@@ -4,7 +4,7 @@
 
 schema_version: '1.0'
 type: manifest
-generated_date: '2026-03-08T05:02:38.568709Z'
+generated_date: '2026-03-08T07:38:42.065213Z'
 generated_from: adrs/**/*.yaml
 adrs:
 - id: ADR-L-0001
@@ -27,6 +27,121 @@ adrs:
   invariant_count: 7
   gap_count: 0
   blocking_gaps: 0
+  component_count: 0
+- id: ADR-L-0002
+  type: logical
+  title: Multi-Scope ADR Architecture for Sub-Module Development
+  status: proposed
+  file_path: adrs\logical\ADR-L-0002-multi-scope-adr-architecture-for-sub-module-develo.yaml
+  domains:
+  - adr
+  - architecture
+  - governance
+  - multi-project
+  tags:
+  - adr
+  - scope-resolution
+  - multi-project
+  - sub-modules
+  - monorepo
+  implements_logical: []
+  technologies: []
+  decision_count: 1
+  invariant_count: 6
+  gap_count: 0
+  blocking_gaps: 0
+  component_count: 0
+- id: ADR-L-0003
+  type: logical
+  title: Quality Assurance and Testing Strategy
+  status: accepted
+  file_path: adrs\logical\ADR-L-0003-quality-assurance-and-testing-strategy.yaml
+  domains:
+  - quality-assurance
+  - testing
+  - governance
+  - reliability
+  tags:
+  - testing
+  - quality
+  - ci-cd
+  - validation
+  - coverage
+  implements_logical: []
+  technologies: []
+  decision_count: 5
+  invariant_count: 7
+  gap_count: 0
+  blocking_gaps: 0
+  component_count: 0
+- id: ADR-L-0004
+  type: logical
+  title: ADR-to-Code Traceability via Decorators
+  status: proposed
+  file_path: adrs\logical\ADR-L-0004-adr-to-code-traceability-via-decorators.yaml
+  domains:
+  - architecture
+  - traceability
+  - governance
+  - verification
+  tags:
+  - traceability
+  - decorators
+  - verification
+  - drift-detection
+  - embodied-design
+  implements_logical: []
+  technologies: []
+  decision_count: 3
+  invariant_count: 6
+  gap_count: 4
+  blocking_gaps: 3
+  component_count: 0
+- id: ADR-L-0005
+  type: logical
+  title: ADR-to-Prompt Translation for AI Implementation
+  status: proposed
+  file_path: adrs\logical\ADR-L-0005-adr-to-prompt-translation-for-ai-implementation.yaml
+  domains:
+  - adr
+  - automation
+  - ai-tooling
+  - code-generation
+  tags:
+  - prompt-engineering
+  - adr
+  - automation
+  - ai-agents
+  - code-generation
+  - llm
+  implements_logical: []
+  technologies: []
+  decision_count: 4
+  invariant_count: 6
+  gap_count: 4
+  blocking_gaps: 1
+  component_count: 0
+- id: ADR-L-0006
+  type: logical
+  title: Rule Library Sub-Module with Cooperative Signals
+  status: proposed
+  file_path: adrs\logical\ADR-L-0006-rule-library-sub-module-with-cooperative-signals.yaml
+  domains:
+  - governance
+  - rules
+  - signals
+  - integration
+  tags:
+  - rule-library
+  - cooperative-signals
+  - submodule
+  - mcp
+  implements_logical: []
+  technologies: []
+  decision_count: 5
+  invariant_count: 4
+  gap_count: 3
+  blocking_gaps: 1
   component_count: 0
 - id: ADR-P-0001
   type: physical
@@ -82,10 +197,43 @@ adrs:
 by_domain:
   architecture:
   - ADR-L-0001
+  - ADR-L-0002
+  - ADR-L-0004
   governance:
   - ADR-L-0001
+  - ADR-L-0002
+  - ADR-L-0003
+  - ADR-L-0004
+  - ADR-L-0006
   documentation-state:
   - ADR-L-0001
+  adr:
+  - ADR-L-0002
+  - ADR-L-0005
+  multi-project:
+  - ADR-L-0002
+  quality-assurance:
+  - ADR-L-0003
+  testing:
+  - ADR-L-0003
+  reliability:
+  - ADR-L-0003
+  traceability:
+  - ADR-L-0004
+  verification:
+  - ADR-L-0004
+  automation:
+  - ADR-L-0005
+  ai-tooling:
+  - ADR-L-0005
+  code-generation:
+  - ADR-L-0005
+  rules:
+  - ADR-L-0006
+  signals:
+  - ADR-L-0006
+  integration:
+  - ADR-L-0006
   implementation:
   - ADR-P-0001
   tooling:
@@ -99,8 +247,14 @@ by_domain:
 by_status:
   accepted:
   - ADR-L-0001
+  - ADR-L-0003
   - ADR-P-0001
   - ADR-P-0002
+  proposed:
+  - ADR-L-0002
+  - ADR-L-0004
+  - ADR-L-0005
+  - ADR-L-0006
 by_technology:
   python:
   - ADR-P-0001
@@ -158,17 +312,290 @@ invariants:
   defined_in: ADR-L-0001
   enforced_by: []
   enforcement_level: must
+- id: INV-0014
+  statement: 'ADR generators and validators MUST support explicit scope parameter
+    to
+
+    override auto-detection when needed
+
+    '
+  defined_in: ADR-L-0002
+  enforced_by: []
+  enforcement_level: must
+- id: INV-0015
+  statement: 'Project scope resolution MUST use the same marker hierarchy as ste-runtime:
+
+    1. Explicit --scope parameter (highest priority)
+
+    2. ste.config.json in current or parent directories
+
+    3. Standard project markers (package.json, pyproject.toml, .git)
+
+    4. Current working directory (fallback)
+
+    '
+  defined_in: ADR-L-0002
+  enforced_by: []
+  enforcement_level: must
+- id: INV-0016
+  statement: 'Each project scope MUST maintain its own adrs/ directory and manifest.yaml
+
+    '
+  defined_in: ADR-L-0002
+  enforced_by: []
+  enforcement_level: must
+- id: INV-0017
+  statement: 'ADR cross-references between different scopes MUST use fully-qualified
+
+    identifiers (e.g., "ste-runtime:ADR-L-0001")
+
+    '
+  defined_in: ADR-L-0002
+  enforced_by: []
+  enforcement_level: should
+- id: INV-0018
+  statement: 'Scope resolution MUST NOT traverse above workspace root to prevent
+
+    scanning unintended directories
+
+    '
+  defined_in: ADR-L-0002
+  enforced_by: []
+  enforcement_level: must
+- id: INV-0019
+  statement: 'ADR validation at workspace scope SHOULD validate all sub-module ADRs
+
+    recursively when --recursive flag is provided
+
+    '
+  defined_in: ADR-L-0002
+  enforced_by: []
+  enforcement_level: should
+- id: INV-0020
+  statement: 'Every component with public API MUST have unit tests covering:
+
+    - Happy path (valid inputs)
+
+    - Error cases (invalid inputs)
+
+    - Edge cases (boundary conditions)
+
+    - Backward compatibility (when applicable)
+
+    '
+  defined_in: ADR-L-0003
+  enforced_by: []
+  enforcement_level: must
+- id: INV-0021
+  statement: 'Schema validators MUST have tests proving correctness against:
+
+    - Valid ADRs (should pass)
+
+    - Invalid ADRs (should fail with clear errors)
+
+    - Edge cases (empty fields, special characters, etc.)
+
+    '
+  defined_in: ADR-L-0003
+  enforced_by: []
+  enforcement_level: must
+- id: INV-0022
+  statement: 'Multi-scope functionality MUST have tests covering:
+
+    - Single scope (backward compatibility)
+
+    - Multiple scopes (recursive operations)
+
+    - Scope boundary enforcement (security)
+
+    - Parent-child relationships
+
+    '
+  defined_in: ADR-L-0003
+  enforced_by: []
+  enforcement_level: must
+- id: INV-0023
+  statement: 'Test suite MUST complete in under 30 seconds for fast feedback
+
+    '
+  defined_in: ADR-L-0003
+  enforced_by: []
+  enforcement_level: should
+- id: INV-0024
+  statement: 'Tests MUST be deterministic - same input always produces same output
+
+    '
+  defined_in: ADR-L-0003
+  enforced_by: []
+  enforcement_level: must
+- id: INV-0025
+  statement: 'Breaking changes to public APIs MUST be detected by tests
+
+    '
+  defined_in: ADR-L-0003
+  enforced_by: []
+  enforcement_level: must
+- id: INV-0026
+  statement: 'Test coverage SHOULD be measured and tracked, with minimum 80% coverage
+
+    for critical components (parsers, validators, generators)
+
+    '
+  defined_in: ADR-L-0003
+  enforced_by: []
+  enforcement_level: should
+- id: INV-0027
+  statement: 'All public classes and functions SHOULD be annotated with @implements_adr
+
+    decorator referencing the ADR(s) that justify their existence
+
+    '
+  defined_in: ADR-L-0004
+  enforced_by: []
+  enforcement_level: should
+- id: INV-0028
+  statement: 'Decorator references MUST point to existing, accepted ADRs
+
+    '
+  defined_in: ADR-L-0004
+  enforced_by: []
+  enforcement_level: must
+- id: INV-0029
+  statement: 'ADRs that declare components with implementation_identifiers MUST have
+
+    corresponding code with matching decorators
+
+    '
+  defined_in: ADR-L-0004
+  enforced_by: []
+  enforcement_level: must
+- id: INV-0030
+  statement: 'Code decorated with @enforces_invariant MUST implement validation logic
+
+    for that invariant
+
+    '
+  defined_in: ADR-L-0004
+  enforced_by: []
+  enforcement_level: must
+- id: INV-0031
+  statement: 'Traceability rules MUST be encoded in rule-library sub-module, not
+
+    hardcoded in validators
+
+    '
+  defined_in: ADR-L-0004
+  enforced_by: []
+  enforcement_level: must
+- id: INV-0032
+  statement: 'Rule library SHOULD support both file-based and MCP-based rule delivery
+
+    '
+  defined_in: ADR-L-0004
+  enforced_by: []
+  enforcement_level: should
+- id: INV-0027
+  statement: 'Generated prompts MUST include all invariants from the source ADR with
+
+    their enforcement levels (must/should/may)
+
+    '
+  defined_in: ADR-L-0005
+  enforced_by: []
+  enforcement_level: must
+- id: INV-0028
+  statement: 'Generated prompts MUST include component specifications with complete
+
+    interface definitions (methods, parameters, return types)
+
+    '
+  defined_in: ADR-L-0005
+  enforced_by: []
+  enforcement_level: must
+- id: INV-0029
+  statement: 'Generated prompts MUST reference the source ADR ID and specific sections
+
+    (invariant IDs, component IDs) for traceability
+
+    '
+  defined_in: ADR-L-0005
+  enforced_by: []
+  enforcement_level: must
+- id: INV-0030
+  statement: 'Generated prompts MUST include test requirements from the ADR
+
+    '
+  defined_in: ADR-L-0005
+  enforced_by: []
+  enforcement_level: must
+- id: INV-0031
+  statement: 'Generated prompts SHOULD include implementation strategy guidance
+
+    (e.g., TDD cycle, dependency injection patterns)
+
+    '
+  defined_in: ADR-L-0005
+  enforced_by: []
+  enforcement_level: should
+- id: INV-0032
+  statement: 'Prompt generator MUST be deterministic - same ADR input always produces
+
+    same prompt output
+
+    '
+  defined_in: ADR-L-0005
+  enforced_by: []
+  enforcement_level: must
+- id: INV-0033
+  statement: 'rule-library MUST define canonical schema for cooperative signals
+
+    '
+  defined_in: ADR-L-0006
+  enforced_by: []
+  enforcement_level: must
+- id: INV-0034
+  statement: 'rule-library MUST support file-based rule and signal handling
+
+    '
+  defined_in: ADR-L-0006
+  enforced_by: []
+  enforcement_level: must
+- id: INV-0035
+  statement: 'rule-library MUST NOT self-govern; it is governed by ADRs
+
+    '
+  defined_in: ADR-L-0006
+  enforced_by: []
+  enforcement_level: must
+- id: INV-0036
+  statement: 'Cooperative signal schema MUST include claim, progress, complete,
+
+    wave_complete, validation_ready types
+
+    '
+  defined_in: ADR-L-0006
+  enforced_by: []
+  enforcement_level: must
 gaps_summary:
-  total: 0
-  blocking: 0
-  by_adr: {}
+  total: 11
+  blocking: 5
+  by_adr:
+    ADR-L-0004:
+      total: 4
+      blocking: 3
+    ADR-L-0005:
+      total: 4
+      blocking: 1
+    ADR-L-0006:
+      total: 3
+      blocking: 1
 statistics:
-  total_adrs: 3
-  logical_adrs: 1
+  total_adrs: 8
+  logical_adrs: 6
   physical_adrs: 2
   decision_adrs: 0
-  total_decisions: 6
-  total_invariants: 7
+  total_decisions: 24
+  total_invariants: 36
   total_components: 6
-  total_gaps: 0
-  blocking_gaps: 0
+  total_gaps: 11
+  blocking_gaps: 5

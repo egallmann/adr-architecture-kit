@@ -276,6 +276,10 @@ def implement(adr_id: str, component: Optional[str], plan_only: bool, output: st
         click.echo(plan)
         click.echo()
     
+    # Create signal directory for cooperative coordination
+    signal_dir = Path(f".codex/signals/{adr_id}")
+    signal_dir.mkdir(parents=True, exist_ok=True)
+    
     agent_names = {
         'codex': 'CODEX',
         'cursor': 'Cursor (Sonnet 4.5)',
@@ -284,7 +288,13 @@ def implement(adr_id: str, component: Optional[str], plan_only: bool, output: st
     }
     
     click.echo(f"Ready for {agent_names[agent]} implementation")
-    click.echo(f"   Agent should read: {plan_path}")
+    click.echo(f"   Plan: {plan_path}")
+    click.echo(f"   Signal directory: {signal_dir}/")
+    click.echo()
+    click.echo("Cooperative signals enabled:")
+    click.echo("   Agents can claim components to prevent conflicts")
+    click.echo(f"   Progress visible in {signal_dir}/*.progress.json")
+    click.echo("   Wave completion triggers next wave")
     click.echo()
     click.echo("Next steps:")
     click.echo("   1. Review the plan")

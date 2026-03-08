@@ -51,6 +51,14 @@ Thumbs.db
 .cursor/
 _poc_*/
 
+# Cooperative signals (ephemeral coordination artifacts)
+.codex/signals/
+.cursor/signals/
+
+# Cooperative signals (ephemeral coordination artifacts)
+.codex/signals/
+.cursor/signals/
+
 # Development process files (not part of project)
 HANDOFF-TO-CODEX.md
 CHANGELOG.md
@@ -60,3 +68,4 @@ docs/SESSION-SUMMARY-*.md
 docs/VALIDATION-CHECKLIST.md
 docs/AGENT-SPECIFIC-PROMPTS.md
 docs/PARALLEL-WORKFLOW.md
+docs/COOPERATIVE-SIGNALS.md

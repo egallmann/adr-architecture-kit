@@ -41,8 +41,9 @@ Transform architecture decisions into **enforceable, propagatable policy** acros
 
 **ADR Traceability Foundation**:
 - ✅ ADR-L-0004: Traceability via decorators (logical design)
+- ✅ ADR-L-0006: Rule Library Sub-Module (logical design, cooperative signals)
 - ⏳ Decorator library implementation (after prompt translator)
-- ⏳ Rule-library sub-module scaffolding
+- ⏳ ste-rules-library repo development
 
 ## Roadmap
 
@@ -123,39 +124,42 @@ class ProjectScopeResolver:
 
 ### Phase 2: Rule Library Sub-Module
 
-**Goal**: Create MCP service for rule activation and projection
+**Goal**: Create rule activation service with cooperative signals
+
+**Authority**: ADR-L-0006
 
 **Deliverables**:
-- [ ] **ADR-P-0005**: Physical ADR for rule-library sub-module
-- [ ] `rule-library/` sub-module structure
+- [x] **ADR-L-0006**: Rule Library Sub-Module (Logical)
+- [ ] **ADR-P-0005**: Physical ADR for rule-library implementation
+- [ ] `ste-rules-library/` standalone repo
 - [ ] `rule-library/PROJECT.yaml`
-- [ ] `rule-library/adrs/` (sub-module's own ADRs)
+- [ ] `rule-library/schema/signal.schema.json` - Cooperative + context signals
+- [ ] `rule-library/scripts/emit-signal.py` - CLI for agents
+- [ ] `rule-library/scripts/bootstrap.py` - Submodule init
 - [ ] Rule schema definition
 - [ ] File-based rule loader
-- [ ] Rule activator (context-aware)
-- [ ] MCP server implementation
-- [ ] MCP tools: `get_rules`, `validate_decorator`, `check_traceability`
-- [ ] Tests for rule loading and activation
-- [ ] Integration with adr-architecture-kit
+- [ ] Rule activator (context signals)
+- [ ] MCP server (Phase 2b)
+- [ ] MCP tools: `get_rules`, `emit_signal`, `read_signals`
+- [ ] Integration with prompt translator (signal schema)
+- [ ] Integration with adr-architecture-kit (submodule)
 
 **Success Criteria**:
-- Can load rules from YAML files
-- MCP server responds to tool calls
-- Rules can be filtered by context
-- File-based fallback works offline
-- Independent package (can be extracted)
+- Canonical signal schema (claim, progress, complete, wave_complete, validation_ready)
+- Prompt translator consumes schema for generated prompts
+- File-based rules and signals work offline
+- Bootstrap script for submodule init
+- Independent package (standalone repo)
 
-**Dependencies**: Phase 1 (decorators needed for verification)
+**Dependencies**: Phase 0 (prompt translator generates signal instructions)
 
-**MCP Integration**:
-```bash
-# Start MCP server
-cd rule-library
-python -m rule_library.mcp_server
+**Cooperative Signals**:
+- rule-library defines signal format
+- Prompt translator includes emission instructions in prompts
+- Agents emit to `.codex/signals/` per schema
+- Coordination hub for file-based tooling until RSS built
 
-# Query from consumer
-adr-verify get-rules --project adr-architecture-kit --mcp
-```
+**Design**: docs/RULE-LIBRARY-DESIGN.md
 
 ### Phase 3: Verification System
 

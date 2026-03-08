@@ -11,16 +11,28 @@ from typing import Optional, List
 
 @dataclass
 class ProjectScope:
-    """Resolved project scope information."""
+    """Resolved project scope information.
+    
+    Canonical placement for multi-scope (workspace + submodules):
+    - ADRs: logical_dir, physical_dir (per scope)
+    - Manifest: manifest_path (per scope)
+    - Paths from PROJECT.yaml architecture_documentation when present.
+    """
     
     root: Path
     """Absolute path to project root directory"""
     
     adr_dir: Path
-    """Absolute path to ADRs directory (root/adrs)"""
+    """Absolute path to ADRs directory (root/adrs or from PROJECT.yaml)"""
     
     manifest_path: Path
-    """Absolute path to manifest.yaml"""
+    """Absolute path to manifest.yaml (index of ADRs)"""
+    
+    logical_dir: Path
+    """Absolute path to adrs/logical/ - place new logical ADRs here"""
+    
+    physical_dir: Path
+    """Absolute path to adrs/physical/ - place new physical ADRs here"""
     
     marker: str
     """Marker file/directory that identified this scope"""
@@ -234,6 +246,9 @@ class ProjectScopeResolver:
     def _create_scope(self, root: Path, marker: str) -> ProjectScope:
         """Create ProjectScope from root directory.
         
+        Uses PROJECT.yaml architecture_documentation when present for paths.
+        Ensures canonical placement: adrs/logical/, adrs/physical/, adrs/manifest.yaml.
+        
         Args:
             root: Project root directory
             marker: Marker that identified this scope
@@ -245,7 +260,7 @@ class ProjectScopeResolver:
         adr_dir = root / 'adrs'
         manifest_path = adr_dir / 'manifest.yaml'
         
-        # Try to get project name from PROJECT.yaml
+        # Use PROJECT.yaml architecture_documentation when present
         name = None
         project_yaml = root / 'PROJECT.yaml'
         if project_yaml.exists():
@@ -253,12 +268,21 @@ class ProjectScopeResolver:
                 import yaml
                 with open(project_yaml, 'r', encoding='utf-8') as f:
                     data = yaml.safe_load(f)
-                    if data and 'project' in data:
-                        name = data['project'].get('name')
+                    if data:
+                        arch = data.get('architecture_documentation', {})
+                        if arch:
+                            adr_rel = arch.get('adr_directory', 'adrs/').rstrip('/')
+                            manifest_rel = arch.get('manifest_path', 'adrs/manifest.yaml')
+                            adr_dir = (root / adr_rel).resolve()
+                            manifest_path = (root / manifest_rel).resolve()
+                        if 'project' in data:
+                            name = data['project'].get('name')
             except Exception:
                 pass
         
-        # Fallback to directory name
+        logical_dir = adr_dir / 'logical'
+        physical_dir = adr_dir / 'physical'
+        
         if not name:
             name = root.name
         
@@ -266,6 +290,8 @@ class ProjectScopeResolver:
             root=root,
             adr_dir=adr_dir,
             manifest_path=manifest_path,
+            logical_dir=logical_dir,
+            physical_dir=physical_dir,
             marker=marker,
             name=name,
         )

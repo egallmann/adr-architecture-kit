@@ -1,10 +1,11 @@
 schema_version: "1.0"
-type: logical_adr
+adr_type: logical
 id: ADR-L-0005
 title: ADR-to-Prompt Translation for AI Implementation
 status: proposed
-created_date: 2026-03-08
-last_modified: 2026-03-08
+created_date: "2026-03-08"
+authors: [adr-architecture-kit]
+modified_date: "2026-03-08"
 
 context: |
   The ADR Architecture Kit encodes architectural decisions in machine-readable YAML
@@ -67,7 +68,7 @@ tags:
 
 decisions:
   - id: DEC-0001
-    title: Create ADR-to-Prompt Translator
+    summary: Create ADR-to-Prompt Translator
     rationale: |
       Automate the generation of implementation prompts from ADR specifications
       to ensure consistency, completeness, and scalability.
@@ -80,18 +81,22 @@ decisions:
       - **Scalability**: Works for any number of ADRs
       - **Quality**: Reduces human error in translation
     alternatives_considered:
-      - Manual prompt crafting: Not scalable, error-prone
-      - Template-based generation: Less flexible, hard to maintain
-      - LLM-based translation: Non-deterministic, requires validation
+      - name: Manual prompt crafting
+        rejected_because: Not scalable, error-prone
+      - name: Template-based generation
+        rejected_because: Less flexible, hard to maintain
+      - name: LLM-based translation
+        rejected_because: Non-deterministic, requires validation
     consequences:
-      - Prompts are generated, not hand-crafted
-      - ADR changes automatically propagate to prompts
-      - AI agents receive consistent, complete specifications
-      - Reduces cognitive load on architects
-      - Enables automated implementation pipelines
+      positive:
+        - Prompts are generated, not hand-crafted
+        - ADR changes automatically propagate to prompts
+        - AI agents receive consistent, complete specifications
+        - Reduces cognitive load on architects
+        - Enables automated implementation pipelines
 
   - id: DEC-0002
-    title: Generate Prompts Per Component
+    summary: Generate Prompts Per Component
     rationale: |
       Physical ADRs contain multiple component specifications (COMP-*). Each
       component should have its own implementation prompt to enable:
@@ -100,41 +105,49 @@ decisions:
       - Incremental validation (per component)
       - Clear scope boundaries
     consequences:
-      - One Physical ADR → Multiple prompts (one per component)
-      - Prompts reference parent ADR for context
-      - Prompts can be executed independently or sequentially
+      positive:
+        - One Physical ADR → Multiple prompts (one per component)
+        - Prompts reference parent ADR for context
+        - Prompts can be executed independently or sequentially
 
   - id: DEC-0003
-    title: Include Validation Criteria in Prompts
+    summary: Include Validation Criteria in Prompts
     rationale: |
       Each prompt should include explicit validation criteria so the implementing
       agent knows when it's done and how to verify correctness. This enables
       self-validation and reduces iteration cycles.
     consequences:
-      - Prompts are self-contained with success criteria
-      - AI agents can self-validate before handoff
-      - Reduces back-and-forth between design and implementation
+      positive:
+        - Prompts are self-contained with success criteria
+        - AI agents can self-validate before handoff
+        - Reduces back-and-forth between design and implementation
 
   - id: DEC-0004
-    title: Support Multiple Target Agents
+    summary: Support Multiple Target Agents
     rationale: |
       Different AI agents (CODEX, Cursor, Claude, GPT) have different capabilities
       and prompt formats. The translator should support generating prompts optimized
       for specific target agents.
     alternatives_considered:
-      - Single universal prompt: May not leverage agent-specific features
-      - Manual per-agent prompts: Not scalable
+      - name: Single universal prompt
+        rejected_because: May not leverage agent-specific features
+      - name: Manual per-agent prompts
+        rejected_because: Not scalable
     consequences:
-      - Translator has agent-specific formatters
-      - Can optimize for agent strengths
-      - Maintains core content consistency across formats
+      positive:
+        - Translator has agent-specific formatters
+        - Can optimize for agent strengths
+        - Maintains core content consistency across formats
 
 invariants:
   - id: INV-0027
     statement: |
       Generated prompts MUST include all invariants from the source ADR with
       their enforcement levels (must/should/may)
+    scope: global
     enforcement_level: must
+    enforcement_mechanism: design
+    verification_method: automated
     rationale: |
       Invariants are architectural constraints that MUST be enforced in implementation.
       Missing invariants in prompts leads to non-compliant code.
@@ -143,7 +156,10 @@ invariants:
     statement: |
       Generated prompts MUST include component specifications with complete
       interface definitions (methods, parameters, return types)
+    scope: global
     enforcement_level: must
+    enforcement_mechanism: design
+    verification_method: automated
     rationale: |
       Component specs define what to build. Incomplete specs lead to incorrect
       implementations that don't match the architecture.
@@ -152,7 +168,10 @@ invariants:
     statement: |
       Generated prompts MUST reference the source ADR ID and specific sections
       (invariant IDs, component IDs) for traceability
+    scope: global
     enforcement_level: must
+    enforcement_mechanism: design
+    verification_method: automated
     rationale: |
       Traceability enables validation of implementation against original ADR
       and helps AI agents understand authority chain.
@@ -160,7 +179,10 @@ invariants:
   - id: INV-0030
     statement: |
       Generated prompts MUST include test requirements from the ADR
+    scope: global
     enforcement_level: must
+    enforcement_mechanism: design
+    verification_method: automated
     rationale: |
       Tests are part of the specification. Per ADR-L-0003, TDD methodology
       requires tests to be specified before implementation.
@@ -169,7 +191,10 @@ invariants:
     statement: |
       Generated prompts SHOULD include implementation strategy guidance
       (e.g., TDD cycle, dependency injection patterns)
+    scope: global
     enforcement_level: should
+    enforcement_mechanism: design
+    verification_method: automated
     rationale: |
       Implementation patterns help AI agents produce consistent, high-quality
       code that follows project conventions.
@@ -178,7 +203,10 @@ invariants:
     statement: |
       Prompt generator MUST be deterministic - same ADR input always produces
       same prompt output
+    scope: global
     enforcement_level: must
+    enforcement_mechanism: design
+    verification_method: automated
     rationale: |
       Non-deterministic generation violates SYS-2 (Deterministic Cognition).
       Prompts must be reproducible for validation and debugging.
@@ -256,9 +284,12 @@ capabilities:
       - Easy to add new formats
 
 architectural_boundaries:
-  - name: Prompt Translator
+  - id: BOUND-0001
+    name: Prompt Translator
     description: |
       Translates ADRs into implementation prompts
+    rationale: |
+      Separates ADR parsing from prompt generation for single responsibility.
     inputs:
       - Physical ADR (YAML)
       - Component ID (optional, for single component)
@@ -272,31 +303,31 @@ architectural_boundaries:
       - Must include complete specifications
 
 interaction_contracts:
-  - name: ADR Parser → Prompt Generator
-    description: |
-      ADR parser provides structured component data to prompt generator
-    contract:
-      - Parser extracts component specifications
-      - Parser validates ADR completeness
-      - Generator receives validated component data
-      - Generator produces structured prompt
+  - id: CONTRACT-0001
+    parties: [ADR Parser, Prompt Generator]
+    protocol: Structured component data transfer
+    guarantees: |
+      Parser extracts component specifications.
+      Parser validates ADR completeness.
+      Generator receives validated component data.
+      Generator produces structured prompt.
 
-  - name: Prompt Generator → AI Agent
-    description: |
-      Generated prompts consumed by AI agents for implementation
-    contract:
-      - Prompt is self-contained (no external references needed)
-      - Prompt includes validation criteria
-      - Prompt references source ADR for traceability
-      - Agent can execute prompt independently
+  - id: CONTRACT-0002
+    parties: [Prompt Generator, AI Agent]
+    protocol: Self-contained prompt delivery
+    guarantees: |
+      Prompt is self-contained (no external references needed).
+      Prompt includes validation criteria.
+      Prompt references source ADR for traceability.
+      Agent can execute prompt independently.
 
-  - name: AI Implementation → Validator
-    description: |
-      Implementation validated against original ADR via checklist
-    contract:
-      - Validator uses generated checklist
-      - Validator verifies against ADR invariants
-      - Validator reports compliance status
+  - id: CONTRACT-0003
+    parties: [AI Implementation, Validator]
+    protocol: Checklist-based validation
+    guarantees: |
+      Validator uses generated checklist.
+      Validator verifies against ADR invariants.
+      Validator reports compliance status.
       - Validator references specific ADR sections
 
 related_adrs:
@@ -305,10 +336,22 @@ related_adrs:
   - ADR-P-0003  # Multi-scope implementation (example Physical ADR)
 
 gaps:
-  - Physical ADR needed for prompt translator implementation
-  - Prompt template design needed
-  - Agent-specific formatters need definition
-  - Integration with CI/CD for automated implementation
+  - id: GAP-0001
+    question: Physical ADR needed for prompt translator implementation
+    impact: high
+    blocking: true
+  - id: GAP-0002
+    question: Prompt template design needed
+    impact: medium
+    blocking: false
+  - id: GAP-0003
+    question: Agent-specific formatters need definition
+    impact: medium
+    blocking: false
+  - id: GAP-0004
+    question: Integration with CI/CD for automated implementation
+    impact: medium
+    blocking: false
 
 notes: |
   This capability transforms ADRs from passive documentation into **active

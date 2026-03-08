@@ -1,10 +1,11 @@
 schema_version: "1.0"
-type: logical_adr
+adr_type: logical
 id: ADR-L-0004
 title: ADR-to-Code Traceability via Decorators
 status: proposed
-created_date: 2026-03-08
-last_modified: 2026-03-08
+created_date: "2026-03-08"
+authors: [adr-architecture-kit]
+modified_date: "2026-03-08"
 
 context: |
   Architecture Decision Records document WHY code exists, but there's no
@@ -97,7 +98,7 @@ tags:
 
 decisions:
   - id: DEC-0001
-    title: Adopt Decorator-Based ADR Traceability
+    summary: Adopt Decorator-Based ADR Traceability
     rationale: |
       Python decorators provide a non-invasive way to annotate code with
       architectural metadata without affecting runtime behavior.
@@ -116,14 +117,15 @@ decisions:
       - Traceability for audit and compliance
       - AI agent understanding of code authority
     consequences:
-      - All new code must declare its ADR authority via decorators
-      - RECON must extract decorator metadata
-      - Verification tools must validate decorator references
-      - Existing code needs gradual annotation
-      - Decorator library becomes foundational dependency
+      positive:
+        - All new code must declare its ADR authority via decorators
+        - RECON must extract decorator metadata
+        - Verification tools must validate decorator references
+        - Existing code needs gradual annotation
+        - Decorator library becomes foundational dependency
 
   - id: DEC-0002
-    title: Create Rule Library Sub-Module as MCP Service
+    summary: Create Rule Library Sub-Module as MCP Service
     rationale: |
       ADR traceability rules should be encoded in a separate rule-library
       sub-module that acts as an MCP service, not hardcoded in validators.
@@ -168,16 +170,17 @@ decisions:
       Decorators + Verification
       ```
     consequences:
-      - New sub-module: rule-library/ (MCP service)
-      - Rules generated from ADRs, not manually written
-      - MCP protocol for rule delivery
-      - File-based fallback for offline/development
-      - Rules versioned and governed
-      - Cross-project rule consumption
-      - AI agents receive rules via MCP
+      positive:
+        - "New sub-module: rule-library/ (MCP service)"
+        - Rules generated from ADRs, not manually written
+        - MCP protocol for rule delivery
+        - File-based fallback for offline/development
+        - Rules versioned and governed
+        - Cross-project rule consumption
+        - AI agents receive rules via MCP
 
   - id: DEC-0003
-    title: Support Bidirectional Verification
+    summary: Support Bidirectional Verification
     rationale: |
       Traceability must work in both directions:
       
@@ -195,17 +198,21 @@ decisions:
       - Invalid references (code references non-existent ADR)
       - Status mismatches (code implements "rejected" ADR)
     consequences:
-      - Verification must check both directions
-      - RECON must extract both ADR declarations and code decorators
-      - Drift detection becomes comprehensive
-      - CI/CD can enforce traceability
+      positive:
+        - Verification must check both directions
+        - RECON must extract both ADR declarations and code decorators
+        - Drift detection becomes comprehensive
+        - CI/CD can enforce traceability
 
 invariants:
   - id: INV-0027
     statement: |
       All public classes and functions SHOULD be annotated with @implements_adr
       decorator referencing the ADR(s) that justify their existence
+    scope: global
     enforcement_level: should
+    enforcement_mechanism: design
+    verification_method: automated
     rationale: |
       Public APIs are architectural boundaries. They must have explicit
       architectural justification. Private/internal code may omit decorators
@@ -214,7 +221,10 @@ invariants:
   - id: INV-0028
     statement: |
       Decorator references MUST point to existing, accepted ADRs
+    scope: global
     enforcement_level: must
+    enforcement_mechanism: design
+    verification_method: automated
     rationale: |
       Code cannot claim to implement non-existent or rejected ADRs.
       This prevents invalid traceability claims.
@@ -223,7 +233,10 @@ invariants:
     statement: |
       ADRs that declare components with implementation_identifiers MUST have
       corresponding code with matching decorators
+    scope: global
     enforcement_level: must
+    enforcement_mechanism: design
+    verification_method: automated
     rationale: |
       Forward traceability - if ADR declares implementation, it must exist.
       Detects phantom declarations.
@@ -232,7 +245,10 @@ invariants:
     statement: |
       Code decorated with @enforces_invariant MUST implement validation logic
       for that invariant
+    scope: global
     enforcement_level: must
+    enforcement_mechanism: design
+    verification_method: automated
     rationale: |
       Claiming to enforce an invariant without actually implementing the
       enforcement is architectural drift.
@@ -241,7 +257,10 @@ invariants:
     statement: |
       Traceability rules MUST be encoded in rule-library sub-module, not
       hardcoded in validators
+    scope: global
     enforcement_level: must
+    enforcement_mechanism: design
+    verification_method: automated
     rationale: |
       Rules are architectural artifacts that should be versioned, governed,
       and reusable across projects.
@@ -249,7 +268,10 @@ invariants:
   - id: INV-0032
     statement: |
       Rule library SHOULD support both file-based and MCP-based rule delivery
+    scope: global
     enforcement_level: should
+    enforcement_mechanism: design
+    verification_method: automated
     rationale: |
       File-based for simplicity, MCP-based for dynamic rule serving to AI
       agents and cross-project rule sharing.
@@ -261,10 +283,10 @@ capabilities:
       Python decorators that annotate code with ADR references, creating
       machine-readable traceability metadata.
     acceptance_criteria:
-      - @implements_adr(adr_id, ...) decorator available
-      - @enforces_invariant(inv_id, ...) decorator available
-      - @implements_capability(cap_id) decorator available
-      - @implements_component(comp_id) decorator available
+      - "@implements_adr(adr_id, ...) decorator available"
+      - "@enforces_invariant(inv_id, ...) decorator available"
+      - "@implements_capability(cap_id) decorator available"
+      - "@implements_component(comp_id) decorator available"
       - Decorators don't affect runtime behavior
       - Decorators are extractable by AST parsing
 
@@ -312,23 +334,20 @@ related_adrs:
 
 gaps:
   - id: GAP-0001
-    description: Decorator library not yet implemented
-    impact: Cannot annotate code with ADR references
+    question: Decorator library not yet implemented
+    impact: high
     blocking: true
-    
   - id: GAP-0002
-    description: Rule library sub-module not yet created
-    impact: Rules hardcoded in validators
+    question: Rule library sub-module not yet created
+    impact: high
     blocking: true
-    
   - id: GAP-0003
-    description: RECON doesn't extract decorator metadata
-    impact: No automated traceability verification
+    question: RECON doesn't extract decorator metadata
+    impact: high
     blocking: true
-    
   - id: GAP-0004
-    description: MCP integration for rule delivery not designed
-    impact: Rules only file-based
+    question: MCP integration for rule delivery not designed
+    impact: medium
     blocking: false
 
 notes: |

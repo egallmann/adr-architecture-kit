@@ -8,3 +8,4 @@
 [submodule "ste-rules-library"]
 	path = ste-rules-library
 	url = https://github.com/egallmann/ste-rules-library.git
+	branch = develop

@@ -1,10 +1,11 @@
 schema_version: "1.0"
-type: logical_adr
+adr_type: logical
 id: ADR-L-0003
 title: Quality Assurance and Testing Strategy
 status: accepted
-created_date: 2026-03-08
-last_modified: 2026-03-08
+created_date: "2026-03-08"
+authors: [adr-architecture-kit]
+modified_date: "2026-03-08"
 
 context: |
   The ADR Architecture Kit is a foundational tool for machine-verifiable architecture
@@ -51,7 +52,7 @@ tags:
 
 decisions:
   - id: DEC-0001
-    title: Adopt Multi-Layer Testing Strategy
+    summary: Adopt Multi-Layer Testing Strategy
     rationale: |
       Different types of tests serve different purposes. A layered approach provides
       comprehensive coverage while maintaining fast feedback loops.
@@ -62,14 +63,15 @@ decisions:
       3. **Real-world tests**: Test against actual workspace ADRs
       4. **Regression tests**: Prevent reintroduction of fixed bugs
     consequences:
-      - Clear test organization and purpose
-      - Fast unit tests for rapid development
-      - Integration tests catch interaction bugs
-      - Real-world tests ensure practical usability
-      - Test suite grows with system complexity
+      positive:
+        - Clear test organization and purpose
+        - Fast unit tests for rapid development
+        - Integration tests catch interaction bugs
+        - Real-world tests ensure practical usability
+        - Test suite grows with system complexity
 
   - id: DEC-0002
-    title: Require Tests for All New Components
+    summary: Require Tests for All New Components
     rationale: |
       Every new component must include tests before acceptance. This ensures
       quality is built in from the start, not retrofitted later.
@@ -77,13 +79,14 @@ decisions:
       Prevents technical debt accumulation and ensures new features are
       immediately verifiable.
     consequences:
-      - Slower initial development (offset by fewer bugs)
-      - Higher confidence in new features
-      - Easier refactoring with test safety net
-      - Documentation via test examples
+      positive:
+        - Slower initial development (offset by fewer bugs)
+        - Higher confidence in new features
+        - Easier refactoring with test safety net
+        - Documentation via test examples
 
   - id: DEC-0003
-    title: Test Against Real Workspace ADRs
+    summary: Test Against Real Workspace ADRs
     rationale: |
       The toolkit must work with actual ADRs in the workspace. Testing against
       synthetic fixtures alone is insufficient - real-world ADRs expose edge
@@ -92,25 +95,27 @@ decisions:
       This provides dogfooding and ensures the toolkit works on its own
       documentation.
     consequences:
-      - Tests depend on workspace ADR quality
-      - Tests may break when ADRs change (intentional)
-      - Immediate feedback on ADR schema changes
-      - Confidence in real-world usability
+      positive:
+        - Tests depend on workspace ADR quality
+        - Tests may break when ADRs change (intentional)
+        - Immediate feedback on ADR schema changes
+        - Confidence in real-world usability
 
   - id: DEC-0004
-    title: Enforce Testing in CI/CD Pipeline
+    summary: Enforce Testing in CI/CD Pipeline
     rationale: |
       Automated testing in CI/CD prevents regressions and ensures all
       contributors maintain quality standards. Manual testing is insufficient
       for a governance tool.
     consequences:
-      - PRs cannot merge without passing tests
-      - Consistent quality across contributions
-      - Automated regression detection
-      - Slower PR merge (acceptable trade-off)
+      positive:
+        - PRs cannot merge without passing tests
+        - Consistent quality across contributions
+        - Automated regression detection
+        - Slower PR merge (acceptable trade-off)
 
   - id: DEC-0005
-    title: Adopt Test-Driven Development (TDD) Methodology
+    summary: Adopt Test-Driven Development (TDD) Methodology
     rationale: |
       TDD (Red-Green-Refactor) is architecturally aligned with STE principles:
       
@@ -139,13 +144,14 @@ decisions:
       - API design improves (testability forces good interfaces)
       - Documentation via test examples
     consequences:
-      - Development workflow changes: test-first, not test-after
-      - Initial development may feel slower (pays off in debugging time)
-      - Forces thinking about behavior before implementation
-      - Creates comprehensive test suite organically
-      - Reduces debugging time (tests isolate issues)
-      - Higher confidence in correctness
-      - Better API design (testability constraint)
+      positive:
+        - "Development workflow changes: test-first, not test-after"
+        - Initial development may feel slower (pays off in debugging time)
+        - Forces thinking about behavior before implementation
+        - Creates comprehensive test suite organically
+        - Reduces debugging time (tests isolate issues)
+        - Higher confidence in correctness
+        - Better API design (testability constraint)
 
 invariants:
   - id: INV-0020
@@ -155,7 +161,10 @@ invariants:
       - Error cases (invalid inputs)
       - Edge cases (boundary conditions)
       - Backward compatibility (when applicable)
+    scope: global
     enforcement_level: must
+    enforcement_mechanism: test
+    verification_method: automated
     rationale: |
       Public APIs are contracts. Tests document expected behavior and prevent
       breaking changes.
@@ -166,7 +175,10 @@ invariants:
       - Valid ADRs (should pass)
       - Invalid ADRs (should fail with clear errors)
       - Edge cases (empty fields, special characters, etc.)
+    scope: global
     enforcement_level: must
+    enforcement_mechanism: test
+    verification_method: automated
     rationale: |
       Schema validation is the foundation of machine-verifiable architecture.
       Incorrect validation undermines the entire system.
@@ -178,7 +190,10 @@ invariants:
       - Multiple scopes (recursive operations)
       - Scope boundary enforcement (security)
       - Parent-child relationships
+    scope: global
     enforcement_level: must
+    enforcement_mechanism: test
+    verification_method: automated
     rationale: |
       Multi-scope is complex and affects multiple projects. Comprehensive
       testing prevents cross-project contamination and security issues.
@@ -186,7 +201,10 @@ invariants:
   - id: INV-0023
     statement: |
       Test suite MUST complete in under 30 seconds for fast feedback
+    scope: global
     enforcement_level: should
+    enforcement_mechanism: test
+    verification_method: automated
     rationale: |
       Slow tests discourage running them frequently. Fast feedback enables
       test-driven development and rapid iteration.
@@ -194,7 +212,10 @@ invariants:
   - id: INV-0024
     statement: |
       Tests MUST be deterministic - same input always produces same output
+    scope: global
     enforcement_level: must
+    enforcement_mechanism: test
+    verification_method: automated
     rationale: |
       Non-deterministic tests (flaky tests) erode trust and waste time.
       Aligns with SYS-2 (deterministic cognition).
@@ -202,7 +223,10 @@ invariants:
   - id: INV-0025
     statement: |
       Breaking changes to public APIs MUST be detected by tests
+    scope: global
     enforcement_level: must
+    enforcement_mechanism: test
+    verification_method: automated
     rationale: |
       Backward compatibility is critical for existing users. Tests should
       fail when APIs change incompatibly.
@@ -211,7 +235,10 @@ invariants:
     statement: |
       Test coverage SHOULD be measured and tracked, with minimum 80% coverage
       for critical components (parsers, validators, generators)
+    scope: global
     enforcement_level: should
+    enforcement_mechanism: test
+    verification_method: automated
     rationale: |
       Coverage metrics identify untested code paths. 80% is pragmatic balance
       between thoroughness and diminishing returns.

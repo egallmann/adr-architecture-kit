@@ -1,10 +1,11 @@
 schema_version: "1.0"
-type: logical_adr
+adr_type: logical
 id: ADR-L-0002
 title: Multi-Scope ADR Architecture for Sub-Module Development
 status: proposed
-created_date: 2026-03-08
-last_modified: 2026-03-08
+created_date: "2026-03-08"
+authors: [adr-architecture-kit]
+modified_date: "2026-03-08"
 
 context: |
   The adr-architecture-kit is being actively developed in a single workspace alongside
@@ -46,7 +47,7 @@ tags:
 
 decisions:
   - id: DEC-0001
-    title: Adopt Scope-Aware ADR Architecture
+    summary: Adopt Scope-Aware ADR Architecture
     rationale: |
       ADR generators and validators must support multiple project scopes to enable
       sub-modules to maintain independent architectural documentation while being
@@ -55,18 +56,22 @@ decisions:
       This mirrors the ste-runtime's project scope resolution pattern, providing
       consistent behavior across the STE ecosystem.
     consequences:
-      - ADR tools can work at any project level (workspace, sub-module, service)
-      - Sub-modules can maintain independent ADR directories
-      - Tooling auto-detects project boundaries using standard markers
-      - Manifest generation scoped to specific project context
-      - Validation can be run at different scopes independently
+      positive:
+        - ADR tools can work at any project level (workspace, sub-module, service)
+        - Sub-modules can maintain independent ADR directories
+        - Tooling auto-detects project boundaries using standard markers
+        - Manifest generation scoped to specific project context
+        - Validation can be run at different scopes independently
 
 invariants:
   - id: INV-0014
     statement: |
       ADR generators and validators MUST support explicit scope parameter to
       override auto-detection when needed
+    scope: global
     enforcement_level: must
+    enforcement_mechanism: design
+    verification_method: automated
     rationale: |
       While auto-detection handles most cases, explicit scope control is needed
       for CI/CD, testing, and edge cases where auto-detection may be ambiguous
@@ -78,7 +83,10 @@ invariants:
       2. ste.config.json in current or parent directories
       3. Standard project markers (package.json, pyproject.toml, .git)
       4. Current working directory (fallback)
+    scope: global
     enforcement_level: must
+    enforcement_mechanism: design
+    verification_method: automated
     rationale: |
       Consistent scope resolution across STE tools prevents confusion and ensures
       predictable behavior
@@ -86,7 +94,10 @@ invariants:
   - id: INV-0016
     statement: |
       Each project scope MUST maintain its own adrs/ directory and manifest.yaml
+    scope: global
     enforcement_level: must
+    enforcement_mechanism: design
+    verification_method: automated
     rationale: |
       Independent ADR directories enable sub-modules to document their own
       architecture without interfering with parent or sibling projects
@@ -95,7 +106,10 @@ invariants:
     statement: |
       ADR cross-references between different scopes MUST use fully-qualified
       identifiers (e.g., "ste-runtime:ADR-L-0001")
+    scope: global
     enforcement_level: should
+    enforcement_mechanism: design
+    verification_method: automated
     rationale: |
       Enables linking between workspace and sub-module ADRs while maintaining
       clear scope boundaries
@@ -104,7 +118,10 @@ invariants:
     statement: |
       Scope resolution MUST NOT traverse above workspace root to prevent
       scanning unintended directories
+    scope: global
     enforcement_level: must
+    enforcement_mechanism: design
+    verification_method: automated
     rationale: |
       Security and performance - prevents accidental scanning of home directory
       or system directories
@@ -113,7 +130,10 @@ invariants:
     statement: |
       ADR validation at workspace scope SHOULD validate all sub-module ADRs
       recursively when --recursive flag is provided
+    scope: global
     enforcement_level: should
+    enforcement_mechanism: design
+    verification_method: automated
     rationale: |
       Enables comprehensive validation of entire workspace architecture while
       maintaining ability to validate individual scopes
@@ -160,10 +180,10 @@ capabilities:
     description: |
       Provide CLI commands that work at any scope level with consistent behavior
     acceptance_criteria:
-      - "adr generate-manifest" works from any directory
-      - "adr validate" works from any directory
-      - "--scope" parameter overrides auto-detection
-      - "--recursive" enables multi-scope operations
+      - "adr generate-manifest works from any directory"
+      - "adr validate works from any directory"
+      - "\"--scope\" parameter overrides auto-detection"
+      - "\"--recursive\" enables multi-scope operations"
 
 related_adrs:
   - ADR-L-0001  # STE-compliant ADR system conception

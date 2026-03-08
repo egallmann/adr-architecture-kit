@@ -121,6 +121,31 @@
         }
       },
       "description": "Ownership metadata for governance and escalation"
+    },
+
+    "projection_signals": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Context signals that activate rules derived from this ADR. Consumed by ste-rules-library for rule projection. Examples: python, scope-resolution, traceability, security"
+    },
+
+    "ai_projectable": {
+      "type": "object",
+      "properties": {
+        "minimal_sections": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Section names for minimal AI context (e.g., invariants, decisions)"
+        },
+        "primary_domains": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Primary domains for AI projection priority"
+        }
+      },
+      "description": "AI-first projection hints for ste-rules-library and prompt translator"
     }
   }
 }

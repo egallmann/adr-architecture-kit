@@ -50,7 +50,7 @@ def generate_manifest(scope: Optional[Path], recursive: bool, output: Optional[P
                 scope_obj = next(s for s in resolver.resolve_recursive() if s.name == scope_name)
                 output_path = output or scope_obj.manifest_path
                 generator.save_manifest(manifest, output_path)
-                click.echo(f"✓ Generated manifest for {scope_name}: {output_path}")
+                click.echo(f"Generated manifest for {scope_name}: {output_path}")
             
             click.echo(f"\nGenerated {len(manifests)} manifests")
         else:
@@ -62,7 +62,7 @@ def generate_manifest(scope: Optional[Path], recursive: bool, output: Optional[P
             output_path = output or detected_scope.manifest_path
             generator.save_manifest(manifest, output_path)
             
-            click.echo(f"✓ Generated manifest: {output_path}")
+            click.echo(f"Generated manifest: {output_path}")
             click.echo(f"  ADRs: {manifest.statistics.total_adrs}")
             click.echo(f"  Logical: {manifest.statistics.logical_adrs}")
             click.echo(f"  Physical: {manifest.statistics.physical_adrs}")
@@ -108,7 +108,7 @@ def validate(scope: Optional[Path], recursive: bool, cross_references: bool):
                 if warnings > 0:
                     click.echo(f"  ⚠ {warnings} files with warnings", fg='yellow')
                 if errors == 0 and warnings == 0:
-                    click.echo(f"  ✓ All {len(results)} files valid", fg='green')
+                    click.echo(f"  All {len(results)} files valid", fg='green')
                 
                 total_files += len(results)
                 total_errors += errors
@@ -143,7 +143,7 @@ def validate(scope: Optional[Path], recursive: bool, cross_references: bool):
                     warnings += 1
             
             if errors == 0 and warnings == 0:
-                click.echo(f"✓ All {len(results)} files valid", fg='green')
+                click.echo(f"All {len(results)} files valid", fg='green')
             else:
                 click.echo(f"\n{len(results)} files: {errors} errors, {warnings} warnings")
             
@@ -158,7 +158,7 @@ def validate(scope: Optional[Path], recursive: bool, cross_references: bool):
                         click.echo(f"  ERROR: {error.message}")
                     sys.exit(1)
                 else:
-                    click.echo("✓ Cross-references valid", fg='green')
+                    click.echo("Cross-references valid", fg='green')
             
             if errors > 0:
                 sys.exit(1)

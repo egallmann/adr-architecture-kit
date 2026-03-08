@@ -84,6 +84,15 @@ class ADRFrontmatter(BaseModel):
     related_adrs: List[str] = Field(default_factory=list)
     supersedes: List[str] = Field(default_factory=list)
     superseded_by: Optional[str] = None
+
+    projection_signals: List[str] = Field(
+        default_factory=list,
+        description="Context signals for rule projection (ste-rules-library)"
+    )
+    ai_projectable: Optional[dict] = Field(
+        None,
+        description="AI-first projection hints (minimal_sections, primary_domains)"
+    )
     
     ownership: Optional[Ownership] = None
     

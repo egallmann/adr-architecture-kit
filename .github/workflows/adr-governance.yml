@@ -1,0 +1,143 @@
+name: ADR Governance
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main, develop]
+
+jobs:
+  validate-adrs:
+    name: Validate ADR Schema Compliance
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+      
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+      
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt
+          pip install pytest
+      
+      - name: Validate ADR schema compliance
+        run: |
+          python -c "
+          from pathlib import Path
+          from src.adr_kit.parser import ADRParser
+          
+          parser = ADRParser()
+          errors = []
+          
+          # Validate all logical ADRs
+          for adr_file in Path('adrs/logical').glob('*.yaml'):
+              try:
+                  parser.parse_logical_adr(adr_file)
+                  print(f'✓ {adr_file.name}')
+              except Exception as e:
+                  errors.append(f'{adr_file.name}: {e}')
+                  print(f'✗ {adr_file.name}: {e}')
+          
+          # Validate all physical ADRs
+          for adr_file in Path('adrs/physical').glob('*.yaml'):
+              try:
+                  parser.parse_physical_adr(adr_file)
+                  print(f'✓ {adr_file.name}')
+              except Exception as e:
+                  errors.append(f'{adr_file.name}: {e}')
+                  print(f'✗ {adr_file.name}: {e}')
+          
+          if errors:
+              print(f'\nValidation failed: {len(errors)} error(s)')
+              for error in errors:
+                  print(f'  - {error}')
+              exit(1)
+          else:
+              print(f'\nAll ADRs valid')
+          "
+      
+      - name: Check manifest is up-to-date
+        run: |
+          python -c "
+          from pathlib import Path
+          from src.adr_kit.generators import ManifestGenerator
+          import yaml
+          
+          generator = ManifestGenerator()
+          
+          # Generate fresh manifest
+          manifest = generator.generate_from_directory(Path('adrs'))
+          manifest_dict = manifest.model_dump(mode='json', exclude_none=True)
+          
+          # Load existing manifest
+          manifest_path = Path('adrs/manifest.yaml')
+          if not manifest_path.exists():
+              print('ERROR: manifest.yaml not found')
+              exit(1)
+          
+          with open(manifest_path) as f:
+              # Skip comment lines
+              lines = [line for line in f if not line.strip().startswith('#')]
+              existing = yaml.safe_load(''.join(lines))
+          
+          # Compare statistics (ignore generated_date)
+          if manifest_dict['statistics'] != existing['statistics']:
+              print('ERROR: Manifest is stale')
+              print('Expected statistics:', manifest_dict['statistics'])
+              print('Actual statistics:', existing['statistics'])
+              print('\nRun: python test_generators.py')
+              exit(1)
+          
+          print('✓ Manifest is up-to-date')
+          "
+      
+      - name: Run test suite
+        run: |
+          pytest tests/ -v
+
+  validate-project-metadata:
+    name: Validate PROJECT.yaml
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+      
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt
+      
+      - name: Validate PROJECT.yaml
+        run: |
+          python -c "
+          from pathlib import Path
+          from src.adr_kit.parser import ADRParser
+          
+          parser = ADRParser()
+          
+          project_file = Path('PROJECT.yaml')
+          if not project_file.exists():
+              print('WARNING: PROJECT.yaml not found (optional)')
+              exit(0)
+          
+          try:
+              project = parser.parse_project_metadata(project_file)
+              print(f'✓ PROJECT.yaml valid')
+              print(f'  Project: {project.project.name}')
+              print(f'  Team: {project.ownership.team}')
+          except Exception as e:
+              print(f'✗ PROJECT.yaml validation failed: {e}')
+              exit(1)
+          "

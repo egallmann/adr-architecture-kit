@@ -1,0 +1,17 @@
+schema_version: "1.0"
+adr_type: logical
+id: ADR-L-9999
+title: "Minimal Valid Logical ADR"
+status: proposed
+created_date: "2026-03-07"
+authors: ["test.author"]
+domains: ["test"]
+
+context: |
+  This is a minimal valid logical ADR for testing purposes.
+
+decisions:
+  - id: DEC-0001
+    summary: "Test decision"
+    rationale: |
+      This is a test decision rationale.

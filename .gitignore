@@ -1,0 +1,71 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Virtual environments
+venv/
+ENV/
+env/
+
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Temporary files
+*.tmp
+*.bak
+
+# AI Agent Workspace (not part of project)
+.codex/
+.cursor/
+_poc_*/
+
+# Cooperative signals (ephemeral coordination artifacts)
+.codex/signals/
+.cursor/signals/
+
+# Cooperative signals (ephemeral coordination artifacts)
+.codex/signals/
+.cursor/signals/
+
+# Development process files (not part of project)
+HANDOFF-TO-CODEX.md
+CHANGELOG.md
+docs/CODEX-*.md
+docs/BOOTSTRAP-PROMPTS.md
+docs/SESSION-SUMMARY-*.md
+docs/VALIDATION-CHECKLIST.md
+docs/AGENT-SPECIFIC-PROMPTS.md
+docs/PARALLEL-WORKFLOW.md
+docs/COOPERATIVE-SIGNALS.md

@@ -1,0 +1,151 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://adr-kit.ste.systems/schema/v1.0/adr-common.schema.json",
+  "title": "ADR Common Frontmatter Schema",
+  "description": "Shared frontmatter structure for all ADR types (STE-compliant, PRIME-1, PRIME-2)",
+  
+  "type": "object",
+  "required": [
+    "schema_version",
+    "adr_type",
+    "id",
+    "title",
+    "status",
+    "created_date",
+    "authors"
+  ],
+  
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0",
+      "description": "ADR schema version"
+    },
+    
+    "adr_type": {
+      "type": "string",
+      "enum": ["logical", "physical", "decision"],
+      "description": "Type of ADR (logical, physical, or decision)"
+    },
+    
+    "id": {
+      "$ref": "types.schema.json#/definitions/adr_id_any",
+      "description": "Unique ADR identifier (type-prefixed)"
+    },
+    
+    "title": {
+      "type": "string",
+      "minLength": 5,
+      "maxLength": 200,
+      "description": "Human-readable ADR title"
+    },
+    
+    "status": {
+      "$ref": "types.schema.json#/definitions/status",
+      "description": "ADR lifecycle status"
+    },
+    
+    "created_date": {
+      "$ref": "types.schema.json#/definitions/iso_date",
+      "description": "Date ADR was created"
+    },
+    
+    "modified_date": {
+      "$ref": "types.schema.json#/definitions/iso_date",
+      "description": "Date ADR was last modified"
+    },
+    
+    "authors": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "minItems": 1,
+      "description": "List of ADR authors (e.g., github handles, email)"
+    },
+    
+    "domains": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "minItems": 1,
+      "description": "Architectural domains this ADR belongs to (for discovery and graph queries)"
+    },
+    
+    "tags": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Tags for cross-domain discovery"
+    },
+    
+    "related_adrs": {
+      "type": "array",
+      "items": {
+        "$ref": "types.schema.json#/definitions/adr_id_any"
+      },
+      "description": "Related ADRs (bidirectional association edges in graph)"
+    },
+    
+    "supersedes": {
+      "type": "array",
+      "items": {
+        "$ref": "types.schema.json#/definitions/adr_id_any"
+      },
+      "description": "ADRs that this ADR supersedes (evolution edges)"
+    },
+    
+    "superseded_by": {
+      "oneOf": [
+        {"type": "null"},
+        {"$ref": "types.schema.json#/definitions/adr_id_any"}
+      ],
+      "description": "ADR that supersedes this one (null if current)"
+    },
+    
+    "ownership": {
+      "type": "object",
+      "properties": {
+        "architecture_authority": {
+          "type": "string",
+          "description": "Team or individual responsible for architectural decisions"
+        },
+        "implementation_owners": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Teams responsible for implementing this ADR"
+        }
+      },
+      "description": "Ownership metadata for governance and escalation"
+    },
+
+    "projection_signals": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Context signals that activate rules derived from this ADR. Consumed by ste-rules-library for rule projection. Examples: python, scope-resolution, traceability, security"
+    },
+
+    "ai_projectable": {
+      "type": "object",
+      "properties": {
+        "minimal_sections": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Section names for minimal AI context (e.g., invariants, decisions)"
+        },
+        "primary_domains": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Primary domains for AI projection priority"
+        }
+      },
+      "description": "AI-first projection hints for ste-rules-library and prompt translator"
+    }
+  }
+}

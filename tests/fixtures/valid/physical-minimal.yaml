@@ -1,0 +1,28 @@
+schema_version: "1.0"
+adr_type: physical
+id: ADR-P-9999
+title: "Minimal Valid Physical ADR"
+status: proposed
+created_date: "2026-03-07"
+authors: ["test.author"]
+domains: ["test"]
+
+implements_logical: ["ADR-L-9999"]
+technologies: ["test-tech"]
+
+context: |
+  This is a minimal valid physical ADR for testing purposes.
+
+technology_stack:
+  - category: language
+    name: "TestLang"
+    version: "1.0"
+    rationale: |
+      Test technology choice.
+
+component_specifications:
+  - id: COMP-0001
+    name: "Test Component"
+    type: service
+    responsibilities: |
+      Test component responsibilities.

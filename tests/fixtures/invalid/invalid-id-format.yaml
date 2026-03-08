@@ -1,0 +1,16 @@
+schema_version: "1.0"
+adr_type: logical
+id: ADR-INVALID-001
+title: "Invalid ADR - Wrong ID Format"
+status: proposed
+created_date: "2026-03-07"
+authors: ["test.author"]
+domains: ["test"]
+
+context: |
+  This ADR has an invalid ID format (should be ADR-L-XXXX).
+
+decisions:
+  - id: DEC-0001
+    summary: "Test decision"
+    rationale: "Test rationale"

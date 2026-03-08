@@ -1,0 +1,85 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://adr-kit.ste.systems/schema/v1.0/types.schema.json",
+  "title": "ADR Kit Shared Type Definitions",
+  "description": "Common type definitions used across ADR schemas",
+  
+  "definitions": {
+    "adr_id_logical": {
+      "type": "string",
+      "pattern": "^ADR-L-\\d{4}$",
+      "description": "Logical ADR identifier (e.g., ADR-L-0001)"
+    },
+    
+    "adr_id_physical": {
+      "type": "string",
+      "pattern": "^ADR-P-\\d{4}$",
+      "description": "Physical ADR identifier (e.g., ADR-P-0001)"
+    },
+    
+    "adr_id_decision": {
+      "type": "string",
+      "pattern": "^ADR-D-\\d{4}$",
+      "description": "Decision ADR identifier for autonomous agent decisions (e.g., ADR-D-0001)"
+    },
+    
+    "adr_id_any": {
+      "type": "string",
+      "pattern": "^ADR-(L|P|D)-\\d{4}$",
+      "description": "Any ADR identifier"
+    },
+    
+    "invariant_id": {
+      "type": "string",
+      "pattern": "^INV-\\d{4}$",
+      "description": "Invariant identifier (e.g., INV-0001)"
+    },
+    
+    "entity_id": {
+      "type": "string",
+      "pattern": "^[A-Z]+-\\d{4}$",
+      "description": "Generic entity identifier (e.g., CAP-0001, COMP-0001, DEC-0001)"
+    },
+    
+    "iso_date": {
+      "type": "string",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
+      "description": "ISO 8601 date (YYYY-MM-DD)"
+    },
+    
+    "iso_datetime": {
+      "type": "string",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(Z|[+-]\\d{2}:\\d{2})$",
+      "description": "ISO 8601 datetime with timezone"
+    },
+    
+    "status": {
+      "type": "string",
+      "enum": ["proposed", "accepted", "deprecated", "superseded"],
+      "description": "ADR lifecycle status"
+    },
+    
+    "enforcement_level": {
+      "type": "string",
+      "enum": ["must", "should", "may"],
+      "description": "RFC 2119 enforcement level for invariants"
+    },
+    
+    "impact_level": {
+      "type": "string",
+      "enum": ["high", "medium", "low"],
+      "description": "Impact assessment level"
+    },
+    
+    "markdown_text": {
+      "type": "string",
+      "description": "Markdown-formatted text content"
+    },
+    
+    "url": {
+      "type": "string",
+      "format": "uri",
+      "description": "Valid URL"
+    }
+  }
+}

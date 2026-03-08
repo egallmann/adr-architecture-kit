@@ -1,0 +1,139 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://adr-kit.ste.systems/schema/v1.0/invariant.schema.json",
+  "title": "Invariant Schema",
+  "description": "Schema for standalone invariant definitions (can also be embedded in ADRs)",
+  
+  "type": "object",
+  "required": [
+    "schema_version",
+    "type",
+    "id",
+    "statement",
+    "scope",
+    "enforcement_level",
+    "enforcement_mechanism",
+    "verification_method",
+    "rationale"
+  ],
+  
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0"
+    },
+    
+    "type": {
+      "const": "invariant"
+    },
+    
+    "id": {
+      "$ref": "types.schema.json#/definitions/invariant_id"
+    },
+    
+    "statement": {
+      "type": "string",
+      "minLength": 10,
+      "description": "What must always be true (explicit, testable statement)"
+    },
+    
+    "scope": {
+      "type": "string",
+      "description": "Scope of invariant (global, domain name, or component name)"
+    },
+    
+    "enforcement_level": {
+      "$ref": "types.schema.json#/definitions/enforcement_level",
+      "description": "RFC 2119 enforcement level (must, should, may)"
+    },
+    
+    "enforcement_mechanism": {
+      "type": "string",
+      "enum": ["design", "runtime", "test", "policy", "manual"],
+      "description": "How this invariant is enforced"
+    },
+    
+    "verification_method": {
+      "type": "string",
+      "enum": ["automated", "manual", "audit"],
+      "description": "How compliance is verified"
+    },
+    
+    "rationale": {
+      "$ref": "types.schema.json#/definitions/markdown_text",
+      "description": "Why this invariant exists"
+    },
+    
+    "defined_in": {
+      "$ref": "types.schema.json#/definitions/adr_id_any",
+      "description": "ADR that defines this invariant"
+    },
+    
+    "enforced_by": {
+      "type": "array",
+      "items": {
+        "$ref": "types.schema.json#/definitions/adr_id_any"
+      },
+      "description": "Physical ADRs that enforce this invariant (graph edges)"
+    },
+    
+    "related_constraints": {
+      "type": "array",
+      "items": {
+        "$ref": "types.schema.json#/definitions/entity_id"
+      },
+      "description": "Related constraints from ADRs"
+    },
+    
+    "policy_reference": {
+      "type": "string",
+      "description": "Reference to organizational policy (enables Rules & Signal Service validation)"
+    },
+    
+    "compliance_frameworks": {
+      "type": "array",
+      "items": {"type": "string"},
+      "description": "Compliance frameworks this invariant supports (e.g., SOC2, GDPR, PCI-DSS)"
+    },
+    
+    "exceptions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "granted_to", "rationale", "expires"],
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^EXC-\\d{4}$"
+          },
+          "granted_to": {
+            "type": "string",
+            "description": "Service or component granted exception"
+          },
+          "rationale": {
+            "$ref": "types.schema.json#/definitions/markdown_text"
+          },
+          "expires": {
+            "$ref": "types.schema.json#/definitions/iso_date",
+            "description": "Exception expiration date"
+          },
+          "approved_by": {
+            "type": "string"
+          }
+        }
+      },
+      "description": "Granted exceptions to this invariant"
+    },
+    
+    "validation_query": {
+      "type": "string",
+      "description": "Query or check to validate compliance (for automated validation)"
+    },
+    
+    "validation_frequency": {
+      "type": "string",
+      "enum": ["on_change", "daily", "weekly", "monthly"],
+      "description": "How often to validate compliance"
+    }
+  }
+}

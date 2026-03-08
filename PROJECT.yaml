@@ -1,0 +1,38 @@
+schema_version: "1.0"
+type: project_metadata
+
+project:
+  name: "adr-architecture-kit"
+  description: "STE-compliant Python toolkit for machine-verifiable Architecture Decision Records"
+  type: library
+
+ownership:
+  team: "architecture-systems"
+  tech_lead: "@egallmann"
+
+repository:
+  url: "github.com/egallmann/adr-architecture-kit"
+  primary_branch: "develop"
+
+implementation_identifiers:
+  package_name: "adr-kit"
+  module_path: "src/adr_kit"
+
+automation:
+  auto_merge_allowed: false
+  requires_human_review: true
+  comfort_level: conservative
+
+integrations:
+  scm:
+    type: github
+    required_approvers: ["@egallmann"]
+
+compliance:
+  security_level: medium
+  data_classification: public
+  license: "Apache-2.0"
+
+architecture_documentation:
+  adr_directory: "adrs/"
+  manifest_path: "adrs/manifest.yaml"

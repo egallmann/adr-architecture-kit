@@ -1,0 +1,220 @@
+schema_version: "1.0"
+adr_type: physical
+id: ADR-P-0001
+title: "Python Toolkit Implementation for ADR Kit"
+status: accepted
+created_date: "2026-03-07"
+authors: ["erik.gallmann"]
+
+domains: ["implementation", "tooling"]
+tags: ["python", "pydantic", "yaml", "json-schema"]
+
+implements_logical: ["ADR-L-0001"]
+technologies: ["python", "pydantic", "pyyaml", "jsonschema", "jinja2"]
+
+related_adrs: []
+supersedes: []
+superseded_by: null
+
+ownership:
+  architecture_authority: "architecture-systems"
+  implementation_owners: ["architecture-systems"]
+
+context: |
+  This ADR specifies the implementation of ADR Kit using Python ecosystem and modern
+  Python tooling. The implementation must support schema validation, YAML parsing,
+  Pydantic models, and view generation.
+  
+  The choice of Python is driven by:
+  - Strong typing support (type hints, Pydantic)
+  - Excellent YAML and JSON Schema libraries
+  - Wide adoption in infrastructure tooling
+  - Integration with ste-runtime (also Python)
+
+technology_stack:
+  - category: language
+    name: "Python"
+    version: "3.10+"
+    rationale: |
+      Python 3.10+ provides modern type hints, pattern matching, and performance
+      improvements. Pydantic 2.x requires Python 3.10+. Wide adoption ensures
+      contributor familiarity.
+  
+  - category: library
+    name: "Pydantic"
+    version: "2.x"
+    rationale: |
+      Pydantic v2 provides:
+      - Type-safe data models with validation
+      - JSON Schema generation
+      - Excellent error messages
+      - Performance (Rust core)
+      - Serialization/deserialization
+  
+  - category: library
+    name: "PyYAML"
+    version: "6.x"
+    rationale: |
+      Standard YAML parser for Python. Safe loading. Wide adoption. Stable API.
+  
+  - category: library
+    name: "jsonschema"
+    version: "4.x"
+    rationale: |
+      Reference JSON Schema validator for Python. Supports draft-07. Extensible
+      with custom validators. Clear error messages.
+  
+  - category: library
+    name: "Jinja2"
+    version: "3.1+"
+    rationale: |
+      Template engine for view generation. Powerful, flexible, widely adopted.
+      Supports inheritance, macros, filters. Safe by default.
+
+architecture_patterns:
+  - pattern_name: "Layered Architecture"
+    application: |
+      Package organized into layers:
+      - models/ (data models)
+      - parser/ (YAML parsing)
+      - validator/ (validation logic)
+      - generators/ (artifact generation)
+      - cli/ (command-line interface)
+    components_affected: ["COMP-0001", "COMP-0002", "COMP-0003", "COMP-0004"]
+
+component_specifications:
+  - id: COMP-0001
+    name: "Schema Validator"
+    type: library
+    responsibilities: |
+      Validate ADR YAML files against JSON Schema. Load schemas from schema/v1.0
+      directory. Provide clear error messages with field paths.
+    interfaces:
+      - id: IFACE-0001
+        type: REST
+        specification: |
+          Python API:
+          ```python
+          parser = ADRParser(schema_dir=Path("schema/v1.0"))
+          adr = parser.parse_logical_adr("adrs/logical/ADR-L-0001.yaml")
+          ```
+    dependencies: ["jsonschema", "pyyaml"]
+    implementation_identifiers:
+      module_path: "src/adr_kit/parser/yaml_parser.py"
+  
+  - id: COMP-0002
+    name: "Pydantic Data Models"
+    type: library
+    responsibilities: |
+      Type-safe Python models for ADR artifacts. Validation, serialization,
+      deserialization. Match JSON Schema structure exactly.
+    interfaces:
+      - id: IFACE-0002
+        type: REST
+        specification: |
+          Python API:
+          ```python
+          from adr_kit.models import LogicalADR, PhysicalADR
+          
+          adr = LogicalADR(**yaml_data)
+          ```
+    dependencies: ["pydantic"]
+    implementation_identifiers:
+      module_path: "src/adr_kit/models/"
+  
+  - id: COMP-0003
+    name: "Manifest Generator"
+    type: library
+    responsibilities: |
+      Generate manifest.yaml from ADR directory. Aggregate metadata, compute
+      statistics, create discovery indexes. Validate manifest freshness.
+    interfaces:
+      - id: IFACE-0003
+        type: REST
+        specification: |
+          Python API:
+          ```python
+          from adr_kit.generators import ManifestGenerator
+          
+          generator = ManifestGenerator()
+          manifest = generator.generate_from_directory("adrs/")
+          ```
+    dependencies: ["COMP-0001", "COMP-0002"]
+    implementation_identifiers:
+      module_path: "src/adr_kit/generators/manifest_generator.py"
+  
+  - id: COMP-0004
+    name: "Markdown View Generator"
+    type: library
+    responsibilities: |
+      Generate human-readable markdown views from ADR YAML. Use Jinja2 templates.
+      Support full and summary views.
+    interfaces:
+      - id: IFACE-0004
+        type: REST
+        specification: |
+          Python API:
+          ```python
+          from adr_kit.generators.views import MarkdownGenerator
+          
+          generator = MarkdownGenerator()
+          markdown = generator.render(adr, template="adr-full.md.jinja2")
+          ```
+    dependencies: ["jinja2", "COMP-0002"]
+    implementation_identifiers:
+      module_path: "src/adr_kit/generators/views/markdown.py"
+
+deployment_model:
+  hosting: "on-premise"
+  orchestration: "pip install"
+  scaling_strategy: |
+    Python package installed locally via pip. No runtime deployment. Used as
+    library or CLI tool. Scales horizontally via multiple developer workstations.
+
+implementation_decisions:
+  - id: IMPL-0001
+    summary: "Use pyproject.toml for modern Python packaging"
+    rationale: |
+      pyproject.toml is the modern standard (PEP 518, PEP 621). Replaces setup.py
+      and setup.cfg. Better dependency management. Supports build backends.
+    implements_invariants: []
+    alternatives_considered:
+      - name: "setup.py only"
+        rejected_because: |
+          Legacy approach. pyproject.toml is now standard. Less flexible for
+          modern tooling.
+  
+  - id: IMPL-0002
+    summary: "Use src/ layout for package structure"
+    rationale: |
+      src/ layout prevents accidental imports of uninstalled package. Cleaner
+      separation of source and tests. Modern Python best practice.
+    implements_invariants: []
+    alternatives_considered:
+      - name: "Flat layout (adr_kit/ at root)"
+        rejected_because: |
+          Risk of importing uninstalled package. Tests can accidentally import
+          from source instead of installed package.
+  
+  - id: IMPL-0003
+    summary: "Use RefResolver for local schema references"
+    rationale: |
+      JSON Schema $ref references need resolver to load from local filesystem.
+      RefResolver with schema store prevents network calls. Deterministic validation.
+    implements_invariants: ["INV-0001"]
+    alternatives_considered:
+      - name: "Inline all schemas (no $ref)"
+        rejected_because: |
+          Duplication. Harder to maintain. Can't reuse common definitions.
+
+integration_points: []
+
+operational_requirements:
+  monitoring: |
+    No runtime monitoring required (library/CLI tool).
+  logging: |
+    Use Python logging module for parser/validator errors.
+  security: |
+    No secrets or credentials. Public open-source library.
+
+gaps: []

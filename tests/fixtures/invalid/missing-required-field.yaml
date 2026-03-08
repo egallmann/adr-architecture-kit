@@ -1,0 +1,11 @@
+schema_version: "1.0"
+adr_type: logical
+id: ADR-L-8888
+title: "Invalid ADR - Missing Required Field"
+status: proposed
+created_date: "2026-03-07"
+authors: ["test.author"]
+domains: ["test"]
+
+context: |
+  This ADR is missing the required 'decisions' field.

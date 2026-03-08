@@ -1,0 +1,211 @@
+"""Manifest generator - creates manifest.yaml from ADR directory (SYS-14: Index Currency)."""
+
+from datetime import datetime, timezone
+from pathlib import Path
+from typing import Dict, List
+
+from ..models import (
+    GapsSummary,
+    GapSummaryByADR,
+    LogicalADR,
+    Manifest,
+    ManifestADREntry,
+    ManifestInvariant,
+    ManifestStatistics,
+    PhysicalADR,
+)
+from ..parser import ADRParser
+
+
+class ManifestGenerator:
+    """Generate manifest from ADR directory."""
+    
+    def __init__(self, parser: ADRParser = None):
+        """Initialize generator.
+        
+        Args:
+            parser: ADR parser (creates new one if not provided)
+        """
+        self.parser = parser or ADRParser()
+    
+    def generate_from_directory(self, adr_dir: Path) -> Manifest:
+        """Generate manifest from ADR directory.
+        
+        Args:
+            adr_dir: Path to adrs/ directory
+            
+        Returns:
+            Generated Manifest model
+        """
+        adr_dir = Path(adr_dir)
+        
+        if not adr_dir.exists():
+            raise ValueError(f"ADR directory not found: {adr_dir}")
+        
+        # Discover all ADR files
+        logical_files = list((adr_dir / "logical").glob("*.yaml")) if (adr_dir / "logical").exists() else []
+        physical_files = list((adr_dir / "physical").glob("*.yaml")) if (adr_dir / "physical").exists() else []
+        
+        # Parse all ADRs
+        logical_adrs: List[LogicalADR] = []
+        physical_adrs: List[PhysicalADR] = []
+        
+        for file_path in logical_files:
+            try:
+                adr = self.parser.parse_logical_adr(file_path)
+                logical_adrs.append(adr)
+            except Exception as e:
+                print(f"Warning: Failed to parse {file_path}: {e}")
+        
+        for file_path in physical_files:
+            try:
+                adr = self.parser.parse_physical_adr(file_path)
+                physical_adrs.append(adr)
+            except Exception as e:
+                print(f"Warning: Failed to parse {file_path}: {e}")
+        
+        # Build manifest entries
+        manifest_entries: List[ManifestADREntry] = []
+        
+        for adr in logical_adrs:
+            entry = ManifestADREntry(
+                id=adr.id,
+                type="logical",
+                title=adr.title,
+                status=adr.status,
+                file_path=str(Path("adrs/logical") / f"{adr.id}-{self._slugify(adr.title)}.yaml"),
+                domains=adr.domains,
+                tags=adr.tags,
+                decision_count=len(adr.decisions),
+                invariant_count=len(adr.invariants),
+                gap_count=len(adr.gaps),
+                blocking_gaps=sum(1 for g in adr.gaps if g.blocking),
+            )
+            manifest_entries.append(entry)
+        
+        for adr in physical_adrs:
+            entry = ManifestADREntry(
+                id=adr.id,
+                type="physical",
+                title=adr.title,
+                status=adr.status,
+                file_path=str(Path("adrs/physical") / f"{adr.id}-{self._slugify(adr.title)}.yaml"),
+                domains=adr.domains,
+                tags=adr.tags,
+                implements_logical=adr.implements_logical,
+                technologies=adr.technologies,
+                component_count=len(adr.component_specifications),
+                gap_count=len(adr.gaps),
+                blocking_gaps=sum(1 for g in adr.gaps if g.blocking),
+            )
+            manifest_entries.append(entry)
+        
+        # Build discovery indexes
+        by_domain: Dict[str, List[str]] = {}
+        by_status: Dict[str, List[str]] = {}
+        by_technology: Dict[str, List[str]] = {}
+        
+        for entry in manifest_entries:
+            for domain in entry.domains:
+                by_domain.setdefault(domain, []).append(entry.id)
+            
+            status_key = entry.status.value if hasattr(entry.status, 'value') else str(entry.status)
+            by_status.setdefault(status_key, []).append(entry.id)
+            
+            for tech in entry.technologies:
+                by_technology.setdefault(tech, []).append(entry.id)
+        
+        # Build logical to physical map
+        logical_to_physical: Dict[str, List[str]] = {}
+        for adr in physical_adrs:
+            for logical_id in adr.implements_logical:
+                logical_to_physical.setdefault(logical_id, []).append(adr.id)
+        
+        # Extract all invariants
+        manifest_invariants: List[ManifestInvariant] = []
+        for adr in logical_adrs:
+            for inv in adr.invariants:
+                manifest_inv = ManifestInvariant(
+                    id=inv.id,
+                    statement=inv.statement,
+                    defined_in=adr.id,
+                    enforced_by=[],
+                    enforcement_level=inv.enforcement_level.value if hasattr(inv.enforcement_level, 'value') else str(inv.enforcement_level),
+                )
+                manifest_invariants.append(manifest_inv)
+        
+        # Build gaps summary
+        gaps_by_adr: Dict[str, GapSummaryByADR] = {}
+        total_gaps = 0
+        total_blocking = 0
+        
+        for entry in manifest_entries:
+            if entry.gap_count > 0:
+                gaps_by_adr[entry.id] = GapSummaryByADR(
+                    total=entry.gap_count,
+                    blocking=entry.blocking_gaps
+                )
+                total_gaps += entry.gap_count
+                total_blocking += entry.blocking_gaps
+        
+        gaps_summary = GapsSummary(
+            total=total_gaps,
+            blocking=total_blocking,
+            by_adr=gaps_by_adr
+        )
+        
+        # Build statistics
+        statistics = ManifestStatistics(
+            total_adrs=len(manifest_entries),
+            logical_adrs=len(logical_adrs),
+            physical_adrs=len(physical_adrs),
+            decision_adrs=0,
+            total_decisions=sum(len(adr.decisions) for adr in logical_adrs),
+            total_invariants=len(manifest_invariants),
+            total_components=sum(len(adr.component_specifications) for adr in physical_adrs),
+            total_gaps=total_gaps,
+            blocking_gaps=total_blocking,
+        )
+        
+        # Create manifest
+        manifest = Manifest(
+            schema_version="1.0",
+            type="manifest",
+            generated_date=datetime.now(timezone.utc),
+            generated_from="adrs/**/*.yaml",
+            adrs=manifest_entries,
+            by_domain=by_domain,
+            by_status=by_status,
+            by_technology=by_technology,
+            logical_to_physical_map=logical_to_physical,
+            invariants=manifest_invariants,
+            gaps_summary=gaps_summary,
+            statistics=statistics,
+        )
+        
+        return manifest
+    
+    def _slugify(self, text: str) -> str:
+        """Convert title to slug for filename."""
+        return text.lower().replace(" ", "-").replace(":", "")[:50]
+    
+    def save_manifest(self, manifest: Manifest, output_path: Path):
+        """Save manifest to YAML file.
+        
+        Args:
+            manifest: Manifest model
+            output_path: Path to save manifest.yaml
+        """
+        import yaml
+        
+        output_path = Path(output_path)
+        output_path.parent.mkdir(parents=True, exist_ok=True)
+        
+        # Convert to dict for YAML serialization
+        manifest_dict = manifest.model_dump(mode='json', exclude_none=True)
+        
+        with open(output_path, 'w', encoding='utf-8') as f:
+            f.write("# manifest.yaml - GENERATED FROM ADRs, DO NOT EDIT\n")
+            f.write("# This file is automatically generated by 'adr generate-manifest'\n")
+            f.write("# To update: modify ADRs, then regenerate manifest\n\n")
+            yaml.dump(manifest_dict, f, default_flow_style=False, sort_keys=False, allow_unicode=True)

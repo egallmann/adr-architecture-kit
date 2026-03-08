@@ -1,0 +1,208 @@
+# {{ adr.id }}: {{ adr.title }}
+
+**Status:** {{ adr.status.value }}  
+**Created:** {{ adr.created_date }}  
+{% if adr.modified_date %}**Modified:** {{ adr.modified_date }}  {% endif %}
+**Authors:** {{ adr.authors | join(', ') }}  
+**Domains:** {{ adr.domains | join(', ') }}  
+{% if adr.tags %}**Tags:** {{ adr.tags | join(', ') }}  {% endif %}
+
+{% if adr.implements_logical %}
+**Implements:** {{ adr.implements_logical | join(', ') }}
+{% endif %}
+
+{% if adr.related_adrs %}
+**Related ADRs:** {{ adr.related_adrs | join(', ') }}
+{% endif %}
+
+{% if adr.supersedes %}
+**Supersedes:** {{ adr.supersedes | join(', ') }}
+{% endif %}
+
+{% if adr.superseded_by %}
+**Superseded by:** {{ adr.superseded_by }}
+{% endif %}
+
+---
+
+## Context
+
+{{ adr.context }}
+
+{% if adr.capabilities %}
+## Capabilities
+
+{% for cap in adr.capabilities %}
+### {{ cap.id }}: {{ cap.name }}
+
+{{ cap.description }}
+
+{% endfor %}
+{% endif %}
+
+{% if adr.architectural_boundaries %}
+## Architectural Boundaries
+
+{% for boundary in adr.architectural_boundaries %}
+### {{ boundary.id }}: {{ boundary.name }}
+
+**Description:**
+{{ boundary.description }}
+
+**Rationale:**
+{{ boundary.rationale }}
+
+{% endfor %}
+{% endif %}
+
+{% if adr.interaction_contracts %}
+## Interaction Contracts
+
+{% for contract in adr.interaction_contracts %}
+### {{ contract.id }}
+
+**Parties:** {{ contract.parties | join(', ') }}  
+**Protocol:** {{ contract.protocol }}
+
+**Guarantees:**
+{{ contract.guarantees }}
+
+{% endfor %}
+{% endif %}
+
+{% if adr.constraints %}
+## Constraints
+
+{% for constraint in adr.constraints %}
+### {{ constraint.id }} ({{ constraint.type }})
+
+**Description:**
+{{ constraint.description }}
+
+**Rationale:**
+{{ constraint.rationale }}
+
+{% endfor %}
+{% endif %}
+
+{% if adr.invariants %}
+## Invariants
+
+{% for inv in adr.invariants %}
+### {{ inv.id }}
+
+**Statement:** {{ inv.statement }}  
+**Scope:** {{ inv.scope }}  
+**Enforcement:** {{ inv.enforcement_level.value }} ({{ inv.enforcement_mechanism }})  
+**Verification:** {{ inv.verification_method }}
+
+**Rationale:**
+{{ inv.rationale }}
+
+{% if inv.policy_reference %}
+**Policy Reference:** {{ inv.policy_reference }}
+{% endif %}
+
+{% if inv.compliance_frameworks %}
+**Compliance Frameworks:** {{ inv.compliance_frameworks | join(', ') }}
+{% endif %}
+
+{% endfor %}
+{% endif %}
+
+{% if adr.non_functional_requirements %}
+## Non-Functional Requirements
+
+{% for nfr in adr.non_functional_requirements %}
+### {{ nfr.id }}: {{ nfr.category }}
+
+**Requirement:**
+{{ nfr.requirement }}
+
+**Acceptance Criteria:**
+{{ nfr.acceptance_criteria }}
+
+{% endfor %}
+{% endif %}
+
+## Decisions
+
+{% for decision in adr.decisions %}
+### {{ decision.id }}: {{ decision.summary }}
+
+**Rationale:**
+{{ decision.rationale }}
+
+{% if decision.alternatives_considered %}
+**Alternatives Considered:**
+
+{% for alt in decision.alternatives_considered %}
+- **{{ alt.name }}**: {{ alt.rejected_because }}
+{% endfor %}
+{% endif %}
+
+{% if decision.consequences %}
+**Consequences:**
+
+{% if decision.consequences.positive %}
+**Positive:**
+{% for pos in decision.consequences.positive %}
+- {{ pos }}
+{% endfor %}
+{% endif %}
+
+{% if decision.consequences.negative %}
+**Negative:**
+{% for neg in decision.consequences.negative %}
+- {{ neg }}
+{% endfor %}
+{% endif %}
+{% endif %}
+
+{% if decision.related_invariants %}
+**Related Invariants:** {{ decision.related_invariants | join(', ') }}
+{% endif %}
+
+{% endfor %}
+
+{% if adr.gaps %}
+## Gaps
+
+{% for gap in adr.gaps %}
+### {{ gap.id }}: {{ gap.question }}
+
+**Impact:** {{ gap.impact.value }}  
+**Blocking:** {{ "Yes" if gap.blocking else "No" }}
+
+{% if gap.context %}
+**Context:**
+{{ gap.context }}
+{% endif %}
+
+{% if gap.affects %}
+**Affects:** {{ gap.affects | join(', ') }}
+{% endif %}
+
+{% if gap.options %}
+**Options:**
+{% for option in gap.options %}
+- **{{ option.name }}**
+  {% if option.pros %}
+  - Pros: {{ option.pros | join(', ') }}
+  {% endif %}
+  {% if option.cons %}
+  - Cons: {{ option.cons | join(', ') }}
+  {% endif %}
+{% endfor %}
+{% endif %}
+
+{% if gap.decision_required_from %}
+**Decision Required From:** {{ gap.decision_required_from }}
+{% endif %}
+
+{% endfor %}
+{% endif %}
+
+---
+
+*Generated from {{ adr.id }} by ADR Architecture Kit*

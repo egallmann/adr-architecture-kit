@@ -34,12 +34,63 @@ Transform architecture decisions into **enforceable, propagatable policy** acros
 
 ### 🎯 Current Focus
 
+**AI-Driven Development Automation**:
+- ✅ ADR-L-0005: ADR-to-Prompt Translation (logical design)
+- ✅ ADR-P-0004: Prompt Translator Implementation (physical design)
+- ⏳ Prompt translator implementation (COMP-0005 through COMP-0008)
+
 **ADR Traceability Foundation**:
 - ✅ ADR-L-0004: Traceability via decorators (logical design)
-- ⏳ ADR-P-0004: Decorator library implementation
+- ⏳ Decorator library implementation (after prompt translator)
 - ⏳ Rule-library sub-module scaffolding
 
 ## Roadmap
+
+### Phase 0: Prompt Translator (Foundation)
+
+**Goal**: Automate generation of implementation prompts from ADRs
+
+**Deliverables**:
+- [x] **ADR-L-0005**: ADR-to-Prompt Translation (Logical)
+- [x] **ADR-P-0004**: Prompt Translator Implementation (Physical)
+- [ ] `src/adr_kit/prompts/__init__.py`
+- [ ] `src/adr_kit/prompts/parser.py` - ComponentParser
+- [ ] `src/adr_kit/prompts/generator.py` - PromptGenerator
+- [ ] `src/adr_kit/prompts/dependencies.py` - DependencyAnalyzer
+- [ ] `src/adr_kit/prompts/templates/implementation-prompt.md.jinja2`
+- [ ] `src/adr_kit/prompts/templates/validation-checklist.md.jinja2`
+- [ ] `src/adr_kit/prompts/templates/execution-plan.md.jinja2`
+- [ ] CLI: `adr generate-prompts ADR-P-XXXX`
+- [ ] Tests for all components
+- [ ] Documentation with examples
+
+**Success Criteria**:
+- Parse Physical ADRs and extract component specs
+- Generate implementation prompts with all invariants
+- Generate validation checklists
+- Generate execution plans with dependency ordering
+- Deterministic generation (same ADR → same prompts)
+- CLI works: `adr generate-prompts ADR-P-0003`
+
+**Why First**:
+- Enables automated prompt generation for ALL future work
+- Self-referential: Can generate prompts for decorator library
+- Scales to any number of ADRs/components
+- Reduces manual prompt crafting effort
+
+**Example**:
+```bash
+# Generate prompts from Physical ADR
+adr generate-prompts ADR-P-0003 --target codex --output prompts/
+
+# Generates:
+# - prompts/COMP-0001-scope-resolver.md
+# - prompts/COMP-0002-manifest-generator.md
+# - prompts/COMP-0003-validator.md
+# - prompts/COMP-0004-cli.md
+# - prompts/validation-checklist.md
+# - prompts/execution-plan.md
+```
 
 ### Phase 1: Decorator Library
 

@@ -45,3 +45,14 @@ Thumbs.db
 # Temporary files
 *.tmp
 *.bak
+
+# AI Agent Workspace (not part of project)
+.codex/
+.cursor/
+_poc_*/
+
+# Internal tooling and handoff docs (not part of project)
+HANDOFF-TO-CODEX.md
+docs/CODEX-*.md
+docs/BOOTSTRAP-PROMPTS.md
+docs/SESSION-SUMMARY-*.md

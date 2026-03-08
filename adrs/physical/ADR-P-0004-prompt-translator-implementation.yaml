@@ -1,0 +1,343 @@
+schema_version: "1.0"
+type: physical_adr
+id: ADR-P-0004
+title: Prompt Translator Implementation for AI-Driven Development
+status: proposed
+created_date: 2026-03-08
+last_modified: 2026-03-08
+
+implements_logical:
+  - ADR-L-0005
+
+context: |
+  ADR-L-0005 defines the logical architecture for translating ADRs into
+  implementation prompts for AI agents. This Physical ADR specifies the
+  concrete Python implementation.
+  
+  The prompt translator parses Physical ADRs and generates:
+  1. **Implementation prompts** - One per component (COMP-*)
+  2. **Validation checklist** - Comprehensive verification checklist
+  3. **Execution plan** - Dependency-ordered implementation sequence
+  
+  Key design principles:
+  - **Deterministic**: Same ADR → same prompts (INV-0032)
+  - **Complete**: All invariants, specs, tests included (INV-0027, INV-0028, INV-0030)
+  - **Traceable**: Prompts reference source ADR (INV-0029)
+  - **Extensible**: Support multiple target agents (CAP-0009)
+
+domains:
+  - implementation
+  - automation
+  - ai-tooling
+  - code-generation
+
+tags:
+  - python
+  - prompt-engineering
+  - automation
+  - llm
+  - code-generation
+
+technologies:
+  - python
+  - jinja2
+  - pyyaml
+  - click
+
+component_specifications:
+  - id: COMP-0005
+    name: ADR Component Parser
+    type: module
+    description: |
+      Parses Physical ADRs to extract component specifications and related
+      metadata (invariants, capabilities, implementation decisions)
+    responsibilities:
+      - Parse Physical ADR YAML
+      - Extract component specifications (COMP-*)
+      - Extract relevant invariants from Logical ADR
+      - Extract implementation decisions (IMPL-*)
+      - Extract testing requirements
+      - Build structured component metadata
+    interfaces:
+      - name: ComponentSpec
+        type: dataclass
+        description: Structured component specification
+        fields:
+          - id: str - Component ID (e.g., COMP-0001)
+          - name: str - Component name
+          - type: str - Component type (module, class, enhancement)
+          - description: str - Component description
+          - responsibilities: List[str] - What it does
+          - interfaces: List[InterfaceSpec] - Methods, classes, dataclasses
+          - implementation_identifiers: List[str] - File paths
+          - dependencies: List[str] - External dependencies
+          - testing_requirements: List[str] - Test scenarios
+          - related_invariants: List[InvariantRef] - Relevant invariants
+          - related_capabilities: List[CapabilityRef] - Relevant capabilities
+          - implementation_decisions: List[ImplDecisionRef] - Relevant IMPL-*
+      - name: ComponentParser
+        type: class
+        methods:
+          - parse_physical_adr(adr_path: Path) -> List[ComponentSpec]
+          - load_logical_adr(logical_id: str) -> LogicalADR
+          - extract_related_invariants(component: ComponentSpec, logical: LogicalADR) -> List[InvariantRef]
+          - extract_related_capabilities(component: ComponentSpec, logical: LogicalADR) -> List[CapabilityRef]
+    implementation_identifiers:
+      - src/adr_kit/prompts/__init__.py
+      - src/adr_kit/prompts/parser.py
+    dependencies:
+      - adr_kit.parser.ADRParser
+      - adr_kit.models (LogicalADR, PhysicalADR)
+      - dataclasses
+      - typing
+    testing_requirements:
+      - Test parsing ADR-P-0003 (real Physical ADR)
+      - Test extracting 4 components from ADR-P-0003
+      - Test loading related Logical ADR (ADR-L-0002)
+      - Test extracting related invariants
+      - Test handling missing Logical ADR gracefully
+
+  - id: COMP-0006
+    name: Prompt Template Engine
+    type: module
+    description: |
+      Jinja2-based template engine for generating implementation prompts
+      from component specifications
+    responsibilities:
+      - Render implementation prompts from templates
+      - Support multiple target agent formats
+      - Include all required sections (context, constraints, specs, tests)
+      - Generate validation checklists
+      - Generate execution plans
+    interfaces:
+      - name: PromptTemplate
+        type: class
+        description: Base template for all prompt formats
+        methods:
+          - render(component: ComponentSpec, context: dict) -> str
+      - name: PromptGenerator
+        type: class
+        methods:
+          - generate_implementation_prompt(component: ComponentSpec, target: str) -> str
+          - generate_validation_checklist(components: List[ComponentSpec], adr_id: str) -> str
+          - generate_execution_plan(components: List[ComponentSpec]) -> str
+    implementation_identifiers:
+      - src/adr_kit/prompts/templates/
+      - src/adr_kit/prompts/templates/implementation-prompt.md.jinja2
+      - src/adr_kit/prompts/templates/validation-checklist.md.jinja2
+      - src/adr_kit/prompts/templates/execution-plan.md.jinja2
+      - src/adr_kit/prompts/generator.py
+    dependencies:
+      - jinja2>=3.0
+      - adr_kit.prompts.parser.ComponentSpec
+    testing_requirements:
+      - Test template rendering with real component
+      - Test all required sections present
+      - Test invariant formatting
+      - Test test requirement formatting
+      - Test validation checklist generation
+      - Test execution plan with dependencies
+
+  - id: COMP-0007
+    name: Prompt CLI
+    type: module
+    description: |
+      Click-based CLI for generating prompts from ADRs
+    responsibilities:
+      - Parse command-line arguments
+      - Load Physical ADR
+      - Generate prompts for components
+      - Write prompts to output directory
+      - Display execution plan
+    interfaces:
+      - name: adr generate-prompts
+        parameters:
+          - adr_id: str - Physical ADR ID (e.g., ADR-P-0003)
+          - --component: str - Specific component ID (optional)
+          - --target: str - Target agent (codex, cursor, claude, gpt)
+          - --output: Path - Output directory for prompts
+          - --format: str - Output format (markdown, json)
+        description: Generate implementation prompts from Physical ADR
+        example: |
+          adr generate-prompts ADR-P-0003 --target codex --output prompts/
+    implementation_identifiers:
+      - src/adr_kit/cli/main.py (add command)
+    dependencies:
+      - click
+      - adr_kit.prompts.ComponentParser
+      - adr_kit.prompts.PromptGenerator
+    testing_requirements:
+      - Test CLI invocation
+      - Test output directory creation
+      - Test single component generation
+      - Test all components generation
+      - Test different target formats
+
+  - id: COMP-0008
+    name: Dependency Analyzer
+    type: module
+    description: |
+      Analyzes component dependencies to generate execution order for
+      parallel or sequential implementation
+    responsibilities:
+      - Parse component dependencies
+      - Build dependency graph
+      - Detect circular dependencies
+      - Generate topological sort for execution order
+      - Identify parallelizable components
+    interfaces:
+      - name: DependencyAnalyzer
+        type: class
+        methods:
+          - analyze(components: List[ComponentSpec]) -> DependencyGraph
+          - get_execution_order(graph: DependencyGraph) -> List[List[ComponentSpec]]
+          - detect_circular(graph: DependencyGraph) -> Optional[List[str]]
+    implementation_identifiers:
+      - src/adr_kit/prompts/dependencies.py
+    dependencies:
+      - typing
+      - dataclasses
+    testing_requirements:
+      - Test linear dependency chain
+      - Test parallel components (no dependencies)
+      - Test circular dependency detection
+      - Test complex dependency graph
+
+implementation_decisions:
+  - id: IMPL-0007
+    title: Use Jinja2 for Template Engine
+    rationale: |
+      Jinja2 is already used for markdown view generation. Reusing the same
+      template engine maintains consistency and reduces dependencies.
+    alternatives_considered:
+      - String formatting: Not flexible enough
+      - Custom template engine: Unnecessary complexity
+    consequences:
+      - Consistent template syntax across project
+      - Powerful template features (filters, macros, inheritance)
+      - Well-documented and maintained
+
+  - id: IMPL-0008
+    title: Markdown as Primary Prompt Format
+    rationale: |
+      Markdown is:
+      - Human-readable (architects can review prompts)
+      - AI-friendly (all agents parse markdown well)
+      - Version-controllable (text format)
+      - Supports code blocks, lists, emphasis
+    alternatives_considered:
+      - JSON: Less readable, harder to review
+      - Plain text: Less structure
+      - HTML: Overkill, less readable
+    consequences:
+      - Prompts are readable by humans and AI
+      - Easy to version control and diff
+      - Can be rendered in documentation
+
+  - id: IMPL-0009
+    title: File-Based Prompt Output
+    rationale: |
+      Generate prompts as files rather than stdout to enable:
+      - Review before execution
+      - Version control of prompts
+      - Batch processing
+      - Archival of prompts used
+    alternatives_considered:
+      - Stdout only: Can't review or archive
+      - Database storage: Overkill
+    consequences:
+      - Prompts written to output directory
+      - Can be committed to git for history
+      - Easy to share with team
+
+  - id: IMPL-0010
+    title: Deterministic Generation via Templates
+    rationale: |
+      Using templates with structured data ensures deterministic generation.
+      No LLM involved in prompt generation - pure template rendering.
+    alternatives_considered:
+      - LLM-based generation: Non-deterministic, violates INV-0032
+      - Code-based generation: Less maintainable than templates
+    consequences:
+      - Prompts are reproducible
+      - Template changes are explicit and reviewable
+      - No API calls or LLM costs for generation
+
+deployment_model:
+  packaging:
+    - Part of adr-architecture-kit package
+    - Optional dependency: jinja2>=3.0 (already required)
+  installation:
+    - pip install adr-architecture-kit[cli]
+  usage:
+    - CLI: adr generate-prompts ADR-P-XXXX
+    - Python API: PromptGenerator().generate(component)
+
+data_architecture:
+  prompt_structure:
+    sections:
+      - title: Context (what and why)
+      - constraints: Invariants to enforce
+      - specifications: Component interface
+      - test_requirements: What to verify
+      - implementation_strategy: How to build (TDD)
+      - dependencies: External dependencies
+      - validation_criteria: Success criteria
+  
+  template_data:
+    - component: ComponentSpec
+    - invariants: List[InvariantRef]
+    - capabilities: List[CapabilityRef]
+    - impl_decisions: List[ImplDecisionRef]
+    - adr_id: str (source ADR)
+    - target_agent: str
+
+operational_requirements:
+  performance:
+    - Prompt generation: < 1 second per component
+    - No network calls required
+    - Pure template rendering
+  monitoring:
+    - Log prompts generated
+    - Track which ADRs used
+    - Report generation time
+  security:
+    - No code execution during generation
+    - Template sandboxing via Jinja2
+    - Path validation for output directory
+
+quality_attributes:
+  - Determinism: Same input always produces same output
+  - Completeness: All ADR information included
+  - Traceability: Clear references to source ADR
+  - Maintainability: Templates easy to update
+  - Extensibility: Easy to add new target formats
+
+related_adrs:
+  - ADR-L-0005  # Implements this logical ADR
+  - ADR-L-0003  # Testing strategy (TDD)
+  - ADR-P-0003  # Example Physical ADR to parse
+
+gaps:
+  - Template design needed
+  - Agent-specific formatters need specification
+  - Integration with validation system needed
+
+notes: |
+  Implementation priority: HIGH
+  
+  This component is foundational for scaling AI-driven development. Once
+  implemented, any Physical ADR can be automatically translated into
+  implementation prompts, dramatically reducing manual work.
+  
+  The prompt translator itself should be implemented following TDD:
+  1. Write tests for parsing ADR-P-0003
+  2. Implement ComponentParser
+  3. Write tests for template rendering
+  4. Implement PromptGenerator
+  5. Write tests for CLI
+  6. Implement CLI command
+  
+  Self-referential: Once the prompt translator is implemented, it can
+  generate prompts for future components from their ADRs, including
+  prompts for enhancing itself!

@@ -5,3 +5,6 @@
 	path = ste-runtime
 	url = https://github.com/egallmann/ste-runtime.git
 	branch = develop
+[submodule "ste-rules-library"]
+	path = ste-rules-library
+	url = https://github.com/egallmann/ste-rules-library.git

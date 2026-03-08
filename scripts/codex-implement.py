@@ -24,8 +24,8 @@ sys.path.insert(0, str(Path(__file__).parent.parent / "src"))
 try:
     import click
 except ImportError:
-    print("❌ Error: click not installed")
-    print("   Install with: pip install click")
+    print("ERROR: click not installed")
+    print("Install with: pip install click")
     sys.exit(1)
 
 
@@ -130,7 +130,7 @@ def generate_implementation_plan(
     wave_num = 1
     for component in components:
         plan += f"### Wave {wave_num}: {component['name']} ({component['id']})\n\n"
-        plan += f"- **Status**: ⏳ pending\n"
+        plan += f"- **Status**: pending\n"
         plan += f"- **Type**: {component['type']}\n"
         plan += f"- **Files**:\n"
         for file in component.get("implementation_identifiers", []):
@@ -205,7 +205,8 @@ Generate report in `.codex/reports/{adr_id}-completion.md` with:
 @click.option('--component', help='Specific component ID to implement')
 @click.option('--plan-only', is_flag=True, help='Generate plan without implementing')
 @click.option('--output', default='.codex/plans', help='Output directory for plan')
-def implement(adr_id: str, component: Optional[str], plan_only: bool, output: str):
+@click.option('--agent', default='codex', type=click.Choice(['codex', 'cursor', 'claude', 'gpt']), help='Target AI agent')
+def implement(adr_id: str, component: Optional[str], plan_only: bool, output: str, agent: str):
     """
     Generate implementation plan from Physical ADR.
     
@@ -263,6 +264,7 @@ def implement(adr_id: str, component: Optional[str], plan_only: bool, output: st
     
     click.echo()
     click.echo(f"SUCCESS: Plan generated: {plan_path}")
+    click.echo(f"   Target agent: {agent}")
     click.echo(f"   Components: {len(components)}")
     click.echo(f"   Invariants: {len(invariants)}")
     click.echo(f"   Tests required: {sum(len(c.get('testing_requirements', [])) for c in components)}+")
@@ -274,15 +276,22 @@ def implement(adr_id: str, component: Optional[str], plan_only: bool, output: st
         click.echo(plan)
         click.echo()
     
-    click.echo("Ready for CODEX implementation")
-    click.echo(f"   CODEX should read: {plan_path}")
+    agent_names = {
+        'codex': 'CODEX',
+        'cursor': 'Cursor (Sonnet 4.5)',
+        'claude': 'Claude',
+        'gpt': 'GPT'
+    }
+    
+    click.echo(f"Ready for {agent_names[agent]} implementation")
+    click.echo(f"   Agent should read: {plan_path}")
     click.echo()
     click.echo("Next steps:")
     click.echo("   1. Review the plan")
-    click.echo("   2. Hand to CODEX: 'Implement following .codex/plans/{}.md'".format(adr_id))
-    click.echo("   3. CODEX implements following TDD methodology")
-    click.echo("   4. CODEX self-validates and reports completion")
-    click.echo("   5. Cursor validates against ADR")
+    click.echo(f"   2. Hand to {agent_names[agent]}: 'Implement following .codex/plans/{}.md'".format(adr_id))
+    click.echo(f"   3. {agent_names[agent]} implements following TDD methodology")
+    click.echo(f"   4. {agent_names[agent]} self-validates and reports completion")
+    click.echo("   5. Validator verifies against ADR")
     
     return 0
 

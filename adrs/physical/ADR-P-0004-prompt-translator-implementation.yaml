@@ -102,14 +102,22 @@ component_specifications:
     type: module
     description: |
       Jinja2-based template engine for generating implementation prompts
-      from component specifications
+      from component specifications with agent-specific formatting
     responsibilities:
       - Render implementation prompts from templates
-      - Support multiple target agent formats
+      - Support multiple target agent formats (codex, cursor, claude, gpt)
       - Include all required sections (context, constraints, specs, tests)
       - Generate validation checklists
       - Generate execution plans
+      - Optimize prompt structure per agent capabilities
     interfaces:
+      - name: AgentFormat
+        type: enum
+        values:
+          - codex: "GitHub Copilot / CODEX (concise, code-focused)"
+          - cursor: "Cursor with Sonnet 4.5 (detailed, reasoning-focused)"
+          - claude: "Claude API (structured thinking)"
+          - gpt: "GPT models (example-driven)"
       - name: PromptTemplate
         type: class
         description: Base template for all prompt formats
@@ -118,12 +126,17 @@ component_specifications:
       - name: PromptGenerator
         type: class
         methods:
-          - generate_implementation_prompt(component: ComponentSpec, target: str) -> str
+          - generate_implementation_prompt(component: ComponentSpec, target: AgentFormat) -> str
           - generate_validation_checklist(components: List[ComponentSpec], adr_id: str) -> str
           - generate_execution_plan(components: List[ComponentSpec]) -> str
+          - get_agent_template(target: AgentFormat) -> str
     implementation_identifiers:
       - src/adr_kit/prompts/templates/
-      - src/adr_kit/prompts/templates/implementation-prompt.md.jinja2
+      - src/adr_kit/prompts/templates/base-prompt.md.jinja2
+      - src/adr_kit/prompts/templates/codex-prompt.md.jinja2
+      - src/adr_kit/prompts/templates/cursor-prompt.md.jinja2
+      - src/adr_kit/prompts/templates/claude-prompt.md.jinja2
+      - src/adr_kit/prompts/templates/gpt-prompt.md.jinja2
       - src/adr_kit/prompts/templates/validation-checklist.md.jinja2
       - src/adr_kit/prompts/templates/execution-plan.md.jinja2
       - src/adr_kit/prompts/generator.py
@@ -218,21 +231,31 @@ implementation_decisions:
       - Well-documented and maintained
 
   - id: IMPL-0008
-    title: Markdown as Primary Prompt Format
+    title: Markdown as Primary Prompt Format with Agent-Specific Variants
     rationale: |
       Markdown is:
       - Human-readable (architects can review prompts)
       - AI-friendly (all agents parse markdown well)
       - Version-controllable (text format)
       - Supports code blocks, lists, emphasis
+      
+      However, different AI agents have different strengths and optimal prompt formats:
+      - **CODEX**: Prefers concise, code-focused prompts
+      - **Cursor (Sonnet 4.5)**: Benefits from detailed context and reasoning
+      - **Claude**: Prefers structured thinking and step-by-step guidance
+      - **GPT**: Works well with examples and clear instructions
+      
+      The translator should support agent-specific formatting while maintaining
+      core content consistency (same invariants, specs, tests).
     alternatives_considered:
+      - Single universal format: Doesn't leverage agent strengths
       - JSON: Less readable, harder to review
       - Plain text: Less structure
-      - HTML: Overkill, less readable
     consequences:
       - Prompts are readable by humans and AI
-      - Easy to version control and diff
-      - Can be rendered in documentation
+      - Agent-specific optimizations possible
+      - Core content consistent across formats
+      - Easy to add new agent formats
 
   - id: IMPL-0009
     title: File-Based Prompt Output
@@ -290,7 +313,33 @@ data_architecture:
     - capabilities: List[CapabilityRef]
     - impl_decisions: List[ImplDecisionRef]
     - adr_id: str (source ADR)
-    - target_agent: str
+    - target_agent: AgentFormat
+  
+  agent_specific_formatting:
+    codex:
+      style: concise
+      focus: code_examples
+      sections: [context, constraints, specs, tests, validation]
+      emphasis: Interface signatures and test cases
+      
+    cursor:
+      style: detailed
+      focus: reasoning_and_context
+      sections: [context, rationale, constraints, specs, strategy, tests, validation]
+      emphasis: Why decisions were made, architectural reasoning
+      model: Claude Sonnet 4.5 (long context, deep reasoning)
+      
+    claude:
+      style: structured
+      focus: step_by_step
+      sections: [thinking, context, constraints, approach, specs, tests, validation]
+      emphasis: Structured thinking, clear steps
+      
+    gpt:
+      style: example_driven
+      focus: patterns_and_examples
+      sections: [context, examples, constraints, specs, tests, validation]
+      emphasis: Code examples, common patterns
 
 operational_requirements:
   performance:

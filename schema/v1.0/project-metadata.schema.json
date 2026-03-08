@@ -138,6 +138,57 @@
       "description": "Automation permissions for correction agents"
     },
     
+    "development_methodology": {
+      "type": "object",
+      "properties": {
+        "approach": {
+          "type": "string",
+          "enum": ["test-driven-development", "behavior-driven-development", "test-after", "exploratory"],
+          "description": "Primary development methodology"
+        },
+        "testing_framework": {
+          "type": "string",
+          "description": "Testing framework used (e.g., pytest, jest, vitest)"
+        },
+        "coverage_target": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100,
+          "description": "Target code coverage percentage"
+        },
+        "quality_gates": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "schema_validation",
+              "test_suite_passing", 
+              "type_checking",
+              "linting",
+              "security_scanning",
+              "coverage_threshold",
+              "performance_benchmarks"
+            ]
+          },
+          "description": "Required quality gates for CI/CD"
+        },
+        "tdd_cycle": {
+          "type": "string",
+          "enum": ["red-green-refactor", "test-first", "test-after"],
+          "description": "TDD cycle approach if using TDD"
+        },
+        "rationale": {
+          "type": "string",
+          "description": "Rationale for methodology choice"
+        },
+        "authority": {
+          "type": "string",
+          "description": "ADR that defines this methodology (e.g., ADR-L-0003 DEC-0005)"
+        }
+      },
+      "description": "Development methodology and quality practices (project authority declaration)"
+    },
+    
     "integrations": {
       "type": "object",
       "properties": {

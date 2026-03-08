@@ -1,11 +1,15 @@
-"""ADR validator - validates ADRs against schema and business rules."""
+"""ADR validator - validates ADRs against schema and business rules.
+
+Implements ADR-L-0007: Multi-scope ADR architecture.
+"""
 
 from dataclasses import dataclass
 from pathlib import Path
-from typing import List, Optional, Union
+from typing import List, Optional, Union, Dict
 
 from ..models import LogicalADR, PhysicalADR
 from ..parser import ADRParser, ADRParseError, ADRSchemaValidationError
+from ..scope import ProjectScopeResolver, ProjectScope
 
 
 @dataclass
@@ -38,17 +42,22 @@ class ValidationResult:
 
 
 class ADRValidator:
-    """Validate ADRs against schema and business rules."""
+    """Validate ADRs against schema and business rules.
     
-    def __init__(self, parser: ADRParser = None, project_root: Path = None):
+    Supports multi-scope operation per ADR-L-0007.
+    """
+    
+    def __init__(self, parser: ADRParser = None, project_root: Path = None, scope_resolver: ProjectScopeResolver = None):
         """Initialize validator.
         
         Args:
             parser: ADR parser (creates new one if not provided)
             project_root: Root directory of project (for checking file existence)
+            scope_resolver: Project scope resolver (creates new one if not provided)
         """
         self.parser = parser or ADRParser()
         self.project_root = Path(project_root) if project_root else None
+        self.scope_resolver = scope_resolver or ProjectScopeResolver()
     
     def validate_file(self, file_path: Union[str, Path]) -> ValidationResult:
         """Validate ADR file.
@@ -183,16 +192,23 @@ class ADRValidator:
                                     field="component_specifications.implementation_identifiers"
                                 ))
     
-    def validate_directory(self, adr_dir: Path) -> dict:
+    def validate_directory(self, adr_dir: Path, scope: Optional[ProjectScope] = None) -> dict:
         """Validate all ADRs in directory.
         
         Args:
             adr_dir: Path to adrs/ directory
+            scope: Project scope (auto-detected if not provided)
             
         Returns:
             Dict with validation results per file
         """
         adr_dir = Path(adr_dir)
+        
+        # Auto-detect scope if not provided (ADR-L-0007: CAP-0001)
+        if scope is None:
+            scope = self.scope_resolver.resolve(adr_dir.parent)
+            print(f"Auto-detected project scope: {scope.name} at {scope.root}")
+        
         results = {}
         
         # Find all ADR files
@@ -204,6 +220,45 @@ class ADRValidator:
             results[str(file_path)] = result
         
         return results
+    
+    def validate_scope(self, scope: Optional[ProjectScope] = None) -> dict:
+        """Validate ADRs for project scope (ADR-L-0007: CAP-0003).
+        
+        Args:
+            scope: Project scope (auto-detected if not provided)
+            
+        Returns:
+            Dict with validation results per file
+        """
+        if scope is None:
+            scope = self.scope_resolver.resolve()
+        
+        return self.validate_directory(scope.adr_dir, scope)
+    
+    def validate_recursive(self, scope: Optional[ProjectScope] = None) -> Dict[str, dict]:
+        """Validate ADRs for all scopes recursively (ADR-L-0007: CAP-0003, INV-0019).
+        
+        Args:
+            scope: Root project scope (auto-detected if not provided)
+            
+        Returns:
+            Dict mapping scope name to validation results
+        """
+        if scope is None:
+            scope = self.scope_resolver.resolve()
+        
+        scopes = self.scope_resolver.resolve_recursive(scope.root)
+        all_results = {}
+        
+        for s in scopes:
+            if s.adr_dir.exists():
+                try:
+                    results = self.validate_directory(s.adr_dir, s)
+                    all_results[s.name or str(s.root)] = results
+                except Exception as e:
+                    print(f"Warning: Failed to validate {s.name}: {e}")
+        
+        return all_results
     
     def validate_cross_references(self, adr_dir: Path) -> ValidationResult:
         """Validate cross-references between ADRs.

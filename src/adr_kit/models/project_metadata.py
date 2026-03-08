@@ -51,6 +51,18 @@ class AutomationPermissions(BaseModel):
     comfort_level: str = Field("conservative", pattern=r"^(conservative|moderate|aggressive)$")
 
 
+class DevelopmentMethodology(BaseModel):
+    """Development methodology and quality practices (project authority)."""
+    
+    approach: str = Field(..., pattern=r"^(test-driven-development|behavior-driven-development|test-after|exploratory)$")
+    testing_framework: Optional[str] = None
+    coverage_target: Optional[int] = Field(None, ge=0, le=100)
+    quality_gates: Optional[List[str]] = None
+    tdd_cycle: Optional[str] = Field(None, pattern=r"^(red-green-refactor|test-first|test-after)$")
+    rationale: Optional[str] = None
+    authority: Optional[str] = None
+
+
 class SCMIntegration(BaseModel):
     """Source control management integration."""
     type: str = Field(..., pattern=r"^(github|gitlab|bitbucket)$")
@@ -154,6 +166,7 @@ class ProjectMetadata(BaseModel):
     
     implementation_identifiers: Optional[ProjectImplementationIdentifiers] = None
     automation: Optional[AutomationPermissions] = None
+    development_methodology: Optional[DevelopmentMethodology] = None
     integrations: Optional[Integrations] = None
     compliance: Optional[ComplianceRequirements] = None
     

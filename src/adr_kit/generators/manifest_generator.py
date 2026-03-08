@@ -1,8 +1,11 @@
-"""Manifest generator - creates manifest.yaml from ADR directory (SYS-14: Index Currency)."""
+"""Manifest generator - creates manifest.yaml from ADR directory (SYS-14: Index Currency).
+
+Implements ADR-L-0007: Multi-scope ADR architecture.
+"""
 
 from datetime import datetime, timezone
 from pathlib import Path
-from typing import Dict, List
+from typing import Dict, List, Optional
 
 from ..models import (
     GapsSummary,
@@ -15,29 +18,41 @@ from ..models import (
     PhysicalADR,
 )
 from ..parser import ADRParser
+from ..scope import ProjectScopeResolver, ProjectScope
 
 
 class ManifestGenerator:
-    """Generate manifest from ADR directory."""
+    """Generate manifest from ADR directory.
     
-    def __init__(self, parser: ADRParser = None):
+    Supports multi-scope operation per ADR-L-0007.
+    """
+    
+    def __init__(self, parser: ADRParser = None, scope_resolver: ProjectScopeResolver = None):
         """Initialize generator.
         
         Args:
             parser: ADR parser (creates new one if not provided)
+            scope_resolver: Project scope resolver (creates new one if not provided)
         """
         self.parser = parser or ADRParser()
+        self.scope_resolver = scope_resolver or ProjectScopeResolver()
     
-    def generate_from_directory(self, adr_dir: Path) -> Manifest:
+    def generate_from_directory(self, adr_dir: Path, scope: Optional[ProjectScope] = None) -> Manifest:
         """Generate manifest from ADR directory.
         
         Args:
             adr_dir: Path to adrs/ directory
+            scope: Project scope (auto-detected if not provided)
             
         Returns:
             Generated Manifest model
         """
         adr_dir = Path(adr_dir)
+        
+        # Auto-detect scope if not provided (ADR-L-0007: CAP-0001)
+        if scope is None:
+            scope = self.scope_resolver.resolve(adr_dir.parent)
+            print(f"Auto-detected project scope: {scope.name} at {scope.root}")
         
         if not adr_dir.exists():
             raise ValueError(f"ADR directory not found: {adr_dir}")
@@ -167,7 +182,7 @@ class ManifestGenerator:
             blocking_gaps=total_blocking,
         )
         
-        # Create manifest
+        # Create manifest with scope metadata (ADR-L-0007: CAP-0002)
         manifest = Manifest(
             schema_version="1.0",
             type="manifest",
@@ -184,6 +199,45 @@ class ManifestGenerator:
         )
         
         return manifest
+    
+    def generate_from_scope(self, scope: Optional[ProjectScope] = None) -> Manifest:
+        """Generate manifest for project scope (ADR-L-0007: CAP-0002).
+        
+        Args:
+            scope: Project scope (auto-detected if not provided)
+            
+        Returns:
+            Generated Manifest model
+        """
+        if scope is None:
+            scope = self.scope_resolver.resolve()
+        
+        return self.generate_from_directory(scope.adr_dir, scope)
+    
+    def generate_recursive(self, scope: Optional[ProjectScope] = None) -> Dict[str, Manifest]:
+        """Generate manifests for all scopes recursively (ADR-L-0007: CAP-0002).
+        
+        Args:
+            scope: Root project scope (auto-detected if not provided)
+            
+        Returns:
+            Dict mapping scope name to Manifest
+        """
+        if scope is None:
+            scope = self.scope_resolver.resolve()
+        
+        scopes = self.scope_resolver.resolve_recursive(scope.root)
+        manifests = {}
+        
+        for s in scopes:
+            if s.adr_dir.exists():
+                try:
+                    manifest = self.generate_from_directory(s.adr_dir, s)
+                    manifests[s.name or str(s.root)] = manifest
+                except Exception as e:
+                    print(f"Warning: Failed to generate manifest for {s.name}: {e}")
+        
+        return manifests
     
     def _slugify(self, text: str) -> str:
         """Convert title to slug for filename."""

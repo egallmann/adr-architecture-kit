@@ -23,6 +23,22 @@ automation:
   requires_human_review: true
   comfort_level: conservative
 
+development_methodology:
+  approach: "test-driven-development"
+  testing_framework: "pytest"
+  coverage_target: 80
+  quality_gates:
+    - schema_validation
+    - test_suite_passing
+    - type_checking
+    - linting
+  tdd_cycle: "red-green-refactor"
+  rationale: |
+    TDD is architecturally aligned with STE principles (SYS-2, SYS-4, PRIME-1).
+    As a governance tool that validates architecture decisions, provable
+    correctness is required. Tests serve as executable specifications.
+  authority: "ADR-L-0003 DEC-0005, ADR-P-0003 IMPL-0001"
+
 integrations:
   scm:
     type: github

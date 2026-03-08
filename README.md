@@ -137,18 +137,50 @@ ADR Kit implements STE invariants:
 - **SYS-13**: Graph completeness (bidirectional relationships)
 - **SYS-14**: Index currency (manifest generated from ADRs)
 
+## Multi-Scope Support
+
+**Authority**: ADR-L-0002 - Multi-Scope ADR Architecture
+
+ADR Kit supports **multi-scope operation** - sub-modules can maintain independent ADR directories:
+
+```bash
+# Auto-detect scope from current directory
+adr generate-manifest
+adr validate
+
+# Work with specific scope
+adr validate --scope ste-runtime
+
+# Operate on all scopes recursively
+adr generate-manifest --recursive
+adr validate --recursive
+```
+
+See [Multi-Scope Guide](docs/multi-scope-guide.md) for details.
+
 ## Dogfooding
 
 This project documents its own architecture using ADR Kit:
 
+### Workspace ADRs
 - **ADR-L-0001**: STE-compliant ADR system conception
+- **ADR-L-0002**: Multi-scope ADR architecture
+- **ADR-L-0003**: Quality assurance and testing strategy
 - **ADR-P-0001**: Python toolkit implementation
 - **ADR-P-0002**: JSON Schema + YAML format choice
-- **INV-0001**: Schema validation required
+- **ADR-P-0003**: Multi-scope Python implementation
 
-See `adrs/` directory for complete project documentation.
+### Sub-Module ADRs (ste-runtime)
+- **ADR-L-0001**: RECON provisional execution
+- **ADR-L-0002**: RECON self-validation strategy
+- **ADR-L-0003** through **ADR-L-0006**: Additional logical ADRs
+- **ADR-P-0001** through **ADR-P-0005**: Physical implementations
+
+See `adrs/` and `ste-runtime/adrs/` directories for complete documentation.
 
 ## Testing
+
+**Authority**: ADR-L-0003 - Quality Assurance and Testing Strategy
 
 Run the test suite:
 
@@ -156,12 +188,25 @@ Run the test suite:
 pytest tests/ -v
 ```
 
+With coverage:
+
+```bash
+pytest tests/ --cov=src/adr_kit --cov-report=html --cov-report=term
+```
+
 Test coverage includes:
 - Schema validation (valid and invalid ADRs)
+- Multi-scope detection and resolution
+- Scoped manifest generation
+- Scoped validation (single and recursive)
 - ID pattern validation
-- Manifest generation
 - Markdown view generation
 - Pydantic model parsing
+- Backward compatibility
+
+### Test-Driven Development
+
+This project follows **Red-Green-Refactor TDD methodology** (ADR-L-0003 DEC-0005). See [TDD Workflow Guide](docs/TDD-WORKFLOW.md) for detailed practices.
 
 ## CI Governance
 
@@ -174,10 +219,17 @@ GitHub Actions workflow (`.github/workflows/adr-governance.yml`) enforces:
 
 ## Documentation
 
+### User Guides
 - `docs/schema-guide.md` - JSON Schema reference
 - `docs/logical-adr-guide.md` - Writing logical ADRs
 - `docs/physical-adr-guide.md` - Writing physical ADRs
+- `docs/multi-scope-guide.md` - Multi-scope ADR management
 - `docs/graph-integration.md` - ste-runtime integration
+
+### Developer Guides
+- `docs/TDD-WORKFLOW.md` - Test-Driven Development practices
+- `docs/TESTING-IMPLEMENTATION.md` - Test suite documentation
+- `docs/MULTI-SCOPE-IMPLEMENTATION.md` - Multi-scope architecture details
 - `schema/v1.0/README.md` - Schema documentation
 
 ## Future Vision

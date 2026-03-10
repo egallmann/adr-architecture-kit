@@ -10,10 +10,13 @@ import yaml
 from pydantic import ValidationError
 
 from ..models import (
+    DecisionLedger,
+    EntityRegistry,
     LogicalADR,
     Manifest,
     PhysicalADR,
     ProjectMetadata,
+    RequirementsSnapshot,
     StandaloneInvariant,
 )
 
@@ -31,16 +34,20 @@ class ADRSchemaValidationError(Exception):
 class ADRParser:
     """Parser for ADR YAML artifacts with schema validation."""
     
-    def __init__(self, schema_dir: Path = None):
+    def __init__(self, schema_dir: Path = None, schema_v11_dir: Path = None):
         """Initialize parser with schema directory.
         
         Args:
-            schema_dir: Path to schema directory (defaults to package schema/v1.0)
+            schema_dir: Path to v1.0 schema directory (defaults to package schema/v1.0)
+            schema_v11_dir: Path to v1.1 schema directory (defaults to package schema/v1.1)
         """
         if schema_dir is None:
             schema_dir = Path(__file__).parent.parent.parent.parent / "schema" / "v1.0"
+        if schema_v11_dir is None:
+            schema_v11_dir = Path(__file__).parent.parent.parent.parent / "schema" / "v1.1"
         
         self.schema_dir = Path(schema_dir)
+        self.schema_v11_dir = Path(schema_v11_dir)
         self._schemas = {}
         self._resolvers = {}
         self._load_schemas()
@@ -57,9 +64,22 @@ class ADRParser:
             "manifest": "manifest.schema.json",
         }
         
-        # Load all schemas
+        schema_v11_files = {
+            "entity_registry": "entity-registry.schema.json",
+            "requirements_snapshot": "requirements-snapshot.schema.json",
+            "decision_ledger": "decision-ledger.schema.json",
+        }
+        
+        # Load v1.0 schemas
         for name, filename in schema_files.items():
             schema_path = self.schema_dir / filename
+            if schema_path.exists():
+                with open(schema_path) as f:
+                    self._schemas[name] = json.load(f)
+        
+        # Load v1.1 schemas
+        for name, filename in schema_v11_files.items():
+            schema_path = self.schema_v11_dir / filename
             if schema_path.exists():
                 with open(schema_path) as f:
                     self._schemas[name] = json.load(f)
@@ -279,3 +299,69 @@ class ADRParser:
             raise ADRParseError("Decision ADRs not yet implemented")
         else:
             raise ADRParseError(f"Unknown adr_type: {adr_type}")
+    
+    def parse_entity_registry(self, file_path: Union[str, Path]) -> EntityRegistry:
+        """Parse and validate entity registry.
+        
+        Args:
+            file_path: Path to entity registry YAML file
+            
+        Returns:
+            Validated EntityRegistry model
+            
+        Raises:
+            ADRParseError: If parsing fails
+            ADRSchemaValidationError: If schema validation fails
+            ValidationError: If Pydantic validation fails
+        """
+        data = self.parse_yaml(file_path)
+        self.validate_against_schema(data, "entity_registry")
+        
+        try:
+            return EntityRegistry(**data)
+        except ValidationError as e:
+            raise ADRParseError(f"Pydantic validation failed: {e}")
+    
+    def parse_requirements_snapshot(self, file_path: Union[str, Path]) -> RequirementsSnapshot:
+        """Parse and validate requirements snapshot.
+        
+        Args:
+            file_path: Path to requirements snapshot YAML file
+            
+        Returns:
+            Validated RequirementsSnapshot model
+            
+        Raises:
+            ADRParseError: If parsing fails
+            ADRSchemaValidationError: If schema validation fails
+            ValidationError: If Pydantic validation fails
+        """
+        data = self.parse_yaml(file_path)
+        self.validate_against_schema(data, "requirements_snapshot")
+        
+        try:
+            return RequirementsSnapshot(**data)
+        except ValidationError as e:
+            raise ADRParseError(f"Pydantic validation failed: {e}")
+    
+    def parse_decision_ledger(self, file_path: Union[str, Path]) -> DecisionLedger:
+        """Parse and validate decision ledger.
+        
+        Args:
+            file_path: Path to decision ledger YAML file
+            
+        Returns:
+            Validated DecisionLedger model
+            
+        Raises:
+            ADRParseError: If parsing fails
+            ADRSchemaValidationError: If schema validation fails
+            ValidationError: If Pydantic validation fails
+        """
+        data = self.parse_yaml(file_path)
+        self.validate_against_schema(data, "decision_ledger")
+        
+        try:
+            return DecisionLedger(**data)
+        except ValidationError as e:
+            raise ADRParseError(f"Pydantic validation failed: {e}")

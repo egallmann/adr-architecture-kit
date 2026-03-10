@@ -154,6 +154,16 @@
             "items": {"type": "string"},
             "description": "Services that call this component (for blast radius analysis)"
           },
+          "implements_capabilities": {
+            "type": "array",
+            "items": {"$ref": "types.schema.json#/definitions/entity_id"},
+            "description": "Capabilities (CAP-XXXX) this component implements"
+          },
+          "realizes_entities": {
+            "type": "array",
+            "items": {"$ref": "types.schema.json#/definitions/entity_id"},
+            "description": "Other entities (BOUND, CONTRACT, etc.) this component realizes"
+          },
           "implementation_identifiers": {
             "type": "object",
             "properties": {

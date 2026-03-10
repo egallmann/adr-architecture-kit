@@ -61,6 +61,32 @@ class ManifestStatistics(BaseModel):
     total_components: int = Field(0, ge=0)
     total_gaps: int = Field(0, ge=0)
     blocking_gaps: int = Field(0, ge=0)
+    total_entities: int = Field(0, ge=0)
+    total_requirements_snapshots: int = Field(0, ge=0)
+    total_decision_ledgers: int = Field(0, ge=0)
+
+
+class ManifestEntity(BaseModel):
+    """Entity entry in manifest."""
+    entity_id: str = Field(..., pattern=r"^[A-Z]+-\d{4}$")
+    entity_type: str
+    name: str
+    introduced_by: str = Field(..., pattern=r"^ADR-(L|P|D)-\d{4}$")
+    lifecycle_stage: str
+
+
+class ManifestRequirementsSnapshot(BaseModel):
+    """Requirements snapshot entry in manifest."""
+    snapshot_id: str = Field(..., pattern=r"^REQ-\d{4}$")
+    domains: List[str]
+    capability_count: int = Field(0, ge=0)
+
+
+class ManifestDecisionLedger(BaseModel):
+    """Decision ledger entry in manifest."""
+    ledger_id: str = Field(..., pattern=r"^LEDGER-\d{4}$")
+    target_logical_adr: str = Field(..., pattern=r"^ADR-L-\d{4}$")
+    decision_count: int = Field(0, ge=0)
 
 
 class Manifest(BaseModel):
@@ -80,6 +106,9 @@ class Manifest(BaseModel):
     logical_to_physical_map: Dict[str, List[str]] = Field(default_factory=dict)
     
     invariants: List[ManifestInvariant] = Field(default_factory=list)
+    entities: List[ManifestEntity] = Field(default_factory=list, description="All entities across all ADRs")
+    requirements_snapshots: List[ManifestRequirementsSnapshot] = Field(default_factory=list, description="Requirements snapshots summary")
+    decision_ledgers: List[ManifestDecisionLedger] = Field(default_factory=list, description="Decision ledgers summary")
     gaps_summary: GapsSummary
     statistics: ManifestStatistics
     

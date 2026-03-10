@@ -28,6 +28,9 @@ from .manifest import (
     ManifestADREntry,
     ManifestInvariant,
     ManifestStatistics,
+    ManifestEntity,
+    ManifestRequirementsSnapshot,
+    ManifestDecisionLedger,
 )
 from .physical_adr import (
     ArchitecturePattern,
@@ -61,6 +64,26 @@ from .project_metadata import (
     SCMIntegration,
     ArchitectureDocumentation,
     Integrations,
+)
+from .entity_registry import (
+    Entity,
+    EntityRegistry,
+    EntityRelationships,
+    EntityType,
+    LifecycleStage,
+)
+from .requirements_snapshot import (
+    RequiredCapability,
+    RequiredConstraint,
+    RequiredInvariant,
+    RequiredNFR,
+    RequirementsSnapshot,
+    TechnologySignals,
+)
+from .decision_ledger import (
+    DecisionLedger,
+    LedgerConstraints,
+    LedgerDecision,
 )
 
 __all__ = [
@@ -120,7 +143,27 @@ __all__ = [
     "Manifest",
     "ManifestADREntry",
     "ManifestInvariant",
+    "ManifestEntity",
+    "ManifestRequirementsSnapshot",
+    "ManifestDecisionLedger",
     "GapsSummary",
     "GapSummaryByADR",
     "ManifestStatistics",
+    # Entity Registry (v1.1)
+    "Entity",
+    "EntityRegistry",
+    "EntityRelationships",
+    "EntityType",
+    "LifecycleStage",
+    # Requirements Snapshot (v1.1)
+    "RequiredCapability",
+    "RequiredConstraint",
+    "RequiredInvariant",
+    "RequiredNFR",
+    "RequirementsSnapshot",
+    "TechnologySignals",
+    # Decision Ledger (v1.1)
+    "DecisionLedger",
+    "LedgerConstraints",
+    "LedgerDecision",
 ]

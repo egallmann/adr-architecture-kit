@@ -50,6 +50,15 @@ class ComponentSpecification(BaseModel):
     upstream_services: List[str] = Field(default_factory=list, description="For blast radius analysis")
     downstream_services: List[str] = Field(default_factory=list, description="For blast radius analysis")
     
+    implements_capabilities: List[str] = Field(
+        default_factory=list,
+        description="Capabilities (CAP-XXXX) this component implements"
+    )
+    realizes_entities: List[str] = Field(
+        default_factory=list,
+        description="Other entities (BOUND, CONTRACT, etc.) this component realizes"
+    )
+    
     implementation_identifiers: Optional[ImplementationIdentifiers] = None
 
 

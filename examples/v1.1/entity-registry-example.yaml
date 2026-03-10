@@ -1,0 +1,51 @@
+schema_version: "1.1"
+type: entity_registry
+
+entities:
+  - entity_id: CAP-0015
+    entity_type: capability
+    name: AI Request Routing
+    introduced_by: ADR-L-0007
+    lifecycle_stage: active
+    domains:
+      - ai_platform
+    relationships:
+      depends_on:
+        - CAP-0001  # User Authentication
+  
+  - entity_id: BOUND-0008
+    entity_type: boundary
+    name: AI Gateway Boundary
+    introduced_by: ADR-L-0007
+    lifecycle_stage: active
+    domains:
+      - ai_platform
+  
+  - entity_id: COMP-0010
+    entity_type: component
+    name: AI Gateway Lambda
+    introduced_by: ADR-P-0005
+    lifecycle_stage: active
+    domains:
+      - ai_platform
+    relationships:
+      implements:
+        - CAP-0015
+      depends_on:
+        - COMP-0003  # Auth Service
+  
+  - entity_id: IFACE-0012
+    entity_type: interface
+    name: AI Gateway REST API
+    introduced_by: ADR-P-0005
+    lifecycle_stage: active
+    domains:
+      - ai_platform
+  
+  - entity_id: DEC-0025
+    entity_type: decision
+    name: Use serverless architecture for AI gateway
+    introduced_by: ADR-L-0007
+    lifecycle_stage: active
+    domains:
+      - ai_platform

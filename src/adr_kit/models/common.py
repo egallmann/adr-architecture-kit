@@ -96,6 +96,23 @@ class ADRFrontmatter(BaseModel):
     
     ownership: Optional[Ownership] = None
     
+    introduces_entities: List[str] = Field(
+        default_factory=list,
+        description="Entities introduced by this ADR (CAP-XXXX, COMP-XXXX, etc.)"
+    )
+    modifies_entities: List[str] = Field(
+        default_factory=list,
+        description="Entities modified (lifecycle, relationships, or properties)"
+    )
+    realizes_entities: List[str] = Field(
+        default_factory=list,
+        description="Entities realized by this Physical ADR (COMP implements CAP)"
+    )
+    related_ledgers: List[str] = Field(
+        default_factory=list,
+        description="Decision ledgers that constrained this ADR"
+    )
+    
     @field_validator('id')
     @classmethod
     def validate_id_matches_type(cls, v: str, info) -> str:

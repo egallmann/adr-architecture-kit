@@ -198,6 +198,77 @@
       "description": "Summary of gaps across all ADRs"
     },
     
+    "entities": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["entity_id", "entity_type", "name", "introduced_by", "lifecycle_stage"],
+        "properties": {
+          "entity_id": {
+            "$ref": "types.schema.json#/definitions/entity_id"
+          },
+          "entity_type": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "introduced_by": {
+            "$ref": "types.schema.json#/definitions/adr_id_any"
+          },
+          "lifecycle_stage": {
+            "type": "string"
+          }
+        }
+      },
+      "description": "All entities across all ADRs"
+    },
+
+    "requirements_snapshots": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["snapshot_id", "domains"],
+        "properties": {
+          "snapshot_id": {
+            "type": "string",
+            "pattern": "^REQ-\\d{4}$"
+          },
+          "domains": {
+            "type": "array",
+            "items": {"type": "string"}
+          },
+          "capability_count": {
+            "type": "integer",
+            "minimum": 0
+          }
+        }
+      },
+      "description": "Requirements snapshots summary"
+    },
+
+    "decision_ledgers": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["ledger_id", "target_logical_adr"],
+        "properties": {
+          "ledger_id": {
+            "type": "string",
+            "pattern": "^LEDGER-\\d{4}$"
+          },
+          "target_logical_adr": {
+            "$ref": "types.schema.json#/definitions/adr_id_logical"
+          },
+          "decision_count": {
+            "type": "integer",
+            "minimum": 0
+          }
+        }
+      },
+      "description": "Decision ledgers summary"
+    },
+
     "statistics": {
       "type": "object",
       "required": ["total_adrs", "logical_adrs", "physical_adrs"],
@@ -235,6 +306,18 @@
           "minimum": 0
         },
         "blocking_gaps": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "total_entities": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "total_requirements_snapshots": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "total_decision_ledgers": {
           "type": "integer",
           "minimum": 0
         }

@@ -13,7 +13,10 @@ from ..models import (
     LogicalADR,
     Manifest,
     ManifestADREntry,
+    ManifestEntity,
     ManifestInvariant,
+    ManifestRequirementsSnapshot,
+    ManifestDecisionLedger,
     ManifestStatistics,
     PhysicalADR,
 )
@@ -60,6 +63,10 @@ class ManifestGenerator:
         # Discover all ADR files
         logical_files = list((adr_dir / "logical").glob("*.yaml")) if (adr_dir / "logical").exists() else []
         physical_files = list((adr_dir / "physical").glob("*.yaml")) if (adr_dir / "physical").exists() else []
+        
+        # Discover requirements snapshots and decision ledgers
+        req_snapshot_files = list((adr_dir / "requirements" / "snapshots").glob("*.yaml")) if (adr_dir / "requirements" / "snapshots").exists() else []
+        decision_ledger_files = list((adr_dir / "decisions" / "ledgers").glob("*.yaml")) if (adr_dir / "decisions" / "ledgers").exists() else []
         
         # Parse all ADRs
         logical_adrs: List[LogicalADR] = []
@@ -149,6 +156,152 @@ class ManifestGenerator:
                 )
                 manifest_invariants.append(manifest_inv)
         
+        # Extract all entities from ADRs
+        manifest_entities: List[ManifestEntity] = []
+        entity_map: Dict[str, ManifestEntity] = {}
+        
+        # Extract from Logical ADRs (capabilities, boundaries, contracts, etc.)
+        for adr in logical_adrs:
+            for cap in adr.capabilities:
+                if cap.id not in entity_map:
+                    entity_map[cap.id] = ManifestEntity(
+                        entity_id=cap.id,
+                        entity_type="capability",
+                        name=cap.name,
+                        introduced_by=adr.id,
+                        lifecycle_stage=adr.status.value if hasattr(adr.status, 'value') else str(adr.status),
+                    )
+            
+            for bound in adr.architectural_boundaries:
+                if bound.id not in entity_map:
+                    entity_map[bound.id] = ManifestEntity(
+                        entity_id=bound.id,
+                        entity_type="boundary",
+                        name=bound.name,
+                        introduced_by=adr.id,
+                        lifecycle_stage=adr.status.value if hasattr(adr.status, 'value') else str(adr.status),
+                    )
+            
+            for contract in adr.interaction_contracts:
+                if contract.id not in entity_map:
+                    entity_map[contract.id] = ManifestEntity(
+                        entity_id=contract.id,
+                        entity_type="contract",
+                        name=contract.participants[0] if contract.participants else "Unknown",
+                        introduced_by=adr.id,
+                        lifecycle_stage=adr.status.value if hasattr(adr.status, 'value') else str(adr.status),
+                    )
+            
+            for const in adr.constraints:
+                if const.id not in entity_map:
+                    entity_map[const.id] = ManifestEntity(
+                        entity_id=const.id,
+                        entity_type="constraint",
+                        name=const.type,
+                        introduced_by=adr.id,
+                        lifecycle_stage=adr.status.value if hasattr(adr.status, 'value') else str(adr.status),
+                    )
+            
+            for nfr in adr.non_functional_requirements:
+                if nfr.id not in entity_map:
+                    entity_map[nfr.id] = ManifestEntity(
+                        entity_id=nfr.id,
+                        entity_type="nfr",
+                        name=nfr.category,
+                        introduced_by=adr.id,
+                        lifecycle_stage=adr.status.value if hasattr(adr.status, 'value') else str(adr.status),
+                    )
+            
+            for dec in adr.decisions:
+                if dec.id not in entity_map:
+                    entity_map[dec.id] = ManifestEntity(
+                        entity_id=dec.id,
+                        entity_type="decision",
+                        name=dec.summary,
+                        introduced_by=adr.id,
+                        lifecycle_stage=adr.status.value if hasattr(adr.status, 'value') else str(adr.status),
+                    )
+            
+            for gap in adr.gaps:
+                if gap.id not in entity_map:
+                    entity_map[gap.id] = ManifestEntity(
+                        entity_id=gap.id,
+                        entity_type="gap",
+                        name=gap.question[:50],
+                        introduced_by=adr.id,
+                        lifecycle_stage=adr.status.value if hasattr(adr.status, 'value') else str(adr.status),
+                    )
+        
+        # Extract from Physical ADRs (components, interfaces, integrations, impl decisions)
+        for adr in physical_adrs:
+            for comp in adr.component_specifications:
+                if comp.id not in entity_map:
+                    entity_map[comp.id] = ManifestEntity(
+                        entity_id=comp.id,
+                        entity_type="component",
+                        name=comp.name,
+                        introduced_by=adr.id,
+                        lifecycle_stage=adr.status.value if hasattr(adr.status, 'value') else str(adr.status),
+                    )
+                
+                for iface in comp.interfaces:
+                    if iface.id not in entity_map:
+                        entity_map[iface.id] = ManifestEntity(
+                            entity_id=iface.id,
+                            entity_type="interface",
+                            name=f"{comp.name} {iface.type}",
+                            introduced_by=adr.id,
+                            lifecycle_stage=adr.status.value if hasattr(adr.status, 'value') else str(adr.status),
+                        )
+            
+            for integ in adr.integration_points:
+                if integ.id not in entity_map:
+                    entity_map[integ.id] = ManifestEntity(
+                        entity_id=integ.id,
+                        entity_type="integration",
+                        name=" → ".join(integ.systems),
+                        introduced_by=adr.id,
+                        lifecycle_stage=adr.status.value if hasattr(adr.status, 'value') else str(adr.status),
+                    )
+            
+            for impl_dec in adr.implementation_decisions:
+                if impl_dec.id not in entity_map:
+                    entity_map[impl_dec.id] = ManifestEntity(
+                        entity_id=impl_dec.id,
+                        entity_type="implementation_decision",
+                        name=impl_dec.summary,
+                        introduced_by=adr.id,
+                        lifecycle_stage=adr.status.value if hasattr(adr.status, 'value') else str(adr.status),
+                    )
+        
+        manifest_entities = list(entity_map.values())
+        
+        # Parse requirements snapshots
+        manifest_req_snapshots: List[ManifestRequirementsSnapshot] = []
+        for file_path in req_snapshot_files:
+            try:
+                snapshot = self.parser.parse_requirements_snapshot(file_path)
+                manifest_req_snapshots.append(ManifestRequirementsSnapshot(
+                    snapshot_id=snapshot.snapshot_id,
+                    domains=snapshot.domains or [],
+                    capability_count=len(snapshot.required_capabilities or []),
+                ))
+            except Exception as e:
+                print(f"Warning: Failed to parse requirements snapshot {file_path}: {e}")
+        
+        # Parse decision ledgers
+        manifest_decision_ledgers: List[ManifestDecisionLedger] = []
+        for file_path in decision_ledger_files:
+            try:
+                ledger = self.parser.parse_decision_ledger(file_path)
+                manifest_decision_ledgers.append(ManifestDecisionLedger(
+                    ledger_id=ledger.ledger_id,
+                    target_logical_adr=ledger.target_logical_adr,
+                    decision_count=len(ledger.required_decisions),
+                ))
+            except Exception as e:
+                print(f"Warning: Failed to parse decision ledger {file_path}: {e}")
+        
         # Build gaps summary
         gaps_by_adr: Dict[str, GapSummaryByADR] = {}
         total_gaps = 0
@@ -180,6 +333,9 @@ class ManifestGenerator:
             total_components=sum(len(adr.component_specifications) for adr in physical_adrs),
             total_gaps=total_gaps,
             blocking_gaps=total_blocking,
+            total_entities=len(manifest_entities),
+            total_requirements_snapshots=len(manifest_req_snapshots),
+            total_decision_ledgers=len(manifest_decision_ledgers),
         )
         
         # Create manifest with scope metadata (ADR-L-0007: CAP-0002)
@@ -194,6 +350,9 @@ class ManifestGenerator:
             by_technology=by_technology,
             logical_to_physical_map=logical_to_physical,
             invariants=manifest_invariants,
+            entities=manifest_entities,
+            requirements_snapshots=manifest_req_snapshots,
+            decision_ledgers=manifest_decision_ledgers,
             gaps_summary=gaps_summary,
             statistics=statistics,
         )

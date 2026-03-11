@@ -627,17 +627,45 @@ core_concepts:
       total_time: "1 day (vs 1-2 weeks manual)"
     
     security_model:
-      layer_1: "Cryptographic signatures (authenticity, integrity)"
-      layer_2: "Content validation (static analysis, malware scanning)"
+      critical_distinction: |
+        **Signatures are AUTHENTICATION, not AUTHORIZATION.**
+        
+        - Authentication: "This came from StackHawk" (signatures prove this)
+        - Authorization: "This is a good idea" (reasoning proves this)
+        
+        Signatures get you in the door. They don't guarantee approval.
+      
+      layer_1: "Cryptographic signatures (authentication: who sent this?)"
+      layer_2: "Content validation (authorization: is this correct/safe/compliant?)"
       layer_3: "Behavioral validation (sandbox testing, monitoring)"
       layer_4: "Trust management (reputation, track record)"
       layer_5: "Deployment validation (canary, gradual rollout)"
       layer_6: "Human oversight (risk-based review, audits)"
       
+      example_rejection_despite_valid_signatures:
+        scenario: "StackHawk submits proposal with valid signatures"
+        proposal: "Set JWT token expiry to 5 seconds"
+        signatures: "Valid ✅ (authenticated)"
+        reasoning: "REJECTS ❌ (5 seconds breaks UX, violates policy)"
+        result: "Valid signatures, rejected proposal"
+        
+        workflow: |
+          1. Verify signatures → PASS (authenticated)
+          2. Evaluate reasoning → FAIL (incorrect change)
+          3. Result: REJECTED
+          4. Notification: "Proposal rejected: Token expiry too short"
+      
       supply_chain_protection: |
         Even if provider key is compromised, attack must bypass all 6 layers.
-        Section signatures prevent tampering but not key compromise.
-        Defense in depth is essential.
+        
+        Signatures prevent tampering but not:
+        - Bad reasoning (incorrect proposals)
+        - Key compromise (attacker signs malicious code)
+        - Malicious providers (trusted provider goes rogue)
+        
+        Defense in depth is essential. Both gates must pass:
+        - Gate 1: Authentication (valid signatures)
+        - Gate 2: Authorization (correct reasoning)
     
     code_example: |
       # Provider proposal structure

@@ -132,10 +132,33 @@ capability:
           mechanisms: ["Section signatures", "Master signature", "Key management"]
           protects_against: ["Tampering", "Impersonation (if key secure)", "Replay"]
         
-        - layer: "Layer 2: Content Validation"
-          mechanisms: ["Static analysis", "Malware scanning", "Policy compliance check"]
-          protects_against: ["Malicious code", "Policy violations", "Known vulnerabilities"]
-          tools: ["Snyk", "Semgrep", "CodeQL", "Custom policy validators"]
+        - layer: "Layer 2: Content Validation (Reasoning)"
+          mechanisms: ["Static analysis", "Malware scanning", "Policy compliance check", "Correctness validation"]
+          protects_against: ["Malicious code", "Policy violations", "Known vulnerabilities", "Incorrect proposals"]
+          tools: ["Snyk", "Semgrep", "CodeQL", "Custom policy validators", "AI reasoning agents"]
+          
+          reasoning_checks:
+            - check: "Correctness"
+              question: "Is this change technically correct?"
+              example: "Token expiry 5 seconds → REJECT (too short)"
+            
+            - check: "Safety"
+              question: "Is this change safe to deploy?"
+              example: "Breaking API change → REJECT (requires migration)"
+            
+            - check: "Compliance"
+              question: "Does this comply with policies?"
+              example: "Violates UX policy → REJECT"
+            
+            - check: "Completeness"
+              question: "Is the proposal complete?"
+              example: "Missing rollback plan → REJECT"
+          
+          critical_insight: |
+            Signatures prove "this came from StackHawk."
+            Reasoning proves "this is a good idea."
+            
+            Valid signatures + bad reasoning = REJECTED PROPOSAL
         
         - layer: "Layer 3: Behavioral Validation"
           mechanisms: ["Sandbox testing", "Network monitoring", "File system monitoring"]
@@ -449,11 +472,93 @@ risks:
     mitigation: "Nonce tracking, short expiry windows (24 hours), monitoring for duplicate submissions"
 
 notes: |
+  ## Critical Distinction: Authentication vs Authorization
+  
+  **Signatures are AUTHENTICATION, not AUTHORIZATION.**
+  
+  - **Authentication**: "This proposal came from StackHawk" (signatures prove this)
+  - **Authorization**: "This proposal is good and should be accepted" (reasoning proves this)
+  
+  **Signatures get you in the door. They don't guarantee approval.**
+  
+  ### What Signatures DO
+  
+  ✅ Prove authenticity (this came from claimed provider)
+  ✅ Prove integrity (content hasn't been tampered with)
+  ✅ Prove non-repudiation (provider can't deny sending it)
+  ✅ Prove freshness (not a replay of old proposal)
+  
+  ### What Signatures DON'T DO
+  
+  ❌ Prove proposal is correct
+  ❌ Prove proposal is safe
+  ❌ Prove proposal is compliant
+  ❌ Prove proposal should be accepted
+  
+  **Example: Valid signature, bad proposal**
+  
+  StackHawk submits proposal with valid signatures:
+  - Analysis: "JWT token expiry should be 15 minutes"
+  - Change: Set token expiry to 5 seconds (WRONG!)
+  - Signatures: Valid ✅
+  - Reasoning: REJECTS (5 seconds breaks UX)
+  
+  **The reasoning layer evaluates:**
+  - Is this change correct? (5 seconds is too short)
+  - Is this change safe? (breaks user experience)
+  - Is this change compliant? (violates UX policy)
+  - Should we accept? NO
+  
+  **Result: Valid signatures, rejected proposal.**
+  
+  ### Workflow: Signature Verification → Reasoning Evaluation
+  
+  ```
+  1. Proposal arrives
+     ↓
+  2. Verify signatures (Layer 1: Authentication)
+     - Section signatures valid? ✅
+     - Master signature valid? ✅
+     - Provider identity verified? ✅
+     - Timestamp fresh? ✅
+     → AUTHENTICATED (proposal is from StackHawk)
+     ↓
+  3. Evaluate reasoning (Layer 2: Authorization)
+     - Is change correct? ❌ (5 seconds too short)
+     - Is change safe? ❌ (breaks UX)
+     - Is change compliant? ❌ (violates policy)
+     → REJECTED (proposal is bad)
+     ↓
+  4. Result: "Valid signatures, rejected proposal"
+     - Notification to StackHawk: "Proposal rejected: Token expiry too short"
+     - Audit log: "Authenticated but rejected (reasoning failure)"
+  ```
+  
+  **Key insight**: Signatures are the first gate, not the only gate.
+  
+  ### Another Example: Invalid Signatures
+  
+  ```
+  1. Proposal arrives
+     ↓
+  2. Verify signatures (Layer 1: Authentication)
+     - Section signatures valid? ❌ (signature mismatch)
+     → REJECTED (not authenticated, possible tampering)
+     ↓
+  3. Reasoning evaluation: SKIPPED (failed authentication)
+     ↓
+  4. Result: "Invalid signatures, rejected proposal"
+     - Notification to provider: "Signature verification failed"
+     - Security alert: "Possible tampering detected"
+  ```
+  
+  **Both gates must pass: Authentication AND Authorization.**
+  
   ## Supply Chain Attack Protection
   
   **Question**: Do section signatures stop supply chain attacks?
   
-  **Answer**: Partially. They prevent tampering but not key compromise.
+  **Answer**: No. They prevent tampering but not bad reasoning or key compromise.
   
   **Attack Scenario: Compromised Provider**
   

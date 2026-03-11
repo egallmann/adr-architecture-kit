@@ -142,12 +142,42 @@ Vision ADRs are successful when:
 - Can be promoted to ADR-L when implemented
 - AI can reason over vision to guide development
 
+## What This Really Is
+
+**Not**: A documentation system  
+**Not**: An architecture DSL  
+**Not**: A schema validator  
+
+**Actually**: **A conversation compiler**
+
+We're building a compiler that transforms human conversation into executable
+architecture specifications.
+
+```
+Input:  Human conversation (natural language)
+        ↓ Lexical analysis (extract intent)
+        ↓ Parsing (structure decisions)
+        ↓ Semantic analysis (detect gaps)
+        ↓ Optimization (infer details)
+        ↓ Code generation (generate ADRs)
+Output: Executable architecture (structured, validated, implementable)
+```
+
+Just like a C compiler transforms C code into machine code, the conversation
+compiler transforms architectural dialogue into structured ADRs.
+
+The "source code" is conversation. The "executable" is ADRs. The "runtime"
+is AI code generation.
+
+**We're compiling conversations into systems.**
+
 ## Meta-Insight
 
 **This README itself demonstrates conversational architecture**:
 - Human asked: "Do these need to be absorbed or are these superior?"
 - AI analyzed: "We have ID conflicts and conceptual overlap"
 - Human clarified: "Use ADR-V category, promotable, interviewable"
-- AI implemented: Renamed ADRs, added metadata, created this README
+- Human refined: "We're building a conversation compiler"
+- AI implemented: Renamed ADRs, added metadata, updated framing
 
 The vision is being refined through conversation, just as the vision describes.

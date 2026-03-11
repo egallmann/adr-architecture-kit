@@ -27,10 +27,50 @@ context: |
 capability:
   name: "Conversational Architecture"
   description: |
-    A system where humans express architectural intent through natural conversation,
-    and AI agents automatically generate complete, structured ADRs.
+    A conversation compiler that transforms human architectural intent into
+    executable, structured specifications.
+    
+    Input: Natural language conversation
+    Output: Complete, validated, implementable ADRs
     
     Paradigm shift: Machine-readable, machine-written, human-designed
+  
+  compilation_pipeline:
+    - stage: "Lexical Analysis"
+      agent: "Architecture Agent"
+      input: "Human conversation"
+      process: "Extract architectural intent, entities, decisions, constraints"
+      output: "Intent tokens (capabilities, components, requirements)"
+    
+    - stage: "Parsing"
+      agent: "Architecture Agent"
+      input: "Intent tokens"
+      process: "Structure into ADR template, organize by type (Logical, System, Component)"
+      output: "Draft ADR (incomplete)"
+    
+    - stage: "Semantic Analysis"
+      agent: "Architecture Agent + Watchdog Agent"
+      input: "Draft ADR"
+      process: "Detect gaps, validate completeness, check consistency"
+      output: "Gap list (missing information)"
+    
+    - stage: "Optimization"
+      agent: "Watchdog Agent"
+      input: "Draft ADR + Gap list"
+      process: "Infer missing details from context, activate rules, auto-populate fields"
+      output: "Optimized ADR (gaps filled)"
+    
+    - stage: "Code Generation"
+      agent: "Watchdog Agent"
+      input: "Optimized ADR"
+      process: "Generate final YAML, validate schema, add metadata"
+      output: "Complete ADR (executable specification)"
+    
+    - stage: "Validation"
+      agent: "Validation Agent (Foundation Model)"
+      input: "Complete ADR"
+      process: "Deep validation (logical consistency, feasibility, completeness)"
+      output: "Validated ADR (ready for implementation)"
   
   key_features:
     - name: "Natural Language Input"
@@ -258,3 +298,29 @@ notes: |
   
   This conversation (creating this ADR) demonstrates the system we're building.
   We're dogfooding conversational architecture by encoding this conversation into ADRs.
+  
+  ## What This Really Is
+  
+  **Not**: A documentation system
+  **Not**: An architecture DSL
+  **Not**: A schema validator
+  
+  **Actually**: A conversation compiler
+  
+  We're building a compiler that transforms human conversation into executable
+  architecture specifications. Just like a C compiler transforms C code into
+  machine code, the conversation compiler transforms architectural dialogue
+  into structured ADRs.
+  
+  Compilation stages:
+  1. Lexical analysis (extract intent from conversation)
+  2. Parsing (structure into ADR template)
+  3. Semantic analysis (detect gaps, validate completeness)
+  4. Optimization (infer missing details, apply rules)
+  5. Code generation (generate YAML ADRs)
+  6. Validation (deep consistency checking)
+  
+  The "source code" is conversation. The "executable" is ADRs. The "runtime"
+  is AI code generation.
+  
+  **We're compiling conversations into systems.**

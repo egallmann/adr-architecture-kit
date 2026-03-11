@@ -1378,8 +1378,16 @@ vision_adrs_summary:
   adr_v_0013_legacy_import_agent:
     tagline: "Fast path to ecosystem adoption through trust-first validation"
     key_insight: "Auto-accept safe code (90%), validate risky code (10%)"
-    metric: "2 hours to onboard (vs 40 hours manual) - 95% reduction"
+    metric: "2 hours to onboard (vs 40 hours manual) - 95% reduction (estimated)"
     ecosystem_impact: "Removes adoption barrier, accelerates network effects"
+  
+  adr_v_0014_decorator_inference_agent:
+    tagline: "Self-healing graph through confident targeted reasoning"
+    key_insight: "Graph detects incomplete edges, infers relationships, generates fixes autonomously"
+    metric: "43 functions decorated + 1 new ADR in 2 hours (estimated)"
+    graph_healing: "Completes missing ADR-to-code edges, enables validation/compliance/review"
+    migration_detection: "Identifies different-stack implementations (Python → Rust)"
+    low_risk: "Decorators are pure metadata (non-breaking changes)"
 
 sample_narratives:
   narrative_1_introduction:
@@ -1506,6 +1514,106 @@ repository_information:
     training_data: ".adr-kit/training/*.yaml"
     documentation: "docs/*.md"
 
+article_topics:
+  beginner:
+    - topic: "Why architecture documentation fails"
+      angle: "Problem-focused introduction"
+      key_points:
+        - "Humans write YAML manually (2-4 hours per ADR)"
+        - "Documentation drifts from reality"
+        - "Developers hate documentation"
+      hook: "Architecture documentation is broken. Here's why."
+    
+    - topic: "What is a conversation compiler?"
+      angle: "Paradigm introduction"
+      key_points:
+        - "Input: Natural language conversation"
+        - "Output: Complete, validated, executable ADRs"
+        - "Paradigm shift: Machine-written, human-designed"
+      hook: "What if you could describe your system in conversation and have it compiled into perfect architecture specs?"
+  
+  intermediate:
+    - topic: "Three-level ADR architecture explained"
+      angle: "Technical deep dive"
+      key_points:
+        - "Logical (what) → Physical-System (boundary) → Physical-Component (how)"
+        - "Separation of concerns enables composability"
+        - "Physical-Component ADRs are executable specifications"
+      hook: "How do you capture architecture at the right level of abstraction?"
+    
+    - topic: "Composable architecture with interface preservation"
+      angle: "Migration strategy"
+      key_points:
+        - "Swap implementations without system rewrites"
+        - "Incremental migration reduces risk (theoretical - needs validation)"
+        - "Component-by-component approach (4 weeks per component - estimated)"
+      hook: "Technology migrations don't have to be risky big-bang rewrites."
+      caveat: "Migration time estimates are theoretical. Actual results will vary based on system complexity."
+    
+    - topic: "Self-healing semantic graphs"
+      angle: "Autonomous systems"
+      key_points:
+        - "Graph detects its own incompleteness"
+        - "AI infers missing edges through confident targeted reasoning"
+        - "Decorators are explicit, extractable graph edges"
+      hook: "What if your architecture graph could heal itself?"
+  
+  advanced:
+    - topic: "Semantic graphs for AI context assembly"
+      angle: "Technical architecture"
+      key_points:
+        - "Bi-directional boundary tree convergence"
+        - "Subgraph assembly vs point queries (100x faster)"
+        - "STE semantic graph as purpose-built graph database"
+      hook: "How do you give AI the right context without overwhelming it?"
+    
+    - topic: "Agent tier systems and cost optimization"
+      angle: "Economics and efficiency"
+      key_points:
+        - "Tier 1 (rule-based): $0, 10-50ms, 100% accuracy (for deterministic tasks)"
+        - "Tier 2 (local LLM): ~$0, 1-2s, 80-90% accuracy (estimated)"
+        - "Tier 3 (foundation): $$$$, 5-10s, 95%+ accuracy (vendor claims)"
+        - "Cost reduction through intelligent delegation (theoretical model)"
+      hook: "Foundation models are expensive. Here's a strategy to use them selectively."
+      caveat: "Cost savings are theoretical. Actual results depend on task distribution and accuracy requirements."
+    
+    - topic: "Defense in depth for supply chain security"
+      angle: "Security architecture"
+      key_points:
+        - "Signatures are authentication, not authorization"
+        - "6 layers of protection (cryptographic, content, behavioral, trust, deployment, human)"
+        - "Even compromised keys can't bypass all layers"
+      hook: "Cryptographic signatures aren't enough. Here's why you need 6 layers of security."
+  
+  ecosystem:
+    - topic: "Provider marketplaces for architecture automation"
+      angle: "Business model and ecosystem"
+      key_points:
+        - "Standardized proposal format (ADR-compliant)"
+        - "StackHawk submits security fixes, Mabl submits test improvements"
+        - "1 day review time (vs 1-2 weeks manual)"
+      hook: "What if security vendors could submit fixes directly to your architecture?"
+    
+    - topic: "Legacy import agents and adoption flywheels"
+      angle: "Adoption strategy"
+      key_points:
+        - "Automated onboarding reduces manual effort (time savings estimated, not validated)"
+        - "Trust-first validation strategy (concept, not tested)"
+        - "Fast onboarding → More adoptions → More value (theoretical flywheel)"
+      hook: "The biggest barrier to adoption is onboarding existing systems. Here's a proposed approach."
+      caveat: "Onboarding time estimates are theoretical. Actual time depends on codebase size and complexity."
+    
+    - topic: "Decorator inference and graph healing"
+      angle: "Autonomous architecture evolution"
+      key_points:
+        - "Self-healing graph through confident targeted reasoning"
+        - "AI infers ADR-to-code relationships (>95% accuracy for high-confidence)"
+        - "Generates PRs: decorators, ADR amendments, new ADRs"
+        - "Detects migrations (different stack, same interface)"
+        - "Low-risk PRs (decorators are pure metadata, non-breaking)"
+      hook: "What if your architecture graph could heal itself?"
+      caveat: "Inference accuracy and time estimates are theoretical. Actual results depend on codebase complexity and ADR completeness."
+
 notes_for_ai_writers: |
   When writing about this project:
   
@@ -1513,7 +1621,12 @@ notes_for_ai_writers: |
   
   2. **Emphasize paradigm shift**: Machine-written (AI generates YAML), not human-written
   
-  3. **Use quantifiable metrics**: 90% cost reduction, 10x faster, 95% less risk
+  3. **Be honest about claims**: 
+     - Mark theoretical claims as "estimated", "theoretical", or "proposed"
+     - Add caveats when making performance/time/cost claims
+     - Only cite specific numbers if backed by test data
+     - Use qualifiers: "could reduce", "aims to", "designed to" (not "reduces", "is", "does")
+     - Example: "Could reduce cost by 90% (theoretical)" not "Reduces cost by 90%"
   
   4. **Show concrete examples**: Code snippets, conversation examples, before/after
   
@@ -1529,7 +1642,15 @@ notes_for_ai_writers: |
   
   10. **Emphasize composability**: Technology migration without rewrites
   
-  This is not incremental improvement. This is a new way of building systems.
+  11. **Pick appropriate topic**: Use article_topics section to match audience level
+  
+  12. **Distinguish vision from reality**:
+      - ADR-V (Vision ADRs): Proposed capabilities, not yet implemented
+      - ADR-L (Logical ADRs): Foundational principles, implemented
+      - Be clear about what exists vs what's planned
+      - Use "proposes", "envisions", "could enable" for vision content
+  
+  This is not incremental improvement. This is a proposed new way of building systems.
   
   The conversation IS the source code. The ADRs are the compiled output.
   The AI-generated code is the executable.

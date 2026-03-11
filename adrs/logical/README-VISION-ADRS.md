@@ -19,7 +19,7 @@
 - Status: `accepted` or `implemented`
 - Examples: STE compliance, multi-scope architecture, testing strategy
 
-**Vision ADRs** (`ADR-V-0001` through `ADR-V-0013`):
+**Vision ADRs** (`ADR-V-0001` through `ADR-V-0014`):
 - Document the **future system** (what should exist)
 - Status: `proposed` (vision, not yet built)
 - Examples: Conversational architecture, agent tier system, meta-optimization
@@ -94,13 +94,14 @@ notes: "Vision realized, promoted to ADR-L-0014"
 - **ADR-V-0011**: Self-Evolving Infrastructure
 - **ADR-V-0012**: Code Decorators (Intent Primitive)
 - **ADR-V-0013**: Legacy Import Agent (Trust-First Validation)
+- **ADR-V-0014**: Decorator Inference Agent (Self-Healing Graph)
 
 ## How AI Should Use Vision ADRs
 
 ### For Understanding Vision
 ```
 AI: "What's the long-term vision for this system?"
-→ Read ADR-V-0001 through ADR-V-0013
+→ Read ADR-V-0001 through ADR-V-0014
 → Understand complete meta-system architecture
 ```
 

@@ -1,0 +1,102 @@
+schema_version: "1.0"
+adr_type: physical-system
+id: ADR-PS-0001
+title: "User Service System Architecture"
+status: accepted
+created_date: "2026-03-10"
+authors: ["test.author"]
+
+domains: ["user-management"]
+tags: ["microservice", "rest-api"]
+
+implements_logical: ["ADR-L-0001"]
+technologies: ["nodejs", "postgresql", "redis"]
+
+context: |
+  Microservice architecture for user management with REST API,
+  PostgreSQL database, and Redis caching layer.
+
+technology_stack:
+  - category: language
+    name: "Node.js"
+    version: "20.x"
+    rationale: "Excellent REST framework ecosystem and wide adoption"
+
+system_boundaries:
+  - id: SYSBOUND-0001
+    name: "User Service Boundary"
+    description: |
+      Encapsulates all user management functionality including
+      authentication, authorization, and user data management.
+    external_dependencies:
+      - "Authentication Provider"
+      - "Email Service"
+    exposed_interfaces:
+      - "REST API"
+      - "User Events"
+
+component_topology:
+  components:
+    - name: "User API"
+      type: service
+      purpose: "REST API for user operations"
+      implements_adr: "ADR-PC-0001"
+    - name: "User Database"
+      type: database
+      purpose: "Persistent user data storage"
+    - name: "User Cache"
+      type: cache
+      purpose: "Session and frequently accessed data caching"
+  relationships:
+    - from: "User API"
+      to: "User Database"
+      type: reads_from
+      protocol: "PostgreSQL"
+    - from: "User API"
+      to: "User Cache"
+      type: reads_from
+      protocol: "Redis"
+
+integration_patterns:
+  - pattern_name: "API Gateway Pattern"
+    application: |
+      User API sits behind API gateway for authentication,
+      rate limiting, and request routing.
+    components_affected: ["User API"]
+
+data_flows:
+  - id: FLOW-0001
+    name: "User Authentication Flow"
+    description: "User login and JWT token generation"
+    path: ["API Gateway", "User API", "User Database", "User Cache"]
+    data_type: "Authentication Request"
+    latency_requirements: "p95 < 200ms"
+
+deployment_model:
+  hosting: cloud
+  orchestration: "Kubernetes"
+  scaling_strategy: |
+    Horizontal scaling of User API pods based on CPU and request rate.
+    Database uses read replicas for scaling reads.
+
+scalability_strategy:
+  horizontal_scaling: "User API scales to 10+ pods under load"
+  bottlenecks:
+    - "Database write throughput"
+    - "Cache memory capacity"
+
+failure_modes:
+  - scenario: "Database connection failure"
+    impact: high
+    mitigation: |
+      Circuit breaker pattern with fallback to cached data.
+      Automatic retry with exponential backoff.
+    detection: "Health check failures and error rate spike"
+    recovery: "Automatic reconnection on database recovery"
+
+operational_requirements:
+  monitoring: "Prometheus metrics, Grafana dashboards"
+  logging: "Structured JSON logs to ELK stack"
+  security: "TLS for all connections, JWT authentication"
+
+gaps: []

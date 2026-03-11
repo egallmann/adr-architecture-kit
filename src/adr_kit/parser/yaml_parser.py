@@ -15,6 +15,8 @@ from ..models import (
     LogicalADR,
     Manifest,
     PhysicalADR,
+    PhysicalSystemADR,
+    PhysicalComponentADR,
     ProjectMetadata,
     RequirementsSnapshot,
     StandaloneInvariant,
@@ -59,6 +61,9 @@ class ADRParser:
             "common": "adr-common.schema.json",
             "logical": "adr-logical.schema.json",
             "physical": "adr-physical.schema.json",
+            "physical_base": "adr-physical-base.schema.json",
+            "physical_system": "adr-physical-system.schema.json",
+            "physical_component": "adr-physical-component.schema.json",
             "invariant": "invariant.schema.json",
             "project": "project-metadata.schema.json",
             "manifest": "manifest.schema.json",
@@ -200,6 +205,56 @@ class ADRParser:
         except ValidationError as e:
             raise ADRParseError(f"Pydantic validation failed: {e}") from e
     
+    def parse_physical_system_adr(self, file_path: Union[str, Path]) -> PhysicalSystemADR:
+        """Parse and validate physical-system ADR.
+        
+        Args:
+            file_path: Path to physical-system ADR YAML file
+            
+        Returns:
+            Validated PhysicalSystemADR model
+            
+        Raises:
+            ADRParseError: If parsing fails
+            ADRSchemaValidationError: If schema validation fails
+            ValidationError: If Pydantic validation fails
+        """
+        data = self.parse_yaml(file_path)
+        
+        # Validate against JSON Schema
+        self.validate_against_schema(data, "physical_system")
+        
+        # Parse into Pydantic model
+        try:
+            return PhysicalSystemADR(**data)
+        except ValidationError as e:
+            raise ADRParseError(f"Pydantic validation failed: {e}") from e
+    
+    def parse_physical_component_adr(self, file_path: Union[str, Path]) -> PhysicalComponentADR:
+        """Parse and validate physical-component ADR.
+        
+        Args:
+            file_path: Path to physical-component ADR YAML file
+            
+        Returns:
+            Validated PhysicalComponentADR model
+            
+        Raises:
+            ADRParseError: If parsing fails
+            ADRSchemaValidationError: If schema validation fails
+            ValidationError: If Pydantic validation fails
+        """
+        data = self.parse_yaml(file_path)
+        
+        # Validate against JSON Schema
+        self.validate_against_schema(data, "physical_component")
+        
+        # Parse into Pydantic model
+        try:
+            return PhysicalComponentADR(**data)
+        except ValidationError as e:
+            raise ADRParseError(f"Pydantic validation failed: {e}") from e
+    
     def parse_invariant(self, file_path: Union[str, Path]) -> StandaloneInvariant:
         """Parse and validate standalone invariant.
         
@@ -275,14 +330,14 @@ class ADRParser:
         except ValidationError as e:
             raise ADRParseError(f"Pydantic validation failed: {e}") from e
     
-    def parse_adr(self, file_path: Union[str, Path]) -> Union[LogicalADR, PhysicalADR]:
+    def parse_adr(self, file_path: Union[str, Path]) -> Union[LogicalADR, PhysicalADR, PhysicalSystemADR, PhysicalComponentADR]:
         """Parse ADR (auto-detect type).
         
         Args:
             file_path: Path to ADR YAML file
             
         Returns:
-            Validated LogicalADR or PhysicalADR model
+            Validated LogicalADR, PhysicalADR, PhysicalSystemADR, or PhysicalComponentADR model
             
         Raises:
             ADRParseError: If parsing fails or type unknown
@@ -295,6 +350,10 @@ class ADRParser:
             return self.parse_logical_adr(file_path)
         elif adr_type == 'physical':
             return self.parse_physical_adr(file_path)
+        elif adr_type == 'physical-system':
+            return self.parse_physical_system_adr(file_path)
+        elif adr_type == 'physical-component':
+            return self.parse_physical_component_adr(file_path)
         elif adr_type == 'decision':
             raise ADRParseError("Decision ADRs not yet implemented")
         else:

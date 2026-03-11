@@ -66,6 +66,10 @@ def generate_manifest(scope: Optional[Path], recursive: bool, output: Optional[P
             click.echo(f"  ADRs: {manifest.statistics.total_adrs}")
             click.echo(f"  Logical: {manifest.statistics.logical_adrs}")
             click.echo(f"  Physical: {manifest.statistics.physical_adrs}")
+            if manifest.statistics.physical_system_adrs > 0:
+                click.echo(f"  Physical-System: {manifest.statistics.physical_system_adrs}")
+            if manifest.statistics.physical_component_adrs > 0:
+                click.echo(f"  Physical-Component: {manifest.statistics.physical_component_adrs}")
             
     except Exception as e:
         click.echo(f"Error: {e}", err=True)

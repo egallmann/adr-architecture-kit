@@ -1,0 +1,427 @@
+id: ADR-V-0009
+adr_type: logical
+vision_category: true
+promotable_to_logical: true
+title: "Proposal Security System"
+status: proposed
+created_date: 2024-03-10
+tags:
+  - security
+  - cryptography
+  - signatures
+  - trust
+
+context: |
+  Provider proposals contain code changes that will be deployed to production.
+  
+  Security threats:
+  - Tampering: Attacker modifies proposal after provider signs
+  - Impersonation: Attacker pretends to be trusted provider
+  - Replay: Attacker resubmits old proposal
+  - Man-in-the-middle: Attacker intercepts and modifies proposal
+  
+  Requirements:
+  - Authenticity: Verify proposal is from claimed provider
+  - Integrity: Detect any tampering with proposal content
+  - Non-repudiation: Provider cannot deny submitting proposal
+  - Freshness: Prevent replay of old proposals
+  
+  Solution: Cryptographic signatures using public key infrastructure.
+
+capability:
+  name: "Proposal Security System"
+  description: |
+    A cryptographic security system that ensures provider proposals are
+    authentic, untampered, non-repudiable, and fresh using digital signatures.
+  
+  security_mechanisms:
+    - mechanism: "Public Key Infrastructure (PKI)"
+      description: "Each provider has public/private key pair"
+      components:
+        - "Private key (provider keeps secret, signs proposals)"
+        - "Public key (published in registry, verifies signatures)"
+        - "Key rotation (periodic key updates)"
+      
+      key_management:
+        - "Provider generates key pair (RSA 4096 or Ed25519)"
+        - "Provider registers public key in registry"
+        - "Provider keeps private key secure (HSM recommended)"
+        - "Provider rotates keys annually (or if compromised)"
+    
+    - mechanism: "Section-Level Signatures"
+      description: "Each proposal section signed independently"
+      rationale: "Enables partial verification, isolates tampering"
+      
+      signed_sections:
+        - section: "metadata"
+          includes: ["proposal_id", "provider_id", "submission_date", "proposal_type"]
+          signature: "Sign(hash(metadata_content), private_key)"
+        
+        - section: "analysis"
+          includes: ["issue_description", "severity", "impact_analysis"]
+          signature: "Sign(hash(analysis_content), private_key)"
+        
+        - section: "adr_changes"
+          includes: ["adr_id", "changes", "rationale"]
+          signature: "Sign(hash(adr_changes_content), private_key)"
+        
+        - section: "code_changes"
+          includes: ["files", "changes", "tests"]
+          signature: "Sign(hash(code_changes_content), private_key)"
+        
+        - section: "migration_plan"
+          includes: ["rollout_strategy", "rollback_plan"]
+          signature: "Sign(hash(migration_plan_content), private_key)"
+    
+    - mechanism: "Master Signature"
+      description: "Signs all section hashes together"
+      rationale: "Prevents section reordering, ensures completeness"
+      
+      process:
+        - "Compute hash of each section"
+        - "Concatenate all section hashes"
+        - "Sign concatenated hashes with private key"
+        - "Include master signature in proposal"
+      
+      verification:
+        - "Recompute hash of each section"
+        - "Concatenate section hashes"
+        - "Verify master signature against concatenated hashes"
+        - "If valid: All sections authentic and complete"
+    
+    - mechanism: "Content Hashing"
+      description: "Detect tampering with section content"
+      algorithm: "SHA-256 (collision-resistant)"
+      
+      process:
+        - "Compute SHA-256 hash of section content"
+        - "Include hash in section metadata"
+        - "Sign hash with private key"
+      
+      verification:
+        - "Recompute SHA-256 hash of section content"
+        - "Compare with included hash"
+        - "If mismatch: Section tampered"
+    
+    - mechanism: "Timestamp Validation"
+      description: "Prevent replay attacks"
+      components:
+        - "Submission timestamp (when proposal created)"
+        - "Expiry timestamp (when proposal expires)"
+        - "Nonce (unique ID, prevents duplicate submission)"
+      
+      validation:
+        - "Check submission timestamp is recent (< 24 hours old)"
+        - "Check proposal not expired"
+        - "Check nonce not seen before (prevent replay)"
+    
+    - mechanism: "Code Hash Verification"
+      description: "Ensure proposal targets correct code version"
+      process:
+        - "Provider includes hash of target code version"
+        - "Organization verifies hash matches current code"
+        - "If mismatch: Proposal targets wrong version, reject"
+      
+      rationale: "Prevents applying outdated fixes to updated code"
+
+boundaries:
+  in_scope:
+    - "Cryptographic signatures (authenticity, integrity)"
+    - "Key management (registration, rotation)"
+    - "Signature verification (validate proposals)"
+    - "Replay prevention (timestamps, nonces)"
+  
+  out_of_scope:
+    - "Key generation (providers use standard tools)"
+    - "Key storage (providers use HSM/secure storage)"
+    - "Network security (TLS for transport)"
+
+contracts:
+  signature_schema:
+    description: "Structure of cryptographic signatures"
+    format: "JSON object"
+    
+    fields:
+      - name: "section_signatures"
+        type: "array"
+        items:
+          - "section_name"
+          - "content_hash (SHA-256)"
+          - "signature (RSA/Ed25519)"
+          - "algorithm (rsa-sha256, ed25519)"
+          - "timestamp"
+      
+      - name: "master_signature"
+        type: "object"
+        fields:
+          - "concatenated_hashes (all section hashes)"
+          - "signature (signs concatenated_hashes)"
+          - "algorithm"
+          - "timestamp"
+      
+      - name: "provider_key_id"
+        type: "string"
+        description: "ID of public key used (for key rotation)"
+      
+      - name: "nonce"
+        type: "string"
+        description: "Unique ID (prevents replay)"
+      
+      - name: "expiry"
+        type: "timestamp"
+        description: "When proposal expires"
+  
+  verification_interface:
+    description: "How signatures are verified"
+    inputs:
+      - name: "proposal"
+        format: "Provider proposal with signatures"
+      
+      - name: "provider_public_key"
+        format: "Public key from registry"
+    
+    outputs:
+      - name: "verification_result"
+        type: "object"
+        fields:
+          - "valid (boolean)"
+          - "provider_verified (boolean)"
+          - "integrity_verified (boolean)"
+          - "freshness_verified (boolean)"
+          - "errors (array of issues)"
+
+quality_attributes:
+  - attribute: "Security"
+    requirement: "Prevent tampering, impersonation, replay"
+    measurement: "Security incidents"
+    target: "0 incidents"
+  
+  - attribute: "Verification Speed"
+    requirement: "Fast signature verification"
+    measurement: "Time to verify proposal"
+    target: "< 1 second"
+  
+  - attribute: "Key Management"
+    requirement: "Secure key storage and rotation"
+    measurement: "Key compromise incidents"
+    target: "0 incidents"
+  
+  - attribute: "Usability"
+    requirement: "Easy for providers to implement"
+    measurement: "Provider adoption rate"
+    target: "> 90% of providers use signing"
+
+rationale: |
+  **Why cryptographic signatures?**
+  
+  Provider proposals contain code that will run in production.
+  
+  Without signatures:
+  - Attacker impersonates provider (submits malicious code)
+  - Attacker tampers with proposal (modifies code after signing)
+  - Attacker replays old proposal (resubmits fixed vulnerability)
+  
+  With signatures:
+  - Authenticity: Verify proposal is from claimed provider
+  - Integrity: Detect any tampering
+  - Non-repudiation: Provider cannot deny submission
+  - Freshness: Prevent replay attacks
+  
+  **Example attack scenarios:**
+  
+  Scenario 1: Impersonation
+  - Attacker: Submits proposal claiming to be "StackHawk"
+  - Without signatures: Organization accepts, deploys malicious code
+  - With signatures: Verification fails (attacker doesn't have StackHawk's private key)
+  
+  Scenario 2: Tampering
+  - Provider: Submits legitimate proposal
+  - Attacker: Intercepts, modifies code changes
+  - Without signatures: Organization deploys tampered code
+  - With signatures: Verification fails (content hash mismatch)
+  
+  Scenario 3: Replay
+  - Provider: Submits fix for vulnerability (6 months ago)
+  - Attacker: Resubmits same proposal (vulnerability now exploitable)
+  - Without signatures: Organization redeploys old fix (reintroduces vulnerability)
+  - With signatures: Verification fails (timestamp expired, nonce seen before)
+  
+  **Why section-level signatures?**
+  
+  Enables partial verification:
+  - Metadata valid, but code changes tampered → reject
+  - Analysis valid, but migration plan tampered → reject
+  
+  Isolates tampering:
+  - Know exactly which section was modified
+  - Easier debugging
+  
+  **Why master signature?**
+  
+  Prevents section reordering:
+  - Attacker swaps sections → master signature invalid
+  
+  Ensures completeness:
+  - Attacker removes section → master signature invalid
+  
+  **Why content hashing?**
+  
+  Detect tampering:
+  - Compute hash of content
+  - Sign hash
+  - Verify hash matches content
+  - If mismatch: Content tampered
+  
+  Collision-resistant:
+  - SHA-256 (2^256 possible hashes)
+  - Computationally infeasible to find collision
+
+alternatives_considered:
+  - alternative: "No signatures (trust providers)"
+    pros:
+      - "Simpler (no crypto)"
+      - "Faster (no verification)"
+    cons:
+      - "Insecure (no protection)"
+      - "Risky (malicious proposals accepted)"
+    why_not_chosen: "Unacceptable security risk"
+  
+  - alternative: "TLS only (transport security)"
+    pros:
+      - "Protects in transit"
+      - "Standard protocol"
+    cons:
+      - "Doesn't protect at rest (proposal stored)"
+      - "Doesn't prevent impersonation (anyone with TLS cert)"
+      - "Doesn't prevent replay (no timestamps)"
+    why_not_chosen: "Insufficient, need end-to-end security"
+  
+  - alternative: "Proposal-level signature only (no section signatures)"
+    pros:
+      - "Simpler (one signature)"
+      - "Faster (less verification)"
+    cons:
+      - "Can't isolate tampering (which section modified?)"
+      - "Can't partially verify (all or nothing)"
+    why_not_chosen: "Section-level provides better diagnostics"
+
+trade_offs:
+  - trade_off: "Cryptographic signatures add complexity"
+    acceptance: "Security justifies complexity"
+    mitigation: "Provide libraries, documentation, reference implementations"
+  
+  - trade_off: "Key management burden"
+    acceptance: "Providers handle key management (standard practice)"
+    mitigation: "Provide key generation scripts, HSM recommendations"
+  
+  - trade_off: "Signature verification adds latency"
+    acceptance: "< 1 second acceptable for security"
+    mitigation: "Optimize verification (parallel section verification)"
+
+success_criteria:
+  - criterion: "Security incidents"
+    measurement: "Number of tampering/impersonation incidents"
+    target: "0 incidents"
+  
+  - criterion: "Verification speed"
+    measurement: "Time to verify proposal"
+    target: "< 1 second"
+  
+  - criterion: "Provider adoption"
+    measurement: "Percentage of providers using signatures"
+    target: "> 90%"
+  
+  - criterion: "Key compromise incidents"
+    measurement: "Number of private key compromises"
+    target: "0 incidents"
+
+dependencies:
+  requires:
+    - "Provider Ecosystem (ADR-L-0008) - provides provider registry"
+    - "Public key registry (stores provider public keys)"
+    - "Cryptographic libraries (RSA, Ed25519, SHA-256)"
+  
+  enables:
+    - "Trusted proposals (organizations trust provider submissions)"
+    - "Automated acceptance (high-confidence proposals auto-approved)"
+    - "Audit trail (non-repudiation for compliance)"
+
+risks:
+  - risk: "Private key compromise"
+    likelihood: "low"
+    impact: "high"
+    mitigation: "HSM storage, key rotation, revocation capability"
+  
+  - risk: "Signature verification bugs"
+    likelihood: "low"
+    impact: "high"
+    mitigation: "Use standard libraries, comprehensive tests, security audit"
+  
+  - risk: "Replay attacks (if timestamp validation fails)"
+    likelihood: "low"
+    impact: "medium"
+    mitigation: "Nonce tracking, short expiry windows, monitoring"
+
+notes: |
+  This is the "cryptographic trust" capability.
+  
+  Security model:
+  - Provider has private key (keeps secret)
+  - Provider publishes public key (in registry)
+  - Provider signs proposals with private key
+  - Organization verifies signatures with public key
+  
+  Signature process (provider side):
+  1. Generate proposal content
+  2. Compute hash of each section (SHA-256)
+  3. Sign each section hash (RSA/Ed25519)
+  4. Compute master hash (all section hashes)
+  5. Sign master hash
+  6. Include all signatures in proposal
+  
+  Verification process (organization side):
+  1. Receive proposal
+  2. Look up provider public key (from registry)
+  3. Verify each section signature
+  4. Verify master signature
+  5. Check timestamp (freshness)
+  6. Check nonce (no replay)
+  7. If all valid: Accept proposal
+  
+  Example signature structure:
+  
+  ```json
+  {
+    "section_signatures": [
+      {
+        "section": "metadata",
+        "content_hash": "a3f5...",
+        "signature": "b7d2...",
+        "algorithm": "rsa-sha256",
+        "timestamp": "2024-03-10T10:30:00Z"
+      },
+      {
+        "section": "code_changes",
+        "content_hash": "c8e1...",
+        "signature": "d9f3...",
+        "algorithm": "rsa-sha256",
+        "timestamp": "2024-03-10T10:30:00Z"
+      }
+    ],
+    "master_signature": {
+      "concatenated_hashes": "a3f5...c8e1...",
+      "signature": "e2a4...",
+      "algorithm": "rsa-sha256",
+      "timestamp": "2024-03-10T10:30:00Z"
+    },
+    "provider_key_id": "stackhawk-2024-key",
+    "nonce": "550e8400-e29b-41d4-a716-446655440000",
+    "expiry": "2024-03-11T10:30:00Z"
+  }
+  ```
+  
+  This ensures:
+  - Authenticity (signed by StackHawk)
+  - Integrity (content not tampered)
+  - Non-repudiation (StackHawk cannot deny)
+  - Freshness (expires in 24 hours)

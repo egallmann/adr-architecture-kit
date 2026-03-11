@@ -1,0 +1,260 @@
+id: ADR-V-0001
+adr_type: logical
+vision_category: true
+promotable_to_logical: true
+title: "Conversational Architecture System"
+status: proposed
+created_date: 2024-03-10
+tags:
+  - conversational-architecture
+  - ai-agents
+  - human-ai-collaboration
+  - meta-system
+
+context: |
+  Traditional architecture documentation is:
+  - Manual and tedious (humans write YAML/diagrams)
+  - Quickly outdated (docs drift from reality)
+  - Inaccessible to AI (unstructured, scattered)
+  - Missing rationale (the "why" is lost)
+  
+  This creates friction:
+  - Developers avoid documenting (too much work)
+  - Architecture becomes tribal knowledge
+  - AI cannot reason over architecture
+  - Decisions are lost to history
+
+capability:
+  name: "Conversational Architecture"
+  description: |
+    A system where humans express architectural intent through natural conversation,
+    and AI agents automatically generate complete, structured ADRs.
+    
+    Paradigm shift: Machine-readable, machine-written, human-designed
+  
+  key_features:
+    - name: "Natural Language Input"
+      description: "Humans describe what they want in conversation, no YAML editing"
+      
+    - name: "Architecture Agent"
+      description: "Local 13B model interviews humans, asks clarifying questions, fills ADR templates"
+      rationale: "Cost-effective ($0 per ADR), fast (1-2s responses), privacy-preserving (local execution)"
+      
+    - name: "Specialist Watchdog Agent"
+      description: "Monitors ADR updates, infers technical details from context signals and rules library"
+      rationale: "Reduces human burden (auto-fills fields), maintains consistency (applies org policies)"
+      
+    - name: "Validation Agent"
+      description: "Foundation model (GPT-4/Claude/o1) validates final ADR for logical consistency, completeness, feasibility"
+      rationale: "Quality assurance (catches subtle issues), cost-optimized (only used once per ADR)"
+      
+    - name: "Conversation Metadata Capture"
+      description: "Preserves the conversation that led to decisions, including rationale and trade-offs"
+      rationale: "Preserves 'why' for future reference, enables learning from past decisions"
+
+boundaries:
+  in_scope:
+    - "Conversational ADR creation (human → AI → ADR)"
+    - "Multi-turn interview process (clarifying questions)"
+    - "Automatic field inference (from context + policies)"
+    - "Validation and quality assurance"
+    - "Conversation history preservation"
+  
+  out_of_scope:
+    - "Code generation (separate capability)"
+    - "Deployment automation (separate capability)"
+    - "Specific UI implementation (interface-agnostic)"
+
+contracts:
+  inputs:
+    - name: "Human Intent"
+      format: "Natural language conversation"
+      example: "I need a user authentication service with JWT tokens"
+    
+    - name: "Org Policies"
+      format: "Structured policy files (.adr-kit/policies/)"
+      example: "security.yaml with authentication standards"
+  
+  outputs:
+    - name: "Complete ADR"
+      format: "YAML file conforming to ADR schema"
+      completeness: "Must include all required fields for AI code generation"
+    
+    - name: "Conversation Metadata"
+      format: "Embedded in ADR (conversation_metadata field)"
+      includes: "Participants, key decisions, rationale, duration"
+
+quality_attributes:
+  - attribute: "Ease of Use"
+    requirement: "Humans can create ADRs through conversation only, no YAML knowledge required"
+    measurement: "User satisfaction surveys, time to create ADR"
+    
+  - attribute: "Completeness"
+    requirement: "Generated ADRs must be complete enough for autonomous code generation"
+    measurement: "Percentage of ADRs that can be implemented without clarification"
+    target: "> 95%"
+    
+  - attribute: "Cost Efficiency"
+    requirement: "Minimize LLM API costs through local model usage"
+    measurement: "Average cost per ADR"
+    target: "< $0.10 per ADR (98% savings vs GPT-4 only)"
+    
+  - attribute: "Speed"
+    requirement: "ADR creation should be fast (not waiting for slow API calls)"
+    measurement: "Time from conversation start to final ADR"
+    target: "< 15 minutes"
+    
+  - attribute: "Quality"
+    requirement: "Generated ADRs must be logically consistent and implementable"
+    measurement: "Validation pass rate, implementation success rate"
+    target: "> 95% validation pass rate"
+
+rationale: |
+  **Why conversational architecture?**
+  
+  The best interface is no interface. Humans already communicate through conversation.
+  By making architecture conversational, we:
+  - Remove friction (no YAML editing)
+  - Preserve intent (conversation captures "why")
+  - Enable AI reasoning (structured output)
+  - Democratize architecture (anyone can participate)
+  
+  **Why agent-based?**
+  
+  Different tasks require different capabilities:
+  - Interview: Local models excel (structured questions, template filling)
+  - Inference: Rules engines excel (deterministic, fast, free)
+  - Validation: Foundation models excel (deep reasoning, subtle issue detection)
+  
+  Using the right model for each task optimizes cost, speed, and quality.
+  
+  **Why machine-written?**
+  
+  Humans are good at: Intent, decisions, trade-offs
+  AI is good at: Structure, consistency, completeness
+  
+  Let each do what they're best at.
+
+alternatives_considered:
+  - alternative: "Manual YAML editing"
+    pros:
+      - "Direct control over structure"
+      - "No AI dependency"
+    cons:
+      - "High friction (humans must learn YAML + schema)"
+      - "Error-prone (syntax errors, schema violations)"
+      - "Slow (manual typing)"
+      - "Incomplete (humans forget fields)"
+    why_not_chosen: "Too much friction, architecture documentation gets skipped"
+  
+  - alternative: "Form-based UI"
+    pros:
+      - "Structured input"
+      - "Validation built-in"
+    cons:
+      - "Still manual (fill many form fields)"
+      - "Rigid (can't express nuance)"
+      - "Context switching (leave conversation to fill form)"
+    why_not_chosen: "Better than YAML but still friction, conversation is more natural"
+  
+  - alternative: "GPT-4 for entire conversation"
+    pros:
+      - "Best quality (deep reasoning)"
+      - "Handles complex cases"
+    cons:
+      - "Expensive ($3 per ADR)"
+      - "Slow (5-10s per response)"
+      - "Privacy concerns (all conversations sent to cloud)"
+    why_not_chosen: "Cost prohibitive at scale, local model + GPT-4 validation is optimal"
+
+trade_offs:
+  - trade_off: "AI-generated ADRs may lack human nuance"
+    acceptance: "Humans review and can override any field"
+    mitigation: "Conversation metadata preserves original human intent"
+  
+  - trade_off: "Local models may miss subtle issues"
+    acceptance: "Foundation model validates final ADR"
+    mitigation: "Two-tier validation (local + foundation) catches issues"
+  
+  - trade_off: "Requires AI infrastructure (local models)"
+    acceptance: "One-time setup cost, ongoing savings"
+    mitigation: "Fallback to foundation model if local unavailable"
+
+success_criteria:
+  - criterion: "ADR creation time reduced"
+    measurement: "Time to create ADR: manual YAML (2-4 hours) vs conversational (10-15 minutes)"
+    target: "< 15 minutes average"
+  
+  - criterion: "ADR completeness improved"
+    measurement: "Percentage of ADRs with all required fields"
+    target: "> 95% (vs ~60% for manual)"
+  
+  - criterion: "Cost efficiency"
+    measurement: "Average cost per ADR"
+    target: "< $0.10 (vs $3 for GPT-4 only)"
+  
+  - criterion: "Adoption rate"
+    measurement: "Percentage of architecture decisions documented as ADRs"
+    target: "> 90% (vs ~30% for manual)"
+
+dependencies:
+  requires:
+    - "Physical-Component ADR schema (must support generation_context, conversation_metadata)"
+    - "Local LLM infrastructure (7B-13B model deployment)"
+    - "Foundation model API access (GPT-4, Claude, or o1)"
+    - "Org policy system (for auto-population)"
+  
+  enables:
+    - "Meta-optimization (AI improves itself)"
+    - "Legacy import (reverse engineer existing systems)"
+    - "Provider proposals (external improvements)"
+
+risks:
+  - risk: "Local model quality insufficient"
+    likelihood: "low"
+    impact: "medium"
+    mitigation: "Foundation model validates, can fall back to GPT-4 for interview if needed"
+  
+  - risk: "Humans don't trust AI-generated ADRs"
+    likelihood: "medium"
+    impact: "high"
+    mitigation: "Humans always review, conversation metadata shows reasoning, can override any field"
+  
+  - risk: "Conversation takes longer than YAML editing for experts"
+    likelihood: "low"
+    impact: "low"
+    mitigation: "Experts can still write YAML directly, conversational is optional"
+
+related_adrs:
+  - ADR-L-0001  # STE-Compliant ADR System (foundational, this builds on it)
+  - ADR-L-0003  # Quality Assurance Strategy (ensures vision quality)
+
+notes: |
+  ## ADR-V Category (Vision ADRs)
+  
+  This is an ADR-V (Vision ADR) - a special category of Logical ADRs that document
+  the meta-system vision. ADR-V ADRs are:
+  - Logical ADRs (capabilities, boundaries, contracts)
+  - Vision-focused (what the system should become)
+  - Promotable (can become ADR-L-XXXX when implemented)
+  - Interviewable (AI can ask questions to refine vision)
+  
+  ADR-V ADRs are isolated from foundational ADRs (ADR-L-0001 through ADR-L-0006)
+  to prevent ID conflicts while maintaining clear relationship to the foundation.
+  
+  ## Relationship to Foundation
+  
+  This vision builds on:
+  - ADR-L-0001: STE-Compliant ADR System (constitutional foundation)
+  - ADR-L-0003: Quality Assurance Strategy (ensures quality)
+  
+  ## Implementation Phases
+  
+  - Phase 1: Foundation (schemas that support conversation_metadata) - IN PROGRESS
+  - Phase 2: Vision documentation (this ADR and ADR-V-0002 through ADR-V-0013) - CURRENT
+  - Phase 3: Architecture Agent (local model interview system) - FUTURE
+  - Phase 4: Watchdog Agent (inference and auto-population) - FUTURE
+  - Phase 5: Validation Agent (foundation model validation) - FUTURE
+  
+  This conversation (creating this ADR) demonstrates the system we're building.
+  We're dogfooding conversational architecture by encoding this conversation into ADRs.

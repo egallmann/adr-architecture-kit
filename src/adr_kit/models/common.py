@@ -10,7 +10,9 @@ from pydantic import BaseModel, Field, field_validator
 class ADRType(str, Enum):
     """ADR type enumeration."""
     LOGICAL = "logical"
-    PHYSICAL = "physical"
+    PHYSICAL = "physical"  # Legacy, use PHYSICAL_SYSTEM or PHYSICAL_COMPONENT
+    PHYSICAL_SYSTEM = "physical-system"
+    PHYSICAL_COMPONENT = "physical-component"
     DECISION = "decision"
 
 
@@ -122,6 +124,10 @@ class ADRFrontmatter(BaseModel):
             raise ValueError(f"Logical ADR must have ID starting with ADR-L-, got {v}")
         elif adr_type == ADRType.PHYSICAL and not v.startswith('ADR-P-'):
             raise ValueError(f"Physical ADR must have ID starting with ADR-P-, got {v}")
+        elif adr_type == ADRType.PHYSICAL_SYSTEM and not v.startswith('ADR-PS-'):
+            raise ValueError(f"Physical-System ADR must have ID starting with ADR-PS-, got {v}")
+        elif adr_type == ADRType.PHYSICAL_COMPONENT and not v.startswith('ADR-PC-'):
+            raise ValueError(f"Physical-Component ADR must have ID starting with ADR-PC-, got {v}")
         elif adr_type == ADRType.DECISION and not v.startswith('ADR-D-'):
             raise ValueError(f"Decision ADR must have ID starting with ADR-D-, got {v}")
         return v

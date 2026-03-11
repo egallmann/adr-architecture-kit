@@ -19,6 +19,8 @@ from ..models import (
     ManifestDecisionLedger,
     ManifestStatistics,
     PhysicalADR,
+    PhysicalSystemADR,
+    PhysicalComponentADR,
 )
 from ..parser import ADRParser
 from ..scope import ProjectScopeResolver, ProjectScope
@@ -63,6 +65,8 @@ class ManifestGenerator:
         # Discover all ADR files
         logical_files = list((adr_dir / "logical").glob("*.yaml")) if (adr_dir / "logical").exists() else []
         physical_files = list((adr_dir / "physical").glob("*.yaml")) if (adr_dir / "physical").exists() else []
+        physical_system_files = list((adr_dir / "physical-system").glob("*.yaml")) if (adr_dir / "physical-system").exists() else []
+        physical_component_files = list((adr_dir / "physical-component").glob("*.yaml")) if (adr_dir / "physical-component").exists() else []
         
         # Discover requirements snapshots and decision ledgers
         req_snapshot_files = list((adr_dir / "requirements" / "snapshots").glob("*.yaml")) if (adr_dir / "requirements" / "snapshots").exists() else []
@@ -71,6 +75,8 @@ class ManifestGenerator:
         # Parse all ADRs
         logical_adrs: List[LogicalADR] = []
         physical_adrs: List[PhysicalADR] = []
+        physical_system_adrs: List[PhysicalSystemADR] = []
+        physical_component_adrs: List[PhysicalComponentADR] = []
         
         for file_path in logical_files:
             try:
@@ -83,6 +89,20 @@ class ManifestGenerator:
             try:
                 adr = self.parser.parse_physical_adr(file_path)
                 physical_adrs.append(adr)
+            except Exception as e:
+                print(f"Warning: Failed to parse {file_path}: {e}")
+        
+        for file_path in physical_system_files:
+            try:
+                adr = self.parser.parse_physical_system_adr(file_path)
+                physical_system_adrs.append(adr)
+            except Exception as e:
+                print(f"Warning: Failed to parse {file_path}: {e}")
+        
+        for file_path in physical_component_files:
+            try:
+                adr = self.parser.parse_physical_component_adr(file_path)
+                physical_component_adrs.append(adr)
             except Exception as e:
                 print(f"Warning: Failed to parse {file_path}: {e}")
         
@@ -122,6 +142,39 @@ class ManifestGenerator:
             )
             manifest_entries.append(entry)
         
+        for adr in physical_system_adrs:
+            entry = ManifestADREntry(
+                id=adr.id,
+                type="physical-system",
+                title=adr.title,
+                status=adr.status,
+                file_path=str(Path("adrs/physical-system") / f"{adr.id}-{self._slugify(adr.title)}.yaml"),
+                domains=adr.domains,
+                tags=adr.tags,
+                implements_logical=adr.implements_logical,
+                technologies=adr.technologies,
+                gap_count=len(adr.gaps),
+                blocking_gaps=sum(1 for g in adr.gaps if g.blocking),
+            )
+            manifest_entries.append(entry)
+        
+        for adr in physical_component_adrs:
+            entry = ManifestADREntry(
+                id=adr.id,
+                type="physical-component",
+                title=adr.title,
+                status=adr.status,
+                file_path=str(Path("adrs/physical-component") / f"{adr.id}-{self._slugify(adr.title)}.yaml"),
+                domains=adr.domains,
+                tags=adr.tags,
+                implements_logical=adr.implements_logical,
+                technologies=adr.technologies,
+                component_count=len(adr.component_specifications),
+                gap_count=len(adr.gaps),
+                blocking_gaps=sum(1 for g in adr.gaps if g.blocking),
+            )
+            manifest_entries.append(entry)
+        
         # Build discovery indexes
         by_domain: Dict[str, List[str]] = {}
         by_status: Dict[str, List[str]] = {}
@@ -142,6 +195,18 @@ class ManifestGenerator:
         for adr in physical_adrs:
             for logical_id in adr.implements_logical:
                 logical_to_physical.setdefault(logical_id, []).append(adr.id)
+        for adr in physical_system_adrs:
+            for logical_id in adr.implements_logical:
+                logical_to_physical.setdefault(logical_id, []).append(adr.id)
+        for adr in physical_component_adrs:
+            for logical_id in adr.implements_logical:
+                logical_to_physical.setdefault(logical_id, []).append(adr.id)
+        
+        # Build system to component map
+        system_to_components: Dict[str, List[str]] = {}
+        for adr in physical_component_adrs:
+            for system_id in adr.implements_system:
+                system_to_components.setdefault(system_id, []).append(adr.id)
         
         # Extract all invariants
         manifest_invariants: List[ManifestInvariant] = []
@@ -327,10 +392,13 @@ class ManifestGenerator:
             total_adrs=len(manifest_entries),
             logical_adrs=len(logical_adrs),
             physical_adrs=len(physical_adrs),
+            physical_system_adrs=len(physical_system_adrs),
+            physical_component_adrs=len(physical_component_adrs),
             decision_adrs=0,
             total_decisions=sum(len(adr.decisions) for adr in logical_adrs),
             total_invariants=len(manifest_invariants),
-            total_components=sum(len(adr.component_specifications) for adr in physical_adrs),
+            total_components=sum(len(adr.component_specifications) for adr in physical_adrs) + 
+                           sum(len(adr.component_specifications) for adr in physical_component_adrs),
             total_gaps=total_gaps,
             blocking_gaps=total_blocking,
             total_entities=len(manifest_entities),
@@ -349,6 +417,7 @@ class ManifestGenerator:
             by_status=by_status,
             by_technology=by_technology,
             logical_to_physical_map=logical_to_physical,
+            system_to_components_map=system_to_components,
             invariants=manifest_invariants,
             entities=manifest_entities,
             requirements_snapshots=manifest_req_snapshots,

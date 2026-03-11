@@ -55,6 +55,8 @@ class ManifestStatistics(BaseModel):
     total_adrs: int = Field(..., ge=0)
     logical_adrs: int = Field(..., ge=0)
     physical_adrs: int = Field(..., ge=0)
+    physical_system_adrs: int = Field(0, ge=0)
+    physical_component_adrs: int = Field(0, ge=0)
     decision_adrs: int = Field(0, ge=0)
     total_decisions: int = Field(0, ge=0)
     total_invariants: int = Field(0, ge=0)
@@ -102,8 +104,9 @@ class Manifest(BaseModel):
     by_domain: Dict[str, List[str]] = Field(default_factory=dict)
     by_status: Dict[str, List[str]] = Field(default_factory=dict)
     by_technology: Dict[str, List[str]] = Field(default_factory=dict)
-    
+
     logical_to_physical_map: Dict[str, List[str]] = Field(default_factory=dict)
+    system_to_components_map: Dict[str, List[str]] = Field(default_factory=dict, description="Physical-System to Physical-Component mapping")
     
     invariants: List[ManifestInvariant] = Field(default_factory=list)
     entities: List[ManifestEntity] = Field(default_factory=list, description="All entities across all ADRs")

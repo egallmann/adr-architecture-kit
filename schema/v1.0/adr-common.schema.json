@@ -24,8 +24,8 @@
     
     "adr_type": {
       "type": "string",
-      "enum": ["logical", "physical", "decision"],
-      "description": "Type of ADR (logical, physical, or decision)"
+      "enum": ["logical", "physical", "physical-system", "physical-component", "decision"],
+      "description": "Type of ADR (logical, physical [legacy], physical-system, physical-component, or decision)"
     },
     
     "id": {

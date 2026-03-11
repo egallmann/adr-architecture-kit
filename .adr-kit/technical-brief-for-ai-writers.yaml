@@ -427,6 +427,60 @@ core_concepts:
       The STE semantic graph IS the graph database for ADR Kit.
       It's not "good enough" - it's purpose-built for this exact use case.
     
+    slice_architecture_foundation:
+      insight: |
+        RECON extracts both ADRs and code into slices (semantic entities).
+        Code decorators create explicit edges between ADR slices and code slices.
+        
+        This is how the decorator idea emerged: We needed explicit, extractable
+        edges to build a bidirectional graph between architecture and code.
+      
+      adr_slices:
+        - "ADR metadata slice (id, title, status)"
+        - "Component specification slice (interfaces, requirements)"
+        - "Interface slice (endpoints, contracts)"
+        - "Relationship slice (implements, references, supersedes)"
+      
+      code_slices:
+        - "Function slice (signature, parameters, dependencies)"
+        - "Class slice (methods, properties, inheritance)"
+        - "Module slice (imports, exports, structure)"
+      
+      decorator_edges:
+        - "@adr_implements → Creates 'implements' edge (code → ADR component)"
+        - "@adr_invariant → Creates 'enforces' edge (code → invariant)"
+        - "@adr_algorithm → Creates 'uses_algorithm' edge (code → algorithm spec)"
+      
+      graph_structure: |
+        ADR Slice (ADR-PC-0042)
+              ↓ [contains]
+        Component Slice (COMP-0001)
+              ↓ [contains]
+        Interface Slice (IFACE-0001)
+              ↑ [implements] ← EXPLICIT EDGE FROM DECORATOR
+        Code Slice (authenticate_user function)
+              ↓ [enforces] ← EXPLICIT EDGE FROM DECORATOR
+        Invariant Slice (INV-001)
+      
+      bidirectional_queries:
+        forward: "ADR → Code (what code implements this ADR?)"
+        backward: "Code → ADR (why does this code exist?)"
+        
+        example: |
+          Query: "Find all code that implements ADR-PC-0042"
+          Graph: ADR-PC-0042 → [implements edges] → code slices
+          Result: [authenticate_user(), create_user(), get_user()]
+          Time: <100ms
+      
+      why_decorators_are_essential: |
+        Without decorators: ADR-to-code links are implicit (must infer)
+        With decorators: ADR-to-code links are explicit (RECON extracts them)
+        
+        Decorators are not comments. They are extractable graph edges.
+        
+        This solves the "missing intent primitive" - code now explicitly
+        declares why it exists and which architectural decisions it implements.
+    
     architecture:
       type: "Bi-directional boundary tree"
       traversal: "From insertion point, traverse upstream (dependencies) and downstream (dependents)"

@@ -34,12 +34,165 @@ context: |
   ```
   
   Opportunity: Explicit intent markers in code.
+  
+  ## The Slice Architecture Insight
+  
+  RECON extracts code into slices (AST-based semantic entities):
+  - Function slices (function definitions, signatures, dependencies)
+  - Class slices (class definitions, methods, relationships)
+  - Module slices (imports, exports, structure)
+  
+  ADRs are also extracted into slices:
+  - ADR metadata slices (id, title, status, tags)
+  - Component specification slices (interfaces, requirements)
+  - Relationship slices (implements, references, supersedes)
+  
+  **Problem**: How do we link ADR slices to code slices?
+  
+  **Solution**: Code decorators are explicit edges in the semantic graph.
+  
+  ```
+  ADR Slice (ADR-PC-0042)
+        ↓
+    [edge: implements]
+        ↓
+  Code Slice (authenticate_user function)
+  ```
+  
+  Just like AST code slices have edges (function calls, imports),
+  ADR-to-code relationships need explicit edges (decorators).
+  
+  **This is how the decorator idea emerged**: We needed explicit, extractable
+  edges to build a bidirectional graph between architecture (ADRs) and
+  implementation (code).
 
 capability:
   name: "Code Decorators (Intent Primitive)"
   description: |
     A system of code decorators that explicitly link code to architectural
     intent (ADRs), enabling traceability, validation, and surgical code review.
+    
+    Decorators are explicit edges in the semantic graph that connect ADR slices
+    to code slices, creating a bidirectional, queryable architecture-to-code graph.
+  
+  slice_architecture:
+    description: |
+      RECON extracts both ADRs and code into slices (semantic entities).
+      Decorators create explicit edges between these slices.
+    
+    adr_slices:
+      extraction: "RECON scans ADR YAML files"
+      slice_types:
+        - type: "ADR metadata slice"
+          contains: ["id", "title", "status", "tags", "created_date"]
+          example: "ADR-PC-0042 (User Service API Component)"
+        
+        - type: "Component specification slice"
+          contains: ["interfaces", "algorithms", "error_handling", "testing_requirements"]
+          example: "COMP-0001 (User Service API)"
+        
+        - type: "Interface slice"
+          contains: ["type", "endpoints", "specification"]
+          example: "IFACE-0001 (REST API: GET /users, POST /users)"
+        
+        - type: "Relationship slice"
+          contains: ["implements", "references", "supersedes"]
+          example: "ADR-PC-0042 implements ADR-PS-0012"
+    
+    code_slices:
+      extraction: "RECON scans source code (AST-based)"
+      slice_types:
+        - type: "Function slice"
+          contains: ["signature", "parameters", "return_type", "dependencies"]
+          example: "authenticate_user(token: str) -> User"
+        
+        - type: "Class slice"
+          contains: ["class_name", "methods", "properties", "inheritance"]
+          example: "UserService class"
+        
+        - type: "Module slice"
+          contains: ["imports", "exports", "functions", "classes"]
+          example: "src/api/user.py module"
+    
+    decorator_edges:
+      description: "Decorators create explicit edges between ADR slices and code slices"
+      
+      edge_types:
+        - edge: "implements"
+          from: "Code slice (function/class)"
+          to: "ADR slice (component/interface)"
+          decorator: "@adr_implements(adr_id, component_id, interface_id)"
+          example: "authenticate_user → ADR-PC-0042 → COMP-0001 → IFACE-0001"
+        
+        - edge: "enforces"
+          from: "Code slice (function)"
+          to: "Invariant slice"
+          decorator: "@adr_invariant(invariant_id, description)"
+          example: "validate_token_expiry → INV-001"
+        
+        - edge: "uses_algorithm"
+          from: "Code slice (function)"
+          to: "Algorithm slice (within ADR)"
+          decorator: "@adr_algorithm(adr_id, algorithm_name)"
+          example: "hash_password → ADR-PC-0042 → bcrypt algorithm"
+      
+      bidirectional_traversal:
+        forward: "ADR → Code (what code implements this ADR?)"
+        backward: "Code → ADR (why does this code exist?)"
+        
+        example_queries:
+          - query: "Find all code that implements ADR-PC-0042"
+            graph_traversal: "ADR-PC-0042 → [implements edges] → code slices"
+            result: ["authenticate_user()", "create_user()", "get_user()"]
+          
+          - query: "Why does authenticate_user() exist?"
+            graph_traversal: "authenticate_user() → [implements edge] → ADR-PC-0042"
+            result: "Implements authentication-api interface of user-service component"
+          
+          - query: "What code enforces security invariants?"
+            graph_traversal: "INV-* (security tag) → [enforces edges] → code slices"
+            result: ["validate_token_expiry()", "check_permissions()", "encrypt_data()"]
+    
+    graph_structure:
+      visualization: |
+        ┌─────────────────────────────────────────────────────────────┐
+        │                    Semantic Graph                           │
+        ├─────────────────────────────────────────────────────────────┤
+        │                                                             │
+        │  ADR Slices                    Code Slices                 │
+        │  ┌──────────────┐              ┌──────────────┐            │
+        │  │ ADR-PC-0042  │              │ user.py      │            │
+        │  │ (metadata)   │              │ (module)     │            │
+        │  └──────────────┘              └──────────────┘            │
+        │         │                              │                   │
+        │         │ contains                     │ contains          │
+        │         ↓                              ↓                   │
+        │  ┌──────────────┐              ┌──────────────┐            │
+        │  │ COMP-0001    │←─implements──│authenticate_ │            │
+        │  │ (component)  │              │user()        │            │
+        │  └──────────────┘              └──────────────┘            │
+        │         │                              │                   │
+        │         │ contains                     │ enforces          │
+        │         ↓                              ↓                   │
+        │  ┌──────────────┐              ┌──────────────┐            │
+        │  │ IFACE-0001   │              │ INV-001      │            │
+        │  │ (interface)  │              │ (invariant)  │            │
+        │  └──────────────┘              └──────────────┘            │
+        │                                                             │
+        │  Edges created by:                                         │
+        │  - RECON extraction (ADR structure, code AST)              │
+        │  - Decorator extraction (@adr_implements, @adr_invariant)  │
+        │                                                             │
+        └─────────────────────────────────────────────────────────────┘
+      
+      key_insight: |
+        Decorators are not just comments or metadata.
+        They are explicit, extractable edges in the semantic graph.
+        
+        RECON extracts decorators from code → Creates graph edges → Enables queries
+        
+        This is why decorators solve the "missing intent primitive":
+        They make architectural intent explicit, extractable, and queryable.
   
   decorator_types:
     - decorator: "@adr_implements"

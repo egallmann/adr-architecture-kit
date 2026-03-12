@@ -5,7 +5,7 @@ Implements ADR-L-0007: Multi-scope ADR architecture.
 
 from datetime import datetime, timezone
 from pathlib import Path
-from typing import Dict, List, Optional
+from typing import Dict, List, Optional, Tuple
 
 from ..models import (
     GapsSummary,
@@ -22,6 +22,7 @@ from ..models import (
     PhysicalSystemADR,
     PhysicalComponentADR,
 )
+from ..pathing import manifest_relative_path
 from ..parser import ADRParser
 from ..scope import ProjectScopeResolver, ProjectScope
 
@@ -42,6 +43,27 @@ class ManifestGenerator:
         self.parser = parser or ADRParser()
         self.scope_resolver = scope_resolver or ProjectScopeResolver()
     
+    def _discover_adr_files(self, adr_dir: Path) -> Tuple[List[Path], List[Path]]:
+        """Discover logical and physical ADR files.
+
+        Frontmatter is authoritative for subtype classification. Directory structure
+        only distinguishes broad classes: logical vs physical.
+        """
+        logical_files = list((adr_dir / "logical").glob("*.yaml")) if (adr_dir / "logical").exists() else []
+
+        physical_files: List[Path] = []
+        for dirname in ("physical", "physical-system", "physical-component"):
+            candidate_dir = adr_dir / dirname
+            if candidate_dir.exists():
+                physical_files.extend(candidate_dir.glob("*.yaml"))
+
+        deduped_physical = list(dict.fromkeys(path.resolve() for path in physical_files))
+        return logical_files, [Path(path) for path in deduped_physical]
+
+    def _relative_manifest_path(self, file_path: Path, adr_dir: Path) -> str:
+        """Return the manifest-relative path for a discovered ADR file."""
+        return manifest_relative_path(adr_dir.parent, file_path)
+
     def generate_from_directory(self, adr_dir: Path, scope: Optional[ProjectScope] = None) -> Manifest:
         """Generate manifest from ADR directory.
         
@@ -52,21 +74,18 @@ class ManifestGenerator:
         Returns:
             Generated Manifest model
         """
-        adr_dir = Path(adr_dir)
+        adr_dir = Path(adr_dir).resolve()
+
+        if not adr_dir.exists():
+            raise ValueError(f"ADR directory not found: {adr_dir}")
         
         # Auto-detect scope if not provided (ADR-L-0007: CAP-0001)
         if scope is None:
             scope = self.scope_resolver.resolve(adr_dir.parent)
             print(f"Auto-detected project scope: {scope.name} at {scope.root}")
         
-        if not adr_dir.exists():
-            raise ValueError(f"ADR directory not found: {adr_dir}")
-        
         # Discover all ADR files
-        logical_files = list((adr_dir / "logical").glob("*.yaml")) if (adr_dir / "logical").exists() else []
-        physical_files = list((adr_dir / "physical").glob("*.yaml")) if (adr_dir / "physical").exists() else []
-        physical_system_files = list((adr_dir / "physical-system").glob("*.yaml")) if (adr_dir / "physical-system").exists() else []
-        physical_component_files = list((adr_dir / "physical-component").glob("*.yaml")) if (adr_dir / "physical-component").exists() else []
+        logical_files, physical_candidate_files = self._discover_adr_files(adr_dir)
         
         # Discover requirements snapshots and decision ledgers
         req_snapshot_files = list((adr_dir / "requirements" / "snapshots").glob("*.yaml")) if (adr_dir / "requirements" / "snapshots").exists() else []
@@ -74,9 +93,9 @@ class ManifestGenerator:
         
         # Parse all ADRs
         logical_adrs: List[LogicalADR] = []
-        physical_adrs: List[PhysicalADR] = []
-        physical_system_adrs: List[PhysicalSystemADR] = []
-        physical_component_adrs: List[PhysicalComponentADR] = []
+        physical_adrs: List[Tuple[PhysicalADR, Path]] = []
+        physical_system_adrs: List[Tuple[PhysicalSystemADR, Path]] = []
+        physical_component_adrs: List[Tuple[PhysicalComponentADR, Path]] = []
         
         for file_path in logical_files:
             try:
@@ -85,24 +104,15 @@ class ManifestGenerator:
             except Exception as e:
                 print(f"Warning: Failed to parse {file_path}: {e}")
         
-        for file_path in physical_files:
+        for file_path in physical_candidate_files:
             try:
-                adr = self.parser.parse_physical_adr(file_path)
-                physical_adrs.append(adr)
-            except Exception as e:
-                print(f"Warning: Failed to parse {file_path}: {e}")
-        
-        for file_path in physical_system_files:
-            try:
-                adr = self.parser.parse_physical_system_adr(file_path)
-                physical_system_adrs.append(adr)
-            except Exception as e:
-                print(f"Warning: Failed to parse {file_path}: {e}")
-        
-        for file_path in physical_component_files:
-            try:
-                adr = self.parser.parse_physical_component_adr(file_path)
-                physical_component_adrs.append(adr)
+                adr = self.parser.parse_adr(file_path)
+                if isinstance(adr, PhysicalComponentADR):
+                    physical_component_adrs.append((adr, file_path))
+                elif isinstance(adr, PhysicalSystemADR):
+                    physical_system_adrs.append((adr, file_path))
+                elif isinstance(adr, PhysicalADR):
+                    physical_adrs.append((adr, file_path))
             except Exception as e:
                 print(f"Warning: Failed to parse {file_path}: {e}")
         
@@ -125,13 +135,13 @@ class ManifestGenerator:
             )
             manifest_entries.append(entry)
         
-        for adr in physical_adrs:
+        for adr, file_path in physical_adrs:
             entry = ManifestADREntry(
                 id=adr.id,
                 type="physical",
                 title=adr.title,
                 status=adr.status,
-                file_path=str(Path("adrs/physical") / f"{adr.id}-{self._slugify(adr.title)}.yaml"),
+                file_path=self._relative_manifest_path(file_path, adr_dir),
                 domains=adr.domains,
                 tags=adr.tags,
                 implements_logical=adr.implements_logical,
@@ -142,13 +152,13 @@ class ManifestGenerator:
             )
             manifest_entries.append(entry)
         
-        for adr in physical_system_adrs:
+        for adr, file_path in physical_system_adrs:
             entry = ManifestADREntry(
                 id=adr.id,
                 type="physical-system",
                 title=adr.title,
                 status=adr.status,
-                file_path=str(Path("adrs/physical-system") / f"{adr.id}-{self._slugify(adr.title)}.yaml"),
+                file_path=self._relative_manifest_path(file_path, adr_dir),
                 domains=adr.domains,
                 tags=adr.tags,
                 implements_logical=adr.implements_logical,
@@ -158,13 +168,13 @@ class ManifestGenerator:
             )
             manifest_entries.append(entry)
         
-        for adr in physical_component_adrs:
+        for adr, file_path in physical_component_adrs:
             entry = ManifestADREntry(
                 id=adr.id,
                 type="physical-component",
                 title=adr.title,
                 status=adr.status,
-                file_path=str(Path("adrs/physical-component") / f"{adr.id}-{self._slugify(adr.title)}.yaml"),
+                file_path=self._relative_manifest_path(file_path, adr_dir),
                 domains=adr.domains,
                 tags=adr.tags,
                 implements_logical=adr.implements_logical,
@@ -192,19 +202,19 @@ class ManifestGenerator:
         
         # Build logical to physical map
         logical_to_physical: Dict[str, List[str]] = {}
-        for adr in physical_adrs:
+        for adr, _ in physical_adrs:
             for logical_id in adr.implements_logical:
                 logical_to_physical.setdefault(logical_id, []).append(adr.id)
-        for adr in physical_system_adrs:
+        for adr, _ in physical_system_adrs:
             for logical_id in adr.implements_logical:
                 logical_to_physical.setdefault(logical_id, []).append(adr.id)
-        for adr in physical_component_adrs:
+        for adr, _ in physical_component_adrs:
             for logical_id in adr.implements_logical:
                 logical_to_physical.setdefault(logical_id, []).append(adr.id)
         
         # Build system to component map
         system_to_components: Dict[str, List[str]] = {}
-        for adr in physical_component_adrs:
+        for adr, _ in physical_component_adrs:
             for system_id in adr.implements_system:
                 system_to_components.setdefault(system_id, []).append(adr.id)
         
@@ -252,7 +262,7 @@ class ManifestGenerator:
                     entity_map[contract.id] = ManifestEntity(
                         entity_id=contract.id,
                         entity_type="contract",
-                        name=contract.participants[0] if contract.participants else "Unknown",
+                        name=contract.parties[0] if contract.parties else "Unknown",
                         introduced_by=adr.id,
                         lifecycle_stage=adr.status.value if hasattr(adr.status, 'value') else str(adr.status),
                     )
@@ -298,7 +308,7 @@ class ManifestGenerator:
                     )
         
         # Extract from Physical ADRs (components, interfaces, integrations, impl decisions)
-        for adr in physical_adrs:
+        for adr, _ in physical_adrs:
             for comp in adr.component_specifications:
                 if comp.id not in entity_map:
                     entity_map[comp.id] = ManifestEntity(
@@ -391,14 +401,14 @@ class ManifestGenerator:
         statistics = ManifestStatistics(
             total_adrs=len(manifest_entries),
             logical_adrs=len(logical_adrs),
-            physical_adrs=len(physical_adrs),
+            physical_adrs=len(physical_adrs) + len(physical_system_adrs) + len(physical_component_adrs),
             physical_system_adrs=len(physical_system_adrs),
             physical_component_adrs=len(physical_component_adrs),
             decision_adrs=0,
             total_decisions=sum(len(adr.decisions) for adr in logical_adrs),
             total_invariants=len(manifest_invariants),
-            total_components=sum(len(adr.component_specifications) for adr in physical_adrs) + 
-                           sum(len(adr.component_specifications) for adr in physical_component_adrs),
+            total_components=sum(len(adr.component_specifications) for adr, _ in physical_adrs) +
+                           sum(len(adr.component_specifications) for adr, _ in physical_component_adrs),
             total_gaps=total_gaps,
             blocking_gaps=total_blocking,
             total_entities=len(manifest_entities),
@@ -410,7 +420,7 @@ class ManifestGenerator:
         manifest = Manifest(
             schema_version="1.0",
             type="manifest",
-            generated_date=datetime.now(timezone.utc),
+            generated_date=datetime.now(timezone.utc).replace(microsecond=0),
             generated_from="adrs/**/*.yaml",
             adrs=manifest_entries,
             by_domain=by_domain,

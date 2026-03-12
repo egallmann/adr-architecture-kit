@@ -4,7 +4,7 @@
 
 schema_version: '1.0'
 type: manifest
-generated_date: '2026-03-08T07:38:42.065213Z'
+generated_date: '2026-03-12T01:41:31Z'
 generated_from: adrs/**/*.yaml
 adrs:
 - id: ADR-L-0001
@@ -143,11 +143,33 @@ adrs:
   gap_count: 3
   blocking_gaps: 1
   component_count: 0
+- id: ADR-L-0007
+  type: logical
+  title: Deterministic Documentation Projection
+  status: accepted
+  file_path: adrs\logical\ADR-L-0007-deterministic-documentation-projection.yaml
+  domains:
+  - documentation
+  - governance
+  - determinism
+  - projection
+  tags:
+  - generated-documentation
+  - deterministic
+  - ai-first
+  - drift-prevention
+  implements_logical: []
+  technologies: []
+  decision_count: 3
+  invariant_count: 3
+  gap_count: 0
+  blocking_gaps: 0
+  component_count: 0
 - id: ADR-P-0001
   type: physical
   title: Python Toolkit Implementation for ADR Kit
   status: accepted
-  file_path: adrs\physical\ADR-P-0001-python-toolkit-implementation-for-adr-kit.yaml
+  file_path: adrs\physical\ADR-P-0001-python-toolkit-implementation.yaml
   domains:
   - implementation
   - tooling
@@ -173,7 +195,7 @@ adrs:
   type: physical
   title: JSON Schema Validation with YAML Document Format
   status: accepted
-  file_path: adrs\physical\ADR-P-0002-json-schema-validation-with-yaml-document-format.yaml
+  file_path: adrs\physical\ADR-P-0002-json-schema-yaml-format.yaml
   domains:
   - schema
   - validation
@@ -205,6 +227,7 @@ by_domain:
   - ADR-L-0003
   - ADR-L-0004
   - ADR-L-0006
+  - ADR-L-0007
   documentation-state:
   - ADR-L-0001
   adr:
@@ -234,6 +257,12 @@ by_domain:
   - ADR-L-0006
   integration:
   - ADR-L-0006
+  documentation:
+  - ADR-L-0007
+  determinism:
+  - ADR-L-0007
+  projection:
+  - ADR-L-0007
   implementation:
   - ADR-P-0001
   tooling:
@@ -248,6 +277,7 @@ by_status:
   accepted:
   - ADR-L-0001
   - ADR-L-0003
+  - ADR-L-0007
   - ADR-P-0001
   - ADR-P-0002
   proposed:
@@ -276,6 +306,7 @@ logical_to_physical_map:
   ADR-L-0001:
   - ADR-P-0001
   - ADR-P-0002
+system_to_components_map: {}
 invariants:
 - id: INV-0001
   statement: All ADRs must validate against JSON Schema before commit
@@ -576,6 +607,308 @@ invariants:
   defined_in: ADR-L-0006
   enforced_by: []
   enforcement_level: must
+- id: INV-0037
+  statement: 'INV-DOC-001: All human-readable architecture documentation must be generated
+
+    from structured artifacts or explicit projection code that is itself
+
+    governed as source state.
+
+    '
+  defined_in: ADR-L-0007
+  enforced_by: []
+  enforcement_level: must
+- id: INV-0038
+  statement: 'INV-DOC-002: Generated documentation must be deterministic given identical
+
+    source artifacts and generator inputs.
+
+    '
+  defined_in: ADR-L-0007
+  enforced_by: []
+  enforcement_level: must
+- id: INV-0039
+  statement: 'INV-DOC-003: Rendered documentation must never be edited manually; changes
+
+    must be made through generators, templates, or structured source artifacts.
+
+    '
+  defined_in: ADR-L-0007
+  enforced_by: []
+  enforcement_level: must
+entities:
+- entity_id: CAP-0001
+  entity_type: capability
+  name: Machine-Verifiable Architecture Documentation
+  introduced_by: ADR-L-0001
+  lifecycle_stage: accepted
+- entity_id: CAP-0002
+  entity_type: capability
+  name: Two-Layer Architecture Model
+  introduced_by: ADR-L-0001
+  lifecycle_stage: accepted
+- entity_id: CAP-0003
+  entity_type: capability
+  name: Semantic Graph Integration
+  introduced_by: ADR-L-0001
+  lifecycle_stage: accepted
+- entity_id: CAP-0004
+  entity_type: capability
+  name: Explicit Gap Tracking
+  introduced_by: ADR-L-0001
+  lifecycle_stage: accepted
+- entity_id: CAP-0005
+  entity_type: capability
+  name: Derived Manifest Generation
+  introduced_by: ADR-L-0001
+  lifecycle_stage: accepted
+- entity_id: CAP-0006
+  entity_type: capability
+  name: Policy Integration Readiness
+  introduced_by: ADR-L-0001
+  lifecycle_stage: accepted
+- entity_id: CAP-0007
+  entity_type: capability
+  name: Correction Agent Context
+  introduced_by: ADR-L-0001
+  lifecycle_stage: accepted
+- entity_id: BOUND-0001
+  entity_type: boundary
+  name: Logical vs Physical Separation
+  introduced_by: ADR-L-0001
+  lifecycle_stage: accepted
+- entity_id: BOUND-0002
+  entity_type: boundary
+  name: ADR Kit vs ste-runtime Separation
+  introduced_by: ADR-L-0001
+  lifecycle_stage: accepted
+- entity_id: BOUND-0003
+  entity_type: boundary
+  name: Frontmatter as Authority
+  introduced_by: ADR-L-0001
+  lifecycle_stage: accepted
+- entity_id: CONTRACT-0001
+  entity_type: contract
+  name: adr-kit
+  introduced_by: ADR-L-0001
+  lifecycle_stage: accepted
+- entity_id: CONTRACT-0002
+  entity_type: contract
+  name: adr-kit
+  introduced_by: ADR-L-0001
+  lifecycle_stage: accepted
+- entity_id: CONST-0001
+  entity_type: constraint
+  name: technical
+  introduced_by: ADR-L-0001
+  lifecycle_stage: accepted
+- entity_id: CONST-0002
+  entity_type: constraint
+  name: technical
+  introduced_by: ADR-L-0001
+  lifecycle_stage: accepted
+- entity_id: CONST-0003
+  entity_type: constraint
+  name: business
+  introduced_by: ADR-L-0001
+  lifecycle_stage: accepted
+- entity_id: CONST-0004
+  entity_type: constraint
+  name: technical
+  introduced_by: ADR-L-0001
+  lifecycle_stage: accepted
+- entity_id: NFR-0001
+  entity_type: nfr
+  name: performance
+  introduced_by: ADR-L-0001
+  lifecycle_stage: accepted
+- entity_id: NFR-0002
+  entity_type: nfr
+  name: reliability
+  introduced_by: ADR-L-0001
+  lifecycle_stage: accepted
+- entity_id: NFR-0003
+  entity_type: nfr
+  name: maintainability
+  introduced_by: ADR-L-0001
+  lifecycle_stage: accepted
+- entity_id: NFR-0004
+  entity_type: nfr
+  name: usability
+  introduced_by: ADR-L-0001
+  lifecycle_stage: accepted
+- entity_id: DEC-0001
+  entity_type: decision
+  name: Use YAML with embedded markdown, not markdown with YAML frontmatter
+  introduced_by: ADR-L-0001
+  lifecycle_stage: accepted
+- entity_id: DEC-0002
+  entity_type: decision
+  name: Separate logical and physical ADRs with distinct schemas
+  introduced_by: ADR-L-0001
+  lifecycle_stage: accepted
+- entity_id: DEC-0003
+  entity_type: decision
+  name: Rich frontmatter as authoritative metadata, manifest as derived view
+  introduced_by: ADR-L-0001
+  lifecycle_stage: accepted
+- entity_id: DEC-0004
+  entity_type: decision
+  name: Type-prefixed IDs (ADR-L-XXXX, ADR-P-XXXX) with 4-digit numbering
+  introduced_by: ADR-L-0001
+  lifecycle_stage: accepted
+- entity_id: DEC-0005
+  entity_type: decision
+  name: PROJECT.yaml for project-level metadata, separate from ADR metadata
+  introduced_by: ADR-L-0001
+  lifecycle_stage: accepted
+- entity_id: DEC-0006
+  entity_type: decision
+  name: Dogfooding strategy - document this project using ADR Kit
+  introduced_by: ADR-L-0001
+  lifecycle_stage: accepted
+- entity_id: GAP-0001
+  entity_type: gap
+  name: Decorator library not yet implemented
+  introduced_by: ADR-L-0004
+  lifecycle_stage: proposed
+- entity_id: GAP-0002
+  entity_type: gap
+  name: Rule library sub-module not yet created
+  introduced_by: ADR-L-0004
+  lifecycle_stage: proposed
+- entity_id: GAP-0003
+  entity_type: gap
+  name: RECON doesn't extract decorator metadata
+  introduced_by: ADR-L-0004
+  lifecycle_stage: proposed
+- entity_id: GAP-0004
+  entity_type: gap
+  name: MCP integration for rule delivery not designed
+  introduced_by: ADR-L-0004
+  lifecycle_stage: proposed
+- entity_id: CAP-0008
+  entity_type: capability
+  name: Multi-Agent Prompt Generation
+  introduced_by: ADR-L-0005
+  lifecycle_stage: proposed
+- entity_id: CAP-0009
+  entity_type: capability
+  name: Prompt Format Adaptation
+  introduced_by: ADR-L-0005
+  lifecycle_stage: proposed
+- entity_id: CONTRACT-0003
+  entity_type: contract
+  name: AI Implementation
+  introduced_by: ADR-L-0005
+  lifecycle_stage: proposed
+- entity_id: CAP-0010
+  entity_type: capability
+  name: Signal Schema Authority
+  introduced_by: ADR-L-0006
+  lifecycle_stage: proposed
+- entity_id: CAP-0011
+  entity_type: capability
+  name: Signal Emission CLI
+  introduced_by: ADR-L-0006
+  lifecycle_stage: proposed
+- entity_id: CAP-0012
+  entity_type: capability
+  name: Rule Activation and Projection
+  introduced_by: ADR-L-0006
+  lifecycle_stage: proposed
+- entity_id: CAP-0013
+  entity_type: capability
+  name: Submodule Bootstrap
+  introduced_by: ADR-L-0006
+  lifecycle_stage: proposed
+- entity_id: GAP-0005
+  entity_type: gap
+  name: rule-library repo not yet created
+  introduced_by: ADR-L-0006
+  lifecycle_stage: proposed
+- entity_id: GAP-0006
+  entity_type: gap
+  name: 'Prompt translator COMP-0009 (SignalGenerator) not '
+  introduced_by: ADR-L-0006
+  lifecycle_stage: proposed
+- entity_id: GAP-0007
+  entity_type: gap
+  name: Rules & Signal Service not built
+  introduced_by: ADR-L-0006
+  lifecycle_stage: proposed
+- entity_id: CAP-0014
+  entity_type: capability
+  name: Deterministic Documentation Projection
+  introduced_by: ADR-L-0007
+  lifecycle_stage: accepted
+- entity_id: COMP-0001
+  entity_type: component
+  name: Schema Validator
+  introduced_by: ADR-P-0001
+  lifecycle_stage: accepted
+- entity_id: IFACE-0001
+  entity_type: interface
+  name: Schema Validator REST
+  introduced_by: ADR-P-0001
+  lifecycle_stage: accepted
+- entity_id: COMP-0002
+  entity_type: component
+  name: Pydantic Data Models
+  introduced_by: ADR-P-0001
+  lifecycle_stage: accepted
+- entity_id: IFACE-0002
+  entity_type: interface
+  name: Pydantic Data Models REST
+  introduced_by: ADR-P-0001
+  lifecycle_stage: accepted
+- entity_id: COMP-0003
+  entity_type: component
+  name: Manifest Generator
+  introduced_by: ADR-P-0001
+  lifecycle_stage: accepted
+- entity_id: IFACE-0003
+  entity_type: interface
+  name: Manifest Generator REST
+  introduced_by: ADR-P-0001
+  lifecycle_stage: accepted
+- entity_id: COMP-0004
+  entity_type: component
+  name: Markdown View Generator
+  introduced_by: ADR-P-0001
+  lifecycle_stage: accepted
+- entity_id: IFACE-0004
+  entity_type: interface
+  name: Markdown View Generator REST
+  introduced_by: ADR-P-0001
+  lifecycle_stage: accepted
+- entity_id: IMPL-0001
+  entity_type: implementation_decision
+  name: Use pyproject.toml for modern Python packaging
+  introduced_by: ADR-P-0001
+  lifecycle_stage: accepted
+- entity_id: IMPL-0002
+  entity_type: implementation_decision
+  name: Use src/ layout for package structure
+  introduced_by: ADR-P-0001
+  lifecycle_stage: accepted
+- entity_id: IMPL-0003
+  entity_type: implementation_decision
+  name: Use RefResolver for local schema references
+  introduced_by: ADR-P-0001
+  lifecycle_stage: accepted
+- entity_id: INTEG-0001
+  entity_type: integration
+  name: adr-kit → pydantic
+  introduced_by: ADR-P-0002
+  lifecycle_stage: accepted
+- entity_id: IMPL-0004
+  entity_type: implementation_decision
+  name: Use RefResolver with schema store for local references
+  introduced_by: ADR-P-0002
+  lifecycle_stage: accepted
+requirements_snapshots: []
+decision_ledgers: []
 gaps_summary:
   total: 11
   blocking: 5
@@ -590,12 +923,17 @@ gaps_summary:
       total: 3
       blocking: 1
 statistics:
-  total_adrs: 8
-  logical_adrs: 6
+  total_adrs: 9
+  logical_adrs: 7
   physical_adrs: 2
+  physical_system_adrs: 0
+  physical_component_adrs: 0
   decision_adrs: 0
-  total_decisions: 24
-  total_invariants: 36
+  total_decisions: 27
+  total_invariants: 39
   total_components: 6
   total_gaps: 11
   blocking_gaps: 5
+  total_entities: 54
+  total_requirements_snapshots: 0
+  total_decision_ledgers: 0

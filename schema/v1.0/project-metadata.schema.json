@@ -166,6 +166,9 @@
               "type_checking",
               "linting",
               "security_scanning",
+              "deprecation_free_runtime",
+              "dependency_security_audit",
+              "dependency_freshness_review",
               "coverage_threshold",
               "performance_benchmarks"
             ]

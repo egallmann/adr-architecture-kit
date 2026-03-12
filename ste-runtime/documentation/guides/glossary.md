@@ -2,7 +2,7 @@
 
 Definitions of terms and concepts used in ste-runtime, a component implementation of the [System of Thought Engineering (STE) Specification](https://github.com/egallmann/ste-spec).
 
-**Note:** This glossary is aligned with the [STE Specification Glossary](../../spec/ste-spec/glossary.md). For authoritative definitions, refer to the specification.
+**Note:** This glossary is aligned with the [STE Specification Glossary](../../ste-spec/ste-spec/glossary.md). For authoritative definitions, refer to the specification.
 
 **Important:** ste-runtime implements a subset of STE Runtime components (RECON and RSS). The complete STE Runtime architecture includes additional services (AI-DOC Fabric, STE Gateway, Trust Registry) not implemented in this repository.
 
@@ -59,7 +59,7 @@ Security mechanism that prevents RECON from scanning outside the allowed project
 
 **Status in ste-runtime:** Not implemented (deferred per [E-ADR-003](../e-adr/E-ADR-003-CEM-Deferral.md)). Human-in-loop provides implicit CEM governance during development.
 
-**See:** [STE Cognitive Execution Model](../../spec/ste-spec/execution/STE-Cognitive-Execution-Model.md) in the STE Specification
+**See:** [STE Cognitive Execution Model](../../ste-spec/ste-spec/execution/STE-Cognitive-Execution-Model.md) in the STE Specification
 
 ---
 
@@ -82,7 +82,7 @@ ste rss context "add rate limiting to auth endpoints"
 
 **Implementation:** Implemented in ste-runtime via the `assembleContext` function in RSS operations. Takes entry points and traverses the graph to assemble minimal viable context with configurable depth and node limits.
 
-**See:** [RSS Operations](../../src/rss/rss-operations.ts), [STE Architecture Specification](../../spec/ste-spec/architecture/STE-Architecture.md) Section 4.6
+**See:** [RSS Operations](../../src/rss/rss-operations.ts), [STE Architecture Specification](../../ste-spec/ste-spec/architecture/STE-Architecture.md) Section 4.6
 
 ---
 
@@ -284,7 +284,7 @@ A slice whose source file has been deleted. Detected by RECON Phase 6 and automa
 - `blast-radius` - Impact analysis
 - `context` - Context assembly
 
-**Authority:** [STE Specification Glossary (ste-spec)](../../spec/ste-spec/glossary.md)
+**Authority:** [STE Specification Glossary (ste-spec)](../../ste-spec/ste-spec/glossary.md)
 
 **See:** [RSS Usage Guide](../../instructions/RSS-USAGE-GUIDE.md)
 

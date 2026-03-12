@@ -179,5 +179,5 @@ The migration tooling is designed to be reusable for:
 ## References
 
 - [ADR Kit Schema](https://github.com/egallmann/adr-architecture-kit/tree/main/schema)
-- [STE Architecture Specification](../spec/ste-spec/)
+- [STE Architecture Specification](../../ste-spec/ste-spec/)
 - [Original E-ADRs (archived)](../documentation/e-adr-archived/)

@@ -120,5 +120,5 @@ See [MIGRATION.md](MIGRATION.md) for detailed migration process and rationale.
 ## References
 
 - [ADR Kit Documentation](https://github.com/egallmann/adr-architecture-kit)
-- [STE Architecture Specification](../spec/ste-spec/)
+- [STE Architecture Specification](../../ste-spec/ste-spec/)
 - [Migration Guide](MIGRATION.md)

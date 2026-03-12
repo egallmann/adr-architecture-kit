@@ -478,7 +478,7 @@ Maximize: Task success rate
 
 - [E-ADR-011: ste-runtime MCP Server Implementation](../e-adr/E-ADR-011-ste-runtime-MCP-Server.md)
 - [E-ADR-007: Watchdog Authoritative Mode](../e-adr/E-ADR-007-Watchdog-Authoritative-Mode.md)
-- [STE Architecture Specification](../../spec/ste-spec/architecture/STE-Architecture.md)
+- [STE Architecture Specification](../../ste-spec/ste-spec/architecture/STE-Architecture.md)
 
 ---
 

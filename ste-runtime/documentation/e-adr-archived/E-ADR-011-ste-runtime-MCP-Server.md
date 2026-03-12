@@ -1082,7 +1082,7 @@ Systems we've examined:
 
 ## References
 
-- [STE Architecture](../../spec/ste-spec/architecture/STE-Architecture.md) - Sections 3.1, 4.6, 5.3
+- [STE Architecture](../../ste-spec/ste-spec/architecture/STE-Architecture.md) - Sections 3.1, 4.6, 5.3
 - [E-ADR-007](E-ADR-007-Watchdog-Authoritative-Mode.md) - Workspace Boundary operation
 - [E-ADR-004](E-ADR-004-RSS-CLI-Implementation.md) - RSS operations
 - [Incremental RECON](../../instructions/recon-incremental.md) - Implementation guide

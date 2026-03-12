@@ -17,7 +17,7 @@ This document describes the **actual architecture of ste-runtime** — what has 
 - Reference for contributors and users
 
 **Related Documents:**
-- [STE Architecture Specification](../../spec/ste-spec/architecture/STE-Architecture.md) — Complete STE Runtime architecture
+- [STE Architecture Specification](../../ste-spec/ste-spec/architecture/STE-Architecture.md) — Complete STE Runtime architecture
 - [E-ADRs](../e-adr/) — Component-level architectural decisions
 - [Architecture Diagrams](../diagrams/README.md) — Visual architecture diagrams
 
@@ -540,7 +540,7 @@ MCP query received
 - [Architecture Diagrams](../diagrams/README.md) — Visual architecture
 - [Getting Started Guide](../guides/getting-started.md) — User onboarding
 - [Configuration Reference](../guides/configuration-reference.md) — Configuration options
-- [STE Specification Architecture](../../spec/ste-spec/architecture/STE-Architecture.md) — Complete STE Runtime architecture
+- [STE Specification Architecture](../../ste-spec/ste-spec/architecture/STE-Architecture.md) — Complete STE Runtime architecture
 
 ---
 

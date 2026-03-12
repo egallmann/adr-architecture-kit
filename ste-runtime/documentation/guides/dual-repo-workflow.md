@@ -159,35 +159,30 @@ git push public feature-for-public:main
 
 ---
 
-## Git Submodule Workflow
+## Workspace Sibling-Repo Workflow
 
-Since your private project will use `ste-runtime` as a submodule:
+Since your private project will use `ste-runtime` as a sibling repository in a shared workspace:
 
 ### In Your Private Project
 
 ```bash
 cd /path/to/my-private-project
 
-# Add the PUBLIC ste-runtime as a submodule
-git submodule add https://github.com/egallmann/ste-runtime.git ste-runtime
+# Clone the PUBLIC ste-runtime beside your private project
+git clone https://github.com/egallmann/ste-runtime.git ste-runtime
 
-# This pulls from the public repo
-# You get stable, released versions
+# This gives you a sibling checkout from the public repo
+# You get stable, released versions without submodule wiring
 ```
 
-### Updating the Submodule
+### Updating the Sibling Checkout
 
 When you push new versions to public:
 
 ```bash
-# In your private project
-cd ste-runtime
+# In the sibling ste-runtime checkout
+cd /path/to/STE-workspace/ste-runtime
 git pull origin main  # Pull latest from public repo
-
-cd ..  # Back to private project root
-git add ste-runtime
-git commit -m "Update ste-runtime submodule to v1.1.0"
-git push
 ```
 
 ### Development in Both Repos
@@ -203,19 +198,16 @@ git push origin develop
 # 2. When stable, push to public
 git push public develop:main
 
-# 3. Update submodule in private project
-cd /path/to/my-private-project/ste-runtime
+# 3. Update sibling checkout in the workspace
+cd /path/to/STE-workspace/ste-runtime
 git pull origin main
-cd ..
-git add ste-runtime
-git commit -m "Update ste-runtime"
 ```
 
-**Option B: Develop directly in the submodule (for quick fixes)**
+**Option B: Develop directly in the sibling checkout (for quick fixes)**
 
 ```bash
-# In your private project's ste-runtime submodule
-cd /path/to/my-private-project/ste-runtime
+# In your workspace's ste-runtime checkout
+cd /path/to/STE-workspace/ste-runtime
 
 # Make changes
 # ... edit files ...
@@ -224,7 +216,7 @@ cd /path/to/my-private-project/ste-runtime
 git add .
 git commit -m "Fix bug X"
 
-# Push to PUBLIC repo (since submodule points to public)
+# Push to PUBLIC repo
 git push origin main
 
 # Or push to private repo instead:
@@ -320,11 +312,11 @@ git merge public/main
 
 ## Prompt for Cursor (Other Project)
 
-When working in your other Cursor project that uses `ste-runtime` as a submodule:
+When working in your other Cursor project inside the shared workspace:
 
 ```
-I'm using ste-runtime as a git submodule in this project.
-- The submodule is located at: ste-runtime/
+I'm using ste-runtime as a sibling repository in this workspace.
+- The repository is located at: ../ste-runtime/ or ste-runtime/ depending on the current project root
 - It points to the public repo: https://github.com/egallmann/ste-runtime.git
 - I develop ste-runtime separately in a separate repository
 - That repo has two remotes:
@@ -332,12 +324,12 @@ I'm using ste-runtime as a git submodule in this project.
   - public: ste-runtime (public releases)
 
 When I need to:
-1. Use ste-runtime → Use the submodule as-is
-2. Update ste-runtime → cd ste-runtime && git pull origin main
+1. Use ste-runtime → Use the sibling checkout as-is
+2. Update ste-runtime → cd ../ste-runtime && git pull origin main
 3. Develop ste-runtime → Switch to my development repository
-4. Release updates → Push from private to public, then update submodule
+4. Release updates → Push from private to public, then update the sibling checkout
 
-Please respect this workflow and don't modify the submodule directly unless it's a small fix I want to push to public immediately.
+Please respect this workflow and don't create nested submodule wiring for ste-runtime inside the workspace.
 ```
 
 ---
@@ -348,10 +340,10 @@ Please respect this workflow and don't modify the submodule directly unless it's
 |--------|---------|---------|
 | Normal development | `git push origin develop` | Private repo |
 | Public release | `git push public main` | Public repo |
-| Update submodule | `cd submodule && git pull origin main` | Pull from public |
+| Update sibling checkout | `cd ../ste-runtime && git pull origin main` | Pull from public |
 | Check remotes | `git remote -v` | Show all remotes |
 
-**Your workflow is:** Develop in private → Test thoroughly → Push stable code to public → Update submodules
+**Your workflow is:** Develop in private → Test thoroughly → Push stable code to public → Update sibling checkouts
 
 This gives you **full control** over what becomes public while maintaining **clean separation** between development and releases.
 

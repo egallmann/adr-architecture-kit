@@ -2,7 +2,7 @@
 
 from typing import List, Optional
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, ConfigDict, Field
 
 from .common import (
     ADRFrontmatter,
@@ -95,9 +95,8 @@ class LogicalADR(ADRFrontmatter):
     decisions: List[Decision] = Field(..., min_length=1)
     gaps: List[Gap] = Field(default_factory=list)
     
-    class Config:
-        """Pydantic configuration."""
-        json_schema_extra = {
+    model_config = ConfigDict(
+        json_schema_extra={
             "examples": [{
                 "schema_version": "1.0",
                 "adr_type": "logical",
@@ -115,3 +114,4 @@ class LogicalADR(ADRFrontmatter):
                 }]
             }]
         }
+    )

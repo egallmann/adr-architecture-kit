@@ -59,6 +59,23 @@ class ADRValidator:
         self.project_root = Path(project_root) if project_root else None
         self.scope_resolver = scope_resolver or ProjectScopeResolver()
     
+    def _discover_adr_files(self, adr_dir: Path) -> tuple[list[Path], list[Path]]:
+        """Discover logical and physical ADR files.
+
+        Frontmatter determines exact ADR subtype. Directory structure only distinguishes
+        logical from physical.
+        """
+        logical_files = list((adr_dir / "logical").glob("*.yaml")) if (adr_dir / "logical").exists() else []
+
+        physical_files: list[Path] = []
+        for dirname in ("physical", "physical-system", "physical-component"):
+            candidate_dir = adr_dir / dirname
+            if candidate_dir.exists():
+                physical_files.extend(candidate_dir.glob("*.yaml"))
+
+        deduped_physical = list(dict.fromkeys(path.resolve() for path in physical_files))
+        return logical_files, [Path(path) for path in deduped_physical]
+
     def validate_file(self, file_path: Union[str, Path]) -> ValidationResult:
         """Validate ADR file.
         
@@ -222,8 +239,9 @@ class ADRValidator:
                 field="system_boundaries"
             ))
         
-        # If references_components is provided, warn if empty
-        if adr.references_components is not None and len(adr.references_components) == 0:
+        # references_components is optional and defaults to an empty list in the model,
+        # so an empty value alone is not useful signal.
+        if adr.references_components and len(adr.references_components) == 0:
             warnings.append(ValidationError(
                 severity="warning",
                 rule="completeness",
@@ -343,12 +361,9 @@ class ADRValidator:
         results = {}
         
         # Find all ADR files
-        logical_files = list((adr_dir / "logical").glob("*.yaml")) if (adr_dir / "logical").exists() else []
-        physical_files = list((adr_dir / "physical").glob("*.yaml")) if (adr_dir / "physical").exists() else []
-        physical_system_files = list((adr_dir / "physical-system").glob("*.yaml")) if (adr_dir / "physical-system").exists() else []
-        physical_component_files = list((adr_dir / "physical-component").glob("*.yaml")) if (adr_dir / "physical-component").exists() else []
-        
-        for file_path in logical_files + physical_files + physical_system_files + physical_component_files:
+        logical_files, physical_files = self._discover_adr_files(adr_dir)
+
+        for file_path in logical_files + physical_files:
             result = self.validate_file(file_path)
             results[str(file_path)] = result
         
@@ -412,10 +427,7 @@ class ADRValidator:
         physical_system_adrs = {}
         physical_component_adrs = {}
         
-        logical_files = list((adr_dir / "logical").glob("*.yaml")) if (adr_dir / "logical").exists() else []
-        physical_files = list((adr_dir / "physical").glob("*.yaml")) if (adr_dir / "physical").exists() else []
-        physical_system_files = list((adr_dir / "physical-system").glob("*.yaml")) if (adr_dir / "physical-system").exists() else []
-        physical_component_files = list((adr_dir / "physical-component").glob("*.yaml")) if (adr_dir / "physical-component").exists() else []
+        logical_files, physical_files = self._discover_adr_files(adr_dir)
         
         for file_path in logical_files:
             try:
@@ -430,30 +442,13 @@ class ADRValidator:
         
         for file_path in physical_files:
             try:
-                adr = self.parser.parse_physical_adr(file_path)
-                physical_adrs[adr.id] = adr
-            except Exception as e:
-                errors.append(ValidationError(
-                    severity="error",
-                    rule="parse_error",
-                    message=f"Failed to parse {file_path}: {e}"
-                ))
-        
-        for file_path in physical_system_files:
-            try:
-                adr = self.parser.parse_physical_system_adr(file_path)
-                physical_system_adrs[adr.id] = adr
-            except Exception as e:
-                errors.append(ValidationError(
-                    severity="error",
-                    rule="parse_error",
-                    message=f"Failed to parse {file_path}: {e}"
-                ))
-        
-        for file_path in physical_component_files:
-            try:
-                adr = self.parser.parse_physical_component_adr(file_path)
-                physical_component_adrs[adr.id] = adr
+                adr = self.parser.parse_adr(file_path)
+                if isinstance(adr, PhysicalComponentADR):
+                    physical_component_adrs[adr.id] = adr
+                elif isinstance(adr, PhysicalSystemADR):
+                    physical_system_adrs[adr.id] = adr
+                elif isinstance(adr, PhysicalADR):
+                    physical_adrs[adr.id] = adr
             except Exception as e:
                 errors.append(ValidationError(
                     severity="error",

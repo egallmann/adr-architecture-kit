@@ -5,7 +5,9 @@ from pathlib import Path
 from typing import Union
 
 import jsonschema
-from jsonschema import RefResolver
+from jsonschema.validators import Draft7Validator
+from referencing import Registry, Resource
+from referencing.jsonschema import DRAFT7
 import yaml
 from pydantic import ValidationError
 
@@ -51,7 +53,7 @@ class ADRParser:
         self.schema_dir = Path(schema_dir)
         self.schema_v11_dir = Path(schema_v11_dir)
         self._schemas = {}
-        self._resolvers = {}
+        self._validators = {}
         self._load_schemas()
     
     def _load_schemas(self):
@@ -89,17 +91,16 @@ class ADRParser:
                 with open(schema_path) as f:
                     self._schemas[name] = json.load(f)
         
-        # Create schema store for resolver
-        schema_store = {}
+        resources = []
+        for schema in self._schemas.values():
+            schema_id = schema.get("$id")
+            if schema_id:
+                resources.append((schema_id, Resource.from_contents(schema, default_specification=DRAFT7)))
+
+        registry = Registry().with_resources(resources)
+
         for name, schema in self._schemas.items():
-            if "$id" in schema:
-                schema_store[schema["$id"]] = schema
-        
-        # Create resolvers for each schema
-        for name, schema in self._schemas.items():
-            if "$id" in schema:
-                resolver = RefResolver.from_schema(schema, store=schema_store)
-                self._resolvers[name] = resolver
+            self._validators[name] = Draft7Validator(schema, registry=registry)
     
     def validate_against_schema(self, data: dict, schema_name: str):
         """Validate data against JSON Schema.
@@ -115,11 +116,10 @@ class ADRParser:
             raise ADRParseError(f"Schema '{schema_name}' not found")
         
         schema = self._schemas[schema_name]
-        resolver = self._resolvers.get(schema_name)
-        
         try:
-            if resolver:
-                jsonschema.validate(data, schema, resolver=resolver)
+            validator = self._validators.get(schema_name)
+            if validator is not None:
+                validator.validate(data)
             else:
                 jsonschema.validate(data, schema)
         except jsonschema.ValidationError as e:

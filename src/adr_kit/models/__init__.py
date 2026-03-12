@@ -65,6 +65,7 @@ from .physical_component_adr import (
     ErrorHandling,
     ErrorType,
     GenerationContext,
+    ImplementationRequirements,
     InterfaceCompatibility,
     LatencyRequirements,
     LoggingConfig,
@@ -166,6 +167,7 @@ __all__ = [
     # Physical-Component ADR
     "PhysicalComponentADR",
     "GenerationContext",
+    "ImplementationRequirements",
     "Algorithm",
     "ErrorHandling",
     "ErrorType",

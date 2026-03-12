@@ -1,7 +1,7 @@
 """Pydantic models for Decision Ledger (v1.1)."""
 
 from datetime import date
-from typing import List, Optional
+from typing import List, Literal, Optional
 
 from pydantic import BaseModel, Field
 
@@ -31,8 +31,8 @@ class LedgerConstraints(BaseModel):
 
 class DecisionLedger(BaseModel):
     """Bounds design space and constrains ADR creation."""
-    schema_version: str = Field(default="1.1", const=True)
-    type: str = Field(default="decision_ledger", const=True)
+    schema_version: Literal["1.1"] = "1.1"
+    type: Literal["decision_ledger"] = "decision_ledger"
     ledger_id: str = Field(..., pattern=r"^LEDGER-\d{4}$")
     version: str = Field(default="1.0", pattern=r"^\d+\.\d+$")
     created_date: date

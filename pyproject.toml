@@ -4,7 +4,7 @@ version = "0.1.0"
 description = "STE-compliant toolkit for machine-verifiable Architecture Decision Records"
 authors = [{name = "Erik Gallmann"}]
 license = {text = "Apache-2.0"}
-requires-python = ">=3.10"
+requires-python = ">=3.11"
 readme = "README.md"
 
 dependencies = [
@@ -21,6 +21,7 @@ dev = [
     "black>=23.0",
     "ruff>=0.1",
     "mypy>=1.0",
+    "pip-audit>=2.7",
 ]
 
 cli = [
@@ -36,14 +37,14 @@ build-backend = "setuptools.build_meta"
 
 [tool.black]
 line-length = 100
-target-version = ['py310']
+target-version = ['py311']
 
 [tool.ruff]
 line-length = 100
-target-version = "py310"
+target-version = "py311"
 
 [tool.mypy]
-python_version = "3.10"
+python_version = "3.11"
 strict = true
 warn_return_any = true
 warn_unused_configs = true

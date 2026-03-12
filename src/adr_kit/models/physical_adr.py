@@ -2,7 +2,7 @@
 
 from typing import List, Optional
 
-from pydantic import BaseModel, Field, field_validator
+from pydantic import BaseModel, ConfigDict, Field, field_validator
 
 from .common import ADRFrontmatter, ADRType, Alternative, Gap
 
@@ -76,8 +76,7 @@ class DataArchitecture(BaseModel):
     schema_definition: Optional[str] = Field(None, alias="schema")
     access_patterns: Optional[str] = None
     
-    class Config:
-        populate_by_name = True
+    model_config = ConfigDict(populate_by_name=True)
 
 
 class ImplementationDecision(BaseModel):
@@ -95,7 +94,7 @@ class IntegrationPoint(BaseModel):
     systems: List[str] = Field(..., min_length=2)
     protocol: str
     specification: str
-    contract_adr: Optional[str] = Field(None, pattern=r"^ADR-(L|P|D)-\d{4}$")
+    contract_adr: Optional[str] = Field(None, pattern=r"^ADR-(L|P|PS|PC|D)-\d{4}$")
 
 
 class OperationalRequirements(BaseModel):
@@ -138,9 +137,8 @@ class PhysicalADR(ADRFrontmatter):
     operational_requirements: Optional[OperationalRequirements] = None
     gaps: List[Gap] = Field(default_factory=list)
     
-    class Config:
-        """Pydantic configuration."""
-        json_schema_extra = {
+    model_config = ConfigDict(
+        json_schema_extra={
             "examples": [{
                 "schema_version": "1.0",
                 "adr_type": "physical",
@@ -167,3 +165,4 @@ class PhysicalADR(ADRFrontmatter):
                 }]
             }]
         }
+    )

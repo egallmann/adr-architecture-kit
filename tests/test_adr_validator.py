@@ -1,6 +1,8 @@
 """Test ADR validator (ADR-P-0003: COMP-0003)."""
 
 import pytest
+import shutil
+import uuid
 from pathlib import Path
 
 from src.adr_kit.validators import ADRValidator, ValidationResult, ValidationError
@@ -56,17 +58,47 @@ class TestADRValidation:
             assert isinstance(result, ValidationResult)
     
     def test_validate_cross_references(self, validator):
-        """Test cross-reference validation."""
-        adr_dir = Path("adrs")
-        
-        if not adr_dir.exists():
-            pytest.skip("ADR directory not found")
-        
-        result = validator.validate_cross_references(adr_dir)
-        
-        assert isinstance(result, ValidationResult)
-        # Should not have errors in well-formed ADR directory
-        assert result.valid is True or len(result.errors) == 0
+        """Test cross-reference validation with a curated valid fixture scope."""
+        temp_root = Path("tests") / ".tmp" / str(uuid.uuid4())
+        adr_dir = temp_root / "adrs"
+        logical_dir = adr_dir / "logical"
+        physical_dir = adr_dir / "physical"
+        logical_dir.mkdir(parents=True, exist_ok=True)
+        physical_dir.mkdir(parents=True, exist_ok=True)
+
+        try:
+            shutil.copy(Path("tests/fixtures/valid/logical-minimal.yaml"), logical_dir / "ADR-L-9999-logical.yaml")
+            shutil.copy(Path("tests/fixtures/valid/physical-minimal.yaml"), physical_dir / "ADR-P-9999-physical.yaml")
+
+            result = validator.validate_cross_references(adr_dir)
+
+            assert isinstance(result, ValidationResult)
+            assert result.valid
+            assert len(result.errors) == 0
+        finally:
+            shutil.rmtree(temp_root, ignore_errors=True)
+
+    def test_validate_directory_discovers_physical_subtypes_in_physical_dir(self, validator):
+        """Validation should discover ADR-PS and ADR-PC files placed under adrs/physical."""
+        temp_root = Path("tests") / ".tmp" / str(uuid.uuid4())
+        adr_dir = temp_root / "adrs"
+        logical_dir = adr_dir / "logical"
+        physical_dir = adr_dir / "physical"
+        logical_dir.mkdir(parents=True, exist_ok=True)
+        physical_dir.mkdir(parents=True, exist_ok=True)
+
+        try:
+            shutil.copy(Path("tests/fixtures/valid/logical-minimal.yaml"), logical_dir / "ADR-L-9999-logical.yaml")
+            shutil.copy(Path("tests/fixtures/valid/physical-system-minimal.yaml"), physical_dir / "ADR-PS-0001-system.yaml")
+            shutil.copy(Path("tests/fixtures/valid/physical-component-minimal.yaml"), physical_dir / "ADR-PC-0001-component.yaml")
+
+            results = validator.validate_directory(adr_dir)
+
+            assert len(results) == 3
+            assert any("ADR-PS-0001-system.yaml" in path for path in results.keys())
+            assert any("ADR-PC-0001-component.yaml" in path for path in results.keys())
+        finally:
+            shutil.rmtree(temp_root, ignore_errors=True)
 
 
 class TestScopeAwareValidation:
@@ -129,19 +161,19 @@ class TestValidationRules:
         """Create validator instance."""
         return ADRValidator()
     
-    def test_logical_adr_must_have_decisions(self, validator, tmp_path):
+    def test_logical_adr_must_have_decisions(self, validator):
         """Test that logical ADRs should have decisions."""
         # This would require creating a test ADR file
         # Skipping for now - would need test fixtures
         pytest.skip("Requires test fixtures")
     
-    def test_physical_adr_must_reference_logical(self, validator, tmp_path):
+    def test_physical_adr_must_reference_logical(self, validator):
         """Test INV-0003: Physical ADRs must reference logical ADRs."""
         # This would require creating a test ADR file
         # Skipping for now - would need test fixtures
         pytest.skip("Requires test fixtures")
     
-    def test_duplicate_invariant_ids_detected(self, validator, tmp_path):
+    def test_duplicate_invariant_ids_detected(self, validator):
         """Test INV-0005: Duplicate invariant IDs are detected."""
         # This would require creating a test ADR file
         # Skipping for now - would need test fixtures

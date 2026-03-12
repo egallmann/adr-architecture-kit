@@ -1,7 +1,7 @@
 """Pydantic models for Requirements Snapshot (v1.1)."""
 
 from datetime import date
-from typing import List, Optional
+from typing import List, Literal, Optional
 
 from pydantic import BaseModel, Field
 
@@ -41,8 +41,8 @@ class TechnologySignals(BaseModel):
 
 class RequirementsSnapshot(BaseModel):
     """Captures requirements interrogation state at a point in time."""
-    schema_version: str = Field(default="1.1", const=True)
-    type: str = Field(default="requirements_snapshot", const=True)
+    schema_version: Literal["1.1"] = "1.1"
+    type: Literal["requirements_snapshot"] = "requirements_snapshot"
     snapshot_id: str = Field(..., pattern=r"^REQ-\d{4}$")
     created_date: date
     required_capabilities: Optional[List[RequiredCapability]] = Field(default_factory=list)

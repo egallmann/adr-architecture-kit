@@ -1,8 +1,9 @@
 """Integration tests for entity lifecycle workflow."""
 
-import tempfile
+import shutil
 from datetime import date
 from pathlib import Path
+import uuid
 
 import pytest
 import yaml
@@ -23,15 +24,21 @@ from adr_kit.validators import EntityValidator
 @pytest.fixture
 def temp_adr_dir():
     """Create temporary ADR directory structure."""
-    with tempfile.TemporaryDirectory() as tmpdir:
-        adr_dir = Path(tmpdir) / "adrs"
-        adr_dir.mkdir()
-        (adr_dir / "logical").mkdir()
-        (adr_dir / "physical").mkdir()
-        (adr_dir / "requirements" / "snapshots").mkdir(parents=True)
-        (adr_dir / "decisions" / "ledgers").mkdir(parents=True)
-        (adr_dir / "entities").mkdir()
+    base_dir = Path(__file__).resolve().parents[1] / ".tmp"
+    base_dir.mkdir(parents=True, exist_ok=True)
+    root_dir = base_dir / f"entity-lifecycle-{uuid.uuid4().hex[:8]}"
+    adr_dir = root_dir / "adrs"
+    adr_dir.mkdir(parents=True)
+    (adr_dir / "logical").mkdir()
+    (adr_dir / "physical").mkdir()
+    (adr_dir / "requirements" / "snapshots").mkdir(parents=True)
+    (adr_dir / "decisions" / "ledgers").mkdir(parents=True)
+    (adr_dir / "entities").mkdir()
+
+    try:
         yield adr_dir
+    finally:
+        shutil.rmtree(root_dir, ignore_errors=True)
 
 
 def test_requirements_to_ledger_to_adr_workflow(temp_adr_dir):
@@ -112,7 +119,13 @@ def test_requirements_to_ledger_to_adr_workflow(temp_adr_dir):
         "constraints": [],
         "non_functional_requirements": [],
         "invariants": [],
-        "decisions": [],
+        "decisions": [
+            {
+                "id": "DEC-0001",
+                "summary": "Use a routed gateway for AI requests",
+                "rationale": "Supports multi-provider request handling."
+            }
+        ],
         "gaps": []
     }
     
@@ -258,7 +271,13 @@ def test_entity_lifecycle_tracking(temp_adr_dir):
         "constraints": [],
         "non_functional_requirements": [],
         "invariants": [],
-        "decisions": [],
+        "decisions": [
+            {
+                "id": "DEC-0002",
+                "summary": "Track lifecycle through ADR status",
+                "rationale": "Entity registry derives lifecycle from ADR state."
+            }
+        ],
         "gaps": []
     }
     

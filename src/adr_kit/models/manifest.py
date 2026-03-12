@@ -3,15 +3,15 @@
 from datetime import datetime
 from typing import Dict, List, Optional
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, ConfigDict, Field
 
 from .common import ImpactLevel, Status
 
 
 class ManifestADREntry(BaseModel):
     """ADR entry in manifest (aggregated metadata)."""
-    id: str = Field(..., pattern=r"^ADR-(L|P|D)-\d{4}$")
-    type: str = Field(..., pattern=r"^(logical|physical|decision)$")
+    id: str = Field(..., pattern=r"^ADR-(L|P|PS|PC|D)-\d{4}$")
+    type: str = Field(..., pattern=r"^(logical|physical|physical-system|physical-component|decision)$")
     title: str
     status: Status
     file_path: str
@@ -32,7 +32,7 @@ class ManifestInvariant(BaseModel):
     """Invariant entry in manifest."""
     id: str = Field(..., pattern=r"^INV-\d{4}$")
     statement: str
-    defined_in: str = Field(..., pattern=r"^ADR-(L|P|D)-\d{4}$")
+    defined_in: str = Field(..., pattern=r"^ADR-(L|P|PS|PC|D)-\d{4}$")
     enforced_by: List[str] = Field(default_factory=list)
     enforcement_level: str = Field(..., pattern=r"^(must|should|may)$")
 
@@ -73,7 +73,7 @@ class ManifestEntity(BaseModel):
     entity_id: str = Field(..., pattern=r"^[A-Z]+-\d{4}$")
     entity_type: str
     name: str
-    introduced_by: str = Field(..., pattern=r"^ADR-(L|P|D)-\d{4}$")
+    introduced_by: str = Field(..., pattern=r"^ADR-(L|P|PS|PC|D)-\d{4}$")
     lifecycle_stage: str
 
 
@@ -115,9 +115,8 @@ class Manifest(BaseModel):
     gaps_summary: GapsSummary
     statistics: ManifestStatistics
     
-    class Config:
-        """Pydantic configuration."""
-        json_schema_extra = {
+    model_config = ConfigDict(
+        json_schema_extra={
             "examples": [{
                 "schema_version": "1.0",
                 "type": "manifest",
@@ -144,3 +143,4 @@ class Manifest(BaseModel):
                 }
             }]
         }
+    )

@@ -78,9 +78,9 @@ class ADRFrontmatter(BaseModel):
     status: Status
     created_date: date
     modified_date: Optional[date] = None
-    authors: List[str] = Field(..., min_items=1)
+    authors: List[str] = Field(..., min_length=1)
     
-    domains: List[str] = Field(default_factory=list, min_items=1)
+    domains: List[str] = Field(default_factory=list, min_length=1)
     tags: List[str] = Field(default_factory=list)
     
     related_adrs: List[str] = Field(default_factory=list)

@@ -1,6 +1,8 @@
 """Test multi-scope manifest generation (ADR-P-0003: COMP-0002)."""
 
 import pytest
+import shutil
+import uuid
 from pathlib import Path
 
 from src.adr_kit.generators import ManifestGenerator
@@ -110,7 +112,7 @@ class TestBackwardCompatibility:
         assert manifest.schema_version == "1.0"
         assert manifest.type == "manifest"
     
-    def test_save_manifest_still_works(self, tmp_path):
+    def test_save_manifest_still_works(self):
         """Test that save_manifest works as before."""
         generator = ManifestGenerator()
         adr_dir = Path("adrs")
@@ -118,14 +120,17 @@ class TestBackwardCompatibility:
         if not adr_dir.exists():
             pytest.skip("ADR directory not found")
         
-        manifest = generator.generate_from_directory(adr_dir)
-        output_path = tmp_path / "test-manifest.yaml"
-        
-        # Old API should still work
-        generator.save_manifest(manifest, output_path)
-        
-        assert output_path.exists()
-        assert output_path.stat().st_size > 0
+        temp_root = Path("tests") / ".tmp" / str(uuid.uuid4())
+        output_path = temp_root / "test-manifest.yaml"
+
+        try:
+            manifest = generator.generate_from_directory(adr_dir)
+            generator.save_manifest(manifest, output_path)
+
+            assert output_path.exists()
+            assert output_path.stat().st_size > 0
+        finally:
+            shutil.rmtree(temp_root, ignore_errors=True)
 
 
 class TestEdgeCases:
@@ -138,17 +143,20 @@ class TestEdgeCases:
         with pytest.raises(ValueError, match="ADR directory not found"):
             generator.generate_from_directory(Path("/nonexistent/adrs"))
     
-    def test_generate_from_empty_directory(self, tmp_path):
+    def test_generate_from_empty_directory(self):
         """Test generation from empty ADR directory."""
-        empty_adrs = tmp_path / "adrs"
-        empty_adrs.mkdir()
+        temp_root = Path("tests") / ".tmp" / str(uuid.uuid4())
+        empty_adrs = temp_root / "adrs"
+        empty_adrs.mkdir(parents=True, exist_ok=True)
         (empty_adrs / "logical").mkdir()
         (empty_adrs / "physical").mkdir()
-        
-        generator = ManifestGenerator()
-        manifest = generator.generate_from_directory(empty_adrs)
-        
-        # Should generate valid but empty manifest
-        assert manifest.statistics.total_adrs == 0
-        assert manifest.statistics.logical_adrs == 0
-        assert manifest.statistics.physical_adrs == 0
+
+        try:
+            generator = ManifestGenerator()
+            manifest = generator.generate_from_directory(empty_adrs)
+
+            assert manifest.statistics.total_adrs == 0
+            assert manifest.statistics.logical_adrs == 0
+            assert manifest.statistics.physical_adrs == 0
+        finally:
+            shutil.rmtree(temp_root, ignore_errors=True)

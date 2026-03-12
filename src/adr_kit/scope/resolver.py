@@ -6,7 +6,7 @@ Mirrors ste-runtime's scope detection pattern for consistency.
 
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Optional, List
+from typing import List, Optional, Tuple
 
 
 @dataclass
@@ -104,7 +104,7 @@ class ProjectScopeResolver:
         current = Path(start_dir).resolve() if start_dir else Path.cwd()
         
         # Priority 2-4: Search for markers (INV-0015)
-        project_root = self._find_project_root(current)
+        project_root, marker = self._find_project_root(current)
         
         if not project_root:
             raise ValueError(
@@ -115,7 +115,7 @@ class ProjectScopeResolver:
         # Check if this is a sub-module by looking for parent project
         parent_scope = self._find_parent_scope(project_root)
         
-        scope = self._create_scope(project_root, 'auto-detected')
+        scope = self._create_scope(project_root, marker or 'auto-detected')
         scope.is_sub_module = parent_scope is not None
         scope.parent_scope = parent_scope
         
@@ -142,7 +142,7 @@ class ProjectScopeResolver:
         
         return scopes
     
-    def _find_project_root(self, start_dir: Path) -> Optional[Path]:
+    def _find_project_root(self, start_dir: Path) -> Tuple[Optional[Path], Optional[str]]:
         """Find project root by searching for markers.
         
         Implements INV-0018: Stop at workspace boundary.
@@ -156,15 +156,15 @@ class ProjectScopeResolver:
                 # Found boundary, check if current dir has markers
                 for marker in self.MARKERS:
                     if (current / marker).exists():
-                        return current
+                        return current, marker
                 # No markers at boundary, stop here
-                return None
+                return None, None
             
             # Check for markers in current directory
             for marker in self.MARKERS:
                 marker_path = current / marker
                 if marker_path.exists():
-                    return current
+                    return current, marker
             
             # Move up one level
             parent = current.parent
@@ -172,7 +172,7 @@ class ProjectScopeResolver:
                 break
             current = parent
         
-        return None
+        return None, None
     
     def _is_workspace_boundary(self, path: Path) -> bool:
         """Check if path is a workspace boundary (INV-0018).
@@ -203,10 +203,10 @@ class ProjectScopeResolver:
         parent_dir = project_root.parent
         
         # Try to find parent project markers
-        parent_root = self._find_project_root(parent_dir)
+        parent_root, parent_marker = self._find_project_root(parent_dir)
         
         if parent_root and parent_root != project_root:
-            return self._create_scope(parent_root, 'parent')
+            return self._create_scope(parent_root, parent_marker or 'parent')
         
         return None
     

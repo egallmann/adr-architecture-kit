@@ -6,6 +6,10 @@
 
 ADR Architecture Kit implements the **Documentation-State Layer (Layer 5)** of the System of Thought Engineering (STE) framework, providing structured, schema-validated architecture documentation that AI systems can reason over deterministically.
 
+For fastest repo orientation, start with [SYSTEM-OVERVIEW.md](/c:/Users/Erik/Documents/Projects/adr-architecture-kit/SYSTEM-OVERVIEW.md).
+`SYSTEM-OVERVIEW.md` is a generated artifact. Update it with `adr generate-system-overview` and validate it with `adr validate-system-overview`.
+Rendered ADR markdown and the manifest are also generated artifacts. Refresh them with `adr generate-rendered-docs` and `adr generate-manifest`, then verify projections with `adr validate-generated-docs`.
+
 ### Key Features
 
 - **Machine-Verifiable ADRs** - JSON Schema validation ensures structural integrity
@@ -22,6 +26,8 @@ ADR Architecture Kit implements the **Documentation-State Layer (Layer 5)** of t
 ```bash
 pip install -r requirements.txt
 ```
+
+Supported runtime: Python 3.11+.
 
 ### Parse an ADR
 
@@ -62,6 +68,15 @@ adr = parser.parse_logical_adr(Path("adrs/logical/ADR-L-0001.yaml"))
 generator.render_to_file(adr, Path("adrs/rendered/ADR-L-0001.md"))
 ```
 
+### Validate Generated Documentation
+
+```bash
+adr generate-manifest
+adr generate-rendered-docs
+adr generate-system-overview
+adr validate-generated-docs
+```
+
 ## Architecture
 
 ### Three-Repository Architecture
@@ -86,11 +101,30 @@ ste-runtime (semantic graph extraction via RECON)
 - Invariants and non-functional requirements
 - NO implementation details
 
-**Physical ADRs** (`ADR-P-XXXX`) - Implementation specifications:
+**Vision ADRs** (`ADR-V-XXXX`) - Future-state logical direction:
+- A special category of logical ADR focused on target evolution and planned capability
+- Defines future-state architecture and capability intent the system should grow toward
+- Helps ensure implementation evolves toward the intended meta-system vision
+- Not treated as current implemented authority in the same way as accepted foundational ADR-L artifacts
+
+**Physical ADRs** (`ADR-P-XXXX`) - Legacy broad implementation specifications:
 - Technology stack and architecture patterns
 - Component specifications with interfaces
 - Deployment model and data architecture
 - Implementation decisions and operational requirements
+
+**Physical-System ADRs** (`ADR-PS-XXXX`) - System architecture / high-level design:
+- High-level design with major components, boundaries, and relationships
+- System topology, integration patterns, and data flows
+- Broad technology and deployment claims at system scope
+- The "component boxes and relationships" view of the implementation design
+- Steelman acceptance bar: a coherent design for the abstraction layer it supports
+
+**Physical-Component ADRs** (`ADR-PC-XXXX`) - Executable architecture:
+- Complete component-level implementation specification
+- All detail required for AI-assisted implementation without further human clarification
+- Interface, algorithm, operational, compatibility, and testing requirements
+- Steelman acceptance bar: sufficient precision for implementation-ready execution
 
 **PROJECT.yaml** - Project-level metadata:
 - Ownership (team, tech lead, on-call)
@@ -116,7 +150,10 @@ Located in `schema/v1.0/`:
 
 ```
 ADR-L-0001  Logical ADR
+ADR-V-0001  Vision ADR
 ADR-P-0001  Physical ADR
+ADR-PS-0001 Physical-System ADR
+ADR-PC-0001 Physical-Component ADR
 INV-0001    Invariant
 CAP-0001    Capability
 COMP-0001   Component
@@ -216,6 +253,16 @@ GitHub Actions workflow (`.github/workflows/adr-governance.yml`) enforces:
 2. **Manifest freshness** - Manifest must be up-to-date with ADRs
 3. **Test suite** - All tests must pass
 4. **PROJECT.yaml validation** - Project metadata must be valid
+5. **Runtime hygiene** - Deprecated APIs fail governance checks
+6. **Dependency security** - Known vulnerable packages fail governance checks
+7. **Dependency freshness** - Outdated direct dependencies are surfaced continuously
+
+Run the runtime hygiene audit locally:
+
+```bash
+python scripts/check_runtime_hygiene.py
+adr audit-runtime --fail-on-outdated
+```
 
 ## Documentation
 

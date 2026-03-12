@@ -20,12 +20,13 @@ jobs:
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.10'
+          python-version: '3.12'
       
       - name: Install dependencies
         run: |
-          pip install -r requirements.txt
-          pip install pytest
+          python -m pip install --upgrade pip
+          pip install -e .[dev,cli]
+          pip install pip-audit
       
       - name: Validate ADR schema compliance
         run: |
@@ -102,6 +103,18 @@ jobs:
         run: |
           pytest tests/ -v
 
+      - name: Validate system overview
+        run: |
+          adr validate-system-overview
+
+      - name: Validate generated documentation
+        run: |
+          adr validate-generated-docs
+
+      - name: Audit runtime hygiene
+        run: |
+          python scripts/check_runtime_hygiene.py --fail-on-outdated
+
   validate-project-metadata:
     name: Validate PROJECT.yaml
     runs-on: ubuntu-latest
@@ -113,11 +126,12 @@ jobs:
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.10'
+          python-version: '3.12'
       
       - name: Install dependencies
         run: |
-          pip install -r requirements.txt
+          python -m pip install --upgrade pip
+          pip install -e .
       
       - name: Validate PROJECT.yaml
         run: |

@@ -1,0 +1,67 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://ste-rules-library.ste.systems/schema/rule.schema.json",
+  "title": "Rule Schema",
+  "description": "Schema for governance rules. Authority: ste-rules-library ADR-L-0001. Consumes projection_signals from adr-architecture-kit ADR frontmatter.",
+
+  "type": "object",
+  "required": ["id", "version", "description"],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^rule-[a-z0-9-]+$",
+      "description": "Unique rule identifier"
+    },
+    "version": {
+      "type": "string",
+      "pattern": "^\\d+\\.\\d+\\.\\d+$",
+      "description": "Semantic version"
+    },
+    "description": {
+      "type": "string",
+      "description": "Human-readable rule description"
+    },
+    "source_adr": {
+      "type": "string",
+      "pattern": "^ADR-[LP]-\\d{4}$",
+      "description": "ADR that authorizes this rule (adr-architecture-kit or ste-rules-library)"
+    },
+    "scope": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "File patterns this rule applies to (e.g. **/*.py, **/adrs/**)"
+    },
+    "signals": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Context signals that activate this rule. Populated from ADR projection_signals when rule is ADR-derived"
+    },
+    "authority": {
+      "type": "string",
+      "enum": ["layer-1", "layer-2", "layer-3"],
+      "description": "Authority layer"
+    },
+    "escalation_posture": {
+      "type": "string",
+      "enum": ["halt", "warn"],
+      "default": "halt",
+      "description": "Conflict handling"
+    },
+    "ai_projectable": {
+      "type": "object",
+      "properties": {
+        "minimal_context": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Minimal sections for AI context projection"
+        },
+        "priority": {
+          "type": "string",
+          "enum": ["high", "medium", "low"],
+          "description": "Projection priority when context is constrained"
+        }
+      },
+      "description": "AI-first projection hints"
+    }
+  }
+}

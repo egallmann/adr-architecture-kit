@@ -1,0 +1,416 @@
+schema_version: '1.0'
+adr_type: physical-system
+id: ADR-PS-0001
+title: STE Runtime Developer Cognition Environment
+status: accepted
+created_date: '2026-03-12'
+authors:
+- erik.gallmann
+domains:
+- runtime
+- architecture
+- cognition
+- recon
+- rss
+tags:
+- ste-runtime
+- physical-system
+- developer-cognition
+- local-first
+related_adrs: []
+supersedes: []
+projection_signals: []
+introduces_entities: []
+modifies_entities: []
+realizes_entities: []
+related_ledgers: []
+implements_logical:
+- ADR-L-0001
+- ADR-L-0002
+- ADR-L-0003
+- ADR-L-0004
+- ADR-L-0006
+technologies:
+- typescript
+- python
+- yaml
+- embedded-analytical-database
+- mcp
+- local-first-runtime
+context: |
+  ## System Context
+  STE Runtime is the local developer cognition environment for workspace-scale semantic extraction, graph-backed runtime state slicing, context assembly, rule projection, and interface delivery. It operates inside the Workspace Development Boundary as provisional runtime architecture over local source artifacts and `.ste/state/` documentation-state.
+
+  ## Authority Alignment
+  1. **ste-spec doctrine** is normative for RECON, RSS, CEM, Minimally Viable Context (MVC), authority boundaries, and system invariants. This ADR adopts those doctrines and does not redefine them.
+  2. **adr-architecture-kit schema authority** governs the structure and validation shape of this Physical-System ADR.
+  3. **ste-runtime embodiment baseline** provides current implementation evidence only, including `src/recon/`, `src/rss/`, `src/mcp/`, `src/watch/`, and `.ste/state/` usage.
+
+  ## Architectural Principles
+  1. **Graph-first cognition**: the semantic graph is the primary reasoning substrate for runtime cognition.
+  2. **Deterministic extraction**: RECON uses explicit extraction and normalization, not probabilistic inference, to derive state.
+  3. **Incremental RECON**: file changes should update only affected semantic state when possible, with full regeneration as the correctness fallback.
+  4. **Local-first execution**: the runtime must function on a developer workstation without mandatory network services.
+  5. **Explicit subsystem boundaries**: extraction, storage, slicing, context assembly, rule projection, interface delivery, and supervision remain separable responsibilities.
+  6. **Inspectable cognition**: each runtime stage must expose evidence sufficient for developer inspection and fault isolation.
+  7. **Minimally Viable Context**: context assembly must stay bounded to task-relevant slices and preserve provenance.
+
+  ## Cognition Pipeline
+  ### 1. Filesystem Event
+  - Responsibility: detect workspace changes or explicit refresh requests that require cognition state refresh.
+  - Input contract: filesystem notifications, manual refresh requests, or startup bootstrap signals.
+  - Output contract: a deterministic set of changed paths or a full-refresh request routed to extraction.
+  - Invariants: observed changes are explicit; self-generated runtime state writes must not be treated as source change intent.
+  - Inspection surface: watchdog diagnostics, watch status output, refresh event logs.
+
+  ### 2. Extraction (RECON)
+  - Responsibility: extract semantic slices from source artifacts and normalize them into documentation-state.
+  - Input contract: changed source files or full workspace source inventory.
+  - Output contract: deterministic AI-DOC slices and refresh metadata suitable for graph update.
+  - Invariants: deterministic extraction, ID stability for stable source elements, incremental correctness with full RECON fallback.
+  - Inspection surface: extraction reports, validation findings, emitted YAML slices, RECON manifests.
+
+  ### 3. Semantic Graph Update
+  - Responsibility: persist authoritative YAML slices and refresh the local query index.
+  - Input contract: normalized slices plus create/update/delete intent from extraction.
+  - Output contract: authoritative YAML state and a queryable local graph index consistent with that YAML.
+  - Invariants: YAML is primary truth, index state is regenerable, sync direction is YAML to database.
+  - Inspection surface: graph state inspection, storage freshness metadata, rebuild diagnostics.
+
+  ### 4. Runtime State Slicing (RSS)
+  - Responsibility: traverse graph state to resolve lookup, dependency, dependent, blast-radius, and related bounded graph queries.
+  - Input contract: explicit identifiers, entry points, traversal depth, and query intent.
+  - Output contract: bounded traversal results with provenance and deterministic ordering sufficient for assembly.
+  - Invariants: same inputs produce the same traversal, traversal remains depth-bounded, slicing never substitutes probabilistic search for doctrinal RSS.
+  - Inspection surface: RSS traces, query metadata, traversal diagnostics.
+
+  ### 5. Context Assembly
+  - Responsibility: transform RSS outputs into reproducible, task-relevant context bundles.
+  - Input contract: RSS traversal results, provenance metadata, task framing, and context limits.
+  - Output contract: context bundles containing MVC, provenance, and assembly metadata.
+  - Invariants: provenance-preserving output, bounded bundle size, reproducible bundle composition from the same inputs.
+  - Inspection surface: context bundle inspection, token and slice composition metadata, exported bundle artifacts.
+
+  ### 6. Rules Projection
+  - Responsibility: activate applicable rules and obligations against assembled context before interface delivery.
+  - Input contract: context bundle plus projected governance sources available in the runtime boundary.
+  - Output contract: activated rules, obligation diagnostics, and rule-aware response annotations.
+  - Invariants: rule activation is explicit, obligation reasoning is inspectable, projection does not claim authority above ste-spec doctrine.
+  - Inspection surface: rule activation diagnostics, obligation reports, projection traces.
+
+  ### 7. Interface Response
+  - Responsibility: expose runtime cognition results through MCP and CLI without owning cognition logic.
+  - Input contract: rule-aware context results and interface request metadata.
+  - Output contract: interface-specific responses, diagnostics, and inspection handles for the caller.
+  - Invariants: transport stays separate from cognition, responses preserve provenance, interface behavior reflects runtime state rather than hidden inference.
+  - Inspection surface: MCP tool metadata, CLI output, response diagnostics.
+
+  ## Subsystem Topology
+  ### Extraction Pipeline
+  - Responsibility: source artifacts to normalized semantic slices.
+  - Contract boundary: accepts explicit source-change scope and emits deterministic slice mutations only.
+  - Current embodiment: `src/recon/` and its phased extraction pipeline.
+  - Future component ADR: ADR-PC-0001 Extraction Pipeline.
+
+  ### Semantic Graph Store
+  - Responsibility: maintain authoritative state and query acceleration storage.
+  - Contract boundary: persists authoritative YAML state and serves graph state to RSS through a storage abstraction.
+  - Current embodiment: `.ste/state/` YAML plus in-memory loading over file-based state.
+  - Future component ADR: ADR-PC-0002 Graph Store.
+
+  ### Runtime State Slicing (RSS)
+  - Responsibility: bounded graph traversal over semantic state.
+  - Contract boundary: accepts explicit query intent and graph entry points; returns deterministic traversal outputs.
+  - Current embodiment: `src/rss/` query and traversal operations.
+  - Future component ADR: ADR-PC-0003 RSS.
+
+  ### Context Assembly
+  - Responsibility: produce MVC-oriented context bundles from RSS output.
+  - Contract boundary: consumes traversal results and emits reproducible, provenance-preserving bundles.
+  - Current embodiment: context assembly logic split between RSS and MCP-facing paths.
+  - Future component ADR: ADR-PC-0004 Context Assembler.
+
+  ### Rules Projection
+  - Responsibility: project rules and obligations onto assembled context.
+  - Contract boundary: consumes context bundles and emits activation and obligation diagnostics without redefining doctrine.
+  - Current embodiment: partial obligation projection in `src/mcp/obligation-projector.ts`.
+  - Future component ADR: ADR-PC-0005 Rules Projection.
+
+  ### Interface Layer
+  - Responsibility: expose runtime capabilities via CLI and MCP.
+  - Contract boundary: transports requests and responses while delegating cognition to upstream subsystems.
+  - Current embodiment: `src/mcp/` and `src/cli/`.
+  - Future component ADR: ADR-PC-0006 MCP Interface.
+
+  ### Runtime Supervisor
+  - Responsibility: coordinate lifecycle, refresh orchestration, and subsystem startup/shutdown.
+  - Contract boundary: orchestrates pipeline transitions and health diagnostics without collapsing subsystem responsibilities.
+  - Current embodiment: startup and watch orchestration distributed across runtime entrypoints and watchdog logic.
+  - Future component ADR: ADR-PC-0007 Watchdog.
+
+  ## Storage Architecture
+  The storage architecture is hybrid and authority-ordered:
+  - YAML slices under `.ste/state/` are the authoritative runtime state.
+  - The embedded analytical database is a local query acceleration index only.
+  - Synchronization is one-way from YAML to database.
+  - The database is regenerable from authoritative YAML and RECON output.
+  - The database remains local and gitignored.
+
+  Consequences:
+  - If YAML and database diverge, YAML wins.
+  - Database loss is recoverable by rebuilding from authoritative state.
+  - Storage substitution remains possible so long as the state authority order is preserved.
+
+  ## Storage Abstraction Interface
+  The system-level storage contract remains implementation-neutral:
+  ```text
+  StateStore
+  - writeSlices(slices)
+  - deleteSlices(ids)
+  - readSlice(id)
+  - readSlices(ids)
+  - queryByDomain(domain)
+  - queryByTag(tag)
+  - traverseDependencies(id, depth)
+  - traverseDependents(id, depth)
+  - semanticSearch(query, topK)
+  - getFreshnessState()
+  - rebuildQueryIndexFromYaml()
+  ```
+  This contract exists to preserve subsystem separation between extraction, state authority, query execution, and interface delivery. Specific storage technologies, schemas, index layouts, and performance tactics are deferred to component ADRs.
+
+  ## Inspection Surfaces
+  1. **Graph state inspection**: direct YAML inspection, graph show operations, and provenance-aware slice viewing.
+  2. **RSS query traces**: traversal paths, pruning decisions, depth usage, and query diagnostics.
+  3. **Rule activation diagnostics**: active rules, obligation rationale, and projection evidence.
+  4. **Context bundle inspection**: bundle composition, provenance, token counts, and exported debug bundles.
+  5. **Watchdog diagnostics**: watch health, refresh events, debounce decisions, and loop prevention evidence.
+
+  ## Deferred Decisions
+  The following implementation decisions are intentionally deferred to component ADRs:
+  - ADR-PC-0001 Extraction Pipeline
+  - ADR-PC-0002 Graph Store
+  - ADR-PC-0003 RSS
+  - ADR-PC-0004 Context Assembler
+  - ADR-PC-0005 Rules Projection
+  - ADR-PC-0006 MCP Interface
+  - ADR-PC-0007 Watchdog
+
+  Deferred decisions include exact storage engine choice, traversal algorithms, cache strategy, watcher library behavior, MCP SDK specifics, bundle serialization details, and rule execution mechanics.
+
+  ## System Invariants
+  1. **Deterministic extraction**: equivalent source inputs must yield equivalent extracted semantic state.
+  2. **Graph inspectability**: authoritative graph state must remain inspectable as explicit artifacts.
+  3. **RECON regenerability**: local query acceleration state must be rebuildable from authoritative state without semantic loss.
+  4. **Bounded RSS traversal**: runtime slicing must remain depth-bounded and provenance-preserving.
+  5. **Minimally Viable Context**: context assembly must select the smallest sufficient explicit context for the task.
+  6. **Authority preservation**: runtime behavior must not override ste-spec doctrine or claim canonical authority beyond the workspace boundary.
+technology_stack:
+- category: language
+  name: TypeScript/JavaScript
+  version: deferred to ADR-PC-0001, ADR-PC-0003, and ADR-PC-0006
+  rationale: Primary runtime and interface language family for extraction orchestration, RSS operations, and local interface delivery within the existing Node.js-oriented embodiment.
+- category: language
+  name: Python
+  version: deferred to ADR-PC-0001
+  rationale: Supported extraction language category for workspace code analysis where Python parsing and runtime integration remain part of the embodiment baseline.
+- category: database
+  name: Embedded Analytical Database
+  version: deferred to ADR-PC-0002
+  rationale: Required as a local query acceleration index with recursive traversal, semantic search support, and regenerable single-node operation while remaining subordinate to YAML authority.
+- category: tooling
+  name: YAML State Artifacts
+  version: schema-defined, implementation-neutral
+  rationale: Authoritative documentation-state must remain human-inspectable, git-friendly, and regenerable through RECON-compatible workflows.
+- category: framework
+  name: Model Context Protocol
+  version: deferred to ADR-PC-0006
+  rationale: Standard interface category for exposing runtime cognition capabilities to AI tooling without embedding cognition logic into the client transport.
+system_boundaries:
+- id: SYSBOUND-0001
+  name: Workspace Developer Cognition Boundary
+  description: STE Runtime operates as a local developer cognition environment inside the Workspace Development Boundary. It maintains provisional semantic state for a single workspace, assembles bounded context from explicit graph state, and exposes that context through local interfaces without claiming canonical authority over ste-spec doctrine or production execution boundaries.
+  external_dependencies:
+  - Local source workspace
+  - Local filesystem events
+  - ste-spec doctrine
+  - adr-architecture-kit schema authority
+  - Developer-facing MCP or CLI clients
+  exposed_interfaces:
+  - MCP interface
+  - CLI interface
+  - Graph inspection surfaces
+  - Context inspection surfaces
+  - Runtime diagnostics
+component_topology:
+  components:
+  - name: Runtime Supervisor
+    type: scheduler
+    purpose: Coordinate startup, refresh orchestration, and runtime lifecycle across cognition subsystems.
+  - name: Extraction Pipeline
+    type: service
+    purpose: Extract deterministic semantic slices from workspace artifacts via RECON.
+  - name: Semantic Graph Store
+    type: database
+    purpose: Persist authoritative YAML-backed semantic state and maintain a regenerable local query index.
+  - name: Runtime State Slicing (RSS)
+    type: service
+    purpose: Perform deterministic, bounded graph traversal over semantic state.
+  - name: Context Assembly
+    type: service
+    purpose: Assemble provenance-preserving MVC bundles from RSS outputs.
+  - name: Rules Projection
+    type: service
+    purpose: Project applicable rules and obligations onto assembled runtime context.
+  - name: Interface Layer
+    type: gateway
+    purpose: Expose cognition results through local MCP and CLI interfaces.
+  relationships:
+  - from: Runtime Supervisor
+    to: Extraction Pipeline
+    type: calls
+    description: Supervisor initiates full or incremental refresh work.
+  - from: Extraction Pipeline
+    to: Semantic Graph Store
+    type: writes_to
+    description: Extraction persists authoritative YAML state and index refresh intent.
+  - from: Runtime State Slicing (RSS)
+    to: Semantic Graph Store
+    type: reads_from
+    description: RSS traverses authoritative graph state through the storage abstraction boundary.
+  - from: Context Assembly
+    to: Runtime State Slicing (RSS)
+    type: calls
+    description: Context assembly requests bounded traversal outputs for bundle construction.
+  - from: Rules Projection
+    to: Context Assembly
+    type: calls
+    description: Rules projection evaluates assembled bundles before delivery.
+  - from: Interface Layer
+    to: Rules Projection
+    type: calls
+    description: The interface returns rule-aware context results to callers.
+  - from: Interface Layer
+    to: Runtime Supervisor
+    type: depends_on
+    description: Local interface availability depends on supervisor-managed runtime lifecycle.
+integration_patterns:
+- pattern_name: Graph-first cognition
+  application: The runtime reasons over explicit semantic graph state rather than direct ad hoc source inspection or hidden model memory.
+  components_affected:
+  - Semantic Graph Store
+  - Runtime State Slicing (RSS)
+  - Context Assembly
+- pattern_name: Deterministic extraction
+  application: RECON-derived state is produced through explicit extraction and normalization so the same source state yields the same semantic state.
+  components_affected:
+  - Extraction Pipeline
+  - Semantic Graph Store
+- pattern_name: Incremental RECON
+  application: Runtime refresh should prefer affected-file updates while retaining full regeneration as the correctness fallback.
+  components_affected:
+  - Runtime Supervisor
+  - Extraction Pipeline
+  - Semantic Graph Store
+- pattern_name: Local-first execution
+  application: The default runtime architecture runs on the developer workstation without mandatory remote services.
+  components_affected:
+  - Runtime Supervisor
+  - Semantic Graph Store
+  - Interface Layer
+- pattern_name: Explicit subsystem boundaries
+  application: Subsystem responsibilities remain separable so service decomposition remains possible without redefining system responsibilities.
+  components_affected:
+  - Extraction Pipeline
+  - Semantic Graph Store
+  - Runtime State Slicing (RSS)
+  - Context Assembly
+  - Rules Projection
+  - Interface Layer
+  - Runtime Supervisor
+- pattern_name: Inspectable cognition
+  application: Every major stage exposes evidence and diagnostics for human inspection and recovery.
+  components_affected:
+  - Semantic Graph Store
+  - Runtime State Slicing (RSS)
+  - Context Assembly
+  - Rules Projection
+  - Runtime Supervisor
+- pattern_name: Minimally Viable Context
+  application: Context is assembled as the smallest sufficient explicit bundle for the task, with provenance preserved and traversal bounded.
+  components_affected:
+  - Runtime State Slicing (RSS)
+  - Context Assembly
+  - Rules Projection
+- pattern_name: Hybrid authoritative storage
+  application: Authoritative YAML state is paired with a regenerable local query index to preserve inspectability while enabling runtime query performance.
+  components_affected:
+  - Extraction Pipeline
+  - Semantic Graph Store
+  - Runtime State Slicing (RSS)
+- pattern_name: Service-separable modular monolith
+  application: The default runtime remains a single local process while subsystem contracts preserve the option for later service separation.
+  components_affected:
+  - Runtime Supervisor
+  - Interface Layer
+  - Semantic Graph Store
+data_flows:
+- id: FLOW-0001
+  name: Canonical Runtime Cognition Pipeline
+  description: Filesystem events or explicit refresh requests enter the supervisor, trigger RECON extraction, refresh authoritative graph state, perform bounded RSS traversal, assemble MVC-oriented context, project rules, and return an inspectable interface response.
+  path:
+  - Runtime Supervisor
+  - Extraction Pipeline
+  - Semantic Graph Store
+  - Runtime State Slicing (RSS)
+  - Context Assembly
+  - Rules Projection
+  - Interface Layer
+  data_type: Semantic runtime cognition state
+  latency_requirements: Interactive local responses should remain bounded and inspectable, with correctness taking precedence over speculative speedups.
+references_components: []
+deployment_model:
+  hosting: on-premise
+  orchestration: Single-process local runtime by default; service-separated deployment deferred.
+  scaling_strategy: The default deployment is local-first and single-user. Future service separation may scale individual subsystems independently, but this ADR does not commit to a distributed deployment design.
+scalability_strategy:
+  horizontal_scaling: Not required for the default local deployment. Horizontal separation is reserved for future component ADRs if shared or networked runtime operation becomes necessary.
+  vertical_scaling: Local execution scales by improving incremental refresh, bounded traversal, and regenerable query acceleration while preserving YAML authority.
+  bottlenecks:
+  - Full-workspace RECON on large repositories
+  - Deep graph traversal and context assembly cost
+  - Query-index rebuild duration
+  - Rule projection cost for oversized bundles
+  capacity_planning: Capacity planning is driven by workspace size, slice count, refresh frequency, and bounded context assembly requirements rather than by network concurrency targets.
+failure_modes:
+- scenario: Graph staleness
+  impact: high
+  mitigation: Use watchdog-driven incremental refresh and explicit freshness tracking so stale state becomes observable rather than implicit.
+  detection: Manifest or freshness mismatch between source changes and semantic state, missing recent refresh events, or explicit stale-state diagnostics.
+  recovery: Run incremental RECON for affected files; fall back to full RECON when incremental equivalence cannot be trusted.
+- scenario: Extraction drift
+  impact: high
+  mitigation: Keep extraction deterministic, report validation findings, and preserve the ability to inspect authoritative YAML output directly.
+  detection: Self-validation findings, schema violations, repeatability mismatches, or graph anomalies after extraction.
+  recovery: Correct extractor behavior and regenerate state through incremental or full RECON as appropriate.
+- scenario: Rule misfire
+  impact: medium
+  mitigation: Require explicit activation rationale and expose rule diagnostics so incorrect projection remains inspectable.
+  detection: Unexpected obligation reports, mismatched rule activation evidence, or human review identifying incorrect projection.
+  recovery: Correct rule definitions or projection logic and re-run projection against the affected context bundle.
+- scenario: Context explosion
+  impact: medium
+  mitigation: Enforce bounded traversal and MVC-oriented assembly so bundle growth is constrained before interface delivery.
+  detection: Bundle diagnostics showing excessive slice counts, token growth, or traversal depth exceeding expected bounds.
+  recovery: Tighten entry points, reduce traversal depth, or refine bundle filters while preserving required provenance.
+- scenario: Refresh loops
+  impact: medium
+  mitigation: Separate source artifact watching from derived state writes and track self-generated writes explicitly.
+  detection: Repeated watch-triggered refresh activity on derived-state paths or loop diagnostics in watchdog logs.
+  recovery: Suppress derived-state events, reset watch state, and re-enter refresh only from valid source changes.
+operational_requirements:
+  monitoring: Expose graph freshness, RSS traceability, context bundle composition, rule activation evidence, and watchdog health as first-class inspection surfaces.
+  logging: Use structured runtime diagnostics for refresh events, extraction findings, traversal decisions, bundle assembly, and rule projection.
+  backup_recovery: Authoritative YAML state is the recovery baseline; local query acceleration state must be discardable and rebuildable from authoritative state.
+  security: The runtime operates within the workspace development boundary and must not claim canonical attestation authority or override ste-spec governance boundaries.
+gaps: []

@@ -1,0 +1,33 @@
+# ste-rules-library Governance Manifest
+# Authority: ADR-L-0001
+
+schema_version: "1.0"
+type: governance_manifest
+
+conflict_strategy:
+  escalation_posture: halt
+  auto_resolve: false
+  rationale: Conflicting rules escalate to human. Never auto-resolve.
+
+authority_layers:
+  layer_1:
+    name: organizational
+    description: Always-on rules from external admin
+    source: external
+  layer_2:
+    name: project_rules
+    description: Conditional rules from this repo
+    source: rules/
+  layer_3:
+    name: runtime_projection
+    description: Context signals select relevant rules
+    source: dynamic
+
+activation:
+  max_rules_per_projection: 20
+  file_based_fallback: true
+
+integrations:
+  adr_architecture_kit: ADR-L-0006
+  prompt_translator: signal schema for generated prompts
+  ste_runtime: future MCP

@@ -1,0 +1,38 @@
+_slice:
+  id: data-GreetingConfig
+  domain: data
+  type: entity
+  source_files:
+    - app/services/greeting.py
+  references:
+    - domain: graph
+      type: module
+      id: module-app-services-greeting
+  referenced_by: []
+  tags:
+    - data
+    - entity
+  extraction:
+    method: static
+    confidence: high
+    timestamp: '2026-03-08T08:21:27.318Z'
+entity:
+  id: data-GreetingConfig
+  name: GreetingConfig
+  description: Configuration for greeting service.
+  source:
+    file: app/services/greeting.py
+    class: GreetingConfig
+    line: 8
+  persistence:
+    type: none
+  fields:
+    - name: prefix
+      type: str
+      default: '''Hello'''
+    - name: suffix
+      type: str
+      default: '''!'''
+  relationships: []
+  indexes: []
+  validation_rules: []

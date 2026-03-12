@@ -6,26 +6,65 @@
   
   "type": "object",
   "allOf": [
-    {"$ref": "adr-common.schema.json"}
-  ],
-  
-  "required": [
-    "context",
-    "decisions"
+    {"$ref": "adr-common.schema.json"},
+    {
+      "properties": {
+        "adr_type": {
+          "const": "logical"
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "id": {
+            "$ref": "types.schema.json#/definitions/adr_id_logical"
+          }
+        }
+      },
+      "then": {
+        "required": [
+          "context",
+          "decisions"
+        ]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "id": {
+            "$ref": "types.schema.json#/definitions/adr_id_vision"
+          }
+        }
+      },
+      "then": {
+        "required": [
+          "context",
+          "vision_category"
+        ],
+        "properties": {
+          "vision_category": {
+            "const": true
+          }
+        }
+      }
+    }
   ],
   
   "properties": {
-    "adr_type": {
-      "const": "logical"
-    },
-    
-    "id": {
-      "$ref": "types.schema.json#/definitions/adr_id_logical"
-    },
-    
     "context": {
       "$ref": "types.schema.json#/definitions/markdown_text",
       "description": "Problem space, business drivers, constraints (markdown)"
+    },
+    
+    "vision_category": {
+      "type": "boolean",
+      "description": "True when this ADR is a vision-oriented logical ADR."
+    },
+    
+    "promotable_to_logical": {
+      "type": "boolean",
+      "description": "Whether this vision ADR is intended to be promotable into a fully realized ADR-L."
     },
     
     "capabilities": {

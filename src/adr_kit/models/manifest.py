@@ -10,7 +10,7 @@ from .common import ImpactLevel, Status
 
 class ManifestADREntry(BaseModel):
     """ADR entry in manifest (aggregated metadata)."""
-    id: str = Field(..., pattern=r"^ADR-(L|P|PS|PC|D)-\d{4}$")
+    id: str = Field(..., pattern=r"^ADR-(L|V|P|PS|PC|D)-\d{4}$")
     type: str = Field(..., pattern=r"^(logical|physical|physical-system|physical-component|decision)$")
     title: str
     status: Status
@@ -32,7 +32,7 @@ class ManifestInvariant(BaseModel):
     """Invariant entry in manifest."""
     id: str = Field(..., pattern=r"^INV-\d{4}$")
     statement: str
-    defined_in: str = Field(..., pattern=r"^ADR-(L|P|PS|PC|D)-\d{4}$")
+    defined_in: str = Field(..., pattern=r"^ADR-(L|V|P|PS|PC|D)-\d{4}$")
     enforced_by: List[str] = Field(default_factory=list)
     enforcement_level: str = Field(..., pattern=r"^(must|should|may)$")
 
@@ -73,7 +73,7 @@ class ManifestEntity(BaseModel):
     entity_id: str = Field(..., pattern=r"^[A-Z]+-\d{4}$")
     entity_type: str
     name: str
-    introduced_by: str = Field(..., pattern=r"^ADR-(L|P|PS|PC|D)-\d{4}$")
+    introduced_by: str = Field(..., pattern=r"^ADR-(L|V|P|PS|PC|D)-\d{4}$")
     lifecycle_stage: str
 
 

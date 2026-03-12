@@ -1,8 +1,8 @@
 """Pydantic models for Physical ADRs."""
 
-from typing import List, Optional
+from typing import Any, List, Optional
 
-from pydantic import BaseModel, ConfigDict, Field, field_validator
+from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator
 
 from .common import ADRFrontmatter, ADRType, Alternative, Gap
 
@@ -25,9 +25,27 @@ class ArchitecturePattern(BaseModel):
 class Interface(BaseModel):
     """Component interface specification."""
     id: str = Field(..., pattern=r"^IFACE-\d{4}$")
-    type: str = Field(..., pattern=r"^(REST|gRPC|GraphQL|message|event|stream|batch)$")
-    specification: str
+    name: Optional[str] = None
+    type: Optional[str] = None
+    specification: Optional[str] = None
+    description: Optional[str] = None
+    fields: List[Any] = Field(default_factory=list)
+    methods: List[str] = Field(default_factory=list)
+    parameters: List[Any] = Field(default_factory=list)
+    returns: Optional[str] = None
+    example: Optional[str] = None
+    values: List[Any] = Field(default_factory=list)
     contract_reference: Optional[str] = None
+
+    @model_validator(mode="after")
+    def validate_interface_shape(self) -> "Interface":
+        """Support both contract-style and descriptive legacy interface definitions."""
+        if self.type and self.type not in {"REST", "gRPC", "GraphQL", "message", "event", "stream", "batch"}:
+            if not self.name:
+                raise ValueError(f"Legacy interface type requires a name, got type={self.type}")
+        if self.specification is None and self.name is None:
+            raise ValueError("Interface must define either specification or name")
+        return self
 
 
 class ImplementationIdentifiers(BaseModel):

@@ -73,7 +73,7 @@ class ADRFrontmatter(BaseModel):
     
     schema_version: str = Field("1.0", pattern=r"^1\.0$")
     adr_type: ADRType
-    id: str = Field(..., pattern=r"^ADR-(L|P|D)-\d{4}$")
+    id: str = Field(..., pattern=r"^ADR-(L|V|P|PS|PC|D)-\d{4}$")
     title: str = Field(..., min_length=5, max_length=200)
     status: Status
     created_date: date
@@ -120,8 +120,8 @@ class ADRFrontmatter(BaseModel):
     def validate_id_matches_type(cls, v: str, info) -> str:
         """Validate that ID prefix matches adr_type."""
         adr_type = info.data.get('adr_type')
-        if adr_type == ADRType.LOGICAL and not v.startswith('ADR-L-'):
-            raise ValueError(f"Logical ADR must have ID starting with ADR-L-, got {v}")
+        if adr_type == ADRType.LOGICAL and not (v.startswith('ADR-L-') or v.startswith('ADR-V-')):
+            raise ValueError(f"Logical ADR must have ID starting with ADR-L- or ADR-V-, got {v}")
         elif adr_type == ADRType.PHYSICAL and not v.startswith('ADR-P-'):
             raise ValueError(f"Physical ADR must have ID starting with ADR-P-, got {v}")
         elif adr_type == ADRType.PHYSICAL_SYSTEM and not v.startswith('ADR-PS-'):

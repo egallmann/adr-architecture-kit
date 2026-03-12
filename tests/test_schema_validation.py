@@ -46,6 +46,37 @@ class TestValidLogicalADRs:
         assert len(adr.invariants) == 7
         assert len(adr.capabilities) == 7
 
+    def test_vision_logical_adr_allows_lightweight_structure(self, parser, tmp_path):
+        """ADR-V files should validate as logical ADRs without ADR-L completeness requirements."""
+        adr_path = tmp_path / "ADR-V-9999-vision.yaml"
+        adr_path.write_text(
+            "\n".join(
+                [
+                    'schema_version: "1.0"',
+                    "id: ADR-V-9999",
+                    "adr_type: logical",
+                    "vision_category: true",
+                    "promotable_to_logical: true",
+                    'title: "Example Vision ADR"',
+                    "status: proposed",
+                    'created_date: "2026-03-11"',
+                    "authors: [adr-architecture-kit]",
+                    "domains: [vision]",
+                    "context: |",
+                    "  Future-state capability framing.",
+                    "capability: |",
+                    "  Vision capabilities can be described without DEC entries yet.",
+                ]
+            ),
+            encoding="utf-8",
+        )
+
+        adr = parser.parse_logical_adr(adr_path)
+
+        assert adr.id == "ADR-V-9999"
+        assert adr.vision_category is True
+        assert adr.decisions == []
+
 
 class TestValidPhysicalADRs:
     """Test valid physical ADR parsing."""

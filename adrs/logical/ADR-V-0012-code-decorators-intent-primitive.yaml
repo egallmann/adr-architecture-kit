@@ -1,3 +1,4 @@
+schema_version: "1.0"
 id: ADR-V-0012
 adr_type: logical
 vision_category: true
@@ -5,7 +6,8 @@ promotable_to_logical: true
 title: "Code Decorators (Intent Primitive)"
 absorbs_concepts_from: ["ADR-L-0004"]
 status: proposed
-created_date: 2024-03-10
+created_date: "2024-03-10"
+authors: [adr-architecture-kit]
 tags:
   - code-decorators
   - intent

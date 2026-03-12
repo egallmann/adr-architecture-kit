@@ -1,3 +1,4 @@
+schema_version: "1.0"
 id: ADR-V-0004
 adr_type: logical
 vision_category: true
@@ -5,7 +6,8 @@ promotable_to_logical: true
 title: "Bidirectional Translation Layer"
 absorbs_concepts_from: ["ADR-L-0005"]
 status: proposed
-created_date: 2024-03-10
+created_date: "2024-03-10"
+authors: [adr-architecture-kit]
 tags:
   - translation
   - human-ai-interface

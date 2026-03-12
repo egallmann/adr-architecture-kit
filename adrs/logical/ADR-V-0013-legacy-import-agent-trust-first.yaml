@@ -1,10 +1,12 @@
+schema_version: "1.0"
 id: ADR-V-0013
 adr_type: logical
 vision_category: true
 promotable_to_logical: true
 title: "Legacy Import Agent (Trust-First Validation)"
 status: proposed
-created_date: 2024-03-10
+created_date: "2024-03-10"
+authors: [adr-architecture-kit]
 tags:
   - legacy-import
   - reverse-engineering

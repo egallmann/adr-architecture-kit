@@ -152,8 +152,8 @@ class ADRValidator:
                 ))
                 break
         
-        # Check that decisions exist
-        if not adr.decisions or len(adr.decisions) == 0:
+        # Check that decisions exist for fully realized ADR-L artifacts.
+        if adr.id.startswith("ADR-L-") and (not adr.decisions or len(adr.decisions) == 0):
             warnings.append(ValidationError(
                 severity="warning",
                 rule="completeness",

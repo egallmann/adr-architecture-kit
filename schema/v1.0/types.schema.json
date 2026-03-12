@@ -11,6 +11,12 @@
       "description": "Logical ADR identifier (e.g., ADR-L-0001)"
     },
     
+    "adr_id_vision": {
+      "type": "string",
+      "pattern": "^ADR-V-\\d{4}$",
+      "description": "Vision ADR identifier (e.g., ADR-V-0001)"
+    },
+    
     "adr_id_physical": {
       "type": "string",
       "pattern": "^ADR-P-\\d{4}$",
@@ -37,7 +43,7 @@
     
     "adr_id_any": {
       "type": "string",
-      "pattern": "^ADR-(L|P|PS|PC|D)-\\d{4}$",
+      "pattern": "^ADR-(L|V|P|PS|PC|D)-\\d{4}$",
       "description": "Any ADR identifier"
     },
     

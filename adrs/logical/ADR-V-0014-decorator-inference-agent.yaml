@@ -1,10 +1,12 @@
+schema_version: "1.0"
 id: ADR-V-0014
 adr_type: logical
 vision_category: true
 promotable_to_logical: true
 title: "Decorator Inference Agent (Self-Healing Graph)"
 status: proposed
-created_date: 2024-03-10
+created_date: "2024-03-10"
+authors: [adr-architecture-kit]
 tags:
   - decorator-inference
   - self-healing-graph

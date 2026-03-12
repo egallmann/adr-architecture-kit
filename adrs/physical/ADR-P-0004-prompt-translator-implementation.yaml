@@ -78,7 +78,8 @@ component_specifications:
       - Extract testing requirements
       - Build structured component metadata
     interfaces:
-      - name: ComponentSpec
+      - id: IFACE-0001
+        name: ComponentSpec
         type: dataclass
         description: Structured component specification
         fields:
@@ -94,7 +95,8 @@ component_specifications:
           - related_invariants: List[InvariantRef] - Relevant invariants
           - related_capabilities: List[CapabilityRef] - Relevant capabilities
           - implementation_decisions: List[ImplDecisionRef] - Relevant IMPL-*
-      - name: ComponentParser
+      - id: IFACE-0002
+        name: ComponentParser
         type: class
         methods:
           - "parse_physical_adr(adr_path: Path) -> List[ComponentSpec]"
@@ -129,19 +131,22 @@ component_specifications:
       - Generate execution plans
       - Optimize prompt structure per agent capabilities
     interfaces:
-      - name: AgentFormat
+      - id: IFACE-0003
+        name: AgentFormat
         type: enum
         values:
           - codex: "GitHub Copilot / CODEX (concise, code-focused)"
           - cursor: "Cursor with Sonnet 4.5 (detailed, reasoning-focused)"
           - claude: "Claude API (structured thinking)"
           - gpt: "GPT models (example-driven)"
-      - name: PromptTemplate
+      - id: IFACE-0004
+        name: PromptTemplate
         type: class
         description: Base template for all prompt formats
         methods:
           - "render(component: ComponentSpec, context: dict) -> str"
-      - name: PromptGenerator
+      - id: IFACE-0005
+        name: PromptGenerator
         type: class
         methods:
           - "generate_implementation_prompt(component: ComponentSpec, target: AgentFormat) -> str"
@@ -174,7 +179,8 @@ component_specifications:
       - Display execution plan
       - Generate cooperative signals for parallel agent coordination
     interfaces:
-      - name: adr generate-prompts
+      - id: IFACE-0006
+        name: adr generate-prompts
         parameters:
           - adr_id: str - Physical ADR ID (e.g., ADR-P-0003)
           - --component: str - Specific component ID (optional)
@@ -210,7 +216,8 @@ component_specifications:
       - Generate topological sort for execution order
       - Identify parallelizable components
     interfaces:
-      - name: DependencyAnalyzer
+      - id: IFACE-0007
+        name: DependencyAnalyzer
         type: class
         methods:
           - "analyze(components: List[ComponentSpec]) -> DependencyGraph"
@@ -396,9 +403,26 @@ related_adrs:
   - ADR-P-0003  # Example Physical ADR to parse
 
 gaps:
-  - Template design needed
-  - Agent-specific formatters need specification
-  - Integration with validation system needed
+  - id: GAP-0001
+    question: How should the base prompt template hierarchy be structured?
+    impact: medium
+    blocking: false
+    affects:
+      - COMP-0006
+  - id: GAP-0002
+    question: What agent-specific formatting rules should be standardized first?
+    impact: medium
+    blocking: false
+    affects:
+      - COMP-0006
+      - COMP-0007
+  - id: GAP-0003
+    question: How should generated prompts integrate with the existing validation subsystem?
+    impact: high
+    blocking: false
+    affects:
+      - COMP-0007
+      - COMP-0008
 
 notes: |
   Implementation priority: HIGH

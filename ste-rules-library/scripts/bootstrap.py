@@ -2,6 +2,7 @@
 """
 Bootstrap ste-rules-library for consumer projects.
 Authority: ADR-L-0001. Creates signal directories and integration snippet.
+Assumes ste-rules-library is available as a sibling workspace folder.
 """
 from __future__ import annotations
 
@@ -23,7 +24,11 @@ def bootstrap() -> int:
     root = _find_consumer_root()
     lib = root / "ste-rules-library"
     if not lib.exists():
-        print("ste-rules-library submodule not found. Run from consumer project root.", file=sys.stderr)
+        print(
+            "ste-rules-library folder not found. Run from a consumer project root "
+            "that has a sibling ste-rules-library checkout.",
+            file=sys.stderr,
+        )
         return 1
 
     # Create signal directories

@@ -22,17 +22,17 @@ ste-rules-library/
 ├── governance/manifest.yaml
 ├── rules/                   # ADR-derived rules (future)
 └── scripts/
-    ├── bootstrap.py        # Submodule init
+    ├── bootstrap.py        # Consumer workspace bootstrap
     └── emit-signal.py      # Signal emission CLI
 ```
 
 ## Usage (Consumer Project)
 
 ```bash
-# Add as submodule
-git submodule add https://github.com/egallmann/ste-rules-library.git ste-rules-library
+# Clone as a sibling workspace repository
+git clone https://github.com/egallmann/ste-rules-library.git ste-rules-library
 
-# Bootstrap
+# Bootstrap from the consumer project root
 python ste-rules-library/scripts/bootstrap.py
 
 # Emit signal (from consumer project root)

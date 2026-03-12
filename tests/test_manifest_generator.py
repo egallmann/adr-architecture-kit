@@ -1,6 +1,8 @@
 """Test manifest generator."""
 
 import pytest
+import shutil
+import uuid
 from pathlib import Path
 
 from src.adr_kit.generators import ManifestGenerator
@@ -56,3 +58,30 @@ class TestManifestGeneration:
         assert manifest.gaps_summary.total >= 0
         assert manifest.gaps_summary.blocking >= 0
         assert manifest.gaps_summary.blocking <= manifest.gaps_summary.total
+
+    def test_manifest_classifies_physical_subtypes_from_frontmatter_in_physical_dir(self):
+        """Physical ADR subtypes should be discovered from frontmatter, not subfolders."""
+        temp_root = Path("tests") / ".tmp" / str(uuid.uuid4())
+        adr_dir = temp_root / "adrs"
+        logical_dir = adr_dir / "logical"
+        physical_dir = adr_dir / "physical"
+        logical_dir.mkdir(parents=True, exist_ok=True)
+        physical_dir.mkdir(parents=True, exist_ok=True)
+
+        try:
+            shutil.copy(Path("tests/fixtures/valid/logical-minimal.yaml"), logical_dir / "ADR-L-9999-logical.yaml")
+            shutil.copy(Path("tests/fixtures/valid/physical-minimal.yaml"), physical_dir / "ADR-P-9999-physical.yaml")
+            shutil.copy(Path("tests/fixtures/valid/physical-system-minimal.yaml"), physical_dir / "ADR-PS-0001-system.yaml")
+            shutil.copy(Path("tests/fixtures/valid/physical-component-minimal.yaml"), physical_dir / "ADR-PC-0001-component.yaml")
+
+            manifest = ManifestGenerator().generate_from_directory(adr_dir)
+
+            assert manifest.statistics.logical_adrs == 1
+            assert manifest.statistics.physical_adrs == 3
+            assert manifest.statistics.physical_system_adrs == 1
+            assert manifest.statistics.physical_component_adrs == 1
+            assert any(entry.type == "physical-system" for entry in manifest.adrs)
+            assert any(entry.type == "physical-component" for entry in manifest.adrs)
+            assert any(entry.file_path.endswith("adrs\\physical\\ADR-PS-0001-system.yaml") or entry.file_path.endswith("adrs/physical/ADR-PS-0001-system.yaml") for entry in manifest.adrs)
+        finally:
+            shutil.rmtree(temp_root, ignore_errors=True)

@@ -13,9 +13,37 @@ except ImportError:
     print("Error: click package not installed. Install with: pip install adr-architecture-kit[cli]")
     sys.exit(1)
 
-from ..generators import ManifestGenerator
-from ..validators import ADRValidator
+from ..generators import ManifestGenerator, PhysicalSystemADRGenerator, SystemOverviewGenerator
+from ..generators.views import MarkdownGenerator
+from ..integrity import GeneratedArtifactStatus
+from ..parser import ADRParser
+from ..validators import (
+    ADRValidator,
+    GeneratedArtifactValidator,
+    find_import_deprecations,
+    format_findings,
+    format_outdated_packages,
+    list_outdated_packages,
+    load_direct_dependency_names,
+    run_pip_audit,
+    SystemOverviewValidator,
+)
 from ..scope import ProjectScopeResolver
+
+
+def _discover_scope_adr_files(scope) -> list[Path]:
+    """Discover ADR source files for rendered markdown generation."""
+    files: list[Path] = []
+    for directory in (
+        scope.logical_dir,
+        scope.physical_dir,
+        scope.adr_dir / "physical-system",
+        scope.adr_dir / "physical-component",
+    ):
+        if not directory.exists():
+            continue
+        files.extend(sorted(path for path in directory.glob("*.yaml") if path.is_file() and not path.is_symlink()))
+    return files
 
 
 @click.group()
@@ -49,7 +77,7 @@ def generate_manifest(scope: Optional[Path], recursive: bool, output: Optional[P
             for scope_name, manifest in manifests.items():
                 scope_obj = next(s for s in resolver.resolve_recursive() if s.name == scope_name)
                 output_path = output or scope_obj.manifest_path
-                generator.save_manifest(manifest, output_path)
+                generator.save_manifest(manifest, output_path, scope_obj)
                 click.echo(f"Generated manifest for {scope_name}: {output_path}")
             
             click.echo(f"\nGenerated {len(manifests)} manifests")
@@ -60,13 +88,63 @@ def generate_manifest(scope: Optional[Path], recursive: bool, output: Optional[P
             
             manifest = generator.generate_from_scope(detected_scope)
             output_path = output or detected_scope.manifest_path
-            generator.save_manifest(manifest, output_path)
+            generator.save_manifest(manifest, output_path, detected_scope)
             
             click.echo(f"Generated manifest: {output_path}")
             click.echo(f"  ADRs: {manifest.statistics.total_adrs}")
             click.echo(f"  Logical: {manifest.statistics.logical_adrs}")
             click.echo(f"  Physical: {manifest.statistics.physical_adrs}")
+            if manifest.statistics.physical_system_adrs > 0:
+                click.echo(f"  Physical-System: {manifest.statistics.physical_system_adrs}")
+            if manifest.statistics.physical_component_adrs > 0:
+                click.echo(f"  Physical-Component: {manifest.statistics.physical_component_adrs}")
             
+    except Exception as e:
+        click.echo(f"Error: {e}", err=True)
+        sys.exit(1)
+
+
+@cli.command("generate-physical-system")
+@click.option(
+    "--input",
+    "input_path",
+    required=True,
+    type=click.Path(exists=True, dir_okay=False, path_type=Path),
+    help="Path to structured YAML input for the Physical-System ADR.",
+)
+@click.option(
+    "--output",
+    required=True,
+    type=click.Path(dir_okay=False, path_type=Path),
+    help="Path to write the generated Physical-System ADR YAML.",
+)
+def generate_physical_system(input_path: Path, output: Path):
+    """Generate a Physical-System ADR YAML file from structured input."""
+    try:
+        parser = ADRParser()
+        validator = ADRValidator(parser=parser)
+        generator = PhysicalSystemADRGenerator(parser=parser, validator=validator)
+
+        adr = generator.create_adr_from_file(input_path)
+        generator.save_adr(adr, output)
+
+        parser.parse_physical_system_adr(output)
+        result = validator.validate_file(output)
+
+        if result.has_errors:
+            click.echo(f"Generated file failed validation: {output}", err=True)
+            for error in result.errors:
+                click.echo(f"  ERROR: {error.message}", err=True)
+            sys.exit(1)
+
+        click.echo(f"Generated Physical-System ADR: {output}")
+        click.echo(f"  ID: {adr.id}")
+        click.echo(f"  Title: {adr.title}")
+
+        if result.has_warnings:
+            for warning in result.warnings:
+                click.echo(f"  WARNING: {warning.message}")
+
     except Exception as e:
         click.echo(f"Error: {e}", err=True)
         sys.exit(1)
@@ -104,11 +182,11 @@ def validate(scope: Optional[Path], recursive: bool, cross_references: bool):
                 warnings = sum(1 for r in results.values() if r.has_warnings)
                 
                 if errors > 0:
-                    click.echo(f"  ✗ {errors} files with errors", fg='red')
+                    click.secho(f"  ERROR {errors} files with errors", fg='red')
                 if warnings > 0:
-                    click.echo(f"  ⚠ {warnings} files with warnings", fg='yellow')
+                    click.secho(f"  WARN {warnings} files with warnings", fg='yellow')
                 if errors == 0 and warnings == 0:
-                    click.echo(f"  All {len(results)} files valid", fg='green')
+                    click.secho(f"  All {len(results)} files valid", fg="green")
                 
                 total_files += len(results)
                 total_errors += errors
@@ -132,18 +210,18 @@ def validate(scope: Optional[Path], recursive: bool, cross_references: bool):
             
             for file_path, result in results.items():
                 if result.has_errors:
-                    click.echo(f"\n✗ {file_path}", fg='red')
+                    click.secho(f"\nERROR {file_path}", fg='red')
                     for error in result.errors:
                         click.echo(f"  ERROR: {error.message}")
                     errors += 1
                 elif result.has_warnings:
-                    click.echo(f"\n⚠ {file_path}", fg='yellow')
+                    click.secho(f"\nWARN {file_path}", fg='yellow')
                     for warning in result.warnings:
                         click.echo(f"  WARNING: {warning.message}")
                     warnings += 1
             
             if errors == 0 and warnings == 0:
-                click.echo(f"All {len(results)} files valid", fg='green')
+                click.secho(f"All {len(results)} files valid", fg="green")
             else:
                 click.echo(f"\n{len(results)} files: {errors} errors, {warnings} warnings")
             
@@ -153,12 +231,12 @@ def validate(scope: Optional[Path], recursive: bool, cross_references: bool):
                 xref_result = validator.validate_cross_references(detected_scope.adr_dir)
                 
                 if xref_result.has_errors:
-                    click.echo("✗ Cross-reference validation failed", fg='red')
+                    click.secho("ERROR Cross-reference validation failed", fg='red')
                     for error in xref_result.errors:
                         click.echo(f"  ERROR: {error.message}")
                     sys.exit(1)
                 else:
-                    click.echo("Cross-references valid", fg='green')
+                    click.secho("Cross-references valid", fg="green")
             
             if errors > 0:
                 sys.exit(1)
@@ -219,6 +297,185 @@ def show_scope(recursive: bool):
             else:
                 click.echo(f"\nADR directory does not exist")
                 
+    except Exception as e:
+        click.echo(f"Error: {e}", err=True)
+        sys.exit(1)
+
+
+@cli.command("audit-runtime")
+@click.option(
+    "--requirements",
+    type=click.Path(exists=True, dir_okay=False, path_type=Path),
+    default=Path("requirements.txt"),
+    show_default=True,
+    help="Requirements file for dependency security audit.",
+)
+@click.option(
+    "--pyproject",
+    type=click.Path(exists=True, dir_okay=False, path_type=Path),
+    default=Path("pyproject.toml"),
+    show_default=True,
+    help="pyproject.toml used to determine direct dependencies.",
+)
+@click.option(
+    "--fail-on-outdated/--warn-on-outdated",
+    default=False,
+    show_default=True,
+    help="Whether outdated direct dependencies fail the command.",
+)
+def audit_runtime(requirements: Path, pyproject: Path, fail_on_outdated: bool):
+    """Audit deprecated APIs and dependency posture."""
+    failures = 0
+
+    click.echo("Checking deprecated runtime APIs...")
+    deprecations = find_import_deprecations("adr_kit")
+    if deprecations:
+        failures += 1
+        click.echo("Deprecated API usage detected:", err=True)
+        for line in format_findings(deprecations):
+            click.echo(f"  - {line}", err=True)
+    else:
+        click.echo("  OK: no deprecation warnings during adr_kit import scan")
+
+    click.echo("\nChecking dependency security...")
+    audit_result = run_pip_audit(requirements)
+    if audit_result.returncode != 0:
+        failures += 1
+        click.echo("Dependency security audit failed:", err=True)
+        if audit_result.stdout.strip():
+            click.echo(audit_result.stdout.strip(), err=True)
+        if audit_result.stderr.strip():
+            click.echo(audit_result.stderr.strip(), err=True)
+    else:
+        click.echo("  OK: no known vulnerabilities in audited dependencies")
+
+    click.echo("\nChecking direct dependency freshness...")
+    direct_dependencies = load_direct_dependency_names(requirements, pyproject)
+    outdated = list_outdated_packages(direct_dependencies)
+    if outdated:
+        click.echo("Outdated direct dependencies detected:")
+        for line in format_outdated_packages(outdated):
+            click.echo(f"  - {line}")
+        if fail_on_outdated:
+            failures += 1
+    else:
+        click.echo("  OK: direct dependencies are current")
+
+    if failures:
+        sys.exit(1)
+
+
+@cli.command("generate-system-overview")
+@click.option(
+    "--output",
+    type=click.Path(dir_okay=False, path_type=Path),
+    default=Path("SYSTEM-OVERVIEW.md"),
+    show_default=True,
+    help="Path to write the generated system overview.",
+)
+def generate_system_overview(output: Path):
+    """Generate the AI-first SYSTEM-OVERVIEW.md artifact."""
+    try:
+        generator = SystemOverviewGenerator()
+        generator.save(output)
+        click.echo(f"Generated system overview: {output}")
+    except Exception as e:
+        click.echo(f"Error: {e}", err=True)
+        sys.exit(1)
+
+
+@cli.command("generate-rendered-docs")
+@click.option('--scope', type=click.Path(exists=True, file_okay=False, path_type=Path),
+              help='Explicit project scope (overrides auto-detection)')
+@click.option('--recursive', is_flag=True,
+              help='Generate rendered ADR markdown for all scopes recursively')
+def generate_rendered_docs(scope: Optional[Path], recursive: bool):
+    """Generate rendered ADR markdown artifacts with integrity headers."""
+    try:
+        resolver = ProjectScopeResolver(explicit_scope=scope)
+        parser = ADRParser()
+        generator = MarkdownGenerator()
+        scopes = resolver.resolve_recursive() if recursive else [resolver.resolve()]
+
+        total = 0
+        for current_scope in scopes:
+            rendered_dir = current_scope.adr_dir / "rendered"
+            rendered_dir.mkdir(parents=True, exist_ok=True)
+            click.echo(f"Generating rendered docs for {current_scope.name}...")
+            for source_path in _discover_scope_adr_files(current_scope):
+                try:
+                    adr = parser.parse_adr(source_path)
+                    output_path = rendered_dir / f"{adr.id}.md"
+                    generator.render_to_file(
+                        adr,
+                        output_path,
+                        scope=current_scope,
+                        source_path=source_path,
+                    )
+                    total += 1
+                    click.echo(f"  Generated: {output_path}")
+                except Exception as exc:
+                    click.echo(f"  Warning: Failed to render {source_path.name}: {exc}")
+
+        click.echo(f"\nGenerated {total} rendered ADR markdown artifact(s)")
+    except Exception as e:
+        click.echo(f"Error: {e}", err=True)
+        sys.exit(1)
+
+
+@cli.command("validate-system-overview")
+@click.option(
+    "--file",
+    "file_path",
+    type=click.Path(dir_okay=False, path_type=Path),
+    default=Path("SYSTEM-OVERVIEW.md"),
+    show_default=True,
+    help="Path to the system overview file.",
+)
+def validate_system_overview(file_path: Path):
+    """Validate that SYSTEM-OVERVIEW.md is generated and current."""
+    try:
+        result = SystemOverviewValidator().validate_file(file_path)
+        if result.errors:
+            for error in result.errors:
+                click.echo(f"ERROR: {error}", err=True)
+            sys.exit(1)
+        for warning in result.warnings:
+            click.echo(f"WARNING: {warning}")
+        click.echo(f"System overview is valid: {file_path}")
+    except Exception as e:
+        click.echo(f"Error: {e}", err=True)
+        sys.exit(1)
+
+
+@cli.command("validate-generated-docs")
+@click.option('--scope', type=click.Path(exists=True, file_okay=False, path_type=Path),
+              help='Explicit project scope (overrides auto-detection)')
+@click.option('--recursive', is_flag=True,
+              help='Validate generated documentation for all scopes recursively')
+def validate_generated_docs(scope: Optional[Path], recursive: bool):
+    """Validate covered generated documentation artifacts."""
+    try:
+        resolver = ProjectScopeResolver(explicit_scope=scope)
+        validator = GeneratedArtifactValidator(scope_resolver=resolver)
+        results_by_scope = (
+            validator.validate_recursive() if recursive
+            else {resolver.resolve().name or str(resolver.resolve().root): validator.validate_scope(resolver.resolve())}
+        )
+
+        failures = 0
+        for scope_name, results in results_by_scope.items():
+            click.echo(f"{scope_name}:")
+            for result in results:
+                click.echo(
+                    f"  {result.status}: {result.artifact_path} "
+                    f"({result.reason_code})"
+                )
+                if result.status != GeneratedArtifactStatus.VALID.value:
+                    failures += 1
+
+        if failures:
+            sys.exit(1)
     except Exception as e:
         click.echo(f"Error: {e}", err=True)
         sys.exit(1)

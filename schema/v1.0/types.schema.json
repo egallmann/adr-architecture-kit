@@ -11,10 +11,28 @@
       "description": "Logical ADR identifier (e.g., ADR-L-0001)"
     },
     
+    "adr_id_vision": {
+      "type": "string",
+      "pattern": "^ADR-V-\\d{4}$",
+      "description": "Vision ADR identifier (e.g., ADR-V-0001)"
+    },
+    
     "adr_id_physical": {
       "type": "string",
       "pattern": "^ADR-P-\\d{4}$",
-      "description": "Physical ADR identifier (e.g., ADR-P-0001)"
+      "description": "Physical ADR identifier (e.g., ADR-P-0001) - legacy, use physical-system or physical-component"
+    },
+    
+    "adr_id_physical_system": {
+      "type": "string",
+      "pattern": "^ADR-PS-\\d{4}$",
+      "description": "Physical-System ADR identifier (e.g., ADR-PS-0001)"
+    },
+    
+    "adr_id_physical_component": {
+      "type": "string",
+      "pattern": "^ADR-PC-\\d{4}$",
+      "description": "Physical-Component ADR identifier (e.g., ADR-PC-0001)"
     },
     
     "adr_id_decision": {
@@ -25,7 +43,7 @@
     
     "adr_id_any": {
       "type": "string",
-      "pattern": "^ADR-(L|P|D)-\\d{4}$",
+      "pattern": "^ADR-(L|V|P|PS|PC|D)-\\d{4}$",
       "description": "Any ADR identifier"
     },
     

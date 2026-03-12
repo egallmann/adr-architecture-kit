@@ -125,6 +125,7 @@
 {% endfor %}
 {% endif %}
 
+{% if adr.decisions %}
 ## Decisions
 
 {% for decision in adr.decisions %}
@@ -164,6 +165,12 @@
 {% endif %}
 
 {% endfor %}
+{% elif adr.vision_category %}
+## Vision Status
+
+This vision ADR is intentionally lightweight and does not yet formalize architectural decisions as `DEC-*` entries.
+
+{% endif %}
 
 {% if adr.gaps %}
 ## Gaps

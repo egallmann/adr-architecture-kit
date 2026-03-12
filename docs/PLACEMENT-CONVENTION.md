@@ -13,9 +13,14 @@ Each project scope (workspace root or submodule) has its own canonical paths:
 <scope_root>/
   adrs/
     logical/           # Logical ADRs (ADR-L-XXXX)
-    physical/          # Physical ADRs (ADR-P-XXXX)
+    physical/          # Physical ADRs (ADR-P-XXXX, ADR-PS-XXXX, ADR-PC-XXXX)
     manifest.yaml      # Index of all ADRs in this scope
 ```
+
+**Type authority rule**:
+- Directory placement distinguishes only broad class: `logical` vs `physical`
+- Exact ADR subtype is authoritative in frontmatter via `adr_type` and `id`
+- Tooling must not infer `physical-system` or `physical-component` from subfolder names
 
 **ProjectScope fields** (from scope resolver):
 
@@ -66,8 +71,15 @@ Paths are resolved relative to scope root. Defaults: `adrs/`, `adrs/manifest.yam
 
 1. **Manifest**: Always write to `scope.manifest_path`
 2. **New logical ADR**: Write to `scope.logical_dir`
-3. **New physical ADR**: Write to `scope.physical_dir`
+3. **New physical ADR**: Write to `scope.physical_dir` regardless of physical subtype
 4. **Recursive**: Resolve scope first, then use that scope's paths
+
+## Path Invariants
+
+1. All artifact paths must be derived from an explicit scope root.
+2. Relative manifest paths must be computed from the resolved scope root, not the current working directory.
+3. Generated and temporary test artifacts must stay inside scope-owned ignored paths such as `tests/.tmp/`.
+4. Cross-scope traversal occurs only through explicit recursive scope resolution.
 
 ---
 

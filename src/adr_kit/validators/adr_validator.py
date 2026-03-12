@@ -7,7 +7,7 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import List, Optional, Union, Dict
 
-from ..models import LogicalADR, PhysicalADR
+from ..models import LogicalADR, PhysicalADR, PhysicalSystemADR, PhysicalComponentADR
 from ..parser import ADRParser, ADRParseError, ADRSchemaValidationError
 from ..scope import ProjectScopeResolver, ProjectScope
 
@@ -59,6 +59,23 @@ class ADRValidator:
         self.project_root = Path(project_root) if project_root else None
         self.scope_resolver = scope_resolver or ProjectScopeResolver()
     
+    def _discover_adr_files(self, adr_dir: Path) -> tuple[list[Path], list[Path]]:
+        """Discover logical and physical ADR files.
+
+        Frontmatter determines exact ADR subtype. Directory structure only distinguishes
+        logical from physical.
+        """
+        logical_files = list((adr_dir / "logical").glob("*.yaml")) if (adr_dir / "logical").exists() else []
+
+        physical_files: list[Path] = []
+        for dirname in ("physical", "physical-system", "physical-component"):
+            candidate_dir = adr_dir / dirname
+            if candidate_dir.exists():
+                physical_files.extend(candidate_dir.glob("*.yaml"))
+
+        deduped_physical = list(dict.fromkeys(path.resolve() for path in physical_files))
+        return logical_files, [Path(path) for path in deduped_physical]
+
     def validate_file(self, file_path: Union[str, Path]) -> ValidationResult:
         """Validate ADR file.
         
@@ -100,6 +117,10 @@ class ADRValidator:
         # Run business rule validations
         if isinstance(adr, LogicalADR):
             self._validate_logical_adr(adr, errors, warnings)
+        elif isinstance(adr, PhysicalSystemADR):
+            self._validate_physical_system_adr(adr, errors, warnings)
+        elif isinstance(adr, PhysicalComponentADR):
+            self._validate_physical_component_adr(adr, errors, warnings)
         elif isinstance(adr, PhysicalADR):
             self._validate_physical_adr(adr, errors, warnings)
         
@@ -131,8 +152,8 @@ class ADRValidator:
                 ))
                 break
         
-        # Check that decisions exist
-        if not adr.decisions or len(adr.decisions) == 0:
+        # Check that decisions exist for fully realized ADR-L artifacts.
+        if adr.id.startswith("ADR-L-") and (not adr.decisions or len(adr.decisions) == 0):
             warnings.append(ValidationError(
                 severity="warning",
                 rule="completeness",
@@ -192,6 +213,134 @@ class ADRValidator:
                                     field="component_specifications.implementation_identifiers"
                                 ))
     
+    def _validate_physical_system_adr(self, adr: PhysicalSystemADR, errors: List[ValidationError], warnings: List[ValidationError]):
+        """Validate physical-system ADR business rules.
+        
+        Args:
+            adr: Physical-System ADR model
+            errors: List to append errors to
+            warnings: List to append warnings to
+        """
+        # Must reference at least one logical ADR
+        if not adr.implements_logical or len(adr.implements_logical) == 0:
+            errors.append(ValidationError(
+                severity="error",
+                rule="physical_system_logical_ref",
+                message="Physical-System ADR must reference at least one logical ADR",
+                field="implements_logical"
+            ))
+        
+        # System boundaries should be defined
+        if not adr.system_boundaries or len(adr.system_boundaries) == 0:
+            warnings.append(ValidationError(
+                severity="warning",
+                rule="completeness",
+                message="Physical-System ADR should define system boundaries",
+                field="system_boundaries"
+            ))
+        
+        # references_components is optional and defaults to an empty list in the model,
+        # so an empty value alone is not useful signal.
+        if adr.references_components and len(adr.references_components) == 0:
+            warnings.append(ValidationError(
+                severity="warning",
+                rule="completeness",
+                message="references_components is empty, consider removing or adding component references",
+                field="references_components"
+            ))
+    
+    def _validate_physical_component_adr(self, adr: PhysicalComponentADR, errors: List[ValidationError], warnings: List[ValidationError]):
+        """Validate physical-component ADR business rules.
+        
+        Args:
+            adr: Physical-Component ADR model
+            errors: List to append errors to
+            warnings: List to append warnings to
+        """
+        # Must reference at least one Physical-System ADR
+        if not adr.implements_system or len(adr.implements_system) == 0:
+            errors.append(ValidationError(
+                severity="error",
+                rule="physical_component_system_ref",
+                message="Physical-Component ADR must reference at least one Physical-System ADR",
+                field="implements_system"
+            ))
+        
+        # Must reference at least one logical ADR (inherited or direct)
+        if not adr.implements_logical or len(adr.implements_logical) == 0:
+            errors.append(ValidationError(
+                severity="error",
+                rule="physical_component_logical_ref",
+                message="Physical-Component ADR must reference at least one logical ADR",
+                field="implements_logical"
+            ))
+        
+        # Must have at least one component specification
+        if not adr.component_specifications or len(adr.component_specifications) == 0:
+            errors.append(ValidationError(
+                severity="error",
+                rule="completeness",
+                message="Physical-Component ADR must have at least one component specification",
+                field="component_specifications"
+            ))
+        
+        # Validate component specifications for AI generation readiness
+        for comp in adr.component_specifications:
+            # Must have implementation_identifiers for AI generation
+            if not comp.implementation_identifiers:
+                errors.append(ValidationError(
+                    severity="error",
+                    rule="ai_generation_readiness",
+                    message=f"Component {comp.id} missing implementation_identifiers (required for AI generation)",
+                    field="component_specifications.implementation_identifiers"
+                ))
+            
+            # Must have at least one interface
+            if not comp.interfaces or len(comp.interfaces) == 0:
+                errors.append(ValidationError(
+                    severity="error",
+                    rule="ai_generation_readiness",
+                    message=f"Component {comp.id} missing interfaces (required for AI generation)",
+                    field="component_specifications.interfaces"
+                ))
+            
+            # Must have generation_context
+            if not comp.generation_context:
+                errors.append(ValidationError(
+                    severity="error",
+                    rule="ai_generation_readiness",
+                    message=f"Component {comp.id} missing generation_context (required for AI generation)",
+                    field="component_specifications.generation_context"
+                ))
+            
+            # Must have implementation_requirements
+            if not comp.implementation_requirements:
+                errors.append(ValidationError(
+                    severity="error",
+                    rule="ai_generation_readiness",
+                    message=f"Component {comp.id} missing implementation_requirements (required for AI generation)",
+                    field="component_specifications.implementation_requirements"
+                ))
+        
+        # Validate granularity (2-8 components typical, >10 needs justification)
+        if len(adr.component_specifications) > 10:
+            warnings.append(ValidationError(
+                severity="warning",
+                rule="granularity",
+                message=f"Physical-Component ADR has {len(adr.component_specifications)} components (>10). Ensure granularity is justified.",
+                field="component_specifications"
+            ))
+        
+        # If interface_compatibility is set, validate supersedes reference
+        if adr.interface_compatibility and adr.interface_compatibility.supersedes_adr:
+            if not adr.supersedes or adr.interface_compatibility.supersedes_adr not in adr.supersedes:
+                warnings.append(ValidationError(
+                    severity="warning",
+                    rule="interface_compatibility",
+                    message="interface_compatibility.supersedes_adr should be listed in supersedes field",
+                    field="interface_compatibility"
+                ))
+    
     def validate_directory(self, adr_dir: Path, scope: Optional[ProjectScope] = None) -> dict:
         """Validate all ADRs in directory.
         
@@ -212,9 +361,8 @@ class ADRValidator:
         results = {}
         
         # Find all ADR files
-        logical_files = list((adr_dir / "logical").glob("*.yaml")) if (adr_dir / "logical").exists() else []
-        physical_files = list((adr_dir / "physical").glob("*.yaml")) if (adr_dir / "physical").exists() else []
-        
+        logical_files, physical_files = self._discover_adr_files(adr_dir)
+
         for file_path in logical_files + physical_files:
             result = self.validate_file(file_path)
             results[str(file_path)] = result
@@ -276,9 +424,10 @@ class ADRValidator:
         # Parse all ADRs
         logical_adrs = {}
         physical_adrs = {}
+        physical_system_adrs = {}
+        physical_component_adrs = {}
         
-        logical_files = list((adr_dir / "logical").glob("*.yaml")) if (adr_dir / "logical").exists() else []
-        physical_files = list((adr_dir / "physical").glob("*.yaml")) if (adr_dir / "physical").exists() else []
+        logical_files, physical_files = self._discover_adr_files(adr_dir)
         
         for file_path in logical_files:
             try:
@@ -293,8 +442,13 @@ class ADRValidator:
         
         for file_path in physical_files:
             try:
-                adr = self.parser.parse_physical_adr(file_path)
-                physical_adrs[adr.id] = adr
+                adr = self.parser.parse_adr(file_path)
+                if isinstance(adr, PhysicalComponentADR):
+                    physical_component_adrs[adr.id] = adr
+                elif isinstance(adr, PhysicalSystemADR):
+                    physical_system_adrs[adr.id] = adr
+                elif isinstance(adr, PhysicalADR):
+                    physical_adrs[adr.id] = adr
             except Exception as e:
                 errors.append(ValidationError(
                     severity="error",
@@ -313,10 +467,52 @@ class ADRValidator:
                         field="implements_logical"
                     ))
         
-        # Validate related_adrs exist
-        all_adr_ids = set(logical_adrs.keys()) | set(physical_adrs.keys())
+        # Validate physical-system ADRs reference existing logical ADRs
+        for sys_id, sys_adr in physical_system_adrs.items():
+            for logical_ref in sys_adr.implements_logical:
+                if logical_ref not in logical_adrs:
+                    errors.append(ValidationError(
+                        severity="error",
+                        rule="cross_reference",
+                        message=f"Physical-System ADR {sys_id} references non-existent logical ADR {logical_ref}",
+                        field="implements_logical"
+                    ))
+            
+            # Validate references_components if present
+            if sys_adr.references_components:
+                for comp_ref in sys_adr.references_components:
+                    if comp_ref not in physical_component_adrs:
+                        errors.append(ValidationError(
+                            severity="error",
+                            rule="cross_reference",
+                            message=f"Physical-System ADR {sys_id} references non-existent Physical-Component ADR {comp_ref}",
+                            field="references_components"
+                        ))
         
-        for adr in list(logical_adrs.values()) + list(physical_adrs.values()):
+        # Validate physical-component ADRs reference existing system and logical ADRs
+        for comp_id, comp_adr in physical_component_adrs.items():
+            for sys_ref in comp_adr.implements_system:
+                if sys_ref not in physical_system_adrs:
+                    errors.append(ValidationError(
+                        severity="error",
+                        rule="cross_reference",
+                        message=f"Physical-Component ADR {comp_id} references non-existent Physical-System ADR {sys_ref}",
+                        field="implements_system"
+                    ))
+            
+            for logical_ref in comp_adr.implements_logical:
+                if logical_ref not in logical_adrs:
+                    errors.append(ValidationError(
+                        severity="error",
+                        rule="cross_reference",
+                        message=f"Physical-Component ADR {comp_id} references non-existent logical ADR {logical_ref}",
+                        field="implements_logical"
+                    ))
+        
+        # Validate related_adrs exist
+        all_adr_ids = set(logical_adrs.keys()) | set(physical_adrs.keys()) | set(physical_system_adrs.keys()) | set(physical_component_adrs.keys())
+        
+        for adr in list(logical_adrs.values()) + list(physical_adrs.values()) + list(physical_system_adrs.values()) + list(physical_component_adrs.values()):
             if adr.related_adrs:
                 for related_id in adr.related_adrs:
                     if related_id not in all_adr_ids:
@@ -328,12 +524,12 @@ class ADRValidator:
                         ))
         
         # INV-0005: Check for duplicate IDs
-        all_ids = list(logical_adrs.keys()) + list(physical_adrs.keys())
+        all_ids = list(logical_adrs.keys()) + list(physical_adrs.keys()) + list(physical_system_adrs.keys()) + list(physical_component_adrs.keys())
         if len(all_ids) != len(set(all_ids)):
             errors.append(ValidationError(
                 severity="error",
                 rule="INV-0005",
-                message="Duplicate ADR IDs found across logical and physical ADRs"
+                message="Duplicate ADR IDs found across all ADR types"
             ))
         
         return ValidationResult(

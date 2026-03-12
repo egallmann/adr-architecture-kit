@@ -1,0 +1,436 @@
+schema_version: "1.0"
+id: ADR-V-0007
+adr_type: logical
+vision_category: true
+promotable_to_logical: true
+title: "Compliance AI Agent"
+status: proposed
+created_date: "2024-03-10"
+authors: [adr-architecture-kit]
+tags:
+  - compliance
+  - ai-agent
+  - self-healing
+  - code-generation
+
+context: |
+  Compliance violations are detected by Autonomous Compliance System (ADR-L-0006).
+  
+  Current state: Violations flagged, humans fix manually
+  - Compliance report shows violations
+  - Developers read report
+  - Developers implement fixes
+  - Developers test fixes
+  - Developers submit for review
+  
+  Problems:
+  - Slow (developers have other priorities)
+  - Error-prone (humans make mistakes)
+  - Inconsistent (different developers fix differently)
+  - Expensive (developer time costly)
+  
+  Opportunity: AI can propose and implement fixes automatically.
+  
+  The system has complete context:
+  - ADR (what system should be)
+  - EDR (what system actually is)
+  - Policies (what standards to follow)
+  - Violation (what's wrong)
+  
+  AI can reason over this context and generate compliant fixes.
+
+capability:
+  name: "Compliance AI Agent"
+  description: |
+    An AI agent that detects compliance violations, analyzes root causes,
+    proposes ADR-compliant fixes, generates implementation code, and submits
+    for human review.
+  
+  agent_workflow:
+    - phase: "Detect"
+      description: "Identify compliance violations"
+      inputs:
+        - "Compliance report (from Autonomous Compliance System)"
+        - "Violations list (what's wrong)"
+      
+      outputs:
+        - "Prioritized violations (by severity, impact)"
+        - "Violation context (ADR, EDR, Policy references)"
+    
+    - phase: "Analyze"
+      description: "Understand root cause of violation"
+      process:
+        - "Read relevant ADRs (understand intent)"
+        - "Read relevant EDRs (understand current state)"
+        - "Read relevant policies (understand standards)"
+        - "Identify root cause (why violation exists)"
+      
+      outputs:
+        - "Root cause analysis (why violation occurred)"
+        - "Impact analysis (what's affected)"
+        - "Fix strategy (how to resolve)"
+    
+    - phase: "Propose"
+      description: "Design ADR-compliant fix"
+      process:
+        - "Design fix that satisfies ADR + Policy"
+        - "Ensure fix doesn't break invariants"
+        - "Ensure fix is backward compatible (if possible)"
+        - "Create ADR update (if design changes)"
+      
+      outputs:
+        - "Fix proposal (ADR changes, rationale)"
+        - "Migration plan (how to roll out)"
+        - "Risk assessment (what could go wrong)"
+    
+    - phase: "Implement"
+      description: "Generate implementation code"
+      process:
+        - "Generate code changes (fix violation)"
+        - "Generate tests (verify fix works)"
+        - "Generate migration scripts (if needed)"
+        - "Ensure code follows org standards"
+      
+      outputs:
+        - "Code changes (implementation)"
+        - "Test suite (validation)"
+        - "Migration scripts (deployment)"
+    
+    - phase: "Validate"
+      description: "Verify fix resolves violation"
+      process:
+        - "Run tests (ensure fix works)"
+        - "Run compliance validation (ensure violation resolved)"
+        - "Run regression tests (ensure nothing broken)"
+      
+      outputs:
+        - "Validation results (pass/fail)"
+        - "Compliance score (before/after)"
+        - "Test coverage (new tests added)"
+    
+    - phase: "Submit"
+      description: "Submit fix for human review"
+      process:
+        - "Create pull request (code changes)"
+        - "Include fix proposal (ADR, rationale)"
+        - "Include validation results (tests, compliance)"
+        - "Request review from appropriate team"
+      
+      outputs:
+        - "Pull request (ready for review)"
+        - "Documentation (what changed, why)"
+        - "Approval workflow (who reviews)"
+
+boundaries:
+  in_scope:
+    - "Violation detection and analysis"
+    - "Fix proposal generation"
+    - "Code generation for fixes"
+    - "Validation and testing"
+    - "Submission for human review"
+  
+  out_of_scope:
+    - "Automatic deployment (humans approve first)"
+    - "Policy creation (humans define policies)"
+    - "Architectural decisions (humans make trade-offs)"
+
+contracts:
+  fix_proposal_interface:
+    description: "Structure of fix proposals"
+    format: "JSON document"
+    
+    fields:
+      - name: "violation_id"
+        type: "string"
+        description: "ID of violation being fixed"
+      
+      - name: "root_cause"
+        type: "string"
+        description: "Why violation occurred"
+      
+      - name: "fix_strategy"
+        type: "string"
+        description: "How fix resolves violation"
+      
+      - name: "adr_changes"
+        type: "array"
+        description: "ADR updates (if design changes)"
+      
+      - name: "code_changes"
+        type: "array"
+        description: "Code changes (implementation)"
+      
+      - name: "migration_plan"
+        type: "object"
+        description: "How to roll out fix"
+      
+      - name: "risk_assessment"
+        type: "object"
+        description: "What could go wrong"
+      
+      - name: "validation_results"
+        type: "object"
+        description: "Test results, compliance score"
+  
+  approval_interface:
+    description: "How humans review and approve fixes"
+    inputs:
+      - name: "fix_proposal"
+        format: "Fix proposal document"
+    
+    outputs:
+      - name: "approval_decision"
+        type: "enum"
+        values: ["approved", "rejected", "needs_revision"]
+      
+      - name: "feedback"
+        type: "string"
+        description: "Human feedback (if rejected/needs_revision)"
+
+quality_attributes:
+  - attribute: "Fix Accuracy"
+    requirement: "Proposed fixes must resolve violations"
+    measurement: "Percentage of fixes that resolve violation"
+    target: "> 95%"
+  
+  - attribute: "Fix Quality"
+    requirement: "Generated code must be production-ready"
+    measurement: "Human approval rate"
+    target: "> 90%"
+  
+  - attribute: "Fix Speed"
+    requirement: "Quickly generate fix proposals"
+    measurement: "Time from violation detection to proposal"
+    target: "< 1 hour"
+  
+  - attribute: "Safety"
+    requirement: "Fixes must not break existing functionality"
+    measurement: "Regression rate (fixes that break things)"
+    target: "< 1%"
+
+rationale: |
+  **Why Compliance AI Agent?**
+  
+  Compliance violations are deterministic:
+  - Violation: Token expiry is 20 minutes
+  - Policy: Token expiry must be <= 15 minutes
+  - Fix: Change token expiry to 15 minutes
+  
+  This is not creative work, it's mechanical.
+  
+  AI is good at:
+  - Reading specifications (ADR, Policy)
+  - Understanding current state (EDR)
+  - Generating code (implementation)
+  - Writing tests (validation)
+  
+  Humans are good at:
+  - Reviewing proposals (sanity check)
+  - Approving changes (final decision)
+  - Handling edge cases (ambiguous situations)
+  
+  Let AI do the mechanical work, humans do the judgment.
+  
+  **Example: JWT token expiry violation**
+  
+  Violation detected:
+  ```
+  Policy: SEC-001-JWT requires token_expiry <= 15 minutes
+  Current: token_expiry = 20 minutes
+  Severity: Medium
+  ```
+  
+  Compliance AI Agent:
+  
+  1. Detect: Reads violation from compliance report
+  2. Analyze:
+     - Reads ADR-PC-0042 (User Service design)
+     - Reads SEC-001 policy (JWT standards)
+     - Root cause: Developer set 20 minutes (policy is 15)
+  3. Propose:
+     - Fix: Update token_expiry to 15 minutes
+     - Rationale: Comply with security policy
+     - Risk: Existing tokens expire faster (acceptable)
+  4. Implement:
+     - Update config: `TOKEN_EXPIRY_MINUTES=15`
+     - Update tests: Verify 15 minute expiry
+     - Update docs: Document policy compliance
+  5. Validate:
+     - Tests pass: ✓
+     - Compliance score: 98% → 100%
+     - No regressions: ✓
+  6. Submit:
+     - Pull request created
+     - Security team notified
+     - Ready for review
+  
+  Total time: 15 minutes (vs 2-4 hours manual)
+  
+  **Why human review?**
+  
+  AI can make mistakes:
+  - Misunderstand context
+  - Generate buggy code
+  - Miss edge cases
+  
+  Human review ensures:
+  - Fix is correct (resolves violation)
+  - Fix is safe (doesn't break things)
+  - Fix is appropriate (best solution)
+  
+  But 90%+ of fixes are straightforward and approved as-is.
+
+alternatives_considered:
+  - alternative: "Manual fixes only"
+    pros:
+      - "Human judgment (context-aware)"
+      - "No AI dependency"
+    cons:
+      - "Slow (hours to days)"
+      - "Expensive (developer time)"
+      - "Inconsistent (different approaches)"
+    why_not_chosen: "Too slow, violations persist too long"
+  
+  - alternative: "Automatic fixes (no human review)"
+    pros:
+      - "Fastest (immediate deployment)"
+      - "Fully automated"
+    cons:
+      - "Risky (AI mistakes auto-deployed)"
+      - "No human oversight"
+    why_not_chosen: "Too risky, need human approval for safety"
+  
+  - alternative: "Fix suggestions only (no code generation)"
+    pros:
+      - "Safer (humans implement)"
+      - "Simpler (no code generation)"
+    cons:
+      - "Still slow (humans implement)"
+      - "Still error-prone (humans make mistakes)"
+    why_not_chosen: "Doesn't solve the speed/quality problem"
+
+trade_offs:
+  - trade_off: "AI-generated fixes may have bugs"
+    acceptance: "Humans review before deployment"
+    mitigation: "Comprehensive tests, validation, rollback capability"
+  
+  - trade_off: "Human review adds latency"
+    acceptance: "Safety more important than speed"
+    mitigation: "Prioritize by severity, auto-approve low-risk fixes (future)"
+  
+  - trade_off: "Requires foundation model (expensive)"
+    acceptance: "Cost justified by time savings"
+    mitigation: "Use tier 2 (local LLM) for simple fixes"
+
+success_criteria:
+  - criterion: "Fix accuracy"
+    measurement: "Percentage of fixes that resolve violation"
+    target: "> 95%"
+  
+  - criterion: "Human approval rate"
+    measurement: "Percentage of proposals approved"
+    target: "> 90%"
+  
+  - criterion: "Time to fix"
+    measurement: "Time from violation to deployment"
+    target: "< 4 hours (vs 2-4 days manual)"
+  
+  - criterion: "Regression rate"
+    measurement: "Percentage of fixes that break things"
+    target: "< 1%"
+
+dependencies:
+  requires:
+    - "Autonomous Compliance System (ADR-L-0006) - detects violations"
+    - "ADR system (provides intent)"
+    - "EDR system (provides reality)"
+    - "Policy system (provides standards)"
+    - "Code generation capability"
+  
+  enables:
+    - "Self-healing systems (auto-fix violations)"
+    - "Continuous compliance (violations fixed quickly)"
+    - "Reduced developer burden (AI handles mechanical fixes)"
+
+risks:
+  - risk: "AI generates incorrect fixes"
+    likelihood: "medium"
+    impact: "medium"
+    mitigation: "Human review, comprehensive tests, rollback capability"
+  
+  - risk: "Fixes break existing functionality"
+    likelihood: "low"
+    impact: "high"
+    mitigation: "Regression tests, gradual rollout, monitoring"
+  
+  - risk: "Humans rubber-stamp approvals (don't review)"
+    likelihood: "medium"
+    impact: "medium"
+    mitigation: "Require meaningful review comments, audit approvals"
+
+notes: |
+  This is the "self-healing compliance" capability.
+  
+  Traditional approach: Manual fixes
+  - Violation detected
+  - Developer assigned
+  - Developer implements fix
+  - Developer tests fix
+  - Code review
+  - Deployment
+  - Time: 2-4 days
+  
+  Compliance AI approach: AI-proposed fixes
+  - Violation detected
+  - AI analyzes violation
+  - AI proposes fix
+  - AI generates code
+  - AI validates fix
+  - Human reviews (15 minutes)
+  - Deployment
+  - Time: 4 hours
+  
+  **10x faster, same quality.**
+  
+  The AI agent has complete context:
+  - Knows what system should be (ADR)
+  - Knows what system is (EDR)
+  - Knows what standards to follow (Policy)
+  - Knows what's wrong (Violation)
+  
+  This is enough to generate compliant fixes.
+  
+  Example fix proposal:
+  
+  ```json
+  {
+    "violation_id": "SEC-001-JWT-001",
+    "root_cause": "Token expiry set to 20 minutes, policy requires <= 15 minutes",
+    "fix_strategy": "Update TOKEN_EXPIRY_MINUTES to 15",
+    "adr_changes": [],
+    "code_changes": [
+      {
+        "file": "config/auth.py",
+        "change": "TOKEN_EXPIRY_MINUTES = 15  # Was 20, updated for SEC-001 compliance"
+      }
+    ],
+    "migration_plan": {
+      "breaking": false,
+      "rollout": "Deploy immediately, existing tokens unaffected",
+      "rollback": "Revert config change if issues"
+    },
+    "risk_assessment": {
+      "risk_level": "low",
+      "risks": ["Existing tokens expire 5 minutes earlier"],
+      "mitigation": "Acceptable, improves security"
+    },
+    "validation_results": {
+      "tests_passed": true,
+      "compliance_score_before": 98,
+      "compliance_score_after": 100,
+      "regressions": 0
+    }
+  }
+  ```
+  
+  Human reviews, approves, deploys. Done.

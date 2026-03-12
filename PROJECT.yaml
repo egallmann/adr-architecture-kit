@@ -32,6 +32,9 @@ development_methodology:
     - test_suite_passing
     - type_checking
     - linting
+    - deprecation_free_runtime
+    - dependency_security_audit
+    - dependency_freshness_review
   tdd_cycle: "red-green-refactor"
   rationale: |
     TDD is architecturally aligned with STE principles (SYS-2, SYS-4, PRIME-1).

@@ -3,7 +3,7 @@
 from datetime import date
 from typing import List, Optional
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, ConfigDict, Field
 
 from .common import EnforcementLevel
 
@@ -31,7 +31,7 @@ class StandaloneInvariant(BaseModel):
     verification_method: str = Field(..., pattern=r"^(automated|manual|audit)$")
     rationale: str
     
-    defined_in: Optional[str] = Field(None, pattern=r"^ADR-(L|P|D)-\d{4}$")
+    defined_in: Optional[str] = Field(None, pattern=r"^ADR-(L|P|PS|PC|D)-\d{4}$")
     enforced_by: List[str] = Field(default_factory=list)
     related_constraints: List[str] = Field(default_factory=list)
     
@@ -42,9 +42,8 @@ class StandaloneInvariant(BaseModel):
     validation_query: Optional[str] = Field(None, description="Query to validate compliance")
     validation_frequency: Optional[str] = Field(None, pattern=r"^(on_change|daily|weekly|monthly)$")
     
-    class Config:
-        """Pydantic configuration."""
-        json_schema_extra = {
+    model_config = ConfigDict(
+        json_schema_extra={
             "examples": [{
                 "schema_version": "1.0",
                 "type": "invariant",
@@ -60,3 +59,4 @@ class StandaloneInvariant(BaseModel):
                 "policy_reference": "ORG-POL-001"
             }]
         }
+    )

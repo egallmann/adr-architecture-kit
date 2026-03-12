@@ -10,7 +10,9 @@ from pydantic import BaseModel, Field, field_validator
 class ADRType(str, Enum):
     """ADR type enumeration."""
     LOGICAL = "logical"
-    PHYSICAL = "physical"
+    PHYSICAL = "physical"  # Legacy, use PHYSICAL_SYSTEM or PHYSICAL_COMPONENT
+    PHYSICAL_SYSTEM = "physical-system"
+    PHYSICAL_COMPONENT = "physical-component"
     DECISION = "decision"
 
 
@@ -71,14 +73,14 @@ class ADRFrontmatter(BaseModel):
     
     schema_version: str = Field("1.0", pattern=r"^1\.0$")
     adr_type: ADRType
-    id: str = Field(..., pattern=r"^ADR-(L|P|D)-\d{4}$")
+    id: str = Field(..., pattern=r"^ADR-(L|V|P|PS|PC|D)-\d{4}$")
     title: str = Field(..., min_length=5, max_length=200)
     status: Status
     created_date: date
     modified_date: Optional[date] = None
-    authors: List[str] = Field(..., min_items=1)
+    authors: List[str] = Field(..., min_length=1)
     
-    domains: List[str] = Field(default_factory=list, min_items=1)
+    domains: List[str] = Field(default_factory=list, min_length=1)
     tags: List[str] = Field(default_factory=list)
     
     related_adrs: List[str] = Field(default_factory=list)
@@ -96,15 +98,36 @@ class ADRFrontmatter(BaseModel):
     
     ownership: Optional[Ownership] = None
     
+    introduces_entities: List[str] = Field(
+        default_factory=list,
+        description="Entities introduced by this ADR (CAP-XXXX, COMP-XXXX, etc.)"
+    )
+    modifies_entities: List[str] = Field(
+        default_factory=list,
+        description="Entities modified (lifecycle, relationships, or properties)"
+    )
+    realizes_entities: List[str] = Field(
+        default_factory=list,
+        description="Entities realized by this Physical ADR (COMP implements CAP)"
+    )
+    related_ledgers: List[str] = Field(
+        default_factory=list,
+        description="Decision ledgers that constrained this ADR"
+    )
+    
     @field_validator('id')
     @classmethod
     def validate_id_matches_type(cls, v: str, info) -> str:
         """Validate that ID prefix matches adr_type."""
         adr_type = info.data.get('adr_type')
-        if adr_type == ADRType.LOGICAL and not v.startswith('ADR-L-'):
-            raise ValueError(f"Logical ADR must have ID starting with ADR-L-, got {v}")
+        if adr_type == ADRType.LOGICAL and not (v.startswith('ADR-L-') or v.startswith('ADR-V-')):
+            raise ValueError(f"Logical ADR must have ID starting with ADR-L- or ADR-V-, got {v}")
         elif adr_type == ADRType.PHYSICAL and not v.startswith('ADR-P-'):
             raise ValueError(f"Physical ADR must have ID starting with ADR-P-, got {v}")
+        elif adr_type == ADRType.PHYSICAL_SYSTEM and not v.startswith('ADR-PS-'):
+            raise ValueError(f"Physical-System ADR must have ID starting with ADR-PS-, got {v}")
+        elif adr_type == ADRType.PHYSICAL_COMPONENT and not v.startswith('ADR-PC-'):
+            raise ValueError(f"Physical-Component ADR must have ID starting with ADR-PC-, got {v}")
         elif adr_type == ADRType.DECISION and not v.startswith('ADR-D-'):
             raise ValueError(f"Decision ADR must have ID starting with ADR-D-, got {v}")
         return v

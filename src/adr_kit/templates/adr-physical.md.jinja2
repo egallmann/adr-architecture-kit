@@ -58,7 +58,7 @@
 {% if comp.interfaces %}
 **Interfaces:**
 {% for iface in comp.interfaces %}
-- **{{ iface.id }}** ({{ iface.type }}): {{ iface.specification[:100] }}...
+- **{{ iface.id }}**{% if iface.name %} {{ iface.name }}{% endif %}{% if iface.type %} ({{ iface.type }}){% endif %}: {{ (iface.specification or iface.description or iface.name or "Interface definition")[:100] }}{% if iface.specification or iface.description %}...{% endif %}
 {% endfor %}
 {% endif %}
 

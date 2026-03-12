@@ -2,11 +2,12 @@
 
 from typing import List, Optional
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, ConfigDict, Field
 
 
 class ProjectInfo(BaseModel):
     """Project identification."""
+
     name: str = Field(..., pattern=r"^[a-z0-9-]+$")
     description: str
     type: str = Field(..., pattern=r"^(service|library|platform|system|tool)$")
@@ -14,6 +15,7 @@ class ProjectInfo(BaseModel):
 
 class OnCallRotation(BaseModel):
     """On-call rotation configuration."""
+
     schedule: str
     rotation: str = Field(..., pattern=r"^(daily|weekly|biweekly|monthly)$")
     members: List[str]
@@ -22,6 +24,7 @@ class OnCallRotation(BaseModel):
 
 class ProjectOwnership(BaseModel):
     """Project ownership metadata."""
+
     team: str
     tech_lead: Optional[str] = None
     on_call: Optional[OnCallRotation] = None
@@ -29,12 +32,14 @@ class ProjectOwnership(BaseModel):
 
 class Repository(BaseModel):
     """Repository information."""
+
     url: str
     primary_branch: str
 
 
 class ProjectImplementationIdentifiers(BaseModel):
     """Implementation identifiers for correction agents."""
+
     service_name: Optional[str] = None
     namespace: Optional[str] = None
     deployment_name: Optional[str] = None
@@ -44,6 +49,7 @@ class ProjectImplementationIdentifiers(BaseModel):
 
 class AutomationPermissions(BaseModel):
     """Automation permissions for correction agents."""
+
     auto_merge_allowed: bool = False
     auto_deploy_staging: bool = False
     auto_deploy_production: bool = False
@@ -53,7 +59,7 @@ class AutomationPermissions(BaseModel):
 
 class DevelopmentMethodology(BaseModel):
     """Development methodology and quality practices (project authority)."""
-    
+
     approach: str = Field(..., pattern=r"^(test-driven-development|behavior-driven-development|test-after|exploratory)$")
     testing_framework: Optional[str] = None
     coverage_target: Optional[int] = Field(None, ge=0, le=100)
@@ -65,6 +71,7 @@ class DevelopmentMethodology(BaseModel):
 
 class SCMIntegration(BaseModel):
     """Source control management integration."""
+
     type: str = Field(..., pattern=r"^(github|gitlab|bitbucket)$")
     app_installation_id: Optional[str] = None
     required_approvers: List[str] = Field(default_factory=list)
@@ -72,6 +79,7 @@ class SCMIntegration(BaseModel):
 
 class CIIntegration(BaseModel):
     """CI/CD integration."""
+
     type: str = Field(..., pattern=r"^(github_actions|jenkins|circleci|gitlab_ci)$")
     workflow_path: Optional[str] = None
     required_checks: List[str] = Field(default_factory=list)
@@ -79,24 +87,28 @@ class CIIntegration(BaseModel):
 
 class MetricsConfig(BaseModel):
     """Metrics configuration."""
+
     provider: str = Field(..., pattern=r"^(datadog|prometheus|cloudwatch|newrelic)$")
     dashboards: List[str] = Field(default_factory=list)
 
 
 class LogsConfig(BaseModel):
     """Logs configuration."""
+
     provider: str = Field(..., pattern=r"^(cloudwatch|datadog|splunk|elasticsearch)$")
     log_groups: List[str] = Field(default_factory=list)
 
 
 class AlertsConfig(BaseModel):
     """Alerts configuration."""
+
     provider: str = Field(..., pattern=r"^(pagerduty|opsgenie|victorops)$")
     escalation_policy: Optional[str] = None
 
 
 class ObservabilityConfig(BaseModel):
     """Observability configuration."""
+
     metrics: Optional[MetricsConfig] = None
     logs: Optional[LogsConfig] = None
     alerts: Optional[AlertsConfig] = None
@@ -104,6 +116,7 @@ class ObservabilityConfig(BaseModel):
 
 class Integrations(BaseModel):
     """External integrations."""
+
     scm: Optional[SCMIntegration] = None
     ci: Optional[CIIntegration] = None
     observability: Optional[ObservabilityConfig] = None
@@ -111,14 +124,7 @@ class Integrations(BaseModel):
 
 class RequiredControls(BaseModel):
     """Required security controls."""
-    encryption_at_rest: bool = False
-    encryption_in_transit: bool = False
-    mfa_required: bool = False
-    audit_logging: bool = False
 
-
-class RequiredControls(BaseModel):
-    """Required security controls."""
     encryption_at_rest: bool = False
     encryption_in_transit: bool = False
     mfa_required: bool = False
@@ -127,6 +133,7 @@ class RequiredControls(BaseModel):
 
 class ComplianceRequirements(BaseModel):
     """Compliance and security requirements."""
+
     security_level: Optional[str] = Field(None, pattern=r"^(high|medium|low)$")
     data_classification: Optional[str] = Field(None, pattern=r"^(public|internal|confidential|restricted)$")
     regulatory_requirements: List[str] = Field(default_factory=list)
@@ -136,43 +143,30 @@ class ComplianceRequirements(BaseModel):
 
 class ArchitectureDocumentation(BaseModel):
     """Architecture documentation location."""
-    adr_directory: str = "adrs/"
-    manifest_path: str = "adrs/manifest.yaml"
 
-
-class Integrations(BaseModel):
-    """External integrations."""
-    scm: Optional[SCMIntegration] = None
-    ci: Optional[CIIntegration] = None
-    observability: Optional[ObservabilityConfig] = None
-
-
-class ArchitectureDocumentation(BaseModel):
-    """Architecture documentation location."""
     adr_directory: str = "adrs/"
     manifest_path: str = "adrs/manifest.yaml"
 
 
 class ProjectMetadata(BaseModel):
     """PROJECT.yaml - project-level metadata (one per repository)."""
-    
+
     schema_version: str = Field("1.0", pattern=r"^1\.0$")
     type: str = Field("project_metadata", pattern=r"^project_metadata$")
-    
+
     project: ProjectInfo
     ownership: ProjectOwnership
     repository: Repository
     architecture_documentation: ArchitectureDocumentation
-    
+
     implementation_identifiers: Optional[ProjectImplementationIdentifiers] = None
     automation: Optional[AutomationPermissions] = None
     development_methodology: Optional[DevelopmentMethodology] = None
     integrations: Optional[Integrations] = None
     compliance: Optional[ComplianceRequirements] = None
-    
-    class Config:
-        """Pydantic configuration."""
-        json_schema_extra = {
+
+    model_config = ConfigDict(
+        json_schema_extra={
             "examples": [{
                 "schema_version": "1.0",
                 "type": "project_metadata",
@@ -195,3 +189,4 @@ class ProjectMetadata(BaseModel):
                 }
             }]
         }
+    )

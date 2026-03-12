@@ -70,7 +70,8 @@ component_specifications:
       - Discover sub-module scopes recursively
       - Maintain parent-child scope relationships
     interfaces:
-      - name: ProjectScope
+      - id: IFACE-0001
+        name: ProjectScope
         type: dataclass
         description: Immutable scope metadata
         fields:
@@ -81,7 +82,8 @@ component_specifications:
           - name: Optional[str] - Project name
           - is_sub_module: bool - Sub-module flag
           - parent_scope: Optional[ProjectScope] - Parent reference
-      - name: ProjectScopeResolver
+      - id: IFACE-0002
+        name: ProjectScopeResolver
         type: class
         methods:
           - resolve(start_dir) -> ProjectScope
@@ -110,21 +112,25 @@ component_specifications:
       - Generate manifests recursively for all scopes
       - Maintain backward compatibility with single-scope usage
     interfaces:
-      - name: ManifestGenerator.__init__
+      - id: IFACE-0003
+        name: ManifestGenerator.__init__
         parameters:
           - parser: ADRParser (optional)
           - scope_resolver: ProjectScopeResolver (optional)
-      - name: generate_from_directory
+      - id: IFACE-0004
+        name: generate_from_directory
         parameters:
           - adr_dir: Path
           - scope: Optional[ProjectScope]
         returns: Manifest
-      - name: generate_from_scope
+      - id: IFACE-0005
+        name: generate_from_scope
         parameters:
           - scope: Optional[ProjectScope]
         returns: Manifest
         description: New method for scope-based generation
-      - name: generate_recursive
+      - id: IFACE-0006
+        name: generate_recursive
         parameters:
           - scope: Optional[ProjectScope]
         returns: Dict[str, Manifest]
@@ -151,7 +157,7 @@ component_specifications:
       - Validate recursively for all scopes (INV-0019)
       - Maintain backward compatibility
     interfaces:
-      - id: IFACE-0004
+      - id: IFACE-0007
         type: REST
         specification: |
           ADRValidator.__init__(parser, project_root, scope_resolver).
@@ -180,17 +186,17 @@ component_specifications:
       - Support --recursive flag for multi-scope operations
       - Display clear scope information to users
     interfaces:
-      - id: IFACE-0001
+      - id: IFACE-0008
         type: REST
         specification: |
           adr generate-manifest: --scope PATH (optional), --recursive (flag), --output PATH (optional).
           Generate manifest for scope(s).
-      - id: IFACE-0002
+      - id: IFACE-0009
         type: REST
         specification: |
           adr validate: --scope PATH (optional), --recursive (flag), --cross-references (flag).
           Validate ADRs in scope(s).
-      - id: IFACE-0003
+      - id: IFACE-0010
         type: REST
         specification: |
           adr scope: --recursive (flag).

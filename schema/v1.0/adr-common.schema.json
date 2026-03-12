@@ -24,8 +24,8 @@
     
     "adr_type": {
       "type": "string",
-      "enum": ["logical", "physical", "decision"],
-      "description": "Type of ADR (logical, physical, or decision)"
+      "enum": ["logical", "physical", "physical-system", "physical-component", "decision"],
+      "description": "Type of ADR (logical, physical [legacy], physical-system, physical-component, or decision)"
     },
     
     "id": {
@@ -146,6 +146,30 @@
         }
       },
       "description": "AI-first projection hints for ste-rules-library and prompt translator"
+    },
+
+    "introduces_entities": {
+      "type": "array",
+      "items": {"$ref": "types.schema.json#/definitions/entity_id"},
+      "description": "Entities introduced by this ADR (CAP-XXXX, COMP-XXXX, etc.)"
+    },
+
+    "modifies_entities": {
+      "type": "array",
+      "items": {"$ref": "types.schema.json#/definitions/entity_id"},
+      "description": "Entities modified (lifecycle, relationships, or properties)"
+    },
+
+    "realizes_entities": {
+      "type": "array",
+      "items": {"$ref": "types.schema.json#/definitions/entity_id"},
+      "description": "Entities realized by this Physical ADR (COMP implements CAP)"
+    },
+
+    "related_ledgers": {
+      "type": "array",
+      "items": {"type": "string", "pattern": "^LEDGER-\\d{4}$"},
+      "description": "Decision ledgers that constrained this ADR"
     }
   }
 }

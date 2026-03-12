@@ -3,15 +3,15 @@
 from datetime import datetime
 from typing import Dict, List, Optional
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, ConfigDict, Field
 
 from .common import ImpactLevel, Status
 
 
 class ManifestADREntry(BaseModel):
     """ADR entry in manifest (aggregated metadata)."""
-    id: str = Field(..., pattern=r"^ADR-(L|P|D)-\d{4}$")
-    type: str = Field(..., pattern=r"^(logical|physical|decision)$")
+    id: str = Field(..., pattern=r"^ADR-(L|V|P|PS|PC|D)-\d{4}$")
+    type: str = Field(..., pattern=r"^(logical|physical|physical-system|physical-component|decision)$")
     title: str
     status: Status
     file_path: str
@@ -32,7 +32,7 @@ class ManifestInvariant(BaseModel):
     """Invariant entry in manifest."""
     id: str = Field(..., pattern=r"^INV-\d{4}$")
     statement: str
-    defined_in: str = Field(..., pattern=r"^ADR-(L|P|D)-\d{4}$")
+    defined_in: str = Field(..., pattern=r"^ADR-(L|V|P|PS|PC|D)-\d{4}$")
     enforced_by: List[str] = Field(default_factory=list)
     enforcement_level: str = Field(..., pattern=r"^(must|should|may)$")
 
@@ -55,12 +55,40 @@ class ManifestStatistics(BaseModel):
     total_adrs: int = Field(..., ge=0)
     logical_adrs: int = Field(..., ge=0)
     physical_adrs: int = Field(..., ge=0)
+    physical_system_adrs: int = Field(0, ge=0)
+    physical_component_adrs: int = Field(0, ge=0)
     decision_adrs: int = Field(0, ge=0)
     total_decisions: int = Field(0, ge=0)
     total_invariants: int = Field(0, ge=0)
     total_components: int = Field(0, ge=0)
     total_gaps: int = Field(0, ge=0)
     blocking_gaps: int = Field(0, ge=0)
+    total_entities: int = Field(0, ge=0)
+    total_requirements_snapshots: int = Field(0, ge=0)
+    total_decision_ledgers: int = Field(0, ge=0)
+
+
+class ManifestEntity(BaseModel):
+    """Entity entry in manifest."""
+    entity_id: str = Field(..., pattern=r"^[A-Z]+-\d{4}$")
+    entity_type: str
+    name: str
+    introduced_by: str = Field(..., pattern=r"^ADR-(L|V|P|PS|PC|D)-\d{4}$")
+    lifecycle_stage: str
+
+
+class ManifestRequirementsSnapshot(BaseModel):
+    """Requirements snapshot entry in manifest."""
+    snapshot_id: str = Field(..., pattern=r"^REQ-\d{4}$")
+    domains: List[str]
+    capability_count: int = Field(0, ge=0)
+
+
+class ManifestDecisionLedger(BaseModel):
+    """Decision ledger entry in manifest."""
+    ledger_id: str = Field(..., pattern=r"^LEDGER-\d{4}$")
+    target_logical_adr: str = Field(..., pattern=r"^ADR-L-\d{4}$")
+    decision_count: int = Field(0, ge=0)
 
 
 class Manifest(BaseModel):
@@ -76,16 +104,19 @@ class Manifest(BaseModel):
     by_domain: Dict[str, List[str]] = Field(default_factory=dict)
     by_status: Dict[str, List[str]] = Field(default_factory=dict)
     by_technology: Dict[str, List[str]] = Field(default_factory=dict)
-    
+
     logical_to_physical_map: Dict[str, List[str]] = Field(default_factory=dict)
+    system_to_components_map: Dict[str, List[str]] = Field(default_factory=dict, description="Physical-System to Physical-Component mapping")
     
     invariants: List[ManifestInvariant] = Field(default_factory=list)
+    entities: List[ManifestEntity] = Field(default_factory=list, description="All entities across all ADRs")
+    requirements_snapshots: List[ManifestRequirementsSnapshot] = Field(default_factory=list, description="Requirements snapshots summary")
+    decision_ledgers: List[ManifestDecisionLedger] = Field(default_factory=list, description="Decision ledgers summary")
     gaps_summary: GapsSummary
     statistics: ManifestStatistics
     
-    class Config:
-        """Pydantic configuration."""
-        json_schema_extra = {
+    model_config = ConfigDict(
+        json_schema_extra={
             "examples": [{
                 "schema_version": "1.0",
                 "type": "manifest",
@@ -112,3 +143,4 @@ class Manifest(BaseModel):
                 }
             }]
         }
+    )

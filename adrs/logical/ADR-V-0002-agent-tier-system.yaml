@@ -1,0 +1,331 @@
+schema_version: "1.0"
+id: ADR-V-0002
+adr_type: logical
+vision_category: true
+promotable_to_logical: true
+title: "Agent Tier System"
+status: proposed
+created_date: "2024-03-10"
+authors: [adr-architecture-kit]
+tags:
+  - ai-agents
+  - cost-optimization
+  - performance
+  - democratization
+
+context: |
+  AI agent systems typically use a single model type (e.g., GPT-4) for all tasks.
+  
+  Problems with single-model approach:
+  - Expensive: $0.03-0.10 per 1K tokens for foundation models
+  - Slow: 5-10 seconds per response (API latency)
+  - Wasteful: Using GPT-4 for simple tasks is overkill
+  - Centralized: Requires cloud API access, privacy concerns
+  
+  Many tasks don't require foundation model capabilities:
+  - Rule-based validation (deterministic logic)
+  - Template filling (structured data)
+  - Code formatting (syntax rules)
+  - Coverage checks (count lines)
+  
+  Opportunity: Match task complexity to model capability.
+
+capability:
+  name: "Agent Tier System"
+  description: |
+    A three-tier architecture for AI agents, where tasks are routed to the
+    appropriate tier based on complexity, cost, and quality requirements.
+    
+    Principle: Use the simplest agent that can reliably complete the task.
+  
+  tiers:
+    - tier: 1
+      name: "Rule-Based Agents"
+      description: "No LLM, pure deterministic logic"
+      capabilities:
+        - "Syntax validation (JSON, YAML, schema compliance)"
+        - "Coverage checks (test coverage, documentation coverage)"
+        - "Naming convention enforcement"
+        - "Simple calculations (metrics, statistics)"
+        - "File system operations (find, copy, move)"
+      
+      characteristics:
+        cost: "$0 (no API calls, no model inference)"
+        speed: "10-50ms (CPU-bound, no network)"
+        accuracy: "100% (deterministic logic)"
+        deployment: "Embedded in application (no external dependencies)"
+      
+      examples:
+        - "Check if ADR ID matches type (ADR-PC-XXXX for physical-component)"
+        - "Validate YAML syntax"
+        - "Count test coverage percentage"
+        - "Enforce file naming conventions"
+    
+    - tier: 2
+      name: "Local LLM Agents"
+      description: "7B-13B parameter models running locally or on org infrastructure"
+      capabilities:
+        - "Structured data extraction (parse logs, extract entities)"
+        - "Template filling (ADR creation from conversation)"
+        - "Code review against spec (compare code to requirements)"
+        - "Test generation (unit tests from function signatures)"
+        - "Simple reasoning (categorize, classify, summarize)"
+      
+      characteristics:
+        cost: "~$0 (local inference, one-time hardware cost)"
+        speed: "1-2s (local GPU inference)"
+        accuracy: "80-90% (good for structured tasks)"
+        deployment: "Self-hosted (org controls data, privacy preserved)"
+      
+      models:
+        - "Llama 3.1 13B"
+        - "Mistral 7B"
+        - "Qwen 14B"
+        - "DeepSeek Coder 13B"
+      
+      examples:
+        - "Interview human to fill ADR template"
+        - "Generate unit tests from function signature"
+        - "Review code against Physical-Component ADR spec"
+        - "Categorize code changes (feature, bugfix, refactor)"
+    
+    - tier: 3
+      name: "Foundation Model Agents"
+      description: "GPT-4, Claude, o1 - best-in-class reasoning"
+      capabilities:
+        - "Deep architectural analysis (system design, trade-offs)"
+        - "Complex reasoning (multi-step logic, edge cases)"
+        - "Creative problem solving (novel solutions)"
+        - "Validation of complex decisions (ADR review)"
+        - "Meta-optimization (improve the system itself)"
+      
+      characteristics:
+        cost: "$$$$ ($0.03-0.10 per 1K tokens)"
+        speed: "5-10s (API latency + inference)"
+        accuracy: "95%+ (state-of-the-art reasoning)"
+        deployment: "Cloud API (requires internet, privacy considerations)"
+      
+      models:
+        - "GPT-4 Turbo"
+        - "Claude 3.5 Sonnet"
+        - "OpenAI o1"
+      
+      examples:
+        - "Validate ADR for logical consistency and completeness"
+        - "Analyze system architecture for scalability issues"
+        - "Design meta-optimization strategies"
+        - "Review complex security implications"
+
+boundaries:
+  in_scope:
+    - "Task routing (match task to appropriate tier)"
+    - "Tier capabilities (what each tier can do)"
+    - "Cost/speed/quality trade-offs"
+    - "Escalation strategy (tier 2 → tier 3 if needed)"
+  
+  out_of_scope:
+    - "Specific model implementations (LLM training)"
+    - "Hardware requirements (GPU specs)"
+    - "Specific prompt engineering (per-task prompts)"
+
+contracts:
+  routing_interface:
+    description: "How tasks are routed to appropriate tier"
+    inputs:
+      - name: "task_type"
+        type: "enum"
+        values: ["validation", "generation", "analysis", "optimization"]
+      
+      - name: "complexity"
+        type: "enum"
+        values: ["simple", "moderate", "complex"]
+      
+      - name: "quality_requirement"
+        type: "enum"
+        values: ["deterministic", "good", "best"]
+    
+    outputs:
+      - name: "selected_tier"
+        type: "integer"
+        values: [1, 2, 3]
+      
+      - name: "rationale"
+        type: "string"
+        description: "Why this tier was selected"
+  
+  escalation_interface:
+    description: "How tasks escalate to higher tiers if needed"
+    triggers:
+      - "Tier 2 confidence < 80%"
+      - "Tier 2 result fails validation"
+      - "Task explicitly requires foundation model"
+    
+    process:
+      - "Log escalation reason"
+      - "Route to next tier"
+      - "Preserve context from lower tier"
+
+quality_attributes:
+  - attribute: "Cost Efficiency"
+    requirement: "Minimize LLM API costs by using lower tiers when possible"
+    measurement: "Average cost per task"
+    target: "90% cost reduction vs tier 3 only"
+  
+  - attribute: "Speed"
+    requirement: "Minimize latency by using local models when possible"
+    measurement: "Average task completion time"
+    target: "80% faster than tier 3 only"
+  
+  - attribute: "Quality"
+    requirement: "Maintain high quality by using appropriate tier"
+    measurement: "Task success rate"
+    target: "> 95% success rate"
+  
+  - attribute: "Democratization"
+    requirement: "Enable anyone to build agents (not just those with API budgets)"
+    measurement: "Number of custom agents built"
+    target: "10x increase in agent development"
+
+rationale: |
+  **Why three tiers?**
+  
+  Tasks have different complexity levels. Using GPT-4 for everything is like
+  using a Ferrari to go to the grocery store - expensive and wasteful.
+  
+  **Cost optimization example:**
+  
+  Scenario: Validate 1000 ADRs
+  
+  Tier 3 only (GPT-4):
+  - Cost: $0.10 per ADR = $100
+  - Time: 10s per ADR = 2.8 hours
+  
+  Multi-tier approach:
+  - Tier 1 (schema validation): 700 ADRs, $0, 35s total
+  - Tier 2 (logic validation): 250 ADRs, $0, 500s total
+  - Tier 3 (complex validation): 50 ADRs, $5, 500s total
+  - Total: $5, 17 minutes
+  
+  **95% cost reduction, 90% time reduction**
+  
+  **Why local models?**
+  
+  - Privacy: Org data stays on org infrastructure
+  - Cost: One-time hardware cost vs ongoing API costs
+  - Speed: No network latency
+  - Control: Org can fine-tune models for their domain
+  
+  **Why foundation models still needed?**
+  
+  Some tasks genuinely require deep reasoning:
+  - Architectural decisions (trade-offs, long-term implications)
+  - Complex validation (subtle logical inconsistencies)
+  - Meta-optimization (improving the system itself)
+  
+  Use them strategically, not universally.
+
+alternatives_considered:
+  - alternative: "Foundation models only"
+    pros:
+      - "Best quality for all tasks"
+      - "Simpler architecture (one model type)"
+    cons:
+      - "Extremely expensive ($100+ per 1000 tasks)"
+      - "Slow (API latency for every task)"
+      - "Wasteful (overkill for simple tasks)"
+    why_not_chosen: "Cost prohibitive at scale, 95% of tasks don't need this capability"
+  
+  - alternative: "Local models only"
+    pros:
+      - "Zero API costs"
+      - "Fast (local inference)"
+      - "Privacy preserved"
+    cons:
+      - "Lower quality for complex tasks"
+      - "May miss subtle issues"
+      - "Requires GPU infrastructure"
+    why_not_chosen: "Quality insufficient for complex reasoning, need foundation models for validation"
+  
+  - alternative: "Two tiers (local + foundation)"
+    pros:
+      - "Simpler than three tiers"
+      - "Still cost-optimized"
+    cons:
+      - "Misses rule-based optimization (tier 1)"
+      - "Local model used for tasks that don't need LLM"
+    why_not_chosen: "Tier 1 provides additional 50% cost/speed improvement"
+
+trade_offs:
+  - trade_off: "More complex routing logic"
+    acceptance: "Routing logic is deterministic and testable"
+    mitigation: "Clear routing rules, well-documented escalation paths"
+  
+  - trade_off: "Tier 2 may produce lower quality"
+    acceptance: "Tier 3 validates critical outputs"
+    mitigation: "Confidence scoring, automatic escalation if quality insufficient"
+  
+  - trade_off: "Requires local GPU infrastructure"
+    acceptance: "One-time cost, ongoing savings"
+    mitigation: "Fallback to tier 3 if local unavailable"
+
+success_criteria:
+  - criterion: "Cost reduction"
+    measurement: "Total LLM API costs vs tier 3 only"
+    target: "> 90% cost reduction"
+  
+  - criterion: "Speed improvement"
+    measurement: "Average task completion time"
+    target: "> 80% faster"
+  
+  - criterion: "Quality maintained"
+    measurement: "Task success rate"
+    target: "> 95% (same as tier 3 only)"
+  
+  - criterion: "Democratization"
+    measurement: "Number of custom agents built by community"
+    target: "10x increase (tier 1 agents are easy to build)"
+
+dependencies:
+  requires:
+    - "Structured ADR system (provides deterministic validation rules)"
+    - "Local LLM infrastructure (for tier 2 deployment)"
+    - "Foundation model API access (for tier 3)"
+  
+  enables:
+    - "Meta-optimization (tier 3 designs, tier 1/2 execute)"
+    - "Cost-effective scaling (1000s of ADRs validated)"
+    - "Community agent development (tier 1 accessible to all)"
+
+risks:
+  - risk: "Tier 2 quality insufficient"
+    likelihood: "medium"
+    impact: "medium"
+    mitigation: "Confidence scoring, automatic escalation, tier 3 validation"
+  
+  - risk: "Routing logic incorrect (wrong tier selected)"
+    likelihood: "low"
+    impact: "medium"
+    mitigation: "Extensive testing, monitoring, manual override capability"
+  
+  - risk: "Local infrastructure costs too high"
+    likelihood: "low"
+    impact: "medium"
+    mitigation: "Break-even analysis (local GPU amortizes over 6-12 months), cloud GPU options"
+
+notes: |
+  This tier system enables meta-optimization (ADR-L-0003).
+  
+  Foundation models observe their own usage patterns and design optimizations:
+  - "This task is repetitive, delegate to tier 1 rule"
+  - "This task is structured, delegate to tier 2 local model"
+  - "This task is complex, keep in tier 3"
+  
+  Over time, the system automates itself out of 99% of tasks.
+  
+  Example progression:
+  - Week 1: 100% tier 3 (foundation model does everything)
+  - Week 4: 70% tier 3, 30% tier 2 (local model handles interviews)
+  - Week 12: 40% tier 3, 40% tier 2, 20% tier 1 (rules handle validation)
+  - Week 24: 10% tier 3, 30% tier 2, 60% tier 1 (mostly automated)
+  
+  The foundation model becomes the architect, not the worker.

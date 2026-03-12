@@ -28,6 +28,9 @@ from .manifest import (
     ManifestADREntry,
     ManifestInvariant,
     ManifestStatistics,
+    ManifestEntity,
+    ManifestRequirementsSnapshot,
+    ManifestDecisionLedger,
 )
 from .physical_adr import (
     ArchitecturePattern,
@@ -41,6 +44,41 @@ from .physical_adr import (
     OperationalRequirements,
     PhysicalADR,
     TechnologyChoice,
+)
+from .physical_system_adr import (
+    ComponentRelationship,
+    ComponentTopology,
+    ComponentTopologyComponent,
+    ConversationMetadata,
+    DataFlow,
+    FailureMode,
+    HumanDecision,
+    IntegrationPattern,
+    PhysicalSystemADR,
+    ScalabilityStrategy,
+    SystemBoundary,
+)
+from .physical_component_adr import (
+    Algorithm,
+    BreakingChange,
+    CircuitBreaker,
+    ErrorHandling,
+    ErrorType,
+    GenerationContext,
+    ImplementationRequirements,
+    InterfaceCompatibility,
+    LatencyRequirements,
+    LoggingConfig,
+    Metric,
+    Observability,
+    PerformanceRequirements,
+    PhysicalComponentADR,
+    RateLimit,
+    RateLimiting,
+    ResourceLimits,
+    SecurityRequirements,
+    TestingRequirements,
+    Tracing,
 )
 from .project_metadata import (
     AlertsConfig,
@@ -61,6 +99,26 @@ from .project_metadata import (
     SCMIntegration,
     ArchitectureDocumentation,
     Integrations,
+)
+from .entity_registry import (
+    Entity,
+    EntityRegistry,
+    EntityRelationships,
+    EntityType,
+    LifecycleStage,
+)
+from .requirements_snapshot import (
+    RequiredCapability,
+    RequiredConstraint,
+    RequiredInvariant,
+    RequiredNFR,
+    RequirementsSnapshot,
+    TechnologySignals,
+)
+from .decision_ledger import (
+    DecisionLedger,
+    LedgerConstraints,
+    LedgerDecision,
 )
 
 __all__ = [
@@ -94,6 +152,39 @@ __all__ = [
     "ImplementationDecision",
     "IntegrationPoint",
     "OperationalRequirements",
+    # Physical-System ADR
+    "PhysicalSystemADR",
+    "SystemBoundary",
+    "ComponentTopology",
+    "ComponentTopologyComponent",
+    "ComponentRelationship",
+    "IntegrationPattern",
+    "DataFlow",
+    "ScalabilityStrategy",
+    "FailureMode",
+    "ConversationMetadata",
+    "HumanDecision",
+    # Physical-Component ADR
+    "PhysicalComponentADR",
+    "GenerationContext",
+    "ImplementationRequirements",
+    "Algorithm",
+    "ErrorHandling",
+    "ErrorType",
+    "CircuitBreaker",
+    "LoggingConfig",
+    "Metric",
+    "Tracing",
+    "Observability",
+    "TestingRequirements",
+    "SecurityRequirements",
+    "RateLimiting",
+    "RateLimit",
+    "PerformanceRequirements",
+    "LatencyRequirements",
+    "ResourceLimits",
+    "InterfaceCompatibility",
+    "BreakingChange",
     # Invariant
     "StandaloneInvariant",
     "InvariantException",
@@ -120,7 +211,27 @@ __all__ = [
     "Manifest",
     "ManifestADREntry",
     "ManifestInvariant",
+    "ManifestEntity",
+    "ManifestRequirementsSnapshot",
+    "ManifestDecisionLedger",
     "GapsSummary",
     "GapSummaryByADR",
     "ManifestStatistics",
+    # Entity Registry (v1.1)
+    "Entity",
+    "EntityRegistry",
+    "EntityRelationships",
+    "EntityType",
+    "LifecycleStage",
+    # Requirements Snapshot (v1.1)
+    "RequiredCapability",
+    "RequiredConstraint",
+    "RequiredInvariant",
+    "RequiredNFR",
+    "RequirementsSnapshot",
+    "TechnologySignals",
+    # Decision Ledger (v1.1)
+    "DecisionLedger",
+    "LedgerConstraints",
+    "LedgerDecision",
 ]

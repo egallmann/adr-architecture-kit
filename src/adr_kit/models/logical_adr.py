@@ -2,7 +2,7 @@
 
 from typing import List, Optional
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, ConfigDict, Field, model_validator
 
 from .common import (
     ADRFrontmatter,
@@ -82,7 +82,9 @@ class LogicalADR(ADRFrontmatter):
     """Logical ADR - conceptual design without implementation details."""
     
     adr_type: ADRType = Field(ADRType.LOGICAL, frozen=True)
-    id: str = Field(..., pattern=r"^ADR-L-\d{4}$")
+    id: str = Field(..., pattern=r"^ADR-(L|V)-\d{4}$")
+    vision_category: bool = False
+    promotable_to_logical: Optional[bool] = None
     
     context: str = Field(..., description="Problem space, business drivers, constraints")
     
@@ -92,12 +94,12 @@ class LogicalADR(ADRFrontmatter):
     constraints: List[Constraint] = Field(default_factory=list)
     invariants: List[Invariant] = Field(default_factory=list)
     non_functional_requirements: List[NonFunctionalRequirement] = Field(default_factory=list)
-    decisions: List[Decision] = Field(..., min_length=1)
+    decisions: List[Decision] = Field(default_factory=list)
     gaps: List[Gap] = Field(default_factory=list)
     
-    class Config:
-        """Pydantic configuration."""
-        json_schema_extra = {
+    model_config = ConfigDict(
+        extra="allow",
+        json_schema_extra={
             "examples": [{
                 "schema_version": "1.0",
                 "adr_type": "logical",
@@ -115,3 +117,13 @@ class LogicalADR(ADRFrontmatter):
                 }]
             }]
         }
+    )
+
+    @model_validator(mode="after")
+    def validate_logical_variant(self) -> "LogicalADR":
+        """Enforce strict ADR-L rules while allowing lightweight ADR-V structure."""
+        if self.id.startswith("ADR-L-") and not self.decisions:
+            raise ValueError("ADR-L logical ADRs must define at least one decision")
+        if self.id.startswith("ADR-V-") and not self.vision_category:
+            raise ValueError("ADR-V logical ADRs must set vision_category: true")
+        return self

@@ -1,0 +1,374 @@
+schema_version: "1.0"
+id: ADR-V-0004
+adr_type: logical
+vision_category: true
+promotable_to_logical: true
+title: "Bidirectional Translation Layer"
+absorbs_concepts_from: ["ADR-L-0005"]
+status: proposed
+created_date: "2024-03-10"
+authors: [adr-architecture-kit]
+tags:
+  - translation
+  - human-ai-interface
+  - schema
+  - prompts
+
+context: |
+  Humans and AI speak different languages:
+  - Humans: Natural language (conversational, ambiguous, contextual)
+  - AI: Structured data (JSON, YAML, precise, formal)
+  
+  Traditional approach: Force humans to learn AI's language
+  - Write YAML/JSON manually
+  - Learn schema rules
+  - Understand validation errors
+  
+  Problems:
+  - High friction (humans must learn syntax)
+  - Error-prone (syntax errors, schema violations)
+  - Inaccessible (technical knowledge required)
+  - Slow (manual typing, formatting)
+  
+  Opportunity: Let AI translate between human and machine language.
+  
+  The ADR schema is already a translation layer:
+  - Converts human intent → structured data
+  - But humans still see the structure (YAML editing)
+  
+  Vision: Humans never see structure, only conversation.
+
+capability:
+  name: "Bidirectional Translation Layer"
+  description: |
+    A system that translates between human natural language and machine-readable
+    structured data, in both directions, making the structure invisible to humans.
+    
+    The ADR schema becomes a "Rosetta Stone" - a universal translator between
+    human conversation and AI reasoning.
+  
+  translation_flows:
+    - flow: "Human → Structure (Conversation Compilation)"
+      description: "Convert human conversation into structured ADRs"
+      process:
+        - step: "Human speaks naturally"
+          example: "I need a user service with JWT authentication"
+        
+        - step: "Local LLM extracts intent"
+          output: "Structured entities (service, auth method, requirements)"
+        
+        - step: "Local LLM fills ADR template"
+          output: "Complete ADR YAML with all fields"
+        
+        - step: "Watchdog agent infers missing details"
+          output: "Technology stack, deployment model, etc."
+        
+        - step: "Foundation model validates"
+          output: "Validated ADR ready for implementation"
+      
+      key_principle: "Humans never write YAML, AI does it"
+    
+    - flow: "Structure → Model-Specific Prompts (Optimization)"
+      description: "Convert structured ADRs into optimal prompts for each AI model"
+      process:
+        - step: "ADR contains structured data"
+          example: "Physical-Component ADR with generation_context"
+        
+        - step: "Prompt generator reads ADR"
+          output: "Extracts relevant fields for task"
+        
+        - step: "Model-specific formatting"
+          output: "GPT-4: XML tags, Claude: Markdown, o1: Chain-of-thought"
+        
+        - step: "Optimized prompt sent to model"
+          output: "Model receives information in its preferred format"
+      
+      key_principle: "Each model gets prompts in its optimal format"
+    
+    - flow: "Structure → Human (Natural Language Explanation)"
+      description: "Convert structured ADRs back into natural language for humans"
+      process:
+        - step: "Human asks about ADR"
+          example: "Why did we choose JWT authentication?"
+        
+        - step: "Local LLM reads ADR"
+          output: "Extracts rationale, trade-offs, alternatives"
+        
+        - step: "Local LLM generates explanation"
+          output: "Natural language summary"
+        
+        - step: "Human receives answer"
+          output: "No YAML shown, just conversation"
+      
+      key_principle: "Humans never read YAML, AI explains it"
+
+boundaries:
+  in_scope:
+    - "Conversation → ADR compilation"
+    - "ADR → model-specific prompt generation"
+    - "ADR → natural language explanation"
+    - "Schema as universal translator"
+  
+  out_of_scope:
+    - "Specific UI implementation (CLI, web, Slack, etc.)"
+    - "Specific model implementations (LLM training)"
+    - "Natural language generation quality (use existing models)"
+
+contracts:
+  conversation_to_structure:
+    description: "How conversation compiles into ADRs"
+    inputs:
+      - name: "conversation_transcript"
+        format: "Array of messages"
+        fields:
+          - "speaker (human|agent)"
+          - "message (string)"
+          - "timestamp"
+    
+    outputs:
+      - name: "adr_document"
+        format: "YAML file conforming to ADR schema"
+        completeness: "All required fields populated"
+  
+  structure_to_prompt:
+    description: "How ADRs become model-specific prompts"
+    inputs:
+      - name: "adr_document"
+        format: "Parsed ADR object"
+      
+      - name: "task_type"
+        type: "enum"
+        values: ["code_generation", "validation", "analysis"]
+      
+      - name: "target_model"
+        type: "enum"
+        values: ["gpt4", "claude", "o1", "local"]
+    
+    outputs:
+      - name: "optimized_prompt"
+        format: "String (model-specific formatting)"
+        includes:
+          - "Relevant ADR fields (not all fields)"
+          - "Model-specific formatting (XML, Markdown, etc.)"
+          - "Task-specific instructions"
+  
+  structure_to_explanation:
+    description: "How ADRs become natural language explanations"
+    inputs:
+      - name: "adr_document"
+        format: "Parsed ADR object"
+      
+      - name: "human_question"
+        type: "string"
+        example: "Why did we choose this technology?"
+    
+    outputs:
+      - name: "natural_language_answer"
+        format: "String (conversational)"
+        characteristics:
+          - "No YAML/JSON shown"
+          - "Focuses on 'why' not 'what'"
+          - "Cites ADR fields as evidence"
+
+quality_attributes:
+  - attribute: "Human Accessibility"
+    requirement: "Humans can interact with system through conversation only"
+    measurement: "Percentage of users who never see YAML"
+    target: "> 95%"
+  
+  - attribute: "Translation Accuracy"
+    requirement: "Conversation accurately captured in ADR structure"
+    measurement: "Human validation rate (do humans approve generated ADRs?)"
+    target: "> 95%"
+  
+  - attribute: "Prompt Optimization"
+    requirement: "Model-specific prompts improve AI performance"
+    measurement: "Task success rate (structured prompts vs raw ADR)"
+    target: "> 20% improvement"
+  
+  - attribute: "Explanation Quality"
+    requirement: "Natural language explanations are clear and accurate"
+    measurement: "Human comprehension rate"
+    target: "> 90%"
+
+rationale: |
+  **Why bidirectional translation?**
+  
+  The best interface is no interface. Humans shouldn't need to learn YAML.
+  
+  The ADR schema is powerful:
+  - Captures architectural intent
+  - Enables AI reasoning
+  - Preserves decisions
+  
+  But it's inaccessible to non-technical users.
+  
+  Solution: Make the schema invisible.
+  - Humans speak naturally
+  - AI translates to structure
+  - AI translates back to natural language
+  
+  **The ADR schema as Rosetta Stone:**
+  
+  The Rosetta Stone enabled translation between Egyptian hieroglyphs and Greek.
+  
+  The ADR schema enables translation between:
+  - Human conversation (natural language)
+  - AI reasoning (structured data)
+  - Model-specific prompts (optimized formats)
+  
+  It's the universal translator for human-AI collaboration.
+  
+  **Why model-specific prompts?**
+  
+  Different models have different preferences:
+  - GPT-4: Prefers XML tags (<capability>, <rationale>)
+  - Claude: Prefers Markdown (## Capability, ## Rationale)
+  - o1: Prefers chain-of-thought (step-by-step reasoning)
+  
+  By generating model-specific prompts, we optimize AI performance.
+  
+  Example: Code generation from Physical-Component ADR
+  
+  Raw ADR (1000 lines of YAML):
+  - Success rate: 70% (too much information, model confused)
+  
+  Optimized prompt (200 lines, model-specific format):
+  - Success rate: 90% (focused, clear, formatted correctly)
+  
+  **20% improvement just from better prompts.**
+
+alternatives_considered:
+  - alternative: "Humans write YAML directly"
+    pros:
+      - "Direct control"
+      - "No AI dependency"
+    cons:
+      - "High friction (learn YAML + schema)"
+      - "Error-prone (syntax errors)"
+      - "Inaccessible (technical knowledge required)"
+    why_not_chosen: "Too much friction, documentation gets skipped"
+  
+  - alternative: "Form-based UI"
+    pros:
+      - "Structured input"
+      - "Validation built-in"
+    cons:
+      - "Still manual (fill many fields)"
+      - "Rigid (can't express nuance)"
+      - "Not conversational"
+    why_not_chosen: "Better than YAML but still friction"
+  
+  - alternative: "Single prompt format (no model-specific optimization)"
+    pros:
+      - "Simpler (one format for all models)"
+      - "Less code to maintain"
+    cons:
+      - "Suboptimal (each model has preferences)"
+      - "Lower success rates (20% worse)"
+    why_not_chosen: "Model-specific optimization provides significant improvement"
+
+trade_offs:
+  - trade_off: "AI translation may misinterpret human intent"
+    acceptance: "Humans review and can override"
+    mitigation: "Conversation metadata preserves original intent, human approval required"
+  
+  - trade_off: "Model-specific prompts require maintenance"
+    acceptance: "20% improvement justifies maintenance cost"
+    mitigation: "Prompt templates versioned, tested, documented"
+  
+  - trade_off: "Hiding structure may confuse advanced users"
+    acceptance: "Advanced users can still view/edit YAML directly"
+    mitigation: "Provide 'show YAML' option for power users"
+
+success_criteria:
+  - criterion: "Accessibility"
+    measurement: "Percentage of users who create ADRs without YAML knowledge"
+    target: "> 90%"
+  
+  - criterion: "Translation accuracy"
+    measurement: "Human approval rate for generated ADRs"
+    target: "> 95%"
+  
+  - criterion: "Prompt optimization impact"
+    measurement: "Task success rate improvement (structured vs raw)"
+    target: "> 20% improvement"
+  
+  - criterion: "User satisfaction"
+    measurement: "User surveys (conversational vs manual)"
+    target: "> 4.5/5 rating"
+
+dependencies:
+  requires:
+    - "Conversational Architecture System (ADR-L-0001) - provides conversation interface"
+    - "Agent Tier System (ADR-L-0002) - provides local LLM for translation"
+    - "ADR schema (foundation) - provides structure to translate to/from"
+  
+  enables:
+    - "Democratization (anyone can create ADRs)"
+    - "AI performance optimization (better prompts)"
+    - "Human-AI collaboration (seamless interaction)"
+
+risks:
+  - risk: "Translation misinterprets human intent"
+    likelihood: "medium"
+    impact: "medium"
+    mitigation: "Human review required, conversation metadata preserves original intent"
+  
+  - risk: "Model-specific prompts become outdated"
+    likelihood: "medium"
+    impact: "low"
+    mitigation: "Version prompts, monitor success rates, update as models evolve"
+  
+  - risk: "Hiding structure confuses debugging"
+    likelihood: "low"
+    impact: "low"
+    mitigation: "Provide 'show YAML' option, log all translations"
+
+notes: |
+  This is the "conversation compiles into structure" capability.
+  
+  The ADR schema is not just documentation:
+  - It's a translation layer
+  - It's a universal format
+  - It's a Rosetta Stone
+  
+  Humans speak, AI translates, structure emerges.
+  
+  The structure is optimized for AI reasoning:
+  - Machine-readable (JSON/YAML)
+  - Strongly typed (schema validation)
+  - Semantically rich (rationale, trade-offs, dependencies)
+  
+  But humans never see it:
+  - Conversation in
+  - Conversation out
+  - Structure hidden in between
+  
+  This is the endgame: Conversational computing.
+  
+  Example interaction:
+  
+  Human: "I need a user service with JWT authentication"
+  
+  AI: "Got it. Should this service handle user registration too, or just authentication?"
+  
+  Human: "Both registration and authentication"
+  
+  AI: "What database should we use for user storage?"
+  
+  Human: "PostgreSQL"
+  
+  AI: "Perfect. I've created ADR-PC-0042 for the User Service. It includes:
+       - JWT authentication with RS256
+       - User registration with email verification
+       - PostgreSQL for user storage
+       - Password hashing with bcrypt
+       
+       Want me to generate the implementation?"
+  
+  Human: "Yes"
+  
+  [AI generates code from ADR-PC-0042]
+  
+  Human never saw YAML. AI handled all translation.

@@ -45,6 +45,8 @@ Thumbs.db
 # Temporary files
 *.tmp
 *.bak
+tests/.tmp/
+.tmp/
 
 # AI Agent Workspace (not part of project)
 .codex/

@@ -116,25 +116,90 @@
           "interfaces": {
             "type": "array",
             "items": {
-              "type": "object",
-              "required": ["id", "type", "specification"],
-              "properties": {
-                "id": {
-                  "$ref": "types.schema.json#/definitions/entity_id",
-                  "pattern": "^IFACE-\\d{4}$"
+              "oneOf": [
+                {
+                  "type": "object",
+                  "required": ["id", "type", "specification"],
+                  "properties": {
+                    "id": {
+                      "$ref": "types.schema.json#/definitions/entity_id",
+                      "pattern": "^IFACE-\\d{4}$"
+                    },
+                    "type": {
+                      "type": "string",
+                      "enum": ["REST", "gRPC", "GraphQL", "message", "event", "stream", "batch"]
+                    },
+                    "specification": {
+                      "$ref": "types.schema.json#/definitions/markdown_text"
+                    },
+                    "contract_reference": {
+                      "type": "string",
+                      "description": "Reference to API contract (OpenAPI, proto file, etc.)"
+                    }
+                  }
                 },
-                "type": {
-                  "type": "string",
-                  "enum": ["REST", "gRPC", "GraphQL", "message", "event", "stream", "batch"]
-                },
-                "specification": {
-                  "$ref": "types.schema.json#/definitions/markdown_text"
-                },
-                "contract_reference": {
-                  "type": "string",
-                  "description": "Reference to API contract (OpenAPI, proto file, etc.)"
+                {
+                  "type": "object",
+                  "required": ["id", "name"],
+                  "properties": {
+                    "id": {
+                      "$ref": "types.schema.json#/definitions/entity_id",
+                      "pattern": "^IFACE-\\d{4}$"
+                    },
+                    "name": {
+                      "type": "string"
+                    },
+                    "type": {
+                      "type": "string"
+                    },
+                    "description": {
+                      "$ref": "types.schema.json#/definitions/markdown_text"
+                    },
+                    "fields": {
+                      "type": "array",
+                      "items": {
+                        "oneOf": [
+                          {"type": "string"},
+                          {"type": "object"}
+                        ]
+                      }
+                    },
+                    "methods": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "parameters": {
+                      "type": "array",
+                      "items": {
+                        "oneOf": [
+                          {"type": "string"},
+                          {"type": "object"}
+                        ]
+                      }
+                    },
+                    "returns": {
+                      "type": "string"
+                    },
+                    "example": {
+                      "$ref": "types.schema.json#/definitions/markdown_text"
+                    },
+                    "values": {
+                      "type": "array",
+                      "items": {
+                        "oneOf": [
+                          {"type": "string"},
+                          {"type": "object"}
+                        ]
+                      }
+                    },
+                    "specification": {
+                      "$ref": "types.schema.json#/definitions/markdown_text"
+                    }
+                  }
                 }
-              }
+              ]
             }
           },
           "dependencies": {
@@ -153,6 +218,16 @@
             "type": "array",
             "items": {"type": "string"},
             "description": "Services that call this component (for blast radius analysis)"
+          },
+          "implements_capabilities": {
+            "type": "array",
+            "items": {"$ref": "types.schema.json#/definitions/entity_id"},
+            "description": "Capabilities (CAP-XXXX) this component implements"
+          },
+          "realizes_entities": {
+            "type": "array",
+            "items": {"$ref": "types.schema.json#/definitions/entity_id"},
+            "description": "Other entities (BOUND, CONTRACT, etc.) this component realizes"
           },
           "implementation_identifiers": {
             "type": "object",

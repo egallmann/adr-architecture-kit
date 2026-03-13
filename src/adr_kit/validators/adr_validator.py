@@ -27,6 +27,7 @@ class ValidationResult:
     """Result of ADR validation."""
     
     valid: bool
+    mode: str
     errors: List[ValidationError]
     warnings: List[ValidationError]
     
@@ -76,7 +77,21 @@ class ADRValidator:
         deduped_physical = list(dict.fromkeys(path.resolve() for path in physical_files))
         return logical_files, [Path(path) for path in deduped_physical]
 
-    def validate_file(self, file_path: Union[str, Path]) -> ValidationResult:
+    def _schema_name_for_data(self, data: dict) -> str:
+        """Map adr_type to parser schema names."""
+        adr_type = data.get("adr_type")
+        mapping = {
+            "logical": "logical",
+            "physical": "physical",
+            "physical-system": "physical_system",
+            "physical-component": "physical_component",
+        }
+        schema_name = mapping.get(adr_type)
+        if schema_name is None:
+            raise ADRParseError(f"Unknown adr_type: {adr_type}")
+        return schema_name
+
+    def validate_file(self, file_path: Union[str, Path], mode: str = "complete") -> ValidationResult:
         """Validate ADR file.
         
         Args:
@@ -88,6 +103,42 @@ class ADRValidator:
         file_path = Path(file_path)
         errors: List[ValidationError] = []
         warnings: List[ValidationError] = []
+
+        if mode not in {"complete", "structural"}:
+            errors.append(ValidationError(
+                severity="error",
+                rule="invalid_mode",
+                message=f"Unknown validation mode: {mode}"
+            ))
+            return ValidationResult(valid=False, mode=mode, errors=errors, warnings=warnings)
+
+        if mode == "structural":
+            try:
+                data = self.parser.parse_yaml(file_path)
+                self.parser.validate_against_schema(
+                    data,
+                    self._schema_name_for_data(data),
+                    mode="structural",
+                )
+            except ADRSchemaValidationError as e:
+                errors.append(ValidationError(
+                    severity="error",
+                    rule="schema_validation",
+                    message=str(e)
+                ))
+            except ADRParseError as e:
+                errors.append(ValidationError(
+                    severity="error",
+                    rule="parse_error",
+                    message=str(e)
+                ))
+            except Exception as e:
+                errors.append(ValidationError(
+                    severity="error",
+                    rule="unknown_error",
+                    message=f"Unexpected error: {e}"
+                ))
+            return ValidationResult(valid=len(errors) == 0, mode=mode, errors=errors, warnings=warnings)
         
         # Try to parse ADR
         try:
@@ -98,21 +149,21 @@ class ADRValidator:
                 rule="schema_validation",
                 message=str(e)
             ))
-            return ValidationResult(valid=False, errors=errors, warnings=warnings)
+            return ValidationResult(valid=False, mode=mode, errors=errors, warnings=warnings)
         except ADRParseError as e:
             errors.append(ValidationError(
                 severity="error",
                 rule="parse_error",
                 message=str(e)
             ))
-            return ValidationResult(valid=False, errors=errors, warnings=warnings)
+            return ValidationResult(valid=False, mode=mode, errors=errors, warnings=warnings)
         except Exception as e:
             errors.append(ValidationError(
                 severity="error",
                 rule="unknown_error",
                 message=f"Unexpected error: {e}"
             ))
-            return ValidationResult(valid=False, errors=errors, warnings=warnings)
+            return ValidationResult(valid=False, mode=mode, errors=errors, warnings=warnings)
         
         # Run business rule validations
         if isinstance(adr, LogicalADR):
@@ -126,6 +177,7 @@ class ADRValidator:
         
         return ValidationResult(
             valid=len(errors) == 0,
+            mode=mode,
             errors=errors,
             warnings=warnings
         )
@@ -341,7 +393,7 @@ class ADRValidator:
                     field="interface_compatibility"
                 ))
     
-    def validate_directory(self, adr_dir: Path, scope: Optional[ProjectScope] = None) -> dict:
+    def validate_directory(self, adr_dir: Path, scope: Optional[ProjectScope] = None, mode: str = "complete") -> dict:
         """Validate all ADRs in directory.
         
         Args:
@@ -364,12 +416,12 @@ class ADRValidator:
         logical_files, physical_files = self._discover_adr_files(adr_dir)
 
         for file_path in logical_files + physical_files:
-            result = self.validate_file(file_path)
+            result = self.validate_file(file_path, mode=mode)
             results[str(file_path)] = result
         
         return results
     
-    def validate_scope(self, scope: Optional[ProjectScope] = None) -> dict:
+    def validate_scope(self, scope: Optional[ProjectScope] = None, mode: str = "complete") -> dict:
         """Validate ADRs for project scope (ADR-L-0007: CAP-0003).
         
         Args:
@@ -381,9 +433,9 @@ class ADRValidator:
         if scope is None:
             scope = self.scope_resolver.resolve()
         
-        return self.validate_directory(scope.adr_dir, scope)
+        return self.validate_directory(scope.adr_dir, scope, mode=mode)
     
-    def validate_recursive(self, scope: Optional[ProjectScope] = None) -> Dict[str, dict]:
+    def validate_recursive(self, scope: Optional[ProjectScope] = None, mode: str = "complete") -> Dict[str, dict]:
         """Validate ADRs for all scopes recursively (ADR-L-0007: CAP-0003, INV-0019).
         
         Args:
@@ -401,7 +453,7 @@ class ADRValidator:
         for s in scopes:
             if s.adr_dir.exists():
                 try:
-                    results = self.validate_directory(s.adr_dir, s)
+                    results = self.validate_directory(s.adr_dir, s, mode=mode)
                     all_results[s.name or str(s.root)] = results
                 except Exception as e:
                     print(f"Warning: Failed to validate {s.name}: {e}")
@@ -534,6 +586,7 @@ class ADRValidator:
         
         return ValidationResult(
             valid=len(errors) == 0,
+            mode="complete",
             errors=errors,
             warnings=warnings
         )

@@ -1,377 +1,329 @@
-schema_version: "1.0"
+schema_version: '1.0'
 id: ADR-V-0005
 adr_type: logical
 vision_category: true
 promotable_to_logical: true
-title: "Policy Lifecycle Management"
+title: Policy Lifecycle Management
 status: proposed
-created_date: "2024-03-10"
-authors: [adr-architecture-kit]
+created_date: '2024-03-10'
+authors:
+- adr-architecture-kit
 tags:
-  - policy
-  - governance
-  - onboarding
-  - certification
-
+- policy
+- governance
+- onboarding
+- certification
 context: |
   Organizations have standards and policies:
   - Security standards (authentication, encryption, access control)
   - Coding standards (naming conventions, testing requirements)
   - Operational standards (logging, monitoring, error handling)
   - Compliance requirements (GDPR, HIPAA, SOC2)
-  
+
   Problems with current approach:
   - Policies documented separately (wiki, PDF, tribal knowledge)
   - Not enforced automatically (manual review required)
   - Quickly outdated (policies change, docs don't)
   - Not connected to code (can't verify compliance)
-  
-  Opportunity: Encode policies as structured data, auto-populate ADRs.
 
+  Opportunity: Encode policies as structured data, auto-populate ADRs.
 capability:
-  name: "Policy Lifecycle Management"
+  name: Policy Lifecycle Management
   description: |
     A system for capturing, certifying, maintaining, and applying organizational
     policies to ADRs automatically, ensuring consistent adherence to standards.
-  
   lifecycle_phases:
-    - phase: "Capture"
-      description: "Onboarding wizard captures org standards conversationally"
-      process:
-        - step: "Wizard interviews stakeholders"
-          questions:
-            - "What authentication method do you use? (JWT, OAuth2, SAML)"
-            - "What's your logging standard? (structured JSON, plain text)"
-            - "What databases are approved? (PostgreSQL, MySQL, MongoDB)"
-            - "What's your testing requirement? (80% coverage, 90% coverage)"
-        
-        - step: "AI generates structured policy files"
-          output: ".adr-kit/policies/security.yaml, coding.yaml, operational.yaml"
-        
-        - step: "Stakeholders review and approve"
-          output: "Certified policies ready for use"
-      
-      outputs:
-        - "Structured policy files (.adr-kit/policies/*.yaml)"
-        - "Policy metadata (owner, certification date, expiry)"
-    
-    - phase: "Certify"
-      description: "Security/compliance teams certify policies"
-      process:
-        - step: "Policy submitted for certification"
-          includes: "Policy content, rationale, impact analysis"
-        
-        - step: "Security team reviews"
-          checks:
-            - "Meets compliance requirements (GDPR, HIPAA, etc.)"
-            - "No security vulnerabilities"
-            - "Feasible to implement"
-        
-        - step: "Certification granted or denied"
-          if_granted: "Policy marked as certified, effective date set"
-          if_denied: "Feedback provided, policy revised"
-      
-      outputs:
-        - "Certification status (certified, pending, expired)"
-        - "Certification metadata (certified_by, certified_date, expiry_date)"
-    
-    - phase: "Apply"
-      description: "Watchdog agent auto-populates ADRs from policies"
-      process:
-        - step: "New ADR created (via conversation)"
-          example: "Human: I need a user authentication service"
-        
-        - step: "Watchdog detects relevant policies"
-          matches: "security.yaml (authentication standards)"
-        
-        - step: "Watchdog auto-populates ADR fields"
-          populated:
-            - "authentication_method: JWT (from policy)"
-            - "token_expiry: 15 minutes (from policy)"
-            - "encryption: RS256 (from policy)"
-        
-        - step: "Human reviews auto-populated fields"
-          options: "Accept, override with justification, request exception"
-      
-      outputs:
-        - "ADR with policy-compliant defaults"
-        - "Policy references (which policies applied)"
-    
-    - phase: "Maintain"
-      description: "Policies are kept fresh and up-to-date"
-      process:
-        - step: "Policy expiry approaching"
-          trigger: "30 days before expiry_date"
-          action: "Notify policy owner for recertification"
-        
-        - step: "Policy updated"
-          trigger: "Standards change (new compliance requirement)"
-          action: "Policy revised, recertification required"
-        
-        - step: "Impact analysis"
-          analysis: "Which ADRs reference this policy? What needs updating?"
-          output: "List of affected ADRs, migration plan"
-        
-        - step: "Rollout"
-          strategy: "Gradual rollout, monitor for issues, rollback if needed"
-      
-      outputs:
-        - "Updated policies (versioned)"
-        - "Impact analysis (affected ADRs)"
-        - "Migration plan (how to update systems)"
-
+  - phase: Capture
+    description: Onboarding wizard captures org standards conversationally
+    process:
+    - step: Wizard interviews stakeholders
+      questions:
+      - What authentication method do you use? (JWT, OAuth2, SAML)
+      - What's your logging standard? (structured JSON, plain text)
+      - What databases are approved? (PostgreSQL, MySQL, MongoDB)
+      - What's your testing requirement? (80% coverage, 90% coverage)
+    - step: AI generates structured policy files
+      output: .adr-kit/policies/security.yaml, coding.yaml, operational.yaml
+    - step: Stakeholders review and approve
+      output: Certified policies ready for use
+    outputs:
+    - Structured policy files (.adr-kit/policies/*.yaml)
+    - Policy metadata (owner, certification date, expiry)
+  - phase: Certify
+    description: Security/compliance teams certify policies
+    process:
+    - step: Policy submitted for certification
+      includes: Policy content, rationale, impact analysis
+    - step: Security team reviews
+      checks:
+      - Meets compliance requirements (GDPR, HIPAA, etc.)
+      - No security vulnerabilities
+      - Feasible to implement
+    - step: Certification granted or denied
+      if_granted: Policy marked as certified, effective date set
+      if_denied: Feedback provided, policy revised
+    outputs:
+    - Certification status (certified, pending, expired)
+    - Certification metadata (certified_by, certified_date, expiry_date)
+  - phase: Apply
+    description: Watchdog agent auto-populates ADRs from policies
+    process:
+    - step: New ADR created (via conversation)
+      example: 'Human: I need a user authentication service'
+    - step: Watchdog detects relevant policies
+      matches: security.yaml (authentication standards)
+    - step: Watchdog auto-populates ADR fields
+      populated:
+      - 'authentication_method: JWT (from policy)'
+      - 'token_expiry: 15 minutes (from policy)'
+      - 'encryption: RS256 (from policy)'
+    - step: Human reviews auto-populated fields
+      options: Accept, override with justification, request exception
+    outputs:
+    - ADR with policy-compliant defaults
+    - Policy references (which policies applied)
+  - phase: Maintain
+    description: Policies are kept fresh and up-to-date
+    process:
+    - step: Policy expiry approaching
+      trigger: 30 days before expiry_date
+      action: Notify policy owner for recertification
+    - step: Policy updated
+      trigger: Standards change (new compliance requirement)
+      action: Policy revised, recertification required
+    - step: Impact analysis
+      analysis: Which ADRs reference this policy? What needs updating?
+      output: List of affected ADRs, migration plan
+    - step: Rollout
+      strategy: Gradual rollout, monitor for issues, rollback if needed
+    outputs:
+    - Updated policies (versioned)
+    - Impact analysis (affected ADRs)
+    - Migration plan (how to update systems)
 boundaries:
   in_scope:
-    - "Policy capture (onboarding wizard)"
-    - "Policy certification (approval workflow)"
-    - "Policy application (auto-populate ADRs)"
-    - "Policy maintenance (freshness, updates)"
-  
+  - Policy capture (onboarding wizard)
+  - Policy certification (approval workflow)
+  - Policy application (auto-populate ADRs)
+  - Policy maintenance (freshness, updates)
   out_of_scope:
-    - "Policy enforcement in code (separate: Compliance AI)"
-    - "Policy violation detection (separate: Compliance Watchdog)"
-    - "Specific compliance frameworks (GDPR, HIPAA - org-specific)"
-
+  - 'Policy enforcement in code (separate: Compliance AI)'
+  - 'Policy violation detection (separate: Compliance Watchdog)'
+  - Specific compliance frameworks (GDPR, HIPAA - org-specific)
 contracts:
   policy_schema:
-    description: "Structure of policy files"
-    format: "YAML"
-    location: ".adr-kit/policies/"
-    
+    description: Structure of policy files
+    format: YAML
+    location: .adr-kit/policies/
     fields:
-      - name: "policy_id"
-        type: "string"
-        example: "SEC-001"
-      
-      - name: "category"
-        type: "enum"
-        values: ["security", "coding", "operational", "compliance"]
-      
-      - name: "rules"
-        type: "array"
-        items:
-          - "rule_id"
-          - "description"
-          - "applies_to (ADR types)"
-          - "field_mappings (which ADR fields to populate)"
-          - "validation_criteria"
-      
-      - name: "certification"
-        type: "object"
-        fields:
-          - "status (certified, pending, expired)"
-          - "certified_by"
-          - "certified_date"
-          - "expiry_date"
-          - "recertification_required_by"
-  
+    - name: policy_id
+      type: string
+      example: SEC-001
+    - name: category
+      type: enum
+      values:
+      - security
+      - coding
+      - operational
+      - compliance
+    - name: rules
+      type: array
+      items:
+      - rule_id
+      - description
+      - applies_to (ADR types)
+      - field_mappings (which ADR fields to populate)
+      - validation_criteria
+    - name: certification
+      type: object
+      fields:
+      - status (certified, pending, expired)
+      - certified_by
+      - certified_date
+      - expiry_date
+      - recertification_required_by
   policy_application_interface:
-    description: "How policies are applied to ADRs"
+    description: How policies are applied to ADRs
     inputs:
-      - name: "adr_draft"
-        format: "Partial ADR (from conversation)"
-      
-      - name: "applicable_policies"
-        format: "Array of policy IDs"
-    
+    - name: adr_draft
+      format: Partial ADR (from conversation)
+    - name: applicable_policies
+      format: Array of policy IDs
     outputs:
-      - name: "adr_with_defaults"
-        format: "ADR with policy-compliant defaults populated"
-      
-      - name: "policy_references"
-        format: "Array of policy IDs applied"
-      
-      - name: "override_justifications"
-        format: "If human overrides policy, justification required"
-
+    - name: adr_with_defaults
+      format: ADR with policy-compliant defaults populated
+    - name: policy_references
+      format: Array of policy IDs applied
+    - name: override_justifications
+      format: If human overrides policy, justification required
 quality_attributes:
-  - attribute: "Compliance Rate"
-    requirement: "ADRs must adhere to org policies by default"
-    measurement: "Percentage of ADRs compliant with policies"
-    target: "> 95%"
-  
-  - attribute: "Policy Freshness"
-    requirement: "Policies must be current and certified"
-    measurement: "Percentage of policies within certification period"
-    target: "100%"
-  
-  - attribute: "Onboarding Speed"
-    requirement: "Quickly capture org standards"
-    measurement: "Time to complete onboarding wizard"
-    target: "< 2 hours"
-  
-  - attribute: "Auto-Population Accuracy"
-    requirement: "Policies correctly applied to ADRs"
-    measurement: "Human override rate (lower is better)"
-    target: "< 10% override rate"
-
+- attribute: Compliance Rate
+  requirement: ADRs must adhere to org policies by default
+  measurement: Percentage of ADRs compliant with policies
+  target: '> 95%'
+- attribute: Policy Freshness
+  requirement: Policies must be current and certified
+  measurement: Percentage of policies within certification period
+  target: 100%
+- attribute: Onboarding Speed
+  requirement: Quickly capture org standards
+  measurement: Time to complete onboarding wizard
+  target: < 2 hours
+- attribute: Auto-Population Accuracy
+  requirement: Policies correctly applied to ADRs
+  measurement: Human override rate (lower is better)
+  target: < 10% override rate
 rationale: |
   **Why policy lifecycle management?**
-  
+
   Policies exist but aren't enforced:
   - Documented in wiki (developers don't read)
   - Checked in code review (manual, inconsistent)
   - Violations discovered late (in production)
-  
+
   Solution: Encode policies as structured data.
-  
+
   Benefits:
   - Auto-populate ADRs (compliance by default)
   - Validate automatically (catch violations early)
   - Track compliance (which systems are compliant)
   - Update systematically (impact analysis, migration plan)
-  
+
   **Example: Authentication policy**
-  
+
   Traditional approach:
   - Wiki page: "Use JWT with RS256 encryption, 15 minute expiry"
   - Developer creates service, forgets to check wiki
   - Uses HS256 encryption (weaker)
   - Security team finds in code review (late)
-  
+
   Policy lifecycle approach:
   - Policy file: security.yaml defines JWT standards
   - Developer: "I need user authentication"
   - Watchdog: Auto-populates ADR with JWT, RS256, 15 min expiry
   - Developer: Reviews, accepts defaults
   - Code generated from ADR (automatically compliant)
-  
+
   **Compliance by default, not by enforcement.**
-  
+
   **Why certification?**
-  
+
   Policies have authority:
   - Security policies: Security team owns
   - Compliance policies: Compliance team owns
   - Coding policies: Engineering lead owns
-  
+
   Certification ensures:
   - Policies are reviewed by experts
   - Policies meet compliance requirements
   - Policies are feasible to implement
-  
+
   **Why freshness tracking?**
-  
+
   Policies become outdated:
   - New compliance requirements (GDPR updated)
   - New security threats (algorithm deprecated)
   - New technology (better practices available)
-  
+
   Freshness tracking ensures:
   - Policies are recertified regularly
   - Outdated policies are flagged
   - Impact analysis before updates
-
 alternatives_considered:
-  - alternative: "Manual policy enforcement (code review)"
-    pros:
-      - "Human judgment (context-aware)"
-      - "No automation needed"
-    cons:
-      - "Inconsistent (reviewers miss things)"
-      - "Late (violations found in review)"
-      - "Slow (manual process)"
-    why_not_chosen: "Too inconsistent, violations discovered too late"
-  
-  - alternative: "Static analysis tools (linters)"
-    pros:
-      - "Automated (no human needed)"
-      - "Fast (runs in CI/CD)"
-    cons:
-      - "Limited scope (syntax only, not architecture)"
-      - "Can't enforce ADR-level policies"
-      - "No policy lifecycle (just rules)"
-    why_not_chosen: "Insufficient for architectural policies"
-  
-  - alternative: "No policies (trust developers)"
-    pros:
-      - "Simple (no policy system)"
-      - "Fast (no overhead)"
-    cons:
-      - "Inconsistent (each team does differently)"
-      - "Non-compliant (violates regulations)"
-      - "Risky (security vulnerabilities)"
-    why_not_chosen: "Unacceptable for regulated industries"
-
+- alternative: Manual policy enforcement (code review)
+  pros:
+  - Human judgment (context-aware)
+  - No automation needed
+  cons:
+  - Inconsistent (reviewers miss things)
+  - Late (violations found in review)
+  - Slow (manual process)
+  why_not_chosen: Too inconsistent, violations discovered too late
+- alternative: Static analysis tools (linters)
+  pros:
+  - Automated (no human needed)
+  - Fast (runs in CI/CD)
+  cons:
+  - Limited scope (syntax only, not architecture)
+  - Can't enforce ADR-level policies
+  - No policy lifecycle (just rules)
+  why_not_chosen: Insufficient for architectural policies
+- alternative: No policies (trust developers)
+  pros:
+  - Simple (no policy system)
+  - Fast (no overhead)
+  cons:
+  - Inconsistent (each team does differently)
+  - Non-compliant (violates regulations)
+  - Risky (security vulnerabilities)
+  why_not_chosen: Unacceptable for regulated industries
 trade_offs:
-  - trade_off: "Policies may be too restrictive"
-    acceptance: "Humans can override with justification"
-    mitigation: "Override tracking, review overrides for policy updates"
-  
-  - trade_off: "Policy updates may break existing systems"
-    acceptance: "Impact analysis before updates"
-    mitigation: "Gradual rollout, migration plans, backward compatibility"
-  
-  - trade_off: "Onboarding wizard may miss nuances"
-    acceptance: "Policies can be refined after initial capture"
-    mitigation: "Iterative refinement, expert review"
-
+- trade_off: Policies may be too restrictive
+  acceptance: Humans can override with justification
+  mitigation: Override tracking, review overrides for policy updates
+- trade_off: Policy updates may break existing systems
+  acceptance: Impact analysis before updates
+  mitigation: Gradual rollout, migration plans, backward compatibility
+- trade_off: Onboarding wizard may miss nuances
+  acceptance: Policies can be refined after initial capture
+  mitigation: Iterative refinement, expert review
 success_criteria:
-  - criterion: "Compliance rate"
-    measurement: "Percentage of ADRs compliant with policies"
-    target: "> 95%"
-  
-  - criterion: "Policy freshness"
-    measurement: "Percentage of policies within certification period"
-    target: "100%"
-  
-  - criterion: "Onboarding completion"
-    measurement: "Percentage of orgs that complete onboarding"
-    target: "> 90%"
-  
-  - criterion: "Override rate"
-    measurement: "Percentage of policy defaults overridden"
-    target: "< 10% (policies are good defaults)"
-
+- criterion: Compliance rate
+  measurement: Percentage of ADRs compliant with policies
+  target: '> 95%'
+- criterion: Policy freshness
+  measurement: Percentage of policies within certification period
+  target: 100%
+- criterion: Onboarding completion
+  measurement: Percentage of orgs that complete onboarding
+  target: '> 90%'
+- criterion: Override rate
+  measurement: Percentage of policy defaults overridden
+  target: < 10% (policies are good defaults)
 dependencies:
   requires:
-    - "Conversational Architecture System (ADR-L-0001) - provides onboarding wizard"
-    - "Watchdog Agent (ADR-L-0001) - applies policies to ADRs"
-    - "ADR schema - supports policy_references field"
-  
+  - Conversational Architecture System (ADR-L-0001) - provides onboarding wizard
+  - Watchdog Agent (ADR-L-0001) - applies policies to ADRs
+  - ADR schema - supports policy_references field
   enables:
-    - "Autonomous Compliance System (ADR-L-0006) - validates against policies"
-    - "Compliance AI Agent (ADR-L-0007) - proposes policy-compliant fixes"
-
+  - Autonomous Compliance System (ADR-L-0006) - validates against policies
+  - Compliance AI Agent (ADR-L-0007) - proposes policy-compliant fixes
 risks:
-  - risk: "Policies too restrictive (stifle innovation)"
-    likelihood: "medium"
-    impact: "medium"
-    mitigation: "Override capability, regular policy review, feedback loop"
-  
-  - risk: "Policies become outdated"
-    likelihood: "high"
-    impact: "medium"
-    mitigation: "Freshness tracking, expiry dates, recertification workflow"
-  
-  - risk: "Policy updates break systems"
-    likelihood: "medium"
-    impact: "high"
-    mitigation: "Impact analysis, migration plans, gradual rollout, rollback capability"
-
+- risk: Policies too restrictive (stifle innovation)
+  likelihood: medium
+  impact: medium
+  mitigation: Override capability, regular policy review, feedback loop
+- risk: Policies become outdated
+  likelihood: high
+  impact: medium
+  mitigation: Freshness tracking, expiry dates, recertification workflow
+- risk: Policy updates break systems
+  likelihood: medium
+  impact: high
+  mitigation: Impact analysis, migration plans, gradual rollout, rollback capability
 notes: |
   This is the "compliance by default" capability.
-  
+
   Traditional approach: Enforce compliance
   - Write policies
   - Check compliance manually
   - Punish violations
-  
+
   Policy lifecycle approach: Enable compliance
   - Capture policies as structured data
   - Auto-populate ADRs with compliant defaults
   - Validate automatically
   - Update systematically
-  
+
   Compliance becomes the path of least resistance.
-  
+
   Example policy file (.adr-kit/policies/security.yaml):
-  
+
   ```yaml
   policy_id: SEC-001
   category: security
   title: "Authentication Standards"
-  
+
   rules:
     - rule_id: SEC-001-JWT
       description: "All services must use JWT with RS256"
@@ -383,7 +335,7 @@ notes: |
       validation_criteria:
         - "Must use RS256 (not HS256)"
         - "Token expiry <= 15 minutes"
-  
+
   certification:
     status: certified
     certified_by: security-team@company.com
@@ -391,7 +343,7 @@ notes: |
     expiry_date: 2025-01-15
     recertification_required_by: 2024-12-15
   ```
-  
+
   When developer creates authentication service:
   - Watchdog detects SEC-001 applies
   - Auto-populates ADR with JWT, RS256, 15 min expiry

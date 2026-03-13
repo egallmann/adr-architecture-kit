@@ -1,0 +1,104 @@
+schema_version: '1.0'
+adr_type: physical-component
+id: ADR-PC-0001
+title: Entity Registry and Discovery Index
+status: proposed
+created_date: '2026-03-13'
+authors:
+- adr-architecture-kit
+domains:
+- discovery
+- indexing
+- tooling
+implements_system:
+- ADR-PS-0001
+implements_logical:
+- ADR-L-0009
+introduces_entities:
+- COMP-0010
+- IFACE-0011
+- IMPL-0011
+technologies:
+- python
+- pyyaml
+- click
+context: |
+  The Entity Registry component generates `adrs/entities/registry.yaml` from
+  canonical ADR and standalone invariant artifacts, validates deterministic
+  regeneration, and exposes exact-ID and filtered CLI query operations over the
+  generated registry artifact.
+technology_stack:
+- category: language
+  name: Python
+  version: '3.11'
+  rationale: Existing adr-architecture-kit implementation language.
+- category: library
+  name: PyYAML
+  version: 6.x
+  rationale: Stable YAML parsing and rendering for registry artifacts.
+- category: tooling
+  name: Click
+  version: 8.x
+  rationale: Existing CLI framework for scope-aware commands.
+component_specifications:
+- id: COMP-0010
+  name: Entity Registry Generator and Query Surface
+  type: service
+  responsibilities: |
+    - Scan canonical ADR and invariant artifacts
+    - Normalize explicit architecture entities into registry records
+    - Emit deterministic `adrs/entities/registry.yaml`
+    - Provide CLI query access over generated registry state
+  implements_capabilities:
+  - CAP-0018
+  generation_context:
+    purpose: Generate and query the normalized entity registry for agent discovery.
+    key_responsibilities:
+    - Generate deterministic registry records from canonical artifacts
+    - Reject duplicate explicitly introduced entity IDs
+    - Support exact entity lookup and filtered list operations from CLI
+    constraints:
+    - Registry is derived and non-authoritative
+    - CLI must read generated registry artifacts instead of rescanning ADRs
+    - Output must be deterministic when inputs are unchanged
+    success_criteria:
+    - Registry generation is deterministic
+    - ADR-L-0008 entities are present in generated registry output
+    - CLI list/get/invariants/capabilities commands query the registry successfully
+  interfaces:
+  - id: IFACE-0011
+    type: CLI
+    specification: |
+      Commands:
+      - adr generate-entity-registry
+      - adr entities list
+      - adr entities get <id>
+      - adr entities invariants
+      - adr entities capabilities
+  implementation_identifiers:
+    module_path: src/adr_kit/generators/entity_registry_generator.py
+    entry_point: src/adr_kit/cli/main.py
+  implementation_requirements:
+    error_handling:
+      strategy: Fail closed on duplicate entity IDs, invalid registry files, and missing
+        generated registry artifacts.
+    observability:
+      logging:
+        level: info
+        structured: false
+      metrics:
+      - name: entity_registry_generations_total
+        type: counter
+    testing_requirements:
+      unit_test_coverage: '>= 80%'
+      integration_tests: |
+        - Registry generation from logical, physical, physical-system, physical-component, and invariant sources
+        - CLI query flows against generated registry artifacts
+implementation_decisions:
+- id: IMPL-0011
+  summary: Use one normalized entities list for the registry wire shape
+  rationale: |
+    A single normalized entity collection is easier for agents to filter and
+    query deterministically than multiple top-level sections with divergent
+    shapes.
+gaps: []

@@ -179,6 +179,61 @@ class TestValidationRules:
         # Skipping for now - would need test fixtures
         pytest.skip("Requires test fixtures")
 
+    def test_structural_mode_accepts_draft_logical_adr(self, validator, tmp_path):
+        """Structural mode should accept explicit empty required collections."""
+        adr_path = tmp_path / "draft-logical.yaml"
+        adr_path.write_text(
+            "\n".join(
+                [
+                    'schema_version: "1.0"',
+                    "adr_type: logical",
+                    "id: ADR-L-9996",
+                    'title: "Draft Logical ADR"',
+                    "status: proposed",
+                    'created_date: "2026-03-13"',
+                    "authors: [adr-architecture-kit]",
+                    "domains: [drafting]",
+                    "context: |",
+                    "  Draft context pending fuller pin-down.",
+                    "decisions: []",
+                ]
+            ),
+            encoding="utf-8",
+        )
+
+        result = validator.validate_file(adr_path, mode="structural")
+
+        assert result.valid
+        assert result.mode == "structural"
+
+    def test_complete_mode_rejects_draft_logical_adr(self, validator, tmp_path):
+        """Complete mode should preserve current strict behavior."""
+        adr_path = tmp_path / "draft-logical.yaml"
+        adr_path.write_text(
+            "\n".join(
+                [
+                    'schema_version: "1.0"',
+                    "adr_type: logical",
+                    "id: ADR-L-9995",
+                    'title: "Draft Logical ADR"',
+                    "status: proposed",
+                    'created_date: "2026-03-13"',
+                    "authors: [adr-architecture-kit]",
+                    "domains: [drafting]",
+                    "context: |",
+                    "  Draft context pending fuller pin-down.",
+                    "decisions: []",
+                ]
+            ),
+            encoding="utf-8",
+        )
+
+        result = validator.validate_file(adr_path, mode="complete")
+
+        assert result.valid is False
+        assert result.mode == "complete"
+        assert result.has_errors
+
 
 class TestBackwardCompatibility:
     """Test backward compatibility with single-scope usage."""

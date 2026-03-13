@@ -8,6 +8,7 @@ from src.adr_kit.cli.main import cli
 from src.adr_kit.integrity import GeneratedArtifactStatus, GeneratedArtifactValidator
 from src.adr_kit.integrity.core import (
     GeneratorIdentity,
+    HashInput,
     compute_source_hash,
     parse_integrity_header,
 )
@@ -17,12 +18,12 @@ from src.adr_kit.scope import ProjectScopeResolver
 def _write_workspace(workspace: Path, include_submodule: bool = False, name: str = "projection-test") -> None:
     workspace.mkdir(parents=True, exist_ok=True)
     (workspace / "PROJECT.yaml").write_text(
-        f"project:\n  name: {name}\narchitecture_documentation:\n  adr_directory: adrs/\n  manifest_path: adrs/manifest.yaml\n",
+        f"project:\n  name: {name}\narchitecture_documentation:\n  adr_directory: adrs/\n  manifest_path: adrs/manifest.yaml\n  architecture_namespace: {name}\n",
         encoding="utf-8",
     )
-    (workspace / "adrs" / "logical").mkdir(parents=True)
-    (workspace / "adrs" / "physical").mkdir(parents=True)
-    (workspace / "adrs" / "invariants").mkdir(parents=True)
+    (workspace / "adrs" / "logical").mkdir(parents=True, exist_ok=True)
+    (workspace / "adrs" / "physical").mkdir(parents=True, exist_ok=True)
+    (workspace / "adrs" / "invariants").mkdir(parents=True, exist_ok=True)
 
     logical = Path("tests/fixtures/valid/logical-minimal.yaml").read_text(encoding="utf-8")
     physical = Path("tests/fixtures/valid/physical-minimal.yaml").read_text(encoding="utf-8")
@@ -34,7 +35,7 @@ def _write_workspace(workspace: Path, include_submodule: bool = False, name: str
 
     if include_submodule:
         module = workspace / "module-a"
-        module.mkdir()
+        module.mkdir(exist_ok=True)
         (module / "package.json").write_text('{"name": "module-a"}', encoding="utf-8")
         _write_workspace(module, include_submodule=False, name="module-a")
 
@@ -81,6 +82,24 @@ def test_source_hash_changes_with_new_optional_manifest_inputs(tmp_path):
     after = compute_source_hash(scope.root, after_inputs, GeneratorIdentity("adr-manifest", 1))
 
     assert before != after
+
+
+def test_source_hash_is_stable_across_line_endings(tmp_path):
+    workspace = tmp_path / "workspace"
+    workspace.mkdir(parents=True, exist_ok=True)
+
+    lf_hash = compute_source_hash(
+        workspace,
+        [HashInput("logical/sample.yaml", b"line1\nline2\n")],
+        GeneratorIdentity("adr-manifest", 1),
+    )
+    crlf_hash = compute_source_hash(
+        workspace,
+        [HashInput("logical/sample.yaml", b"line1\r\nline2\r\n")],
+        GeneratorIdentity("adr-manifest", 1),
+    )
+
+    assert lf_hash == crlf_hash
 
 
 def test_generate_and_validate_rendered_docs_cli(tmp_path):

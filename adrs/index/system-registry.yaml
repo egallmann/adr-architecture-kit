@@ -1,0 +1,45 @@
+schema_version: '1.1'
+type: normalized_entity_registry
+entities:
+- id: SYS-0001
+  entity_type: system
+  name: ADR Architecture Kit Discovery and Indexing System
+  summary: The discovery and indexing subsystem provides the derived surfaces that
+    agents query instead of scanning raw ADR bodies by default. It includes summary
+    generation (`manifest.yaml`), normalized entity lookup (`adrs/entiti
+  canonical_source:
+    source_type: physical_system_adr
+    source_ref: ADR-PS-0001
+    artifact_path: adrs/physical-system/ADR-PS-0001-adr-architecture-kit-discovery-and-indexing-system.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-PS-0001
+    implements_logical:
+    - ADR-L-0009
+    technologies:
+    - python
+    - pyyaml
+    - click
+  relationships:
+    declared_in:
+    - ADR-PS-0001
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: physical_system_adr
+    source_ref: ADR-PS-0001
+    extraction_phase: extract_system
+    classification: explicit
+    generator: adr-architecture-index

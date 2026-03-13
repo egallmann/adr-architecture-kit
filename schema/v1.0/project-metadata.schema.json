@@ -301,7 +301,7 @@
     
     "architecture_documentation": {
       "type": "object",
-      "required": ["adr_directory"],
+      "required": ["adr_directory", "architecture_namespace"],
       "properties": {
         "adr_directory": {
           "type": "string",
@@ -310,6 +310,10 @@
         "manifest_path": {
           "type": "string",
           "default": "adrs/manifest.yaml"
+        },
+        "architecture_namespace": {
+          "type": "string",
+          "pattern": "^[a-z0-9-]+$"
         }
       },
       "description": "Location of architecture documentation"

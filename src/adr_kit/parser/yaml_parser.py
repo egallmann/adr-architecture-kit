@@ -1,6 +1,7 @@
 """YAML parser with JSON Schema validation for ADR artifacts."""
 
 import json
+from copy import deepcopy
 from pathlib import Path
 from typing import Union
 
@@ -12,16 +13,20 @@ import yaml
 from pydantic import ValidationError
 
 from ..models import (
+    ArchitectureIndex,
     DecisionLedger,
     EntityRegistry,
     LogicalADR,
     Manifest,
+    NormalizedEntityRegistry,
     PhysicalADR,
     PhysicalSystemADR,
     PhysicalComponentADR,
     ProjectMetadata,
+    RelationshipRegistry,
     RequirementsSnapshot,
     StandaloneInvariant,
+    UnresolvedRegistry,
 )
 
 
@@ -54,7 +59,24 @@ class ADRParser:
         self.schema_v11_dir = Path(schema_v11_dir)
         self._schemas = {}
         self._validators = {}
+        self._structural_validators = {}
         self._load_schemas()
+
+    def _build_structural_schema(self, schema: dict) -> dict:
+        """Relax completeness-oriented constraints while preserving shape checks."""
+        structural_schema = deepcopy(schema)
+
+        def relax(node):
+            if isinstance(node, dict):
+                node.pop("minItems", None)
+                for value in node.values():
+                    relax(value)
+            elif isinstance(node, list):
+                for item in node:
+                    relax(item)
+
+        relax(structural_schema)
+        return structural_schema
     
     def _load_schemas(self):
         """Load all JSON schemas and create resolvers."""
@@ -72,9 +94,13 @@ class ADRParser:
         }
         
         schema_v11_files = {
+            "architecture_index": "architecture-index.schema.json",
             "entity_registry": "entity-registry.schema.json",
+            "normalized_entity_registry": "normalized-entity-registry.schema.json",
             "requirements_snapshot": "requirements-snapshot.schema.json",
             "decision_ledger": "decision-ledger.schema.json",
+            "relationship_registry": "relationship-registry.schema.json",
+            "unresolved_registry": "unresolved-registry.schema.json",
         }
         
         # Load v1.0 schemas
@@ -99,10 +125,25 @@ class ADRParser:
 
         registry = Registry().with_resources(resources)
 
+        structural_resources = []
+        structural_schemas = {}
+        for schema in self._schemas.values():
+            schema_id = schema.get("$id")
+            if schema_id:
+                structural_schema = self._build_structural_schema(schema)
+                structural_schemas[schema_id] = structural_schema
+                structural_resources.append(
+                    (schema_id, Resource.from_contents(structural_schema, default_specification=DRAFT7))
+                )
+
+        structural_registry = Registry().with_resources(structural_resources)
+
         for name, schema in self._schemas.items():
             self._validators[name] = Draft7Validator(schema, registry=registry)
-    
-    def validate_against_schema(self, data: dict, schema_name: str):
+            structural_schema = self._build_structural_schema(schema)
+            self._structural_validators[name] = Draft7Validator(structural_schema, registry=structural_registry)
+
+    def validate_against_schema(self, data: dict, schema_name: str, mode: str = "complete"):
         """Validate data against JSON Schema.
         
         Args:
@@ -115,12 +156,17 @@ class ADRParser:
         if schema_name not in self._schemas:
             raise ADRParseError(f"Schema '{schema_name}' not found")
         
-        schema = self._schemas[schema_name]
         try:
-            validator = self._validators.get(schema_name)
+            if mode == "complete":
+                validator = self._validators.get(schema_name)
+            elif mode == "structural":
+                validator = self._structural_validators.get(schema_name)
+            else:
+                raise ADRParseError(f"Unknown validation mode: {mode}")
             if validator is not None:
                 validator.validate(data)
             else:
+                schema = self._schemas[schema_name]
                 jsonschema.validate(data, schema)
         except jsonschema.ValidationError as e:
             raise ADRSchemaValidationError(
@@ -378,6 +424,46 @@ class ADRParser:
         
         try:
             return EntityRegistry(**data)
+        except ValidationError as e:
+            raise ADRParseError(f"Pydantic validation failed: {e}")
+
+    def parse_normalized_entity_registry(self, file_path: Union[str, Path]) -> NormalizedEntityRegistry:
+        """Parse and validate normalized entity registry."""
+        data = self.parse_yaml(file_path)
+        self.validate_against_schema(data, "normalized_entity_registry")
+
+        try:
+            return NormalizedEntityRegistry(**data)
+        except ValidationError as e:
+            raise ADRParseError(f"Pydantic validation failed: {e}")
+
+    def parse_relationship_registry(self, file_path: Union[str, Path]) -> RelationshipRegistry:
+        """Parse and validate relationship registry."""
+        data = self.parse_yaml(file_path)
+        self.validate_against_schema(data, "relationship_registry")
+
+        try:
+            return RelationshipRegistry(**data)
+        except ValidationError as e:
+            raise ADRParseError(f"Pydantic validation failed: {e}")
+
+    def parse_unresolved_registry(self, file_path: Union[str, Path]) -> UnresolvedRegistry:
+        """Parse and validate unresolved registry."""
+        data = self.parse_yaml(file_path)
+        self.validate_against_schema(data, "unresolved_registry")
+
+        try:
+            return UnresolvedRegistry(**data)
+        except ValidationError as e:
+            raise ADRParseError(f"Pydantic validation failed: {e}")
+
+    def parse_architecture_index(self, file_path: Union[str, Path]) -> ArchitectureIndex:
+        """Parse and validate architecture index."""
+        data = self.parse_yaml(file_path)
+        self.validate_against_schema(data, "architecture_index")
+
+        try:
+            return ArchitectureIndex(**data)
         except ValidationError as e:
             raise ADRParseError(f"Pydantic validation failed: {e}")
     

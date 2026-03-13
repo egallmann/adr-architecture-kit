@@ -1,0 +1,179 @@
+schema_version: '1.0'
+adr_type: logical
+id: ADR-L-0008
+title: Validation Modes for Draft and Complete ADRs
+status: proposed
+created_date: '2026-03-13'
+authors:
+- adr-architecture-kit
+domains:
+- validation
+- adr
+- workflow
+- governance
+tags:
+- draft
+- completeness
+- schema
+- steelman
+introduces_entities:
+- INV-0040
+- INV-0041
+- INV-0042
+- CAP-0015
+- CAP-0016
+context: |
+  The ADR Architecture Kit currently couples schema validation to completeness for
+  several ADR types. That behavior is useful for acceptance gates, but it is too
+  strict for the actual design workflow used in this workspace.
+
+  The intended workflow is:
+  1. Generate or author partially pinned ADRs while a design is still forming
+  2. Preserve explicit empty sections so missing content remains visible
+  3. Validate structural alignment separately from completeness
+  4. Run steelman review as a correctness pass over the draft
+  5. Enforce complete population only when the artifact is ready for stronger gates
+
+  Today the implementation prunes empty collections during generation and relies on
+  strict schema/model requirements for validation. That collapses two distinct
+  states into one:
+  - structurally aligned draft
+  - complete artifact ready for stronger downstream use
+
+  This makes draft ADR authoring less transparent and prevents empty sections from
+  acting as fast review signals.
+decisions:
+- id: DEC-0013
+  summary: Use one validator with explicit validation modes
+  rationale: |
+    The artifact type does not change across the workflow; only the validation
+    gate changes. A single validator with an explicit mode argument keeps the
+    API coherent and avoids duplicating parsing and reporting logic.
+  consequences:
+    positive:
+    - One validation entrypoint for all workflow stages
+    - CLI and API semantics stay consistent
+    - Different gates can share reporting structures
+- id: DEC-0020
+  summary: Define structural mode for schema-aligned drafts
+  rationale: |
+    Structural validation should answer whether an ADR is shaped correctly
+    enough to participate in review, even if required sections are intentionally
+    empty while decisions are still being pinned down.
+
+    Structural mode keeps section presence and schema shape checks, but it does
+    not fail solely because a required collection is empty.
+  consequences:
+    positive:
+    - Draft ADRs can validate without pretending to be complete
+    - Empty sections remain visible as review targets
+    - Tooling can distinguish malformed artifacts from incomplete ones
+- id: DEC-0027
+  summary: Define complete mode for population readiness
+  rationale: |
+    Complete validation should answer whether the ADR is sufficiently populated
+    for stricter downstream use. This is still a structural/content-presence
+    gate, not a correctness gate.
+  consequences:
+    positive:
+    - Current strict validation behavior remains available
+    - Downstream generation and acceptance gates can depend on populated inputs
+    - Completeness remains deterministic and non-LLM-based
+- id: DEC-0032
+  summary: Keep steelman review separate from deterministic validation
+  rationale: |
+    Steelman review evaluates correctness, coherence, missing reasoning, and
+    architectural quality. That is not the same concern as schema alignment or
+    section population, and it should remain a separate LLM-backed review pass.
+  consequences:
+    positive:
+    - Deterministic validation remains deterministic
+    - Steelman review can focus on correctness rather than syntax
+    - Failure modes are easier to interpret
+- id: DEC-0035
+  summary: Allow generators to preserve explicit empty sections when requested
+  rationale: |
+    If draft ADRs are expected to surface incompleteness, generators must not
+    erase those signals unconditionally. Empty sections should be preservable
+    when the author is intentionally emitting a draft artifact.
+  consequences:
+    positive:
+    - Generated drafts remain inspectable
+    - Review tooling can use empties as fast signals
+    - Complete-mode generation can still emit pruned, stricter artifacts when desired
+invariants:
+- id: INV-0040
+  statement: |
+    ADR validation MUST support a structural mode that accepts intentionally
+    incomplete drafts when their schema shape is otherwise valid.
+  scope: global
+  enforcement_level: must
+  enforcement_mechanism: design
+  verification_method: automated
+  rationale: |
+    Draft ADRs are first-class artifacts in the design workflow and must be
+    distinguishable from malformed YAML or invalid schemas.
+- id: INV-0041
+  statement: |
+    Complete validation MUST remain deterministic and MUST NOT depend on LLM
+    reasoning.
+  scope: global
+  enforcement_level: must
+  enforcement_mechanism: design
+  verification_method: automated
+  rationale: |
+    Completeness is a workflow gate, not a correctness judgment.
+- id: INV-0042
+  statement: |
+    Steelman review MUST remain a separate correctness-oriented review layer
+    and MUST NOT be conflated with schema validation.
+  scope: global
+  enforcement_level: must
+  enforcement_mechanism: design
+  verification_method: manual
+  rationale: |
+    Correctness and coherence require semantic judgment that differs from
+    deterministic structural validation.
+capabilities:
+- id: CAP-0015
+  name: Mode-Aware ADR Validation
+  description: |
+    The validator accepts a mode argument and returns findings appropriate to
+    structural or complete validation.
+  acceptance_criteria:
+  - Structural mode accepts explicit empty required collections
+  - Complete mode preserves strict population checks
+  - Result format remains consistent across modes
+- id: CAP-0016
+  name: Draft-Preserving Source Generation
+  description: |
+    Source ADR generators can preserve explicit empty sections when generating
+    draft artifacts for review.
+  acceptance_criteria:
+  - Empty arrays and objects can be preserved on request
+  - Preserved drafts can be validated in structural mode
+  - Existing strict generation workflows remain available
+related_adrs:
+- ADR-L-0001
+- ADR-L-0003
+- ADR-P-0001
+- ADR-P-0002
+- ADR-P-0003
+gaps: []
+migration_origin:
+  remapped_entities:
+  - entity_type: decision
+    from: DEC-0001
+    to: DEC-0013
+  - entity_type: decision
+    from: DEC-0002
+    to: DEC-0020
+  - entity_type: decision
+    from: DEC-0003
+    to: DEC-0027
+  - entity_type: decision
+    from: DEC-0004
+    to: DEC-0032
+  - entity_type: decision
+    from: DEC-0005
+    to: DEC-0035

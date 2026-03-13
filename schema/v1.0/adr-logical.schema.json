@@ -82,6 +82,16 @@
           },
           "description": {
             "$ref": "types.schema.json#/definitions/markdown_text"
+          },
+          "implemented_by_components": {
+            "type": "array",
+            "items": {"type": "string"}
+          },
+          "enabled_by_decisions": {
+            "type": "array",
+            "items": {
+              "$ref": "types.schema.json#/definitions/entity_id"
+            }
           }
         }
       },
@@ -194,6 +204,16 @@
           "rationale": {
             "$ref": "types.schema.json#/definitions/markdown_text"
           },
+          "declaration_mode": {
+            "type": "string",
+            "enum": ["canonical", "local", "reference"]
+          },
+          "upheld_by_decisions": {
+            "type": "array",
+            "items": {
+              "$ref": "types.schema.json#/definitions/entity_id"
+            }
+          },
           "policy_reference": {
             "type": "string",
             "description": "Reference to organizational policy (enables policy validation)"
@@ -288,6 +308,34 @@
               "$ref": "types.schema.json#/definitions/invariant_id"
             },
             "description": "Invariants this decision enforces or relates to"
+          },
+          "enforces_invariants": {
+            "type": "array",
+            "items": {
+              "$ref": "types.schema.json#/definitions/invariant_id"
+            }
+          },
+          "enables_capabilities": {
+            "type": "array",
+            "items": {
+              "$ref": "types.schema.json#/definitions/entity_id"
+            }
+          },
+          "governs_components": {
+            "type": "array",
+            "items": {"type": "string"}
+          },
+          "supersedes": {
+            "type": "array",
+            "items": {
+              "$ref": "types.schema.json#/definitions/entity_id"
+            }
+          },
+          "refines": {
+            "type": "array",
+            "items": {
+              "$ref": "types.schema.json#/definitions/entity_id"
+            }
           }
         }
       },

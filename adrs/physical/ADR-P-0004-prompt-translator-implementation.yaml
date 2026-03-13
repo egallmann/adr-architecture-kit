@@ -1,381 +1,368 @@
-schema_version: "1.0"
+schema_version: '1.0'
 adr_type: physical
 id: ADR-P-0004
 title: Prompt Translator Implementation for AI-Driven Development
 status: proposed
-created_date: "2026-03-08"
-authors: [adr-architecture-kit]
-modified_date: "2026-03-08"
-
+created_date: '2026-03-08'
+authors:
+- adr-architecture-kit
+modified_date: '2026-03-08'
 implements_logical:
-  - ADR-L-0005
-
+- ADR-L-0005
 context: |
   ADR-L-0005 defines the logical architecture for translating ADRs into
   implementation prompts for AI agents. This Physical ADR specifies the
   concrete Python implementation.
-  
+
   The prompt translator parses Physical ADRs and generates:
   1. **Implementation prompts** - One per component (COMP-*)
   2. **Validation checklist** - Comprehensive verification checklist
   3. **Execution plan** - Dependency-ordered implementation sequence
-  
+
   Key design principles:
   - **Deterministic**: Same ADR → same prompts (INV-0032)
   - **Complete**: All invariants, specs, tests included (INV-0027, INV-0028, INV-0030)
   - **Traceable**: Prompts reference source ADR (INV-0029)
   - **Extensible**: Support multiple target agents (CAP-0009)
-
 domains:
-  - implementation
-  - automation
-  - ai-tooling
-  - code-generation
-
+- implementation
+- automation
+- ai-tooling
+- code-generation
 tags:
-  - python
-  - prompt-engineering
-  - automation
-  - llm
-  - code-generation
-
+- python
+- prompt-engineering
+- automation
+- llm
+- code-generation
 technologies:
-  - python
-  - jinja2
-  - pyyaml
-  - click
-
+- python
+- jinja2
+- pyyaml
+- click
 technology_stack:
-  - category: language
-    name: Python
-    version: "3.10+"
-    rationale: Primary implementation language
-  - category: library
-    name: Jinja2
-    version: "3.x"
-    rationale: Template engine for prompt generation
-  - category: library
-    name: PyYAML
-    version: "6.x"
-    rationale: ADR YAML parsing
-  - category: library
-    name: Click
-    version: "8.x"
-    rationale: CLI framework
-
+- category: language
+  name: Python
+  version: 3.10+
+  rationale: Primary implementation language
+- category: library
+  name: Jinja2
+  version: 3.x
+  rationale: Template engine for prompt generation
+- category: library
+  name: PyYAML
+  version: 6.x
+  rationale: ADR YAML parsing
+- category: library
+  name: Click
+  version: 8.x
+  rationale: CLI framework
 component_specifications:
-  - id: COMP-0005
-    name: ADR Component Parser
-    type: library
-    description: |
-      Parses Physical ADRs to extract component specifications and related
-      metadata (invariants, capabilities, implementation decisions)
-    responsibilities: |
-      - Parse Physical ADR YAML
-      - Extract component specifications (COMP-*)
-      - Extract relevant invariants from Logical ADR
-      - Extract implementation decisions (IMPL-*)
-      - Extract testing requirements
-      - Build structured component metadata
-    interfaces:
-      - id: IFACE-0001
-        name: ComponentSpec
-        type: dataclass
-        description: Structured component specification
-        fields:
-          - id: str - Component ID (e.g., COMP-0001)
-          - name: str - Component name
-          - type: str - Component type (module, class, enhancement)
-          - description: str - Component description
-          - responsibilities: List[str] - What it does
-          - interfaces: List[InterfaceSpec] - Methods, classes, dataclasses
-          - implementation_identifiers: List[str] - File paths
-          - dependencies: List[str] - External dependencies
-          - testing_requirements: List[str] - Test scenarios
-          - related_invariants: List[InvariantRef] - Relevant invariants
-          - related_capabilities: List[CapabilityRef] - Relevant capabilities
-          - implementation_decisions: List[ImplDecisionRef] - Relevant IMPL-*
-      - id: IFACE-0002
-        name: ComponentParser
-        type: class
-        methods:
-          - "parse_physical_adr(adr_path: Path) -> List[ComponentSpec]"
-          - "load_logical_adr(logical_id: str) -> LogicalADR"
-          - "extract_related_invariants(component: ComponentSpec, logical: LogicalADR) -> List[InvariantRef]"
-          - "extract_related_capabilities(component: ComponentSpec, logical: LogicalADR) -> List[CapabilityRef]"
-    implementation_identifiers:
-      module_path: src/adr_kit/prompts/
-    dependencies:
-      - adr_kit.parser.ADRParser
-      - adr_kit.models (LogicalADR, PhysicalADR)
-      - dataclasses
-      - typing
-    testing_requirements:
-      - Test parsing ADR-P-0003 (real Physical ADR)
-      - Test extracting 4 components from ADR-P-0003
-      - Test loading related Logical ADR (ADR-L-0002)
-      - Test extracting related invariants
-      - Test handling missing Logical ADR gracefully
-
-  - id: COMP-0006
-    name: Prompt Template Engine
-    type: library
-    description: |
-      Jinja2-based template engine for generating implementation prompts
-      from component specifications with agent-specific formatting
-    responsibilities: |
-      - Render implementation prompts from templates
-      - Support multiple target agent formats (codex, cursor, claude, gpt)
-      - Include all required sections (context, constraints, specs, tests)
-      - Generate validation checklists
-      - Generate execution plans
-      - Optimize prompt structure per agent capabilities
-    interfaces:
-      - id: IFACE-0003
-        name: AgentFormat
-        type: enum
-        values:
-          - codex: "GitHub Copilot / CODEX (concise, code-focused)"
-          - cursor: "Cursor with Sonnet 4.5 (detailed, reasoning-focused)"
-          - claude: "Claude API (structured thinking)"
-          - gpt: "GPT models (example-driven)"
-      - id: IFACE-0004
-        name: PromptTemplate
-        type: class
-        description: Base template for all prompt formats
-        methods:
-          - "render(component: ComponentSpec, context: dict) -> str"
-      - id: IFACE-0005
-        name: PromptGenerator
-        type: class
-        methods:
-          - "generate_implementation_prompt(component: ComponentSpec, target: AgentFormat) -> str"
-          - "generate_validation_checklist(components: List[ComponentSpec], adr_id: str) -> str"
-          - "generate_execution_plan(components: List[ComponentSpec]) -> str"
-          - "get_agent_template(target: AgentFormat) -> str"
-    implementation_identifiers:
-      module_path: src/adr_kit/prompts/
-    dependencies:
-      - jinja2>=3.0
-      - adr_kit.prompts.parser.ComponentSpec
-    testing_requirements:
-      - Test template rendering with real component
-      - Test all required sections present
-      - Test invariant formatting
-      - Test test requirement formatting
-      - Test validation checklist generation
-      - Test execution plan with dependencies
-
-  - id: COMP-0007
-    name: Prompt CLI
-    type: library
-    description: |
-      Click-based CLI for generating prompts from ADRs
-    responsibilities: |
-      - Parse command-line arguments
-      - Load Physical ADR
-      - Generate prompts for components
-      - Write prompts to output directory
-      - Display execution plan
-      - Generate cooperative signals for parallel agent coordination
-    interfaces:
-      - id: IFACE-0006
-        name: adr generate-prompts
-        parameters:
-          - adr_id: str - Physical ADR ID (e.g., ADR-P-0003)
-          - --component: str - Specific component ID (optional)
-          - --target: str - Target agent (codex, cursor, claude, gpt)
-          - --output: Path - Output directory for prompts
-          - --format: str - Output format (markdown, json)
-        description: Generate implementation prompts from Physical ADR
-        example: |
-          adr generate-prompts ADR-P-0003 --target codex --output prompts/
-    implementation_identifiers:
-      module_path: src/adr_kit/cli/main.py
-    dependencies:
-      - click
-      - adr_kit.prompts.ComponentParser
-      - adr_kit.prompts.PromptGenerator
-    testing_requirements:
-      - Test CLI invocation
-      - Test output directory creation
-      - Test single component generation
-      - Test all components generation
-      - Test different target formats
-
-  - id: COMP-0008
-    name: Dependency Analyzer
-    type: library
-    description: |
-      Analyzes component dependencies to generate execution order for
-      parallel or sequential implementation
-    responsibilities: |
-      - Parse component dependencies
-      - Build dependency graph
-      - Detect circular dependencies
-      - Generate topological sort for execution order
-      - Identify parallelizable components
-    interfaces:
-      - id: IFACE-0007
-        name: DependencyAnalyzer
-        type: class
-        methods:
-          - "analyze(components: List[ComponentSpec]) -> DependencyGraph"
-          - "get_execution_order(graph: DependencyGraph) -> List[List[ComponentSpec]]"
-          - "detect_circular(graph: DependencyGraph) -> Optional[List[str]]"
-    implementation_identifiers:
-      module_path: src/adr_kit/prompts/dependencies.py
-    dependencies:
-      - typing
-      - dataclasses
-    testing_requirements:
-      - Test linear dependency chain
-      - Test parallel components (no dependencies)
-      - Test circular dependency detection
-      - Test complex dependency graph
-
-  - id: COMP-0009
-    name: Cooperative Signal Generator
-    type: library
-    description: |
-      Generates file-based coordination signals for parallel AI agents.
-      Temporary mechanism until Rules & Signal Service (Tier 2) is implemented.
-    responsibilities: |
-      - Generate component ownership signals (claim/release)
-      - Generate progress signals (started/in_progress/complete)
-      - Generate dependency satisfaction signals (wave complete)
-      - Generate completion signals (ready for validation)
-      - Clean up stale signals
-    interfaces:
-      - id: IFACE-0001
-        type: REST
-        specification: |
-          SignalType enum: claim, progress, complete, wave_complete, validation_ready.
-          Signal dataclass. SignalGenerator with emit_claim, emit_progress, emit_complete,
-          emit_wave_complete, read_signals, clean_stale_signals.
-    implementation_identifiers:
-      module_path: src/adr_kit/prompts/signals.py
-    dependencies:
-      - dataclasses
-      - datetime
-      - json
-      - pathlib
-    testing_requirements:
-      - Test signal emission (creates file)
-      - Test signal reading (parses file)
-      - Test signal filtering by component
-      - Test stale signal cleanup
-      - Test concurrent signal handling
-
+- id: COMP-0005
+  name: ADR Component Parser
+  type: library
+  description: |
+    Parses Physical ADRs to extract component specifications and related
+    metadata (invariants, capabilities, implementation decisions)
+  responsibilities: |
+    - Parse Physical ADR YAML
+    - Extract component specifications (COMP-*)
+    - Extract relevant invariants from Logical ADR
+    - Extract implementation decisions (IMPL-*)
+    - Extract testing requirements
+    - Build structured component metadata
+  interfaces:
+  - id: IFACE-0001
+    name: ComponentSpec
+    type: dataclass
+    description: Structured component specification
+    fields:
+    - id: str - Component ID (e.g., COMP-0001)
+    - name: str - Component name
+    - type: str - Component type (module, class, enhancement)
+    - description: str - Component description
+    - responsibilities: List[str] - What it does
+    - interfaces: List[InterfaceSpec] - Methods, classes, dataclasses
+    - implementation_identifiers: List[str] - File paths
+    - dependencies: List[str] - External dependencies
+    - testing_requirements: List[str] - Test scenarios
+    - related_invariants: List[InvariantRef] - Relevant invariants
+    - related_capabilities: List[CapabilityRef] - Relevant capabilities
+    - implementation_decisions: List[ImplDecisionRef] - Relevant IMPL-*
+  - id: IFACE-0002
+    name: ComponentParser
+    type: class
+    methods:
+    - 'parse_physical_adr(adr_path: Path) -> List[ComponentSpec]'
+    - 'load_logical_adr(logical_id: str) -> LogicalADR'
+    - 'extract_related_invariants(component: ComponentSpec, logical: LogicalADR) ->
+      List[InvariantRef]'
+    - 'extract_related_capabilities(component: ComponentSpec, logical: LogicalADR)
+      -> List[CapabilityRef]'
+  implementation_identifiers:
+    module_path: src/adr_kit/prompts/
+  dependencies:
+  - adr_kit.parser.ADRParser
+  - adr_kit.models (LogicalADR, PhysicalADR)
+  - dataclasses
+  - typing
+  testing_requirements:
+  - Test parsing ADR-P-0003 (real Physical ADR)
+  - Test extracting 4 components from ADR-P-0003
+  - Test loading related Logical ADR (ADR-L-0002)
+  - Test extracting related invariants
+  - Test handling missing Logical ADR gracefully
+- id: COMP-0006
+  name: Prompt Template Engine
+  type: library
+  description: |
+    Jinja2-based template engine for generating implementation prompts
+    from component specifications with agent-specific formatting
+  responsibilities: |
+    - Render implementation prompts from templates
+    - Support multiple target agent formats (codex, cursor, claude, gpt)
+    - Include all required sections (context, constraints, specs, tests)
+    - Generate validation checklists
+    - Generate execution plans
+    - Optimize prompt structure per agent capabilities
+  interfaces:
+  - id: IFACE-0003
+    name: AgentFormat
+    type: enum
+    values:
+    - codex: GitHub Copilot / CODEX (concise, code-focused)
+    - cursor: Cursor with Sonnet 4.5 (detailed, reasoning-focused)
+    - claude: Claude API (structured thinking)
+    - gpt: GPT models (example-driven)
+  - id: IFACE-0004
+    name: PromptTemplate
+    type: class
+    description: Base template for all prompt formats
+    methods:
+    - 'render(component: ComponentSpec, context: dict) -> str'
+  - id: IFACE-0005
+    name: PromptGenerator
+    type: class
+    methods:
+    - 'generate_implementation_prompt(component: ComponentSpec, target: AgentFormat)
+      -> str'
+    - 'generate_validation_checklist(components: List[ComponentSpec], adr_id: str)
+      -> str'
+    - 'generate_execution_plan(components: List[ComponentSpec]) -> str'
+    - 'get_agent_template(target: AgentFormat) -> str'
+  implementation_identifiers:
+    module_path: src/adr_kit/prompts/
+  dependencies:
+  - jinja2>=3.0
+  - adr_kit.prompts.parser.ComponentSpec
+  testing_requirements:
+  - Test template rendering with real component
+  - Test all required sections present
+  - Test invariant formatting
+  - Test test requirement formatting
+  - Test validation checklist generation
+  - Test execution plan with dependencies
+- id: COMP-0007
+  name: Prompt CLI
+  type: library
+  description: |
+    Click-based CLI for generating prompts from ADRs
+  responsibilities: |
+    - Parse command-line arguments
+    - Load Physical ADR
+    - Generate prompts for components
+    - Write prompts to output directory
+    - Display execution plan
+    - Generate cooperative signals for parallel agent coordination
+  interfaces:
+  - id: IFACE-0006
+    name: adr generate-prompts
+    parameters:
+    - adr_id: str - Physical ADR ID (e.g., ADR-P-0003)
+    - --component: str - Specific component ID (optional)
+    - --target: str - Target agent (codex, cursor, claude, gpt)
+    - --output: Path - Output directory for prompts
+    - --format: str - Output format (markdown, json)
+    description: Generate implementation prompts from Physical ADR
+    example: |
+      adr generate-prompts ADR-P-0003 --target codex --output prompts/
+  implementation_identifiers:
+    module_path: src/adr_kit/cli/main.py
+  dependencies:
+  - click
+  - adr_kit.prompts.ComponentParser
+  - adr_kit.prompts.PromptGenerator
+  testing_requirements:
+  - Test CLI invocation
+  - Test output directory creation
+  - Test single component generation
+  - Test all components generation
+  - Test different target formats
+- id: COMP-0008
+  name: Dependency Analyzer
+  type: library
+  description: |
+    Analyzes component dependencies to generate execution order for
+    parallel or sequential implementation
+  responsibilities: |
+    - Parse component dependencies
+    - Build dependency graph
+    - Detect circular dependencies
+    - Generate topological sort for execution order
+    - Identify parallelizable components
+  interfaces:
+  - id: IFACE-0007
+    name: DependencyAnalyzer
+    type: class
+    methods:
+    - 'analyze(components: List[ComponentSpec]) -> DependencyGraph'
+    - 'get_execution_order(graph: DependencyGraph) -> List[List[ComponentSpec]]'
+    - 'detect_circular(graph: DependencyGraph) -> Optional[List[str]]'
+  implementation_identifiers:
+    module_path: src/adr_kit/prompts/dependencies.py
+  dependencies:
+  - typing
+  - dataclasses
+  testing_requirements:
+  - Test linear dependency chain
+  - Test parallel components (no dependencies)
+  - Test circular dependency detection
+  - Test complex dependency graph
+- id: COMP-0009
+  name: Cooperative Signal Generator
+  type: library
+  description: |
+    Generates file-based coordination signals for parallel AI agents.
+    Temporary mechanism until Rules & Signal Service (Tier 2) is implemented.
+  responsibilities: |
+    - Generate component ownership signals (claim/release)
+    - Generate progress signals (started/in_progress/complete)
+    - Generate dependency satisfaction signals (wave complete)
+    - Generate completion signals (ready for validation)
+    - Clean up stale signals
+  interfaces:
+  - id: IFACE-0001
+    type: REST
+    specification: |
+      SignalType enum: claim, progress, complete, wave_complete, validation_ready.
+      Signal dataclass. SignalGenerator with emit_claim, emit_progress, emit_complete,
+      emit_wave_complete, read_signals, clean_stale_signals.
+  implementation_identifiers:
+    module_path: src/adr_kit/prompts/signals.py
+  dependencies:
+  - dataclasses
+  - datetime
+  - json
+  - pathlib
+  testing_requirements:
+  - Test signal emission (creates file)
+  - Test signal reading (parses file)
+  - Test signal filtering by component
+  - Test stale signal cleanup
+  - Test concurrent signal handling
 implementation_decisions:
-  - id: IMPL-0007
-    summary: Use Jinja2 for Template Engine
-    rationale: |
-      Jinja2 is already used for markdown view generation. Reusing the same
-      template engine maintains consistency and reduces dependencies.
-    alternatives_considered:
-      - name: String formatting
-        rejected_because: Not flexible enough
-      - name: Custom template engine
-        rejected_because: Unnecessary complexity
-    consequences:
-      - Consistent template syntax across project
-      - Powerful template features (filters, macros, inheritance)
-      - Well-documented and maintained
+- id: IMPL-0007
+  summary: Use Jinja2 for Template Engine
+  rationale: |
+    Jinja2 is already used for markdown view generation. Reusing the same
+    template engine maintains consistency and reduces dependencies.
+  alternatives_considered:
+  - name: String formatting
+    rejected_because: Not flexible enough
+  - name: Custom template engine
+    rejected_because: Unnecessary complexity
+  consequences:
+  - Consistent template syntax across project
+  - Powerful template features (filters, macros, inheritance)
+  - Well-documented and maintained
+- id: IMPL-0008
+  summary: Markdown as Primary Prompt Format with Agent-Specific Variants
+  rationale: |
+    Markdown is:
+    - Human-readable (architects can review prompts)
+    - AI-friendly (all agents parse markdown well)
+    - Version-controllable (text format)
+    - Supports code blocks, lists, emphasis
 
-  - id: IMPL-0008
-    summary: Markdown as Primary Prompt Format with Agent-Specific Variants
-    rationale: |
-      Markdown is:
-      - Human-readable (architects can review prompts)
-      - AI-friendly (all agents parse markdown well)
-      - Version-controllable (text format)
-      - Supports code blocks, lists, emphasis
-      
-      However, different AI agents have different strengths and optimal prompt formats:
-      - **CODEX**: Prefers concise, code-focused prompts
-      - **Cursor (Sonnet 4.5)**: Benefits from detailed context and reasoning
-      - **Claude**: Prefers structured thinking and step-by-step guidance
-      - **GPT**: Works well with examples and clear instructions
-      
-      The translator should support agent-specific formatting while maintaining
-      core content consistency (same invariants, specs, tests).
-    alternatives_considered:
-      - name: Single universal format
-        rejected_because: Doesn't leverage agent strengths
-      - name: JSON
-        rejected_because: Less readable, harder to review
-      - name: Plain text
-        rejected_because: Less structure
-    consequences:
-      - Prompts are readable by humans and AI
-      - Agent-specific optimizations possible
-      - Core content consistent across formats
-      - Easy to add new agent formats
+    However, different AI agents have different strengths and optimal prompt formats:
+    - **CODEX**: Prefers concise, code-focused prompts
+    - **Cursor (Sonnet 4.5)**: Benefits from detailed context and reasoning
+    - **Claude**: Prefers structured thinking and step-by-step guidance
+    - **GPT**: Works well with examples and clear instructions
 
-  - id: IMPL-0009
-    summary: File-Based Prompt Output
-    rationale: |
-      Generate prompts as files rather than stdout to enable:
-      - Review before execution
-      - Version control of prompts
-      - Batch processing
-      - Archival of prompts used
-    alternatives_considered:
-      - name: Stdout only
-        rejected_because: Can't review or archive
-      - name: Database storage
-        rejected_because: Overkill
-    consequences:
-      - Prompts written to output directory
-      - Can be committed to git for history
-      - Easy to share with team
-
-  - id: IMPL-0010
-    summary: Deterministic Generation via Templates
-    rationale: |
-      Using templates with structured data ensures deterministic generation.
-      No LLM involved in prompt generation - pure template rendering.
-    alternatives_considered:
-      - name: LLM-based generation
-        rejected_because: Non-deterministic, violates INV-0032
-      - name: Code-based generation
-        rejected_because: Less maintainable than templates
-    consequences:
-      - Prompts are reproducible
-      - Template changes are explicit and reviewable
-      - No API calls or LLM costs for generation
-
+    The translator should support agent-specific formatting while maintaining
+    core content consistency (same invariants, specs, tests).
+  alternatives_considered:
+  - name: Single universal format
+    rejected_because: Doesn't leverage agent strengths
+  - name: JSON
+    rejected_because: Less readable, harder to review
+  - name: Plain text
+    rejected_because: Less structure
+  consequences:
+  - Prompts are readable by humans and AI
+  - Agent-specific optimizations possible
+  - Core content consistent across formats
+  - Easy to add new agent formats
+- id: IMPL-0009
+  summary: File-Based Prompt Output
+  rationale: |
+    Generate prompts as files rather than stdout to enable:
+    - Review before execution
+    - Version control of prompts
+    - Batch processing
+    - Archival of prompts used
+  alternatives_considered:
+  - name: Stdout only
+    rejected_because: Can't review or archive
+  - name: Database storage
+    rejected_because: Overkill
+  consequences:
+  - Prompts written to output directory
+  - Can be committed to git for history
+  - Easy to share with team
+- id: IMPL-0010
+  summary: Deterministic Generation via Templates
+  rationale: |
+    Using templates with structured data ensures deterministic generation.
+    No LLM involved in prompt generation - pure template rendering.
+  alternatives_considered:
+  - name: LLM-based generation
+    rejected_because: Non-deterministic, violates INV-0032
+  - name: Code-based generation
+    rejected_because: Less maintainable than templates
+  consequences:
+  - Prompts are reproducible
+  - Template changes are explicit and reviewable
+  - No API calls or LLM costs for generation
 deployment_model:
   packaging:
-    - Part of adr-architecture-kit package
-    - Optional dependency: jinja2>=3.0 (already required)
+  - Part of adr-architecture-kit package
+  - Optional dependency: jinja2>=3.0 (already required)
   installation:
-    - pip install adr-architecture-kit[cli]
+  - pip install adr-architecture-kit[cli]
   usage:
-    - CLI: adr generate-prompts ADR-P-XXXX
-    - Python API: PromptGenerator().generate(component)
-
+  - CLI: adr generate-prompts ADR-P-XXXX
+  - Python API: PromptGenerator().generate(component)
 data_architecture:
-  - entity: prompt_structure
-    storage: Jinja2 templates
-    schema: |
-      Sections: context, constraints, specifications, test_requirements,
-      implementation_strategy, dependencies, validation_criteria
-  - entity: template_data
-    storage: ComponentSpec, invariants, capabilities, impl_decisions
-    schema: |
-      component: ComponentSpec
-      invariants: List[InvariantRef]
-      capabilities: List[CapabilityRef]
-      impl_decisions: List[ImplDecisionRef]
-      adr_id: str
-      target_agent: AgentFormat
-  - entity: agent_specific_formatting
-    storage: Per-agent configuration
-    schema: |
-      codex, cursor, claude, gpt with style, focus, sections, emphasis
-
+- entity: prompt_structure
+  storage: Jinja2 templates
+  schema: |
+    Sections: context, constraints, specifications, test_requirements,
+    implementation_strategy, dependencies, validation_criteria
+- entity: template_data
+  storage: ComponentSpec, invariants, capabilities, impl_decisions
+  schema: |
+    component: ComponentSpec
+    invariants: List[InvariantRef]
+    capabilities: List[CapabilityRef]
+    impl_decisions: List[ImplDecisionRef]
+    adr_id: str
+    target_agent: AgentFormat
+- entity: agent_specific_formatting
+  storage: Per-agent configuration
+  schema: |
+    codex, cursor, claude, gpt with style, focus, sections, emphasis
 operational_requirements:
   performance: |
     Prompt generation: < 1 second per component.
@@ -389,48 +376,44 @@ operational_requirements:
     No code execution during generation.
     Template sandboxing via Jinja2.
     Path validation for output directory.
-
 quality_attributes:
-  - Determinism: Same input always produces same output
-  - Completeness: All ADR information included
-  - Traceability: Clear references to source ADR
-  - Maintainability: Templates easy to update
-  - Extensibility: Easy to add new target formats
-
+- Determinism: Same input always produces same output
+- Completeness: All ADR information included
+- Traceability: Clear references to source ADR
+- Maintainability: Templates easy to update
+- Extensibility: Easy to add new target formats
 related_adrs:
-  - ADR-L-0005  # Implements this logical ADR
-  - ADR-L-0003  # Testing strategy (TDD)
-  - ADR-P-0003  # Example Physical ADR to parse
-
+- ADR-L-0005
+- ADR-L-0003
+- ADR-P-0003
 gaps:
-  - id: GAP-0001
-    question: How should the base prompt template hierarchy be structured?
-    impact: medium
-    blocking: false
-    affects:
-      - COMP-0006
-  - id: GAP-0002
-    question: What agent-specific formatting rules should be standardized first?
-    impact: medium
-    blocking: false
-    affects:
-      - COMP-0006
-      - COMP-0007
-  - id: GAP-0003
-    question: How should generated prompts integrate with the existing validation subsystem?
-    impact: high
-    blocking: false
-    affects:
-      - COMP-0007
-      - COMP-0008
-
+- id: GAP-0001
+  question: How should the base prompt template hierarchy be structured?
+  impact: medium
+  blocking: false
+  affects:
+  - COMP-0006
+- id: GAP-0002
+  question: What agent-specific formatting rules should be standardized first?
+  impact: medium
+  blocking: false
+  affects:
+  - COMP-0006
+  - COMP-0007
+- id: GAP-0003
+  question: How should generated prompts integrate with the existing validation subsystem?
+  impact: high
+  blocking: false
+  affects:
+  - COMP-0007
+  - COMP-0008
 notes: |
   Implementation priority: HIGH
-  
+
   This component is foundational for scaling AI-driven development. Once
   implemented, any Physical ADR can be automatically translated into
   implementation prompts, dramatically reducing manual work.
-  
+
   The prompt translator itself should be implemented following TDD:
   1. Write tests for parsing ADR-P-0003
   2. Implement ComponentParser
@@ -438,11 +421,11 @@ notes: |
   4. Implement PromptGenerator
   5. Write tests for CLI
   6. Implement CLI command
-  
+
   Self-referential: Once the prompt translator is implemented, it can
   generate prompts for future components from their ADRs, including
   prompts for enhancing itself!
-  
+
   Cooperative Signals:
   The prompt translator generates file-based signals for coordinating parallel
   AI agents until proper Rules & Signal Service is built. These signals enable:
@@ -450,7 +433,7 @@ notes: |
   - Progress broadcasting (agents see each other's status)
   - Dependency satisfaction signals (Wave 1 complete → Wave 2 can start)
   - Completion signals (component done → validator can check)
-  
+
   Signal files live in .codex/signals/ and are ephemeral coordination artifacts,
   not tracked in git. This is a temporary file-based coordination mechanism
   that will be replaced by proper Rules & Signal Service (ADR-L-0004) when

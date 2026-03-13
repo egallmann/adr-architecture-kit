@@ -167,6 +167,7 @@ class ImplementationRequirements(BaseModel):
 class ComponentSpecification(BaseModel):
     """Detailed component specification with implementation details."""
     id: str = Field(..., pattern=r"^COMP-\d{4}$")
+    component_id: Optional[str] = Field(None, pattern=r"^COMP-[A-Z0-9-]+$")
     name: str
     type: str = Field(..., pattern=r"^(service|library|database|queue|cache|gateway|proxy|worker|scheduler)$")
     responsibilities: str

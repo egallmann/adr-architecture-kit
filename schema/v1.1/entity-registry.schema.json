@@ -17,7 +17,7 @@
       "type": "array",
       "items": {
         "type": "object",
-        "required": ["entity_id", "entity_type", "name", "introduced_by", "lifecycle_stage"],
+        "required": ["entity_id", "entity_type", "name", "introduced_by", "lifecycle_stage", "source_path", "source_artifact_type"],
         "properties": {
           "entity_id": {
             "$ref": "../v1.0/types.schema.json#/definitions/entity_id",
@@ -53,10 +53,48 @@
             "enum": ["proposed", "active", "deprecated", "superseded"],
             "description": "Current lifecycle stage"
           },
+          "source_path": {
+            "type": "string",
+            "description": "Scope-relative canonical source artifact path"
+          },
+          "source_artifact_type": {
+            "type": "string",
+            "enum": [
+              "logical_adr",
+              "physical_adr",
+              "physical_system_adr",
+              "physical_component_adr",
+              "standalone_invariant"
+            ],
+            "description": "Canonical source artifact type"
+          },
           "domains": {
             "type": "array",
             "items": {"type": "string"},
             "description": "Business/technical domains"
+          },
+          "related_adrs": {
+            "type": "array",
+            "items": {"$ref": "../v1.0/types.schema.json#/definitions/adr_id_any"},
+            "description": "Related ADR references for discovery"
+          },
+          "realized_by": {
+            "type": "array",
+            "items": {"type": "string"},
+            "description": "ADRs or entities that operationalize this entity"
+          },
+          "ownership": {
+            "type": "object",
+            "properties": {
+              "architecture_authority": {
+                "type": "string"
+              },
+              "implementation_owners": {
+                "type": "array",
+                "items": {"type": "string"}
+              }
+            },
+            "description": "Derived ownership metadata"
           },
           "relationships": {
             "type": "object",
@@ -70,6 +108,10 @@
                 "items": {"$ref": "../v1.0/types.schema.json#/definitions/entity_id"}
               },
               "consumes": {
+                "type": "array",
+                "items": {"$ref": "../v1.0/types.schema.json#/definitions/entity_id"}
+              },
+              "realizes": {
                 "type": "array",
                 "items": {"$ref": "../v1.0/types.schema.json#/definitions/entity_id"}
               }

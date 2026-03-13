@@ -17,12 +17,12 @@ from src.adr_kit.scope import ProjectScopeResolver
 def _write_workspace(workspace: Path, include_submodule: bool = False, name: str = "projection-test") -> None:
     workspace.mkdir(parents=True, exist_ok=True)
     (workspace / "PROJECT.yaml").write_text(
-        f"project:\n  name: {name}\narchitecture_documentation:\n  adr_directory: adrs/\n  manifest_path: adrs/manifest.yaml\n",
+        f"project:\n  name: {name}\narchitecture_documentation:\n  adr_directory: adrs/\n  manifest_path: adrs/manifest.yaml\n  architecture_namespace: {name}\n",
         encoding="utf-8",
     )
-    (workspace / "adrs" / "logical").mkdir(parents=True)
-    (workspace / "adrs" / "physical").mkdir(parents=True)
-    (workspace / "adrs" / "invariants").mkdir(parents=True)
+    (workspace / "adrs" / "logical").mkdir(parents=True, exist_ok=True)
+    (workspace / "adrs" / "physical").mkdir(parents=True, exist_ok=True)
+    (workspace / "adrs" / "invariants").mkdir(parents=True, exist_ok=True)
 
     logical = Path("tests/fixtures/valid/logical-minimal.yaml").read_text(encoding="utf-8")
     physical = Path("tests/fixtures/valid/physical-minimal.yaml").read_text(encoding="utf-8")
@@ -34,7 +34,7 @@ def _write_workspace(workspace: Path, include_submodule: bool = False, name: str
 
     if include_submodule:
         module = workspace / "module-a"
-        module.mkdir()
+        module.mkdir(exist_ok=True)
         (module / "package.json").write_text('{"name": "module-a"}', encoding="utf-8")
         _write_workspace(module, include_submodule=False, name="module-a")
 

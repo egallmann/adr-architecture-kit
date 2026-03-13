@@ -19,6 +19,8 @@ class Capability(BaseModel):
     id: str = Field(..., pattern=r"^CAP-\d{4}$")
     name: str
     description: str
+    implemented_by_components: List[str] = Field(default_factory=list)
+    enabled_by_decisions: List[str] = Field(default_factory=list)
 
 
 class ArchitecturalBoundary(BaseModel):
@@ -54,6 +56,8 @@ class Invariant(BaseModel):
     enforcement_mechanism: str = Field(..., pattern=r"^(design|runtime|test|policy|manual)$")
     verification_method: str = Field(..., pattern=r"^(automated|manual|audit)$")
     rationale: str
+    declaration_mode: Optional[str] = Field(None, pattern=r"^(canonical|local|reference)$")
+    upheld_by_decisions: List[str] = Field(default_factory=list)
     
     policy_reference: Optional[str] = None
     compliance_frameworks: List[str] = Field(default_factory=list)
@@ -76,6 +80,11 @@ class Decision(BaseModel):
     alternatives_considered: List[Alternative] = Field(default_factory=list)
     consequences: Optional[Consequences] = None
     related_invariants: List[str] = Field(default_factory=list)
+    enforces_invariants: List[str] = Field(default_factory=list)
+    enables_capabilities: List[str] = Field(default_factory=list)
+    governs_components: List[str] = Field(default_factory=list)
+    supersedes: List[str] = Field(default_factory=list)
+    refines: List[str] = Field(default_factory=list)
 
 
 class LogicalADR(ADRFrontmatter):

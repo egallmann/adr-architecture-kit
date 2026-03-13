@@ -1,0 +1,115 @@
+schema_version: '1.0'
+adr_type: logical
+id: ADR-L-0009
+title: Derived Architecture Discovery Surfaces
+status: proposed
+created_date: '2026-03-13'
+authors:
+- adr-architecture-kit
+domains:
+- discovery
+- indexing
+- governance
+- ai-first
+tags:
+- entity-registry
+- manifest
+- discovery
+- agent-tooling
+introduces_entities:
+- INV-0043
+- INV-0044
+- INV-0045
+- CAP-0017
+- CAP-0018
+context: |
+  adr-architecture-kit is primarily machine-facing tooling used by agents to
+  reason over canonical architecture artifacts. Relying on agents to scan raw
+  ADR bodies for discovery is inconsistent with the toolkit's AI-first design
+  theory: discovery surfaces should be explicit, deterministic, cheap to query,
+  and derived from canonical authority.
+
+  The kit already provides `manifest.yaml` as a broad summary artifact and has
+  a provisional entity-registry subsystem. What is missing is an explicit
+  architectural decision that separates summary/discovery from normalized entity
+  lookup, and that defines how agents are expected to consume those artifacts
+  before the SUPER GRAPH exists.
+decisions:
+- id: DEC-0014
+  summary: Use derived discovery artifacts for agent-facing architecture lookup
+  rationale: |
+    Canonical authority remains in ADRs and standalone invariants, but agents
+    should interact with derived, machine-stable discovery artifacts by
+    default. This reduces scan cost, ambiguity, and ad hoc parsing logic.
+- id: DEC-0021
+  summary: Keep manifest as summary-oriented discovery surface
+  rationale: |
+    The manifest is useful for broad scope summaries, counts, lifecycle
+    summaries, and high-level discovery, but it should not be overloaded as
+    the main normalized entity lookup surface.
+- id: DEC-0028
+  summary: Use entity-registry as graph-lite normalized lookup surface
+  rationale: |
+    The entity registry should provide exact-ID, filtered, deterministic
+    lookup for entities such as invariants, capabilities, and components until
+    the SUPER GRAPH provides richer graph-native query semantics.
+invariants:
+- id: INV-0043
+  statement: |
+    Canonical architectural authority MUST remain in ADR and standalone
+    invariant artifacts, not in derived discovery artifacts.
+  scope: global
+  enforcement_level: must
+  enforcement_mechanism: design
+  verification_method: automated
+  rationale: |
+    Derived discovery surfaces are indexes of canonical architecture state,
+    not the source of truth.
+- id: INV-0044
+  statement: |
+    Derived architecture discovery artifacts MUST be deterministic,
+    reproducible, and disposable.
+  scope: global
+  enforcement_level: must
+  enforcement_mechanism: design
+  verification_method: automated
+  rationale: |
+    Deterministic regeneration is required for machine trust, CI validation,
+    and drift detection.
+- id: INV-0045
+  statement: |
+    Agent-facing ADR toolkit workflows MUST prefer indexed lookup surfaces
+    over raw ADR body traversal by default.
+  scope: global
+  enforcement_level: must
+  enforcement_mechanism: design
+  verification_method: automated
+  rationale: |
+    Explicit, cheap-to-query indexes are more aligned with AI-first design
+    than repeated ad hoc document scans.
+capabilities:
+- id: CAP-0017
+  name: Summary Discovery Surface
+  description: |
+    Provide a broad summary-oriented discovery artifact for ADR and scope
+    metadata through `manifest.yaml`.
+- id: CAP-0018
+  name: Normalized Entity Lookup Surface
+  description: |
+    Provide deterministic lookup for normalized architecture entities through
+    `adrs/entities/registry.yaml`.
+related_adrs:
+- ADR-L-0001
+- ADR-L-0008
+gaps: []
+migration_origin:
+  remapped_entities:
+  - entity_type: decision
+    from: DEC-0001
+    to: DEC-0014
+  - entity_type: decision
+    from: DEC-0002
+    to: DEC-0021
+  - entity_type: decision
+    from: DEC-0003
+    to: DEC-0028

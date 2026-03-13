@@ -146,6 +146,7 @@ class ArchitectureDocumentation(BaseModel):
 
     adr_directory: str = "adrs/"
     manifest_path: str = "adrs/manifest.yaml"
+    architecture_namespace: Optional[str] = None
 
 
 class ProjectMetadata(BaseModel):

@@ -13,10 +13,22 @@ except ImportError:
     print("Error: click package not installed. Install with: pip install adr-architecture-kit[cli]")
     sys.exit(1)
 
-from ..generators import ManifestGenerator, PhysicalSystemADRGenerator, SystemOverviewGenerator
+import yaml
+
+from ..generators import (
+    ArchitectureIndexGenerator,
+    EntityRegistryGenerator,
+    LogicalADRGenerator,
+    ManifestGenerator,
+    PhysicalComponentADRGenerator,
+    PhysicalSystemADRGenerator,
+    SystemOverviewGenerator,
+)
 from ..generators.views import MarkdownGenerator
 from ..integrity import GeneratedArtifactStatus
+from ..migrators.canonical_id_normalizer import CanonicalIdNormalizer
 from ..parser import ADRParser
+from ..repository import ArchitectureRepository
 from ..validators import (
     ADRValidator,
     GeneratedArtifactValidator,
@@ -46,11 +58,211 @@ def _discover_scope_adr_files(scope) -> list[Path]:
     return files
 
 
+def _architecture_index_path(scope) -> Path:
+    """Return canonical architecture index output path for a scope."""
+    return scope.adr_dir / "index" / "architecture-index.yaml"
+
+
+def _load_architecture_repository(scope_path: Optional[Path]) -> ArchitectureRepository:
+    """Load repository-backed architecture discovery state."""
+    repository = ArchitectureRepository(scope_resolver=ProjectScopeResolver(explicit_scope=scope_path))
+    repository.load()
+    return repository
+
+
+def _dump_yaml(data) -> str:
+    """Render CLI output as deterministic YAML."""
+    return yaml.safe_dump(data, sort_keys=False, allow_unicode=True).rstrip()
+
+
+def _entity_identifier(entity):
+    return getattr(entity, "id", getattr(entity, "entity_id", None))
+
+
+def _entity_type_name(entity):
+    entity_type = getattr(entity, "entity_type", None)
+    return entity_type.value if hasattr(entity_type, "value") else entity_type
+
+
+def _entity_status(entity):
+    lifecycle = getattr(entity, "lifecycle_stage", None)
+    return lifecycle.value if hasattr(lifecycle, "value") else lifecycle
+
+
+def _entity_adr_refs(entity):
+    if hasattr(entity, "canonical_source"):
+        refs = set()
+        canonical_ref = entity.canonical_source.source_ref.split("#")[0]
+        if canonical_ref.startswith("ADR-"):
+            refs.add(canonical_ref)
+        refs.update(
+            ref.source_ref.split("#")[0]
+            for ref in getattr(entity, "source_refs", []) or []
+            if ref.source_ref.startswith("ADR-")
+        )
+        metadata = getattr(entity, "metadata", {}) or {}
+        for metadata_ref_key in ("adr_id", "defined_in"):
+            metadata_ref = metadata.get(metadata_ref_key)
+            if metadata_ref and metadata_ref.startswith("ADR-"):
+                refs.add(metadata_ref)
+        refs.update(getattr(entity.relationships, "declared_in", []) or [])
+        return refs
+    refs = {getattr(entity, "introduced_by", "")}
+    refs.update(getattr(entity, "related_adrs", []) or [])
+    refs.update(getattr(entity, "realized_by", []) or [])
+    return {ref for ref in refs if ref}
+
+
 @click.group()
 @click.version_option()
 def cli():
     """ADR Architecture Kit - Multi-scope ADR management."""
     pass
+
+
+def _generate_source_adr(
+    input_path: Path,
+    output: Path,
+    generator_cls,
+    parse_method: str,
+    label: str,
+    required_prefix: str,
+    validation_mode: str,
+    preserve_empty_sections: bool,
+):
+    """Generate, save, parse, and validate a source ADR artifact."""
+    parser = ADRParser()
+    validator = ADRValidator(parser=parser)
+    generator = generator_cls(parser=parser, validator=validator)
+
+    adr = generator.create_adr_from_file(input_path, mode=validation_mode)
+    adr_id = adr.id if hasattr(adr, "id") else adr["id"]
+    adr_title = adr.title if hasattr(adr, "title") else adr["title"]
+    if not adr_id.startswith(required_prefix):
+        raise ValueError(f"{label} must use ID prefix {required_prefix}, got {adr_id}")
+
+    generator.save_adr(
+        adr,
+        output,
+        mode=validation_mode,
+        preserve_empty_sections=preserve_empty_sections,
+    )
+
+    if validation_mode == "complete":
+        getattr(parser, parse_method)(output)
+    result = validator.validate_file(output, mode=validation_mode)
+
+    if result.has_errors:
+        click.echo(f"Generated file failed validation: {output}", err=True)
+        for error in result.errors:
+            click.echo(f"  ERROR: {error.message}", err=True)
+        sys.exit(1)
+
+    click.echo(f"Generated {label}: {output}")
+    click.echo(f"  ID: {adr_id}")
+    click.echo(f"  Title: {adr_title}")
+
+    if result.has_warnings:
+        for warning in result.warnings:
+            click.echo(f"  WARNING: {warning.message}")
+
+
+@cli.command("generate-logical")
+@click.option(
+    "--input",
+    "input_path",
+    required=True,
+    type=click.Path(exists=True, dir_okay=False, path_type=Path),
+    help="Path to structured YAML input for the Logical ADR.",
+)
+@click.option(
+    "--output",
+    required=True,
+    type=click.Path(dir_okay=False, path_type=Path),
+    help="Path to write the generated Logical ADR YAML.",
+)
+@click.option(
+    "--validation-mode",
+    type=click.Choice(["complete", "structural"]),
+    default="complete",
+    show_default=True,
+    help="Validation mode for generation.",
+)
+@click.option(
+    "--preserve-empty-sections",
+    is_flag=True,
+    help="Preserve explicit empty arrays/objects in generated YAML.",
+)
+def generate_logical(
+    input_path: Path,
+    output: Path,
+    validation_mode: str,
+    preserve_empty_sections: bool,
+):
+    """Generate a Logical ADR YAML file from structured input."""
+    try:
+        _generate_source_adr(
+            input_path,
+            output,
+            LogicalADRGenerator,
+            "parse_logical_adr",
+            "Logical ADR",
+            "ADR-L-",
+            validation_mode,
+            preserve_empty_sections,
+        )
+    except Exception as e:
+        click.echo(f"Error: {e}", err=True)
+        sys.exit(1)
+
+
+@cli.command("generate-vision")
+@click.option(
+    "--input",
+    "input_path",
+    required=True,
+    type=click.Path(exists=True, dir_okay=False, path_type=Path),
+    help="Path to structured YAML input for the Vision ADR.",
+)
+@click.option(
+    "--output",
+    required=True,
+    type=click.Path(dir_okay=False, path_type=Path),
+    help="Path to write the generated Vision ADR YAML.",
+)
+@click.option(
+    "--validation-mode",
+    type=click.Choice(["complete", "structural"]),
+    default="complete",
+    show_default=True,
+    help="Validation mode for generation.",
+)
+@click.option(
+    "--preserve-empty-sections",
+    is_flag=True,
+    help="Preserve explicit empty arrays/objects in generated YAML.",
+)
+def generate_vision(
+    input_path: Path,
+    output: Path,
+    validation_mode: str,
+    preserve_empty_sections: bool,
+):
+    """Generate a Vision ADR YAML file from structured input."""
+    try:
+        _generate_source_adr(
+            input_path,
+            output,
+            LogicalADRGenerator,
+            "parse_logical_adr",
+            "Vision ADR",
+            "ADR-V-",
+            validation_mode,
+            preserve_empty_sections,
+        )
+    except Exception as e:
+        click.echo(f"Error: {e}", err=True)
+        sys.exit(1)
 
 
 @cli.command('generate-manifest')
@@ -104,6 +316,55 @@ def generate_manifest(scope: Optional[Path], recursive: bool, output: Optional[P
         sys.exit(1)
 
 
+@cli.command("generate-physical-component")
+@click.option(
+    "--input",
+    "input_path",
+    required=True,
+    type=click.Path(exists=True, dir_okay=False, path_type=Path),
+    help="Path to structured YAML input for the Physical-Component ADR.",
+)
+@click.option(
+    "--output",
+    required=True,
+    type=click.Path(dir_okay=False, path_type=Path),
+    help="Path to write the generated Physical-Component ADR YAML.",
+)
+@click.option(
+    "--validation-mode",
+    type=click.Choice(["complete", "structural"]),
+    default="complete",
+    show_default=True,
+    help="Validation mode for generation.",
+)
+@click.option(
+    "--preserve-empty-sections",
+    is_flag=True,
+    help="Preserve explicit empty arrays/objects in generated YAML.",
+)
+def generate_physical_component(
+    input_path: Path,
+    output: Path,
+    validation_mode: str,
+    preserve_empty_sections: bool,
+):
+    """Generate a Physical-Component ADR YAML file from structured input."""
+    try:
+        _generate_source_adr(
+            input_path,
+            output,
+            PhysicalComponentADRGenerator,
+            "parse_physical_component_adr",
+            "Physical-Component ADR",
+            "ADR-PC-",
+            validation_mode,
+            preserve_empty_sections,
+        )
+    except Exception as e:
+        click.echo(f"Error: {e}", err=True)
+        sys.exit(1)
+
+
 @cli.command("generate-physical-system")
 @click.option(
     "--input",
@@ -118,33 +379,142 @@ def generate_manifest(scope: Optional[Path], recursive: bool, output: Optional[P
     type=click.Path(dir_okay=False, path_type=Path),
     help="Path to write the generated Physical-System ADR YAML.",
 )
-def generate_physical_system(input_path: Path, output: Path):
+@click.option(
+    "--validation-mode",
+    type=click.Choice(["complete", "structural"]),
+    default="complete",
+    show_default=True,
+    help="Validation mode for generation.",
+)
+@click.option(
+    "--preserve-empty-sections",
+    is_flag=True,
+    help="Preserve explicit empty arrays/objects in generated YAML.",
+)
+def generate_physical_system(
+    input_path: Path,
+    output: Path,
+    validation_mode: str,
+    preserve_empty_sections: bool,
+):
     """Generate a Physical-System ADR YAML file from structured input."""
     try:
-        parser = ADRParser()
-        validator = ADRValidator(parser=parser)
-        generator = PhysicalSystemADRGenerator(parser=parser, validator=validator)
+        _generate_source_adr(
+            input_path,
+            output,
+            PhysicalSystemADRGenerator,
+            "parse_physical_system_adr",
+            "Physical-System ADR",
+            "ADR-PS-",
+            validation_mode,
+            preserve_empty_sections,
+        )
+    except Exception as e:
+        click.echo(f"Error: {e}", err=True)
+        sys.exit(1)
 
-        adr = generator.create_adr_from_file(input_path)
-        generator.save_adr(adr, output)
 
-        parser.parse_physical_system_adr(output)
-        result = validator.validate_file(output)
+@cli.command("generate-entity-registry")
+@click.option('--scope', type=click.Path(exists=True, file_okay=False, path_type=Path),
+              help='Explicit project scope (overrides auto-detection)')
+@click.option('--recursive', is_flag=True,
+              help='Generate entity registries for all sub-modules recursively')
+@click.option('--output', type=click.Path(path_type=Path),
+              help='Output path for registry (default: <scope>/adrs/entities/registry.yaml)')
+def generate_entity_registry(scope: Optional[Path], recursive: bool, output: Optional[Path]):
+    """Generate the legacy entity-registry.yaml compatibility artifact."""
+    try:
+        resolver = ProjectScopeResolver(explicit_scope=scope)
+        generator = ArchitectureIndexGenerator(scope_resolver=resolver)
 
-        if result.has_errors:
-            click.echo(f"Generated file failed validation: {output}", err=True)
-            for error in result.errors:
-                click.echo(f"  ERROR: {error.message}", err=True)
-            sys.exit(1)
+        if recursive:
+            click.echo("Generating architecture indexes recursively for legacy entity registry compatibility...")
+            scopes = resolver.resolve_recursive()
+            for scope_obj in scopes:
+                if not scope_obj.adr_dir.exists():
+                    continue
+                bundle = generator.generate_from_scope(scope_obj)
+                paths = generator.save_bundle(bundle, scope_obj)
+                scope_name = scope_obj.name or str(scope_obj.root)
+                output_path = output or paths["legacy_entity_registry"]
+                if output is not None and output_path != paths["legacy_entity_registry"]:
+                    output_path.parent.mkdir(parents=True, exist_ok=True)
+                    output_path.write_text(
+                        generator.render_yaml(bundle.legacy_entity_registry),
+                        encoding="utf-8",
+                        newline="\n",
+                    )
+                click.echo(f"Generated legacy entity registry for {scope_name}: {output_path}")
+                click.echo(f"  Architecture index: {paths['architecture_index']}")
 
-        click.echo(f"Generated Physical-System ADR: {output}")
-        click.echo(f"  ID: {adr.id}")
-        click.echo(f"  Title: {adr.title}")
+            click.echo(f"\nGenerated legacy entity registry compatibility artifacts for {len(scopes)} scope(s)")
+        else:
+            click.echo("Generating architecture index and legacy entity registry compatibility artifact...")
+            detected_scope = resolver.resolve()
+            click.echo(f"Project scope: {detected_scope.name} ({detected_scope.root})")
 
-        if result.has_warnings:
-            for warning in result.warnings:
-                click.echo(f"  WARNING: {warning.message}")
+            bundle = generator.generate_from_scope(detected_scope)
+            paths = generator.save_bundle(bundle, detected_scope)
+            output_path = output or paths["legacy_entity_registry"]
+            if output is not None and output_path != paths["legacy_entity_registry"]:
+                output_path.parent.mkdir(parents=True, exist_ok=True)
+                output_path.write_text(
+                    generator.render_yaml(bundle.legacy_entity_registry),
+                    encoding="utf-8",
+                    newline="\n",
+                )
 
+            click.echo(f"Generated legacy entity registry: {output_path}")
+            click.echo(f"  Architecture index: {paths['architecture_index']}")
+            click.echo(f"  Entities: {len(bundle.legacy_entity_registry.entities)}")
+    except Exception as e:
+        click.echo(f"Error: {e}", err=True)
+        sys.exit(1)
+
+
+@cli.command("generate-architecture-index")
+@click.option('--scope', type=click.Path(exists=True, file_okay=False, path_type=Path),
+              help='Explicit project scope (overrides auto-detection)')
+def generate_architecture_index(scope: Optional[Path]):
+    """Generate normalized architecture discovery artifacts under adrs/index/."""
+    try:
+        resolver = ProjectScopeResolver(explicit_scope=scope)
+        generator = ArchitectureIndexGenerator(scope_resolver=resolver)
+        detected_scope = resolver.resolve()
+        click.echo("Generating architecture discovery index...")
+        click.echo(f"Project scope: {detected_scope.name} ({detected_scope.root})")
+        bundle = generator.generate_from_scope(detected_scope)
+        paths = generator.save_bundle(bundle, detected_scope)
+        click.echo(f"Generated architecture index: {_architecture_index_path(detected_scope)}")
+        click.echo(f"  Namespace: {bundle.architecture_index.architecture_namespace}")
+        click.echo(f"  Entities: {len(bundle.entity_registry.entities)}")
+        click.echo(f"  Relationships: {len(bundle.relationship_registry.relationships)}")
+        click.echo(f"  Unresolved: {len(bundle.unresolved_registry.unresolved)}")
+        click.echo(f"  Legacy entity registry: {paths['legacy_entity_registry']}")
+    except Exception as e:
+        click.echo(f"Error: {e}", err=True)
+        sys.exit(1)
+
+
+@cli.command("normalize-canonical-ids")
+@click.option('--scope', type=click.Path(exists=True, file_okay=False, path_type=Path),
+              help='Explicit project scope (overrides auto-detection)')
+def normalize_canonical_ids(scope: Optional[Path]):
+    """Normalize canonical entity ID collisions across ADR YAML files."""
+    try:
+        resolver = ProjectScopeResolver(explicit_scope=scope)
+        normalizer = CanonicalIdNormalizer(scope_resolver=resolver)
+        detected_scope = resolver.resolve()
+        click.echo("Normalizing canonical entity ID collisions...")
+        click.echo(f"Project scope: {detected_scope.name} ({detected_scope.root})")
+        remaps = normalizer.normalize(detected_scope)
+        if not remaps:
+            click.echo("No canonical ID collisions found. No changes made.")
+            click.echo("Run `adr generate-architecture-index --scope .`")
+            return
+        click.echo(f"Normalized {len(remaps)} canonical ID collisions.")
+        click.echo(f"Migration ledger: {detected_scope.adr_dir / 'migrations' / 'canonical-id-remap.yaml'}")
+        click.echo("Run `adr generate-architecture-index --scope .`")
     except Exception as e:
         click.echo(f"Error: {e}", err=True)
         sys.exit(1)
@@ -157,7 +527,14 @@ def generate_physical_system(input_path: Path, output: Path):
               help='Validate all sub-modules recursively')
 @click.option('--cross-references', is_flag=True,
               help='Validate cross-references between ADRs')
-def validate(scope: Optional[Path], recursive: bool, cross_references: bool):
+@click.option(
+    '--mode',
+    type=click.Choice(["complete", "structural"]),
+    default="complete",
+    show_default=True,
+    help='Validation mode to apply.'
+)
+def validate(scope: Optional[Path], recursive: bool, cross_references: bool, mode: str):
     """Validate ADRs against schema and business rules (ADR-L-0002: CAP-0003).
     
     Auto-detects project scope by default. Use --scope to override.
@@ -169,7 +546,7 @@ def validate(scope: Optional[Path], recursive: bool, cross_references: bool):
         
         if recursive:
             click.echo("Validating ADRs recursively...")
-            all_results = validator.validate_recursive()
+            all_results = validator.validate_recursive(mode=mode)
             
             total_files = 0
             total_errors = 0
@@ -202,7 +579,7 @@ def validate(scope: Optional[Path], recursive: bool, cross_references: bool):
             detected_scope = resolver.resolve()
             click.echo(f"Project scope: {detected_scope.name} ({detected_scope.root})")
             
-            results = validator.validate_scope(detected_scope)
+            results = validator.validate_scope(detected_scope, mode=mode)
             
             # Print results
             errors = 0
@@ -241,6 +618,118 @@ def validate(scope: Optional[Path], recursive: bool, cross_references: bool):
             if errors > 0:
                 sys.exit(1)
                 
+    except Exception as e:
+        click.echo(f"Error: {e}", err=True)
+        sys.exit(1)
+
+
+@cli.group("entities")
+def entities_cli():
+    """Query the generated architecture discovery bundle."""
+    pass
+
+
+def _filter_entities(registry, entity_type=None, adr=None, domain=None, status=None):
+    """Filter registry entities deterministically."""
+    entities = sorted(registry.entities, key=_entity_identifier)
+    if entity_type:
+        entities = [entity for entity in entities if _entity_type_name(entity) == entity_type]
+    if adr:
+        entities = [entity for entity in entities if adr in _entity_adr_refs(entity)]
+    if domain:
+        entities = [entity for entity in entities if domain in ((getattr(entity, "domains", None) or getattr(entity, "metadata", {}).get("domains", [])) or [])]
+    if status:
+        entities = [entity for entity in entities if _entity_status(entity) == status]
+    return entities
+
+
+@entities_cli.command("list")
+@click.option('--scope', type=click.Path(exists=True, file_okay=False, path_type=Path),
+              help='Explicit project scope (overrides auto-detection)')
+@click.option('--type', 'entity_type',
+              type=click.Choice(["adr", "system", "capability", "decision", "component", "invariant", "boundary", "contract", "constraint", "nfr", "gap", "interface", "integration", "implementation_decision"]),
+              help='Filter by entity type')
+@click.option('--adr', 'adr_id', help='Filter by ADR reference')
+@click.option('--domain', help='Filter by domain')
+@click.option('--status', type=click.Choice(["proposed", "active", "deprecated", "superseded"]),
+              help='Filter by lifecycle stage')
+def entities_list(scope: Optional[Path], entity_type: Optional[str], adr_id: Optional[str], domain: Optional[str], status: Optional[str]):
+    """List entities from the generated registry."""
+    try:
+        repository = _load_architecture_repository(scope)
+        entities = _filter_entities(
+            repository.legacy_entity_registry or repository.primary_entity_registry,
+            entity_type=entity_type,
+            adr=adr_id,
+            domain=domain,
+            status=status,
+        )
+        click.echo(_dump_yaml({"entities": [entity.model_dump(mode="json", exclude_none=True) for entity in entities]}))
+    except Exception as e:
+        click.echo(f"Error: {e}", err=True)
+        sys.exit(1)
+
+
+@entities_cli.command("get")
+@click.argument("entity_id")
+@click.option('--scope', type=click.Path(exists=True, file_okay=False, path_type=Path),
+              help='Explicit project scope (overrides auto-detection)')
+def entities_get(entity_id: str, scope: Optional[Path]):
+    """Get an entity by exact ID."""
+    try:
+        repository = _load_architecture_repository(scope)
+        entity = repository.find_entity(entity_id)
+        if entity is None:
+            raise ValueError(f"Entity not found: {entity_id}")
+        click.echo(_dump_yaml(entity.model_dump(mode="json", exclude_none=True)))
+    except Exception as e:
+        click.echo(f"Error: {e}", err=True)
+        sys.exit(1)
+
+
+@entities_cli.command("invariants")
+@click.option('--scope', type=click.Path(exists=True, file_okay=False, path_type=Path),
+              help='Explicit project scope (overrides auto-detection)')
+@click.option('--adr', 'adr_id', help='Filter by ADR reference')
+@click.option('--domain', help='Filter by domain')
+@click.option('--status', type=click.Choice(["proposed", "active", "deprecated", "superseded"]),
+              help='Filter by lifecycle stage')
+def entities_invariants(scope: Optional[Path], adr_id: Optional[str], domain: Optional[str], status: Optional[str]):
+    """List invariants from the generated registry."""
+    try:
+        repository = _load_architecture_repository(scope)
+        entities = _filter_entities(
+            type("RegistryView", (), {"entities": repository.get_invariants()})(),
+            entity_type="invariant",
+            adr=adr_id,
+            domain=domain,
+            status=status,
+        )
+        click.echo(_dump_yaml({"entities": [entity.model_dump(mode="json", exclude_none=True) for entity in entities]}))
+    except Exception as e:
+        click.echo(f"Error: {e}", err=True)
+        sys.exit(1)
+
+
+@entities_cli.command("capabilities")
+@click.option('--scope', type=click.Path(exists=True, file_okay=False, path_type=Path),
+              help='Explicit project scope (overrides auto-detection)')
+@click.option('--adr', 'adr_id', help='Filter by ADR reference')
+@click.option('--domain', help='Filter by domain')
+@click.option('--status', type=click.Choice(["proposed", "active", "deprecated", "superseded"]),
+              help='Filter by lifecycle stage')
+def entities_capabilities(scope: Optional[Path], adr_id: Optional[str], domain: Optional[str], status: Optional[str]):
+    """List capabilities from the generated registry."""
+    try:
+        repository = _load_architecture_repository(scope)
+        entities = _filter_entities(
+            type("RegistryView", (), {"entities": repository.get_capabilities()})(),
+            entity_type="capability",
+            adr=adr_id,
+            domain=domain,
+            status=status,
+        )
+        click.echo(_dump_yaml({"entities": [entity.model_dump(mode="json", exclude_none=True) for entity in entities]}))
     except Exception as e:
         click.echo(f"Error: {e}", err=True)
         sys.exit(1)

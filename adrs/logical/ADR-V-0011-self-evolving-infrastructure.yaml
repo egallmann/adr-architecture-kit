@@ -1,250 +1,229 @@
-schema_version: "1.0"
+schema_version: '1.0'
 id: ADR-V-0011
 adr_type: logical
 vision_category: true
 promotable_to_logical: true
-title: "Self-Evolving Infrastructure"
+title: Self-Evolving Infrastructure
 status: proposed
-created_date: "2024-03-10"
-authors: [adr-architecture-kit]
+created_date: '2024-03-10'
+authors:
+- adr-architecture-kit
 tags:
-  - infrastructure
-  - self-healing
-  - automation
-  - shared-libraries
-
+- infrastructure
+- self-healing
+- automation
+- shared-libraries
 context: |
   Shared infrastructure libraries are used across many services:
   - Logging library (used by 50 services)
   - Authentication library (used by 30 services)
   - Database client (used by 40 services)
   - Monitoring library (used by 50 services)
-  
+
   When infrastructure needs change:
   - Log analytics requires new fields
   - Security requires new auth method
   - Database needs connection pooling
   - Monitoring needs new metrics
-  
+
   Traditional approach: Manual updates
   - Update library code
   - Update each service (50 PRs)
   - Deploy each service (50 deployments)
   - Timeline: Weeks to months
-  
+
   Problems:
   - Slow (manual updates)
   - Inconsistent (services update at different times)
   - Error-prone (humans make mistakes)
   - Expensive (developer time)
-  
-  Opportunity: AI-maintained shared libraries with automated deployment.
 
+  Opportunity: AI-maintained shared libraries with automated deployment.
 capability:
-  name: "Self-Evolving Infrastructure"
+  name: Self-Evolving Infrastructure
   description: |
     A system where shared infrastructure libraries (logging, auth, etc.) are
     automatically updated and deployed across services based on signals,
     adhering to tolerance configurations and invariants.
-  
   evolution_components:
-    - component: "Infrastructure Primitives"
-      description: "Shared libraries as Physical-Component ADRs"
+  - component: Infrastructure Primitives
+    description: Shared libraries as Physical-Component ADRs
+    examples:
+    - adr_id: ADR-PC-INFRA-001
+      name: Logging Library
+      used_by: 50 services
+      interface: log(level, message, context)
+    - adr_id: ADR-PC-INFRA-002
+      name: Authentication Library
+      used_by: 30 services
+      interface: authenticate(token) → user
+    - adr_id: ADR-PC-INFRA-003
+      name: Database Client
+      used_by: 40 services
+      interface: query(sql, params) → results
+    characteristics:
+    - Versioned (semantic versioning)
+    - Tested (comprehensive test suite)
+    - Documented (API docs, examples)
+    - Monitored (usage metrics, errors)
+  - component: Watchdog Agents
+    description: AI agents that monitor infrastructure and propose improvements
+    responsibilities:
+    - Monitor signals (log analytics needs, security requirements)
+    - Analyze impact (which services affected)
+    - Design improvements (non-breaking changes)
+    - Generate code (implementation)
+    - Validate safety (tests, invariants)
+    - Submit for review (or auto-deploy if within tolerance)
+    example_signals:
+    - signal: log-analytics-needs-trace-id
+      analysis: Log analytics requires trace_id field for distributed tracing
+      impact: 50 services use logging library
+      improvement: Add trace_id to log context (non-breaking)
+      safety: Existing logs unaffected, new field optional
+      deployment: Auto-deploy (within tolerance)
+    - signal: security-requires-jwt-rotation
+      analysis: Security requires JWT token rotation every 7 days
+      impact: 30 services use auth library
+      improvement: Add token rotation logic
+      safety: Breaking change (requires service updates)
+      deployment: Human review required
+  - component: Tolerance Configuration
+    description: Rules defining what can be auto-deployed
+    location: PROJECT.yaml
+    rules:
+    - rule: non_breaking_changes
+      description: Changes that don't affect existing behavior
       examples:
-        - adr_id: "ADR-PC-INFRA-001"
-          name: "Logging Library"
-          used_by: "50 services"
-          interface: "log(level, message, context)"
-        
-        - adr_id: "ADR-PC-INFRA-002"
-          name: "Authentication Library"
-          used_by: "30 services"
-          interface: "authenticate(token) → user"
-        
-        - adr_id: "ADR-PC-INFRA-003"
-          name: "Database Client"
-          used_by: "40 services"
-          interface: "query(sql, params) → results"
-      
-      characteristics:
-        - "Versioned (semantic versioning)"
-        - "Tested (comprehensive test suite)"
-        - "Documented (API docs, examples)"
-        - "Monitored (usage metrics, errors)"
-    
-    - component: "Watchdog Agents"
-      description: "AI agents that monitor infrastructure and propose improvements"
-      responsibilities:
-        - "Monitor signals (log analytics needs, security requirements)"
-        - "Analyze impact (which services affected)"
-        - "Design improvements (non-breaking changes)"
-        - "Generate code (implementation)"
-        - "Validate safety (tests, invariants)"
-        - "Submit for review (or auto-deploy if within tolerance)"
-      
-      example_signals:
-        - signal: "log-analytics-needs-trace-id"
-          analysis: "Log analytics requires trace_id field for distributed tracing"
-          impact: "50 services use logging library"
-          improvement: "Add trace_id to log context (non-breaking)"
-          safety: "Existing logs unaffected, new field optional"
-          deployment: "Auto-deploy (within tolerance)"
-        
-        - signal: "security-requires-jwt-rotation"
-          analysis: "Security requires JWT token rotation every 7 days"
-          impact: "30 services use auth library"
-          improvement: "Add token rotation logic"
-          safety: "Breaking change (requires service updates)"
-          deployment: "Human review required"
-    
-    - component: "Tolerance Configuration"
-      description: "Rules defining what can be auto-deployed"
-      location: "PROJECT.yaml"
-      
-      rules:
-        - rule: "non_breaking_changes"
-          description: "Changes that don't affect existing behavior"
-          examples:
-            - "Add optional field"
-            - "Add new method"
-            - "Improve performance"
-            - "Fix bug"
-          action: "auto_deploy"
-        
-        - rule: "breaking_changes"
-          description: "Changes that affect existing behavior"
-          examples:
-            - "Remove method"
-            - "Change method signature"
-            - "Change return type"
-            - "Change behavior"
-          action: "human_review_required"
-        
-        - rule: "security_changes"
-          description: "Changes affecting security"
-          examples:
-            - "Authentication logic"
-            - "Authorization logic"
-            - "Encryption"
-            - "Key management"
-          action: "security_team_review_required"
-    
-    - component: "Global Invariants"
-      description: "Constraints that must never be violated"
+      - Add optional field
+      - Add new method
+      - Improve performance
+      - Fix bug
+      action: auto_deploy
+    - rule: breaking_changes
+      description: Changes that affect existing behavior
       examples:
-        - invariant: "logging_never_blocks"
-          description: "Logging must never block application threads"
-          validation: "Async logging, bounded queues"
-        
-        - invariant: "auth_always_validates"
-          description: "Authentication must always validate tokens"
-          validation: "No bypass, no default allow"
-        
-        - invariant: "db_connection_pooling"
-          description: "Database connections must be pooled"
-          validation: "Max connections enforced"
-      
-      enforcement:
-        - "Watchdog validates invariants before deployment"
-        - "Tests verify invariants"
-        - "Deployment blocked if invariant violated"
-
+      - Remove method
+      - Change method signature
+      - Change return type
+      - Change behavior
+      action: human_review_required
+    - rule: security_changes
+      description: Changes affecting security
+      examples:
+      - Authentication logic
+      - Authorization logic
+      - Encryption
+      - Key management
+      action: security_team_review_required
+  - component: Global Invariants
+    description: Constraints that must never be violated
+    examples:
+    - invariant: logging_never_blocks
+      description: Logging must never block application threads
+      validation: Async logging, bounded queues
+    - invariant: auth_always_validates
+      description: Authentication must always validate tokens
+      validation: No bypass, no default allow
+    - invariant: db_connection_pooling
+      description: Database connections must be pooled
+      validation: Max connections enforced
+    enforcement:
+    - Watchdog validates invariants before deployment
+    - Tests verify invariants
+    - Deployment blocked if invariant violated
 boundaries:
   in_scope:
-    - "Shared infrastructure libraries (logging, auth, db, monitoring)"
-    - "AI-driven improvements (watchdog agents)"
-    - "Automated deployment (within tolerance)"
-    - "Invariant preservation (safety constraints)"
-  
+  - Shared infrastructure libraries (logging, auth, db, monitoring)
+  - AI-driven improvements (watchdog agents)
+  - Automated deployment (within tolerance)
+  - Invariant preservation (safety constraints)
   out_of_scope:
-    - "Application-specific code (business logic)"
-    - "Manual infrastructure changes (humans can still update)"
-    - "Breaking changes without migration plan"
-
+  - Application-specific code (business logic)
+  - Manual infrastructure changes (humans can still update)
+  - Breaking changes without migration plan
 contracts:
   signal_interface:
-    description: "How signals trigger infrastructure evolution"
+    description: How signals trigger infrastructure evolution
     inputs:
-      - name: "signal_type"
-        type: "enum"
-        values: ["log_analytics", "security", "performance", "observability"]
-      
-      - name: "signal_description"
-        type: "string"
-        example: "Log analytics requires trace_id field"
-      
-      - name: "affected_libraries"
-        type: "array"
-        example: ["ADR-PC-INFRA-001"]
-    
+    - name: signal_type
+      type: enum
+      values:
+      - log_analytics
+      - security
+      - performance
+      - observability
+    - name: signal_description
+      type: string
+      example: Log analytics requires trace_id field
+    - name: affected_libraries
+      type: array
+      example:
+      - ADR-PC-INFRA-001
     outputs:
-      - name: "improvement_proposal"
-        format: "ADR update + code changes"
-      
-      - name: "deployment_decision"
-        type: "enum"
-        values: ["auto_deploy", "human_review", "security_review"]
-  
+    - name: improvement_proposal
+      format: ADR update + code changes
+    - name: deployment_decision
+      type: enum
+      values:
+      - auto_deploy
+      - human_review
+      - security_review
   tolerance_interface:
-    description: "How tolerance rules are evaluated"
+    description: How tolerance rules are evaluated
     inputs:
-      - name: "change_type"
-        type: "enum"
-        values: ["non_breaking", "breaking", "security"]
-      
-      - name: "invariants_preserved"
-        type: "boolean"
-      
-      - name: "tests_passing"
-        type: "boolean"
-    
+    - name: change_type
+      type: enum
+      values:
+      - non_breaking
+      - breaking
+      - security
+    - name: invariants_preserved
+      type: boolean
+    - name: tests_passing
+      type: boolean
     outputs:
-      - name: "deployment_allowed"
-        type: "boolean"
-      
-      - name: "review_required"
-        type: "boolean"
-      
-      - name: "reviewers"
-        type: "array"
-        example: ["security-team", "infra-team"]
-
+    - name: deployment_allowed
+      type: boolean
+    - name: review_required
+      type: boolean
+    - name: reviewers
+      type: array
+      example:
+      - security-team
+      - infra-team
 quality_attributes:
-  - attribute: "Evolution Speed"
-    requirement: "Quickly respond to infrastructure needs"
-    measurement: "Time from signal to deployment"
-    target: "< 24 hours for non-breaking changes"
-  
-  - attribute: "Safety"
-    requirement: "Never break existing services"
-    measurement: "Incident rate from infrastructure changes"
-    target: "0 incidents"
-  
-  - attribute: "Consistency"
-    requirement: "All services use same infrastructure version"
-    measurement: "Version consistency across services"
-    target: "> 95% on latest version"
-  
-  - attribute: "Automation Rate"
-    requirement: "Minimize human intervention"
-    measurement: "Percentage of changes auto-deployed"
-    target: "> 80%"
-
+- attribute: Evolution Speed
+  requirement: Quickly respond to infrastructure needs
+  measurement: Time from signal to deployment
+  target: < 24 hours for non-breaking changes
+- attribute: Safety
+  requirement: Never break existing services
+  measurement: Incident rate from infrastructure changes
+  target: 0 incidents
+- attribute: Consistency
+  requirement: All services use same infrastructure version
+  measurement: Version consistency across services
+  target: '> 95% on latest version'
+- attribute: Automation Rate
+  requirement: Minimize human intervention
+  measurement: Percentage of changes auto-deployed
+  target: '> 80%'
 rationale: |
   **Why self-evolving infrastructure?**
-  
+
   Infrastructure needs change frequently:
   - Log analytics adds new features
   - Security discovers new threats
   - Performance monitoring adds new metrics
   - Observability requires new telemetry
-  
+
   Updating 50 services manually is painful:
   - 50 PRs (copy-paste changes)
   - 50 reviews (rubber-stamp approvals)
   - 50 deployments (weeks of work)
   - Inconsistent (services update at different times)
-  
+
   AI can do this automatically:
   - Detect signal (log analytics needs trace_id)
   - Analyze impact (50 services affected)
@@ -252,9 +231,9 @@ rationale: |
   - Generate code (update logging library)
   - Validate safety (tests pass, invariants preserved)
   - Deploy automatically (within tolerance)
-  
+
   **Example: Log analytics requires trace_id**
-  
+
   Traditional approach:
   1. Log analytics team requests trace_id field
   2. Infra team updates logging library (1 day)
@@ -262,7 +241,7 @@ rationale: |
   4. 50 code reviews (1 week)
   5. 50 deployments (2 weeks)
   6. Total: 3-4 weeks
-  
+
   Self-evolving approach:
   1. Log analytics sends signal: "need trace_id"
   2. Watchdog agent:
@@ -273,180 +252,164 @@ rationale: |
      - Evaluates: Non-breaking change, within tolerance
      - Deploys: Auto-deploy to all 50 services
   3. Total: 24 hours
-  
+
   **10x faster, 0 human effort, 100% consistent.**
-  
+
   **Why tolerance configuration?**
-  
+
   Not all changes are safe to auto-deploy:
   - Non-breaking: Safe (add optional field)
   - Breaking: Risky (change method signature)
   - Security: Critical (requires expert review)
-  
+
   Tolerance configuration defines boundaries:
   - Auto-deploy: Non-breaking, tests pass, invariants preserved
   - Human review: Breaking changes, migration plan required
   - Security review: Security-critical changes
-  
+
   This balances automation with safety.
-  
+
   **Why global invariants?**
-  
+
   Some constraints must never be violated:
   - Logging must never block (async only)
   - Auth must always validate (no bypass)
   - DB connections must be pooled (no leaks)
-  
+
   Invariants are enforced:
   - Watchdog validates before deployment
   - Tests verify invariants
   - Deployment blocked if violated
-  
+
   This ensures safety even with automation.
-
 alternatives_considered:
-  - alternative: "Manual infrastructure updates"
-    pros:
-      - "Human oversight (careful review)"
-      - "No automation risk"
-    cons:
-      - "Slow (weeks to months)"
-      - "Inconsistent (services update at different times)"
-      - "Expensive (developer time)"
-    why_not_chosen: "Too slow, infrastructure evolution blocked"
-  
-  - alternative: "Automatic updates without tolerance rules"
-    pros:
-      - "Fastest (immediate deployment)"
-      - "Fully automated"
-    cons:
-      - "Risky (breaking changes auto-deployed)"
-      - "No safety checks"
-    why_not_chosen: "Too risky, need safety boundaries"
-  
-  - alternative: "Monolithic infrastructure (no shared libraries)"
-    pros:
-      - "Simpler (each service owns infrastructure)"
-    cons:
-      - "Inconsistent (each service different)"
-      - "Duplicated (same code in 50 services)"
-      - "Slow evolution (update 50 services)"
-    why_not_chosen: "Shared libraries enable consistent evolution"
-
+- alternative: Manual infrastructure updates
+  pros:
+  - Human oversight (careful review)
+  - No automation risk
+  cons:
+  - Slow (weeks to months)
+  - Inconsistent (services update at different times)
+  - Expensive (developer time)
+  why_not_chosen: Too slow, infrastructure evolution blocked
+- alternative: Automatic updates without tolerance rules
+  pros:
+  - Fastest (immediate deployment)
+  - Fully automated
+  cons:
+  - Risky (breaking changes auto-deployed)
+  - No safety checks
+  why_not_chosen: Too risky, need safety boundaries
+- alternative: Monolithic infrastructure (no shared libraries)
+  pros:
+  - Simpler (each service owns infrastructure)
+  cons:
+  - Inconsistent (each service different)
+  - Duplicated (same code in 50 services)
+  - Slow evolution (update 50 services)
+  why_not_chosen: Shared libraries enable consistent evolution
 trade_offs:
-  - trade_off: "Automated deployment may introduce bugs"
-    acceptance: "Comprehensive tests, invariant validation"
-    mitigation: "Gradual rollout, monitoring, automatic rollback"
-  
-  - trade_off: "Tolerance rules may be too restrictive"
-    acceptance: "Humans can override (manual deployment)"
-    mitigation: "Iterative refinement of tolerance rules"
-  
-  - trade_off: "Global invariants may limit flexibility"
-    acceptance: "Invariants are safety-critical"
-    mitigation: "Invariants can be updated with human approval"
-
+- trade_off: Automated deployment may introduce bugs
+  acceptance: Comprehensive tests, invariant validation
+  mitigation: Gradual rollout, monitoring, automatic rollback
+- trade_off: Tolerance rules may be too restrictive
+  acceptance: Humans can override (manual deployment)
+  mitigation: Iterative refinement of tolerance rules
+- trade_off: Global invariants may limit flexibility
+  acceptance: Invariants are safety-critical
+  mitigation: Invariants can be updated with human approval
 success_criteria:
-  - criterion: "Evolution speed"
-    measurement: "Time from signal to deployment"
-    target: "< 24 hours for non-breaking changes"
-  
-  - criterion: "Safety"
-    measurement: "Incidents from infrastructure changes"
-    target: "0 incidents"
-  
-  - criterion: "Consistency"
-    measurement: "Version consistency across services"
-    target: "> 95% on latest version"
-  
-  - criterion: "Automation rate"
-    measurement: "Percentage of changes auto-deployed"
-    target: "> 80%"
-
+- criterion: Evolution speed
+  measurement: Time from signal to deployment
+  target: < 24 hours for non-breaking changes
+- criterion: Safety
+  measurement: Incidents from infrastructure changes
+  target: 0 incidents
+- criterion: Consistency
+  measurement: Version consistency across services
+  target: '> 95% on latest version'
+- criterion: Automation rate
+  measurement: Percentage of changes auto-deployed
+  target: '> 80%'
 dependencies:
   requires:
-    - "Physical-Component ADRs (infrastructure as ADRs)"
-    - "Watchdog agents (detect signals, propose changes)"
-    - "Tolerance configuration (safety boundaries)"
-    - "Invariant system (safety constraints)"
-  
+  - Physical-Component ADRs (infrastructure as ADRs)
+  - Watchdog agents (detect signals, propose changes)
+  - Tolerance configuration (safety boundaries)
+  - Invariant system (safety constraints)
   enables:
-    - "Rapid infrastructure evolution (24 hours vs weeks)"
-    - "Consistent infrastructure (all services same version)"
-    - "Reduced developer burden (automated updates)"
-
+  - Rapid infrastructure evolution (24 hours vs weeks)
+  - Consistent infrastructure (all services same version)
+  - Reduced developer burden (automated updates)
 risks:
-  - risk: "Automated deployment introduces bugs"
-    likelihood: "medium"
-    impact: "high"
-    mitigation: "Comprehensive tests, gradual rollout, monitoring, rollback"
-  
-  - risk: "Invariant violation"
-    likelihood: "low"
-    impact: "high"
-    mitigation: "Automated validation, deployment blocked if violated"
-  
-  - risk: "Breaking change auto-deployed"
-    likelihood: "low"
-    impact: "high"
-    mitigation: "Tolerance rules, change classification, human review for breaking changes"
-
+- risk: Automated deployment introduces bugs
+  likelihood: medium
+  impact: high
+  mitigation: Comprehensive tests, gradual rollout, monitoring, rollback
+- risk: Invariant violation
+  likelihood: low
+  impact: high
+  mitigation: Automated validation, deployment blocked if violated
+- risk: Breaking change auto-deployed
+  likelihood: low
+  impact: high
+  mitigation: Tolerance rules, change classification, human review for breaking changes
 notes: |
   This is the "self-maintaining infrastructure" capability.
-  
+
   Traditional infrastructure: Manual maintenance
   - Humans detect needs
   - Humans design changes
   - Humans implement changes
   - Humans deploy changes
   - Timeline: Weeks
-  
+
   Self-evolving infrastructure: AI maintenance
   - AI detects signals
   - AI designs changes
   - AI implements changes
   - AI deploys changes (within tolerance)
   - Timeline: Hours
-  
+
   Example: Logging library evolution
-  
+
   Week 1: Log analytics needs trace_id
   - Signal: "log-analytics-needs-trace-id"
   - Watchdog: Adds trace_id field (optional)
   - Deployment: Auto-deployed to 50 services
   - Timeline: 24 hours
-  
+
   Week 4: Security requires structured logging
   - Signal: "security-requires-structured-logs"
   - Watchdog: Adds JSON formatting
   - Deployment: Auto-deployed (non-breaking)
   - Timeline: 24 hours
-  
+
   Week 8: Performance monitoring needs latency
   - Signal: "monitoring-needs-latency"
   - Watchdog: Adds latency tracking
   - Deployment: Auto-deployed
   - Timeline: 24 hours
-  
+
   Infrastructure evolves continuously, automatically, safely.
-  
+
   The logging library is a living system:
   - Responds to signals
   - Evolves to meet needs
   - Maintains invariants
   - Deploys automatically
-  
+
   Humans focus on:
   - Defining tolerance rules
   - Defining invariants
   - Reviewing breaking changes
   - Strategic decisions
-  
+
   AI handles:
   - Detecting signals
   - Designing changes
   - Implementing changes
   - Deploying changes
   - Monitoring health
-  
+
   This is the future of infrastructure.

@@ -63,6 +63,16 @@
       "$ref": "types.schema.json#/definitions/markdown_text",
       "description": "Why this invariant exists"
     },
+    "declaration_mode": {
+      "type": "string",
+      "enum": ["canonical", "local", "reference"]
+    },
+    "upheld_by_decisions": {
+      "type": "array",
+      "items": {
+        "$ref": "types.schema.json#/definitions/entity_id"
+      }
+    },
     
     "defined_in": {
       "$ref": "types.schema.json#/definitions/adr_id_any",

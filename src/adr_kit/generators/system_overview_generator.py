@@ -112,8 +112,12 @@ class SystemOverviewGenerator:
                     "[`manifest_generator.py`](src/adr_kit/generators/manifest_generator.py)",
                 ),
                 OverviewRule(
-                    "Entity registry generation",
+                    "Legacy entity registry compatibility",
                     "[`entity_registry_generator.py`](src/adr_kit/generators/entity_registry_generator.py)",
+                ),
+                OverviewRule(
+                    "Architecture index generation",
+                    "[`architecture_index_generator.py`](src/adr_kit/generators/architecture_index_generator.py)",
                 ),
                 OverviewRule(
                     "Physical-System ADR generation",
@@ -126,6 +130,8 @@ class SystemOverviewGenerator:
             ],
             "cli_capabilities": [
                 "`adr generate-manifest`",
+                "`adr generate-architecture-index`",
+                "`adr normalize-canonical-ids`",
                 "`adr generate-rendered-docs`",
                 "`adr validate`",
                 "`adr validate-generated-docs`",
@@ -138,7 +144,9 @@ class SystemOverviewGenerator:
             "artifact_classes": [
                 "ADRs: [`adrs/logical/`](adrs/logical/) and [`adrs/physical/`](adrs/physical/)",
                 "Invariants: [`adrs/invariants/`](adrs/invariants/)",
+                "Architecture discovery bundle: [`adrs/index/`](adrs/index/)",
                 "Derived manifest: [`adrs/manifest.yaml`](adrs/manifest.yaml)",
+                "Legacy compatibility registry: [`adrs/entities/registry.yaml`](adrs/entities/registry.yaml)",
                 "Rendered ADR markdown: [`adrs/rendered/`](adrs/rendered/)",
                 "JSON schemas: [`schema/v1.0/`](schema/v1.0/) and [`schema/v1.1/`](schema/v1.1/)",
                 "Project metadata: [`PROJECT.yaml`](PROJECT.yaml)",
@@ -168,6 +176,7 @@ class SystemOverviewGenerator:
             ],
             "canonical_workflows": [
                 OverviewRule("Validate the repository", "Run `adr validate`, `adr validate --recursive`, and `pytest tests -q`."),
+                OverviewRule("Generate or refresh the architecture index", "Run `adr generate-architecture-index`. Treat `adrs/index/` as the primary machine discovery surface."),
                 OverviewRule("Generate or refresh the manifest", "Run `adr generate-manifest` or `adr generate-manifest --recursive`. Do not hand-edit `manifest.yaml`."),
                 OverviewRule("Generate rendered ADR markdown", "Run `adr generate-rendered-docs`. Do not hand-edit files under `adrs/rendered/`."),
                 OverviewRule("Validate generated documentation", "Run `adr validate-generated-docs` after regenerating derived artifacts."),

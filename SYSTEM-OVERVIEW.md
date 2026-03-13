@@ -5,8 +5,8 @@ artifact_kind: system_overview
 generator_id: adr-system-overview
 generator_version: 1
 hash_algorithm: sha256
-source_hash: b4f68dc8e98c7de255f901a58349656a9d205beb6bf0c29f107a85f799f3ce77
-rendered_hash: c9e1ebe190d9d5214934f7877bc7e931ae650e2dcad1c2779a2c43d2aab338df
+source_hash: 4a654f9b9e64a80b8ac0596af6d3e23636bbe8b7efd45bdb8fa46c895cc5bebb
+rendered_hash: 4e8df4fe02b4a94ecd15fc3862cb36f07904090e908efb3ba1948efecf4a3d05
 -->
 
 ---
@@ -93,13 +93,16 @@ Core implementation areas:
 - Business validation: [`adr_validator.py`](src/adr_kit/validators/adr_validator.py)
 - Scope resolution: [`resolver.py`](src/adr_kit/scope/resolver.py)
 - Manifest generation: [`manifest_generator.py`](src/adr_kit/generators/manifest_generator.py)
-- Entity registry generation: [`entity_registry_generator.py`](src/adr_kit/generators/entity_registry_generator.py)
+- Legacy entity registry compatibility: [`entity_registry_generator.py`](src/adr_kit/generators/entity_registry_generator.py)
+- Architecture index generation: [`architecture_index_generator.py`](src/adr_kit/generators/architecture_index_generator.py)
 - Physical-System ADR generation: [`physical_system_generator.py`](src/adr_kit/generators/physical_system_generator.py)
 - Runtime hygiene: [`runtime_hygiene.py`](src/adr_kit/validators/runtime_hygiene.py)
 
 Primary CLI capabilities:
 
 - `adr generate-manifest`
+- `adr generate-architecture-index`
+- `adr normalize-canonical-ids`
 - `adr generate-rendered-docs`
 - `adr validate`
 - `adr validate-generated-docs`
@@ -115,7 +118,9 @@ Repository artifact classes:
 
 - ADRs: [`adrs/logical/`](adrs/logical/) and [`adrs/physical/`](adrs/physical/)
 - Invariants: [`adrs/invariants/`](adrs/invariants/)
+- Architecture discovery bundle: [`adrs/index/`](adrs/index/)
 - Derived manifest: [`adrs/manifest.yaml`](adrs/manifest.yaml)
+- Legacy compatibility registry: [`adrs/entities/registry.yaml`](adrs/entities/registry.yaml)
 - Rendered ADR markdown: [`adrs/rendered/`](adrs/rendered/)
 - JSON schemas: [`schema/v1.0/`](schema/v1.0/) and [`schema/v1.1/`](schema/v1.1/)
 - Project metadata: [`PROJECT.yaml`](PROJECT.yaml)
@@ -143,6 +148,10 @@ Use this type model when reasoning about repository architecture artifacts:
 ### Validate the repository
 
 Run `adr validate`, `adr validate --recursive`, and `pytest tests -q`.
+
+### Generate or refresh the architecture index
+
+Run `adr generate-architecture-index`. Treat `adrs/index/` as the primary machine discovery surface.
 
 ### Generate or refresh the manifest
 

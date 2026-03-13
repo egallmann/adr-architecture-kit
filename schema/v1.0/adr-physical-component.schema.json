@@ -42,6 +42,10 @@
             "$ref": "types.schema.json#/definitions/entity_id",
             "pattern": "^COMP-\\d{4}$"
           },
+          "component_id": {
+            "type": "string",
+            "pattern": "^COMP-[A-Z0-9-]+$"
+          },
           "name": {
             "type": "string"
           },

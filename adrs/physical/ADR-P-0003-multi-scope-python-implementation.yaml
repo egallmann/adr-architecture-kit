@@ -1,364 +1,346 @@
-schema_version: "1.0"
+schema_version: '1.0'
 adr_type: physical
 id: ADR-P-0003
 title: Multi-Scope Python Implementation for ADR Toolkit
 status: accepted
-created_date: "2026-03-08"
-authors: [adr-architecture-kit]
-modified_date: "2026-03-08"
-
+created_date: '2026-03-08'
+authors:
+- adr-architecture-kit
+modified_date: '2026-03-08'
 implements_logical:
-  - ADR-L-0002
-
+- ADR-L-0002
 context: |
   ADR-L-0002 defines the logical architecture for multi-scope ADR support.
   This Physical ADR specifies the concrete Python implementation including
   module structure, API design, and CLI interface.
-  
+
   Implementation leverages existing patterns from ste-runtime's scope resolution
   (src/config/index.ts) to maintain consistency across the STE ecosystem.
-
 domains:
-  - implementation
-  - adr
-  - python
-  - cli
-
+- implementation
+- adr
+- python
+- cli
 tags:
-  - python
-  - implementation
-  - scope-resolution
-  - cli
-  - api
-
+- python
+- implementation
+- scope-resolution
+- cli
+- api
 technologies:
-  - python
-  - click
-  - pyyaml
-  - pathlib
-  - dataclasses
-
+- python
+- click
+- pyyaml
+- pathlib
+- dataclasses
 technology_stack:
-  - category: language
-    name: Python
-    version: "3.10+"
-    rationale: Primary implementation language; 3.10+ for type hints and pathlib
-  - category: library
-    name: Click
-    version: "8.x"
-    rationale: CLI framework; consistent with STE ecosystem CLI patterns
-  - category: library
-    name: PyYAML
-    version: "6.x"
-    rationale: ADR YAML parsing; schema validation
-  - category: library
-    name: pathlib
-    version: stdlib
-    rationale: Cross-platform path handling for scope resolution
-
+- category: language
+  name: Python
+  version: 3.10+
+  rationale: Primary implementation language; 3.10+ for type hints and pathlib
+- category: library
+  name: Click
+  version: 8.x
+  rationale: CLI framework; consistent with STE ecosystem CLI patterns
+- category: library
+  name: PyYAML
+  version: 6.x
+  rationale: ADR YAML parsing; schema validation
+- category: library
+  name: pathlib
+  version: stdlib
+  rationale: Cross-platform path handling for scope resolution
 component_specifications:
-  - id: COMP-0001
-    name: Project Scope Resolver
-    type: library
-    description: |
-      Python module implementing project scope detection and resolution
-      per ADR-L-0002 INV-0015 marker hierarchy
-    responsibilities: |
-      - Detect project boundaries using marker files
-      - Enforce workspace boundaries (INV-0018)
-      - Support explicit scope override
-      - Discover sub-module scopes recursively
-      - Maintain parent-child scope relationships
-    interfaces:
-      - id: IFACE-0001
-        name: ProjectScope
-        type: dataclass
-        description: Immutable scope metadata
-        fields:
-          - root: Path - Project root directory
-          - adr_dir: Path - ADRs directory
-          - manifest_path: Path - Manifest file path
-          - marker: str - Detection marker
-          - name: Optional[str] - Project name
-          - is_sub_module: bool - Sub-module flag
-          - parent_scope: Optional[ProjectScope] - Parent reference
-      - id: IFACE-0002
-        name: ProjectScopeResolver
-        type: class
-        methods:
-          - resolve(start_dir) -> ProjectScope
-          - resolve_recursive(start_dir) -> List[ProjectScope]
-    implementation_identifiers:
-      module_path: src/adr_kit/scope/
-    dependencies:
-      - pathlib.Path
-      - dataclasses.dataclass
-      - typing (Optional, List)
-      - yaml (for PROJECT.yaml parsing)
-    testing_requirements:
-      - Unit tests for marker detection
-      - Unit tests for boundary enforcement
-      - Unit tests for recursive discovery
-      - Integration tests with real directory structures
-
-  - id: COMP-0002
-    name: Scope-Aware Manifest Generator
-    type: library
-    description: |
-      Enhanced ManifestGenerator with scope awareness per ADR-L-0002 CAP-0002
-    responsibilities: |
-      - Generate manifest scoped to specific project
-      - Support auto-detection and explicit scope
-      - Generate manifests recursively for all scopes
-      - Maintain backward compatibility with single-scope usage
-    interfaces:
-      - id: IFACE-0003
-        name: ManifestGenerator.__init__
-        parameters:
-          - parser: ADRParser (optional)
-          - scope_resolver: ProjectScopeResolver (optional)
-      - id: IFACE-0004
-        name: generate_from_directory
-        parameters:
-          - adr_dir: Path
-          - scope: Optional[ProjectScope]
-        returns: Manifest
-      - id: IFACE-0005
-        name: generate_from_scope
-        parameters:
-          - scope: Optional[ProjectScope]
-        returns: Manifest
-        description: New method for scope-based generation
-      - id: IFACE-0006
-        name: generate_recursive
-        parameters:
-          - scope: Optional[ProjectScope]
-        returns: Dict[str, Manifest]
-        description: New method for recursive generation
-    implementation_identifiers:
-      module_path: src/adr_kit/generators/manifest_generator.py
-    dependencies:
-      - adr_kit.scope.ProjectScopeResolver
-      - adr_kit.scope.ProjectScope
-    testing_requirements:
-      - Test scope auto-detection
-      - Test explicit scope override
-      - Test recursive generation
-      - Test backward compatibility
-
-  - id: COMP-0003
-    name: Scope-Aware Validator
-    type: library
-    description: |
-      Enhanced ADRValidator with scope awareness per ADR-L-0002 CAP-0003
-    responsibilities: |
-      - Validate ADRs scoped to specific project
-      - Support auto-detection and explicit scope
-      - Validate recursively for all scopes (INV-0019)
-      - Maintain backward compatibility
-    interfaces:
-      - id: IFACE-0007
-        type: REST
-        specification: |
-          ADRValidator.__init__(parser, project_root, scope_resolver).
-          validate_directory(adr_dir, scope) -> dict.
-          validate_scope(scope) -> dict.
-          validate_recursive(scope) -> Dict[str, dict].
-    implementation_identifiers:
-      module_path: src/adr_kit/validators/adr_validator.py
-    dependencies:
-      - adr_kit.scope.ProjectScopeResolver
-      - adr_kit.scope.ProjectScope
-    testing_requirements:
-      - Test scope auto-detection
-      - Test explicit scope override
-      - Test recursive validation
-      - Test backward compatibility
-
-  - id: COMP-0004
-    name: Multi-Scope CLI
-    type: library
-    description: |
-      Click-based CLI implementing ADR-L-0002 CAP-0004 multi-scope interface
-    responsibilities: |
-      - Provide scope-aware commands
-      - Support --scope parameter for explicit override
-      - Support --recursive flag for multi-scope operations
-      - Display clear scope information to users
-    interfaces:
-      - id: IFACE-0008
-        type: REST
-        specification: |
-          adr generate-manifest: --scope PATH (optional), --recursive (flag), --output PATH (optional).
-          Generate manifest for scope(s).
-      - id: IFACE-0009
-        type: REST
-        specification: |
-          adr validate: --scope PATH (optional), --recursive (flag), --cross-references (flag).
-          Validate ADRs in scope(s).
-      - id: IFACE-0010
-        type: REST
-        specification: |
-          adr scope: --recursive (flag).
-          Show detected scope(s).
-    implementation_identifiers:
-      module_path: src/adr_kit/cli/
-    dependencies:
-      - click>=8.0
-      - adr_kit.generators.ManifestGenerator
-      - adr_kit.validators.ADRValidator
-      - adr_kit.scope.ProjectScopeResolver
-    testing_requirements:
-      - CLI integration tests
-      - Test command output formatting
-      - Test error handling
-      - Test --help documentation
-
+- id: COMP-0001
+  name: Project Scope Resolver
+  type: library
+  description: |
+    Python module implementing project scope detection and resolution
+    per ADR-L-0002 INV-0015 marker hierarchy
+  responsibilities: |
+    - Detect project boundaries using marker files
+    - Enforce workspace boundaries (INV-0018)
+    - Support explicit scope override
+    - Discover sub-module scopes recursively
+    - Maintain parent-child scope relationships
+  interfaces:
+  - id: IFACE-0001
+    name: ProjectScope
+    type: dataclass
+    description: Immutable scope metadata
+    fields:
+    - root: Path - Project root directory
+    - adr_dir: Path - ADRs directory
+    - manifest_path: Path - Manifest file path
+    - marker: str - Detection marker
+    - name: Optional[str] - Project name
+    - is_sub_module: bool - Sub-module flag
+    - parent_scope: Optional[ProjectScope] - Parent reference
+  - id: IFACE-0002
+    name: ProjectScopeResolver
+    type: class
+    methods:
+    - resolve(start_dir) -> ProjectScope
+    - resolve_recursive(start_dir) -> List[ProjectScope]
+  implementation_identifiers:
+    module_path: src/adr_kit/scope/
+  dependencies:
+  - pathlib.Path
+  - dataclasses.dataclass
+  - typing (Optional, List)
+  - yaml (for PROJECT.yaml parsing)
+  testing_requirements:
+  - Unit tests for marker detection
+  - Unit tests for boundary enforcement
+  - Unit tests for recursive discovery
+  - Integration tests with real directory structures
+- id: COMP-0002
+  name: Scope-Aware Manifest Generator
+  type: library
+  description: |
+    Enhanced ManifestGenerator with scope awareness per ADR-L-0002 CAP-0002
+  responsibilities: |
+    - Generate manifest scoped to specific project
+    - Support auto-detection and explicit scope
+    - Generate manifests recursively for all scopes
+    - Maintain backward compatibility with single-scope usage
+  interfaces:
+  - id: IFACE-0003
+    name: ManifestGenerator.__init__
+    parameters:
+    - parser: ADRParser (optional)
+    - scope_resolver: ProjectScopeResolver (optional)
+  - id: IFACE-0004
+    name: generate_from_directory
+    parameters:
+    - adr_dir: Path
+    - scope: Optional[ProjectScope]
+    returns: Manifest
+  - id: IFACE-0005
+    name: generate_from_scope
+    parameters:
+    - scope: Optional[ProjectScope]
+    returns: Manifest
+    description: New method for scope-based generation
+  - id: IFACE-0006
+    name: generate_recursive
+    parameters:
+    - scope: Optional[ProjectScope]
+    returns: Dict[str, Manifest]
+    description: New method for recursive generation
+  implementation_identifiers:
+    module_path: src/adr_kit/generators/manifest_generator.py
+  dependencies:
+  - adr_kit.scope.ProjectScopeResolver
+  - adr_kit.scope.ProjectScope
+  testing_requirements:
+  - Test scope auto-detection
+  - Test explicit scope override
+  - Test recursive generation
+  - Test backward compatibility
+- id: COMP-0003
+  name: Scope-Aware Validator
+  type: library
+  description: |
+    Enhanced ADRValidator with scope awareness per ADR-L-0002 CAP-0003
+  responsibilities: |
+    - Validate ADRs scoped to specific project
+    - Support auto-detection and explicit scope
+    - Validate recursively for all scopes (INV-0019)
+    - Maintain backward compatibility
+  interfaces:
+  - id: IFACE-0007
+    type: REST
+    specification: |
+      ADRValidator.__init__(parser, project_root, scope_resolver).
+      validate_directory(adr_dir, scope) -> dict.
+      validate_scope(scope) -> dict.
+      validate_recursive(scope) -> Dict[str, dict].
+  implementation_identifiers:
+    module_path: src/adr_kit/validators/adr_validator.py
+  dependencies:
+  - adr_kit.scope.ProjectScopeResolver
+  - adr_kit.scope.ProjectScope
+  testing_requirements:
+  - Test scope auto-detection
+  - Test explicit scope override
+  - Test recursive validation
+  - Test backward compatibility
+- id: COMP-0004
+  name: Multi-Scope CLI
+  type: library
+  description: |
+    Click-based CLI implementing ADR-L-0002 CAP-0004 multi-scope interface
+  responsibilities: |
+    - Provide scope-aware commands
+    - Support --scope parameter for explicit override
+    - Support --recursive flag for multi-scope operations
+    - Display clear scope information to users
+  interfaces:
+  - id: IFACE-0008
+    type: REST
+    specification: |
+      adr generate-manifest: --scope PATH (optional), --recursive (flag), --output PATH (optional).
+      Generate manifest for scope(s).
+  - id: IFACE-0009
+    type: REST
+    specification: |
+      adr validate: --scope PATH (optional), --recursive (flag), --cross-references (flag).
+      Validate ADRs in scope(s).
+  - id: IFACE-0010
+    type: REST
+    specification: |
+      adr scope: --recursive (flag).
+      Show detected scope(s).
+  implementation_identifiers:
+    module_path: src/adr_kit/cli/
+  dependencies:
+  - click>=8.0
+  - adr_kit.generators.ManifestGenerator
+  - adr_kit.validators.ADRValidator
+  - adr_kit.scope.ProjectScopeResolver
+  testing_requirements:
+  - CLI integration tests
+  - Test command output formatting
+  - Test error handling
+  - Test --help documentation
 implementation_decisions:
-  - id: IMPL-0001
-    summary: Adopt Red-Green-Refactor TDD Methodology
-    rationale: |
-      Test-Driven Development is architecturally aligned with STE principles:
-      
-      1. **SYS-2 (Deterministic Cognition)**: Tests enforce deterministic behavior
-      2. **SYS-4 (Drift Prevention)**: Tests detect implementation drift immediately
-      3. **PRIME-1 (No Implicit Assumptions)**: Tests make behavior explicit
-      4. **INV-0001 (Schema Validation)**: Tests prove validation correctness
-      
-      This is a governance tool that validates other systems - it MUST be provably
-      correct. TDD provides:
-      - Executable specification of behavior
-      - Immediate feedback on correctness
-      - Refactoring safety net
-      - Living documentation
-      - Design pressure toward testable code
-      
-      Red-Green-Refactor cycle:
-      1. **Red**: Write failing test (specification)
-      2. **Green**: Implement minimum code to pass (correctness)
-      3. **Refactor**: Improve design while maintaining tests (quality)
-    alternatives_considered:
-      - name: Test-after development
-        rejected_because: Risks untestable code, implicit behavior
-      - name: No systematic testing
-        rejected_because: Unacceptable for governance tool
-      - name: Property-based only
-        rejected_because: Insufficient for explicit behavior specification
-    consequences:
-      - Slower initial development (offset by fewer bugs and faster debugging)
-      - Higher code quality and design clarity
-      - Better API design (testability forces good interfaces)
-      - Living documentation via tests
-      - Confidence in refactoring
-      - Provable correctness for critical validation logic
+- id: IMPL-0001
+  summary: Adopt Red-Green-Refactor TDD Methodology
+  rationale: |
+    Test-Driven Development is architecturally aligned with STE principles:
 
-  - id: IMPL-0002
-    summary: Use Dataclasses for ProjectScope
-    rationale: |
-      Dataclasses provide immutable, type-safe scope metadata with minimal
-      boilerplate. Aligns with modern Python best practices.
-    alternatives_considered:
-      - name: Named tuples
-        rejected_because: Less readable, no default values
-      - name: Regular classes
-        rejected_because: More boilerplate, mutable by default
-    consequences:
-      - Requires Python 3.7+ (already required)
-      - Clear, type-checked scope objects
-      - Easy serialization for debugging
+    1. **SYS-2 (Deterministic Cognition)**: Tests enforce deterministic behavior
+    2. **SYS-4 (Drift Prevention)**: Tests detect implementation drift immediately
+    3. **PRIME-1 (No Implicit Assumptions)**: Tests make behavior explicit
+    4. **INV-0001 (Schema Validation)**: Tests prove validation correctness
 
-  - id: IMPL-0003
-    summary: Mirror ste-runtime Marker Hierarchy
-    rationale: |
-      Consistency across STE ecosystem. Users familiar with ste-runtime
-      scope detection will understand ADR toolkit behavior.
-    alternatives_considered:
-      - name: Different marker priority
-        rejected_because: Would confuse users
-      - name: ADR-specific markers only
-        rejected_because: Less flexible
-    consequences:
-      - ste.config.json works for both systems
-      - Predictable behavior across tools
-      - Easier to document and support
+    This is a governance tool that validates other systems - it MUST be provably
+    correct. TDD provides:
+    - Executable specification of behavior
+    - Immediate feedback on correctness
+    - Refactoring safety net
+    - Living documentation
+    - Design pressure toward testable code
 
-  - id: IMPL-0004
-    summary: Backward Compatible API
-    rationale: |
-      Existing single-scope code must continue working without changes.
-      Scope awareness is opt-in via new methods.
-    alternatives_considered:
-      - name: Breaking change with migration
-        rejected_because: Too disruptive
-      - name: Separate scope-aware classes
-        rejected_because: Code duplication
-    consequences:
-      - Existing code works unchanged
-      - New code can use scope features
-      - Slightly more complex API surface
-
-  - id: IMPL-0005
-    summary: Click for CLI Framework
-    rationale: |
-      Click is already in optional dependencies [cli]. Provides excellent
-      parameter handling, help text, and color output.
-    alternatives_considered:
-      - name: argparse
-        rejected_because: More verbose, less features
-      - name: typer
-        rejected_because: Additional dependency, overkill
-    consequences:
-      - Professional CLI UX
-      - Good help documentation
-      - Easy to extend
-
-  - id: IMPL-0006
-    summary: Auto-Detection by Default
-    rationale: |
-      Zero-configuration experience. Tools "just work" from any directory
-      without requiring --scope parameter.
-    alternatives_considered:
-      - name: Always require --scope
-        rejected_because: Poor UX
-      - name: Config file required
-        rejected_because: Too much setup
-    consequences:
-      - Excellent developer experience
-      - Explicit override available when needed
-      - Potential for ambiguous cases (mitigated by clear errors)
-
+    Red-Green-Refactor cycle:
+    1. **Red**: Write failing test (specification)
+    2. **Green**: Implement minimum code to pass (correctness)
+    3. **Refactor**: Improve design while maintaining tests (quality)
+  alternatives_considered:
+  - name: Test-after development
+    rejected_because: Risks untestable code, implicit behavior
+  - name: No systematic testing
+    rejected_because: Unacceptable for governance tool
+  - name: Property-based only
+    rejected_because: Insufficient for explicit behavior specification
+  consequences:
+  - Slower initial development (offset by fewer bugs and faster debugging)
+  - Higher code quality and design clarity
+  - Better API design (testability forces good interfaces)
+  - Living documentation via tests
+  - Confidence in refactoring
+  - Provable correctness for critical validation logic
+- id: IMPL-0002
+  summary: Use Dataclasses for ProjectScope
+  rationale: |
+    Dataclasses provide immutable, type-safe scope metadata with minimal
+    boilerplate. Aligns with modern Python best practices.
+  alternatives_considered:
+  - name: Named tuples
+    rejected_because: Less readable, no default values
+  - name: Regular classes
+    rejected_because: More boilerplate, mutable by default
+  consequences:
+  - Requires Python 3.7+ (already required)
+  - Clear, type-checked scope objects
+  - Easy serialization for debugging
+- id: IMPL-0003
+  summary: Mirror ste-runtime Marker Hierarchy
+  rationale: |
+    Consistency across STE ecosystem. Users familiar with ste-runtime
+    scope detection will understand ADR toolkit behavior.
+  alternatives_considered:
+  - name: Different marker priority
+    rejected_because: Would confuse users
+  - name: ADR-specific markers only
+    rejected_because: Less flexible
+  consequences:
+  - ste.config.json works for both systems
+  - Predictable behavior across tools
+  - Easier to document and support
+- id: IMPL-0004
+  summary: Backward Compatible API
+  rationale: |
+    Existing single-scope code must continue working without changes.
+    Scope awareness is opt-in via new methods.
+  alternatives_considered:
+  - name: Breaking change with migration
+    rejected_because: Too disruptive
+  - name: Separate scope-aware classes
+    rejected_because: Code duplication
+  consequences:
+  - Existing code works unchanged
+  - New code can use scope features
+  - Slightly more complex API surface
+- id: IMPL-0005
+  summary: Click for CLI Framework
+  rationale: |
+    Click is already in optional dependencies [cli]. Provides excellent
+    parameter handling, help text, and color output.
+  alternatives_considered:
+  - name: argparse
+    rejected_because: More verbose, less features
+  - name: typer
+    rejected_because: Additional dependency, overkill
+  consequences:
+  - Professional CLI UX
+  - Good help documentation
+  - Easy to extend
+- id: IMPL-0006
+  summary: Auto-Detection by Default
+  rationale: |
+    Zero-configuration experience. Tools "just work" from any directory
+    without requiring --scope parameter.
+  alternatives_considered:
+  - name: Always require --scope
+    rejected_because: Poor UX
+  - name: Config file required
+    rejected_because: Too much setup
+  consequences:
+  - Excellent developer experience
+  - Explicit override available when needed
+  - Potential for ambiguous cases (mitigated by clear errors)
 deployment_model:
   packaging:
-    - Python package via setuptools
-    - CLI entry point: adr -> adr_kit.cli.main:cli
-    - Optional dependency: click>=8.0 in [cli] extra
+  - Python package via setuptools
+  - CLI entry point: adr -> adr_kit.cli.main:cli
+  - Optional dependency: click>=8.0 in [cli] extra
   installation:
-    - pip install adr-architecture-kit (core only)
-    - pip install adr-architecture-kit[cli] (with CLI)
+  - pip install adr-architecture-kit (core only)
+  - pip install adr-architecture-kit[cli] (with CLI)
   compatibility:
-    - Python 3.10+ (existing requirement)
-    - Cross-platform (Windows, Linux, macOS)
-    - No breaking changes to existing API
-
+  - Python 3.10+ (existing requirement)
+  - Cross-platform (Windows, Linux, macOS)
+  - No breaking changes to existing API
 data_architecture:
-  - entity: scope_detection
-    storage: File system traversal using pathlib
-    schema: |
-      Marker file detection via Path.exists()
-      Parent-child relationships via Path.parent
-  - entity: state_storage
-    storage: Per-scope adrs directories
-    schema: |
-      Each scope maintains own adrs/ directory
-      Each scope has own manifest.yaml
-      No shared state between scopes
-  - entity: cross_scope_references
-    storage: Documented pattern
-    schema: |
-      scope-name:ADR-ID pattern
-      Validation warns on cross-scope refs
-      No automatic resolution (future enhancement)
-
+- entity: scope_detection
+  storage: File system traversal using pathlib
+  schema: |
+    Marker file detection via Path.exists()
+    Parent-child relationships via Path.parent
+- entity: state_storage
+  storage: Per-scope adrs directories
+  schema: |
+    Each scope maintains own adrs/ directory
+    Each scope has own manifest.yaml
+    No shared state between scopes
+- entity: cross_scope_references
+  storage: Documented pattern
+  schema: |
+    scope-name:ADR-ID pattern
+    Validation warns on cross-scope refs
+    No automatic resolution (future enhancement)
 operational_requirements:
   performance: |
     Scope detection: O(depth) file system operations.
@@ -372,30 +354,26 @@ operational_requirements:
     Workspace boundary enforcement (INV-0018).
     No traversal above system directories.
     Path validation prevents escape attacks.
-
 quality_attributes:
-  - Maintainability: Mirrors ste-runtime patterns
-  - Testability: Clear interfaces, dependency injection
-  - Usability: Auto-detection, clear error messages
-  - Compatibility: Backward compatible, no breaking changes
-  - Portability: Pure Python, cross-platform
-
+- Maintainability: Mirrors ste-runtime patterns
+- Testability: Clear interfaces, dependency injection
+- Usability: Auto-detection, clear error messages
+- Compatibility: Backward compatible, no breaking changes
+- Portability: Pure Python, cross-platform
 related_adrs:
-  - ADR-L-0002  # Implements this logical ADR
-  - ADR-P-0001  # Python toolkit foundation
-  - ADR-P-0002  # JSON Schema + YAML format
-
+- ADR-L-0002
+- ADR-P-0001
+- ADR-P-0002
 gaps: []
-
 notes: |
   Implementation complete as of 2026-03-08.
-  
+
   Future enhancements to consider:
   - Cross-scope reference resolution
   - Scope configuration files (.adr-scope.yaml)
   - MCP tool integration for multi-scope queries
   - Performance optimization for large workspaces
-  
+
   Testing priority:
   1. Scope detection edge cases
   2. Boundary enforcement security

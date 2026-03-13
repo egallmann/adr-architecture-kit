@@ -16,7 +16,7 @@ from ...integrity import (
     compute_rendered_hash,
     compute_source_hash,
 )
-from ...models import LogicalADR, PhysicalADR
+from ...models import LogicalADR, PhysicalADR, PhysicalComponentADR, PhysicalSystemADR
 from ...scope import ProjectScope
 
 
@@ -53,7 +53,7 @@ class MarkdownGenerator:
         template = self.env.get_template("adr-logical.md.jinja2")
         return template.render(adr=adr)
     
-    def render_physical_adr(self, adr: PhysicalADR) -> str:
+    def render_physical_adr(self, adr: PhysicalADR | PhysicalSystemADR | PhysicalComponentADR) -> str:
         """Render physical ADR to markdown.
         
         Args:
@@ -65,15 +65,15 @@ class MarkdownGenerator:
         template = self.env.get_template("adr-physical.md.jinja2")
         return template.render(adr=adr)
 
-    def template_path_for_adr(self, adr: Union[LogicalADR, PhysicalADR]) -> Path:
+    def template_path_for_adr(self, adr: Union[LogicalADR, PhysicalADR, PhysicalSystemADR, PhysicalComponentADR]) -> Path:
         """Return the template path used for the ADR."""
         if isinstance(adr, LogicalADR):
             return self.template_dir / "adr-logical.md.jinja2"
-        if isinstance(adr, PhysicalADR):
+        if isinstance(adr, (PhysicalADR, PhysicalSystemADR, PhysicalComponentADR)):
             return self.template_dir / "adr-physical.md.jinja2"
         raise ValueError(f"Unknown ADR type: {type(adr)}")
 
-    def render_adr(self, adr: Union[LogicalADR, PhysicalADR]) -> str:
+    def render_adr(self, adr: Union[LogicalADR, PhysicalADR, PhysicalSystemADR, PhysicalComponentADR]) -> str:
         """Render ADR to markdown (auto-detect type).
         
         Args:
@@ -84,7 +84,7 @@ class MarkdownGenerator:
         """
         if isinstance(adr, LogicalADR):
             return self.render_logical_adr(adr)
-        elif isinstance(adr, PhysicalADR):
+        elif isinstance(adr, (PhysicalADR, PhysicalSystemADR, PhysicalComponentADR)):
             return self.render_physical_adr(adr)
         else:
             raise ValueError(f"Unknown ADR type: {type(adr)}")
@@ -109,7 +109,7 @@ class MarkdownGenerator:
             ]
         raise ValueError(f"Could not locate source ADR for rendered artifact: {artifact_path}")
 
-    def _parse_adr(self, file_path: Path) -> Union[LogicalADR, PhysicalADR]:
+    def _parse_adr(self, file_path: Path) -> Union[LogicalADR, PhysicalADR, PhysicalSystemADR, PhysicalComponentADR]:
         from ...parser import ADRParser
 
         parser = ADRParser()
@@ -136,7 +136,7 @@ class MarkdownGenerator:
 
     def render_to_file(
         self,
-        adr: Union[LogicalADR, PhysicalADR],
+        adr: Union[LogicalADR, PhysicalADR, PhysicalSystemADR, PhysicalComponentADR],
         output_path: Path,
         scope: ProjectScope | None = None,
         source_path: Path | None = None,

@@ -1,0 +1,52 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://adr-kit.ste.systems/schema/v1.1/unresolved-registry.schema.json",
+  "title": "Unresolved Registry Schema",
+  "type": "object",
+  "required": ["schema_version", "type", "unresolved"],
+  "properties": {
+    "schema_version": {"const": "1.1"},
+    "type": {"const": "unresolved_registry"},
+    "unresolved": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "gap_class", "gap_type", "source_entity_id", "severity", "provenance", "evidence"],
+        "properties": {
+          "id": {"type": "string"},
+          "gap_class": {
+            "type": "string",
+            "enum": ["author_declared", "generator_derived"]
+          },
+          "gap_type": {"type": "string"},
+          "source_entity_id": {"type": "string"},
+          "related_entity_id": {"type": "string"},
+          "expected_relationship": {"type": "string"},
+          "severity": {
+            "type": "string",
+            "enum": ["critical", "important", "advisory"]
+          },
+          "provenance": {
+            "type": "object",
+            "required": ["source_type", "source_ref", "extraction_phase", "classification", "generator"],
+            "properties": {
+              "source_type": {"type": "string"},
+              "source_ref": {"type": "string"},
+              "extraction_phase": {"type": "string"},
+              "classification": {
+                "type": "string",
+                "enum": ["explicit", "derived", "heuristic"]
+              },
+              "generator": {"type": "string"}
+            }
+          },
+          "evidence": {
+            "type": "array",
+            "items": {"type": "string"}
+          },
+          "suggested_resolution": {"type": "string"}
+        }
+      }
+    }
+  }
+}

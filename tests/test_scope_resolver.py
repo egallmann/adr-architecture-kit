@@ -110,9 +110,10 @@ class TestProjectScopeDetection:
         """Test error when no project markers found."""
         empty_dir = tmp_path / "empty"
         empty_dir.mkdir()
-        
+
         resolver = ProjectScopeResolver()
-        
+        resolver.SYSTEM_BOUNDARIES = [*resolver.SYSTEM_BOUNDARIES, tmp_path.name]
+
         with pytest.raises(ValueError, match="Could not determine project root"):
             resolver.resolve(start_dir=empty_dir)
 
@@ -170,10 +171,11 @@ class TestSubModuleDetection:
         workspace.mkdir()
         (workspace / "PROJECT.yaml").write_text("project:\n  name: workspace")
         (workspace / "adrs").mkdir()
-        
+
         resolver = ProjectScopeResolver()
+        resolver.SYSTEM_BOUNDARIES = [*resolver.SYSTEM_BOUNDARIES, tmp_path.name]
         scope = resolver.resolve(start_dir=workspace)
-        
+
         assert scope.is_sub_module is False
         assert scope.parent_scope is None
 

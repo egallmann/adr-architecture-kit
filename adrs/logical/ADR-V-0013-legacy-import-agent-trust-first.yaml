@@ -1,427 +1,383 @@
-schema_version: "1.0"
+schema_version: '1.0'
 id: ADR-V-0013
 adr_type: logical
 vision_category: true
 promotable_to_logical: true
-title: "Legacy Import Agent (Trust-First Validation)"
+title: Legacy Import Agent (Trust-First Validation)
 status: proposed
-created_date: "2024-03-10"
-authors: [adr-architecture-kit]
+created_date: '2024-03-10'
+authors:
+- adr-architecture-kit
 tags:
-  - legacy-import
-  - reverse-engineering
-  - onboarding
-  - trust-first
-
+- legacy-import
+- reverse-engineering
+- onboarding
+- trust-first
 context: |
   Organizations have existing systems without ADRs:
   - Legacy codebases (10+ years old)
   - Undocumented architecture (tribal knowledge)
   - No design records (decisions lost)
   - Unknown invariants (implicit constraints)
-  
+
   Onboarding to ADR Kit requires documentation:
   - Create ADRs for existing systems
   - Extract design from code (reverse engineering)
   - Validate with humans (confirm understanding)
-  
+
   Traditional approach: Manual documentation
   - Developers read code
   - Developers write ADRs
   - Developers validate with experts
   - Timeline: Weeks to months
-  
+
   Problems:
   - Slow (manual process)
   - Incomplete (developers miss details)
   - Expensive (developer time)
   - Tedious (developers hate documentation)
-  
-  Opportunity: AI-driven reverse engineering with conversational validation.
 
+  Opportunity: AI-driven reverse engineering with conversational validation.
 capability:
-  name: "Legacy Import Agent (Trust-First Validation)"
+  name: Legacy Import Agent (Trust-First Validation)
   description: |
     An AI agent that reverse engineers existing systems into ADRs through
     conversational validation with humans, using a trust-first strategy to
     minimize human effort.
-  
   import_workflow:
-    - phase: "Scan"
-      description: "Extract architectural metadata from code"
-      process:
-        - "RECON scans codebase"
-        - "Extract components, interfaces, dependencies"
-        - "Detect technology stack, frameworks"
-        - "Identify patterns, conventions"
-      
-      outputs:
-        - "EDR (Extracted Design Record)"
-        - "Confidence scores (per field)"
-        - "Gaps (missing information)"
-    
-    - phase: "Infer"
-      description: "AI infers architectural intent from code"
-      process:
-        - "Analyze code structure (components, modules)"
-        - "Infer design patterns (MVC, microservices)"
-        - "Infer technology choices (why Python? why PostgreSQL?)"
-        - "Infer invariants (what must be true?)"
-      
-      outputs:
-        - "Draft ADRs (Logical, Physical-System, Physical-Component)"
-        - "Confidence scores (per ADR, per field)"
-        - "Rationale (why AI inferred this)"
-    
-    - phase: "Classify"
-      description: "Classify code findings by risk and compliance"
-      categories:
-        - category: "safe_and_compliant"
-          description: "Code follows best practices, no risks"
-          confidence: "high (95%+)"
-          action: "auto_accept"
-          example: "Standard REST API, proper error handling, tested"
-        
-        - category: "safe_but_non_compliant"
-          description: "Code is safe but doesn't follow org policies"
-          confidence: "medium (80-95%)"
-          action: "targeted_validation"
-          example: "JWT with HS256 (policy requires RS256)"
-        
-        - category: "risky"
-          description: "Code has security/performance risks"
-          confidence: "low (< 80%)"
-          action: "targeted_validation"
-          example: "SQL injection vulnerability, no input validation"
-      
-      scoring:
-        - "Analyze each code finding"
-        - "Assign category (safe/non-compliant/risky)"
-        - "Assign confidence score"
-        - "Prioritize validation (risky first)"
-    
-    - phase: "Validate (Trust-First)"
-      description: "Conversational validation with humans"
-      strategy: "Auto-accept safe/compliant code, validate only risky/non-compliant"
-      
-      validation_modes:
-        - mode: "validation"
-          description: "Human corrects or confirms"
-          use_case: "Risky code, low confidence"
-          example:
-            ai: "I found SQL query without parameterization. Is this intentional?"
-            human: "No, that's a bug. Should use parameterized queries."
-            ai: "Updated ADR to require parameterized queries."
-        
-        - mode: "acceptance_with_why"
-          description: "Human accepts and provides rationale"
-          use_case: "Non-compliant code with good reason"
-          example:
-            ai: "JWT uses HS256, policy requires RS256. Accept?"
-            human: "Accept. This is internal service, HS256 is sufficient."
-            ai: "Recorded exception with rationale."
-        
-        - mode: "simple_acknowledgement"
-          description: "Human acknowledges without detail"
-          use_case: "Safe code, professional judgment"
-          example:
-            ai: "Found 50 standard REST endpoints. Auto-accepted as compliant."
-            human: "Acknowledged."
-      
-      progression:
-        initial: "62% confidence (many gaps)"
-        after_targeted_validation: "95%+ confidence (only validated risky/non-compliant)"
-        timeline: "1-2 hours (vs 40 hours manual)"
-    
-    - phase: "Refine"
-      description: "Iteratively improve ADRs"
-      process:
-        - "Identify low-confidence fields"
-        - "Ask targeted questions"
-        - "Update ADRs with answers"
-        - "Repeat until confidence threshold met"
-      
-      outputs:
-        - "High-confidence ADRs (95%+)"
-        - "Complete documentation (all fields populated)"
-        - "Validated by humans (approved)"
-
+  - phase: Scan
+    description: Extract architectural metadata from code
+    process:
+    - RECON scans codebase
+    - Extract components, interfaces, dependencies
+    - Detect technology stack, frameworks
+    - Identify patterns, conventions
+    outputs:
+    - EDR (Extracted Design Record)
+    - Confidence scores (per field)
+    - Gaps (missing information)
+  - phase: Infer
+    description: AI infers architectural intent from code
+    process:
+    - Analyze code structure (components, modules)
+    - Infer design patterns (MVC, microservices)
+    - Infer technology choices (why Python? why PostgreSQL?)
+    - Infer invariants (what must be true?)
+    outputs:
+    - Draft ADRs (Logical, Physical-System, Physical-Component)
+    - Confidence scores (per ADR, per field)
+    - Rationale (why AI inferred this)
+  - phase: Classify
+    description: Classify code findings by risk and compliance
+    categories:
+    - category: safe_and_compliant
+      description: Code follows best practices, no risks
+      confidence: high (95%+)
+      action: auto_accept
+      example: Standard REST API, proper error handling, tested
+    - category: safe_but_non_compliant
+      description: Code is safe but doesn't follow org policies
+      confidence: medium (80-95%)
+      action: targeted_validation
+      example: JWT with HS256 (policy requires RS256)
+    - category: risky
+      description: Code has security/performance risks
+      confidence: low (< 80%)
+      action: targeted_validation
+      example: SQL injection vulnerability, no input validation
+    scoring:
+    - Analyze each code finding
+    - Assign category (safe/non-compliant/risky)
+    - Assign confidence score
+    - Prioritize validation (risky first)
+  - phase: Validate (Trust-First)
+    description: Conversational validation with humans
+    strategy: Auto-accept safe/compliant code, validate only risky/non-compliant
+    validation_modes:
+    - mode: validation
+      description: Human corrects or confirms
+      use_case: Risky code, low confidence
+      example:
+        ai: Updated ADR to require parameterized queries.
+        human: No, that's a bug. Should use parameterized queries.
+    - mode: acceptance_with_why
+      description: Human accepts and provides rationale
+      use_case: Non-compliant code with good reason
+      example:
+        ai: Recorded exception with rationale.
+        human: Accept. This is internal service, HS256 is sufficient.
+    - mode: simple_acknowledgement
+      description: Human acknowledges without detail
+      use_case: Safe code, professional judgment
+      example:
+        ai: Found 50 standard REST endpoints. Auto-accepted as compliant.
+        human: Acknowledged.
+    progression:
+      initial: 62% confidence (many gaps)
+      after_targeted_validation: 95%+ confidence (only validated risky/non-compliant)
+      timeline: 1-2 hours (vs 40 hours manual)
+  - phase: Refine
+    description: Iteratively improve ADRs
+    process:
+    - Identify low-confidence fields
+    - Ask targeted questions
+    - Update ADRs with answers
+    - Repeat until confidence threshold met
+    outputs:
+    - High-confidence ADRs (95%+)
+    - Complete documentation (all fields populated)
+    - Validated by humans (approved)
 boundaries:
   in_scope:
-    - "Code scanning (extract metadata)"
-    - "Intent inference (reverse engineer design)"
-    - "Conversational validation (confirm with humans)"
-    - "Trust-first strategy (auto-accept safe code)"
-  
+  - Code scanning (extract metadata)
+  - Intent inference (reverse engineer design)
+  - Conversational validation (confirm with humans)
+  - Trust-first strategy (auto-accept safe code)
   out_of_scope:
-    - "Code refactoring (separate capability)"
-    - "Bug fixing (separate capability)"
-    - "Performance optimization (separate capability)"
-
+  - Code refactoring (separate capability)
+  - Bug fixing (separate capability)
+  - Performance optimization (separate capability)
 contracts:
   edr_with_confidence:
-    description: "EDR format with confidence scoring"
+    description: EDR format with confidence scoring
     fields:
-      - name: "extracted_elements"
-        type: "array"
-        items:
-          - "element_type (component, interface, dependency)"
-          - "element_data (extracted information)"
-          - "confidence_score (0-100%)"
-          - "validation_status (auto_accepted, validated, pending)"
-          - "rationale (why AI inferred this)"
-      
-      - name: "overall_confidence"
-        type: "number"
-        description: "Overall confidence in EDR"
-        calculation: "weighted average of element confidence scores"
-      
-      - name: "validation_history"
-        type: "array"
-        items:
-          - "timestamp"
-          - "validator (human name)"
-          - "action (accepted, rejected, corrected)"
-          - "rationale"
-  
+    - name: extracted_elements
+      type: array
+      items:
+      - element_type (component, interface, dependency)
+      - element_data (extracted information)
+      - confidence_score (0-100%)
+      - validation_status (auto_accepted, validated, pending)
+      - rationale (why AI inferred this)
+    - name: overall_confidence
+      type: number
+      description: Overall confidence in EDR
+      calculation: weighted average of element confidence scores
+    - name: validation_history
+      type: array
+      items:
+      - timestamp
+      - validator (human name)
+      - action (accepted, rejected, corrected)
+      - rationale
   validation_interface:
-    description: "How humans validate findings"
+    description: How humans validate findings
     inputs:
-      - name: "finding"
-        format: "Code finding with AI inference"
-        fields:
-          - "code_snippet"
-          - "ai_interpretation"
-          - "confidence_score"
-          - "category (safe/non-compliant/risky)"
-    
+    - name: finding
+      format: Code finding with AI inference
+      fields:
+      - code_snippet
+      - ai_interpretation
+      - confidence_score
+      - category (safe/non-compliant/risky)
     outputs:
-      - name: "validation_result"
-        type: "enum"
-        values: ["accept", "reject", "correct"]
-      
-      - name: "rationale"
-        type: "string"
-        description: "Why human made this decision"
-
+    - name: validation_result
+      type: enum
+      values:
+      - accept
+      - reject
+      - correct
+    - name: rationale
+      type: string
+      description: Why human made this decision
 quality_attributes:
-  - attribute: "Onboarding Speed"
-    requirement: "Quickly onboard legacy systems"
-    measurement: "Time to generate ADRs for legacy system"
-    target: "< 2 hours (vs 40 hours manual)"
-  
-  - attribute: "Accuracy"
-    requirement: "Accurately reverse engineer architecture"
-    measurement: "Percentage of ADRs validated by humans"
-    target: "> 95%"
-  
-  - attribute: "Confidence Improvement"
-    requirement: "Increase EDR confidence through validation"
-    measurement: "Confidence score before/after validation"
-    target: "62% → 95%+"
-  
-  - attribute: "Human Effort Reduction"
-    requirement: "Minimize human validation effort"
-    measurement: "Percentage of code auto-accepted"
-    target: "> 90% (only validate 10% risky/non-compliant)"
-
+- attribute: Onboarding Speed
+  requirement: Quickly onboard legacy systems
+  measurement: Time to generate ADRs for legacy system
+  target: < 2 hours (vs 40 hours manual)
+- attribute: Accuracy
+  requirement: Accurately reverse engineer architecture
+  measurement: Percentage of ADRs validated by humans
+  target: '> 95%'
+- attribute: Confidence Improvement
+  requirement: Increase EDR confidence through validation
+  measurement: Confidence score before/after validation
+  target: 62% → 95%+
+- attribute: Human Effort Reduction
+  requirement: Minimize human validation effort
+  measurement: Percentage of code auto-accepted
+  target: '> 90% (only validate 10% risky/non-compliant)'
 rationale: |
   **Why Legacy Import Agent?**
-  
+
   Organizations have existing systems:
   - 10+ years of code
   - No documentation
   - Tribal knowledge
-  
+
   Onboarding to ADR Kit requires ADRs:
   - Document existing architecture
   - Reverse engineer from code
   - Validate with humans
-  
+
   Manual approach is painful:
   - 40 hours per system
   - Incomplete (humans miss details)
   - Tedious (developers hate it)
-  
+
   AI can automate:
   - Scan code (RECON)
   - Infer design (AI reasoning)
   - Validate conversationally (targeted questions)
-  
+
   **Example: Legacy user service**
-  
+
   Manual approach:
   1. Developer reads 10,000 lines of code (8 hours)
   2. Developer writes ADRs (16 hours)
   3. Developer validates with architect (8 hours)
   4. Developer revises ADRs (8 hours)
   5. Total: 40 hours
-  
+
   Legacy Import Agent approach:
   1. RECON scans code (5 minutes)
      - Extracts: 5 components, 20 endpoints, 3 databases
      - Confidence: 62% (many gaps)
-  
+
   2. AI infers design (10 minutes)
      - Infers: Microservices pattern, REST APIs, PostgreSQL
      - Generates: 3 Logical ADRs, 1 Physical-System ADR, 5 Physical-Component ADRs
      - Confidence: 70% (some assumptions)
-  
+
   3. AI classifies findings (5 minutes)
      - Safe & compliant: 80% (auto-accept)
      - Non-compliant: 15% (validate)
      - Risky: 5% (validate)
-  
+
   4. AI validates with human (1 hour)
      - 80% auto-accepted: "Standard REST APIs, proper error handling"
      - 15% targeted validation: "JWT uses HS256, policy requires RS256"
        - Human: "Accept, internal service, HS256 sufficient"
      - 5% targeted validation: "SQL query without parameterization"
        - Human: "Reject, that's a bug, use parameterized queries"
-  
+
   5. AI refines ADRs (10 minutes)
      - Updates ADRs with human feedback
      - Confidence: 95%+
-  
+
   Total: 1-2 hours (vs 40 hours manual)
-  
+
   **95% time reduction, same accuracy.**
-  
+
   **Why trust-first strategy?**
-  
+
   Not all code needs validation:
   - Safe & compliant: Auto-accept (90%)
   - Risky/non-compliant: Validate (10%)
-  
+
   Trust-first means:
   - Assume professionals wrote good code
   - Auto-accept safe/compliant code
   - Validate only risky/non-compliant code
-  
+
   This dramatically reduces human effort:
   - 10,000 lines of code
   - 9,000 lines safe & compliant (auto-accept)
   - 1,000 lines risky/non-compliant (validate)
-  
+
   Human validates 10% (vs 100% manual).
-  
+
   **Why conversational validation?**
-  
+
   Humans are good at:
   - Confirming/correcting AI understanding
   - Providing rationale (why this decision?)
   - Handling edge cases (ambiguous situations)
-  
+
   Humans are bad at:
   - Reading 10,000 lines of code
   - Remembering all details
   - Writing complete documentation
-  
+
   Conversational validation leverages human strengths:
   - AI does heavy lifting (scan, infer, draft)
   - Human provides judgment (confirm, correct)
   - AI refines (update ADRs)
-  
+
   This is optimal collaboration.
-
 alternatives_considered:
-  - alternative: "Manual documentation"
-    pros:
-      - "Human judgment (context-aware)"
-      - "No AI dependency"
-    cons:
-      - "Slow (40 hours per system)"
-      - "Incomplete (humans miss details)"
-      - "Tedious (developers hate it)"
-    why_not_chosen: "Too slow, too painful, adoption blocked"
-  
-  - alternative: "Fully automated (no human validation)"
-    pros:
-      - "Fastest (no human effort)"
-      - "Fully automated"
-    cons:
-      - "Inaccurate (AI makes mistakes)"
-      - "No human judgment"
-      - "Low confidence (< 80%)"
-    why_not_chosen: "Quality insufficient, need human validation"
-  
-  - alternative: "Validate everything (no trust-first)"
-    pros:
-      - "Highest confidence (human validates all)"
-    cons:
-      - "Slow (validate 10,000 lines)"
-      - "Tedious (validate safe code)"
-      - "Wasteful (validate obvious things)"
-    why_not_chosen: "Trust-first reduces effort by 90%"
-
+- alternative: Manual documentation
+  pros:
+  - Human judgment (context-aware)
+  - No AI dependency
+  cons:
+  - Slow (40 hours per system)
+  - Incomplete (humans miss details)
+  - Tedious (developers hate it)
+  why_not_chosen: Too slow, too painful, adoption blocked
+- alternative: Fully automated (no human validation)
+  pros:
+  - Fastest (no human effort)
+  - Fully automated
+  cons:
+  - Inaccurate (AI makes mistakes)
+  - No human judgment
+  - Low confidence (< 80%)
+  why_not_chosen: Quality insufficient, need human validation
+- alternative: Validate everything (no trust-first)
+  pros:
+  - Highest confidence (human validates all)
+  cons:
+  - Slow (validate 10,000 lines)
+  - Tedious (validate safe code)
+  - Wasteful (validate obvious things)
+  why_not_chosen: Trust-first reduces effort by 90%
 trade_offs:
-  - trade_off: "Auto-acceptance may accept incorrect code"
-    acceptance: "Confidence scoring, periodic audits"
-    mitigation: "High confidence threshold (95%+), human can override"
-  
-  - trade_off: "AI inference may be incorrect"
-    acceptance: "Humans validate risky/non-compliant code"
-    mitigation: "Targeted validation, conversation metadata preserves reasoning"
-  
-  - trade_off: "Requires human time for validation"
-    acceptance: "1-2 hours acceptable (vs 40 hours manual)"
-    mitigation: "Trust-first minimizes validation to 10% of code"
-
+- trade_off: Auto-acceptance may accept incorrect code
+  acceptance: Confidence scoring, periodic audits
+  mitigation: High confidence threshold (95%+), human can override
+- trade_off: AI inference may be incorrect
+  acceptance: Humans validate risky/non-compliant code
+  mitigation: Targeted validation, conversation metadata preserves reasoning
+- trade_off: Requires human time for validation
+  acceptance: 1-2 hours acceptable (vs 40 hours manual)
+  mitigation: Trust-first minimizes validation to 10% of code
 success_criteria:
-  - criterion: "Onboarding speed"
-    measurement: "Time to generate ADRs for legacy system"
-    target: "< 2 hours"
-  
-  - criterion: "Accuracy"
-    measurement: "Percentage of ADRs validated by humans"
-    target: "> 95%"
-  
-  - criterion: "Confidence improvement"
-    measurement: "EDR confidence before/after validation"
-    target: "62% → 95%+"
-  
-  - criterion: "Human effort reduction"
-    measurement: "Percentage of code auto-accepted"
-    target: "> 90%"
-
+- criterion: Onboarding speed
+  measurement: Time to generate ADRs for legacy system
+  target: < 2 hours
+- criterion: Accuracy
+  measurement: Percentage of ADRs validated by humans
+  target: '> 95%'
+- criterion: Confidence improvement
+  measurement: EDR confidence before/after validation
+  target: 62% → 95%+
+- criterion: Human effort reduction
+  measurement: Percentage of code auto-accepted
+  target: '> 90%'
 dependencies:
   requires:
-    - "RECON extractor (scan code, extract metadata)"
-    - "AI inference (reverse engineer design)"
-    - "Conversational interface (validate with humans)"
-    - "Confidence scoring (classify findings)"
-  
+  - RECON extractor (scan code, extract metadata)
+  - AI inference (reverse engineer design)
+  - Conversational interface (validate with humans)
+  - Confidence scoring (classify findings)
   enables:
-    - "Legacy system onboarding (adopt ADR Kit)"
-    - "Continuous documentation (keep ADRs updated)"
-    - "Knowledge preservation (capture tribal knowledge)"
-
+  - Legacy system onboarding (adopt ADR Kit)
+  - Continuous documentation (keep ADRs updated)
+  - Knowledge preservation (capture tribal knowledge)
 risks:
-  - risk: "AI inference incorrect"
-    likelihood: "medium"
-    impact: "medium"
-    mitigation: "Human validation, confidence scoring, conversation metadata"
-  
-  - risk: "Auto-acceptance accepts bugs"
-    likelihood: "low"
-    impact: "medium"
-    mitigation: "High confidence threshold, periodic audits, human override"
-  
-  - risk: "Humans rubber-stamp validation"
-    likelihood: "medium"
-    impact: "medium"
-    mitigation: "Require rationale for acceptance, audit validations"
-
+- risk: AI inference incorrect
+  likelihood: medium
+  impact: medium
+  mitigation: Human validation, confidence scoring, conversation metadata
+- risk: Auto-acceptance accepts bugs
+  likelihood: low
+  impact: medium
+  mitigation: High confidence threshold, periodic audits, human override
+- risk: Humans rubber-stamp validation
+  likelihood: medium
+  impact: medium
+  mitigation: Require rationale for acceptance, audit validations
 notes: |
   This is the "legacy onboarding" capability.
-  
+
   Traditional onboarding: Manual documentation
   - Read code (8 hours)
   - Write ADRs (16 hours)
   - Validate (8 hours)
   - Revise (8 hours)
   - Total: 40 hours
-  
+
   Legacy Import Agent: AI-driven reverse engineering
   - Scan code (5 minutes)
   - Infer design (10 minutes)
@@ -429,39 +385,39 @@ notes: |
   - Validate conversationally (1 hour)
   - Refine ADRs (10 minutes)
   - Total: 1-2 hours
-  
+
   **95% time reduction.**
-  
+
   Trust-first strategy:
   - 90% of code is safe & compliant (auto-accept)
   - 10% of code is risky/non-compliant (validate)
-  
+
   This reduces human effort by 90%.
-  
+
   Example validation conversation:
-  
+
   AI: "I scanned your user service. Found 50 REST endpoints, all using standard patterns. Auto-accepted as compliant. Confidence: 95%."
-  
+
   Human: "Acknowledged."
-  
+
   AI: "Found 1 SQL query without parameterization in login endpoint. This is risky (SQL injection). Should we use parameterized queries?"
-  
+
   Human: "Yes, that's a bug. Use parameterized queries."
-  
+
   AI: "Updated ADR-PC-0042 to require parameterized queries. Added to invariants."
-  
+
   AI: "Found JWT authentication using HS256. Policy requires RS256. Accept as exception?"
-  
+
   Human: "Accept. This is internal service, HS256 is sufficient for our threat model."
-  
+
   AI: "Recorded exception with rationale. Confidence now 98%."
-  
+
   Total validation time: 15 minutes.
-  
+
   The system now has:
   - Complete ADRs (all fields populated)
   - High confidence (98%)
   - Human validated (risky/non-compliant code)
   - Minimal effort (15 minutes vs 40 hours)
-  
+
   This makes legacy onboarding feasible.

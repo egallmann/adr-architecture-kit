@@ -77,6 +77,57 @@ class TestValidLogicalADRs:
         assert adr.vision_category is True
         assert adr.decisions == []
 
+    def test_structural_validation_allows_empty_required_collections_for_draft(self, parser, tmp_path):
+        """Structural mode should accept draft ADRs with explicit empty required sections."""
+        adr_path = tmp_path / "ADR-L-9998-draft.yaml"
+        adr_path.write_text(
+            "\n".join(
+                [
+                    'schema_version: "1.0"',
+                    "id: ADR-L-9998",
+                    "adr_type: logical",
+                    'title: "Draft Logical ADR"',
+                    "status: proposed",
+                    'created_date: "2026-03-13"',
+                    "authors: [adr-architecture-kit]",
+                    "domains: [drafting]",
+                    "context: |",
+                    "  Draft context pending fuller pin-down.",
+                    "decisions: []",
+                ]
+            ),
+            encoding="utf-8",
+        )
+
+        data = parser.parse_yaml(adr_path)
+        parser.validate_against_schema(data, "logical", mode="structural")
+
+    def test_complete_validation_rejects_empty_required_collections_for_draft(self, parser, tmp_path):
+        """Complete mode should reject draft ADRs with empty required sections."""
+        adr_path = tmp_path / "ADR-L-9997-draft.yaml"
+        adr_path.write_text(
+            "\n".join(
+                [
+                    'schema_version: "1.0"',
+                    "id: ADR-L-9997",
+                    "adr_type: logical",
+                    'title: "Draft Logical ADR"',
+                    "status: proposed",
+                    'created_date: "2026-03-13"',
+                    "authors: [adr-architecture-kit]",
+                    "domains: [drafting]",
+                    "context: |",
+                    "  Draft context pending fuller pin-down.",
+                    "decisions: []",
+                ]
+            ),
+            encoding="utf-8",
+        )
+
+        data = parser.parse_yaml(adr_path)
+        with pytest.raises(ADRSchemaValidationError):
+            parser.validate_against_schema(data, "logical", mode="complete")
+
 
 class TestValidPhysicalADRs:
     """Test valid physical ADR parsing."""

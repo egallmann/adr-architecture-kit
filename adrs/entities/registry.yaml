@@ -1,0 +1,1729 @@
+schema_version: '1.1'
+type: entity_registry
+entities:
+- entity_id: CAP-0001
+  entity_type: capability
+  name: Machine-Verifiable Architecture Documentation
+  introduced_by: ADR-L-0001
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0001-ste-compliant-adr-system.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs: []
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: CAP-0002
+  entity_type: capability
+  name: Two-Layer Architecture Model
+  introduced_by: ADR-L-0001
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0001-ste-compliant-adr-system.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs: []
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: CAP-0003
+  entity_type: capability
+  name: Semantic Graph Integration
+  introduced_by: ADR-L-0001
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0001-ste-compliant-adr-system.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs: []
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: CAP-0004
+  entity_type: capability
+  name: Explicit Gap Tracking
+  introduced_by: ADR-L-0001
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0001-ste-compliant-adr-system.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs: []
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: CAP-0005
+  entity_type: capability
+  name: Derived Manifest Generation
+  introduced_by: ADR-L-0001
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0001-ste-compliant-adr-system.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs: []
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: CAP-0006
+  entity_type: capability
+  name: Policy Integration Readiness
+  introduced_by: ADR-L-0001
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0001-ste-compliant-adr-system.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs: []
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: CAP-0007
+  entity_type: capability
+  name: Correction Agent Context
+  introduced_by: ADR-L-0001
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0001-ste-compliant-adr-system.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs: []
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: CAP-0008
+  entity_type: capability
+  name: Multi-Agent Prompt Generation
+  introduced_by: ADR-L-0005
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0005-adr-to-prompt-translation.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs: []
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: CAP-0009
+  entity_type: capability
+  name: Prompt Format Adaptation
+  introduced_by: ADR-L-0005
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0005-adr-to-prompt-translation.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs: []
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: CAP-0010
+  entity_type: capability
+  name: Signal Schema Authority
+  introduced_by: ADR-L-0006
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0006-rule-library-sub-module.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs: []
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: CAP-0011
+  entity_type: capability
+  name: Signal Emission CLI
+  introduced_by: ADR-L-0006
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0006-rule-library-sub-module.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs: []
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: CAP-0012
+  entity_type: capability
+  name: Rule Activation and Projection
+  introduced_by: ADR-L-0006
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0006-rule-library-sub-module.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs: []
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: CAP-0013
+  entity_type: capability
+  name: Submodule Bootstrap
+  introduced_by: ADR-L-0006
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0006-rule-library-sub-module.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs: []
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: CAP-0014
+  entity_type: capability
+  name: Deterministic Documentation Projection
+  introduced_by: ADR-L-0007
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0007-deterministic-documentation-projection.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs: []
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: CAP-0015
+  entity_type: capability
+  name: Mode-Aware ADR Validation
+  introduced_by: ADR-L-0008
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0008-validation-modes-for-draft-and-complete-adrs.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs: []
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: CAP-0016
+  entity_type: capability
+  name: Draft-Preserving Source Generation
+  introduced_by: ADR-L-0008
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0008-validation-modes-for-draft-and-complete-adrs.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs: []
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: CAP-0017
+  entity_type: capability
+  name: Summary Discovery Surface
+  introduced_by: ADR-L-0009
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0009-derived-architecture-discovery-surfaces.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs: []
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: CAP-0018
+  entity_type: capability
+  name: Normalized Entity Lookup Surface
+  introduced_by: ADR-L-0009
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0009-derived-architecture-discovery-surfaces.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs: []
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: CAP-0019
+  entity_type: capability
+  name: Automatic Project Scope Detection
+  introduced_by: ADR-L-0002
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0002-multi-scope-adr-architecture.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs: []
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: CAP-0020
+  entity_type: capability
+  name: Automated Quality Gates
+  introduced_by: ADR-L-0003
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0003-quality-assurance-and-testing-strategy.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs: []
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: CAP-0021
+  entity_type: capability
+  name: Decorator-Based Code Annotation
+  introduced_by: ADR-L-0004
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0004-adr-to-code-traceability-via-decorators.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs: []
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: CAP-0022
+  entity_type: capability
+  name: Scoped Manifest Generation
+  introduced_by: ADR-L-0002
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0002-multi-scope-adr-architecture.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs: []
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: CAP-0023
+  entity_type: capability
+  name: Test-Driven Development Support
+  introduced_by: ADR-L-0003
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0003-quality-assurance-and-testing-strategy.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs: []
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: CAP-0024
+  entity_type: capability
+  name: Bidirectional Traceability Verification
+  introduced_by: ADR-L-0004
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0004-adr-to-code-traceability-via-decorators.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs: []
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: CAP-0025
+  entity_type: capability
+  name: Scoped Validation
+  introduced_by: ADR-L-0002
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0002-multi-scope-adr-architecture.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs: []
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: CAP-0026
+  entity_type: capability
+  name: Regression Prevention
+  introduced_by: ADR-L-0003
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0003-quality-assurance-and-testing-strategy.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs: []
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: CAP-0027
+  entity_type: capability
+  name: Rule Library Sub-Module
+  introduced_by: ADR-L-0004
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0004-adr-to-code-traceability-via-decorators.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs: []
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: CAP-0028
+  entity_type: capability
+  name: Multi-Scope CLI Interface
+  introduced_by: ADR-L-0002
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0002-multi-scope-adr-architecture.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs: []
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: CAP-0029
+  entity_type: capability
+  name: Documentation via Tests
+  introduced_by: ADR-L-0003
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0003-quality-assurance-and-testing-strategy.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs: []
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: CAP-0030
+  entity_type: capability
+  name: RECON Integration for Decorator Extraction
+  introduced_by: ADR-L-0004
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0004-adr-to-code-traceability-via-decorators.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs: []
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: CAP-0031
+  entity_type: capability
+  name: Parse Physical ADR Components
+  introduced_by: ADR-L-0005
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0005-adr-to-prompt-translation.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs: []
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: CAP-0032
+  entity_type: capability
+  name: Generate Implementation Prompt
+  introduced_by: ADR-L-0005
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0005-adr-to-prompt-translation.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs: []
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: CAP-0033
+  entity_type: capability
+  name: Generate Validation Checklist
+  introduced_by: ADR-L-0005
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0005-adr-to-prompt-translation.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs: []
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: COMP-0010
+  entity_type: component
+  name: Entity Registry Generator and Query Surface
+  introduced_by: ADR-PC-0001
+  lifecycle_stage: active
+  source_path: adrs/physical-component/ADR-PC-0001-entity-registry-and-discovery-index.yaml
+  source_artifact_type: physical_component_adr
+  domains: []
+  related_adrs: []
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: DEC-0001
+  entity_type: decision
+  name: Use YAML with embedded markdown, not markdown with YAML frontmatter
+  introduced_by: ADR-L-0001
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0001-ste-compliant-adr-system.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs: []
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes:
+    - INV-0001
+- entity_id: DEC-0002
+  entity_type: decision
+  name: Separate logical and physical ADRs with distinct schemas
+  introduced_by: ADR-L-0001
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0001-ste-compliant-adr-system.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs: []
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes:
+    - INV-0002
+    - INV-0003
+- entity_id: DEC-0003
+  entity_type: decision
+  name: Rich frontmatter as authoritative metadata, manifest as derived view
+  introduced_by: ADR-L-0001
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0001-ste-compliant-adr-system.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs: []
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes:
+    - INV-0004
+- entity_id: DEC-0004
+  entity_type: decision
+  name: Type-prefixed IDs (ADR-L-XXXX, ADR-P-XXXX) with 4-digit numbering
+  introduced_by: ADR-L-0001
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0001-ste-compliant-adr-system.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs: []
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes:
+    - INV-0005
+- entity_id: DEC-0005
+  entity_type: decision
+  name: PROJECT.yaml for project-level metadata, separate from ADR metadata
+  introduced_by: ADR-L-0001
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0001-ste-compliant-adr-system.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs: []
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: DEC-0006
+  entity_type: decision
+  name: Dogfooding strategy - document this project using ADR Kit
+  introduced_by: ADR-L-0001
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0001-ste-compliant-adr-system.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs: []
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: DEC-0007
+  entity_type: decision
+  name: Adopt Scope-Aware ADR Architecture
+  introduced_by: ADR-L-0002
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0002-multi-scope-adr-architecture.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs: []
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: DEC-0008
+  entity_type: decision
+  name: Adopt Multi-Layer Testing Strategy
+  introduced_by: ADR-L-0003
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0003-quality-assurance-and-testing-strategy.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs: []
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: DEC-0009
+  entity_type: decision
+  name: Adopt Decorator-Based ADR Traceability
+  introduced_by: ADR-L-0004
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0004-adr-to-code-traceability-via-decorators.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs: []
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: DEC-0010
+  entity_type: decision
+  name: Create ADR-to-Prompt Translator
+  introduced_by: ADR-L-0005
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0005-adr-to-prompt-translation.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs: []
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: DEC-0011
+  entity_type: decision
+  name: Build from POC Principles
+  introduced_by: ADR-L-0006
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0006-rule-library-sub-module.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs: []
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: DEC-0012
+  entity_type: decision
+  name: Treat human-readable architecture documentation as deterministic derived state
+  introduced_by: ADR-L-0007
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0007-deterministic-documentation-projection.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs: []
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes:
+    - INV-0037
+    - INV-0038
+    - INV-0039
+- entity_id: DEC-0013
+  entity_type: decision
+  name: Use one validator with explicit validation modes
+  introduced_by: ADR-L-0008
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0008-validation-modes-for-draft-and-complete-adrs.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs: []
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: DEC-0014
+  entity_type: decision
+  name: Use derived discovery artifacts for agent-facing architecture lookup
+  introduced_by: ADR-L-0009
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0009-derived-architecture-discovery-surfaces.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs: []
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: DEC-0015
+  entity_type: decision
+  name: Require Tests for All New Components
+  introduced_by: ADR-L-0003
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0003-quality-assurance-and-testing-strategy.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs: []
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: DEC-0016
+  entity_type: decision
+  name: Create Rule Library Sub-Module as MCP Service
+  introduced_by: ADR-L-0004
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0004-adr-to-code-traceability-via-decorators.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs: []
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: DEC-0017
+  entity_type: decision
+  name: Generate Prompts Per Component
+  introduced_by: ADR-L-0005
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0005-adr-to-prompt-translation.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs: []
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: DEC-0018
+  entity_type: decision
+  name: Cooperative Signals as First-Class
+  introduced_by: ADR-L-0006
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0006-rule-library-sub-module.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs: []
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: DEC-0019
+  entity_type: decision
+  name: Prohibit manual edits to generated documentation
+  introduced_by: ADR-L-0007
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0007-deterministic-documentation-projection.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs: []
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes:
+    - INV-0037
+    - INV-0039
+- entity_id: DEC-0020
+  entity_type: decision
+  name: Define structural mode for schema-aligned drafts
+  introduced_by: ADR-L-0008
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0008-validation-modes-for-draft-and-complete-adrs.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs: []
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: DEC-0021
+  entity_type: decision
+  name: Keep manifest as summary-oriented discovery surface
+  introduced_by: ADR-L-0009
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0009-derived-architecture-discovery-surfaces.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs: []
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: DEC-0022
+  entity_type: decision
+  name: Test Against Real Workspace ADRs
+  introduced_by: ADR-L-0003
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0003-quality-assurance-and-testing-strategy.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs: []
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: DEC-0023
+  entity_type: decision
+  name: Support Bidirectional Verification
+  introduced_by: ADR-L-0004
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0004-adr-to-code-traceability-via-decorators.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs: []
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: DEC-0024
+  entity_type: decision
+  name: Include Validation Criteria in Prompts
+  introduced_by: ADR-L-0005
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0005-adr-to-prompt-translation.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs: []
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: DEC-0025
+  entity_type: decision
+  name: Prompt Translator Integration
+  introduced_by: ADR-L-0006
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0006-rule-library-sub-module.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs: []
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: DEC-0026
+  entity_type: decision
+  name: Require generator, validator, test, and CI enforcement for documentation projection
+  introduced_by: ADR-L-0007
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0007-deterministic-documentation-projection.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs: []
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes:
+    - INV-0038
+    - INV-0039
+- entity_id: DEC-0027
+  entity_type: decision
+  name: Define complete mode for population readiness
+  introduced_by: ADR-L-0008
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0008-validation-modes-for-draft-and-complete-adrs.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs: []
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: DEC-0028
+  entity_type: decision
+  name: Use entity-registry as graph-lite normalized lookup surface
+  introduced_by: ADR-L-0009
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0009-derived-architecture-discovery-surfaces.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs: []
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: DEC-0029
+  entity_type: decision
+  name: Enforce Testing in CI/CD Pipeline
+  introduced_by: ADR-L-0003
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0003-quality-assurance-and-testing-strategy.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs: []
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: DEC-0030
+  entity_type: decision
+  name: Support Multiple Target Agents
+  introduced_by: ADR-L-0005
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0005-adr-to-prompt-translation.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs: []
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: DEC-0031
+  entity_type: decision
+  name: Standalone Repo, Submodule Consumption
+  introduced_by: ADR-L-0006
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0006-rule-library-sub-module.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs: []
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: DEC-0032
+  entity_type: decision
+  name: Keep steelman review separate from deterministic validation
+  introduced_by: ADR-L-0008
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0008-validation-modes-for-draft-and-complete-adrs.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs: []
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: DEC-0033
+  entity_type: decision
+  name: Adopt Test-Driven Development (TDD) Methodology
+  introduced_by: ADR-L-0003
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0003-quality-assurance-and-testing-strategy.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs: []
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: DEC-0034
+  entity_type: decision
+  name: File-Based First, MCP Later
+  introduced_by: ADR-L-0006
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0006-rule-library-sub-module.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs: []
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: DEC-0035
+  entity_type: decision
+  name: Allow generators to preserve explicit empty sections when requested
+  introduced_by: ADR-L-0008
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0008-validation-modes-for-draft-and-complete-adrs.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs: []
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: INV-0001
+  entity_type: invariant
+  name: INV-0001
+  introduced_by: ADR-L-0001
+  lifecycle_stage: active
+  source_path: adrs/invariants/INV-0001-schema-validation-required.yaml
+  source_artifact_type: standalone_invariant
+  domains: []
+  related_adrs:
+  - ADR-L-0001
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes:
+    - ADR-P-0002
+- entity_id: INV-0002
+  entity_type: invariant
+  name: INV-0002
+  introduced_by: ADR-L-0003
+  lifecycle_stage: active
+  source_path: adrs/invariants/INV-0002-runtime-hygiene-and-dependency-security.yaml
+  source_artifact_type: standalone_invariant
+  domains: []
+  related_adrs:
+  - ADR-L-0001
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes:
+    - ADR-P-0001
+- entity_id: INV-0003
+  entity_type: invariant
+  name: INV-0003
+  introduced_by: ADR-L-0001
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0001-ste-compliant-adr-system.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs: []
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: INV-0004
+  entity_type: invariant
+  name: INV-0004
+  introduced_by: ADR-L-0001
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0001-ste-compliant-adr-system.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs: []
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: INV-0005
+  entity_type: invariant
+  name: INV-0005
+  introduced_by: ADR-L-0001
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0001-ste-compliant-adr-system.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs: []
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: INV-0006
+  entity_type: invariant
+  name: INV-0006
+  introduced_by: ADR-L-0001
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0001-ste-compliant-adr-system.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs: []
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: INV-0007
+  entity_type: invariant
+  name: INV-0007
+  introduced_by: ADR-L-0001
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0001-ste-compliant-adr-system.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs: []
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: INV-0014
+  entity_type: invariant
+  name: INV-0014
+  introduced_by: ADR-L-0002
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0002-multi-scope-adr-architecture.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs: []
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: INV-0015
+  entity_type: invariant
+  name: INV-0015
+  introduced_by: ADR-L-0002
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0002-multi-scope-adr-architecture.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs: []
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: INV-0016
+  entity_type: invariant
+  name: INV-0016
+  introduced_by: ADR-L-0002
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0002-multi-scope-adr-architecture.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs: []
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: INV-0017
+  entity_type: invariant
+  name: INV-0017
+  introduced_by: ADR-L-0002
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0002-multi-scope-adr-architecture.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs: []
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: INV-0018
+  entity_type: invariant
+  name: INV-0018
+  introduced_by: ADR-L-0002
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0002-multi-scope-adr-architecture.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs: []
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: INV-0019
+  entity_type: invariant
+  name: INV-0019
+  introduced_by: ADR-L-0002
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0002-multi-scope-adr-architecture.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs: []
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: INV-0020
+  entity_type: invariant
+  name: INV-0020
+  introduced_by: ADR-L-0003
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0003-quality-assurance-and-testing-strategy.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs: []
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: INV-0021
+  entity_type: invariant
+  name: INV-0021
+  introduced_by: ADR-L-0003
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0003-quality-assurance-and-testing-strategy.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs: []
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: INV-0022
+  entity_type: invariant
+  name: INV-0022
+  introduced_by: ADR-L-0003
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0003-quality-assurance-and-testing-strategy.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs: []
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: INV-0023
+  entity_type: invariant
+  name: INV-0023
+  introduced_by: ADR-L-0003
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0003-quality-assurance-and-testing-strategy.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs: []
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: INV-0024
+  entity_type: invariant
+  name: INV-0024
+  introduced_by: ADR-L-0003
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0003-quality-assurance-and-testing-strategy.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs: []
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: INV-0025
+  entity_type: invariant
+  name: INV-0025
+  introduced_by: ADR-L-0003
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0003-quality-assurance-and-testing-strategy.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs: []
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: INV-0026
+  entity_type: invariant
+  name: INV-0026
+  introduced_by: ADR-L-0003
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0003-quality-assurance-and-testing-strategy.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs: []
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: INV-0027
+  entity_type: invariant
+  name: INV-0027
+  introduced_by: ADR-L-0004
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0004-adr-to-code-traceability-via-decorators.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs: []
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: INV-0028
+  entity_type: invariant
+  name: INV-0028
+  introduced_by: ADR-L-0004
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0004-adr-to-code-traceability-via-decorators.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs: []
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: INV-0029
+  entity_type: invariant
+  name: INV-0029
+  introduced_by: ADR-L-0004
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0004-adr-to-code-traceability-via-decorators.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs: []
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: INV-0030
+  entity_type: invariant
+  name: INV-0030
+  introduced_by: ADR-L-0004
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0004-adr-to-code-traceability-via-decorators.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs: []
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: INV-0031
+  entity_type: invariant
+  name: INV-0031
+  introduced_by: ADR-L-0004
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0004-adr-to-code-traceability-via-decorators.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs: []
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: INV-0032
+  entity_type: invariant
+  name: INV-0032
+  introduced_by: ADR-L-0004
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0004-adr-to-code-traceability-via-decorators.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs: []
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: INV-0033
+  entity_type: invariant
+  name: INV-0033
+  introduced_by: ADR-L-0006
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0006-rule-library-sub-module.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs: []
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: INV-0034
+  entity_type: invariant
+  name: INV-0034
+  introduced_by: ADR-L-0006
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0006-rule-library-sub-module.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs: []
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: INV-0035
+  entity_type: invariant
+  name: INV-0035
+  introduced_by: ADR-L-0006
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0006-rule-library-sub-module.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs: []
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: INV-0036
+  entity_type: invariant
+  name: INV-0036
+  introduced_by: ADR-L-0006
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0006-rule-library-sub-module.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs: []
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: INV-0037
+  entity_type: invariant
+  name: INV-0037
+  introduced_by: ADR-L-0007
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0007-deterministic-documentation-projection.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs: []
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: INV-0038
+  entity_type: invariant
+  name: INV-0038
+  introduced_by: ADR-L-0007
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0007-deterministic-documentation-projection.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs: []
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: INV-0039
+  entity_type: invariant
+  name: INV-0039
+  introduced_by: ADR-L-0007
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0007-deterministic-documentation-projection.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs: []
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: INV-0040
+  entity_type: invariant
+  name: INV-0040
+  introduced_by: ADR-L-0008
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0008-validation-modes-for-draft-and-complete-adrs.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs: []
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: INV-0041
+  entity_type: invariant
+  name: INV-0041
+  introduced_by: ADR-L-0008
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0008-validation-modes-for-draft-and-complete-adrs.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs: []
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: INV-0042
+  entity_type: invariant
+  name: INV-0042
+  introduced_by: ADR-L-0008
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0008-validation-modes-for-draft-and-complete-adrs.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs: []
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: INV-0043
+  entity_type: invariant
+  name: INV-0043
+  introduced_by: ADR-L-0009
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0009-derived-architecture-discovery-surfaces.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs: []
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: INV-0044
+  entity_type: invariant
+  name: INV-0044
+  introduced_by: ADR-L-0009
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0009-derived-architecture-discovery-surfaces.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs: []
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: INV-0045
+  entity_type: invariant
+  name: INV-0045
+  introduced_by: ADR-L-0009
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0009-derived-architecture-discovery-surfaces.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs: []
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: INV-0046
+  entity_type: invariant
+  name: INV-0046
+  introduced_by: ADR-L-0005
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0005-adr-to-prompt-translation.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs: []
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: INV-0047
+  entity_type: invariant
+  name: INV-0047
+  introduced_by: ADR-L-0005
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0005-adr-to-prompt-translation.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs: []
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: INV-0048
+  entity_type: invariant
+  name: INV-0048
+  introduced_by: ADR-L-0005
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0005-adr-to-prompt-translation.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs: []
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: INV-0049
+  entity_type: invariant
+  name: INV-0049
+  introduced_by: ADR-L-0005
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0005-adr-to-prompt-translation.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs: []
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: INV-0050
+  entity_type: invariant
+  name: INV-0050
+  introduced_by: ADR-L-0005
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0005-adr-to-prompt-translation.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs: []
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: INV-0051
+  entity_type: invariant
+  name: INV-0051
+  introduced_by: ADR-L-0005
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0005-adr-to-prompt-translation.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs: []
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []

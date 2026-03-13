@@ -30,6 +30,8 @@ class StandaloneInvariant(BaseModel):
     enforcement_mechanism: str = Field(..., pattern=r"^(design|runtime|test|policy|manual)$")
     verification_method: str = Field(..., pattern=r"^(automated|manual|audit)$")
     rationale: str
+    declaration_mode: Optional[str] = Field(None, pattern=r"^(canonical|local|reference)$")
+    upheld_by_decisions: List[str] = Field(default_factory=list)
     
     defined_in: Optional[str] = Field(None, pattern=r"^ADR-(L|P|PS|PC|D)-\d{4}$")
     enforced_by: List[str] = Field(default_factory=list)

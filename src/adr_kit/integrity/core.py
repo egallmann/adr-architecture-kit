@@ -48,6 +48,11 @@ def _normalize_rel_path(path: str) -> str:
     return path.replace("\\", "/")
 
 
+def _normalize_hash_content(content: bytes) -> bytes:
+    """Normalize line endings for cross-platform deterministic source hashing."""
+    return content.replace(b"\r\n", b"\n").replace(b"\r", b"\n")
+
+
 def _ordered_header_lines(header_fields: dict[str, str]) -> list[str]:
     if set(header_fields.keys()) != set(HEADER_FIELD_ORDER):
         raise IntegrityHeaderError("Header fields do not match required schema")
@@ -150,7 +155,9 @@ def compute_source_hash(
     normalized_inputs: list[tuple[str, bytes]] = []
     for item in inputs:
         if isinstance(item, HashInput):
-            normalized_inputs.append((_normalize_rel_path(item.label), item.content))
+            normalized_inputs.append(
+                (_normalize_rel_path(item.label), _normalize_hash_content(item.content))
+            )
             continue
 
         candidate = Path(item)
@@ -161,7 +168,7 @@ def compute_source_hash(
             label = _normalize_rel_path(str(resolved.relative_to(scope_root)))
         except ValueError:
             label = _normalize_rel_path(f"__generator__/{resolved.name}")
-        normalized_inputs.append((label, resolved.read_bytes()))
+        normalized_inputs.append((label, _normalize_hash_content(resolved.read_bytes())))
 
     normalized_inputs.sort(key=lambda item: item[0])
 

@@ -8,6 +8,7 @@ from src.adr_kit.cli.main import cli
 from src.adr_kit.integrity import GeneratedArtifactStatus, GeneratedArtifactValidator
 from src.adr_kit.integrity.core import (
     GeneratorIdentity,
+    HashInput,
     compute_source_hash,
     parse_integrity_header,
 )
@@ -81,6 +82,24 @@ def test_source_hash_changes_with_new_optional_manifest_inputs(tmp_path):
     after = compute_source_hash(scope.root, after_inputs, GeneratorIdentity("adr-manifest", 1))
 
     assert before != after
+
+
+def test_source_hash_is_stable_across_line_endings(tmp_path):
+    workspace = tmp_path / "workspace"
+    workspace.mkdir(parents=True, exist_ok=True)
+
+    lf_hash = compute_source_hash(
+        workspace,
+        [HashInput("logical/sample.yaml", b"line1\nline2\n")],
+        GeneratorIdentity("adr-manifest", 1),
+    )
+    crlf_hash = compute_source_hash(
+        workspace,
+        [HashInput("logical/sample.yaml", b"line1\r\nline2\r\n")],
+        GeneratorIdentity("adr-manifest", 1),
+    )
+
+    assert lf_hash == crlf_hash
 
 
 def test_generate_and_validate_rendered_docs_cli(tmp_path):

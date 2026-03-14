@@ -5,8 +5,8 @@ artifact_kind: rendered_adr_markdown
 generator_id: adr-rendered-markdown
 generator_version: 1
 hash_algorithm: sha256
-source_hash: 2a22ff7965ba74f5e1dc9644c9a967962c235bbf6adea21b5b4dd6df14ce6f11
-rendered_hash: 22c913c7239cd304ac73c8f84059712d9842c6fb47cefb2bd2b56b919a33101f
+source_hash: 373ce15d6bd6fc777bd1124e5f20891f205c4e655e6e7eb9174de2c9f7226270
+rendered_hash: 331d48d3341340cb91c8e7f1bd7fc49eac4aad3673e1d2064bc88a31ba6a84f8
 -->
 
 # ADR-PC-0001: Entity Registry and Discovery Index
@@ -24,10 +24,12 @@ rendered_hash: 22c913c7239cd304ac73c8f84059712d9842c6fb47cefb2bd2b56b919a33101f
 
 ## Context
 
-The Entity Registry component generates `adrs/entities/registry.yaml` from
-canonical ADR and standalone invariant artifacts, validates deterministic
-regeneration, and exposes exact-ID and filtered CLI query operations over the
-generated registry artifact.
+The discovery/indexing component now centers on the unified compiler path. It
+generates the normalized discovery bundle under `adrs/index/`, emits the
+legacy compatibility registry at `adrs/entities/registry.yaml`, generates
+manifest and rendered ADR markdown outputs through the same compiler-owned
+path for single-scope use, and exposes exact-ID and filtered CLI query
+operations over generated registry state.
 
 
 ## Technology Stack
@@ -60,33 +62,37 @@ Existing CLI framework for scope-aware commands.
 ### COMP-0010: Entity Registry Generator and Query Surface (service)
 
 **Responsibilities:**
-- Scan canonical ADR and invariant artifacts
-- Normalize explicit architecture entities into registry records
-- Emit deterministic `adrs/entities/registry.yaml`
+- Compile canonical ADR and invariant artifacts into a normalized discovery bundle
+- Emit deterministic `adrs/index/*.yaml` registry artifacts
+- Emit deterministic legacy compatibility registry output at `adrs/entities/registry.yaml`
+- Support manifest and rendered markdown emission through the unified compile path
 - Provide CLI query access over generated registry state
 
 
 **Interfaces:**
 - **IFACE-0011** (CLI): Commands:
-- adr generate-entity-registry
-- adr entities list
-- adr entities get <id>
-- adr entities ...
+- adr compile
+- adr generate-architecture-index
+- adr generate-manifest
+- adr generate-ren...
 
 **Implementation Identifiers:**
-- Module Path: `src/adr_kit/generators/entity_registry_generator.py`
+- Service Name: `adr-compiler`
+- Module Path: `src/adr_kit/compiler/driver.py`
 
 
 
 
 ## Implementation Decisions
 
-### IMPL-0011: Use one normalized entities list for the registry wire shape
+### IMPL-0011: Route single-scope discovery generation through the unified compiler driver
 
 **Rationale:**
-A single normalized entity collection is easier for agents to filter and
-query deterministically than multiple top-level sections with divergent
-shapes.
+The unified compiler path keeps normalized registries, the legacy
+compatibility registry, manifest generation, and rendered markdown emission
+aligned while preserving the older single-scope commands as compatibility
+wrappers. Registry backend emission remains compiler-owned rather than
+isolated in the older standalone registry generator.
 
 
 

@@ -5,8 +5,8 @@ entities:
   entity_type: system
   name: ADR Architecture Kit Discovery and Indexing System
   summary: The discovery and indexing subsystem provides the derived surfaces that
-    agents query instead of scanning raw ADR bodies by default. It includes summary
-    generation (`manifest.yaml`), normalized entity lookup (`adrs/entiti
+    agents query instead of scanning raw ADR bodies by default. It now includes normalized
+    discovery bundle generation under `adrs/index/`, legacy compa
   canonical_source:
     source_type: physical_system_adr
     source_ref: ADR-PS-0001

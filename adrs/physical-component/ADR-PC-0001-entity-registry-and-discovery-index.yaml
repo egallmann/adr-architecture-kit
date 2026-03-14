@@ -23,10 +23,12 @@ technologies:
 - pyyaml
 - click
 context: |
-  The Entity Registry component generates `adrs/entities/registry.yaml` from
-  canonical ADR and standalone invariant artifacts, validates deterministic
-  regeneration, and exposes exact-ID and filtered CLI query operations over the
-  generated registry artifact.
+  The discovery/indexing component now centers on the unified compiler path. It
+  generates the normalized discovery bundle under `adrs/index/`, emits the
+  legacy compatibility registry at `adrs/entities/registry.yaml`, generates
+  manifest and rendered ADR markdown outputs through the same compiler-owned
+  path for single-scope use, and exposes exact-ID and filtered CLI query
+  operations over generated registry state.
 technology_stack:
 - category: language
   name: Python
@@ -45,43 +47,53 @@ component_specifications:
   name: Entity Registry Generator and Query Surface
   type: service
   responsibilities: |
-    - Scan canonical ADR and invariant artifacts
-    - Normalize explicit architecture entities into registry records
-    - Emit deterministic `adrs/entities/registry.yaml`
+    - Compile canonical ADR and invariant artifacts into a normalized discovery bundle
+    - Emit deterministic `adrs/index/*.yaml` registry artifacts
+    - Emit deterministic legacy compatibility registry output at `adrs/entities/registry.yaml`
+    - Support manifest and rendered markdown emission through the unified compile path
     - Provide CLI query access over generated registry state
   implements_capabilities:
   - CAP-0018
   generation_context:
     purpose: Generate and query the normalized entity registry for agent discovery.
     key_responsibilities:
-    - Generate deterministic registry records from canonical artifacts
+    - Generate deterministic discovery bundle records from canonical artifacts
+    - Emit the legacy compatibility registry from the normalized compiler output
+    - Delegate single-scope generation commands through the unified compiler driver
     - Reject duplicate explicitly introduced entity IDs
     - Support exact entity lookup and filtered list operations from CLI
     constraints:
-    - Registry is derived and non-authoritative
+    - Discovery outputs are derived and non-authoritative
+    - Single-scope generation commands act as compatibility wrappers over `adr compile`
     - CLI must read generated registry artifacts instead of rescanning ADRs
     - Output must be deterministic when inputs are unchanged
     success_criteria:
-    - Registry generation is deterministic
-    - ADR-L-0008 entities are present in generated registry output
+    - Discovery bundle and legacy registry generation are deterministic
+    - ADR-L-0008 entities are present in generated discovery output
     - CLI list/get/invariants/capabilities commands query the registry successfully
   interfaces:
   - id: IFACE-0011
     type: CLI
     specification: |
       Commands:
+      - adr compile
+      - adr generate-architecture-index
+      - adr generate-manifest
+      - adr generate-rendered-docs
       - adr generate-entity-registry
       - adr entities list
       - adr entities get <id>
       - adr entities invariants
       - adr entities capabilities
   implementation_identifiers:
-    module_path: src/adr_kit/generators/entity_registry_generator.py
+    module_path: src/adr_kit/compiler/driver.py
+    service_name: adr-compiler
     entry_point: src/adr_kit/cli/main.py
+    test_path: tests/test_compiler_driver.py
   implementation_requirements:
     error_handling:
-      strategy: Fail closed on duplicate entity IDs, invalid registry files, and missing
-        generated registry artifacts.
+      strategy: Fail closed on duplicate entity IDs, invalid compiled registry files,
+        and missing generated discovery artifacts.
     observability:
       logging:
         level: info
@@ -92,13 +104,15 @@ component_specifications:
     testing_requirements:
       unit_test_coverage: '>= 80%'
       integration_tests: |
-        - Registry generation from logical, physical, physical-system, physical-component, and invariant sources
+        - Discovery bundle and legacy registry generation from logical, physical, physical-system, physical-component, and invariant sources
         - CLI query flows against generated registry artifacts
 implementation_decisions:
 - id: IMPL-0011
-  summary: Use one normalized entities list for the registry wire shape
+  summary: Route single-scope discovery generation through the unified compiler driver
   rationale: |
-    A single normalized entity collection is easier for agents to filter and
-    query deterministically than multiple top-level sections with divergent
-    shapes.
+    The unified compiler path keeps normalized registries, the legacy
+    compatibility registry, manifest generation, and rendered markdown emission
+    aligned while preserving the older single-scope commands as compatibility
+    wrappers. Registry backend emission remains compiler-owned rather than
+    isolated in the older standalone registry generator.
 gaps: []

@@ -718,9 +718,9 @@ entities:
 - id: ADR-PC-0001
   entity_type: adr
   name: Entity Registry and Discovery Index
-  summary: The Entity Registry component generates `adrs/entities/registry.yaml` from
-    canonical ADR and standalone invariant artifacts, validates deterministic regeneration,
-    and exposes exact-ID and filtered CLI query operations ov
+  summary: The discovery/indexing component now centers on the unified compiler path.
+    It generates the normalized discovery bundle under `adrs/index/`, emits the legacy
+    compatibility registry at `adrs/entities/registry.yaml`, gener
   canonical_source:
     source_type: physical_component_adr
     source_ref: ADR-PC-0001
@@ -759,8 +759,8 @@ entities:
   entity_type: adr
   name: ADR Architecture Kit Discovery and Indexing System
   summary: The discovery and indexing subsystem provides the derived surfaces that
-    agents query instead of scanning raw ADR bodies by default. It includes summary
-    generation (`manifest.yaml`), normalized entity lookup (`adrs/entiti
+    agents query instead of scanning raw ADR bodies by default. It now includes normalized
+    discovery bundle generation under `adrs/index/`, legacy compa
   canonical_source:
     source_type: physical_system_adr
     source_ref: ADR-PS-0001
@@ -2929,9 +2929,9 @@ entities:
 - id: COMP-0010
   entity_type: component
   name: Entity Registry Generator and Query Surface
-  summary: '- Scan canonical ADR and invariant artifacts - Normalize explicit architecture
-    entities into registry records - Emit deterministic `adrs/entities/registry.yaml`
-    - Provide CLI query access over generated registry state'
+  summary: '- Compile canonical ADR and invariant artifacts into a normalized discovery
+    bundle - Emit deterministic `adrs/index/*.yaml` registry artifacts - Emit deterministic
+    legacy compatibility registry output at `adrs/entities/r'
   canonical_source:
     source_type: physical_component_adr
     source_ref: ADR-PC-0001#COMP-0010
@@ -2944,7 +2944,7 @@ entities:
     - python
     - pyyaml
     - click
-    module_path: src/adr_kit/generators/entity_registry_generator.py
+    module_path: src/adr_kit/compiler/driver.py
     implements_capabilities:
     - CAP-0018
     implements_system:
@@ -7103,8 +7103,8 @@ entities:
   entity_type: system
   name: ADR Architecture Kit Discovery and Indexing System
   summary: The discovery and indexing subsystem provides the derived surfaces that
-    agents query instead of scanning raw ADR bodies by default. It includes summary
-    generation (`manifest.yaml`), normalized entity lookup (`adrs/entiti
+    agents query instead of scanning raw ADR bodies by default. It now includes normalized
+    discovery bundle generation under `adrs/index/`, legacy compa
   canonical_source:
     source_type: physical_system_adr
     source_ref: ADR-PS-0001

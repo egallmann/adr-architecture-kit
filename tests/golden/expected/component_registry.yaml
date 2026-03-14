@@ -4,9 +4,9 @@ entities:
 - id: COMP-0010
   entity_type: component
   name: Entity Registry Generator and Query Surface
-  summary: '- Scan canonical ADR and invariant artifacts - Normalize explicit architecture
-    entities into registry records - Emit deterministic `adrs/entities/registry.yaml`
-    - Provide CLI query access over generated registry state'
+  summary: '- Compile canonical ADR and invariant artifacts into a normalized discovery
+    bundle - Emit deterministic `adrs/index/*.yaml` registry artifacts - Emit deterministic
+    legacy compatibility registry output at `adrs/entities/r'
   canonical_source:
     source_type: physical_component_adr
     source_ref: ADR-PC-0001#COMP-0010
@@ -19,7 +19,7 @@ entities:
     - python
     - pyyaml
     - click
-    module_path: src/adr_kit/generators/entity_registry_generator.py
+    module_path: src/adr_kit/compiler/driver.py
     implements_capabilities:
     - CAP-0018
     implements_system:

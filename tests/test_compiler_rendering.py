@@ -1,7 +1,9 @@
 from __future__ import annotations
 
 from pathlib import Path
+from unittest.mock import patch
 
+from src.adr_kit.compiler.driver import _FixedDateTime
 from src.adr_kit.compiler.backend.manifest_rendering import (
     MANIFEST_GENERATOR_IDENTITY,
     build_manifest_integrity_header,
@@ -22,8 +24,12 @@ def test_compiler_manifest_renderer_matches_generator_body_and_inputs():
     scope = ProjectScopeResolver().resolve()
     parser = ADRParser()
 
-    body, source_inputs = render_manifest_for_scope(parser=parser, scope=scope)
-    generator_body, generator_inputs = ManifestGenerator(parser=parser).render_for_scope(scope)
+    with patch("src.adr_kit.generators.manifest_generator.datetime", _FixedDateTime), patch(
+        "src.adr_kit.compiler.backend.manifest_rendering.datetime",
+        _FixedDateTime,
+    ):
+        body, source_inputs = render_manifest_for_scope(parser=parser, scope=scope)
+        generator_body, generator_inputs = ManifestGenerator(parser=parser).render_for_scope(scope)
 
     assert body == generator_body
     assert source_inputs == generator_inputs
@@ -32,13 +38,17 @@ def test_compiler_manifest_renderer_matches_generator_body_and_inputs():
 def test_compiler_manifest_renderer_matches_generator_header():
     scope = ProjectScopeResolver().resolve()
     parser = ADRParser()
-    body, source_inputs = render_manifest_for_scope(parser=parser, scope=scope)
+    with patch("src.adr_kit.generators.manifest_generator.datetime", _FixedDateTime), patch(
+        "src.adr_kit.compiler.backend.manifest_rendering.datetime",
+        _FixedDateTime,
+    ):
+        body, source_inputs = render_manifest_for_scope(parser=parser, scope=scope)
 
-    header = build_manifest_integrity_header(scope, body, source_inputs)
-    generator = ManifestGenerator(parser=parser)
+        header = build_manifest_integrity_header(scope, body, source_inputs)
+        generator = ManifestGenerator(parser=parser)
 
-    assert MANIFEST_GENERATOR_IDENTITY == generator.generator_identity
-    assert header == generator.build_integrity_header(scope, body, source_inputs)
+        assert MANIFEST_GENERATOR_IDENTITY == generator.generator_identity
+        assert header == generator.build_integrity_header(scope, body, source_inputs)
 
 
 def test_compiler_markdown_renderer_matches_generator_body_and_inputs():

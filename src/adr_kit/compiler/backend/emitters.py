@@ -4,10 +4,8 @@ from __future__ import annotations
 
 from dataclasses import dataclass, field
 
-from ...generators import ManifestGenerator
-from ...generators.views import MarkdownGenerator
 from ...parser import ADRParser
-from ...scope import ProjectScope, ProjectScopeResolver
+from ...scope import ProjectScope
 from ..frontend.builder import FrontendBuildResult
 from ..diagnostics import Diagnostic, DiagnosticLog
 from ..registry_bundle import assemble_registry_bundle
@@ -56,11 +54,7 @@ class ManifestBackendEmitter:
     artifact_group: str = "manifest"
 
     def emit(self) -> list[EmittedArtifact]:
-        generator = ManifestGenerator(
-            parser=self.parser,
-            scope_resolver=ProjectScopeResolver(explicit_scope=self.scope.root),
-        )
-        return [emit_manifest_artifact(generator=generator, scope=self.scope)]
+        return [emit_manifest_artifact(parser=self.parser, scope=self.scope)]
 
     def diagnostics(self) -> list[Diagnostic]:
         return []
@@ -77,11 +71,7 @@ class MarkdownBackendEmitter:
     artifact_group: str = "markdown"
 
     def emit(self) -> list[EmittedArtifact]:
-        return emit_markdown_artifacts(
-            parser=self.parser,
-            generator=MarkdownGenerator(),
-            scope=self.scope,
-        )
+        return emit_markdown_artifacts(parser=self.parser, scope=self.scope)
 
     def diagnostics(self) -> list[Diagnostic]:
         return []

@@ -398,4 +398,5 @@ class ArchitectureCompiler:
             _FixedDateTime.fixed_timestamp = timestamp
             stack.enter_context(patch("src.adr_kit.generators.architecture_index_generator.datetime", _FixedDateTime))
             stack.enter_context(patch("src.adr_kit.generators.manifest_generator.datetime", _FixedDateTime))
+            stack.enter_context(patch("src.adr_kit.compiler.backend.manifest_rendering.datetime", _FixedDateTime))
             yield

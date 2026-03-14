@@ -14,6 +14,8 @@ __all__ = [
     "emit_manifest_artifact",
     "emit_markdown_artifacts",
     "emit_registry_artifacts",
+    "render_existing_markdown_artifact",
+    "render_manifest_for_scope",
     "project_entity",
     "project_relationship",
     "project_unresolved",
@@ -37,6 +39,14 @@ def __getattr__(name: str):
             "emit_markdown_artifacts": emit_markdown_artifacts,
         }
         return exports[name]
+    if name in {"render_manifest_for_scope"}:
+        from .manifest_rendering import render_manifest_for_scope
+
+        return render_manifest_for_scope
+    if name in {"render_existing_markdown_artifact"}:
+        from .markdown_rendering import render_existing_markdown_artifact
+
+        return render_existing_markdown_artifact
     if name in {
         "PROJECTABLE_ENTITY_TYPES",
         "build_relationship_summary",

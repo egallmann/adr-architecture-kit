@@ -11,6 +11,7 @@ import yaml
 
 from ..compiler.diagnostics import DiagnosticLog
 from ..compiler.frontend.parser import CachedADRParser
+from ..compiler.passes import validate_bundle
 from ..models import (
     ArchitectureIndex,
     CanonicalSource,
@@ -196,40 +197,16 @@ class ArchitectureIndexGenerator:
         relationship_registry: RelationshipRegistry,
         unresolved_registry: UnresolvedRegistry,
     ) -> None:
-        entity_ids = {entity.id for entity in entity_registry.entities}
-        entity_lookup = {entity.id: entity for entity in entity_registry.entities}
-        relationship_keys = {
-            (item.relationship_type, item.from_entity_id, item.to_entity_id)
-            for item in relationship_registry.relationships
-        }
-        unresolved_ids = [item.id for item in unresolved_registry.unresolved]
-        if len(unresolved_ids) != len(set(unresolved_ids)):
-            duplicates = sorted(item for item in set(unresolved_ids) if unresolved_ids.count(item) > 1)
-            raise ValueError(f"Duplicate unresolved IDs detected: {', '.join(duplicates)}")
-        for relationship in relationship_registry.relationships:
-            if relationship.from_entity_id not in entity_ids or relationship.to_entity_id not in entity_ids:
-                raise ValueError(
-                    f"Relationship references unknown entity: {relationship.relationship_id}"
-                )
-        for entity in entity_registry.entities:
-            for relationship_type, targets in entity.relationships.model_dump(mode="json").items():
-                for target_id in targets:
-                    if target_id not in entity_ids:
-                        raise ValueError(
-                            f"Entity relationship summary references unknown entity: "
-                            f"{entity.id}.{relationship_type} -> {target_id}"
-                        )
-                    if (relationship_type, entity.id, target_id) not in relationship_keys:
-                        raise ValueError(
-                            f"Entity relationship summary missing registry edge: "
-                            f"{entity.id}.{relationship_type} -> {target_id}"
-                        )
-        for unresolved in unresolved_registry.unresolved:
-            if unresolved.source_entity_id not in entity_lookup:
-                raise ValueError(
-                    f"Unresolved record references unknown source entity: "
-                    f"{unresolved.id} -> {unresolved.source_entity_id}"
-                )
+        self.diagnostics.clear()
+        result = validate_bundle(
+            entity_registry,
+            relationship_registry,
+            unresolved_registry,
+            diagnostics=self.diagnostics,
+        )
+        if not result.is_valid:
+            error = result.first_error
+            raise ValueError(error.message if error is not None else "Bundle validation failed")
 
     def _legacy_entity(self, entity: NormalizedEntity) -> Optional[Entity]:
         mapping = {

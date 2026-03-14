@@ -7,6 +7,7 @@ import pytest
 from click.testing import CliRunner
 
 from src.adr_kit.compiler.frontend import CachedADRParser
+from src.adr_kit.compiler.passes import ValidateBundlePass, validate_bundle
 from src.adr_kit.cli.main import cli
 from src.adr_kit.generators import ArchitectureIndexGenerator
 from src.adr_kit.parser import ADRParser
@@ -338,4 +339,49 @@ def test_architecture_index_validation_rejects_unknown_unresolved_source_entity(
     bundle.unresolved_registry.unresolved[0].source_entity_id = "ADR-L-9999"
 
     with pytest.raises(ValueError, match="Unresolved record references unknown source entity"):
+        generator._validate_bundle(bundle.entity_registry, bundle.relationship_registry, bundle.unresolved_registry)
+
+
+def test_validate_bundle_pass_reports_deterministic_diagnostics(tmp_path):
+    adr_dir = _create_fixture(tmp_path)
+    generator = ArchitectureIndexGenerator()
+    bundle = generator.generate_from_directory(adr_dir)
+
+    component = next(entity for entity in bundle.entity_registry.entities if entity.id == "COMP-VALIDATOR")
+    component.relationships.related_to.append("MISSING-ENTITY")
+    bundle.unresolved_registry.unresolved[0].source_entity_id = "ADR-L-9999"
+
+    result = ValidateBundlePass().run(
+        bundle.entity_registry,
+        bundle.relationship_registry,
+        bundle.unresolved_registry,
+    )
+
+    assert result.is_valid is False
+    assert [(item.code, item.message) for item in result.diagnostics] == [
+        (
+            "E403",
+            "Entity relationship summary references unknown entity: COMP-VALIDATOR.related_to -> MISSING-ENTITY",
+        ),
+        (
+            "E405",
+            "Unresolved record references unknown source entity: UGAP-ADR-L-1000-GAP-1000 -> ADR-L-9999",
+        ),
+    ]
+
+
+def test_validate_bundle_helper_matches_generator_failure_message(tmp_path):
+    adr_dir = _create_fixture(tmp_path)
+    generator = ArchitectureIndexGenerator()
+    bundle = generator.generate_from_directory(adr_dir)
+    bundle.unresolved_registry.unresolved[0].source_entity_id = "ADR-L-9999"
+
+    result = validate_bundle(
+        bundle.entity_registry,
+        bundle.relationship_registry,
+        bundle.unresolved_registry,
+    )
+
+    assert result.first_error is not None
+    with pytest.raises(ValueError, match=result.first_error.message):
         generator._validate_bundle(bundle.entity_registry, bundle.relationship_registry, bundle.unresolved_registry)

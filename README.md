@@ -6,6 +6,8 @@
 
 ADR Architecture Kit implements the **Documentation-State Layer (Layer 5)** of the System of Thought Engineering (STE) framework, providing structured, schema-validated architecture documentation that AI systems can reason over deterministically.
 
+The ADR discovery/output path is now an explicit compiler pipeline: canonical ADR files are parsed once, normalized into `ArchModel`, transformed through deterministic compiler passes, and only then emitted as registries, manifest, and rendered ADR markdown.
+
 For fastest repo orientation, start with [SYSTEM-OVERVIEW.md](/c:/Users/Erik/Documents/Projects/adr-architecture-kit/SYSTEM-OVERVIEW.md).
 `SYSTEM-OVERVIEW.md` is a generated artifact. Update it with `adr generate-system-overview` and validate it with `adr validate-system-overview`.
 Rendered ADR markdown and the manifest are also generated artifacts. Refresh them with `adr generate-rendered-docs` and `adr generate-manifest`, then verify projections with `adr validate-generated-docs`.
@@ -251,12 +253,17 @@ adr governance-checks
 ```
 
 This runs the greenfield contract gate, the brownfield ratchet gate, and the full test suite.
+Use `adr governance-checks --recursive` to validate all detected scopes recursively while still running the full test suite once at the root.
 When you finish a coherent implementation slice, commit it after the relevant checks pass rather than accumulating unrelated changes.
 Use `adr compile --mode normal|strict|lenient` when you need the unified compiler path directly:
 - `normal` reports errors and returns non-zero on compile failure
 - `strict` treats any compile error as non-viable
 - `lenient` only tolerates the current post-emit drift and contract-validation error family
 - add `--recursive` to compile each detected scope independently while preserving per-scope output locations
+- add `--emit graph` to generate the additive `adrs/index/architecture-graph.yaml` navigation artifact without changing current registry contracts
+
+The discovery compiler is the authoritative path for registry, manifest, and rendered ADR generation. Compatibility generators remain available, but compiler-backed emitters consume pipeline state rather than reading ADR files independently.
+The architecture graph is an additive machine-navigation surface projected from the same compiler IR; current normalized registries remain the authoritative contract surfaces in this phase.
 
 The compatibility wrapper still exists if you need it:
 
@@ -290,7 +297,8 @@ GitHub Actions workflow (`.github/workflows/adr-governance.yml`) enforces:
 
 1. **ADR validation** - `adr validate --cross-references` must pass
 2. **Governance bundle** - `adr governance-checks` must pass, including the full test suite and contract profile gates
-3. **Generated artifact freshness** - `adr validate-generated-docs` must pass for manifest and rendered output
+   Use `adr governance-checks --recursive` when validating a multi-scope workspace locally.
+3. **Generated artifact freshness** - `adr validate-generated-docs` must pass for manifest, rendered output, and any emitted architecture graph artifacts
 4. **System overview integrity** - `adr validate-system-overview` must pass
 5. **PROJECT.yaml validation** - `adr validate-project-metadata` must pass
 6. **Runtime hygiene** - Deprecated APIs fail governance checks

@@ -5,15 +5,20 @@ from __future__ import annotations
 from pathlib import Path
 
 from .compiler import ArchitectureCompiler, CompilerConfig
-from .generators.manifest_generator import ManifestGenerator
+from .compiler.backend.manifest_rendering import MANIFEST_GENERATOR_IDENTITY, render_manifest_for_scope
+from .compiler.backend.graph_rendering import GRAPH_GENERATOR_IDENTITY, discover_graph_source_inputs
+from .compiler.backend.markdown_rendering import (
+    MARKDOWN_GENERATOR_IDENTITY,
+    render_existing_markdown_artifact,
+)
 from .generators.system_overview_generator import SystemOverviewGenerator
-from .generators.views.markdown import MarkdownGenerator
 from .integrity import (
     ArtifactKind,
     GeneratedArtifact,
     GeneratorIdentity,
     LEGACY_ENTITY_REGISTRY_GENERATOR,
     compute_source_hash,
+    extract_body_without_header,
     legacy_entity_registry_source_inputs,
 )
 from .parser import ADRParser
@@ -31,9 +36,26 @@ class ProjectionInspector:
 
     def inspect(self, artifact: GeneratedArtifact) -> tuple[str, list[Path], GeneratorIdentity]:
         if artifact.artifact_kind == ArtifactKind.MANIFEST:
-            generator = ManifestGenerator(parser=self.parser)
-            body, source_inputs = generator.render_for_scope(artifact.scope)
-            return body, source_inputs, generator.generator_identity
+            body, source_inputs = render_manifest_for_scope(parser=self.parser, scope=artifact.scope)
+            return body, source_inputs, MANIFEST_GENERATOR_IDENTITY
+
+        if artifact.artifact_kind == ArtifactKind.ARCHITECTURE_GRAPH:
+            compiler = ArchitectureCompiler()
+            result = compiler.compile(
+                artifact.scope,
+                CompilerConfig(
+                    emit={"graph"},
+                    dry_run=True,
+                ),
+            )
+            graph_artifact = next(
+                item for item in result.artifacts if item.path.as_posix() == "adrs/index/architecture-graph.yaml"
+            )
+            return (
+                extract_body_without_header(graph_artifact.content.decode("utf-8")),
+                discover_graph_source_inputs(artifact.scope),
+                GRAPH_GENERATOR_IDENTITY,
+            )
 
         if artifact.artifact_kind == ArtifactKind.LEGACY_ENTITY_REGISTRY:
             compiler = ArchitectureCompiler()
@@ -54,9 +76,12 @@ class ProjectionInspector:
             )
 
         if artifact.artifact_kind == ArtifactKind.RENDERED_ADR_MARKDOWN:
-            generator = MarkdownGenerator()
-            body, source_inputs = generator.render_existing_artifact(artifact.artifact_path, artifact.scope)
-            return body, source_inputs, generator.generator_identity
+            body, source_inputs = render_existing_markdown_artifact(
+                artifact.artifact_path,
+                scope=artifact.scope,
+                parser=self.parser,
+            )
+            return body, source_inputs, MARKDOWN_GENERATOR_IDENTITY
 
         if artifact.artifact_kind == ArtifactKind.SYSTEM_OVERVIEW:
             generator = SystemOverviewGenerator()

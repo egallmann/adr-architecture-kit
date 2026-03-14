@@ -44,6 +44,10 @@ __all__ = [
     "CachedADRParser",
     "FrontendBuildResult",
     "build_arch_model",
+    "CompilerPipeline",
+    "CompilerPipelinePass",
+    "CompilerPipelineState",
+    "build_default_frontend_pipeline",
 ]
 
 
@@ -56,6 +60,26 @@ def __getattr__(name: str):
             "CachedADRParser": CachedADRParser,
             "FrontendBuildResult": FrontendBuildResult,
             "build_arch_model": build_arch_model,
+        }
+        return exports[name]
+    if name in {
+        "CompilerPipeline",
+        "CompilerPipelinePass",
+        "CompilerPipelineState",
+        "build_default_frontend_pipeline",
+    }:
+        from .pipeline import (
+            CompilerPipeline,
+            CompilerPipelinePass,
+            CompilerPipelineState,
+            build_default_frontend_pipeline,
+        )
+
+        exports = {
+            "CompilerPipeline": CompilerPipeline,
+            "CompilerPipelinePass": CompilerPipelinePass,
+            "CompilerPipelineState": CompilerPipelineState,
+            "build_default_frontend_pipeline": build_default_frontend_pipeline,
         }
         return exports[name]
     if name in {

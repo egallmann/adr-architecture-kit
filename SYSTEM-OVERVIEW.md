@@ -5,8 +5,8 @@ artifact_kind: system_overview
 generator_id: adr-system-overview
 generator_version: 1
 hash_algorithm: sha256
-source_hash: ebec4189de6757d44b07570bda24e5c23ea8dde1069697b6ee95ffc447107856
-rendered_hash: 6c4f38c9772a41cfafa0c028c8318c2d3a7f658453ce9d8ac1929e4dd0e76973
+source_hash: c74bc959f44c7a60eec27d161906525cbd3aaeee89e230a4be5473655b8a461a
+rendered_hash: ea65b6aeec735630742d02cc92aba6e84568dee6d7e9d19ee5cecb8c89151d71
 -->
 
 ---
@@ -148,7 +148,7 @@ Use this type model when reasoning about repository architecture artifacts:
 
 ### Validate the repository
 
-Run `adr governance-checks` for the standard local governance bundle. Use `adr validate` or `adr validate --recursive` when you only need ADR schema and business-rule validation.
+Run `adr governance-checks` for the standard local governance bundle, or add `--recursive` to validate all detected scopes while keeping tests root-scoped. Use `adr validate` or `adr validate --recursive` when you only need ADR schema and business-rule validation.
 
 ### Compile through the unified driver
 
@@ -271,7 +271,7 @@ A change is not complete unless relevant checks were run.
 Minimum close-out expectation:
 
 - run targeted tests for the changed area
-- run `adr governance-checks` for the standard local governance bundle when repository behavior changed
+- run `adr governance-checks` for the standard local governance bundle when repository behavior changed, or add `--recursive` for workspace-level scope validation
 - commit each meaningful verified implementation boundary before starting the next slice
 - update `README.md` when workflow-facing behavior or orientation guidance changed
 - run `adr validate` when artifact semantics changed but the full governance bundle is unnecessary

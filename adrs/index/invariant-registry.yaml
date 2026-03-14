@@ -146,25 +146,36 @@ entities:
 - id: INV-0004
   entity_type: invariant
   name: INV-0004
-  summary: Manifest must be regenerated when ADRs change
+  summary: Compiler projection from canonical architecture state to kernel-facing
+    registry artifacts must be deterministic and contract-valid.
   canonical_source:
-    source_type: logical_adr
+    source_type: standalone_invariant
+    source_ref: INV-0004
+    artifact_path: adrs/invariants/INV-0004-deterministic-contract-valid-registry-projection.yaml
+  source_refs:
+  - source_type: logical_adr
     source_ref: ADR-L-0001#INV-0004
     artifact_path: adrs/logical/ADR-L-0001-ste-compliant-adr-system.yaml
-  source_refs: []
+    mention_role: reference
   metadata:
-    adr_id: ADR-L-0001
+    defined_in: ADR-L-0012
     scope: global
-    statement: Manifest must be regenerated when ADRs change
+    statement: Compiler projection from canonical architecture state to kernel-facing
+      registry artifacts must be deterministic and contract-valid.
     enforcement_level: must
-    declaration_mode: local
+    declaration_mode: canonical
     upheld_by_decisions: []
+    enforced_by:
+    - ADR-P-0001
+    - ADR-PC-0001
   relationships:
     declared_in:
-    - ADR-L-0001
+    - INV-0004
     references: []
     related_to: []
-    enforces: []
+    enforces:
+    - ADR-P-0001
+    - ADR-PC-0001
     enabled_by: []
     enables: []
     governs: []
@@ -177,33 +188,42 @@ entities:
     status: complete
     missing_fields: []
   provenance:
-    source_type: logical_adr
-    source_ref: ADR-L-0001#INV-0004
+    source_type: standalone_invariant
+    source_ref: INV-0004
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
 - id: INV-0005
   entity_type: invariant
   name: INV-0005
-  summary: ADR IDs must be unique across the project
+  summary: Recursive compilation must compile each resolved project scope independently
+    and must not implicitly merge architecture state across scopes.
   canonical_source:
-    source_type: logical_adr
+    source_type: standalone_invariant
+    source_ref: INV-0005
+    artifact_path: adrs/invariants/INV-0005-scope-isolated-recursive-compilation.yaml
+  source_refs:
+  - source_type: logical_adr
     source_ref: ADR-L-0001#INV-0005
     artifact_path: adrs/logical/ADR-L-0001-ste-compliant-adr-system.yaml
-  source_refs: []
+    mention_role: reference
   metadata:
-    adr_id: ADR-L-0001
+    defined_in: ADR-L-0012
     scope: global
-    statement: ADR IDs must be unique across the project
+    statement: Recursive compilation must compile each resolved project scope independently
+      and must not implicitly merge architecture state across scopes.
     enforcement_level: must
-    declaration_mode: local
+    declaration_mode: canonical
     upheld_by_decisions: []
+    enforced_by:
+    - ADR-P-0001
   relationships:
     declared_in:
-    - ADR-L-0001
+    - INV-0005
     references: []
     related_to: []
-    enforces: []
+    enforces:
+    - ADR-P-0001
     enabled_by: []
     enables: []
     governs: []
@@ -216,33 +236,44 @@ entities:
     status: complete
     missing_fields: []
   provenance:
-    source_type: logical_adr
-    source_ref: ADR-L-0001#INV-0005
+    source_type: standalone_invariant
+    source_ref: INV-0005
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
 - id: INV-0006
   entity_type: invariant
   name: INV-0006
-  summary: Schema changes must be documented in ADRs before implementation
+  summary: In-scope implementation artifacts must declare the ADRs that justify their
+    existence through @implements_adr or an equivalent metadata-level attribution
+    mechanism.
   canonical_source:
-    source_type: logical_adr
+    source_type: standalone_invariant
+    source_ref: INV-0006
+    artifact_path: adrs/invariants/INV-0006-implementation-artifacts-must-declare-architectural-authority.yaml
+  source_refs:
+  - source_type: logical_adr
     source_ref: ADR-L-0001#INV-0006
     artifact_path: adrs/logical/ADR-L-0001-ste-compliant-adr-system.yaml
-  source_refs: []
+    mention_role: reference
   metadata:
-    adr_id: ADR-L-0001
+    defined_in: ADR-L-0004
     scope: global
-    statement: Schema changes must be documented in ADRs before implementation
+    statement: In-scope implementation artifacts must declare the ADRs that justify
+      their existence through @implements_adr or an equivalent metadata-level attribution
+      mechanism.
     enforcement_level: must
-    declaration_mode: local
+    declaration_mode: canonical
     upheld_by_decisions: []
+    enforced_by:
+    - ADR-P-0001
   relationships:
     declared_in:
-    - ADR-L-0001
+    - INV-0006
     references: []
     related_to: []
-    enforces: []
+    enforces:
+    - ADR-P-0001
     enabled_by: []
     enables: []
     governs: []
@@ -255,8 +286,8 @@ entities:
     status: complete
     missing_fields: []
   provenance:
-    source_type: logical_adr
-    source_ref: ADR-L-0001#INV-0006
+    source_type: standalone_invariant
+    source_ref: INV-0006
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
@@ -890,8 +921,9 @@ entities:
 - id: INV-0027
   entity_type: invariant
   name: INV-0027
-  summary: All public classes and functions SHOULD be annotated with @implements_adr
-    decorator referencing the ADR(s) that justify their existence
+  summary: Greenfield in-scope implementation artifacts MUST declare architectural
+    authority through @implements_adr or an equivalent metadata-level attribution
+    mechanism; brownfield and migration may stage adoption under profile-s
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0004#INV-0027
@@ -900,12 +932,16 @@ entities:
   metadata:
     adr_id: ADR-L-0004
     scope: global
-    statement: 'All public classes and functions SHOULD be annotated with @implements_adr
+    statement: 'Greenfield in-scope implementation artifacts MUST declare architectural
 
-      decorator referencing the ADR(s) that justify their existence
+      authority through @implements_adr or an equivalent metadata-level
+
+      attribution mechanism; brownfield and migration may stage adoption under
+
+      profile-specific governance
 
       '
-    enforcement_level: should
+    enforcement_level: must
     declaration_mode: local
     upheld_by_decisions: []
   relationships:
@@ -934,7 +970,8 @@ entities:
 - id: INV-0028
   entity_type: invariant
   name: INV-0028
-  summary: Decorator references MUST point to existing, accepted ADRs
+  summary: Implementation attribution references MUST resolve to existing ADRs, and
+    references to superseded ADRs MUST be surfaced as governance warnings
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0004#INV-0028
@@ -943,7 +980,10 @@ entities:
   metadata:
     adr_id: ADR-L-0004
     scope: global
-    statement: 'Decorator references MUST point to existing, accepted ADRs
+    statement: 'Implementation attribution references MUST resolve to existing ADRs,
+      and
+
+      references to superseded ADRs MUST be surfaced as governance warnings
 
       '
     enforcement_level: must
@@ -975,8 +1015,8 @@ entities:
 - id: INV-0029
   entity_type: invariant
   name: INV-0029
-  summary: ADRs that declare components with implementation_identifiers MUST have
-    corresponding code with matching decorators
+  summary: Implementation attribution evidence MUST preserve provenance identifying
+    the source artifact and extractor responsible for the claim
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0004#INV-0029
@@ -985,10 +1025,9 @@ entities:
   metadata:
     adr_id: ADR-L-0004
     scope: global
-    statement: 'ADRs that declare components with implementation_identifiers MUST
-      have
+    statement: 'Implementation attribution evidence MUST preserve provenance identifying
 
-      corresponding code with matching decorators
+      the source artifact and extractor responsible for the claim
 
       '
     enforcement_level: must
@@ -1065,8 +1104,9 @@ entities:
 - id: INV-0031
   entity_type: invariant
   name: INV-0031
-  summary: Traceability rules MUST be encoded in rule-library sub-module, not hardcoded
-    in validators
+  summary: adr-architecture-kit MUST define the canonical architecture-intent attribution
+    rule and evidence contract without taking on direct source-code parsing responsibilities
+    for downstream repositories
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0004#INV-0031
@@ -1075,9 +1115,11 @@ entities:
   metadata:
     adr_id: ADR-L-0004
     scope: global
-    statement: 'Traceability rules MUST be encoded in rule-library sub-module, not
+    statement: 'adr-architecture-kit MUST define the canonical architecture-intent
 
-      hardcoded in validators
+      attribution rule and evidence contract without taking on direct source-code
+
+      parsing responsibilities for downstream repositories
 
       '
     enforcement_level: must
@@ -1109,7 +1151,8 @@ entities:
 - id: INV-0032
   entity_type: invariant
   name: INV-0032
-  summary: Rule library SHOULD support both file-based and MCP-based rule delivery
+  summary: Downstream extractors and rule-delivery systems SHOULD consume ADR-Kit
+    attribution contracts rather than redefining them independently
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0004#INV-0032
@@ -1118,7 +1161,9 @@ entities:
   metadata:
     adr_id: ADR-L-0004
     scope: global
-    statement: 'Rule library SHOULD support both file-based and MCP-based rule delivery
+    statement: 'Downstream extractors and rule-delivery systems SHOULD consume ADR-Kit
+
+      attribution contracts rather than redefining them independently
 
       '
     enforcement_level: should
@@ -2250,6 +2295,53 @@ entities:
   provenance:
     source_type: logical_adr
     source_ref: ADR-L-0011#INV-0057
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
+- id: INV-0058
+  entity_type: invariant
+  name: INV-0058
+  summary: Federation and aggregation layers MUST treat each repository as authoritative
+    over its own canonical registries and MUST NOT mutate those registries during
+    federation.
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0012#INV-0058
+    artifact_path: adrs/logical/ADR-L-0012-federation-authority-and-qualified-identity.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0012
+    scope: global
+    statement: 'Federation and aggregation layers MUST treat each repository as
+
+      authoritative over its own canonical registries and MUST NOT mutate those
+
+      registries during federation.
+
+      '
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions: []
+  relationships:
+    declared_in:
+    - ADR-L-0012
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0012#INV-0058
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index

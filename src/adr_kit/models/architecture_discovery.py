@@ -117,6 +117,53 @@ class RelationshipRegistry(BaseModel):
     relationships: List[RelationshipRecord] = Field(default_factory=list)
 
 
+class ArchitectureGraphNode(BaseModel):
+    """Node record for the additive architecture graph artifact."""
+
+    id: str
+    entity_type: Literal["adr", "system", "component", "decision", "capability", "invariant"]
+    name: str
+    canonical_source: CanonicalSource
+
+
+class ArchitectureGraphEdge(BaseModel):
+    """Edge record for the additive architecture graph artifact."""
+
+    relationship_id: str
+    relationship_type: Literal[
+        "declared_in",
+        "references",
+        "related_to",
+        "enforces",
+        "enabled_by",
+        "enables",
+        "governs",
+        "implemented_by",
+        "embodied_in",
+        "supersedes",
+        "superseded_by",
+        "refines",
+    ]
+    source_entity_id: str
+    target_entity_id: str
+    provenance_classification: Literal["explicit", "derived", "heuristic"]
+    evidence: List[str] = Field(default_factory=list)
+    canonical_source_ref: str
+    confidence: float = Field(default=1.0, ge=0.0, le=1.0)
+    metadata: Dict[str, Any] = Field(default_factory=dict)
+
+
+class ArchitectureGraph(BaseModel):
+    """Additive graph navigation artifact projected from compiler IR."""
+
+    schema_version: str = "1.0"
+    type: Literal["architecture_graph"] = "architecture_graph"
+    architecture_namespace: str
+    generated_at: datetime
+    nodes: List[ArchitectureGraphNode] = Field(default_factory=list)
+    edges: List[ArchitectureGraphEdge] = Field(default_factory=list)
+
+
 class UnresolvedRecord(BaseModel):
     """Unresolved architecture signal."""
 

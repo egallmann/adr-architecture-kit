@@ -109,6 +109,8 @@ def test_generate_and_validate_rendered_docs_cli(tmp_path):
 
     manifest_result = runner.invoke(cli, ["generate-manifest", "--scope", str(workspace)])
     assert manifest_result.exit_code == 0, manifest_result.output
+    graph_result = runner.invoke(cli, ["compile", "--scope", str(workspace), "--emit", "graph"])
+    assert graph_result.exit_code == 0, graph_result.output
     registry_result = runner.invoke(cli, ["generate-entity-registry", "--scope", str(workspace)])
     assert registry_result.exit_code == 0, registry_result.output
 
@@ -118,6 +120,8 @@ def test_generate_and_validate_rendered_docs_cli(tmp_path):
     rendered_file = workspace / "adrs" / "rendered" / "ADR-L-9999.md"
     rendered_header = parse_integrity_header(rendered_file.read_text(encoding="utf-8"))
     assert rendered_header["artifact_kind"] == "rendered_adr_markdown"
+    graph_header = parse_integrity_header((workspace / "adrs" / "index" / "architecture-graph.yaml").read_text(encoding="utf-8"))
+    assert graph_header["artifact_kind"] == "architecture_graph"
     registry_header = parse_integrity_header((workspace / "adrs" / "entities" / "registry.yaml").read_text(encoding="utf-8"))
     assert registry_header["artifact_kind"] == "legacy_entity_registry"
 
@@ -170,6 +174,7 @@ def test_validate_generated_docs_recursive_is_scope_local(tmp_path):
     runner = CliRunner()
 
     assert runner.invoke(cli, ["generate-manifest", "--scope", str(workspace), "--recursive"]).exit_code == 0
+    assert runner.invoke(cli, ["compile", "--scope", str(workspace), "--emit", "graph", "--recursive"]).exit_code == 0
     assert runner.invoke(cli, ["generate-entity-registry", "--scope", str(workspace), "--recursive"]).exit_code == 0
     assert runner.invoke(cli, ["generate-rendered-docs", "--scope", str(workspace), "--recursive"]).exit_code == 0
     validator = GeneratedArtifactValidator(scope_resolver=ProjectScopeResolver(explicit_scope=workspace))
@@ -207,6 +212,24 @@ def test_validate_generated_docs_reports_tampered_legacy_registry(tmp_path):
     assert "registry.yaml" in result.output
 
 
+def test_validate_generated_docs_reports_tampered_architecture_graph(tmp_path):
+    workspace = tmp_path / "workspace"
+    _write_workspace(workspace)
+    runner = CliRunner()
+
+    assert runner.invoke(cli, ["compile", "--scope", str(workspace), "--emit", "graph"]).exit_code == 0
+    graph_file = workspace / "adrs" / "index" / "architecture-graph.yaml"
+    graph_file.write_text(
+        graph_file.read_text(encoding="utf-8") + "\nmanual edit\n",
+        encoding="utf-8",
+    )
+
+    result = runner.invoke(cli, ["validate-generated-docs", "--scope", str(workspace)])
+    assert result.exit_code != 0
+    assert GeneratedArtifactStatus.TAMPERED_GENERATED_OUTPUT.value in result.output
+    assert "architecture-graph.yaml" in result.output
+
+
 def test_validate_generated_docs_reports_stale_legacy_registry(tmp_path):
     workspace = tmp_path / "workspace"
     _write_workspace(workspace)
@@ -223,3 +246,21 @@ def test_validate_generated_docs_reports_stale_legacy_registry(tmp_path):
     assert result.exit_code != 0
     assert GeneratedArtifactStatus.STALE_GENERATED_OUTPUT.value in result.output
     assert "registry.yaml" in result.output
+
+
+def test_validate_generated_docs_reports_stale_architecture_graph(tmp_path):
+    workspace = tmp_path / "workspace"
+    _write_workspace(workspace)
+    runner = CliRunner()
+
+    assert runner.invoke(cli, ["compile", "--scope", str(workspace), "--emit", "graph"]).exit_code == 0
+    source_file = workspace / "adrs" / "logical" / "ADR-L-9999-minimal-valid-logical-adr.yaml"
+    source_file.write_text(
+        source_file.read_text(encoding="utf-8").replace("Minimal Valid Logical ADR", "Updated Logical ADR"),
+        encoding="utf-8",
+    )
+
+    result = runner.invoke(cli, ["validate-generated-docs", "--scope", str(workspace)])
+    assert result.exit_code != 0
+    assert GeneratedArtifactStatus.STALE_GENERATED_OUTPUT.value in result.output
+    assert "architecture-graph.yaml" in result.output

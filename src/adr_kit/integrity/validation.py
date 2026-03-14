@@ -65,6 +65,9 @@ class GeneratedArtifactValidator:
         artifacts: list[GeneratedArtifact] = []
         if scope.manifest_path.exists():
             artifacts.append(GeneratedArtifact(scope.manifest_path, ArtifactKind.MANIFEST, scope))
+        architecture_graph = scope.adr_dir / "index" / "architecture-graph.yaml"
+        if architecture_graph.exists():
+            artifacts.append(GeneratedArtifact(architecture_graph, ArtifactKind.ARCHITECTURE_GRAPH, scope))
         legacy_entity_registry = scope.adr_dir / "entities" / "registry.yaml"
         if legacy_entity_registry.exists():
             artifacts.append(GeneratedArtifact(legacy_entity_registry, ArtifactKind.LEGACY_ENTITY_REGISTRY, scope))

@@ -17,9 +17,9 @@ unresolved:
   - Decorator library not yet implemented
 - id: UGAP-ADR-L-0004-GAP-0002
   gap_class: author_declared
-  gap_type: author_declared_deferred_gap
+  gap_type: author_declared_real_gap
   source_entity_id: ADR-L-0004
-  severity: advisory
+  severity: important
   provenance:
     source_type: derived_registry
     source_ref: ADR-L-0004#GAP-0002
@@ -28,12 +28,12 @@ unresolved:
     generator: adr-architecture-index
   evidence:
   - ADR-L-0004
-  - ste-rules-library integration into adr-architecture-kit not yet wired
+  - Implementation attribution evidence contract not yet populated by downstream extraction
 - id: UGAP-ADR-L-0004-GAP-0003
   gap_class: author_declared
   gap_type: author_declared_deferred_gap
   source_entity_id: ADR-L-0004
-  severity: important
+  severity: advisory
   provenance:
     source_type: derived_registry
     source_ref: ADR-L-0004#GAP-0003
@@ -42,7 +42,7 @@ unresolved:
     generator: adr-architecture-index
   evidence:
   - ADR-L-0004
-  - RECON doesn't extract decorator metadata
+  - Legacy onboarding rollout for adr-architecture-kit itself is not yet started
 - id: UGAP-ADR-L-0004-GAP-0004
   gap_class: author_declared
   gap_type: author_declared_deferred_gap
@@ -56,7 +56,7 @@ unresolved:
     generator: adr-architecture-index
   evidence:
   - ADR-L-0004
-  - MCP integration for rule delivery not designed
+  - ste-rules-library activation for intent-attribution enforcement remains staged
 - id: UGAP-ADR-L-0005-GAP-0002
   gap_class: author_declared
   gap_type: author_declared_real_gap

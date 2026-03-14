@@ -21,6 +21,11 @@ def main() -> int:
         action="store_true",
         help="Skip the full pytest run.",
     )
+    parser.add_argument(
+        "--recursive",
+        action="store_true",
+        help="Run governance checks for all detected scopes recursively.",
+    )
     args = parser.parse_args()
 
     command = [
@@ -30,6 +35,8 @@ def main() -> int:
     ]
     if args.skip_tests:
         command.append("--skip-tests")
+    if args.recursive:
+        command.append("--recursive")
 
     try:
         cli.main(args=command, prog_name="adr", standalone_mode=False)

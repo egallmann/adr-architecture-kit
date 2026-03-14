@@ -145,10 +145,10 @@ entities:
     generator: adr-architecture-index
 - id: ADR-L-0004
   entity_type: adr
-  name: ADR-to-Code Traceability via Decorators
-  summary: Architecture Decision Records document WHY code exists, but there's no
-    machine-verifiable link from implementation back to the ADRs that justify it.
-    This ADR defines the foundation for a multi-tier governance architectur
+  name: ADR-to-Implementation Traceability via Decorators and Metadata Attribution
+  summary: Architecture Decision Records document why implementation artifacts exist,
+    but the repo still lacks a universal, machine-verifiable way to trace code, infrastructure,
+    configuration, schemas, pipelines, and scripts back t
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0004
@@ -173,6 +173,8 @@ entities:
     - ADR-L-0001
     - ADR-L-0002
     - ADR-L-0003
+    - ADR-L-0010
+    - ADR-L-0012
     related_to: []
     enforces: []
     enabled_by: []
@@ -466,6 +468,7 @@ entities:
     - ADR-L-0001
     - ADR-L-0008
     - ADR-L-0009
+    - ADR-L-0012
     - ADR-P-0001
     - ADR-PC-0001
     related_to: []
@@ -533,6 +536,55 @@ entities:
   provenance:
     source_type: logical_adr
     source_ref: ADR-L-0011
+    extraction_phase: extract_adr
+    classification: explicit
+    generator: adr-architecture-index
+- id: ADR-L-0012
+  entity_type: adr
+  name: Federation Authority and Qualified Identity Model
+  summary: The current compiler and recursive multi-scope behavior preserve scope-local
+    compilation boundaries, but the STE ecosystem is moving toward federation across
+    independently compiled repositories. The planning material est
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0012
+    artifact_path: adrs/logical/ADR-L-0012-federation-authority-and-qualified-identity.yaml
+  source_refs: []
+  metadata:
+    status: proposed
+    domains:
+    - federation
+    - identity
+    - governance
+    - multi-repo
+    tags:
+    - federation
+    - qualified-id
+    - namespace
+    - authority
+  relationships:
+    declared_in: []
+    references:
+    - ADR-L-0002
+    - ADR-L-0007
+    - ADR-L-0010
+    - ADR-PS-0001
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0012
     extraction_phase: extract_adr
     classification: explicit
     generator: adr-architecture-index
@@ -2212,9 +2264,9 @@ entities:
     generator: adr-architecture-index
 - id: CAP-0021
   entity_type: capability
-  name: Decorator-Based Code Annotation
-  summary: Python decorators that annotate code with ADR references, creating machine-readable
-    traceability metadata.
+  name: Architecture Intent Attribution
+  summary: Explicit declaration of architectural authority across code and other implementation
+    artifacts through decorators or metadata-level attribution.
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0004#CAP-0021
@@ -2339,8 +2391,8 @@ entities:
 - id: CAP-0024
   entity_type: capability
   name: Bidirectional Traceability Verification
-  summary: Automated verification that code matches ADR declarations in both directions
-    (ADR→Code and Code→ADR).
+  summary: Automated verification that implementation attribution and ADR declarations
+    agree in both directions.
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0004#CAP-0024
@@ -2464,9 +2516,9 @@ entities:
     generator: adr-architecture-index
 - id: CAP-0027
   entity_type: capability
-  name: Rule Library Sub-Module
-  summary: Separate sub-module that encodes traceability rules as first-class architectural
-    artifacts, supporting both file-based and MCP-based delivery.
+  name: Profile-Aware Legacy Onboarding for Intent Attribution
+  summary: Govern intent-attribution adoption with the existing greenfield, brownfield,
+    and migration profiles instead of a separate legacy mode.
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0004#CAP-0027
@@ -2589,9 +2641,9 @@ entities:
     generator: adr-architecture-index
 - id: CAP-0030
   entity_type: capability
-  name: RECON Integration for Decorator Extraction
-  summary: RECON extracts decorator metadata from Python code, making traceability
-    information available in semantic graph.
+  name: Implementation Attribution Evidence Handoff
+  summary: A compiler-owned evidence contract that downstream extractors populate
+    with implementation-to-ADR attribution claims and provenance.
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0004#CAP-0030
@@ -2923,6 +2975,48 @@ entities:
   provenance:
     source_type: logical_adr
     source_ref: ADR-L-0011#CAP-0037
+    extraction_phase: extract_capability
+    classification: explicit
+    generator: adr-architecture-index
+- id: CAP-0038
+  entity_type: capability
+  name: Federated Qualified Identity Resolution
+  summary: Support unambiguous multi-repository entity references using namespaces
+    and qualified identifiers while preserving bare local references in source ADRs.
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0012#CAP-0038
+    artifact_path: adrs/logical/ADR-L-0012-federation-authority-and-qualified-identity.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0012
+    domains:
+    - federation
+    - identity
+    - governance
+    - multi-repo
+    implemented_by_components: []
+    enabled_by_decisions: []
+  relationships:
+    declared_in:
+    - ADR-L-0012
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0012#CAP-0038
     extraction_phase: extract_capability
     classification: explicit
     generator: adr-architecture-index
@@ -3321,10 +3415,10 @@ entities:
     generator: adr-architecture-index
 - id: DEC-0009
   entity_type: decision
-  name: Adopt Decorator-Based ADR Traceability
-  summary: 'Python decorators provide a non-invasive way to annotate code with architectural
-    metadata without affecting runtime behavior. Benefits: 1. **Machine-readable**:
-    Decorators are parseable by AST analysis 2. **Non-invasive*'
+  name: Adopt explicit architecture intent attribution for implementation artifacts
+  summary: 'Implementation surfaces need explicit, extractable architecture authority.
+    For code, decorators remain the canonical mechanism: - `@implements_adr(...)`
+    - `@enforces_invariant(...)` For infrastructure and adjacent non-co'
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0004#DEC-0009
@@ -3621,10 +3715,11 @@ entities:
     generator: adr-architecture-index
 - id: DEC-0016
   entity_type: decision
-  name: Create Rule Library Sub-Module as MCP Service
-  summary: 'ADR traceability rules should be encoded in a separate rule-library sub-module
-    that acts as an MCP service, not hardcoded in validators. ## Multi-Tier Governance
-    Architecture **Projects** define ADRs with invariants and '
+  name: Stage downstream extraction and rule activation after ADR-Kit authority is
+    defined
+  summary: adr-architecture-kit should first define the canonical rule, evidence contract,
+    and profile-aware validation semantics. Source extraction, runtime rule activation,
+    and any shared ecosystem delivery should build on that a
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0004#DEC-0016
@@ -3920,9 +4015,9 @@ entities:
 - id: DEC-0023
   entity_type: decision
   name: Support Bidirectional Verification
-  summary: 'Traceability must work in both directions: **Forward (ADR → Code)**: -
-    ADR declares component with implementation_identifiers - Verify that code exists
-    and has correct decorators **Reverse (Code → ADR)**: - Code has @imp'
+  summary: 'Traceability must work in both directions: **Forward (ADR -> Implementation)**:
+    - ADR declares component or system implementation identifiers - Verify that downstream
+    attribution evidence resolves to the declared authori'
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0004#DEC-0023
@@ -4847,6 +4942,218 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
+- id: DEC-0045
+  entity_type: decision
+  name: Treat federation as a read-only aggregation layer over per-repo canonical
+    registries
+  summary: Per-repository registries remain the canonical architecture outputs for
+    their owning repository. Federation exists to read, index, merge, and query across
+    those outputs; it must not rewrite or mutate them.
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0012#DEC-0045
+    artifact_path: adrs/logical/ADR-L-0012-federation-authority-and-qualified-identity.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0012
+    related_invariants: []
+    enforces_invariants: []
+    enables_capabilities: []
+    governs_components: []
+    supersedes: []
+    refines: []
+  relationships:
+    declared_in:
+    - ADR-L-0012
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0012#DEC-0045
+    extraction_phase: extract_decision
+    classification: explicit
+    generator: adr-architecture-index
+- id: DEC-0046
+  entity_type: decision
+  name: Use provider-authoritative conflict resolution for federated entity definitions
+  summary: When one repository references an entity defined by another repository,
+    the defining repository is the authority on that entity's name, status, and metadata.
+    Consumers may declare relationships to the entity, but they do
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0012#DEC-0046
+    artifact_path: adrs/logical/ADR-L-0012-federation-authority-and-qualified-identity.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0012
+    related_invariants: []
+    enforces_invariants: []
+    enables_capabilities: []
+    governs_components: []
+    supersedes: []
+    refines: []
+  relationships:
+    declared_in:
+    - ADR-L-0012
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0012#DEC-0046
+    extraction_phase: extract_decision
+    classification: explicit
+    generator: adr-architecture-index
+- id: DEC-0047
+  entity_type: decision
+  name: Keep namespace separate from bare ID and use qualification only for cross-repo
+    references
+  summary: Single-repo authoring should remain simple and backward compatible, while
+    federation requires globally unambiguous identity. Separating namespace from bare
+    ID preserves local ergonomics while enabling global qualificatio
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0012#DEC-0047
+    artifact_path: adrs/logical/ADR-L-0012-federation-authority-and-qualified-identity.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0012
+    related_invariants: []
+    enforces_invariants: []
+    enables_capabilities: []
+    governs_components: []
+    supersedes: []
+    refines: []
+  relationships:
+    declared_in:
+    - ADR-L-0012
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0012#DEC-0047
+    extraction_phase: extract_decision
+    classification: explicit
+    generator: adr-architecture-index
+- id: DEC-0048
+  entity_type: decision
+  name: Define a compiler-owned implementation attribution evidence contract
+  summary: adr-architecture-kit needs a canonical handoff surface for implementation
+    attribution evidence without taking on source parsing itself. A small, compiler-owned
+    schema and model let downstream extractors emit consistent a
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0004#DEC-0048
+    artifact_path: adrs/logical/ADR-L-0004-adr-to-code-traceability-via-decorators.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0004
+    related_invariants: []
+    enforces_invariants: []
+    enables_capabilities: []
+    governs_components: []
+    supersedes: []
+    refines: []
+  relationships:
+    declared_in:
+    - ADR-L-0004
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0004#DEC-0048
+    extraction_phase: extract_decision
+    classification: explicit
+    generator: adr-architecture-index
+- id: DEC-0049
+  entity_type: decision
+  name: Use existing contract profiles for legacy intent-attribution onboarding
+  summary: Greenfield, brownfield, and migration already express the repo's adoption
+    postures. Intent attribution onboarding should use those same profiles rather
+    than creating a second transition taxonomy.
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0004#DEC-0049
+    artifact_path: adrs/logical/ADR-L-0004-adr-to-code-traceability-via-decorators.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0004
+    related_invariants: []
+    enforces_invariants: []
+    enables_capabilities: []
+    governs_components: []
+    supersedes: []
+    refines: []
+  relationships:
+    declared_in:
+    - ADR-L-0004
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0004#DEC-0049
+    extraction_phase: extract_decision
+    classification: explicit
+    generator: adr-architecture-index
 - id: INV-0001
   entity_type: invariant
   name: INV-0001
@@ -4992,25 +5299,36 @@ entities:
 - id: INV-0004
   entity_type: invariant
   name: INV-0004
-  summary: Manifest must be regenerated when ADRs change
+  summary: Compiler projection from canonical architecture state to kernel-facing
+    registry artifacts must be deterministic and contract-valid.
   canonical_source:
-    source_type: logical_adr
+    source_type: standalone_invariant
+    source_ref: INV-0004
+    artifact_path: adrs/invariants/INV-0004-deterministic-contract-valid-registry-projection.yaml
+  source_refs:
+  - source_type: logical_adr
     source_ref: ADR-L-0001#INV-0004
     artifact_path: adrs/logical/ADR-L-0001-ste-compliant-adr-system.yaml
-  source_refs: []
+    mention_role: reference
   metadata:
-    adr_id: ADR-L-0001
+    defined_in: ADR-L-0012
     scope: global
-    statement: Manifest must be regenerated when ADRs change
+    statement: Compiler projection from canonical architecture state to kernel-facing
+      registry artifacts must be deterministic and contract-valid.
     enforcement_level: must
-    declaration_mode: local
+    declaration_mode: canonical
     upheld_by_decisions: []
+    enforced_by:
+    - ADR-P-0001
+    - ADR-PC-0001
   relationships:
     declared_in:
-    - ADR-L-0001
+    - INV-0004
     references: []
     related_to: []
-    enforces: []
+    enforces:
+    - ADR-P-0001
+    - ADR-PC-0001
     enabled_by: []
     enables: []
     governs: []
@@ -5023,33 +5341,42 @@ entities:
     status: complete
     missing_fields: []
   provenance:
-    source_type: logical_adr
-    source_ref: ADR-L-0001#INV-0004
+    source_type: standalone_invariant
+    source_ref: INV-0004
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
 - id: INV-0005
   entity_type: invariant
   name: INV-0005
-  summary: ADR IDs must be unique across the project
+  summary: Recursive compilation must compile each resolved project scope independently
+    and must not implicitly merge architecture state across scopes.
   canonical_source:
-    source_type: logical_adr
+    source_type: standalone_invariant
+    source_ref: INV-0005
+    artifact_path: adrs/invariants/INV-0005-scope-isolated-recursive-compilation.yaml
+  source_refs:
+  - source_type: logical_adr
     source_ref: ADR-L-0001#INV-0005
     artifact_path: adrs/logical/ADR-L-0001-ste-compliant-adr-system.yaml
-  source_refs: []
+    mention_role: reference
   metadata:
-    adr_id: ADR-L-0001
+    defined_in: ADR-L-0012
     scope: global
-    statement: ADR IDs must be unique across the project
+    statement: Recursive compilation must compile each resolved project scope independently
+      and must not implicitly merge architecture state across scopes.
     enforcement_level: must
-    declaration_mode: local
+    declaration_mode: canonical
     upheld_by_decisions: []
+    enforced_by:
+    - ADR-P-0001
   relationships:
     declared_in:
-    - ADR-L-0001
+    - INV-0005
     references: []
     related_to: []
-    enforces: []
+    enforces:
+    - ADR-P-0001
     enabled_by: []
     enables: []
     governs: []
@@ -5062,33 +5389,44 @@ entities:
     status: complete
     missing_fields: []
   provenance:
-    source_type: logical_adr
-    source_ref: ADR-L-0001#INV-0005
+    source_type: standalone_invariant
+    source_ref: INV-0005
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
 - id: INV-0006
   entity_type: invariant
   name: INV-0006
-  summary: Schema changes must be documented in ADRs before implementation
+  summary: In-scope implementation artifacts must declare the ADRs that justify their
+    existence through @implements_adr or an equivalent metadata-level attribution
+    mechanism.
   canonical_source:
-    source_type: logical_adr
+    source_type: standalone_invariant
+    source_ref: INV-0006
+    artifact_path: adrs/invariants/INV-0006-implementation-artifacts-must-declare-architectural-authority.yaml
+  source_refs:
+  - source_type: logical_adr
     source_ref: ADR-L-0001#INV-0006
     artifact_path: adrs/logical/ADR-L-0001-ste-compliant-adr-system.yaml
-  source_refs: []
+    mention_role: reference
   metadata:
-    adr_id: ADR-L-0001
+    defined_in: ADR-L-0004
     scope: global
-    statement: Schema changes must be documented in ADRs before implementation
+    statement: In-scope implementation artifacts must declare the ADRs that justify
+      their existence through @implements_adr or an equivalent metadata-level attribution
+      mechanism.
     enforcement_level: must
-    declaration_mode: local
+    declaration_mode: canonical
     upheld_by_decisions: []
+    enforced_by:
+    - ADR-P-0001
   relationships:
     declared_in:
-    - ADR-L-0001
+    - INV-0006
     references: []
     related_to: []
-    enforces: []
+    enforces:
+    - ADR-P-0001
     enabled_by: []
     enables: []
     governs: []
@@ -5101,8 +5439,8 @@ entities:
     status: complete
     missing_fields: []
   provenance:
-    source_type: logical_adr
-    source_ref: ADR-L-0001#INV-0006
+    source_type: standalone_invariant
+    source_ref: INV-0006
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
@@ -5736,8 +6074,9 @@ entities:
 - id: INV-0027
   entity_type: invariant
   name: INV-0027
-  summary: All public classes and functions SHOULD be annotated with @implements_adr
-    decorator referencing the ADR(s) that justify their existence
+  summary: Greenfield in-scope implementation artifacts MUST declare architectural
+    authority through @implements_adr or an equivalent metadata-level attribution
+    mechanism; brownfield and migration may stage adoption under profile-s
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0004#INV-0027
@@ -5746,12 +6085,16 @@ entities:
   metadata:
     adr_id: ADR-L-0004
     scope: global
-    statement: 'All public classes and functions SHOULD be annotated with @implements_adr
+    statement: 'Greenfield in-scope implementation artifacts MUST declare architectural
 
-      decorator referencing the ADR(s) that justify their existence
+      authority through @implements_adr or an equivalent metadata-level
+
+      attribution mechanism; brownfield and migration may stage adoption under
+
+      profile-specific governance
 
       '
-    enforcement_level: should
+    enforcement_level: must
     declaration_mode: local
     upheld_by_decisions: []
   relationships:
@@ -5780,7 +6123,8 @@ entities:
 - id: INV-0028
   entity_type: invariant
   name: INV-0028
-  summary: Decorator references MUST point to existing, accepted ADRs
+  summary: Implementation attribution references MUST resolve to existing ADRs, and
+    references to superseded ADRs MUST be surfaced as governance warnings
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0004#INV-0028
@@ -5789,7 +6133,10 @@ entities:
   metadata:
     adr_id: ADR-L-0004
     scope: global
-    statement: 'Decorator references MUST point to existing, accepted ADRs
+    statement: 'Implementation attribution references MUST resolve to existing ADRs,
+      and
+
+      references to superseded ADRs MUST be surfaced as governance warnings
 
       '
     enforcement_level: must
@@ -5821,8 +6168,8 @@ entities:
 - id: INV-0029
   entity_type: invariant
   name: INV-0029
-  summary: ADRs that declare components with implementation_identifiers MUST have
-    corresponding code with matching decorators
+  summary: Implementation attribution evidence MUST preserve provenance identifying
+    the source artifact and extractor responsible for the claim
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0004#INV-0029
@@ -5831,10 +6178,9 @@ entities:
   metadata:
     adr_id: ADR-L-0004
     scope: global
-    statement: 'ADRs that declare components with implementation_identifiers MUST
-      have
+    statement: 'Implementation attribution evidence MUST preserve provenance identifying
 
-      corresponding code with matching decorators
+      the source artifact and extractor responsible for the claim
 
       '
     enforcement_level: must
@@ -5911,8 +6257,9 @@ entities:
 - id: INV-0031
   entity_type: invariant
   name: INV-0031
-  summary: Traceability rules MUST be encoded in rule-library sub-module, not hardcoded
-    in validators
+  summary: adr-architecture-kit MUST define the canonical architecture-intent attribution
+    rule and evidence contract without taking on direct source-code parsing responsibilities
+    for downstream repositories
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0004#INV-0031
@@ -5921,9 +6268,11 @@ entities:
   metadata:
     adr_id: ADR-L-0004
     scope: global
-    statement: 'Traceability rules MUST be encoded in rule-library sub-module, not
+    statement: 'adr-architecture-kit MUST define the canonical architecture-intent
 
-      hardcoded in validators
+      attribution rule and evidence contract without taking on direct source-code
+
+      parsing responsibilities for downstream repositories
 
       '
     enforcement_level: must
@@ -5955,7 +6304,8 @@ entities:
 - id: INV-0032
   entity_type: invariant
   name: INV-0032
-  summary: Rule library SHOULD support both file-based and MCP-based rule delivery
+  summary: Downstream extractors and rule-delivery systems SHOULD consume ADR-Kit
+    attribution contracts rather than redefining them independently
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0004#INV-0032
@@ -5964,7 +6314,9 @@ entities:
   metadata:
     adr_id: ADR-L-0004
     scope: global
-    statement: 'Rule library SHOULD support both file-based and MCP-based rule delivery
+    statement: 'Downstream extractors and rule-delivery systems SHOULD consume ADR-Kit
+
+      attribution contracts rather than redefining them independently
 
       '
     enforcement_level: should
@@ -7099,6 +7451,53 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
+- id: INV-0058
+  entity_type: invariant
+  name: INV-0058
+  summary: Federation and aggregation layers MUST treat each repository as authoritative
+    over its own canonical registries and MUST NOT mutate those registries during
+    federation.
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0012#INV-0058
+    artifact_path: adrs/logical/ADR-L-0012-federation-authority-and-qualified-identity.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0012
+    scope: global
+    statement: 'Federation and aggregation layers MUST treat each repository as
+
+      authoritative over its own canonical registries and MUST NOT mutate those
+
+      registries during federation.
+
+      '
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions: []
+  relationships:
+    declared_in:
+    - ADR-L-0012
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0012#INV-0058
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
 - id: SYS-0001
   entity_type: system
   name: ADR Architecture Kit Discovery and Indexing System
@@ -7114,6 +7513,7 @@ entities:
     adr_id: ADR-PS-0001
     implements_logical:
     - ADR-L-0009
+    - ADR-L-0012
     technologies:
     - python
     - pyyaml

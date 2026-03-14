@@ -840,9 +840,9 @@ entities:
     generator: adr-architecture-index
 - id: CAP-0021
   entity_type: capability
-  name: Decorator-Based Code Annotation
-  summary: Python decorators that annotate code with ADR references, creating machine-readable
-    traceability metadata.
+  name: Architecture Intent Attribution
+  summary: Explicit declaration of architectural authority across code and other implementation
+    artifacts through decorators or metadata-level attribution.
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0004#CAP-0021
@@ -967,8 +967,8 @@ entities:
 - id: CAP-0024
   entity_type: capability
   name: Bidirectional Traceability Verification
-  summary: Automated verification that code matches ADR declarations in both directions
-    (ADR→Code and Code→ADR).
+  summary: Automated verification that implementation attribution and ADR declarations
+    agree in both directions.
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0004#CAP-0024
@@ -1092,9 +1092,9 @@ entities:
     generator: adr-architecture-index
 - id: CAP-0027
   entity_type: capability
-  name: Rule Library Sub-Module
-  summary: Separate sub-module that encodes traceability rules as first-class architectural
-    artifacts, supporting both file-based and MCP-based delivery.
+  name: Profile-Aware Legacy Onboarding for Intent Attribution
+  summary: Govern intent-attribution adoption with the existing greenfield, brownfield,
+    and migration profiles instead of a separate legacy mode.
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0004#CAP-0027
@@ -1217,9 +1217,9 @@ entities:
     generator: adr-architecture-index
 - id: CAP-0030
   entity_type: capability
-  name: RECON Integration for Decorator Extraction
-  summary: RECON extracts decorator metadata from Python code, making traceability
-    information available in semantic graph.
+  name: Implementation Attribution Evidence Handoff
+  summary: A compiler-owned evidence contract that downstream extractors populate
+    with implementation-to-ADR attribution claims and provenance.
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0004#CAP-0030
@@ -1551,6 +1551,48 @@ entities:
   provenance:
     source_type: logical_adr
     source_ref: ADR-L-0011#CAP-0037
+    extraction_phase: extract_capability
+    classification: explicit
+    generator: adr-architecture-index
+- id: CAP-0038
+  entity_type: capability
+  name: Federated Qualified Identity Resolution
+  summary: Support unambiguous multi-repository entity references using namespaces
+    and qualified identifiers while preserving bare local references in source ADRs.
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0012#CAP-0038
+    artifact_path: adrs/logical/ADR-L-0012-federation-authority-and-qualified-identity.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0012
+    domains:
+    - federation
+    - identity
+    - governance
+    - multi-repo
+    implemented_by_components: []
+    enabled_by_decisions: []
+  relationships:
+    declared_in:
+    - ADR-L-0012
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0012#CAP-0038
     extraction_phase: extract_capability
     classification: explicit
     generator: adr-architecture-index

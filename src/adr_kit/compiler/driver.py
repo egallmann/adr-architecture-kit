@@ -19,8 +19,9 @@ from .backend import (
 )
 from .config import CompilationMode, CompilerConfig
 from .diagnostics import DiagnosticLevel, DiagnosticLog
-from .frontend import ArchModelBuilder
 from .ir import ArchModel
+from .pipeline import run_frontend_pipeline
+from .frontend import CachedADRParser
 from ..repository.registry_loader import load_remediation_ledger
 
 
@@ -131,12 +132,12 @@ class ArchitectureCompiler:
         timestamp = self._parse_timestamp(config.pinned_timestamp)
 
         with self._pinned_generation_time(timestamp):
-            builder = ArchModelBuilder(
-                scope_resolver=ProjectScopeResolver(explicit_scope=resolved_scope.root),
+            build_result = run_frontend_pipeline(
+                scope=resolved_scope,
+                parser=CachedADRParser(self.parser),
                 config=config,
                 diagnostics=diagnostics,
             )
-            build_result = builder.build_from_scope(resolved_scope)
             model = build_result.model
             model.metadata.scope_root = str(resolved_scope.root)
             model.metadata.generated_at = timestamp or datetime.now(timezone.utc).replace(microsecond=0)
@@ -333,7 +334,7 @@ class ArchitectureCompiler:
         emitted: list[EmittedArtifact] = []
         selected = set(config.emit)
         emitters = build_backend_emitters(parser=self.parser, scope=scope, build_result=build_result)
-        for emitter_name in ("registries", "manifest", "markdown"):
+        for emitter_name in ("registries", "manifest", "markdown", "graph"):
             if emitter_name not in selected:
                 continue
             emitter = emitters[emitter_name]
@@ -398,4 +399,5 @@ class ArchitectureCompiler:
             _FixedDateTime.fixed_timestamp = timestamp
             stack.enter_context(patch("src.adr_kit.generators.architecture_index_generator.datetime", _FixedDateTime))
             stack.enter_context(patch("src.adr_kit.generators.manifest_generator.datetime", _FixedDateTime))
+            stack.enter_context(patch("src.adr_kit.compiler.backend.manifest_rendering.datetime", _FixedDateTime))
             yield

@@ -16,6 +16,7 @@ entities:
     adr_id: ADR-PS-0001
     implements_logical:
     - ADR-L-0009
+    - ADR-L-0012
     technologies:
     - python
     - pyyaml

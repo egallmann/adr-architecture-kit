@@ -1,117 +1,57 @@
-"""Markdown view generator using Jinja2 templates."""
+"""Rendered markdown generator compatibility wrapper."""
 
 from pathlib import Path
 from typing import Union
 
-from jinja2 import Environment, FileSystemLoader, Template
-
-from ...integrity import (
-    ArtifactKind,
-    GeneratorIdentity,
-    GENERATED_MARKER,
-    HASH_ALGORITHM,
-    INTEGRITY_SCHEMA_VERSION,
-    HashInput,
-    build_markdown_header,
-    compute_rendered_hash,
-    compute_source_hash,
+from ...compiler.backend.markdown_rendering import (
+    DEFAULT_TEMPLATE_DIR,
+    MARKDOWN_GENERATOR_IDENTITY,
+    build_markdown_environment,
+    build_markdown_integrity_header,
+    markdown_source_inputs_for_adr,
+    render_adr_markdown,
+    render_existing_markdown_artifact,
+    template_path_for_adr as compiler_template_path_for_adr,
 )
+from ...integrity import GeneratorIdentity, HashInput
 from ...models import LogicalADR, PhysicalADR, PhysicalComponentADR, PhysicalSystemADR
+from ...parser import ADRParser
 from ...scope import ProjectScope
 
 
 class MarkdownGenerator:
-    """Generate markdown views from ADR models."""
+    """Render ADR markdown while delegating rendering authority to compiler helpers."""
 
-    generator_identity = GeneratorIdentity("adr-rendered-markdown", 1)
-    
+    generator_identity = GeneratorIdentity(
+        MARKDOWN_GENERATOR_IDENTITY.generator_id,
+        MARKDOWN_GENERATOR_IDENTITY.generator_version,
+    )
+
     def __init__(self, template_dir: Path = None):
-        """Initialize generator.
-        
-        Args:
-            template_dir: Path to templates directory (defaults to package templates/)
-        """
-        if template_dir is None:
-            template_dir = Path(__file__).parent.parent.parent / "templates"
-        
-        self.template_dir = Path(template_dir)
-        self.env = Environment(
-            loader=FileSystemLoader(str(self.template_dir)),
-            trim_blocks=True,
-            lstrip_blocks=True,
-        )
-    
+        self.template_dir = Path(template_dir or DEFAULT_TEMPLATE_DIR)
+        self.env = build_markdown_environment(self.template_dir)
+
     def render_logical_adr(self, adr: LogicalADR) -> str:
-        """Render logical ADR to markdown.
-        
-        Args:
-            adr: LogicalADR model
-            
-        Returns:
-            Rendered markdown string
-        """
-        template = self.env.get_template("adr-logical.md.jinja2")
-        return template.render(adr=adr)
-    
+        return render_adr_markdown(adr, template_dir=self.template_dir)
+
     def render_physical_adr(self, adr: PhysicalADR | PhysicalSystemADR | PhysicalComponentADR) -> str:
-        """Render physical ADR to markdown.
-        
-        Args:
-            adr: PhysicalADR model
-            
-        Returns:
-            Rendered markdown string
-        """
-        template = self.env.get_template("adr-physical.md.jinja2")
-        return template.render(adr=adr)
+        return render_adr_markdown(adr, template_dir=self.template_dir)
 
     def template_path_for_adr(self, adr: Union[LogicalADR, PhysicalADR, PhysicalSystemADR, PhysicalComponentADR]) -> Path:
-        """Return the template path used for the ADR."""
-        if isinstance(adr, LogicalADR):
-            return self.template_dir / "adr-logical.md.jinja2"
-        if isinstance(adr, (PhysicalADR, PhysicalSystemADR, PhysicalComponentADR)):
-            return self.template_dir / "adr-physical.md.jinja2"
-        raise ValueError(f"Unknown ADR type: {type(adr)}")
+        return compiler_template_path_for_adr(adr, template_dir=self.template_dir)
 
     def render_adr(self, adr: Union[LogicalADR, PhysicalADR, PhysicalSystemADR, PhysicalComponentADR]) -> str:
-        """Render ADR to markdown (auto-detect type).
-        
-        Args:
-            adr: LogicalADR or PhysicalADR model
-            
-        Returns:
-            Rendered markdown string
-        """
-        if isinstance(adr, LogicalADR):
-            return self.render_logical_adr(adr)
-        elif isinstance(adr, (PhysicalADR, PhysicalSystemADR, PhysicalComponentADR)):
-            return self.render_physical_adr(adr)
-        else:
-            raise ValueError(f"Unknown ADR type: {type(adr)}")
+        return render_adr_markdown(adr, template_dir=self.template_dir)
 
     def render_existing_artifact(self, artifact_path: Path, scope: ProjectScope) -> tuple[str, list[Path | HashInput]]:
-        """Re-render an existing rendered ADR markdown artifact."""
-        adr_id = Path(artifact_path).stem
-        for directory in (scope.logical_dir, scope.physical_dir, scope.adr_dir / "physical-system", scope.adr_dir / "physical-component"):
-            if not directory.exists():
-                continue
-            matches = sorted(directory.glob(f"{adr_id}-*.yaml"))
-            if not matches:
-                continue
-            adr = self._parse_adr(matches[0])
-            body = self.render_adr(adr)
-            return body, [
-                matches[0].resolve(),
-                HashInput(
-                    f"__generator__/templates/{self.template_path_for_adr(adr).name}",
-                    self.template_path_for_adr(adr).resolve().read_bytes(),
-                ),
-            ]
-        raise ValueError(f"Could not locate source ADR for rendered artifact: {artifact_path}")
+        return render_existing_markdown_artifact(
+            artifact_path,
+            scope=scope,
+            parser=ADRParser(),
+            template_dir=self.template_dir,
+        )
 
     def _parse_adr(self, file_path: Path) -> Union[LogicalADR, PhysicalADR, PhysicalSystemADR, PhysicalComponentADR]:
-        from ...parser import ADRParser
-
         parser = ADRParser()
         return parser.parse_adr(file_path)
 
@@ -121,18 +61,7 @@ class MarkdownGenerator:
         body: str,
         source_inputs: list[Path | HashInput],
     ) -> str:
-        """Build deterministic markdown integrity header."""
-        header_fields = {
-            "integrity_schema_version": str(INTEGRITY_SCHEMA_VERSION),
-            "generated": GENERATED_MARKER,
-            "artifact_kind": ArtifactKind.RENDERED_ADR_MARKDOWN.value,
-            "generator_id": self.generator_identity.generator_id,
-            "generator_version": str(self.generator_identity.generator_version),
-            "hash_algorithm": HASH_ALGORITHM,
-            "source_hash": compute_source_hash(scope.root, source_inputs, self.generator_identity),
-            "rendered_hash": compute_rendered_hash(body),
-        }
-        return build_markdown_header(header_fields)
+        return build_markdown_integrity_header(scope, body, source_inputs)
 
     def render_to_file(
         self,
@@ -141,31 +70,23 @@ class MarkdownGenerator:
         scope: ProjectScope | None = None,
         source_path: Path | None = None,
     ):
-        """Render ADR and save to file.
-        
-        Args:
-            adr: ADR model
-            output_path: Path to save markdown file
-        """
         output_path = Path(output_path)
         output_path.parent.mkdir(parents=True, exist_ok=True)
-        
+
         markdown = self.render_adr(adr)
         if scope is not None and source_path is not None:
             header = self.build_integrity_header(
                 scope,
                 markdown,
-                [
-                    source_path.resolve(),
-                    HashInput(
-                        f"__generator__/templates/{self.template_path_for_adr(adr).name}",
-                        self.template_path_for_adr(adr).resolve().read_bytes(),
-                    ),
-                ],
+                markdown_source_inputs_for_adr(
+                    adr,
+                    source_path=source_path,
+                    template_dir=self.template_dir,
+                ),
             )
         else:
             header = ""
 
-        with open(output_path, 'w', encoding='utf-8', newline="\n") as f:
-            f.write(header)
-            f.write(markdown)
+        with open(output_path, "w", encoding="utf-8", newline="\n") as handle:
+            handle.write(header)
+            handle.write(markdown)

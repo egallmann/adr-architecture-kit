@@ -4,14 +4,13 @@ from __future__ import annotations
 
 from dataclasses import dataclass, field
 
-from ...generators import ManifestGenerator
-from ...generators.views import MarkdownGenerator
 from ...parser import ADRParser
-from ...scope import ProjectScope, ProjectScopeResolver
+from ...scope import ProjectScope
 from ..frontend.builder import FrontendBuildResult
 from ..diagnostics import Diagnostic, DiagnosticLog
 from ..registry_bundle import assemble_registry_bundle
 from .common import BackendEmitter, EmittedArtifact
+from .graph_emitter import emit_graph_artifact
 from .manifest_emitter import emit_manifest_artifact
 from .markdown_emitter import emit_markdown_artifacts
 from .registry_emitter import emit_registry_artifacts
@@ -56,11 +55,7 @@ class ManifestBackendEmitter:
     artifact_group: str = "manifest"
 
     def emit(self) -> list[EmittedArtifact]:
-        generator = ManifestGenerator(
-            parser=self.parser,
-            scope_resolver=ProjectScopeResolver(explicit_scope=self.scope.root),
-        )
-        return [emit_manifest_artifact(generator=generator, scope=self.scope)]
+        return [emit_manifest_artifact(parser=self.parser, scope=self.scope)]
 
     def diagnostics(self) -> list[Diagnostic]:
         return []
@@ -77,11 +72,25 @@ class MarkdownBackendEmitter:
     artifact_group: str = "markdown"
 
     def emit(self) -> list[EmittedArtifact]:
-        return emit_markdown_artifacts(
-            parser=self.parser,
-            generator=MarkdownGenerator(),
-            scope=self.scope,
-        )
+        return emit_markdown_artifacts(parser=self.parser, scope=self.scope)
+
+    def diagnostics(self) -> list[Diagnostic]:
+        return []
+
+
+@dataclass
+class GraphBackendEmitter:
+    """Emit the additive architecture graph artifact."""
+
+    parser: ADRParser
+    scope: ProjectScope
+    build_result: FrontendBuildResult
+
+    name: str = "graph"
+    artifact_group: str = "graph"
+
+    def emit(self) -> list[EmittedArtifact]:
+        return [emit_graph_artifact(scope=self.scope, build_result=self.build_result)]
 
     def diagnostics(self) -> list[Diagnostic]:
         return []
@@ -99,4 +108,5 @@ def build_backend_emitters(
         "registries": RegistryBackendEmitter(parser=parser, scope=scope, build_result=build_result),
         "manifest": ManifestBackendEmitter(parser=parser, scope=scope),
         "markdown": MarkdownBackendEmitter(parser=parser, scope=scope),
+        "graph": GraphBackendEmitter(parser=parser, scope=scope, build_result=build_result),
     }

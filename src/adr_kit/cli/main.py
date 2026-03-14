@@ -20,7 +20,6 @@ from ..generators import (
     ArchitectureIndexGenerator,
     EntityRegistryGenerator,
     LogicalADRGenerator,
-    ManifestGenerator,
     PhysicalComponentADRGenerator,
     PhysicalSystemADRGenerator,
     SystemOverviewGenerator,
@@ -168,9 +167,86 @@ def _run_governance_checks(scope: Path, *, skip_tests: bool) -> int:
     return failures
 
 
+def _ordered_scopes(scope_path: Optional[Path]) -> list:
+    """Resolve scopes in deterministic root-first order."""
+    resolver = ProjectScopeResolver(explicit_scope=scope_path)
+    scopes = resolver.resolve_recursive()
+    if not scopes:
+        return []
+    root_scope = scopes[0]
+    sub_scopes = sorted(scopes[1:], key=lambda current: current.root.as_posix())
+    return [root_scope, *sub_scopes]
+
+
+def _run_recursive_governance_checks(scope: Path, *, skip_tests: bool) -> int:
+    """Run the standard governance validation bundle across all detected scopes."""
+    failures = 0
+    scope_root = scope.resolve()
+
+    steps: list[tuple[str, list[str]]] = [
+        (
+            "Greenfield contract validation",
+            [
+                "validate-contract",
+                "--scope",
+                str(scope_root),
+                "--contract-profile",
+                "greenfield",
+                "--recursive",
+            ],
+        ),
+        (
+            "Brownfield ratchet validation",
+            [
+                "validate-contract",
+                "--scope",
+                str(scope_root),
+                "--contract-profile",
+                "brownfield",
+                "--max-sentinel-fields",
+                "0",
+                "--max-non-complete-entities",
+                "0",
+                "--recursive",
+            ],
+        ),
+        (
+            "Generated documentation validation",
+            [
+                "validate-generated-docs",
+                "--scope",
+                str(scope_root),
+                "--recursive",
+            ],
+        ),
+        (
+            "Project metadata validation",
+            [
+                "validate-project-metadata",
+                "--scope",
+                str(scope_root),
+                "--recursive",
+            ],
+        ),
+    ]
+
+    for label, args in steps:
+        click.echo(f"\n== {label} ==")
+        click.echo("adr " + " ".join(args))
+        failures += _run_cli_subcommand(args)
+
+    if not skip_tests:
+        test_command = [sys.executable, "-m", "pytest", "tests", "-q"]
+        click.echo("\n== Full test suite ==")
+        click.echo(" ".join(test_command))
+        failures += subprocess.run(test_command, cwd=scope_root).returncode
+
+    return failures
+
+
 def _parse_emit_list(value: str | None) -> set[str]:
     """Parse `adr compile --emit` values."""
-    allowed = {"registries", "manifest", "markdown"}
+    allowed = {"registries", "manifest", "markdown", "graph"}
     if not value:
         return {"registries", "manifest", "markdown"}
     emit = {item.strip() for item in value.split(",") if item.strip()}
@@ -186,6 +262,11 @@ def _artifact_by_path(result, relative_path: str):
         if artifact.path.as_posix() == relative_path:
             return artifact
     raise ValueError(f"Expected emitted artifact not found: {relative_path}")
+
+
+def _load_yaml_artifact(artifact) -> dict:
+    """Parse a YAML-emitted compiler artifact."""
+    return yaml.safe_load(artifact.content.decode("utf-8"))
 
 
 def _echo_compilation_result(scope, result, *, mode: str, check: bool, dry_run: bool, validate_contract: bool, contract_profile: str) -> None:
@@ -438,30 +519,20 @@ def generate_manifest(scope: Optional[Path], recursive: bool, output: Optional[P
     """
     try:
         resolver = ProjectScopeResolver(explicit_scope=scope)
-        generator = ManifestGenerator(scope_resolver=resolver)
         compiler = ArchitectureCompiler(scope_resolver=resolver)
         
         if recursive:
             click.echo("Generating manifests recursively...")
-            if output is None:
-                workspace_result = compiler.compile_recursive(
-                    config=CompilerConfig(emit={"manifest"}),
-                )
-                if not workspace_result.success:
-                    raise ValueError("Architecture compilation failed")
-                for scoped in workspace_result.scope_results:
-                    click.echo(f"Generated manifest for {scoped.scope.name}: {scoped.scope.manifest_path}")
-                click.echo(f"\nGenerated {workspace_result.statistics.scopes_compiled} manifests")
-            else:
-                manifests = generator.generate_recursive()
-
-                for scope_name, manifest in manifests.items():
-                    scope_obj = next(s for s in resolver.resolve_recursive() if s.name == scope_name)
-                    output_path = output or scope_obj.manifest_path
-                    generator.save_manifest(manifest, output_path, scope_obj)
-                    click.echo(f"Generated manifest for {scope_name}: {output_path}")
-
-                click.echo(f"\nGenerated {len(manifests)} manifests")
+            if output is not None:
+                raise ValueError("--output is not supported with --recursive; manifests are emitted per scope")
+            workspace_result = compiler.compile_recursive(
+                config=CompilerConfig(emit={"manifest"}),
+            )
+            if not workspace_result.success:
+                raise ValueError("Architecture compilation failed")
+            for scoped in workspace_result.scope_results:
+                click.echo(f"Generated manifest for {scoped.scope.name}: {scoped.scope.manifest_path}")
+            click.echo(f"\nGenerated {workspace_result.statistics.scopes_compiled} manifests")
         else:
             click.echo("Generating manifest...")
             detected_scope = resolver.resolve()
@@ -485,16 +556,16 @@ def generate_manifest(scope: Optional[Path], recursive: bool, output: Optional[P
                 output_path = output
                 output_path.parent.mkdir(parents=True, exist_ok=True)
                 output_path.write_bytes(_artifact_by_path(result, "adrs/manifest.yaml").content)
-
-            manifest = generator.generate_from_scope(detected_scope)
+            manifest = _load_yaml_artifact(_artifact_by_path(result, "adrs/manifest.yaml"))
+            statistics = manifest["statistics"]
             click.echo(f"Generated manifest: {output_path}")
-            click.echo(f"  ADRs: {manifest.statistics.total_adrs}")
-            click.echo(f"  Logical: {manifest.statistics.logical_adrs}")
-            click.echo(f"  Physical: {manifest.statistics.physical_adrs}")
-            if manifest.statistics.physical_system_adrs > 0:
-                click.echo(f"  Physical-System: {manifest.statistics.physical_system_adrs}")
-            if manifest.statistics.physical_component_adrs > 0:
-                click.echo(f"  Physical-Component: {manifest.statistics.physical_component_adrs}")
+            click.echo(f"  ADRs: {statistics['total_adrs']}")
+            click.echo(f"  Logical: {statistics['logical_adrs']}")
+            click.echo(f"  Physical: {statistics['physical_adrs']}")
+            if statistics["physical_system_adrs"] > 0:
+                click.echo(f"  Physical-System: {statistics['physical_system_adrs']}")
+            if statistics["physical_component_adrs"] > 0:
+                click.echo(f"  Physical-Component: {statistics['physical_component_adrs']}")
             
     except Exception as e:
         click.echo(f"Error: {e}", err=True)
@@ -948,69 +1019,80 @@ def validate(scope: Optional[Path], recursive: bool, cross_references: bool, mod
     default=None,
     help='Optional CI threshold. Fail if non-complete entity count exceeds this value.'
 )
+@click.option('--recursive', is_flag=True,
+              help='Validate the compiled contract bundle for all detected scopes recursively')
 def validate_contract(
     scope: Optional[Path],
     contract_profile: str,
     max_sentinel_fields: Optional[int],
     max_non_complete_entities: Optional[int],
+    recursive: bool,
 ):
     """Validate the compiled kernel contract bundle for the selected profile."""
     try:
-        (
-            detected_scope,
-            architecture_index,
-            entity_registry,
-            relationship_registry,
-            unresolved_registry,
-            remediation_ledger,
-        ) = _load_contract_bundle(scope)
-        click.echo(f"Project scope: {detected_scope.name} ({detected_scope.root})")
+        failures = 0
+        scopes = _ordered_scopes(scope) if recursive else [ProjectScopeResolver(explicit_scope=scope).resolve()]
+        for index, current_scope in enumerate(scopes):
+            if index:
+                click.echo()
+            (
+                detected_scope,
+                architecture_index,
+                entity_registry,
+                relationship_registry,
+                unresolved_registry,
+                remediation_ledger,
+            ) = _load_contract_bundle(current_scope.root)
+            click.echo(f"Project scope: {detected_scope.name} ({detected_scope.root})")
 
-        result = validate_kernel_contract_bundle(
-            architecture_index,
-            entity_registry,
-            relationship_registry,
-            unresolved_registry,
-            profile=contract_profile,
-            remediation_ledger=remediation_ledger,
-        )
-        remediation_state_counts = None
-        if remediation_ledger is not None:
-            remediation_state_counts = {
-                state: sum(1 for entry in remediation_ledger.entries if entry.state == state)
-                for state in ("sentinel", "pending_approval", "approved")
-            }
-        sentinel_threshold_exceeded = (
-            max_sentinel_fields is not None and result.sentinel_field_count > max_sentinel_fields
-        )
-        completeness_threshold_exceeded = (
-            max_non_complete_entities is not None
-            and result.non_complete_entity_count > max_non_complete_entities
-        )
-
-        click.echo(
-            _dump_yaml(
-                {
-                    "profile": result.profile,
-                    "outcome": result.outcome,
-                    "sentinel_field_count": result.sentinel_field_count,
-                    "max_sentinel_fields": max_sentinel_fields,
-                    "sentinel_threshold_exceeded": sentinel_threshold_exceeded,
-                    "non_complete_entity_count": result.non_complete_entity_count,
-                    "max_non_complete_entities": max_non_complete_entities,
-                    "completeness_threshold_exceeded": completeness_threshold_exceeded,
-                    "completeness_counts": result.completeness_counts,
-                    "remediation_ledger_present": remediation_ledger is not None,
-                    "remediation_state_counts": remediation_state_counts,
-                    "issues": [
-                        {"path": issue.path, "message": issue.message}
-                        for issue in result.issues
-                    ],
-                }
+            result = validate_kernel_contract_bundle(
+                architecture_index,
+                entity_registry,
+                relationship_registry,
+                unresolved_registry,
+                profile=contract_profile,
+                remediation_ledger=remediation_ledger,
             )
-        )
+            remediation_state_counts = None
+            if remediation_ledger is not None:
+                remediation_state_counts = {
+                    state: sum(1 for entry in remediation_ledger.entries if entry.state == state)
+                    for state in ("sentinel", "pending_approval", "approved")
+                }
+            sentinel_threshold_exceeded = (
+                max_sentinel_fields is not None and result.sentinel_field_count > max_sentinel_fields
+            )
+            completeness_threshold_exceeded = (
+                max_non_complete_entities is not None
+                and result.non_complete_entity_count > max_non_complete_entities
+            )
 
-        if not result.is_valid or sentinel_threshold_exceeded or completeness_threshold_exceeded:
+            click.echo(
+                _dump_yaml(
+                    {
+                        "profile": result.profile,
+                        "outcome": result.outcome,
+                        "sentinel_field_count": result.sentinel_field_count,
+                        "max_sentinel_fields": max_sentinel_fields,
+                        "sentinel_threshold_exceeded": sentinel_threshold_exceeded,
+                        "non_complete_entity_count": result.non_complete_entity_count,
+                        "max_non_complete_entities": max_non_complete_entities,
+                        "completeness_threshold_exceeded": completeness_threshold_exceeded,
+                        "completeness_counts": result.completeness_counts,
+                        "remediation_ledger_present": remediation_ledger is not None,
+                        "remediation_state_counts": remediation_state_counts,
+                        "issues": [
+                            {"path": issue.path, "message": issue.message}
+                            for issue in result.issues
+                        ],
+                    }
+                )
+            )
+
+            if not result.is_valid or sentinel_threshold_exceeded or completeness_threshold_exceeded:
+                failures += 1
+
+        if failures:
             sys.exit(1)
     except Exception as e:
         click.echo(f"Error: {e}", err=True)
@@ -1024,10 +1106,16 @@ def validate_contract(
               help='Project scope root to validate.')
 @click.option('--skip-tests', is_flag=True,
               help='Skip the full pytest run.')
-def governance_checks(scope: Path, skip_tests: bool):
+@click.option('--recursive', is_flag=True,
+              help='Run governance checks for all detected scopes recursively.')
+def governance_checks(scope: Path, skip_tests: bool, recursive: bool):
     """Run the standard local governance validation bundle."""
     try:
-        failures = _run_governance_checks(scope, skip_tests=skip_tests)
+        failures = (
+            _run_recursive_governance_checks(scope, skip_tests=skip_tests)
+            if recursive
+            else _run_governance_checks(scope, skip_tests=skip_tests)
+        )
         if failures:
             sys.exit(1)
     except Exception as e:
@@ -1205,6 +1293,11 @@ def show_scope(recursive: bool):
 
 @cli.command("validate-project-metadata")
 @click.option(
+    "--scope",
+    type=click.Path(exists=True, file_okay=False, path_type=Path),
+    help="Explicit project scope root (used with --recursive).",
+)
+@click.option(
     "--file",
     "file_path",
     type=click.Path(dir_okay=False, path_type=Path),
@@ -1212,14 +1305,35 @@ def show_scope(recursive: bool):
     show_default=True,
     help="Path to the PROJECT.yaml file.",
 )
-def validate_project_metadata(file_path: Path):
+@click.option('--recursive', is_flag=True,
+              help='Validate PROJECT.yaml for all detected scopes recursively.')
+def validate_project_metadata(scope: Optional[Path], file_path: Path, recursive: bool):
     """Validate PROJECT.yaml against schema and model rules."""
     try:
         parser = ADRParser()
-        project = parser.parse_project_metadata(file_path)
-        click.echo(f"PROJECT.yaml valid: {file_path}")
-        click.echo(f"  Project: {project.project.name}")
-        click.echo(f"  Team: {project.ownership.team}")
+        failures = 0
+        if recursive:
+            for index, current_scope in enumerate(_ordered_scopes(scope)):
+                current_file = current_scope.root / "PROJECT.yaml"
+                if index:
+                    click.echo()
+                click.echo(f"Project scope: {current_scope.name} ({current_scope.root})")
+                try:
+                    project = parser.parse_project_metadata(current_file)
+                    click.echo(f"PROJECT.yaml valid: {current_file}")
+                    click.echo(f"  Project: {project.project.name}")
+                    click.echo(f"  Team: {project.ownership.team}")
+                except Exception as exc:
+                    failures += 1
+                    click.echo(f"ERROR: {current_file}: {exc}", err=True)
+        else:
+            project = parser.parse_project_metadata(file_path)
+            click.echo(f"PROJECT.yaml valid: {file_path}")
+            click.echo(f"  Project: {project.project.name}")
+            click.echo(f"  Team: {project.ownership.team}")
+
+        if failures:
+            sys.exit(1)
     except Exception as e:
         click.echo(f"Error: {e}", err=True)
         sys.exit(1)
@@ -1316,35 +1430,28 @@ def generate_rendered_docs(scope: Optional[Path], recursive: bool):
     """Generate rendered ADR markdown artifacts with integrity headers."""
     try:
         resolver = ProjectScopeResolver(explicit_scope=scope)
+        compiler = ArchitectureCompiler(scope_resolver=resolver)
         if recursive:
-            parser = ADRParser()
-            generator = MarkdownGenerator()
-            scopes = resolver.resolve_recursive()
+            workspace_result = compiler.compile_recursive(
+                config=CompilerConfig(emit={"markdown"}),
+            )
+            if not workspace_result.success:
+                raise ValueError("Architecture compilation failed")
             total = 0
-            for current_scope in scopes:
-                rendered_dir = current_scope.adr_dir / "rendered"
-                rendered_dir.mkdir(parents=True, exist_ok=True)
-                click.echo(f"Generating rendered docs for {current_scope.name}...")
-                for source_path in _discover_scope_adr_files(current_scope):
-                    try:
-                        adr = parser.parse_adr(source_path)
-                        output_path = rendered_dir / f"{adr.id}.md"
-                        generator.render_to_file(
-                            adr,
-                            output_path,
-                            scope=current_scope,
-                            source_path=source_path,
-                        )
-                        total += 1
-                        click.echo(f"  Generated: {output_path}")
-                    except Exception as exc:
-                        click.echo(f"  Warning: Failed to render {source_path.name}: {exc}")
-
+            for scoped in workspace_result.scope_results:
+                click.echo(f"Generating rendered docs for {scoped.scope.name}...")
+                markdown_artifacts = sorted(
+                    (artifact for artifact in scoped.result.artifacts if artifact.kind == "markdown"),
+                    key=lambda artifact: artifact.path.as_posix(),
+                )
+                for artifact in markdown_artifacts:
+                    click.echo(f"  Generated: {scoped.scope.root / artifact.path}")
+                total += len(markdown_artifacts)
             click.echo(f"\nGenerated {total} rendered ADR markdown artifact(s)")
         else:
             detected_scope = resolver.resolve()
             click.echo(f"Generating rendered docs for {detected_scope.name}...")
-            result = ArchitectureCompiler(scope_resolver=resolver).compile(
+            result = compiler.compile(
                 detected_scope,
                 CompilerConfig(emit={"markdown"}),
             )

@@ -110,6 +110,9 @@ from .entity_registry import (
     SourceArtifactType,
 )
 from .architecture_discovery import (
+    ArchitectureGraph,
+    ArchitectureGraphEdge,
+    ArchitectureGraphNode,
     ArchitectureIndex,
     CanonicalSource,
     Completeness,
@@ -141,6 +144,12 @@ from .decision_ledger import (
 from .remediation_ledger import (
     RemediationLedger,
     RemediationLedgerEntry,
+)
+from .implementation_attribution import (
+    ImplementationAttributionEvidence,
+    ImplementationAttributionProvenance,
+    ImplementationAttributionRecord,
+    ImplementationEntityType,
 )
 
 __all__ = [
@@ -248,6 +257,9 @@ __all__ = [
     "LifecycleStage",
     "SourceArtifactType",
     # Architecture discovery
+    "ArchitectureGraph",
+    "ArchitectureGraphEdge",
+    "ArchitectureGraphNode",
     "ArchitectureIndex",
     "CanonicalSource",
     "Completeness",
@@ -275,4 +287,8 @@ __all__ = [
     "LedgerDecision",
     "RemediationLedger",
     "RemediationLedgerEntry",
+    "ImplementationAttributionEvidence",
+    "ImplementationAttributionProvenance",
+    "ImplementationAttributionRecord",
+    "ImplementationEntityType",
 ]

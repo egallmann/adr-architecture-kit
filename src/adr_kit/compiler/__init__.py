@@ -36,7 +36,10 @@ __all__ = [
     "ParsedCorpus",
     "QualifiedEntityId",
     "RelGraph",
+    "ScopedCompilationResult",
     "UnresolvedList",
+    "WorkspaceCompilationResult",
+    "WorkspaceCompilationStatistics",
     "ArchModelBuilder",
     "CachedADRParser",
     "FrontendBuildResult",
@@ -55,14 +58,33 @@ def __getattr__(name: str):
             "build_arch_model": build_arch_model,
         }
         return exports[name]
-    if name in {"ArchitectureCompiler", "CompilationResult", "CompilationStatistics", "OutputArtifact"}:
-        from .driver import ArchitectureCompiler, CompilationResult, CompilationStatistics, OutputArtifact
+    if name in {
+        "ArchitectureCompiler",
+        "CompilationResult",
+        "CompilationStatistics",
+        "OutputArtifact",
+        "ScopedCompilationResult",
+        "WorkspaceCompilationResult",
+        "WorkspaceCompilationStatistics",
+    }:
+        from .driver import (
+            ArchitectureCompiler,
+            CompilationResult,
+            CompilationStatistics,
+            OutputArtifact,
+            ScopedCompilationResult,
+            WorkspaceCompilationResult,
+            WorkspaceCompilationStatistics,
+        )
 
         exports = {
             "ArchitectureCompiler": ArchitectureCompiler,
             "CompilationResult": CompilationResult,
             "CompilationStatistics": CompilationStatistics,
             "OutputArtifact": OutputArtifact,
+            "ScopedCompilationResult": ScopedCompilationResult,
+            "WorkspaceCompilationResult": WorkspaceCompilationResult,
+            "WorkspaceCompilationStatistics": WorkspaceCompilationStatistics,
         }
         return exports[name]
     raise AttributeError(f"module {__name__!r} has no attribute {name!r}")

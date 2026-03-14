@@ -7,7 +7,12 @@ import pytest
 from click.testing import CliRunner
 
 from src.adr_kit.compiler.frontend import CachedADRParser
-from src.adr_kit.compiler.passes import ValidateBundlePass, validate_bundle
+from src.adr_kit.compiler.passes import (
+    ScoreCompletenessPass,
+    ValidateBundlePass,
+    score_completeness,
+    validate_bundle,
+)
 from src.adr_kit.cli.main import cli
 from src.adr_kit.generators import ArchitectureIndexGenerator
 from src.adr_kit.parser import ADRParser
@@ -317,6 +322,28 @@ def test_architecture_index_generator_clears_diagnostics_each_run(tmp_path):
     generator.generate_from_directory(adr_dir)
 
     assert generator.diagnostics.as_list() == []
+
+
+def test_score_completeness_preserves_current_generator_semantics():
+    assert score_completeness().model_dump(mode="json") == {
+        "status": "complete",
+        "missing_fields": [],
+    }
+    assert score_completeness([]).model_dump(mode="json") == {
+        "status": "complete",
+        "missing_fields": [],
+    }
+    assert score_completeness(["metadata.module_path"]).model_dump(mode="json") == {
+        "status": "partial",
+        "missing_fields": ["metadata.module_path"],
+    }
+
+
+def test_architecture_index_generator_complete_delegates_to_pass():
+    generator = ArchitectureIndexGenerator()
+    completeness = generator._complete(["summary"])
+
+    assert completeness == ScoreCompletenessPass().run(["summary"])
 
 
 def test_architecture_index_validation_rejects_broken_entity_relationship_summary(tmp_path):

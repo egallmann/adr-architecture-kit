@@ -11,7 +11,7 @@ import yaml
 
 from ..compiler.diagnostics import DiagnosticLog
 from ..compiler.frontend.parser import CachedADRParser
-from ..compiler.passes import validate_bundle
+from ..compiler.passes import score_completeness, validate_bundle
 from ..models import (
     ArchitectureIndex,
     CanonicalSource,
@@ -101,8 +101,7 @@ class ArchitectureIndexGenerator:
         return CanonicalSource(source_type=source_type, source_ref=source_ref, artifact_path=artifact_path)
 
     def _complete(self, missing_fields: Optional[list[str]] = None) -> Completeness:
-        missing = missing_fields or []
-        return Completeness(status="complete" if not missing else "partial", missing_fields=missing)
+        return score_completeness(missing_fields)
 
     def _summary(self, text: str, limit: int = 220) -> str:
         return " ".join((text or "").split())[:limit]

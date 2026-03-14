@@ -188,6 +188,51 @@ def _artifact_by_path(result, relative_path: str):
     raise ValueError(f"Expected emitted artifact not found: {relative_path}")
 
 
+def _echo_compilation_result(scope, result, *, mode: str, check: bool, dry_run: bool, validate_contract: bool, contract_profile: str) -> None:
+    """Print a single-scope compilation summary."""
+    click.echo(f"Project scope: {scope.name} ({scope.root})")
+    click.echo(f"Mode: {mode}")
+    click.echo(f"Success: {result.success}")
+    click.echo(f"Artifacts emitted: {result.statistics.artifacts_emitted}")
+    click.echo(f"Entities: {result.statistics.entities_extracted}")
+    click.echo(f"Relationships: {result.statistics.relationships_derived}")
+    click.echo(f"Unresolved: {result.statistics.unresolved_detected}")
+    if check:
+        click.echo("Check mode: enabled")
+    elif dry_run:
+        click.echo("Dry run: enabled")
+    if validate_contract:
+        click.echo(f"Contract validation: {contract_profile}")
+    for artifact in sorted(result.artifacts, key=lambda item: item.path.as_posix()):
+        click.echo(f"  {artifact.kind}: {artifact.path.as_posix()}")
+    for diagnostic in result.diagnostics.as_list():
+        click.echo(f"{diagnostic.level.name}: {diagnostic.code} {diagnostic.message}")
+
+
+def _echo_recursive_compilation_result(result, *, mode: str, check: bool, dry_run: bool, validate_contract: bool, contract_profile: str) -> None:
+    """Print a recursive multi-scope compilation summary."""
+    click.echo("Compiling architecture artifacts recursively...")
+    click.echo(f"Mode: {mode}")
+    click.echo(f"Success: {result.success}")
+    click.echo(f"Scopes compiled: {result.statistics.scopes_compiled}")
+    click.echo(f"Successful scopes: {result.statistics.successful_scopes}")
+    click.echo(f"Failed scopes: {result.statistics.failed_scopes}")
+    if check:
+        click.echo("Check mode: enabled")
+    elif dry_run:
+        click.echo("Dry run: enabled")
+    if validate_contract:
+        click.echo(f"Contract validation: {contract_profile}")
+    for scoped in result.scope_results:
+        click.echo(f"\nScope: {scoped.scope.name} ({scoped.scope.root})")
+        click.echo(f"  Success: {scoped.result.success}")
+        click.echo(f"  Artifacts emitted: {scoped.result.statistics.artifacts_emitted}")
+        for artifact in sorted(scoped.result.artifacts, key=lambda item: item.path.as_posix()):
+            click.echo(f"    {artifact.kind}: {artifact.path.as_posix()}")
+        for diagnostic in scoped.result.diagnostics.as_list():
+            click.echo(f"  {diagnostic.level.name}: {diagnostic.code} {diagnostic.message}")
+
+
 def _entity_identifier(entity):
     return getattr(entity, "id", getattr(entity, "entity_id", None))
 
@@ -394,24 +439,34 @@ def generate_manifest(scope: Optional[Path], recursive: bool, output: Optional[P
     try:
         resolver = ProjectScopeResolver(explicit_scope=scope)
         generator = ManifestGenerator(scope_resolver=resolver)
+        compiler = ArchitectureCompiler(scope_resolver=resolver)
         
         if recursive:
             click.echo("Generating manifests recursively...")
-            manifests = generator.generate_recursive()
-            
-            for scope_name, manifest in manifests.items():
-                scope_obj = next(s for s in resolver.resolve_recursive() if s.name == scope_name)
-                output_path = output or scope_obj.manifest_path
-                generator.save_manifest(manifest, output_path, scope_obj)
-                click.echo(f"Generated manifest for {scope_name}: {output_path}")
-            
-            click.echo(f"\nGenerated {len(manifests)} manifests")
+            if output is None:
+                workspace_result = compiler.compile_recursive(
+                    config=CompilerConfig(emit={"manifest"}),
+                )
+                if not workspace_result.success:
+                    raise ValueError("Architecture compilation failed")
+                for scoped in workspace_result.scope_results:
+                    click.echo(f"Generated manifest for {scoped.scope.name}: {scoped.scope.manifest_path}")
+                click.echo(f"\nGenerated {workspace_result.statistics.scopes_compiled} manifests")
+            else:
+                manifests = generator.generate_recursive()
+
+                for scope_name, manifest in manifests.items():
+                    scope_obj = next(s for s in resolver.resolve_recursive() if s.name == scope_name)
+                    output_path = output or scope_obj.manifest_path
+                    generator.save_manifest(manifest, output_path, scope_obj)
+                    click.echo(f"Generated manifest for {scope_name}: {output_path}")
+
+                click.echo(f"\nGenerated {len(manifests)} manifests")
         else:
             click.echo("Generating manifest...")
             detected_scope = resolver.resolve()
             click.echo(f"Project scope: {detected_scope.name} ({detected_scope.root})")
 
-            compiler = ArchitectureCompiler(scope_resolver=resolver)
             if output is None:
                 result = compiler.compile(
                     detected_scope,
@@ -559,20 +614,23 @@ def generate_entity_registry(scope: Optional[Path], recursive: bool, output: Opt
 
         if recursive:
             click.echo("Generating architecture indexes recursively for legacy entity registry compatibility...")
-            scopes = resolver.resolve_recursive()
-            for scope_obj in scopes:
-                if not scope_obj.adr_dir.exists():
-                    continue
-                scope_name = scope_obj.name or str(scope_obj.root)
-                if output is None:
-                    result = compiler.compile(
-                        scope_obj,
-                        CompilerConfig(emit={"registries"}),
-                    )
-                    if not result.success:
-                        raise ValueError("Architecture compilation failed")
-                    output_path = scope_obj.adr_dir / "entities" / "registry.yaml"
-                else:
+            if output is None:
+                workspace_result = compiler.compile_recursive(
+                    config=CompilerConfig(emit={"registries"}),
+                )
+                if not workspace_result.success:
+                    raise ValueError("Architecture compilation failed")
+                for scoped in workspace_result.scope_results:
+                    click.echo(f"Generated legacy entity registry for {scoped.scope.name}: {scoped.scope.adr_dir / 'entities' / 'registry.yaml'}")
+                    click.echo(f"  Architecture index: {scoped.scope.adr_dir / 'index' / 'architecture-index.yaml'}")
+
+                click.echo(f"\nGenerated legacy entity registry compatibility artifacts for {workspace_result.statistics.scopes_compiled} scope(s)")
+            else:
+                scopes = resolver.resolve_recursive()
+                for scope_obj in scopes:
+                    if not scope_obj.adr_dir.exists():
+                        continue
+                    scope_name = scope_obj.name or str(scope_obj.root)
                     result = compiler.compile(
                         scope_obj,
                         CompilerConfig(emit={"registries"}, dry_run=True),
@@ -582,10 +640,10 @@ def generate_entity_registry(scope: Optional[Path], recursive: bool, output: Opt
                     output_path = output
                     output_path.parent.mkdir(parents=True, exist_ok=True)
                     output_path.write_bytes(_artifact_by_path(result, "adrs/entities/registry.yaml").content)
-                click.echo(f"Generated legacy entity registry for {scope_name}: {output_path}")
-                click.echo(f"  Architecture index: {scope_obj.adr_dir / 'index' / 'architecture-index.yaml'}")
+                    click.echo(f"Generated legacy entity registry for {scope_name}: {output_path}")
+                    click.echo(f"  Architecture index: {scope_obj.adr_dir / 'index' / 'architecture-index.yaml'}")
 
-            click.echo(f"\nGenerated legacy entity registry compatibility artifacts for {len(scopes)} scope(s)")
+                click.echo(f"\nGenerated legacy entity registry compatibility artifacts for {len(scopes)} scope(s)")
         else:
             click.echo("Generating architecture index and legacy entity registry compatibility artifact...")
             detected_scope = resolver.resolve()
@@ -683,6 +741,8 @@ def generate_architecture_index(scope: Optional[Path]):
     show_default=True,
     help='Contract validation profile used with --validate-contract.',
 )
+@click.option('--recursive', is_flag=True,
+              help='Compile all detected scopes recursively.')
 def compile_artifacts(
     scope: Optional[Path],
     emit: str,
@@ -692,44 +752,45 @@ def compile_artifacts(
     check: bool,
     validate_contract: bool,
     contract_profile: str,
+    recursive: bool,
 ):
     """Compile selected architecture artifacts through the unified compiler driver."""
     try:
         resolver = ProjectScopeResolver(explicit_scope=scope)
-        detected_scope = resolver.resolve()
         compiler = ArchitectureCompiler(scope_resolver=resolver)
         emit_targets = _parse_emit_list(emit)
-        result = compiler.compile(
-            detected_scope,
-            CompilerConfig(
-                mode=CompilationMode(mode),
-                emit=emit_targets,
-                dry_run=dry_run or check,
-                check=check,
-                profile=contract_profile if validate_contract else None,
-                pinned_timestamp=timestamp,
-                metadata={"validate_contract": "true"} if validate_contract else {},
-            ),
+        config = CompilerConfig(
+            mode=CompilationMode(mode),
+            emit=emit_targets,
+            dry_run=dry_run or check,
+            check=check,
+            profile=contract_profile if validate_contract else None,
+            pinned_timestamp=timestamp,
+            metadata={"validate_contract": "true"} if validate_contract else {},
         )
-
-        click.echo("Compiling architecture artifacts...")
-        click.echo(f"Project scope: {detected_scope.name} ({detected_scope.root})")
-        click.echo(f"Mode: {mode}")
-        click.echo(f"Success: {result.success}")
-        click.echo(f"Artifacts emitted: {result.statistics.artifacts_emitted}")
-        click.echo(f"Entities: {result.statistics.entities_extracted}")
-        click.echo(f"Relationships: {result.statistics.relationships_derived}")
-        click.echo(f"Unresolved: {result.statistics.unresolved_detected}")
-        if check:
-            click.echo("Check mode: enabled")
-        elif dry_run:
-            click.echo("Dry run: enabled")
-        if validate_contract:
-            click.echo(f"Contract validation: {contract_profile}")
-        for artifact in sorted(result.artifacts, key=lambda item: item.path.as_posix()):
-            click.echo(f"  {artifact.kind}: {artifact.path.as_posix()}")
-        for diagnostic in result.diagnostics.as_list():
-            click.echo(f"{diagnostic.level.name}: {diagnostic.code} {diagnostic.message}")
+        if recursive:
+            result = compiler.compile_recursive(scope, config)
+            _echo_recursive_compilation_result(
+                result,
+                mode=mode,
+                check=check,
+                dry_run=dry_run,
+                validate_contract=validate_contract,
+                contract_profile=contract_profile,
+            )
+        else:
+            detected_scope = resolver.resolve()
+            result = compiler.compile(detected_scope, config)
+            click.echo("Compiling architecture artifacts...")
+            _echo_compilation_result(
+                detected_scope,
+                result,
+                mode=mode,
+                check=check,
+                dry_run=dry_run,
+                validate_contract=validate_contract,
+                contract_profile=contract_profile,
+            )
 
         if not result.success:
             sys.exit(1)

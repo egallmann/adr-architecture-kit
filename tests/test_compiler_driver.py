@@ -615,3 +615,135 @@ def test_architecture_compiler_compile_recursive_aggregates_failed_scope(tmp_pat
     assert result.statistics.scopes_compiled == 2
     assert result.statistics.failed_scopes == 1
     assert any(item.code == "E799" for item in result.diagnostics.as_list())
+
+
+def test_compile_cli_recursive_dry_run_reports_all_scopes(tmp_path):
+    _create_recursive_workspace(tmp_path)
+    runner = CliRunner()
+
+    result = runner.invoke(
+        cli,
+        [
+            "compile",
+            "--scope",
+            str(tmp_path),
+            "--recursive",
+            "--emit",
+            "registries,manifest",
+            "--dry-run",
+            "--timestamp",
+            "2026-01-01T00:00:00Z",
+        ],
+    )
+
+    assert result.exit_code == 0, result.output
+    assert "Compiling architecture artifacts recursively..." in result.output
+    assert "Scopes compiled: 2" in result.output
+    assert "Scope: workspace-root" in result.output
+    assert "Scope: workspace-sub" in result.output
+
+
+def test_compile_cli_recursive_check_detects_drift(tmp_path):
+    _create_recursive_workspace(tmp_path)
+    runner = CliRunner()
+
+    compile_result = runner.invoke(
+        cli,
+        [
+            "compile",
+            "--scope",
+            str(tmp_path),
+            "--recursive",
+            "--emit",
+            "registries,manifest",
+            "--timestamp",
+            "2026-01-01T00:00:00Z",
+        ],
+    )
+    assert compile_result.exit_code == 0, compile_result.output
+
+    (tmp_path / "submodule" / "adrs" / "manifest.yaml").write_text("drifted\n", encoding="utf-8")
+
+    check_result = runner.invoke(
+        cli,
+        [
+            "compile",
+            "--scope",
+            str(tmp_path),
+            "--recursive",
+            "--emit",
+            "registries,manifest",
+            "--timestamp",
+            "2026-01-01T00:00:00Z",
+            "--check",
+        ],
+    )
+
+    assert check_result.exit_code == 1, check_result.output
+    assert "Scope: workspace-sub" in check_result.output
+    assert "E702" in check_result.output
+
+
+def test_compile_cli_recursive_can_validate_contract_greenfield(tmp_path):
+    _create_recursive_workspace(tmp_path)
+    runner = CliRunner()
+
+    result = runner.invoke(
+        cli,
+        [
+            "compile",
+            "--scope",
+            str(tmp_path),
+            "--recursive",
+            "--emit",
+            "registries",
+            "--dry-run",
+            "--validate-contract",
+            "--contract-profile",
+            "greenfield",
+            "--timestamp",
+            "2026-01-01T00:00:00Z",
+        ],
+    )
+
+    assert result.exit_code == 0, result.output
+    assert "Contract validation: greenfield" in result.output
+    assert "Scopes compiled: 2" in result.output
+
+
+def test_generate_manifest_recursive_uses_recursive_compiler_defaults(tmp_path):
+    _create_recursive_workspace(tmp_path)
+    runner = CliRunner()
+
+    result = runner.invoke(
+        cli,
+        [
+            "generate-manifest",
+            "--scope",
+            str(tmp_path),
+            "--recursive",
+        ],
+    )
+
+    assert result.exit_code == 0, result.output
+    assert (tmp_path / "adrs" / "manifest.yaml").exists()
+    assert (tmp_path / "submodule" / "adrs" / "manifest.yaml").exists()
+
+
+def test_generate_entity_registry_recursive_uses_recursive_compiler_defaults(tmp_path):
+    _create_recursive_workspace(tmp_path)
+    runner = CliRunner()
+
+    result = runner.invoke(
+        cli,
+        [
+            "generate-entity-registry",
+            "--scope",
+            str(tmp_path),
+            "--recursive",
+        ],
+    )
+
+    assert result.exit_code == 0, result.output
+    assert (tmp_path / "adrs" / "entities" / "registry.yaml").exists()
+    assert (tmp_path / "submodule" / "adrs" / "entities" / "registry.yaml").exists()

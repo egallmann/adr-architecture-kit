@@ -65,6 +65,34 @@ def test_repository_loads_normalized_bundle(tmp_path: Path) -> None:
     assert any(rel.to_entity_id == "COMP-VALIDATOR" for rel in repository.get_relationships())
 
 
+def test_repository_query_entities_filters_deterministically(tmp_path: Path) -> None:
+    _generate_bundle(tmp_path)
+
+    repository = ArchitectureRepository(project_root=tmp_path)
+    repository.load()
+
+    assert [entity.id for entity in repository.query_entities(entity_type="capability")] == ["CAP-1000"]
+    assert [entity.id for entity in repository.query_entities(adr="ADR-L-1000")] == [
+        "ADR-L-1000",
+        "CAP-1000",
+        "DEC-1000",
+        "INV-1000",
+    ]
+    assert repository.query_entities(domain="validation") == []
+    assert repository.query_entities(status="proposed") == []
+
+
+def test_repository_exposes_contract_bundle_view_in_normalized_mode(tmp_path: Path) -> None:
+    _generate_bundle(tmp_path)
+
+    repository = ArchitectureRepository(project_root=tmp_path)
+    contract_bundle = repository.get_contract_bundle_view()
+
+    assert contract_bundle.architecture_index.entity_registry_path == "adrs/index/entity-registry.yaml"
+    assert len(contract_bundle.entity_registry.entities) == len(repository.get_entities())
+    assert contract_bundle.remediation_ledger is None
+
+
 def test_repository_falls_back_to_legacy_mode(tmp_path: Path) -> None:
     _write_legacy_registry(tmp_path)
 
@@ -81,6 +109,14 @@ def test_repository_falls_back_to_legacy_mode(tmp_path: Path) -> None:
     assert [entity.id for entity in model.entities_by_type("capability")] == ["CAP-9000"]
     assert model.find_entity("CAP-9000") is not None
     assert [rel.relationship_type for rel in repository.get_relationships()] == ["declared_in"]
+
+
+def test_repository_rejects_contract_bundle_view_in_legacy_mode(tmp_path: Path) -> None:
+    _write_legacy_registry(tmp_path)
+
+    repository = ArchitectureRepository(project_root=tmp_path)
+    with pytest.raises(ArchitectureRegistryError, match="legacy repository mode"):
+        repository.get_contract_bundle_view()
 
 
 def test_repository_load_is_idempotent_and_reload_refreshes_disk(tmp_path: Path) -> None:
@@ -197,6 +233,15 @@ def test_entities_cli_uses_repository_in_legacy_mode(tmp_path: Path) -> None:
     assert "Legacy capability" in get_result.output
     assert capabilities_result.exit_code == 0, capabilities_result.output
     assert "CAP-9000" in capabilities_result.output
+
+
+def test_cli_no_longer_declares_raw_contract_bundle_loader() -> None:
+    cli_source = Path("src/adr_kit/cli/main.py").read_text(encoding="utf-8")
+
+    assert "def _load_contract_bundle(" not in cli_source
+    assert "ModelView" not in cli_source
+    assert "RegistryView" not in cli_source
+    assert "load_architecture_index" not in cli_source
 
 
 def test_repository_prefers_normalized_mode_when_both_sources_exist(tmp_path: Path) -> None:

@@ -2,23 +2,28 @@
 
 from __future__ import annotations
 
+from dataclasses import dataclass
 from pathlib import Path
 from typing import Literal
 
 from ..models import (
+    ArchitectureIndex,
     CanonicalSource,
     Completeness,
     DiscoveryProvenance,
     Entity,
     NormalizedArchitectureModel,
     NormalizedEntity,
+    RemediationLedger,
+    RelationshipRegistry,
     RelationshipRecord,
+    SourceCoverageSummary,
     SourceRef,
+    UnresolvedRegistry,
     UnresolvedRecord,
     ValidationSummary,
 )
 from ..parser import ADRParser
-from ..schema.contract_validation import ContractValidationError, validate_kernel_contract_bundle
 from ..scope import ProjectScopeResolver
 from .registry_loader import (
     fingerprint_payload,
@@ -35,6 +40,17 @@ from .registry_paths import discover_repository_paths, resolve_index_reference
 
 class ArchitectureRegistryError(Exception):
     """Deterministic repository loading failure."""
+
+
+@dataclass(frozen=True)
+class ContractBundleView:
+    """Repository-facing typed contract bundle for consumer workflows."""
+
+    architecture_index: ArchitectureIndex
+    entity_registry: object
+    relationship_registry: RelationshipRegistry
+    unresolved_registry: UnresolvedRegistry
+    remediation_ledger: RemediationLedger | None
 
 
 class ArchitectureRepository:
@@ -94,24 +110,74 @@ class ArchitectureRepository:
         self.load()
         return list(self.get_model().entities)
 
+    def query_entities(
+        self,
+        *,
+        entity_type: str | None = None,
+        adr: str | None = None,
+        domain: str | None = None,
+        status: str | None = None,
+    ) -> list[NormalizedEntity]:
+        """Return deterministically filtered semantic entities."""
+
+        entities = sorted(self.get_model().entities, key=lambda entity: entity.id)
+        if entity_type:
+            entities = [entity for entity in entities if entity.entity_type == entity_type]
+        if adr:
+            entities = [entity for entity in entities if adr in self._entity_adr_refs(entity)]
+        if domain:
+            entities = [
+                entity
+                for entity in entities
+                if domain in ((entity.metadata or {}).get("domains", []) or [])
+            ]
+        if status:
+            entities = [
+                entity
+                for entity in entities
+                if ((entity.metadata or {}).get("status") == status)
+            ]
+        return entities
+
     def get_components(self) -> list[NormalizedEntity]:
-        return self.get_model().entities_by_type("component")
+        return self.query_entities(entity_type="component")
 
     def get_capabilities(self) -> list[NormalizedEntity]:
-        return self.get_model().entities_by_type("capability")
+        return self.query_entities(entity_type="capability")
 
     def get_decisions(self) -> list[NormalizedEntity]:
-        return self.get_model().entities_by_type("decision")
+        return self.query_entities(entity_type="decision")
 
     def get_invariants(self) -> list[NormalizedEntity]:
-        return self.get_model().entities_by_type("invariant")
+        return self.query_entities(entity_type="invariant")
 
     def get_systems(self) -> list[NormalizedEntity]:
-        return self.get_model().entities_by_type("system")
+        return self.query_entities(entity_type="system")
 
     def get_relationships(self) -> list[RelationshipRecord]:
         self.load()
         return list(self.get_model().relationships)
+
+    def get_contract_bundle_view(self) -> ContractBundleView:
+        """Return the compiled contract bundle through the repository boundary."""
+
+        self.load()
+        if self.mode != "normalized":
+            raise ArchitectureRegistryError("Compiled contract bundle is unavailable in legacy repository mode")
+        if (
+            self.architecture_index is None
+            or self.primary_entity_registry is None
+            or self.relationship_registry is None
+            or self.unresolved_registry is None
+        ):
+            raise ArchitectureRegistryError("Compiled contract bundle unavailable before successful normalized load")
+        return ContractBundleView(
+            architecture_index=self.architecture_index,
+            entity_registry=self.primary_entity_registry,
+            relationship_registry=self.relationship_registry,
+            unresolved_registry=self.unresolved_registry,
+            remediation_ledger=self.remediation_ledger,
+        )
 
     def find_entity(self, entity_id: str) -> NormalizedEntity | None:
         self.load()
@@ -161,18 +227,6 @@ class ArchitectureRepository:
         remediation_ledger_path = discover_repository_paths(scope_root).remediation_ledger
         if remediation_ledger_path.exists():
             remediation_ledger = load_remediation_ledger(self._parser, remediation_ledger_path)
-        try:
-            validate_kernel_contract_bundle(
-                index,
-                primary_registry,
-                relationship_registry,
-                unresolved_registry,
-                profile="greenfield",
-                remediation_ledger=remediation_ledger,
-            ).require_valid()
-        except ContractValidationError as exc:
-            raise ArchitectureRegistryError(f"Kernel contract validation failed: {exc}") from exc
-
         primary_by_id = {entity.id: entity for entity in primary_registry.entities}
         subsets: dict[str, list[NormalizedEntity]] = {}
         subset_models: dict[str, object] = {}
@@ -439,3 +493,20 @@ class ArchitectureRepository:
                 )
             )
         return records
+
+    def _entity_adr_refs(self, entity: NormalizedEntity) -> set[str]:
+        refs = set()
+        canonical_ref = entity.canonical_source.source_ref.split("#")[0]
+        if canonical_ref.startswith("ADR-"):
+            refs.add(canonical_ref)
+        refs.update(
+            ref.source_ref.split("#")[0]
+            for ref in entity.source_refs
+            if ref.source_ref.startswith("ADR-")
+        )
+        for metadata_ref_key in ("adr_id", "defined_in", "introduced_by"):
+            metadata_ref = (entity.metadata or {}).get(metadata_ref_key)
+            if isinstance(metadata_ref, str) and metadata_ref.startswith("ADR-"):
+                refs.add(metadata_ref)
+        refs.update(item for item in entity.relationships.declared_in if item.startswith("ADR-"))
+        return refs

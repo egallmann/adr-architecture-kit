@@ -6,7 +6,7 @@ from click.testing import CliRunner
 
 from src.adr_kit.cli.main import cli
 from src.adr_kit.parser import ADRParser
-from src.adr_kit.repository import ArchitectureRegistryError, ArchitectureRepository
+from src.adr_kit.repository import ArchitectureRepository
 from src.adr_kit.repository.registry_loader import (
     load_architecture_index,
     load_normalized_entity_registry,
@@ -76,7 +76,7 @@ def _create_recursive_contract_workspace(tmp_path):
     return root, child
 
 
-def test_repository_rejects_missing_required_metadata_key(tmp_path):
+def test_repository_loads_non_contract_complete_bundle_for_later_policy_validation(tmp_path):
     paths = _generate_bundle(tmp_path)
     entity_data = yaml.safe_load(paths["entity_registry"].read_text(encoding="utf-8"))
     capability = next(entity for entity in entity_data["entities"] if entity["entity_type"] == "capability")
@@ -84,11 +84,13 @@ def test_repository_rejects_missing_required_metadata_key(tmp_path):
     paths["entity_registry"].write_text(yaml.safe_dump(entity_data, sort_keys=False), encoding="utf-8")
 
     repository = ArchitectureRepository(project_root=tmp_path)
-    with pytest.raises(ArchitectureRegistryError, match="missing required metadata key"):
-        repository.load()
+    repository.load()
+
+    assert repository.mode == "normalized"
+    assert repository.find_entity("CAP-1000") is not None
 
 
-def test_repository_rejects_sentinel_backed_content_by_default(tmp_path):
+def test_repository_loads_sentinel_backed_content_for_profile_validation(tmp_path):
     paths = _generate_bundle(tmp_path)
     entity_data = yaml.safe_load(paths["entity_registry"].read_text(encoding="utf-8"))
     component = next(entity for entity in entity_data["entities"] if entity["entity_type"] == "component")
@@ -96,8 +98,10 @@ def test_repository_rejects_sentinel_backed_content_by_default(tmp_path):
     paths["entity_registry"].write_text(yaml.safe_dump(entity_data, sort_keys=False), encoding="utf-8")
 
     repository = ArchitectureRepository(project_root=tmp_path)
-    with pytest.raises(ArchitectureRegistryError, match="sentinel-backed content"):
-        repository.load()
+    repository.load()
+
+    assert repository.mode == "normalized"
+    assert repository.find_entity("COMP-VALIDATOR") is not None
 
 
 def test_contract_validator_allows_permitted_sentinel_fields_in_brownfield(tmp_path):

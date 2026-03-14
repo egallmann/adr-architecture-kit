@@ -12,6 +12,7 @@ import yaml
 from ..compiler.diagnostics import DiagnosticLog
 from ..compiler.frontend.parser import CachedADRParser
 from ..compiler.passes import (
+    detect_unresolved,
     derive_relationships,
     extract_logical_entities,
     extract_physical_entities,
@@ -374,19 +375,12 @@ class ArchitectureIndexGenerator:
             if item.to_entity_id not in summary:
                 summary.append(item.to_entity_id)
                 summary.sort()
-        for gap in relationship_derivation.generator_gaps:
-            self._unresolved(
-                unresolved,
-                gap.gap_id,
-                "generator_derived",
-                gap.gap_type,
-                gap.source_entity_id,
-                gap.severity,
-                gap.source_ref,
-                gap.evidence,
-                gap.related_entity_id,
-                gap.expected_relationship,
-            )
+        unresolved.extend(
+            detect_unresolved(
+                relationship_derivation.generator_gaps,
+                provenance=self._provenance,
+            ).unresolved
+        )
 
         entity_registry = NormalizedEntityRegistry(entities=sorted(entities.values(), key=lambda item: (item.entity_type, item.id)))
         relationship_registry = RelationshipRegistry(relationships=sorted(relationships.values(), key=lambda item: item.relationship_id))

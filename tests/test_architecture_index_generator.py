@@ -8,6 +8,8 @@ from click.testing import CliRunner
 
 from src.adr_kit.compiler.frontend import CachedADRParser
 from src.adr_kit.compiler.passes import (
+    detect_unresolved,
+    DetectUnresolvedPass,
     DeriveRelationshipsPass,
     DerivedGapSignal,
     ResolveInvariantCanonicalPass,
@@ -15,6 +17,7 @@ from src.adr_kit.compiler.passes import (
     ExtractPhysicalEntitiesPass,
     derive_relationships,
     ScoreCompletenessPass,
+    UnresolvedDetectionResult,
     ValidateBundlePass,
     extract_logical_entities,
     extract_physical_entities,
@@ -723,3 +726,63 @@ def test_derive_relationships_pass_matches_helper(tmp_path):
 
     assert direct.relationships == via_pass.relationships
     assert direct.generator_gaps == via_pass.generator_gaps
+
+
+def test_detect_unresolved_matches_current_generator_shape(tmp_path):
+    adr_dir = _create_fixture(tmp_path)
+    generator = ArchitectureIndexGenerator()
+    bundle = generator.generate_from_directory(adr_dir)
+    logical_files, physical_files, invariant_files = generator._discover_source_files(adr_dir)
+    logical_adrs = [(generator.parser.parse_logical_adr(path), path.resolve()) for path in logical_files]
+    physical_adrs = [(generator.parser.parse_adr(path), path.resolve()) for path in physical_files]
+    standalone_invariants = [(generator.parser.parse_invariant(path), path.resolve()) for path in invariant_files]
+    entities = {entity.id: entity for entity in bundle.entity_registry.entities if entity.id != "COMP-VALIDATOR"}
+
+    derivation = derive_relationships(
+        entities=entities,
+        logical_adrs=logical_adrs,
+        standalone_invariants=standalone_invariants,
+        physical_adrs=physical_adrs,
+        system_ids={"ADR-PS-1000": "SYS-1000"},
+        relationship_id=generator._relationship_id,
+    )
+
+    result = detect_unresolved(
+        derivation.generator_gaps,
+        provenance=generator._provenance,
+    )
+
+    assert result == UnresolvedDetectionResult(
+        unresolved=[
+            next(item for item in result.unresolved if item.id == "GAP-IMPL-CAP-1000-COMP-VALIDATOR")
+        ]
+    )
+    unresolved = result.unresolved[0]
+    assert unresolved.gap_class == "generator_derived"
+    assert unresolved.gap_type == "capability_without_implementing_component"
+    assert unresolved.source_entity_id == "CAP-1000"
+    assert unresolved.related_entity_id == "COMP-VALIDATOR"
+    assert unresolved.expected_relationship == "implemented_by"
+    assert unresolved.provenance.source_type == "derived_registry"
+    assert unresolved.provenance.classification == "derived"
+
+
+def test_detect_unresolved_pass_matches_helper():
+    generator = ArchitectureIndexGenerator()
+    gaps = [
+        DerivedGapSignal(
+            gap_id="GAP-1000",
+            gap_type="unresolved_reference",
+            source_entity_id="DEC-1000",
+            severity="important",
+            source_ref="ADR-L-1000#DEC-1000",
+            evidence=["ADR-L-1000", "CAP-1000"],
+            related_entity_id="CAP-1000",
+            expected_relationship="enables",
+        )
+    ]
+
+    direct = detect_unresolved(gaps, provenance=generator._provenance)
+    via_pass = DetectUnresolvedPass().run(gaps, provenance=generator._provenance)
+
+    assert direct == via_pass

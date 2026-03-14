@@ -18,6 +18,11 @@ from .derive_relationships import (
     RelationshipDerivationResult,
     derive_relationships,
 )
+from .detect_unresolved import (
+    DetectUnresolvedPass,
+    UnresolvedDetectionResult,
+    detect_unresolved,
+)
 from .resolve_invariant_canonical import (
     CanonicalInvariantSelection,
     InvariantResolutionResult,
@@ -30,6 +35,7 @@ from .validate_bundle import BundleValidationResult, ValidateBundlePass, validat
 __all__ = [
     "BundleValidationResult",
     "CanonicalInvariantSelection",
+    "DetectUnresolvedPass",
     "DerivedGapSignal",
     "DeriveRelationshipsPass",
     "ExtractLogicalEntitiesPass",
@@ -42,7 +48,9 @@ __all__ = [
     "RelationshipDerivationResult",
     "ResolveInvariantCanonicalPass",
     "ScoreCompletenessPass",
+    "UnresolvedDetectionResult",
     "ValidateBundlePass",
+    "detect_unresolved",
     "derive_relationships",
     "extract_logical_entities",
     "extract_physical_entities",

@@ -11,7 +11,12 @@ import yaml
 
 from ..compiler.diagnostics import DiagnosticLog
 from ..compiler.frontend.parser import CachedADRParser
-from ..compiler.passes import extract_logical_entities, score_completeness, validate_bundle
+from ..compiler.passes import (
+    extract_logical_entities,
+    extract_physical_entities,
+    score_completeness,
+    validate_bundle,
+)
 from ..models import (
     ArchitectureIndex,
     CanonicalSource,
@@ -355,52 +360,18 @@ class ArchitectureIndexGenerator:
                     mention_role="reference",
                 ))
 
-        for adr, path in physical_adrs:
-            artifact = self._source_path(scope, path)
-            source_type = "physical_component_adr" if isinstance(adr, PhysicalComponentADR) else "physical_system_adr" if isinstance(adr, PhysicalSystemADR) else "physical_adr"
-            add_entity(NormalizedEntity(
-                id=adr.id,
-                entity_type="adr",
-                name=adr.title,
-                summary=self._summary(adr.context),
-                canonical_source=self._canonical(source_type, adr.id, artifact),
-                metadata={"status": adr.status.value, "domains": list(adr.domains), "tags": list(adr.tags)},
-                completeness=self._complete(),
-                provenance=self._provenance(source_type, adr.id, "extract_adr", "explicit"),
-            ), allow_reference_merge=True)
-            if isinstance(adr, PhysicalSystemADR):
-                system_id = self._system_entity_id(adr.id)
-                system_ids[adr.id] = system_id
-                add_entity(NormalizedEntity(
-                    id=system_id,
-                    entity_type="system",
-                    name=adr.title,
-                    summary=self._summary(adr.context),
-                    canonical_source=self._canonical("physical_system_adr", adr.id, artifact),
-                    metadata={"adr_id": adr.id, "implements_logical": list(adr.implements_logical), "technologies": list(adr.technologies)},
-                    completeness=self._complete(),
-                    provenance=self._provenance("physical_system_adr", adr.id, "extract_system", "explicit"),
-                ))
-            if isinstance(adr, PhysicalComponentADR):
-                for component in adr.component_specifications:
-                    component_id = component.component_id or component.id
-                    add_entity(NormalizedEntity(
-                        id=component_id,
-                        entity_type="component",
-                        name=component.name,
-                        summary=self._summary(component.responsibilities),
-                        canonical_source=self._canonical("physical_component_adr", f"{adr.id}#{component_id}", artifact),
-                        metadata={
-                            "adr_id": adr.id,
-                            "legacy_component_id": component.id,
-                            "technologies": list(adr.technologies),
-                            "module_path": component.implementation_identifiers.module_path,
-                            "implements_capabilities": list(component.implements_capabilities),
-                            "implements_system": list(adr.implements_system),
-                        },
-                        completeness=self._complete(),
-                        provenance=self._provenance("physical_component_adr", f"{adr.id}#{component_id}", "extract_component", "explicit"),
-                    ))
+        physical_extraction = extract_physical_entities(
+            physical_adrs,
+            source_path=lambda file_path: self._source_path(scope, file_path),
+            canonical=self._canonical,
+            provenance=self._provenance,
+            summary=self._summary,
+            complete=self._complete,
+            system_entity_id=self._system_entity_id,
+        )
+        for extracted in physical_extraction.entities:
+            add_entity(extracted.entity, allow_reference_merge=extracted.allow_reference_merge)
+        system_ids.update(physical_extraction.system_ids)
 
         for entity in list(entities.values()):
             if entity.entity_type != "adr":

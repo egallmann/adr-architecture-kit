@@ -9,9 +9,11 @@ from click.testing import CliRunner
 from src.adr_kit.compiler.frontend import CachedADRParser
 from src.adr_kit.compiler.passes import (
     ExtractLogicalEntitiesPass,
+    ExtractPhysicalEntitiesPass,
     ScoreCompletenessPass,
     ValidateBundlePass,
     extract_logical_entities,
+    extract_physical_entities,
     score_completeness,
     validate_bundle,
 )
@@ -470,3 +472,60 @@ def test_extract_logical_entities_pass_matches_helper(tmp_path):
     assert direct.entities == via_pass.entities
     assert direct.invariant_mentions == via_pass.invariant_mentions
     assert direct.unresolved == via_pass.unresolved
+
+
+def test_extract_physical_entities_matches_current_fixture_shape(tmp_path):
+    adr_dir = _create_fixture(tmp_path)
+    generator = ArchitectureIndexGenerator()
+    _, physical_files, _ = generator._discover_source_files(adr_dir)
+    physical_adrs = [(generator.parser.parse_adr(path), path.resolve()) for path in physical_files]
+    scope = generator.scope_resolver.resolve(tmp_path)
+
+    result = extract_physical_entities(
+        physical_adrs,
+        source_path=lambda file_path: generator._source_path(scope, file_path),
+        canonical=generator._canonical,
+        provenance=generator._provenance,
+        summary=generator._summary,
+        complete=generator._complete,
+        system_entity_id=generator._system_entity_id,
+    )
+
+    assert [item.entity.id for item in result.entities] == [
+        "ADR-PS-1000",
+        "SYS-1000",
+        "ADR-PC-1000",
+        "COMP-VALIDATOR",
+    ]
+    assert [item.allow_reference_merge for item in result.entities] == [True, False, True, False]
+    assert result.system_ids == {"ADR-PS-1000": "SYS-1000"}
+
+
+def test_extract_physical_entities_pass_matches_helper(tmp_path):
+    adr_dir = _create_fixture(tmp_path)
+    generator = ArchitectureIndexGenerator()
+    _, physical_files, _ = generator._discover_source_files(adr_dir)
+    physical_adrs = [(generator.parser.parse_adr(path), path.resolve()) for path in physical_files]
+    scope = generator.scope_resolver.resolve(tmp_path)
+
+    direct = extract_physical_entities(
+        physical_adrs,
+        source_path=lambda file_path: generator._source_path(scope, file_path),
+        canonical=generator._canonical,
+        provenance=generator._provenance,
+        summary=generator._summary,
+        complete=generator._complete,
+        system_entity_id=generator._system_entity_id,
+    )
+    via_pass = ExtractPhysicalEntitiesPass().run(
+        physical_adrs,
+        source_path=lambda file_path: generator._source_path(scope, file_path),
+        canonical=generator._canonical,
+        provenance=generator._provenance,
+        summary=generator._summary,
+        complete=generator._complete,
+        system_entity_id=generator._system_entity_id,
+    )
+
+    assert direct.entities == via_pass.entities
+    assert direct.system_ids == via_pass.system_ids

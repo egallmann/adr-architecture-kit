@@ -12,6 +12,7 @@ import yaml
 from ..compiler.diagnostics import DiagnosticLog
 from ..compiler.frontend.parser import CachedADRParser
 from ..compiler.passes import (
+    derive_relationships,
     extract_logical_entities,
     extract_physical_entities,
     resolve_invariant_canonical,
@@ -359,74 +360,33 @@ class ArchitectureIndexGenerator:
             add_entity(extracted.entity, allow_reference_merge=extracted.allow_reference_merge)
         system_ids.update(physical_extraction.system_ids)
 
-        for entity in list(entities.values()):
-            if entity.entity_type != "adr":
-                adr_id = entity.canonical_source.source_ref.split("#")[0]
-                if adr_id in entities:
-                    self._add_relationship(relationships, entities, "declared_in", entity.id, adr_id, entity.canonical_source.source_ref, [entity.canonical_source.source_ref])
-
-        for adr, _ in logical_adrs:
-            for related in adr.related_adrs:
-                if related in entities:
-                    self._add_relationship(relationships, entities, "references", adr.id, related, adr.id, [adr.id])
-            for capability in adr.capabilities:
-                for component_id in capability.implemented_by_components:
-                    if component_id in entities:
-                        self._add_relationship(relationships, entities, "implemented_by", capability.id, component_id, f"{adr.id}#{capability.id}", [adr.id])
-                    else:
-                        self._unresolved(unresolved, f"GAP-IMPL-{capability.id}-{component_id}", "generator_derived", "capability_without_implementing_component", capability.id, "important", f"{adr.id}#{capability.id}", [adr.id, component_id], component_id, "implemented_by")
-            for decision in adr.decisions:
-                for invariant_id in sorted(set(decision.related_invariants + decision.enforces_invariants)):
-                    if invariant_id in entities:
-                        self._add_relationship(relationships, entities, "enforces", decision.id, invariant_id, f"{adr.id}#{decision.id}", [adr.id])
-                    else:
-                        self._unresolved(unresolved, f"GAP-INV-{decision.id}-{invariant_id}", "generator_derived", "unresolved_reference", decision.id, "important", f"{adr.id}#{decision.id}", [adr.id, invariant_id], invariant_id, "enforces")
-                for capability_id in decision.enables_capabilities:
-                    if capability_id in entities:
-                        self._add_relationship(relationships, entities, "enables", decision.id, capability_id, f"{adr.id}#{decision.id}", [adr.id])
-                        self._add_relationship(relationships, entities, "enabled_by", capability_id, decision.id, f"{adr.id}#{decision.id}", [adr.id], classification="derived")
-                    else:
-                        self._unresolved(unresolved, f"GAP-CAP-{decision.id}-{capability_id}", "generator_derived", "unresolved_reference", decision.id, "important", f"{adr.id}#{decision.id}", [adr.id, capability_id], capability_id, "enables")
-                for component_id in decision.governs_components:
-                    if component_id in entities:
-                        self._add_relationship(relationships, entities, "governs", decision.id, component_id, f"{adr.id}#{decision.id}", [adr.id])
-                for target in decision.supersedes:
-                    if target in entities:
-                        self._add_relationship(relationships, entities, "supersedes", decision.id, target, f"{adr.id}#{decision.id}", [adr.id])
-                        self._add_relationship(relationships, entities, "superseded_by", target, decision.id, f"{adr.id}#{decision.id}", [adr.id], classification="derived")
-                for target in decision.refines:
-                    if target in entities:
-                        self._add_relationship(relationships, entities, "refines", decision.id, target, f"{adr.id}#{decision.id}", [adr.id])
-
-        for invariant, _ in standalone_invariants:
-            if invariant.id not in entities:
-                continue
-            for target in invariant.enforced_by:
-                if target in entities:
-                    self._add_relationship(relationships, entities, "enforces", invariant.id, target, invariant.id, [invariant.id])
-
-        for adr, _ in physical_adrs:
-            if isinstance(adr, PhysicalComponentADR):
-                for component in adr.component_specifications:
-                    component_id = component.component_id or component.id
-                    for capability_id in component.implements_capabilities:
-                        if capability_id in entities:
-                            self._add_relationship(relationships, entities, "implemented_by", capability_id, component_id, f"{adr.id}#{component_id}", [adr.id])
-                        else:
-                            self._unresolved(unresolved, f"GAP-MISSING-CAP-{component_id}-{capability_id}", "generator_derived", "unresolved_reference", component_id, "important", f"{adr.id}#{component_id}", [adr.id, capability_id], capability_id, "implemented_by")
-                    for system_id in adr.implements_system:
-                        resolved_system_id = system_ids.get(system_id, self._system_entity_id(system_id))
-                        if resolved_system_id in entities:
-                            self._add_relationship(relationships, entities, "embodied_in", component_id, resolved_system_id, f"{adr.id}#{component_id}", [adr.id])
-                        else:
-                            self._unresolved(unresolved, f"GAP-MISSING-SYS-{component_id}-{system_id}", "generator_derived", "component_without_system", component_id, "important", f"{adr.id}#{component_id}", [adr.id, system_id], system_id, "embodied_in")
-                    for dep in component.dependencies:
-                        if dep in entities:
-                            self._add_relationship(relationships, entities, "related_to", component_id, dep, f"{adr.id}#{component_id}", [adr.id], classification="derived", confidence=0.8)
-            if isinstance(adr, PhysicalSystemADR) and adr.references_components:
-                for component_adr in adr.references_components:
-                    if component_adr in entities:
-                        self._add_relationship(relationships, entities, "related_to", adr.id, component_adr, adr.id, [adr.id], classification="derived", confidence=0.8)
+        relationship_derivation = derive_relationships(
+            entities=entities,
+            logical_adrs=logical_adrs,
+            standalone_invariants=standalone_invariants,
+            physical_adrs=physical_adrs,
+            system_ids=system_ids,
+            relationship_id=self._relationship_id,
+        )
+        relationships.update({item.relationship_id: item for item in relationship_derivation.relationships})
+        for item in relationship_derivation.relationships:
+            summary = getattr(entities[item.from_entity_id].relationships, item.relationship_type)
+            if item.to_entity_id not in summary:
+                summary.append(item.to_entity_id)
+                summary.sort()
+        for gap in relationship_derivation.generator_gaps:
+            self._unresolved(
+                unresolved,
+                gap.gap_id,
+                "generator_derived",
+                gap.gap_type,
+                gap.source_entity_id,
+                gap.severity,
+                gap.source_ref,
+                gap.evidence,
+                gap.related_entity_id,
+                gap.expected_relationship,
+            )
 
         entity_registry = NormalizedEntityRegistry(entities=sorted(entities.values(), key=lambda item: (item.entity_type, item.id)))
         relationship_registry = RelationshipRegistry(relationships=sorted(relationships.values(), key=lambda item: item.relationship_id))

@@ -8,9 +8,12 @@ from click.testing import CliRunner
 
 from src.adr_kit.compiler.frontend import CachedADRParser
 from src.adr_kit.compiler.passes import (
+    DeriveRelationshipsPass,
+    DerivedGapSignal,
     ResolveInvariantCanonicalPass,
     ExtractLogicalEntitiesPass,
     ExtractPhysicalEntitiesPass,
+    derive_relationships,
     ScoreCompletenessPass,
     ValidateBundlePass,
     extract_logical_entities,
@@ -627,3 +630,96 @@ def test_resolve_invariant_canonical_pass_matches_helper(tmp_path):
 
     assert direct.entities == via_pass.entities
     assert direct.selections == via_pass.selections
+
+
+def test_derive_relationships_matches_current_fixture_shape(tmp_path):
+    adr_dir = _create_fixture(tmp_path)
+    generator = ArchitectureIndexGenerator()
+    bundle = generator.generate_from_directory(adr_dir)
+    logical_files, physical_files, invariant_files = generator._discover_source_files(adr_dir)
+    logical_adrs = [(generator.parser.parse_logical_adr(path), path.resolve()) for path in logical_files]
+    physical_adrs = [(generator.parser.parse_adr(path), path.resolve()) for path in physical_files]
+    standalone_invariants = [(generator.parser.parse_invariant(path), path.resolve()) for path in invariant_files]
+    entities = {entity.id: entity for entity in bundle.entity_registry.entities}
+    system_ids = {"ADR-PS-1000": "SYS-1000"}
+
+    result = derive_relationships(
+        entities=entities,
+        logical_adrs=logical_adrs,
+        standalone_invariants=standalone_invariants,
+        physical_adrs=physical_adrs,
+        system_ids=system_ids,
+        relationship_id=generator._relationship_id,
+    )
+
+    assert [item.model_dump(mode="json") for item in result.relationships] == [
+        item.model_dump(mode="json") for item in bundle.relationship_registry.relationships
+    ]
+    assert [item.gap_id for item in result.generator_gaps] == []
+
+
+def test_derive_relationships_emits_gap_signals_for_missing_targets(tmp_path):
+    adr_dir = _create_fixture(tmp_path)
+    generator = ArchitectureIndexGenerator()
+    bundle = generator.generate_from_directory(adr_dir)
+    logical_files, physical_files, invariant_files = generator._discover_source_files(adr_dir)
+    logical_adrs = [(generator.parser.parse_logical_adr(path), path.resolve()) for path in logical_files]
+    physical_adrs = [(generator.parser.parse_adr(path), path.resolve()) for path in physical_files]
+    standalone_invariants = [(generator.parser.parse_invariant(path), path.resolve()) for path in invariant_files]
+    entities = {entity.id: entity for entity in bundle.entity_registry.entities if entity.id != "COMP-VALIDATOR"}
+    system_ids = {"ADR-PS-1000": "SYS-1000"}
+
+    result = derive_relationships(
+        entities=entities,
+        logical_adrs=logical_adrs,
+        standalone_invariants=standalone_invariants,
+        physical_adrs=physical_adrs,
+        system_ids=system_ids,
+        relationship_id=generator._relationship_id,
+    )
+
+    assert any(
+        item == DerivedGapSignal(
+            gap_id="GAP-IMPL-CAP-1000-COMP-VALIDATOR",
+            gap_type="capability_without_implementing_component",
+            source_entity_id="CAP-1000",
+            severity="important",
+            source_ref="ADR-L-1000#CAP-1000",
+            evidence=["ADR-L-1000", "COMP-VALIDATOR"],
+            related_entity_id="COMP-VALIDATOR",
+            expected_relationship="implemented_by",
+        )
+        for item in result.generator_gaps
+    )
+
+
+def test_derive_relationships_pass_matches_helper(tmp_path):
+    adr_dir = _create_fixture(tmp_path)
+    generator = ArchitectureIndexGenerator()
+    bundle = generator.generate_from_directory(adr_dir)
+    logical_files, physical_files, invariant_files = generator._discover_source_files(adr_dir)
+    logical_adrs = [(generator.parser.parse_logical_adr(path), path.resolve()) for path in logical_files]
+    physical_adrs = [(generator.parser.parse_adr(path), path.resolve()) for path in physical_files]
+    standalone_invariants = [(generator.parser.parse_invariant(path), path.resolve()) for path in invariant_files]
+    entities = {entity.id: entity for entity in bundle.entity_registry.entities}
+    system_ids = {"ADR-PS-1000": "SYS-1000"}
+
+    direct = derive_relationships(
+        entities=entities,
+        logical_adrs=logical_adrs,
+        standalone_invariants=standalone_invariants,
+        physical_adrs=physical_adrs,
+        system_ids=system_ids,
+        relationship_id=generator._relationship_id,
+    )
+    via_pass = DeriveRelationshipsPass().run(
+        entities=entities,
+        logical_adrs=logical_adrs,
+        standalone_invariants=standalone_invariants,
+        physical_adrs=physical_adrs,
+        system_ids=system_ids,
+        relationship_id=generator._relationship_id,
+    )
+
+    assert direct.relationships == via_pass.relationships
+    assert direct.generator_gaps == via_pass.generator_gaps

@@ -12,6 +12,12 @@ from .extract_physical_entities import (
     PhysicalExtractionResult,
     extract_physical_entities,
 )
+from .derive_relationships import (
+    DerivedGapSignal,
+    DeriveRelationshipsPass,
+    RelationshipDerivationResult,
+    derive_relationships,
+)
 from .resolve_invariant_canonical import (
     CanonicalInvariantSelection,
     InvariantResolutionResult,
@@ -24,6 +30,8 @@ from .validate_bundle import BundleValidationResult, ValidateBundlePass, validat
 __all__ = [
     "BundleValidationResult",
     "CanonicalInvariantSelection",
+    "DerivedGapSignal",
+    "DeriveRelationshipsPass",
     "ExtractLogicalEntitiesPass",
     "ExtractPhysicalEntitiesPass",
     "ExtractedEntity",
@@ -31,9 +39,11 @@ __all__ = [
     "InvariantMention",
     "LogicalExtractionResult",
     "PhysicalExtractionResult",
+    "RelationshipDerivationResult",
     "ResolveInvariantCanonicalPass",
     "ScoreCompletenessPass",
     "ValidateBundlePass",
+    "derive_relationships",
     "extract_logical_entities",
     "extract_physical_entities",
     "resolve_invariant_canonical",

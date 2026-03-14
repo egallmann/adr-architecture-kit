@@ -53,8 +53,12 @@ def test_repository_loads_normalized_bundle(tmp_path: Path) -> None:
 
     repository = ArchitectureRepository(project_root=tmp_path)
     repository.load()
+    model = repository.get_model()
 
     assert repository.mode == "normalized"
+    assert model.mode == "normalized"
+    assert model.architecture_namespace == "arch-test"
+    assert model.fingerprint == repository.fingerprint()
     assert any(entity.id == "CAP-1000" for entity in repository.get_entities())
     assert [entity.id for entity in repository.get_capabilities()] == ["CAP-1000"]
     assert [entity.id for entity in repository.get_components()] == ["COMP-VALIDATOR"]
@@ -66,13 +70,17 @@ def test_repository_falls_back_to_legacy_mode(tmp_path: Path) -> None:
 
     repository = ArchitectureRepository(project_root=tmp_path)
     repository.load()
+    model = repository.get_model()
 
     assert repository.mode == "legacy"
+    assert model.mode == "legacy"
     assert repository.find_entity("CAP-9000") is not None
-    assert [entity.entity_id for entity in repository.get_entities()] == ["CAP-9000"]
-    assert repository.get_capabilities() == []
+    assert [entity.id for entity in repository.get_entities()] == ["CAP-9000"]
+    assert [entity.id for entity in repository.get_capabilities()] == ["CAP-9000"]
     assert repository.get_invariants() == []
-    assert repository.get_relationships() == []
+    assert [entity.id for entity in model.entities_by_type("capability")] == ["CAP-9000"]
+    assert model.find_entity("CAP-9000") is not None
+    assert [rel.relationship_type for rel in repository.get_relationships()] == ["declared_in"]
 
 
 def test_repository_load_is_idempotent_and_reload_refreshes_disk(tmp_path: Path) -> None:
@@ -83,9 +91,10 @@ def test_repository_load_is_idempotent_and_reload_refreshes_disk(tmp_path: Path)
     original_fingerprint = repository.fingerprint()
     original_name = repository.get_capabilities()[0].name
 
-    capability_data = yaml.safe_load(paths["capability_registry"].read_text(encoding="utf-8"))
-    capability_data["entities"][0]["name"] = "Changed capability"
-    paths["capability_registry"].write_text(yaml.safe_dump(capability_data, sort_keys=False), encoding="utf-8")
+    capability_data = yaml.safe_load(paths["entity_registry"].read_text(encoding="utf-8"))
+    capability = next(entity for entity in capability_data["entities"] if entity["entity_type"] == "capability")
+    capability["name"] = "Changed capability"
+    paths["entity_registry"].write_text(yaml.safe_dump(capability_data, sort_keys=False), encoding="utf-8")
 
     repository.load()
     assert repository.fingerprint() == original_fingerprint
@@ -187,7 +196,7 @@ def test_entities_cli_uses_repository_in_legacy_mode(tmp_path: Path) -> None:
     assert get_result.exit_code == 0, get_result.output
     assert "Legacy capability" in get_result.output
     assert capabilities_result.exit_code == 0, capabilities_result.output
-    assert "entities: []" in capabilities_result.output
+    assert "CAP-9000" in capabilities_result.output
 
 
 def test_repository_prefers_normalized_mode_when_both_sources_exist(tmp_path: Path) -> None:

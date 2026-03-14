@@ -32,6 +32,8 @@ artifact.
   inference, unresolved detection, validation, and emission
 - Fixed-order compiler pass runner over extracted compiler steps
 - Compiler-owned registry bundle assembly from `ArchModel`
+- Architecture Repository Boundary over compiled bundles, returning a stable
+  `NormalizedArchitectureModel` for in-process consumers
 - Compiler-authoritative emission of normalized registries, subset registries,
   legacy compatibility registry, manifest, and rendered ADR markdown
 - Additive architecture graph emission from the compiler IR without changing current registry authority

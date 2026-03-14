@@ -4,8 +4,8 @@
 # generator_id: adr-compiler
 # generator_version: 1
 # hash_algorithm: sha256
-# source_hash: d76650132bc278e0ba60c9067a4f04f60b77f996545eadaca1e0e4adef5ebd26
-# rendered_hash: 3d682deeda9b022a926c335c12c3edd27e1dca046e5c62e5b89e4ff983e2e555
+# source_hash: 386d8ec00dd59c623e35534a850cb6288ece7c04de48e6a3943f71d911900225
+# rendered_hash: 5cb7c2402f1b5a3fe09573901c131c2c01c7158528b061ad2d6856fbcda4830e
 
 schema_version: '1.1'
 type: entity_registry
@@ -571,6 +571,21 @@ entities:
   introduced_by: ADR-L-0012
   lifecycle_stage: active
   source_path: adrs/logical/ADR-L-0012-federation-authority-and-qualified-identity.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs: []
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: CAP-0039
+  entity_type: capability
+  name: Stable Repository Semantic Boundary
+  introduced_by: ADR-L-0013
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0013-architecture-repository-boundary-and-normalized-semantic-model.yaml
   source_artifact_type: logical_adr
   domains: []
   related_adrs: []
@@ -1348,6 +1363,53 @@ entities:
     implements: []
     consumes: []
     realizes: []
+- entity_id: DEC-0050
+  entity_type: decision
+  name: Use ArchitectureRepository as the only supported in-process consumer entry
+    point
+  introduced_by: ADR-L-0013
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0013-architecture-repository-boundary-and-normalized-semantic-model.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs: []
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: DEC-0051
+  entity_type: decision
+  name: Expose a NormalizedArchitectureModel as the repository semantic payload
+  introduced_by: ADR-L-0013
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0013-architecture-repository-boundary-and-normalized-semantic-model.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs: []
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: DEC-0052
+  entity_type: decision
+  name: Keep ArchModel compiler-internal and do not promote it to the public consumer
+    API
+  introduced_by: ADR-L-0013
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0013-architecture-repository-boundary-and-normalized-semantic-model.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs: []
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
 - entity_id: INV-0001
   entity_type: invariant
   name: INV-0001
@@ -1454,18 +1516,20 @@ entities:
 - entity_id: INV-0007
   entity_type: invariant
   name: INV-0007
-  introduced_by: ADR-L-0001
+  introduced_by: ADR-L-0013
   lifecycle_stage: active
-  source_path: adrs/logical/ADR-L-0001-ste-compliant-adr-system.yaml
-  source_artifact_type: logical_adr
+  source_path: adrs/invariants/INV-0007-architecture-consumers-must-use-the-repository-boundary.yaml
+  source_artifact_type: standalone_invariant
   domains: []
-  related_adrs: []
+  related_adrs:
+  - ADR-L-0001
   realized_by: []
   relationships:
     depends_on: []
     implements: []
     consumes: []
-    realizes: []
+    realizes:
+    - ADR-P-0001
 - entity_id: INV-0014
   entity_type: invariant
   name: INV-0014
@@ -2132,6 +2196,21 @@ entities:
   introduced_by: ADR-L-0012
   lifecycle_stage: active
   source_path: adrs/logical/ADR-L-0012-federation-authority-and-qualified-identity.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs: []
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: INV-0059
+  entity_type: invariant
+  name: INV-0059
+  introduced_by: ADR-L-0013
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0013-architecture-repository-boundary-and-normalized-semantic-model.yaml
   source_artifact_type: logical_adr
   domains: []
   related_adrs: []

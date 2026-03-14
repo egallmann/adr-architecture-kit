@@ -1,0 +1,103 @@
+schema_version: '1.0'
+adr_type: logical
+id: ADR-L-0013
+title: Architecture Repository Boundary and Normalized Semantic Model
+status: proposed
+created_date: '2026-03-14'
+authors:
+- adr-architecture-kit
+domains:
+- repository
+- discovery
+- compiler
+- kernel
+tags:
+- repository-boundary
+- semantic-model
+- archmodel
+- registries
+introduces_entities:
+- INV-0059
+- CAP-0039
+context: |
+  adr-architecture-kit now has an explicit compiler pipeline, a compiler IR
+  (`ArchModel`), compiled registry bundles, and an additive architecture graph.
+  Those pieces are sufficient to produce deterministic machine-facing artifacts,
+  but they do not yet define one required in-process consumer boundary.
+
+  Without that boundary, tools can drift into reading raw registries directly,
+  interpreting relationships independently, and coupling future kernel or graph
+  consumers to current file layouts and registry schemas. That would undermine
+  determinism, make schema evolution expensive, and allow semantic drift
+  between canonical ADR authority and downstream machine consumers.
+
+  A stabilizing move is needed now while the system is still small enough to
+  evolve safely: one repository boundary that loads compiled artifacts and
+  exposes one stable semantic model to in-process consumers.
+decisions:
+- id: DEC-0050
+  summary: Use ArchitectureRepository as the only supported in-process consumer entry point
+  rationale: |
+    The repository boundary centralizes scope-safe loading, contract
+    validation, path hiding, and registry compatibility adaptation. This keeps
+    consumers from binding directly to registry files and current layout.
+  consequences:
+    positive:
+    - Consumer logic stops duplicating bundle loading behavior
+    - Registry schema and layout evolution can be absorbed behind one boundary
+    - Future kernel consumers can target one trusted seam
+- id: DEC-0051
+  summary: Expose a NormalizedArchitectureModel as the repository semantic payload
+  rationale: |
+    A semantic model is needed so consumers depend on architecture meaning
+    rather than current registry document shapes. The model must preserve
+    entities, relationships, unresolved records, provenance, scope identity,
+    and deterministic fingerprinting.
+  consequences:
+    positive:
+    - Consumers use one typed semantic contract
+    - Future graph compilation has a stable landing zone
+    - Unresolved and provenance semantics remain explicit
+- id: DEC-0052
+  summary: Keep ArchModel compiler-internal and do not promote it to the public consumer API
+  rationale: |
+    The current `ArchModel` is the compiler IR. It reflects pass orchestration
+    and extraction concerns and may evolve as compiler internals change. Making
+    it the public consumer contract would freeze the wrong abstraction too
+    early.
+  consequences:
+    positive:
+    - Compiler internals remain evolvable
+    - Consumer semantics stay narrower and more stable
+    - ADR-Kit avoids becoming an accidental proto-kernel
+invariants:
+- id: INV-0059
+  statement: |
+    In-process architecture consumers MUST use the ArchitectureRepository
+    boundary instead of inventing ad hoc compiled-registry interpretation when
+    a repository boundary is available.
+  scope: global
+  enforcement_level: must
+  enforcement_mechanism: design
+  verification_method: automated
+  rationale: |
+    Centralized loading and semantic adaptation are required to prevent
+    consumer fragmentation and long-term registry drift.
+capabilities:
+- id: CAP-0039
+  name: Stable Repository Semantic Boundary
+  description: |
+    Provide one scope-safe, deterministic in-process interface that loads
+    compiled architecture bundles and returns a stable normalized semantic
+    model for tools, validators, agents, and future kernel consumers.
+  acceptance_criteria:
+  - ArchitectureRepository loads compiled bundles and validates them at load time
+  - Consumers can retrieve a NormalizedArchitectureModel without reading raw YAML
+  - Unresolved records and provenance remain first-class in the semantic model
+  - Compiler-internal ArchModel is not required by normal consumer workflows
+related_adrs:
+- ADR-L-0009
+- ADR-L-0010
+- ADR-L-0012
+- ADR-PC-0001
+gaps: []

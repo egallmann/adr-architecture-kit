@@ -7,6 +7,7 @@
 ADR Architecture Kit implements the **Documentation-State Layer (Layer 5)** of the System of Thought Engineering (STE) framework, providing structured, schema-validated architecture documentation that AI systems can reason over deterministically.
 
 The ADR discovery/output path is now an explicit compiler pipeline: canonical ADR files are parsed once, normalized into `ArchModel`, transformed through deterministic compiler passes, and only then emitted as registries, manifest, and rendered ADR markdown.
+For in-process consumers, use the Architecture Repository Boundary: `ArchitectureRepository` loads compiled bundles and returns a `NormalizedArchitectureModel`. `ArchModel` remains compiler-internal.
 
 For fastest repo orientation, start with [SYSTEM-OVERVIEW.md](/c:/Users/Erik/Documents/Projects/adr-architecture-kit/SYSTEM-OVERVIEW.md).
 `SYSTEM-OVERVIEW.md` is a generated artifact. Update it with `adr generate-system-overview` and validate it with `adr validate-system-overview`.

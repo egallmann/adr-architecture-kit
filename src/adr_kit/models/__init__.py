@@ -151,6 +151,7 @@ from .implementation_attribution import (
     ImplementationAttributionRecord,
     ImplementationEntityType,
 )
+from .normalized_architecture_model import NormalizedArchitectureModel
 
 __all__ = [
     # Common
@@ -291,4 +292,5 @@ __all__ = [
     "ImplementationAttributionProvenance",
     "ImplementationAttributionRecord",
     "ImplementationEntityType",
+    "NormalizedArchitectureModel",
 ]

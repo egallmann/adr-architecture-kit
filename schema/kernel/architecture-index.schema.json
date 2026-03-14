@@ -1,0 +1,140 @@
+{
+  "$defs": {
+    "SourceCoverageSummary": {
+      "description": "Coverage summary of discovered sources.",
+      "properties": {
+        "logical_adrs": {
+          "default": 0,
+          "title": "Logical Adrs",
+          "type": "integer"
+        },
+        "physical_adrs": {
+          "default": 0,
+          "title": "Physical Adrs",
+          "type": "integer"
+        },
+        "physical_component_adrs": {
+          "default": 0,
+          "title": "Physical Component Adrs",
+          "type": "integer"
+        },
+        "physical_system_adrs": {
+          "default": 0,
+          "title": "Physical System Adrs",
+          "type": "integer"
+        },
+        "standalone_invariants": {
+          "default": 0,
+          "title": "Standalone Invariants",
+          "type": "integer"
+        }
+      },
+      "title": "SourceCoverageSummary",
+      "type": "object"
+    },
+    "ValidationSummary": {
+      "description": "Generation validation summary.",
+      "properties": {
+        "hard_failures": {
+          "default": 0,
+          "title": "Hard Failures",
+          "type": "integer"
+        },
+        "unresolved_entries": {
+          "default": 0,
+          "title": "Unresolved Entries",
+          "type": "integer"
+        },
+        "warnings": {
+          "default": 0,
+          "title": "Warnings",
+          "type": "integer"
+        }
+      },
+      "title": "ValidationSummary",
+      "type": "object"
+    }
+  },
+  "description": "Bootstrap index for architecture discovery.",
+  "properties": {
+    "architecture_namespace": {
+      "title": "Architecture Namespace",
+      "type": "string"
+    },
+    "capability_registry_path": {
+      "title": "Capability Registry Path",
+      "type": "string"
+    },
+    "component_registry_path": {
+      "title": "Component Registry Path",
+      "type": "string"
+    },
+    "decision_registry_path": {
+      "title": "Decision Registry Path",
+      "type": "string"
+    },
+    "entity_registry_path": {
+      "title": "Entity Registry Path",
+      "type": "string"
+    },
+    "generated_at": {
+      "format": "date-time",
+      "title": "Generated At",
+      "type": "string"
+    },
+    "generator": {
+      "title": "Generator",
+      "type": "string"
+    },
+    "invariant_registry_path": {
+      "title": "Invariant Registry Path",
+      "type": "string"
+    },
+    "relationship_registry_path": {
+      "title": "Relationship Registry Path",
+      "type": "string"
+    },
+    "schema_version": {
+      "default": "1.1",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "source_coverage": {
+      "$ref": "#/$defs/SourceCoverageSummary"
+    },
+    "system_registry_path": {
+      "title": "System Registry Path",
+      "type": "string"
+    },
+    "type": {
+      "const": "architecture_index",
+      "default": "architecture_index",
+      "title": "Type",
+      "type": "string"
+    },
+    "unresolved_registry_path": {
+      "title": "Unresolved Registry Path",
+      "type": "string"
+    },
+    "validation_summary": {
+      "$ref": "#/$defs/ValidationSummary"
+    }
+  },
+  "required": [
+    "architecture_namespace",
+    "generated_at",
+    "generator",
+    "entity_registry_path",
+    "relationship_registry_path",
+    "unresolved_registry_path",
+    "decision_registry_path",
+    "capability_registry_path",
+    "invariant_registry_path",
+    "component_registry_path",
+    "system_registry_path",
+    "validation_summary",
+    "source_coverage"
+  ],
+  "title": "ArchitectureIndex",
+  "type": "object"
+}

@@ -129,6 +129,7 @@ class SystemOverviewGenerator:
                 ),
             ],
             "cli_capabilities": [
+                "`adr compile --mode {normal,strict,lenient}`",
                 "`adr generate-manifest`",
                 "`adr generate-architecture-index`",
                 "`adr normalize-canonical-ids`",
@@ -175,14 +176,19 @@ class SystemOverviewGenerator:
                 ),
             ],
             "canonical_workflows": [
-                OverviewRule("Validate the repository", "Run `adr validate`, `adr validate --recursive`, and `pytest tests -q`."),
+                OverviewRule("Validate the repository", "Run `adr governance-checks` for the standard local governance bundle. Use `adr validate` or `adr validate --recursive` when you only need ADR schema and business-rule validation."),
+                OverviewRule("Compile through the unified driver", "Run `adr compile --mode normal|strict|lenient` for the single-scope compiler path. `lenient` only tolerates the current post-emit drift and contract-validation error family."),
+                OverviewRule("Commit at meaningful boundaries", "After a coherent implementation slice is verified, commit it before continuing. Do not accumulate unrelated unverified changes."),
+                OverviewRule("Maintain workflow-facing README content", "Update `README.md` when contributor-facing workflows or orientation guidance change. `README.md` is manual, not generated, and is not covered by `adr validate-generated-docs`."),
                 OverviewRule("Generate or refresh the architecture index", "Run `adr generate-architecture-index`. Treat `adrs/index/` as the primary machine discovery surface."),
                 OverviewRule("Generate or refresh the manifest", "Run `adr generate-manifest` or `adr generate-manifest --recursive`. Do not hand-edit `manifest.yaml`."),
                 OverviewRule("Generate rendered ADR markdown", "Run `adr generate-rendered-docs`. Do not hand-edit files under `adrs/rendered/`."),
-                OverviewRule("Validate generated documentation", "Run `adr validate-generated-docs` after regenerating derived artifacts."),
+                OverviewRule("Validate generated documentation", "Run `adr validate-generated-docs` after regenerating manifest or rendered ADR markdown artifacts. This does not validate `README.md` or `SYSTEM-OVERVIEW.md`."),
+                OverviewRule("Validate compiled contract profiles", "Run `adr validate-contract --contract-profile greenfield` for strict contract enforcement, or use the brownfield profile with explicit thresholds during migration."),
                 OverviewRule("Generate a Physical-System ADR", "Inspect the generator first, then use `adr generate-physical-system` when the input can be structured."),
+                OverviewRule("Validate project metadata", "Run `adr validate-project-metadata` to verify `PROJECT.yaml` against schema and model rules."),
                 OverviewRule("Audit runtime hygiene", "Run `adr audit-runtime --fail-on-outdated` or `python scripts/check_runtime_hygiene.py --fail-on-outdated`."),
-                OverviewRule("Regenerate this overview", "Run `adr generate-system-overview`. Do not hand-edit `SYSTEM-OVERVIEW.md`."),
+                OverviewRule("Regenerate this overview", "Run `adr generate-system-overview` and then `adr validate-system-overview`. Do not hand-edit `SYSTEM-OVERVIEW.md`."),
             ],
             "tooling_priority_rules": [
                 "If a generator exists for the target artifact, use or extend it before hand-crafting output.",
@@ -201,6 +207,7 @@ class SystemOverviewGenerator:
             "invariants": [
                 "[`INV-0001-schema-validation-required.yaml`](adrs/invariants/INV-0001-schema-validation-required.yaml)",
                 "[`INV-0002-runtime-hygiene-and-dependency-security.yaml`](adrs/invariants/INV-0002-runtime-hygiene-and-dependency-security.yaml)",
+                "[`INV-0003-meaningful-boundary-commits-required.yaml`](adrs/invariants/INV-0003-meaningful-boundary-commits-required.yaml)",
             ],
             "fast_target_discovery": [
                 OverviewRule(
@@ -236,7 +243,10 @@ class SystemOverviewGenerator:
             ],
             "completion_criteria": [
                 "run targeted tests for the changed area",
-                "run `adr validate` when artifact semantics changed",
+                "run `adr governance-checks` for the standard local governance bundle when repository behavior changed",
+                "commit each meaningful verified implementation boundary before starting the next slice",
+                "update `README.md` when workflow-facing behavior or orientation guidance changed",
+                "run `adr validate` when artifact semantics changed but the full governance bundle is unnecessary",
                 "regenerate derived artifacts if their sources changed",
                 "run `adr validate-generated-docs` for committed generated documentation artifacts",
                 "run runtime hygiene audit when changing dependency or runtime-facing code",

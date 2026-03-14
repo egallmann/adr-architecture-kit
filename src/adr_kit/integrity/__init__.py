@@ -15,6 +15,7 @@ from .core import (
     extract_body_without_header,
     parse_integrity_header,
 )
+from .legacy_registry import LEGACY_ENTITY_REGISTRY_GENERATOR, legacy_entity_registry_source_inputs
 from .validation import (
     GeneratedArtifactStatus,
     GeneratedArtifactValidationResult,
@@ -37,6 +38,8 @@ __all__ = [
     "compute_source_hash",
     "extract_body_without_header",
     "parse_integrity_header",
+    "LEGACY_ENTITY_REGISTRY_GENERATOR",
+    "legacy_entity_registry_source_inputs",
     "GeneratedArtifactStatus",
     "GeneratedArtifactValidationResult",
     "GeneratedArtifactValidator",

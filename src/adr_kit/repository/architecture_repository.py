@@ -7,12 +7,14 @@ from typing import Literal
 
 from ..models import Entity, NormalizedEntity, RelationshipRecord
 from ..parser import ADRParser
+from ..schema.contract_validation import ContractValidationError, validate_kernel_contract_bundle
 from ..scope import ProjectScopeResolver
 from .registry_loader import (
     fingerprint_payload,
     load_architecture_index,
     load_legacy_entity_registry,
     load_normalized_entity_registry,
+    load_remediation_ledger,
     load_relationship_registry,
     load_unresolved_registry,
     model_payload,
@@ -136,6 +138,21 @@ class ArchitectureRepository:
             self._parser,
             resolve_index_reference(scope_root, index.unresolved_registry_path),
         )
+        remediation_ledger = None
+        remediation_ledger_path = discover_repository_paths(scope_root).remediation_ledger
+        if remediation_ledger_path.exists():
+            remediation_ledger = load_remediation_ledger(self._parser, remediation_ledger_path)
+        try:
+            validate_kernel_contract_bundle(
+                index,
+                primary_registry,
+                relationship_registry,
+                unresolved_registry,
+                profile="greenfield",
+                remediation_ledger=remediation_ledger,
+            ).require_valid()
+        except ContractValidationError as exc:
+            raise ArchitectureRegistryError(f"Kernel contract validation failed: {exc}") from exc
 
         primary_by_id = {entity.id: entity for entity in primary_registry.entities}
         subsets: dict[str, list[NormalizedEntity]] = {}
@@ -151,6 +168,7 @@ class ArchitectureRepository:
         self.primary_entity_registry = primary_registry
         self.relationship_registry = relationship_registry
         self.unresolved_registry = unresolved_registry
+        self.remediation_ledger = remediation_ledger
         self.legacy_entity_registry = None
         self._entities = list(primary_registry.entities)
         self._entities_by_id = {entity.id: entity for entity in primary_registry.entities}
@@ -163,6 +181,7 @@ class ArchitectureRepository:
                 "entity_registry": model_payload(primary_registry),
                 "relationship_registry": model_payload(relationship_registry),
                 "unresolved_registry": model_payload(unresolved_registry),
+                "remediation_ledger": model_payload(remediation_ledger),
                 "subset_registries": {
                     name: model_payload(model) for name, model in sorted(subset_models.items())
                 },
@@ -175,6 +194,7 @@ class ArchitectureRepository:
         self.primary_entity_registry = None
         self.relationship_registry = None
         self.unresolved_registry = None
+        self.remediation_ledger = None
         self.legacy_entity_registry = legacy_registry
         self._entities = list(legacy_registry.entities)
         self._entities_by_id = {entity.entity_id: entity for entity in legacy_registry.entities}
@@ -225,6 +245,7 @@ class ArchitectureRepository:
         self.primary_entity_registry = None
         self.relationship_registry = None
         self.unresolved_registry = None
+        self.remediation_ledger = None
         self.legacy_entity_registry = None
         self._entities: list[NormalizedEntity] | list[Entity] = []
         self._entities_by_id: dict[str, NormalizedEntity | Entity] = {}

@@ -171,6 +171,7 @@
 - [ ] `adr generate-manifest --recursive` finds all scopes
 - [ ] `adr validate` works from any directory
 - [ ] `adr validate --recursive` validates all scopes
+- [ ] `adr governance-checks --skip-tests` runs the standard contract validation bundle
 - [ ] `adr scope` shows detected scope
 - [ ] `adr scope --recursive` shows all scopes
 - [ ] Error messages are clear and helpful
@@ -180,7 +181,8 @@
 ## Overall Test Suite
 
 ### Test Execution
-- [ ] All tests pass: `pytest tests/ -v`
+- [ ] The current implementation slice is committed once its relevant checks pass
+- [ ] All tests pass: `adr governance-checks`
 - [ ] No test failures
 - [ ] No test errors
 - [ ] Test coverage ≥ 80% (per ADR-L-0003 INV-0026)
@@ -217,6 +219,7 @@
 - [ ] **CAP-0004**: Multi-Scope CLI Interface
   - [ ] `adr generate-manifest` works from any directory
   - [ ] `adr validate` works from any directory
+  - [ ] `adr governance-checks` works from workspace root
   - [ ] `--scope` parameter overrides auto-detection
   - [ ] `--recursive` enables multi-scope operations
 
@@ -281,8 +284,8 @@
 - [ ] Expected: Shows adr-architecture-kit as root
 - [ ] Run: `adr generate-manifest`
 - [ ] Expected: Generates manifest for workspace ADRs only
-- [ ] Run: `adr validate`
-- [ ] Expected: Validates workspace ADRs
+- [ ] Run: `adr governance-checks --skip-tests`
+- [ ] Expected: Runs greenfield and brownfield contract validation for the workspace
 
 ### Test with ste-runtime
 - [ ] Run from ste-runtime: `cd ste-runtime && adr scope`
@@ -299,6 +302,8 @@
 - [ ] Expected: Generates manifests for both scopes
 - [ ] Run: `adr validate --recursive`
 - [ ] Expected: Validates both scopes
+- [ ] Run: `adr validate-generated-docs`
+- [ ] Expected: Manifest and rendered documentation integrity checks pass
 
 ---
 
@@ -309,6 +314,7 @@
 - [ ] No type checking errors (mypy)
 - [ ] Code follows project style
 - [ ] No code smells or anti-patterns
+- [ ] Changes are grouped into meaningful verified commit boundaries
 
 ### Completeness
 - [ ] All 4 components implemented

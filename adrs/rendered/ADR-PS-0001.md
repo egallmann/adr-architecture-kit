@@ -5,8 +5,8 @@ artifact_kind: rendered_adr_markdown
 generator_id: adr-rendered-markdown
 generator_version: 1
 hash_algorithm: sha256
-source_hash: 312839bfc4e43e9b951ab54c371a9b09a5699e01205c29825d6d163fc7fd84ca
-rendered_hash: 69804abc1f652cbe852b8671301eaeade851ce1b0f06afa273781bb055661c37
+source_hash: 09b7408071a5fec62389b5eebab1e78defc3786e81e73e4273dbccd358ef10a3
+rendered_hash: 4a32d70a08eed5f95fcdff61f5e73ce75f1a9138de238c06d6efc4eaab0ac676
 -->
 
 # ADR-PS-0001: ADR Architecture Kit Discovery and Indexing System
@@ -25,10 +25,12 @@ rendered_hash: 69804abc1f652cbe852b8671301eaeade851ce1b0f06afa273781bb055661c37
 ## Context
 
 The discovery and indexing subsystem provides the derived surfaces that agents
-query instead of scanning raw ADR bodies by default. It includes summary
-generation (`manifest.yaml`), normalized entity lookup
-(`adrs/entities/registry.yaml`), and CLI query surfaces over generated
-registry state.
+query instead of scanning raw ADR bodies by default. It now includes
+normalized discovery bundle generation under `adrs/index/`, legacy
+compatibility registry generation under `adrs/entities/registry.yaml`,
+manifest generation, rendered ADR markdown generation, CLI query surfaces over
+generated registry state, and the unified `adr compile` orchestration path
+that emits these derived discovery artifacts together.
 
 
 ## Technology Stack

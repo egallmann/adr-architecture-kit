@@ -63,15 +63,15 @@ class ManifestGenerator:
         Frontmatter is authoritative for subtype classification. Directory structure
         only distinguishes broad classes: logical vs physical.
         """
-        logical_files = list((adr_dir / "logical").glob("*.yaml")) if (adr_dir / "logical").exists() else []
+        logical_files = sorted((adr_dir / "logical").glob("*.yaml")) if (adr_dir / "logical").exists() else []
 
         physical_files: List[Path] = []
         for dirname in ("physical", "physical-system", "physical-component"):
             candidate_dir = adr_dir / dirname
             if candidate_dir.exists():
-                physical_files.extend(candidate_dir.glob("*.yaml"))
+                physical_files.extend(sorted(candidate_dir.glob("*.yaml")))
 
-        deduped_physical = list(dict.fromkeys(path.resolve() for path in physical_files))
+        deduped_physical = sorted(dict.fromkeys(path.resolve() for path in physical_files))
         return logical_files, [Path(path) for path in deduped_physical]
 
     def _relative_manifest_path(self, file_path: Path, adr_dir: Path) -> str:
@@ -106,7 +106,7 @@ class ManifestGenerator:
         decision_ledger_files = list((adr_dir / "decisions" / "ledgers").glob("*.yaml")) if (adr_dir / "decisions" / "ledgers").exists() else []
         
         # Parse all ADRs
-        logical_adrs: List[LogicalADR] = []
+        logical_adrs: List[Tuple[LogicalADR, Path]] = []
         physical_adrs: List[Tuple[PhysicalADR, Path]] = []
         physical_system_adrs: List[Tuple[PhysicalSystemADR, Path]] = []
         physical_component_adrs: List[Tuple[PhysicalComponentADR, Path]] = []
@@ -114,7 +114,7 @@ class ManifestGenerator:
         for file_path in logical_files:
             try:
                 adr = self.parser.parse_logical_adr(file_path)
-                logical_adrs.append(adr)
+                logical_adrs.append((adr, file_path.resolve()))
             except Exception as e:
                 print(f"Warning: Failed to parse {file_path}: {e}")
         
@@ -133,13 +133,13 @@ class ManifestGenerator:
         # Build manifest entries
         manifest_entries: List[ManifestADREntry] = []
         
-        for adr in logical_adrs:
+        for adr, file_path in logical_adrs:
             entry = ManifestADREntry(
                 id=adr.id,
                 type="logical",
                 title=adr.title,
                 status=adr.status,
-                file_path=str(Path("adrs/logical") / f"{adr.id}-{self._slugify(adr.title)}.yaml"),
+                file_path=self._relative_manifest_path(file_path, adr_dir),
                 domains=adr.domains,
                 tags=adr.tags,
                 decision_count=len(adr.decisions),
@@ -234,7 +234,7 @@ class ManifestGenerator:
         
         # Extract all invariants
         manifest_invariants: List[ManifestInvariant] = []
-        for adr in logical_adrs:
+        for adr, _ in logical_adrs:
             for inv in adr.invariants:
                 manifest_inv = ManifestInvariant(
                     id=inv.id,
@@ -250,7 +250,7 @@ class ManifestGenerator:
         entity_map: Dict[str, ManifestEntity] = {}
         
         # Extract from Logical ADRs (capabilities, boundaries, contracts, etc.)
-        for adr in logical_adrs:
+        for adr, _ in logical_adrs:
             for cap in adr.capabilities:
                 if cap.id not in entity_map:
                     entity_map[cap.id] = ManifestEntity(
@@ -367,7 +367,7 @@ class ManifestGenerator:
         
         # Parse requirements snapshots
         manifest_req_snapshots: List[ManifestRequirementsSnapshot] = []
-        for file_path in req_snapshot_files:
+        for file_path in sorted(req_snapshot_files):
             try:
                 snapshot = self.parser.parse_requirements_snapshot(file_path)
                 manifest_req_snapshots.append(ManifestRequirementsSnapshot(
@@ -380,7 +380,7 @@ class ManifestGenerator:
         
         # Parse decision ledgers
         manifest_decision_ledgers: List[ManifestDecisionLedger] = []
-        for file_path in decision_ledger_files:
+        for file_path in sorted(decision_ledger_files):
             try:
                 ledger = self.parser.parse_decision_ledger(file_path)
                 manifest_decision_ledgers.append(ManifestDecisionLedger(
@@ -419,7 +419,7 @@ class ManifestGenerator:
             physical_system_adrs=len(physical_system_adrs),
             physical_component_adrs=len(physical_component_adrs),
             decision_adrs=0,
-            total_decisions=sum(len(adr.decisions) for adr in logical_adrs),
+            total_decisions=sum(len(adr.decisions) for adr, _ in logical_adrs),
             total_invariants=len(manifest_invariants),
             total_components=sum(len(adr.component_specifications) for adr, _ in physical_adrs) +
                            sum(len(adr.component_specifications) for adr, _ in physical_component_adrs),

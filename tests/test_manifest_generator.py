@@ -82,6 +82,7 @@ class TestManifestGeneration:
             assert manifest.statistics.physical_component_adrs == 1
             assert any(entry.type == "physical-system" for entry in manifest.adrs)
             assert any(entry.type == "physical-component" for entry in manifest.adrs)
-            assert any(entry.file_path.endswith("adrs\\physical\\ADR-PS-0001-system.yaml") or entry.file_path.endswith("adrs/physical/ADR-PS-0001-system.yaml") for entry in manifest.adrs)
+            assert any(entry.file_path.endswith("adrs/physical/ADR-PS-0001-system.yaml") for entry in manifest.adrs)
+            assert all("\\" not in entry.file_path for entry in manifest.adrs)
         finally:
             shutil.rmtree(temp_root, ignore_errors=True)

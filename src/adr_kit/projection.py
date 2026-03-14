@@ -4,10 +4,18 @@ from __future__ import annotations
 
 from pathlib import Path
 
+from .compiler import ArchitectureCompiler, CompilerConfig
 from .generators.manifest_generator import ManifestGenerator
 from .generators.system_overview_generator import SystemOverviewGenerator
 from .generators.views.markdown import MarkdownGenerator
-from .integrity import ArtifactKind, GeneratedArtifact, GeneratorIdentity, compute_source_hash
+from .integrity import (
+    ArtifactKind,
+    GeneratedArtifact,
+    GeneratorIdentity,
+    LEGACY_ENTITY_REGISTRY_GENERATOR,
+    compute_source_hash,
+    legacy_entity_registry_source_inputs,
+)
 from .parser import ADRParser
 
 
@@ -26,6 +34,24 @@ class ProjectionInspector:
             generator = ManifestGenerator(parser=self.parser)
             body, source_inputs = generator.render_for_scope(artifact.scope)
             return body, source_inputs, generator.generator_identity
+
+        if artifact.artifact_kind == ArtifactKind.LEGACY_ENTITY_REGISTRY:
+            compiler = ArchitectureCompiler()
+            result = compiler.compile(
+                artifact.scope,
+                CompilerConfig(
+                    emit={"registries"},
+                    dry_run=True,
+                ),
+            )
+            registry_artifact = next(
+                item for item in result.artifacts if item.path.as_posix() == "adrs/entities/registry.yaml"
+            )
+            return (
+                registry_artifact.content.decode("utf-8"),
+                legacy_entity_registry_source_inputs(artifact.scope),
+                LEGACY_ENTITY_REGISTRY_GENERATOR,
+            )
 
         if artifact.artifact_kind == ArtifactKind.RENDERED_ADR_MARKDOWN:
             generator = MarkdownGenerator()

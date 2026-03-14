@@ -9,6 +9,7 @@ ADR Architecture Kit implements the **Documentation-State Layer (Layer 5)** of t
 For fastest repo orientation, start with [SYSTEM-OVERVIEW.md](/c:/Users/Erik/Documents/Projects/adr-architecture-kit/SYSTEM-OVERVIEW.md).
 `SYSTEM-OVERVIEW.md` is a generated artifact. Update it with `adr generate-system-overview` and validate it with `adr validate-system-overview`.
 Rendered ADR markdown and the manifest are also generated artifacts. Refresh them with `adr generate-rendered-docs` and `adr generate-manifest`, then verify projections with `adr validate-generated-docs`.
+`README.md` is a manual workflow/orientation document. Update it when contributor-facing workflows change; it is not part of `adr validate-generated-docs`.
 
 ### Key Features
 
@@ -225,6 +226,43 @@ Run the test suite:
 pytest tests/ -v
 ```
 
+Validate the compiled contract bundle:
+
+```bash
+adr validate-contract --contract-profile greenfield
+```
+
+Compile the single-scope artifact bundle with an explicit success policy:
+
+```bash
+adr compile --mode strict
+```
+
+Run the ratcheted brownfield gate used in CI:
+
+```bash
+adr validate-contract --contract-profile brownfield --max-sentinel-fields 0 --max-non-complete-entities 0
+```
+
+Run the standard local governance bundle:
+
+```bash
+adr governance-checks
+```
+
+This runs the greenfield contract gate, the brownfield ratchet gate, and the full test suite.
+When you finish a coherent implementation slice, commit it after the relevant checks pass rather than accumulating unrelated changes.
+Use `adr compile --mode normal|strict|lenient` when you need the unified compiler path directly:
+- `normal` reports errors and returns non-zero on compile failure
+- `strict` treats any compile error as non-viable
+- `lenient` only tolerates the current post-emit drift and contract-validation error family
+
+The compatibility wrapper still exists if you need it:
+
+```bash
+python scripts/run_governance_checks.py
+```
+
 With coverage:
 
 ```bash
@@ -249,13 +287,19 @@ This project follows **Red-Green-Refactor TDD methodology** (ADR-L-0003 DEC-0005
 
 GitHub Actions workflow (`.github/workflows/adr-governance.yml`) enforces:
 
-1. **Schema validation** - All ADRs must validate against JSON Schema
-2. **Manifest freshness** - Manifest must be up-to-date with ADRs
-3. **Test suite** - All tests must pass
-4. **PROJECT.yaml validation** - Project metadata must be valid
-5. **Runtime hygiene** - Deprecated APIs fail governance checks
-6. **Dependency security** - Known vulnerable packages fail governance checks
-7. **Dependency freshness** - Outdated direct dependencies are surfaced continuously
+1. **ADR validation** - `adr validate --cross-references` must pass
+2. **Governance bundle** - `adr governance-checks` must pass, including the full test suite and contract profile gates
+3. **Generated artifact freshness** - `adr validate-generated-docs` must pass for manifest and rendered output
+4. **System overview integrity** - `adr validate-system-overview` must pass
+5. **PROJECT.yaml validation** - `adr validate-project-metadata` must pass
+6. **Runtime hygiene** - Deprecated APIs fail governance checks
+7. **Dependency security** - Known vulnerable packages fail governance checks
+8. **Dependency freshness** - Outdated direct dependencies are surfaced continuously
+
+Repository practice also requires commits at meaningful verified boundaries:
+- one coherent implementation slice per commit
+- relevant tests and validation run first
+- leave the repo in a reviewable state before continuing
 
 Run the runtime hygiene audit locally:
 

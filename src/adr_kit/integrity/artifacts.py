@@ -13,6 +13,7 @@ class ArtifactKind(StrEnum):
     """Supported generated artifact kinds."""
 
     MANIFEST = "manifest"
+    LEGACY_ENTITY_REGISTRY = "legacy_entity_registry"
     RENDERED_ADR_MARKDOWN = "rendered_adr_markdown"
     SYSTEM_OVERVIEW = "system_overview"
 
@@ -32,5 +33,6 @@ class ScopeProjectionArtifacts:
 
     scope: ProjectScope
     manifest_path: Path
+    legacy_entity_registry_path: Path
     rendered_dir: Path
     system_overview_path: Path

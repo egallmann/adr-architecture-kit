@@ -1,0 +1,152 @@
+{
+  "$defs": {
+    "DiscoveryProvenance": {
+      "description": "Extraction provenance for a derived record.",
+      "properties": {
+        "classification": {
+          "pattern": "^(explicit|derived|heuristic)$",
+          "title": "Classification",
+          "type": "string"
+        },
+        "extraction_phase": {
+          "title": "Extraction Phase",
+          "type": "string"
+        },
+        "generator": {
+          "title": "Generator",
+          "type": "string"
+        },
+        "source_ref": {
+          "title": "Source Ref",
+          "type": "string"
+        },
+        "source_type": {
+          "title": "Source Type",
+          "type": "string"
+        }
+      },
+      "required": [
+        "source_type",
+        "source_ref",
+        "extraction_phase",
+        "classification",
+        "generator"
+      ],
+      "title": "DiscoveryProvenance",
+      "type": "object"
+    },
+    "UnresolvedRecord": {
+      "description": "Unresolved architecture signal.",
+      "properties": {
+        "evidence": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Evidence",
+          "type": "array"
+        },
+        "expected_relationship": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Expected Relationship"
+        },
+        "gap_class": {
+          "enum": [
+            "author_declared",
+            "generator_derived"
+          ],
+          "title": "Gap Class",
+          "type": "string"
+        },
+        "gap_type": {
+          "title": "Gap Type",
+          "type": "string"
+        },
+        "id": {
+          "title": "Id",
+          "type": "string"
+        },
+        "provenance": {
+          "$ref": "#/$defs/DiscoveryProvenance"
+        },
+        "related_entity_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Related Entity Id"
+        },
+        "severity": {
+          "enum": [
+            "critical",
+            "important",
+            "advisory"
+          ],
+          "title": "Severity",
+          "type": "string"
+        },
+        "source_entity_id": {
+          "title": "Source Entity Id",
+          "type": "string"
+        },
+        "suggested_resolution": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Suggested Resolution"
+        }
+      },
+      "required": [
+        "id",
+        "gap_class",
+        "gap_type",
+        "source_entity_id",
+        "severity",
+        "provenance"
+      ],
+      "title": "UnresolvedRecord",
+      "type": "object"
+    }
+  },
+  "description": "Registry of unresolved architecture signals.",
+  "properties": {
+    "schema_version": {
+      "default": "1.1",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "type": {
+      "const": "unresolved_registry",
+      "default": "unresolved_registry",
+      "title": "Type",
+      "type": "string"
+    },
+    "unresolved": {
+      "items": {
+        "$ref": "#/$defs/UnresolvedRecord"
+      },
+      "title": "Unresolved",
+      "type": "array"
+    }
+  },
+  "title": "UnresolvedRegistry",
+  "type": "object"
+}

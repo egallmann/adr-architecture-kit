@@ -5,8 +5,8 @@ artifact_kind: system_overview
 generator_id: adr-system-overview
 generator_version: 1
 hash_algorithm: sha256
-source_hash: f6c98478b681a81ce4b4bf6407bbe4b770089ad6e1454b4be184771817f1e649
-rendered_hash: 4e8df4fe02b4a94ecd15fc3862cb36f07904090e908efb3ba1948efecf4a3d05
+source_hash: 29c51c166f62ace980b111ea347522d421e948bcbc4f56a8023769f77d162bf5
+rendered_hash: 1fdbb95f8ea129e57b825fc456b5e1a098e933a72af518d8af13e9712d0b5551
 -->
 
 ---
@@ -100,6 +100,7 @@ Core implementation areas:
 
 Primary CLI capabilities:
 
+- `adr compile --mode {normal,strict,lenient}`
 - `adr generate-manifest`
 - `adr generate-architecture-index`
 - `adr normalize-canonical-ids`
@@ -147,7 +148,19 @@ Use this type model when reasoning about repository architecture artifacts:
 
 ### Validate the repository
 
-Run `adr validate`, `adr validate --recursive`, and `pytest tests -q`.
+Run `adr governance-checks` for the standard local governance bundle. Use `adr validate` or `adr validate --recursive` when you only need ADR schema and business-rule validation.
+
+### Compile through the unified driver
+
+Run `adr compile --mode normal|strict|lenient` for the single-scope compiler path. `lenient` only tolerates the current post-emit drift and contract-validation error family.
+
+### Commit at meaningful boundaries
+
+After a coherent implementation slice is verified, commit it before continuing. Do not accumulate unrelated unverified changes.
+
+### Maintain workflow-facing README content
+
+Update `README.md` when contributor-facing workflows or orientation guidance change. `README.md` is manual, not generated, and is not covered by `adr validate-generated-docs`.
 
 ### Generate or refresh the architecture index
 
@@ -163,11 +176,19 @@ Run `adr generate-rendered-docs`. Do not hand-edit files under `adrs/rendered/`.
 
 ### Validate generated documentation
 
-Run `adr validate-generated-docs` after regenerating derived artifacts.
+Run `adr validate-generated-docs` after regenerating manifest or rendered ADR markdown artifacts. This does not validate `README.md` or `SYSTEM-OVERVIEW.md`.
+
+### Validate compiled contract profiles
+
+Run `adr validate-contract --contract-profile greenfield` for strict contract enforcement, or use the brownfield profile with explicit thresholds during migration.
 
 ### Generate a Physical-System ADR
 
 Inspect the generator first, then use `adr generate-physical-system` when the input can be structured.
+
+### Validate project metadata
+
+Run `adr validate-project-metadata` to verify `PROJECT.yaml` against schema and model rules.
 
 ### Audit runtime hygiene
 
@@ -175,7 +196,7 @@ Run `adr audit-runtime --fail-on-outdated` or `python scripts/check_runtime_hygi
 
 ### Regenerate this overview
 
-Run `adr generate-system-overview`. Do not hand-edit `SYSTEM-OVERVIEW.md`.
+Run `adr generate-system-overview` and then `adr validate-system-overview`. Do not hand-edit `SYSTEM-OVERVIEW.md`.
 
 ## Tooling Priority Rules
 
@@ -205,6 +226,7 @@ Start here when you need the non-negotiables:
 
 - [`INV-0001-schema-validation-required.yaml`](adrs/invariants/INV-0001-schema-validation-required.yaml)
 - [`INV-0002-runtime-hygiene-and-dependency-security.yaml`](adrs/invariants/INV-0002-runtime-hygiene-and-dependency-security.yaml)
+- [`INV-0003-meaningful-boundary-commits-required.yaml`](adrs/invariants/INV-0003-meaningful-boundary-commits-required.yaml)
 
 Practical meaning:
 
@@ -249,7 +271,10 @@ A change is not complete unless relevant checks were run.
 Minimum close-out expectation:
 
 - run targeted tests for the changed area
-- run `adr validate` when artifact semantics changed
+- run `adr governance-checks` for the standard local governance bundle when repository behavior changed
+- commit each meaningful verified implementation boundary before starting the next slice
+- update `README.md` when workflow-facing behavior or orientation guidance changed
+- run `adr validate` when artifact semantics changed but the full governance bundle is unnecessary
 - regenerate derived artifacts if their sources changed
 - run `adr validate-generated-docs` for committed generated documentation artifacts
 - run runtime hygiene audit when changing dependency or runtime-facing code

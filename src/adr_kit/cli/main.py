@@ -4,6 +4,7 @@ Implements ADR-L-0002: Multi-scope ADR architecture with scope-aware commands.
 """
 
 import sys
+import subprocess
 from pathlib import Path
 from typing import Optional
 
@@ -25,10 +26,20 @@ from ..generators import (
     SystemOverviewGenerator,
 )
 from ..generators.views import MarkdownGenerator
+from ..compiler import ArchitectureCompiler, CompilationMode, CompilerConfig
 from ..integrity import GeneratedArtifactStatus
 from ..migrators.canonical_id_normalizer import CanonicalIdNormalizer
 from ..parser import ADRParser
 from ..repository import ArchitectureRepository
+from ..repository.registry_loader import (
+    load_architecture_index,
+    load_normalized_entity_registry,
+    load_remediation_ledger,
+    load_relationship_registry,
+    load_unresolved_registry,
+)
+from ..repository.registry_paths import discover_repository_paths, resolve_index_reference
+from ..schema.contract_validation import validate_kernel_contract_bundle
 from ..validators import (
     ADRValidator,
     GeneratedArtifactValidator,
@@ -70,9 +81,111 @@ def _load_architecture_repository(scope_path: Optional[Path]) -> ArchitectureRep
     return repository
 
 
+def _load_contract_bundle(scope_path: Optional[Path]):
+    """Load the compiled kernel contract bundle without repository policy checks."""
+    resolver = ProjectScopeResolver(explicit_scope=scope_path)
+    scope = resolver.resolve()
+    parser = ADRParser()
+    paths = discover_repository_paths(scope.root)
+
+    architecture_index = load_architecture_index(parser, paths.architecture_index)
+    entity_registry = load_normalized_entity_registry(
+        parser,
+        resolve_index_reference(scope.root, architecture_index.entity_registry_path),
+    )
+    relationship_registry = load_relationship_registry(
+        parser,
+        resolve_index_reference(scope.root, architecture_index.relationship_registry_path),
+    )
+    unresolved_registry = load_unresolved_registry(
+        parser,
+        resolve_index_reference(scope.root, architecture_index.unresolved_registry_path),
+    )
+    remediation_ledger = None
+    if paths.remediation_ledger.exists():
+        remediation_ledger = load_remediation_ledger(parser, paths.remediation_ledger)
+
+    return scope, architecture_index, entity_registry, relationship_registry, unresolved_registry, remediation_ledger
+
+
 def _dump_yaml(data) -> str:
     """Render CLI output as deterministic YAML."""
     return yaml.safe_dump(data, sort_keys=False, allow_unicode=True).rstrip()
+
+
+def _run_cli_subcommand(args: list[str]) -> int:
+    """Execute a CLI subcommand in-process."""
+    try:
+        cli.main(args=args, prog_name="adr", standalone_mode=False)
+        return 0
+    except SystemExit as exc:
+        return exc.code if isinstance(exc.code, int) else 1
+
+
+def _run_governance_checks(scope: Path, *, skip_tests: bool) -> int:
+    """Run the standard governance validation bundle."""
+    failures = 0
+    scope_root = scope.resolve()
+
+    steps: list[tuple[str, list[str]]] = [
+        (
+            "Greenfield contract validation",
+            [
+                "validate-contract",
+                "--scope",
+                str(scope_root),
+                "--contract-profile",
+                "greenfield",
+            ],
+        ),
+        (
+            "Brownfield ratchet validation",
+            [
+                "validate-contract",
+                "--scope",
+                str(scope_root),
+                "--contract-profile",
+                "brownfield",
+                "--max-sentinel-fields",
+                "0",
+                "--max-non-complete-entities",
+                "0",
+            ],
+        ),
+    ]
+
+    for label, args in steps:
+        click.echo(f"\n== {label} ==")
+        click.echo("adr " + " ".join(args))
+        failures += _run_cli_subcommand(args)
+
+    if not skip_tests:
+        test_command = [sys.executable, "-m", "pytest", "tests", "-q"]
+        click.echo("\n== Full test suite ==")
+        click.echo(" ".join(test_command))
+        failures += subprocess.run(test_command, cwd=scope_root).returncode
+
+    return failures
+
+
+def _parse_emit_list(value: str | None) -> set[str]:
+    """Parse `adr compile --emit` values."""
+    allowed = {"registries", "manifest", "markdown"}
+    if not value:
+        return {"registries", "manifest", "markdown"}
+    emit = {item.strip() for item in value.split(",") if item.strip()}
+    unknown = sorted(emit - allowed)
+    if unknown:
+        raise ValueError(f"Unknown emit target(s): {', '.join(unknown)}")
+    return emit
+
+
+def _artifact_by_path(result, relative_path: str):
+    """Return an emitted artifact by its relative path."""
+    for artifact in result.artifacts:
+        if artifact.path.as_posix() == relative_path:
+            return artifact
+    raise ValueError(f"Expected emitted artifact not found: {relative_path}")
 
 
 def _entity_identifier(entity):
@@ -297,11 +410,28 @@ def generate_manifest(scope: Optional[Path], recursive: bool, output: Optional[P
             click.echo("Generating manifest...")
             detected_scope = resolver.resolve()
             click.echo(f"Project scope: {detected_scope.name} ({detected_scope.root})")
-            
+
+            compiler = ArchitectureCompiler(scope_resolver=resolver)
+            if output is None:
+                result = compiler.compile(
+                    detected_scope,
+                    CompilerConfig(emit={"manifest"}),
+                )
+                if not result.success:
+                    raise ValueError("Architecture compilation failed")
+                output_path = detected_scope.manifest_path
+            else:
+                result = compiler.compile(
+                    detected_scope,
+                    CompilerConfig(emit={"manifest"}, dry_run=True),
+                )
+                if not result.success:
+                    raise ValueError("Architecture compilation failed")
+                output_path = output
+                output_path.parent.mkdir(parents=True, exist_ok=True)
+                output_path.write_bytes(_artifact_by_path(result, "adrs/manifest.yaml").content)
+
             manifest = generator.generate_from_scope(detected_scope)
-            output_path = output or detected_scope.manifest_path
-            generator.save_manifest(manifest, output_path, detected_scope)
-            
             click.echo(f"Generated manifest: {output_path}")
             click.echo(f"  ADRs: {manifest.statistics.total_adrs}")
             click.echo(f"  Logical: {manifest.statistics.logical_adrs}")
@@ -425,7 +555,7 @@ def generate_entity_registry(scope: Optional[Path], recursive: bool, output: Opt
     """Generate the legacy entity-registry.yaml compatibility artifact."""
     try:
         resolver = ProjectScopeResolver(explicit_scope=scope)
-        generator = ArchitectureIndexGenerator(scope_resolver=resolver)
+        compiler = ArchitectureCompiler(scope_resolver=resolver)
 
         if recursive:
             click.echo("Generating architecture indexes recursively for legacy entity registry compatibility...")
@@ -433,40 +563,56 @@ def generate_entity_registry(scope: Optional[Path], recursive: bool, output: Opt
             for scope_obj in scopes:
                 if not scope_obj.adr_dir.exists():
                     continue
-                bundle = generator.generate_from_scope(scope_obj)
-                paths = generator.save_bundle(bundle, scope_obj)
                 scope_name = scope_obj.name or str(scope_obj.root)
-                output_path = output or paths["legacy_entity_registry"]
-                if output is not None and output_path != paths["legacy_entity_registry"]:
-                    output_path.parent.mkdir(parents=True, exist_ok=True)
-                    output_path.write_text(
-                        generator.render_yaml(bundle.legacy_entity_registry),
-                        encoding="utf-8",
-                        newline="\n",
+                if output is None:
+                    result = compiler.compile(
+                        scope_obj,
+                        CompilerConfig(emit={"registries"}),
                     )
+                    if not result.success:
+                        raise ValueError("Architecture compilation failed")
+                    output_path = scope_obj.adr_dir / "entities" / "registry.yaml"
+                else:
+                    result = compiler.compile(
+                        scope_obj,
+                        CompilerConfig(emit={"registries"}, dry_run=True),
+                    )
+                    if not result.success:
+                        raise ValueError("Architecture compilation failed")
+                    output_path = output
+                    output_path.parent.mkdir(parents=True, exist_ok=True)
+                    output_path.write_bytes(_artifact_by_path(result, "adrs/entities/registry.yaml").content)
                 click.echo(f"Generated legacy entity registry for {scope_name}: {output_path}")
-                click.echo(f"  Architecture index: {paths['architecture_index']}")
+                click.echo(f"  Architecture index: {scope_obj.adr_dir / 'index' / 'architecture-index.yaml'}")
 
             click.echo(f"\nGenerated legacy entity registry compatibility artifacts for {len(scopes)} scope(s)")
         else:
             click.echo("Generating architecture index and legacy entity registry compatibility artifact...")
             detected_scope = resolver.resolve()
             click.echo(f"Project scope: {detected_scope.name} ({detected_scope.root})")
-
-            bundle = generator.generate_from_scope(detected_scope)
-            paths = generator.save_bundle(bundle, detected_scope)
-            output_path = output or paths["legacy_entity_registry"]
-            if output is not None and output_path != paths["legacy_entity_registry"]:
-                output_path.parent.mkdir(parents=True, exist_ok=True)
-                output_path.write_text(
-                    generator.render_yaml(bundle.legacy_entity_registry),
-                    encoding="utf-8",
-                    newline="\n",
+            if output is None:
+                result = compiler.compile(
+                    detected_scope,
+                    CompilerConfig(emit={"registries"}),
                 )
+                if not result.success:
+                    raise ValueError("Architecture compilation failed")
+                output_path = detected_scope.adr_dir / "entities" / "registry.yaml"
+            else:
+                result = compiler.compile(
+                    detected_scope,
+                    CompilerConfig(emit={"registries"}, dry_run=True),
+                )
+                if not result.success:
+                    raise ValueError("Architecture compilation failed")
+                output_path = output
+                output_path.parent.mkdir(parents=True, exist_ok=True)
+                output_path.write_bytes(_artifact_by_path(result, "adrs/entities/registry.yaml").content)
 
             click.echo(f"Generated legacy entity registry: {output_path}")
-            click.echo(f"  Architecture index: {paths['architecture_index']}")
-            click.echo(f"  Entities: {len(bundle.legacy_entity_registry.entities)}")
+            click.echo(f"  Architecture index: {_architecture_index_path(detected_scope)}")
+            legacy_payload = yaml.safe_load(_artifact_by_path(result, "adrs/entities/registry.yaml").content)
+            click.echo(f"  Entities: {len(legacy_payload.get('entities', []))}")
     except Exception as e:
         click.echo(f"Error: {e}", err=True)
         sys.exit(1)
@@ -479,18 +625,114 @@ def generate_architecture_index(scope: Optional[Path]):
     """Generate normalized architecture discovery artifacts under adrs/index/."""
     try:
         resolver = ProjectScopeResolver(explicit_scope=scope)
-        generator = ArchitectureIndexGenerator(scope_resolver=resolver)
+        compiler = ArchitectureCompiler(scope_resolver=resolver)
         detected_scope = resolver.resolve()
         click.echo("Generating architecture discovery index...")
         click.echo(f"Project scope: {detected_scope.name} ({detected_scope.root})")
-        bundle = generator.generate_from_scope(detected_scope)
-        paths = generator.save_bundle(bundle, detected_scope)
+        result = compiler.compile(
+            detected_scope,
+            CompilerConfig(emit={"registries"}),
+        )
+        if not result.success:
+            raise ValueError("Architecture compilation failed")
         click.echo(f"Generated architecture index: {_architecture_index_path(detected_scope)}")
-        click.echo(f"  Namespace: {bundle.architecture_index.architecture_namespace}")
-        click.echo(f"  Entities: {len(bundle.entity_registry.entities)}")
-        click.echo(f"  Relationships: {len(bundle.relationship_registry.relationships)}")
-        click.echo(f"  Unresolved: {len(bundle.unresolved_registry.unresolved)}")
-        click.echo(f"  Legacy entity registry: {paths['legacy_entity_registry']}")
+        click.echo(f"  Entities: {result.statistics.entities_extracted}")
+        click.echo(f"  Relationships: {result.statistics.relationships_derived}")
+        click.echo(f"  Unresolved: {result.statistics.unresolved_detected}")
+        click.echo(f"  Legacy entity registry: {detected_scope.adr_dir / 'entities' / 'registry.yaml'}")
+    except Exception as e:
+        click.echo(f"Error: {e}", err=True)
+        sys.exit(1)
+
+
+@cli.command("compile")
+@click.option('--scope', type=click.Path(exists=True, file_okay=False, path_type=Path),
+              help='Explicit project scope (overrides auto-detection)')
+@click.option(
+    '--emit',
+    default="registries,manifest,markdown",
+    show_default=True,
+    help='Comma-separated emit targets: registries, manifest, markdown.',
+)
+@click.option(
+    '--timestamp',
+    type=str,
+    default=None,
+    help='Pinned timestamp for deterministic compilation (ISO-8601).',
+)
+@click.option(
+    '--mode',
+    type=click.Choice(["normal", "strict", "lenient"]),
+    default="normal",
+    show_default=True,
+    help='Compilation success policy.',
+)
+@click.option('--dry-run', is_flag=True,
+              help='Compile without writing files.')
+@click.option('--check', is_flag=True,
+              help='Compile in-memory and fail if selected on-disk artifacts drift.')
+@click.option(
+    '--validate-contract',
+    is_flag=True,
+    help='Validate the compiled kernel contract bundle from in-memory outputs.',
+)
+@click.option(
+    '--contract-profile',
+    type=click.Choice(["greenfield", "brownfield", "migration"]),
+    default="greenfield",
+    show_default=True,
+    help='Contract validation profile used with --validate-contract.',
+)
+def compile_artifacts(
+    scope: Optional[Path],
+    emit: str,
+    timestamp: Optional[str],
+    mode: str,
+    dry_run: bool,
+    check: bool,
+    validate_contract: bool,
+    contract_profile: str,
+):
+    """Compile selected architecture artifacts through the unified compiler driver."""
+    try:
+        resolver = ProjectScopeResolver(explicit_scope=scope)
+        detected_scope = resolver.resolve()
+        compiler = ArchitectureCompiler(scope_resolver=resolver)
+        emit_targets = _parse_emit_list(emit)
+        result = compiler.compile(
+            detected_scope,
+            CompilerConfig(
+                mode=CompilationMode(mode),
+                emit=emit_targets,
+                dry_run=dry_run or check,
+                check=check,
+                profile=contract_profile if validate_contract else None,
+                pinned_timestamp=timestamp,
+                metadata={"validate_contract": "true"} if validate_contract else {},
+            ),
+        )
+
+        click.echo("Compiling architecture artifacts...")
+        click.echo(f"Project scope: {detected_scope.name} ({detected_scope.root})")
+        click.echo(f"Mode: {mode}")
+        click.echo(f"Success: {result.success}")
+        click.echo(f"Artifacts emitted: {result.statistics.artifacts_emitted}")
+        click.echo(f"Entities: {result.statistics.entities_extracted}")
+        click.echo(f"Relationships: {result.statistics.relationships_derived}")
+        click.echo(f"Unresolved: {result.statistics.unresolved_detected}")
+        if check:
+            click.echo("Check mode: enabled")
+        elif dry_run:
+            click.echo("Dry run: enabled")
+        if validate_contract:
+            click.echo(f"Contract validation: {contract_profile}")
+        for artifact in sorted(result.artifacts, key=lambda item: item.path.as_posix()):
+            click.echo(f"  {artifact.kind}: {artifact.path.as_posix()}")
+        for diagnostic in result.diagnostics.as_list():
+            click.echo(f"{diagnostic.level.name}: {diagnostic.code} {diagnostic.message}")
+
+        if not result.success:
+            sys.exit(1)
     except Exception as e:
         click.echo(f"Error: {e}", err=True)
         sys.exit(1)
@@ -618,6 +860,115 @@ def validate(scope: Optional[Path], recursive: bool, cross_references: bool, mod
             if errors > 0:
                 sys.exit(1)
                 
+    except Exception as e:
+        click.echo(f"Error: {e}", err=True)
+        sys.exit(1)
+
+
+@cli.command("validate-contract")
+@click.option('--scope', type=click.Path(exists=True, file_okay=False, path_type=Path),
+              help='Explicit project scope (overrides auto-detection)')
+@click.option(
+    '--contract-profile',
+    type=click.Choice(["greenfield", "brownfield", "migration"]),
+    default="greenfield",
+    show_default=True,
+    help='Contract validation profile to apply.'
+)
+@click.option(
+    '--max-sentinel-fields',
+    type=int,
+    default=None,
+    help='Optional CI threshold. Fail if sentinel-backed field count exceeds this value.'
+)
+@click.option(
+    '--max-non-complete-entities',
+    type=int,
+    default=None,
+    help='Optional CI threshold. Fail if non-complete entity count exceeds this value.'
+)
+def validate_contract(
+    scope: Optional[Path],
+    contract_profile: str,
+    max_sentinel_fields: Optional[int],
+    max_non_complete_entities: Optional[int],
+):
+    """Validate the compiled kernel contract bundle for the selected profile."""
+    try:
+        (
+            detected_scope,
+            architecture_index,
+            entity_registry,
+            relationship_registry,
+            unresolved_registry,
+            remediation_ledger,
+        ) = _load_contract_bundle(scope)
+        click.echo(f"Project scope: {detected_scope.name} ({detected_scope.root})")
+
+        result = validate_kernel_contract_bundle(
+            architecture_index,
+            entity_registry,
+            relationship_registry,
+            unresolved_registry,
+            profile=contract_profile,
+            remediation_ledger=remediation_ledger,
+        )
+        remediation_state_counts = None
+        if remediation_ledger is not None:
+            remediation_state_counts = {
+                state: sum(1 for entry in remediation_ledger.entries if entry.state == state)
+                for state in ("sentinel", "pending_approval", "approved")
+            }
+        sentinel_threshold_exceeded = (
+            max_sentinel_fields is not None and result.sentinel_field_count > max_sentinel_fields
+        )
+        completeness_threshold_exceeded = (
+            max_non_complete_entities is not None
+            and result.non_complete_entity_count > max_non_complete_entities
+        )
+
+        click.echo(
+            _dump_yaml(
+                {
+                    "profile": result.profile,
+                    "outcome": result.outcome,
+                    "sentinel_field_count": result.sentinel_field_count,
+                    "max_sentinel_fields": max_sentinel_fields,
+                    "sentinel_threshold_exceeded": sentinel_threshold_exceeded,
+                    "non_complete_entity_count": result.non_complete_entity_count,
+                    "max_non_complete_entities": max_non_complete_entities,
+                    "completeness_threshold_exceeded": completeness_threshold_exceeded,
+                    "completeness_counts": result.completeness_counts,
+                    "remediation_ledger_present": remediation_ledger is not None,
+                    "remediation_state_counts": remediation_state_counts,
+                    "issues": [
+                        {"path": issue.path, "message": issue.message}
+                        for issue in result.issues
+                    ],
+                }
+            )
+        )
+
+        if not result.is_valid or sentinel_threshold_exceeded or completeness_threshold_exceeded:
+            sys.exit(1)
+    except Exception as e:
+        click.echo(f"Error: {e}", err=True)
+        sys.exit(1)
+
+
+@cli.command("governance-checks")
+@click.option('--scope', type=click.Path(exists=True, file_okay=False, path_type=Path),
+              default=Path("."),
+              show_default=True,
+              help='Project scope root to validate.')
+@click.option('--skip-tests', is_flag=True,
+              help='Skip the full pytest run.')
+def governance_checks(scope: Path, skip_tests: bool):
+    """Run the standard local governance validation bundle."""
+    try:
+        failures = _run_governance_checks(scope, skip_tests=skip_tests)
+        if failures:
+            sys.exit(1)
     except Exception as e:
         click.echo(f"Error: {e}", err=True)
         sys.exit(1)
@@ -791,6 +1142,28 @@ def show_scope(recursive: bool):
         sys.exit(1)
 
 
+@cli.command("validate-project-metadata")
+@click.option(
+    "--file",
+    "file_path",
+    type=click.Path(dir_okay=False, path_type=Path),
+    default=Path("PROJECT.yaml"),
+    show_default=True,
+    help="Path to the PROJECT.yaml file.",
+)
+def validate_project_metadata(file_path: Path):
+    """Validate PROJECT.yaml against schema and model rules."""
+    try:
+        parser = ADRParser()
+        project = parser.parse_project_metadata(file_path)
+        click.echo(f"PROJECT.yaml valid: {file_path}")
+        click.echo(f"  Project: {project.project.name}")
+        click.echo(f"  Team: {project.ownership.team}")
+    except Exception as e:
+        click.echo(f"Error: {e}", err=True)
+        sys.exit(1)
+
+
 @cli.command("audit-runtime")
 @click.option(
     "--requirements",
@@ -882,31 +1255,47 @@ def generate_rendered_docs(scope: Optional[Path], recursive: bool):
     """Generate rendered ADR markdown artifacts with integrity headers."""
     try:
         resolver = ProjectScopeResolver(explicit_scope=scope)
-        parser = ADRParser()
-        generator = MarkdownGenerator()
-        scopes = resolver.resolve_recursive() if recursive else [resolver.resolve()]
+        if recursive:
+            parser = ADRParser()
+            generator = MarkdownGenerator()
+            scopes = resolver.resolve_recursive()
+            total = 0
+            for current_scope in scopes:
+                rendered_dir = current_scope.adr_dir / "rendered"
+                rendered_dir.mkdir(parents=True, exist_ok=True)
+                click.echo(f"Generating rendered docs for {current_scope.name}...")
+                for source_path in _discover_scope_adr_files(current_scope):
+                    try:
+                        adr = parser.parse_adr(source_path)
+                        output_path = rendered_dir / f"{adr.id}.md"
+                        generator.render_to_file(
+                            adr,
+                            output_path,
+                            scope=current_scope,
+                            source_path=source_path,
+                        )
+                        total += 1
+                        click.echo(f"  Generated: {output_path}")
+                    except Exception as exc:
+                        click.echo(f"  Warning: Failed to render {source_path.name}: {exc}")
 
-        total = 0
-        for current_scope in scopes:
-            rendered_dir = current_scope.adr_dir / "rendered"
-            rendered_dir.mkdir(parents=True, exist_ok=True)
-            click.echo(f"Generating rendered docs for {current_scope.name}...")
-            for source_path in _discover_scope_adr_files(current_scope):
-                try:
-                    adr = parser.parse_adr(source_path)
-                    output_path = rendered_dir / f"{adr.id}.md"
-                    generator.render_to_file(
-                        adr,
-                        output_path,
-                        scope=current_scope,
-                        source_path=source_path,
-                    )
-                    total += 1
-                    click.echo(f"  Generated: {output_path}")
-                except Exception as exc:
-                    click.echo(f"  Warning: Failed to render {source_path.name}: {exc}")
-
-        click.echo(f"\nGenerated {total} rendered ADR markdown artifact(s)")
+            click.echo(f"\nGenerated {total} rendered ADR markdown artifact(s)")
+        else:
+            detected_scope = resolver.resolve()
+            click.echo(f"Generating rendered docs for {detected_scope.name}...")
+            result = ArchitectureCompiler(scope_resolver=resolver).compile(
+                detected_scope,
+                CompilerConfig(emit={"markdown"}),
+            )
+            if not result.success:
+                raise ValueError("Architecture compilation failed")
+            markdown_artifacts = sorted(
+                (artifact for artifact in result.artifacts if artifact.kind == "markdown"),
+                key=lambda artifact: artifact.path.as_posix(),
+            )
+            for artifact in markdown_artifacts:
+                click.echo(f"  Generated: {detected_scope.root / artifact.path}")
+            click.echo(f"\nGenerated {len(markdown_artifacts)} rendered ADR markdown artifact(s)")
     except Exception as e:
         click.echo(f"Error: {e}", err=True)
         sys.exit(1)

@@ -109,6 +109,8 @@ def test_generate_and_validate_rendered_docs_cli(tmp_path):
 
     manifest_result = runner.invoke(cli, ["generate-manifest", "--scope", str(workspace)])
     assert manifest_result.exit_code == 0, manifest_result.output
+    registry_result = runner.invoke(cli, ["generate-entity-registry", "--scope", str(workspace)])
+    assert registry_result.exit_code == 0, registry_result.output
 
     render_result = runner.invoke(cli, ["generate-rendered-docs", "--scope", str(workspace)])
     assert render_result.exit_code == 0, render_result.output
@@ -116,6 +118,8 @@ def test_generate_and_validate_rendered_docs_cli(tmp_path):
     rendered_file = workspace / "adrs" / "rendered" / "ADR-L-9999.md"
     rendered_header = parse_integrity_header(rendered_file.read_text(encoding="utf-8"))
     assert rendered_header["artifact_kind"] == "rendered_adr_markdown"
+    registry_header = parse_integrity_header((workspace / "adrs" / "entities" / "registry.yaml").read_text(encoding="utf-8"))
+    assert registry_header["artifact_kind"] == "legacy_entity_registry"
 
     validate_result = runner.invoke(cli, ["validate-generated-docs", "--scope", str(workspace)])
     assert validate_result.exit_code == 0, validate_result.output
@@ -128,6 +132,7 @@ def test_validate_generated_docs_reports_tampered_output(tmp_path):
     runner = CliRunner()
 
     assert runner.invoke(cli, ["generate-manifest", "--scope", str(workspace)]).exit_code == 0
+    assert runner.invoke(cli, ["generate-entity-registry", "--scope", str(workspace)]).exit_code == 0
     assert runner.invoke(cli, ["generate-rendered-docs", "--scope", str(workspace)]).exit_code == 0
     rendered_file = workspace / "adrs" / "rendered" / "ADR-L-9999.md"
     rendered_file.write_text(
@@ -146,6 +151,7 @@ def test_validate_generated_docs_reports_stale_output(tmp_path):
     runner = CliRunner()
 
     assert runner.invoke(cli, ["generate-manifest", "--scope", str(workspace)]).exit_code == 0
+    assert runner.invoke(cli, ["generate-entity-registry", "--scope", str(workspace)]).exit_code == 0
     assert runner.invoke(cli, ["generate-rendered-docs", "--scope", str(workspace)]).exit_code == 0
     source_file = workspace / "adrs" / "logical" / "ADR-L-9999-minimal-valid-logical-adr.yaml"
     source_file.write_text(
@@ -164,6 +170,7 @@ def test_validate_generated_docs_recursive_is_scope_local(tmp_path):
     runner = CliRunner()
 
     assert runner.invoke(cli, ["generate-manifest", "--scope", str(workspace), "--recursive"]).exit_code == 0
+    assert runner.invoke(cli, ["generate-entity-registry", "--scope", str(workspace), "--recursive"]).exit_code == 0
     assert runner.invoke(cli, ["generate-rendered-docs", "--scope", str(workspace), "--recursive"]).exit_code == 0
     validator = GeneratedArtifactValidator(scope_resolver=ProjectScopeResolver(explicit_scope=workspace))
     results = validator.validate_recursive()
@@ -180,3 +187,39 @@ def test_repo_generated_artifacts_validate():
 
     assert results, "Expected generated artifacts to be discovered"
     assert all(result.status == GeneratedArtifactStatus.VALID.value for result in results), results
+
+
+def test_validate_generated_docs_reports_tampered_legacy_registry(tmp_path):
+    workspace = tmp_path / "workspace"
+    _write_workspace(workspace)
+    runner = CliRunner()
+
+    assert runner.invoke(cli, ["generate-entity-registry", "--scope", str(workspace)]).exit_code == 0
+    registry_file = workspace / "adrs" / "entities" / "registry.yaml"
+    registry_file.write_text(
+        registry_file.read_text(encoding="utf-8") + "\nmanual edit\n",
+        encoding="utf-8",
+    )
+
+    result = runner.invoke(cli, ["validate-generated-docs", "--scope", str(workspace)])
+    assert result.exit_code != 0
+    assert GeneratedArtifactStatus.TAMPERED_GENERATED_OUTPUT.value in result.output
+    assert "registry.yaml" in result.output
+
+
+def test_validate_generated_docs_reports_stale_legacy_registry(tmp_path):
+    workspace = tmp_path / "workspace"
+    _write_workspace(workspace)
+    runner = CliRunner()
+
+    assert runner.invoke(cli, ["generate-entity-registry", "--scope", str(workspace)]).exit_code == 0
+    source_file = workspace / "adrs" / "logical" / "ADR-L-9999-minimal-valid-logical-adr.yaml"
+    source_file.write_text(
+        source_file.read_text(encoding="utf-8").replace("Minimal Valid Logical ADR", "Updated Logical ADR"),
+        encoding="utf-8",
+    )
+
+    result = runner.invoke(cli, ["validate-generated-docs", "--scope", str(workspace)])
+    assert result.exit_code != 0
+    assert GeneratedArtifactStatus.STALE_GENERATED_OUTPUT.value in result.output
+    assert "registry.yaml" in result.output

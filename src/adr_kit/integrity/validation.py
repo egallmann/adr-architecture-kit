@@ -65,6 +65,9 @@ class GeneratedArtifactValidator:
         artifacts: list[GeneratedArtifact] = []
         if scope.manifest_path.exists():
             artifacts.append(GeneratedArtifact(scope.manifest_path, ArtifactKind.MANIFEST, scope))
+        legacy_entity_registry = scope.adr_dir / "entities" / "registry.yaml"
+        if legacy_entity_registry.exists():
+            artifacts.append(GeneratedArtifact(legacy_entity_registry, ArtifactKind.LEGACY_ENTITY_REGISTRY, scope))
         system_overview_path = scope.root / "SYSTEM-OVERVIEW.md"
         if system_overview_path.exists():
             artifacts.append(GeneratedArtifact(system_overview_path, ArtifactKind.SYSTEM_OVERVIEW, scope))

@@ -1,8 +1,9 @@
 """Compiler scaffolding for the architecture migration path."""
 
+from __future__ import annotations
+
 from .config import CompilationMode, CompilerConfig
 from .diagnostics import Diagnostic, DiagnosticLevel, DiagnosticLog
-from .frontend import ArchModelBuilder, CachedADRParser, FrontendBuildResult, build_arch_model
 from .ir import (
     ArchModel,
     CompilationMeta,
@@ -18,8 +19,6 @@ from .ir import (
 
 __all__ = [
     "ArchModel",
-    "ArchModelBuilder",
-    "CachedADRParser",
     "CompilationMeta",
     "CompilationMode",
     "CompilerConfig",
@@ -27,7 +26,6 @@ __all__ = [
     "DiagnosticLevel",
     "DiagnosticLog",
     "EntityGraph",
-    "FrontendBuildResult",
     "IREntity",
     "IRRelationship",
     "IRUnresolved",
@@ -35,5 +33,22 @@ __all__ = [
     "QualifiedEntityId",
     "RelGraph",
     "UnresolvedList",
+    "ArchModelBuilder",
+    "CachedADRParser",
+    "FrontendBuildResult",
     "build_arch_model",
 ]
+
+
+def __getattr__(name: str):
+    if name in {"ArchModelBuilder", "CachedADRParser", "FrontendBuildResult", "build_arch_model"}:
+        from .frontend import ArchModelBuilder, CachedADRParser, FrontendBuildResult, build_arch_model
+
+        exports = {
+            "ArchModelBuilder": ArchModelBuilder,
+            "CachedADRParser": CachedADRParser,
+            "FrontendBuildResult": FrontendBuildResult,
+            "build_arch_model": build_arch_model,
+        }
+        return exports[name]
+    raise AttributeError(f"module {__name__!r} has no attribute {name!r}")

@@ -9,6 +9,8 @@ from typing import Dict, Iterable, List, Optional, Tuple
 
 import yaml
 
+from ..compiler.diagnostics import DiagnosticLog
+from ..compiler.frontend.parser import CachedADRParser
 from ..models import (
     ArchitectureIndex,
     CanonicalSource,
@@ -59,8 +61,9 @@ class ArchitectureDiscoveryBundle:
 class ArchitectureIndexGenerator:
     """Generate normalized architecture discovery artifacts."""
 
-    def __init__(self, parser: ADRParser = None, scope_resolver: ProjectScopeResolver = None):
-        self.parser = parser or ADRParser()
+    def __init__(self, parser: ADRParser | CachedADRParser = None, scope_resolver: ProjectScopeResolver = None):
+        self.parser = parser if isinstance(parser, CachedADRParser) else CachedADRParser(parser or ADRParser())
+        self.diagnostics = DiagnosticLog()
         self.scope_resolver = scope_resolver or ProjectScopeResolver()
 
     def _discover_source_files(self, adr_dir: Path) -> tuple[list[Path], list[Path], list[Path]]:
@@ -269,6 +272,7 @@ class ArchitectureIndexGenerator:
         )
 
     def generate_from_directory(self, adr_dir: Path, scope: Optional[ProjectScope] = None) -> ArchitectureDiscoveryBundle:
+        self.diagnostics.clear()
         adr_dir = Path(adr_dir).resolve()
         scope = scope or self.scope_resolver.resolve(adr_dir.parent)
         namespace = self._load_namespace(scope)

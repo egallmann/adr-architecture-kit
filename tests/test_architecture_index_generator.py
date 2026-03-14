@@ -6,6 +6,7 @@ from textwrap import dedent
 import pytest
 from click.testing import CliRunner
 
+from src.adr_kit.compiler.frontend import CachedADRParser
 from src.adr_kit.cli.main import cli
 from src.adr_kit.generators import ArchitectureIndexGenerator
 from src.adr_kit.parser import ADRParser
@@ -265,6 +266,56 @@ def test_architecture_index_generation_is_deterministic(tmp_path):
     assert generator.render_yaml(bundle_one.entity_registry) == generator.render_yaml(bundle_two.entity_registry)
     assert generator.render_yaml(bundle_one.relationship_registry) == generator.render_yaml(bundle_two.relationship_registry)
     assert generator.render_yaml(bundle_one.unresolved_registry) == generator.render_yaml(bundle_two.unresolved_registry)
+
+
+def test_architecture_index_generator_uses_cached_parser_across_repeated_runs(tmp_path):
+    adr_dir = _create_fixture(tmp_path)
+
+    class TrackingParser(ADRParser):
+        def __init__(self):
+            super().__init__()
+            self.calls: list[tuple[str, str]] = []
+
+        def parse_yaml(self, file_path):
+            self.calls.append(("parse_yaml", str(Path(file_path).resolve())))
+            return super().parse_yaml(file_path)
+
+        def parse_logical_adr(self, file_path):
+            self.calls.append(("parse_logical_adr", str(Path(file_path).resolve())))
+            return super().parse_logical_adr(file_path)
+
+        def parse_adr(self, file_path):
+            self.calls.append(("parse_adr", str(Path(file_path).resolve())))
+            return super().parse_adr(file_path)
+
+        def parse_invariant(self, file_path):
+            self.calls.append(("parse_invariant", str(Path(file_path).resolve())))
+            return super().parse_invariant(file_path)
+
+    tracking_parser = TrackingParser()
+    generator = ArchitectureIndexGenerator(parser=tracking_parser)
+
+    assert isinstance(generator.parser, CachedADRParser)
+
+    generator.generate_from_directory(adr_dir)
+    generator.generate_from_directory(adr_dir)
+
+    assert tracking_parser.calls.count(("parse_yaml", str((tmp_path / "PROJECT.yaml").resolve()))) == 1
+    assert tracking_parser.calls.count(("parse_logical_adr", str((adr_dir / "logical" / "ADR-L-1000-discovery.yaml").resolve()))) == 1
+    assert tracking_parser.calls.count(("parse_adr", str((adr_dir / "physical-system" / "ADR-PS-1000-system.yaml").resolve()))) == 1
+    assert tracking_parser.calls.count(("parse_adr", str((adr_dir / "physical-component" / "ADR-PC-1000-component.yaml").resolve()))) == 1
+    assert tracking_parser.calls.count(("parse_invariant", str((adr_dir / "invariants" / "INV-1000-deterministic.yaml").resolve()))) == 1
+
+
+def test_architecture_index_generator_clears_diagnostics_each_run(tmp_path):
+    adr_dir = _create_fixture(tmp_path)
+    generator = ArchitectureIndexGenerator()
+
+    generator.diagnostics.error("E099", "stale diagnostic")
+
+    generator.generate_from_directory(adr_dir)
+
+    assert generator.diagnostics.as_list() == []
 
 
 def test_architecture_index_validation_rejects_broken_entity_relationship_summary(tmp_path):

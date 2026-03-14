@@ -20,7 +20,6 @@ from ..generators import (
     ArchitectureIndexGenerator,
     EntityRegistryGenerator,
     LogicalADRGenerator,
-    ManifestGenerator,
     PhysicalComponentADRGenerator,
     PhysicalSystemADRGenerator,
     SystemOverviewGenerator,
@@ -263,6 +262,11 @@ def _artifact_by_path(result, relative_path: str):
         if artifact.path.as_posix() == relative_path:
             return artifact
     raise ValueError(f"Expected emitted artifact not found: {relative_path}")
+
+
+def _load_yaml_artifact(artifact) -> dict:
+    """Parse a YAML-emitted compiler artifact."""
+    return yaml.safe_load(artifact.content.decode("utf-8"))
 
 
 def _echo_compilation_result(scope, result, *, mode: str, check: bool, dry_run: bool, validate_contract: bool, contract_profile: str) -> None:
@@ -515,30 +519,20 @@ def generate_manifest(scope: Optional[Path], recursive: bool, output: Optional[P
     """
     try:
         resolver = ProjectScopeResolver(explicit_scope=scope)
-        generator = ManifestGenerator(scope_resolver=resolver)
         compiler = ArchitectureCompiler(scope_resolver=resolver)
         
         if recursive:
             click.echo("Generating manifests recursively...")
-            if output is None:
-                workspace_result = compiler.compile_recursive(
-                    config=CompilerConfig(emit={"manifest"}),
-                )
-                if not workspace_result.success:
-                    raise ValueError("Architecture compilation failed")
-                for scoped in workspace_result.scope_results:
-                    click.echo(f"Generated manifest for {scoped.scope.name}: {scoped.scope.manifest_path}")
-                click.echo(f"\nGenerated {workspace_result.statistics.scopes_compiled} manifests")
-            else:
-                manifests = generator.generate_recursive()
-
-                for scope_name, manifest in manifests.items():
-                    scope_obj = next(s for s in resolver.resolve_recursive() if s.name == scope_name)
-                    output_path = output or scope_obj.manifest_path
-                    generator.save_manifest(manifest, output_path, scope_obj)
-                    click.echo(f"Generated manifest for {scope_name}: {output_path}")
-
-                click.echo(f"\nGenerated {len(manifests)} manifests")
+            if output is not None:
+                raise ValueError("--output is not supported with --recursive; manifests are emitted per scope")
+            workspace_result = compiler.compile_recursive(
+                config=CompilerConfig(emit={"manifest"}),
+            )
+            if not workspace_result.success:
+                raise ValueError("Architecture compilation failed")
+            for scoped in workspace_result.scope_results:
+                click.echo(f"Generated manifest for {scoped.scope.name}: {scoped.scope.manifest_path}")
+            click.echo(f"\nGenerated {workspace_result.statistics.scopes_compiled} manifests")
         else:
             click.echo("Generating manifest...")
             detected_scope = resolver.resolve()
@@ -562,16 +556,16 @@ def generate_manifest(scope: Optional[Path], recursive: bool, output: Optional[P
                 output_path = output
                 output_path.parent.mkdir(parents=True, exist_ok=True)
                 output_path.write_bytes(_artifact_by_path(result, "adrs/manifest.yaml").content)
-
-            manifest = generator.generate_from_scope(detected_scope)
+            manifest = _load_yaml_artifact(_artifact_by_path(result, "adrs/manifest.yaml"))
+            statistics = manifest["statistics"]
             click.echo(f"Generated manifest: {output_path}")
-            click.echo(f"  ADRs: {manifest.statistics.total_adrs}")
-            click.echo(f"  Logical: {manifest.statistics.logical_adrs}")
-            click.echo(f"  Physical: {manifest.statistics.physical_adrs}")
-            if manifest.statistics.physical_system_adrs > 0:
-                click.echo(f"  Physical-System: {manifest.statistics.physical_system_adrs}")
-            if manifest.statistics.physical_component_adrs > 0:
-                click.echo(f"  Physical-Component: {manifest.statistics.physical_component_adrs}")
+            click.echo(f"  ADRs: {statistics['total_adrs']}")
+            click.echo(f"  Logical: {statistics['logical_adrs']}")
+            click.echo(f"  Physical: {statistics['physical_adrs']}")
+            if statistics["physical_system_adrs"] > 0:
+                click.echo(f"  Physical-System: {statistics['physical_system_adrs']}")
+            if statistics["physical_component_adrs"] > 0:
+                click.echo(f"  Physical-Component: {statistics['physical_component_adrs']}")
             
     except Exception as e:
         click.echo(f"Error: {e}", err=True)
@@ -1436,35 +1430,28 @@ def generate_rendered_docs(scope: Optional[Path], recursive: bool):
     """Generate rendered ADR markdown artifacts with integrity headers."""
     try:
         resolver = ProjectScopeResolver(explicit_scope=scope)
+        compiler = ArchitectureCompiler(scope_resolver=resolver)
         if recursive:
-            parser = ADRParser()
-            generator = MarkdownGenerator()
-            scopes = resolver.resolve_recursive()
+            workspace_result = compiler.compile_recursive(
+                config=CompilerConfig(emit={"markdown"}),
+            )
+            if not workspace_result.success:
+                raise ValueError("Architecture compilation failed")
             total = 0
-            for current_scope in scopes:
-                rendered_dir = current_scope.adr_dir / "rendered"
-                rendered_dir.mkdir(parents=True, exist_ok=True)
-                click.echo(f"Generating rendered docs for {current_scope.name}...")
-                for source_path in _discover_scope_adr_files(current_scope):
-                    try:
-                        adr = parser.parse_adr(source_path)
-                        output_path = rendered_dir / f"{adr.id}.md"
-                        generator.render_to_file(
-                            adr,
-                            output_path,
-                            scope=current_scope,
-                            source_path=source_path,
-                        )
-                        total += 1
-                        click.echo(f"  Generated: {output_path}")
-                    except Exception as exc:
-                        click.echo(f"  Warning: Failed to render {source_path.name}: {exc}")
-
+            for scoped in workspace_result.scope_results:
+                click.echo(f"Generating rendered docs for {scoped.scope.name}...")
+                markdown_artifacts = sorted(
+                    (artifact for artifact in scoped.result.artifacts if artifact.kind == "markdown"),
+                    key=lambda artifact: artifact.path.as_posix(),
+                )
+                for artifact in markdown_artifacts:
+                    click.echo(f"  Generated: {scoped.scope.root / artifact.path}")
+                total += len(markdown_artifacts)
             click.echo(f"\nGenerated {total} rendered ADR markdown artifact(s)")
         else:
             detected_scope = resolver.resolve()
             click.echo(f"Generating rendered docs for {detected_scope.name}...")
-            result = ArchitectureCompiler(scope_resolver=resolver).compile(
+            result = compiler.compile(
                 detected_scope,
                 CompilerConfig(emit={"markdown"}),
             )

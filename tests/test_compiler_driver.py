@@ -730,6 +730,26 @@ def test_generate_manifest_recursive_uses_recursive_compiler_defaults(tmp_path):
     assert (tmp_path / "submodule" / "adrs" / "manifest.yaml").exists()
 
 
+def test_generate_manifest_recursive_rejects_explicit_output_path(tmp_path):
+    _create_recursive_workspace(tmp_path)
+    runner = CliRunner()
+
+    result = runner.invoke(
+        cli,
+        [
+            "generate-manifest",
+            "--scope",
+            str(tmp_path),
+            "--recursive",
+            "--output",
+            str(tmp_path / "combined-manifest.yaml"),
+        ],
+    )
+
+    assert result.exit_code == 1, result.output
+    assert "--output is not supported with --recursive" in result.output
+
+
 def test_generate_entity_registry_recursive_uses_recursive_compiler_defaults(tmp_path):
     _create_recursive_workspace(tmp_path)
     runner = CliRunner()

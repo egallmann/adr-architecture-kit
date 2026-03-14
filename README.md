@@ -251,6 +251,7 @@ adr governance-checks
 ```
 
 This runs the greenfield contract gate, the brownfield ratchet gate, and the full test suite.
+Use `adr governance-checks --recursive` to validate all detected scopes recursively while still running the full test suite once at the root.
 When you finish a coherent implementation slice, commit it after the relevant checks pass rather than accumulating unrelated changes.
 Use `adr compile --mode normal|strict|lenient` when you need the unified compiler path directly:
 - `normal` reports errors and returns non-zero on compile failure
@@ -290,6 +291,7 @@ GitHub Actions workflow (`.github/workflows/adr-governance.yml`) enforces:
 
 1. **ADR validation** - `adr validate --cross-references` must pass
 2. **Governance bundle** - `adr governance-checks` must pass, including the full test suite and contract profile gates
+   Use `adr governance-checks --recursive` when validating a multi-scope workspace locally.
 3. **Generated artifact freshness** - `adr validate-generated-docs` must pass for manifest and rendered output
 4. **System overview integrity** - `adr validate-system-overview` must pass
 5. **PROJECT.yaml validation** - `adr validate-project-metadata` must pass

@@ -22,7 +22,7 @@ from .backend import (
     emit_registry_artifacts,
 )
 from .config import CompilationMode, CompilerConfig
-from .diagnostics import DiagnosticLog
+from .diagnostics import DiagnosticLevel, DiagnosticLog
 from .frontend import ArchModelBuilder
 from .ir import ArchModel
 from ..repository.registry_loader import load_remediation_ledger
@@ -120,10 +120,7 @@ class ArchitectureCompiler:
         if config.metadata.get("validate_contract") == "true":
             self._validate_contract(artifacts, resolved_scope, config, diagnostics)
 
-        if config.mode == CompilationMode.STRICT and diagnostics.has_errors:
-            success = False
-        else:
-            success = not diagnostics.has_errors
+        success = self._compute_success(diagnostics, config)
 
         duration_ms = int((perf_counter() - started) * 1000)
         projectable_entities = [
@@ -145,6 +142,19 @@ class ArchitectureCompiler:
             model=build_result.model,
             duration_ms=duration_ms,
         )
+
+    def _compute_success(self, diagnostics: DiagnosticLog, config: CompilerConfig) -> bool:
+        items = diagnostics.as_list()
+        if not any(item.level == DiagnosticLevel.ERROR for item in items):
+            return True
+
+        if config.mode == CompilationMode.LENIENT:
+            non_lenient_errors = [
+                item for item in items if item.level == DiagnosticLevel.ERROR and item.code not in {"E701", "E702", "E703", "E704"}
+            ]
+            return not non_lenient_errors
+
+        return False
 
     def _validate_contract(
         self,

@@ -5,7 +5,7 @@ from pathlib import Path
 from click.testing import CliRunner
 
 from src.adr_kit.cli.main import cli
-from src.adr_kit.compiler import ArchitectureCompiler, CompilerConfig
+from src.adr_kit.compiler import ArchitectureCompiler, CompilationMode, CompilerConfig
 from src.adr_kit.scope import ProjectScopeResolver
 from tests.golden.helpers import clone_scope_sources, generate_deterministic_outputs
 
@@ -212,4 +212,151 @@ def test_compile_cli_exits_non_zero_when_contract_validation_fails(tmp_path, mon
     )
 
     assert result.exit_code == 1, result.output
+    assert "ERROR: E704 forced failure" in result.output
+
+
+def test_architecture_compiler_normal_mode_fails_on_contract_error(tmp_path, monkeypatch):
+    workspace = tmp_path / "workspace"
+    clone_scope_sources(_repo_root(), workspace)
+
+    from src.adr_kit.compiler import driver as driver_module
+    from src.adr_kit.schema.contract_validation import ContractValidationIssue, ContractValidationResult
+
+    monkeypatch.setattr(
+        driver_module,
+        "validate_kernel_contract_bundle",
+        lambda *args, **kwargs: ContractValidationResult(
+            profile="greenfield",
+            outcome="non_compliant",
+            issues=(ContractValidationIssue(path="entities[0]", message="forced failure"),),
+            sentinel_field_count=0,
+            non_complete_entity_count=0,
+            completeness_counts={"complete": 1},
+        ),
+    )
+
+    compiler = ArchitectureCompiler(scope_resolver=ProjectScopeResolver(explicit_scope=workspace))
+    result = compiler.compile(
+        config=CompilerConfig(
+            mode=CompilationMode.NORMAL,
+            dry_run=True,
+            emit={"registries"},
+            profile="greenfield",
+            metadata={"validate_contract": "true"},
+            pinned_timestamp="2026-01-01T00:00:00Z",
+        )
+    )
+
+    assert result.success is False
+    assert [(item.code, item.message) for item in result.diagnostics.as_list()] == [
+        ("E704", "forced failure"),
+    ]
+
+
+def test_architecture_compiler_lenient_mode_tolerates_contract_error(tmp_path, monkeypatch):
+    workspace = tmp_path / "workspace"
+    clone_scope_sources(_repo_root(), workspace)
+
+    from src.adr_kit.compiler import driver as driver_module
+    from src.adr_kit.schema.contract_validation import ContractValidationIssue, ContractValidationResult
+
+    monkeypatch.setattr(
+        driver_module,
+        "validate_kernel_contract_bundle",
+        lambda *args, **kwargs: ContractValidationResult(
+            profile="greenfield",
+            outcome="non_compliant",
+            issues=(ContractValidationIssue(path="entities[0]", message="forced failure"),),
+            sentinel_field_count=0,
+            non_complete_entity_count=0,
+            completeness_counts={"complete": 1},
+        ),
+    )
+
+    compiler = ArchitectureCompiler(scope_resolver=ProjectScopeResolver(explicit_scope=workspace))
+    result = compiler.compile(
+        config=CompilerConfig(
+            mode=CompilationMode.LENIENT,
+            dry_run=True,
+            emit={"registries"},
+            profile="greenfield",
+            metadata={"validate_contract": "true"},
+            pinned_timestamp="2026-01-01T00:00:00Z",
+        )
+    )
+
+    assert result.success is True
+    assert [(item.code, item.message) for item in result.diagnostics.as_list()] == [
+        ("E704", "forced failure"),
+    ]
+
+
+def test_compile_cli_supports_public_mode_surface(tmp_path):
+    workspace = tmp_path / "workspace"
+    clone_scope_sources(_repo_root(), workspace)
+
+    runner = CliRunner()
+    result = runner.invoke(
+        cli,
+        [
+            "compile",
+            "--scope",
+            str(workspace),
+            "--emit",
+            "registries",
+            "--dry-run",
+            "--mode",
+            "strict",
+            "--timestamp",
+            "2026-01-01T00:00:00Z",
+        ],
+    )
+
+    assert result.exit_code == 0, result.output
+    assert "Mode: strict" in result.output
+
+
+def test_compile_cli_lenient_mode_allows_tolerated_contract_failure(tmp_path, monkeypatch):
+    workspace = tmp_path / "workspace"
+    clone_scope_sources(_repo_root(), workspace)
+
+    from src.adr_kit.compiler import driver as driver_module
+    from src.adr_kit.schema.contract_validation import ContractValidationIssue, ContractValidationResult
+
+    monkeypatch.setattr(
+        driver_module,
+        "validate_kernel_contract_bundle",
+        lambda *args, **kwargs: ContractValidationResult(
+            profile="greenfield",
+            outcome="non_compliant",
+            issues=(ContractValidationIssue(path="entities[0]", message="forced failure"),),
+            sentinel_field_count=0,
+            non_complete_entity_count=0,
+            completeness_counts={"complete": 1},
+        ),
+    )
+
+    runner = CliRunner()
+    result = runner.invoke(
+        cli,
+        [
+            "compile",
+            "--scope",
+            str(workspace),
+            "--emit",
+            "registries",
+            "--dry-run",
+            "--mode",
+            "lenient",
+            "--validate-contract",
+            "--contract-profile",
+            "greenfield",
+            "--timestamp",
+            "2026-01-01T00:00:00Z",
+        ],
+    )
+
+    assert result.exit_code == 0, result.output
+    assert "Mode: lenient" in result.output
+    assert "Success: True" in result.output
     assert "ERROR: E704 forced failure" in result.output

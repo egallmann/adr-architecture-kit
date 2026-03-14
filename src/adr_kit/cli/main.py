@@ -26,7 +26,7 @@ from ..generators import (
     SystemOverviewGenerator,
 )
 from ..generators.views import MarkdownGenerator
-from ..compiler import ArchitectureCompiler, CompilerConfig
+from ..compiler import ArchitectureCompiler, CompilationMode, CompilerConfig
 from ..integrity import GeneratedArtifactStatus
 from ..migrators.canonical_id_normalizer import CanonicalIdNormalizer
 from ..parser import ADRParser
@@ -660,6 +660,13 @@ def generate_architecture_index(scope: Optional[Path]):
     default=None,
     help='Pinned timestamp for deterministic compilation (ISO-8601).',
 )
+@click.option(
+    '--mode',
+    type=click.Choice(["normal", "strict", "lenient"]),
+    default="normal",
+    show_default=True,
+    help='Compilation success policy.',
+)
 @click.option('--dry-run', is_flag=True,
               help='Compile without writing files.')
 @click.option('--check', is_flag=True,
@@ -680,6 +687,7 @@ def compile_artifacts(
     scope: Optional[Path],
     emit: str,
     timestamp: Optional[str],
+    mode: str,
     dry_run: bool,
     check: bool,
     validate_contract: bool,
@@ -694,6 +702,7 @@ def compile_artifacts(
         result = compiler.compile(
             detected_scope,
             CompilerConfig(
+                mode=CompilationMode(mode),
                 emit=emit_targets,
                 dry_run=dry_run or check,
                 check=check,
@@ -705,6 +714,7 @@ def compile_artifacts(
 
         click.echo("Compiling architecture artifacts...")
         click.echo(f"Project scope: {detected_scope.name} ({detected_scope.root})")
+        click.echo(f"Mode: {mode}")
         click.echo(f"Success: {result.success}")
         click.echo(f"Artifacts emitted: {result.statistics.artifacts_emitted}")
         click.echo(f"Entities: {result.statistics.entities_extracted}")

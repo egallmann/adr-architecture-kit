@@ -14,6 +14,7 @@ from ..compiler.frontend.parser import CachedADRParser
 from ..compiler.passes import (
     extract_logical_entities,
     extract_physical_entities,
+    resolve_invariant_canonical,
     score_completeness,
     validate_bundle,
 )
@@ -333,32 +334,17 @@ class ArchitectureIndexGenerator:
                 invariant.id,
             ))
 
-        for inv_id, mentions in invariant_mentions.items():
-            standalone = [item for item in mentions if item[2] == inv_id]
-            local = [item for item in mentions if item[2] != inv_id]
-            if len(standalone) > 1 or (not standalone and len(local) > 1):
-                raise ValueError(f"Duplicate canonical invariant ID {inv_id}")
-            payload, artifact, source_ref = (standalone[0] if standalone else local[0])
-            entity = NormalizedEntity(
-                id=inv_id,
-                entity_type="invariant",
-                name=payload["name"],
-                summary=payload["summary"],
-                canonical_source=self._canonical("standalone_invariant" if standalone else "logical_adr", source_ref, artifact),
-                metadata=payload["metadata"],
-                completeness=self._complete(),
-                provenance=self._provenance("standalone_invariant" if standalone else "logical_adr", source_ref, "assign_canonical_invariant", "explicit"),
-            )
-            add_entity(entity)
-            for _, ref_artifact, ref_source in mentions:
-                if ref_source == source_ref and ref_artifact == artifact:
-                    continue
-                self._append_source_ref(entity, SourceRef(
-                    source_type="logical_adr" if ref_source.startswith("ADR-") else "standalone_invariant",
-                    source_ref=ref_source,
-                    artifact_path=ref_artifact,
-                    mention_role="reference",
-                ))
+        invariant_resolution = resolve_invariant_canonical(
+            invariant_mentions,
+            canonical=self._canonical,
+            provenance=self._provenance,
+            complete=self._complete,
+        )
+        for extracted in invariant_resolution.entities:
+            add_entity(extracted.entity, allow_reference_merge=extracted.allow_reference_merge)
+        for selection in invariant_resolution.selections.values():
+            for ref in selection.reference_source_refs:
+                self._append_source_ref(selection.entity, ref)
 
         physical_extraction = extract_physical_entities(
             physical_adrs,

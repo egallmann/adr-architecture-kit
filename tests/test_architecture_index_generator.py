@@ -8,12 +8,14 @@ from click.testing import CliRunner
 
 from src.adr_kit.compiler.frontend import CachedADRParser
 from src.adr_kit.compiler.passes import (
+    ResolveInvariantCanonicalPass,
     ExtractLogicalEntitiesPass,
     ExtractPhysicalEntitiesPass,
     ScoreCompletenessPass,
     ValidateBundlePass,
     extract_logical_entities,
     extract_physical_entities,
+    resolve_invariant_canonical,
     score_completeness,
     validate_bundle,
 )
@@ -529,3 +531,99 @@ def test_extract_physical_entities_pass_matches_helper(tmp_path):
 
     assert direct.entities == via_pass.entities
     assert direct.system_ids == via_pass.system_ids
+
+
+def test_resolve_invariant_canonical_prefers_standalone_and_preserves_references(tmp_path):
+    adr_dir = _create_fixture(tmp_path)
+    generator = ArchitectureIndexGenerator()
+    logical_files, _, invariant_files = generator._discover_source_files(adr_dir)
+    logical_adrs = [(generator.parser.parse_logical_adr(path), path.resolve()) for path in logical_files]
+    standalone_invariants = [(generator.parser.parse_invariant(path), path.resolve()) for path in invariant_files]
+    scope = generator.scope_resolver.resolve(tmp_path)
+
+    logical_result = extract_logical_entities(
+        logical_adrs,
+        source_path=lambda file_path: generator._source_path(scope, file_path),
+        canonical=generator._canonical,
+        provenance=generator._provenance,
+        summary=generator._summary,
+        complete=generator._complete,
+        classify_author_gap=generator._classify_author_gap,
+    )
+    invariant_mentions = {
+        inv_id: [(mention.payload, mention.artifact_path, mention.source_ref) for mention in mentions]
+        for inv_id, mentions in logical_result.invariant_mentions.items()
+    }
+    for invariant, path in standalone_invariants:
+        artifact = generator._source_path(scope, path)
+        invariant_mentions.setdefault(invariant.id, []).append(
+            (
+                {
+                    "name": invariant.id,
+                    "summary": generator._summary(invariant.statement),
+                    "metadata": {
+                        "defined_in": invariant.defined_in,
+                        "scope": invariant.scope,
+                        "statement": invariant.statement,
+                        "enforcement_level": invariant.enforcement_level.value,
+                        "declaration_mode": invariant.declaration_mode or "canonical",
+                        "upheld_by_decisions": list(invariant.upheld_by_decisions),
+                        "enforced_by": list(invariant.enforced_by),
+                    },
+                },
+                artifact,
+                invariant.id,
+            )
+        )
+
+    result = resolve_invariant_canonical(
+        invariant_mentions,
+        canonical=generator._canonical,
+        provenance=generator._provenance,
+        complete=generator._complete,
+    )
+
+    selection = result.selections["INV-1000"]
+    assert selection.entity.canonical_source.source_type == "standalone_invariant"
+    assert selection.entity.canonical_source.source_ref == "INV-1000"
+    assert [ref.source_ref for ref in selection.reference_source_refs] == ["ADR-L-1000#INV-1000"]
+
+
+def test_resolve_invariant_canonical_pass_matches_helper(tmp_path):
+    generator = ArchitectureIndexGenerator()
+    invariant_mentions = {
+        "INV-1000": [
+            (
+                {
+                    "name": "INV-1000",
+                    "summary": "Discovery must be deterministic.",
+                    "metadata": {
+                        "adr_id": "ADR-L-1000",
+                        "scope": "global",
+                        "statement": "Discovery must be deterministic.",
+                        "enforcement_level": "must",
+                        "declaration_mode": "local",
+                        "upheld_by_decisions": [],
+                    },
+                },
+                "adrs/logical/ADR-L-1000-discovery.yaml",
+                "ADR-L-1000#INV-1000",
+            )
+        ]
+    }
+
+    direct = resolve_invariant_canonical(
+        invariant_mentions,
+        canonical=generator._canonical,
+        provenance=generator._provenance,
+        complete=generator._complete,
+    )
+    via_pass = ResolveInvariantCanonicalPass().run(
+        invariant_mentions,
+        canonical=generator._canonical,
+        provenance=generator._provenance,
+        complete=generator._complete,
+    )
+
+    assert direct.entities == via_pass.entities
+    assert direct.selections == via_pass.selections

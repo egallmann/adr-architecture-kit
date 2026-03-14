@@ -93,6 +93,22 @@ def test_repository_exposes_contract_bundle_view_in_normalized_mode(tmp_path: Pa
     assert contract_bundle.remediation_ledger is None
 
 
+def test_repository_exposes_semantic_relationship_and_provenance_helpers(tmp_path: Path) -> None:
+    _generate_bundle(tmp_path)
+
+    repository = ArchitectureRepository(project_root=tmp_path)
+    repository.load()
+
+    relationships = repository.get_relationships_for_entity("CAP-1000")
+    assert any(item.relationship_id == "declared_in:CAP-1000:ADR-L-1000" for item in relationships)
+    assert repository.get_unresolved_for_entity("CAP-1000") == []
+    assert repository.get_adr_status("ADR-L-1000") == "accepted"
+    assert repository.get_entity_adr_refs("CAP-1000") == ["ADR-L-1000"]
+    provenance = repository.get_entity_provenance("CAP-1000")
+    assert provenance is not None
+    assert provenance.source_ref == "ADR-L-1000#CAP-1000"
+
+
 def test_repository_falls_back_to_legacy_mode(tmp_path: Path) -> None:
     _write_legacy_registry(tmp_path)
 
@@ -108,6 +124,7 @@ def test_repository_falls_back_to_legacy_mode(tmp_path: Path) -> None:
     assert repository.get_invariants() == []
     assert [entity.id for entity in model.entities_by_type("capability")] == ["CAP-9000"]
     assert model.find_entity("CAP-9000") is not None
+    assert model.canonical_adr_refs_for_entity("CAP-9000") == ["ADR-L-9000"]
     assert [rel.relationship_type for rel in repository.get_relationships()] == ["declared_in"]
 
 

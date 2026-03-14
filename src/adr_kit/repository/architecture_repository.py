@@ -158,6 +158,31 @@ class ArchitectureRepository:
         self.load()
         return list(self.get_model().relationships)
 
+    def get_relationships_for_entity(
+        self,
+        entity_id: str,
+        *,
+        relationship_type: str | None = None,
+        direction: Literal["any", "incoming", "outgoing"] = "any",
+    ) -> list[RelationshipRecord]:
+        return self.get_model().relationships_for_entity(
+            entity_id,
+            relationship_type=relationship_type,
+            direction=direction,
+        )
+
+    def get_unresolved_for_entity(self, entity_id: str) -> list[UnresolvedRecord]:
+        return self.get_model().unresolved_for_entity(entity_id)
+
+    def get_adr_status(self, adr_id: str) -> str | None:
+        return self.get_model().adr_status(adr_id)
+
+    def get_entity_provenance(self, entity_id: str) -> DiscoveryProvenance | None:
+        return self.get_model().provenance_for_entity(entity_id)
+
+    def get_entity_adr_refs(self, entity_id: str) -> list[str]:
+        return self.get_model().canonical_adr_refs_for_entity(entity_id)
+
     def get_contract_bundle_view(self) -> ContractBundleView:
         """Return the compiled contract bundle through the repository boundary."""
 

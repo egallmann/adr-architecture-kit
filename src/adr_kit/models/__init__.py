@@ -145,6 +145,12 @@ from .remediation_ledger import (
     RemediationLedger,
     RemediationLedgerEntry,
 )
+from .implementation_attribution import (
+    ImplementationAttributionEvidence,
+    ImplementationAttributionProvenance,
+    ImplementationAttributionRecord,
+    ImplementationEntityType,
+)
 
 __all__ = [
     # Common
@@ -281,4 +287,8 @@ __all__ = [
     "LedgerDecision",
     "RemediationLedger",
     "RemediationLedgerEntry",
+    "ImplementationAttributionEvidence",
+    "ImplementationAttributionProvenance",
+    "ImplementationAttributionRecord",
+    "ImplementationEntityType",
 ]

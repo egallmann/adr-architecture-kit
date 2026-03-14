@@ -16,6 +16,7 @@ from ..models import (
     ArchitectureIndex,
     DecisionLedger,
     EntityRegistry,
+    ImplementationAttributionEvidence,
     LogicalADR,
     Manifest,
     NormalizedEntityRegistry,
@@ -103,6 +104,7 @@ class ADRParser:
             "remediation_ledger": "remediation-ledger.schema.json",
             "relationship_registry": "relationship-registry.schema.json",
             "unresolved_registry": "unresolved-registry.schema.json",
+            "implementation_attribution_evidence": "implementation-attribution-evidence.schema.json",
         }
         
         # Load v1.0 schemas
@@ -502,6 +504,31 @@ class ADRParser:
         self.validate_against_schema(data, "architecture_index")
         try:
             return ArchitectureIndex(**data)
+        except ValidationError as e:
+            raise ADRParseError(f"Pydantic validation failed: {e}")
+
+    def parse_implementation_attribution_evidence(
+        self,
+        file_path: Union[str, Path],
+    ) -> ImplementationAttributionEvidence:
+        """Parse and validate implementation attribution evidence."""
+        data = self.parse_yaml(file_path)
+        self.validate_against_schema(data, "implementation_attribution_evidence")
+
+        try:
+            return ImplementationAttributionEvidence(**data)
+        except ValidationError as e:
+            raise ADRParseError(f"Pydantic validation failed: {e}")
+
+    def parse_implementation_attribution_evidence_from_data(
+        self,
+        yaml_text: str,
+    ) -> ImplementationAttributionEvidence:
+        """Parse and validate implementation attribution evidence from YAML text."""
+        data = yaml.safe_load(yaml_text)
+        self.validate_against_schema(data, "implementation_attribution_evidence")
+        try:
+            return ImplementationAttributionEvidence(**data)
         except ValidationError as e:
             raise ADRParseError(f"Pydantic validation failed: {e}")
     

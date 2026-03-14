@@ -1,87 +1,64 @@
 schema_version: '1.0'
 adr_type: logical
 id: ADR-L-0004
-title: ADR-to-Code Traceability via Decorators
+title: ADR-to-Implementation Traceability via Decorators and Metadata Attribution
 status: proposed
 created_date: '2026-03-08'
 authors:
 - adr-architecture-kit
-modified_date: '2026-03-08'
+modified_date: '2026-03-14'
 context: |
-  Architecture Decision Records document WHY code exists, but there's no
-  machine-verifiable link from implementation back to the ADRs that justify it.
-  This ADR defines the foundation for a multi-tier governance architecture.
+  Architecture Decision Records document why implementation artifacts exist, but
+  the repo still lacks a universal, machine-verifiable way to trace code,
+  infrastructure, configuration, schemas, pipelines, and scripts back to the
+  ADRs that justify them.
+
+  Earlier design work in this ADR established decorator-based code traceability,
+  RECON extraction, and bidirectional verification as the right direction.
+  Since then, adr-architecture-kit has gained an explicit compiler pipeline,
+  profile-aware contract validation, and stronger governance around derived
+  architecture state. The traceability design now needs to be widened and
+  grounded in that current compiler/governance reality.
 
   ## Current State
 
   - ADRs reference implementation via `implementation_identifiers`
-  - Code has no reverse link to ADRs
-  - No automated verification that code implements declared ADRs
-  - Manual effort to trace code changes to architectural decisions
-  - Drift detection is reactive, not proactive
+  - Code and infrastructure still lack a canonical reverse link to ADRs
+  - adr-architecture-kit owns canonical architecture authority, but not source
+    extraction of implementation artifacts
+  - ste-runtime / RECON can already carry decorator metadata, but does not yet
+    interpret architecture-intent attribution semantically
+  - Existing governance already distinguishes `greenfield`, `brownfield`, and
+    `migration`, which should govern legacy onboarding instead of inventing a
+    separate transition model
 
-  ## The STE Governance Vision
+  ## Architecture Direction
 
-  ```
-  Project/Service
-      ↓ defines
-  ADRs (Architecture Decisions)
-      ↓ parsed by
-  Rules & Signal Service
-      ↓ generates
-  Enforcement Rules + Signals
-      ↓ activated by
-  Rule Library (MCP Service)
-      ↓ projected to
-  Other Projects (consumers)
-      ↓ enforced via
-  Decorators + Verification
-  ```
+  This repository remains the authority for:
+  - the attribution rule itself
+  - the canonical decorator and metadata semantics
+  - the compiler-owned evidence contract that downstream extractors populate
+  - the validation posture for greenfield, brownfield, and migration use
 
-  This creates a **policy propagation system** where architectural decisions
-  in one project become enforceable rules in dependent projects.
-
-  ## Multi-Tier Architecture
-
-  **Tier 1: Project Authority (This Project)**
-  - Projects define ADRs documenting their architecture
-  - ADRs contain invariants, capabilities, components
-  - Code annotated with decorators linking to ADRs
-
-  **Tier 2: Rules & Signal Service (Future)**
-  - Parses ADRs from projects
-  - Generates enforcement rules from invariants
-  - Generates signals for capability implementation
-  - Publishes rules to rule-library
-
-  **Tier 3: Rule Library (Sub-Module)**
-  - Activates rules from Rules & Signal Service
-  - Projects rules as MCP service
-  - Provides rule evaluation logic
-  - Enables cross-project rule consumption
-
-  **Tier 4: Verification & Enforcement (This Project + Consumers)**
-  - Decorator-based code annotation
-  - Bidirectional traceability verification
-  - CI/CD enforcement
-  - AI agent compliance checking
+  This repository does not take on source-code parsing for this feature in the
+  current slice. That remains downstream work for ste-runtime / RECON.
 
   ## Problems Solved
 
-  1. **Orphaned code**: Code exists with no architectural justification
-  2. **Incomplete implementation**: ADRs declare components that aren't implemented
-  3. **Drift**: Code evolves without updating ADRs
-  4. **Policy propagation**: Architectural decisions can't be shared/enforced
-  5. **AI reasoning**: AI agents can't trace code to architectural authority
-  6. **Cross-project governance**: No way to enforce architectural standards across services
+  1. **Orphaned implementation**: Artifacts exist with no architectural justification
+  2. **Incomplete implementation**: ADRs declare architecture that is not traced to implementation
+  3. **Drift**: Implementation evolves without architecture authority remaining explicit
+  4. **Legacy imports**: Existing codebases need staged onboarding without losing deterministic governance
+  5. **AI reasoning**: Agents need an explicit intent surface rather than heuristic code-to-ADR guesses
+  6. **EDR evidence**: Embodied decision records need provenance-rich implementation claims
 
   ## STE Principles
 
-  - **PRIME-1**: No implicit assumptions (code must declare its authority)
+  - **PRIME-1**: No implicit assumptions (implementation must declare its authority)
   - **SYS-4**: Drift prevention (detect when code diverges from ADRs)
   - **SYS-5**: Documentation-state as authoritative (ADRs govern code)
   - **SYS-6**: RECON completion (architecture must be extractable)
-  - **Policy Propagation**: Architectural decisions become enforceable across projects
+  - **Scope-aware onboarding**: Migration posture must be explicit rather than ad hoc
 domains:
 - architecture
 - traceability
@@ -95,143 +72,120 @@ tags:
 - embodied-design
 decisions:
 - id: DEC-0009
-  summary: Adopt Decorator-Based ADR Traceability
+  summary: Adopt explicit architecture intent attribution for implementation artifacts
   rationale: |
-    Python decorators provide a non-invasive way to annotate code with
-    architectural metadata without affecting runtime behavior.
+    Implementation surfaces need explicit, extractable architecture authority.
+    For code, decorators remain the canonical mechanism:
+    - `@implements_adr(...)`
+    - `@enforces_invariant(...)`
 
-    Benefits:
-    1. **Machine-readable**: Decorators are parseable by AST analysis
-    2. **Non-invasive**: Don't affect code execution
-    3. **Composable**: Multiple decorators can be stacked
-    4. **Pythonic**: Idiomatic Python pattern
-    5. **Extractable**: RECON can extract decorator metadata
+    For infrastructure and adjacent non-code artifacts, the same intent is
+    expressed through metadata-level declarations rather than per-resource
+    decoration.
 
-    This enables:
-    - Automated verification of ADR implementation
-    - Detection of orphaned code (no ADR justification)
-    - Detection of incomplete ADRs (declared but not implemented)
-    - Traceability for audit and compliance
-    - AI agent understanding of code authority
+    This keeps attribution explicit while respecting artifact-type differences.
   consequences:
     positive:
-    - All new code must declare its ADR authority via decorators
-    - RECON must extract decorator metadata
-    - Verification tools must validate decorator references
-    - Existing code needs gradual annotation
-    - Decorator library becomes foundational dependency
+    - New implementation can declare architectural authority deterministically
+    - Code and infrastructure use a consistent intent model
+    - Downstream extraction can remain language-specific without changing rule semantics
+    - AI reasoning gains explicit implementation-to-ADR provenance
 - id: DEC-0016
-  summary: Create Rule Library Sub-Module as MCP Service
+  summary: Stage downstream extraction and rule activation after ADR-Kit authority is defined
   rationale: |
-    ADR traceability rules should be encoded in a separate rule-library
-    sub-module that acts as an MCP service, not hardcoded in validators.
-
-    ## Multi-Tier Governance Architecture
-
-    **Projects** define ADRs with invariants and capabilities
-        ↓
-    **Rules & Signal Service** parses ADRs and generates enforcement rules
-        ↓
-    **Rule Library** (this sub-module) activates and projects rules via MCP
-        ↓
-    **Consumer Projects** receive rules and enforce via decorators/verification
-
-    This enables:
-    1. **Policy Propagation**: ADRs in one project become rules in others
-    2. **Centralized Governance**: Rules & Signal Service is authoritative
-    3. **Distributed Enforcement**: Each project enforces via rule-library
-    4. **Dynamic Rules**: Rules update when ADRs change
-    5. **Cross-Project Standards**: Shared architectural standards
-
-    The rule-library sub-module will:
-    - Receive rules from Rules & Signal Service (or load from files)
-    - Activate rules for specific projects/contexts
-    - Project rules via MCP to AI agents and tools
-    - Provide rule evaluation logic
-    - Support file-based fallback (for development)
-
-    ## Rule Flow
-
-    ```
-    adr-architecture-kit/adrs/
-        ↓ (parsed by Rules & Signal Service)
-    Generated Rules:
-      - "Public classes must have @implements_adr"
-      - "Code must enforce declared invariants"
-        ↓ (published to rule-library)
-    rule-library/ (MCP Service)
-        ↓ (consumed via MCP)
-    Consumer Projects (ste-runtime, other services)
-        ↓ (enforced via)
-    Decorators + Verification
-    ```
+    adr-architecture-kit should first define the canonical rule, evidence
+    contract, and profile-aware validation semantics. Source extraction,
+    runtime rule activation, and any shared ecosystem delivery should build on
+    that authority rather than forcing this repo to duplicate downstream logic.
   consequences:
     positive:
-    - 'New sub-module: rule-library/ (MCP service)'
-    - Rules generated from ADRs, not manually written
-    - MCP protocol for rule delivery
-    - File-based fallback for offline/development
-    - Rules versioned and governed
-    - Cross-project rule consumption
-    - AI agents receive rules via MCP
+    - adr-architecture-kit remains the source of canonical architecture semantics
+    - ste-runtime can focus on extraction rather than architecture authority
+    - ste-rules-library can encode activation logic later without redefining the rule
+    - ste-spec only needs involvement if the evidence contract must become shared doctrine
 - id: DEC-0023
   summary: Support Bidirectional Verification
   rationale: |
     Traceability must work in both directions:
 
-    **Forward (ADR → Code)**:
-    - ADR declares component with implementation_identifiers
-    - Verify that code exists and has correct decorators
+    **Forward (ADR -> Implementation)**:
+    - ADR declares component or system implementation identifiers
+    - Verify that downstream attribution evidence resolves to the declared authority
 
-    **Reverse (Code → ADR)**:
-    - Code has @implements_adr decorator
-    - Verify that referenced ADR exists and is accepted
+    **Reverse (Implementation -> ADR)**:
+    - Code has `@implements_adr` or equivalent metadata-level attribution
+    - Verify that referenced ADR exists and is still a valid authority target
 
     This bidirectional verification detects:
-    - Orphaned code (no ADR)
-    - Phantom declarations (ADR but no code)
-    - Invalid references (code references non-existent ADR)
-    - Status mismatches (code implements "rejected" ADR)
+    - Orphaned implementation (no ADR)
+    - Phantom declarations (ADR but no implementation evidence)
+    - Invalid references (implementation references non-existent ADR)
+    - Status mismatches (implementation references superseded ADRs)
   consequences:
     positive:
     - Verification must check both directions
-    - RECON must extract both ADR declarations and code decorators
+    - Downstream extraction must preserve both ADR declarations and implementation attribution claims
     - Drift detection becomes comprehensive
     - CI/CD can enforce traceability
+- id: DEC-0048
+  summary: Define a compiler-owned implementation attribution evidence contract
+  rationale: |
+    adr-architecture-kit needs a canonical handoff surface for implementation
+    attribution evidence without taking on source parsing itself. A small,
+    compiler-owned schema and model let downstream extractors emit consistent
+    attribution records that governance can validate deterministically.
+  consequences:
+    positive:
+    - ste-runtime / RECON has a canonical handoff contract to populate
+    - Governance can validate implementation attribution without parsing source code here
+    - EDR and coverage work can build on a stable evidence shape
+- id: DEC-0049
+  summary: Use existing contract profiles for legacy intent-attribution onboarding
+  rationale: |
+    Greenfield, brownfield, and migration already express the repo's adoption
+    postures. Intent attribution onboarding should use those same profiles
+    rather than creating a second transition taxonomy.
+  consequences:
+    positive:
+    - Legacy onboarding remains aligned with existing governance
+    - Greenfield enforcement can be strict without blocking brownfield imports
+    - Migration tightening can happen without schema forks or one-off modes
 invariants:
 - id: INV-0027
   statement: |
-    All public classes and functions SHOULD be annotated with @implements_adr
-    decorator referencing the ADR(s) that justify their existence
+    Greenfield in-scope implementation artifacts MUST declare architectural
+    authority through @implements_adr or an equivalent metadata-level
+    attribution mechanism; brownfield and migration may stage adoption under
+    profile-specific governance
   scope: global
-  enforcement_level: should
+  enforcement_level: must
   enforcement_mechanism: design
   verification_method: automated
   rationale: |
-    Public APIs are architectural boundaries. They must have explicit
-    architectural justification. Private/internal code may omit decorators
-    if covered by class-level decorator.
+    Explicit architecture intent is mandatory for new systems, but legacy
+    onboarding must be staged through the existing profile model.
 - id: INV-0028
   statement: |
-    Decorator references MUST point to existing, accepted ADRs
+    Implementation attribution references MUST resolve to existing ADRs, and
+    references to superseded ADRs MUST be surfaced as governance warnings
   scope: global
   enforcement_level: must
   enforcement_mechanism: design
   verification_method: automated
   rationale: |
-    Code cannot claim to implement non-existent or rejected ADRs.
-    This prevents invalid traceability claims.
+    Invalid or stale authority references undermine machine traceability even
+    when the attribution syntax itself is present.
 - id: INV-0029
   statement: |
-    ADRs that declare components with implementation_identifiers MUST have
-    corresponding code with matching decorators
+    Implementation attribution evidence MUST preserve provenance identifying
+    the source artifact and extractor responsible for the claim
   scope: global
   enforcement_level: must
   enforcement_mechanism: design
   verification_method: automated
   rationale: |
-    Forward traceability - if ADR declares implementation, it must exist.
-    Detects phantom declarations.
+    Traceability without provenance is not auditable enough for EDR evidence,
+    drift analysis, or trustworthy agent reasoning.
 - id: INV-0030
   statement: |
     Code decorated with @enforces_invariant MUST implement validation logic
@@ -245,76 +199,77 @@ invariants:
     enforcement is architectural drift.
 - id: INV-0031
   statement: |
-    Traceability rules MUST be encoded in rule-library sub-module, not
-    hardcoded in validators
+    adr-architecture-kit MUST define the canonical architecture-intent
+    attribution rule and evidence contract without taking on direct source-code
+    parsing responsibilities for downstream repositories
   scope: global
   enforcement_level: must
   enforcement_mechanism: design
   verification_method: automated
   rationale: |
-    Rules are architectural artifacts that should be versioned, governed,
-    and reusable across projects.
+    This repository owns architecture authority, while downstream extractors own
+    language-specific parsing and evidence emission.
 - id: INV-0032
   statement: |
-    Rule library SHOULD support both file-based and MCP-based rule delivery
+    Downstream extractors and rule-delivery systems SHOULD consume ADR-Kit
+    attribution contracts rather than redefining them independently
   scope: global
   enforcement_level: should
   enforcement_mechanism: design
   verification_method: automated
   rationale: |
-    File-based for simplicity, MCP-based for dynamic rule serving to AI
-    agents and cross-project rule sharing.
+    Reusing a single contract preserves deterministic semantics across the
+    ecosystem even when extraction and rule activation live elsewhere.
 capabilities:
 - id: CAP-0021
-  name: Decorator-Based Code Annotation
+  name: Architecture Intent Attribution
   description: |
-    Python decorators that annotate code with ADR references, creating
-    machine-readable traceability metadata.
+    Explicit declaration of architectural authority across code and other
+    implementation artifacts through decorators or metadata-level attribution.
   acceptance_criteria:
   - '@implements_adr(adr_id, ...) decorator available'
   - '@enforces_invariant(inv_id, ...) decorator available'
-  - '@implements_capability(cap_id) decorator available'
-  - '@implements_component(comp_id) decorator available'
-  - Decorators don't affect runtime behavior
-  - Decorators are extractable by AST parsing
+  - infrastructure/config/schema/pipeline/script artifacts can declare ADR IDs through metadata
+  - attribution metadata does not alter runtime behavior
+  - attribution is extractable by downstream tooling
 - id: CAP-0024
   name: Bidirectional Traceability Verification
   description: |
-    Automated verification that code matches ADR declarations in both
-    directions (ADR→Code and Code→ADR).
+    Automated verification that implementation attribution and ADR declarations
+    agree in both directions.
   acceptance_criteria:
-  - Verify ADR implementation_identifiers have matching code
-  - Verify code decorators reference valid ADRs
-  - Detect orphaned code (no ADR reference)
-  - Detect phantom declarations (ADR but no code)
+  - Verify ADR implementation_identifiers have matching implementation attribution evidence
+  - Verify attribution references valid ADRs
+  - Detect orphaned implementation (no ADR reference)
+  - Detect phantom declarations (ADR but no implementation evidence)
   - Report traceability violations
 - id: CAP-0027
-  name: Rule Library Sub-Module
+  name: Profile-Aware Legacy Onboarding for Intent Attribution
   description: |
-    Separate sub-module that encodes traceability rules as first-class
-    architectural artifacts, supporting both file-based and MCP-based delivery.
+    Govern intent-attribution adoption with the existing greenfield,
+    brownfield, and migration profiles instead of a separate legacy mode.
   acceptance_criteria:
-  - rule-library/ sub-module exists
-  - Rules defined in structured format (YAML/JSON)
-  - Rules versioned and governed
-  - File-based rule loading
-  - MCP server can serve rules
-  - Projects can customize rules
+  - greenfield treats missing required attribution as an error
+  - brownfield and migration can surface onboarding gaps as warnings
+  - missing ADR references still fail regardless of profile
+  - superseded ADR references are visible without blocking onboarding
 - id: CAP-0030
-  name: RECON Integration for Decorator Extraction
+  name: Implementation Attribution Evidence Handoff
   description: |
-    RECON extracts decorator metadata from Python code, making traceability
-    information available in semantic graph.
+    A compiler-owned evidence contract that downstream extractors populate with
+    implementation-to-ADR attribution claims and provenance.
   acceptance_criteria:
-  - RECON extracts @implements_adr decorators
-  - RECON extracts @enforces_invariant decorators
-  - Decorator metadata in AI-DOC slices
-  - Graph queries can find code by ADR reference
-  - Graph queries can find ADRs by implementation
+  - evidence records include implementation entity ID and type
+  - evidence records include attributed ADR IDs
+  - evidence records preserve provenance
+  - optional invariant claims can be carried without schema forks
+  - ste-runtime can emit the contract without adr-architecture-kit parsing source code directly
 related_adrs:
 - ADR-L-0001
 - ADR-L-0002
 - ADR-L-0003
+- ADR-L-0010
+- ADR-L-0012
 gaps:
 - id: GAP-0001
   question: Decorator library not yet implemented
@@ -322,43 +277,43 @@ gaps:
   impact: high
   blocking: true
 - id: GAP-0002
-  question: ste-rules-library integration into adr-architecture-kit not yet wired
-  context: 'Classification: deferred gap. ste-rules-library exists as a sibling repo,
-    but this repo does not yet consume it as a submodule or runtime dependency.'
-  impact: medium
-  blocking: false
-- id: GAP-0003
-  question: RECON doesn't extract decorator metadata
-  context: 'Classification: deferred gap. This is owned by ste-runtime / RECON integration,
-    not this repo''s current implementation slice.'
+  question: Implementation attribution evidence contract not yet populated by downstream extraction
+  context: 'Classification: real gap. adr-architecture-kit can define the evidence contract,
+    but ste-runtime / RECON does not yet emit architecture-intent attribution records.'
   impact: high
   blocking: true
+- id: GAP-0003
+  question: Legacy onboarding rollout for adr-architecture-kit itself is not yet started
+  context: 'Classification: deferred gap. The repo needs an explicit first-wave annotation
+    plan before broad decorator rollout.'
+  impact: medium
+  blocking: false
 - id: GAP-0004
-  question: MCP integration for rule delivery not designed
-  context: 'Classification: deferred gap. File-based delivery exists first; MCP remains
-    a later integration phase.'
+  question: ste-rules-library activation for intent-attribution enforcement remains staged
+  context: 'Classification: deferred gap. Downstream rule activation may be useful later,
+    but it should consume ADR-Kit authority rather than redefine it.'
   impact: medium
   blocking: false
 notes: "Implementation phases:\n\nPhase 1: Decorator Library (ADR-P-0004)\n- Create\
-  \ adr_kit.decorators module\n- Implement @implements_adr, @enforces_invariant, etc.\n\
-  - Add to core toolkit\n\nPhase 2: Rule Library Sub-Module (ADR-P-0005)\n- Create\
-  \ rule-library/ sub-module\n- Define rule schema\n- Implement file-based rule loading\n\
-  - Version and govern rules\n\nPhase 3: Verification System (ADR-P-0006)\n- Bidirectional\
-  \ traceability checker\n- Integration with validators\n- CI/CD enforcement\n\nPhase\
-  \ 4: RECON Integration (ste-runtime ADR)\n- Extract decorator metadata\n- Add to\
-  \ AI-DOC slices\n- Enable graph queries\n\nPhase 5: MCP Integration (rule-library\
-  \ ADR)\n- MCP server for rule delivery\n- Dynamic rule loading\n- Cross-project\
-  \ rule sharing\n\nExample usage:\n```python\n@implements_adr(\"ADR-L-0002\", \"\
-  ADR-P-0003\")\n@enforces_invariant(\"INV-0015\", \"INV-0018\")\nclass ProjectScopeResolver:\n\
-  \    '''Resolve project scope per ADR-L-0002 CAP-0001.'''\n    \n    @implements_capability(\"\
-  CAP-0001\")\n    @enforces_invariant(\"INV-0018\")\n    def resolve(self, start_dir:\
-  \ Optional[Path] = None) -> ProjectScope:\n        '''Auto-detect project boundaries.'''\n\
-  \        # Boundary enforcement per INV-0018\n        if self._is_workspace_boundary(start_dir):\n\
-  \            raise ValueError(\"Cannot traverse above workspace boundary\")\n  \
-  \      # ...\n```\n\nVerification output:\n```\n✓ ProjectScopeResolver implements\
-  \ ADR-L-0002 ✓\n✓ ProjectScopeResolver implements ADR-P-0003 ✓\n✓ ProjectScopeResolver\
-  \ enforces INV-0015 ✓\n✓ ProjectScopeResolver enforces INV-0018 ✓\n✓ resolve() implements\
-  \ CAP-0001 ✓\n\nTraceability: 100% (5/5 declarations verified)\n```\n"
+  \ adr_kit.decorators module\n- Implement @implements_adr and @enforces_invariant\n\
+  - Add language-level examples without forcing broad annotation yet\n\nPhase 2:\
+  \ Evidence Contract + Validation\n- Define implementation attribution evidence\
+  \ schema in adr-architecture-kit\n- Validate evidence against canonical ADR state\
+  \ with profile-aware onboarding semantics\n- Keep attribution authority in ADR-Kit,\
+  \ not in downstream extractors\n\nPhase 3: Downstream Extraction (ste-runtime)\n\
+  - Extract decorators / metadata from code and infrastructure artifacts\n- Emit\
+  \ implementation attribution evidence and slice claims with provenance\n- Preserve\
+  \ provenance for EDR and drift analysis\n\nPhase 4: Legacy Onboarding\n- Identify\
+  \ in-scope implementation surfaces per repo\n- Roll out attribution starting with\
+  \ public boundaries and high-authority modules\n- Use greenfield, brownfield,\
+  \ and migration profiles to control enforcement\n\nPhase 5: Optional Rule Activation\
+  \ (ste-rules-library)\n- Encode reusable rule activation only after the authority\
+  \ and evidence contracts are stable\n- Keep downstream delivery additive rather\
+  \ than redefining semantics\n\nExample code attribution:\n```python\n@implements_adr(\"\
+  ADR-L-0002\", \"ADR-P-0003\")\n@enforces_invariant(\"INV-0015\", \"INV-0018\")\n\
+  class ProjectScopeResolver:\n      pass\n```\n\nExample infrastructure attribution:\n\
+  ```yaml\nMetadata:\n  implements_adr:\n    - ADR-L-0001\n    - ADR-PS-0001\n```\
+  \n"
 migration_origin:
   remapped_entities:
   - entity_type: capability

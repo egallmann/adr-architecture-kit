@@ -4,8 +4,8 @@
 # generator_id: adr-compiler
 # generator_version: 1
 # hash_algorithm: sha256
-# source_hash: a0c954fd8ed2be18978e1d928cf7332e47412d51b3c24cdd0ae857ea7ea39502
-# rendered_hash: b8b459f4649dd8c32f5761b87db28d1f0eaeb90643fb4b4ff9b66c8c7896fc95
+# source_hash: d76650132bc278e0ba60c9067a4f04f60b77f996545eadaca1e0e4adef5ebd26
+# rendered_hash: 3d682deeda9b022a926c335c12c3edd27e1dca046e5c62e5b89e4ff983e2e555
 
 schema_version: '1.1'
 type: entity_registry
@@ -312,7 +312,7 @@ entities:
     realizes: []
 - entity_id: CAP-0021
   entity_type: capability
-  name: Decorator-Based Code Annotation
+  name: Architecture Intent Attribution
   introduced_by: ADR-L-0004
   lifecycle_stage: active
   source_path: adrs/logical/ADR-L-0004-adr-to-code-traceability-via-decorators.yaml
@@ -402,7 +402,7 @@ entities:
     realizes: []
 - entity_id: CAP-0027
   entity_type: capability
-  name: Rule Library Sub-Module
+  name: Profile-Aware Legacy Onboarding for Intent Attribution
   introduced_by: ADR-L-0004
   lifecycle_stage: active
   source_path: adrs/logical/ADR-L-0004-adr-to-code-traceability-via-decorators.yaml
@@ -447,7 +447,7 @@ entities:
     realizes: []
 - entity_id: CAP-0030
   entity_type: capability
-  name: RECON Integration for Decorator Extraction
+  name: Implementation Attribution Evidence Handoff
   introduced_by: ADR-L-0004
   lifecycle_stage: active
   source_path: adrs/logical/ADR-L-0004-adr-to-code-traceability-via-decorators.yaml
@@ -722,7 +722,7 @@ entities:
     realizes: []
 - entity_id: DEC-0009
   entity_type: decision
-  name: Adopt Decorator-Based ADR Traceability
+  name: Adopt explicit architecture intent attribution for implementation artifacts
   introduced_by: ADR-L-0004
   lifecycle_stage: active
   source_path: adrs/logical/ADR-L-0004-adr-to-code-traceability-via-decorators.yaml
@@ -830,7 +830,8 @@ entities:
     realizes: []
 - entity_id: DEC-0016
   entity_type: decision
-  name: Create Rule Library Sub-Module as MCP Service
+  name: Stage downstream extraction and rule activation after ADR-Kit authority is
+    defined
   introduced_by: ADR-L-0004
   lifecycle_stage: active
   source_path: adrs/logical/ADR-L-0004-adr-to-code-traceability-via-decorators.yaml
@@ -1317,6 +1318,36 @@ entities:
     implements: []
     consumes: []
     realizes: []
+- entity_id: DEC-0048
+  entity_type: decision
+  name: Define a compiler-owned implementation attribution evidence contract
+  introduced_by: ADR-L-0004
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0004-adr-to-code-traceability-via-decorators.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs: []
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: DEC-0049
+  entity_type: decision
+  name: Use existing contract profiles for legacy intent-attribution onboarding
+  introduced_by: ADR-L-0004
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0004-adr-to-code-traceability-via-decorators.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs: []
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
 - entity_id: INV-0001
   entity_type: invariant
   name: INV-0001
@@ -1406,18 +1437,20 @@ entities:
 - entity_id: INV-0006
   entity_type: invariant
   name: INV-0006
-  introduced_by: ADR-L-0001
+  introduced_by: ADR-L-0004
   lifecycle_stage: active
-  source_path: adrs/logical/ADR-L-0001-ste-compliant-adr-system.yaml
-  source_artifact_type: logical_adr
+  source_path: adrs/invariants/INV-0006-implementation-artifacts-must-declare-architectural-authority.yaml
+  source_artifact_type: standalone_invariant
   domains: []
-  related_adrs: []
+  related_adrs:
+  - ADR-L-0001
   realized_by: []
   relationships:
     depends_on: []
     implements: []
     consumes: []
-    realizes: []
+    realizes:
+    - ADR-P-0001
 - entity_id: INV-0007
   entity_type: invariant
   name: INV-0007

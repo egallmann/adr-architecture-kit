@@ -92,7 +92,25 @@ Success criteria:
   and explicit validation commands without contradiction
 - Recursive and single-scope flows behave consistently
 
-### 3. Federation preparation
+### 3. Intent attribution groundwork
+
+Goal: define canonical implementation-to-ADR attribution authority before
+decorator cleanup or legacy onboarding grows harder.
+
+Near-term work:
+
+- strengthen `ADR-L-0004` around universal implementation intent attribution
+- define a compiler-owned evidence contract for downstream extractors
+- keep legacy onboarding aligned to `greenfield`, `brownfield`, and `migration`
+- prepare repo-local first-wave annotation boundaries without bulk rollout yet
+
+Success criteria:
+
+- adr-architecture-kit owns the rule and evidence contract
+- downstream extraction can populate the contract without ADR-Kit parsing source code
+- legacy onboarding posture is explicit before broad annotation work starts
+
+### 4. Federation preparation
 
 Goal: prepare for multi-repository architecture reasoning without collapsing
 repository authority boundaries.
@@ -122,9 +140,9 @@ for this repository right now.
 
 ### Decorator and traceability stack
 
-- `ADR-L-0004` remains accepted logical direction
-- Decorator libraries, verification tooling, and RECON extraction are deferred
-- They should resume only after the compiler/governance surface is sufficiently stable
+- `ADR-L-0004` is now the canonical direction for intent-attribution authority
+- Decorator libraries, verification tooling, and RECON extraction remain staged
+- Broad annotation rollout should follow the explicit legacy onboarding boundary
 
 ### Rules-library and broader autonomous governance services
 

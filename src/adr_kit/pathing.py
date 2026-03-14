@@ -15,7 +15,7 @@ def manifest_relative_path(scope_root: Path, file_path: Path) -> str:
     """Return a manifest-safe relative path from a scope root."""
     scope_root = Path(scope_root).resolve()
     file_path = ensure_within_scope(scope_root, file_path)
-    return str(file_path.relative_to(scope_root))
+    return file_path.relative_to(scope_root).as_posix()
 
 
 def scope_temp_dir(scope_root: Path, purpose: str = "pytest") -> Path:

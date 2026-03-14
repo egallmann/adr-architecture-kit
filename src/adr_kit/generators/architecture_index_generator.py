@@ -8,6 +8,17 @@ from typing import Dict, Iterable, List, Optional, Tuple
 
 from ..compiler.diagnostics import DiagnosticLevel, DiagnosticLog
 from ..compiler.frontend.parser import CachedADRParser
+from ..compiler.frontend.support import (
+    classify_author_gap,
+    discover_source_files,
+    load_namespace,
+    make_canonical,
+    make_completeness,
+    make_provenance,
+    source_path,
+    summarize_text,
+    system_entity_id,
+)
 from ..compiler.registry_bundle import (
     ArchitectureDiscoveryBundle,
     assemble_registry_bundle,
@@ -62,49 +73,31 @@ class ArchitectureIndexGenerator:
         self.scope_resolver = scope_resolver or ProjectScopeResolver()
 
     def _discover_source_files(self, adr_dir: Path) -> tuple[list[Path], list[Path], list[Path]]:
-        logical = sorted((adr_dir / "logical").glob("*.yaml")) if (adr_dir / "logical").exists() else []
-        physical: list[Path] = []
-        for dirname in ("physical", "physical-system", "physical-component"):
-            base = adr_dir / dirname
-            if base.exists():
-                physical.extend(sorted(base.glob("*.yaml")))
-        invariants = sorted((adr_dir / "invariants").glob("*.yaml")) if (adr_dir / "invariants").exists() else []
-        deduped = list(dict.fromkeys(path.resolve() for path in physical))
-        return logical, [Path(path) for path in deduped], invariants
+        return discover_source_files(adr_dir)
 
     def _source_path(self, scope: ProjectScope, file_path: Path) -> str:
-        return str(file_path.resolve().relative_to(scope.root.resolve())).replace("\\", "/")
+        return source_path(scope, file_path)
 
     def _load_namespace(self, scope: ProjectScope) -> str:
-        data = self.parser.parse_yaml(scope.root / "PROJECT.yaml")
-        namespace = ((data.get("architecture_documentation") or {}).get("architecture_namespace"))
-        if not namespace:
-            raise ValueError("PROJECT.yaml is missing architecture_documentation.architecture_namespace")
-        return namespace
+        return load_namespace(self.parser, scope)
 
     def _provenance(self, source_type: str, source_ref: str, phase: str, classification: str) -> DiscoveryProvenance:
-        return DiscoveryProvenance(
-            source_type=source_type,
-            source_ref=source_ref,
-            extraction_phase=phase,
-            classification=classification,
-            generator=GENERATOR_ID,
-        )
+        return make_provenance(source_type, source_ref, phase, classification)
 
     def _canonical(self, source_type: str, source_ref: str, artifact_path: str) -> CanonicalSource:
-        return CanonicalSource(source_type=source_type, source_ref=source_ref, artifact_path=artifact_path)
+        return make_canonical(source_type, source_ref, artifact_path)
 
     def _complete(self, missing_fields: Optional[list[str]] = None) -> Completeness:
-        return score_completeness(missing_fields)
+        return make_completeness(missing_fields)
 
     def _summary(self, text: str, limit: int = 220) -> str:
-        return " ".join((text or "").split())[:limit]
+        return summarize_text(text, limit)
 
     def _filtered(self, registry: NormalizedEntityRegistry, entity_type: str) -> NormalizedEntityRegistry:
         return NormalizedEntityRegistry(entities=[e for e in registry.entities if e.entity_type == entity_type])
 
     def _system_entity_id(self, adr_id: str) -> str:
-        return f"SYS-{adr_id.replace('ADR-PS-', '')}"
+        return system_entity_id(adr_id)
 
     def _append_source_ref(self, entity: NormalizedEntity, ref: SourceRef) -> None:
         existing = {(item.source_ref, item.mention_role) for item in entity.source_refs}
@@ -177,12 +170,7 @@ class ArchitectureIndexGenerator:
         )
 
     def _classify_author_gap(self, gap) -> str:
-        context = (getattr(gap, "context", None) or "").lower()
-        if "classification: deferred" in context:
-            return "author_declared_deferred_gap"
-        if "classification: resolved" in context:
-            return "author_declared_resolved_gap"
-        return "author_declared_real_gap"
+        return classify_author_gap(gap)
 
     def _validate_bundle(
         self,

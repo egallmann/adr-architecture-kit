@@ -6,13 +6,24 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Dict, List
 
-from ...generators.architecture_index_generator import GENERATOR_ID, ArchitectureIndexGenerator
 from ...models import CanonicalSource, DiscoveryProvenance, SourceCoverageSummary, SourceRef
 from ...scope import ProjectScope, ProjectScopeResolver
 from ..config import CompilerConfig
 from ..diagnostics import DiagnosticLog
 from ..ir import ArchModel, IREntity, IRRelationship, IRUnresolved
 from .parser import CachedADRParser
+from .support import (
+    GENERATOR_ID,
+    classify_author_gap,
+    discover_source_files,
+    load_namespace,
+    make_canonical,
+    make_completeness,
+    make_provenance,
+    source_path,
+    summarize_text,
+    system_entity_id,
+)
 
 
 @dataclass
@@ -38,10 +49,9 @@ class ArchModelBuilder:
         self.scope_resolver = scope_resolver or ProjectScopeResolver()
         self.config = config or CompilerConfig()
         self.diagnostics = diagnostics or DiagnosticLog()
-        self._generator_helpers = ArchitectureIndexGenerator(parser=self.parser, scope_resolver=self.scope_resolver)
 
     def discover_source_files(self, adr_dir: Path) -> tuple[list[Path], list[Path], list[Path]]:
-        return self._generator_helpers._discover_source_files(adr_dir)
+        return discover_source_files(adr_dir)
 
     def build_from_scope(self, scope: ProjectScope | None = None) -> FrontendBuildResult:
         scope = scope or self.scope_resolver.resolve()
@@ -50,7 +60,7 @@ class ArchModelBuilder:
     def build_from_directory(self, adr_dir: Path, scope: ProjectScope | None = None) -> FrontendBuildResult:
         adr_dir = Path(adr_dir).resolve()
         scope = scope or self.scope_resolver.resolve(adr_dir.parent)
-        namespace = self._generator_helpers._load_namespace(scope)
+        namespace = load_namespace(self.parser, scope)
         logical_files, physical_files, invariant_files = self.discover_source_files(adr_dir)
 
         model = ArchModel()
@@ -98,17 +108,17 @@ class ArchModelBuilder:
                 refs.sort(key=lambda item: (item.source_ref, item.mention_role))
 
         for adr, path in logical_adrs:
-            artifact = self._generator_helpers._source_path(scope, path)
+            artifact = source_path(scope, path)
             add_entity(
                 IREntity(
                     id=adr.id,
                     entity_type="adr",
                     name=adr.title,
-                    summary=self._generator_helpers._summary(adr.context),
-                    canonical_source=self._generator_helpers._canonical("logical_adr", adr.id, artifact),
+                    summary=summarize_text(adr.context),
+                    canonical_source=make_canonical("logical_adr", adr.id, artifact),
                     metadata={"status": adr.status.value, "domains": list(adr.domains), "tags": list(adr.tags)},
-                    completeness=self._generator_helpers._complete(),
-                    provenance=self._generator_helpers._provenance("logical_adr", adr.id, "extract_adr", "explicit"),
+                    completeness=make_completeness(),
+                    provenance=make_provenance("logical_adr", adr.id, "extract_adr", "explicit"),
                 )
             )
             for capability in adr.capabilities:
@@ -118,16 +128,16 @@ class ArchModelBuilder:
                         id=capability.id,
                         entity_type="capability",
                         name=capability.name,
-                        summary=self._generator_helpers._summary(capability.description),
-                        canonical_source=self._generator_helpers._canonical("logical_adr", source_ref, artifact),
+                        summary=summarize_text(capability.description),
+                        canonical_source=make_canonical("logical_adr", source_ref, artifact),
                         metadata={
                             "adr_id": adr.id,
                             "domains": list(adr.domains),
                             "implemented_by_components": list(capability.implemented_by_components),
                             "enabled_by_decisions": list(capability.enabled_by_decisions),
                         },
-                        completeness=self._generator_helpers._complete(),
-                        provenance=self._generator_helpers._provenance("logical_adr", source_ref, "extract_capability", "explicit"),
+                        completeness=make_completeness(),
+                        provenance=make_provenance("logical_adr", source_ref, "extract_capability", "explicit"),
                     )
                 )
             for decision in adr.decisions:
@@ -137,8 +147,8 @@ class ArchModelBuilder:
                         id=decision.id,
                         entity_type="decision",
                         name=decision.summary,
-                        summary=self._generator_helpers._summary(decision.rationale),
-                        canonical_source=self._generator_helpers._canonical("logical_adr", source_ref, artifact),
+                        summary=summarize_text(decision.rationale),
+                        canonical_source=make_canonical("logical_adr", source_ref, artifact),
                         metadata={
                             "adr_id": adr.id,
                             "related_invariants": list(decision.related_invariants),
@@ -148,8 +158,8 @@ class ArchModelBuilder:
                             "supersedes": list(decision.supersedes),
                             "refines": list(decision.refines),
                         },
-                        completeness=self._generator_helpers._complete(),
-                        provenance=self._generator_helpers._provenance("logical_adr", source_ref, "extract_decision", "explicit"),
+                        completeness=make_completeness(),
+                        provenance=make_provenance("logical_adr", source_ref, "extract_decision", "explicit"),
                     )
                 )
             for invariant in adr.invariants:
@@ -157,7 +167,7 @@ class ArchModelBuilder:
                     (
                         {
                             "name": invariant.id,
-                            "summary": self._generator_helpers._summary(invariant.statement),
+                            "summary": summarize_text(invariant.statement),
                             "metadata": {
                                 "adr_id": adr.id,
                                 "scope": invariant.scope,
@@ -175,7 +185,7 @@ class ArchModelBuilder:
                 unresolved = self._make_unresolved(
                     gap_id=f"UGAP-{adr.id}-{gap.id}",
                     gap_class="author_declared",
-                    gap_type=self._generator_helpers._classify_author_gap(gap),
+                    gap_type=classify_author_gap(gap),
                     source_entity_id=adr.id,
                     severity="important" if gap.blocking else "advisory",
                     source_ref=f"{adr.id}#{gap.id}",
@@ -185,12 +195,12 @@ class ArchModelBuilder:
                 model.unresolved.add(unresolved)
 
         for invariant, path in standalone_invariants:
-            artifact = self._generator_helpers._source_path(scope, path)
+            artifact = source_path(scope, path)
             invariant_mentions.setdefault(invariant.id, []).append(
                 (
                     {
                         "name": invariant.id,
-                        "summary": self._generator_helpers._summary(invariant.statement),
+                        "summary": summarize_text(invariant.statement),
                         "metadata": {
                             "defined_in": invariant.defined_in,
                             "scope": invariant.scope,
@@ -217,14 +227,14 @@ class ArchModelBuilder:
                 entity_type="invariant",
                 name=payload["name"],
                 summary=payload["summary"],
-                canonical_source=self._generator_helpers._canonical(
+                canonical_source=make_canonical(
                     "standalone_invariant" if standalone else "logical_adr",
                     source_ref,
                     artifact,
                 ),
                 metadata=payload["metadata"],
-                completeness=self._generator_helpers._complete(),
-                provenance=self._generator_helpers._provenance(
+                completeness=make_completeness(),
+                provenance=make_provenance(
                     "standalone_invariant" if standalone else "logical_adr",
                     source_ref,
                     "assign_canonical_invariant",
@@ -247,7 +257,7 @@ class ArchModelBuilder:
                     refs.sort(key=lambda item: (item.source_ref, item.mention_role))
 
         for adr, path in physical_adrs:
-            artifact = self._generator_helpers._source_path(scope, path)
+            artifact = source_path(scope, path)
             source_type = (
                 "physical_component_adr"
                 if adr.__class__.__name__ == "PhysicalComponentADR"
@@ -260,31 +270,31 @@ class ArchModelBuilder:
                     id=adr.id,
                     entity_type="adr",
                     name=adr.title,
-                    summary=self._generator_helpers._summary(adr.context),
-                    canonical_source=self._generator_helpers._canonical(source_type, adr.id, artifact),
+                    summary=summarize_text(adr.context),
+                    canonical_source=make_canonical(source_type, adr.id, artifact),
                     metadata={"status": adr.status.value, "domains": list(adr.domains), "tags": list(adr.tags)},
-                    completeness=self._generator_helpers._complete(),
-                    provenance=self._generator_helpers._provenance(source_type, adr.id, "extract_adr", "explicit"),
+                    completeness=make_completeness(),
+                    provenance=make_provenance(source_type, adr.id, "extract_adr", "explicit"),
                 ),
                 allow_reference_merge=True,
             )
             if adr.__class__.__name__ == "PhysicalSystemADR":
-                system_id = self._generator_helpers._system_entity_id(adr.id)
+                system_id = system_entity_id(adr.id)
                 system_ids[adr.id] = system_id
                 add_entity(
                     IREntity(
                         id=system_id,
                         entity_type="system",
                         name=adr.title,
-                        summary=self._generator_helpers._summary(adr.context),
-                        canonical_source=self._generator_helpers._canonical("physical_system_adr", adr.id, artifact),
+                        summary=summarize_text(adr.context),
+                        canonical_source=make_canonical("physical_system_adr", adr.id, artifact),
                         metadata={
                             "adr_id": adr.id,
                             "implements_logical": list(adr.implements_logical),
                             "technologies": list(adr.technologies),
                         },
-                        completeness=self._generator_helpers._complete(),
-                        provenance=self._generator_helpers._provenance("physical_system_adr", adr.id, "extract_system", "explicit"),
+                        completeness=make_completeness(),
+                        provenance=make_provenance("physical_system_adr", adr.id, "extract_system", "explicit"),
                     )
                 )
             if adr.__class__.__name__ == "PhysicalComponentADR":
@@ -295,8 +305,8 @@ class ArchModelBuilder:
                             id=component_id,
                             entity_type="component",
                             name=component.name,
-                            summary=self._generator_helpers._summary(component.responsibilities),
-                            canonical_source=self._generator_helpers._canonical(
+                            summary=summarize_text(component.responsibilities),
+                            canonical_source=make_canonical(
                                 "physical_component_adr",
                                 f"{adr.id}#{component_id}",
                                 artifact,
@@ -309,8 +319,8 @@ class ArchModelBuilder:
                                 "implements_capabilities": list(component.implements_capabilities),
                                 "implements_system": list(adr.implements_system),
                             },
-                            completeness=self._generator_helpers._complete(),
-                            provenance=self._generator_helpers._provenance(
+                            completeness=make_completeness(),
+                            provenance=make_provenance(
                                 "physical_component_adr",
                                 f"{adr.id}#{component_id}",
                                 "extract_component",
@@ -439,7 +449,7 @@ class ArchModelBuilder:
                                 )
                             )
                     for system_id in adr.implements_system:
-                        resolved_system_id = system_ids.get(system_id, self._generator_helpers._system_entity_id(system_id))
+                        resolved_system_id = system_ids.get(system_id, system_entity_id(system_id))
                         if model.entities.get(resolved_system_id) is not None:
                             self._add_relationship(model, "embodied_in", component_id, resolved_system_id, f"{adr.id}#{component_id}", [adr.id])
                         else:
@@ -542,7 +552,7 @@ class ArchModelBuilder:
         related_entity_id: str | None = None,
         expected_relationship: str | None = None,
     ) -> IRUnresolved:
-        provenance = self._generator_helpers._provenance("derived_registry", source_ref, "detect_unresolved", classification)
+        provenance = make_provenance("derived_registry", source_ref, "detect_unresolved", classification)
         return IRUnresolved(
             id=gap_id,
             gap_class=gap_class,

@@ -58,6 +58,41 @@ class CompilationResult:
     duration_ms: int
 
 
+@dataclass(frozen=True)
+class ScopedCompilationResult:
+    """Compilation result for one resolved scope within a recursive run."""
+
+    scope: ProjectScope
+    result: CompilationResult
+
+
+@dataclass(frozen=True)
+class WorkspaceCompilationStatistics:
+    """Aggregate statistics for a recursive compile invocation."""
+
+    scopes_compiled: int
+    successful_scopes: int
+    failed_scopes: int
+    source_files: int
+    parse_errors: int
+    entities_extracted: int
+    relationships_derived: int
+    unresolved_detected: int
+    artifacts_emitted: int
+
+
+@dataclass(frozen=True)
+class WorkspaceCompilationResult:
+    """Aggregate result returned by recursive multi-scope compilation."""
+
+    success: bool
+    scope_results: list[ScopedCompilationResult]
+    artifacts: list[OutputArtifact]
+    diagnostics: DiagnosticLog
+    statistics: WorkspaceCompilationStatistics
+    duration_ms: int
+
+
 class _FixedDateTime(datetime):
     """Patch target for deterministic generator timestamps."""
 
@@ -136,6 +171,79 @@ class ArchitectureCompiler:
             diagnostics=diagnostics,
             statistics=statistics,
             model=build_result.model,
+            duration_ms=duration_ms,
+        )
+
+    def compile_recursive(
+        self,
+        scope: Path | ProjectScope | None = None,
+        config: CompilerConfig | None = None,
+    ) -> WorkspaceCompilationResult:
+        """Compile every discovered scope independently and aggregate the results."""
+
+        started = perf_counter()
+        config = config or CompilerConfig()
+        root_scope = self._resolve_scope(scope, config)
+        all_scopes = self.scope_resolver.resolve_recursive(root_scope.root)
+        ordered_scopes = [root_scope, *sorted(
+            (item for item in all_scopes if item.root != root_scope.root),
+            key=lambda item: item.root.as_posix(),
+        )]
+
+        aggregate_diagnostics = DiagnosticLog()
+        scope_results: list[ScopedCompilationResult] = []
+        artifacts: list[OutputArtifact] = []
+
+        for current_scope in ordered_scopes:
+            try:
+                result = self.compile(current_scope, config)
+            except Exception as exc:
+                diagnostics = DiagnosticLog()
+                diagnostics.error(
+                    "E799",
+                    f"Scope compilation failed: {exc}",
+                    path=current_scope.root,
+                )
+                result = CompilationResult(
+                    success=False,
+                    artifacts=[],
+                    diagnostics=diagnostics,
+                    statistics=CompilationStatistics(
+                        source_files=0,
+                        parse_errors=1,
+                        entities_extracted=0,
+                        relationships_derived=0,
+                        unresolved_detected=0,
+                        artifacts_emitted=0,
+                    ),
+                    model=ArchModel(),
+                    duration_ms=0,
+                )
+
+            scope_results.append(ScopedCompilationResult(scope=current_scope, result=result))
+            aggregate_diagnostics.extend(result.diagnostics.as_list())
+            artifacts.extend(result.artifacts)
+
+        duration_ms = int((perf_counter() - started) * 1000)
+        successful_scopes = sum(1 for item in scope_results if item.result.success)
+        failed_scopes = len(scope_results) - successful_scopes
+        statistics = WorkspaceCompilationStatistics(
+            scopes_compiled=len(scope_results),
+            successful_scopes=successful_scopes,
+            failed_scopes=failed_scopes,
+            source_files=sum(item.result.statistics.source_files for item in scope_results),
+            parse_errors=sum(item.result.statistics.parse_errors for item in scope_results),
+            entities_extracted=sum(item.result.statistics.entities_extracted for item in scope_results),
+            relationships_derived=sum(item.result.statistics.relationships_derived for item in scope_results),
+            unresolved_detected=sum(item.result.statistics.unresolved_detected for item in scope_results),
+            artifacts_emitted=sum(item.result.statistics.artifacts_emitted for item in scope_results),
+        )
+        return WorkspaceCompilationResult(
+            success=all(item.result.success for item in scope_results),
+            scope_results=scope_results,
+            artifacts=artifacts,
+            diagnostics=aggregate_diagnostics,
+            statistics=statistics,
             duration_ms=duration_ms,
         )
 

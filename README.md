@@ -256,6 +256,7 @@ Use `adr compile --mode normal|strict|lenient` when you need the unified compile
 - `normal` reports errors and returns non-zero on compile failure
 - `strict` treats any compile error as non-viable
 - `lenient` only tolerates the current post-emit drift and contract-validation error family
+- add `--recursive` to compile each detected scope independently while preserving per-scope output locations
 
 The compatibility wrapper still exists if you need it:
 

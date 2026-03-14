@@ -177,7 +177,7 @@ class SystemOverviewGenerator:
             ],
             "canonical_workflows": [
                 OverviewRule("Validate the repository", "Run `adr governance-checks` for the standard local governance bundle. Use `adr validate` or `adr validate --recursive` when you only need ADR schema and business-rule validation."),
-                OverviewRule("Compile through the unified driver", "Run `adr compile --mode normal|strict|lenient` for the single-scope compiler path. `lenient` only tolerates the current post-emit drift and contract-validation error family."),
+                OverviewRule("Compile through the unified driver", "Run `adr compile --mode normal|strict|lenient` for the unified compiler path. Add `--recursive` to compile each detected scope independently. `lenient` only tolerates the current post-emit drift and contract-validation error family."),
                 OverviewRule("Commit at meaningful boundaries", "After a coherent implementation slice is verified, commit it before continuing. Do not accumulate unrelated unverified changes."),
                 OverviewRule("Maintain workflow-facing README content", "Update `README.md` when contributor-facing workflows or orientation guidance change. `README.md` is manual, not generated, and is not covered by `adr validate-generated-docs`."),
                 OverviewRule("Generate or refresh the architecture index", "Run `adr generate-architecture-index`. Treat `adrs/index/` as the primary machine discovery surface."),

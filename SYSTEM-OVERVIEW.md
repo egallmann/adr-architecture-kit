@@ -5,8 +5,8 @@ artifact_kind: system_overview
 generator_id: adr-system-overview
 generator_version: 1
 hash_algorithm: sha256
-source_hash: 29c51c166f62ace980b111ea347522d421e948bcbc4f56a8023769f77d162bf5
-rendered_hash: 1fdbb95f8ea129e57b825fc456b5e1a098e933a72af518d8af13e9712d0b5551
+source_hash: ebec4189de6757d44b07570bda24e5c23ea8dde1069697b6ee95ffc447107856
+rendered_hash: 6c4f38c9772a41cfafa0c028c8318c2d3a7f658453ce9d8ac1929e4dd0e76973
 -->
 
 ---
@@ -152,7 +152,7 @@ Run `adr governance-checks` for the standard local governance bundle. Use `adr v
 
 ### Compile through the unified driver
 
-Run `adr compile --mode normal|strict|lenient` for the single-scope compiler path. `lenient` only tolerates the current post-emit drift and contract-validation error family.
+Run `adr compile --mode normal|strict|lenient` for the unified compiler path. Add `--recursive` to compile each detected scope independently. `lenient` only tolerates the current post-emit drift and contract-validation error family.
 
 ### Commit at meaningful boundaries
 

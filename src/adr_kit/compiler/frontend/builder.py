@@ -21,6 +21,7 @@ class FrontendBuildResult:
 
     model: ArchModel
     coverage: SourceCoverageSummary
+    namespace: str
 
 
 class ArchModelBuilder:
@@ -499,7 +500,7 @@ class ArchModelBuilder:
                 ),
             )
         )
-        return FrontendBuildResult(model=model, coverage=coverage)
+        return FrontendBuildResult(model=model, coverage=coverage, namespace=namespace)
 
     def _add_relationship(
         self,

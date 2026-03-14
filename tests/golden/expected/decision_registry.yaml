@@ -1875,3 +1875,131 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
+- id: DEC-0045
+  entity_type: decision
+  name: Treat federation as a read-only aggregation layer over per-repo canonical
+    registries
+  summary: Per-repository registries remain the canonical architecture outputs for
+    their owning repository. Federation exists to read, index, merge, and query across
+    those outputs; it must not rewrite or mutate them.
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0012#DEC-0045
+    artifact_path: adrs/logical/ADR-L-0012-federation-authority-and-qualified-identity.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0012
+    related_invariants: []
+    enforces_invariants: []
+    enables_capabilities: []
+    governs_components: []
+    supersedes: []
+    refines: []
+  relationships:
+    declared_in:
+    - ADR-L-0012
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0012#DEC-0045
+    extraction_phase: extract_decision
+    classification: explicit
+    generator: adr-architecture-index
+- id: DEC-0046
+  entity_type: decision
+  name: Use provider-authoritative conflict resolution for federated entity definitions
+  summary: When one repository references an entity defined by another repository,
+    the defining repository is the authority on that entity's name, status, and metadata.
+    Consumers may declare relationships to the entity, but they do
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0012#DEC-0046
+    artifact_path: adrs/logical/ADR-L-0012-federation-authority-and-qualified-identity.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0012
+    related_invariants: []
+    enforces_invariants: []
+    enables_capabilities: []
+    governs_components: []
+    supersedes: []
+    refines: []
+  relationships:
+    declared_in:
+    - ADR-L-0012
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0012#DEC-0046
+    extraction_phase: extract_decision
+    classification: explicit
+    generator: adr-architecture-index
+- id: DEC-0047
+  entity_type: decision
+  name: Keep namespace separate from bare ID and use qualification only for cross-repo
+    references
+  summary: Single-repo authoring should remain simple and backward compatible, while
+    federation requires globally unambiguous identity. Separating namespace from bare
+    ID preserves local ergonomics while enabling global qualificatio
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0012#DEC-0047
+    artifact_path: adrs/logical/ADR-L-0012-federation-authority-and-qualified-identity.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0012
+    related_invariants: []
+    enforces_invariants: []
+    enables_capabilities: []
+    governs_components: []
+    supersedes: []
+    refines: []
+  relationships:
+    declared_in:
+    - ADR-L-0012
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0012#DEC-0047
+    extraction_phase: extract_decision
+    classification: explicit
+    generator: adr-architecture-index

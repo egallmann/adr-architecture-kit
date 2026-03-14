@@ -1554,3 +1554,45 @@ entities:
     extraction_phase: extract_capability
     classification: explicit
     generator: adr-architecture-index
+- id: CAP-0038
+  entity_type: capability
+  name: Federated Qualified Identity Resolution
+  summary: Support unambiguous multi-repository entity references using namespaces
+    and qualified identifiers while preserving bare local references in source ADRs.
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0012#CAP-0038
+    artifact_path: adrs/logical/ADR-L-0012-federation-authority-and-qualified-identity.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0012
+    domains:
+    - federation
+    - identity
+    - governance
+    - multi-repo
+    implemented_by_components: []
+    enabled_by_decisions: []
+  relationships:
+    declared_in:
+    - ADR-L-0012
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0012#CAP-0038
+    extraction_phase: extract_capability
+    classification: explicit
+    generator: adr-architecture-index

@@ -466,6 +466,7 @@ entities:
     - ADR-L-0001
     - ADR-L-0008
     - ADR-L-0009
+    - ADR-L-0012
     - ADR-P-0001
     - ADR-PC-0001
     related_to: []
@@ -533,6 +534,55 @@ entities:
   provenance:
     source_type: logical_adr
     source_ref: ADR-L-0011
+    extraction_phase: extract_adr
+    classification: explicit
+    generator: adr-architecture-index
+- id: ADR-L-0012
+  entity_type: adr
+  name: Federation Authority and Qualified Identity Model
+  summary: The current compiler and recursive multi-scope behavior preserve scope-local
+    compilation boundaries, but the STE ecosystem is moving toward federation across
+    independently compiled repositories. The planning material est
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0012
+    artifact_path: adrs/logical/ADR-L-0012-federation-authority-and-qualified-identity.yaml
+  source_refs: []
+  metadata:
+    status: proposed
+    domains:
+    - federation
+    - identity
+    - governance
+    - multi-repo
+    tags:
+    - federation
+    - qualified-id
+    - namespace
+    - authority
+  relationships:
+    declared_in: []
+    references:
+    - ADR-L-0002
+    - ADR-L-0007
+    - ADR-L-0010
+    - ADR-PS-0001
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0012
     extraction_phase: extract_adr
     classification: explicit
     generator: adr-architecture-index
@@ -2926,6 +2976,48 @@ entities:
     extraction_phase: extract_capability
     classification: explicit
     generator: adr-architecture-index
+- id: CAP-0038
+  entity_type: capability
+  name: Federated Qualified Identity Resolution
+  summary: Support unambiguous multi-repository entity references using namespaces
+    and qualified identifiers while preserving bare local references in source ADRs.
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0012#CAP-0038
+    artifact_path: adrs/logical/ADR-L-0012-federation-authority-and-qualified-identity.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0012
+    domains:
+    - federation
+    - identity
+    - governance
+    - multi-repo
+    implemented_by_components: []
+    enabled_by_decisions: []
+  relationships:
+    declared_in:
+    - ADR-L-0012
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0012#CAP-0038
+    extraction_phase: extract_capability
+    classification: explicit
+    generator: adr-architecture-index
 - id: COMP-0010
   entity_type: component
   name: Entity Registry Generator and Query Surface
@@ -4847,6 +4939,134 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
+- id: DEC-0045
+  entity_type: decision
+  name: Treat federation as a read-only aggregation layer over per-repo canonical
+    registries
+  summary: Per-repository registries remain the canonical architecture outputs for
+    their owning repository. Federation exists to read, index, merge, and query across
+    those outputs; it must not rewrite or mutate them.
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0012#DEC-0045
+    artifact_path: adrs/logical/ADR-L-0012-federation-authority-and-qualified-identity.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0012
+    related_invariants: []
+    enforces_invariants: []
+    enables_capabilities: []
+    governs_components: []
+    supersedes: []
+    refines: []
+  relationships:
+    declared_in:
+    - ADR-L-0012
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0012#DEC-0045
+    extraction_phase: extract_decision
+    classification: explicit
+    generator: adr-architecture-index
+- id: DEC-0046
+  entity_type: decision
+  name: Use provider-authoritative conflict resolution for federated entity definitions
+  summary: When one repository references an entity defined by another repository,
+    the defining repository is the authority on that entity's name, status, and metadata.
+    Consumers may declare relationships to the entity, but they do
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0012#DEC-0046
+    artifact_path: adrs/logical/ADR-L-0012-federation-authority-and-qualified-identity.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0012
+    related_invariants: []
+    enforces_invariants: []
+    enables_capabilities: []
+    governs_components: []
+    supersedes: []
+    refines: []
+  relationships:
+    declared_in:
+    - ADR-L-0012
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0012#DEC-0046
+    extraction_phase: extract_decision
+    classification: explicit
+    generator: adr-architecture-index
+- id: DEC-0047
+  entity_type: decision
+  name: Keep namespace separate from bare ID and use qualification only for cross-repo
+    references
+  summary: Single-repo authoring should remain simple and backward compatible, while
+    federation requires globally unambiguous identity. Separating namespace from bare
+    ID preserves local ergonomics while enabling global qualificatio
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0012#DEC-0047
+    artifact_path: adrs/logical/ADR-L-0012-federation-authority-and-qualified-identity.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0012
+    related_invariants: []
+    enforces_invariants: []
+    enables_capabilities: []
+    governs_components: []
+    supersedes: []
+    refines: []
+  relationships:
+    declared_in:
+    - ADR-L-0012
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0012#DEC-0047
+    extraction_phase: extract_decision
+    classification: explicit
+    generator: adr-architecture-index
 - id: INV-0001
   entity_type: invariant
   name: INV-0001
@@ -4992,25 +5212,36 @@ entities:
 - id: INV-0004
   entity_type: invariant
   name: INV-0004
-  summary: Manifest must be regenerated when ADRs change
+  summary: Compiler projection from canonical architecture state to kernel-facing
+    registry artifacts must be deterministic and contract-valid.
   canonical_source:
-    source_type: logical_adr
+    source_type: standalone_invariant
+    source_ref: INV-0004
+    artifact_path: adrs/invariants/INV-0004-deterministic-contract-valid-registry-projection.yaml
+  source_refs:
+  - source_type: logical_adr
     source_ref: ADR-L-0001#INV-0004
     artifact_path: adrs/logical/ADR-L-0001-ste-compliant-adr-system.yaml
-  source_refs: []
+    mention_role: reference
   metadata:
-    adr_id: ADR-L-0001
+    defined_in: ADR-L-0012
     scope: global
-    statement: Manifest must be regenerated when ADRs change
+    statement: Compiler projection from canonical architecture state to kernel-facing
+      registry artifacts must be deterministic and contract-valid.
     enforcement_level: must
-    declaration_mode: local
+    declaration_mode: canonical
     upheld_by_decisions: []
+    enforced_by:
+    - ADR-P-0001
+    - ADR-PC-0001
   relationships:
     declared_in:
-    - ADR-L-0001
+    - INV-0004
     references: []
     related_to: []
-    enforces: []
+    enforces:
+    - ADR-P-0001
+    - ADR-PC-0001
     enabled_by: []
     enables: []
     governs: []
@@ -5023,33 +5254,42 @@ entities:
     status: complete
     missing_fields: []
   provenance:
-    source_type: logical_adr
-    source_ref: ADR-L-0001#INV-0004
+    source_type: standalone_invariant
+    source_ref: INV-0004
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
 - id: INV-0005
   entity_type: invariant
   name: INV-0005
-  summary: ADR IDs must be unique across the project
+  summary: Recursive compilation must compile each resolved project scope independently
+    and must not implicitly merge architecture state across scopes.
   canonical_source:
-    source_type: logical_adr
+    source_type: standalone_invariant
+    source_ref: INV-0005
+    artifact_path: adrs/invariants/INV-0005-scope-isolated-recursive-compilation.yaml
+  source_refs:
+  - source_type: logical_adr
     source_ref: ADR-L-0001#INV-0005
     artifact_path: adrs/logical/ADR-L-0001-ste-compliant-adr-system.yaml
-  source_refs: []
+    mention_role: reference
   metadata:
-    adr_id: ADR-L-0001
+    defined_in: ADR-L-0012
     scope: global
-    statement: ADR IDs must be unique across the project
+    statement: Recursive compilation must compile each resolved project scope independently
+      and must not implicitly merge architecture state across scopes.
     enforcement_level: must
-    declaration_mode: local
+    declaration_mode: canonical
     upheld_by_decisions: []
+    enforced_by:
+    - ADR-P-0001
   relationships:
     declared_in:
-    - ADR-L-0001
+    - INV-0005
     references: []
     related_to: []
-    enforces: []
+    enforces:
+    - ADR-P-0001
     enabled_by: []
     enables: []
     governs: []
@@ -5062,8 +5302,8 @@ entities:
     status: complete
     missing_fields: []
   provenance:
-    source_type: logical_adr
-    source_ref: ADR-L-0001#INV-0005
+    source_type: standalone_invariant
+    source_ref: INV-0005
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
@@ -7099,6 +7339,53 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
+- id: INV-0058
+  entity_type: invariant
+  name: INV-0058
+  summary: Federation and aggregation layers MUST treat each repository as authoritative
+    over its own canonical registries and MUST NOT mutate those registries during
+    federation.
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0012#INV-0058
+    artifact_path: adrs/logical/ADR-L-0012-federation-authority-and-qualified-identity.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0012
+    scope: global
+    statement: 'Federation and aggregation layers MUST treat each repository as
+
+      authoritative over its own canonical registries and MUST NOT mutate those
+
+      registries during federation.
+
+      '
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions: []
+  relationships:
+    declared_in:
+    - ADR-L-0012
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0012#INV-0058
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
 - id: SYS-0001
   entity_type: system
   name: ADR Architecture Kit Discovery and Indexing System
@@ -7114,6 +7401,7 @@ entities:
     adr_id: ADR-PS-0001
     implements_logical:
     - ADR-L-0009
+    - ADR-L-0012
     technologies:
     - python
     - pyyaml

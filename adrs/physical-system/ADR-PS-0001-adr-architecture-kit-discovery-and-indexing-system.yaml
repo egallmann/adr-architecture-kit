@@ -12,6 +12,7 @@ domains:
 - tooling
 implements_logical:
 - ADR-L-0009
+- ADR-L-0012
 references_components:
 - ADR-PC-0001
 technologies:

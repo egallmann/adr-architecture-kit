@@ -5,8 +5,8 @@ artifact_kind: rendered_adr_markdown
 generator_id: adr-rendered-markdown
 generator_version: 1
 hash_algorithm: sha256
-source_hash: 09b7408071a5fec62389b5eebab1e78defc3786e81e73e4273dbccd358ef10a3
-rendered_hash: 4a32d70a08eed5f95fcdff61f5e73ce75f1a9138de238c06d6efc4eaab0ac676
+source_hash: 9c09558bdb690c10a4379c59ed59be8467c53731a2987a2b40f2b30850a8f50e
+rendered_hash: 0c8be3c93939134fc9a4e353818508b4b344064e90ea8b06dd686a2fcb5eaaa2
 -->
 
 # ADR-PS-0001: ADR Architecture Kit Discovery and Indexing System
@@ -16,7 +16,7 @@ rendered_hash: 4a32d70a08eed5f95fcdff61f5e73ce75f1a9138de238c06d6efc4eaab0ac676
 **Authors:** adr-architecture-kit  
 **Domains:** discovery, indexing, tooling  
 
-**Implements Logical:** ADR-L-0009  
+**Implements Logical:** ADR-L-0009, ADR-L-0012  
 **Technologies:** python, pyyaml, click
 
 

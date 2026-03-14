@@ -5,8 +5,8 @@ artifact_kind: rendered_adr_markdown
 generator_id: adr-rendered-markdown
 generator_version: 1
 hash_algorithm: sha256
-source_hash: 373ce15d6bd6fc777bd1124e5f20891f205c4e655e6e7eb9174de2c9f7226270
-rendered_hash: 331d48d3341340cb91c8e7f1bd7fc49eac4aad3673e1d2064bc88a31ba6a84f8
+source_hash: 30a8d9affb55079c4edbd4a93c312337749b26254a000775cb4b97dbfb0925e7
+rendered_hash: a2bedadadff2b8ba74b79f5c5c533d28d6fcf107f87304f9f71c7d6339062487
 -->
 
 # ADR-PC-0001: Entity Registry and Discovery Index
@@ -16,7 +16,7 @@ rendered_hash: 331d48d3341340cb91c8e7f1bd7fc49eac4aad3673e1d2064bc88a31ba6a84f8
 **Authors:** adr-architecture-kit  
 **Domains:** discovery, indexing, tooling  
 
-**Implements Logical:** ADR-L-0009  
+**Implements Logical:** ADR-L-0009, ADR-L-0012  
 **Technologies:** python, pyyaml, click
 
 

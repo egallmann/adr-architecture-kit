@@ -1,0 +1,34 @@
+schema_version: "1.0"
+type: invariant
+id: INV-0005
+statement: "Recursive compilation must compile each resolved project scope independently and must not implicitly merge architecture state across scopes."
+scope: global
+enforcement_level: must
+enforcement_mechanism: design
+verification_method: automated
+rationale: |
+  Multi-scope support exists to let each project root own its own canonical ADR
+  state and derived artifacts. Recursive execution is therefore an orchestration
+  convenience, not an authorization to collapse sibling or nested scopes into a
+  synthetic combined architecture model.
+
+  Keeping recursive compilation scope-isolated preserves per-scope ownership,
+  avoids accidental workspace-level coupling, and ensures that any future
+  cross-scope or federated aggregation remains an explicit architectural step.
+
+defined_in: ADR-L-0012
+enforced_by: ["ADR-P-0001"]
+related_constraints: []
+
+policy_reference: "ORG-POL-002"
+compliance_frameworks: ["STE"]
+
+validation_query: |
+  In recursive compiler execution:
+  - resolve scopes using the configured scope resolver
+  - compile each scope independently
+  - emit artifacts only into that scope's output locations
+  - do not create combined workspace registries or merged architecture indexes
+    unless a separate explicit architecture decision authorizes them
+
+validation_frequency: on_change

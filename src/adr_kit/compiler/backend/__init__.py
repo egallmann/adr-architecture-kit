@@ -12,8 +12,13 @@ __all__ = [
     "build_relationship_summary",
     "discover_scope_adr_files",
     "emit_manifest_artifact",
+    "emit_graph_artifact",
     "emit_markdown_artifacts",
     "emit_registry_artifacts",
+    "build_architecture_graph",
+    "build_graph_integrity_header",
+    "discover_graph_source_inputs",
+    "render_graph_yaml",
     "render_existing_markdown_artifact",
     "render_manifest_for_scope",
     "project_entity",
@@ -31,6 +36,30 @@ def __getattr__(name: str):
         from .manifest_emitter import emit_manifest_artifact
 
         return emit_manifest_artifact
+    if name in {
+        "build_architecture_graph",
+        "build_graph_integrity_header",
+        "discover_graph_source_inputs",
+        "render_graph_yaml",
+    }:
+        from .graph_rendering import (
+            build_architecture_graph,
+            build_graph_integrity_header,
+            discover_graph_source_inputs,
+            render_graph_yaml,
+        )
+
+        exports = {
+            "build_architecture_graph": build_architecture_graph,
+            "build_graph_integrity_header": build_graph_integrity_header,
+            "discover_graph_source_inputs": discover_graph_source_inputs,
+            "render_graph_yaml": render_graph_yaml,
+        }
+        return exports[name]
+    if name == "emit_graph_artifact":
+        from .graph_emitter import emit_graph_artifact
+
+        return emit_graph_artifact
     if name in {"discover_scope_adr_files", "emit_markdown_artifacts"}:
         from .markdown_emitter import discover_scope_adr_files, emit_markdown_artifacts
 

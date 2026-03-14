@@ -110,6 +110,9 @@ from .entity_registry import (
     SourceArtifactType,
 )
 from .architecture_discovery import (
+    ArchitectureGraph,
+    ArchitectureGraphEdge,
+    ArchitectureGraphNode,
     ArchitectureIndex,
     CanonicalSource,
     Completeness,
@@ -248,6 +251,9 @@ __all__ = [
     "LifecycleStage",
     "SourceArtifactType",
     # Architecture discovery
+    "ArchitectureGraph",
+    "ArchitectureGraphEdge",
+    "ArchitectureGraphNode",
     "ArchitectureIndex",
     "CanonicalSource",
     "Completeness",

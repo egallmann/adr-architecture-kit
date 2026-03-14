@@ -246,7 +246,7 @@ def _run_recursive_governance_checks(scope: Path, *, skip_tests: bool) -> int:
 
 def _parse_emit_list(value: str | None) -> set[str]:
     """Parse `adr compile --emit` values."""
-    allowed = {"registries", "manifest", "markdown"}
+    allowed = {"registries", "manifest", "markdown", "graph"}
     if not value:
         return {"registries", "manifest", "markdown"}
     emit = {item.strip() for item in value.split(",") if item.strip()}

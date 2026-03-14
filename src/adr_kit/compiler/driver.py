@@ -334,7 +334,7 @@ class ArchitectureCompiler:
         emitted: list[EmittedArtifact] = []
         selected = set(config.emit)
         emitters = build_backend_emitters(parser=self.parser, scope=scope, build_result=build_result)
-        for emitter_name in ("registries", "manifest", "markdown"):
+        for emitter_name in ("registries", "manifest", "markdown", "graph"):
             if emitter_name not in selected:
                 continue
             emitter = emitters[emitter_name]

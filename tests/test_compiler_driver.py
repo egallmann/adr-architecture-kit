@@ -206,6 +206,7 @@ def test_architecture_compiler_dry_run_emits_default_artifacts(tmp_path):
     assert "adrs/index/architecture-index.yaml" in artifact_paths
     assert "adrs/entities/registry.yaml" in artifact_paths
     assert "adrs/manifest.yaml" in artifact_paths
+    assert "adrs/index/architecture-graph.yaml" not in artifact_paths
     assert any(path.startswith("adrs/rendered/ADR-") for path in artifact_paths)
     assert not (workspace / "adrs" / "index" / "architecture-index.yaml").exists()
     assert result.statistics.artifacts_emitted == len(result.artifacts)
@@ -384,6 +385,53 @@ def test_compile_cli_exits_non_zero_when_contract_validation_fails(tmp_path, mon
 
     assert result.exit_code == 1, result.output
     assert "ERROR: E704 forced failure" in result.output
+
+
+def test_compile_cli_can_emit_architecture_graph(tmp_path):
+    workspace = tmp_path / "workspace"
+    clone_scope_sources(_repo_root(), workspace)
+
+    runner = CliRunner()
+    result = runner.invoke(
+        cli,
+        [
+            "compile",
+            "--scope",
+            str(workspace),
+            "--emit",
+            "graph",
+            "--timestamp",
+            "2026-01-01T00:00:00Z",
+        ],
+    )
+
+    assert result.exit_code == 0, result.output
+    assert "graph: adrs/index/architecture-graph.yaml" in result.output
+    assert (workspace / "adrs" / "index" / "architecture-graph.yaml").exists()
+
+
+def test_compile_cli_can_emit_architecture_graph_recursively(tmp_path):
+    workspace = tmp_path / "workspace"
+    _create_recursive_workspace(workspace)
+
+    runner = CliRunner()
+    result = runner.invoke(
+        cli,
+        [
+            "compile",
+            "--scope",
+            str(workspace),
+            "--emit",
+            "graph",
+            "--recursive",
+            "--timestamp",
+            "2026-01-01T00:00:00Z",
+        ],
+    )
+
+    assert result.exit_code == 0, result.output
+    assert (workspace / "adrs" / "index" / "architecture-graph.yaml").exists()
+    assert (workspace / "submodule" / "adrs" / "index" / "architecture-graph.yaml").exists()
 
 
 def test_architecture_compiler_normal_mode_fails_on_contract_error(tmp_path, monkeypatch):

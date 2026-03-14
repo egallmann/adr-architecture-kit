@@ -2,30 +2,22 @@
 
 from __future__ import annotations
 
-from dataclasses import dataclass
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Dict, Iterable, List, Optional, Tuple
 
-import yaml
-
-from ..compiler.diagnostics import DiagnosticLog
+from ..compiler.diagnostics import DiagnosticLevel, DiagnosticLog
 from ..compiler.frontend.parser import CachedADRParser
+from ..compiler.registry_bundle import (
+    ArchitectureDiscoveryBundle,
+    assemble_registry_bundle,
+    render_bundle_yaml,
+    render_legacy_entity_registry as render_legacy_entity_registry_output,
+)
 from ..compiler.passes import (
     FixedOrderArchitecturePassRunner,
     score_completeness,
     validate_bundle,
-)
-from ..integrity import (
-    ArtifactKind,
-    GENERATED_MARKER,
-    HASH_ALGORITHM,
-    INTEGRITY_SCHEMA_VERSION,
-    LEGACY_ENTITY_REGISTRY_GENERATOR,
-    build_yaml_header,
-    compute_rendered_hash,
-    compute_source_hash,
-    legacy_entity_registry_source_inputs,
 )
 from ..models import (
     ArchitectureIndex,
@@ -58,20 +50,6 @@ from ..scope import ProjectScope, ProjectScopeResolver
 
 
 GENERATOR_ID = "adr-architecture-index"
-
-
-@dataclass
-class ArchitectureDiscoveryBundle:
-    architecture_index: ArchitectureIndex
-    entity_registry: NormalizedEntityRegistry
-    relationship_registry: RelationshipRegistry
-    unresolved_registry: UnresolvedRegistry
-    decision_registry: NormalizedEntityRegistry
-    capability_registry: NormalizedEntityRegistry
-    invariant_registry: NormalizedEntityRegistry
-    component_registry: NormalizedEntityRegistry
-    system_registry: NormalizedEntityRegistry
-    legacy_entity_registry: EntityRegistry
 
 
 class ArchitectureIndexGenerator:
@@ -267,161 +245,39 @@ class ArchitectureIndexGenerator:
         self.diagnostics.clear()
         adr_dir = Path(adr_dir).resolve()
         scope = scope or self.scope_resolver.resolve(adr_dir.parent)
-        namespace = self._load_namespace(scope)
-        logical_files, physical_files, invariant_files = self._discover_source_files(adr_dir)
+        from ..compiler.frontend import ArchModelBuilder
 
-        logical_adrs: List[Tuple[LogicalADR, Path]] = [(self.parser.parse_logical_adr(path), path.resolve()) for path in logical_files]
-        physical_adrs: List[Tuple[PhysicalADR | PhysicalSystemADR | PhysicalComponentADR, Path]] = [(self.parser.parse_adr(path), path.resolve()) for path in physical_files]
-        standalone_invariants: List[Tuple[StandaloneInvariant, Path]] = [(self.parser.parse_invariant(path), path.resolve()) for path in invariant_files]
-
-        coverage = SourceCoverageSummary(
-            logical_adrs=len(logical_adrs),
-            physical_adrs=sum(1 for adr, _ in physical_adrs if isinstance(adr, PhysicalADR)),
-            physical_system_adrs=sum(1 for adr, _ in physical_adrs if isinstance(adr, PhysicalSystemADR)),
-            physical_component_adrs=sum(1 for adr, _ in physical_adrs if isinstance(adr, PhysicalComponentADR)),
-            standalone_invariants=len(standalone_invariants),
-        )
-
-        entities: Dict[str, NormalizedEntity] = {}
-        relationships: Dict[str, RelationshipRecord] = {}
-        unresolved: List[UnresolvedRecord] = []
-        invariant_mentions: Dict[str, List[tuple[dict, str, str]]] = {}
-        system_ids: Dict[str, str] = {}
-
-        def add_entity(entity: NormalizedEntity, allow_reference_merge: bool = False) -> None:
-            existing = entities.get(entity.id)
-            if existing is None:
-                entities[entity.id] = entity
-                return
-            if allow_reference_merge:
-                self._append_source_ref(
-                    existing,
-                    SourceRef(
-                        source_type=entity.canonical_source.source_type,
-                        source_ref=entity.canonical_source.source_ref,
-                        artifact_path=entity.canonical_source.artifact_path,
-                        mention_role="reference",
-                    ),
-                )
-                return
-            raise ValueError(f"Duplicate canonical entity ID {entity.id}")
-
-        def collect_standalone_invariant_mentions(mentions: Dict[str, List[tuple[dict, str, str]]]) -> None:
-            for invariant, path in standalone_invariants:
-                artifact = self._source_path(scope, path)
-                mentions.setdefault(invariant.id, []).append((
-                    {
-                        "name": invariant.id,
-                        "summary": self._summary(invariant.statement),
-                        "metadata": {
-                            "defined_in": invariant.defined_in,
-                            "scope": invariant.scope,
-                            "statement": invariant.statement,
-                            "enforcement_level": invariant.enforcement_level.value,
-                            "declaration_mode": invariant.declaration_mode or "canonical",
-                            "upheld_by_decisions": list(invariant.upheld_by_decisions),
-                            "enforced_by": list(invariant.enforced_by),
-                        },
-                    },
-                    artifact,
-                    invariant.id,
-                ))
-
-        self.pass_runner.run(
-            logical_adrs=logical_adrs,
-            physical_adrs=physical_adrs,
-            standalone_invariants=standalone_invariants,
-            entities=entities,
-            relationships=relationships,
-            unresolved=unresolved,
-            system_ids=system_ids,
-            source_path=lambda file_path: self._source_path(scope, file_path),
-            canonical=self._canonical,
-            provenance=self._provenance,
-            summary=self._summary,
-            complete=self._complete,
-            classify_author_gap=self._classify_author_gap,
-            system_entity_id=self._system_entity_id,
-            relationship_id=self._relationship_id,
-            add_entity=add_entity,
-            append_source_ref=self._append_source_ref,
-            collect_standalone_invariant_mentions=collect_standalone_invariant_mentions,
-        )
-
-        entity_registry = NormalizedEntityRegistry(entities=sorted(entities.values(), key=lambda item: (item.entity_type, item.id)))
-        relationship_registry = RelationshipRegistry(relationships=sorted(relationships.values(), key=lambda item: item.relationship_id))
-        unresolved_registry = UnresolvedRegistry(unresolved=sorted(unresolved, key=lambda item: item.id))
-        decision_registry = self._filtered(entity_registry, "decision")
-        capability_registry = self._filtered(entity_registry, "capability")
-        invariant_registry = self._filtered(entity_registry, "invariant")
-        component_registry = self._filtered(entity_registry, "component")
-        system_registry = self._filtered(entity_registry, "system")
-        legacy_entities = [item for item in (self._legacy_entity(entity) for entity in entity_registry.entities) if item is not None]
-        legacy_registry = EntityRegistry(entities=sorted(legacy_entities, key=lambda item: item.entity_id))
-        self.diagnostics.clear()
-        validation = self.pass_runner.validate(
-            entity_registry,
-            relationship_registry,
-            unresolved_registry,
+        builder = ArchModelBuilder(
+            parser=self.parser,
+            scope_resolver=self.scope_resolver,
             diagnostics=self.diagnostics,
         )
-        if not validation.is_valid:
-            error = validation.first_error
-            raise ValueError(error.message if error is not None else "Bundle validation failed")
-        index = ArchitectureIndex(
-            architecture_namespace=namespace,
-            generated_at=datetime.now(timezone.utc).replace(microsecond=0),
-            generator=GENERATOR_ID,
-            entity_registry_path="adrs/index/entity-registry.yaml",
-            relationship_registry_path="adrs/index/relationship-registry.yaml",
-            unresolved_registry_path="adrs/index/unresolved-registry.yaml",
-            decision_registry_path="adrs/index/decision-registry.yaml",
-            capability_registry_path="adrs/index/capability-registry.yaml",
-            invariant_registry_path="adrs/index/invariant-registry.yaml",
-            component_registry_path="adrs/index/component-registry.yaml",
-            system_registry_path="adrs/index/system-registry.yaml",
-            validation_summary=ValidationSummary(hard_failures=0, warnings=0, unresolved_entries=len(unresolved_registry.unresolved)),
-            source_coverage=coverage,
+        build_result = builder.build_from_scope(scope)
+        generated_at = datetime.now(timezone.utc).replace(microsecond=0)
+        build_result.model.metadata.scope_root = str(scope.root)
+        build_result.model.metadata.generated_at = generated_at
+        bundle = assemble_registry_bundle(
+            build_result.model,
+            coverage=build_result.coverage,
+            namespace=build_result.namespace,
+            generated_at=generated_at,
+            diagnostics=self.diagnostics,
+            generator_id=GENERATOR_ID,
         )
-        return ArchitectureDiscoveryBundle(
-            architecture_index=index,
-            entity_registry=entity_registry,
-            relationship_registry=relationship_registry,
-            unresolved_registry=unresolved_registry,
-            decision_registry=decision_registry,
-            capability_registry=capability_registry,
-            invariant_registry=invariant_registry,
-            component_registry=component_registry,
-            system_registry=system_registry,
-            legacy_entity_registry=legacy_registry,
-        )
+        errors = [item for item in self.diagnostics.as_list() if item.level == DiagnosticLevel.ERROR]
+        if errors:
+            raise ValueError(errors[0].message)
+        return bundle
 
     def generate_from_scope(self, scope: Optional[ProjectScope] = None) -> ArchitectureDiscoveryBundle:
         scope = scope or self.scope_resolver.resolve()
         return self.generate_from_directory(scope.adr_dir, scope)
 
     def render_yaml(self, model) -> str:
-        return yaml.safe_dump(model.model_dump(mode="json", exclude_none=True), sort_keys=False, allow_unicode=True)
+        return render_bundle_yaml(model)
 
     def render_legacy_entity_registry(self, bundle: ArchitectureDiscoveryBundle, scope: ProjectScope) -> str:
-        body = self.render_yaml(bundle.legacy_entity_registry)
-        header = build_yaml_header(
-            {
-                "integrity_schema_version": str(INTEGRITY_SCHEMA_VERSION),
-                "generated": GENERATED_MARKER,
-                "artifact_kind": ArtifactKind.LEGACY_ENTITY_REGISTRY.value,
-                "generator_id": LEGACY_ENTITY_REGISTRY_GENERATOR.generator_id,
-                "generator_version": str(LEGACY_ENTITY_REGISTRY_GENERATOR.generator_version),
-                "hash_algorithm": HASH_ALGORITHM,
-                "source_hash": compute_source_hash(
-                    scope.root,
-                    legacy_entity_registry_source_inputs(scope),
-                    LEGACY_ENTITY_REGISTRY_GENERATOR,
-                ),
-                "rendered_hash": compute_rendered_hash(body),
-            }
-        )
-        return f"{header}{body}"
+        return render_legacy_entity_registry_output(bundle, scope)
 
     def save_bundle(self, bundle: ArchitectureDiscoveryBundle, scope: Optional[ProjectScope] = None) -> dict[str, Path]:
         scope = scope or self.scope_resolver.resolve()

@@ -38,7 +38,7 @@ class ArchModelBuilder:
         self.scope_resolver = scope_resolver or ProjectScopeResolver()
         self.config = config or CompilerConfig()
         self.diagnostics = diagnostics or DiagnosticLog()
-        self._generator_helpers = ArchitectureIndexGenerator(parser=self.parser.parser, scope_resolver=self.scope_resolver)
+        self._generator_helpers = ArchitectureIndexGenerator(parser=self.parser, scope_resolver=self.scope_resolver)
 
     def discover_source_files(self, adr_dir: Path) -> tuple[list[Path], list[Path], list[Path]]:
         return self._generator_helpers._discover_source_files(adr_dir)

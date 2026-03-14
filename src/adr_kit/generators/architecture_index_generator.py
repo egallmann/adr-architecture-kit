@@ -11,7 +11,7 @@ import yaml
 
 from ..compiler.diagnostics import DiagnosticLog
 from ..compiler.frontend.parser import CachedADRParser
-from ..compiler.passes import score_completeness, validate_bundle
+from ..compiler.passes import extract_logical_entities, score_completeness, validate_bundle
 from ..models import (
     ArchitectureIndex,
     CanonicalSource,
@@ -290,84 +290,23 @@ class ArchitectureIndexGenerator:
                 return
             raise ValueError(f"Duplicate canonical entity ID {entity.id}")
 
-        for adr, path in logical_adrs:
-            artifact = self._source_path(scope, path)
-            add_entity(NormalizedEntity(
-                id=adr.id,
-                entity_type="adr",
-                name=adr.title,
-                summary=self._summary(adr.context),
-                canonical_source=self._canonical("logical_adr", adr.id, artifact),
-                metadata={"status": adr.status.value, "domains": list(adr.domains), "tags": list(adr.tags)},
-                completeness=self._complete(),
-                provenance=self._provenance("logical_adr", adr.id, "extract_adr", "explicit"),
-            ))
-            for capability in adr.capabilities:
-                source_ref = f"{adr.id}#{capability.id}"
-                add_entity(NormalizedEntity(
-                    id=capability.id,
-                    entity_type="capability",
-                    name=capability.name,
-                    summary=self._summary(capability.description),
-                    canonical_source=self._canonical("logical_adr", source_ref, artifact),
-                    metadata={
-                        "adr_id": adr.id,
-                        "domains": list(adr.domains),
-                        "implemented_by_components": list(capability.implemented_by_components),
-                        "enabled_by_decisions": list(capability.enabled_by_decisions),
-                    },
-                    completeness=self._complete(),
-                    provenance=self._provenance("logical_adr", source_ref, "extract_capability", "explicit"),
-                ))
-            for decision in adr.decisions:
-                source_ref = f"{adr.id}#{decision.id}"
-                add_entity(NormalizedEntity(
-                    id=decision.id,
-                    entity_type="decision",
-                    name=decision.summary,
-                    summary=self._summary(decision.rationale),
-                    canonical_source=self._canonical("logical_adr", source_ref, artifact),
-                    metadata={
-                        "adr_id": adr.id,
-                        "related_invariants": list(decision.related_invariants),
-                        "enforces_invariants": list(decision.enforces_invariants),
-                        "enables_capabilities": list(decision.enables_capabilities),
-                        "governs_components": list(decision.governs_components),
-                        "supersedes": list(decision.supersedes),
-                        "refines": list(decision.refines),
-                    },
-                    completeness=self._complete(),
-                    provenance=self._provenance("logical_adr", source_ref, "extract_decision", "explicit"),
-                ))
-            for invariant in adr.invariants:
-                invariant_mentions.setdefault(invariant.id, []).append((
-                    {
-                        "name": invariant.id,
-                        "summary": self._summary(invariant.statement),
-                        "metadata": {
-                            "adr_id": adr.id,
-                            "scope": invariant.scope,
-                            "statement": invariant.statement,
-                            "enforcement_level": invariant.enforcement_level.value,
-                            "declaration_mode": invariant.declaration_mode or "local",
-                            "upheld_by_decisions": list(invariant.upheld_by_decisions),
-                        },
-                    },
-                    artifact,
-                    f"{adr.id}#{invariant.id}",
-                ))
-            for gap in adr.gaps:
-                self._unresolved(
-                    unresolved,
-                    f"UGAP-{adr.id}-{gap.id}",
-                    "author_declared",
-                    self._classify_author_gap(gap),
-                    adr.id,
-                    "important" if gap.blocking else "advisory",
-                    f"{adr.id}#{gap.id}",
-                    [adr.id, gap.question],
-                )
-                unresolved[-1].provenance.classification = "explicit"
+        logical_extraction = extract_logical_entities(
+            logical_adrs,
+            source_path=lambda file_path: self._source_path(scope, file_path),
+            canonical=self._canonical,
+            provenance=self._provenance,
+            summary=self._summary,
+            complete=self._complete,
+            classify_author_gap=self._classify_author_gap,
+        )
+        for extracted in logical_extraction.entities:
+            add_entity(extracted.entity, allow_reference_merge=extracted.allow_reference_merge)
+        for inv_id, mentions in logical_extraction.invariant_mentions.items():
+            invariant_mentions.setdefault(inv_id, []).extend(
+                (mention.payload, mention.artifact_path, mention.source_ref)
+                for mention in mentions
+            )
+        unresolved.extend(logical_extraction.unresolved)
 
         for invariant, path in standalone_invariants:
             artifact = self._source_path(scope, path)

@@ -8,8 +8,10 @@ from click.testing import CliRunner
 
 from src.adr_kit.compiler.frontend import CachedADRParser
 from src.adr_kit.compiler.passes import (
+    ExtractLogicalEntitiesPass,
     ScoreCompletenessPass,
     ValidateBundlePass,
+    extract_logical_entities,
     score_completeness,
     validate_bundle,
 )
@@ -412,3 +414,59 @@ def test_validate_bundle_helper_matches_generator_failure_message(tmp_path):
     assert result.first_error is not None
     with pytest.raises(ValueError, match=result.first_error.message):
         generator._validate_bundle(bundle.entity_registry, bundle.relationship_registry, bundle.unresolved_registry)
+
+
+def test_extract_logical_entities_matches_current_fixture_shape(tmp_path):
+    adr_dir = _create_fixture(tmp_path)
+    generator = ArchitectureIndexGenerator()
+    logical_files, _, _ = generator._discover_source_files(adr_dir)
+    logical_adrs = [(generator.parser.parse_logical_adr(path), path.resolve()) for path in logical_files]
+    scope = generator.scope_resolver.resolve(tmp_path)
+
+    result = extract_logical_entities(
+        logical_adrs,
+        source_path=lambda file_path: generator._source_path(scope, file_path),
+        canonical=generator._canonical,
+        provenance=generator._provenance,
+        summary=generator._summary,
+        complete=generator._complete,
+        classify_author_gap=generator._classify_author_gap,
+    )
+
+    assert [item.entity.id for item in result.entities] == ["ADR-L-1000", "CAP-1000", "DEC-1000"]
+    assert all(item.allow_reference_merge is False for item in result.entities)
+    assert result.invariant_mentions["INV-1000"][0].source_ref == "ADR-L-1000#INV-1000"
+    assert result.invariant_mentions["INV-1000"][0].artifact_path == "adrs/logical/ADR-L-1000-discovery.yaml"
+    assert [item.id for item in result.unresolved] == ["UGAP-ADR-L-1000-GAP-1000"]
+    assert result.unresolved[0].provenance.classification == "explicit"
+
+
+def test_extract_logical_entities_pass_matches_helper(tmp_path):
+    adr_dir = _create_fixture(tmp_path)
+    generator = ArchitectureIndexGenerator()
+    logical_files, _, _ = generator._discover_source_files(adr_dir)
+    logical_adrs = [(generator.parser.parse_logical_adr(path), path.resolve()) for path in logical_files]
+    scope = generator.scope_resolver.resolve(tmp_path)
+
+    direct = extract_logical_entities(
+        logical_adrs,
+        source_path=lambda file_path: generator._source_path(scope, file_path),
+        canonical=generator._canonical,
+        provenance=generator._provenance,
+        summary=generator._summary,
+        complete=generator._complete,
+        classify_author_gap=generator._classify_author_gap,
+    )
+    via_pass = ExtractLogicalEntitiesPass().run(
+        logical_adrs,
+        source_path=lambda file_path: generator._source_path(scope, file_path),
+        canonical=generator._canonical,
+        provenance=generator._provenance,
+        summary=generator._summary,
+        complete=generator._complete,
+        classify_author_gap=generator._classify_author_gap,
+    )
+
+    assert direct.entities == via_pass.entities
+    assert direct.invariant_mentions == via_pass.invariant_mentions
+    assert direct.unresolved == via_pass.unresolved

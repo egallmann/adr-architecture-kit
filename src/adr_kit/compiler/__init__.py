@@ -2,6 +2,7 @@
 
 from .config import CompilationMode, CompilerConfig
 from .diagnostics import Diagnostic, DiagnosticLevel, DiagnosticLog
+from .frontend import ArchModelBuilder, CachedADRParser, FrontendBuildResult, build_arch_model
 from .ir import (
     ArchModel,
     CompilationMeta,
@@ -17,6 +18,8 @@ from .ir import (
 
 __all__ = [
     "ArchModel",
+    "ArchModelBuilder",
+    "CachedADRParser",
     "CompilationMeta",
     "CompilationMode",
     "CompilerConfig",
@@ -24,6 +27,7 @@ __all__ = [
     "DiagnosticLevel",
     "DiagnosticLog",
     "EntityGraph",
+    "FrontendBuildResult",
     "IREntity",
     "IRRelationship",
     "IRUnresolved",
@@ -31,4 +35,5 @@ __all__ = [
     "QualifiedEntityId",
     "RelGraph",
     "UnresolvedList",
+    "build_arch_model",
 ]

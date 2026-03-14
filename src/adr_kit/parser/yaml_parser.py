@@ -23,6 +23,7 @@ from ..models import (
     PhysicalSystemADR,
     PhysicalComponentADR,
     ProjectMetadata,
+    RemediationLedger,
     RelationshipRegistry,
     RequirementsSnapshot,
     StandaloneInvariant,
@@ -99,6 +100,7 @@ class ADRParser:
             "normalized_entity_registry": "normalized-entity-registry.schema.json",
             "requirements_snapshot": "requirements-snapshot.schema.json",
             "decision_ledger": "decision-ledger.schema.json",
+            "remediation_ledger": "remediation-ledger.schema.json",
             "relationship_registry": "relationship-registry.schema.json",
             "unresolved_registry": "unresolved-registry.schema.json",
         }
@@ -508,5 +510,15 @@ class ADRParser:
         
         try:
             return DecisionLedger(**data)
+        except ValidationError as e:
+            raise ADRParseError(f"Pydantic validation failed: {e}")
+
+    def parse_remediation_ledger(self, file_path: Union[str, Path]) -> RemediationLedger:
+        """Parse and validate remediation ledger."""
+        data = self.parse_yaml(file_path)
+        self.validate_against_schema(data, "remediation_ledger")
+
+        try:
+            return RemediationLedger(**data)
         except ValidationError as e:
             raise ADRParseError(f"Pydantic validation failed: {e}")

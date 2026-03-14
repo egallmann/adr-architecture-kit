@@ -491,7 +491,7 @@ After each prompt implementation, I will:
 - ✅ Review type hints and documentation
 
 ### 2. Test Verification
-- ✅ Run test suite: `pytest tests/ -v`
+- ✅ Run governance bundle: `adr governance-checks`
 - ✅ Verify all required tests exist
 - ✅ Check test coverage for new code
 - ✅ Validate test quality (clear, isolated, deterministic)

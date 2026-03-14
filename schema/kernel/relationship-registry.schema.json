@@ -1,0 +1,104 @@
+{
+  "$defs": {
+    "RelationshipRecord": {
+      "description": "First-class relationship record.",
+      "properties": {
+        "canonical_source_ref": {
+          "title": "Canonical Source Ref",
+          "type": "string"
+        },
+        "confidence": {
+          "default": 1.0,
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Confidence",
+          "type": "number"
+        },
+        "evidence": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Evidence",
+          "type": "array"
+        },
+        "from_entity_id": {
+          "title": "From Entity Id",
+          "type": "string"
+        },
+        "metadata": {
+          "additionalProperties": true,
+          "title": "Metadata",
+          "type": "object"
+        },
+        "provenance_classification": {
+          "enum": [
+            "explicit",
+            "derived",
+            "heuristic"
+          ],
+          "title": "Provenance Classification",
+          "type": "string"
+        },
+        "relationship_id": {
+          "title": "Relationship Id",
+          "type": "string"
+        },
+        "relationship_type": {
+          "enum": [
+            "declared_in",
+            "references",
+            "related_to",
+            "enforces",
+            "enabled_by",
+            "enables",
+            "governs",
+            "implemented_by",
+            "embodied_in",
+            "supersedes",
+            "superseded_by",
+            "refines"
+          ],
+          "title": "Relationship Type",
+          "type": "string"
+        },
+        "to_entity_id": {
+          "title": "To Entity Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "relationship_id",
+        "relationship_type",
+        "from_entity_id",
+        "to_entity_id",
+        "provenance_classification",
+        "canonical_source_ref"
+      ],
+      "title": "RelationshipRecord",
+      "type": "object"
+    }
+  },
+  "description": "Registry of normalized relationships.",
+  "properties": {
+    "relationships": {
+      "items": {
+        "$ref": "#/$defs/RelationshipRecord"
+      },
+      "title": "Relationships",
+      "type": "array"
+    },
+    "schema_version": {
+      "default": "1.1",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "type": {
+      "const": "relationship_registry",
+      "default": "relationship_registry",
+      "title": "Type",
+      "type": "string"
+    }
+  },
+  "title": "RelationshipRegistry",
+  "type": "object"
+}

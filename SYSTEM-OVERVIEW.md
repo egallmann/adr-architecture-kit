@@ -5,8 +5,8 @@ artifact_kind: system_overview
 generator_id: adr-system-overview
 generator_version: 1
 hash_algorithm: sha256
-source_hash: f6c98478b681a81ce4b4bf6407bbe4b770089ad6e1454b4be184771817f1e649
-rendered_hash: 4e8df4fe02b4a94ecd15fc3862cb36f07904090e908efb3ba1948efecf4a3d05
+source_hash: e2e957b8d84362c95f9d16ea1b4e9fc3912aa27b1da9b93bd554e3911824ecb0
+rendered_hash: 8266db2b1770467b9497e3300b2fe4e0ad12d969eef091fdd449b3e0f13221ac
 -->
 
 ---
@@ -147,7 +147,7 @@ Use this type model when reasoning about repository architecture artifacts:
 
 ### Validate the repository
 
-Run `adr validate`, `adr validate --recursive`, and `pytest tests -q`.
+Run `adr governance-checks` for the standard local governance bundle. Use `adr validate` or `adr validate --recursive` when you only need ADR schema and business-rule validation.
 
 ### Generate or refresh the architecture index
 
@@ -163,11 +163,19 @@ Run `adr generate-rendered-docs`. Do not hand-edit files under `adrs/rendered/`.
 
 ### Validate generated documentation
 
-Run `adr validate-generated-docs` after regenerating derived artifacts.
+Run `adr validate-generated-docs` after regenerating derived artifacts, including the manifest.
+
+### Validate compiled contract profiles
+
+Run `adr validate-contract --contract-profile greenfield` for strict contract enforcement, or use the brownfield profile with explicit thresholds during migration.
 
 ### Generate a Physical-System ADR
 
 Inspect the generator first, then use `adr generate-physical-system` when the input can be structured.
+
+### Validate project metadata
+
+Run `adr validate-project-metadata` to verify `PROJECT.yaml` against schema and model rules.
 
 ### Audit runtime hygiene
 
@@ -249,7 +257,8 @@ A change is not complete unless relevant checks were run.
 Minimum close-out expectation:
 
 - run targeted tests for the changed area
-- run `adr validate` when artifact semantics changed
+- run `adr governance-checks` for the standard local governance bundle when repository behavior changed
+- run `adr validate` when artifact semantics changed but the full governance bundle is unnecessary
 - regenerate derived artifacts if their sources changed
 - run `adr validate-generated-docs` for committed generated documentation artifacts
 - run runtime hygiene audit when changing dependency or runtime-facing code

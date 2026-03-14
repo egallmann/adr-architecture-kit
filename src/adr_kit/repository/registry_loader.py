@@ -11,6 +11,7 @@ from ..models import (
     ArchitectureIndex,
     EntityRegistry,
     NormalizedEntityRegistry,
+    RemediationLedger,
     RelationshipRegistry,
     UnresolvedRegistry,
 )
@@ -35,6 +36,11 @@ def load_relationship_registry(parser: ADRParser, path: Path) -> RelationshipReg
 def load_unresolved_registry(parser: ADRParser, path: Path) -> UnresolvedRegistry:
     """Load and validate an unresolved registry."""
     return _wrap_parse(lambda: parser.parse_unresolved_registry(path), path)
+
+
+def load_remediation_ledger(parser: ADRParser, path: Path) -> RemediationLedger:
+    """Load and validate remediation ledger."""
+    return _wrap_parse(lambda: parser.parse_remediation_ledger(path), path)
 
 
 def load_legacy_entity_registry(parser: ADRParser, path: Path) -> EntityRegistry:

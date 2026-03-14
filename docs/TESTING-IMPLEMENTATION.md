@@ -144,7 +144,7 @@ def test_generate_from_directory_still_works()  # Backward compat
 
 ### All Tests
 ```bash
-pytest tests/ -v
+adr governance-checks
 ```
 
 ### With Coverage
@@ -251,6 +251,7 @@ jobs:
       
       - name: Run tests with coverage
         run: |
+          adr governance-checks
           pytest tests/ --cov=src/adr_kit --cov-report=xml --cov-report=term
       
       - name: Upload coverage

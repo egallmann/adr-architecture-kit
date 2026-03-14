@@ -15,6 +15,7 @@ class RepositoryPaths:
     scope_root: Path
     architecture_index: Path
     legacy_entity_registry: Path
+    remediation_ledger: Path
 
 
 def discover_repository_paths(scope_root: Path) -> RepositoryPaths:
@@ -24,6 +25,7 @@ def discover_repository_paths(scope_root: Path) -> RepositoryPaths:
         scope_root=root,
         architecture_index=root / "adrs" / "index" / "architecture-index.yaml",
         legacy_entity_registry=root / "adrs" / "entities" / "registry.yaml",
+        remediation_ledger=root / "adrs" / "governance" / "remediation-ledger.yaml",
     )
 
 

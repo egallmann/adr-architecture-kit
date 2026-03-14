@@ -36,8 +36,9 @@ policy_reference: "ORG-POL-001"
 compliance_frameworks: ["STE"]
 
 validation_query: |
-  Run `adr validate --all --strict` in CI pipeline.
-  Exit code 0 = all ADRs valid.
+  Run `adr validate --cross-references` in CI for ADR artifact validation.
+  Run `adr governance-checks` for the standard contract-and-test governance bundle.
+  Exit code 0 = all validation gates pass.
   Exit code 1 = validation failures (halt build).
 
 validation_frequency: on_change

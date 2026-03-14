@@ -273,7 +273,8 @@ Use `--recursive` in CI pipelines to validate entire workspace:
   run: |
     pip install adr-architecture-kit[cli]
     adr validate --recursive --cross-references
-    adr generate-manifest --recursive
+    adr governance-checks
+    adr validate-generated-docs
 ```
 
 ### 5. Development Workflow

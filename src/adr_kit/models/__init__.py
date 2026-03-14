@@ -138,6 +138,10 @@ from .decision_ledger import (
     LedgerConstraints,
     LedgerDecision,
 )
+from .remediation_ledger import (
+    RemediationLedger,
+    RemediationLedgerEntry,
+)
 
 __all__ = [
     # Common
@@ -269,4 +273,6 @@ __all__ = [
     "DecisionLedger",
     "LedgerConstraints",
     "LedgerDecision",
+    "RemediationLedger",
+    "RemediationLedgerEntry",
 ]

@@ -19,8 +19,9 @@ from .backend import (
 )
 from .config import CompilationMode, CompilerConfig
 from .diagnostics import DiagnosticLevel, DiagnosticLog
-from .frontend import ArchModelBuilder
 from .ir import ArchModel
+from .pipeline import run_frontend_pipeline
+from .frontend import CachedADRParser
 from ..repository.registry_loader import load_remediation_ledger
 
 
@@ -131,12 +132,12 @@ class ArchitectureCompiler:
         timestamp = self._parse_timestamp(config.pinned_timestamp)
 
         with self._pinned_generation_time(timestamp):
-            builder = ArchModelBuilder(
-                scope_resolver=ProjectScopeResolver(explicit_scope=resolved_scope.root),
+            build_result = run_frontend_pipeline(
+                scope=resolved_scope,
+                parser=CachedADRParser(self.parser),
                 config=config,
                 diagnostics=diagnostics,
             )
-            build_result = builder.build_from_scope(resolved_scope)
             model = build_result.model
             model.metadata.scope_root = str(resolved_scope.root)
             model.metadata.generated_at = timestamp or datetime.now(timezone.utc).replace(microsecond=0)

@@ -181,6 +181,7 @@
 ## Overall Test Suite
 
 ### Test Execution
+- [ ] The current implementation slice is committed once its relevant checks pass
 - [ ] All tests pass: `adr governance-checks`
 - [ ] No test failures
 - [ ] No test errors
@@ -313,6 +314,7 @@
 - [ ] No type checking errors (mypy)
 - [ ] Code follows project style
 - [ ] No code smells or anti-patterns
+- [ ] Changes are grouped into meaningful verified commit boundaries
 
 ### Completeness
 - [ ] All 4 components implemented

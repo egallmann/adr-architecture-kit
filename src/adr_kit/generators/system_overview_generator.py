@@ -176,6 +176,7 @@ class SystemOverviewGenerator:
             ],
             "canonical_workflows": [
                 OverviewRule("Validate the repository", "Run `adr governance-checks` for the standard local governance bundle. Use `adr validate` or `adr validate --recursive` when you only need ADR schema and business-rule validation."),
+                OverviewRule("Commit at meaningful boundaries", "After a coherent implementation slice is verified, commit it before continuing. Do not accumulate unrelated unverified changes."),
                 OverviewRule("Generate or refresh the architecture index", "Run `adr generate-architecture-index`. Treat `adrs/index/` as the primary machine discovery surface."),
                 OverviewRule("Generate or refresh the manifest", "Run `adr generate-manifest` or `adr generate-manifest --recursive`. Do not hand-edit `manifest.yaml`."),
                 OverviewRule("Generate rendered ADR markdown", "Run `adr generate-rendered-docs`. Do not hand-edit files under `adrs/rendered/`."),
@@ -203,6 +204,7 @@ class SystemOverviewGenerator:
             "invariants": [
                 "[`INV-0001-schema-validation-required.yaml`](adrs/invariants/INV-0001-schema-validation-required.yaml)",
                 "[`INV-0002-runtime-hygiene-and-dependency-security.yaml`](adrs/invariants/INV-0002-runtime-hygiene-and-dependency-security.yaml)",
+                "[`INV-0003-meaningful-boundary-commits-required.yaml`](adrs/invariants/INV-0003-meaningful-boundary-commits-required.yaml)",
             ],
             "fast_target_discovery": [
                 OverviewRule(
@@ -239,6 +241,7 @@ class SystemOverviewGenerator:
             "completion_criteria": [
                 "run targeted tests for the changed area",
                 "run `adr governance-checks` for the standard local governance bundle when repository behavior changed",
+                "commit each meaningful verified implementation boundary before starting the next slice",
                 "run `adr validate` when artifact semantics changed but the full governance bundle is unnecessary",
                 "regenerate derived artifacts if their sources changed",
                 "run `adr validate-generated-docs` for committed generated documentation artifacts",

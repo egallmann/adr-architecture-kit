@@ -244,6 +244,7 @@ adr governance-checks
 ```
 
 This runs the greenfield contract gate, the brownfield ratchet gate, and the full test suite.
+When you finish a coherent implementation slice, commit it after the relevant checks pass rather than accumulating unrelated changes.
 
 The compatibility wrapper still exists if you need it:
 
@@ -283,6 +284,11 @@ GitHub Actions workflow (`.github/workflows/adr-governance.yml`) enforces:
 6. **Runtime hygiene** - Deprecated APIs fail governance checks
 7. **Dependency security** - Known vulnerable packages fail governance checks
 8. **Dependency freshness** - Outdated direct dependencies are surfaced continuously
+
+Repository practice also requires commits at meaningful verified boundaries:
+- one coherent implementation slice per commit
+- relevant tests and validation run first
+- leave the repo in a reviewable state before continuing
 
 Run the runtime hygiene audit locally:
 

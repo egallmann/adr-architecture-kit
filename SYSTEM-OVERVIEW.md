@@ -5,8 +5,8 @@ artifact_kind: system_overview
 generator_id: adr-system-overview
 generator_version: 1
 hash_algorithm: sha256
-source_hash: e2e957b8d84362c95f9d16ea1b4e9fc3912aa27b1da9b93bd554e3911824ecb0
-rendered_hash: 8266db2b1770467b9497e3300b2fe4e0ad12d969eef091fdd449b3e0f13221ac
+source_hash: 196ef4ba32a07f360aecf13271a4a1bd9377aa70cc28ce65fee215387a28c3de
+rendered_hash: a95088a78f3e6946f8e1019d92e4e3684bb00f24a3e025c7de5798e51ce69821
 -->
 
 ---
@@ -149,6 +149,10 @@ Use this type model when reasoning about repository architecture artifacts:
 
 Run `adr governance-checks` for the standard local governance bundle. Use `adr validate` or `adr validate --recursive` when you only need ADR schema and business-rule validation.
 
+### Commit at meaningful boundaries
+
+After a coherent implementation slice is verified, commit it before continuing. Do not accumulate unrelated unverified changes.
+
 ### Generate or refresh the architecture index
 
 Run `adr generate-architecture-index`. Treat `adrs/index/` as the primary machine discovery surface.
@@ -213,6 +217,7 @@ Start here when you need the non-negotiables:
 
 - [`INV-0001-schema-validation-required.yaml`](adrs/invariants/INV-0001-schema-validation-required.yaml)
 - [`INV-0002-runtime-hygiene-and-dependency-security.yaml`](adrs/invariants/INV-0002-runtime-hygiene-and-dependency-security.yaml)
+- [`INV-0003-meaningful-boundary-commits-required.yaml`](adrs/invariants/INV-0003-meaningful-boundary-commits-required.yaml)
 
 Practical meaning:
 
@@ -258,6 +263,7 @@ Minimum close-out expectation:
 
 - run targeted tests for the changed area
 - run `adr governance-checks` for the standard local governance bundle when repository behavior changed
+- commit each meaningful verified implementation boundary before starting the next slice
 - run `adr validate` when artifact semantics changed but the full governance bundle is unnecessary
 - regenerate derived artifacts if their sources changed
 - run `adr validate-generated-docs` for committed generated documentation artifacts

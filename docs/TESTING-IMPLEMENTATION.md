@@ -147,6 +147,8 @@ def test_generate_from_directory_still_works()  # Backward compat
 adr governance-checks
 ```
 
+Treat a passing governance run as the boundary check for a coherent slice: commit that verified slice before starting the next unrelated block of work.
+
 ### With Coverage
 ```bash
 pytest tests/ --cov=src/adr_kit --cov-report=html --cov-report=term

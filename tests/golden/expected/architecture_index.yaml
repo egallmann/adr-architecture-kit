@@ -20,4 +20,4 @@ source_coverage:
   physical_adrs: 4
   physical_system_adrs: 1
   physical_component_adrs: 1
-  standalone_invariants: 2
+  standalone_invariants: 3

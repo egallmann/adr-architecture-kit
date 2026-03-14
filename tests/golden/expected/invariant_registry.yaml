@@ -98,25 +98,34 @@ entities:
 - id: INV-0003
   entity_type: invariant
   name: INV-0003
-  summary: Physical ADRs must reference at least one logical ADR
+  summary: Repository changes must be committed at meaningful verified boundaries
+    rather than accumulated indefinitely.
   canonical_source:
-    source_type: logical_adr
+    source_type: standalone_invariant
+    source_ref: INV-0003
+    artifact_path: adrs/invariants/INV-0003-meaningful-boundary-commits-required.yaml
+  source_refs:
+  - source_type: logical_adr
     source_ref: ADR-L-0001#INV-0003
     artifact_path: adrs/logical/ADR-L-0001-ste-compliant-adr-system.yaml
-  source_refs: []
+    mention_role: reference
   metadata:
-    adr_id: ADR-L-0001
+    defined_in: ADR-L-0003
     scope: global
-    statement: Physical ADRs must reference at least one logical ADR
+    statement: Repository changes must be committed at meaningful verified boundaries
+      rather than accumulated indefinitely.
     enforcement_level: must
-    declaration_mode: local
+    declaration_mode: canonical
     upheld_by_decisions: []
+    enforced_by:
+    - ADR-P-0001
   relationships:
     declared_in:
-    - ADR-L-0001
+    - INV-0003
     references: []
     related_to: []
-    enforces: []
+    enforces:
+    - ADR-P-0001
     enabled_by: []
     enables: []
     governs: []
@@ -129,8 +138,8 @@ entities:
     status: complete
     missing_fields: []
   provenance:
-    source_type: logical_adr
-    source_ref: ADR-L-0001#INV-0003
+    source_type: standalone_invariant
+    source_ref: INV-0003
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index

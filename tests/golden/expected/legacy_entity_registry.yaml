@@ -1283,18 +1283,20 @@ entities:
 - entity_id: INV-0003
   entity_type: invariant
   name: INV-0003
-  introduced_by: ADR-L-0001
+  introduced_by: ADR-L-0003
   lifecycle_stage: active
-  source_path: adrs/logical/ADR-L-0001-ste-compliant-adr-system.yaml
-  source_artifact_type: logical_adr
+  source_path: adrs/invariants/INV-0003-meaningful-boundary-commits-required.yaml
+  source_artifact_type: standalone_invariant
   domains: []
-  related_adrs: []
+  related_adrs:
+  - ADR-L-0001
   realized_by: []
   relationships:
     depends_on: []
     implements: []
     consumes: []
-    realizes: []
+    realizes:
+    - ADR-P-0001
 - entity_id: INV-0004
   entity_type: invariant
   name: INV-0004

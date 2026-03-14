@@ -35,6 +35,47 @@ def _write_remediation_ledger(tmp_path, entries):
     return ledger_path
 
 
+def _write_project_file(root, *, name: str, namespace: str | None = None):
+    project_file = root / "PROJECT.yaml"
+    project_file.write_text(
+        "\n".join(
+            [
+                'schema_version: "1.0"',
+                "type: project_metadata",
+                "project:",
+                f"  name: {name}",
+                "  description: test project",
+                "  type: library",
+                "ownership:",
+                "  team: architecture",
+                "repository:",
+                "  url: local",
+                "  primary_branch: main",
+                "architecture_documentation:",
+                "  adr_directory: adrs/",
+                "  manifest_path: adrs/manifest.yaml",
+                f'  architecture_namespace: "{namespace or name}"',
+            ]
+        )
+        + "\n",
+        encoding="utf-8",
+    )
+    return project_file
+
+
+def _create_recursive_contract_workspace(tmp_path):
+    root = tmp_path / "workspace"
+    child = root / "module-a"
+    child.mkdir(parents=True, exist_ok=True)
+    (child / "package.json").write_text('{"name": "module-a"}', encoding="utf-8")
+
+    _write_project_file(root, name="workspace")
+    _write_project_file(child, name="module-a")
+    _generate_bundle(root)
+    _generate_bundle(child)
+    return root, child
+
+
 def test_repository_rejects_missing_required_metadata_key(tmp_path):
     paths = _generate_bundle(tmp_path)
     entity_data = yaml.safe_load(paths["entity_registry"].read_text(encoding="utf-8"))
@@ -264,31 +305,59 @@ def test_governance_checks_cli_runs_contract_bundle_without_tests(tmp_path):
     assert "outcome: compliant" in result.output
 
 
-def test_validate_project_metadata_cli_reports_valid_project(tmp_path):
-    project_file = tmp_path / "PROJECT.yaml"
-    project_file.write_text(
-        "\n".join(
-            [
-                'schema_version: "1.0"',
-                "type: project_metadata",
-                "project:",
-                "  name: test-project",
-                "  description: test project",
-                "  type: library",
-                "ownership:",
-                "  team: architecture",
-                "repository:",
-                "  url: local",
-                "  primary_branch: main",
-                "architecture_documentation:",
-                "  adr_directory: adrs/",
-                "  manifest_path: adrs/manifest.yaml",
-                '  architecture_namespace: "test-project"',
-            ]
-        )
-        + "\n",
-        encoding="utf-8",
+def test_validate_contract_cli_recursive_validates_all_scopes(tmp_path):
+    workspace, child = _create_recursive_contract_workspace(tmp_path)
+
+    runner = CliRunner()
+    result = runner.invoke(
+        cli,
+        [
+            "validate-contract",
+            "--scope",
+            str(workspace),
+            "--contract-profile",
+            "greenfield",
+            "--recursive",
+        ],
     )
+
+    assert result.exit_code == 0, result.output
+    assert f"({workspace.resolve()})" in result.output
+    assert f"({child.resolve()})" in result.output
+    assert result.output.count("Project scope:") == 2
+
+
+def test_validate_contract_cli_recursive_reports_scope_failure(tmp_path):
+    workspace, child = _create_recursive_contract_workspace(tmp_path)
+    child_paths = discover_repository_paths(child)
+    architecture_index = load_architecture_index(ADRParser(), child_paths.architecture_index)
+    entity_registry_path = resolve_index_reference(child, architecture_index.entity_registry_path)
+    entity_data = yaml.safe_load(entity_registry_path.read_text(encoding="utf-8"))
+    component = next(entity for entity in entity_data["entities"] if entity["entity_type"] == "component")
+    component["metadata"]["module_path"] = "__NOT_YET_MODELED__"
+    entity_registry_path.write_text(yaml.safe_dump(entity_data, sort_keys=False), encoding="utf-8")
+
+    runner = CliRunner()
+    result = runner.invoke(
+        cli,
+        [
+            "validate-contract",
+            "--scope",
+            str(workspace),
+            "--contract-profile",
+            "greenfield",
+            "--recursive",
+        ],
+    )
+
+    assert result.exit_code == 1, result.output
+    assert f"({workspace.resolve()})" in result.output
+    assert f"({child.resolve()})" in result.output
+    assert "sentinel-backed content is not allowed for profile=greenfield" in result.output
+
+
+def test_validate_project_metadata_cli_reports_valid_project(tmp_path):
+    project_file = _write_project_file(tmp_path, name="test-project")
 
     runner = CliRunner()
     result = runner.invoke(cli, ["validate-project-metadata", "--file", str(project_file)])
@@ -296,6 +365,48 @@ def test_validate_project_metadata_cli_reports_valid_project(tmp_path):
     assert result.exit_code == 0, result.output
     assert "PROJECT.yaml valid:" in result.output
     assert "Project: test-project" in result.output
+
+
+def test_validate_project_metadata_cli_recursive_validates_all_scopes(tmp_path):
+    workspace, child = _create_recursive_contract_workspace(tmp_path)
+
+    runner = CliRunner()
+    result = runner.invoke(
+        cli,
+        [
+            "validate-project-metadata",
+            "--scope",
+            str(workspace),
+            "--recursive",
+        ],
+    )
+
+    assert result.exit_code == 0, result.output
+    assert f"({workspace.resolve()})" in result.output
+    assert f"({child.resolve()})" in result.output
+    assert f"PROJECT.yaml valid: {workspace / 'PROJECT.yaml'}" in result.output
+    assert f"PROJECT.yaml valid: {child / 'PROJECT.yaml'}" in result.output
+
+
+def test_validate_project_metadata_cli_recursive_reports_subscope_failure(tmp_path):
+    workspace, child = _create_recursive_contract_workspace(tmp_path)
+    (child / "PROJECT.yaml").write_text("not: valid: yaml\n", encoding="utf-8")
+
+    runner = CliRunner()
+    result = runner.invoke(
+        cli,
+        [
+            "validate-project-metadata",
+            "--scope",
+            str(workspace),
+            "--recursive",
+        ],
+    )
+
+    assert result.exit_code == 1, result.output
+    assert f"({workspace.resolve()})" in result.output
+    assert f"({child.resolve()})" in result.output
+    assert f"ERROR: {child / 'PROJECT.yaml'}:" in result.output
 
 
 def test_contract_validator_accepts_pending_approval_for_replaced_value(tmp_path):
@@ -382,3 +493,27 @@ def test_contract_validator_rejects_sentinel_state_when_value_is_replaced(tmp_pa
         issue.message == "sentinel ledger entry requires current field value to remain sentinel-backed"
         for issue in result.issues
     )
+
+
+def test_governance_checks_cli_recursive_runs_scope_local_bundle_without_tests(tmp_path):
+    workspace, child = _create_recursive_contract_workspace(tmp_path)
+    runner = CliRunner()
+
+    result = runner.invoke(
+        cli,
+        [
+            "governance-checks",
+            "--scope",
+            str(workspace),
+            "--recursive",
+            "--skip-tests",
+        ],
+    )
+
+    assert result.exit_code == 0, result.output
+    assert "== Greenfield contract validation ==" in result.output
+    assert "== Brownfield ratchet validation ==" in result.output
+    assert "== Generated documentation validation ==" in result.output
+    assert "== Project metadata validation ==" in result.output
+    assert f"({workspace.resolve()})" in result.output
+    assert f"({child.resolve()})" in result.output

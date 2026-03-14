@@ -28,6 +28,8 @@ artifact.
 ### Compiler and contract foundations
 
 - Unified compiler driver with `adr compile`
+- Explicit discovery compiler pipeline over parse, normalization, extraction,
+  inference, unresolved detection, validation, and emission
 - Fixed-order compiler pass runner over extracted compiler steps
 - Compiler-owned registry bundle assembly from `ArchModel`
 - Compiler-authoritative emission of normalized registries, subset registries,
@@ -77,6 +79,8 @@ governance layered on top rather than parallel to it.
 Next steps:
 
 - Keep legacy validation paths only where they are still the right abstraction
+- Keep compatibility wrappers thin while the explicit compiler pipeline owns
+  discovery orchestration
 - Align contributor docs with compiler-backed workflows
 - Reduce remaining split-brain behavior between older command shapes and the
   compiler/governance surface

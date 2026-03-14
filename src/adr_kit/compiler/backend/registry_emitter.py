@@ -4,18 +4,7 @@ from __future__ import annotations
 
 from pathlib import Path
 
-from ...generators.architecture_index_generator import ArchitectureDiscoveryBundle, ArchitectureIndexGenerator
-from ...integrity import (
-    ArtifactKind,
-    GENERATED_MARKER,
-    HASH_ALGORITHM,
-    INTEGRITY_SCHEMA_VERSION,
-    LEGACY_ENTITY_REGISTRY_GENERATOR,
-    build_yaml_header,
-    compute_rendered_hash,
-    compute_source_hash,
-    legacy_entity_registry_source_inputs,
-)
+from ..registry_bundle import ArchitectureDiscoveryBundle, render_bundle_yaml, render_legacy_entity_registry
 from ...scope import ProjectScope
 from .common import EmittedArtifact
 
@@ -23,28 +12,10 @@ from .common import EmittedArtifact
 def emit_registry_artifacts(
     bundle: ArchitectureDiscoveryBundle,
     *,
-    generator: ArchitectureIndexGenerator,
     scope: ProjectScope,
 ) -> list[EmittedArtifact]:
     """Serialize the architecture discovery bundle into compiler artifacts."""
 
-    legacy_body = generator.render_yaml(bundle.legacy_entity_registry)
-    legacy_header = build_yaml_header(
-        {
-            "integrity_schema_version": str(INTEGRITY_SCHEMA_VERSION),
-            "generated": GENERATED_MARKER,
-            "artifact_kind": ArtifactKind.LEGACY_ENTITY_REGISTRY.value,
-            "generator_id": LEGACY_ENTITY_REGISTRY_GENERATOR.generator_id,
-            "generator_version": str(LEGACY_ENTITY_REGISTRY_GENERATOR.generator_version),
-            "hash_algorithm": HASH_ALGORITHM,
-            "source_hash": compute_source_hash(
-                scope.root,
-                legacy_entity_registry_source_inputs(scope),
-                LEGACY_ENTITY_REGISTRY_GENERATOR,
-            ),
-            "rendered_hash": compute_rendered_hash(legacy_body),
-        }
-    )
     payloads = [
         ("adrs/index/architecture-index.yaml", bundle.architecture_index, "index"),
         ("adrs/index/entity-registry.yaml", bundle.entity_registry, "registry"),
@@ -60,17 +31,20 @@ def emit_registry_artifacts(
     emitted = [
         EmittedArtifact(
             path=Path(relative_path),
-            content=generator.render_yaml(model).encode("utf-8"),
+            content=render_bundle_yaml(model).encode("utf-8"),
             kind=kind,
         )
         for relative_path, model, kind in payloads
     ]
+    legacy_content = render_legacy_entity_registry(bundle, scope)
+    header, _, _ = legacy_content.partition("\n\n")
+    header = header + "\n\n"
     emitted.append(
         EmittedArtifact(
             path=Path("adrs/entities/registry.yaml"),
-            content=f"{legacy_header}{legacy_body}".encode("utf-8"),
+            content=legacy_content.encode("utf-8"),
             kind="legacy",
-            integrity_header=legacy_header,
+            integrity_header=header,
         )
     )
     return emitted

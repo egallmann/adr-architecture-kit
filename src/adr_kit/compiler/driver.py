@@ -106,7 +106,7 @@ class ArchitectureCompiler:
             model.metadata.scope_root = str(resolved_scope.root)
             model.metadata.generated_at = timestamp or datetime.now(timezone.utc).replace(microsecond=0)
 
-            artifacts = self._emit_artifacts(resolved_scope, config, diagnostics)
+            artifacts = self._emit_artifacts(resolved_scope, config, diagnostics, build_result)
 
         if config.check:
             self._check_artifacts(artifacts, resolved_scope, config, diagnostics)
@@ -220,10 +220,11 @@ class ArchitectureCompiler:
         scope: ProjectScope,
         config: CompilerConfig,
         diagnostics: DiagnosticLog,
+        build_result,
     ) -> list[OutputArtifact]:
         emitted: list[EmittedArtifact] = []
         selected = set(config.emit)
-        emitters = build_backend_emitters(parser=self.parser, scope=scope)
+        emitters = build_backend_emitters(parser=self.parser, scope=scope, build_result=build_result)
         for emitter_name in ("registries", "manifest", "markdown"):
             if emitter_name not in selected:
                 continue

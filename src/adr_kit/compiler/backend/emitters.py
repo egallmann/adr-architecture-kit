@@ -4,11 +4,13 @@ from __future__ import annotations
 
 from dataclasses import dataclass, field
 
-from ...generators import ArchitectureIndexGenerator, ManifestGenerator
+from ...generators import ManifestGenerator
 from ...generators.views import MarkdownGenerator
 from ...parser import ADRParser
 from ...scope import ProjectScope, ProjectScopeResolver
-from ..diagnostics import Diagnostic
+from ..frontend.builder import FrontendBuildResult
+from ..diagnostics import Diagnostic, DiagnosticLog
+from ..registry_bundle import assemble_registry_bundle
 from .common import BackendEmitter, EmittedArtifact
 from .manifest_emitter import emit_manifest_artifact
 from .markdown_emitter import emit_markdown_artifacts
@@ -21,19 +23,23 @@ class RegistryBackendEmitter:
 
     parser: ADRParser
     scope: ProjectScope
+    build_result: FrontendBuildResult
 
     name: str = "registries"
     artifact_group: str = "registries"
     _diagnostics: list[Diagnostic] = field(default_factory=list, init=False, repr=False)
 
     def emit(self) -> list[EmittedArtifact]:
-        generator = ArchitectureIndexGenerator(
-            parser=self.parser,
-            scope_resolver=ProjectScopeResolver(explicit_scope=self.scope.root),
+        diagnostics = DiagnosticLog()
+        bundle = assemble_registry_bundle(
+            self.build_result.model,
+            coverage=self.build_result.coverage,
+            namespace=self.build_result.namespace,
+            generated_at=self.build_result.model.metadata.generated_at,
+            diagnostics=diagnostics,
         )
-        bundle = generator.generate_from_scope(self.scope)
-        self._diagnostics = generator.diagnostics.as_list()
-        return emit_registry_artifacts(bundle, generator=generator, scope=self.scope)
+        self._diagnostics = diagnostics.as_list()
+        return emit_registry_artifacts(bundle, scope=self.scope)
 
     def diagnostics(self) -> list[Diagnostic]:
         return list(self._diagnostics)
@@ -81,11 +87,16 @@ class MarkdownBackendEmitter:
         return []
 
 
-def build_backend_emitters(*, parser: ADRParser, scope: ProjectScope) -> dict[str, BackendEmitter]:
+def build_backend_emitters(
+    *,
+    parser: ADRParser,
+    scope: ProjectScope,
+    build_result: FrontendBuildResult,
+) -> dict[str, BackendEmitter]:
     """Build the static backend-emitter map used by the compiler driver."""
 
     return {
-        "registries": RegistryBackendEmitter(parser=parser, scope=scope),
+        "registries": RegistryBackendEmitter(parser=parser, scope=scope, build_result=build_result),
         "manifest": ManifestBackendEmitter(parser=parser, scope=scope),
         "markdown": MarkdownBackendEmitter(parser=parser, scope=scope),
     }

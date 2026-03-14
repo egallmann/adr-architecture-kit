@@ -7,6 +7,7 @@ from .extract_logical_entities import (
     LogicalExtractionResult,
     extract_logical_entities,
 )
+from .fixed_order import FixedOrderArchitecturePassRunner, FixedOrderPassRunResult
 from .extract_physical_entities import (
     ExtractPhysicalEntitiesPass,
     PhysicalExtractionResult,
@@ -41,6 +42,8 @@ __all__ = [
     "ExtractLogicalEntitiesPass",
     "ExtractPhysicalEntitiesPass",
     "ExtractedEntity",
+    "FixedOrderArchitecturePassRunner",
+    "FixedOrderPassRunResult",
     "InvariantResolutionResult",
     "InvariantMention",
     "LogicalExtractionResult",

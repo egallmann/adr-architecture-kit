@@ -12,6 +12,7 @@ from src.adr_kit.compiler.passes import (
     DetectUnresolvedPass,
     DeriveRelationshipsPass,
     DerivedGapSignal,
+    FixedOrderArchitecturePassRunner,
     ResolveInvariantCanonicalPass,
     ExtractLogicalEntitiesPass,
     ExtractPhysicalEntitiesPass,
@@ -27,6 +28,7 @@ from src.adr_kit.compiler.passes import (
 )
 from src.adr_kit.cli.main import cli
 from src.adr_kit.generators import ArchitectureIndexGenerator
+from src.adr_kit.models import SourceRef
 from src.adr_kit.parser import ADRParser
 
 
@@ -786,3 +788,114 @@ def test_detect_unresolved_pass_matches_helper():
     via_pass = DetectUnresolvedPass().run(gaps, provenance=generator._provenance)
 
     assert direct == via_pass
+
+
+def test_fixed_order_pass_runner_matches_current_generator_sequence(tmp_path):
+    adr_dir = _create_fixture(tmp_path)
+    generator = ArchitectureIndexGenerator()
+    logical_files, physical_files, invariant_files = generator._discover_source_files(adr_dir)
+    logical_adrs = [(generator.parser.parse_logical_adr(path), path.resolve()) for path in logical_files]
+    physical_adrs = [(generator.parser.parse_adr(path), path.resolve()) for path in physical_files]
+    standalone_invariants = [(generator.parser.parse_invariant(path), path.resolve()) for path in invariant_files]
+    scope = generator.scope_resolver.resolve(tmp_path)
+
+    entities = {}
+    relationships = {}
+    unresolved = []
+    system_ids = {}
+
+    def add_entity(entity, allow_reference_merge=False):
+        existing = entities.get(entity.id)
+        if existing is None:
+            entities[entity.id] = entity
+            return
+        if allow_reference_merge:
+            generator._append_source_ref(
+                existing,
+                SourceRef(
+                    source_type=entity.canonical_source.source_type,
+                    source_ref=entity.canonical_source.source_ref,
+                    artifact_path=entity.canonical_source.artifact_path,
+                    mention_role="reference",
+                ),
+            )
+            return
+        raise ValueError(f"Duplicate canonical entity ID {entity.id}")
+
+    def collect_standalone_invariant_mentions(mentions):
+        for invariant, path in standalone_invariants:
+            artifact = generator._source_path(scope, path)
+            mentions.setdefault(invariant.id, []).append(
+                (
+                    {
+                        "name": invariant.id,
+                        "summary": generator._summary(invariant.statement),
+                        "metadata": {
+                            "defined_in": invariant.defined_in,
+                            "scope": invariant.scope,
+                            "statement": invariant.statement,
+                            "enforcement_level": invariant.enforcement_level.value,
+                            "declaration_mode": invariant.declaration_mode or "canonical",
+                            "upheld_by_decisions": list(invariant.upheld_by_decisions),
+                            "enforced_by": list(invariant.enforced_by),
+                        },
+                    },
+                    artifact,
+                    invariant.id,
+                )
+            )
+
+    result = FixedOrderArchitecturePassRunner().run(
+        logical_adrs=logical_adrs,
+        physical_adrs=physical_adrs,
+        standalone_invariants=standalone_invariants,
+        entities=entities,
+        relationships=relationships,
+        unresolved=unresolved,
+        system_ids=system_ids,
+        source_path=lambda file_path: generator._source_path(scope, file_path),
+        canonical=generator._canonical,
+        provenance=generator._provenance,
+        summary=generator._summary,
+        complete=generator._complete,
+        classify_author_gap=generator._classify_author_gap,
+        system_entity_id=generator._system_entity_id,
+        relationship_id=generator._relationship_id,
+        add_entity=add_entity,
+        append_source_ref=generator._append_source_ref,
+        collect_standalone_invariant_mentions=collect_standalone_invariant_mentions,
+    )
+
+    bundle = generator.generate_from_directory(adr_dir)
+
+    assert [item.entity.id for item in result.logical_extraction.entities] == ["ADR-L-1000", "CAP-1000", "DEC-1000"]
+    assert [item.entity.id for item in result.invariant_resolution.entities] == ["INV-1000"]
+    assert [item.entity.id for item in result.physical_extraction.entities] == [
+        "ADR-PS-1000",
+        "SYS-1000",
+        "ADR-PC-1000",
+        "COMP-VALIDATOR",
+    ]
+    assert [item.relationship_id for item in result.relationship_derivation.relationships] == [
+        item.relationship_id for item in bundle.relationship_registry.relationships
+    ]
+    assert [item.id for item in result.unresolved_detection.unresolved] == []
+
+
+def test_fixed_order_pass_runner_validate_matches_helper(tmp_path):
+    adr_dir = _create_fixture(tmp_path)
+    generator = ArchitectureIndexGenerator()
+    bundle = generator.generate_from_directory(adr_dir)
+
+    direct = validate_bundle(
+        bundle.entity_registry,
+        bundle.relationship_registry,
+        bundle.unresolved_registry,
+    )
+    via_runner = FixedOrderArchitecturePassRunner().validate(
+        bundle.entity_registry,
+        bundle.relationship_registry,
+        bundle.unresolved_registry,
+    )
+
+    assert direct == via_runner

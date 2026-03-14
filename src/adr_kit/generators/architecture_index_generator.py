@@ -12,11 +12,7 @@ import yaml
 from ..compiler.diagnostics import DiagnosticLog
 from ..compiler.frontend.parser import CachedADRParser
 from ..compiler.passes import (
-    detect_unresolved,
-    derive_relationships,
-    extract_logical_entities,
-    extract_physical_entities,
-    resolve_invariant_canonical,
+    FixedOrderArchitecturePassRunner,
     score_completeness,
     validate_bundle,
 )
@@ -73,6 +69,7 @@ class ArchitectureIndexGenerator:
     def __init__(self, parser: ADRParser | CachedADRParser = None, scope_resolver: ProjectScopeResolver = None):
         self.parser = parser if isinstance(parser, CachedADRParser) else CachedADRParser(parser or ADRParser())
         self.diagnostics = DiagnosticLog()
+        self.pass_runner = FixedOrderArchitecturePassRunner()
         self.scope_resolver = scope_resolver or ProjectScopeResolver()
 
     def _discover_source_files(self, adr_dir: Path) -> tuple[list[Path], list[Path], list[Path]]:
@@ -298,88 +295,46 @@ class ArchitectureIndexGenerator:
                 return
             raise ValueError(f"Duplicate canonical entity ID {entity.id}")
 
-        logical_extraction = extract_logical_entities(
-            logical_adrs,
+        def collect_standalone_invariant_mentions(mentions: Dict[str, List[tuple[dict, str, str]]]) -> None:
+            for invariant, path in standalone_invariants:
+                artifact = self._source_path(scope, path)
+                mentions.setdefault(invariant.id, []).append((
+                    {
+                        "name": invariant.id,
+                        "summary": self._summary(invariant.statement),
+                        "metadata": {
+                            "defined_in": invariant.defined_in,
+                            "scope": invariant.scope,
+                            "statement": invariant.statement,
+                            "enforcement_level": invariant.enforcement_level.value,
+                            "declaration_mode": invariant.declaration_mode or "canonical",
+                            "upheld_by_decisions": list(invariant.upheld_by_decisions),
+                            "enforced_by": list(invariant.enforced_by),
+                        },
+                    },
+                    artifact,
+                    invariant.id,
+                ))
+
+        self.pass_runner.run(
+            logical_adrs=logical_adrs,
+            physical_adrs=physical_adrs,
+            standalone_invariants=standalone_invariants,
+            entities=entities,
+            relationships=relationships,
+            unresolved=unresolved,
+            system_ids=system_ids,
             source_path=lambda file_path: self._source_path(scope, file_path),
             canonical=self._canonical,
             provenance=self._provenance,
             summary=self._summary,
             complete=self._complete,
             classify_author_gap=self._classify_author_gap,
-        )
-        for extracted in logical_extraction.entities:
-            add_entity(extracted.entity, allow_reference_merge=extracted.allow_reference_merge)
-        for inv_id, mentions in logical_extraction.invariant_mentions.items():
-            invariant_mentions.setdefault(inv_id, []).extend(
-                (mention.payload, mention.artifact_path, mention.source_ref)
-                for mention in mentions
-            )
-        unresolved.extend(logical_extraction.unresolved)
-
-        for invariant, path in standalone_invariants:
-            artifact = self._source_path(scope, path)
-            invariant_mentions.setdefault(invariant.id, []).append((
-                {
-                    "name": invariant.id,
-                    "summary": self._summary(invariant.statement),
-                    "metadata": {
-                        "defined_in": invariant.defined_in,
-                        "scope": invariant.scope,
-                        "statement": invariant.statement,
-                        "enforcement_level": invariant.enforcement_level.value,
-                        "declaration_mode": invariant.declaration_mode or "canonical",
-                        "upheld_by_decisions": list(invariant.upheld_by_decisions),
-                        "enforced_by": list(invariant.enforced_by),
-                    },
-                },
-                artifact,
-                invariant.id,
-            ))
-
-        invariant_resolution = resolve_invariant_canonical(
-            invariant_mentions,
-            canonical=self._canonical,
-            provenance=self._provenance,
-            complete=self._complete,
-        )
-        for extracted in invariant_resolution.entities:
-            add_entity(extracted.entity, allow_reference_merge=extracted.allow_reference_merge)
-        for selection in invariant_resolution.selections.values():
-            for ref in selection.reference_source_refs:
-                self._append_source_ref(selection.entity, ref)
-
-        physical_extraction = extract_physical_entities(
-            physical_adrs,
-            source_path=lambda file_path: self._source_path(scope, file_path),
-            canonical=self._canonical,
-            provenance=self._provenance,
-            summary=self._summary,
-            complete=self._complete,
             system_entity_id=self._system_entity_id,
-        )
-        for extracted in physical_extraction.entities:
-            add_entity(extracted.entity, allow_reference_merge=extracted.allow_reference_merge)
-        system_ids.update(physical_extraction.system_ids)
-
-        relationship_derivation = derive_relationships(
-            entities=entities,
-            logical_adrs=logical_adrs,
-            standalone_invariants=standalone_invariants,
-            physical_adrs=physical_adrs,
-            system_ids=system_ids,
             relationship_id=self._relationship_id,
-        )
-        relationships.update({item.relationship_id: item for item in relationship_derivation.relationships})
-        for item in relationship_derivation.relationships:
-            summary = getattr(entities[item.from_entity_id].relationships, item.relationship_type)
-            if item.to_entity_id not in summary:
-                summary.append(item.to_entity_id)
-                summary.sort()
-        unresolved.extend(
-            detect_unresolved(
-                relationship_derivation.generator_gaps,
-                provenance=self._provenance,
-            ).unresolved
+            add_entity=add_entity,
+            append_source_ref=self._append_source_ref,
+            collect_standalone_invariant_mentions=collect_standalone_invariant_mentions,
         )
 
         entity_registry = NormalizedEntityRegistry(entities=sorted(entities.values(), key=lambda item: (item.entity_type, item.id)))
@@ -392,7 +347,16 @@ class ArchitectureIndexGenerator:
         system_registry = self._filtered(entity_registry, "system")
         legacy_entities = [item for item in (self._legacy_entity(entity) for entity in entity_registry.entities) if item is not None]
         legacy_registry = EntityRegistry(entities=sorted(legacy_entities, key=lambda item: item.entity_id))
-        self._validate_bundle(entity_registry, relationship_registry, unresolved_registry)
+        self.diagnostics.clear()
+        validation = self.pass_runner.validate(
+            entity_registry,
+            relationship_registry,
+            unresolved_registry,
+            diagnostics=self.diagnostics,
+        )
+        if not validation.is_valid:
+            error = validation.first_error
+            raise ValueError(error.message if error is not None else "Bundle validation failed")
         index = ArchitectureIndex(
             architecture_namespace=namespace,
             generated_at=datetime.now(timezone.utc).replace(microsecond=0),

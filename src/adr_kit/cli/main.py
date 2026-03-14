@@ -1157,8 +1157,9 @@ def entities_list(scope: Optional[Path], entity_type: Optional[str], adr_id: Opt
     """List entities from the generated registry."""
     try:
         repository = _load_architecture_repository(scope)
+        model = repository.get_model()
         entities = _filter_entities(
-            repository.legacy_entity_registry or repository.primary_entity_registry,
+            type("ModelView", (), {"entities": model.entities})(),
             entity_type=entity_type,
             adr=adr_id,
             domain=domain,

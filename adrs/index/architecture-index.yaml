@@ -1,7 +1,7 @@
 schema_version: '1.1'
 type: architecture_index
 architecture_namespace: adr-architecture-kit
-generated_at: '2026-03-14T19:31:03Z'
+generated_at: '2026-03-14T20:42:41Z'
 generator: adr-architecture-index
 entity_registry_path: adrs/index/entity-registry.yaml
 relationship_registry_path: adrs/index/relationship-registry.yaml
@@ -16,8 +16,8 @@ validation_summary:
   warnings: 0
   unresolved_entries: 9
 source_coverage:
-  logical_adrs: 26
+  logical_adrs: 27
   physical_adrs: 4
   physical_system_adrs: 1
   physical_component_adrs: 1
-  standalone_invariants: 6
+  standalone_invariants: 7

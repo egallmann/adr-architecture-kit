@@ -294,26 +294,36 @@ entities:
 - id: INV-0007
   entity_type: invariant
   name: INV-0007
-  summary: Schema evolution must maintain backward compatibility unless major version
+  summary: In-process architecture consumers must use ArchitectureRepository and its
+    normalized semantic model rather than interpreting compiled registries ad hoc
+    when the repository boundary is available.
   canonical_source:
-    source_type: logical_adr
+    source_type: standalone_invariant
+    source_ref: INV-0007
+    artifact_path: adrs/invariants/INV-0007-architecture-consumers-must-use-the-repository-boundary.yaml
+  source_refs:
+  - source_type: logical_adr
     source_ref: ADR-L-0001#INV-0007
     artifact_path: adrs/logical/ADR-L-0001-ste-compliant-adr-system.yaml
-  source_refs: []
+    mention_role: reference
   metadata:
-    adr_id: ADR-L-0001
+    defined_in: ADR-L-0013
     scope: global
-    statement: Schema evolution must maintain backward compatibility unless major
-      version
+    statement: In-process architecture consumers must use ArchitectureRepository and
+      its normalized semantic model rather than interpreting compiled registries ad
+      hoc when the repository boundary is available.
     enforcement_level: must
-    declaration_mode: local
+    declaration_mode: canonical
     upheld_by_decisions: []
+    enforced_by:
+    - ADR-P-0001
   relationships:
     declared_in:
-    - ADR-L-0001
+    - INV-0007
     references: []
     related_to: []
-    enforces: []
+    enforces:
+    - ADR-P-0001
     enabled_by: []
     enables: []
     governs: []
@@ -326,8 +336,8 @@ entities:
     status: complete
     missing_fields: []
   provenance:
-    source_type: logical_adr
-    source_ref: ADR-L-0001#INV-0007
+    source_type: standalone_invariant
+    source_ref: INV-0007
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
@@ -2342,6 +2352,53 @@ entities:
   provenance:
     source_type: logical_adr
     source_ref: ADR-L-0012#INV-0058
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
+- id: INV-0059
+  entity_type: invariant
+  name: INV-0059
+  summary: In-process architecture consumers MUST use the ArchitectureRepository boundary
+    instead of inventing ad hoc compiled-registry interpretation when a repository
+    boundary is available.
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0013#INV-0059
+    artifact_path: adrs/logical/ADR-L-0013-architecture-repository-boundary-and-normalized-semantic-model.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0013
+    scope: global
+    statement: 'In-process architecture consumers MUST use the ArchitectureRepository
+
+      boundary instead of inventing ad hoc compiled-registry interpretation when
+
+      a repository boundary is available.
+
+      '
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions: []
+  relationships:
+    declared_in:
+    - ADR-L-0013
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0013#INV-0059
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index

@@ -419,6 +419,7 @@ entities:
     references:
     - ADR-L-0001
     - ADR-L-0008
+    - ADR-L-0013
     related_to: []
     enforces: []
     enabled_by: []
@@ -469,6 +470,7 @@ entities:
     - ADR-L-0008
     - ADR-L-0009
     - ADR-L-0012
+    - ADR-L-0013
     - ADR-P-0001
     - ADR-PC-0001
     related_to: []
@@ -568,6 +570,7 @@ entities:
     - ADR-L-0002
     - ADR-L-0007
     - ADR-L-0010
+    - ADR-L-0013
     - ADR-PS-0001
     related_to: []
     enforces: []
@@ -585,6 +588,55 @@ entities:
   provenance:
     source_type: logical_adr
     source_ref: ADR-L-0012
+    extraction_phase: extract_adr
+    classification: explicit
+    generator: adr-architecture-index
+- id: ADR-L-0013
+  entity_type: adr
+  name: Architecture Repository Boundary and Normalized Semantic Model
+  summary: 'adr-architecture-kit now has an explicit compiler pipeline, a compiler
+    IR (`ArchModel`), compiled registry bundles, and an additive architecture graph.
+    Those pieces are sufficient to produce deterministic machine-facing '
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0013
+    artifact_path: adrs/logical/ADR-L-0013-architecture-repository-boundary-and-normalized-semantic-model.yaml
+  source_refs: []
+  metadata:
+    status: proposed
+    domains:
+    - repository
+    - discovery
+    - compiler
+    - kernel
+    tags:
+    - repository-boundary
+    - semantic-model
+    - archmodel
+    - registries
+  relationships:
+    declared_in: []
+    references:
+    - ADR-L-0009
+    - ADR-L-0010
+    - ADR-L-0012
+    - ADR-PC-0001
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0013
     extraction_phase: extract_adr
     classification: explicit
     generator: adr-architecture-index
@@ -3020,6 +3072,49 @@ entities:
     extraction_phase: extract_capability
     classification: explicit
     generator: adr-architecture-index
+- id: CAP-0039
+  entity_type: capability
+  name: Stable Repository Semantic Boundary
+  summary: Provide one scope-safe, deterministic in-process interface that loads compiled
+    architecture bundles and returns a stable normalized semantic model for tools,
+    validators, agents, and future kernel consumers.
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0013#CAP-0039
+    artifact_path: adrs/logical/ADR-L-0013-architecture-repository-boundary-and-normalized-semantic-model.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0013
+    domains:
+    - repository
+    - discovery
+    - compiler
+    - kernel
+    implemented_by_components: []
+    enabled_by_decisions: []
+  relationships:
+    declared_in:
+    - ADR-L-0013
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0013#CAP-0039
+    extraction_phase: extract_capability
+    classification: explicit
+    generator: adr-architecture-index
 - id: COMP-0010
   entity_type: component
   name: Entity Registry Generator and Query Surface
@@ -5154,6 +5249,134 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
+- id: DEC-0050
+  entity_type: decision
+  name: Use ArchitectureRepository as the only supported in-process consumer entry
+    point
+  summary: The repository boundary centralizes scope-safe loading, contract validation,
+    path hiding, and registry compatibility adaptation. This keeps consumers from
+    binding directly to registry files and current layout.
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0013#DEC-0050
+    artifact_path: adrs/logical/ADR-L-0013-architecture-repository-boundary-and-normalized-semantic-model.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0013
+    related_invariants: []
+    enforces_invariants: []
+    enables_capabilities: []
+    governs_components: []
+    supersedes: []
+    refines: []
+  relationships:
+    declared_in:
+    - ADR-L-0013
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0013#DEC-0050
+    extraction_phase: extract_decision
+    classification: explicit
+    generator: adr-architecture-index
+- id: DEC-0051
+  entity_type: decision
+  name: Expose a NormalizedArchitectureModel as the repository semantic payload
+  summary: A semantic model is needed so consumers depend on architecture meaning
+    rather than current registry document shapes. The model must preserve entities,
+    relationships, unresolved records, provenance, scope identity, and de
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0013#DEC-0051
+    artifact_path: adrs/logical/ADR-L-0013-architecture-repository-boundary-and-normalized-semantic-model.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0013
+    related_invariants: []
+    enforces_invariants: []
+    enables_capabilities: []
+    governs_components: []
+    supersedes: []
+    refines: []
+  relationships:
+    declared_in:
+    - ADR-L-0013
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0013#DEC-0051
+    extraction_phase: extract_decision
+    classification: explicit
+    generator: adr-architecture-index
+- id: DEC-0052
+  entity_type: decision
+  name: Keep ArchModel compiler-internal and do not promote it to the public consumer
+    API
+  summary: The current `ArchModel` is the compiler IR. It reflects pass orchestration
+    and extraction concerns and may evolve as compiler internals change. Making it
+    the public consumer contract would freeze the wrong abstraction to
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0013#DEC-0052
+    artifact_path: adrs/logical/ADR-L-0013-architecture-repository-boundary-and-normalized-semantic-model.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0013
+    related_invariants: []
+    enforces_invariants: []
+    enables_capabilities: []
+    governs_components: []
+    supersedes: []
+    refines: []
+  relationships:
+    declared_in:
+    - ADR-L-0013
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0013#DEC-0052
+    extraction_phase: extract_decision
+    classification: explicit
+    generator: adr-architecture-index
 - id: INV-0001
   entity_type: invariant
   name: INV-0001
@@ -5447,26 +5670,36 @@ entities:
 - id: INV-0007
   entity_type: invariant
   name: INV-0007
-  summary: Schema evolution must maintain backward compatibility unless major version
+  summary: In-process architecture consumers must use ArchitectureRepository and its
+    normalized semantic model rather than interpreting compiled registries ad hoc
+    when the repository boundary is available.
   canonical_source:
-    source_type: logical_adr
+    source_type: standalone_invariant
+    source_ref: INV-0007
+    artifact_path: adrs/invariants/INV-0007-architecture-consumers-must-use-the-repository-boundary.yaml
+  source_refs:
+  - source_type: logical_adr
     source_ref: ADR-L-0001#INV-0007
     artifact_path: adrs/logical/ADR-L-0001-ste-compliant-adr-system.yaml
-  source_refs: []
+    mention_role: reference
   metadata:
-    adr_id: ADR-L-0001
+    defined_in: ADR-L-0013
     scope: global
-    statement: Schema evolution must maintain backward compatibility unless major
-      version
+    statement: In-process architecture consumers must use ArchitectureRepository and
+      its normalized semantic model rather than interpreting compiled registries ad
+      hoc when the repository boundary is available.
     enforcement_level: must
-    declaration_mode: local
+    declaration_mode: canonical
     upheld_by_decisions: []
+    enforced_by:
+    - ADR-P-0001
   relationships:
     declared_in:
-    - ADR-L-0001
+    - INV-0007
     references: []
     related_to: []
-    enforces: []
+    enforces:
+    - ADR-P-0001
     enabled_by: []
     enables: []
     governs: []
@@ -5479,8 +5712,8 @@ entities:
     status: complete
     missing_fields: []
   provenance:
-    source_type: logical_adr
-    source_ref: ADR-L-0001#INV-0007
+    source_type: standalone_invariant
+    source_ref: INV-0007
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
@@ -7495,6 +7728,53 @@ entities:
   provenance:
     source_type: logical_adr
     source_ref: ADR-L-0012#INV-0058
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
+- id: INV-0059
+  entity_type: invariant
+  name: INV-0059
+  summary: In-process architecture consumers MUST use the ArchitectureRepository boundary
+    instead of inventing ad hoc compiled-registry interpretation when a repository
+    boundary is available.
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0013#INV-0059
+    artifact_path: adrs/logical/ADR-L-0013-architecture-repository-boundary-and-normalized-semantic-model.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0013
+    scope: global
+    statement: 'In-process architecture consumers MUST use the ArchitectureRepository
+
+      boundary instead of inventing ad hoc compiled-registry interpretation when
+
+      a repository boundary is available.
+
+      '
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions: []
+  relationships:
+    declared_in:
+    - ADR-L-0013
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0013#INV-0059
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index

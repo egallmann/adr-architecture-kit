@@ -439,11 +439,29 @@ class ADRParser:
         except ValidationError as e:
             raise ADRParseError(f"Pydantic validation failed: {e}")
 
+    def parse_normalized_entity_registry_from_data(self, yaml_text: str) -> NormalizedEntityRegistry:
+        """Parse and validate normalized entity registry from YAML text."""
+        data = yaml.safe_load(yaml_text)
+        self.validate_against_schema(data, "normalized_entity_registry")
+        try:
+            return NormalizedEntityRegistry(**data)
+        except ValidationError as e:
+            raise ADRParseError(f"Pydantic validation failed: {e}")
+
     def parse_relationship_registry(self, file_path: Union[str, Path]) -> RelationshipRegistry:
         """Parse and validate relationship registry."""
         data = self.parse_yaml(file_path)
         self.validate_against_schema(data, "relationship_registry")
 
+        try:
+            return RelationshipRegistry(**data)
+        except ValidationError as e:
+            raise ADRParseError(f"Pydantic validation failed: {e}")
+
+    def parse_relationship_registry_from_data(self, yaml_text: str) -> RelationshipRegistry:
+        """Parse and validate relationship registry from YAML text."""
+        data = yaml.safe_load(yaml_text)
+        self.validate_against_schema(data, "relationship_registry")
         try:
             return RelationshipRegistry(**data)
         except ValidationError as e:
@@ -459,11 +477,29 @@ class ADRParser:
         except ValidationError as e:
             raise ADRParseError(f"Pydantic validation failed: {e}")
 
+    def parse_unresolved_registry_from_data(self, yaml_text: str) -> UnresolvedRegistry:
+        """Parse and validate unresolved registry from YAML text."""
+        data = yaml.safe_load(yaml_text)
+        self.validate_against_schema(data, "unresolved_registry")
+        try:
+            return UnresolvedRegistry(**data)
+        except ValidationError as e:
+            raise ADRParseError(f"Pydantic validation failed: {e}")
+
     def parse_architecture_index(self, file_path: Union[str, Path]) -> ArchitectureIndex:
         """Parse and validate architecture index."""
         data = self.parse_yaml(file_path)
         self.validate_against_schema(data, "architecture_index")
 
+        try:
+            return ArchitectureIndex(**data)
+        except ValidationError as e:
+            raise ADRParseError(f"Pydantic validation failed: {e}")
+
+    def parse_architecture_index_from_data(self, yaml_text: str) -> ArchitectureIndex:
+        """Parse and validate architecture index from YAML text."""
+        data = yaml.safe_load(yaml_text)
+        self.validate_against_schema(data, "architecture_index")
         try:
             return ArchitectureIndex(**data)
         except ValidationError as e:

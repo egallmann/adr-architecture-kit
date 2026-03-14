@@ -436,6 +436,106 @@ entities:
     extraction_phase: extract_adr
     classification: explicit
     generator: adr-architecture-index
+- id: ADR-L-0010
+  entity_type: adr
+  name: Kernel Interface Contract and Validation Profiles
+  summary: 'adr-architecture-kit is transitioning from an implicit generator toolkit
+    into an explicit architecture compiler with a defined contract boundary to the
+    STE kernel. The plan work established that the kernel consumes four '
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0010
+    artifact_path: adrs/logical/ADR-L-0010-kernel-interface-contract-and-validation-profiles.yaml
+  source_refs: []
+  metadata:
+    status: proposed
+    domains:
+    - kernel
+    - contract
+    - governance
+    - validation
+    tags:
+    - contract
+    - registries
+    - brownfield
+    - migration
+    - sentinel
+  relationships:
+    declared_in: []
+    references:
+    - ADR-L-0001
+    - ADR-L-0008
+    - ADR-L-0009
+    - ADR-P-0001
+    - ADR-PC-0001
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0010
+    extraction_phase: extract_adr
+    classification: explicit
+    generator: adr-architecture-index
+- id: ADR-L-0011
+  entity_type: adr
+  name: Metadata Schemas and Remediation Ledger Enforcement
+  summary: The compiler contract now distinguishes fully compliant bundles from sentinel-backed
+    brownfield and migration bundles. That boundary is only safe if sentinel use is
+    narrow, explicitly tracked, and moved toward approved c
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0011
+    artifact_path: adrs/logical/ADR-L-0011-metadata-schemas-and-remediation-ledger-enforcement.yaml
+  source_refs: []
+  metadata:
+    status: proposed
+    domains:
+    - governance
+    - metadata
+    - migration
+    - brownfield
+    tags:
+    - metadata
+    - remediation-ledger
+    - sentinel
+    - approval
+  relationships:
+    declared_in: []
+    references:
+    - ADR-L-0001
+    - ADR-L-0008
+    - ADR-L-0010
+    - ADR-V-0013
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0011
+    extraction_phase: extract_adr
+    classification: explicit
+    generator: adr-architecture-index
 - id: ADR-P-0001
   entity_type: adr
   name: Python Toolkit Implementation for ADR Kit
@@ -2658,6 +2758,174 @@ entities:
     extraction_phase: extract_capability
     classification: explicit
     generator: adr-architecture-index
+- id: CAP-0034
+  entity_type: capability
+  name: Profile-Aware Contract Validation
+  summary: Validate compiled registry bundles against a single contract schema with
+    profile-specific enforcement for greenfield, brownfield, and migration.
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0010#CAP-0034
+    artifact_path: adrs/logical/ADR-L-0010-kernel-interface-contract-and-validation-profiles.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0010
+    domains:
+    - kernel
+    - contract
+    - governance
+    - validation
+    implemented_by_components: []
+    enabled_by_decisions: []
+  relationships:
+    declared_in:
+    - ADR-L-0010
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0010#CAP-0034
+    extraction_phase: extract_capability
+    classification: explicit
+    generator: adr-architecture-index
+- id: CAP-0035
+  entity_type: capability
+  name: Production-Safe Kernel Admission
+  summary: Distinguish between contract-valid bundles that are production-safe and
+    bundles that are inspection-safe only.
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0010#CAP-0035
+    artifact_path: adrs/logical/ADR-L-0010-kernel-interface-contract-and-validation-profiles.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0010
+    domains:
+    - kernel
+    - contract
+    - governance
+    - validation
+    implemented_by_components: []
+    enabled_by_decisions: []
+  relationships:
+    declared_in:
+    - ADR-L-0010
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0010#CAP-0035
+    extraction_phase: extract_capability
+    classification: explicit
+    generator: adr-architecture-index
+- id: CAP-0036
+  entity_type: capability
+  name: Typed Metadata Contract Enforcement
+  summary: Validate entity metadata against entity-type-specific schema expectations
+    under the active enforcement profile.
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0011#CAP-0036
+    artifact_path: adrs/logical/ADR-L-0011-metadata-schemas-and-remediation-ledger-enforcement.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0011
+    domains:
+    - governance
+    - metadata
+    - migration
+    - brownfield
+    implemented_by_components: []
+    enabled_by_decisions: []
+  relationships:
+    declared_in:
+    - ADR-L-0011
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0011#CAP-0036
+    extraction_phase: extract_capability
+    classification: explicit
+    generator: adr-architecture-index
+- id: CAP-0037
+  entity_type: capability
+  name: Remediation Ledger Governance
+  summary: Track sentinel usage, replacement, approval, and no-regression state in
+    a canonical governance artifact.
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0011#CAP-0037
+    artifact_path: adrs/logical/ADR-L-0011-metadata-schemas-and-remediation-ledger-enforcement.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0011
+    domains:
+    - governance
+    - metadata
+    - migration
+    - brownfield
+    implemented_by_components: []
+    enabled_by_decisions: []
+  relationships:
+    declared_in:
+    - ADR-L-0011
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0011#CAP-0037
+    extraction_phase: extract_capability
+    classification: explicit
+    generator: adr-architecture-index
 - id: COMP-0010
   entity_type: component
   name: Entity Registry Generator and Query Surface
@@ -4198,6 +4466,387 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
+- id: DEC-0036
+  entity_type: decision
+  name: Use the four core registries as the kernel contract surface
+  summary: The kernel needs a stable, minimal set of compiled artifacts that can be
+    loaded without parsing ADR source files. The architecture index plus the entity,
+    relationship, and unresolved registries are sufficient and already
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0010#DEC-0036
+    artifact_path: adrs/logical/ADR-L-0010-kernel-interface-contract-and-validation-profiles.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0010
+    related_invariants: []
+    enforces_invariants: []
+    enables_capabilities: []
+    governs_components: []
+    supersedes: []
+    refines: []
+  relationships:
+    declared_in:
+    - ADR-L-0010
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0010#DEC-0036
+    extraction_phase: extract_decision
+    classification: explicit
+    generator: adr-architecture-index
+- id: DEC-0037
+  entity_type: decision
+  name: Treat the compiler-kernel contract as pre-stable 0.x until intentionally frozen
+  summary: The contract is not yet open as a stable external surface. Using 0.x avoids
+    pretending the boundary is already semantically frozen while still keeping a versioned
+    contract and explicit upgrade path.
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0010#DEC-0037
+    artifact_path: adrs/logical/ADR-L-0010-kernel-interface-contract-and-validation-profiles.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0010
+    related_invariants: []
+    enforces_invariants: []
+    enables_capabilities: []
+    governs_components: []
+    supersedes: []
+    refines: []
+  relationships:
+    declared_in:
+    - ADR-L-0010
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0010#DEC-0037
+    extraction_phase: extract_decision
+    classification: explicit
+    generator: adr-architecture-index
+- id: DEC-0038
+  entity_type: decision
+  name: Validate compiled output through explicit greenfield, brownfield, and migration
+    profiles
+  summary: A single contract schema is not enough to represent the enforcement posture
+    across new systems, legacy imports, and active remediation states. Profiles allow
+    strict integrity rules to remain universal while allowing qual
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0010#DEC-0038
+    artifact_path: adrs/logical/ADR-L-0010-kernel-interface-contract-and-validation-profiles.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0010
+    related_invariants: []
+    enforces_invariants: []
+    enables_capabilities: []
+    governs_components: []
+    supersedes: []
+    refines: []
+  relationships:
+    declared_in:
+    - ADR-L-0010
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0010#DEC-0038
+    extraction_phase: extract_decision
+    classification: explicit
+    generator: adr-architecture-index
+- id: DEC-0039
+  entity_type: decision
+  name: Classify sentinel-backed bundles as sentinel compliant rather than compliant
+  summary: Sentinel-backed content is valid under the right profile, but it is not
+    the same as fully populated architecture knowledge. A separate validator outcome
+    preserves honesty while keeping the system operational.
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0010#DEC-0039
+    artifact_path: adrs/logical/ADR-L-0010-kernel-interface-contract-and-validation-profiles.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0010
+    related_invariants: []
+    enforces_invariants: []
+    enables_capabilities: []
+    governs_components: []
+    supersedes: []
+    refines: []
+  relationships:
+    declared_in:
+    - ADR-L-0010
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0010#DEC-0039
+    extraction_phase: extract_decision
+    classification: explicit
+    generator: adr-architecture-index
+- id: DEC-0040
+  entity_type: decision
+  name: Define per-entity metadata through typed schemas rather than an unconstrained
+    metadata bag
+  summary: Registry metadata is currently too weak as a contract surface. Different
+    entity types carry different keys, and without typed expectations the kernel and
+    compiler can drift silently.
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0011#DEC-0040
+    artifact_path: adrs/logical/ADR-L-0011-metadata-schemas-and-remediation-ledger-enforcement.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0011
+    related_invariants: []
+    enforces_invariants: []
+    enables_capabilities: []
+    governs_components: []
+    supersedes: []
+    refines: []
+  relationships:
+    declared_in:
+    - ADR-L-0011
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0011#DEC-0040
+    extraction_phase: extract_decision
+    classification: explicit
+    generator: adr-architecture-index
+- id: DEC-0041
+  entity_type: decision
+  name: Restrict sentinel values to narrative fields and sections only
+  summary: Sentinel values are useful for preserving structure where knowledge is
+    missing, but they are dangerous in identifiers, references, enums, or governance
+    fields. Narrow placement keeps them honest and machine-safe.
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0011#DEC-0041
+    artifact_path: adrs/logical/ADR-L-0011-metadata-schemas-and-remediation-ledger-enforcement.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0011
+    related_invariants: []
+    enforces_invariants: []
+    enables_capabilities: []
+    governs_components: []
+    supersedes: []
+    refines: []
+  relationships:
+    declared_in:
+    - ADR-L-0011
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0011#DEC-0041
+    extraction_phase: extract_decision
+    classification: explicit
+    generator: adr-architecture-index
+- id: DEC-0042
+  entity_type: decision
+  name: Enforce remediation through a separate canonical remediation ledger
+  summary: Current architecture content and remediation workflow state should not
+    be mixed. A separate remediation ledger preserves auditability, avoids process
+    leakage into ADR text, and provides a stable mechanism for no-regressi
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0011#DEC-0042
+    artifact_path: adrs/logical/ADR-L-0011-metadata-schemas-and-remediation-ledger-enforcement.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0011
+    related_invariants: []
+    enforces_invariants: []
+    enables_capabilities: []
+    governs_components: []
+    supersedes: []
+    refines: []
+  relationships:
+    declared_in:
+    - ADR-L-0011
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0011#DEC-0042
+    extraction_phase: extract_decision
+    classification: explicit
+    generator: adr-architecture-index
+- id: DEC-0043
+  entity_type: decision
+  name: Require staged approval before replacement content becomes protected canonical
+    content
+  summary: Non-sentinel replacement content may be better than a sentinel without
+    yet being authoritative. Staged approval prevents accidental promotion and keeps
+    the no-regression rule tied to explicit governance.
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0011#DEC-0043
+    artifact_path: adrs/logical/ADR-L-0011-metadata-schemas-and-remediation-ledger-enforcement.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0011
+    related_invariants: []
+    enforces_invariants: []
+    enables_capabilities: []
+    governs_components: []
+    supersedes: []
+    refines: []
+  relationships:
+    declared_in:
+    - ADR-L-0011
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0011#DEC-0043
+    extraction_phase: extract_decision
+    classification: explicit
+    generator: adr-architecture-index
+- id: DEC-0044
+  entity_type: decision
+  name: Promote the contract to 1.0 only through an explicit readiness gate
+  summary: Stable status should reflect implemented and verified behavior, not elapsed
+    time or confidence. The transition from 0.x to 1.0 must therefore be tied to concrete
+    conditions across compiler output, schema conformance, and
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0010#DEC-0044
+    artifact_path: adrs/logical/ADR-L-0010-kernel-interface-contract-and-validation-profiles.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0010
+    related_invariants: []
+    enforces_invariants: []
+    enables_capabilities: []
+    governs_components: []
+    supersedes: []
+    refines: []
+  relationships:
+    declared_in:
+    - ADR-L-0010
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0010#DEC-0044
+    extraction_phase: extract_decision
+    classification: explicit
+    generator: adr-architecture-index
 - id: INV-0001
   entity_type: invariant
   name: INV-0001
@@ -4295,25 +4944,34 @@ entities:
 - id: INV-0003
   entity_type: invariant
   name: INV-0003
-  summary: Physical ADRs must reference at least one logical ADR
+  summary: Repository changes must be committed at meaningful verified boundaries
+    rather than accumulated indefinitely.
   canonical_source:
-    source_type: logical_adr
+    source_type: standalone_invariant
+    source_ref: INV-0003
+    artifact_path: adrs/invariants/INV-0003-meaningful-boundary-commits-required.yaml
+  source_refs:
+  - source_type: logical_adr
     source_ref: ADR-L-0001#INV-0003
     artifact_path: adrs/logical/ADR-L-0001-ste-compliant-adr-system.yaml
-  source_refs: []
+    mention_role: reference
   metadata:
-    adr_id: ADR-L-0001
+    defined_in: ADR-L-0003
     scope: global
-    statement: Physical ADRs must reference at least one logical ADR
+    statement: Repository changes must be committed at meaningful verified boundaries
+      rather than accumulated indefinitely.
     enforcement_level: must
-    declaration_mode: local
+    declaration_mode: canonical
     upheld_by_decisions: []
+    enforced_by:
+    - ADR-P-0001
   relationships:
     declared_in:
-    - ADR-L-0001
+    - INV-0003
     references: []
     related_to: []
-    enforces: []
+    enforces:
+    - ADR-P-0001
     enabled_by: []
     enables: []
     governs: []
@@ -4326,8 +4984,8 @@ entities:
     status: complete
     missing_fields: []
   provenance:
-    source_type: logical_adr
-    source_ref: ADR-L-0001#INV-0003
+    source_type: standalone_invariant
+    source_ref: INV-0003
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
@@ -6164,6 +6822,280 @@ entities:
   provenance:
     source_type: logical_adr
     source_ref: ADR-L-0005#INV-0051
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
+- id: INV-0052
+  entity_type: invariant
+  name: INV-0052
+  summary: 'The STE kernel MUST consume compiled registry artifacts through exactly
+    four contract files: architecture-index, entity-registry, relationship-registry,
+    and unresolved-registry.'
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0010#INV-0052
+    artifact_path: adrs/logical/ADR-L-0010-kernel-interface-contract-and-validation-profiles.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0010
+    scope: global
+    statement: 'The STE kernel MUST consume compiled registry artifacts through exactly
+      four
+
+      contract files: architecture-index, entity-registry, relationship-registry,
+
+      and unresolved-registry.
+
+      '
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions: []
+  relationships:
+    declared_in:
+    - ADR-L-0010
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0010#INV-0052
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
+- id: INV-0053
+  entity_type: invariant
+  name: INV-0053
+  summary: Contract validation MUST support profile-based enforcement for greenfield,
+    brownfield, and migration without forking the registry schema.
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0010#INV-0053
+    artifact_path: adrs/logical/ADR-L-0010-kernel-interface-contract-and-validation-profiles.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0010
+    scope: global
+    statement: 'Contract validation MUST support profile-based enforcement for greenfield,
+
+      brownfield, and migration without forking the registry schema.
+
+      '
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions: []
+  relationships:
+    declared_in:
+    - ADR-L-0010
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0010#INV-0053
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
+- id: INV-0054
+  entity_type: invariant
+  name: INV-0054
+  summary: Bundles classified as sentinel compliant MUST NOT be admitted to production
+    kernel loads by default, but MAY be loaded by inspection-only or remediation tooling.
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0010#INV-0054
+    artifact_path: adrs/logical/ADR-L-0010-kernel-interface-contract-and-validation-profiles.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0010
+    scope: global
+    statement: 'Bundles classified as sentinel compliant MUST NOT be admitted to production
+
+      kernel loads by default, but MAY be loaded by inspection-only or remediation
+
+      tooling.
+
+      '
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions: []
+  relationships:
+    declared_in:
+    - ADR-L-0010
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0010#INV-0054
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
+- id: INV-0055
+  entity_type: invariant
+  name: INV-0055
+  summary: Reserved sentinel values MUST be allowed only in narrative fields or sections
+    explicitly designated as sentinel-capable by schema or policy.
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0011#INV-0055
+    artifact_path: adrs/logical/ADR-L-0011-metadata-schemas-and-remediation-ledger-enforcement.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0011
+    scope: global
+    statement: 'Reserved sentinel values MUST be allowed only in narrative fields
+      or
+
+      sections explicitly designated as sentinel-capable by schema or policy.
+
+      '
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions: []
+  relationships:
+    declared_in:
+    - ADR-L-0011
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0011#INV-0055
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
+- id: INV-0056
+  entity_type: invariant
+  name: INV-0056
+  summary: Remediation workflow state MUST be recorded in a separate canonical remediation
+    ledger rather than in ADR content fields.
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0011#INV-0056
+    artifact_path: adrs/logical/ADR-L-0011-metadata-schemas-and-remediation-ledger-enforcement.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0011
+    scope: global
+    statement: 'Remediation workflow state MUST be recorded in a separate canonical
+
+      remediation ledger rather than in ADR content fields.
+
+      '
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions: []
+  relationships:
+    declared_in:
+    - ADR-L-0011
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0011#INV-0056
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
+- id: INV-0057
+  entity_type: invariant
+  name: INV-0057
+  summary: Once a field or section has an approved remediation-ledger entry for non-sentinel
+    canonical content, that field or section MUST NOT regress to a sentinel state
+    under normal validation.
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0011#INV-0057
+    artifact_path: adrs/logical/ADR-L-0011-metadata-schemas-and-remediation-ledger-enforcement.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0011
+    scope: global
+    statement: 'Once a field or section has an approved remediation-ledger entry for
+
+      non-sentinel canonical content, that field or section MUST NOT regress to a
+
+      sentinel state under normal validation.
+
+      '
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions: []
+  relationships:
+    declared_in:
+    - ADR-L-0011
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0011#INV-0057
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index

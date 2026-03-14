@@ -1386,3 +1386,171 @@ entities:
     extraction_phase: extract_capability
     classification: explicit
     generator: adr-architecture-index
+- id: CAP-0034
+  entity_type: capability
+  name: Profile-Aware Contract Validation
+  summary: Validate compiled registry bundles against a single contract schema with
+    profile-specific enforcement for greenfield, brownfield, and migration.
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0010#CAP-0034
+    artifact_path: adrs/logical/ADR-L-0010-kernel-interface-contract-and-validation-profiles.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0010
+    domains:
+    - kernel
+    - contract
+    - governance
+    - validation
+    implemented_by_components: []
+    enabled_by_decisions: []
+  relationships:
+    declared_in:
+    - ADR-L-0010
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0010#CAP-0034
+    extraction_phase: extract_capability
+    classification: explicit
+    generator: adr-architecture-index
+- id: CAP-0035
+  entity_type: capability
+  name: Production-Safe Kernel Admission
+  summary: Distinguish between contract-valid bundles that are production-safe and
+    bundles that are inspection-safe only.
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0010#CAP-0035
+    artifact_path: adrs/logical/ADR-L-0010-kernel-interface-contract-and-validation-profiles.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0010
+    domains:
+    - kernel
+    - contract
+    - governance
+    - validation
+    implemented_by_components: []
+    enabled_by_decisions: []
+  relationships:
+    declared_in:
+    - ADR-L-0010
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0010#CAP-0035
+    extraction_phase: extract_capability
+    classification: explicit
+    generator: adr-architecture-index
+- id: CAP-0036
+  entity_type: capability
+  name: Typed Metadata Contract Enforcement
+  summary: Validate entity metadata against entity-type-specific schema expectations
+    under the active enforcement profile.
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0011#CAP-0036
+    artifact_path: adrs/logical/ADR-L-0011-metadata-schemas-and-remediation-ledger-enforcement.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0011
+    domains:
+    - governance
+    - metadata
+    - migration
+    - brownfield
+    implemented_by_components: []
+    enabled_by_decisions: []
+  relationships:
+    declared_in:
+    - ADR-L-0011
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0011#CAP-0036
+    extraction_phase: extract_capability
+    classification: explicit
+    generator: adr-architecture-index
+- id: CAP-0037
+  entity_type: capability
+  name: Remediation Ledger Governance
+  summary: Track sentinel usage, replacement, approval, and no-regression state in
+    a canonical governance artifact.
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0011#CAP-0037
+    artifact_path: adrs/logical/ADR-L-0011-metadata-schemas-and-remediation-ledger-enforcement.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0011
+    domains:
+    - governance
+    - metadata
+    - migration
+    - brownfield
+    implemented_by_components: []
+    enabled_by_decisions: []
+  relationships:
+    declared_in:
+    - ADR-L-0011
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0011#CAP-0037
+    extraction_phase: extract_capability
+    classification: explicit
+    generator: adr-architecture-index

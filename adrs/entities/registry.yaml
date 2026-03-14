@@ -1,3 +1,12 @@
+# integrity_schema_version: 1
+# generated: deterministic_projection_v1
+# artifact_kind: legacy_entity_registry
+# generator_id: adr-compiler
+# generator_version: 1
+# hash_algorithm: sha256
+# source_hash: 7319136544e3935bdad7e06d467be3b5ead5f26d1ae4dd9e9c24e040b568c465
+# rendered_hash: 7504b12f10615594660ea690f83ed96656bf46736047698f8d1a858b6f13bd86
+
 schema_version: '1.1'
 type: entity_registry
 entities:
@@ -487,6 +496,66 @@ entities:
   introduced_by: ADR-L-0005
   lifecycle_stage: active
   source_path: adrs/logical/ADR-L-0005-adr-to-prompt-translation.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs: []
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: CAP-0034
+  entity_type: capability
+  name: Profile-Aware Contract Validation
+  introduced_by: ADR-L-0010
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0010-kernel-interface-contract-and-validation-profiles.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs: []
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: CAP-0035
+  entity_type: capability
+  name: Production-Safe Kernel Admission
+  introduced_by: ADR-L-0010
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0010-kernel-interface-contract-and-validation-profiles.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs: []
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: CAP-0036
+  entity_type: capability
+  name: Typed Metadata Contract Enforcement
+  introduced_by: ADR-L-0011
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0011-metadata-schemas-and-remediation-ledger-enforcement.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs: []
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: CAP-0037
+  entity_type: capability
+  name: Remediation Ledger Governance
+  introduced_by: ADR-L-0011
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0011-metadata-schemas-and-remediation-ledger-enforcement.yaml
   source_artifact_type: logical_adr
   domains: []
   related_adrs: []
@@ -1048,6 +1117,144 @@ entities:
     implements: []
     consumes: []
     realizes: []
+- entity_id: DEC-0036
+  entity_type: decision
+  name: Use the four core registries as the kernel contract surface
+  introduced_by: ADR-L-0010
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0010-kernel-interface-contract-and-validation-profiles.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs: []
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: DEC-0037
+  entity_type: decision
+  name: Treat the compiler-kernel contract as pre-stable 0.x until intentionally frozen
+  introduced_by: ADR-L-0010
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0010-kernel-interface-contract-and-validation-profiles.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs: []
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: DEC-0038
+  entity_type: decision
+  name: Validate compiled output through explicit greenfield, brownfield, and migration
+    profiles
+  introduced_by: ADR-L-0010
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0010-kernel-interface-contract-and-validation-profiles.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs: []
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: DEC-0039
+  entity_type: decision
+  name: Classify sentinel-backed bundles as sentinel compliant rather than compliant
+  introduced_by: ADR-L-0010
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0010-kernel-interface-contract-and-validation-profiles.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs: []
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: DEC-0040
+  entity_type: decision
+  name: Define per-entity metadata through typed schemas rather than an unconstrained
+    metadata bag
+  introduced_by: ADR-L-0011
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0011-metadata-schemas-and-remediation-ledger-enforcement.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs: []
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: DEC-0041
+  entity_type: decision
+  name: Restrict sentinel values to narrative fields and sections only
+  introduced_by: ADR-L-0011
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0011-metadata-schemas-and-remediation-ledger-enforcement.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs: []
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: DEC-0042
+  entity_type: decision
+  name: Enforce remediation through a separate canonical remediation ledger
+  introduced_by: ADR-L-0011
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0011-metadata-schemas-and-remediation-ledger-enforcement.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs: []
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: DEC-0043
+  entity_type: decision
+  name: Require staged approval before replacement content becomes protected canonical
+    content
+  introduced_by: ADR-L-0011
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0011-metadata-schemas-and-remediation-ledger-enforcement.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs: []
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: DEC-0044
+  entity_type: decision
+  name: Promote the contract to 1.0 only through an explicit readiness gate
+  introduced_by: ADR-L-0010
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0010-kernel-interface-contract-and-validation-profiles.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs: []
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
 - entity_id: INV-0001
   entity_type: invariant
   name: INV-0001
@@ -1085,18 +1292,20 @@ entities:
 - entity_id: INV-0003
   entity_type: invariant
   name: INV-0003
-  introduced_by: ADR-L-0001
+  introduced_by: ADR-L-0003
   lifecycle_stage: active
-  source_path: adrs/logical/ADR-L-0001-ste-compliant-adr-system.yaml
-  source_artifact_type: logical_adr
+  source_path: adrs/invariants/INV-0003-meaningful-boundary-commits-required.yaml
+  source_artifact_type: standalone_invariant
   domains: []
-  related_adrs: []
+  related_adrs:
+  - ADR-L-0001
   realized_by: []
   relationships:
     depends_on: []
     implements: []
     consumes: []
-    realizes: []
+    realizes:
+    - ADR-P-0001
 - entity_id: INV-0004
   entity_type: invariant
   name: INV-0004
@@ -1718,6 +1927,96 @@ entities:
   introduced_by: ADR-L-0005
   lifecycle_stage: active
   source_path: adrs/logical/ADR-L-0005-adr-to-prompt-translation.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs: []
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: INV-0052
+  entity_type: invariant
+  name: INV-0052
+  introduced_by: ADR-L-0010
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0010-kernel-interface-contract-and-validation-profiles.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs: []
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: INV-0053
+  entity_type: invariant
+  name: INV-0053
+  introduced_by: ADR-L-0010
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0010-kernel-interface-contract-and-validation-profiles.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs: []
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: INV-0054
+  entity_type: invariant
+  name: INV-0054
+  introduced_by: ADR-L-0010
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0010-kernel-interface-contract-and-validation-profiles.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs: []
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: INV-0055
+  entity_type: invariant
+  name: INV-0055
+  introduced_by: ADR-L-0011
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0011-metadata-schemas-and-remediation-ledger-enforcement.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs: []
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: INV-0056
+  entity_type: invariant
+  name: INV-0056
+  introduced_by: ADR-L-0011
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0011-metadata-schemas-and-remediation-ledger-enforcement.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs: []
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: INV-0057
+  entity_type: invariant
+  name: INV-0057
+  introduced_by: ADR-L-0011
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0011-metadata-schemas-and-remediation-ledger-enforcement.yaml
   source_artifact_type: logical_adr
   domains: []
   related_adrs: []

@@ -2,6 +2,9 @@ from __future__ import annotations
 
 from pathlib import Path
 
+from click.testing import CliRunner
+
+from src.adr_kit.cli.main import cli
 from src.adr_kit.compiler import ArchitectureCompiler, CompilerConfig
 from src.adr_kit.scope import ProjectScopeResolver
 from tests.golden.helpers import clone_scope_sources, generate_deterministic_outputs
@@ -96,3 +99,117 @@ def test_architecture_compiler_check_detects_drift(tmp_path):
     assert [(item.code, item.message) for item in result.diagnostics.as_list()] == [
         ("E702", "Compiled artifact drift detected: adrs/manifest.yaml"),
     ]
+
+
+def test_architecture_compiler_can_validate_contract_in_memory(tmp_path):
+    workspace = tmp_path / "workspace"
+    clone_scope_sources(_repo_root(), workspace)
+
+    compiler = ArchitectureCompiler(scope_resolver=ProjectScopeResolver(explicit_scope=workspace))
+    result = compiler.compile(
+        config=CompilerConfig(
+            dry_run=True,
+            emit={"registries"},
+            profile="greenfield",
+            metadata={"validate_contract": "true"},
+            pinned_timestamp="2026-01-01T00:00:00Z",
+        )
+    )
+
+    assert result.success is True
+    assert all(diagnostic.code != "E704" for diagnostic in result.diagnostics.as_list())
+
+
+def test_compile_cli_can_validate_contract_greenfield(tmp_path):
+    workspace = tmp_path / "workspace"
+    clone_scope_sources(_repo_root(), workspace)
+
+    runner = CliRunner()
+    result = runner.invoke(
+        cli,
+        [
+            "compile",
+            "--scope",
+            str(workspace),
+            "--emit",
+            "registries",
+            "--dry-run",
+            "--validate-contract",
+            "--contract-profile",
+            "greenfield",
+            "--timestamp",
+            "2026-01-01T00:00:00Z",
+        ],
+    )
+
+    assert result.exit_code == 0, result.output
+    assert "Contract validation: greenfield" in result.output
+    assert "Success: True" in result.output
+
+
+def test_compile_cli_can_validate_contract_brownfield(tmp_path):
+    workspace = tmp_path / "workspace"
+    clone_scope_sources(_repo_root(), workspace)
+
+    runner = CliRunner()
+    result = runner.invoke(
+        cli,
+        [
+            "compile",
+            "--scope",
+            str(workspace),
+            "--emit",
+            "registries",
+            "--dry-run",
+            "--validate-contract",
+            "--contract-profile",
+            "brownfield",
+            "--timestamp",
+            "2026-01-01T00:00:00Z",
+        ],
+    )
+
+    assert result.exit_code == 0, result.output
+    assert "Contract validation: brownfield" in result.output
+
+
+def test_compile_cli_exits_non_zero_when_contract_validation_fails(tmp_path, monkeypatch):
+    workspace = tmp_path / "workspace"
+    clone_scope_sources(_repo_root(), workspace)
+
+    from src.adr_kit.compiler import driver as driver_module
+    from src.adr_kit.schema.contract_validation import ContractValidationIssue, ContractValidationResult
+
+    monkeypatch.setattr(
+        driver_module,
+        "validate_kernel_contract_bundle",
+        lambda *args, **kwargs: ContractValidationResult(
+            profile="greenfield",
+            outcome="non_compliant",
+            issues=(ContractValidationIssue(path="entities[0]", message="forced failure"),),
+            sentinel_field_count=0,
+            non_complete_entity_count=0,
+            completeness_counts={"complete": 1},
+        ),
+    )
+
+    runner = CliRunner()
+    result = runner.invoke(
+        cli,
+        [
+            "compile",
+            "--scope",
+            str(workspace),
+            "--emit",
+            "registries",
+            "--dry-run",
+            "--validate-contract",
+            "--contract-profile",
+            "greenfield",
+            "--timestamp",
+            "2026-01-01T00:00:00Z",
+        ],
+    )
+
+    assert result.exit_code == 1, result.output
+    assert "ERROR: E704 forced failure" in result.output

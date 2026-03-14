@@ -1,3 +1,12 @@
+# integrity_schema_version: 1
+# generated: deterministic_projection_v1
+# artifact_kind: legacy_entity_registry
+# generator_id: adr-compiler
+# generator_version: 1
+# hash_algorithm: sha256
+# source_hash: 7319136544e3935bdad7e06d467be3b5ead5f26d1ae4dd9e9c24e040b568c465
+# rendered_hash: 7504b12f10615594660ea690f83ed96656bf46736047698f8d1a858b6f13bd86
+
 schema_version: '1.1'
 type: entity_registry
 entities:

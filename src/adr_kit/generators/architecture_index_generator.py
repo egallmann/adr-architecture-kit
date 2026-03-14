@@ -16,6 +16,17 @@ from ..compiler.passes import (
     score_completeness,
     validate_bundle,
 )
+from ..integrity import (
+    ArtifactKind,
+    GENERATED_MARKER,
+    HASH_ALGORITHM,
+    INTEGRITY_SCHEMA_VERSION,
+    LEGACY_ENTITY_REGISTRY_GENERATOR,
+    build_yaml_header,
+    compute_rendered_hash,
+    compute_source_hash,
+    legacy_entity_registry_source_inputs,
+)
 from ..models import (
     ArchitectureIndex,
     CanonicalSource,
@@ -392,6 +403,26 @@ class ArchitectureIndexGenerator:
     def render_yaml(self, model) -> str:
         return yaml.safe_dump(model.model_dump(mode="json", exclude_none=True), sort_keys=False, allow_unicode=True)
 
+    def render_legacy_entity_registry(self, bundle: ArchitectureDiscoveryBundle, scope: ProjectScope) -> str:
+        body = self.render_yaml(bundle.legacy_entity_registry)
+        header = build_yaml_header(
+            {
+                "integrity_schema_version": str(INTEGRITY_SCHEMA_VERSION),
+                "generated": GENERATED_MARKER,
+                "artifact_kind": ArtifactKind.LEGACY_ENTITY_REGISTRY.value,
+                "generator_id": LEGACY_ENTITY_REGISTRY_GENERATOR.generator_id,
+                "generator_version": str(LEGACY_ENTITY_REGISTRY_GENERATOR.generator_version),
+                "hash_algorithm": HASH_ALGORITHM,
+                "source_hash": compute_source_hash(
+                    scope.root,
+                    legacy_entity_registry_source_inputs(scope),
+                    LEGACY_ENTITY_REGISTRY_GENERATOR,
+                ),
+                "rendered_hash": compute_rendered_hash(body),
+            }
+        )
+        return f"{header}{body}"
+
     def save_bundle(self, bundle: ArchitectureDiscoveryBundle, scope: Optional[ProjectScope] = None) -> dict[str, Path]:
         scope = scope or self.scope_resolver.resolve()
         index_dir = scope.adr_dir / "index"
@@ -422,5 +453,8 @@ class ArchitectureIndexGenerator:
         }
         for key, path in paths.items():
             path.parent.mkdir(parents=True, exist_ok=True)
+            if key == "legacy_entity_registry":
+                path.write_text(self.render_legacy_entity_registry(bundle, scope), encoding="utf-8", newline="\n")
+                continue
             path.write_text(self.render_yaml(payloads[key]), encoding="utf-8", newline="\n")
         return paths

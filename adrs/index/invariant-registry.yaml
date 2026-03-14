@@ -98,25 +98,34 @@ entities:
 - id: INV-0003
   entity_type: invariant
   name: INV-0003
-  summary: Physical ADRs must reference at least one logical ADR
+  summary: Repository changes must be committed at meaningful verified boundaries
+    rather than accumulated indefinitely.
   canonical_source:
-    source_type: logical_adr
+    source_type: standalone_invariant
+    source_ref: INV-0003
+    artifact_path: adrs/invariants/INV-0003-meaningful-boundary-commits-required.yaml
+  source_refs:
+  - source_type: logical_adr
     source_ref: ADR-L-0001#INV-0003
     artifact_path: adrs/logical/ADR-L-0001-ste-compliant-adr-system.yaml
-  source_refs: []
+    mention_role: reference
   metadata:
-    adr_id: ADR-L-0001
+    defined_in: ADR-L-0003
     scope: global
-    statement: Physical ADRs must reference at least one logical ADR
+    statement: Repository changes must be committed at meaningful verified boundaries
+      rather than accumulated indefinitely.
     enforcement_level: must
-    declaration_mode: local
+    declaration_mode: canonical
     upheld_by_decisions: []
+    enforced_by:
+    - ADR-P-0001
   relationships:
     declared_in:
-    - ADR-L-0001
+    - INV-0003
     references: []
     related_to: []
-    enforces: []
+    enforces:
+    - ADR-P-0001
     enabled_by: []
     enables: []
     governs: []
@@ -129,8 +138,8 @@ entities:
     status: complete
     missing_fields: []
   provenance:
-    source_type: logical_adr
-    source_ref: ADR-L-0001#INV-0003
+    source_type: standalone_invariant
+    source_ref: INV-0003
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
@@ -1967,6 +1976,280 @@ entities:
   provenance:
     source_type: logical_adr
     source_ref: ADR-L-0005#INV-0051
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
+- id: INV-0052
+  entity_type: invariant
+  name: INV-0052
+  summary: 'The STE kernel MUST consume compiled registry artifacts through exactly
+    four contract files: architecture-index, entity-registry, relationship-registry,
+    and unresolved-registry.'
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0010#INV-0052
+    artifact_path: adrs/logical/ADR-L-0010-kernel-interface-contract-and-validation-profiles.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0010
+    scope: global
+    statement: 'The STE kernel MUST consume compiled registry artifacts through exactly
+      four
+
+      contract files: architecture-index, entity-registry, relationship-registry,
+
+      and unresolved-registry.
+
+      '
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions: []
+  relationships:
+    declared_in:
+    - ADR-L-0010
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0010#INV-0052
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
+- id: INV-0053
+  entity_type: invariant
+  name: INV-0053
+  summary: Contract validation MUST support profile-based enforcement for greenfield,
+    brownfield, and migration without forking the registry schema.
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0010#INV-0053
+    artifact_path: adrs/logical/ADR-L-0010-kernel-interface-contract-and-validation-profiles.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0010
+    scope: global
+    statement: 'Contract validation MUST support profile-based enforcement for greenfield,
+
+      brownfield, and migration without forking the registry schema.
+
+      '
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions: []
+  relationships:
+    declared_in:
+    - ADR-L-0010
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0010#INV-0053
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
+- id: INV-0054
+  entity_type: invariant
+  name: INV-0054
+  summary: Bundles classified as sentinel compliant MUST NOT be admitted to production
+    kernel loads by default, but MAY be loaded by inspection-only or remediation tooling.
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0010#INV-0054
+    artifact_path: adrs/logical/ADR-L-0010-kernel-interface-contract-and-validation-profiles.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0010
+    scope: global
+    statement: 'Bundles classified as sentinel compliant MUST NOT be admitted to production
+
+      kernel loads by default, but MAY be loaded by inspection-only or remediation
+
+      tooling.
+
+      '
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions: []
+  relationships:
+    declared_in:
+    - ADR-L-0010
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0010#INV-0054
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
+- id: INV-0055
+  entity_type: invariant
+  name: INV-0055
+  summary: Reserved sentinel values MUST be allowed only in narrative fields or sections
+    explicitly designated as sentinel-capable by schema or policy.
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0011#INV-0055
+    artifact_path: adrs/logical/ADR-L-0011-metadata-schemas-and-remediation-ledger-enforcement.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0011
+    scope: global
+    statement: 'Reserved sentinel values MUST be allowed only in narrative fields
+      or
+
+      sections explicitly designated as sentinel-capable by schema or policy.
+
+      '
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions: []
+  relationships:
+    declared_in:
+    - ADR-L-0011
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0011#INV-0055
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
+- id: INV-0056
+  entity_type: invariant
+  name: INV-0056
+  summary: Remediation workflow state MUST be recorded in a separate canonical remediation
+    ledger rather than in ADR content fields.
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0011#INV-0056
+    artifact_path: adrs/logical/ADR-L-0011-metadata-schemas-and-remediation-ledger-enforcement.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0011
+    scope: global
+    statement: 'Remediation workflow state MUST be recorded in a separate canonical
+
+      remediation ledger rather than in ADR content fields.
+
+      '
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions: []
+  relationships:
+    declared_in:
+    - ADR-L-0011
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0011#INV-0056
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
+- id: INV-0057
+  entity_type: invariant
+  name: INV-0057
+  summary: Once a field or section has an approved remediation-ledger entry for non-sentinel
+    canonical content, that field or section MUST NOT regress to a sentinel state
+    under normal validation.
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0011#INV-0057
+    artifact_path: adrs/logical/ADR-L-0011-metadata-schemas-and-remediation-ledger-enforcement.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0011
+    scope: global
+    statement: 'Once a field or section has an approved remediation-ledger entry for
+
+      non-sentinel canonical content, that field or section MUST NOT regress to a
+
+      sentinel state under normal validation.
+
+      '
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions: []
+  relationships:
+    declared_in:
+    - ADR-L-0011
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0011#INV-0057
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index

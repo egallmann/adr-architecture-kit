@@ -555,7 +555,7 @@ def generate_entity_registry(scope: Optional[Path], recursive: bool, output: Opt
     """Generate the legacy entity-registry.yaml compatibility artifact."""
     try:
         resolver = ProjectScopeResolver(explicit_scope=scope)
-        generator = ArchitectureIndexGenerator(scope_resolver=resolver)
+        compiler = ArchitectureCompiler(scope_resolver=resolver)
 
         if recursive:
             click.echo("Generating architecture indexes recursively for legacy entity registry compatibility...")
@@ -563,26 +563,33 @@ def generate_entity_registry(scope: Optional[Path], recursive: bool, output: Opt
             for scope_obj in scopes:
                 if not scope_obj.adr_dir.exists():
                     continue
-                bundle = generator.generate_from_scope(scope_obj)
-                paths = generator.save_bundle(bundle, scope_obj)
                 scope_name = scope_obj.name or str(scope_obj.root)
-                output_path = output or paths["legacy_entity_registry"]
-                if output is not None and output_path != paths["legacy_entity_registry"]:
-                    output_path.parent.mkdir(parents=True, exist_ok=True)
-                    output_path.write_text(
-                        generator.render_yaml(bundle.legacy_entity_registry),
-                        encoding="utf-8",
-                        newline="\n",
+                if output is None:
+                    result = compiler.compile(
+                        scope_obj,
+                        CompilerConfig(emit={"registries"}),
                     )
+                    if not result.success:
+                        raise ValueError("Architecture compilation failed")
+                    output_path = scope_obj.adr_dir / "entities" / "registry.yaml"
+                else:
+                    result = compiler.compile(
+                        scope_obj,
+                        CompilerConfig(emit={"registries"}, dry_run=True),
+                    )
+                    if not result.success:
+                        raise ValueError("Architecture compilation failed")
+                    output_path = output
+                    output_path.parent.mkdir(parents=True, exist_ok=True)
+                    output_path.write_bytes(_artifact_by_path(result, "adrs/entities/registry.yaml").content)
                 click.echo(f"Generated legacy entity registry for {scope_name}: {output_path}")
-                click.echo(f"  Architecture index: {paths['architecture_index']}")
+                click.echo(f"  Architecture index: {scope_obj.adr_dir / 'index' / 'architecture-index.yaml'}")
 
             click.echo(f"\nGenerated legacy entity registry compatibility artifacts for {len(scopes)} scope(s)")
         else:
             click.echo("Generating architecture index and legacy entity registry compatibility artifact...")
             detected_scope = resolver.resolve()
             click.echo(f"Project scope: {detected_scope.name} ({detected_scope.root})")
-            compiler = ArchitectureCompiler(scope_resolver=resolver)
             if output is None:
                 result = compiler.compile(
                     detected_scope,
@@ -657,7 +664,27 @@ def generate_architecture_index(scope: Optional[Path]):
               help='Compile without writing files.')
 @click.option('--check', is_flag=True,
               help='Compile in-memory and fail if selected on-disk artifacts drift.')
-def compile_artifacts(scope: Optional[Path], emit: str, timestamp: Optional[str], dry_run: bool, check: bool):
+@click.option(
+    '--validate-contract',
+    is_flag=True,
+    help='Validate the compiled kernel contract bundle from in-memory outputs.',
+)
+@click.option(
+    '--contract-profile',
+    type=click.Choice(["greenfield", "brownfield", "migration"]),
+    default="greenfield",
+    show_default=True,
+    help='Contract validation profile used with --validate-contract.',
+)
+def compile_artifacts(
+    scope: Optional[Path],
+    emit: str,
+    timestamp: Optional[str],
+    dry_run: bool,
+    check: bool,
+    validate_contract: bool,
+    contract_profile: str,
+):
     """Compile selected architecture artifacts through the unified compiler driver."""
     try:
         resolver = ProjectScopeResolver(explicit_scope=scope)
@@ -670,7 +697,9 @@ def compile_artifacts(scope: Optional[Path], emit: str, timestamp: Optional[str]
                 emit=emit_targets,
                 dry_run=dry_run or check,
                 check=check,
+                profile=contract_profile if validate_contract else None,
                 pinned_timestamp=timestamp,
+                metadata={"validate_contract": "true"} if validate_contract else {},
             ),
         )
 
@@ -685,6 +714,8 @@ def compile_artifacts(scope: Optional[Path], emit: str, timestamp: Optional[str]
             click.echo("Check mode: enabled")
         elif dry_run:
             click.echo("Dry run: enabled")
+        if validate_contract:
+            click.echo(f"Contract validation: {contract_profile}")
         for artifact in sorted(result.artifacts, key=lambda item: item.path.as_posix()):
             click.echo(f"  {artifact.kind}: {artifact.path.as_posix()}")
         for diagnostic in result.diagnostics.as_list():

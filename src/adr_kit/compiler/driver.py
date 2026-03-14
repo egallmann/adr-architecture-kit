@@ -12,6 +12,7 @@ from unittest.mock import patch
 from ..generators import ArchitectureIndexGenerator, ManifestGenerator
 from ..generators.views import MarkdownGenerator
 from ..parser import ADRParser
+from ..schema.contract_validation import validate_kernel_contract_bundle
 from ..scope import ProjectScope, ProjectScopeResolver
 from .backend import (
     EmittedArtifact,
@@ -24,6 +25,7 @@ from .config import CompilationMode, CompilerConfig
 from .diagnostics import DiagnosticLog
 from .frontend import ArchModelBuilder
 from .ir import ArchModel
+from ..repository.registry_loader import load_remediation_ledger
 
 
 @dataclass(frozen=True)
@@ -115,6 +117,9 @@ class ArchitectureCompiler:
         elif not config.dry_run:
             self._write_artifacts(artifacts, resolved_scope, config)
 
+        if config.metadata.get("validate_contract") == "true":
+            self._validate_contract(artifacts, resolved_scope, config, diagnostics)
+
         if config.mode == CompilationMode.STRICT and diagnostics.has_errors:
             success = False
         else:
@@ -140,6 +145,60 @@ class ArchitectureCompiler:
             model=build_result.model,
             duration_ms=duration_ms,
         )
+
+    def _validate_contract(
+        self,
+        artifacts: list[OutputArtifact],
+        scope: ProjectScope,
+        config: CompilerConfig,
+        diagnostics: DiagnosticLog,
+    ) -> None:
+        artifact_map = {artifact.path.as_posix(): artifact for artifact in artifacts}
+        parser = self.parser
+        architecture_index_artifact = artifact_map.get("adrs/index/architecture-index.yaml")
+        entity_registry_artifact = artifact_map.get("adrs/index/entity-registry.yaml")
+        relationship_registry_artifact = artifact_map.get("adrs/index/relationship-registry.yaml")
+        unresolved_registry_artifact = artifact_map.get("adrs/index/unresolved-registry.yaml")
+        if not all((architecture_index_artifact, entity_registry_artifact, relationship_registry_artifact, unresolved_registry_artifact)):
+            diagnostics.error(
+                "E703",
+                "Contract validation requires registries emission in the current compile invocation",
+            )
+            return
+
+        architecture_index = parser.parse_architecture_index_from_data(
+            architecture_index_artifact.content.decode("utf-8")
+        )
+        entity_registry = parser.parse_normalized_entity_registry_from_data(
+            entity_registry_artifact.content.decode("utf-8")
+        )
+        relationship_registry = parser.parse_relationship_registry_from_data(
+            relationship_registry_artifact.content.decode("utf-8")
+        )
+        unresolved_registry = parser.parse_unresolved_registry_from_data(
+            unresolved_registry_artifact.content.decode("utf-8")
+        )
+
+        remediation_ledger = None
+        remediation_ledger_path = scope.adr_dir / "governance" / "remediation-ledger.yaml"
+        if remediation_ledger_path.exists():
+            remediation_ledger = load_remediation_ledger(parser, remediation_ledger_path)
+
+        result = validate_kernel_contract_bundle(
+            architecture_index,
+            entity_registry,
+            relationship_registry,
+            unresolved_registry,
+            profile=config.profile or "greenfield",
+            remediation_ledger=remediation_ledger,
+        )
+        for issue in result.issues:
+            diagnostics.error("E704", issue.message, path=issue.path)
+        if result.outcome == "sentinel_compliant":
+            diagnostics.warning(
+                "W704",
+                f"Contract validation passed with sentinel-backed content under profile={result.profile}",
+            )
 
     def _resolve_scope(self, scope: Path | ProjectScope | None, config: CompilerConfig) -> ProjectScope:
         if isinstance(scope, ProjectScope):

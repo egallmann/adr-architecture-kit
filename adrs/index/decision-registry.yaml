@@ -1494,3 +1494,384 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
+- id: DEC-0036
+  entity_type: decision
+  name: Use the four core registries as the kernel contract surface
+  summary: The kernel needs a stable, minimal set of compiled artifacts that can be
+    loaded without parsing ADR source files. The architecture index plus the entity,
+    relationship, and unresolved registries are sufficient and already
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0010#DEC-0036
+    artifact_path: adrs/logical/ADR-L-0010-kernel-interface-contract-and-validation-profiles.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0010
+    related_invariants: []
+    enforces_invariants: []
+    enables_capabilities: []
+    governs_components: []
+    supersedes: []
+    refines: []
+  relationships:
+    declared_in:
+    - ADR-L-0010
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0010#DEC-0036
+    extraction_phase: extract_decision
+    classification: explicit
+    generator: adr-architecture-index
+- id: DEC-0037
+  entity_type: decision
+  name: Treat the compiler-kernel contract as pre-stable 0.x until intentionally frozen
+  summary: The contract is not yet open as a stable external surface. Using 0.x avoids
+    pretending the boundary is already semantically frozen while still keeping a versioned
+    contract and explicit upgrade path.
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0010#DEC-0037
+    artifact_path: adrs/logical/ADR-L-0010-kernel-interface-contract-and-validation-profiles.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0010
+    related_invariants: []
+    enforces_invariants: []
+    enables_capabilities: []
+    governs_components: []
+    supersedes: []
+    refines: []
+  relationships:
+    declared_in:
+    - ADR-L-0010
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0010#DEC-0037
+    extraction_phase: extract_decision
+    classification: explicit
+    generator: adr-architecture-index
+- id: DEC-0038
+  entity_type: decision
+  name: Validate compiled output through explicit greenfield, brownfield, and migration
+    profiles
+  summary: A single contract schema is not enough to represent the enforcement posture
+    across new systems, legacy imports, and active remediation states. Profiles allow
+    strict integrity rules to remain universal while allowing qual
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0010#DEC-0038
+    artifact_path: adrs/logical/ADR-L-0010-kernel-interface-contract-and-validation-profiles.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0010
+    related_invariants: []
+    enforces_invariants: []
+    enables_capabilities: []
+    governs_components: []
+    supersedes: []
+    refines: []
+  relationships:
+    declared_in:
+    - ADR-L-0010
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0010#DEC-0038
+    extraction_phase: extract_decision
+    classification: explicit
+    generator: adr-architecture-index
+- id: DEC-0039
+  entity_type: decision
+  name: Classify sentinel-backed bundles as sentinel compliant rather than compliant
+  summary: Sentinel-backed content is valid under the right profile, but it is not
+    the same as fully populated architecture knowledge. A separate validator outcome
+    preserves honesty while keeping the system operational.
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0010#DEC-0039
+    artifact_path: adrs/logical/ADR-L-0010-kernel-interface-contract-and-validation-profiles.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0010
+    related_invariants: []
+    enforces_invariants: []
+    enables_capabilities: []
+    governs_components: []
+    supersedes: []
+    refines: []
+  relationships:
+    declared_in:
+    - ADR-L-0010
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0010#DEC-0039
+    extraction_phase: extract_decision
+    classification: explicit
+    generator: adr-architecture-index
+- id: DEC-0040
+  entity_type: decision
+  name: Define per-entity metadata through typed schemas rather than an unconstrained
+    metadata bag
+  summary: Registry metadata is currently too weak as a contract surface. Different
+    entity types carry different keys, and without typed expectations the kernel and
+    compiler can drift silently.
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0011#DEC-0040
+    artifact_path: adrs/logical/ADR-L-0011-metadata-schemas-and-remediation-ledger-enforcement.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0011
+    related_invariants: []
+    enforces_invariants: []
+    enables_capabilities: []
+    governs_components: []
+    supersedes: []
+    refines: []
+  relationships:
+    declared_in:
+    - ADR-L-0011
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0011#DEC-0040
+    extraction_phase: extract_decision
+    classification: explicit
+    generator: adr-architecture-index
+- id: DEC-0041
+  entity_type: decision
+  name: Restrict sentinel values to narrative fields and sections only
+  summary: Sentinel values are useful for preserving structure where knowledge is
+    missing, but they are dangerous in identifiers, references, enums, or governance
+    fields. Narrow placement keeps them honest and machine-safe.
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0011#DEC-0041
+    artifact_path: adrs/logical/ADR-L-0011-metadata-schemas-and-remediation-ledger-enforcement.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0011
+    related_invariants: []
+    enforces_invariants: []
+    enables_capabilities: []
+    governs_components: []
+    supersedes: []
+    refines: []
+  relationships:
+    declared_in:
+    - ADR-L-0011
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0011#DEC-0041
+    extraction_phase: extract_decision
+    classification: explicit
+    generator: adr-architecture-index
+- id: DEC-0042
+  entity_type: decision
+  name: Enforce remediation through a separate canonical remediation ledger
+  summary: Current architecture content and remediation workflow state should not
+    be mixed. A separate remediation ledger preserves auditability, avoids process
+    leakage into ADR text, and provides a stable mechanism for no-regressi
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0011#DEC-0042
+    artifact_path: adrs/logical/ADR-L-0011-metadata-schemas-and-remediation-ledger-enforcement.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0011
+    related_invariants: []
+    enforces_invariants: []
+    enables_capabilities: []
+    governs_components: []
+    supersedes: []
+    refines: []
+  relationships:
+    declared_in:
+    - ADR-L-0011
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0011#DEC-0042
+    extraction_phase: extract_decision
+    classification: explicit
+    generator: adr-architecture-index
+- id: DEC-0043
+  entity_type: decision
+  name: Require staged approval before replacement content becomes protected canonical
+    content
+  summary: Non-sentinel replacement content may be better than a sentinel without
+    yet being authoritative. Staged approval prevents accidental promotion and keeps
+    the no-regression rule tied to explicit governance.
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0011#DEC-0043
+    artifact_path: adrs/logical/ADR-L-0011-metadata-schemas-and-remediation-ledger-enforcement.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0011
+    related_invariants: []
+    enforces_invariants: []
+    enables_capabilities: []
+    governs_components: []
+    supersedes: []
+    refines: []
+  relationships:
+    declared_in:
+    - ADR-L-0011
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0011#DEC-0043
+    extraction_phase: extract_decision
+    classification: explicit
+    generator: adr-architecture-index
+- id: DEC-0044
+  entity_type: decision
+  name: Promote the contract to 1.0 only through an explicit readiness gate
+  summary: Stable status should reflect implemented and verified behavior, not elapsed
+    time or confidence. The transition from 0.x to 1.0 must therefore be tied to concrete
+    conditions across compiler output, schema conformance, and
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0010#DEC-0044
+    artifact_path: adrs/logical/ADR-L-0010-kernel-interface-contract-and-validation-profiles.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0010
+    related_invariants: []
+    enforces_invariants: []
+    enables_capabilities: []
+    governs_components: []
+    supersedes: []
+    refines: []
+  relationships:
+    declared_in:
+    - ADR-L-0010
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0010#DEC-0044
+    extraction_phase: extract_decision
+    classification: explicit
+    generator: adr-architecture-index

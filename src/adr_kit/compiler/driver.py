@@ -9,17 +9,13 @@ from pathlib import Path
 from time import perf_counter
 from unittest.mock import patch
 
-from ..generators import ArchitectureIndexGenerator, ManifestGenerator
-from ..generators.views import MarkdownGenerator
 from ..parser import ADRParser
 from ..schema.contract_validation import validate_kernel_contract_bundle
 from ..scope import ProjectScope, ProjectScopeResolver
 from .backend import (
     EmittedArtifact,
     PROJECTABLE_ENTITY_TYPES,
-    emit_manifest_artifact,
-    emit_markdown_artifacts,
-    emit_registry_artifacts,
+    build_backend_emitters,
 )
 from .config import CompilationMode, CompilerConfig
 from .diagnostics import DiagnosticLevel, DiagnosticLog
@@ -227,42 +223,13 @@ class ArchitectureCompiler:
     ) -> list[OutputArtifact]:
         emitted: list[EmittedArtifact] = []
         selected = set(config.emit)
-
-        if "registries" in selected:
-            index_generator = ArchitectureIndexGenerator(
-                parser=self.parser,
-                scope_resolver=ProjectScopeResolver(explicit_scope=scope.root),
-            )
-            bundle = index_generator.generate_from_scope(scope)
-            diagnostics.extend(index_generator.diagnostics.as_list())
-            emitted.extend(
-                emit_registry_artifacts(
-                    bundle,
-                    generator=index_generator,
-                    scope=scope,
-                )
-            )
-
-        if "manifest" in selected:
-            manifest_generator = ManifestGenerator(
-                parser=self.parser,
-                scope_resolver=ProjectScopeResolver(explicit_scope=scope.root),
-            )
-            emitted.append(
-                emit_manifest_artifact(
-                    generator=manifest_generator,
-                    scope=scope,
-                )
-            )
-
-        if "markdown" in selected:
-            emitted.extend(
-                emit_markdown_artifacts(
-                    parser=self.parser,
-                    generator=MarkdownGenerator(),
-                    scope=scope,
-                )
-            )
+        emitters = build_backend_emitters(parser=self.parser, scope=scope)
+        for emitter_name in ("registries", "manifest", "markdown"):
+            if emitter_name not in selected:
+                continue
+            emitter = emitters[emitter_name]
+            emitted.extend(emitter.emit())
+            diagnostics.extend(emitter.diagnostics())
 
         return [
             OutputArtifact(

@@ -5,8 +5,8 @@ artifact_kind: system_overview
 generator_id: adr-system-overview
 generator_version: 1
 hash_algorithm: sha256
-source_hash: ebffc4331241cc44a0e92830c29b06993e05e9b236c1d1c8430f1e6b366d5670
-rendered_hash: cdd87c66835b869e827a037c0f965a879b0fc4046ea550491a0fdcdd0673d62e
+source_hash: 29c51c166f62ace980b111ea347522d421e948bcbc4f56a8023769f77d162bf5
+rendered_hash: 1fdbb95f8ea129e57b825fc456b5e1a098e933a72af518d8af13e9712d0b5551
 -->
 
 ---
@@ -100,6 +100,7 @@ Core implementation areas:
 
 Primary CLI capabilities:
 
+- `adr compile --mode {normal,strict,lenient}`
 - `adr generate-manifest`
 - `adr generate-architecture-index`
 - `adr normalize-canonical-ids`
@@ -148,6 +149,10 @@ Use this type model when reasoning about repository architecture artifacts:
 ### Validate the repository
 
 Run `adr governance-checks` for the standard local governance bundle. Use `adr validate` or `adr validate --recursive` when you only need ADR schema and business-rule validation.
+
+### Compile through the unified driver
+
+Run `adr compile --mode normal|strict|lenient` for the single-scope compiler path. `lenient` only tolerates the current post-emit drift and contract-validation error family.
 
 ### Commit at meaningful boundaries
 

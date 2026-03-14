@@ -232,6 +232,12 @@ Validate the compiled contract bundle:
 adr validate-contract --contract-profile greenfield
 ```
 
+Compile the single-scope artifact bundle with an explicit success policy:
+
+```bash
+adr compile --mode strict
+```
+
 Run the ratcheted brownfield gate used in CI:
 
 ```bash
@@ -246,6 +252,10 @@ adr governance-checks
 
 This runs the greenfield contract gate, the brownfield ratchet gate, and the full test suite.
 When you finish a coherent implementation slice, commit it after the relevant checks pass rather than accumulating unrelated changes.
+Use `adr compile --mode normal|strict|lenient` when you need the unified compiler path directly:
+- `normal` reports errors and returns non-zero on compile failure
+- `strict` treats any compile error as non-viable
+- `lenient` only tolerates the current post-emit drift and contract-validation error family
 
 The compatibility wrapper still exists if you need it:
 

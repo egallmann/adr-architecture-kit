@@ -26,6 +26,7 @@ from ..generators import (
 )
 from ..generators.views import MarkdownGenerator
 from ..compiler import ArchitectureCompiler, CompilationMode, CompilerConfig
+from ..decorators import implements_adr
 from ..integrity import GeneratedArtifactStatus
 from ..migrators.canonical_id_normalizer import CanonicalIdNormalizer
 from ..parser import ADRParser
@@ -283,6 +284,7 @@ def _echo_recursive_compilation_result(result, *, mode: str, check: bool, dry_ru
         for diagnostic in scoped.result.diagnostics.as_list():
             click.echo(f"  {diagnostic.level.name}: {diagnostic.code} {diagnostic.message}")
 
+@implements_adr("ADR-L-0002", "ADR-L-0013")
 @click.group()
 @click.version_option()
 def cli():
@@ -337,6 +339,7 @@ def _generate_source_adr(
             click.echo(f"  WARNING: {warning.message}")
 
 
+@implements_adr("ADR-L-0002", "ADR-L-0013")
 @cli.command("generate-logical")
 @click.option(
     "--input",
@@ -386,6 +389,7 @@ def generate_logical(
         sys.exit(1)
 
 
+@implements_adr("ADR-L-0002", "ADR-L-0013")
 @cli.command("generate-vision")
 @click.option(
     "--input",
@@ -435,6 +439,7 @@ def generate_vision(
         sys.exit(1)
 
 
+@implements_adr("ADR-L-0002", "ADR-L-0013")
 @cli.command('generate-manifest')
 @click.option('--scope', type=click.Path(exists=True, file_okay=False, path_type=Path),
               help='Explicit project scope (overrides auto-detection)')
@@ -503,6 +508,7 @@ def generate_manifest(scope: Optional[Path], recursive: bool, output: Optional[P
         sys.exit(1)
 
 
+@implements_adr("ADR-L-0002", "ADR-L-0013")
 @cli.command("generate-physical-component")
 @click.option(
     "--input",
@@ -552,6 +558,7 @@ def generate_physical_component(
         sys.exit(1)
 
 
+@implements_adr("ADR-L-0002", "ADR-L-0013")
 @cli.command("generate-physical-system")
 @click.option(
     "--input",
@@ -601,6 +608,7 @@ def generate_physical_system(
         sys.exit(1)
 
 
+@implements_adr("ADR-L-0002", "ADR-L-0013")
 @cli.command("generate-entity-registry")
 @click.option('--scope', type=click.Path(exists=True, file_okay=False, path_type=Path),
               help='Explicit project scope (overrides auto-detection)')
@@ -678,6 +686,7 @@ def generate_entity_registry(scope: Optional[Path], recursive: bool, output: Opt
         sys.exit(1)
 
 
+@implements_adr("ADR-L-0002", "ADR-L-0013")
 @cli.command("generate-architecture-index")
 @click.option('--scope', type=click.Path(exists=True, file_okay=False, path_type=Path),
               help='Explicit project scope (overrides auto-detection)')
@@ -705,6 +714,7 @@ def generate_architecture_index(scope: Optional[Path]):
         sys.exit(1)
 
 
+@implements_adr("ADR-L-0002", "ADR-L-0013")
 @cli.command("compile")
 @click.option('--scope', type=click.Path(exists=True, file_okay=False, path_type=Path),
               help='Explicit project scope (overrides auto-detection)')
@@ -801,6 +811,7 @@ def compile_artifacts(
         sys.exit(1)
 
 
+@implements_adr("ADR-L-0002", "ADR-L-0013")
 @cli.command("normalize-canonical-ids")
 @click.option('--scope', type=click.Path(exists=True, file_okay=False, path_type=Path),
               help='Explicit project scope (overrides auto-detection)')
@@ -825,6 +836,7 @@ def normalize_canonical_ids(scope: Optional[Path]):
         sys.exit(1)
 
 
+@implements_adr("ADR-L-0002", "ADR-L-0013")
 @cli.command('validate')
 @click.option('--scope', type=click.Path(exists=True, file_okay=False, path_type=Path),
               help='Explicit project scope (overrides auto-detection)')
@@ -928,6 +940,7 @@ def validate(scope: Optional[Path], recursive: bool, cross_references: bool, mod
         sys.exit(1)
 
 
+@implements_adr("ADR-L-0002", "ADR-L-0013")
 @cli.command("validate-contract")
 @click.option('--scope', type=click.Path(exists=True, file_okay=False, path_type=Path),
               help='Explicit project scope (overrides auto-detection)')
@@ -1024,6 +1037,7 @@ def validate_contract(
         sys.exit(1)
 
 
+@implements_adr("ADR-L-0002", "ADR-L-0013")
 @cli.command("governance-checks")
 @click.option('--scope', type=click.Path(exists=True, file_okay=False, path_type=Path),
               default=Path("."),
@@ -1048,11 +1062,13 @@ def governance_checks(scope: Path, skip_tests: bool, recursive: bool):
         sys.exit(1)
 
 
+@implements_adr("ADR-L-0002", "ADR-L-0013")
 @cli.group("entities")
 def entities_cli():
     """Query the generated architecture discovery bundle."""
     pass
 
+@implements_adr("ADR-L-0002", "ADR-L-0013")
 @entities_cli.command("list")
 @click.option('--scope', type=click.Path(exists=True, file_okay=False, path_type=Path),
               help='Explicit project scope (overrides auto-detection)')
@@ -1079,6 +1095,7 @@ def entities_list(scope: Optional[Path], entity_type: Optional[str], adr_id: Opt
         sys.exit(1)
 
 
+@implements_adr("ADR-L-0002", "ADR-L-0013")
 @entities_cli.command("get")
 @click.argument("entity_id")
 @click.option('--scope', type=click.Path(exists=True, file_okay=False, path_type=Path),
@@ -1096,6 +1113,7 @@ def entities_get(entity_id: str, scope: Optional[Path]):
         sys.exit(1)
 
 
+@implements_adr("ADR-L-0002", "ADR-L-0013")
 @entities_cli.command("invariants")
 @click.option('--scope', type=click.Path(exists=True, file_okay=False, path_type=Path),
               help='Explicit project scope (overrides auto-detection)')
@@ -1119,6 +1137,7 @@ def entities_invariants(scope: Optional[Path], adr_id: Optional[str], domain: Op
         sys.exit(1)
 
 
+@implements_adr("ADR-L-0002", "ADR-L-0013")
 @entities_cli.command("capabilities")
 @click.option('--scope', type=click.Path(exists=True, file_okay=False, path_type=Path),
               help='Explicit project scope (overrides auto-detection)')
@@ -1142,6 +1161,7 @@ def entities_capabilities(scope: Optional[Path], adr_id: Optional[str], domain: 
         sys.exit(1)
 
 
+@implements_adr("ADR-L-0002", "ADR-L-0013")
 @cli.command('scope')
 @click.option('--recursive', is_flag=True,
               help='Show all sub-module scopes')
@@ -1198,6 +1218,7 @@ def show_scope(recursive: bool):
         sys.exit(1)
 
 
+@implements_adr("ADR-L-0002", "ADR-L-0013")
 @cli.command("validate-project-metadata")
 @click.option(
     "--scope",
@@ -1246,6 +1267,7 @@ def validate_project_metadata(scope: Optional[Path], file_path: Path, recursive:
         sys.exit(1)
 
 
+@implements_adr("ADR-L-0002", "ADR-L-0013")
 @cli.command("audit-runtime")
 @click.option(
     "--requirements",
@@ -1309,6 +1331,7 @@ def audit_runtime(requirements: Path, pyproject: Path, fail_on_outdated: bool):
         sys.exit(1)
 
 
+@implements_adr("ADR-L-0002", "ADR-L-0013")
 @cli.command("generate-system-overview")
 @click.option(
     "--output",
@@ -1328,6 +1351,7 @@ def generate_system_overview(output: Path):
         sys.exit(1)
 
 
+@implements_adr("ADR-L-0002", "ADR-L-0013")
 @cli.command("generate-rendered-docs")
 @click.option('--scope', type=click.Path(exists=True, file_okay=False, path_type=Path),
               help='Explicit project scope (overrides auto-detection)')
@@ -1376,6 +1400,7 @@ def generate_rendered_docs(scope: Optional[Path], recursive: bool):
         sys.exit(1)
 
 
+@implements_adr("ADR-L-0002", "ADR-L-0013")
 @cli.command("validate-system-overview")
 @click.option(
     "--file",
@@ -1401,6 +1426,7 @@ def validate_system_overview(file_path: Path):
         sys.exit(1)
 
 
+@implements_adr("ADR-L-0002", "ADR-L-0013")
 @cli.command("validate-generated-docs")
 @click.option('--scope', type=click.Path(exists=True, file_okay=False, path_type=Path),
               help='Explicit project scope (overrides auto-detection)')

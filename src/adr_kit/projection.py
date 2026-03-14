@@ -5,6 +5,7 @@ from __future__ import annotations
 from pathlib import Path
 
 from .compiler import ArchitectureCompiler, CompilerConfig
+from .decorators import implements_adr
 from .compiler.backend.manifest_rendering import MANIFEST_GENERATOR_IDENTITY, render_manifest_for_scope
 from .compiler.backend.graph_rendering import GRAPH_GENERATOR_IDENTITY, discover_graph_source_inputs
 from .compiler.backend.markdown_rendering import (
@@ -24,6 +25,7 @@ from .integrity import (
 from .parser import ADRParser
 
 
+@implements_adr("ADR-L-0007")
 class ProjectionInspector:
     """Inspect generated artifacts using shared discovery and rendering rules."""
 

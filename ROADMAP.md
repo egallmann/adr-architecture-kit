@@ -34,6 +34,7 @@ artifact.
 - Compiler-owned registry bundle assembly from `ArchModel`
 - Compiler-authoritative emission of normalized registries, subset registries,
   legacy compatibility registry, manifest, and rendered ADR markdown
+- Additive architecture graph emission from the compiler IR without changing current registry authority
 - Public compile modes: `normal`, `strict`, `lenient`
 - Recursive multi-scope compilation through `adr compile --recursive`
 

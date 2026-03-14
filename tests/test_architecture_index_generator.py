@@ -276,6 +276,68 @@ def test_generate_entity_registry_cli_uses_architecture_index_pipeline(tmp_path)
     assert (tmp_path / "adrs" / "entities" / "registry.yaml").exists()
 
 
+def test_compile_cli_writes_selected_artifacts(tmp_path):
+    _create_fixture(tmp_path)
+    runner = CliRunner()
+
+    result = runner.invoke(
+        cli,
+        [
+            "compile",
+            "--scope",
+            str(tmp_path),
+            "--emit",
+            "registries,manifest",
+            "--timestamp",
+            "2026-01-01T00:00:00Z",
+        ],
+    )
+
+    assert result.exit_code == 0, result.output
+    assert "Compiling architecture artifacts..." in result.output
+    assert (tmp_path / "adrs" / "index" / "architecture-index.yaml").exists()
+    assert (tmp_path / "adrs" / "manifest.yaml").exists()
+    assert not (tmp_path / "adrs" / "rendered" / "ADR-L-1000.md").exists()
+
+
+def test_compile_cli_check_detects_drift(tmp_path):
+    _create_fixture(tmp_path)
+    runner = CliRunner()
+
+    compile_result = runner.invoke(
+        cli,
+        [
+            "compile",
+            "--scope",
+            str(tmp_path),
+            "--emit",
+            "registries,manifest",
+            "--timestamp",
+            "2026-01-01T00:00:00Z",
+        ],
+    )
+    assert compile_result.exit_code == 0, compile_result.output
+
+    (tmp_path / "adrs" / "manifest.yaml").write_text("drifted\n", encoding="utf-8")
+
+    check_result = runner.invoke(
+        cli,
+        [
+            "compile",
+            "--scope",
+            str(tmp_path),
+            "--emit",
+            "registries,manifest",
+            "--timestamp",
+            "2026-01-01T00:00:00Z",
+            "--check",
+        ],
+    )
+
+    assert check_result.exit_code == 1
+    assert "E702" in check_result.output
+
+
 def test_architecture_index_generation_is_deterministic(tmp_path):
     adr_dir = _create_fixture(tmp_path)
     generator = ArchitectureIndexGenerator()

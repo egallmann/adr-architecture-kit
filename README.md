@@ -9,6 +9,7 @@ ADR Architecture Kit implements the **Documentation-State Layer (Layer 5)** of t
 For fastest repo orientation, start with [SYSTEM-OVERVIEW.md](/c:/Users/Erik/Documents/Projects/adr-architecture-kit/SYSTEM-OVERVIEW.md).
 `SYSTEM-OVERVIEW.md` is a generated artifact. Update it with `adr generate-system-overview` and validate it with `adr validate-system-overview`.
 Rendered ADR markdown and the manifest are also generated artifacts. Refresh them with `adr generate-rendered-docs` and `adr generate-manifest`, then verify projections with `adr validate-generated-docs`.
+`README.md` is a manual workflow/orientation document. Update it when contributor-facing workflows change; it is not part of `adr validate-generated-docs`.
 
 ### Key Features
 

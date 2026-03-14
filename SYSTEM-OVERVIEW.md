@@ -5,8 +5,8 @@ artifact_kind: system_overview
 generator_id: adr-system-overview
 generator_version: 1
 hash_algorithm: sha256
-source_hash: 196ef4ba32a07f360aecf13271a4a1bd9377aa70cc28ce65fee215387a28c3de
-rendered_hash: a95088a78f3e6946f8e1019d92e4e3684bb00f24a3e025c7de5798e51ce69821
+source_hash: ebffc4331241cc44a0e92830c29b06993e05e9b236c1d1c8430f1e6b366d5670
+rendered_hash: cdd87c66835b869e827a037c0f965a879b0fc4046ea550491a0fdcdd0673d62e
 -->
 
 ---
@@ -153,6 +153,10 @@ Run `adr governance-checks` for the standard local governance bundle. Use `adr v
 
 After a coherent implementation slice is verified, commit it before continuing. Do not accumulate unrelated unverified changes.
 
+### Maintain workflow-facing README content
+
+Update `README.md` when contributor-facing workflows or orientation guidance change. `README.md` is manual, not generated, and is not covered by `adr validate-generated-docs`.
+
 ### Generate or refresh the architecture index
 
 Run `adr generate-architecture-index`. Treat `adrs/index/` as the primary machine discovery surface.
@@ -167,7 +171,7 @@ Run `adr generate-rendered-docs`. Do not hand-edit files under `adrs/rendered/`.
 
 ### Validate generated documentation
 
-Run `adr validate-generated-docs` after regenerating derived artifacts, including the manifest.
+Run `adr validate-generated-docs` after regenerating manifest or rendered ADR markdown artifacts. This does not validate `README.md` or `SYSTEM-OVERVIEW.md`.
 
 ### Validate compiled contract profiles
 
@@ -187,7 +191,7 @@ Run `adr audit-runtime --fail-on-outdated` or `python scripts/check_runtime_hygi
 
 ### Regenerate this overview
 
-Run `adr generate-system-overview`. Do not hand-edit `SYSTEM-OVERVIEW.md`.
+Run `adr generate-system-overview` and then `adr validate-system-overview`. Do not hand-edit `SYSTEM-OVERVIEW.md`.
 
 ## Tooling Priority Rules
 
@@ -264,6 +268,7 @@ Minimum close-out expectation:
 - run targeted tests for the changed area
 - run `adr governance-checks` for the standard local governance bundle when repository behavior changed
 - commit each meaningful verified implementation boundary before starting the next slice
+- update `README.md` when workflow-facing behavior or orientation guidance changed
 - run `adr validate` when artifact semantics changed but the full governance bundle is unnecessary
 - regenerate derived artifacts if their sources changed
 - run `adr validate-generated-docs` for committed generated documentation artifacts

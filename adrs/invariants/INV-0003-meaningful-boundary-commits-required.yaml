@@ -30,6 +30,11 @@ validation_query: |
   Before concluding a meaningful implementation slice:
   - run the slice-relevant tests
   - run `adr governance-checks` when repository behavior changes
+  - update `README.md` when contributor-facing workflow guidance changes
+  - regenerate `SYSTEM-OVERVIEW.md` and run `adr validate-system-overview` when
+    orientation-relevant workflow guidance changes
+  - run `adr validate-generated-docs` for manifest and rendered ADR markdown
+    artifacts when their canonical inputs changed
   - commit the verified slice before continuing to the next one
   Audit history should show coherent, reviewable commits rather than one large
   unverified accumulation.

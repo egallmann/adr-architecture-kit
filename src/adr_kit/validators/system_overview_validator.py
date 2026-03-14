@@ -77,6 +77,11 @@ class SystemOverviewValidator:
                 "SYSTEM-OVERVIEW.md is stale or manually edited; regenerate it with `adr generate-system-overview`."
             )
 
+        if actual_body.startswith("---\n"):
+            errors.append(
+                "SYSTEM-OVERVIEW.md still uses visible YAML frontmatter; regenerate it with the hidden metadata format."
+            )
+
         for token in self.REQUIRED_TOKENS:
             if token not in actual:
                 errors.append(f"Missing required overview token: {token}")

@@ -5,7 +5,13 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import Literal
 
-from adr_kit.models import ImplementationAttributionEvidence, NormalizedEntityRegistry
+from adr_kit.decorators import implements_adr
+from adr_kit.models import (
+    ImplementationAttributionEvidence,
+    NormalizedArchitectureModel,
+    NormalizedEntityRegistry,
+)
+from adr_kit.repository.semantic_adapter import coerce_to_normalized_model
 from adr_kit.schema.contract_validation import ContractProfile
 
 ImplementationAttributionSeverity = Literal["error", "warning"]
@@ -38,19 +44,22 @@ class ImplementationAttributionValidationResult:
         return self.error_count == 0
 
 
+@implements_adr("ADR-L-0004", "ADR-L-0013")
 def validate_implementation_attribution_evidence(
-    entity_registry: NormalizedEntityRegistry,
+    entity_registry: NormalizedEntityRegistry | NormalizedArchitectureModel,
     evidence: ImplementationAttributionEvidence,
     *,
     profile: ContractProfile = "greenfield",
 ) -> ImplementationAttributionValidationResult:
     """Validate implementation attribution claims against canonical ADR state."""
     issues: list[ImplementationAttributionIssue] = []
-    adr_status_by_id = {
-        entity.id: str(entity.metadata.get("status", ""))
-        for entity in entity_registry.entities
-        if entity.entity_type == "adr"
-    }
+    model = coerce_to_normalized_model(
+        entity_registry,
+        fingerprint="implementation-attribution-validation",
+        generator="implementation-attribution-validation",
+        extraction_phase="implementation_attribution_validation.coerce_model",
+    )
+    adr_status_by_id = model.adr_status_map()
 
     for index, record in enumerate(evidence.records):
         if not record.attributed_adrs:

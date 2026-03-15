@@ -6,6 +6,7 @@ from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Dict, List, Protocol
 
+from ..decorators import implements_adr
 from ..models import (
     CanonicalSource,
     DiscoveryProvenance,
@@ -432,6 +433,7 @@ class ValidationPass:
 
 
 @dataclass
+@implements_adr("ADR-L-0009", "ADR-L-0013")
 class CompilerPipeline:
     """Deterministic discovery pipeline over the existing compiler IR."""
 
@@ -463,6 +465,7 @@ def build_default_frontend_pipeline() -> CompilerPipeline:
     )
 
 
+@implements_adr("ADR-L-0009", "ADR-L-0013")
 def run_frontend_pipeline(
     *,
     scope: ProjectScope,

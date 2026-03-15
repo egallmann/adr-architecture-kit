@@ -26,18 +26,11 @@ from ..generators import (
 )
 from ..generators.views import MarkdownGenerator
 from ..compiler import ArchitectureCompiler, CompilationMode, CompilerConfig
+from ..decorators import implements_adr
 from ..integrity import GeneratedArtifactStatus
 from ..migrators.canonical_id_normalizer import CanonicalIdNormalizer
 from ..parser import ADRParser
 from ..repository import ArchitectureRepository
-from ..repository.registry_loader import (
-    load_architecture_index,
-    load_normalized_entity_registry,
-    load_remediation_ledger,
-    load_relationship_registry,
-    load_unresolved_registry,
-)
-from ..repository.registry_paths import discover_repository_paths, resolve_index_reference
 from ..schema.contract_validation import validate_kernel_contract_bundle
 from ..validators import (
     ADRValidator,
@@ -80,36 +73,14 @@ def _load_architecture_repository(scope_path: Optional[Path]) -> ArchitectureRep
     return repository
 
 
-def _load_contract_bundle(scope_path: Optional[Path]):
-    """Load the compiled kernel contract bundle without repository policy checks."""
-    resolver = ProjectScopeResolver(explicit_scope=scope_path)
-    scope = resolver.resolve()
-    parser = ADRParser()
-    paths = discover_repository_paths(scope.root)
-
-    architecture_index = load_architecture_index(parser, paths.architecture_index)
-    entity_registry = load_normalized_entity_registry(
-        parser,
-        resolve_index_reference(scope.root, architecture_index.entity_registry_path),
-    )
-    relationship_registry = load_relationship_registry(
-        parser,
-        resolve_index_reference(scope.root, architecture_index.relationship_registry_path),
-    )
-    unresolved_registry = load_unresolved_registry(
-        parser,
-        resolve_index_reference(scope.root, architecture_index.unresolved_registry_path),
-    )
-    remediation_ledger = None
-    if paths.remediation_ledger.exists():
-        remediation_ledger = load_remediation_ledger(parser, paths.remediation_ledger)
-
-    return scope, architecture_index, entity_registry, relationship_registry, unresolved_registry, remediation_ledger
-
-
 def _dump_yaml(data) -> str:
     """Render CLI output as deterministic YAML."""
     return yaml.safe_dump(data, sort_keys=False, allow_unicode=True).rstrip()
+
+
+def _dump_entities(entities) -> str:
+    """Render normalized entities as deterministic YAML."""
+    return _dump_yaml({"entities": [entity.model_dump(mode="json", exclude_none=True) for entity in entities]})
 
 
 def _run_cli_subcommand(args: list[str]) -> int:
@@ -313,45 +284,7 @@ def _echo_recursive_compilation_result(result, *, mode: str, check: bool, dry_ru
         for diagnostic in scoped.result.diagnostics.as_list():
             click.echo(f"  {diagnostic.level.name}: {diagnostic.code} {diagnostic.message}")
 
-
-def _entity_identifier(entity):
-    return getattr(entity, "id", getattr(entity, "entity_id", None))
-
-
-def _entity_type_name(entity):
-    entity_type = getattr(entity, "entity_type", None)
-    return entity_type.value if hasattr(entity_type, "value") else entity_type
-
-
-def _entity_status(entity):
-    lifecycle = getattr(entity, "lifecycle_stage", None)
-    return lifecycle.value if hasattr(lifecycle, "value") else lifecycle
-
-
-def _entity_adr_refs(entity):
-    if hasattr(entity, "canonical_source"):
-        refs = set()
-        canonical_ref = entity.canonical_source.source_ref.split("#")[0]
-        if canonical_ref.startswith("ADR-"):
-            refs.add(canonical_ref)
-        refs.update(
-            ref.source_ref.split("#")[0]
-            for ref in getattr(entity, "source_refs", []) or []
-            if ref.source_ref.startswith("ADR-")
-        )
-        metadata = getattr(entity, "metadata", {}) or {}
-        for metadata_ref_key in ("adr_id", "defined_in"):
-            metadata_ref = metadata.get(metadata_ref_key)
-            if metadata_ref and metadata_ref.startswith("ADR-"):
-                refs.add(metadata_ref)
-        refs.update(getattr(entity.relationships, "declared_in", []) or [])
-        return refs
-    refs = {getattr(entity, "introduced_by", "")}
-    refs.update(getattr(entity, "related_adrs", []) or [])
-    refs.update(getattr(entity, "realized_by", []) or [])
-    return {ref for ref in refs if ref}
-
-
+@implements_adr("ADR-L-0002", "ADR-L-0013")
 @click.group()
 @click.version_option()
 def cli():
@@ -406,6 +339,7 @@ def _generate_source_adr(
             click.echo(f"  WARNING: {warning.message}")
 
 
+@implements_adr("ADR-L-0002", "ADR-L-0013")
 @cli.command("generate-logical")
 @click.option(
     "--input",
@@ -455,6 +389,7 @@ def generate_logical(
         sys.exit(1)
 
 
+@implements_adr("ADR-L-0002", "ADR-L-0013")
 @cli.command("generate-vision")
 @click.option(
     "--input",
@@ -504,6 +439,7 @@ def generate_vision(
         sys.exit(1)
 
 
+@implements_adr("ADR-L-0002", "ADR-L-0013")
 @cli.command('generate-manifest')
 @click.option('--scope', type=click.Path(exists=True, file_okay=False, path_type=Path),
               help='Explicit project scope (overrides auto-detection)')
@@ -572,6 +508,7 @@ def generate_manifest(scope: Optional[Path], recursive: bool, output: Optional[P
         sys.exit(1)
 
 
+@implements_adr("ADR-L-0002", "ADR-L-0013")
 @cli.command("generate-physical-component")
 @click.option(
     "--input",
@@ -621,6 +558,7 @@ def generate_physical_component(
         sys.exit(1)
 
 
+@implements_adr("ADR-L-0002", "ADR-L-0013")
 @cli.command("generate-physical-system")
 @click.option(
     "--input",
@@ -670,6 +608,7 @@ def generate_physical_system(
         sys.exit(1)
 
 
+@implements_adr("ADR-L-0002", "ADR-L-0013")
 @cli.command("generate-entity-registry")
 @click.option('--scope', type=click.Path(exists=True, file_okay=False, path_type=Path),
               help='Explicit project scope (overrides auto-detection)')
@@ -747,6 +686,7 @@ def generate_entity_registry(scope: Optional[Path], recursive: bool, output: Opt
         sys.exit(1)
 
 
+@implements_adr("ADR-L-0002", "ADR-L-0013")
 @cli.command("generate-architecture-index")
 @click.option('--scope', type=click.Path(exists=True, file_okay=False, path_type=Path),
               help='Explicit project scope (overrides auto-detection)')
@@ -774,6 +714,7 @@ def generate_architecture_index(scope: Optional[Path]):
         sys.exit(1)
 
 
+@implements_adr("ADR-L-0002", "ADR-L-0013")
 @cli.command("compile")
 @click.option('--scope', type=click.Path(exists=True, file_okay=False, path_type=Path),
               help='Explicit project scope (overrides auto-detection)')
@@ -870,6 +811,7 @@ def compile_artifacts(
         sys.exit(1)
 
 
+@implements_adr("ADR-L-0002", "ADR-L-0013")
 @cli.command("normalize-canonical-ids")
 @click.option('--scope', type=click.Path(exists=True, file_okay=False, path_type=Path),
               help='Explicit project scope (overrides auto-detection)')
@@ -894,6 +836,7 @@ def normalize_canonical_ids(scope: Optional[Path]):
         sys.exit(1)
 
 
+@implements_adr("ADR-L-0002", "ADR-L-0013")
 @cli.command('validate')
 @click.option('--scope', type=click.Path(exists=True, file_okay=False, path_type=Path),
               help='Explicit project scope (overrides auto-detection)')
@@ -997,6 +940,7 @@ def validate(scope: Optional[Path], recursive: bool, cross_references: bool, mod
         sys.exit(1)
 
 
+@implements_adr("ADR-L-0002", "ADR-L-0013")
 @cli.command("validate-contract")
 @click.option('--scope', type=click.Path(exists=True, file_okay=False, path_type=Path),
               help='Explicit project scope (overrides auto-detection)')
@@ -1035,28 +979,22 @@ def validate_contract(
         for index, current_scope in enumerate(scopes):
             if index:
                 click.echo()
-            (
-                detected_scope,
-                architecture_index,
-                entity_registry,
-                relationship_registry,
-                unresolved_registry,
-                remediation_ledger,
-            ) = _load_contract_bundle(current_scope.root)
-            click.echo(f"Project scope: {detected_scope.name} ({detected_scope.root})")
+            repository = _load_architecture_repository(current_scope.root)
+            contract_bundle = repository.get_contract_bundle_view()
+            click.echo(f"Project scope: {current_scope.name} ({current_scope.root})")
 
             result = validate_kernel_contract_bundle(
-                architecture_index,
-                entity_registry,
-                relationship_registry,
-                unresolved_registry,
+                contract_bundle.architecture_index,
+                contract_bundle.entity_registry,
+                contract_bundle.relationship_registry,
+                contract_bundle.unresolved_registry,
                 profile=contract_profile,
-                remediation_ledger=remediation_ledger,
+                remediation_ledger=contract_bundle.remediation_ledger,
             )
             remediation_state_counts = None
-            if remediation_ledger is not None:
+            if contract_bundle.remediation_ledger is not None:
                 remediation_state_counts = {
-                    state: sum(1 for entry in remediation_ledger.entries if entry.state == state)
+                    state: sum(1 for entry in contract_bundle.remediation_ledger.entries if entry.state == state)
                     for state in ("sentinel", "pending_approval", "approved")
                 }
             sentinel_threshold_exceeded = (
@@ -1079,7 +1017,7 @@ def validate_contract(
                         "max_non_complete_entities": max_non_complete_entities,
                         "completeness_threshold_exceeded": completeness_threshold_exceeded,
                         "completeness_counts": result.completeness_counts,
-                        "remediation_ledger_present": remediation_ledger is not None,
+                        "remediation_ledger_present": contract_bundle.remediation_ledger is not None,
                         "remediation_state_counts": remediation_state_counts,
                         "issues": [
                             {"path": issue.path, "message": issue.message}
@@ -1099,6 +1037,7 @@ def validate_contract(
         sys.exit(1)
 
 
+@implements_adr("ADR-L-0002", "ADR-L-0013")
 @cli.command("governance-checks")
 @click.option('--scope', type=click.Path(exists=True, file_okay=False, path_type=Path),
               default=Path("."),
@@ -1123,26 +1062,13 @@ def governance_checks(scope: Path, skip_tests: bool, recursive: bool):
         sys.exit(1)
 
 
+@implements_adr("ADR-L-0002", "ADR-L-0013")
 @cli.group("entities")
 def entities_cli():
     """Query the generated architecture discovery bundle."""
     pass
 
-
-def _filter_entities(registry, entity_type=None, adr=None, domain=None, status=None):
-    """Filter registry entities deterministically."""
-    entities = sorted(registry.entities, key=_entity_identifier)
-    if entity_type:
-        entities = [entity for entity in entities if _entity_type_name(entity) == entity_type]
-    if adr:
-        entities = [entity for entity in entities if adr in _entity_adr_refs(entity)]
-    if domain:
-        entities = [entity for entity in entities if domain in ((getattr(entity, "domains", None) or getattr(entity, "metadata", {}).get("domains", [])) or [])]
-    if status:
-        entities = [entity for entity in entities if _entity_status(entity) == status]
-    return entities
-
-
+@implements_adr("ADR-L-0002", "ADR-L-0013")
 @entities_cli.command("list")
 @click.option('--scope', type=click.Path(exists=True, file_okay=False, path_type=Path),
               help='Explicit project scope (overrides auto-detection)')
@@ -1157,20 +1083,19 @@ def entities_list(scope: Optional[Path], entity_type: Optional[str], adr_id: Opt
     """List entities from the generated registry."""
     try:
         repository = _load_architecture_repository(scope)
-        model = repository.get_model()
-        entities = _filter_entities(
-            type("ModelView", (), {"entities": model.entities})(),
+        entities = repository.query_entities(
             entity_type=entity_type,
             adr=adr_id,
             domain=domain,
             status=status,
         )
-        click.echo(_dump_yaml({"entities": [entity.model_dump(mode="json", exclude_none=True) for entity in entities]}))
+        click.echo(_dump_entities(entities))
     except Exception as e:
         click.echo(f"Error: {e}", err=True)
         sys.exit(1)
 
 
+@implements_adr("ADR-L-0002", "ADR-L-0013")
 @entities_cli.command("get")
 @click.argument("entity_id")
 @click.option('--scope', type=click.Path(exists=True, file_okay=False, path_type=Path),
@@ -1188,6 +1113,7 @@ def entities_get(entity_id: str, scope: Optional[Path]):
         sys.exit(1)
 
 
+@implements_adr("ADR-L-0002", "ADR-L-0013")
 @entities_cli.command("invariants")
 @click.option('--scope', type=click.Path(exists=True, file_okay=False, path_type=Path),
               help='Explicit project scope (overrides auto-detection)')
@@ -1199,19 +1125,19 @@ def entities_invariants(scope: Optional[Path], adr_id: Optional[str], domain: Op
     """List invariants from the generated registry."""
     try:
         repository = _load_architecture_repository(scope)
-        entities = _filter_entities(
-            type("RegistryView", (), {"entities": repository.get_invariants()})(),
+        entities = repository.query_entities(
             entity_type="invariant",
             adr=adr_id,
             domain=domain,
             status=status,
         )
-        click.echo(_dump_yaml({"entities": [entity.model_dump(mode="json", exclude_none=True) for entity in entities]}))
+        click.echo(_dump_entities(entities))
     except Exception as e:
         click.echo(f"Error: {e}", err=True)
         sys.exit(1)
 
 
+@implements_adr("ADR-L-0002", "ADR-L-0013")
 @entities_cli.command("capabilities")
 @click.option('--scope', type=click.Path(exists=True, file_okay=False, path_type=Path),
               help='Explicit project scope (overrides auto-detection)')
@@ -1223,19 +1149,19 @@ def entities_capabilities(scope: Optional[Path], adr_id: Optional[str], domain: 
     """List capabilities from the generated registry."""
     try:
         repository = _load_architecture_repository(scope)
-        entities = _filter_entities(
-            type("RegistryView", (), {"entities": repository.get_capabilities()})(),
+        entities = repository.query_entities(
             entity_type="capability",
             adr=adr_id,
             domain=domain,
             status=status,
         )
-        click.echo(_dump_yaml({"entities": [entity.model_dump(mode="json", exclude_none=True) for entity in entities]}))
+        click.echo(_dump_entities(entities))
     except Exception as e:
         click.echo(f"Error: {e}", err=True)
         sys.exit(1)
 
 
+@implements_adr("ADR-L-0002", "ADR-L-0013")
 @cli.command('scope')
 @click.option('--recursive', is_flag=True,
               help='Show all sub-module scopes')
@@ -1292,6 +1218,7 @@ def show_scope(recursive: bool):
         sys.exit(1)
 
 
+@implements_adr("ADR-L-0002", "ADR-L-0013")
 @cli.command("validate-project-metadata")
 @click.option(
     "--scope",
@@ -1340,6 +1267,7 @@ def validate_project_metadata(scope: Optional[Path], file_path: Path, recursive:
         sys.exit(1)
 
 
+@implements_adr("ADR-L-0002", "ADR-L-0013")
 @cli.command("audit-runtime")
 @click.option(
     "--requirements",
@@ -1403,6 +1331,7 @@ def audit_runtime(requirements: Path, pyproject: Path, fail_on_outdated: bool):
         sys.exit(1)
 
 
+@implements_adr("ADR-L-0002", "ADR-L-0013")
 @cli.command("generate-system-overview")
 @click.option(
     "--output",
@@ -1422,6 +1351,7 @@ def generate_system_overview(output: Path):
         sys.exit(1)
 
 
+@implements_adr("ADR-L-0002", "ADR-L-0013")
 @cli.command("generate-rendered-docs")
 @click.option('--scope', type=click.Path(exists=True, file_okay=False, path_type=Path),
               help='Explicit project scope (overrides auto-detection)')
@@ -1470,6 +1400,7 @@ def generate_rendered_docs(scope: Optional[Path], recursive: bool):
         sys.exit(1)
 
 
+@implements_adr("ADR-L-0002", "ADR-L-0013")
 @cli.command("validate-system-overview")
 @click.option(
     "--file",
@@ -1495,6 +1426,7 @@ def validate_system_overview(file_path: Path):
         sys.exit(1)
 
 
+@implements_adr("ADR-L-0002", "ADR-L-0013")
 @cli.command("validate-generated-docs")
 @click.option('--scope', type=click.Path(exists=True, file_okay=False, path_type=Path),
               help='Explicit project scope (overrides auto-detection)')

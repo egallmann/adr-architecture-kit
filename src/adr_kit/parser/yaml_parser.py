@@ -12,6 +12,7 @@ from referencing.jsonschema import DRAFT7
 import yaml
 from pydantic import ValidationError
 
+from ..decorators import implements_adr
 from ..models import (
     ArchitectureIndex,
     DecisionLedger,
@@ -42,6 +43,7 @@ class ADRSchemaValidationError(Exception):
     pass
 
 
+@implements_adr("ADR-L-0001")
 class ADRParser:
     """Parser for ADR YAML artifacts with schema validation."""
     

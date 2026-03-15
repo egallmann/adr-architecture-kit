@@ -2,23 +2,23 @@
 
 from __future__ import annotations
 
+from dataclasses import dataclass
 from pathlib import Path
 from typing import Literal
 
 from ..models import (
-    CanonicalSource,
-    Completeness,
+    ArchitectureIndex,
     DiscoveryProvenance,
-    Entity,
     NormalizedArchitectureModel,
     NormalizedEntity,
+    RemediationLedger,
+    RelationshipRegistry,
     RelationshipRecord,
     SourceRef,
+    UnresolvedRegistry,
     UnresolvedRecord,
-    ValidationSummary,
 )
 from ..parser import ADRParser
-from ..schema.contract_validation import ContractValidationError, validate_kernel_contract_bundle
 from ..scope import ProjectScopeResolver
 from .registry_loader import (
     fingerprint_payload,
@@ -31,12 +31,26 @@ from .registry_loader import (
     model_payload,
 )
 from .registry_paths import discover_repository_paths, resolve_index_reference
+from .semantic_adapter import coerce_to_normalized_model
+from ..decorators import implements_adr
 
 
 class ArchitectureRegistryError(Exception):
     """Deterministic repository loading failure."""
 
 
+@dataclass(frozen=True)
+class ContractBundleView:
+    """Repository-facing typed contract bundle for consumer workflows."""
+
+    architecture_index: ArchitectureIndex
+    entity_registry: object
+    relationship_registry: RelationshipRegistry
+    unresolved_registry: UnresolvedRegistry
+    remediation_ledger: RemediationLedger | None
+
+
+@implements_adr("ADR-L-0013")
 class ArchitectureRepository:
     """Load compiled bundles and expose a stable semantic model."""
 
@@ -94,24 +108,120 @@ class ArchitectureRepository:
         self.load()
         return list(self.get_model().entities)
 
+    def query_entities(
+        self,
+        *,
+        entity_type: str | None = None,
+        adr: str | None = None,
+        domain: str | None = None,
+        status: str | None = None,
+    ) -> list[NormalizedEntity]:
+        """Return deterministically filtered semantic entities."""
+
+        entities = sorted(self.get_model().entities, key=lambda entity: entity.id)
+        if entity_type:
+            entities = [entity for entity in entities if entity.entity_type == entity_type]
+        if adr:
+            entities = [
+                entity
+                for entity in entities
+                if adr in self.get_model().canonical_adr_refs_for_entity(entity.id)
+            ]
+        if domain:
+            entities = [
+                entity
+                for entity in entities
+                if domain in self.get_model().entity_domains(entity.id)
+            ]
+        if status:
+            entities = [
+                entity
+                for entity in entities
+                if self.get_model().entity_status(entity.id) == status
+            ]
+        return entities
+
     def get_components(self) -> list[NormalizedEntity]:
-        return self.get_model().entities_by_type("component")
+        return self.query_entities(entity_type="component")
 
     def get_capabilities(self) -> list[NormalizedEntity]:
-        return self.get_model().entities_by_type("capability")
+        return self.query_entities(entity_type="capability")
 
     def get_decisions(self) -> list[NormalizedEntity]:
-        return self.get_model().entities_by_type("decision")
+        return self.query_entities(entity_type="decision")
 
     def get_invariants(self) -> list[NormalizedEntity]:
-        return self.get_model().entities_by_type("invariant")
+        return self.query_entities(entity_type="invariant")
 
     def get_systems(self) -> list[NormalizedEntity]:
-        return self.get_model().entities_by_type("system")
+        return self.query_entities(entity_type="system")
 
     def get_relationships(self) -> list[RelationshipRecord]:
         self.load()
         return list(self.get_model().relationships)
+
+    def get_relationships_for_entity(
+        self,
+        entity_id: str,
+        *,
+        relationship_type: str | None = None,
+        direction: Literal["any", "incoming", "outgoing"] = "any",
+    ) -> list[RelationshipRecord]:
+        return self.get_model().relationships_for_entity(
+            entity_id,
+            relationship_type=relationship_type,
+            direction=direction,
+        )
+
+    def get_unresolved_for_entity(self, entity_id: str) -> list[UnresolvedRecord]:
+        return self.get_model().unresolved_for_entity(entity_id)
+
+    @implements_adr("ADR-L-0013")
+    def get_unresolved_by_role(
+        self,
+        entity_id: str,
+        *,
+        role: Literal["source", "related", "any"] = "source",
+    ) -> list[UnresolvedRecord]:
+        return self.get_model().unresolved_for_entity(entity_id, role=role)
+
+    def get_adr_status(self, adr_id: str) -> str | None:
+        return self.get_model().adr_status(adr_id)
+
+    def get_entity_provenance(self, entity_id: str) -> DiscoveryProvenance | None:
+        return self.get_model().provenance_for_entity(entity_id)
+
+    @implements_adr("ADR-L-0013")
+    def get_entity_canonical_source_ref(self, entity_id: str) -> str | None:
+        return self.get_model().canonical_source_ref_for_entity(entity_id)
+
+    @implements_adr("ADR-L-0013")
+    def get_entity_source_refs(self, entity_id: str) -> list[SourceRef]:
+        return self.get_model().source_refs_for_entity(entity_id)
+
+    def get_entity_adr_refs(self, entity_id: str) -> list[str]:
+        return self.get_model().canonical_adr_refs_for_entity(entity_id)
+
+    def get_contract_bundle_view(self) -> ContractBundleView:
+        """Return the compiled contract bundle through the repository boundary."""
+
+        self.load()
+        if self.mode != "normalized":
+            raise ArchitectureRegistryError("Compiled contract bundle is unavailable in legacy repository mode")
+        if (
+            self.architecture_index is None
+            or self.primary_entity_registry is None
+            or self.relationship_registry is None
+            or self.unresolved_registry is None
+        ):
+            raise ArchitectureRegistryError("Compiled contract bundle unavailable before successful normalized load")
+        return ContractBundleView(
+            architecture_index=self.architecture_index,
+            entity_registry=self.primary_entity_registry,
+            relationship_registry=self.relationship_registry,
+            unresolved_registry=self.unresolved_registry,
+            remediation_ledger=self.remediation_ledger,
+        )
 
     def find_entity(self, entity_id: str) -> NormalizedEntity | None:
         self.load()
@@ -161,18 +271,6 @@ class ArchitectureRepository:
         remediation_ledger_path = discover_repository_paths(scope_root).remediation_ledger
         if remediation_ledger_path.exists():
             remediation_ledger = load_remediation_ledger(self._parser, remediation_ledger_path)
-        try:
-            validate_kernel_contract_bundle(
-                index,
-                primary_registry,
-                relationship_registry,
-                unresolved_registry,
-                profile="greenfield",
-                remediation_ledger=remediation_ledger,
-            ).require_valid()
-        except ContractValidationError as exc:
-            raise ArchitectureRegistryError(f"Kernel contract validation failed: {exc}") from exc
-
         primary_by_id = {entity.id: entity for entity in primary_registry.entities}
         subsets: dict[str, list[NormalizedEntity]] = {}
         subset_models: dict[str, object] = {}
@@ -226,17 +324,23 @@ class ArchitectureRepository:
         self.unresolved_registry = None
         self.remediation_ledger = None
         self.legacy_entity_registry = legacy_registry
-        adapted_entities = [self._legacy_entity_to_normalized(entity) for entity in legacy_registry.entities]
-        adapted_relationships = self._legacy_relationships(adapted_entities)
-        self._entities = adapted_entities
-        self._entities_by_id = {entity.id: entity for entity in adapted_entities}
-        self._relationships = adapted_relationships
+        adapted_model = coerce_to_normalized_model(
+            legacy_registry,
+            fingerprint="legacy-architecture-repository",
+            scope_root=str(self._scope_root) if self._scope_root else str(legacy_path.parent.parent),
+            architecture_namespace=getattr(self._scope_resolver.resolve(), "name", None),
+            generator="adr-architecture-repository",
+            extraction_phase="architecture_repository.load_legacy",
+        )
+        self._entities = list(adapted_model.entities)
+        self._entities_by_id = {entity.id: entity for entity in adapted_model.entities}
+        self._relationships = list(adapted_model.relationships)
         self._subsets = {
-            "components": [entity for entity in adapted_entities if entity.entity_type == "component"],
-            "capabilities": [entity for entity in adapted_entities if entity.entity_type == "capability"],
-            "decisions": [entity for entity in adapted_entities if entity.entity_type == "decision"],
-            "invariants": [entity for entity in adapted_entities if entity.entity_type == "invariant"],
-            "systems": [entity for entity in adapted_entities if entity.entity_type == "system"],
+            "components": [entity for entity in adapted_model.entities if entity.entity_type == "component"],
+            "capabilities": [entity for entity in adapted_model.entities if entity.entity_type == "capability"],
+            "decisions": [entity for entity in adapted_model.entities if entity.entity_type == "decision"],
+            "invariants": [entity for entity in adapted_model.entities if entity.entity_type == "invariant"],
+            "systems": [entity for entity in adapted_model.entities if entity.entity_type == "system"],
         }
         self._fingerprint = fingerprint_payload(
             {
@@ -244,21 +348,7 @@ class ArchitectureRepository:
                 "legacy_entity_registry": model_payload(legacy_registry),
             }
         )
-        self._model = NormalizedArchitectureModel(
-            mode="legacy",
-            scope_root=str(self._scope_root) if self._scope_root else str(legacy_path.parent.parent),
-            architecture_namespace=getattr(self._scope_resolver.resolve(), "name", None),
-            fingerprint=self._fingerprint,
-            entities=adapted_entities,
-            relationships=adapted_relationships,
-            unresolved=[],
-            validation_summary=ValidationSummary(
-                hard_failures=0,
-                warnings=0,
-                unresolved_entries=0,
-            ),
-            source_coverage=None,
-        )
+        self._model = adapted_model.model_copy(update={"fingerprint": self._fingerprint})
 
     def _validate_subset_registry(
         self,
@@ -305,137 +395,3 @@ class ArchitectureRepository:
             "invariants": [],
             "systems": [],
         }
-
-    def _legacy_entity_to_normalized(self, entity: Entity) -> NormalizedEntity:
-        entity_type = entity.entity_type.value
-        if entity_type == "implementation_decision":
-            entity_type = "decision"
-        canonical_ref = f"{entity.introduced_by}#{entity.entity_id}"
-        metadata = {
-            "status": entity.lifecycle_stage.value,
-            "domains": list(entity.domains or []),
-            "legacy_source_artifact_type": entity.source_artifact_type.value,
-            "introduced_by": entity.introduced_by,
-        }
-        if entity.ownership is not None:
-            metadata["ownership"] = entity.ownership.model_dump(mode="json", exclude_none=True)
-
-        relationships = getattr(entity, "relationships", None)
-        related_to = list(getattr(relationships, "depends_on", []) or [])
-        enables = list(getattr(relationships, "implements", []) or [])
-        enforces = list(getattr(relationships, "realizes", []) or [])
-
-        source_refs = [
-            SourceRef(
-                source_type="legacy_related_adr",
-                source_ref=ref,
-                artifact_path=entity.source_path,
-                mention_role="reference",
-            )
-            for ref in sorted(
-                {
-                    *list(entity.related_adrs or []),
-                    *list(entity.realized_by or []),
-                }
-            )
-            if ref.startswith("ADR-")
-        ]
-
-        return NormalizedEntity(
-            id=entity.entity_id,
-            entity_type=entity_type,
-            name=entity.name,
-            summary=entity.name,
-            canonical_source=CanonicalSource(
-                source_type=entity.source_artifact_type.value,
-                source_ref=canonical_ref,
-                artifact_path=entity.source_path,
-            ),
-            source_refs=source_refs,
-            metadata=metadata,
-            relationships={
-                "declared_in": [entity.introduced_by],
-                "related_to": related_to,
-                "enables": enables,
-                "enforces": enforces,
-            },
-            completeness=Completeness(status="partial", missing_fields=["legacy_normalized_semantics"]),
-            provenance=DiscoveryProvenance(
-                source_type="legacy_entity_registry",
-                source_ref=f"adrs/entities/registry.yaml#{entity.entity_id}",
-                extraction_phase="architecture_repository.load_legacy",
-                classification="derived",
-                generator="adr-architecture-repository",
-            ),
-        )
-
-    def _legacy_relationships(self, entities: list[NormalizedEntity]) -> list[RelationshipRecord]:
-        relationships: list[RelationshipRecord] = []
-        known_ids = {entity.id for entity in entities}
-
-        for entity in entities:
-            relationships.extend(
-                self._relationship_records_for_targets(
-                    entity=entity,
-                    relationship_type="declared_in",
-                    targets=list(entity.relationships.declared_in),
-                    canonical_source_ref=entity.canonical_source.source_ref,
-                    known_ids=known_ids,
-                )
-            )
-            relationships.extend(
-                self._relationship_records_for_targets(
-                    entity=entity,
-                    relationship_type="related_to",
-                    targets=list(entity.relationships.related_to),
-                    canonical_source_ref=entity.canonical_source.source_ref,
-                    known_ids=known_ids,
-                )
-            )
-            relationships.extend(
-                self._relationship_records_for_targets(
-                    entity=entity,
-                    relationship_type="enables",
-                    targets=list(entity.relationships.enables),
-                    canonical_source_ref=entity.canonical_source.source_ref,
-                    known_ids=known_ids,
-                )
-            )
-            relationships.extend(
-                self._relationship_records_for_targets(
-                    entity=entity,
-                    relationship_type="enforces",
-                    targets=list(entity.relationships.enforces),
-                    canonical_source_ref=entity.canonical_source.source_ref,
-                    known_ids=known_ids,
-                )
-            )
-
-        return sorted(relationships, key=lambda item: item.relationship_id)
-
-    def _relationship_records_for_targets(
-        self,
-        *,
-        entity: NormalizedEntity,
-        relationship_type: str,
-        targets: list[str],
-        canonical_source_ref: str,
-        known_ids: set[str],
-    ) -> list[RelationshipRecord]:
-        records: list[RelationshipRecord] = []
-        for target in sorted(set(targets)):
-            if target not in known_ids and not target.startswith("ADR-"):
-                continue
-            records.append(
-                RelationshipRecord(
-                    relationship_id=f"{relationship_type}:{entity.id}:{target}",
-                    relationship_type=relationship_type,
-                    from_entity_id=entity.id,
-                    to_entity_id=target,
-                    provenance_classification="derived",
-                    evidence=[f"Adapted from legacy entity registry for {entity.id}"],
-                    canonical_source_ref=canonical_source_ref,
-                    confidence=1.0,
-                )
-            )
-        return records

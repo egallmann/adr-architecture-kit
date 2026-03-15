@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+from pathlib import Path
+
 import pytest
 
 from src.adr_kit.models import (
@@ -9,6 +11,7 @@ from src.adr_kit.models import (
     ImplementationAttributionEvidence,
     ImplementationAttributionProvenance,
     ImplementationAttributionRecord,
+    NormalizedArchitectureModel,
     NormalizedEntity,
     NormalizedEntityRegistry,
 )
@@ -42,6 +45,20 @@ def _adr_entity(adr_id: str, *, status: str = "accepted") -> NormalizedEntity:
 
 def _evidence(*records: ImplementationAttributionRecord) -> ImplementationAttributionEvidence:
     return ImplementationAttributionEvidence(records=list(records))
+
+
+def _model(*entities: NormalizedEntity) -> NormalizedArchitectureModel:
+    return NormalizedArchitectureModel(
+        mode="normalized",
+        scope_root=".",
+        architecture_namespace="test",
+        fingerprint="test-model",
+        entities=list(entities),
+        relationships=[],
+        unresolved=[],
+        validation_summary=None,
+        source_coverage=None,
+    )
 
 
 def _record(*adrs: str) -> ImplementationAttributionRecord:
@@ -118,3 +135,28 @@ def test_superseded_adr_reference_is_a_warning():
     assert result.warning_count == 1
     assert result.error_count == 0
     assert "referenced ADR is superseded" in result.issues[0].message
+
+
+def test_validation_accepts_normalized_architecture_model_input():
+    model = _model(
+        _adr_entity("ADR-L-0001"),
+        _adr_entity("ADR-L-0002", status="superseded"),
+    )
+
+    result = validate_implementation_attribution_evidence(
+        model,
+        _evidence(_record("ADR-L-0001", "ADR-L-0002")),
+        profile="greenfield",
+    )
+
+    assert result.is_valid is True
+    assert result.warning_count == 1
+    assert result.error_count == 0
+
+
+def test_helper_module_no_longer_declares_private_model_coercion() -> None:
+    source = Path(
+        "src/adr_kit/schema/implementation_attribution_validation.py"
+    ).read_text(encoding="utf-8")
+
+    assert "def _coerce_model(" not in source

@@ -9,6 +9,7 @@ from pathlib import Path
 from time import perf_counter
 from unittest.mock import patch
 
+from ..decorators import implements_adr
 from ..parser import ADRParser
 from ..schema.contract_validation import validate_kernel_contract_bundle
 from ..scope import ProjectScope, ProjectScopeResolver
@@ -106,6 +107,7 @@ class _FixedDateTime(datetime):
         return cls.fixed_timestamp.astimezone(tz)
 
 
+@implements_adr("ADR-L-0009", "ADR-L-0013")
 class ArchitectureCompiler:
     """Single-scope architecture compiler driver."""
 

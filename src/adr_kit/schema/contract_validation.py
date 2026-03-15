@@ -5,6 +5,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import Literal
 
+from adr_kit.decorators import implements_adr
 from adr_kit.models.architecture_discovery import (
     ArchitectureIndex,
     NormalizedEntity,
@@ -84,6 +85,7 @@ class ContractValidationError(ValueError):
         super().__init__(joined)
 
 
+@implements_adr("ADR-L-0010", "ADR-L-0011")
 def validate_kernel_contract_bundle(
     architecture_index: ArchitectureIndex,
     entity_registry: NormalizedEntityRegistry,

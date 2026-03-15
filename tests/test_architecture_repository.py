@@ -104,9 +104,12 @@ def test_repository_exposes_semantic_relationship_and_provenance_helpers(tmp_pat
     assert repository.get_unresolved_for_entity("CAP-1000") == []
     assert repository.get_adr_status("ADR-L-1000") == "accepted"
     assert repository.get_entity_adr_refs("CAP-1000") == ["ADR-L-1000"]
+    assert repository.get_entity_canonical_source_ref("CAP-1000") == "ADR-L-1000#CAP-1000"
+    assert repository.get_entity_source_refs("CAP-1000") == []
     provenance = repository.get_entity_provenance("CAP-1000")
     assert provenance is not None
     assert provenance.source_ref == "ADR-L-1000#CAP-1000"
+    assert repository.get_unresolved_by_role("CAP-1000", role="any") == []
 
 
 def test_repository_falls_back_to_legacy_mode(tmp_path: Path) -> None:
@@ -124,6 +127,7 @@ def test_repository_falls_back_to_legacy_mode(tmp_path: Path) -> None:
     assert repository.get_invariants() == []
     assert [entity.id for entity in model.entities_by_type("capability")] == ["CAP-9000"]
     assert model.find_entity("CAP-9000") is not None
+    assert repository.get_entity_canonical_source_ref("CAP-9000") == "ADR-L-9000#CAP-9000"
     assert model.canonical_adr_refs_for_entity("CAP-9000") == ["ADR-L-9000"]
     assert [rel.relationship_type for rel in repository.get_relationships()] == ["declared_in"]
 

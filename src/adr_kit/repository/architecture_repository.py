@@ -14,6 +14,7 @@ from ..models import (
     RemediationLedger,
     RelationshipRegistry,
     RelationshipRecord,
+    SourceRef,
     UnresolvedRegistry,
     UnresolvedRecord,
 )
@@ -175,11 +176,28 @@ class ArchitectureRepository:
     def get_unresolved_for_entity(self, entity_id: str) -> list[UnresolvedRecord]:
         return self.get_model().unresolved_for_entity(entity_id)
 
+    @implements_adr("ADR-L-0013")
+    def get_unresolved_by_role(
+        self,
+        entity_id: str,
+        *,
+        role: Literal["source", "related", "any"] = "source",
+    ) -> list[UnresolvedRecord]:
+        return self.get_model().unresolved_for_entity(entity_id, role=role)
+
     def get_adr_status(self, adr_id: str) -> str | None:
         return self.get_model().adr_status(adr_id)
 
     def get_entity_provenance(self, entity_id: str) -> DiscoveryProvenance | None:
         return self.get_model().provenance_for_entity(entity_id)
+
+    @implements_adr("ADR-L-0013")
+    def get_entity_canonical_source_ref(self, entity_id: str) -> str | None:
+        return self.get_model().canonical_source_ref_for_entity(entity_id)
+
+    @implements_adr("ADR-L-0013")
+    def get_entity_source_refs(self, entity_id: str) -> list[SourceRef]:
+        return self.get_model().source_refs_for_entity(entity_id)
 
     def get_entity_adr_refs(self, entity_id: str) -> list[str]:
         return self.get_model().canonical_adr_refs_for_entity(entity_id)

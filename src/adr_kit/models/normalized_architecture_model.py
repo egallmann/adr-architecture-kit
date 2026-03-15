@@ -13,6 +13,7 @@ from .architecture_discovery import (
     NormalizedEntity,
     RelationshipRecord,
     SourceCoverageSummary,
+    SourceRef,
     UnresolvedRecord,
     ValidationSummary,
 )
@@ -58,11 +59,33 @@ class NormalizedArchitectureModel(BaseModel):
         status = (entity.metadata or {}).get("status")
         return str(status) if status is not None else None
 
+    @implements_adr("ADR-L-0013")
     def provenance_for_entity(self, entity_id: str) -> DiscoveryProvenance | None:
         """Return semantic provenance for one entity if present."""
 
         entity = self.find_entity(entity_id)
         return entity.provenance if entity is not None else None
+
+    @implements_adr("ADR-L-0013")
+    def canonical_source_ref_for_entity(self, entity_id: str) -> str | None:
+        """Return the canonical source reference for one semantic entity if present."""
+
+        entity = self.find_entity(entity_id)
+        if entity is None:
+            return None
+        return entity.canonical_source.source_ref
+
+    @implements_adr("ADR-L-0013")
+    def source_refs_for_entity(self, entity_id: str) -> list[SourceRef]:
+        """Return deterministic source references for one semantic entity."""
+
+        entity = self.find_entity(entity_id)
+        if entity is None:
+            return []
+        return sorted(
+            list(entity.source_refs),
+            key=lambda item: (item.source_ref, item.mention_role, item.artifact_path),
+        )
 
     @implements_adr("ADR-L-0013")
     def entity_status(self, entity_id: str) -> str | None:
@@ -86,6 +109,7 @@ class NormalizedArchitectureModel(BaseModel):
             return []
         return sorted(str(domain) for domain in domains)
 
+    @implements_adr("ADR-L-0013")
     def canonical_adr_refs_for_entity(self, entity_id: str) -> list[str]:
         """Return deterministic ADR references attached to one semantic entity."""
 
@@ -119,6 +143,7 @@ class NormalizedArchitectureModel(BaseModel):
                 result[entity.id] = status
         return result
 
+    @implements_adr("ADR-L-0013")
     def relationships_for_entity(
         self,
         entity_id: str,
@@ -146,6 +171,7 @@ class NormalizedArchitectureModel(BaseModel):
             ]
         return sorted(relationships, key=lambda item: item.relationship_id)
 
+    @implements_adr("ADR-L-0013")
     def related_entity_ids(
         self,
         entity_id: str,
@@ -188,10 +214,56 @@ class NormalizedArchitectureModel(BaseModel):
             )
         return sorted(set(related))
 
-    def unresolved_for_entity(self, entity_id: str) -> list[UnresolvedRecord]:
-        """Return unresolved records attached to the entity."""
+    @implements_adr("ADR-L-0013")
+    def unresolved_records(
+        self,
+        *,
+        role: Literal["source", "related", "any"] = "any",
+    ) -> list[UnresolvedRecord]:
+        """Return deterministic unresolved records across the model, optionally filtered by role."""
 
-        return sorted(
-            [item for item in self.unresolved if item.source_entity_id == entity_id],
-            key=lambda item: item.id,
-        )
+        if role == "source":
+            unresolved = [item for item in self.unresolved if item.source_entity_id]
+        elif role == "related":
+            unresolved = [item for item in self.unresolved if item.related_entity_id is not None]
+        else:
+            unresolved = list(self.unresolved)
+        return sorted(unresolved, key=lambda item: item.id)
+
+    @implements_adr("ADR-L-0013")
+    def unresolved_for_entity(
+        self,
+        entity_id: str,
+        *,
+        role: Literal["source", "related", "any"] = "source",
+    ) -> list[UnresolvedRecord]:
+        """Return deterministic unresolved records attached to one entity by role."""
+
+        if role == "source":
+            unresolved = [item for item in self.unresolved if item.source_entity_id == entity_id]
+        elif role == "related":
+            unresolved = [item for item in self.unresolved if item.related_entity_id == entity_id]
+        else:
+            unresolved = [
+                item
+                for item in self.unresolved
+                if item.source_entity_id == entity_id or item.related_entity_id == entity_id
+            ]
+        return sorted(unresolved, key=lambda item: item.id)
+
+    @implements_adr("ADR-L-0013")
+    def unresolved_related_entity_ids(
+        self,
+        entity_id: str,
+        *,
+        role: Literal["source", "related", "any"] = "source",
+    ) -> list[str]:
+        """Return deterministic adjacent entity IDs from unresolved records."""
+
+        related_ids: set[str] = set()
+        for item in self.unresolved_for_entity(entity_id, role=role):
+            if item.source_entity_id == entity_id and item.related_entity_id:
+                related_ids.add(item.related_entity_id)
+            elif item.related_entity_id == entity_id:
+                related_ids.add(item.source_entity_id)
+        return sorted(related_ids)

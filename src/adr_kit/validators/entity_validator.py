@@ -85,12 +85,14 @@ class EntityValidator:
                     f"{relationship.to_entity_id}"
                 )
 
-        for unresolved in model.unresolved:
+        for unresolved in model.unresolved_records(role="source"):
             if unresolved.source_entity_id not in entity_ids:
                 errors.append(
                     f"Unresolved record {unresolved.id} references unknown source entity "
                     f"{unresolved.source_entity_id}"
                 )
+
+        for unresolved in model.unresolved_records(role="related"):
             if unresolved.related_entity_id and unresolved.related_entity_id not in entity_ids:
                 errors.append(
                     f"Unresolved record {unresolved.id} references unknown related entity "

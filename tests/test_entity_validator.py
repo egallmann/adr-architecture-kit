@@ -123,3 +123,4 @@ def test_entity_validator_no_longer_declares_private_legacy_adapter() -> None:
 
     assert "def _legacy_registry_to_model(" not in source
     assert "def _relationship_records_for_targets(" not in source
+    assert "for unresolved in model.unresolved:" not in source

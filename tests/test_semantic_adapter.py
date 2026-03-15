@@ -13,6 +13,8 @@ from src.adr_kit.models import (
     NormalizedEntity,
     NormalizedEntityRegistry,
     SourceArtifactType,
+    SourceRef,
+    UnresolvedRecord,
 )
 from src.adr_kit.repository.semantic_adapter import coerce_to_normalized_model
 
@@ -28,6 +30,14 @@ def _normalized_entity(entity_id: str, entity_type: str = "adr") -> NormalizedEn
             source_ref=f"{entity_id}#root" if entity_id.startswith("ADR-") else f"ADR-L-0001#{entity_id}",
             artifact_path="adrs/logical/ADR-L-0001.yaml",
         ),
+        source_refs=[
+            SourceRef(
+                source_type="logical_adr",
+                source_ref="ADR-L-0001#reference",
+                artifact_path="adrs/logical/ADR-L-0001.yaml",
+                mention_role="reference",
+            )
+        ],
         metadata={"status": "accepted", "domains": ["test"]},
         completeness=Completeness(status="complete", missing_fields=[]),
         provenance=DiscoveryProvenance(
@@ -80,6 +90,8 @@ def test_coerce_to_normalized_model_adapts_normalized_entity_registry() -> None:
     assert result.mode == "normalized"
     assert result.fingerprint == "registry-adapter"
     assert result.adr_status_map() == {"ADR-L-0001": "accepted"}
+    assert result.canonical_source_ref_for_entity("ADR-L-0001") == "ADR-L-0001#root"
+    assert [item.source_ref for item in result.source_refs_for_entity("ADR-L-0001")] == ["ADR-L-0001#reference"]
 
 
 def test_coerce_to_normalized_model_adapts_legacy_entity_registry() -> None:
@@ -130,3 +142,57 @@ def test_coerce_to_normalized_model_adapts_legacy_entity_registry() -> None:
         "enables:COMP-0001:CAP-0001",
         "related_to:COMP-0001:CAP-0001",
     ]
+
+
+def test_normalized_model_exposes_deterministic_unresolved_traversal() -> None:
+    model = NormalizedArchitectureModel(
+        mode="normalized",
+        scope_root=".",
+        architecture_namespace="test",
+        fingerprint="unresolved-model",
+        entities=[_normalized_entity("COMP-0001", "component"), _normalized_entity("CAP-0001", "capability")],
+        relationships=[],
+        unresolved=[
+            UnresolvedRecord(
+                id="GAP-0002",
+                gap_class="generator_derived",
+                gap_type="missing_relationship_target",
+                source_entity_id="COMP-0001",
+                related_entity_id="CAP-0001",
+                expected_relationship="related_to",
+                severity="important",
+                provenance=DiscoveryProvenance(
+                    source_type="derived_registry",
+                    source_ref="ADR-L-0001#COMP-0001",
+                    extraction_phase="detect_unresolved",
+                    classification="derived",
+                    generator="test",
+                ),
+                evidence=[],
+            ),
+            UnresolvedRecord(
+                id="GAP-0001",
+                gap_class="generator_derived",
+                gap_type="missing_relationship_target",
+                source_entity_id="COMP-0001",
+                related_entity_id=None,
+                expected_relationship="related_to",
+                severity="important",
+                provenance=DiscoveryProvenance(
+                    source_type="derived_registry",
+                    source_ref="ADR-L-0001#COMP-0001",
+                    extraction_phase="detect_unresolved",
+                    classification="derived",
+                    generator="test",
+                ),
+                evidence=[],
+            ),
+        ],
+        validation_summary=None,
+        source_coverage=None,
+    )
+
+    assert [item.id for item in model.unresolved_records()] == ["GAP-0001", "GAP-0002"]
+    assert [item.id for item in model.unresolved_for_entity("COMP-0001", role="source")] == ["GAP-0001", "GAP-0002"]
+    assert [item.id for item in model.unresolved_for_entity("CAP-0001", role="related")] == ["GAP-0002"]
+    assert model.unresolved_related_entity_ids("COMP-0001", role="source") == ["CAP-0001"]

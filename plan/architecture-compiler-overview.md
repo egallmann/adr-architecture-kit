@@ -9,6 +9,34 @@ frontend (parsing), middle-end (analysis and transformation), backend (emission)
 
 ---
 
+## Current State
+
+This overview now sits behind the implemented boundary work rather than ahead
+of it.
+
+Current repo state:
+- the compiler pipeline is explicit and compiler-owned
+- the additive architecture graph exists as a derived artifact
+- `ArchitectureRepository` and `NormalizedArchitectureModel` form the stable
+  in-process semantic boundary
+- CLI and validator semantic consumers have been migrated onto that boundary
+- resilience coverage now protects the boundary against near-term legacy and
+  layout drift
+
+Interpretation rule:
+- compiled registries remain derived contract/discovery artifacts
+- in-process semantic consumers should use the repository boundary, not invent
+  ad hoc registry interpretation
+
+Legacy registry note:
+- `adrs/entities/registry.yaml` remains a compatibility projection
+- explicit empty lists in that file are intentional deterministic shape, not
+  automatically missing data defects
+- richer semantic access should prefer the normalized bundle under `adrs/index`
+  and the repository boundary
+
+---
+
 ## 1. Compiler Identity
 
 **What it compiles:**

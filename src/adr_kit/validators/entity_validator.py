@@ -24,6 +24,7 @@ class EntityValidationError(Exception):
 class EntityValidator:
     """Validate entity relationships and traceability."""
 
+    @implements_adr("ADR-L-0013")
     def validate_entity_references(
         self,
         entity_registry: EntityRegistry | NormalizedArchitectureModel,
@@ -34,7 +35,7 @@ class EntityValidator:
 
         model = self._coerce_model(entity_registry)
         errors = []
-        entity_ids = {entity.id for entity in model.entities}
+        entity_ids = set(model.entity_ids())
 
         for adr in logical_adrs + physical_adrs:
             for entity_id in adr.introduces_entities:
@@ -63,6 +64,7 @@ class EntityValidator:
 
         return errors
 
+    @implements_adr("ADR-L-0013")
     def validate_entity_relationships(
         self,
         entity_registry: EntityRegistry | NormalizedArchitectureModel,
@@ -71,15 +73,18 @@ class EntityValidator:
 
         model = self._coerce_model(entity_registry)
         errors = []
-        entity_ids = {entity.id for entity in model.entities}
+        entity_ids = set(model.entity_ids())
 
-        for relationship in model.relationships:
+        for relationship in model.relationship_records():
             if relationship.from_entity_id not in entity_ids:
                 errors.append(
                     f"Relationship {relationship.relationship_id} references unknown source entity "
                     f"{relationship.from_entity_id}"
                 )
-            if relationship.to_entity_id not in entity_ids and not relationship.to_entity_id.startswith("ADR-"):
+            if (
+                relationship.to_entity_id not in entity_ids
+                and model.adr_status(relationship.to_entity_id) is None
+            ):
                 errors.append(
                     f"Relationship {relationship.relationship_id} references unknown target entity "
                     f"{relationship.to_entity_id}"

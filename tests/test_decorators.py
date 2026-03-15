@@ -80,6 +80,8 @@ def test_first_wave_public_boundaries_are_decorated() -> None:
 def test_boundary_semantic_helpers_are_decorated() -> None:
     assert ArchitectureRepository.__implements_adrs__ == ("ADR-L-0013",)
     assert NormalizedArchitectureModel.__implements_adrs__ == ("ADR-L-0013",)
+    assert NormalizedArchitectureModel.entity_ids.__implements_adrs__ == ("ADR-L-0013",)
+    assert NormalizedArchitectureModel.relationship_records.__implements_adrs__ == ("ADR-L-0013",)
     assert NormalizedArchitectureModel.provenance_for_entity.__implements_adrs__ == ("ADR-L-0013",)
     assert NormalizedArchitectureModel.canonical_source_ref_for_entity.__implements_adrs__ == ("ADR-L-0013",)
     assert NormalizedArchitectureModel.source_refs_for_entity.__implements_adrs__ == ("ADR-L-0013",)
@@ -93,6 +95,8 @@ def test_boundary_semantic_helpers_are_decorated() -> None:
     assert NormalizedArchitectureModel.unresolved_for_entity.__implements_adrs__ == ("ADR-L-0013",)
     assert NormalizedArchitectureModel.unresolved_related_entity_ids.__implements_adrs__ == ("ADR-L-0013",)
     assert EntityValidator.__implements_adrs__ == ("ADR-L-0013",)
+    assert EntityValidator.validate_entity_references.__implements_adrs__ == ("ADR-L-0013",)
+    assert EntityValidator.validate_entity_relationships.__implements_adrs__ == ("ADR-L-0013",)
     assert validate_implementation_attribution_evidence.__implements_adrs__ == ("ADR-L-0004", "ADR-L-0013")
     assert ArchitectureRepository.get_unresolved_by_role.__implements_adrs__ == ("ADR-L-0013",)
     assert ArchitectureRepository.get_entity_canonical_source_ref.__implements_adrs__ == ("ADR-L-0013",)

@@ -10,6 +10,21 @@ finding includes a recommended amendment. The existing plan documents are
 
 ---
 
+## Current Status
+
+Several of the boundary-hardening amendments captured here have now landed in
+the repo:
+- compiler pipeline formalization
+- repository boundary introduction
+- normalized semantic model introduction
+- CLI and validator migration onto the semantic boundary
+- semantic adaptation / provenance / unresolved traversal centralization
+
+Use this document as a convergence reference, but treat
+`implementation-roadmap.md` as the current execution-status view.
+
+---
+
 ## 1. Structural Inconsistencies
 
 ### SI-1: Phase Numbering Divergence

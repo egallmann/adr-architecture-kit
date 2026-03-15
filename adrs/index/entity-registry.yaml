@@ -640,6 +640,55 @@ entities:
     extraction_phase: extract_adr
     classification: explicit
     generator: adr-architecture-index
+- id: ADR-L-0014
+  entity_type: adr
+  name: Brownfield Onboarding and Canonicalization Workflow
+  summary: 'STE adoption often begins after meaningful architecture and implementation
+    decisions already exist. In that stage, the problem is not blank-slate design;
+    it is brownfield onboarding: discover current architecture state, '
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0014
+    artifact_path: adrs/logical/ADR-L-0014-brownfield-onboarding-and-canonicalization-workflow.yaml
+  source_refs: []
+  metadata:
+    status: proposed
+    domains:
+    - migration
+    - onboarding
+    - governance
+    - brownfield
+    tags:
+    - onboarding
+    - migration
+    - canonicalization
+    - cleanup
+  relationships:
+    declared_in: []
+    references:
+    - ADR-L-0009
+    - ADR-L-0011
+    - ADR-L-0013
+    - ADR-V-0013
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0014
+    extraction_phase: extract_adr
+    classification: explicit
+    generator: adr-architecture-index
 - id: ADR-P-0001
   entity_type: adr
   name: Python Toolkit Implementation for ADR Kit
@@ -652,7 +701,7 @@ entities:
     artifact_path: adrs/physical/ADR-P-0001-python-toolkit-implementation.yaml
   source_refs: []
   metadata:
-    status: accepted
+    status: superseded
     domains:
     - implementation
     - tooling
@@ -695,7 +744,7 @@ entities:
     artifact_path: adrs/physical/ADR-P-0002-json-schema-yaml-format.yaml
   source_refs: []
   metadata:
-    status: accepted
+    status: superseded
     domains:
     - schema
     - validation
@@ -776,16 +825,16 @@ entities:
 - id: ADR-P-0004
   entity_type: adr
   name: Prompt Translator Implementation for AI-Driven Development
-  summary: ADR-L-0005 defines the logical architecture for translating ADRs into implementation
-    prompts for AI agents. This Physical ADR specifies the concrete Python implementation.
-    The prompt translator parses Physical ADRs and g
+  summary: 'ADR-L-0005 defines the logical architecture for translating ADRs into
+    implementation prompts for AI agents. This Physical ADR specifies the concrete
+    Python implementation. Current repo state does not contain the planned '
   canonical_source:
     source_type: physical_adr
     source_ref: ADR-P-0004
     artifact_path: adrs/physical/ADR-P-0004-prompt-translator-implementation.yaml
   source_refs: []
   metadata:
-    status: proposed
+    status: deprecated
     domains:
     - implementation
     - automation
@@ -859,6 +908,206 @@ entities:
     extraction_phase: extract_adr
     classification: explicit
     generator: adr-architecture-index
+- id: ADR-PC-0002
+  entity_type: adr
+  name: Schema and Contract Validation
+  summary: Schema and contract validation is now a stable component boundary rather
+    than a generic legacy physical slice. It validates canonical ADR structure, profile-specific
+    contract requirements, project metadata, and implement
+  canonical_source:
+    source_type: physical_component_adr
+    source_ref: ADR-PC-0002
+    artifact_path: adrs/physical-component/ADR-PC-0002-schema-and-contract-validation.yaml
+  source_refs: []
+  metadata:
+    status: proposed
+    domains:
+    - validation
+    - schema
+    - contracts
+    tags: []
+  relationships:
+    declared_in: []
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: physical_component_adr
+    source_ref: ADR-PC-0002
+    extraction_phase: extract_adr
+    classification: explicit
+    generator: adr-architecture-index
+- id: ADR-PC-0003
+  entity_type: adr
+  name: Compiler Pipeline and Driver
+  summary: The compiler driver and explicit pipeline now own deterministic architecture
+    compilation across parse, analysis, emission, and recursive scope orchestration.
+    This component documents that public compile boundary.
+  canonical_source:
+    source_type: physical_component_adr
+    source_ref: ADR-PC-0003
+    artifact_path: adrs/physical-component/ADR-PC-0003-compiler-pipeline-and-driver.yaml
+  source_refs: []
+  metadata:
+    status: proposed
+    domains:
+    - compiler
+    - pipeline
+    - tooling
+    tags: []
+  relationships:
+    declared_in: []
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: physical_component_adr
+    source_ref: ADR-PC-0003
+    extraction_phase: extract_adr
+    classification: explicit
+    generator: adr-architecture-index
+- id: ADR-PC-0004
+  entity_type: adr
+  name: Repository Boundary and Normalized Semantic Model
+  summary: ArchitectureRepository and NormalizedArchitectureModel are now the stable
+    in-process semantic boundary for consumers. This component captures that runtime
+    contract and keeps consumer-side interpretation centralized.
+  canonical_source:
+    source_type: physical_component_adr
+    source_ref: ADR-PC-0004
+    artifact_path: adrs/physical-component/ADR-PC-0004-repository-boundary-and-normalized-model.yaml
+  source_refs: []
+  metadata:
+    status: proposed
+    domains:
+    - repository
+    - semantic-model
+    - tooling
+    tags: []
+  relationships:
+    declared_in: []
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: physical_component_adr
+    source_ref: ADR-PC-0004
+    extraction_phase: extract_adr
+    classification: explicit
+    generator: adr-architecture-index
+- id: ADR-PC-0005
+  entity_type: adr
+  name: Generated Artifact Integrity Validation
+  summary: Generated artifact integrity validation verifies freshness, tamper status,
+    integrity headers, and scope-local generated outputs. It is a distinct public
+    subsystem used by validator and governance flows.
+  canonical_source:
+    source_type: physical_component_adr
+    source_ref: ADR-PC-0005
+    artifact_path: adrs/physical-component/ADR-PC-0005-generated-artifact-integrity-validation.yaml
+  source_refs: []
+  metadata:
+    status: proposed
+    domains:
+    - integrity
+    - validation
+    - projections
+    tags: []
+  relationships:
+    declared_in: []
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: physical_component_adr
+    source_ref: ADR-PC-0005
+    extraction_phase: extract_adr
+    classification: explicit
+    generator: adr-architecture-index
+- id: ADR-PC-0006
+  entity_type: adr
+  name: Brownfield Onboarding and Canonical Normalization
+  summary: adr-architecture-kit already includes migration and normalization behavior
+    in its migrator and CLI surfaces. This component makes brownfield onboarding and
+    canonical normalization an explicit part of the compiler/validat
+  canonical_source:
+    source_type: physical_component_adr
+    source_ref: ADR-PC-0006
+    artifact_path: adrs/physical-component/ADR-PC-0006-brownfield-onboarding-and-canonical-normalization.yaml
+  source_refs: []
+  metadata:
+    status: proposed
+    domains:
+    - migration
+    - onboarding
+    - normalization
+    tags: []
+  relationships:
+    declared_in: []
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: physical_component_adr
+    source_ref: ADR-PC-0006
+    extraction_phase: extract_adr
+    classification: explicit
+    generator: adr-architecture-index
 - id: ADR-PS-0001
   entity_type: adr
   name: ADR Architecture Kit Discovery and Indexing System
@@ -897,6 +1146,54 @@ entities:
   provenance:
     source_type: physical_system_adr
     source_ref: ADR-PS-0001
+    extraction_phase: extract_adr
+    classification: explicit
+    generator: adr-architecture-index
+- id: ADR-PS-0002
+  entity_type: adr
+  name: ADR Kit Compiler and Validation Runtime
+  summary: adr-architecture-kit now operates as a compiler and validation runtime
+    rather than a collection of unrelated generators. The implementation includes
+    an explicit compiler pipeline, contract validation, normalized reposito
+  canonical_source:
+    source_type: physical_system_adr
+    source_ref: ADR-PS-0002
+    artifact_path: adrs/physical-system/ADR-PS-0002-adr-kit-compiler-and-validation-runtime.yaml
+  source_refs: []
+  metadata:
+    status: proposed
+    domains:
+    - compiler
+    - validation
+    - tooling
+    tags:
+    - compiler
+    - validation
+    - runtime
+    - python
+  relationships:
+    declared_in: []
+    references: []
+    related_to:
+    - ADR-PC-0002
+    - ADR-PC-0003
+    - ADR-PC-0004
+    - ADR-PC-0005
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: physical_system_adr
+    source_ref: ADR-PS-0002
     extraction_phase: extract_adr
     classification: explicit
     generator: adr-architecture-index
@@ -3115,6 +3412,91 @@ entities:
     extraction_phase: extract_capability
     classification: explicit
     generator: adr-architecture-index
+- id: CAP-0040
+  entity_type: capability
+  name: Brownfield Onboarding Workflow
+  summary: Provide an explicit workflow for migrating existing repositories into STE
+    canonical architecture authority through phased discovery, normalization, canonization,
+    regeneration, and validation.
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0014#CAP-0040
+    artifact_path: adrs/logical/ADR-L-0014-brownfield-onboarding-and-canonicalization-workflow.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0014
+    domains:
+    - migration
+    - onboarding
+    - governance
+    - brownfield
+    implemented_by_components: []
+    enabled_by_decisions: []
+  relationships:
+    declared_in:
+    - ADR-L-0014
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0014#CAP-0040
+    extraction_phase: extract_capability
+    classification: explicit
+    generator: adr-architecture-index
+- id: CAP-0041
+  entity_type: capability
+  name: Canonical Migration Evidence
+  summary: Record deterministic remaps, onboarding cleanup results, and legacy-to-
+    canonical transitions in machine-readable migration artifacts.
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0014#CAP-0041
+    artifact_path: adrs/logical/ADR-L-0014-brownfield-onboarding-and-canonicalization-workflow.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0014
+    domains:
+    - migration
+    - onboarding
+    - governance
+    - brownfield
+    implemented_by_components: []
+    enabled_by_decisions: []
+  relationships:
+    declared_in:
+    - ADR-L-0014
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0014#CAP-0041
+    extraction_phase: extract_capability
+    classification: explicit
+    generator: adr-architecture-index
 - id: COMP-0010
   entity_type: component
   name: Entity Registry Generator and Query Surface
@@ -3159,6 +3541,236 @@ entities:
   provenance:
     source_type: physical_component_adr
     source_ref: ADR-PC-0001#COMP-0010
+    extraction_phase: extract_component
+    classification: explicit
+    generator: adr-architecture-index
+- id: COMP-0011
+  entity_type: component
+  name: Schema and Contract Validation Surface
+  summary: '- Validate canonical ADR artifacts against schema and business rules -
+    Validate kernel-facing contract profiles - Validate project metadata and implementation
+    attribution evidence - Provide CLI entrypoints for validation'
+  canonical_source:
+    source_type: physical_component_adr
+    source_ref: ADR-PC-0002#COMP-0011
+    artifact_path: adrs/physical-component/ADR-PC-0002-schema-and-contract-validation.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-PC-0002
+    legacy_component_id: COMP-0011
+    technologies:
+    - python
+    - jsonschema
+    - pydantic
+    module_path: src/adr_kit/schema/contract_validation.py
+    implements_capabilities: []
+    implements_system:
+    - ADR-PS-0002
+  relationships:
+    declared_in:
+    - ADR-PC-0002
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in:
+    - SYS-0002
+    supersedes: []
+    superseded_by: []
+    refines: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: physical_component_adr
+    source_ref: ADR-PC-0002#COMP-0011
+    extraction_phase: extract_component
+    classification: explicit
+    generator: adr-architecture-index
+- id: COMP-0012
+  entity_type: component
+  name: Compiler Pipeline and Driver
+  summary: '- Build compiler pipeline state from canonical scope inputs - Execute
+    deterministic pass ordering - Emit architecture bundle, manifest, graph, and rendered
+    outputs - Support recursive multi-scope compilation and reportin'
+  canonical_source:
+    source_type: physical_component_adr
+    source_ref: ADR-PC-0003#COMP-0012
+    artifact_path: adrs/physical-component/ADR-PC-0003-compiler-pipeline-and-driver.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-PC-0003
+    legacy_component_id: COMP-0012
+    technologies:
+    - python
+    - yaml
+    - click
+    module_path: src/adr_kit/compiler/driver.py
+    implements_capabilities: []
+    implements_system:
+    - ADR-PS-0002
+  relationships:
+    declared_in:
+    - ADR-PC-0003
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in:
+    - SYS-0002
+    supersedes: []
+    superseded_by: []
+    refines: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: physical_component_adr
+    source_ref: ADR-PC-0003#COMP-0012
+    extraction_phase: extract_component
+    classification: explicit
+    generator: adr-architecture-index
+- id: COMP-0013
+  entity_type: component
+  name: Repository Boundary Component
+  summary: '- Load compiled architecture bundle artifacts - Expose normalized semantic
+    queries to in-process consumers - Centralize provenance, unresolved, and ADR/status
+    lookup logic - Prevent ad hoc re-interpretation of compiled r'
+  canonical_source:
+    source_type: physical_component_adr
+    source_ref: ADR-PC-0004#COMP-0013
+    artifact_path: adrs/physical-component/ADR-PC-0004-repository-boundary-and-normalized-model.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-PC-0004
+    legacy_component_id: COMP-0013
+    technologies:
+    - python
+    - yaml
+    - pydantic
+    module_path: src/adr_kit/repository/architecture_repository.py
+    implements_capabilities: []
+    implements_system:
+    - ADR-PS-0002
+  relationships:
+    declared_in:
+    - ADR-PC-0004
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in:
+    - SYS-0002
+    supersedes: []
+    superseded_by: []
+    refines: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: physical_component_adr
+    source_ref: ADR-PC-0004#COMP-0013
+    extraction_phase: extract_component
+    classification: explicit
+    generator: adr-architecture-index
+- id: COMP-0014
+  entity_type: component
+  name: Generated Artifact Integrity Validation
+  summary: '- Enumerate scope-local generated artifacts - Validate integrity headers
+    and source hashes - Detect stale, tampered, or malformed generated outputs - Support
+    governance checks over generated artifacts'
+  canonical_source:
+    source_type: physical_component_adr
+    source_ref: ADR-PC-0005#COMP-0014
+    artifact_path: adrs/physical-component/ADR-PC-0005-generated-artifact-integrity-validation.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-PC-0005
+    legacy_component_id: COMP-0014
+    technologies:
+    - python
+    - sha256
+    - yaml
+    module_path: src/adr_kit/integrity/validation.py
+    implements_capabilities: []
+    implements_system:
+    - ADR-PS-0002
+  relationships:
+    declared_in:
+    - ADR-PC-0005
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in:
+    - SYS-0002
+    supersedes: []
+    superseded_by: []
+    refines: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: physical_component_adr
+    source_ref: ADR-PC-0005#COMP-0014
+    extraction_phase: extract_component
+    classification: explicit
+    generator: adr-architecture-index
+- id: COMP-0015
+  entity_type: component
+  name: Brownfield Onboarding and Canonical Normalization
+  summary: '- Detect canonical entity ID collisions - Apply deterministic canonical
+    ID remaps - Write canonical migration ledgers - Support brownfield onboarding
+    cleanup as governed normalization rather than ad hoc editing'
+  canonical_source:
+    source_type: physical_component_adr
+    source_ref: ADR-PC-0006#COMP-0015
+    artifact_path: adrs/physical-component/ADR-PC-0006-brownfield-onboarding-and-canonical-normalization.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-PC-0006
+    legacy_component_id: COMP-0015
+    technologies:
+    - python
+    - yaml
+    - click
+    module_path: src/adr_kit/migrators/canonical_id_normalizer.py
+    implements_capabilities: []
+    implements_system:
+    - ADR-PS-0002
+  relationships:
+    declared_in:
+    - ADR-PC-0006
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in:
+    - SYS-0002
+    supersedes: []
+    superseded_by: []
+    refines: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: physical_component_adr
+    source_ref: ADR-PC-0006#COMP-0015
     extraction_phase: extract_component
     classification: explicit
     generator: adr-architecture-index
@@ -5377,6 +5989,177 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
+- id: DEC-0053
+  entity_type: decision
+  name: Treat brownfield onboarding as a first-class canonicalization workflow
+  summary: Existing architecture can be informally decided but not yet canonicalized.
+    STE needs an explicit workflow for converting that state into canonical ADR authority
+    without pretending the implementation invented the architec
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0014#DEC-0053
+    artifact_path: adrs/logical/ADR-L-0014-brownfield-onboarding-and-canonicalization-workflow.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0014
+    related_invariants: []
+    enforces_invariants: []
+    enables_capabilities: []
+    governs_components: []
+    supersedes: []
+    refines: []
+  relationships:
+    declared_in:
+    - ADR-L-0014
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0014#DEC-0053
+    extraction_phase: extract_decision
+    classification: explicit
+    generator: adr-architecture-index
+- id: DEC-0054
+  entity_type: decision
+  name: Separate onboarding into discovery, normalization, canonization, regeneration,
+    and validation phases
+  summary: 'Brownfield onboarding mixes several concerns that should not be collapsed:
+    discovery identifies what exists, normalization resolves collisions and missing
+    metadata, canonization creates or updates canonical ADRs, regener'
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0014#DEC-0054
+    artifact_path: adrs/logical/ADR-L-0014-brownfield-onboarding-and-canonicalization-workflow.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0014
+    related_invariants: []
+    enforces_invariants: []
+    enables_capabilities: []
+    governs_components: []
+    supersedes: []
+    refines: []
+  relationships:
+    declared_in:
+    - ADR-L-0014
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0014#DEC-0054
+    extraction_phase: extract_decision
+    classification: explicit
+    generator: adr-architecture-index
+- id: DEC-0055
+  entity_type: decision
+  name: Record deterministic brownfield remaps and cleanup transitions in canonical
+    migration artifacts
+  summary: Canonical ID remaps, onboarding normalization, and controlled cleanup transitions
+    should produce durable evidence so future consumers can explain how legacy identifiers
+    and structures map into current canonical state.
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0014#DEC-0055
+    artifact_path: adrs/logical/ADR-L-0014-brownfield-onboarding-and-canonicalization-workflow.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0014
+    related_invariants: []
+    enforces_invariants: []
+    enables_capabilities: []
+    governs_components: []
+    supersedes: []
+    refines: []
+  relationships:
+    declared_in:
+    - ADR-L-0014
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0014#DEC-0055
+    extraction_phase: extract_decision
+    classification: explicit
+    generator: adr-architecture-index
+- id: DEC-0056
+  entity_type: decision
+  name: Keep rendered artifacts as disposable human projections and forbid them as
+    semantic authority when canonical YAML exists
+  summary: Rendered markdown is useful for review and browsing, but it is structurally
+    weaker than canonical YAML and should never become the semantic source of truth
+    when canonical ADR artifacts are available.
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0014#DEC-0056
+    artifact_path: adrs/logical/ADR-L-0014-brownfield-onboarding-and-canonicalization-workflow.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0014
+    related_invariants: []
+    enforces_invariants: []
+    enables_capabilities: []
+    governs_components: []
+    supersedes: []
+    refines: []
+  relationships:
+    declared_in:
+    - ADR-L-0014
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0014#DEC-0056
+    extraction_phase: extract_decision
+    classification: explicit
+    generator: adr-architecture-index
 - id: INV-0001
   entity_type: invariant
   name: INV-0001
@@ -5714,6 +6497,54 @@ entities:
   provenance:
     source_type: standalone_invariant
     source_ref: INV-0007
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
+- id: INV-0008
+  entity_type: invariant
+  name: INV-0008
+  summary: Rendered markdown artifacts must be treated as derived human-facing projections
+    and must not be used as semantic authority when canonical YAML source artifacts
+    are available.
+  canonical_source:
+    source_type: standalone_invariant
+    source_ref: INV-0008
+    artifact_path: adrs/invariants/INV-0008-rendered-artifacts-are-derived-only.yaml
+  source_refs: []
+  metadata:
+    defined_in: ADR-L-0014
+    scope: global
+    statement: Rendered markdown artifacts must be treated as derived human-facing
+      projections and must not be used as semantic authority when canonical YAML source
+      artifacts are available.
+    enforcement_level: must
+    declaration_mode: canonical
+    upheld_by_decisions: []
+    enforced_by:
+    - ADR-PC-0001
+    - ADR-PC-0005
+  relationships:
+    declared_in:
+    - INV-0008
+    references: []
+    related_to: []
+    enforces:
+    - ADR-PC-0001
+    - ADR-PC-0005
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: standalone_invariant
+    source_ref: INV-0008
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
@@ -7778,6 +8609,100 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
+- id: INV-0060
+  entity_type: invariant
+  name: INV-0060
+  summary: STE onboarding workflows MUST treat discovery, normalization, canonization,
+    regeneration, and validation as distinct phases with canonical artifacts updated
+    before derived artifacts are refreshed.
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0014#INV-0060
+    artifact_path: adrs/logical/ADR-L-0014-brownfield-onboarding-and-canonicalization-workflow.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0014
+    scope: global
+    statement: 'STE onboarding workflows MUST treat discovery, normalization, canonization,
+
+      regeneration, and validation as distinct phases with canonical artifacts
+
+      updated before derived artifacts are refreshed.
+
+      '
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions: []
+  relationships:
+    declared_in:
+    - ADR-L-0014
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0014#INV-0060
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
+- id: INV-0061
+  entity_type: invariant
+  name: INV-0061
+  summary: Rendered markdown artifacts MUST be treated as derived human-facing projections
+    and MUST NOT be used as semantic authority when canonical YAML source artifacts
+    are available.
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0014#INV-0061
+    artifact_path: adrs/logical/ADR-L-0014-brownfield-onboarding-and-canonicalization-workflow.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0014
+    scope: global
+    statement: 'Rendered markdown artifacts MUST be treated as derived human-facing
+
+      projections and MUST NOT be used as semantic authority when canonical YAML
+
+      source artifacts are available.
+
+      '
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions: []
+  relationships:
+    declared_in:
+    - ADR-L-0014
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0014#INV-0061
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
 - id: SYS-0001
   entity_type: system
   name: ADR Architecture Kit Discovery and Indexing System
@@ -7818,6 +8743,55 @@ entities:
   provenance:
     source_type: physical_system_adr
     source_ref: ADR-PS-0001
+    extraction_phase: extract_system
+    classification: explicit
+    generator: adr-architecture-index
+- id: SYS-0002
+  entity_type: system
+  name: ADR Kit Compiler and Validation Runtime
+  summary: adr-architecture-kit now operates as a compiler and validation runtime
+    rather than a collection of unrelated generators. The implementation includes
+    an explicit compiler pipeline, contract validation, normalized reposito
+  canonical_source:
+    source_type: physical_system_adr
+    source_ref: ADR-PS-0002
+    artifact_path: adrs/physical-system/ADR-PS-0002-adr-kit-compiler-and-validation-runtime.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-PS-0002
+    implements_logical:
+    - ADR-L-0001
+    - ADR-L-0007
+    - ADR-L-0008
+    - ADR-L-0010
+    - ADR-L-0011
+    - ADR-L-0013
+    technologies:
+    - python
+    - click
+    - pydantic
+    - yaml
+    - json-schema
+  relationships:
+    declared_in:
+    - ADR-PS-0002
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: physical_system_adr
+    source_ref: ADR-PS-0002
     extraction_phase: extract_system
     classification: explicit
     generator: adr-architecture-index

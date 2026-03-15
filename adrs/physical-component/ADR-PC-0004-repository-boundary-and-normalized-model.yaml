@@ -1,0 +1,93 @@
+schema_version: '1.0'
+adr_type: physical-component
+id: ADR-PC-0004
+title: Repository Boundary and Normalized Semantic Model
+status: proposed
+created_date: '2026-03-15'
+authors:
+- adr-architecture-kit
+domains:
+- repository
+- semantic-model
+- tooling
+implements_system:
+- ADR-PS-0002
+implements_logical:
+- ADR-L-0013
+introduces_entities:
+- COMP-0013
+- IFACE-0014
+- IMPL-0014
+technologies:
+- python
+- yaml
+- pydantic
+context: |
+  ArchitectureRepository and NormalizedArchitectureModel are now the stable
+  in-process semantic boundary for consumers. This component captures that
+  runtime contract and keeps consumer-side interpretation centralized.
+technology_stack:
+- category: language
+  name: Python
+  version: '3.11'
+  rationale: Existing implementation language.
+- category: library
+  name: Pydantic
+  version: 2.x
+  rationale: Typed normalized semantic models.
+component_specifications:
+- id: COMP-0013
+  name: Repository Boundary Component
+  type: service
+  responsibilities: |
+    - Load compiled architecture bundle artifacts
+    - Expose normalized semantic queries to in-process consumers
+    - Centralize provenance, unresolved, and ADR/status lookup logic
+    - Prevent ad hoc re-interpretation of compiled registries
+  generation_context:
+    purpose: Provide a stable semantic boundary for in-process consumers.
+    key_responsibilities:
+    - Load normalized bundle state
+    - Provide deterministic consumer queries
+    - Centralize semantic adaptation logic
+    constraints:
+    - Consumers should not bypass the boundary for normal semantic access
+    - Boundary changes must remain additive
+    success_criteria:
+    - Consumer flows use ArchitectureRepository and NormalizedArchitectureModel
+    - Semantic adaptation stays centralized
+  interfaces:
+  - id: IFACE-0014
+    type: library_api
+    specification: |
+      Public surfaces:
+      - ArchitectureRepository
+      - NormalizedArchitectureModel
+      - registry loader and repository path helpers
+  implementation_identifiers:
+    module_path: src/adr_kit/repository/architecture_repository.py
+    test_path: tests/test_architecture_repository.py
+  implementation_requirements:
+    error_handling:
+      strategy: Fail closed on missing, malformed, or out-of-scope bundle references.
+    observability:
+      logging:
+        level: info
+        structured: false
+      metrics:
+      - name: repository_loads_total
+        type: counter
+    testing_requirements:
+      unit_test_coverage: '>= 80%'
+      integration_tests: |
+        - Repository load and normalized lookup
+        - Scope boundary enforcement
+        - Legacy adaptation parity
+implementation_decisions:
+- id: IMPL-0014
+  summary: Treat the repository/model boundary as a first-class component
+  rationale: |
+    The repository boundary is stable runtime behavior and should be documented
+    as its own component authority.
+gaps: []
+

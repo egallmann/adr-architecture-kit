@@ -2216,3 +2216,174 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
+- id: DEC-0053
+  entity_type: decision
+  name: Treat brownfield onboarding as a first-class canonicalization workflow
+  summary: Existing architecture can be informally decided but not yet canonicalized.
+    STE needs an explicit workflow for converting that state into canonical ADR authority
+    without pretending the implementation invented the architec
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0014#DEC-0053
+    artifact_path: adrs/logical/ADR-L-0014-brownfield-onboarding-and-canonicalization-workflow.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0014
+    related_invariants: []
+    enforces_invariants: []
+    enables_capabilities: []
+    governs_components: []
+    supersedes: []
+    refines: []
+  relationships:
+    declared_in:
+    - ADR-L-0014
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0014#DEC-0053
+    extraction_phase: extract_decision
+    classification: explicit
+    generator: adr-architecture-index
+- id: DEC-0054
+  entity_type: decision
+  name: Separate onboarding into discovery, normalization, canonization, regeneration,
+    and validation phases
+  summary: 'Brownfield onboarding mixes several concerns that should not be collapsed:
+    discovery identifies what exists, normalization resolves collisions and missing
+    metadata, canonization creates or updates canonical ADRs, regener'
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0014#DEC-0054
+    artifact_path: adrs/logical/ADR-L-0014-brownfield-onboarding-and-canonicalization-workflow.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0014
+    related_invariants: []
+    enforces_invariants: []
+    enables_capabilities: []
+    governs_components: []
+    supersedes: []
+    refines: []
+  relationships:
+    declared_in:
+    - ADR-L-0014
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0014#DEC-0054
+    extraction_phase: extract_decision
+    classification: explicit
+    generator: adr-architecture-index
+- id: DEC-0055
+  entity_type: decision
+  name: Record deterministic brownfield remaps and cleanup transitions in canonical
+    migration artifacts
+  summary: Canonical ID remaps, onboarding normalization, and controlled cleanup transitions
+    should produce durable evidence so future consumers can explain how legacy identifiers
+    and structures map into current canonical state.
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0014#DEC-0055
+    artifact_path: adrs/logical/ADR-L-0014-brownfield-onboarding-and-canonicalization-workflow.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0014
+    related_invariants: []
+    enforces_invariants: []
+    enables_capabilities: []
+    governs_components: []
+    supersedes: []
+    refines: []
+  relationships:
+    declared_in:
+    - ADR-L-0014
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0014#DEC-0055
+    extraction_phase: extract_decision
+    classification: explicit
+    generator: adr-architecture-index
+- id: DEC-0056
+  entity_type: decision
+  name: Keep rendered artifacts as disposable human projections and forbid them as
+    semantic authority when canonical YAML exists
+  summary: Rendered markdown is useful for review and browsing, but it is structurally
+    weaker than canonical YAML and should never become the semantic source of truth
+    when canonical ADR artifacts are available.
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0014#DEC-0056
+    artifact_path: adrs/logical/ADR-L-0014-brownfield-onboarding-and-canonicalization-workflow.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0014
+    related_invariants: []
+    enforces_invariants: []
+    enables_capabilities: []
+    governs_components: []
+    supersedes: []
+    refines: []
+  relationships:
+    declared_in:
+    - ADR-L-0014
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0014#DEC-0056
+    extraction_phase: extract_decision
+    classification: explicit
+    generator: adr-architecture-index

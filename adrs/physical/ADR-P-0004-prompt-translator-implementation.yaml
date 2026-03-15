@@ -2,7 +2,7 @@ schema_version: '1.0'
 adr_type: physical
 id: ADR-P-0004
 title: Prompt Translator Implementation for AI-Driven Development
-status: proposed
+status: deprecated
 created_date: '2026-03-08'
 authors:
 - adr-architecture-kit
@@ -13,6 +13,10 @@ context: |
   ADR-L-0005 defines the logical architecture for translating ADRs into
   implementation prompts for AI agents. This Physical ADR specifies the
   concrete Python implementation.
+
+  Current repo state does not contain the planned `src/adr_kit/prompts`
+  implementation surface. This document remains as deferred design material and
+  is not authoritative for current implemented behavior.
 
   The prompt translator parses Physical ADRs and generates:
   1. **Implementation prompts** - One per component (COMP-*)

@@ -2,7 +2,7 @@ schema_version: '1.0'
 adr_type: physical
 id: ADR-P-0002
 title: JSON Schema Validation with YAML Document Format
-status: accepted
+status: superseded
 created_date: '2026-03-07'
 authors:
 - erik.gallmann
@@ -24,7 +24,7 @@ technologies:
 related_adrs:
 - ADR-P-0001
 supersedes: []
-superseded_by: null
+superseded_by: ADR-PC-0002
 ownership:
   architecture_authority: architecture-systems
   implementation_owners:

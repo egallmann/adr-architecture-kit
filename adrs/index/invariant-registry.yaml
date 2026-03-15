@@ -341,6 +341,54 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
+- id: INV-0008
+  entity_type: invariant
+  name: INV-0008
+  summary: Rendered markdown artifacts must be treated as derived human-facing projections
+    and must not be used as semantic authority when canonical YAML source artifacts
+    are available.
+  canonical_source:
+    source_type: standalone_invariant
+    source_ref: INV-0008
+    artifact_path: adrs/invariants/INV-0008-rendered-artifacts-are-derived-only.yaml
+  source_refs: []
+  metadata:
+    defined_in: ADR-L-0014
+    scope: global
+    statement: Rendered markdown artifacts must be treated as derived human-facing
+      projections and must not be used as semantic authority when canonical YAML source
+      artifacts are available.
+    enforcement_level: must
+    declaration_mode: canonical
+    upheld_by_decisions: []
+    enforced_by:
+    - ADR-PC-0001
+    - ADR-PC-0005
+  relationships:
+    declared_in:
+    - INV-0008
+    references: []
+    related_to: []
+    enforces:
+    - ADR-PC-0001
+    - ADR-PC-0005
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: standalone_invariant
+    source_ref: INV-0008
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
 - id: INV-0014
   entity_type: invariant
   name: INV-0014
@@ -2399,6 +2447,100 @@ entities:
   provenance:
     source_type: logical_adr
     source_ref: ADR-L-0013#INV-0059
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
+- id: INV-0060
+  entity_type: invariant
+  name: INV-0060
+  summary: STE onboarding workflows MUST treat discovery, normalization, canonization,
+    regeneration, and validation as distinct phases with canonical artifacts updated
+    before derived artifacts are refreshed.
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0014#INV-0060
+    artifact_path: adrs/logical/ADR-L-0014-brownfield-onboarding-and-canonicalization-workflow.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0014
+    scope: global
+    statement: 'STE onboarding workflows MUST treat discovery, normalization, canonization,
+
+      regeneration, and validation as distinct phases with canonical artifacts
+
+      updated before derived artifacts are refreshed.
+
+      '
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions: []
+  relationships:
+    declared_in:
+    - ADR-L-0014
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0014#INV-0060
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
+- id: INV-0061
+  entity_type: invariant
+  name: INV-0061
+  summary: Rendered markdown artifacts MUST be treated as derived human-facing projections
+    and MUST NOT be used as semantic authority when canonical YAML source artifacts
+    are available.
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0014#INV-0061
+    artifact_path: adrs/logical/ADR-L-0014-brownfield-onboarding-and-canonicalization-workflow.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0014
+    scope: global
+    statement: 'Rendered markdown artifacts MUST be treated as derived human-facing
+
+      projections and MUST NOT be used as semantic authority when canonical YAML
+
+      source artifacts are available.
+
+      '
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions: []
+  relationships:
+    declared_in:
+    - ADR-L-0014
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0014#INV-0061
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index

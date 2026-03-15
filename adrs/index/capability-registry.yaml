@@ -1639,3 +1639,88 @@ entities:
     extraction_phase: extract_capability
     classification: explicit
     generator: adr-architecture-index
+- id: CAP-0040
+  entity_type: capability
+  name: Brownfield Onboarding Workflow
+  summary: Provide an explicit workflow for migrating existing repositories into STE
+    canonical architecture authority through phased discovery, normalization, canonization,
+    regeneration, and validation.
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0014#CAP-0040
+    artifact_path: adrs/logical/ADR-L-0014-brownfield-onboarding-and-canonicalization-workflow.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0014
+    domains:
+    - migration
+    - onboarding
+    - governance
+    - brownfield
+    implemented_by_components: []
+    enabled_by_decisions: []
+  relationships:
+    declared_in:
+    - ADR-L-0014
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0014#CAP-0040
+    extraction_phase: extract_capability
+    classification: explicit
+    generator: adr-architecture-index
+- id: CAP-0041
+  entity_type: capability
+  name: Canonical Migration Evidence
+  summary: Record deterministic remaps, onboarding cleanup results, and legacy-to-
+    canonical transitions in machine-readable migration artifacts.
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0014#CAP-0041
+    artifact_path: adrs/logical/ADR-L-0014-brownfield-onboarding-and-canonicalization-workflow.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0014
+    domains:
+    - migration
+    - onboarding
+    - governance
+    - brownfield
+    implemented_by_components: []
+    enabled_by_decisions: []
+  relationships:
+    declared_in:
+    - ADR-L-0014
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0014#CAP-0041
+    extraction_phase: extract_capability
+    classification: explicit
+    generator: adr-architecture-index

@@ -6,9 +6,20 @@ from src.adr_kit.cli.main import cli
 from src.adr_kit.compiler.driver import ArchitectureCompiler
 from src.adr_kit.compiler.pipeline import CompilerPipeline, run_frontend_pipeline
 from src.adr_kit.decorators import enforces_invariant, implements_adr
+from src.adr_kit.models.normalized_architecture_model import NormalizedArchitectureModel
 from src.adr_kit.parser.yaml_parser import ADRParser
 from src.adr_kit.projection import ProjectionInspector
+from src.adr_kit.repository.architecture_repository import ArchitectureRepository
+from src.adr_kit.repository.semantic_adapter import (
+    coerce_to_normalized_model,
+    legacy_entity_to_normalized,
+    legacy_relationships,
+)
 from src.adr_kit.schema.contract_validation import validate_kernel_contract_bundle
+from src.adr_kit.schema.implementation_attribution_validation import (
+    validate_implementation_attribution_evidence,
+)
+from src.adr_kit.validators import EntityValidator
 
 
 def test_implements_adr_attaches_ordered_metadata_to_function() -> None:
@@ -54,3 +65,16 @@ def test_first_wave_public_boundaries_are_decorated() -> None:
     assert ADRParser.__implements_adrs__ == ("ADR-L-0001",)
     assert ProjectionInspector.__implements_adrs__ == ("ADR-L-0007",)
     assert validate_kernel_contract_bundle.__implements_adrs__ == ("ADR-L-0010", "ADR-L-0011")
+
+
+def test_boundary_semantic_helpers_are_decorated() -> None:
+    assert ArchitectureRepository.__implements_adrs__ == ("ADR-L-0013",)
+    assert NormalizedArchitectureModel.__implements_adrs__ == ("ADR-L-0013",)
+    assert NormalizedArchitectureModel.entity_status.__implements_adrs__ == ("ADR-L-0013",)
+    assert NormalizedArchitectureModel.entity_domains.__implements_adrs__ == ("ADR-L-0013",)
+    assert NormalizedArchitectureModel.adr_status_map.__implements_adrs__ == ("ADR-L-0013",)
+    assert EntityValidator.__implements_adrs__ == ("ADR-L-0013",)
+    assert validate_implementation_attribution_evidence.__implements_adrs__ == ("ADR-L-0004", "ADR-L-0013")
+    assert coerce_to_normalized_model.__implements_adrs__ == ("ADR-L-0013",)
+    assert legacy_entity_to_normalized.__implements_adrs__ == ("ADR-L-0013",)
+    assert legacy_relationships.__implements_adrs__ == ("ADR-L-0013",)

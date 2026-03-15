@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+from pathlib import Path
+
 from src.adr_kit.models import (
     CanonicalSource,
     Completeness,
@@ -114,3 +116,10 @@ def test_validate_entity_relationships_reports_unknown_targets_and_unresolved_so
 
     assert any("unknown target entity COMP-4040" in error for error in errors)
     assert any("unknown source entity COMP-4040" in error for error in errors)
+
+
+def test_entity_validator_no_longer_declares_private_legacy_adapter() -> None:
+    source = Path("src/adr_kit/validators/entity_validator.py").read_text(encoding="utf-8")
+
+    assert "def _legacy_registry_to_model(" not in source
+    assert "def _relationship_records_for_targets(" not in source

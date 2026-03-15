@@ -271,3 +271,9 @@ def test_repository_prefers_normalized_mode_when_both_sources_exist(tmp_path: Pa
     assert repository.mode == "normalized"
     assert repository.find_entity("CAP-1000") is not None
     assert repository.find_entity("CAP-9000") is None
+
+
+def test_repository_no_longer_declares_local_adr_ref_helper() -> None:
+    source = Path("src/adr_kit/repository/architecture_repository.py").read_text(encoding="utf-8")
+
+    assert "def _entity_adr_refs(" not in source

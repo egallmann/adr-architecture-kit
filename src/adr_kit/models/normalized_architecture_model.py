@@ -7,6 +7,7 @@ from typing import Literal
 
 from pydantic import BaseModel, Field
 
+from ..decorators import implements_adr
 from .architecture_discovery import (
     DiscoveryProvenance,
     NormalizedEntity,
@@ -17,6 +18,7 @@ from .architecture_discovery import (
 )
 
 
+@implements_adr("ADR-L-0013")
 class NormalizedArchitectureModel(BaseModel):
     """Typed semantic view over one loaded architecture scope."""
 
@@ -62,6 +64,28 @@ class NormalizedArchitectureModel(BaseModel):
         entity = self.find_entity(entity_id)
         return entity.provenance if entity is not None else None
 
+    @implements_adr("ADR-L-0013")
+    def entity_status(self, entity_id: str) -> str | None:
+        """Return one entity status from semantic metadata if present."""
+
+        entity = self.find_entity(entity_id)
+        if entity is None:
+            return None
+        status = (entity.metadata or {}).get("status")
+        return str(status) if status is not None else None
+
+    @implements_adr("ADR-L-0013")
+    def entity_domains(self, entity_id: str) -> list[str]:
+        """Return deterministic semantic domains for one entity."""
+
+        entity = self.find_entity(entity_id)
+        if entity is None:
+            return []
+        domains = (entity.metadata or {}).get("domains", [])
+        if not isinstance(domains, list):
+            return []
+        return sorted(str(domain) for domain in domains)
+
     def canonical_adr_refs_for_entity(self, entity_id: str) -> list[str]:
         """Return deterministic ADR references attached to one semantic entity."""
 
@@ -83,6 +107,17 @@ class NormalizedArchitectureModel(BaseModel):
                 refs.add(metadata_ref)
         refs.update(item for item in entity.relationships.declared_in if item.startswith("ADR-"))
         return sorted(refs)
+
+    @implements_adr("ADR-L-0013")
+    def adr_status_map(self) -> dict[str, str]:
+        """Return deterministic ADR status lookup for validator consumers."""
+
+        result: dict[str, str] = {}
+        for entity in self.adr_entities():
+            status = self.entity_status(entity.id)
+            if status is not None:
+                result[entity.id] = status
+        return result
 
     def relationships_for_entity(
         self,

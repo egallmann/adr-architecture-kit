@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+from pathlib import Path
+
 import pytest
 
 from src.adr_kit.models import (
@@ -150,3 +152,11 @@ def test_validation_accepts_normalized_architecture_model_input():
     assert result.is_valid is True
     assert result.warning_count == 1
     assert result.error_count == 0
+
+
+def test_helper_module_no_longer_declares_private_model_coercion() -> None:
+    source = Path(
+        "src/adr_kit/schema/implementation_attribution_validation.py"
+    ).read_text(encoding="utf-8")
+
+    assert "def _coerce_model(" not in source

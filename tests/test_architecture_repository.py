@@ -48,6 +48,21 @@ def _write_legacy_registry(scope_root: Path) -> Path:
     return legacy_path
 
 
+def _write_project_yaml(scope_root: Path, *, project_name: str) -> None:
+    (scope_root / "PROJECT.yaml").write_text(
+        "\n".join(
+            [
+                'schema_version: "1.0"',
+                "type: project_metadata",
+                "project:",
+                f'  name: "{project_name}"',
+            ]
+        )
+        + "\n",
+        encoding="utf-8",
+    )
+
+
 def test_repository_loads_normalized_bundle(tmp_path: Path) -> None:
     _generate_bundle(tmp_path)
 
@@ -113,6 +128,7 @@ def test_repository_exposes_semantic_relationship_and_provenance_helpers(tmp_pat
 
 
 def test_repository_falls_back_to_legacy_mode(tmp_path: Path) -> None:
+    _write_project_yaml(tmp_path, project_name="legacy-scope")
     _write_legacy_registry(tmp_path)
 
     repository = ArchitectureRepository(project_root=tmp_path)
@@ -121,6 +137,7 @@ def test_repository_falls_back_to_legacy_mode(tmp_path: Path) -> None:
 
     assert repository.mode == "legacy"
     assert model.mode == "legacy"
+    assert model.architecture_namespace == "legacy-scope"
     assert repository.find_entity("CAP-9000") is not None
     assert [entity.id for entity in repository.get_entities()] == ["CAP-9000"]
     assert [entity.id for entity in repository.get_capabilities()] == ["CAP-9000"]
@@ -160,6 +177,41 @@ def test_repository_load_is_idempotent_and_reload_refreshes_disk(tmp_path: Path)
     repository.reload()
     assert repository.fingerprint() != original_fingerprint
     assert repository.get_capabilities()[0].name == "Changed capability"
+
+
+def test_repository_fingerprint_ignores_entity_order_reordering(tmp_path: Path) -> None:
+    paths = _generate_bundle(tmp_path)
+    repository = ArchitectureRepository(project_root=tmp_path)
+    repository.load()
+    original_fingerprint = repository.fingerprint()
+
+    entity_data = yaml.safe_load(paths["entity_registry"].read_text(encoding="utf-8"))
+    entity_data["entities"].reverse()
+    paths["entity_registry"].write_text(yaml.safe_dump(entity_data, sort_keys=False), encoding="utf-8")
+
+    capability_data = yaml.safe_load(paths["capability_registry"].read_text(encoding="utf-8"))
+    capability_data["entities"].reverse()
+    paths["capability_registry"].write_text(yaml.safe_dump(capability_data, sort_keys=False), encoding="utf-8")
+
+    repository.reload()
+
+    assert repository.fingerprint() == original_fingerprint
+    assert repository.get_entity_adr_refs("CAP-1000") == ["ADR-L-1000"]
+
+
+def test_repository_fingerprint_changes_on_semantically_relevant_content_change(tmp_path: Path) -> None:
+    paths = _generate_bundle(tmp_path)
+    repository = ArchitectureRepository(project_root=tmp_path)
+    repository.load()
+    original_fingerprint = repository.fingerprint()
+
+    index_data = yaml.safe_load(paths["architecture_index"].read_text(encoding="utf-8"))
+    index_data["architecture_namespace"] = "modified-namespace"
+    paths["architecture_index"].write_text(yaml.safe_dump(index_data, sort_keys=False), encoding="utf-8")
+
+    repository.reload()
+
+    assert repository.fingerprint() != original_fingerprint
 
 
 def test_repository_rejects_subset_entity_missing_from_primary_registry(tmp_path: Path) -> None:
@@ -203,6 +255,40 @@ def test_repository_rejects_index_path_traversal_outside_scope(tmp_path: Path) -
 
     repository = ArchitectureRepository(project_root=tmp_path)
     with pytest.raises(ArchitectureRegistryError, match="escapes scope root"):
+        repository.load()
+
+
+def test_repository_rejects_absolute_index_reference(tmp_path: Path) -> None:
+    paths = _generate_bundle(tmp_path)
+    index_data = yaml.safe_load(paths["architecture_index"].read_text(encoding="utf-8"))
+    index_data["entity_registry_path"] = str(paths["entity_registry"].resolve())
+    paths["architecture_index"].write_text(yaml.safe_dump(index_data, sort_keys=False), encoding="utf-8")
+
+    repository = ArchitectureRepository(project_root=tmp_path)
+    with pytest.raises(ArchitectureRegistryError, match="must be relative to scope root"):
+        repository.load()
+
+
+def test_repository_allows_in_scope_duplicate_path_shapes(tmp_path: Path) -> None:
+    paths = _generate_bundle(tmp_path)
+    index_data = yaml.safe_load(paths["architecture_index"].read_text(encoding="utf-8"))
+    index_data["entity_registry_path"] = "adrs/index/../index/entity-registry.yaml"
+    paths["architecture_index"].write_text(yaml.safe_dump(index_data, sort_keys=False), encoding="utf-8")
+
+    repository = ArchitectureRepository(project_root=tmp_path)
+    repository.load()
+
+    assert repository.find_entity("CAP-1000") is not None
+
+
+def test_repository_rejects_unsupported_architecture_index_schema_version(tmp_path: Path) -> None:
+    paths = _generate_bundle(tmp_path)
+    index_data = yaml.safe_load(paths["architecture_index"].read_text(encoding="utf-8"))
+    index_data["schema_version"] = "9.9"
+    paths["architecture_index"].write_text(yaml.safe_dump(index_data, sort_keys=False), encoding="utf-8")
+
+    repository = ArchitectureRepository(project_root=tmp_path)
+    with pytest.raises(ArchitectureRegistryError, match="Failed to load registry"):
         repository.load()
 
 

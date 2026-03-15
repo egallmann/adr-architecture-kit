@@ -10,6 +10,16 @@ from src.adr_kit.models.normalized_architecture_model import NormalizedArchitect
 from src.adr_kit.parser.yaml_parser import ADRParser
 from src.adr_kit.projection import ProjectionInspector
 from src.adr_kit.repository.architecture_repository import ArchitectureRepository
+from src.adr_kit.repository.registry_loader import (
+    fingerprint_payload,
+    load_architecture_index,
+    load_legacy_entity_registry,
+    load_normalized_entity_registry,
+    load_relationship_registry,
+    load_remediation_ledger,
+    load_unresolved_registry,
+    model_payload,
+)
 from src.adr_kit.repository.semantic_adapter import (
     coerce_to_normalized_model,
     legacy_entity_to_normalized,
@@ -90,3 +100,11 @@ def test_boundary_semantic_helpers_are_decorated() -> None:
     assert coerce_to_normalized_model.__implements_adrs__ == ("ADR-L-0013",)
     assert legacy_entity_to_normalized.__implements_adrs__ == ("ADR-L-0013",)
     assert legacy_relationships.__implements_adrs__ == ("ADR-L-0013",)
+    assert load_architecture_index.__implements_adrs__ == ("ADR-L-0013",)
+    assert load_normalized_entity_registry.__implements_adrs__ == ("ADR-L-0013",)
+    assert load_relationship_registry.__implements_adrs__ == ("ADR-L-0013",)
+    assert load_unresolved_registry.__implements_adrs__ == ("ADR-L-0013",)
+    assert load_remediation_ledger.__implements_adrs__ == ("ADR-L-0013",)
+    assert load_legacy_entity_registry.__implements_adrs__ == ("ADR-L-0013",)
+    assert fingerprint_payload.__implements_adrs__ == ("ADR-L-0013",)
+    assert model_payload.__implements_adrs__ == ("ADR-L-0013",)

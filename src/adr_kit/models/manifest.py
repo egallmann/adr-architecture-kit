@@ -30,6 +30,7 @@ class ManifestADREntry(BaseModel):
         None,
         pattern=r"^(none|advisory|implementation_authoritative)$",
     )
+    related_reviews: List[str] = Field(default_factory=list)
     related_overrides: List[str] = Field(default_factory=list)
     related_ledgers: List[str] = Field(default_factory=list)
 
@@ -73,6 +74,7 @@ class ManifestStatistics(BaseModel):
     total_requirements_snapshots: int = Field(0, ge=0)
     total_decision_ledgers: int = Field(0, ge=0)
     total_objection_overrides: int = Field(0, ge=0)
+    total_steelman_reviews: int = Field(0, ge=0)
 
 
 class ManifestEntity(BaseModel):
@@ -110,6 +112,17 @@ class ManifestObjectionOverride(BaseModel):
     )
 
 
+class ManifestSteelmanReview(BaseModel):
+    """Steelman review entry in manifest."""
+
+    id: str = Field(..., pattern=r"^REVIEW-\d{4}$")
+    target_adr: str = Field(..., pattern=r"^ADR-(L|V|P|PS|PC|D)-\d{4}$")
+    review_kind: str = Field(..., pattern=r"^steelman$")
+    overall_recommendation: str
+    objection_count: int = Field(0, ge=0)
+    blocking_objections: int = Field(0, ge=0)
+
+
 class Manifest(BaseModel):
     """Generated manifest for ADR discovery (SYS-14: Index Currency)."""
     
@@ -132,6 +145,7 @@ class Manifest(BaseModel):
     requirements_snapshots: List[ManifestRequirementsSnapshot] = Field(default_factory=list, description="Requirements snapshots summary")
     decision_ledgers: List[ManifestDecisionLedger] = Field(default_factory=list, description="Decision ledgers summary")
     objection_overrides: List[ManifestObjectionOverride] = Field(default_factory=list, description="Objection overrides summary")
+    steelman_reviews: List[ManifestSteelmanReview] = Field(default_factory=list, description="Steelman reviews summary")
     gaps_summary: GapsSummary
     statistics: ManifestStatistics
     

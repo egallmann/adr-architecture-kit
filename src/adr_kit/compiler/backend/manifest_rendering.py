@@ -28,6 +28,7 @@ from ...models import (
     ManifestEntity,
     ManifestInvariant,
     ManifestObjectionOverride,
+    ManifestSteelmanReview,
     ManifestRequirementsSnapshot,
     ManifestStatistics,
     PhysicalADR,
@@ -67,6 +68,7 @@ def build_manifest_from_directory(
     parser: ADRParser,
     scope: Optional[ProjectScope] = None,
     scope_resolver: ProjectScopeResolver | None = None,
+    generated_at: Optional[datetime] = None,
 ) -> Manifest:
     """Build the manifest model for one ADR directory."""
     adr_dir = Path(adr_dir).resolve()
@@ -92,6 +94,11 @@ def build_manifest_from_directory(
     objection_override_files = (
         list((adr_dir / "decisions" / "overrides").glob("*.yaml"))
         if (adr_dir / "decisions" / "overrides").exists()
+        else []
+    )
+    steelman_review_files = (
+        list((adr_dir / "decisions" / "reviews").glob("*.yaml"))
+        if (adr_dir / "decisions" / "reviews").exists()
         else []
     )
 
@@ -137,6 +144,7 @@ def build_manifest_from_directory(
                 gap_count=len(adr.gaps),
                 blocking_gaps=sum(1 for gap in adr.gaps if gap.blocking),
                 implementation_authority=governance.implementation_authority.value if governance and governance.implementation_authority else None,
+                related_reviews=list(governance.related_reviews) if governance else [],
                 related_overrides=list(governance.related_overrides) if governance else [],
                 related_ledgers=list(governance.related_ledgers) if governance else list(adr.related_ledgers),
             )
@@ -159,6 +167,7 @@ def build_manifest_from_directory(
                 gap_count=len(adr.gaps),
                 blocking_gaps=sum(1 for gap in adr.gaps if gap.blocking),
                 implementation_authority=governance.implementation_authority.value if governance and governance.implementation_authority else None,
+                related_reviews=list(governance.related_reviews) if governance else [],
                 related_overrides=list(governance.related_overrides) if governance else [],
                 related_ledgers=list(governance.related_ledgers) if governance else list(adr.related_ledgers),
             )
@@ -180,6 +189,7 @@ def build_manifest_from_directory(
                 gap_count=len(adr.gaps),
                 blocking_gaps=sum(1 for gap in adr.gaps if gap.blocking),
                 implementation_authority=governance.implementation_authority.value if governance and governance.implementation_authority else None,
+                related_reviews=list(governance.related_reviews) if governance else [],
                 related_overrides=list(governance.related_overrides) if governance else [],
                 related_ledgers=list(governance.related_ledgers) if governance else list(adr.related_ledgers),
             )
@@ -202,6 +212,7 @@ def build_manifest_from_directory(
                 gap_count=len(adr.gaps),
                 blocking_gaps=sum(1 for gap in adr.gaps if gap.blocking),
                 implementation_authority=governance.implementation_authority.value if governance and governance.implementation_authority else None,
+                related_reviews=list(governance.related_reviews) if governance else [],
                 related_overrides=list(governance.related_overrides) if governance else [],
                 related_ledgers=list(governance.related_ledgers) if governance else list(adr.related_ledgers),
             )
@@ -376,6 +387,23 @@ def build_manifest_from_directory(
         except Exception as exc:
             print(f"Warning: Failed to parse objection override {file_path}: {exc}")
 
+    manifest_steelman_reviews: List[ManifestSteelmanReview] = []
+    for file_path in sorted(steelman_review_files):
+        try:
+            review = parser.parse_steelman_review(file_path)
+            manifest_steelman_reviews.append(
+                ManifestSteelmanReview(
+                    id=review.id,
+                    target_adr=review.target_adr,
+                    review_kind=review.review_kind,
+                    overall_recommendation=review.overall_recommendation,
+                    objection_count=len(review.objections),
+                    blocking_objections=sum(1 for objection in review.objections if objection.disposition.value == "blocking"),
+                )
+            )
+        except Exception as exc:
+            print(f"Warning: Failed to parse steelman review {file_path}: {exc}")
+
     gaps_by_adr: Dict[str, GapSummaryByADR] = {}
     total_gaps = 0
     total_blocking = 0
@@ -402,12 +430,13 @@ def build_manifest_from_directory(
         total_requirements_snapshots=len(manifest_req_snapshots),
         total_decision_ledgers=len(manifest_decision_ledgers),
         total_objection_overrides=len(manifest_objection_overrides),
+        total_steelman_reviews=len(manifest_steelman_reviews),
     )
 
     return Manifest(
         schema_version="1.0",
         type="manifest",
-        generated_date=datetime.now(timezone.utc).replace(microsecond=0),
+        generated_date=(generated_at or datetime.now(timezone.utc).replace(microsecond=0)),
         generated_from="adrs/**/*.yaml",
         adrs=manifest_entries,
         by_domain=by_domain,
@@ -420,6 +449,7 @@ def build_manifest_from_directory(
         requirements_snapshots=manifest_req_snapshots,
         decision_ledgers=manifest_decision_ledgers,
         objection_overrides=manifest_objection_overrides,
+        steelman_reviews=manifest_steelman_reviews,
         gaps_summary=GapsSummary(total=total_gaps, blocking=total_blocking, by_adr=gaps_by_adr),
         statistics=statistics,
     )
@@ -430,6 +460,7 @@ def build_manifest_from_scope(
     parser: ADRParser,
     scope: ProjectScope,
     scope_resolver: ProjectScopeResolver | None = None,
+    generated_at: datetime | None = None,
 ) -> Manifest:
     """Build the manifest model for one scope."""
     return build_manifest_from_directory(
@@ -437,6 +468,7 @@ def build_manifest_from_scope(
         parser=parser,
         scope=scope,
         scope_resolver=scope_resolver,
+        generated_at=generated_at,
     )
 
 
@@ -453,6 +485,7 @@ def discover_manifest_source_inputs(adr_dir: Path) -> List[Path]:
         Path("requirements") / "snapshots",
         Path("decisions") / "ledgers",
         Path("decisions") / "overrides",
+        Path("decisions") / "reviews",
     ):
         base = adr_dir / relative
         if not base.exists():
@@ -485,9 +518,15 @@ def render_manifest_for_scope(
     parser: ADRParser,
     scope: ProjectScope,
     scope_resolver: ProjectScopeResolver | None = None,
+    generated_at: datetime | None = None,
 ) -> tuple[str, List[Path]]:
     """Render manifest body and return canonical source inputs."""
-    manifest = build_manifest_from_scope(parser=parser, scope=scope, scope_resolver=scope_resolver)
+    manifest = build_manifest_from_scope(
+        parser=parser,
+        scope=scope,
+        scope_resolver=scope_resolver,
+        generated_at=generated_at,
+    )
     return render_manifest_yaml(manifest), discover_manifest_source_inputs(scope.adr_dir)
 
 

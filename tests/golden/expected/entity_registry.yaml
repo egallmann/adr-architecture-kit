@@ -23,6 +23,9 @@ entities:
     - machine-verifiable
     - ai-first
     - semantic-graph
+    implementation_authority: null
+    related_reviews: []
+    related_overrides: []
   relationships:
     declared_in: []
     references: []
@@ -69,6 +72,9 @@ entities:
     - multi-project
     - sub-modules
     - monorepo
+    implementation_authority: null
+    related_reviews: []
+    related_overrides: []
   relationships:
     declared_in: []
     references:
@@ -117,6 +123,9 @@ entities:
     - ci-cd
     - validation
     - coverage
+    implementation_authority: null
+    related_reviews: []
+    related_overrides: []
   relationships:
     declared_in: []
     references:
@@ -167,6 +176,9 @@ entities:
     - verification
     - drift-detection
     - embodied-design
+    implementation_authority: null
+    related_reviews: []
+    related_overrides: []
   relationships:
     declared_in: []
     references:
@@ -219,6 +231,9 @@ entities:
     - ai-agents
     - code-generation
     - llm
+    implementation_authority: null
+    related_reviews: []
+    related_overrides: []
   relationships:
     declared_in: []
     references:
@@ -267,6 +282,9 @@ entities:
     - cooperative-signals
     - submodule
     - mcp
+    implementation_authority: null
+    related_reviews: []
+    related_overrides: []
   relationships:
     declared_in: []
     references:
@@ -315,6 +333,9 @@ entities:
     - deterministic
     - ai-first
     - drift-prevention
+    implementation_authority: null
+    related_reviews: []
+    related_overrides: []
   relationships:
     declared_in: []
     references:
@@ -364,6 +385,9 @@ entities:
     - completeness
     - schema
     - steelman
+    implementation_authority: null
+    related_reviews: []
+    related_overrides: []
   relationships:
     declared_in: []
     references:
@@ -414,6 +438,9 @@ entities:
     - manifest
     - discovery
     - agent-tooling
+    implementation_authority: null
+    related_reviews: []
+    related_overrides: []
   relationships:
     declared_in: []
     references:
@@ -464,6 +491,9 @@ entities:
     - brownfield
     - migration
     - sentinel
+    implementation_authority: null
+    related_reviews: []
+    related_overrides: []
   relationships:
     declared_in: []
     references:
@@ -516,6 +546,9 @@ entities:
     - remediation-ledger
     - sentinel
     - approval
+    implementation_authority: null
+    related_reviews: []
+    related_overrides: []
   relationships:
     declared_in: []
     references:
@@ -565,6 +598,9 @@ entities:
     - qualified-id
     - namespace
     - authority
+    implementation_authority: null
+    related_reviews: []
+    related_overrides: []
   relationships:
     declared_in: []
     references:
@@ -615,6 +651,9 @@ entities:
     - semantic-model
     - archmodel
     - registries
+    implementation_authority: null
+    related_reviews: []
+    related_overrides: []
   relationships:
     declared_in: []
     references:
@@ -664,6 +703,9 @@ entities:
     - migration
     - canonicalization
     - cleanup
+    implementation_authority: null
+    related_reviews: []
+    related_overrides: []
   relationships:
     declared_in: []
     references:
@@ -713,6 +755,10 @@ entities:
     - override
     - steelman
     - approval
+    implementation_authority: advisory
+    related_reviews:
+    - REVIEW-0001
+    related_overrides: []
   relationships:
     declared_in: []
     references:
@@ -761,6 +807,9 @@ entities:
     - pydantic
     - yaml
     - json-schema
+    implementation_authority: null
+    related_reviews: []
+    related_overrides: []
   relationships:
     declared_in: []
     references: []
@@ -805,6 +854,9 @@ entities:
     - yaml
     - validation
     - ste-compliance
+    implementation_authority: null
+    related_reviews: []
+    related_overrides: []
   relationships:
     declared_in: []
     references: []
@@ -851,6 +903,9 @@ entities:
     - scope-resolution
     - cli
     - api
+    implementation_authority: null
+    related_reviews: []
+    related_overrides: []
   relationships:
     declared_in: []
     references: []
@@ -897,6 +952,9 @@ entities:
     - automation
     - llm
     - code-generation
+    implementation_authority: null
+    related_reviews: []
+    related_overrides: []
   relationships:
     declared_in: []
     references: []
@@ -937,6 +995,9 @@ entities:
     - indexing
     - tooling
     tags: []
+    implementation_authority: null
+    related_reviews: []
+    related_overrides: []
   relationships:
     declared_in: []
     references: []
@@ -977,6 +1038,9 @@ entities:
     - schema
     - contracts
     tags: []
+    implementation_authority: null
+    related_reviews: []
+    related_overrides: []
   relationships:
     declared_in: []
     references: []
@@ -1017,6 +1081,9 @@ entities:
     - pipeline
     - tooling
     tags: []
+    implementation_authority: null
+    related_reviews: []
+    related_overrides: []
   relationships:
     declared_in: []
     references: []
@@ -1057,6 +1124,9 @@ entities:
     - semantic-model
     - tooling
     tags: []
+    implementation_authority: null
+    related_reviews: []
+    related_overrides: []
   relationships:
     declared_in: []
     references: []
@@ -1097,6 +1167,9 @@ entities:
     - validation
     - projections
     tags: []
+    implementation_authority: null
+    related_reviews: []
+    related_overrides: []
   relationships:
     declared_in: []
     references: []
@@ -1137,6 +1210,9 @@ entities:
     - onboarding
     - normalization
     tags: []
+    implementation_authority: null
+    related_reviews: []
+    related_overrides: []
   relationships:
     declared_in: []
     references: []
@@ -1177,6 +1253,9 @@ entities:
     - indexing
     - tooling
     tags: []
+    implementation_authority: null
+    related_reviews: []
+    related_overrides: []
   relationships:
     declared_in: []
     references: []
@@ -1222,6 +1301,9 @@ entities:
     - validation
     - runtime
     - python
+    implementation_authority: null
+    related_reviews: []
+    related_overrides: []
   relationships:
     declared_in: []
     references: []
@@ -1267,6 +1349,9 @@ entities:
     - ai-agents
     - human-ai-collaboration
     - meta-system
+    implementation_authority: null
+    related_reviews: []
+    related_overrides: []
   relationships:
     declared_in: []
     references:
@@ -1310,6 +1395,9 @@ entities:
     - cost-optimization
     - performance
     - democratization
+    implementation_authority: null
+    related_reviews: []
+    related_overrides: []
   relationships:
     declared_in: []
     references: []
@@ -1351,6 +1439,9 @@ entities:
     - self-improvement
     - ai-agents
     - cost-optimization
+    implementation_authority: null
+    related_reviews: []
+    related_overrides: []
   relationships:
     declared_in: []
     references: []
@@ -1392,6 +1483,9 @@ entities:
     - human-ai-interface
     - schema
     - prompts
+    implementation_authority: null
+    related_reviews: []
+    related_overrides: []
   relationships:
     declared_in: []
     references: []
@@ -1433,6 +1527,9 @@ entities:
     - governance
     - onboarding
     - certification
+    implementation_authority: null
+    related_reviews: []
+    related_overrides: []
   relationships:
     declared_in: []
     references: []
@@ -1474,6 +1571,9 @@ entities:
     - automation
     - validation
     - self-healing
+    implementation_authority: null
+    related_reviews: []
+    related_overrides: []
   relationships:
     declared_in: []
     references: []
@@ -1515,6 +1615,9 @@ entities:
     - ai-agent
     - self-healing
     - code-generation
+    implementation_authority: null
+    related_reviews: []
+    related_overrides: []
   relationships:
     declared_in: []
     references: []
@@ -1556,6 +1659,9 @@ entities:
     - marketplace
     - ecosystem
     - collaboration
+    implementation_authority: null
+    related_reviews: []
+    related_overrides: []
   relationships:
     declared_in: []
     references: []
@@ -1597,6 +1703,9 @@ entities:
     - cryptography
     - signatures
     - trust
+    implementation_authority: null
+    related_reviews: []
+    related_overrides: []
   relationships:
     declared_in: []
     references: []
@@ -1638,6 +1747,9 @@ entities:
     - technology-migration
     - polyglot
     - modernization
+    implementation_authority: null
+    related_reviews: []
+    related_overrides: []
   relationships:
     declared_in: []
     references: []
@@ -1679,6 +1791,9 @@ entities:
     - self-healing
     - automation
     - shared-libraries
+    implementation_authority: null
+    related_reviews: []
+    related_overrides: []
   relationships:
     declared_in: []
     references: []
@@ -1720,6 +1835,9 @@ entities:
     - intent
     - traceability
     - semantic-graph
+    implementation_authority: null
+    related_reviews: []
+    related_overrides: []
   relationships:
     declared_in: []
     references: []
@@ -1761,6 +1879,9 @@ entities:
     - reverse-engineering
     - onboarding
     - trust-first
+    implementation_authority: null
+    related_reviews: []
+    related_overrides: []
   relationships:
     declared_in: []
     references: []
@@ -1803,6 +1924,9 @@ entities:
     - ai-agent
     - graph-completion
     - autonomous-systems
+    implementation_authority: null
+    related_reviews: []
+    related_overrides: []
   relationships:
     declared_in: []
     references: []

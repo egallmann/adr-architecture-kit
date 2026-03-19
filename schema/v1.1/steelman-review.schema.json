@@ -1,0 +1,94 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://adr-kit.ste.systems/schema/v1.1/steelman-review.schema.json",
+  "title": "Steelman Review Schema",
+  "description": "Canonical record of a steelman review for one ADR",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "type",
+    "id",
+    "target_adr",
+    "review_kind",
+    "review_date",
+    "reviewed_by",
+    "overall_recommendation",
+    "objections"
+  ],
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.1"
+    },
+    "type": {
+      "type": "string",
+      "const": "steelman_review"
+    },
+    "id": {
+      "$ref": "../v1.0/types.schema.json#/definitions/review_id"
+    },
+    "target_adr": {
+      "$ref": "../v1.0/types.schema.json#/definitions/adr_id_any"
+    },
+    "review_kind": {
+      "type": "string",
+      "const": "steelman"
+    },
+    "review_date": {
+      "$ref": "../v1.0/types.schema.json#/definitions/iso_date"
+    },
+    "reviewed_by": {
+      "type": "string",
+      "minLength": 1
+    },
+    "overall_recommendation": {
+      "type": "string",
+      "minLength": 3
+    },
+    "objections": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": [
+          "statement",
+          "why_it_matters",
+          "gap_type",
+          "evidence_needed",
+          "downstream_failure_if_unanswered",
+          "disposition"
+        ],
+        "properties": {
+          "statement": {
+            "type": "string",
+            "minLength": 5
+          },
+          "why_it_matters": {
+            "type": "string",
+            "minLength": 5
+          },
+          "gap_type": {
+            "type": "string",
+            "minLength": 3
+          },
+          "evidence_needed": {
+            "type": "string",
+            "minLength": 5
+          },
+          "downstream_failure_if_unanswered": {
+            "type": "string",
+            "minLength": 5
+          },
+          "disposition": {
+            "type": "string",
+            "enum": [
+              "closed",
+              "deferred_with_authority",
+              "blocking"
+            ]
+          }
+        }
+      }
+    }
+  }
+}

@@ -34,8 +34,10 @@ from .manifest import (
     ManifestRequirementsSnapshot,
     ManifestDecisionLedger,
     ManifestObjectionOverride,
+    ManifestSteelmanReview,
 )
 from .objection_override import ImplementationEffect, ObjectionOverride
+from .steelman_review import ReviewDisposition, SteelmanObjection, SteelmanReview
 from .physical_adr import (
     ArchitecturePattern,
     ComponentSpecification,
@@ -253,11 +255,15 @@ __all__ = [
     "ManifestRequirementsSnapshot",
     "ManifestDecisionLedger",
     "ManifestObjectionOverride",
+    "ManifestSteelmanReview",
     "GapsSummary",
     "GapSummaryByADR",
     "ManifestStatistics",
     "ImplementationEffect",
     "ObjectionOverride",
+    "ReviewDisposition",
+    "SteelmanObjection",
+    "SteelmanReview",
     # Entity Registry (v1.1)
     "Entity",
     "EntityRegistry",

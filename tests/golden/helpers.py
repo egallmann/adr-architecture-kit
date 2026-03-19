@@ -50,6 +50,7 @@ def clone_scope_sources(source_root: Path, destination_root: Path) -> None:
         Path("adrs") / "invariants",
         Path("adrs") / "requirements" / "snapshots",
         Path("adrs") / "decisions" / "ledgers",
+        Path("adrs") / "decisions" / "reviews",
     ):
         source_dir = source_root / relative
         if source_dir.exists():

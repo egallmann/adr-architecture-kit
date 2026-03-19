@@ -18,8 +18,10 @@ tags:
 - approval
 governance:
   steelman_review_required: true
-  steelman_review_completed: false
+  steelman_review_completed: true
   implementation_authority: advisory
+  related_reviews:
+  - REVIEW-0001
 introduces_entities:
 - INV-0064
 - INV-0065

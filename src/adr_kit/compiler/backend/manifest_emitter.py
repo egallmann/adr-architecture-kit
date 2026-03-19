@@ -14,10 +14,11 @@ def emit_manifest_artifact(
     *,
     parser: ADRParser,
     scope: ProjectScope,
+    generated_at=None,
 ) -> EmittedArtifact:
     """Serialize the scope manifest into one emitted artifact."""
 
-    body, source_inputs = render_manifest_for_scope(parser=parser, scope=scope)
+    body, source_inputs = render_manifest_for_scope(parser=parser, scope=scope, generated_at=generated_at)
     header = build_manifest_integrity_header(scope, body, source_inputs)
     return EmittedArtifact(
         path=Path("adrs/manifest.yaml"),

@@ -152,6 +152,13 @@
           ],
           "description": "Date of current governance approval"
         },
+        "related_reviews": {
+          "type": "array",
+          "items": {
+            "$ref": "types.schema.json#/definitions/review_id"
+          },
+          "description": "Canonical steelman reviews associated with this ADR"
+        },
         "related_overrides": {
           "type": "array",
           "items": {

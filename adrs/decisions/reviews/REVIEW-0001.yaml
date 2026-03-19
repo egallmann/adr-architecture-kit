@@ -1,0 +1,33 @@
+schema_version: "1.1"
+type: steelman_review
+id: REVIEW-0001
+target_adr: ADR-L-0015
+review_kind: steelman
+review_date: "2026-03-18"
+reviewed_by: "erik"
+overall_recommendation: "ready with explicit deferred authority"
+objections:
+  - statement: "Governance metadata may still be insufficient without a richer approval-oriented lifecycle vocabulary."
+    why_it_matters: "Operators can still confuse ADR lifecycle with governance approval posture unless implementation tooling always reads the governance block first."
+    gap_type: "classification_gap"
+    evidence_needed: "Examples from future acceptance and promotion flows showing whether status-only reasoning would cause ambiguity."
+    downstream_failure_if_unanswered: "Agents may incorrectly treat proposed-but-governed ADRs as either too weak or stronger than intended."
+    disposition: deferred_with_authority
+  - statement: "Placing review references inside governance risks mixing approval metadata with review provenance."
+    why_it_matters: "If governance becomes overcrowded, ADR readability and machine interpretation can both degrade."
+    gap_type: "provenance_gap"
+    evidence_needed: "Additional governance use cases showing whether review references remain compact and queryable without a separate top-level reference surface."
+    downstream_failure_if_unanswered: "Future schema changes may split review linkage back out, creating avoidable migration churn."
+    disposition: deferred_with_authority
+  - statement: "Compile-time gating may be too broad if every compile path is treated like implementation execution."
+    why_it_matters: "Compilation is also used for discovery, validation, and documentation workflows, not only code-generation authority."
+    gap_type: "execution_gap"
+    evidence_needed: "Operational experience showing whether implementation-authoritative compile failures disrupt non-implementation governance workflows."
+    downstream_failure_if_unanswered: "Teams may work around governance checks instead of relying on them if compile becomes unexpectedly blocking."
+    disposition: deferred_with_authority
+  - statement: "Override and review coupling is still light because stale review-to-ADR revision binding is not enforced yet."
+    why_it_matters: "A completed review can look current even after meaningful ADR changes unless revision coupling becomes explicit later."
+    gap_type: "readiness_gap"
+    evidence_needed: "A follow-on design for review revision coupling and stale-review detection once this first governance slice stabilizes."
+    downstream_failure_if_unanswered: "Teams may over-trust old review conclusions after ADR meaning evolves."
+    disposition: deferred_with_authority

@@ -439,6 +439,82 @@ class TestValidationRules:
         finally:
             shutil.rmtree(temp_root, ignore_errors=True)
 
+    def test_governance_completed_requires_related_review_reference(self, validator, tmp_path):
+        """Completed steelman must reference at least one canonical review artifact."""
+        adr_path = tmp_path / "logical-governance.yaml"
+        adr_path.write_text(
+            "\n".join(
+                [
+                    'schema_version: "1.0"',
+                    "adr_type: logical",
+                    "id: ADR-L-9989",
+                    'title: "Governed Logical ADR"',
+                    "status: proposed",
+                    'created_date: "2026-03-13"',
+                    "authors: [adr-architecture-kit]",
+                    "domains: [governance]",
+                    "context: |",
+                    "  Governance test ADR.",
+                    "governance:",
+                    "  steelman_review_required: true",
+                    "  steelman_review_completed: true",
+                    "decisions:",
+                    "  - id: DEC-0001",
+                    '    summary: "Test decision"',
+                    "    rationale: |",
+                    "      Required for validation.",
+                ]
+            ),
+            encoding="utf-8",
+        )
+
+        result = validator.validate_file(adr_path, mode="complete")
+
+        assert result.valid is False
+        assert any(error.rule == "governance_steelman" for error in result.errors)
+
+    def test_cross_references_fail_for_missing_review_artifact(self, validator):
+        """Review IDs must resolve to canonical steelman review artifacts."""
+        temp_root = Path("tests") / ".tmp" / str(uuid.uuid4())
+        adr_dir = temp_root / "adrs"
+        logical_dir = adr_dir / "logical"
+        logical_dir.mkdir(parents=True, exist_ok=True)
+
+        try:
+            (logical_dir / "ADR-L-9988-logical.yaml").write_text(
+                "\n".join(
+                    [
+                        'schema_version: "1.0"',
+                        "adr_type: logical",
+                        "id: ADR-L-9988",
+                        'title: "Logical ADR With Missing Review"',
+                        "status: proposed",
+                        'created_date: "2026-03-13"',
+                        "authors: [test.author]",
+                        "domains: [test]",
+                        "context: |",
+                        "  Cross-reference test ADR.",
+                        "governance:",
+                        "  steelman_review_required: true",
+                        "  steelman_review_completed: true",
+                        "  related_reviews: [REVIEW-0001]",
+                        "decisions:",
+                        "  - id: DEC-0001",
+                        '    summary: "Test decision"',
+                        "    rationale: |",
+                        "      Required for validation.",
+                    ]
+                ),
+                encoding="utf-8",
+            )
+
+            result = validator.validate_cross_references(adr_dir)
+
+            assert result.valid is False
+            assert any(error.rule == "review_reference" for error in result.errors)
+        finally:
+            shutil.rmtree(temp_root, ignore_errors=True)
+
 
 class TestBackwardCompatibility:
     """Test backward compatibility with single-scope usage."""

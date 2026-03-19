@@ -83,6 +83,7 @@ class Governance(BaseModel):
     implementation_authority: Optional[ImplementationAuthority] = None
     approved_by: Optional[str] = None
     approved_date: Optional[datetime] = None
+    related_reviews: List[str] = Field(default_factory=list)
     related_overrides: List[str] = Field(default_factory=list)
     related_ledgers: List[str] = Field(default_factory=list)
 

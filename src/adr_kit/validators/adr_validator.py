@@ -15,6 +15,7 @@ from ..models import (
     PhysicalADR,
     PhysicalComponentADR,
     PhysicalSystemADR,
+    SteelmanReview,
 )
 from ..parser import ADRParser, ADRParseError, ADRSchemaValidationError
 from ..scope import ProjectScopeResolver, ProjectScope
@@ -92,6 +93,13 @@ class ADRValidator:
         if not override_dir.exists():
             return []
         return sorted(path.resolve() for path in override_dir.glob("*.yaml"))
+
+    def _discover_review_files(self, adr_dir: Path) -> list[Path]:
+        """Discover steelman review artifacts deterministically."""
+        review_dir = adr_dir / "decisions" / "reviews"
+        if not review_dir.exists():
+            return []
+        return sorted(path.resolve() for path in review_dir.glob("*.yaml"))
 
     def _schema_name_for_data(self, data: dict) -> str:
         """Map adr_type to parser schema names."""
@@ -257,6 +265,14 @@ class ADRValidator:
                 field="governance.steelman_review_completed",
             ))
 
+        if governance.steelman_review_completed is True and not governance.related_reviews:
+            errors.append(ValidationError(
+                severity="error",
+                rule="governance_steelman",
+                message="governance.steelman_review_completed=true requires at least one governance.related_reviews entry",
+                field="governance.related_reviews",
+            ))
+
         if governance.implementation_authority == ImplementationAuthority.IMPLEMENTATION_AUTHORITATIVE:
             if not governance.approved_by or governance.approved_date is None:
                 errors.append(ValidationError(
@@ -264,6 +280,13 @@ class ADRValidator:
                     rule="governance_implementation_authority",
                     message="governance.implementation_authority=implementation_authoritative requires approval metadata",
                     field="governance.implementation_authority",
+                ))
+            if governance.steelman_review_required is True and governance.steelman_review_completed is not True:
+                errors.append(ValidationError(
+                    severity="error",
+                    rule="governance_implementation_authority",
+                    message="implementation-authoritative ADRs requiring steelman review must set governance.steelman_review_completed=true",
+                    field="governance.steelman_review_completed",
                 ))
     
     def _validate_logical_adr(self, adr: LogicalADR, errors: List[ValidationError], warnings: List[ValidationError]):
@@ -563,6 +586,7 @@ class ADRValidator:
         physical_system_adrs = {}
         physical_component_adrs = {}
         overrides: Dict[str, ObjectionOverride] = {}
+        reviews: Dict[str, SteelmanReview] = {}
         
         logical_files, physical_files = self._discover_adr_files(adr_dir)
         
@@ -597,6 +621,17 @@ class ADRValidator:
             try:
                 override = self.parser.parse_objection_override(file_path)
                 overrides[override.id] = override
+            except Exception as e:
+                errors.append(ValidationError(
+                    severity="error",
+                    rule="parse_error",
+                    message=f"Failed to parse {file_path}: {e}"
+                ))
+
+        for file_path in self._discover_review_files(adr_dir):
+            try:
+                review = self.parser.parse_steelman_review(file_path)
+                reviews[review.id] = review
             except Exception as e:
                 errors.append(ValidationError(
                     severity="error",
@@ -672,6 +707,28 @@ class ADRValidator:
                         ))
 
             governance = getattr(adr, "governance", None)
+            resolved_reviews: list[SteelmanReview] = []
+            if governance and governance.related_reviews:
+                for review_id in governance.related_reviews:
+                    review = reviews.get(review_id)
+                    if review is None:
+                        errors.append(ValidationError(
+                            severity="error",
+                            rule="review_reference",
+                            message=f"ADR {adr.id} references non-existent steelman review {review_id}",
+                            field="governance.related_reviews",
+                        ))
+                        continue
+                    if review.target_adr != adr.id:
+                        errors.append(ValidationError(
+                            severity="error",
+                            rule="review_reference",
+                            message=f"Steelman review {review.id} targets {review.target_adr} but is referenced by {adr.id}",
+                            field="governance.related_reviews",
+                        ))
+                        continue
+                    resolved_reviews.append(review)
+
             if governance and governance.related_overrides:
                 for override_id in governance.related_overrides:
                     override = overrides.get(override_id)
@@ -690,6 +747,14 @@ class ADRValidator:
                             message=f"Objection override {override.id} points to {override.related_adr} but is referenced by {adr.id}",
                             field="governance.related_overrides",
                         ))
+
+            if governance and governance.steelman_review_required is True and governance.steelman_review_completed is True and not resolved_reviews:
+                errors.append(ValidationError(
+                    severity="error",
+                    rule="review_reference",
+                    message=f"ADR {adr.id} marks steelman review completed but has no resolved steelman review artifact",
+                    field="governance.related_reviews",
+                ))
 
         for override in overrides.values():
             related_adr = (
@@ -714,6 +779,21 @@ class ADRValidator:
                     message=f"Objection override {override.id} targets ADR version {override.related_adr_version} but {related_adr.id} is currently at {related_adr.modified_date}",
                     field="related_adr_version",
                 ))
+
+        for review in reviews.values():
+            related_adr = (
+                logical_adrs.get(review.target_adr)
+                or physical_adrs.get(review.target_adr)
+                or physical_system_adrs.get(review.target_adr)
+                or physical_component_adrs.get(review.target_adr)
+            )
+            if related_adr is None:
+                errors.append(ValidationError(
+                    severity="error",
+                    rule="review_reference",
+                    message=f"Steelman review {review.id} references non-existent ADR {review.target_adr}",
+                    field="target_adr",
+                ))
         
         # INV-0005: Check for duplicate IDs
         all_ids = list(logical_adrs.keys()) + list(physical_adrs.keys()) + list(physical_system_adrs.keys()) + list(physical_component_adrs.keys())
@@ -729,4 +809,79 @@ class ADRValidator:
             mode="complete",
             errors=errors,
             warnings=warnings
+        )
+
+    def validate_implementation_authority_gate(self, adr_dir: Path) -> ValidationResult:
+        """Validate approval and steelman readiness for implementation-authoritative ADRs only."""
+        adr_dir = Path(adr_dir)
+        errors: List[ValidationError] = []
+        warnings: List[ValidationError] = []
+        reviews: Dict[str, SteelmanReview] = {}
+
+        for file_path in self._discover_review_files(adr_dir):
+            try:
+                review = self.parser.parse_steelman_review(file_path)
+                reviews[review.id] = review
+            except Exception as e:
+                errors.append(ValidationError(
+                    severity="error",
+                    rule="review_parse_error",
+                    message=f"Failed to parse steelman review {file_path}: {e}",
+                ))
+
+        logical_files, physical_files = self._discover_adr_files(adr_dir)
+        for file_path in logical_files + physical_files:
+            try:
+                adr = self.parser.parse_adr(file_path)
+            except Exception as e:
+                errors.append(ValidationError(
+                    severity="error",
+                    rule="parse_error",
+                    message=f"Failed to parse {file_path}: {e}",
+                ))
+                continue
+
+            governance = getattr(adr, "governance", None)
+            if governance is None or governance.implementation_authority != ImplementationAuthority.IMPLEMENTATION_AUTHORITATIVE:
+                continue
+
+            file_result = self.validate_file(file_path, mode="complete")
+            errors.extend(file_result.errors)
+            warnings.extend(file_result.warnings)
+
+            if governance.steelman_review_required is True:
+                resolved_reviews = []
+                for review_id in governance.related_reviews:
+                    review = reviews.get(review_id)
+                    if review is None:
+                        errors.append(ValidationError(
+                            severity="error",
+                            rule="governance_gate",
+                            message=f"Implementation-authoritative ADR {adr.id} references non-existent steelman review {review_id}",
+                            field=str(file_path),
+                        ))
+                        continue
+                    if review.target_adr != adr.id:
+                        errors.append(ValidationError(
+                            severity="error",
+                            rule="governance_gate",
+                            message=f"Implementation-authoritative ADR {adr.id} is linked to steelman review {review.id} for {review.target_adr}",
+                            field=str(file_path),
+                        ))
+                        continue
+                    resolved_reviews.append(review)
+
+                if governance.steelman_review_completed is not True or not resolved_reviews:
+                    errors.append(ValidationError(
+                        severity="error",
+                        rule="governance_gate",
+                        message=f"Implementation-authoritative ADR {adr.id} is missing a completed, resolved steelman review",
+                        field=str(file_path),
+                    ))
+
+        return ValidationResult(
+            valid=len(errors) == 0,
+            mode="complete",
+            errors=errors,
+            warnings=warnings,
         )

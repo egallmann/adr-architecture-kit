@@ -273,6 +273,68 @@ def test_architecture_compiler_check_detects_drift(tmp_path):
     ]
 
 
+def test_architecture_compiler_check_infers_timestamp_from_disk(tmp_path):
+    workspace = tmp_path / "workspace"
+    generate_deterministic_outputs(_repo_root(), workspace)
+
+    compiler = ArchitectureCompiler(scope_resolver=ProjectScopeResolver(explicit_scope=workspace))
+    result = compiler.compile(
+        config=CompilerConfig(
+            dry_run=True,
+            check=True,
+            emit={"registries", "manifest"},
+        )
+    )
+
+    assert result.success is True
+    assert all(item.code != "E702" for item in result.diagnostics.as_list())
+    assert all(item.code != "E705" for item in result.diagnostics.as_list())
+
+
+def test_architecture_compiler_check_fails_when_generated_timestamps_disagree(tmp_path):
+    workspace = tmp_path / "workspace"
+    generated = generate_deterministic_outputs(_repo_root(), workspace)
+    manifest_data = generated["manifest"].read_text(encoding="utf-8").replace("2026-01-01T00:00:00Z", "2026-01-02T00:00:00Z")
+    (workspace / "adrs" / "manifest.yaml").write_text(manifest_data, encoding="utf-8")
+
+    compiler = ArchitectureCompiler(scope_resolver=ProjectScopeResolver(explicit_scope=workspace))
+    result = compiler.compile(
+        config=CompilerConfig(
+            dry_run=True,
+            check=True,
+            emit={"registries", "manifest"},
+        )
+    )
+
+    assert result.success is False
+    assert any(item.code == "E705" for item in result.diagnostics.as_list())
+
+
+def test_architecture_compiler_blocks_non_approved_implementation_authority(tmp_path):
+    workspace = tmp_path / "workspace"
+    _create_scope_fixture(workspace, project_name="workspace-root", namespace="workspace-root", suffix="3100")
+    logical_path = workspace / "adrs" / "logical" / "ADR-L-3100-fixture.yaml"
+    logical_path.write_text(
+            logical_path.read_text(encoding="utf-8").replace(
+                "context: |\n  Recursive compile fixture 3100.\n",
+                "context: |\n  Recursive compile fixture 3100.\ngovernance:\n  steelman_review_required: true\n  steelman_review_completed: false\n  implementation_authority: implementation_authoritative\n  approved_by: erik\n  approved_date: \"2026-03-18T12:00:00Z\"\n",
+            ),
+            encoding="utf-8",
+        )
+
+    compiler = ArchitectureCompiler(scope_resolver=ProjectScopeResolver(explicit_scope=workspace))
+    result = compiler.compile(
+        config=CompilerConfig(
+            dry_run=True,
+            emit={"registries", "manifest"},
+            pinned_timestamp="2026-01-01T00:00:00Z",
+        )
+    )
+
+    assert result.success is False
+    assert any(item.code == "E706" for item in result.diagnostics.as_list())
+
+
 def test_architecture_compiler_can_validate_contract_in_memory(tmp_path):
     workspace = tmp_path / "workspace"
     clone_scope_sources(_repo_root(), workspace)

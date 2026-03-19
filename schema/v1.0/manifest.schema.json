@@ -97,6 +97,12 @@
           "implementation_authority": {
             "$ref": "types.schema.json#/definitions/implementation_authority"
           },
+          "related_reviews": {
+            "type": "array",
+            "items": {
+              "$ref": "types.schema.json#/definitions/review_id"
+            }
+          },
           "related_overrides": {
             "type": "array",
             "items": {
@@ -311,6 +317,37 @@
       },
       "description": "Objection overrides summary"
     },
+    "steelman_reviews": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "target_adr", "review_kind", "overall_recommendation"],
+        "properties": {
+          "id": {
+            "$ref": "types.schema.json#/definitions/review_id"
+          },
+          "target_adr": {
+            "$ref": "types.schema.json#/definitions/adr_id_any"
+          },
+          "review_kind": {
+            "type": "string",
+            "enum": ["steelman"]
+          },
+          "overall_recommendation": {
+            "type": "string"
+          },
+          "objection_count": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "blocking_objections": {
+            "type": "integer",
+            "minimum": 0
+          }
+        }
+      },
+      "description": "Steelman review summary"
+    },
 
     "statistics": {
       "type": "object",
@@ -365,6 +402,10 @@
           "minimum": 0
         },
         "total_objection_overrides": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "total_steelman_reviews": {
           "type": "integer",
           "minimum": 0
         }

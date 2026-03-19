@@ -1,7 +1,7 @@
 schema_version: '1.1'
 type: architecture_index
 architecture_namespace: adr-architecture-kit
-generated_at: '2026-03-19T02:56:10Z'
+generated_at: '2026-03-19T03:55:08Z'
 generator: adr-architecture-index
 entity_registry_path: adrs/index/entity-registry.yaml
 relationship_registry_path: adrs/index/relationship-registry.yaml

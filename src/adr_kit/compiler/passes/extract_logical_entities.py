@@ -89,6 +89,7 @@ def extract_logical_entities(
 
     for adr, path in logical_adrs:
         artifact = source_path(path)
+        governance = adr.governance
         result.entities.append(
             ExtractedEntity(
                 entity=NormalizedEntity(
@@ -97,7 +98,14 @@ def extract_logical_entities(
                     name=adr.title,
                     summary=summary(adr.context),
                     canonical_source=canonical("logical_adr", adr.id, artifact),
-                    metadata={"status": adr.status.value, "domains": list(adr.domains), "tags": list(adr.tags)},
+                    metadata={
+                        "status": adr.status.value,
+                        "domains": list(adr.domains),
+                        "tags": list(adr.tags),
+                        "implementation_authority": governance.implementation_authority.value if governance and governance.implementation_authority else None,
+                        "related_reviews": list(governance.related_reviews) if governance else [],
+                        "related_overrides": list(governance.related_overrides) if governance else [],
+                    },
                     completeness=complete(),
                     provenance=provenance("logical_adr", adr.id, "extract_adr", "explicit"),
                 )

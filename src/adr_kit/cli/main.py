@@ -99,6 +99,17 @@ def _run_governance_checks(scope: Path, *, skip_tests: bool) -> int:
 
     steps: list[tuple[str, list[str]]] = [
         (
+            "ADR validation and governance references",
+            [
+                "validate",
+                "--scope",
+                str(scope_root),
+                "--mode",
+                "complete",
+                "--cross-references",
+            ],
+        ),
+        (
             "Greenfield contract validation",
             [
                 "validate-contract",
@@ -156,6 +167,17 @@ def _run_recursive_governance_checks(scope: Path, *, skip_tests: bool) -> int:
 
     steps: list[tuple[str, list[str]]] = [
         (
+            "ADR validation",
+            [
+                "validate",
+                "--scope",
+                str(scope_root),
+                "--mode",
+                "complete",
+                "--recursive",
+            ],
+        ),
+        (
             "Greenfield contract validation",
             [
                 "validate-contract",
@@ -205,6 +227,17 @@ def _run_recursive_governance_checks(scope: Path, *, skip_tests: bool) -> int:
         click.echo(f"\n== {label} ==")
         click.echo("adr " + " ".join(args))
         failures += _run_cli_subcommand(args)
+
+    validator = ADRValidator(scope_resolver=ProjectScopeResolver(explicit_scope=scope_root))
+    for current_scope in _ordered_scopes(scope_root):
+        click.echo(f"\n== Cross-reference validation ({current_scope.name}) ==")
+        result = validator.validate_cross_references(current_scope.adr_dir)
+        if result.has_errors:
+            for error in result.errors:
+                click.echo(f"ERROR: {error.message}")
+            failures += 1
+        else:
+            click.echo("Cross-references valid")
 
     if not skip_tests:
         test_command = [sys.executable, "-m", "pytest", "tests", "-q"]

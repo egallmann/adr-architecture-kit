@@ -411,6 +411,26 @@ relationships:
   canonical_source_ref: ADR-L-0014#CAP-0041
   confidence: 1.0
   metadata: {}
+- relationship_id: declared_in:CAP-0042:ADR-L-0015
+  relationship_type: declared_in
+  from_entity_id: CAP-0042
+  to_entity_id: ADR-L-0015
+  provenance_classification: explicit
+  evidence:
+  - ADR-L-0015#CAP-0042
+  canonical_source_ref: ADR-L-0015#CAP-0042
+  confidence: 1.0
+  metadata: {}
+- relationship_id: declared_in:CAP-0043:ADR-L-0015
+  relationship_type: declared_in
+  from_entity_id: CAP-0043
+  to_entity_id: ADR-L-0015
+  provenance_classification: explicit
+  evidence:
+  - ADR-L-0015#CAP-0043
+  canonical_source_ref: ADR-L-0015#CAP-0043
+  confidence: 1.0
+  metadata: {}
 - relationship_id: declared_in:COMP-0010:ADR-PC-0001
   relationship_type: declared_in
   from_entity_id: COMP-0010
@@ -1031,6 +1051,106 @@ relationships:
   canonical_source_ref: ADR-L-0014#DEC-0056
   confidence: 1.0
   metadata: {}
+- relationship_id: declared_in:DEC-0057:ADR-L-0009
+  relationship_type: declared_in
+  from_entity_id: DEC-0057
+  to_entity_id: ADR-L-0009
+  provenance_classification: explicit
+  evidence:
+  - ADR-L-0009#DEC-0057
+  canonical_source_ref: ADR-L-0009#DEC-0057
+  confidence: 1.0
+  metadata: {}
+- relationship_id: declared_in:DEC-0058:ADR-L-0009
+  relationship_type: declared_in
+  from_entity_id: DEC-0058
+  to_entity_id: ADR-L-0009
+  provenance_classification: explicit
+  evidence:
+  - ADR-L-0009#DEC-0058
+  canonical_source_ref: ADR-L-0009#DEC-0058
+  confidence: 1.0
+  metadata: {}
+- relationship_id: declared_in:DEC-0059:ADR-L-0010
+  relationship_type: declared_in
+  from_entity_id: DEC-0059
+  to_entity_id: ADR-L-0010
+  provenance_classification: explicit
+  evidence:
+  - ADR-L-0010#DEC-0059
+  canonical_source_ref: ADR-L-0010#DEC-0059
+  confidence: 1.0
+  metadata: {}
+- relationship_id: declared_in:DEC-0060:ADR-L-0010
+  relationship_type: declared_in
+  from_entity_id: DEC-0060
+  to_entity_id: ADR-L-0010
+  provenance_classification: explicit
+  evidence:
+  - ADR-L-0010#DEC-0060
+  canonical_source_ref: ADR-L-0010#DEC-0060
+  confidence: 1.0
+  metadata: {}
+- relationship_id: declared_in:DEC-0061:ADR-L-0013
+  relationship_type: declared_in
+  from_entity_id: DEC-0061
+  to_entity_id: ADR-L-0013
+  provenance_classification: explicit
+  evidence:
+  - ADR-L-0013#DEC-0061
+  canonical_source_ref: ADR-L-0013#DEC-0061
+  confidence: 1.0
+  metadata: {}
+- relationship_id: declared_in:DEC-0062:ADR-L-0013
+  relationship_type: declared_in
+  from_entity_id: DEC-0062
+  to_entity_id: ADR-L-0013
+  provenance_classification: explicit
+  evidence:
+  - ADR-L-0013#DEC-0062
+  canonical_source_ref: ADR-L-0013#DEC-0062
+  confidence: 1.0
+  metadata: {}
+- relationship_id: declared_in:DEC-0063:ADR-L-0015
+  relationship_type: declared_in
+  from_entity_id: DEC-0063
+  to_entity_id: ADR-L-0015
+  provenance_classification: explicit
+  evidence:
+  - ADR-L-0015#DEC-0063
+  canonical_source_ref: ADR-L-0015#DEC-0063
+  confidence: 1.0
+  metadata: {}
+- relationship_id: declared_in:DEC-0064:ADR-L-0015
+  relationship_type: declared_in
+  from_entity_id: DEC-0064
+  to_entity_id: ADR-L-0015
+  provenance_classification: explicit
+  evidence:
+  - ADR-L-0015#DEC-0064
+  canonical_source_ref: ADR-L-0015#DEC-0064
+  confidence: 1.0
+  metadata: {}
+- relationship_id: declared_in:DEC-0065:ADR-L-0015
+  relationship_type: declared_in
+  from_entity_id: DEC-0065
+  to_entity_id: ADR-L-0015
+  provenance_classification: explicit
+  evidence:
+  - ADR-L-0015#DEC-0065
+  canonical_source_ref: ADR-L-0015#DEC-0065
+  confidence: 1.0
+  metadata: {}
+- relationship_id: declared_in:DEC-0066:ADR-L-0015
+  relationship_type: declared_in
+  from_entity_id: DEC-0066
+  to_entity_id: ADR-L-0015
+  provenance_classification: explicit
+  evidence:
+  - ADR-L-0015#DEC-0066
+  canonical_source_ref: ADR-L-0015#DEC-0066
+  confidence: 1.0
+  metadata: {}
 - relationship_id: declared_in:INV-0001:INV-0001
   relationship_type: declared_in
   from_entity_id: INV-0001
@@ -1589,6 +1709,36 @@ relationships:
   evidence:
   - ADR-L-0014#INV-0061
   canonical_source_ref: ADR-L-0014#INV-0061
+  confidence: 1.0
+  metadata: {}
+- relationship_id: declared_in:INV-0064:ADR-L-0015
+  relationship_type: declared_in
+  from_entity_id: INV-0064
+  to_entity_id: ADR-L-0015
+  provenance_classification: explicit
+  evidence:
+  - ADR-L-0015#INV-0064
+  canonical_source_ref: ADR-L-0015#INV-0064
+  confidence: 1.0
+  metadata: {}
+- relationship_id: declared_in:INV-0065:ADR-L-0015
+  relationship_type: declared_in
+  from_entity_id: INV-0065
+  to_entity_id: ADR-L-0015
+  provenance_classification: explicit
+  evidence:
+  - ADR-L-0015#INV-0065
+  canonical_source_ref: ADR-L-0015#INV-0065
+  confidence: 1.0
+  metadata: {}
+- relationship_id: declared_in:INV-0066:ADR-L-0015
+  relationship_type: declared_in
+  from_entity_id: INV-0066
+  to_entity_id: ADR-L-0015
+  provenance_classification: explicit
+  evidence:
+  - ADR-L-0015#INV-0066
+  canonical_source_ref: ADR-L-0015#INV-0066
   confidence: 1.0
   metadata: {}
 - relationship_id: declared_in:SYS-0001:ADR-PS-0001
@@ -2181,6 +2331,16 @@ relationships:
   canonical_source_ref: ADR-L-0009
   confidence: 1.0
   metadata: {}
+- relationship_id: references:ADR-L-0009:ADR-L-0010
+  relationship_type: references
+  from_entity_id: ADR-L-0009
+  to_entity_id: ADR-L-0010
+  provenance_classification: explicit
+  evidence:
+  - ADR-L-0009
+  canonical_source_ref: ADR-L-0009
+  confidence: 1.0
+  metadata: {}
 - relationship_id: references:ADR-L-0009:ADR-L-0013
   relationship_type: references
   from_entity_id: ADR-L-0009
@@ -2429,6 +2589,56 @@ relationships:
   evidence:
   - ADR-L-0014
   canonical_source_ref: ADR-L-0014
+  confidence: 1.0
+  metadata: {}
+- relationship_id: references:ADR-L-0015:ADR-L-0008
+  relationship_type: references
+  from_entity_id: ADR-L-0015
+  to_entity_id: ADR-L-0008
+  provenance_classification: explicit
+  evidence:
+  - ADR-L-0015
+  canonical_source_ref: ADR-L-0015
+  confidence: 1.0
+  metadata: {}
+- relationship_id: references:ADR-L-0015:ADR-L-0009
+  relationship_type: references
+  from_entity_id: ADR-L-0015
+  to_entity_id: ADR-L-0009
+  provenance_classification: explicit
+  evidence:
+  - ADR-L-0015
+  canonical_source_ref: ADR-L-0015
+  confidence: 1.0
+  metadata: {}
+- relationship_id: references:ADR-L-0015:ADR-L-0010
+  relationship_type: references
+  from_entity_id: ADR-L-0015
+  to_entity_id: ADR-L-0010
+  provenance_classification: explicit
+  evidence:
+  - ADR-L-0015
+  canonical_source_ref: ADR-L-0015
+  confidence: 1.0
+  metadata: {}
+- relationship_id: references:ADR-L-0015:ADR-L-0011
+  relationship_type: references
+  from_entity_id: ADR-L-0015
+  to_entity_id: ADR-L-0011
+  provenance_classification: explicit
+  evidence:
+  - ADR-L-0015
+  canonical_source_ref: ADR-L-0015
+  confidence: 1.0
+  metadata: {}
+- relationship_id: references:ADR-L-0015:ADR-L-0013
+  relationship_type: references
+  from_entity_id: ADR-L-0015
+  to_entity_id: ADR-L-0013
+  provenance_classification: explicit
+  evidence:
+  - ADR-L-0015
+  canonical_source_ref: ADR-L-0015
   confidence: 1.0
   metadata: {}
 - relationship_id: references:ADR-V-0001:ADR-L-0001

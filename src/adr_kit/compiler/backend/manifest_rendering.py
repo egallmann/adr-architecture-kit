@@ -27,6 +27,7 @@ from ...models import (
     ManifestDecisionLedger,
     ManifestEntity,
     ManifestInvariant,
+    ManifestObjectionOverride,
     ManifestRequirementsSnapshot,
     ManifestStatistics,
     PhysicalADR,
@@ -88,6 +89,11 @@ def build_manifest_from_directory(
         if (adr_dir / "decisions" / "ledgers").exists()
         else []
     )
+    objection_override_files = (
+        list((adr_dir / "decisions" / "overrides").glob("*.yaml"))
+        if (adr_dir / "decisions" / "overrides").exists()
+        else []
+    )
 
     logical_adrs: List[Tuple[LogicalADR, Path]] = []
     physical_adrs: List[Tuple[PhysicalADR, Path]] = []
@@ -116,6 +122,7 @@ def build_manifest_from_directory(
     manifest_entries: List[ManifestADREntry] = []
 
     for adr, file_path in logical_adrs:
+        governance = adr.governance
         manifest_entries.append(
             ManifestADREntry(
                 id=adr.id,
@@ -129,10 +136,14 @@ def build_manifest_from_directory(
                 invariant_count=len(adr.invariants),
                 gap_count=len(adr.gaps),
                 blocking_gaps=sum(1 for gap in adr.gaps if gap.blocking),
+                implementation_authority=governance.implementation_authority.value if governance and governance.implementation_authority else None,
+                related_overrides=list(governance.related_overrides) if governance else [],
+                related_ledgers=list(governance.related_ledgers) if governance else list(adr.related_ledgers),
             )
         )
 
     for adr, file_path in physical_adrs:
+        governance = adr.governance
         manifest_entries.append(
             ManifestADREntry(
                 id=adr.id,
@@ -147,10 +158,14 @@ def build_manifest_from_directory(
                 component_count=len(adr.component_specifications),
                 gap_count=len(adr.gaps),
                 blocking_gaps=sum(1 for gap in adr.gaps if gap.blocking),
+                implementation_authority=governance.implementation_authority.value if governance and governance.implementation_authority else None,
+                related_overrides=list(governance.related_overrides) if governance else [],
+                related_ledgers=list(governance.related_ledgers) if governance else list(adr.related_ledgers),
             )
         )
 
     for adr, file_path in physical_system_adrs:
+        governance = adr.governance
         manifest_entries.append(
             ManifestADREntry(
                 id=adr.id,
@@ -164,10 +179,14 @@ def build_manifest_from_directory(
                 technologies=adr.technologies,
                 gap_count=len(adr.gaps),
                 blocking_gaps=sum(1 for gap in adr.gaps if gap.blocking),
+                implementation_authority=governance.implementation_authority.value if governance and governance.implementation_authority else None,
+                related_overrides=list(governance.related_overrides) if governance else [],
+                related_ledgers=list(governance.related_ledgers) if governance else list(adr.related_ledgers),
             )
         )
 
     for adr, file_path in physical_component_adrs:
+        governance = adr.governance
         manifest_entries.append(
             ManifestADREntry(
                 id=adr.id,
@@ -182,6 +201,9 @@ def build_manifest_from_directory(
                 component_count=len(adr.component_specifications),
                 gap_count=len(adr.gaps),
                 blocking_gaps=sum(1 for gap in adr.gaps if gap.blocking),
+                implementation_authority=governance.implementation_authority.value if governance and governance.implementation_authority else None,
+                related_overrides=list(governance.related_overrides) if governance else [],
+                related_ledgers=list(governance.related_ledgers) if governance else list(adr.related_ledgers),
             )
         )
 
@@ -339,6 +361,21 @@ def build_manifest_from_directory(
         except Exception as exc:
             print(f"Warning: Failed to parse decision ledger {file_path}: {exc}")
 
+    manifest_objection_overrides: List[ManifestObjectionOverride] = []
+    for file_path in sorted(objection_override_files):
+        try:
+            override = parser.parse_objection_override(file_path)
+            manifest_objection_overrides.append(
+                ManifestObjectionOverride(
+                    id=override.id,
+                    related_adr=override.related_adr,
+                    related_review=override.related_review,
+                    implementation_effect=override.implementation_effect.value,
+                )
+            )
+        except Exception as exc:
+            print(f"Warning: Failed to parse objection override {file_path}: {exc}")
+
     gaps_by_adr: Dict[str, GapSummaryByADR] = {}
     total_gaps = 0
     total_blocking = 0
@@ -364,6 +401,7 @@ def build_manifest_from_directory(
         total_entities=len(entity_map),
         total_requirements_snapshots=len(manifest_req_snapshots),
         total_decision_ledgers=len(manifest_decision_ledgers),
+        total_objection_overrides=len(manifest_objection_overrides),
     )
 
     return Manifest(
@@ -381,6 +419,7 @@ def build_manifest_from_directory(
         entities=list(entity_map.values()),
         requirements_snapshots=manifest_req_snapshots,
         decision_ledgers=manifest_decision_ledgers,
+        objection_overrides=manifest_objection_overrides,
         gaps_summary=GapsSummary(total=total_gaps, blocking=total_blocking, by_adr=gaps_by_adr),
         statistics=statistics,
     )
@@ -413,6 +452,7 @@ def discover_manifest_source_inputs(adr_dir: Path) -> List[Path]:
         Path("invariants"),
         Path("requirements") / "snapshots",
         Path("decisions") / "ledgers",
+        Path("decisions") / "overrides",
     ):
         base = adr_dir / relative
         if not base.exists():

@@ -341,6 +341,54 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
+- id: INV-0008
+  entity_type: invariant
+  name: INV-0008
+  summary: Rendered markdown artifacts must be treated as derived human-facing projections
+    and must not be used as semantic authority when canonical YAML source artifacts
+    are available.
+  canonical_source:
+    source_type: standalone_invariant
+    source_ref: INV-0008
+    artifact_path: adrs/invariants/INV-0008-rendered-artifacts-are-derived-only.yaml
+  source_refs: []
+  metadata:
+    defined_in: ADR-L-0014
+    scope: global
+    statement: Rendered markdown artifacts must be treated as derived human-facing
+      projections and must not be used as semantic authority when canonical YAML source
+      artifacts are available.
+    enforcement_level: must
+    declaration_mode: canonical
+    upheld_by_decisions: []
+    enforced_by:
+    - ADR-PC-0001
+    - ADR-PC-0005
+  relationships:
+    declared_in:
+    - INV-0008
+    references: []
+    related_to: []
+    enforces:
+    - ADR-PC-0001
+    - ADR-PC-0005
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: standalone_invariant
+    source_ref: INV-0008
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
 - id: INV-0014
   entity_type: invariant
   name: INV-0014
@@ -2037,9 +2085,9 @@ entities:
 - id: INV-0052
   entity_type: invariant
   name: INV-0052
-  summary: 'The STE kernel MUST consume compiled registry artifacts through exactly
-    four contract files: architecture-index, entity-registry, relationship-registry,
-    and unresolved-registry.'
+  summary: 'The compiler''s guaranteed machine-readable contract surface MUST be defined
+    as all generated artifacts under `adrs/index/` plus `adrs/manifest.yaml`. Consumers
+    MAY define narrower minimal load subsets, but those subsets '
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0010#INV-0052
@@ -2048,12 +2096,14 @@ entities:
   metadata:
     adr_id: ADR-L-0010
     scope: global
-    statement: 'The STE kernel MUST consume compiled registry artifacts through exactly
-      four
+    statement: 'The compiler''s guaranteed machine-readable contract surface MUST
+      be defined
 
-      contract files: architecture-index, entity-registry, relationship-registry,
+      as all generated artifacts under `adrs/index/` plus `adrs/manifest.yaml`.
 
-      and unresolved-registry.
+      Consumers MAY define narrower minimal load subsets, but those subsets MUST
+
+      NOT be treated as the full guaranteed contract surface.
 
       '
     enforcement_level: must
@@ -2360,7 +2410,7 @@ entities:
   name: INV-0059
   summary: In-process architecture consumers MUST use the ArchitectureRepository boundary
     instead of inventing ad hoc compiled-registry interpretation when a repository
-    boundary is available.
+    boundary is available. Cross-language or out-of-process consum
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0013#INV-0059
@@ -2373,7 +2423,11 @@ entities:
 
       boundary instead of inventing ad hoc compiled-registry interpretation when
 
-      a repository boundary is available.
+      a repository boundary is available. Cross-language or out-of-process
+
+      consumers MAY consume generated `adrs/index/*` artifacts directly when the
+
+      repository boundary is not available to them.
 
       '
     enforcement_level: must
@@ -2399,6 +2453,235 @@ entities:
   provenance:
     source_type: logical_adr
     source_ref: ADR-L-0013#INV-0059
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
+- id: INV-0060
+  entity_type: invariant
+  name: INV-0060
+  summary: STE onboarding workflows MUST treat discovery, normalization, canonization,
+    regeneration, and validation as distinct phases with canonical artifacts updated
+    before derived artifacts are refreshed.
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0014#INV-0060
+    artifact_path: adrs/logical/ADR-L-0014-brownfield-onboarding-and-canonicalization-workflow.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0014
+    scope: global
+    statement: 'STE onboarding workflows MUST treat discovery, normalization, canonization,
+
+      regeneration, and validation as distinct phases with canonical artifacts
+
+      updated before derived artifacts are refreshed.
+
+      '
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions: []
+  relationships:
+    declared_in:
+    - ADR-L-0014
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0014#INV-0060
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
+- id: INV-0061
+  entity_type: invariant
+  name: INV-0061
+  summary: Rendered markdown artifacts MUST be treated as derived human-facing projections
+    and MUST NOT be used as semantic authority when canonical YAML source artifacts
+    are available.
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0014#INV-0061
+    artifact_path: adrs/logical/ADR-L-0014-brownfield-onboarding-and-canonicalization-workflow.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0014
+    scope: global
+    statement: 'Rendered markdown artifacts MUST be treated as derived human-facing
+
+      projections and MUST NOT be used as semantic authority when canonical YAML
+
+      source artifacts are available.
+
+      '
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions: []
+  relationships:
+    declared_in:
+    - ADR-L-0014
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0014#INV-0061
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
+- id: INV-0064
+  entity_type: invariant
+  name: INV-0064
+  summary: Absence of ADR governance approval fields MUST NOT be interpreted as approval
+    or implementation authority.
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0015#INV-0064
+    artifact_path: adrs/logical/ADR-L-0015-adr-governance-state-and-override-semantics.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0015
+    scope: global
+    statement: 'Absence of ADR governance approval fields MUST NOT be interpreted
+      as
+
+      approval or implementation authority.
+
+      '
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions: []
+  relationships:
+    declared_in:
+    - ADR-L-0015
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0015#INV-0064
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
+- id: INV-0065
+  entity_type: invariant
+  name: INV-0065
+  summary: Objection override artifacts MUST NOT change ADR architectural meaning
+    and MUST govern implementation allowance only.
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0015#INV-0065
+    artifact_path: adrs/logical/ADR-L-0015-adr-governance-state-and-override-semantics.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0015
+    scope: global
+    statement: 'Objection override artifacts MUST NOT change ADR architectural meaning
+      and
+
+      MUST govern implementation allowance only.
+
+      '
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions: []
+  relationships:
+    declared_in:
+    - ADR-L-0015
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0015#INV-0065
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
+- id: INV-0066
+  entity_type: invariant
+  name: INV-0066
+  summary: Derived projections MUST expose only governance IDs and summary metadata
+    and MUST NOT invent approvals, risks, or authority-altering interpretations.
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0015#INV-0066
+    artifact_path: adrs/logical/ADR-L-0015-adr-governance-state-and-override-semantics.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0015
+    scope: global
+    statement: 'Derived projections MUST expose only governance IDs and summary metadata
+      and
+
+      MUST NOT invent approvals, risks, or authority-altering interpretations.
+
+      '
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions: []
+  relationships:
+    declared_in:
+    - ADR-L-0015
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0015#INV-0066
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index

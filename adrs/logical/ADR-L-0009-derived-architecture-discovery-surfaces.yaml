@@ -2,7 +2,7 @@ schema_version: '1.0'
 adr_type: logical
 id: ADR-L-0009
 title: Derived Architecture Discovery Surfaces
-status: proposed
+status: accepted
 created_date: '2026-03-13'
 authors:
 - adr-architecture-kit
@@ -29,11 +29,11 @@ context: |
   theory: discovery surfaces should be explicit, deterministic, cheap to query,
   and derived from canonical authority.
 
-  The kit already provides `manifest.yaml` as a broad summary artifact and has
-  a provisional entity-registry subsystem. What is missing is an explicit
-  architectural decision that separates summary/discovery from normalized entity
-  lookup, and that defines how agents are expected to consume those artifacts
-  before the SUPER GRAPH exists.
+  The kit already provides `manifest.yaml`, the normalized index family under
+  `adrs/index/`, and a legacy compatibility registry. What was missing was an
+  explicit architectural decision that separates broad discovery, normalized
+  lookup, guaranteed contract outputs, and compatibility-only projections so
+  downstream consumers do not guess which generated surfaces are authoritative.
 decisions:
 - id: DEC-0014
   summary: Use derived discovery artifacts for agent-facing architecture lookup
@@ -42,17 +42,31 @@ decisions:
     should interact with derived, machine-stable discovery artifacts by
     default. This reduces scan cost, ambiguity, and ad hoc parsing logic.
 - id: DEC-0021
-  summary: Keep manifest as summary-oriented discovery surface
+  summary: Treat manifest as a guaranteed discovery surface within the compiler contract family
   rationale: |
-    The manifest is useful for broad scope summaries, counts, lifecycle
-    summaries, and high-level discovery, but it should not be overloaded as
-    the main normalized entity lookup surface.
+    The manifest is the first discovery surface used by humans and agents for
+    scope inventory, freshness checks, and lifecycle summaries. It remains a
+    discovery artifact rather than a normalized semantic payload, but its
+    presence and format are guaranteed within the compiler contract family.
 - id: DEC-0028
-  summary: Use entity-registry as graph-lite normalized lookup surface
+  summary: Use `adrs/index/entity-registry.yaml` as the normalized lookup surface and keep legacy registry as compatibility-only
   rationale: |
-    The entity registry should provide exact-ID, filtered, deterministic
-    lookup for entities such as invariants, capabilities, and components until
-    the SUPER GRAPH provides richer graph-native query semantics.
+    The normalized entity registry in `adrs/index/` is the current machine
+    lookup surface for deterministic entity access. The legacy
+    `adrs/entities/registry.yaml` path remains compatibility-only and should
+    not gain new consumers.
+- id: DEC-0057
+  summary: Classify compiler discovery outputs by guaranteed, optional, and deprecated stability tiers
+  rationale: |
+    Downstream consumers need to know which generated surfaces are guaranteed
+    contract outputs, which are optional human conveniences, and which remain
+    transitional compatibility artifacts.
+- id: DEC-0058
+  summary: Deprecate `adrs/entities/registry.yaml` as a legacy compatibility projection
+  rationale: |
+    The normalized index family supersedes the legacy registry for new
+    consumers. Keeping the legacy path for compatibility is acceptable, but it
+    must be explicitly marked deprecated to prevent contract ambiguity.
 invariants:
 - id: INV-0043
   statement: |
@@ -97,10 +111,14 @@ capabilities:
   name: Normalized Entity Lookup Surface
   description: |
     Provide deterministic lookup for normalized architecture entities through
-    `adrs/entities/registry.yaml`.
+    `adrs/index/entity-registry.yaml`.
+  acceptance_criteria:
+  - normalized entity lookup is served from the indexed contract family
+  - the legacy entity registry is treated as compatibility-only
 related_adrs:
 - ADR-L-0001
 - ADR-L-0008
+- ADR-L-0010
 - ADR-L-0013
 gaps: []
 migration_origin:

@@ -6,7 +6,9 @@ from .common import (
     Consequences,
     EnforcementLevel,
     Gap,
+    Governance,
     ImpactLevel,
+    ImplementationAuthority,
     Ownership,
     Status,
 )
@@ -31,7 +33,9 @@ from .manifest import (
     ManifestEntity,
     ManifestRequirementsSnapshot,
     ManifestDecisionLedger,
+    ManifestObjectionOverride,
 )
+from .objection_override import ImplementationEffect, ObjectionOverride
 from .physical_adr import (
     ArchitecturePattern,
     ComponentSpecification,
@@ -162,7 +166,9 @@ __all__ = [
     "Alternative",
     "Consequences",
     "Gap",
+    "Governance",
     "Ownership",
+    "ImplementationAuthority",
     # Logical ADR
     "LogicalADR",
     "Capability",
@@ -246,9 +252,12 @@ __all__ = [
     "ManifestEntity",
     "ManifestRequirementsSnapshot",
     "ManifestDecisionLedger",
+    "ManifestObjectionOverride",
     "GapsSummary",
     "GapSummaryByADR",
     "ManifestStatistics",
+    "ImplementationEffect",
+    "ObjectionOverride",
     # Entity Registry (v1.1)
     "Entity",
     "EntityRegistry",

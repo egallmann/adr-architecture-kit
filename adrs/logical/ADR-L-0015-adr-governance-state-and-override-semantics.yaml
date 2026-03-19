@@ -1,0 +1,146 @@
+schema_version: '1.0'
+adr_type: logical
+id: ADR-L-0015
+title: ADR Governance State and Override Semantics
+status: proposed
+created_date: '2026-03-18'
+authors:
+- adr-architecture-kit
+domains:
+- governance
+- validation
+- approval
+- overrides
+tags:
+- governance
+- override
+- steelman
+- approval
+governance:
+  steelman_review_required: true
+  steelman_review_completed: false
+  implementation_authority: advisory
+introduces_entities:
+- INV-0064
+- INV-0065
+- INV-0066
+- CAP-0042
+- CAP-0043
+context: |
+  The repository now has a first-pass governance block on ADRs and a canonical
+  objection override artifact. That initial implementation made the metadata
+  available, but it left several important questions under-specified:
+
+  1. whether implementation authority is boolean or tiered
+  2. how approval metadata is paired and interpreted
+  3. how overrides relate to ADR meaning versus implementation allowance
+  4. how override validity is coupled to later ADR revision
+  5. how projections may expose governance state without inventing meaning
+
+  Those questions materially affect acceptance gating, implementation behavior,
+  and deterministic validation. They need a single canonical decision so schema,
+  validator, and projection behavior stay aligned.
+decisions:
+- id: DEC-0063
+  summary: Define ADR governance as a canonical nested metadata block with explicit implementation-authority levels
+  rationale: |
+    Governance state is part of canonical ADR meaning, but it is not the same
+    thing as ADR lifecycle or architecture intent. A nested governance block
+    keeps approval and implementation gating explicit without turning derived
+    projections into authority.
+  consequences:
+    positive:
+    - Approval and implementation status become machine-detectable
+    - Authority stays on the ADR rather than migrating into indexes
+    - Future governance fields can be extended without overloading lifecycle status
+- id: DEC-0064
+  summary: Record implementation exceptions in separate objection override artifacts
+  rationale: |
+    Override rationale, risk, and exception posture should remain canonical, but
+    they should not bloat ADR text or rewrite architecture intent. Separate
+    override artifacts keep exception handling explicit and auditable.
+  consequences:
+    positive:
+    - ADR meaning remains stable while implementation exceptions are recorded separately
+    - Override approval and accepted risk are queryable
+    - ADRs can reference overrides by ID without carrying inline exception prose
+- id: DEC-0065
+  summary: Bind override review validity to ADR modified_date and warn on stale coupling
+  rationale: |
+    Overrides should not silently continue applying after the ADR they depend on
+    has materially changed. Using ADR modified_date provides a minimal canonical
+    coupling point that works with the current schema line.
+  consequences:
+    positive:
+    - Validators can detect likely stale exceptions deterministically
+    - The MVP avoids inventing a new ADR revision field prematurely
+    - Governance review remains visible when ADR meaning evolves
+- id: DEC-0066
+  summary: Allow projections to expose governance references and summary metadata only
+  rationale: |
+    Projections need to support lookup and orchestration, but they must not
+    synthesize approvals, risks, or override semantics beyond what the canonical
+    artifacts explicitly say.
+  consequences:
+    positive:
+    - Manifests and indexes stay useful for tooling
+    - Projections do not become alternate governance authority
+    - Validation can compare projection output directly to canonical sources
+invariants:
+- id: INV-0064
+  statement: |
+    Absence of ADR governance approval fields MUST NOT be interpreted as
+    approval or implementation authority.
+  scope: global
+  enforcement_level: must
+  enforcement_mechanism: policy
+  verification_method: automated
+  rationale: |
+    Governance state must be explicit, not inferred by omission.
+- id: INV-0065
+  statement: |
+    Objection override artifacts MUST NOT change ADR architectural meaning and
+    MUST govern implementation allowance only.
+  scope: global
+  enforcement_level: must
+  enforcement_mechanism: design
+  verification_method: automated
+  rationale: |
+    Override records are exception control, not alternate architecture authority.
+- id: INV-0066
+  statement: |
+    Derived projections MUST expose only governance IDs and summary metadata and
+    MUST NOT invent approvals, risks, or authority-altering interpretations.
+  scope: global
+  enforcement_level: must
+  enforcement_mechanism: policy
+  verification_method: automated
+  rationale: |
+    Lookup surfaces must remain projections over canonical governance state.
+capabilities:
+- id: CAP-0042
+  name: Deterministic ADR Governance Validation
+  description: |
+    Validate ADR governance metadata, approval pairings, implementation
+    authority, override references, and stale revision coupling through
+    deterministic rules.
+  acceptance_criteria:
+  - Invalid governance pairings fail validation
+  - Missing override artifacts fail cross-reference validation
+  - Stale override coupling is surfaced as a warning in the MVP
+- id: CAP-0043
+  name: Governance Summary Projection
+  description: |
+    Expose ADR governance references and override summaries in manifest and
+    discovery surfaces without leaking rationale or accepted risk text.
+  acceptance_criteria:
+  - ADR summaries expose implementation authority and related override IDs
+  - Override summaries expose IDs and bounded effect metadata only
+  - Projections remain semantically aligned with canonical artifacts
+related_adrs:
+- ADR-L-0008
+- ADR-L-0009
+- ADR-L-0010
+- ADR-L-0011
+- ADR-L-0013
+gaps: []

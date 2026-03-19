@@ -48,3 +48,233 @@ entities:
     extraction_phase: extract_component
     classification: explicit
     generator: adr-architecture-index
+- id: COMP-0011
+  entity_type: component
+  name: Schema and Contract Validation Surface
+  summary: '- Validate canonical ADR artifacts against schema and business rules -
+    Validate kernel-facing contract profiles - Validate project metadata and implementation
+    attribution evidence - Provide CLI entrypoints for validation'
+  canonical_source:
+    source_type: physical_component_adr
+    source_ref: ADR-PC-0002#COMP-0011
+    artifact_path: adrs/physical-component/ADR-PC-0002-schema-and-contract-validation.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-PC-0002
+    legacy_component_id: COMP-0011
+    technologies:
+    - python
+    - jsonschema
+    - pydantic
+    module_path: src/adr_kit/schema/contract_validation.py
+    implements_capabilities: []
+    implements_system:
+    - ADR-PS-0002
+  relationships:
+    declared_in:
+    - ADR-PC-0002
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in:
+    - SYS-0002
+    supersedes: []
+    superseded_by: []
+    refines: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: physical_component_adr
+    source_ref: ADR-PC-0002#COMP-0011
+    extraction_phase: extract_component
+    classification: explicit
+    generator: adr-architecture-index
+- id: COMP-0012
+  entity_type: component
+  name: Compiler Pipeline and Driver
+  summary: '- Build compiler pipeline state from canonical scope inputs - Execute
+    deterministic pass ordering - Emit architecture bundle, manifest, graph, and rendered
+    outputs - Support recursive multi-scope compilation and reportin'
+  canonical_source:
+    source_type: physical_component_adr
+    source_ref: ADR-PC-0003#COMP-0012
+    artifact_path: adrs/physical-component/ADR-PC-0003-compiler-pipeline-and-driver.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-PC-0003
+    legacy_component_id: COMP-0012
+    technologies:
+    - python
+    - yaml
+    - click
+    module_path: src/adr_kit/compiler/driver.py
+    implements_capabilities: []
+    implements_system:
+    - ADR-PS-0002
+  relationships:
+    declared_in:
+    - ADR-PC-0003
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in:
+    - SYS-0002
+    supersedes: []
+    superseded_by: []
+    refines: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: physical_component_adr
+    source_ref: ADR-PC-0003#COMP-0012
+    extraction_phase: extract_component
+    classification: explicit
+    generator: adr-architecture-index
+- id: COMP-0013
+  entity_type: component
+  name: Repository Boundary Component
+  summary: '- Load compiled architecture bundle artifacts - Expose normalized semantic
+    queries to in-process consumers - Centralize provenance, unresolved, and ADR/status
+    lookup logic - Prevent ad hoc re-interpretation of compiled r'
+  canonical_source:
+    source_type: physical_component_adr
+    source_ref: ADR-PC-0004#COMP-0013
+    artifact_path: adrs/physical-component/ADR-PC-0004-repository-boundary-and-normalized-model.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-PC-0004
+    legacy_component_id: COMP-0013
+    technologies:
+    - python
+    - yaml
+    - pydantic
+    module_path: src/adr_kit/repository/architecture_repository.py
+    implements_capabilities: []
+    implements_system:
+    - ADR-PS-0002
+  relationships:
+    declared_in:
+    - ADR-PC-0004
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in:
+    - SYS-0002
+    supersedes: []
+    superseded_by: []
+    refines: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: physical_component_adr
+    source_ref: ADR-PC-0004#COMP-0013
+    extraction_phase: extract_component
+    classification: explicit
+    generator: adr-architecture-index
+- id: COMP-0014
+  entity_type: component
+  name: Generated Artifact Integrity Validation
+  summary: '- Enumerate scope-local generated artifacts - Validate integrity headers
+    and source hashes - Detect stale, tampered, or malformed generated outputs - Support
+    governance checks over generated artifacts'
+  canonical_source:
+    source_type: physical_component_adr
+    source_ref: ADR-PC-0005#COMP-0014
+    artifact_path: adrs/physical-component/ADR-PC-0005-generated-artifact-integrity-validation.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-PC-0005
+    legacy_component_id: COMP-0014
+    technologies:
+    - python
+    - sha256
+    - yaml
+    module_path: src/adr_kit/integrity/validation.py
+    implements_capabilities: []
+    implements_system:
+    - ADR-PS-0002
+  relationships:
+    declared_in:
+    - ADR-PC-0005
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in:
+    - SYS-0002
+    supersedes: []
+    superseded_by: []
+    refines: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: physical_component_adr
+    source_ref: ADR-PC-0005#COMP-0014
+    extraction_phase: extract_component
+    classification: explicit
+    generator: adr-architecture-index
+- id: COMP-0015
+  entity_type: component
+  name: Brownfield Onboarding and Canonical Normalization
+  summary: '- Detect canonical entity ID collisions - Apply deterministic canonical
+    ID remaps - Write canonical migration ledgers - Support brownfield onboarding
+    cleanup as governed normalization rather than ad hoc editing'
+  canonical_source:
+    source_type: physical_component_adr
+    source_ref: ADR-PC-0006#COMP-0015
+    artifact_path: adrs/physical-component/ADR-PC-0006-brownfield-onboarding-and-canonical-normalization.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-PC-0006
+    legacy_component_id: COMP-0015
+    technologies:
+    - python
+    - yaml
+    - click
+    module_path: src/adr_kit/migrators/canonical_id_normalizer.py
+    implements_capabilities: []
+    implements_system:
+    - ADR-PS-0002
+  relationships:
+    declared_in:
+    - ADR-PC-0006
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in:
+    - SYS-0002
+    supersedes: []
+    superseded_by: []
+    refines: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: physical_component_adr
+    source_ref: ADR-PC-0006#COMP-0015
+    extraction_phase: extract_component
+    classification: explicit
+    generator: adr-architecture-index

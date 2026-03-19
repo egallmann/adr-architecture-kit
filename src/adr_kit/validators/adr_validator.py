@@ -7,7 +7,14 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import List, Optional, Union, Dict
 
-from ..models import LogicalADR, PhysicalADR, PhysicalSystemADR, PhysicalComponentADR
+from ..models import (
+    ImplementationAuthority,
+    LogicalADR,
+    ObjectionOverride,
+    PhysicalADR,
+    PhysicalComponentADR,
+    PhysicalSystemADR,
+)
 from ..parser import ADRParser, ADRParseError, ADRSchemaValidationError
 from ..scope import ProjectScopeResolver, ProjectScope
 
@@ -77,6 +84,13 @@ class ADRValidator:
         deduped_physical = list(dict.fromkeys(path.resolve() for path in physical_files))
         return logical_files, [Path(path) for path in deduped_physical]
 
+    def _discover_override_files(self, adr_dir: Path) -> list[Path]:
+        """Discover objection override artifacts deterministically."""
+        override_dir = adr_dir / "decisions" / "overrides"
+        if not override_dir.exists():
+            return []
+        return sorted(path.resolve() for path in override_dir.glob("*.yaml"))
+
     def _schema_name_for_data(self, data: dict) -> str:
         """Map adr_type to parser schema names."""
         adr_type = data.get("adr_type")
@@ -140,6 +154,16 @@ class ADRValidator:
                 ))
             return ValidationResult(valid=len(errors) == 0, mode=mode, errors=errors, warnings=warnings)
         
+        try:
+            raw_data = self.parser.parse_yaml(file_path)
+        except ADRParseError as e:
+            errors.append(ValidationError(
+                severity="error",
+                rule="parse_error",
+                message=str(e)
+            ))
+            return ValidationResult(valid=False, mode=mode, errors=errors, warnings=warnings)
+
         # Try to parse ADR
         try:
             adr = self.parser.parse_adr(file_path)
@@ -165,6 +189,8 @@ class ADRValidator:
             ))
             return ValidationResult(valid=False, mode=mode, errors=errors, warnings=warnings)
         
+        self._validate_governance_metadata(adr, raw_data, errors, warnings)
+
         # Run business rule validations
         if isinstance(adr, LogicalADR):
             self._validate_logical_adr(adr, errors, warnings)
@@ -181,6 +207,62 @@ class ADRValidator:
             errors=errors,
             warnings=warnings
         )
+
+    def _validate_governance_metadata(self, adr, raw_data: dict, errors: List[ValidationError], warnings: List[ValidationError]):
+        """Validate deterministic governance semantics on one ADR."""
+        governance = getattr(adr, "governance", None)
+
+        if "related_ledgers" in raw_data:
+            warnings.append(ValidationError(
+                severity="warning",
+                rule="governance_deprecation",
+                message="Top-level related_ledgers is deprecated; use governance.related_ledgers instead",
+                field="related_ledgers",
+            ))
+
+        if governance is None:
+            return
+
+        if governance.approved_by and governance.approved_date is None:
+            errors.append(ValidationError(
+                severity="error",
+                rule="governance_pairing",
+                message="governance.approved_by requires governance.approved_date",
+                field="governance.approved_date",
+            ))
+
+        if governance.approved_date is not None and not governance.approved_by:
+            errors.append(ValidationError(
+                severity="error",
+                rule="governance_pairing",
+                message="governance.approved_date requires governance.approved_by",
+                field="governance.approved_by",
+            ))
+
+        if governance.steelman_review_required is True and governance.steelman_review_completed is None:
+            errors.append(ValidationError(
+                severity="error",
+                rule="governance_steelman",
+                message="governance.steelman_review_required=true requires an explicit governance.steelman_review_completed value",
+                field="governance.steelman_review_completed",
+            ))
+
+        if governance.steelman_review_required is False and governance.steelman_review_completed is True:
+            errors.append(ValidationError(
+                severity="error",
+                rule="governance_steelman",
+                message="governance.steelman_review_completed=true is invalid when governance.steelman_review_required=false",
+                field="governance.steelman_review_completed",
+            ))
+
+        if governance.implementation_authority == ImplementationAuthority.IMPLEMENTATION_AUTHORITATIVE:
+            if not governance.approved_by or governance.approved_date is None:
+                errors.append(ValidationError(
+                    severity="error",
+                    rule="governance_implementation_authority",
+                    message="governance.implementation_authority=implementation_authoritative requires approval metadata",
+                    field="governance.implementation_authority",
+                ))
     
     def _validate_logical_adr(self, adr: LogicalADR, errors: List[ValidationError], warnings: List[ValidationError]):
         """Validate logical ADR business rules.
@@ -478,6 +560,7 @@ class ADRValidator:
         physical_adrs = {}
         physical_system_adrs = {}
         physical_component_adrs = {}
+        overrides: Dict[str, ObjectionOverride] = {}
         
         logical_files, physical_files = self._discover_adr_files(adr_dir)
         
@@ -501,6 +584,17 @@ class ADRValidator:
                     physical_system_adrs[adr.id] = adr
                 elif isinstance(adr, PhysicalADR):
                     physical_adrs[adr.id] = adr
+            except Exception as e:
+                errors.append(ValidationError(
+                    severity="error",
+                    rule="parse_error",
+                    message=f"Failed to parse {file_path}: {e}"
+                ))
+
+        for file_path in self._discover_override_files(adr_dir):
+            try:
+                override = self.parser.parse_objection_override(file_path)
+                overrides[override.id] = override
             except Exception as e:
                 errors.append(ValidationError(
                     severity="error",
@@ -574,6 +668,50 @@ class ADRValidator:
                             message=f"ADR {adr.id} references non-existent related ADR {related_id}",
                             field="related_adrs"
                         ))
+
+            governance = getattr(adr, "governance", None)
+            if governance and governance.related_overrides:
+                for override_id in governance.related_overrides:
+                    override = overrides.get(override_id)
+                    if override is None:
+                        errors.append(ValidationError(
+                            severity="error",
+                            rule="override_reference",
+                            message=f"ADR {adr.id} references non-existent objection override {override_id}",
+                            field="governance.related_overrides",
+                        ))
+                        continue
+                    if override.related_adr != adr.id:
+                        errors.append(ValidationError(
+                            severity="error",
+                            rule="override_reference",
+                            message=f"Objection override {override.id} points to {override.related_adr} but is referenced by {adr.id}",
+                            field="governance.related_overrides",
+                        ))
+
+        for override in overrides.values():
+            related_adr = (
+                logical_adrs.get(override.related_adr)
+                or physical_adrs.get(override.related_adr)
+                or physical_system_adrs.get(override.related_adr)
+                or physical_component_adrs.get(override.related_adr)
+            )
+            if related_adr is None:
+                errors.append(ValidationError(
+                    severity="error",
+                    rule="override_reference",
+                    message=f"Objection override {override.id} references non-existent ADR {override.related_adr}",
+                    field="related_adr",
+                ))
+                continue
+
+            if override.related_adr_version is not None and getattr(related_adr, "modified_date", None) != override.related_adr_version:
+                warnings.append(ValidationError(
+                    severity="warning",
+                    rule="stale_override",
+                    message=f"Objection override {override.id} targets ADR version {override.related_adr_version} but {related_adr.id} is currently at {related_adr.modified_date}",
+                    field="related_adr_version",
+                ))
         
         # INV-0005: Check for duplicate IDs
         all_ids = list(logical_adrs.keys()) + list(physical_adrs.keys()) + list(physical_system_adrs.keys()) + list(physical_component_adrs.keys())

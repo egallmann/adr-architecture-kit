@@ -234,6 +234,211 @@ class TestValidationRules:
         assert result.mode == "complete"
         assert result.has_errors
 
+    def test_governance_implementation_authoritative_requires_approval(self, validator, tmp_path):
+        """Implementation-authoritative ADRs must carry approval metadata."""
+        adr_path = tmp_path / "logical-governance.yaml"
+        adr_path.write_text(
+            "\n".join(
+                [
+                    'schema_version: "1.0"',
+                    "adr_type: logical",
+                    "id: ADR-L-9994",
+                    'title: "Governed Logical ADR"',
+                    "status: proposed",
+                    'created_date: "2026-03-13"',
+                    "authors: [adr-architecture-kit]",
+                    "domains: [governance]",
+                    "context: |",
+                    "  Governance test ADR.",
+                    "governance:",
+                    "  implementation_authority: implementation_authoritative",
+                    "decisions:",
+                    "  - id: DEC-0001",
+                    '    summary: "Test decision"',
+                    "    rationale: |",
+                    "      Required for validation.",
+                ]
+            ),
+            encoding="utf-8",
+        )
+
+        result = validator.validate_file(adr_path, mode="complete")
+
+        assert result.valid is False
+        assert any(
+            error.rule == "governance_implementation_authority"
+            or "approved_by" in error.message
+            for error in result.errors
+        )
+
+    def test_governance_completed_without_required_false_fails(self, validator, tmp_path):
+        """Completed steelman cannot coexist with required=false."""
+        adr_path = tmp_path / "logical-governance.yaml"
+        adr_path.write_text(
+            "\n".join(
+                [
+                    'schema_version: "1.0"',
+                    "adr_type: logical",
+                    "id: ADR-L-9993",
+                    'title: "Governed Logical ADR"',
+                    "status: proposed",
+                    'created_date: "2026-03-13"',
+                    "authors: [adr-architecture-kit]",
+                    "domains: [governance]",
+                    "context: |",
+                    "  Governance test ADR.",
+                    "governance:",
+                    "  steelman_review_required: false",
+                    "  steelman_review_completed: true",
+                    "decisions:",
+                    "  - id: DEC-0001",
+                    '    summary: "Test decision"',
+                    "    rationale: |",
+                    "      Required for validation.",
+                ]
+            ),
+            encoding="utf-8",
+        )
+
+        result = validator.validate_file(adr_path, mode="complete")
+
+        assert result.valid is False
+        assert any(error.rule == "governance_steelman" for error in result.errors)
+
+    def test_legacy_related_ledgers_warns(self, validator, tmp_path):
+        """Top-level related_ledgers should warn but remain compatible."""
+        adr_path = tmp_path / "logical-governance.yaml"
+        adr_path.write_text(
+            "\n".join(
+                [
+                    'schema_version: "1.0"',
+                    "adr_type: logical",
+                    "id: ADR-L-9992",
+                    'title: "Governed Logical ADR"',
+                    "status: proposed",
+                    'created_date: "2026-03-13"',
+                    "authors: [adr-architecture-kit]",
+                    "domains: [governance]",
+                    "related_ledgers: [LEDGER-0001]",
+                    "context: |",
+                    "  Governance test ADR.",
+                    "decisions:",
+                    "  - id: DEC-0001",
+                    '    summary: "Test decision"',
+                    "    rationale: |",
+                    "      Required for validation.",
+                ]
+            ),
+            encoding="utf-8",
+        )
+
+        result = validator.validate_file(adr_path, mode="complete")
+
+        assert result.valid
+        assert any(warning.rule == "governance_deprecation" for warning in result.warnings)
+
+    def test_cross_references_fail_for_missing_override_artifact(self, validator):
+        """Override IDs must resolve to canonical override artifacts."""
+        temp_root = Path("tests") / ".tmp" / str(uuid.uuid4())
+        adr_dir = temp_root / "adrs"
+        logical_dir = adr_dir / "logical"
+        logical_dir.mkdir(parents=True, exist_ok=True)
+
+        try:
+            (logical_dir / "ADR-L-9991-logical.yaml").write_text(
+                "\n".join(
+                    [
+                        'schema_version: "1.0"',
+                        "adr_type: logical",
+                        "id: ADR-L-9991",
+                        'title: "Logical ADR With Missing Override"',
+                        "status: proposed",
+                        'created_date: "2026-03-13"',
+                        "authors: [test.author]",
+                        "domains: [test]",
+                        "context: |",
+                        "  Cross-reference test ADR.",
+                        "governance:",
+                        "  related_overrides: [OVERRIDE-0001]",
+                        "decisions:",
+                        "  - id: DEC-0001",
+                        '    summary: "Test decision"',
+                        "    rationale: |",
+                        "      Required for validation.",
+                    ]
+                ),
+                encoding="utf-8",
+            )
+
+            result = validator.validate_cross_references(adr_dir)
+
+            assert result.valid is False
+            assert any(error.rule == "override_reference" for error in result.errors)
+        finally:
+            shutil.rmtree(temp_root, ignore_errors=True)
+
+    def test_cross_references_warn_for_stale_override_version(self, validator):
+        """Stale override-to-ADR revision coupling should warn in the MVP."""
+        temp_root = Path("tests") / ".tmp" / str(uuid.uuid4())
+        adr_dir = temp_root / "adrs"
+        logical_dir = adr_dir / "logical"
+        override_dir = adr_dir / "decisions" / "overrides"
+        logical_dir.mkdir(parents=True, exist_ok=True)
+        override_dir.mkdir(parents=True, exist_ok=True)
+
+        try:
+            (logical_dir / "ADR-L-9990-logical.yaml").write_text(
+                "\n".join(
+                    [
+                        'schema_version: "1.0"',
+                        "adr_type: logical",
+                        "id: ADR-L-9990",
+                        'title: "Logical ADR With Override"',
+                        "status: accepted",
+                        'created_date: "2026-03-13"',
+                        'modified_date: "2026-03-15"',
+                        "authors: [test.author]",
+                        "domains: [test]",
+                        "context: |",
+                        "  Cross-reference test ADR.",
+                        "governance:",
+                        "  related_overrides: [OVERRIDE-0001]",
+                        "decisions:",
+                        "  - id: DEC-0001",
+                        '    summary: "Test decision"',
+                        "    rationale: |",
+                        "      Required for validation.",
+                    ]
+                ),
+                encoding="utf-8",
+            )
+            (override_dir / "OVERRIDE-0001.yaml").write_text(
+                "\n".join(
+                    [
+                        'schema_version: "1.1"',
+                        "type: objection_override",
+                        "id: OVERRIDE-0001",
+                        "related_adr: ADR-L-9990",
+                        "related_review: REVIEW-0001",
+                        'related_adr_version: "2026-03-14"',
+                        'objection_summary: "Bounded exception needed for rollout"',
+                        'override_rationale: "Implementation must proceed before full compliance closes"',
+                        'accepted_risk: "Short-lived governance variance is accepted"',
+                        'approving_authority: "erik"',
+                        'approved_date: "2026-03-18T12:00:00Z"',
+                        "implementation_effect: exception",
+                    ]
+                ),
+                encoding="utf-8",
+            )
+
+            result = validator.validate_cross_references(adr_dir)
+
+            assert len(result.errors) == 0
+            assert any(warning.rule == "stale_override" for warning in result.warnings)
+        finally:
+            shutil.rmtree(temp_root, ignore_errors=True)
+
 
 class TestBackwardCompatibility:
     """Test backward compatibility with single-scope usage."""

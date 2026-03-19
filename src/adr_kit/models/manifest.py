@@ -26,6 +26,12 @@ class ManifestADREntry(BaseModel):
     gap_count: int = Field(0, ge=0)
     blocking_gaps: int = Field(0, ge=0)
     component_count: int = Field(0, ge=0)
+    implementation_authority: Optional[str] = Field(
+        None,
+        pattern=r"^(none|advisory|implementation_authoritative)$",
+    )
+    related_overrides: List[str] = Field(default_factory=list)
+    related_ledgers: List[str] = Field(default_factory=list)
 
 
 class ManifestInvariant(BaseModel):
@@ -66,6 +72,7 @@ class ManifestStatistics(BaseModel):
     total_entities: int = Field(0, ge=0)
     total_requirements_snapshots: int = Field(0, ge=0)
     total_decision_ledgers: int = Field(0, ge=0)
+    total_objection_overrides: int = Field(0, ge=0)
 
 
 class ManifestEntity(BaseModel):
@@ -91,6 +98,18 @@ class ManifestDecisionLedger(BaseModel):
     decision_count: int = Field(0, ge=0)
 
 
+class ManifestObjectionOverride(BaseModel):
+    """Objection override entry in manifest."""
+
+    id: str = Field(..., pattern=r"^OVERRIDE-\d{4}$")
+    related_adr: str = Field(..., pattern=r"^ADR-(L|V|P|PS|PC|D)-\d{4}$")
+    related_review: Optional[str] = Field(None, pattern=r"^REVIEW-\d{4}$")
+    implementation_effect: str = Field(
+        ...,
+        pattern=r"^(exception|deferred_compliance|risk_accepted_variance)$",
+    )
+
+
 class Manifest(BaseModel):
     """Generated manifest for ADR discovery (SYS-14: Index Currency)."""
     
@@ -112,6 +131,7 @@ class Manifest(BaseModel):
     entities: List[ManifestEntity] = Field(default_factory=list, description="All entities across all ADRs")
     requirements_snapshots: List[ManifestRequirementsSnapshot] = Field(default_factory=list, description="Requirements snapshots summary")
     decision_ledgers: List[ManifestDecisionLedger] = Field(default_factory=list, description="Decision ledgers summary")
+    objection_overrides: List[ManifestObjectionOverride] = Field(default_factory=list, description="Objection overrides summary")
     gaps_summary: GapsSummary
     statistics: ManifestStatistics
     

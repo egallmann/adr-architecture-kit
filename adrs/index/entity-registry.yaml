@@ -403,7 +403,7 @@ entities:
     artifact_path: adrs/logical/ADR-L-0009-derived-architecture-discovery-surfaces.yaml
   source_refs: []
   metadata:
-    status: proposed
+    status: accepted
     domains:
     - discovery
     - indexing
@@ -419,6 +419,7 @@ entities:
     references:
     - ADR-L-0001
     - ADR-L-0008
+    - ADR-L-0010
     - ADR-L-0013
     related_to: []
     enforces: []
@@ -442,16 +443,16 @@ entities:
 - id: ADR-L-0010
   entity_type: adr
   name: Kernel Interface Contract and Validation Profiles
-  summary: 'adr-architecture-kit is transitioning from an implicit generator toolkit
+  summary: adr-architecture-kit is transitioning from an implicit generator toolkit
     into an explicit architecture compiler with a defined contract boundary to the
-    STE kernel. The plan work established that the kernel consumes four '
+    STE kernel. The plan work established that the compiler's guaranteed
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0010
     artifact_path: adrs/logical/ADR-L-0010-kernel-interface-contract-and-validation-profiles.yaml
   source_refs: []
   metadata:
-    status: proposed
+    status: accepted
     domains:
     - kernel
     - contract
@@ -603,7 +604,7 @@ entities:
     artifact_path: adrs/logical/ADR-L-0013-architecture-repository-boundary-and-normalized-semantic-model.yaml
   source_refs: []
   metadata:
-    status: proposed
+    status: accepted
     domains:
     - repository
     - discovery
@@ -686,6 +687,56 @@ entities:
   provenance:
     source_type: logical_adr
     source_ref: ADR-L-0014
+    extraction_phase: extract_adr
+    classification: explicit
+    generator: adr-architecture-index
+- id: ADR-L-0015
+  entity_type: adr
+  name: ADR Governance State and Override Semantics
+  summary: 'The repository now has a first-pass governance block on ADRs and a canonical
+    objection override artifact. That initial implementation made the metadata available,
+    but it left several important questions under-specified: '
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0015
+    artifact_path: adrs/logical/ADR-L-0015-adr-governance-state-and-override-semantics.yaml
+  source_refs: []
+  metadata:
+    status: proposed
+    domains:
+    - governance
+    - validation
+    - approval
+    - overrides
+    tags:
+    - governance
+    - override
+    - steelman
+    - approval
+  relationships:
+    declared_in: []
+    references:
+    - ADR-L-0008
+    - ADR-L-0009
+    - ADR-L-0010
+    - ADR-L-0011
+    - ADR-L-0013
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0015
     extraction_phase: extract_adr
     classification: explicit
     generator: adr-architecture-index
@@ -2487,7 +2538,7 @@ entities:
   entity_type: capability
   name: Normalized Entity Lookup Surface
   summary: Provide deterministic lookup for normalized architecture entities through
-    `adrs/entities/registry.yaml`.
+    `adrs/index/entity-registry.yaml`.
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0009#CAP-0018
@@ -3494,6 +3545,90 @@ entities:
   provenance:
     source_type: logical_adr
     source_ref: ADR-L-0014#CAP-0041
+    extraction_phase: extract_capability
+    classification: explicit
+    generator: adr-architecture-index
+- id: CAP-0042
+  entity_type: capability
+  name: Deterministic ADR Governance Validation
+  summary: Validate ADR governance metadata, approval pairings, implementation authority,
+    override references, and stale revision coupling through deterministic rules.
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0015#CAP-0042
+    artifact_path: adrs/logical/ADR-L-0015-adr-governance-state-and-override-semantics.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0015
+    domains:
+    - governance
+    - validation
+    - approval
+    - overrides
+    implemented_by_components: []
+    enabled_by_decisions: []
+  relationships:
+    declared_in:
+    - ADR-L-0015
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0015#CAP-0042
+    extraction_phase: extract_capability
+    classification: explicit
+    generator: adr-architecture-index
+- id: CAP-0043
+  entity_type: capability
+  name: Governance Summary Projection
+  summary: Expose ADR governance references and override summaries in manifest and
+    discovery surfaces without leaking rationale or accepted risk text.
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0015#CAP-0043
+    artifact_path: adrs/logical/ADR-L-0015-adr-governance-state-and-override-semantics.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0015
+    domains:
+    - governance
+    - validation
+    - approval
+    - overrides
+    implemented_by_components: []
+    enabled_by_decisions: []
+  relationships:
+    declared_in:
+    - ADR-L-0015
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0015#CAP-0043
     extraction_phase: extract_capability
     classification: explicit
     generator: adr-architecture-index
@@ -4637,10 +4772,11 @@ entities:
     generator: adr-architecture-index
 - id: DEC-0021
   entity_type: decision
-  name: Keep manifest as summary-oriented discovery surface
-  summary: The manifest is useful for broad scope summaries, counts, lifecycle summaries,
-    and high-level discovery, but it should not be overloaded as the main normalized
-    entity lookup surface.
+  name: Treat manifest as a guaranteed discovery surface within the compiler contract
+    family
+  summary: The manifest is the first discovery surface used by humans and agents for
+    scope inventory, freshness checks, and lifecycle summaries. It remains a discovery
+    artifact rather than a normalized semantic payload, but its pre
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0009#DEC-0021
@@ -4935,10 +5071,11 @@ entities:
     generator: adr-architecture-index
 - id: DEC-0028
   entity_type: decision
-  name: Use entity-registry as graph-lite normalized lookup surface
-  summary: The entity registry should provide exact-ID, filtered, deterministic lookup
-    for entities such as invariants, capabilities, and components until the SUPER
-    GRAPH provides richer graph-native query semantics.
+  name: Use `adrs/index/entity-registry.yaml` as the normalized lookup surface and
+    keep legacy registry as compatibility-only
+  summary: The normalized entity registry in `adrs/index/` is the current machine
+    lookup surface for deterministic entity access. The legacy `adrs/entities/registry.yaml`
+    path remains compatibility-only and should not gain new cons
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0009#DEC-0028
@@ -5270,10 +5407,11 @@ entities:
     generator: adr-architecture-index
 - id: DEC-0036
   entity_type: decision
-  name: Use the four core registries as the kernel contract surface
-  summary: The kernel needs a stable, minimal set of compiled artifacts that can be
-    loaded without parsing ADR source files. The architecture index plus the entity,
-    relationship, and unresolved registries are sufficient and already
+  name: Use the indexed compiler bundle as the contract surface, with four core artifacts
+    as the minimal kernel load subset
+  summary: The full guaranteed compiler contract includes all generated artifacts
+    in `adrs/index/` plus `manifest.yaml`. The kernel may rely on a narrower minimal
+    load subset for bootstrap loading, but that subset must not be mista
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0010#DEC-0036
@@ -6157,6 +6295,431 @@ entities:
   provenance:
     source_type: logical_adr
     source_ref: ADR-L-0014#DEC-0056
+    extraction_phase: extract_decision
+    classification: explicit
+    generator: adr-architecture-index
+- id: DEC-0057
+  entity_type: decision
+  name: Classify compiler discovery outputs by guaranteed, optional, and deprecated
+    stability tiers
+  summary: Downstream consumers need to know which generated surfaces are guaranteed
+    contract outputs, which are optional human conveniences, and which remain transitional
+    compatibility artifacts.
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0009#DEC-0057
+    artifact_path: adrs/logical/ADR-L-0009-derived-architecture-discovery-surfaces.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0009
+    related_invariants: []
+    enforces_invariants: []
+    enables_capabilities: []
+    governs_components: []
+    supersedes: []
+    refines: []
+  relationships:
+    declared_in:
+    - ADR-L-0009
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0009#DEC-0057
+    extraction_phase: extract_decision
+    classification: explicit
+    generator: adr-architecture-index
+- id: DEC-0058
+  entity_type: decision
+  name: Deprecate `adrs/entities/registry.yaml` as a legacy compatibility projection
+  summary: The normalized index family supersedes the legacy registry for new consumers.
+    Keeping the legacy path for compatibility is acceptable, but it must be explicitly
+    marked deprecated to prevent contract ambiguity.
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0009#DEC-0058
+    artifact_path: adrs/logical/ADR-L-0009-derived-architecture-discovery-surfaces.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0009
+    related_invariants: []
+    enforces_invariants: []
+    enables_capabilities: []
+    governs_components: []
+    supersedes: []
+    refines: []
+  relationships:
+    declared_in:
+    - ADR-L-0009
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0009#DEC-0058
+    extraction_phase: extract_decision
+    classification: explicit
+    generator: adr-architecture-index
+- id: DEC-0059
+  entity_type: decision
+  name: Treat all `adrs/index/*` artifacts and `manifest.yaml` as the guaranteed contract
+    family
+  summary: 'Downstream bridge and kernel work already depend on the wider indexed
+    bundle, the manifest, and the additive graph artifact. Guaranteeing the full family
+    prevents downstream consumers from inventing different notions of '
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0010#DEC-0059
+    artifact_path: adrs/logical/ADR-L-0010-kernel-interface-contract-and-validation-profiles.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0010
+    related_invariants: []
+    enforces_invariants: []
+    enables_capabilities: []
+    governs_components: []
+    supersedes: []
+    refines: []
+  relationships:
+    declared_in:
+    - ADR-L-0010
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0010#DEC-0059
+    extraction_phase: extract_decision
+    classification: explicit
+    generator: adr-architecture-index
+- id: DEC-0060
+  entity_type: decision
+  name: Treat `architecture-graph.yaml` as an additive indexed artifact rather than
+    a second architecture authority
+  summary: The graph is consumed downstream and belongs to the generated contract
+    family, but it remains a projection artifact over the same architecture authority
+    rather than a separate source of meaning.
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0010#DEC-0060
+    artifact_path: adrs/logical/ADR-L-0010-kernel-interface-contract-and-validation-profiles.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0010
+    related_invariants: []
+    enforces_invariants: []
+    enables_capabilities: []
+    governs_components: []
+    supersedes: []
+    refines: []
+  relationships:
+    declared_in:
+    - ADR-L-0010
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0010#DEC-0060
+    extraction_phase: extract_decision
+    classification: explicit
+    generator: adr-architecture-index
+- id: DEC-0061
+  entity_type: decision
+  name: Permit direct `adrs/index/*` consumption for cross-language or out-of-process
+    consumers
+  summary: Cross-language consumers such as `ste-runtime` cannot call a Python repository
+    API directly. They still consume the same generated authority surface, but through
+    the file-format contract rather than the in-process reposi
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0013#DEC-0061
+    artifact_path: adrs/logical/ADR-L-0013-architecture-repository-boundary-and-normalized-semantic-model.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0013
+    related_invariants: []
+    enforces_invariants: []
+    enables_capabilities: []
+    governs_components: []
+    supersedes: []
+    refines: []
+  relationships:
+    declared_in:
+    - ADR-L-0013
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0013#DEC-0061
+    extraction_phase: extract_decision
+    classification: explicit
+    generator: adr-architecture-index
+- id: DEC-0062
+  entity_type: decision
+  name: Treat repository-backed graph access as the intended Python graph seam
+  summary: Python consumers should not hardcode the graph artifact path once the repository
+    boundary can expose it as part of the indexed contract family. This preserves
+    a coherent semantic seam for in-process consumers.
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0013#DEC-0062
+    artifact_path: adrs/logical/ADR-L-0013-architecture-repository-boundary-and-normalized-semantic-model.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0013
+    related_invariants: []
+    enforces_invariants: []
+    enables_capabilities: []
+    governs_components: []
+    supersedes: []
+    refines: []
+  relationships:
+    declared_in:
+    - ADR-L-0013
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0013#DEC-0062
+    extraction_phase: extract_decision
+    classification: explicit
+    generator: adr-architecture-index
+- id: DEC-0063
+  entity_type: decision
+  name: Define ADR governance as a canonical nested metadata block with explicit implementation-authority
+    levels
+  summary: Governance state is part of canonical ADR meaning, but it is not the same
+    thing as ADR lifecycle or architecture intent. A nested governance block keeps
+    approval and implementation gating explicit without turning derived
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0015#DEC-0063
+    artifact_path: adrs/logical/ADR-L-0015-adr-governance-state-and-override-semantics.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0015
+    related_invariants: []
+    enforces_invariants: []
+    enables_capabilities: []
+    governs_components: []
+    supersedes: []
+    refines: []
+  relationships:
+    declared_in:
+    - ADR-L-0015
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0015#DEC-0063
+    extraction_phase: extract_decision
+    classification: explicit
+    generator: adr-architecture-index
+- id: DEC-0064
+  entity_type: decision
+  name: Record implementation exceptions in separate objection override artifacts
+  summary: Override rationale, risk, and exception posture should remain canonical,
+    but they should not bloat ADR text or rewrite architecture intent. Separate override
+    artifacts keep exception handling explicit and auditable.
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0015#DEC-0064
+    artifact_path: adrs/logical/ADR-L-0015-adr-governance-state-and-override-semantics.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0015
+    related_invariants: []
+    enforces_invariants: []
+    enables_capabilities: []
+    governs_components: []
+    supersedes: []
+    refines: []
+  relationships:
+    declared_in:
+    - ADR-L-0015
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0015#DEC-0064
+    extraction_phase: extract_decision
+    classification: explicit
+    generator: adr-architecture-index
+- id: DEC-0065
+  entity_type: decision
+  name: Bind override review validity to ADR modified_date and warn on stale coupling
+  summary: Overrides should not silently continue applying after the ADR they depend
+    on has materially changed. Using ADR modified_date provides a minimal canonical
+    coupling point that works with the current schema line.
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0015#DEC-0065
+    artifact_path: adrs/logical/ADR-L-0015-adr-governance-state-and-override-semantics.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0015
+    related_invariants: []
+    enforces_invariants: []
+    enables_capabilities: []
+    governs_components: []
+    supersedes: []
+    refines: []
+  relationships:
+    declared_in:
+    - ADR-L-0015
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0015#DEC-0065
+    extraction_phase: extract_decision
+    classification: explicit
+    generator: adr-architecture-index
+- id: DEC-0066
+  entity_type: decision
+  name: Allow projections to expose governance references and summary metadata only
+  summary: Projections need to support lookup and orchestration, but they must not
+    synthesize approvals, risks, or override semantics beyond what the canonical artifacts
+    explicitly say.
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0015#DEC-0066
+    artifact_path: adrs/logical/ADR-L-0015-adr-governance-state-and-override-semantics.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0015
+    related_invariants: []
+    enforces_invariants: []
+    enables_capabilities: []
+    governs_components: []
+    supersedes: []
+    refines: []
+  relationships:
+    declared_in:
+    - ADR-L-0015
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0015#DEC-0066
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
@@ -8244,9 +8807,9 @@ entities:
 - id: INV-0052
   entity_type: invariant
   name: INV-0052
-  summary: 'The STE kernel MUST consume compiled registry artifacts through exactly
-    four contract files: architecture-index, entity-registry, relationship-registry,
-    and unresolved-registry.'
+  summary: 'The compiler''s guaranteed machine-readable contract surface MUST be defined
+    as all generated artifacts under `adrs/index/` plus `adrs/manifest.yaml`. Consumers
+    MAY define narrower minimal load subsets, but those subsets '
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0010#INV-0052
@@ -8255,12 +8818,14 @@ entities:
   metadata:
     adr_id: ADR-L-0010
     scope: global
-    statement: 'The STE kernel MUST consume compiled registry artifacts through exactly
-      four
+    statement: 'The compiler''s guaranteed machine-readable contract surface MUST
+      be defined
 
-      contract files: architecture-index, entity-registry, relationship-registry,
+      as all generated artifacts under `adrs/index/` plus `adrs/manifest.yaml`.
 
-      and unresolved-registry.
+      Consumers MAY define narrower minimal load subsets, but those subsets MUST
+
+      NOT be treated as the full guaranteed contract surface.
 
       '
     enforcement_level: must
@@ -8567,7 +9132,7 @@ entities:
   name: INV-0059
   summary: In-process architecture consumers MUST use the ArchitectureRepository boundary
     instead of inventing ad hoc compiled-registry interpretation when a repository
-    boundary is available.
+    boundary is available. Cross-language or out-of-process consum
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0013#INV-0059
@@ -8580,7 +9145,11 @@ entities:
 
       boundary instead of inventing ad hoc compiled-registry interpretation when
 
-      a repository boundary is available.
+      a repository boundary is available. Cross-language or out-of-process
+
+      consumers MAY consume generated `adrs/index/*` artifacts directly when the
+
+      repository boundary is not available to them.
 
       '
     enforcement_level: must
@@ -8700,6 +9269,141 @@ entities:
   provenance:
     source_type: logical_adr
     source_ref: ADR-L-0014#INV-0061
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
+- id: INV-0064
+  entity_type: invariant
+  name: INV-0064
+  summary: Absence of ADR governance approval fields MUST NOT be interpreted as approval
+    or implementation authority.
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0015#INV-0064
+    artifact_path: adrs/logical/ADR-L-0015-adr-governance-state-and-override-semantics.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0015
+    scope: global
+    statement: 'Absence of ADR governance approval fields MUST NOT be interpreted
+      as
+
+      approval or implementation authority.
+
+      '
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions: []
+  relationships:
+    declared_in:
+    - ADR-L-0015
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0015#INV-0064
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
+- id: INV-0065
+  entity_type: invariant
+  name: INV-0065
+  summary: Objection override artifacts MUST NOT change ADR architectural meaning
+    and MUST govern implementation allowance only.
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0015#INV-0065
+    artifact_path: adrs/logical/ADR-L-0015-adr-governance-state-and-override-semantics.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0015
+    scope: global
+    statement: 'Objection override artifacts MUST NOT change ADR architectural meaning
+      and
+
+      MUST govern implementation allowance only.
+
+      '
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions: []
+  relationships:
+    declared_in:
+    - ADR-L-0015
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0015#INV-0065
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
+- id: INV-0066
+  entity_type: invariant
+  name: INV-0066
+  summary: Derived projections MUST expose only governance IDs and summary metadata
+    and MUST NOT invent approvals, risks, or authority-altering interpretations.
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0015#INV-0066
+    artifact_path: adrs/logical/ADR-L-0015-adr-governance-state-and-override-semantics.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0015
+    scope: global
+    statement: 'Derived projections MUST expose only governance IDs and summary metadata
+      and
+
+      MUST NOT invent approvals, risks, or authority-altering interpretations.
+
+      '
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions: []
+  relationships:
+    declared_in:
+    - ADR-L-0015
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0015#INV-0066
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index

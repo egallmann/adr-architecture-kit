@@ -78,6 +78,7 @@ v1.1 extends v1.0 schemas:
 - `entity-registry.schema.json`
 - `requirements-snapshot.schema.json`
 - `decision-ledger.schema.json`
+- `objection-override.schema.json`
 - `implementation-attribution-evidence.schema.json`
 
 ## Architecture Flow

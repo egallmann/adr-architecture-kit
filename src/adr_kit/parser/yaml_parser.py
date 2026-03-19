@@ -21,6 +21,7 @@ from ..models import (
     LogicalADR,
     Manifest,
     NormalizedEntityRegistry,
+    ObjectionOverride,
     PhysicalADR,
     PhysicalSystemADR,
     PhysicalComponentADR,
@@ -103,6 +104,7 @@ class ADRParser:
             "normalized_entity_registry": "normalized-entity-registry.schema.json",
             "requirements_snapshot": "requirements-snapshot.schema.json",
             "decision_ledger": "decision-ledger.schema.json",
+            "objection_override": "objection-override.schema.json",
             "remediation_ledger": "remediation-ledger.schema.json",
             "relationship_registry": "relationship-registry.schema.json",
             "unresolved_registry": "unresolved-registry.schema.json",
@@ -575,6 +577,16 @@ class ADRParser:
         
         try:
             return DecisionLedger(**data)
+        except ValidationError as e:
+            raise ADRParseError(f"Pydantic validation failed: {e}")
+
+    def parse_objection_override(self, file_path: Union[str, Path]) -> ObjectionOverride:
+        """Parse and validate objection override."""
+        data = self.parse_yaml(file_path)
+        self.validate_against_schema(data, "objection_override")
+
+        try:
+            return ObjectionOverride(**data)
         except ValidationError as e:
             raise ADRParseError(f"Pydantic validation failed: {e}")
 

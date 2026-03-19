@@ -7,6 +7,7 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import List, Optional, Union, Dict
 
+from ..decorators import implements_adr
 from ..models import (
     ImplementationAuthority,
     LogicalADR,
@@ -49,6 +50,7 @@ class ValidationResult:
         return len(self.warnings) > 0
 
 
+@implements_adr("ADR-L-0015")
 class ADRValidator:
     """Validate ADRs against schema and business rules.
     

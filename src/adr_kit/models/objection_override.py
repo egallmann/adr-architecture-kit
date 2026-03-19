@@ -6,6 +6,8 @@ from typing import Optional
 
 from pydantic import BaseModel, Field
 
+from ..decorators import implements_adr
+
 
 class ImplementationEffect(str, Enum):
     """Allowed implementation effect semantics for an override."""
@@ -15,6 +17,7 @@ class ImplementationEffect(str, Enum):
     RISK_ACCEPTED_VARIANCE = "risk_accepted_variance"
 
 
+@implements_adr("ADR-L-0015")
 class ObjectionOverride(BaseModel):
     """Canonical record of an overridden steelman objection."""
 

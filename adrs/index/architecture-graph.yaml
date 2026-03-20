@@ -4,13 +4,13 @@
 # generator_id: adr-architecture-graph
 # generator_version: 1
 # hash_algorithm: sha256
-# source_hash: a17fbf8bd5550e64130143ca6a645746b023a5844d215b3309f39066493c3a1c
-# rendered_hash: 8d9d4dfabf5f3ec09246960f8a2ab7b28adaddef1941ff2590e8677a2e1006c8
+# source_hash: c86ab29bcc6b966121a5b1dc29e9ff5d10fc24e052063c2a0ac98d64f70f704a
+# rendered_hash: 818cb1c3752cf8ee82a4883349a8d101e1c055ebd438d4607a2fef6944f63dc4
 
 schema_version: '1.0'
 type: architecture_graph
 architecture_namespace: adr-architecture-kit
-generated_at: '2026-03-20T01:31:39Z'
+generated_at: '2026-03-20T02:00:05Z'
 nodes:
 - id: ADR-L-0001
   entity_type: adr
@@ -600,6 +600,13 @@ nodes:
     source_type: logical_adr
     source_ref: ADR-L-0015#CAP-0043
     artifact_path: adrs/logical/ADR-L-0015-adr-governance-state-and-override-semantics.yaml
+- id: CAP-0044
+  entity_type: capability
+  name: Cross-Language Runtime Ingestion Contract
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0013#CAP-0044
+    artifact_path: adrs/logical/ADR-L-0013-architecture-repository-boundary-and-normalized-semantic-model.yaml
 - id: COMP-0010
   entity_type: component
   name: Entity Registry Generator and Query Surface
@@ -1123,6 +1130,22 @@ nodes:
     source_type: logical_adr
     source_ref: ADR-L-0015#DEC-0066
     artifact_path: adrs/logical/ADR-L-0015-adr-governance-state-and-override-semantics.yaml
+- id: DEC-0067
+  entity_type: decision
+  name: Define an index-first minimal runtime ingestion subset for cross-language
+    architecture consumers
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0013#DEC-0067
+    artifact_path: adrs/logical/ADR-L-0013-architecture-repository-boundary-and-normalized-semantic-model.yaml
+- id: DEC-0068
+  entity_type: decision
+  name: Require cross-language runtime ingestion to remain index-first, manifest-aware,
+    and additive-safe
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0013#DEC-0068
+    artifact_path: adrs/logical/ADR-L-0013-architecture-repository-boundary-and-normalized-semantic-model.yaml
 - id: INV-0001
   entity_type: invariant
   name: INV-0001
@@ -1536,6 +1559,13 @@ nodes:
     source_type: logical_adr
     source_ref: ADR-L-0015#INV-0066
     artifact_path: adrs/logical/ADR-L-0015-adr-governance-state-and-override-semantics.yaml
+- id: INV-0067
+  entity_type: invariant
+  name: INV-0067
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0013#INV-0067
+    artifact_path: adrs/logical/ADR-L-0013-architecture-repository-boundary-and-normalized-semantic-model.yaml
 - id: SYS-0001
   entity_type: system
   name: ADR Architecture Kit Discovery and Indexing System
@@ -1979,6 +2009,16 @@ edges:
   evidence:
   - ADR-L-0015#CAP-0043
   canonical_source_ref: ADR-L-0015#CAP-0043
+  confidence: 1.0
+  metadata: {}
+- relationship_id: declared_in:CAP-0044:ADR-L-0013
+  relationship_type: declared_in
+  source_entity_id: CAP-0044
+  target_entity_id: ADR-L-0013
+  provenance_classification: explicit
+  evidence:
+  - ADR-L-0013#CAP-0044
+  canonical_source_ref: ADR-L-0013#CAP-0044
   confidence: 1.0
   metadata: {}
 - relationship_id: declared_in:COMP-0010:ADR-PC-0001
@@ -2701,6 +2741,26 @@ edges:
   canonical_source_ref: ADR-L-0015#DEC-0066
   confidence: 1.0
   metadata: {}
+- relationship_id: declared_in:DEC-0067:ADR-L-0013
+  relationship_type: declared_in
+  source_entity_id: DEC-0067
+  target_entity_id: ADR-L-0013
+  provenance_classification: explicit
+  evidence:
+  - ADR-L-0013#DEC-0067
+  canonical_source_ref: ADR-L-0013#DEC-0067
+  confidence: 1.0
+  metadata: {}
+- relationship_id: declared_in:DEC-0068:ADR-L-0013
+  relationship_type: declared_in
+  source_entity_id: DEC-0068
+  target_entity_id: ADR-L-0013
+  provenance_classification: explicit
+  evidence:
+  - ADR-L-0013#DEC-0068
+  canonical_source_ref: ADR-L-0013#DEC-0068
+  confidence: 1.0
+  metadata: {}
 - relationship_id: declared_in:INV-0001:INV-0001
   relationship_type: declared_in
   source_entity_id: INV-0001
@@ -3291,6 +3351,16 @@ edges:
   canonical_source_ref: ADR-L-0015#INV-0066
   confidence: 1.0
   metadata: {}
+- relationship_id: declared_in:INV-0067:ADR-L-0013
+  relationship_type: declared_in
+  source_entity_id: INV-0067
+  target_entity_id: ADR-L-0013
+  provenance_classification: explicit
+  evidence:
+  - ADR-L-0013#INV-0067
+  canonical_source_ref: ADR-L-0013#INV-0067
+  confidence: 1.0
+  metadata: {}
 - relationship_id: declared_in:SYS-0001:ADR-PS-0001
   relationship_type: declared_in
   source_entity_id: SYS-0001
@@ -3594,6 +3664,16 @@ edges:
 - relationship_id: implemented_by:CAP-0018:COMP-0010
   relationship_type: implemented_by
   source_entity_id: CAP-0018
+  target_entity_id: COMP-0010
+  provenance_classification: explicit
+  evidence:
+  - ADR-PC-0001
+  canonical_source_ref: ADR-PC-0001#COMP-0010
+  confidence: 1.0
+  metadata: {}
+- relationship_id: implemented_by:CAP-0044:COMP-0010
+  relationship_type: implemented_by
+  source_entity_id: CAP-0044
   target_entity_id: COMP-0010
   provenance_classification: explicit
   evidence:
@@ -4095,6 +4175,16 @@ edges:
   relationship_type: references
   source_entity_id: ADR-L-0013
   target_entity_id: ADR-PC-0001
+  provenance_classification: explicit
+  evidence:
+  - ADR-L-0013
+  canonical_source_ref: ADR-L-0013
+  confidence: 1.0
+  metadata: {}
+- relationship_id: references:ADR-L-0013:ADR-PC-0005
+  relationship_type: references
+  source_entity_id: ADR-L-0013
+  target_entity_id: ADR-PC-0005
   provenance_classification: explicit
   evidence:
   - ADR-L-0013

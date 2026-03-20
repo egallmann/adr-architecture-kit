@@ -2685,3 +2685,63 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
+- id: INV-0067
+  entity_type: invariant
+  name: INV-0067
+  summary: Cross-language or out-of-process architecture consumers that rely on the
+    file-format contract MUST bootstrap from `adrs/index/architecture-index.yaml`,
+    MUST require the minimal ingestion subset of `entity-registry.yaml`,
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0013#INV-0067
+    artifact_path: adrs/logical/ADR-L-0013-architecture-repository-boundary-and-normalized-semantic-model.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0013
+    scope: global
+    statement: 'Cross-language or out-of-process architecture consumers that rely
+      on the
+
+      file-format contract MUST bootstrap from `adrs/index/architecture-index.yaml`,
+
+      MUST require the minimal ingestion subset of `entity-registry.yaml`,
+
+      `relationship-registry.yaml`, `unresolved-registry.yaml`, and
+
+      `adrs/manifest.yaml`, and MUST NOT recreate architecture authority by
+
+      reparsing ADR source YAML when the generated contract bundle is expected.
+
+      Subset registries and `architecture-graph.yaml` MAY be consumed only as
+
+      additive artifacts, and `adrs/entities/registry.yaml` MUST remain
+
+      compatibility-only.
+
+      '
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions: []
+  relationships:
+    declared_in:
+    - ADR-L-0013
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0013#INV-0067
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index

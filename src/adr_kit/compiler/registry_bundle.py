@@ -1,4 +1,11 @@
-"""Compiler-owned registry bundle assembly from ArchModel."""
+"""Registry bundle assembly from ArchModel (authoring-time / migration parity).
+
+Authoring authority: adr-architecture-kit validates and helps author ADRs.
+Compiler authority: ste-runtime is the compiler of record for machine-consumable
+architecture state for the runtime/kernel. Do not treat this module as the long-term
+authoritative producer of runtime registry bundles—migrate projection to ste-runtime
+and remove dual compilation. See repo AUTHORING-SYSTEM.md and ste-runtime COMPILER-AUTHORITY.md.
+"""
 
 from __future__ import annotations
 

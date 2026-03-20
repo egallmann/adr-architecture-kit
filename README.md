@@ -6,7 +6,9 @@
 
 ADR Architecture Kit implements the **Documentation-State Layer (Layer 5)** of the System of Thought Engineering (STE) framework, providing structured, schema-validated architecture documentation that AI systems can reason over deterministically.
 
-The ADR discovery/output path is now an explicit compiler pipeline: canonical ADR files are parsed once, normalized into `ArchModel`, transformed through deterministic compiler passes, and only then emitted as registries, manifest, and rendered ADR markdown.
+**Authoring vs compilation:** This repository is the **authoring system** (schema, validation, contributor workflows). **ste-runtime** is the **compiler of record** for machine-consumable architecture state (registries, architecture index, manifest, and evidence consumed by ste-kernel). See [AUTHORING-SYSTEM.md](AUTHORING-SYSTEM.md). Do not emit or rely on a **second authoritative** machine graph or registry compiler path here once the ste-runtime migration completes; legacy Python compilation may remain temporarily for golden parity only.
+
+The in-repo ADR discovery/output path uses an explicit **authoring-time** compiler pipeline: canonical ADR files are parsed once, normalized into `ArchModel`, transformed through deterministic compiler passes, and emitted as registries, manifest, and rendered ADR markdown. **Runtime-facing** compilation authority migrates to ste-runtime per [AUTHORING-SYSTEM.md](AUTHORING-SYSTEM.md).
 For in-process consumers, use the Architecture Repository Boundary: `ArchitectureRepository` loads compiled bundles and returns a `NormalizedArchitectureModel`. `ArchModel` remains compiler-internal.
 
 For fastest repo orientation, start with [SYSTEM-OVERVIEW.md](/c:/Users/Erik/Documents/Projects/adr-architecture-kit/SYSTEM-OVERVIEW.md).

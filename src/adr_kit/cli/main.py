@@ -801,6 +801,13 @@ def compile_artifacts(
 ):
     """Compile selected architecture artifacts through the unified compiler driver."""
     try:
+        click.echo(
+            "WARNING: adr compile is deprecated for runtime machine artifacts. "
+            "Use `ste architecture compile --project-root <repo>` (ste-runtime) as the compiler of record. "
+            "This Python path remains for migration / golden parity only. "
+            "See ste-runtime COMPILER-AUTHORITY.md and adr-architecture-kit AUTHORING-SYSTEM.md.",
+            err=True,
+        )
         resolver = ProjectScopeResolver(explicit_scope=scope)
         compiler = ArchitectureCompiler(scope_resolver=resolver)
         emit_targets = _parse_emit_list(emit)

@@ -1,4 +1,9 @@
-"""Compiler scaffolding for the architecture migration path."""
+"""Compiler scaffolding for the architecture migration path (authoring-time / parity).
+
+Guardrail: ste-runtime is the compiler of record for machine-consumable architecture
+state. Do not introduce or preserve a second authoritative IR/compiler for runtime
+artifacts—see repo AUTHORING-SYSTEM.md.
+"""
 
 from __future__ import annotations
 

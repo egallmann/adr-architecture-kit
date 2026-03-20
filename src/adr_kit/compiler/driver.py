@@ -9,10 +9,13 @@ from pathlib import Path
 from time import perf_counter
 from unittest.mock import patch
 
+import yaml
+
 from ..decorators import implements_adr
 from ..parser import ADRParser
 from ..schema.contract_validation import validate_kernel_contract_bundle
 from ..scope import ProjectScope, ProjectScopeResolver
+from ..validators import ADRValidator
 from .backend import (
     EmittedArtifact,
     PROJECTABLE_ENTITY_TYPES,
@@ -131,7 +134,28 @@ class ArchitectureCompiler:
         config = config or CompilerConfig()
         diagnostics = DiagnosticLog()
         resolved_scope = self._resolve_scope(scope, config)
-        timestamp = self._parse_timestamp(config.pinned_timestamp)
+        timestamp, check_timestamp_error = self._resolve_check_timestamp(resolved_scope, config)
+        if check_timestamp_error is not None:
+            diagnostics.error("E705", check_timestamp_error)
+            duration_ms = int((perf_counter() - started) * 1000)
+            empty_model = ArchModel()
+            empty_model.metadata.scope_root = str(resolved_scope.root)
+            return CompilationResult(
+                success=False,
+                artifacts=[],
+                diagnostics=diagnostics,
+                statistics=CompilationStatistics(
+                    source_files=0,
+                    parse_errors=0,
+                    entities_extracted=0,
+                    relationships_derived=0,
+                    unresolved_detected=0,
+                    artifacts_emitted=0,
+                ),
+                model=empty_model,
+                duration_ms=duration_ms,
+            )
+        skip_artifact_check = False
 
         with self._pinned_generation_time(timestamp):
             build_result = run_frontend_pipeline(
@@ -146,8 +170,11 @@ class ArchitectureCompiler:
 
             artifacts = self._emit_artifacts(resolved_scope, config, diagnostics, build_result)
 
+        self._validate_compile_governance_gate(resolved_scope, diagnostics)
+
         if config.check:
-            self._check_artifacts(artifacts, resolved_scope, config, diagnostics)
+            if not skip_artifact_check:
+                self._check_artifacts(artifacts, resolved_scope, config, diagnostics)
         elif not config.dry_run:
             self._write_artifacts(artifacts, resolved_scope, config)
 
@@ -382,14 +409,73 @@ class ArchitectureCompiler:
                 artifact_label = artifact.path.as_posix()
                 diagnostics.error("E702", f"Compiled artifact drift detected: {artifact_label}", path=artifact.path)
 
-    def _parse_timestamp(self, timestamp: str | None) -> datetime | None:
+    def _parse_timestamp(self, timestamp: str | datetime | None) -> datetime | None:
         if timestamp is None:
             return None
+        if isinstance(timestamp, datetime):
+            parsed = timestamp
+            if parsed.tzinfo is None:
+                parsed = parsed.replace(tzinfo=timezone.utc)
+            return parsed.astimezone(timezone.utc)
         normalized = timestamp.replace("Z", "+00:00")
         parsed = datetime.fromisoformat(normalized)
         if parsed.tzinfo is None:
             parsed = parsed.replace(tzinfo=timezone.utc)
         return parsed.astimezone(timezone.utc)
+
+    def _resolve_check_timestamp(
+        self,
+        scope: ProjectScope,
+        config: CompilerConfig,
+    ) -> tuple[datetime | None, str | None]:
+        explicit_timestamp = self._parse_timestamp(config.pinned_timestamp)
+        if explicit_timestamp is not None or not config.check:
+            return explicit_timestamp, None
+
+        root = (config.output_dir or scope.root).resolve()
+        candidates: list[tuple[str, datetime]] = []
+
+        def _load_timestamp(path: Path, field_name: str) -> tuple[datetime | None, str | None]:
+            if not path.exists():
+                return None, None
+            data = yaml.safe_load(path.read_text(encoding="utf-8"))
+            if not isinstance(data, dict) or field_name not in data:
+                return None, f"Compiled artifact timestamp metadata missing from {path.relative_to(root).as_posix()}"
+            return self._parse_timestamp(data[field_name]), None
+
+        if "manifest" in config.emit:
+            timestamp, error = _load_timestamp(root / "adrs" / "manifest.yaml", "generated_date")
+            if error is not None:
+                return None, error
+            if timestamp is not None:
+                candidates.append(("adrs/manifest.yaml", timestamp))
+
+        if "registries" in config.emit:
+            timestamp, error = _load_timestamp(root / "adrs" / "index" / "architecture-index.yaml", "generated_at")
+            if error is not None:
+                return None, error
+            if timestamp is not None:
+                candidates.append(("adrs/index/architecture-index.yaml", timestamp))
+
+        if not candidates:
+            return None, None
+
+        unique_timestamps = {item[1] for item in candidates}
+        if len(unique_timestamps) > 1:
+            mismatch = ", ".join(f"{path}={timestamp.isoformat().replace('+00:00', 'Z')}" for path, timestamp in candidates)
+            return None, f"Compiled artifact timestamps disagree for deterministic check: {mismatch}"
+
+        return candidates[0][1], None
+
+    def _validate_compile_governance_gate(
+        self,
+        scope: ProjectScope,
+        diagnostics: DiagnosticLog,
+    ) -> None:
+        validator = ADRValidator(parser=self.parser, scope_resolver=ProjectScopeResolver(explicit_scope=scope.root))
+        result = validator.validate_implementation_authority_gate(scope.adr_dir)
+        for error in result.errors:
+            diagnostics.error("E706", error.message)
 
     @contextmanager
     def _pinned_generation_time(self, timestamp: datetime | None):

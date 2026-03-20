@@ -76,6 +76,26 @@ def test_validate_entity_relationships_accepts_semantic_model() -> None:
     assert validator.validate_entity_relationships(model) == []
 
 
+def test_validate_entity_relationships_accepts_adr_targets_via_model_lookup() -> None:
+    validator = EntityValidator()
+    model = _model(
+        entities=[_entity("CAP-0001", "capability"), _entity("ADR-L-0001", "adr")],
+        relationships=[
+            RelationshipRecord(
+                relationship_id="declared_in:CAP-0001:ADR-L-0001",
+                relationship_type="declared_in",
+                from_entity_id="CAP-0001",
+                to_entity_id="ADR-L-0001",
+                provenance_classification="explicit",
+                evidence=[],
+                canonical_source_ref="ADR-L-0001#CAP-0001",
+            )
+        ],
+    )
+
+    assert validator.validate_entity_relationships(model) == []
+
+
 def test_validate_entity_relationships_reports_unknown_targets_and_unresolved_sources() -> None:
     validator = EntityValidator()
     model = _model(
@@ -124,3 +144,5 @@ def test_entity_validator_no_longer_declares_private_legacy_adapter() -> None:
     assert "def _legacy_registry_to_model(" not in source
     assert "def _relationship_records_for_targets(" not in source
     assert "for unresolved in model.unresolved:" not in source
+    assert "for relationship in model.relationships:" not in source
+    assert "entity_ids = {entity.id for entity in model.entities}" not in source

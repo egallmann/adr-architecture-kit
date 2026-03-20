@@ -4,8 +4,8 @@
 # generator_id: adr-compiler
 # generator_version: 1
 # hash_algorithm: sha256
-# source_hash: 386d8ec00dd59c623e35534a850cb6288ece7c04de48e6a3943f71d911900225
-# rendered_hash: 5cb7c2402f1b5a3fe09573901c131c2c01c7158528b061ad2d6856fbcda4830e
+# source_hash: 5a68a777adc8c6367879d3da081d41cc27cced8b1000811ad7252d593a0731aa
+# rendered_hash: 00ff66702d3539f9fb457a829bf427f3a307d4cf6df6b8229626ef957a8f4b3c
 
 schema_version: '1.1'
 type: entity_registry
@@ -595,12 +595,147 @@ entities:
     implements: []
     consumes: []
     realizes: []
+- entity_id: CAP-0040
+  entity_type: capability
+  name: Brownfield Onboarding Workflow
+  introduced_by: ADR-L-0014
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0014-brownfield-onboarding-and-canonicalization-workflow.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs: []
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: CAP-0041
+  entity_type: capability
+  name: Canonical Migration Evidence
+  introduced_by: ADR-L-0014
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0014-brownfield-onboarding-and-canonicalization-workflow.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs: []
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: CAP-0042
+  entity_type: capability
+  name: Deterministic ADR Governance Validation
+  introduced_by: ADR-L-0015
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0015-adr-governance-state-and-override-semantics.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs: []
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: CAP-0043
+  entity_type: capability
+  name: Governance Summary Projection
+  introduced_by: ADR-L-0015
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0015-adr-governance-state-and-override-semantics.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs: []
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
 - entity_id: COMP-0010
   entity_type: component
   name: Entity Registry Generator and Query Surface
   introduced_by: ADR-PC-0001
   lifecycle_stage: active
   source_path: adrs/physical-component/ADR-PC-0001-entity-registry-and-discovery-index.yaml
+  source_artifact_type: physical_component_adr
+  domains: []
+  related_adrs: []
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: COMP-0011
+  entity_type: component
+  name: Schema and Contract Validation Surface
+  introduced_by: ADR-PC-0002
+  lifecycle_stage: active
+  source_path: adrs/physical-component/ADR-PC-0002-schema-and-contract-validation.yaml
+  source_artifact_type: physical_component_adr
+  domains: []
+  related_adrs: []
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: COMP-0012
+  entity_type: component
+  name: Compiler Pipeline and Driver
+  introduced_by: ADR-PC-0003
+  lifecycle_stage: active
+  source_path: adrs/physical-component/ADR-PC-0003-compiler-pipeline-and-driver.yaml
+  source_artifact_type: physical_component_adr
+  domains: []
+  related_adrs: []
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: COMP-0013
+  entity_type: component
+  name: Repository Boundary Component
+  introduced_by: ADR-PC-0004
+  lifecycle_stage: active
+  source_path: adrs/physical-component/ADR-PC-0004-repository-boundary-and-normalized-model.yaml
+  source_artifact_type: physical_component_adr
+  domains: []
+  related_adrs: []
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: COMP-0014
+  entity_type: component
+  name: Generated Artifact Integrity Validation
+  introduced_by: ADR-PC-0005
+  lifecycle_stage: active
+  source_path: adrs/physical-component/ADR-PC-0005-generated-artifact-integrity-validation.yaml
+  source_artifact_type: physical_component_adr
+  domains: []
+  related_adrs: []
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: COMP-0015
+  entity_type: component
+  name: Brownfield Onboarding and Canonical Normalization
+  introduced_by: ADR-PC-0006
+  lifecycle_stage: active
+  source_path: adrs/physical-component/ADR-PC-0006-brownfield-onboarding-and-canonical-normalization.yaml
   source_artifact_type: physical_component_adr
   domains: []
   related_adrs: []
@@ -923,7 +1058,8 @@ entities:
     realizes: []
 - entity_id: DEC-0021
   entity_type: decision
-  name: Keep manifest as summary-oriented discovery surface
+  name: Treat manifest as a guaranteed discovery surface within the compiler contract
+    family
   introduced_by: ADR-L-0009
   lifecycle_stage: active
   source_path: adrs/logical/ADR-L-0009-derived-architecture-discovery-surfaces.yaml
@@ -1030,7 +1166,8 @@ entities:
     realizes: []
 - entity_id: DEC-0028
   entity_type: decision
-  name: Use entity-registry as graph-lite normalized lookup surface
+  name: Use `adrs/index/entity-registry.yaml` as the normalized lookup surface and
+    keep legacy registry as compatibility-only
   introduced_by: ADR-L-0009
   lifecycle_stage: active
   source_path: adrs/logical/ADR-L-0009-derived-architecture-discovery-surfaces.yaml
@@ -1150,7 +1287,8 @@ entities:
     realizes: []
 - entity_id: DEC-0036
   entity_type: decision
-  name: Use the four core registries as the kernel contract surface
+  name: Use the indexed compiler bundle as the contract surface, with four core artifacts
+    as the minimal kernel load subset
   introduced_by: ADR-L-0010
   lifecycle_stage: active
   source_path: adrs/logical/ADR-L-0010-kernel-interface-contract-and-validation-profiles.yaml
@@ -1410,6 +1548,224 @@ entities:
     implements: []
     consumes: []
     realizes: []
+- entity_id: DEC-0053
+  entity_type: decision
+  name: Treat brownfield onboarding as a first-class canonicalization workflow
+  introduced_by: ADR-L-0014
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0014-brownfield-onboarding-and-canonicalization-workflow.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs: []
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: DEC-0054
+  entity_type: decision
+  name: Separate onboarding into discovery, normalization, canonization, regeneration,
+    and validation phases
+  introduced_by: ADR-L-0014
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0014-brownfield-onboarding-and-canonicalization-workflow.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs: []
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: DEC-0055
+  entity_type: decision
+  name: Record deterministic brownfield remaps and cleanup transitions in canonical
+    migration artifacts
+  introduced_by: ADR-L-0014
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0014-brownfield-onboarding-and-canonicalization-workflow.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs: []
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: DEC-0056
+  entity_type: decision
+  name: Keep rendered artifacts as disposable human projections and forbid them as
+    semantic authority when canonical YAML exists
+  introduced_by: ADR-L-0014
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0014-brownfield-onboarding-and-canonicalization-workflow.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs: []
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: DEC-0057
+  entity_type: decision
+  name: Classify compiler discovery outputs by guaranteed, optional, and deprecated
+    stability tiers
+  introduced_by: ADR-L-0009
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0009-derived-architecture-discovery-surfaces.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs: []
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: DEC-0058
+  entity_type: decision
+  name: Deprecate `adrs/entities/registry.yaml` as a legacy compatibility projection
+  introduced_by: ADR-L-0009
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0009-derived-architecture-discovery-surfaces.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs: []
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: DEC-0059
+  entity_type: decision
+  name: Treat all `adrs/index/*` artifacts and `manifest.yaml` as the guaranteed contract
+    family
+  introduced_by: ADR-L-0010
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0010-kernel-interface-contract-and-validation-profiles.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs: []
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: DEC-0060
+  entity_type: decision
+  name: Treat `architecture-graph.yaml` as an additive indexed artifact rather than
+    a second architecture authority
+  introduced_by: ADR-L-0010
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0010-kernel-interface-contract-and-validation-profiles.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs: []
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: DEC-0061
+  entity_type: decision
+  name: Permit direct `adrs/index/*` consumption for cross-language or out-of-process
+    consumers
+  introduced_by: ADR-L-0013
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0013-architecture-repository-boundary-and-normalized-semantic-model.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs: []
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: DEC-0062
+  entity_type: decision
+  name: Treat repository-backed graph access as the intended Python graph seam
+  introduced_by: ADR-L-0013
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0013-architecture-repository-boundary-and-normalized-semantic-model.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs: []
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: DEC-0063
+  entity_type: decision
+  name: Define ADR governance as a canonical nested metadata block with explicit implementation-authority
+    levels
+  introduced_by: ADR-L-0015
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0015-adr-governance-state-and-override-semantics.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs: []
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: DEC-0064
+  entity_type: decision
+  name: Record implementation exceptions in separate objection override artifacts
+  introduced_by: ADR-L-0015
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0015-adr-governance-state-and-override-semantics.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs: []
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: DEC-0065
+  entity_type: decision
+  name: Bind override review validity to ADR modified_date and warn on stale coupling
+  introduced_by: ADR-L-0015
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0015-adr-governance-state-and-override-semantics.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs: []
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: DEC-0066
+  entity_type: decision
+  name: Allow projections to expose governance references and summary metadata only
+  introduced_by: ADR-L-0015
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0015-adr-governance-state-and-override-semantics.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs: []
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
 - entity_id: INV-0001
   entity_type: invariant
   name: INV-0001
@@ -1530,6 +1886,23 @@ entities:
     consumes: []
     realizes:
     - ADR-P-0001
+- entity_id: INV-0008
+  entity_type: invariant
+  name: INV-0008
+  introduced_by: ADR-L-0014
+  lifecycle_stage: active
+  source_path: adrs/invariants/INV-0008-rendered-artifacts-are-derived-only.yaml
+  source_artifact_type: standalone_invariant
+  domains: []
+  related_adrs: []
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes:
+    - ADR-PC-0001
+    - ADR-PC-0005
 - entity_id: INV-0014
   entity_type: invariant
   name: INV-0014
@@ -2211,6 +2584,81 @@ entities:
   introduced_by: ADR-L-0013
   lifecycle_stage: active
   source_path: adrs/logical/ADR-L-0013-architecture-repository-boundary-and-normalized-semantic-model.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs: []
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: INV-0060
+  entity_type: invariant
+  name: INV-0060
+  introduced_by: ADR-L-0014
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0014-brownfield-onboarding-and-canonicalization-workflow.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs: []
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: INV-0061
+  entity_type: invariant
+  name: INV-0061
+  introduced_by: ADR-L-0014
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0014-brownfield-onboarding-and-canonicalization-workflow.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs: []
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: INV-0064
+  entity_type: invariant
+  name: INV-0064
+  introduced_by: ADR-L-0015
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0015-adr-governance-state-and-override-semantics.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs: []
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: INV-0065
+  entity_type: invariant
+  name: INV-0065
+  introduced_by: ADR-L-0015
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0015-adr-governance-state-and-override-semantics.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs: []
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: INV-0066
+  entity_type: invariant
+  name: INV-0066
+  introduced_by: ADR-L-0015
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0015-adr-governance-state-and-override-semantics.yaml
   source_artifact_type: logical_adr
   domains: []
   related_adrs: []

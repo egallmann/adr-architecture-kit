@@ -5,6 +5,7 @@ from src.adr_kit.models import (
     Completeness,
     DiscoveryProvenance,
     Entity,
+    EntityOwnership,
     EntityRegistry,
     EntityRelationships,
     EntityType,
@@ -142,6 +143,123 @@ def test_coerce_to_normalized_model_adapts_legacy_entity_registry() -> None:
         "enables:COMP-0001:CAP-0001",
         "related_to:COMP-0001:CAP-0001",
     ]
+
+
+def test_coerce_to_normalized_model_preserves_legacy_ownership_and_source_refs() -> None:
+    registry = EntityRegistry(
+        entities=[
+            Entity(
+                entity_id="COMP-0001",
+                entity_type=EntityType.COMPONENT,
+                name="Component",
+                introduced_by="ADR-L-0001",
+                lifecycle_stage=LifecycleStage.ACTIVE,
+                source_path="adrs/logical/ADR-L-0001.yaml",
+                source_artifact_type=SourceArtifactType.LOGICAL_ADR,
+                domains=["runtime"],
+                related_adrs=["ADR-L-0002"],
+                realized_by=["ADR-PC-0001"],
+                ownership=EntityOwnership(
+                    architecture_authority="platform-arch",
+                    implementation_owners=["team-runtime"],
+                ),
+                relationships=EntityRelationships(),
+            )
+        ]
+    )
+
+    result = coerce_to_normalized_model(
+        registry,
+        fingerprint="legacy-ownership",
+        architecture_namespace="legacy-scope",
+        generator="test",
+        extraction_phase="test",
+    )
+
+    entity = result.find_entity("COMP-0001")
+    assert entity is not None
+    assert result.architecture_namespace == "legacy-scope"
+    assert entity.metadata["ownership"] == {
+        "architecture_authority": "platform-arch",
+        "implementation_owners": ["team-runtime"],
+    }
+    assert [item.source_ref for item in result.source_refs_for_entity("COMP-0001")] == [
+        "ADR-L-0002",
+        "ADR-PC-0001",
+    ]
+    assert result.canonical_source_ref_for_entity("COMP-0001") == "ADR-L-0001#COMP-0001"
+    provenance = result.provenance_for_entity("COMP-0001")
+    assert provenance is not None
+    assert provenance.source_ref == "adrs/entities/registry.yaml#COMP-0001"
+
+
+def test_coerce_to_normalized_model_maps_legacy_implementation_decision_to_decision() -> None:
+    registry = EntityRegistry(
+        entities=[
+            Entity(
+                entity_id="DEC-0001",
+                entity_type=EntityType.IMPLEMENTATION_DECISION,
+                name="Implementation decision",
+                introduced_by="ADR-PC-0001",
+                lifecycle_stage=LifecycleStage.ACTIVE,
+                source_path="adrs/physical-component/ADR-PC-0001.yaml",
+                source_artifact_type=SourceArtifactType.PHYSICAL_COMPONENT_ADR,
+                domains=["runtime"],
+                related_adrs=[],
+                realized_by=[],
+                relationships=EntityRelationships(),
+            )
+        ]
+    )
+
+    result = coerce_to_normalized_model(
+        registry,
+        fingerprint="legacy-impl-decision",
+        generator="test",
+        extraction_phase="test",
+    )
+
+    entity = result.find_entity("DEC-0001")
+    assert entity is not None
+    assert entity.entity_type == "decision"
+
+
+def test_normalized_model_treats_colon_bearing_ids_and_source_refs_as_opaque() -> None:
+    entity = _normalized_entity("workspace:CAP-0001", "capability")
+    entity = entity.model_copy(
+        update={
+            "canonical_source": CanonicalSource(
+                source_type="logical_adr",
+                source_ref="workspace:ADR-L-0001#workspace:CAP-0001",
+                artifact_path="adrs/logical/ADR-L-0001.yaml",
+            ),
+            "source_refs": [
+                SourceRef(
+                    source_type="logical_adr",
+                    source_ref="workspace:ADR-L-0002#reference",
+                    artifact_path="adrs/logical/ADR-L-0002.yaml",
+                    mention_role="reference",
+                )
+            ],
+        }
+    )
+    model = NormalizedArchitectureModel(
+        mode="normalized",
+        scope_root=".",
+        architecture_namespace="workspace",
+        fingerprint="opaque-ids",
+        entities=[entity],
+        relationships=[],
+        unresolved=[],
+        validation_summary=None,
+        source_coverage=None,
+    )
+
+    assert model.canonical_source_ref_for_entity("workspace:CAP-0001") == "workspace:ADR-L-0001#workspace:CAP-0001"
+    assert [item.source_ref for item in model.source_refs_for_entity("workspace:CAP-0001")] == [
+        "workspace:ADR-L-0002#reference"
+    ]
+    assert model.canonical_adr_refs_for_entity("workspace:CAP-0001") == []
 
 
 def test_normalized_model_exposes_deterministic_unresolved_traversal() -> None:

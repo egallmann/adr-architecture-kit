@@ -123,6 +123,58 @@
       "description": "Ownership metadata for governance and escalation"
     },
 
+    "governance": {
+      "type": "object",
+      "properties": {
+        "steelman_review_required": {
+          "type": ["boolean", "null"],
+          "description": "Whether steelman review is required before acceptance or implementation authority"
+        },
+        "steelman_review_completed": {
+          "type": ["boolean", "null"],
+          "description": "Whether the required steelman review has been completed"
+        },
+        "implementation_authority": {
+          "oneOf": [
+            {"type": "null"},
+            {"$ref": "types.schema.json#/definitions/implementation_authority"}
+          ],
+          "description": "Whether this ADR may currently be used as implementation authority"
+        },
+        "approved_by": {
+          "type": ["string", "null"],
+          "description": "Canonical approver identity for this ADR's current governance state"
+        },
+        "approved_date": {
+          "oneOf": [
+            {"type": "null"},
+            {"$ref": "types.schema.json#/definitions/iso_datetime"}
+          ],
+          "description": "Date of current governance approval"
+        },
+        "related_reviews": {
+          "type": "array",
+          "items": {
+            "$ref": "types.schema.json#/definitions/review_id"
+          },
+          "description": "Canonical steelman reviews associated with this ADR"
+        },
+        "related_overrides": {
+          "type": "array",
+          "items": {
+            "$ref": "types.schema.json#/definitions/override_id"
+          },
+          "description": "Objection override artifacts associated with this ADR"
+        },
+        "related_ledgers": {
+          "type": "array",
+          "items": {"type": "string", "pattern": "^LEDGER-\\d{4}$"},
+          "description": "Decision ledgers that constrained this ADR"
+        }
+      },
+      "description": "Governance metadata for approval, implementation authority, and override references"
+    },
+
     "projection_signals": {
       "type": "array",
       "items": {
@@ -169,7 +221,62 @@
     "related_ledgers": {
       "type": "array",
       "items": {"type": "string", "pattern": "^LEDGER-\\d{4}$"},
-      "description": "Decision ledgers that constrained this ADR"
+      "description": "Decision ledgers that constrained this ADR. Deprecated in favor of governance.related_ledgers."
     }
-  }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "governance": {
+            "required": ["approved_by"]
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "governance": {
+            "required": ["approved_date"]
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "governance": {
+            "required": ["approved_date"]
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "governance": {
+            "required": ["approved_by"]
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "governance": {
+            "properties": {
+              "implementation_authority": {
+                "const": "implementation_authoritative"
+              }
+            },
+            "required": ["implementation_authority"]
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "governance": {
+            "required": ["approved_by", "approved_date"]
+          }
+        }
+      }
+    }
+  ]
 }

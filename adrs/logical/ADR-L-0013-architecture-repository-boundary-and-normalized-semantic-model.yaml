@@ -2,7 +2,7 @@ schema_version: '1.0'
 adr_type: logical
 id: ADR-L-0013
 title: Architecture Repository Boundary and Normalized Semantic Model
-status: proposed
+status: accepted
 created_date: '2026-03-14'
 authors:
 - adr-architecture-kit
@@ -25,15 +25,18 @@ context: |
   Those pieces are sufficient to produce deterministic machine-facing artifacts,
   but they do not yet define one required in-process consumer boundary.
 
-  Without that boundary, tools can drift into reading raw registries directly,
-  interpreting relationships independently, and coupling future kernel or graph
-  consumers to current file layouts and registry schemas. That would undermine
-  determinism, make schema evolution expensive, and allow semantic drift
-  between canonical ADR authority and downstream machine consumers.
+  Without that boundary, in-process tools can drift into reading raw registries
+  directly, interpreting relationships independently, and coupling future
+  kernel or graph consumers to current file layouts and registry schemas. That
+  would undermine determinism, make schema evolution expensive, and allow
+  semantic drift between canonical ADR authority and downstream machine
+  consumers.
 
   A stabilizing move is needed now while the system is still small enough to
   evolve safely: one repository boundary that loads compiled artifacts and
-  exposes one stable semantic model to in-process consumers.
+  exposes one stable semantic model to in-process consumers, while still making
+  the cross-language file-format contract explicit for consumers that cannot
+  call Python repository APIs.
 decisions:
 - id: DEC-0050
   summary: Use ArchitectureRepository as the only supported in-process consumer entry point
@@ -70,12 +73,27 @@ decisions:
     - Compiler internals remain evolvable
     - Consumer semantics stay narrower and more stable
     - ADR-Kit avoids becoming an accidental proto-kernel
+- id: DEC-0061
+  summary: Permit direct `adrs/index/*` consumption for cross-language or out-of-process consumers
+  rationale: |
+    Cross-language consumers such as `ste-runtime` cannot call a Python
+    repository API directly. They still consume the same generated authority
+    surface, but through the file-format contract rather than the in-process
+    repository seam.
+- id: DEC-0062
+  summary: Treat repository-backed graph access as the intended Python graph seam
+  rationale: |
+    Python consumers should not hardcode the graph artifact path once the
+    repository boundary can expose it as part of the indexed contract family.
+    This preserves a coherent semantic seam for in-process consumers.
 invariants:
 - id: INV-0059
   statement: |
     In-process architecture consumers MUST use the ArchitectureRepository
     boundary instead of inventing ad hoc compiled-registry interpretation when
-    a repository boundary is available.
+    a repository boundary is available. Cross-language or out-of-process
+    consumers MAY consume generated `adrs/index/*` artifacts directly when the
+    repository boundary is not available to them.
   scope: global
   enforcement_level: must
   enforcement_mechanism: design
@@ -95,6 +113,7 @@ capabilities:
   - Consumers can retrieve a NormalizedArchitectureModel without reading raw YAML
   - Unresolved records and provenance remain first-class in the semantic model
   - Compiler-internal ArchModel is not required by normal consumer workflows
+  - Repository evolution remains the preferred in-process seam for graph access once implemented
 related_adrs:
 - ADR-L-0009
 - ADR-L-0010

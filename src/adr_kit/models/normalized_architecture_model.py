@@ -35,6 +35,18 @@ class NormalizedArchitectureModel(BaseModel):
     validation_summary: ValidationSummary | None = None
     source_coverage: SourceCoverageSummary | None = None
 
+    @implements_adr("ADR-L-0013")
+    def entity_ids(self) -> list[str]:
+        """Return deterministic semantic entity IDs for the loaded scope."""
+
+        return sorted(entity.id for entity in self.entities)
+
+    @implements_adr("ADR-L-0013")
+    def relationship_records(self) -> list[RelationshipRecord]:
+        """Return deterministic semantic relationships for the loaded scope."""
+
+        return sorted(self.relationships, key=lambda item: item.relationship_id)
+
     def find_entity(self, entity_id: str) -> NormalizedEntity | None:
         """Return the entity with the provided ID."""
 

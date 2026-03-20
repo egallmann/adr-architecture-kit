@@ -1,0 +1,92 @@
+schema_version: '1.0'
+adr_type: physical-component
+id: ADR-PC-0005
+title: Generated Artifact Integrity Validation
+status: proposed
+created_date: '2026-03-15'
+authors:
+- adr-architecture-kit
+domains:
+- integrity
+- validation
+- projections
+implements_system:
+- ADR-PS-0002
+implements_logical:
+- ADR-L-0007
+- ADR-L-0013
+introduces_entities:
+- COMP-0014
+- IFACE-0015
+- IMPL-0015
+technologies:
+- python
+- sha256
+- yaml
+context: |
+  Generated artifact integrity validation verifies freshness, tamper status,
+  integrity headers, and scope-local generated outputs. It is a distinct public
+  subsystem used by validator and governance flows.
+technology_stack:
+- category: language
+  name: Python
+  version: '3.11'
+  rationale: Existing implementation language.
+- category: library
+  name: PyYAML
+  version: 6.x
+  rationale: Generated artifact inspection and parsing.
+component_specifications:
+- id: COMP-0014
+  name: Generated Artifact Integrity Validation
+  type: service
+  responsibilities: |
+    - Enumerate scope-local generated artifacts
+    - Validate integrity headers and source hashes
+    - Detect stale, tampered, or malformed generated outputs
+    - Support governance checks over generated artifacts
+  generation_context:
+    purpose: Protect derived artifacts from silent drift and tampering.
+    key_responsibilities:
+    - Validate generated outputs deterministically
+    - Support governance and documentation checks
+    constraints:
+    - Derived artifacts remain non-authoritative
+    - Integrity validation must operate scope-locally
+    success_criteria:
+    - Invalid generated outputs are surfaced explicitly
+    - Scope-local integrity checks remain deterministic
+  interfaces:
+  - id: IFACE-0015
+    type: library_api
+    specification: |
+      Public surfaces:
+      - GeneratedArtifactValidator
+      - generated artifact integrity result models
+  implementation_identifiers:
+    module_path: src/adr_kit/integrity/validation.py
+    test_path: tests/test_generated_docs_integrity.py
+  implementation_requirements:
+    error_handling:
+      strategy: Return explicit invalid states for malformed, stale, or tampered artifacts.
+    observability:
+      logging:
+        level: info
+        structured: false
+      metrics:
+      - name: generated_artifact_validations_total
+        type: counter
+    testing_requirements:
+      unit_test_coverage: '>= 80%'
+      integration_tests: |
+        - Generated docs integrity checks
+        - Scope-local artifact enumeration
+        - Stale/tampered artifact detection
+implementation_decisions:
+- id: IMPL-0015
+  summary: Separate artifact integrity validation from discovery/indexing authority
+  rationale: |
+    Integrity validation is a runtime concern shared across generated artifact
+    kinds and deserves its own component authority.
+gaps: []
+

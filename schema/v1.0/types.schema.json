@@ -58,6 +58,18 @@
       "pattern": "^[A-Z]+-\\d{4}$",
       "description": "Generic entity identifier (e.g., CAP-0001, COMP-0001, DEC-0001)"
     },
+
+    "override_id": {
+      "type": "string",
+      "pattern": "^OVERRIDE-\\d{4}$",
+      "description": "Objection override identifier (e.g., OVERRIDE-0001)"
+    },
+
+    "review_id": {
+      "type": "string",
+      "pattern": "^REVIEW-\\d{4}$",
+      "description": "Review artifact identifier (e.g., REVIEW-0001)"
+    },
     
     "iso_date": {
       "type": "string",
@@ -69,6 +81,12 @@
       "type": "string",
       "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(Z|[+-]\\d{2}:\\d{2})$",
       "description": "ISO 8601 datetime with timezone"
+    },
+
+    "implementation_authority": {
+      "type": "string",
+      "enum": ["none", "advisory", "implementation_authoritative"],
+      "description": "Implementation authority level for one ADR"
     },
     
     "status": {

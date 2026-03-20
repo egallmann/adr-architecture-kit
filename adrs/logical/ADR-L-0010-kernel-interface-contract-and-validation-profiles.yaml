@@ -2,7 +2,7 @@ schema_version: '1.0'
 adr_type: logical
 id: ADR-L-0010
 title: Kernel Interface Contract and Validation Profiles
-status: proposed
+status: accepted
 created_date: '2026-03-14'
 authors:
 - adr-architecture-kit
@@ -26,9 +26,10 @@ introduces_entities:
 context: |
   adr-architecture-kit is transitioning from an implicit generator toolkit into
   an explicit architecture compiler with a defined contract boundary to the STE
-  kernel. The plan work established that the kernel consumes four compiled
-  registry files, not raw ADRs, and that the contract is still pre-stable while
-  the boundary is being finalized.
+  kernel. The plan work established that the compiler's guaranteed contract
+  surface is broader than the kernel's minimal load subset: the contract family
+  is all generated artifacts under `adrs/index/` plus `manifest.yaml`, while
+  individual consumers may rely on narrower subsets.
 
   The same plan work also established that legacy onboarding must be tolerated
   without collapsing schema structure. Brownfield architectures need a way to
@@ -45,17 +46,17 @@ decision:
   deprecated: This field is intentionally absent; decisions are listed below.
 decisions:
 - id: DEC-0036
-  summary: Use the four core registries as the kernel contract surface
+  summary: Use the indexed compiler bundle as the contract surface, with four core artifacts as the minimal kernel load subset
   rationale: |
-    The kernel needs a stable, minimal set of compiled artifacts that can be
-    loaded without parsing ADR source files. The architecture index plus the
-    entity, relationship, and unresolved registries are sufficient and already
-    match the current system shape.
+    The full guaranteed compiler contract includes all generated artifacts in
+    `adrs/index/` plus `manifest.yaml`. The kernel may rely on a narrower
+    minimal load subset for bootstrap loading, but that subset must not be
+    mistaken for the entire guaranteed contract family.
   consequences:
     positive:
-    - Kernel loading surface stays small and explicit
-    - Compiler internals may evolve without changing kernel expectations
-    - Subset registries and rendered docs remain optional conveniences
+    - Kernel loading surface can stay small and explicit
+    - The broader guaranteed contract family remains available to downstream consumers
+    - Minimal load subset and full contract family are separated cleanly
 - id: DEC-0037
   summary: Treat the compiler-kernel contract as pre-stable 0.x until intentionally frozen
   rationale: |
@@ -102,18 +103,33 @@ decisions:
     - Compile success and contract honesty are both preserved
     - CI behavior can follow the active profile explicitly
     - Production kernel loads can reject sentinel-backed bundles by default
+- id: DEC-0059
+  summary: Treat all `adrs/index/*` artifacts and `manifest.yaml` as the guaranteed contract family
+  rationale: |
+    Downstream bridge and kernel work already depend on the wider indexed
+    bundle, the manifest, and the additive graph artifact. Guaranteeing the
+    full family prevents downstream consumers from inventing different notions
+    of what the compiler publishes.
+- id: DEC-0060
+  summary: Treat `architecture-graph.yaml` as an additive indexed artifact rather than a second architecture authority
+  rationale: |
+    The graph is consumed downstream and belongs to the generated contract
+    family, but it remains a projection artifact over the same architecture
+    authority rather than a separate source of meaning.
 invariants:
 - id: INV-0052
   statement: |
-    The STE kernel MUST consume compiled registry artifacts through exactly four
-    contract files: architecture-index, entity-registry, relationship-registry,
-    and unresolved-registry.
+    The compiler's guaranteed machine-readable contract surface MUST be defined
+    as all generated artifacts under `adrs/index/` plus `adrs/manifest.yaml`.
+    Consumers MAY define narrower minimal load subsets, but those subsets MUST
+    NOT be treated as the full guaranteed contract surface.
   scope: global
   enforcement_level: must
   enforcement_mechanism: design
   verification_method: automated
   rationale: |
-    The contract boundary must remain explicit and minimal.
+    The contract boundary must remain explicit without collapsing the broader
+    generated bundle into one consumer's minimal load subset.
 - id: INV-0053
   statement: |
     Contract validation MUST support profile-based enforcement for greenfield,

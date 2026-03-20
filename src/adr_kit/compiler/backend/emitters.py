@@ -50,12 +50,19 @@ class ManifestBackendEmitter:
 
     parser: ADRParser
     scope: ProjectScope
+    build_result: FrontendBuildResult
 
     name: str = "manifest"
     artifact_group: str = "manifest"
 
     def emit(self) -> list[EmittedArtifact]:
-        return [emit_manifest_artifact(parser=self.parser, scope=self.scope)]
+        return [
+            emit_manifest_artifact(
+                parser=self.parser,
+                scope=self.scope,
+                generated_at=self.build_result.model.metadata.generated_at,
+            )
+        ]
 
     def diagnostics(self) -> list[Diagnostic]:
         return []
@@ -106,7 +113,7 @@ def build_backend_emitters(
 
     return {
         "registries": RegistryBackendEmitter(parser=parser, scope=scope, build_result=build_result),
-        "manifest": ManifestBackendEmitter(parser=parser, scope=scope),
+        "manifest": ManifestBackendEmitter(parser=parser, scope=scope, build_result=build_result),
         "markdown": MarkdownBackendEmitter(parser=parser, scope=scope),
         "graph": GraphBackendEmitter(parser=parser, scope=scope, build_result=build_result),
     }

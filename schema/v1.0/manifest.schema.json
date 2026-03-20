@@ -45,7 +45,7 @@
           },
           "type": {
             "type": "string",
-            "enum": ["logical", "physical", "decision"]
+            "enum": ["logical", "physical", "physical-system", "physical-component", "decision"]
           },
           "title": {
             "type": "string"
@@ -93,6 +93,28 @@
           "component_count": {
             "type": "integer",
             "minimum": 0
+          },
+          "implementation_authority": {
+            "$ref": "types.schema.json#/definitions/implementation_authority"
+          },
+          "related_reviews": {
+            "type": "array",
+            "items": {
+              "$ref": "types.schema.json#/definitions/review_id"
+            }
+          },
+          "related_overrides": {
+            "type": "array",
+            "items": {
+              "$ref": "types.schema.json#/definitions/override_id"
+            }
+          },
+          "related_ledgers": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^LEDGER-\\d{4}$"
+            }
           }
         }
       },
@@ -269,6 +291,64 @@
       "description": "Decision ledgers summary"
     },
 
+    "objection_overrides": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "related_adr", "implementation_effect"],
+        "properties": {
+          "id": {
+            "$ref": "types.schema.json#/definitions/override_id"
+          },
+          "related_adr": {
+            "$ref": "types.schema.json#/definitions/adr_id_any"
+          },
+          "related_review": {
+            "oneOf": [
+              {"type": "null"},
+              {"$ref": "types.schema.json#/definitions/review_id"}
+            ]
+          },
+          "implementation_effect": {
+            "type": "string",
+            "enum": ["exception", "deferred_compliance", "risk_accepted_variance"]
+          }
+        }
+      },
+      "description": "Objection overrides summary"
+    },
+    "steelman_reviews": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "target_adr", "review_kind", "overall_recommendation"],
+        "properties": {
+          "id": {
+            "$ref": "types.schema.json#/definitions/review_id"
+          },
+          "target_adr": {
+            "$ref": "types.schema.json#/definitions/adr_id_any"
+          },
+          "review_kind": {
+            "type": "string",
+            "enum": ["steelman"]
+          },
+          "overall_recommendation": {
+            "type": "string"
+          },
+          "objection_count": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "blocking_objections": {
+            "type": "integer",
+            "minimum": 0
+          }
+        }
+      },
+      "description": "Steelman review summary"
+    },
+
     "statistics": {
       "type": "object",
       "required": ["total_adrs", "logical_adrs", "physical_adrs"],
@@ -318,6 +398,14 @@
           "minimum": 0
         },
         "total_decision_ledgers": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "total_objection_overrides": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "total_steelman_reviews": {
           "type": "integer",
           "minimum": 0
         }

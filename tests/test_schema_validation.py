@@ -152,7 +152,7 @@ class TestValidPhysicalADRs:
         adr = parser.parse_physical_adr(adr_path)
         
         assert adr.id == "ADR-P-0001"
-        assert adr.status.value == "accepted"
+        assert adr.status.value == "superseded"
         assert "ADR-L-0001" in adr.implements_logical
         assert len(adr.component_specifications) == 4
 

@@ -5,8 +5,8 @@ artifact_kind: rendered_adr_markdown
 generator_id: adr-rendered-markdown
 generator_version: 1
 hash_algorithm: sha256
-source_hash: 30a8d9affb55079c4edbd4a93c312337749b26254a000775cb4b97dbfb0925e7
-rendered_hash: a2bedadadff2b8ba74b79f5c5c533d28d6fcf107f87304f9f71c7d6339062487
+source_hash: 29515de32e51fe33712ff98cc16caa1f2b5009f94f745c32d5fe7304a0fe6c10
+rendered_hash: fd190eb2fd4a16c47b0fb19a1ab995668f6e0252fcc57d12f6831866e5626d7d
 -->
 
 # ADR-PC-0001: Entity Registry and Discovery Index
@@ -30,6 +30,10 @@ legacy compatibility registry at `adrs/entities/registry.yaml`, generates
 manifest and rendered ADR markdown outputs through the same compiler-owned
 path for single-scope use, and exposes exact-ID and filtered CLI query
 operations over generated registry state.
+
+It also serves as the file-format discovery surface for cross-language or
+out-of-process consumers such as `ste-runtime`, which must bootstrap from the
+indexed bundle rather than reparsing source ADRs.
 
 
 ## Technology Stack
@@ -67,6 +71,7 @@ Existing CLI framework for scope-aware commands.
 - Emit deterministic legacy compatibility registry output at `adrs/entities/registry.yaml`
 - Support manifest and rendered markdown emission through the unified compile path
 - Provide CLI query access over generated registry state
+- Preserve an index-first discovery posture for cross-language consumers
 
 
 **Interfaces:**

@@ -4,8 +4,8 @@
 # generator_id: adr-compiler
 # generator_version: 1
 # hash_algorithm: sha256
-# source_hash: 5a68a777adc8c6367879d3da081d41cc27cced8b1000811ad7252d593a0731aa
-# rendered_hash: 00ff66702d3539f9fb457a829bf427f3a307d4cf6df6b8229626ef957a8f4b3c
+# source_hash: b4fc1ae8627312452a1b0c90e679fe51a8063978a16d1014af03fd2447cd68b7
+# rendered_hash: b814a8ee692172b1b7c1bacf0209bedfb008f6f010288c45d30aa23444cd4fd3
 
 schema_version: '1.1'
 type: entity_registry
@@ -646,6 +646,21 @@ entities:
   introduced_by: ADR-L-0015
   lifecycle_stage: active
   source_path: adrs/logical/ADR-L-0015-adr-governance-state-and-override-semantics.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs: []
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: CAP-0044
+  entity_type: capability
+  name: Cross-Language Runtime Ingestion Contract
+  introduced_by: ADR-L-0013
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0013-architecture-repository-boundary-and-normalized-semantic-model.yaml
   source_artifact_type: logical_adr
   domains: []
   related_adrs: []
@@ -1766,6 +1781,38 @@ entities:
     implements: []
     consumes: []
     realizes: []
+- entity_id: DEC-0067
+  entity_type: decision
+  name: Define an index-first minimal runtime ingestion subset for cross-language
+    architecture consumers
+  introduced_by: ADR-L-0013
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0013-architecture-repository-boundary-and-normalized-semantic-model.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs: []
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: DEC-0068
+  entity_type: decision
+  name: Require cross-language runtime ingestion to remain index-first, manifest-aware,
+    and additive-safe
+  introduced_by: ADR-L-0013
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0013-architecture-repository-boundary-and-normalized-semantic-model.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs: []
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
 - entity_id: INV-0001
   entity_type: invariant
   name: INV-0001
@@ -2659,6 +2706,21 @@ entities:
   introduced_by: ADR-L-0015
   lifecycle_stage: active
   source_path: adrs/logical/ADR-L-0015-adr-governance-state-and-override-semantics.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs: []
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: INV-0067
+  entity_type: invariant
+  name: INV-0067
+  introduced_by: ADR-L-0013
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0013-architecture-repository-boundary-and-normalized-semantic-model.yaml
   source_artifact_type: logical_adr
   domains: []
   related_adrs: []

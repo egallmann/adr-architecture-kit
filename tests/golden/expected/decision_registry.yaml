@@ -2815,3 +2815,89 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
+- id: DEC-0067
+  entity_type: decision
+  name: Define an index-first minimal runtime ingestion subset for cross-language
+    architecture consumers
+  summary: Cross-language consumers such as `ste-runtime` need an explicit baseline
+    ingestion contract so they do not guess which generated artifacts are required
+    for architecture-aware operation. The baseline subset is `architectu
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0013#DEC-0067
+    artifact_path: adrs/logical/ADR-L-0013-architecture-repository-boundary-and-normalized-semantic-model.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0013
+    related_invariants: []
+    enforces_invariants: []
+    enables_capabilities: []
+    governs_components: []
+    supersedes: []
+    refines: []
+  relationships:
+    declared_in:
+    - ADR-L-0013
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0013#DEC-0067
+    extraction_phase: extract_decision
+    classification: explicit
+    generator: adr-architecture-index
+- id: DEC-0068
+  entity_type: decision
+  name: Require cross-language runtime ingestion to remain index-first, manifest-aware,
+    and additive-safe
+  summary: The runtime bridge must preserve compiler authority even when a consumer
+    uses file-format contracts directly. Cross-language consumers should bootstrap
+    from the architecture index, treat manifest as a discovery and fresh
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0013#DEC-0068
+    artifact_path: adrs/logical/ADR-L-0013-architecture-repository-boundary-and-normalized-semantic-model.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0013
+    related_invariants: []
+    enforces_invariants: []
+    enables_capabilities: []
+    governs_components: []
+    supersedes: []
+    refines: []
+  relationships:
+    declared_in:
+    - ADR-L-0013
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0013#DEC-0068
+    extraction_phase: extract_decision
+    classification: explicit
+    generator: adr-architecture-index

@@ -661,6 +661,7 @@ entities:
     - ADR-L-0010
     - ADR-L-0012
     - ADR-PC-0001
+    - ADR-PC-0005
     related_to: []
     enforces: []
     enabled_by: []
@@ -3756,6 +3757,50 @@ entities:
     extraction_phase: extract_capability
     classification: explicit
     generator: adr-architecture-index
+- id: CAP-0044
+  entity_type: capability
+  name: Cross-Language Runtime Ingestion Contract
+  summary: Provide one explicit file-format ingestion posture for cross-language or
+    out-of-process runtime consumers so they can consume compiler-owned Architecture
+    IR without redefining architecture semantics locally.
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0013#CAP-0044
+    artifact_path: adrs/logical/ADR-L-0013-architecture-repository-boundary-and-normalized-semantic-model.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0013
+    domains:
+    - repository
+    - discovery
+    - compiler
+    - kernel
+    implemented_by_components: []
+    enabled_by_decisions: []
+  relationships:
+    declared_in:
+    - ADR-L-0013
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by:
+    - COMP-0010
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0013#CAP-0044
+    extraction_phase: extract_capability
+    classification: explicit
+    generator: adr-architecture-index
 - id: COMP-0010
   entity_type: component
   name: Entity Registry Generator and Query Surface
@@ -3777,6 +3822,7 @@ entities:
     module_path: src/adr_kit/compiler/driver.py
     implements_capabilities:
     - CAP-0018
+    - CAP-0044
     implements_system:
     - ADR-PS-0001
   relationships:
@@ -6847,6 +6893,92 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
+- id: DEC-0067
+  entity_type: decision
+  name: Define an index-first minimal runtime ingestion subset for cross-language
+    architecture consumers
+  summary: Cross-language consumers such as `ste-runtime` need an explicit baseline
+    ingestion contract so they do not guess which generated artifacts are required
+    for architecture-aware operation. The baseline subset is `architectu
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0013#DEC-0067
+    artifact_path: adrs/logical/ADR-L-0013-architecture-repository-boundary-and-normalized-semantic-model.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0013
+    related_invariants: []
+    enforces_invariants: []
+    enables_capabilities: []
+    governs_components: []
+    supersedes: []
+    refines: []
+  relationships:
+    declared_in:
+    - ADR-L-0013
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0013#DEC-0067
+    extraction_phase: extract_decision
+    classification: explicit
+    generator: adr-architecture-index
+- id: DEC-0068
+  entity_type: decision
+  name: Require cross-language runtime ingestion to remain index-first, manifest-aware,
+    and additive-safe
+  summary: The runtime bridge must preserve compiler authority even when a consumer
+    uses file-format contracts directly. Cross-language consumers should bootstrap
+    from the architecture index, treat manifest as a discovery and fresh
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0013#DEC-0068
+    artifact_path: adrs/logical/ADR-L-0013-architecture-repository-boundary-and-normalized-semantic-model.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0013
+    related_invariants: []
+    enforces_invariants: []
+    enables_capabilities: []
+    governs_components: []
+    supersedes: []
+    refines: []
+  relationships:
+    declared_in:
+    - ADR-L-0013
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0013#DEC-0068
+    extraction_phase: extract_decision
+    classification: explicit
+    generator: adr-architecture-index
 - id: INV-0001
   entity_type: invariant
   name: INV-0001
@@ -9528,6 +9660,66 @@ entities:
   provenance:
     source_type: logical_adr
     source_ref: ADR-L-0015#INV-0066
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
+- id: INV-0067
+  entity_type: invariant
+  name: INV-0067
+  summary: Cross-language or out-of-process architecture consumers that rely on the
+    file-format contract MUST bootstrap from `adrs/index/architecture-index.yaml`,
+    MUST require the minimal ingestion subset of `entity-registry.yaml`,
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0013#INV-0067
+    artifact_path: adrs/logical/ADR-L-0013-architecture-repository-boundary-and-normalized-semantic-model.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0013
+    scope: global
+    statement: 'Cross-language or out-of-process architecture consumers that rely
+      on the
+
+      file-format contract MUST bootstrap from `adrs/index/architecture-index.yaml`,
+
+      MUST require the minimal ingestion subset of `entity-registry.yaml`,
+
+      `relationship-registry.yaml`, `unresolved-registry.yaml`, and
+
+      `adrs/manifest.yaml`, and MUST NOT recreate architecture authority by
+
+      reparsing ADR source YAML when the generated contract bundle is expected.
+
+      Subset registries and `architecture-graph.yaml` MAY be consumed only as
+
+      additive artifacts, and `adrs/entities/registry.yaml` MUST remain
+
+      compatibility-only.
+
+      '
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions: []
+  relationships:
+    declared_in:
+    - ADR-L-0013
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0013#INV-0067
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index

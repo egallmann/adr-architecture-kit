@@ -19,6 +19,8 @@ tags:
 introduces_entities:
 - INV-0059
 - CAP-0039
+- INV-0067
+- CAP-0044
 context: |
   adr-architecture-kit now has an explicit compiler pipeline, a compiler IR
   (`ArchModel`), compiled registry bundles, and an additive architecture graph.
@@ -86,6 +88,34 @@ decisions:
     Python consumers should not hardcode the graph artifact path once the
     repository boundary can expose it as part of the indexed contract family.
     This preserves a coherent semantic seam for in-process consumers.
+- id: DEC-0067
+  summary: Define an index-first minimal runtime ingestion subset for cross-language architecture consumers
+  rationale: |
+    Cross-language consumers such as `ste-runtime` need an explicit baseline
+    ingestion contract so they do not guess which generated artifacts are
+    required for architecture-aware operation. The baseline subset is
+    `architecture-index.yaml`, `entity-registry.yaml`,
+    `relationship-registry.yaml`, `unresolved-registry.yaml`, and
+    `manifest.yaml`.
+  consequences:
+    positive:
+    - Cross-language runtime ingestion starts from one named bundle contract
+    - Required bundle failure becomes explicit instead of implicit drift
+    - Downstream runtime implementation can remain smaller and more deterministic
+- id: DEC-0068
+  summary: Require cross-language runtime ingestion to remain index-first, manifest-aware, and additive-safe
+  rationale: |
+    The runtime bridge must preserve compiler authority even when a consumer
+    uses file-format contracts directly. Cross-language consumers should
+    bootstrap from the architecture index, treat manifest as a discovery and
+    freshness aid, treat subset registries and `architecture-graph.yaml` as
+    additive, and refuse to reconstruct authority by reparsing source ADR YAML.
+  consequences:
+    positive:
+    - Compiler authority remains upstream of runtime projection behavior
+    - Additive graph or subset-registry failures can degrade safely without
+      redefining the baseline contract
+    - The legacy compatibility registry does not silently regain authority
 invariants:
 - id: INV-0059
   statement: |
@@ -101,6 +131,25 @@ invariants:
   rationale: |
     Centralized loading and semantic adaptation are required to prevent
     consumer fragmentation and long-term registry drift.
+- id: INV-0067
+  statement: |
+    Cross-language or out-of-process architecture consumers that rely on the
+    file-format contract MUST bootstrap from `adrs/index/architecture-index.yaml`,
+    MUST require the minimal ingestion subset of `entity-registry.yaml`,
+    `relationship-registry.yaml`, `unresolved-registry.yaml`, and
+    `adrs/manifest.yaml`, and MUST NOT recreate architecture authority by
+    reparsing ADR source YAML when the generated contract bundle is expected.
+    Subset registries and `architecture-graph.yaml` MAY be consumed only as
+    additive artifacts, and `adrs/entities/registry.yaml` MUST remain
+    compatibility-only.
+  scope: global
+  enforcement_level: must
+  enforcement_mechanism: design
+  verification_method: automated
+  rationale: |
+    Cross-language consumers need an explicit ingestion posture that preserves
+    compiler authority, keeps required versus additive surfaces distinct, and
+    prevents fallback drift into source-level reinterpretation.
 capabilities:
 - id: CAP-0039
   name: Stable Repository Semantic Boundary
@@ -114,9 +163,22 @@ capabilities:
   - Unresolved records and provenance remain first-class in the semantic model
   - Compiler-internal ArchModel is not required by normal consumer workflows
   - Repository evolution remains the preferred in-process seam for graph access once implemented
+- id: CAP-0044
+  name: Cross-Language Runtime Ingestion Contract
+  description: |
+    Provide one explicit file-format ingestion posture for cross-language or
+    out-of-process runtime consumers so they can consume compiler-owned
+    Architecture IR without redefining architecture semantics locally.
+  acceptance_criteria:
+  - "cross-language consumers bootstrap from `architecture-index.yaml`"
+  - the required runtime ingestion subset is explicit and smaller than the full guaranteed contract family
+  - "subset registries and `architecture-graph.yaml` remain additive"
+  - "`manifest.yaml` is used for discovery and freshness orientation, not semantic authority"
+  - the legacy compatibility registry remains unavailable for new consumer dependencies
 related_adrs:
 - ADR-L-0009
 - ADR-L-0010
 - ADR-L-0012
+- ADR-PC-0005
 - ADR-PC-0001
 gaps: []

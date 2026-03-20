@@ -22,6 +22,7 @@ entities:
     module_path: src/adr_kit/compiler/driver.py
     implements_capabilities:
     - CAP-0018
+    - CAP-0044
     implements_system:
     - ADR-PS-0001
   relationships:

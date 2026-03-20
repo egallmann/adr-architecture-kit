@@ -30,6 +30,10 @@ context: |
   manifest and rendered ADR markdown outputs through the same compiler-owned
   path for single-scope use, and exposes exact-ID and filtered CLI query
   operations over generated registry state.
+
+  It also serves as the file-format discovery surface for cross-language or
+  out-of-process consumers such as `ste-runtime`, which must bootstrap from the
+  indexed bundle rather than reparsing source ADRs.
 technology_stack:
 - category: language
   name: Python
@@ -53,8 +57,10 @@ component_specifications:
     - Emit deterministic legacy compatibility registry output at `adrs/entities/registry.yaml`
     - Support manifest and rendered markdown emission through the unified compile path
     - Provide CLI query access over generated registry state
+    - Preserve an index-first discovery posture for cross-language consumers
   implements_capabilities:
   - CAP-0018
+  - CAP-0044
   generation_context:
     purpose: Generate and query the normalized entity registry for agent discovery.
     key_responsibilities:
@@ -63,15 +69,20 @@ component_specifications:
     - Delegate single-scope generation commands through the unified compiler driver
     - Reject duplicate explicitly introduced entity IDs
     - Support exact entity lookup and filtered list operations from CLI
+    - Keep the required discovery bundle and additive indexed artifacts distinct for downstream consumers
     constraints:
     - Discovery outputs are derived and non-authoritative
     - Single-scope generation commands act as compatibility wrappers over `adr compile`
     - CLI must read generated registry artifacts instead of rescanning ADRs
     - Output must be deterministic when inputs are unchanged
+    - "Cross-language consumers bootstrap from `architecture-index.yaml` and the required registry bundle"
+    - "`manifest.yaml` is a guaranteed discovery and freshness surface, not a semantic authority"
+    - "`adrs/entities/registry.yaml` must remain compatibility-only for new consumers"
     success_criteria:
     - Discovery bundle and legacy registry generation are deterministic
     - ADR-L-0008 entities are present in generated discovery output
     - CLI list/get/invariants/capabilities commands query the registry successfully
+    - Cross-language consumers can rely on the indexed bundle without needing raw ADR traversal
   interfaces:
   - id: IFACE-0011
     type: CLI

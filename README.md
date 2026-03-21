@@ -266,7 +266,7 @@ Use `adr compile --mode normal|strict|lenient` when you need the unified compile
 - add `--emit graph` to generate the additive `adrs/index/architecture-graph.yaml` navigation artifact without changing current registry contracts
 
 The discovery compiler is the authoritative path for registry, manifest, and rendered ADR generation. Compatibility generators remain available, but compiler-backed emitters consume pipeline state rather than reading ADR files independently.
-The architecture graph is an additive machine-navigation surface projected from the same compiler IR; current normalized registries remain the authoritative contract surfaces in this phase.
+The architecture graph is an additive machine-navigation surface projected from the same compiler IR; current normalized registries remain the authoritative contract surfaces in the current implementation state.
 
 The compatibility wrapper still exists if you need it:
 

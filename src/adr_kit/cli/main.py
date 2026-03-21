@@ -25,7 +25,13 @@ from ..generators import (
     SystemOverviewGenerator,
 )
 from ..generators.views import MarkdownGenerator
-from ..compiler import ArchitectureCompiler, CompilationMode, CompilerConfig
+from ..compiler import (
+    AdrIrFragmentCompileError,
+    ArchitectureCompiler,
+    CompilationMode,
+    CompilerConfig,
+    compile_logical_adr_ir_fragments,
+)
 from ..decorators import implements_adr
 from ..integrity import GeneratedArtifactStatus
 from ..migrators.canonical_id_normalizer import CanonicalIdNormalizer
@@ -323,6 +329,84 @@ def _echo_recursive_compilation_result(result, *, mode: str, check: bool, dry_ru
 def cli():
     """ADR Architecture Kit - Multi-scope ADR management."""
     pass
+
+
+@implements_adr("ADR-L-0002", "ADR-L-0013")
+@cli.command("compile-ir-fragments")
+@click.option(
+    "--scope-root",
+    type=click.Path(exists=True, file_okay=False, path_type=Path),
+    help="Scope root used to derive deterministic artifact_uri and input_ref values.",
+)
+@click.option(
+    "--adr-file",
+    "adr_files",
+    type=click.Path(exists=True, dir_okay=False, path_type=Path),
+    multiple=True,
+    required=True,
+    help="Explicit Logical ADR file to compile. Repeat for multiple ADR-L inputs.",
+)
+@click.option(
+    "--namespace",
+    required=True,
+    type=str,
+    help="Opaque Architecture IR namespace string supplied by the ingestion pipeline.",
+)
+@click.option(
+    "--artifact-kind",
+    required=True,
+    type=str,
+    help="Artifact kind recorded in provenance.source.artifact_kind.",
+)
+@click.option(
+    "--last-updated",
+    required=True,
+    type=str,
+    help="Fixed pipeline-supplied timestamp for provenance.last_updated.",
+)
+@click.option(
+    "--adapter-schema-version",
+    default="logical_adr_ir_fragment.v1",
+    show_default=True,
+    type=str,
+    help="Logical ADR to Architecture IR adapter profile version.",
+)
+@click.option(
+    "--output",
+    required=True,
+    type=click.Path(dir_okay=False, path_type=Path),
+    help="Output path for the canonical JSON fragment array.",
+)
+def compile_ir_fragments(
+    scope_root: Optional[Path],
+    adr_files: tuple[Path, ...],
+    namespace: str,
+    artifact_kind: str,
+    last_updated: str,
+    adapter_schema_version: str,
+    output: Path,
+):
+    """Compile explicit Logical ADR files into deterministic Architecture IR fragments."""
+    try:
+        result = compile_logical_adr_ir_fragments(
+            adr_file_paths=list(adr_files),
+            namespace=namespace,
+            artifact_kind=artifact_kind,
+            last_updated=last_updated,
+            adapter_schema_version=adapter_schema_version,
+            scope_root=scope_root,
+        )
+        output.parent.mkdir(parents=True, exist_ok=True)
+        output.write_bytes(result.canonical_fragment_bytes)
+        click.echo(f"Compiled {len(result.records)} IR fragment records: {output}")
+        click.echo(f"  Entities: {len(result.entities)}")
+        click.echo(f"  Relationships: {len(result.relationships)}")
+    except AdrIrFragmentCompileError as exc:
+        click.echo(f"Error: {exc}", err=True)
+        sys.exit(1)
+    except Exception as e:
+        click.echo(f"Error: {e}", err=True)
+        sys.exit(1)
 
 
 def _generate_source_adr(

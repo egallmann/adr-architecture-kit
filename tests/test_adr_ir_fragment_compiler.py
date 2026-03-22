@@ -472,3 +472,19 @@ def test_cli_compile_ir_fragments_writes_canonical_array(tmp_path: Path) -> None
     assert output_path.exists()
     records = json.loads(output_path.read_text(encoding="utf-8"))
     assert len(records) == 3
+
+
+def test_cli_build_ir_fragments_writes_repo_publication_artifact() -> None:
+    runner = CliRunner()
+    result = runner.invoke(cli, ["build-ir-fragments"])
+
+    assert result.exit_code == 0, result.output
+    output_path = REPO_ROOT / "dist" / "architecture-ir" / "adr-ir-fragments.json"
+    assert output_path.exists()
+    records = json.loads(output_path.read_text(encoding="utf-8"))
+    assert isinstance(records, list)
+    assert {record.get("kind", record.get("type")) for record in records} == {
+        "capability",
+        "decision",
+        "decision_supports_capability",
+    }

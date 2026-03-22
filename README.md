@@ -281,6 +281,12 @@ kernel IR publication drift:
 python scripts/run_local_pre_push_checks.py
 ```
 
+Build the canonical ADR IR fragment publication artifact consumed by `ste-kernel`:
+
+```bash
+adr build-ir-fragments
+```
+
 Install the matching Git pre-push hook so the same bundle runs automatically before push:
 
 ```bash

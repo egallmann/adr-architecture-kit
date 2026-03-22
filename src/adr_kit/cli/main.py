@@ -409,6 +409,33 @@ def compile_ir_fragments(
         sys.exit(1)
 
 
+@implements_adr("ADR-L-0002", "ADR-L-0013")
+@cli.command("build-ir-fragments")
+def build_ir_fragments():
+    """Build the canonical ADR IR fragment publication artifact for this repository."""
+    try:
+        repo_root = Path(__file__).resolve().parents[3]
+        adr_source_path = repo_root / "adrs" / "logical" / "ADR-L-9000-kernel-boot-publication-surface.yaml"
+        output_path = repo_root / "dist" / "architecture-ir" / "adr-ir-fragments.json"
+
+        result = compile_logical_adr_ir_fragments(
+            adr_file_paths=[adr_source_path],
+            namespace="repo:ste-workspace:boot",
+            artifact_kind="logical-adr",
+            last_updated="2026-03-21T00:00:00.000Z",
+            scope_root=repo_root,
+        )
+        output_path.parent.mkdir(parents=True, exist_ok=True)
+        output_path.write_bytes(result.canonical_fragment_bytes)
+        click.echo(f"Built {len(result.records)} IR fragment records: {output_path}")
+    except AdrIrFragmentCompileError as exc:
+        click.echo(f"Error: {exc}", err=True)
+        sys.exit(1)
+    except Exception as e:
+        click.echo(f"Error: {e}", err=True)
+        sys.exit(1)
+
+
 def _generate_source_adr(
     input_path: Path,
     output: Path,

@@ -4,13 +4,13 @@
 # generator_id: adr-architecture-graph
 # generator_version: 1
 # hash_algorithm: sha256
-# source_hash: c86ab29bcc6b966121a5b1dc29e9ff5d10fc24e052063c2a0ac98d64f70f704a
-# rendered_hash: 818cb1c3752cf8ee82a4883349a8d101e1c055ebd438d4607a2fef6944f63dc4
+# source_hash: bc26e6c2ed3ac9c39c52feae91962869464977cd28afbfea6ced0bc8c3687dff
+# rendered_hash: add8b909c3ec537eba2e46922c769160495b82ec0857544ffca249085486683e
 
 schema_version: '1.0'
 type: architecture_graph
 architecture_namespace: adr-architecture-kit
-generated_at: '2026-03-20T02:00:05Z'
+generated_at: '2026-03-22T00:14:17Z'
 nodes:
 - id: ADR-L-0001
   entity_type: adr
@@ -117,6 +117,13 @@ nodes:
     source_type: logical_adr
     source_ref: ADR-L-0015
     artifact_path: adrs/logical/ADR-L-0015-adr-governance-state-and-override-semantics.yaml
+- id: ADR-L-9000
+  entity_type: adr
+  name: Kernel Boot Publication Surface
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-9000
+    artifact_path: adrs/logical/ADR-L-9000-kernel-boot-publication-surface.yaml
 - id: ADR-P-0001
   entity_type: adr
   name: Python Toolkit Implementation for ADR Kit
@@ -607,6 +614,13 @@ nodes:
     source_type: logical_adr
     source_ref: ADR-L-0013#CAP-0044
     artifact_path: adrs/logical/ADR-L-0013-architecture-repository-boundary-and-normalized-semantic-model.yaml
+- id: CAP-9000
+  entity_type: capability
+  name: Kernel Boot Readiness
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-9000#CAP-9000
+    artifact_path: adrs/logical/ADR-L-9000-kernel-boot-publication-surface.yaml
 - id: COMP-0010
   entity_type: component
   name: Entity Registry Generator and Query Surface
@@ -1146,6 +1160,13 @@ nodes:
     source_type: logical_adr
     source_ref: ADR-L-0013#DEC-0068
     artifact_path: adrs/logical/ADR-L-0013-architecture-repository-boundary-and-normalized-semantic-model.yaml
+- id: DEC-9000
+  entity_type: decision
+  name: Publish a deterministic logical ADR fragment for boot readiness.
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-9000#DEC-9000
+    artifact_path: adrs/logical/ADR-L-9000-kernel-boot-publication-surface.yaml
 - id: INV-0001
   entity_type: invariant
   name: INV-0001
@@ -2021,6 +2042,16 @@ edges:
   canonical_source_ref: ADR-L-0013#CAP-0044
   confidence: 1.0
   metadata: {}
+- relationship_id: declared_in:CAP-9000:ADR-L-9000
+  relationship_type: declared_in
+  source_entity_id: CAP-9000
+  target_entity_id: ADR-L-9000
+  provenance_classification: explicit
+  evidence:
+  - ADR-L-9000#CAP-9000
+  canonical_source_ref: ADR-L-9000#CAP-9000
+  confidence: 1.0
+  metadata: {}
 - relationship_id: declared_in:COMP-0010:ADR-PC-0001
   relationship_type: declared_in
   source_entity_id: COMP-0010
@@ -2761,6 +2792,16 @@ edges:
   canonical_source_ref: ADR-L-0013#DEC-0068
   confidence: 1.0
   metadata: {}
+- relationship_id: declared_in:DEC-9000:ADR-L-9000
+  relationship_type: declared_in
+  source_entity_id: DEC-9000
+  target_entity_id: ADR-L-9000
+  provenance_classification: explicit
+  evidence:
+  - ADR-L-9000#DEC-9000
+  canonical_source_ref: ADR-L-9000#DEC-9000
+  confidence: 1.0
+  metadata: {}
 - relationship_id: declared_in:INV-0001:INV-0001
   relationship_type: declared_in
   source_entity_id: INV-0001
@@ -3439,6 +3480,26 @@ edges:
   evidence:
   - ADR-PC-0006
   canonical_source_ref: ADR-PC-0006#COMP-0015
+  confidence: 1.0
+  metadata: {}
+- relationship_id: enabled_by:CAP-9000:DEC-9000
+  relationship_type: enabled_by
+  source_entity_id: CAP-9000
+  target_entity_id: DEC-9000
+  provenance_classification: derived
+  evidence:
+  - ADR-L-9000
+  canonical_source_ref: ADR-L-9000#DEC-9000
+  confidence: 1.0
+  metadata: {}
+- relationship_id: enables:DEC-9000:CAP-9000
+  relationship_type: enables
+  source_entity_id: DEC-9000
+  target_entity_id: CAP-9000
+  provenance_classification: explicit
+  evidence:
+  - ADR-L-9000
+  canonical_source_ref: ADR-L-9000#DEC-9000
   confidence: 1.0
   metadata: {}
 - relationship_id: enforces:DEC-0001:INV-0001

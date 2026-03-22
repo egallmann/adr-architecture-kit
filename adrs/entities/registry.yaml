@@ -4,8 +4,8 @@
 # generator_id: adr-compiler
 # generator_version: 1
 # hash_algorithm: sha256
-# source_hash: b4fc1ae8627312452a1b0c90e679fe51a8063978a16d1014af03fd2447cd68b7
-# rendered_hash: b814a8ee692172b1b7c1bacf0209bedfb008f6f010288c45d30aa23444cd4fd3
+# source_hash: 44bf4ff2d2e1b45762fe56dc49d1b50b446eebbdb6e8c2d62a8c4f79a5f2f9e2
+# rendered_hash: 9f02b784031ee8bbbc7f5cf6cf053760dd588c6399a6715c76f5a6e6a9e10fb7
 
 schema_version: '1.1'
 type: entity_registry
@@ -661,6 +661,21 @@ entities:
   introduced_by: ADR-L-0013
   lifecycle_stage: active
   source_path: adrs/logical/ADR-L-0013-architecture-repository-boundary-and-normalized-semantic-model.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs: []
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: CAP-9000
+  entity_type: capability
+  name: Kernel Boot Readiness
+  introduced_by: ADR-L-9000
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-9000-kernel-boot-publication-surface.yaml
   source_artifact_type: logical_adr
   domains: []
   related_adrs: []
@@ -1811,6 +1826,22 @@ entities:
   relationships:
     depends_on: []
     implements: []
+    consumes: []
+    realizes: []
+- entity_id: DEC-9000
+  entity_type: decision
+  name: Publish a deterministic logical ADR fragment for boot readiness.
+  introduced_by: ADR-L-9000
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-9000-kernel-boot-publication-surface.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs: []
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements:
+    - CAP-9000
     consumes: []
     realizes: []
 - entity_id: INV-0001

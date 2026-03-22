@@ -2901,3 +2901,46 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
+- id: DEC-9000
+  entity_type: decision
+  name: Publish a deterministic logical ADR fragment for boot readiness.
+  summary: ste-kernel requires a contract-backed ADR fragment source at a conventional
+    path.
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-9000#DEC-9000
+    artifact_path: adrs/logical/ADR-L-9000-kernel-boot-publication-surface.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-9000
+    related_invariants: []
+    enforces_invariants: []
+    enables_capabilities:
+    - CAP-9000
+    governs_components: []
+    supersedes: []
+    refines: []
+  relationships:
+    declared_in:
+    - ADR-L-9000
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables:
+    - CAP-9000
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-9000#DEC-9000
+    extraction_phase: extract_decision
+    classification: explicit
+    generator: adr-architecture-index

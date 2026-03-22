@@ -1852,3 +1852,44 @@ entities:
     extraction_phase: extract_capability
     classification: explicit
     generator: adr-architecture-index
+- id: CAP-9000
+  entity_type: capability
+  name: Kernel Boot Readiness
+  summary: Provide a deterministic ADR publication surface for kernel boot-readiness
+    compilation.
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-9000#CAP-9000
+    artifact_path: adrs/logical/ADR-L-9000-kernel-boot-publication-surface.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-9000
+    domains:
+    - kernel
+    - integration
+    implemented_by_components: []
+    enabled_by_decisions: []
+  relationships:
+    declared_in:
+    - ADR-L-9000
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by:
+    - DEC-9000
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-9000#CAP-9000
+    extraction_phase: extract_capability
+    classification: explicit
+    generator: adr-architecture-index

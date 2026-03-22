@@ -23,6 +23,9 @@ from .ir import (
 )
 
 __all__ = [
+    "AdrIrFragmentCompileError",
+    "AdrIrFragmentCompileResult",
+    "AdrIrSourceDescriptor",
     "ArchModel",
     "ArchitectureCompiler",
     "CompilationMeta",
@@ -47,6 +50,7 @@ __all__ = [
     "WorkspaceCompilationStatistics",
     "ArchModelBuilder",
     "CachedADRParser",
+    "compile_logical_adr_ir_fragments",
     "FrontendBuildResult",
     "build_arch_model",
     "CompilerPipeline",
@@ -65,6 +69,26 @@ def __getattr__(name: str):
             "CachedADRParser": CachedADRParser,
             "FrontendBuildResult": FrontendBuildResult,
             "build_arch_model": build_arch_model,
+        }
+        return exports[name]
+    if name in {
+        "AdrIrFragmentCompileError",
+        "AdrIrFragmentCompileResult",
+        "AdrIrSourceDescriptor",
+        "compile_logical_adr_ir_fragments",
+    }:
+        from .backend.adr_ir_fragment_emitter import (
+            AdrIrFragmentCompileError,
+            AdrIrFragmentCompileResult,
+            AdrIrSourceDescriptor,
+            compile_logical_adr_ir_fragments,
+        )
+
+        exports = {
+            "AdrIrFragmentCompileError": AdrIrFragmentCompileError,
+            "AdrIrFragmentCompileResult": AdrIrFragmentCompileResult,
+            "AdrIrSourceDescriptor": AdrIrSourceDescriptor,
+            "compile_logical_adr_ir_fragments": compile_logical_adr_ir_fragments,
         }
         return exports[name]
     if name in {

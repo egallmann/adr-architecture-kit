@@ -115,4 +115,4 @@ When the architecture reaches publication readiness:
 - Subsequent schema evolution will follow semantic versioning
 - Migration tooling will be introduced if breaking changes occur
 
-Until that milestone, schema evolution remains flexible.
+Until that schema lock point, schema evolution remains flexible.

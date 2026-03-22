@@ -1,0 +1,32 @@
+schema_version: "1.0"
+adr_type: logical
+id: ADR-L-9000
+title: Kernel Boot Publication Surface
+status: accepted
+created_date: "2026-03-21"
+authors:
+  - adr-architecture-kit
+domains:
+  - kernel
+  - integration
+tags:
+  - boot
+  - publication
+context: |
+  The STE workspace needs a deterministic ADR-backed Architecture IR fragment
+  publication surface at a conventional path so ste-kernel can prove boot
+  readiness across real sibling adapters. This ADR defines only that minimal
+  publication surface.
+capabilities:
+  - id: CAP-9000
+    name: Kernel Boot Readiness
+    description: Provide a deterministic ADR publication surface for kernel boot-readiness compilation.
+constraints: []
+invariants: []
+decisions:
+  - id: DEC-9000
+    summary: Publish a deterministic logical ADR fragment for boot readiness.
+    rationale: ste-kernel requires a contract-backed ADR fragment source at a conventional path.
+    enables_capabilities:
+      - CAP-9000
+gaps: []

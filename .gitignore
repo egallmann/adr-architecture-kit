@@ -76,3 +76,9 @@ docs/PARALLEL-WORKFLOW.md
 docs/COOPERATIVE-SIGNALS.md
 /plan/
 /plan.zip
+
+# Proof artifacts, test output, generated reports (do not commit)
+# (dist/ and build/ are already ignored above; dist/architecture-ir/ remains tracked via ! rules)
+lifecycle-proof/
+coverage/
+reports/

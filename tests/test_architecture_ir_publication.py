@@ -9,13 +9,15 @@ from scripts.publish_architecture_ir_fragments import OUTPUT_PATH, publish_archi
 
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
-KERNEL_SCHEMA_PATH = (
-    REPO_ROOT.parent / "ste-kernel" / "architecture-ir" / "architecture-ir.schema.json"
+KERNEL_SCHEMA_PATH = REPO_ROOT.parent / "ste-kernel" / "architecture-ir" / "architecture-ir.schema.json"
+FALLBACK_KERNEL_SCHEMA_PATH = (
+    REPO_ROOT / "tests" / "fixtures" / "kernel" / "architecture-ir.schema.json"
 )
 
 
 def _load_kernel_schema() -> dict:
-    return json.loads(KERNEL_SCHEMA_PATH.read_text(encoding="utf-8"))
+    schema_path = KERNEL_SCHEMA_PATH if KERNEL_SCHEMA_PATH.exists() else FALLBACK_KERNEL_SCHEMA_PATH
+    return json.loads(schema_path.read_text(encoding="utf-8"))
 
 
 def _build_compiled_document(records: list[dict]) -> dict:

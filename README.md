@@ -274,6 +274,19 @@ The compatibility wrapper still exists if you need it:
 python scripts/run_governance_checks.py
 ```
 
+Run the focused local pre-push regression bundle for generated artifact freshness and
+kernel IR publication drift:
+
+```bash
+python scripts/run_local_pre_push_checks.py
+```
+
+Install the matching Git pre-push hook so the same bundle runs automatically before push:
+
+```bash
+python scripts/install_pre_push_hook.py
+```
+
 With coverage:
 
 ```bash

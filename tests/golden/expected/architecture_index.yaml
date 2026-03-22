@@ -16,7 +16,7 @@ validation_summary:
   warnings: 0
   unresolved_entries: 9
 source_coverage:
-  logical_adrs: 29
+  logical_adrs: 30
   physical_adrs: 4
   physical_system_adrs: 2
   physical_component_adrs: 6

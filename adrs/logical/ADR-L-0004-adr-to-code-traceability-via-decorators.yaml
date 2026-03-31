@@ -1,0 +1,340 @@
+schema_version: '1.0'
+adr_type: logical
+id: ADR-L-0004
+title: ADR-to-Implementation Traceability via Decorators and Metadata Attribution
+status: proposed
+created_date: '2026-03-08'
+authors:
+- adr-architecture-kit
+modified_date: '2026-03-14'
+context: |
+  Architecture Decision Records document why implementation artifacts exist, but
+  the repo still lacks a universal, machine-verifiable way to trace code,
+  infrastructure, configuration, schemas, pipelines, and scripts back to the
+  ADRs that justify them.
+
+  Earlier design work in this ADR established decorator-based code traceability,
+  RECON extraction, and bidirectional verification as the right direction.
+  Since then, adr-architecture-kit has gained an explicit compiler pipeline,
+  profile-aware contract validation, and stronger governance around derived
+  architecture state. The traceability design now needs to be widened and
+  grounded in that current compiler/governance reality.
+
+  ## Current State
+
+  - ADRs reference implementation via `implementation_identifiers`
+  - Code and infrastructure still lack a canonical reverse link to ADRs
+  - adr-architecture-kit owns canonical architecture authority, but not source
+    extraction of implementation artifacts
+  - ste-runtime / RECON can already carry decorator metadata, but does not yet
+    interpret architecture-intent attribution semantically
+  - Existing governance already distinguishes `greenfield`, `brownfield`, and
+    `migration`, which should govern legacy onboarding instead of inventing a
+    separate transition model
+
+  ## Architecture Direction
+
+  This repository remains the authority for:
+  - the attribution rule itself
+  - the canonical decorator and metadata semantics
+  - the compiler-owned evidence contract that downstream extractors populate
+  - the validation posture for greenfield, brownfield, and migration use
+
+  This repository does not take on source-code parsing for this feature in the
+  current slice. That remains downstream work for ste-runtime / RECON.
+
+  ## Problems Solved
+
+  1. **Orphaned implementation**: Artifacts exist with no architectural justification
+  2. **Incomplete implementation**: ADRs declare architecture that is not traced to implementation
+  3. **Drift**: Implementation evolves without architecture authority remaining explicit
+  4. **Legacy imports**: Existing codebases need staged onboarding without losing deterministic governance
+  5. **AI reasoning**: Agents need an explicit intent surface rather than heuristic code-to-ADR guesses
+  6. **EDR evidence**: Embodied decision records need provenance-rich implementation claims
+
+  ## STE Principles
+
+  - **PRIME-1**: No implicit assumptions (implementation must declare its authority)
+  - **SYS-4**: Drift prevention (detect when code diverges from ADRs)
+  - **SYS-5**: Documentation-state as authoritative (ADRs govern code)
+  - **SYS-6**: RECON completion (architecture must be extractable)
+  - **Scope-aware onboarding**: Migration posture must be explicit rather than ad hoc
+domains:
+- architecture
+- traceability
+- governance
+- verification
+tags:
+- traceability
+- decorators
+- verification
+- drift-detection
+- embodied-design
+decisions:
+- id: DEC-0009
+  summary: Adopt explicit architecture intent attribution for implementation artifacts
+  rationale: |
+    Implementation surfaces need explicit, extractable architecture authority.
+    For code, decorators remain the canonical mechanism:
+    - `@implements_adr(...)`
+    - `@enforces_invariant(...)`
+
+    For infrastructure and adjacent non-code artifacts, the same intent is
+    expressed through metadata-level declarations rather than per-resource
+    decoration.
+
+    This keeps attribution explicit while respecting artifact-type differences.
+  consequences:
+    positive:
+    - New implementation can declare architectural authority deterministically
+    - Code and infrastructure use a consistent intent model
+    - Downstream extraction can remain language-specific without changing rule semantics
+    - AI reasoning gains explicit implementation-to-ADR provenance
+- id: DEC-0016
+  summary: Stage downstream extraction and rule activation after ADR-Kit authority is defined
+  rationale: |
+    adr-architecture-kit should first define the canonical rule, evidence
+    contract, and profile-aware validation semantics. Source extraction,
+    runtime rule activation, and any shared ecosystem delivery should build on
+    that authority rather than forcing this repo to duplicate downstream logic.
+  consequences:
+    positive:
+    - adr-architecture-kit remains the source of canonical architecture semantics
+    - ste-runtime can focus on extraction rather than architecture authority
+    - ste-rules-library can encode activation logic later without redefining the rule
+    - ste-spec only needs involvement if the evidence contract must become shared doctrine
+- id: DEC-0023
+  summary: Support Bidirectional Verification
+  rationale: |
+    Traceability must work in both directions:
+
+    **Forward (ADR -> Implementation)**:
+    - ADR declares component or system implementation identifiers
+    - Verify that downstream attribution evidence resolves to the declared authority
+
+    **Reverse (Implementation -> ADR)**:
+    - Code has `@implements_adr` or equivalent metadata-level attribution
+    - Verify that referenced ADR exists and is still a valid authority target
+
+    This bidirectional verification detects:
+    - Orphaned implementation (no ADR)
+    - Phantom declarations (ADR but no implementation evidence)
+    - Invalid references (implementation references non-existent ADR)
+    - Status mismatches (implementation references superseded ADRs)
+  consequences:
+    positive:
+    - Verification must check both directions
+    - Downstream extraction must preserve both ADR declarations and implementation attribution claims
+    - Drift detection becomes comprehensive
+    - CI/CD can enforce traceability
+- id: DEC-0048
+  summary: Define a compiler-owned implementation attribution evidence contract
+  rationale: |
+    adr-architecture-kit needs a canonical handoff surface for implementation
+    attribution evidence without taking on source parsing itself. A small,
+    compiler-owned schema and model let downstream extractors emit consistent
+    attribution records that governance can validate deterministically.
+  consequences:
+    positive:
+    - ste-runtime / RECON has a canonical handoff contract to populate
+    - Governance can validate implementation attribution without parsing source code here
+    - EDR and coverage work can build on a stable evidence shape
+- id: DEC-0049
+  summary: Use existing contract profiles for legacy intent-attribution onboarding
+  rationale: |
+    Greenfield, brownfield, and migration already express the repo's adoption
+    postures. Intent attribution onboarding should use those same profiles
+    rather than creating a second transition taxonomy.
+  consequences:
+    positive:
+    - Legacy onboarding remains aligned with existing governance
+    - Greenfield enforcement can be strict without blocking brownfield imports
+    - Migration tightening can happen without schema forks or one-off modes
+invariants:
+- id: INV-0027
+  statement: |
+    Greenfield in-scope implementation artifacts MUST declare architectural
+    authority through @implements_adr or an equivalent metadata-level
+    attribution mechanism; brownfield and migration may stage adoption under
+    profile-specific governance
+  scope: global
+  enforcement_level: must
+  enforcement_mechanism: design
+  verification_method: automated
+  rationale: |
+    Explicit architecture intent is mandatory for new systems, but legacy
+    onboarding must be staged through the existing profile model.
+- id: INV-0028
+  statement: |
+    Implementation attribution references MUST resolve to existing ADRs, and
+    references to superseded ADRs MUST be surfaced as governance warnings
+  scope: global
+  enforcement_level: must
+  enforcement_mechanism: design
+  verification_method: automated
+  rationale: |
+    Invalid or stale authority references undermine machine traceability even
+    when the attribution syntax itself is present.
+- id: INV-0029
+  statement: |
+    Implementation attribution evidence MUST preserve provenance identifying
+    the source artifact and extractor responsible for the claim
+  scope: global
+  enforcement_level: must
+  enforcement_mechanism: design
+  verification_method: automated
+  rationale: |
+    Traceability without provenance is not auditable enough for EDR evidence,
+    drift analysis, or trustworthy agent reasoning.
+- id: INV-0030
+  statement: |
+    Code decorated with @enforces_invariant MUST implement validation logic
+    for that invariant
+  scope: global
+  enforcement_level: must
+  enforcement_mechanism: design
+  verification_method: automated
+  rationale: |
+    Claiming to enforce an invariant without actually implementing the
+    enforcement is architectural drift.
+- id: INV-0031
+  statement: |
+    adr-architecture-kit MUST define the canonical architecture-intent
+    attribution rule and evidence contract without taking on direct source-code
+    parsing responsibilities for downstream repositories
+  scope: global
+  enforcement_level: must
+  enforcement_mechanism: design
+  verification_method: automated
+  rationale: |
+    This repository owns architecture authority, while downstream extractors own
+    language-specific parsing and evidence emission.
+- id: INV-0032
+  statement: |
+    Downstream extractors and rule-delivery systems SHOULD consume ADR-Kit
+    attribution contracts rather than redefining them independently
+  scope: global
+  enforcement_level: should
+  enforcement_mechanism: design
+  verification_method: automated
+  rationale: |
+    Reusing a single contract preserves deterministic semantics across the
+    ecosystem even when extraction and rule activation live elsewhere.
+capabilities:
+- id: CAP-0021
+  name: Architecture Intent Attribution
+  description: |
+    Explicit declaration of architectural authority across code and other
+    implementation artifacts through decorators or metadata-level attribution.
+  acceptance_criteria:
+  - '@implements_adr(adr_id, ...) decorator available'
+  - '@enforces_invariant(inv_id, ...) decorator available'
+  - infrastructure/config/schema/pipeline/script artifacts can declare ADR IDs through metadata
+  - attribution metadata does not alter runtime behavior
+  - attribution is extractable by downstream tooling
+- id: CAP-0024
+  name: Bidirectional Traceability Verification
+  description: |
+    Automated verification that implementation attribution and ADR declarations
+    agree in both directions.
+  acceptance_criteria:
+  - Verify ADR implementation_identifiers have matching implementation attribution evidence
+  - Verify attribution references valid ADRs
+  - Detect orphaned implementation (no ADR reference)
+  - Detect phantom declarations (ADR but no implementation evidence)
+  - Report traceability violations
+- id: CAP-0027
+  name: Profile-Aware Legacy Onboarding for Intent Attribution
+  description: |
+    Govern intent-attribution adoption with the existing greenfield,
+    brownfield, and migration profiles instead of a separate legacy mode.
+  acceptance_criteria:
+  - greenfield treats missing required attribution as an error
+  - brownfield and migration can surface onboarding gaps as warnings
+  - missing ADR references still fail regardless of profile
+  - superseded ADR references are visible without blocking onboarding
+- id: CAP-0030
+  name: Implementation Attribution Evidence Handoff
+  description: |
+    A compiler-owned evidence contract that downstream extractors populate with
+    implementation-to-ADR attribution claims and provenance.
+  acceptance_criteria:
+  - evidence records include implementation entity ID and type
+  - evidence records include attributed ADR IDs
+  - evidence records preserve provenance
+  - optional invariant claims can be carried without schema forks
+  - ste-runtime can emit the contract without adr-architecture-kit parsing source code directly
+related_adrs:
+- ADR-L-0001
+- ADR-L-0002
+- ADR-L-0003
+- ADR-L-0010
+- ADR-L-0012
+gaps:
+- id: GAP-0001
+  question: Decorator library not yet implemented
+  context: 'Classification: real gap. No adr_kit.decorators module exists yet.'
+  impact: high
+  blocking: true
+- id: GAP-0002
+  question: Implementation attribution evidence contract not yet populated by downstream extraction
+  context: 'Classification: real gap. adr-architecture-kit can define the evidence contract,
+    but ste-runtime / RECON does not yet emit architecture-intent attribution records.'
+  impact: high
+  blocking: true
+- id: GAP-0003
+  question: Legacy onboarding rollout for adr-architecture-kit itself is not yet started
+  context: 'Classification: deferred gap. The repo needs an explicit first-wave annotation
+    plan before broad decorator rollout.'
+  impact: medium
+  blocking: false
+- id: GAP-0004
+  question: ste-rules-library activation for intent-attribution enforcement remains staged
+  context: 'Classification: deferred gap. Downstream rule activation may be useful later,
+    but it should consume ADR-Kit authority rather than redefine it.'
+  impact: medium
+  blocking: false
+notes: "Implementation phases:\n\nPhase 1: Decorator Library (ADR-P-0004)\n- Create\
+  \ adr_kit.decorators module\n- Implement @implements_adr and @enforces_invariant\n\
+  - Add language-level examples without forcing broad annotation yet\n\nPhase 2:\
+  \ Evidence Contract + Validation\n- Define implementation attribution evidence\
+  \ schema in adr-architecture-kit\n- Validate evidence against canonical ADR state\
+  \ with profile-aware onboarding semantics\n- Keep attribution authority in ADR-Kit,\
+  \ not in downstream extractors\n\nPhase 3: Downstream Extraction (ste-runtime)\n\
+  - Extract decorators / metadata from code and infrastructure artifacts\n- Emit\
+  \ implementation attribution evidence and slice claims with provenance\n- Preserve\
+  \ provenance for EDR and drift analysis\n\nPhase 4: Legacy Onboarding\n- Identify\
+  \ in-scope implementation surfaces per repo\n- Roll out attribution starting with\
+  \ public boundaries and high-authority modules\n- Use greenfield, brownfield,\
+  \ and migration profiles to control enforcement\n\nPhase 5: Optional Rule Activation\
+  \ (ste-rules-library)\n- Encode reusable rule activation only after the authority\
+  \ and evidence contracts are stable\n- Keep downstream delivery additive rather\
+  \ than redefining semantics\n\nExample code attribution:\n```python\n@implements_adr(\"\
+  ADR-L-0002\", \"ADR-P-0003\")\n@enforces_invariant(\"INV-0015\", \"INV-0018\")\n\
+  class ProjectScopeResolver:\n      pass\n```\n\nExample infrastructure attribution:\n\
+  ```yaml\nMetadata:\n  implements_adr:\n    - ADR-L-0001\n    - ADR-PS-0001\n```\
+  \n"
+migration_origin:
+  remapped_entities:
+  - entity_type: capability
+    from: CAP-0001
+    to: CAP-0021
+  - entity_type: capability
+    from: CAP-0002
+    to: CAP-0024
+  - entity_type: capability
+    from: CAP-0003
+    to: CAP-0027
+  - entity_type: capability
+    from: CAP-0004
+    to: CAP-0030
+  - entity_type: decision
+    from: DEC-0001
+    to: DEC-0009
+  - entity_type: decision
+    from: DEC-0002
+    to: DEC-0016
+  - entity_type: decision
+    from: DEC-0003
+    to: DEC-0023
+  original_capability_id: CAP-0001

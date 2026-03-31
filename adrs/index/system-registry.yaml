@@ -1,0 +1,95 @@
+schema_version: '1.1'
+type: normalized_entity_registry
+entities:
+- id: SYS-0001
+  entity_type: system
+  name: ADR Architecture Kit Discovery and Indexing System
+  summary: The discovery and indexing subsystem provides the derived surfaces that
+    agents query instead of scanning raw ADR bodies by default. It now includes normalized
+    discovery bundle generation under `adrs/index/`, legacy compa
+  canonical_source:
+    source_type: physical_system_adr
+    source_ref: ADR-PS-0001
+    artifact_path: adrs/physical-system/ADR-PS-0001-adr-architecture-kit-discovery-and-indexing-system.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-PS-0001
+    implements_logical:
+    - ADR-L-0009
+    - ADR-L-0012
+    technologies:
+    - python
+    - pyyaml
+    - click
+  relationships:
+    declared_in:
+    - ADR-PS-0001
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: physical_system_adr
+    source_ref: ADR-PS-0001
+    extraction_phase: extract_system
+    classification: explicit
+    generator: adr-architecture-index
+- id: SYS-0002
+  entity_type: system
+  name: ADR Kit Compiler and Validation Runtime
+  summary: adr-architecture-kit now operates as a compiler and validation runtime
+    rather than a collection of unrelated generators. The implementation includes
+    an explicit compiler pipeline, contract validation, normalized reposito
+  canonical_source:
+    source_type: physical_system_adr
+    source_ref: ADR-PS-0002
+    artifact_path: adrs/physical-system/ADR-PS-0002-adr-kit-compiler-and-validation-runtime.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-PS-0002
+    implements_logical:
+    - ADR-L-0001
+    - ADR-L-0007
+    - ADR-L-0008
+    - ADR-L-0010
+    - ADR-L-0011
+    - ADR-L-0013
+    technologies:
+    - python
+    - click
+    - pydantic
+    - yaml
+    - json-schema
+  relationships:
+    declared_in:
+    - ADR-PS-0002
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: physical_system_adr
+    source_ref: ADR-PS-0002
+    extraction_phase: extract_system
+    classification: explicit
+    generator: adr-architecture-index

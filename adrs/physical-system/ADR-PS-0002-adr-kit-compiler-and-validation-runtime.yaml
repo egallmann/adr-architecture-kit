@@ -1,0 +1,124 @@
+schema_version: '1.0'
+adr_type: physical-system
+id: ADR-PS-0002
+title: ADR Kit Compiler and Validation Runtime
+status: proposed
+created_date: '2026-03-15'
+authors:
+- adr-architecture-kit
+domains:
+- compiler
+- validation
+- tooling
+tags:
+- compiler
+- validation
+- runtime
+- python
+implements_logical:
+- ADR-L-0001
+- ADR-L-0007
+- ADR-L-0008
+- ADR-L-0010
+- ADR-L-0011
+- ADR-L-0013
+references_components:
+- ADR-PC-0002
+- ADR-PC-0003
+- ADR-PC-0004
+- ADR-PC-0005
+related_adrs:
+- ADR-P-0001
+- ADR-P-0002
+supersedes:
+- ADR-P-0001
+technologies:
+- python
+- click
+- pydantic
+- yaml
+- json-schema
+context: |
+  adr-architecture-kit now operates as a compiler and validation runtime rather
+  than a collection of unrelated generators. The implementation includes an
+  explicit compiler pipeline, contract validation, normalized repository/model
+  access, integrity verification, and CLI orchestration over those surfaces.
+
+  This ADR establishes the concrete runtime system boundary for those public
+  capabilities. Discovery and indexing remain covered by ADR-PS-0001; this ADR
+  covers the compiler/validation runtime that powers canonical parsing,
+  compilation, repository loading, contract checks, and artifact integrity.
+technology_stack:
+- category: language
+  name: Python
+  version: '3.11'
+  rationale: Existing implementation language for compiler and validator code.
+- category: tooling
+  name: Click
+  version: 8.x
+  rationale: Existing CLI surface for compile and validate operations.
+- category: library
+  name: Pydantic
+  version: 2.x
+  rationale: Typed canonical models and validation.
+- category: library
+  name: jsonschema
+  version: 4.x
+  rationale: Structural schema validation for canonical artifacts.
+system_boundaries:
+- id: SYSBOUND-0002
+  name: Compiler and Validation Runtime Boundary
+  description: |
+    Encapsulates canonical ADR parsing, compiler orchestration, schema and
+    contract validation, normalized repository access, and generated artifact
+    integrity validation.
+  external_dependencies:
+  - Canonical ADR artifacts
+  - Canonical invariant artifacts
+  - Generated registry bundles
+  exposed_interfaces:
+  - adr compile
+  - adr validate
+  - adr validate-contract
+  - adr validate-project-metadata
+  - adr entities *
+component_topology:
+  components:
+  - name: Schema and Contract Validation Component
+    type: service
+    purpose: Validates canonical ADR structure and contract expectations.
+    implements_adr: ADR-PC-0002
+  - name: Compiler Pipeline Component
+    type: service
+    purpose: Builds and emits deterministic architecture compilation outputs.
+    implements_adr: ADR-PC-0003
+  - name: Repository Boundary Component
+    type: service
+    purpose: Loads and serves normalized semantic state for in-process consumers.
+    implements_adr: ADR-PC-0004
+  - name: Integrity Validation Component
+    type: service
+    purpose: Verifies generated artifact freshness and tamper integrity.
+    implements_adr: ADR-PC-0005
+  relationships:
+  - from: Canonical ADR artifacts
+    to: Schema and Contract Validation Component
+    type: depends_on
+    description: Validation consumes canonical source artifacts.
+  - from: Schema and Contract Validation Component
+    to: Compiler Pipeline Component
+    type: depends_on
+    description: Compilation assumes structurally valid canonical input.
+  - from: Compiler Pipeline Component
+    to: Repository Boundary Component
+    type: depends_on
+    description: Repository consumers rely on compiled bundle artifacts.
+  - from: Compiler Pipeline Component
+    to: Integrity Validation Component
+    type: depends_on
+    description: Integrity validation checks compiler-owned artifacts.
+operational_requirements:
+  monitoring: Deterministic validation and compilation output with explicit diagnostics.
+  logging: CLI-visible diagnostic logging with fail-closed validation behavior.
+gaps: []
+

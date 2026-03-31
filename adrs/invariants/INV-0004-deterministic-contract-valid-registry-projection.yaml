@@ -1,0 +1,35 @@
+schema_version: "1.0"
+type: invariant
+id: INV-0004
+statement: "Compiler projection from canonical architecture state to kernel-facing registry artifacts must be deterministic and contract-valid."
+scope: global
+enforcement_level: must
+enforcement_mechanism: test
+verification_method: automated
+rationale: |
+  The compiler is now the authoritative path from ADR-defined architecture state
+  to kernel-facing registries. That boundary is only trustworthy if equivalent
+  canonical inputs always produce equivalent registry outputs and those outputs
+  continue to satisfy the explicit kernel contract.
+
+  This rule extends deterministic projection beyond human-readable documentation
+  into the compiled architecture bundle itself. It protects golden regression
+  tests, contract conformance checks, and downstream kernel consumers from
+  silent projection drift.
+
+defined_in: ADR-L-0012
+enforced_by: ["ADR-P-0001", "ADR-PC-0001"]
+related_constraints: ["CONST-0001"]
+
+policy_reference: "ORG-POL-002"
+compliance_frameworks: ["STE"]
+
+validation_query: |
+  For any compiler or projection change:
+  - compile the registry bundle from canonical ADR inputs
+  - verify deterministic output using golden or repeatable compile tests
+  - validate the bundle against the committed kernel contract schemas
+  - fail if projection output changes without intentional canonical updates
+  - fail if emitted contract files are not contract-valid
+
+validation_frequency: on_change

@@ -1,0 +1,108 @@
+schema_version: '1.0'
+adr_type: logical
+id: ADR-L-0012
+title: Federation Authority and Qualified Identity Model
+status: proposed
+created_date: '2026-03-14'
+authors:
+- adr-architecture-kit
+domains:
+- federation
+- identity
+- governance
+- multi-repo
+tags:
+- federation
+- qualified-id
+- namespace
+- authority
+introduces_entities:
+- INV-0058
+- CAP-0038
+context: |
+  The current compiler and recursive multi-scope behavior preserve scope-local
+  compilation boundaries, but the STE ecosystem is moving toward federation
+  across independently compiled repositories. The planning material establishes
+  that federation must remain read-only, that each repository is authoritative
+  over its own entities, and that bare local IDs must evolve into an
+  unambiguous multi-repository identity model without breaking single-repo
+  authoring.
+
+  Those rules are architectural decisions, not temporary implementation notes.
+  They determine how repositories reference each other, how conflicts are
+  resolved, and what the federation layer is allowed to do with canonical
+  per-repo registries.
+
+  What is needed is one explicit ADR that formalizes:
+  1. Federation as a read-only aggregation step over independently compiled repos
+  2. Provider-authoritative conflict resolution for entity definitions
+  3. A qualified identity model with namespace separated from bare ID
+  4. Bare local references remaining valid by default, with qualification only
+     when cross-repo references are intended
+decisions:
+- id: DEC-0045
+  summary: Treat federation as a read-only aggregation layer over per-repo canonical registries
+  rationale: |
+    Per-repository registries remain the canonical architecture outputs for
+    their owning repository. Federation exists to read, index, merge, and query
+    across those outputs; it must not rewrite or mutate them.
+  consequences:
+    positive:
+    - Repository ownership boundaries remain explicit
+    - Federation can be added or evolved without changing local compiler output
+    - Global analysis stays traceable to per-repo canonical state
+- id: DEC-0046
+  summary: Use provider-authoritative conflict resolution for federated entity definitions
+  rationale: |
+    When one repository references an entity defined by another repository, the
+    defining repository is the authority on that entity's name, status, and
+    metadata. Consumers may declare relationships to the entity, but they do
+    not redefine it.
+  consequences:
+    positive:
+    - Entity ownership remains unambiguous across repository boundaries
+    - Consumer references cannot silently override provider truth
+    - Conflict handling remains deterministic
+- id: DEC-0047
+  summary: Keep namespace separate from bare ID and use qualification only for cross-repo references
+  rationale: |
+    Single-repo authoring should remain simple and backward compatible, while
+    federation requires globally unambiguous identity. Separating namespace from
+    bare ID preserves local ergonomics while enabling global qualification when
+    needed.
+  consequences:
+    positive:
+    - Existing local ADR authoring remains valid
+    - Cross-repo references become explicit and machine-parseable
+    - Global identity does not require a central ID allocator
+invariants:
+- id: INV-0058
+  statement: |
+    Federation and aggregation layers MUST treat each repository as
+    authoritative over its own canonical registries and MUST NOT mutate those
+    registries during federation.
+  scope: global
+  enforcement_level: must
+  enforcement_mechanism: design
+  verification_method: automated
+  rationale: |
+    Multi-repository architecture reasoning depends on repository ownership and
+    read-only aggregation remaining explicit.
+capabilities:
+- id: CAP-0038
+  name: Federated Qualified Identity Resolution
+  description: |
+    Support unambiguous multi-repository entity references using namespaces and
+    qualified identifiers while preserving bare local references in source ADRs.
+  acceptance_criteria:
+  - Bare local IDs remain valid within a repository
+  - Cross-repo references use namespace-qualified identifiers
+  - Provider repositories remain authoritative for their own entity definitions
+  - Federation reads and merges per-repo registries without rewriting them
+related_adrs:
+- ADR-L-0002
+- ADR-L-0007
+- ADR-L-0010
+- ADR-L-0013
+- ADR-PS-0001
+gaps: []

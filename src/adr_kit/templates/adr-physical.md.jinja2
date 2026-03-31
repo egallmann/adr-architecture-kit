@@ -1,0 +1,201 @@
+# {{ adr.id }}: {{ adr.title }}
+
+**Status:** {{ adr.status.value }}  
+**Created:** {{ adr.created_date }}  
+{% if adr.modified_date %}**Modified:** {{ adr.modified_date }}  {% endif %}
+**Authors:** {{ adr.authors | join(', ') }}  
+**Domains:** {{ adr.domains | join(', ') }}  
+{% if adr.tags %}**Tags:** {{ adr.tags | join(', ') }}  {% endif %}
+
+**Implements Logical:** {{ adr.implements_logical | join(', ') }}  
+**Technologies:** {{ adr.technologies | join(', ') }}
+
+{% if adr.related_adrs %}
+**Related ADRs:** {{ adr.related_adrs | join(', ') }}
+{% endif %}
+
+---
+
+## Context
+
+{{ adr.context }}
+
+## Technology Stack
+
+{% for tech in adr.technology_stack %}
+### {{ tech.name }} ({{ tech.category }})
+
+**Version:** {{ tech.version }}
+
+**Rationale:**
+{{ tech.rationale }}
+
+{% endfor %}
+
+{% if adr.architecture_patterns %}
+## Architecture Patterns
+
+{% for pattern in adr.architecture_patterns %}
+### {{ pattern.pattern_name }}
+
+{{ pattern.application }}
+
+{% if pattern.components_affected %}
+**Components Affected:** {{ pattern.components_affected | join(', ') }}
+{% endif %}
+
+{% endfor %}
+{% endif %}
+
+## Component Specifications
+
+{% for comp in adr.component_specifications %}
+### {{ comp.id }}: {{ comp.name }} ({{ comp.type }})
+
+**Responsibilities:**
+{{ comp.responsibilities }}
+
+{% if comp.interfaces %}
+**Interfaces:**
+{% for iface in comp.interfaces %}
+- **{{ iface.id }}**{% if iface.name %} {{ iface.name }}{% endif %}{% if iface.type %} ({{ iface.type }}){% endif %}: {{ (iface.specification or iface.description or iface.name or "Interface definition")[:100] }}{% if iface.specification or iface.description %}...{% endif %}
+{% endfor %}
+{% endif %}
+
+{% if comp.dependencies %}
+**Dependencies:** {{ comp.dependencies | join(', ') }}
+{% endif %}
+
+{% if comp.implementation_identifiers %}
+**Implementation Identifiers:**
+{% if comp.implementation_identifiers.service_name %}
+- Service Name: `{{ comp.implementation_identifiers.service_name }}`
+{% endif %}
+{% if comp.implementation_identifiers.repository %}
+- Repository: `{{ comp.implementation_identifiers.repository }}`
+{% endif %}
+{% if comp.implementation_identifiers.module_path %}
+- Module Path: `{{ comp.implementation_identifiers.module_path }}`
+{% endif %}
+{% endif %}
+
+{% endfor %}
+
+{% if adr.deployment_model %}
+## Deployment Model
+
+{% if adr.deployment_model.hosting %}**Hosting:** {{ adr.deployment_model.hosting }}  {% endif %}
+{% if adr.deployment_model.orchestration %}**Orchestration:** {{ adr.deployment_model.orchestration }}  {% endif %}
+
+{% if adr.deployment_model.scaling_strategy %}
+**Scaling Strategy:**
+{{ adr.deployment_model.scaling_strategy }}
+{% endif %}
+{% endif %}
+
+{% if adr.data_architecture %}
+## Data Architecture
+
+{% for data in adr.data_architecture %}
+### {{ data.entity }}
+
+**Storage:** {{ data.storage }}
+
+{% if data.schema_definition %}
+**Schema:**
+{{ data.schema_definition }}
+{% endif %}
+
+{% if data.access_patterns %}
+**Access Patterns:**
+{{ data.access_patterns }}
+{% endif %}
+
+{% endfor %}
+{% endif %}
+
+{% if adr.implementation_decisions %}
+## Implementation Decisions
+
+{% for decision in adr.implementation_decisions %}
+### {{ decision.id }}: {{ decision.summary }}
+
+**Rationale:**
+{{ decision.rationale }}
+
+{% if decision.alternatives_considered %}
+**Alternatives Considered:**
+{% for alt in decision.alternatives_considered %}
+- **{{ alt.name }}**: {{ alt.rejected_because }}
+{% endfor %}
+{% endif %}
+
+{% if decision.implements_invariants %}
+**Implements Invariants:** {{ decision.implements_invariants | join(', ') }}
+{% endif %}
+
+{% endfor %}
+{% endif %}
+
+{% if adr.integration_points %}
+## Integration Points
+
+{% for integ in adr.integration_points %}
+### {{ integ.id }}
+
+**Systems:** {{ integ.systems | join(', ') }}  
+**Protocol:** {{ integ.protocol }}
+
+**Specification:**
+{{ integ.specification }}
+
+{% if integ.contract_adr %}
+**Contract ADR:** {{ integ.contract_adr }}
+{% endif %}
+
+{% endfor %}
+{% endif %}
+
+{% if adr.operational_requirements %}
+## Operational Requirements
+
+{% if adr.operational_requirements.monitoring %}
+### Monitoring
+{{ adr.operational_requirements.monitoring }}
+{% endif %}
+
+{% if adr.operational_requirements.logging %}
+### Logging
+{{ adr.operational_requirements.logging }}
+{% endif %}
+
+{% if adr.operational_requirements.backup_recovery %}
+### Backup & Recovery
+{{ adr.operational_requirements.backup_recovery }}
+{% endif %}
+
+{% if adr.operational_requirements.security %}
+### Security
+{{ adr.operational_requirements.security }}
+{% endif %}
+{% endif %}
+
+{% if adr.gaps %}
+## Gaps
+
+{% for gap in adr.gaps %}
+### {{ gap.id }}: {{ gap.question }}
+
+**Impact:** {{ gap.impact.value }}  
+**Blocking:** {{ "Yes" if gap.blocking else "No" }}
+
+{% if gap.context %}
+{{ gap.context }}
+{% endif %}
+
+{% endfor %}
+{% endif %}
+
+---
+
+*Generated from {{ adr.id }} by ADR Architecture Kit*

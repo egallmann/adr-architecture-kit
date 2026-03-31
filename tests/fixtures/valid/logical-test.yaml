@@ -1,0 +1,26 @@
+schema_version: "1.0"
+adr_type: logical
+id: ADR-L-0001
+title: "User Management Capability"
+status: accepted
+created_date: "2026-03-10"
+authors: ["test.author"]
+
+domains: ["user-management"]
+tags: ["authentication", "authorization"]
+
+context: |
+  System requires user management capabilities including
+  authentication, authorization, and user data management.
+
+capabilities:
+  - id: CAP-0001
+    name: "User Authentication"
+    description: "Authenticate users and manage sessions"
+
+decisions:
+  - id: DEC-0001
+    summary: "Use JWT for authentication"
+    rationale: "Stateless, scalable, industry standard"
+
+gaps: []

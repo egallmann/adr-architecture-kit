@@ -1,0 +1,371 @@
+schema_version: '1.0'
+id: ADR-V-0010
+adr_type: logical
+vision_category: true
+promotable_to_logical: true
+title: Composable Architecture
+status: proposed
+created_date: '2024-03-10'
+authors:
+- adr-architecture-kit
+tags:
+- composability
+- technology-migration
+- polyglot
+- modernization
+context: |
+  Technology landscapes evolve:
+  - New languages (Rust, Go, Zig)
+  - New frameworks (Next.js, SvelteKit, Astro)
+  - New databases (Clickhouse, DuckDB, SurrealDB)
+  - New paradigms (serverless, edge computing)
+
+  Traditional approach: Big bang rewrites
+  - Rewrite entire system in new technology
+  - High risk (everything changes at once)
+  - Long timeline (months to years)
+  - Expensive (full team dedicated)
+
+  Problems:
+  - Risky (all or nothing)
+  - Slow (can't ship features during rewrite)
+  - Expensive (opportunity cost)
+  - Often fails (abandoned mid-rewrite)
+
+  Opportunity: Incremental migration through composability.
+capability:
+  name: Composable Architecture
+  description: |
+    A system where components can be swapped independently while preserving
+    interface contracts, enabling incremental technology migration, polyglot
+    systems, and continuous modernization.
+  composability_principles:
+  - principle: Interface Preservation
+    description: New implementation must honor existing interface contracts
+    enforcement:
+    - Physical-Component ADR defines interface contract
+    - New ADR must implement same contract
+    - Validator checks interface compatibility
+    example:
+      original: User Service (Python + Flask)
+      interface: 'REST API: GET /users, POST /users, etc.'
+      new: User Service (Rust + Axum)
+      requirement: Must implement same REST API
+  - principle: Independent Deployment
+    description: Components can be deployed independently
+    requirements:
+    - No shared state (each component owns its data)
+    - Versioned APIs (backward compatibility)
+    - Health checks (verify component operational)
+    benefits:
+    - Deploy new implementation without downtime
+    - Rollback if issues detected
+    - A/B test old vs new implementation
+  - principle: Gradual Migration
+    description: Migrate one component at a time
+    strategy:
+    - Identify component to migrate
+    - Create new Physical-Component ADR (new technology)
+    - Implement new component
+    - Deploy alongside old component (canary)
+    - Route traffic gradually (10% → 50% → 100%)
+    - Deprecate old component
+    timeline: Weeks per component (vs months for big bang)
+  - principle: Polyglot Support
+    description: Different components can use different technologies
+    rationale: Use best tool for each job
+    examples:
+    - 'User Service: Rust (performance-critical)'
+    - 'Admin Dashboard: TypeScript + React (rapid development)'
+    - 'Analytics: Python + Pandas (data science)'
+    - 'Real-time Chat: Go + WebSockets (concurrency)'
+  migration_patterns:
+  - pattern: Strangler Fig
+    description: Gradually replace old system with new
+    steps:
+    - Create new component (new technology)
+    - Route new requests to new component
+    - Migrate existing data (if needed)
+    - Deprecate old component when traffic reaches 0
+    adr_relationship: supersedes
+    example: ADR-PC-0042 (Python) superseded by ADR-PC-0087 (Rust)
+  - pattern: Parallel Run
+    description: Run old and new components simultaneously
+    steps:
+    - Deploy new component
+    - Route traffic to both (compare results)
+    - Verify new component produces same results
+    - Switch traffic to new component
+    - Deprecate old component
+    adr_relationship: replaces
+    use_case: High-risk migrations (payment processing)
+  - pattern: Feature Toggle
+    description: Toggle between old and new implementations
+    steps:
+    - Deploy new component
+    - Add feature flag (old vs new)
+    - Enable for subset of users (canary)
+    - Monitor metrics (performance, errors)
+    - Gradually increase percentage
+    - Remove old component when 100% on new
+    adr_relationship: supersedes
+    use_case: User-facing features (gradual rollout)
+boundaries:
+  in_scope:
+  - Interface contract preservation
+  - Independent component deployment
+  - Gradual migration strategies
+  - Polyglot system support
+  out_of_scope:
+  - Specific technology choices (org decides)
+  - Data migration tools (use existing tools)
+  - Deployment orchestration (use existing CI/CD)
+contracts:
+  interface_compatibility:
+    description: How interface compatibility is validated
+    fields:
+    - name: contract_preservation
+      type: boolean
+      description: Must new component honor old contract?
+      default: true
+    - name: breaking_changes
+      type: array
+      description: List of breaking changes (if any)
+      requires_justification: true
+    - name: migration_strategy
+      type: enum
+      values:
+      - strangler_fig
+      - parallel_run
+      - feature_toggle
+      - big_bang
+    - name: rollback_plan
+      type: string
+      description: How to rollback if migration fails
+    - name: supersedes
+      type: string
+      description: ADR ID of component being replaced
+  migration_validation:
+    description: How migrations are validated
+    checks:
+    - Interface compatibility (same endpoints/methods)
+    - Data compatibility (same schema/format)
+    - Performance acceptable (not slower)
+    - Tests passing (same behavior)
+quality_attributes:
+- attribute: Migration Risk
+  requirement: Minimize risk of migration failures
+  measurement: Percentage of successful migrations
+  target: '> 95%'
+- attribute: Migration Speed
+  requirement: Fast incremental migrations
+  measurement: Time to migrate one component
+  target: < 2 weeks per component
+- attribute: System Availability
+  requirement: No downtime during migration
+  measurement: Uptime during migration
+  target: 99.9%
+- attribute: Technology Flexibility
+  requirement: Support multiple technologies
+  measurement: Number of languages/frameworks in use
+  target: No artificial limits
+rationale: |
+  **Why composable architecture?**
+
+  Technology evolves faster than systems:
+  - Python 2 → Python 3 (10 year migration)
+  - Angular.js → Angular (rewrite required)
+  - MongoDB → PostgreSQL (data migration nightmare)
+
+  Big bang rewrites fail:
+  - Netscape (18 months, failed)
+  - Basecamp (rewrote 3 times)
+  - Many startups (never finished)
+
+  Composable architecture enables:
+  - Incremental migration (low risk)
+  - Continuous modernization (always up-to-date)
+  - Polyglot systems (best tool for each job)
+  - Independent deployment (no coordination)
+
+  **Example: Python → Rust migration**
+
+  Traditional approach (big bang):
+  - Rewrite entire system in Rust
+  - Timeline: 12-18 months
+  - Risk: High (everything changes)
+  - Cost: $500K-1M (full team)
+  - Outcome: Often abandoned
+
+  Composable approach (incremental):
+  - Identify performance-critical component (User Service)
+  - Create ADR-PC-0087 (Rust implementation)
+  - Implement new component (2 weeks)
+  - Deploy alongside old component
+  - Route 10% traffic → monitor → 50% → 100%
+  - Deprecate ADR-PC-0042 (Python)
+  - Timeline: 4 weeks per component
+  - Risk: Low (one component at a time)
+  - Cost: $20K-40K per component
+  - Outcome: Successful, proven
+
+  **12x faster, 10x cheaper, 95% less risk.**
+
+  **Why interface preservation?**
+
+  Interface is the contract:
+  - Consumers depend on interface
+  - Implementation is internal detail
+
+  Preserve interface → consumers unaffected:
+  - Same REST endpoints
+  - Same request/response format
+  - Same error codes
+  - Same performance characteristics
+
+  Change implementation → consumers don't care:
+  - Python → Rust (faster)
+  - Flask → Axum (more efficient)
+  - PostgreSQL → DuckDB (better analytics)
+
+  **This is the power of abstraction.**
+
+  **Why polyglot?**
+
+  Different problems need different tools:
+  - Performance-critical: Rust, C++, Zig
+  - Rapid development: Python, TypeScript, Ruby
+  - Data science: Python, R, Julia
+  - Concurrency: Go, Elixir, Erlang
+  - Web UI: TypeScript, Elm, ReasonML
+
+  Polyglot systems use best tool for each job:
+  - User Service: Rust (performance)
+  - Admin Dashboard: TypeScript (rapid iteration)
+  - Analytics: Python (data science libraries)
+  - Real-time Chat: Go (concurrency)
+
+  This is optimal, not dogmatic.
+alternatives_considered:
+- alternative: Big bang rewrite
+  pros:
+  - Clean slate (no legacy code)
+  - Consistent technology (one language)
+  cons:
+  - High risk (all or nothing)
+  - Long timeline (months to years)
+  - Expensive (full team dedicated)
+  - Often fails (abandoned mid-rewrite)
+  why_not_chosen: Too risky, too slow, too expensive
+- alternative: Monolithic architecture (no composability)
+  pros:
+  - Simpler (one codebase)
+  - Easier deployment (one artifact)
+  cons:
+  - Technology lock-in (stuck with one language)
+  - Risky migrations (must migrate everything)
+  - Slow evolution (can't adopt new tech incrementally)
+  why_not_chosen: Prevents incremental modernization
+- alternative: Microservices without interface contracts
+  pros:
+  - Independent deployment
+  - Polyglot support
+  cons:
+  - Breaking changes common (no contract enforcement)
+  - Integration issues (no compatibility validation)
+  - Migration chaos (no clear strategy)
+  why_not_chosen: Interface contracts essential for composability
+trade_offs:
+- trade_off: More components to manage
+  acceptance: Automation reduces management burden
+  mitigation: Automated deployment, monitoring, health checks
+- trade_off: Interface contracts may limit flexibility
+  acceptance: Contracts can evolve (versioned APIs)
+  mitigation: Breaking changes allowed with migration plan
+- trade_off: Polyglot systems increase complexity
+  acceptance: Complexity justified by using best tools
+  mitigation: Standardize interfaces, shared libraries, documentation
+success_criteria:
+- criterion: Migration success rate
+  measurement: Percentage of migrations completed successfully
+  target: '> 95%'
+- criterion: Migration speed
+  measurement: Average time to migrate one component
+  target: < 2 weeks
+- criterion: System availability
+  measurement: Uptime during migrations
+  target: '> 99.9%'
+- criterion: Technology adoption
+  measurement: Time from new tech available to production use
+  target: < 1 month
+dependencies:
+  requires:
+  - Physical-Component ADR schema (defines interfaces)
+  - Validator (checks interface compatibility)
+  - Deployment system (independent deployment)
+  enables:
+  - Incremental modernization (continuous evolution)
+  - Polyglot systems (best tool for each job)
+  - Low-risk migrations (one component at a time)
+risks:
+- risk: Interface compatibility bugs
+  likelihood: medium
+  impact: medium
+  mitigation: Automated compatibility testing, validation
+- risk: Data migration failures
+  likelihood: medium
+  impact: high
+  mitigation: Parallel run pattern, rollback capability
+- risk: Performance regressions
+  likelihood: low
+  impact: medium
+  mitigation: Performance testing, gradual rollout, monitoring
+notes: |
+  This is the "incremental modernization" capability.
+
+  The ADR Kit itself dogfoods this:
+  - Any component can be forked
+  - Interfaces are preserved
+  - Implementations are swappable
+
+  Example: Parser component
+  - Original: Python parser (ADR-PC-XXXX)
+  - Alternative: Rust parser (ADR-PC-YYYY)
+  - Interface: parse_adr(file_path) → ADR object
+  - Swap: Update imports, same interface
+
+  This enables:
+  - Community contributions (alternative implementations)
+  - Performance optimization (Rust for speed)
+  - Experimentation (try new approaches)
+
+  The system evolves without breaking.
+
+  Migration example:
+
+  ```yaml
+  # ADR-PC-0087: User Service (Rust)
+  id: ADR-PC-0087
+  adr_type: physical-component
+  title: "User Service (Rust Implementation)"
+
+  implements_system: ADR-PS-0012
+  supersedes: ADR-PC-0042  # Python implementation
+
+  interface_compatibility:
+    contract_preservation: true
+    breaking_changes: []
+    migration_strategy: strangler_fig
+    rollback_plan: "Route traffic back to ADR-PC-0042"
+
+  component_specifications:
+    interfaces:
+      - name: "User API"
+        type: "REST"
+        endpoints:
+          - "GET /users (same as ADR-PC-0042)"
+          - "POST /users (same as ADR-PC-0042)"
+        compatibility: "100% compatible with ADR-PC-0042"
+  ```
+
+  Deploy, route traffic, deprecate old. Done.

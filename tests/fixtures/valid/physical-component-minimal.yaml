@@ -1,0 +1,256 @@
+schema_version: "1.0"
+adr_type: physical-component
+id: ADR-PC-0001
+title: "User Service API Component"
+status: accepted
+created_date: "2026-03-10"
+authors: ["test.author"]
+
+domains: ["user-management", "api"]
+tags: ["rest-api", "nodejs", "express"]
+
+implements_system: ["ADR-PS-0001"]
+implements_logical: ["ADR-L-0001"]
+technologies: ["nodejs", "express", "jwt"]
+
+context: |
+  REST API component for user management operations including
+  CRUD operations, authentication, and authorization.
+
+technology_stack:
+  - category: framework
+    name: "Express"
+    version: "4.x"
+    rationale: "Battle-tested REST framework with extensive middleware ecosystem"
+  - category: library
+    name: "jsonwebtoken"
+    version: "9.x"
+    rationale: "Standard JWT library for Node.js"
+
+component_specifications:
+  - id: COMP-0001
+    name: "User API Service"
+    type: service
+    responsibilities: |
+      - User CRUD operations
+      - JWT-based authentication
+      - Rate limiting per user
+      - Input validation
+    
+    generation_context:
+      purpose: "REST API for user management with authentication"
+      key_responsibilities:
+        - "User CRUD operations (GET, POST, PUT, DELETE)"
+        - "JWT token generation and validation"
+        - "Rate limiting (100 req/min per user)"
+        - "Input validation and sanitization"
+      constraints:
+        - "Must use bcrypt for password hashing"
+        - "Must implement RFC 7807 Problem Details for errors"
+        - "Must support correlation IDs for request tracing"
+      success_criteria:
+        - "All endpoints respond within p95 < 200ms"
+        - "Unit test coverage >= 80%"
+        - "Zero authentication bypass vulnerabilities"
+    
+    interfaces:
+      - id: IFACE-0001
+        type: REST
+        specification: |
+          OpenAPI 3.0 Specification:
+          
+          paths:
+            /users:
+              get:
+                summary: List users
+                responses:
+                  200:
+                    description: User list
+              post:
+                summary: Create user
+                responses:
+                  201:
+                    description: User created
+            /users/{id}:
+              get:
+                summary: Get user by ID
+                responses:
+                  200:
+                    description: User details
+                  404:
+                    description: User not found
+            /auth/login:
+              post:
+                summary: User login
+                responses:
+                  200:
+                    description: JWT token returned
+                  401:
+                    description: Invalid credentials
+        contract_tests: |
+          Contract tests validate:
+          - Response schemas match OpenAPI spec
+          - Error responses follow RFC 7807
+          - Authentication headers are validated
+    
+    implementation_identifiers:
+      module_path: "src/api"
+      service_name: "user-api"
+      repository: "github.com/org/user-service"
+      entry_point: "src/api/server.ts"
+      test_path: "tests/api"
+    
+    implementation_requirements:
+      algorithms:
+        - name: "Password Hashing"
+          specification: "bcrypt with cost factor 12"
+          rationale: "OWASP recommendation for 2026"
+          complexity: "O(1) per hash, intentionally slow"
+          edge_cases:
+            - "Empty password (reject)"
+            - "Password > 72 bytes (truncate)"
+        
+        - name: "JWT Token Generation"
+          specification: |
+            Algorithm: HS256
+            Expiry: 1 hour
+            Refresh token: 7 days
+            Claims: {sub, iat, exp, roles}
+          rationale: "Standard JWT pattern with refresh tokens"
+          edge_cases:
+            - "Token expiry boundary conditions"
+            - "Invalid signature handling"
+      
+      error_handling:
+        strategy: "RFC 7807 Problem Details for HTTP APIs"
+        error_types:
+          - type: "ValidationError"
+            http_status: 400
+            response_format: "application/problem+json"
+            logging_level: "info"
+          - type: "AuthenticationError"
+            http_status: 401
+            response_format: "application/problem+json"
+            logging_level: "warn"
+          - type: "AuthorizationError"
+            http_status: 403
+            response_format: "application/problem+json"
+            logging_level: "warn"
+          - type: "NotFoundError"
+            http_status: 404
+            response_format: "application/problem+json"
+            logging_level: "info"
+          - type: "InternalError"
+            http_status: 500
+            response_format: "application/problem+json"
+            logging_level: "error"
+        circuit_breaker:
+          enabled: true
+          threshold: 5
+          timeout: "30s"
+      
+      observability:
+        logging:
+          level: "info"
+          structured: true
+          correlation_id: true
+          sensitive_data_handling: "Mask passwords, tokens, and PII"
+        metrics:
+          - name: "http_requests_total"
+            type: counter
+            description: "Total HTTP requests"
+            labels: ["method", "path", "status"]
+          - name: "http_request_duration_seconds"
+            type: histogram
+            description: "HTTP request latency"
+            labels: ["method", "path"]
+          - name: "authentication_failures_total"
+            type: counter
+            description: "Failed authentication attempts"
+            labels: ["reason"]
+          - name: "active_sessions"
+            type: gauge
+            description: "Number of active user sessions"
+        tracing:
+          enabled: true
+          sampler: "always_on"
+          propagation: "W3C Trace Context"
+      
+      testing_requirements:
+        unit_test_coverage: ">= 80%"
+        integration_tests: |
+          - All endpoints with authentication scenarios
+          - Database integration tests
+          - Cache integration tests
+        contract_tests: |
+          - OpenAPI contract validation
+          - Error response format validation
+        performance_tests: |
+          - Load test: 1000 req/s sustained
+          - Latency test: p95 < 200ms
+        test_data: |
+          - Test users with various roles
+          - Invalid credentials for negative tests
+          - Edge case data (special characters, long strings)
+      
+      security_requirements:
+        authentication: "JWT with HS256, 1-hour expiry"
+        authorization: "Role-based access control (RBAC)"
+        input_validation: "Joi schema validation on all inputs"
+        rate_limiting:
+          strategy: "Token bucket per user"
+          limits:
+            - scope: "per_user"
+              limit: "100"
+              window: "1m"
+            - scope: "per_ip"
+              limit: "1000"
+              window: "1m"
+      
+      performance_requirements:
+        latency:
+          p50: "50ms"
+          p95: "200ms"
+          p99: "500ms"
+        throughput: "1000 req/s per pod"
+        resource_limits:
+          cpu: "500m"
+          memory: "512Mi"
+          connections: 100
+
+data_architecture:
+  - entity: "User"
+    storage: "PostgreSQL"
+    schema: |
+      CREATE TABLE users (
+        id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+        email VARCHAR(255) UNIQUE NOT NULL,
+        password_hash VARCHAR(255) NOT NULL,
+        name VARCHAR(255),
+        roles TEXT[],
+        created_at TIMESTAMP DEFAULT NOW(),
+        updated_at TIMESTAMP DEFAULT NOW()
+      );
+      
+      CREATE INDEX idx_users_email ON users(email);
+    access_patterns: |
+      - Lookup by ID (primary key)
+      - Lookup by email (indexed)
+      - List with pagination
+    indexes:
+      - "idx_users_email"
+    migrations: |
+      Use Flyway for schema migrations.
+      Migrations are versioned and applied automatically on deployment.
+
+deployment_model:
+  hosting: cloud
+  orchestration: "Kubernetes Deployment"
+  scaling_strategy: "Horizontal Pod Autoscaler based on CPU (target 70%)"
+
+operational_requirements:
+  monitoring: "Prometheus scraping /metrics endpoint"
+  logging: "Structured JSON to stdout, collected by Fluentd"
+  security: "TLS 1.3 for all external connections"
+
+gaps: []

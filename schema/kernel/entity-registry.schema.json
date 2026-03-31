@@ -1,0 +1,292 @@
+{
+  "$defs": {
+    "CanonicalSource": {
+      "description": "Canonical source anchor for a normalized entity.",
+      "properties": {
+        "artifact_path": {
+          "title": "Artifact Path",
+          "type": "string"
+        },
+        "source_ref": {
+          "title": "Source Ref",
+          "type": "string"
+        },
+        "source_type": {
+          "title": "Source Type",
+          "type": "string"
+        }
+      },
+      "required": [
+        "source_type",
+        "source_ref",
+        "artifact_path"
+      ],
+      "title": "CanonicalSource",
+      "type": "object"
+    },
+    "Completeness": {
+      "description": "Completeness state for a normalized entity.",
+      "properties": {
+        "missing_fields": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Missing Fields",
+          "type": "array"
+        },
+        "status": {
+          "pattern": "^(complete|partial|reference_only|conflicted)$",
+          "title": "Status",
+          "type": "string"
+        }
+      },
+      "required": [
+        "status"
+      ],
+      "title": "Completeness",
+      "type": "object"
+    },
+    "DiscoveryProvenance": {
+      "description": "Extraction provenance for a derived record.",
+      "properties": {
+        "classification": {
+          "pattern": "^(explicit|derived|heuristic)$",
+          "title": "Classification",
+          "type": "string"
+        },
+        "extraction_phase": {
+          "title": "Extraction Phase",
+          "type": "string"
+        },
+        "generator": {
+          "title": "Generator",
+          "type": "string"
+        },
+        "source_ref": {
+          "title": "Source Ref",
+          "type": "string"
+        },
+        "source_type": {
+          "title": "Source Type",
+          "type": "string"
+        }
+      },
+      "required": [
+        "source_type",
+        "source_ref",
+        "extraction_phase",
+        "classification",
+        "generator"
+      ],
+      "title": "DiscoveryProvenance",
+      "type": "object"
+    },
+    "EntityRelationshipSummary": {
+      "description": "Local relationship summary attached to an entity.",
+      "properties": {
+        "declared_in": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Declared In",
+          "type": "array"
+        },
+        "embodied_in": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Embodied In",
+          "type": "array"
+        },
+        "enabled_by": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Enabled By",
+          "type": "array"
+        },
+        "enables": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Enables",
+          "type": "array"
+        },
+        "enforces": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Enforces",
+          "type": "array"
+        },
+        "governs": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Governs",
+          "type": "array"
+        },
+        "implemented_by": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Implemented By",
+          "type": "array"
+        },
+        "references": {
+          "items": {
+            "type": "string"
+          },
+          "title": "References",
+          "type": "array"
+        },
+        "refines": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Refines",
+          "type": "array"
+        },
+        "related_to": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Related To",
+          "type": "array"
+        },
+        "superseded_by": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Superseded By",
+          "type": "array"
+        },
+        "supersedes": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Supersedes",
+          "type": "array"
+        }
+      },
+      "title": "EntityRelationshipSummary",
+      "type": "object"
+    },
+    "NormalizedEntity": {
+      "description": "Normalized architecture discovery entity.",
+      "properties": {
+        "canonical_source": {
+          "$ref": "#/$defs/CanonicalSource"
+        },
+        "completeness": {
+          "$ref": "#/$defs/Completeness"
+        },
+        "entity_type": {
+          "enum": [
+            "adr",
+            "system",
+            "component",
+            "decision",
+            "capability",
+            "invariant"
+          ],
+          "title": "Entity Type",
+          "type": "string"
+        },
+        "id": {
+          "title": "Id",
+          "type": "string"
+        },
+        "metadata": {
+          "additionalProperties": true,
+          "title": "Metadata",
+          "type": "object"
+        },
+        "name": {
+          "title": "Name",
+          "type": "string"
+        },
+        "provenance": {
+          "$ref": "#/$defs/DiscoveryProvenance"
+        },
+        "relationships": {
+          "$ref": "#/$defs/EntityRelationshipSummary"
+        },
+        "source_refs": {
+          "items": {
+            "$ref": "#/$defs/SourceRef"
+          },
+          "title": "Source Refs",
+          "type": "array"
+        },
+        "summary": {
+          "title": "Summary",
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "entity_type",
+        "name",
+        "summary",
+        "canonical_source",
+        "completeness",
+        "provenance"
+      ],
+      "title": "NormalizedEntity",
+      "type": "object"
+    },
+    "SourceRef": {
+      "description": "Non-canonical mention of an entity.",
+      "properties": {
+        "artifact_path": {
+          "title": "Artifact Path",
+          "type": "string"
+        },
+        "mention_role": {
+          "title": "Mention Role",
+          "type": "string"
+        },
+        "source_ref": {
+          "title": "Source Ref",
+          "type": "string"
+        },
+        "source_type": {
+          "title": "Source Type",
+          "type": "string"
+        }
+      },
+      "required": [
+        "source_type",
+        "source_ref",
+        "artifact_path",
+        "mention_role"
+      ],
+      "title": "SourceRef",
+      "type": "object"
+    }
+  },
+  "description": "Registry of normalized architecture entities.",
+  "properties": {
+    "entities": {
+      "items": {
+        "$ref": "#/$defs/NormalizedEntity"
+      },
+      "title": "Entities",
+      "type": "array"
+    },
+    "schema_version": {
+      "default": "1.1",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "type": {
+      "const": "normalized_entity_registry",
+      "default": "normalized_entity_registry",
+      "title": "Type",
+      "type": "string"
+    }
+  },
+  "title": "NormalizedEntityRegistry",
+  "type": "object"
+}

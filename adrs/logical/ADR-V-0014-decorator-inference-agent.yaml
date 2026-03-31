@@ -1,0 +1,593 @@
+schema_version: '1.0'
+id: ADR-V-0014
+adr_type: logical
+vision_category: true
+promotable_to_logical: true
+title: Decorator Inference Agent (Self-Healing Graph)
+status: proposed
+created_date: '2024-03-10'
+authors:
+- adr-architecture-kit
+tags:
+- decorator-inference
+- self-healing-graph
+- ai-agent
+- graph-completion
+- autonomous-systems
+context: |
+  The semantic graph is incomplete without explicit ADR-to-code edges:
+  - ADR slices exist (extracted from YAML files)
+  - Code slices exist (extracted from source code)
+  - Edges between them? Missing (no decorators)
+
+  Problems with incomplete graph:
+  - Can't query "what code implements this ADR?" (no edges to traverse)
+  - Can't validate code matches spec (no links to compare)
+  - Can't detect drift (no way to know what changed)
+  - Can't do surgical review (can't isolate relevant code)
+  - Can't measure compliance (can't find code to check)
+
+  Manual decoration is broken:
+  - Developers forget decorators (human error)
+  - Manual decoration is tedious (low adoption)
+  - No feedback loop (graph stays broken)
+
+  Opportunity: Self-healing graph through confident targeted reasoning.
+
+  ## The Self-Healing Paradigm
+
+  Traditional graphs:
+  - Static structure (edges defined manually)
+  - Incomplete by default (humans forget to link)
+  - No self-awareness (can't detect missing edges)
+  - No self-repair (requires manual fixes)
+
+  Self-healing semantic graph:
+  - Dynamic structure (edges inferred automatically)
+  - Complete by default (AI fills gaps)
+  - Self-aware (detects incomplete edges)
+  - Self-repairing (reasons and heals autonomously)
+
+  The graph reasons over its own structure to complete itself.
+capability:
+  name: Decorator Inference Agent (Self-Healing Graph)
+  description: |
+    An AI agent that enables the semantic graph to heal itself by using
+    confident targeted reasoning to infer missing ADR-to-code edges, then
+    generating PRs to add decorators or create new Physical-Component ADRs.
+
+    Core concept: The graph detects its own incompleteness, reasons over its
+    structure, and autonomously generates fixes.
+  self_healing_mechanism:
+  - step: Detect
+    description: Graph identifies incomplete edges (ADR slices + code slices, no connections)
+    agent: Decorator Inference Agent
+    input: Semantic graph (ADR slices, code slices, existing edges)
+    output: List of potential matches (ADR-code pairs)
+  - step: Reason
+    description: Foundation model analyzes both sides (ADR spec + code behavior)
+    agent: Foundation Model (Tier 3)
+    input: ADR specification, code structure, context
+    output: Confidence scores and classifications
+  - step: Infer
+    description: Confident matches identified (>80% certainty)
+    agent: Decorator Inference Agent
+    input: Confidence scores
+    output: High-confidence matches, medium-confidence matches, low-confidence skips
+  - step: Heal
+    description: Decorators added OR new ADRs created → RECON extracts → Edges created
+    agent: PR Generator
+    input: Matches and classifications
+    output: Pull requests (decorators, ADR amendments, new ADRs)
+  - step: Complete
+    description: Graph now has bidirectional relationships
+    agent: RECON
+    input: Merged PRs
+    output: Updated semantic graph with explicit edges
+  confident_targeted_reasoning:
+    confident:
+      definition: Only acts on high-certainty matches (>80%)
+      rationale: Low-risk changes (decorators are metadata) enable aggressive inference
+      thresholds:
+      - level: high
+        range: 95%+
+        action: Auto-include in PR
+        example: Function name + behavior + ADR spec all align
+      - level: medium
+        range: 80-95%
+        action: Include with human review flag
+        example: Function matches but naming is ambiguous
+      - level: low
+        range: <80%
+        action: Skip (don't waste human time)
+        example: Unclear match, too uncertain
+    targeted:
+      definition: Analyzes specific ADR-code pairs (not random)
+      approach: For each Physical-Component ADR, find matching code
+      focus: Interface contracts, algorithm specifications, invariant enforcement
+    reasoning:
+      definition: Foundation model matches intent (not just names)
+      capabilities:
+      - Pattern matching (code behavior ↔ ADR spec)
+      - Intent inference (why does this code exist?)
+      - Confidence estimation (how certain am I?)
+      - Technology detection (same stack or different?)
+  classification_logic:
+    outcomes:
+    - outcome: A
+      name: Add Decorator
+      condition: Code matches existing ADR perfectly
+      criteria:
+      - Code implements ADR spec exactly
+      - Same technology stack
+      - Same runtime/language
+      action: Add @adr_implements decorator
+      pr_type: 'Type A: Add Decorators'
+    - outcome: B
+      name: Amend Existing Physical-Component ADR
+      condition: Code is close but needs ADR update
+      criteria:
+      - Code implements capability with minor differences
+      - Same technology stack
+      - Differences are acceptable (additional endpoints, updated algorithms)
+      action: Update existing ADR-PC-XXXX to match actual implementation
+      pr_type: 'Type B: Amend Existing ADR'
+      example: ADR says 'GET /users', code also has 'GET /users/search' (acceptable
+        addition)
+    - outcome: C
+      name: Create New Physical-Component ADR
+      condition: Code is compliant but different stack
+      criteria:
+      - Code implements same interface/capability
+      - Different technology stack (Python vs Rust, Node vs Go)
+      - Different runtime/deployment model
+      action: Create new ADR-PC-XXXX with interface_compatibility validated
+      pr_type: 'Type C: Create New Physical-Component ADR'
+      human_decision: Keep both (complements) or migrate (supersedes)
+      adr_maintenance: Fills in migration/coexistence details based on human choice
+    - outcome: D
+      name: Skip
+      condition: No match or low confidence
+      criteria:
+      - Code doesn't match any ADR
+      - Confidence too low (<80%)
+      action: Skip (don't waste human time)
+  pr_generation:
+    type_a_add_decorators:
+      branch: feat/add-decorators-adr-pc-{id}
+      changes:
+      - Add decorators to matched functions
+      - Include rationale in PR description
+      - Link to ADRs and confidence scores
+      risk: Low (decorators are pure metadata, non-breaking)
+      approval: Fast (review focuses on correctness, not safety)
+    type_b_amend_adr:
+      branch: feat/amend-adr-pc-{id}-{description}
+      changes:
+      - Update existing ADR-PC-XXXX YAML file to match implementation
+      - Add decorators to code
+      - Include rationale (why ADR needs update)
+      risk: Low (documents reality, doesn't change code)
+      approval: 'Human validates: ''Is this addition acceptable?'''
+    type_c_create_new_adr:
+      branch: feat/adr-pc-{new-id}-{component}-{stack}
+      changes:
+      - Generate new ADR-PC-XXXX YAML file
+      - Document technology stack, interface compatibility
+      - Link to logical ADR (implements_logical)
+      - Propose two relationship options (supersedes OR complements)
+      - Add decorators to code referencing new ADR
+      risk: Low (new ADR documents existing code)
+      approval: 'Human decides: ''Keep both or migrate?'''
+      adr_maintenance: Updates migration/coexistence details based on human choice
+  agent_tier:
+    tier: 3
+    model: Foundation Model (GPT-4, Claude, o1)
+    rationale:
+    - Requires deep reasoning (match intent, not just names)
+    - High accuracy needed (decorators become graph edges)
+    - Complex inference (match intent, handle ambiguity, detect migrations)
+    - One-time cost (per codebase, not per query)
+    cost: $0.10 per ADR (vs $3 for GPT-4 only)
+    speed: 5-10s per match
+    accuracy: 95%+ for high-confidence matches
+boundaries:
+  in_scope:
+  - Detecting missing ADR-to-code edges
+  - Inferring decorator placements (confident targeted reasoning)
+  - Generating PRs (decorators, ADR amendments, new ADRs)
+  - Detecting technology migrations (different stack, same interface)
+  - Validating interface compatibility
+  out_of_scope:
+  - Generating code (that's code generation agents)
+  - Modifying existing code behavior (only adds metadata)
+  - Deciding migration strategy (human decides supersedes vs complements)
+  - Implementing ADR changes (ADR maintenance handles that)
+contracts:
+  inference_interface:
+    description: How the agent infers decorator placements
+    inputs:
+    - name: semantic_graph
+      type: STE semantic graph
+      contains:
+      - ADR slices
+      - code slices
+      - existing edges
+    - name: physical_component_adrs
+      type: array of ADR-PC
+      description: Physical-Component ADRs to match against code
+    - name: confidence_threshold
+      type: float
+      default: 0.8
+      description: Minimum confidence for inclusion
+    outputs:
+    - name: matches
+      type: array
+      structure:
+      - adr_id
+      - code_slice_id
+      - confidence_score
+      - classification (A/B/C/D)
+      - rationale
+    - name: pull_requests
+      type: array
+      structure:
+      - pr_type (A/B/C)
+      - branch_name
+      - changes
+      - rationale
+  reasoning_prompt_template:
+    description: Pseudo-prompt for foundation models
+    example_outcome_a:
+      given:
+        adr: 'ADR-PC-0042: User Service API Component'
+        adr_interface: REST API (GET /users, POST /users, etc.)
+        adr_algorithm: JWT validation (RS256, 1-hour expiry)
+        adr_invariant: Token expiry <= 15 minutes
+        code: 'authenticate_user(token: str) -> User'
+        code_behavior: Validates JWT token, checks expiry, returns user object
+      question: Should this function be decorated with @adr_implements?
+      reasoning:
+      - Function validates JWT → Matches 'JWT validation' algorithm
+      - Function checks expiry → Enforces token expiry invariant
+      - Function returns User → Matches interface contract
+      confidence: 95% (high - clear match)
+      recommendation: |
+        @adr_implements("ADR-PC-0042", "user-service", "authentication-api")
+        @adr_algorithm("ADR-PC-0042", "jwt-validation")
+        @adr_invariant("INV-001", "Token expiry must be <= 15 minutes")
+    example_outcome_c:
+      given:
+        adr: 'ADR-PC-0042: User Service API Component (Python + Flask)'
+        adr_interface: REST API (GET /users, POST /users)
+        adr_technology: Python 3.11, Flask, PostgreSQL
+        code: 'authenticate_user(token: str) -> User (Rust + Axum)'
+        code_behavior: Implements same REST API, different technology
+        code_technology: Rust, Axum, same PostgreSQL
+      question: Should this be decorated with @adr_implements('ADR-PC-0042')?
+      reasoning:
+      - Interface matches → Same capability ✅
+      - Technology differs → Different stack ❌
+      - Cannot decorate with ADR-PC-0042 → Wrong technology
+      confidence: 95% (high - clear interface match, wrong stack)
+      recommendation: |
+        Create new ADR-PC-0087: User Service API Component (Rust)
+        - implements_logical: [ADR-L-0042] (same capability)
+        - interface_compatibility: true (same REST API)
+        - technology_stack: Rust + Axum
+
+        Two relationship options (human decides):
+
+        Option A: Migration Path
+        - supersedes: ADR-PC-0042
+        - migration_strategy: strangler_fig
+        - Intent: Replace Python with Rust (deprecate old)
+
+        Option B: Polyglot Architecture
+        - complements: ADR-PC-0042
+        - coexistence_strategy: load_balanced
+        - Intent: Keep both (Python + Rust coexist)
+
+        Then decorate Rust code:
+        @adr_implements("ADR-PC-0087", "user-service", "authentication-api")
+
+        Human chooses in PR review: "Should we migrate or keep both?"
+quality_attributes:
+- attribute: Inference Accuracy
+  requirement: Accurately match code to ADRs
+  measurement: Precision/recall for high-confidence matches
+  target: '>95% precision, >90% recall'
+- attribute: PR Acceptance Rate
+  requirement: Humans agree with inferences
+  measurement: Percentage of PRs merged without changes
+  target: '>90%'
+- attribute: Graph Completeness
+  requirement: Complete missing edges
+  measurement: Percentage of expected edges present
+  target: '>95%'
+- attribute: Time to Decorate Codebase
+  requirement: Fast onboarding
+  measurement: Time from scan to decorated codebase
+  target: <2 hours (vs weeks manual)
+- attribute: Low-Risk Changes
+  requirement: Decorators don't break code
+  measurement: Production incidents caused by decorators
+  target: 0 incidents
+dependencies:
+  requires:
+  - Code Decorators (ADR-V-0012) - defines decorator types
+  - STE semantic graph - provides ADR and code slices
+  - RECON - extracts decorators into graph edges
+  - Physical-Component ADRs - complete specifications for matching
+  - Foundation Model (Tier 3) - for confident targeted reasoning
+  enables:
+  - Complete semantic graph (bidirectional ADR-to-code edges)
+  - Validation (compare code to ADR spec via edges)
+  - Compliance checking (detect drift via graph queries)
+  - Surgical code review (isolate code by signal)
+  - Migration detection (identify different-stack implementations)
+risks:
+- risk: False positives (incorrect decorator placement)
+  likelihood: low
+  impact: low
+  description: Agent decorates code with wrong ADR
+  mitigation: |
+    - High confidence threshold (95% for auto-include)
+    - Human review for medium confidence (80-95%)
+    - Decorators are metadata (easy to fix if wrong)
+    - PR review catches errors before merge
+  detection: Human review, post-merge validation
+- risk: False negatives (missed matches)
+  likelihood: medium
+  impact: medium
+  description: Agent misses valid ADR-code matches
+  mitigation: |
+    - Run agent periodically (catch missed matches over time)
+    - Human can manually add decorators (agent doesn't prevent manual)
+    - Graph completeness metrics detect gaps
+  detection: Graph completeness metrics, manual inspection
+- risk: Over-aggressive inference (too many medium-confidence matches)
+  likelihood: medium
+  impact: low
+  description: Agent includes too many ambiguous matches, overwhelming human reviewers
+  mitigation: |
+    - Tune confidence thresholds based on acceptance rate
+    - Batch PRs by ADR (one PR per Physical-Component)
+    - Clear rationale in PR descriptions
+  detection: PR review time, acceptance rate metrics
+rationale: |
+  **Why a Decorator Inference Agent?**
+
+  Manual decoration is broken:
+  - Developers forget decorators (human error)
+  - Manual decoration is tedious (low adoption)
+  - No feedback loop (graph stays broken)
+
+  **Why self-healing?**
+
+  The graph can reason over its own structure:
+  - Detects incomplete edges (ADR slices + code slices, no connections)
+  - Analyzes both sides (ADR spec + code behavior)
+  - Infers missing relationships (confident matching)
+  - Generates fixes (decorators, ADR amendments, new ADRs)
+
+  **Why confident targeted reasoning?**
+
+  - **Confident**: Only acts when certain (>80%) - low-risk changes enable aggressive inference
+  - **Targeted**: Analyzes specific ADR-code pairs - not random guessing
+  - **Reasoning**: Foundation model matches intent - not just names
+
+  **Why low-risk?**
+
+  Decorators are pure metadata:
+  - Don't affect runtime behavior
+  - Don't change function signatures
+  - Don't modify logic
+  - Easy to remove if wrong
+
+  This enables aggressive inference and fast approval.
+
+  **Why detect migrations?**
+
+  Code implementing same interface with different stack is valuable:
+  - Captures technology evolution (Python → Rust)
+  - Documents composable architecture (multiple implementations)
+  - Enables gradual migration (both coexist)
+
+  Agent detects this and proposes new Physical-Component ADR.
+  Human decides: migrate (supersedes) or keep both (complements).
+
+  **Benefits:**
+
+  1. **Complete graph**: Bidirectional ADR-to-code edges enable all other capabilities
+  2. **Fast onboarding**: 2 hours to decorate codebase (vs weeks manual)
+  3. **High accuracy**: 95%+ for high-confidence matches
+  4. **Low risk**: Decorators are metadata (non-breaking)
+  5. **Migration detection**: Captures technology evolution automatically
+  6. **Self-healing**: Graph completes itself autonomously
+alternatives:
+- alternative: Manual decoration (status quo)
+  pros:
+  - Human control
+  - No AI inference errors
+  cons:
+  - Tedious
+  - Low adoption
+  - Human error
+  - Graph stays incomplete
+  why_not_chosen: Manual decoration doesn't scale, graph stays broken
+- alternative: Rule-based matching (Tier 1)
+  pros:
+  - Fast
+  - Cheap
+  - Deterministic
+  cons:
+  - Can't match intent
+  - Misses ambiguous cases
+  - No migration detection
+  why_not_chosen: Requires deep reasoning to match intent, not just names
+- alternative: Local LLM (Tier 2)
+  pros:
+  - Cheaper than foundation model
+  - Privacy preserved
+  cons:
+  - Lower accuracy (80-90%)
+  - May miss subtle matches
+  why_not_chosen: Decorator placement is high-stakes (becomes graph edges), need 95%+
+    accuracy
+- alternative: Direct commit (no PR review)
+  pros:
+  - Faster
+  - No human bottleneck
+  cons:
+  - No human validation
+  - Errors harder to catch
+  why_not_chosen: Decorators are architectural assertions, human review builds trust
+notes: |
+  ## Self-Healing Graph: The Core Innovation
+
+  This is not just automation - it's autonomous graph evolution.
+
+  Traditional approach: Manual graph construction
+  ```
+  Human writes code → Human adds decorators → RECON extracts → Graph complete
+                      ↑
+                      BOTTLENECK (humans forget, make mistakes, get tired)
+  ```
+
+  Self-healing approach: Autonomous graph completion
+  ```
+  Human writes code → RECON extracts code slices → Graph detects missing edges
+                                                          ↓
+                                                     AI reasons over graph
+                                                          ↓
+                                                     Confident matches found
+                                                          ↓
+                                                     Decorators generated
+                                                          ↓
+                                                     RECON extracts edges
+                                                          ↓
+                                                     Graph healed
+  ```
+
+  **Key characteristics of self-healing:**
+
+  1. **Self-awareness**: Graph knows when edges are missing
+  2. **Self-analysis**: Graph reasons over its own structure
+  3. **Self-repair**: Graph generates fixes (decorators, ADRs)
+  4. **Confidence-based**: Only heals when reasoning is strong
+  5. **Targeted**: Focuses on specific incomplete areas
+
+  ## Why Decorators Are Low-Risk
+
+  Decorators are pure metadata - they don't affect runtime behavior:
+
+  ```python
+  # Before (no decorator)
+  def authenticate_user(token: str) -> User:
+      return validate_jwt(token)
+
+  # After (with decorator)
+  @adr_implements("ADR-PC-0042", "user-service", "authentication-api")
+  def authenticate_user(token: str) -> User:
+      return validate_jwt(token)
+  ```
+
+  **What changed?**
+  - Function signature: ❌ No change
+  - Function logic: ❌ No change
+  - Runtime behavior: ❌ No change
+  - Metadata: ✅ Added (for RECON extraction)
+
+  **Risk assessment:**
+  - Breaking production: Near zero
+  - Wrong metadata: Low (wrong graph edge, fixable)
+  - Performance impact: Zero (extracted at build time)
+  - Rollback cost: Trivial (remove decorator)
+
+  This enables aggressive inference and fast approval.
+
+  ## Integration with Existing Vision
+
+  This ADR completes the decorator adoption story:
+
+  - **ADR-V-0012**: Defines decorators (what they are, how they create edges)
+  - **ADR-V-0013**: Imports legacy systems (creates ADR slices from code)
+  - **ADR-V-0014**: Infers decorators (heals graph by completing edges)
+
+  Together: Complete automation of ADR-to-code traceability.
+
+  ### The Complete Graph Lifecycle
+
+  ```
+  Legacy Code
+      ↓
+  ADR-V-0013 (Legacy Import Agent)
+      ↓
+  ADR Slices Created
+      ↓
+  Incomplete Graph (ADR slices + code slices, no edges)
+      ↓
+  ADR-V-0014 (Decorator Inference Agent)
+      ↓
+  Decorators Added OR New ADRs Created
+      ↓
+  RECON Extracts
+      ↓
+  Complete Graph (explicit edges)
+      ↓
+  Bidirectional Queries Work
+      ↓
+  Validation, Compliance, Surgical Review Enabled
+  ```
+
+  **Graph healing is the missing piece** that makes the semantic graph fully functional.
+
+  ## Example Scenario
+
+  **Codebase**: 10,000 lines, 0 decorators, 5 Physical-Component ADRs
+
+  **Agent workflow**:
+
+  1. Load semantic graph (5 ADR slices, 200 code slices)
+  2. For each ADR, find matching code:
+     - ADR-PC-0042 (User Service, Python) → 15 Python functions matched
+     - ADR-PC-0043 (Auth Service, Node) → 8 Node functions matched
+     - ADR-PC-0044 (Database, Python) → 12 Python functions matched
+  3. **Detect migration**: 8 Rust functions implement user-service interface
+     - Same interface as ADR-PC-0042
+     - Different stack (Rust vs Python)
+     - Action: Propose ADR-PC-0087 (User Service, Rust)
+  4. Generate 4 PRs:
+     - PR 1: Add decorators to Python user-service (ADR-PC-0042)
+     - PR 2: Add decorators to Node auth-service (ADR-PC-0043)
+     - PR 3: Add decorators to Python database (ADR-PC-0044)
+     - **PR 4: Create ADR-PC-0087 (Rust user-service) + add decorators**
+  5. Human reviews PRs (1.5 hours total, low-risk review)
+     - PRs 1-3: "Is this the right ADR?" (fast)
+     - PR 4: "Should we migrate or keep both?" (decision point)
+  6. Merge PRs → RECON extracts decorators + new ADR → Graph updated
+
+  **Result**: 43 functions decorated + 1 new ADR created in 2 hours (vs 2 weeks manual)
+
+  **Graph healing**:
+  - Before: 5 ADR slices, 200 code slices, 0 ADR-to-code edges
+  - After: **6 ADR slices** (added ADR-PC-0087), 200 code slices, 43 ADR-to-code edges
+  - Graph completeness: 95% (43 of 45 expected edges present)
+  - **Decision captured**: Human chose Option A (migration path)
+    - ADR-PC-0087 (Rust) supersedes ADR-PC-0042 (Python)
+    - Migration strategy: strangler_fig
+    - Python will be deprecated after Rust is validated
+  - Queries now work:
+    - "What code implements ADR-PC-0042?" → 15 Python functions
+    - "What code implements ADR-PC-0087?" → 8 Rust functions
+    - "What's the migration path?" → ADR-PC-0042 → ADR-PC-0087 (supersedes)
+
+  ## This Is Not Just Automation
+
+  This is autonomous graph evolution.
+
+  The graph doesn't wait for humans to fix it.
+  It reasons over itself, identifies gaps, and heals them confidently.
+
+  **We're building a self-healing semantic graph.**

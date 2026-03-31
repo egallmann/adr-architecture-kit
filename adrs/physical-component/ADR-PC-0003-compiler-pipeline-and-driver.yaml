@@ -1,0 +1,97 @@
+schema_version: '1.0'
+adr_type: physical-component
+id: ADR-PC-0003
+title: Compiler Pipeline and Driver
+status: proposed
+created_date: '2026-03-15'
+authors:
+- adr-architecture-kit
+domains:
+- compiler
+- pipeline
+- tooling
+implements_system:
+- ADR-PS-0002
+implements_logical:
+- ADR-L-0007
+- ADR-L-0009
+- ADR-L-0013
+introduces_entities:
+- COMP-0012
+- IFACE-0013
+- IMPL-0013
+technologies:
+- python
+- yaml
+- click
+context: |
+  The compiler driver and explicit pipeline now own deterministic architecture
+  compilation across parse, analysis, emission, and recursive scope
+  orchestration. This component documents that public compile boundary.
+technology_stack:
+- category: language
+  name: Python
+  version: '3.11'
+  rationale: Existing compiler implementation language.
+- category: tooling
+  name: Click
+  version: 8.x
+  rationale: CLI orchestration for compile entrypoints.
+component_specifications:
+- id: COMP-0012
+  name: Compiler Pipeline and Driver
+  type: service
+  responsibilities: |
+    - Build compiler pipeline state from canonical scope inputs
+    - Execute deterministic pass ordering
+    - Emit architecture bundle, manifest, graph, and rendered outputs
+    - Support recursive multi-scope compilation and reporting
+  generation_context:
+    purpose: Compile canonical architecture artifacts into derived outputs.
+    key_responsibilities:
+    - Own compile orchestration
+    - Keep emission deterministic
+    - Support recursive workspace compilation
+    constraints:
+    - Derived outputs remain non-authoritative
+    - Pass ordering must stay compiler-owned and explicit
+    success_criteria:
+    - adr compile remains the authoritative orchestration path
+    - Recursive compilation produces scope-local artifacts deterministically
+  interfaces:
+  - id: IFACE-0013
+    type: CLI
+    specification: |
+      Commands:
+      - adr compile
+      - adr generate-architecture-index
+      - adr generate-manifest
+      - adr generate-rendered-docs
+  implementation_identifiers:
+    module_path: src/adr_kit/compiler/driver.py
+    service_name: adr-compiler
+    entry_point: src/adr_kit/cli/main.py
+    test_path: tests/test_compiler_driver.py
+  implementation_requirements:
+    error_handling:
+      strategy: Surface compilation diagnostics and fail closed on invalid bundles when required.
+    observability:
+      logging:
+        level: info
+        structured: false
+      metrics:
+      - name: compiler_runs_total
+        type: counter
+    testing_requirements:
+      unit_test_coverage: '>= 80%'
+      integration_tests: |
+        - Single-scope compilation
+        - Recursive workspace compilation
+        - Bundle and graph emission
+implementation_decisions:
+- id: IMPL-0013
+  summary: Keep compiler orchestration as a dedicated component
+  rationale: |
+    The explicit pipeline and driver are now stable public runtime behavior and
+    should not remain implicit inside a generic toolkit ADR.
+gaps: []

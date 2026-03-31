@@ -1,0 +1,95 @@
+schema_version: '1.0'
+adr_type: physical-component
+id: ADR-PC-0006
+title: Brownfield Onboarding and Canonical Normalization
+status: proposed
+created_date: '2026-03-15'
+authors:
+- adr-architecture-kit
+domains:
+- migration
+- onboarding
+- normalization
+implements_system:
+- ADR-PS-0002
+implements_logical:
+- ADR-L-0011
+- ADR-L-0014
+introduces_entities:
+- COMP-0015
+- IFACE-0016
+- IMPL-0016
+technologies:
+- python
+- yaml
+- click
+context: |
+  adr-architecture-kit already includes migration and normalization behavior in
+  its migrator and CLI surfaces. This component makes brownfield onboarding and
+  canonical normalization an explicit part of the compiler/validation runtime.
+technology_stack:
+- category: language
+  name: Python
+  version: '3.11'
+  rationale: Existing implementation language.
+- category: tooling
+  name: Click
+  version: 8.x
+  rationale: Existing CLI surface for migration workflows.
+component_specifications:
+- id: COMP-0015
+  name: Brownfield Onboarding and Canonical Normalization
+  type: service
+  responsibilities: |
+    - Detect canonical entity ID collisions
+    - Apply deterministic canonical ID remaps
+    - Write canonical migration ledgers
+    - Support brownfield onboarding cleanup as governed normalization rather than ad hoc editing
+  generation_context:
+    purpose: Normalize brownfield architecture artifacts into canonical STE form.
+    key_responsibilities:
+    - canonical ID normalization
+    - migration ledger generation
+    - brownfield onboarding support
+    constraints:
+    - normalization must be deterministic and auditable
+    - canonical updates must precede derived artifact regeneration
+    success_criteria:
+    - normalize-canonical-ids produces deterministic remaps
+    - migration ledgers preserve old-to-new mapping evidence
+  interfaces:
+  - id: IFACE-0016
+    type: CLI
+    specification: |
+      Commands:
+      - adr normalize-canonical-ids
+      Public modules:
+      - src/adr_kit/migrators/canonical_id_normalizer.py
+  implementation_identifiers:
+    module_path: src/adr_kit/migrators/canonical_id_normalizer.py
+    entry_point: src/adr_kit/cli/main.py
+    test_path: tests/test_canonical_id_normalizer.py
+  implementation_requirements:
+    error_handling:
+      strategy: Apply deterministic remaps only for detected collisions and preserve a machine-readable migration ledger.
+    observability:
+      logging:
+        level: info
+        structured: false
+      metrics:
+      - name: canonical_id_normalizations_total
+        type: counter
+    testing_requirements:
+      unit_test_coverage: '>= 80%'
+      integration_tests: |
+        - Canonical collision detection
+        - Deterministic remap application
+        - Migration ledger generation
+implementation_decisions:
+- id: IMPL-0016
+  summary: Treat brownfield onboarding and canonical normalization as an explicit component capability
+  rationale: |
+    Migration logic is part of the usable onboarding path for STE adoption and
+    should be documented as an intentional system capability rather than hidden
+    utility behavior.
+gaps: []

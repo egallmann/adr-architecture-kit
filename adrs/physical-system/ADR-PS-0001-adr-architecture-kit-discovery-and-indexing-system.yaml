@@ -1,0 +1,72 @@
+schema_version: '1.0'
+adr_type: physical-system
+id: ADR-PS-0001
+title: ADR Architecture Kit Discovery and Indexing System
+status: proposed
+created_date: '2026-03-13'
+authors:
+- adr-architecture-kit
+domains:
+- discovery
+- indexing
+- tooling
+implements_logical:
+- ADR-L-0009
+- ADR-L-0012
+references_components:
+- ADR-PC-0001
+technologies:
+- python
+- pyyaml
+- click
+context: |
+  The discovery and indexing subsystem provides the derived surfaces that agents
+  query instead of scanning raw ADR bodies by default. It now includes
+  normalized discovery bundle generation under `adrs/index/`, legacy
+  compatibility registry generation under `adrs/entities/registry.yaml`,
+  manifest generation, rendered ADR markdown generation, CLI query surfaces over
+  generated registry state, and the unified `adr compile` orchestration path
+  that emits these derived discovery artifacts together.
+technology_stack:
+- category: language
+  name: Python
+  version: '3.11'
+  rationale: Existing adr-architecture-kit implementation language.
+- category: library
+  name: PyYAML
+  version: 6.x
+  rationale: Deterministic YAML parsing and rendering for derived artifacts.
+- category: tooling
+  name: Click
+  version: 8.x
+  rationale: Existing CLI surface for agent and human invocation.
+system_boundaries:
+- id: SYSBOUND-0001
+  name: Discovery and Indexing Boundary
+  description: |
+    Encapsulates generation and query of derived discovery artifacts without
+    changing canonical ADR authority.
+  external_dependencies:
+  - Canonical ADR artifacts
+  - Standalone invariant artifacts
+  exposed_interfaces:
+  - adr compile
+  - adr generate-architecture-index
+  - adr generate-manifest
+  - adr generate-rendered-docs
+  - adr generate-entity-registry
+  - adr entities *
+component_topology:
+  components:
+  - name: Entity Registry Component
+    type: service
+    purpose: Compile, emit, and query derived discovery artifacts for architecture
+      indexing.
+    implements_adr: ADR-PC-0001
+  relationships:
+  - from: Canonical ADR artifacts
+    to: Entity Registry Component
+    type: depends_on
+    description: Discovery bundle, manifest, markdown, and legacy registry generation
+      depend on canonical artifacts.
+gaps: []

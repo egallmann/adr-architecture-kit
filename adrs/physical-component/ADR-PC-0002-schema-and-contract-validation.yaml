@@ -1,0 +1,106 @@
+schema_version: '1.0'
+adr_type: physical-component
+id: ADR-PC-0002
+title: Schema and Contract Validation
+status: proposed
+created_date: '2026-03-15'
+authors:
+- adr-architecture-kit
+domains:
+- validation
+- schema
+- contracts
+implements_system:
+- ADR-PS-0002
+implements_logical:
+- ADR-L-0008
+- ADR-L-0010
+- ADR-L-0011
+related_adrs:
+- ADR-P-0002
+supersedes:
+- ADR-P-0002
+introduces_entities:
+- COMP-0011
+- IFACE-0012
+- IMPL-0012
+technologies:
+- python
+- jsonschema
+- pydantic
+context: |
+  Schema and contract validation is now a stable component boundary rather than
+  a generic legacy physical slice. It validates canonical ADR structure,
+  profile-specific contract requirements, project metadata, and implementation
+  attribution evidence.
+technology_stack:
+- category: language
+  name: Python
+  version: '3.11'
+  rationale: Existing implementation language.
+- category: library
+  name: jsonschema
+  version: 4.x
+  rationale: Structural schema validation.
+- category: library
+  name: Pydantic
+  version: 2.x
+  rationale: Typed contract and validation result models.
+component_specifications:
+- id: COMP-0011
+  name: Schema and Contract Validation Surface
+  type: service
+  responsibilities: |
+    - Validate canonical ADR artifacts against schema and business rules
+    - Validate kernel-facing contract profiles
+    - Validate project metadata and implementation attribution evidence
+    - Provide CLI entrypoints for validation workflows
+  generation_context:
+    purpose: Validate canonical architecture artifacts before downstream use.
+    key_responsibilities:
+    - Enforce schema and contract expectations
+    - Produce deterministic validation issues
+    - Fail closed on invalid contract inputs
+    constraints:
+    - Validation authority must remain canonical-artifact-first
+    - Consumer code must not invent a second contract interpretation path
+    success_criteria:
+    - Contract/profile validation runs through shared validation surfaces
+    - Validation failures are deterministic and actionable
+  interfaces:
+  - id: IFACE-0012
+    type: CLI
+    specification: |
+      Commands:
+      - adr validate
+      - adr validate-contract
+      - adr validate-project-metadata
+      - adr validate-generated-docs
+  implementation_identifiers:
+    module_path: src/adr_kit/schema/contract_validation.py
+    entry_point: src/adr_kit/cli/main.py
+    test_path: tests/test_kernel_contract_validation.py
+  implementation_requirements:
+    error_handling:
+      strategy: Fail closed on invalid schema, invalid contract input, and invalid attribution evidence.
+    observability:
+      logging:
+        level: info
+        structured: false
+      metrics:
+      - name: validation_runs_total
+        type: counter
+    testing_requirements:
+      unit_test_coverage: '>= 80%'
+      integration_tests: |
+        - Contract validation profile checks
+        - Project metadata validation
+        - Generated docs validation
+implementation_decisions:
+- id: IMPL-0012
+  summary: Treat schema and contract validation as a component boundary
+  rationale: |
+    Validation surfaces are independently public, stable, and reused across CLI
+    and downstream canonicalization workflows.
+gaps: []
+

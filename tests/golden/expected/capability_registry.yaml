@@ -1,0 +1,1895 @@
+schema_version: '1.1'
+type: normalized_entity_registry
+entities:
+- id: CAP-0001
+  entity_type: capability
+  name: Machine-Verifiable Architecture Documentation
+  summary: Enable AI systems to deterministically reason over architecture decisions
+    through structured, schema-validated artifacts. No ambiguous markdown parsing,
+    no implicit assumptions, no narrative drift.
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0001#CAP-0001
+    artifact_path: adrs/logical/ADR-L-0001-ste-compliant-adr-system.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0001
+    domains:
+    - architecture
+    - governance
+    - documentation-state
+    implemented_by_components: []
+    enabled_by_decisions: []
+  relationships:
+    declared_in:
+    - ADR-L-0001
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0001#CAP-0001
+    extraction_phase: extract_capability
+    classification: explicit
+    generator: adr-architecture-index
+- id: CAP-0002
+  entity_type: capability
+  name: Two-Layer Architecture Model
+  summary: Separate conceptual design (logical ADRs) from implementation specifications
+    (physical ADRs). Logical ADRs define capabilities, boundaries, contracts, and
+    invariants without implementation details. Physical ADRs operatio
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0001#CAP-0002
+    artifact_path: adrs/logical/ADR-L-0001-ste-compliant-adr-system.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0001
+    domains:
+    - architecture
+    - governance
+    - documentation-state
+    implemented_by_components: []
+    enabled_by_decisions: []
+  relationships:
+    declared_in:
+    - ADR-L-0001
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0001#CAP-0002
+    extraction_phase: extract_capability
+    classification: explicit
+    generator: adr-architecture-index
+- id: CAP-0003
+  entity_type: capability
+  name: Semantic Graph Integration
+  summary: Architecture artifacts participate in ste-runtime semantic graph through
+    RECON extraction. ADRs become graph nodes with typed edges (implements, relates_to,
+    enforces), enabling graph queries, blast radius analysis, and p
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0001#CAP-0003
+    artifact_path: adrs/logical/ADR-L-0001-ste-compliant-adr-system.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0001
+    domains:
+    - architecture
+    - governance
+    - documentation-state
+    implemented_by_components: []
+    enabled_by_decisions: []
+  relationships:
+    declared_in:
+    - ADR-L-0001
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0001#CAP-0003
+    extraction_phase: extract_capability
+    classification: explicit
+    generator: adr-architecture-index
+- id: CAP-0004
+  entity_type: capability
+  name: Explicit Gap Tracking
+  summary: Incomplete designs are first-class schema elements. Gaps are structured
+    with impact assessment, blocking status, and decision ownership. Convergence validation
+    ensures gaps are resolved or explicitly tracked.
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0001#CAP-0004
+    artifact_path: adrs/logical/ADR-L-0001-ste-compliant-adr-system.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0001
+    domains:
+    - architecture
+    - governance
+    - documentation-state
+    implemented_by_components: []
+    enabled_by_decisions: []
+  relationships:
+    declared_in:
+    - ADR-L-0001
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0001#CAP-0004
+    extraction_phase: extract_capability
+    classification: explicit
+    generator: adr-architecture-index
+- id: CAP-0005
+  entity_type: capability
+  name: Derived Manifest Generation
+  summary: Manifest is generated from authoritative ADRs, never manually edited. Provides
+    fast discovery without reading all ADRs. CI validates manifest freshness (SYS-14).
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0001#CAP-0005
+    artifact_path: adrs/logical/ADR-L-0001-ste-compliant-adr-system.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0001
+    domains:
+    - architecture
+    - governance
+    - documentation-state
+    implemented_by_components: []
+    enabled_by_decisions: []
+  relationships:
+    declared_in:
+    - ADR-L-0001
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0001#CAP-0005
+    extraction_phase: extract_capability
+    classification: explicit
+    generator: adr-architecture-index
+- id: CAP-0006
+  entity_type: capability
+  name: Policy Integration Readiness
+  summary: Schema includes policy_reference, enforcement_level, compliance_frameworks
+    fields to enable future Rules & Signal Service validation. Invariants can be extracted
+    into requirement registry and validated against organizati
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0001#CAP-0006
+    artifact_path: adrs/logical/ADR-L-0001-ste-compliant-adr-system.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0001
+    domains:
+    - architecture
+    - governance
+    - documentation-state
+    implemented_by_components: []
+    enabled_by_decisions: []
+  relationships:
+    declared_in:
+    - ADR-L-0001
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0001#CAP-0006
+    extraction_phase: extract_capability
+    classification: explicit
+    generator: adr-architecture-index
+- id: CAP-0007
+  entity_type: capability
+  name: Correction Agent Context
+  summary: Schema includes implementation_identifiers, ownership, automation flags
+    to enable future correction agents. Agents can locate code, understand boundaries,
+    and operate within safety constraints.
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0001#CAP-0007
+    artifact_path: adrs/logical/ADR-L-0001-ste-compliant-adr-system.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0001
+    domains:
+    - architecture
+    - governance
+    - documentation-state
+    implemented_by_components: []
+    enabled_by_decisions: []
+  relationships:
+    declared_in:
+    - ADR-L-0001
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0001#CAP-0007
+    extraction_phase: extract_capability
+    classification: explicit
+    generator: adr-architecture-index
+- id: CAP-0008
+  entity_type: capability
+  name: Multi-Agent Prompt Generation
+  summary: Generate prompts for multiple components that can be executed in parallel
+    by different AI agents, with clear dependency ordering
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0005#CAP-0008
+    artifact_path: adrs/logical/ADR-L-0005-adr-to-prompt-translation.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0005
+    domains:
+    - adr
+    - automation
+    - ai-tooling
+    - code-generation
+    implemented_by_components: []
+    enabled_by_decisions: []
+  relationships:
+    declared_in:
+    - ADR-L-0005
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0005#CAP-0008
+    extraction_phase: extract_capability
+    classification: explicit
+    generator: adr-architecture-index
+- id: CAP-0009
+  entity_type: capability
+  name: Prompt Format Adaptation
+  summary: Adapt prompt format for different target AI agents (CODEX, Cursor, Claude,
+    GPT) while maintaining core content consistency
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0005#CAP-0009
+    artifact_path: adrs/logical/ADR-L-0005-adr-to-prompt-translation.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0005
+    domains:
+    - adr
+    - automation
+    - ai-tooling
+    - code-generation
+    implemented_by_components: []
+    enabled_by_decisions: []
+  relationships:
+    declared_in:
+    - ADR-L-0005
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0005#CAP-0009
+    extraction_phase: extract_capability
+    classification: explicit
+    generator: adr-architecture-index
+- id: CAP-0010
+  entity_type: capability
+  name: Signal Schema Authority
+  summary: rule-library defines canonical schema for context and cooperative signals.
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0006#CAP-0010
+    artifact_path: adrs/logical/ADR-L-0006-rule-library-sub-module.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0006
+    domains:
+    - governance
+    - rules
+    - signals
+    - integration
+    implemented_by_components: []
+    enabled_by_decisions: []
+  relationships:
+    declared_in:
+    - ADR-L-0006
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0006#CAP-0010
+    extraction_phase: extract_capability
+    classification: explicit
+    generator: adr-architecture-index
+- id: CAP-0011
+  entity_type: capability
+  name: Signal Emission CLI
+  summary: CLI for agents to emit cooperative signals without writing JSON manually.
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0006#CAP-0011
+    artifact_path: adrs/logical/ADR-L-0006-rule-library-sub-module.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0006
+    domains:
+    - governance
+    - rules
+    - signals
+    - integration
+    implemented_by_components: []
+    enabled_by_decisions: []
+  relationships:
+    declared_in:
+    - ADR-L-0006
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0006#CAP-0011
+    extraction_phase: extract_capability
+    classification: explicit
+    generator: adr-architecture-index
+- id: CAP-0012
+  entity_type: capability
+  name: Rule Activation and Projection
+  summary: Context signals drive rule selection; rules projected for consumption.
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0006#CAP-0012
+    artifact_path: adrs/logical/ADR-L-0006-rule-library-sub-module.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0006
+    domains:
+    - governance
+    - rules
+    - signals
+    - integration
+    implemented_by_components: []
+    enabled_by_decisions: []
+  relationships:
+    declared_in:
+    - ADR-L-0006
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0006#CAP-0012
+    extraction_phase: extract_capability
+    classification: explicit
+    generator: adr-architecture-index
+- id: CAP-0013
+  entity_type: capability
+  name: Submodule Bootstrap
+  summary: Bootstrap script for projects adding rule-library as submodule.
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0006#CAP-0013
+    artifact_path: adrs/logical/ADR-L-0006-rule-library-sub-module.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0006
+    domains:
+    - governance
+    - rules
+    - signals
+    - integration
+    implemented_by_components: []
+    enabled_by_decisions: []
+  relationships:
+    declared_in:
+    - ADR-L-0006
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0006#CAP-0013
+    extraction_phase: extract_capability
+    classification: explicit
+    generator: adr-architecture-index
+- id: CAP-0014
+  entity_type: capability
+  name: Deterministic Documentation Projection
+  summary: The system can generate human-readable architecture documentation from
+    structured source artifacts and verify that rendered output remains in sync.
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0007#CAP-0014
+    artifact_path: adrs/logical/ADR-L-0007-deterministic-documentation-projection.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0007
+    domains:
+    - documentation
+    - governance
+    - determinism
+    - projection
+    implemented_by_components: []
+    enabled_by_decisions: []
+  relationships:
+    declared_in:
+    - ADR-L-0007
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0007#CAP-0014
+    extraction_phase: extract_capability
+    classification: explicit
+    generator: adr-architecture-index
+- id: CAP-0015
+  entity_type: capability
+  name: Mode-Aware ADR Validation
+  summary: The validator accepts a mode argument and returns findings appropriate
+    to structural or complete validation.
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0008#CAP-0015
+    artifact_path: adrs/logical/ADR-L-0008-validation-modes-for-draft-and-complete-adrs.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0008
+    domains:
+    - validation
+    - adr
+    - workflow
+    - governance
+    implemented_by_components: []
+    enabled_by_decisions: []
+  relationships:
+    declared_in:
+    - ADR-L-0008
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0008#CAP-0015
+    extraction_phase: extract_capability
+    classification: explicit
+    generator: adr-architecture-index
+- id: CAP-0016
+  entity_type: capability
+  name: Draft-Preserving Source Generation
+  summary: Source ADR generators can preserve explicit empty sections when generating
+    draft artifacts for review.
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0008#CAP-0016
+    artifact_path: adrs/logical/ADR-L-0008-validation-modes-for-draft-and-complete-adrs.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0008
+    domains:
+    - validation
+    - adr
+    - workflow
+    - governance
+    implemented_by_components: []
+    enabled_by_decisions: []
+  relationships:
+    declared_in:
+    - ADR-L-0008
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0008#CAP-0016
+    extraction_phase: extract_capability
+    classification: explicit
+    generator: adr-architecture-index
+- id: CAP-0017
+  entity_type: capability
+  name: Summary Discovery Surface
+  summary: Provide a broad summary-oriented discovery artifact for ADR and scope metadata
+    through `manifest.yaml`.
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0009#CAP-0017
+    artifact_path: adrs/logical/ADR-L-0009-derived-architecture-discovery-surfaces.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0009
+    domains:
+    - discovery
+    - indexing
+    - governance
+    - ai-first
+    implemented_by_components: []
+    enabled_by_decisions: []
+  relationships:
+    declared_in:
+    - ADR-L-0009
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0009#CAP-0017
+    extraction_phase: extract_capability
+    classification: explicit
+    generator: adr-architecture-index
+- id: CAP-0018
+  entity_type: capability
+  name: Normalized Entity Lookup Surface
+  summary: Provide deterministic lookup for normalized architecture entities through
+    `adrs/index/entity-registry.yaml`.
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0009#CAP-0018
+    artifact_path: adrs/logical/ADR-L-0009-derived-architecture-discovery-surfaces.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0009
+    domains:
+    - discovery
+    - indexing
+    - governance
+    - ai-first
+    implemented_by_components: []
+    enabled_by_decisions: []
+  relationships:
+    declared_in:
+    - ADR-L-0009
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by:
+    - COMP-0010
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0009#CAP-0018
+    extraction_phase: extract_capability
+    classification: explicit
+    generator: adr-architecture-index
+- id: CAP-0019
+  entity_type: capability
+  name: Automatic Project Scope Detection
+  summary: 'Auto-detect project boundaries by searching for markers: - ste.config.json
+    (authoritative) - PROJECT.yaml (ADR-specific marker) - package.json, pyproject.toml
+    (language markers) - .git directory (repository root)'
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0002#CAP-0019
+    artifact_path: adrs/logical/ADR-L-0002-multi-scope-adr-architecture.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0002
+    domains:
+    - adr
+    - architecture
+    - governance
+    - multi-project
+    implemented_by_components: []
+    enabled_by_decisions: []
+  relationships:
+    declared_in:
+    - ADR-L-0002
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0002#CAP-0019
+    extraction_phase: extract_capability
+    classification: explicit
+    generator: adr-architecture-index
+- id: CAP-0020
+  entity_type: capability
+  name: Automated Quality Gates
+  summary: CI/CD pipeline automatically runs test suite on every commit and PR. Prevents
+    merging code that fails tests or reduces coverage.
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0003#CAP-0020
+    artifact_path: adrs/logical/ADR-L-0003-quality-assurance-and-testing-strategy.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0003
+    domains:
+    - quality-assurance
+    - testing
+    - governance
+    - reliability
+    implemented_by_components: []
+    enabled_by_decisions: []
+  relationships:
+    declared_in:
+    - ADR-L-0003
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0003#CAP-0020
+    extraction_phase: extract_capability
+    classification: explicit
+    generator: adr-architecture-index
+- id: CAP-0021
+  entity_type: capability
+  name: Architecture Intent Attribution
+  summary: Explicit declaration of architectural authority across code and other implementation
+    artifacts through decorators or metadata-level attribution.
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0004#CAP-0021
+    artifact_path: adrs/logical/ADR-L-0004-adr-to-code-traceability-via-decorators.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0004
+    domains:
+    - architecture
+    - traceability
+    - governance
+    - verification
+    implemented_by_components: []
+    enabled_by_decisions: []
+  relationships:
+    declared_in:
+    - ADR-L-0004
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0004#CAP-0021
+    extraction_phase: extract_capability
+    classification: explicit
+    generator: adr-architecture-index
+- id: CAP-0022
+  entity_type: capability
+  name: Scoped Manifest Generation
+  summary: Generate manifest.yaml scoped to specific project, including only ADRs
+    within that project's adrs/ directory
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0002#CAP-0022
+    artifact_path: adrs/logical/ADR-L-0002-multi-scope-adr-architecture.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0002
+    domains:
+    - adr
+    - architecture
+    - governance
+    - multi-project
+    implemented_by_components: []
+    enabled_by_decisions: []
+  relationships:
+    declared_in:
+    - ADR-L-0002
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0002#CAP-0022
+    extraction_phase: extract_capability
+    classification: explicit
+    generator: adr-architecture-index
+- id: CAP-0023
+  entity_type: capability
+  name: Test-Driven Development Support
+  summary: Test infrastructure supports TDD workflow - write failing test, implement
+    feature, test passes. Fast test execution enables rapid iteration.
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0003#CAP-0023
+    artifact_path: adrs/logical/ADR-L-0003-quality-assurance-and-testing-strategy.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0003
+    domains:
+    - quality-assurance
+    - testing
+    - governance
+    - reliability
+    implemented_by_components: []
+    enabled_by_decisions: []
+  relationships:
+    declared_in:
+    - ADR-L-0003
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0003#CAP-0023
+    extraction_phase: extract_capability
+    classification: explicit
+    generator: adr-architecture-index
+- id: CAP-0024
+  entity_type: capability
+  name: Bidirectional Traceability Verification
+  summary: Automated verification that implementation attribution and ADR declarations
+    agree in both directions.
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0004#CAP-0024
+    artifact_path: adrs/logical/ADR-L-0004-adr-to-code-traceability-via-decorators.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0004
+    domains:
+    - architecture
+    - traceability
+    - governance
+    - verification
+    implemented_by_components: []
+    enabled_by_decisions: []
+  relationships:
+    declared_in:
+    - ADR-L-0004
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0004#CAP-0024
+    extraction_phase: extract_capability
+    classification: explicit
+    generator: adr-architecture-index
+- id: CAP-0025
+  entity_type: capability
+  name: Scoped Validation
+  summary: Validate ADRs within specific project scope, with optional recursive validation
+    of sub-modules
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0002#CAP-0025
+    artifact_path: adrs/logical/ADR-L-0002-multi-scope-adr-architecture.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0002
+    domains:
+    - adr
+    - architecture
+    - governance
+    - multi-project
+    implemented_by_components: []
+    enabled_by_decisions: []
+  relationships:
+    declared_in:
+    - ADR-L-0002
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0002#CAP-0025
+    extraction_phase: extract_capability
+    classification: explicit
+    generator: adr-architecture-index
+- id: CAP-0026
+  entity_type: capability
+  name: Regression Prevention
+  summary: Once a bug is fixed, a test is added to prevent reintroduction. Test suite
+    grows to cover discovered edge cases.
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0003#CAP-0026
+    artifact_path: adrs/logical/ADR-L-0003-quality-assurance-and-testing-strategy.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0003
+    domains:
+    - quality-assurance
+    - testing
+    - governance
+    - reliability
+    implemented_by_components: []
+    enabled_by_decisions: []
+  relationships:
+    declared_in:
+    - ADR-L-0003
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0003#CAP-0026
+    extraction_phase: extract_capability
+    classification: explicit
+    generator: adr-architecture-index
+- id: CAP-0027
+  entity_type: capability
+  name: Profile-Aware Legacy Onboarding for Intent Attribution
+  summary: Govern intent-attribution adoption with the existing greenfield, brownfield,
+    and migration profiles instead of a separate legacy mode.
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0004#CAP-0027
+    artifact_path: adrs/logical/ADR-L-0004-adr-to-code-traceability-via-decorators.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0004
+    domains:
+    - architecture
+    - traceability
+    - governance
+    - verification
+    implemented_by_components: []
+    enabled_by_decisions: []
+  relationships:
+    declared_in:
+    - ADR-L-0004
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0004#CAP-0027
+    extraction_phase: extract_capability
+    classification: explicit
+    generator: adr-architecture-index
+- id: CAP-0028
+  entity_type: capability
+  name: Multi-Scope CLI Interface
+  summary: Provide CLI commands that work at any scope level with consistent behavior
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0002#CAP-0028
+    artifact_path: adrs/logical/ADR-L-0002-multi-scope-adr-architecture.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0002
+    domains:
+    - adr
+    - architecture
+    - governance
+    - multi-project
+    implemented_by_components: []
+    enabled_by_decisions: []
+  relationships:
+    declared_in:
+    - ADR-L-0002
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0002#CAP-0028
+    extraction_phase: extract_capability
+    classification: explicit
+    generator: adr-architecture-index
+- id: CAP-0029
+  entity_type: capability
+  name: Documentation via Tests
+  summary: Tests serve as executable documentation showing how to use components.
+    Examples in tests demonstrate API usage patterns.
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0003#CAP-0029
+    artifact_path: adrs/logical/ADR-L-0003-quality-assurance-and-testing-strategy.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0003
+    domains:
+    - quality-assurance
+    - testing
+    - governance
+    - reliability
+    implemented_by_components: []
+    enabled_by_decisions: []
+  relationships:
+    declared_in:
+    - ADR-L-0003
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0003#CAP-0029
+    extraction_phase: extract_capability
+    classification: explicit
+    generator: adr-architecture-index
+- id: CAP-0030
+  entity_type: capability
+  name: Implementation Attribution Evidence Handoff
+  summary: A compiler-owned evidence contract that downstream extractors populate
+    with implementation-to-ADR attribution claims and provenance.
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0004#CAP-0030
+    artifact_path: adrs/logical/ADR-L-0004-adr-to-code-traceability-via-decorators.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0004
+    domains:
+    - architecture
+    - traceability
+    - governance
+    - verification
+    implemented_by_components: []
+    enabled_by_decisions: []
+  relationships:
+    declared_in:
+    - ADR-L-0004
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0004#CAP-0030
+    extraction_phase: extract_capability
+    classification: explicit
+    generator: adr-architecture-index
+- id: CAP-0031
+  entity_type: capability
+  name: Parse Physical ADR Components
+  summary: 'Parse Physical ADRs to extract component specifications, including: -
+    Component ID, name, type, description - Responsibilities - Interface definitions
+    (methods, parameters, types) - Implementation identifiers (file paths'
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0005#CAP-0031
+    artifact_path: adrs/logical/ADR-L-0005-adr-to-prompt-translation.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0005
+    domains:
+    - adr
+    - automation
+    - ai-tooling
+    - code-generation
+    implemented_by_components: []
+    enabled_by_decisions: []
+  relationships:
+    declared_in:
+    - ADR-L-0005
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0005#CAP-0031
+    extraction_phase: extract_capability
+    classification: explicit
+    generator: adr-architecture-index
+- id: CAP-0032
+  entity_type: capability
+  name: Generate Implementation Prompt
+  summary: 'Generate implementation prompt for a specific component that includes:
+    - Context (what is being built and why) - Constraints (invariants to enforce)
+    - Specifications (what to build) - Test requirements (what to verify) -'
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0005#CAP-0032
+    artifact_path: adrs/logical/ADR-L-0005-adr-to-prompt-translation.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0005
+    domains:
+    - adr
+    - automation
+    - ai-tooling
+    - code-generation
+    implemented_by_components: []
+    enabled_by_decisions: []
+  relationships:
+    declared_in:
+    - ADR-L-0005
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0005#CAP-0032
+    extraction_phase: extract_capability
+    classification: explicit
+    generator: adr-architecture-index
+- id: CAP-0033
+  entity_type: capability
+  name: Generate Validation Checklist
+  summary: 'Generate validation checklist for verifying implementation against ADR,
+    including checks for: - Code structure (files, classes, methods exist) - Invariant
+    enforcement (constraints are enforced) - Test coverage (all requi'
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0005#CAP-0033
+    artifact_path: adrs/logical/ADR-L-0005-adr-to-prompt-translation.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0005
+    domains:
+    - adr
+    - automation
+    - ai-tooling
+    - code-generation
+    implemented_by_components: []
+    enabled_by_decisions: []
+  relationships:
+    declared_in:
+    - ADR-L-0005
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0005#CAP-0033
+    extraction_phase: extract_capability
+    classification: explicit
+    generator: adr-architecture-index
+- id: CAP-0034
+  entity_type: capability
+  name: Profile-Aware Contract Validation
+  summary: Validate compiled registry bundles against a single contract schema with
+    profile-specific enforcement for greenfield, brownfield, and migration.
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0010#CAP-0034
+    artifact_path: adrs/logical/ADR-L-0010-kernel-interface-contract-and-validation-profiles.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0010
+    domains:
+    - kernel
+    - contract
+    - governance
+    - validation
+    implemented_by_components: []
+    enabled_by_decisions: []
+  relationships:
+    declared_in:
+    - ADR-L-0010
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0010#CAP-0034
+    extraction_phase: extract_capability
+    classification: explicit
+    generator: adr-architecture-index
+- id: CAP-0035
+  entity_type: capability
+  name: Production-Safe Kernel Admission
+  summary: Distinguish between contract-valid bundles that are production-safe and
+    bundles that are inspection-safe only.
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0010#CAP-0035
+    artifact_path: adrs/logical/ADR-L-0010-kernel-interface-contract-and-validation-profiles.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0010
+    domains:
+    - kernel
+    - contract
+    - governance
+    - validation
+    implemented_by_components: []
+    enabled_by_decisions: []
+  relationships:
+    declared_in:
+    - ADR-L-0010
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0010#CAP-0035
+    extraction_phase: extract_capability
+    classification: explicit
+    generator: adr-architecture-index
+- id: CAP-0036
+  entity_type: capability
+  name: Typed Metadata Contract Enforcement
+  summary: Validate entity metadata against entity-type-specific schema expectations
+    under the active enforcement profile.
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0011#CAP-0036
+    artifact_path: adrs/logical/ADR-L-0011-metadata-schemas-and-remediation-ledger-enforcement.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0011
+    domains:
+    - governance
+    - metadata
+    - migration
+    - brownfield
+    implemented_by_components: []
+    enabled_by_decisions: []
+  relationships:
+    declared_in:
+    - ADR-L-0011
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0011#CAP-0036
+    extraction_phase: extract_capability
+    classification: explicit
+    generator: adr-architecture-index
+- id: CAP-0037
+  entity_type: capability
+  name: Remediation Ledger Governance
+  summary: Track sentinel usage, replacement, approval, and no-regression state in
+    a canonical governance artifact.
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0011#CAP-0037
+    artifact_path: adrs/logical/ADR-L-0011-metadata-schemas-and-remediation-ledger-enforcement.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0011
+    domains:
+    - governance
+    - metadata
+    - migration
+    - brownfield
+    implemented_by_components: []
+    enabled_by_decisions: []
+  relationships:
+    declared_in:
+    - ADR-L-0011
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0011#CAP-0037
+    extraction_phase: extract_capability
+    classification: explicit
+    generator: adr-architecture-index
+- id: CAP-0038
+  entity_type: capability
+  name: Federated Qualified Identity Resolution
+  summary: Support unambiguous multi-repository entity references using namespaces
+    and qualified identifiers while preserving bare local references in source ADRs.
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0012#CAP-0038
+    artifact_path: adrs/logical/ADR-L-0012-federation-authority-and-qualified-identity.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0012
+    domains:
+    - federation
+    - identity
+    - governance
+    - multi-repo
+    implemented_by_components: []
+    enabled_by_decisions: []
+  relationships:
+    declared_in:
+    - ADR-L-0012
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0012#CAP-0038
+    extraction_phase: extract_capability
+    classification: explicit
+    generator: adr-architecture-index
+- id: CAP-0039
+  entity_type: capability
+  name: Stable Repository Semantic Boundary
+  summary: Provide one scope-safe, deterministic in-process interface that loads compiled
+    architecture bundles and returns a stable normalized semantic model for tools,
+    validators, agents, and future kernel consumers.
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0013#CAP-0039
+    artifact_path: adrs/logical/ADR-L-0013-architecture-repository-boundary-and-normalized-semantic-model.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0013
+    domains:
+    - repository
+    - discovery
+    - compiler
+    - kernel
+    implemented_by_components: []
+    enabled_by_decisions: []
+  relationships:
+    declared_in:
+    - ADR-L-0013
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0013#CAP-0039
+    extraction_phase: extract_capability
+    classification: explicit
+    generator: adr-architecture-index
+- id: CAP-0040
+  entity_type: capability
+  name: Brownfield Onboarding Workflow
+  summary: Provide an explicit workflow for migrating existing repositories into STE
+    canonical architecture authority through phased discovery, normalization, canonization,
+    regeneration, and validation.
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0014#CAP-0040
+    artifact_path: adrs/logical/ADR-L-0014-brownfield-onboarding-and-canonicalization-workflow.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0014
+    domains:
+    - migration
+    - onboarding
+    - governance
+    - brownfield
+    implemented_by_components: []
+    enabled_by_decisions: []
+  relationships:
+    declared_in:
+    - ADR-L-0014
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0014#CAP-0040
+    extraction_phase: extract_capability
+    classification: explicit
+    generator: adr-architecture-index
+- id: CAP-0041
+  entity_type: capability
+  name: Canonical Migration Evidence
+  summary: Record deterministic remaps, onboarding cleanup results, and legacy-to-
+    canonical transitions in machine-readable migration artifacts.
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0014#CAP-0041
+    artifact_path: adrs/logical/ADR-L-0014-brownfield-onboarding-and-canonicalization-workflow.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0014
+    domains:
+    - migration
+    - onboarding
+    - governance
+    - brownfield
+    implemented_by_components: []
+    enabled_by_decisions: []
+  relationships:
+    declared_in:
+    - ADR-L-0014
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0014#CAP-0041
+    extraction_phase: extract_capability
+    classification: explicit
+    generator: adr-architecture-index
+- id: CAP-0042
+  entity_type: capability
+  name: Deterministic ADR Governance Validation
+  summary: Validate ADR governance metadata, approval pairings, implementation authority,
+    override references, and stale revision coupling through deterministic rules.
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0015#CAP-0042
+    artifact_path: adrs/logical/ADR-L-0015-adr-governance-state-and-override-semantics.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0015
+    domains:
+    - governance
+    - validation
+    - approval
+    - overrides
+    implemented_by_components: []
+    enabled_by_decisions: []
+  relationships:
+    declared_in:
+    - ADR-L-0015
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0015#CAP-0042
+    extraction_phase: extract_capability
+    classification: explicit
+    generator: adr-architecture-index
+- id: CAP-0043
+  entity_type: capability
+  name: Governance Summary Projection
+  summary: Expose ADR governance references and override summaries in manifest and
+    discovery surfaces without leaking rationale or accepted risk text.
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0015#CAP-0043
+    artifact_path: adrs/logical/ADR-L-0015-adr-governance-state-and-override-semantics.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0015
+    domains:
+    - governance
+    - validation
+    - approval
+    - overrides
+    implemented_by_components: []
+    enabled_by_decisions: []
+  relationships:
+    declared_in:
+    - ADR-L-0015
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0015#CAP-0043
+    extraction_phase: extract_capability
+    classification: explicit
+    generator: adr-architecture-index
+- id: CAP-0044
+  entity_type: capability
+  name: Cross-Language Runtime Ingestion Contract
+  summary: Provide one explicit file-format ingestion posture for cross-language or
+    out-of-process runtime consumers so they can consume compiler-owned Architecture
+    IR without redefining architecture semantics locally.
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0013#CAP-0044
+    artifact_path: adrs/logical/ADR-L-0013-architecture-repository-boundary-and-normalized-semantic-model.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0013
+    domains:
+    - repository
+    - discovery
+    - compiler
+    - kernel
+    implemented_by_components: []
+    enabled_by_decisions: []
+  relationships:
+    declared_in:
+    - ADR-L-0013
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by:
+    - COMP-0010
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0013#CAP-0044
+    extraction_phase: extract_capability
+    classification: explicit
+    generator: adr-architecture-index
+- id: CAP-9000
+  entity_type: capability
+  name: Kernel Boot Readiness
+  summary: Provide a deterministic ADR publication surface for kernel boot-readiness
+    compilation.
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-9000#CAP-9000
+    artifact_path: adrs/logical/ADR-L-9000-kernel-boot-publication-surface.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-9000
+    domains:
+    - kernel
+    - integration
+    implemented_by_components: []
+    enabled_by_decisions: []
+  relationships:
+    declared_in:
+    - ADR-L-9000
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by:
+    - DEC-9000
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-9000#CAP-9000
+    extraction_phase: extract_capability
+    classification: explicit
+    generator: adr-architecture-index

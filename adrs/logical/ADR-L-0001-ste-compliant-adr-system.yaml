@@ -1,0 +1,537 @@
+schema_version: '1.0'
+adr_type: logical
+id: ADR-L-0001
+title: STE-Compliant Machine-Verifiable Architecture Decision Record System
+status: accepted
+created_date: '2026-03-07'
+authors:
+- erik.gallmann
+domains:
+- architecture
+- governance
+- documentation-state
+tags:
+- ste-compliance
+- machine-verifiable
+- ai-first
+- semantic-graph
+related_adrs: []
+supersedes: []
+superseded_by: null
+ownership:
+  architecture_authority: architecture-systems
+  implementation_owners:
+  - architecture-systems
+context: |
+  # The Constitutional Document
+
+  This ADR captures the complete conception of the ADR Architecture Kit as an STE-compliant
+  Documentation-State Layer (Layer 5) implementation. It represents the crystallization nuclei
+  from which the entire system self-organizes.
+
+  ## Problem Space
+
+  Architecture documentation suffers from fundamental problems:
+
+  1. **Implicit assumptions** - Architecture decisions rely on undocumented context
+  2. **Drift** - Documentation diverges from implementation without detection
+  3. **Narrative ambiguity** - Free-form markdown prevents deterministic reasoning
+  4. **Manual governance** - No automated validation of architectural compliance
+  5. **Disconnected artifacts** - Architecture docs don't participate in semantic reasoning
+
+  ## Business Drivers
+
+  The System of Thought Engineering (STE) framework provides a normative specification for
+  governable AI cognition. ADR Kit implements STE's Documentation-State Layer, enabling:
+
+  - **Deterministic architecture reasoning** - AI systems reason over structured artifacts
+  - **Automated governance** - Schema validation replaces manual review
+  - **Semantic graph integration** - Architecture participates in AI-DOC substrate
+  - **Policy propagation** - Architectural decisions become enforceable constraints
+  - **Self-healing systems** - Autonomous correction within safety boundaries
+
+  ## Constraints
+
+  This system operates under STE invariants:
+
+  - **PRIME-1**: No implicit assumptions (all architecture explicit)
+  - **PRIME-2**: No undeclared state (all metadata in frontmatter)
+  - **SYS-2**: Deterministic cognition through constraints (schema validation)
+  - **SYS-4**: Drift prevention as first-class objective (violations halt execution)
+  - **SYS-5**: Documentation-state as authoritative truth (ADRs precede implementation)
+  - **SYS-6**: RECON completion prerequisite (architecture extracted before reasoning)
+  - **SYS-13**: Graph completeness (bidirectional relationships)
+  - **SYS-14**: Index currency (manifest generated from ADRs)
+
+  ## Vision
+
+  ADR Kit is the foundational artifact layer for an autonomous architecture knowledge system:
+
+  ```
+  ste-spec (normative specification)
+      ↓ governs
+  ADR Kit (this project - Documentation-State Layer)
+      ↓ feeds
+  ste-runtime (semantic graph extraction via RECON)
+      ↓ enables
+  Rules & Signal Service (policy validation)
+      ↓ triggers
+  Correction Agents (autonomous remediation)
+      ↓ achieves
+  Self-Healing Architecture (policy-driven automation)
+  ```
+capabilities:
+- id: CAP-0001
+  name: Machine-Verifiable Architecture Documentation
+  description: |
+    Enable AI systems to deterministically reason over architecture decisions through
+    structured, schema-validated artifacts. No ambiguous markdown parsing, no implicit
+    assumptions, no narrative drift.
+- id: CAP-0002
+  name: Two-Layer Architecture Model
+  description: |
+    Separate conceptual design (logical ADRs) from implementation specifications
+    (physical ADRs). Logical ADRs define capabilities, boundaries, contracts, and
+    invariants without implementation details. Physical ADRs operationalize logical
+    designs with technology choices and component specifications.
+- id: CAP-0003
+  name: Semantic Graph Integration
+  description: |
+    Architecture artifacts participate in ste-runtime semantic graph through RECON
+    extraction. ADRs become graph nodes with typed edges (implements, relates_to,
+    enforces), enabling graph queries, blast radius analysis, and policy propagation.
+- id: CAP-0004
+  name: Explicit Gap Tracking
+  description: |
+    Incomplete designs are first-class schema elements. Gaps are structured with
+    impact assessment, blocking status, and decision ownership. Convergence validation
+    ensures gaps are resolved or explicitly tracked.
+- id: CAP-0005
+  name: Derived Manifest Generation
+  description: |
+    Manifest is generated from authoritative ADRs, never manually edited. Provides
+    fast discovery without reading all ADRs. CI validates manifest freshness (SYS-14).
+- id: CAP-0006
+  name: Policy Integration Readiness
+  description: |
+    Schema includes policy_reference, enforcement_level, compliance_frameworks fields
+    to enable future Rules & Signal Service validation. Invariants can be extracted
+    into requirement registry and validated against organizational policy.
+- id: CAP-0007
+  name: Correction Agent Context
+  description: |
+    Schema includes implementation_identifiers, ownership, automation flags to enable
+    future correction agents. Agents can locate code, understand boundaries, and
+    operate within safety constraints.
+architectural_boundaries:
+- id: BOUND-0001
+  name: Logical vs Physical Separation
+  description: |
+    Strict separation between conceptual design (logical) and implementation
+    specifications (physical). Enforced through distinct schemas and validation.
+  rationale: |
+    Prevents implementation bias in architectural thinking. Enables architectural
+    decisions to be made independently of technology constraints. Supports multiple
+    physical implementations of a single logical design.
+- id: BOUND-0002
+  name: ADR Kit vs ste-runtime Separation
+  description: |
+    ADR Kit defines structure and validates schema. ste-runtime extracts graph
+    via RECON. Clear separation of concerns.
+  rationale: |
+    ADR Kit focuses on artifact structure and validation. Graph extraction is
+    ste-runtime's responsibility. Enables independent evolution of schema and
+    graph implementation.
+- id: BOUND-0003
+  name: Frontmatter as Authority
+  description: |
+    All discovery metadata lives in ADR frontmatter (single source of truth).
+    Manifest is derived, never manually edited.
+  rationale: |
+    Prevents drift between ADR and manifest. Atomic updates (metadata + content
+    change together). Version controlled metadata. Schema-validated correctness.
+interaction_contracts:
+- id: CONTRACT-0001
+  parties:
+  - adr-kit
+  - ste-runtime
+  protocol: YAML artifact structure
+  guarantees: |
+    ADR Kit guarantees:
+    - Valid YAML with explicit structure
+    - Schema-validated before commit
+    - Type-prefixed IDs (ADR-L-XXXX, ADR-P-XXXX)
+    - Explicit relationships (array fields for graph edges)
+    - Rich frontmatter with all metadata
+
+    ste-runtime guarantees:
+    - RECON discovers adrs/ directory
+    - Parses YAML into graph nodes and edges
+    - Exposes graph via MCP for queries
+    - Validates graph extraction success
+- id: CONTRACT-0002
+  parties:
+  - adr-kit
+  - json-schema
+  protocol: JSON Schema validation
+  guarantees: |
+    ADR Kit guarantees:
+    - All ADRs validate against schema before commit
+    - Schema violations = CI failure
+    - No ambiguous or optional validation
+
+    JSON Schema guarantees:
+    - Deterministic validation (same input = same result)
+    - Clear error messages with field paths
+    - Extensible for future schema evolution
+constraints:
+- id: CONST-0001
+  type: technical
+  description: |
+    YAML with embedded markdown, not markdown with YAML frontmatter.
+  rationale: |
+    Deterministic structure for AI reasoning. Direct field access without markdown
+    parsing ambiguity. Schema validation before processing. Clear separation of
+    metadata vs content.
+- id: CONST-0002
+  type: technical
+  description: |
+    Type-prefixed IDs (ADR-L-XXXX, ADR-P-XXXX) with 4-digit numbering.
+  rationale: |
+    Prevents collision between logical and physical ADRs. Type visible in ID alone.
+    Scales to 9,999 ADRs per type. Graph clarity (node type obvious in queries).
+- id: CONST-0003
+  type: business
+  description: |
+    Dogfooding from day 1 - this project documents itself using ADR Kit.
+  rationale: |
+    Real friction drives design. If we can't document our decisions, the schema is
+    incomplete. Validates STE compliance through actual usage. Living specification.
+- id: CONST-0004
+  type: technical
+  description: |
+    Schema must support future use cases without breaking changes.
+  rationale: |
+    ADR Kit is meta-system - schema authority for architecture encoding. Schema
+    evolution must be backward compatible (optional fields, version signaling).
+    Enables PROJECT.yaml, Decision ADRs, policy validation, correction agents.
+invariants:
+- id: INV-0001
+  statement: All ADRs must validate against JSON Schema before commit
+  scope: global
+  enforcement_level: must
+  enforcement_mechanism: policy
+  verification_method: automated
+  rationale: |
+    Schema validation ensures structural integrity, STE compliance, and prevents
+    divergence. CI must fail on schema violations (SYS-4: Drift Prevention).
+- id: INV-0002
+  statement: Logical ADRs must not contain implementation details
+  scope: global
+  enforcement_level: must
+  enforcement_mechanism: design
+  verification_method: manual
+  rationale: |
+    Enforces architectural discipline. Prevents implementation bias in conceptual
+    design. Enables multiple physical implementations of logical designs.
+- id: INV-0003
+  statement: Physical ADRs must reference at least one logical ADR
+  scope: global
+  enforcement_level: must
+  enforcement_mechanism: design
+  verification_method: automated
+  rationale: |
+    Ensures traceability from implementation to intent. Every implementation must
+    have architectural rationale. Enables impact analysis via graph traversal.
+- id: INV-0004
+  statement: Manifest must be regenerated when ADRs change
+  scope: global
+  enforcement_level: must
+  enforcement_mechanism: policy
+  verification_method: automated
+  rationale: |
+    SYS-14: Index Currency. Stale manifest = divergence. CI validates manifest
+    freshness. Manifest is derived, never manually edited.
+- id: INV-0005
+  statement: ADR IDs must be unique across the project
+  scope: global
+  enforcement_level: must
+  enforcement_mechanism: design
+  verification_method: automated
+  rationale: |
+    Graph node identity requires unique IDs. Collision breaks graph traversal.
+    Type-prefixed IDs (ADR-L-XXXX, ADR-P-XXXX) prevent collision.
+- id: INV-0006
+  statement: Schema changes must be documented in ADRs before implementation
+  scope: global
+  enforcement_level: must
+  enforcement_mechanism: policy
+  verification_method: manual
+  rationale: |
+    ADR Kit is meta-system - schema authority. Schema changes affect all projects.
+    Changes must be documented with rationale, alternatives, and consequences.
+- id: INV-0007
+  statement: Schema evolution must maintain backward compatibility unless major version
+  scope: global
+  enforcement_level: must
+  enforcement_mechanism: design
+  verification_method: automated
+  rationale: |
+    Enables gradual migration. Old tools read new ADRs (skip unknown fields).
+    New tools read old ADRs (provide defaults). Breaking changes only in v2.0+.
+non_functional_requirements:
+- id: NFR-0001
+  category: performance
+  requirement: |
+    Schema validation must complete in <100ms per ADR for files <100KB
+  acceptance_criteria: |
+    Benchmark tests show p95 latency <100ms for typical ADR files
+- id: NFR-0002
+  category: reliability
+  requirement: |
+    Parser must be deterministic (same input = same output every time)
+  acceptance_criteria: |
+    Running parser 100 times on same ADR produces identical Pydantic models
+- id: NFR-0003
+  category: maintainability
+  requirement: |
+    Schema must be extensible without breaking existing ADRs
+  acceptance_criteria: |
+    Adding optional fields to schema doesn't invalidate existing ADRs
+- id: NFR-0004
+  category: usability
+  requirement: |
+    Schema validation errors must be actionable (clear field path and expected format)
+  acceptance_criteria: |
+    Error messages include field path, expected type/pattern, and actual value
+decisions:
+- id: DEC-0001
+  summary: Use YAML with embedded markdown, not markdown with YAML frontmatter
+  rationale: |
+    **AI reasoning advantages:**
+    - Deterministic structure (no markdown parsing ambiguity)
+    - Direct field access (adr.decisions[0].rationale)
+    - Schema-validated before processing
+    - Clear separation of metadata vs content
+    - Graph extraction is straightforward
+
+    **Human advantages:**
+    - Readable source format
+    - Rich prose in markdown fields
+    - Version control friendly
+    - Generate beautiful views from structured data
+  alternatives_considered:
+  - name: Markdown with YAML frontmatter
+    rejected_because: |
+      Markdown structure is ambiguous. Heading levels vary. Content parsing is
+      non-deterministic. Schema validation is difficult. Graph extraction requires
+      complex markdown parsing.
+  - name: Pure JSON
+    rejected_because: |
+      Not human-friendly for writing. No rich prose support. Verbose for long
+      text content. Poor version control diffs.
+  consequences:
+    positive:
+    - Deterministic parsing and validation
+    - Direct field access for AI reasoning
+    - Schema validation before use
+    - Graph extraction is straightforward
+    - Human-readable source format
+    negative:
+    - Learning curve for YAML syntax
+    - Requires tooling for view generation
+    - Less familiar than pure markdown
+  related_invariants:
+  - INV-0001
+- id: DEC-0002
+  summary: Separate logical and physical ADRs with distinct schemas
+  rationale: |
+    **Architectural discipline:**
+    - Enforces separation of concerns (intent vs implementation)
+    - Prevents implementation bias in conceptual design
+    - Enables different validation rules per type
+    - Clear semantic distinction for AI reasoning
+
+    **Traceability:**
+    - Physical ADRs explicitly reference logical ADRs (implements_logical field)
+    - Graph edges from physical to logical (realization relationship)
+    - Impact analysis: "What implements ADR-L-0001?"
+
+    **Multiple implementations:**
+    - One logical design can have multiple physical implementations
+    - Technology migrations don't change logical architecture
+    - A/B testing of implementation approaches
+  alternatives_considered:
+  - name: Single unified ADR schema
+    rejected_because: |
+      Cannot enforce logical/physical separation. Implementation details leak into
+      conceptual design. Validation rules conflict (logical forbids impl details,
+      physical requires them).
+  - name: Separate document types (not ADRs)
+    rejected_because: |
+      Loses semantic relationship. Traceability becomes manual. Graph extraction
+      more complex. Violates principle of unified architecture documentation.
+  consequences:
+    positive:
+    - Enforced architectural discipline
+    - Clear traceability (implements_logical edges)
+    - Supports multiple implementations
+    - Different validation rules per type
+    negative:
+    - More complex schema (two types instead of one)
+    - Requires understanding of logical vs physical distinction
+  related_invariants:
+  - INV-0002
+  - INV-0003
+- id: DEC-0003
+  summary: Rich frontmatter as authoritative metadata, manifest as derived view
+  rationale: |
+    **Single source of truth:**
+    - All discovery metadata in ADR frontmatter
+    - No drift between ADR and manifest
+    - Atomic updates (metadata + content change together)
+    - Version controlled metadata
+    - Schema validated correctness
+
+    **Manifest governance:**
+    - Generated via `adr generate-manifest`
+    - Never manually edited
+    - CI validates freshness (SYS-14)
+    - Stale manifest = CI failure
+    - Regenerable anytime
+
+    **Fast discovery:**
+    - Query manifest for simple lookups
+    - Read ADRs only when needed
+    - Graph queries for complex reasoning
+  alternatives_considered:
+  - name: Lightweight frontmatter, rich manifest
+    rejected_because: |
+      Manifest becomes authoritative. Drift risk (manifest not updated). Metadata
+      changes not version controlled. Schema validation only on manifest, not ADRs.
+  - name: No manifest, always read ADRs
+    rejected_because: |
+      Slow discovery (must read all ADRs). No fast lookup. Violates SYS-14
+      (Index Currency requirement).
+  consequences:
+    positive:
+    - No drift possible (manifest derived from ADRs)
+    - Metadata version controlled
+    - Fast discovery via manifest
+    - ADRs remain authoritative
+    negative:
+    - Must regenerate manifest after ADR changes
+    - CI complexity (validate manifest freshness)
+  related_invariants:
+  - INV-0004
+- id: DEC-0004
+  summary: Type-prefixed IDs (ADR-L-XXXX, ADR-P-XXXX) with 4-digit numbering
+  rationale: |
+    **Collision prevention:**
+    - Separate namespaces for logical and physical
+    - No risk of ADR-0001 collision
+
+    **Type visibility:**
+    - Type immediately clear from ID alone
+    - AI reasoning: type encoded in identifier
+    - Graph clarity: node type obvious in queries
+
+    **Scalability:**
+    - 9,999 ADRs per type
+    - Sufficient for large organizations
+
+    **Traceability:**
+    - `implements_logical: [ADR-L-0001]` is explicit
+    - Graph edges typed by ID prefix
+  alternatives_considered:
+  - name: Shared numbering (ADR-0001, ADR-0002)
+    rejected_because: |
+      Collision risk (logical and physical share namespace). Type not visible
+      in ID. Requires reading ADR to know type.
+  - name: UUID identifiers
+    rejected_because: |
+      Not human-readable. Difficult to reference in conversation. No semantic
+      meaning. Poor for documentation.
+  consequences:
+    positive:
+    - No collision possible
+    - Type visible in ID
+    - Human-readable and memorable
+    - Graph queries simplified
+    negative:
+    - Slightly longer IDs (ADR-L-0001 vs ADR-0001)
+  related_invariants:
+  - INV-0005
+- id: DEC-0005
+  summary: PROJECT.yaml for project-level metadata, separate from ADR metadata
+  rationale: |
+    **Right level of granularity:**
+    - Ownership, automation, integrations belong at project level
+    - Not repeated in every ADR
+    - Single source of truth for operational metadata
+
+    **Executable configuration:**
+    - CI reads PROJECT.yaml → provisions infrastructure
+    - Datadog dashboards, PagerDuty schedules, IAM roles
+    - Self-service onboarding
+
+    **Correction agent context:**
+    - Agents read PROJECT.yaml to understand boundaries
+    - Automation flags define what agents can do
+    - Ownership metadata enables escalation
+
+    **Reduced duplication:**
+    - Team changes? Update one file, not 50 ADRs
+  alternatives_considered:
+  - name: Ownership in every ADR frontmatter
+    rejected_because: |
+      Wrong granularity. Duplication across ADRs. Team changes require updating
+      all ADRs. Operational metadata mixed with architectural metadata.
+  - name: Separate config files per concern
+    rejected_because: |
+      Fragmentation. Multiple files to update. No single source of truth. Harder
+      for correction agents to understand context.
+  consequences:
+    positive:
+    - Single source of truth for project metadata
+    - Enables self-service infrastructure provisioning
+    - Correction agents have clear context
+    - Reduced duplication
+    negative:
+    - Additional artifact type to maintain
+    - Schema complexity (one more schema)
+  related_invariants: []
+- id: DEC-0006
+  summary: Dogfooding strategy - document this project using ADR Kit
+  rationale: |
+    **Real friction drives design:**
+    - If we can't document our decisions, schema is incomplete
+    - Actual usage reveals gaps and awkwardness
+    - Validates STE compliance through practice
+
+    **Living specification:**
+    - Project ADRs become reference implementation
+    - Future contributors understand WHY
+    - Evolves as system crystallizes
+
+    **Execution pressure:**
+    - Forces schema completeness
+    - Validates graph extraction
+    - Tests manifest generation
+    - Proves view generation works
+  alternatives_considered:
+  - name: Artificial examples only
+    rejected_because: |
+      Examples don't reveal real friction. No execution pressure. Incomplete
+      validation of schema. Not a living specification.
+  consequences:
+    positive:
+    - Real usage validates schema
+    - Friction reveals gaps
+    - Living specification
+    - Reference implementation
+    negative:
+    - Bootstrap complexity (need minimal schema first)
+    - Iterative refinement required
+  related_invariants: []
+gaps: []

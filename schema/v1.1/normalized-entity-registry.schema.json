@@ -1,0 +1,79 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://adr-kit.ste.systems/schema/v1.1/normalized-entity-registry.schema.json",
+  "title": "Normalized Entity Registry Schema",
+  "type": "object",
+  "required": ["schema_version", "type", "entities"],
+  "properties": {
+    "schema_version": {"const": "1.1"},
+    "type": {"const": "normalized_entity_registry"},
+    "entities": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "entity_type", "name", "summary", "canonical_source", "source_refs", "metadata", "relationships", "completeness", "provenance"],
+        "properties": {
+          "id": {"type": "string"},
+          "entity_type": {
+            "type": "string",
+            "enum": ["adr", "system", "component", "decision", "capability", "invariant"]
+          },
+          "name": {"type": "string"},
+          "summary": {"type": "string"},
+          "canonical_source": {
+            "type": "object",
+            "required": ["source_type", "source_ref", "artifact_path"],
+            "properties": {
+              "source_type": {"type": "string"},
+              "source_ref": {"type": "string"},
+              "artifact_path": {"type": "string"}
+            }
+          },
+          "source_refs": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["source_type", "source_ref", "artifact_path", "mention_role"],
+              "properties": {
+                "source_type": {"type": "string"},
+                "source_ref": {"type": "string"},
+                "artifact_path": {"type": "string"},
+                "mention_role": {"type": "string"}
+              }
+            }
+          },
+          "metadata": {"type": "object"},
+          "relationships": {"type": "object"},
+          "completeness": {
+            "type": "object",
+            "required": ["status", "missing_fields"],
+            "properties": {
+              "status": {
+                "type": "string",
+                "enum": ["complete", "partial", "reference_only", "conflicted"]
+              },
+              "missing_fields": {
+                "type": "array",
+                "items": {"type": "string"}
+              }
+            }
+          },
+          "provenance": {
+            "type": "object",
+            "required": ["source_type", "source_ref", "extraction_phase", "classification", "generator"],
+            "properties": {
+              "source_type": {"type": "string"},
+              "source_ref": {"type": "string"},
+              "extraction_phase": {"type": "string"},
+              "classification": {
+                "type": "string",
+                "enum": ["explicit", "derived", "heuristic"]
+              },
+              "generator": {"type": "string"}
+            }
+          }
+        }
+      }
+    }
+  }
+}

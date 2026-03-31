@@ -1,0 +1,177 @@
+<!--
+document_type: {{ frontmatter.document_type }}
+audience: {{ frontmatter.audience }}
+project: {{ frontmatter.project }}
+status: {{ frontmatter.status }}
+purpose: >
+  {{ frontmatter.purpose }}
+authority_order:
+{% for item in frontmatter.authority_order %}
+  - {{ item }}
+{% endfor %}
+first_read: {{ "true" if frontmatter.first_read else "false" }}
+last_updated: {{ frontmatter.last_updated }}
+generation_rule: >
+  {{ frontmatter.generation_rule }}
+-->
+
+# SYSTEM-OVERVIEW
+
+## Why This File Exists
+
+This file is the fastest correct orientation path for an AI working in this repository.
+
+Its job is to prevent two common failures:
+
+1. Missing project-native capabilities that already exist, such as generators, validators, and CLI commands.
+2. Making path, scope, or artifact assumptions that conflict with repository authority.
+
+Read this file before writing code, generating artifacts, or hand-crafting repository outputs.
+
+## System Purpose
+
+`adr-architecture-kit` is the documentation-state toolkit for STE architecture work.
+
+It provides:
+
+- JSON Schema contracts for ADR artifacts
+- Pydantic models for typed parsing
+- parsers and business-rule validators
+- manifest and registry generators
+- YAML authoring support for Physical-System ADRs
+- CLI workflows for scope-aware governance operations
+
+It does not define STE doctrine. That authority remains in `ste-spec`.
+
+## Authority Hierarchy
+
+Use this order when resolving ambiguity:
+
+{% for item in authority_hierarchy %}
+{{ loop.index }}. {{ item.title }}
+   {{ item.detail }}
+{% endfor %}
+
+If code and ADRs disagree, treat the ADRs and project policy as authoritative unless the task is explicitly to correct the ADRs.
+
+## First Discovery Order
+
+When an AI enters this repo cold, use this order:
+
+{% for item in first_discovery_order %}
+{{ loop.index }}. {{ item }}
+{% endfor %}
+
+Do not start by hand-writing artifacts if a generator or validator already exists.
+
+## Canonical Capabilities
+
+Core implementation areas:
+
+{% for item in capabilities %}
+- {{ item.title }}: {{ item.detail }}
+{% endfor %}
+
+Primary CLI capabilities:
+
+{% for item in cli_capabilities %}
+- {{ item }}
+{% endfor %}
+
+## Artifact Model
+
+Repository artifact classes:
+
+{% for item in artifact_classes %}
+- {{ item }}
+{% endfor %}
+
+Subtype authority comes from document content, not folders:
+
+- `adr_type`
+- `id`
+
+Do not infer physical subtype from directory names when frontmatter already tells you the type.
+
+## ADR Taxonomy
+
+Use this type model when reasoning about repository architecture artifacts:
+
+{% for item in adr_taxonomy %}
+- {{ item.title }}: {{ item.detail }}
+{% endfor %}
+
+## Canonical Workflows
+
+{% for item in canonical_workflows %}
+### {{ item.title }}
+
+{{ item.detail }}
+
+{% endfor %}
+## Tooling Priority Rules
+
+These are operational rules for AI contributors:
+
+{% for item in tooling_priority_rules %}
+{{ loop.index }}. {{ item }}
+{% endfor %}
+
+## Path and Scope Rules
+
+These rules are mandatory:
+
+{% for item in path_scope_rules %}
+{{ loop.index }}. {{ item }}
+{% endfor %}
+
+See [`PLACEMENT-CONVENTION.md`](docs/PLACEMENT-CONVENTION.md) for the full placement rule.
+
+## High-Value Invariants
+
+Start here when you need the non-negotiables:
+
+{% for item in invariants %}
+- {{ item }}
+{% endfor %}
+
+Practical meaning:
+
+- schema-invalid artifacts are not acceptable
+- deprecated runtime APIs are not acceptable
+- dependency security must be checked
+- dependency freshness must be surfaced continuously
+- derived artifacts must be regenerated, not manually drifted
+
+## Fast Target Discovery
+
+Use these heuristics before implementing:
+
+{% for item in fast_target_discovery %}
+- {{ item.title }}:
+  {{ item.detail }}
+{% endfor %}
+
+## Common Failure Modes
+
+Avoid these:
+
+{% for item in common_failure_modes %}
+- {{ item }}
+{% endfor %}
+
+## Completion Criteria
+
+A change is not complete unless relevant checks were run.
+
+Minimum close-out expectation:
+
+{% for item in completion_criteria %}
+- {{ item }}
+{% endfor %}
+
+## One-Line Orientation
+
+If you only remember one thing:
+
+This repository is generator-first, validator-first, scope-aware, and frontmatter-authoritative.

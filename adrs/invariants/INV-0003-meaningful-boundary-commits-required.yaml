@@ -1,0 +1,42 @@
+schema_version: "1.0"
+type: invariant
+id: INV-0003
+statement: "Repository changes must be committed at meaningful verified boundaries rather than accumulated indefinitely."
+scope: global
+enforcement_level: must
+enforcement_mechanism: policy
+verification_method: audit
+rationale: |
+  Small, coherent commits reduce review ambiguity, preserve architectural intent,
+  and make regressions easier to isolate. This repository is increasingly driven by
+  generated artifacts, contract rules, and compiler migration steps; long-running
+  uncommitted change piles make it difficult to verify which slice introduced drift.
+
+  A meaningful boundary is reached only when:
+  - the change set forms one coherent implementation slice
+  - tests and validation relevant to that slice have been run
+  - the repository is left in a reviewable state
+
+  This rule applies to all contributors, including human maintainers and agents.
+
+defined_in: ADR-L-0003
+enforced_by: ["ADR-P-0001"]
+related_constraints: ["CONST-0001"]
+
+policy_reference: "ORG-POL-002"
+compliance_frameworks: ["STE"]
+
+validation_query: |
+  Before concluding a meaningful implementation slice:
+  - run the slice-relevant tests
+  - run `adr governance-checks` when repository behavior changes
+  - update `README.md` when contributor-facing workflow guidance changes
+  - regenerate `SYSTEM-OVERVIEW.md` and run `adr validate-system-overview` when
+    orientation-relevant workflow guidance changes
+  - run `adr validate-generated-docs` for manifest and rendered ADR markdown
+    artifacts when their canonical inputs changed
+  - commit the verified slice before continuing to the next one
+  Audit history should show coherent, reviewable commits rather than one large
+  unverified accumulation.
+
+validation_frequency: on_change

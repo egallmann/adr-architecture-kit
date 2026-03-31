@@ -1,0 +1,111 @@
+<!--
+integrity_schema_version: 1
+generated: deterministic_projection_v1
+artifact_kind: rendered_adr_markdown
+generator_id: adr-rendered-markdown
+generator_version: 1
+hash_algorithm: sha256
+source_hash: 29515de32e51fe33712ff98cc16caa1f2b5009f94f745c32d5fe7304a0fe6c10
+rendered_hash: fd190eb2fd4a16c47b0fb19a1ab995668f6e0252fcc57d12f6831866e5626d7d
+-->
+
+# ADR-PC-0001: Entity Registry and Discovery Index
+
+**Status:** proposed  
+**Created:** 2026-03-13  
+**Authors:** adr-architecture-kit  
+**Domains:** discovery, indexing, tooling  
+
+**Implements Logical:** ADR-L-0009, ADR-L-0012  
+**Technologies:** python, pyyaml, click
+
+
+---
+
+## Context
+
+The discovery/indexing component now centers on the unified compiler path. It
+generates the normalized discovery bundle under `adrs/index/`, emits the
+legacy compatibility registry at `adrs/entities/registry.yaml`, generates
+manifest and rendered ADR markdown outputs through the same compiler-owned
+path for single-scope use, and exposes exact-ID and filtered CLI query
+operations over generated registry state.
+
+It also serves as the file-format discovery surface for cross-language or
+out-of-process consumers such as `ste-runtime`, which must bootstrap from the
+indexed bundle rather than reparsing source ADRs.
+
+
+## Technology Stack
+
+### Python (language)
+
+**Version:** 3.11
+
+**Rationale:**
+Existing adr-architecture-kit implementation language.
+
+### PyYAML (library)
+
+**Version:** 6.x
+
+**Rationale:**
+Stable YAML parsing and rendering for registry artifacts.
+
+### Click (tooling)
+
+**Version:** 8.x
+
+**Rationale:**
+Existing CLI framework for scope-aware commands.
+
+
+
+## Component Specifications
+
+### COMP-0010: Entity Registry Generator and Query Surface (service)
+
+**Responsibilities:**
+- Compile canonical ADR and invariant artifacts into a normalized discovery bundle
+- Emit deterministic `adrs/index/*.yaml` registry artifacts
+- Emit deterministic legacy compatibility registry output at `adrs/entities/registry.yaml`
+- Support manifest and rendered markdown emission through the unified compile path
+- Provide CLI query access over generated registry state
+- Preserve an index-first discovery posture for cross-language consumers
+
+
+**Interfaces:**
+- **IFACE-0011** (CLI): Commands:
+- adr compile
+- adr generate-architecture-index
+- adr generate-manifest
+- adr generate-ren...
+
+**Implementation Identifiers:**
+- Service Name: `adr-compiler`
+- Module Path: `src/adr_kit/compiler/driver.py`
+
+
+
+
+## Implementation Decisions
+
+### IMPL-0011: Route single-scope discovery generation through the unified compiler driver
+
+**Rationale:**
+The unified compiler path keeps normalized registries, the legacy
+compatibility registry, manifest generation, and rendered markdown emission
+aligned while preserving the older single-scope commands as compatibility
+wrappers. Registry backend emission remains compiler-owned rather than
+isolated in the older standalone registry generator.
+
+
+
+
+
+
+
+
+---
+
+*Generated from ADR-PC-0001 by ADR Architecture Kit*

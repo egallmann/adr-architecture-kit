@@ -1,0 +1,38 @@
+schema_version: "1.0"
+adr_type: logical
+id: ADR-L-0001
+title: "Public Example Logical ADR"
+status: accepted
+created_date: "2026-04-02"
+authors:
+  - adr-architecture-kit
+domains:
+  - architecture
+tags:
+  - public-example
+context: |
+  Provide one minimal public logical ADR example for repository onboarding.
+capabilities:
+  - id: CAP-0001
+    name: Public Repository Onboarding
+    description: Explain the minimal public ADR to IR flow.
+constraints: []
+invariants:
+  - id: INV-0001
+    statement: "Public examples must separate ADR authority from public IR contract ownership."
+    scope: global
+    enforcement_level: must
+    enforcement_mechanism: design
+    verification_method: manual
+    rationale: |
+      The example must not imply that adr-architecture-kit owns the normative
+      cross-repo Architecture IR schema.
+decisions:
+  - id: DEC-0001
+    summary: "Publish a minimal public example set."
+    rationale: |
+      External users need a compact onboarding path that shows source ADRs,
+      repository discovery outputs, and ADR-derived IR fragments together.
+    enables_capabilities:
+      - CAP-0001
+gaps: []

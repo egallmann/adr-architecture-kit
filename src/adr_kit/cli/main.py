@@ -914,7 +914,7 @@ def compile_artifacts(
     try:
         click.echo(
             "WARNING: adr compile is deprecated for runtime machine artifacts. "
-            "Use `ste architecture compile --project-root <repo>` (ste-runtime) as the compiler of record. "
+            "Use `ste architecture compile --project-root <repo>` (ste-runtime) for runtime-owned machine artifacts. "
             "This Python path remains for migration / golden parity only. "
             "See ste-runtime COMPILER-AUTHORITY.md and adr-architecture-kit AUTHORING-SYSTEM.md.",
             err=True,

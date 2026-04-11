@@ -1,0 +1,24 @@
+[
+  {
+    "id": "capability:example-cap-0001",
+    "kind": "capability",
+    "slug": "cap-0001",
+    "title": "Public Repository Onboarding",
+    "description": "Explain the minimal public ADR to IR flow.",
+    "status": "accepted"
+  },
+  {
+    "id": "decision:example-dec-0001",
+    "kind": "decision",
+    "adr_id": "ADR-L-0001#DEC-0001",
+    "status": "accepted",
+    "authority_tier": "accepted",
+    "summary": "Publish a minimal public example set."
+  },
+  {
+    "id": "rel:example-rel-0001",
+    "type": "decision_supports_capability",
+    "from_id": "decision:example-dec-0001",
+    "to_id": "capability:example-cap-0001"
+  }
+]

@@ -1,0 +1,22 @@
+schema_version: "1.1"
+type: normalized_entity_registry
+entities:
+  - id: ADR-L-0001
+    entity_type: adr
+    name: Public Example Logical ADR
+    summary: Minimal logical ADR for the public onboarding flow.
+    canonical_source:
+      source_type: logical_adr
+      source_ref: ADR-L-0001#root
+      artifact_path: adrs/logical/ADR-L-0001-public-example-logical.yaml
+    source_refs: []
+    metadata:
+      status: accepted
+      domains:
+        - architecture
+    relationships:
+      declared_in: []
+    completeness:
+      status: complete
+    provenance:
+      source_path: adrs/logical/ADR-L-0001-public-example-logical.yaml

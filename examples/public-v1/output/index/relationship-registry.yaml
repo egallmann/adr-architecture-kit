@@ -1,0 +1,8 @@
+schema_version: "1.1"
+type: relationship_registry
+relationships:
+  - relationship_id: REL-0001
+    relationship_type: implements_logical
+    from_entity_id: ADR-PS-0001
+    to_entity_id: ADR-L-0001
+    canonical_source_ref: ADR-PS-0001

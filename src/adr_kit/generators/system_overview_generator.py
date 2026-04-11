@@ -56,8 +56,8 @@ class SystemOverviewGenerator:
                 "status": "active",
                 "purpose": (
                     "Single-file orientation for AI and human contributors. "
-                    "Use this file first to discover project authority, canonical workflows, "
-                    "required tools, and safe extension points before making changes."
+                    "Use this file first to discover project authority, public surface boundaries, "
+                    "canonical workflows, required tools, and safe extension points before making changes."
                 ),
                 "authority_order": [
                     "ste-spec doctrine",
@@ -112,16 +112,20 @@ class SystemOverviewGenerator:
                     "[`manifest_generator.py`](src/adr_kit/generators/manifest_generator.py)",
                 ),
                 OverviewRule(
+                    "Repository discovery bundle generation",
+                    "[`architecture_index_generator.py`](src/adr_kit/generators/architecture_index_generator.py)",
+                ),
+                OverviewRule(
                     "Legacy entity registry compatibility",
                     "[`entity_registry_generator.py`](src/adr_kit/generators/entity_registry_generator.py)",
                 ),
                 OverviewRule(
-                    "Architecture index generation",
-                    "[`architecture_index_generator.py`](src/adr_kit/generators/architecture_index_generator.py)",
-                ),
-                OverviewRule(
                     "Physical-System ADR generation",
                     "[`physical_system_generator.py`](src/adr_kit/generators/physical_system_generator.py)",
+                ),
+                OverviewRule(
+                    "Architecture IR fragment adapter",
+                    "[`adr_ir_fragment_emitter.py`](src/adr_kit/compiler/backend/adr_ir_fragment_emitter.py)",
                 ),
                 OverviewRule(
                     "Runtime hygiene",
@@ -145,11 +149,12 @@ class SystemOverviewGenerator:
             "artifact_classes": [
                 "ADRs: [`adrs/logical/`](adrs/logical/) and [`adrs/physical/`](adrs/physical/)",
                 "Invariants: [`adrs/invariants/`](adrs/invariants/)",
-                "Architecture discovery bundle: [`adrs/index/`](adrs/index/)",
-                "Derived manifest: [`adrs/manifest.yaml`](adrs/manifest.yaml)",
+                "Repository-normalized discovery bundle: [`adrs/index/`](adrs/index/)",
+                "Derived manifest and discovery aid: [`adrs/manifest.yaml`](adrs/manifest.yaml)",
                 "Legacy compatibility registry: [`adrs/entities/registry.yaml`](adrs/entities/registry.yaml)",
+                "ADR-derived IR publication example: [`dist/architecture-ir/`](dist/architecture-ir/)",
                 "Rendered ADR markdown: [`adrs/rendered/`](adrs/rendered/)",
-                "JSON schemas: [`schema/v1.0/`](schema/v1.0/) and [`schema/v1.1/`](schema/v1.1/)",
+                "Stable schemas: [`schema/v1.0/`](schema/v1.0/); draft schemas: [`schema/v1.1/`](schema/v1.1/)",
                 "Project metadata: [`PROJECT.yaml`](PROJECT.yaml)",
                 "AI-first overview: [`SYSTEM-OVERVIEW.md`](SYSTEM-OVERVIEW.md)",
             ],
@@ -160,11 +165,11 @@ class SystemOverviewGenerator:
                 ),
                 OverviewRule(
                     "`ADR-V-XXXX`",
-                    "Vision-oriented logical ADRs that describe future-state capabilities and target evolution.",
+                    "Experimental vision-oriented logical ADRs that describe future-state capabilities and target evolution.",
                 ),
                 OverviewRule(
                     "`ADR-P-XXXX`",
-                    "Legacy broad physical implementation specifications.",
+                    "Legacy broad physical implementation specifications retained for compatibility.",
                 ),
                 OverviewRule(
                     "`ADR-PS-XXXX`",
@@ -180,11 +185,12 @@ class SystemOverviewGenerator:
                 OverviewRule("Compile through the unified driver", "Run `adr compile --mode normal|strict|lenient` for the unified compiler path. Add `--recursive` to compile each detected scope independently. `lenient` only tolerates the current post-emit drift and contract-validation error family."),
                 OverviewRule("Commit at meaningful boundaries", "After a coherent implementation slice is verified, commit it before continuing. Do not accumulate unrelated unverified changes."),
                 OverviewRule("Maintain workflow-facing README content", "Update `README.md` when contributor-facing workflows or orientation guidance change. `README.md` is manual, not generated, and is not covered by `adr validate-generated-docs`."),
-                OverviewRule("Generate or refresh the architecture index", "Run `adr generate-architecture-index`. Treat `adrs/index/` as the primary machine discovery surface."),
-                OverviewRule("Generate or refresh the manifest", "Run `adr generate-manifest` or `adr generate-manifest --recursive`. Do not hand-edit `manifest.yaml`."),
+                OverviewRule("Generate or refresh the architecture index", "Run `adr generate-architecture-index`. Treat `adrs/index/` as the primary repository discovery surface."),
+                OverviewRule("Generate or refresh the manifest", "Run `adr generate-manifest` or `adr generate-manifest --recursive`. Treat `manifest.yaml` as a discovery and freshness aid, not semantic authority."),
                 OverviewRule("Generate rendered ADR markdown", "Run `adr generate-rendered-docs`. Do not hand-edit files under `adrs/rendered/`."),
                 OverviewRule("Validate generated documentation", "Run `adr validate-generated-docs` after regenerating manifest or rendered ADR markdown artifacts. This does not validate `README.md` or `SYSTEM-OVERVIEW.md`."),
                 OverviewRule("Validate compiled contract profiles", "Run `adr validate-contract --contract-profile greenfield` for strict contract enforcement, or use the brownfield profile with explicit thresholds during migration."),
+                OverviewRule("Build ADR-derived IR fragments", "Run `adr build-ir-fragments` when you need the repository's conventional ADR-derived Architecture IR fragment publication example. The normative IR schema still lives in `ste-spec`."),
                 OverviewRule("Generate a Physical-System ADR", "Inspect the generator first, then use `adr generate-physical-system` when the input can be structured."),
                 OverviewRule("Validate project metadata", "Run `adr validate-project-metadata` to verify `PROJECT.yaml` against schema and model rules."),
                 OverviewRule("Audit runtime hygiene", "Run `adr audit-runtime --fail-on-outdated` or `python scripts/check_runtime_hygiene.py --fail-on-outdated`."),
@@ -196,6 +202,7 @@ class SystemOverviewGenerator:
                 "If a CLI command exposes the workflow, prefer it over ad hoc scripts.",
                 "If scope resolution exists, use it instead of assuming the current working directory is the only project root.",
                 "If frontmatter identifies artifact type, trust frontmatter over folder naming.",
+                "If Architecture IR ownership is relevant, treat `ste-spec` as normative and this repo as an adapter/producer, not a competing schema authority.",
                 "AI-first artifacts such as this overview must be generated from code or structured templates, not maintained manually.",
             ],
             "path_scope_rules": [
@@ -238,6 +245,7 @@ class SystemOverviewGenerator:
                 "writing tests against OS temp locations when repo-owned temp roots are the project rule",
                 "leaving manifest output stale after artifact changes",
                 "hand-editing rendered ADR markdown instead of regenerating it",
+                "treating repository-normalized discovery outputs as if they were the normative public Architecture IR schema",
                 "allowing deprecated APIs or dependency vulnerabilities to accumulate silently",
                 "maintaining AI-first documentation manually when a generator should be authoritative",
             ],
@@ -250,7 +258,7 @@ class SystemOverviewGenerator:
                 "regenerate derived artifacts if their sources changed",
                 "run `adr validate-generated-docs` for committed generated documentation artifacts",
                 "run runtime hygiene audit when changing dependency or runtime-facing code",
-                "regenerate and validate `SYSTEM-OVERVIEW.md` when orientation-relevant workflows change",
+                "regenerate and validate `SYSTEM-OVERVIEW.md` when orientation-relevant workflows or public surface boundaries change",
             ],
         }
 

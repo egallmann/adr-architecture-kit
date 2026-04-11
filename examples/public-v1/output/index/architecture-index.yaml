@@ -1,0 +1,10 @@
+schema_version: "1.1"
+type: architecture_index
+entity_registry_path: adrs/index/entity-registry.yaml
+relationship_registry_path: adrs/index/relationship-registry.yaml
+unresolved_registry_path: adrs/index/unresolved-registry.yaml
+component_registry_path: adrs/index/component-registry.yaml
+capability_registry_path: adrs/index/capability-registry.yaml
+decision_registry_path: adrs/index/decision-registry.yaml
+invariant_registry_path: adrs/index/invariant-registry.yaml
+system_registry_path: adrs/index/system-registry.yaml

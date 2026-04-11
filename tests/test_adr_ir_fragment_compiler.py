@@ -23,15 +23,11 @@ from src.adr_kit.compiler.backend.adr_ir_fragment_rendering import (
 
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
-KERNEL_SCHEMA_PATH = REPO_ROOT.parent / "ste-kernel" / "architecture-ir" / "architecture-ir.schema.json"
-FALLBACK_KERNEL_SCHEMA_PATH = (
-    REPO_ROOT / "tests" / "fixtures" / "kernel" / "architecture-ir.schema.json"
-)
+SPEC_SCHEMA_PATH = REPO_ROOT.parent / "ste-spec" / "contracts" / "architecture-ir" / "architecture-ir.schema.json"
 
 
 def _load_kernel_schema() -> dict:
-    schema_path = KERNEL_SCHEMA_PATH if KERNEL_SCHEMA_PATH.exists() else FALLBACK_KERNEL_SCHEMA_PATH
-    return json.loads(schema_path.read_text(encoding="utf-8"))
+    return json.loads(SPEC_SCHEMA_PATH.read_text(encoding="utf-8"))
 
 
 def _write_logical_adr(tmp_path: Path, filename: str, payload: dict) -> Path:
@@ -101,7 +97,7 @@ def _build_compiled_document(result) -> dict:
     decisions = [record for record in result.entities if record["kind"] == "decision"]
     return {
         "ir_version": "0.1.0",
-        "schema_id": "https://ste-kernel.local/schema/architecture-ir/0.1.0/architecture-ir.schema.json",
+        "schema_id": "https://github.com/egallmann/ste-spec/contracts/architecture-ir/architecture-ir.schema.json",
         "document_id": "sha256:" + "a" * 64,
         "assembled_at": "2026-03-20T12:00:00.000Z",
         "namespace": "repo:ste-kernel:test",

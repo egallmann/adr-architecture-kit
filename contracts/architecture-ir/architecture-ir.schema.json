@@ -1,0 +1,791 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/egallmann/ste-spec/contracts/architecture-ir/architecture-ir.schema.json",
+  "title": "STE Architecture IR (Compiled_IR_Document)",
+  "description": "Normative JSON Schema for the compiled Architecture IR document (`Compiled_IR_Document`) consumed by ste-kernel. Governed in ste-spec under `contracts/architecture-ir/`. Deterministic compilation rules are normative: IDs are pure functions of normalized adapter inputs and namespace, hashing uses RFC 8785 JCS over UTF-8, compiled arrays are sorted by id in UTF-8 byte order, document_id excludes document_id and assembled_at from its hash input, merge precedence is ADR > Spec > Runtime > Rules, and null values are forbidden everywhere in a Compiled_IR_Document.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "ir_version",
+    "schema_id",
+    "document_id",
+    "assembled_at",
+    "namespace",
+    "entities",
+    "relationships"
+  ],
+  "properties": {
+    "ir_version": {
+      "type": "string",
+      "pattern": "^\\d+\\.\\d+\\.\\d+$",
+      "description": "Semantic version of the Architecture IR document. This value is required in the envelope but must not participate in entity, relationship, or document payload_for_id derivation."
+    },
+    "schema_id": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Stable identifier for this schema contract. schema_id is envelope metadata, not an entity identity input."
+    },
+    "document_id": {
+      "type": "string",
+      "pattern": "^sha256:[a-f0-9]{64}$",
+      "description": "Hash of the full compiled Architecture IR document after RFC 8785 JCS canonicalization over UTF-8, excluding document_id and assembled_at. Root extensions participate only when allowlisted and present."
+    },
+    "assembled_at": {
+      "$ref": "#/$defs/timestamp",
+      "description": "Informational assembly timestamp serialized as RFC 3339 UTC with millisecond precision. assembled_at must not participate in document_id or record id derivation."
+    },
+    "namespace": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9:._/-]*$",
+      "description": "Logical scope for identity stability. namespace must appear in every payload_for_id canonical object for entities and relationships."
+    },
+    "entities": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "capabilities",
+        "decisions",
+        "components",
+        "invariants",
+        "rules",
+        "evidences"
+      ],
+      "properties": {
+        "capabilities": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/capability"
+          }
+        },
+        "decisions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/decision"
+          }
+        },
+        "components": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/component"
+          }
+        },
+        "invariants": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/invariant"
+          }
+        },
+        "rules": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/rule"
+          }
+        },
+        "evidences": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/evidence"
+          }
+        }
+      }
+    },
+    "relationships": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "decision_supports_capability",
+        "component_implements_decision",
+        "invariant_constrains_component",
+        "rule_evaluates_decision",
+        "evidence_supports_component"
+      ],
+      "properties": {
+        "decision_supports_capability": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/decisionSupportsCapability"
+          }
+        },
+        "component_implements_decision": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/componentImplementsDecision"
+          }
+        },
+        "invariant_constrains_component": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/invariantConstrainsComponent"
+          }
+        },
+        "rule_evaluates_decision": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/ruleEvaluatesDecision"
+          }
+        },
+        "evidence_supports_component": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/evidenceSupportsComponent"
+          }
+        }
+      }
+    }
+  },
+  "$defs": {
+    "timestamp": {
+      "type": "string",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{3}Z$"
+    },
+    "nonEmptyString": {
+      "type": "string",
+      "minLength": 1
+    },
+    "stringArray": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "uniqueItems": true
+    },
+    "metadataValue": {
+      "oneOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "number"
+        },
+        {
+          "type": "integer"
+        },
+        {
+          "type": "boolean"
+        },
+        {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/metadataValue"
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/$defs/metadataValue"
+          }
+        }
+      ]
+    },
+    "provenance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "source",
+        "last_updated",
+        "derivation_chain"
+      ],
+      "properties": {
+        "source": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "adapter",
+            "artifact_uri",
+            "artifact_kind"
+          ],
+          "properties": {
+            "adapter": {
+              "type": "string",
+              "enum": [
+                "adr",
+                "spec",
+                "runtime",
+                "rules",
+                "kernel_merge"
+              ]
+            },
+            "artifact_uri": {
+              "$ref": "#/$defs/nonEmptyString"
+            },
+            "artifact_kind": {
+              "$ref": "#/$defs/nonEmptyString"
+            }
+          }
+        },
+        "last_updated": {
+          "$ref": "#/$defs/timestamp",
+          "description": "Deterministic merged timestamp. When multiple contributors are merged, last_updated is the maximum contributor instant in fixed RFC 3339 UTC form."
+        },
+        "derivation_chain": {
+          "type": "array",
+          "description": "Strictly ordered contiguous derivation steps. step must equal array index and content_hash is computed from the immediate adapter source fragment using RFC 8785 JCS over UTF-8.",
+          "items": {
+            "$ref": "#/$defs/derivationStep"
+          }
+        }
+      }
+    },
+    "derivationStep": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "step",
+        "adapter",
+        "operation",
+        "input_ref",
+        "adapter_schema_version",
+        "content_hash"
+      ],
+      "properties": {
+        "step": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "adapter": {
+          "type": "string",
+          "enum": [
+            "adr",
+            "spec",
+            "runtime",
+            "rules",
+            "kernel_merge"
+          ]
+        },
+        "operation": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "input_ref": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "adapter_schema_version": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "content_hash": {
+          "type": "string",
+          "pattern": "^sha256:[a-f0-9]{64}$"
+        }
+      }
+    },
+    "capabilityId": {
+      "type": "string",
+      "pattern": "^capability:[A-Za-z0-9][A-Za-z0-9._:-]*$"
+    },
+    "decisionId": {
+      "type": "string",
+      "pattern": "^decision:[A-Za-z0-9][A-Za-z0-9._:-]*$"
+    },
+    "componentId": {
+      "type": "string",
+      "pattern": "^component:[A-Za-z0-9][A-Za-z0-9._:-]*$"
+    },
+    "invariantId": {
+      "type": "string",
+      "pattern": "^invariant:[A-Za-z0-9][A-Za-z0-9._:-]*$"
+    },
+    "ruleId": {
+      "type": "string",
+      "pattern": "^rule:[A-Za-z0-9][A-Za-z0-9._:-]*$"
+    },
+    "evidenceId": {
+      "type": "string",
+      "pattern": "^evidence:[A-Za-z0-9][A-Za-z0-9._:-]*$"
+    },
+    "relationshipId": {
+      "type": "string",
+      "pattern": "^rel:[A-Za-z0-9][A-Za-z0-9._:-]*$"
+    },
+    "capability": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Capability record. payload_for_id uses namespace plus normalized slug when slug is authoritative; if slug is absent in upstream material, adapters must hash a canonical object documented in ARCHITECTURE_IR.md and prefix with capability:.",
+      "required": [
+        "id",
+        "kind",
+        "slug",
+        "title",
+        "description",
+        "status",
+        "provenance"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/capabilityId"
+        },
+        "kind": {
+          "const": "capability"
+        },
+        "slug": {
+          "type": "string",
+          "pattern": "^[a-z0-9][a-z0-9-]*$"
+        },
+        "title": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "description": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "proposed",
+            "accepted",
+            "deprecated"
+          ]
+        },
+        "tags": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "provenance": {
+          "$ref": "#/$defs/provenance"
+        }
+      }
+    },
+    "decision": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Decision record. At least one of adr_id or decision_key is required. When both are present, adr_id is the primary identity input and decision_key is an additional stable locator. payload_for_id must include namespace and use adr_id first, falling back to decision_key only when adr_id is absent.",
+      "required": [
+        "id",
+        "kind",
+        "status",
+        "authority_tier",
+        "summary",
+        "provenance"
+      ],
+      "anyOf": [
+        {
+          "required": [
+            "adr_id"
+          ]
+        },
+        {
+          "required": [
+            "decision_key"
+          ]
+        }
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/decisionId"
+        },
+        "kind": {
+          "const": "decision"
+        },
+        "adr_id": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "decision_key": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "draft",
+            "promoted",
+            "superseded"
+          ]
+        },
+        "authority_tier": {
+          "type": "string",
+          "enum": [
+            "promoted",
+            "draft",
+            "unknown"
+          ]
+        },
+        "summary": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "supersedes": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/decisionId"
+          },
+          "uniqueItems": true
+        },
+        "validation_profile": {
+          "type": "string",
+          "enum": [
+            "greenfield",
+            "brownfield"
+          ]
+        },
+        "provenance": {
+          "$ref": "#/$defs/provenance"
+        }
+      }
+    },
+    "component": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Component record. payload_for_id uses namespace plus normalized component identity fields defined in ARCHITECTURE_IR.md; external_refs are supplementary and must not silently replace the documented identity source fields.",
+      "required": [
+        "id",
+        "kind",
+        "name",
+        "type",
+        "provenance"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/componentId"
+        },
+        "kind": {
+          "const": "component"
+        },
+        "name": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "type": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_-]*$"
+        },
+        "boundary": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "owners": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "external_refs": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/$defs/nonEmptyString"
+          }
+        },
+        "provenance": {
+          "$ref": "#/$defs/provenance"
+        }
+      }
+    },
+    "invariant": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Invariant record. payload_for_id uses namespace plus normalized invariant_key when authoritative, otherwise a canonical hash of the normalized invariant statement object documented in ARCHITECTURE_IR.md.",
+      "required": [
+        "id",
+        "kind",
+        "invariant_key",
+        "statement",
+        "scope",
+        "enforcement_level",
+        "enforcement_mechanism",
+        "verification_method",
+        "provenance"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/invariantId"
+        },
+        "kind": {
+          "const": "invariant"
+        },
+        "invariant_key": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "statement": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "scope": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "enforcement_level": {
+          "type": "string",
+          "enum": [
+            "must",
+            "should",
+            "may"
+          ]
+        },
+        "enforcement_mechanism": {
+          "type": "string",
+          "enum": [
+            "runtime",
+            "build",
+            "manual",
+            "governance"
+          ]
+        },
+        "verification_method": {
+          "type": "string",
+          "enum": [
+            "automated",
+            "manual",
+            "hybrid"
+          ]
+        },
+        "rationale": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "provenance": {
+          "$ref": "#/$defs/provenance"
+        }
+      }
+    },
+    "rule": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Rule record. payload_for_id uses namespace, rule_id, and version in canonical order unless a future schema version explicitly revises the identity function.",
+      "required": [
+        "id",
+        "kind",
+        "rule_id",
+        "rule_pack_id",
+        "version",
+        "severity",
+        "provenance"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/ruleId"
+        },
+        "kind": {
+          "const": "rule"
+        },
+        "rule_id": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "rule_pack_id": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "version": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "severity": {
+          "type": "string",
+          "enum": [
+            "info",
+            "warning",
+            "error",
+            "critical"
+          ]
+        },
+        "applies_when": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "subject_kind",
+            "subject_selector"
+          ],
+          "properties": {
+            "subject_kind": {
+              "type": "string",
+              "enum": [
+                "decision",
+                "decision_class"
+              ]
+            },
+            "subject_selector": {
+              "$ref": "#/$defs/nonEmptyString"
+            }
+          }
+        },
+        "provenance": {
+          "$ref": "#/$defs/provenance"
+        }
+      }
+    },
+    "evidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Evidence record. payload_for_id uses namespace, evidence_type, and a canonical payload hash. payload_ref should carry the same hash family used to identify the underlying evidence source fragment.",
+      "required": [
+        "id",
+        "kind",
+        "evidence_type",
+        "payload_ref",
+        "summary",
+        "freshness",
+        "provenance"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/evidenceId"
+        },
+        "kind": {
+          "const": "evidence"
+        },
+        "evidence_type": {
+          "type": "string",
+          "enum": [
+            "runtime_architecture_bundle",
+            "schema_validation",
+            "ci_attestation"
+          ]
+        },
+        "payload_ref": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "summary": {
+          "$ref": "#/$defs/nonEmptyString"
+        },
+        "freshness": {
+          "type": "object",
+          "additionalProperties": false,
+          "description": "Freshness facts projected from evidence sources. observed_at is required in compiled IR; if the adapter source omits it, the adapter must use deterministic assembly-time fallback and record that fallback in provenance.derivation_chain.",
+          "required": [
+            "freshness_class",
+            "observed_at"
+          ],
+          "properties": {
+            "freshness_class": {
+              "type": "string",
+              "enum": [
+                "current",
+                "stale-unknown",
+                "stale-confirmed"
+              ]
+            },
+            "observed_at": {
+              "$ref": "#/$defs/timestamp"
+            },
+            "last_reconciled": {
+              "$ref": "#/$defs/timestamp"
+            }
+          }
+        },
+        "provenance": {
+          "$ref": "#/$defs/provenance"
+        }
+      }
+    },
+    "relationshipBase": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Relationship record base. payload_for_id uses namespace, relationship type, from_id, and to_id in canonical order. metadata may be included in source fragments but must not alter identity unless a future schema version explicitly says so.",
+      "required": [
+        "id",
+        "type",
+        "from_id",
+        "to_id",
+        "provenance"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/relationshipId"
+        },
+        "type": {
+          "type": "string"
+        },
+        "from_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "to_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "metadata": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/$defs/metadataValue"
+          }
+        },
+        "provenance": {
+          "$ref": "#/$defs/provenance"
+        }
+      }
+    },
+    "decisionSupportsCapability": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/relationshipBase"
+        },
+        {
+          "properties": {
+            "type": {
+              "const": "decision_supports_capability"
+            },
+            "from_id": {
+              "$ref": "#/$defs/decisionId"
+            },
+            "to_id": {
+              "$ref": "#/$defs/capabilityId"
+            }
+          }
+        }
+      ]
+    },
+    "componentImplementsDecision": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/relationshipBase"
+        },
+        {
+          "properties": {
+            "type": {
+              "const": "component_implements_decision"
+            },
+            "from_id": {
+              "$ref": "#/$defs/componentId"
+            },
+            "to_id": {
+              "$ref": "#/$defs/decisionId"
+            }
+          }
+        }
+      ]
+    },
+    "invariantConstrainsComponent": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/relationshipBase"
+        },
+        {
+          "properties": {
+            "type": {
+              "const": "invariant_constrains_component"
+            },
+            "from_id": {
+              "$ref": "#/$defs/invariantId"
+            },
+            "to_id": {
+              "$ref": "#/$defs/componentId"
+            }
+          }
+        }
+      ]
+    },
+    "ruleEvaluatesDecision": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/relationshipBase"
+        },
+        {
+          "properties": {
+            "type": {
+              "const": "rule_evaluates_decision"
+            },
+            "from_id": {
+              "$ref": "#/$defs/ruleId"
+            },
+            "to_id": {
+              "$ref": "#/$defs/decisionId"
+            }
+          }
+        }
+      ]
+    },
+    "evidenceSupportsComponent": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/relationshipBase"
+        },
+        {
+          "properties": {
+            "type": {
+              "const": "evidence_supports_component"
+            },
+            "from_id": {
+              "$ref": "#/$defs/evidenceId"
+            },
+            "to_id": {
+              "$ref": "#/$defs/componentId"
+            }
+          }
+        }
+      ]
+    }
+  }
+}

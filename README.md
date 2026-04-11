@@ -128,7 +128,7 @@ Use the IR fragment path when you need ADR-derived records that conform to the p
 adr build-ir-fragments
 ```
 
-This produces the repo's example publication artifact at `dist/architecture-ir/adr-ir-fragments.json`. The normative IR schema still lives in `ste-spec`.
+This produces the repo's example publication artifact at `dist/architecture-ir/adr-ir-fragments.json`. The normative IR schema still lives in `ste-spec`, and this repo mirrors the current public contract at `contracts/architecture-ir/architecture-ir.schema.json` so the repository remains testable as a standalone checkout.
 
 ## Python Consumer Boundary
 
@@ -213,7 +213,7 @@ adr compile --mode normal
 
 - `README.md` is manual and contributor-facing.
 - `SYSTEM-OVERVIEW.md` is generated; edit its generator/template rather than hand-editing the artifact.
-- Tests intentionally validate the public Architecture IR schema from a sibling `ste-spec` checkout when available. This is by design and documents the authority boundary rather than duplicating the contract locally.
+- This repository is expected to work as a standalone checkout. The public Architecture IR schema is mirrored locally at `contracts/architecture-ir/architecture-ir.schema.json`, and tests compare that mirror against a sibling `ste-spec` checkout only when one is present.
 
 ## Related Documents
 

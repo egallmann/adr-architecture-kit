@@ -1,0 +1,71 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://adr-kit.ste.systems/schema/v1.1/objection-override.schema.json",
+  "title": "Objection Override Schema",
+  "description": "Canonical record of a steelman objection that was explicitly overridden",
+
+  "type": "object",
+  "required": [
+    "schema_version",
+    "type",
+    "id",
+    "related_adr",
+    "objection_summary",
+    "override_rationale",
+    "accepted_risk",
+    "approving_authority",
+    "approved_date",
+    "implementation_effect"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "1.1"
+    },
+    "type": {
+      "const": "objection_override"
+    },
+    "id": {
+      "$ref": "../v1.0/types.schema.json#/definitions/override_id"
+    },
+    "related_adr": {
+      "$ref": "../v1.0/types.schema.json#/definitions/adr_id_any"
+    },
+    "related_review": {
+      "oneOf": [
+        {"type": "null"},
+        {"$ref": "../v1.0/types.schema.json#/definitions/review_id"}
+      ],
+      "description": "Reference to the review or review artifact that raised the objection"
+    },
+    "related_adr_version": {
+      "oneOf": [
+        {"type": "null"},
+        {"$ref": "../v1.0/types.schema.json#/definitions/iso_date"}
+      ],
+      "description": "Canonical ADR modified_date this override was approved against"
+    },
+    "objection_summary": {
+      "type": "string",
+      "minLength": 5
+    },
+    "override_rationale": {
+      "type": "string",
+      "minLength": 5
+    },
+    "accepted_risk": {
+      "type": "string",
+      "minLength": 5
+    },
+    "approving_authority": {
+      "type": "string",
+      "minLength": 1
+    },
+    "approved_date": {
+      "$ref": "../v1.0/types.schema.json#/definitions/iso_datetime"
+    },
+    "implementation_effect": {
+      "type": "string",
+      "enum": ["exception", "deferred_compliance", "risk_accepted_variance"]
+    }
+  }
+}

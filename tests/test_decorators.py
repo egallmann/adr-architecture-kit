@@ -25,7 +25,7 @@ from src.adr_kit.repository.semantic_adapter import (
     legacy_entity_to_normalized,
     legacy_relationships,
 )
-from src.adr_kit.schema.contract_validation import validate_kernel_contract_bundle
+from src.adr_kit.schema.contract_validation import validate_adr_contract_bundle
 from src.adr_kit.schema.implementation_attribution_validation import (
     validate_implementation_attribution_evidence,
 )
@@ -74,7 +74,7 @@ def test_first_wave_public_boundaries_are_decorated() -> None:
     assert run_frontend_pipeline.__implements_adrs__ == ("ADR-L-0009", "ADR-L-0013")
     assert ADRParser.__implements_adrs__ == ("ADR-L-0001",)
     assert ProjectionInspector.__implements_adrs__ == ("ADR-L-0007",)
-    assert validate_kernel_contract_bundle.__implements_adrs__ == ("ADR-L-0010", "ADR-L-0011")
+    assert validate_adr_contract_bundle.__implements_adrs__ == ("ADR-L-0010", "ADR-L-0011")
 
 
 def test_boundary_semantic_helpers_are_decorated() -> None:

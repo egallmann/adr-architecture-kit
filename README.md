@@ -177,12 +177,43 @@ A standalone public example set lives under [`examples/public-v1/`](examples/pub
 
 Use the walkthrough in [walkthrough-adr-to-ir.md](docs/walkthrough-adr-to-ir.md) to understand how those example assets connect.
 
+## Install
+
+### Standard install
+
+```bash
+pip install adr-architecture-kit
+```
+
+Requires Python 3.11+. Installs the `adr` CLI and the `adr_kit` Python package.
+
+### Quickstart
+
+```bash
+# Verify the install
+adr --help
+
+# Validate ADRs in the current directory
+adr validate
+
+# Generate the repository discovery index
+adr generate-architecture-index
+```
+
+### Development / editable install
+
+```bash
+git clone https://github.com/egallmann/adr-architecture-kit
+cd adr-architecture-kit
+pip install -e .[dev]
+```
+
 ## Contributor Workflow
 
 ### Installation
 
 ```bash
-pip install -r requirements.txt
+pip install -e .[dev]
 ```
 
 Supported runtime: Python 3.11+.
@@ -217,6 +248,7 @@ adr compile --mode normal
 
 ## Related Documents
 
+- [Documentation index](docs/README.md) — curated public `docs/` set and contributor reference under `docs/contributors/`
 - [architecture-ir-overview.md](docs/architecture-ir-overview.md)
 - [adr-type-model.md](docs/adr-type-model.md)
 - [public-surface-and-stability.md](docs/public-surface-and-stability.md)

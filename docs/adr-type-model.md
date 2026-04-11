@@ -1,10 +1,22 @@
-# ADR Type Model
+# ADR type model
 
 ## Purpose
 
 This document is the canonical public explanation of ADR types in `adr-architecture-kit`.
 
-## Stable Types
+## Quick reference
+
+| Prefix | Role | Stability |
+|--------|------|-----------|
+| **ADR-L** | Conceptual architecture: capabilities, boundaries, contracts, invariants, decisions | Stable public v1 |
+| **ADR-PS** | Physical-system: topology, integration patterns, high-level technology posture | Stable public v1 |
+| **ADR-PC** | Physical-component: implementation-ready design, interfaces, identifiers | Stable public v1 |
+| **ADR-P** | Legacy broad physical ADR | Compatibility; not preferred for new work |
+| **ADR-V** | Vision / future-state exploration | Experimental; not part of stable v1 contract |
+
+Standalone **INV-*** invariants are first-class authoring artifacts validated alongside ADRs.
+
+## Stable types
 
 ### `ADR-L-*` Logical ADRs
 
@@ -49,7 +61,7 @@ Typical content:
 
 This is the preferred detailed physical modeling form for public use.
 
-## Compatibility Type
+## Compatibility type
 
 ### `ADR-P-*` Legacy Physical ADRs
 
@@ -63,7 +75,7 @@ Use it as:
 
 Do not treat it as the preferred forward public modeling form when `ADR-PS-*` and `ADR-PC-*` can express the architecture more clearly.
 
-## Experimental Type
+## Experimental type
 
 ### `ADR-V-*` Vision ADRs
 
@@ -77,7 +89,7 @@ They are useful for:
 
 They are not part of the stable public v1 contract for this repository.
 
-## Relationship Between Types
+## Relationship between types
 
 ```text
 ADR-L
@@ -92,7 +104,9 @@ ADR-V
     -> experimental future-state material
 ```
 
-## Source to Output Relationship
+A typical refinement chain is: **logical intent (L)** → **system shape (PS)** → **component specification (PC)**. Exact linking fields live in the schemas; see [schema/v1.0/README.md](../schema/v1.0/README.md).
+
+## Source to output relationship
 
 - ADR source artifacts define canonical authoring intent
 - compiler and generators normalize that intent into repository discovery outputs

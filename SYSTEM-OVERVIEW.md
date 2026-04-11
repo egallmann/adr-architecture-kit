@@ -5,8 +5,8 @@ artifact_kind: system_overview
 generator_id: adr-system-overview
 generator_version: 1
 hash_algorithm: sha256
-source_hash: 4713e283cca66d18244dcb6d24e9c94321f0c45be66c3bf055d0c4d121c388d5
-rendered_hash: 44e0eecc27801ae2795a5b685376cff5d799a32871172d1c6cea84e1ca064dab
+source_hash: 14bfa3ca2ef6244c77a460a4f02b8c8d668f4de1daf9f80205c6008db2b8d5f0
+rendered_hash: ab35b37bd5dbe4fa475f4b23f5bc756ed27bfe0bd46e776eacf7f59dae4710b1
 -->
 
 <!--
@@ -80,7 +80,7 @@ When an AI enters this repo cold, use this order:
 4. Inspect the CLI entrypoints in [`main.py`](src/adr_kit/cli/main.py).
 5. Inspect generators in [`src/adr_kit/generators/`](src/adr_kit/generators/).
 6. Inspect validators in [`src/adr_kit/validators/`](src/adr_kit/validators/).
-7. Inspect placement and scope rules in [`PLACEMENT-CONVENTION.md`](docs/PLACEMENT-CONVENTION.md).
+7. Inspect placement and scope rules in [`placement-convention.md`](docs/contributors/placement-convention.md).
 8. Only then decide whether new code is needed.
 
 Do not start by hand-writing artifacts if a generator or validator already exists.
@@ -225,7 +225,7 @@ These rules are mandatory:
 3. Treat submodules and sibling repositories as separate scopes unless recursive scope resolution is explicitly requested.
 4. Never classify artifacts by path shape when authoritative document metadata already exists.
 
-See [`PLACEMENT-CONVENTION.md`](docs/PLACEMENT-CONVENTION.md) for the full placement rule.
+See [`placement-convention.md`](docs/contributors/placement-convention.md) for the full placement rule.
 
 ## High-Value Invariants
 

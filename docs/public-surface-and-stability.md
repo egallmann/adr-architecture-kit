@@ -1,8 +1,8 @@
-# Public Surface And Stability
+# Public surface and stability
 
 ## Stable
 
-The following are the intended stable public v1 surfaces for `adr-architecture-kit`:
+The following are the intended **stable public v1** surfaces for `adr-architecture-kit`:
 
 - ADR v1.0 schemas in `schema/v1.0/`
 - ADR frontmatter model and type taxonomy
@@ -23,7 +23,7 @@ These surfaces are public but not yet declared shape-stable:
 - logical ADR IR adapter profile version details
 - lifecycle, remediation, and ledger extensions
 
-Draft means:
+**Draft** means:
 
 - useful to review and consume carefully
 - expected to evolve
@@ -37,17 +37,17 @@ These areas are intentionally outside the stable public v1 contract:
 - `src/adr_kit/migrators/`
 - `ADR-L-9000` and workspace boot publication examples
 - `scripts/publish_architecture_ir_fragments.py`
-- older strategy or ecosystem-future docs that depend on a shared workspace narrative
+- older strategy or ecosystem-future material that depends on a shared workspace narrative
 
-Experimental means:
+**Experimental** means:
 
 - present for exploration or internal evolution
 - not guaranteed to remain
 - not appropriate as the foundation for new external dependencies
 
-## Reference Implementation Surface
+## Reference implementation surface
 
-The following are public reference implementation assets rather than normative contracts:
+The following are public **reference implementation** assets rather than normative contracts:
 
 - compiler pipeline internals
 - registry and projection emitters
@@ -56,9 +56,9 @@ The following are public reference implementation assets rather than normative c
 - CLI orchestration
 - integrity and freshness validation
 
-These are useful and supported, but external users should depend on the declared public surface rather than on internal implementation details.
+These are useful and supported, but external users should depend on the **declared public surface** rather than on internal implementation details.
 
-## Practical Consumption Rules
+## Practical consumption rules
 
 - Depend on `schema/v1.0/` for stable ADR encoding contracts.
 - Use `ArchitectureRepository` or the repository-normalized bundle for repository-local consumer workflows.

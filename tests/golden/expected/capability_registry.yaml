@@ -17,7 +17,6 @@ entities:
     domains:
     - architecture
     - governance
-    - documentation-state
     implemented_by_components: []
     enabled_by_decisions: []
   relationships:
@@ -59,7 +58,6 @@ entities:
     domains:
     - architecture
     - governance
-    - documentation-state
     implemented_by_components: []
     enabled_by_decisions: []
   relationships:
@@ -101,7 +99,6 @@ entities:
     domains:
     - architecture
     - governance
-    - documentation-state
     implemented_by_components: []
     enabled_by_decisions: []
   relationships:
@@ -143,7 +140,6 @@ entities:
     domains:
     - architecture
     - governance
-    - documentation-state
     implemented_by_components: []
     enabled_by_decisions: []
   relationships:
@@ -184,7 +180,6 @@ entities:
     domains:
     - architecture
     - governance
-    - documentation-state
     implemented_by_components: []
     enabled_by_decisions: []
   relationships:
@@ -226,7 +221,6 @@ entities:
     domains:
     - architecture
     - governance
-    - documentation-state
     implemented_by_components: []
     enabled_by_decisions: []
   relationships:
@@ -268,7 +262,6 @@ entities:
     domains:
     - architecture
     - governance
-    - documentation-state
     implemented_by_components: []
     enabled_by_decisions: []
   relationships:

@@ -4,6 +4,7 @@ import json
 from pathlib import Path
 
 import jsonschema
+import pytest
 
 from scripts.publish_architecture_ir_fragments import OUTPUT_PATH, publish_architecture_ir_fragments
 
@@ -13,6 +14,8 @@ SPEC_SCHEMA_PATH = REPO_ROOT.parent / "ste-spec" / "contracts" / "architecture-i
 
 
 def _load_kernel_schema() -> dict:
+    if not SPEC_SCHEMA_PATH.exists():
+        pytest.skip("Sibling ste-spec checkout not available in this environment.")
     return json.loads(SPEC_SCHEMA_PATH.read_text(encoding="utf-8"))
 
 

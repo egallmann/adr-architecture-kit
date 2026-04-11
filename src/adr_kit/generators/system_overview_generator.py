@@ -94,7 +94,7 @@ class SystemOverviewGenerator:
                 "Inspect the CLI entrypoints in [`main.py`](src/adr_kit/cli/main.py).",
                 "Inspect generators in [`src/adr_kit/generators/`](src/adr_kit/generators/).",
                 "Inspect validators in [`src/adr_kit/validators/`](src/adr_kit/validators/).",
-                "Inspect placement and scope rules in [`PLACEMENT-CONVENTION.md`](docs/PLACEMENT-CONVENTION.md).",
+                "Inspect placement and scope rules in [`placement-convention.md`](docs/contributors/placement-convention.md).",
                 "Only then decide whether new code is needed.",
             ],
             "capabilities": [

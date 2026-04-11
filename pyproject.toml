@@ -1,17 +1,31 @@
 [project]
 name = "adr-architecture-kit"
 version = "0.1.0"
-description = "STE-compliant toolkit for machine-verifiable Architecture Decision Records"
+description = "STE authoring subsystem for canonical ADR encoding and authoring-time validation"
 authors = [{name = "Erik Gallmann"}]
+maintainers = [{name = "Erik Gallmann"}]
 license = {text = "Apache-2.0"}
 requires-python = ">=3.11"
 readme = "README.md"
+keywords = ["architecture", "adr", "ste", "decision-records", "governance", "architecture-decision-records"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: Apache Software License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Software Development :: Documentation",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Typing :: Typed",
+]
 
 dependencies = [
     "pydantic>=2.0",
     "pyyaml>=6.0",
     "jsonschema>=4.0",
     "jinja2>=3.1",
+    "click>=8.0",
 ]
 
 [project.optional-dependencies]
@@ -22,11 +36,12 @@ dev = [
     "ruff>=0.1",
     "mypy>=1.0",
     "pip-audit>=2.7",
+    "build>=1.0",
 ]
 
-cli = [
-    "click>=8.0",
-]
+[project.urls]
+Homepage = "https://github.com/egallmann/adr-architecture-kit"
+Repository = "https://github.com/egallmann/adr-architecture-kit"
 
 [project.scripts]
 adr = "adr_kit.cli.main:cli"
@@ -34,6 +49,14 @@ adr = "adr_kit.cli.main:cli"
 [build-system]
 requires = ["setuptools>=65.0", "wheel"]
 build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+"adr_kit.schema.v1_0" = ["*.json"]
+"adr_kit.schema.v1_1" = ["*.json"]
+"adr_kit.templates" = ["*.jinja2"]
 
 [tool.black]
 line-length = 100

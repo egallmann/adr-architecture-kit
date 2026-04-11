@@ -416,7 +416,7 @@ def test_compile_cli_exits_non_zero_when_contract_validation_fails(tmp_path, mon
 
     monkeypatch.setattr(
         driver_module,
-        "validate_kernel_contract_bundle",
+        "validate_adr_contract_bundle",
         lambda *args, **kwargs: ContractValidationResult(
             profile="greenfield",
             outcome="non_compliant",
@@ -505,7 +505,7 @@ def test_architecture_compiler_normal_mode_fails_on_contract_error(tmp_path, mon
 
     monkeypatch.setattr(
         driver_module,
-        "validate_kernel_contract_bundle",
+        "validate_adr_contract_bundle",
         lambda *args, **kwargs: ContractValidationResult(
             profile="greenfield",
             outcome="non_compliant",
@@ -543,7 +543,7 @@ def test_architecture_compiler_lenient_mode_tolerates_contract_error(tmp_path, m
 
     monkeypatch.setattr(
         driver_module,
-        "validate_kernel_contract_bundle",
+        "validate_adr_contract_bundle",
         lambda *args, **kwargs: ContractValidationResult(
             profile="greenfield",
             outcome="non_compliant",
@@ -606,7 +606,7 @@ def test_compile_cli_lenient_mode_allows_tolerated_contract_failure(tmp_path, mo
 
     monkeypatch.setattr(
         driver_module,
-        "validate_kernel_contract_bundle",
+        "validate_adr_contract_bundle",
         lambda *args, **kwargs: ContractValidationResult(
             profile="greenfield",
             outcome="non_compliant",

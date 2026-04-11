@@ -1,108 +1,139 @@
-# Walkthrough: ADR To IR
+# Walkthrough: ADR to IR
 
 ## Goal
 
-This walkthrough shows the end-to-end public story for `adr-architecture-kit`:
+This walkthrough shows the end-to-end **public** story for `adr-architecture-kit`:
 
-1. author ADR source artifacts
-2. normalize them into the repository discovery bundle
-3. emit ADR-derived Architecture IR fragments
+1. Author ADR source artifacts (canonical YAML under `adrs/`).
+2. Normalize them into the **repository-normalized discovery bundle** (indexes and manifest).
+3. Optionally emit **ADR-derived Architecture IR fragments** that conform to the contract owned by `ste-spec`.
 
-The example assets live under [`examples/public-v1/`](../examples/public-v1/).
+A minimal worked example lives under [`examples/public-v1/`](../examples/public-v1/).
 
-## Example Inputs
+## Three authoring levels (conceptual)
 
-The example source set contains:
+ADR Kit models architecture at three levels (see [adr-type-model.md](adr-type-model.md) for the full taxonomy):
+
+| Level | Prefix | Question it answers |
+|-------|--------|---------------------|
+| Logical | `ADR-L-*` | **What** must be true — capabilities, boundaries, contracts, invariants |
+| Physical system | `ADR-PS-*` | **How** at system scale — topology, integration patterns, major components |
+| Physical component | `ADR-PC-*` | **How** at execution scale — interfaces, responsibilities, implementation identifiers |
+
+Typical refinement flow:
+
+```text
+ADR-L (intent)
+    -> ADR-PS (system realization)
+        -> ADR-PC (implementation-ready components)
+```
+
+Relationships between artifacts are expressed in ADR frontmatter and compiled into registries; the example set includes one file of each kind.
+
+## Example inputs
+
+The [`examples/public-v1/`](../examples/public-v1/) tree includes:
 
 - one logical ADR: `ADR-L-0001`
 - one physical-system ADR: `ADR-PS-0001`
 - one physical-component ADR: `ADR-PC-0001`
 
-Those files are the canonical source artifacts for the example.
+Those YAML files are the **canonical source** artifacts for the example. Everything under `examples/public-v1/output/` is **derived**.
 
-## Step 1: ADR Source Meaning
+## Step 1: ADR source meaning
 
-### Logical ADR
+### Logical ADR (`ADR-L-*`)
 
-The logical ADR defines conceptual architecture intent:
+Defines conceptual architecture intent: capabilities, boundaries, interaction contracts, constraints, invariants, and decisions — without locking implementation technology.
 
-- one capability
-- one invariant
-- one decision
+### Physical-system ADR (`ADR-PS-*`)
 
-### Physical-System ADR
+Defines the high-level system shape that realizes logical intent: major components, topology, integration posture, and system-level boundaries.
 
-The physical-system ADR defines the high-level system shape that realizes the logical intent.
+### Physical-component ADR (`ADR-PC-*`)
 
-### Physical-Component ADR
+Defines implementation-ready component design: interfaces, operational requirements, testing expectations, and **implementation identifiers** (where the component lives in code and deployment).
 
-The physical-component ADR defines the implementation-ready component responsible for the concrete realization.
+## Step 2: Normalize into repository discovery outputs
 
-## Step 2: Normalize Into Repository Discovery Outputs
+The compiler / generator pipeline turns ADR authority into a **deterministic, repository-local** bundle for discovery and tooling.
 
-The repository compiler/generator flow turns ADR authority into a deterministic repository-facing bundle.
+Core outputs include:
 
-Core outputs:
+- `architecture-index.yaml` — bootstrap pointer into the bundle
+- `entity-registry.yaml` — normalized entity records
+- `relationship-registry.yaml` — explicit edges
+- `unresolved-registry.yaml` — gaps and deferred items as first-class signals
+- `manifest.yaml` — summary index (derived; not semantic authority on its own)
 
-- `architecture-index.yaml`
-- `entity-registry.yaml`
-- `relationship-registry.yaml`
-- `unresolved-registry.yaml`
-- `manifest.yaml`
+In the public example, compiled outputs appear under:
 
-In the example, these live under:
+- [`examples/public-v1/output/index/`](../examples/public-v1/output/index/)
+- [`examples/public-v1/output/manifest.yaml`](../examples/public-v1/output/manifest.yaml)
 
-- `examples/public-v1/output/index/`
-- `examples/public-v1/output/manifest.yaml`
+**Important:** this bundle is the repository-owned **discovery surface**. It is **not** the normative cross-repo Architecture IR contract (that remains `ste-spec`).
 
-This layer is meant for repository discovery and semantic loading. It is not the public cross-repo Architecture IR contract.
-
-## Step 3: Emit Architecture IR Fragments
-
-Selected ADR inputs can also be adapted into public Architecture IR records.
-
-In the example, the fragment output lives at:
-
-- `examples/public-v1/output/architecture-ir/adr-ir-fragments.json`
-
-That file is an ADR-derived IR adapter output. It is shaped to conform to the public Architecture IR contract owned by `ste-spec`.
-
-## What Runtime And Kernel Consume
-
-### Runtime
-
-`ste-runtime` consumes architecture information as part of runtime observation and evidence composition. It does not become the normative owner of ADR encoding or public IR contracts.
-
-### Kernel
-
-`ste-kernel` consumes compiled inputs and applies governance/admission logic. It does not redefine the Architecture IR schema.
-
-## Example Commands
-
-Repository discovery outputs:
+### Example commands (typical repo)
 
 ```bash
 adr generate-architecture-index
 adr generate-manifest
 ```
 
-IR fragment publication example:
+Use `--scope <path>` when working in a subdirectory; use `--recursive` to refresh multiple scopes (see project CLI help).
+
+## Step 3: Emit Architecture IR fragments
+
+Selected logical ADR inputs can be adapted into JSON records shaped for the **public Architecture IR** schema.
+
+In the example, output is at:
+
+- [`examples/public-v1/output/architecture-ir/adr-ir-fragments.json`](../examples/public-v1/output/architecture-ir/adr-ir-fragments.json)
+
+That file is an **adapter output**: it must validate against the schema mirrored at [`contracts/architecture-ir/architecture-ir.schema.json`](../contracts/architecture-ir/architecture-ir.schema.json), whose normative home is **`ste-spec`**.
+
+### Example commands
 
 ```bash
+# Parameterized / generic path (see `adr compile-ir-fragments --help`)
+adr compile-ir-fragments
+
+# Conventional in-repo self-publication example (this repository)
 adr build-ir-fragments
 ```
 
-## Mapping Summary
+`build-ir-fragments` is explicitly a **repository self-publication** example; prefer `compile-ir-fragments` for parameterized use.
+
+## Downstream consumption (runtime and kernel)
+
+### Graph and runtime (`ste-runtime`)
+
+`ste-runtime` owns **runtime observation**, evidence extraction, and graph composition. It should **consume** upstream architecture surfaces (discovery bundle and/or public IR) — not redefine ADR encoding or the normative IR schema.
+
+**Practical posture for integrators:**
+
+- Prefer the repository-normalized bundle (`adrs/index/*`, `adrs/manifest.yaml`) for **repository-local** discovery and semantic loading.
+- Use **`ste-spec`** for the normative **Architecture IR** schema and cross-repo semantics.
+- Do not treat downstream graph projections as a new source of architecture authority.
+
+### Kernel (`ste-kernel`)
+
+`ste-kernel` owns **admission and governance** over compiled inputs. It does not own the Architecture IR schema.
+
+## End-to-end mapping
 
 ```text
-ADR source artifacts
-    -> repository-normalized discovery outputs
-    -> Python consumer boundary
-    -> ADR-derived Architecture IR fragments
-    -> ste-spec Architecture IR contract
+ADR source artifacts (adrs/**/*.yaml, invariants)
+    -> parse / validate (schema/v1.0)
+    -> repository-normalized discovery outputs (adrs/index/*, manifest)
+    -> Python consumer boundary (ArchitectureRepository, NormalizedArchitectureModel)
+    -> optional: ADR-derived Architecture IR fragments (JSON)
+    -> normative contract: ste-spec Architecture IR schema
 ```
 
 ## Related
 
-- [architecture-ir-overview.md](architecture-ir-overview.md)
-- [adr-type-model.md](adr-type-model.md)
+- [architecture-ir-overview.md](architecture-ir-overview.md) — layers vs `ArchModel` vs public seam
+- [adr-type-model.md](adr-type-model.md) — ADR-L / PS / PC / P / V
+- [authority-boundary.md](authority-boundary.md) — STE stack ownership
+- [public-surface-and-stability.md](public-surface-and-stability.md) — what to depend on externally

@@ -6,6 +6,21 @@ from pathlib import Path
 from src.adr_kit.parser import ADRParser, ADRParseError, ADRSchemaValidationError
 
 
+def test_adr_parser_default_init():
+    """ADRParser() with no args must resolve bundled schemas via importlib.resources."""
+    parser = ADRParser()
+    assert parser.schema_dir.exists(), f"Schema v1_0 dir not found: {parser.schema_dir}"
+    assert parser.schema_v11_dir.exists(), f"Schema v1_1 dir not found: {parser.schema_v11_dir}"
+    assert any(parser.schema_dir.glob("*.json")), "No JSON schemas in v1_0"
+    assert any(parser.schema_v11_dir.glob("*.json")), "No JSON schemas in v1_1"
+
+
+def test_adr_parser_loads_schemas():
+    """ADRParser must populate _schemas on init (importlib.resources path must resolve)."""
+    parser = ADRParser()
+    assert parser._schemas, "Expected _schemas to be non-empty after init"
+
+
 @pytest.fixture
 def parser():
     """Create ADR parser."""

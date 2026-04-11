@@ -1,0 +1,80 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://adr-kit.ste.systems/schema/v1.1/decision-ledger.schema.json",
+  "title": "Decision Ledger Schema",
+  "description": "Bounds design space and constrains ADR creation",
+  
+  "type": "object",
+  "required": ["schema_version", "type", "ledger_id", "source_requirements_snapshot", "target_logical_adr"],
+  "properties": {
+    "schema_version": {
+      "const": "1.1"
+    },
+    "type": {
+      "const": "decision_ledger"
+    },
+    "ledger_id": {
+      "type": "string",
+      "pattern": "^LEDGER-\\d{4}$"
+    },
+    "version": {
+      "type": "string",
+      "pattern": "^\\d+\\.\\d+$",
+      "default": "1.0"
+    },
+    "created_date": {
+      "$ref": "../v1.0/types.schema.json#/definitions/iso_date"
+    },
+    "source_requirements_snapshot": {
+      "type": "string",
+      "pattern": "^REQ-\\d{4}$",
+      "description": "Immutable reference to requirements snapshot"
+    },
+    "target_logical_adr": {
+      "$ref": "../v1.0/types.schema.json#/definitions/adr_id_logical"
+    },
+    "required_decisions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["ledger_decision_id", "question", "alternatives"],
+        "properties": {
+          "ledger_decision_id": {
+            "type": "string",
+            "pattern": "^LDEC-\\d{4}$",
+            "description": "Ledger-local decision identifier"
+          },
+          "question": {
+            "type": "string",
+            "description": "What decision must be made?"
+          },
+          "alternatives": {
+            "type": "array",
+            "items": {"type": "string"},
+            "description": "Alternatives to consider"
+          },
+          "related_snapshot_items": {
+            "type": "array",
+            "items": {"type": "string", "pattern": "^RQ[A-Z]+-\\d{4}$"},
+            "description": "Related snapshot requirement items (RQCAP, RQCONST, RQINV, RQNFR)"
+          },
+          "resolved_by_decisions": {
+            "type": "array",
+            "items": {"$ref": "../v1.0/types.schema.json#/definitions/entity_id"},
+            "description": "ADR decisions (DEC-XXXX) that resolved this ledger decision"
+          }
+        }
+      }
+    },
+    "constraints": {
+      "type": "object",
+      "properties": {
+        "snapshot_items": {
+          "type": "array",
+          "items": {"type": "string", "pattern": "^RQ[A-Z]+-\\d{4}$"},
+          "description": "Snapshot requirement items that constrain design (RQINV, RQNFR, RQCONST)"
+        }
+      }
+    }
+  }
+}

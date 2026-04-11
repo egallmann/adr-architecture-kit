@@ -1,0 +1,9 @@
+schema_version: "1.0"
+type: manifest
+adrs:
+  logical:
+    - ADR-L-0001
+  physical_system:
+    - ADR-PS-0001
+  physical_component:
+    - ADR-PC-0001

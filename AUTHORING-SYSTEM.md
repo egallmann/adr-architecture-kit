@@ -2,7 +2,7 @@
 
 **adr-architecture-kit is an authoring-only system** for Architecture Decision Records: JSON Schema contracts, Pydantic models, parsers, validators, CLI workflows for humans, and optional human-facing generated views.
 
-It is **not** the compiler of record for **machine-consumable** architecture state consumed by **ste-runtime** / **ste-kernel**. That compilation authority lives in **ste-runtime** (ADR graph + RECON + merge + projection).
+It is **not** the owner of public cross-repo schemas or of runtime/admission contracts. Public schemas live in **ste-spec**; runtime evidence is produced by **ste-runtime**; admission is emitted by **ste-kernel**.
 
 ## Guardrails
 

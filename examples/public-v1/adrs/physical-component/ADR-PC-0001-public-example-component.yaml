@@ -1,0 +1,64 @@
+schema_version: "1.0"
+adr_type: physical-component
+id: ADR-PC-0001
+title: "Public Example Component ADR"
+status: accepted
+created_date: "2026-04-02"
+authors:
+  - adr-architecture-kit
+domains:
+  - architecture
+tags:
+  - public-example
+implements_system:
+  - ADR-PS-0001
+implements_logical:
+  - ADR-L-0001
+technologies:
+  - python
+context: |
+  Provide one implementation-ready component example for the public onboarding flow.
+technology_stack:
+  - category: language
+    name: "Python"
+    version: "3.11"
+    rationale: "Matches the implementation language of adr-architecture-kit."
+component_specifications:
+  - id: COMP-0001
+    name: "Example Compiler Surface"
+    type: service
+    responsibilities: |
+      - Normalize ADR inputs into repository outputs
+      - Expose ADR-derived IR fragment generation
+    generation_context:
+      purpose: "Expose the minimal public ADR to IR example flow"
+      key_responsibilities:
+        - "Generate repository discovery outputs"
+        - "Emit ADR-derived IR fragments"
+      constraints:
+        - "Do not claim ownership of the normative public IR schema"
+      success_criteria:
+        - "Example readers can identify source, normalized, and public IR layers"
+    interfaces:
+      - id: IFACE-0001
+        type: CLI
+        specification: |
+          Example commands:
+          - adr generate-architecture-index
+          - adr build-ir-fragments
+    implementation_identifiers:
+      module_path: "src/adr_kit"
+      entry_point: "src/adr_kit/cli/main.py"
+    implementation_requirements:
+      error_handling:
+        strategy: "Fail clearly when example artifacts are missing or inconsistent."
+      observability:
+        logging:
+          level: "info"
+          structured: false
+        metrics:
+          - name: "example_runs_total"
+            type: counter
+      testing_requirements:
+        unit_test_coverage: ">= 0%"
+gaps: []

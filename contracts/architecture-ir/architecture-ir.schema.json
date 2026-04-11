@@ -1,8 +1,8 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://ste-kernel.local/schema/architecture-ir/0.1.0/architecture-ir.schema.json",
-  "title": "STE Kernel Architecture IR",
-  "description": "Normative schema for the compiled Architecture IR document consumed by ste-kernel. Deterministic compilation rules are normative: IDs are pure functions of normalized adapter inputs and namespace, hashing uses RFC 8785 JCS over UTF-8, compiled arrays are sorted by id in UTF-8 byte order, document_id excludes document_id and assembled_at from its hash input, merge precedence is ADR > Spec > Runtime > Rules, and null values are forbidden everywhere in a Compiled_IR_Document.",
+  "$id": "https://github.com/egallmann/ste-spec/contracts/architecture-ir/architecture-ir.schema.json",
+  "title": "STE Architecture IR (Compiled_IR_Document)",
+  "description": "Normative JSON Schema for the compiled Architecture IR document (`Compiled_IR_Document`) consumed by ste-kernel. Governed in ste-spec under `contracts/architecture-ir/`. Deterministic compilation rules are normative: IDs are pure functions of normalized adapter inputs and namespace, hashing uses RFC 8785 JCS over UTF-8, compiled arrays are sorted by id in UTF-8 byte order, document_id excludes document_id and assembled_at from its hash input, merge precedence is ADR > Spec > Runtime > Rules, and null values are forbidden everywhere in a Compiled_IR_Document.",
   "type": "object",
   "additionalProperties": false,
   "required": [

@@ -9,15 +9,13 @@ from scripts.publish_architecture_ir_fragments import OUTPUT_PATH, publish_archi
 
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
-KERNEL_SCHEMA_PATH = REPO_ROOT.parent / "ste-kernel" / "architecture-ir" / "architecture-ir.schema.json"
-FALLBACK_KERNEL_SCHEMA_PATH = (
-    REPO_ROOT / "tests" / "fixtures" / "kernel" / "architecture-ir.schema.json"
+PUBLIC_IR_SCHEMA_PATH = (
+    REPO_ROOT / "contracts" / "architecture-ir" / "architecture-ir.schema.json"
 )
 
 
 def _load_kernel_schema() -> dict:
-    schema_path = KERNEL_SCHEMA_PATH if KERNEL_SCHEMA_PATH.exists() else FALLBACK_KERNEL_SCHEMA_PATH
-    return json.loads(schema_path.read_text(encoding="utf-8"))
+    return json.loads(PUBLIC_IR_SCHEMA_PATH.read_text(encoding="utf-8"))
 
 
 def _build_compiled_document(records: list[dict]) -> dict:
@@ -25,7 +23,7 @@ def _build_compiled_document(records: list[dict]) -> dict:
     relationships = [record for record in records if "type" in record]
     return {
         "ir_version": "0.1.0",
-        "schema_id": "https://ste-kernel.local/schema/architecture-ir/0.1.0/architecture-ir.schema.json",
+        "schema_id": "https://github.com/egallmann/ste-spec/contracts/architecture-ir/architecture-ir.schema.json",
         "document_id": "sha256:" + "d" * 64,
         "assembled_at": "2026-03-21T00:00:00.000Z",
         "namespace": "repo:ste-workspace:boot",

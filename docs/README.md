@@ -50,6 +50,7 @@ Earlier drafts lived in a flat `docs/` tree and a temporary `_docs/` reference f
 | `logical-adr-guide.md` | [contributors/logical-adr-guide.md](contributors/logical-adr-guide.md) when present |
 | `physical-adr-guide.md` | [contributors/physical-adr-guide.md](contributors/physical-adr-guide.md) (also in contributor reference above) |
 | `schema-guide.md` | [contributors/schema-guide.md](contributors/schema-guide.md); normative schema overview remains [schema/v1.0/README.md](../schema/v1.0/README.md) |
+
 | `placement-convention.md` | [contributors/placement-convention.md](contributors/placement-convention.md) when present |
 | `multi-scope-guide.md`, `v1.1-integration-guide.md` | Optional under `contributors/`; stability story in [public-surface-and-stability.md](public-surface-and-stability.md) |
 | Internal design write-ups (traceability, projection, methodology) | Optional under `contributors/` or drop if obsolete |

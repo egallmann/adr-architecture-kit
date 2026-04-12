@@ -50,6 +50,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   discovery / IR out; Alpha).
 - PR template checklist: **CI vs local** note linking to CONTRIBUTING.
 
+
 ### Added
 
 - CI job `release-artifact-validation`: builds wheel and sdist, installs into a
@@ -64,6 +65,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Maintainer instructions in `CONTRIBUTING.md` for linking PyPI to this repository.
 - `pyproject.toml` `[tool.setuptools] license-files` so `LICENSE` is included in
   the source distribution.
+
 
 ## [0.1.0] — 2026-03-07
 

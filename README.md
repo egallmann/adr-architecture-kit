@@ -140,7 +140,7 @@ Full breakdown: [public-surface-and-stability.md](docs/public-surface-and-stabil
 | [contributors/schema-guide.md](docs/contributors/schema-guide.md) | Long-form schema and validation notes |
 | [contributors/placement-convention.md](docs/contributors/placement-convention.md) | Placement rules for ADRs, manifest, and index paths |
 
-Also [CONTRIBUTING.md](CONTRIBUTING.md) and [schema/v1.0/README.md](schema/v1.0/README.md). **Where to start:** ADR authors — [adr-type-model.md](docs/adr-type-model.md), [schema/v1.0/README.md](schema/v1.0/README.md), [walkthrough-adr-to-ir.md](docs/walkthrough-adr-to-ir.md). Python or cross-repo IR consumers — [architecture-ir-overview.md](docs/architecture-ir-overview.md), [authority-boundary.md](docs/authority-boundary.md); code entry point [`architecture_repository.py`](src/adr_kit/repository/architecture_repository.py).
+Also [CONTRIBUTING.md](CONTRIBUTING.md) and [schema/v1.0/README.md](schema/v1.0/README.md). **Where to start:** ADR authors — [adr-type-model.md](docs/adr-type-model.md), [schema/v1.0/README.md](schema/v1.0/README.md), [walkthrough-adr-to-ir.md](docs/walkthrough-adr-to-ir.md). Python or cross-repo IR consumers — [architecture-ir-overview.md](docs/architecture-ir-overview.md), [authority-boundary.md](docs/authority-boundary.md); code entry point [`architecture_repository.py`](src/adr_kit/repository/architecture_repository.py). Curated doc index: [docs/README.md](docs/README.md).
 
 ## Contributing
 

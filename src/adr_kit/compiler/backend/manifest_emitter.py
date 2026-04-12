@@ -4,12 +4,14 @@ from __future__ import annotations
 
 from pathlib import Path
 
+from ...decorators import implements_adr
 from ...parser import ADRParser
 from ...scope import ProjectScope
 from .common import EmittedArtifact
 from .manifest_rendering import build_manifest_integrity_header, render_manifest_for_scope
 
 
+@implements_adr("ADR-L-0009", "ADR-L-0010", "ADR-PC-0003")
 def emit_manifest_artifact(
     *,
     parser: ADRParser,

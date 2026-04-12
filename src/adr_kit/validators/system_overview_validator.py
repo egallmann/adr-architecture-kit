@@ -6,6 +6,7 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import List
 
+from ..decorators import enforces_invariant, implements_adr
 from ..integrity import GeneratedArtifactValidator, GeneratedArtifactStatus
 from ..integrity.artifacts import ArtifactKind, GeneratedArtifact
 from ..integrity.core import extract_body_without_header
@@ -25,6 +26,8 @@ class SystemOverviewValidationResult:
         return not self.errors
 
 
+@implements_adr("ADR-L-0007", "ADR-PC-0005")
+@enforces_invariant("INV-0037", "INV-0038", "INV-0039")
 class SystemOverviewValidator:
     """Validate that SYSTEM-OVERVIEW.md is generated and current."""
 

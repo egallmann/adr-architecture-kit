@@ -1,3 +1,7 @@
+# Supplementary dependency list for runtime hygiene / audit tooling (see load_direct_dependency_names).
+# Authoritative install: pip install adr-architecture-kit  (or pip install -e ".[dev]" from a checkout).
+
+click>=8.0.0
 pydantic>=2.0.0
 pyyaml>=6.0.0
 jsonschema>=4.0.0

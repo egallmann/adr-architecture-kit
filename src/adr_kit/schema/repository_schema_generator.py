@@ -14,6 +14,7 @@ import json
 from pathlib import Path
 from typing import Any
 
+from adr_kit.decorators import implements_adr
 from adr_kit.models.architecture_discovery import (
     ArchitectureIndex,
     NormalizedEntityRegistry,
@@ -39,6 +40,7 @@ def normalize_json_data(value: Any) -> Any:
     return value
 
 
+@implements_adr("ADR-L-0010", "ADR-L-0011", "ADR-PC-0002")
 def generate_repository_schema_documents() -> dict[str, dict[str, Any]]:
     """Generate normalized JSON Schema documents for repository discovery models."""
     return {
@@ -47,6 +49,7 @@ def generate_repository_schema_documents() -> dict[str, dict[str, Any]]:
     }
 
 
+@implements_adr("ADR-L-0010", "ADR-L-0011", "ADR-PC-0002")
 def write_repository_schema_documents(output_dir: Path) -> list[Path]:
     """Write normalized repository schema documents to disk."""
     output_dir.mkdir(parents=True, exist_ok=True)

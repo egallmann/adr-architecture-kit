@@ -7,6 +7,7 @@ from enum import StrEnum
 from pathlib import Path
 from typing import Callable
 
+from ..decorators import enforces_invariant, implements_adr
 from ..scope import ProjectScope, ProjectScopeResolver
 from .artifacts import ArtifactKind, GeneratedArtifact, ScopeProjectionArtifacts
 from .core import (
@@ -46,6 +47,8 @@ class GeneratedArtifactValidationResult:
         return self.status == GeneratedArtifactStatus.VALID.value
 
 
+@implements_adr("ADR-L-0007", "ADR-PC-0005")
+@enforces_invariant("INV-0037", "INV-0038", "INV-0039")
 class GeneratedArtifactValidator:
     """Validate covered generated artifacts for one or more scopes."""
 

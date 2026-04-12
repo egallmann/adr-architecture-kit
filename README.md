@@ -1,102 +1,59 @@
 # ADR Architecture Kit
 
-`adr-architecture-kit` is the canonical ADR encoding and Architecture IR adapter layer for System of Thought Engineering (STE).
+**ADR Architecture Kit** (`adr-architecture-kit`) is a Python toolkit for teams and integrators who maintain **Architecture Decision Records** as structured YAML. It parses and validates those sources, normalizes them into deterministic machine-queryable **repository discovery** outputs (indexes, registries, manifest), and can emit **ADR-derived Architecture IR** fragments that match the public contract defined in **`ste-spec`**.
 
-It owns the ADR frontmatter model, ADR schemas, authoring-time validation, repository-normalized discovery outputs, and the adapter/compiler logic that turns ADR authority into records that conform to the public Architecture IR contract. It does not own the normative cross-repo IR schema itself. That authority belongs to `ste-spec`.
+Prose ADRs often go stale once written. Structured YAML keeps architecture as a **first-class maintained artifact**: explicit shapes and links preserve higher-fidelity intent for human review and for AI-assisted engineering, slowing drift and informal lossiness when decisions live only in narrative. Machine-readable discovery outputs and **Architecture IR** supply shared, queryable context for review and automation—grounding work in repository facts rather than inferring structure from incomplete prose; that reduces (it does not remove) the risk of speculative reasoning when assistants and engineers reason about the system at scale. Derived indexes, registries, and rendered documentation keep those views reproducible as the codebase matures. For how contracts split across related repositories, see [Who Owns What](#who-owns-what) below.
 
-## What This Repository Owns
+## Authoring boundary and AI orientation
+
+`adr-architecture-kit` does not turn freeform conversation into architectural decisions by itself. It expects intent already expressed in **structured** inputs (canonical ADR YAML and related artifacts), then **validates** and **materializes** them into repository-native outputs—deterministic discovery bundles, rendered views, and ADR-derived Architecture IR aligned with **`ste-spec`**.
+
+There is a deliberate **generation gap** between informal reasoning (including model-assisted chat) and **schema-conformant, placement-correct** STE ADRs. This repository mitigates that gap in two ways: structured drafts are checked by parsers and validators; and **[`SYSTEM-OVERVIEW.md`](SYSTEM-OVERVIEW.md)**—a **generated, AI-first orientation** artifact—gives assistants a canonical discovery path (authority order, scope rules, CLI and generator entry points, placement conventions) before they author or change ADRs. **`SYSTEM-OVERVIEW.md`** does not replace **`ste-spec`** doctrine; it orients work **in this repository** (regenerate with `adr generate-system-overview`; do not hand-edit the committed file).
+
+**AI-assisted IDEs and coding agents** can be **guided with repository instructions and examples** to **draft** structured ADR inputs; this kit remains the **schema, validation, and materialization** boundary between accepted structured intent and committed canonical artifacts.
+
+## Quick Start
+
+Requires **Python 3.11+**. Installs the `adr` CLI and the `adr_kit` package.
+
+```bash
+pip install adr-architecture-kit
+
+adr --help
+```
+
+`adr --help` works from any directory after install. `adr validate` and `adr generate-architecture-index` are project-scoped commands: they require a resolvable project tree with `adrs/` and the expected project markers, or an explicit `--scope PATH`.
+
+For a first end-to-end run, use a repository checkout with `adrs/` populated and follow [walkthrough-adr-to-ir.md](docs/walkthrough-adr-to-ir.md). The public example under [`examples/public-v1/`](examples/public-v1/) is included in that walkthrough.
+
+## Minimal Example
+
+A standalone public example lives under [`examples/public-v1/`](examples/public-v1/): one `ADR-L`, one `ADR-PS`, one `ADR-PC`, a minimal normalized discovery bundle, and an ADR-derived Architecture IR fragment file. The walkthrough links each asset.
+
+Representative logical ADR source (trimmed from the public example):
+
+```yaml
+# adrs/logical/ADR-L-0001-public-example-logical.yaml (excerpt)
+schema_version: "1.0"
+adr_type: logical
+id: ADR-L-0001
+title: "Public Example Logical ADR"
+status: accepted
+capabilities:
+  - id: CAP-0001
+    name: Public Repository Onboarding
+    description: Explain the minimal public ADR to IR flow.
+```
+
+From a checkout with `adrs/` populated, `adr generate-architecture-index` (with other generators as needed) materializes discovery outputs such as `adrs/index/architecture-index.yaml` and companion registries under `adrs/index/`.
+
+## What It Does
 
 - ADR schemas and frontmatter rules for canonical ADR artifacts
 - Pydantic models, parsing, and validation for ADR and invariant sources
 - Authoring-time normalization and deterministic repository discovery outputs
-- Python consumer boundary over compiled repository bundles
-- ADR-to-Architecture-IR adapter logic for the public `ste-spec` contract
-
-## What This Repository Does Not Own
-
-- `ste-handbook`: explanatory model, theory, and teaching material
-- `ste-spec`: normative contracts, schemas, and the public cross-repo Architecture IR contract
-- `ste-runtime`: runtime evidence extraction, observation, and composition
-- `ste-kernel`: admission, governance, and decisioning over compiled inputs
-
-See [authority-boundary.md](docs/authority-boundary.md) for the full authority split.
-
-## Three Layers You Must Not Confuse
-
-### 1. ADR Source Model
-
-Canonical ADR YAML and invariant artifacts under `adrs/` are the authoring source of truth for this repository.
-
-### 2. Repository-Normalized Discovery Bundle
-
-This repository compiles canonical ADR inputs into a deterministic repository-facing bundle:
-
-- `adrs/index/architecture-index.yaml`
-- `adrs/index/entity-registry.yaml`
-- `adrs/index/relationship-registry.yaml`
-- `adrs/index/unresolved-registry.yaml`
-- `adrs/manifest.yaml`
-
-This bundle is a stable repository discovery and consumer surface. It is not the same thing as the public cross-repo Architecture IR contract.
-
-### 3. Public Cross-Repo Architecture IR
-
-The public Architecture IR contract is defined normatively in `ste-spec`. This repository emits ADR-derived records that conform to that contract, but it does not redefine the contract locally.
-
-For the distinction between these layers, see [architecture-ir-overview.md](docs/architecture-ir-overview.md).
-
-## Public Surface
-
-### Stable v1 public surface
-
-- ADR v1.0 schemas under `schema/v1.0/`
-- ADR type taxonomy and frontmatter model
-- parser/validator flow for ADRs and invariants
-- repository-normalized discovery bundle concept and its core files
-- `ArchitectureRepository`
-- `NormalizedArchitectureModel`
-- the rule that `ArchModel` is compiler-internal
-- ADR-to-Architecture-IR adapter semantics, with `ste-spec` owning the normative schema
-
-### Draft surface
-
-- `schema/v1.1/` lifecycle and ledger extensions
-- exact evolution of normalized registry fields beyond the core bundle identity
-- logical ADR IR adapter profile version details
-- additive subset registries and graph artifacts
-
-### Experimental surface
-
-- `ADR-V-*` vision materials
-- migration and canonicalization tooling in `src/adr_kit/migrators/`
-- workspace boot/publication examples such as `ADR-L-9000` and `scripts/publish_architecture_ir_fragments.py`
-- repo guidance that depends on sibling workspace checkouts
-
-See [public-surface-and-stability.md](docs/public-surface-and-stability.md).
-
-## ADR Taxonomy
-
-### `ADR-L`
-
-Logical architecture intent: capabilities, boundaries, contracts, constraints, invariants, and other conceptual decisions.
-
-### `ADR-PS`
-
-Physical-system architecture: high-level implementation/system design, major components, boundaries, and topology.
-
-### `ADR-PC`
-
-Physical-component architecture: implementation-ready component design with enough precision for execution.
-
-### `ADR-P`
-
-Legacy broad physical ADR form. Publicly retained for compatibility and reference, not the preferred forward modeling surface.
-
-### `ADR-V`
-
-Experimental vision material. Useful for future-state exploration, but not part of the stable public v1 contract.
-
-See [adr-type-model.md](docs/adr-type-model.md).
+- Python API over compiled repository bundles (`ArchitectureRepository`, `NormalizedArchitectureModel`)
+- ADR-to-Architecture-IR adapter logic for the public **`ste-spec`** contract
 
 ## Core Workflow
 
@@ -108,150 +65,83 @@ ADR sources and invariants
     -> optionally emit ADR-derived Architecture IR fragments
 ```
 
-### Repository-normalized discovery flow
-
-Use the authoring/compiler toolchain when you need repository-local discovery outputs:
-
 ```bash
+# Repository-local discovery outputs (derived; do not hand-edit adrs/index/* or manifest)
 adr generate-architecture-index
 adr generate-manifest
 adr generate-rendered-docs
-```
 
-`adrs/index/*` plus `adrs/manifest.yaml` are derived artifacts. Treat them as generated, not hand-authored.
-
-### Architecture IR adapter flow
-
-Use the IR fragment path when you need ADR-derived records that conform to the public `ste-spec` Architecture IR contract:
-
-```bash
+# Example publication path for ADR-derived IR fragments (schema: ste-spec; test mirror under contracts/)
 adr build-ir-fragments
 ```
 
-This produces the repo's example publication artifact at `dist/architecture-ir/adr-ir-fragments.json`. The normative IR schema still lives in `ste-spec`, and this repo mirrors the current public contract at `contracts/architecture-ir/architecture-ir.schema.json` so the repository remains testable as a standalone checkout.
+## Key Concepts
 
-## Python Consumer Boundary
+**Three data layers** — each has a distinct role:
 
-For Python consumers, the supported repository seam is:
+1. **ADR source model** — Canonical YAML and invariants under `adrs/` are the authoring source of truth for this repository.
+2. **Repository-normalized discovery bundle** — Deterministic outputs such as `adrs/index/*.yaml` and `adrs/manifest.yaml` for repo-local discovery; separate from the cross-repo Architecture IR contract. For the supported Python API, use `ArchitectureRepository` and `NormalizedArchitectureModel` (`ArchModel` is internal to the compiler, not a stable public interface).
+3. **Public Architecture IR** — Defined in **`ste-spec`**; this kit emits conforming ADR-derived records without redefining that schema.
 
-- `ArchitectureRepository`
-- `NormalizedArchitectureModel`
+More detail: [architecture-ir-overview.md](docs/architecture-ir-overview.md).
 
-`ArchModel` is compiler-internal. It is not the public consumer contract and should not be treated as a stable cross-repo interface.
+**ADR taxonomy (quick reference)**
 
-## Start Here
+| Prefix | Role | Stability |
+|--------|------|-------------|
+| **ADR-L** | Conceptual architecture: capabilities, boundaries, contracts, invariants, decisions | Stable public v1 |
+| **ADR-PS** | Physical-system: topology, integration patterns, high-level technology posture | Stable public v1 |
+| **ADR-PC** | Physical-component: implementation-ready design, interfaces, identifiers | Stable public v1 |
+| **ADR-P** | Legacy broad physical ADR | Compatibility; not preferred for new work |
+| **ADR-V** | Vision / future-state exploration | Experimental; not stable v1 contract |
 
-### For ADR authors
+Full model: [adr-type-model.md](docs/adr-type-model.md).
 
-Read:
+## Who Owns What
 
-- [adr-type-model.md](docs/adr-type-model.md)
-- [schema/v1.0/README.md](schema/v1.0/README.md)
-- [walkthrough-adr-to-ir.md](docs/walkthrough-adr-to-ir.md)
+- **`ste-handbook`** — Explanatory model, theory, teaching.
+- **`ste-spec`** — Contracts, schemas, and the public cross-repo Architecture IR contract.
+- **`adr-architecture-kit`** (this repo) — ADR encoding, authoring validation, repository discovery outputs, and IR adapter logic into **`ste-spec`**.
+- **`ste-runtime`** — Runtime observation, evidence extraction, composition.
+- **`ste-kernel`** — Admission and governance over compiled inputs.
 
-### For Python consumers
+Full split: [authority-boundary.md](docs/authority-boundary.md).
 
-Read:
+## Stability
 
-- [architecture-ir-overview.md](docs/architecture-ir-overview.md)
-- [authority-boundary.md](docs/authority-boundary.md)
-- [`src/adr_kit/repository/architecture_repository.py`](src/adr_kit/repository/architecture_repository.py)
+This project is **pre-1.0 (Alpha)** on PyPI; surfaces may evolve until a **1.0** commitment. Trove classifiers match that posture.
 
-### For cross-repo IR consumers
+- **Stable v1** — ADR v1.0 schemas, parser/validator behavior, discovery bundle role, supported Python API, IR adapter semantics with **`ste-spec`** owning the Architecture IR schema contract.
+- **Draft** — v1.1 and evolving registry/IR adapter details; consume with care.
+- **Experimental** — Vision ADRs, migrators, workspace boot examples; not a basis for long-term external dependencies.
 
-Read:
+Full breakdown: [public-surface-and-stability.md](docs/public-surface-and-stability.md).
 
-- [architecture-ir-overview.md](docs/architecture-ir-overview.md)
-- [authority-boundary.md](docs/authority-boundary.md)
-- [walkthrough-adr-to-ir.md](docs/walkthrough-adr-to-ir.md)
+## Documentation
 
-## Minimal Example
+### Public documentation
 
-A standalone public example set lives under [`examples/public-v1/`](examples/public-v1/):
+| Document | Description |
+|----------|-------------|
+| [authority-boundary.md](docs/authority-boundary.md) | Who owns what across `ste-handbook`, `ste-spec`, this kit, `ste-runtime`, and `ste-kernel` |
+| [adr-type-model.md](docs/adr-type-model.md) | ADR taxonomy: `ADR-L`, `ADR-PS`, `ADR-PC`, legacy `ADR-P`, experimental `ADR-V` |
+| [architecture-ir-overview.md](docs/architecture-ir-overview.md) | Three layers: ADR sources, repository discovery bundle, public Architecture IR |
+| [public-surface-and-stability.md](docs/public-surface-and-stability.md) | Stable v1 vs draft vs experimental surfaces |
+| [walkthrough-adr-to-ir.md](docs/walkthrough-adr-to-ir.md) | End-to-end flow with [`examples/public-v1/`](examples/public-v1/) |
 
-- one `ADR-L`
-- one `ADR-PS`
-- one `ADR-PC`
-- a minimal normalized discovery bundle
-- an ADR-derived Architecture IR fragment file
+### Contributor guides
 
-Use the walkthrough in [walkthrough-adr-to-ir.md](docs/walkthrough-adr-to-ir.md) to understand how those example assets connect.
+| Document | Description |
+|----------|-------------|
+| [SYSTEM-OVERVIEW.md](SYSTEM-OVERVIEW.md) | Generated AI-first repo orientation (authority, workflows, CLI, generators); read before large changes |
+| [contributors/tdd-workflow.md](docs/contributors/tdd-workflow.md) | TDD workflow for this codebase |
+| [contributors/logical-adr-guide.md](docs/contributors/logical-adr-guide.md) | Writing logical ADRs |
+| [contributors/physical-adr-guide.md](docs/contributors/physical-adr-guide.md) | Physical ADR families (`ADR-PS`, `ADR-PC`, legacy `ADR-P`) |
+| [contributors/schema-guide.md](docs/contributors/schema-guide.md) | Long-form schema and validation notes |
+| [contributors/placement-convention.md](docs/contributors/placement-convention.md) | Placement rules for ADRs, manifest, and index paths |
 
-## Install
+Also [CONTRIBUTING.md](CONTRIBUTING.md) and [schema/v1.0/README.md](schema/v1.0/README.md). **Where to start:** ADR authors — [adr-type-model.md](docs/adr-type-model.md), [schema/v1.0/README.md](schema/v1.0/README.md), [walkthrough-adr-to-ir.md](docs/walkthrough-adr-to-ir.md). Python or cross-repo IR consumers — [architecture-ir-overview.md](docs/architecture-ir-overview.md), [authority-boundary.md](docs/authority-boundary.md); code entry point [`architecture_repository.py`](src/adr_kit/repository/architecture_repository.py). Curated doc index: [docs/README.md](docs/README.md).
 
-### Standard install
+## Contributing
 
-```bash
-pip install adr-architecture-kit
-```
-
-Requires Python 3.11+. Installs the `adr` CLI and the `adr_kit` Python package.
-
-### Quickstart
-
-```bash
-# Verify the install
-adr --help
-
-# Validate ADRs in the current directory
-adr validate
-
-# Generate the repository discovery index
-adr generate-architecture-index
-```
-
-### Development / editable install
-
-```bash
-git clone https://github.com/egallmann/adr-architecture-kit
-cd adr-architecture-kit
-pip install -e .[dev]
-```
-
-## Contributor Workflow
-
-### Installation
-
-```bash
-pip install -e .[dev]
-```
-
-Supported runtime: Python 3.11+.
-
-### Validation
-
-```bash
-adr validate
-adr validate-generated-docs
-adr validate-system-overview
-```
-
-### Governance bundle
-
-```bash
-adr governance-checks
-```
-
-### Compile through the unified driver
-
-```bash
-adr compile --mode normal
-```
-
-`adr compile` remains an authoring-time and repository-discovery path. Runtime-owned machine artifacts move to `ste-runtime` per [AUTHORING-SYSTEM.md](AUTHORING-SYSTEM.md).
-
-## Repository Notes
-
-- `README.md` is manual and contributor-facing.
-- `SYSTEM-OVERVIEW.md` is generated; edit its generator/template rather than hand-editing the artifact.
-- This repository is expected to work as a standalone checkout. The public Architecture IR schema is mirrored locally at `contracts/architecture-ir/architecture-ir.schema.json`, and tests compare that mirror against a sibling `ste-spec` checkout only when one is present.
-
-## Related Documents
-
-- [Documentation index](docs/README.md) — curated public `docs/` set and contributor reference under `docs/contributors/`
-- [architecture-ir-overview.md](docs/architecture-ir-overview.md)
-- [adr-type-model.md](docs/adr-type-model.md)
-- [public-surface-and-stability.md](docs/public-surface-and-stability.md)
-- [authority-boundary.md](docs/authority-boundary.md)
-- [walkthrough-adr-to-ir.md](docs/walkthrough-adr-to-ir.md)
-- [AUTHORING-SYSTEM.md](AUTHORING-SYSTEM.md)
+Contributions use **Test-Driven Development** (see [`PROJECT.yaml`](PROJECT.yaml), `ADR-L-0003`). Setup, quality gates, schema parity, governance, and PR flow are in [CONTRIBUTING.md](CONTRIBUTING.md). Authoring and placement guides live under [docs/contributors/](docs/contributors/). For authoring-time vs runtime artifact boundaries, see [AUTHORING-SYSTEM.md](AUTHORING-SYSTEM.md).

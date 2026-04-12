@@ -6,6 +6,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Dict, Iterable, List, Optional, Tuple
 
+from ..decorators import implements_adr
 from ..compiler.diagnostics import DiagnosticLevel, DiagnosticLog
 from ..compiler.frontend.parser import CachedADRParser
 from ..compiler.frontend.support import (
@@ -63,6 +64,7 @@ from ..scope import ProjectScope, ProjectScopeResolver
 GENERATOR_ID = "adr-architecture-index"
 
 
+@implements_adr("ADR-L-0009", "ADR-L-0013", "ADR-PC-0001")
 class ArchitectureIndexGenerator:
     """Generate normalized architecture discovery artifacts."""
 

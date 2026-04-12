@@ -25,6 +25,8 @@ Closes #<!-- issue number, if applicable -->
 - [ ] Schema parity maintained (`schema/` and `src/adr_kit/schema/` are in sync)
 - [ ] `CHANGELOG.md` updated under `[Unreleased]`
 
+**CI note:** GitHub Actions enforces ADR validation, `adr governance-checks` (including `pytest`), generated-docs checks, system overview validation, runtime hygiene, and schema parity. Coverage, `ruff`, `mypy`, and `black` are **strongly recommended locally** but are not separate CI jobs—see [CONTRIBUTING.md](CONTRIBUTING.md#development-methodology).
+
 ## ADR Traceability
 
 If this PR implements or modifies behavior governed by an ADR or invariant, list them here (e.g. `ADR-L-0002 INV-0015`). If a new architectural decision is required, note whether an ADR has been authored or is planned.

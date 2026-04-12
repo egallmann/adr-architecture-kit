@@ -1,7 +1,7 @@
 [project]
 name = "adr-architecture-kit"
 version = "0.1.0"
-description = "STE authoring subsystem for canonical ADR encoding and authoring-time validation"
+description = "Authoring-time STE toolkit: validate structured ADR YAML, emit discovery outputs and Architecture IR fragments (ste-spec). Pre-1.0 Alpha."
 authors = [{name = "Erik Gallmann"}]
 maintainers = [{name = "Erik Gallmann"}]
 license = {text = "Apache-2.0"}
@@ -49,6 +49,9 @@ adr = "adr_kit.cli.main:cli"
 [build-system]
 requires = ["setuptools>=65.0", "wheel"]
 build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+license-files = ["LICENSE"]
 
 [tool.setuptools.packages.find]
 where = ["src"]

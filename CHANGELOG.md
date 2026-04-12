@@ -42,6 +42,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   install instructions to use `pip install -e .[dev]`.
 - Fixed `PROJECT.yaml` `package_name` field to match published package name
   (`adr-architecture-kit`, not `adr-kit`); added `import_name: adr_kit` field.
+- README: **Authoring boundary and AI orientation** (generation gap, role of
+  generated `SYSTEM-OVERVIEW.md`, AI-assisted drafting vs kit validation);
+  **Stability** pre-1.0 Alpha note for PyPI; contributor table links for
+  `SYSTEM-OVERVIEW.md`, physical ADR guide, and schema guide.
+- `pyproject.toml` `description` sharpened for PyPI listing (structured ADR in,
+  discovery / IR out; Alpha).
+- PR template checklist: **CI vs local** note linking to CONTRIBUTING.
+
 
 ### Added
 
@@ -52,6 +60,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   match the repo-root `schema/v*/` canonical files byte-for-byte.
 - Advisory CI step for Architecture IR mirror check against sibling `ste-spec`
   checkout (skips gracefully when sibling is absent).
+- GitHub Actions workflow `publish-pypi.yml`: publish to PyPI on **push to `main`**
+  that changes `pyproject.toml`, using **Trusted Publishing** (OIDC; no PyPI token in secrets).
+- Maintainer instructions in `CONTRIBUTING.md` for linking PyPI to this repository.
+- `pyproject.toml` `[tool.setuptools] license-files` so `LICENSE` is included in
+  the source distribution.
+
 
 ## [0.1.0] — 2026-03-07
 

@@ -7,6 +7,7 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 
+from ...decorators import implements_adr
 from ...models.logical_adr import LogicalADR
 from ...parser import ADRParser
 from .adr_ir_fragment_rendering import (
@@ -52,6 +53,7 @@ class AdrIrFragmentCompileResult:
         return sort_records_by_id([*self.entities, *self.relationships])
 
 
+@implements_adr("ADR-L-0013", "ADR-L-9000")
 def compile_logical_adr_ir_fragments(
     *,
     adr_file_paths: list[Path],

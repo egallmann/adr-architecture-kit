@@ -8,6 +8,7 @@ from typing import Any, Dict, List
 
 from jinja2 import Environment, FileSystemLoader
 
+from ..decorators import implements_adr
 from ..integrity import (
     ArtifactKind,
     GeneratorIdentity,
@@ -29,6 +30,7 @@ class OverviewRule:
     detail: str
 
 
+@implements_adr("ADR-L-0007")
 class SystemOverviewGenerator:
     """Generate the repo-level AI-first SYSTEM-OVERVIEW.md artifact."""
 

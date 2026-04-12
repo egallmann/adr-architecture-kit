@@ -136,6 +136,10 @@ jobs:
         run: |
           adr generate-architecture-index --help
 
+      - name: Smoke test — adr entities list --help
+        run: |
+          adr entities list --help
+
       - name: Smoke test — schema loading (ADRParser init)
         run: |
           python -c "
@@ -149,6 +153,12 @@ jobs:
           print(f'Schema v1.1 dir: {p.schema_v11_dir}')
           print('ADRParser init: OK')
           "
+
+      - name: Smoke test — sdist reinstall
+        run: |
+          pip uninstall -y adr-architecture-kit
+          pip install dist/*.tar.gz
+          adr --help
 
   mirror-check:
     name: Architecture IR Mirror Check (Advisory)

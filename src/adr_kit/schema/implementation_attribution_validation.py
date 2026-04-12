@@ -5,7 +5,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import Literal
 
-from adr_kit.decorators import implements_adr
+from adr_kit.decorators import enforces_invariant, implements_adr
 from adr_kit.models import (
     ImplementationAttributionEvidence,
     NormalizedArchitectureModel,
@@ -45,6 +45,7 @@ class ImplementationAttributionValidationResult:
 
 
 @implements_adr("ADR-L-0004", "ADR-L-0013")
+@enforces_invariant("INV-0027", "INV-0028", "INV-0029")
 def validate_implementation_attribution_evidence(
     entity_registry: NormalizedEntityRegistry | NormalizedArchitectureModel,
     evidence: ImplementationAttributionEvidence,

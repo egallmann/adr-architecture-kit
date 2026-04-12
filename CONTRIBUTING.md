@@ -5,12 +5,15 @@ Thank you for your interest in contributing. This document covers how to set up 
 ## Table of Contents
 
 - [Development Setup](#development-setup)
+  - [Repository maintenance notes](#repository-maintenance-notes)
 - [Development Methodology](#development-methodology)
 - [Running Tests](#running-tests)
 - [Schema Parity](#schema-parity)
 - [Governance Checks](#governance-checks)
+  - [System overview and unified compile](#system-overview-and-unified-compile)
 - [Pre-push Hook](#pre-push-hook)
 - [Submitting Changes](#submitting-changes)
+- [Publishing to PyPI (maintainers)](#publishing-to-pypi-maintainers)
 - [ADR Authority](#adr-authority)
 
 ---
@@ -39,6 +42,12 @@ The `adr` CLI is registered automatically:
 adr --help
 ```
 
+### Repository maintenance notes
+
+- [`README.md`](README.md) at the repository root is maintained manually.
+- [`SYSTEM-OVERVIEW.md`](SYSTEM-OVERVIEW.md) is **generated**; edit its template/generator in `src/adr_kit/` rather than hand-editing the committed artifact.
+- This repository is expected to work as a **standalone checkout**. The public Architecture IR schema is mirrored at [`contracts/architecture-ir/architecture-ir.schema.json`](contracts/architecture-ir/architecture-ir.schema.json) (see [`contracts/architecture-ir/MIRROR.md`](contracts/architecture-ir/MIRROR.md)); some tests additionally compare against a sibling `ste-spec` checkout when present.
+
 ---
 
 ## Development Methodology
@@ -64,6 +73,8 @@ See [`docs/contributors/tdd-workflow.md`](docs/contributors/tdd-workflow.md) for
 | Format | `black --check src/ tests/` |
 | Governance | `adr governance-checks` |
 | Schema parity | see below |
+
+**CI vs local:** GitHub Actions enforces ADR validation, `adr governance-checks` (including `pytest`), generated-docs checks, system overview validation, runtime hygiene, and the schema parity step below. The other rows (coverage threshold, `ruff`, `mypy`, `black --check`) are **strongly recommended locally** before merge but are not separate CI jobs today.
 
 ---
 
@@ -121,6 +132,16 @@ adr validate-project-metadata
 python scripts/check_runtime_hygiene.py
 ```
 
+### System overview and unified compile
+
+```bash
+adr validate-system-overview
+
+adr compile --mode normal
+```
+
+`adr compile` is an authoring-time and repository-discovery path. Runtime-owned machine artifacts belong in `ste-runtime`; see [`AUTHORING-SYSTEM.md`](AUTHORING-SYSTEM.md).
+
 ---
 
 ## Pre-push Hook
@@ -151,22 +172,67 @@ For non-trivial changes, consider opening an issue first to discuss the approach
 
 ---
 
+## Publishing to PyPI (maintainers)
+
+Releases are published with **Trusted Publishing** (OpenID Connect): GitHub proves the workflow run to PyPI; you do **not** store a PyPI password or API token in repository secrets.
+
+Official background: [Publishing package distribution releases using GitHub Actions](https://packaging.python.org/en/guides/publishing-package-distribution-releases-using-github-actions-ci-cd-workflows/) (Python Packaging User Guide).
+
+### One-time linking: PyPI ↔ GitHub
+
+1. **PyPI account** — Enable **2FA** on [pypi.org](https://pypi.org) (required to upload).
+2. **Trusted publisher on PyPI** — While logged into PyPI:
+   - Open **Account settings** → **Publishing** (or your project’s publishing settings after the first upload).
+   - **Add a new pending publisher** → **GitHub** as the provider.
+   - **PyPI project name:** `adr-architecture-kit` (must match `[project].name` in [`pyproject.toml`](pyproject.toml), *not* `adr-kit` or the import name `adr_kit`).
+   - **Owner:** `egallmann` (or your GitHub user/org).
+   - **Repository name:** `adr-architecture-kit`.
+   - **Workflow name:** `publish-pypi.yml` (must match [`.github/workflows/publish-pypi.yml`](.github/workflows/publish-pypi.yml) — not `workflow.yml`).
+   - **Environment name:** `pypi` (must match the workflow job’s `environment:` and a GitHub **Environment** you create below).
+3. **GitHub Environment** — In the repo on GitHub: **Settings** → **Environments** → **New environment** → name **`pypi`**. You can leave protection rules empty at first, or add required reviewers for extra safety.
+4. **Save** the pending publisher on PyPI (after the workflow and environment exist on the default branch, or the first publish may be rejected).
+
+The **link** is that PyPI trusts *that GitHub repo + that workflow file* to upload the **distribution name** `adr-architecture-kit`. You do not paste a PyPI token into GitHub for this flow.
+
+### Ship a version
+
+1. Bump **`version`** in [`pyproject.toml`](pyproject.toml) (and keep [`src/adr_kit/__init__.py`](src/adr_kit/__init__.py) `__version__` in sync if you rely on it).
+2. Update [`CHANGELOG.md`](CHANGELOG.md) with a dated section for that version.
+3. **Merge to `main`** (e.g. via pull request). When that merge includes a change to **`pyproject.toml`**, [`publish-pypi.yml`](.github/workflows/publish-pypi.yml) runs, builds with `python -m build`, and uploads to PyPI.
+
+Merges to `main` that do **not** touch `pyproject.toml` do not trigger a publish (avoids failed uploads when the version was not bumped). The **first** successful upload creates the PyPI project if it did not exist.
+
+### After publish
+
+In a clean virtual environment:
+
+```bash
+pip install adr-architecture-kit
+adr --help
+```
+
+### Optional: TestPyPI first
+
+To practice uploads, configure a second workflow or `repository-url` for TestPyPI as in [Using TestPyPI](https://packaging.python.org/en/guides/using-testpypi/); not required for production once you trust the flow.
+
+---
+
 ## ADR Authority
 
 Architecture decisions are encoded in YAML ADRs under `adrs/`. Before making structural changes to the library, check whether a relevant ADR or invariant governs the area:
 
 ```bash
-# List all ADRs
-adr list
+# List ADRs as entities from the discovery bundle
+adr entities list --type adr
 
-# View a specific ADR
-adr show ADR-L-0001
+# View a specific entity (e.g. an ADR record) by ID
+adr entities get ADR-L-0001
 ```
 
-If your change requires a new architectural decision, author a Logical ADR (`ADR-L`) first:
+If your change requires a new architectural decision, author a Logical ADR (`ADR-L`) first (structured input YAML → generated artifact under `adrs/logical/`):
 
 ```bash
-adr new --type logical "My Decision Title"
+adr generate-logical --input path/to/logical-spec.yaml --output adrs/logical/ADR-L-xxxx-my-decision.yaml
 ```
 
 See [`docs/contributors/logical-adr-guide.md`](docs/contributors/logical-adr-guide.md) for authoring guidance.

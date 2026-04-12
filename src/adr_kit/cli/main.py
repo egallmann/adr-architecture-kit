@@ -11,7 +11,7 @@ from typing import Optional
 try:
     import click
 except ImportError:
-    print("Error: click package not installed. Install with: pip install adr-architecture-kit[cli]")
+    print("Error: click package not installed. Install with: pip install adr-architecture-kit")
     sys.exit(1)
 
 import yaml

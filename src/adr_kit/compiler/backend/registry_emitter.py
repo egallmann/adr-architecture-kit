@@ -4,11 +4,13 @@ from __future__ import annotations
 
 from pathlib import Path
 
+from ...decorators import implements_adr
 from ..registry_bundle import ArchitectureDiscoveryBundle, render_bundle_yaml, render_legacy_entity_registry
 from ...scope import ProjectScope
 from .common import EmittedArtifact
 
 
+@implements_adr("ADR-L-0009", "ADR-L-0010", "ADR-PC-0003")
 def emit_registry_artifacts(
     bundle: ArchitectureDiscoveryBundle,
     *,

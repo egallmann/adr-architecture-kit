@@ -118,12 +118,12 @@ jobs:
 
       - name: Build wheel and sdist
         run: |
-          rm -rf dist
-          python -m build
+          rm -rf python-dist
+          python -m build --outdir python-dist
 
       - name: Install wheel into clean environment
         run: |
-          pip install dist/*.whl
+          pip install python-dist/*.whl
 
       - name: Smoke test — adr --help
         run: |
@@ -158,7 +158,7 @@ jobs:
       - name: Smoke test — sdist reinstall
         run: |
           pip uninstall -y adr-architecture-kit
-          pip install dist/*.tar.gz
+          pip install python-dist/*.tar.gz
           adr --help
 
   mirror-check:

@@ -118,6 +118,7 @@ jobs:
 
       - name: Build wheel and sdist
         run: |
+          rm -rf dist
           python -m build
 
       - name: Install wheel into clean environment

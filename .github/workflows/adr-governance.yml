@@ -25,7 +25,7 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install -e .[dev,cli]
+          pip install -e .[dev]
           pip install pip-audit
 
       - name: Validate ADR schema compliance
@@ -48,6 +48,34 @@ jobs:
         run: |
           python scripts/check_runtime_hygiene.py --fail-on-outdated
 
+      - name: Check package schema parity
+        run: |
+          python - <<'EOF'
+          import filecmp
+          import sys
+          from pathlib import Path
+
+          root = Path(".")
+          mismatches = []
+          for version in ("v1.0", "v1.1"):
+              canonical_dir = root / "schema" / version
+              bundled_dir = root / "src" / "adr_kit" / "schema" / version.replace(".", "_")
+              for canonical in sorted(canonical_dir.glob("*.json")):
+                  bundled = bundled_dir / canonical.name
+                  if not bundled.exists():
+                      mismatches.append(f"MISSING in package bundle: {bundled}")
+                  elif not filecmp.cmp(canonical, bundled, shallow=False):
+                      mismatches.append(f"DRIFT: {canonical} vs {bundled}")
+
+          if mismatches:
+              print("Schema parity check FAILED:")
+              for m in mismatches:
+                  print(f"  {m}")
+              sys.exit(1)
+          else:
+              print("Schema parity check passed: all bundled schemas match canonical sources.")
+          EOF
+
   validate-project-metadata:
     name: Validate PROJECT.yaml
     runs-on: ubuntu-latest
@@ -64,8 +92,115 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install -e .[cli]
+          pip install -e .
 
       - name: Validate PROJECT.yaml
         run: |
           adr validate-project-metadata
+
+  release-artifact-validation:
+    name: Release Artifact Validation
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install build tools
+        run: |
+          python -m pip install --upgrade pip
+          pip install build
+
+      - name: Build wheel and sdist
+        run: |
+          python -m build
+
+      - name: Install wheel into clean environment
+        run: |
+          pip install dist/*.whl
+
+      - name: Smoke test — adr --help
+        run: |
+          adr --help
+
+      - name: Smoke test — adr validate --help
+        run: |
+          adr validate --help
+
+      - name: Smoke test — adr generate-architecture-index --help
+        run: |
+          adr generate-architecture-index --help
+
+      - name: Smoke test — adr entities list --help
+        run: |
+          adr entities list --help
+
+      - name: Smoke test — schema loading (ADRParser init)
+        run: |
+          python -c "
+          from adr_kit.parser import ADRParser
+          p = ADRParser()
+          assert p.schema_dir.exists(), f'Schema dir not found: {p.schema_dir}'
+          assert p.schema_v11_dir.exists(), f'Schema v1.1 dir not found: {p.schema_v11_dir}'
+          assert any(p.schema_dir.glob('*.json')), 'No JSON schemas found in v1_0'
+          assert any(p.schema_v11_dir.glob('*.json')), 'No JSON schemas found in v1_1'
+          print(f'Schema dir: {p.schema_dir}')
+          print(f'Schema v1.1 dir: {p.schema_v11_dir}')
+          print('ADRParser init: OK')
+          "
+
+      - name: Smoke test — sdist reinstall
+        run: |
+          pip uninstall -y adr-architecture-kit
+          pip install dist/*.tar.gz
+          adr --help
+
+  mirror-check:
+    name: Architecture IR Mirror Check (Advisory)
+    runs-on: ubuntu-latest
+    continue-on-error: true
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Checkout ste-spec sibling (if available)
+        id: ste-spec-checkout
+        continue-on-error: true
+        uses: actions/checkout@v4
+        with:
+          repository: egallmann/ste-spec
+          path: .ste-spec-sibling
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Check mirror parity against ste-spec
+        if: steps.ste-spec-checkout.outcome == 'success'
+        run: |
+          python - <<'EOF'
+          import filecmp
+          import sys
+          from pathlib import Path
+
+          local = Path("contracts/architecture-ir/architecture-ir.schema.json")
+          upstream = Path(".ste-spec-sibling/contracts/architecture-ir/architecture-ir.schema.json")
+
+          if not upstream.exists():
+              print("WARNING: upstream schema not found at expected path — skipping mirror check.")
+              sys.exit(0)
+
+          if filecmp.cmp(local, upstream, shallow=False):
+              print("Mirror check passed: local mirror matches ste-spec.")
+          else:
+              print("WARNING: local Architecture IR mirror has drifted from ste-spec.")
+              print("Update contracts/architecture-ir/architecture-ir.schema.json and MIRROR.md.")
+          EOF
+
+      - name: Skip notice (ste-spec sibling unavailable)
+        if: steps.ste-spec-checkout.outcome != 'success'
+        run: |
+          echo "ste-spec sibling checkout unavailable — mirror check skipped (advisory only)."

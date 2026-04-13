@@ -4,6 +4,7 @@ from __future__ import annotations
 
 from pathlib import Path
 
+from ...decorators import implements_adr
 from ...scope import ProjectScope
 from ..frontend.builder import FrontendBuildResult
 from .common import EmittedArtifact
@@ -15,6 +16,7 @@ from .graph_rendering import (
 )
 
 
+@implements_adr("ADR-L-0009", "ADR-L-0010", "ADR-PC-0003")
 def emit_graph_artifact(
     *,
     scope: ProjectScope,

@@ -13,7 +13,7 @@ import yaml
 
 from ..decorators import implements_adr
 from ..parser import ADRParser
-from ..schema.contract_validation import validate_kernel_contract_bundle
+from ..schema.contract_validation import validate_adr_contract_bundle
 from ..scope import ProjectScope, ProjectScopeResolver
 from ..validators import ADRValidator
 from .backend import (
@@ -328,7 +328,7 @@ class ArchitectureCompiler:
         if remediation_ledger_path.exists():
             remediation_ledger = load_remediation_ledger(parser, remediation_ledger_path)
 
-        result = validate_kernel_contract_bundle(
+        result = validate_adr_contract_bundle(
             architecture_index,
             entity_registry,
             relationship_registry,

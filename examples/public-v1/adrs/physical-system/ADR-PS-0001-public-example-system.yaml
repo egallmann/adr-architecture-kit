@@ -1,0 +1,46 @@
+schema_version: "1.0"
+adr_type: physical-system
+id: ADR-PS-0001
+title: "Public Example System ADR"
+status: accepted
+created_date: "2026-04-02"
+authors:
+  - adr-architecture-kit
+domains:
+  - architecture
+tags:
+  - public-example
+implements_logical:
+  - ADR-L-0001
+technologies:
+  - python
+context: |
+  Provide a high-level physical-system example for the public onboarding flow.
+technology_stack:
+  - category: language
+    name: "Python"
+    version: "3.11"
+    rationale: "Matches the implementation language of adr-architecture-kit."
+system_boundaries:
+  - id: SYSBOUND-0001
+    name: "Public Example Boundary"
+    description: |
+      Encapsulates the example compilation flow from ADR sources to repository
+      outputs and ADR-derived IR fragments.
+    exposed_interfaces:
+      - "CLI"
+component_topology:
+  components:
+    - name: "Example Compiler Surface"
+      type: service
+      purpose: "Produces repository-normalized discovery outputs."
+      implements_adr: "ADR-PC-0001"
+  relationships: []
+integration_patterns:
+  - pattern_name: "Deterministic compilation"
+    application: |
+      Example sources compile into stable repository outputs before any
+      downstream Architecture IR adaptation occurs.
+references_components:
+  - ADR-PC-0001
+gaps: []

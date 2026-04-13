@@ -1,4 +1,14 @@
-"""Validation helpers for compiled kernel contract artifacts."""
+"""Authoring-time validation helpers for compiled repository contract bundles.
+
+This module validates compiled repository-normalized discovery artifacts
+(architecture index, entity registry, relationship registry, unresolved
+registry) against authoring-time contract rules.
+
+It does not own the normative cross-repo Architecture IR contract; that
+authority belongs to ste-spec. Validation here is subordinate and
+compatibility-focused: it checks that this repository's compiled outputs
+conform to the contract shape, not that the contract shape itself is correct.
+"""
 
 from __future__ import annotations
 
@@ -86,7 +96,7 @@ class ContractValidationError(ValueError):
 
 
 @implements_adr("ADR-L-0010", "ADR-L-0011")
-def validate_kernel_contract_bundle(
+def validate_adr_contract_bundle(
     architecture_index: ArchitectureIndex,
     entity_registry: NormalizedEntityRegistry,
     relationship_registry: RelationshipRegistry,
@@ -95,7 +105,13 @@ def validate_kernel_contract_bundle(
     profile: ContractProfile = "greenfield",
     remediation_ledger: RemediationLedger | None = None,
 ) -> ContractValidationResult:
-    """Validate compiled contract bundle semantics beyond schema shape."""
+    """Validate compiled repository contract bundle semantics beyond schema shape.
+
+    Checks that the compiled repository-normalized discovery artifacts conform
+    to the authoring-time contract rules for the given profile. This function
+    does not own the normative cross-repo Architecture IR schema; it validates
+    that this repository's outputs are internally consistent and profile-compliant.
+    """
     del architecture_index, relationship_registry, unresolved_registry
     issues: list[ContractValidationIssue] = []
     sentinel_hits = 0
@@ -138,6 +154,13 @@ def validate_kernel_contract_bundle(
         non_complete_entity_count=non_complete_entity_count,
         completeness_counts=completeness_counts,
     )
+
+
+# Pre-1.0 rename: validate_kernel_contract_bundle → validate_adr_contract_bundle.
+# The old name implied this repository owns the kernel contract authority, which
+# it does not. This alias preserves compatibility during the transition and will
+# be removed in a future release.
+validate_kernel_contract_bundle = validate_adr_contract_bundle
 
 
 def _validate_entity_metadata(entity: NormalizedEntity, index: int) -> list[ContractValidationIssue]:

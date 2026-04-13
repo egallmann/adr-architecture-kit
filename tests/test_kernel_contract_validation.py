@@ -14,7 +14,7 @@ from src.adr_kit.repository.registry_loader import (
     load_unresolved_registry,
 )
 from src.adr_kit.repository.registry_paths import discover_repository_paths, resolve_index_reference
-from src.adr_kit.schema.contract_validation import validate_kernel_contract_bundle
+from src.adr_kit.schema.contract_validation import validate_adr_contract_bundle
 from tests.test_architecture_repository import _generate_bundle
 
 
@@ -127,7 +127,7 @@ def test_contract_validator_allows_permitted_sentinel_fields_in_brownfield(tmp_p
         resolve_index_reference(tmp_path, architecture_index.unresolved_registry_path),
     )
 
-    result = validate_kernel_contract_bundle(
+    result = validate_adr_contract_bundle(
         architecture_index,
         entity_registry,
         relationship_registry,
@@ -442,7 +442,7 @@ def test_contract_validator_accepts_pending_approval_for_replaced_value(tmp_path
     )
     remediation_ledger = parser.parse_remediation_ledger(repository_paths.remediation_ledger)
 
-    result = validate_kernel_contract_bundle(
+    result = validate_adr_contract_bundle(
         architecture_index,
         entity_registry,
         relationship_registry,
@@ -483,7 +483,7 @@ def test_contract_validator_rejects_sentinel_state_when_value_is_replaced(tmp_pa
     )
     remediation_ledger = parser.parse_remediation_ledger(repository_paths.remediation_ledger)
 
-    result = validate_kernel_contract_bundle(
+    result = validate_adr_contract_bundle(
         architecture_index,
         entity_registry,
         relationship_registry,

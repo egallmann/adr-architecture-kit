@@ -3,9 +3,19 @@ from __future__ import annotations
 import pytest
 
 from src.adr_kit.cli.main import cli
+from src.adr_kit.compiler.backend.adr_ir_fragment_emitter import compile_logical_adr_ir_fragments
+from src.adr_kit.compiler.backend.graph_emitter import emit_graph_artifact
+from src.adr_kit.compiler.backend.manifest_emitter import emit_manifest_artifact
+from src.adr_kit.compiler.backend.markdown_emitter import emit_markdown_artifacts
+from src.adr_kit.compiler.backend.registry_emitter import emit_registry_artifacts
 from src.adr_kit.compiler.driver import ArchitectureCompiler
 from src.adr_kit.compiler.pipeline import CompilerPipeline, run_frontend_pipeline
 from src.adr_kit.decorators import enforces_invariant, implements_adr
+from src.adr_kit.generators.architecture_index_generator import ArchitectureIndexGenerator
+from src.adr_kit.generators.entity_registry_generator import EntityRegistryGenerator
+from src.adr_kit.generators.manifest_generator import ManifestGenerator
+from src.adr_kit.generators.system_overview_generator import SystemOverviewGenerator
+from src.adr_kit.integrity.validation import GeneratedArtifactValidator
 from src.adr_kit.models.normalized_architecture_model import NormalizedArchitectureModel
 from src.adr_kit.parser.yaml_parser import ADRParser
 from src.adr_kit.projection import ProjectionInspector
@@ -25,11 +35,15 @@ from src.adr_kit.repository.semantic_adapter import (
     legacy_entity_to_normalized,
     legacy_relationships,
 )
-from src.adr_kit.schema.contract_validation import validate_kernel_contract_bundle
+from src.adr_kit.schema.contract_validation import validate_adr_contract_bundle
 from src.adr_kit.schema.implementation_attribution_validation import (
     validate_implementation_attribution_evidence,
 )
-from src.adr_kit.validators import EntityValidator
+from src.adr_kit.schema.repository_schema_generator import (
+    generate_repository_schema_documents,
+    write_repository_schema_documents,
+)
+from src.adr_kit.validators import ADRValidator, EntityValidator, SystemOverviewValidator
 
 
 def test_implements_adr_attaches_ordered_metadata_to_function() -> None:
@@ -74,7 +88,7 @@ def test_first_wave_public_boundaries_are_decorated() -> None:
     assert run_frontend_pipeline.__implements_adrs__ == ("ADR-L-0009", "ADR-L-0013")
     assert ADRParser.__implements_adrs__ == ("ADR-L-0001",)
     assert ProjectionInspector.__implements_adrs__ == ("ADR-L-0007",)
-    assert validate_kernel_contract_bundle.__implements_adrs__ == ("ADR-L-0010", "ADR-L-0011")
+    assert validate_adr_contract_bundle.__implements_adrs__ == ("ADR-L-0010", "ADR-L-0011")
 
 
 def test_boundary_semantic_helpers_are_decorated() -> None:
@@ -112,3 +126,34 @@ def test_boundary_semantic_helpers_are_decorated() -> None:
     assert load_legacy_entity_registry.__implements_adrs__ == ("ADR-L-0013",)
     assert fingerprint_payload.__implements_adrs__ == ("ADR-L-0013",)
     assert model_payload.__implements_adrs__ == ("ADR-L-0013",)
+
+
+def test_generator_and_emitter_boundaries_are_decorated() -> None:
+    assert ArchitectureIndexGenerator.__implements_adrs__ == ("ADR-L-0009", "ADR-L-0013", "ADR-PC-0001")
+    assert ManifestGenerator.__implements_adrs__ == ("ADR-L-0009", "ADR-L-0010", "ADR-PC-0001")
+    assert EntityRegistryGenerator.__implements_adrs__ == ("ADR-L-0009", "ADR-L-0013", "ADR-PC-0001")
+    assert SystemOverviewGenerator.__implements_adrs__ == ("ADR-L-0007",)
+    assert emit_markdown_artifacts.__implements_adrs__ == ("ADR-L-0007", "ADR-PC-0001")
+    assert emit_registry_artifacts.__implements_adrs__ == ("ADR-L-0009", "ADR-L-0010", "ADR-PC-0003")
+    assert emit_manifest_artifact.__implements_adrs__ == ("ADR-L-0009", "ADR-L-0010", "ADR-PC-0003")
+    assert emit_graph_artifact.__implements_adrs__ == ("ADR-L-0009", "ADR-L-0010", "ADR-PC-0003")
+    assert compile_logical_adr_ir_fragments.__implements_adrs__ == ("ADR-L-0013", "ADR-L-9000")
+    assert generate_repository_schema_documents.__implements_adrs__ == ("ADR-L-0010", "ADR-L-0011", "ADR-PC-0002")
+    assert write_repository_schema_documents.__implements_adrs__ == ("ADR-L-0010", "ADR-L-0011", "ADR-PC-0002")
+
+
+def test_invariant_enforcement_boundaries_are_decorated() -> None:
+    assert GeneratedArtifactValidator.__implements_adrs__ == ("ADR-L-0007", "ADR-PC-0005")
+    assert GeneratedArtifactValidator.__enforces_invariants__ == ("INV-0037", "INV-0038", "INV-0039")
+    assert SystemOverviewValidator.__implements_adrs__ == ("ADR-L-0007", "ADR-PC-0005")
+    assert SystemOverviewValidator.__enforces_invariants__ == ("INV-0037", "INV-0038", "INV-0039")
+    assert validate_implementation_attribution_evidence.__enforces_invariants__ == ("INV-0027", "INV-0028", "INV-0029")
+
+
+def test_governance_validation_boundaries_are_decorated() -> None:
+    assert ADRValidator.__implements_adrs__ == ("ADR-L-0001", "ADR-L-0015", "ADR-PC-0002")
+    assert ADRValidator.validate_file.__implements_adrs__ == ("ADR-L-0001", "ADR-L-0015", "ADR-PC-0002")
+    assert ADRValidator._validate_governance_metadata.__enforces_invariants__ == ("INV-0064",)
+    assert ADRValidator.validate_cross_references.__implements_adrs__ == ("ADR-L-0001", "ADR-L-0015", "ADR-PC-0002")
+    assert ADRValidator.validate_implementation_authority_gate.__implements_adrs__ == ("ADR-L-0001", "ADR-L-0015", "ADR-PC-0002")
+    assert ADRValidator.validate_implementation_authority_gate.__enforces_invariants__ == ("INV-0065",)

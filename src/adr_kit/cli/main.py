@@ -11,7 +11,7 @@ from typing import Optional
 try:
     import click
 except ImportError:
-    print("Error: click package not installed. Install with: pip install adr-architecture-kit[cli]")
+    print("Error: click package not installed. Install with: pip install adr-architecture-kit")
     sys.exit(1)
 
 import yaml
@@ -37,7 +37,7 @@ from ..integrity import GeneratedArtifactStatus
 from ..migrators.canonical_id_normalizer import CanonicalIdNormalizer
 from ..parser import ADRParser
 from ..repository import ArchitectureRepository
-from ..schema.contract_validation import validate_kernel_contract_bundle
+from ..schema.contract_validation import validate_adr_contract_bundle
 from ..validators import (
     ADRValidator,
     GeneratedArtifactValidator,
@@ -412,8 +412,22 @@ def compile_ir_fragments(
 @implements_adr("ADR-L-0002", "ADR-L-0013")
 @cli.command("build-ir-fragments")
 def build_ir_fragments():
-    """Build the canonical ADR IR fragment publication artifact for this repository."""
+    """Repository self-publication example. Not a generic consumer command.
+
+    Builds the ADR IR fragment publication artifact for the adr-architecture-kit
+    repository itself, using hardcoded repo-specific paths (ADR-L-9000, dist/).
+
+    This command is an example of how a repository publishes its own ADR-derived
+    IR fragments. It is not intended for use in other repositories or as a
+    generic product API. For parameterized IR fragment compilation, use the
+    `compile-ir-fragments` command instead.
+    """
     try:
+        click.echo(
+            "NOTE: build-ir-fragments is a repository self-publication example, not a "
+            "generic consumer command. Use `adr compile-ir-fragments` for parameterized use.",
+            err=True,
+        )
         repo_root = Path(__file__).resolve().parents[3]
         adr_source_path = repo_root / "adrs" / "logical" / "ADR-L-9000-kernel-boot-publication-surface.yaml"
         output_path = repo_root / "dist" / "architecture-ir" / "adr-ir-fragments.json"
@@ -888,7 +902,7 @@ def generate_architecture_index(scope: Optional[Path]):
 @click.option(
     '--validate-contract',
     is_flag=True,
-    help='Validate the compiled kernel contract bundle from in-memory outputs.',
+    help='Validate the compiled repository contract bundle from in-memory outputs.',
 )
 @click.option(
     '--contract-profile',
@@ -914,7 +928,7 @@ def compile_artifacts(
     try:
         click.echo(
             "WARNING: adr compile is deprecated for runtime machine artifacts. "
-            "Use `ste architecture compile --project-root <repo>` (ste-runtime) as the compiler of record. "
+            "Use `ste architecture compile --project-root <repo>` (ste-runtime) for runtime-owned machine artifacts. "
             "This Python path remains for migration / golden parity only. "
             "See ste-runtime COMPILER-AUTHORITY.md and adr-architecture-kit AUTHORING-SYSTEM.md.",
             err=True,
@@ -1123,7 +1137,7 @@ def validate_contract(
     max_non_complete_entities: Optional[int],
     recursive: bool,
 ):
-    """Validate the compiled kernel contract bundle for the selected profile."""
+    """Validate the compiled repository contract bundle for the selected profile."""
     try:
         failures = 0
         scopes = _ordered_scopes(scope) if recursive else [ProjectScopeResolver(explicit_scope=scope).resolve()]
@@ -1134,7 +1148,7 @@ def validate_contract(
             contract_bundle = repository.get_contract_bundle_view()
             click.echo(f"Project scope: {current_scope.name} ({current_scope.root})")
 
-            result = validate_kernel_contract_bundle(
+            result = validate_adr_contract_bundle(
                 contract_bundle.architecture_index,
                 contract_bundle.entity_registry,
                 contract_bundle.relationship_registry,

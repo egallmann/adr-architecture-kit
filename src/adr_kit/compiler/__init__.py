@@ -1,8 +1,8 @@
 """Compiler scaffolding for the architecture migration path (authoring-time / parity).
 
-Guardrail: ste-runtime is the compiler of record for machine-consumable architecture
-state. Do not introduce or preserve a second authoritative IR/compiler for runtime
-artifacts—see repo AUTHORING-SYSTEM.md.
+Guardrail: public cross-repo contracts are owned by ste-spec. This module exists for
+authoring-time parity and ADR->IR compilation support; do not introduce or preserve a
+second authority for shared IR/evidence/admission contracts.
 """
 
 from __future__ import annotations
@@ -92,26 +92,6 @@ def __getattr__(name: str):
         }
         return exports[name]
     if name in {
-        "CompilerPipeline",
-        "CompilerPipelinePass",
-        "CompilerPipelineState",
-        "build_default_frontend_pipeline",
-    }:
-        from .pipeline import (
-            CompilerPipeline,
-            CompilerPipelinePass,
-            CompilerPipelineState,
-            build_default_frontend_pipeline,
-        )
-
-        exports = {
-            "CompilerPipeline": CompilerPipeline,
-            "CompilerPipelinePass": CompilerPipelinePass,
-            "CompilerPipelineState": CompilerPipelineState,
-            "build_default_frontend_pipeline": build_default_frontend_pipeline,
-        }
-        return exports[name]
-    if name in {
         "ArchitectureCompiler",
         "CompilationResult",
         "CompilationStatistics",
@@ -140,4 +120,24 @@ def __getattr__(name: str):
             "WorkspaceCompilationStatistics": WorkspaceCompilationStatistics,
         }
         return exports[name]
-    raise AttributeError(f"module {__name__!r} has no attribute {name!r}")
+    if name in {
+        "CompilerPipeline",
+        "CompilerPipelinePass",
+        "CompilerPipelineState",
+        "build_default_frontend_pipeline",
+    }:
+        from .pipeline import (
+            CompilerPipeline,
+            CompilerPipelinePass,
+            CompilerPipelineState,
+            build_default_frontend_pipeline,
+        )
+
+        exports = {
+            "CompilerPipeline": CompilerPipeline,
+            "CompilerPipelinePass": CompilerPipelinePass,
+            "CompilerPipelineState": CompilerPipelineState,
+            "build_default_frontend_pipeline": build_default_frontend_pipeline,
+        }
+        return exports[name]
+    raise AttributeError(name)

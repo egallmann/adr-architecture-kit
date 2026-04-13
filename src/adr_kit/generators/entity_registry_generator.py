@@ -5,6 +5,7 @@ from typing import Dict, List, Optional, Tuple
 
 import yaml
 
+from ..decorators import implements_adr
 from ..models import (
     Entity,
     EntityOwnership,
@@ -24,6 +25,7 @@ from ..parser import ADRParser
 from ..scope import ProjectScope, ProjectScopeResolver
 
 
+@implements_adr("ADR-L-0009", "ADR-L-0013", "ADR-PC-0001")
 class EntityRegistryGenerator:
     """Generate deterministic entity registry from canonical architecture artifacts."""
 

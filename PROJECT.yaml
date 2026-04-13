@@ -15,7 +15,8 @@ repository:
   primary_branch: "develop"
 
 implementation_identifiers:
-  package_name: "adr-kit"
+  package_name: "adr-architecture-kit"
+  import_name: "adr_kit"
   module_path: "src/adr_kit"
 
 automation:

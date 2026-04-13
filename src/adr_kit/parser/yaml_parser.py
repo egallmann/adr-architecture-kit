@@ -1,5 +1,6 @@
 """YAML parser with JSON Schema validation for ADR artifacts."""
 
+import importlib.resources
 import json
 from copy import deepcopy
 from pathlib import Path
@@ -35,6 +36,19 @@ from ..models import (
 )
 
 
+def _package_schema_dir(package: str) -> Path:
+    """Return the filesystem path for a bundled schema sub-package.
+
+    Uses importlib.resources so the path is valid both in editable installs
+    and in installed wheels, without hard-coding any source-tree traversal.
+    """
+    ref = importlib.resources.files(package)
+    # files() returns a Traversable; on CPython this is a real Path for
+    # directory-backed packages.  Resolve it to a concrete Path so that
+    # downstream code (glob, open, etc.) can treat it as a filesystem path.
+    return Path(str(ref))
+
+
 class ADRParseError(Exception):
     """Error parsing ADR artifact."""
     pass
@@ -51,15 +65,15 @@ class ADRParser:
     
     def __init__(self, schema_dir: Path = None, schema_v11_dir: Path = None):
         """Initialize parser with schema directory.
-        
+
         Args:
-            schema_dir: Path to v1.0 schema directory (defaults to package schema/v1.0)
-            schema_v11_dir: Path to v1.1 schema directory (defaults to package schema/v1.1)
+            schema_dir: Path to v1.0 schema directory (defaults to package-bundled schema/v1.0)
+            schema_v11_dir: Path to v1.1 schema directory (defaults to package-bundled schema/v1.1)
         """
         if schema_dir is None:
-            schema_dir = Path(__file__).parent.parent.parent.parent / "schema" / "v1.0"
+            schema_dir = _package_schema_dir("adr_kit.schema.v1_0")
         if schema_v11_dir is None:
-            schema_v11_dir = Path(__file__).parent.parent.parent.parent / "schema" / "v1.1"
+            schema_v11_dir = _package_schema_dir("adr_kit.schema.v1_1")
         
         self.schema_dir = Path(schema_dir)
         self.schema_v11_dir = Path(schema_v11_dir)

@@ -1,10 +1,9 @@
-"""Registry bundle assembly from ArchModel (authoring-time / migration parity).
+﻿"""Registry bundle assembly from ArchModel (authoring-time / migration parity).
 
 Authoring authority: adr-architecture-kit validates and helps author ADRs.
-Compiler authority: ste-runtime is the compiler of record for machine-consumable
-architecture state for the runtime/kernel. Do not treat this module as the long-term
-authoritative producer of runtime registry bundles—migrate projection to ste-runtime
-and remove dual compilation. See repo AUTHORING-SYSTEM.md and ste-runtime COMPILER-AUTHORITY.md.
+Public cross-repo contracts remain owned by ste-spec. Do not treat this module as a
+second authority for shared IR/evidence/admission schemas; it supports authoring-time
+projection and migration parity only. See repo AUTHORING-SYSTEM.md.
 """
 
 from __future__ import annotations
@@ -226,3 +225,4 @@ def _legacy_entity(entity: NormalizedEntity) -> Entity | None:
             realizes=list(entity.relationships.enforces),
         ),
     )
+

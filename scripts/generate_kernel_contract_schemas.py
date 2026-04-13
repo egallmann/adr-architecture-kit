@@ -1,19 +1,10 @@
-"""Generate committed kernel contract JSON Schemas."""
+"""Backward-compatibility shim. Use generate_repository_schemas.py instead.
 
-from __future__ import annotations
+This script was renamed to generate_repository_schemas.py in the pre-1.0
+public-release cleanup pass. It delegates to the new script unchanged.
+"""
 
-from pathlib import Path
-
-from adr_kit.schema.kernel_contract import write_kernel_schema_documents
-
-
-def main() -> None:
-    repo_root = Path(__file__).resolve().parents[1]
-    output_dir = repo_root / "schema" / "kernel"
-    write_kernel_schema_documents(output_dir)
-    print(f"Wrote kernel schemas to {output_dir}")
-
+from generate_repository_schemas import main
 
 if __name__ == "__main__":
     main()
-

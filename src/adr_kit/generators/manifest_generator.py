@@ -15,12 +15,14 @@ from ..compiler.backend.manifest_rendering import (
     render_manifest_for_scope as render_compiler_manifest_for_scope,
     render_manifest_yaml as render_compiler_manifest_yaml,
 )
+from ..decorators import implements_adr
 from ..integrity import GeneratorIdentity
 from ..models import Manifest
 from ..parser import ADRParser
 from ..scope import ProjectScope, ProjectScopeResolver
 
 
+@implements_adr("ADR-L-0009", "ADR-L-0010", "ADR-PC-0001")
 class ManifestGenerator:
     """Generate manifest artifacts while delegating rendering authority to the compiler."""
 

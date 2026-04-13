@@ -1,0 +1,58 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://adr-kit.ste.systems/schema/v1.1/architecture-index.schema.json",
+  "title": "Architecture Index Schema",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "type",
+    "architecture_namespace",
+    "generated_at",
+    "generator",
+    "entity_registry_path",
+    "relationship_registry_path",
+    "unresolved_registry_path",
+    "decision_registry_path",
+    "capability_registry_path",
+    "invariant_registry_path",
+    "component_registry_path",
+    "system_registry_path",
+    "validation_summary",
+    "source_coverage"
+  ],
+  "properties": {
+    "schema_version": {"const": "1.1"},
+    "type": {"const": "architecture_index"},
+    "architecture_namespace": {"type": "string"},
+    "generated_at": {"type": "string", "format": "date-time"},
+    "generator": {"type": "string"},
+    "entity_registry_path": {"type": "string"},
+    "relationship_registry_path": {"type": "string"},
+    "unresolved_registry_path": {"type": "string"},
+    "decision_registry_path": {"type": "string"},
+    "capability_registry_path": {"type": "string"},
+    "invariant_registry_path": {"type": "string"},
+    "component_registry_path": {"type": "string"},
+    "system_registry_path": {"type": "string"},
+    "validation_summary": {
+      "type": "object",
+      "required": ["hard_failures", "warnings", "unresolved_entries"],
+      "properties": {
+        "hard_failures": {"type": "integer"},
+        "warnings": {"type": "integer"},
+        "unresolved_entries": {"type": "integer"}
+      }
+    },
+    "source_coverage": {
+      "type": "object",
+      "required": ["logical_adrs", "physical_adrs", "physical_system_adrs", "physical_component_adrs", "standalone_invariants"],
+      "properties": {
+        "logical_adrs": {"type": "integer"},
+        "physical_adrs": {"type": "integer"},
+        "physical_system_adrs": {"type": "integer"},
+        "physical_component_adrs": {"type": "integer"},
+        "standalone_invariants": {"type": "integer"}
+      }
+    }
+  }
+}

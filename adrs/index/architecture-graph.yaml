@@ -4,13 +4,13 @@
 # generator_id: adr-architecture-graph
 # generator_version: 1
 # hash_algorithm: sha256
-# source_hash: bc26e6c2ed3ac9c39c52feae91962869464977cd28afbfea6ced0bc8c3687dff
-# rendered_hash: add8b909c3ec537eba2e46922c769160495b82ec0857544ffca249085486683e
+# source_hash: 4f19fd480fd7e85a179fedcd968bf714c5cc9d889bbf2aed19bdbe22220baf50
+# rendered_hash: 142f25abc6718d88ee577ce33a33bb2f03c19faa3744cbb25ff31c0083c2b53b
 
 schema_version: '1.0'
 type: architecture_graph
 architecture_namespace: adr-architecture-kit
-generated_at: '2026-03-22T00:14:17Z'
+generated_at: '2026-04-11T06:09:42Z'
 nodes:
 - id: ADR-L-0001
   entity_type: adr
@@ -208,104 +208,6 @@ nodes:
     source_type: physical_system_adr
     source_ref: ADR-PS-0002
     artifact_path: adrs/physical-system/ADR-PS-0002-adr-kit-compiler-and-validation-runtime.yaml
-- id: ADR-V-0001
-  entity_type: adr
-  name: Conversational Architecture System
-  canonical_source:
-    source_type: logical_adr
-    source_ref: ADR-V-0001
-    artifact_path: adrs/logical/ADR-V-0001-conversational-architecture-system.yaml
-- id: ADR-V-0002
-  entity_type: adr
-  name: Agent Tier System
-  canonical_source:
-    source_type: logical_adr
-    source_ref: ADR-V-0002
-    artifact_path: adrs/logical/ADR-V-0002-agent-tier-system.yaml
-- id: ADR-V-0003
-  entity_type: adr
-  name: Meta-Optimization System
-  canonical_source:
-    source_type: logical_adr
-    source_ref: ADR-V-0003
-    artifact_path: adrs/logical/ADR-V-0003-meta-optimization-system.yaml
-- id: ADR-V-0004
-  entity_type: adr
-  name: Bidirectional Translation Layer
-  canonical_source:
-    source_type: logical_adr
-    source_ref: ADR-V-0004
-    artifact_path: adrs/logical/ADR-V-0004-bidirectional-translation-layer.yaml
-- id: ADR-V-0005
-  entity_type: adr
-  name: Policy Lifecycle Management
-  canonical_source:
-    source_type: logical_adr
-    source_ref: ADR-V-0005
-    artifact_path: adrs/logical/ADR-V-0005-policy-lifecycle-management.yaml
-- id: ADR-V-0006
-  entity_type: adr
-  name: Autonomous Compliance System
-  canonical_source:
-    source_type: logical_adr
-    source_ref: ADR-V-0006
-    artifact_path: adrs/logical/ADR-V-0006-autonomous-compliance-system.yaml
-- id: ADR-V-0007
-  entity_type: adr
-  name: Compliance AI Agent
-  canonical_source:
-    source_type: logical_adr
-    source_ref: ADR-V-0007
-    artifact_path: adrs/logical/ADR-V-0007-compliance-ai-agent.yaml
-- id: ADR-V-0008
-  entity_type: adr
-  name: Provider Ecosystem
-  canonical_source:
-    source_type: logical_adr
-    source_ref: ADR-V-0008
-    artifact_path: adrs/logical/ADR-V-0008-provider-ecosystem.yaml
-- id: ADR-V-0009
-  entity_type: adr
-  name: Proposal Security System
-  canonical_source:
-    source_type: logical_adr
-    source_ref: ADR-V-0009
-    artifact_path: adrs/logical/ADR-V-0009-proposal-security-system.yaml
-- id: ADR-V-0010
-  entity_type: adr
-  name: Composable Architecture
-  canonical_source:
-    source_type: logical_adr
-    source_ref: ADR-V-0010
-    artifact_path: adrs/logical/ADR-V-0010-composable-architecture.yaml
-- id: ADR-V-0011
-  entity_type: adr
-  name: Self-Evolving Infrastructure
-  canonical_source:
-    source_type: logical_adr
-    source_ref: ADR-V-0011
-    artifact_path: adrs/logical/ADR-V-0011-self-evolving-infrastructure.yaml
-- id: ADR-V-0012
-  entity_type: adr
-  name: Code Decorators (Intent Primitive)
-  canonical_source:
-    source_type: logical_adr
-    source_ref: ADR-V-0012
-    artifact_path: adrs/logical/ADR-V-0012-code-decorators-intent-primitive.yaml
-- id: ADR-V-0013
-  entity_type: adr
-  name: Legacy Import Agent (Trust-First Validation)
-  canonical_source:
-    source_type: logical_adr
-    source_ref: ADR-V-0013
-    artifact_path: adrs/logical/ADR-V-0013-legacy-import-agent-trust-first.yaml
-- id: ADR-V-0014
-  entity_type: adr
-  name: Decorator Inference Agent (Self-Healing Graph)
-  canonical_source:
-    source_type: logical_adr
-    source_ref: ADR-V-0014
-    artifact_path: adrs/logical/ADR-V-0014-decorator-inference-agent.yaml
 - id: CAP-0001
   entity_type: capability
   name: Machine-Verifiable Architecture Documentation
@@ -4142,16 +4044,6 @@ edges:
   canonical_source_ref: ADR-L-0011
   confidence: 1.0
   metadata: {}
-- relationship_id: references:ADR-L-0011:ADR-V-0013
-  relationship_type: references
-  source_entity_id: ADR-L-0011
-  target_entity_id: ADR-V-0013
-  provenance_classification: explicit
-  evidence:
-  - ADR-L-0011
-  canonical_source_ref: ADR-L-0011
-  confidence: 1.0
-  metadata: {}
 - relationship_id: references:ADR-L-0012:ADR-L-0002
   relationship_type: references
   source_entity_id: ADR-L-0012
@@ -4282,16 +4174,6 @@ edges:
   canonical_source_ref: ADR-L-0014
   confidence: 1.0
   metadata: {}
-- relationship_id: references:ADR-L-0014:ADR-V-0013
-  relationship_type: references
-  source_entity_id: ADR-L-0014
-  target_entity_id: ADR-V-0013
-  provenance_classification: explicit
-  evidence:
-  - ADR-L-0014
-  canonical_source_ref: ADR-L-0014
-  confidence: 1.0
-  metadata: {}
 - relationship_id: references:ADR-L-0015:ADR-L-0008
   relationship_type: references
   source_entity_id: ADR-L-0015
@@ -4340,26 +4222,6 @@ edges:
   evidence:
   - ADR-L-0015
   canonical_source_ref: ADR-L-0015
-  confidence: 1.0
-  metadata: {}
-- relationship_id: references:ADR-V-0001:ADR-L-0001
-  relationship_type: references
-  source_entity_id: ADR-V-0001
-  target_entity_id: ADR-L-0001
-  provenance_classification: explicit
-  evidence:
-  - ADR-V-0001
-  canonical_source_ref: ADR-V-0001
-  confidence: 1.0
-  metadata: {}
-- relationship_id: references:ADR-V-0001:ADR-L-0003
-  relationship_type: references
-  source_entity_id: ADR-V-0001
-  target_entity_id: ADR-L-0003
-  provenance_classification: explicit
-  evidence:
-  - ADR-V-0001
-  canonical_source_ref: ADR-V-0001
   confidence: 1.0
   metadata: {}
 - relationship_id: related_to:ADR-PS-0001:ADR-PC-0001

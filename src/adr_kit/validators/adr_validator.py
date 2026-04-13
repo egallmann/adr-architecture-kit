@@ -7,7 +7,7 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import List, Optional, Union, Dict
 
-from ..decorators import implements_adr
+from ..decorators import enforces_invariant, implements_adr
 from ..models import (
     ImplementationAuthority,
     LogicalADR,
@@ -51,7 +51,7 @@ class ValidationResult:
         return len(self.warnings) > 0
 
 
-@implements_adr("ADR-L-0015")
+@implements_adr("ADR-L-0001", "ADR-L-0015", "ADR-PC-0002")
 class ADRValidator:
     """Validate ADRs against schema and business rules.
     
@@ -115,6 +115,7 @@ class ADRValidator:
             raise ADRParseError(f"Unknown adr_type: {adr_type}")
         return schema_name
 
+    @implements_adr("ADR-L-0001", "ADR-L-0015", "ADR-PC-0002")
     def validate_file(self, file_path: Union[str, Path], mode: str = "complete") -> ValidationResult:
         """Validate ADR file.
         
@@ -218,6 +219,7 @@ class ADRValidator:
             warnings=warnings
         )
 
+    @enforces_invariant("INV-0064")
     def _validate_governance_metadata(self, adr, raw_data: dict, errors: List[ValidationError], warnings: List[ValidationError]):
         """Validate deterministic governance semantics on one ADR."""
         governance = getattr(adr, "governance", None)
@@ -567,6 +569,7 @@ class ADRValidator:
         
         return all_results
     
+    @implements_adr("ADR-L-0001", "ADR-L-0015", "ADR-PC-0002")
     def validate_cross_references(self, adr_dir: Path) -> ValidationResult:
         """Validate cross-references between ADRs.
         
@@ -811,6 +814,8 @@ class ADRValidator:
             warnings=warnings
         )
 
+    @enforces_invariant("INV-0065")
+    @implements_adr("ADR-L-0001", "ADR-L-0015", "ADR-PC-0002")
     def validate_implementation_authority_gate(self, adr_dir: Path) -> ValidationResult:
         """Validate approval and steelman readiness for implementation-authoritative ADRs only."""
         adr_dir = Path(adr_dir)

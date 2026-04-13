@@ -17,6 +17,11 @@ def _load_yaml(path):
     return yaml.safe_load(path.read_text(encoding="utf-8"))
 
 
+def _normalize_newlines(data: bytes) -> bytes:
+    """Git may check out golden fixtures with CRLF on Windows; generators emit LF."""
+    return data.replace(b"\r\n", b"\n")
+
+
 def test_current_outputs_match_expected_semantically(tmp_path):
     generated_paths = generate_deterministic_outputs(_repo_root(), tmp_path / "workspace")
     expected_dir = _expected_dir()
@@ -34,7 +39,7 @@ def test_current_outputs_match_expected_bytes(tmp_path):
     for key in GOLDEN_KEYS:
         expected_bytes = (expected_dir / f"{key}.yaml").read_bytes()
         actual_bytes = generated_paths[key].read_bytes()
-        assert actual_bytes == expected_bytes, key
+        assert _normalize_newlines(actual_bytes) == _normalize_newlines(expected_bytes), key
 
 
 def test_deterministic_generation_is_byte_identical(tmp_path):

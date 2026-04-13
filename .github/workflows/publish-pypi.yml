@@ -4,6 +4,9 @@
 # Runs only on default branch main (not develop, not feature/*): push that touches
 # pyproject.toml (typical: version bump). Bump [project].version before merge;
 # PyPI rejects duplicate versions.
+#
+# Build output goes to python-dist/ (not dist/) so tracked example IR under dist/
+# is not mistaken for a distribution by Twine.
 name: Publish to PyPI
 
 on:
@@ -12,10 +15,7 @@ on:
       - main
     paths:
       - "pyproject.toml"
-<<<<<<< HEAD
   workflow_dispatch:
-=======
->>>>>>> origin/main
 
 permissions:
   contents: read
@@ -42,7 +42,6 @@ jobs:
         run: python -m pip install --upgrade pip build
 
       - name: Build wheel and sdist
-<<<<<<< HEAD
         run: |
           rm -rf python-dist
           python -m build --outdir python-dist
@@ -51,9 +50,3 @@ jobs:
         uses: pypa/gh-action-pypi-publish@release/v1
         with:
           packages-dir: python-dist
-=======
-        run: python -m build
-
-      - name: Publish to PyPI
-        uses: pypa/gh-action-pypi-publish@release/v1
->>>>>>> origin/main

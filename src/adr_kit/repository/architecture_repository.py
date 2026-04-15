@@ -5,10 +5,14 @@ from __future__ import annotations
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Literal
+import re
+import yaml
 
 from ..models import (
     ArchitectureIndex,
+    CorpusSummary,
     DiscoveryProvenance,
+    Manifest,
     NormalizedArchitectureModel,
     NormalizedEntity,
     RemediationLedger,
@@ -50,6 +54,16 @@ class ContractBundleView:
     remediation_ledger: RemediationLedger | None
 
 
+@dataclass(frozen=True)
+class AdrIdAllocationBands:
+    """Centralized ADR allocation band policy."""
+
+    normal_start: int = 1
+    normal_end: int = 8999
+    reserved_start: int = 9000
+    reserved_end: int = 9999
+
+
 @implements_adr("ADR-L-0013")
 class ArchitectureRepository:
     """Load compiled bundles and expose a stable semantic model."""
@@ -61,6 +75,13 @@ class ArchitectureRepository:
         "invariant_registry_path": ("invariants", "invariant"),
         "system_registry_path": ("systems", "system"),
     }
+    _ADR_TYPE_PATTERNS: dict[str, tuple[str, str]] = {
+        "logical": ("ADR-L-", "logical"),
+        "physical-system": ("ADR-PS-", "physical-system"),
+        "physical-component": ("ADR-PC-", "physical-component"),
+    }
+    _ADR_ID_BANDS = AdrIdAllocationBands()
+    _ALLOCATION_STATE_FILE = ".adr-id-allocation.yaml"
 
     def __init__(
         self,
@@ -103,6 +124,25 @@ class ArchitectureRepository:
         if self._model is None:
             raise ArchitectureRegistryError("Normalized architecture model unavailable before successful load")
         return self._model
+
+    def get_manifest(self) -> Manifest:
+        """Return the parsed manifest for the current scope."""
+        scope = self._scope_resolver.resolve()
+        if not scope.manifest_path.exists():
+            raise ArchitectureRegistryError(
+                f"Manifest not found for scope {scope.root}. Run 'adr generate-manifest' or 'adr compile' first."
+            )
+        try:
+            return Manifest(**self._parser.parse_yaml(scope.manifest_path))
+        except Exception as exc:
+            raise ArchitectureRegistryError(f"Failed to load manifest: {exc}") from exc
+
+    def get_index(self) -> ArchitectureIndex:
+        """Return the architecture index for normalized repository mode."""
+        self.load()
+        if self.mode != "normalized" or self.architecture_index is None:
+            raise ArchitectureRegistryError("Architecture index is unavailable in legacy repository mode")
+        return self.architecture_index
 
     def get_entities(self) -> list[NormalizedEntity]:
         self.load()
@@ -173,6 +213,25 @@ class ArchitectureRepository:
             direction=direction,
         )
 
+    def find_adrs_referencing_entity(self, entity_id: str) -> list[str]:
+        """Return ADR IDs directly associated to an entity through repository relationships."""
+        self.load()
+        if self.find_entity(entity_id) is None:
+            raise ArchitectureRegistryError(f"Entity not found: {entity_id}")
+
+        references: set[str] = set(self.get_entity_adr_refs(entity_id))
+        for relationship in self.get_relationships_for_entity(entity_id):
+            for candidate_id in (relationship.from_entity_id, relationship.to_entity_id):
+                if candidate_id == entity_id:
+                    continue
+                candidate = self.find_entity(candidate_id)
+                if candidate is None:
+                    continue
+                if candidate.entity_type == "adr":
+                    references.add(candidate.id)
+                references.update(self.get_entity_adr_refs(candidate_id))
+        return sorted(references)
+
     def get_unresolved_for_entity(self, entity_id: str) -> list[UnresolvedRecord]:
         return self.get_model().unresolved_for_entity(entity_id)
 
@@ -221,6 +280,134 @@ class ArchitectureRepository:
             relationship_registry=self.relationship_registry,
             unresolved_registry=self.unresolved_registry,
             remediation_ledger=self.remediation_ledger,
+        )
+
+    def get_corpus_summary(self) -> CorpusSummary:
+        """Return deterministic corpus orientation data for the current scope."""
+        model = self.get_model()
+        entity_counts: dict[str, int] = {}
+        adr_counts_by_type: dict[str, int] = {}
+        adr_counts_by_status: dict[str, int] = {}
+
+        for entity in model.entities:
+            entity_counts[entity.entity_type] = entity_counts.get(entity.entity_type, 0) + 1
+            if entity.entity_type != "adr":
+                continue
+            adr_type = self._adr_type_for_id(entity.id)
+            adr_counts_by_type[adr_type] = adr_counts_by_type.get(adr_type, 0) + 1
+            adr_status = model.adr_status(entity.id) or "unknown"
+            adr_counts_by_status[adr_status] = adr_counts_by_status.get(adr_status, 0) + 1
+
+        return CorpusSummary(
+            scope_root=model.scope_root,
+            architecture_namespace=model.architecture_namespace,
+            fingerprint=model.fingerprint,
+            mode=model.mode,
+            entity_counts=dict(sorted(entity_counts.items())),
+            adr_counts_by_type=dict(sorted(adr_counts_by_type.items())),
+            adr_counts_by_status=dict(sorted(adr_counts_by_status.items())),
+            relationship_count=len(model.relationships),
+            unresolved_count=len(model.unresolved),
+            source_coverage=model.source_coverage,
+            validation_summary=model.validation_summary,
+        )
+
+    def _adr_type_for_id(self, adr_id: str) -> str:
+        """Infer ADR taxonomy from canonical ADR ID."""
+        if adr_id.startswith("ADR-L-") or adr_id.startswith("ADR-V-"):
+            return "logical"
+        if adr_id.startswith("ADR-PS-"):
+            return "physical-system"
+        if adr_id.startswith("ADR-PC-"):
+            return "physical-component"
+        if adr_id.startswith("ADR-P-"):
+            return "physical"
+        return "unknown"
+
+    def next_id(self, adr_type: str) -> str:
+        """Allocate the next normal-band ADR ID for a supported forward-authoring type."""
+        if adr_type not in self._ADR_TYPE_PATTERNS:
+            allowed = ", ".join(sorted(self._ADR_TYPE_PATTERNS))
+            raise ArchitectureRegistryError(f"Unsupported ADR type for next-id: {adr_type}. Expected one of: {allowed}")
+
+        prefix, directory_name = self._ADR_TYPE_PATTERNS[adr_type]
+        scope = self._scope_resolver.resolve()
+        target_dir = scope.adr_dir / directory_name
+        pattern = re.compile(rf"^{re.escape(prefix)}(\d{{4}})")
+
+        highest = self._load_allocation_high_water(scope.root, adr_type)
+        seen_ids: dict[str, Path] = {}
+        if target_dir.exists():
+            for path in sorted(target_dir.glob("*.yaml")):
+                try:
+                    data = self._parser.parse_yaml(path)
+                except Exception as exc:
+                    raise ArchitectureRegistryError(f"Failed to read ADR header from {path}: {exc}") from exc
+
+                declared_id = data.get("id")
+                if not isinstance(declared_id, str):
+                    continue
+
+                existing_path = seen_ids.get(declared_id)
+                if existing_path is not None:
+                    raise ArchitectureRegistryError(
+                        f"Duplicate ADR ID in {target_dir}: {declared_id} declared in both {existing_path.name} and {path.name}"
+                    )
+                seen_ids[declared_id] = path
+
+                match = pattern.match(declared_id)
+                if match:
+                    sequence = int(match.group(1))
+                    if self._ADR_ID_BANDS.normal_start <= sequence <= self._ADR_ID_BANDS.normal_end:
+                        highest = max(highest, sequence)
+
+        next_sequence = highest + 1
+        if next_sequence > self._ADR_ID_BANDS.normal_end:
+            raise ArchitectureRegistryError(
+                f"ADR ID allocation band exhausted for {adr_type}: "
+                f"{self._ADR_ID_BANDS.normal_start:04d}-{self._ADR_ID_BANDS.normal_end:04d}"
+            )
+
+        self._save_allocation_high_water(scope.root, adr_type, next_sequence)
+        return f"{prefix}{next_sequence:04d}"
+
+    def _allocation_state_path(self, scope_root: Path) -> Path:
+        """Return the repo-local ADR allocation state file path."""
+        return scope_root / self._ALLOCATION_STATE_FILE
+
+    def _load_allocation_high_water(self, scope_root: Path, adr_type: str) -> int:
+        """Load the current high-water mark for an ADR type."""
+        state_path = self._allocation_state_path(scope_root)
+        if not state_path.exists():
+            return 0
+        try:
+            data = yaml.safe_load(state_path.read_text(encoding="utf-8")) or {}
+        except Exception as exc:
+            raise ArchitectureRegistryError(f"Failed to load ADR allocation state from {state_path}: {exc}") from exc
+
+        allocation = data.get("allocation", {})
+        value = allocation.get(adr_type, 0)
+        if not isinstance(value, int):
+            raise ArchitectureRegistryError(f"Invalid ADR allocation state for {adr_type} in {state_path}")
+        return value
+
+    def _save_allocation_high_water(self, scope_root: Path, adr_type: str, high_water: int) -> None:
+        """Persist the current high-water mark for an ADR type."""
+        state_path = self._allocation_state_path(scope_root)
+        data: dict = {}
+        if state_path.exists():
+            try:
+                data = yaml.safe_load(state_path.read_text(encoding="utf-8")) or {}
+            except Exception as exc:
+                raise ArchitectureRegistryError(f"Failed to load ADR allocation state from {state_path}: {exc}") from exc
+        allocation = data.setdefault("allocation", {})
+        existing = allocation.get(adr_type, 0)
+        if not isinstance(existing, int):
+            raise ArchitectureRegistryError(f"Invalid ADR allocation state for {adr_type} in {state_path}")
+        allocation[adr_type] = max(existing, high_water)
+        state_path.write_text(
+            yaml.safe_dump(data, sort_keys=False, allow_unicode=True),
+            encoding="utf-8",
         )
 
     def find_entity(self, entity_id: str) -> NormalizedEntity | None:

@@ -22,6 +22,7 @@ from ..generators import (
     LogicalADRGenerator,
     PhysicalComponentADRGenerator,
     PhysicalSystemADRGenerator,
+    ScaffoldGenerator,
     SystemOverviewGenerator,
 )
 from ..generators.views import MarkdownGenerator
@@ -50,6 +51,7 @@ from ..validators import (
     SystemOverviewValidator,
 )
 from ..scope import ProjectScopeResolver
+from .. import __version__
 
 
 def _discover_scope_adr_files(scope) -> list[Path]:
@@ -87,6 +89,35 @@ def _dump_yaml(data) -> str:
 def _dump_entities(entities) -> str:
     """Render normalized entities as deterministic YAML."""
     return _dump_yaml({"entities": [entity.model_dump(mode="json", exclude_none=True) for entity in entities]})
+
+
+def _dump_relationships(relationships) -> str:
+    """Render relationship records as deterministic YAML."""
+    return _dump_yaml(
+        {
+            "relationships": [
+                relationship.model_dump(mode="json", exclude_none=True)
+                for relationship in relationships
+            ]
+        }
+    )
+
+
+def _maybe_show_input_schema(generator_cls, show_input_schema: bool) -> bool:
+    """Render generator input schema and short-circuit command execution."""
+    if not show_input_schema:
+        return False
+    click.echo(_dump_yaml(generator_cls.input_json_schema()))
+    return True
+
+
+def _require_generation_paths(input_path: Optional[Path], output: Optional[Path]) -> tuple[Path, Path]:
+    """Validate required paths for source generation commands."""
+    if input_path is None:
+        raise ValueError("--input is required unless --show-input-schema is used")
+    if output is None:
+        raise ValueError("--output is required unless --show-input-schema is used")
+    return input_path, output
 
 
 def _run_cli_subcommand(args: list[str]) -> int:
@@ -325,7 +356,7 @@ def _echo_recursive_compilation_result(result, *, mode: str, check: bool, dry_ru
 
 @implements_adr("ADR-L-0002", "ADR-L-0013")
 @click.group()
-@click.version_option()
+@click.version_option(version=__version__)
 def cli():
     """ADR Architecture Kit - Multi-scope ADR management."""
     pass
@@ -502,13 +533,13 @@ def _generate_source_adr(
 @click.option(
     "--input",
     "input_path",
-    required=True,
+    required=False,
     type=click.Path(exists=True, dir_okay=False, path_type=Path),
     help="Path to structured YAML input for the Logical ADR.",
 )
 @click.option(
     "--output",
-    required=True,
+    required=False,
     type=click.Path(dir_okay=False, path_type=Path),
     help="Path to write the generated Logical ADR YAML.",
 )
@@ -524,14 +555,23 @@ def _generate_source_adr(
     is_flag=True,
     help="Preserve explicit empty arrays/objects in generated YAML.",
 )
+@click.option(
+    "--show-input-schema",
+    is_flag=True,
+    help="Print the JSON Schema for the structured input contract and exit.",
+)
 def generate_logical(
-    input_path: Path,
-    output: Path,
+    input_path: Optional[Path],
+    output: Optional[Path],
     validation_mode: str,
     preserve_empty_sections: bool,
+    show_input_schema: bool,
 ):
     """Generate a Logical ADR YAML file from structured input."""
     try:
+        if _maybe_show_input_schema(LogicalADRGenerator, show_input_schema):
+            return
+        input_path, output = _require_generation_paths(input_path, output)
         _generate_source_adr(
             input_path,
             output,
@@ -552,13 +592,13 @@ def generate_logical(
 @click.option(
     "--input",
     "input_path",
-    required=True,
+    required=False,
     type=click.Path(exists=True, dir_okay=False, path_type=Path),
     help="Path to structured YAML input for the Vision ADR.",
 )
 @click.option(
     "--output",
-    required=True,
+    required=False,
     type=click.Path(dir_okay=False, path_type=Path),
     help="Path to write the generated Vision ADR YAML.",
 )
@@ -574,14 +614,23 @@ def generate_logical(
     is_flag=True,
     help="Preserve explicit empty arrays/objects in generated YAML.",
 )
+@click.option(
+    "--show-input-schema",
+    is_flag=True,
+    help="Print the JSON Schema for the structured input contract and exit.",
+)
 def generate_vision(
-    input_path: Path,
-    output: Path,
+    input_path: Optional[Path],
+    output: Optional[Path],
     validation_mode: str,
     preserve_empty_sections: bool,
+    show_input_schema: bool,
 ):
     """Generate a Vision ADR YAML file from structured input."""
     try:
+        if _maybe_show_input_schema(LogicalADRGenerator, show_input_schema):
+            return
+        input_path, output = _require_generation_paths(input_path, output)
         _generate_source_adr(
             input_path,
             output,
@@ -667,17 +716,80 @@ def generate_manifest(scope: Optional[Path], recursive: bool, output: Optional[P
 
 
 @implements_adr("ADR-L-0002", "ADR-L-0013")
+@cli.command("next-id")
+@click.option('--scope', type=click.Path(exists=True, file_okay=False, path_type=Path),
+              help='Explicit project scope (overrides auto-detection)')
+@click.option(
+    "--type",
+    "adr_type",
+    required=True,
+    type=click.Choice(["logical", "physical-system", "physical-component"]),
+    help="ADR type to allocate a next ID for.",
+)
+def next_id(scope: Optional[Path], adr_type: str):
+    """Print the next available ADR ID for forward-authoring ADR types."""
+    try:
+        repository = ArchitectureRepository(scope_resolver=ProjectScopeResolver(explicit_scope=scope))
+        click.echo(repository.next_id(adr_type))
+    except Exception as e:
+        click.echo(f"Error: {e}", err=True)
+        sys.exit(1)
+
+
+@implements_adr("ADR-L-0002", "ADR-L-0013")
+@cli.command("scaffold")
+@click.option('--scope', type=click.Path(exists=True, file_okay=False, path_type=Path),
+              help='Explicit project scope used to derive the next ADR ID when --id is omitted')
+@click.option(
+    "--type",
+    "adr_type",
+    required=True,
+    type=click.Choice(["logical", "physical-system", "physical-component"]),
+    help="ADR type scaffold to emit.",
+)
+@click.option("--id", "adr_id", help="Explicit ADR ID for the scaffold.")
+@click.option("--title", help="Override scaffold title.")
+@click.option("--include-optional", is_flag=True, help="Include optional scaffold sections.")
+@click.option("--output", type=click.Path(dir_okay=False, path_type=Path),
+              help="Optional file path to write the scaffold YAML.")
+def scaffold(scope: Optional[Path], adr_type: str, adr_id: Optional[str], title: Optional[str], include_optional: bool, output: Optional[Path]):
+    """Generate a structured ADR input scaffold."""
+    try:
+        resolved_id = adr_id
+        if resolved_id is None:
+            repository = ArchitectureRepository(scope_resolver=ProjectScopeResolver(explicit_scope=scope))
+            resolved_id = repository.next_id(adr_type)
+        generator = ScaffoldGenerator()
+        rendered = generator.scaffold_yaml(
+            adr_type,
+            adr_id=resolved_id,
+            title=title,
+            include_optional=include_optional,
+        )
+        if output is None:
+            click.echo(rendered.rstrip())
+        else:
+            output.parent.mkdir(parents=True, exist_ok=True)
+            output.write_text(rendered, encoding="utf-8")
+            click.echo(f"Generated scaffold: {output}")
+            click.echo(f"  ID: {resolved_id}")
+    except Exception as e:
+        click.echo(f"Error: {e}", err=True)
+        sys.exit(1)
+
+
+@implements_adr("ADR-L-0002", "ADR-L-0013")
 @cli.command("generate-physical-component")
 @click.option(
     "--input",
     "input_path",
-    required=True,
+    required=False,
     type=click.Path(exists=True, dir_okay=False, path_type=Path),
     help="Path to structured YAML input for the Physical-Component ADR.",
 )
 @click.option(
     "--output",
-    required=True,
+    required=False,
     type=click.Path(dir_okay=False, path_type=Path),
     help="Path to write the generated Physical-Component ADR YAML.",
 )
@@ -693,14 +805,23 @@ def generate_manifest(scope: Optional[Path], recursive: bool, output: Optional[P
     is_flag=True,
     help="Preserve explicit empty arrays/objects in generated YAML.",
 )
+@click.option(
+    "--show-input-schema",
+    is_flag=True,
+    help="Print the JSON Schema for the structured input contract and exit.",
+)
 def generate_physical_component(
-    input_path: Path,
-    output: Path,
+    input_path: Optional[Path],
+    output: Optional[Path],
     validation_mode: str,
     preserve_empty_sections: bool,
+    show_input_schema: bool,
 ):
     """Generate a Physical-Component ADR YAML file from structured input."""
     try:
+        if _maybe_show_input_schema(PhysicalComponentADRGenerator, show_input_schema):
+            return
+        input_path, output = _require_generation_paths(input_path, output)
         _generate_source_adr(
             input_path,
             output,
@@ -721,13 +842,13 @@ def generate_physical_component(
 @click.option(
     "--input",
     "input_path",
-    required=True,
+    required=False,
     type=click.Path(exists=True, dir_okay=False, path_type=Path),
     help="Path to structured YAML input for the Physical-System ADR.",
 )
 @click.option(
     "--output",
-    required=True,
+    required=False,
     type=click.Path(dir_okay=False, path_type=Path),
     help="Path to write the generated Physical-System ADR YAML.",
 )
@@ -743,14 +864,23 @@ def generate_physical_component(
     is_flag=True,
     help="Preserve explicit empty arrays/objects in generated YAML.",
 )
+@click.option(
+    "--show-input-schema",
+    is_flag=True,
+    help="Print the JSON Schema for the structured input contract and exit.",
+)
 def generate_physical_system(
-    input_path: Path,
-    output: Path,
+    input_path: Optional[Path],
+    output: Optional[Path],
     validation_mode: str,
     preserve_empty_sections: bool,
+    show_input_schema: bool,
 ):
     """Generate a Physical-System ADR YAML file from structured input."""
     try:
+        if _maybe_show_input_schema(PhysicalSystemADRGenerator, show_input_schema):
+            return
+        input_path, output = _require_generation_paths(input_path, output)
         _generate_source_adr(
             input_path,
             output,
@@ -1279,6 +1409,57 @@ def entities_get(entity_id: str, scope: Optional[Path]):
 
 
 @implements_adr("ADR-L-0002", "ADR-L-0013")
+@entities_cli.command("relationships")
+@click.option('--scope', type=click.Path(exists=True, file_okay=False, path_type=Path),
+              help='Explicit project scope (overrides auto-detection)')
+@click.option('--entity', 'entity_id', help='Filter relationships to one entity ID')
+@click.option('--type', 'relationship_type',
+              type=click.Choice(["declared_in", "references", "related_to", "enforces", "enabled_by", "enables", "governs", "implemented_by", "embodied_in", "supersedes", "superseded_by", "refines"]),
+              help='Filter by relationship type')
+@click.option('--direction',
+              type=click.Choice(["any", "incoming", "outgoing"]),
+              default="any",
+              show_default=True,
+              help='Relationship direction when --entity is provided')
+def entities_relationships(scope: Optional[Path], entity_id: Optional[str], relationship_type: Optional[str], direction: str):
+    """List repository relationship records."""
+    try:
+        repository = _load_architecture_repository(scope)
+        relationships = (
+            repository.get_relationships_for_entity(
+                entity_id,
+                relationship_type=relationship_type,
+                direction=direction,
+            )
+            if entity_id
+            else [
+                relationship
+                for relationship in repository.get_relationships()
+                if relationship_type is None or relationship.relationship_type == relationship_type
+            ]
+        )
+        relationships = sorted(relationships, key=lambda relationship: relationship.relationship_id)
+        click.echo(_dump_relationships(relationships))
+    except Exception as e:
+        click.echo(f"Error: {e}", err=True)
+        sys.exit(1)
+
+
+@implements_adr("ADR-L-0002", "ADR-L-0013")
+@entities_cli.command("summary")
+@click.option('--scope', type=click.Path(exists=True, file_okay=False, path_type=Path),
+              help='Explicit project scope (overrides auto-detection)')
+def entities_summary(scope: Optional[Path]):
+    """Summarize the generated architecture corpus for the current scope."""
+    try:
+        repository = _load_architecture_repository(scope)
+        click.echo(_dump_yaml(repository.get_corpus_summary().model_dump(mode="json", exclude_none=True)))
+    except Exception as e:
+        click.echo(f"Error: {e}", err=True)
+        sys.exit(1)
+
+
+@implements_adr("ADR-L-0002", "ADR-L-0013")
 @entities_cli.command("invariants")
 @click.option('--scope', type=click.Path(exists=True, file_okay=False, path_type=Path),
               help='Explicit project scope (overrides auto-detection)')
@@ -1353,7 +1534,15 @@ def show_scope(recursive: bool):
                 if scope.adr_dir.exists():
                     logical_count = len(list((scope.adr_dir / 'logical').glob('*.yaml'))) if (scope.adr_dir / 'logical').exists() else 0
                     physical_count = len(list((scope.adr_dir / 'physical').glob('*.yaml'))) if (scope.adr_dir / 'physical').exists() else 0
-                    click.echo(f"   ADR count: {logical_count} logical, {physical_count} physical")
+                    physical_system_count = len(list(scope.physical_system_dir.glob('*.yaml'))) if scope.physical_system_dir.exists() else 0
+                    physical_component_count = len(list(scope.physical_component_dir.glob('*.yaml'))) if scope.physical_component_dir.exists() else 0
+                    click.echo(
+                        "   ADR count: "
+                        f"{logical_count} logical, "
+                        f"{physical_count} physical, "
+                        f"{physical_system_count} physical-system, "
+                        f"{physical_component_count} physical-component"
+                    )
                 else:
                     click.echo(f"   ADR count: (directory not found)")
                 
@@ -1374,7 +1563,15 @@ def show_scope(recursive: bool):
             if scope.adr_dir.exists():
                 logical_count = len(list((scope.adr_dir / 'logical').glob('*.yaml'))) if (scope.adr_dir / 'logical').exists() else 0
                 physical_count = len(list((scope.adr_dir / 'physical').glob('*.yaml'))) if (scope.adr_dir / 'physical').exists() else 0
-                click.echo(f"\nADR count: {logical_count} logical, {physical_count} physical")
+                physical_system_count = len(list(scope.physical_system_dir.glob('*.yaml'))) if scope.physical_system_dir.exists() else 0
+                physical_component_count = len(list(scope.physical_component_dir.glob('*.yaml'))) if scope.physical_component_dir.exists() else 0
+                click.echo(
+                    "\nADR count: "
+                    f"{logical_count} logical, "
+                    f"{physical_count} physical, "
+                    f"{physical_system_count} physical-system, "
+                    f"{physical_component_count} physical-component"
+                )
             else:
                 click.echo(f"\nADR directory does not exist")
                 

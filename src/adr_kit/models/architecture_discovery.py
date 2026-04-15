@@ -205,6 +205,22 @@ class SourceCoverageSummary(BaseModel):
     standalone_invariants: int = 0
 
 
+class CorpusSummary(BaseModel):
+    """Deterministic repository orientation summary."""
+
+    scope_root: str
+    architecture_namespace: str | None = None
+    fingerprint: str
+    mode: Literal["normalized", "legacy"]
+    entity_counts: Dict[str, int] = Field(default_factory=dict)
+    adr_counts_by_type: Dict[str, int] = Field(default_factory=dict)
+    adr_counts_by_status: Dict[str, int] = Field(default_factory=dict)
+    relationship_count: int = 0
+    unresolved_count: int = 0
+    source_coverage: SourceCoverageSummary | None = None
+    validation_summary: ValidationSummary | None = None
+
+
 class ArchitectureIndex(BaseModel):
     """Bootstrap index for architecture discovery."""
 

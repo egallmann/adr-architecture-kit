@@ -2745,3 +2745,190 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
+- id: INV-0068
+  entity_type: invariant
+  name: INV-0068
+  summary: Forward authoring ergonomics in adr-architecture-kit MUST target logical,
+    physical-system, and physical-component ADRs, while legacy `ADR-P-*` support remains
+    compatibility-only.
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0017#INV-0068
+    artifact_path: adrs/logical/ADR-L-0017-forward-authoring-ergonomics-for-split-physical-adr-types.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0017
+    scope: global
+    statement: 'Forward authoring ergonomics in adr-architecture-kit MUST target logical,
+
+      physical-system, and physical-component ADRs, while legacy `ADR-P-*`
+
+      support remains compatibility-only.
+
+      '
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions: []
+  relationships:
+    declared_in:
+    - ADR-L-0017
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0017#INV-0068
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
+- id: INV-0069
+  entity_type: invariant
+  name: INV-0069
+  summary: Forward-authoring ADR ID allocation MUST be monotonic and non-reusable.
+    Previously allocated IDs and historical gaps remain consumed history and MUST
+    NOT be reissued.
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0016#INV-0069
+    artifact_path: adrs/logical/ADR-L-0016-deterministic-corpus-query-and-authoring-orientation.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0016
+    scope: global
+    statement: 'Forward-authoring ADR ID allocation MUST be monotonic and non-reusable.
+
+      Previously allocated IDs and historical gaps remain consumed history and
+
+      MUST NOT be reissued.
+
+      '
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions: []
+  relationships:
+    declared_in:
+    - ADR-L-0016
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0016#INV-0069
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
+- id: INV-0070
+  entity_type: invariant
+  name: INV-0070
+  summary: ADR IDs `9000-9999` MUST be treated as a reserved exceptional allocation
+    range for cases such as brownfield imports, retained legacy artifacts pending
+    migration, and other imported records requiring preserved identity. S
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0017#INV-0070
+    artifact_path: adrs/logical/ADR-L-0017-forward-authoring-ergonomics-for-split-physical-adr-types.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0017
+    scope: global
+    statement: 'ADR IDs `9000-9999` MUST be treated as a reserved exceptional allocation
+
+      range for cases such as brownfield imports, retained legacy artifacts
+
+      pending migration, and other imported records requiring preserved
+
+      identity. Standard forward authoring allocation MUST exclude that range.
+
+      '
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions: []
+  relationships:
+    declared_in:
+    - ADR-L-0017
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0017#INV-0070
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
+- id: INV-0071
+  entity_type: invariant
+  name: INV-0071
+  summary: Reserved ADR IDs `9000-9999` MUST NOT participate in standard forward authoring
+    allocation.
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0016#INV-0071
+    artifact_path: adrs/logical/ADR-L-0016-deterministic-corpus-query-and-authoring-orientation.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0016
+    scope: global
+    statement: 'Reserved ADR IDs `9000-9999` MUST NOT participate in standard forward
+
+      authoring allocation.
+
+      '
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions: []
+  relationships:
+    declared_in:
+    - ADR-L-0016
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0016#INV-0071
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index

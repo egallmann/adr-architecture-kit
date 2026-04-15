@@ -2901,6 +2901,302 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
+- id: DEC-0069
+  entity_type: decision
+  name: Extend ArchitectureRepository with deterministic orientation helpers
+  summary: Repository consumers should use one in-process boundary for manifest access,
+    architecture index access, corpus summary generation, entity reference lookup,
+    and forward-authoring ID allocation.
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0016#DEC-0069
+    artifact_path: adrs/logical/ADR-L-0016-deterministic-corpus-query-and-authoring-orientation.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0016
+    related_invariants: []
+    enforces_invariants: []
+    enables_capabilities: []
+    governs_components: []
+    supersedes: []
+    refines: []
+  relationships:
+    declared_in:
+    - ADR-L-0016
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0016#DEC-0069
+    extraction_phase: extract_decision
+    classification: explicit
+    generator: adr-architecture-index
+- id: DEC-0070
+  entity_type: decision
+  name: Expose corpus summary and relationships through supported CLI commands
+  summary: Human and script consumers need stable CLI ergonomics that mirror the repository
+    boundary without treating raw registry files as the user-facing interface.
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0016#DEC-0070
+    artifact_path: adrs/logical/ADR-L-0016-deterministic-corpus-query-and-authoring-orientation.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0016
+    related_invariants: []
+    enforces_invariants: []
+    enables_capabilities: []
+    governs_components: []
+    supersedes: []
+    refines: []
+  relationships:
+    declared_in:
+    - ADR-L-0016
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0016#DEC-0070
+    extraction_phase: extract_decision
+    classification: explicit
+    generator: adr-architecture-index
+- id: DEC-0071
+  entity_type: decision
+  name: Provide scaffold and schema-surface ergonomics for logical, physical-system,
+    and physical-component ADRs only
+  summary: New authoring ergonomics should reinforce the forward taxonomy and expose
+    deterministic structured inputs for the ADR types the repository wants new work
+    to use.
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0017#DEC-0071
+    artifact_path: adrs/logical/ADR-L-0017-forward-authoring-ergonomics-for-split-physical-adr-types.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0017
+    related_invariants: []
+    enforces_invariants: []
+    enables_capabilities: []
+    governs_components: []
+    supersedes: []
+    refines: []
+  relationships:
+    declared_in:
+    - ADR-L-0017
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0017#DEC-0071
+    extraction_phase: extract_decision
+    classification: explicit
+    generator: adr-architecture-index
+- id: DEC-0072
+  entity_type: decision
+  name: Retain legacy ADR-P parsing and validation but exclude it from new creation
+    ergonomics
+  summary: Existing repositories and tests still contain `ADR-P-*` artifacts, so backward
+    compatibility remains necessary. That compatibility does not require adding new
+    forward-authoring affordances for the legacy type.
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0017#DEC-0072
+    artifact_path: adrs/logical/ADR-L-0017-forward-authoring-ergonomics-for-split-physical-adr-types.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0017
+    related_invariants: []
+    enforces_invariants: []
+    enables_capabilities: []
+    governs_components: []
+    supersedes: []
+    refines: []
+  relationships:
+    declared_in:
+    - ADR-L-0017
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0017#DEC-0072
+    extraction_phase: extract_decision
+    classification: explicit
+    generator: adr-architecture-index
+- id: DEC-0073
+  entity_type: decision
+  name: Make forward-authoring ADR ID allocation monotonic and non-reusable
+  summary: ADR identifiers are architectural identity, not recyclable sequence numbers.
+    Once an ID is allocated, gaps must remain consumed history even if an ADR is later
+    deleted, superseded, or removed from the active corpus.
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0016#DEC-0073
+    artifact_path: adrs/logical/ADR-L-0016-deterministic-corpus-query-and-authoring-orientation.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0016
+    related_invariants: []
+    enforces_invariants: []
+    enables_capabilities: []
+    governs_components: []
+    supersedes: []
+    refines: []
+  relationships:
+    declared_in:
+    - ADR-L-0016
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0016#DEC-0073
+    extraction_phase: extract_decision
+    classification: explicit
+    generator: adr-architecture-index
+- id: DEC-0074
+  entity_type: decision
+  name: Reserve ADR IDs 9000-9999 for exceptional allocation and exclude that range
+    from normal forward allocation
+  summary: The high ADR ID range is needed for exceptional cases such as brownfield
+    imports, retained legacy artifacts pending migration, and other imported records
+    whose identity must be preserved. Normal authoring allocation shou
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0017#DEC-0074
+    artifact_path: adrs/logical/ADR-L-0017-forward-authoring-ergonomics-for-split-physical-adr-types.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0017
+    related_invariants: []
+    enforces_invariants: []
+    enables_capabilities: []
+    governs_components: []
+    supersedes: []
+    refines: []
+  relationships:
+    declared_in:
+    - ADR-L-0017
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0017#DEC-0074
+    extraction_phase: extract_decision
+    classification: explicit
+    generator: adr-architecture-index
+- id: DEC-0075
+  entity_type: decision
+  name: Exclude reserved ADR IDs 9000-9999 from standard forward allocation
+  summary: Brownfield onboarding and imported architectural records need a controlled
+    exceptional range where identity can be preserved without perturbing the normal
+    authoring sequence.
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0016#DEC-0075
+    artifact_path: adrs/logical/ADR-L-0016-deterministic-corpus-query-and-authoring-orientation.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0016
+    related_invariants: []
+    enforces_invariants: []
+    enables_capabilities: []
+    governs_components: []
+    supersedes: []
+    refines: []
+  relationships:
+    declared_in:
+    - ADR-L-0016
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0016#DEC-0075
+    extraction_phase: extract_decision
+    classification: explicit
+    generator: adr-architecture-index
 - id: DEC-9000
   entity_type: decision
   name: Publish a deterministic logical ADR fragment for boot readiness.

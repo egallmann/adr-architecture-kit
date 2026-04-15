@@ -4,8 +4,8 @@
 # generator_id: adr-compiler
 # generator_version: 1
 # hash_algorithm: sha256
-# source_hash: 30dd721e75653a98267397500b5a91fcff1a707e5cc40b1cbf52b877be12ebe6
-# rendered_hash: 9f02b784031ee8bbbc7f5cf6cf053760dd588c6399a6715c76f5a6e6a9e10fb7
+# source_hash: 5f7205bf24aa194a31f71afaabe0957b77224ceccf586bc88182872ac3fed5f9
+# rendered_hash: 1efb327624bfe8d28b84f15f8d4b26abce82752df69b70a1ce286d6cafe25938
 
 schema_version: '1.1'
 type: entity_registry
@@ -661,6 +661,21 @@ entities:
   introduced_by: ADR-L-0013
   lifecycle_stage: active
   source_path: adrs/logical/ADR-L-0013-architecture-repository-boundary-and-normalized-semantic-model.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs: []
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: CAP-0045
+  entity_type: capability
+  name: Deterministic Corpus Orientation Surface
+  introduced_by: ADR-L-0016
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0016-deterministic-corpus-query-and-authoring-orientation.yaml
   source_artifact_type: logical_adr
   domains: []
   related_adrs: []
@@ -1828,6 +1843,114 @@ entities:
     implements: []
     consumes: []
     realizes: []
+- entity_id: DEC-0069
+  entity_type: decision
+  name: Extend ArchitectureRepository with deterministic orientation helpers
+  introduced_by: ADR-L-0016
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0016-deterministic-corpus-query-and-authoring-orientation.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs: []
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: DEC-0070
+  entity_type: decision
+  name: Expose corpus summary and relationships through supported CLI commands
+  introduced_by: ADR-L-0016
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0016-deterministic-corpus-query-and-authoring-orientation.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs: []
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: DEC-0071
+  entity_type: decision
+  name: Provide scaffold and schema-surface ergonomics for logical, physical-system,
+    and physical-component ADRs only
+  introduced_by: ADR-L-0017
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0017-forward-authoring-ergonomics-for-split-physical-adr-types.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs: []
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: DEC-0072
+  entity_type: decision
+  name: Retain legacy ADR-P parsing and validation but exclude it from new creation
+    ergonomics
+  introduced_by: ADR-L-0017
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0017-forward-authoring-ergonomics-for-split-physical-adr-types.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs: []
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: DEC-0073
+  entity_type: decision
+  name: Make forward-authoring ADR ID allocation monotonic and non-reusable
+  introduced_by: ADR-L-0016
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0016-deterministic-corpus-query-and-authoring-orientation.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs: []
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: DEC-0074
+  entity_type: decision
+  name: Reserve ADR IDs 9000-9999 for exceptional allocation and exclude that range
+    from normal forward allocation
+  introduced_by: ADR-L-0017
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0017-forward-authoring-ergonomics-for-split-physical-adr-types.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs: []
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: DEC-0075
+  entity_type: decision
+  name: Exclude reserved ADR IDs 9000-9999 from standard forward allocation
+  introduced_by: ADR-L-0016
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0016-deterministic-corpus-query-and-authoring-orientation.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs: []
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
 - entity_id: DEC-9000
   entity_type: decision
   name: Publish a deterministic logical ADR fragment for boot readiness.
@@ -2752,6 +2875,66 @@ entities:
   introduced_by: ADR-L-0013
   lifecycle_stage: active
   source_path: adrs/logical/ADR-L-0013-architecture-repository-boundary-and-normalized-semantic-model.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs: []
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: INV-0068
+  entity_type: invariant
+  name: INV-0068
+  introduced_by: ADR-L-0017
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0017-forward-authoring-ergonomics-for-split-physical-adr-types.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs: []
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: INV-0069
+  entity_type: invariant
+  name: INV-0069
+  introduced_by: ADR-L-0016
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0016-deterministic-corpus-query-and-authoring-orientation.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs: []
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: INV-0070
+  entity_type: invariant
+  name: INV-0070
+  introduced_by: ADR-L-0017
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0017-forward-authoring-ergonomics-for-split-physical-adr-types.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs: []
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: INV-0071
+  entity_type: invariant
+  name: INV-0071
+  introduced_by: ADR-L-0016
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0016-deterministic-corpus-query-and-authoring-orientation.yaml
   source_artifact_type: logical_adr
   domains: []
   related_adrs: []

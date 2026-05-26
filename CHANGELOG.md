@@ -53,6 +53,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- Logical invariants: optional `supersedes` list on invariant entities; compiler
+  derives invariant-to-invariant `supersedes` / `superseded_by` relationships and
+  includes `supersedes` in extracted invariant metadata. JSON Schema for logical
+  ADRs updated accordingly.
+- `SystemOverviewGenerator` resolves project metadata from the current working
+  directory and `PROJECT.yaml`, with configurable system purpose and optional
+  workspace highlights in the Jinja2 template.
 - CI job `release-artifact-validation`: builds wheel and sdist, installs into a
   clean environment, and runs `adr --help` smoke tests to prove the wheel install
   works without editable-install workarounds.

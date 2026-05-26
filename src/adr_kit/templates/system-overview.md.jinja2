@@ -30,19 +30,24 @@ Read this file before writing code, generating artifacts, or hand-crafting repos
 
 ## System Purpose
 
-`adr-architecture-kit` is the documentation-state toolkit for STE architecture work.
+{{ system_purpose_lead }}
 
 It provides:
 
-- JSON Schema contracts for ADR artifacts
-- Pydantic models for typed parsing
-- parsers and business-rule validators
-- manifest and registry generators
-- YAML authoring support for Physical-System ADRs
-- CLI workflows for scope-aware governance operations
+{% for bullet in system_purpose_bullets %}
+- {{ bullet }}
+{% endfor %}
 
-It does not define STE doctrine. That authority remains in `ste-spec`.
+{{ system_purpose_footer }}
 
+{% if workspace_highlights %}
+## Workspace scope and bootstrap ADRs
+
+{% for line in workspace_highlights %}
+{{ line }}
+{% endfor %}
+
+{% endif %}
 ## Authority Hierarchy
 
 Use this order when resolving ambiguity:

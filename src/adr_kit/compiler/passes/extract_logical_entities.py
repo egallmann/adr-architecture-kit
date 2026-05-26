@@ -172,6 +172,7 @@ def extract_logical_entities(
                             "enforcement_level": invariant.enforcement_level.value,
                             "declaration_mode": invariant.declaration_mode or "local",
                             "upheld_by_decisions": list(invariant.upheld_by_decisions),
+                            "supersedes": list(getattr(invariant, "supersedes", []) or []),
                         },
                     },
                     artifact_path=artifact,

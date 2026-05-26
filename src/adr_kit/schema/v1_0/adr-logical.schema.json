@@ -227,6 +227,13 @@
             "type": "array",
             "items": {"type": "string"},
             "description": "Granted exceptions to this invariant"
+          },
+          "supersedes": {
+            "type": "array",
+            "items": {
+              "$ref": "types.schema.json#/definitions/entity_id"
+            },
+            "description": "Entity IDs this invariant supersedes (typically prior invariant IDs)"
           }
         }
       },

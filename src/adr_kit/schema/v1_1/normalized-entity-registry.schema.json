@@ -11,7 +11,7 @@
       "type": "array",
       "items": {
         "type": "object",
-        "required": ["id", "entity_type", "name", "summary", "canonical_source", "source_refs", "metadata", "relationships", "completeness", "provenance"],
+        "required": ["id", "entity_type", "name", "summary", "lifecycle_stage", "canonical_source", "source_refs", "metadata", "relationships", "completeness", "provenance"],
         "properties": {
           "id": {"type": "string"},
           "entity_type": {
@@ -20,6 +20,10 @@
           },
           "name": {"type": "string"},
           "summary": {"type": "string"},
+          "lifecycle_stage": {
+            "type": "string",
+            "enum": ["proposed", "active", "deprecated", "superseded"]
+          },
           "canonical_source": {
             "type": "object",
             "required": ["source_type", "source_ref", "artifact_path"],

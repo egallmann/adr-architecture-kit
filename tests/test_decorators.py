@@ -10,7 +10,12 @@ from src.adr_kit.compiler.backend.markdown_emitter import emit_markdown_artifact
 from src.adr_kit.compiler.backend.registry_emitter import emit_registry_artifacts
 from src.adr_kit.compiler.driver import ArchitectureCompiler
 from src.adr_kit.compiler.pipeline import CompilerPipeline, run_frontend_pipeline
-from src.adr_kit.decorators import enforces_invariant, implements_adr
+from src.adr_kit.decorators import (
+    enforces_invariant,
+    enforces_invariants,
+    implements_adr,
+    implements_adrs,
+)
 from src.adr_kit.generators.architecture_index_generator import ArchitectureIndexGenerator
 from src.adr_kit.generators.entity_registry_generator import EntityRegistryGenerator
 from src.adr_kit.generators.manifest_generator import ManifestGenerator
@@ -55,6 +60,15 @@ def test_implements_adr_attaches_ordered_metadata_to_function() -> None:
     assert sample.__implements_adrs__ == ("ADR-L-0001", "ADR-L-0013")
 
 
+def test_implements_adrs_accepts_sequence_literal_style() -> None:
+    @implements_adrs(["ADR-L-0001", "ADR-L-0013"])
+    def sample() -> str:
+        return "ok"
+
+    assert sample() == "ok"
+    assert sample.__implements_adrs__ == ("ADR-L-0001", "ADR-L-0013")
+
+
 def test_enforces_invariant_attaches_ordered_metadata_to_class() -> None:
     @enforces_invariant("INV-0006")
     class Sample:
@@ -65,15 +79,27 @@ def test_enforces_invariant_attaches_ordered_metadata_to_class() -> None:
     assert Sample().value() == "ok"
 
 
+def test_enforces_invariants_accepts_sequence_literal_style() -> None:
+    @enforces_invariants(["INV-0006", "INV-0007"])
+    def sample() -> int:
+        return 1
+
+    assert sample.__enforces_invariants__ == ("INV-0006", "INV-0007")
+
+
 @pytest.mark.parametrize(
     ("factory", "args", "error_type"),
     [
         (implements_adr, (), ValueError),
         (implements_adr, ("ADR-L-0001", "ADR-L-0001"), ValueError),
         (implements_adr, ("ADR-L-0001", 7), TypeError),
+        (implements_adrs, ("not-a-seq",), TypeError),
+        (implements_adrs, ([],), ValueError),
         (enforces_invariant, (), ValueError),
         (enforces_invariant, ("INV-0006", " INV-0006 "), ValueError),
         (enforces_invariant, ("INV-0006", None), TypeError),
+        (enforces_invariants, ("INV-0006",), TypeError),
+        (enforces_invariants, ([],), ValueError),
     ],
 )
 def test_decorator_factories_reject_invalid_inputs(factory, args, error_type) -> None:

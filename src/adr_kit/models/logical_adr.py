@@ -62,6 +62,10 @@ class Invariant(BaseModel):
     policy_reference: Optional[str] = None
     compliance_frameworks: List[str] = Field(default_factory=list)
     exceptions: List[str] = Field(default_factory=list)
+    supersedes: List[str] = Field(
+        default_factory=list,
+        description="Other invariants or entity IDs this invariant supersedes (evolution edges)",
+    )
 
 
 class NonFunctionalRequirement(BaseModel):

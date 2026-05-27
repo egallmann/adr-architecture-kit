@@ -10,6 +10,7 @@ from ...models import (
     PhysicalADR,
     PhysicalComponentADR,
     PhysicalSystemADR,
+    lifecycle_stage_from_adr_status,
 )
 from .extract_logical_entities import ExtractedEntity
 
@@ -70,6 +71,7 @@ def extract_physical_entities(
     for adr, path in physical_adrs:
         artifact = source_path(path)
         governance = adr.governance
+        adr_lifecycle = lifecycle_stage_from_adr_status(adr.status.value)
         source_type = (
             "physical_component_adr"
             if isinstance(adr, PhysicalComponentADR)
@@ -84,6 +86,7 @@ def extract_physical_entities(
                     entity_type="adr",
                     name=adr.title,
                     summary=summary(adr.context),
+                    lifecycle_stage=adr_lifecycle,
                     canonical_source=canonical(source_type, adr.id, artifact),
                     metadata={
                         "status": adr.status.value,
@@ -110,6 +113,7 @@ def extract_physical_entities(
                         entity_type="system",
                         name=adr.title,
                         summary=summary(adr.context),
+                        lifecycle_stage=adr_lifecycle,
                         canonical_source=canonical("physical_system_adr", adr.id, artifact),
                         metadata={
                             "adr_id": adr.id,
@@ -132,6 +136,7 @@ def extract_physical_entities(
                             entity_type="component",
                             name=component.name,
                             summary=summary(component.responsibilities),
+                            lifecycle_stage=adr_lifecycle,
                             canonical_source=canonical("physical_component_adr", f"{adr.id}#{component_id}", artifact),
                             metadata={
                                 "adr_id": adr.id,

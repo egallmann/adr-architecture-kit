@@ -53,6 +53,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- Logical invariants: optional `supersedes` list on invariant entities; compiler
+  derives invariant-to-invariant `supersedes` / `superseded_by` relationships and
+  includes `supersedes` in extracted invariant metadata. JSON Schema for logical
+  ADRs updated accordingly.
+- `SystemOverviewGenerator` resolves project metadata from the current working
+  directory and `PROJECT.yaml`, with configurable system purpose and optional
+  workspace highlights in the Jinja2 template.
 - CI job `release-artifact-validation`: builds wheel and sdist, installs into a
   clean environment, and runs `adr --help` smoke tests to prove the wheel install
   works without editable-install workarounds.
@@ -65,9 +72,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Maintainer instructions in `CONTRIBUTING.md` for linking PyPI to this repository.
 - `pyproject.toml` `[tool.setuptools] license-files` so `LICENSE` is included in
   the source distribution.
+- `adr attribution check`, **`coverage`**, and **`generate-shim`** CLI commands for validating
+  RECON-derived `implementation-attribution-evidence.yaml`, reporting citation coverage,
+  and emitting Python/TypeScript linkage shims.
+- **`implementation-attribution-evidence`** schema **`1.2`** extensions (`confidence`,
+  `attributed_capabilities`, `attribution_source_language`) aligned with **ste-runtime** emission.
+- Normalized **entity registry**: `lifecycle_stage` on each `NormalizedEntity`, derived from ADR status
+  and persisted in emitted `entity-registry.yaml`; refreshed **kernel** JSON Schema in `schema/kernel/`.
+- Canonical **`schema/v1.1/implementation-attribution-evidence.schema.json`** synced with the bundled
+  package copy so CI schema parity (`schema/` vs `src/adr_kit/schema/`) passes.
+- **`tests/test_package_schema_parity.py`**: asserts canonical vs bundled authoring schemas stay byte-identical (mirrors `.github/workflows/adr-governance.yml`); included in **`scripts/run_local_pre_push_checks.py`**.
+- Explicitly recorded bundled **`normalized-entity-registry.schema.json`** at **`src/adr_kit/schema/v1_1/`** matching **`schema/v1.1/`** for clean-checkout CI parity (`assume-unchanged` in local workspaces can suppress staging otherwise — see **`CONTRIBUTING.md`**).
 
 
-## [0.1.0] — 2026-03-07
 
 ### Added
 

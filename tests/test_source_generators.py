@@ -8,7 +8,7 @@ import yaml
 from click.testing import CliRunner
 
 from src.adr_kit.cli.main import cli
-from src.adr_kit.generators import LogicalADRGenerator, PhysicalComponentADRGenerator
+from src.adr_kit.generators import LogicalADRGenerator, PhysicalComponentADRGenerator, ScaffoldGenerator
 from src.adr_kit.parser import ADRParser
 from src.adr_kit.validators import ADRValidator
 
@@ -63,6 +63,17 @@ def test_generate_logical_cli_round_trip():
         assert validation.valid
     finally:
         shutil.rmtree(temp_dir, ignore_errors=True)
+
+
+def test_generate_logical_cli_can_show_input_schema():
+    """CLI can print the structured input schema without requiring input/output paths."""
+    runner = CliRunner()
+
+    result = runner.invoke(cli, ["generate-logical", "--show-input-schema"])
+
+    assert result.exit_code == 0, result.output
+    assert "properties:" in result.output
+    assert "decisions:" in result.output
 
 
 def test_generate_vision_cli_round_trip():
@@ -138,6 +149,17 @@ def test_generate_physical_component_cli_round_trip():
         shutil.rmtree(temp_dir, ignore_errors=True)
 
 
+def test_generate_physical_system_cli_can_show_input_schema():
+    """CLI can print the physical-system input schema without generation paths."""
+    runner = CliRunner()
+
+    result = runner.invoke(cli, ["generate-physical-system", "--show-input-schema"])
+
+    assert result.exit_code == 0, result.output
+    assert "technology_stack:" in result.output
+    assert "system_boundaries:" in result.output
+
+
 def test_generate_logical_cli_structural_mode_preserves_empty_sections():
     """CLI can generate draft logical ADRs with explicit empty sections intact."""
     runner = CliRunner()
@@ -191,3 +213,47 @@ def test_generate_logical_cli_structural_mode_preserves_empty_sections():
         assert validation.valid
     finally:
         shutil.rmtree(temp_dir, ignore_errors=True)
+
+
+def test_generator_exposes_input_json_schema():
+    """Programmatic schema exposure should match the model-backed input contract."""
+    schema = LogicalADRGenerator.input_json_schema()
+
+    assert "properties" in schema
+    assert "decisions" in schema["properties"]
+
+
+def test_scaffold_generator_emits_forward_authoring_scaffold():
+    """Scaffold generator emits deterministic structured inputs for supported ADR types."""
+    generator = ScaffoldGenerator()
+    logical = generator.scaffold("logical", adr_id="ADR-L-1234", title="Example")
+    physical_component_yaml = generator.scaffold_yaml("physical-component", adr_id="ADR-PC-0009")
+
+    assert logical["id"] == "ADR-L-1234"
+    assert logical["title"] == "Example"
+    assert logical["decisions"][0]["id"] == "DEC-0001"
+    assert "ADR-PC-0009" in physical_component_yaml
+
+
+def test_scaffold_cli_writes_yaml(tmp_path: Path):
+    """CLI scaffold command writes deterministic scaffold YAML."""
+    runner = CliRunner()
+    output_path = tmp_path / "scaffold.yaml"
+
+    result = runner.invoke(
+        cli,
+        [
+            "scaffold",
+            "--type",
+            "logical",
+            "--id",
+            "ADR-L-0099",
+            "--output",
+            str(output_path),
+        ],
+    )
+
+    assert result.exit_code == 0, result.output
+    rendered = output_path.read_text(encoding="utf-8")
+    assert 'id: ADR-L-0099' in rendered
+    assert 'decisions:' in rendered

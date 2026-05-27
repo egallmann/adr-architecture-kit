@@ -4,13 +4,13 @@
 # generator_id: adr-architecture-graph
 # generator_version: 1
 # hash_algorithm: sha256
-# source_hash: 4f19fd480fd7e85a179fedcd968bf714c5cc9d889bbf2aed19bdbe22220baf50
-# rendered_hash: 142f25abc6718d88ee577ce33a33bb2f03c19faa3744cbb25ff31c0083c2b53b
+# source_hash: 88e543c8d1fb015b9494e259dd673a6d472399746326195896a5e93378619544
+# rendered_hash: 6b2c533bd84a28e6c7c87cd0f9d3449cc985bac4cf3edbc0afc4764a9e684f92
 
 schema_version: '1.0'
 type: architecture_graph
 architecture_namespace: adr-architecture-kit
-generated_at: '2026-04-11T06:09:42Z'
+generated_at: '2026-05-27T02:45:34Z'
 nodes:
 - id: ADR-L-0001
   entity_type: adr
@@ -117,6 +117,20 @@ nodes:
     source_type: logical_adr
     source_ref: ADR-L-0015
     artifact_path: adrs/logical/ADR-L-0015-adr-governance-state-and-override-semantics.yaml
+- id: ADR-L-0016
+  entity_type: adr
+  name: Deterministic Corpus Query and Authoring Orientation APIs
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0016
+    artifact_path: adrs/logical/ADR-L-0016-deterministic-corpus-query-and-authoring-orientation.yaml
+- id: ADR-L-0017
+  entity_type: adr
+  name: Forward Authoring Ergonomics for Split Physical ADR Types
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0017
+    artifact_path: adrs/logical/ADR-L-0017-forward-authoring-ergonomics-for-split-physical-adr-types.yaml
 - id: ADR-L-9000
   entity_type: adr
   name: Kernel Boot Publication Surface
@@ -516,6 +530,13 @@ nodes:
     source_type: logical_adr
     source_ref: ADR-L-0013#CAP-0044
     artifact_path: adrs/logical/ADR-L-0013-architecture-repository-boundary-and-normalized-semantic-model.yaml
+- id: CAP-0045
+  entity_type: capability
+  name: Deterministic Corpus Orientation Surface
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0016#CAP-0045
+    artifact_path: adrs/logical/ADR-L-0016-deterministic-corpus-query-and-authoring-orientation.yaml
 - id: CAP-9000
   entity_type: capability
   name: Kernel Boot Readiness
@@ -1062,6 +1083,65 @@ nodes:
     source_type: logical_adr
     source_ref: ADR-L-0013#DEC-0068
     artifact_path: adrs/logical/ADR-L-0013-architecture-repository-boundary-and-normalized-semantic-model.yaml
+- id: DEC-0069
+  entity_type: decision
+  name: Extend ArchitectureRepository with deterministic orientation helpers
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0016#DEC-0069
+    artifact_path: adrs/logical/ADR-L-0016-deterministic-corpus-query-and-authoring-orientation.yaml
+- id: DEC-0070
+  entity_type: decision
+  name: Expose corpus summary and relationships through supported CLI commands
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0016#DEC-0070
+    artifact_path: adrs/logical/ADR-L-0016-deterministic-corpus-query-and-authoring-orientation.yaml
+- id: DEC-0071
+  entity_type: decision
+  name: Provide scaffold and schema-surface ergonomics for logical, physical-system,
+    and physical-component ADRs only
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0017#DEC-0071
+    artifact_path: adrs/logical/ADR-L-0017-forward-authoring-ergonomics-for-split-physical-adr-types.yaml
+- id: DEC-0072
+  entity_type: decision
+  name: Retain legacy ADR-P parsing and validation but exclude it from new creation
+    ergonomics
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0017#DEC-0072
+    artifact_path: adrs/logical/ADR-L-0017-forward-authoring-ergonomics-for-split-physical-adr-types.yaml
+- id: DEC-0073
+  entity_type: decision
+  name: Make forward-authoring ADR ID allocation monotonic and non-reusable
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0016#DEC-0073
+    artifact_path: adrs/logical/ADR-L-0016-deterministic-corpus-query-and-authoring-orientation.yaml
+- id: DEC-0074
+  entity_type: decision
+  name: Reserve ADR IDs 9000-9999 for exceptional allocation and exclude that range
+    from normal forward allocation
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0017#DEC-0074
+    artifact_path: adrs/logical/ADR-L-0017-forward-authoring-ergonomics-for-split-physical-adr-types.yaml
+- id: DEC-0075
+  entity_type: decision
+  name: Exclude reserved ADR IDs 9000-9999 from standard forward allocation
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0016#DEC-0075
+    artifact_path: adrs/logical/ADR-L-0016-deterministic-corpus-query-and-authoring-orientation.yaml
+- id: DEC-0076
+  entity_type: decision
+  name: Treat runtime-emitted implementation attribution as downstream evidence
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0004#DEC-0076
+    artifact_path: adrs/logical/ADR-L-0004-adr-to-code-traceability-via-decorators.yaml
 - id: DEC-9000
   entity_type: decision
   name: Publish a deterministic logical ADR fragment for boot readiness.
@@ -1489,6 +1569,34 @@ nodes:
     source_type: logical_adr
     source_ref: ADR-L-0013#INV-0067
     artifact_path: adrs/logical/ADR-L-0013-architecture-repository-boundary-and-normalized-semantic-model.yaml
+- id: INV-0068
+  entity_type: invariant
+  name: INV-0068
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0017#INV-0068
+    artifact_path: adrs/logical/ADR-L-0017-forward-authoring-ergonomics-for-split-physical-adr-types.yaml
+- id: INV-0069
+  entity_type: invariant
+  name: INV-0069
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0016#INV-0069
+    artifact_path: adrs/logical/ADR-L-0016-deterministic-corpus-query-and-authoring-orientation.yaml
+- id: INV-0070
+  entity_type: invariant
+  name: INV-0070
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0017#INV-0070
+    artifact_path: adrs/logical/ADR-L-0017-forward-authoring-ergonomics-for-split-physical-adr-types.yaml
+- id: INV-0071
+  entity_type: invariant
+  name: INV-0071
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0016#INV-0071
+    artifact_path: adrs/logical/ADR-L-0016-deterministic-corpus-query-and-authoring-orientation.yaml
 - id: SYS-0001
   entity_type: system
   name: ADR Architecture Kit Discovery and Indexing System
@@ -1942,6 +2050,16 @@ edges:
   evidence:
   - ADR-L-0013#CAP-0044
   canonical_source_ref: ADR-L-0013#CAP-0044
+  confidence: 1.0
+  metadata: {}
+- relationship_id: declared_in:CAP-0045:ADR-L-0016
+  relationship_type: declared_in
+  source_entity_id: CAP-0045
+  target_entity_id: ADR-L-0016
+  provenance_classification: explicit
+  evidence:
+  - ADR-L-0016#CAP-0045
+  canonical_source_ref: ADR-L-0016#CAP-0045
   confidence: 1.0
   metadata: {}
 - relationship_id: declared_in:CAP-9000:ADR-L-9000
@@ -2694,6 +2812,86 @@ edges:
   canonical_source_ref: ADR-L-0013#DEC-0068
   confidence: 1.0
   metadata: {}
+- relationship_id: declared_in:DEC-0069:ADR-L-0016
+  relationship_type: declared_in
+  source_entity_id: DEC-0069
+  target_entity_id: ADR-L-0016
+  provenance_classification: explicit
+  evidence:
+  - ADR-L-0016#DEC-0069
+  canonical_source_ref: ADR-L-0016#DEC-0069
+  confidence: 1.0
+  metadata: {}
+- relationship_id: declared_in:DEC-0070:ADR-L-0016
+  relationship_type: declared_in
+  source_entity_id: DEC-0070
+  target_entity_id: ADR-L-0016
+  provenance_classification: explicit
+  evidence:
+  - ADR-L-0016#DEC-0070
+  canonical_source_ref: ADR-L-0016#DEC-0070
+  confidence: 1.0
+  metadata: {}
+- relationship_id: declared_in:DEC-0071:ADR-L-0017
+  relationship_type: declared_in
+  source_entity_id: DEC-0071
+  target_entity_id: ADR-L-0017
+  provenance_classification: explicit
+  evidence:
+  - ADR-L-0017#DEC-0071
+  canonical_source_ref: ADR-L-0017#DEC-0071
+  confidence: 1.0
+  metadata: {}
+- relationship_id: declared_in:DEC-0072:ADR-L-0017
+  relationship_type: declared_in
+  source_entity_id: DEC-0072
+  target_entity_id: ADR-L-0017
+  provenance_classification: explicit
+  evidence:
+  - ADR-L-0017#DEC-0072
+  canonical_source_ref: ADR-L-0017#DEC-0072
+  confidence: 1.0
+  metadata: {}
+- relationship_id: declared_in:DEC-0073:ADR-L-0016
+  relationship_type: declared_in
+  source_entity_id: DEC-0073
+  target_entity_id: ADR-L-0016
+  provenance_classification: explicit
+  evidence:
+  - ADR-L-0016#DEC-0073
+  canonical_source_ref: ADR-L-0016#DEC-0073
+  confidence: 1.0
+  metadata: {}
+- relationship_id: declared_in:DEC-0074:ADR-L-0017
+  relationship_type: declared_in
+  source_entity_id: DEC-0074
+  target_entity_id: ADR-L-0017
+  provenance_classification: explicit
+  evidence:
+  - ADR-L-0017#DEC-0074
+  canonical_source_ref: ADR-L-0017#DEC-0074
+  confidence: 1.0
+  metadata: {}
+- relationship_id: declared_in:DEC-0075:ADR-L-0016
+  relationship_type: declared_in
+  source_entity_id: DEC-0075
+  target_entity_id: ADR-L-0016
+  provenance_classification: explicit
+  evidence:
+  - ADR-L-0016#DEC-0075
+  canonical_source_ref: ADR-L-0016#DEC-0075
+  confidence: 1.0
+  metadata: {}
+- relationship_id: declared_in:DEC-0076:ADR-L-0004
+  relationship_type: declared_in
+  source_entity_id: DEC-0076
+  target_entity_id: ADR-L-0004
+  provenance_classification: explicit
+  evidence:
+  - ADR-L-0004#DEC-0076
+  canonical_source_ref: ADR-L-0004#DEC-0076
+  confidence: 1.0
+  metadata: {}
 - relationship_id: declared_in:DEC-9000:ADR-L-9000
   relationship_type: declared_in
   source_entity_id: DEC-9000
@@ -3302,6 +3500,46 @@ edges:
   evidence:
   - ADR-L-0013#INV-0067
   canonical_source_ref: ADR-L-0013#INV-0067
+  confidence: 1.0
+  metadata: {}
+- relationship_id: declared_in:INV-0068:ADR-L-0017
+  relationship_type: declared_in
+  source_entity_id: INV-0068
+  target_entity_id: ADR-L-0017
+  provenance_classification: explicit
+  evidence:
+  - ADR-L-0017#INV-0068
+  canonical_source_ref: ADR-L-0017#INV-0068
+  confidence: 1.0
+  metadata: {}
+- relationship_id: declared_in:INV-0069:ADR-L-0016
+  relationship_type: declared_in
+  source_entity_id: INV-0069
+  target_entity_id: ADR-L-0016
+  provenance_classification: explicit
+  evidence:
+  - ADR-L-0016#INV-0069
+  canonical_source_ref: ADR-L-0016#INV-0069
+  confidence: 1.0
+  metadata: {}
+- relationship_id: declared_in:INV-0070:ADR-L-0017
+  relationship_type: declared_in
+  source_entity_id: INV-0070
+  target_entity_id: ADR-L-0017
+  provenance_classification: explicit
+  evidence:
+  - ADR-L-0017#INV-0070
+  canonical_source_ref: ADR-L-0017#INV-0070
+  confidence: 1.0
+  metadata: {}
+- relationship_id: declared_in:INV-0071:ADR-L-0016
+  relationship_type: declared_in
+  source_entity_id: INV-0071
+  target_entity_id: ADR-L-0016
+  provenance_classification: explicit
+  evidence:
+  - ADR-L-0016#INV-0071
+  canonical_source_ref: ADR-L-0016#INV-0071
   confidence: 1.0
   metadata: {}
 - relationship_id: declared_in:SYS-0001:ADR-PS-0001
@@ -4222,6 +4460,46 @@ edges:
   evidence:
   - ADR-L-0015
   canonical_source_ref: ADR-L-0015
+  confidence: 1.0
+  metadata: {}
+- relationship_id: references:ADR-L-0016:ADR-L-0013
+  relationship_type: references
+  source_entity_id: ADR-L-0016
+  target_entity_id: ADR-L-0013
+  provenance_classification: explicit
+  evidence:
+  - ADR-L-0016
+  canonical_source_ref: ADR-L-0016
+  confidence: 1.0
+  metadata: {}
+- relationship_id: references:ADR-L-0016:ADR-L-0017
+  relationship_type: references
+  source_entity_id: ADR-L-0016
+  target_entity_id: ADR-L-0017
+  provenance_classification: explicit
+  evidence:
+  - ADR-L-0016
+  canonical_source_ref: ADR-L-0016
+  confidence: 1.0
+  metadata: {}
+- relationship_id: references:ADR-L-0017:ADR-L-0002
+  relationship_type: references
+  source_entity_id: ADR-L-0017
+  target_entity_id: ADR-L-0002
+  provenance_classification: explicit
+  evidence:
+  - ADR-L-0017
+  canonical_source_ref: ADR-L-0017
+  confidence: 1.0
+  metadata: {}
+- relationship_id: references:ADR-L-0017:ADR-L-0016
+  relationship_type: references
+  source_entity_id: ADR-L-0017
+  target_entity_id: ADR-L-0016
+  provenance_classification: explicit
+  evidence:
+  - ADR-L-0017
+  canonical_source_ref: ADR-L-0017
   confidence: 1.0
   metadata: {}
 - relationship_id: related_to:ADR-PS-0001:ADR-PC-0001

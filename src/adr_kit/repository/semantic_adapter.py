@@ -126,6 +126,7 @@ def legacy_entity_to_normalized(
         entity_type=entity_type,
         name=entity.name,
         summary=entity.name,
+        lifecycle_stage=str(entity.lifecycle_stage.value),
         canonical_source=CanonicalSource(
             source_type=entity.source_artifact_type.value,
             source_ref=canonical_ref,

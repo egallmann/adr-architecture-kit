@@ -198,6 +198,11 @@ def derive_relationships(
             for target in decision.refines:
                 if target in entities:
                     add_relationship("refines", decision.id, target, f"{adr.id}#{decision.id}", [adr.id])
+        for invariant in adr.invariants:
+            for target in getattr(invariant, "supersedes", []) or []:
+                if target in entities:
+                    add_relationship("supersedes", invariant.id, target, f"{adr.id}#{invariant.id}", [adr.id])
+                    add_relationship("superseded_by", target, invariant.id, f"{adr.id}#{invariant.id}", [adr.id], classification="derived")
 
     for invariant, _ in standalone_invariants:
         if invariant.id not in entities:

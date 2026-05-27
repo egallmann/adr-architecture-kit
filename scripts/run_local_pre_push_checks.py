@@ -25,6 +25,7 @@ COMMANDS: tuple[tuple[str, ...], ...] = (
         "tests/golden/test_current_outputs.py",
         "tests/test_generated_docs_integrity.py",
         "tests/test_kernel_schema_fixture_sync.py",
+        "tests/test_package_schema_parity.py",
         "tests/test_adr_ir_fragment_compiler.py",
         "tests/test_architecture_ir_publication.py",
         "-q",

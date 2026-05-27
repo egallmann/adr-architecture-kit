@@ -7,6 +7,23 @@ from typing import Any, Dict, List, Literal, Optional
 
 from pydantic import BaseModel, Field
 
+LifecycleStageNormalized = Literal["proposed", "active", "deprecated", "superseded"]
+
+
+def lifecycle_stage_from_adr_status(status: Optional[str]) -> LifecycleStageNormalized:
+    """Map ADR status (accepted/...) to normalized registry lifecycle_stage enum."""
+
+    if not status:
+        return "active"
+    lowered = status.lower()
+    mapping: dict[str, LifecycleStageNormalized] = {
+        "proposed": "proposed",
+        "accepted": "active",
+        "deprecated": "deprecated",
+        "superseded": "superseded",
+    }
+    return mapping.get(lowered, "active")
+
 
 class DiscoveryProvenance(BaseModel):
     """Extraction provenance for a derived record."""
@@ -66,6 +83,7 @@ class NormalizedEntity(BaseModel):
     entity_type: Literal["adr", "system", "component", "decision", "capability", "invariant"]
     name: str
     summary: str
+    lifecycle_stage: LifecycleStageNormalized = "active"
     canonical_source: CanonicalSource
     source_refs: List[SourceRef] = Field(default_factory=list)
     metadata: Dict[str, Any] = Field(default_factory=dict)
@@ -203,6 +221,22 @@ class SourceCoverageSummary(BaseModel):
     physical_system_adrs: int = 0
     physical_component_adrs: int = 0
     standalone_invariants: int = 0
+
+
+class CorpusSummary(BaseModel):
+    """Deterministic repository orientation summary."""
+
+    scope_root: str
+    architecture_namespace: str | None = None
+    fingerprint: str
+    mode: Literal["normalized", "legacy"]
+    entity_counts: Dict[str, int] = Field(default_factory=dict)
+    adr_counts_by_type: Dict[str, int] = Field(default_factory=dict)
+    adr_counts_by_status: Dict[str, int] = Field(default_factory=dict)
+    relationship_count: int = 0
+    unresolved_count: int = 0
+    source_coverage: SourceCoverageSummary | None = None
+    validation_summary: ValidationSummary | None = None
 
 
 class ArchitectureIndex(BaseModel):

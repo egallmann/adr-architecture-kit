@@ -6,6 +6,7 @@ from .entity_registry_generator import EntityRegistryGenerator
 from .logical_generator import LogicalADRGenerator
 from .physical_component_generator import PhysicalComponentADRGenerator
 from .physical_system_generator import PhysicalSystemADRGenerator
+from .scaffold_generator import ScaffoldGenerator
 from .system_overview_generator import SystemOverviewGenerator
 
 __all__ = [
@@ -15,5 +16,6 @@ __all__ = [
     "LogicalADRGenerator",
     "PhysicalComponentADRGenerator",
     "PhysicalSystemADRGenerator",
+    "ScaffoldGenerator",
     "SystemOverviewGenerator",
 ]

@@ -7,6 +7,7 @@ from ...models.architecture_discovery import (
     NormalizedEntity,
     RelationshipRecord,
     UnresolvedRecord,
+    lifecycle_stage_from_adr_status,
 )
 from ..ir.entity_graph import ENTITY_RELATIONSHIP_TYPES, IREntity
 from ..ir.rel_graph import IRRelationship, RelGraph
@@ -26,6 +27,15 @@ def build_relationship_summary(entity_id: str, rel_graph: RelGraph) -> EntityRel
     return EntityRelationshipSummary(**buckets)
 
 
+def _lifecycle_stage_for_projection(entity: IREntity) -> str:
+    raw = entity.metadata.get("lifecycle_stage")
+    if isinstance(raw, str) and raw in ("proposed", "active", "deprecated", "superseded"):
+        return raw
+    return lifecycle_stage_from_adr_status(
+        entity.metadata.get("status") if isinstance(entity.metadata.get("status"), str) else None
+    )
+
+
 def project_entity(entity: IREntity, rel_graph: RelGraph | None = None) -> NormalizedEntity | None:
     """Project an IR entity to the kernel-facing registry shape."""
     if entity.entity_type not in PROJECTABLE_ENTITY_TYPES:
@@ -36,6 +46,7 @@ def project_entity(entity: IREntity, rel_graph: RelGraph | None = None) -> Norma
         entity_type=entity.entity_type,
         name=entity.name,
         summary=entity.summary,
+        lifecycle_stage=_lifecycle_stage_for_projection(entity),
         canonical_source=entity.canonical_source,
         source_refs=list(entity.source_refs),
         metadata=dict(entity.metadata),

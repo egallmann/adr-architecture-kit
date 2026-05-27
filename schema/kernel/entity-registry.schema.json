@@ -197,6 +197,17 @@
           "title": "Id",
           "type": "string"
         },
+        "lifecycle_stage": {
+          "default": "active",
+          "enum": [
+            "proposed",
+            "active",
+            "deprecated",
+            "superseded"
+          ],
+          "title": "Lifecycle Stage",
+          "type": "string"
+        },
         "metadata": {
           "additionalProperties": true,
           "title": "Metadata",

@@ -6,7 +6,7 @@ Implements ADR-L-0002: Multi-scope ADR architecture with scope-aware commands.
 import sys
 import subprocess
 from pathlib import Path
-from typing import Optional
+from typing import Optional, cast
 
 try:
     import click
@@ -34,11 +34,14 @@ from ..compiler import (
     compile_logical_adr_ir_fragments,
 )
 from ..decorators import implements_adr
+from ..models.implementation_attribution import ImplementationAttributionEvidence
 from ..integrity import GeneratedArtifactStatus
 from ..migrators.canonical_id_normalizer import CanonicalIdNormalizer
 from ..parser import ADRParser
 from ..repository import ArchitectureRepository
-from ..schema.contract_validation import validate_adr_contract_bundle
+from ..schema.contract_validation import ContractProfile, validate_adr_contract_bundle
+from ..schema.implementation_attribution_validation import validate_implementation_attribution_evidence
+from ..attribution_shim_generator import generate_shim
 from ..validators import (
     ADRValidator,
     GeneratedArtifactValidator,
@@ -1817,6 +1820,177 @@ def validate_generated_docs(scope: Optional[Path], recursive: bool):
 
         if failures:
             sys.exit(1)
+    except Exception as e:
+        click.echo(f"Error: {e}", err=True)
+        sys.exit(1)
+
+
+def _resolve_attribution_evidence_path(scope_root: Path, evidence: Optional[Path]) -> Path:
+    """Return path to attribution evidence YAML, resolving defaults under scope_root."""
+    if evidence is not None:
+        resolved = Path(evidence).expanduser().resolve()
+        if not resolved.is_file():
+            raise FileNotFoundError(f"Attribution evidence not found: {resolved}")
+        return resolved
+    candidates = [
+        scope_root / "state" / "attribution" / "implementation-attribution-evidence.yaml",
+        scope_root / ".ste" / "state" / "attribution" / "implementation-attribution-evidence.yaml",
+    ]
+    for candidate in candidates:
+        if candidate.is_file():
+            return candidate.resolve()
+    raise FileNotFoundError(
+        "No attribution evidence file found.\nProvide --evidence or place file at:\n"
+        + "\n".join(str(c) for c in candidates),
+    )
+
+
+@implements_adr("ADR-L-0002", "ADR-L-0013", "ADR-L-0004")
+@cli.group("attribution")
+def attribution_cli():
+    """Implementation attribution evidence helpers."""
+    pass
+
+
+@implements_adr("ADR-L-0002", "ADR-L-0013", "ADR-L-0004")
+@attribution_cli.command("check")
+@click.option(
+    "--scope",
+    type=click.Path(exists=True, file_okay=False, path_type=Path),
+    default=None,
+    help="Project root (defaults to cwd). Must contain canonical /adrs for validation.",
+)
+@click.option(
+    "--evidence",
+    type=click.Path(dir_okay=False, path_type=Path),
+    default=None,
+    help=(
+        "Path to implementation-attribution-evidence.yaml. "
+        "Defaults to state/attribution/ or .ste/state/attribution/ under --scope."
+    ),
+)
+@click.option(
+    "--profile",
+    type=click.Choice(["greenfield", "brownfield", "migration"]),
+    default="greenfield",
+    show_default=True,
+)
+def attribution_check_cmd(scope: Optional[Path], evidence: Optional[Path], profile: str):
+    """Validate implementation attribution evidence against the canonical ADR corpus."""
+    try:
+        scope_root = Path(scope).resolve() if scope else Path.cwd().resolve()
+        ev_path = _resolve_attribution_evidence_path(scope_root, evidence)
+        data = yaml.safe_load(ev_path.read_text(encoding="utf-8"))
+        evidence_obj = ImplementationAttributionEvidence.model_validate(data)
+
+        repo = ArchitectureRepository(project_root=scope_root)
+        repo.load()
+        model = repo.get_model()
+
+        typed_profile = cast(ContractProfile, profile)
+        result = validate_implementation_attribution_evidence(
+            model,
+            evidence_obj,
+            profile=typed_profile,
+        )
+        click.echo(
+            yaml.safe_dump(
+                {
+                    "evidence_file": str(ev_path),
+                    "schema_version": evidence_obj.schema_version,
+                    "record_count": len(evidence_obj.records),
+                    "profile": result.profile,
+                    "outcome": result.outcome,
+                    "error_count": result.error_count,
+                    "warning_count": result.warning_count,
+                    "issues": [
+                        {"severity": i.severity, "path": i.path, "message": i.message}
+                        for i in result.issues
+                    ],
+                },
+                sort_keys=False,
+                allow_unicode=True,
+            ).rstrip()
+        )
+        if not result.is_valid:
+            sys.exit(1)
+    except Exception as e:
+        click.echo(f"Error: {e}", err=True)
+        sys.exit(1)
+
+
+@implements_adr("ADR-L-0002", "ADR-L-0013", "ADR-L-0004")
+@attribution_cli.command("coverage")
+@click.option(
+    "--scope",
+    type=click.Path(exists=True, file_okay=False, path_type=Path),
+    default=None,
+)
+@click.option("--evidence", type=click.Path(dir_okay=False, path_type=Path), default=None)
+def attribution_coverage_cmd(scope: Optional[Path], evidence: Optional[Path]):
+    """Report ADRs cited by attribution evidence vs ADR corpus (informational)."""
+    try:
+        scope_root = Path(scope).resolve() if scope else Path.cwd().resolve()
+        cited: list[str] = []
+        schema_version = "unknown"
+        try:
+            ev_path = _resolve_attribution_evidence_path(scope_root, evidence)
+            data = yaml.safe_load(ev_path.read_text(encoding="utf-8"))
+            evidence_obj = ImplementationAttributionEvidence.model_validate(data)
+            schema_version = str(evidence_obj.schema_version)
+            seen: set[str] = set()
+            for rec in evidence_obj.records:
+                for adr_id in rec.attributed_adrs:
+                    seen.add(adr_id)
+            cited = sorted(seen)
+        except FileNotFoundError:
+            pass
+
+        repo = ArchitectureRepository(project_root=scope_root)
+        repo.load()
+        model = repo.get_model()
+        catalog = sorted(model.adr_status_map().keys())
+        unattributed_in_corpus = sorted(set(catalog) - set(cited))
+
+        payload = {
+            "scope_root": str(scope_root),
+            "evidence_schema_version": schema_version,
+            "adrs_with_attribution_claims": cited,
+            "adr_corpus_total": len(catalog),
+            "catalog_adrs_not_cited_by_evidence": unattributed_in_corpus,
+        }
+        click.echo(yaml.safe_dump(payload, sort_keys=False, allow_unicode=True).rstrip())
+    except Exception as e:
+        click.echo(f"Error: {e}", err=True)
+        sys.exit(1)
+
+
+@implements_adr("ADR-L-0002", "ADR-L-0013", "ADR-L-0004")
+@attribution_cli.command("generate-shim")
+@click.option(
+    "--lang",
+    "--language",
+    "language",
+    type=click.Choice(["python", "typescript"], case_sensitive=False),
+    required=True,
+)
+@click.option(
+    "--output",
+    "-o",
+    type=click.Path(dir_okay=False, path_type=Path),
+    default=None,
+    help="Write shim to path; omit to print to stdout.",
+)
+def attribution_generate_shim(language: str, output: Optional[Path]):
+    """Emit a standalone no-op implementation-linkage shim (Python or TypeScript)."""
+    try:
+        body = generate_shim(language)
+        if output is None:
+            click.echo(body)
+        else:
+            output.parent.mkdir(parents=True, exist_ok=True)
+            output.write_text(body, encoding="utf-8")
+            click.echo(f"Wrote {language} shim: {output.resolve()}")
     except Exception as e:
         click.echo(f"Error: {e}", err=True)
         sys.exit(1)

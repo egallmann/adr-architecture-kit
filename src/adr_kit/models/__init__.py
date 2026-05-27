@@ -134,6 +134,7 @@ from .architecture_discovery import (
     UnresolvedRecord,
     UnresolvedRegistry,
     ValidationSummary,
+    lifecycle_stage_from_adr_status,
 )
 from .requirements_snapshot import (
     RequiredCapability,
@@ -292,6 +293,7 @@ __all__ = [
     "UnresolvedRecord",
     "UnresolvedRegistry",
     "ValidationSummary",
+    "lifecycle_stage_from_adr_status",
     # Requirements Snapshot (v1.1)
     "RequiredCapability",
     "RequiredConstraint",

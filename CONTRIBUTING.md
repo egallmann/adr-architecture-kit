@@ -47,6 +47,7 @@ adr --help
 - [`README.md`](README.md) at the repository root is maintained manually.
 - [`SYSTEM-OVERVIEW.md`](SYSTEM-OVERVIEW.md) is **generated**; edit its template/generator in `src/adr_kit/` rather than hand-editing the committed artifact.
 - This repository is expected to work as a **standalone checkout**. The public Architecture IR schema is mirrored at [`contracts/architecture-ir/architecture-ir.schema.json`](contracts/architecture-ir/architecture-ir.schema.json) (see [`contracts/architecture-ir/MIRROR.md`](contracts/architecture-ir/MIRROR.md)); some tests additionally compare against a sibling `ste-spec` checkout when present.
+- If **`git ls-files -v`** shows **`H`** for paths you have edited locally, **`assume-unchanged`** is enabled. Git may omit those paths from **`git status`** until you run **`git update-index --no-assume-unchanged -- <paths>`**. That hides real drift (for example **`schema/`** vs **`src/adr_kit/schema/`** parity) against a fresh clone or CI — clear it before you commit schema or generated-artifact fixes. Avoid blanket-setting assume-unchanged on the whole repository when doing release work (`tests/test_package_schema_parity.py` helps catch bundled drift).
 
 ---
 
@@ -161,6 +162,9 @@ Or run the checks manually before pushing:
 ```bash
 python scripts/run_local_pre_push_checks.py
 ```
+
+That bundle validates generated-docs integrity and runs a **subset** of `pytest`, including **`tests/test_package_schema_parity.py`** — canonical **`schema/v*.*`** must byte-match **`src/adr_kit/schema/v*_*`** (same check as **`Check package schema parity`** in **`.github/workflows/adr-governance.yml`**).
+
 
 ---
 

@@ -18,12 +18,12 @@
             "type": "string",
             "enum": ["adr", "system", "component", "decision", "capability", "invariant"]
           },
-          "name": {"type": "string"},
-          "summary": {"type": "string"},
           "lifecycle_stage": {
             "type": "string",
             "enum": ["proposed", "active", "deprecated", "superseded"]
           },
+          "name": {"type": "string"},
+          "summary": {"type": "string"},
           "canonical_source": {
             "type": "object",
             "required": ["source_type", "source_ref", "artifact_path"],

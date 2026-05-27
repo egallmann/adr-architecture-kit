@@ -4,8 +4,8 @@
 # generator_id: adr-compiler
 # generator_version: 1
 # hash_algorithm: sha256
-# source_hash: 5f7205bf24aa194a31f71afaabe0957b77224ceccf586bc88182872ac3fed5f9
-# rendered_hash: 1efb327624bfe8d28b84f15f8d4b26abce82752df69b70a1ce286d6cafe25938
+# source_hash: f7a78f1a510a31b5d5ac01f3cc4dd5bb29e51f36aabc9340245346c5d57157d8
+# rendered_hash: a2637d3c7ea12c9291bfa21c2a2b614b71e0854a05e169d2e0790aeb53b1e05d
 
 schema_version: '1.1'
 type: entity_registry
@@ -1942,6 +1942,21 @@ entities:
   introduced_by: ADR-L-0016
   lifecycle_stage: active
   source_path: adrs/logical/ADR-L-0016-deterministic-corpus-query-and-authoring-orientation.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs: []
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: DEC-0076
+  entity_type: decision
+  name: Treat runtime-emitted implementation attribution as downstream evidence
+  introduced_by: ADR-L-0004
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0004-adr-to-code-traceability-via-decorators.yaml
   source_artifact_type: logical_adr
   domains: []
   related_adrs: []

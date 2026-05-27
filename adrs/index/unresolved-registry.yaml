@@ -19,7 +19,7 @@ unresolved:
   gap_class: author_declared
   gap_type: author_declared_real_gap
   source_entity_id: ADR-L-0004
-  severity: important
+  severity: advisory
   provenance:
     source_type: derived_registry
     source_ref: ADR-L-0004#GAP-0002
@@ -28,7 +28,7 @@ unresolved:
     generator: adr-architecture-index
   evidence:
   - ADR-L-0004
-  - Implementation attribution evidence contract not yet populated by downstream extraction
+  - Downstream implementation attribution evidence requires broader extractor coverage
 - id: UGAP-ADR-L-0004-GAP-0003
   gap_class: author_declared
   gap_type: author_declared_deferred_gap

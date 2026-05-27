@@ -154,6 +154,18 @@ Normative rationale: [ADR-L-0004](adrs/logical/ADR-L-0004-adr-to-code-traceabili
 
 **ste-runtime** RECON can parse the decorator calls from the AST and emit derived evidence (for example `implementation-attribution-evidence.yaml` under a project’s `.ste` state). That output is **declared linkage**, not proof of correctness: canonical architecture remains the ADR corpus and contracts in **`ste-spec`**.
 
+**CLI (`adr attribution`)** validates and inspects RECON-derived (or synthetic) attribution evidence YAML against your repository’s canonical ADRs:
+
+- **`adr attribution check`** — Schema + corpus validation (`--profile greenfield|brownfield|migration`, default **greenfield**). Use `--scope PATH` as the project root (default: current directory) and optional `--evidence PATH` for the YAML file.
+- **`adr attribution coverage`** — Prints an informational YAML report of ADRs cited by evidence versus the corpus (same `--scope` / `--evidence`).
+- **`adr attribution generate-shim --language python|typescript`** — Writes linkage decorator shims (`-o`/ stdout).
+
+If `--evidence` is omitted, the CLI resolves the first existing file under `--scope`:
+
+1. `{scope}/state/attribution/implementation-attribution-evidence.yaml`
+2. `{scope}/.ste/state/attribution/implementation-attribution-evidence.yaml`
+
+Normative YAML schema for that evidence artifact is owned by **`adr-architecture-kit`** (see [`schema/v1.1/implementation-attribution-evidence.schema.json`](schema/v1.1/implementation-attribution-evidence.schema.json)). The **`ste-spec`** repository publishes draft hand-off prose under **`contracts/implementation-attribution-evidence/`** until the contract is promoted; there is intentionally no mirrored JSON schema there yet (contrast with the Architecture IR mirror in this repo).
 ## Contributing
 
 Contributions use **Test-Driven Development** (see [`PROJECT.yaml`](PROJECT.yaml), `ADR-L-0003`). Setup, quality gates, schema parity, governance, and PR flow are in [CONTRIBUTING.md](CONTRIBUTING.md). Authoring and placement guides live under [docs/contributors/](docs/contributors/). For authoring-time vs runtime artifact boundaries, see [AUTHORING-SYSTEM.md](AUTHORING-SYSTEM.md).

@@ -21,6 +21,10 @@ ImplementationEntityType = Literal[
     "data_model",
 ]
 
+AttributionConfidenceLevel = Literal["declared", "inferred", "heuristic"]
+
+AttributionSourceLanguage = Literal["python", "typescript", "cloudformation", "csharp", "unknown"]
+
 
 class ImplementationAttributionProvenance(BaseModel):
     """Extraction provenance for an implementation attribution claim."""
@@ -39,11 +43,14 @@ class ImplementationAttributionRecord(BaseModel):
     enforced_invariants: list[str] = Field(default_factory=list)
     provenance: ImplementationAttributionProvenance
     metadata: dict[str, Any] = Field(default_factory=dict)
+    confidence: AttributionConfidenceLevel = "declared"
+    attributed_capabilities: list[str] = Field(default_factory=list)
+    attribution_source_language: AttributionSourceLanguage | None = None
 
 
 class ImplementationAttributionEvidence(BaseModel):
     """Collection of extracted implementation attribution claims."""
 
-    schema_version: str = "1.0"
+    schema_version: Literal["1.0", "1.2"] = "1.2"
     type: Literal["implementation_attribution_evidence"] = "implementation_attribution_evidence"
     records: list[ImplementationAttributionRecord] = Field(default_factory=list)

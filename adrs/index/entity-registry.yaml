@@ -7,6 +7,7 @@ entities:
   summary: '# ADR Architecture Kit — STE Authoring Subsystem This ADR captures the
     design of the ADR Architecture Kit as the STE authoring subsystem for canonical
     ADR encoding and authoring-time validation. ADR Kit is subordinate to'
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0001
@@ -53,6 +54,7 @@ entities:
   summary: The adr-architecture-kit is being actively developed in a single workspace
     alongside multiple sub-modules (ste-runtime, future services) that will eventually
     become independent services. Each sub-module needs to leverage
+  lifecycle_stage: proposed
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0002
@@ -104,6 +106,7 @@ entities:
   summary: The ADR Architecture Kit is a foundational tool for machine-verifiable
     architecture documentation. As such, it must maintain high quality standards to
     ensure reliability, correctness, and trust in the architectural gover
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0003
@@ -157,6 +160,7 @@ entities:
   summary: Architecture Decision Records document why implementation artifacts exist,
     but the repo still lacks a universal, machine-verifiable way to trace code, infrastructure,
     configuration, schemas, pipelines, and scripts back t
+  lifecycle_stage: proposed
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0004
@@ -211,6 +215,7 @@ entities:
   summary: The ADR Architecture Kit encodes architectural decisions in machine-readable
     YAML format with explicit invariants, capabilities, and component specifications.
     These structured ADRs contain all the information needed to g
+  lifecycle_stage: proposed
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0005
@@ -264,6 +269,7 @@ entities:
   summary: ADR-L-0004 defines a multi-tier governance architecture where a rule-library
     sub-module activates and projects rules via MCP. The Rules & Signal Service (Tier
     2) parses ADRs and generates enforcement rules; the rule-libr
+  lifecycle_stage: proposed
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0006
@@ -315,6 +321,7 @@ entities:
   summary: 'The repository already treats several human-readable artifacts as derived
     state: ADR markdown renderings, manifest summaries, and the AI-first SYSTEM-OVERVIEW
     are generated from structured or code-defined sources. That b'
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0007
@@ -367,6 +374,7 @@ entities:
   summary: The ADR Architecture Kit currently couples schema validation to completeness
     for several ADR types. That behavior is useful for acceptance gates, but it is
     too strict for the actual design workflow used in this workspace
+  lifecycle_stage: proposed
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0008
@@ -420,6 +428,7 @@ entities:
   summary: 'adr-architecture-kit is primarily machine-facing tooling used by agents
     to reason over canonical architecture artifacts. Relying on agents to scan raw
     ADR bodies for discovery is inconsistent with the toolkit''s AI-first '
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0009
@@ -472,6 +481,7 @@ entities:
   summary: adr-architecture-kit is transitioning from an implicit generator toolkit
     into an explicit architecture compiler with a defined contract boundary to the
     STE kernel. The plan work established that the compiler's guaranteed
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0010
@@ -528,6 +538,7 @@ entities:
   summary: The compiler contract now distinguishes fully compliant bundles from sentinel-backed
     brownfield and migration bundles. That boundary is only safe if sentinel use is
     narrow, explicitly tracked, and moved toward approved c
+  lifecycle_stage: proposed
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0011
@@ -579,6 +590,7 @@ entities:
   summary: The current compiler and recursive multi-scope behavior preserve scope-local
     compilation boundaries, but the STE ecosystem is moving toward federation across
     independently compiled repositories. The planning material est
+  lifecycle_stage: proposed
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0012
@@ -632,6 +644,7 @@ entities:
   summary: 'adr-architecture-kit now has an explicit compiler pipeline, a compiler
     IR (`ArchModel`), compiled registry bundles, and an additive architecture graph.
     Those pieces are sufficient to produce deterministic machine-facing '
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0013
@@ -685,6 +698,7 @@ entities:
   summary: 'STE adoption often begins after meaningful architecture and implementation
     decisions already exist. In that stage, the problem is not blank-slate design;
     it is brownfield onboarding: discover current architecture state, '
+  lifecycle_stage: proposed
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0014
@@ -736,6 +750,7 @@ entities:
   summary: 'The repository now has a first-pass governance block on ADRs and a canonical
     objection override artifact. That initial implementation made the metadata available,
     but it left several important questions under-specified: '
+  lifecycle_stage: proposed
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0015
@@ -790,6 +805,7 @@ entities:
   summary: Upstream authoring workflows need deterministic ways to inspect the compiled
     corpus, orient themselves within a scope, and allocate new ADR identifiers without
     reparsing registry YAML or hand-implementing directory scans
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0016
@@ -838,6 +854,7 @@ entities:
   summary: 'adr-architecture-kit now supports multiple physical ADR shapes: legacy
     `ADR-P-*`, current `ADR-PS-*`, and current `ADR-PC-*`. Upstream authoring workflows
     need structured scaffolds, schema discovery, and next-ID allocati'
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0017
@@ -885,6 +902,7 @@ entities:
   summary: The STE workspace needs a deterministic ADR-backed Architecture IR fragment
     publication surface at a conventional path so ste-kernel can prove boot readiness
     across real sibling adapters. This ADR defines only that minim
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-9000
@@ -929,6 +947,7 @@ entities:
   summary: This ADR specifies the implementation of ADR Kit using Python ecosystem
     and modern Python tooling. The implementation must support schema validation,
     YAML parsing, Pydantic models, and view generation. The choice of Pyth
+  lifecycle_stage: superseded
   canonical_source:
     source_type: physical_adr
     source_ref: ADR-P-0001
@@ -975,6 +994,7 @@ entities:
   summary: This ADR specifies the use of JSON Schema for validation with YAML as the
     document format. This combination provides deterministic validation (JSON Schema)
     with human-readable authoring (YAML with embedded markdown). The
+  lifecycle_stage: superseded
   canonical_source:
     source_type: physical_adr
     source_ref: ADR-P-0002
@@ -1022,6 +1042,7 @@ entities:
   summary: 'ADR-L-0002 defines the logical architecture for multi-scope ADR support.
     This Physical ADR specifies the concrete Python implementation including module
     structure, API design, and CLI interface. Implementation leverages '
+  lifecycle_stage: active
   canonical_source:
     source_type: physical_adr
     source_ref: ADR-P-0003
@@ -1071,6 +1092,7 @@ entities:
   summary: 'ADR-L-0005 defines the logical architecture for translating ADRs into
     implementation prompts for AI agents. This Physical ADR specifies the concrete
     Python implementation. Current repo state does not contain the planned '
+  lifecycle_stage: deprecated
   canonical_source:
     source_type: physical_adr
     source_ref: ADR-P-0004
@@ -1120,6 +1142,7 @@ entities:
   summary: The discovery/indexing component now centers on the unified compiler path.
     It generates the normalized discovery bundle under `adrs/index/`, emits the legacy
     compatibility registry at `adrs/entities/registry.yaml`, gener
+  lifecycle_stage: proposed
   canonical_source:
     source_type: physical_component_adr
     source_ref: ADR-PC-0001
@@ -1163,6 +1186,7 @@ entities:
   summary: Schema and contract validation is now a stable component boundary rather
     than a generic legacy physical slice. It validates canonical ADR structure, profile-specific
     contract requirements, project metadata, and implement
+  lifecycle_stage: proposed
   canonical_source:
     source_type: physical_component_adr
     source_ref: ADR-PC-0002
@@ -1206,6 +1230,7 @@ entities:
   summary: The compiler driver and explicit pipeline now own deterministic architecture
     compilation across parse, analysis, emission, and recursive scope orchestration.
     This component documents that public compile boundary.
+  lifecycle_stage: proposed
   canonical_source:
     source_type: physical_component_adr
     source_ref: ADR-PC-0003
@@ -1249,6 +1274,7 @@ entities:
   summary: ArchitectureRepository and NormalizedArchitectureModel are now the stable
     in-process semantic boundary for consumers. This component captures that runtime
     contract and keeps consumer-side interpretation centralized.
+  lifecycle_stage: proposed
   canonical_source:
     source_type: physical_component_adr
     source_ref: ADR-PC-0004
@@ -1292,6 +1318,7 @@ entities:
   summary: Generated artifact integrity validation verifies freshness, tamper status,
     integrity headers, and scope-local generated outputs. It is a distinct public
     subsystem used by validator and governance flows.
+  lifecycle_stage: proposed
   canonical_source:
     source_type: physical_component_adr
     source_ref: ADR-PC-0005
@@ -1335,6 +1362,7 @@ entities:
   summary: adr-architecture-kit already includes migration and normalization behavior
     in its migrator and CLI surfaces. This component makes brownfield onboarding and
     canonical normalization an explicit part of the compiler/validat
+  lifecycle_stage: proposed
   canonical_source:
     source_type: physical_component_adr
     source_ref: ADR-PC-0006
@@ -1378,6 +1406,7 @@ entities:
   summary: The discovery and indexing subsystem provides the derived surfaces that
     agents query instead of scanning raw ADR bodies by default. It now includes normalized
     discovery bundle generation under `adrs/index/`, legacy compa
+  lifecycle_stage: proposed
   canonical_source:
     source_type: physical_system_adr
     source_ref: ADR-PS-0001
@@ -1422,6 +1451,7 @@ entities:
   summary: adr-architecture-kit now operates as a compiler and validation runtime
     rather than a collection of unrelated generators. The implementation includes
     an explicit compiler pipeline, contract validation, normalized reposito
+  lifecycle_stage: proposed
   canonical_source:
     source_type: physical_system_adr
     source_ref: ADR-PS-0002
@@ -1473,6 +1503,7 @@ entities:
   summary: Enable AI systems to deterministically reason over architecture decisions
     through structured, schema-validated artifacts. No ambiguous markdown parsing,
     no implicit assumptions, no narrative drift.
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0001#CAP-0001
@@ -1514,6 +1545,7 @@ entities:
   summary: Separate conceptual design (logical ADRs) from implementation specifications
     (physical ADRs). Logical ADRs define capabilities, boundaries, contracts, and
     invariants without implementation details. Physical ADRs operatio
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0001#CAP-0002
@@ -1555,6 +1587,7 @@ entities:
   summary: Architecture artifacts participate in ste-runtime semantic graph through
     RECON extraction. ADRs become graph nodes with typed edges (implements, relates_to,
     enforces), enabling graph queries, blast radius analysis, and p
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0001#CAP-0003
@@ -1596,6 +1629,7 @@ entities:
   summary: Incomplete designs are first-class schema elements. Gaps are structured
     with impact assessment, blocking status, and decision ownership. Convergence validation
     ensures gaps are resolved or explicitly tracked.
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0001#CAP-0004
@@ -1636,6 +1670,7 @@ entities:
   name: Derived Manifest Generation
   summary: Manifest is generated from authoritative ADRs, never manually edited. Provides
     fast discovery without reading all ADRs. CI validates manifest freshness (SYS-14).
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0001#CAP-0005
@@ -1677,6 +1712,7 @@ entities:
   summary: Schema includes policy_reference, enforcement_level, compliance_frameworks
     fields to enable future Rules & Signal Service validation. Invariants can be extracted
     into requirement registry and validated against organizati
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0001#CAP-0006
@@ -1718,6 +1754,7 @@ entities:
   summary: Schema includes implementation_identifiers, ownership, automation flags
     to enable future correction agents. Agents can locate code, understand boundaries,
     and operate within safety constraints.
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0001#CAP-0007
@@ -1758,6 +1795,7 @@ entities:
   name: Multi-Agent Prompt Generation
   summary: Generate prompts for multiple components that can be executed in parallel
     by different AI agents, with clear dependency ordering
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0005#CAP-0008
@@ -1800,6 +1838,7 @@ entities:
   name: Prompt Format Adaptation
   summary: Adapt prompt format for different target AI agents (CODEX, Cursor, Claude,
     GPT) while maintaining core content consistency
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0005#CAP-0009
@@ -1841,6 +1880,7 @@ entities:
   entity_type: capability
   name: Signal Schema Authority
   summary: rule-library defines canonical schema for context and cooperative signals.
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0006#CAP-0010
@@ -1882,6 +1922,7 @@ entities:
   entity_type: capability
   name: Signal Emission CLI
   summary: CLI for agents to emit cooperative signals without writing JSON manually.
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0006#CAP-0011
@@ -1923,6 +1964,7 @@ entities:
   entity_type: capability
   name: Rule Activation and Projection
   summary: Context signals drive rule selection; rules projected for consumption.
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0006#CAP-0012
@@ -1964,6 +2006,7 @@ entities:
   entity_type: capability
   name: Submodule Bootstrap
   summary: Bootstrap script for projects adding rule-library as submodule.
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0006#CAP-0013
@@ -2006,6 +2049,7 @@ entities:
   name: Deterministic Documentation Projection
   summary: The system can generate human-readable architecture documentation from
     structured source artifacts and verify that rendered output remains in sync.
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0007#CAP-0014
@@ -2048,6 +2092,7 @@ entities:
   name: Mode-Aware ADR Validation
   summary: The validator accepts a mode argument and returns findings appropriate
     to structural or complete validation.
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0008#CAP-0015
@@ -2090,6 +2135,7 @@ entities:
   name: Draft-Preserving Source Generation
   summary: Source ADR generators can preserve explicit empty sections when generating
     draft artifacts for review.
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0008#CAP-0016
@@ -2132,6 +2178,7 @@ entities:
   name: Summary Discovery Surface
   summary: Provide a broad summary-oriented discovery artifact for ADR and scope metadata
     through `manifest.yaml`.
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0009#CAP-0017
@@ -2174,6 +2221,7 @@ entities:
   name: Normalized Entity Lookup Surface
   summary: Provide deterministic lookup for normalized architecture entities through
     `adrs/index/entity-registry.yaml`.
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0009#CAP-0018
@@ -2218,6 +2266,7 @@ entities:
   summary: 'Auto-detect project boundaries by searching for markers: - ste.config.json
     (authoritative) - PROJECT.yaml (ADR-specific marker) - package.json, pyproject.toml
     (language markers) - .git directory (repository root)'
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0002#CAP-0019
@@ -2260,6 +2309,7 @@ entities:
   name: Automated Quality Gates
   summary: CI/CD pipeline automatically runs test suite on every commit and PR. Prevents
     merging code that fails tests or reduces coverage.
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0003#CAP-0020
@@ -2302,6 +2352,7 @@ entities:
   name: Architecture Intent Attribution
   summary: Explicit declaration of architectural authority across code and other implementation
     artifacts through decorators or metadata-level attribution.
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0004#CAP-0021
@@ -2344,6 +2395,7 @@ entities:
   name: Scoped Manifest Generation
   summary: Generate manifest.yaml scoped to specific project, including only ADRs
     within that project's adrs/ directory
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0002#CAP-0022
@@ -2386,6 +2438,7 @@ entities:
   name: Test-Driven Development Support
   summary: Test infrastructure supports TDD workflow - write failing test, implement
     feature, test passes. Fast test execution enables rapid iteration.
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0003#CAP-0023
@@ -2428,6 +2481,7 @@ entities:
   name: Bidirectional Traceability Verification
   summary: Automated verification that implementation attribution and ADR declarations
     agree in both directions.
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0004#CAP-0024
@@ -2470,6 +2524,7 @@ entities:
   name: Scoped Validation
   summary: Validate ADRs within specific project scope, with optional recursive validation
     of sub-modules
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0002#CAP-0025
@@ -2512,6 +2567,7 @@ entities:
   name: Regression Prevention
   summary: Once a bug is fixed, a test is added to prevent reintroduction. Test suite
     grows to cover discovered edge cases.
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0003#CAP-0026
@@ -2554,6 +2610,7 @@ entities:
   name: Profile-Aware Legacy Onboarding for Intent Attribution
   summary: Govern intent-attribution adoption with the existing greenfield, brownfield,
     and migration profiles instead of a separate legacy mode.
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0004#CAP-0027
@@ -2595,6 +2652,7 @@ entities:
   entity_type: capability
   name: Multi-Scope CLI Interface
   summary: Provide CLI commands that work at any scope level with consistent behavior
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0002#CAP-0028
@@ -2637,6 +2695,7 @@ entities:
   name: Documentation via Tests
   summary: Tests serve as executable documentation showing how to use components.
     Examples in tests demonstrate API usage patterns.
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0003#CAP-0029
@@ -2679,6 +2738,7 @@ entities:
   name: Implementation Attribution Evidence Handoff
   summary: A compiler-owned evidence contract that downstream extractors populate
     with implementation-to-ADR attribution claims and provenance.
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0004#CAP-0030
@@ -2722,6 +2782,7 @@ entities:
   summary: 'Parse Physical ADRs to extract component specifications, including: -
     Component ID, name, type, description - Responsibilities - Interface definitions
     (methods, parameters, types) - Implementation identifiers (file paths'
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0005#CAP-0031
@@ -2765,6 +2826,7 @@ entities:
   summary: 'Generate implementation prompt for a specific component that includes:
     - Context (what is being built and why) - Constraints (invariants to enforce)
     - Specifications (what to build) - Test requirements (what to verify) -'
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0005#CAP-0032
@@ -2808,6 +2870,7 @@ entities:
   summary: 'Generate validation checklist for verifying implementation against ADR,
     including checks for: - Code structure (files, classes, methods exist) - Invariant
     enforcement (constraints are enforced) - Test coverage (all requi'
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0005#CAP-0033
@@ -2850,6 +2913,7 @@ entities:
   name: Profile-Aware Contract Validation
   summary: Validate compiled registry bundles against a single contract schema with
     profile-specific enforcement for greenfield, brownfield, and migration.
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0010#CAP-0034
@@ -2892,6 +2956,7 @@ entities:
   name: Production-Safe Kernel Admission
   summary: Distinguish between contract-valid bundles that are production-safe and
     bundles that are inspection-safe only.
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0010#CAP-0035
@@ -2934,6 +2999,7 @@ entities:
   name: Typed Metadata Contract Enforcement
   summary: Validate entity metadata against entity-type-specific schema expectations
     under the active enforcement profile.
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0011#CAP-0036
@@ -2976,6 +3042,7 @@ entities:
   name: Remediation Ledger Governance
   summary: Track sentinel usage, replacement, approval, and no-regression state in
     a canonical governance artifact.
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0011#CAP-0037
@@ -3018,6 +3085,7 @@ entities:
   name: Federated Qualified Identity Resolution
   summary: Support unambiguous multi-repository entity references using namespaces
     and qualified identifiers while preserving bare local references in source ADRs.
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0012#CAP-0038
@@ -3061,6 +3129,7 @@ entities:
   summary: Provide one scope-safe, deterministic in-process interface that loads compiled
     architecture bundles and returns a stable normalized semantic model for tools,
     validators, agents, and future kernel consumers.
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0013#CAP-0039
@@ -3104,6 +3173,7 @@ entities:
   summary: Provide an explicit workflow for migrating existing repositories into STE
     canonical architecture authority through phased discovery, normalization, canonization,
     regeneration, and validation.
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0014#CAP-0040
@@ -3146,6 +3216,7 @@ entities:
   name: Canonical Migration Evidence
   summary: Record deterministic remaps, onboarding cleanup results, and legacy-to-
     canonical transitions in machine-readable migration artifacts.
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0014#CAP-0041
@@ -3188,6 +3259,7 @@ entities:
   name: Deterministic ADR Governance Validation
   summary: Validate ADR governance metadata, approval pairings, implementation authority,
     override references, and stale revision coupling through deterministic rules.
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0015#CAP-0042
@@ -3230,6 +3302,7 @@ entities:
   name: Governance Summary Projection
   summary: Expose ADR governance references and override summaries in manifest and
     discovery surfaces without leaking rationale or accepted risk text.
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0015#CAP-0043
@@ -3273,6 +3346,7 @@ entities:
   summary: Provide one explicit file-format ingestion posture for cross-language or
     out-of-process runtime consumers so they can consume compiler-owned Architecture
     IR without redefining architecture semantics locally.
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0013#CAP-0044
@@ -3316,6 +3390,7 @@ entities:
   name: Deterministic Corpus Orientation Surface
   summary: Provide one supported API and CLI surface for manifest access, index access,
     corpus summaries, relationship inspection, and scope-local next ADR ID allocation.
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0016#CAP-0045
@@ -3357,6 +3432,7 @@ entities:
   name: Kernel Boot Readiness
   summary: Provide a deterministic ADR publication surface for kernel boot-readiness
     compilation.
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-9000#CAP-9000
@@ -3399,6 +3475,7 @@ entities:
   summary: '- Compile canonical ADR and invariant artifacts into a normalized discovery
     bundle - Emit deterministic `adrs/index/*.yaml` registry artifacts - Emit deterministic
     legacy compatibility registry output at `adrs/entities/r'
+  lifecycle_stage: active
   canonical_source:
     source_type: physical_component_adr
     source_ref: ADR-PC-0001#COMP-0010
@@ -3447,6 +3524,7 @@ entities:
   summary: '- Validate canonical ADR artifacts against schema and business rules -
     Validate kernel-facing contract profiles - Validate project metadata and implementation
     attribution evidence - Provide CLI entrypoints for validation'
+  lifecycle_stage: active
   canonical_source:
     source_type: physical_component_adr
     source_ref: ADR-PC-0002#COMP-0011
@@ -3493,6 +3571,7 @@ entities:
   summary: '- Build compiler pipeline state from canonical scope inputs - Execute
     deterministic pass ordering - Emit architecture bundle, manifest, graph, and rendered
     outputs - Support recursive multi-scope compilation and reportin'
+  lifecycle_stage: active
   canonical_source:
     source_type: physical_component_adr
     source_ref: ADR-PC-0003#COMP-0012
@@ -3539,6 +3618,7 @@ entities:
   summary: '- Load compiled architecture bundle artifacts - Expose normalized semantic
     queries to in-process consumers - Centralize provenance, unresolved, and ADR/status
     lookup logic - Prevent ad hoc re-interpretation of compiled r'
+  lifecycle_stage: active
   canonical_source:
     source_type: physical_component_adr
     source_ref: ADR-PC-0004#COMP-0013
@@ -3585,6 +3665,7 @@ entities:
   summary: '- Enumerate scope-local generated artifacts - Validate integrity headers
     and source hashes - Detect stale, tampered, or malformed generated outputs - Support
     governance checks over generated artifacts'
+  lifecycle_stage: active
   canonical_source:
     source_type: physical_component_adr
     source_ref: ADR-PC-0005#COMP-0014
@@ -3631,6 +3712,7 @@ entities:
   summary: '- Detect canonical entity ID collisions - Apply deterministic canonical
     ID remaps - Write canonical migration ledgers - Support brownfield onboarding
     cleanup as governed normalization rather than ad hoc editing'
+  lifecycle_stage: active
   canonical_source:
     source_type: physical_component_adr
     source_ref: ADR-PC-0006#COMP-0015
@@ -3677,6 +3759,7 @@ entities:
   summary: '**AI reasoning advantages:** - Deterministic structure (no markdown parsing
     ambiguity) - Direct field access (adr.decisions[0].rationale) - Schema-validated
     before processing - Clear separation of metadata vs content - G'
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0001#DEC-0001
@@ -3721,6 +3804,7 @@ entities:
   summary: '**Architectural discipline:** - Enforces separation of concerns (intent
     vs implementation) - Prevents implementation bias in conceptual design - Enables
     different validation rules per type - Clear semantic distinction fo'
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0001#DEC-0002
@@ -3767,6 +3851,7 @@ entities:
   summary: '**Single source of truth:** - All discovery metadata in ADR frontmatter
     - No drift between ADR and manifest - Atomic updates (metadata + content change
     together) - Version controlled metadata - Schema validated correctne'
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0001#DEC-0003
@@ -3811,6 +3896,7 @@ entities:
   summary: '**Collision prevention:** - Separate namespaces for logical and physical
     - No risk of ADR-0001 collision **Type visibility:** - Type immediately clear
     from ID alone - AI reasoning: type encoded in identifier - Graph clar'
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0001#DEC-0004
@@ -3855,6 +3941,7 @@ entities:
   summary: '**Right level of granularity:** - Ownership, automation, integrations
     belong at project level - Not repeated in every ADR - Single source of truth for
     operational metadata **Executable configuration:** - CI reads PROJECT'
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0001#DEC-0005
@@ -3897,6 +3984,7 @@ entities:
   summary: '**Real friction drives design:** - If we can''t document our decisions,
     schema is incomplete - Actual usage reveals gaps and awkwardness - Validates STE
     compliance through practice **Living specification:** - Project ADRs'
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0001#DEC-0006
@@ -3939,6 +4027,7 @@ entities:
   summary: ADR generators and validators must support multiple project scopes to enable
     sub-modules to maintain independent architectural documentation while being developed
     in a shared workspace. This mirrors the ste-runtime's pro
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0002#DEC-0007
@@ -3981,6 +4070,7 @@ entities:
   summary: 'Different types of tests serve different purposes. A layered approach
     provides comprehensive coverage while maintaining fast feedback loops. Layers:
     1. **Unit tests**: Fast, isolated, test individual functions/methods 2.'
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0003#DEC-0008
@@ -4023,6 +4113,7 @@ entities:
   summary: 'Implementation surfaces need explicit, extractable architecture authority.
     For code, decorators remain the canonical mechanism: - `@implements_adr(...)`
     - `@enforces_invariant(...)` For infrastructure and adjacent non-co'
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0004#DEC-0009
@@ -4065,6 +4156,7 @@ entities:
   summary: 'Automate the generation of implementation prompts from ADR specifications
     to ensure consistency, completeness, and scalability. Benefits: - **Consistency**:
     Same ADR always generates same prompt structure - **Completenes'
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0005#DEC-0010
@@ -4107,6 +4199,7 @@ entities:
   summary: 'Build ste-rules-library from POC design principles. Adopt from POC: -
     Three-layer activation (context signals drive rule selection) - Signal-driven
     projection (only relevant rules) - Submodule protocol with bootstrap - M'
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0006#DEC-0011
@@ -4149,6 +4242,7 @@ entities:
   summary: Structured architecture artifacts are the canonical source of truth in
     this repository. Human-readable documentation is valuable for comprehension, but
     it must be a deterministic rendering derived from those structured a
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0007#DEC-0012
@@ -4197,6 +4291,7 @@ entities:
   summary: The artifact type does not change across the workflow; only the validation
     gate changes. A single validator with an explicit mode argument keeps the API
     coherent and avoids duplicating parsing and reporting logic.
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0008#DEC-0013
@@ -4239,6 +4334,7 @@ entities:
   summary: Canonical authority remains in ADRs and standalone invariants, but agents
     should interact with derived, machine-stable discovery artifacts by default. This
     reduces scan cost, ambiguity, and ad hoc parsing logic.
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0009#DEC-0014
@@ -4281,6 +4377,7 @@ entities:
   summary: Every new component must include tests before acceptance. This ensures
     quality is built in from the start, not retrofitted later. Prevents technical
     debt accumulation and ensures new features are immediately verifiable.
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0003#DEC-0015
@@ -4324,6 +4421,7 @@ entities:
   summary: adr-architecture-kit should first define the canonical rule, evidence contract,
     and profile-aware validation semantics. Source extraction, runtime rule activation,
     and any shared ecosystem delivery should build on that a
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0004#DEC-0016
@@ -4366,6 +4464,7 @@ entities:
   summary: 'Physical ADRs contain multiple component specifications (COMP-*). Each
     component should have its own implementation prompt to enable: - Focused implementation
     (one component at a time) - Parallel implementation (multiple'
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0005#DEC-0017
@@ -4408,6 +4507,7 @@ entities:
   summary: 'rule-library defines and supports cooperative signals alongside context
     signals. Two signal semantics: **Context signals** (from POC): Drive rule selection
     - file_pattern, language, domain - "What rules apply to this con'
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0006#DEC-0018
@@ -4450,6 +4550,7 @@ entities:
   summary: Once an artifact is declared generated, manual edits create ambiguity over
     whether the generated output or the source artifact should be trusted. That ambiguity
     is architecturally unacceptable in a governance repository.
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0007#DEC-0019
@@ -4496,6 +4597,7 @@ entities:
   summary: Structural validation should answer whether an ADR is shaped correctly
     enough to participate in review, even if required sections are intentionally empty
     while decisions are still being pinned down. Structural mode keeps
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0008#DEC-0020
@@ -4539,6 +4641,7 @@ entities:
   summary: The manifest is the first discovery surface used by humans and agents for
     scope inventory, freshness checks, and lifecycle summaries. It remains a discovery
     artifact rather than a normalized semantic payload, but its pre
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0009#DEC-0021
@@ -4581,6 +4684,7 @@ entities:
   summary: The toolkit must work with actual ADRs in the workspace. Testing against
     synthetic fixtures alone is insufficient - real-world ADRs expose edge cases and
     integration issues. This provides dogfooding and ensures the toolk
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0003#DEC-0022
@@ -4623,6 +4727,7 @@ entities:
   summary: 'Traceability must work in both directions: **Forward (ADR -> Implementation)**:
     - ADR declares component or system implementation identifiers - Verify that downstream
     attribution evidence resolves to the declared authori'
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0004#DEC-0023
@@ -4665,6 +4770,7 @@ entities:
   summary: Each prompt should include explicit validation criteria so the implementing
     agent knows when it's done and how to verify correctness. This enables self-validation
     and reduces iteration cycles.
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0005#DEC-0024
@@ -4707,6 +4813,7 @@ entities:
   summary: 'Prompt translator (adr-architecture-kit) generates implementation prompts
     that include signal emission instructions. rule-library is the schema authority
     for those instructions. Flow: 1. rule-library defines signal.schem'
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0006#DEC-0025
@@ -4749,6 +4856,7 @@ entities:
   summary: 'The rule is only durable if it is automated. Deterministic documentation
     projection must therefore be enforced through: - generators that produce rendered
     documentation - validators that compare rendered output to genera'
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0007#DEC-0026
@@ -4795,6 +4903,7 @@ entities:
   summary: Complete validation should answer whether the ADR is sufficiently populated
     for stricter downstream use. This is still a structural/content-presence gate,
     not a correctness gate.
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0008#DEC-0027
@@ -4838,6 +4947,7 @@ entities:
   summary: The normalized entity registry in `adrs/index/` is the current machine
     lookup surface for deterministic entity access. The legacy `adrs/entities/registry.yaml`
     path remains compatibility-only and should not gain new cons
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0009#DEC-0028
@@ -4879,6 +4989,7 @@ entities:
   name: Enforce Testing in CI/CD Pipeline
   summary: Automated testing in CI/CD prevents regressions and ensures all contributors
     maintain quality standards. Manual testing is insufficient for a governance tool.
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0003#DEC-0029
@@ -4921,6 +5032,7 @@ entities:
   summary: Different AI agents (CODEX, Cursor, Claude, GPT) have different capabilities
     and prompt formats. The translator should support generating prompts optimized
     for specific target agents.
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0005#DEC-0030
@@ -4963,6 +5075,7 @@ entities:
   summary: 'rule-library as standalone repo enables: - Independent versioning - Clean
     dependency boundary - Submodule into adr-architecture-kit, ste-runtime, any STE
     project - No monorepo coupling Consumption: - git submodule add <r'
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0006#DEC-0031
@@ -5005,6 +5118,7 @@ entities:
   summary: Steelman review evaluates correctness, coherence, missing reasoning, and
     architectural quality. That is not the same concern as schema alignment or section
     population, and it should remain a separate LLM-backed review pa
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0008#DEC-0032
@@ -5047,6 +5161,7 @@ entities:
   summary: 'TDD (Red-Green-Refactor) is architecturally aligned with STE principles:
     **Alignment with STE**: - SYS-2 (Deterministic Cognition): Tests enforce deterministic
     behavior - SYS-4 (Drift Prevention): Tests detect drift imme'
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0003#DEC-0033
@@ -5089,6 +5204,7 @@ entities:
   summary: 'Phase 1: File-based rules and signals. No server. Works with existing
     prompt translator, codex-implement.py, bootstrap prompts. Phase 2: MCP server
     for rule projection. get_rules, emit_signal tools. File-based remains fa'
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0006#DEC-0034
@@ -5131,6 +5247,7 @@ entities:
   summary: If draft ADRs are expected to surface incompleteness, generators must not
     erase those signals unconditionally. Empty sections should be preservable when
     the author is intentionally emitting a draft artifact.
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0008#DEC-0035
@@ -5174,6 +5291,7 @@ entities:
   summary: The full guaranteed compiler contract includes all generated artifacts
     in `adrs/index/` plus `manifest.yaml`. The kernel may rely on a narrower minimal
     load subset for bootstrap loading, but that subset must not be mista
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0010#DEC-0036
@@ -5216,6 +5334,7 @@ entities:
   summary: The contract is not yet open as a stable external surface. Using 0.x avoids
     pretending the boundary is already semantically frozen while still keeping a versioned
     contract and explicit upgrade path.
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0010#DEC-0037
@@ -5259,6 +5378,7 @@ entities:
   summary: A single contract schema is not enough to represent the enforcement posture
     across new systems, legacy imports, and active remediation states. Profiles allow
     strict integrity rules to remain universal while allowing qual
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0010#DEC-0038
@@ -5301,6 +5421,7 @@ entities:
   summary: Sentinel-backed content is valid under the right profile, but it is not
     the same as fully populated architecture knowledge. A separate validator outcome
     preserves honesty while keeping the system operational.
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0010#DEC-0039
@@ -5344,6 +5465,7 @@ entities:
   summary: Registry metadata is currently too weak as a contract surface. Different
     entity types carry different keys, and without typed expectations the kernel and
     compiler can drift silently.
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0011#DEC-0040
@@ -5386,6 +5508,7 @@ entities:
   summary: Sentinel values are useful for preserving structure where knowledge is
     missing, but they are dangerous in identifiers, references, enums, or governance
     fields. Narrow placement keeps them honest and machine-safe.
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0011#DEC-0041
@@ -5428,6 +5551,7 @@ entities:
   summary: Current architecture content and remediation workflow state should not
     be mixed. A separate remediation ledger preserves auditability, avoids process
     leakage into ADR text, and provides a stable mechanism for no-regressi
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0011#DEC-0042
@@ -5471,6 +5595,7 @@ entities:
   summary: Non-sentinel replacement content may be better than a sentinel without
     yet being authoritative. Staged approval prevents accidental promotion and keeps
     the no-regression rule tied to explicit governance.
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0011#DEC-0043
@@ -5513,6 +5638,7 @@ entities:
   summary: Stable status should reflect implemented and verified behavior, not elapsed
     time or confidence. The transition from 0.x to 1.0 must therefore be tied to concrete
     conditions across compiler output, schema conformance, and
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0010#DEC-0044
@@ -5556,6 +5682,7 @@ entities:
   summary: Per-repository registries remain the canonical architecture outputs for
     their owning repository. Federation exists to read, index, merge, and query across
     those outputs; it must not rewrite or mutate them.
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0012#DEC-0045
@@ -5598,6 +5725,7 @@ entities:
   summary: When one repository references an entity defined by another repository,
     the defining repository is the authority on that entity's name, status, and metadata.
     Consumers may declare relationships to the entity, but they do
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0012#DEC-0046
@@ -5641,6 +5769,7 @@ entities:
   summary: Single-repo authoring should remain simple and backward compatible, while
     federation requires globally unambiguous identity. Separating namespace from bare
     ID preserves local ergonomics while enabling global qualificatio
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0012#DEC-0047
@@ -5683,6 +5812,7 @@ entities:
   summary: adr-architecture-kit needs a canonical handoff surface for implementation
     attribution evidence without taking on source parsing itself. A small, compiler-owned
     schema and model let downstream extractors emit consistent a
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0004#DEC-0048
@@ -5725,6 +5855,7 @@ entities:
   summary: Greenfield, brownfield, and migration already express the repo's adoption
     postures. Intent attribution onboarding should use those same profiles rather
     than creating a second transition taxonomy.
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0004#DEC-0049
@@ -5768,6 +5899,7 @@ entities:
   summary: The repository boundary centralizes scope-safe loading, contract validation,
     path hiding, and registry compatibility adaptation. This keeps consumers from
     binding directly to registry files and current layout.
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0013#DEC-0050
@@ -5810,6 +5942,7 @@ entities:
   summary: A semantic model is needed so consumers depend on architecture meaning
     rather than current registry document shapes. The model must preserve entities,
     relationships, unresolved records, provenance, scope identity, and de
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0013#DEC-0051
@@ -5853,6 +5986,7 @@ entities:
   summary: The current `ArchModel` is the compiler IR. It reflects pass orchestration
     and extraction concerns and may evolve as compiler internals change. Making it
     the public consumer contract would freeze the wrong abstraction to
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0013#DEC-0052
@@ -5895,6 +6029,7 @@ entities:
   summary: Existing architecture can be informally decided but not yet canonicalized.
     STE needs an explicit workflow for converting that state into canonical ADR authority
     without pretending the implementation invented the architec
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0014#DEC-0053
@@ -5938,6 +6073,7 @@ entities:
   summary: 'Brownfield onboarding mixes several concerns that should not be collapsed:
     discovery identifies what exists, normalization resolves collisions and missing
     metadata, canonization creates or updates canonical ADRs, regener'
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0014#DEC-0054
@@ -5981,6 +6117,7 @@ entities:
   summary: Canonical ID remaps, onboarding normalization, and controlled cleanup transitions
     should produce durable evidence so future consumers can explain how legacy identifiers
     and structures map into current canonical state.
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0014#DEC-0055
@@ -6024,6 +6161,7 @@ entities:
   summary: Rendered markdown is useful for review and browsing, but it is structurally
     weaker than canonical YAML and should never become the semantic source of truth
     when canonical ADR artifacts are available.
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0014#DEC-0056
@@ -6067,6 +6205,7 @@ entities:
   summary: Downstream consumers need to know which generated surfaces are guaranteed
     contract outputs, which are optional human conveniences, and which remain transitional
     compatibility artifacts.
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0009#DEC-0057
@@ -6109,6 +6248,7 @@ entities:
   summary: The normalized index family supersedes the legacy registry for new consumers.
     Keeping the legacy path for compatibility is acceptable, but it must be explicitly
     marked deprecated to prevent contract ambiguity.
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0009#DEC-0058
@@ -6152,6 +6292,7 @@ entities:
   summary: 'Downstream bridge and kernel work already depend on the wider indexed
     bundle, the manifest, and the additive graph artifact. Guaranteeing the full family
     prevents downstream consumers from inventing different notions of '
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0010#DEC-0059
@@ -6195,6 +6336,7 @@ entities:
   summary: The graph is consumed downstream and belongs to the generated contract
     family, but it remains a projection artifact over the same architecture authority
     rather than a separate source of meaning.
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0010#DEC-0060
@@ -6238,6 +6380,7 @@ entities:
   summary: Cross-language consumers such as `ste-runtime` cannot call a Python repository
     API directly. They still consume the same generated authority surface, but through
     the file-format contract rather than the in-process reposi
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0013#DEC-0061
@@ -6280,6 +6423,7 @@ entities:
   summary: Python consumers should not hardcode the graph artifact path once the repository
     boundary can expose it as part of the indexed contract family. This preserves
     a coherent semantic seam for in-process consumers.
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0013#DEC-0062
@@ -6323,6 +6467,7 @@ entities:
   summary: Governance state is part of canonical ADR meaning, but it is not the same
     thing as ADR lifecycle or architecture intent. A nested governance block keeps
     approval and implementation gating explicit without turning derived
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0015#DEC-0063
@@ -6365,6 +6510,7 @@ entities:
   summary: Override rationale, risk, and exception posture should remain canonical,
     but they should not bloat ADR text or rewrite architecture intent. Separate override
     artifacts keep exception handling explicit and auditable.
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0015#DEC-0064
@@ -6407,6 +6553,7 @@ entities:
   summary: Overrides should not silently continue applying after the ADR they depend
     on has materially changed. Using ADR modified_date provides a minimal canonical
     coupling point that works with the current schema line.
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0015#DEC-0065
@@ -6449,6 +6596,7 @@ entities:
   summary: Projections need to support lookup and orchestration, but they must not
     synthesize approvals, risks, or override semantics beyond what the canonical artifacts
     explicitly say.
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0015#DEC-0066
@@ -6492,6 +6640,7 @@ entities:
   summary: Cross-language consumers such as `ste-runtime` need an explicit baseline
     ingestion contract so they do not guess which generated artifacts are required
     for architecture-aware operation. The baseline subset is `architectu
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0013#DEC-0067
@@ -6535,6 +6684,7 @@ entities:
   summary: The runtime bridge must preserve compiler authority even when a consumer
     uses file-format contracts directly. Cross-language consumers should bootstrap
     from the architecture index, treat manifest as a discovery and fresh
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0013#DEC-0068
@@ -6577,6 +6727,7 @@ entities:
   summary: Repository consumers should use one in-process boundary for manifest access,
     architecture index access, corpus summary generation, entity reference lookup,
     and forward-authoring ID allocation.
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0016#DEC-0069
@@ -6618,6 +6769,7 @@ entities:
   name: Expose corpus summary and relationships through supported CLI commands
   summary: Human and script consumers need stable CLI ergonomics that mirror the repository
     boundary without treating raw registry files as the user-facing interface.
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0016#DEC-0070
@@ -6661,6 +6813,7 @@ entities:
   summary: New authoring ergonomics should reinforce the forward taxonomy and expose
     deterministic structured inputs for the ADR types the repository wants new work
     to use.
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0017#DEC-0071
@@ -6704,6 +6857,7 @@ entities:
   summary: Existing repositories and tests still contain `ADR-P-*` artifacts, so backward
     compatibility remains necessary. That compatibility does not require adding new
     forward-authoring affordances for the legacy type.
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0017#DEC-0072
@@ -6746,6 +6900,7 @@ entities:
   summary: ADR identifiers are architectural identity, not recyclable sequence numbers.
     Once an ID is allocated, gaps must remain consumed history even if an ADR is later
     deleted, superseded, or removed from the active corpus.
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0016#DEC-0073
@@ -6789,6 +6944,7 @@ entities:
   summary: The high ADR ID range is needed for exceptional cases such as brownfield
     imports, retained legacy artifacts pending migration, and other imported records
     whose identity must be preserved. Normal authoring allocation shou
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0017#DEC-0074
@@ -6831,6 +6987,7 @@ entities:
   summary: Brownfield onboarding and imported architectural records need a controlled
     exceptional range where identity can be preserved without perturbing the normal
     authoring sequence.
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0016#DEC-0075
@@ -6873,6 +7030,7 @@ entities:
   summary: ste-runtime now populates implementation attribution evidence from parsed
     implementation artifacts. That closes the first downstream extraction gap without
     moving attribution authority into ste-runtime. adr-architecture-
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0004#DEC-0076
@@ -6914,6 +7072,7 @@ entities:
   name: Publish a deterministic logical ADR fragment for boot readiness.
   summary: ste-kernel requires a contract-backed ADR fragment source at a conventional
     path.
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-9000#DEC-9000
@@ -6956,6 +7115,7 @@ entities:
   entity_type: invariant
   name: INV-0001
   summary: All ADRs must validate against JSON Schema before commit
+  lifecycle_stage: active
   canonical_source:
     source_type: standalone_invariant
     source_ref: INV-0001
@@ -7003,6 +7163,7 @@ entities:
   name: INV-0002
   summary: adr_kit MUST not ship deprecated runtime API usage, and its direct dependencies
     MUST be audited for vulnerabilities and upgrade freshness
+  lifecycle_stage: active
   canonical_source:
     source_type: standalone_invariant
     source_ref: INV-0002
@@ -7051,6 +7212,7 @@ entities:
   name: INV-0003
   summary: Repository changes must be committed at meaningful verified boundaries
     rather than accumulated indefinitely.
+  lifecycle_stage: active
   canonical_source:
     source_type: standalone_invariant
     source_ref: INV-0003
@@ -7099,6 +7261,7 @@ entities:
   name: INV-0004
   summary: Compiler projection from canonical architecture state to kernel-facing
     registry artifacts must be deterministic and contract-valid.
+  lifecycle_stage: active
   canonical_source:
     source_type: standalone_invariant
     source_ref: INV-0004
@@ -7149,6 +7312,7 @@ entities:
   name: INV-0005
   summary: Recursive compilation must compile each resolved project scope independently
     and must not implicitly merge architecture state across scopes.
+  lifecycle_stage: active
   canonical_source:
     source_type: standalone_invariant
     source_ref: INV-0005
@@ -7198,6 +7362,7 @@ entities:
   summary: In-scope implementation artifacts must declare the ADRs that justify their
     existence through @implements_adr or an equivalent metadata-level attribution
     mechanism.
+  lifecycle_stage: active
   canonical_source:
     source_type: standalone_invariant
     source_ref: INV-0006
@@ -7248,6 +7413,7 @@ entities:
   summary: In-process architecture consumers must use ArchitectureRepository and its
     normalized semantic model rather than interpreting compiled registries ad hoc
     when the repository boundary is available.
+  lifecycle_stage: active
   canonical_source:
     source_type: standalone_invariant
     source_ref: INV-0007
@@ -7298,6 +7464,7 @@ entities:
   summary: Rendered markdown artifacts must be treated as derived human-facing projections
     and must not be used as semantic authority when canonical YAML source artifacts
     are available.
+  lifecycle_stage: active
   canonical_source:
     source_type: standalone_invariant
     source_ref: INV-0008
@@ -7345,6 +7512,7 @@ entities:
   name: INV-0014
   summary: ADR generators and validators MUST support explicit scope parameter to
     override auto-detection when needed
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0002#INV-0014
@@ -7362,6 +7530,7 @@ entities:
     enforcement_level: must
     declaration_mode: local
     upheld_by_decisions: []
+    supersedes: []
   relationships:
     declared_in:
     - ADR-L-0002
@@ -7391,6 +7560,7 @@ entities:
   summary: 'Project scope resolution MUST use the same marker hierarchy as ste-runtime:
     1. Explicit --scope parameter (highest priority) 2. ste.config.json in current
     or parent directories 3. Standard project markers (package.json, '
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0002#INV-0015
@@ -7413,6 +7583,7 @@ entities:
     enforcement_level: must
     declaration_mode: local
     upheld_by_decisions: []
+    supersedes: []
   relationships:
     declared_in:
     - ADR-L-0002
@@ -7440,6 +7611,7 @@ entities:
   entity_type: invariant
   name: INV-0016
   summary: Each project scope MUST maintain its own adrs/ directory and manifest.yaml
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0002#INV-0016
@@ -7454,6 +7626,7 @@ entities:
     enforcement_level: must
     declaration_mode: local
     upheld_by_decisions: []
+    supersedes: []
   relationships:
     declared_in:
     - ADR-L-0002
@@ -7482,6 +7655,7 @@ entities:
   name: INV-0017
   summary: ADR cross-references between different scopes MUST use fully-qualified
     identifiers (e.g., "ste-runtime:ADR-L-0001")
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0002#INV-0017
@@ -7498,6 +7672,7 @@ entities:
     enforcement_level: should
     declaration_mode: local
     upheld_by_decisions: []
+    supersedes: []
   relationships:
     declared_in:
     - ADR-L-0002
@@ -7526,6 +7701,7 @@ entities:
   name: INV-0018
   summary: Scope resolution MUST NOT traverse above workspace root to prevent scanning
     unintended directories
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0002#INV-0018
@@ -7542,6 +7718,7 @@ entities:
     enforcement_level: must
     declaration_mode: local
     upheld_by_decisions: []
+    supersedes: []
   relationships:
     declared_in:
     - ADR-L-0002
@@ -7570,6 +7747,7 @@ entities:
   name: INV-0019
   summary: ADR validation at workspace scope SHOULD validate all sub-module ADRs recursively
     when --recursive flag is provided
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0002#INV-0019
@@ -7586,6 +7764,7 @@ entities:
     enforcement_level: should
     declaration_mode: local
     upheld_by_decisions: []
+    supersedes: []
   relationships:
     declared_in:
     - ADR-L-0002
@@ -7615,6 +7794,7 @@ entities:
   summary: 'Every component with public API MUST have unit tests covering: - Happy
     path (valid inputs) - Error cases (invalid inputs) - Edge cases (boundary conditions)
     - Backward compatibility (when applicable)'
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0003#INV-0020
@@ -7637,6 +7817,7 @@ entities:
     enforcement_level: must
     declaration_mode: local
     upheld_by_decisions: []
+    supersedes: []
   relationships:
     declared_in:
     - ADR-L-0003
@@ -7666,6 +7847,7 @@ entities:
   summary: 'Schema validators MUST have tests proving correctness against: - Valid
     ADRs (should pass) - Invalid ADRs (should fail with clear errors) - Edge cases
     (empty fields, special characters, etc.)'
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0003#INV-0021
@@ -7686,6 +7868,7 @@ entities:
     enforcement_level: must
     declaration_mode: local
     upheld_by_decisions: []
+    supersedes: []
   relationships:
     declared_in:
     - ADR-L-0003
@@ -7715,6 +7898,7 @@ entities:
   summary: 'Multi-scope functionality MUST have tests covering: - Single scope (backward
     compatibility) - Multiple scopes (recursive operations) - Scope boundary enforcement
     (security) - Parent-child relationships'
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0003#INV-0022
@@ -7737,6 +7921,7 @@ entities:
     enforcement_level: must
     declaration_mode: local
     upheld_by_decisions: []
+    supersedes: []
   relationships:
     declared_in:
     - ADR-L-0003
@@ -7764,6 +7949,7 @@ entities:
   entity_type: invariant
   name: INV-0023
   summary: Test suite MUST complete in under 30 seconds for fast feedback
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0003#INV-0023
@@ -7778,6 +7964,7 @@ entities:
     enforcement_level: should
     declaration_mode: local
     upheld_by_decisions: []
+    supersedes: []
   relationships:
     declared_in:
     - ADR-L-0003
@@ -7805,6 +7992,7 @@ entities:
   entity_type: invariant
   name: INV-0024
   summary: Tests MUST be deterministic - same input always produces same output
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0003#INV-0024
@@ -7819,6 +8007,7 @@ entities:
     enforcement_level: must
     declaration_mode: local
     upheld_by_decisions: []
+    supersedes: []
   relationships:
     declared_in:
     - ADR-L-0003
@@ -7846,6 +8035,7 @@ entities:
   entity_type: invariant
   name: INV-0025
   summary: Breaking changes to public APIs MUST be detected by tests
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0003#INV-0025
@@ -7860,6 +8050,7 @@ entities:
     enforcement_level: must
     declaration_mode: local
     upheld_by_decisions: []
+    supersedes: []
   relationships:
     declared_in:
     - ADR-L-0003
@@ -7888,6 +8079,7 @@ entities:
   name: INV-0026
   summary: Test coverage SHOULD be measured and tracked, with minimum 80% coverage
     for critical components (parsers, validators, generators)
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0003#INV-0026
@@ -7904,6 +8096,7 @@ entities:
     enforcement_level: should
     declaration_mode: local
     upheld_by_decisions: []
+    supersedes: []
   relationships:
     declared_in:
     - ADR-L-0003
@@ -7933,6 +8126,7 @@ entities:
   summary: Greenfield in-scope implementation artifacts MUST declare architectural
     authority through @implements_adr or an equivalent metadata-level attribution
     mechanism; brownfield and migration may stage adoption under profile-s
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0004#INV-0027
@@ -7953,6 +8147,7 @@ entities:
     enforcement_level: must
     declaration_mode: local
     upheld_by_decisions: []
+    supersedes: []
   relationships:
     declared_in:
     - ADR-L-0004
@@ -7981,6 +8176,7 @@ entities:
   name: INV-0028
   summary: Implementation attribution references MUST resolve to existing ADRs, and
     references to superseded ADRs MUST be surfaced as governance warnings
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0004#INV-0028
@@ -7998,6 +8194,7 @@ entities:
     enforcement_level: must
     declaration_mode: local
     upheld_by_decisions: []
+    supersedes: []
   relationships:
     declared_in:
     - ADR-L-0004
@@ -8026,6 +8223,7 @@ entities:
   name: INV-0029
   summary: Implementation attribution evidence MUST preserve provenance identifying
     the source artifact and extractor responsible for the claim
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0004#INV-0029
@@ -8042,6 +8240,7 @@ entities:
     enforcement_level: must
     declaration_mode: local
     upheld_by_decisions: []
+    supersedes: []
   relationships:
     declared_in:
     - ADR-L-0004
@@ -8070,6 +8269,7 @@ entities:
   name: INV-0030
   summary: Code decorated with @enforces_invariant MUST implement validation logic
     for that invariant
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0004#INV-0030
@@ -8087,6 +8287,7 @@ entities:
     enforcement_level: must
     declaration_mode: local
     upheld_by_decisions: []
+    supersedes: []
   relationships:
     declared_in:
     - ADR-L-0004
@@ -8116,6 +8317,7 @@ entities:
   summary: adr-architecture-kit MUST define the canonical architecture-intent attribution
     rule and evidence contract without taking on direct source-code parsing responsibilities
     for downstream repositories
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0004#INV-0031
@@ -8134,6 +8336,7 @@ entities:
     enforcement_level: must
     declaration_mode: local
     upheld_by_decisions: []
+    supersedes: []
   relationships:
     declared_in:
     - ADR-L-0004
@@ -8162,6 +8365,7 @@ entities:
   name: INV-0032
   summary: Downstream extractors and rule-delivery systems SHOULD consume ADR-Kit
     attribution contracts rather than redefining them independently
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0004#INV-0032
@@ -8178,6 +8382,7 @@ entities:
     enforcement_level: should
     declaration_mode: local
     upheld_by_decisions: []
+    supersedes: []
   relationships:
     declared_in:
     - ADR-L-0004
@@ -8205,6 +8410,7 @@ entities:
   entity_type: invariant
   name: INV-0033
   summary: rule-library MUST define canonical schema for cooperative signals
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0006#INV-0033
@@ -8219,6 +8425,7 @@ entities:
     enforcement_level: must
     declaration_mode: local
     upheld_by_decisions: []
+    supersedes: []
   relationships:
     declared_in:
     - ADR-L-0006
@@ -8246,6 +8453,7 @@ entities:
   entity_type: invariant
   name: INV-0034
   summary: rule-library MUST support file-based rule and signal handling
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0006#INV-0034
@@ -8260,6 +8468,7 @@ entities:
     enforcement_level: must
     declaration_mode: local
     upheld_by_decisions: []
+    supersedes: []
   relationships:
     declared_in:
     - ADR-L-0006
@@ -8287,6 +8496,7 @@ entities:
   entity_type: invariant
   name: INV-0035
   summary: rule-library MUST NOT self-govern; it is governed by ADRs
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0006#INV-0035
@@ -8301,6 +8511,7 @@ entities:
     enforcement_level: must
     declaration_mode: local
     upheld_by_decisions: []
+    supersedes: []
   relationships:
     declared_in:
     - ADR-L-0006
@@ -8329,6 +8540,7 @@ entities:
   name: INV-0036
   summary: Cooperative signal schema MUST include claim, progress, complete, wave_complete,
     validation_ready types
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0006#INV-0036
@@ -8345,6 +8557,7 @@ entities:
     enforcement_level: must
     declaration_mode: local
     upheld_by_decisions: []
+    supersedes: []
   relationships:
     declared_in:
     - ADR-L-0006
@@ -8374,6 +8587,7 @@ entities:
   summary: 'INV-DOC-001: All human-readable architecture documentation must be generated
     from structured artifacts or explicit projection code that is itself governed
     as source state.'
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0007#INV-0037
@@ -8393,6 +8607,7 @@ entities:
     enforcement_level: must
     declaration_mode: local
     upheld_by_decisions: []
+    supersedes: []
   relationships:
     declared_in:
     - ADR-L-0007
@@ -8421,6 +8636,7 @@ entities:
   name: INV-0038
   summary: 'INV-DOC-002: Generated documentation must be deterministic given identical
     source artifacts and generator inputs.'
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0007#INV-0038
@@ -8437,6 +8653,7 @@ entities:
     enforcement_level: must
     declaration_mode: local
     upheld_by_decisions: []
+    supersedes: []
   relationships:
     declared_in:
     - ADR-L-0007
@@ -8465,6 +8682,7 @@ entities:
   name: INV-0039
   summary: 'INV-DOC-003: Rendered documentation must never be edited manually; changes
     must be made through generators, templates, or structured source artifacts.'
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0007#INV-0039
@@ -8482,6 +8700,7 @@ entities:
     enforcement_level: must
     declaration_mode: local
     upheld_by_decisions: []
+    supersedes: []
   relationships:
     declared_in:
     - ADR-L-0007
@@ -8510,6 +8729,7 @@ entities:
   name: INV-0040
   summary: ADR validation MUST support a structural mode that accepts intentionally
     incomplete drafts when their schema shape is otherwise valid.
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0008#INV-0040
@@ -8526,6 +8746,7 @@ entities:
     enforcement_level: must
     declaration_mode: local
     upheld_by_decisions: []
+    supersedes: []
   relationships:
     declared_in:
     - ADR-L-0008
@@ -8554,6 +8775,7 @@ entities:
   name: INV-0041
   summary: Complete validation MUST remain deterministic and MUST NOT depend on LLM
     reasoning.
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0008#INV-0041
@@ -8571,6 +8793,7 @@ entities:
     enforcement_level: must
     declaration_mode: local
     upheld_by_decisions: []
+    supersedes: []
   relationships:
     declared_in:
     - ADR-L-0008
@@ -8599,6 +8822,7 @@ entities:
   name: INV-0042
   summary: Steelman review MUST remain a separate correctness-oriented review layer
     and MUST NOT be conflated with schema validation.
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0008#INV-0042
@@ -8616,6 +8840,7 @@ entities:
     enforcement_level: must
     declaration_mode: local
     upheld_by_decisions: []
+    supersedes: []
   relationships:
     declared_in:
     - ADR-L-0008
@@ -8644,6 +8869,7 @@ entities:
   name: INV-0043
   summary: Canonical architectural authority MUST remain in ADR and standalone invariant
     artifacts, not in derived discovery artifacts.
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0009#INV-0043
@@ -8660,6 +8886,7 @@ entities:
     enforcement_level: must
     declaration_mode: local
     upheld_by_decisions: []
+    supersedes: []
   relationships:
     declared_in:
     - ADR-L-0009
@@ -8688,6 +8915,7 @@ entities:
   name: INV-0044
   summary: Derived architecture discovery artifacts MUST be deterministic, reproducible,
     and disposable.
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0009#INV-0044
@@ -8704,6 +8932,7 @@ entities:
     enforcement_level: must
     declaration_mode: local
     upheld_by_decisions: []
+    supersedes: []
   relationships:
     declared_in:
     - ADR-L-0009
@@ -8732,6 +8961,7 @@ entities:
   name: INV-0045
   summary: Agent-facing ADR toolkit workflows MUST prefer indexed lookup surfaces
     over raw ADR body traversal by default.
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0009#INV-0045
@@ -8748,6 +8978,7 @@ entities:
     enforcement_level: must
     declaration_mode: local
     upheld_by_decisions: []
+    supersedes: []
   relationships:
     declared_in:
     - ADR-L-0009
@@ -8776,6 +9007,7 @@ entities:
   name: INV-0046
   summary: Generated prompts MUST include all invariants from the source ADR with
     their enforcement levels (must/should/may)
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0005#INV-0046
@@ -8793,6 +9025,7 @@ entities:
     enforcement_level: must
     declaration_mode: local
     upheld_by_decisions: []
+    supersedes: []
   relationships:
     declared_in:
     - ADR-L-0005
@@ -8821,6 +9054,7 @@ entities:
   name: INV-0047
   summary: Generated prompts MUST include component specifications with complete interface
     definitions (methods, parameters, return types)
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0005#INV-0047
@@ -8837,6 +9071,7 @@ entities:
     enforcement_level: must
     declaration_mode: local
     upheld_by_decisions: []
+    supersedes: []
   relationships:
     declared_in:
     - ADR-L-0005
@@ -8865,6 +9100,7 @@ entities:
   name: INV-0048
   summary: Generated prompts MUST reference the source ADR ID and specific sections
     (invariant IDs, component IDs) for traceability
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0005#INV-0048
@@ -8881,6 +9117,7 @@ entities:
     enforcement_level: must
     declaration_mode: local
     upheld_by_decisions: []
+    supersedes: []
   relationships:
     declared_in:
     - ADR-L-0005
@@ -8908,6 +9145,7 @@ entities:
   entity_type: invariant
   name: INV-0049
   summary: Generated prompts MUST include test requirements from the ADR
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0005#INV-0049
@@ -8922,6 +9160,7 @@ entities:
     enforcement_level: must
     declaration_mode: local
     upheld_by_decisions: []
+    supersedes: []
   relationships:
     declared_in:
     - ADR-L-0005
@@ -8950,6 +9189,7 @@ entities:
   name: INV-0050
   summary: Generated prompts SHOULD include implementation strategy guidance (e.g.,
     TDD cycle, dependency injection patterns)
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0005#INV-0050
@@ -8966,6 +9206,7 @@ entities:
     enforcement_level: should
     declaration_mode: local
     upheld_by_decisions: []
+    supersedes: []
   relationships:
     declared_in:
     - ADR-L-0005
@@ -8994,6 +9235,7 @@ entities:
   name: INV-0051
   summary: Prompt generator MUST be deterministic - same ADR input always produces
     same prompt output
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0005#INV-0051
@@ -9010,6 +9252,7 @@ entities:
     enforcement_level: must
     declaration_mode: local
     upheld_by_decisions: []
+    supersedes: []
   relationships:
     declared_in:
     - ADR-L-0005
@@ -9039,6 +9282,7 @@ entities:
   summary: 'The compiler''s guaranteed machine-readable contract surface MUST be defined
     as all generated artifacts under `adrs/index/` plus `adrs/manifest.yaml`. Consumers
     MAY define narrower minimal load subsets, but those subsets '
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0010#INV-0052
@@ -9060,6 +9304,7 @@ entities:
     enforcement_level: must
     declaration_mode: local
     upheld_by_decisions: []
+    supersedes: []
   relationships:
     declared_in:
     - ADR-L-0010
@@ -9088,6 +9333,7 @@ entities:
   name: INV-0053
   summary: Contract validation MUST support profile-based enforcement for greenfield,
     brownfield, and migration without forking the registry schema.
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0010#INV-0053
@@ -9104,6 +9350,7 @@ entities:
     enforcement_level: must
     declaration_mode: local
     upheld_by_decisions: []
+    supersedes: []
   relationships:
     declared_in:
     - ADR-L-0010
@@ -9132,6 +9379,7 @@ entities:
   name: INV-0054
   summary: Bundles classified as sentinel compliant MUST NOT be admitted to production
     kernel loads by default, but MAY be loaded by inspection-only or remediation tooling.
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0010#INV-0054
@@ -9150,6 +9398,7 @@ entities:
     enforcement_level: must
     declaration_mode: local
     upheld_by_decisions: []
+    supersedes: []
   relationships:
     declared_in:
     - ADR-L-0010
@@ -9178,6 +9427,7 @@ entities:
   name: INV-0055
   summary: Reserved sentinel values MUST be allowed only in narrative fields or sections
     explicitly designated as sentinel-capable by schema or policy.
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0011#INV-0055
@@ -9195,6 +9445,7 @@ entities:
     enforcement_level: must
     declaration_mode: local
     upheld_by_decisions: []
+    supersedes: []
   relationships:
     declared_in:
     - ADR-L-0011
@@ -9223,6 +9474,7 @@ entities:
   name: INV-0056
   summary: Remediation workflow state MUST be recorded in a separate canonical remediation
     ledger rather than in ADR content fields.
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0011#INV-0056
@@ -9239,6 +9491,7 @@ entities:
     enforcement_level: must
     declaration_mode: local
     upheld_by_decisions: []
+    supersedes: []
   relationships:
     declared_in:
     - ADR-L-0011
@@ -9268,6 +9521,7 @@ entities:
   summary: Once a field or section has an approved remediation-ledger entry for non-sentinel
     canonical content, that field or section MUST NOT regress to a sentinel state
     under normal validation.
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0011#INV-0057
@@ -9286,6 +9540,7 @@ entities:
     enforcement_level: must
     declaration_mode: local
     upheld_by_decisions: []
+    supersedes: []
   relationships:
     declared_in:
     - ADR-L-0011
@@ -9315,6 +9570,7 @@ entities:
   summary: Federation and aggregation layers MUST treat each repository as authoritative
     over its own canonical registries and MUST NOT mutate those registries during
     federation.
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0012#INV-0058
@@ -9333,6 +9589,7 @@ entities:
     enforcement_level: must
     declaration_mode: local
     upheld_by_decisions: []
+    supersedes: []
   relationships:
     declared_in:
     - ADR-L-0012
@@ -9362,6 +9619,7 @@ entities:
   summary: In-process architecture consumers MUST use the ArchitectureRepository boundary
     instead of inventing ad hoc compiled-registry interpretation when a repository
     boundary is available. Cross-language or out-of-process consum
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0013#INV-0059
@@ -9384,6 +9642,7 @@ entities:
     enforcement_level: must
     declaration_mode: local
     upheld_by_decisions: []
+    supersedes: []
   relationships:
     declared_in:
     - ADR-L-0013
@@ -9413,6 +9672,7 @@ entities:
   summary: STE onboarding workflows MUST treat discovery, normalization, canonization,
     regeneration, and validation as distinct phases with canonical artifacts updated
     before derived artifacts are refreshed.
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0014#INV-0060
@@ -9431,6 +9691,7 @@ entities:
     enforcement_level: must
     declaration_mode: local
     upheld_by_decisions: []
+    supersedes: []
   relationships:
     declared_in:
     - ADR-L-0014
@@ -9460,6 +9721,7 @@ entities:
   summary: Rendered markdown artifacts MUST be treated as derived human-facing projections
     and MUST NOT be used as semantic authority when canonical YAML source artifacts
     are available.
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0014#INV-0061
@@ -9478,6 +9740,7 @@ entities:
     enforcement_level: must
     declaration_mode: local
     upheld_by_decisions: []
+    supersedes: []
   relationships:
     declared_in:
     - ADR-L-0014
@@ -9506,6 +9769,7 @@ entities:
   name: INV-0064
   summary: Absence of ADR governance approval fields MUST NOT be interpreted as approval
     or implementation authority.
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0015#INV-0064
@@ -9523,6 +9787,7 @@ entities:
     enforcement_level: must
     declaration_mode: local
     upheld_by_decisions: []
+    supersedes: []
   relationships:
     declared_in:
     - ADR-L-0015
@@ -9551,6 +9816,7 @@ entities:
   name: INV-0065
   summary: Objection override artifacts MUST NOT change ADR architectural meaning
     and MUST govern implementation allowance only.
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0015#INV-0065
@@ -9568,6 +9834,7 @@ entities:
     enforcement_level: must
     declaration_mode: local
     upheld_by_decisions: []
+    supersedes: []
   relationships:
     declared_in:
     - ADR-L-0015
@@ -9596,6 +9863,7 @@ entities:
   name: INV-0066
   summary: Derived projections MUST expose only governance IDs and summary metadata
     and MUST NOT invent approvals, risks, or authority-altering interpretations.
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0015#INV-0066
@@ -9613,6 +9881,7 @@ entities:
     enforcement_level: must
     declaration_mode: local
     upheld_by_decisions: []
+    supersedes: []
   relationships:
     declared_in:
     - ADR-L-0015
@@ -9642,6 +9911,7 @@ entities:
   summary: Cross-language or out-of-process architecture consumers that rely on the
     file-format contract MUST bootstrap from `adrs/index/architecture-index.yaml`,
     MUST require the minimal ingestion subset of `entity-registry.yaml`,
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0013#INV-0067
@@ -9673,6 +9943,7 @@ entities:
     enforcement_level: must
     declaration_mode: local
     upheld_by_decisions: []
+    supersedes: []
   relationships:
     declared_in:
     - ADR-L-0013
@@ -9702,6 +9973,7 @@ entities:
   summary: Forward authoring ergonomics in adr-architecture-kit MUST target logical,
     physical-system, and physical-component ADRs, while legacy `ADR-P-*` support remains
     compatibility-only.
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0017#INV-0068
@@ -9720,6 +9992,7 @@ entities:
     enforcement_level: must
     declaration_mode: local
     upheld_by_decisions: []
+    supersedes: []
   relationships:
     declared_in:
     - ADR-L-0017
@@ -9749,6 +10022,7 @@ entities:
   summary: Forward-authoring ADR ID allocation MUST be monotonic and non-reusable.
     Previously allocated IDs and historical gaps remain consumed history and MUST
     NOT be reissued.
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0016#INV-0069
@@ -9767,6 +10041,7 @@ entities:
     enforcement_level: must
     declaration_mode: local
     upheld_by_decisions: []
+    supersedes: []
   relationships:
     declared_in:
     - ADR-L-0016
@@ -9796,6 +10071,7 @@ entities:
   summary: ADR IDs `9000-9999` MUST be treated as a reserved exceptional allocation
     range for cases such as brownfield imports, retained legacy artifacts pending
     migration, and other imported records requiring preserved identity. S
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0017#INV-0070
@@ -9816,6 +10092,7 @@ entities:
     enforcement_level: must
     declaration_mode: local
     upheld_by_decisions: []
+    supersedes: []
   relationships:
     declared_in:
     - ADR-L-0017
@@ -9844,6 +10121,7 @@ entities:
   name: INV-0071
   summary: Reserved ADR IDs `9000-9999` MUST NOT participate in standard forward authoring
     allocation.
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0016#INV-0071
@@ -9860,6 +10138,7 @@ entities:
     enforcement_level: must
     declaration_mode: local
     upheld_by_decisions: []
+    supersedes: []
   relationships:
     declared_in:
     - ADR-L-0016
@@ -9889,6 +10168,7 @@ entities:
   summary: The discovery and indexing subsystem provides the derived surfaces that
     agents query instead of scanning raw ADR bodies by default. It now includes normalized
     discovery bundle generation under `adrs/index/`, legacy compa
+  lifecycle_stage: active
   canonical_source:
     source_type: physical_system_adr
     source_ref: ADR-PS-0001
@@ -9932,6 +10212,7 @@ entities:
   summary: adr-architecture-kit now operates as a compiler and validation runtime
     rather than a collection of unrelated generators. The implementation includes
     an explicit compiler pipeline, contract validation, normalized reposito
+  lifecycle_stage: active
   canonical_source:
     source_type: physical_system_adr
     source_ref: ADR-PS-0002

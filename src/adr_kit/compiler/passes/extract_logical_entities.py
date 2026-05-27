@@ -13,6 +13,7 @@ from ...models import (
     NormalizedEntity,
     SourceRef,
     UnresolvedRecord,
+    lifecycle_stage_from_adr_status,
 )
 
 
@@ -90,6 +91,7 @@ def extract_logical_entities(
     for adr, path in logical_adrs:
         artifact = source_path(path)
         governance = adr.governance
+        adr_lifecycle = lifecycle_stage_from_adr_status(adr.status.value)
         result.entities.append(
             ExtractedEntity(
                 entity=NormalizedEntity(
@@ -97,6 +99,7 @@ def extract_logical_entities(
                     entity_type="adr",
                     name=adr.title,
                     summary=summary(adr.context),
+                    lifecycle_stage=adr_lifecycle,
                     canonical_source=canonical("logical_adr", adr.id, artifact),
                     metadata={
                         "status": adr.status.value,
@@ -121,6 +124,7 @@ def extract_logical_entities(
                         entity_type="capability",
                         name=capability.name,
                         summary=summary(capability.description),
+                        lifecycle_stage=adr_lifecycle,
                         canonical_source=canonical("logical_adr", source_ref, artifact),
                         metadata={
                             "adr_id": adr.id,
@@ -143,6 +147,7 @@ def extract_logical_entities(
                         entity_type="decision",
                         name=decision.summary,
                         summary=summary(decision.rationale),
+                        lifecycle_stage=adr_lifecycle,
                         canonical_source=canonical("logical_adr", source_ref, artifact),
                         metadata={
                             "adr_id": adr.id,

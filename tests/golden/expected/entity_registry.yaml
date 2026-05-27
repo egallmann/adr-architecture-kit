@@ -6867,6 +6867,48 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
+- id: DEC-0076
+  entity_type: decision
+  name: Treat runtime-emitted implementation attribution as downstream evidence
+  summary: ste-runtime now populates implementation attribution evidence from parsed
+    implementation artifacts. That closes the first downstream extraction gap without
+    moving attribution authority into ste-runtime. adr-architecture-
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0004#DEC-0076
+    artifact_path: adrs/logical/ADR-L-0004-adr-to-code-traceability-via-decorators.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0004
+    related_invariants: []
+    enforces_invariants: []
+    enables_capabilities: []
+    governs_components: []
+    supersedes: []
+    refines: []
+  relationships:
+    declared_in:
+    - ADR-L-0004
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0004#DEC-0076
+    extraction_phase: extract_decision
+    classification: explicit
+    generator: adr-architecture-index
 - id: DEC-9000
   entity_type: decision
   name: Publish a deterministic logical ADR fragment for boot readiness.

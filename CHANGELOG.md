@@ -79,6 +79,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   `attributed_capabilities`, `attribution_source_language`) aligned with **ste-runtime** emission.
 - Normalized **entity registry**: `lifecycle_stage` on each `NormalizedEntity`, derived from ADR status
   and persisted in emitted `entity-registry.yaml`; refreshed **kernel** JSON Schema in `schema/kernel/`.
+- Canonical **`schema/v1.1/implementation-attribution-evidence.schema.json`** synced with the bundled
+  package copy so CI schema parity (`schema/` vs `src/adr_kit/schema/`) passes.
 ## [0.1.0] — 2026-03-07
 
 ### Added

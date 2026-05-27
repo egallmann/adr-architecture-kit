@@ -7362,6 +7362,7 @@ entities:
     enforcement_level: must
     declaration_mode: local
     upheld_by_decisions: []
+    supersedes: []
   relationships:
     declared_in:
     - ADR-L-0002
@@ -7413,6 +7414,7 @@ entities:
     enforcement_level: must
     declaration_mode: local
     upheld_by_decisions: []
+    supersedes: []
   relationships:
     declared_in:
     - ADR-L-0002
@@ -7454,6 +7456,7 @@ entities:
     enforcement_level: must
     declaration_mode: local
     upheld_by_decisions: []
+    supersedes: []
   relationships:
     declared_in:
     - ADR-L-0002
@@ -7498,6 +7501,7 @@ entities:
     enforcement_level: should
     declaration_mode: local
     upheld_by_decisions: []
+    supersedes: []
   relationships:
     declared_in:
     - ADR-L-0002
@@ -7542,6 +7546,7 @@ entities:
     enforcement_level: must
     declaration_mode: local
     upheld_by_decisions: []
+    supersedes: []
   relationships:
     declared_in:
     - ADR-L-0002
@@ -7586,6 +7591,7 @@ entities:
     enforcement_level: should
     declaration_mode: local
     upheld_by_decisions: []
+    supersedes: []
   relationships:
     declared_in:
     - ADR-L-0002
@@ -7637,6 +7643,7 @@ entities:
     enforcement_level: must
     declaration_mode: local
     upheld_by_decisions: []
+    supersedes: []
   relationships:
     declared_in:
     - ADR-L-0003
@@ -7686,6 +7693,7 @@ entities:
     enforcement_level: must
     declaration_mode: local
     upheld_by_decisions: []
+    supersedes: []
   relationships:
     declared_in:
     - ADR-L-0003
@@ -7737,6 +7745,7 @@ entities:
     enforcement_level: must
     declaration_mode: local
     upheld_by_decisions: []
+    supersedes: []
   relationships:
     declared_in:
     - ADR-L-0003
@@ -7778,6 +7787,7 @@ entities:
     enforcement_level: should
     declaration_mode: local
     upheld_by_decisions: []
+    supersedes: []
   relationships:
     declared_in:
     - ADR-L-0003
@@ -7819,6 +7829,7 @@ entities:
     enforcement_level: must
     declaration_mode: local
     upheld_by_decisions: []
+    supersedes: []
   relationships:
     declared_in:
     - ADR-L-0003
@@ -7860,6 +7871,7 @@ entities:
     enforcement_level: must
     declaration_mode: local
     upheld_by_decisions: []
+    supersedes: []
   relationships:
     declared_in:
     - ADR-L-0003
@@ -7904,6 +7916,7 @@ entities:
     enforcement_level: should
     declaration_mode: local
     upheld_by_decisions: []
+    supersedes: []
   relationships:
     declared_in:
     - ADR-L-0003
@@ -7953,6 +7966,7 @@ entities:
     enforcement_level: must
     declaration_mode: local
     upheld_by_decisions: []
+    supersedes: []
   relationships:
     declared_in:
     - ADR-L-0004
@@ -7998,6 +8012,7 @@ entities:
     enforcement_level: must
     declaration_mode: local
     upheld_by_decisions: []
+    supersedes: []
   relationships:
     declared_in:
     - ADR-L-0004
@@ -8042,6 +8057,7 @@ entities:
     enforcement_level: must
     declaration_mode: local
     upheld_by_decisions: []
+    supersedes: []
   relationships:
     declared_in:
     - ADR-L-0004
@@ -8087,6 +8103,7 @@ entities:
     enforcement_level: must
     declaration_mode: local
     upheld_by_decisions: []
+    supersedes: []
   relationships:
     declared_in:
     - ADR-L-0004
@@ -8134,6 +8151,7 @@ entities:
     enforcement_level: must
     declaration_mode: local
     upheld_by_decisions: []
+    supersedes: []
   relationships:
     declared_in:
     - ADR-L-0004
@@ -8178,6 +8196,7 @@ entities:
     enforcement_level: should
     declaration_mode: local
     upheld_by_decisions: []
+    supersedes: []
   relationships:
     declared_in:
     - ADR-L-0004
@@ -8219,6 +8238,7 @@ entities:
     enforcement_level: must
     declaration_mode: local
     upheld_by_decisions: []
+    supersedes: []
   relationships:
     declared_in:
     - ADR-L-0006
@@ -8260,6 +8280,7 @@ entities:
     enforcement_level: must
     declaration_mode: local
     upheld_by_decisions: []
+    supersedes: []
   relationships:
     declared_in:
     - ADR-L-0006
@@ -8301,6 +8322,7 @@ entities:
     enforcement_level: must
     declaration_mode: local
     upheld_by_decisions: []
+    supersedes: []
   relationships:
     declared_in:
     - ADR-L-0006
@@ -8345,6 +8367,7 @@ entities:
     enforcement_level: must
     declaration_mode: local
     upheld_by_decisions: []
+    supersedes: []
   relationships:
     declared_in:
     - ADR-L-0006
@@ -8393,6 +8416,7 @@ entities:
     enforcement_level: must
     declaration_mode: local
     upheld_by_decisions: []
+    supersedes: []
   relationships:
     declared_in:
     - ADR-L-0007
@@ -8437,6 +8461,7 @@ entities:
     enforcement_level: must
     declaration_mode: local
     upheld_by_decisions: []
+    supersedes: []
   relationships:
     declared_in:
     - ADR-L-0007
@@ -8482,6 +8507,7 @@ entities:
     enforcement_level: must
     declaration_mode: local
     upheld_by_decisions: []
+    supersedes: []
   relationships:
     declared_in:
     - ADR-L-0007
@@ -8526,6 +8552,7 @@ entities:
     enforcement_level: must
     declaration_mode: local
     upheld_by_decisions: []
+    supersedes: []
   relationships:
     declared_in:
     - ADR-L-0008
@@ -8571,6 +8598,7 @@ entities:
     enforcement_level: must
     declaration_mode: local
     upheld_by_decisions: []
+    supersedes: []
   relationships:
     declared_in:
     - ADR-L-0008
@@ -8616,6 +8644,7 @@ entities:
     enforcement_level: must
     declaration_mode: local
     upheld_by_decisions: []
+    supersedes: []
   relationships:
     declared_in:
     - ADR-L-0008
@@ -8660,6 +8689,7 @@ entities:
     enforcement_level: must
     declaration_mode: local
     upheld_by_decisions: []
+    supersedes: []
   relationships:
     declared_in:
     - ADR-L-0009
@@ -8704,6 +8734,7 @@ entities:
     enforcement_level: must
     declaration_mode: local
     upheld_by_decisions: []
+    supersedes: []
   relationships:
     declared_in:
     - ADR-L-0009
@@ -8748,6 +8779,7 @@ entities:
     enforcement_level: must
     declaration_mode: local
     upheld_by_decisions: []
+    supersedes: []
   relationships:
     declared_in:
     - ADR-L-0009
@@ -8793,6 +8825,7 @@ entities:
     enforcement_level: must
     declaration_mode: local
     upheld_by_decisions: []
+    supersedes: []
   relationships:
     declared_in:
     - ADR-L-0005
@@ -8837,6 +8870,7 @@ entities:
     enforcement_level: must
     declaration_mode: local
     upheld_by_decisions: []
+    supersedes: []
   relationships:
     declared_in:
     - ADR-L-0005
@@ -8881,6 +8915,7 @@ entities:
     enforcement_level: must
     declaration_mode: local
     upheld_by_decisions: []
+    supersedes: []
   relationships:
     declared_in:
     - ADR-L-0005
@@ -8922,6 +8957,7 @@ entities:
     enforcement_level: must
     declaration_mode: local
     upheld_by_decisions: []
+    supersedes: []
   relationships:
     declared_in:
     - ADR-L-0005
@@ -8966,6 +9002,7 @@ entities:
     enforcement_level: should
     declaration_mode: local
     upheld_by_decisions: []
+    supersedes: []
   relationships:
     declared_in:
     - ADR-L-0005
@@ -9010,6 +9047,7 @@ entities:
     enforcement_level: must
     declaration_mode: local
     upheld_by_decisions: []
+    supersedes: []
   relationships:
     declared_in:
     - ADR-L-0005
@@ -9060,6 +9098,7 @@ entities:
     enforcement_level: must
     declaration_mode: local
     upheld_by_decisions: []
+    supersedes: []
   relationships:
     declared_in:
     - ADR-L-0010
@@ -9104,6 +9143,7 @@ entities:
     enforcement_level: must
     declaration_mode: local
     upheld_by_decisions: []
+    supersedes: []
   relationships:
     declared_in:
     - ADR-L-0010
@@ -9150,6 +9190,7 @@ entities:
     enforcement_level: must
     declaration_mode: local
     upheld_by_decisions: []
+    supersedes: []
   relationships:
     declared_in:
     - ADR-L-0010
@@ -9195,6 +9236,7 @@ entities:
     enforcement_level: must
     declaration_mode: local
     upheld_by_decisions: []
+    supersedes: []
   relationships:
     declared_in:
     - ADR-L-0011
@@ -9239,6 +9281,7 @@ entities:
     enforcement_level: must
     declaration_mode: local
     upheld_by_decisions: []
+    supersedes: []
   relationships:
     declared_in:
     - ADR-L-0011
@@ -9286,6 +9329,7 @@ entities:
     enforcement_level: must
     declaration_mode: local
     upheld_by_decisions: []
+    supersedes: []
   relationships:
     declared_in:
     - ADR-L-0011
@@ -9333,6 +9377,7 @@ entities:
     enforcement_level: must
     declaration_mode: local
     upheld_by_decisions: []
+    supersedes: []
   relationships:
     declared_in:
     - ADR-L-0012
@@ -9384,6 +9429,7 @@ entities:
     enforcement_level: must
     declaration_mode: local
     upheld_by_decisions: []
+    supersedes: []
   relationships:
     declared_in:
     - ADR-L-0013
@@ -9431,6 +9477,7 @@ entities:
     enforcement_level: must
     declaration_mode: local
     upheld_by_decisions: []
+    supersedes: []
   relationships:
     declared_in:
     - ADR-L-0014
@@ -9478,6 +9525,7 @@ entities:
     enforcement_level: must
     declaration_mode: local
     upheld_by_decisions: []
+    supersedes: []
   relationships:
     declared_in:
     - ADR-L-0014
@@ -9523,6 +9571,7 @@ entities:
     enforcement_level: must
     declaration_mode: local
     upheld_by_decisions: []
+    supersedes: []
   relationships:
     declared_in:
     - ADR-L-0015
@@ -9568,6 +9617,7 @@ entities:
     enforcement_level: must
     declaration_mode: local
     upheld_by_decisions: []
+    supersedes: []
   relationships:
     declared_in:
     - ADR-L-0015
@@ -9613,6 +9663,7 @@ entities:
     enforcement_level: must
     declaration_mode: local
     upheld_by_decisions: []
+    supersedes: []
   relationships:
     declared_in:
     - ADR-L-0015
@@ -9673,6 +9724,7 @@ entities:
     enforcement_level: must
     declaration_mode: local
     upheld_by_decisions: []
+    supersedes: []
   relationships:
     declared_in:
     - ADR-L-0013
@@ -9720,6 +9772,7 @@ entities:
     enforcement_level: must
     declaration_mode: local
     upheld_by_decisions: []
+    supersedes: []
   relationships:
     declared_in:
     - ADR-L-0017
@@ -9767,6 +9820,7 @@ entities:
     enforcement_level: must
     declaration_mode: local
     upheld_by_decisions: []
+    supersedes: []
   relationships:
     declared_in:
     - ADR-L-0016
@@ -9816,6 +9870,7 @@ entities:
     enforcement_level: must
     declaration_mode: local
     upheld_by_decisions: []
+    supersedes: []
   relationships:
     declared_in:
     - ADR-L-0017
@@ -9860,6 +9915,7 @@ entities:
     enforcement_level: must
     declaration_mode: local
     upheld_by_decisions: []
+    supersedes: []
   relationships:
     declared_in:
     - ADR-L-0016

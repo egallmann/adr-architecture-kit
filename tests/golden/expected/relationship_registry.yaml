@@ -1271,6 +1271,16 @@ relationships:
   canonical_source_ref: ADR-L-0016#DEC-0075
   confidence: 1.0
   metadata: {}
+- relationship_id: declared_in:DEC-0076:ADR-L-0004
+  relationship_type: declared_in
+  from_entity_id: DEC-0076
+  to_entity_id: ADR-L-0004
+  provenance_classification: explicit
+  evidence:
+  - ADR-L-0004#DEC-0076
+  canonical_source_ref: ADR-L-0004#DEC-0076
+  confidence: 1.0
+  metadata: {}
 - relationship_id: declared_in:DEC-9000:ADR-L-9000
   relationship_type: declared_in
   from_entity_id: DEC-9000

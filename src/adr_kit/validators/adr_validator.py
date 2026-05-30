@@ -3,6 +3,7 @@
 Implements ADR-L-0007: Multi-scope ADR architecture.
 """
 
+import re
 from dataclasses import dataclass
 from pathlib import Path
 from typing import List, Optional, Union, Dict
@@ -291,6 +292,24 @@ class ADRValidator:
                     field="governance.steelman_review_completed",
                 ))
     
+    # INV-0002: patterns that detect genuine implementation-detail leakage in logical ADR
+    # context prose.  Each pattern is anchored to whole-word boundaries so common
+    # architectural compound terms do not trigger false positives:
+    #   "first-class"  → does NOT match 'class'   (negative lookbehind for '-')
+    #   "sub-module"   → does NOT match 'module'   (negative lookbehind for '-')
+    #   "pipeline"     → does NOT match 'pip'      (\b prevents partial-word match)
+    #   "functions"    → does NOT match 'function' (\b prevents partial-word match)
+    #   "important"    → does NOT match 'import'   (\b prevents partial-word match)
+    _IMPL_DETAIL_PATTERNS: list[tuple[str, re.Pattern[str]]] = [
+        ("class",    re.compile(r"(?<!-)class\b")),
+        ("function", re.compile(r"\bfunction\b")),
+        ("module",   re.compile(r"(?<!-)module\b")),
+        ("package",  re.compile(r"\bpackage\b")),
+        ("import",   re.compile(r"\bimport\b")),
+        ("npm",      re.compile(r"\bnpm\b")),
+        ("pip",      re.compile(r"\bpip\b")),
+    ]
+
     def _validate_logical_adr(self, adr: LogicalADR, errors: List[ValidationError], warnings: List[ValidationError]):
         """Validate logical ADR business rules.
         
@@ -300,11 +319,10 @@ class ADRValidator:
             warnings: List to append warnings to
         """
         # INV-0002: Logical ADRs must not contain implementation details
-        impl_keywords = ["class", "function", "module", "package", "import", "npm", "pip"]
         context_lower = adr.context.lower() if adr.context else ""
-        
-        for keyword in impl_keywords:
-            if keyword in context_lower:
+
+        for keyword, pattern in self._IMPL_DETAIL_PATTERNS:
+            if pattern.search(context_lower):
                 warnings.append(ValidationError(
                     severity="warning",
                     rule="INV-0002",

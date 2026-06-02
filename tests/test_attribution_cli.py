@@ -62,6 +62,71 @@ def test_attribution_generate_shim_python():
     assert "implements_adrs" in result.output
 
 
+def test_attribution_workspace_report_writes_federation(tmp_path: Path) -> None:
+    workspace_root = tmp_path / "ws"
+    state_dir = workspace_root / ".ste-workspace"
+    repo_a = workspace_root / "repo-a"
+    repo_a.mkdir(parents=True)
+    (workspace_root / "workspace.yaml").write_text(
+        yaml.safe_dump(
+            {
+                "schema_version": "1.0",
+                "output_dir": ".ste-workspace/",
+                "repos": [{"name": "repo-a", "path": "repo-a", "kind": "library", "lang": "python"}],
+            },
+        ),
+        encoding="utf-8",
+    )
+    (repo_a / "adrs").mkdir(parents=True)
+    (repo_a / "adrs" / "manifest.yaml").write_text(
+        yaml.safe_dump(
+            {
+                "schema_version": "1.0",
+                "type": "manifest",
+                "adrs": [{"id": "ADR-L-0001", "title": "Test", "status": "accepted"}],
+            },
+        ),
+        encoding="utf-8",
+    )
+    ev_dir = state_dir / "state" / "repo-a" / "attribution"
+    ev_dir.mkdir(parents=True)
+    (ev_dir / "implementation-attribution-evidence.yaml").write_text(
+        yaml.safe_dump(
+            {
+                "schema_version": "1.2",
+                "type": "implementation_attribution_evidence",
+                "records": [
+                    {
+                        "implementation_entity_id": "fn:1",
+                        "implementation_entity_type": "function",
+                        "attributed_adrs": ["ADR-L-0001"],
+                        "enforced_invariants": [],
+                        "provenance": {"source_file": "a.py", "extractor": "t", "commit": None},
+                    },
+                ],
+            },
+        ),
+        encoding="utf-8",
+    )
+
+    runner = CliRunner()
+    result = runner.invoke(
+        cli,
+        [
+            "attribution",
+            "workspace-report",
+            "--workspace-root",
+            str(workspace_root),
+        ],
+    )
+    assert result.exit_code == 0, result.output
+    out_file = state_dir / "workspace-attribution-federation.yaml"
+    assert out_file.is_file()
+    doc = yaml.safe_load(out_file.read_text(encoding="utf-8"))
+    assert doc["type"] == "workspace_attribution_federation"
+    assert any(r["qualified_id"] == "repo-a:ADR-L-0001" for r in doc["qualified_adrs"])
+
+
 def test_attribution_generate_shim_typescript():
     runner = CliRunner()
     result = runner.invoke(cli, ["attribution", "generate-shim", "--lang", "typescript"])

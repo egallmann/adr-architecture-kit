@@ -137,6 +137,16 @@ python scripts/check_runtime_hygiene.py
 
 When touching implementation linkage or attribution evidence pipelines, smoke-check representative files with **`adr attribution check`** (optional `adr attribution coverage` for corpus-vs-evidence summaries); see README **Implementation linkage** for flags and evidence path defaults.
 
+**Attribution retrofit closure workflow** (multi-repo STE workspace):
+
+1. From **`ste-runtime`**, refresh derived evidence: `npm run recon:workspace`
+2. Evidence path: `.ste-workspace/state/adr-architecture-kit/attribution/implementation-attribution-evidence.yaml`
+3. From **`adr-architecture-kit`**: `adr attribution check --scope . --evidence <path above>`
+4. Contract guards: `pytest tests/test_retrofit_contract_guards.py tests/test_attribution_evidence_sync.py -q`
+5. Negative-space sign-off: [`docs/attribution-negative-space.md`](docs/attribution-negative-space.md)
+
+Pre-push runs contract guards always; **`adr attribution check`** runs when workspace evidence exists (otherwise skipped with a message).
+
 ### System overview and unified compile
 
 ```bash
@@ -163,7 +173,7 @@ Or run the checks manually before pushing:
 python scripts/run_local_pre_push_checks.py
 ```
 
-That bundle validates generated-docs integrity and runs a **subset** of `pytest`, including **`tests/test_package_schema_parity.py`** — canonical **`schema/v*.*`** must byte-match **`src/adr_kit/schema/v*_*`** (same check as **`Check package schema parity`** in **`.github/workflows/adr-governance.yml`**).
+That bundle validates generated-docs integrity and runs a **subset** of `pytest`, including **`tests/test_package_schema_parity.py`** — canonical **`schema/v*.*`** must byte-match **`src/adr_kit/schema/v*_*`** (same check as **`Check package schema parity`** in **`.github/workflows/adr-governance.yml`**). It also runs **`tests/test_retrofit_contract_guards.py`** and **`tests/test_attribution_evidence_sync.py`**, then **`adr attribution check`** when workspace RECON evidence is present under **`.ste-workspace/state/adr-architecture-kit/`**.
 
 
 ---

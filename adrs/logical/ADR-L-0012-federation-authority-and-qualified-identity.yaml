@@ -2,8 +2,9 @@ schema_version: '1.0'
 adr_type: logical
 id: ADR-L-0012
 title: Federation Authority and Qualified Identity Model
-status: proposed
+status: accepted
 created_date: '2026-03-14'
+modified_date: '2026-06-02'
 authors:
 - adr-architecture-kit
 domains:
@@ -75,6 +76,19 @@ decisions:
     - Existing local ADR authoring remains valid
     - Cross-repo references become explicit and machine-parseable
     - Global identity does not require a central ID allocator
+- id: DEC-0077
+  summary: Emit workspace-attribution-federation.yaml as read-only cross-repo attribution index
+  rationale: |
+    Per-repo implementation-attribution-evidence.yaml files use bare ADR ids valid
+    only within each corpus. Workspace reasoning requires a derived federation
+    artifact keyed by qualified_id (workspaceRepoKey:ADR-L-XXXX) so homonymous
+    bare ids across repositories are never merged into a single semantic cluster.
+  consequences:
+    positive:
+    - Agents and workspace tools resolve ADR embodiment without bare-id collapse
+    - Federation remains derived and does not mutate per-repo evidence
+    negative:
+    - Workspace manifest repo keys must remain stable for qualified_id namespaces
 invariants:
 - id: INV-0058
   statement: |

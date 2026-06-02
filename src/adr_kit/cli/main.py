@@ -42,6 +42,10 @@ from ..repository import ArchitectureRepository
 from ..schema.contract_validation import ContractProfile, validate_adr_contract_bundle
 from ..schema.implementation_attribution_validation import validate_implementation_attribution_evidence
 from ..attribution_shim_generator import generate_shim
+from ..federation.workspace_attribution import (
+    resolve_workspace_repos,
+    write_workspace_attribution_federation,
+)
 from ..validators import (
     ADRValidator,
     GeneratedArtifactValidator,
@@ -1960,6 +1964,67 @@ def attribution_coverage_cmd(scope: Optional[Path], evidence: Optional[Path]):
             "catalog_adrs_not_cited_by_evidence": unattributed_in_corpus,
         }
         click.echo(yaml.safe_dump(payload, sort_keys=False, allow_unicode=True).rstrip())
+    except Exception as e:
+        click.echo(f"Error: {e}", err=True)
+        sys.exit(1)
+
+
+@implements_adr("ADR-L-0002", "ADR-L-0012", "ADR-L-0013", "ADR-L-0004")
+@attribution_cli.command("workspace-report")
+@click.option(
+    "--workspace-root",
+    type=click.Path(exists=True, file_okay=False, path_type=Path),
+    default=".",
+    show_default=True,
+    help="Directory containing workspace.yaml (or parent of output_dir).",
+)
+@click.option(
+    "--state-dir",
+    type=click.Path(exists=True, file_okay=False, path_type=Path),
+    default=None,
+    help="Override derived state directory (default: output_dir from workspace.yaml).",
+)
+@click.option(
+    "--output",
+    "-o",
+    type=click.Path(dir_okay=False, path_type=Path),
+    default=None,
+    help="Federation YAML path (default: <state-dir>/workspace-attribution-federation.yaml).",
+)
+def attribution_workspace_report_cmd(
+    workspace_root: Path,
+    state_dir: Optional[Path],
+    output: Optional[Path],
+):
+    """Build workspace attribution federation index (qualified ADR ids across repos)."""
+    try:
+        resolved_state, repos = resolve_workspace_repos(Path(workspace_root))
+        state_path = Path(state_dir).resolve() if state_dir is not None else resolved_state
+        out_path = (
+            Path(output).resolve()
+            if output is not None
+            else state_path / "workspace-attribution-federation.yaml"
+        )
+        write_workspace_attribution_federation(
+            out_path,
+            workspace_root=Path(workspace_root).resolve(),
+            state_dir=state_path,
+            repos=repos,
+        )
+        doc = yaml.safe_load(out_path.read_text(encoding="utf-8"))
+        homonym_count = len(doc.get("homonym_groups") or [])
+        qualified_count = len(doc.get("qualified_adrs") or [])
+        click.echo(
+            yaml.safe_dump(
+                {
+                    "output": str(out_path),
+                    "qualified_adr_count": qualified_count,
+                    "homonym_group_count": homonym_count,
+                    "repos_scanned": [name for name, _ in repos],
+                },
+                sort_keys=False,
+            ).rstrip(),
+        )
     except Exception as e:
         click.echo(f"Error: {e}", err=True)
         sys.exit(1)

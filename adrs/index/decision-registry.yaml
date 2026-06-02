@@ -3315,6 +3315,50 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
+- id: DEC-0077
+  entity_type: decision
+  name: Emit workspace-attribution-federation.yaml as read-only cross-repo attribution
+    index
+  summary: Per-repo implementation-attribution-evidence.yaml files use bare ADR ids
+    valid only within each corpus. Workspace reasoning requires a derived federation
+    artifact keyed by qualified_id (workspaceRepoKey:ADR-L-XXXX) so ho
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0012#DEC-0077
+    artifact_path: adrs/logical/ADR-L-0012-federation-authority-and-qualified-identity.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0012
+    related_invariants: []
+    enforces_invariants: []
+    enables_capabilities: []
+    governs_components: []
+    supersedes: []
+    refines: []
+  relationships:
+    declared_in:
+    - ADR-L-0012
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0012#DEC-0077
+    extraction_phase: extract_decision
+    classification: explicit
+    generator: adr-architecture-index
 - id: DEC-9000
   entity_type: decision
   name: Publish a deterministic logical ADR fragment for boot readiness.

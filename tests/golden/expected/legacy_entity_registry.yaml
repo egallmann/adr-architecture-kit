@@ -4,8 +4,8 @@
 # generator_id: adr-compiler
 # generator_version: 1
 # hash_algorithm: sha256
-# source_hash: 75208e0ba52d915570df00fd04ec0e104bf71829f20ed0c259c3cdff2c1a7076
-# rendered_hash: a2637d3c7ea12c9291bfa21c2a2b614b71e0854a05e169d2e0790aeb53b1e05d
+# source_hash: 10e3f74a84cfafce45db79d124da2bd6d6670b5db3122ce892f56526bb2e56d4
+# rendered_hash: 442444f8528157fadacd3453a87a952bc1793ab66fcfc20b2b8dcd34b707332c
 
 schema_version: '1.1'
 type: entity_registry
@@ -1957,6 +1957,22 @@ entities:
   introduced_by: ADR-L-0004
   lifecycle_stage: active
   source_path: adrs/logical/ADR-L-0004-adr-to-code-traceability-via-decorators.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs: []
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: DEC-0077
+  entity_type: decision
+  name: Emit workspace-attribution-federation.yaml as read-only cross-repo attribution
+    index
+  introduced_by: ADR-L-0012
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0012-federation-authority-and-qualified-identity.yaml
   source_artifact_type: logical_adr
   domains: []
   related_adrs: []

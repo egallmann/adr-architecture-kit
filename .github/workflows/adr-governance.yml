@@ -79,6 +79,15 @@ jobs:
               print("Schema parity check passed: all bundled schemas match canonical sources.")
           EOF
 
+      - name: Run attribution retrofit contract guards
+        run: |
+          pytest tests/test_retrofit_contract_guards.py -q
+
+      - name: Run attribution evidence sync (optional workspace state)
+        run: |
+          pytest tests/test_attribution_evidence_sync.py -q
+        continue-on-error: true
+
   validate-project-metadata:
     name: Validate PROJECT.yaml
     runs-on: ubuntu-latest

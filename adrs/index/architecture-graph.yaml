@@ -4,13 +4,13 @@
 # generator_id: adr-architecture-graph
 # generator_version: 1
 # hash_algorithm: sha256
-# source_hash: 88e543c8d1fb015b9494e259dd673a6d472399746326195896a5e93378619544
-# rendered_hash: 6b2c533bd84a28e6c7c87cd0f9d3449cc985bac4cf3edbc0afc4764a9e684f92
+# source_hash: e673b66a801ff8eb47b816e962ec2fac41a943ee9286cb7d901df883dac9ae36
+# rendered_hash: 1624a5a3e0737d76210e77fcfe86e28e0b252028288debb4f9cc44c708a5627b
 
 schema_version: '1.0'
 type: architecture_graph
 architecture_namespace: adr-architecture-kit
-generated_at: '2026-05-27T02:45:34Z'
+generated_at: '2026-06-02T04:58:54Z'
 nodes:
 - id: ADR-L-0001
   entity_type: adr
@@ -1142,6 +1142,14 @@ nodes:
     source_type: logical_adr
     source_ref: ADR-L-0004#DEC-0076
     artifact_path: adrs/logical/ADR-L-0004-adr-to-code-traceability-via-decorators.yaml
+- id: DEC-0077
+  entity_type: decision
+  name: Emit workspace-attribution-federation.yaml as read-only cross-repo attribution
+    index
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0012#DEC-0077
+    artifact_path: adrs/logical/ADR-L-0012-federation-authority-and-qualified-identity.yaml
 - id: DEC-9000
   entity_type: decision
   name: Publish a deterministic logical ADR fragment for boot readiness.
@@ -2890,6 +2898,16 @@ edges:
   evidence:
   - ADR-L-0004#DEC-0076
   canonical_source_ref: ADR-L-0004#DEC-0076
+  confidence: 1.0
+  metadata: {}
+- relationship_id: declared_in:DEC-0077:ADR-L-0012
+  relationship_type: declared_in
+  source_entity_id: DEC-0077
+  target_entity_id: ADR-L-0012
+  provenance_classification: explicit
+  evidence:
+  - ADR-L-0012#DEC-0077
+  canonical_source_ref: ADR-L-0012#DEC-0077
   confidence: 1.0
   metadata: {}
 - relationship_id: declared_in:DEC-9000:ADR-L-9000

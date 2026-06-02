@@ -76,7 +76,7 @@ decisions:
     - Existing local ADR authoring remains valid
     - Cross-repo references become explicit and machine-parseable
     - Global identity does not require a central ID allocator
-- id: DEC-0048
+- id: DEC-0077
   summary: Emit workspace-attribution-federation.yaml as read-only cross-repo attribution index
   rationale: |
     Per-repo implementation-attribution-evidence.yaml files use bare ADR ids valid

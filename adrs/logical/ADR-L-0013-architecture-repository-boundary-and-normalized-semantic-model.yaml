@@ -6,6 +6,7 @@ status: accepted
 created_date: '2026-03-14'
 authors:
 - adr-architecture-kit
+modified_date: '2026-08-05'
 domains:
 - repository
 - discovery
@@ -116,6 +117,24 @@ decisions:
     - Additive graph or subset-registry failures can degrade safely without
       redefining the baseline contract
     - The legacy compatibility registry does not silently regain authority
+- id: DEC-0079
+  summary: Preserve the present repository seam and defer any narrow consumer facade
+  rationale: |
+    Phase 0 production hardening does not authorize a new SDK, root export,
+    replacement compilation result, normalized-model revision, or graph API.
+    `ArchitectureRepository` and `NormalizedArchitectureModel` remain the
+    supported in-process seam. The historical `ArchModel` export is retained
+    for compatibility but remains compiler-internal and unsuitable as a new
+    consumer dependency.
+
+    A later phase may introduce a narrow facade over supported interfaces only.
+    Any future Assembler must call that supported boundary and must not bind to
+    `ArchModel`, compiler passes, raw source ADR parsing, or generated-file layout.
+  consequences:
+    positive:
+    - Production controls land without freezing a premature SDK abstraction
+    - Existing imports remain compatible during pre-1.0 hardening
+    - Later facade and Assembler work starts from an explicit dependency boundary
 invariants:
 - id: INV-0059
   statement: |
@@ -182,3 +201,8 @@ related_adrs:
 - ADR-PC-0005
 - ADR-PC-0001
 gaps: []
+notes: |
+  Explicitly deferred beyond Phase 0: graph bundles, assertion identity,
+  entity/schema expansion, topology identity, bindings, transactional authoring,
+  facade/SDK creation, Assembler implementation, MCP, runtime extraction, rules,
+  substrate, and admission capability.

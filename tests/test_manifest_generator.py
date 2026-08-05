@@ -5,7 +5,7 @@ import shutil
 import uuid
 from pathlib import Path
 
-from src.adr_kit.generators import ManifestGenerator
+from adr_kit.generators import ManifestGenerator
 
 
 @pytest.fixture

@@ -6,7 +6,7 @@ from unittest.mock import Mock, patch
 import tempfile
 import shutil
 
-from src.adr_kit.scope import ProjectScopeResolver, ProjectScope
+from adr_kit.scope import ProjectScopeResolver, ProjectScope
 
 
 class TestProjectScopeDetection:

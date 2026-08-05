@@ -21,7 +21,7 @@ COMMANDS: tuple[tuple[str, ...], ...] = (
     (
         sys.executable,
         "-m",
-        "src.adr_kit.cli.main",
+        "adr_kit.cli.main",
         "validate-generated-docs",
         "--scope",
         str(REPO_ROOT),
@@ -55,7 +55,7 @@ def run_attribution_check() -> int:
     command = (
         sys.executable,
         "-m",
-        "src.adr_kit.cli.main",
+        "adr_kit.cli.main",
         "attribution",
         "check",
         "--scope",

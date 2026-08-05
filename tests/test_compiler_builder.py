@@ -1,9 +1,9 @@
 from pathlib import Path
 
-from src.adr_kit.compiler import ArchModelBuilder
-from src.adr_kit.compiler.backend.projection import project_entity, project_relationship, project_unresolved
-from src.adr_kit.generators.architecture_index_generator import ArchitectureIndexGenerator
-from src.adr_kit.scope import ProjectScopeResolver
+from adr_kit.compiler import ArchModelBuilder
+from adr_kit.compiler.backend.projection import project_entity, project_relationship, project_unresolved
+from adr_kit.generators.architecture_index_generator import ArchitectureIndexGenerator
+from adr_kit.scope import ProjectScopeResolver
 from tests.golden.helpers import clone_scope_sources, generate_deterministic_outputs
 
 

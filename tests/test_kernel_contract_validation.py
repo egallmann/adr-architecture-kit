@@ -4,17 +4,17 @@ import pytest
 import yaml
 from click.testing import CliRunner
 
-from src.adr_kit.cli.main import cli
-from src.adr_kit.parser import ADRParser
-from src.adr_kit.repository import ArchitectureRepository
-from src.adr_kit.repository.registry_loader import (
+from adr_kit.cli.main import cli
+from adr_kit.parser import ADRParser
+from adr_kit.repository import ArchitectureRepository
+from adr_kit.repository.registry_loader import (
     load_architecture_index,
     load_normalized_entity_registry,
     load_relationship_registry,
     load_unresolved_registry,
 )
-from src.adr_kit.repository.registry_paths import discover_repository_paths, resolve_index_reference
-from src.adr_kit.schema.contract_validation import validate_adr_contract_bundle
+from adr_kit.repository.registry_paths import discover_repository_paths, resolve_index_reference
+from adr_kit.schema.contract_validation import validate_adr_contract_bundle
 from tests.test_architecture_repository import _generate_bundle
 
 

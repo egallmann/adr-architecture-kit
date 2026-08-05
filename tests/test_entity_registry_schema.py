@@ -1,7 +1,7 @@
 """Schema validation tests for entity registry artifacts."""
 
-from src.adr_kit.generators import EntityRegistryGenerator
-from src.adr_kit.parser import ADRParser
+from adr_kit.generators import EntityRegistryGenerator
+from adr_kit.parser import ADRParser
 
 
 def test_generated_entity_registry_parses_against_schema(tmp_path):

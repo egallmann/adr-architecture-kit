@@ -134,7 +134,7 @@ class ArchitectureCompiler:
         config = config or CompilerConfig()
         diagnostics = DiagnosticLog()
         resolved_scope = self._resolve_scope(scope, config)
-        timestamp, check_timestamp_error = self._resolve_check_timestamp(resolved_scope, config)
+        timestamp, check_timestamp_error = self._resolve_generation_timestamp(resolved_scope, config)
         if check_timestamp_error is not None:
             diagnostics.error("E705", check_timestamp_error)
             duration_ms = int((perf_counter() - started) * 1000)
@@ -423,13 +423,13 @@ class ArchitectureCompiler:
             parsed = parsed.replace(tzinfo=timezone.utc)
         return parsed.astimezone(timezone.utc)
 
-    def _resolve_check_timestamp(
+    def _resolve_generation_timestamp(
         self,
         scope: ProjectScope,
         config: CompilerConfig,
     ) -> tuple[datetime | None, str | None]:
         explicit_timestamp = self._parse_timestamp(config.pinned_timestamp)
-        if explicit_timestamp is not None or not config.check:
+        if explicit_timestamp is not None:
             return explicit_timestamp, None
 
         root = (config.output_dir or scope.root).resolve()
@@ -485,7 +485,7 @@ class ArchitectureCompiler:
 
         with ExitStack() as stack:
             _FixedDateTime.fixed_timestamp = timestamp
-            stack.enter_context(patch("src.adr_kit.generators.architecture_index_generator.datetime", _FixedDateTime))
-            stack.enter_context(patch("src.adr_kit.generators.manifest_generator.datetime", _FixedDateTime))
-            stack.enter_context(patch("src.adr_kit.compiler.backend.manifest_rendering.datetime", _FixedDateTime))
+            stack.enter_context(patch("adr_kit.generators.architecture_index_generator.datetime", _FixedDateTime))
+            stack.enter_context(patch("adr_kit.generators.manifest_generator.datetime", _FixedDateTime))
+            stack.enter_context(patch("adr_kit.compiler.backend.manifest_rendering.datetime", _FixedDateTime))
             yield

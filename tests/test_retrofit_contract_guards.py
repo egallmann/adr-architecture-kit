@@ -4,25 +4,25 @@ from __future__ import annotations
 
 import pytest
 
-from src.adr_kit.cli.main import cli
-from src.adr_kit.compiler.backend.adr_ir_fragment_emitter import compile_logical_adr_ir_fragments
-from src.adr_kit.compiler.backend.graph_emitter import emit_graph_artifact
-from src.adr_kit.compiler.backend.manifest_emitter import emit_manifest_artifact
-from src.adr_kit.compiler.backend.markdown_emitter import emit_markdown_artifacts
-from src.adr_kit.compiler.backend.registry_emitter import emit_registry_artifacts
-from src.adr_kit.compiler.driver import ArchitectureCompiler
-from src.adr_kit.compiler.pipeline import CompilerPipeline, run_frontend_pipeline
-from src.adr_kit.generators.architecture_index_generator import ArchitectureIndexGenerator
-from src.adr_kit.generators.entity_registry_generator import EntityRegistryGenerator
-from src.adr_kit.generators.manifest_generator import ManifestGenerator
-from src.adr_kit.generators.scaffold_generator import ScaffoldGenerator
-from src.adr_kit.generators.system_overview_generator import SystemOverviewGenerator
-from src.adr_kit.integrity.validation import GeneratedArtifactValidator
-from src.adr_kit.models.normalized_architecture_model import NormalizedArchitectureModel
-from src.adr_kit.parser.yaml_parser import ADRParser
-from src.adr_kit.projection import ProjectionInspector
-from src.adr_kit.repository.architecture_repository import ArchitectureRepository
-from src.adr_kit.repository.registry_loader import (
+from adr_kit.cli.main import cli
+from adr_kit.compiler.backend.adr_ir_fragment_emitter import compile_logical_adr_ir_fragments
+from adr_kit.compiler.backend.graph_emitter import emit_graph_artifact
+from adr_kit.compiler.backend.manifest_emitter import emit_manifest_artifact
+from adr_kit.compiler.backend.markdown_emitter import emit_markdown_artifacts
+from adr_kit.compiler.backend.registry_emitter import emit_registry_artifacts
+from adr_kit.compiler.driver import ArchitectureCompiler
+from adr_kit.compiler.pipeline import CompilerPipeline, run_frontend_pipeline
+from adr_kit.generators.architecture_index_generator import ArchitectureIndexGenerator
+from adr_kit.generators.entity_registry_generator import EntityRegistryGenerator
+from adr_kit.generators.manifest_generator import ManifestGenerator
+from adr_kit.generators.scaffold_generator import ScaffoldGenerator
+from adr_kit.generators.system_overview_generator import SystemOverviewGenerator
+from adr_kit.integrity.validation import GeneratedArtifactValidator
+from adr_kit.models.normalized_architecture_model import NormalizedArchitectureModel
+from adr_kit.parser.yaml_parser import ADRParser
+from adr_kit.projection import ProjectionInspector
+from adr_kit.repository.architecture_repository import ArchitectureRepository
+from adr_kit.repository.registry_loader import (
     fingerprint_payload,
     load_architecture_index,
     load_legacy_entity_registry,
@@ -32,17 +32,17 @@ from src.adr_kit.repository.registry_loader import (
     load_unresolved_registry,
     model_payload,
 )
-from src.adr_kit.repository.semantic_adapter import (
+from adr_kit.repository.semantic_adapter import (
     coerce_to_normalized_model,
     legacy_entity_to_normalized,
     legacy_relationships,
 )
-from src.adr_kit.schema.contract_validation import validate_adr_contract_bundle
-from src.adr_kit.schema.implementation_attribution_validation import (
+from adr_kit.schema.contract_validation import validate_adr_contract_bundle
+from adr_kit.schema.implementation_attribution_validation import (
     validate_implementation_attribution_evidence,
 )
-from src.adr_kit.schema.repository_schema_generator import generate_repository_schema_documents
-from src.adr_kit.validators import ADRValidator, EntityValidator, SystemOverviewValidator
+from adr_kit.schema.repository_schema_generator import generate_repository_schema_documents
+from adr_kit.validators import ADRValidator, EntityValidator, SystemOverviewValidator
 
 from tests.provenance_test_helpers import (
     class_adr_metadata,

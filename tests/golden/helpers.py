@@ -6,9 +6,9 @@ from datetime import datetime, timezone
 from pathlib import Path
 from unittest.mock import patch
 
-from src.adr_kit.generators.architecture_index_generator import ArchitectureIndexGenerator
-from src.adr_kit.generators.manifest_generator import ManifestGenerator
-from src.adr_kit.scope import ProjectScopeResolver
+from adr_kit.generators.architecture_index_generator import ArchitectureIndexGenerator
+from adr_kit.generators.manifest_generator import ManifestGenerator
+from adr_kit.scope import ProjectScopeResolver
 
 
 FIXED_TIMESTAMP = datetime(2026, 1, 1, 0, 0, 0, tzinfo=timezone.utc)
@@ -61,8 +61,8 @@ def clone_scope_sources(source_root: Path, destination_root: Path) -> None:
 def pinned_generation_time():
     """Pin generator timestamps for deterministic output."""
     with ExitStack() as stack:
-        stack.enter_context(patch("src.adr_kit.generators.architecture_index_generator.datetime", _FixedDateTime))
-        stack.enter_context(patch("src.adr_kit.generators.manifest_generator.datetime", _FixedDateTime))
+        stack.enter_context(patch("adr_kit.generators.architecture_index_generator.datetime", _FixedDateTime))
+        stack.enter_context(patch("adr_kit.generators.manifest_generator.datetime", _FixedDateTime))
         yield
 
 

@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import pytest
 
-from src.adr_kit.decorators import (
+from adr_kit.decorators import (
     enforces_invariant,
     enforces_invariants,
     implements_adr,

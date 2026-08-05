@@ -7,13 +7,13 @@ import jsonschema
 import yaml
 from click.testing import CliRunner
 
-from src.adr_kit.cli.main import cli
-from src.adr_kit.compiler import (
+from adr_kit.cli.main import cli
+from adr_kit.compiler import (
     AdrIrFragmentCompileError,
     AdrIrSourceDescriptor,
     compile_logical_adr_ir_fragments,
 )
-from src.adr_kit.compiler.backend.adr_ir_fragment_rendering import (
+from adr_kit.compiler.backend.adr_ir_fragment_rendering import (
     canonical_json_bytes,
     lower_ascii,
     norm,

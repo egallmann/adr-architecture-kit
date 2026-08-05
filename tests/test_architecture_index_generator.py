@@ -6,8 +6,8 @@ from textwrap import dedent
 import pytest
 from click.testing import CliRunner
 
-from src.adr_kit.compiler.frontend import CachedADRParser
-from src.adr_kit.compiler.passes import (
+from adr_kit.compiler.frontend import CachedADRParser
+from adr_kit.compiler.passes import (
     detect_unresolved,
     DetectUnresolvedPass,
     DeriveRelationshipsPass,
@@ -26,10 +26,10 @@ from src.adr_kit.compiler.passes import (
     score_completeness,
     validate_bundle,
 )
-from src.adr_kit.cli.main import cli
-from src.adr_kit.generators import ArchitectureIndexGenerator
-from src.adr_kit.models import SourceRef
-from src.adr_kit.parser import ADRParser
+from adr_kit.cli.main import cli
+from adr_kit.generators import ArchitectureIndexGenerator
+from adr_kit.models import SourceRef
+from adr_kit.parser import ADRParser
 
 
 def _write_file(path: Path, content: str) -> None:

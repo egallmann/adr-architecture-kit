@@ -4,8 +4,8 @@ from pathlib import Path
 
 import yaml
 
-from src.adr_kit.compiler import ArchitectureCompiler, CompilerConfig
-from src.adr_kit.scope import ProjectScopeResolver
+from adr_kit.compiler import ArchitectureCompiler, CompilerConfig
+from adr_kit.scope import ProjectScopeResolver
 from tests.test_compiler_driver import _create_recursive_workspace
 from tests.golden.helpers import clone_scope_sources
 

@@ -6,8 +6,8 @@ from unittest.mock import MagicMock, patch
 import yaml
 from click.testing import CliRunner
 
-from src.adr_kit.cli.main import cli
-from src.adr_kit.models import (
+from adr_kit.cli.main import cli
+from adr_kit.models import (
     CanonicalSource,
     Completeness,
     DiscoveryProvenance,
@@ -180,7 +180,7 @@ def test_attribution_check_reads_evidence(tmp_path: Path):
     mock_repo.load.return_value = None
     mock_repo.get_model.return_value = _minimal_model_for_cli()
 
-    with patch("src.adr_kit.cli.main.ArchitectureRepository", return_value=mock_repo):
+    with patch("adr_kit.cli.main.ArchitectureRepository", return_value=mock_repo):
         result = runner.invoke(
             cli,
             [
@@ -209,7 +209,7 @@ def test_attribution_coverage_cmd(tmp_path: Path):
     mock_repo.load.return_value = None
     mock_repo.get_model.return_value = mm
 
-    with patch("src.adr_kit.cli.main.ArchitectureRepository", return_value=mock_repo):
+    with patch("adr_kit.cli.main.ArchitectureRepository", return_value=mock_repo):
         result = runner.invoke(cli, ["attribution", "coverage", "--scope", str(scope)])
 
     assert result.exit_code == 0

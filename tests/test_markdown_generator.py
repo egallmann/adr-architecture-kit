@@ -3,8 +3,8 @@
 import pytest
 from pathlib import Path
 
-from src.adr_kit.parser import ADRParser
-from src.adr_kit.generators.views import MarkdownGenerator
+from adr_kit.parser import ADRParser
+from adr_kit.generators.views import MarkdownGenerator
 
 
 @pytest.fixture

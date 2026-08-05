@@ -1,21 +1,21 @@
 from __future__ import annotations
 
-from src.adr_kit.compiler.backend.projection import (
+from adr_kit.compiler.backend.projection import (
     build_relationship_summary,
     project_entity,
     project_relationship,
     project_unresolved,
 )
-from src.adr_kit.compiler.ir import IREntity, IRRelationship, IRUnresolved, RelGraph
-from src.adr_kit.models.architecture_discovery import CanonicalSource, DiscoveryProvenance
-from src.adr_kit.parser import ADRParser
-from src.adr_kit.repository.registry_loader import (
+from adr_kit.compiler.ir import IREntity, IRRelationship, IRUnresolved, RelGraph
+from adr_kit.models.architecture_discovery import CanonicalSource, DiscoveryProvenance
+from adr_kit.parser import ADRParser
+from adr_kit.repository.registry_loader import (
     load_architecture_index,
     load_normalized_entity_registry,
     load_relationship_registry,
     load_unresolved_registry,
 )
-from src.adr_kit.repository.registry_paths import discover_repository_paths, resolve_index_reference
+from adr_kit.repository.registry_paths import discover_repository_paths, resolve_index_reference
 from tests.golden.helpers import generate_deterministic_outputs
 
 

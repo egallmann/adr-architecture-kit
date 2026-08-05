@@ -47,10 +47,10 @@ entities:
     generator: adr-architecture-index
 - id: SYS-0002
   entity_type: system
-  name: ADR Kit Compiler and Validation Runtime
-  summary: adr-architecture-kit now operates as a compiler and validation runtime
-    rather than a collection of unrelated generators. The implementation includes
-    an explicit compiler pipeline, contract validation, normalized reposito
+  name: ADR Kit Authoring Compiler and Validation System
+  summary: adr-architecture-kit operates as an authoring-time compiler and validation
+    system rather than a collection of unrelated generators. The implementation includes
+    an explicit compiler pipeline, contract validation, normaliz
   lifecycle_stage: active
   canonical_source:
     source_type: physical_system_adr

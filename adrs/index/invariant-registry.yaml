@@ -3052,3 +3052,111 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
+- id: INV-0072
+  entity_type: invariant
+  name: INV-0072
+  summary: Pull-request and release validation MUST install the project before tests,
+    MUST measure canonical `adr_kit` namespace coverage at no less than 80%, and MUST
+    exercise both a source installation and the exact retained whee
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0003#INV-0072
+    artifact_path: adrs/logical/ADR-L-0003-quality-assurance-and-testing-strategy.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0003
+    scope: global
+    statement: 'Pull-request and release validation MUST install the project before
+      tests,
+
+      MUST measure canonical `adr_kit` namespace coverage at no less than 80%,
+
+      and MUST exercise both a source installation and the exact retained wheel
+
+      on every claimed Python version.
+
+      '
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions: []
+    supersedes: []
+  relationships:
+    declared_in:
+    - ADR-L-0003
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0003#INV-0072
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
+- id: INV-0073
+  entity_type: invariant
+  name: INV-0073
+  summary: Release publication MUST promote exactly one previously tested wheel and
+    one previously tested sdist without rebuilding. Their filenames, sizes, SHA-256
+    hashes, package version, source commit, and `v<version>` tag MUST b
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0003#INV-0073
+    artifact_path: adrs/logical/ADR-L-0003-quality-assurance-and-testing-strategy.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0003
+    scope: global
+    statement: 'Release publication MUST promote exactly one previously tested wheel
+      and
+
+      one previously tested sdist without rebuilding. Their filenames, sizes,
+
+      SHA-256 hashes, package version, source commit, and `v<version>` tag MUST
+
+      be verified before the privileged publish step. Ruff, strict-mypy, and
+
+      Black debt MUST be guarded by committed no-regression baselines that allow
+
+      removals but reject additions or count increases.
+
+      '
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions: []
+    supersedes: []
+  relationships:
+    declared_in:
+    - ADR-L-0003
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0003#INV-0073
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index

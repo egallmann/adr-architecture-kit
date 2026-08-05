@@ -5,17 +5,17 @@ artifact_kind: rendered_adr_markdown
 generator_id: adr-rendered-markdown
 generator_version: 1
 hash_algorithm: sha256
-source_hash: 68d6b052ed91d897467a63a0cc45fe7d3ce51043efbb375ce78582d93dc2b502
-rendered_hash: 815051175ff9542379b7a014976c27fd3276b5edece9eb0a26cf69ac95b3516e
+source_hash: a2e3a118ebc9f86fa50c8e110dc1af6a66c955a60d2cc5504e6493948e23dd21
+rendered_hash: 07ccb310a1f487b3c4bafd8cfb7db305533b3ad19892d40f50b728ab40fb606b
 -->
 
-# ADR-PS-0002: ADR Kit Compiler and Validation Runtime
+# ADR-PS-0002: ADR Kit Authoring Compiler and Validation System
 
 **Status:** proposed  
 **Created:** 2026-03-15  
-**Authors:** adr-architecture-kit  
+**Modified:** 2026-08-05  **Authors:** adr-architecture-kit  
 **Domains:** compiler, validation, tooling  
-**Tags:** compiler, validation, runtime, python  
+**Tags:** compiler, validation, authoring, python  
 **Implements Logical:** ADR-L-0001, ADR-L-0007, ADR-L-0008, ADR-L-0010, ADR-L-0011, ADR-L-0013  
 **Technologies:** python, click, pydantic, yaml, json-schema
 
@@ -25,15 +25,20 @@ rendered_hash: 815051175ff9542379b7a014976c27fd3276b5edece9eb0a26cf69ac95b3516e
 
 ## Context
 
-adr-architecture-kit now operates as a compiler and validation runtime rather
+adr-architecture-kit operates as an authoring-time compiler and validation system rather
 than a collection of unrelated generators. The implementation includes an
 explicit compiler pipeline, contract validation, normalized repository/model
 access, integrity verification, and CLI orchestration over those surfaces.
 
-This ADR establishes the concrete runtime system boundary for those public
+This ADR establishes the concrete authoring/compiler system boundary for those public
 capabilities. Discovery and indexing remain covered by ADR-PS-0001; this ADR
-covers the compiler/validation runtime that powers canonical parsing,
+covers the authoring/compiler implementation that powers canonical parsing,
 compilation, repository loading, contract checks, and artifact integrity.
+
+The boundary explicitly excludes Assembler behavior, runtime observation or
+evidence extraction, rules execution, substrate management, admission decisions,
+MCP surfaces, and LLM responsibilities. Those belong to later work or sibling
+systems and must not be introduced by Phase 0 production hardening.
 
 
 ## Technology Stack

@@ -1,0 +1,1428 @@
+{
+  "finding_count": 370,
+  "findings": [
+    {
+      "code": "import-not-found",
+      "count": 1,
+      "message": "Cannot find implementation or library stub for module named \"generate_repository_schemas\"",
+      "path": "scripts/generate_kernel_contract_schemas.py"
+    },
+    {
+      "code": "assignment",
+      "count": 1,
+      "message": "Incompatible types in assignment (expression has type \"ADRParser\", variable has type \"ArgumentParser\")",
+      "path": "scripts/migrate_e_adrs.py"
+    },
+    {
+      "code": "attr-defined",
+      "count": 1,
+      "message": "\"ArgumentParser\" has no attribute \"parse_adr\"; maybe \"parse_args\"?",
+      "path": "scripts/migrate_e_adrs.py"
+    },
+    {
+      "code": "no-untyped-call",
+      "count": 1,
+      "message": "Call to untyped function \"main\" in typed context",
+      "path": "scripts/migrate_e_adrs.py"
+    },
+    {
+      "code": "no-untyped-def",
+      "count": 1,
+      "message": "Function is missing a return type annotation",
+      "path": "scripts/migrate_e_adrs.py"
+    },
+    {
+      "code": "arg-type",
+      "count": 1,
+      "message": "Argument \"direction\" to \"get_relationships_for_entity\" of \"ArchitectureRepository\" has incompatible type \"str\"; expected \"Literal['any', 'incoming', 'outgoing']\"",
+      "path": "src/adr_kit/cli/main.py"
+    },
+    {
+      "code": "arg-type",
+      "count": 1,
+      "message": "Argument \"profile\" to \"validate_adr_contract_bundle\" has incompatible type \"str\"; expected \"Literal['greenfield', 'brownfield', 'migration']\"",
+      "path": "src/adr_kit/cli/main.py"
+    },
+    {
+      "code": "arg-type",
+      "count": 1,
+      "message": "Argument 1 to \"scaffold_yaml\" of \"ScaffoldGenerator\" has incompatible type \"str\"; expected \"Literal['logical', 'physical-system', 'physical-component']\"",
+      "path": "src/adr_kit/cli/main.py"
+    },
+    {
+      "code": "arg-type",
+      "count": 1,
+      "message": "Argument 2 to \"validate_adr_contract_bundle\" has incompatible type \"object\"; expected \"NormalizedEntityRegistry\"",
+      "path": "src/adr_kit/cli/main.py"
+    },
+    {
+      "code": "no-any-return",
+      "count": 1,
+      "message": "Returning Any from function declared to return \"Path\"",
+      "path": "src/adr_kit/cli/main.py"
+    },
+    {
+      "code": "no-any-return",
+      "count": 1,
+      "message": "Returning Any from function declared to return \"dict[Any, Any]\"",
+      "path": "src/adr_kit/cli/main.py"
+    },
+    {
+      "code": "no-untyped-def",
+      "count": 38,
+      "message": "Function is missing a return type annotation",
+      "path": "src/adr_kit/cli/main.py"
+    },
+    {
+      "code": "no-untyped-def",
+      "count": 11,
+      "message": "Function is missing a type annotation for one or more parameters",
+      "path": "src/adr_kit/cli/main.py"
+    },
+    {
+      "code": "type-arg",
+      "count": 1,
+      "message": "Missing type arguments for generic type \"dict\"",
+      "path": "src/adr_kit/cli/main.py"
+    },
+    {
+      "code": "type-arg",
+      "count": 1,
+      "message": "Missing type arguments for generic type \"list\"",
+      "path": "src/adr_kit/cli/main.py"
+    },
+    {
+      "code": "no-untyped-def",
+      "count": 1,
+      "message": "Function is missing a return type annotation",
+      "path": "src/adr_kit/compiler/__init__.py"
+    },
+    {
+      "code": "attr-defined",
+      "count": 1,
+      "message": "Module \"adr_kit.compiler.backend.markdown_emitter\" does not explicitly export attribute \"discover_scope_adr_files\"",
+      "path": "src/adr_kit/compiler/backend/__init__.py"
+    },
+    {
+      "code": "dict-item",
+      "count": 1,
+      "message": "Dict entry 0 has incompatible type \"str\": \"set[str]\"; expected \"str\": \"function\"",
+      "path": "src/adr_kit/compiler/backend/__init__.py"
+    },
+    {
+      "code": "no-untyped-def",
+      "count": 1,
+      "message": "Function is missing a return type annotation",
+      "path": "src/adr_kit/compiler/backend/__init__.py"
+    },
+    {
+      "code": "assignment",
+      "count": 2,
+      "message": "Incompatible types in assignment (expression has type \"list[str]\", target has type \"str\")",
+      "path": "src/adr_kit/compiler/backend/adr_ir_fragment_emitter.py"
+    },
+    {
+      "code": "attr-defined",
+      "count": 1,
+      "message": "Module \"adr_kit.compiler.frontend.builder\" does not explicitly export attribute \"FrontendBuildResult\"",
+      "path": "src/adr_kit/compiler/backend/emitters.py"
+    },
+    {
+      "code": "attr-defined",
+      "count": 1,
+      "message": "Module \"adr_kit.compiler.frontend.builder\" does not explicitly export attribute \"FrontendBuildResult\"",
+      "path": "src/adr_kit/compiler/backend/graph_emitter.py"
+    },
+    {
+      "code": "arg-type",
+      "count": 1,
+      "message": "Argument \"entity_type\" to \"ArchitectureGraphNode\" has incompatible type \"str\"; expected \"Literal['adr', 'system', 'component', 'decision', 'capability', 'invariant']\"",
+      "path": "src/adr_kit/compiler/backend/graph_rendering.py"
+    },
+    {
+      "code": "attr-defined",
+      "count": 1,
+      "message": "Module \"adr_kit.compiler.frontend.builder\" does not explicitly export attribute \"FrontendBuildResult\"",
+      "path": "src/adr_kit/compiler/backend/graph_rendering.py"
+    },
+    {
+      "code": "no-untyped-def",
+      "count": 1,
+      "message": "Function is missing a type annotation for one or more parameters",
+      "path": "src/adr_kit/compiler/backend/manifest_emitter.py"
+    },
+    {
+      "code": "assignment",
+      "count": 1,
+      "message": "Incompatible types in assignment (expression has type \"LogicalADR | PhysicalADR | PhysicalSystemADR | PhysicalComponentADR\", variable has type \"LogicalADR\")",
+      "path": "src/adr_kit/compiler/backend/manifest_rendering.py"
+    },
+    {
+      "code": "assignment",
+      "count": 3,
+      "message": "Incompatible types in assignment (expression has type \"PhysicalADR\", variable has type \"LogicalADR\")",
+      "path": "src/adr_kit/compiler/backend/manifest_rendering.py"
+    },
+    {
+      "code": "assignment",
+      "count": 3,
+      "message": "Incompatible types in assignment (expression has type \"PhysicalComponentADR\", variable has type \"LogicalADR\")",
+      "path": "src/adr_kit/compiler/backend/manifest_rendering.py"
+    },
+    {
+      "code": "assignment",
+      "count": 2,
+      "message": "Incompatible types in assignment (expression has type \"PhysicalSystemADR\", variable has type \"LogicalADR\")",
+      "path": "src/adr_kit/compiler/backend/manifest_rendering.py"
+    },
+    {
+      "code": "attr-defined",
+      "count": 3,
+      "message": "\"LogicalADR\" has no attribute \"component_specifications\"",
+      "path": "src/adr_kit/compiler/backend/manifest_rendering.py"
+    },
+    {
+      "code": "attr-defined",
+      "count": 1,
+      "message": "\"LogicalADR\" has no attribute \"implementation_decisions\"",
+      "path": "src/adr_kit/compiler/backend/manifest_rendering.py"
+    },
+    {
+      "code": "attr-defined",
+      "count": 6,
+      "message": "\"LogicalADR\" has no attribute \"implements_logical\"",
+      "path": "src/adr_kit/compiler/backend/manifest_rendering.py"
+    },
+    {
+      "code": "attr-defined",
+      "count": 1,
+      "message": "\"LogicalADR\" has no attribute \"implements_system\"",
+      "path": "src/adr_kit/compiler/backend/manifest_rendering.py"
+    },
+    {
+      "code": "attr-defined",
+      "count": 1,
+      "message": "\"LogicalADR\" has no attribute \"integration_points\"; maybe \"interaction_contracts\"?",
+      "path": "src/adr_kit/compiler/backend/manifest_rendering.py"
+    },
+    {
+      "code": "attr-defined",
+      "count": 3,
+      "message": "\"LogicalADR\" has no attribute \"technologies\"",
+      "path": "src/adr_kit/compiler/backend/manifest_rendering.py"
+    },
+    {
+      "code": "call-arg",
+      "count": 2,
+      "message": "Missing named argument \"component_count\" for \"ManifestADREntry\"",
+      "path": "src/adr_kit/compiler/backend/manifest_rendering.py"
+    },
+    {
+      "code": "call-arg",
+      "count": 3,
+      "message": "Missing named argument \"decision_count\" for \"ManifestADREntry\"",
+      "path": "src/adr_kit/compiler/backend/manifest_rendering.py"
+    },
+    {
+      "code": "call-arg",
+      "count": 3,
+      "message": "Missing named argument \"invariant_count\" for \"ManifestADREntry\"",
+      "path": "src/adr_kit/compiler/backend/manifest_rendering.py"
+    },
+    {
+      "code": "arg-type",
+      "count": 1,
+      "message": "Argument \"entity_type\" to \"NormalizedEntity\" has incompatible type \"str\"; expected \"Literal['adr', 'system', 'component', 'decision', 'capability', 'invariant']\"",
+      "path": "src/adr_kit/compiler/backend/projection.py"
+    },
+    {
+      "code": "arg-type",
+      "count": 1,
+      "message": "Argument \"gap_class\" to \"UnresolvedRecord\" has incompatible type \"str\"; expected \"Literal['author_declared', 'generator_derived']\"",
+      "path": "src/adr_kit/compiler/backend/projection.py"
+    },
+    {
+      "code": "arg-type",
+      "count": 1,
+      "message": "Argument \"lifecycle_stage\" to \"NormalizedEntity\" has incompatible type \"str\"; expected \"Literal['proposed', 'active', 'deprecated', 'superseded']\"",
+      "path": "src/adr_kit/compiler/backend/projection.py"
+    },
+    {
+      "code": "arg-type",
+      "count": 1,
+      "message": "Argument \"provenance_classification\" to \"RelationshipRecord\" has incompatible type \"str\"; expected \"Literal['explicit', 'derived', 'heuristic']\"",
+      "path": "src/adr_kit/compiler/backend/projection.py"
+    },
+    {
+      "code": "arg-type",
+      "count": 1,
+      "message": "Argument \"relationship_type\" to \"RelationshipRecord\" has incompatible type \"str\"; expected \"Literal['declared_in', 'references', 'related_to', 'enforces', 'enabled_by', 'enables', 'governs', 'implemented_by', 'embodied_in', 'supersedes', 'superseded_by', 'refines']\"",
+      "path": "src/adr_kit/compiler/backend/projection.py"
+    },
+    {
+      "code": "arg-type",
+      "count": 1,
+      "message": "Argument \"severity\" to \"UnresolvedRecord\" has incompatible type \"str\"; expected \"Literal['critical', 'important', 'advisory']\"",
+      "path": "src/adr_kit/compiler/backend/projection.py"
+    },
+    {
+      "code": "var-annotated",
+      "count": 1,
+      "message": "Need type annotation for \"buckets\"",
+      "path": "src/adr_kit/compiler/backend/projection.py"
+    },
+    {
+      "code": "arg-type",
+      "count": 3,
+      "message": "Argument 4 to \"add\" of \"DiagnosticLog\" has incompatible type \"**dict[str, object]\"; expected \"str | None\"",
+      "path": "src/adr_kit/compiler/diagnostics.py"
+    },
+    {
+      "code": "arg-type",
+      "count": 3,
+      "message": "Argument 4 to \"add\" of \"DiagnosticLog\" has incompatible type \"**dict[str, object]\"; expected \"str | Path | None\"",
+      "path": "src/adr_kit/compiler/diagnostics.py"
+    },
+    {
+      "code": "arg-type",
+      "count": 1,
+      "message": "Argument \"profile\" to \"validate_adr_contract_bundle\" has incompatible type \"str\"; expected \"Literal['greenfield', 'brownfield', 'migration']\"",
+      "path": "src/adr_kit/compiler/driver.py"
+    },
+    {
+      "code": "no-untyped-def",
+      "count": 1,
+      "message": "Function is missing a return type annotation",
+      "path": "src/adr_kit/compiler/driver.py"
+    },
+    {
+      "code": "no-untyped-def",
+      "count": 1,
+      "message": "Function is missing a type annotation",
+      "path": "src/adr_kit/compiler/driver.py"
+    },
+    {
+      "code": "no-untyped-def",
+      "count": 1,
+      "message": "Function is missing a type annotation for one or more parameters",
+      "path": "src/adr_kit/compiler/driver.py"
+    },
+    {
+      "code": "union-attr",
+      "count": 4,
+      "message": "Item \"None\" of \"OutputArtifact | None\" has no attribute \"content\"",
+      "path": "src/adr_kit/compiler/driver.py"
+    },
+    {
+      "code": "attr-defined",
+      "count": 1,
+      "message": "Module \"adr_kit.compiler.frontend.builder\" does not explicitly export attribute \"FrontendBuildResult\"",
+      "path": "src/adr_kit/compiler/frontend/__init__.py"
+    },
+    {
+      "code": "dict-item",
+      "count": 1,
+      "message": "Dict entry 2 has incompatible type \"str\": \"def build_arch_model(scope: ProjectScope | None = ..., *, parser: CachedADRParser | None = ..., scope_resolver: ProjectScopeResolver | None = ..., config: CompilerConfig | None = ..., diagnostics: DiagnosticLog | None = ...) -> FrontendBuildResult\"; expected \"str\": \"type\"",
+      "path": "src/adr_kit/compiler/frontend/__init__.py"
+    },
+    {
+      "code": "no-untyped-def",
+      "count": 1,
+      "message": "Function is missing a return type annotation",
+      "path": "src/adr_kit/compiler/frontend/__init__.py"
+    },
+    {
+      "code": "no-any-return",
+      "count": 1,
+      "message": "Returning Any from function declared to return \"dict[str, Any]\"",
+      "path": "src/adr_kit/compiler/frontend/parser.py"
+    },
+    {
+      "code": "no-any-return",
+      "count": 1,
+      "message": "Returning Any from function declared to return \"str\"",
+      "path": "src/adr_kit/compiler/frontend/support.py"
+    },
+    {
+      "code": "no-untyped-def",
+      "count": 2,
+      "message": "Function is missing a type annotation for one or more parameters",
+      "path": "src/adr_kit/compiler/frontend/support.py"
+    },
+    {
+      "code": "arg-type",
+      "count": 1,
+      "message": "Argument \"provenance_classification\" to \"RelationshipRecord\" has incompatible type \"str\"; expected \"Literal['explicit', 'derived', 'heuristic']\"",
+      "path": "src/adr_kit/compiler/passes/derive_relationships.py"
+    },
+    {
+      "code": "arg-type",
+      "count": 1,
+      "message": "Argument \"relationship_type\" to \"RelationshipRecord\" has incompatible type \"str\"; expected \"Literal['declared_in', 'references', 'related_to', 'enforces', 'enabled_by', 'enables', 'governs', 'implemented_by', 'embodied_in', 'supersedes', 'superseded_by', 'refines']\"",
+      "path": "src/adr_kit/compiler/passes/derive_relationships.py"
+    },
+    {
+      "code": "assignment",
+      "count": 1,
+      "message": "Incompatible types in assignment (expression has type \"PhysicalADR | PhysicalSystemADR | PhysicalComponentADR\", variable has type \"LogicalADR\")",
+      "path": "src/adr_kit/compiler/passes/derive_relationships.py"
+    },
+    {
+      "code": "assignment",
+      "count": 1,
+      "message": "Incompatible types in assignment (expression has type \"StandaloneInvariant\", variable has type \"Invariant\")",
+      "path": "src/adr_kit/compiler/passes/derive_relationships.py"
+    },
+    {
+      "code": "attr-defined",
+      "count": 1,
+      "message": "\"Invariant\" has no attribute \"enforced_by\"",
+      "path": "src/adr_kit/compiler/passes/derive_relationships.py"
+    },
+    {
+      "code": "no-untyped-def",
+      "count": 2,
+      "message": "Function is missing a type annotation for one or more parameters",
+      "path": "src/adr_kit/compiler/passes/derive_relationships.py"
+    },
+    {
+      "code": "type-arg",
+      "count": 1,
+      "message": "Missing type arguments for generic type \"dict\"",
+      "path": "src/adr_kit/compiler/passes/derive_relationships.py"
+    },
+    {
+      "code": "arg-type",
+      "count": 1,
+      "message": "Argument \"severity\" to \"UnresolvedRecord\" has incompatible type \"str\"; expected \"Literal['critical', 'important', 'advisory']\"",
+      "path": "src/adr_kit/compiler/passes/detect_unresolved.py"
+    },
+    {
+      "code": "no-untyped-def",
+      "count": 2,
+      "message": "Function is missing a type annotation for one or more parameters",
+      "path": "src/adr_kit/compiler/passes/detect_unresolved.py"
+    },
+    {
+      "code": "no-untyped-def",
+      "count": 2,
+      "message": "Function is missing a type annotation for one or more parameters",
+      "path": "src/adr_kit/compiler/passes/extract_logical_entities.py"
+    },
+    {
+      "code": "type-arg",
+      "count": 1,
+      "message": "Missing type arguments for generic type \"dict\"",
+      "path": "src/adr_kit/compiler/passes/extract_logical_entities.py"
+    },
+    {
+      "code": "no-untyped-def",
+      "count": 2,
+      "message": "Function is missing a type annotation for one or more parameters",
+      "path": "src/adr_kit/compiler/passes/extract_physical_entities.py"
+    },
+    {
+      "code": "no-untyped-def",
+      "count": 2,
+      "message": "Function is missing a type annotation for one or more parameters",
+      "path": "src/adr_kit/compiler/passes/fixed_order.py"
+    },
+    {
+      "code": "no-untyped-def",
+      "count": 2,
+      "message": "Function is missing a type annotation for one or more parameters",
+      "path": "src/adr_kit/compiler/passes/resolve_invariant_canonical.py"
+    },
+    {
+      "code": "type-arg",
+      "count": 2,
+      "message": "Missing type arguments for generic type \"dict\"",
+      "path": "src/adr_kit/compiler/passes/resolve_invariant_canonical.py"
+    },
+    {
+      "code": "arg-type",
+      "count": 1,
+      "message": "Argument \"logical_adrs\" to \"derive_relationships\" has incompatible type \"list[tuple[object, Path]]\"; expected \"list[tuple[LogicalADR, Path]]\"",
+      "path": "src/adr_kit/compiler/pipeline.py"
+    },
+    {
+      "code": "arg-type",
+      "count": 1,
+      "message": "Argument \"physical_adrs\" to \"derive_relationships\" has incompatible type \"list[tuple[object, Path]]\"; expected \"list[tuple[PhysicalADR | PhysicalSystemADR | PhysicalComponentADR, Path]]\"",
+      "path": "src/adr_kit/compiler/pipeline.py"
+    },
+    {
+      "code": "arg-type",
+      "count": 1,
+      "message": "Argument \"standalone_invariants\" to \"derive_relationships\" has incompatible type \"list[tuple[object, Path]]\"; expected \"list[tuple[StandaloneInvariant, Path]]\"",
+      "path": "src/adr_kit/compiler/pipeline.py"
+    },
+    {
+      "code": "arg-type",
+      "count": 3,
+      "message": "Argument 1 to \"add_entity\" of \"CompilerPipelineState\" has incompatible type \"NormalizedEntity\"; expected \"IREntity\"",
+      "path": "src/adr_kit/compiler/pipeline.py"
+    },
+    {
+      "code": "arg-type",
+      "count": 1,
+      "message": "Argument 1 to \"append_source_ref\" of \"CompilerPipelineState\" has incompatible type \"NormalizedEntity\"; expected \"IREntity\"",
+      "path": "src/adr_kit/compiler/pipeline.py"
+    },
+    {
+      "code": "arg-type",
+      "count": 1,
+      "message": "Argument 1 to \"extract_logical_entities\" has incompatible type \"list[tuple[object, Path]]\"; expected \"list[tuple[LogicalADR, Path]]\"",
+      "path": "src/adr_kit/compiler/pipeline.py"
+    },
+    {
+      "code": "arg-type",
+      "count": 1,
+      "message": "Argument 1 to \"extract_physical_entities\" has incompatible type \"list[tuple[object, Path]]\"; expected \"list[tuple[PhysicalADR | PhysicalSystemADR | PhysicalComponentADR, Path]]\"",
+      "path": "src/adr_kit/compiler/pipeline.py"
+    },
+    {
+      "code": "assignment",
+      "count": 1,
+      "message": "Incompatible types in assignment (expression has type \"list[Diagnostic]\", variable has type \"list[object]\")",
+      "path": "src/adr_kit/compiler/pipeline.py"
+    },
+    {
+      "code": "attr-defined",
+      "count": 1,
+      "message": "\"CompilerPipelineState\" has no attribute \"_generator_gaps\"",
+      "path": "src/adr_kit/compiler/pipeline.py"
+    },
+    {
+      "code": "attr-defined",
+      "count": 1,
+      "message": "\"IREntity\" has no attribute \"relationships\"",
+      "path": "src/adr_kit/compiler/pipeline.py"
+    },
+    {
+      "code": "attr-defined",
+      "count": 1,
+      "message": "\"object\" has no attribute \"declaration_mode\"",
+      "path": "src/adr_kit/compiler/pipeline.py"
+    },
+    {
+      "code": "attr-defined",
+      "count": 1,
+      "message": "\"object\" has no attribute \"defined_in\"",
+      "path": "src/adr_kit/compiler/pipeline.py"
+    },
+    {
+      "code": "attr-defined",
+      "count": 1,
+      "message": "\"object\" has no attribute \"enforced_by\"",
+      "path": "src/adr_kit/compiler/pipeline.py"
+    },
+    {
+      "code": "attr-defined",
+      "count": 1,
+      "message": "\"object\" has no attribute \"enforcement_level\"",
+      "path": "src/adr_kit/compiler/pipeline.py"
+    },
+    {
+      "code": "attr-defined",
+      "count": 3,
+      "message": "\"object\" has no attribute \"id\"",
+      "path": "src/adr_kit/compiler/pipeline.py"
+    },
+    {
+      "code": "attr-defined",
+      "count": 1,
+      "message": "\"object\" has no attribute \"scope\"",
+      "path": "src/adr_kit/compiler/pipeline.py"
+    },
+    {
+      "code": "attr-defined",
+      "count": 2,
+      "message": "\"object\" has no attribute \"statement\"",
+      "path": "src/adr_kit/compiler/pipeline.py"
+    },
+    {
+      "code": "attr-defined",
+      "count": 1,
+      "message": "\"object\" has no attribute \"upheld_by_decisions\"",
+      "path": "src/adr_kit/compiler/pipeline.py"
+    },
+    {
+      "code": "list-item",
+      "count": 1,
+      "message": "List item 0 has incompatible type \"ADRParsePass\"; expected \"CompilerPipelinePass\"",
+      "path": "src/adr_kit/compiler/pipeline.py"
+    },
+    {
+      "code": "list-item",
+      "count": 1,
+      "message": "List item 1 has incompatible type \"ADRNormalizationPass\"; expected \"CompilerPipelinePass\"",
+      "path": "src/adr_kit/compiler/pipeline.py"
+    },
+    {
+      "code": "list-item",
+      "count": 1,
+      "message": "List item 2 has incompatible type \"LogicalEntityExtractionPass\"; expected \"CompilerPipelinePass\"",
+      "path": "src/adr_kit/compiler/pipeline.py"
+    },
+    {
+      "code": "list-item",
+      "count": 1,
+      "message": "List item 3 has incompatible type \"InvariantExtractionPass\"; expected \"CompilerPipelinePass\"",
+      "path": "src/adr_kit/compiler/pipeline.py"
+    },
+    {
+      "code": "list-item",
+      "count": 1,
+      "message": "List item 4 has incompatible type \"PhysicalEntityExtractionPass\"; expected \"CompilerPipelinePass\"",
+      "path": "src/adr_kit/compiler/pipeline.py"
+    },
+    {
+      "code": "list-item",
+      "count": 1,
+      "message": "List item 5 has incompatible type \"RelationshipInferencePass\"; expected \"CompilerPipelinePass\"",
+      "path": "src/adr_kit/compiler/pipeline.py"
+    },
+    {
+      "code": "list-item",
+      "count": 1,
+      "message": "List item 6 has incompatible type \"UnresolvedDetectionPass\"; expected \"CompilerPipelinePass\"",
+      "path": "src/adr_kit/compiler/pipeline.py"
+    },
+    {
+      "code": "list-item",
+      "count": 1,
+      "message": "List item 7 has incompatible type \"ValidationPass\"; expected \"CompilerPipelinePass\"",
+      "path": "src/adr_kit/compiler/pipeline.py"
+    },
+    {
+      "code": "type-arg",
+      "count": 1,
+      "message": "Missing type arguments for generic type \"dict\"",
+      "path": "src/adr_kit/compiler/pipeline.py"
+    },
+    {
+      "code": "no-untyped-def",
+      "count": 1,
+      "message": "Function is missing a type annotation for one or more parameters",
+      "path": "src/adr_kit/compiler/registry_bundle.py"
+    },
+    {
+      "code": "no-untyped-def",
+      "count": 1,
+      "message": "Function is missing a return type annotation",
+      "path": "src/adr_kit/generators/_yaml_support.py"
+    },
+    {
+      "code": "no-untyped-def",
+      "count": 1,
+      "message": "Function is missing a type annotation",
+      "path": "src/adr_kit/generators/_yaml_support.py"
+    },
+    {
+      "code": "arg-type",
+      "count": 1,
+      "message": "Argument \"gap_class\" to \"UnresolvedRecord\" has incompatible type \"str\"; expected \"Literal['author_declared', 'generator_derived']\"",
+      "path": "src/adr_kit/generators/architecture_index_generator.py"
+    },
+    {
+      "code": "arg-type",
+      "count": 1,
+      "message": "Argument \"provenance_classification\" to \"RelationshipRecord\" has incompatible type \"str\"; expected \"Literal['explicit', 'derived', 'heuristic']\"",
+      "path": "src/adr_kit/generators/architecture_index_generator.py"
+    },
+    {
+      "code": "arg-type",
+      "count": 1,
+      "message": "Argument \"relationship_type\" to \"RelationshipRecord\" has incompatible type \"str\"; expected \"Literal['declared_in', 'references', 'related_to', 'enforces', 'enabled_by', 'enables', 'governs', 'implemented_by', 'embodied_in', 'supersedes', 'superseded_by', 'refines']\"",
+      "path": "src/adr_kit/generators/architecture_index_generator.py"
+    },
+    {
+      "code": "arg-type",
+      "count": 1,
+      "message": "Argument \"severity\" to \"UnresolvedRecord\" has incompatible type \"str\"; expected \"Literal['critical', 'important', 'advisory']\"",
+      "path": "src/adr_kit/generators/architecture_index_generator.py"
+    },
+    {
+      "code": "assignment",
+      "count": 1,
+      "message": "Incompatible default for parameter \"parser\" (default has type \"None\", parameter has type \"ADRParser | CachedADRParser\")",
+      "path": "src/adr_kit/generators/architecture_index_generator.py"
+    },
+    {
+      "code": "assignment",
+      "count": 1,
+      "message": "Incompatible default for parameter \"scope_resolver\" (default has type \"None\", parameter has type \"ProjectScopeResolver\")",
+      "path": "src/adr_kit/generators/architecture_index_generator.py"
+    },
+    {
+      "code": "no-untyped-def",
+      "count": 2,
+      "message": "Function is missing a type annotation for one or more parameters",
+      "path": "src/adr_kit/generators/architecture_index_generator.py"
+    },
+    {
+      "code": "type-arg",
+      "count": 1,
+      "message": "Missing type arguments for generic type \"dict\"",
+      "path": "src/adr_kit/generators/architecture_index_generator.py"
+    },
+    {
+      "code": "arg-type",
+      "count": 1,
+      "message": "Argument 1 to \"append\" of \"list\" has incompatible type \"tuple[LogicalADR | PhysicalADR | PhysicalSystemADR | PhysicalComponentADR, Path]\"; expected \"tuple[PhysicalADR | PhysicalSystemADR | PhysicalComponentADR, Path]\"",
+      "path": "src/adr_kit/generators/entity_registry_generator.py"
+    },
+    {
+      "code": "assignment",
+      "count": 1,
+      "message": "Incompatible default for parameter \"parser\" (default has type \"None\", parameter has type \"ADRParser\")",
+      "path": "src/adr_kit/generators/entity_registry_generator.py"
+    },
+    {
+      "code": "assignment",
+      "count": 1,
+      "message": "Incompatible default for parameter \"scope_resolver\" (default has type \"None\", parameter has type \"ProjectScopeResolver\")",
+      "path": "src/adr_kit/generators/entity_registry_generator.py"
+    },
+    {
+      "code": "assignment",
+      "count": 2,
+      "message": "Incompatible types in assignment (expression has type \"PhysicalADR | PhysicalSystemADR | PhysicalComponentADR\", variable has type \"LogicalADR\")",
+      "path": "src/adr_kit/generators/entity_registry_generator.py"
+    },
+    {
+      "code": "assignment",
+      "count": 1,
+      "message": "Incompatible types in assignment (expression has type \"StandaloneInvariant\", variable has type \"Invariant\")",
+      "path": "src/adr_kit/generators/entity_registry_generator.py"
+    },
+    {
+      "code": "attr-defined",
+      "count": 4,
+      "message": "\"Invariant\" has no attribute \"defined_in\"",
+      "path": "src/adr_kit/generators/entity_registry_generator.py"
+    },
+    {
+      "code": "attr-defined",
+      "count": 1,
+      "message": "\"Invariant\" has no attribute \"enforced_by\"",
+      "path": "src/adr_kit/generators/entity_registry_generator.py"
+    },
+    {
+      "code": "attr-defined",
+      "count": 1,
+      "message": "\"Invariant\" has no attribute \"related_constraints\"",
+      "path": "src/adr_kit/generators/entity_registry_generator.py"
+    },
+    {
+      "code": "no-untyped-def",
+      "count": 3,
+      "message": "Function is missing a return type annotation",
+      "path": "src/adr_kit/generators/entity_registry_generator.py"
+    },
+    {
+      "code": "no-untyped-def",
+      "count": 4,
+      "message": "Function is missing a type annotation for one or more parameters",
+      "path": "src/adr_kit/generators/entity_registry_generator.py"
+    },
+    {
+      "code": "operator",
+      "count": 1,
+      "message": "Unsupported right operand type for in (\"list[str] | None\")",
+      "path": "src/adr_kit/generators/entity_registry_generator.py"
+    },
+    {
+      "code": "union-attr",
+      "count": 1,
+      "message": "Item \"None\" of \"list[str] | None\" has no attribute \"append\"",
+      "path": "src/adr_kit/generators/entity_registry_generator.py"
+    },
+    {
+      "code": "union-attr",
+      "count": 1,
+      "message": "Item \"None\" of \"list[str] | None\" has no attribute \"sort\"",
+      "path": "src/adr_kit/generators/entity_registry_generator.py"
+    },
+    {
+      "code": "assignment",
+      "count": 1,
+      "message": "Incompatible types in assignment (expression has type \"str\", base class \"SourceADRGenerator\" defined the type as \"None\")",
+      "path": "src/adr_kit/generators/logical_generator.py"
+    },
+    {
+      "code": "assignment",
+      "count": 1,
+      "message": "Incompatible types in assignment (expression has type \"type[LogicalADR]\", base class \"SourceADRGenerator\" defined the type as \"None\")",
+      "path": "src/adr_kit/generators/logical_generator.py"
+    },
+    {
+      "code": "assignment",
+      "count": 1,
+      "message": "Incompatible default for parameter \"parser\" (default has type \"None\", parameter has type \"ADRParser\")",
+      "path": "src/adr_kit/generators/manifest_generator.py"
+    },
+    {
+      "code": "assignment",
+      "count": 1,
+      "message": "Incompatible default for parameter \"scope_resolver\" (default has type \"None\", parameter has type \"ProjectScopeResolver\")",
+      "path": "src/adr_kit/generators/manifest_generator.py"
+    },
+    {
+      "code": "no-untyped-def",
+      "count": 1,
+      "message": "Function is missing a return type annotation",
+      "path": "src/adr_kit/generators/manifest_generator.py"
+    },
+    {
+      "code": "assignment",
+      "count": 1,
+      "message": "Incompatible types in assignment (expression has type \"str\", base class \"SourceADRGenerator\" defined the type as \"None\")",
+      "path": "src/adr_kit/generators/physical_component_generator.py"
+    },
+    {
+      "code": "assignment",
+      "count": 1,
+      "message": "Incompatible types in assignment (expression has type \"type[PhysicalComponentADR]\", base class \"SourceADRGenerator\" defined the type as \"None\")",
+      "path": "src/adr_kit/generators/physical_component_generator.py"
+    },
+    {
+      "code": "assignment",
+      "count": 1,
+      "message": "Incompatible types in assignment (expression has type \"str\", base class \"SourceADRGenerator\" defined the type as \"None\")",
+      "path": "src/adr_kit/generators/physical_system_generator.py"
+    },
+    {
+      "code": "assignment",
+      "count": 1,
+      "message": "Incompatible types in assignment (expression has type \"type[PhysicalSystemADR]\", base class \"SourceADRGenerator\" defined the type as \"None\")",
+      "path": "src/adr_kit/generators/physical_system_generator.py"
+    },
+    {
+      "code": "type-arg",
+      "count": 3,
+      "message": "Missing type arguments for generic type \"dict\"",
+      "path": "src/adr_kit/generators/scaffold_generator.py"
+    },
+    {
+      "code": "arg-type",
+      "count": 1,
+      "message": "Argument 1 to \"validate_against_schema\" of \"ADRParser\" has incompatible type \"dict[Any, Any] | T\"; expected \"dict[Any, Any]\"",
+      "path": "src/adr_kit/generators/source_adr_generator.py"
+    },
+    {
+      "code": "arg-type",
+      "count": 3,
+      "message": "Argument 2 to \"isinstance\" has incompatible type \"None\"; expected \"_ClassInfo\"",
+      "path": "src/adr_kit/generators/source_adr_generator.py"
+    },
+    {
+      "code": "arg-type",
+      "count": 1,
+      "message": "Argument 2 to \"validate_against_schema\" of \"ADRParser\" has incompatible type \"None\"; expected \"str\"",
+      "path": "src/adr_kit/generators/source_adr_generator.py"
+    },
+    {
+      "code": "assignment",
+      "count": 1,
+      "message": "Incompatible default for parameter \"parser\" (default has type \"None\", parameter has type \"ADRParser\")",
+      "path": "src/adr_kit/generators/source_adr_generator.py"
+    },
+    {
+      "code": "assignment",
+      "count": 1,
+      "message": "Incompatible default for parameter \"validator\" (default has type \"None\", parameter has type \"ADRValidator\")",
+      "path": "src/adr_kit/generators/source_adr_generator.py"
+    },
+    {
+      "code": "misc",
+      "count": 1,
+      "message": "\"None\" not callable",
+      "path": "src/adr_kit/generators/source_adr_generator.py"
+    },
+    {
+      "code": "no-any-return",
+      "count": 1,
+      "message": "Returning Any from function declared to return \"dict[Any, Any] | T\"",
+      "path": "src/adr_kit/generators/source_adr_generator.py"
+    },
+    {
+      "code": "no-untyped-call",
+      "count": 3,
+      "message": "Call to untyped function \"_prune_empty\" in typed context",
+      "path": "src/adr_kit/generators/source_adr_generator.py"
+    },
+    {
+      "code": "no-untyped-def",
+      "count": 1,
+      "message": "Function is missing a type annotation",
+      "path": "src/adr_kit/generators/source_adr_generator.py"
+    },
+    {
+      "code": "type-arg",
+      "count": 6,
+      "message": "Missing type arguments for generic type \"dict\"",
+      "path": "src/adr_kit/generators/source_adr_generator.py"
+    },
+    {
+      "code": "return-value",
+      "count": 1,
+      "message": "Incompatible return value type (got \"tuple[str, list[Path | HashInput]]\", expected \"tuple[str, list[Path]]\")",
+      "path": "src/adr_kit/generators/system_overview_generator.py"
+    },
+    {
+      "code": "union-attr",
+      "count": 1,
+      "message": "Item \"None\" of \"Any | dict[Any, Any] | None\" has no attribute \"get\"",
+      "path": "src/adr_kit/generators/system_overview_generator.py"
+    },
+    {
+      "code": "assignment",
+      "count": 1,
+      "message": "Incompatible default for parameter \"template_dir\" (default has type \"None\", parameter has type \"Path\")",
+      "path": "src/adr_kit/generators/views/markdown.py"
+    },
+    {
+      "code": "no-untyped-def",
+      "count": 1,
+      "message": "Function is missing a return type annotation",
+      "path": "src/adr_kit/generators/views/markdown.py"
+    },
+    {
+      "code": "no-redef",
+      "count": 1,
+      "message": "Name \"raw_lines\" already defined on line 81",
+      "path": "src/adr_kit/integrity/core.py"
+    },
+    {
+      "code": "arg-type",
+      "count": 1,
+      "message": "Argument 3 to \"compute_source_hash\" of \"ProjectionInspector\" has incompatible type \"object\"; expected \"GeneratorIdentity\"",
+      "path": "src/adr_kit/integrity/validation.py"
+    },
+    {
+      "code": "arg-type",
+      "count": 1,
+      "message": "Argument \"adr_type\" to \"CanonicalEntityOccurrence\" has incompatible type \"Any | None\"; expected \"str\"",
+      "path": "src/adr_kit/migrators/canonical_id_normalizer.py"
+    },
+    {
+      "code": "arg-type",
+      "count": 1,
+      "message": "Argument 1 to \"get\" of \"dict\" has incompatible type \"Any | None\"; expected \"str\"",
+      "path": "src/adr_kit/migrators/canonical_id_normalizer.py"
+    },
+    {
+      "code": "assignment",
+      "count": 1,
+      "message": "Incompatible default for parameter \"parser\" (default has type \"None\", parameter has type \"ADRParser\")",
+      "path": "src/adr_kit/migrators/canonical_id_normalizer.py"
+    },
+    {
+      "code": "assignment",
+      "count": 1,
+      "message": "Incompatible default for parameter \"scope_resolver\" (default has type \"None\", parameter has type \"ProjectScopeResolver\")",
+      "path": "src/adr_kit/migrators/canonical_id_normalizer.py"
+    },
+    {
+      "code": "type-arg",
+      "count": 2,
+      "message": "Missing type arguments for generic type \"dict\"",
+      "path": "src/adr_kit/migrators/canonical_id_normalizer.py"
+    },
+    {
+      "code": "type-arg",
+      "count": 1,
+      "message": "Missing type arguments for generic type \"Dict\"",
+      "path": "src/adr_kit/migrators/e_adr_classification.py"
+    },
+    {
+      "code": "valid-type",
+      "count": 1,
+      "message": "Function \"builtins.any\" is not valid as a type",
+      "path": "src/adr_kit/migrators/e_adr_classification.py"
+    },
+    {
+      "code": "var-annotated",
+      "count": 1,
+      "message": "Need type annotation for \"current_content\" (hint: \"current_content: list[<type>] = ...\")",
+      "path": "src/adr_kit/migrators/e_adr_parser.py"
+    },
+    {
+      "code": "arg-type",
+      "count": 1,
+      "message": "Argument \"adr_type\" to \"LogicalADR\" has incompatible type \"str\"; expected \"ADRType\"",
+      "path": "src/adr_kit/migrators/markdown_to_yaml.py"
+    },
+    {
+      "code": "arg-type",
+      "count": 1,
+      "message": "Argument \"adr_type\" to \"PhysicalADR\" has incompatible type \"str\"; expected \"ADRType\"",
+      "path": "src/adr_kit/migrators/markdown_to_yaml.py"
+    },
+    {
+      "code": "arg-type",
+      "count": 1,
+      "message": "Argument \"created_date\" to \"LogicalADR\" has incompatible type \"str\"; expected \"date\"",
+      "path": "src/adr_kit/migrators/markdown_to_yaml.py"
+    },
+    {
+      "code": "arg-type",
+      "count": 1,
+      "message": "Argument \"created_date\" to \"PhysicalADR\" has incompatible type \"str\"; expected \"date\"",
+      "path": "src/adr_kit/migrators/markdown_to_yaml.py"
+    },
+    {
+      "code": "arg-type",
+      "count": 1,
+      "message": "Argument \"modified_date\" to \"PhysicalADR\" has incompatible type \"str\"; expected \"date | None\"",
+      "path": "src/adr_kit/migrators/markdown_to_yaml.py"
+    },
+    {
+      "code": "arg-type",
+      "count": 1,
+      "message": "Argument \"name\" to \"ComponentSpecification\" has incompatible type \"Sequence[str]\"; expected \"str\"",
+      "path": "src/adr_kit/migrators/markdown_to_yaml.py"
+    },
+    {
+      "code": "arg-type",
+      "count": 1,
+      "message": "Argument \"responsibilities\" to \"ComponentSpecification\" has incompatible type \"Sequence[str]\"; expected \"str\"",
+      "path": "src/adr_kit/migrators/markdown_to_yaml.py"
+    },
+    {
+      "code": "arg-type",
+      "count": 1,
+      "message": "Argument \"status\" to \"LogicalADR\" has incompatible type \"str\"; expected \"Status\"",
+      "path": "src/adr_kit/migrators/markdown_to_yaml.py"
+    },
+    {
+      "code": "arg-type",
+      "count": 1,
+      "message": "Argument \"status\" to \"PhysicalADR\" has incompatible type \"str\"; expected \"Status\"",
+      "path": "src/adr_kit/migrators/markdown_to_yaml.py"
+    },
+    {
+      "code": "arg-type",
+      "count": 1,
+      "message": "Argument 1 to \"_map_component_type\" of \"MarkdownToYAMLMigrator\" has incompatible type \"Sequence[str]\"; expected \"str\"",
+      "path": "src/adr_kit/migrators/markdown_to_yaml.py"
+    },
+    {
+      "code": "assignment",
+      "count": 1,
+      "message": "Incompatible types in assignment (expression has type \"PhysicalADR\", variable has type \"LogicalADR\")",
+      "path": "src/adr_kit/migrators/markdown_to_yaml.py"
+    },
+    {
+      "code": "call-arg",
+      "count": 2,
+      "message": "Missing named argument \"declaration_mode\" for \"Invariant\"",
+      "path": "src/adr_kit/migrators/markdown_to_yaml.py"
+    },
+    {
+      "code": "call-arg",
+      "count": 1,
+      "message": "Missing named argument \"deployment_name\" for \"ImplementationIdentifiers\"",
+      "path": "src/adr_kit/migrators/markdown_to_yaml.py"
+    },
+    {
+      "code": "call-arg",
+      "count": 1,
+      "message": "Missing named argument \"repository\" for \"ImplementationIdentifiers\"",
+      "path": "src/adr_kit/migrators/markdown_to_yaml.py"
+    },
+    {
+      "code": "call-arg",
+      "count": 1,
+      "message": "Missing named argument \"service_name\" for \"ImplementationIdentifiers\"",
+      "path": "src/adr_kit/migrators/markdown_to_yaml.py"
+    },
+    {
+      "code": "call-arg",
+      "count": 1,
+      "message": "Unexpected keyword argument \"last_modified_date\" for \"LogicalADR\"; did you mean \"modified_date\"?",
+      "path": "src/adr_kit/migrators/markdown_to_yaml.py"
+    },
+    {
+      "code": "call-arg",
+      "count": 1,
+      "message": "Unexpected keyword argument \"metadata\" for \"LogicalADR\"",
+      "path": "src/adr_kit/migrators/markdown_to_yaml.py"
+    },
+    {
+      "code": "call-arg",
+      "count": 1,
+      "message": "Unexpected keyword argument \"metadata\" for \"PhysicalADR\"",
+      "path": "src/adr_kit/migrators/markdown_to_yaml.py"
+    },
+    {
+      "code": "no-untyped-def",
+      "count": 1,
+      "message": "Function is missing a return type annotation",
+      "path": "src/adr_kit/migrators/markdown_to_yaml.py"
+    },
+    {
+      "code": "type-arg",
+      "count": 4,
+      "message": "Missing type arguments for generic type \"Dict\"",
+      "path": "src/adr_kit/migrators/markdown_to_yaml.py"
+    },
+    {
+      "code": "var-annotated",
+      "count": 1,
+      "message": "Need type annotation for \"negative\" (hint: \"negative: list[<type>] = ...\")",
+      "path": "src/adr_kit/migrators/markdown_to_yaml.py"
+    },
+    {
+      "code": "var-annotated",
+      "count": 1,
+      "message": "Need type annotation for \"positive\" (hint: \"positive: list[<type>] = ...\")",
+      "path": "src/adr_kit/migrators/markdown_to_yaml.py"
+    },
+    {
+      "code": "no-untyped-def",
+      "count": 1,
+      "message": "Function is missing a type annotation for one or more parameters",
+      "path": "src/adr_kit/models/common.py"
+    },
+    {
+      "code": "type-arg",
+      "count": 2,
+      "message": "Missing type arguments for generic type \"dict\"",
+      "path": "src/adr_kit/models/common.py"
+    },
+    {
+      "code": "assignment",
+      "count": 1,
+      "message": "Incompatible default for parameter \"schema_dir\" (default has type \"None\", parameter has type \"Path\")",
+      "path": "src/adr_kit/parser/yaml_parser.py"
+    },
+    {
+      "code": "assignment",
+      "count": 1,
+      "message": "Incompatible default for parameter \"schema_v11_dir\" (default has type \"None\", parameter has type \"Path\")",
+      "path": "src/adr_kit/parser/yaml_parser.py"
+    },
+    {
+      "code": "no-untyped-call",
+      "count": 1,
+      "message": "Call to untyped function \"_load_schemas\" in typed context",
+      "path": "src/adr_kit/parser/yaml_parser.py"
+    },
+    {
+      "code": "no-untyped-call",
+      "count": 3,
+      "message": "Call to untyped function \"relax\" in typed context",
+      "path": "src/adr_kit/parser/yaml_parser.py"
+    },
+    {
+      "code": "no-untyped-def",
+      "count": 2,
+      "message": "Function is missing a return type annotation",
+      "path": "src/adr_kit/parser/yaml_parser.py"
+    },
+    {
+      "code": "no-untyped-def",
+      "count": 1,
+      "message": "Function is missing a type annotation",
+      "path": "src/adr_kit/parser/yaml_parser.py"
+    },
+    {
+      "code": "type-arg",
+      "count": 3,
+      "message": "Missing type arguments for generic type \"dict\"",
+      "path": "src/adr_kit/parser/yaml_parser.py"
+    },
+    {
+      "code": "var-annotated",
+      "count": 1,
+      "message": "Need type annotation for \"_schemas\" (hint: \"_schemas: dict[<type>, <type>] = ...\")",
+      "path": "src/adr_kit/parser/yaml_parser.py"
+    },
+    {
+      "code": "var-annotated",
+      "count": 1,
+      "message": "Need type annotation for \"_structural_validators\" (hint: \"_structural_validators: dict[<type>, <type>] = ...\")",
+      "path": "src/adr_kit/parser/yaml_parser.py"
+    },
+    {
+      "code": "var-annotated",
+      "count": 1,
+      "message": "Need type annotation for \"_validators\" (hint: \"_validators: dict[<type>, <type>] = ...\")",
+      "path": "src/adr_kit/parser/yaml_parser.py"
+    },
+    {
+      "code": "assignment",
+      "count": 1,
+      "message": "Incompatible types in assignment (expression has type \"list[Path | HashInput]\", variable has type \"list[Path]\")",
+      "path": "src/adr_kit/projection.py"
+    },
+    {
+      "code": "assignment",
+      "count": 1,
+      "message": "Incompatible types in assignment (expression has type \"EntityRegistry\", variable has type \"None\")",
+      "path": "src/adr_kit/repository/architecture_repository.py"
+    },
+    {
+      "code": "assignment",
+      "count": 2,
+      "message": "Incompatible types in assignment (expression has type \"None\", variable has type \"ArchitectureIndex\")",
+      "path": "src/adr_kit/repository/architecture_repository.py"
+    },
+    {
+      "code": "assignment",
+      "count": 1,
+      "message": "Incompatible types in assignment (expression has type \"None\", variable has type \"NormalizedArchitectureModel\")",
+      "path": "src/adr_kit/repository/architecture_repository.py"
+    },
+    {
+      "code": "assignment",
+      "count": 2,
+      "message": "Incompatible types in assignment (expression has type \"None\", variable has type \"NormalizedEntityRegistry\")",
+      "path": "src/adr_kit/repository/architecture_repository.py"
+    },
+    {
+      "code": "assignment",
+      "count": 1,
+      "message": "Incompatible types in assignment (expression has type \"None\", variable has type \"Path\")",
+      "path": "src/adr_kit/repository/architecture_repository.py"
+    },
+    {
+      "code": "assignment",
+      "count": 2,
+      "message": "Incompatible types in assignment (expression has type \"None\", variable has type \"RelationshipRegistry\")",
+      "path": "src/adr_kit/repository/architecture_repository.py"
+    },
+    {
+      "code": "assignment",
+      "count": 2,
+      "message": "Incompatible types in assignment (expression has type \"None\", variable has type \"UnresolvedRegistry\")",
+      "path": "src/adr_kit/repository/architecture_repository.py"
+    },
+    {
+      "code": "no-redef",
+      "count": 1,
+      "message": "Attribute \"_entities\" already defined on line 477",
+      "path": "src/adr_kit/repository/architecture_repository.py"
+    },
+    {
+      "code": "no-redef",
+      "count": 1,
+      "message": "Attribute \"_entities_by_id\" already defined on line 478",
+      "path": "src/adr_kit/repository/architecture_repository.py"
+    },
+    {
+      "code": "no-redef",
+      "count": 1,
+      "message": "Attribute \"_model\" already defined on line 494",
+      "path": "src/adr_kit/repository/architecture_repository.py"
+    },
+    {
+      "code": "no-redef",
+      "count": 1,
+      "message": "Attribute \"_relationships\" already defined on line 479",
+      "path": "src/adr_kit/repository/architecture_repository.py"
+    },
+    {
+      "code": "no-redef",
+      "count": 1,
+      "message": "Attribute \"_scope_root\" already defined on line 425",
+      "path": "src/adr_kit/repository/architecture_repository.py"
+    },
+    {
+      "code": "no-redef",
+      "count": 1,
+      "message": "Attribute \"_subsets\" already defined on line 480",
+      "path": "src/adr_kit/repository/architecture_repository.py"
+    },
+    {
+      "code": "type-arg",
+      "count": 1,
+      "message": "Missing type arguments for generic type \"dict\"",
+      "path": "src/adr_kit/repository/architecture_repository.py"
+    },
+    {
+      "code": "no-any-return",
+      "count": 1,
+      "message": "Returning Any from function declared to return \"ArchitectureIndex\"",
+      "path": "src/adr_kit/repository/registry_loader.py"
+    },
+    {
+      "code": "no-any-return",
+      "count": 1,
+      "message": "Returning Any from function declared to return \"EntityRegistry\"",
+      "path": "src/adr_kit/repository/registry_loader.py"
+    },
+    {
+      "code": "no-any-return",
+      "count": 1,
+      "message": "Returning Any from function declared to return \"NormalizedEntityRegistry\"",
+      "path": "src/adr_kit/repository/registry_loader.py"
+    },
+    {
+      "code": "no-any-return",
+      "count": 1,
+      "message": "Returning Any from function declared to return \"RelationshipRegistry\"",
+      "path": "src/adr_kit/repository/registry_loader.py"
+    },
+    {
+      "code": "no-any-return",
+      "count": 1,
+      "message": "Returning Any from function declared to return \"RemediationLedger\"",
+      "path": "src/adr_kit/repository/registry_loader.py"
+    },
+    {
+      "code": "no-any-return",
+      "count": 1,
+      "message": "Returning Any from function declared to return \"UnresolvedRegistry\"",
+      "path": "src/adr_kit/repository/registry_loader.py"
+    },
+    {
+      "code": "no-untyped-def",
+      "count": 1,
+      "message": "Function is missing a return type annotation",
+      "path": "src/adr_kit/repository/registry_loader.py"
+    },
+    {
+      "code": "arg-type",
+      "count": 1,
+      "message": "Argument \"entity_type\" to \"NormalizedEntity\" has incompatible type \"str\"; expected \"Literal['adr', 'system', 'component', 'decision', 'capability', 'invariant']\"",
+      "path": "src/adr_kit/repository/semantic_adapter.py"
+    },
+    {
+      "code": "arg-type",
+      "count": 1,
+      "message": "Argument \"lifecycle_stage\" to \"NormalizedEntity\" has incompatible type \"str\"; expected \"Literal['proposed', 'active', 'deprecated', 'superseded']\"",
+      "path": "src/adr_kit/repository/semantic_adapter.py"
+    },
+    {
+      "code": "arg-type",
+      "count": 1,
+      "message": "Argument \"relationship_type\" to \"RelationshipRecord\" has incompatible type \"str\"; expected \"Literal['declared_in', 'references', 'related_to', 'enforces', 'enabled_by', 'enables', 'governs', 'implemented_by', 'embodied_in', 'supersedes', 'superseded_by', 'refines']\"",
+      "path": "src/adr_kit/repository/semantic_adapter.py"
+    },
+    {
+      "code": "arg-type",
+      "count": 1,
+      "message": "Argument \"relationships\" to \"NormalizedEntity\" has incompatible type \"dict[str, list[Any]]\"; expected \"EntityRelationshipSummary\"",
+      "path": "src/adr_kit/repository/semantic_adapter.py"
+    },
+    {
+      "code": "arg-type",
+      "count": 1,
+      "message": "Argument 1 to \"legacy_entity_to_normalized\" has incompatible type \"Entity | NormalizedEntity\"; expected \"Entity\"",
+      "path": "src/adr_kit/repository/semantic_adapter.py"
+    },
+    {
+      "code": "assignment",
+      "count": 1,
+      "message": "Incompatible types in assignment (expression has type \"dict[str, Any]\", target has type \"list[str] | str\")",
+      "path": "src/adr_kit/repository/semantic_adapter.py"
+    },
+    {
+      "code": "attr-defined",
+      "count": 1,
+      "message": "\"ModelMetaclass\" has no attribute \"model_json_schema\"",
+      "path": "src/adr_kit/schema/repository_schema_generator.py"
+    },
+    {
+      "code": "var-annotated",
+      "count": 1,
+      "message": "Need type annotation for \"sub_scopes\" (hint: \"sub_scopes: list[<type>] = ...\")",
+      "path": "src/adr_kit/scope/resolver.py"
+    },
+    {
+      "code": "arg-type",
+      "count": 1,
+      "message": "Argument 1 to \"get\" of \"dict\" has incompatible type \"Any | None\"; expected \"str\"",
+      "path": "src/adr_kit/validators/adr_validator.py"
+    },
+    {
+      "code": "assignment",
+      "count": 1,
+      "message": "Incompatible default for parameter \"parser\" (default has type \"None\", parameter has type \"ADRParser\")",
+      "path": "src/adr_kit/validators/adr_validator.py"
+    },
+    {
+      "code": "assignment",
+      "count": 1,
+      "message": "Incompatible default for parameter \"project_root\" (default has type \"None\", parameter has type \"Path\")",
+      "path": "src/adr_kit/validators/adr_validator.py"
+    },
+    {
+      "code": "assignment",
+      "count": 1,
+      "message": "Incompatible default for parameter \"scope_resolver\" (default has type \"None\", parameter has type \"ProjectScopeResolver\")",
+      "path": "src/adr_kit/validators/adr_validator.py"
+    },
+    {
+      "code": "assignment",
+      "count": 1,
+      "message": "Incompatible types in assignment (expression has type \"LogicalADR | PhysicalADR | PhysicalSystemADR | PhysicalComponentADR\", variable has type \"LogicalADR\")",
+      "path": "src/adr_kit/validators/adr_validator.py"
+    },
+    {
+      "code": "assignment",
+      "count": 1,
+      "message": "Incompatible types in assignment (expression has type \"ObjectionOverride | None\", variable has type \"ObjectionOverride\")",
+      "path": "src/adr_kit/validators/adr_validator.py"
+    },
+    {
+      "code": "assignment",
+      "count": 2,
+      "message": "Incompatible types in assignment (expression has type \"SteelmanReview | None\", variable has type \"SteelmanReview\")",
+      "path": "src/adr_kit/validators/adr_validator.py"
+    },
+    {
+      "code": "no-untyped-def",
+      "count": 5,
+      "message": "Function is missing a return type annotation",
+      "path": "src/adr_kit/validators/adr_validator.py"
+    },
+    {
+      "code": "no-untyped-def",
+      "count": 1,
+      "message": "Function is missing a type annotation for one or more parameters",
+      "path": "src/adr_kit/validators/adr_validator.py"
+    },
+    {
+      "code": "operator",
+      "count": 1,
+      "message": "Unsupported operand types for / (\"Path\" and \"tuple[str, Any]\")",
+      "path": "src/adr_kit/validators/adr_validator.py"
+    },
+    {
+      "code": "type-arg",
+      "count": 5,
+      "message": "Missing type arguments for generic type \"dict\"",
+      "path": "src/adr_kit/validators/adr_validator.py"
+    },
+    {
+      "code": "return-value",
+      "count": 1,
+      "message": "Incompatible return value type (got \"list[str] | Literal[True]\", expected \"list[str]\")",
+      "path": "src/adr_kit/validators/entity_validator.py"
+    },
+    {
+      "code": "var-annotated",
+      "count": 1,
+      "message": "Need type annotation for \"errors\" (hint: \"errors: list[<type>] = ...\")",
+      "path": "src/adr_kit/validators/entity_validator.py"
+    },
+    {
+      "code": "no-any-return",
+      "count": 1,
+      "message": "Returning Any from function declared to return \"list[dict[Any, Any]]\"",
+      "path": "src/adr_kit/validators/runtime_hygiene.py"
+    },
+    {
+      "code": "type-arg",
+      "count": 2,
+      "message": "Missing type arguments for generic type \"dict\"",
+      "path": "src/adr_kit/validators/runtime_hygiene.py"
+    }
+  ],
+  "tool": "mypy"
+}

@@ -14,7 +14,7 @@ There is a deliberate **generation gap** between informal reasoning (including m
 
 ## Quick Start
 
-Requires **Python 3.11+**. Installs the `adr` CLI and the `adr_kit` package.
+Supports **Python 3.11–3.14**. Installs the `adr` CLI and the `adr_kit` package.
 
 ```bash
 pip install adr-architecture-kit
@@ -111,7 +111,7 @@ Full split: [authority-boundary.md](docs/authority-boundary.md).
 
 This project is **pre-1.0 (Alpha)** on PyPI; surfaces may evolve until a **1.0** commitment. Trove classifiers match that posture.
 
-- **Stable v1** — ADR v1.0 schemas, parser/validator behavior, discovery bundle role, supported Python API, IR adapter semantics with **`ste-spec`** owning the Architecture IR schema contract.
+- **Stable ADR v1.0 encoding** — ADR schema versioning is distinct from the package's pre-1.0 SemVer status. The repository/model consumer seam is supported; documented historical imports and CLI behavior are compatibility-snapshotted. See [public surface and stability](docs/public-surface-and-stability.md).
 - **Draft** — v1.1 and evolving registry/IR adapter details; consume with care.
 - **Experimental** — Vision ADRs, migrators, workspace boot examples; not a basis for long-term external dependencies.
 

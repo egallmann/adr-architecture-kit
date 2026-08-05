@@ -11,6 +11,8 @@ Contributor-oriented guides (TDD, authoring, placement) live under [`contributor
 | [authority-boundary.md](authority-boundary.md) | Who owns what across `ste-handbook`, `ste-spec`, this kit, `ste-runtime`, and `ste-kernel` |
 | [adr-type-model.md](adr-type-model.md) | ADR taxonomy: `ADR-L`, `ADR-PS`, `ADR-PC`, legacy `ADR-P`, experimental `ADR-V` |
 | [architecture-ir-overview.md](architecture-ir-overview.md) | Three layers: ADR sources, repository discovery bundle, public Architecture IR |
+| [public-surface-and-stability.md](public-surface-and-stability.md) | Pre-1.0 compatibility categories and migration rules |
+| [production-hardening/phase-0-controls.md](production-hardening/phase-0-controls.md) | Quality, release-manifest, installed-wheel, and benchmark controls |
 | [public-surface-and-stability.md](public-surface-and-stability.md) | Stable v1 vs draft vs experimental surfaces |
 | [walkthrough-adr-to-ir.md](walkthrough-adr-to-ir.md) | End-to-end flow with the [`examples/public-v1/`](../examples/public-v1/) example |
 

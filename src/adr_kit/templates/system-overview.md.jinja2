@@ -10,7 +10,6 @@ authority_order:
   - {{ item }}
 {% endfor %}
 first_read: {{ "true" if frontmatter.first_read else "false" }}
-last_updated: {{ frontmatter.last_updated }}
 generation_rule: >
   {{ frontmatter.generation_rule }}
 -->

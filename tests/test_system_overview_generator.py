@@ -15,6 +15,7 @@ def test_system_overview_generator_renders_required_sections():
     assert "authority_order:" in body
     assert "-->\n\n# SYSTEM-OVERVIEW" in body
     assert "---\n" not in body
+    assert "last_updated:" not in body
     assert "# SYSTEM-OVERVIEW" in body
     assert "## First Discovery Order" in body
     assert "`adr generate-system-overview`" in body

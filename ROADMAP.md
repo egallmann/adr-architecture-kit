@@ -1,60 +1,54 @@
-# ADR Architecture Kit Roadmap
+# ADR Architecture Kit roadmap
 
-## Summary
+The roadmap is gate-based. Passing a phase authorizes evaluation of the next phase; it
+does not silently introduce that phase's capability. `ste-spec` remains normative for
+shared schemas, `ste-runtime` for runtime observation/evidence, and `ste-kernel` for
+admission.
 
-The current roadmap is centered on making `adr-architecture-kit` a clean public STE component for canonical ADR encoding, repository-normalized discovery, and ADR-derived Architecture IR adaptation.
+## Phase 0 — production hardening
 
-The near-term priority is not a large internal refactor. It is surface stabilization:
+Gate: the existing `0.1.0` authoring/compiler package is releaseable without adding a
+new SDK, schema, graph, normalized model, authoring transaction, Assembler, MCP,
+runtime, rules, substrate, or admission capability.
 
-- clarify the repository role
-- document stable versus draft versus experimental areas
-- add standalone onboarding examples
-- keep the authority split with `ste-spec`, `ste-runtime`, and `ste-kernel` explicit
+- canonical imports and truthful coverage at 80% or greater;
+- frozen Python/CLI compatibility inventory and version drift guard;
+- Ruff, strict-mypy, and Black no-regression ratchets;
+- supported source and retained-wheel execution on Python 3.11–3.14;
+- one wheel and one sdist built once, manifested, tested, and promoted without rebuild;
+- reproducibility, metadata, dependency-audit, installed-consumer, and benchmark gates;
+- ADR-first authority, deterministic generated artifacts, and complete documentation.
 
-## Current Priority Track
+## Phase 1 — narrow consumer-facade decision
 
-### 1. Public surface clarification
+Entry requires Phase 0 closure. Decide, through a new or amended ADR, whether a small
+facade over `ArchitectureRepository` and `NormalizedArchitectureModel` is warranted.
+This phase also owns migrating runtime version reporting to `importlib.metadata`.
+No facade may expose `ArchModel`, compiler passes, raw ADR parsing, or file layout.
 
-- keep `ste-spec` explicit as the owner of the normative Architecture IR contract
-- present this repository as the canonical ADR encoding and IR adapter layer
-- keep `ArchModel` compiler-internal
-- make the repository-normalized discovery bundle a clearly named public surface
+## Phase 2 — contract and identity promotion review
 
-### 2. Public documentation cleanup
+Entry requires a stable Phase 1 consumer boundary. Review provisional v1.1 schema,
+assertion identity, entity expansion, topology identity, bindings, graph-bundle, ledger,
+and attribution material individually. Promotion requires `ste-spec` authority where
+the contract is cross-repository and explicit migration evidence; nothing is promoted
+by roadmap text alone.
 
-- maintain a README that explains the repository role without assuming a private workspace
-- keep one canonical ADR type model document
-- document the authority boundary across handbook, spec, kit, runtime, and kernel
-- keep graph integration docs framed as downstream integration notes rather than contract ownership
+## Phase 3 — transactional authoring decision
 
-### 3. Onboarding and examples
+Entry requires approved Phase 2 contracts. Evaluate bounded authoring transactions,
+rollback, conflict handling, and deterministic regeneration as authoring concerns.
+This phase must not absorb runtime extraction, rules execution, substrate, or admission.
 
-- provide a minimal public ADR example set
-- include resulting normalized outputs
-- include an ADR-derived IR fragment example
-- document the end-to-end walkthrough from ADR source to discovery bundle to IR adapter output
+## Phase 4 — Assembler boundary decision
 
-### 4. Stability policy
+Entry requires an approved authoring transaction and consumer facade. Decide whether an
+Assembler belongs in this repository or elsewhere. Any implementation must use supported
+interfaces only and may not couple to compiler IR, internal passes, or generated paths.
 
-- treat `schema/v1.0/` as stable
-- keep `schema/v1.1/` draft
-- keep `ADR-V-*`, migrators, and boot publication examples experimental
-- separate reference implementation assets from normative surfaces
+## Phase 5 — ecosystem integration review
 
-## Ongoing Engineering Work
-
-The existing compiler and governance work remains important, but it should now be expressed through the public-surface lens:
-
-- authoring-time compiler path remains the repository discovery/compiler surface
-- normalized bundle and repository boundary remain the intended Python consumer seam
-- ADR-derived IR compilation remains an adapter into `ste-spec`
-- workspace-only or boot-specific publication assets remain examples, not core public API
-
-## Completion Markers
-
-This public-readiness phase is in good shape when:
-
-- the top-level docs tell one consistent story
-- external readers can tell which surface is normative, stable, draft, or experimental
-- the repo can be understood without access to a private sibling workspace
-- example assets demonstrate the end-to-end flow without relying on local lore
+Entry requires all earlier gates. Evaluate MCP, LLM-assisted flows, runtime/rules
+integration, substrate, and admission only as explicit cross-repository architecture
+decisions. Authority boundaries and fail-closed governance remain prerequisites; Phase 5
+is not authorization to implement those concerns in the kit.

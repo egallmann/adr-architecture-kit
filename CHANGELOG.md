@@ -9,6 +9,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+- Phase 0 production hardening now installs through the canonical `adr_kit`
+  namespace, snapshots Python/CLI compatibility, enforces version and quality
+  ratchets, supports Python 3.11–3.14, tests the retained wheel, and promotes a
+  manifested wheel/sdist bundle without rebuilding in the PyPI job.
 - Reframed as STE authoring subsystem. Package description, README, `__init__.py`,
   and ADR-L-0001 now consistently present ADR Kit as the authoring-time layer for
   canonical ADR encoding and validation, subordinate to ste-spec, ste-runtime, and

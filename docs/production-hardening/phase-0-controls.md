@@ -20,7 +20,9 @@ python scripts/check_quality_ratchets.py
 Quality baselines contain normalized finding identities. Findings may be removed; new
 identities or count increases fail. Do not refresh a baseline to make a regression pass.
 New Phase 0 Python files are checked separately and must be Ruff, strict-mypy, and Black
-clean.
+clean. The baseline-defining tool versions are pinned in `pyproject.toml` (`ruff==0.15.15`,
+`mypy==2.1.0`, and `black==26.5.1`) so dependency resolution cannot silently redefine
+the measurements.
 
 ## Local release validation
 

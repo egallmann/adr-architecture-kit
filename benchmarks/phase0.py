@@ -10,15 +10,17 @@ import shutil
 import statistics
 import sys
 import tempfile
+from collections.abc import Callable, Sequence
 from dataclasses import dataclass
 from pathlib import Path
 from time import perf_counter_ns
-from typing import Callable, Sequence, TypeVar
+from typing import TypeVar
 
 import yaml
 
 from adr_kit.compiler import ArchitectureCompiler, CompilerConfig
 from adr_kit.compiler.backend.graph_rendering import build_architecture_graph, render_graph_yaml
+from adr_kit.compiler.diagnostics import DiagnosticLog
 from adr_kit.compiler.frontend import CachedADRParser, FrontendBuildResult
 from adr_kit.compiler.pipeline import (
     ADRNormalizationPass,
@@ -30,7 +32,6 @@ from adr_kit.compiler.pipeline import (
     RelationshipInferencePass,
 )
 from adr_kit.compiler.registry_bundle import assemble_registry_bundle, render_bundle_yaml
-from adr_kit.compiler.diagnostics import DiagnosticLog
 from adr_kit.parser import ADRParser
 from adr_kit.repository import ArchitectureRepository
 from adr_kit.scope import ProjectScope, ProjectScopeResolver

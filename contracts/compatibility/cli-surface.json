@@ -230,7 +230,7 @@
       ]
     },
     "build-ir-fragments": {
-      "help": "Repository self-publication example. Not a generic consumer command.\n\n    Builds the ADR IR fragment publication artifact for the adr-architecture-kit\n    repository itself, using hardcoded repo-specific paths (ADR-L-9000, dist/).\n\n    This command is an example of how a repository publishes its own ADR-derived\n    IR fragments. It is not intended for use in other repositories or as a\n    generic product API. For parameterized IR fragment compilation, use the\n    `compile-ir-fragments` command instead.\n    ",
+      "help": "Repository self-publication example. Not a generic consumer command.\n\nBuilds the ADR IR fragment publication artifact for the adr-architecture-kit\nrepository itself, using hardcoded repo-specific paths (ADR-L-9000, dist/).\n\nThis command is an example of how a repository publishes its own ADR-derived\nIR fragments. It is not intended for use in other repositories or as a\ngeneric product API. For parameterized IR fragment compilation, use the\n`compile-ir-fragments` command instead.",
       "params": []
     },
     "compile": {
@@ -961,7 +961,7 @@
       ]
     },
     "generate-manifest": {
-      "help": "Generate manifest.yaml from ADRs (ADR-L-0002: CAP-0002).\n    \n    Auto-detects project scope by default. Use --scope to override.\n    Use --recursive to generate manifests for all sub-modules.\n    ",
+      "help": "Generate manifest.yaml from ADRs (ADR-L-0002: CAP-0002).\n\nAuto-detects project scope by default. Use --scope to override.\nUse --recursive to generate manifests for all sub-modules.",
       "params": [
         {
           "count": false,
@@ -1506,7 +1506,7 @@
       ]
     },
     "scope": {
-      "help": "Show detected project scope(s) (ADR-L-0002: CAP-0001).\n    \n    Displays project boundaries and ADR directory locations.\n    ",
+      "help": "Show detected project scope(s) (ADR-L-0002: CAP-0001).\n\nDisplays project boundaries and ADR directory locations.",
       "params": [
         {
           "count": false,
@@ -1526,7 +1526,7 @@
       ]
     },
     "validate": {
-      "help": "Validate ADRs against schema and business rules (ADR-L-0002: CAP-0003).\n    \n    Auto-detects project scope by default. Use --scope to override.\n    Use --recursive to validate all sub-modules (ADR-L-0002: INV-0019).\n    ",
+      "help": "Validate ADRs against schema and business rules (ADR-L-0002: CAP-0003).\n\nAuto-detects project scope by default. Use --scope to override.\nUse --recursive to validate all sub-modules (ADR-L-0002: INV-0019).",
       "params": [
         {
           "count": false,

@@ -9,8 +9,9 @@ import re
 import subprocess
 import sys
 from collections import Counter
+from collections.abc import Iterable, Sequence
 from pathlib import Path
-from typing import Any, Iterable, Sequence, cast
+from typing import Any, cast
 
 ROOT = Path(__file__).resolve().parents[1]
 BASELINE_DIR = ROOT / "quality-baselines"

@@ -8,8 +8,8 @@ import shutil
 import subprocess
 import sys
 import tempfile
+from collections.abc import Sequence
 from pathlib import Path
-from typing import Sequence
 
 ROOT = Path(__file__).resolve().parents[1]
 PROBES = ("imports", "cli", "external-fixture", "schemas", "templates", "source-isolation")

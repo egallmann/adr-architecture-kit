@@ -4,7 +4,8 @@ from __future__ import annotations
 
 import sys
 import tomllib
-from importlib.metadata import PackageNotFoundError, version as installed_version
+from importlib.metadata import PackageNotFoundError
+from importlib.metadata import version as installed_version
 from pathlib import Path
 from typing import Any
 

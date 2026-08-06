@@ -3,7 +3,9 @@
 from __future__ import annotations
 
 import argparse
+import difflib
 import importlib
+import inspect
 import json
 import sys
 from pathlib import Path
@@ -73,7 +75,7 @@ def _walk_commands(group: click.Group, prefix: str = "") -> dict[str, Any]:
     for name, command in sorted(group.commands.items()):
         path = f"{prefix} {name}".strip()
         records[path] = {
-            "help": command.help or "",
+            "help": inspect.cleandoc(command.help or ""),
             "params": [_parameter_record(parameter) for parameter in command.params],
         }
         if isinstance(command, click.Group):
@@ -101,6 +103,20 @@ def _check(path: Path, actual: object) -> bool:
     expected: object = json.loads(path.read_text(encoding="utf-8"))
     if expected != actual:
         print(f"compatibility snapshot drift: {path.relative_to(ROOT)}", file=sys.stderr)
+        expected_text = json.dumps(expected, indent=2, sort_keys=True).splitlines()
+        actual_text = json.dumps(actual, indent=2, sort_keys=True).splitlines()
+        print(
+            "\n".join(
+                difflib.unified_diff(
+                    expected_text,
+                    actual_text,
+                    fromfile=f"committed/{path.relative_to(ROOT).as_posix()}",
+                    tofile=f"actual/{path.relative_to(ROOT).as_posix()}",
+                    lineterm="",
+                )
+            ),
+            file=sys.stderr,
+        )
         return False
     print(f"OK: {path.relative_to(ROOT)}")
     return True

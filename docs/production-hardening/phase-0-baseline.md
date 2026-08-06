@@ -18,9 +18,9 @@ measurement, allow debt reduction, and fail on new findings or count increases.
 | Canonical package coverage | 83% when measured with `--cov=adr_kit` after canonical namespace loading | Truthful passing baseline |
 | Documented coverage command | `--cov=adr_kit` reported 3% while tests mixed `src.adr_kit` and `adr_kit` | Misleading check; must be replaced |
 | Pre-push bundle | 60 passed plus generated-artifact and attribution checks; approximately 43s | Passing baseline |
-| Ruff | 68 findings | Pre-existing debt; ratchet required |
-| strict mypy | 392 errors | Pre-existing debt; ratchet required |
-| Black | 105 unformatted tracked Python files | Pre-existing debt; ratchet required |
+| Ruff 0.15.15 | 68 findings | Pre-existing debt; ratchet required |
+| strict mypy 2.1.0 | 370 errors | Pre-existing debt; ratchet required |
+| Black 26.5.1 | 105 unformatted tracked Python files | Pre-existing debt; ratchet required |
 | Dependency audit | No known project dependency vulnerabilities | Passing baseline |
 | Clean wheel | Install, documented imports, CLI, schemas, templates, and ADR validation succeeded | Passing but not automated across supported versions |
 | ADR validation | No errors; two warnings | Pre-existing warnings, not regressions |

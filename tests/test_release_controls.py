@@ -27,17 +27,19 @@ def _release_utility(*arguments: str) -> subprocess.CompletedProcess[str]:
 
 def _write_sdist(path: Path, timestamp: int) -> None:
     payload = b"deterministic content\n"
-    with path.open("wb") as raw:
-        with gzip.GzipFile(filename="", mode="wb", fileobj=raw, mtime=timestamp) as compressed:
-            with tarfile.open(fileobj=compressed, mode="w", format=tarfile.PAX_FORMAT) as archive:
-                member = tarfile.TarInfo("package/file.txt")
-                member.size = len(payload)
-                member.mtime = timestamp
-                member.uid = timestamp
-                member.gid = timestamp
-                member.uname = "builder"
-                member.gname = "builder"
-                archive.addfile(member, io.BytesIO(payload))
+    with (
+        path.open("wb") as raw,
+        gzip.GzipFile(filename="", mode="wb", fileobj=raw, mtime=timestamp) as compressed,
+        tarfile.open(fileobj=compressed, mode="w", format=tarfile.PAX_FORMAT) as archive,
+    ):
+        member = tarfile.TarInfo("package/file.txt")
+        member.size = len(payload)
+        member.mtime = timestamp
+        member.uid = timestamp
+        member.gid = timestamp
+        member.uname = "builder"
+        member.gname = "builder"
+        archive.addfile(member, io.BytesIO(payload))
 
 
 def test_release_manifest_rejects_missing_extra_hash_tag_and_version_mismatches(

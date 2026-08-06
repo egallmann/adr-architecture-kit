@@ -12,8 +12,9 @@ import os
 import re
 import sys
 import tarfile
+from collections.abc import Sequence
 from pathlib import Path
-from typing import Any, Sequence
+from typing import Any
 
 WHEEL_SUFFIX = ".whl"
 SDIST_SUFFIX = ".tar.gz"
@@ -66,21 +67,21 @@ def normalize_sdist(sdist: Path, source_date_epoch: int) -> None:
 
     temporary = sdist.with_name(f".{sdist.name}.normalized.tmp")
     try:
-        with temporary.open("wb") as raw:
-            with gzip.GzipFile(
+        with (
+            temporary.open("wb") as raw,
+            gzip.GzipFile(
                 filename="", mode="wb", fileobj=raw, mtime=source_date_epoch
-            ) as compressed:
-                with tarfile.open(
-                    fileobj=compressed, mode="w", format=tarfile.PAX_FORMAT
-                ) as target:
-                    for member, payload in sorted(entries, key=lambda entry: entry[0].name):
-                        member.mtime = source_date_epoch
-                        member.uid = 0
-                        member.gid = 0
-                        member.uname = ""
-                        member.gname = ""
-                        member.pax_headers = {}
-                        target.addfile(member, io.BytesIO(payload) if payload is not None else None)
+            ) as compressed,
+            tarfile.open(fileobj=compressed, mode="w", format=tarfile.PAX_FORMAT) as target,
+        ):
+            for member, payload in sorted(entries, key=lambda entry: entry[0].name):
+                member.mtime = source_date_epoch
+                member.uid = 0
+                member.gid = 0
+                member.uname = ""
+                member.gname = ""
+                member.pax_headers = {}
+                target.addfile(member, io.BytesIO(payload) if payload is not None else None)
         os.replace(temporary, sdist)
     finally:
         temporary.unlink(missing_ok=True)
@@ -126,7 +127,7 @@ def verify_manifest(
     actual_names = {path.name for path in files}
     records = payload.get("artifacts")
     if not isinstance(records, list):
-        raise ValueError("release manifest artifacts must be a list")
+        raise TypeError("release manifest artifacts must be a list")
     manifest_names = {
         str(record.get("filename", "")) for record in records if isinstance(record, dict)
     }
@@ -136,7 +137,7 @@ def verify_manifest(
     by_name = {path.name: path for path in files}
     for untyped_record in records:
         if not isinstance(untyped_record, dict):
-            raise ValueError("invalid artifact record")
+            raise TypeError("invalid artifact record")
         record: dict[str, Any] = untyped_record
         filename = str(record.get("filename", ""))
         path = by_name[filename]

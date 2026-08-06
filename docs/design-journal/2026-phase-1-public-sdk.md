@@ -319,3 +319,37 @@ runtime projection was not accepted as canonical, compatibility baselines were n
 changed, and no production SDK code was started. Architecture authority must resolve
 which generator owns the overlapping files, or define a compatible handoff, before
 Phase 1 can continue.
+
+### Root-cause confirmation
+
+The runtime refresh was initially executed from `ste-runtime` branch
+`feature/mvc-evolution`. A direct diff against `origin/develop` showed no changes in
+`src/architecture`, the architecture CLI command, or `COMPILER-AUTHORITY.md`; using
+the current runtime development branch would therefore produce the same conflict.
+
+The conflict is contractual rather than a timestamp or line-ending artifact:
+
+- `adr-architecture-kit/AUTHORING-SYSTEM.md` says runtime-intended registries,
+  architecture index, and manifest must be produced by `ste-runtime` once migration
+  completes;
+- `ste-runtime/COMPILER-AUTHORITY.md` identifies `ste architecture compile` as the
+  compiler of record and says it writes those paths;
+- `ste-runtime/src/architecture/compile-architecture.ts` unconditionally writes the
+  overlapping files and a rule registry;
+- its bundle uses the runtime normalized payload and ordinary YAML rendering rather
+  than the authoring generator's integrity-envelope and compatibility bytes.
+
+The available paths all require renewed architecture authority:
+
+1. Making runtime output canonical changes committed artifact bytes, integrity
+   behavior, golden snapshots, and compatibility baselines, which Phase 1 forbids.
+2. Keeping the authoring projection canonical contradicts the documented runtime
+   compiler-of-record boundary.
+3. Giving runtime a separate output namespace or compatible projection requires a
+   cross-repository contract and `ste-runtime` source work, both excluded from this
+   phase.
+4. Replacing the required refresh with `--dry-run` would conceal rather than resolve
+   the overlapping ownership conflict and would not satisfy the authority gate.
+
+Phase 1 therefore remains stopped before Gate 2A until an accepted decision chooses
+one of those ownership/handoff models and updates the affected plan constraints.

@@ -30,6 +30,16 @@ PHASE0_FILES = (
     "tests/test_release_controls.py",
     "tests/test_benchmark_phase0.py",
 )
+PHASE0_MYPY_ARGS = (
+    "-m",
+    "mypy",
+    "--strict",
+    *PHASE0_FILES,
+    "--follow-imports=silent",
+    "--no-incremental",
+    "--no-color-output",
+    "--no-pretty",
+)
 MYPY_PATTERN = re.compile(r"^(.*?):\d+(?::\d+)?: error: (.*?)\s+\[([^]]+)]$")
 BLACK_PATTERN = re.compile(r"would reformat (.+)$")
 
@@ -82,6 +92,7 @@ def collect_mypy() -> dict[str, object]:
             "mypy",
             "--explicit-package-bases",
             *MYPY_TARGETS,
+            "--no-incremental",
             "--show-error-codes",
             "--no-color-output",
             "--no-pretty",
@@ -90,10 +101,7 @@ def collect_mypy() -> dict[str, object]:
     )
     if result.returncode not in (0, 1):
         raise RuntimeError(result.stdout + result.stderr)
-    phase0 = _run(
-        ["-m", "mypy", "--strict", *PHASE0_FILES, "--no-color-output", "--no-pretty"],
-        environment,
-    )
+    phase0 = _run(PHASE0_MYPY_ARGS, environment)
     if phase0.returncode != 0:
         raise RuntimeError(
             "new Phase 0 files are not strict-mypy clean:\n" + phase0.stdout + phase0.stderr
@@ -159,7 +167,7 @@ def check_new_phase0_files() -> None:
     commands = (
         ["-m", "ruff", "check", *PHASE0_FILES],
         ["-m", "black", "--check", *PHASE0_FILES],
-        ["-m", "mypy", "--strict", *PHASE0_FILES, "--no-color-output", "--no-pretty"],
+        PHASE0_MYPY_ARGS,
     )
     for command in commands:
         result = _run(command, environment)

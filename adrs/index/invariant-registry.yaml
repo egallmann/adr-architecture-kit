@@ -3160,3 +3160,110 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
+- id: INV-0074
+  entity_type: invariant
+  name: INV-0074
+  summary: The supported `adr_kit.api` facade MUST NOT expose `ArchModel`, compiler
+    configuration, compiler passes, frontend or backend objects, emitters, internal
+    output artifacts, mutable diagnostic logs, compiler caches, or othe
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0013#INV-0074
+    artifact_path: adrs/logical/ADR-L-0013-architecture-repository-boundary-and-normalized-semantic-model.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0013
+    scope: global
+    statement: 'The supported `adr_kit.api` facade MUST NOT expose `ArchModel`, compiler
+
+      configuration, compiler passes, frontend or backend objects, emitters,
+
+      internal output artifacts, mutable diagnostic logs, compiler caches, or
+
+      other compiler-internal types through public annotations or runtime result
+
+      object graphs.
+
+      '
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions: []
+    supersedes: []
+  relationships:
+    declared_in:
+    - ADR-L-0013
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0013#INV-0074
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
+- id: INV-0075
+  entity_type: invariant
+  name: INV-0075
+  summary: Source, editable-install, and clean retained-wheel consumers MUST exercise
+    the supported SDK and MUST agree on package, CLI, SDK result, capability, and
+    installed-distribution versions wherever distribution metadata exis
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0003#INV-0075
+    artifact_path: adrs/logical/ADR-L-0003-quality-assurance-and-testing-strategy.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0003
+    scope: global
+    statement: 'Source, editable-install, and clean retained-wheel consumers MUST
+      exercise
+
+      the supported SDK and MUST agree on package, CLI, SDK result, capability,
+
+      and installed-distribution versions wherever distribution metadata exists.
+
+      Direct-source fallback MUST occur only when metadata is absent and MUST NOT
+
+      hide invalid installed metadata or package-resource failures.
+
+      '
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions: []
+    supersedes: []
+  relationships:
+    declared_in:
+    - ADR-L-0003
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0003#INV-0075
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index

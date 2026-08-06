@@ -5,15 +5,15 @@ artifact_kind: rendered_adr_markdown
 generator_id: adr-rendered-markdown
 generator_version: 1
 hash_algorithm: sha256
-source_hash: 5c14ecfd15f4fd656f9e9e72285df4b9ee674b8115a3a923368b2ba152e4b8fa
-rendered_hash: b8cb812226027141d9254c6c70286f08b0dfc9cb9826265e52224822aeefd90c
+source_hash: a83ade634d2e75c85f571ff19a7b80b35b7f6fc2b0fc29577892b55dfa63ba21
+rendered_hash: eeaafb2d25255a1153f4aec8ce3635f70518454104b5a11f30f7c7395244d452
 -->
 
 # ADR-PC-0002: Schema and Contract Validation
 
 **Status:** proposed  
 **Created:** 2026-03-15  
-**Authors:** adr-architecture-kit  
+**Modified:** 2026-08-06  **Authors:** adr-architecture-kit  
 **Domains:** validation, schema, contracts  
 
 **Implements Logical:** ADR-L-0008, ADR-L-0010, ADR-L-0011  
@@ -72,7 +72,8 @@ Typed contract and validation result models.
 - adr validate
 - adr validate-contract
 - adr validate-project-metadata
-- adr validate-gene...
+- adr validate-gene...- **IFACE-0017** (library_api): A private validation application service supports both the compatibility-
+preserved CLI adapter and ...
 
 **Implementation Identifiers:**
 - Module Path: `src/adr_kit/schema/contract_validation.py`
@@ -87,6 +88,17 @@ Typed contract and validation result models.
 **Rationale:**
 Validation surfaces are independently public, stable, and reused across CLI
 and downstream canonicalization workflows.
+
+
+
+
+### IMPL-0018: Translate shared validation service results at the public SDK boundary
+
+**Rationale:**
+CLI presentation and public SDK contracts have different compatibility
+responsibilities. One private application service prevents divergent
+validation semantics while adapters preserve CLI bytes and exclude validator
+implementation objects from the SDK result graph.
 
 
 

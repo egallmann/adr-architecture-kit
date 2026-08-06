@@ -4,8 +4,8 @@
 # generator_id: adr-compiler
 # generator_version: 1
 # hash_algorithm: sha256
-# source_hash: 03ee3c1628295d3ea27b95ffed777d8a1ec519f72393c07a3b9f87ed9a3c5a8b
-# rendered_hash: a05af0611a4fca57f00aa30d1f26b43cca358e33a545a5f4d277ffba4e8280c6
+# source_hash: 761334c43a40cad14384b416e94bcaecfa49b0c485b8113e4863f9e908955f4f
+# rendered_hash: 5076429bd7525845899adb4b8035c9130e47363b6c4d64cfada229e124700960
 
 schema_version: '1.1'
 type: entity_registry
@@ -691,6 +691,21 @@ entities:
   introduced_by: ADR-L-0003
   lifecycle_stage: active
   source_path: adrs/logical/ADR-L-0003-quality-assurance-and-testing-strategy.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs: []
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: CAP-0047
+  entity_type: capability
+  name: Narrow Supported Authoring SDK
+  introduced_by: ADR-L-0013
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0013-architecture-repository-boundary-and-normalized-semantic-model.yaml
   source_artifact_type: logical_adr
   domains: []
   related_adrs: []
@@ -1563,8 +1578,7 @@ entities:
     realizes: []
 - entity_id: DEC-0050
   entity_type: decision
-  name: Use ArchitectureRepository as the only supported in-process consumer entry
-    point
+  name: Use ArchitectureRepository as the supported in-process semantic entry point
   introduced_by: ADR-L-0013
   lifecycle_stage: active
   source_path: adrs/logical/ADR-L-0013-architecture-repository-boundary-and-normalized-semantic-model.yaml
@@ -2018,6 +2032,36 @@ entities:
   introduced_by: ADR-L-0013
   lifecycle_stage: active
   source_path: adrs/logical/ADR-L-0013-architecture-repository-boundary-and-normalized-semantic-model.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs: []
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: DEC-0080
+  entity_type: decision
+  name: Establish adr_kit.api as the narrow supported authoring SDK facade
+  introduced_by: ADR-L-0013
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0013-architecture-repository-boundary-and-normalized-semantic-model.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs: []
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: DEC-0081
+  entity_type: decision
+  name: Make installed distribution metadata the runtime package-version authority
+  introduced_by: ADR-L-0003
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0003-quality-assurance-and-testing-strategy.yaml
   source_artifact_type: logical_adr
   domains: []
   related_adrs: []
@@ -3038,6 +3082,36 @@ entities:
 - entity_id: INV-0073
   entity_type: invariant
   name: INV-0073
+  introduced_by: ADR-L-0003
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0003-quality-assurance-and-testing-strategy.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs: []
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: INV-0074
+  entity_type: invariant
+  name: INV-0074
+  introduced_by: ADR-L-0013
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0013-architecture-repository-boundary-and-normalized-semantic-model.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs: []
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: INV-0075
+  entity_type: invariant
+  name: INV-0075
   introduced_by: ADR-L-0003
   lifecycle_stage: active
   source_path: adrs/logical/ADR-L-0003-quality-assurance-and-testing-strategy.yaml

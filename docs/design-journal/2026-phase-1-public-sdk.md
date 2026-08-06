@@ -271,6 +271,19 @@ implementation boundaries without silently changing their status. Authority is
 locked only after cross-reference validation, deterministic authoring projection
 regeneration, a runtime-derived refresh, and a second zero-diff validation pass.
 
+Planned implementation attribution, recorded before production code exists:
+
+| Authority | Intended symbols or controls |
+| --- | --- |
+| `ADR-L-0013` / `DEC-0080` / `CAP-0047` | `adr_kit.api` public inventory and four operations |
+| `ADR-L-0013` / `INV-0074` | public annotation and recursive result-graph containment tests |
+| `ADR-L-0003` / `DEC-0081` | `adr_kit._version.resolve_version` and all runtime version consumers |
+| `ADR-L-0003` / `INV-0075` | source, editable, retained-wheel, CLI, SDK, and capability equivalence controls |
+| `ADR-PC-0002` / `IFACE-0017` / `IMPL-0018` | private validation application service and public/CLI translators |
+| `ADR-PC-0003` / `IFACE-0018` / `IMPL-0019` | private compilation application service and containment adapters |
+| `ADR-PC-0004` / `IFACE-0019` / `IMPL-0020` | `open_repository`, capabilities, and private normalized-bundle assembly |
+| `ADR-PS-0002` | authoring SDK system-boundary documentation and exclusions |
+
 Production code remains blocked until that gate is green. Any required schema/model
 expansion, public compiler-internal leakage, CLI or artifact drift, incompatible
 runtime overwrite, dynamic capability claim, or weakening of Phase 0 controls stops

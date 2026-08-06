@@ -6,6 +6,7 @@ status: proposed
 created_date: '2026-03-15'
 authors:
 - adr-architecture-kit
+modified_date: '2026-08-06'
 domains:
 - validation
 - schema
@@ -24,6 +25,8 @@ introduces_entities:
 - COMP-0011
 - IFACE-0012
 - IMPL-0012
+- IFACE-0017
+- IMPL-0018
 technologies:
 - python
 - jsonschema
@@ -76,6 +79,14 @@ component_specifications:
       - adr validate-contract
       - adr validate-project-metadata
       - adr validate-generated-docs
+  - id: IFACE-0017
+    type: library_api
+    specification: |
+      A private validation application service supports both the compatibility-
+      preserved CLI adapter and the `adr_kit.api.validate_architecture` adapter.
+      The public adapter accepts one explicit project root, `complete` or
+      `structural` mode, and optional cross-reference validation, then translates
+      completed schema and semantic failures into immutable public diagnostics.
   implementation_identifiers:
     module_path: src/adr_kit/schema/contract_validation.py
     entry_point: src/adr_kit/cli/main.py
@@ -102,5 +113,12 @@ implementation_decisions:
   rationale: |
     Validation surfaces are independently public, stable, and reused across CLI
     and downstream canonicalization workflows.
+- id: IMPL-0018
+  summary: Translate shared validation service results at the public SDK boundary
+  rationale: |
+    CLI presentation and public SDK contracts have different compatibility
+    responsibilities. One private application service prevents divergent
+    validation semantics while adapters preserve CLI bytes and exclude validator
+    implementation objects from the SDK result graph.
 gaps: []
 

@@ -21,6 +21,8 @@ introduces_entities:
 - COMP-0012
 - IFACE-0013
 - IMPL-0013
+- IFACE-0018
+- IMPL-0019
 technologies:
 - python
 - yaml
@@ -59,9 +61,10 @@ component_specifications:
     constraints:
     - Derived outputs remain non-authoritative
     - Pass ordering must stay compiler-owned and explicit
-    - Internal compiler types must not be promoted into a new public facade in Phase 0
+    - Internal compiler types must not cross the supported public facade
     success_criteria:
-    - adr compile remains the authoritative orchestration path
+    - adr compile remains the compatibility-preserved authoring CLI orchestration path
+    - Runtime machine-artifact authority remains owned by ste-runtime
     - Recursive compilation produces scope-local artifacts deterministically
   interfaces:
   - id: IFACE-0013
@@ -72,6 +75,14 @@ component_specifications:
       - adr generate-architecture-index
       - adr generate-manifest
       - adr generate-rendered-docs
+  - id: IFACE-0018
+    type: library_api
+    specification: |
+      A private compilation application service supports a restricted
+      `adr_kit.api.compile_architecture` adapter and a compatibility CLI adapter.
+      The public adapter accepts one explicit scope and only registries, manifest,
+      and markdown groups. The CLI adapter retains graph, recursive, check,
+      strict/lenient, contract-profile, output, diagnostic, and exit behavior.
   implementation_identifiers:
     module_path: src/adr_kit/compiler/driver.py
     service_name: adr-compiler
@@ -101,4 +112,11 @@ implementation_decisions:
     component. Their CLI behavior and generated compatibility surfaces are guarded,
     but their Python internals remain evolvable and must not be described as a
     stable public runtime API.
+- id: IMPL-0019
+  summary: Contain compiler internals behind public and CLI application-service adapters
+  rationale: |
+    Shared orchestration preserves output and diagnostic semantics without
+    promoting `ArchModel`, compiler configuration, passes, emitters, internal
+    artifacts, or mutable diagnostic logs into the supported SDK. CLI behavioral
+    snapshots guard delegation independently from the narrower facade contract.
 gaps: []

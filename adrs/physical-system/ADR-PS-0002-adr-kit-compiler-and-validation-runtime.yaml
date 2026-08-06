@@ -48,12 +48,13 @@ context: |
   This ADR establishes the concrete authoring/compiler system boundary for those public
   capabilities. Discovery and indexing remain covered by ADR-PS-0001; this ADR
   covers the authoring/compiler implementation that powers canonical parsing,
-  compilation, repository loading, contract checks, and artifact integrity.
+  compilation, repository loading, contract checks, artifact integrity, and the
+  narrow `adr_kit.api` authoring SDK.
 
   The boundary explicitly excludes Assembler behavior, runtime observation or
   evidence extraction, rules execution, substrate management, admission decisions,
   MCP surfaces, and LLM responsibilities. Those belong to later work or sibling
-  systems and must not be introduced by Phase 0 production hardening.
+  systems and must not be introduced by the Phase 1 SDK.
 technology_stack:
 - category: language
   name: Python
@@ -77,8 +78,10 @@ system_boundaries:
   description: |
     Encapsulates canonical ADR parsing, compiler orchestration, schema and
     contract validation, normalized repository access, and generated artifact
-    integrity validation. It does not perform runtime extraction, rules,
-    substrate, admission, MCP, LLM, or Assembler responsibilities.
+    integrity validation. It exposes a narrow Python authoring SDK over supported
+    validation, compilation, repository, model, and capability contracts. It does
+    not perform runtime extraction, rules, substrate, admission, MCP, LLM, or
+    Assembler responsibilities.
   external_dependencies:
   - Canonical ADR artifacts
   - Canonical invariant artifacts
@@ -89,6 +92,7 @@ system_boundaries:
   - adr validate-contract
   - adr validate-project-metadata
   - adr entities *
+  - adr_kit.api
 component_topology:
   components:
   - name: Schema and Contract Validation Component

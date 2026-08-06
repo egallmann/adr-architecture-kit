@@ -57,6 +57,7 @@ introduces_entities:
 - INV-0072
 - INV-0073
 - CAP-0046
+- INV-0075
 decisions:
 - id: DEC-0008
   summary: Adopt Multi-Layer Testing Strategy
@@ -161,6 +162,25 @@ decisions:
     - Published artifacts are byte-identical to the tested release bundle
     - Existing quality debt can only stay level or decrease
     - Supported Python claims are backed by source and wheel execution
+- id: DEC-0081
+  summary: Make installed distribution metadata the runtime package-version authority
+  rationale: |
+    A manually synchronized package literal can drift from build metadata and
+    from the artifact exercised by an installed consumer. Runtime package, CLI,
+    SDK result, and capability versions therefore resolve from installed
+    `adr-architecture-kit` metadata. Only `PackageNotFoundError` permits a
+    direct-source fallback to a name-verified `pyproject.toml`; an unavailable
+    or invalid source fallback returns the explicit non-release sentinel
+    `0+unknown`.
+
+    `pyproject.toml:[project].version` remains the sole manually edited package
+    version. Editable and wheel tests must prove metadata resolution rather than
+    silently relying on source-tree importability.
+  consequences:
+    positive:
+    - Package, CLI, SDK, and installed-distribution version reports share one authority
+    - Direct-source execution remains supported without masking packaging defects
+    - Release evidence detects drift instead of synchronizing duplicate literals
 invariants:
 - id: INV-0020
   statement: |
@@ -272,6 +292,21 @@ invariants:
   rationale: |
     Artifact identity and truthful quality measurements are required for a
     trustworthy release chain while pre-existing debt is retired incrementally.
+- id: INV-0075
+  statement: |
+    Source, editable-install, and clean retained-wheel consumers MUST exercise
+    the supported SDK and MUST agree on package, CLI, SDK result, capability,
+    and installed-distribution versions wherever distribution metadata exists.
+    Direct-source fallback MUST occur only when metadata is absent and MUST NOT
+    hide invalid installed metadata or package-resource failures.
+  scope: global
+  enforcement_level: must
+  enforcement_mechanism: test
+  verification_method: automated
+  rationale: |
+    A supported SDK and release chain require equivalent behavior from the
+    checkout, editable installation, and the exact artifact selected for
+    promotion.
 capabilities:
 - id: CAP-0020
   name: Automated Quality Gates

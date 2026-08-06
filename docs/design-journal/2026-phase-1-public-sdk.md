@@ -288,3 +288,34 @@ Production code remains blocked until that gate is green. Any required schema/mo
 expansion, public compiler-internal leakage, CLI or artifact drift, incompatible
 runtime overwrite, dynamic capability claim, or weakening of Phase 0 controls stops
 implementation and returns the contradiction to architecture authority.
+
+## Authority-gate blocker observed on 2026-08-06
+
+The authoring sequence completed successfully and reproduced with no second-pass
+diff: cross-references were valid, generated-document and system-overview integrity
+passed, compiler check mode passed, and golden/package-schema tests passed.
+
+The globally installed `ste` launcher could not run because its npm target was
+missing. The equivalent repository-owned runtime CLI was rebuilt and invoked as:
+
+```powershell
+node .\dist\cli\index.js architecture compile --project-root ..\adr-architecture-kit
+```
+
+That refresh rewrote every overlapping authoring registry plus `adrs/manifest.yaml`
+and introduced `adrs/index/rule-registry.yaml`. The required post-refresh controls
+then failed:
+
+- `adr validate-generated-docs` reported malformed integrity headers for the
+  manifest and legacy entity registry and a stale system overview;
+- `adr validate-system-overview` reported `stale_generated_output`;
+- authoring compiler check mode reported `E702` drift for all twelve overlapping
+  generated artifacts;
+- the runtime projection produced a very large representation-level diff rather
+  than the authoring generator's deterministic bytes.
+
+This is the plan's explicit incompatible-overlap stop condition. The incompatible
+runtime projection was not accepted as canonical, compatibility baselines were not
+changed, and no production SDK code was started. Architecture authority must resolve
+which generator owns the overlapping files, or define a compatible handoff, before
+Phase 1 can continue.

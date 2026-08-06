@@ -41,7 +41,11 @@ jobs:
       - run: python -m pip install --upgrade pip
       - run: python -m pip install .[dev]
       - run: python scripts/check_version_consistency.py
-      - run: python -m build --outdir python-dist
+      - name: Build release bundle once
+        run: |
+          export SOURCE_DATE_EPOCH="$(git log -1 --format=%ct)"
+          python -m build --outdir python-dist
+          python scripts/release_manifest.py normalize-sdist --sdist "$(find python-dist -maxdepth 1 -name '*.tar.gz' -print -quit)" --source-date-epoch "${SOURCE_DATE_EPOCH}"
       - run: python -m twine check python-dist/*
       - name: Verify tag and create release manifest
         run: |

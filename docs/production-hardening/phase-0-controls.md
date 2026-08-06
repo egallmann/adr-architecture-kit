@@ -25,7 +25,11 @@ clean.
 ## Local release validation
 
 ```bash
+export SOURCE_DATE_EPOCH="$(git log -1 --format=%ct)"
 python -m build --outdir python-dist
+python scripts/release_manifest.py normalize-sdist \
+  --sdist python-dist/adr_architecture_kit-<version>.tar.gz \
+  --source-date-epoch "${SOURCE_DATE_EPOCH}"
 python -m twine check python-dist/*
 python scripts/release_manifest.py create \
   --dist-dir python-dist \
@@ -43,7 +47,9 @@ python scripts/test_installed_wheel.py --wheel <wheel-path>
 
 The manifest requires exactly one wheel and one sdist and verifies filenames, sizes,
 SHA-256 hashes, source commit, package version, and tag. Release publishing downloads
-and re-verifies that retained bundle. The privileged job never rebuilds it.
+and re-verifies that retained bundle. Sdist normalization removes build-clock and
+owner metadata using the source commit epoch before hashing. The privileged job never
+rebuilds it.
 
 ## Benchmarks
 

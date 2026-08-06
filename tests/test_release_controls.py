@@ -2,9 +2,12 @@
 
 from __future__ import annotations
 
+import gzip
+import io
 import json
 import subprocess
 import sys
+import tarfile
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -20,6 +23,21 @@ def _release_utility(*arguments: str) -> subprocess.CompletedProcess[str]:
         capture_output=True,
         check=False,
     )
+
+
+def _write_sdist(path: Path, timestamp: int) -> None:
+    payload = b"deterministic content\n"
+    with path.open("wb") as raw:
+        with gzip.GzipFile(filename="", mode="wb", fileobj=raw, mtime=timestamp) as compressed:
+            with tarfile.open(fileobj=compressed, mode="w", format=tarfile.PAX_FORMAT) as archive:
+                member = tarfile.TarInfo("package/file.txt")
+                member.size = len(payload)
+                member.mtime = timestamp
+                member.uid = timestamp
+                member.gid = timestamp
+                member.uname = "builder"
+                member.gname = "builder"
+                archive.addfile(member, io.BytesIO(payload))
 
 
 def test_release_manifest_rejects_missing_extra_hash_tag_and_version_mismatches(
@@ -131,6 +149,33 @@ def test_release_manifest_rejects_missing_extra_hash_tag_and_version_mismatches(
     )
 
 
+def test_sdist_normalization_removes_build_time_and_owner_variation(tmp_path: Path) -> None:
+    first = tmp_path / "first.tar.gz"
+    second = tmp_path / "second.tar.gz"
+    epoch = 1_767_225_600
+    _write_sdist(first, epoch + 10)
+    _write_sdist(second, epoch + 20)
+    assert first.read_bytes() != second.read_bytes()
+
+    for path in (first, second):
+        result = _release_utility(
+            "normalize-sdist",
+            "--sdist",
+            str(path),
+            "--source-date-epoch",
+            str(epoch),
+        )
+        assert result.returncode == 0, result.stdout + result.stderr
+
+    assert first.read_bytes() == second.read_bytes()
+    with tarfile.open(first, "r:gz") as archive:
+        members = archive.getmembers()
+    assert members
+    assert all(member.mtime == epoch for member in members)
+    assert all(member.uid == member.gid == 0 for member in members)
+    assert all(member.uname == member.gname == "" for member in members)
+
+
 def test_installed_wheel_harness_declares_all_consumer_probes() -> None:
     script = ROOT / "scripts" / "test_installed_wheel.py"
     assert script.is_file(), "missing installed-wheel consumer harness"
@@ -156,6 +201,7 @@ def test_publish_workflow_promotes_without_rebuilding_and_scopes_privilege() -> 
     assert "environment:" in publish_section and "name: pypi" in publish_section
     pre_publish = workflow[: workflow.index("  publish:")]
     assert "id-token: write" not in pre_publish
+    assert "normalize-sdist" in pre_publish
 
 
 def test_pr_workflow_has_source_wheel_quality_security_and_reproducibility_gates() -> None:
@@ -174,3 +220,4 @@ def test_pr_workflow_has_source_wheel_quality_security_and_reproducibility_gates
         "benchmark-smoke",
     ):
         assert f"  {contract}:" in workflow
+    assert workflow.count("normalize-sdist") >= 3

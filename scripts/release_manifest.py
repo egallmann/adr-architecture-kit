@@ -3,10 +3,15 @@
 from __future__ import annotations
 
 import argparse
+import copy
+import gzip
 import hashlib
+import io
 import json
+import os
 import re
 import sys
+import tarfile
 from pathlib import Path
 from typing import Any, Sequence
 
@@ -41,6 +46,44 @@ def _filename_has_version(filename: str, package_version: str) -> bool:
     if filename.endswith(WHEEL_SUFFIX):
         return re.search(rf"-{escaped}-[^/]+\.whl$", filename) is not None
     return filename.endswith(f"-{package_version}{SDIST_SUFFIX}")
+
+
+def normalize_sdist(sdist: Path, source_date_epoch: int) -> None:
+    """Rewrite an sdist with stable gzip, tar, timestamp, and owner metadata."""
+
+    if not sdist.name.endswith(SDIST_SUFFIX):
+        raise ValueError("sdist path must end with .tar.gz")
+    if source_date_epoch < 0:
+        raise ValueError("source date epoch must be non-negative")
+
+    entries: list[tuple[tarfile.TarInfo, bytes | None]] = []
+    with tarfile.open(sdist, "r:gz") as source:
+        for original in source.getmembers():
+            member = copy.copy(original)
+            extracted = source.extractfile(original) if original.isfile() else None
+            payload = extracted.read() if extracted is not None else None
+            entries.append((member, payload))
+
+    temporary = sdist.with_name(f".{sdist.name}.normalized.tmp")
+    try:
+        with temporary.open("wb") as raw:
+            with gzip.GzipFile(
+                filename="", mode="wb", fileobj=raw, mtime=source_date_epoch
+            ) as compressed:
+                with tarfile.open(
+                    fileobj=compressed, mode="w", format=tarfile.PAX_FORMAT
+                ) as target:
+                    for member, payload in sorted(entries, key=lambda entry: entry[0].name):
+                        member.mtime = source_date_epoch
+                        member.uid = 0
+                        member.gid = 0
+                        member.uname = ""
+                        member.gname = ""
+                        member.pax_headers = {}
+                        target.addfile(member, io.BytesIO(payload) if payload is not None else None)
+        os.replace(temporary, sdist)
+    finally:
+        temporary.unlink(missing_ok=True)
 
 
 def create_manifest(dist_dir: Path, output: Path, source_commit: str, package_version: str) -> None:
@@ -113,6 +156,9 @@ def _parser() -> argparse.ArgumentParser:
     create.add_argument("--output", type=Path, required=True)
     create.add_argument("--source-commit", required=True)
     create.add_argument("--version", required=True)
+    normalize = subparsers.add_parser("normalize-sdist")
+    normalize.add_argument("--sdist", type=Path, required=True)
+    normalize.add_argument("--source-date-epoch", type=int, required=True)
     verify = subparsers.add_parser("verify")
     verify.add_argument("--dist-dir", type=Path, required=True)
     verify.add_argument("--manifest", type=Path, required=True)
@@ -130,6 +176,9 @@ def main(argv: Sequence[str] | None = None) -> int:
                 arguments.dist_dir, arguments.output, arguments.source_commit, arguments.version
             )
             print(arguments.output)
+        elif arguments.command == "normalize-sdist":
+            normalize_sdist(arguments.sdist, arguments.source_date_epoch)
+            print(arguments.sdist)
         else:
             verify_manifest(
                 arguments.dist_dir,
@@ -139,7 +188,7 @@ def main(argv: Sequence[str] | None = None) -> int:
                 arguments.expected_tag,
             )
             print("release manifest verified")
-    except (OSError, ValueError, json.JSONDecodeError) as exc:
+    except (OSError, ValueError, json.JSONDecodeError, tarfile.TarError) as exc:
         print(f"release manifest error: {exc}", file=sys.stderr)
         return 1
     return 0

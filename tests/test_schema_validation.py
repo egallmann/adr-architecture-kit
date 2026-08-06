@@ -3,7 +3,7 @@
 import pytest
 from pathlib import Path
 
-from src.adr_kit.parser import ADRParser, ADRParseError, ADRSchemaValidationError
+from adr_kit.parser import ADRParser, ADRParseError, ADRSchemaValidationError
 
 
 def test_adr_parser_default_init():

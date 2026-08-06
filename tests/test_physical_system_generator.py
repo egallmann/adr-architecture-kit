@@ -6,10 +6,10 @@ from pathlib import Path
 
 from click.testing import CliRunner
 
-from src.adr_kit.cli.main import cli
-from src.adr_kit.generators import PhysicalSystemADRGenerator
-from src.adr_kit.parser import ADRParser
-from src.adr_kit.validators import ADRValidator
+from adr_kit.cli.main import cli
+from adr_kit.generators import PhysicalSystemADRGenerator
+from adr_kit.parser import ADRParser
+from adr_kit.validators import ADRValidator
 
 
 def test_render_yaml_from_minimal_fixture():

@@ -1,7 +1,7 @@
 from pathlib import Path
 
-from src.adr_kit.compiler.backend.manifest_rendering import build_manifest_from_directory
-from src.adr_kit.parser import ADRParser
+from adr_kit.compiler.backend.manifest_rendering import build_manifest_from_directory
+from adr_kit.parser import ADRParser
 
 
 def test_parse_objection_override(tmp_path):

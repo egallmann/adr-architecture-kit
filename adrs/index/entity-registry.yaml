@@ -1229,7 +1229,7 @@ entities:
   name: Compiler Pipeline and Driver
   summary: The compiler driver and explicit pipeline now own deterministic architecture
     compilation across parse, analysis, emission, and recursive scope orchestration.
-    This component documents that public compile boundary.
+    The command-line behavior is compatibility-relevant, while the
   lifecycle_stage: proposed
   canonical_source:
     source_type: physical_component_adr
@@ -1272,8 +1272,8 @@ entities:
   entity_type: adr
   name: Repository Boundary and Normalized Semantic Model
   summary: ArchitectureRepository and NormalizedArchitectureModel are now the stable
-    in-process semantic boundary for consumers. This component captures that runtime
-    contract and keeps consumer-side interpretation centralized.
+    in-process semantic boundary for consumers. This component captures that consumer
+    contract and keeps interpretation centralized without creating a
   lifecycle_stage: proposed
   canonical_source:
     source_type: physical_component_adr
@@ -1447,10 +1447,10 @@ entities:
     generator: adr-architecture-index
 - id: ADR-PS-0002
   entity_type: adr
-  name: ADR Kit Compiler and Validation Runtime
-  summary: adr-architecture-kit now operates as a compiler and validation runtime
-    rather than a collection of unrelated generators. The implementation includes
-    an explicit compiler pipeline, contract validation, normalized reposito
+  name: ADR Kit Authoring Compiler and Validation System
+  summary: adr-architecture-kit operates as an authoring-time compiler and validation
+    system rather than a collection of unrelated generators. The implementation includes
+    an explicit compiler pipeline, contract validation, normaliz
   lifecycle_stage: proposed
   canonical_source:
     source_type: physical_system_adr
@@ -1466,7 +1466,7 @@ entities:
     tags:
     - compiler
     - validation
-    - runtime
+    - authoring
     - python
     implementation_authority: null
     related_reviews: []
@@ -3424,6 +3424,50 @@ entities:
   provenance:
     source_type: logical_adr
     source_ref: ADR-L-0016#CAP-0045
+    extraction_phase: extract_capability
+    classification: explicit
+    generator: adr-architecture-index
+- id: CAP-0046
+  entity_type: capability
+  name: Verified Build-Once Release Promotion
+  summary: Build one release bundle, verify its metadata and identity, exercise the
+    retained wheel across the supported Python matrix, and publish that exact bundle
+    without a second build.
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0003#CAP-0046
+    artifact_path: adrs/logical/ADR-L-0003-quality-assurance-and-testing-strategy.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0003
+    domains:
+    - quality-assurance
+    - testing
+    - governance
+    - reliability
+    implemented_by_components: []
+    enabled_by_decisions: []
+  relationships:
+    declared_in:
+    - ADR-L-0003
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0003#CAP-0046
     extraction_phase: extract_capability
     classification: explicit
     generator: adr-architecture-index
@@ -7111,6 +7155,92 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
+- id: DEC-0078
+  entity_type: decision
+  name: Require retained release-artifact testing and no-regression quality controls
+  summary: Source-tree tests alone cannot prove that an installed distribution contains
+    the documented modules and package data, and rebuilding during publication breaks
+    the identity between tested and published artifacts. Existing
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0003#DEC-0078
+    artifact_path: adrs/logical/ADR-L-0003-quality-assurance-and-testing-strategy.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0003
+    related_invariants: []
+    enforces_invariants: []
+    enables_capabilities: []
+    governs_components: []
+    supersedes: []
+    refines: []
+  relationships:
+    declared_in:
+    - ADR-L-0003
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0003#DEC-0078
+    extraction_phase: extract_decision
+    classification: explicit
+    generator: adr-architecture-index
+- id: DEC-0079
+  entity_type: decision
+  name: Preserve the present repository seam and defer any narrow consumer facade
+  summary: Phase 0 production hardening does not authorize a new SDK, root export,
+    replacement compilation result, normalized-model revision, or graph API. `ArchitectureRepository`
+    and `NormalizedArchitectureModel` remain the suppo
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0013#DEC-0079
+    artifact_path: adrs/logical/ADR-L-0013-architecture-repository-boundary-and-normalized-semantic-model.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0013
+    related_invariants: []
+    enforces_invariants: []
+    enables_capabilities: []
+    governs_components: []
+    supersedes: []
+    refines: []
+  relationships:
+    declared_in:
+    - ADR-L-0013
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0013#DEC-0079
+    extraction_phase: extract_decision
+    classification: explicit
+    generator: adr-architecture-index
 - id: DEC-9000
   entity_type: decision
   name: Publish a deterministic logical ADR fragment for boot readiness.
@@ -10206,6 +10336,114 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
+- id: INV-0072
+  entity_type: invariant
+  name: INV-0072
+  summary: Pull-request and release validation MUST install the project before tests,
+    MUST measure canonical `adr_kit` namespace coverage at no less than 80%, and MUST
+    exercise both a source installation and the exact retained whee
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0003#INV-0072
+    artifact_path: adrs/logical/ADR-L-0003-quality-assurance-and-testing-strategy.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0003
+    scope: global
+    statement: 'Pull-request and release validation MUST install the project before
+      tests,
+
+      MUST measure canonical `adr_kit` namespace coverage at no less than 80%,
+
+      and MUST exercise both a source installation and the exact retained wheel
+
+      on every claimed Python version.
+
+      '
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions: []
+    supersedes: []
+  relationships:
+    declared_in:
+    - ADR-L-0003
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0003#INV-0072
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
+- id: INV-0073
+  entity_type: invariant
+  name: INV-0073
+  summary: Release publication MUST promote exactly one previously tested wheel and
+    one previously tested sdist without rebuilding. Their filenames, sizes, SHA-256
+    hashes, package version, source commit, and `v<version>` tag MUST b
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0003#INV-0073
+    artifact_path: adrs/logical/ADR-L-0003-quality-assurance-and-testing-strategy.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0003
+    scope: global
+    statement: 'Release publication MUST promote exactly one previously tested wheel
+      and
+
+      one previously tested sdist without rebuilding. Their filenames, sizes,
+
+      SHA-256 hashes, package version, source commit, and `v<version>` tag MUST
+
+      be verified before the privileged publish step. Ruff, strict-mypy, and
+
+      Black debt MUST be guarded by committed no-regression baselines that allow
+
+      removals but reject additions or count increases.
+
+      '
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions: []
+    supersedes: []
+  relationships:
+    declared_in:
+    - ADR-L-0003
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0003#INV-0073
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
 - id: SYS-0001
   entity_type: system
   name: ADR Architecture Kit Discovery and Indexing System
@@ -10252,10 +10490,10 @@ entities:
     generator: adr-architecture-index
 - id: SYS-0002
   entity_type: system
-  name: ADR Kit Compiler and Validation Runtime
-  summary: adr-architecture-kit now operates as a compiler and validation runtime
-    rather than a collection of unrelated generators. The implementation includes
-    an explicit compiler pipeline, contract validation, normalized reposito
+  name: ADR Kit Authoring Compiler and Validation System
+  summary: adr-architecture-kit operates as an authoring-time compiler and validation
+    system rather than a collection of unrelated generators. The implementation includes
+    an explicit compiler pipeline, contract validation, normaliz
   lifecycle_stage: active
   canonical_source:
     source_type: physical_system_adr

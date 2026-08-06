@@ -5,9 +5,9 @@ from textwrap import dedent
 
 from click.testing import CliRunner
 
-from src.adr_kit.cli.main import cli
-from src.adr_kit.migrators.canonical_id_normalizer import CanonicalIdNormalizer
-from src.adr_kit.parser import ADRParser
+from adr_kit.cli.main import cli
+from adr_kit.migrators.canonical_id_normalizer import CanonicalIdNormalizer
+from adr_kit.parser import ADRParser
 
 
 def _write(path: Path, content: str) -> None:

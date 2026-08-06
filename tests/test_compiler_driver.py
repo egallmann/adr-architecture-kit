@@ -4,9 +4,9 @@ from pathlib import Path
 
 from click.testing import CliRunner
 
-from src.adr_kit.cli.main import cli
-from src.adr_kit.compiler import ArchitectureCompiler, CompilationMode, CompilerConfig
-from src.adr_kit.scope import ProjectScopeResolver
+from adr_kit.cli.main import cli
+from adr_kit.compiler import ArchitectureCompiler, CompilationMode, CompilerConfig
+from adr_kit.scope import ProjectScopeResolver
 from tests.golden.helpers import clone_scope_sources, generate_deterministic_outputs
 
 
@@ -291,6 +291,20 @@ def test_architecture_compiler_check_infers_timestamp_from_disk(tmp_path):
     assert all(item.code != "E705" for item in result.diagnostics.as_list())
 
 
+def test_architecture_compiler_regeneration_reuses_existing_timestamp(tmp_path):
+    workspace = tmp_path / "workspace"
+    generated = generate_deterministic_outputs(_repo_root(), workspace)
+    expected_manifest = generated["manifest"].read_bytes()
+    expected_index = generated["architecture_index"].read_bytes()
+
+    compiler = ArchitectureCompiler(scope_resolver=ProjectScopeResolver(explicit_scope=workspace))
+    result = compiler.compile(config=CompilerConfig(emit={"registries", "manifest"}))
+
+    assert result.success is True
+    assert generated["manifest"].read_bytes() == expected_manifest
+    assert generated["architecture_index"].read_bytes() == expected_index
+
+
 def test_architecture_compiler_check_fails_when_generated_timestamps_disagree(tmp_path):
     workspace = tmp_path / "workspace"
     generated = generate_deterministic_outputs(_repo_root(), workspace)
@@ -411,8 +425,8 @@ def test_compile_cli_exits_non_zero_when_contract_validation_fails(tmp_path, mon
     workspace = tmp_path / "workspace"
     clone_scope_sources(_repo_root(), workspace)
 
-    from src.adr_kit.compiler import driver as driver_module
-    from src.adr_kit.schema.contract_validation import ContractValidationIssue, ContractValidationResult
+    from adr_kit.compiler import driver as driver_module
+    from adr_kit.schema.contract_validation import ContractValidationIssue, ContractValidationResult
 
     monkeypatch.setattr(
         driver_module,
@@ -500,8 +514,8 @@ def test_architecture_compiler_normal_mode_fails_on_contract_error(tmp_path, mon
     workspace = tmp_path / "workspace"
     clone_scope_sources(_repo_root(), workspace)
 
-    from src.adr_kit.compiler import driver as driver_module
-    from src.adr_kit.schema.contract_validation import ContractValidationIssue, ContractValidationResult
+    from adr_kit.compiler import driver as driver_module
+    from adr_kit.schema.contract_validation import ContractValidationIssue, ContractValidationResult
 
     monkeypatch.setattr(
         driver_module,
@@ -538,8 +552,8 @@ def test_architecture_compiler_lenient_mode_tolerates_contract_error(tmp_path, m
     workspace = tmp_path / "workspace"
     clone_scope_sources(_repo_root(), workspace)
 
-    from src.adr_kit.compiler import driver as driver_module
-    from src.adr_kit.schema.contract_validation import ContractValidationIssue, ContractValidationResult
+    from adr_kit.compiler import driver as driver_module
+    from adr_kit.schema.contract_validation import ContractValidationIssue, ContractValidationResult
 
     monkeypatch.setattr(
         driver_module,
@@ -601,8 +615,8 @@ def test_compile_cli_lenient_mode_allows_tolerated_contract_failure(tmp_path, mo
     workspace = tmp_path / "workspace"
     clone_scope_sources(_repo_root(), workspace)
 
-    from src.adr_kit.compiler import driver as driver_module
-    from src.adr_kit.schema.contract_validation import ContractValidationIssue, ContractValidationResult
+    from adr_kit.compiler import driver as driver_module
+    from adr_kit.schema.contract_validation import ContractValidationIssue, ContractValidationResult
 
     monkeypatch.setattr(
         driver_module,

@@ -7,13 +7,14 @@ import jsonschema
 import yaml
 from click.testing import CliRunner
 
-from src.adr_kit.cli.main import cli
-from src.adr_kit.compiler import (
+import adr_kit.cli.main as cli_main
+from adr_kit.cli.main import cli
+from adr_kit.compiler import (
     AdrIrFragmentCompileError,
     AdrIrSourceDescriptor,
     compile_logical_adr_ir_fragments,
 )
-from src.adr_kit.compiler.backend.adr_ir_fragment_rendering import (
+from adr_kit.compiler.backend.adr_ir_fragment_rendering import (
     canonical_json_bytes,
     lower_ascii,
     norm,
@@ -472,7 +473,13 @@ def test_cli_compile_ir_fragments_writes_canonical_array(tmp_path: Path) -> None
     assert len(records) == 3
 
 
-def test_cli_build_ir_fragments_writes_repo_publication_artifact() -> None:
+def test_cli_build_ir_fragments_writes_repo_publication_artifact(monkeypatch) -> None:
+    monkeypatch.chdir(REPO_ROOT)
+    monkeypatch.setattr(
+        cli_main,
+        "__file__",
+        "/opt/python/lib/python3.12/site-packages/adr_kit/cli/main.py",
+    )
     runner = CliRunner()
     result = runner.invoke(cli, ["build-ir-fragments"])
 

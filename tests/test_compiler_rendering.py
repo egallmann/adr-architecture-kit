@@ -3,29 +3,29 @@ from __future__ import annotations
 from pathlib import Path
 from unittest.mock import patch
 
-from src.adr_kit.compiler.driver import _FixedDateTime
-from src.adr_kit.compiler.backend.manifest_rendering import (
+from adr_kit.compiler.driver import _FixedDateTime
+from adr_kit.compiler.backend.manifest_rendering import (
     MANIFEST_GENERATOR_IDENTITY,
     build_manifest_integrity_header,
     render_manifest_for_scope,
 )
-from src.adr_kit.compiler.backend.markdown_rendering import (
+from adr_kit.compiler.backend.markdown_rendering import (
     MARKDOWN_GENERATOR_IDENTITY,
     build_markdown_integrity_header,
     render_existing_markdown_artifact,
 )
-from src.adr_kit.generators.manifest_generator import ManifestGenerator
-from src.adr_kit.generators.views.markdown import MarkdownGenerator
-from src.adr_kit.parser import ADRParser
-from src.adr_kit.scope import ProjectScopeResolver
+from adr_kit.generators.manifest_generator import ManifestGenerator
+from adr_kit.generators.views.markdown import MarkdownGenerator
+from adr_kit.parser import ADRParser
+from adr_kit.scope import ProjectScopeResolver
 
 
 def test_compiler_manifest_renderer_matches_generator_body_and_inputs():
     scope = ProjectScopeResolver().resolve()
     parser = ADRParser()
 
-    with patch("src.adr_kit.generators.manifest_generator.datetime", _FixedDateTime), patch(
-        "src.adr_kit.compiler.backend.manifest_rendering.datetime",
+    with patch("adr_kit.generators.manifest_generator.datetime", _FixedDateTime), patch(
+        "adr_kit.compiler.backend.manifest_rendering.datetime",
         _FixedDateTime,
     ):
         body, source_inputs = render_manifest_for_scope(parser=parser, scope=scope)
@@ -38,8 +38,8 @@ def test_compiler_manifest_renderer_matches_generator_body_and_inputs():
 def test_compiler_manifest_renderer_matches_generator_header():
     scope = ProjectScopeResolver().resolve()
     parser = ADRParser()
-    with patch("src.adr_kit.generators.manifest_generator.datetime", _FixedDateTime), patch(
-        "src.adr_kit.compiler.backend.manifest_rendering.datetime",
+    with patch("adr_kit.generators.manifest_generator.datetime", _FixedDateTime), patch(
+        "adr_kit.compiler.backend.manifest_rendering.datetime",
         _FixedDateTime,
     ):
         body, source_inputs = render_manifest_for_scope(parser=parser, scope=scope)

@@ -7,7 +7,7 @@ REPO_ROOT = Path(__file__).resolve().parents[1]
 if str(REPO_ROOT) not in sys.path:
     sys.path.insert(0, str(REPO_ROOT))
 
-from src.adr_kit.compiler import compile_logical_adr_ir_fragments
+from adr_kit.compiler import compile_logical_adr_ir_fragments
 
 
 ADR_SOURCE_PATH = REPO_ROOT / "adrs" / "logical" / "ADR-L-9000-kernel-boot-publication-surface.yaml"

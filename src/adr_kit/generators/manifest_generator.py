@@ -42,7 +42,7 @@ class ManifestGenerator:
         return relative_manifest_path(file_path, adr_dir)
 
     def generate_from_directory(self, adr_dir: Path, scope: Optional[ProjectScope] = None) -> Manifest:
-        with patch("src.adr_kit.compiler.backend.manifest_rendering.datetime", datetime):
+        with patch("adr_kit.compiler.backend.manifest_rendering.datetime", datetime):
             return build_manifest_from_directory(
                 adr_dir,
                 parser=self.parser,
@@ -57,7 +57,7 @@ class ManifestGenerator:
         return render_compiler_manifest_yaml(manifest)
 
     def render_for_scope(self, scope: ProjectScope) -> tuple[str, List[Path]]:
-        with patch("src.adr_kit.compiler.backend.manifest_rendering.datetime", datetime):
+        with patch("adr_kit.compiler.backend.manifest_rendering.datetime", datetime):
             return render_compiler_manifest_for_scope(
                 parser=self.parser,
                 scope=scope,

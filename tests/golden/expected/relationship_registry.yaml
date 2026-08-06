@@ -451,6 +451,16 @@ relationships:
   canonical_source_ref: ADR-L-0016#CAP-0045
   confidence: 1.0
   metadata: {}
+- relationship_id: declared_in:CAP-0046:ADR-L-0003
+  relationship_type: declared_in
+  from_entity_id: CAP-0046
+  to_entity_id: ADR-L-0003
+  provenance_classification: explicit
+  evidence:
+  - ADR-L-0003#CAP-0046
+  canonical_source_ref: ADR-L-0003#CAP-0046
+  confidence: 1.0
+  metadata: {}
 - relationship_id: declared_in:CAP-9000:ADR-L-9000
   relationship_type: declared_in
   from_entity_id: CAP-9000
@@ -1291,6 +1301,26 @@ relationships:
   canonical_source_ref: ADR-L-0012#DEC-0077
   confidence: 1.0
   metadata: {}
+- relationship_id: declared_in:DEC-0078:ADR-L-0003
+  relationship_type: declared_in
+  from_entity_id: DEC-0078
+  to_entity_id: ADR-L-0003
+  provenance_classification: explicit
+  evidence:
+  - ADR-L-0003#DEC-0078
+  canonical_source_ref: ADR-L-0003#DEC-0078
+  confidence: 1.0
+  metadata: {}
+- relationship_id: declared_in:DEC-0079:ADR-L-0013
+  relationship_type: declared_in
+  from_entity_id: DEC-0079
+  to_entity_id: ADR-L-0013
+  provenance_classification: explicit
+  evidence:
+  - ADR-L-0013#DEC-0079
+  canonical_source_ref: ADR-L-0013#DEC-0079
+  confidence: 1.0
+  metadata: {}
 - relationship_id: declared_in:DEC-9000:ADR-L-9000
   relationship_type: declared_in
   from_entity_id: DEC-9000
@@ -1939,6 +1969,26 @@ relationships:
   evidence:
   - ADR-L-0016#INV-0071
   canonical_source_ref: ADR-L-0016#INV-0071
+  confidence: 1.0
+  metadata: {}
+- relationship_id: declared_in:INV-0072:ADR-L-0003
+  relationship_type: declared_in
+  from_entity_id: INV-0072
+  to_entity_id: ADR-L-0003
+  provenance_classification: explicit
+  evidence:
+  - ADR-L-0003#INV-0072
+  canonical_source_ref: ADR-L-0003#INV-0072
+  confidence: 1.0
+  metadata: {}
+- relationship_id: declared_in:INV-0073:ADR-L-0003
+  relationship_type: declared_in
+  from_entity_id: INV-0073
+  to_entity_id: ADR-L-0003
+  provenance_classification: explicit
+  evidence:
+  - ADR-L-0003#INV-0073
+  canonical_source_ref: ADR-L-0003#INV-0073
   confidence: 1.0
   metadata: {}
 - relationship_id: declared_in:SYS-0001:ADR-PS-0001

@@ -6,7 +6,7 @@ status: accepted
 created_date: '2026-03-08'
 authors:
 - adr-architecture-kit
-modified_date: '2026-03-08'
+modified_date: '2026-08-05'
 context: |
   The ADR Architecture Kit is a foundational tool for machine-verifiable architecture
   documentation. As such, it must maintain high quality standards to ensure reliability,
@@ -53,6 +53,10 @@ tags:
 - ci-cd
 - validation
 - coverage
+introduces_entities:
+- INV-0072
+- INV-0073
+- CAP-0046
 decisions:
 - id: DEC-0008
   summary: Adopt Multi-Layer Testing Strategy
@@ -139,6 +143,24 @@ decisions:
     - Reduces debugging time (tests isolate issues)
     - Higher confidence in correctness
     - Better API design (testability constraint)
+- id: DEC-0078
+  summary: Require retained release-artifact testing and no-regression quality controls
+  rationale: |
+    Source-tree tests alone cannot prove that an installed distribution contains
+    the documented modules and package data, and rebuilding during publication
+    breaks the identity between tested and published artifacts. Existing Ruff,
+    strict-mypy, and Black debt must remain visible without permitting new debt.
+
+    CI therefore tests source installs and the exact retained wheel on every
+    supported Python version, measures coverage through the canonical `adr_kit`
+    namespace, ratchets legacy quality findings, and promotes a verified wheel
+    and sdist without rebuilding them in the publishing job.
+  consequences:
+    positive:
+    - Installed-package behavior becomes release evidence rather than an assumption
+    - Published artifacts are byte-identical to the tested release bundle
+    - Existing quality debt can only stay level or decrease
+    - Supported Python claims are backed by source and wheel execution
 invariants:
 - id: INV-0020
   statement: |
@@ -222,6 +244,34 @@ invariants:
   rationale: |
     Coverage metrics identify untested code paths. 80% is pragmatic balance
     between thoroughness and diminishing returns.
+- id: INV-0072
+  statement: |
+    Pull-request and release validation MUST install the project before tests,
+    MUST measure canonical `adr_kit` namespace coverage at no less than 80%,
+    and MUST exercise both a source installation and the exact retained wheel
+    on every claimed Python version.
+  scope: global
+  enforcement_level: must
+  enforcement_mechanism: test
+  verification_method: automated
+  rationale: |
+    Source-package leakage and namespace aliases can produce misleading
+    coverage and allow incomplete wheels to pass repository-local tests.
+- id: INV-0073
+  statement: |
+    Release publication MUST promote exactly one previously tested wheel and
+    one previously tested sdist without rebuilding. Their filenames, sizes,
+    SHA-256 hashes, package version, source commit, and `v<version>` tag MUST
+    be verified before the privileged publish step. Ruff, strict-mypy, and
+    Black debt MUST be guarded by committed no-regression baselines that allow
+    removals but reject additions or count increases.
+  scope: global
+  enforcement_level: must
+  enforcement_mechanism: test
+  verification_method: automated
+  rationale: |
+    Artifact identity and truthful quality measurements are required for a
+    trustworthy release chain while pre-existing debt is retired incrementally.
 capabilities:
 - id: CAP-0020
   name: Automated Quality Gates
@@ -262,6 +312,18 @@ capabilities:
   - Tests demonstrate error handling
   - Tests illustrate edge cases
   - Test names clearly describe behavior
+- id: CAP-0046
+  name: Verified Build-Once Release Promotion
+  description: |
+    Build one release bundle, verify its metadata and identity, exercise the
+    retained wheel across the supported Python matrix, and publish that exact
+    bundle without a second build.
+  acceptance_criteria:
+  - CI supports Python 3.11, 3.12, 3.13, and 3.14 only after source and retained-wheel jobs pass
+  - canonical package coverage remains at or above 80%
+  - Ruff, strict-mypy, and Black controls reject new debt
+  - the release manifest requires exactly one wheel and one sdist
+  - the publish job has no build step and confines OIDC and the PyPI environment to publication
 related_adrs:
 - ADR-L-0001
 - ADR-L-0002
@@ -304,12 +366,13 @@ notes: |
 
   # Targeted pytest usage for local development
   pytest tests/ -v
-  pytest tests/ --cov=src/adr_kit --cov-report=html --cov-report=term
+  pytest tests/ --cov=adr_kit --cov-report=html --cov-report=term --cov-fail-under=80
   pytest tests/ -k "scope" -v
   ```
 
   CI/CD integration:
-  - GitHub Actions workflow runs on every push and pull request
+  - GitHub Actions installs the project and runs the full suite on Python
+    3.11, 3.12, 3.13, and 3.14
   - `adr validate --cross-references` must pass
   - `adr governance-checks` must pass
   - `adr validate-generated-docs` must pass for manifest and rendered ADR output
@@ -319,6 +382,10 @@ notes: |
     contract, generated-artifact, and project-metadata integrity
   - Verified implementation slices must be committed at meaningful boundaries in
     alignment with `INV-0003`
+  - Release artifacts are built once, retained, installed in clean environments,
+    manifested, re-verified, and promoted without rebuilding
+  - Ruff, strict-mypy, and Black legacy debt is governed by no-regression ratchets;
+    new Phase 0 Python files must be clean under all three tools
 
   Future enhancements:
   - Property-based testing (hypothesis) for generators

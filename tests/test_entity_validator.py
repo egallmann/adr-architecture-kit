@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from pathlib import Path
 
-from src.adr_kit.models import (
+from adr_kit.models import (
     CanonicalSource,
     Completeness,
     DiscoveryProvenance,
@@ -11,7 +11,7 @@ from src.adr_kit.models import (
     RelationshipRecord,
     UnresolvedRecord,
 )
-from src.adr_kit.validators import EntityValidator
+from adr_kit.validators import EntityValidator
 
 
 def _entity(entity_id: str, entity_type: str) -> NormalizedEntity:

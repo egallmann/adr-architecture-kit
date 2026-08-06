@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import pytest
 
-from src.adr_kit.parser import ADRParser, ADRSchemaValidationError
+from adr_kit.parser import ADRParser, ADRSchemaValidationError
 
 
 def test_parser_accepts_valid_implementation_attribution_evidence(tmp_path):

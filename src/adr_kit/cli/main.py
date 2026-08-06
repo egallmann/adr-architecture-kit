@@ -466,7 +466,10 @@ def build_ir_fragments():
             "generic consumer command. Use `adr compile-ir-fragments` for parameterized use.",
             err=True,
         )
-        repo_root = Path(__file__).resolve().parents[3]
+        # This command intentionally publishes repository-owned example data.
+        # Resolve that authority from the checked-out repository, not from the
+        # installed package location used to execute the command.
+        repo_root = Path.cwd().resolve()
         adr_source_path = repo_root / "adrs" / "logical" / "ADR-L-9000-kernel-boot-publication-surface.yaml"
         output_path = repo_root / "dist" / "architecture-ir" / "adr-ir-fragments.json"
 

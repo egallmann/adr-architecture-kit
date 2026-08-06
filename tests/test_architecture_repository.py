@@ -8,9 +8,9 @@ import pytest
 import yaml
 from click.testing import CliRunner
 
-from src.adr_kit.cli.main import cli
-from src.adr_kit.generators import ArchitectureIndexGenerator
-from src.adr_kit.repository import ArchitectureRegistryError, ArchitectureRepository
+from adr_kit.cli.main import cli
+from adr_kit.generators import ArchitectureIndexGenerator
+from adr_kit.repository import ArchitectureRegistryError, ArchitectureRepository
 from tests.test_architecture_index_generator import _create_fixture
 
 

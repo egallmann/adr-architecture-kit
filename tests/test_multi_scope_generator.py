@@ -5,8 +5,8 @@ import shutil
 import uuid
 from pathlib import Path
 
-from src.adr_kit.generators import ManifestGenerator
-from src.adr_kit.scope import ProjectScopeResolver
+from adr_kit.generators import ManifestGenerator
+from adr_kit.scope import ProjectScopeResolver
 
 
 class TestScopeAwareGeneration:

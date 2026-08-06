@@ -1,0 +1,396 @@
+{
+  "finding_count": 68,
+  "findings": [
+    {
+      "code": "F401",
+      "count": 1,
+      "message": "`..generators.ArchitectureIndexGenerator` imported but unused",
+      "path": "src/adr_kit/cli/main.py"
+    },
+    {
+      "code": "F401",
+      "count": 1,
+      "message": "`..generators.EntityRegistryGenerator` imported but unused",
+      "path": "src/adr_kit/cli/main.py"
+    },
+    {
+      "code": "F401",
+      "count": 1,
+      "message": "`..generators.views.MarkdownGenerator` imported but unused",
+      "path": "src/adr_kit/cli/main.py"
+    },
+    {
+      "code": "F541",
+      "count": 2,
+      "message": "f-string without any placeholders",
+      "path": "src/adr_kit/cli/main.py"
+    },
+    {
+      "code": "F401",
+      "count": 1,
+      "message": "`.markdown_rendering.discover_scope_adr_files` imported but unused",
+      "path": "src/adr_kit/compiler/backend/markdown_emitter.py"
+    },
+    {
+      "code": "F401",
+      "count": 1,
+      "message": "`...models.CanonicalSource` imported but unused",
+      "path": "src/adr_kit/compiler/passes/extract_logical_entities.py"
+    },
+    {
+      "code": "F401",
+      "count": 1,
+      "message": "`...models.Completeness` imported but unused",
+      "path": "src/adr_kit/compiler/passes/extract_logical_entities.py"
+    },
+    {
+      "code": "F401",
+      "count": 1,
+      "message": "`...models.DiscoveryProvenance` imported but unused",
+      "path": "src/adr_kit/compiler/passes/extract_logical_entities.py"
+    },
+    {
+      "code": "F401",
+      "count": 1,
+      "message": "`...models.SourceRef` imported but unused",
+      "path": "src/adr_kit/compiler/passes/extract_logical_entities.py"
+    },
+    {
+      "code": "F401",
+      "count": 1,
+      "message": "`...models.SourceRef` imported but unused",
+      "path": "src/adr_kit/compiler/passes/fixed_order.py"
+    },
+    {
+      "code": "F401",
+      "count": 1,
+      "message": "`..scope.ProjectScopeResolver` imported but unused",
+      "path": "src/adr_kit/compiler/pipeline.py"
+    },
+    {
+      "code": "F401",
+      "count": 1,
+      "message": "`..compiler.passes.score_completeness` imported but unused",
+      "path": "src/adr_kit/generators/architecture_index_generator.py"
+    },
+    {
+      "code": "F401",
+      "count": 1,
+      "message": "`..models.ArchitectureIndex` imported but unused",
+      "path": "src/adr_kit/generators/architecture_index_generator.py"
+    },
+    {
+      "code": "F401",
+      "count": 1,
+      "message": "`..models.EntityRegistry` imported but unused",
+      "path": "src/adr_kit/generators/architecture_index_generator.py"
+    },
+    {
+      "code": "F401",
+      "count": 1,
+      "message": "`..models.LogicalADR` imported but unused",
+      "path": "src/adr_kit/generators/architecture_index_generator.py"
+    },
+    {
+      "code": "F401",
+      "count": 1,
+      "message": "`..models.PhysicalADR` imported but unused",
+      "path": "src/adr_kit/generators/architecture_index_generator.py"
+    },
+    {
+      "code": "F401",
+      "count": 1,
+      "message": "`..models.PhysicalComponentADR` imported but unused",
+      "path": "src/adr_kit/generators/architecture_index_generator.py"
+    },
+    {
+      "code": "F401",
+      "count": 1,
+      "message": "`..models.PhysicalSystemADR` imported but unused",
+      "path": "src/adr_kit/generators/architecture_index_generator.py"
+    },
+    {
+      "code": "F401",
+      "count": 1,
+      "message": "`..models.SourceCoverageSummary` imported but unused",
+      "path": "src/adr_kit/generators/architecture_index_generator.py"
+    },
+    {
+      "code": "F401",
+      "count": 1,
+      "message": "`..models.StandaloneInvariant` imported but unused",
+      "path": "src/adr_kit/generators/architecture_index_generator.py"
+    },
+    {
+      "code": "F401",
+      "count": 1,
+      "message": "`..models.ValidationSummary` imported but unused",
+      "path": "src/adr_kit/generators/architecture_index_generator.py"
+    },
+    {
+      "code": "F401",
+      "count": 1,
+      "message": "`typing.Tuple` imported but unused",
+      "path": "src/adr_kit/generators/architecture_index_generator.py"
+    },
+    {
+      "code": "F401",
+      "count": 1,
+      "message": "`datetime.timezone` imported but unused",
+      "path": "src/adr_kit/generators/manifest_generator.py"
+    },
+    {
+      "code": "F401",
+      "count": 1,
+      "message": "`typing.List` imported but unused",
+      "path": "src/adr_kit/generators/system_overview_generator.py"
+    },
+    {
+      "code": "F401",
+      "count": 1,
+      "message": "`.artifacts.ScopeProjectionArtifacts` imported but unused",
+      "path": "src/adr_kit/integrity/validation.py"
+    },
+    {
+      "code": "F401",
+      "count": 1,
+      "message": "`typing.Dict` imported but unused",
+      "path": "src/adr_kit/migrators/canonical_id_normalizer.py"
+    },
+    {
+      "code": "F401",
+      "count": 1,
+      "message": "`typing.List` imported but unused",
+      "path": "src/adr_kit/migrators/canonical_id_normalizer.py"
+    },
+    {
+      "code": "F841",
+      "count": 1,
+      "message": "Local variable `keeper` is assigned to but never used",
+      "path": "src/adr_kit/migrators/canonical_id_normalizer.py"
+    },
+    {
+      "code": "F401",
+      "count": 1,
+      "message": "`.e_adr_classification.classify_eadr` imported but unused",
+      "path": "src/adr_kit/migrators/markdown_to_yaml.py"
+    },
+    {
+      "code": "F401",
+      "count": 1,
+      "message": "`.e_adr_classification.get_new_adr_id` imported but unused",
+      "path": "src/adr_kit/migrators/markdown_to_yaml.py"
+    },
+    {
+      "code": "F401",
+      "count": 1,
+      "message": "`typing.Set` imported but unused",
+      "path": "src/adr_kit/migrators/markdown_to_yaml.py"
+    },
+    {
+      "code": "F841",
+      "count": 1,
+      "message": "Local variable `section_title` is assigned to but never used",
+      "path": "src/adr_kit/migrators/markdown_to_yaml.py"
+    },
+    {
+      "code": "F401",
+      "count": 1,
+      "message": "`.common.ImpactLevel` imported but unused",
+      "path": "src/adr_kit/models/manifest.py"
+    },
+    {
+      "code": "E741",
+      "count": 1,
+      "message": "Ambiguous variable name: `l`",
+      "path": "src/adr_kit/validators/entity_validator.py"
+    },
+    {
+      "code": "E402",
+      "count": 1,
+      "message": "Module level import not at top of file",
+      "path": "tests/golden/refresh_goldens.py"
+    },
+    {
+      "code": "F401",
+      "count": 1,
+      "message": "`adr_kit.models.EntityRegistry` imported but unused",
+      "path": "tests/integration/test_entity_lifecycle.py"
+    },
+    {
+      "code": "F401",
+      "count": 1,
+      "message": "`adr_kit.validators.ValidationError` imported but unused",
+      "path": "tests/test_adr_validator.py"
+    },
+    {
+      "code": "F841",
+      "count": 2,
+      "message": "Local variable `workspace_root` is assigned to but never used",
+      "path": "tests/test_adr_validator.py"
+    },
+    {
+      "code": "F841",
+      "count": 1,
+      "message": "Local variable `adr_dir` is assigned to but never used",
+      "path": "tests/test_canonical_id_normalizer.py"
+    },
+    {
+      "code": "F401",
+      "count": 1,
+      "message": "`pathlib.Path` imported but unused",
+      "path": "tests/test_compiler_frontend_parser.py"
+    },
+    {
+      "code": "F401",
+      "count": 1,
+      "message": "`pytest` imported but unused",
+      "path": "tests/test_kernel_contract_validation.py"
+    },
+    {
+      "code": "F841",
+      "count": 1,
+      "message": "Local variable `ste_adr_ids` is assigned to but never used",
+      "path": "tests/test_multi_scope_generator.py"
+    },
+    {
+      "code": "F841",
+      "count": 1,
+      "message": "Local variable `workspace_adr_ids` is assigned to but never used",
+      "path": "tests/test_multi_scope_generator.py"
+    },
+    {
+      "code": "F841",
+      "count": 2,
+      "message": "Local variable `workspace_root` is assigned to but never used",
+      "path": "tests/test_multi_scope_generator.py"
+    },
+    {
+      "code": "F401",
+      "count": 1,
+      "message": "`pathlib.Path` imported but unused",
+      "path": "tests/test_objection_override.py"
+    },
+    {
+      "code": "F401",
+      "count": 1,
+      "message": "`adr_kit.parser.ADRParseError` imported but unused",
+      "path": "tests/test_physical_system_adr.py"
+    },
+    {
+      "code": "F401",
+      "count": 1,
+      "message": "`adr_kit.compiler.backend.graph_emitter.emit_graph_artifact` imported but unused",
+      "path": "tests/test_retrofit_contract_guards.py"
+    },
+    {
+      "code": "F401",
+      "count": 1,
+      "message": "`adr_kit.compiler.backend.manifest_emitter.emit_manifest_artifact` imported but unused",
+      "path": "tests/test_retrofit_contract_guards.py"
+    },
+    {
+      "code": "F401",
+      "count": 1,
+      "message": "`adr_kit.repository.registry_loader.fingerprint_payload` imported but unused",
+      "path": "tests/test_retrofit_contract_guards.py"
+    },
+    {
+      "code": "F401",
+      "count": 1,
+      "message": "`adr_kit.repository.registry_loader.load_legacy_entity_registry` imported but unused",
+      "path": "tests/test_retrofit_contract_guards.py"
+    },
+    {
+      "code": "F401",
+      "count": 1,
+      "message": "`adr_kit.repository.registry_loader.load_relationship_registry` imported but unused",
+      "path": "tests/test_retrofit_contract_guards.py"
+    },
+    {
+      "code": "F401",
+      "count": 1,
+      "message": "`adr_kit.repository.registry_loader.load_remediation_ledger` imported but unused",
+      "path": "tests/test_retrofit_contract_guards.py"
+    },
+    {
+      "code": "F401",
+      "count": 1,
+      "message": "`adr_kit.repository.registry_loader.load_unresolved_registry` imported but unused",
+      "path": "tests/test_retrofit_contract_guards.py"
+    },
+    {
+      "code": "F401",
+      "count": 1,
+      "message": "`adr_kit.repository.registry_loader.model_payload` imported but unused",
+      "path": "tests/test_retrofit_contract_guards.py"
+    },
+    {
+      "code": "F401",
+      "count": 1,
+      "message": "`adr_kit.repository.semantic_adapter.legacy_entity_to_normalized` imported but unused",
+      "path": "tests/test_retrofit_contract_guards.py"
+    },
+    {
+      "code": "F401",
+      "count": 1,
+      "message": "`adr_kit.repository.semantic_adapter.legacy_relationships` imported but unused",
+      "path": "tests/test_retrofit_contract_guards.py"
+    },
+    {
+      "code": "F401",
+      "count": 1,
+      "message": "`adr_kit.validators.EntityValidator` imported but unused",
+      "path": "tests/test_retrofit_contract_guards.py"
+    },
+    {
+      "code": "F401",
+      "count": 1,
+      "message": "`adr_kit.validators.SystemOverviewValidator` imported but unused",
+      "path": "tests/test_retrofit_contract_guards.py"
+    },
+    {
+      "code": "F401",
+      "count": 1,
+      "message": "`adr_kit.scope.ProjectScope` imported but unused",
+      "path": "tests/test_scope_resolver.py"
+    },
+    {
+      "code": "F401",
+      "count": 1,
+      "message": "`shutil` imported but unused",
+      "path": "tests/test_scope_resolver.py"
+    },
+    {
+      "code": "F401",
+      "count": 1,
+      "message": "`tempfile` imported but unused",
+      "path": "tests/test_scope_resolver.py"
+    },
+    {
+      "code": "F401",
+      "count": 1,
+      "message": "`unittest.mock.Mock` imported but unused",
+      "path": "tests/test_scope_resolver.py"
+    },
+    {
+      "code": "F401",
+      "count": 1,
+      "message": "`unittest.mock.patch` imported but unused",
+      "path": "tests/test_scope_resolver.py"
+    },
+    {
+      "code": "F841",
+      "count": 1,
+      "message": "Local variable `test_path` is assigned to but never used",
+      "path": "tests/test_scope_resolver.py"
+    },
+    {
+      "code": "F401",
+      "count": 1,
+      "message": "`adr_kit.generators.PhysicalComponentADRGenerator` imported but unused",
+      "path": "tests/test_source_generators.py"
+    }
+  ],
+  "tool": "ruff"
+}

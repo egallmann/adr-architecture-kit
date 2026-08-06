@@ -7,10 +7,10 @@ from pathlib import Path
 import yaml
 from click.testing import CliRunner
 
-from src.adr_kit.cli.main import cli
-from src.adr_kit.generators import LogicalADRGenerator, PhysicalComponentADRGenerator, ScaffoldGenerator
-from src.adr_kit.parser import ADRParser
-from src.adr_kit.validators import ADRValidator
+from adr_kit.cli.main import cli
+from adr_kit.generators import LogicalADRGenerator, PhysicalComponentADRGenerator, ScaffoldGenerator
+from adr_kit.parser import ADRParser
+from adr_kit.validators import ADRValidator
 
 
 def _make_workspace_temp_dir() -> Path:

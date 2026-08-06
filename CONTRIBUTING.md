@@ -20,7 +20,7 @@ Thank you for your interest in contributing. This document covers how to set up 
 
 ## Development Setup
 
-**Requirements:** Python 3.11+
+**Requirements:** Python 3.11–3.14
 
 ```bash
 # Clone the repository
@@ -67,15 +67,17 @@ See [`docs/contributors/tdd-workflow.md`](docs/contributors/tdd-workflow.md) for
 
 | Gate | Command |
 |------|---------|
-| Test suite | `pytest` |
-| Coverage (≥80%) | `pytest --cov=adr_kit --cov-report=term-missing` |
-| Lint | `ruff check src/ tests/` |
-| Type check | `mypy src/` |
-| Format | `black --check src/ tests/` |
+| Test suite | `python -m pytest` |
+| Coverage (≥80%) | `python -m pytest --cov=adr_kit --cov-report=term-missing --cov-fail-under=80` |
+| Compatibility | `python scripts/check_compatibility_snapshots.py` |
+| Version consistency | `python scripts/check_version_consistency.py` |
+| Quality debt | `python scripts/check_quality_ratchets.py` |
 | Governance | `adr governance-checks` |
 | Schema parity | see below |
 
-**CI vs local:** GitHub Actions enforces ADR validation, `adr governance-checks` (including `pytest`), generated-docs checks, system overview validation, runtime hygiene, and the schema parity step below. The other rows (coverage threshold, `ruff`, `mypy`, `black --check`) are **strongly recommended locally** before merge but are not separate CI jobs today.
+CI enforces every row above, source-installed tests on Python 3.11–3.14,
+dependency audit, build-once release artifacts, retained-wheel smoke tests on all
+four Python versions, fixed-epoch reproducibility, and benchmark determinism.
 
 ---
 
@@ -86,7 +88,7 @@ See [`docs/contributors/tdd-workflow.md`](docs/contributors/tdd-workflow.md) for
 pytest
 
 # With coverage report
-pytest --cov=adr_kit --cov-report=term-missing
+python -m pytest --cov=adr_kit --cov-report=term-missing --cov-fail-under=80
 
 # Specific test file
 pytest tests/test_schema_validation.py -v
@@ -216,9 +218,16 @@ The **link** is that PyPI trusts *that GitHub repo + that workflow file* to uplo
 
 1. Bump **`version`** in [`pyproject.toml`](pyproject.toml) (and keep [`src/adr_kit/__init__.py`](src/adr_kit/__init__.py) `__version__` in sync if you rely on it).
 2. Update [`CHANGELOG.md`](CHANGELOG.md) with a dated section for that version.
-3. **Merge to `main`** (e.g. via pull request). When that merge includes a change to **`pyproject.toml`**, [`publish-pypi.yml`](.github/workflows/publish-pypi.yml) runs, builds with `python -m build`, and uploads to PyPI.
+3. Merge the reviewed version change to `main` and create the exact tag
+   `v<project-version>` (for example, `v0.1.1`).
+4. The release workflow reruns quality/governance gates, builds one wheel and one
+   sdist, validates metadata, creates a hash manifest, tests the retained wheel on
+   Python 3.11–3.14, and uploads the retained bundle.
+5. The `pypi` job downloads and re-verifies that bundle against the source commit,
+   package version, and tag, then publishes without rebuilding.
 
-Merges to `main` that do **not** touch `pyproject.toml` do not trigger a publish (avoids failed uploads when the version was not bumped). The **first** successful upload creates the PyPI project if it did not exist.
+The workflow does not publish on a branch push or manual dispatch. The first
+successful tagged upload creates the PyPI project if it does not exist.
 
 ### After publish
 

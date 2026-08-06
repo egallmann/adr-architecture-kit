@@ -4,15 +4,15 @@ from pathlib import Path
 
 from click.testing import CliRunner
 
-from src.adr_kit.cli.main import cli
-from src.adr_kit.integrity import GeneratedArtifactStatus, GeneratedArtifactValidator
-from src.adr_kit.integrity.core import (
+from adr_kit.cli.main import cli
+from adr_kit.integrity import GeneratedArtifactStatus, GeneratedArtifactValidator
+from adr_kit.integrity.core import (
     GeneratorIdentity,
     HashInput,
     compute_source_hash,
     parse_integrity_header,
 )
-from src.adr_kit.scope import ProjectScopeResolver
+from adr_kit.scope import ProjectScopeResolver
 
 
 def _write_workspace(workspace: Path, include_submodule: bool = False, name: str = "projection-test") -> None:

@@ -1,6 +1,6 @@
 from pathlib import Path
 
-from src.adr_kit.compiler.frontend import CachedADRParser
+from adr_kit.compiler.frontend import CachedADRParser
 
 
 class StubParser:

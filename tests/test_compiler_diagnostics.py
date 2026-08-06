@@ -1,6 +1,6 @@
 from pathlib import Path
 
-from src.adr_kit.compiler import DiagnosticLevel, DiagnosticLog
+from adr_kit.compiler import DiagnosticLevel, DiagnosticLog
 
 
 def test_diagnostic_log_orders_by_level_path_source_and_code():

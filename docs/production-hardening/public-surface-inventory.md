@@ -19,7 +19,7 @@ that the pre-1.0 package has declared SemVer 1.0 compatibility.
 | `adr_kit.parser.ADRParser`, `ADRParseError`, `ADRSchemaValidationError` | De facto public | Preserve documented imports and diagnostic behavior |
 | `adr_kit.validators.*` exported validators/results | De facto public | Preserve imports and validation behavior |
 | `adr_kit.generators.*` exported generators | De facto public | Preserve imports; generated compatibility rules apply |
-| `adr_kit.decorators.implements_adr`, `implements_invariant` | Stable traceability surface | Preserve call signatures and no-op metadata semantics |
+| `adr_kit.decorators.implements_adr`, `implements_adrs`, `enforces_invariant`, `enforces_invariants` | Stable traceability surface | Preserve call signatures and no-op metadata semantics |
 | `adr_kit.compiler.ArchModel` and other compiler exports | Compatibility-preserved internal/deep imports | Do not remove in Phase 0; do not recommend for new consumers |
 | `adr_kit.compiler.*`, backend/frontend/pass/IR modules | Internal/reference implementation | No new stability promise; existing tests protect accidental breakage |
 | `adr_kit.migrators.*` | Experimental | No compatibility promise |

@@ -17,7 +17,7 @@ PROBE = """
 from importlib import resources
 from pathlib import Path
 import adr_kit
-from adr_kit.decorators import implements_adr, implements_invariant
+from adr_kit.decorators import enforces_invariant, implements_adr
 from adr_kit.models import NormalizedArchitectureModel
 from adr_kit.parser import ADRParser
 from adr_kit.repository import ArchitectureRepository

@@ -56,3 +56,8 @@ def test_phase0_benchmark_smoke_is_deterministic(tmp_path: Path) -> None:
         "representative_queries",
     ):
         assert stage in first_payload["results"][0]["stages"]
+    for sdk_stage in ("sdk_validate", "sdk_compile_preview", "sdk_open_repository"):
+        assert sdk_stage in first_payload["results"][0]["sdk_stages"]
+        assert first_payload["results"][0]["sdk_stages"][sdk_stage]["warm_ms"]
+    assert first_payload["sdk_deterministic"] is True
+    assert first_payload["sdk_evidence"] == second_payload["sdk_evidence"]

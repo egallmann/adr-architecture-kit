@@ -61,3 +61,12 @@ def test_phase0_benchmark_smoke_is_deterministic(tmp_path: Path) -> None:
         assert first_payload["results"][0]["sdk_stages"][sdk_stage]["warm_ms"]
     assert first_payload["sdk_deterministic"] is True
     assert first_payload["sdk_evidence"] == second_payload["sdk_evidence"]
+    for phase2_stage in (
+        "v12_parsing",
+        "semantic_compilation",
+        "assertion_derivation_1000",
+        "topology_migration_plan",
+    ):
+        assert phase2_stage in first_payload["phase2_stages"]
+    assert first_payload["phase2_deterministic"] is True
+    assert first_payload["phase2_evidence"] == second_payload["phase2_evidence"]

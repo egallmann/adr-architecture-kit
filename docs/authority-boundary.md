@@ -18,7 +18,10 @@ Owns the canonical ADR encoding model, authoring validation, authoring-time norm
 
 ### `ste-runtime`
 
-Owns runtime observation, evidence extraction, and composition. It does not own architecture doctrine.
+Owns runtime observation, evidence extraction, and composition. Its derived state
+is written beneath the workspace-root `.ste-workspace/` directory, outside every
+repository. It may read supported ADR Kit contracts but must never write into the
+ADR Kit repository. It does not own architecture doctrine.
 
 ### `ste-kernel`
 
@@ -30,6 +33,23 @@ Owns admission and governance decisions over compiled inputs.
 - If the question is about **ADR encoding**, **authoring validation**, or **repository discovery outputs**, `adr-architecture-kit` wins.
 - If the question is about **observed runtime evidence**, `ste-runtime` wins.
 - If the question is about **governance or admission**, `ste-kernel` wins.
+
+## Repository write boundary
+
+Each repository is the sole writer of its own canonical and repository-local
+derived artifacts. In particular, only ADR Kit tooling may create or modify files
+inside `adr-architecture-kit`.
+
+Workspace and runtime projections are not repository artifacts. They belong under:
+
+```text
+<workspace-root>/.ste-workspace/
+```
+
+External tools may consume repository contracts read-only. A runtime or workspace
+command that resolves an output path inside a repository violates this boundary;
+its output must not be accepted, committed, or used to refresh compatibility
+baselines.
 
 ## Why this boundary exists
 

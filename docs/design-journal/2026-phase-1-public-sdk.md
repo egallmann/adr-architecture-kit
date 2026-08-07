@@ -1,6 +1,6 @@
 # Phase 1 narrow public SDK decision journal
 
-Status: authority review ready  
+Status: authority locked; implementation resumed
 Authority baseline: `27b041da093a2e95ee8698be3ac2211156caad8e`
 
 ## Problem and authority boundary
@@ -351,5 +351,25 @@ The available paths all require renewed architecture authority:
 4. Replacing the required refresh with `--dry-run` would conceal rather than resolve
    the overlapping ownership conflict and would not satisfy the authority gate.
 
-Phase 1 therefore remains stopped before Gate 2A until an accepted decision chooses
-one of those ownership/handoff models and updates the affected plan constraints.
+This initially stopped Phase 1 before Gate 2A pending renewed authority.
+
+### Authority resolution on 2026-08-06
+
+Architecture authority clarified that repositories and workspace-derived state have
+disjoint write domains:
+
+- ADR Kit is the sole writer of every file inside `adr-architecture-kit`;
+- external systems may read supported ADR Kit contracts but may not write anywhere
+  inside its repository;
+- runtime-derived graphs, evidence, registries, manifests, and all other workspace
+  state belong beneath `<workspace-root>/.ste-workspace/`, outside every repository;
+- the repository-targeted runtime refresh prescribed by the original Phase 1 plan
+  was invalid and is removed from the ADR Kit authority gate;
+- the observed runtime overwrite is a separate `ste-runtime` output-location defect
+  and is not implemented or baselined in this phase.
+
+`DEC-0082` and `INV-0076` record this boundary canonically. The blocker is resolved.
+Gate 1 closes when ADR Kit's own cross-reference, deterministic regeneration,
+generated-integrity, system-overview, compiler-check, and golden/package-schema
+controls pass. Phase 1 then resumes at Gate 2A without invoking or modifying
+`ste-runtime`.

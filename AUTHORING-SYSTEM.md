@@ -6,7 +6,9 @@ It is **not** the owner of public cross-repo schemas or of runtime/admission con
 
 ## Guardrails
 
-- **Do not emit authoritative machine graphs** for the runtime/kernel trust boundary from this package once the ste-runtime migration completes. Registry bundles, architecture index, and manifest intended for **runtime evidence** must be produced by **ste-runtime**, not duplicated here as a second source of truth.
+- **ADR Kit is the sole writer of its repository tree.** External runtime and workspace systems may read supported ADR Kit contracts, but they must never create, replace, or update files anywhere inside this repository.
+- **Runtime-derived state is workspace state.** Runtime graphs, evidence, registries, manifests, and other derived runtime outputs belong beneath the workspace-root `.ste-workspace/` directory, outside every repository tree.
+- **Do not emit authoritative runtime evidence** from this package. ADR Kit's repository-local registries, architecture index, manifest, and rendered views are authoring projections governed by this repository; they are not runtime workspace state.
 - **Schema and validation** remain authoritative **for authoring correctness** (what contributors may check in).
 - During migration, legacy compiler paths may remain for **golden parity** only; they must be deprecated and removed per the workspace migration plan.
 
@@ -16,4 +18,4 @@ It is **not** the owner of public cross-repo schemas or of runtime/admission con
 
 ## CLI note
 
-`adr compile` emits a **deprecation warning** (stderr) and must not be treated as the authoritative producer of runtime machine artifacts. Prefer **`ste architecture compile --project-root <repo>`** from **ste-runtime**.
+`adr compile` emits a **deprecation warning** (stderr) for runtime use. Within this repository it remains an authoring compatibility path for deterministic, repository-owned projections. Runtime tooling must use workspace-aware output beneath `.ste-workspace/` and must never target this repository as an output directory.

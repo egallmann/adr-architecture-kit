@@ -6,7 +6,7 @@ status: accepted
 created_date: '2026-03-14'
 authors:
 - adr-architecture-kit
-modified_date: '2026-08-05'
+modified_date: '2026-08-06'
 domains:
 - repository
 - discovery
@@ -24,6 +24,7 @@ introduces_entities:
 - CAP-0044
 - INV-0074
 - CAP-0047
+- INV-0076
 context: |
   adr-architecture-kit now has an explicit compiler pipeline, a compiler IR
   (`ArchModel`), compiled registry bundles, and an additive architecture graph.
@@ -160,6 +161,27 @@ decisions:
     - Existing repository and normalized-model contracts remain unchanged
     - Compiler implementation types remain free to evolve behind translation
     - Historical deep imports remain compatible without becoming recommended
+- id: DEC-0082
+  summary: Keep repository-local authoring projections separate from workspace runtime state
+  rationale: |
+    Every artifact stored inside the `adr-architecture-kit` repository is owned
+    and written by ADR Kit. External systems may read its canonical ADRs and
+    supported authoring projections, but they must not target the repository as
+    an output location. Runtime-derived graphs, evidence, registries, manifests,
+    and other workspace state belong under the workspace-root `.ste-workspace`
+    directory, which is outside every repository.
+
+    Phase 1 therefore validates only ADR Kit's own deterministic authoring
+    outputs. A repository-targeted runtime refresh is not part of the SDK
+    authority gate. Any runtime command that writes into this repository violates
+    the workspace state boundary and is an external implementation defect rather
+    than authoring output to accept or baseline.
+  consequences:
+    positive:
+    - ADR Kit remains the sole writer of files committed in its repository
+    - Runtime and workspace state cannot invalidate authoring integrity controls
+    - Cross-repository consumers retain read access without sharing write authority
+    - SDK implementation remains independent of runtime graph production
 invariants:
 - id: INV-0059
   statement: |
@@ -209,6 +231,22 @@ invariants:
     The facade is a stable consumer contract, while compiler orchestration and
     intermediate representation remain implementation details that must be able
     to evolve independently.
+- id: INV-0076
+  statement: |
+    Only ADR Kit tooling MAY create or modify canonical artifacts, authoring
+    projections, compatibility outputs, or other files inside the
+    `adr-architecture-kit` repository. External runtime or workspace tooling MAY
+    read supported repository contracts but MUST NOT write anywhere inside any
+    repository tree. All runtime-derived and workspace-derived state MUST be
+    written beneath the workspace-root `.ste-workspace` directory.
+  scope: global
+  enforcement_level: must
+  enforcement_mechanism: design
+  verification_method: automated
+  rationale: |
+    Separate write domains prevent derived runtime state from corrupting
+    canonical authoring state, compatibility bytes, integrity metadata, and
+    repository-local governance evidence.
 capabilities:
 - id: CAP-0039
   name: Stable Repository Semantic Boundary

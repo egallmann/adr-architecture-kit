@@ -13,8 +13,8 @@
     ],
     "exit_code": 0,
     "generated_files": {},
-    "stderr": "WARNING: adr compile is deprecated for runtime machine artifacts. Use `ste architecture compile --project-root <repo>` (ste-runtime) for runtime-owned machine artifacts. This Python path remains for migration / golden parity only. See ste-runtime COMPILER-AUTHORITY.md and adr-architecture-kit AUTHORING-SYSTEM.md.\r\n",
-    "stdout": "Compiling architecture artifacts...\r\nProject scope: arch-test (<FIXTURE_ROOT>)\r\nMode: normal\r\nSuccess: True\r\nArtifacts emitted: 14\r\nEntities: 8\r\nRelationships: 14\r\nUnresolved: 1\r\nDry run: enabled\r\nContract validation: brownfield\r\n  legacy: adrs/entities/registry.yaml\r\n  index: adrs/index/architecture-index.yaml\r\n  registry: adrs/index/capability-registry.yaml\r\n  registry: adrs/index/component-registry.yaml\r\n  registry: adrs/index/decision-registry.yaml\r\n  registry: adrs/index/entity-registry.yaml\r\n  registry: adrs/index/invariant-registry.yaml\r\n  registry: adrs/index/relationship-registry.yaml\r\n  registry: adrs/index/system-registry.yaml\r\n  registry: adrs/index/unresolved-registry.yaml\r\n  manifest: adrs/manifest.yaml\r\n  markdown: adrs/rendered/ADR-L-1000.md\r\n  markdown: adrs/rendered/ADR-PC-1000.md\r\n  markdown: adrs/rendered/ADR-PS-1000.md\r\n"
+    "stderr": "WARNING: adr compile is deprecated for runtime machine artifacts. Use `ste architecture compile --project-root <repo>` (ste-runtime) for runtime-owned machine artifacts. This Python path remains for migration / golden parity only. See ste-runtime COMPILER-AUTHORITY.md and adr-architecture-kit AUTHORING-SYSTEM.md.\n",
+    "stdout": "Compiling architecture artifacts...\nProject scope: arch-test (<FIXTURE_ROOT>)\nMode: normal\nSuccess: True\nArtifacts emitted: 14\nEntities: 8\nRelationships: 14\nUnresolved: 1\nDry run: enabled\nContract validation: brownfield\n  legacy: adrs/entities/registry.yaml\n  index: adrs/index/architecture-index.yaml\n  registry: adrs/index/capability-registry.yaml\n  registry: adrs/index/component-registry.yaml\n  registry: adrs/index/decision-registry.yaml\n  registry: adrs/index/entity-registry.yaml\n  registry: adrs/index/invariant-registry.yaml\n  registry: adrs/index/relationship-registry.yaml\n  registry: adrs/index/system-registry.yaml\n  registry: adrs/index/unresolved-registry.yaml\n  manifest: adrs/manifest.yaml\n  markdown: adrs/rendered/ADR-L-1000.md\n  markdown: adrs/rendered/ADR-PC-1000.md\n  markdown: adrs/rendered/ADR-PS-1000.md\n"
   },
   "compile-clean-check": {
     "argv": [
@@ -40,8 +40,8 @@
       "adrs/rendered/ADR-PC-1000.md": "82fbcb270b64efa549f603cc8327cdd55959e880eb4bf86ec0960f7324cd3612",
       "adrs/rendered/ADR-PS-1000.md": "cf48149c09e650664e5e8954b48191b52c8c9f34216d5bb841629c60abcc98e4"
     },
-    "stderr": "WARNING: adr compile is deprecated for runtime machine artifacts. Use `ste architecture compile --project-root <repo>` (ste-runtime) for runtime-owned machine artifacts. This Python path remains for migration / golden parity only. See ste-runtime COMPILER-AUTHORITY.md and adr-architecture-kit AUTHORING-SYSTEM.md.\r\n",
-    "stdout": "Compiling architecture artifacts...\r\nProject scope: arch-test (<FIXTURE_ROOT>)\r\nMode: normal\r\nSuccess: True\r\nArtifacts emitted: 14\r\nEntities: 8\r\nRelationships: 14\r\nUnresolved: 1\r\nCheck mode: enabled\r\n  legacy: adrs/entities/registry.yaml\r\n  index: adrs/index/architecture-index.yaml\r\n  registry: adrs/index/capability-registry.yaml\r\n  registry: adrs/index/component-registry.yaml\r\n  registry: adrs/index/decision-registry.yaml\r\n  registry: adrs/index/entity-registry.yaml\r\n  registry: adrs/index/invariant-registry.yaml\r\n  registry: adrs/index/relationship-registry.yaml\r\n  registry: adrs/index/system-registry.yaml\r\n  registry: adrs/index/unresolved-registry.yaml\r\n  manifest: adrs/manifest.yaml\r\n  markdown: adrs/rendered/ADR-L-1000.md\r\n  markdown: adrs/rendered/ADR-PC-1000.md\r\n  markdown: adrs/rendered/ADR-PS-1000.md\r\n"
+    "stderr": "WARNING: adr compile is deprecated for runtime machine artifacts. Use `ste architecture compile --project-root <repo>` (ste-runtime) for runtime-owned machine artifacts. This Python path remains for migration / golden parity only. See ste-runtime COMPILER-AUTHORITY.md and adr-architecture-kit AUTHORING-SYSTEM.md.\n",
+    "stdout": "Compiling architecture artifacts...\nProject scope: arch-test (<FIXTURE_ROOT>)\nMode: normal\nSuccess: True\nArtifacts emitted: 14\nEntities: 8\nRelationships: 14\nUnresolved: 1\nCheck mode: enabled\n  legacy: adrs/entities/registry.yaml\n  index: adrs/index/architecture-index.yaml\n  registry: adrs/index/capability-registry.yaml\n  registry: adrs/index/component-registry.yaml\n  registry: adrs/index/decision-registry.yaml\n  registry: adrs/index/entity-registry.yaml\n  registry: adrs/index/invariant-registry.yaml\n  registry: adrs/index/relationship-registry.yaml\n  registry: adrs/index/system-registry.yaml\n  registry: adrs/index/unresolved-registry.yaml\n  manifest: adrs/manifest.yaml\n  markdown: adrs/rendered/ADR-L-1000.md\n  markdown: adrs/rendered/ADR-PC-1000.md\n  markdown: adrs/rendered/ADR-PS-1000.md\n"
   },
   "compile-drifted-check": {
     "argv": [
@@ -67,8 +67,8 @@
       "adrs/rendered/ADR-PC-1000.md": "82fbcb270b64efa549f603cc8327cdd55959e880eb4bf86ec0960f7324cd3612",
       "adrs/rendered/ADR-PS-1000.md": "cf48149c09e650664e5e8954b48191b52c8c9f34216d5bb841629c60abcc98e4"
     },
-    "stderr": "WARNING: adr compile is deprecated for runtime machine artifacts. Use `ste architecture compile --project-root <repo>` (ste-runtime) for runtime-owned machine artifacts. This Python path remains for migration / golden parity only. See ste-runtime COMPILER-AUTHORITY.md and adr-architecture-kit AUTHORING-SYSTEM.md.\r\n",
-    "stdout": "Compiling architecture artifacts...\r\nProject scope: arch-test (<FIXTURE_ROOT>)\r\nMode: normal\r\nSuccess: False\r\nArtifacts emitted: 0\r\nEntities: 0\r\nRelationships: 0\r\nUnresolved: 0\r\nCheck mode: enabled\r\nERROR: E705 Compiled artifact timestamp metadata missing from adrs/manifest.yaml\r\n"
+    "stderr": "WARNING: adr compile is deprecated for runtime machine artifacts. Use `ste architecture compile --project-root <repo>` (ste-runtime) for runtime-owned machine artifacts. This Python path remains for migration / golden parity only. See ste-runtime COMPILER-AUTHORITY.md and adr-architecture-kit AUTHORING-SYSTEM.md.\n",
+    "stdout": "Compiling architecture artifacts...\nProject scope: arch-test (<FIXTURE_ROOT>)\nMode: normal\nSuccess: False\nArtifacts emitted: 0\nEntities: 0\nRelationships: 0\nUnresolved: 0\nCheck mode: enabled\nERROR: E705 Compiled artifact timestamp metadata missing from adrs/manifest.yaml\n"
   },
   "compile-dry-run": {
     "argv": [
@@ -81,8 +81,8 @@
     ],
     "exit_code": 0,
     "generated_files": {},
-    "stderr": "WARNING: adr compile is deprecated for runtime machine artifacts. Use `ste architecture compile --project-root <repo>` (ste-runtime) for runtime-owned machine artifacts. This Python path remains for migration / golden parity only. See ste-runtime COMPILER-AUTHORITY.md and adr-architecture-kit AUTHORING-SYSTEM.md.\r\n",
-    "stdout": "Compiling architecture artifacts...\r\nProject scope: arch-test (<FIXTURE_ROOT>)\r\nMode: normal\r\nSuccess: True\r\nArtifacts emitted: 14\r\nEntities: 8\r\nRelationships: 14\r\nUnresolved: 1\r\nDry run: enabled\r\n  legacy: adrs/entities/registry.yaml\r\n  index: adrs/index/architecture-index.yaml\r\n  registry: adrs/index/capability-registry.yaml\r\n  registry: adrs/index/component-registry.yaml\r\n  registry: adrs/index/decision-registry.yaml\r\n  registry: adrs/index/entity-registry.yaml\r\n  registry: adrs/index/invariant-registry.yaml\r\n  registry: adrs/index/relationship-registry.yaml\r\n  registry: adrs/index/system-registry.yaml\r\n  registry: adrs/index/unresolved-registry.yaml\r\n  manifest: adrs/manifest.yaml\r\n  markdown: adrs/rendered/ADR-L-1000.md\r\n  markdown: adrs/rendered/ADR-PC-1000.md\r\n  markdown: adrs/rendered/ADR-PS-1000.md\r\n"
+    "stderr": "WARNING: adr compile is deprecated for runtime machine artifacts. Use `ste architecture compile --project-root <repo>` (ste-runtime) for runtime-owned machine artifacts. This Python path remains for migration / golden parity only. See ste-runtime COMPILER-AUTHORITY.md and adr-architecture-kit AUTHORING-SYSTEM.md.\n",
+    "stdout": "Compiling architecture artifacts...\nProject scope: arch-test (<FIXTURE_ROOT>)\nMode: normal\nSuccess: True\nArtifacts emitted: 14\nEntities: 8\nRelationships: 14\nUnresolved: 1\nDry run: enabled\n  legacy: adrs/entities/registry.yaml\n  index: adrs/index/architecture-index.yaml\n  registry: adrs/index/capability-registry.yaml\n  registry: adrs/index/component-registry.yaml\n  registry: adrs/index/decision-registry.yaml\n  registry: adrs/index/entity-registry.yaml\n  registry: adrs/index/invariant-registry.yaml\n  registry: adrs/index/relationship-registry.yaml\n  registry: adrs/index/system-registry.yaml\n  registry: adrs/index/unresolved-registry.yaml\n  manifest: adrs/manifest.yaml\n  markdown: adrs/rendered/ADR-L-1000.md\n  markdown: adrs/rendered/ADR-PC-1000.md\n  markdown: adrs/rendered/ADR-PS-1000.md\n"
   },
   "compile-graph": {
     "argv": [
@@ -98,8 +98,8 @@
     "generated_files": {
       "adrs/index/architecture-graph.yaml": "edb2563d2239de6d2fabbf2941b1355dd78652bd6bb166a6ac777ed41d41e8df"
     },
-    "stderr": "WARNING: adr compile is deprecated for runtime machine artifacts. Use `ste architecture compile --project-root <repo>` (ste-runtime) for runtime-owned machine artifacts. This Python path remains for migration / golden parity only. See ste-runtime COMPILER-AUTHORITY.md and adr-architecture-kit AUTHORING-SYSTEM.md.\r\n",
-    "stdout": "Compiling architecture artifacts...\r\nProject scope: arch-test (<FIXTURE_ROOT>)\r\nMode: normal\r\nSuccess: True\r\nArtifacts emitted: 1\r\nEntities: 8\r\nRelationships: 14\r\nUnresolved: 1\r\n  graph: adrs/index/architecture-graph.yaml\r\n"
+    "stderr": "WARNING: adr compile is deprecated for runtime machine artifacts. Use `ste architecture compile --project-root <repo>` (ste-runtime) for runtime-owned machine artifacts. This Python path remains for migration / golden parity only. See ste-runtime COMPILER-AUTHORITY.md and adr-architecture-kit AUTHORING-SYSTEM.md.\n",
+    "stdout": "Compiling architecture artifacts...\nProject scope: arch-test (<FIXTURE_ROOT>)\nMode: normal\nSuccess: True\nArtifacts emitted: 1\nEntities: 8\nRelationships: 14\nUnresolved: 1\n  graph: adrs/index/architecture-graph.yaml\n"
   },
   "compile-greenfield-contract": {
     "argv": [
@@ -115,8 +115,8 @@
     ],
     "exit_code": 0,
     "generated_files": {},
-    "stderr": "WARNING: adr compile is deprecated for runtime machine artifacts. Use `ste architecture compile --project-root <repo>` (ste-runtime) for runtime-owned machine artifacts. This Python path remains for migration / golden parity only. See ste-runtime COMPILER-AUTHORITY.md and adr-architecture-kit AUTHORING-SYSTEM.md.\r\n",
-    "stdout": "Compiling architecture artifacts...\r\nProject scope: arch-test (<FIXTURE_ROOT>)\r\nMode: normal\r\nSuccess: True\r\nArtifacts emitted: 14\r\nEntities: 8\r\nRelationships: 14\r\nUnresolved: 1\r\nDry run: enabled\r\nContract validation: greenfield\r\n  legacy: adrs/entities/registry.yaml\r\n  index: adrs/index/architecture-index.yaml\r\n  registry: adrs/index/capability-registry.yaml\r\n  registry: adrs/index/component-registry.yaml\r\n  registry: adrs/index/decision-registry.yaml\r\n  registry: adrs/index/entity-registry.yaml\r\n  registry: adrs/index/invariant-registry.yaml\r\n  registry: adrs/index/relationship-registry.yaml\r\n  registry: adrs/index/system-registry.yaml\r\n  registry: adrs/index/unresolved-registry.yaml\r\n  manifest: adrs/manifest.yaml\r\n  markdown: adrs/rendered/ADR-L-1000.md\r\n  markdown: adrs/rendered/ADR-PC-1000.md\r\n  markdown: adrs/rendered/ADR-PS-1000.md\r\n"
+    "stderr": "WARNING: adr compile is deprecated for runtime machine artifacts. Use `ste architecture compile --project-root <repo>` (ste-runtime) for runtime-owned machine artifacts. This Python path remains for migration / golden parity only. See ste-runtime COMPILER-AUTHORITY.md and adr-architecture-kit AUTHORING-SYSTEM.md.\n",
+    "stdout": "Compiling architecture artifacts...\nProject scope: arch-test (<FIXTURE_ROOT>)\nMode: normal\nSuccess: True\nArtifacts emitted: 14\nEntities: 8\nRelationships: 14\nUnresolved: 1\nDry run: enabled\nContract validation: greenfield\n  legacy: adrs/entities/registry.yaml\n  index: adrs/index/architecture-index.yaml\n  registry: adrs/index/capability-registry.yaml\n  registry: adrs/index/component-registry.yaml\n  registry: adrs/index/decision-registry.yaml\n  registry: adrs/index/entity-registry.yaml\n  registry: adrs/index/invariant-registry.yaml\n  registry: adrs/index/relationship-registry.yaml\n  registry: adrs/index/system-registry.yaml\n  registry: adrs/index/unresolved-registry.yaml\n  manifest: adrs/manifest.yaml\n  markdown: adrs/rendered/ADR-L-1000.md\n  markdown: adrs/rendered/ADR-PC-1000.md\n  markdown: adrs/rendered/ADR-PS-1000.md\n"
   },
   "compile-lenient-diagnostic": {
     "argv": [
@@ -131,8 +131,8 @@
     ],
     "exit_code": 1,
     "generated_files": {},
-    "stderr": "WARNING: adr compile is deprecated for runtime machine artifacts. Use `ste architecture compile --project-root <repo>` (ste-runtime) for runtime-owned machine artifacts. This Python path remains for migration / golden parity only. See ste-runtime COMPILER-AUTHORITY.md and adr-architecture-kit AUTHORING-SYSTEM.md.\r\n",
-    "stdout": "Compiling architecture artifacts...\r\nProject scope: arch-test (<FIXTURE_ROOT>)\r\nMode: lenient\r\nSuccess: False\r\nArtifacts emitted: 14\r\nEntities: 8\r\nRelationships: 14\r\nUnresolved: 1\r\nDry run: enabled\r\n  legacy: adrs/entities/registry.yaml\r\n  index: adrs/index/architecture-index.yaml\r\n  registry: adrs/index/capability-registry.yaml\r\n  registry: adrs/index/component-registry.yaml\r\n  registry: adrs/index/decision-registry.yaml\r\n  registry: adrs/index/entity-registry.yaml\r\n  registry: adrs/index/invariant-registry.yaml\r\n  registry: adrs/index/relationship-registry.yaml\r\n  registry: adrs/index/system-registry.yaml\r\n  registry: adrs/index/unresolved-registry.yaml\r\n  manifest: adrs/manifest.yaml\r\n  markdown: adrs/rendered/ADR-L-1000.md\r\n  markdown: adrs/rendered/ADR-PC-1000.md\r\n  markdown: adrs/rendered/ADR-PS-1000.md\r\nERROR: E706 Implementation-authoritative ADR ADR-L-1000 is missing a completed, resolved steelman review\r\nERROR: E706 implementation-authoritative ADRs requiring steelman review must set governance.steelman_review_completed=true\r\n"
+    "stderr": "WARNING: adr compile is deprecated for runtime machine artifacts. Use `ste architecture compile --project-root <repo>` (ste-runtime) for runtime-owned machine artifacts. This Python path remains for migration / golden parity only. See ste-runtime COMPILER-AUTHORITY.md and adr-architecture-kit AUTHORING-SYSTEM.md.\n",
+    "stdout": "Compiling architecture artifacts...\nProject scope: arch-test (<FIXTURE_ROOT>)\nMode: lenient\nSuccess: False\nArtifacts emitted: 14\nEntities: 8\nRelationships: 14\nUnresolved: 1\nDry run: enabled\n  legacy: adrs/entities/registry.yaml\n  index: adrs/index/architecture-index.yaml\n  registry: adrs/index/capability-registry.yaml\n  registry: adrs/index/component-registry.yaml\n  registry: adrs/index/decision-registry.yaml\n  registry: adrs/index/entity-registry.yaml\n  registry: adrs/index/invariant-registry.yaml\n  registry: adrs/index/relationship-registry.yaml\n  registry: adrs/index/system-registry.yaml\n  registry: adrs/index/unresolved-registry.yaml\n  manifest: adrs/manifest.yaml\n  markdown: adrs/rendered/ADR-L-1000.md\n  markdown: adrs/rendered/ADR-PC-1000.md\n  markdown: adrs/rendered/ADR-PS-1000.md\nERROR: E706 Implementation-authoritative ADR ADR-L-1000 is missing a completed, resolved steelman review\nERROR: E706 implementation-authoritative ADRs requiring steelman review must set governance.steelman_review_completed=true\n"
   },
   "compile-recursive": {
     "argv": [
@@ -146,8 +146,8 @@
     ],
     "exit_code": 0,
     "generated_files": {},
-    "stderr": "WARNING: adr compile is deprecated for runtime machine artifacts. Use `ste architecture compile --project-root <repo>` (ste-runtime) for runtime-owned machine artifacts. This Python path remains for migration / golden parity only. See ste-runtime COMPILER-AUTHORITY.md and adr-architecture-kit AUTHORING-SYSTEM.md.\r\n",
-    "stdout": "Compiling architecture artifacts recursively...\r\nMode: normal\r\nSuccess: True\r\nScopes compiled: 2\r\nSuccessful scopes: 2\r\nFailed scopes: 0\r\nDry run: enabled\r\n\r\nScope: workspace-root (<FIXTURE_ROOT>)\r\n  Success: True\r\n  Artifacts emitted: 14\r\n    legacy: adrs/entities/registry.yaml\r\n    index: adrs/index/architecture-index.yaml\r\n    registry: adrs/index/capability-registry.yaml\r\n    registry: adrs/index/component-registry.yaml\r\n    registry: adrs/index/decision-registry.yaml\r\n    registry: adrs/index/entity-registry.yaml\r\n    registry: adrs/index/invariant-registry.yaml\r\n    registry: adrs/index/relationship-registry.yaml\r\n    registry: adrs/index/system-registry.yaml\r\n    registry: adrs/index/unresolved-registry.yaml\r\n    manifest: adrs/manifest.yaml\r\n    markdown: adrs/rendered/ADR-L-1100.md\r\n    markdown: adrs/rendered/ADR-PC-1100.md\r\n    markdown: adrs/rendered/ADR-PS-1100.md\r\n\r\nScope: workspace-sub (<FIXTURE_ROOT>/submodule)\r\n  Success: True\r\n  Artifacts emitted: 14\r\n    legacy: adrs/entities/registry.yaml\r\n    index: adrs/index/architecture-index.yaml\r\n    registry: adrs/index/capability-registry.yaml\r\n    registry: adrs/index/component-registry.yaml\r\n    registry: adrs/index/decision-registry.yaml\r\n    registry: adrs/index/entity-registry.yaml\r\n    registry: adrs/index/invariant-registry.yaml\r\n    registry: adrs/index/relationship-registry.yaml\r\n    registry: adrs/index/system-registry.yaml\r\n    registry: adrs/index/unresolved-registry.yaml\r\n    manifest: adrs/manifest.yaml\r\n    markdown: adrs/rendered/ADR-L-2100.md\r\n    markdown: adrs/rendered/ADR-PC-2100.md\r\n    markdown: adrs/rendered/ADR-PS-2100.md\r\n"
+    "stderr": "WARNING: adr compile is deprecated for runtime machine artifacts. Use `ste architecture compile --project-root <repo>` (ste-runtime) for runtime-owned machine artifacts. This Python path remains for migration / golden parity only. See ste-runtime COMPILER-AUTHORITY.md and adr-architecture-kit AUTHORING-SYSTEM.md.\n",
+    "stdout": "Compiling architecture artifacts recursively...\nMode: normal\nSuccess: True\nScopes compiled: 2\nSuccessful scopes: 2\nFailed scopes: 0\nDry run: enabled\n\nScope: workspace-root (<FIXTURE_ROOT>)\n  Success: True\n  Artifacts emitted: 14\n    legacy: adrs/entities/registry.yaml\n    index: adrs/index/architecture-index.yaml\n    registry: adrs/index/capability-registry.yaml\n    registry: adrs/index/component-registry.yaml\n    registry: adrs/index/decision-registry.yaml\n    registry: adrs/index/entity-registry.yaml\n    registry: adrs/index/invariant-registry.yaml\n    registry: adrs/index/relationship-registry.yaml\n    registry: adrs/index/system-registry.yaml\n    registry: adrs/index/unresolved-registry.yaml\n    manifest: adrs/manifest.yaml\n    markdown: adrs/rendered/ADR-L-1100.md\n    markdown: adrs/rendered/ADR-PC-1100.md\n    markdown: adrs/rendered/ADR-PS-1100.md\n\nScope: workspace-sub (<FIXTURE_ROOT>/submodule)\n  Success: True\n  Artifacts emitted: 14\n    legacy: adrs/entities/registry.yaml\n    index: adrs/index/architecture-index.yaml\n    registry: adrs/index/capability-registry.yaml\n    registry: adrs/index/component-registry.yaml\n    registry: adrs/index/decision-registry.yaml\n    registry: adrs/index/entity-registry.yaml\n    registry: adrs/index/invariant-registry.yaml\n    registry: adrs/index/relationship-registry.yaml\n    registry: adrs/index/system-registry.yaml\n    registry: adrs/index/unresolved-registry.yaml\n    manifest: adrs/manifest.yaml\n    markdown: adrs/rendered/ADR-L-2100.md\n    markdown: adrs/rendered/ADR-PC-2100.md\n    markdown: adrs/rendered/ADR-PS-2100.md\n"
   },
   "compile-strict-failure": {
     "argv": [
@@ -162,8 +162,8 @@
     ],
     "exit_code": 1,
     "generated_files": {},
-    "stderr": "WARNING: adr compile is deprecated for runtime machine artifacts. Use `ste architecture compile --project-root <repo>` (ste-runtime) for runtime-owned machine artifacts. This Python path remains for migration / golden parity only. See ste-runtime COMPILER-AUTHORITY.md and adr-architecture-kit AUTHORING-SYSTEM.md.\r\n",
-    "stdout": "Compiling architecture artifacts...\r\nProject scope: arch-test (<FIXTURE_ROOT>)\r\nMode: strict\r\nSuccess: False\r\nArtifacts emitted: 14\r\nEntities: 8\r\nRelationships: 14\r\nUnresolved: 1\r\nDry run: enabled\r\n  legacy: adrs/entities/registry.yaml\r\n  index: adrs/index/architecture-index.yaml\r\n  registry: adrs/index/capability-registry.yaml\r\n  registry: adrs/index/component-registry.yaml\r\n  registry: adrs/index/decision-registry.yaml\r\n  registry: adrs/index/entity-registry.yaml\r\n  registry: adrs/index/invariant-registry.yaml\r\n  registry: adrs/index/relationship-registry.yaml\r\n  registry: adrs/index/system-registry.yaml\r\n  registry: adrs/index/unresolved-registry.yaml\r\n  manifest: adrs/manifest.yaml\r\n  markdown: adrs/rendered/ADR-L-1000.md\r\n  markdown: adrs/rendered/ADR-PC-1000.md\r\n  markdown: adrs/rendered/ADR-PS-1000.md\r\nERROR: E706 Implementation-authoritative ADR ADR-L-1000 is missing a completed, resolved steelman review\r\nERROR: E706 implementation-authoritative ADRs requiring steelman review must set governance.steelman_review_completed=true\r\n"
+    "stderr": "WARNING: adr compile is deprecated for runtime machine artifacts. Use `ste architecture compile --project-root <repo>` (ste-runtime) for runtime-owned machine artifacts. This Python path remains for migration / golden parity only. See ste-runtime COMPILER-AUTHORITY.md and adr-architecture-kit AUTHORING-SYSTEM.md.\n",
+    "stdout": "Compiling architecture artifacts...\nProject scope: arch-test (<FIXTURE_ROOT>)\nMode: strict\nSuccess: False\nArtifacts emitted: 14\nEntities: 8\nRelationships: 14\nUnresolved: 1\nDry run: enabled\n  legacy: adrs/entities/registry.yaml\n  index: adrs/index/architecture-index.yaml\n  registry: adrs/index/capability-registry.yaml\n  registry: adrs/index/component-registry.yaml\n  registry: adrs/index/decision-registry.yaml\n  registry: adrs/index/entity-registry.yaml\n  registry: adrs/index/invariant-registry.yaml\n  registry: adrs/index/relationship-registry.yaml\n  registry: adrs/index/system-registry.yaml\n  registry: adrs/index/unresolved-registry.yaml\n  manifest: adrs/manifest.yaml\n  markdown: adrs/rendered/ADR-L-1000.md\n  markdown: adrs/rendered/ADR-PC-1000.md\n  markdown: adrs/rendered/ADR-PS-1000.md\nERROR: E706 Implementation-authoritative ADR ADR-L-1000 is missing a completed, resolved steelman review\nERROR: E706 implementation-authoritative ADRs requiring steelman review must set governance.steelman_review_completed=true\n"
   },
   "compile-write": {
     "argv": [
@@ -190,8 +190,8 @@
       "adrs/rendered/ADR-PC-1000.md": "82fbcb270b64efa549f603cc8327cdd55959e880eb4bf86ec0960f7324cd3612",
       "adrs/rendered/ADR-PS-1000.md": "cf48149c09e650664e5e8954b48191b52c8c9f34216d5bb841629c60abcc98e4"
     },
-    "stderr": "WARNING: adr compile is deprecated for runtime machine artifacts. Use `ste architecture compile --project-root <repo>` (ste-runtime) for runtime-owned machine artifacts. This Python path remains for migration / golden parity only. See ste-runtime COMPILER-AUTHORITY.md and adr-architecture-kit AUTHORING-SYSTEM.md.\r\n",
-    "stdout": "Compiling architecture artifacts...\r\nProject scope: arch-test (<FIXTURE_ROOT>)\r\nMode: normal\r\nSuccess: True\r\nArtifacts emitted: 14\r\nEntities: 8\r\nRelationships: 14\r\nUnresolved: 1\r\n  legacy: adrs/entities/registry.yaml\r\n  index: adrs/index/architecture-index.yaml\r\n  registry: adrs/index/capability-registry.yaml\r\n  registry: adrs/index/component-registry.yaml\r\n  registry: adrs/index/decision-registry.yaml\r\n  registry: adrs/index/entity-registry.yaml\r\n  registry: adrs/index/invariant-registry.yaml\r\n  registry: adrs/index/relationship-registry.yaml\r\n  registry: adrs/index/system-registry.yaml\r\n  registry: adrs/index/unresolved-registry.yaml\r\n  manifest: adrs/manifest.yaml\r\n  markdown: adrs/rendered/ADR-L-1000.md\r\n  markdown: adrs/rendered/ADR-PC-1000.md\r\n  markdown: adrs/rendered/ADR-PS-1000.md\r\n"
+    "stderr": "WARNING: adr compile is deprecated for runtime machine artifacts. Use `ste architecture compile --project-root <repo>` (ste-runtime) for runtime-owned machine artifacts. This Python path remains for migration / golden parity only. See ste-runtime COMPILER-AUTHORITY.md and adr-architecture-kit AUTHORING-SYSTEM.md.\n",
+    "stdout": "Compiling architecture artifacts...\nProject scope: arch-test (<FIXTURE_ROOT>)\nMode: normal\nSuccess: True\nArtifacts emitted: 14\nEntities: 8\nRelationships: 14\nUnresolved: 1\n  legacy: adrs/entities/registry.yaml\n  index: adrs/index/architecture-index.yaml\n  registry: adrs/index/capability-registry.yaml\n  registry: adrs/index/component-registry.yaml\n  registry: adrs/index/decision-registry.yaml\n  registry: adrs/index/entity-registry.yaml\n  registry: adrs/index/invariant-registry.yaml\n  registry: adrs/index/relationship-registry.yaml\n  registry: adrs/index/system-registry.yaml\n  registry: adrs/index/unresolved-registry.yaml\n  manifest: adrs/manifest.yaml\n  markdown: adrs/rendered/ADR-L-1000.md\n  markdown: adrs/rendered/ADR-PC-1000.md\n  markdown: adrs/rendered/ADR-PS-1000.md\n"
   },
   "validate-complete": {
     "argv": [
@@ -202,7 +202,7 @@
     "exit_code": 0,
     "generated_files": {},
     "stderr": "",
-    "stdout": "Validating ADRs...\r\nProject scope: arch-test (<FIXTURE_ROOT>)\r\nAll 3 files valid\r\n"
+    "stdout": "Validating ADRs...\nProject scope: arch-test (<FIXTURE_ROOT>)\nAll 3 files valid\n"
   },
   "validate-cross-reference-failure": {
     "argv": [
@@ -214,7 +214,7 @@
     "exit_code": 0,
     "generated_files": {},
     "stderr": "",
-    "stdout": "Validating ADRs...\r\nProject scope: arch-test (<FIXTURE_ROOT>)\r\nAll 3 files valid\r\n\r\nValidating cross-references...\r\nCross-references valid\r\n"
+    "stdout": "Validating ADRs...\nProject scope: arch-test (<FIXTURE_ROOT>)\nAll 3 files valid\n\nValidating cross-references...\nCross-references valid\n"
   },
   "validate-cross-reference-success": {
     "argv": [
@@ -226,7 +226,7 @@
     "exit_code": 0,
     "generated_files": {},
     "stderr": "",
-    "stdout": "Validating ADRs...\r\nProject scope: arch-test (<FIXTURE_ROOT>)\r\nAll 3 files valid\r\n\r\nValidating cross-references...\r\nCross-references valid\r\n"
+    "stdout": "Validating ADRs...\nProject scope: arch-test (<FIXTURE_ROOT>)\nAll 3 files valid\n\nValidating cross-references...\nCross-references valid\n"
   },
   "validate-invalid-schema": {
     "argv": [
@@ -237,7 +237,7 @@
     "exit_code": 1,
     "generated_files": {},
     "stderr": "",
-    "stdout": "Validating ADRs...\r\nProject scope: arch-test (<FIXTURE_ROOT>)\r\n\r\nERROR <FIXTURE_ROOT>/adrs/logical/ADR-L-1000-discovery.yaml\r\n  ERROR: Schema validation failed: 'title' is a required property\r\nPath: \r\n\r\n3 files: 1 errors, 0 warnings\r\n"
+    "stdout": "Validating ADRs...\nProject scope: arch-test (<FIXTURE_ROOT>)\n\nERROR <FIXTURE_ROOT>/adrs/logical/ADR-L-1000-discovery.yaml\n  ERROR: Schema validation failed: 'title' is a required property\nPath: \n\n3 files: 1 errors, 0 warnings\n"
   },
   "validate-recursive": {
     "argv": [
@@ -249,7 +249,7 @@
     "exit_code": 0,
     "generated_files": {},
     "stderr": "",
-    "stdout": "Validating ADRs recursively...\r\n\r\nworkspace-root:\r\n  All 3 files valid\r\n\r\nworkspace-sub:\r\n  All 3 files valid\r\n\r\nTotal: 6 files, 0 errors, 0 warnings\r\n"
+    "stdout": "Validating ADRs recursively...\n\nworkspace-root:\n  All 3 files valid\n\nworkspace-sub:\n  All 3 files valid\n\nTotal: 6 files, 0 errors, 0 warnings\n"
   },
   "validate-structural": {
     "argv": [
@@ -262,6 +262,6 @@
     "exit_code": 0,
     "generated_files": {},
     "stderr": "",
-    "stdout": "Validating ADRs...\r\nProject scope: arch-test (<FIXTURE_ROOT>)\r\nAll 3 files valid\r\n"
+    "stdout": "Validating ADRs...\nProject scope: arch-test (<FIXTURE_ROOT>)\nAll 3 files valid\n"
   }
 }

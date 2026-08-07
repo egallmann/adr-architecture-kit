@@ -36,6 +36,20 @@ MODULES = (
 PINNED_TIMESTAMP = "2026-01-01T00:00:00Z"
 
 
+def _canonicalize_strings(value: object) -> object:
+    """Canonicalize text recursively so snapshots are host-platform independent."""
+
+    if isinstance(value, str):
+        return value.replace("\r\n", "\n").replace("\r", "\n")
+    if isinstance(value, list):
+        return [_canonicalize_strings(item) for item in value]
+    if isinstance(value, tuple):
+        return tuple(_canonicalize_strings(item) for item in value)
+    if isinstance(value, dict):
+        return {key: _canonicalize_strings(item) for key, item in value.items()}
+    return value
+
+
 def _json_value(value: object) -> object:
     if isinstance(value, (str, int, float, bool)) or value is None:
         return value
@@ -139,7 +153,7 @@ def _generated_hashes(root: Path) -> dict[str, str]:
 
 
 def _normalize_output(value: bytes, fixture_root: Path) -> str:
-    text = value.decode("utf-8")
+    text = value.decode("utf-8").replace("\r\n", "\n").replace("\r", "\n")
     for root_text in (str(fixture_root), fixture_root.as_posix()):
         text = text.replace(root_text, "<FIXTURE_ROOT>")
     return text.replace("\\", "/")
@@ -268,16 +282,37 @@ def collect_cli_behavior() -> dict[str, dict[str, Any]]:
 
 def _write(path: Path, payload: object) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+    canonical = _canonicalize_strings(payload)
+    path.write_text(
+        json.dumps(canonical, indent=2, sort_keys=True) + "\n",
+        encoding="utf-8",
+        newline="\n",
+    )
+
+
+def _snapshot_label(path: Path) -> str:
+    try:
+        return path.relative_to(ROOT).as_posix()
+    except ValueError:
+        return path.as_posix()
 
 
 def _check(path: Path, actual: object) -> bool:
     if not path.is_file():
-        print(f"missing compatibility snapshot: {path.relative_to(ROOT)}", file=sys.stderr)
+        print(f"missing compatibility snapshot: {_snapshot_label(path)}", file=sys.stderr)
         return False
     expected: object = json.loads(path.read_text(encoding="utf-8"))
+    canonical_expected = _canonicalize_strings(expected)
+    if expected != canonical_expected:
+        print(
+            f"non-canonical newlines in compatibility snapshot: {_snapshot_label(path)}; "
+            "refresh the snapshot with --write",
+            file=sys.stderr,
+        )
+        return False
+    actual = _canonicalize_strings(actual)
     if expected != actual:
-        print(f"compatibility snapshot drift: {path.relative_to(ROOT)}", file=sys.stderr)
+        print(f"compatibility snapshot drift: {_snapshot_label(path)}", file=sys.stderr)
         expected_text = json.dumps(expected, indent=2, sort_keys=True).splitlines()
         actual_text = json.dumps(actual, indent=2, sort_keys=True).splitlines()
         print(
@@ -285,15 +320,15 @@ def _check(path: Path, actual: object) -> bool:
                 difflib.unified_diff(
                     expected_text,
                     actual_text,
-                    fromfile=f"committed/{path.relative_to(ROOT).as_posix()}",
-                    tofile=f"actual/{path.relative_to(ROOT).as_posix()}",
+                    fromfile=f"committed/{_snapshot_label(path)}",
+                    tofile=f"actual/{_snapshot_label(path)}",
                     lineterm="",
                 )
             ),
             file=sys.stderr,
         )
         return False
-    print(f"OK: {path.relative_to(ROOT)}")
+    print(f"OK: {_snapshot_label(path)}")
     return True
 
 

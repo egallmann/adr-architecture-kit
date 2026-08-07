@@ -34,6 +34,7 @@ def test_direct_source_fallback_reads_pyproject(monkeypatch: pytest.MonkeyPatch)
         raise metadata.PackageNotFoundError
 
     monkeypatch.setattr(version_module, "distribution_version", missing_metadata)
+    monkeypatch.setattr(version_module, "SOURCE_PROJECT", ROOT / "pyproject.toml")
 
     assert version_module.resolve_version() == "0.1.0"
 

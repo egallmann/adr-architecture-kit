@@ -7,12 +7,14 @@ from pathlib import Path
 from typing import Literal, cast
 
 from .. import __version__
-from ..compiler import ArchitectureCompiler, CompilerConfig, DiagnosticLevel
+from ..compiler import ArchitectureCompiler, CompilationMode, CompilerConfig, DiagnosticLevel
+from ..compiler.driver import CompilationResult as InternalCompilationResult
+from ..compiler.driver import WorkspaceCompilationResult
 from ..decorators import enforces_invariant, implements_adr
 from ..repository import ArchitectureRegistryError, ArchitectureRepository
 from ..repository._normalized_bundle import load_normalized_bundle_from_bytes
-from ..scope import ProjectScopeResolver
-from ..validators import ADRValidator
+from ..scope import ProjectScope, ProjectScopeResolver
+from ..validators import ADRValidator, ValidationResult as InternalValidationResult
 from ._contracts import (
     API_CONTRACT_VERSION,
     ARTIFACT_GROUPS,
@@ -29,6 +31,8 @@ from ._contracts import (
 from ._errors import OperationError, RepositoryError
 
 Severity = Literal["info", "warning", "error"]
+ValidationFileResults = dict[str, InternalValidationResult]
+RecursiveValidationResults = dict[str, ValidationFileResults]
 
 
 def _severity(value: object) -> Severity:
@@ -107,6 +111,69 @@ def _artifact_id(relative_path: str) -> str:
     if relative_path.startswith("adrs/rendered/") and relative_path.endswith(".md"):
         return f"rendered-adr:{Path(relative_path).stem}"
     raise OperationError(f"Unsupported emitted artifact path: {relative_path}")
+
+
+@implements_adr("ADR-L-0013", "ADR-PC-0002")
+def validate_for_cli(
+    scope: Path | None,
+    *,
+    recursive: bool,
+    cross_references: bool,
+    mode: str,
+) -> tuple[
+    ProjectScope | None,
+    ValidationFileResults | RecursiveValidationResults,
+    InternalValidationResult | None,
+]:
+    """Run the compatibility-preserved CLI validation application service."""
+
+    resolver = ProjectScopeResolver(explicit_scope=scope)
+    validator = ADRValidator(scope_resolver=resolver)
+    if recursive:
+        return None, validator.validate_recursive(mode=mode), None
+
+    detected_scope = resolver.resolve()
+    results = validator.validate_scope(detected_scope, mode=mode)
+    cross_reference_result = (
+        validator.validate_cross_references(detected_scope.adr_dir) if cross_references else None
+    )
+    return detected_scope, results, cross_reference_result
+
+
+@implements_adr("ADR-L-0013", "ADR-PC-0003")
+def compile_for_cli(
+    scope: Path | None,
+    *,
+    emit_targets: set[str],
+    timestamp: str | None,
+    mode: str,
+    dry_run: bool,
+    check: bool,
+    validate_contract: bool,
+    contract_profile: str,
+    recursive: bool,
+) -> tuple[
+    ProjectScope | None,
+    InternalCompilationResult | WorkspaceCompilationResult,
+]:
+    """Run the compatibility-preserved CLI compilation application service."""
+
+    resolver = ProjectScopeResolver(explicit_scope=scope)
+    compiler = ArchitectureCompiler(scope_resolver=resolver)
+    config = CompilerConfig(
+        mode=CompilationMode(mode),
+        emit=emit_targets,
+        dry_run=dry_run or check,
+        check=check,
+        profile=contract_profile if validate_contract else None,
+        pinned_timestamp=timestamp,
+        metadata={"validate_contract": "true"} if validate_contract else {},
+    )
+    if recursive:
+        return None, compiler.compile_recursive(scope, config)
+
+    detected_scope = resolver.resolve()
+    return detected_scope, compiler.compile(detected_scope, config)
 
 
 @implements_adr("ADR-L-0013", "ADR-PC-0004")

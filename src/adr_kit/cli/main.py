@@ -16,20 +16,17 @@ except ImportError:
 
 import yaml
 
+from ..api import _operations as application_service
 from ..generators import (
-    ArchitectureIndexGenerator,
-    EntityRegistryGenerator,
     LogicalADRGenerator,
     PhysicalComponentADRGenerator,
     PhysicalSystemADRGenerator,
     ScaffoldGenerator,
     SystemOverviewGenerator,
 )
-from ..generators.views import MarkdownGenerator
 from ..compiler import (
     AdrIrFragmentCompileError,
     ArchitectureCompiler,
-    CompilationMode,
     CompilerConfig,
     compile_logical_adr_ir_fragments,
 )
@@ -40,7 +37,9 @@ from ..migrators.canonical_id_normalizer import CanonicalIdNormalizer
 from ..parser import ADRParser
 from ..repository import ArchitectureRepository
 from ..schema.contract_validation import ContractProfile, validate_adr_contract_bundle
-from ..schema.implementation_attribution_validation import validate_implementation_attribution_evidence
+from ..schema.implementation_attribution_validation import (
+    validate_implementation_attribution_evidence,
+)
 from ..attribution_shim_generator import generate_shim
 from ..federation.workspace_attribution import (
     resolve_workspace_repos,
@@ -72,7 +71,13 @@ def _discover_scope_adr_files(scope) -> list[Path]:
     ):
         if not directory.exists():
             continue
-        files.extend(sorted(path for path in directory.glob("*.yaml") if path.is_file() and not path.is_symlink()))
+        files.extend(
+            sorted(
+                path
+                for path in directory.glob("*.yaml")
+                if path.is_file() and not path.is_symlink()
+            )
+        )
     return files
 
 
@@ -83,7 +88,9 @@ def _architecture_index_path(scope) -> Path:
 
 def _load_architecture_repository(scope_path: Optional[Path]) -> ArchitectureRepository:
     """Load repository-backed architecture discovery state."""
-    repository = ArchitectureRepository(scope_resolver=ProjectScopeResolver(explicit_scope=scope_path))
+    repository = ArchitectureRepository(
+        scope_resolver=ProjectScopeResolver(explicit_scope=scope_path)
+    )
     repository.load()
     return repository
 
@@ -95,7 +102,9 @@ def _dump_yaml(data) -> str:
 
 def _dump_entities(entities) -> str:
     """Render normalized entities as deterministic YAML."""
-    return _dump_yaml({"entities": [entity.model_dump(mode="json", exclude_none=True) for entity in entities]})
+    return _dump_yaml(
+        {"entities": [entity.model_dump(mode="json", exclude_none=True) for entity in entities]}
+    )
 
 
 def _dump_relationships(relationships) -> str:
@@ -118,7 +127,9 @@ def _maybe_show_input_schema(generator_cls, show_input_schema: bool) -> bool:
     return True
 
 
-def _require_generation_paths(input_path: Optional[Path], output: Optional[Path]) -> tuple[Path, Path]:
+def _require_generation_paths(
+    input_path: Optional[Path], output: Optional[Path]
+) -> tuple[Path, Path]:
     """Validate required paths for source generation commands."""
     if input_path is None:
         raise ValueError("--input is required unless --show-input-schema is used")
@@ -317,7 +328,16 @@ def _load_yaml_artifact(artifact) -> dict:
     return yaml.safe_load(artifact.content.decode("utf-8"))
 
 
-def _echo_compilation_result(scope, result, *, mode: str, check: bool, dry_run: bool, validate_contract: bool, contract_profile: str) -> None:
+def _echo_compilation_result(
+    scope,
+    result,
+    *,
+    mode: str,
+    check: bool,
+    dry_run: bool,
+    validate_contract: bool,
+    contract_profile: str,
+) -> None:
     """Print a single-scope compilation summary."""
     click.echo(f"Project scope: {scope.name} ({scope.root})")
     click.echo(f"Mode: {mode}")
@@ -338,7 +358,9 @@ def _echo_compilation_result(scope, result, *, mode: str, check: bool, dry_run: 
         click.echo(f"{diagnostic.level.name}: {diagnostic.code} {diagnostic.message}")
 
 
-def _echo_recursive_compilation_result(result, *, mode: str, check: bool, dry_run: bool, validate_contract: bool, contract_profile: str) -> None:
+def _echo_recursive_compilation_result(
+    result, *, mode: str, check: bool, dry_run: bool, validate_contract: bool, contract_profile: str
+) -> None:
     """Print a recursive multi-scope compilation summary."""
     click.echo("Compiling architecture artifacts recursively...")
     click.echo(f"Mode: {mode}")
@@ -360,6 +382,7 @@ def _echo_recursive_compilation_result(result, *, mode: str, check: bool, dry_ru
             click.echo(f"    {artifact.kind}: {artifact.path.as_posix()}")
         for diagnostic in scoped.result.diagnostics.as_list():
             click.echo(f"  {diagnostic.level.name}: {diagnostic.code} {diagnostic.message}")
+
 
 @implements_adr("ADR-L-0002", "ADR-L-0013")
 @click.group()
@@ -470,7 +493,9 @@ def build_ir_fragments():
         # Resolve that authority from the checked-out repository, not from the
         # installed package location used to execute the command.
         repo_root = Path.cwd().resolve()
-        adr_source_path = repo_root / "adrs" / "logical" / "ADR-L-9000-kernel-boot-publication-surface.yaml"
+        adr_source_path = (
+            repo_root / "adrs" / "logical" / "ADR-L-9000-kernel-boot-publication-surface.yaml"
+        )
         output_path = repo_root / "dist" / "architecture-ir" / "adr-ir-fragments.json"
 
         result = compile_logical_adr_ir_fragments(
@@ -657,34 +682,45 @@ def generate_vision(
 
 
 @implements_adr("ADR-L-0002", "ADR-L-0013")
-@cli.command('generate-manifest')
-@click.option('--scope', type=click.Path(exists=True, file_okay=False, path_type=Path),
-              help='Explicit project scope (overrides auto-detection)')
-@click.option('--recursive', is_flag=True,
-              help='Generate manifests for all sub-modules recursively')
-@click.option('--output', type=click.Path(path_type=Path),
-              help='Output path for manifest (default: <scope>/adrs/manifest.yaml)')
+@cli.command("generate-manifest")
+@click.option(
+    "--scope",
+    type=click.Path(exists=True, file_okay=False, path_type=Path),
+    help="Explicit project scope (overrides auto-detection)",
+)
+@click.option(
+    "--recursive", is_flag=True, help="Generate manifests for all sub-modules recursively"
+)
+@click.option(
+    "--output",
+    type=click.Path(path_type=Path),
+    help="Output path for manifest (default: <scope>/adrs/manifest.yaml)",
+)
 def generate_manifest(scope: Optional[Path], recursive: bool, output: Optional[Path]):
     """Generate manifest.yaml from ADRs (ADR-L-0002: CAP-0002).
-    
+
     Auto-detects project scope by default. Use --scope to override.
     Use --recursive to generate manifests for all sub-modules.
     """
     try:
         resolver = ProjectScopeResolver(explicit_scope=scope)
         compiler = ArchitectureCompiler(scope_resolver=resolver)
-        
+
         if recursive:
             click.echo("Generating manifests recursively...")
             if output is not None:
-                raise ValueError("--output is not supported with --recursive; manifests are emitted per scope")
+                raise ValueError(
+                    "--output is not supported with --recursive; manifests are emitted per scope"
+                )
             workspace_result = compiler.compile_recursive(
                 config=CompilerConfig(emit={"manifest"}),
             )
             if not workspace_result.success:
                 raise ValueError("Architecture compilation failed")
             for scoped in workspace_result.scope_results:
-                click.echo(f"Generated manifest for {scoped.scope.name}: {scoped.scope.manifest_path}")
+                click.echo(
+                    f"Generated manifest for {scoped.scope.name}: {scoped.scope.manifest_path}"
+                )
             click.echo(f"\nGenerated {workspace_result.statistics.scopes_compiled} manifests")
         else:
             click.echo("Generating manifest...")
@@ -719,7 +755,7 @@ def generate_manifest(scope: Optional[Path], recursive: bool, output: Optional[P
                 click.echo(f"  Physical-System: {statistics['physical_system_adrs']}")
             if statistics["physical_component_adrs"] > 0:
                 click.echo(f"  Physical-Component: {statistics['physical_component_adrs']}")
-            
+
     except Exception as e:
         click.echo(f"Error: {e}", err=True)
         sys.exit(1)
@@ -727,8 +763,11 @@ def generate_manifest(scope: Optional[Path], recursive: bool, output: Optional[P
 
 @implements_adr("ADR-L-0002", "ADR-L-0013")
 @cli.command("next-id")
-@click.option('--scope', type=click.Path(exists=True, file_okay=False, path_type=Path),
-              help='Explicit project scope (overrides auto-detection)')
+@click.option(
+    "--scope",
+    type=click.Path(exists=True, file_okay=False, path_type=Path),
+    help="Explicit project scope (overrides auto-detection)",
+)
 @click.option(
     "--type",
     "adr_type",
@@ -739,7 +778,9 @@ def generate_manifest(scope: Optional[Path], recursive: bool, output: Optional[P
 def next_id(scope: Optional[Path], adr_type: str):
     """Print the next available ADR ID for forward-authoring ADR types."""
     try:
-        repository = ArchitectureRepository(scope_resolver=ProjectScopeResolver(explicit_scope=scope))
+        repository = ArchitectureRepository(
+            scope_resolver=ProjectScopeResolver(explicit_scope=scope)
+        )
         click.echo(repository.next_id(adr_type))
     except Exception as e:
         click.echo(f"Error: {e}", err=True)
@@ -748,8 +789,11 @@ def next_id(scope: Optional[Path], adr_type: str):
 
 @implements_adr("ADR-L-0002", "ADR-L-0013")
 @cli.command("scaffold")
-@click.option('--scope', type=click.Path(exists=True, file_okay=False, path_type=Path),
-              help='Explicit project scope used to derive the next ADR ID when --id is omitted')
+@click.option(
+    "--scope",
+    type=click.Path(exists=True, file_okay=False, path_type=Path),
+    help="Explicit project scope used to derive the next ADR ID when --id is omitted",
+)
 @click.option(
     "--type",
     "adr_type",
@@ -760,14 +804,26 @@ def next_id(scope: Optional[Path], adr_type: str):
 @click.option("--id", "adr_id", help="Explicit ADR ID for the scaffold.")
 @click.option("--title", help="Override scaffold title.")
 @click.option("--include-optional", is_flag=True, help="Include optional scaffold sections.")
-@click.option("--output", type=click.Path(dir_okay=False, path_type=Path),
-              help="Optional file path to write the scaffold YAML.")
-def scaffold(scope: Optional[Path], adr_type: str, adr_id: Optional[str], title: Optional[str], include_optional: bool, output: Optional[Path]):
+@click.option(
+    "--output",
+    type=click.Path(dir_okay=False, path_type=Path),
+    help="Optional file path to write the scaffold YAML.",
+)
+def scaffold(
+    scope: Optional[Path],
+    adr_type: str,
+    adr_id: Optional[str],
+    title: Optional[str],
+    include_optional: bool,
+    output: Optional[Path],
+):
     """Generate a structured ADR input scaffold."""
     try:
         resolved_id = adr_id
         if resolved_id is None:
-            repository = ArchitectureRepository(scope_resolver=ProjectScopeResolver(explicit_scope=scope))
+            repository = ArchitectureRepository(
+                scope_resolver=ProjectScopeResolver(explicit_scope=scope)
+            )
             resolved_id = repository.next_id(adr_type)
         generator = ScaffoldGenerator()
         rendered = generator.scaffold_yaml(
@@ -908,12 +964,19 @@ def generate_physical_system(
 
 @implements_adr("ADR-L-0002", "ADR-L-0013")
 @cli.command("generate-entity-registry")
-@click.option('--scope', type=click.Path(exists=True, file_okay=False, path_type=Path),
-              help='Explicit project scope (overrides auto-detection)')
-@click.option('--recursive', is_flag=True,
-              help='Generate entity registries for all sub-modules recursively')
-@click.option('--output', type=click.Path(path_type=Path),
-              help='Output path for registry (default: <scope>/adrs/entities/registry.yaml)')
+@click.option(
+    "--scope",
+    type=click.Path(exists=True, file_okay=False, path_type=Path),
+    help="Explicit project scope (overrides auto-detection)",
+)
+@click.option(
+    "--recursive", is_flag=True, help="Generate entity registries for all sub-modules recursively"
+)
+@click.option(
+    "--output",
+    type=click.Path(path_type=Path),
+    help="Output path for registry (default: <scope>/adrs/entities/registry.yaml)",
+)
 def generate_entity_registry(scope: Optional[Path], recursive: bool, output: Optional[Path]):
     """Generate the legacy entity-registry.yaml compatibility artifact."""
     try:
@@ -921,7 +984,9 @@ def generate_entity_registry(scope: Optional[Path], recursive: bool, output: Opt
         compiler = ArchitectureCompiler(scope_resolver=resolver)
 
         if recursive:
-            click.echo("Generating architecture indexes recursively for legacy entity registry compatibility...")
+            click.echo(
+                "Generating architecture indexes recursively for legacy entity registry compatibility..."
+            )
             if output is None:
                 workspace_result = compiler.compile_recursive(
                     config=CompilerConfig(emit={"registries"}),
@@ -929,10 +994,16 @@ def generate_entity_registry(scope: Optional[Path], recursive: bool, output: Opt
                 if not workspace_result.success:
                     raise ValueError("Architecture compilation failed")
                 for scoped in workspace_result.scope_results:
-                    click.echo(f"Generated legacy entity registry for {scoped.scope.name}: {scoped.scope.adr_dir / 'entities' / 'registry.yaml'}")
-                    click.echo(f"  Architecture index: {scoped.scope.adr_dir / 'index' / 'architecture-index.yaml'}")
+                    click.echo(
+                        f"Generated legacy entity registry for {scoped.scope.name}: {scoped.scope.adr_dir / 'entities' / 'registry.yaml'}"
+                    )
+                    click.echo(
+                        f"  Architecture index: {scoped.scope.adr_dir / 'index' / 'architecture-index.yaml'}"
+                    )
 
-                click.echo(f"\nGenerated legacy entity registry compatibility artifacts for {workspace_result.statistics.scopes_compiled} scope(s)")
+                click.echo(
+                    f"\nGenerated legacy entity registry compatibility artifacts for {workspace_result.statistics.scopes_compiled} scope(s)"
+                )
             else:
                 scopes = resolver.resolve_recursive()
                 for scope_obj in scopes:
@@ -947,13 +1018,21 @@ def generate_entity_registry(scope: Optional[Path], recursive: bool, output: Opt
                         raise ValueError("Architecture compilation failed")
                     output_path = output
                     output_path.parent.mkdir(parents=True, exist_ok=True)
-                    output_path.write_bytes(_artifact_by_path(result, "adrs/entities/registry.yaml").content)
+                    output_path.write_bytes(
+                        _artifact_by_path(result, "adrs/entities/registry.yaml").content
+                    )
                     click.echo(f"Generated legacy entity registry for {scope_name}: {output_path}")
-                    click.echo(f"  Architecture index: {scope_obj.adr_dir / 'index' / 'architecture-index.yaml'}")
+                    click.echo(
+                        f"  Architecture index: {scope_obj.adr_dir / 'index' / 'architecture-index.yaml'}"
+                    )
 
-                click.echo(f"\nGenerated legacy entity registry compatibility artifacts for {len(scopes)} scope(s)")
+                click.echo(
+                    f"\nGenerated legacy entity registry compatibility artifacts for {len(scopes)} scope(s)"
+                )
         else:
-            click.echo("Generating architecture index and legacy entity registry compatibility artifact...")
+            click.echo(
+                "Generating architecture index and legacy entity registry compatibility artifact..."
+            )
             detected_scope = resolver.resolve()
             click.echo(f"Project scope: {detected_scope.name} ({detected_scope.root})")
             if output is None:
@@ -973,11 +1052,15 @@ def generate_entity_registry(scope: Optional[Path], recursive: bool, output: Opt
                     raise ValueError("Architecture compilation failed")
                 output_path = output
                 output_path.parent.mkdir(parents=True, exist_ok=True)
-                output_path.write_bytes(_artifact_by_path(result, "adrs/entities/registry.yaml").content)
+                output_path.write_bytes(
+                    _artifact_by_path(result, "adrs/entities/registry.yaml").content
+                )
 
             click.echo(f"Generated legacy entity registry: {output_path}")
             click.echo(f"  Architecture index: {_architecture_index_path(detected_scope)}")
-            legacy_payload = yaml.safe_load(_artifact_by_path(result, "adrs/entities/registry.yaml").content)
+            legacy_payload = yaml.safe_load(
+                _artifact_by_path(result, "adrs/entities/registry.yaml").content
+            )
             click.echo(f"  Entities: {len(legacy_payload.get('entities', []))}")
     except Exception as e:
         click.echo(f"Error: {e}", err=True)
@@ -986,8 +1069,11 @@ def generate_entity_registry(scope: Optional[Path], recursive: bool, output: Opt
 
 @implements_adr("ADR-L-0002", "ADR-L-0013")
 @cli.command("generate-architecture-index")
-@click.option('--scope', type=click.Path(exists=True, file_okay=False, path_type=Path),
-              help='Explicit project scope (overrides auto-detection)')
+@click.option(
+    "--scope",
+    type=click.Path(exists=True, file_okay=False, path_type=Path),
+    help="Explicit project scope (overrides auto-detection)",
+)
 def generate_architecture_index(scope: Optional[Path]):
     """Generate normalized architecture discovery artifacts under adrs/index/."""
     try:
@@ -1006,7 +1092,9 @@ def generate_architecture_index(scope: Optional[Path]):
         click.echo(f"  Entities: {result.statistics.entities_extracted}")
         click.echo(f"  Relationships: {result.statistics.relationships_derived}")
         click.echo(f"  Unresolved: {result.statistics.unresolved_detected}")
-        click.echo(f"  Legacy entity registry: {detected_scope.adr_dir / 'entities' / 'registry.yaml'}")
+        click.echo(
+            f"  Legacy entity registry: {detected_scope.adr_dir / 'entities' / 'registry.yaml'}"
+        )
     except Exception as e:
         click.echo(f"Error: {e}", err=True)
         sys.exit(1)
@@ -1014,45 +1102,47 @@ def generate_architecture_index(scope: Optional[Path]):
 
 @implements_adr("ADR-L-0002", "ADR-L-0013")
 @cli.command("compile")
-@click.option('--scope', type=click.Path(exists=True, file_okay=False, path_type=Path),
-              help='Explicit project scope (overrides auto-detection)')
 @click.option(
-    '--emit',
+    "--scope",
+    type=click.Path(exists=True, file_okay=False, path_type=Path),
+    help="Explicit project scope (overrides auto-detection)",
+)
+@click.option(
+    "--emit",
     default="registries,manifest,markdown",
     show_default=True,
-    help='Comma-separated emit targets: registries, manifest, markdown.',
+    help="Comma-separated emit targets: registries, manifest, markdown.",
 )
 @click.option(
-    '--timestamp',
+    "--timestamp",
     type=str,
     default=None,
-    help='Pinned timestamp for deterministic compilation (ISO-8601).',
+    help="Pinned timestamp for deterministic compilation (ISO-8601).",
 )
 @click.option(
-    '--mode',
+    "--mode",
     type=click.Choice(["normal", "strict", "lenient"]),
     default="normal",
     show_default=True,
-    help='Compilation success policy.',
+    help="Compilation success policy.",
 )
-@click.option('--dry-run', is_flag=True,
-              help='Compile without writing files.')
-@click.option('--check', is_flag=True,
-              help='Compile in-memory and fail if selected on-disk artifacts drift.')
+@click.option("--dry-run", is_flag=True, help="Compile without writing files.")
 @click.option(
-    '--validate-contract',
+    "--check", is_flag=True, help="Compile in-memory and fail if selected on-disk artifacts drift."
+)
+@click.option(
+    "--validate-contract",
     is_flag=True,
-    help='Validate the compiled repository contract bundle from in-memory outputs.',
+    help="Validate the compiled repository contract bundle from in-memory outputs.",
 )
 @click.option(
-    '--contract-profile',
+    "--contract-profile",
     type=click.Choice(["greenfield", "brownfield", "migration"]),
     default="greenfield",
     show_default=True,
-    help='Contract validation profile used with --validate-contract.',
+    help="Contract validation profile used with --validate-contract.",
 )
-@click.option('--recursive', is_flag=True,
-              help='Compile all detected scopes recursively.')
+@click.option("--recursive", is_flag=True, help="Compile all detected scopes recursively.")
 def compile_artifacts(
     scope: Optional[Path],
     emit: str,
@@ -1073,20 +1163,19 @@ def compile_artifacts(
             "See ste-runtime COMPILER-AUTHORITY.md and adr-architecture-kit AUTHORING-SYSTEM.md.",
             err=True,
         )
-        resolver = ProjectScopeResolver(explicit_scope=scope)
-        compiler = ArchitectureCompiler(scope_resolver=resolver)
         emit_targets = _parse_emit_list(emit)
-        config = CompilerConfig(
-            mode=CompilationMode(mode),
-            emit=emit_targets,
-            dry_run=dry_run or check,
+        detected_scope, result = application_service.compile_for_cli(
+            scope,
+            emit_targets=emit_targets,
+            timestamp=timestamp,
+            mode=mode,
+            dry_run=dry_run,
             check=check,
-            profile=contract_profile if validate_contract else None,
-            pinned_timestamp=timestamp,
-            metadata={"validate_contract": "true"} if validate_contract else {},
+            validate_contract=validate_contract,
+            contract_profile=contract_profile,
+            recursive=recursive,
         )
         if recursive:
-            result = compiler.compile_recursive(scope, config)
             _echo_recursive_compilation_result(
                 result,
                 mode=mode,
@@ -1096,8 +1185,8 @@ def compile_artifacts(
                 contract_profile=contract_profile,
             )
         else:
-            detected_scope = resolver.resolve()
-            result = compiler.compile(detected_scope, config)
+            if detected_scope is None:
+                raise RuntimeError("Compilation scope was not resolved")
             click.echo("Compiling architecture artifacts...")
             _echo_compilation_result(
                 detected_scope,
@@ -1118,8 +1207,11 @@ def compile_artifacts(
 
 @implements_adr("ADR-L-0002", "ADR-L-0013")
 @cli.command("normalize-canonical-ids")
-@click.option('--scope', type=click.Path(exists=True, file_okay=False, path_type=Path),
-              help='Explicit project scope (overrides auto-detection)')
+@click.option(
+    "--scope",
+    type=click.Path(exists=True, file_okay=False, path_type=Path),
+    help="Explicit project scope (overrides auto-detection)",
+)
 def normalize_canonical_ids(scope: Optional[Path]):
     """Normalize canonical entity ID collisions across ADR YAML files."""
     try:
@@ -1134,7 +1226,9 @@ def normalize_canonical_ids(scope: Optional[Path]):
             click.echo("Run `adr generate-architecture-index --scope .`")
             return
         click.echo(f"Normalized {len(remaps)} canonical ID collisions.")
-        click.echo(f"Migration ledger: {detected_scope.adr_dir / 'migrations' / 'canonical-id-remap.yaml'}")
+        click.echo(
+            f"Migration ledger: {detected_scope.adr_dir / 'migrations' / 'canonical-id-remap.yaml'}"
+        )
         click.echo("Run `adr generate-architecture-index --scope .`")
     except Exception as e:
         click.echo(f"Error: {e}", err=True)
@@ -1142,104 +1236,111 @@ def normalize_canonical_ids(scope: Optional[Path]):
 
 
 @implements_adr("ADR-L-0002", "ADR-L-0013")
-@cli.command('validate')
-@click.option('--scope', type=click.Path(exists=True, file_okay=False, path_type=Path),
-              help='Explicit project scope (overrides auto-detection)')
-@click.option('--recursive', is_flag=True,
-              help='Validate all sub-modules recursively')
-@click.option('--cross-references', is_flag=True,
-              help='Validate cross-references between ADRs')
+@cli.command("validate")
 @click.option(
-    '--mode',
+    "--scope",
+    type=click.Path(exists=True, file_okay=False, path_type=Path),
+    help="Explicit project scope (overrides auto-detection)",
+)
+@click.option("--recursive", is_flag=True, help="Validate all sub-modules recursively")
+@click.option("--cross-references", is_flag=True, help="Validate cross-references between ADRs")
+@click.option(
+    "--mode",
     type=click.Choice(["complete", "structural"]),
     default="complete",
     show_default=True,
-    help='Validation mode to apply.'
+    help="Validation mode to apply.",
 )
 def validate(scope: Optional[Path], recursive: bool, cross_references: bool, mode: str):
     """Validate ADRs against schema and business rules (ADR-L-0002: CAP-0003).
-    
+
     Auto-detects project scope by default. Use --scope to override.
     Use --recursive to validate all sub-modules (ADR-L-0002: INV-0019).
     """
     try:
-        resolver = ProjectScopeResolver(explicit_scope=scope)
-        validator = ADRValidator(scope_resolver=resolver)
-        
+        detected_scope, results, xref_result = application_service.validate_for_cli(
+            scope,
+            recursive=recursive,
+            cross_references=cross_references,
+            mode=mode,
+        )
+
         if recursive:
             click.echo("Validating ADRs recursively...")
-            all_results = validator.validate_recursive(mode=mode)
-            
+            all_results = results
+
             total_files = 0
             total_errors = 0
             total_warnings = 0
-            
+
             for scope_name, results in all_results.items():
                 click.echo(f"\n{scope_name}:")
-                
+
                 errors = sum(1 for r in results.values() if r.has_errors)
                 warnings = sum(1 for r in results.values() if r.has_warnings)
-                
+
                 if errors > 0:
-                    click.secho(f"  ERROR {errors} files with errors", fg='red')
+                    click.secho(f"  ERROR {errors} files with errors", fg="red")
                 if warnings > 0:
-                    click.secho(f"  WARN {warnings} files with warnings", fg='yellow')
+                    click.secho(f"  WARN {warnings} files with warnings", fg="yellow")
                 if errors == 0 and warnings == 0:
                     click.secho(f"  All {len(results)} files valid", fg="green")
-                
+
                 total_files += len(results)
                 total_errors += errors
                 total_warnings += warnings
-            
-            click.echo(f"\nTotal: {total_files} files, {total_errors} errors, {total_warnings} warnings")
-            
+
+            click.echo(
+                f"\nTotal: {total_files} files, {total_errors} errors, {total_warnings} warnings"
+            )
+
             if total_errors > 0:
                 sys.exit(1)
-                
+
         else:
             click.echo("Validating ADRs...")
-            detected_scope = resolver.resolve()
+            if detected_scope is None:
+                raise RuntimeError("Validation scope was not resolved")
             click.echo(f"Project scope: {detected_scope.name} ({detected_scope.root})")
-            
-            results = validator.validate_scope(detected_scope, mode=mode)
-            
+
             # Print results
             errors = 0
             warnings = 0
-            
+
             for file_path, result in results.items():
                 if result.has_errors:
-                    click.secho(f"\nERROR {file_path}", fg='red')
+                    click.secho(f"\nERROR {file_path}", fg="red")
                     for error in result.errors:
                         click.echo(f"  ERROR: {error.message}")
                     errors += 1
                 elif result.has_warnings:
-                    click.secho(f"\nWARN {file_path}", fg='yellow')
+                    click.secho(f"\nWARN {file_path}", fg="yellow")
                     for warning in result.warnings:
                         click.echo(f"  WARNING: {warning.message}")
                     warnings += 1
-            
+
             if errors == 0 and warnings == 0:
                 click.secho(f"All {len(results)} files valid", fg="green")
             else:
                 click.echo(f"\n{len(results)} files: {errors} errors, {warnings} warnings")
-            
+
             # Validate cross-references if requested
             if cross_references:
                 click.echo("\nValidating cross-references...")
-                xref_result = validator.validate_cross_references(detected_scope.adr_dir)
-                
+                if xref_result is None:
+                    raise RuntimeError("Cross-reference validation result unavailable")
+
                 if xref_result.has_errors:
-                    click.secho("ERROR Cross-reference validation failed", fg='red')
+                    click.secho("ERROR Cross-reference validation failed", fg="red")
                     for error in xref_result.errors:
                         click.echo(f"  ERROR: {error.message}")
                     sys.exit(1)
                 else:
                     click.secho("Cross-references valid", fg="green")
-            
+
             if errors > 0:
                 sys.exit(1)
-                
+
     except Exception as e:
         click.echo(f"Error: {e}", err=True)
         sys.exit(1)
@@ -1247,29 +1348,35 @@ def validate(scope: Optional[Path], recursive: bool, cross_references: bool, mod
 
 @implements_adr("ADR-L-0002", "ADR-L-0013")
 @cli.command("validate-contract")
-@click.option('--scope', type=click.Path(exists=True, file_okay=False, path_type=Path),
-              help='Explicit project scope (overrides auto-detection)')
 @click.option(
-    '--contract-profile',
+    "--scope",
+    type=click.Path(exists=True, file_okay=False, path_type=Path),
+    help="Explicit project scope (overrides auto-detection)",
+)
+@click.option(
+    "--contract-profile",
     type=click.Choice(["greenfield", "brownfield", "migration"]),
     default="greenfield",
     show_default=True,
-    help='Contract validation profile to apply.'
+    help="Contract validation profile to apply.",
 )
 @click.option(
-    '--max-sentinel-fields',
+    "--max-sentinel-fields",
     type=int,
     default=None,
-    help='Optional CI threshold. Fail if sentinel-backed field count exceeds this value.'
+    help="Optional CI threshold. Fail if sentinel-backed field count exceeds this value.",
 )
 @click.option(
-    '--max-non-complete-entities',
+    "--max-non-complete-entities",
     type=int,
     default=None,
-    help='Optional CI threshold. Fail if non-complete entity count exceeds this value.'
+    help="Optional CI threshold. Fail if non-complete entity count exceeds this value.",
 )
-@click.option('--recursive', is_flag=True,
-              help='Validate the compiled contract bundle for all detected scopes recursively')
+@click.option(
+    "--recursive",
+    is_flag=True,
+    help="Validate the compiled contract bundle for all detected scopes recursively",
+)
 def validate_contract(
     scope: Optional[Path],
     contract_profile: str,
@@ -1280,7 +1387,11 @@ def validate_contract(
     """Validate the compiled repository contract bundle for the selected profile."""
     try:
         failures = 0
-        scopes = _ordered_scopes(scope) if recursive else [ProjectScopeResolver(explicit_scope=scope).resolve()]
+        scopes = (
+            _ordered_scopes(scope)
+            if recursive
+            else [ProjectScopeResolver(explicit_scope=scope).resolve()]
+        )
         for index, current_scope in enumerate(scopes):
             if index:
                 click.echo()
@@ -1299,11 +1410,16 @@ def validate_contract(
             remediation_state_counts = None
             if contract_bundle.remediation_ledger is not None:
                 remediation_state_counts = {
-                    state: sum(1 for entry in contract_bundle.remediation_ledger.entries if entry.state == state)
+                    state: sum(
+                        1
+                        for entry in contract_bundle.remediation_ledger.entries
+                        if entry.state == state
+                    )
                     for state in ("sentinel", "pending_approval", "approved")
                 }
             sentinel_threshold_exceeded = (
-                max_sentinel_fields is not None and result.sentinel_field_count > max_sentinel_fields
+                max_sentinel_fields is not None
+                and result.sentinel_field_count > max_sentinel_fields
             )
             completeness_threshold_exceeded = (
                 max_non_complete_entities is not None
@@ -1322,7 +1438,8 @@ def validate_contract(
                         "max_non_complete_entities": max_non_complete_entities,
                         "completeness_threshold_exceeded": completeness_threshold_exceeded,
                         "completeness_counts": result.completeness_counts,
-                        "remediation_ledger_present": contract_bundle.remediation_ledger is not None,
+                        "remediation_ledger_present": contract_bundle.remediation_ledger
+                        is not None,
                         "remediation_state_counts": remediation_state_counts,
                         "issues": [
                             {"path": issue.path, "message": issue.message}
@@ -1332,7 +1449,11 @@ def validate_contract(
                 )
             )
 
-            if not result.is_valid or sentinel_threshold_exceeded or completeness_threshold_exceeded:
+            if (
+                not result.is_valid
+                or sentinel_threshold_exceeded
+                or completeness_threshold_exceeded
+            ):
                 failures += 1
 
         if failures:
@@ -1344,14 +1465,17 @@ def validate_contract(
 
 @implements_adr("ADR-L-0002", "ADR-L-0013")
 @cli.command("governance-checks")
-@click.option('--scope', type=click.Path(exists=True, file_okay=False, path_type=Path),
-              default=Path("."),
-              show_default=True,
-              help='Project scope root to validate.')
-@click.option('--skip-tests', is_flag=True,
-              help='Skip the full pytest run.')
-@click.option('--recursive', is_flag=True,
-              help='Run governance checks for all detected scopes recursively.')
+@click.option(
+    "--scope",
+    type=click.Path(exists=True, file_okay=False, path_type=Path),
+    default=Path("."),
+    show_default=True,
+    help="Project scope root to validate.",
+)
+@click.option("--skip-tests", is_flag=True, help="Skip the full pytest run.")
+@click.option(
+    "--recursive", is_flag=True, help="Run governance checks for all detected scopes recursively."
+)
 def governance_checks(scope: Path, skip_tests: bool, recursive: bool):
     """Run the standard local governance validation bundle."""
     try:
@@ -1373,18 +1497,51 @@ def entities_cli():
     """Query the generated architecture discovery bundle."""
     pass
 
+
 @implements_adr("ADR-L-0002", "ADR-L-0013")
 @entities_cli.command("list")
-@click.option('--scope', type=click.Path(exists=True, file_okay=False, path_type=Path),
-              help='Explicit project scope (overrides auto-detection)')
-@click.option('--type', 'entity_type',
-              type=click.Choice(["adr", "system", "capability", "decision", "component", "invariant", "boundary", "contract", "constraint", "nfr", "gap", "interface", "integration", "implementation_decision"]),
-              help='Filter by entity type')
-@click.option('--adr', 'adr_id', help='Filter by ADR reference')
-@click.option('--domain', help='Filter by domain')
-@click.option('--status', type=click.Choice(["proposed", "active", "deprecated", "superseded"]),
-              help='Filter by lifecycle stage')
-def entities_list(scope: Optional[Path], entity_type: Optional[str], adr_id: Optional[str], domain: Optional[str], status: Optional[str]):
+@click.option(
+    "--scope",
+    type=click.Path(exists=True, file_okay=False, path_type=Path),
+    help="Explicit project scope (overrides auto-detection)",
+)
+@click.option(
+    "--type",
+    "entity_type",
+    type=click.Choice(
+        [
+            "adr",
+            "system",
+            "capability",
+            "decision",
+            "component",
+            "invariant",
+            "boundary",
+            "contract",
+            "constraint",
+            "nfr",
+            "gap",
+            "interface",
+            "integration",
+            "implementation_decision",
+        ]
+    ),
+    help="Filter by entity type",
+)
+@click.option("--adr", "adr_id", help="Filter by ADR reference")
+@click.option("--domain", help="Filter by domain")
+@click.option(
+    "--status",
+    type=click.Choice(["proposed", "active", "deprecated", "superseded"]),
+    help="Filter by lifecycle stage",
+)
+def entities_list(
+    scope: Optional[Path],
+    entity_type: Optional[str],
+    adr_id: Optional[str],
+    domain: Optional[str],
+    status: Optional[str],
+):
     """List entities from the generated registry."""
     try:
         repository = _load_architecture_repository(scope)
@@ -1403,8 +1560,11 @@ def entities_list(scope: Optional[Path], entity_type: Optional[str], adr_id: Opt
 @implements_adr("ADR-L-0002", "ADR-L-0013")
 @entities_cli.command("get")
 @click.argument("entity_id")
-@click.option('--scope', type=click.Path(exists=True, file_okay=False, path_type=Path),
-              help='Explicit project scope (overrides auto-detection)')
+@click.option(
+    "--scope",
+    type=click.Path(exists=True, file_okay=False, path_type=Path),
+    help="Explicit project scope (overrides auto-detection)",
+)
 def entities_get(entity_id: str, scope: Optional[Path]):
     """Get an entity by exact ID."""
     try:
@@ -1420,18 +1580,46 @@ def entities_get(entity_id: str, scope: Optional[Path]):
 
 @implements_adr("ADR-L-0002", "ADR-L-0013")
 @entities_cli.command("relationships")
-@click.option('--scope', type=click.Path(exists=True, file_okay=False, path_type=Path),
-              help='Explicit project scope (overrides auto-detection)')
-@click.option('--entity', 'entity_id', help='Filter relationships to one entity ID')
-@click.option('--type', 'relationship_type',
-              type=click.Choice(["declared_in", "references", "related_to", "enforces", "enabled_by", "enables", "governs", "implemented_by", "embodied_in", "supersedes", "superseded_by", "refines"]),
-              help='Filter by relationship type')
-@click.option('--direction',
-              type=click.Choice(["any", "incoming", "outgoing"]),
-              default="any",
-              show_default=True,
-              help='Relationship direction when --entity is provided')
-def entities_relationships(scope: Optional[Path], entity_id: Optional[str], relationship_type: Optional[str], direction: str):
+@click.option(
+    "--scope",
+    type=click.Path(exists=True, file_okay=False, path_type=Path),
+    help="Explicit project scope (overrides auto-detection)",
+)
+@click.option("--entity", "entity_id", help="Filter relationships to one entity ID")
+@click.option(
+    "--type",
+    "relationship_type",
+    type=click.Choice(
+        [
+            "declared_in",
+            "references",
+            "related_to",
+            "enforces",
+            "enabled_by",
+            "enables",
+            "governs",
+            "implemented_by",
+            "embodied_in",
+            "supersedes",
+            "superseded_by",
+            "refines",
+        ]
+    ),
+    help="Filter by relationship type",
+)
+@click.option(
+    "--direction",
+    type=click.Choice(["any", "incoming", "outgoing"]),
+    default="any",
+    show_default=True,
+    help="Relationship direction when --entity is provided",
+)
+def entities_relationships(
+    scope: Optional[Path],
+    entity_id: Optional[str],
+    relationship_type: Optional[str],
+    direction: str,
+):
     """List repository relationship records."""
     try:
         repository = _load_architecture_repository(scope)
@@ -1457,13 +1645,18 @@ def entities_relationships(scope: Optional[Path], entity_id: Optional[str], rela
 
 @implements_adr("ADR-L-0002", "ADR-L-0013")
 @entities_cli.command("summary")
-@click.option('--scope', type=click.Path(exists=True, file_okay=False, path_type=Path),
-              help='Explicit project scope (overrides auto-detection)')
+@click.option(
+    "--scope",
+    type=click.Path(exists=True, file_okay=False, path_type=Path),
+    help="Explicit project scope (overrides auto-detection)",
+)
 def entities_summary(scope: Optional[Path]):
     """Summarize the generated architecture corpus for the current scope."""
     try:
         repository = _load_architecture_repository(scope)
-        click.echo(_dump_yaml(repository.get_corpus_summary().model_dump(mode="json", exclude_none=True)))
+        click.echo(
+            _dump_yaml(repository.get_corpus_summary().model_dump(mode="json", exclude_none=True))
+        )
     except Exception as e:
         click.echo(f"Error: {e}", err=True)
         sys.exit(1)
@@ -1471,13 +1664,21 @@ def entities_summary(scope: Optional[Path]):
 
 @implements_adr("ADR-L-0002", "ADR-L-0013")
 @entities_cli.command("invariants")
-@click.option('--scope', type=click.Path(exists=True, file_okay=False, path_type=Path),
-              help='Explicit project scope (overrides auto-detection)')
-@click.option('--adr', 'adr_id', help='Filter by ADR reference')
-@click.option('--domain', help='Filter by domain')
-@click.option('--status', type=click.Choice(["proposed", "active", "deprecated", "superseded"]),
-              help='Filter by lifecycle stage')
-def entities_invariants(scope: Optional[Path], adr_id: Optional[str], domain: Optional[str], status: Optional[str]):
+@click.option(
+    "--scope",
+    type=click.Path(exists=True, file_okay=False, path_type=Path),
+    help="Explicit project scope (overrides auto-detection)",
+)
+@click.option("--adr", "adr_id", help="Filter by ADR reference")
+@click.option("--domain", help="Filter by domain")
+@click.option(
+    "--status",
+    type=click.Choice(["proposed", "active", "deprecated", "superseded"]),
+    help="Filter by lifecycle stage",
+)
+def entities_invariants(
+    scope: Optional[Path], adr_id: Optional[str], domain: Optional[str], status: Optional[str]
+):
     """List invariants from the generated registry."""
     try:
         repository = _load_architecture_repository(scope)
@@ -1495,13 +1696,21 @@ def entities_invariants(scope: Optional[Path], adr_id: Optional[str], domain: Op
 
 @implements_adr("ADR-L-0002", "ADR-L-0013")
 @entities_cli.command("capabilities")
-@click.option('--scope', type=click.Path(exists=True, file_okay=False, path_type=Path),
-              help='Explicit project scope (overrides auto-detection)')
-@click.option('--adr', 'adr_id', help='Filter by ADR reference')
-@click.option('--domain', help='Filter by domain')
-@click.option('--status', type=click.Choice(["proposed", "active", "deprecated", "superseded"]),
-              help='Filter by lifecycle stage')
-def entities_capabilities(scope: Optional[Path], adr_id: Optional[str], domain: Optional[str], status: Optional[str]):
+@click.option(
+    "--scope",
+    type=click.Path(exists=True, file_okay=False, path_type=Path),
+    help="Explicit project scope (overrides auto-detection)",
+)
+@click.option("--adr", "adr_id", help="Filter by ADR reference")
+@click.option("--domain", help="Filter by domain")
+@click.option(
+    "--status",
+    type=click.Choice(["proposed", "active", "deprecated", "superseded"]),
+    help="Filter by lifecycle stage",
+)
+def entities_capabilities(
+    scope: Optional[Path], adr_id: Optional[str], domain: Optional[str], status: Optional[str]
+):
     """List capabilities from the generated registry."""
     try:
         repository = _load_architecture_repository(scope)
@@ -1518,34 +1727,49 @@ def entities_capabilities(scope: Optional[Path], adr_id: Optional[str], domain: 
 
 
 @implements_adr("ADR-L-0002", "ADR-L-0013")
-@cli.command('scope')
-@click.option('--recursive', is_flag=True,
-              help='Show all sub-module scopes')
+@cli.command("scope")
+@click.option("--recursive", is_flag=True, help="Show all sub-module scopes")
 def show_scope(recursive: bool):
     """Show detected project scope(s) (ADR-L-0002: CAP-0001).
-    
+
     Displays project boundaries and ADR directory locations.
     """
     try:
         resolver = ProjectScopeResolver()
-        
+
         if recursive:
             scopes = resolver.resolve_recursive()
             click.echo(f"Found {len(scopes)} project scope(s):\n")
-            
+
             for i, scope in enumerate(scopes, 1):
-                marker_info = f" (via {scope.marker})" if scope.marker != 'auto-detected' else ""
+                marker_info = f" (via {scope.marker})" if scope.marker != "auto-detected" else ""
                 sub_info = " [sub-module]" if scope.is_sub_module else " [workspace root]"
-                
+
                 click.echo(f"{i}. {scope.name}{sub_info}{marker_info}")
                 click.echo(f"   Root: {scope.root}")
                 click.echo(f"   ADRs: {scope.adr_dir}")
-                
+
                 if scope.adr_dir.exists():
-                    logical_count = len(list((scope.adr_dir / 'logical').glob('*.yaml'))) if (scope.adr_dir / 'logical').exists() else 0
-                    physical_count = len(list((scope.adr_dir / 'physical').glob('*.yaml'))) if (scope.adr_dir / 'physical').exists() else 0
-                    physical_system_count = len(list(scope.physical_system_dir.glob('*.yaml'))) if scope.physical_system_dir.exists() else 0
-                    physical_component_count = len(list(scope.physical_component_dir.glob('*.yaml'))) if scope.physical_component_dir.exists() else 0
+                    logical_count = (
+                        len(list((scope.adr_dir / "logical").glob("*.yaml")))
+                        if (scope.adr_dir / "logical").exists()
+                        else 0
+                    )
+                    physical_count = (
+                        len(list((scope.adr_dir / "physical").glob("*.yaml")))
+                        if (scope.adr_dir / "physical").exists()
+                        else 0
+                    )
+                    physical_system_count = (
+                        len(list(scope.physical_system_dir.glob("*.yaml")))
+                        if scope.physical_system_dir.exists()
+                        else 0
+                    )
+                    physical_component_count = (
+                        len(list(scope.physical_component_dir.glob("*.yaml")))
+                        if scope.physical_component_dir.exists()
+                        else 0
+                    )
                     click.echo(
                         "   ADR count: "
                         f"{logical_count} logical, "
@@ -1554,27 +1778,43 @@ def show_scope(recursive: bool):
                         f"{physical_component_count} physical-component"
                     )
                 else:
-                    click.echo(f"   ADR count: (directory not found)")
-                
+                    click.echo("   ADR count: (directory not found)")
+
                 click.echo()
         else:
             scope = resolver.resolve()
-            marker_info = f" (detected via {scope.marker})" if scope.marker != 'explicit' else ""
-            
+            marker_info = f" (detected via {scope.marker})" if scope.marker != "explicit" else ""
+
             click.echo(f"Project: {scope.name}{marker_info}")
             click.echo(f"Root: {scope.root}")
             click.echo(f"ADR directory: {scope.adr_dir}")
             click.echo(f"Manifest: {scope.manifest_path}")
-            
+
             if scope.is_sub_module and scope.parent_scope:
                 click.echo(f"\nParent project: {scope.parent_scope.name}")
                 click.echo(f"Parent root: {scope.parent_scope.root}")
-            
+
             if scope.adr_dir.exists():
-                logical_count = len(list((scope.adr_dir / 'logical').glob('*.yaml'))) if (scope.adr_dir / 'logical').exists() else 0
-                physical_count = len(list((scope.adr_dir / 'physical').glob('*.yaml'))) if (scope.adr_dir / 'physical').exists() else 0
-                physical_system_count = len(list(scope.physical_system_dir.glob('*.yaml'))) if scope.physical_system_dir.exists() else 0
-                physical_component_count = len(list(scope.physical_component_dir.glob('*.yaml'))) if scope.physical_component_dir.exists() else 0
+                logical_count = (
+                    len(list((scope.adr_dir / "logical").glob("*.yaml")))
+                    if (scope.adr_dir / "logical").exists()
+                    else 0
+                )
+                physical_count = (
+                    len(list((scope.adr_dir / "physical").glob("*.yaml")))
+                    if (scope.adr_dir / "physical").exists()
+                    else 0
+                )
+                physical_system_count = (
+                    len(list(scope.physical_system_dir.glob("*.yaml")))
+                    if scope.physical_system_dir.exists()
+                    else 0
+                )
+                physical_component_count = (
+                    len(list(scope.physical_component_dir.glob("*.yaml")))
+                    if scope.physical_component_dir.exists()
+                    else 0
+                )
                 click.echo(
                     "\nADR count: "
                     f"{logical_count} logical, "
@@ -1583,8 +1823,8 @@ def show_scope(recursive: bool):
                     f"{physical_component_count} physical-component"
                 )
             else:
-                click.echo(f"\nADR directory does not exist")
-                
+                click.echo("\nADR directory does not exist")
+
     except Exception as e:
         click.echo(f"Error: {e}", err=True)
         sys.exit(1)
@@ -1605,8 +1845,9 @@ def show_scope(recursive: bool):
     show_default=True,
     help="Path to the PROJECT.yaml file.",
 )
-@click.option('--recursive', is_flag=True,
-              help='Validate PROJECT.yaml for all detected scopes recursively.')
+@click.option(
+    "--recursive", is_flag=True, help="Validate PROJECT.yaml for all detected scopes recursively."
+)
 def validate_project_metadata(scope: Optional[Path], file_path: Path, recursive: bool):
     """Validate PROJECT.yaml against schema and model rules."""
     try:
@@ -1725,10 +1966,14 @@ def generate_system_overview(output: Path):
 
 @implements_adr("ADR-L-0002", "ADR-L-0013")
 @cli.command("generate-rendered-docs")
-@click.option('--scope', type=click.Path(exists=True, file_okay=False, path_type=Path),
-              help='Explicit project scope (overrides auto-detection)')
-@click.option('--recursive', is_flag=True,
-              help='Generate rendered ADR markdown for all scopes recursively')
+@click.option(
+    "--scope",
+    type=click.Path(exists=True, file_okay=False, path_type=Path),
+    help="Explicit project scope (overrides auto-detection)",
+)
+@click.option(
+    "--recursive", is_flag=True, help="Generate rendered ADR markdown for all scopes recursively"
+)
 def generate_rendered_docs(scope: Optional[Path], recursive: bool):
     """Generate rendered ADR markdown artifacts with integrity headers."""
     try:
@@ -1744,7 +1989,11 @@ def generate_rendered_docs(scope: Optional[Path], recursive: bool):
             for scoped in workspace_result.scope_results:
                 click.echo(f"Generating rendered docs for {scoped.scope.name}...")
                 markdown_artifacts = sorted(
-                    (artifact for artifact in scoped.result.artifacts if artifact.kind == "markdown"),
+                    (
+                        artifact
+                        for artifact in scoped.result.artifacts
+                        if artifact.kind == "markdown"
+                    ),
                     key=lambda artifact: artifact.path.as_posix(),
                 )
                 for artifact in markdown_artifacts:
@@ -1800,28 +2049,33 @@ def validate_system_overview(file_path: Path):
 
 @implements_adr("ADR-L-0002", "ADR-L-0013")
 @cli.command("validate-generated-docs")
-@click.option('--scope', type=click.Path(exists=True, file_okay=False, path_type=Path),
-              help='Explicit project scope (overrides auto-detection)')
-@click.option('--recursive', is_flag=True,
-              help='Validate generated documentation for all scopes recursively')
+@click.option(
+    "--scope",
+    type=click.Path(exists=True, file_okay=False, path_type=Path),
+    help="Explicit project scope (overrides auto-detection)",
+)
+@click.option(
+    "--recursive", is_flag=True, help="Validate generated documentation for all scopes recursively"
+)
 def validate_generated_docs(scope: Optional[Path], recursive: bool):
     """Validate covered generated documentation artifacts."""
     try:
         resolver = ProjectScopeResolver(explicit_scope=scope)
         validator = GeneratedArtifactValidator(scope_resolver=resolver)
         results_by_scope = (
-            validator.validate_recursive() if recursive
-            else {resolver.resolve().name or str(resolver.resolve().root): validator.validate_scope(resolver.resolve())}
+            validator.validate_recursive()
+            if recursive
+            else {
+                resolver.resolve().name
+                or str(resolver.resolve().root): validator.validate_scope(resolver.resolve())
+            }
         )
 
         failures = 0
         for scope_name, results in results_by_scope.items():
             click.echo(f"{scope_name}:")
             for result in results:
-                click.echo(
-                    f"  {result.status}: {result.artifact_path} "
-                    f"({result.reason_code})"
-                )
+                click.echo(f"  {result.status}: {result.artifact_path} " f"({result.reason_code})")
                 if result.status != GeneratedArtifactStatus.VALID.value:
                     failures += 1
 
@@ -2064,5 +2318,5 @@ def attribution_generate_shim(language: str, output: Optional[Path]):
         sys.exit(1)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     cli()

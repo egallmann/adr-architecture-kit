@@ -1,0 +1,245 @@
+schema_version: '1.0'
+adr_type: logical
+id: ADR-L-0018
+title: Schema v1.2 and Normalized Semantic Foundation
+status: accepted
+created_date: '2026-08-07'
+authors:
+- adr-architecture-kit
+domains:
+- authoring
+- schema
+- semantic-model
+- identity
+- migration
+tags:
+- schema-v1.2
+- normalized-model
+- assertion-identity
+- external-bindings
+- topology-identity
+introduces_entities:
+- INV-0077
+- INV-0078
+- INV-0079
+- INV-0080
+- INV-0081
+- CAP-0048
+- CAP-0049
+- CAP-0050
+- CAP-0051
+context: |
+  Phase 1 established a narrow supported authoring SDK while explicitly deferring
+  schema expansion, normalized-model expansion, assertion identity, bindings, and
+  topology identity. The repository now needs those contracts as an additive
+  semantic foundation for future consumers, without implementing the Phase 3 graph
+  bundle or absorbing authority owned by runtime, rules, substrate, or admission
+  systems.
+
+  Schema v1.0 is the frozen stable ADR encoding. Schema v1.1 is an existing
+  provisional discovery, ledger, remediation, and attribution line and must not be
+  repurposed. The next ADR authoring line is therefore v1.2. Existing source models
+  already identify boundaries, contracts, interfaces, implementation decisions,
+  and name-keyed topology, but their normalized identity and migration behavior are
+  not yet authoritative.
+decisions:
+- id: DEC-0083
+  summary: Introduce provisional additive ADR authoring schema v1.2
+  rationale: |
+    Schema v1.2 extends the existing ADR authoring shapes with external-reference,
+    binding, evidence-expectation, and topology-ID fields. Version dispatch must be
+    explicit. Schema v1.0 files remain byte-for-byte frozen and valid; v1.1 retains
+    its current provisional discovery and ledger role. Unsupported future versions
+    fail closed rather than falling back to v1.0.
+  consequences:
+    positive:
+    - Existing v1.0 authoring remains compatible
+    - V1.2 additions have an explicit provisional contract and package-data surface
+    - V1.1 is not silently reinterpreted as an ADR authoring line
+- id: DEC-0084
+  summary: Represent external bindings as qualified references without absorbing authority
+  rationale: |
+    Local entity references remain bare IDs. A cross-repository entity reference is
+    an object containing required `namespace`, `id`, `kind`, and `fingerprint`
+    fields; its normalized display qualification is `namespace:id`. Fingerprints
+    use `sha256:<64 lowercase hexadecimal characters>`.
+
+    A substrate binding is identified within one ADR by
+    `(external_namespace, artifact_id, role)`. A rule binding is identified by
+    `(namespace, rule_id)`. An evidence expectation is identified by
+    `expectation_id`. Duplicate identities are invalid. Rule dispositions are
+    exactly `adopted`, `refined`, `overridden`, `exempted`, or `not_applicable`.
+    Refined, overridden, exempted, and not-applicable dispositions require a
+    rationale; exempted dispositions also require `exception_ref`.
+  consequences:
+    positive:
+    - Cross-repository intent is explicit and deterministic
+    - Provider authority remains external and traceable
+    - No network or external semantic resolution is required for validation
+- id: DEC-0085
+  summary: Promote four already-authored entity types into normalized model version 1.1
+  rationale: |
+    `boundary`, `contract`, `interface`, and `implementation_decision` are already
+    independently identified in canonical ADRs and are useful through repository
+    queries. They join the existing `adr`, `system`, `component`, `decision`,
+    `capability`, and `invariant` types. `constraint`, `nfr`, `gap`, and
+    `integration` remain embedded. Data flow is not promoted in Phase 2.
+
+    This materially expands the normalized model, so the model reports additive
+    schema version `1.1`. Existing query helpers keep their previous selection
+    semantics; new typed helpers are additive.
+  consequences:
+    positive:
+    - Independently addressable authored meaning reaches the supported repository seam
+    - Existing six-type queries remain stable
+    - Phase 3 receives a typed semantic foundation without a graph-bundle dependency
+- id: DEC-0086
+  summary: Add deterministic source-sensitive assertion identity without replacing relationship identity
+  rationale: |
+    Historical `relationship_id` remains the endpoint-derived compatibility key.
+    `assertion_id` is `asrt-` followed by the lowercase SHA-256 hexadecimal digest
+    of the UTF-8 canonical JSON array
+    `[relationship_type, from_entity_id, to_entity_id, canonical_source_ref,
+    source_pointer_or_empty_string]`, serialized with no insignificant whitespace.
+    Display text and collection order are not inputs. Distinct canonical sources
+    therefore produce distinct assertion identities for the same semantic edge.
+  consequences:
+    positive:
+    - Assertion identity is deterministic and source-sensitive
+    - Existing relationship consumers retain their historical key
+    - Phase 3 multi-source semantics remain explicitly deferred
+- id: DEC-0087
+  summary: Add optional stable topology IDs and deterministic dry-run-first migration
+  rationale: |
+    V1.2 topology component IDs use the closed pattern
+    `TOPO-[A-Z0-9][A-Z0-9-]*`. Endpoints and data-flow paths may use IDs or legacy
+    names, but every reference must resolve exactly once. Migration preserves
+    existing IDs, allocates first-free sequential `TOPO-0001` identifiers in
+    canonical component-list order, rewrites uniquely resolvable names, retains
+    display names, and updates the document to schema v1.2. It is non-destructive
+    unless explicitly asked to write and is idempotent after a successful write.
+  consequences:
+    positive:
+    - Physical topology gains reviewable stable identity
+    - Legacy name-based input remains migratable
+    - Ambiguous or dangling references fail without guessed rewrites
+invariants:
+- id: INV-0077
+  statement: |
+    ADR schema v1.0 MUST remain byte-for-byte frozen. Parser dispatch MUST resolve
+    v1.0 and v1.2 authoring explicitly, MUST preserve the existing provisional
+    v1.1 artifact behavior, and MUST reject unsupported future versions without
+    falling back to another schema line.
+  scope: global
+  enforcement_level: must
+  enforcement_mechanism: test
+  verification_method: automated
+  rationale: |
+    Additive schema evolution is safe only when version identity and the frozen
+    compatibility line remain truthful.
+- id: INV-0078
+  statement: |
+    Substrate bindings, rule bindings, evidence expectations, and external
+    references MUST remain authored references. ADR Kit MUST NOT load, copy,
+    execute, infer over, or admit external semantic bodies or observed evidence
+    as local architecture authority.
+  scope: global
+  enforcement_level: must
+  enforcement_mechanism: design
+  verification_method: automated
+  rationale: |
+    Binding external authority is not ownership of that authority.
+- id: INV-0079
+  statement: |
+    Every newly projected relationship assertion MUST receive an `assertion_id`
+    using DEC-0086, while compatibility-preserved `relationship_id` semantics MUST
+    remain unchanged. Phase 2 MUST NOT claim GraphProjectionBundle, snapshot
+    replacement, or source-scoped stale-assertion removal semantics.
+  scope: global
+  enforcement_level: must
+  enforcement_mechanism: test
+  verification_method: automated
+  rationale: |
+    Source identity is needed now, but final multi-source graph behavior belongs to
+    the next phase.
+- id: INV-0080
+  statement: |
+    Topology migration MUST be deterministic, idempotent, non-destructive by
+    default, explicit about rewritten references, and fail closed on duplicate IDs,
+    ambiguous names, or dangling endpoints. It MUST NOT use probabilistic or LLM
+    resolution.
+  scope: global
+  enforcement_level: must
+  enforcement_mechanism: test
+  verification_method: automated
+  rationale: |
+    A migration that guesses changes canonical architecture authority incorrectly.
+- id: INV-0081
+  statement: |
+    The normalized projectable entity vocabulary MUST be exactly `adr`, `system`,
+    `component`, `decision`, `capability`, `invariant`, `boundary`, `contract`,
+    `interface`, and `implementation_decision` for Phase 2. The relationship
+    vocabulary is closed; the only newly authorized verbs are `binds_substrate`,
+    `binds_rule`, `expects_evidence`, `provides_interface`, `consumes_interface`,
+    and `composed_of`, and a compiler MUST emit one only from an actual authored
+    extraction path.
+  scope: global
+  enforcement_level: must
+  enforcement_mechanism: test
+  verification_method: automated
+  rationale: |
+    Explicit promotion prevents internal IR richness or future graph needs from
+    silently becoming public semantic authority.
+capabilities:
+- id: CAP-0048
+  name: Additive ADR Schema v1.2 Authoring
+  description: |
+    Validate, parse, package, and compile provisional v1.2 ADR authoring while
+    preserving frozen v1.0 and the existing provisional v1.1 artifact family.
+  acceptance_criteria:
+  - V1.2 schemas are discoverable from source and installed wheels
+  - Canonical and bundled v1.2 schema bytes match
+  - Version negotiation is explicit and future versions fail closed
+  - Existing v1.0 fixtures and generated compatibility surfaces remain valid
+- id: CAP-0049
+  name: Expanded Normalized Semantic Model
+  description: |
+    Expose boundary, contract, interface, and implementation-decision entities with
+    deterministic provenance, relationships, repository queries, and fingerprints.
+  acceptance_criteria:
+  - The normalized model reports schema version 1.1
+  - Existing six entity types retain their behavior
+  - The four promoted types are first-class and queryable
+  - Embedded and Phase 3 types remain unpromoted
+- id: CAP-0050
+  name: Bind-Only External Authority Contracts
+  description: |
+    Author deterministic substrate, rule, and evidence-expectation bindings without
+    ingesting external semantic bodies or observed evidence.
+  acceptance_criteria:
+  - Binding families validate and round trip deterministically
+  - Cross-repository entity references are explicitly qualified
+  - Invalid disposition, duplicate identity, or unresolved local entity fails closed
+  - Validation performs no network access or external rule execution
+- id: CAP-0051
+  name: Stable Physical Topology Identity Migration
+  description: |
+    Add optional topology component IDs and migrate uniquely resolvable legacy names
+    to stable IDs with deterministic diagnostics and output.
+  acceptance_criteria:
+  - V1.2 accepts stable topology IDs and legacy names where unambiguous
+  - Migration is dry-run-first, deterministic, and idempotent
+  - Ambiguous names and dangling references do not produce guessed output
+  - Migrated documents validate as v1.2
+related_adrs:
+- ADR-L-0001
+- ADR-L-0003
+- ADR-L-0009
+- ADR-L-0012
+- ADR-L-0013
+- ADR-L-0017
+- ADR-PC-0002
+- ADR-PC-0003
+- ADR-PC-0004
+- ADR-PS-0002
+gaps: []

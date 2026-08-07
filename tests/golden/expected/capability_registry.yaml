@@ -2019,6 +2019,182 @@ entities:
     extraction_phase: extract_capability
     classification: explicit
     generator: adr-architecture-index
+- id: CAP-0048
+  entity_type: capability
+  name: Additive ADR Schema v1.2 Authoring
+  summary: Validate, parse, package, and compile provisional v1.2 ADR authoring while
+    preserving frozen v1.0 and the existing provisional v1.1 artifact family.
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0018#CAP-0048
+    artifact_path: adrs/logical/ADR-L-0018-schema-v12-and-normalized-semantic-foundation.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0018
+    domains:
+    - authoring
+    - schema
+    - semantic-model
+    - identity
+    - migration
+    implemented_by_components: []
+    enabled_by_decisions: []
+  relationships:
+    declared_in:
+    - ADR-L-0018
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0018#CAP-0048
+    extraction_phase: extract_capability
+    classification: explicit
+    generator: adr-architecture-index
+- id: CAP-0049
+  entity_type: capability
+  name: Expanded Normalized Semantic Model
+  summary: Expose boundary, contract, interface, and implementation-decision entities
+    with deterministic provenance, relationships, repository queries, and fingerprints.
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0018#CAP-0049
+    artifact_path: adrs/logical/ADR-L-0018-schema-v12-and-normalized-semantic-foundation.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0018
+    domains:
+    - authoring
+    - schema
+    - semantic-model
+    - identity
+    - migration
+    implemented_by_components: []
+    enabled_by_decisions: []
+  relationships:
+    declared_in:
+    - ADR-L-0018
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0018#CAP-0049
+    extraction_phase: extract_capability
+    classification: explicit
+    generator: adr-architecture-index
+- id: CAP-0050
+  entity_type: capability
+  name: Bind-Only External Authority Contracts
+  summary: Author deterministic substrate, rule, and evidence-expectation bindings
+    without ingesting external semantic bodies or observed evidence.
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0018#CAP-0050
+    artifact_path: adrs/logical/ADR-L-0018-schema-v12-and-normalized-semantic-foundation.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0018
+    domains:
+    - authoring
+    - schema
+    - semantic-model
+    - identity
+    - migration
+    implemented_by_components: []
+    enabled_by_decisions: []
+  relationships:
+    declared_in:
+    - ADR-L-0018
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0018#CAP-0050
+    extraction_phase: extract_capability
+    classification: explicit
+    generator: adr-architecture-index
+- id: CAP-0051
+  entity_type: capability
+  name: Stable Physical Topology Identity Migration
+  summary: Add optional topology component IDs and migrate uniquely resolvable legacy
+    names to stable IDs with deterministic diagnostics and output.
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0018#CAP-0051
+    artifact_path: adrs/logical/ADR-L-0018-schema-v12-and-normalized-semantic-foundation.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0018
+    domains:
+    - authoring
+    - schema
+    - semantic-model
+    - identity
+    - migration
+    implemented_by_components: []
+    enabled_by_decisions: []
+  relationships:
+    declared_in:
+    - ADR-L-0018
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0018#CAP-0051
+    extraction_phase: extract_capability
+    classification: explicit
+    generator: adr-architecture-index
 - id: CAP-9000
   entity_type: capability
   name: Kernel Boot Readiness

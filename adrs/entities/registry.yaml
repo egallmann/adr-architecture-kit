@@ -4,8 +4,8 @@
 # generator_id: adr-compiler
 # generator_version: 1
 # hash_algorithm: sha256
-# source_hash: c08dfc4d5cb2b76484ca09d995bb58e5b123de310570f24374187024e184de3b
-# rendered_hash: aeca9c5535186fb7fd601fc19acc605374b85c2044a96d01413b2b989a8f64c4
+# source_hash: ca43fc6c3c2d84c5ffe70f5f7f08e02a21aad92e89a9306323f54cf2f47b953b
+# rendered_hash: f8e3315080f9d0aba838b82bdf1279fa6c1a0902949ecd659c341257b4ce02b2
 
 schema_version: '1.1'
 type: entity_registry
@@ -706,6 +706,66 @@ entities:
   introduced_by: ADR-L-0013
   lifecycle_stage: active
   source_path: adrs/logical/ADR-L-0013-architecture-repository-boundary-and-normalized-semantic-model.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs: []
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: CAP-0048
+  entity_type: capability
+  name: Additive ADR Schema v1.2 Authoring
+  introduced_by: ADR-L-0018
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0018-schema-v12-and-normalized-semantic-foundation.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs: []
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: CAP-0049
+  entity_type: capability
+  name: Expanded Normalized Semantic Model
+  introduced_by: ADR-L-0018
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0018-schema-v12-and-normalized-semantic-foundation.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs: []
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: CAP-0050
+  entity_type: capability
+  name: Bind-Only External Authority Contracts
+  introduced_by: ADR-L-0018
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0018-schema-v12-and-normalized-semantic-foundation.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs: []
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: CAP-0051
+  entity_type: capability
+  name: Stable Physical Topology Identity Migration
+  introduced_by: ADR-L-0018
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0018-schema-v12-and-normalized-semantic-foundation.yaml
   source_artifact_type: logical_adr
   domains: []
   related_adrs: []
@@ -2087,6 +2147,82 @@ entities:
     implements: []
     consumes: []
     realizes: []
+- entity_id: DEC-0083
+  entity_type: decision
+  name: Introduce provisional additive ADR authoring schema v1.2
+  introduced_by: ADR-L-0018
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0018-schema-v12-and-normalized-semantic-foundation.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs: []
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: DEC-0084
+  entity_type: decision
+  name: Represent external bindings as qualified references without absorbing authority
+  introduced_by: ADR-L-0018
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0018-schema-v12-and-normalized-semantic-foundation.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs: []
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: DEC-0085
+  entity_type: decision
+  name: Promote four already-authored entity types into normalized model version 1.1
+  introduced_by: ADR-L-0018
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0018-schema-v12-and-normalized-semantic-foundation.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs: []
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: DEC-0086
+  entity_type: decision
+  name: Add deterministic source-sensitive assertion identity without replacing relationship
+    identity
+  introduced_by: ADR-L-0018
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0018-schema-v12-and-normalized-semantic-foundation.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs: []
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: DEC-0087
+  entity_type: decision
+  name: Add optional stable topology IDs and deterministic dry-run-first migration
+  introduced_by: ADR-L-0018
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0018-schema-v12-and-normalized-semantic-foundation.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs: []
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
 - entity_id: DEC-9000
   entity_type: decision
   name: Publish a deterministic logical ADR fragment for boot readiness.
@@ -3146,6 +3282,81 @@ entities:
   introduced_by: ADR-L-0013
   lifecycle_stage: active
   source_path: adrs/logical/ADR-L-0013-architecture-repository-boundary-and-normalized-semantic-model.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs: []
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: INV-0077
+  entity_type: invariant
+  name: INV-0077
+  introduced_by: ADR-L-0018
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0018-schema-v12-and-normalized-semantic-foundation.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs: []
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: INV-0078
+  entity_type: invariant
+  name: INV-0078
+  introduced_by: ADR-L-0018
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0018-schema-v12-and-normalized-semantic-foundation.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs: []
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: INV-0079
+  entity_type: invariant
+  name: INV-0079
+  introduced_by: ADR-L-0018
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0018-schema-v12-and-normalized-semantic-foundation.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs: []
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: INV-0080
+  entity_type: invariant
+  name: INV-0080
+  introduced_by: ADR-L-0018
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0018-schema-v12-and-normalized-semantic-foundation.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs: []
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: INV-0081
+  entity_type: invariant
+  name: INV-0081
+  introduced_by: ADR-L-0018
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0018-schema-v12-and-normalized-semantic-foundation.yaml
   source_artifact_type: logical_adr
   domains: []
   related_adrs: []

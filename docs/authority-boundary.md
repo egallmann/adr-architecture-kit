@@ -14,7 +14,9 @@ Owns normative contracts, schemas, and the public cross-repo Architecture IR con
 
 ### `adr-architecture-kit`
 
-Owns the canonical ADR encoding model, authoring validation, authoring-time normalization, projections, the Python repository boundary, and adapter/compiler logic that turns ADR authority into IR-compatible outputs.
+Owns the canonical ADR encoding model, authoring validation, authoring-time normalization,
+repository projections, the narrow `adr_kit.api` authoring SDK, the Python repository
+boundary, and adapter/compiler logic that turns ADR authority into IR-compatible outputs.
 
 ### `ste-runtime`
 
@@ -50,6 +52,10 @@ External tools may consume repository contracts read-only. A runtime or workspac
 command that resolves an output path inside a repository violates this boundary;
 its output must not be accepted, committed, or used to refresh compatibility
 baselines.
+
+The SDK compilation groups (`registries`, `manifest`, and `markdown`) remain ADR Kit
+authoring projections. They do not authorize runtime graph or evidence emission into
+this repository.
 
 ## Why this boundary exists
 

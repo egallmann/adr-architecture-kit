@@ -104,6 +104,19 @@ adr build-ir-fragments
 
 `build-ir-fragments` is explicitly a **repository self-publication** example; prefer `compile-ir-fragments` for parameterized use.
 
+## Optional Python SDK consumption
+
+New Python integrations should validate and preview repository-owned authoring
+projections through `adr_kit.api`:
+
+```bash
+python examples/public_sdk_consumer.py /absolute/path/to/project
+```
+
+The SDK stops at validation, `registries`, `manifest`, `markdown`, and the stable
+repository/model seam. The Architecture IR fragment command above remains a separate
+CLI/internal compatibility path governed by `ste-spec`.
+
 ## Downstream consumption (runtime and kernel)
 
 ### Graph and runtime (`ste-runtime`)

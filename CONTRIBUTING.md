@@ -71,6 +71,7 @@ See [`docs/contributors/tdd-workflow.md`](docs/contributors/tdd-workflow.md) for
 | Coverage (≥80%) | `python -m pytest --cov=adr_kit --cov-report=term-missing --cov-fail-under=80` |
 | Compatibility | `python scripts/check_compatibility_snapshots.py` |
 | Version consistency | `python scripts/check_version_consistency.py` |
+| Public SDK | `python -m pytest tests/test_public_sdk_contract.py tests/test_public_sdk_operations.py -q` |
 | Quality debt | `python scripts/check_quality_ratchets.py` |
 | Governance | `adr governance-checks` |
 | Schema parity | see below |
@@ -141,7 +142,8 @@ When touching implementation linkage or attribution evidence pipelines, smoke-ch
 
 **Attribution retrofit closure workflow** (multi-repo STE workspace):
 
-1. From **`ste-runtime`**, refresh derived evidence: `npm run recon:workspace`
+1. From **`ste-runtime`**, refresh derived evidence into the workspace-root
+   `.ste-workspace/` directory. The runtime must never write into this repository.
 2. Evidence path: `.ste-workspace/state/adr-architecture-kit/attribution/implementation-attribution-evidence.yaml`
 3. From **`adr-architecture-kit`**: `adr attribution check --scope . --evidence <path above>`
 4. Contract guards: `pytest tests/test_retrofit_contract_guards.py tests/test_attribution_evidence_sync.py -q`
@@ -216,7 +218,8 @@ The **link** is that PyPI trusts *that GitHub repo + that workflow file* to uplo
 
 ### Ship a version
 
-1. Bump **`version`** in [`pyproject.toml`](pyproject.toml) (and keep [`src/adr_kit/__init__.py`](src/adr_kit/__init__.py) `__version__` in sync if you rely on it).
+1. Bump **`version`** only in [`pyproject.toml`](pyproject.toml). Runtime, CLI, and SDK
+   versions resolve from distribution metadata; do not add another version literal.
 2. Update [`CHANGELOG.md`](CHANGELOG.md) with a dated section for that version.
 3. Merge the reviewed version change to `main` and create the exact tag
    `v<project-version>` (for example, `v0.1.1`).

@@ -11,6 +11,10 @@ It is **not** the owner of public cross-repo schemas or of runtime/admission con
 - **Do not emit authoritative runtime evidence** from this package. ADR Kit's repository-local registries, architecture index, manifest, and rendered views are authoring projections governed by this repository; they are not runtime workspace state.
 - **Schema and validation** remain authoritative **for authoring correctness** (what contributors may check in).
 - During migration, legacy compiler paths may remain for **golden parity** only; they must be deprecated and removed per the workspace migration plan.
+- New Python consumers use the bounded `adr_kit.api` authoring facade. Its compile
+  operation emits only repository-owned `registries`, `manifest`, and `markdown`
+  projections; it does not expose graph, Architecture IR, recursive runtime, or
+  workspace-state capabilities.
 
 ## Related
 

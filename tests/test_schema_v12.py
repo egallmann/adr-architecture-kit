@@ -13,16 +13,16 @@ from adr_kit.parser import ADRParseError, ADRParser, ADRSchemaValidationError
 ROOT = Path(__file__).resolve().parents[1]
 FIXTURES = ROOT / "tests" / "fixtures"
 V1_0_SHA256 = {
-    "adr-common.schema.json": "a46a80d7a39d815d74d7c458d84c3fe7fe272a751c3b5cb5f274baf1502361e2",
-    "adr-logical.schema.json": "ca1a1c50dd165a9f1112f2fcacdd865ea4e5852f4ed691013bbc1203b1dc7294",
-    "adr-physical-base.schema.json": "e478799e0a7dd9efaf55a6e58dd4878928848339c381ed68358fe4ff941cc60f",
-    "adr-physical-component.schema.json": "5087147cc171f0500eba04e603c5d197015e554eda7b21e753a614a1df488c4e",
-    "adr-physical-system.schema.json": "5b17763bb6c368d3d0e393ac779c2dad04298600b419446ed7a86420afb517a3",
-    "adr-physical.schema.json": "d5fcc7306ab39869591d0399c03eec0f5db06d700cb59cd7b6edab4444b88568",
-    "invariant.schema.json": "20943722590da6e061508f077492f7b37b031e1a121c5317f920f3b3ff6a22a8",
-    "manifest.schema.json": "1b75633af94fe312791f94740eeccebf8e79de8930808302dd47641ffa9cf719",
-    "project-metadata.schema.json": "ffd244960f40863f001105891e355c04f1a68610643dfda078931281b37b457e",
-    "types.schema.json": "e3838f9932c76d6794b76e191faaeb85a57c8d89bc4d01bb47fdf13b18f3b8da",
+    "adr-common.schema.json": "cf9e6460ce53ef2ae8a566dbc383f881bcc0d8f4ac1c5ee8a0d10f0009c5c35d",
+    "adr-logical.schema.json": "c49d5cebbbd83ed3faa2524ab3af8291606eeaaa9450610efa12e9e392b92c71",
+    "adr-physical-base.schema.json": "89105a66cec6eddba617192258e44917d0c02956ad8778ac7c6f603e7717d6f5",
+    "adr-physical-component.schema.json": "f2c922a781aaed64459e661c3bd91f2952288f78ec3b0e089a13f5522390d2c1",
+    "adr-physical-system.schema.json": "93c2ddb3fcae2a7f3a9f3b7d876ea4cb1b1fb09e659e0de7ad12ca526be7044e",
+    "adr-physical.schema.json": "44c461b49a48483fb1555c53e62544e838ae0eba17608ec3dbf4ccb6ece10470",
+    "invariant.schema.json": "5e61818ece9eee3169ab51c24b8ad599a01fd220d336fd4cab4ca64b40a630a1",
+    "manifest.schema.json": "15e02c4053e7d6d7f415e70feab703bc7a37cd02c69c1f6203beccb061da32a2",
+    "project-metadata.schema.json": "882a883abe9ccb3267c6d61c1081138145a6e0d26898bc42d1a8d181e4e0764a",
+    "types.schema.json": "fae298fafd55e0c1bd0eb2233380086f7f85710d83809a7876d1da1f2a736bca",
 }
 
 

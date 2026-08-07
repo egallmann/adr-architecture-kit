@@ -55,6 +55,7 @@ jobs:
       - run: python -m pip install --upgrade pip
       - run: python -m pip install .[dev]
       - run: adr validate --cross-references
+      - run: adr repair-canonical-ids --check
       - run: adr governance-checks
       - run: adr validate-generated-docs
       - run: adr validate-system-overview

@@ -1410,6 +1410,71 @@
         }
       ]
     },
+    "repair-canonical-ids": {
+      "help": "Plan, apply, or check monotonic canonical entity-ID repairs.",
+      "params": [
+        {
+          "count": false,
+          "default": "Sentinel.UNSET",
+          "is_flag": false,
+          "kind": "Option",
+          "multiple": false,
+          "name": "scope",
+          "nargs": 1,
+          "opts": [
+            "--scope"
+          ],
+          "required": false,
+          "secondary_opts": [],
+          "type": "directory"
+        },
+        {
+          "count": false,
+          "default": false,
+          "is_flag": true,
+          "kind": "Option",
+          "multiple": false,
+          "name": "apply_repairs",
+          "nargs": 1,
+          "opts": [
+            "--apply"
+          ],
+          "required": false,
+          "secondary_opts": [],
+          "type": "boolean"
+        },
+        {
+          "count": false,
+          "default": false,
+          "is_flag": true,
+          "kind": "Option",
+          "multiple": false,
+          "name": "check",
+          "nargs": 1,
+          "opts": [
+            "--check"
+          ],
+          "required": false,
+          "secondary_opts": [],
+          "type": "boolean"
+        },
+        {
+          "count": false,
+          "default": "Sentinel.UNSET",
+          "is_flag": false,
+          "kind": "Option",
+          "multiple": false,
+          "name": "resolution_map",
+          "nargs": 1,
+          "opts": [
+            "--resolution-map"
+          ],
+          "required": false,
+          "secondary_opts": [],
+          "type": "file"
+        }
+      ]
+    },
     "scaffold": {
       "help": "Generate a structured ADR input scaffold.",
       "params": [

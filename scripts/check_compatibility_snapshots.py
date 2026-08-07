@@ -197,7 +197,7 @@ def _prepare_check(root: Path, *, drift: bool) -> None:
         raise RuntimeError(result.output)
     if drift:
         manifest = root / "adrs" / "manifest.yaml"
-        manifest.write_text("drifted\n", encoding="utf-8")
+        manifest.write_text("drifted\n", encoding="utf-8", newline="\n")
 
 
 def collect_cli_behavior() -> dict[str, dict[str, Any]]:

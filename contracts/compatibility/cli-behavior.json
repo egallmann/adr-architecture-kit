@@ -62,7 +62,7 @@
       "adrs/index/relationship-registry.yaml": "38d44871a08985d2ec0fc39ac1a200f2f2def3a3d32e9621cd66d68fcba549e1",
       "adrs/index/system-registry.yaml": "931ecbebaf5c4f7416dccae6d39224b1db6cca6c78f8e1d797ef32d75f7873cd",
       "adrs/index/unresolved-registry.yaml": "bdbfe81213b1c8901da1285ed3162d7cea789c6f60d2617017ec6c222ecd7fb9",
-      "adrs/manifest.yaml": "08157bbf304fdf498216b7298baa1e8f5f52e91e5747b5cb5a4e217276c4581e",
+      "adrs/manifest.yaml": "893105a87e63183bf7c064d2248bffc21f64f311cf22c700cf89d211d50e355d",
       "adrs/rendered/ADR-L-1000.md": "c5a9aa92dc6bf3fb0ee5bb3941d5b4a326286a97963553577a7d6c8d47ac4225",
       "adrs/rendered/ADR-PC-1000.md": "82fbcb270b64efa549f603cc8327cdd55959e880eb4bf86ec0960f7324cd3612",
       "adrs/rendered/ADR-PS-1000.md": "cf48149c09e650664e5e8954b48191b52c8c9f34216d5bb841629c60abcc98e4"

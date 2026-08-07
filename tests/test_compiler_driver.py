@@ -20,7 +20,7 @@ def _artifact_map(result) -> dict[str, bytes]:
 
 def _write_file(path: Path, content: str) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(content.strip() + "\n", encoding="utf-8")
+    path.write_text(content.strip() + "\n", encoding="utf-8", newline="\n")
 
 
 def _create_scope_fixture(root: Path, *, project_name: str, namespace: str, suffix: str) -> None:

@@ -30,19 +30,22 @@ or repository file-layout dependency. Source, editable, and retained-wheel consu
 and deterministic SDK benchmark sidecars close the gate. Package release remains a
 separate decision.
 
-## Phase 2 — contract and identity promotion review
+## Phase 2 — schema v1.2 and normalized semantic foundation (implemented)
 
-Entry requires a stable Phase 1 consumer boundary. Review provisional v1.1 schema,
-assertion identity, entity expansion, topology identity, bindings, graph-bundle, ledger,
-and attribution material individually. Promotion requires `ste-spec` authority where
-the contract is cross-repository and explicit migration evidence; nothing is promoted
-by roadmap text alone.
+Implemented after ADR-L-0018 authorization: provisional additive ADR authoring schema
+v1.2, normalized model 1.1 with four promoted entity families, source-sensitive
+assertion IDs, bind-only substrate/rule/evidence contracts, stable topology identity
+and migration, and ADR Kit-owned canonical collision repair. V1.0 remains frozen,
+external authority remains external, and runtime state remains outside repositories.
+GraphProjectionBundle and multi-source assertion replacement remain Phase 3 concerns.
 
-## Phase 3 — transactional authoring decision
+## Phase 3 — graph bundle and transactional authoring decisions
 
-Entry requires approved Phase 2 contracts. Evaluate bounded authoring transactions,
-rollback, conflict handling, and deterministic regeneration as authoring concerns.
-This phase must not absorb runtime extraction, rules execution, substrate, or admission.
+Entry requires approved Phase 2 contracts. First evaluate GraphProjectionBundle,
+multi-source assertion lifecycle, and snapshot replacement without redefining Phase 2
+identity. Separately evaluate bounded authoring transactions, rollback, conflict
+handling, and deterministic regeneration as authoring concerns. This phase must not
+absorb runtime extraction, rules execution, substrate, or admission.
 
 ## Phase 4 — Assembler boundary decision
 

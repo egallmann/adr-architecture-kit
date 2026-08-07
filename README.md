@@ -140,6 +140,9 @@ Full breakdown: [public-surface-and-stability.md](docs/public-surface-and-stabil
 |----------|-------------|
 | [authority-boundary.md](docs/authority-boundary.md) | Who owns what across `ste-handbook`, `ste-spec`, this kit, `ste-runtime`, and `ste-kernel` |
 | [public-sdk.md](docs/public-sdk.md) | Supported `adr_kit.api` installation and consumer contract |
+| [schema-v1.2.md](docs/schema-v1.2.md) | Additive v1.2 authoring and normalized semantics |
+| [external-bindings.md](docs/external-bindings.md) | External authority binding without ownership absorption |
+| [topology-identity-migration.md](docs/topology-identity-migration.md) | Stable physical topology identity migration |
 | [adr-type-model.md](docs/adr-type-model.md) | ADR taxonomy: `ADR-L`, `ADR-PS`, `ADR-PC`, legacy `ADR-P`, experimental `ADR-V` |
 | [architecture-ir-overview.md](docs/architecture-ir-overview.md) | Three layers: ADR sources, repository discovery bundle, public Architecture IR |
 | [public-surface-and-stability.md](docs/public-surface-and-stability.md) | Stable v1 vs draft vs experimental surfaces |

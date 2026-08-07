@@ -16,6 +16,8 @@ from adr_kit.api import capabilities
 manifest = capabilities()
 print(manifest.package_version)
 print(manifest.api_contract_version)  # 1.0
+print(manifest.supported_adr_schema_versions)  # ('1.0', '1.1', '1.2')
+print(manifest.normalized_model_schema_version)  # 1.1
 print(manifest.as_dict())
 ```
 
@@ -101,6 +103,12 @@ print(repository.fingerprint())
 print(model.entity_ids())
 ```
 
+The expanded normalized model exposes `boundary`, `contract`, `interface`, and
+`implementation_decision` in addition to the existing six entity types. The
+repository provides explicit `get_boundaries()`, `get_contracts()`,
+`get_interfaces()`, and `get_implementation_decisions()` queries. Existing
+queries such as `get_decisions()` retain their previous selection semantics.
+
 `open_repository()` eagerly loads and returns the existing
 `ArchitectureRepository`. Compilation results expose a detached
 `NormalizedArchitectureModel` only when registry projection succeeds. For an
@@ -142,3 +150,8 @@ Nothing is re-exported from the `adr_kit` package root except `__version__`.
 Historical imports remain compatible, but new production integrations should use
 this facade. See [public surface and stability](public-surface-and-stability.md)
 and the executable [consumer example](../examples/public_sdk_consumer.py).
+
+Schema v1.2 and topology migration are provisional package surfaces rather than
+new `adr_kit.api` exports. See [schema v1.2](schema-v1.2.md),
+[external bindings](external-bindings.md), and
+[topology migration](topology-identity-migration.md).

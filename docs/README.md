@@ -10,11 +10,16 @@ Contributor-oriented guides (TDD, authoring, placement) live under [`contributor
 |----------|-------------|
 | [authority-boundary.md](authority-boundary.md) | Who owns what across `ste-handbook`, `ste-spec`, this kit, `ste-runtime`, and `ste-kernel` |
 | [public-sdk.md](public-sdk.md) | Supported `adr_kit.api` facade, contracts, examples, and exclusions |
+| [schema-v1.2.md](schema-v1.2.md) | Provisional additive authoring schema and normalized semantic contract |
+| [external-bindings.md](external-bindings.md) | Bind-only substrate, rule, evidence, and external-reference semantics |
+| [topology-identity-migration.md](topology-identity-migration.md) | Stable topology IDs and deterministic migration workflow |
 | [adr-type-model.md](adr-type-model.md) | ADR taxonomy: `ADR-L`, `ADR-PS`, `ADR-PC`, legacy `ADR-P`, experimental `ADR-V` |
 | [architecture-ir-overview.md](architecture-ir-overview.md) | Three layers: ADR sources, repository discovery bundle, public Architecture IR |
 | [public-surface-and-stability.md](public-surface-and-stability.md) | Pre-1.0 compatibility categories and migration rules |
 | [production-hardening/phase-0-controls.md](production-hardening/phase-0-controls.md) | Quality, release-manifest, installed-wheel, and benchmark controls |
 | [production-hardening/benchmark-baseline.md](production-hardening/benchmark-baseline.md) | Phase 0 corpus identities, fingerprints, and measured timings |
+| [production-hardening/phase-2-benchmark-baseline.md](production-hardening/phase-2-benchmark-baseline.md) | Phase 2 v1.2 semantic benchmark observations |
+| [production-hardening/phase-2-closeout.md](production-hardening/phase-2-closeout.md) | Phase 2 implementation and verification closeout |
 | [walkthrough-adr-to-ir.md](walkthrough-adr-to-ir.md) | End-to-end flow with the [`examples/public-v1/`](../examples/public-v1/) example |
 
 ## Contributor reference

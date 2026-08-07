@@ -8,10 +8,13 @@ import importlib
 import inspect
 import json
 import sys
+import tempfile
+from hashlib import sha256
 from pathlib import Path
 from typing import Any
 
 import click
+from click.testing import CliRunner
 
 from adr_kit.cli.main import cli
 
@@ -19,7 +22,9 @@ ROOT = Path(__file__).resolve().parents[1]
 CONTRACT_DIR = ROOT / "contracts" / "compatibility"
 PYTHON_SNAPSHOT = CONTRACT_DIR / "python-surface.json"
 CLI_SNAPSHOT = CONTRACT_DIR / "cli-surface.json"
+CLI_BEHAVIOR_SNAPSHOT = CONTRACT_DIR / "cli-behavior.json"
 MODULES = (
+    "adr_kit.api",
     "adr_kit.repository",
     "adr_kit.parser",
     "adr_kit.validators",
@@ -27,6 +32,8 @@ MODULES = (
     "adr_kit.models",
     "adr_kit.compiler",
 )
+
+PINNED_TIMESTAMP = "2026-01-01T00:00:00Z"
 
 
 def _json_value(value: object) -> object:
@@ -91,6 +98,170 @@ def collect_cli_surface() -> dict[str, Any]:
     }
 
 
+def _fixture(root: Path, *, recursive: bool = False) -> None:
+    root_text = str(ROOT)
+    if root_text not in sys.path:
+        sys.path.insert(0, root_text)
+    if recursive:
+        from tests.test_compiler_driver import _create_recursive_workspace
+
+        _create_recursive_workspace(root)
+        return
+
+    from tests.test_architecture_index_generator import _create_fixture
+
+    _create_fixture(root)
+
+
+def _replace(root: Path, old: str, new: str) -> None:
+    path = root / "adrs" / "logical" / "ADR-L-1000-discovery.yaml"
+    path.write_text(path.read_text(encoding="utf-8").replace(old, new), encoding="utf-8")
+
+
+def _generated_hashes(root: Path) -> dict[str, str]:
+    paths: list[Path] = []
+    for scope in (root, *sorted(path.parent for path in root.rglob("PROJECT.yaml"))):
+        for relative in ("adrs/manifest.yaml", "adrs/entities/registry.yaml"):
+            candidate = scope / relative
+            if candidate.is_file():
+                paths.append(candidate)
+        for directory in (scope / "adrs" / "index", scope / "adrs" / "rendered"):
+            if directory.is_dir():
+                paths.extend(path for path in directory.rglob("*") if path.is_file())
+    return {
+        path.relative_to(root).as_posix(): sha256(path.read_bytes()).hexdigest()
+        for path in sorted(set(paths))
+    }
+
+
+def _normalize_output(value: bytes, fixture_root: Path) -> str:
+    text = value.decode("utf-8")
+    for root_text in (str(fixture_root), fixture_root.as_posix()):
+        text = text.replace(root_text, "<FIXTURE_ROOT>")
+    return text.replace("\\", "/")
+
+
+def _invoke(argv: list[str], fixture_root: Path) -> dict[str, Any]:
+    runner = CliRunner()
+    result = runner.invoke(cli, argv, color=False)
+    return {
+        "argv": [
+            item.replace(str(fixture_root), "<FIXTURE_ROOT>").replace("\\", "/") for item in argv
+        ],
+        "exit_code": result.exit_code,
+        "stdout": _normalize_output(result.stdout_bytes, fixture_root),
+        "stderr": _normalize_output(result.stderr_bytes, fixture_root),
+        "generated_files": _generated_hashes(fixture_root),
+    }
+
+
+def _governance_failure(root: Path) -> None:
+    _replace(
+        root,
+        "context: |\n  Discovery fixture.\n",
+        "context: |\n  Discovery fixture.\n"
+        "governance:\n"
+        "  steelman_review_required: true\n"
+        "  steelman_review_completed: false\n"
+        "  implementation_authority: implementation_authoritative\n"
+        "  approved_by: erik\n"
+        '  approved_date: "2026-03-18T12:00:00Z"\n',
+    )
+
+
+def _prepare_check(root: Path, *, drift: bool) -> None:
+    result = CliRunner().invoke(
+        cli,
+        ["compile", "--scope", str(root), "--timestamp", PINNED_TIMESTAMP],
+        color=False,
+    )
+    if result.exit_code != 0:
+        raise RuntimeError(result.output)
+    if drift:
+        manifest = root / "adrs" / "manifest.yaml"
+        manifest.write_text("drifted\n", encoding="utf-8")
+
+
+def collect_cli_behavior() -> dict[str, dict[str, Any]]:
+    """Capture the exact Phase 1 validate/compile compatibility matrix."""
+
+    cases: tuple[tuple[str, tuple[str, ...], str], ...] = (
+        ("validate-complete", (), "basic"),
+        ("validate-structural", ("--mode", "structural"), "basic"),
+        ("validate-invalid-schema", (), "invalid-schema"),
+        ("validate-cross-reference-success", ("--cross-references",), "basic"),
+        ("validate-cross-reference-failure", ("--cross-references",), "xref-failure"),
+        ("validate-recursive", ("--recursive",), "recursive"),
+        ("compile-write", ("--timestamp", PINNED_TIMESTAMP), "basic"),
+        ("compile-dry-run", ("--dry-run", "--timestamp", PINNED_TIMESTAMP), "basic"),
+        ("compile-clean-check", ("--check",), "clean-check"),
+        ("compile-drifted-check", ("--check",), "drift-check"),
+        (
+            "compile-strict-failure",
+            ("--dry-run", "--mode", "strict", "--timestamp", PINNED_TIMESTAMP),
+            "governance-failure",
+        ),
+        (
+            "compile-lenient-diagnostic",
+            ("--dry-run", "--mode", "lenient", "--timestamp", PINNED_TIMESTAMP),
+            "governance-failure",
+        ),
+        (
+            "compile-greenfield-contract",
+            (
+                "--dry-run",
+                "--validate-contract",
+                "--contract-profile",
+                "greenfield",
+                "--timestamp",
+                PINNED_TIMESTAMP,
+            ),
+            "basic",
+        ),
+        (
+            "compile-brownfield-contract",
+            (
+                "--dry-run",
+                "--validate-contract",
+                "--contract-profile",
+                "brownfield",
+                "--timestamp",
+                PINNED_TIMESTAMP,
+            ),
+            "basic",
+        ),
+        (
+            "compile-graph",
+            ("--emit", "graph", "--timestamp", PINNED_TIMESTAMP),
+            "basic",
+        ),
+        (
+            "compile-recursive",
+            ("--recursive", "--dry-run", "--timestamp", PINNED_TIMESTAMP),
+            "recursive",
+        ),
+    )
+    behavior: dict[str, dict[str, Any]] = {}
+    with tempfile.TemporaryDirectory(prefix="adr-kit-cli-behavior-") as temporary:
+        temporary_root = Path(temporary)
+        for name, arguments, setup in cases:
+            root = temporary_root / name / "project"
+            _fixture(root, recursive=setup == "recursive")
+            if setup == "invalid-schema":
+                _replace(root, 'title: "Discovery"\n', "")
+            elif setup == "xref-failure":
+                _replace(root, 'related_adrs: ["ADR-PC-1000"]', 'related_adrs: ["ADR-PC-9999"]')
+            elif setup == "governance-failure":
+                _governance_failure(root)
+            elif setup in {"clean-check", "drift-check"}:
+                _prepare_check(root, drift=setup == "drift-check")
+
+            command = "validate" if name.startswith("validate-") else "compile"
+            argv = [command, "--scope", str(root), *arguments]
+            behavior[name] = _invoke(argv, root)
+    return behavior
+
+
 def _write(path: Path, payload: object) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n", encoding="utf-8")
@@ -128,11 +299,18 @@ def main() -> int:
     arguments = parser.parse_args()
     python_surface = collect_python_surface()
     cli_surface = collect_cli_surface()
+    cli_behavior = collect_cli_behavior()
     if arguments.write:
         _write(PYTHON_SNAPSHOT, python_surface)
         _write(CLI_SNAPSHOT, cli_surface)
+        _write(CLI_BEHAVIOR_SNAPSHOT, cli_behavior)
         return 0
-    return 0 if _check(PYTHON_SNAPSHOT, python_surface) and _check(CLI_SNAPSHOT, cli_surface) else 1
+    checks = (
+        _check(PYTHON_SNAPSHOT, python_surface),
+        _check(CLI_SNAPSHOT, cli_surface),
+        _check(CLI_BEHAVIOR_SNAPSHOT, cli_behavior),
+    )
+    return 0 if all(checks) else 1
 
 
 if __name__ == "__main__":

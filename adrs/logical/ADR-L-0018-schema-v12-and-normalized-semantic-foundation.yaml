@@ -4,6 +4,7 @@ id: ADR-L-0018
 title: Schema v1.2 and Normalized Semantic Foundation
 status: accepted
 created_date: '2026-08-07'
+modified_date: '2026-08-07'
 authors:
 - adr-architecture-kit
 domains:
@@ -24,10 +25,12 @@ introduces_entities:
 - INV-0079
 - INV-0080
 - INV-0081
+- INV-0082
 - CAP-0048
 - CAP-0049
 - CAP-0050
 - CAP-0051
+- CAP-0052
 context: |
   Phase 1 established a narrow supported authoring SDK while explicitly deferring
   schema expansion, normalized-model expansion, assertion identity, bindings, and
@@ -123,6 +126,40 @@ decisions:
     - Physical topology gains reviewable stable identity
     - Legacy name-based input remains migratable
     - Ambiguous or dangling references fail without guessed rewrites
+- id: DEC-0088
+  summary: Make ADR Kit the exclusive repair authority for canonical entity-ID collisions
+  rationale: |
+    Promoting independently authored boundaries, contracts, interfaces, and
+    implementation decisions exposed historical bare-ID collisions inside this
+    repository. Repository qualification cannot resolve an intra-repository
+    collision, and runtime-derived qualification must not mutate canonical source.
+
+    ADR Kit therefore detects and repairs every canonical entity-ID collision in
+    its repository. One occurrence retains the historical ID in deterministic
+    canonical order by ADR creation date, ADR ID, repository-relative path, and
+    structural source pointer unless an explicit reviewed resolution mapping
+    selects another keeper. Every other occurrence receives the next monotonic ID
+    for its prefix, defined as one greater than the highest ID ever allocated.
+    Active, retired, removed, reserved, and remapped IDs are never reused.
+
+    ADR Kit rewrites schema-typed references only when their target resolves
+    exactly once. Ambiguous references require an explicit occurrence-scoped
+    resolution mapping; ADR Kit still performs every canonical write. Repair is
+    dry-run-first, atomic, deterministic, idempotent, recorded in canonical
+    allocation and migration ledgers, followed by validation and regeneration of
+    ADR Kit-owned projections. CI validates allocations and drift but does not
+    mutate the repository.
+
+    ste-runtime remains read-only over ADR Kit. It assembles cross-repository
+    identity as the structured pair `(repository_namespace, local_entity_id)`,
+    displayed as `namespace:id`, and never repairs canonical identity.
+  consequences:
+    positive:
+    - Local canonical identity becomes collision-free and historically non-reusable
+    - Repairs and reference rewrites remain owned by ADR Kit tooling
+    - Runtime federation gains unambiguous qualified identities without write authority
+    negative:
+    - Ambiguous legacy references require a reviewed resolution map before repair
 invariants:
 - id: INV-0077
   statement: |
@@ -190,6 +227,22 @@ invariants:
   rationale: |
     Explicit promotion prevents internal IR richness or future graph needs from
     silently becoming public semantic authority.
+- id: INV-0082
+  statement: |
+    ADR Kit MUST own detection and repair of canonical entity-ID collisions in its
+    repository. Allocation MUST be monotonic above the historical high-water mark,
+    MUST permanently reserve retired, removed, remapped, and previously allocated
+    IDs, and MUST update every uniquely resolvable schema-typed local reference.
+    Ambiguous references MUST fail closed until an explicit occurrence-scoped
+    resolution mapping is supplied. Runtime and CI MUST NOT perform canonical
+    repair writes.
+  scope: global
+  enforcement_level: must
+  enforcement_mechanism: test
+  verification_method: automated
+  rationale: |
+    Repository-local identity must be unique before runtime qualification, and
+    collision repair cannot safely guess architectural reference intent.
 capabilities:
 - id: CAP-0048
   name: Additive ADR Schema v1.2 Authoring
@@ -231,6 +284,18 @@ capabilities:
   - Migration is dry-run-first, deterministic, and idempotent
   - Ambiguous names and dangling references do not produce guessed output
   - Migrated documents validate as v1.2
+- id: CAP-0052
+  name: Canonical Entity Identity Repair
+  description: |
+    Detect and repair canonical entity-ID collisions through ADR Kit-owned,
+    monotonic, non-reusing allocation and occurrence-aware reference migration.
+  acceptance_criteria:
+  - Every canonical collision enters an ADR Kit-owned repair workflow
+  - Replacement IDs are allocated above the historical prefix high-water mark
+  - Retired, removed, reserved, and remapped IDs are never reused
+  - Uniquely resolvable typed references are rewritten and ambiguous ones fail closed
+  - Allocation and remap evidence is canonical, deterministic, and idempotent
+  - CI validates uniqueness, allocation consistency, reference integrity, and drift
 related_adrs:
 - ADR-L-0001
 - ADR-L-0003

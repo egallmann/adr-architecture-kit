@@ -50,6 +50,12 @@ semantics, so Phase 2 needs an explicit accepted ADR before production implement
    name rewrites.
 8. Keep the relationship vocabulary closed. Phase 2 may emit only the six newly
    authorized verbs when an actual authored extraction path exists.
+9. Make ADR Kit the exclusive repair authority for repository-local canonical ID
+   collisions. Preserve one occurrence by deterministic canonical order, allocate
+   replacements strictly above the historical prefix high-water mark, never reuse
+   allocated or retired IDs, rewrite only uniquely resolvable typed references, and
+   require an explicit occurrence-scoped mapping for ambiguity. CI verifies but does
+   not write; ste-runtime only assembles structured `namespace:id` identity.
 
 ## Alternatives rejected
 
@@ -62,6 +68,10 @@ semantics, so Phase 2 needs an explicit accepted ADR before production implement
   authority owned by another namespace.
 - Hash-derived topology IDs: rejected because a migration must produce reviewable,
   human-stable identifiers that persist in canonical source after allocation.
+- Lowest-free canonical entity IDs: rejected because retired or removed identifiers
+  remain historically allocated and must never be reused.
+- Runtime collision repair: rejected because runtime is a read-only consumer of ADR
+  Kit authority and its qualified identities cannot repair local canonical ambiguity.
 - Implementing GraphProjectionBundle: deferred to Phase 3.
 
 ## Authority and write boundary

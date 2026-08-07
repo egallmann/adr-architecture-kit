@@ -3754,6 +3754,50 @@ entities:
     extraction_phase: extract_capability
     classification: explicit
     generator: adr-architecture-index
+- id: CAP-0052
+  entity_type: capability
+  name: Canonical Entity Identity Repair
+  summary: Detect and repair canonical entity-ID collisions through ADR Kit-owned,
+    monotonic, non-reusing allocation and occurrence-aware reference migration.
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0018#CAP-0052
+    artifact_path: adrs/logical/ADR-L-0018-schema-v12-and-normalized-semantic-foundation.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0018
+    domains:
+    - authoring
+    - schema
+    - semantic-model
+    - identity
+    - migration
+    implemented_by_components: []
+    enabled_by_decisions: []
+  relationships:
+    declared_in:
+    - ADR-L-0018
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0018#CAP-0052
+    extraction_phase: extract_capability
+    classification: explicit
+    generator: adr-architecture-index
 - id: CAP-9000
   entity_type: capability
   name: Kernel Boot Readiness
@@ -7869,6 +7913,49 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
+- id: DEC-0088
+  entity_type: decision
+  name: Make ADR Kit the exclusive repair authority for canonical entity-ID collisions
+  summary: Promoting independently authored boundaries, contracts, interfaces, and
+    implementation decisions exposed historical bare-ID collisions inside this repository.
+    Repository qualification cannot resolve an intra-repository c
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0018#DEC-0088
+    artifact_path: adrs/logical/ADR-L-0018-schema-v12-and-normalized-semantic-foundation.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0018
+    related_invariants: []
+    enforces_invariants: []
+    enables_capabilities: []
+    governs_components: []
+    supersedes: []
+    refines: []
+  relationships:
+    declared_in:
+    - ADR-L-0018
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0018#DEC-0088
+    extraction_phase: extract_decision
+    classification: explicit
+    generator: adr-architecture-index
 - id: DEC-9000
   entity_type: decision
   name: Publish a deterministic logical ADR fragment for boot readiness.
@@ -11495,6 +11582,64 @@ entities:
   provenance:
     source_type: logical_adr
     source_ref: ADR-L-0018#INV-0081
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
+- id: INV-0082
+  entity_type: invariant
+  name: INV-0082
+  summary: ADR Kit MUST own detection and repair of canonical entity-ID collisions
+    in its repository. Allocation MUST be monotonic above the historical high-water
+    mark, MUST permanently reserve retired, removed, remapped, and previ
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0018#INV-0082
+    artifact_path: adrs/logical/ADR-L-0018-schema-v12-and-normalized-semantic-foundation.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0018
+    scope: global
+    statement: 'ADR Kit MUST own detection and repair of canonical entity-ID collisions
+      in its
+
+      repository. Allocation MUST be monotonic above the historical high-water mark,
+
+      MUST permanently reserve retired, removed, remapped, and previously allocated
+
+      IDs, and MUST update every uniquely resolvable schema-typed local reference.
+
+      Ambiguous references MUST fail closed until an explicit occurrence-scoped
+
+      resolution mapping is supplied. Runtime and CI MUST NOT perform canonical
+
+      repair writes.
+
+      '
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions: []
+    supersedes: []
+  relationships:
+    declared_in:
+    - ADR-L-0018
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0018#INV-0082
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index

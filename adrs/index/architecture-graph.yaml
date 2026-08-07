@@ -4,8 +4,8 @@
 # generator_id: adr-architecture-graph
 # generator_version: 1
 # hash_algorithm: sha256
-# source_hash: 28ab184d3b63ccf48e17033fe3615b6e7d930c2abc6a392772e868517b744ce3
-# rendered_hash: a1fd0558a726d845962f653ad0733cc23749d1cbb2550968a80d4c14696b6816
+# source_hash: 989c21977f1a686b6a620106059148e2585b360e428d7c4981bbe641f5537e2c
+# rendered_hash: f5394f4211bd5389a3d3259fceccac080ab2bfb9d95783a105bb63bcb1db47fb
 
 schema_version: '1.0'
 type: architecture_graph
@@ -585,6 +585,13 @@ nodes:
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0018#CAP-0051
+    artifact_path: adrs/logical/ADR-L-0018-schema-v12-and-normalized-semantic-foundation.yaml
+- id: CAP-0052
+  entity_type: capability
+  name: Canonical Entity Identity Repair
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0018#CAP-0052
     artifact_path: adrs/logical/ADR-L-0018-schema-v12-and-normalized-semantic-foundation.yaml
 - id: CAP-9000
   entity_type: capability
@@ -1270,6 +1277,13 @@ nodes:
     source_type: logical_adr
     source_ref: ADR-L-0018#DEC-0087
     artifact_path: adrs/logical/ADR-L-0018-schema-v12-and-normalized-semantic-foundation.yaml
+- id: DEC-0088
+  entity_type: decision
+  name: Make ADR Kit the exclusive repair authority for canonical entity-ID collisions
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0018#DEC-0088
+    artifact_path: adrs/logical/ADR-L-0018-schema-v12-and-normalized-semantic-foundation.yaml
 - id: DEC-9000
   entity_type: decision
   name: Publish a deterministic logical ADR fragment for boot readiness.
@@ -1795,6 +1809,13 @@ nodes:
     source_type: logical_adr
     source_ref: ADR-L-0018#INV-0081
     artifact_path: adrs/logical/ADR-L-0018-schema-v12-and-normalized-semantic-foundation.yaml
+- id: INV-0082
+  entity_type: invariant
+  name: INV-0082
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0018#INV-0082
+    artifact_path: adrs/logical/ADR-L-0018-schema-v12-and-normalized-semantic-foundation.yaml
 - id: SYS-0001
   entity_type: system
   name: ADR Architecture Kit Discovery and Indexing System
@@ -2318,6 +2339,16 @@ edges:
   evidence:
   - ADR-L-0018#CAP-0051
   canonical_source_ref: ADR-L-0018#CAP-0051
+  confidence: 1.0
+  metadata: {}
+- relationship_id: declared_in:CAP-0052:ADR-L-0018
+  relationship_type: declared_in
+  source_entity_id: CAP-0052
+  target_entity_id: ADR-L-0018
+  provenance_classification: explicit
+  evidence:
+  - ADR-L-0018#CAP-0052
+  canonical_source_ref: ADR-L-0018#CAP-0052
   confidence: 1.0
   metadata: {}
 - relationship_id: declared_in:CAP-9000:ADR-L-9000
@@ -3260,6 +3291,16 @@ edges:
   canonical_source_ref: ADR-L-0018#DEC-0087
   confidence: 1.0
   metadata: {}
+- relationship_id: declared_in:DEC-0088:ADR-L-0018
+  relationship_type: declared_in
+  source_entity_id: DEC-0088
+  target_entity_id: ADR-L-0018
+  provenance_classification: explicit
+  evidence:
+  - ADR-L-0018#DEC-0088
+  canonical_source_ref: ADR-L-0018#DEC-0088
+  confidence: 1.0
+  metadata: {}
 - relationship_id: declared_in:DEC-9000:ADR-L-9000
   relationship_type: declared_in
   source_entity_id: DEC-9000
@@ -4008,6 +4049,16 @@ edges:
   evidence:
   - ADR-L-0018#INV-0081
   canonical_source_ref: ADR-L-0018#INV-0081
+  confidence: 1.0
+  metadata: {}
+- relationship_id: declared_in:INV-0082:ADR-L-0018
+  relationship_type: declared_in
+  source_entity_id: INV-0082
+  target_entity_id: ADR-L-0018
+  provenance_classification: explicit
+  evidence:
+  - ADR-L-0018#INV-0082
+  canonical_source_ref: ADR-L-0018#INV-0082
   confidence: 1.0
   metadata: {}
 - relationship_id: declared_in:SYS-0001:ADR-PS-0001

@@ -2195,6 +2195,50 @@ entities:
     extraction_phase: extract_capability
     classification: explicit
     generator: adr-architecture-index
+- id: CAP-0052
+  entity_type: capability
+  name: Canonical Entity Identity Repair
+  summary: Detect and repair canonical entity-ID collisions through ADR Kit-owned,
+    monotonic, non-reusing allocation and occurrence-aware reference migration.
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0018#CAP-0052
+    artifact_path: adrs/logical/ADR-L-0018-schema-v12-and-normalized-semantic-foundation.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0018
+    domains:
+    - authoring
+    - schema
+    - semantic-model
+    - identity
+    - migration
+    implemented_by_components: []
+    enabled_by_decisions: []
+  relationships:
+    declared_in:
+    - ADR-L-0018
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0018#CAP-0052
+    extraction_phase: extract_capability
+    classification: explicit
+    generator: adr-architecture-index
 - id: CAP-9000
   entity_type: capability
   name: Kernel Boot Readiness

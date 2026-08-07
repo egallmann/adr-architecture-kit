@@ -3586,3 +3586,61 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
+- id: INV-0082
+  entity_type: invariant
+  name: INV-0082
+  summary: ADR Kit MUST own detection and repair of canonical entity-ID collisions
+    in its repository. Allocation MUST be monotonic above the historical high-water
+    mark, MUST permanently reserve retired, removed, remapped, and previ
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0018#INV-0082
+    artifact_path: adrs/logical/ADR-L-0018-schema-v12-and-normalized-semantic-foundation.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0018
+    scope: global
+    statement: 'ADR Kit MUST own detection and repair of canonical entity-ID collisions
+      in its
+
+      repository. Allocation MUST be monotonic above the historical high-water mark,
+
+      MUST permanently reserve retired, removed, remapped, and previously allocated
+
+      IDs, and MUST update every uniquely resolvable schema-typed local reference.
+
+      Ambiguous references MUST fail closed until an explicit occurrence-scoped
+
+      resolution mapping is supplied. Runtime and CI MUST NOT perform canonical
+
+      repair writes.
+
+      '
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions: []
+    supersedes: []
+  relationships:
+    declared_in:
+    - ADR-L-0018
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0018#INV-0082
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index

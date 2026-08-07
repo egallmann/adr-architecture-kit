@@ -4,8 +4,8 @@
 # generator_id: adr-compiler
 # generator_version: 1
 # hash_algorithm: sha256
-# source_hash: ca43fc6c3c2d84c5ffe70f5f7f08e02a21aad92e89a9306323f54cf2f47b953b
-# rendered_hash: f8e3315080f9d0aba838b82bdf1279fa6c1a0902949ecd659c341257b4ce02b2
+# source_hash: 0d41a18b47e2953a68923e1dd8b18997de5c321756ff32d044126bad64a49200
+# rendered_hash: da0c8a0ce6e504a50e71ea8709ffbc74cd5ba9f08e5484db20431f130f9902ea
 
 schema_version: '1.1'
 type: entity_registry
@@ -763,6 +763,21 @@ entities:
 - entity_id: CAP-0051
   entity_type: capability
   name: Stable Physical Topology Identity Migration
+  introduced_by: ADR-L-0018
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0018-schema-v12-and-normalized-semantic-foundation.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs: []
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: CAP-0052
+  entity_type: capability
+  name: Canonical Entity Identity Repair
   introduced_by: ADR-L-0018
   lifecycle_stage: active
   source_path: adrs/logical/ADR-L-0018-schema-v12-and-normalized-semantic-foundation.yaml
@@ -2223,6 +2238,21 @@ entities:
     implements: []
     consumes: []
     realizes: []
+- entity_id: DEC-0088
+  entity_type: decision
+  name: Make ADR Kit the exclusive repair authority for canonical entity-ID collisions
+  introduced_by: ADR-L-0018
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0018-schema-v12-and-normalized-semantic-foundation.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs: []
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
 - entity_id: DEC-9000
   entity_type: decision
   name: Publish a deterministic logical ADR fragment for boot readiness.
@@ -3354,6 +3384,21 @@ entities:
 - entity_id: INV-0081
   entity_type: invariant
   name: INV-0081
+  introduced_by: ADR-L-0018
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0018-schema-v12-and-normalized-semantic-foundation.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs: []
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: INV-0082
+  entity_type: invariant
+  name: INV-0082
   introduced_by: ADR-L-0018
   lifecycle_stage: active
   source_path: adrs/logical/ADR-L-0018-schema-v12-and-normalized-semantic-foundation.yaml

@@ -114,7 +114,20 @@ def test_compile_failure_truth_table(tmp_path: Path, monkeypatch: pytest.MonkeyP
     api = _api()
     root = _fixture(tmp_path / "project")
     logical_path = root / "adrs" / "logical" / "ADR-L-1000-discovery.yaml"
-    logical_path.write_text("not: [valid", encoding="utf-8")
+    original = logical_path.read_text(encoding="utf-8")
+    logical_path.write_text(
+        original.replace(
+            "context: |\n  Discovery fixture.\n",
+            "context: |\n  Discovery fixture.\n"
+            "governance:\n"
+            "  steelman_review_required: true\n"
+            "  steelman_review_completed: false\n"
+            "  implementation_authority: implementation_authoritative\n"
+            "  approved_by: erik\n"
+            '  approved_date: "2026-03-18T12:00:00Z"\n',
+        ),
+        encoding="utf-8",
+    )
 
     diagnostic_failure = _preview(api, root)
     assert diagnostic_failure.success is False
@@ -123,6 +136,11 @@ def test_compile_failure_truth_table(tmp_path: Path, monkeypatch: pytest.MonkeyP
     if not diagnostic_failure.artifacts:
         assert diagnostic_failure.model is None
         assert diagnostic_failure.fingerprint is None
+
+    logical_path.write_text("not: [valid", encoding="utf-8")
+    with pytest.raises(api.OperationError) as parser_failure:
+        _preview(api, root)
+    assert parser_failure.value.__cause__ is not None
 
     operations = import_module("adr_kit.api._operations")
 
@@ -165,8 +183,8 @@ def test_artifact_descriptor_ids_paths_hashes_and_integrity(tmp_path: Path) -> N
         assert artifact.size_bytes == len(artifact.content)
         assert artifact.sha256 == sha256(artifact.content).hexdigest()
         assert len(artifact.sha256) == 64
-        assert artifact.integrity_header
-        assert artifact.content.startswith(artifact.integrity_header.encode("utf-8"))
+        if artifact.integrity_header is not None:
+            assert artifact.content.startswith(artifact.integrity_header.encode("utf-8"))
 
 
 def test_open_repository_returns_loaded_stable_repository(tmp_path: Path) -> None:

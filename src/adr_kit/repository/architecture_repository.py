@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Literal
+from typing import Any, Literal
 import re
 import yaml
 
@@ -12,9 +12,11 @@ from ..models import (
     ArchitectureIndex,
     CorpusSummary,
     DiscoveryProvenance,
+    EntityRegistry,
     Manifest,
     NormalizedArchitectureModel,
     NormalizedEntity,
+    NormalizedEntityRegistry,
     RemediationLedger,
     RelationshipRegistry,
     RelationshipRecord,
@@ -26,15 +28,11 @@ from ..parser import ADRParser
 from ..scope import ProjectScopeResolver
 from .registry_loader import (
     fingerprint_payload,
-    load_architecture_index,
     load_legacy_entity_registry,
-    load_normalized_entity_registry,
-    load_remediation_ledger,
-    load_relationship_registry,
-    load_unresolved_registry,
     model_payload,
 )
-from .registry_paths import discover_repository_paths, resolve_index_reference
+from .registry_paths import discover_repository_paths
+from ._normalized_bundle import SUBSET_TYPES, load_normalized_bundle_from_paths
 from .semantic_adapter import coerce_to_normalized_model
 from ..decorators import implements_adr
 
@@ -68,13 +66,20 @@ class AdrIdAllocationBands:
 class ArchitectureRepository:
     """Load compiled bundles and expose a stable semantic model."""
 
-    _SUBSET_TYPES: dict[str, tuple[str, str]] = {
-        "component_registry_path": ("components", "component"),
-        "capability_registry_path": ("capabilities", "capability"),
-        "decision_registry_path": ("decisions", "decision"),
-        "invariant_registry_path": ("invariants", "invariant"),
-        "system_registry_path": ("systems", "system"),
-    }
+    _scope_root: Path | None
+    architecture_index: ArchitectureIndex | None
+    primary_entity_registry: NormalizedEntityRegistry | None
+    relationship_registry: RelationshipRegistry | None
+    unresolved_registry: UnresolvedRegistry | None
+    remediation_ledger: RemediationLedger | None
+    legacy_entity_registry: EntityRegistry | None
+    _model: NormalizedArchitectureModel | None
+    _entities: list[NormalizedEntity]
+    _entities_by_id: dict[str, NormalizedEntity]
+    _relationships: list[RelationshipRecord]
+    _subsets: dict[str, list[NormalizedEntity]]
+
+    _SUBSET_TYPES = SUBSET_TYPES
     _ADR_TYPE_PATTERNS: dict[str, tuple[str, str]] = {
         "logical": ("ADR-L-", "logical"),
         "physical-system": ("ADR-PS-", "physical-system"),
@@ -114,7 +119,9 @@ class ArchitectureRepository:
         """Return the deterministic fingerprint of the loaded bundle."""
         self.load()
         if self._fingerprint is None:
-            raise ArchitectureRegistryError("Repository fingerprint unavailable before successful load")
+            raise ArchitectureRegistryError(
+                "Repository fingerprint unavailable before successful load"
+            )
         return self._fingerprint
 
     def get_model(self) -> NormalizedArchitectureModel:
@@ -122,7 +129,9 @@ class ArchitectureRepository:
 
         self.load()
         if self._model is None:
-            raise ArchitectureRegistryError("Normalized architecture model unavailable before successful load")
+            raise ArchitectureRegistryError(
+                "Normalized architecture model unavailable before successful load"
+            )
         return self._model
 
     def get_manifest(self) -> Manifest:
@@ -141,7 +150,9 @@ class ArchitectureRepository:
         """Return the architecture index for normalized repository mode."""
         self.load()
         if self.mode != "normalized" or self.architecture_index is None:
-            raise ArchitectureRegistryError("Architecture index is unavailable in legacy repository mode")
+            raise ArchitectureRegistryError(
+                "Architecture index is unavailable in legacy repository mode"
+            )
         return self.architecture_index
 
     def get_entities(self) -> list[NormalizedEntity]:
@@ -175,9 +186,7 @@ class ArchitectureRepository:
             ]
         if status:
             entities = [
-                entity
-                for entity in entities
-                if self.get_model().entity_status(entity.id) == status
+                entity for entity in entities if self.get_model().entity_status(entity.id) == status
             ]
         return entities
 
@@ -266,14 +275,18 @@ class ArchitectureRepository:
 
         self.load()
         if self.mode != "normalized":
-            raise ArchitectureRegistryError("Compiled contract bundle is unavailable in legacy repository mode")
+            raise ArchitectureRegistryError(
+                "Compiled contract bundle is unavailable in legacy repository mode"
+            )
         if (
             self.architecture_index is None
             or self.primary_entity_registry is None
             or self.relationship_registry is None
             or self.unresolved_registry is None
         ):
-            raise ArchitectureRegistryError("Compiled contract bundle unavailable before successful normalized load")
+            raise ArchitectureRegistryError(
+                "Compiled contract bundle unavailable before successful normalized load"
+            )
         return ContractBundleView(
             architecture_index=self.architecture_index,
             entity_registry=self.primary_entity_registry,
@@ -328,7 +341,9 @@ class ArchitectureRepository:
         """Allocate the next normal-band ADR ID for a supported forward-authoring type."""
         if adr_type not in self._ADR_TYPE_PATTERNS:
             allowed = ", ".join(sorted(self._ADR_TYPE_PATTERNS))
-            raise ArchitectureRegistryError(f"Unsupported ADR type for next-id: {adr_type}. Expected one of: {allowed}")
+            raise ArchitectureRegistryError(
+                f"Unsupported ADR type for next-id: {adr_type}. Expected one of: {allowed}"
+            )
 
         prefix, directory_name = self._ADR_TYPE_PATTERNS[adr_type]
         scope = self._scope_resolver.resolve()
@@ -342,7 +357,9 @@ class ArchitectureRepository:
                 try:
                     data = self._parser.parse_yaml(path)
                 except Exception as exc:
-                    raise ArchitectureRegistryError(f"Failed to read ADR header from {path}: {exc}") from exc
+                    raise ArchitectureRegistryError(
+                        f"Failed to read ADR header from {path}: {exc}"
+                    ) from exc
 
                 declared_id = data.get("id")
                 if not isinstance(declared_id, str):
@@ -383,27 +400,35 @@ class ArchitectureRepository:
         try:
             data = yaml.safe_load(state_path.read_text(encoding="utf-8")) or {}
         except Exception as exc:
-            raise ArchitectureRegistryError(f"Failed to load ADR allocation state from {state_path}: {exc}") from exc
+            raise ArchitectureRegistryError(
+                f"Failed to load ADR allocation state from {state_path}: {exc}"
+            ) from exc
 
         allocation = data.get("allocation", {})
         value = allocation.get(adr_type, 0)
         if not isinstance(value, int):
-            raise ArchitectureRegistryError(f"Invalid ADR allocation state for {adr_type} in {state_path}")
+            raise ArchitectureRegistryError(
+                f"Invalid ADR allocation state for {adr_type} in {state_path}"
+            )
         return value
 
     def _save_allocation_high_water(self, scope_root: Path, adr_type: str, high_water: int) -> None:
         """Persist the current high-water mark for an ADR type."""
         state_path = self._allocation_state_path(scope_root)
-        data: dict = {}
+        data: dict[str, Any] = {}
         if state_path.exists():
             try:
                 data = yaml.safe_load(state_path.read_text(encoding="utf-8")) or {}
             except Exception as exc:
-                raise ArchitectureRegistryError(f"Failed to load ADR allocation state from {state_path}: {exc}") from exc
+                raise ArchitectureRegistryError(
+                    f"Failed to load ADR allocation state from {state_path}: {exc}"
+                ) from exc
         allocation = data.setdefault("allocation", {})
         existing = allocation.get(adr_type, 0)
         if not isinstance(existing, int):
-            raise ArchitectureRegistryError(f"Invalid ADR allocation state for {adr_type} in {state_path}")
+            raise ArchitectureRegistryError(
+                f"Invalid ADR allocation state for {adr_type} in {state_path}"
+            )
         allocation[adr_type] = max(existing, high_water)
         state_path.write_text(
             yaml.safe_dump(data, sort_keys=False, allow_unicode=True),
@@ -441,67 +466,19 @@ class ArchitectureRepository:
             raise ArchitectureRegistryError(str(exc)) from exc
 
     def _load_normalized(self, scope_root: Path, index_path: Path) -> None:
-        index = load_architecture_index(self._parser, index_path)
-        primary_registry = load_normalized_entity_registry(
-            self._parser,
-            resolve_index_reference(scope_root, index.entity_registry_path),
-        )
-        relationship_registry = load_relationship_registry(
-            self._parser,
-            resolve_index_reference(scope_root, index.relationship_registry_path),
-        )
-        unresolved_registry = load_unresolved_registry(
-            self._parser,
-            resolve_index_reference(scope_root, index.unresolved_registry_path),
-        )
-        remediation_ledger = None
-        remediation_ledger_path = discover_repository_paths(scope_root).remediation_ledger
-        if remediation_ledger_path.exists():
-            remediation_ledger = load_remediation_ledger(self._parser, remediation_ledger_path)
-        primary_by_id = {entity.id: entity for entity in primary_registry.entities}
-        subsets: dict[str, list[NormalizedEntity]] = {}
-        subset_models: dict[str, object] = {}
-        for field_name, (subset_name, expected_type) in self._SUBSET_TYPES.items():
-            subset_path = resolve_index_reference(scope_root, getattr(index, field_name))
-            subset_registry = load_normalized_entity_registry(self._parser, subset_path)
-            self._validate_subset_registry(subset_registry, subset_name, expected_type, primary_by_id)
-            subsets[subset_name] = list(subset_registry.entities)
-            subset_models[subset_name] = subset_registry
-
-        self.architecture_index = index
-        self.primary_entity_registry = primary_registry
-        self.relationship_registry = relationship_registry
-        self.unresolved_registry = unresolved_registry
-        self.remediation_ledger = remediation_ledger
+        bundle = load_normalized_bundle_from_paths(self._parser, scope_root, index_path)
+        self.architecture_index = bundle.architecture_index
+        self.primary_entity_registry = bundle.entity_registry
+        self.relationship_registry = bundle.relationship_registry
+        self.unresolved_registry = bundle.unresolved_registry
+        self.remediation_ledger = bundle.remediation_ledger
         self.legacy_entity_registry = None
-        self._entities = list(primary_registry.entities)
-        self._entities_by_id = {entity.id: entity for entity in primary_registry.entities}
-        self._relationships = list(relationship_registry.relationships)
-        self._subsets = subsets
-        self._fingerprint = fingerprint_payload(
-            {
-                "mode": "normalized",
-                "architecture_index": model_payload(index),
-                "entity_registry": model_payload(primary_registry),
-                "relationship_registry": model_payload(relationship_registry),
-                "unresolved_registry": model_payload(unresolved_registry),
-                "remediation_ledger": model_payload(remediation_ledger),
-                "subset_registries": {
-                    name: model_payload(model) for name, model in sorted(subset_models.items())
-                },
-            }
-        )
-        self._model = NormalizedArchitectureModel(
-            mode="normalized",
-            scope_root=str(scope_root),
-            architecture_namespace=index.architecture_namespace,
-            fingerprint=self._fingerprint,
-            entities=list(primary_registry.entities),
-            relationships=list(relationship_registry.relationships),
-            unresolved=list(unresolved_registry.unresolved),
-            validation_summary=index.validation_summary,
-            source_coverage=index.source_coverage,
-        )
+        self._entities = list(bundle.entity_registry.entities)
+        self._entities_by_id = {entity.id: entity for entity in bundle.entity_registry.entities}
+        self._relationships = list(bundle.relationship_registry.relationships)
+        self._subsets = bundle.subsets
+        self._fingerprint = bundle.fingerprint
+        self._model = bundle.model
 
     def _load_legacy(self, legacy_path: Path) -> None:
         legacy_registry = load_legacy_entity_registry(self._parser, legacy_path)
@@ -514,7 +491,9 @@ class ArchitectureRepository:
         adapted_model = coerce_to_normalized_model(
             legacy_registry,
             fingerprint="legacy-architecture-repository",
-            scope_root=str(self._scope_root) if self._scope_root else str(legacy_path.parent.parent),
+            scope_root=(
+                str(self._scope_root) if self._scope_root else str(legacy_path.parent.parent)
+            ),
             architecture_namespace=getattr(self._scope_resolver.resolve(), "name", None),
             generator="adr-architecture-repository",
             extraction_phase="architecture_repository.load_legacy",
@@ -523,11 +502,21 @@ class ArchitectureRepository:
         self._entities_by_id = {entity.id: entity for entity in adapted_model.entities}
         self._relationships = list(adapted_model.relationships)
         self._subsets = {
-            "components": [entity for entity in adapted_model.entities if entity.entity_type == "component"],
-            "capabilities": [entity for entity in adapted_model.entities if entity.entity_type == "capability"],
-            "decisions": [entity for entity in adapted_model.entities if entity.entity_type == "decision"],
-            "invariants": [entity for entity in adapted_model.entities if entity.entity_type == "invariant"],
-            "systems": [entity for entity in adapted_model.entities if entity.entity_type == "system"],
+            "components": [
+                entity for entity in adapted_model.entities if entity.entity_type == "component"
+            ],
+            "capabilities": [
+                entity for entity in adapted_model.entities if entity.entity_type == "capability"
+            ],
+            "decisions": [
+                entity for entity in adapted_model.entities if entity.entity_type == "decision"
+            ],
+            "invariants": [
+                entity for entity in adapted_model.entities if entity.entity_type == "invariant"
+            ],
+            "systems": [
+                entity for entity in adapted_model.entities if entity.entity_type == "system"
+            ],
         }
         self._fingerprint = fingerprint_payload(
             {
@@ -537,45 +526,19 @@ class ArchitectureRepository:
         )
         self._model = adapted_model.model_copy(update={"fingerprint": self._fingerprint})
 
-    def _validate_subset_registry(
-        self,
-        subset_registry: object,
-        subset_name: str,
-        expected_type: str,
-        primary_by_id: dict[str, NormalizedEntity],
-    ) -> None:
-        entities = getattr(subset_registry, "entities", None)
-        if not isinstance(entities, list):
-            raise ArchitectureRegistryError(f"Subset registry {subset_name} is malformed")
-        for entity in entities:
-            primary_entity = primary_by_id.get(entity.id)
-            if primary_entity is None:
-                raise ArchitectureRegistryError(
-                    f"Subset registry {subset_name} references unknown entity ID: {entity.id}"
-                )
-            if entity.entity_type != expected_type:
-                raise ArchitectureRegistryError(
-                    f"Subset registry {subset_name} has mismatched entity_type for {entity.id}: "
-                    f"expected {expected_type}, got {entity.entity_type}"
-                )
-            if entity.canonical_source.source_ref != primary_entity.canonical_source.source_ref:
-                raise ArchitectureRegistryError(
-                    f"Subset registry {subset_name} has mismatched canonical_source.source_ref for {entity.id}"
-                )
-
     def _reset_state(self) -> None:
-        self._scope_root: Path | None = None
+        self._scope_root = None
         self.architecture_index = None
         self.primary_entity_registry = None
         self.relationship_registry = None
         self.unresolved_registry = None
         self.remediation_ledger = None
         self.legacy_entity_registry = None
-        self._model: NormalizedArchitectureModel | None = None
-        self._entities: list[NormalizedEntity] = []
-        self._entities_by_id: dict[str, NormalizedEntity] = {}
-        self._relationships: list[RelationshipRecord] = []
-        self._subsets: dict[str, list[NormalizedEntity]] = {
+        self._model = None
+        self._entities = []
+        self._entities_by_id = {}
+        self._relationships = []
+        self._subsets = {
             "components": [],
             "capabilities": [],
             "decisions": [],

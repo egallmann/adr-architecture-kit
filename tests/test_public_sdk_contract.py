@@ -68,7 +68,7 @@ def test_api_symbol_inventory_matches_contract() -> None:
 
     assert api.__all__ == EXPECTED_PUBLIC_SYMBOLS
     assert sorted(name for name in vars(api) if not name.startswith("_")) == sorted(
-        [*EXPECTED_PUBLIC_SYMBOLS, "annotations"]
+        EXPECTED_PUBLIC_SYMBOLS
     )
 
 

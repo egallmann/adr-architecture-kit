@@ -238,6 +238,8 @@ def test_pr_workflow_has_source_wheel_quality_security_and_reproducibility_gates
     assert "scripts/test_sdk_consumer.py" in source_section
     assert "python -m pip install -e ." in source_section
     assert source_section.count("scripts/test_sdk_consumer.py") >= 2
-    wheel_section = workflow[workflow.index("  wheel-smoke:") : workflow.index("  reproducibility:")]
+    wheel_section = workflow[
+        workflow.index("  wheel-smoke:") : workflow.index("  reproducibility:")
+    ]
     assert "scripts/test_installed_wheel.py" in wheel_section
     assert "sdk-consumer" in workflow

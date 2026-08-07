@@ -24,6 +24,22 @@ jobs:
           python-version: ${{ matrix.python-version }}
       - run: python -m pip install --upgrade pip
       - run: python -m pip install .[dev]
+      - name: Exercise installed SDK consumer outside the checkout
+        run: |
+          mkdir -p "${RUNNER_TEMP}/sdk-consumer/fixture/adrs/logical"
+          cp PROJECT.yaml "${RUNNER_TEMP}/sdk-consumer/fixture/PROJECT.yaml"
+          cp tests/fixtures/valid/logical-minimal.yaml "${RUNNER_TEMP}/sdk-consumer/fixture/adrs/logical/ADR-L-9999-minimal.yaml"
+          cd "${RUNNER_TEMP}/sdk-consumer"
+          env -u PYTHONPATH python "${GITHUB_WORKSPACE}/scripts/test_sdk_consumer.py" --project-root fixture --version-source metadata
+      - name: Exercise direct-source version fallback outside the checkout
+        run: |
+          cd "${RUNNER_TEMP}/sdk-consumer"
+          PYTHONPATH="${GITHUB_WORKSPACE}/src" python "${GITHUB_WORKSPACE}/scripts/test_sdk_consumer.py" --project-root fixture --version-source source
+      - run: python -m pip install -e .
+      - name: Exercise editable SDK consumer outside the checkout
+        run: |
+          cd "${RUNNER_TEMP}/sdk-consumer"
+          env -u PYTHONPATH python "${GITHUB_WORKSPACE}/scripts/test_sdk_consumer.py" --project-root fixture --version-source metadata
       - run: python -m pytest
 
   governance:
@@ -123,6 +139,7 @@ jobs:
           name: release-bundle
           path: python-dist
       - run: python scripts/test_installed_wheel.py --wheel "$(find python-dist -maxdepth 1 -name '*.whl' -print -quit)"
+      - run: python scripts/test_installed_wheel.py --describe | grep sdk-consumer
 
   reproducibility:
     name: Fixed-epoch distribution reproducibility

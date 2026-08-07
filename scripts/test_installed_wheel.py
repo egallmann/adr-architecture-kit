@@ -12,7 +12,18 @@ from collections.abc import Sequence
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-PROBES = ("imports", "cli", "external-fixture", "schemas", "templates", "source-isolation")
+PROBES = (
+    "imports",
+    "cli",
+    "external-fixture",
+    "schemas",
+    "templates",
+    "source-isolation",
+    "sdk-consumer",
+    "sdk-version-parity",
+    "sdk-operations",
+    "compiler-containment",
+)
 PROBE = """
 from importlib import resources
 from pathlib import Path
@@ -66,7 +77,21 @@ def run_harness(wheel: Path, python: Path) -> None:
             ROOT / "tests" / "fixtures" / "valid" / "logical-minimal.yaml",
             fixture / "adrs" / "logical" / "ADR-L-9999-minimal.yaml",
         )
+        consumer_script = consumer / "test_sdk_consumer.py"
+        shutil.copy2(ROOT / "scripts" / "test_sdk_consumer.py", consumer_script)
         _run([str(venv_python), "-c", PROBE], consumer, isolated_environment)
+        _run(
+            [
+                str(venv_python),
+                str(consumer_script),
+                "--project-root",
+                str(fixture),
+                "--version-source",
+                "metadata",
+            ],
+            consumer,
+            isolated_environment,
+        )
         _run([str(adr), "--version"], consumer, isolated_environment)
         _run([str(adr), "validate", "--scope", str(fixture)], consumer, isolated_environment)
         _run(

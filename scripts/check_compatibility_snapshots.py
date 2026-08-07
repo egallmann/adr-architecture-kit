@@ -103,14 +103,18 @@ def _fixture(root: Path, *, recursive: bool = False) -> None:
     if root_text not in sys.path:
         sys.path.insert(0, root_text)
     if recursive:
-        from tests.test_compiler_driver import _create_recursive_workspace
-
-        _create_recursive_workspace(root)
+        fixture_builder = getattr(
+            importlib.import_module("tests.test_compiler_driver"),
+            "_create_recursive_workspace",
+        )
+        fixture_builder(root)
         return
 
-    from tests.test_architecture_index_generator import _create_fixture
-
-    _create_fixture(root)
+    fixture_builder = getattr(
+        importlib.import_module("tests.test_architecture_index_generator"),
+        "_create_fixture",
+    )
+    fixture_builder(root)
 
 
 def _replace(root: Path, old: str, new: str) -> None:

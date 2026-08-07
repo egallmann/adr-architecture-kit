@@ -30,11 +30,34 @@ PHASE0_FILES = (
     "tests/test_release_controls.py",
     "tests/test_benchmark_phase0.py",
 )
+PHASE1_FILES = (
+    "src/adr_kit/_version.py",
+    "src/adr_kit/api/__init__.py",
+    "src/adr_kit/api/_contracts.py",
+    "src/adr_kit/api/_errors.py",
+    "src/adr_kit/api/_operations.py",
+    "src/adr_kit/repository/_normalized_bundle.py",
+    "scripts/test_sdk_consumer.py",
+    "tests/test_public_sdk_contract.py",
+    "tests/test_public_sdk_operations.py",
+    "tests/test_cli_application_delegation.py",
+    "tests/test_version_authority.py",
+)
 PHASE0_MYPY_ARGS = (
     "-m",
     "mypy",
     "--strict",
     *PHASE0_FILES,
+    "--follow-imports=silent",
+    "--no-incremental",
+    "--no-color-output",
+    "--no-pretty",
+)
+PHASE1_MYPY_ARGS = (
+    "-m",
+    "mypy",
+    "--strict",
+    *PHASE1_FILES,
     "--follow-imports=silent",
     "--no-incremental",
     "--no-color-output",
@@ -116,7 +139,7 @@ def collect_mypy() -> dict[str, object]:
 
 
 def collect_black() -> dict[str, object]:
-    result = _run(["-m", "black", "--check", *FORMAT_TARGETS])
+    result = _run(["-m", "black", "--no-cache", "--check", *FORMAT_TARGETS])
     if result.returncode not in (0, 1):
         raise RuntimeError(result.stdout + result.stderr)
     files = []
@@ -161,18 +184,21 @@ def _load(name: str) -> dict[str, Any]:
     return payload
 
 
-def check_new_phase0_files() -> None:
+def check_new_phase_files() -> None:
     environment = os.environ.copy()
     environment["MYPYPATH"] = "src"
     commands = (
-        ["-m", "ruff", "check", *PHASE0_FILES],
-        ["-m", "black", "--check", *PHASE0_FILES],
+        ["-m", "ruff", "check", *PHASE0_FILES, *PHASE1_FILES],
+        ["-m", "black", "--no-cache", "--check", *PHASE0_FILES, *PHASE1_FILES],
         PHASE0_MYPY_ARGS,
+        PHASE1_MYPY_ARGS,
     )
     for command in commands:
         result = _run(command, environment)
         if result.returncode != 0:
-            raise RuntimeError("new Phase 0 files are not clean:\n" + result.stdout + result.stderr)
+            raise RuntimeError(
+                "new Phase 0/1 files are not clean:\n" + result.stdout + result.stderr
+            )
 
 
 def main(argv: Iterable[str] | None = None) -> int:
@@ -180,7 +206,7 @@ def main(argv: Iterable[str] | None = None) -> int:
     parser.add_argument("--write-baseline", action="store_true")
     arguments = parser.parse_args(argv)
     try:
-        check_new_phase0_files()
+        check_new_phase_files()
         current = {
             "ruff.json": collect_ruff(),
             "mypy.json": collect_mypy(),

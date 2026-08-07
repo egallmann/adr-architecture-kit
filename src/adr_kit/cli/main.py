@@ -55,6 +55,7 @@ from ..validators import (
     load_direct_dependency_names,
     run_pip_audit,
     SystemOverviewValidator,
+    ValidationResult as ValidatorValidationResult,
 )
 from ..scope import ProjectScopeResolver
 from .. import __version__
@@ -1267,26 +1268,26 @@ def validate(scope: Optional[Path], recursive: bool, cross_references: bool, mod
 
         if recursive:
             click.echo("Validating ADRs recursively...")
-            all_results = results
+            all_results = cast(dict[str, dict[str, ValidatorValidationResult]], results)
 
             total_files = 0
             total_errors = 0
             total_warnings = 0
 
-            for scope_name, results in all_results.items():
+            for scope_name, scope_results in all_results.items():
                 click.echo(f"\n{scope_name}:")
 
-                errors = sum(1 for r in results.values() if r.has_errors)
-                warnings = sum(1 for r in results.values() if r.has_warnings)
+                errors = sum(1 for result in scope_results.values() if result.has_errors)
+                warnings = sum(1 for result in scope_results.values() if result.has_warnings)
 
                 if errors > 0:
                     click.secho(f"  ERROR {errors} files with errors", fg="red")
                 if warnings > 0:
                     click.secho(f"  WARN {warnings} files with warnings", fg="yellow")
                 if errors == 0 and warnings == 0:
-                    click.secho(f"  All {len(results)} files valid", fg="green")
+                    click.secho(f"  All {len(scope_results)} files valid", fg="green")
 
-                total_files += len(results)
+                total_files += len(scope_results)
                 total_errors += errors
                 total_warnings += warnings
 
@@ -1302,12 +1303,13 @@ def validate(scope: Optional[Path], recursive: bool, cross_references: bool, mod
             if detected_scope is None:
                 raise RuntimeError("Validation scope was not resolved")
             click.echo(f"Project scope: {detected_scope.name} ({detected_scope.root})")
+            file_results = cast(dict[str, ValidatorValidationResult], results)
 
             # Print results
             errors = 0
             warnings = 0
 
-            for file_path, result in results.items():
+            for file_path, result in file_results.items():
                 if result.has_errors:
                     click.secho(f"\nERROR {file_path}", fg="red")
                     for error in result.errors:
@@ -1320,9 +1322,9 @@ def validate(scope: Optional[Path], recursive: bool, cross_references: bool, mod
                     warnings += 1
 
             if errors == 0 and warnings == 0:
-                click.secho(f"All {len(results)} files valid", fg="green")
+                click.secho(f"All {len(file_results)} files valid", fg="green")
             else:
-                click.echo(f"\n{len(results)} files: {errors} errors, {warnings} warnings")
+                click.echo(f"\n{len(file_results)} files: {errors} errors, {warnings} warnings")
 
             # Validate cross-references if requested
             if cross_references:

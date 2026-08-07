@@ -7,4 +7,6 @@ Architecture IR contract (that authority belongs to ste-spec) or runtime
 evidence extraction (ste-runtime) or admission governance (ste-kernel).
 """
 
-__version__ = "0.1.0"
+from ._version import __version__
+
+__all__ = ["__version__"]

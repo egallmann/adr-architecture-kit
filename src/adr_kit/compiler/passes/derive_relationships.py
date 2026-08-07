@@ -15,6 +15,7 @@ from ...models import (
     StandaloneInvariant,
 )
 from ...models.architecture_discovery import RelationshipType
+from ...models.common import EntityReference, ExternalReference
 
 
 @dataclass(frozen=True)
@@ -92,8 +93,12 @@ def derive_relationships(
         classification: str = "explicit",
         confidence: float = 1.0,
         metadata: dict | None = None,
+        source_pointer: str | None = None,
+        allow_nonlocal_target: bool = False,
     ) -> None:
-        if from_id not in entities or to_id not in entities:
+        if from_id not in entities:
+            return
+        if to_id not in entities and not allow_nonlocal_target:
             return
         rel_id = relationship_id(relationship_type, from_id, to_id)
         if rel_id in relationships:
@@ -106,9 +111,25 @@ def derive_relationships(
             provenance_classification=classification,
             evidence=sorted(set(evidence)),
             canonical_source_ref=source_ref,
+            source_pointer=source_pointer,
             confidence=confidence,
             metadata=metadata or {},
         )
+
+    def normalized_binding_reference(
+        reference: EntityReference, *, owner: str, pointer: str
+    ) -> str | dict[str, str]:
+        if isinstance(reference, str):
+            if reference not in entities:
+                raise ValueError(
+                    f"Unresolved local binding reference {reference!r} at " f"{owner}#{pointer}"
+                )
+            return reference
+        if not isinstance(reference, ExternalReference):
+            raise TypeError(f"Unsupported binding reference at {owner}#{pointer}")
+        payload = reference.model_dump(mode="json")
+        payload["qualified_id"] = reference.qualified_id
+        return payload
 
     def add_gap(
         gap_id: str,
@@ -261,6 +282,115 @@ def derive_relationships(
                         [adr.id],
                         classification="derived",
                     )
+
+        for index, substrate_binding in enumerate(adr.substrate_bindings):
+            pointer = f"/substrate_bindings/{index}"
+            normalized_binding_reference(
+                substrate_binding.selected_by,
+                owner=adr.id,
+                pointer=f"{pointer}/selected_by",
+            )
+            external_reference = {
+                "namespace": substrate_binding.external_namespace,
+                "id": substrate_binding.artifact_id,
+                "kind": substrate_binding.kind,
+                "fingerprint": substrate_binding.fingerprint,
+                "qualified_id": (
+                    f"{substrate_binding.external_namespace}:"
+                    f"{substrate_binding.artifact_id}"
+                ),
+            }
+            add_relationship(
+                "binds_substrate",
+                adr.id,
+                external_reference["qualified_id"],
+                adr.id,
+                [adr.id],
+                source_pointer=pointer,
+                allow_nonlocal_target=True,
+                metadata={
+                    "target_scope": "external",
+                    "external_reference": external_reference,
+                    "version": substrate_binding.version,
+                    "source_pack": substrate_binding.source_pack,
+                    "role": substrate_binding.role,
+                    "selected_by": substrate_binding.selected_by,
+                    "local_config_ref": substrate_binding.local_config_ref,
+                    "supersedes": [
+                        normalized_binding_reference(
+                            item,
+                            owner=adr.id,
+                            pointer=f"{pointer}/supersedes/{item_index}",
+                        )
+                        for item_index, item in enumerate(substrate_binding.supersedes)
+                    ],
+                },
+            )
+
+        for index, rule_binding in enumerate(adr.rule_bindings):
+            pointer = f"/rule_bindings/{index}"
+            affected_entities = [
+                normalized_binding_reference(
+                    item,
+                    owner=adr.id,
+                    pointer=f"{pointer}/affected_entities/{item_index}",
+                )
+                for item_index, item in enumerate(rule_binding.affected_entities)
+            ]
+            qualified_id = f"{rule_binding.namespace}:{rule_binding.rule_id}"
+            add_relationship(
+                "binds_rule",
+                adr.id,
+                qualified_id,
+                adr.id,
+                [adr.id],
+                source_pointer=pointer,
+                allow_nonlocal_target=True,
+                metadata={
+                    "target_scope": "external",
+                    "external_reference": {
+                        "namespace": rule_binding.namespace,
+                        "id": rule_binding.rule_id,
+                        "kind": "rule",
+                        "fingerprint": rule_binding.fingerprint,
+                        "qualified_id": qualified_id,
+                    },
+                    "version": rule_binding.version,
+                    "disposition": rule_binding.disposition,
+                    "rationale": rule_binding.rationale,
+                    "exception_ref": rule_binding.exception_ref,
+                    "owner": rule_binding.owner,
+                    "affected_entities": affected_entities,
+                    "expected_evidence_ref": rule_binding.expected_evidence_ref,
+                },
+            )
+
+        for index, expectation in enumerate(adr.evidence_expectations):
+            pointer = f"/evidence_expectations/{index}"
+            related_entities = [
+                normalized_binding_reference(
+                    item,
+                    owner=adr.id,
+                    pointer=f"{pointer}/related_entities/{item_index}",
+                )
+                for item_index, item in enumerate(expectation.related_entities)
+            ]
+            add_relationship(
+                "expects_evidence",
+                adr.id,
+                expectation.expectation_id,
+                adr.id,
+                [adr.id],
+                source_pointer=pointer,
+                allow_nonlocal_target=True,
+                metadata={
+                    "target_scope": "expectation",
+                    "kind": expectation.kind,
+                    "description": expectation.description,
+                    "related_entities": related_entities,
+                    "observed_evidence": False,
+                },
+            )
 
     for invariant, _ in standalone_invariants:
         if invariant.id not in entities:

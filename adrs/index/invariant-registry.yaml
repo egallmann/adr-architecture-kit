@@ -41,6 +41,9 @@ entities:
     refines: []
     provides_interface: []
     composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -92,6 +95,9 @@ entities:
     refines: []
     provides_interface: []
     composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -143,6 +149,9 @@ entities:
     refines: []
     provides_interface: []
     composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -196,6 +205,9 @@ entities:
     refines: []
     provides_interface: []
     composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -247,6 +259,9 @@ entities:
     refines: []
     provides_interface: []
     composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -300,6 +315,9 @@ entities:
     refines: []
     provides_interface: []
     composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -353,6 +371,9 @@ entities:
     refines: []
     provides_interface: []
     composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -404,6 +425,9 @@ entities:
     refines: []
     provides_interface: []
     composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -453,6 +477,9 @@ entities:
     refines: []
     provides_interface: []
     composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -508,6 +535,9 @@ entities:
     refines: []
     provides_interface: []
     composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -553,6 +583,9 @@ entities:
     refines: []
     provides_interface: []
     composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -601,6 +634,9 @@ entities:
     refines: []
     provides_interface: []
     composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -649,6 +685,9 @@ entities:
     refines: []
     provides_interface: []
     composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -697,6 +736,9 @@ entities:
     refines: []
     provides_interface: []
     composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -752,6 +794,9 @@ entities:
     refines: []
     provides_interface: []
     composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -805,6 +850,9 @@ entities:
     refines: []
     provides_interface: []
     composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -860,6 +908,9 @@ entities:
     refines: []
     provides_interface: []
     composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -905,6 +956,9 @@ entities:
     refines: []
     provides_interface: []
     composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -950,6 +1004,9 @@ entities:
     refines: []
     provides_interface: []
     composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -995,6 +1052,9 @@ entities:
     refines: []
     provides_interface: []
     composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -1043,6 +1103,9 @@ entities:
     refines: []
     provides_interface: []
     composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -1096,6 +1159,9 @@ entities:
     refines: []
     provides_interface: []
     composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -1145,6 +1211,9 @@ entities:
     refines: []
     provides_interface: []
     composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -1193,6 +1262,9 @@ entities:
     refines: []
     provides_interface: []
     composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -1242,6 +1314,9 @@ entities:
     refines: []
     provides_interface: []
     composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -1293,6 +1368,9 @@ entities:
     refines: []
     provides_interface: []
     composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -1341,6 +1419,9 @@ entities:
     refines: []
     provides_interface: []
     composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -1386,6 +1467,9 @@ entities:
     refines: []
     provides_interface: []
     composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -1431,6 +1515,9 @@ entities:
     refines: []
     provides_interface: []
     composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -1476,6 +1563,9 @@ entities:
     refines: []
     provides_interface: []
     composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -1524,6 +1614,9 @@ entities:
     refines: []
     provides_interface: []
     composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -1576,6 +1669,9 @@ entities:
     refines: []
     provides_interface: []
     composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -1624,6 +1720,9 @@ entities:
     refines: []
     provides_interface: []
     composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -1673,6 +1772,9 @@ entities:
     refines: []
     provides_interface: []
     composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -1721,6 +1823,9 @@ entities:
     refines: []
     provides_interface: []
     composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -1770,6 +1875,9 @@ entities:
     refines: []
     provides_interface: []
     composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -1819,6 +1927,9 @@ entities:
     refines: []
     provides_interface: []
     composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -1867,6 +1978,9 @@ entities:
     refines: []
     provides_interface: []
     composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -1915,6 +2029,9 @@ entities:
     refines: []
     provides_interface: []
     composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -1963,6 +2080,9 @@ entities:
     refines: []
     provides_interface: []
     composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -2012,6 +2132,9 @@ entities:
     refines: []
     provides_interface: []
     composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -2060,6 +2183,9 @@ entities:
     refines: []
     provides_interface: []
     composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -2108,6 +2234,9 @@ entities:
     refines: []
     provides_interface: []
     composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -2153,6 +2282,9 @@ entities:
     refines: []
     provides_interface: []
     composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -2201,6 +2333,9 @@ entities:
     refines: []
     provides_interface: []
     composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -2249,6 +2384,9 @@ entities:
     refines: []
     provides_interface: []
     composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -2303,6 +2441,9 @@ entities:
     refines: []
     provides_interface: []
     composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -2351,6 +2492,9 @@ entities:
     refines: []
     provides_interface: []
     composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -2401,6 +2545,9 @@ entities:
     refines: []
     provides_interface: []
     composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -2450,6 +2597,9 @@ entities:
     refines: []
     provides_interface: []
     composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -2498,6 +2648,9 @@ entities:
     refines: []
     provides_interface: []
     composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -2549,6 +2702,9 @@ entities:
     refines: []
     provides_interface: []
     composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -2600,6 +2756,9 @@ entities:
     refines: []
     provides_interface: []
     composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -2655,6 +2814,9 @@ entities:
     refines: []
     provides_interface: []
     composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -2706,6 +2868,9 @@ entities:
     refines: []
     provides_interface: []
     composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -2757,6 +2922,9 @@ entities:
     refines: []
     provides_interface: []
     composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -2806,6 +2974,9 @@ entities:
     refines: []
     provides_interface: []
     composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -2855,6 +3026,9 @@ entities:
     refines: []
     provides_interface: []
     composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -2904,6 +3078,9 @@ entities:
     refines: []
     provides_interface: []
     composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -2968,6 +3145,9 @@ entities:
     refines: []
     provides_interface: []
     composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -3019,6 +3199,9 @@ entities:
     refines: []
     provides_interface: []
     composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -3070,6 +3253,9 @@ entities:
     refines: []
     provides_interface: []
     composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -3123,6 +3309,9 @@ entities:
     refines: []
     provides_interface: []
     composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -3171,6 +3360,9 @@ entities:
     refines: []
     provides_interface: []
     composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -3225,6 +3417,9 @@ entities:
     refines: []
     provides_interface: []
     composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -3283,6 +3478,9 @@ entities:
     refines: []
     provides_interface: []
     composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -3338,6 +3536,9 @@ entities:
     refines: []
     provides_interface: []
     composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -3394,6 +3595,9 @@ entities:
     refines: []
     provides_interface: []
     composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -3451,6 +3655,9 @@ entities:
     refines: []
     provides_interface: []
     composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -3505,6 +3712,9 @@ entities:
     refines: []
     provides_interface: []
     composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -3558,6 +3768,9 @@ entities:
     refines: []
     provides_interface: []
     composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -3611,6 +3824,9 @@ entities:
     refines: []
     provides_interface: []
     composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -3665,6 +3881,9 @@ entities:
     refines: []
     provides_interface: []
     composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -3725,6 +3944,9 @@ entities:
     refines: []
     provides_interface: []
     composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -3785,6 +4007,9 @@ entities:
     refines: []
     provides_interface: []
     composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []

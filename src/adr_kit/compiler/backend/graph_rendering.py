@@ -47,21 +47,25 @@ def build_architecture_graph(build_result: FrontendBuildResult) -> ArchitectureG
         )
         for entity in projected_entities
     ]
+    node_ids = {node.id for node in nodes}
     edges = [
         ArchitectureGraphEdge(
             relationship_id=relationship.relationship_id,
+            assertion_id=relationship.assertion_id,
             relationship_type=relationship.relationship_type,
             source_entity_id=relationship.from_entity_id,
             target_entity_id=relationship.to_entity_id,
             provenance_classification=relationship.provenance_classification,
             evidence=list(relationship.evidence),
             canonical_source_ref=relationship.canonical_source_ref,
+            source_pointer=relationship.source_pointer,
             confidence=relationship.confidence,
             metadata=dict(relationship.metadata),
         )
         for relationship in (
             project_relationship(item) for item in build_result.model.relationships.values()
         )
+        if relationship.from_entity_id in node_ids and relationship.to_entity_id in node_ids
     ]
     return ArchitectureGraph(
         architecture_namespace=build_result.namespace,

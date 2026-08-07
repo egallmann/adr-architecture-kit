@@ -35,6 +35,8 @@ def build_relationship_summary(entity_id: str, rel_graph: RelGraph) -> EntityRel
     """Rebuild the registry relationship summary for one entity."""
     buckets = {relationship_type: [] for relationship_type in ENTITY_RELATIONSHIP_TYPES}
     for relationship in rel_graph.outgoing(entity_id):
+        if relationship.metadata.get("target_scope") in {"external", "expectation"}:
+            continue
         buckets[relationship.relationship_type].append(relationship.to_entity_id)
     for values in buckets.values():
         values.sort()
@@ -81,12 +83,14 @@ def project_relationship(relationship: IRRelationship) -> RelationshipRecord:
     """Project an IR relationship to the registry shape."""
     return RelationshipRecord(
         relationship_id=relationship.relationship_id,
+        assertion_id=relationship.assertion_id,
         relationship_type=cast(RelationshipType, relationship.relationship_type),
         from_entity_id=relationship.from_entity_id,
         to_entity_id=relationship.to_entity_id,
         provenance_classification=relationship.provenance_classification,
         evidence=list(relationship.evidence),
         canonical_source_ref=relationship.canonical_source_ref,
+        source_pointer=relationship.source_pointer,
         confidence=relationship.confidence,
         metadata=dict(relationship.metadata),
     )

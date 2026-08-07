@@ -106,7 +106,7 @@ def test_entity_projection_order_and_payload_are_deterministic(tmp_path: Path) -
 
     first_keys = [(item.entity_type, item.id) for item in first_bundle.entity_registry.entities]
     second_keys = [(item.entity_type, item.id) for item in second_bundle.entity_registry.entities]
-    assert first_keys == sorted(first_keys)
+    assert [item_id for _, item_id in first_keys] == sorted(item_id for _, item_id in first_keys)
     assert first_keys == second_keys
     assert first_bundle.entity_registry.model_dump(
         mode="json"

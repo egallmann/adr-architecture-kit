@@ -4,8 +4,8 @@
 # generator_id: adr-architecture-graph
 # generator_version: 1
 # hash_algorithm: sha256
-# source_hash: 3636708fd428e4aecef41404e441aa488877bb9b4c520cf57b824583acad6469
-# rendered_hash: 337cb86f54e88a629eb6addf5d30e96744d4d422af52d49d568c9b4561a66bb5
+# source_hash: 9d1142904cf99c04e3cec918fa17bdcbcb5560aeaa91f6af9a66a46f737615e5
+# rendered_hash: 60f8968db59fb56906bdbda5a084654d381ebeb6d7fd565492e37f2779e4705e
 
 schema_version: '1.0'
 type: architecture_graph
@@ -1191,6 +1191,14 @@ nodes:
     source_type: logical_adr
     source_ref: ADR-L-0003#DEC-0081
     artifact_path: adrs/logical/ADR-L-0003-quality-assurance-and-testing-strategy.yaml
+- id: DEC-0082
+  entity_type: decision
+  name: Keep repository-local authoring projections separate from workspace runtime
+    state
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0013#DEC-0082
+    artifact_path: adrs/logical/ADR-L-0013-architecture-repository-boundary-and-normalized-semantic-model.yaml
 - id: DEC-9000
   entity_type: decision
   name: Publish a deterministic logical ADR fragment for boot readiness.
@@ -1674,6 +1682,13 @@ nodes:
     source_type: logical_adr
     source_ref: ADR-L-0003#INV-0075
     artifact_path: adrs/logical/ADR-L-0003-quality-assurance-and-testing-strategy.yaml
+- id: INV-0076
+  entity_type: invariant
+  name: INV-0076
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0013#INV-0076
+    artifact_path: adrs/logical/ADR-L-0013-architecture-repository-boundary-and-normalized-semantic-model.yaml
 - id: SYS-0001
   entity_type: system
   name: ADR Architecture Kit Discovery and Indexing System
@@ -3039,6 +3054,16 @@ edges:
   canonical_source_ref: ADR-L-0003#DEC-0081
   confidence: 1.0
   metadata: {}
+- relationship_id: declared_in:DEC-0082:ADR-L-0013
+  relationship_type: declared_in
+  source_entity_id: DEC-0082
+  target_entity_id: ADR-L-0013
+  provenance_classification: explicit
+  evidence:
+  - ADR-L-0013#DEC-0082
+  canonical_source_ref: ADR-L-0013#DEC-0082
+  confidence: 1.0
+  metadata: {}
 - relationship_id: declared_in:DEC-9000:ADR-L-9000
   relationship_type: declared_in
   source_entity_id: DEC-9000
@@ -3727,6 +3752,16 @@ edges:
   evidence:
   - ADR-L-0003#INV-0075
   canonical_source_ref: ADR-L-0003#INV-0075
+  confidence: 1.0
+  metadata: {}
+- relationship_id: declared_in:INV-0076:ADR-L-0013
+  relationship_type: declared_in
+  source_entity_id: INV-0076
+  target_entity_id: ADR-L-0013
+  provenance_classification: explicit
+  evidence:
+  - ADR-L-0013#INV-0076
+  canonical_source_ref: ADR-L-0013#INV-0076
   confidence: 1.0
   metadata: {}
 - relationship_id: declared_in:SYS-0001:ADR-PS-0001

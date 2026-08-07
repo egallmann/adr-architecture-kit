@@ -3267,3 +3267,58 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
+- id: INV-0076
+  entity_type: invariant
+  name: INV-0076
+  summary: Only ADR Kit tooling MAY create or modify canonical artifacts, authoring
+    projections, compatibility outputs, or other files inside the `adr-architecture-kit`
+    repository. External runtime or workspace tooling MAY read sup
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0013#INV-0076
+    artifact_path: adrs/logical/ADR-L-0013-architecture-repository-boundary-and-normalized-semantic-model.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0013
+    scope: global
+    statement: 'Only ADR Kit tooling MAY create or modify canonical artifacts, authoring
+
+      projections, compatibility outputs, or other files inside the
+
+      `adr-architecture-kit` repository. External runtime or workspace tooling MAY
+
+      read supported repository contracts but MUST NOT write anywhere inside any
+
+      repository tree. All runtime-derived and workspace-derived state MUST be
+
+      written beneath the workspace-root `.ste-workspace` directory.
+
+      '
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions: []
+    supersedes: []
+  relationships:
+    declared_in:
+    - ADR-L-0013
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0013#INV-0076
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index

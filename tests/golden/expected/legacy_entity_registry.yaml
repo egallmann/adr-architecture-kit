@@ -4,8 +4,8 @@
 # generator_id: adr-compiler
 # generator_version: 1
 # hash_algorithm: sha256
-# source_hash: 761334c43a40cad14384b416e94bcaecfa49b0c485b8113e4863f9e908955f4f
-# rendered_hash: 5076429bd7525845899adb4b8035c9130e47363b6c4d64cfada229e124700960
+# source_hash: c08dfc4d5cb2b76484ca09d995bb58e5b123de310570f24374187024e184de3b
+# rendered_hash: aeca9c5535186fb7fd601fc19acc605374b85c2044a96d01413b2b989a8f64c4
 
 schema_version: '1.1'
 type: entity_registry
@@ -2071,6 +2071,22 @@ entities:
     implements: []
     consumes: []
     realizes: []
+- entity_id: DEC-0082
+  entity_type: decision
+  name: Keep repository-local authoring projections separate from workspace runtime
+    state
+  introduced_by: ADR-L-0013
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0013-architecture-repository-boundary-and-normalized-semantic-model.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs: []
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
 - entity_id: DEC-9000
   entity_type: decision
   name: Publish a deterministic logical ADR fragment for boot readiness.
@@ -3115,6 +3131,21 @@ entities:
   introduced_by: ADR-L-0003
   lifecycle_stage: active
   source_path: adrs/logical/ADR-L-0003-quality-assurance-and-testing-strategy.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs: []
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: INV-0076
+  entity_type: invariant
+  name: INV-0076
+  introduced_by: ADR-L-0013
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0013-architecture-repository-boundary-and-normalized-semantic-model.yaml
   source_artifact_type: logical_adr
   domains: []
   related_adrs: []

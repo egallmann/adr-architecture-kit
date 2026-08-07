@@ -1355,6 +1355,41 @@
         }
       ]
     },
+    "migrate-topology-ids": {
+      "help": "Plan or apply stable physical-topology identity migration.",
+      "params": [
+        {
+          "count": false,
+          "default": "Sentinel.UNSET",
+          "is_flag": false,
+          "kind": "Option",
+          "multiple": false,
+          "name": "scope",
+          "nargs": 1,
+          "opts": [
+            "--scope"
+          ],
+          "required": false,
+          "secondary_opts": [],
+          "type": "directory"
+        },
+        {
+          "count": false,
+          "default": false,
+          "is_flag": true,
+          "kind": "Option",
+          "multiple": false,
+          "name": "apply_migration",
+          "nargs": 1,
+          "opts": [
+            "--apply"
+          ],
+          "required": false,
+          "secondary_opts": [],
+          "type": "boolean"
+        }
+      ]
+    },
     "next-id": {
       "help": "Print the next available ADR ID for forward-authoring ADR types.",
       "params": [

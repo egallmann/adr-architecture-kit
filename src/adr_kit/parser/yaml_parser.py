@@ -63,20 +63,29 @@ class ADRSchemaValidationError(Exception):
 class ADRParser:
     """Parser for ADR YAML artifacts with schema validation."""
     
-    def __init__(self, schema_dir: Path = None, schema_v11_dir: Path = None):
+    def __init__(
+        self,
+        schema_dir: Path | None = None,
+        schema_v11_dir: Path | None = None,
+        schema_v12_dir: Path | None = None,
+    ):
         """Initialize parser with schema directory.
 
         Args:
             schema_dir: Path to v1.0 schema directory (defaults to package-bundled schema/v1.0)
             schema_v11_dir: Path to v1.1 schema directory (defaults to package-bundled schema/v1.1)
+            schema_v12_dir: Path to v1.2 schema directory (defaults to package-bundled schema/v1.2)
         """
         if schema_dir is None:
             schema_dir = _package_schema_dir("adr_kit.schema.v1_0")
         if schema_v11_dir is None:
             schema_v11_dir = _package_schema_dir("adr_kit.schema.v1_1")
+        if schema_v12_dir is None:
+            schema_v12_dir = _package_schema_dir("adr_kit.schema.v1_2")
         
         self.schema_dir = Path(schema_dir)
         self.schema_v11_dir = Path(schema_v11_dir)
+        self.schema_v12_dir = Path(schema_v12_dir)
         self._schemas = {}
         self._validators = {}
         self._structural_validators = {}
@@ -126,6 +135,17 @@ class ADRParser:
             "unresolved_registry": "unresolved-registry.schema.json",
             "implementation_attribution_evidence": "implementation-attribution-evidence.schema.json",
         }
+
+        schema_v12_files = {
+            "types_v1_2": "types.schema.json",
+            "common_v1_2": "adr-common.schema.json",
+            "logical_v1_2": "adr-logical.schema.json",
+            "physical_v1_2": "adr-physical.schema.json",
+            "physical_base_v1_2": "adr-physical-base.schema.json",
+            "physical_system_v1_2": "adr-physical-system.schema.json",
+            "physical_component_v1_2": "adr-physical-component.schema.json",
+            "invariant_v1_2": "invariant.schema.json",
+        }
         
         # Load v1.0 schemas
         for name, filename in schema_files.items():
@@ -137,6 +157,13 @@ class ADRParser:
         # Load v1.1 schemas
         for name, filename in schema_v11_files.items():
             schema_path = self.schema_v11_dir / filename
+            if schema_path.exists():
+                with open(schema_path) as f:
+                    self._schemas[name] = json.load(f)
+
+        # Load provisional v1.2 ADR authoring schemas under versioned dispatch keys.
+        for name, filename in schema_v12_files.items():
+            schema_path = self.schema_v12_dir / filename
             if schema_path.exists():
                 with open(schema_path) as f:
                     self._schemas[name] = json.load(f)
@@ -224,6 +251,19 @@ class ADRParser:
             return data
         except yaml.YAMLError as e:
             raise ADRParseError(f"YAML parsing failed: {e}") from e
+
+    def _authoring_schema_name(self, data: dict[str, object], base_name: str) -> str:
+        """Resolve an ADR authoring schema explicitly without cross-line fallback."""
+
+        version = data.get("schema_version")
+        if version is None or version == "1.0":
+            return base_name
+        if version == "1.2":
+            return f"{base_name}_v1_2"
+        raise ADRParseError(
+            f"Unsupported ADR schema_version '{version}' for adr_type "
+            f"'{data.get('adr_type', base_name)}'"
+        )
     
     def parse_logical_adr(self, file_path: Union[str, Path]) -> LogicalADR:
         """Parse and validate logical ADR.
@@ -242,7 +282,7 @@ class ADRParser:
         data = self.parse_yaml(file_path)
         
         # Validate against JSON Schema
-        self.validate_against_schema(data, "logical")
+        self.validate_against_schema(data, self._authoring_schema_name(data, "logical"))
         
         # Parse into Pydantic model
         try:
@@ -267,7 +307,7 @@ class ADRParser:
         data = self.parse_yaml(file_path)
         
         # Validate against JSON Schema
-        self.validate_against_schema(data, "physical")
+        self.validate_against_schema(data, self._authoring_schema_name(data, "physical"))
         
         # Parse into Pydantic model
         try:
@@ -292,7 +332,7 @@ class ADRParser:
         data = self.parse_yaml(file_path)
         
         # Validate against JSON Schema
-        self.validate_against_schema(data, "physical_system")
+        self.validate_against_schema(data, self._authoring_schema_name(data, "physical_system"))
         
         # Parse into Pydantic model
         try:
@@ -317,7 +357,7 @@ class ADRParser:
         data = self.parse_yaml(file_path)
         
         # Validate against JSON Schema
-        self.validate_against_schema(data, "physical_component")
+        self.validate_against_schema(data, self._authoring_schema_name(data, "physical_component"))
         
         # Parse into Pydantic model
         try:
@@ -342,7 +382,7 @@ class ADRParser:
         data = self.parse_yaml(file_path)
         
         # Validate against JSON Schema
-        self.validate_against_schema(data, "invariant")
+        self.validate_against_schema(data, self._authoring_schema_name(data, "invariant"))
         
         # Parse into Pydantic model
         try:

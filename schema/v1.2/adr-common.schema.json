@@ -1,0 +1,432 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://adr-kit.ste.systems/schema/v1.2/adr-common.schema.json",
+  "title": "ADR Common Frontmatter Schema",
+  "description": "Shared frontmatter structure for all ADR types (STE-compliant, PRIME-1, PRIME-2)",
+
+  "definitions": {
+    "fingerprint": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "local_entity_reference": {
+      "type": "string",
+      "pattern": "^(ADR-(L|V|P|PS|PC|D)-\\d{4}|[A-Z][A-Z0-9]*(?:-[A-Z0-9]+)+)$"
+    },
+    "external_reference": {
+      "type": "object",
+      "required": ["namespace", "id", "kind", "fingerprint"],
+      "properties": {
+        "namespace": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$"
+        },
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "kind": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_]*$"
+        },
+        "fingerprint": {
+          "$ref": "#/definitions/fingerprint"
+        }
+      },
+      "additionalProperties": false
+    },
+    "entity_reference": {
+      "oneOf": [
+        {"$ref": "#/definitions/local_entity_reference"},
+        {"$ref": "#/definitions/external_reference"}
+      ]
+    }
+  },
+  
+  "type": "object",
+  "required": [
+    "schema_version",
+    "adr_type",
+    "id",
+    "title",
+    "status",
+    "created_date",
+    "authors"
+  ],
+  
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.2",
+      "description": "ADR schema version"
+    },
+    
+    "adr_type": {
+      "type": "string",
+      "enum": ["logical", "physical", "physical-system", "physical-component", "decision"],
+      "description": "Type of ADR (logical, physical [legacy], physical-system, physical-component, or decision)"
+    },
+    
+    "id": {
+      "$ref": "types.schema.json#/definitions/adr_id_any",
+      "description": "Unique ADR identifier (type-prefixed)"
+    },
+    
+    "title": {
+      "type": "string",
+      "minLength": 5,
+      "maxLength": 200,
+      "description": "Human-readable ADR title"
+    },
+    
+    "status": {
+      "$ref": "types.schema.json#/definitions/status",
+      "description": "ADR lifecycle status"
+    },
+    
+    "created_date": {
+      "$ref": "types.schema.json#/definitions/iso_date",
+      "description": "Date ADR was created"
+    },
+    
+    "modified_date": {
+      "$ref": "types.schema.json#/definitions/iso_date",
+      "description": "Date ADR was last modified"
+    },
+    
+    "authors": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "minItems": 1,
+      "description": "List of ADR authors (e.g., github handles, email)"
+    },
+    
+    "domains": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "minItems": 1,
+      "description": "Architectural domains this ADR belongs to (for discovery and graph queries)"
+    },
+    
+    "tags": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Tags for cross-domain discovery"
+    },
+    
+    "related_adrs": {
+      "type": "array",
+      "items": {
+        "$ref": "types.schema.json#/definitions/adr_id_any"
+      },
+      "description": "Related ADRs (bidirectional association edges in graph)"
+    },
+    
+    "supersedes": {
+      "type": "array",
+      "items": {
+        "$ref": "types.schema.json#/definitions/adr_id_any"
+      },
+      "description": "ADRs that this ADR supersedes (evolution edges)"
+    },
+    
+    "superseded_by": {
+      "oneOf": [
+        {"type": "null"},
+        {"$ref": "types.schema.json#/definitions/adr_id_any"}
+      ],
+      "description": "ADR that supersedes this one (null if current)"
+    },
+    
+    "ownership": {
+      "type": "object",
+      "properties": {
+        "architecture_authority": {
+          "type": "string",
+          "description": "Team or individual responsible for architectural decisions"
+        },
+        "implementation_owners": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Teams responsible for implementing this ADR"
+        }
+      },
+      "description": "Ownership metadata for governance and escalation"
+    },
+
+    "governance": {
+      "type": "object",
+      "properties": {
+        "steelman_review_required": {
+          "type": ["boolean", "null"],
+          "description": "Whether steelman review is required before acceptance or implementation authority"
+        },
+        "steelman_review_completed": {
+          "type": ["boolean", "null"],
+          "description": "Whether the required steelman review has been completed"
+        },
+        "implementation_authority": {
+          "oneOf": [
+            {"type": "null"},
+            {"$ref": "types.schema.json#/definitions/implementation_authority"}
+          ],
+          "description": "Whether this ADR may currently be used as implementation authority"
+        },
+        "approved_by": {
+          "type": ["string", "null"],
+          "description": "Canonical approver identity for this ADR's current governance state"
+        },
+        "approved_date": {
+          "oneOf": [
+            {"type": "null"},
+            {"$ref": "types.schema.json#/definitions/iso_datetime"}
+          ],
+          "description": "Date of current governance approval"
+        },
+        "related_reviews": {
+          "type": "array",
+          "items": {
+            "$ref": "types.schema.json#/definitions/review_id"
+          },
+          "description": "Canonical steelman reviews associated with this ADR"
+        },
+        "related_overrides": {
+          "type": "array",
+          "items": {
+            "$ref": "types.schema.json#/definitions/override_id"
+          },
+          "description": "Objection override artifacts associated with this ADR"
+        },
+        "related_ledgers": {
+          "type": "array",
+          "items": {"type": "string", "pattern": "^LEDGER-\\d{4}$"},
+          "description": "Decision ledgers that constrained this ADR"
+        }
+      },
+      "description": "Governance metadata for approval, implementation authority, and override references"
+    },
+
+    "projection_signals": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Context signals that activate rules derived from this ADR. Consumed by ste-rules-library for rule projection. Examples: python, scope-resolution, traceability, security"
+    },
+
+    "ai_projectable": {
+      "type": "object",
+      "properties": {
+        "minimal_sections": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Section names for minimal AI context (e.g., invariants, decisions)"
+        },
+        "primary_domains": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Primary domains for AI projection priority"
+        }
+      },
+      "description": "AI-first projection hints for ste-rules-library and prompt translator"
+    },
+
+    "introduces_entities": {
+      "type": "array",
+      "items": {"$ref": "types.schema.json#/definitions/entity_id"},
+      "description": "Entities introduced by this ADR (CAP-XXXX, COMP-XXXX, etc.)"
+    },
+
+    "modifies_entities": {
+      "type": "array",
+      "items": {"$ref": "types.schema.json#/definitions/entity_id"},
+      "description": "Entities modified (lifecycle, relationships, or properties)"
+    },
+
+    "realizes_entities": {
+      "type": "array",
+      "items": {"$ref": "types.schema.json#/definitions/entity_id"},
+      "description": "Entities realized by this Physical ADR (COMP implements CAP)"
+    },
+
+    "related_ledgers": {
+      "type": "array",
+      "items": {"type": "string", "pattern": "^LEDGER-\\d{4}$"},
+      "description": "Decision ledgers that constrained this ADR. Deprecated in favor of governance.related_ledgers."
+    },
+
+    "substrate_bindings": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "external_namespace",
+          "artifact_id",
+          "kind",
+          "version",
+          "fingerprint",
+          "role",
+          "selected_by"
+        ],
+        "properties": {
+          "external_namespace": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$"
+          },
+          "artifact_id": {"type": "string", "minLength": 1},
+          "kind": {"type": "string", "pattern": "^[a-z][a-z0-9_]*$"},
+          "version": {"type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._+:-]*$"},
+          "fingerprint": {"$ref": "#/definitions/fingerprint"},
+          "source_pack": {"type": "string"},
+          "role": {"type": "string", "pattern": "^[a-z][a-z0-9_]*$"},
+          "selected_by": {"$ref": "#/definitions/local_entity_reference"},
+          "local_config_ref": {"type": "string"},
+          "supersedes": {
+            "type": "array",
+            "items": {"$ref": "#/definitions/external_reference"}
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+
+    "rule_bindings": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "rule_id",
+          "namespace",
+          "version",
+          "fingerprint",
+          "disposition",
+          "affected_entities"
+        ],
+        "properties": {
+          "rule_id": {"type": "string", "minLength": 1},
+          "namespace": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$"
+          },
+          "version": {"type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._+:-]*$"},
+          "fingerprint": {"$ref": "#/definitions/fingerprint"},
+          "disposition": {
+            "type": "string",
+            "enum": ["adopted", "refined", "overridden", "exempted", "not_applicable"]
+          },
+          "rationale": {"type": "string", "minLength": 1},
+          "exception_ref": {"type": "string", "minLength": 1},
+          "owner": {"type": "string"},
+          "affected_entities": {
+            "type": "array",
+            "items": {"$ref": "#/definitions/entity_reference"},
+            "minItems": 1
+          },
+          "expected_evidence_ref": {"type": "string", "pattern": "^EVID-[A-Z0-9-]+$"}
+        },
+        "allOf": [
+          {
+            "if": {
+              "properties": {
+                "disposition": {
+                  "enum": ["refined", "overridden", "exempted", "not_applicable"]
+                }
+              },
+              "required": ["disposition"]
+            },
+            "then": {"required": ["rationale"]}
+          },
+          {
+            "if": {
+              "properties": {"disposition": {"const": "exempted"}},
+              "required": ["disposition"]
+            },
+            "then": {"required": ["exception_ref"]}
+          }
+        ],
+        "additionalProperties": false
+      }
+    },
+
+    "evidence_expectations": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["expectation_id", "kind", "description", "related_entities"],
+        "properties": {
+          "expectation_id": {"type": "string", "pattern": "^EVID-[A-Z0-9-]+$"},
+          "kind": {"type": "string", "pattern": "^[a-z][a-z0-9_]*$"},
+          "description": {"type": "string", "minLength": 1},
+          "related_entities": {
+            "type": "array",
+            "items": {"$ref": "#/definitions/entity_reference"}
+          }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "governance": {
+            "required": ["approved_by"]
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "governance": {
+            "required": ["approved_date"]
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "governance": {
+            "required": ["approved_date"]
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "governance": {
+            "required": ["approved_by"]
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "governance": {
+            "properties": {
+              "implementation_authority": {
+                "const": "implementation_authoritative"
+              }
+            },
+            "required": ["implementation_authority"]
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "governance": {
+            "required": ["approved_by", "approved_date"]
+          }
+        }
+      }
+    }
+  ]
+}

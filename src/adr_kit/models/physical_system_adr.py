@@ -59,6 +59,7 @@ class SystemBoundary(BaseModel):
 
 class ComponentTopologyComponent(BaseModel):
     """Component in topology."""
+    id: Optional[str] = Field(None, pattern=r"^TOPO-[A-Z0-9][A-Z0-9-]*$")
     name: str
     type: str = Field(..., pattern=r"^(service|database|queue|cache|gateway|proxy|worker|scheduler)$")
     purpose: str

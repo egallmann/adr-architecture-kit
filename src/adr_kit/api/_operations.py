@@ -191,9 +191,9 @@ def capabilities() -> CapabilityManifest:
         ),
         validation_modes=VALIDATION_MODES,
         artifact_groups=ARTIFACT_GROUPS,
-        supported_adr_schema_versions=("1.0", "1.1"),
+        supported_adr_schema_versions=("1.0", "1.1", "1.2"),
         stable_adr_schema_versions=("1.0",),
-        provisional_adr_schema_versions=("1.1",),
+        provisional_adr_schema_versions=("1.1", "1.2"),
         normalized_model_schema_version="1.0",
     )
 

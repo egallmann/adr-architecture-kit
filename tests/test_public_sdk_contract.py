@@ -190,9 +190,9 @@ def test_capability_manifest_is_exact_and_deterministic() -> None:
     )
     assert first.validation_modes == ("complete", "structural")
     assert first.artifact_groups == ("registries", "manifest", "markdown")
-    assert first.supported_adr_schema_versions == ("1.0", "1.1")
+    assert first.supported_adr_schema_versions == ("1.0", "1.1", "1.2")
     assert first.stable_adr_schema_versions == ("1.0",)
-    assert first.provisional_adr_schema_versions == ("1.1",)
+    assert first.provisional_adr_schema_versions == ("1.1", "1.2")
     assert first.normalized_model_schema_version == "1.0"
     assert list(first.as_dict()) == [field.name for field in fields(first)]
     assert all(not isinstance(value, tuple) for value in first.as_dict().values())

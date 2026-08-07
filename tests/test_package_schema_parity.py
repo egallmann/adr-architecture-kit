@@ -14,7 +14,7 @@ REPO_ROOT = Path(__file__).resolve().parents[1]
 
 def _schema_parity_mismatches(root: Path) -> list[str]:
     mismatches: list[str] = []
-    for version in ("v1.0", "v1.1"):
+    for version in ("v1.0", "v1.1", "v1.2"):
         canonical_dir = root / "schema" / version
         bundled_dir = root / "src" / "adr_kit" / "schema" / version.replace(".", "_")
         for canonical in sorted(canonical_dir.glob("*.json")):

@@ -84,7 +84,7 @@ def extract_logical_entities(
     complete,
     classify_author_gap,
 ) -> LogicalExtractionResult:
-    """Extract ADR, capability, and decision entities plus logical-only side data."""
+    """Extract projectable logical entities plus logical-only side data."""
 
     result = LogicalExtractionResult()
 
@@ -134,6 +134,55 @@ def extract_logical_entities(
                         },
                         completeness=complete(),
                         provenance=provenance("logical_adr", source_ref, "extract_capability", "explicit"),
+                    )
+                )
+            )
+
+        for boundary in adr.architectural_boundaries:
+            source_ref = f"{adr.id}#{boundary.id}"
+            result.entities.append(
+                ExtractedEntity(
+                    entity=NormalizedEntity(
+                        id=boundary.id,
+                        entity_type="boundary",
+                        name=boundary.name,
+                        summary=summary(boundary.description),
+                        lifecycle_stage=adr_lifecycle,
+                        canonical_source=canonical("logical_adr", source_ref, artifact),
+                        metadata={
+                            "adr_id": adr.id,
+                            "domains": list(adr.domains),
+                            "rationale": boundary.rationale,
+                        },
+                        completeness=complete(),
+                        provenance=provenance(
+                            "logical_adr", source_ref, "extract_boundary", "explicit"
+                        ),
+                    )
+                )
+            )
+
+        for contract in adr.interaction_contracts:
+            source_ref = f"{adr.id}#{contract.id}"
+            result.entities.append(
+                ExtractedEntity(
+                    entity=NormalizedEntity(
+                        id=contract.id,
+                        entity_type="contract",
+                        name=contract.id,
+                        summary=summary(contract.guarantees),
+                        lifecycle_stage=adr_lifecycle,
+                        canonical_source=canonical("logical_adr", source_ref, artifact),
+                        metadata={
+                            "adr_id": adr.id,
+                            "domains": list(adr.domains),
+                            "parties": list(contract.parties),
+                            "protocol": contract.protocol,
+                        },
+                        completeness=complete(),
+                        provenance=provenance(
+                            "logical_adr", source_ref, "extract_contract", "explicit"
+                        ),
                     )
                 )
             )

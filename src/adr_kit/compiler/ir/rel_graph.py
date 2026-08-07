@@ -19,6 +19,8 @@ RELATIONSHIP_TYPES = (
     "supersedes",
     "superseded_by",
     "refines",
+    "provides_interface",
+    "composed_of",
 )
 
 

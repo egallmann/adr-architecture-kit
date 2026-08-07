@@ -16,7 +16,7 @@
           "id": {"type": "string"},
           "entity_type": {
             "type": "string",
-            "enum": ["adr", "system", "component", "decision", "capability", "invariant"]
+            "enum": ["adr", "system", "component", "decision", "capability", "invariant", "boundary", "contract", "interface", "implementation_decision"]
           },
           "lifecycle_stage": {
             "type": "string",

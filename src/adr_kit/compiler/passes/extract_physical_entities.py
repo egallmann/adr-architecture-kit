@@ -64,7 +64,7 @@ def extract_physical_entities(
     complete,
     system_entity_id,
 ) -> PhysicalExtractionResult:
-    """Extract physical ADR, system, and component entities."""
+    """Extract projectable physical entities."""
 
     result = PhysicalExtractionResult()
 
@@ -125,6 +125,38 @@ def extract_physical_entities(
                     )
                 )
             )
+            for topology_component in (
+                adr.component_topology.components if adr.component_topology else []
+            ):
+                if topology_component.id is None:
+                    continue
+                source_ref = f"{adr.id}#{topology_component.id}"
+                result.entities.append(
+                    ExtractedEntity(
+                        entity=NormalizedEntity(
+                            id=topology_component.id,
+                            entity_type="component",
+                            name=topology_component.name,
+                            summary=summary(topology_component.purpose),
+                            lifecycle_stage=adr_lifecycle,
+                            canonical_source=canonical(
+                                "physical_system_adr", source_ref, artifact
+                            ),
+                            metadata={
+                                "adr_id": adr.id,
+                                "topology_type": topology_component.type,
+                                "implements_adr": topology_component.implements_adr,
+                            },
+                            completeness=complete(),
+                            provenance=provenance(
+                                "physical_system_adr",
+                                source_ref,
+                                "extract_topology_component",
+                                "explicit",
+                            ),
+                        )
+                    )
+                )
 
         if isinstance(adr, PhysicalComponentADR):
             for component in adr.component_specifications:
@@ -148,6 +180,66 @@ def extract_physical_entities(
                             },
                             completeness=complete(),
                             provenance=provenance("physical_component_adr", f"{adr.id}#{component_id}", "extract_component", "explicit"),
+                        )
+                    )
+                )
+                for interface in component.interfaces:
+                    source_ref = f"{adr.id}#{interface.id}"
+                    result.entities.append(
+                        ExtractedEntity(
+                            entity=NormalizedEntity(
+                                id=interface.id,
+                                entity_type="interface",
+                                name=interface.id,
+                                summary=summary(interface.specification),
+                                lifecycle_stage=adr_lifecycle,
+                                canonical_source=canonical(
+                                    "physical_component_adr", source_ref, artifact
+                                ),
+                                metadata={
+                                    "adr_id": adr.id,
+                                    "component_id": component_id,
+                                    "interface_type": interface.type,
+                                    "contract_reference": interface.contract_reference,
+                                    "contract_tests": interface.contract_tests,
+                                },
+                                completeness=complete(),
+                                provenance=provenance(
+                                    "physical_component_adr",
+                                    source_ref,
+                                    "extract_interface",
+                                    "explicit",
+                                ),
+                            )
+                        )
+                    )
+
+            for decision in adr.implementation_decisions:
+                source_ref = f"{adr.id}#{decision.id}"
+                result.entities.append(
+                    ExtractedEntity(
+                        entity=NormalizedEntity(
+                            id=decision.id,
+                            entity_type="implementation_decision",
+                            name=decision.summary,
+                            summary=summary(decision.rationale),
+                            lifecycle_stage=adr_lifecycle,
+                            canonical_source=canonical(
+                                "physical_component_adr", source_ref, artifact
+                            ),
+                            metadata={
+                                "adr_id": adr.id,
+                                "implements_invariants": list(
+                                    decision.implements_invariants
+                                ),
+                            },
+                            completeness=complete(),
+                            provenance=provenance(
+                                "physical_component_adr",
+                                source_ref,
+                                "extract_implementation_decision",
+                                "explicit",
+                            ),
                         )
                     )
                 )

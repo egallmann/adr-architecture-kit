@@ -194,7 +194,7 @@ def capabilities() -> CapabilityManifest:
         supported_adr_schema_versions=("1.0", "1.1", "1.2"),
         stable_adr_schema_versions=("1.0",),
         provisional_adr_schema_versions=("1.1", "1.2"),
-        normalized_model_schema_version="1.0",
+        normalized_model_schema_version="1.1",
     )
 
 

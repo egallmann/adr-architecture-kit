@@ -5,7 +5,7 @@
 # generator_version: 1
 # hash_algorithm: sha256
 # source_hash: f4f5cdd6e0ab94f10c7f3642b39f78160a60dc877dcb59ebaade8e52a361ca59
-# rendered_hash: f5394f4211bd5389a3d3259fceccac080ab2bfb9d95783a105bb63bcb1db47fb
+# rendered_hash: 7af284c18bc70faf2ef14a9616d83b8161c2fd441f0ae3da97b73e218fda8824
 
 schema_version: '1.0'
 type: architecture_graph
@@ -229,6 +229,34 @@ nodes:
     source_type: physical_system_adr
     source_ref: ADR-PS-0002
     artifact_path: adrs/physical-system/ADR-PS-0002-adr-kit-compiler-and-validation-runtime.yaml
+- id: BOUND-0001
+  entity_type: boundary
+  name: Logical vs Physical Separation
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0001#BOUND-0001
+    artifact_path: adrs/logical/ADR-L-0001-ste-compliant-adr-system.yaml
+- id: BOUND-0002
+  entity_type: boundary
+  name: ADR Kit vs ste-runtime Separation
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0001#BOUND-0002
+    artifact_path: adrs/logical/ADR-L-0001-ste-compliant-adr-system.yaml
+- id: BOUND-0003
+  entity_type: boundary
+  name: Frontmatter as Authority
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0001#BOUND-0003
+    artifact_path: adrs/logical/ADR-L-0001-ste-compliant-adr-system.yaml
+- id: BOUND-0004
+  entity_type: boundary
+  name: Prompt Translator
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0005#BOUND-0004
+    artifact_path: adrs/logical/ADR-L-0005-adr-to-prompt-translation.yaml
 - id: CAP-0001
   entity_type: capability
   name: Machine-Verifiable Architecture Documentation
@@ -642,6 +670,41 @@ nodes:
     source_type: physical_component_adr
     source_ref: ADR-PC-0006#COMP-0015
     artifact_path: adrs/physical-component/ADR-PC-0006-brownfield-onboarding-and-canonical-normalization.yaml
+- id: CONTRACT-0001
+  entity_type: contract
+  name: CONTRACT-0001
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0001#CONTRACT-0001
+    artifact_path: adrs/logical/ADR-L-0001-ste-compliant-adr-system.yaml
+- id: CONTRACT-0002
+  entity_type: contract
+  name: CONTRACT-0002
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0001#CONTRACT-0002
+    artifact_path: adrs/logical/ADR-L-0001-ste-compliant-adr-system.yaml
+- id: CONTRACT-0003
+  entity_type: contract
+  name: CONTRACT-0003
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0005#CONTRACT-0003
+    artifact_path: adrs/logical/ADR-L-0005-adr-to-prompt-translation.yaml
+- id: CONTRACT-0004
+  entity_type: contract
+  name: CONTRACT-0004
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0005#CONTRACT-0004
+    artifact_path: adrs/logical/ADR-L-0005-adr-to-prompt-translation.yaml
+- id: CONTRACT-0005
+  entity_type: contract
+  name: CONTRACT-0005
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0005#CONTRACT-0005
+    artifact_path: adrs/logical/ADR-L-0005-adr-to-prompt-translation.yaml
 - id: DEC-0001
   entity_type: decision
   name: Use YAML with embedded markdown, not markdown with YAML frontmatter
@@ -1291,6 +1354,140 @@ nodes:
     source_type: logical_adr
     source_ref: ADR-L-9000#DEC-9000
     artifact_path: adrs/logical/ADR-L-9000-kernel-boot-publication-surface.yaml
+- id: IFACE-0011
+  entity_type: interface
+  name: IFACE-0011
+  canonical_source:
+    source_type: physical_component_adr
+    source_ref: ADR-PC-0001#IFACE-0011
+    artifact_path: adrs/physical-component/ADR-PC-0001-entity-registry-and-discovery-index.yaml
+- id: IFACE-0012
+  entity_type: interface
+  name: IFACE-0012
+  canonical_source:
+    source_type: physical_component_adr
+    source_ref: ADR-PC-0002#IFACE-0012
+    artifact_path: adrs/physical-component/ADR-PC-0002-schema-and-contract-validation.yaml
+- id: IFACE-0013
+  entity_type: interface
+  name: IFACE-0013
+  canonical_source:
+    source_type: physical_component_adr
+    source_ref: ADR-PC-0003#IFACE-0013
+    artifact_path: adrs/physical-component/ADR-PC-0003-compiler-pipeline-and-driver.yaml
+- id: IFACE-0014
+  entity_type: interface
+  name: IFACE-0014
+  canonical_source:
+    source_type: physical_component_adr
+    source_ref: ADR-PC-0004#IFACE-0014
+    artifact_path: adrs/physical-component/ADR-PC-0004-repository-boundary-and-normalized-model.yaml
+- id: IFACE-0015
+  entity_type: interface
+  name: IFACE-0015
+  canonical_source:
+    source_type: physical_component_adr
+    source_ref: ADR-PC-0005#IFACE-0015
+    artifact_path: adrs/physical-component/ADR-PC-0005-generated-artifact-integrity-validation.yaml
+- id: IFACE-0016
+  entity_type: interface
+  name: IFACE-0016
+  canonical_source:
+    source_type: physical_component_adr
+    source_ref: ADR-PC-0006#IFACE-0016
+    artifact_path: adrs/physical-component/ADR-PC-0006-brownfield-onboarding-and-canonical-normalization.yaml
+- id: IFACE-0017
+  entity_type: interface
+  name: IFACE-0017
+  canonical_source:
+    source_type: physical_component_adr
+    source_ref: ADR-PC-0002#IFACE-0017
+    artifact_path: adrs/physical-component/ADR-PC-0002-schema-and-contract-validation.yaml
+- id: IFACE-0018
+  entity_type: interface
+  name: IFACE-0018
+  canonical_source:
+    source_type: physical_component_adr
+    source_ref: ADR-PC-0003#IFACE-0018
+    artifact_path: adrs/physical-component/ADR-PC-0003-compiler-pipeline-and-driver.yaml
+- id: IFACE-0019
+  entity_type: interface
+  name: IFACE-0019
+  canonical_source:
+    source_type: physical_component_adr
+    source_ref: ADR-PC-0004#IFACE-0019
+    artifact_path: adrs/physical-component/ADR-PC-0004-repository-boundary-and-normalized-model.yaml
+- id: IMPL-0011
+  entity_type: implementation_decision
+  name: Route single-scope discovery generation through the unified compiler driver
+  canonical_source:
+    source_type: physical_component_adr
+    source_ref: ADR-PC-0001#IMPL-0011
+    artifact_path: adrs/physical-component/ADR-PC-0001-entity-registry-and-discovery-index.yaml
+- id: IMPL-0012
+  entity_type: implementation_decision
+  name: Treat schema and contract validation as a component boundary
+  canonical_source:
+    source_type: physical_component_adr
+    source_ref: ADR-PC-0002#IMPL-0012
+    artifact_path: adrs/physical-component/ADR-PC-0002-schema-and-contract-validation.yaml
+- id: IMPL-0013
+  entity_type: implementation_decision
+  name: Keep compiler orchestration as a dedicated component
+  canonical_source:
+    source_type: physical_component_adr
+    source_ref: ADR-PC-0003#IMPL-0013
+    artifact_path: adrs/physical-component/ADR-PC-0003-compiler-pipeline-and-driver.yaml
+- id: IMPL-0014
+  entity_type: implementation_decision
+  name: Treat the repository/model boundary as a first-class component
+  canonical_source:
+    source_type: physical_component_adr
+    source_ref: ADR-PC-0004#IMPL-0014
+    artifact_path: adrs/physical-component/ADR-PC-0004-repository-boundary-and-normalized-model.yaml
+- id: IMPL-0015
+  entity_type: implementation_decision
+  name: Separate artifact integrity validation from discovery/indexing authority
+  canonical_source:
+    source_type: physical_component_adr
+    source_ref: ADR-PC-0005#IMPL-0015
+    artifact_path: adrs/physical-component/ADR-PC-0005-generated-artifact-integrity-validation.yaml
+- id: IMPL-0016
+  entity_type: implementation_decision
+  name: Treat brownfield onboarding and canonical normalization as an explicit component
+    capability
+  canonical_source:
+    source_type: physical_component_adr
+    source_ref: ADR-PC-0006#IMPL-0016
+    artifact_path: adrs/physical-component/ADR-PC-0006-brownfield-onboarding-and-canonical-normalization.yaml
+- id: IMPL-0017
+  entity_type: implementation_decision
+  name: Record the Phase 0 facade deferral and constrain future Assembler dependencies
+  canonical_source:
+    source_type: physical_component_adr
+    source_ref: ADR-PC-0004#IMPL-0017
+    artifact_path: adrs/physical-component/ADR-PC-0004-repository-boundary-and-normalized-model.yaml
+- id: IMPL-0018
+  entity_type: implementation_decision
+  name: Translate shared validation service results at the public SDK boundary
+  canonical_source:
+    source_type: physical_component_adr
+    source_ref: ADR-PC-0002#IMPL-0018
+    artifact_path: adrs/physical-component/ADR-PC-0002-schema-and-contract-validation.yaml
+- id: IMPL-0019
+  entity_type: implementation_decision
+  name: Contain compiler internals behind public and CLI application-service adapters
+  canonical_source:
+    source_type: physical_component_adr
+    source_ref: ADR-PC-0003#IMPL-0019
+    artifact_path: adrs/physical-component/ADR-PC-0003-compiler-pipeline-and-driver.yaml
+- id: IMPL-0020
+  entity_type: implementation_decision
+  name: Reuse private normalized-bundle assembly across repository and SDK compilation
+  canonical_source:
+    source_type: physical_component_adr
+    source_ref: ADR-PC-0004#IMPL-0020
+    artifact_path: adrs/physical-component/ADR-PC-0004-repository-boundary-and-normalized-model.yaml
 - id: INV-0001
   entity_type: invariant
   name: INV-0001
@@ -1831,6 +2028,46 @@ nodes:
     source_ref: ADR-PS-0002
     artifact_path: adrs/physical-system/ADR-PS-0002-adr-kit-compiler-and-validation-runtime.yaml
 edges:
+- relationship_id: declared_in:BOUND-0001:ADR-L-0001
+  relationship_type: declared_in
+  source_entity_id: BOUND-0001
+  target_entity_id: ADR-L-0001
+  provenance_classification: explicit
+  evidence:
+  - ADR-L-0001#BOUND-0001
+  canonical_source_ref: ADR-L-0001#BOUND-0001
+  confidence: 1.0
+  metadata: {}
+- relationship_id: declared_in:BOUND-0002:ADR-L-0001
+  relationship_type: declared_in
+  source_entity_id: BOUND-0002
+  target_entity_id: ADR-L-0001
+  provenance_classification: explicit
+  evidence:
+  - ADR-L-0001#BOUND-0002
+  canonical_source_ref: ADR-L-0001#BOUND-0002
+  confidence: 1.0
+  metadata: {}
+- relationship_id: declared_in:BOUND-0003:ADR-L-0001
+  relationship_type: declared_in
+  source_entity_id: BOUND-0003
+  target_entity_id: ADR-L-0001
+  provenance_classification: explicit
+  evidence:
+  - ADR-L-0001#BOUND-0003
+  canonical_source_ref: ADR-L-0001#BOUND-0003
+  confidence: 1.0
+  metadata: {}
+- relationship_id: declared_in:BOUND-0004:ADR-L-0005
+  relationship_type: declared_in
+  source_entity_id: BOUND-0004
+  target_entity_id: ADR-L-0005
+  provenance_classification: explicit
+  evidence:
+  - ADR-L-0005#BOUND-0004
+  canonical_source_ref: ADR-L-0005#BOUND-0004
+  confidence: 1.0
+  metadata: {}
 - relationship_id: declared_in:CAP-0001:ADR-L-0001
   relationship_type: declared_in
   source_entity_id: CAP-0001
@@ -2419,6 +2656,56 @@ edges:
   evidence:
   - ADR-PC-0006#COMP-0015
   canonical_source_ref: ADR-PC-0006#COMP-0015
+  confidence: 1.0
+  metadata: {}
+- relationship_id: declared_in:CONTRACT-0001:ADR-L-0001
+  relationship_type: declared_in
+  source_entity_id: CONTRACT-0001
+  target_entity_id: ADR-L-0001
+  provenance_classification: explicit
+  evidence:
+  - ADR-L-0001#CONTRACT-0001
+  canonical_source_ref: ADR-L-0001#CONTRACT-0001
+  confidence: 1.0
+  metadata: {}
+- relationship_id: declared_in:CONTRACT-0002:ADR-L-0001
+  relationship_type: declared_in
+  source_entity_id: CONTRACT-0002
+  target_entity_id: ADR-L-0001
+  provenance_classification: explicit
+  evidence:
+  - ADR-L-0001#CONTRACT-0002
+  canonical_source_ref: ADR-L-0001#CONTRACT-0002
+  confidence: 1.0
+  metadata: {}
+- relationship_id: declared_in:CONTRACT-0003:ADR-L-0005
+  relationship_type: declared_in
+  source_entity_id: CONTRACT-0003
+  target_entity_id: ADR-L-0005
+  provenance_classification: explicit
+  evidence:
+  - ADR-L-0005#CONTRACT-0003
+  canonical_source_ref: ADR-L-0005#CONTRACT-0003
+  confidence: 1.0
+  metadata: {}
+- relationship_id: declared_in:CONTRACT-0004:ADR-L-0005
+  relationship_type: declared_in
+  source_entity_id: CONTRACT-0004
+  target_entity_id: ADR-L-0005
+  provenance_classification: explicit
+  evidence:
+  - ADR-L-0005#CONTRACT-0004
+  canonical_source_ref: ADR-L-0005#CONTRACT-0004
+  confidence: 1.0
+  metadata: {}
+- relationship_id: declared_in:CONTRACT-0005:ADR-L-0005
+  relationship_type: declared_in
+  source_entity_id: CONTRACT-0005
+  target_entity_id: ADR-L-0005
+  provenance_classification: explicit
+  evidence:
+  - ADR-L-0005#CONTRACT-0005
+  canonical_source_ref: ADR-L-0005#CONTRACT-0005
   confidence: 1.0
   metadata: {}
 - relationship_id: declared_in:DEC-0001:ADR-L-0001
@@ -3309,6 +3596,196 @@ edges:
   evidence:
   - ADR-L-9000#DEC-9000
   canonical_source_ref: ADR-L-9000#DEC-9000
+  confidence: 1.0
+  metadata: {}
+- relationship_id: declared_in:IFACE-0011:ADR-PC-0001
+  relationship_type: declared_in
+  source_entity_id: IFACE-0011
+  target_entity_id: ADR-PC-0001
+  provenance_classification: explicit
+  evidence:
+  - ADR-PC-0001#IFACE-0011
+  canonical_source_ref: ADR-PC-0001#IFACE-0011
+  confidence: 1.0
+  metadata: {}
+- relationship_id: declared_in:IFACE-0012:ADR-PC-0002
+  relationship_type: declared_in
+  source_entity_id: IFACE-0012
+  target_entity_id: ADR-PC-0002
+  provenance_classification: explicit
+  evidence:
+  - ADR-PC-0002#IFACE-0012
+  canonical_source_ref: ADR-PC-0002#IFACE-0012
+  confidence: 1.0
+  metadata: {}
+- relationship_id: declared_in:IFACE-0013:ADR-PC-0003
+  relationship_type: declared_in
+  source_entity_id: IFACE-0013
+  target_entity_id: ADR-PC-0003
+  provenance_classification: explicit
+  evidence:
+  - ADR-PC-0003#IFACE-0013
+  canonical_source_ref: ADR-PC-0003#IFACE-0013
+  confidence: 1.0
+  metadata: {}
+- relationship_id: declared_in:IFACE-0014:ADR-PC-0004
+  relationship_type: declared_in
+  source_entity_id: IFACE-0014
+  target_entity_id: ADR-PC-0004
+  provenance_classification: explicit
+  evidence:
+  - ADR-PC-0004#IFACE-0014
+  canonical_source_ref: ADR-PC-0004#IFACE-0014
+  confidence: 1.0
+  metadata: {}
+- relationship_id: declared_in:IFACE-0015:ADR-PC-0005
+  relationship_type: declared_in
+  source_entity_id: IFACE-0015
+  target_entity_id: ADR-PC-0005
+  provenance_classification: explicit
+  evidence:
+  - ADR-PC-0005#IFACE-0015
+  canonical_source_ref: ADR-PC-0005#IFACE-0015
+  confidence: 1.0
+  metadata: {}
+- relationship_id: declared_in:IFACE-0016:ADR-PC-0006
+  relationship_type: declared_in
+  source_entity_id: IFACE-0016
+  target_entity_id: ADR-PC-0006
+  provenance_classification: explicit
+  evidence:
+  - ADR-PC-0006#IFACE-0016
+  canonical_source_ref: ADR-PC-0006#IFACE-0016
+  confidence: 1.0
+  metadata: {}
+- relationship_id: declared_in:IFACE-0017:ADR-PC-0002
+  relationship_type: declared_in
+  source_entity_id: IFACE-0017
+  target_entity_id: ADR-PC-0002
+  provenance_classification: explicit
+  evidence:
+  - ADR-PC-0002#IFACE-0017
+  canonical_source_ref: ADR-PC-0002#IFACE-0017
+  confidence: 1.0
+  metadata: {}
+- relationship_id: declared_in:IFACE-0018:ADR-PC-0003
+  relationship_type: declared_in
+  source_entity_id: IFACE-0018
+  target_entity_id: ADR-PC-0003
+  provenance_classification: explicit
+  evidence:
+  - ADR-PC-0003#IFACE-0018
+  canonical_source_ref: ADR-PC-0003#IFACE-0018
+  confidence: 1.0
+  metadata: {}
+- relationship_id: declared_in:IFACE-0019:ADR-PC-0004
+  relationship_type: declared_in
+  source_entity_id: IFACE-0019
+  target_entity_id: ADR-PC-0004
+  provenance_classification: explicit
+  evidence:
+  - ADR-PC-0004#IFACE-0019
+  canonical_source_ref: ADR-PC-0004#IFACE-0019
+  confidence: 1.0
+  metadata: {}
+- relationship_id: declared_in:IMPL-0011:ADR-PC-0001
+  relationship_type: declared_in
+  source_entity_id: IMPL-0011
+  target_entity_id: ADR-PC-0001
+  provenance_classification: explicit
+  evidence:
+  - ADR-PC-0001#IMPL-0011
+  canonical_source_ref: ADR-PC-0001#IMPL-0011
+  confidence: 1.0
+  metadata: {}
+- relationship_id: declared_in:IMPL-0012:ADR-PC-0002
+  relationship_type: declared_in
+  source_entity_id: IMPL-0012
+  target_entity_id: ADR-PC-0002
+  provenance_classification: explicit
+  evidence:
+  - ADR-PC-0002#IMPL-0012
+  canonical_source_ref: ADR-PC-0002#IMPL-0012
+  confidence: 1.0
+  metadata: {}
+- relationship_id: declared_in:IMPL-0013:ADR-PC-0003
+  relationship_type: declared_in
+  source_entity_id: IMPL-0013
+  target_entity_id: ADR-PC-0003
+  provenance_classification: explicit
+  evidence:
+  - ADR-PC-0003#IMPL-0013
+  canonical_source_ref: ADR-PC-0003#IMPL-0013
+  confidence: 1.0
+  metadata: {}
+- relationship_id: declared_in:IMPL-0014:ADR-PC-0004
+  relationship_type: declared_in
+  source_entity_id: IMPL-0014
+  target_entity_id: ADR-PC-0004
+  provenance_classification: explicit
+  evidence:
+  - ADR-PC-0004#IMPL-0014
+  canonical_source_ref: ADR-PC-0004#IMPL-0014
+  confidence: 1.0
+  metadata: {}
+- relationship_id: declared_in:IMPL-0015:ADR-PC-0005
+  relationship_type: declared_in
+  source_entity_id: IMPL-0015
+  target_entity_id: ADR-PC-0005
+  provenance_classification: explicit
+  evidence:
+  - ADR-PC-0005#IMPL-0015
+  canonical_source_ref: ADR-PC-0005#IMPL-0015
+  confidence: 1.0
+  metadata: {}
+- relationship_id: declared_in:IMPL-0016:ADR-PC-0006
+  relationship_type: declared_in
+  source_entity_id: IMPL-0016
+  target_entity_id: ADR-PC-0006
+  provenance_classification: explicit
+  evidence:
+  - ADR-PC-0006#IMPL-0016
+  canonical_source_ref: ADR-PC-0006#IMPL-0016
+  confidence: 1.0
+  metadata: {}
+- relationship_id: declared_in:IMPL-0017:ADR-PC-0004
+  relationship_type: declared_in
+  source_entity_id: IMPL-0017
+  target_entity_id: ADR-PC-0004
+  provenance_classification: explicit
+  evidence:
+  - ADR-PC-0004#IMPL-0017
+  canonical_source_ref: ADR-PC-0004#IMPL-0017
+  confidence: 1.0
+  metadata: {}
+- relationship_id: declared_in:IMPL-0018:ADR-PC-0002
+  relationship_type: declared_in
+  source_entity_id: IMPL-0018
+  target_entity_id: ADR-PC-0002
+  provenance_classification: explicit
+  evidence:
+  - ADR-PC-0002#IMPL-0018
+  canonical_source_ref: ADR-PC-0002#IMPL-0018
+  confidence: 1.0
+  metadata: {}
+- relationship_id: declared_in:IMPL-0019:ADR-PC-0003
+  relationship_type: declared_in
+  source_entity_id: IMPL-0019
+  target_entity_id: ADR-PC-0003
+  provenance_classification: explicit
+  evidence:
+  - ADR-PC-0003#IMPL-0019
+  canonical_source_ref: ADR-PC-0003#IMPL-0019
+  confidence: 1.0
+  metadata: {}
+- relationship_id: declared_in:IMPL-0020:ADR-PC-0004
+  relationship_type: declared_in
+  source_entity_id: IMPL-0020
+  target_entity_id: ADR-PC-0004
+  provenance_classification: explicit
+  evidence:
+  - ADR-PC-0004#IMPL-0020
+  canonical_source_ref: ADR-PC-0004#IMPL-0020
   confidence: 1.0
   metadata: {}
 - relationship_id: declared_in:INV-0001:INV-0001
@@ -4399,6 +4876,96 @@ edges:
   evidence:
   - ADR-PC-0001
   canonical_source_ref: ADR-PC-0001#COMP-0010
+  confidence: 1.0
+  metadata: {}
+- relationship_id: provides_interface:COMP-0010:IFACE-0011
+  relationship_type: provides_interface
+  source_entity_id: COMP-0010
+  target_entity_id: IFACE-0011
+  provenance_classification: explicit
+  evidence:
+  - ADR-PC-0001
+  canonical_source_ref: ADR-PC-0001#IFACE-0011
+  confidence: 1.0
+  metadata: {}
+- relationship_id: provides_interface:COMP-0011:IFACE-0012
+  relationship_type: provides_interface
+  source_entity_id: COMP-0011
+  target_entity_id: IFACE-0012
+  provenance_classification: explicit
+  evidence:
+  - ADR-PC-0002
+  canonical_source_ref: ADR-PC-0002#IFACE-0012
+  confidence: 1.0
+  metadata: {}
+- relationship_id: provides_interface:COMP-0011:IFACE-0017
+  relationship_type: provides_interface
+  source_entity_id: COMP-0011
+  target_entity_id: IFACE-0017
+  provenance_classification: explicit
+  evidence:
+  - ADR-PC-0002
+  canonical_source_ref: ADR-PC-0002#IFACE-0017
+  confidence: 1.0
+  metadata: {}
+- relationship_id: provides_interface:COMP-0012:IFACE-0013
+  relationship_type: provides_interface
+  source_entity_id: COMP-0012
+  target_entity_id: IFACE-0013
+  provenance_classification: explicit
+  evidence:
+  - ADR-PC-0003
+  canonical_source_ref: ADR-PC-0003#IFACE-0013
+  confidence: 1.0
+  metadata: {}
+- relationship_id: provides_interface:COMP-0012:IFACE-0018
+  relationship_type: provides_interface
+  source_entity_id: COMP-0012
+  target_entity_id: IFACE-0018
+  provenance_classification: explicit
+  evidence:
+  - ADR-PC-0003
+  canonical_source_ref: ADR-PC-0003#IFACE-0018
+  confidence: 1.0
+  metadata: {}
+- relationship_id: provides_interface:COMP-0013:IFACE-0014
+  relationship_type: provides_interface
+  source_entity_id: COMP-0013
+  target_entity_id: IFACE-0014
+  provenance_classification: explicit
+  evidence:
+  - ADR-PC-0004
+  canonical_source_ref: ADR-PC-0004#IFACE-0014
+  confidence: 1.0
+  metadata: {}
+- relationship_id: provides_interface:COMP-0013:IFACE-0019
+  relationship_type: provides_interface
+  source_entity_id: COMP-0013
+  target_entity_id: IFACE-0019
+  provenance_classification: explicit
+  evidence:
+  - ADR-PC-0004
+  canonical_source_ref: ADR-PC-0004#IFACE-0019
+  confidence: 1.0
+  metadata: {}
+- relationship_id: provides_interface:COMP-0014:IFACE-0015
+  relationship_type: provides_interface
+  source_entity_id: COMP-0014
+  target_entity_id: IFACE-0015
+  provenance_classification: explicit
+  evidence:
+  - ADR-PC-0005
+  canonical_source_ref: ADR-PC-0005#IFACE-0015
+  confidence: 1.0
+  metadata: {}
+- relationship_id: provides_interface:COMP-0015:IFACE-0016
+  relationship_type: provides_interface
+  source_entity_id: COMP-0015
+  target_entity_id: IFACE-0016
+  provenance_classification: explicit
+  evidence:
+  - ADR-PC-0006
+  canonical_source_ref: ADR-PC-0006#IFACE-0016
   confidence: 1.0
   metadata: {}
 - relationship_id: references:ADR-L-0002:ADR-L-0001

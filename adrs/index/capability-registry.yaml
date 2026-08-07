@@ -34,6 +34,8 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
   completeness:
     status: complete
     missing_fields: []
@@ -76,6 +78,8 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
   completeness:
     status: complete
     missing_fields: []
@@ -118,6 +122,8 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
   completeness:
     status: complete
     missing_fields: []
@@ -160,6 +166,8 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
   completeness:
     status: complete
     missing_fields: []
@@ -201,6 +209,8 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
   completeness:
     status: complete
     missing_fields: []
@@ -243,6 +253,8 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
   completeness:
     status: complete
     missing_fields: []
@@ -285,6 +297,8 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
   completeness:
     status: complete
     missing_fields: []
@@ -328,6 +342,8 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
   completeness:
     status: complete
     missing_fields: []
@@ -371,6 +387,8 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
   completeness:
     status: complete
     missing_fields: []
@@ -413,6 +431,8 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
   completeness:
     status: complete
     missing_fields: []
@@ -455,6 +475,8 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
   completeness:
     status: complete
     missing_fields: []
@@ -497,6 +519,8 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
   completeness:
     status: complete
     missing_fields: []
@@ -539,6 +563,8 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
   completeness:
     status: complete
     missing_fields: []
@@ -582,6 +608,8 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
   completeness:
     status: complete
     missing_fields: []
@@ -625,6 +653,8 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
   completeness:
     status: complete
     missing_fields: []
@@ -668,6 +698,8 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
   completeness:
     status: complete
     missing_fields: []
@@ -711,6 +743,8 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
   completeness:
     status: complete
     missing_fields: []
@@ -755,6 +789,8 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
   completeness:
     status: complete
     missing_fields: []
@@ -799,6 +835,8 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
   completeness:
     status: complete
     missing_fields: []
@@ -842,6 +880,8 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
   completeness:
     status: complete
     missing_fields: []
@@ -885,6 +925,8 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
   completeness:
     status: complete
     missing_fields: []
@@ -928,6 +970,8 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
   completeness:
     status: complete
     missing_fields: []
@@ -971,6 +1015,8 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
   completeness:
     status: complete
     missing_fields: []
@@ -1014,6 +1060,8 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
   completeness:
     status: complete
     missing_fields: []
@@ -1057,6 +1105,8 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
   completeness:
     status: complete
     missing_fields: []
@@ -1100,6 +1150,8 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
   completeness:
     status: complete
     missing_fields: []
@@ -1143,6 +1195,8 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
   completeness:
     status: complete
     missing_fields: []
@@ -1185,6 +1239,8 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
   completeness:
     status: complete
     missing_fields: []
@@ -1228,6 +1284,8 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
   completeness:
     status: complete
     missing_fields: []
@@ -1271,6 +1329,8 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
   completeness:
     status: complete
     missing_fields: []
@@ -1315,6 +1375,8 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
   completeness:
     status: complete
     missing_fields: []
@@ -1359,6 +1421,8 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
   completeness:
     status: complete
     missing_fields: []
@@ -1403,6 +1467,8 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
   completeness:
     status: complete
     missing_fields: []
@@ -1446,6 +1512,8 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
   completeness:
     status: complete
     missing_fields: []
@@ -1489,6 +1557,8 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
   completeness:
     status: complete
     missing_fields: []
@@ -1532,6 +1602,8 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
   completeness:
     status: complete
     missing_fields: []
@@ -1575,6 +1647,8 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
   completeness:
     status: complete
     missing_fields: []
@@ -1618,6 +1692,8 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
   completeness:
     status: complete
     missing_fields: []
@@ -1662,6 +1738,8 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
   completeness:
     status: complete
     missing_fields: []
@@ -1706,6 +1784,8 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
   completeness:
     status: complete
     missing_fields: []
@@ -1749,6 +1829,8 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
   completeness:
     status: complete
     missing_fields: []
@@ -1792,6 +1874,8 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
   completeness:
     status: complete
     missing_fields: []
@@ -1835,6 +1919,8 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
   completeness:
     status: complete
     missing_fields: []
@@ -1880,6 +1966,8 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
   completeness:
     status: complete
     missing_fields: []
@@ -1922,6 +2010,8 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
   completeness:
     status: complete
     missing_fields: []
@@ -1966,6 +2056,8 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
   completeness:
     status: complete
     missing_fields: []
@@ -2010,6 +2102,8 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
   completeness:
     status: complete
     missing_fields: []
@@ -2054,6 +2148,8 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
   completeness:
     status: complete
     missing_fields: []
@@ -2098,6 +2194,8 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
   completeness:
     status: complete
     missing_fields: []
@@ -2142,6 +2240,8 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
   completeness:
     status: complete
     missing_fields: []
@@ -2186,6 +2286,8 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
   completeness:
     status: complete
     missing_fields: []
@@ -2230,6 +2332,8 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
   completeness:
     status: complete
     missing_fields: []
@@ -2272,6 +2376,8 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
   completeness:
     status: complete
     missing_fields: []

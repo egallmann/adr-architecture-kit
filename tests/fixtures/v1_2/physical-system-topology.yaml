@@ -29,6 +29,7 @@ component_topology:
     name: gateway
     type: gateway
     purpose: Accept requests.
+    implements_adr: ADR-PC-9801
   - id: TOPO-0002
     name: worker
     type: worker

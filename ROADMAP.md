@@ -19,12 +19,16 @@ runtime, rules, substrate, or admission capability.
 - reproducibility, metadata, dependency-audit, installed-consumer, and benchmark gates;
 - ADR-first authority, deterministic generated artifacts, and complete documentation.
 
-## Phase 1 — narrow consumer-facade decision
+## Phase 1 — narrow consumer facade (implemented)
 
-Entry requires Phase 0 closure. Decide, through a new or amended ADR, whether a small
-facade over `ArchitectureRepository` and `NormalizedArchitectureModel` is warranted.
-This phase also owns migrating runtime version reporting to `importlib.metadata`.
-No facade may expose `ArchModel`, compiler passes, raw ADR parsing, or file layout.
+Implemented after Phase 0 closure: the exact `adr_kit.api` facade covers validation,
+restricted authoring compilation, `ArchitectureRepository`, and
+`NormalizedArchitectureModel`. Runtime version reporting now uses installed
+distribution metadata with a bounded direct-source fallback. The facade exposes no
+`ArchModel`, compiler pass, raw parser, graph/IR emission, recursive runtime behavior,
+or repository file-layout dependency. Source, editable, and retained-wheel consumers
+and deterministic SDK benchmark sidecars close the gate. Package release remains a
+separate decision.
 
 ## Phase 2 — contract and identity promotion review
 

@@ -79,6 +79,13 @@ bindings, transactional authoring, SDK/API facade work, replacement compilation
 results, Assembler behavior, MCP, LLM integration, runtime observation, rules,
 substrate, and admission remain outside Phase 0.
 
+## Phase 1 disposition
+
+Phase 1 subsequently authorized and implemented the narrow `adr_kit.api` facade and
+metadata-first runtime version authority. The other deferrals remain in force. See
+[the Phase 1 design journal](2026-phase-1-public-sdk.md) and
+[closeout](../production-hardening/phase-1-closeout.md).
+
 ## Lock readiness
 
 The decision set is ready to lock when the five ADR amendments validate with cross

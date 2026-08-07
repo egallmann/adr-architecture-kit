@@ -2142,8 +2142,7 @@ entities:
     generator: adr-architecture-index
 - id: DEC-0050
   entity_type: decision
-  name: Use ArchitectureRepository as the only supported in-process consumer entry
-    point
+  name: Use ArchitectureRepository as the supported in-process semantic entry point
   summary: The repository boundary centralizes scope-safe loading, contract validation,
     path hiding, and registry compatibility adaptation. This keeps consumers from
     binding directly to registry files and current layout.
@@ -3442,6 +3441,136 @@ entities:
   provenance:
     source_type: logical_adr
     source_ref: ADR-L-0013#DEC-0079
+    extraction_phase: extract_decision
+    classification: explicit
+    generator: adr-architecture-index
+- id: DEC-0080
+  entity_type: decision
+  name: Establish adr_kit.api as the narrow supported authoring SDK facade
+  summary: Phase 1 now has sufficient compatibility, packaging, and release controls
+    to add a deliberately bounded facade. The facade supports single-scope validation,
+    authoring compilation for registries, manifest, and markdown, r
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0013#DEC-0080
+    artifact_path: adrs/logical/ADR-L-0013-architecture-repository-boundary-and-normalized-semantic-model.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0013
+    related_invariants: []
+    enforces_invariants: []
+    enables_capabilities: []
+    governs_components: []
+    supersedes: []
+    refines: []
+  relationships:
+    declared_in:
+    - ADR-L-0013
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0013#DEC-0080
+    extraction_phase: extract_decision
+    classification: explicit
+    generator: adr-architecture-index
+- id: DEC-0081
+  entity_type: decision
+  name: Make installed distribution metadata the runtime package-version authority
+  summary: A manually synchronized package literal can drift from build metadata and
+    from the artifact exercised by an installed consumer. Runtime package, CLI, SDK
+    result, and capability versions therefore resolve from installed `
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0003#DEC-0081
+    artifact_path: adrs/logical/ADR-L-0003-quality-assurance-and-testing-strategy.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0003
+    related_invariants: []
+    enforces_invariants: []
+    enables_capabilities: []
+    governs_components: []
+    supersedes: []
+    refines: []
+  relationships:
+    declared_in:
+    - ADR-L-0003
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0003#DEC-0081
+    extraction_phase: extract_decision
+    classification: explicit
+    generator: adr-architecture-index
+- id: DEC-0082
+  entity_type: decision
+  name: Keep repository-local authoring projections separate from workspace runtime
+    state
+  summary: Every artifact stored inside the `adr-architecture-kit` repository is owned
+    and written by ADR Kit. External systems may read its canonical ADRs and supported
+    authoring projections, but they must not target the repositor
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0013#DEC-0082
+    artifact_path: adrs/logical/ADR-L-0013-architecture-repository-boundary-and-normalized-semantic-model.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0013
+    related_invariants: []
+    enforces_invariants: []
+    enables_capabilities: []
+    governs_components: []
+    supersedes: []
+    refines: []
+  relationships:
+    declared_in:
+    - ADR-L-0013
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0013#DEC-0082
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index

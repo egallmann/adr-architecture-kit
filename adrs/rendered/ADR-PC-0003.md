@@ -5,8 +5,8 @@ artifact_kind: rendered_adr_markdown
 generator_id: adr-rendered-markdown
 generator_version: 1
 hash_algorithm: sha256
-source_hash: e35f15575d017ff63c78983057ab02e09256f03287e82c719db12f8485cc43d4
-rendered_hash: 4c8aee1f0c8895c1a7e06fba6fcd2a0651a033ff31d61ee64f85bf1480b0c43a
+source_hash: ca096a00b35964248338bd335fa9a192cfa53bf18b5d0cb7cccb22415ea4e1af
+rendered_hash: 5e2662d050fe507876be7a1ffce292859957f19ddc98e341d7342f14c094e121
 -->
 
 # ADR-PC-0003: Compiler Pipeline and Driver
@@ -66,7 +66,8 @@ CLI orchestration for compile entrypoints.
 - adr compile
 - adr generate-architecture-index
 - adr generate-manifest
-- adr generate-ren...
+- adr generate-ren...- **IFACE-0018** (library_api): A private compilation application service supports a restricted
+`adr_kit.api.compile_architecture` a...
 
 **Implementation Identifiers:**
 - Service Name: `adr-compiler`
@@ -84,6 +85,17 @@ The explicit pipeline and driver are a dedicated authoring-time implementation
 component. Their CLI behavior and generated compatibility surfaces are guarded,
 but their Python internals remain evolvable and must not be described as a
 stable public runtime API.
+
+
+
+
+### IMPL-0019: Contain compiler internals behind public and CLI application-service adapters
+
+**Rationale:**
+Shared orchestration preserves output and diagnostic semantics without
+promoting `ArchModel`, compiler configuration, passes, emitters, internal
+artifacts, or mutable diagnostic logs into the supported SDK. CLI behavioral
+snapshots guard delegation independently from the narrower facade contract.
 
 
 

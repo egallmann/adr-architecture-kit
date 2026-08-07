@@ -5,8 +5,8 @@ artifact_kind: rendered_adr_markdown
 generator_id: adr-rendered-markdown
 generator_version: 1
 hash_algorithm: sha256
-source_hash: a2e3a118ebc9f86fa50c8e110dc1af6a66c955a60d2cc5504e6493948e23dd21
-rendered_hash: 07ccb310a1f487b3c4bafd8cfb7db305533b3ad19892d40f50b728ab40fb606b
+source_hash: ca08a86fea63a4e7d363ab42d1f893ffb00dcf31b989fa07e152636c920fcde1
+rendered_hash: a68b941af27d980fd9cb2aa3cd4f6be13cf99a6a6d1988d22ce9195e3d9af8ec
 -->
 
 # ADR-PS-0002: ADR Kit Authoring Compiler and Validation System
@@ -33,12 +33,13 @@ access, integrity verification, and CLI orchestration over those surfaces.
 This ADR establishes the concrete authoring/compiler system boundary for those public
 capabilities. Discovery and indexing remain covered by ADR-PS-0001; this ADR
 covers the authoring/compiler implementation that powers canonical parsing,
-compilation, repository loading, contract checks, and artifact integrity.
+compilation, repository loading, contract checks, artifact integrity, and the
+narrow `adr_kit.api` authoring SDK.
 
 The boundary explicitly excludes Assembler behavior, runtime observation or
 evidence extraction, rules execution, substrate management, admission decisions,
 MCP surfaces, and LLM responsibilities. Those belong to later work or sibling
-systems and must not be introduced by Phase 0 production hardening.
+systems and must not be introduced by the Phase 1 SDK.
 
 
 ## Technology Stack

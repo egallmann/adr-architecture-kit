@@ -189,7 +189,18 @@ def test_installed_wheel_harness_declares_all_consumer_probes() -> None:
         check=False,
     )
     assert result.returncode == 0, result.stdout + result.stderr
-    for probe in ("imports", "cli", "external-fixture", "schemas", "templates", "source-isolation"):
+    for probe in (
+        "imports",
+        "cli",
+        "external-fixture",
+        "schemas",
+        "templates",
+        "source-isolation",
+        "sdk-consumer",
+        "sdk-version-parity",
+        "sdk-operations",
+        "compiler-containment",
+    ):
         assert probe in result.stdout
 
 
@@ -223,3 +234,12 @@ def test_pr_workflow_has_source_wheel_quality_security_and_reproducibility_gates
     ):
         assert f"  {contract}:" in workflow
     assert workflow.count("normalize-sdist") >= 3
+    source_section = workflow[workflow.index("  source-tests:") : workflow.index("  governance:")]
+    assert "scripts/test_sdk_consumer.py" in source_section
+    assert "python -m pip install -e ." in source_section
+    assert source_section.count("scripts/test_sdk_consumer.py") >= 2
+    wheel_section = workflow[
+        workflow.index("  wheel-smoke:") : workflow.index("  reproducibility:")
+    ]
+    assert "scripts/test_installed_wheel.py" in wheel_section
+    assert "sdk-consumer" in workflow

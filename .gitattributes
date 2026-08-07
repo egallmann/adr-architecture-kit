@@ -1,0 +1,2 @@
+contracts/compatibility/*.json text eol=lf
+tests/golden/expected/*.yaml text eol=lf

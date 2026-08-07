@@ -1271,9 +1271,9 @@ entities:
 - id: ADR-PC-0004
   entity_type: adr
   name: Repository Boundary and Normalized Semantic Model
-  summary: ArchitectureRepository and NormalizedArchitectureModel are now the stable
-    in-process semantic boundary for consumers. This component captures that consumer
-    contract and keeps interpretation centralized without creating a
+  summary: 'ArchitectureRepository and NormalizedArchitectureModel are the stable
+    in-process semantic boundary for consumers. Phase 1 adds a narrow supported authoring
+    facade that reuses those contracts without wrapping or changing '
   lifecycle_stage: proposed
   canonical_source:
     source_type: physical_component_adr
@@ -3468,6 +3468,50 @@ entities:
   provenance:
     source_type: logical_adr
     source_ref: ADR-L-0003#CAP-0046
+    extraction_phase: extract_capability
+    classification: explicit
+    generator: adr-architecture-index
+- id: CAP-0047
+  entity_type: capability
+  name: Narrow Supported Authoring SDK
+  summary: Provide a deterministic Python facade for explicit-root validation, authoring
+    compilation of registries, manifest, and markdown, repository loading, normalized-model
+    consumption, and local capability discovery.
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0013#CAP-0047
+    artifact_path: adrs/logical/ADR-L-0013-architecture-repository-boundary-and-normalized-semantic-model.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0013
+    domains:
+    - repository
+    - discovery
+    - compiler
+    - kernel
+    implemented_by_components: []
+    enabled_by_decisions: []
+  relationships:
+    declared_in:
+    - ADR-L-0013
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0013#CAP-0047
     extraction_phase: extract_capability
     classification: explicit
     generator: adr-architecture-index
@@ -5938,8 +5982,7 @@ entities:
     generator: adr-architecture-index
 - id: DEC-0050
   entity_type: decision
-  name: Use ArchitectureRepository as the only supported in-process consumer entry
-    point
+  name: Use ArchitectureRepository as the supported in-process semantic entry point
   summary: The repository boundary centralizes scope-safe loading, contract validation,
     path hiding, and registry compatibility adaptation. This keeps consumers from
     binding directly to registry files and current layout.
@@ -7238,6 +7281,136 @@ entities:
   provenance:
     source_type: logical_adr
     source_ref: ADR-L-0013#DEC-0079
+    extraction_phase: extract_decision
+    classification: explicit
+    generator: adr-architecture-index
+- id: DEC-0080
+  entity_type: decision
+  name: Establish adr_kit.api as the narrow supported authoring SDK facade
+  summary: Phase 1 now has sufficient compatibility, packaging, and release controls
+    to add a deliberately bounded facade. The facade supports single-scope validation,
+    authoring compilation for registries, manifest, and markdown, r
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0013#DEC-0080
+    artifact_path: adrs/logical/ADR-L-0013-architecture-repository-boundary-and-normalized-semantic-model.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0013
+    related_invariants: []
+    enforces_invariants: []
+    enables_capabilities: []
+    governs_components: []
+    supersedes: []
+    refines: []
+  relationships:
+    declared_in:
+    - ADR-L-0013
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0013#DEC-0080
+    extraction_phase: extract_decision
+    classification: explicit
+    generator: adr-architecture-index
+- id: DEC-0081
+  entity_type: decision
+  name: Make installed distribution metadata the runtime package-version authority
+  summary: A manually synchronized package literal can drift from build metadata and
+    from the artifact exercised by an installed consumer. Runtime package, CLI, SDK
+    result, and capability versions therefore resolve from installed `
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0003#DEC-0081
+    artifact_path: adrs/logical/ADR-L-0003-quality-assurance-and-testing-strategy.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0003
+    related_invariants: []
+    enforces_invariants: []
+    enables_capabilities: []
+    governs_components: []
+    supersedes: []
+    refines: []
+  relationships:
+    declared_in:
+    - ADR-L-0003
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0003#DEC-0081
+    extraction_phase: extract_decision
+    classification: explicit
+    generator: adr-architecture-index
+- id: DEC-0082
+  entity_type: decision
+  name: Keep repository-local authoring projections separate from workspace runtime
+    state
+  summary: Every artifact stored inside the `adr-architecture-kit` repository is owned
+    and written by ADR Kit. External systems may read its canonical ADRs and supported
+    authoring projections, but they must not target the repositor
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0013#DEC-0082
+    artifact_path: adrs/logical/ADR-L-0013-architecture-repository-boundary-and-normalized-semantic-model.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0013
+    related_invariants: []
+    enforces_invariants: []
+    enables_capabilities: []
+    governs_components: []
+    supersedes: []
+    refines: []
+  relationships:
+    declared_in:
+    - ADR-L-0013
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0013#DEC-0082
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
@@ -10441,6 +10614,168 @@ entities:
   provenance:
     source_type: logical_adr
     source_ref: ADR-L-0003#INV-0073
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
+- id: INV-0074
+  entity_type: invariant
+  name: INV-0074
+  summary: The supported `adr_kit.api` facade MUST NOT expose `ArchModel`, compiler
+    configuration, compiler passes, frontend or backend objects, emitters, internal
+    output artifacts, mutable diagnostic logs, compiler caches, or othe
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0013#INV-0074
+    artifact_path: adrs/logical/ADR-L-0013-architecture-repository-boundary-and-normalized-semantic-model.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0013
+    scope: global
+    statement: 'The supported `adr_kit.api` facade MUST NOT expose `ArchModel`, compiler
+
+      configuration, compiler passes, frontend or backend objects, emitters,
+
+      internal output artifacts, mutable diagnostic logs, compiler caches, or
+
+      other compiler-internal types through public annotations or runtime result
+
+      object graphs.
+
+      '
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions: []
+    supersedes: []
+  relationships:
+    declared_in:
+    - ADR-L-0013
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0013#INV-0074
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
+- id: INV-0075
+  entity_type: invariant
+  name: INV-0075
+  summary: Source, editable-install, and clean retained-wheel consumers MUST exercise
+    the supported SDK and MUST agree on package, CLI, SDK result, capability, and
+    installed-distribution versions wherever distribution metadata exis
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0003#INV-0075
+    artifact_path: adrs/logical/ADR-L-0003-quality-assurance-and-testing-strategy.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0003
+    scope: global
+    statement: 'Source, editable-install, and clean retained-wheel consumers MUST
+      exercise
+
+      the supported SDK and MUST agree on package, CLI, SDK result, capability,
+
+      and installed-distribution versions wherever distribution metadata exists.
+
+      Direct-source fallback MUST occur only when metadata is absent and MUST NOT
+
+      hide invalid installed metadata or package-resource failures.
+
+      '
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions: []
+    supersedes: []
+  relationships:
+    declared_in:
+    - ADR-L-0003
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0003#INV-0075
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
+- id: INV-0076
+  entity_type: invariant
+  name: INV-0076
+  summary: Only ADR Kit tooling MAY create or modify canonical artifacts, authoring
+    projections, compatibility outputs, or other files inside the `adr-architecture-kit`
+    repository. External runtime or workspace tooling MAY read sup
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0013#INV-0076
+    artifact_path: adrs/logical/ADR-L-0013-architecture-repository-boundary-and-normalized-semantic-model.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0013
+    scope: global
+    statement: 'Only ADR Kit tooling MAY create or modify canonical artifacts, authoring
+
+      projections, compatibility outputs, or other files inside the
+
+      `adr-architecture-kit` repository. External runtime or workspace tooling MAY
+
+      read supported repository contracts but MUST NOT write anywhere inside any
+
+      repository tree. All runtime-derived and workspace-derived state MUST be
+
+      written beneath the workspace-root `.ste-workspace` directory.
+
+      '
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions: []
+    supersedes: []
+  relationships:
+    declared_in:
+    - ADR-L-0013
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0013#INV-0076
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index

@@ -53,7 +53,16 @@ authorize removal.
 Compiler passes, IR, emitters, renderers, orchestration plumbing, and other modules not
 classified above are internal/reference implementation. Their behavior can evolve,
 but existing de facto imports are still protected from accidental Phase 0 breakage.
-No new root exports or SDK facade are created in Phase 0.
+Phase 1 adds no root export beyond `__version__`; the supported facade is the separate
+`adr_kit.api` module.
+
+### Supported SDK
+
+`adr_kit.api` is the recommended boundary for new Python integrations. Its exact
+17-symbol inventory and API contract version `1.0` are compatibility tested. Public
+annotations and returned object graphs exclude compiler internals. The supported
+operations are local capability discovery, one-scope validation, restricted authoring
+compilation, and eager repository opening. See [Public Python SDK](public-sdk.md).
 
 ### Generated compatibility
 
@@ -74,10 +83,11 @@ repository-owned commands; never edit a projection directly.
 - Moving to `1.0.0` requires an explicit compatibility review; Phase 0 does not make
   that declaration.
 
-The release tag must be `v<PEP 440 project version>`. Project metadata,
-`adr_kit.__version__`, installed metadata, and `adr --version` must agree. Runtime
-version sourcing from `importlib.metadata` is mandatory Phase 1 work; Phase 0 preserves
-the literal runtime behavior at `0.1.0` and adds a drift guard.
+The release tag must be `v<PEP 440 project version>`. `pyproject.toml` is the only
+manually edited package-version authority. Installed metadata, `adr_kit.__version__`,
+`adr --version`, SDK capabilities, and SDK results must agree. Direct-source execution
+falls back to validated project metadata; an invalid or unavailable source reports the
+explicit non-release sentinel `0+unknown`.
 
 ## Surface-specific rules
 
@@ -98,8 +108,9 @@ the literal runtime behavior at `0.1.0` and adds a drift guard.
 ## Practical consumption
 
 - Depend on `schema/v1.0/` for stable ADR encoding.
-- Use `ArchitectureRepository` and `NormalizedArchitectureModel` for in-process
-  consumption; use the documented generated file contract only when Python is not
+- Use `adr_kit.api` for new in-process integrations. Existing direct
+  `ArchitectureRepository` and `NormalizedArchitectureModel` consumers remain
+  supported; use the documented generated file contract only when Python is not
   available.
 - Treat `ste-spec` as the normative owner of cross-repository Architecture IR.
 - Avoid new dependencies on `ArchModel`, compiler internals, provisional graph shape,

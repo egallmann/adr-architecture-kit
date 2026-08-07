@@ -2,6 +2,25 @@
   "adr_kit": [
     "__version__"
   ],
+  "adr_kit.api": [
+    "ArchitectureRepository",
+    "ArtifactDescriptor",
+    "CapabilityManifest",
+    "CompilationRequest",
+    "CompilationResult",
+    "Diagnostic",
+    "InvalidRequestError",
+    "NormalizedArchitectureModel",
+    "OperationError",
+    "RepositoryError",
+    "SDKError",
+    "ValidationRequest",
+    "ValidationResult",
+    "capabilities",
+    "compile_architecture",
+    "open_repository",
+    "validate_architecture"
+  ],
   "adr_kit.compiler": [
     "AdrIrFragmentCompileError",
     "AdrIrFragmentCompileResult",

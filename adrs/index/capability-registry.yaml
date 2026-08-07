@@ -1975,6 +1975,50 @@ entities:
     extraction_phase: extract_capability
     classification: explicit
     generator: adr-architecture-index
+- id: CAP-0047
+  entity_type: capability
+  name: Narrow Supported Authoring SDK
+  summary: Provide a deterministic Python facade for explicit-root validation, authoring
+    compilation of registries, manifest, and markdown, repository loading, normalized-model
+    consumption, and local capability discovery.
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0013#CAP-0047
+    artifact_path: adrs/logical/ADR-L-0013-architecture-repository-boundary-and-normalized-semantic-model.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0013
+    domains:
+    - repository
+    - discovery
+    - compiler
+    - kernel
+    implemented_by_components: []
+    enabled_by_decisions: []
+  relationships:
+    declared_in:
+    - ADR-L-0013
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0013#CAP-0047
+    extraction_phase: extract_capability
+    classification: explicit
+    generator: adr-architecture-index
 - id: CAP-9000
   entity_type: capability
   name: Kernel Boot Readiness

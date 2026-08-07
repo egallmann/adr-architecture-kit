@@ -24,6 +24,20 @@ adr --help
 
 `adr --help` works from any directory after install. `adr validate` and `adr generate-architecture-index` are project-scoped commands: they require a resolvable project tree with `adrs/` and the expected project markers, or an explicit `--scope PATH`.
 
+New Python integrations should use the narrow supported facade:
+
+```python
+from pathlib import Path
+from adr_kit.api import ValidationRequest, capabilities, validate_architecture
+
+print(capabilities().as_dict())
+result = validate_architecture(ValidationRequest(Path("/absolute/project/root")))
+print(result.success, result.diagnostics)
+```
+
+See the [public SDK guide](docs/public-sdk.md) for preview/write compilation,
+repository queries, diagnostics, and the exact supported inventory.
+
 For a first end-to-end run, use a repository checkout with `adrs/` populated and follow [walkthrough-adr-to-ir.md](docs/walkthrough-adr-to-ir.md). The public example under [`examples/public-v1/`](examples/public-v1/) is included in that walkthrough.
 
 ## Minimal Example
@@ -52,7 +66,8 @@ From a checkout with `adrs/` populated, `adr generate-architecture-index` (with 
 - ADR schemas and frontmatter rules for canonical ADR artifacts
 - Pydantic models, parsing, and validation for ADR and invariant sources
 - Authoring-time normalization and deterministic repository discovery outputs
-- Python API over compiled repository bundles (`ArchitectureRepository`, `NormalizedArchitectureModel`)
+- Narrow installed-package SDK (`adr_kit.api`) over validation, authoring compilation,
+  `ArchitectureRepository`, and `NormalizedArchitectureModel`
 - ADR-to-Architecture-IR adapter logic for the public **`ste-spec`** contract
 
 ## Core Workflow
@@ -124,6 +139,7 @@ Full breakdown: [public-surface-and-stability.md](docs/public-surface-and-stabil
 | Document | Description |
 |----------|-------------|
 | [authority-boundary.md](docs/authority-boundary.md) | Who owns what across `ste-handbook`, `ste-spec`, this kit, `ste-runtime`, and `ste-kernel` |
+| [public-sdk.md](docs/public-sdk.md) | Supported `adr_kit.api` installation and consumer contract |
 | [adr-type-model.md](docs/adr-type-model.md) | ADR taxonomy: `ADR-L`, `ADR-PS`, `ADR-PC`, legacy `ADR-P`, experimental `ADR-V` |
 | [architecture-ir-overview.md](docs/architecture-ir-overview.md) | Three layers: ADR sources, repository discovery bundle, public Architecture IR |
 | [public-surface-and-stability.md](docs/public-surface-and-stability.md) | Stable v1 vs draft vs experimental surfaces |
@@ -152,7 +168,7 @@ Python APIs and CLI entry points declare **architecture implementation intent** 
 
 Normative rationale: [ADR-L-0004](adrs/logical/ADR-L-0004-adr-to-code-traceability-via-decorators.yaml). These decorators only attach `__implements_adrs__` and `__enforces_invariants__`; they do not change control flow.
 
-**ste-runtime** RECON can parse the decorator calls from the AST and emit derived evidence (for example `implementation-attribution-evidence.yaml` under a project’s `.ste` state). That output is **declared linkage**, not proof of correctness: canonical architecture remains the ADR corpus and contracts in **`ste-spec`**.
+**ste-runtime** RECON can parse the decorator calls from the AST and emit derived evidence under the workspace-root `.ste-workspace/` state directory, outside every repository. That output is **declared linkage**, not proof of correctness: canonical architecture remains the ADR corpus and contracts in **`ste-spec`**.
 
 **CLI (`adr attribution`)** validates and inspects RECON-derived (or synthetic) attribution evidence YAML against your repository’s canonical ADRs:
 

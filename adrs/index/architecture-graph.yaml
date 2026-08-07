@@ -4,13 +4,13 @@
 # generator_id: adr-architecture-graph
 # generator_version: 1
 # hash_algorithm: sha256
-# source_hash: 9141fccdd0df2b49202a304629be6e7dee7ea42092fa9d42e4b75a6d60567c62
-# rendered_hash: 8ed89654c6c35564ca3f5d299db5c679e816eb525c8834cc011f8e6fee75169a
+# source_hash: 9d1142904cf99c04e3cec918fa17bdcbcb5560aeaa91f6af9a66a46f737615e5
+# rendered_hash: 60f8968db59fb56906bdbda5a084654d381ebeb6d7fd565492e37f2779e4705e
 
 schema_version: '1.0'
 type: architecture_graph
 architecture_namespace: adr-architecture-kit
-generated_at: '2026-08-05T23:53:09Z'
+generated_at: '2026-08-06T21:01:37Z'
 nodes:
 - id: ADR-L-0001
   entity_type: adr
@@ -544,6 +544,13 @@ nodes:
     source_type: logical_adr
     source_ref: ADR-L-0003#CAP-0046
     artifact_path: adrs/logical/ADR-L-0003-quality-assurance-and-testing-strategy.yaml
+- id: CAP-0047
+  entity_type: capability
+  name: Narrow Supported Authoring SDK
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0013#CAP-0047
+    artifact_path: adrs/logical/ADR-L-0013-architecture-repository-boundary-and-normalized-semantic-model.yaml
 - id: CAP-9000
   entity_type: capability
   name: Kernel Boot Readiness
@@ -947,8 +954,7 @@ nodes:
     artifact_path: adrs/logical/ADR-L-0004-adr-to-code-traceability-via-decorators.yaml
 - id: DEC-0050
   entity_type: decision
-  name: Use ArchitectureRepository as the only supported in-process consumer entry
-    point
+  name: Use ArchitectureRepository as the supported in-process semantic entry point
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0013#DEC-0050
@@ -1170,6 +1176,28 @@ nodes:
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0013#DEC-0079
+    artifact_path: adrs/logical/ADR-L-0013-architecture-repository-boundary-and-normalized-semantic-model.yaml
+- id: DEC-0080
+  entity_type: decision
+  name: Establish adr_kit.api as the narrow supported authoring SDK facade
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0013#DEC-0080
+    artifact_path: adrs/logical/ADR-L-0013-architecture-repository-boundary-and-normalized-semantic-model.yaml
+- id: DEC-0081
+  entity_type: decision
+  name: Make installed distribution metadata the runtime package-version authority
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0003#DEC-0081
+    artifact_path: adrs/logical/ADR-L-0003-quality-assurance-and-testing-strategy.yaml
+- id: DEC-0082
+  entity_type: decision
+  name: Keep repository-local authoring projections separate from workspace runtime
+    state
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0013#DEC-0082
     artifact_path: adrs/logical/ADR-L-0013-architecture-repository-boundary-and-normalized-semantic-model.yaml
 - id: DEC-9000
   entity_type: decision
@@ -1640,6 +1668,27 @@ nodes:
     source_type: logical_adr
     source_ref: ADR-L-0003#INV-0073
     artifact_path: adrs/logical/ADR-L-0003-quality-assurance-and-testing-strategy.yaml
+- id: INV-0074
+  entity_type: invariant
+  name: INV-0074
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0013#INV-0074
+    artifact_path: adrs/logical/ADR-L-0013-architecture-repository-boundary-and-normalized-semantic-model.yaml
+- id: INV-0075
+  entity_type: invariant
+  name: INV-0075
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0003#INV-0075
+    artifact_path: adrs/logical/ADR-L-0003-quality-assurance-and-testing-strategy.yaml
+- id: INV-0076
+  entity_type: invariant
+  name: INV-0076
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0013#INV-0076
+    artifact_path: adrs/logical/ADR-L-0013-architecture-repository-boundary-and-normalized-semantic-model.yaml
 - id: SYS-0001
   entity_type: system
   name: ADR Architecture Kit Discovery and Indexing System
@@ -2113,6 +2162,16 @@ edges:
   evidence:
   - ADR-L-0003#CAP-0046
   canonical_source_ref: ADR-L-0003#CAP-0046
+  confidence: 1.0
+  metadata: {}
+- relationship_id: declared_in:CAP-0047:ADR-L-0013
+  relationship_type: declared_in
+  source_entity_id: CAP-0047
+  target_entity_id: ADR-L-0013
+  provenance_classification: explicit
+  evidence:
+  - ADR-L-0013#CAP-0047
+  canonical_source_ref: ADR-L-0013#CAP-0047
   confidence: 1.0
   metadata: {}
 - relationship_id: declared_in:CAP-9000:ADR-L-9000
@@ -2975,6 +3034,36 @@ edges:
   canonical_source_ref: ADR-L-0013#DEC-0079
   confidence: 1.0
   metadata: {}
+- relationship_id: declared_in:DEC-0080:ADR-L-0013
+  relationship_type: declared_in
+  source_entity_id: DEC-0080
+  target_entity_id: ADR-L-0013
+  provenance_classification: explicit
+  evidence:
+  - ADR-L-0013#DEC-0080
+  canonical_source_ref: ADR-L-0013#DEC-0080
+  confidence: 1.0
+  metadata: {}
+- relationship_id: declared_in:DEC-0081:ADR-L-0003
+  relationship_type: declared_in
+  source_entity_id: DEC-0081
+  target_entity_id: ADR-L-0003
+  provenance_classification: explicit
+  evidence:
+  - ADR-L-0003#DEC-0081
+  canonical_source_ref: ADR-L-0003#DEC-0081
+  confidence: 1.0
+  metadata: {}
+- relationship_id: declared_in:DEC-0082:ADR-L-0013
+  relationship_type: declared_in
+  source_entity_id: DEC-0082
+  target_entity_id: ADR-L-0013
+  provenance_classification: explicit
+  evidence:
+  - ADR-L-0013#DEC-0082
+  canonical_source_ref: ADR-L-0013#DEC-0082
+  confidence: 1.0
+  metadata: {}
 - relationship_id: declared_in:DEC-9000:ADR-L-9000
   relationship_type: declared_in
   source_entity_id: DEC-9000
@@ -3643,6 +3732,36 @@ edges:
   evidence:
   - ADR-L-0003#INV-0073
   canonical_source_ref: ADR-L-0003#INV-0073
+  confidence: 1.0
+  metadata: {}
+- relationship_id: declared_in:INV-0074:ADR-L-0013
+  relationship_type: declared_in
+  source_entity_id: INV-0074
+  target_entity_id: ADR-L-0013
+  provenance_classification: explicit
+  evidence:
+  - ADR-L-0013#INV-0074
+  canonical_source_ref: ADR-L-0013#INV-0074
+  confidence: 1.0
+  metadata: {}
+- relationship_id: declared_in:INV-0075:ADR-L-0003
+  relationship_type: declared_in
+  source_entity_id: INV-0075
+  target_entity_id: ADR-L-0003
+  provenance_classification: explicit
+  evidence:
+  - ADR-L-0003#INV-0075
+  canonical_source_ref: ADR-L-0003#INV-0075
+  confidence: 1.0
+  metadata: {}
+- relationship_id: declared_in:INV-0076:ADR-L-0013
+  relationship_type: declared_in
+  source_entity_id: INV-0076
+  target_entity_id: ADR-L-0013
+  provenance_classification: explicit
+  evidence:
+  - ADR-L-0013#INV-0076
+  canonical_source_ref: ADR-L-0013#INV-0076
   confidence: 1.0
   metadata: {}
 - relationship_id: declared_in:SYS-0001:ADR-PS-0001

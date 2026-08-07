@@ -5,8 +5,8 @@ artifact_kind: rendered_adr_markdown
 generator_id: adr-rendered-markdown
 generator_version: 1
 hash_algorithm: sha256
-source_hash: 1ba02529b44559b7f25d4f65c4d4cee32e0d88ffc51844efee4bae949c1d4a65
-rendered_hash: d7868449e98473b60f2ae8f127e09d3b1aa6a9b08d1045dbeca7d7ee8c8396b0
+source_hash: ace28f2bb60de0ec6a6e0af2826aa3714aed63cb582c35dd12d8f09c74810eeb
+rendered_hash: bcf2a9d04ab90e8b9aee15079cbfa57672cce1db59dddd2946802c0b04b79e83
 -->
 
 # ADR-PC-0004: Repository Boundary and Normalized Semantic Model
@@ -24,10 +24,10 @@ rendered_hash: d7868449e98473b60f2ae8f127e09d3b1aa6a9b08d1045dbeca7d7ee8c8396b0
 
 ## Context
 
-ArchitectureRepository and NormalizedArchitectureModel are now the stable
-in-process semantic boundary for consumers. This component captures that
-consumer contract and keeps interpretation centralized without creating a
-broader SDK facade or changing the normalized model in Phase 0.
+ArchitectureRepository and NormalizedArchitectureModel are the stable
+in-process semantic boundary for consumers. Phase 1 adds a narrow supported
+authoring facade that reuses those contracts without wrapping or changing the
+normalized model and without making registry loaders or path helpers public.
 
 
 ## Technology Stack
@@ -63,7 +63,8 @@ Typed normalized semantic models.
 - **IFACE-0014** (library_api): Public surfaces:
 - ArchitectureRepository
 - NormalizedArchitectureModel
-- registry loader and reposi...
+...- **IFACE-0019** (library_api): `adr_kit.api.open_repository` resolves an explicit project root, eagerly
+loads it, and returns the e...
 
 **Implementation Identifiers:**
 - Module Path: `src/adr_kit/repository/architecture_repository.py`
@@ -82,14 +83,26 @@ as its own component authority.
 
 
 
-### IMPL-0017: Defer a narrow facade and constrain future Assembler dependencies
+### IMPL-0017: Record the Phase 0 facade deferral and constrain future Assembler dependencies
 
 **Rationale:**
-Phase 0 preserves `ArchitectureRepository` and
-`NormalizedArchitectureModel` exactly as the present consumer seam. A later
-narrow facade may wrap supported interfaces, but it is not created here.
+Phase 0 preserved `ArchitectureRepository` and
+`NormalizedArchitectureModel` exactly as the consumer seam and deferred a
+facade. Phase 1 completes that bounded deferral through IFACE-0019 without
+wrapping or changing either contract.
 A future Assembler may depend only on that supported seam and must not bind
 to compiler IR, compiler passes, raw ADR parsing, or generated-file layout.
+
+
+
+
+### IMPL-0020: Reuse private normalized-bundle assembly across repository and SDK compilation
+
+**Rationale:**
+Constructing the detached SDK model from the same emitted registry bytes and
+private assembly logic used by ArchitectureRepository prevents semantic and
+fingerprint drift while preserving the normalized model's existing shape and
+behavior.
 
 
 

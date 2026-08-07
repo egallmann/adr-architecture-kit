@@ -19,6 +19,13 @@ from typing import TypeVar
 import yaml
 
 from adr_kit.compiler import ArchitectureCompiler, CompilerConfig
+from adr_kit.api import (
+    CompilationRequest,
+    ValidationRequest,
+    compile_architecture,
+    open_repository,
+    validate_architecture,
+)
 from adr_kit.compiler.backend.graph_rendering import build_architecture_graph, render_graph_yaml
 from adr_kit.compiler.diagnostics import DiagnosticLog
 from adr_kit.compiler.frontend import CachedADRParser, FrontendBuildResult
@@ -53,6 +60,7 @@ STAGE_NAMES = (
     "repository_loading",
     "representative_queries",
 )
+SDK_STAGE_NAMES = ("sdk_validate", "sdk_compile_preview", "sdk_open_repository")
 SOURCE_DIRS = ("logical", "physical", "physical-system", "physical-component", "invariants")
 T = TypeVar("T")
 
@@ -146,7 +154,9 @@ def _new_state(scope: ProjectScope) -> CompilerPipelineState:
     )
 
 
-def _run_iteration(case: CorpusCase, output: Path) -> tuple[dict[str, float], str]:
+def _run_iteration(
+    case: CorpusCase, output: Path
+) -> tuple[dict[str, float], str, dict[str, float], dict[str, object]]:
     timings: dict[str, float] = {}
     resolver = ProjectScopeResolver(explicit_scope=case.root)
     scope = resolver.resolve()
@@ -212,12 +222,35 @@ def _run_iteration(case: CorpusCase, output: Path) -> tuple[dict[str, float], st
         )
 
     timings["representative_queries"], _ = _measure(query)
-    return timings, model.fingerprint
+    sdk_timings: dict[str, float] = {}
+    sdk_timings["sdk_validate"], sdk_validation = _measure(
+        lambda: validate_architecture(ValidationRequest(case.root))
+    )
+    sdk_timings["sdk_compile_preview"], sdk_compilation = _measure(
+        lambda: compile_architecture(CompilationRequest(case.root, timestamp=FIXED_TIMESTAMP))
+    )
+    sdk_timings["sdk_open_repository"], sdk_repository = _measure(
+        lambda: open_repository(case.root)
+    )
+    if not sdk_validation.success or not sdk_compilation.success:
+        raise RuntimeError("SDK benchmark operation failed")
+    evidence: dict[str, object] = {
+        "validation_diagnostics": [
+            (item.severity, item.code, item.message, item.path)
+            for item in sdk_validation.diagnostics
+        ],
+        "artifact_hashes": {item.artifact_id: item.sha256 for item in sdk_compilation.artifacts},
+        "preview_fingerprint": sdk_compilation.fingerprint,
+        "repository_fingerprint": sdk_repository.fingerprint(),
+    }
+    return timings, model.fingerprint, sdk_timings, evidence
 
 
-def _summarize(samples: list[dict[str, float]]) -> dict[str, dict[str, object]]:
+def _summarize(
+    samples: list[dict[str, float]], stage_names: tuple[str, ...] = STAGE_NAMES
+) -> dict[str, dict[str, object]]:
     summary: dict[str, dict[str, object]] = {}
-    for stage in STAGE_NAMES:
+    for stage in stage_names:
         values = [sample[stage] for sample in samples]
         warm = values[1:]
         summary[stage] = {
@@ -249,25 +282,36 @@ def run(corpus: str, sizes: list[int], warmups: int, repeats: int) -> dict[str, 
         results: list[dict[str, object]] = []
         fingerprints: dict[str, str] = {}
         deterministic = True
+        sdk_deterministic = True
+        sdk_evidence: dict[str, object] = {}
         for case in cases:
             for index in range(warmups):
                 _run_iteration(case, base / "outputs" / case.name / f"warmup-{index}")
             samples: list[dict[str, float]] = []
+            sdk_samples: list[dict[str, float]] = []
             case_fingerprints: list[str] = []
+            case_sdk_evidence: list[dict[str, object]] = []
             for index in range(repeats + 1):
-                timings, fingerprint = _run_iteration(
+                timings, fingerprint, sdk_timings, evidence = _run_iteration(
                     case, base / "outputs" / case.name / f"repeat-{index}"
                 )
                 samples.append(timings)
+                sdk_samples.append(sdk_timings)
                 case_fingerprints.append(fingerprint)
+                case_sdk_evidence.append(evidence)
             deterministic = deterministic and len(set(case_fingerprints)) == 1
+            sdk_deterministic = sdk_deterministic and all(
+                item == case_sdk_evidence[0] for item in case_sdk_evidence
+            )
             fingerprints[f"{case.name}:{case.adr_count}"] = case_fingerprints[0]
+            sdk_evidence[f"{case.name}:{case.adr_count}"] = case_sdk_evidence[0]
             results.append(
                 {
                     "corpus": case.name,
                     "adr_count": case.adr_count,
                     "identity": case.identity,
                     "stages": _summarize(samples),
+                    "sdk_stages": _summarize(sdk_samples, SDK_STAGE_NAMES),
                 }
             )
         return {
@@ -286,6 +330,8 @@ def run(corpus: str, sizes: list[int], warmups: int, repeats: int) -> dict[str, 
             "results": results,
             "fingerprints": fingerprints,
             "deterministic": deterministic,
+            "sdk_deterministic": sdk_deterministic,
+            "sdk_evidence": sdk_evidence,
         }
 
 

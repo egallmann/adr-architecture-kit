@@ -266,7 +266,7 @@ capabilities:
   - Format optimized for target agent
   - Easy to add new formats
 architectural_boundaries:
-- id: BOUND-0001
+- id: BOUND-0004
   name: Prompt Translator
   description: |
     Translates ADRs into implementation prompts
@@ -284,7 +284,7 @@ architectural_boundaries:
   - Must preserve all invariants
   - Must include complete specifications
 interaction_contracts:
-- id: CONTRACT-0001
+- id: CONTRACT-0004
   parties:
   - ADR Parser
   - Prompt Generator
@@ -294,7 +294,7 @@ interaction_contracts:
     Parser validates ADR completeness.
     Generator receives validated component data.
     Generator produces structured prompt.
-- id: CONTRACT-0002
+- id: CONTRACT-0005
   parties:
   - Prompt Generator
   - AI Agent
@@ -413,4 +413,16 @@ migration_origin:
   - entity_type: invariant
     from: INV-0032
     to: INV-0051
+  - entity_type: boundary
+    from: BOUND-0001
+    to: BOUND-0004
+    source_pointer: /architectural_boundaries/0/id
+  - entity_type: contract
+    from: CONTRACT-0001
+    to: CONTRACT-0004
+    source_pointer: /interaction_contracts/0/id
+  - entity_type: contract
+    from: CONTRACT-0002
+    to: CONTRACT-0005
+    source_pointer: /interaction_contracts/1/id
   original_capability_id: CAP-0005

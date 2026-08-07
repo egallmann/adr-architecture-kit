@@ -37,6 +37,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -84,6 +89,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -129,6 +139,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -174,6 +189,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -217,6 +237,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -260,6 +285,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -303,6 +333,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -346,6 +381,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -389,6 +429,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -432,6 +477,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -475,6 +525,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -524,6 +579,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -567,6 +627,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -610,6 +675,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -653,6 +723,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -697,6 +772,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -740,6 +820,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -783,6 +868,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -830,6 +920,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -873,6 +968,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -917,6 +1017,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -960,6 +1065,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -1003,6 +1113,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -1046,6 +1161,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -1089,6 +1209,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -1136,6 +1261,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -1179,6 +1309,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -1223,6 +1358,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -1265,6 +1405,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -1308,6 +1453,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -1351,6 +1501,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -1394,6 +1549,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -1437,6 +1597,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -1480,6 +1645,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -1523,6 +1693,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -1567,6 +1742,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -1610,6 +1790,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -1654,6 +1839,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -1697,6 +1887,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -1741,6 +1936,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -1784,6 +1984,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -1827,6 +2032,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -1871,6 +2081,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -1914,6 +2129,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -1958,6 +2178,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -2001,6 +2226,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -2045,6 +2275,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -2088,6 +2323,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -2131,6 +2371,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -2174,6 +2419,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -2217,6 +2467,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -2261,6 +2516,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -2304,6 +2564,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -2348,6 +2613,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -2392,6 +2662,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -2436,6 +2711,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -2480,6 +2760,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -2523,6 +2808,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -2567,6 +2857,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -2611,6 +2906,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -2655,6 +2955,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -2698,6 +3003,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -2742,6 +3052,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -2785,6 +3100,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -2828,6 +3148,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -2871,6 +3196,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -2915,6 +3245,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -2959,6 +3294,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -3002,6 +3342,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -3044,6 +3389,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -3088,6 +3438,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -3132,6 +3487,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -3175,6 +3535,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -3219,6 +3584,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -3262,6 +3632,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -3305,6 +3680,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -3349,6 +3729,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -3392,6 +3777,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -3435,6 +3825,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -3478,6 +3873,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -3521,6 +3921,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -3565,12 +3970,306 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
   provenance:
     source_type: logical_adr
     source_ref: ADR-L-0013#DEC-0082
+    extraction_phase: extract_decision
+    classification: explicit
+    generator: adr-architecture-index
+- id: DEC-0083
+  entity_type: decision
+  name: Introduce provisional additive ADR authoring schema v1.2
+  summary: Schema v1.2 extends the existing ADR authoring shapes with external-reference,
+    binding, evidence-expectation, and topology-ID fields. Version dispatch must be
+    explicit. Schema v1.0 files remain byte-for-byte frozen and v
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0018#DEC-0083
+    artifact_path: adrs/logical/ADR-L-0018-schema-v12-and-normalized-semantic-foundation.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0018
+    related_invariants: []
+    enforces_invariants: []
+    enables_capabilities: []
+    governs_components: []
+    supersedes: []
+    refines: []
+  relationships:
+    declared_in:
+    - ADR-L-0018
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0018#DEC-0083
+    extraction_phase: extract_decision
+    classification: explicit
+    generator: adr-architecture-index
+- id: DEC-0084
+  entity_type: decision
+  name: Represent external bindings as qualified references without absorbing authority
+  summary: Local entity references remain bare IDs. A cross-repository entity reference
+    is an object containing required `namespace`, `id`, `kind`, and `fingerprint`
+    fields; its normalized display qualification is `namespace:id`. F
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0018#DEC-0084
+    artifact_path: adrs/logical/ADR-L-0018-schema-v12-and-normalized-semantic-foundation.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0018
+    related_invariants: []
+    enforces_invariants: []
+    enables_capabilities: []
+    governs_components: []
+    supersedes: []
+    refines: []
+  relationships:
+    declared_in:
+    - ADR-L-0018
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0018#DEC-0084
+    extraction_phase: extract_decision
+    classification: explicit
+    generator: adr-architecture-index
+- id: DEC-0085
+  entity_type: decision
+  name: Promote four already-authored entity types into normalized model version 1.1
+  summary: '`boundary`, `contract`, `interface`, and `implementation_decision` are
+    already independently identified in canonical ADRs and are useful through repository
+    queries. They join the existing `adr`, `system`, `component`, `d'
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0018#DEC-0085
+    artifact_path: adrs/logical/ADR-L-0018-schema-v12-and-normalized-semantic-foundation.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0018
+    related_invariants: []
+    enforces_invariants: []
+    enables_capabilities: []
+    governs_components: []
+    supersedes: []
+    refines: []
+  relationships:
+    declared_in:
+    - ADR-L-0018
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0018#DEC-0085
+    extraction_phase: extract_decision
+    classification: explicit
+    generator: adr-architecture-index
+- id: DEC-0086
+  entity_type: decision
+  name: Add deterministic source-sensitive assertion identity without replacing relationship
+    identity
+  summary: Historical `relationship_id` remains the endpoint-derived compatibility
+    key. `assertion_id` is `asrt-` followed by the lowercase SHA-256 hexadecimal digest
+    of the UTF-8 canonical JSON array `[relationship_type, from_enti
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0018#DEC-0086
+    artifact_path: adrs/logical/ADR-L-0018-schema-v12-and-normalized-semantic-foundation.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0018
+    related_invariants: []
+    enforces_invariants: []
+    enables_capabilities: []
+    governs_components: []
+    supersedes: []
+    refines: []
+  relationships:
+    declared_in:
+    - ADR-L-0018
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0018#DEC-0086
+    extraction_phase: extract_decision
+    classification: explicit
+    generator: adr-architecture-index
+- id: DEC-0087
+  entity_type: decision
+  name: Add optional stable topology IDs and deterministic dry-run-first migration
+  summary: V1.2 topology component IDs use the closed pattern `TOPO-[A-Z0-9][A-Z0-9-]*`.
+    Endpoints and data-flow paths may use IDs or legacy names, but every reference
+    must resolve exactly once. Migration preserves existing IDs, al
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0018#DEC-0087
+    artifact_path: adrs/logical/ADR-L-0018-schema-v12-and-normalized-semantic-foundation.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0018
+    related_invariants: []
+    enforces_invariants: []
+    enables_capabilities: []
+    governs_components: []
+    supersedes: []
+    refines: []
+  relationships:
+    declared_in:
+    - ADR-L-0018
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0018#DEC-0087
+    extraction_phase: extract_decision
+    classification: explicit
+    generator: adr-architecture-index
+- id: DEC-0088
+  entity_type: decision
+  name: Make ADR Kit the exclusive repair authority for canonical entity-ID collisions
+  summary: Promoting independently authored boundaries, contracts, interfaces, and
+    implementation decisions exposed historical bare-ID collisions inside this repository.
+    Repository qualification cannot resolve an intra-repository c
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0018#DEC-0088
+    artifact_path: adrs/logical/ADR-L-0018-schema-v12-and-normalized-semantic-foundation.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0018
+    related_invariants: []
+    enforces_invariants: []
+    enables_capabilities: []
+    governs_components: []
+    supersedes: []
+    refines: []
+  relationships:
+    declared_in:
+    - ADR-L-0018
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0018#DEC-0088
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
@@ -3609,6 +4308,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []

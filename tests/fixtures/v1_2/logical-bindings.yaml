@@ -1,0 +1,60 @@
+schema_version: '1.2'
+adr_type: logical
+id: ADR-L-9801
+title: V1.2 Binding Contract Fixture
+status: accepted
+created_date: '2026-08-07'
+authors:
+- phase2-test
+domains:
+- phase2
+context: |
+  Exercise additive external binding contracts without loading external authority.
+decisions:
+- id: DEC-9801
+  summary: Bind external authority by reference
+  rationale: External semantics remain owned by their provider namespaces.
+architectural_boundaries:
+- id: BOUND-9801
+  name: External Authority Boundary
+  description: Separates local authoring from external semantic ownership.
+  rationale: Bindings must not absorb provider authority.
+interaction_contracts:
+- id: CONTRACT-9801
+  parties:
+  - DEC-9801
+  - COMP-9801
+  protocol: authored_reference
+  guarantees: External references retain provider namespace and fingerprint.
+substrate_bindings:
+- external_namespace: ste-substrate
+  artifact_id: SUBSTRATE-0001
+  kind: context_domain
+  version: 1.0.0
+  fingerprint: sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+  source_pack: core-context
+  role: required_context
+  selected_by: DEC-9801
+  local_config_ref: config/context.yaml
+rule_bindings:
+- rule_id: RULE-0001
+  namespace: ste-rules
+  version: 2.1.0
+  fingerprint: sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb
+  disposition: refined
+  rationale: The local decision narrows the provider rule without redefining it.
+  owner: architecture-systems
+  affected_entities:
+  - DEC-9801
+  - namespace: provider-architecture
+    id: CAP-0042
+    kind: capability
+    fingerprint: sha256:cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
+  expected_evidence_ref: EVID-9801
+evidence_expectations:
+- expectation_id: EVID-9801
+  kind: test_result
+  description: A deterministic conformance test result is expected at runtime.
+  related_entities:
+  - DEC-9801
+gaps: []

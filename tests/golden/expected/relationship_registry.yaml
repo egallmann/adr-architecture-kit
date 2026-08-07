@@ -1,7 +1,52 @@
 schema_version: '1.1'
 type: relationship_registry
 relationships:
+- relationship_id: declared_in:BOUND-0001:ADR-L-0001
+  assertion_id: asrt-5ab86705a3849ee43b12670df20b4a3a8c095db548df6cafc68f5deb32af8c6c
+  relationship_type: declared_in
+  from_entity_id: BOUND-0001
+  to_entity_id: ADR-L-0001
+  provenance_classification: explicit
+  evidence:
+  - ADR-L-0001#BOUND-0001
+  canonical_source_ref: ADR-L-0001#BOUND-0001
+  confidence: 1.0
+  metadata: {}
+- relationship_id: declared_in:BOUND-0002:ADR-L-0001
+  assertion_id: asrt-86b9f901c6d7c787bc5d3f8852f7e4e5c746035a14442113efe1e66d57141f6a
+  relationship_type: declared_in
+  from_entity_id: BOUND-0002
+  to_entity_id: ADR-L-0001
+  provenance_classification: explicit
+  evidence:
+  - ADR-L-0001#BOUND-0002
+  canonical_source_ref: ADR-L-0001#BOUND-0002
+  confidence: 1.0
+  metadata: {}
+- relationship_id: declared_in:BOUND-0003:ADR-L-0001
+  assertion_id: asrt-a6ce5065362d3f81e093035ce614e3c3bbcb4b737791588820c5b347f1b11e54
+  relationship_type: declared_in
+  from_entity_id: BOUND-0003
+  to_entity_id: ADR-L-0001
+  provenance_classification: explicit
+  evidence:
+  - ADR-L-0001#BOUND-0003
+  canonical_source_ref: ADR-L-0001#BOUND-0003
+  confidence: 1.0
+  metadata: {}
+- relationship_id: declared_in:BOUND-0004:ADR-L-0005
+  assertion_id: asrt-0bf1cbde96cb628ce6fd869367e4f94bc7c164e558a4a4850d0b7457dcfa5cd6
+  relationship_type: declared_in
+  from_entity_id: BOUND-0004
+  to_entity_id: ADR-L-0005
+  provenance_classification: explicit
+  evidence:
+  - ADR-L-0005#BOUND-0004
+  canonical_source_ref: ADR-L-0005#BOUND-0004
+  confidence: 1.0
+  metadata: {}
 - relationship_id: declared_in:CAP-0001:ADR-L-0001
+  assertion_id: asrt-f3f0a66246bd573b50132247581b23ef5adef8c83c4dbe44d07a4b6bfd4f132a
   relationship_type: declared_in
   from_entity_id: CAP-0001
   to_entity_id: ADR-L-0001
@@ -12,6 +57,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: declared_in:CAP-0002:ADR-L-0001
+  assertion_id: asrt-84fa6a10d1c7c99e491ea27c1480615ff23f2b62d0f2b7acadcbe0e2fe71e80c
   relationship_type: declared_in
   from_entity_id: CAP-0002
   to_entity_id: ADR-L-0001
@@ -22,6 +68,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: declared_in:CAP-0003:ADR-L-0001
+  assertion_id: asrt-dbf7c8ee5d2e3b6cb2d3cca2edd79715976a26d2888c8cd760c6293f49eb4b06
   relationship_type: declared_in
   from_entity_id: CAP-0003
   to_entity_id: ADR-L-0001
@@ -32,6 +79,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: declared_in:CAP-0004:ADR-L-0001
+  assertion_id: asrt-9d497b83600d046f0bd1963be36af6b463329a718d06ced7d84658fe4bf4772d
   relationship_type: declared_in
   from_entity_id: CAP-0004
   to_entity_id: ADR-L-0001
@@ -42,6 +90,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: declared_in:CAP-0005:ADR-L-0001
+  assertion_id: asrt-51ddee0a4aa960ed77cd88d2d701c83537b0bf598f6b0570bb82735040f93350
   relationship_type: declared_in
   from_entity_id: CAP-0005
   to_entity_id: ADR-L-0001
@@ -52,6 +101,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: declared_in:CAP-0006:ADR-L-0001
+  assertion_id: asrt-0e73c31b5358ca28133f80b1cad91a45ad7869bbfc2f45af63281cc89f60248c
   relationship_type: declared_in
   from_entity_id: CAP-0006
   to_entity_id: ADR-L-0001
@@ -62,6 +112,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: declared_in:CAP-0007:ADR-L-0001
+  assertion_id: asrt-707d39603a8a077fd1c9119f634ff2c820a0b5458d8503c48259dfb790a6d77d
   relationship_type: declared_in
   from_entity_id: CAP-0007
   to_entity_id: ADR-L-0001
@@ -72,6 +123,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: declared_in:CAP-0008:ADR-L-0005
+  assertion_id: asrt-f1b2eff57cba6882854c704f1dce936828d6ef1a91bf73cb0be834e6a02b2480
   relationship_type: declared_in
   from_entity_id: CAP-0008
   to_entity_id: ADR-L-0005
@@ -82,6 +134,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: declared_in:CAP-0009:ADR-L-0005
+  assertion_id: asrt-102d5ba99da9c5a703a5170ccf873caa67dad09a98481903f371df24d35049cf
   relationship_type: declared_in
   from_entity_id: CAP-0009
   to_entity_id: ADR-L-0005
@@ -92,6 +145,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: declared_in:CAP-0010:ADR-L-0006
+  assertion_id: asrt-b982f1f4bf2355923f64fec5df556fca15d237e9804d4cceb79e8d4b1a00a9ee
   relationship_type: declared_in
   from_entity_id: CAP-0010
   to_entity_id: ADR-L-0006
@@ -102,6 +156,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: declared_in:CAP-0011:ADR-L-0006
+  assertion_id: asrt-a496caf8d7513012239c99318c488d2b989930dd9c5c3a6d110a843524600738
   relationship_type: declared_in
   from_entity_id: CAP-0011
   to_entity_id: ADR-L-0006
@@ -112,6 +167,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: declared_in:CAP-0012:ADR-L-0006
+  assertion_id: asrt-7acc9f0433e875053626d0d98b2d83130651c24386791754c1799541a1457e7c
   relationship_type: declared_in
   from_entity_id: CAP-0012
   to_entity_id: ADR-L-0006
@@ -122,6 +178,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: declared_in:CAP-0013:ADR-L-0006
+  assertion_id: asrt-7c78012f262b86b21a48f81696355352515236a9f7dab2790344b3aaf4a345d2
   relationship_type: declared_in
   from_entity_id: CAP-0013
   to_entity_id: ADR-L-0006
@@ -132,6 +189,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: declared_in:CAP-0014:ADR-L-0007
+  assertion_id: asrt-95d249a099c430af3c85354ac98d7239d94428f84113e8eab9b7b08125de1424
   relationship_type: declared_in
   from_entity_id: CAP-0014
   to_entity_id: ADR-L-0007
@@ -142,6 +200,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: declared_in:CAP-0015:ADR-L-0008
+  assertion_id: asrt-1cd6ede36212240b1cfb6cbf0e1c3c52db02d765e384b9d6f069341d802fc272
   relationship_type: declared_in
   from_entity_id: CAP-0015
   to_entity_id: ADR-L-0008
@@ -152,6 +211,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: declared_in:CAP-0016:ADR-L-0008
+  assertion_id: asrt-3ed477571dc654def586a91932ad67a960aee2479d684a7bf54c94c57ab6ea2a
   relationship_type: declared_in
   from_entity_id: CAP-0016
   to_entity_id: ADR-L-0008
@@ -162,6 +222,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: declared_in:CAP-0017:ADR-L-0009
+  assertion_id: asrt-f361b1a1a126fd4b42083e4090dc2ed0e728e6097e1c23a16d1cff2441203a90
   relationship_type: declared_in
   from_entity_id: CAP-0017
   to_entity_id: ADR-L-0009
@@ -172,6 +233,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: declared_in:CAP-0018:ADR-L-0009
+  assertion_id: asrt-f01b8d93d819c130c400ba1697187a6828a4bc8b8f9beb3eb27c0dff62dad022
   relationship_type: declared_in
   from_entity_id: CAP-0018
   to_entity_id: ADR-L-0009
@@ -182,6 +244,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: declared_in:CAP-0019:ADR-L-0002
+  assertion_id: asrt-a6a16b72d0244430fee2e4153aace25e379cb3a208260cb8a577d0750a349045
   relationship_type: declared_in
   from_entity_id: CAP-0019
   to_entity_id: ADR-L-0002
@@ -192,6 +255,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: declared_in:CAP-0020:ADR-L-0003
+  assertion_id: asrt-485143cac8fb10a48af8e1b17c246e9b7b645dd9d254b38fefb868c6ac199b6a
   relationship_type: declared_in
   from_entity_id: CAP-0020
   to_entity_id: ADR-L-0003
@@ -202,6 +266,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: declared_in:CAP-0021:ADR-L-0004
+  assertion_id: asrt-99b2f3b456cd95bce8d4021afa1c49b4e78cb481dce661a7abd876b88fcf1f17
   relationship_type: declared_in
   from_entity_id: CAP-0021
   to_entity_id: ADR-L-0004
@@ -212,6 +277,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: declared_in:CAP-0022:ADR-L-0002
+  assertion_id: asrt-74754dca633bee8a923b0adf25f2f9dbad9052ceaa9e68f1a6ca25254834b5f9
   relationship_type: declared_in
   from_entity_id: CAP-0022
   to_entity_id: ADR-L-0002
@@ -222,6 +288,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: declared_in:CAP-0023:ADR-L-0003
+  assertion_id: asrt-69a27cd2201ed3f7d06ca16cba1ce6fb649a291ea471c4492385019399ab68bb
   relationship_type: declared_in
   from_entity_id: CAP-0023
   to_entity_id: ADR-L-0003
@@ -232,6 +299,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: declared_in:CAP-0024:ADR-L-0004
+  assertion_id: asrt-71a55f307c7e779b0b371ca20c694a28f7dccf883c765e89e1a93617ba255e50
   relationship_type: declared_in
   from_entity_id: CAP-0024
   to_entity_id: ADR-L-0004
@@ -242,6 +310,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: declared_in:CAP-0025:ADR-L-0002
+  assertion_id: asrt-ea0d248d85e1e90e7517fea08a6d34d246755eef00550ab5083fa1e277966378
   relationship_type: declared_in
   from_entity_id: CAP-0025
   to_entity_id: ADR-L-0002
@@ -252,6 +321,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: declared_in:CAP-0026:ADR-L-0003
+  assertion_id: asrt-61780bd600e12b3bb17304003362012f5c3679c1fa18520ae3dac13c44810bd3
   relationship_type: declared_in
   from_entity_id: CAP-0026
   to_entity_id: ADR-L-0003
@@ -262,6 +332,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: declared_in:CAP-0027:ADR-L-0004
+  assertion_id: asrt-2ec6f8cc5e5da27ce44ba70ff05eda8fe1b5094fa630d6e7cced05b402decfb2
   relationship_type: declared_in
   from_entity_id: CAP-0027
   to_entity_id: ADR-L-0004
@@ -272,6 +343,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: declared_in:CAP-0028:ADR-L-0002
+  assertion_id: asrt-3cc2526bbb1aef600505ffa3671712f5f35bb1ccb3b3fd218fd228733c550a84
   relationship_type: declared_in
   from_entity_id: CAP-0028
   to_entity_id: ADR-L-0002
@@ -282,6 +354,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: declared_in:CAP-0029:ADR-L-0003
+  assertion_id: asrt-d1c0ae50e9a64f0616d24a13d91fea923d0631a1b4fc992f1f155933081676f3
   relationship_type: declared_in
   from_entity_id: CAP-0029
   to_entity_id: ADR-L-0003
@@ -292,6 +365,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: declared_in:CAP-0030:ADR-L-0004
+  assertion_id: asrt-a451645bf4d50e4ac2d5209d62910ed6e6be5e8af96355c092a9837ac3ded534
   relationship_type: declared_in
   from_entity_id: CAP-0030
   to_entity_id: ADR-L-0004
@@ -302,6 +376,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: declared_in:CAP-0031:ADR-L-0005
+  assertion_id: asrt-498d6ac27ac1e67e30db7ad82e0e391a1a988f96ea08b6e2a56027cb2aba7cf0
   relationship_type: declared_in
   from_entity_id: CAP-0031
   to_entity_id: ADR-L-0005
@@ -312,6 +387,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: declared_in:CAP-0032:ADR-L-0005
+  assertion_id: asrt-f50c9bca9fdd8ba424114cea59224a35c1bdc4a38ccd08aef41e2d654360cee9
   relationship_type: declared_in
   from_entity_id: CAP-0032
   to_entity_id: ADR-L-0005
@@ -322,6 +398,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: declared_in:CAP-0033:ADR-L-0005
+  assertion_id: asrt-9aedbd7d953fd2bec7e6f02e9642d1c9cbc3c0d332510e1b21375089c3aa7a40
   relationship_type: declared_in
   from_entity_id: CAP-0033
   to_entity_id: ADR-L-0005
@@ -332,6 +409,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: declared_in:CAP-0034:ADR-L-0010
+  assertion_id: asrt-26bcf869cd5d7130066b9aede428cc125b44b91a036039fa53101add38f5fa76
   relationship_type: declared_in
   from_entity_id: CAP-0034
   to_entity_id: ADR-L-0010
@@ -342,6 +420,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: declared_in:CAP-0035:ADR-L-0010
+  assertion_id: asrt-c6354aac25dce0f6af1d18966629c4cf4b7dd3482bb61ffb2c3fc37be1fc9e76
   relationship_type: declared_in
   from_entity_id: CAP-0035
   to_entity_id: ADR-L-0010
@@ -352,6 +431,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: declared_in:CAP-0036:ADR-L-0011
+  assertion_id: asrt-56adb282c744b726d7aa18439461e159e5c321a3d860396ea36a6df6b25afb7d
   relationship_type: declared_in
   from_entity_id: CAP-0036
   to_entity_id: ADR-L-0011
@@ -362,6 +442,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: declared_in:CAP-0037:ADR-L-0011
+  assertion_id: asrt-08fd6db2a13c514e758224084de4d5843357e9b1a8598bf2c587e33de7b42a4c
   relationship_type: declared_in
   from_entity_id: CAP-0037
   to_entity_id: ADR-L-0011
@@ -372,6 +453,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: declared_in:CAP-0038:ADR-L-0012
+  assertion_id: asrt-3da9f972d34b8db1109bf037be656c6b9c346bf9aefe783070d26a0594259dbe
   relationship_type: declared_in
   from_entity_id: CAP-0038
   to_entity_id: ADR-L-0012
@@ -382,6 +464,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: declared_in:CAP-0039:ADR-L-0013
+  assertion_id: asrt-c41ce425c51e2d39913e2a82fff4145af08fdac80f73a8af638c371b345404fb
   relationship_type: declared_in
   from_entity_id: CAP-0039
   to_entity_id: ADR-L-0013
@@ -392,6 +475,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: declared_in:CAP-0040:ADR-L-0014
+  assertion_id: asrt-643e8e90da2447216f49cff307b89b955269138397ae193a77259be27567b9b4
   relationship_type: declared_in
   from_entity_id: CAP-0040
   to_entity_id: ADR-L-0014
@@ -402,6 +486,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: declared_in:CAP-0041:ADR-L-0014
+  assertion_id: asrt-dba3f4c45baeaf385eb73694a8c094df73a008651ba02bc5228bcadb68d681f5
   relationship_type: declared_in
   from_entity_id: CAP-0041
   to_entity_id: ADR-L-0014
@@ -412,6 +497,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: declared_in:CAP-0042:ADR-L-0015
+  assertion_id: asrt-1dc88fb33441defea3125198dd4751f7e25d2614684774f7020501ed6bf40541
   relationship_type: declared_in
   from_entity_id: CAP-0042
   to_entity_id: ADR-L-0015
@@ -422,6 +508,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: declared_in:CAP-0043:ADR-L-0015
+  assertion_id: asrt-fe325a7e4668e74aac73b51d265cca2b58978dbbdffd362295ad4be4d759d2aa
   relationship_type: declared_in
   from_entity_id: CAP-0043
   to_entity_id: ADR-L-0015
@@ -432,6 +519,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: declared_in:CAP-0044:ADR-L-0013
+  assertion_id: asrt-dc8c291587b92dc2d9cca864e583496ed5426e3cec42c13ec9ef41ef3a710d20
   relationship_type: declared_in
   from_entity_id: CAP-0044
   to_entity_id: ADR-L-0013
@@ -442,6 +530,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: declared_in:CAP-0045:ADR-L-0016
+  assertion_id: asrt-48f54096c12669b46cf3daad80f62088353620cd821aa0066176c160d6250a01
   relationship_type: declared_in
   from_entity_id: CAP-0045
   to_entity_id: ADR-L-0016
@@ -452,6 +541,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: declared_in:CAP-0046:ADR-L-0003
+  assertion_id: asrt-5b52f1c6e98d5ccbebabe67196e2f8c1b6bc79c8dd595d7b4d9714d132d706f3
   relationship_type: declared_in
   from_entity_id: CAP-0046
   to_entity_id: ADR-L-0003
@@ -462,6 +552,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: declared_in:CAP-0047:ADR-L-0013
+  assertion_id: asrt-20cc8d43ca8fcef30072fbd6216b2cd98099e73545cd9a86acad40bb380b40d6
   relationship_type: declared_in
   from_entity_id: CAP-0047
   to_entity_id: ADR-L-0013
@@ -471,7 +562,63 @@ relationships:
   canonical_source_ref: ADR-L-0013#CAP-0047
   confidence: 1.0
   metadata: {}
+- relationship_id: declared_in:CAP-0048:ADR-L-0018
+  assertion_id: asrt-7908d920d7adb02a874fb8d1fee123f197567fe0381fb7ef077dd526a85705be
+  relationship_type: declared_in
+  from_entity_id: CAP-0048
+  to_entity_id: ADR-L-0018
+  provenance_classification: explicit
+  evidence:
+  - ADR-L-0018#CAP-0048
+  canonical_source_ref: ADR-L-0018#CAP-0048
+  confidence: 1.0
+  metadata: {}
+- relationship_id: declared_in:CAP-0049:ADR-L-0018
+  assertion_id: asrt-8be87a130f8ba4ee351bbb7189e1541686f9f69395d6d08edfb896fcabe50a35
+  relationship_type: declared_in
+  from_entity_id: CAP-0049
+  to_entity_id: ADR-L-0018
+  provenance_classification: explicit
+  evidence:
+  - ADR-L-0018#CAP-0049
+  canonical_source_ref: ADR-L-0018#CAP-0049
+  confidence: 1.0
+  metadata: {}
+- relationship_id: declared_in:CAP-0050:ADR-L-0018
+  assertion_id: asrt-b4650d38f630f4970826a6f8d2dfc881d0244abfd3aa8bf1c76cf6ee541efa83
+  relationship_type: declared_in
+  from_entity_id: CAP-0050
+  to_entity_id: ADR-L-0018
+  provenance_classification: explicit
+  evidence:
+  - ADR-L-0018#CAP-0050
+  canonical_source_ref: ADR-L-0018#CAP-0050
+  confidence: 1.0
+  metadata: {}
+- relationship_id: declared_in:CAP-0051:ADR-L-0018
+  assertion_id: asrt-b24c5223a191c058b82f9c59dd78c9975f5b62f47ac2a339c928254c10e24690
+  relationship_type: declared_in
+  from_entity_id: CAP-0051
+  to_entity_id: ADR-L-0018
+  provenance_classification: explicit
+  evidence:
+  - ADR-L-0018#CAP-0051
+  canonical_source_ref: ADR-L-0018#CAP-0051
+  confidence: 1.0
+  metadata: {}
+- relationship_id: declared_in:CAP-0052:ADR-L-0018
+  assertion_id: asrt-75ffe7ac64913b6c92db083d47d100eef3bdc2daad4fa0bec16547e6411d2b1e
+  relationship_type: declared_in
+  from_entity_id: CAP-0052
+  to_entity_id: ADR-L-0018
+  provenance_classification: explicit
+  evidence:
+  - ADR-L-0018#CAP-0052
+  canonical_source_ref: ADR-L-0018#CAP-0052
+  confidence: 1.0
+  metadata: {}
 - relationship_id: declared_in:CAP-9000:ADR-L-9000
+  assertion_id: asrt-b543347f473c690729365e4bf8fca2dc2e78d837b525f92ba74208567226281c
   relationship_type: declared_in
   from_entity_id: CAP-9000
   to_entity_id: ADR-L-9000
@@ -482,6 +629,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: declared_in:COMP-0010:ADR-PC-0001
+  assertion_id: asrt-da877c6ad72d865e7193f94dcbefe41abfb68b449604b1ef9f44169c000d3c35
   relationship_type: declared_in
   from_entity_id: COMP-0010
   to_entity_id: ADR-PC-0001
@@ -492,6 +640,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: declared_in:COMP-0011:ADR-PC-0002
+  assertion_id: asrt-2b8b151a3c1b59fffc3a572a346399ebc217e6b1605ad623bb9685da906df8bf
   relationship_type: declared_in
   from_entity_id: COMP-0011
   to_entity_id: ADR-PC-0002
@@ -502,6 +651,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: declared_in:COMP-0012:ADR-PC-0003
+  assertion_id: asrt-3b387569de2f5f03973a5b2fd607c8e22400d8a80befbad10d87fa7b493a1ee4
   relationship_type: declared_in
   from_entity_id: COMP-0012
   to_entity_id: ADR-PC-0003
@@ -512,6 +662,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: declared_in:COMP-0013:ADR-PC-0004
+  assertion_id: asrt-1e4cd5732487b05f3534a6512a540af1b5cb3de9fc1de4388f8115c58805cf31
   relationship_type: declared_in
   from_entity_id: COMP-0013
   to_entity_id: ADR-PC-0004
@@ -522,6 +673,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: declared_in:COMP-0014:ADR-PC-0005
+  assertion_id: asrt-c5488a99b9378bd989ce527b25a916efba5581eca43559d12a0df1aedbea2c6c
   relationship_type: declared_in
   from_entity_id: COMP-0014
   to_entity_id: ADR-PC-0005
@@ -532,6 +684,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: declared_in:COMP-0015:ADR-PC-0006
+  assertion_id: asrt-c98b37a65b790e6ab60f6916ff629628f8a1c80e154250167da5e6eb12f0decf
   relationship_type: declared_in
   from_entity_id: COMP-0015
   to_entity_id: ADR-PC-0006
@@ -541,7 +694,63 @@ relationships:
   canonical_source_ref: ADR-PC-0006#COMP-0015
   confidence: 1.0
   metadata: {}
+- relationship_id: declared_in:CONTRACT-0001:ADR-L-0001
+  assertion_id: asrt-825db0fe9cffcc285daecc61dd51eb0440082f0717b5704ebcd941f63a308772
+  relationship_type: declared_in
+  from_entity_id: CONTRACT-0001
+  to_entity_id: ADR-L-0001
+  provenance_classification: explicit
+  evidence:
+  - ADR-L-0001#CONTRACT-0001
+  canonical_source_ref: ADR-L-0001#CONTRACT-0001
+  confidence: 1.0
+  metadata: {}
+- relationship_id: declared_in:CONTRACT-0002:ADR-L-0001
+  assertion_id: asrt-c3bd2ef6c7d5880b7ddabedda7f3fa37f8bb7c851b1b01174a76e17174becf4c
+  relationship_type: declared_in
+  from_entity_id: CONTRACT-0002
+  to_entity_id: ADR-L-0001
+  provenance_classification: explicit
+  evidence:
+  - ADR-L-0001#CONTRACT-0002
+  canonical_source_ref: ADR-L-0001#CONTRACT-0002
+  confidence: 1.0
+  metadata: {}
+- relationship_id: declared_in:CONTRACT-0003:ADR-L-0005
+  assertion_id: asrt-cdc4673f870d98d5afb77880262e5c6059d9a61db9907f90c8594dc3bab70927
+  relationship_type: declared_in
+  from_entity_id: CONTRACT-0003
+  to_entity_id: ADR-L-0005
+  provenance_classification: explicit
+  evidence:
+  - ADR-L-0005#CONTRACT-0003
+  canonical_source_ref: ADR-L-0005#CONTRACT-0003
+  confidence: 1.0
+  metadata: {}
+- relationship_id: declared_in:CONTRACT-0004:ADR-L-0005
+  assertion_id: asrt-60ec59424e1f7aa32fe703634d043f25921dd74dd8effb4620a0bbd56fb79e58
+  relationship_type: declared_in
+  from_entity_id: CONTRACT-0004
+  to_entity_id: ADR-L-0005
+  provenance_classification: explicit
+  evidence:
+  - ADR-L-0005#CONTRACT-0004
+  canonical_source_ref: ADR-L-0005#CONTRACT-0004
+  confidence: 1.0
+  metadata: {}
+- relationship_id: declared_in:CONTRACT-0005:ADR-L-0005
+  assertion_id: asrt-4e5edd8b3b366f65e30230d4d3657006821d5d7fc033bd63ed9853f8c374ab52
+  relationship_type: declared_in
+  from_entity_id: CONTRACT-0005
+  to_entity_id: ADR-L-0005
+  provenance_classification: explicit
+  evidence:
+  - ADR-L-0005#CONTRACT-0005
+  canonical_source_ref: ADR-L-0005#CONTRACT-0005
+  confidence: 1.0
+  metadata: {}
 - relationship_id: declared_in:DEC-0001:ADR-L-0001
+  assertion_id: asrt-9f82cdf04ef1c99db12cbc7aae34b2187faf01f9c720cfdc00be9d43a4daef92
   relationship_type: declared_in
   from_entity_id: DEC-0001
   to_entity_id: ADR-L-0001
@@ -552,6 +761,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: declared_in:DEC-0002:ADR-L-0001
+  assertion_id: asrt-5f6b134bc6a1df7323ef19e63b20336a7137284b4714a261943458e3ff48cfea
   relationship_type: declared_in
   from_entity_id: DEC-0002
   to_entity_id: ADR-L-0001
@@ -562,6 +772,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: declared_in:DEC-0003:ADR-L-0001
+  assertion_id: asrt-c8f96bc3de1a5e392dbfc43056ba899920a95244c15a2af444545f7e0a5bf7ab
   relationship_type: declared_in
   from_entity_id: DEC-0003
   to_entity_id: ADR-L-0001
@@ -572,6 +783,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: declared_in:DEC-0004:ADR-L-0001
+  assertion_id: asrt-38b82344e7135d49d1247a2872260d98cf8ab99f899f7921842087d6d37ca3dd
   relationship_type: declared_in
   from_entity_id: DEC-0004
   to_entity_id: ADR-L-0001
@@ -582,6 +794,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: declared_in:DEC-0005:ADR-L-0001
+  assertion_id: asrt-755d9b8648381cddcf424927e742637d69f6024a2962408707b972e5c207c9c9
   relationship_type: declared_in
   from_entity_id: DEC-0005
   to_entity_id: ADR-L-0001
@@ -592,6 +805,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: declared_in:DEC-0006:ADR-L-0001
+  assertion_id: asrt-c186adfecb6a8147a166d37747110be00be7e7ea5d4382822c00141de45bb5bc
   relationship_type: declared_in
   from_entity_id: DEC-0006
   to_entity_id: ADR-L-0001
@@ -602,6 +816,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: declared_in:DEC-0007:ADR-L-0002
+  assertion_id: asrt-235e9c3b2a4ba304845b82d074fb4b8fac309982584c01bb137a2cc71c4134b8
   relationship_type: declared_in
   from_entity_id: DEC-0007
   to_entity_id: ADR-L-0002
@@ -612,6 +827,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: declared_in:DEC-0008:ADR-L-0003
+  assertion_id: asrt-370b24e6ecded4bb4e3513d9fe0bbcaa584efc606cf16f6ddfd8eb4639956e50
   relationship_type: declared_in
   from_entity_id: DEC-0008
   to_entity_id: ADR-L-0003
@@ -622,6 +838,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: declared_in:DEC-0009:ADR-L-0004
+  assertion_id: asrt-089cfd4de1ff55ae792a5ef6b219e9c938c50f081b8726b9dd906593f6345fa6
   relationship_type: declared_in
   from_entity_id: DEC-0009
   to_entity_id: ADR-L-0004
@@ -632,6 +849,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: declared_in:DEC-0010:ADR-L-0005
+  assertion_id: asrt-28a4b6d126edaba234fb4c8de2feaddfcb6a2111c113d91fed1fe88dd4a8900d
   relationship_type: declared_in
   from_entity_id: DEC-0010
   to_entity_id: ADR-L-0005
@@ -642,6 +860,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: declared_in:DEC-0011:ADR-L-0006
+  assertion_id: asrt-881ac396850eaefb8b56a32e1c258ad2b3fda9c318ca9a5c6c7020e35a2c0585
   relationship_type: declared_in
   from_entity_id: DEC-0011
   to_entity_id: ADR-L-0006
@@ -652,6 +871,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: declared_in:DEC-0012:ADR-L-0007
+  assertion_id: asrt-38db2134654773bea89b3546b98a1a761a3339f9784e9943922dcf4ba7e65486
   relationship_type: declared_in
   from_entity_id: DEC-0012
   to_entity_id: ADR-L-0007
@@ -662,6 +882,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: declared_in:DEC-0013:ADR-L-0008
+  assertion_id: asrt-52d53e57793ce4b2f896abeafbf3a0cae48d9715e5a471fbd93553ebd00968c1
   relationship_type: declared_in
   from_entity_id: DEC-0013
   to_entity_id: ADR-L-0008
@@ -672,6 +893,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: declared_in:DEC-0014:ADR-L-0009
+  assertion_id: asrt-982b981af3f25a71fea5b60ccacf41836844bf98c1250956d5e6db76b96e4b5e
   relationship_type: declared_in
   from_entity_id: DEC-0014
   to_entity_id: ADR-L-0009
@@ -682,6 +904,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: declared_in:DEC-0015:ADR-L-0003
+  assertion_id: asrt-8d7dbc129d2ca44e2a2f541bf70c8d984d8d51993c675ec086419e9c774f5cb9
   relationship_type: declared_in
   from_entity_id: DEC-0015
   to_entity_id: ADR-L-0003
@@ -692,6 +915,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: declared_in:DEC-0016:ADR-L-0004
+  assertion_id: asrt-a8f362c4748dcd3fce7d5e4a09a2407951ec421b5f6d68fed201583c7775cebd
   relationship_type: declared_in
   from_entity_id: DEC-0016
   to_entity_id: ADR-L-0004
@@ -702,6 +926,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: declared_in:DEC-0017:ADR-L-0005
+  assertion_id: asrt-822ac856891a969875f764320a85dca8a11e9a6c594d2e69a3dc656746f0cc5b
   relationship_type: declared_in
   from_entity_id: DEC-0017
   to_entity_id: ADR-L-0005
@@ -712,6 +937,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: declared_in:DEC-0018:ADR-L-0006
+  assertion_id: asrt-c41c661edc2d56d9c549600dc7148d9b50528daa0f4ab83eddfe488d79042bed
   relationship_type: declared_in
   from_entity_id: DEC-0018
   to_entity_id: ADR-L-0006
@@ -722,6 +948,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: declared_in:DEC-0019:ADR-L-0007
+  assertion_id: asrt-dc4f5d46bed1396a758880d333459f1a92687c9120b8a941bdeb07ac505b9c04
   relationship_type: declared_in
   from_entity_id: DEC-0019
   to_entity_id: ADR-L-0007
@@ -732,6 +959,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: declared_in:DEC-0020:ADR-L-0008
+  assertion_id: asrt-639dce73999a76f51b17f48337b4b161d726b93502abba0bba3c17015c3121ca
   relationship_type: declared_in
   from_entity_id: DEC-0020
   to_entity_id: ADR-L-0008
@@ -742,6 +970,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: declared_in:DEC-0021:ADR-L-0009
+  assertion_id: asrt-cd34bc7a267c52c7bcf558d6c51cb5d07df532107d619405b257ddfc11ceabee
   relationship_type: declared_in
   from_entity_id: DEC-0021
   to_entity_id: ADR-L-0009
@@ -752,6 +981,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: declared_in:DEC-0022:ADR-L-0003
+  assertion_id: asrt-949bfda09af7eb2db674b678fc4959ec89b91f61c229440fbd501d72fef64877
   relationship_type: declared_in
   from_entity_id: DEC-0022
   to_entity_id: ADR-L-0003
@@ -762,6 +992,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: declared_in:DEC-0023:ADR-L-0004
+  assertion_id: asrt-b5fc2b6901a6e73a97c9d2bc87e87a88c2a43ad2b1fef9687c083f26a08d9335
   relationship_type: declared_in
   from_entity_id: DEC-0023
   to_entity_id: ADR-L-0004
@@ -772,6 +1003,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: declared_in:DEC-0024:ADR-L-0005
+  assertion_id: asrt-05bf6ece49922f29ef5c571d8549cb4fb20c1caf66ef165610c6bda4f8a3e674
   relationship_type: declared_in
   from_entity_id: DEC-0024
   to_entity_id: ADR-L-0005
@@ -782,6 +1014,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: declared_in:DEC-0025:ADR-L-0006
+  assertion_id: asrt-c0d859f0f269a480402292059cfc89ce392fa8f14f01efa17a1ffac02d10a008
   relationship_type: declared_in
   from_entity_id: DEC-0025
   to_entity_id: ADR-L-0006
@@ -792,6 +1025,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: declared_in:DEC-0026:ADR-L-0007
+  assertion_id: asrt-86ff973541a3ec8192618bbff1b91141d22cff0e734563972d7556e58fddc1e3
   relationship_type: declared_in
   from_entity_id: DEC-0026
   to_entity_id: ADR-L-0007
@@ -802,6 +1036,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: declared_in:DEC-0027:ADR-L-0008
+  assertion_id: asrt-c5c5182aeb9e16d9d11efb4be62646d026c4d731f0b53f5f3209e1298d8bf0e2
   relationship_type: declared_in
   from_entity_id: DEC-0027
   to_entity_id: ADR-L-0008
@@ -812,6 +1047,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: declared_in:DEC-0028:ADR-L-0009
+  assertion_id: asrt-1afe7b2cbee58462960eac7ffede94919c3cc07188f62840cc5abc6544b58ba5
   relationship_type: declared_in
   from_entity_id: DEC-0028
   to_entity_id: ADR-L-0009
@@ -822,6 +1058,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: declared_in:DEC-0029:ADR-L-0003
+  assertion_id: asrt-f3f4df5af20486dfa21564de9256669a24c0dab618cc047085065c2b9fbf29e8
   relationship_type: declared_in
   from_entity_id: DEC-0029
   to_entity_id: ADR-L-0003
@@ -832,6 +1069,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: declared_in:DEC-0030:ADR-L-0005
+  assertion_id: asrt-17b1ad0de554ea23d07dff6b3ff60f291405bf6f14ca952f0c99962e965fd91a
   relationship_type: declared_in
   from_entity_id: DEC-0030
   to_entity_id: ADR-L-0005
@@ -842,6 +1080,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: declared_in:DEC-0031:ADR-L-0006
+  assertion_id: asrt-ab3e6308167348a6726aed9b4328a32e488774697535c970ae0615ddb0ca5973
   relationship_type: declared_in
   from_entity_id: DEC-0031
   to_entity_id: ADR-L-0006
@@ -852,6 +1091,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: declared_in:DEC-0032:ADR-L-0008
+  assertion_id: asrt-19565608f05b967e55ff84b2d3c56b7b341247411ec03a269f907012cffe5549
   relationship_type: declared_in
   from_entity_id: DEC-0032
   to_entity_id: ADR-L-0008
@@ -862,6 +1102,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: declared_in:DEC-0033:ADR-L-0003
+  assertion_id: asrt-86caf2d1df467825bd17a5eb5556a1862be6a08c8173b345aeda15b7cf9e835f
   relationship_type: declared_in
   from_entity_id: DEC-0033
   to_entity_id: ADR-L-0003
@@ -872,6 +1113,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: declared_in:DEC-0034:ADR-L-0006
+  assertion_id: asrt-eab3bbaa7afd6bb1d37dbc59ee7e2be921b7eff7b8cfecfea2ad256a442c7022
   relationship_type: declared_in
   from_entity_id: DEC-0034
   to_entity_id: ADR-L-0006
@@ -882,6 +1124,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: declared_in:DEC-0035:ADR-L-0008
+  assertion_id: asrt-a420592ebf49dd2f47fe245ee12288cfc2a7ac6fd37042f0961eda6490f726bd
   relationship_type: declared_in
   from_entity_id: DEC-0035
   to_entity_id: ADR-L-0008
@@ -892,6 +1135,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: declared_in:DEC-0036:ADR-L-0010
+  assertion_id: asrt-a69315246a2e202928ad1a3e91bca06ef5129f490cbbcec8f239b822d969ba32
   relationship_type: declared_in
   from_entity_id: DEC-0036
   to_entity_id: ADR-L-0010
@@ -902,6 +1146,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: declared_in:DEC-0037:ADR-L-0010
+  assertion_id: asrt-48225c8c91ada572a80e13f2b7ec09f3108798d2b26eaf538328ab065b2d1e45
   relationship_type: declared_in
   from_entity_id: DEC-0037
   to_entity_id: ADR-L-0010
@@ -912,6 +1157,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: declared_in:DEC-0038:ADR-L-0010
+  assertion_id: asrt-f9448b6c2ca8dbd2d0f5f912fa33b2cdd696d1a3ba8a58648957543dbb58e68c
   relationship_type: declared_in
   from_entity_id: DEC-0038
   to_entity_id: ADR-L-0010
@@ -922,6 +1168,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: declared_in:DEC-0039:ADR-L-0010
+  assertion_id: asrt-579664d8f7f607d93a66a3eaca574e49694cab69954eb4602890c13c46907648
   relationship_type: declared_in
   from_entity_id: DEC-0039
   to_entity_id: ADR-L-0010
@@ -932,6 +1179,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: declared_in:DEC-0040:ADR-L-0011
+  assertion_id: asrt-846ac2e67897e6b0bc234eec006ce6671ed5081accfb727a4ff52098682a8981
   relationship_type: declared_in
   from_entity_id: DEC-0040
   to_entity_id: ADR-L-0011
@@ -942,6 +1190,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: declared_in:DEC-0041:ADR-L-0011
+  assertion_id: asrt-29887d5c2eb4eb7900921b9f74eea579d870b1d321f7087f2d1002ddf2fa10c1
   relationship_type: declared_in
   from_entity_id: DEC-0041
   to_entity_id: ADR-L-0011
@@ -952,6 +1201,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: declared_in:DEC-0042:ADR-L-0011
+  assertion_id: asrt-4afbf9196624618cf5da98e7fabbd1128c65fe2a714786221cef6dd4c9ac5d9b
   relationship_type: declared_in
   from_entity_id: DEC-0042
   to_entity_id: ADR-L-0011
@@ -962,6 +1212,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: declared_in:DEC-0043:ADR-L-0011
+  assertion_id: asrt-796ecc4badf7f65f74726c06b32080302b6d537ffa682b67213b18a799eeb4ff
   relationship_type: declared_in
   from_entity_id: DEC-0043
   to_entity_id: ADR-L-0011
@@ -972,6 +1223,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: declared_in:DEC-0044:ADR-L-0010
+  assertion_id: asrt-f92d1297d3be5ddd14294cdb07c2d5574cb5a9741c62f933130a6ab776630384
   relationship_type: declared_in
   from_entity_id: DEC-0044
   to_entity_id: ADR-L-0010
@@ -982,6 +1234,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: declared_in:DEC-0045:ADR-L-0012
+  assertion_id: asrt-1f209c8513f3e6dfd3f1f8e845a36f2cb2d7f14d0a8f26e3bfa647efa242ebfe
   relationship_type: declared_in
   from_entity_id: DEC-0045
   to_entity_id: ADR-L-0012
@@ -992,6 +1245,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: declared_in:DEC-0046:ADR-L-0012
+  assertion_id: asrt-bd9ee0bf03fdbbfcc4c6d820b6f5f8d19c4dc06fb35af1c19762670ea139ef03
   relationship_type: declared_in
   from_entity_id: DEC-0046
   to_entity_id: ADR-L-0012
@@ -1002,6 +1256,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: declared_in:DEC-0047:ADR-L-0012
+  assertion_id: asrt-6419fcd0da89decced026f0336f09c9b3147b59087aca39cf928ae8d83743565
   relationship_type: declared_in
   from_entity_id: DEC-0047
   to_entity_id: ADR-L-0012
@@ -1012,6 +1267,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: declared_in:DEC-0048:ADR-L-0004
+  assertion_id: asrt-06544e3a4969a0c262f5bd11a33acf79a07071b1ac27561b48399de33e24dae5
   relationship_type: declared_in
   from_entity_id: DEC-0048
   to_entity_id: ADR-L-0004
@@ -1022,6 +1278,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: declared_in:DEC-0049:ADR-L-0004
+  assertion_id: asrt-693b3035baa0b34c348ed182033d1aac6e18e89ae35150c482b7918f0167d300
   relationship_type: declared_in
   from_entity_id: DEC-0049
   to_entity_id: ADR-L-0004
@@ -1032,6 +1289,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: declared_in:DEC-0050:ADR-L-0013
+  assertion_id: asrt-6d376fbd8feffb8190cf78f29571b0e704c123cdddfc8d498cb0103ff50cb351
   relationship_type: declared_in
   from_entity_id: DEC-0050
   to_entity_id: ADR-L-0013
@@ -1042,6 +1300,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: declared_in:DEC-0051:ADR-L-0013
+  assertion_id: asrt-57c0e50b3161c96a9eebea77f97771843c4e2c6d191bbbceb367844629b272f2
   relationship_type: declared_in
   from_entity_id: DEC-0051
   to_entity_id: ADR-L-0013
@@ -1052,6 +1311,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: declared_in:DEC-0052:ADR-L-0013
+  assertion_id: asrt-cf7b1850b26b4617f1f45a342a3a3dee8e3f4d4c15903f3074627662f10fc8cc
   relationship_type: declared_in
   from_entity_id: DEC-0052
   to_entity_id: ADR-L-0013
@@ -1062,6 +1322,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: declared_in:DEC-0053:ADR-L-0014
+  assertion_id: asrt-d11ce9f26da0d38670747b5f0de34733d2068e08b6fa0e45147a7356e2569364
   relationship_type: declared_in
   from_entity_id: DEC-0053
   to_entity_id: ADR-L-0014
@@ -1072,6 +1333,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: declared_in:DEC-0054:ADR-L-0014
+  assertion_id: asrt-29d017f08bd748aa88428ad63320e7a4643e5e119d28e05094ae2d9ab316e795
   relationship_type: declared_in
   from_entity_id: DEC-0054
   to_entity_id: ADR-L-0014
@@ -1082,6 +1344,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: declared_in:DEC-0055:ADR-L-0014
+  assertion_id: asrt-fd37e52252a1620149aec4700015c5cbdcdff54c107c94a45c9dbf18fc96da17
   relationship_type: declared_in
   from_entity_id: DEC-0055
   to_entity_id: ADR-L-0014
@@ -1092,6 +1355,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: declared_in:DEC-0056:ADR-L-0014
+  assertion_id: asrt-cfdf5b26ef517384db8eec53e669cfdef0ecd0c7603f35c0864122b8ab7c0d18
   relationship_type: declared_in
   from_entity_id: DEC-0056
   to_entity_id: ADR-L-0014
@@ -1102,6 +1366,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: declared_in:DEC-0057:ADR-L-0009
+  assertion_id: asrt-9c2e9f250baa809b9b44870ca9e238f183bfa1883edeba9bbd086ab6f0a29f69
   relationship_type: declared_in
   from_entity_id: DEC-0057
   to_entity_id: ADR-L-0009
@@ -1112,6 +1377,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: declared_in:DEC-0058:ADR-L-0009
+  assertion_id: asrt-a53818e750dccf8659ce6e64d1baf4e3b5729ce5bef8e3f58d758c69325d9679
   relationship_type: declared_in
   from_entity_id: DEC-0058
   to_entity_id: ADR-L-0009
@@ -1122,6 +1388,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: declared_in:DEC-0059:ADR-L-0010
+  assertion_id: asrt-97a6f585e07c803910374325dd47cb50a43bf1a60be14f304f86ddcebb19d47d
   relationship_type: declared_in
   from_entity_id: DEC-0059
   to_entity_id: ADR-L-0010
@@ -1132,6 +1399,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: declared_in:DEC-0060:ADR-L-0010
+  assertion_id: asrt-d34bee2be8ec938cef462f2f38b40691744ca56ea2999671d1f0b8e086cac8fa
   relationship_type: declared_in
   from_entity_id: DEC-0060
   to_entity_id: ADR-L-0010
@@ -1142,6 +1410,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: declared_in:DEC-0061:ADR-L-0013
+  assertion_id: asrt-bfb64ac11495ebd9cc552dbcdf4e75ef71120023b4b08baaf3d0c74973184e18
   relationship_type: declared_in
   from_entity_id: DEC-0061
   to_entity_id: ADR-L-0013
@@ -1152,6 +1421,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: declared_in:DEC-0062:ADR-L-0013
+  assertion_id: asrt-7e568115ebaeea8f15d2c9f37f6d58be47fa779833aa286c1cb3de5f25367dd1
   relationship_type: declared_in
   from_entity_id: DEC-0062
   to_entity_id: ADR-L-0013
@@ -1162,6 +1432,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: declared_in:DEC-0063:ADR-L-0015
+  assertion_id: asrt-1b7b68c131320cee61d41b039b49a854e9814793fb0d8bc6c2ff454da9f5b71d
   relationship_type: declared_in
   from_entity_id: DEC-0063
   to_entity_id: ADR-L-0015
@@ -1172,6 +1443,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: declared_in:DEC-0064:ADR-L-0015
+  assertion_id: asrt-99adbf81a77bc5da89d2d20e5c3c4b5b3a55d93f9d2e388c8d257ebd93866372
   relationship_type: declared_in
   from_entity_id: DEC-0064
   to_entity_id: ADR-L-0015
@@ -1182,6 +1454,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: declared_in:DEC-0065:ADR-L-0015
+  assertion_id: asrt-4d4df36ecd9a552171cd7fbf1797caa518f6ac580fae3ba718d174265df3e5bc
   relationship_type: declared_in
   from_entity_id: DEC-0065
   to_entity_id: ADR-L-0015
@@ -1192,6 +1465,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: declared_in:DEC-0066:ADR-L-0015
+  assertion_id: asrt-0a35363d240c0f028130d987ec58445abc58f38ab2c398801887f27c90cd6c8a
   relationship_type: declared_in
   from_entity_id: DEC-0066
   to_entity_id: ADR-L-0015
@@ -1202,6 +1476,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: declared_in:DEC-0067:ADR-L-0013
+  assertion_id: asrt-6ad70d0a21144195f871b951b82a4f363e4e6718f67794a699c36224ecae52c4
   relationship_type: declared_in
   from_entity_id: DEC-0067
   to_entity_id: ADR-L-0013
@@ -1212,6 +1487,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: declared_in:DEC-0068:ADR-L-0013
+  assertion_id: asrt-2f1daea91ffedcc9c32578a4e74798a5c34c4d2a39252de2aa017cb2e898ba53
   relationship_type: declared_in
   from_entity_id: DEC-0068
   to_entity_id: ADR-L-0013
@@ -1222,6 +1498,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: declared_in:DEC-0069:ADR-L-0016
+  assertion_id: asrt-754baa2312b4f2ff582d7efcf004309fd2df682b34cd3c960407c60f0c831d14
   relationship_type: declared_in
   from_entity_id: DEC-0069
   to_entity_id: ADR-L-0016
@@ -1232,6 +1509,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: declared_in:DEC-0070:ADR-L-0016
+  assertion_id: asrt-81a31e7d094221eb6fbe95c367bba91b67233fbca7c3574fc0633ba809f6cfe9
   relationship_type: declared_in
   from_entity_id: DEC-0070
   to_entity_id: ADR-L-0016
@@ -1242,6 +1520,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: declared_in:DEC-0071:ADR-L-0017
+  assertion_id: asrt-2b638f5bc963b45a8709c82bd9cb79e5e4eabebc9f937d04237b3963c9b7f847
   relationship_type: declared_in
   from_entity_id: DEC-0071
   to_entity_id: ADR-L-0017
@@ -1252,6 +1531,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: declared_in:DEC-0072:ADR-L-0017
+  assertion_id: asrt-b2c0fe26ac5e0ab042fd028c24431f90d2ef65324d5369d47fdd8458b956c20f
   relationship_type: declared_in
   from_entity_id: DEC-0072
   to_entity_id: ADR-L-0017
@@ -1262,6 +1542,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: declared_in:DEC-0073:ADR-L-0016
+  assertion_id: asrt-e1ca34d38814f31278222174777b2a35a1a86d59e9b2be08dc82587259ae548a
   relationship_type: declared_in
   from_entity_id: DEC-0073
   to_entity_id: ADR-L-0016
@@ -1272,6 +1553,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: declared_in:DEC-0074:ADR-L-0017
+  assertion_id: asrt-758fbc940ef9c77e0a07f2f535e2248c9cf6b2853bf58367e31e96071e8a95cd
   relationship_type: declared_in
   from_entity_id: DEC-0074
   to_entity_id: ADR-L-0017
@@ -1282,6 +1564,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: declared_in:DEC-0075:ADR-L-0016
+  assertion_id: asrt-82a07ec9fab444279e831e99d7f16f49f89e2cdb2450eabe29769c63222d9b9b
   relationship_type: declared_in
   from_entity_id: DEC-0075
   to_entity_id: ADR-L-0016
@@ -1292,6 +1575,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: declared_in:DEC-0076:ADR-L-0004
+  assertion_id: asrt-b07b18f8f70401f95cc99c1d7377dd5aba7c2cd0a7228a3bcb88a3191abc1740
   relationship_type: declared_in
   from_entity_id: DEC-0076
   to_entity_id: ADR-L-0004
@@ -1302,6 +1586,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: declared_in:DEC-0077:ADR-L-0012
+  assertion_id: asrt-353c5f21208c0e18252d22b19c5cef472415edc424d985f244961e5a5f72e818
   relationship_type: declared_in
   from_entity_id: DEC-0077
   to_entity_id: ADR-L-0012
@@ -1312,6 +1597,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: declared_in:DEC-0078:ADR-L-0003
+  assertion_id: asrt-7e6c8d29c12543a3710b478c1cc9ad0a076c8cebdccadd09dc1e8869a4902530
   relationship_type: declared_in
   from_entity_id: DEC-0078
   to_entity_id: ADR-L-0003
@@ -1322,6 +1608,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: declared_in:DEC-0079:ADR-L-0013
+  assertion_id: asrt-40adcf117971eba83ded8bdfe4361956d5c20ca23f116358505c1e402205e91a
   relationship_type: declared_in
   from_entity_id: DEC-0079
   to_entity_id: ADR-L-0013
@@ -1332,6 +1619,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: declared_in:DEC-0080:ADR-L-0013
+  assertion_id: asrt-6591738e8db80393945daf46e56021ba50b8816e91c15764b540603de0031573
   relationship_type: declared_in
   from_entity_id: DEC-0080
   to_entity_id: ADR-L-0013
@@ -1342,6 +1630,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: declared_in:DEC-0081:ADR-L-0003
+  assertion_id: asrt-1287a9410c17ecbb7a5aa229e89f374bd83c9aba84f61464a40f177c7d20a5d8
   relationship_type: declared_in
   from_entity_id: DEC-0081
   to_entity_id: ADR-L-0003
@@ -1352,6 +1641,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: declared_in:DEC-0082:ADR-L-0013
+  assertion_id: asrt-ab3ffdfcec20d6ee07c8fe9ce83441ac6b09ec5f4f9a193707aab980d3f05c6b
   relationship_type: declared_in
   from_entity_id: DEC-0082
   to_entity_id: ADR-L-0013
@@ -1361,7 +1651,74 @@ relationships:
   canonical_source_ref: ADR-L-0013#DEC-0082
   confidence: 1.0
   metadata: {}
+- relationship_id: declared_in:DEC-0083:ADR-L-0018
+  assertion_id: asrt-13c77001781d1b0cee76c7974cdb66bdb7f83304ba5b7dab812f6a5ff63f3cfb
+  relationship_type: declared_in
+  from_entity_id: DEC-0083
+  to_entity_id: ADR-L-0018
+  provenance_classification: explicit
+  evidence:
+  - ADR-L-0018#DEC-0083
+  canonical_source_ref: ADR-L-0018#DEC-0083
+  confidence: 1.0
+  metadata: {}
+- relationship_id: declared_in:DEC-0084:ADR-L-0018
+  assertion_id: asrt-2ae03d893311e06973d38b5a725758ddb36582ec4ca24fdce9f55f3fd1ad1d5e
+  relationship_type: declared_in
+  from_entity_id: DEC-0084
+  to_entity_id: ADR-L-0018
+  provenance_classification: explicit
+  evidence:
+  - ADR-L-0018#DEC-0084
+  canonical_source_ref: ADR-L-0018#DEC-0084
+  confidence: 1.0
+  metadata: {}
+- relationship_id: declared_in:DEC-0085:ADR-L-0018
+  assertion_id: asrt-19c4cb3dbc44f90da2a12186278340b77647f1ef01f2f590eded276d250d871c
+  relationship_type: declared_in
+  from_entity_id: DEC-0085
+  to_entity_id: ADR-L-0018
+  provenance_classification: explicit
+  evidence:
+  - ADR-L-0018#DEC-0085
+  canonical_source_ref: ADR-L-0018#DEC-0085
+  confidence: 1.0
+  metadata: {}
+- relationship_id: declared_in:DEC-0086:ADR-L-0018
+  assertion_id: asrt-976f8c0ee3eeb5606a978700ef557d5ccb55406fcfebe8d1ed4fed137617801a
+  relationship_type: declared_in
+  from_entity_id: DEC-0086
+  to_entity_id: ADR-L-0018
+  provenance_classification: explicit
+  evidence:
+  - ADR-L-0018#DEC-0086
+  canonical_source_ref: ADR-L-0018#DEC-0086
+  confidence: 1.0
+  metadata: {}
+- relationship_id: declared_in:DEC-0087:ADR-L-0018
+  assertion_id: asrt-a74c95dae4b30c5ad54e3f41aeb2b368f584998866df94c4ee451b47581d6c20
+  relationship_type: declared_in
+  from_entity_id: DEC-0087
+  to_entity_id: ADR-L-0018
+  provenance_classification: explicit
+  evidence:
+  - ADR-L-0018#DEC-0087
+  canonical_source_ref: ADR-L-0018#DEC-0087
+  confidence: 1.0
+  metadata: {}
+- relationship_id: declared_in:DEC-0088:ADR-L-0018
+  assertion_id: asrt-f053a946bda5da1369853d6627c1d4183cb27c5d84a82fb31a6f6fe9a899621c
+  relationship_type: declared_in
+  from_entity_id: DEC-0088
+  to_entity_id: ADR-L-0018
+  provenance_classification: explicit
+  evidence:
+  - ADR-L-0018#DEC-0088
+  canonical_source_ref: ADR-L-0018#DEC-0088
+  confidence: 1.0
+  metadata: {}
 - relationship_id: declared_in:DEC-9000:ADR-L-9000
+  assertion_id: asrt-f2694b70d6e7a24618c76af039642b7334d07d7b8ab8eba07dcdf4bc1fcd9313
   relationship_type: declared_in
   from_entity_id: DEC-9000
   to_entity_id: ADR-L-9000
@@ -1371,7 +1728,217 @@ relationships:
   canonical_source_ref: ADR-L-9000#DEC-9000
   confidence: 1.0
   metadata: {}
+- relationship_id: declared_in:IFACE-0011:ADR-PC-0001
+  assertion_id: asrt-0c7924a2e4fba28f25868e17c897fca6c62cd021b32fec5c4dca8a92d9a9af07
+  relationship_type: declared_in
+  from_entity_id: IFACE-0011
+  to_entity_id: ADR-PC-0001
+  provenance_classification: explicit
+  evidence:
+  - ADR-PC-0001#IFACE-0011
+  canonical_source_ref: ADR-PC-0001#IFACE-0011
+  confidence: 1.0
+  metadata: {}
+- relationship_id: declared_in:IFACE-0012:ADR-PC-0002
+  assertion_id: asrt-f2949325ce6b515c358c4bb571b1d55885c30bb0fe18ecf251c98572c08b30c3
+  relationship_type: declared_in
+  from_entity_id: IFACE-0012
+  to_entity_id: ADR-PC-0002
+  provenance_classification: explicit
+  evidence:
+  - ADR-PC-0002#IFACE-0012
+  canonical_source_ref: ADR-PC-0002#IFACE-0012
+  confidence: 1.0
+  metadata: {}
+- relationship_id: declared_in:IFACE-0013:ADR-PC-0003
+  assertion_id: asrt-634f7b08f5fb0cb23f5e116e659a67c33116f497c4c3c4bb40c0b3e4c5017a9b
+  relationship_type: declared_in
+  from_entity_id: IFACE-0013
+  to_entity_id: ADR-PC-0003
+  provenance_classification: explicit
+  evidence:
+  - ADR-PC-0003#IFACE-0013
+  canonical_source_ref: ADR-PC-0003#IFACE-0013
+  confidence: 1.0
+  metadata: {}
+- relationship_id: declared_in:IFACE-0014:ADR-PC-0004
+  assertion_id: asrt-c8c7a5cda1d826669bd17ad6fd4493f24a731349da9bad5fc83508d765b648e3
+  relationship_type: declared_in
+  from_entity_id: IFACE-0014
+  to_entity_id: ADR-PC-0004
+  provenance_classification: explicit
+  evidence:
+  - ADR-PC-0004#IFACE-0014
+  canonical_source_ref: ADR-PC-0004#IFACE-0014
+  confidence: 1.0
+  metadata: {}
+- relationship_id: declared_in:IFACE-0015:ADR-PC-0005
+  assertion_id: asrt-5b951ac5c8ab7ad633b71387081888720020228f5d3149f11aa877fb2b669c8a
+  relationship_type: declared_in
+  from_entity_id: IFACE-0015
+  to_entity_id: ADR-PC-0005
+  provenance_classification: explicit
+  evidence:
+  - ADR-PC-0005#IFACE-0015
+  canonical_source_ref: ADR-PC-0005#IFACE-0015
+  confidence: 1.0
+  metadata: {}
+- relationship_id: declared_in:IFACE-0016:ADR-PC-0006
+  assertion_id: asrt-0cd25a5b1bdbc430d8f9faccc9b32248108a592e066a25489fa58a1034312f2f
+  relationship_type: declared_in
+  from_entity_id: IFACE-0016
+  to_entity_id: ADR-PC-0006
+  provenance_classification: explicit
+  evidence:
+  - ADR-PC-0006#IFACE-0016
+  canonical_source_ref: ADR-PC-0006#IFACE-0016
+  confidence: 1.0
+  metadata: {}
+- relationship_id: declared_in:IFACE-0017:ADR-PC-0002
+  assertion_id: asrt-e3e0abcbf915f48cfee9e7851d15434374a1c491d88b11087ba5cd6ab0701646
+  relationship_type: declared_in
+  from_entity_id: IFACE-0017
+  to_entity_id: ADR-PC-0002
+  provenance_classification: explicit
+  evidence:
+  - ADR-PC-0002#IFACE-0017
+  canonical_source_ref: ADR-PC-0002#IFACE-0017
+  confidence: 1.0
+  metadata: {}
+- relationship_id: declared_in:IFACE-0018:ADR-PC-0003
+  assertion_id: asrt-8bf871ca5a813a6454d6e41d289976b2f52cd92c36049d63165b20a3cd2eec26
+  relationship_type: declared_in
+  from_entity_id: IFACE-0018
+  to_entity_id: ADR-PC-0003
+  provenance_classification: explicit
+  evidence:
+  - ADR-PC-0003#IFACE-0018
+  canonical_source_ref: ADR-PC-0003#IFACE-0018
+  confidence: 1.0
+  metadata: {}
+- relationship_id: declared_in:IFACE-0019:ADR-PC-0004
+  assertion_id: asrt-f3642084d5060df60e51c813ebb353d33fbcee66ab7924e5c062c22bd83b962a
+  relationship_type: declared_in
+  from_entity_id: IFACE-0019
+  to_entity_id: ADR-PC-0004
+  provenance_classification: explicit
+  evidence:
+  - ADR-PC-0004#IFACE-0019
+  canonical_source_ref: ADR-PC-0004#IFACE-0019
+  confidence: 1.0
+  metadata: {}
+- relationship_id: declared_in:IMPL-0011:ADR-PC-0001
+  assertion_id: asrt-19992dfc78531ec70fa52f947132d834fb03acd63bb4b16e6d355ec6aadfd7dd
+  relationship_type: declared_in
+  from_entity_id: IMPL-0011
+  to_entity_id: ADR-PC-0001
+  provenance_classification: explicit
+  evidence:
+  - ADR-PC-0001#IMPL-0011
+  canonical_source_ref: ADR-PC-0001#IMPL-0011
+  confidence: 1.0
+  metadata: {}
+- relationship_id: declared_in:IMPL-0012:ADR-PC-0002
+  assertion_id: asrt-b1bbf95e2eeeff5738dd5c6a9c1369f1d526435aa3a56540729c0972514c8cb1
+  relationship_type: declared_in
+  from_entity_id: IMPL-0012
+  to_entity_id: ADR-PC-0002
+  provenance_classification: explicit
+  evidence:
+  - ADR-PC-0002#IMPL-0012
+  canonical_source_ref: ADR-PC-0002#IMPL-0012
+  confidence: 1.0
+  metadata: {}
+- relationship_id: declared_in:IMPL-0013:ADR-PC-0003
+  assertion_id: asrt-4a79c2bab851b4030a37b85784c648cef4aa0a908ff5e01eb28653ebb44af4a8
+  relationship_type: declared_in
+  from_entity_id: IMPL-0013
+  to_entity_id: ADR-PC-0003
+  provenance_classification: explicit
+  evidence:
+  - ADR-PC-0003#IMPL-0013
+  canonical_source_ref: ADR-PC-0003#IMPL-0013
+  confidence: 1.0
+  metadata: {}
+- relationship_id: declared_in:IMPL-0014:ADR-PC-0004
+  assertion_id: asrt-393eb732fa7141088039e81ee709e9926a71ea45c3410546778a4fdd3d34fee2
+  relationship_type: declared_in
+  from_entity_id: IMPL-0014
+  to_entity_id: ADR-PC-0004
+  provenance_classification: explicit
+  evidence:
+  - ADR-PC-0004#IMPL-0014
+  canonical_source_ref: ADR-PC-0004#IMPL-0014
+  confidence: 1.0
+  metadata: {}
+- relationship_id: declared_in:IMPL-0015:ADR-PC-0005
+  assertion_id: asrt-e4be3c0b22d82d2582e8fc928779917680444527a3edf7ddd83d37d1af2c6f13
+  relationship_type: declared_in
+  from_entity_id: IMPL-0015
+  to_entity_id: ADR-PC-0005
+  provenance_classification: explicit
+  evidence:
+  - ADR-PC-0005#IMPL-0015
+  canonical_source_ref: ADR-PC-0005#IMPL-0015
+  confidence: 1.0
+  metadata: {}
+- relationship_id: declared_in:IMPL-0016:ADR-PC-0006
+  assertion_id: asrt-86d6a6a97e35f6f62da0f6b4187d029107d6d25d809ea863eed16dc580dc17d9
+  relationship_type: declared_in
+  from_entity_id: IMPL-0016
+  to_entity_id: ADR-PC-0006
+  provenance_classification: explicit
+  evidence:
+  - ADR-PC-0006#IMPL-0016
+  canonical_source_ref: ADR-PC-0006#IMPL-0016
+  confidence: 1.0
+  metadata: {}
+- relationship_id: declared_in:IMPL-0017:ADR-PC-0004
+  assertion_id: asrt-5235ed4cae9aac004afebd2e94caffbfa01ab34230553616ee18da831aad37bd
+  relationship_type: declared_in
+  from_entity_id: IMPL-0017
+  to_entity_id: ADR-PC-0004
+  provenance_classification: explicit
+  evidence:
+  - ADR-PC-0004#IMPL-0017
+  canonical_source_ref: ADR-PC-0004#IMPL-0017
+  confidence: 1.0
+  metadata: {}
+- relationship_id: declared_in:IMPL-0018:ADR-PC-0002
+  assertion_id: asrt-8e490487de3a3e53f7706c5408f7a26e62c650a872d87fc4c9a43e9a89a64303
+  relationship_type: declared_in
+  from_entity_id: IMPL-0018
+  to_entity_id: ADR-PC-0002
+  provenance_classification: explicit
+  evidence:
+  - ADR-PC-0002#IMPL-0018
+  canonical_source_ref: ADR-PC-0002#IMPL-0018
+  confidence: 1.0
+  metadata: {}
+- relationship_id: declared_in:IMPL-0019:ADR-PC-0003
+  assertion_id: asrt-21b552569849eb43f8027abdf8b450f4a9fa442bbbc8a04a5bfa0f28968b09a0
+  relationship_type: declared_in
+  from_entity_id: IMPL-0019
+  to_entity_id: ADR-PC-0003
+  provenance_classification: explicit
+  evidence:
+  - ADR-PC-0003#IMPL-0019
+  canonical_source_ref: ADR-PC-0003#IMPL-0019
+  confidence: 1.0
+  metadata: {}
+- relationship_id: declared_in:IMPL-0020:ADR-PC-0004
+  assertion_id: asrt-d382471ef7ed97f542da56af04fdcc78b74c7d84e672ce0b3c5bfb0190bf82c1
+  relationship_type: declared_in
+  from_entity_id: IMPL-0020
+  to_entity_id: ADR-PC-0004
+  provenance_classification: explicit
+  evidence:
+  - ADR-PC-0004#IMPL-0020
+  canonical_source_ref: ADR-PC-0004#IMPL-0020
+  confidence: 1.0
+  metadata: {}
 - relationship_id: declared_in:INV-0001:INV-0001
+  assertion_id: asrt-0251514fe91ae27a3c287848c150f0c53bc93bdf4cb7f214c3c361904954d568
   relationship_type: declared_in
   from_entity_id: INV-0001
   to_entity_id: INV-0001
@@ -1382,6 +1949,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: declared_in:INV-0002:INV-0002
+  assertion_id: asrt-756eae1dbf52801f8328343e4207715cf610c655dc8e73ee243175a07c4a70fc
   relationship_type: declared_in
   from_entity_id: INV-0002
   to_entity_id: INV-0002
@@ -1392,6 +1960,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: declared_in:INV-0003:INV-0003
+  assertion_id: asrt-fda9c94daa1fb56ab94061a4a04fdf00d51aa6bb05ee66db5382f6775f68958c
   relationship_type: declared_in
   from_entity_id: INV-0003
   to_entity_id: INV-0003
@@ -1402,6 +1971,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: declared_in:INV-0004:INV-0004
+  assertion_id: asrt-21e5336ea4942b5c923e92ccffa32925ad7fac8ad23fb23dc6bfbb9ed912f81f
   relationship_type: declared_in
   from_entity_id: INV-0004
   to_entity_id: INV-0004
@@ -1412,6 +1982,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: declared_in:INV-0005:INV-0005
+  assertion_id: asrt-9b04479604bda36e00be3268f77a5b18643a05865da743e58aca7f08e7130526
   relationship_type: declared_in
   from_entity_id: INV-0005
   to_entity_id: INV-0005
@@ -1422,6 +1993,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: declared_in:INV-0006:INV-0006
+  assertion_id: asrt-fa7e54d752a08383bfe455a3b2d9ad44c308e0819edd10d22b2db3823c608fae
   relationship_type: declared_in
   from_entity_id: INV-0006
   to_entity_id: INV-0006
@@ -1432,6 +2004,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: declared_in:INV-0007:INV-0007
+  assertion_id: asrt-2c976145768fafb12b019ac893d528035c1cb189107a8c066b3af677c35b807f
   relationship_type: declared_in
   from_entity_id: INV-0007
   to_entity_id: INV-0007
@@ -1442,6 +2015,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: declared_in:INV-0008:INV-0008
+  assertion_id: asrt-b2940638a2a778d62667dbf0d1df1671ec5da3e1d278333178ee6dd6e456951c
   relationship_type: declared_in
   from_entity_id: INV-0008
   to_entity_id: INV-0008
@@ -1452,6 +2026,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: declared_in:INV-0014:ADR-L-0002
+  assertion_id: asrt-2ff44184eb6c0449ed6d29dfc924b1ea9e31a765f7463226bdbbfd2b65fe28d7
   relationship_type: declared_in
   from_entity_id: INV-0014
   to_entity_id: ADR-L-0002
@@ -1462,6 +2037,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: declared_in:INV-0015:ADR-L-0002
+  assertion_id: asrt-63512e36f4d1ec4313e2223cc7ad52798880f72031451536b9461a99b55a905b
   relationship_type: declared_in
   from_entity_id: INV-0015
   to_entity_id: ADR-L-0002
@@ -1472,6 +2048,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: declared_in:INV-0016:ADR-L-0002
+  assertion_id: asrt-2e4ae7234dc0c5335d42054bb0b6c5b6de901225c67c843db4b7501854fee7eb
   relationship_type: declared_in
   from_entity_id: INV-0016
   to_entity_id: ADR-L-0002
@@ -1482,6 +2059,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: declared_in:INV-0017:ADR-L-0002
+  assertion_id: asrt-e532c15bd8530656ce02c49b0f8436fe786e96b915a100d7a041a360ac5b0959
   relationship_type: declared_in
   from_entity_id: INV-0017
   to_entity_id: ADR-L-0002
@@ -1492,6 +2070,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: declared_in:INV-0018:ADR-L-0002
+  assertion_id: asrt-e5a62b47de3a5b20f0e84620622d3a89bd56985ff56425ddb7850dd6f8ca61e6
   relationship_type: declared_in
   from_entity_id: INV-0018
   to_entity_id: ADR-L-0002
@@ -1502,6 +2081,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: declared_in:INV-0019:ADR-L-0002
+  assertion_id: asrt-d506155a81a242a9329451e64f5dd8a974e4e437633b1859431bc9e23ddd9df8
   relationship_type: declared_in
   from_entity_id: INV-0019
   to_entity_id: ADR-L-0002
@@ -1512,6 +2092,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: declared_in:INV-0020:ADR-L-0003
+  assertion_id: asrt-04d21535bbdf9e99c4c816379015f4428b7f23e4affe3c23c6d774017d7dcd02
   relationship_type: declared_in
   from_entity_id: INV-0020
   to_entity_id: ADR-L-0003
@@ -1522,6 +2103,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: declared_in:INV-0021:ADR-L-0003
+  assertion_id: asrt-edc43981513d1f5eaee249441ea712af67fa7a7a3d90e0b31d27562c6a707817
   relationship_type: declared_in
   from_entity_id: INV-0021
   to_entity_id: ADR-L-0003
@@ -1532,6 +2114,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: declared_in:INV-0022:ADR-L-0003
+  assertion_id: asrt-b8a42e02ac7c997c461cd83ebad9639b2334921265c7c67fa61a28cd93698076
   relationship_type: declared_in
   from_entity_id: INV-0022
   to_entity_id: ADR-L-0003
@@ -1542,6 +2125,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: declared_in:INV-0023:ADR-L-0003
+  assertion_id: asrt-cca8fdbb42ca9894ad1d6ff0c1fad95e330956b1078c981de392bbd768fde742
   relationship_type: declared_in
   from_entity_id: INV-0023
   to_entity_id: ADR-L-0003
@@ -1552,6 +2136,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: declared_in:INV-0024:ADR-L-0003
+  assertion_id: asrt-834b4dc5a44c83d84460d5772942a4c608d74ad0aaf3b1626233336fada410ee
   relationship_type: declared_in
   from_entity_id: INV-0024
   to_entity_id: ADR-L-0003
@@ -1562,6 +2147,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: declared_in:INV-0025:ADR-L-0003
+  assertion_id: asrt-cbb7cee700062460171f6989fa117a3606215846fecded5b9d7711e791d7be38
   relationship_type: declared_in
   from_entity_id: INV-0025
   to_entity_id: ADR-L-0003
@@ -1572,6 +2158,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: declared_in:INV-0026:ADR-L-0003
+  assertion_id: asrt-865eb900dc9a6f549d8b16307ebde6dde1243c3332e4101ec89d51e75d474c63
   relationship_type: declared_in
   from_entity_id: INV-0026
   to_entity_id: ADR-L-0003
@@ -1582,6 +2169,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: declared_in:INV-0027:ADR-L-0004
+  assertion_id: asrt-696461f68fe993fb2459e2125ff46c04249a4dd1d7f73f8c012fe81cf83b34ab
   relationship_type: declared_in
   from_entity_id: INV-0027
   to_entity_id: ADR-L-0004
@@ -1592,6 +2180,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: declared_in:INV-0028:ADR-L-0004
+  assertion_id: asrt-035ee2f207be22721bd81b776793b44e519f19afb93a35f2ee42a907696d6258
   relationship_type: declared_in
   from_entity_id: INV-0028
   to_entity_id: ADR-L-0004
@@ -1602,6 +2191,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: declared_in:INV-0029:ADR-L-0004
+  assertion_id: asrt-979f5469588f88011c5566f41545930526a035c1068a6bd55306b60a5812e647
   relationship_type: declared_in
   from_entity_id: INV-0029
   to_entity_id: ADR-L-0004
@@ -1612,6 +2202,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: declared_in:INV-0030:ADR-L-0004
+  assertion_id: asrt-84d7e244d1c0c01e1c8d9a5aa72ac4f842b8ff369011fcdf231492997de94e2f
   relationship_type: declared_in
   from_entity_id: INV-0030
   to_entity_id: ADR-L-0004
@@ -1622,6 +2213,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: declared_in:INV-0031:ADR-L-0004
+  assertion_id: asrt-e802fad005db5c625529628cd9ded4cd62574847a2773d48cc6e704c72ef42e1
   relationship_type: declared_in
   from_entity_id: INV-0031
   to_entity_id: ADR-L-0004
@@ -1632,6 +2224,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: declared_in:INV-0032:ADR-L-0004
+  assertion_id: asrt-8f8ece39ad85272d9df185135efa2ea080b5d520f0fbe18acd7af510aa14bede
   relationship_type: declared_in
   from_entity_id: INV-0032
   to_entity_id: ADR-L-0004
@@ -1642,6 +2235,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: declared_in:INV-0033:ADR-L-0006
+  assertion_id: asrt-9d118a1be3f94429027fa09ba049113aeaea579ec351fbb459d0e630840dc66f
   relationship_type: declared_in
   from_entity_id: INV-0033
   to_entity_id: ADR-L-0006
@@ -1652,6 +2246,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: declared_in:INV-0034:ADR-L-0006
+  assertion_id: asrt-e523c63f4f66f419fca461ac944165465780c0a8490a75cad4b2582ffa0fb86b
   relationship_type: declared_in
   from_entity_id: INV-0034
   to_entity_id: ADR-L-0006
@@ -1662,6 +2257,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: declared_in:INV-0035:ADR-L-0006
+  assertion_id: asrt-b2b7edc4dc80e6a833cb4868b55721bcbc29056a30c06aadf57622cb88eb3f23
   relationship_type: declared_in
   from_entity_id: INV-0035
   to_entity_id: ADR-L-0006
@@ -1672,6 +2268,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: declared_in:INV-0036:ADR-L-0006
+  assertion_id: asrt-77c9fb5f9c62e341b85069fc2f98df4db6c4d818d1f09462c2ed4c31db4d74f4
   relationship_type: declared_in
   from_entity_id: INV-0036
   to_entity_id: ADR-L-0006
@@ -1682,6 +2279,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: declared_in:INV-0037:ADR-L-0007
+  assertion_id: asrt-f058ab56daa1fc4502a6d5a8dc3e098c56b55f5ff022dc73b460b1abb57eb8c5
   relationship_type: declared_in
   from_entity_id: INV-0037
   to_entity_id: ADR-L-0007
@@ -1692,6 +2290,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: declared_in:INV-0038:ADR-L-0007
+  assertion_id: asrt-dda0f100a7b24611800918a193b6b2c4a2dfdc1789d10fcd29db6ed99d7f6046
   relationship_type: declared_in
   from_entity_id: INV-0038
   to_entity_id: ADR-L-0007
@@ -1702,6 +2301,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: declared_in:INV-0039:ADR-L-0007
+  assertion_id: asrt-1a216131e8889898f25c61517756ffda3e3aad3deb784c2b4925d8540178599e
   relationship_type: declared_in
   from_entity_id: INV-0039
   to_entity_id: ADR-L-0007
@@ -1712,6 +2312,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: declared_in:INV-0040:ADR-L-0008
+  assertion_id: asrt-118a1c64303d7190bdccb27b48de16a52740f1846a5cf80e5e65f086b4fa846a
   relationship_type: declared_in
   from_entity_id: INV-0040
   to_entity_id: ADR-L-0008
@@ -1722,6 +2323,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: declared_in:INV-0041:ADR-L-0008
+  assertion_id: asrt-661ada901893654c4bb247432ae014d160b01437be43f5315308edd2ce80be86
   relationship_type: declared_in
   from_entity_id: INV-0041
   to_entity_id: ADR-L-0008
@@ -1732,6 +2334,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: declared_in:INV-0042:ADR-L-0008
+  assertion_id: asrt-d53311eb52d46e0f0755798806bec66123436cd76fcda56c682bbc2194c750a1
   relationship_type: declared_in
   from_entity_id: INV-0042
   to_entity_id: ADR-L-0008
@@ -1742,6 +2345,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: declared_in:INV-0043:ADR-L-0009
+  assertion_id: asrt-777001d01ed0f827c37716f1761a10404ff8c30bdf44963cb0bc8b6acb9fd0f1
   relationship_type: declared_in
   from_entity_id: INV-0043
   to_entity_id: ADR-L-0009
@@ -1752,6 +2356,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: declared_in:INV-0044:ADR-L-0009
+  assertion_id: asrt-23eaecc85992e359138279a30284466036463d5b863bd36fc8c0a1bfc7458f22
   relationship_type: declared_in
   from_entity_id: INV-0044
   to_entity_id: ADR-L-0009
@@ -1762,6 +2367,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: declared_in:INV-0045:ADR-L-0009
+  assertion_id: asrt-c0f7f5be23cc70e355a167b5bd60011ef9a912826f04d61ddced666c40a7e91c
   relationship_type: declared_in
   from_entity_id: INV-0045
   to_entity_id: ADR-L-0009
@@ -1772,6 +2378,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: declared_in:INV-0046:ADR-L-0005
+  assertion_id: asrt-2b7b6e6a609bbbcb763225b3e76362875d43f331cd1d77575d2b1bb71784ea98
   relationship_type: declared_in
   from_entity_id: INV-0046
   to_entity_id: ADR-L-0005
@@ -1782,6 +2389,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: declared_in:INV-0047:ADR-L-0005
+  assertion_id: asrt-62bafd2e7f8a4ac4100f893be43701ff3f3fa2a976a74ff1779119fa3ecff973
   relationship_type: declared_in
   from_entity_id: INV-0047
   to_entity_id: ADR-L-0005
@@ -1792,6 +2400,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: declared_in:INV-0048:ADR-L-0005
+  assertion_id: asrt-4eedd07a796dee148ad19fe5d67417ec6aa1dfdc50b9d6fe5364bfd50b885216
   relationship_type: declared_in
   from_entity_id: INV-0048
   to_entity_id: ADR-L-0005
@@ -1802,6 +2411,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: declared_in:INV-0049:ADR-L-0005
+  assertion_id: asrt-f7ca468f4dfb3d0f82b0ef4b5735a9d78e03bacf5a9d44860ab333ec94a74e92
   relationship_type: declared_in
   from_entity_id: INV-0049
   to_entity_id: ADR-L-0005
@@ -1812,6 +2422,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: declared_in:INV-0050:ADR-L-0005
+  assertion_id: asrt-6cd9139b07222981ec1f4bcab47813a3f5fd11f37bf5fcd4a54e26caddcad7a8
   relationship_type: declared_in
   from_entity_id: INV-0050
   to_entity_id: ADR-L-0005
@@ -1822,6 +2433,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: declared_in:INV-0051:ADR-L-0005
+  assertion_id: asrt-ba8876ff131b0ccb96c106365595a44dac461ac6d35679fd5233c5b5d0a1aa79
   relationship_type: declared_in
   from_entity_id: INV-0051
   to_entity_id: ADR-L-0005
@@ -1832,6 +2444,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: declared_in:INV-0052:ADR-L-0010
+  assertion_id: asrt-a9a98c00a6c9bccd7834dda89d11042cc2c130e2fa9da4aabbf438c69f69bd79
   relationship_type: declared_in
   from_entity_id: INV-0052
   to_entity_id: ADR-L-0010
@@ -1842,6 +2455,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: declared_in:INV-0053:ADR-L-0010
+  assertion_id: asrt-f0a2adceed6644073cf23a6200f26531aa07fb6d8c548a171029c3a5fa11008d
   relationship_type: declared_in
   from_entity_id: INV-0053
   to_entity_id: ADR-L-0010
@@ -1852,6 +2466,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: declared_in:INV-0054:ADR-L-0010
+  assertion_id: asrt-be54f7192800a8f4cd7450b616073fde60f25113b56ec837e28ebef0300313de
   relationship_type: declared_in
   from_entity_id: INV-0054
   to_entity_id: ADR-L-0010
@@ -1862,6 +2477,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: declared_in:INV-0055:ADR-L-0011
+  assertion_id: asrt-133ddcc24ebba75cafda9ce784f1b568192f7b2acf78653e6710861207be66eb
   relationship_type: declared_in
   from_entity_id: INV-0055
   to_entity_id: ADR-L-0011
@@ -1872,6 +2488,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: declared_in:INV-0056:ADR-L-0011
+  assertion_id: asrt-a0c9b359249c546cbcecf80889c25cc1a16d1b17eef6f55db9a202ce29264291
   relationship_type: declared_in
   from_entity_id: INV-0056
   to_entity_id: ADR-L-0011
@@ -1882,6 +2499,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: declared_in:INV-0057:ADR-L-0011
+  assertion_id: asrt-92461184108eb64915c0ddc1f0bfa547c41c694bd597554eac16c34dd2e73ea3
   relationship_type: declared_in
   from_entity_id: INV-0057
   to_entity_id: ADR-L-0011
@@ -1892,6 +2510,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: declared_in:INV-0058:ADR-L-0012
+  assertion_id: asrt-7ac6b9f39ea7476a3a3b97acf3aa29b8a6c07b6e442b913245107575dea3c586
   relationship_type: declared_in
   from_entity_id: INV-0058
   to_entity_id: ADR-L-0012
@@ -1902,6 +2521,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: declared_in:INV-0059:ADR-L-0013
+  assertion_id: asrt-363cc690c84262fb4aa37ade8f878cd23b80165c7fdb666c18575b524c805847
   relationship_type: declared_in
   from_entity_id: INV-0059
   to_entity_id: ADR-L-0013
@@ -1912,6 +2532,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: declared_in:INV-0060:ADR-L-0014
+  assertion_id: asrt-d9e537d332e795a40f171a1a8c36fc4e8da4686b5bf414598e5c324d0adc2d36
   relationship_type: declared_in
   from_entity_id: INV-0060
   to_entity_id: ADR-L-0014
@@ -1922,6 +2543,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: declared_in:INV-0061:ADR-L-0014
+  assertion_id: asrt-fe674f0e3d18d620d1f71ff2ab5244236581648f7b6b0887a8a73d92bebcd213
   relationship_type: declared_in
   from_entity_id: INV-0061
   to_entity_id: ADR-L-0014
@@ -1932,6 +2554,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: declared_in:INV-0064:ADR-L-0015
+  assertion_id: asrt-56b61c0e2b06ff2256ca2ded1f43ea489f1071d60fbfc1f50e322aaad801173a
   relationship_type: declared_in
   from_entity_id: INV-0064
   to_entity_id: ADR-L-0015
@@ -1942,6 +2565,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: declared_in:INV-0065:ADR-L-0015
+  assertion_id: asrt-66925c6b74f37cc57a2b85b39e0b241ba4fb4cebddb23a493976b4b163434262
   relationship_type: declared_in
   from_entity_id: INV-0065
   to_entity_id: ADR-L-0015
@@ -1952,6 +2576,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: declared_in:INV-0066:ADR-L-0015
+  assertion_id: asrt-266c1992b09874dc30ba158044383a9f9390de99a1e989a262efe6605dcbc6fb
   relationship_type: declared_in
   from_entity_id: INV-0066
   to_entity_id: ADR-L-0015
@@ -1962,6 +2587,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: declared_in:INV-0067:ADR-L-0013
+  assertion_id: asrt-84ea9ced3936d91ff210f0bf97cbe876837b95c5e9c54c51bd0ec0e2246db703
   relationship_type: declared_in
   from_entity_id: INV-0067
   to_entity_id: ADR-L-0013
@@ -1972,6 +2598,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: declared_in:INV-0068:ADR-L-0017
+  assertion_id: asrt-a57cfd7519d08e78cce1875e4ac9ae5aa4ad7662b2d042f55b43b93ced7667e2
   relationship_type: declared_in
   from_entity_id: INV-0068
   to_entity_id: ADR-L-0017
@@ -1982,6 +2609,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: declared_in:INV-0069:ADR-L-0016
+  assertion_id: asrt-bcf5e7cc4b52bbc9153fb77645ebc9dd10ec83c0fad973731c8313ff8baf830e
   relationship_type: declared_in
   from_entity_id: INV-0069
   to_entity_id: ADR-L-0016
@@ -1992,6 +2620,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: declared_in:INV-0070:ADR-L-0017
+  assertion_id: asrt-bd6ceba88920311adff284fdd899de1376ec554939b5d1f29b8e99291cee806a
   relationship_type: declared_in
   from_entity_id: INV-0070
   to_entity_id: ADR-L-0017
@@ -2002,6 +2631,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: declared_in:INV-0071:ADR-L-0016
+  assertion_id: asrt-8384ee0b749c1ce9f8474e3221eebdb6aa6bae7d170012d14e7c81765eb456e7
   relationship_type: declared_in
   from_entity_id: INV-0071
   to_entity_id: ADR-L-0016
@@ -2012,6 +2642,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: declared_in:INV-0072:ADR-L-0003
+  assertion_id: asrt-a0b38436c862de3f08ab0b220b8f9f87ee88a045ce893bf88c4c40bae2376c91
   relationship_type: declared_in
   from_entity_id: INV-0072
   to_entity_id: ADR-L-0003
@@ -2022,6 +2653,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: declared_in:INV-0073:ADR-L-0003
+  assertion_id: asrt-f165638ec8a6b58859ecf2938804aef5111ced1c1e6da4917a39f59dab88651b
   relationship_type: declared_in
   from_entity_id: INV-0073
   to_entity_id: ADR-L-0003
@@ -2032,6 +2664,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: declared_in:INV-0074:ADR-L-0013
+  assertion_id: asrt-17e0cbb069340d32bf69e8fbb39d6c919e3f885d1734694f853813d79f73ed22
   relationship_type: declared_in
   from_entity_id: INV-0074
   to_entity_id: ADR-L-0013
@@ -2042,6 +2675,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: declared_in:INV-0075:ADR-L-0003
+  assertion_id: asrt-6f95e57e58e3d6ac03a64d0ff5e98a129dff1732843c6a31f56385711b7761ab
   relationship_type: declared_in
   from_entity_id: INV-0075
   to_entity_id: ADR-L-0003
@@ -2052,6 +2686,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: declared_in:INV-0076:ADR-L-0013
+  assertion_id: asrt-55fc344bab5cc63e76772b735c40a3695b598011b1cd9878c3a27f4d963627ff
   relationship_type: declared_in
   from_entity_id: INV-0076
   to_entity_id: ADR-L-0013
@@ -2061,7 +2696,74 @@ relationships:
   canonical_source_ref: ADR-L-0013#INV-0076
   confidence: 1.0
   metadata: {}
+- relationship_id: declared_in:INV-0077:ADR-L-0018
+  assertion_id: asrt-b9f1e9c72669f376a6f234aa99d31f47ea8d71f8bd26c6662c8e31dc708cd6b4
+  relationship_type: declared_in
+  from_entity_id: INV-0077
+  to_entity_id: ADR-L-0018
+  provenance_classification: explicit
+  evidence:
+  - ADR-L-0018#INV-0077
+  canonical_source_ref: ADR-L-0018#INV-0077
+  confidence: 1.0
+  metadata: {}
+- relationship_id: declared_in:INV-0078:ADR-L-0018
+  assertion_id: asrt-d76a82073708994e391eceb94bb5b0ea90d16e61d2f92914c6e55118408f7cdd
+  relationship_type: declared_in
+  from_entity_id: INV-0078
+  to_entity_id: ADR-L-0018
+  provenance_classification: explicit
+  evidence:
+  - ADR-L-0018#INV-0078
+  canonical_source_ref: ADR-L-0018#INV-0078
+  confidence: 1.0
+  metadata: {}
+- relationship_id: declared_in:INV-0079:ADR-L-0018
+  assertion_id: asrt-977aad347b5a0404077f9a82cda4ed82118b6e065b49182186409001b31dc820
+  relationship_type: declared_in
+  from_entity_id: INV-0079
+  to_entity_id: ADR-L-0018
+  provenance_classification: explicit
+  evidence:
+  - ADR-L-0018#INV-0079
+  canonical_source_ref: ADR-L-0018#INV-0079
+  confidence: 1.0
+  metadata: {}
+- relationship_id: declared_in:INV-0080:ADR-L-0018
+  assertion_id: asrt-6ee9fb00061675760066d8e36ac30fe0967b94ae2e9e41a258ca2b547f12a485
+  relationship_type: declared_in
+  from_entity_id: INV-0080
+  to_entity_id: ADR-L-0018
+  provenance_classification: explicit
+  evidence:
+  - ADR-L-0018#INV-0080
+  canonical_source_ref: ADR-L-0018#INV-0080
+  confidence: 1.0
+  metadata: {}
+- relationship_id: declared_in:INV-0081:ADR-L-0018
+  assertion_id: asrt-a5fc1446241be9f924d085f15ef43258c56dcfaf934a3d413a0ece6437bb51d6
+  relationship_type: declared_in
+  from_entity_id: INV-0081
+  to_entity_id: ADR-L-0018
+  provenance_classification: explicit
+  evidence:
+  - ADR-L-0018#INV-0081
+  canonical_source_ref: ADR-L-0018#INV-0081
+  confidence: 1.0
+  metadata: {}
+- relationship_id: declared_in:INV-0082:ADR-L-0018
+  assertion_id: asrt-5191b1837801460df9120d818d7227dc5989a6d9e1d0e2e4730d3c0dbdb54436
+  relationship_type: declared_in
+  from_entity_id: INV-0082
+  to_entity_id: ADR-L-0018
+  provenance_classification: explicit
+  evidence:
+  - ADR-L-0018#INV-0082
+  canonical_source_ref: ADR-L-0018#INV-0082
+  confidence: 1.0
+  metadata: {}
 - relationship_id: declared_in:SYS-0001:ADR-PS-0001
+  assertion_id: asrt-a799c2831537b2e725e5ae68f9d9fb5e900e7a28584994526dee5ae2cbdb821d
   relationship_type: declared_in
   from_entity_id: SYS-0001
   to_entity_id: ADR-PS-0001
@@ -2072,6 +2774,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: declared_in:SYS-0002:ADR-PS-0002
+  assertion_id: asrt-d077a0a152ce661b50a388f902b45b34ea59f11c27f072743cd3396c563b22e4
   relationship_type: declared_in
   from_entity_id: SYS-0002
   to_entity_id: ADR-PS-0002
@@ -2082,6 +2785,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: embodied_in:COMP-0010:SYS-0001
+  assertion_id: asrt-b56bf63d2d29c63bc75823331a6c9a131a653e45bb74ce9cc35e49c5d6605372
   relationship_type: embodied_in
   from_entity_id: COMP-0010
   to_entity_id: SYS-0001
@@ -2092,6 +2796,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: embodied_in:COMP-0011:SYS-0002
+  assertion_id: asrt-6ebe673c2c8d607ea99a15985b5048ad4acf5227d8992a287bb78c36450d6520
   relationship_type: embodied_in
   from_entity_id: COMP-0011
   to_entity_id: SYS-0002
@@ -2102,6 +2807,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: embodied_in:COMP-0012:SYS-0002
+  assertion_id: asrt-d3b474804193f6b93b40302c53e7e0e162bbcfa8ed9ff6197e78e8c372c654c6
   relationship_type: embodied_in
   from_entity_id: COMP-0012
   to_entity_id: SYS-0002
@@ -2112,6 +2818,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: embodied_in:COMP-0013:SYS-0002
+  assertion_id: asrt-9667af41a99fb855c54772ea35058fd92a1cd11492736faed653d58a395fa8fb
   relationship_type: embodied_in
   from_entity_id: COMP-0013
   to_entity_id: SYS-0002
@@ -2122,6 +2829,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: embodied_in:COMP-0014:SYS-0002
+  assertion_id: asrt-afc1c8c4586cc9ed743080b6d50f1456b2b1b11211c1e36967a3158ef8683ce0
   relationship_type: embodied_in
   from_entity_id: COMP-0014
   to_entity_id: SYS-0002
@@ -2132,6 +2840,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: embodied_in:COMP-0015:SYS-0002
+  assertion_id: asrt-e13644575c98b661e63da5e55ef1b07625d97d25df84a9b78dd83de9d4244d51
   relationship_type: embodied_in
   from_entity_id: COMP-0015
   to_entity_id: SYS-0002
@@ -2142,6 +2851,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: enabled_by:CAP-9000:DEC-9000
+  assertion_id: asrt-572aba628b8ddd283ae8be3b65cd8844179e724a90c37396245068091cb320c6
   relationship_type: enabled_by
   from_entity_id: CAP-9000
   to_entity_id: DEC-9000
@@ -2152,6 +2862,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: enables:DEC-9000:CAP-9000
+  assertion_id: asrt-ada59d9ce71a53b2db02f8b5b23854667560855f4cd5c0cfa6a3c0c62102bbc6
   relationship_type: enables
   from_entity_id: DEC-9000
   to_entity_id: CAP-9000
@@ -2162,6 +2873,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: enforces:DEC-0001:INV-0001
+  assertion_id: asrt-9b870999bde6cf18be696af41b243128cbd4a9078b87b8a66ca8f372f9dc5130
   relationship_type: enforces
   from_entity_id: DEC-0001
   to_entity_id: INV-0001
@@ -2172,6 +2884,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: enforces:DEC-0002:INV-0002
+  assertion_id: asrt-5650106e493ed3d24bbc6b81bc5956f55cfd86cf1f7e311c8936d1a9f35f4d86
   relationship_type: enforces
   from_entity_id: DEC-0002
   to_entity_id: INV-0002
@@ -2182,6 +2895,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: enforces:DEC-0002:INV-0003
+  assertion_id: asrt-91db867c921c7c91b273344a535d56e7bed8e6f0e56b7cc2232ba4a2ca97c9e9
   relationship_type: enforces
   from_entity_id: DEC-0002
   to_entity_id: INV-0003
@@ -2192,6 +2906,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: enforces:DEC-0003:INV-0004
+  assertion_id: asrt-c6ecb52dc17f3aeeaf7566fb9d5dfbd65a57e03102e1dfcf13537eaa1ba4fc5c
   relationship_type: enforces
   from_entity_id: DEC-0003
   to_entity_id: INV-0004
@@ -2202,6 +2917,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: enforces:DEC-0004:INV-0005
+  assertion_id: asrt-ad449b165a9e86809cabd61589bc7aa50ec7c72946b762ab324602ecf8c8f3ed
   relationship_type: enforces
   from_entity_id: DEC-0004
   to_entity_id: INV-0005
@@ -2212,6 +2928,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: enforces:DEC-0012:INV-0037
+  assertion_id: asrt-4b3fd654ca50b7c166d1e5a15b7421da5bf0a7d75c85cb9c22abd8512066dfe0
   relationship_type: enforces
   from_entity_id: DEC-0012
   to_entity_id: INV-0037
@@ -2222,6 +2939,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: enforces:DEC-0012:INV-0038
+  assertion_id: asrt-df7d706e92a66b77a6ba421e25a01e2de23058e33733075b2cc0833c1db788b9
   relationship_type: enforces
   from_entity_id: DEC-0012
   to_entity_id: INV-0038
@@ -2232,6 +2950,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: enforces:DEC-0012:INV-0039
+  assertion_id: asrt-eb53a6f4ecd803d2dddcd1d70ea9ecdbe1f261a17fcd361d242ff57e9bad3c28
   relationship_type: enforces
   from_entity_id: DEC-0012
   to_entity_id: INV-0039
@@ -2242,6 +2961,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: enforces:DEC-0019:INV-0037
+  assertion_id: asrt-792b92b6638c504971942eda41f6b6f46450c0b23946d6db98e9f7da5cb95fe0
   relationship_type: enforces
   from_entity_id: DEC-0019
   to_entity_id: INV-0037
@@ -2252,6 +2972,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: enforces:DEC-0019:INV-0039
+  assertion_id: asrt-2ddc2da51b73e5e2b05dcf8bf2040416ec4a5af06c99cf9ed3b5a61a28b96a57
   relationship_type: enforces
   from_entity_id: DEC-0019
   to_entity_id: INV-0039
@@ -2262,6 +2983,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: enforces:DEC-0026:INV-0038
+  assertion_id: asrt-7095134e8f19a05913bc91c18d1d438d13720c4be349d3dd7485d991c816bcfd
   relationship_type: enforces
   from_entity_id: DEC-0026
   to_entity_id: INV-0038
@@ -2272,6 +2994,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: enforces:DEC-0026:INV-0039
+  assertion_id: asrt-f6071443cee4c4f9e63db361f1b59abaf1f10ed16546cc6a1eab5cdf3bf5bf98
   relationship_type: enforces
   from_entity_id: DEC-0026
   to_entity_id: INV-0039
@@ -2282,6 +3005,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: enforces:INV-0001:ADR-P-0002
+  assertion_id: asrt-3516aabf32f3eedbc3cd93da35c00c5b44fc2afb314615baa4d85a1498663fd8
   relationship_type: enforces
   from_entity_id: INV-0001
   to_entity_id: ADR-P-0002
@@ -2292,6 +3016,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: enforces:INV-0002:ADR-P-0001
+  assertion_id: asrt-8ba4bb7e78536c7d43887e84e25d6dfbd2dcb811d1bd745b9d3ba707946ca89f
   relationship_type: enforces
   from_entity_id: INV-0002
   to_entity_id: ADR-P-0001
@@ -2302,6 +3027,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: enforces:INV-0003:ADR-P-0001
+  assertion_id: asrt-38f20b532486c66e9e7f3376fd1b96b5fc2f717a40ecf950cf8ec5d8b62b817a
   relationship_type: enforces
   from_entity_id: INV-0003
   to_entity_id: ADR-P-0001
@@ -2312,6 +3038,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: enforces:INV-0004:ADR-P-0001
+  assertion_id: asrt-8bcab10e1a2e7fdae738b821fd01a14e6320402217dfa095e2ac41492887b8c8
   relationship_type: enforces
   from_entity_id: INV-0004
   to_entity_id: ADR-P-0001
@@ -2322,6 +3049,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: enforces:INV-0004:ADR-PC-0001
+  assertion_id: asrt-2a42dffa53839e88446241f5edc00e391b0c86a28398395e153ac4438ed3f11e
   relationship_type: enforces
   from_entity_id: INV-0004
   to_entity_id: ADR-PC-0001
@@ -2332,6 +3060,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: enforces:INV-0005:ADR-P-0001
+  assertion_id: asrt-ef92095ea7906bab0d86457fbe1e22581e1c7a905cc9c6abbf4b9d6c0ad13d3b
   relationship_type: enforces
   from_entity_id: INV-0005
   to_entity_id: ADR-P-0001
@@ -2342,6 +3071,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: enforces:INV-0006:ADR-P-0001
+  assertion_id: asrt-0784832fa9e056120606ab9e509534e1cbaf4eed7d64c52159e5e63b2f06b147
   relationship_type: enforces
   from_entity_id: INV-0006
   to_entity_id: ADR-P-0001
@@ -2352,6 +3082,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: enforces:INV-0007:ADR-P-0001
+  assertion_id: asrt-0769667415d5bde8f454e2f72ad90b656c5125a37b0709c23e4afd0bd4ccb3f2
   relationship_type: enforces
   from_entity_id: INV-0007
   to_entity_id: ADR-P-0001
@@ -2362,6 +3093,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: enforces:INV-0008:ADR-PC-0001
+  assertion_id: asrt-0d0a5238d8be81982a9c90e313e68e6dfd7a135e0979ab54e1e8c82f8941bba7
   relationship_type: enforces
   from_entity_id: INV-0008
   to_entity_id: ADR-PC-0001
@@ -2372,6 +3104,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: enforces:INV-0008:ADR-PC-0005
+  assertion_id: asrt-010c72754bd91e3483fec0b29e406aefbd234f49f4c8ec07368b30ae9f5cd505
   relationship_type: enforces
   from_entity_id: INV-0008
   to_entity_id: ADR-PC-0005
@@ -2382,6 +3115,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: implemented_by:CAP-0018:COMP-0010
+  assertion_id: asrt-02b3940793ffe0be8311e1834ded73a2a68d144f3474893e78177859106f6fc0
   relationship_type: implemented_by
   from_entity_id: CAP-0018
   to_entity_id: COMP-0010
@@ -2392,6 +3126,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: implemented_by:CAP-0044:COMP-0010
+  assertion_id: asrt-131e1720a991db57d7f4a00e98bb97639a140e54fb5e89527f707c96ff846c64
   relationship_type: implemented_by
   from_entity_id: CAP-0044
   to_entity_id: COMP-0010
@@ -2401,7 +3136,107 @@ relationships:
   canonical_source_ref: ADR-PC-0001#COMP-0010
   confidence: 1.0
   metadata: {}
+- relationship_id: provides_interface:COMP-0010:IFACE-0011
+  assertion_id: asrt-720b257c392367b7564f9d05b97cf7d3a63b67a4e0e935263b70539ab7682c53
+  relationship_type: provides_interface
+  from_entity_id: COMP-0010
+  to_entity_id: IFACE-0011
+  provenance_classification: explicit
+  evidence:
+  - ADR-PC-0001
+  canonical_source_ref: ADR-PC-0001#IFACE-0011
+  confidence: 1.0
+  metadata: {}
+- relationship_id: provides_interface:COMP-0011:IFACE-0012
+  assertion_id: asrt-cd2765d25ee9e3a87d42af6abc4e5910fd08c44b1aaed46efdb27f317e286755
+  relationship_type: provides_interface
+  from_entity_id: COMP-0011
+  to_entity_id: IFACE-0012
+  provenance_classification: explicit
+  evidence:
+  - ADR-PC-0002
+  canonical_source_ref: ADR-PC-0002#IFACE-0012
+  confidence: 1.0
+  metadata: {}
+- relationship_id: provides_interface:COMP-0011:IFACE-0017
+  assertion_id: asrt-41ef768066b77c194da4b74b3aaefe4b782191bf4b7ff73f384b4e7dacf112f7
+  relationship_type: provides_interface
+  from_entity_id: COMP-0011
+  to_entity_id: IFACE-0017
+  provenance_classification: explicit
+  evidence:
+  - ADR-PC-0002
+  canonical_source_ref: ADR-PC-0002#IFACE-0017
+  confidence: 1.0
+  metadata: {}
+- relationship_id: provides_interface:COMP-0012:IFACE-0013
+  assertion_id: asrt-bd9676f5f565fd863542cf1a1422a45ff92e311510cd79fc0ebc36764ca30ea4
+  relationship_type: provides_interface
+  from_entity_id: COMP-0012
+  to_entity_id: IFACE-0013
+  provenance_classification: explicit
+  evidence:
+  - ADR-PC-0003
+  canonical_source_ref: ADR-PC-0003#IFACE-0013
+  confidence: 1.0
+  metadata: {}
+- relationship_id: provides_interface:COMP-0012:IFACE-0018
+  assertion_id: asrt-4e374edd562b9b662642f071fa8fca8fa68149479e48a92bb25fd823251a1445
+  relationship_type: provides_interface
+  from_entity_id: COMP-0012
+  to_entity_id: IFACE-0018
+  provenance_classification: explicit
+  evidence:
+  - ADR-PC-0003
+  canonical_source_ref: ADR-PC-0003#IFACE-0018
+  confidence: 1.0
+  metadata: {}
+- relationship_id: provides_interface:COMP-0013:IFACE-0014
+  assertion_id: asrt-7ab7c568f158e2f80c9016b76f6ac42a8496863cb61e3ed2aabd4d646c67baeb
+  relationship_type: provides_interface
+  from_entity_id: COMP-0013
+  to_entity_id: IFACE-0014
+  provenance_classification: explicit
+  evidence:
+  - ADR-PC-0004
+  canonical_source_ref: ADR-PC-0004#IFACE-0014
+  confidence: 1.0
+  metadata: {}
+- relationship_id: provides_interface:COMP-0013:IFACE-0019
+  assertion_id: asrt-ecb7b16933ec64c9ca2802924bb5d920cd1f9f931ca45fada0b2eb6f11a7ed05
+  relationship_type: provides_interface
+  from_entity_id: COMP-0013
+  to_entity_id: IFACE-0019
+  provenance_classification: explicit
+  evidence:
+  - ADR-PC-0004
+  canonical_source_ref: ADR-PC-0004#IFACE-0019
+  confidence: 1.0
+  metadata: {}
+- relationship_id: provides_interface:COMP-0014:IFACE-0015
+  assertion_id: asrt-95f81b2924d631aef665a45ecdc79f3606ba5dbced4fa7f1b7f293c9e1b163f3
+  relationship_type: provides_interface
+  from_entity_id: COMP-0014
+  to_entity_id: IFACE-0015
+  provenance_classification: explicit
+  evidence:
+  - ADR-PC-0005
+  canonical_source_ref: ADR-PC-0005#IFACE-0015
+  confidence: 1.0
+  metadata: {}
+- relationship_id: provides_interface:COMP-0015:IFACE-0016
+  assertion_id: asrt-7082f5fd70563ef0c9bd36e1275788cec11b8c238a2670b1e01dbaa972858b0d
+  relationship_type: provides_interface
+  from_entity_id: COMP-0015
+  to_entity_id: IFACE-0016
+  provenance_classification: explicit
+  evidence:
+  - ADR-PC-0006
+  canonical_source_ref: ADR-PC-0006#IFACE-0016
+  confidence: 1.0
+  metadata: {}
 - relationship_id: references:ADR-L-0002:ADR-L-0001
+  assertion_id: asrt-bb3d0ae6aad615ceb5637d7bd4d3e5d90bc1e0364a24091ed7c59ebd4dcb8d40
   relationship_type: references
   from_entity_id: ADR-L-0002
   to_entity_id: ADR-L-0001
@@ -2412,6 +3247,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: references:ADR-L-0002:ADR-L-0004
+  assertion_id: asrt-c095a7157494309e2993553a5504eabd971d517c5548680e8242850dc56a7648
   relationship_type: references
   from_entity_id: ADR-L-0002
   to_entity_id: ADR-L-0004
@@ -2422,6 +3258,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: references:ADR-L-0003:ADR-L-0001
+  assertion_id: asrt-1c25ff2f3a208da2cc982c1bd13470bdb5e02f9b318c53bede31a7614ea93747
   relationship_type: references
   from_entity_id: ADR-L-0003
   to_entity_id: ADR-L-0001
@@ -2432,6 +3269,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: references:ADR-L-0003:ADR-L-0002
+  assertion_id: asrt-a948466b12897571e45a44a670cab0be82521ca9d937b2a355c8757f596de4b9
   relationship_type: references
   from_entity_id: ADR-L-0003
   to_entity_id: ADR-L-0002
@@ -2442,6 +3280,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: references:ADR-L-0003:ADR-P-0001
+  assertion_id: asrt-f8a438bc5aa95431c51e53fed322d6928bdc9346502e2c19dbdeccec154a0eb3
   relationship_type: references
   from_entity_id: ADR-L-0003
   to_entity_id: ADR-P-0001
@@ -2452,6 +3291,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: references:ADR-L-0003:ADR-P-0003
+  assertion_id: asrt-9e2aab6427985f73d73f6c6f61b6e8d46963ea9cf91a9e26aa798c0ca65059bb
   relationship_type: references
   from_entity_id: ADR-L-0003
   to_entity_id: ADR-P-0003
@@ -2462,6 +3302,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: references:ADR-L-0004:ADR-L-0001
+  assertion_id: asrt-c678b9443b0eb86c1d157400e9713f22746962f0559c1c1374a39ff7818917e1
   relationship_type: references
   from_entity_id: ADR-L-0004
   to_entity_id: ADR-L-0001
@@ -2472,6 +3313,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: references:ADR-L-0004:ADR-L-0002
+  assertion_id: asrt-6ebdf3b7c51ddef17a34585a12f42b9e571d3f99aacbfeb676ee1746cfb9ad6c
   relationship_type: references
   from_entity_id: ADR-L-0004
   to_entity_id: ADR-L-0002
@@ -2482,6 +3324,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: references:ADR-L-0004:ADR-L-0003
+  assertion_id: asrt-b3ace99662315dc14161ae3731ca783e1ccfbbe71e7225617838f7459000675d
   relationship_type: references
   from_entity_id: ADR-L-0004
   to_entity_id: ADR-L-0003
@@ -2492,6 +3335,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: references:ADR-L-0004:ADR-L-0010
+  assertion_id: asrt-eaa9becd47f4583bd3e2c5dbe1c6421bf210d7c2eaf825644b6bf57bb71b5851
   relationship_type: references
   from_entity_id: ADR-L-0004
   to_entity_id: ADR-L-0010
@@ -2502,6 +3346,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: references:ADR-L-0004:ADR-L-0012
+  assertion_id: asrt-e14e81e189b6ed041f219909b58b1a2906f4290bc30c50bdbc1264bff2c31cb3
   relationship_type: references
   from_entity_id: ADR-L-0004
   to_entity_id: ADR-L-0012
@@ -2512,6 +3357,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: references:ADR-L-0005:ADR-L-0003
+  assertion_id: asrt-cc9a2564e3a5a6eed2efa8cf683a1c0b24aedc0d15b9e43bb6eb58b93a109372
   relationship_type: references
   from_entity_id: ADR-L-0005
   to_entity_id: ADR-L-0003
@@ -2522,6 +3368,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: references:ADR-L-0005:ADR-L-0004
+  assertion_id: asrt-ef47dc6698baea2757a484dd040b84244bbd8d0e099ae183eb38b3b6b5bbde74
   relationship_type: references
   from_entity_id: ADR-L-0005
   to_entity_id: ADR-L-0004
@@ -2532,6 +3379,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: references:ADR-L-0005:ADR-P-0003
+  assertion_id: asrt-fcac8fce27dc732f6ac3138f58d96a35cdbefd9e199dd8d098f8288cc9de2f44
   relationship_type: references
   from_entity_id: ADR-L-0005
   to_entity_id: ADR-P-0003
@@ -2542,6 +3390,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: references:ADR-L-0006:ADR-L-0004
+  assertion_id: asrt-492377faf732f5f8274cdf367ca18be119c29dff4de98debd4eeb74b001e0f8f
   relationship_type: references
   from_entity_id: ADR-L-0006
   to_entity_id: ADR-L-0004
@@ -2552,6 +3401,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: references:ADR-L-0006:ADR-L-0005
+  assertion_id: asrt-820366d603d99fcabcad572ed0549309bda0a1aea70db159e3ebc627d436c869
   relationship_type: references
   from_entity_id: ADR-L-0006
   to_entity_id: ADR-L-0005
@@ -2562,6 +3412,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: references:ADR-L-0006:ADR-P-0004
+  assertion_id: asrt-6eab1a885e7222cdcb9f84d898263089e664d8cc8c57d54494a1203fcf66f6e8
   relationship_type: references
   from_entity_id: ADR-L-0006
   to_entity_id: ADR-P-0004
@@ -2572,6 +3423,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: references:ADR-L-0007:ADR-L-0001
+  assertion_id: asrt-928e94ac902a894963a51491a722fe491cb39b725cfa9197d2214b884332d3e5
   relationship_type: references
   from_entity_id: ADR-L-0007
   to_entity_id: ADR-L-0001
@@ -2582,6 +3434,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: references:ADR-L-0007:ADR-L-0003
+  assertion_id: asrt-ae6734bf4dcf4c3766520cad8aba983d9a7747a88e9e3f74ff3f96a7420cc178
   relationship_type: references
   from_entity_id: ADR-L-0007
   to_entity_id: ADR-L-0003
@@ -2592,6 +3445,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: references:ADR-L-0007:ADR-P-0001
+  assertion_id: asrt-4c0f594623a0a4c8ae1e02ceb2b84410258aa0091543fa2a331fff527c4fe012
   relationship_type: references
   from_entity_id: ADR-L-0007
   to_entity_id: ADR-P-0001
@@ -2602,6 +3456,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: references:ADR-L-0007:ADR-P-0002
+  assertion_id: asrt-44ce3e6b82b6669c7ec0957ab64787d61a577350c008d16d026476ec6254af40
   relationship_type: references
   from_entity_id: ADR-L-0007
   to_entity_id: ADR-P-0002
@@ -2612,6 +3467,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: references:ADR-L-0008:ADR-L-0001
+  assertion_id: asrt-12e423a6b52151ff24ea566317cc63df2d34d62393e67393f0c8bae886eff2ce
   relationship_type: references
   from_entity_id: ADR-L-0008
   to_entity_id: ADR-L-0001
@@ -2622,6 +3478,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: references:ADR-L-0008:ADR-L-0003
+  assertion_id: asrt-a8a99ac6aa6a052f8929bbbd3855271960da4096fc824de825c7bbbc00576d9c
   relationship_type: references
   from_entity_id: ADR-L-0008
   to_entity_id: ADR-L-0003
@@ -2632,6 +3489,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: references:ADR-L-0008:ADR-P-0001
+  assertion_id: asrt-143cca514920f7119d12a619d35ebe1be23676e4d5be8db8e1bb22b32ea2724f
   relationship_type: references
   from_entity_id: ADR-L-0008
   to_entity_id: ADR-P-0001
@@ -2642,6 +3500,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: references:ADR-L-0008:ADR-P-0002
+  assertion_id: asrt-22a7e50e87cf46738f0bb6fe58ae09bcc80fdd26771cf4738cab8ddd1c9107b5
   relationship_type: references
   from_entity_id: ADR-L-0008
   to_entity_id: ADR-P-0002
@@ -2652,6 +3511,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: references:ADR-L-0008:ADR-P-0003
+  assertion_id: asrt-6499e08a0ea21eaf6239c0c400b1fab63bec0d87ac8f2a870acbe7cafe8efccb
   relationship_type: references
   from_entity_id: ADR-L-0008
   to_entity_id: ADR-P-0003
@@ -2662,6 +3522,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: references:ADR-L-0009:ADR-L-0001
+  assertion_id: asrt-560551fb54430ee9f152f155d9ae143efb421e98be2414c25aad9d05df3c960f
   relationship_type: references
   from_entity_id: ADR-L-0009
   to_entity_id: ADR-L-0001
@@ -2672,6 +3533,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: references:ADR-L-0009:ADR-L-0008
+  assertion_id: asrt-21f2cb869088b1b3b8516fb28524fbc275203d71f45058085dedd01a2e30a151
   relationship_type: references
   from_entity_id: ADR-L-0009
   to_entity_id: ADR-L-0008
@@ -2682,6 +3544,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: references:ADR-L-0009:ADR-L-0010
+  assertion_id: asrt-79b8da35eeb14053c2f972d3d74ccbb65832b243ffc9767c4c4a7aca61b176e2
   relationship_type: references
   from_entity_id: ADR-L-0009
   to_entity_id: ADR-L-0010
@@ -2692,6 +3555,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: references:ADR-L-0009:ADR-L-0013
+  assertion_id: asrt-1f03e01d0a134f1e25c597e59fceea85059a15a09033ab71b563533439e29faf
   relationship_type: references
   from_entity_id: ADR-L-0009
   to_entity_id: ADR-L-0013
@@ -2702,6 +3566,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: references:ADR-L-0010:ADR-L-0001
+  assertion_id: asrt-b89e9f30da001a0c83883643d2b3470b34001fdff5bff01a6ebcf7be8ca9be58
   relationship_type: references
   from_entity_id: ADR-L-0010
   to_entity_id: ADR-L-0001
@@ -2712,6 +3577,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: references:ADR-L-0010:ADR-L-0008
+  assertion_id: asrt-00415102eb342d6f1978df2cc50599f9c004e6191138522457dbdd3e47d4e75a
   relationship_type: references
   from_entity_id: ADR-L-0010
   to_entity_id: ADR-L-0008
@@ -2722,6 +3588,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: references:ADR-L-0010:ADR-L-0009
+  assertion_id: asrt-4441851c0bc7ef7fdff8cf828866d1fe414a7cc27d09a67f5fcdfddedd6065a7
   relationship_type: references
   from_entity_id: ADR-L-0010
   to_entity_id: ADR-L-0009
@@ -2732,6 +3599,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: references:ADR-L-0010:ADR-L-0012
+  assertion_id: asrt-f522e0ec8326a29ea139a6eab93f4d459b0f58b6ff52bf272df8c8fd3392c676
   relationship_type: references
   from_entity_id: ADR-L-0010
   to_entity_id: ADR-L-0012
@@ -2742,6 +3610,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: references:ADR-L-0010:ADR-L-0013
+  assertion_id: asrt-f245b5e30dc4dc24a3cde88fcb4bf6a3af8f0319959f3209ec888732732bda7d
   relationship_type: references
   from_entity_id: ADR-L-0010
   to_entity_id: ADR-L-0013
@@ -2752,6 +3621,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: references:ADR-L-0010:ADR-P-0001
+  assertion_id: asrt-def82bc7fbf190f4eb569c3f2d0c9a5402f7dff4f2d41437a8865d5b6d44fee4
   relationship_type: references
   from_entity_id: ADR-L-0010
   to_entity_id: ADR-P-0001
@@ -2762,6 +3632,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: references:ADR-L-0010:ADR-PC-0001
+  assertion_id: asrt-968d123d11da72d8e512a55ab01577f7008b2f1d5ae29aa24e79711ddee374ee
   relationship_type: references
   from_entity_id: ADR-L-0010
   to_entity_id: ADR-PC-0001
@@ -2772,6 +3643,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: references:ADR-L-0011:ADR-L-0001
+  assertion_id: asrt-b252b12fb70de5ccd509c88d8573b1de21a92ee09c182a43dc748eb6c04868ab
   relationship_type: references
   from_entity_id: ADR-L-0011
   to_entity_id: ADR-L-0001
@@ -2782,6 +3654,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: references:ADR-L-0011:ADR-L-0008
+  assertion_id: asrt-db732df891d6e44c07f063e77997c4600245764cf356d4fea32b1a850e5042bb
   relationship_type: references
   from_entity_id: ADR-L-0011
   to_entity_id: ADR-L-0008
@@ -2792,6 +3665,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: references:ADR-L-0011:ADR-L-0010
+  assertion_id: asrt-e2d744a6e3f3959b27ab608dae13151899a1be6c9fd4153247e52f5edd8c5722
   relationship_type: references
   from_entity_id: ADR-L-0011
   to_entity_id: ADR-L-0010
@@ -2802,6 +3676,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: references:ADR-L-0012:ADR-L-0002
+  assertion_id: asrt-c68d4b5d204fc528f74ed84b6057aba3f7b5ea57fc57d6805a140bcc5d09e4fd
   relationship_type: references
   from_entity_id: ADR-L-0012
   to_entity_id: ADR-L-0002
@@ -2812,6 +3687,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: references:ADR-L-0012:ADR-L-0007
+  assertion_id: asrt-c0d97963ee50e7f161e8e67aedb6257bced7ca930d6752ecbd5478d37beb7a84
   relationship_type: references
   from_entity_id: ADR-L-0012
   to_entity_id: ADR-L-0007
@@ -2822,6 +3698,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: references:ADR-L-0012:ADR-L-0010
+  assertion_id: asrt-590f187a2839df8fcb07239c8e3a8ca7d06f3ec0e15a0a00a3646d0c6a469250
   relationship_type: references
   from_entity_id: ADR-L-0012
   to_entity_id: ADR-L-0010
@@ -2832,6 +3709,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: references:ADR-L-0012:ADR-L-0013
+  assertion_id: asrt-5da06cec8745cb7147362a6d124e1c2e46df842a25885e613d66026d49506438
   relationship_type: references
   from_entity_id: ADR-L-0012
   to_entity_id: ADR-L-0013
@@ -2841,7 +3719,19 @@ relationships:
   canonical_source_ref: ADR-L-0012
   confidence: 1.0
   metadata: {}
+- relationship_id: references:ADR-L-0012:ADR-L-0018
+  assertion_id: asrt-ff7d9a71615087f839e8217adbcce2a5e20b521d9b196821fc5f49e379a8d529
+  relationship_type: references
+  from_entity_id: ADR-L-0012
+  to_entity_id: ADR-L-0018
+  provenance_classification: explicit
+  evidence:
+  - ADR-L-0012
+  canonical_source_ref: ADR-L-0012
+  confidence: 1.0
+  metadata: {}
 - relationship_id: references:ADR-L-0012:ADR-PS-0001
+  assertion_id: asrt-498decb3b8c9edb6d7c229df7fb7a42a0937e2fcf9f88cc5d5183d87c7ad8bb5
   relationship_type: references
   from_entity_id: ADR-L-0012
   to_entity_id: ADR-PS-0001
@@ -2852,6 +3742,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: references:ADR-L-0013:ADR-L-0009
+  assertion_id: asrt-34c5025e94784ce49000826c339970f59c69a147898c81ddc69bdb3d6c789884
   relationship_type: references
   from_entity_id: ADR-L-0013
   to_entity_id: ADR-L-0009
@@ -2862,6 +3753,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: references:ADR-L-0013:ADR-L-0010
+  assertion_id: asrt-6ed56aac6a280510eaf2db60dc1c269ac703f24550cff9281e0619102d166722
   relationship_type: references
   from_entity_id: ADR-L-0013
   to_entity_id: ADR-L-0010
@@ -2872,6 +3764,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: references:ADR-L-0013:ADR-L-0012
+  assertion_id: asrt-9e5e8d4568aa9d1722946444d44a8f0434357fbd3fb1a179380eda9af440267a
   relationship_type: references
   from_entity_id: ADR-L-0013
   to_entity_id: ADR-L-0012
@@ -2881,7 +3774,19 @@ relationships:
   canonical_source_ref: ADR-L-0013
   confidence: 1.0
   metadata: {}
+- relationship_id: references:ADR-L-0013:ADR-L-0018
+  assertion_id: asrt-3caa2a9a716b522f49b08224dbb5d876f7d21921ad9d90a15ec0863a86ff91d5
+  relationship_type: references
+  from_entity_id: ADR-L-0013
+  to_entity_id: ADR-L-0018
+  provenance_classification: explicit
+  evidence:
+  - ADR-L-0013
+  canonical_source_ref: ADR-L-0013
+  confidence: 1.0
+  metadata: {}
 - relationship_id: references:ADR-L-0013:ADR-PC-0001
+  assertion_id: asrt-2772b1e9cb504d86a03c9e12b12e8b9523096e27f5e49e59409a134abde6a5a3
   relationship_type: references
   from_entity_id: ADR-L-0013
   to_entity_id: ADR-PC-0001
@@ -2892,6 +3797,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: references:ADR-L-0013:ADR-PC-0005
+  assertion_id: asrt-4e68c3b72df1f10c39b439a6781ec8820d530a45e6bddb0a06070b1bdaf1f3b4
   relationship_type: references
   from_entity_id: ADR-L-0013
   to_entity_id: ADR-PC-0005
@@ -2902,6 +3808,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: references:ADR-L-0014:ADR-L-0009
+  assertion_id: asrt-3c18440fc4c08c1a13240bfd7ec1e2186ffb2455c387d622cf0afc12ae50d9c5
   relationship_type: references
   from_entity_id: ADR-L-0014
   to_entity_id: ADR-L-0009
@@ -2912,6 +3819,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: references:ADR-L-0014:ADR-L-0011
+  assertion_id: asrt-3fec80913cf6256389869798c6fcfda8410dcf351419edfda9a26d10b31e3d36
   relationship_type: references
   from_entity_id: ADR-L-0014
   to_entity_id: ADR-L-0011
@@ -2922,6 +3830,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: references:ADR-L-0014:ADR-L-0013
+  assertion_id: asrt-1688490024e274c3f56c8623f3a0d36e342d16c87d44bb7940fd247aeeec226c
   relationship_type: references
   from_entity_id: ADR-L-0014
   to_entity_id: ADR-L-0013
@@ -2932,6 +3841,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: references:ADR-L-0015:ADR-L-0008
+  assertion_id: asrt-1bd5f2ec028f7acd3a25323a1a952e5aa4f33c9148241d77204f4f9d6d4154c5
   relationship_type: references
   from_entity_id: ADR-L-0015
   to_entity_id: ADR-L-0008
@@ -2942,6 +3852,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: references:ADR-L-0015:ADR-L-0009
+  assertion_id: asrt-740b8efaa4a0613126121cb6357de109f8727d73c960d1ac7bcc8025c1b6e8c1
   relationship_type: references
   from_entity_id: ADR-L-0015
   to_entity_id: ADR-L-0009
@@ -2952,6 +3863,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: references:ADR-L-0015:ADR-L-0010
+  assertion_id: asrt-e2d6f161dcc2c6a47470251c02655d35a6137376b04e75403a104d1805dc7176
   relationship_type: references
   from_entity_id: ADR-L-0015
   to_entity_id: ADR-L-0010
@@ -2962,6 +3874,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: references:ADR-L-0015:ADR-L-0011
+  assertion_id: asrt-edfa9a6fd93d39f41bd958b2afdf839808cab4cfd0a48f4be9d8dc9fb7b03507
   relationship_type: references
   from_entity_id: ADR-L-0015
   to_entity_id: ADR-L-0011
@@ -2972,6 +3885,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: references:ADR-L-0015:ADR-L-0013
+  assertion_id: asrt-c890189a69bbfaa8b07c4dcfb117c490ff82216476ea7aa36c4147ebfa25cd0f
   relationship_type: references
   from_entity_id: ADR-L-0015
   to_entity_id: ADR-L-0013
@@ -2982,6 +3896,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: references:ADR-L-0016:ADR-L-0013
+  assertion_id: asrt-46636a8b58a41b467d9a6a71357955a32e6f06eded84b10fdb42509ec09cab79
   relationship_type: references
   from_entity_id: ADR-L-0016
   to_entity_id: ADR-L-0013
@@ -2992,6 +3907,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: references:ADR-L-0016:ADR-L-0017
+  assertion_id: asrt-ebfca532f19718a920447c7b81fac37ecd0f82d7df94fdcdee2ee9d37d1c7693
   relationship_type: references
   from_entity_id: ADR-L-0016
   to_entity_id: ADR-L-0017
@@ -3002,6 +3918,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: references:ADR-L-0017:ADR-L-0002
+  assertion_id: asrt-38d186bbf2ce17f6ca628506eeebfa72e4bf69a7a13930b11a227696b39c60cc
   relationship_type: references
   from_entity_id: ADR-L-0017
   to_entity_id: ADR-L-0002
@@ -3012,6 +3929,7 @@ relationships:
   confidence: 1.0
   metadata: {}
 - relationship_id: references:ADR-L-0017:ADR-L-0016
+  assertion_id: asrt-a0d6aee51ad9614937b5402e9d29472c4c4a5fac3831cbe6fb4ebf366ac63219
   relationship_type: references
   from_entity_id: ADR-L-0017
   to_entity_id: ADR-L-0016
@@ -3021,7 +3939,118 @@ relationships:
   canonical_source_ref: ADR-L-0017
   confidence: 1.0
   metadata: {}
+- relationship_id: references:ADR-L-0018:ADR-L-0001
+  assertion_id: asrt-958c41645f8deb4e030f312a55553a170712198b8dac068ab69ceb01a05fa420
+  relationship_type: references
+  from_entity_id: ADR-L-0018
+  to_entity_id: ADR-L-0001
+  provenance_classification: explicit
+  evidence:
+  - ADR-L-0018
+  canonical_source_ref: ADR-L-0018
+  confidence: 1.0
+  metadata: {}
+- relationship_id: references:ADR-L-0018:ADR-L-0003
+  assertion_id: asrt-dfd4af8c7e6ed93a3ddbbafc6e378dd68abc362699182ebac6590146215e974a
+  relationship_type: references
+  from_entity_id: ADR-L-0018
+  to_entity_id: ADR-L-0003
+  provenance_classification: explicit
+  evidence:
+  - ADR-L-0018
+  canonical_source_ref: ADR-L-0018
+  confidence: 1.0
+  metadata: {}
+- relationship_id: references:ADR-L-0018:ADR-L-0009
+  assertion_id: asrt-c55d86be0b6bf50a0dfc625ddb8a0d66323e279541e7c13a61f15bc4c8ce75be
+  relationship_type: references
+  from_entity_id: ADR-L-0018
+  to_entity_id: ADR-L-0009
+  provenance_classification: explicit
+  evidence:
+  - ADR-L-0018
+  canonical_source_ref: ADR-L-0018
+  confidence: 1.0
+  metadata: {}
+- relationship_id: references:ADR-L-0018:ADR-L-0012
+  assertion_id: asrt-852be1631b247d7e5f8811c3931e13f7d4fb336ee3ee803d7bc76a5304041393
+  relationship_type: references
+  from_entity_id: ADR-L-0018
+  to_entity_id: ADR-L-0012
+  provenance_classification: explicit
+  evidence:
+  - ADR-L-0018
+  canonical_source_ref: ADR-L-0018
+  confidence: 1.0
+  metadata: {}
+- relationship_id: references:ADR-L-0018:ADR-L-0013
+  assertion_id: asrt-f8c77597af5a2f9808a4141e51cb763eceba1b949c34ba7761df4d738884cb05
+  relationship_type: references
+  from_entity_id: ADR-L-0018
+  to_entity_id: ADR-L-0013
+  provenance_classification: explicit
+  evidence:
+  - ADR-L-0018
+  canonical_source_ref: ADR-L-0018
+  confidence: 1.0
+  metadata: {}
+- relationship_id: references:ADR-L-0018:ADR-L-0017
+  assertion_id: asrt-d4654d90e6a988c44a0449e9a52e4c288c345baa31563cfa59cd46db121ac8f3
+  relationship_type: references
+  from_entity_id: ADR-L-0018
+  to_entity_id: ADR-L-0017
+  provenance_classification: explicit
+  evidence:
+  - ADR-L-0018
+  canonical_source_ref: ADR-L-0018
+  confidence: 1.0
+  metadata: {}
+- relationship_id: references:ADR-L-0018:ADR-PC-0002
+  assertion_id: asrt-967316450b682530ffbd6bb5220f0da4061fa9337a022e9c75485f3296eae0ad
+  relationship_type: references
+  from_entity_id: ADR-L-0018
+  to_entity_id: ADR-PC-0002
+  provenance_classification: explicit
+  evidence:
+  - ADR-L-0018
+  canonical_source_ref: ADR-L-0018
+  confidence: 1.0
+  metadata: {}
+- relationship_id: references:ADR-L-0018:ADR-PC-0003
+  assertion_id: asrt-5c724809178b20daca776e42fbe8bc0b9b054cec15dadd51048a7c2c47656e54
+  relationship_type: references
+  from_entity_id: ADR-L-0018
+  to_entity_id: ADR-PC-0003
+  provenance_classification: explicit
+  evidence:
+  - ADR-L-0018
+  canonical_source_ref: ADR-L-0018
+  confidence: 1.0
+  metadata: {}
+- relationship_id: references:ADR-L-0018:ADR-PC-0004
+  assertion_id: asrt-38fde4cad14e7b28b81cbc77f72de66d746ac8da3773201e79e02b59f4994229
+  relationship_type: references
+  from_entity_id: ADR-L-0018
+  to_entity_id: ADR-PC-0004
+  provenance_classification: explicit
+  evidence:
+  - ADR-L-0018
+  canonical_source_ref: ADR-L-0018
+  confidence: 1.0
+  metadata: {}
+- relationship_id: references:ADR-L-0018:ADR-PS-0002
+  assertion_id: asrt-3b544778990f86f31e17fe13ab050e2b8359f153925523227e866e41b6fbd1db
+  relationship_type: references
+  from_entity_id: ADR-L-0018
+  to_entity_id: ADR-PS-0002
+  provenance_classification: explicit
+  evidence:
+  - ADR-L-0018
+  canonical_source_ref: ADR-L-0018
+  confidence: 1.0
+  metadata: {}
 - relationship_id: related_to:ADR-PS-0001:ADR-PC-0001
+  assertion_id: asrt-70d88d8740309dfb53eb269bffffa5ccb1626f8f43c2296fe6daad0d1201dfd8
   relationship_type: related_to
   from_entity_id: ADR-PS-0001
   to_entity_id: ADR-PC-0001
@@ -3032,6 +4061,7 @@ relationships:
   confidence: 0.8
   metadata: {}
 - relationship_id: related_to:ADR-PS-0002:ADR-PC-0002
+  assertion_id: asrt-dbbada1a2116f783d856215fda23ce4574a1ae0d7ba6c0d0a6f53f6d0790aae4
   relationship_type: related_to
   from_entity_id: ADR-PS-0002
   to_entity_id: ADR-PC-0002
@@ -3042,6 +4072,7 @@ relationships:
   confidence: 0.8
   metadata: {}
 - relationship_id: related_to:ADR-PS-0002:ADR-PC-0003
+  assertion_id: asrt-96d05b6a016194eb4b862e070a35d08d133e4fe573320b186f9955ba278f1a38
   relationship_type: related_to
   from_entity_id: ADR-PS-0002
   to_entity_id: ADR-PC-0003
@@ -3052,6 +4083,7 @@ relationships:
   confidence: 0.8
   metadata: {}
 - relationship_id: related_to:ADR-PS-0002:ADR-PC-0004
+  assertion_id: asrt-813a39a74b6b65b50874cdea07a2d5518b413b9f93ce3a6c85dfd6c54b55cbb7
   relationship_type: related_to
   from_entity_id: ADR-PS-0002
   to_entity_id: ADR-PC-0004
@@ -3062,6 +4094,7 @@ relationships:
   confidence: 0.8
   metadata: {}
 - relationship_id: related_to:ADR-PS-0002:ADR-PC-0005
+  assertion_id: asrt-1aecd0b86ab20cab483d057d2f75ded5b00186ab2f47b5aea38d3555834cba73
   relationship_type: related_to
   from_entity_id: ADR-PS-0002
   to_entity_id: ADR-PC-0005

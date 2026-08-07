@@ -34,6 +34,7 @@ from ..decorators import implements_adr
 from ..models.implementation_attribution import ImplementationAttributionEvidence
 from ..integrity import GeneratedArtifactStatus
 from ..migrators.canonical_id_normalizer import CanonicalIdNormalizer
+from ..migrators.topology_identity import TopologyIdentityMigrator
 from ..parser import ADRParser
 from ..repository import ArchitectureRepository
 from ..schema.contract_validation import ContractProfile, validate_adr_contract_bundle
@@ -1207,6 +1208,99 @@ def compile_artifacts(
 
 
 @implements_adr("ADR-L-0002", "ADR-L-0013")
+@cli.command("repair-canonical-ids")
+@click.option(
+    "--scope",
+    type=click.Path(exists=True, file_okay=False, path_type=Path),
+    help="Explicit project scope (overrides auto-detection)",
+)
+@click.option(
+    "--apply",
+    "apply_repairs",
+    is_flag=True,
+    help="Apply the planned canonical repair through ADR Kit-owned writes.",
+)
+@click.option(
+    "--check",
+    is_flag=True,
+    help="Fail when a repair is required; intended for CI validation.",
+)
+@click.option(
+    "--resolution-map",
+    type=click.Path(exists=True, dir_okay=False, path_type=Path),
+    help="Occurrence-scoped YAML mapping for ambiguous keepers or references.",
+)
+def repair_canonical_ids(
+    scope: Optional[Path],
+    apply_repairs: bool,
+    check: bool,
+    resolution_map: Optional[Path],
+) -> None:
+    """Plan, apply, or check monotonic canonical entity-ID repairs."""
+    try:
+        if apply_repairs and check:
+            raise ValueError("--apply and --check are mutually exclusive")
+        resolver = ProjectScopeResolver(explicit_scope=scope)
+        normalizer = CanonicalIdNormalizer(scope_resolver=resolver)
+        detected_scope = resolver.resolve()
+        plan = normalizer.plan(detected_scope, resolution_map=resolution_map)
+        for remap in plan.remaps:
+            relative = remap.file_path.resolve().relative_to(detected_scope.root.resolve())
+            click.echo(
+                f"{relative.as_posix()}#{remap.source_pointer}: "
+                f"{remap.old_id} -> {remap.new_id}"
+            )
+        for ambiguity in plan.ambiguities:
+            relative = ambiguity.file_path.resolve().relative_to(
+                detected_scope.root.resolve()
+            )
+            click.echo(
+                f"Ambiguous reference: {relative.as_posix()}#"
+                f"{ambiguity.source_pointer} ({ambiguity.entity_id})",
+                err=True,
+            )
+        if check:
+            findings = normalizer.validate_allocations(detected_scope)
+            if plan.remaps or plan.ambiguities or findings:
+                for finding in findings:
+                    click.echo(f"Allocation error: {finding}", err=True)
+                click.echo("Canonical ID repair required.", err=True)
+                raise click.exceptions.Exit(1)
+            click.echo("Canonical ID allocation and collision check passed.")
+            return
+        if not plan.remaps:
+            click.echo("No canonical ID collisions found. No changes made.")
+            return
+        if not apply_repairs:
+            click.echo(
+                f"Planned {len(plan.remaps)} canonical ID repairs; no files changed."
+            )
+            if plan.ambiguities:
+                click.echo(
+                    "Resolve ambiguous references before applying this plan.", err=True
+                )
+            return
+        applied = normalizer.repair(
+            detected_scope, apply=True, resolution_map=resolution_map
+        )
+        click.echo(f"Applied {len(applied.remaps)} canonical ID repairs.")
+        click.echo(
+            f"Allocation ledger: "
+            f"{detected_scope.adr_dir / 'migrations' / 'canonical-id-allocation.yaml'}"
+        )
+        click.echo(
+            f"Migration ledger: "
+            f"{detected_scope.adr_dir / 'migrations' / 'canonical-id-remap.yaml'}"
+        )
+        click.echo("Run `adr validate --scope . --mode complete` and regenerate projections.")
+    except click.exceptions.Exit:
+        raise
+    except Exception as exc:
+        click.echo(f"Error: {exc}", err=True)
+        raise click.exceptions.Exit(1) from exc
+
+
+@implements_adr("ADR-L-0002", "ADR-L-0013")
 @cli.command("normalize-canonical-ids")
 @click.option(
     "--scope",
@@ -1234,6 +1328,61 @@ def normalize_canonical_ids(scope: Optional[Path]):
     except Exception as e:
         click.echo(f"Error: {e}", err=True)
         sys.exit(1)
+
+
+@implements_adr("ADR-L-0018")
+@cli.command("migrate-topology-ids")
+@click.option(
+    "--scope",
+    type=click.Path(exists=True, file_okay=False, path_type=Path),
+    help="Explicit project scope (overrides auto-detection)",
+)
+@click.option(
+    "--apply",
+    "apply_migration",
+    is_flag=True,
+    help="Apply the planned topology migration through ADR Kit-owned writes.",
+)
+def migrate_topology_ids(scope: Optional[Path], apply_migration: bool) -> None:
+    """Plan or apply stable physical-topology identity migration."""
+    try:
+        resolver = ProjectScopeResolver(explicit_scope=scope)
+        detected_scope = resolver.resolve()
+        migrator = TopologyIdentityMigrator()
+        plan = migrator.plan(detected_scope)
+        for change in plan.changes:
+            relative = change.file_path.resolve().relative_to(detected_scope.root.resolve())
+            click.echo(
+                f"{relative.as_posix()}#{change.pointer}: "
+                f"{change.before!r} -> {change.after!r}"
+            )
+        if plan.diagnostics:
+            for diagnostic in plan.diagnostics:
+                relative = diagnostic.file_path.resolve().relative_to(
+                    detected_scope.root.resolve()
+                )
+                click.echo(
+                    f"{diagnostic.code}: {relative.as_posix()}#"
+                    f"{diagnostic.pointer}: {diagnostic.message}",
+                    err=True,
+                )
+            raise click.exceptions.Exit(1)
+        if not apply_migration:
+            click.echo(
+                f"Planned {len(plan.changes)} topology changes across "
+                f"{len(plan.changed_files)} files; no files changed."
+            )
+            return
+        applied = migrator.apply(detected_scope)
+        suffix = "" if len(applied.changed_files) == 1 else "s"
+        click.echo(
+            f"Applied topology migration to {len(applied.changed_files)} file{suffix}."
+        )
+    except click.exceptions.Exit:
+        raise
+    except Exception as exc:
+        click.echo(f"Error: {exc}", err=True)
+        raise click.exceptions.Exit(1) from exc
 
 
 @implements_adr("ADR-L-0002", "ADR-L-0013")

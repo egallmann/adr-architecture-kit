@@ -70,6 +70,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- Provisional additive ADR authoring schema v1.2, explicit parser negotiation, and
+  byte-identical installed-package schema resources while preserving frozen v1.0.
+- Normalized model 1.1 promotion for `boundary`, `contract`, `interface`, and
+  `implementation_decision`, including repository query methods and deterministic
+  projection.
+- Source-sensitive `assertion_id` on relationship records while preserving historical
+  endpoint-based `relationship_id` compatibility.
+- Bind-only substrate, rule, and evidence-expectation contracts with explicit
+  cross-repository qualification and no external authority or runtime evidence
+  ingestion.
+- Dry-run-first `adr migrate-topology-ids` with first-free stable IDs, unique name
+  rewrites, candidate validation, atomic writes, and fail-closed ambiguity handling.
+- ADR Kit-owned monotonic canonical-ID collision repair, permanent non-reuse ledgers,
+  CI/pre-push allocation validation, and runtime read-only `namespace:id` assembly.
+- Installed-wheel and benchmark proof for Phase 2 schemas, semantic projection,
+  bindings, assertion identity, and topology migration.
+
 - Logical invariants: optional `supersedes` list on invariant entities; compiler
   derives invariant-to-invariant `supersedes` / `superseded_by` relationships and
   includes `supersedes` in extracted invariant metadata. JSON Schema for logical

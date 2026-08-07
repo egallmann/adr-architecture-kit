@@ -144,18 +144,18 @@ def test_projection_round_trips_current_registry_models(tmp_path):
 
 def test_project_entity_skips_non_registry_ir_types():
     entity = IREntity(
-        id="BOUND-1000",
-        entity_type="boundary",
-        name="Boundary",
+        id="CONST-1000",
+        entity_type="constraint",
+        name="Constraint",
         summary="Not emitted yet.",
         canonical_source=CanonicalSource(
             source_type="logical_adr",
-            source_ref="ADR-L-0001#BOUND-1000",
+            source_ref="ADR-L-0001#CONST-1000",
             artifact_path="adrs/logical/ADR-L-0001.yaml",
         ),
         provenance=DiscoveryProvenance(
             source_type="logical_adr",
-            source_ref="ADR-L-0001#BOUND-1000",
+            source_ref="ADR-L-0001#CONST-1000",
             extraction_phase="test",
             classification="explicit",
             generator="test",

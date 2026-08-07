@@ -30,9 +30,10 @@ as a new consumer contract.
 
 Provisional surfaces are public enough for careful integration but may evolve before
 promotion. They include `schema/v1.1/`, discovery/ledger/lifecycle/remediation
-extensions, normalized fields outside the core consumer seam, subset registries, and
-the additive architecture graph. Provisional material must identify migration impact
-when it changes and is not promoted by Phase 0.
+extensions, provisional ADR authoring `schema/v1.2/`, normalized-model contract `1.1`,
+source-sensitive assertion identity, external binding projections, topology identity,
+subset registries, and the additive architecture graph. Provisional material must
+identify migration impact when it changes and is not promoted merely by implementation.
 
 ### Experimental
 
@@ -92,7 +93,8 @@ explicit non-release sentinel `0+unknown`.
 ## Surface-specific rules
 
 - ADR v1.0 encoding is stable. ADR v1.1 discovery, ledger, graph, and attribution
-  material remains provisional or draft.
+  material remains provisional or draft. ADR authoring v1.2 and normalized model 1.1
+  are additive provisional contracts authorized by ADR-L-0018.
 - Existing CLI command names, options, defaults, exit codes, diagnostics, and
   machine-readable shapes are de facto public. Additive developer controls do not
   redefine existing commands.

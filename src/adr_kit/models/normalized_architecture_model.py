@@ -23,7 +23,7 @@ from .architecture_discovery import (
 class NormalizedArchitectureModel(BaseModel):
     """Typed semantic view over one loaded architecture scope."""
 
-    schema_version: str = "1.0"
+    schema_version: str = "1.1"
     type: Literal["normalized_architecture_model"] = "normalized_architecture_model"
     mode: Literal["normalized", "legacy"]
     scope_root: str

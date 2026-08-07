@@ -1,0 +1,48 @@
+schema_version: '1.2'
+adr_type: physical-system
+id: ADR-PS-9801
+title: V1.2 Stable Topology Fixture
+status: accepted
+created_date: '2026-08-07'
+authors:
+- phase2-test
+domains:
+- phase2
+implements_logical:
+- ADR-L-9801
+technologies:
+- python
+context: |
+  Exercise stable component identities and transitional topology references.
+technology_stack:
+- category: language
+  name: Python
+  version: '3.12'
+  rationale: Deterministic test fixture.
+system_boundaries:
+- id: SYSBOUND-9801
+  name: Fixture Boundary
+  description: Contains the fixture topology.
+component_topology:
+  components:
+  - id: TOPO-0001
+    name: gateway
+    type: gateway
+    purpose: Accept requests.
+    implements_adr: ADR-PC-9801
+  - id: TOPO-0002
+    name: worker
+    type: worker
+    purpose: Process requests.
+  relationships:
+  - from: TOPO-0001
+    to: worker
+    type: calls
+data_flows:
+- id: FLOW-9801
+  name: Request flow
+  description: Gateway to worker.
+  path:
+  - gateway
+  - TOPO-0002
+gaps: []

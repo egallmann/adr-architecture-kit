@@ -84,6 +84,27 @@
     "EntityRelationshipSummary": {
       "description": "Local relationship summary attached to an entity.",
       "properties": {
+        "binds_rule": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Binds Rule",
+          "type": "array"
+        },
+        "binds_substrate": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Binds Substrate",
+          "type": "array"
+        },
+        "composed_of": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Composed Of",
+          "type": "array"
+        },
         "declared_in": {
           "items": {
             "type": "string"
@@ -119,6 +140,13 @@
           "title": "Enforces",
           "type": "array"
         },
+        "expects_evidence": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Expects Evidence",
+          "type": "array"
+        },
         "governs": {
           "items": {
             "type": "string"
@@ -131,6 +159,13 @@
             "type": "string"
           },
           "title": "Implemented By",
+          "type": "array"
+        },
+        "provides_interface": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Provides Interface",
           "type": "array"
         },
         "references": {
@@ -188,7 +223,11 @@
             "component",
             "decision",
             "capability",
-            "invariant"
+            "invariant",
+            "boundary",
+            "contract",
+            "interface",
+            "implementation_decision"
           ],
           "title": "Entity Type",
           "type": "string"

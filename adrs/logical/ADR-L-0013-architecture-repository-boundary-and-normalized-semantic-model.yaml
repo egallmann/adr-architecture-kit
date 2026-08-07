@@ -289,6 +289,7 @@ related_adrs:
 - ADR-L-0009
 - ADR-L-0010
 - ADR-L-0012
+- ADR-L-0018
 - ADR-PC-0005
 - ADR-PC-0001
 gaps: []

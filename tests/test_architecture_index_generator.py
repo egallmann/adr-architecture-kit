@@ -568,8 +568,15 @@ def test_extract_physical_entities_matches_current_fixture_shape(tmp_path):
         "SYS-1000",
         "ADR-PC-1000",
         "COMP-VALIDATOR",
+        "IFACE-1000",
     ]
-    assert [item.allow_reference_merge for item in result.entities] == [True, False, True, False]
+    assert [item.allow_reference_merge for item in result.entities] == [
+        True,
+        False,
+        True,
+        False,
+        False,
+    ]
     assert result.system_ids == {"ADR-PS-1000": "SYS-1000"}
 
 
@@ -937,6 +944,7 @@ def test_fixed_order_pass_runner_matches_current_generator_sequence(tmp_path):
         "SYS-1000",
         "ADR-PC-1000",
         "COMP-VALIDATOR",
+        "IFACE-1000",
     ]
     assert [item.relationship_id for item in result.relationship_derivation.relationships] == [
         item.relationship_id for item in bundle.relationship_registry.relationships

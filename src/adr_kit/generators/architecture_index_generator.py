@@ -57,9 +57,9 @@ from ..models import (
     UnresolvedRegistry,
     ValidationSummary,
 )
+from ..models.architecture_discovery import RelationshipType
 from ..parser import ADRParser
 from ..scope import ProjectScope, ProjectScopeResolver
-
 
 GENERATOR_ID = "adr-architecture-index"
 
@@ -68,8 +68,16 @@ GENERATOR_ID = "adr-architecture-index"
 class ArchitectureIndexGenerator:
     """Generate normalized architecture discovery artifacts."""
 
-    def __init__(self, parser: ADRParser | CachedADRParser = None, scope_resolver: ProjectScopeResolver = None):
-        self.parser = parser if isinstance(parser, CachedADRParser) else CachedADRParser(parser or ADRParser())
+    def __init__(
+        self,
+        parser: ADRParser | CachedADRParser = None,
+        scope_resolver: ProjectScopeResolver = None,
+    ):
+        self.parser = (
+            parser
+            if isinstance(parser, CachedADRParser)
+            else CachedADRParser(parser or ADRParser())
+        )
         self.diagnostics = DiagnosticLog()
         self.pass_runner = FixedOrderArchitecturePassRunner()
         self.scope_resolver = scope_resolver or ProjectScopeResolver()
@@ -83,7 +91,9 @@ class ArchitectureIndexGenerator:
     def _load_namespace(self, scope: ProjectScope) -> str:
         return load_namespace(self.parser, scope)
 
-    def _provenance(self, source_type: str, source_ref: str, phase: str, classification: str) -> DiscoveryProvenance:
+    def _provenance(
+        self, source_type: str, source_ref: str, phase: str, classification: str
+    ) -> DiscoveryProvenance:
         return make_provenance(source_type, source_ref, phase, classification)
 
     def _canonical(self, source_type: str, source_ref: str, artifact_path: str) -> CanonicalSource:
@@ -95,8 +105,12 @@ class ArchitectureIndexGenerator:
     def _summary(self, text: str, limit: int = 220) -> str:
         return summarize_text(text, limit)
 
-    def _filtered(self, registry: NormalizedEntityRegistry, entity_type: str) -> NormalizedEntityRegistry:
-        return NormalizedEntityRegistry(entities=[e for e in registry.entities if e.entity_type == entity_type])
+    def _filtered(
+        self, registry: NormalizedEntityRegistry, entity_type: str
+    ) -> NormalizedEntityRegistry:
+        return NormalizedEntityRegistry(
+            entities=[e for e in registry.entities if e.entity_type == entity_type]
+        )
 
     def _system_entity_id(self, adr_id: str) -> str:
         return system_entity_id(adr_id)
@@ -115,7 +129,7 @@ class ArchitectureIndexGenerator:
         self,
         relationships: Dict[str, RelationshipRecord],
         entities: Dict[str, NormalizedEntity],
-        relationship_type: str,
+        relationship_type: RelationshipType,
         from_id: str,
         to_id: str,
         source_ref: str,
@@ -166,7 +180,9 @@ class ArchitectureIndexGenerator:
                 related_entity_id=related_entity_id,
                 expected_relationship=expected_relationship,
                 severity=severity,
-                provenance=self._provenance("derived_registry", source_ref, "detect_unresolved", "derived"),
+                provenance=self._provenance(
+                    "derived_registry", source_ref, "detect_unresolved", "derived"
+                ),
                 evidence=evidence,
             )
         )
@@ -200,7 +216,9 @@ class ArchitectureIndexGenerator:
         }
         if entity.entity_type not in mapping:
             return None
-        if entity.entity_type == "component" and entity.id != entity.metadata.get("legacy_component_id", entity.id):
+        if entity.entity_type == "component" and entity.id != entity.metadata.get(
+            "legacy_component_id", entity.id
+        ):
             return None
         introduced_by = entity.canonical_source.source_ref.split("#")[0]
         source_type = SourceArtifactType.LOGICAL_ADR
@@ -219,11 +237,13 @@ class ArchitectureIndexGenerator:
             lifecycle_stage=LifecycleStage.ACTIVE,
             source_path=entity.canonical_source.artifact_path,
             source_artifact_type=source_type,
-            related_adrs=sorted({
-                ref.source_ref.split("#")[0]
-                for ref in entity.source_refs
-                if ref.source_ref.startswith("ADR-")
-            }),
+            related_adrs=sorted(
+                {
+                    ref.source_ref.split("#")[0]
+                    for ref in entity.source_refs
+                    if ref.source_ref.startswith("ADR-")
+                }
+            ),
             relationships=EntityRelationships(
                 depends_on=list(entity.relationships.related_to),
                 implements=list(entity.relationships.enables),
@@ -231,7 +251,9 @@ class ArchitectureIndexGenerator:
             ),
         )
 
-    def generate_from_directory(self, adr_dir: Path, scope: Optional[ProjectScope] = None) -> ArchitectureDiscoveryBundle:
+    def generate_from_directory(
+        self, adr_dir: Path, scope: Optional[ProjectScope] = None
+    ) -> ArchitectureDiscoveryBundle:
         self.diagnostics.clear()
         adr_dir = Path(adr_dir).resolve()
         scope = scope or self.scope_resolver.resolve(adr_dir.parent)
@@ -254,22 +276,30 @@ class ArchitectureIndexGenerator:
             diagnostics=self.diagnostics,
             generator_id=GENERATOR_ID,
         )
-        errors = [item for item in self.diagnostics.as_list() if item.level == DiagnosticLevel.ERROR]
+        errors = [
+            item for item in self.diagnostics.as_list() if item.level == DiagnosticLevel.ERROR
+        ]
         if errors:
             raise ValueError(errors[0].message)
         return bundle
 
-    def generate_from_scope(self, scope: Optional[ProjectScope] = None) -> ArchitectureDiscoveryBundle:
+    def generate_from_scope(
+        self, scope: Optional[ProjectScope] = None
+    ) -> ArchitectureDiscoveryBundle:
         scope = scope or self.scope_resolver.resolve()
         return self.generate_from_directory(scope.adr_dir, scope)
 
     def render_yaml(self, model) -> str:
         return render_bundle_yaml(model)
 
-    def render_legacy_entity_registry(self, bundle: ArchitectureDiscoveryBundle, scope: ProjectScope) -> str:
+    def render_legacy_entity_registry(
+        self, bundle: ArchitectureDiscoveryBundle, scope: ProjectScope
+    ) -> str:
         return render_legacy_entity_registry_output(bundle, scope)
 
-    def save_bundle(self, bundle: ArchitectureDiscoveryBundle, scope: Optional[ProjectScope] = None) -> dict[str, Path]:
+    def save_bundle(
+        self, bundle: ArchitectureDiscoveryBundle, scope: Optional[ProjectScope] = None
+    ) -> dict[str, Path]:
         scope = scope or self.scope_resolver.resolve()
         index_dir = scope.adr_dir / "index"
         index_dir.mkdir(parents=True, exist_ok=True)
@@ -300,7 +330,11 @@ class ArchitectureIndexGenerator:
         for key, path in paths.items():
             path.parent.mkdir(parents=True, exist_ok=True)
             if key == "legacy_entity_registry":
-                path.write_text(self.render_legacy_entity_registry(bundle, scope), encoding="utf-8", newline="\n")
+                path.write_text(
+                    self.render_legacy_entity_registry(bundle, scope),
+                    encoding="utf-8",
+                    newline="\n",
+                )
                 continue
             path.write_text(self.render_yaml(payloads[key]), encoding="utf-8", newline="\n")
         return paths

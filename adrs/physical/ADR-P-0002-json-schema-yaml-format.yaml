@@ -79,7 +79,7 @@ architecture_patterns:
   - COMP-0001
   - COMP-0002
 component_specifications:
-- id: COMP-0001
+- id: COMP-0016
   name: JSON Schema Definitions
   type: library
   responsibilities: |
@@ -92,7 +92,7 @@ component_specifications:
     - project-metadata.schema.json (PROJECT.yaml)
     - manifest.schema.json (generated manifest)
   interfaces:
-  - id: IFACE-0001
+  - id: IFACE-0020
     type: REST
     specification: |
       JSON Schema files loaded by validation libraries. Standard JSON Schema
@@ -100,14 +100,14 @@ component_specifications:
   dependencies: []
   implementation_identifiers:
     module_path: schema/v1.0/
-- id: COMP-0002
+- id: COMP-0018
   name: Schema Resolver
   type: library
   responsibilities: |
     Resolve $ref references between schemas. Load schemas from local filesystem.
     Build schema store for RefResolver. Enable cross-schema validation.
   interfaces:
-  - id: IFACE-0002
+  - id: IFACE-0024
     type: REST
     specification: |
       Python API:
@@ -116,7 +116,7 @@ component_specifications:
       # Automatically loads schemas and creates resolvers
       ```
   dependencies:
-  - COMP-0001
+  - COMP-0016
   implementation_identifiers:
     module_path: src/adr_kit/parser/yaml_parser.py
 deployment_model:
@@ -126,7 +126,7 @@ deployment_model:
     JSON Schema files stored in git. Versioned in schema/v1.0/ directory.
     Future versions in schema/v1.1/, schema/v2.0/, etc.
 implementation_decisions:
-- id: IMPL-0001
+- id: IMPL-0021
   summary: Use JSON Schema draft-07 (not draft-2020-12)
   rationale: |
     draft-07 is widely supported across languages and tools. draft-2020-12 has
@@ -139,7 +139,7 @@ implementation_decisions:
     rejected_because: |
       Limited tooling support. Python jsonschema library support is incomplete.
       No significant features needed from draft-2020-12.
-- id: IMPL-0002
+- id: IMPL-0023
   summary: Use $ref for schema composition (not allOf/oneOf where possible)
   rationale: |
     $ref is clearer for schema reuse. allOf can be ambiguous. $ref with RefResolver
@@ -150,7 +150,7 @@ implementation_decisions:
   - name: Inline all schemas (no $ref)
     rejected_because: |
       Duplication. Harder to maintain. Can't reuse common definitions.
-- id: IMPL-0003
+- id: IMPL-0025
   summary: Store schemas in schema/v1.0/ directory (version-specific)
   rationale: |
     Enables schema evolution. Multiple versions can coexist. Tools can load
@@ -193,3 +193,33 @@ operational_requirements:
   security: |
     Schemas are public. No secrets or credentials in schema definitions.
 gaps: []
+migration_origin:
+  remapped_entities:
+  - entity_type: component
+    from: COMP-0001
+    to: COMP-0016
+    source_pointer: /component_specifications/0/id
+  - entity_type: component
+    from: COMP-0002
+    to: COMP-0018
+    source_pointer: /component_specifications/1/id
+  - entity_type: implementation_decision
+    from: IMPL-0001
+    to: IMPL-0021
+    source_pointer: /implementation_decisions/0/id
+  - entity_type: implementation_decision
+    from: IMPL-0002
+    to: IMPL-0023
+    source_pointer: /implementation_decisions/1/id
+  - entity_type: implementation_decision
+    from: IMPL-0003
+    to: IMPL-0025
+    source_pointer: /implementation_decisions/2/id
+  - entity_type: interface
+    from: IFACE-0001
+    to: IFACE-0020
+    source_pointer: /component_specifications/0/interfaces/0/id
+  - entity_type: interface
+    from: IFACE-0002
+    to: IFACE-0024
+    source_pointer: /component_specifications/1/interfaces/0/id

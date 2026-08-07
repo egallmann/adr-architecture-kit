@@ -2,9 +2,16 @@
 
 from datetime import date, datetime
 from enum import Enum
-from typing import List, Optional
+from typing import Annotated, List, Literal, Optional, Union
 
-from pydantic import BaseModel, Field, field_validator, model_validator
+from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator
+
+
+Fingerprint = Annotated[str, Field(pattern=r"^sha256:[0-9a-f]{64}$")]
+LocalEntityReference = Annotated[
+    str,
+    Field(pattern=r"^(ADR-(L|V|P|PS|PC|D)-\d{4}|[A-Z][A-Z0-9]*(?:-[A-Z0-9]+)+)$"),
+]
 
 
 class ADRType(str, Enum):
@@ -88,10 +95,98 @@ class Governance(BaseModel):
     related_ledgers: List[str] = Field(default_factory=list)
 
 
+class ExternalReference(BaseModel):
+    """Qualified reference to authority owned by another namespace."""
+
+    namespace: str = Field(pattern=r"^[A-Za-z0-9][A-Za-z0-9._-]*$")
+    id: str = Field(min_length=1)
+    kind: str = Field(pattern=r"^[a-z][a-z0-9_]*$")
+    fingerprint: Fingerprint
+
+    model_config = ConfigDict(extra="forbid", frozen=True)
+
+    @property
+    def qualified_id(self) -> str:
+        """Return the deterministic display qualification without claiming ownership."""
+
+        return f"{self.namespace}:{self.id}"
+
+
+EntityReference = Union[LocalEntityReference, ExternalReference]
+
+
+class SubstrateBinding(BaseModel):
+    """Authored selection of externally owned substrate."""
+
+    external_namespace: str = Field(pattern=r"^[A-Za-z0-9][A-Za-z0-9._-]*$")
+    artifact_id: str = Field(min_length=1)
+    kind: str = Field(pattern=r"^[a-z][a-z0-9_]*$")
+    version: str = Field(pattern=r"^[A-Za-z0-9][A-Za-z0-9._+:-]*$")
+    fingerprint: Fingerprint
+    source_pack: Optional[str] = None
+    role: str = Field(pattern=r"^[a-z][a-z0-9_]*$")
+    selected_by: LocalEntityReference
+    local_config_ref: Optional[str] = None
+    supersedes: List[ExternalReference] = Field(default_factory=list)
+
+    model_config = ConfigDict(extra="forbid")
+
+    @property
+    def binding_identity(self) -> tuple[str, str, str]:
+        """Return the ADR-local deterministic binding identity."""
+
+        return (self.external_namespace, self.artifact_id, self.role)
+
+
+class RuleBinding(BaseModel):
+    """Authored disposition toward an externally owned rule."""
+
+    rule_id: str = Field(min_length=1)
+    namespace: str = Field(pattern=r"^[A-Za-z0-9][A-Za-z0-9._-]*$")
+    version: str = Field(pattern=r"^[A-Za-z0-9][A-Za-z0-9._+:-]*$")
+    fingerprint: Fingerprint
+    disposition: Literal["adopted", "refined", "overridden", "exempted", "not_applicable"]
+    rationale: Optional[str] = Field(default=None, min_length=1)
+    exception_ref: Optional[str] = Field(default=None, min_length=1)
+    owner: Optional[str] = None
+    affected_entities: List[EntityReference] = Field(min_length=1)
+    expected_evidence_ref: Optional[str] = Field(default=None, pattern=r"^EVID-[A-Z0-9-]+$")
+
+    model_config = ConfigDict(extra="forbid")
+
+    @model_validator(mode="after")
+    def validate_disposition_requirements(self) -> "RuleBinding":
+        """Enforce rationale and exception requirements from ADR-L-0018."""
+
+        if self.disposition in {"refined", "overridden", "exempted", "not_applicable"}:
+            if self.rationale is None:
+                raise ValueError(f"{self.disposition} rule bindings require rationale")
+        if self.disposition == "exempted" and self.exception_ref is None:
+            raise ValueError("exempted rule bindings require exception_ref")
+        return self
+
+    @property
+    def binding_identity(self) -> tuple[str, str]:
+        """Return the ADR-local deterministic binding identity."""
+
+        return (self.namespace, self.rule_id)
+
+
+class EvidenceExpectation(BaseModel):
+    """Authored expectation for evidence, never an observed evidence record."""
+
+    expectation_id: str = Field(pattern=r"^EVID-[A-Z0-9-]+$")
+    kind: str = Field(pattern=r"^[a-z][a-z0-9_]*$")
+    description: str = Field(min_length=1)
+    related_entities: List[EntityReference] = Field(default_factory=list)
+
+    model_config = ConfigDict(extra="forbid")
+
+
 class ADRFrontmatter(BaseModel):
     """Common frontmatter for all ADR types (STE-compliant, PRIME-1, PRIME-2)."""
     
-    schema_version: str = Field("1.0", pattern=r"^1\.0$")
+    schema_version: str = Field("1.0", pattern=r"^(1\.0|1\.2)$")
     adr_type: ADRType
     id: str = Field(..., pattern=r"^ADR-(L|V|P|PS|PC|D)-\d{4}$")
     title: str = Field(..., min_length=5, max_length=200)
@@ -135,6 +230,9 @@ class ADRFrontmatter(BaseModel):
         default_factory=list,
         description="Deprecated in favor of governance.related_ledgers"
     )
+    substrate_bindings: List[SubstrateBinding] = Field(default_factory=list)
+    rule_bindings: List[RuleBinding] = Field(default_factory=list)
+    evidence_expectations: List[EvidenceExpectation] = Field(default_factory=list)
 
     @model_validator(mode="after")
     def normalize_governance_references(self) -> "ADRFrontmatter":
@@ -144,6 +242,32 @@ class ADRFrontmatter(BaseModel):
                 self.governance = Governance(related_ledgers=list(self.related_ledgers))
             elif not self.governance.related_ledgers:
                 self.governance.related_ledgers = list(self.related_ledgers)
+        if self.schema_version == "1.0" and (
+            self.substrate_bindings or self.rule_bindings or self.evidence_expectations
+        ):
+            raise ValueError("Phase 2 binding fields require ADR schema_version 1.2")
+
+        substrate_identities = [binding.binding_identity for binding in self.substrate_bindings]
+        if len(substrate_identities) != len(set(substrate_identities)):
+            raise ValueError("duplicate substrate binding identity")
+
+        rule_identities = [binding.binding_identity for binding in self.rule_bindings]
+        if len(rule_identities) != len(set(rule_identities)):
+            raise ValueError("duplicate rule binding identity")
+
+        expectation_ids = [item.expectation_id for item in self.evidence_expectations]
+        if len(expectation_ids) != len(set(expectation_ids)):
+            raise ValueError("duplicate evidence expectation identity")
+        expectation_id_set = set(expectation_ids)
+        for binding in self.rule_bindings:
+            if (
+                binding.expected_evidence_ref is not None
+                and binding.expected_evidence_ref not in expectation_id_set
+            ):
+                raise ValueError(
+                    "rule binding expected_evidence_ref must identify an evidence expectation "
+                    "in the same ADR"
+                )
         return self
     
     @field_validator('id')

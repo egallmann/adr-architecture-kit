@@ -7,7 +7,40 @@ from typing import Any, Dict, List, Literal, Optional
 
 from pydantic import BaseModel, Field
 
+from ..identity import derive_assertion_id
+
 LifecycleStageNormalized = Literal["proposed", "active", "deprecated", "superseded"]
+NormalizedEntityType = Literal[
+    "adr",
+    "system",
+    "component",
+    "decision",
+    "capability",
+    "invariant",
+    "boundary",
+    "contract",
+    "interface",
+    "implementation_decision",
+]
+RelationshipType = Literal[
+    "declared_in",
+    "references",
+    "related_to",
+    "enforces",
+    "enabled_by",
+    "enables",
+    "governs",
+    "implemented_by",
+    "embodied_in",
+    "supersedes",
+    "superseded_by",
+    "refines",
+    "provides_interface",
+    "composed_of",
+    "binds_substrate",
+    "binds_rule",
+    "expects_evidence",
+]
 
 
 def lifecycle_stage_from_adr_status(status: Optional[str]) -> LifecycleStageNormalized:
@@ -74,13 +107,18 @@ class EntityRelationshipSummary(BaseModel):
     supersedes: List[str] = Field(default_factory=list)
     superseded_by: List[str] = Field(default_factory=list)
     refines: List[str] = Field(default_factory=list)
+    provides_interface: List[str] = Field(default_factory=list)
+    composed_of: List[str] = Field(default_factory=list)
+    binds_substrate: List[str] = Field(default_factory=list)
+    binds_rule: List[str] = Field(default_factory=list)
+    expects_evidence: List[str] = Field(default_factory=list)
 
 
 class NormalizedEntity(BaseModel):
     """Normalized architecture discovery entity."""
 
     id: str
-    entity_type: Literal["adr", "system", "component", "decision", "capability", "invariant"]
+    entity_type: NormalizedEntityType
     name: str
     summary: str
     lifecycle_stage: LifecycleStageNormalized = "active"
@@ -104,27 +142,27 @@ class RelationshipRecord(BaseModel):
     """First-class relationship record."""
 
     relationship_id: str
-    relationship_type: Literal[
-        "declared_in",
-        "references",
-        "related_to",
-        "enforces",
-        "enabled_by",
-        "enables",
-        "governs",
-        "implemented_by",
-        "embodied_in",
-        "supersedes",
-        "superseded_by",
-        "refines",
-    ]
+    assertion_id: str = Field(default="", pattern=r"^asrt-[0-9a-f]{64}$")
+    relationship_type: RelationshipType
     from_entity_id: str
     to_entity_id: str
     provenance_classification: Literal["explicit", "derived", "heuristic"]
     evidence: List[str] = Field(default_factory=list)
     canonical_source_ref: str
+    source_pointer: Optional[str] = None
     confidence: float = Field(default=1.0, ge=0.0, le=1.0)
     metadata: Dict[str, Any] = Field(default_factory=dict)
+
+    def model_post_init(self, __context: Any) -> None:
+        """Backfill assertion identity when loading additive legacy records."""
+        if not self.assertion_id:
+            self.assertion_id = derive_assertion_id(
+                self.relationship_type,
+                self.from_entity_id,
+                self.to_entity_id,
+                self.canonical_source_ref,
+                self.source_pointer,
+            )
 
 
 class RelationshipRegistry(BaseModel):
@@ -139,7 +177,7 @@ class ArchitectureGraphNode(BaseModel):
     """Node record for the additive architecture graph artifact."""
 
     id: str
-    entity_type: Literal["adr", "system", "component", "decision", "capability", "invariant"]
+    entity_type: NormalizedEntityType
     name: str
     canonical_source: CanonicalSource
 
@@ -148,25 +186,14 @@ class ArchitectureGraphEdge(BaseModel):
     """Edge record for the additive architecture graph artifact."""
 
     relationship_id: str
-    relationship_type: Literal[
-        "declared_in",
-        "references",
-        "related_to",
-        "enforces",
-        "enabled_by",
-        "enables",
-        "governs",
-        "implemented_by",
-        "embodied_in",
-        "supersedes",
-        "superseded_by",
-        "refines",
-    ]
+    assertion_id: str = Field(pattern=r"^asrt-[0-9a-f]{64}$")
+    relationship_type: RelationshipType
     source_entity_id: str
     target_entity_id: str
     provenance_classification: Literal["explicit", "derived", "heuristic"]
     evidence: List[str] = Field(default_factory=list)
     canonical_source_ref: str
+    source_pointer: Optional[str] = None
     confidence: float = Field(default=1.0, ge=0.0, le=1.0)
     metadata: Dict[str, Any] = Field(default_factory=dict)
 

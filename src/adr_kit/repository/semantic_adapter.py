@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+from typing import cast
+
 from ..decorators import implements_adr
 from ..models import (
     CanonicalSource,
@@ -16,6 +18,7 @@ from ..models import (
     SourceRef,
     ValidationSummary,
 )
+from ..models.architecture_discovery import NormalizedEntityType, RelationshipType
 
 
 @implements_adr("ADR-L-0013")
@@ -123,7 +126,7 @@ def legacy_entity_to_normalized(
 
     return NormalizedEntity(
         id=entity.entity_id,
-        entity_type=entity_type,
+        entity_type=cast(NormalizedEntityType, entity_type),
         name=entity.name,
         summary=entity.name,
         lifecycle_stage=str(entity.lifecycle_stage.value),
@@ -196,7 +199,7 @@ def legacy_relationships(entities: list[NormalizedEntity]) -> list[RelationshipR
 def _relationship_records_for_targets(
     *,
     entity: NormalizedEntity,
-    relationship_type: str,
+    relationship_type: RelationshipType,
     targets: list[str],
     known_ids: set[str],
 ) -> list[RelationshipRecord]:

@@ -62,6 +62,7 @@ where = ["src"]
 "adr_kit" = ["py.typed"]
 "adr_kit.schema.v1_0" = ["*.json"]
 "adr_kit.schema.v1_1" = ["*.json"]
+"adr_kit.schema.v1_2" = ["*.json"]
 "adr_kit.templates" = ["*.jinja2"]
 
 [tool.black]

@@ -39,6 +39,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -88,6 +93,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -137,6 +147,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -188,6 +203,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -237,6 +257,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -288,6 +313,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -339,6 +369,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -388,6 +423,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -435,6 +475,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -488,6 +533,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -531,6 +581,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -577,6 +632,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -623,6 +683,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -669,6 +734,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -722,6 +792,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -773,6 +848,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -826,6 +906,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -869,6 +954,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -912,6 +1002,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -955,6 +1050,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -1001,6 +1101,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -1052,6 +1157,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -1099,6 +1209,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -1145,6 +1260,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -1192,6 +1312,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -1241,6 +1366,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -1287,6 +1417,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -1330,6 +1465,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -1373,6 +1513,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -1416,6 +1561,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -1462,6 +1612,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -1512,6 +1667,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -1558,6 +1718,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -1605,6 +1770,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -1651,6 +1821,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -1698,6 +1873,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -1745,6 +1925,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -1791,6 +1976,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -1837,6 +2027,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -1883,6 +2078,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -1930,6 +2130,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -1976,6 +2181,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -2022,6 +2232,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -2065,6 +2280,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -2111,6 +2331,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -2157,6 +2382,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -2209,6 +2439,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -2255,6 +2490,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -2303,6 +2543,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -2350,6 +2595,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -2396,6 +2646,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -2445,6 +2700,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -2494,6 +2754,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -2547,6 +2812,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -2596,6 +2866,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -2645,6 +2920,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -2692,6 +2972,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -2739,6 +3024,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -2786,6 +3076,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -2848,6 +3143,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -2897,6 +3197,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -2946,6 +3251,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -2997,6 +3307,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -3043,6 +3358,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -3095,6 +3415,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -3151,6 +3476,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -3204,6 +3534,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -3258,6 +3593,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -3313,12 +3653,369 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
   provenance:
     source_type: logical_adr
     source_ref: ADR-L-0013#INV-0076
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
+- id: INV-0077
+  entity_type: invariant
+  name: INV-0077
+  summary: ADR schema v1.0 MUST remain byte-for-byte frozen. Parser dispatch MUST
+    resolve v1.0 and v1.2 authoring explicitly, MUST preserve the existing provisional
+    v1.1 artifact behavior, and MUST reject unsupported future version
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0018#INV-0077
+    artifact_path: adrs/logical/ADR-L-0018-schema-v12-and-normalized-semantic-foundation.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0018
+    scope: global
+    statement: 'ADR schema v1.0 MUST remain byte-for-byte frozen. Parser dispatch
+      MUST resolve
+
+      v1.0 and v1.2 authoring explicitly, MUST preserve the existing provisional
+
+      v1.1 artifact behavior, and MUST reject unsupported future versions without
+
+      falling back to another schema line.
+
+      '
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions: []
+    supersedes: []
+  relationships:
+    declared_in:
+    - ADR-L-0018
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0018#INV-0077
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
+- id: INV-0078
+  entity_type: invariant
+  name: INV-0078
+  summary: 'Substrate bindings, rule bindings, evidence expectations, and external
+    references MUST remain authored references. ADR Kit MUST NOT load, copy, execute,
+    infer over, or admit external semantic bodies or observed evidence '
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0018#INV-0078
+    artifact_path: adrs/logical/ADR-L-0018-schema-v12-and-normalized-semantic-foundation.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0018
+    scope: global
+    statement: 'Substrate bindings, rule bindings, evidence expectations, and external
+
+      references MUST remain authored references. ADR Kit MUST NOT load, copy,
+
+      execute, infer over, or admit external semantic bodies or observed evidence
+
+      as local architecture authority.
+
+      '
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions: []
+    supersedes: []
+  relationships:
+    declared_in:
+    - ADR-L-0018
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0018#INV-0078
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
+- id: INV-0079
+  entity_type: invariant
+  name: INV-0079
+  summary: Every newly projected relationship assertion MUST receive an `assertion_id`
+    using DEC-0086, while compatibility-preserved `relationship_id` semantics MUST
+    remain unchanged. Phase 2 MUST NOT claim GraphProjectionBundle, s
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0018#INV-0079
+    artifact_path: adrs/logical/ADR-L-0018-schema-v12-and-normalized-semantic-foundation.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0018
+    scope: global
+    statement: 'Every newly projected relationship assertion MUST receive an `assertion_id`
+
+      using DEC-0086, while compatibility-preserved `relationship_id` semantics MUST
+
+      remain unchanged. Phase 2 MUST NOT claim GraphProjectionBundle, snapshot
+
+      replacement, or source-scoped stale-assertion removal semantics.
+
+      '
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions: []
+    supersedes: []
+  relationships:
+    declared_in:
+    - ADR-L-0018
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0018#INV-0079
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
+- id: INV-0080
+  entity_type: invariant
+  name: INV-0080
+  summary: Topology migration MUST be deterministic, idempotent, non-destructive by
+    default, explicit about rewritten references, and fail closed on duplicate IDs,
+    ambiguous names, or dangling endpoints. It MUST NOT use probabilist
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0018#INV-0080
+    artifact_path: adrs/logical/ADR-L-0018-schema-v12-and-normalized-semantic-foundation.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0018
+    scope: global
+    statement: 'Topology migration MUST be deterministic, idempotent, non-destructive
+      by
+
+      default, explicit about rewritten references, and fail closed on duplicate IDs,
+
+      ambiguous names, or dangling endpoints. It MUST NOT use probabilistic or LLM
+
+      resolution.
+
+      '
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions: []
+    supersedes: []
+  relationships:
+    declared_in:
+    - ADR-L-0018
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0018#INV-0080
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
+- id: INV-0081
+  entity_type: invariant
+  name: INV-0081
+  summary: The normalized projectable entity vocabulary MUST be exactly `adr`, `system`,
+    `component`, `decision`, `capability`, `invariant`, `boundary`, `contract`, `interface`,
+    and `implementation_decision` for Phase 2. The relati
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0018#INV-0081
+    artifact_path: adrs/logical/ADR-L-0018-schema-v12-and-normalized-semantic-foundation.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0018
+    scope: global
+    statement: 'The normalized projectable entity vocabulary MUST be exactly `adr`,
+      `system`,
+
+      `component`, `decision`, `capability`, `invariant`, `boundary`, `contract`,
+
+      `interface`, and `implementation_decision` for Phase 2. The relationship
+
+      vocabulary is closed; the only newly authorized verbs are `binds_substrate`,
+
+      `binds_rule`, `expects_evidence`, `provides_interface`, `consumes_interface`,
+
+      and `composed_of`, and a compiler MUST emit one only from an actual authored
+
+      extraction path.
+
+      '
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions: []
+    supersedes: []
+  relationships:
+    declared_in:
+    - ADR-L-0018
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0018#INV-0081
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
+- id: INV-0082
+  entity_type: invariant
+  name: INV-0082
+  summary: ADR Kit MUST own detection and repair of canonical entity-ID collisions
+    in its repository. Allocation MUST be monotonic above the historical high-water
+    mark, MUST permanently reserve retired, removed, remapped, and previ
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0018#INV-0082
+    artifact_path: adrs/logical/ADR-L-0018-schema-v12-and-normalized-semantic-foundation.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0018
+    scope: global
+    statement: 'ADR Kit MUST own detection and repair of canonical entity-ID collisions
+      in its
+
+      repository. Allocation MUST be monotonic above the historical high-water mark,
+
+      MUST permanently reserve retired, removed, remapped, and previously allocated
+
+      IDs, and MUST update every uniquely resolvable schema-typed local reference.
+
+      Ambiguous references MUST fail closed until an explicit occurrence-scoped
+
+      resolution mapping is supplied. Runtime and CI MUST NOT perform canonical
+
+      repair writes.
+
+      '
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions: []
+    supersedes: []
+  relationships:
+    declared_in:
+    - ADR-L-0018
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0018#INV-0082
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index

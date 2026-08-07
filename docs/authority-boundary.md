@@ -57,6 +57,19 @@ The SDK compilation groups (`registries`, `manifest`, and `markdown`) remain ADR
 authoring projections. They do not authorize runtime graph or evidence emission into
 this repository.
 
+ADR Kit is also the sole repair authority for collisions among repository-local
+canonical entity IDs. It detects collisions, preserves one deterministic keeper,
+allocates replacements above the historical prefix high-water mark, never reuses
+retired or remapped IDs, rewrites resolvable typed references, validates, and
+regenerates its projections. Runtime does not repair local identity. A runtime
+consumer may only assemble the repository namespace and local ID as structured
+`namespace:id` identity.
+
+V1.2 bindings preserve the same boundary: ADR Kit owns the authored binding record,
+while the provider namespace owns the referenced substrate, rule, or entity. An
+evidence expectation remains authored intent; observed evidence remains runtime-owned
+state under `.ste-workspace/`.
+
 ## Why this boundary exists
 
 Without an explicit authority split, the same architecture meaning would be redefined in multiple places:

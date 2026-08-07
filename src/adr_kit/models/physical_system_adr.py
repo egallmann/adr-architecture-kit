@@ -2,7 +2,7 @@
 
 from typing import List, Optional
 
-from pydantic import BaseModel, ConfigDict, Field
+from pydantic import BaseModel, ConfigDict, Field, model_validator
 
 from .common import ADRFrontmatter, ADRType, Gap, ImpactLevel
 
@@ -59,6 +59,7 @@ class SystemBoundary(BaseModel):
 
 class ComponentTopologyComponent(BaseModel):
     """Component in topology."""
+    id: Optional[str] = Field(None, pattern=r"^TOPO-[A-Z0-9][A-Z0-9-]*$")
     name: str
     type: str = Field(..., pattern=r"^(service|database|queue|cache|gateway|proxy|worker|scheduler)$")
     purpose: str
@@ -144,6 +145,37 @@ class PhysicalSystemADR(ADRFrontmatter):
     
     conversation_metadata: Optional[ConversationMetadata] = None
     gaps: List[Gap] = Field(default_factory=list)
+
+    @model_validator(mode="after")
+    def validate_v12_topology_references(self) -> "PhysicalSystemADR":
+        """Require every v1.2 topology reference to resolve exactly once."""
+        if self.schema_version != "1.2" or self.component_topology is None:
+            return self
+        components = self.component_topology.components
+        ids = [item.id for item in components if item.id is not None]
+        duplicate_ids = sorted({item for item in ids if ids.count(item) > 1})
+        if duplicate_ids:
+            raise ValueError(f"Duplicate topology IDs: {', '.join(duplicate_ids)}")
+
+        def resolve(reference: str) -> None:
+            candidates = {
+                index
+                for index, component in enumerate(components)
+                if component.id == reference or component.name == reference
+            }
+            if len(candidates) != 1:
+                raise ValueError(
+                    f"Topology reference {reference!r} must resolve exactly once; "
+                    f"resolved {len(candidates)} times"
+                )
+
+        for relationship in self.component_topology.relationships:
+            resolve(relationship.from_component)
+            resolve(relationship.to_component)
+        for flow in self.data_flows:
+            for reference in flow.path:
+                resolve(reference)
+        return self
     
     model_config = ConfigDict(
         json_schema_extra={

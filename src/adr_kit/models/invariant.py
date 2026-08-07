@@ -20,7 +20,7 @@ class InvariantException(BaseModel):
 class StandaloneInvariant(BaseModel):
     """Standalone invariant definition (can also be embedded in ADRs)."""
     
-    schema_version: str = Field("1.0", pattern=r"^1\.0$")
+    schema_version: str = Field("1.0", pattern=r"^(1\.0|1\.2)$")
     type: str = Field("invariant", pattern=r"^invariant$")
     id: str = Field(..., pattern=r"^INV-\d{4}$")
     

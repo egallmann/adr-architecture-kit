@@ -205,6 +205,18 @@ class ArchitectureRepository:
     def get_systems(self) -> list[NormalizedEntity]:
         return self.query_entities(entity_type="system")
 
+    def get_boundaries(self) -> list[NormalizedEntity]:
+        return self.query_entities(entity_type="boundary")
+
+    def get_contracts(self) -> list[NormalizedEntity]:
+        return self.query_entities(entity_type="contract")
+
+    def get_interfaces(self) -> list[NormalizedEntity]:
+        return self.query_entities(entity_type="interface")
+
+    def get_implementation_decisions(self) -> list[NormalizedEntity]:
+        return self.query_entities(entity_type="implementation_decision")
+
     def get_relationships(self) -> list[RelationshipRecord]:
         self.load()
         return list(self.get_model().relationships)

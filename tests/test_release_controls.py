@@ -200,6 +200,11 @@ def test_installed_wheel_harness_declares_all_consumer_probes() -> None:
         "sdk-version-parity",
         "sdk-operations",
         "compiler-containment",
+        "v1.2-schemas",
+        "v1.2-compilation",
+        "promoted-entity-queries",
+        "external-bindings",
+        "topology-migration-entrypoint",
     ):
         assert probe in result.stdout
 

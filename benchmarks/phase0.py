@@ -39,6 +39,9 @@ from adr_kit.compiler.pipeline import (
     RelationshipInferencePass,
 )
 from adr_kit.compiler.registry_bundle import assemble_registry_bundle, render_bundle_yaml
+from adr_kit.generators import ArchitectureIndexGenerator
+from adr_kit.identity import derive_assertion_id
+from adr_kit.migrators import TopologyIdentityMigrator
 from adr_kit.parser import ADRParser
 from adr_kit.repository import ArchitectureRepository
 from adr_kit.scope import ProjectScope, ProjectScopeResolver
@@ -61,6 +64,12 @@ STAGE_NAMES = (
     "representative_queries",
 )
 SDK_STAGE_NAMES = ("sdk_validate", "sdk_compile_preview", "sdk_open_repository")
+PHASE2_STAGE_NAMES = (
+    "v12_parsing",
+    "semantic_compilation",
+    "assertion_derivation_1000",
+    "topology_migration_plan",
+)
 SOURCE_DIRS = ("logical", "physical", "physical-system", "physical-component", "invariants")
 T = TypeVar("T")
 
@@ -134,6 +143,27 @@ def _copy_case(base: Path, name: str, source: Path) -> CorpusCase:
         if source_dir.exists():
             shutil.copytree(source_dir, root / "adrs" / directory)
     return _case(name, root)
+
+
+def _phase2_case(base: Path) -> CorpusCase:
+    root = base / "phase2-semantic"
+    root.mkdir(parents=True)
+    _write_project(root, "phase2-semantic")
+    fixture_root = ROOT / "tests" / "fixtures" / "v1_2"
+    fixtures = (
+        ("logical-bindings.yaml", "logical", "ADR-L-9801-bindings.yaml"),
+        (
+            "physical-component-semantics.yaml",
+            "physical-component",
+            "ADR-PC-9801-semantics.yaml",
+        ),
+        ("physical-system-topology.yaml", "physical-system", "ADR-PS-9801-topology.yaml"),
+    )
+    for source_name, directory, destination_name in fixtures:
+        destination = root / "adrs" / directory / destination_name
+        destination.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copy2(fixture_root / source_name, destination)
+    return _case("phase2-semantic", root)
 
 
 def _case(name: str, root: Path) -> CorpusCase:
@@ -246,6 +276,61 @@ def _run_iteration(
     return timings, model.fingerprint, sdk_timings, evidence
 
 
+def _run_phase2_iteration(case: CorpusCase) -> tuple[dict[str, float], dict[str, object]]:
+    timings: dict[str, float] = {}
+    resolver = ProjectScopeResolver(explicit_scope=case.root)
+    scope = resolver.resolve()
+    parser = ADRParser()
+    source_files = sorted((case.root / "adrs").rglob("*.yaml"))
+
+    timings["v12_parsing"], parsed = _measure(
+        lambda: [parser.parse_adr(path) for path in source_files]
+    )
+    generator = ArchitectureIndexGenerator(scope_resolver=resolver)
+    timings["semantic_compilation"], bundle = _measure(lambda: generator.generate_from_scope(scope))
+
+    def assertions() -> list[str]:
+        return [
+            derive_assertion_id(
+                "binds_rule",
+                "ADR-L-9801",
+                "ste-rules:RULE-0001",
+                "ADR-L-9801",
+                f"/rule_bindings/{index}",
+            )
+            for index in range(1000)
+        ]
+
+    timings["assertion_derivation_1000"], assertion_ids = _measure(assertions)
+    migrator = TopologyIdentityMigrator()
+    timings["topology_migration_plan"], migration_plan = _measure(lambda: migrator.plan(scope))
+    relationships = bundle.relationship_registry.relationships
+    evidence = {
+        "parsed_types": [type(item).__name__ for item in parsed],
+        "entity_counts": {
+            entity_type: sum(
+                item.entity_type == entity_type for item in bundle.entity_registry.entities
+            )
+            for entity_type in (
+                "boundary",
+                "contract",
+                "interface",
+                "implementation_decision",
+            )
+        },
+        "binding_relationships": sum(
+            item.relationship_type in {"binds_substrate", "binds_rule", "expects_evidence"}
+            for item in relationships
+        ),
+        "assertion_digest": hashlib.sha256("\n".join(assertion_ids).encode()).hexdigest(),
+        "migration_changes": [
+            (item.pointer, item.before, item.after) for item in migration_plan.changes
+        ],
+        "migration_diagnostics": [item.message for item in migration_plan.diagnostics],
+    }
+    return timings, evidence
+
+
 def _summarize(
     samples: list[dict[str, float]], stage_names: tuple[str, ...] = STAGE_NAMES
 ) -> dict[str, dict[str, object]]:
@@ -271,6 +356,7 @@ def _parse_sizes(value: str) -> list[int]:
 def run(corpus: str, sizes: list[int], warmups: int, repeats: int) -> dict[str, object]:
     with tempfile.TemporaryDirectory(prefix="adr-kit-phase0-benchmark-") as temporary:
         base = Path(temporary)
+        phase2_case = _phase2_case(base)
         cases: list[CorpusCase] = []
         if corpus in ("all", "repository"):
             cases.append(_copy_case(base, "repository", ROOT / "adrs"))
@@ -314,6 +400,17 @@ def run(corpus: str, sizes: list[int], warmups: int, repeats: int) -> dict[str, 
                     "sdk_stages": _summarize(sdk_samples, SDK_STAGE_NAMES),
                 }
             )
+        for _ in range(warmups):
+            _run_phase2_iteration(phase2_case)
+        phase2_samples: list[dict[str, float]] = []
+        phase2_evidence_samples: list[dict[str, object]] = []
+        for _ in range(repeats + 1):
+            timings, evidence = _run_phase2_iteration(phase2_case)
+            phase2_samples.append(timings)
+            phase2_evidence_samples.append(evidence)
+        phase2_deterministic = all(
+            item == phase2_evidence_samples[0] for item in phase2_evidence_samples
+        )
         return {
             "schema_version": 1,
             "environment": {
@@ -332,6 +429,9 @@ def run(corpus: str, sizes: list[int], warmups: int, repeats: int) -> dict[str, 
             "deterministic": deterministic,
             "sdk_deterministic": sdk_deterministic,
             "sdk_evidence": sdk_evidence,
+            "phase2_stages": _summarize(phase2_samples, PHASE2_STAGE_NAMES),
+            "phase2_deterministic": phase2_deterministic,
+            "phase2_evidence": phase2_evidence_samples[0],
         }
 
 
@@ -354,7 +454,7 @@ def main(argv: Sequence[str] | None = None) -> int:
             json.dumps(payload, indent=2, sort_keys=True) + "\n", encoding="utf-8"
         )
         print(arguments.json_out)
-        return 0 if payload["deterministic"] else 1
+        return 0 if payload["deterministic"] and payload["phase2_deterministic"] else 1
     except (OSError, RuntimeError, ValueError) as exc:
         print(f"benchmark failed: {exc}", file=sys.stderr)
         return 1

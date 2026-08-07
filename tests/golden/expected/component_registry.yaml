@@ -41,6 +41,12 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface:
+    - IFACE-0011
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -88,6 +94,13 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface:
+    - IFACE-0012
+    - IFACE-0017
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -135,6 +148,13 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface:
+    - IFACE-0013
+    - IFACE-0018
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -182,6 +202,13 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface:
+    - IFACE-0014
+    - IFACE-0019
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -229,6 +256,12 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface:
+    - IFACE-0015
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -276,6 +309,12 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface:
+    - IFACE-0016
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []

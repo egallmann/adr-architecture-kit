@@ -1,0 +1,390 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://adr-kit.ste.systems/schema/v1.2/adr-physical.schema.json",
+  "title": "Physical ADR Schema",
+  "description": "Schema for Physical ADRs - implementation specifications that operationalize logical designs (STE-compliant, enables EDR comparison and correction agents)",
+  
+  "type": "object",
+  "allOf": [
+    {"$ref": "adr-common.schema.json"}
+  ],
+  
+  "required": [
+    "implements_logical",
+    "context",
+    "technology_stack",
+    "component_specifications"
+  ],
+  
+  "properties": {
+    "adr_type": {
+      "const": "physical"
+    },
+    
+    "id": {
+      "$ref": "types.schema.json#/definitions/adr_id_physical"
+    },
+    
+    "implements_logical": {
+      "type": "array",
+      "items": {
+        "$ref": "types.schema.json#/definitions/adr_id_logical"
+      },
+      "minItems": 1,
+      "description": "Logical ADRs that this physical ADR implements (graph edges)"
+    },
+    
+    "technologies": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Technologies used (for policy propagation and blast radius analysis)"
+    },
+    
+    "context": {
+      "$ref": "types.schema.json#/definitions/markdown_text",
+      "description": "Implementation context and technology choices"
+    },
+    
+    "technology_stack": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["category", "name", "version", "rationale"],
+        "properties": {
+          "category": {
+            "type": "string",
+            "enum": ["language", "framework", "library", "database", "messaging", "infrastructure", "tooling"]
+          },
+          "name": {
+            "type": "string"
+          },
+          "version": {
+            "type": "string"
+          },
+          "rationale": {
+            "$ref": "types.schema.json#/definitions/markdown_text"
+          }
+        }
+      },
+      "minItems": 1,
+      "description": "Technology choices with rationale"
+    },
+    
+    "architecture_patterns": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["pattern_name", "application"],
+        "properties": {
+          "pattern_name": {
+            "type": "string"
+          },
+          "application": {
+            "$ref": "types.schema.json#/definitions/markdown_text"
+          },
+          "components_affected": {
+            "type": "array",
+            "items": {"type": "string"}
+          }
+        }
+      },
+      "description": "Architectural patterns applied"
+    },
+    
+    "component_specifications": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "name", "type", "responsibilities"],
+        "properties": {
+          "id": {
+            "$ref": "types.schema.json#/definitions/entity_id",
+            "pattern": "^COMP-\\d{4}$"
+          },
+          "name": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string",
+            "enum": ["service", "library", "database", "queue", "cache", "gateway", "proxy", "worker", "scheduler"]
+          },
+          "responsibilities": {
+            "$ref": "types.schema.json#/definitions/markdown_text"
+          },
+          "interfaces": {
+            "type": "array",
+            "items": {
+              "oneOf": [
+                {
+                  "type": "object",
+                  "required": ["id", "type", "specification"],
+                  "properties": {
+                    "id": {
+                      "$ref": "types.schema.json#/definitions/entity_id",
+                      "pattern": "^IFACE-\\d{4}$"
+                    },
+                    "type": {
+                      "type": "string",
+                      "enum": ["REST", "gRPC", "GraphQL", "message", "event", "stream", "batch"]
+                    },
+                    "specification": {
+                      "$ref": "types.schema.json#/definitions/markdown_text"
+                    },
+                    "contract_reference": {
+                      "type": "string",
+                      "description": "Reference to API contract (OpenAPI, proto file, etc.)"
+                    }
+                  }
+                },
+                {
+                  "type": "object",
+                  "required": ["id", "name"],
+                  "properties": {
+                    "id": {
+                      "$ref": "types.schema.json#/definitions/entity_id",
+                      "pattern": "^IFACE-\\d{4}$"
+                    },
+                    "name": {
+                      "type": "string"
+                    },
+                    "type": {
+                      "type": "string"
+                    },
+                    "description": {
+                      "$ref": "types.schema.json#/definitions/markdown_text"
+                    },
+                    "fields": {
+                      "type": "array",
+                      "items": {
+                        "oneOf": [
+                          {"type": "string"},
+                          {"type": "object"}
+                        ]
+                      }
+                    },
+                    "methods": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "parameters": {
+                      "type": "array",
+                      "items": {
+                        "oneOf": [
+                          {"type": "string"},
+                          {"type": "object"}
+                        ]
+                      }
+                    },
+                    "returns": {
+                      "type": "string"
+                    },
+                    "example": {
+                      "$ref": "types.schema.json#/definitions/markdown_text"
+                    },
+                    "values": {
+                      "type": "array",
+                      "items": {
+                        "oneOf": [
+                          {"type": "string"},
+                          {"type": "object"}
+                        ]
+                      }
+                    },
+                    "specification": {
+                      "$ref": "types.schema.json#/definitions/markdown_text"
+                    }
+                  }
+                }
+              ]
+            }
+          },
+          "dependencies": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Component dependencies (graph edges) - component IDs or external service names"
+          },
+          "upstream_services": {
+            "type": "array",
+            "items": {"type": "string"},
+            "description": "Services this component calls (for blast radius analysis)"
+          },
+          "downstream_services": {
+            "type": "array",
+            "items": {"type": "string"},
+            "description": "Services that call this component (for blast radius analysis)"
+          },
+          "implements_capabilities": {
+            "type": "array",
+            "items": {"$ref": "types.schema.json#/definitions/entity_id"},
+            "description": "Capabilities (CAP-XXXX) this component implements"
+          },
+          "realizes_entities": {
+            "type": "array",
+            "items": {"$ref": "types.schema.json#/definitions/entity_id"},
+            "description": "Other entities (BOUND, CONTRACT, etc.) this component realizes"
+          },
+          "implementation_identifiers": {
+            "type": "object",
+            "properties": {
+              "service_name": {
+                "type": "string",
+                "description": "Runtime service name (Kubernetes, Docker, etc.)"
+              },
+              "repository": {
+                "type": "string",
+                "description": "Source control repository URL"
+              },
+              "module_path": {
+                "type": "string",
+                "description": "Code location within repository"
+              },
+              "deployment_name": {
+                "type": "string",
+                "description": "Deployment identifier"
+              }
+            },
+            "description": "Identifiers for EDR matching and correction agent location"
+          }
+        }
+      },
+      "minItems": 1,
+      "description": "Component specifications with implementation identifiers"
+    },
+    
+    "deployment_model": {
+      "type": "object",
+      "properties": {
+        "hosting": {
+          "type": "string",
+          "enum": ["cloud", "on-premise", "hybrid", "edge"]
+        },
+        "orchestration": {
+          "type": "string"
+        },
+        "scaling_strategy": {
+          "$ref": "types.schema.json#/definitions/markdown_text"
+        }
+      },
+      "description": "Deployment and orchestration model"
+    },
+    
+    "data_architecture": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["entity", "storage"],
+        "properties": {
+          "entity": {
+            "type": "string"
+          },
+          "storage": {
+            "type": "string"
+          },
+          "schema": {
+            "$ref": "types.schema.json#/definitions/markdown_text"
+          },
+          "access_patterns": {
+            "$ref": "types.schema.json#/definitions/markdown_text"
+          }
+        }
+      },
+      "description": "Data architecture and storage"
+    },
+    
+    "implementation_decisions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "summary", "rationale"],
+        "properties": {
+          "id": {
+            "$ref": "types.schema.json#/definitions/entity_id",
+            "pattern": "^IMPL-\\d{4}$"
+          },
+          "summary": {
+            "type": "string"
+          },
+          "rationale": {
+            "$ref": "types.schema.json#/definitions/markdown_text"
+          },
+          "implements_invariants": {
+            "type": "array",
+            "items": {
+              "$ref": "types.schema.json#/definitions/invariant_id"
+            },
+            "description": "Invariants this implementation enforces"
+          },
+          "alternatives_considered": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["name", "rejected_because"],
+              "properties": {
+                "name": {"type": "string"},
+                "rejected_because": {
+                  "$ref": "types.schema.json#/definitions/markdown_text"
+                }
+              }
+            }
+          }
+        }
+      },
+      "description": "Implementation-level decisions"
+    },
+    
+    "integration_points": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "systems", "protocol", "specification"],
+        "properties": {
+          "id": {
+            "$ref": "types.schema.json#/definitions/entity_id",
+            "pattern": "^INTEG-\\d{4}$"
+          },
+          "systems": {
+            "type": "array",
+            "items": {"type": "string"},
+            "minItems": 2
+          },
+          "protocol": {
+            "type": "string"
+          },
+          "specification": {
+            "$ref": "types.schema.json#/definitions/markdown_text"
+          },
+          "contract_adr": {
+            "$ref": "types.schema.json#/definitions/adr_id_any",
+            "description": "ADR defining the integration contract"
+          }
+        }
+      },
+      "description": "Integration points between systems"
+    },
+    
+    "operational_requirements": {
+      "type": "object",
+      "properties": {
+        "monitoring": {
+          "$ref": "types.schema.json#/definitions/markdown_text"
+        },
+        "logging": {
+          "$ref": "types.schema.json#/definitions/markdown_text"
+        },
+        "backup_recovery": {
+          "$ref": "types.schema.json#/definitions/markdown_text"
+        },
+        "security": {
+          "$ref": "types.schema.json#/definitions/markdown_text"
+        }
+      },
+      "description": "Operational requirements and practices"
+    }
+  }
+}

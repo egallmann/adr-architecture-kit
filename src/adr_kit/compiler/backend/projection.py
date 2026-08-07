@@ -2,10 +2,14 @@
 
 from __future__ import annotations
 
+from typing import cast
+
 from ...models.architecture_discovery import (
     EntityRelationshipSummary,
     NormalizedEntity,
     RelationshipRecord,
+    RelationshipType,
+    NormalizedEntityType,
     UnresolvedRecord,
     lifecycle_stage_from_adr_status,
 )
@@ -13,14 +17,26 @@ from ..ir.entity_graph import ENTITY_RELATIONSHIP_TYPES, IREntity
 from ..ir.rel_graph import IRRelationship, RelGraph
 from ..ir.unresolved_list import IRUnresolved
 
-
-PROJECTABLE_ENTITY_TYPES = {"adr", "system", "component", "decision", "capability", "invariant"}
+PROJECTABLE_ENTITY_TYPES = {
+    "adr",
+    "system",
+    "component",
+    "decision",
+    "capability",
+    "invariant",
+    "boundary",
+    "contract",
+    "interface",
+    "implementation_decision",
+}
 
 
 def build_relationship_summary(entity_id: str, rel_graph: RelGraph) -> EntityRelationshipSummary:
     """Rebuild the registry relationship summary for one entity."""
     buckets = {relationship_type: [] for relationship_type in ENTITY_RELATIONSHIP_TYPES}
     for relationship in rel_graph.outgoing(entity_id):
+        if relationship.metadata.get("target_scope") in {"external", "expectation"}:
+            continue
         buckets[relationship.relationship_type].append(relationship.to_entity_id)
     for values in buckets.values():
         values.sort()
@@ -38,12 +54,19 @@ def _lifecycle_stage_for_projection(entity: IREntity) -> str:
 
 def project_entity(entity: IREntity, rel_graph: RelGraph | None = None) -> NormalizedEntity | None:
     """Project an IR entity to the kernel-facing registry shape."""
-    if entity.entity_type not in PROJECTABLE_ENTITY_TYPES:
+    if (
+        entity.entity_type not in PROJECTABLE_ENTITY_TYPES
+        or entity.canonical_source.source_type == "project_metadata"
+    ):
         return None
-    relationships = build_relationship_summary(entity.id, rel_graph) if rel_graph is not None else EntityRelationshipSummary()
+    relationships = (
+        build_relationship_summary(entity.id, rel_graph)
+        if rel_graph is not None
+        else EntityRelationshipSummary()
+    )
     return NormalizedEntity(
         id=entity.id,
-        entity_type=entity.entity_type,
+        entity_type=cast(NormalizedEntityType, entity.entity_type),
         name=entity.name,
         summary=entity.summary,
         lifecycle_stage=_lifecycle_stage_for_projection(entity),
@@ -60,12 +83,14 @@ def project_relationship(relationship: IRRelationship) -> RelationshipRecord:
     """Project an IR relationship to the registry shape."""
     return RelationshipRecord(
         relationship_id=relationship.relationship_id,
-        relationship_type=relationship.relationship_type,
+        assertion_id=relationship.assertion_id,
+        relationship_type=cast(RelationshipType, relationship.relationship_type),
         from_entity_id=relationship.from_entity_id,
         to_entity_id=relationship.to_entity_id,
         provenance_classification=relationship.provenance_classification,
         evidence=list(relationship.evidence),
         canonical_source_ref=relationship.canonical_source_ref,
+        source_pointer=relationship.source_pointer,
         confidence=relationship.confidence,
         metadata=dict(relationship.metadata),
     )

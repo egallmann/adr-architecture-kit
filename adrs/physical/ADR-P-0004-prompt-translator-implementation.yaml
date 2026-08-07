@@ -76,7 +76,7 @@ component_specifications:
     - Extract testing requirements
     - Build structured component metadata
   interfaces:
-  - id: IFACE-0001
+  - id: IFACE-0022
     name: ComponentSpec
     type: dataclass
     description: Structured component specification
@@ -93,7 +93,7 @@ component_specifications:
     - related_invariants: List[InvariantRef] - Relevant invariants
     - related_capabilities: List[CapabilityRef] - Relevant capabilities
     - implementation_decisions: List[ImplDecisionRef] - Relevant IMPL-*
-  - id: IFACE-0002
+  - id: IFACE-0026
     name: ComponentParser
     type: class
     methods:
@@ -130,7 +130,7 @@ component_specifications:
     - Generate execution plans
     - Optimize prompt structure per agent capabilities
   interfaces:
-  - id: IFACE-0003
+  - id: IFACE-0028
     name: AgentFormat
     type: enum
     values:
@@ -138,13 +138,13 @@ component_specifications:
     - cursor: Cursor with Sonnet 4.5 (detailed, reasoning-focused)
     - claude: Claude API (structured thinking)
     - gpt: GPT models (example-driven)
-  - id: IFACE-0004
+  - id: IFACE-0030
     name: PromptTemplate
     type: class
     description: Base template for all prompt formats
     methods:
     - 'render(component: ComponentSpec, context: dict) -> str'
-  - id: IFACE-0005
+  - id: IFACE-0031
     name: PromptGenerator
     type: class
     methods:
@@ -179,7 +179,7 @@ component_specifications:
     - Display execution plan
     - Generate cooperative signals for parallel agent coordination
   interfaces:
-  - id: IFACE-0006
+  - id: IFACE-0032
     name: adr generate-prompts
     parameters:
     - adr_id: str - Physical ADR ID (e.g., ADR-P-0003)
@@ -215,7 +215,7 @@ component_specifications:
     - Generate topological sort for execution order
     - Identify parallelizable components
   interfaces:
-  - id: IFACE-0007
+  - id: IFACE-0033
     name: DependencyAnalyzer
     type: class
     methods:
@@ -245,7 +245,7 @@ component_specifications:
     - Generate completion signals (ready for validation)
     - Clean up stale signals
   interfaces:
-  - id: IFACE-0001
+  - id: IFACE-0023
     type: REST
     specification: |
       SignalType enum: claim, progress, complete, wave_complete, validation_ready.
@@ -442,3 +442,37 @@ notes: |
   not tracked in git. This is a temporary file-based coordination mechanism
   that will be replaced by proper Rules & Signal Service (ADR-L-0004) when
   that tier is implemented.
+migration_origin:
+  remapped_entities:
+  - entity_type: interface
+    from: IFACE-0001
+    to: IFACE-0022
+    source_pointer: /component_specifications/0/interfaces/0/id
+  - entity_type: interface
+    from: IFACE-0001
+    to: IFACE-0023
+    source_pointer: /component_specifications/4/interfaces/0/id
+  - entity_type: interface
+    from: IFACE-0002
+    to: IFACE-0026
+    source_pointer: /component_specifications/0/interfaces/1/id
+  - entity_type: interface
+    from: IFACE-0003
+    to: IFACE-0028
+    source_pointer: /component_specifications/1/interfaces/0/id
+  - entity_type: interface
+    from: IFACE-0004
+    to: IFACE-0030
+    source_pointer: /component_specifications/1/interfaces/1/id
+  - entity_type: interface
+    from: IFACE-0005
+    to: IFACE-0031
+    source_pointer: /component_specifications/1/interfaces/2/id
+  - entity_type: interface
+    from: IFACE-0006
+    to: IFACE-0032
+    source_pointer: /component_specifications/2/interfaces/0/id
+  - entity_type: interface
+    from: IFACE-0007
+    to: IFACE-0033
+    source_pointer: /component_specifications/3/interfaces/0/id

@@ -7,6 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.3.1] — 2026-08-08
+
+### Fixed
+
+- Made the package README PyPI-portable by replacing repository-relative Markdown
+  links with absolute GitHub `main` blob/tree URLs (observed on published `0.3.0`:
+  relative targets such as `docs/public-sdk.md` resolved under the PyPI project page
+  and 404'd). Added deterministic README portability validation (`INV-0083`) wired
+  into local pre-push checks and covered by release quality pytest.
+
 ## [0.3.0] — 2026-08-07
 
 Cumulative public delta since `0.1.0`: Phase 0 production hardening, Phase 1 public SDK,

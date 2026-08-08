@@ -248,3 +248,8 @@ def test_pr_workflow_has_source_wheel_quality_security_and_reproducibility_gates
     ]
     assert "scripts/test_installed_wheel.py" in wheel_section
     assert "sdk-consumer" in workflow
+
+
+def test_local_pre_push_checks_include_readme_pypi_portability() -> None:
+    script = (ROOT / "scripts" / "run_local_pre_push_checks.py").read_text(encoding="utf-8")
+    assert "tests/test_readme_pypi_portability.py" in script

@@ -8,7 +8,7 @@ high_water_marks:
   DEC: 9000
   IFACE: 33
   IMPL: 27
-  INV: 82
+  INV: 83
 allocations:
 - id: BOUND-0001
   entity_type: boundary
@@ -1845,4 +1845,10 @@ allocations:
   adr_id: ADR-L-0018
   file_path: adrs/logical/ADR-L-0018-schema-v12-and-normalized-semantic-foundation.yaml
   source_pointer: /invariants/5/id
+  state: active
+- id: INV-0083
+  entity_type: invariant
+  adr_id: ADR-L-0003
+  file_path: adrs/logical/ADR-L-0003-quality-assurance-and-testing-strategy.yaml
+  source_pointer: /invariants/10/id
   state: active

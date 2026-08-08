@@ -43,6 +43,7 @@ COMMANDS: tuple[tuple[str, ...], ...] = (
         "tests/test_generated_docs_integrity.py",
         "tests/test_kernel_schema_fixture_sync.py",
         "tests/test_package_schema_parity.py",
+        "tests/test_readme_pypi_portability.py",
         "tests/test_adr_ir_fragment_compiler.py",
         "tests/test_architecture_ir_publication.py",
         "tests/test_retrofit_contract_guards.py",

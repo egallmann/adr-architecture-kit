@@ -53,6 +53,26 @@ and re-verifies that retained bundle. Sdist normalization removes build-clock an
 owner metadata using the source commit epoch before hashing. The privileged job never
 rebuilds it.
 
+## 0.3.0 release finding: PyPI README link portability
+
+**Observed failure:** GitHub-valid repository-relative README links became invalid
+PyPI package-description links (for example
+`https://pypi.org/project/adr-architecture-kit/0.3.0/docs/public-sdk.md`).
+
+**Missing invariant:** Release qualification validated package metadata and artifacts
+(`twine check`, retained-bundle identity) but did not validate README link portability
+across rendering surfaces.
+
+**Resulting control:** The PyPI-facing package description (`project.readme`) must
+contain only link forms valid independently of GitHub repository-relative rendering
+(`INV-0083`; enforced by `tests/test_readme_pypi_portability.py` in the local pre-push
+bundle and full pytest on publish quality).
+
+**Future release-protocol implication:** README/package-description portability is part
+of release qualification. The deferred `capture-release-protocol` contributor skill
+must consume this observed invariant as evidence (skill implementation remains separate
+future work; see `ROADMAP.md`).
+
 ## Benchmarks
 
 The full baseline command is:

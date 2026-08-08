@@ -156,12 +156,18 @@ decisions:
     supported Python version, measures coverage through the canonical `adr_kit`
     namespace, ratchets legacy quality findings, and promotes a verified wheel
     and sdist without rebuilding them in the publishing job.
+
+    Metadata renderability alone is insufficient for the PyPI-facing package
+    description: repository-relative README links resolve on GitHub but break
+    when rendered under the PyPI project page. Release qualification therefore
+    also requires portable link forms in the README used as `project.readme`.
   consequences:
     positive:
     - Installed-package behavior becomes release evidence rather than an assumption
     - Published artifacts are byte-identical to the tested release bundle
     - Existing quality debt can only stay level or decrease
     - Supported Python claims are backed by source and wheel execution
+    - PyPI package-description links remain valid independently of GitHub rendering
 - id: DEC-0081
   summary: Make installed distribution metadata the runtime package-version authority
   rationale: |
@@ -307,6 +313,22 @@ invariants:
     A supported SDK and release chain require equivalent behavior from the
     checkout, editable installation, and the exact artifact selected for
     promotion.
+- id: INV-0083
+  statement: |
+    The PyPI-facing package description (the file declared as `project.readme`)
+    MUST contain only Markdown link and image targets that resolve independently
+    of GitHub repository-relative rendering: same-document anchors, absolute
+    `https://` URLs (optional fragment), and `mailto:` URIs. Repository-relative
+    file or directory targets and `http://` URLs MUST be rejected by automated
+    release qualification before merge or publication.
+  scope: global
+  enforcement_level: must
+  enforcement_mechanism: test
+  verification_method: automated
+  rationale: |
+    Observed on the published `0.3.0` long description: GitHub-valid relative
+    README links became invalid PyPI package-description URLs. `twine check`
+    validates metadata renderability but not cross-surface link portability.
 capabilities:
 - id: CAP-0020
   name: Automated Quality Gates
@@ -359,6 +381,8 @@ capabilities:
   - Ruff, strict-mypy, and Black controls reject new debt
   - the release manifest requires exactly one wheel and one sdist
   - the publish job has no build step and confines OIDC and the PyPI environment to publication
+  - the PyPI-facing package description (`project.readme`) contains only portable
+    link forms valid outside GitHub repository-relative rendering
 related_adrs:
 - ADR-L-0001
 - ADR-L-0002

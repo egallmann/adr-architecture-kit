@@ -59,3 +59,13 @@ Entry requires all earlier gates. Evaluate MCP, LLM-assisted flows, runtime/rule
 integration, substrate, and admission only as explicit cross-repository architecture
 decisions. Authority boundaries and fail-closed governance remain prerequisites; Phase 5
 is not authorization to implement those concerns in the kit.
+
+## Post-release follow-up
+
+- **Capture validated release protocol as reusable contributor skill**
+  (`capture-release-protocol`): use the completed `0.3.0` execution trace as the
+  evidence base for a repository-owned release-promotion skill. Skill implementation
+  remains separate future work. Required evidence to consume includes the `0.3.0`
+  PyPI README link-portability finding and resulting control (`INV-0083` /
+  package-description portability as release qualification)—see
+  [phase-0-controls.md](docs/production-hardening/phase-0-controls.md).

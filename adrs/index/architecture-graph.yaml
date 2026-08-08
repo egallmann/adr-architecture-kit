@@ -4,13 +4,13 @@
 # generator_id: adr-architecture-graph
 # generator_version: 1
 # hash_algorithm: sha256
-# source_hash: f4f5cdd6e0ab94f10c7f3642b39f78160a60dc877dcb59ebaade8e52a361ca59
-# rendered_hash: c3ade97be953040f1929c67c8db2c6ec2206ac3b7517d9a8397a6755024f9b00
+# source_hash: efbe60235312cc6aa7e3190a7fdc6a1e21988c4e93d329e2115985453a47bc9a
+# rendered_hash: 8426fbb7f7cde07d2ce4a273b573181ad73d53f700e3c0e63068325b0ac1e71f
 
 schema_version: '1.0'
 type: architecture_graph
 architecture_namespace: adr-architecture-kit
-generated_at: '2026-08-06T21:01:37Z'
+generated_at: '2026-08-08T05:43:24Z'
 nodes:
 - id: ADR-L-0001
   entity_type: adr
@@ -2013,6 +2013,13 @@ nodes:
     source_type: logical_adr
     source_ref: ADR-L-0018#INV-0082
     artifact_path: adrs/logical/ADR-L-0018-schema-v12-and-normalized-semantic-foundation.yaml
+- id: INV-0083
+  entity_type: invariant
+  name: INV-0083
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0003#INV-0083
+    artifact_path: adrs/logical/ADR-L-0003-quality-assurance-and-testing-strategy.yaml
 - id: SYS-0001
   entity_type: system
   name: ADR Architecture Kit Discovery and Indexing System
@@ -4787,6 +4794,17 @@ edges:
   evidence:
   - ADR-L-0018#INV-0082
   canonical_source_ref: ADR-L-0018#INV-0082
+  confidence: 1.0
+  metadata: {}
+- relationship_id: declared_in:INV-0083:ADR-L-0003
+  assertion_id: asrt-be451607a481dee9cf0011e6d4d69fcb2fea430700b6010353e2ce7fbe8eebc4
+  relationship_type: declared_in
+  source_entity_id: INV-0083
+  target_entity_id: ADR-L-0003
+  provenance_classification: explicit
+  evidence:
+  - ADR-L-0003#INV-0083
+  canonical_source_ref: ADR-L-0003#INV-0083
   confidence: 1.0
   metadata: {}
 - relationship_id: declared_in:SYS-0001:ADR-PS-0001

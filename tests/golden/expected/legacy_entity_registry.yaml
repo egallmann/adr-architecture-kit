@@ -4,8 +4,8 @@
 # generator_id: adr-compiler
 # generator_version: 1
 # hash_algorithm: sha256
-# source_hash: d4d0db3f6d21693e1d16fb5318c5cb9d4375901f7acde18222684df94568ac9b
-# rendered_hash: da0c8a0ce6e504a50e71ea8709ffbc74cd5ba9f08e5484db20431f130f9902ea
+# source_hash: 1e8fd5e36829500dd6843c915547c0382dba65e60c8b1fb459959f333ebcc93b
+# rendered_hash: 761673fd801e46798ca8a59741bf0475a5f5e177e5b37637f37d6518f62b4e2f
 
 schema_version: '1.1'
 type: entity_registry
@@ -3402,6 +3402,21 @@ entities:
   introduced_by: ADR-L-0018
   lifecycle_stage: active
   source_path: adrs/logical/ADR-L-0018-schema-v12-and-normalized-semantic-foundation.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs: []
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: INV-0083
+  entity_type: invariant
+  name: INV-0083
+  introduced_by: ADR-L-0003
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0003-quality-assurance-and-testing-strategy.yaml
   source_artifact_type: logical_adr
   domains: []
   related_adrs: []

@@ -2762,6 +2762,17 @@ relationships:
   canonical_source_ref: ADR-L-0018#INV-0082
   confidence: 1.0
   metadata: {}
+- relationship_id: declared_in:INV-0083:ADR-L-0003
+  assertion_id: asrt-be451607a481dee9cf0011e6d4d69fcb2fea430700b6010353e2ce7fbe8eebc4
+  relationship_type: declared_in
+  from_entity_id: INV-0083
+  to_entity_id: ADR-L-0003
+  provenance_classification: explicit
+  evidence:
+  - ADR-L-0003#INV-0083
+  canonical_source_ref: ADR-L-0003#INV-0083
+  confidence: 1.0
+  metadata: {}
 - relationship_id: declared_in:SYS-0001:ADR-PS-0001
   assertion_id: asrt-a799c2831537b2e725e5ae68f9d9fb5e900e7a28584994526dee5ae2cbdb821d
   relationship_type: declared_in

@@ -28,7 +28,12 @@ def test_runtime_version_has_no_duplicate_literal() -> None:
 
 
 def test_direct_source_fallback_reads_pyproject(monkeypatch: pytest.MonkeyPatch) -> None:
+    import tomllib
+
     version_module = _version_module()
+    expected = tomllib.loads((ROOT / "pyproject.toml").read_text(encoding="utf-8"))["project"][
+        "version"
+    ]
 
     def missing_metadata(_distribution: str) -> str:
         raise metadata.PackageNotFoundError
@@ -36,7 +41,7 @@ def test_direct_source_fallback_reads_pyproject(monkeypatch: pytest.MonkeyPatch)
     monkeypatch.setattr(version_module, "distribution_version", missing_metadata)
     monkeypatch.setattr(version_module, "SOURCE_PROJECT", ROOT / "pyproject.toml")
 
-    assert version_module.resolve_version() == "0.1.0"
+    assert version_module.resolve_version() == expected
 
 
 def test_editable_install_uses_distribution_metadata(monkeypatch: pytest.MonkeyPatch) -> None:

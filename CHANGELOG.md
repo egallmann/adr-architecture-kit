@@ -5,7 +5,14 @@ All notable changes to ADR Architecture Kit will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased] — Public Release Readiness Pass
+## [Unreleased]
+
+## [0.3.0] — 2026-08-07
+
+Cumulative public delta since `0.1.0`: Phase 0 production hardening, Phase 1 public SDK,
+and Phase 2 schema v1.2 / normalized semantic foundation. Unpublished intermediate
+`0.2.0` was intentionally skipped; this release ships the admitted Phase 2 capability
+tier as `0.3.0`.
 
 ### Changed
 
@@ -21,7 +28,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   to exercise the public SDK on Python 3.11–3.14.
 - Reaffirmed that only ADR Kit writes inside this repository; all runtime/workspace
   derived state belongs under the workspace-root `.ste-workspace/`.
-
 - Phase 0 production hardening now installs through the canonical `adr_kit`
   namespace, snapshots Python/CLI compatibility, enforces version and quality
   ratchets, supports Python 3.11–3.14, tests the retained wheel, and promotes a
@@ -67,7 +73,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   discovery / IR out; Alpha).
 - PR template checklist: **CI vs local** note linking to CONTRIBUTING.
 
-
 ### Added
 
 - Provisional additive ADR authoring schema v1.2, explicit parser negotiation, and
@@ -86,7 +91,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   CI/pre-push allocation validation, and runtime read-only `namespace:id` assembly.
 - Installed-wheel and benchmark proof for Phase 2 schemas, semantic projection,
   bindings, assertion identity, and topology migration.
-
 - Logical invariants: optional `supersedes` list on invariant entities; compiler
   derives invariant-to-invariant `supersedes` / `superseded_by` relationships and
   includes `supersedes` in extracted invariant metadata. JSON Schema for logical
@@ -94,15 +98,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `SystemOverviewGenerator` resolves project metadata from the current working
   directory and `PROJECT.yaml`, with configurable system purpose and optional
   workspace highlights in the Jinja2 template.
-- CI job `release-artifact-validation`: builds wheel and sdist, installs into a
-  clean environment, and runs `adr --help` smoke tests to prove the wheel install
-  works without editable-install workarounds.
+- CI job for retained release-artifact validation: builds wheel and sdist, installs
+  into a clean environment, and runs smoke tests to prove wheel install without
+  editable-install workarounds.
 - CI step for schema parity check: validates that `src/adr_kit/schema/v*/` copies
   match the repo-root `schema/v*/` canonical files byte-for-byte.
 - Advisory CI step for Architecture IR mirror check against sibling `ste-spec`
   checkout (skips gracefully when sibling is absent).
-- GitHub Actions workflow `publish-pypi.yml`: publish to PyPI on **push to `main`**
-  that changes `pyproject.toml`, using **Trusted Publishing** (OIDC; no PyPI token in secrets).
+- GitHub Actions workflow `publish-pypi.yml`: publish to PyPI on push of a `v*` tag
+  matching the package version, using **Trusted Publishing** (OIDC; no PyPI token in
+  secrets). Does not publish on branch push or manual dispatch.
 - Maintainer instructions in `CONTRIBUTING.md` for linking PyPI to this repository.
 - `pyproject.toml` `[tool.setuptools] license-files` so `LICENSE` is included in
   the source distribution.
@@ -118,7 +123,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **`tests/test_package_schema_parity.py`**: asserts canonical vs bundled authoring schemas stay byte-identical (mirrors `.github/workflows/adr-governance.yml`); included in **`scripts/run_local_pre_push_checks.py`**.
 - Explicitly recorded bundled **`normalized-entity-registry.schema.json`** at **`src/adr_kit/schema/v1_1/`** matching **`schema/v1.1/`** for clean-checkout CI parity (`assume-unchanged` in local workspaces can suppress staging otherwise — see **`CONTRIBUTING.md`**).
 
-
+## [0.1.0]
 
 ### Added
 

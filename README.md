@@ -8,7 +8,7 @@ Prose ADRs often go stale once written. Structured YAML keeps architecture as a 
 
 `adr-architecture-kit` does not turn freeform conversation into architectural decisions by itself. It expects intent already expressed in **structured** inputs (canonical ADR YAML and related artifacts), then **validates** and **materializes** them into repository-native outputs—deterministic discovery bundles, rendered views, and ADR-derived Architecture IR aligned with **`ste-spec`**.
 
-There is a deliberate **generation gap** between informal reasoning (including model-assisted chat) and **schema-conformant, placement-correct** STE ADRs. This repository mitigates that gap in two ways: structured drafts are checked by parsers and validators; and **[`SYSTEM-OVERVIEW.md`](SYSTEM-OVERVIEW.md)**—a **generated, AI-first orientation** artifact—gives assistants a canonical discovery path (authority order, scope rules, CLI and generator entry points, placement conventions) before they author or change ADRs. **`SYSTEM-OVERVIEW.md`** does not replace **`ste-spec`** doctrine; it orients work **in this repository** (regenerate with `adr generate-system-overview`; do not hand-edit the committed file).
+There is a deliberate **generation gap** between informal reasoning (including model-assisted chat) and **schema-conformant, placement-correct** STE ADRs. This repository mitigates that gap in two ways: structured drafts are checked by parsers and validators; and **[`SYSTEM-OVERVIEW.md`](https://github.com/egallmann/adr-architecture-kit/blob/main/SYSTEM-OVERVIEW.md)**—a **generated, AI-first orientation** artifact—gives assistants a canonical discovery path (authority order, scope rules, CLI and generator entry points, placement conventions) before they author or change ADRs. **`SYSTEM-OVERVIEW.md`** does not replace **`ste-spec`** doctrine; it orients work **in this repository** (regenerate with `adr generate-system-overview`; do not hand-edit the committed file).
 
 **AI-assisted IDEs and coding agents** can be **guided with repository instructions and examples** to **draft** structured ADR inputs; this kit remains the **schema, validation, and materialization** boundary between accepted structured intent and committed canonical artifacts.
 
@@ -35,14 +35,14 @@ result = validate_architecture(ValidationRequest(Path("/absolute/project/root"))
 print(result.success, result.diagnostics)
 ```
 
-See the [public SDK guide](docs/public-sdk.md) for preview/write compilation,
+See the [public SDK guide](https://github.com/egallmann/adr-architecture-kit/blob/main/docs/public-sdk.md) for preview/write compilation,
 repository queries, diagnostics, and the exact supported inventory.
 
-For a first end-to-end run, use a repository checkout with `adrs/` populated and follow [walkthrough-adr-to-ir.md](docs/walkthrough-adr-to-ir.md). The public example under [`examples/public-v1/`](examples/public-v1/) is included in that walkthrough.
+For a first end-to-end run, use a repository checkout with `adrs/` populated and follow [walkthrough-adr-to-ir.md](https://github.com/egallmann/adr-architecture-kit/blob/main/docs/walkthrough-adr-to-ir.md). The public example under [`examples/public-v1/`](https://github.com/egallmann/adr-architecture-kit/tree/main/examples/public-v1/) is included in that walkthrough.
 
 ## Minimal Example
 
-A standalone public example lives under [`examples/public-v1/`](examples/public-v1/): one `ADR-L`, one `ADR-PS`, one `ADR-PC`, a minimal normalized discovery bundle, and an ADR-derived Architecture IR fragment file. The walkthrough links each asset.
+A standalone public example lives under [`examples/public-v1/`](https://github.com/egallmann/adr-architecture-kit/tree/main/examples/public-v1/): one `ADR-L`, one `ADR-PS`, one `ADR-PC`, a minimal normalized discovery bundle, and an ADR-derived Architecture IR fragment file. The walkthrough links each asset.
 
 Representative logical ADR source (trimmed from the public example):
 
@@ -98,7 +98,7 @@ adr build-ir-fragments
 2. **Repository-normalized discovery bundle** — Deterministic outputs such as `adrs/index/*.yaml` and `adrs/manifest.yaml` for repo-local discovery; separate from the cross-repo Architecture IR contract. For the supported Python API, use `ArchitectureRepository` and `NormalizedArchitectureModel` (`ArchModel` is internal to the compiler, not a stable public interface).
 3. **Public Architecture IR** — Defined in **`ste-spec`**; this kit emits conforming ADR-derived records without redefining that schema.
 
-More detail: [architecture-ir-overview.md](docs/architecture-ir-overview.md).
+More detail: [architecture-ir-overview.md](https://github.com/egallmann/adr-architecture-kit/blob/main/docs/architecture-ir-overview.md).
 
 **ADR taxonomy (quick reference)**
 
@@ -110,7 +110,7 @@ More detail: [architecture-ir-overview.md](docs/architecture-ir-overview.md).
 | **ADR-P** | Legacy broad physical ADR | Compatibility; not preferred for new work |
 | **ADR-V** | Vision / future-state exploration | Experimental; not stable v1 contract |
 
-Full model: [adr-type-model.md](docs/adr-type-model.md).
+Full model: [adr-type-model.md](https://github.com/egallmann/adr-architecture-kit/blob/main/docs/adr-type-model.md).
 
 ## Who Owns What
 
@@ -120,17 +120,17 @@ Full model: [adr-type-model.md](docs/adr-type-model.md).
 - **`ste-runtime`** — Runtime observation, evidence extraction, composition.
 - **`ste-kernel`** — Admission and governance over compiled inputs.
 
-Full split: [authority-boundary.md](docs/authority-boundary.md).
+Full split: [authority-boundary.md](https://github.com/egallmann/adr-architecture-kit/blob/main/docs/authority-boundary.md).
 
 ## Stability
 
 This project is **pre-1.0 (Alpha)** on PyPI; surfaces may evolve until a **1.0** commitment. Trove classifiers match that posture.
 
-- **Stable ADR v1.0 encoding** — ADR schema versioning is distinct from the package's pre-1.0 SemVer status. The repository/model consumer seam is supported; documented historical imports and CLI behavior are compatibility-snapshotted. See [public surface and stability](docs/public-surface-and-stability.md).
+- **Stable ADR v1.0 encoding** — ADR schema versioning is distinct from the package's pre-1.0 SemVer status. The repository/model consumer seam is supported; documented historical imports and CLI behavior are compatibility-snapshotted. See [public surface and stability](https://github.com/egallmann/adr-architecture-kit/blob/main/docs/public-surface-and-stability.md).
 - **Draft** — v1.1 and evolving registry/IR adapter details; consume with care.
 - **Experimental** — Vision ADRs, migrators, workspace boot examples; not a basis for long-term external dependencies.
 
-Full breakdown: [public-surface-and-stability.md](docs/public-surface-and-stability.md).
+Full breakdown: [public-surface-and-stability.md](https://github.com/egallmann/adr-architecture-kit/blob/main/docs/public-surface-and-stability.md).
 
 ## Documentation
 
@@ -138,38 +138,38 @@ Full breakdown: [public-surface-and-stability.md](docs/public-surface-and-stabil
 
 | Document | Description |
 |----------|-------------|
-| [authority-boundary.md](docs/authority-boundary.md) | Who owns what across `ste-handbook`, `ste-spec`, this kit, `ste-runtime`, and `ste-kernel` |
-| [public-sdk.md](docs/public-sdk.md) | Supported `adr_kit.api` installation and consumer contract |
-| [schema-v1.2.md](docs/schema-v1.2.md) | Additive v1.2 authoring and normalized semantics |
-| [external-bindings.md](docs/external-bindings.md) | External authority binding without ownership absorption |
-| [topology-identity-migration.md](docs/topology-identity-migration.md) | Stable physical topology identity migration |
-| [adr-type-model.md](docs/adr-type-model.md) | ADR taxonomy: `ADR-L`, `ADR-PS`, `ADR-PC`, legacy `ADR-P`, experimental `ADR-V` |
-| [architecture-ir-overview.md](docs/architecture-ir-overview.md) | Three layers: ADR sources, repository discovery bundle, public Architecture IR |
-| [public-surface-and-stability.md](docs/public-surface-and-stability.md) | Stable v1 vs draft vs experimental surfaces |
-| [walkthrough-adr-to-ir.md](docs/walkthrough-adr-to-ir.md) | End-to-end flow with [`examples/public-v1/`](examples/public-v1/) |
+| [authority-boundary.md](https://github.com/egallmann/adr-architecture-kit/blob/main/docs/authority-boundary.md) | Who owns what across `ste-handbook`, `ste-spec`, this kit, `ste-runtime`, and `ste-kernel` |
+| [public-sdk.md](https://github.com/egallmann/adr-architecture-kit/blob/main/docs/public-sdk.md) | Supported `adr_kit.api` installation and consumer contract |
+| [schema-v1.2.md](https://github.com/egallmann/adr-architecture-kit/blob/main/docs/schema-v1.2.md) | Additive v1.2 authoring and normalized semantics |
+| [external-bindings.md](https://github.com/egallmann/adr-architecture-kit/blob/main/docs/external-bindings.md) | External authority binding without ownership absorption |
+| [topology-identity-migration.md](https://github.com/egallmann/adr-architecture-kit/blob/main/docs/topology-identity-migration.md) | Stable physical topology identity migration |
+| [adr-type-model.md](https://github.com/egallmann/adr-architecture-kit/blob/main/docs/adr-type-model.md) | ADR taxonomy: `ADR-L`, `ADR-PS`, `ADR-PC`, legacy `ADR-P`, experimental `ADR-V` |
+| [architecture-ir-overview.md](https://github.com/egallmann/adr-architecture-kit/blob/main/docs/architecture-ir-overview.md) | Three layers: ADR sources, repository discovery bundle, public Architecture IR |
+| [public-surface-and-stability.md](https://github.com/egallmann/adr-architecture-kit/blob/main/docs/public-surface-and-stability.md) | Stable v1 vs draft vs experimental surfaces |
+| [walkthrough-adr-to-ir.md](https://github.com/egallmann/adr-architecture-kit/blob/main/docs/walkthrough-adr-to-ir.md) | End-to-end flow with [`examples/public-v1/`](https://github.com/egallmann/adr-architecture-kit/tree/main/examples/public-v1/) |
 
 ### Contributor guides
 
 | Document | Description |
 |----------|-------------|
-| [SYSTEM-OVERVIEW.md](SYSTEM-OVERVIEW.md) | Generated AI-first repo orientation (authority, workflows, CLI, generators); read before large changes |
-| [contributors/tdd-workflow.md](docs/contributors/tdd-workflow.md) | TDD workflow for this codebase |
-| [contributors/logical-adr-guide.md](docs/contributors/logical-adr-guide.md) | Writing logical ADRs |
-| [contributors/physical-adr-guide.md](docs/contributors/physical-adr-guide.md) | Physical ADR families (`ADR-PS`, `ADR-PC`, legacy `ADR-P`) |
-| [contributors/schema-guide.md](docs/contributors/schema-guide.md) | Long-form schema and validation notes |
-| [contributors/placement-convention.md](docs/contributors/placement-convention.md) | Placement rules for ADRs, manifest, and index paths |
+| [SYSTEM-OVERVIEW.md](https://github.com/egallmann/adr-architecture-kit/blob/main/SYSTEM-OVERVIEW.md) | Generated AI-first repo orientation (authority, workflows, CLI, generators); read before large changes |
+| [contributors/tdd-workflow.md](https://github.com/egallmann/adr-architecture-kit/blob/main/docs/contributors/tdd-workflow.md) | TDD workflow for this codebase |
+| [contributors/logical-adr-guide.md](https://github.com/egallmann/adr-architecture-kit/blob/main/docs/contributors/logical-adr-guide.md) | Writing logical ADRs |
+| [contributors/physical-adr-guide.md](https://github.com/egallmann/adr-architecture-kit/blob/main/docs/contributors/physical-adr-guide.md) | Physical ADR families (`ADR-PS`, `ADR-PC`, legacy `ADR-P`) |
+| [contributors/schema-guide.md](https://github.com/egallmann/adr-architecture-kit/blob/main/docs/contributors/schema-guide.md) | Long-form schema and validation notes |
+| [contributors/placement-convention.md](https://github.com/egallmann/adr-architecture-kit/blob/main/docs/contributors/placement-convention.md) | Placement rules for ADRs, manifest, and index paths |
 
-Also [CONTRIBUTING.md](CONTRIBUTING.md) and [schema/v1.0/README.md](schema/v1.0/README.md). **Where to start:** ADR authors — [adr-type-model.md](docs/adr-type-model.md), [schema/v1.0/README.md](schema/v1.0/README.md), [walkthrough-adr-to-ir.md](docs/walkthrough-adr-to-ir.md). Python or cross-repo IR consumers — [architecture-ir-overview.md](docs/architecture-ir-overview.md), [authority-boundary.md](docs/authority-boundary.md); code entry point [`architecture_repository.py`](src/adr_kit/repository/architecture_repository.py). Curated doc index: [docs/README.md](docs/README.md).
+Also [CONTRIBUTING.md](https://github.com/egallmann/adr-architecture-kit/blob/main/CONTRIBUTING.md) and [schema/v1.0/README.md](https://github.com/egallmann/adr-architecture-kit/blob/main/schema/v1.0/README.md). **Where to start:** ADR authors — [adr-type-model.md](https://github.com/egallmann/adr-architecture-kit/blob/main/docs/adr-type-model.md), [schema/v1.0/README.md](https://github.com/egallmann/adr-architecture-kit/blob/main/schema/v1.0/README.md), [walkthrough-adr-to-ir.md](https://github.com/egallmann/adr-architecture-kit/blob/main/docs/walkthrough-adr-to-ir.md). Python or cross-repo IR consumers — [architecture-ir-overview.md](https://github.com/egallmann/adr-architecture-kit/blob/main/docs/architecture-ir-overview.md), [authority-boundary.md](https://github.com/egallmann/adr-architecture-kit/blob/main/docs/authority-boundary.md); code entry point [`architecture_repository.py`](https://github.com/egallmann/adr-architecture-kit/blob/main/src/adr_kit/repository/architecture_repository.py). Curated doc index: [docs/README.md](https://github.com/egallmann/adr-architecture-kit/blob/main/docs/README.md).
 
 ## Implementation linkage
 
-Python APIs and CLI entry points declare **architecture implementation intent** beside code using no-op decorators in [`src/adr_kit/decorators.py`](src/adr_kit/decorators.py):
+Python APIs and CLI entry points declare **architecture implementation intent** beside code using no-op decorators in [`src/adr_kit/decorators.py`](https://github.com/egallmann/adr-architecture-kit/blob/main/src/adr_kit/decorators.py):
 
 - `@implements_adr("ADR-L-…", …)` — variadic ADR ids
 - `@implements_adrs(["ADR-L-…", …])` — single iterable (matches RECON / TypeScript list style)
 - `@enforces_invariant("INV-…", …)` and `@enforces_invariants(["INV-…", …])`
 
-Normative rationale: [ADR-L-0004](adrs/logical/ADR-L-0004-adr-to-code-traceability-via-decorators.yaml). These decorators only attach `__implements_adrs__` and `__enforces_invariants__`; they do not change control flow.
+Normative rationale: [ADR-L-0004](https://github.com/egallmann/adr-architecture-kit/blob/main/adrs/logical/ADR-L-0004-adr-to-code-traceability-via-decorators.yaml). These decorators only attach `__implements_adrs__` and `__enforces_invariants__`; they do not change control flow.
 
 **ste-runtime** RECON can parse the decorator calls from the AST and emit derived evidence under the workspace-root `.ste-workspace/` state directory, outside every repository. That output is **declared linkage**, not proof of correctness: canonical architecture remains the ADR corpus and contracts in **`ste-spec`**.
 
@@ -184,7 +184,7 @@ If `--evidence` is omitted, the CLI resolves the first existing file under `--sc
 1. `{scope}/state/attribution/implementation-attribution-evidence.yaml`
 2. `{scope}/.ste/state/attribution/implementation-attribution-evidence.yaml`
 
-Normative YAML schema for that evidence artifact is owned by **`adr-architecture-kit`** (see [`schema/v1.1/implementation-attribution-evidence.schema.json`](schema/v1.1/implementation-attribution-evidence.schema.json)). The **`ste-spec`** repository publishes draft hand-off prose under **`contracts/implementation-attribution-evidence/`** until the contract is promoted; there is intentionally no mirrored JSON schema there yet (contrast with the Architecture IR mirror in this repo).
+Normative YAML schema for that evidence artifact is owned by **`adr-architecture-kit`** (see [`schema/v1.1/implementation-attribution-evidence.schema.json`](https://github.com/egallmann/adr-architecture-kit/blob/main/schema/v1.1/implementation-attribution-evidence.schema.json)). The **`ste-spec`** repository publishes draft hand-off prose under **`contracts/implementation-attribution-evidence/`** until the contract is promoted; there is intentionally no mirrored JSON schema there yet (contrast with the Architecture IR mirror in this repo).
 ## Contributing
 
-Contributions use **Test-Driven Development** (see [`PROJECT.yaml`](PROJECT.yaml), `ADR-L-0003`). Setup, quality gates, schema parity, governance, and PR flow are in [CONTRIBUTING.md](CONTRIBUTING.md). Authoring and placement guides live under [docs/contributors/](docs/contributors/). For authoring-time vs runtime artifact boundaries, see [AUTHORING-SYSTEM.md](AUTHORING-SYSTEM.md).
+Contributions use **Test-Driven Development** (see [`PROJECT.yaml`](https://github.com/egallmann/adr-architecture-kit/blob/main/PROJECT.yaml), `ADR-L-0003`). Setup, quality gates, schema parity, governance, and PR flow are in [CONTRIBUTING.md](https://github.com/egallmann/adr-architecture-kit/blob/main/CONTRIBUTING.md). Authoring and placement guides live under [docs/contributors/](https://github.com/egallmann/adr-architecture-kit/tree/main/docs/contributors/). For authoring-time vs runtime artifact boundaries, see [AUTHORING-SYSTEM.md](https://github.com/egallmann/adr-architecture-kit/blob/main/AUTHORING-SYSTEM.md).

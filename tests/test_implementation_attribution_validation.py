@@ -4,7 +4,7 @@ from pathlib import Path
 
 import pytest
 
-from src.adr_kit.models import (
+from adr_kit.models import (
     CanonicalSource,
     Completeness,
     DiscoveryProvenance,
@@ -15,7 +15,7 @@ from src.adr_kit.models import (
     NormalizedEntity,
     NormalizedEntityRegistry,
 )
-from src.adr_kit.schema.implementation_attribution_validation import (
+from adr_kit.schema.implementation_attribution_validation import (
     validate_implementation_attribution_evidence,
 )
 

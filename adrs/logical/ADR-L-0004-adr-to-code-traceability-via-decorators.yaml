@@ -6,7 +6,7 @@ status: proposed
 created_date: '2026-03-08'
 authors:
 - adr-architecture-kit
-modified_date: '2026-03-14'
+modified_date: '2026-05-27'
 context: |
   Architecture Decision Records document why implementation artifacts exist, but
   the repo still lacks a universal, machine-verifiable way to trace code,
@@ -26,8 +26,8 @@ context: |
   - Code and infrastructure still lack a canonical reverse link to ADRs
   - adr-architecture-kit owns canonical architecture authority, but not source
     extraction of implementation artifacts
-  - ste-runtime / RECON can already carry decorator metadata, but does not yet
-    interpret architecture-intent attribution semantically
+  - ste-runtime / RECON now extracts decorator metadata into implementation
+    attribution evidence records for code paths it can parse
   - Existing governance already distinguishes `greenfield`, `brownfield`, and
     `migration`, which should govern legacy onboarding instead of inventing a
     separate transition model
@@ -103,6 +103,21 @@ decisions:
     - ste-runtime can focus on extraction rather than architecture authority
     - ste-rules-library can encode activation logic later without redefining the rule
     - ste-spec only needs involvement if the evidence contract must become shared doctrine
+- id: DEC-0076
+  summary: Treat runtime-emitted implementation attribution as downstream evidence
+  rationale: |
+    ste-runtime now populates implementation attribution evidence from parsed
+    implementation artifacts. That closes the first downstream extraction gap
+    without moving attribution authority into ste-runtime. adr-architecture-kit
+    remains responsible for canonical decorator and metadata semantics, the
+    evidence contract shape, and profile-aware validation against canonical ADR
+    state.
+  consequences:
+    positive:
+    - RECON can supply extracted attribution claims for validation
+    - ADR-Kit validates raw attribution evidence against canonical ADR authoring
+      state before any validated linkage is projected into Architecture IR
+    - Runtime extraction can evolve by language without redefining attribution semantics
 - id: DEC-0023
   summary: Support Bidirectional Verification
   rationale: |
@@ -277,11 +292,12 @@ gaps:
   impact: high
   blocking: true
 - id: GAP-0002
-  question: Implementation attribution evidence contract not yet populated by downstream extraction
-  context: 'Classification: real gap. adr-architecture-kit can define the evidence contract,
-    but ste-runtime / RECON does not yet emit architecture-intent attribution records.'
-  impact: high
-  blocking: true
+  question: Downstream implementation attribution evidence requires broader extractor coverage
+  context: 'Classification: narrowed gap. ste-runtime / RECON now emits architecture-intent
+    attribution records for parsed decorator metadata, but coverage across all supported
+    implementation artifact classes remains staged.'
+  impact: medium
+  blocking: false
 - id: GAP-0003
   question: Legacy onboarding rollout for adr-architecture-kit itself is not yet started
   context: 'Classification: deferred gap. The repo needs an explicit first-wave annotation

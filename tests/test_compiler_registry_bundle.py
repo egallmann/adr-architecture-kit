@@ -3,10 +3,10 @@ from __future__ import annotations
 from datetime import datetime, timezone
 from pathlib import Path
 
-from src.adr_kit.compiler import ArchModelBuilder
-from src.adr_kit.compiler.registry_bundle import assemble_registry_bundle
-from src.adr_kit.generators.architecture_index_generator import ArchitectureIndexGenerator
-from src.adr_kit.scope import ProjectScopeResolver
+from adr_kit.compiler import ArchModelBuilder
+from adr_kit.compiler.registry_bundle import assemble_registry_bundle
+from adr_kit.generators.architecture_index_generator import ArchitectureIndexGenerator
+from adr_kit.scope import ProjectScopeResolver
 from tests.golden.helpers import FIXED_TIMESTAMP, generate_deterministic_outputs, pinned_generation_time
 
 

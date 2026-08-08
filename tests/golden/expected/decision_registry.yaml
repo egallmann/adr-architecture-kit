@@ -7,6 +7,7 @@ entities:
   summary: '**AI reasoning advantages:** - Deterministic structure (no markdown parsing
     ambiguity) - Direct field access (adr.decisions[0].rationale) - Schema-validated
     before processing - Clear separation of metadata vs content - G'
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0001#DEC-0001
@@ -36,6 +37,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -51,6 +57,7 @@ entities:
   summary: '**Architectural discipline:** - Enforces separation of concerns (intent
     vs implementation) - Prevents implementation bias in conceptual design - Enables
     different validation rules per type - Clear semantic distinction fo'
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0001#DEC-0002
@@ -82,6 +89,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -97,6 +109,7 @@ entities:
   summary: '**Single source of truth:** - All discovery metadata in ADR frontmatter
     - No drift between ADR and manifest - Atomic updates (metadata + content change
     together) - Version controlled metadata - Schema validated correctne'
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0001#DEC-0003
@@ -126,6 +139,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -141,6 +159,7 @@ entities:
   summary: '**Collision prevention:** - Separate namespaces for logical and physical
     - No risk of ADR-0001 collision **Type visibility:** - Type immediately clear
     from ID alone - AI reasoning: type encoded in identifier - Graph clar'
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0001#DEC-0004
@@ -170,6 +189,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -185,6 +209,7 @@ entities:
   summary: '**Right level of granularity:** - Ownership, automation, integrations
     belong at project level - Not repeated in every ADR - Single source of truth for
     operational metadata **Executable configuration:** - CI reads PROJECT'
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0001#DEC-0005
@@ -212,6 +237,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -227,6 +257,7 @@ entities:
   summary: '**Real friction drives design:** - If we can''t document our decisions,
     schema is incomplete - Actual usage reveals gaps and awkwardness - Validates STE
     compliance through practice **Living specification:** - Project ADRs'
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0001#DEC-0006
@@ -254,6 +285,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -269,6 +305,7 @@ entities:
   summary: ADR generators and validators must support multiple project scopes to enable
     sub-modules to maintain independent architectural documentation while being developed
     in a shared workspace. This mirrors the ste-runtime's pro
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0002#DEC-0007
@@ -296,6 +333,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -311,6 +353,7 @@ entities:
   summary: 'Different types of tests serve different purposes. A layered approach
     provides comprehensive coverage while maintaining fast feedback loops. Layers:
     1. **Unit tests**: Fast, isolated, test individual functions/methods 2.'
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0003#DEC-0008
@@ -338,6 +381,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -353,6 +401,7 @@ entities:
   summary: 'Implementation surfaces need explicit, extractable architecture authority.
     For code, decorators remain the canonical mechanism: - `@implements_adr(...)`
     - `@enforces_invariant(...)` For infrastructure and adjacent non-co'
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0004#DEC-0009
@@ -380,6 +429,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -395,6 +449,7 @@ entities:
   summary: 'Automate the generation of implementation prompts from ADR specifications
     to ensure consistency, completeness, and scalability. Benefits: - **Consistency**:
     Same ADR always generates same prompt structure - **Completenes'
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0005#DEC-0010
@@ -422,6 +477,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -437,6 +497,7 @@ entities:
   summary: 'Build ste-rules-library from POC design principles. Adopt from POC: -
     Three-layer activation (context signals drive rule selection) - Signal-driven
     projection (only relevant rules) - Submodule protocol with bootstrap - M'
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0006#DEC-0011
@@ -464,6 +525,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -479,6 +545,7 @@ entities:
   summary: Structured architecture artifacts are the canonical source of truth in
     this repository. Human-readable documentation is valuable for comprehension, but
     it must be a deterministic rendering derived from those structured a
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0007#DEC-0012
@@ -512,6 +579,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -527,6 +599,7 @@ entities:
   summary: The artifact type does not change across the workflow; only the validation
     gate changes. A single validator with an explicit mode argument keeps the API
     coherent and avoids duplicating parsing and reporting logic.
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0008#DEC-0013
@@ -554,6 +627,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -569,6 +647,7 @@ entities:
   summary: Canonical authority remains in ADRs and standalone invariants, but agents
     should interact with derived, machine-stable discovery artifacts by default. This
     reduces scan cost, ambiguity, and ad hoc parsing logic.
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0009#DEC-0014
@@ -596,6 +675,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -611,6 +695,7 @@ entities:
   summary: Every new component must include tests before acceptance. This ensures
     quality is built in from the start, not retrofitted later. Prevents technical
     debt accumulation and ensures new features are immediately verifiable.
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0003#DEC-0015
@@ -638,6 +723,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -654,6 +744,7 @@ entities:
   summary: adr-architecture-kit should first define the canonical rule, evidence contract,
     and profile-aware validation semantics. Source extraction, runtime rule activation,
     and any shared ecosystem delivery should build on that a
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0004#DEC-0016
@@ -681,6 +772,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -696,6 +792,7 @@ entities:
   summary: 'Physical ADRs contain multiple component specifications (COMP-*). Each
     component should have its own implementation prompt to enable: - Focused implementation
     (one component at a time) - Parallel implementation (multiple'
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0005#DEC-0017
@@ -723,6 +820,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -738,6 +840,7 @@ entities:
   summary: 'rule-library defines and supports cooperative signals alongside context
     signals. Two signal semantics: **Context signals** (from POC): Drive rule selection
     - file_pattern, language, domain - "What rules apply to this con'
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0006#DEC-0018
@@ -765,6 +868,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -780,6 +888,7 @@ entities:
   summary: Once an artifact is declared generated, manual edits create ambiguity over
     whether the generated output or the source artifact should be trusted. That ambiguity
     is architecturally unacceptable in a governance repository.
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0007#DEC-0019
@@ -811,6 +920,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -826,6 +940,7 @@ entities:
   summary: Structural validation should answer whether an ADR is shaped correctly
     enough to participate in review, even if required sections are intentionally empty
     while decisions are still being pinned down. Structural mode keeps
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0008#DEC-0020
@@ -853,6 +968,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -869,6 +989,7 @@ entities:
   summary: The manifest is the first discovery surface used by humans and agents for
     scope inventory, freshness checks, and lifecycle summaries. It remains a discovery
     artifact rather than a normalized semantic payload, but its pre
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0009#DEC-0021
@@ -896,6 +1017,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -911,6 +1037,7 @@ entities:
   summary: The toolkit must work with actual ADRs in the workspace. Testing against
     synthetic fixtures alone is insufficient - real-world ADRs expose edge cases and
     integration issues. This provides dogfooding and ensures the toolk
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0003#DEC-0022
@@ -938,6 +1065,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -953,6 +1085,7 @@ entities:
   summary: 'Traceability must work in both directions: **Forward (ADR -> Implementation)**:
     - ADR declares component or system implementation identifiers - Verify that downstream
     attribution evidence resolves to the declared authori'
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0004#DEC-0023
@@ -980,6 +1113,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -995,6 +1133,7 @@ entities:
   summary: Each prompt should include explicit validation criteria so the implementing
     agent knows when it's done and how to verify correctness. This enables self-validation
     and reduces iteration cycles.
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0005#DEC-0024
@@ -1022,6 +1161,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -1037,6 +1181,7 @@ entities:
   summary: 'Prompt translator (adr-architecture-kit) generates implementation prompts
     that include signal emission instructions. rule-library is the schema authority
     for those instructions. Flow: 1. rule-library defines signal.schem'
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0006#DEC-0025
@@ -1064,6 +1209,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -1079,6 +1229,7 @@ entities:
   summary: 'The rule is only durable if it is automated. Deterministic documentation
     projection must therefore be enforced through: - generators that produce rendered
     documentation - validators that compare rendered output to genera'
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0007#DEC-0026
@@ -1110,6 +1261,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -1125,6 +1281,7 @@ entities:
   summary: Complete validation should answer whether the ADR is sufficiently populated
     for stricter downstream use. This is still a structural/content-presence gate,
     not a correctness gate.
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0008#DEC-0027
@@ -1152,6 +1309,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -1168,6 +1330,7 @@ entities:
   summary: The normalized entity registry in `adrs/index/` is the current machine
     lookup surface for deterministic entity access. The legacy `adrs/entities/registry.yaml`
     path remains compatibility-only and should not gain new cons
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0009#DEC-0028
@@ -1195,6 +1358,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -1209,6 +1377,7 @@ entities:
   name: Enforce Testing in CI/CD Pipeline
   summary: Automated testing in CI/CD prevents regressions and ensures all contributors
     maintain quality standards. Manual testing is insufficient for a governance tool.
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0003#DEC-0029
@@ -1236,6 +1405,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -1251,6 +1425,7 @@ entities:
   summary: Different AI agents (CODEX, Cursor, Claude, GPT) have different capabilities
     and prompt formats. The translator should support generating prompts optimized
     for specific target agents.
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0005#DEC-0030
@@ -1278,6 +1453,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -1293,6 +1473,7 @@ entities:
   summary: 'rule-library as standalone repo enables: - Independent versioning - Clean
     dependency boundary - Submodule into adr-architecture-kit, ste-runtime, any STE
     project - No monorepo coupling Consumption: - git submodule add <r'
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0006#DEC-0031
@@ -1320,6 +1501,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -1335,6 +1521,7 @@ entities:
   summary: Steelman review evaluates correctness, coherence, missing reasoning, and
     architectural quality. That is not the same concern as schema alignment or section
     population, and it should remain a separate LLM-backed review pa
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0008#DEC-0032
@@ -1362,6 +1549,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -1377,6 +1569,7 @@ entities:
   summary: 'TDD (Red-Green-Refactor) is architecturally aligned with STE principles:
     **Alignment with STE**: - SYS-2 (Deterministic Cognition): Tests enforce deterministic
     behavior - SYS-4 (Drift Prevention): Tests detect drift imme'
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0003#DEC-0033
@@ -1404,6 +1597,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -1419,6 +1617,7 @@ entities:
   summary: 'Phase 1: File-based rules and signals. No server. Works with existing
     prompt translator, codex-implement.py, bootstrap prompts. Phase 2: MCP server
     for rule projection. get_rules, emit_signal tools. File-based remains fa'
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0006#DEC-0034
@@ -1446,6 +1645,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -1461,6 +1665,7 @@ entities:
   summary: If draft ADRs are expected to surface incompleteness, generators must not
     erase those signals unconditionally. Empty sections should be preservable when
     the author is intentionally emitting a draft artifact.
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0008#DEC-0035
@@ -1488,6 +1693,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -1504,6 +1714,7 @@ entities:
   summary: The full guaranteed compiler contract includes all generated artifacts
     in `adrs/index/` plus `manifest.yaml`. The kernel may rely on a narrower minimal
     load subset for bootstrap loading, but that subset must not be mista
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0010#DEC-0036
@@ -1531,6 +1742,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -1546,6 +1762,7 @@ entities:
   summary: The contract is not yet open as a stable external surface. Using 0.x avoids
     pretending the boundary is already semantically frozen while still keeping a versioned
     contract and explicit upgrade path.
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0010#DEC-0037
@@ -1573,6 +1790,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -1589,6 +1811,7 @@ entities:
   summary: A single contract schema is not enough to represent the enforcement posture
     across new systems, legacy imports, and active remediation states. Profiles allow
     strict integrity rules to remain universal while allowing qual
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0010#DEC-0038
@@ -1616,6 +1839,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -1631,6 +1859,7 @@ entities:
   summary: Sentinel-backed content is valid under the right profile, but it is not
     the same as fully populated architecture knowledge. A separate validator outcome
     preserves honesty while keeping the system operational.
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0010#DEC-0039
@@ -1658,6 +1887,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -1674,6 +1908,7 @@ entities:
   summary: Registry metadata is currently too weak as a contract surface. Different
     entity types carry different keys, and without typed expectations the kernel and
     compiler can drift silently.
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0011#DEC-0040
@@ -1701,6 +1936,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -1716,6 +1956,7 @@ entities:
   summary: Sentinel values are useful for preserving structure where knowledge is
     missing, but they are dangerous in identifiers, references, enums, or governance
     fields. Narrow placement keeps them honest and machine-safe.
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0011#DEC-0041
@@ -1743,6 +1984,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -1758,6 +2004,7 @@ entities:
   summary: Current architecture content and remediation workflow state should not
     be mixed. A separate remediation ledger preserves auditability, avoids process
     leakage into ADR text, and provides a stable mechanism for no-regressi
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0011#DEC-0042
@@ -1785,6 +2032,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -1801,6 +2053,7 @@ entities:
   summary: Non-sentinel replacement content may be better than a sentinel without
     yet being authoritative. Staged approval prevents accidental promotion and keeps
     the no-regression rule tied to explicit governance.
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0011#DEC-0043
@@ -1828,6 +2081,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -1843,6 +2101,7 @@ entities:
   summary: Stable status should reflect implemented and verified behavior, not elapsed
     time or confidence. The transition from 0.x to 1.0 must therefore be tied to concrete
     conditions across compiler output, schema conformance, and
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0010#DEC-0044
@@ -1870,6 +2129,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -1886,6 +2150,7 @@ entities:
   summary: Per-repository registries remain the canonical architecture outputs for
     their owning repository. Federation exists to read, index, merge, and query across
     those outputs; it must not rewrite or mutate them.
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0012#DEC-0045
@@ -1913,6 +2178,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -1928,6 +2198,7 @@ entities:
   summary: When one repository references an entity defined by another repository,
     the defining repository is the authority on that entity's name, status, and metadata.
     Consumers may declare relationships to the entity, but they do
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0012#DEC-0046
@@ -1955,6 +2226,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -1971,6 +2247,7 @@ entities:
   summary: Single-repo authoring should remain simple and backward compatible, while
     federation requires globally unambiguous identity. Separating namespace from bare
     ID preserves local ergonomics while enabling global qualificatio
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0012#DEC-0047
@@ -1998,6 +2275,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -2013,6 +2295,7 @@ entities:
   summary: adr-architecture-kit needs a canonical handoff surface for implementation
     attribution evidence without taking on source parsing itself. A small, compiler-owned
     schema and model let downstream extractors emit consistent a
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0004#DEC-0048
@@ -2040,6 +2323,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -2055,6 +2343,7 @@ entities:
   summary: Greenfield, brownfield, and migration already express the repo's adoption
     postures. Intent attribution onboarding should use those same profiles rather
     than creating a second transition taxonomy.
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0004#DEC-0049
@@ -2082,6 +2371,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -2093,11 +2387,11 @@ entities:
     generator: adr-architecture-index
 - id: DEC-0050
   entity_type: decision
-  name: Use ArchitectureRepository as the only supported in-process consumer entry
-    point
+  name: Use ArchitectureRepository as the supported in-process semantic entry point
   summary: The repository boundary centralizes scope-safe loading, contract validation,
     path hiding, and registry compatibility adaptation. This keeps consumers from
     binding directly to registry files and current layout.
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0013#DEC-0050
@@ -2125,6 +2419,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -2140,6 +2439,7 @@ entities:
   summary: A semantic model is needed so consumers depend on architecture meaning
     rather than current registry document shapes. The model must preserve entities,
     relationships, unresolved records, provenance, scope identity, and de
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0013#DEC-0051
@@ -2167,6 +2467,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -2183,6 +2488,7 @@ entities:
   summary: The current `ArchModel` is the compiler IR. It reflects pass orchestration
     and extraction concerns and may evolve as compiler internals change. Making it
     the public consumer contract would freeze the wrong abstraction to
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0013#DEC-0052
@@ -2210,6 +2516,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -2225,6 +2536,7 @@ entities:
   summary: Existing architecture can be informally decided but not yet canonicalized.
     STE needs an explicit workflow for converting that state into canonical ADR authority
     without pretending the implementation invented the architec
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0014#DEC-0053
@@ -2252,6 +2564,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -2268,6 +2585,7 @@ entities:
   summary: 'Brownfield onboarding mixes several concerns that should not be collapsed:
     discovery identifies what exists, normalization resolves collisions and missing
     metadata, canonization creates or updates canonical ADRs, regener'
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0014#DEC-0054
@@ -2295,6 +2613,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -2311,6 +2634,7 @@ entities:
   summary: Canonical ID remaps, onboarding normalization, and controlled cleanup transitions
     should produce durable evidence so future consumers can explain how legacy identifiers
     and structures map into current canonical state.
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0014#DEC-0055
@@ -2338,6 +2662,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -2354,6 +2683,7 @@ entities:
   summary: Rendered markdown is useful for review and browsing, but it is structurally
     weaker than canonical YAML and should never become the semantic source of truth
     when canonical ADR artifacts are available.
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0014#DEC-0056
@@ -2381,6 +2711,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -2397,6 +2732,7 @@ entities:
   summary: Downstream consumers need to know which generated surfaces are guaranteed
     contract outputs, which are optional human conveniences, and which remain transitional
     compatibility artifacts.
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0009#DEC-0057
@@ -2424,6 +2760,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -2439,6 +2780,7 @@ entities:
   summary: The normalized index family supersedes the legacy registry for new consumers.
     Keeping the legacy path for compatibility is acceptable, but it must be explicitly
     marked deprecated to prevent contract ambiguity.
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0009#DEC-0058
@@ -2466,6 +2808,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -2482,6 +2829,7 @@ entities:
   summary: 'Downstream bridge and kernel work already depend on the wider indexed
     bundle, the manifest, and the additive graph artifact. Guaranteeing the full family
     prevents downstream consumers from inventing different notions of '
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0010#DEC-0059
@@ -2509,6 +2857,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -2525,6 +2878,7 @@ entities:
   summary: The graph is consumed downstream and belongs to the generated contract
     family, but it remains a projection artifact over the same architecture authority
     rather than a separate source of meaning.
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0010#DEC-0060
@@ -2552,6 +2906,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -2568,6 +2927,7 @@ entities:
   summary: Cross-language consumers such as `ste-runtime` cannot call a Python repository
     API directly. They still consume the same generated authority surface, but through
     the file-format contract rather than the in-process reposi
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0013#DEC-0061
@@ -2595,6 +2955,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -2610,6 +2975,7 @@ entities:
   summary: Python consumers should not hardcode the graph artifact path once the repository
     boundary can expose it as part of the indexed contract family. This preserves
     a coherent semantic seam for in-process consumers.
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0013#DEC-0062
@@ -2637,6 +3003,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -2653,6 +3024,7 @@ entities:
   summary: Governance state is part of canonical ADR meaning, but it is not the same
     thing as ADR lifecycle or architecture intent. A nested governance block keeps
     approval and implementation gating explicit without turning derived
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0015#DEC-0063
@@ -2680,6 +3052,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -2695,6 +3072,7 @@ entities:
   summary: Override rationale, risk, and exception posture should remain canonical,
     but they should not bloat ADR text or rewrite architecture intent. Separate override
     artifacts keep exception handling explicit and auditable.
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0015#DEC-0064
@@ -2722,6 +3100,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -2737,6 +3120,7 @@ entities:
   summary: Overrides should not silently continue applying after the ADR they depend
     on has materially changed. Using ADR modified_date provides a minimal canonical
     coupling point that works with the current schema line.
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0015#DEC-0065
@@ -2764,6 +3148,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -2779,6 +3168,7 @@ entities:
   summary: Projections need to support lookup and orchestration, but they must not
     synthesize approvals, risks, or override semantics beyond what the canonical artifacts
     explicitly say.
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0015#DEC-0066
@@ -2806,6 +3196,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -2822,6 +3217,7 @@ entities:
   summary: Cross-language consumers such as `ste-runtime` need an explicit baseline
     ingestion contract so they do not guess which generated artifacts are required
     for architecture-aware operation. The baseline subset is `architectu
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0013#DEC-0067
@@ -2849,6 +3245,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -2865,6 +3266,7 @@ entities:
   summary: The runtime bridge must preserve compiler authority even when a consumer
     uses file-format contracts directly. Cross-language consumers should bootstrap
     from the architecture index, treat manifest as a discovery and fresh
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0013#DEC-0068
@@ -2892,6 +3294,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -2901,11 +3308,977 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
+- id: DEC-0069
+  entity_type: decision
+  name: Extend ArchitectureRepository with deterministic orientation helpers
+  summary: Repository consumers should use one in-process boundary for manifest access,
+    architecture index access, corpus summary generation, entity reference lookup,
+    and forward-authoring ID allocation.
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0016#DEC-0069
+    artifact_path: adrs/logical/ADR-L-0016-deterministic-corpus-query-and-authoring-orientation.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0016
+    related_invariants: []
+    enforces_invariants: []
+    enables_capabilities: []
+    governs_components: []
+    supersedes: []
+    refines: []
+  relationships:
+    declared_in:
+    - ADR-L-0016
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0016#DEC-0069
+    extraction_phase: extract_decision
+    classification: explicit
+    generator: adr-architecture-index
+- id: DEC-0070
+  entity_type: decision
+  name: Expose corpus summary and relationships through supported CLI commands
+  summary: Human and script consumers need stable CLI ergonomics that mirror the repository
+    boundary without treating raw registry files as the user-facing interface.
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0016#DEC-0070
+    artifact_path: adrs/logical/ADR-L-0016-deterministic-corpus-query-and-authoring-orientation.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0016
+    related_invariants: []
+    enforces_invariants: []
+    enables_capabilities: []
+    governs_components: []
+    supersedes: []
+    refines: []
+  relationships:
+    declared_in:
+    - ADR-L-0016
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0016#DEC-0070
+    extraction_phase: extract_decision
+    classification: explicit
+    generator: adr-architecture-index
+- id: DEC-0071
+  entity_type: decision
+  name: Provide scaffold and schema-surface ergonomics for logical, physical-system,
+    and physical-component ADRs only
+  summary: New authoring ergonomics should reinforce the forward taxonomy and expose
+    deterministic structured inputs for the ADR types the repository wants new work
+    to use.
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0017#DEC-0071
+    artifact_path: adrs/logical/ADR-L-0017-forward-authoring-ergonomics-for-split-physical-adr-types.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0017
+    related_invariants: []
+    enforces_invariants: []
+    enables_capabilities: []
+    governs_components: []
+    supersedes: []
+    refines: []
+  relationships:
+    declared_in:
+    - ADR-L-0017
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0017#DEC-0071
+    extraction_phase: extract_decision
+    classification: explicit
+    generator: adr-architecture-index
+- id: DEC-0072
+  entity_type: decision
+  name: Retain legacy ADR-P parsing and validation but exclude it from new creation
+    ergonomics
+  summary: Existing repositories and tests still contain `ADR-P-*` artifacts, so backward
+    compatibility remains necessary. That compatibility does not require adding new
+    forward-authoring affordances for the legacy type.
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0017#DEC-0072
+    artifact_path: adrs/logical/ADR-L-0017-forward-authoring-ergonomics-for-split-physical-adr-types.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0017
+    related_invariants: []
+    enforces_invariants: []
+    enables_capabilities: []
+    governs_components: []
+    supersedes: []
+    refines: []
+  relationships:
+    declared_in:
+    - ADR-L-0017
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0017#DEC-0072
+    extraction_phase: extract_decision
+    classification: explicit
+    generator: adr-architecture-index
+- id: DEC-0073
+  entity_type: decision
+  name: Make forward-authoring ADR ID allocation monotonic and non-reusable
+  summary: ADR identifiers are architectural identity, not recyclable sequence numbers.
+    Once an ID is allocated, gaps must remain consumed history even if an ADR is later
+    deleted, superseded, or removed from the active corpus.
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0016#DEC-0073
+    artifact_path: adrs/logical/ADR-L-0016-deterministic-corpus-query-and-authoring-orientation.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0016
+    related_invariants: []
+    enforces_invariants: []
+    enables_capabilities: []
+    governs_components: []
+    supersedes: []
+    refines: []
+  relationships:
+    declared_in:
+    - ADR-L-0016
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0016#DEC-0073
+    extraction_phase: extract_decision
+    classification: explicit
+    generator: adr-architecture-index
+- id: DEC-0074
+  entity_type: decision
+  name: Reserve ADR IDs 9000-9999 for exceptional allocation and exclude that range
+    from normal forward allocation
+  summary: The high ADR ID range is needed for exceptional cases such as brownfield
+    imports, retained legacy artifacts pending migration, and other imported records
+    whose identity must be preserved. Normal authoring allocation shou
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0017#DEC-0074
+    artifact_path: adrs/logical/ADR-L-0017-forward-authoring-ergonomics-for-split-physical-adr-types.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0017
+    related_invariants: []
+    enforces_invariants: []
+    enables_capabilities: []
+    governs_components: []
+    supersedes: []
+    refines: []
+  relationships:
+    declared_in:
+    - ADR-L-0017
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0017#DEC-0074
+    extraction_phase: extract_decision
+    classification: explicit
+    generator: adr-architecture-index
+- id: DEC-0075
+  entity_type: decision
+  name: Exclude reserved ADR IDs 9000-9999 from standard forward allocation
+  summary: Brownfield onboarding and imported architectural records need a controlled
+    exceptional range where identity can be preserved without perturbing the normal
+    authoring sequence.
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0016#DEC-0075
+    artifact_path: adrs/logical/ADR-L-0016-deterministic-corpus-query-and-authoring-orientation.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0016
+    related_invariants: []
+    enforces_invariants: []
+    enables_capabilities: []
+    governs_components: []
+    supersedes: []
+    refines: []
+  relationships:
+    declared_in:
+    - ADR-L-0016
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0016#DEC-0075
+    extraction_phase: extract_decision
+    classification: explicit
+    generator: adr-architecture-index
+- id: DEC-0076
+  entity_type: decision
+  name: Treat runtime-emitted implementation attribution as downstream evidence
+  summary: ste-runtime now populates implementation attribution evidence from parsed
+    implementation artifacts. That closes the first downstream extraction gap without
+    moving attribution authority into ste-runtime. adr-architecture-
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0004#DEC-0076
+    artifact_path: adrs/logical/ADR-L-0004-adr-to-code-traceability-via-decorators.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0004
+    related_invariants: []
+    enforces_invariants: []
+    enables_capabilities: []
+    governs_components: []
+    supersedes: []
+    refines: []
+  relationships:
+    declared_in:
+    - ADR-L-0004
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0004#DEC-0076
+    extraction_phase: extract_decision
+    classification: explicit
+    generator: adr-architecture-index
+- id: DEC-0077
+  entity_type: decision
+  name: Emit workspace-attribution-federation.yaml as read-only cross-repo attribution
+    index
+  summary: Per-repo implementation-attribution-evidence.yaml files use bare ADR ids
+    valid only within each corpus. Workspace reasoning requires a derived federation
+    artifact keyed by qualified_id (workspaceRepoKey:ADR-L-XXXX) so ho
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0012#DEC-0077
+    artifact_path: adrs/logical/ADR-L-0012-federation-authority-and-qualified-identity.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0012
+    related_invariants: []
+    enforces_invariants: []
+    enables_capabilities: []
+    governs_components: []
+    supersedes: []
+    refines: []
+  relationships:
+    declared_in:
+    - ADR-L-0012
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0012#DEC-0077
+    extraction_phase: extract_decision
+    classification: explicit
+    generator: adr-architecture-index
+- id: DEC-0078
+  entity_type: decision
+  name: Require retained release-artifact testing and no-regression quality controls
+  summary: Source-tree tests alone cannot prove that an installed distribution contains
+    the documented modules and package data, and rebuilding during publication breaks
+    the identity between tested and published artifacts. Existing
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0003#DEC-0078
+    artifact_path: adrs/logical/ADR-L-0003-quality-assurance-and-testing-strategy.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0003
+    related_invariants: []
+    enforces_invariants: []
+    enables_capabilities: []
+    governs_components: []
+    supersedes: []
+    refines: []
+  relationships:
+    declared_in:
+    - ADR-L-0003
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0003#DEC-0078
+    extraction_phase: extract_decision
+    classification: explicit
+    generator: adr-architecture-index
+- id: DEC-0079
+  entity_type: decision
+  name: Preserve the present repository seam and defer any narrow consumer facade
+  summary: Phase 0 production hardening does not authorize a new SDK, root export,
+    replacement compilation result, normalized-model revision, or graph API. `ArchitectureRepository`
+    and `NormalizedArchitectureModel` remain the suppo
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0013#DEC-0079
+    artifact_path: adrs/logical/ADR-L-0013-architecture-repository-boundary-and-normalized-semantic-model.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0013
+    related_invariants: []
+    enforces_invariants: []
+    enables_capabilities: []
+    governs_components: []
+    supersedes: []
+    refines: []
+  relationships:
+    declared_in:
+    - ADR-L-0013
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0013#DEC-0079
+    extraction_phase: extract_decision
+    classification: explicit
+    generator: adr-architecture-index
+- id: DEC-0080
+  entity_type: decision
+  name: Establish adr_kit.api as the narrow supported authoring SDK facade
+  summary: Phase 1 now has sufficient compatibility, packaging, and release controls
+    to add a deliberately bounded facade. The facade supports single-scope validation,
+    authoring compilation for registries, manifest, and markdown, r
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0013#DEC-0080
+    artifact_path: adrs/logical/ADR-L-0013-architecture-repository-boundary-and-normalized-semantic-model.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0013
+    related_invariants: []
+    enforces_invariants: []
+    enables_capabilities: []
+    governs_components: []
+    supersedes: []
+    refines: []
+  relationships:
+    declared_in:
+    - ADR-L-0013
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0013#DEC-0080
+    extraction_phase: extract_decision
+    classification: explicit
+    generator: adr-architecture-index
+- id: DEC-0081
+  entity_type: decision
+  name: Make installed distribution metadata the runtime package-version authority
+  summary: A manually synchronized package literal can drift from build metadata and
+    from the artifact exercised by an installed consumer. Runtime package, CLI, SDK
+    result, and capability versions therefore resolve from installed `
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0003#DEC-0081
+    artifact_path: adrs/logical/ADR-L-0003-quality-assurance-and-testing-strategy.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0003
+    related_invariants: []
+    enforces_invariants: []
+    enables_capabilities: []
+    governs_components: []
+    supersedes: []
+    refines: []
+  relationships:
+    declared_in:
+    - ADR-L-0003
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0003#DEC-0081
+    extraction_phase: extract_decision
+    classification: explicit
+    generator: adr-architecture-index
+- id: DEC-0082
+  entity_type: decision
+  name: Keep repository-local authoring projections separate from workspace runtime
+    state
+  summary: Every artifact stored inside the `adr-architecture-kit` repository is owned
+    and written by ADR Kit. External systems may read its canonical ADRs and supported
+    authoring projections, but they must not target the repositor
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0013#DEC-0082
+    artifact_path: adrs/logical/ADR-L-0013-architecture-repository-boundary-and-normalized-semantic-model.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0013
+    related_invariants: []
+    enforces_invariants: []
+    enables_capabilities: []
+    governs_components: []
+    supersedes: []
+    refines: []
+  relationships:
+    declared_in:
+    - ADR-L-0013
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0013#DEC-0082
+    extraction_phase: extract_decision
+    classification: explicit
+    generator: adr-architecture-index
+- id: DEC-0083
+  entity_type: decision
+  name: Introduce provisional additive ADR authoring schema v1.2
+  summary: Schema v1.2 extends the existing ADR authoring shapes with external-reference,
+    binding, evidence-expectation, and topology-ID fields. Version dispatch must be
+    explicit. Schema v1.0 files remain byte-for-byte frozen and v
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0018#DEC-0083
+    artifact_path: adrs/logical/ADR-L-0018-schema-v12-and-normalized-semantic-foundation.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0018
+    related_invariants: []
+    enforces_invariants: []
+    enables_capabilities: []
+    governs_components: []
+    supersedes: []
+    refines: []
+  relationships:
+    declared_in:
+    - ADR-L-0018
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0018#DEC-0083
+    extraction_phase: extract_decision
+    classification: explicit
+    generator: adr-architecture-index
+- id: DEC-0084
+  entity_type: decision
+  name: Represent external bindings as qualified references without absorbing authority
+  summary: Local entity references remain bare IDs. A cross-repository entity reference
+    is an object containing required `namespace`, `id`, `kind`, and `fingerprint`
+    fields; its normalized display qualification is `namespace:id`. F
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0018#DEC-0084
+    artifact_path: adrs/logical/ADR-L-0018-schema-v12-and-normalized-semantic-foundation.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0018
+    related_invariants: []
+    enforces_invariants: []
+    enables_capabilities: []
+    governs_components: []
+    supersedes: []
+    refines: []
+  relationships:
+    declared_in:
+    - ADR-L-0018
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0018#DEC-0084
+    extraction_phase: extract_decision
+    classification: explicit
+    generator: adr-architecture-index
+- id: DEC-0085
+  entity_type: decision
+  name: Promote four already-authored entity types into normalized model version 1.1
+  summary: '`boundary`, `contract`, `interface`, and `implementation_decision` are
+    already independently identified in canonical ADRs and are useful through repository
+    queries. They join the existing `adr`, `system`, `component`, `d'
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0018#DEC-0085
+    artifact_path: adrs/logical/ADR-L-0018-schema-v12-and-normalized-semantic-foundation.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0018
+    related_invariants: []
+    enforces_invariants: []
+    enables_capabilities: []
+    governs_components: []
+    supersedes: []
+    refines: []
+  relationships:
+    declared_in:
+    - ADR-L-0018
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0018#DEC-0085
+    extraction_phase: extract_decision
+    classification: explicit
+    generator: adr-architecture-index
+- id: DEC-0086
+  entity_type: decision
+  name: Add deterministic source-sensitive assertion identity without replacing relationship
+    identity
+  summary: Historical `relationship_id` remains the endpoint-derived compatibility
+    key. `assertion_id` is `asrt-` followed by the lowercase SHA-256 hexadecimal digest
+    of the UTF-8 canonical JSON array `[relationship_type, from_enti
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0018#DEC-0086
+    artifact_path: adrs/logical/ADR-L-0018-schema-v12-and-normalized-semantic-foundation.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0018
+    related_invariants: []
+    enforces_invariants: []
+    enables_capabilities: []
+    governs_components: []
+    supersedes: []
+    refines: []
+  relationships:
+    declared_in:
+    - ADR-L-0018
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0018#DEC-0086
+    extraction_phase: extract_decision
+    classification: explicit
+    generator: adr-architecture-index
+- id: DEC-0087
+  entity_type: decision
+  name: Add optional stable topology IDs and deterministic dry-run-first migration
+  summary: V1.2 topology component IDs use the closed pattern `TOPO-[A-Z0-9][A-Z0-9-]*`.
+    Endpoints and data-flow paths may use IDs or legacy names, but every reference
+    must resolve exactly once. Migration preserves existing IDs, al
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0018#DEC-0087
+    artifact_path: adrs/logical/ADR-L-0018-schema-v12-and-normalized-semantic-foundation.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0018
+    related_invariants: []
+    enforces_invariants: []
+    enables_capabilities: []
+    governs_components: []
+    supersedes: []
+    refines: []
+  relationships:
+    declared_in:
+    - ADR-L-0018
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0018#DEC-0087
+    extraction_phase: extract_decision
+    classification: explicit
+    generator: adr-architecture-index
+- id: DEC-0088
+  entity_type: decision
+  name: Make ADR Kit the exclusive repair authority for canonical entity-ID collisions
+  summary: Promoting independently authored boundaries, contracts, interfaces, and
+    implementation decisions exposed historical bare-ID collisions inside this repository.
+    Repository qualification cannot resolve an intra-repository c
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0018#DEC-0088
+    artifact_path: adrs/logical/ADR-L-0018-schema-v12-and-normalized-semantic-foundation.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0018
+    related_invariants: []
+    enforces_invariants: []
+    enables_capabilities: []
+    governs_components: []
+    supersedes: []
+    refines: []
+  relationships:
+    declared_in:
+    - ADR-L-0018
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0018#DEC-0088
+    extraction_phase: extract_decision
+    classification: explicit
+    generator: adr-architecture-index
 - id: DEC-9000
   entity_type: decision
   name: Publish a deterministic logical ADR fragment for boot readiness.
   summary: ste-kernel requires a contract-backed ADR fragment source at a conventional
     path.
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-9000#DEC-9000
@@ -2935,6 +4308,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []

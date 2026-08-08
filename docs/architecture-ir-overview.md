@@ -65,10 +65,13 @@ It exists to support authoring-time compilation, pass orchestration, and determi
 - the public Architecture IR contract
 - a stable cross-repo data model
 
-The stable Python consumer seam is instead:
+The stable Python consumer seam is exposed through `adr_kit.api` and reuses:
 
 - [`ArchitectureRepository`](../src/adr_kit/repository/architecture_repository.py)
 - [`NormalizedArchitectureModel`](../src/adr_kit/models/normalized_architecture_model.py)
+
+The facade deliberately excludes graph and Architecture IR emission. Those remain
+compatibility-preserved CLI/internal capabilities and do not become an SDK contract.
 
 ## How this repository emits IR
 
@@ -87,7 +90,7 @@ The output is an adapter surface into the public IR contract, not a replacement 
 - Treat `adrs/index/*` and `adrs/manifest.yaml` as repository-generated discovery outputs.
 - Treat `ste-spec` as the only normative owner of the public Architecture IR schema.
 - Treat `ArchModel` as internal only.
-- Treat `ArchitectureRepository` and `NormalizedArchitectureModel` as the supported Python consumer seam.
+- Use `adr_kit.api` as the supported entry point for the repository/model consumer seam.
 
 ## Related
 

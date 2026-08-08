@@ -5,17 +5,17 @@ artifact_kind: rendered_adr_markdown
 generator_id: adr-rendered-markdown
 generator_version: 1
 hash_algorithm: sha256
-source_hash: 68d6b052ed91d897467a63a0cc45fe7d3ce51043efbb375ce78582d93dc2b502
-rendered_hash: 815051175ff9542379b7a014976c27fd3276b5edece9eb0a26cf69ac95b3516e
+source_hash: ca08a86fea63a4e7d363ab42d1f893ffb00dcf31b989fa07e152636c920fcde1
+rendered_hash: a68b941af27d980fd9cb2aa3cd4f6be13cf99a6a6d1988d22ce9195e3d9af8ec
 -->
 
-# ADR-PS-0002: ADR Kit Compiler and Validation Runtime
+# ADR-PS-0002: ADR Kit Authoring Compiler and Validation System
 
 **Status:** proposed  
 **Created:** 2026-03-15  
-**Authors:** adr-architecture-kit  
+**Modified:** 2026-08-05  **Authors:** adr-architecture-kit  
 **Domains:** compiler, validation, tooling  
-**Tags:** compiler, validation, runtime, python  
+**Tags:** compiler, validation, authoring, python  
 **Implements Logical:** ADR-L-0001, ADR-L-0007, ADR-L-0008, ADR-L-0010, ADR-L-0011, ADR-L-0013  
 **Technologies:** python, click, pydantic, yaml, json-schema
 
@@ -25,15 +25,21 @@ rendered_hash: 815051175ff9542379b7a014976c27fd3276b5edece9eb0a26cf69ac95b3516e
 
 ## Context
 
-adr-architecture-kit now operates as a compiler and validation runtime rather
+adr-architecture-kit operates as an authoring-time compiler and validation system rather
 than a collection of unrelated generators. The implementation includes an
 explicit compiler pipeline, contract validation, normalized repository/model
 access, integrity verification, and CLI orchestration over those surfaces.
 
-This ADR establishes the concrete runtime system boundary for those public
+This ADR establishes the concrete authoring/compiler system boundary for those public
 capabilities. Discovery and indexing remain covered by ADR-PS-0001; this ADR
-covers the compiler/validation runtime that powers canonical parsing,
-compilation, repository loading, contract checks, and artifact integrity.
+covers the authoring/compiler implementation that powers canonical parsing,
+compilation, repository loading, contract checks, artifact integrity, and the
+narrow `adr_kit.api` authoring SDK.
+
+The boundary explicitly excludes Assembler behavior, runtime observation or
+evidence extraction, rules execution, substrate management, admission decisions,
+MCP surfaces, and LLM responsibilities. Those belong to later work or sibling
+systems and must not be introduced by the Phase 1 SDK.
 
 
 ## Technology Stack

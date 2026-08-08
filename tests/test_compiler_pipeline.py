@@ -1,16 +1,16 @@
 from pathlib import Path
 
-from src.adr_kit.compiler import (
+from adr_kit.compiler import (
     ArchModelBuilder,
     CompilerConfig,
     CompilerPipelineState,
     DiagnosticLog,
     build_default_frontend_pipeline,
 )
-from src.adr_kit.compiler.frontend import CachedADRParser
-from src.adr_kit.compiler.pipeline import run_frontend_pipeline
-from src.adr_kit.compiler.backend.projection import project_entity, project_relationship, project_unresolved
-from src.adr_kit.scope import ProjectScopeResolver
+from adr_kit.compiler.frontend import CachedADRParser
+from adr_kit.compiler.pipeline import run_frontend_pipeline
+from adr_kit.compiler.backend.projection import project_entity, project_relationship, project_unresolved
+from adr_kit.scope import ProjectScopeResolver
 
 
 def _repo_root() -> Path:

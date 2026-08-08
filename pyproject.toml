@@ -1,20 +1,22 @@
 [project]
 name = "adr-architecture-kit"
-version = "0.1.0"
+version = "0.3.0"
 description = "Authoring-time STE toolkit: validate structured ADR YAML, emit discovery outputs and Architecture IR fragments (ste-spec). Pre-1.0 Alpha."
 authors = [{name = "Erik Gallmann"}]
 maintainers = [{name = "Erik Gallmann"}]
-license = {text = "Apache-2.0"}
+license = "Apache-2.0"
+license-files = ["LICENSE"]
 requires-python = ">=3.11"
 readme = "README.md"
 keywords = ["architecture", "adr", "ste", "decision-records", "governance", "architecture-decision-records"]
 classifiers = [
     "Development Status :: 3 - Alpha",
     "Intended Audience :: Developers",
-    "License :: OSI Approved :: Apache Software License",
     "Programming Language :: Python :: 3",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
     "Topic :: Software Development :: Documentation",
     "Topic :: Software Development :: Libraries :: Python Modules",
     "Typing :: Typed",
@@ -32,11 +34,14 @@ dependencies = [
 dev = [
     "pytest>=7.0",
     "pytest-cov>=4.0",
-    "black>=23.0",
-    "ruff>=0.1",
-    "mypy>=1.0",
+    "black==26.5.1",
+    "ruff==0.15.15",
+    "mypy==2.1.0",
+    "types-PyYAML>=6.0",
+    "types-jsonschema>=4.0",
     "pip-audit>=2.7",
     "build>=1.0",
+    "twine>=5.0",
 ]
 
 [project.urls]
@@ -47,18 +52,17 @@ Repository = "https://github.com/egallmann/adr-architecture-kit"
 adr = "adr_kit.cli.main:cli"
 
 [build-system]
-requires = ["setuptools>=65.0", "wheel"]
+requires = ["setuptools>=77.0", "wheel"]
 build-backend = "setuptools.build_meta"
-
-[tool.setuptools]
-license-files = ["LICENSE"]
 
 [tool.setuptools.packages.find]
 where = ["src"]
 
 [tool.setuptools.package-data]
+"adr_kit" = ["py.typed"]
 "adr_kit.schema.v1_0" = ["*.json"]
 "adr_kit.schema.v1_1" = ["*.json"]
+"adr_kit.schema.v1_2" = ["*.json"]
 "adr_kit.templates" = ["*.jinja2"]
 
 [tool.black]

@@ -6,202 +6,167 @@ on:
   pull_request:
     branches: [main, develop]
 
-jobs:
-  validate-adrs:
-    name: Validate ADR Schema Compliance
-    runs-on: ubuntu-latest
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
+jobs:
+  source-tests:
+    name: Source install / Python ${{ matrix.python-version }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.11", "3.12", "3.13", "3.14"]
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+      - run: python -m pip install --upgrade pip
+      - run: python -m pip install .[dev]
+      - name: Exercise installed SDK consumer outside the checkout
+        run: |
+          mkdir -p "${RUNNER_TEMP}/sdk-consumer/fixture/adrs/logical"
+          cp PROJECT.yaml "${RUNNER_TEMP}/sdk-consumer/fixture/PROJECT.yaml"
+          cp tests/fixtures/valid/logical-minimal.yaml "${RUNNER_TEMP}/sdk-consumer/fixture/adrs/logical/ADR-L-9999-minimal.yaml"
+          cd "${RUNNER_TEMP}/sdk-consumer"
+          env -u PYTHONPATH python "${GITHUB_WORKSPACE}/scripts/test_sdk_consumer.py" --project-root fixture --version-source metadata
+      - name: Exercise direct-source version fallback outside the checkout
+        run: |
+          cd "${RUNNER_TEMP}/sdk-consumer"
+          PYTHONPATH="${GITHUB_WORKSPACE}/src" python "${GITHUB_WORKSPACE}/scripts/test_sdk_consumer.py" --project-root fixture --version-source source
+      - run: python -m pip install -e .
+      - name: Exercise editable SDK consumer outside the checkout
+        run: |
+          cd "${RUNNER_TEMP}/sdk-consumer"
+          env -u PYTHONPATH python "${GITHUB_WORKSPACE}/scripts/test_sdk_consumer.py" --project-root fixture --version-source metadata
+      - run: python -m pytest
+
+  governance:
+    name: ADR, generated artifact, and contract governance
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
         with:
           submodules: recursive
-
-      - name: Setup Python
-        uses: actions/setup-python@v5
+      - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
+      - run: python -m pip install --upgrade pip
+      - run: python -m pip install .[dev]
+      - run: adr validate --cross-references
+      - run: adr repair-canonical-ids --check
+      - run: adr governance-checks
+      - run: adr validate-generated-docs
+      - run: adr validate-system-overview
+      - run: python -m pytest tests/test_package_schema_parity.py tests/golden/test_current_outputs.py
+      - run: python scripts/run_local_pre_push_checks.py
 
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install -e .[dev]
-          pip install pip-audit
-
-      - name: Validate ADR schema compliance
-        run: |
-          adr validate --cross-references
-
-      - name: Run governance contract checks
-        run: |
-          adr governance-checks
-
-      - name: Validate generated documentation
-        run: |
-          adr validate-generated-docs
-
-      - name: Validate system overview
-        run: |
-          adr validate-system-overview
-
-      - name: Audit runtime hygiene
-        run: |
-          python scripts/check_runtime_hygiene.py --fail-on-outdated
-
-      - name: Check package schema parity
-        run: |
-          python - <<'EOF'
-          import filecmp
-          import sys
-          from pathlib import Path
-
-          root = Path(".")
-          mismatches = []
-          for version in ("v1.0", "v1.1"):
-              canonical_dir = root / "schema" / version
-              bundled_dir = root / "src" / "adr_kit" / "schema" / version.replace(".", "_")
-              for canonical in sorted(canonical_dir.glob("*.json")):
-                  bundled = bundled_dir / canonical.name
-                  if not bundled.exists():
-                      mismatches.append(f"MISSING in package bundle: {bundled}")
-                  elif not filecmp.cmp(canonical, bundled, shallow=False):
-                      mismatches.append(f"DRIFT: {canonical} vs {bundled}")
-
-          if mismatches:
-              print("Schema parity check FAILED:")
-              for m in mismatches:
-                  print(f"  {m}")
-              sys.exit(1)
-          else:
-              print("Schema parity check passed: all bundled schemas match canonical sources.")
-          EOF
-
-  validate-project-metadata:
-    name: Validate PROJECT.yaml
+  coverage:
+    name: Canonical package coverage
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Setup Python
-        uses: actions/setup-python@v5
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
+      - run: python -m pip install --upgrade pip
+      - run: python -m pip install .[dev]
+      - run: python -m pytest --cov=adr_kit --cov-report=term-missing --cov-fail-under=80
 
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install -e .
-
-      - name: Validate PROJECT.yaml
-        run: |
-          adr validate-project-metadata
-
-  release-artifact-validation:
-    name: Release Artifact Validation
+  quality-ratchets:
+    name: Ruff / mypy / Black no-regression ratchets
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Setup Python
-        uses: actions/setup-python@v5
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
+      - run: python -m pip install --upgrade pip
+      - run: python -m pip install .[dev]
+      - run: python scripts/check_quality_ratchets.py
 
-      - name: Install build tools
-        run: |
-          python -m pip install --upgrade pip
-          pip install build
+  dependency-audit:
+    name: Project dependency audit
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install --upgrade pip
+      - run: python -m pip install .[dev]
+      - run: python -m pip_audit .
 
-      - name: Build wheel and sdist
+  release-artifacts:
+    name: Build and validate the retained release bundle once
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install --upgrade pip
+      - run: python -m pip install .[dev]
+      - run: python scripts/check_version_consistency.py
+      - name: Build retained bundle once
         run: |
-          rm -rf python-dist
+          export SOURCE_DATE_EPOCH="$(git log -1 --format=%ct)"
           python -m build --outdir python-dist
-
-      - name: Install wheel into clean environment
-        run: |
-          pip install python-dist/*.whl
-
-      - name: Smoke test — adr --help
-        run: |
-          adr --help
-
-      - name: Smoke test — adr validate --help
-        run: |
-          adr validate --help
-
-      - name: Smoke test — adr generate-architecture-index --help
-        run: |
-          adr generate-architecture-index --help
-
-      - name: Smoke test — adr entities list --help
-        run: |
-          adr entities list --help
-
-      - name: Smoke test — schema loading (ADRParser init)
-        run: |
-          python -c "
-          from adr_kit.parser import ADRParser
-          p = ADRParser()
-          assert p.schema_dir.exists(), f'Schema dir not found: {p.schema_dir}'
-          assert p.schema_v11_dir.exists(), f'Schema v1.1 dir not found: {p.schema_v11_dir}'
-          assert any(p.schema_dir.glob('*.json')), 'No JSON schemas found in v1_0'
-          assert any(p.schema_v11_dir.glob('*.json')), 'No JSON schemas found in v1_1'
-          print(f'Schema dir: {p.schema_dir}')
-          print(f'Schema v1.1 dir: {p.schema_v11_dir}')
-          print('ADRParser init: OK')
-          "
-
-      - name: Smoke test — sdist reinstall
-        run: |
-          pip uninstall -y adr-architecture-kit
-          pip install python-dist/*.tar.gz
-          adr --help
-
-  mirror-check:
-    name: Architecture IR Mirror Check (Advisory)
-    runs-on: ubuntu-latest
-    continue-on-error: true
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Checkout ste-spec sibling (if available)
-        id: ste-spec-checkout
-        continue-on-error: true
-        uses: actions/checkout@v4
+          python scripts/release_manifest.py normalize-sdist --sdist "$(find python-dist -maxdepth 1 -name '*.tar.gz' -print -quit)" --source-date-epoch "${SOURCE_DATE_EPOCH}"
+      - run: python -m twine check python-dist/*
+      - run: python scripts/release_manifest.py create --dist-dir python-dist --output python-dist/release-manifest.json --source-commit "${GITHUB_SHA}" --version "$(python -c 'import tomllib; print(tomllib.load(open("pyproject.toml", "rb"))["project"]["version"])')"
+      - uses: actions/upload-artifact@v4
         with:
-          repository: egallmann/ste-spec
-          path: .ste-spec-sibling
-          token: ${{ secrets.GITHUB_TOKEN }}
+          name: release-bundle
+          path: python-dist/
+          if-no-files-found: error
 
-      - name: Check mirror parity against ste-spec
-        if: steps.ste-spec-checkout.outcome == 'success'
-        run: |
-          python - <<'EOF'
-          import filecmp
-          import sys
-          from pathlib import Path
+  wheel-smoke:
+    name: Retained wheel / Python ${{ matrix.python-version }}
+    needs: release-artifacts
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.11", "3.12", "3.13", "3.14"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+      - uses: actions/download-artifact@v4
+        with:
+          name: release-bundle
+          path: python-dist
+      - run: python scripts/test_installed_wheel.py --wheel "$(find python-dist -maxdepth 1 -name '*.whl' -print -quit)"
+      - run: python scripts/test_installed_wheel.py --describe | grep sdk-consumer
 
-          local = Path("contracts/architecture-ir/architecture-ir.schema.json")
-          upstream = Path(".ste-spec-sibling/contracts/architecture-ir/architecture-ir.schema.json")
+  reproducibility:
+    name: Fixed-epoch distribution reproducibility
+    runs-on: ubuntu-latest
+    env:
+      SOURCE_DATE_EPOCH: "1767225600"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install --upgrade pip build
+      - run: python -m build --outdir "${RUNNER_TEMP}/build-one"
+      - run: python -m build --outdir "${RUNNER_TEMP}/build-two"
+      - run: python scripts/release_manifest.py normalize-sdist --sdist "$(find "${RUNNER_TEMP}/build-one" -maxdepth 1 -name '*.tar.gz' -print -quit)" --source-date-epoch "${SOURCE_DATE_EPOCH}"
+      - run: python scripts/release_manifest.py normalize-sdist --sdist "$(find "${RUNNER_TEMP}/build-two" -maxdepth 1 -name '*.tar.gz' -print -quit)" --source-date-epoch "${SOURCE_DATE_EPOCH}"
+      - run: python -c "import hashlib,pathlib,sys; a=sorted((pathlib.Path('${RUNNER_TEMP}')/'build-one').iterdir()); b=sorted((pathlib.Path('${RUNNER_TEMP}')/'build-two').iterdir()); ha=[hashlib.sha256(p.read_bytes()).hexdigest() for p in a]; hb=[hashlib.sha256(p.read_bytes()).hexdigest() for p in b]; print(dict(zip([p.name for p in a],ha))); sys.exit(ha != hb)"
 
-          if not upstream.exists():
-              print("WARNING: upstream schema not found at expected path — skipping mirror check.")
-              sys.exit(0)
-
-          if filecmp.cmp(local, upstream, shallow=False):
-              print("Mirror check passed: local mirror matches ste-spec.")
-          else:
-              print("WARNING: local Architecture IR mirror has drifted from ste-spec.")
-              print("Update contracts/architecture-ir/architecture-ir.schema.json and MIRROR.md.")
-          EOF
-
-      - name: Skip notice (ste-spec sibling unavailable)
-        if: steps.ste-spec-checkout.outcome != 'success'
-        run: |
-          echo "ste-spec sibling checkout unavailable — mirror check skipped (advisory only)."
+  benchmark-smoke:
+    name: Deterministic benchmark functional smoke
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install --upgrade pip
+      - run: python -m pip install .[dev]
+      - run: python benchmarks/phase0.py --corpus synthetic --sizes 10 --warmups 0 --repeats 1 --json-out benchmark-smoke.json

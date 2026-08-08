@@ -7,6 +7,7 @@ entities:
   summary: '- Compile canonical ADR and invariant artifacts into a normalized discovery
     bundle - Emit deterministic `adrs/index/*.yaml` registry artifacts - Emit deterministic
     legacy compatibility registry output at `adrs/entities/r'
+  lifecycle_stage: active
   canonical_source:
     source_type: physical_component_adr
     source_ref: ADR-PC-0001#COMP-0010
@@ -40,6 +41,12 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface:
+    - IFACE-0011
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -55,6 +62,7 @@ entities:
   summary: '- Validate canonical ADR artifacts against schema and business rules -
     Validate kernel-facing contract profiles - Validate project metadata and implementation
     attribution evidence - Provide CLI entrypoints for validation'
+  lifecycle_stage: active
   canonical_source:
     source_type: physical_component_adr
     source_ref: ADR-PC-0002#COMP-0011
@@ -86,6 +94,13 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface:
+    - IFACE-0012
+    - IFACE-0017
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -101,6 +116,7 @@ entities:
   summary: '- Build compiler pipeline state from canonical scope inputs - Execute
     deterministic pass ordering - Emit architecture bundle, manifest, graph, and rendered
     outputs - Support recursive multi-scope compilation and reportin'
+  lifecycle_stage: active
   canonical_source:
     source_type: physical_component_adr
     source_ref: ADR-PC-0003#COMP-0012
@@ -132,6 +148,13 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface:
+    - IFACE-0013
+    - IFACE-0018
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -147,6 +170,7 @@ entities:
   summary: '- Load compiled architecture bundle artifacts - Expose normalized semantic
     queries to in-process consumers - Centralize provenance, unresolved, and ADR/status
     lookup logic - Prevent ad hoc re-interpretation of compiled r'
+  lifecycle_stage: active
   canonical_source:
     source_type: physical_component_adr
     source_ref: ADR-PC-0004#COMP-0013
@@ -178,6 +202,13 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface:
+    - IFACE-0014
+    - IFACE-0019
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -193,6 +224,7 @@ entities:
   summary: '- Enumerate scope-local generated artifacts - Validate integrity headers
     and source hashes - Detect stale, tampered, or malformed generated outputs - Support
     governance checks over generated artifacts'
+  lifecycle_stage: active
   canonical_source:
     source_type: physical_component_adr
     source_ref: ADR-PC-0005#COMP-0014
@@ -224,6 +256,12 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface:
+    - IFACE-0015
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -239,6 +277,7 @@ entities:
   summary: '- Detect canonical entity ID collisions - Apply deterministic canonical
     ID remaps - Write canonical migration ledgers - Support brownfield onboarding
     cleanup as governed normalization rather than ad hoc editing'
+  lifecycle_stage: active
   canonical_source:
     source_type: physical_component_adr
     source_ref: ADR-PC-0006#COMP-0015
@@ -270,6 +309,12 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface:
+    - IFACE-0016
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []

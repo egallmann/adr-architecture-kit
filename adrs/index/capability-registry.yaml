@@ -7,6 +7,7 @@ entities:
   summary: Enable AI systems to deterministically reason over architecture decisions
     through structured, schema-validated artifacts. No ambiguous markdown parsing,
     no implicit assumptions, no narrative drift.
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0001#CAP-0001
@@ -33,6 +34,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -48,6 +54,7 @@ entities:
   summary: Separate conceptual design (logical ADRs) from implementation specifications
     (physical ADRs). Logical ADRs define capabilities, boundaries, contracts, and
     invariants without implementation details. Physical ADRs operatio
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0001#CAP-0002
@@ -74,6 +81,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -89,6 +101,7 @@ entities:
   summary: Architecture artifacts participate in ste-runtime semantic graph through
     RECON extraction. ADRs become graph nodes with typed edges (implements, relates_to,
     enforces), enabling graph queries, blast radius analysis, and p
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0001#CAP-0003
@@ -115,6 +128,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -130,6 +148,7 @@ entities:
   summary: Incomplete designs are first-class schema elements. Gaps are structured
     with impact assessment, blocking status, and decision ownership. Convergence validation
     ensures gaps are resolved or explicitly tracked.
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0001#CAP-0004
@@ -156,6 +175,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -170,6 +194,7 @@ entities:
   name: Derived Manifest Generation
   summary: Manifest is generated from authoritative ADRs, never manually edited. Provides
     fast discovery without reading all ADRs. CI validates manifest freshness (SYS-14).
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0001#CAP-0005
@@ -196,6 +221,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -211,6 +241,7 @@ entities:
   summary: Schema includes policy_reference, enforcement_level, compliance_frameworks
     fields to enable future Rules & Signal Service validation. Invariants can be extracted
     into requirement registry and validated against organizati
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0001#CAP-0006
@@ -237,6 +268,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -252,6 +288,7 @@ entities:
   summary: Schema includes implementation_identifiers, ownership, automation flags
     to enable future correction agents. Agents can locate code, understand boundaries,
     and operate within safety constraints.
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0001#CAP-0007
@@ -278,6 +315,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -292,6 +334,7 @@ entities:
   name: Multi-Agent Prompt Generation
   summary: Generate prompts for multiple components that can be executed in parallel
     by different AI agents, with clear dependency ordering
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0005#CAP-0008
@@ -320,6 +363,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -334,6 +382,7 @@ entities:
   name: Prompt Format Adaptation
   summary: Adapt prompt format for different target AI agents (CODEX, Cursor, Claude,
     GPT) while maintaining core content consistency
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0005#CAP-0009
@@ -362,6 +411,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -375,6 +429,7 @@ entities:
   entity_type: capability
   name: Signal Schema Authority
   summary: rule-library defines canonical schema for context and cooperative signals.
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0006#CAP-0010
@@ -403,6 +458,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -416,6 +476,7 @@ entities:
   entity_type: capability
   name: Signal Emission CLI
   summary: CLI for agents to emit cooperative signals without writing JSON manually.
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0006#CAP-0011
@@ -444,6 +505,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -457,6 +523,7 @@ entities:
   entity_type: capability
   name: Rule Activation and Projection
   summary: Context signals drive rule selection; rules projected for consumption.
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0006#CAP-0012
@@ -485,6 +552,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -498,6 +570,7 @@ entities:
   entity_type: capability
   name: Submodule Bootstrap
   summary: Bootstrap script for projects adding rule-library as submodule.
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0006#CAP-0013
@@ -526,6 +599,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -540,6 +618,7 @@ entities:
   name: Deterministic Documentation Projection
   summary: The system can generate human-readable architecture documentation from
     structured source artifacts and verify that rendered output remains in sync.
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0007#CAP-0014
@@ -568,6 +647,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -582,6 +666,7 @@ entities:
   name: Mode-Aware ADR Validation
   summary: The validator accepts a mode argument and returns findings appropriate
     to structural or complete validation.
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0008#CAP-0015
@@ -610,6 +695,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -624,6 +714,7 @@ entities:
   name: Draft-Preserving Source Generation
   summary: Source ADR generators can preserve explicit empty sections when generating
     draft artifacts for review.
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0008#CAP-0016
@@ -652,6 +743,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -666,6 +762,7 @@ entities:
   name: Summary Discovery Surface
   summary: Provide a broad summary-oriented discovery artifact for ADR and scope metadata
     through `manifest.yaml`.
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0009#CAP-0017
@@ -694,6 +791,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -708,6 +810,7 @@ entities:
   name: Normalized Entity Lookup Surface
   summary: Provide deterministic lookup for normalized architecture entities through
     `adrs/index/entity-registry.yaml`.
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0009#CAP-0018
@@ -737,6 +840,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -752,6 +860,7 @@ entities:
   summary: 'Auto-detect project boundaries by searching for markers: - ste.config.json
     (authoritative) - PROJECT.yaml (ADR-specific marker) - package.json, pyproject.toml
     (language markers) - .git directory (repository root)'
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0002#CAP-0019
@@ -780,6 +889,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -794,6 +908,7 @@ entities:
   name: Automated Quality Gates
   summary: CI/CD pipeline automatically runs test suite on every commit and PR. Prevents
     merging code that fails tests or reduces coverage.
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0003#CAP-0020
@@ -822,6 +937,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -836,6 +956,7 @@ entities:
   name: Architecture Intent Attribution
   summary: Explicit declaration of architectural authority across code and other implementation
     artifacts through decorators or metadata-level attribution.
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0004#CAP-0021
@@ -864,6 +985,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -878,6 +1004,7 @@ entities:
   name: Scoped Manifest Generation
   summary: Generate manifest.yaml scoped to specific project, including only ADRs
     within that project's adrs/ directory
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0002#CAP-0022
@@ -906,6 +1033,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -920,6 +1052,7 @@ entities:
   name: Test-Driven Development Support
   summary: Test infrastructure supports TDD workflow - write failing test, implement
     feature, test passes. Fast test execution enables rapid iteration.
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0003#CAP-0023
@@ -948,6 +1081,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -962,6 +1100,7 @@ entities:
   name: Bidirectional Traceability Verification
   summary: Automated verification that implementation attribution and ADR declarations
     agree in both directions.
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0004#CAP-0024
@@ -990,6 +1129,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -1004,6 +1148,7 @@ entities:
   name: Scoped Validation
   summary: Validate ADRs within specific project scope, with optional recursive validation
     of sub-modules
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0002#CAP-0025
@@ -1032,6 +1177,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -1046,6 +1196,7 @@ entities:
   name: Regression Prevention
   summary: Once a bug is fixed, a test is added to prevent reintroduction. Test suite
     grows to cover discovered edge cases.
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0003#CAP-0026
@@ -1074,6 +1225,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -1088,6 +1244,7 @@ entities:
   name: Profile-Aware Legacy Onboarding for Intent Attribution
   summary: Govern intent-attribution adoption with the existing greenfield, brownfield,
     and migration profiles instead of a separate legacy mode.
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0004#CAP-0027
@@ -1116,6 +1273,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -1129,6 +1291,7 @@ entities:
   entity_type: capability
   name: Multi-Scope CLI Interface
   summary: Provide CLI commands that work at any scope level with consistent behavior
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0002#CAP-0028
@@ -1157,6 +1320,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -1171,6 +1339,7 @@ entities:
   name: Documentation via Tests
   summary: Tests serve as executable documentation showing how to use components.
     Examples in tests demonstrate API usage patterns.
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0003#CAP-0029
@@ -1199,6 +1368,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -1213,6 +1387,7 @@ entities:
   name: Implementation Attribution Evidence Handoff
   summary: A compiler-owned evidence contract that downstream extractors populate
     with implementation-to-ADR attribution claims and provenance.
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0004#CAP-0030
@@ -1241,6 +1416,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -1256,6 +1436,7 @@ entities:
   summary: 'Parse Physical ADRs to extract component specifications, including: -
     Component ID, name, type, description - Responsibilities - Interface definitions
     (methods, parameters, types) - Implementation identifiers (file paths'
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0005#CAP-0031
@@ -1284,6 +1465,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -1299,6 +1485,7 @@ entities:
   summary: 'Generate implementation prompt for a specific component that includes:
     - Context (what is being built and why) - Constraints (invariants to enforce)
     - Specifications (what to build) - Test requirements (what to verify) -'
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0005#CAP-0032
@@ -1327,6 +1514,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -1342,6 +1534,7 @@ entities:
   summary: 'Generate validation checklist for verifying implementation against ADR,
     including checks for: - Code structure (files, classes, methods exist) - Invariant
     enforcement (constraints are enforced) - Test coverage (all requi'
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0005#CAP-0033
@@ -1370,6 +1563,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -1384,6 +1582,7 @@ entities:
   name: Profile-Aware Contract Validation
   summary: Validate compiled registry bundles against a single contract schema with
     profile-specific enforcement for greenfield, brownfield, and migration.
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0010#CAP-0034
@@ -1412,6 +1611,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -1426,6 +1630,7 @@ entities:
   name: Production-Safe Kernel Admission
   summary: Distinguish between contract-valid bundles that are production-safe and
     bundles that are inspection-safe only.
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0010#CAP-0035
@@ -1454,6 +1659,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -1468,6 +1678,7 @@ entities:
   name: Typed Metadata Contract Enforcement
   summary: Validate entity metadata against entity-type-specific schema expectations
     under the active enforcement profile.
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0011#CAP-0036
@@ -1496,6 +1707,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -1510,6 +1726,7 @@ entities:
   name: Remediation Ledger Governance
   summary: Track sentinel usage, replacement, approval, and no-regression state in
     a canonical governance artifact.
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0011#CAP-0037
@@ -1538,6 +1755,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -1552,6 +1774,7 @@ entities:
   name: Federated Qualified Identity Resolution
   summary: Support unambiguous multi-repository entity references using namespaces
     and qualified identifiers while preserving bare local references in source ADRs.
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0012#CAP-0038
@@ -1580,6 +1803,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -1595,6 +1823,7 @@ entities:
   summary: Provide one scope-safe, deterministic in-process interface that loads compiled
     architecture bundles and returns a stable normalized semantic model for tools,
     validators, agents, and future kernel consumers.
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0013#CAP-0039
@@ -1623,6 +1852,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -1638,6 +1872,7 @@ entities:
   summary: Provide an explicit workflow for migrating existing repositories into STE
     canonical architecture authority through phased discovery, normalization, canonization,
     regeneration, and validation.
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0014#CAP-0040
@@ -1666,6 +1901,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -1680,6 +1920,7 @@ entities:
   name: Canonical Migration Evidence
   summary: Record deterministic remaps, onboarding cleanup results, and legacy-to-
     canonical transitions in machine-readable migration artifacts.
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0014#CAP-0041
@@ -1708,6 +1949,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -1722,6 +1968,7 @@ entities:
   name: Deterministic ADR Governance Validation
   summary: Validate ADR governance metadata, approval pairings, implementation authority,
     override references, and stale revision coupling through deterministic rules.
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0015#CAP-0042
@@ -1750,6 +1997,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -1764,6 +2016,7 @@ entities:
   name: Governance Summary Projection
   summary: Expose ADR governance references and override summaries in manifest and
     discovery surfaces without leaking rationale or accepted risk text.
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0015#CAP-0043
@@ -1792,6 +2045,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -1807,6 +2065,7 @@ entities:
   summary: Provide one explicit file-format ingestion posture for cross-language or
     out-of-process runtime consumers so they can consume compiler-owned Architecture
     IR without redefining architecture semantics locally.
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0013#CAP-0044
@@ -1836,6 +2095,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -1845,11 +2109,402 @@ entities:
     extraction_phase: extract_capability
     classification: explicit
     generator: adr-architecture-index
+- id: CAP-0045
+  entity_type: capability
+  name: Deterministic Corpus Orientation Surface
+  summary: Provide one supported API and CLI surface for manifest access, index access,
+    corpus summaries, relationship inspection, and scope-local next ADR ID allocation.
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0016#CAP-0045
+    artifact_path: adrs/logical/ADR-L-0016-deterministic-corpus-query-and-authoring-orientation.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0016
+    domains:
+    - repository
+    - discovery
+    - authoring
+    implemented_by_components: []
+    enabled_by_decisions: []
+  relationships:
+    declared_in:
+    - ADR-L-0016
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0016#CAP-0045
+    extraction_phase: extract_capability
+    classification: explicit
+    generator: adr-architecture-index
+- id: CAP-0046
+  entity_type: capability
+  name: Verified Build-Once Release Promotion
+  summary: Build one release bundle, verify its metadata and identity, exercise the
+    retained wheel across the supported Python matrix, and publish that exact bundle
+    without a second build.
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0003#CAP-0046
+    artifact_path: adrs/logical/ADR-L-0003-quality-assurance-and-testing-strategy.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0003
+    domains:
+    - quality-assurance
+    - testing
+    - governance
+    - reliability
+    implemented_by_components: []
+    enabled_by_decisions: []
+  relationships:
+    declared_in:
+    - ADR-L-0003
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0003#CAP-0046
+    extraction_phase: extract_capability
+    classification: explicit
+    generator: adr-architecture-index
+- id: CAP-0047
+  entity_type: capability
+  name: Narrow Supported Authoring SDK
+  summary: Provide a deterministic Python facade for explicit-root validation, authoring
+    compilation of registries, manifest, and markdown, repository loading, normalized-model
+    consumption, and local capability discovery.
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0013#CAP-0047
+    artifact_path: adrs/logical/ADR-L-0013-architecture-repository-boundary-and-normalized-semantic-model.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0013
+    domains:
+    - repository
+    - discovery
+    - compiler
+    - kernel
+    implemented_by_components: []
+    enabled_by_decisions: []
+  relationships:
+    declared_in:
+    - ADR-L-0013
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0013#CAP-0047
+    extraction_phase: extract_capability
+    classification: explicit
+    generator: adr-architecture-index
+- id: CAP-0048
+  entity_type: capability
+  name: Additive ADR Schema v1.2 Authoring
+  summary: Validate, parse, package, and compile provisional v1.2 ADR authoring while
+    preserving frozen v1.0 and the existing provisional v1.1 artifact family.
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0018#CAP-0048
+    artifact_path: adrs/logical/ADR-L-0018-schema-v12-and-normalized-semantic-foundation.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0018
+    domains:
+    - authoring
+    - schema
+    - semantic-model
+    - identity
+    - migration
+    implemented_by_components: []
+    enabled_by_decisions: []
+  relationships:
+    declared_in:
+    - ADR-L-0018
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0018#CAP-0048
+    extraction_phase: extract_capability
+    classification: explicit
+    generator: adr-architecture-index
+- id: CAP-0049
+  entity_type: capability
+  name: Expanded Normalized Semantic Model
+  summary: Expose boundary, contract, interface, and implementation-decision entities
+    with deterministic provenance, relationships, repository queries, and fingerprints.
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0018#CAP-0049
+    artifact_path: adrs/logical/ADR-L-0018-schema-v12-and-normalized-semantic-foundation.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0018
+    domains:
+    - authoring
+    - schema
+    - semantic-model
+    - identity
+    - migration
+    implemented_by_components: []
+    enabled_by_decisions: []
+  relationships:
+    declared_in:
+    - ADR-L-0018
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0018#CAP-0049
+    extraction_phase: extract_capability
+    classification: explicit
+    generator: adr-architecture-index
+- id: CAP-0050
+  entity_type: capability
+  name: Bind-Only External Authority Contracts
+  summary: Author deterministic substrate, rule, and evidence-expectation bindings
+    without ingesting external semantic bodies or observed evidence.
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0018#CAP-0050
+    artifact_path: adrs/logical/ADR-L-0018-schema-v12-and-normalized-semantic-foundation.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0018
+    domains:
+    - authoring
+    - schema
+    - semantic-model
+    - identity
+    - migration
+    implemented_by_components: []
+    enabled_by_decisions: []
+  relationships:
+    declared_in:
+    - ADR-L-0018
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0018#CAP-0050
+    extraction_phase: extract_capability
+    classification: explicit
+    generator: adr-architecture-index
+- id: CAP-0051
+  entity_type: capability
+  name: Stable Physical Topology Identity Migration
+  summary: Add optional topology component IDs and migrate uniquely resolvable legacy
+    names to stable IDs with deterministic diagnostics and output.
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0018#CAP-0051
+    artifact_path: adrs/logical/ADR-L-0018-schema-v12-and-normalized-semantic-foundation.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0018
+    domains:
+    - authoring
+    - schema
+    - semantic-model
+    - identity
+    - migration
+    implemented_by_components: []
+    enabled_by_decisions: []
+  relationships:
+    declared_in:
+    - ADR-L-0018
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0018#CAP-0051
+    extraction_phase: extract_capability
+    classification: explicit
+    generator: adr-architecture-index
+- id: CAP-0052
+  entity_type: capability
+  name: Canonical Entity Identity Repair
+  summary: Detect and repair canonical entity-ID collisions through ADR Kit-owned,
+    monotonic, non-reusing allocation and occurrence-aware reference migration.
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0018#CAP-0052
+    artifact_path: adrs/logical/ADR-L-0018-schema-v12-and-normalized-semantic-foundation.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0018
+    domains:
+    - authoring
+    - schema
+    - semantic-model
+    - identity
+    - migration
+    implemented_by_components: []
+    enabled_by_decisions: []
+  relationships:
+    declared_in:
+    - ADR-L-0018
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0018#CAP-0052
+    extraction_phase: extract_capability
+    classification: explicit
+    generator: adr-architecture-index
 - id: CAP-9000
   entity_type: capability
   name: Kernel Boot Readiness
   summary: Provide a deterministic ADR publication surface for kernel boot-readiness
     compilation.
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-9000#CAP-9000
@@ -1877,6 +2532,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []

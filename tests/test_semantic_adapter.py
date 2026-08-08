@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from src.adr_kit.models import (
+from adr_kit.models import (
     CanonicalSource,
     Completeness,
     DiscoveryProvenance,
@@ -17,7 +17,7 @@ from src.adr_kit.models import (
     SourceRef,
     UnresolvedRecord,
 )
-from src.adr_kit.repository.semantic_adapter import coerce_to_normalized_model
+from adr_kit.repository.semantic_adapter import coerce_to_normalized_model
 
 
 def _normalized_entity(entity_id: str, entity_type: str = "adr") -> NormalizedEntity:

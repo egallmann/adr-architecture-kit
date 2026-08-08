@@ -1,0 +1,59 @@
+schema_version: '1.2'
+adr_type: physical-component
+id: ADR-PC-9801
+title: V1.2 Projectable Component Fixture
+status: accepted
+created_date: '2026-08-07'
+authors:
+- phase2-test
+domains:
+- phase2
+implements_system:
+- ADR-PS-9801
+implements_logical:
+- ADR-L-9801
+technologies:
+- python
+context: |
+  Exercise interface and implementation-decision projection.
+technology_stack:
+- category: language
+  name: Python
+  version: '3.12'
+  rationale: Deterministic test fixture.
+component_specifications:
+- id: COMP-9801
+  name: Fixture Component
+  type: service
+  responsibilities: Provide the Phase 2 fixture interface.
+  generation_context:
+    purpose: Provide a projectable fixture component.
+    key_responsibilities:
+    - Expose a typed interface.
+  interfaces:
+  - id: IFACE-9801
+    type: library_api
+    specification: A deterministic in-process fixture interface.
+    contract_reference: CONTRACT-9801
+  implementation_identifiers:
+    module_path: src/fixture.py
+  implementation_requirements:
+    error_handling:
+      strategy: Fail closed.
+    observability:
+      logging:
+        level: info
+        structured: true
+      metrics:
+      - name: fixture_calls_total
+        type: counter
+    testing_requirements:
+      unit_test_coverage: '>= 80%'
+  implements_capabilities: []
+implementation_decisions:
+- id: IMPL-9801
+  summary: Keep the fixture deterministic
+  rationale: Stable projection bytes are required for compatibility evidence.
+  implements_invariants:
+  - INV-0079
+gaps: []

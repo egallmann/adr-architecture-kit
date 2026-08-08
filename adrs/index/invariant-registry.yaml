@@ -5,6 +5,7 @@ entities:
   entity_type: invariant
   name: INV-0001
   summary: All ADRs must validate against JSON Schema before commit
+  lifecycle_stage: active
   canonical_source:
     source_type: standalone_invariant
     source_ref: INV-0001
@@ -38,6 +39,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -52,6 +58,7 @@ entities:
   name: INV-0002
   summary: adr_kit MUST not ship deprecated runtime API usage, and its direct dependencies
     MUST be audited for vulnerabilities and upgrade freshness
+  lifecycle_stage: active
   canonical_source:
     source_type: standalone_invariant
     source_ref: INV-0002
@@ -86,6 +93,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -100,6 +112,7 @@ entities:
   name: INV-0003
   summary: Repository changes must be committed at meaningful verified boundaries
     rather than accumulated indefinitely.
+  lifecycle_stage: active
   canonical_source:
     source_type: standalone_invariant
     source_ref: INV-0003
@@ -134,6 +147,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -148,6 +166,7 @@ entities:
   name: INV-0004
   summary: Compiler projection from canonical architecture state to kernel-facing
     registry artifacts must be deterministic and contract-valid.
+  lifecycle_stage: active
   canonical_source:
     source_type: standalone_invariant
     source_ref: INV-0004
@@ -184,6 +203,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -198,6 +222,7 @@ entities:
   name: INV-0005
   summary: Recursive compilation must compile each resolved project scope independently
     and must not implicitly merge architecture state across scopes.
+  lifecycle_stage: active
   canonical_source:
     source_type: standalone_invariant
     source_ref: INV-0005
@@ -232,6 +257,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -247,6 +277,7 @@ entities:
   summary: In-scope implementation artifacts must declare the ADRs that justify their
     existence through @implements_adr or an equivalent metadata-level attribution
     mechanism.
+  lifecycle_stage: active
   canonical_source:
     source_type: standalone_invariant
     source_ref: INV-0006
@@ -282,6 +313,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -297,6 +333,7 @@ entities:
   summary: In-process architecture consumers must use ArchitectureRepository and its
     normalized semantic model rather than interpreting compiled registries ad hoc
     when the repository boundary is available.
+  lifecycle_stage: active
   canonical_source:
     source_type: standalone_invariant
     source_ref: INV-0007
@@ -332,6 +369,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -347,6 +389,7 @@ entities:
   summary: Rendered markdown artifacts must be treated as derived human-facing projections
     and must not be used as semantic authority when canonical YAML source artifacts
     are available.
+  lifecycle_stage: active
   canonical_source:
     source_type: standalone_invariant
     source_ref: INV-0008
@@ -380,6 +423,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -394,6 +442,7 @@ entities:
   name: INV-0014
   summary: ADR generators and validators MUST support explicit scope parameter to
     override auto-detection when needed
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0002#INV-0014
@@ -411,6 +460,7 @@ entities:
     enforcement_level: must
     declaration_mode: local
     upheld_by_decisions: []
+    supersedes: []
   relationships:
     declared_in:
     - ADR-L-0002
@@ -425,6 +475,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -440,6 +495,7 @@ entities:
   summary: 'Project scope resolution MUST use the same marker hierarchy as ste-runtime:
     1. Explicit --scope parameter (highest priority) 2. ste.config.json in current
     or parent directories 3. Standard project markers (package.json, '
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0002#INV-0015
@@ -462,6 +518,7 @@ entities:
     enforcement_level: must
     declaration_mode: local
     upheld_by_decisions: []
+    supersedes: []
   relationships:
     declared_in:
     - ADR-L-0002
@@ -476,6 +533,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -489,6 +551,7 @@ entities:
   entity_type: invariant
   name: INV-0016
   summary: Each project scope MUST maintain its own adrs/ directory and manifest.yaml
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0002#INV-0016
@@ -503,6 +566,7 @@ entities:
     enforcement_level: must
     declaration_mode: local
     upheld_by_decisions: []
+    supersedes: []
   relationships:
     declared_in:
     - ADR-L-0002
@@ -517,6 +581,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -531,6 +600,7 @@ entities:
   name: INV-0017
   summary: ADR cross-references between different scopes MUST use fully-qualified
     identifiers (e.g., "ste-runtime:ADR-L-0001")
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0002#INV-0017
@@ -547,6 +617,7 @@ entities:
     enforcement_level: should
     declaration_mode: local
     upheld_by_decisions: []
+    supersedes: []
   relationships:
     declared_in:
     - ADR-L-0002
@@ -561,6 +632,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -575,6 +651,7 @@ entities:
   name: INV-0018
   summary: Scope resolution MUST NOT traverse above workspace root to prevent scanning
     unintended directories
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0002#INV-0018
@@ -591,6 +668,7 @@ entities:
     enforcement_level: must
     declaration_mode: local
     upheld_by_decisions: []
+    supersedes: []
   relationships:
     declared_in:
     - ADR-L-0002
@@ -605,6 +683,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -619,6 +702,7 @@ entities:
   name: INV-0019
   summary: ADR validation at workspace scope SHOULD validate all sub-module ADRs recursively
     when --recursive flag is provided
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0002#INV-0019
@@ -635,6 +719,7 @@ entities:
     enforcement_level: should
     declaration_mode: local
     upheld_by_decisions: []
+    supersedes: []
   relationships:
     declared_in:
     - ADR-L-0002
@@ -649,6 +734,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -664,6 +754,7 @@ entities:
   summary: 'Every component with public API MUST have unit tests covering: - Happy
     path (valid inputs) - Error cases (invalid inputs) - Edge cases (boundary conditions)
     - Backward compatibility (when applicable)'
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0003#INV-0020
@@ -686,6 +777,7 @@ entities:
     enforcement_level: must
     declaration_mode: local
     upheld_by_decisions: []
+    supersedes: []
   relationships:
     declared_in:
     - ADR-L-0003
@@ -700,6 +792,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -715,6 +812,7 @@ entities:
   summary: 'Schema validators MUST have tests proving correctness against: - Valid
     ADRs (should pass) - Invalid ADRs (should fail with clear errors) - Edge cases
     (empty fields, special characters, etc.)'
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0003#INV-0021
@@ -735,6 +833,7 @@ entities:
     enforcement_level: must
     declaration_mode: local
     upheld_by_decisions: []
+    supersedes: []
   relationships:
     declared_in:
     - ADR-L-0003
@@ -749,6 +848,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -764,6 +868,7 @@ entities:
   summary: 'Multi-scope functionality MUST have tests covering: - Single scope (backward
     compatibility) - Multiple scopes (recursive operations) - Scope boundary enforcement
     (security) - Parent-child relationships'
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0003#INV-0022
@@ -786,6 +891,7 @@ entities:
     enforcement_level: must
     declaration_mode: local
     upheld_by_decisions: []
+    supersedes: []
   relationships:
     declared_in:
     - ADR-L-0003
@@ -800,6 +906,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -813,6 +924,7 @@ entities:
   entity_type: invariant
   name: INV-0023
   summary: Test suite MUST complete in under 30 seconds for fast feedback
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0003#INV-0023
@@ -827,6 +939,7 @@ entities:
     enforcement_level: should
     declaration_mode: local
     upheld_by_decisions: []
+    supersedes: []
   relationships:
     declared_in:
     - ADR-L-0003
@@ -841,6 +954,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -854,6 +972,7 @@ entities:
   entity_type: invariant
   name: INV-0024
   summary: Tests MUST be deterministic - same input always produces same output
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0003#INV-0024
@@ -868,6 +987,7 @@ entities:
     enforcement_level: must
     declaration_mode: local
     upheld_by_decisions: []
+    supersedes: []
   relationships:
     declared_in:
     - ADR-L-0003
@@ -882,6 +1002,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -895,6 +1020,7 @@ entities:
   entity_type: invariant
   name: INV-0025
   summary: Breaking changes to public APIs MUST be detected by tests
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0003#INV-0025
@@ -909,6 +1035,7 @@ entities:
     enforcement_level: must
     declaration_mode: local
     upheld_by_decisions: []
+    supersedes: []
   relationships:
     declared_in:
     - ADR-L-0003
@@ -923,6 +1050,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -937,6 +1069,7 @@ entities:
   name: INV-0026
   summary: Test coverage SHOULD be measured and tracked, with minimum 80% coverage
     for critical components (parsers, validators, generators)
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0003#INV-0026
@@ -953,6 +1086,7 @@ entities:
     enforcement_level: should
     declaration_mode: local
     upheld_by_decisions: []
+    supersedes: []
   relationships:
     declared_in:
     - ADR-L-0003
@@ -967,6 +1101,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -982,6 +1121,7 @@ entities:
   summary: Greenfield in-scope implementation artifacts MUST declare architectural
     authority through @implements_adr or an equivalent metadata-level attribution
     mechanism; brownfield and migration may stage adoption under profile-s
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0004#INV-0027
@@ -1002,6 +1142,7 @@ entities:
     enforcement_level: must
     declaration_mode: local
     upheld_by_decisions: []
+    supersedes: []
   relationships:
     declared_in:
     - ADR-L-0004
@@ -1016,6 +1157,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -1030,6 +1176,7 @@ entities:
   name: INV-0028
   summary: Implementation attribution references MUST resolve to existing ADRs, and
     references to superseded ADRs MUST be surfaced as governance warnings
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0004#INV-0028
@@ -1047,6 +1194,7 @@ entities:
     enforcement_level: must
     declaration_mode: local
     upheld_by_decisions: []
+    supersedes: []
   relationships:
     declared_in:
     - ADR-L-0004
@@ -1061,6 +1209,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -1075,6 +1228,7 @@ entities:
   name: INV-0029
   summary: Implementation attribution evidence MUST preserve provenance identifying
     the source artifact and extractor responsible for the claim
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0004#INV-0029
@@ -1091,6 +1245,7 @@ entities:
     enforcement_level: must
     declaration_mode: local
     upheld_by_decisions: []
+    supersedes: []
   relationships:
     declared_in:
     - ADR-L-0004
@@ -1105,6 +1260,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -1119,6 +1279,7 @@ entities:
   name: INV-0030
   summary: Code decorated with @enforces_invariant MUST implement validation logic
     for that invariant
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0004#INV-0030
@@ -1136,6 +1297,7 @@ entities:
     enforcement_level: must
     declaration_mode: local
     upheld_by_decisions: []
+    supersedes: []
   relationships:
     declared_in:
     - ADR-L-0004
@@ -1150,6 +1312,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -1165,6 +1332,7 @@ entities:
   summary: adr-architecture-kit MUST define the canonical architecture-intent attribution
     rule and evidence contract without taking on direct source-code parsing responsibilities
     for downstream repositories
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0004#INV-0031
@@ -1183,6 +1351,7 @@ entities:
     enforcement_level: must
     declaration_mode: local
     upheld_by_decisions: []
+    supersedes: []
   relationships:
     declared_in:
     - ADR-L-0004
@@ -1197,6 +1366,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -1211,6 +1385,7 @@ entities:
   name: INV-0032
   summary: Downstream extractors and rule-delivery systems SHOULD consume ADR-Kit
     attribution contracts rather than redefining them independently
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0004#INV-0032
@@ -1227,6 +1402,7 @@ entities:
     enforcement_level: should
     declaration_mode: local
     upheld_by_decisions: []
+    supersedes: []
   relationships:
     declared_in:
     - ADR-L-0004
@@ -1241,6 +1417,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -1254,6 +1435,7 @@ entities:
   entity_type: invariant
   name: INV-0033
   summary: rule-library MUST define canonical schema for cooperative signals
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0006#INV-0033
@@ -1268,6 +1450,7 @@ entities:
     enforcement_level: must
     declaration_mode: local
     upheld_by_decisions: []
+    supersedes: []
   relationships:
     declared_in:
     - ADR-L-0006
@@ -1282,6 +1465,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -1295,6 +1483,7 @@ entities:
   entity_type: invariant
   name: INV-0034
   summary: rule-library MUST support file-based rule and signal handling
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0006#INV-0034
@@ -1309,6 +1498,7 @@ entities:
     enforcement_level: must
     declaration_mode: local
     upheld_by_decisions: []
+    supersedes: []
   relationships:
     declared_in:
     - ADR-L-0006
@@ -1323,6 +1513,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -1336,6 +1531,7 @@ entities:
   entity_type: invariant
   name: INV-0035
   summary: rule-library MUST NOT self-govern; it is governed by ADRs
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0006#INV-0035
@@ -1350,6 +1546,7 @@ entities:
     enforcement_level: must
     declaration_mode: local
     upheld_by_decisions: []
+    supersedes: []
   relationships:
     declared_in:
     - ADR-L-0006
@@ -1364,6 +1561,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -1378,6 +1580,7 @@ entities:
   name: INV-0036
   summary: Cooperative signal schema MUST include claim, progress, complete, wave_complete,
     validation_ready types
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0006#INV-0036
@@ -1394,6 +1597,7 @@ entities:
     enforcement_level: must
     declaration_mode: local
     upheld_by_decisions: []
+    supersedes: []
   relationships:
     declared_in:
     - ADR-L-0006
@@ -1408,6 +1612,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -1423,6 +1632,7 @@ entities:
   summary: 'INV-DOC-001: All human-readable architecture documentation must be generated
     from structured artifacts or explicit projection code that is itself governed
     as source state.'
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0007#INV-0037
@@ -1442,6 +1652,7 @@ entities:
     enforcement_level: must
     declaration_mode: local
     upheld_by_decisions: []
+    supersedes: []
   relationships:
     declared_in:
     - ADR-L-0007
@@ -1456,6 +1667,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -1470,6 +1686,7 @@ entities:
   name: INV-0038
   summary: 'INV-DOC-002: Generated documentation must be deterministic given identical
     source artifacts and generator inputs.'
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0007#INV-0038
@@ -1486,6 +1703,7 @@ entities:
     enforcement_level: must
     declaration_mode: local
     upheld_by_decisions: []
+    supersedes: []
   relationships:
     declared_in:
     - ADR-L-0007
@@ -1500,6 +1718,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -1514,6 +1737,7 @@ entities:
   name: INV-0039
   summary: 'INV-DOC-003: Rendered documentation must never be edited manually; changes
     must be made through generators, templates, or structured source artifacts.'
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0007#INV-0039
@@ -1531,6 +1755,7 @@ entities:
     enforcement_level: must
     declaration_mode: local
     upheld_by_decisions: []
+    supersedes: []
   relationships:
     declared_in:
     - ADR-L-0007
@@ -1545,6 +1770,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -1559,6 +1789,7 @@ entities:
   name: INV-0040
   summary: ADR validation MUST support a structural mode that accepts intentionally
     incomplete drafts when their schema shape is otherwise valid.
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0008#INV-0040
@@ -1575,6 +1806,7 @@ entities:
     enforcement_level: must
     declaration_mode: local
     upheld_by_decisions: []
+    supersedes: []
   relationships:
     declared_in:
     - ADR-L-0008
@@ -1589,6 +1821,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -1603,6 +1840,7 @@ entities:
   name: INV-0041
   summary: Complete validation MUST remain deterministic and MUST NOT depend on LLM
     reasoning.
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0008#INV-0041
@@ -1620,6 +1858,7 @@ entities:
     enforcement_level: must
     declaration_mode: local
     upheld_by_decisions: []
+    supersedes: []
   relationships:
     declared_in:
     - ADR-L-0008
@@ -1634,6 +1873,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -1648,6 +1892,7 @@ entities:
   name: INV-0042
   summary: Steelman review MUST remain a separate correctness-oriented review layer
     and MUST NOT be conflated with schema validation.
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0008#INV-0042
@@ -1665,6 +1910,7 @@ entities:
     enforcement_level: must
     declaration_mode: local
     upheld_by_decisions: []
+    supersedes: []
   relationships:
     declared_in:
     - ADR-L-0008
@@ -1679,6 +1925,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -1693,6 +1944,7 @@ entities:
   name: INV-0043
   summary: Canonical architectural authority MUST remain in ADR and standalone invariant
     artifacts, not in derived discovery artifacts.
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0009#INV-0043
@@ -1709,6 +1961,7 @@ entities:
     enforcement_level: must
     declaration_mode: local
     upheld_by_decisions: []
+    supersedes: []
   relationships:
     declared_in:
     - ADR-L-0009
@@ -1723,6 +1976,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -1737,6 +1995,7 @@ entities:
   name: INV-0044
   summary: Derived architecture discovery artifacts MUST be deterministic, reproducible,
     and disposable.
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0009#INV-0044
@@ -1753,6 +2012,7 @@ entities:
     enforcement_level: must
     declaration_mode: local
     upheld_by_decisions: []
+    supersedes: []
   relationships:
     declared_in:
     - ADR-L-0009
@@ -1767,6 +2027,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -1781,6 +2046,7 @@ entities:
   name: INV-0045
   summary: Agent-facing ADR toolkit workflows MUST prefer indexed lookup surfaces
     over raw ADR body traversal by default.
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0009#INV-0045
@@ -1797,6 +2063,7 @@ entities:
     enforcement_level: must
     declaration_mode: local
     upheld_by_decisions: []
+    supersedes: []
   relationships:
     declared_in:
     - ADR-L-0009
@@ -1811,6 +2078,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -1825,6 +2097,7 @@ entities:
   name: INV-0046
   summary: Generated prompts MUST include all invariants from the source ADR with
     their enforcement levels (must/should/may)
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0005#INV-0046
@@ -1842,6 +2115,7 @@ entities:
     enforcement_level: must
     declaration_mode: local
     upheld_by_decisions: []
+    supersedes: []
   relationships:
     declared_in:
     - ADR-L-0005
@@ -1856,6 +2130,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -1870,6 +2149,7 @@ entities:
   name: INV-0047
   summary: Generated prompts MUST include component specifications with complete interface
     definitions (methods, parameters, return types)
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0005#INV-0047
@@ -1886,6 +2166,7 @@ entities:
     enforcement_level: must
     declaration_mode: local
     upheld_by_decisions: []
+    supersedes: []
   relationships:
     declared_in:
     - ADR-L-0005
@@ -1900,6 +2181,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -1914,6 +2200,7 @@ entities:
   name: INV-0048
   summary: Generated prompts MUST reference the source ADR ID and specific sections
     (invariant IDs, component IDs) for traceability
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0005#INV-0048
@@ -1930,6 +2217,7 @@ entities:
     enforcement_level: must
     declaration_mode: local
     upheld_by_decisions: []
+    supersedes: []
   relationships:
     declared_in:
     - ADR-L-0005
@@ -1944,6 +2232,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -1957,6 +2250,7 @@ entities:
   entity_type: invariant
   name: INV-0049
   summary: Generated prompts MUST include test requirements from the ADR
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0005#INV-0049
@@ -1971,6 +2265,7 @@ entities:
     enforcement_level: must
     declaration_mode: local
     upheld_by_decisions: []
+    supersedes: []
   relationships:
     declared_in:
     - ADR-L-0005
@@ -1985,6 +2280,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -1999,6 +2299,7 @@ entities:
   name: INV-0050
   summary: Generated prompts SHOULD include implementation strategy guidance (e.g.,
     TDD cycle, dependency injection patterns)
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0005#INV-0050
@@ -2015,6 +2316,7 @@ entities:
     enforcement_level: should
     declaration_mode: local
     upheld_by_decisions: []
+    supersedes: []
   relationships:
     declared_in:
     - ADR-L-0005
@@ -2029,6 +2331,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -2043,6 +2350,7 @@ entities:
   name: INV-0051
   summary: Prompt generator MUST be deterministic - same ADR input always produces
     same prompt output
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0005#INV-0051
@@ -2059,6 +2367,7 @@ entities:
     enforcement_level: must
     declaration_mode: local
     upheld_by_decisions: []
+    supersedes: []
   relationships:
     declared_in:
     - ADR-L-0005
@@ -2073,6 +2382,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -2088,6 +2402,7 @@ entities:
   summary: 'The compiler''s guaranteed machine-readable contract surface MUST be defined
     as all generated artifacts under `adrs/index/` plus `adrs/manifest.yaml`. Consumers
     MAY define narrower minimal load subsets, but those subsets '
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0010#INV-0052
@@ -2109,6 +2424,7 @@ entities:
     enforcement_level: must
     declaration_mode: local
     upheld_by_decisions: []
+    supersedes: []
   relationships:
     declared_in:
     - ADR-L-0010
@@ -2123,6 +2439,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -2137,6 +2458,7 @@ entities:
   name: INV-0053
   summary: Contract validation MUST support profile-based enforcement for greenfield,
     brownfield, and migration without forking the registry schema.
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0010#INV-0053
@@ -2153,6 +2475,7 @@ entities:
     enforcement_level: must
     declaration_mode: local
     upheld_by_decisions: []
+    supersedes: []
   relationships:
     declared_in:
     - ADR-L-0010
@@ -2167,6 +2490,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -2181,6 +2509,7 @@ entities:
   name: INV-0054
   summary: Bundles classified as sentinel compliant MUST NOT be admitted to production
     kernel loads by default, but MAY be loaded by inspection-only or remediation tooling.
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0010#INV-0054
@@ -2199,6 +2528,7 @@ entities:
     enforcement_level: must
     declaration_mode: local
     upheld_by_decisions: []
+    supersedes: []
   relationships:
     declared_in:
     - ADR-L-0010
@@ -2213,6 +2543,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -2227,6 +2562,7 @@ entities:
   name: INV-0055
   summary: Reserved sentinel values MUST be allowed only in narrative fields or sections
     explicitly designated as sentinel-capable by schema or policy.
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0011#INV-0055
@@ -2244,6 +2580,7 @@ entities:
     enforcement_level: must
     declaration_mode: local
     upheld_by_decisions: []
+    supersedes: []
   relationships:
     declared_in:
     - ADR-L-0011
@@ -2258,6 +2595,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -2272,6 +2614,7 @@ entities:
   name: INV-0056
   summary: Remediation workflow state MUST be recorded in a separate canonical remediation
     ledger rather than in ADR content fields.
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0011#INV-0056
@@ -2288,6 +2631,7 @@ entities:
     enforcement_level: must
     declaration_mode: local
     upheld_by_decisions: []
+    supersedes: []
   relationships:
     declared_in:
     - ADR-L-0011
@@ -2302,6 +2646,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -2317,6 +2666,7 @@ entities:
   summary: Once a field or section has an approved remediation-ledger entry for non-sentinel
     canonical content, that field or section MUST NOT regress to a sentinel state
     under normal validation.
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0011#INV-0057
@@ -2335,6 +2685,7 @@ entities:
     enforcement_level: must
     declaration_mode: local
     upheld_by_decisions: []
+    supersedes: []
   relationships:
     declared_in:
     - ADR-L-0011
@@ -2349,6 +2700,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -2364,6 +2720,7 @@ entities:
   summary: Federation and aggregation layers MUST treat each repository as authoritative
     over its own canonical registries and MUST NOT mutate those registries during
     federation.
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0012#INV-0058
@@ -2382,6 +2739,7 @@ entities:
     enforcement_level: must
     declaration_mode: local
     upheld_by_decisions: []
+    supersedes: []
   relationships:
     declared_in:
     - ADR-L-0012
@@ -2396,6 +2754,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -2411,6 +2774,7 @@ entities:
   summary: In-process architecture consumers MUST use the ArchitectureRepository boundary
     instead of inventing ad hoc compiled-registry interpretation when a repository
     boundary is available. Cross-language or out-of-process consum
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0013#INV-0059
@@ -2433,6 +2797,7 @@ entities:
     enforcement_level: must
     declaration_mode: local
     upheld_by_decisions: []
+    supersedes: []
   relationships:
     declared_in:
     - ADR-L-0013
@@ -2447,6 +2812,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -2462,6 +2832,7 @@ entities:
   summary: STE onboarding workflows MUST treat discovery, normalization, canonization,
     regeneration, and validation as distinct phases with canonical artifacts updated
     before derived artifacts are refreshed.
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0014#INV-0060
@@ -2480,6 +2851,7 @@ entities:
     enforcement_level: must
     declaration_mode: local
     upheld_by_decisions: []
+    supersedes: []
   relationships:
     declared_in:
     - ADR-L-0014
@@ -2494,6 +2866,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -2509,6 +2886,7 @@ entities:
   summary: Rendered markdown artifacts MUST be treated as derived human-facing projections
     and MUST NOT be used as semantic authority when canonical YAML source artifacts
     are available.
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0014#INV-0061
@@ -2527,6 +2905,7 @@ entities:
     enforcement_level: must
     declaration_mode: local
     upheld_by_decisions: []
+    supersedes: []
   relationships:
     declared_in:
     - ADR-L-0014
@@ -2541,6 +2920,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -2555,6 +2939,7 @@ entities:
   name: INV-0064
   summary: Absence of ADR governance approval fields MUST NOT be interpreted as approval
     or implementation authority.
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0015#INV-0064
@@ -2572,6 +2957,7 @@ entities:
     enforcement_level: must
     declaration_mode: local
     upheld_by_decisions: []
+    supersedes: []
   relationships:
     declared_in:
     - ADR-L-0015
@@ -2586,6 +2972,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -2600,6 +2991,7 @@ entities:
   name: INV-0065
   summary: Objection override artifacts MUST NOT change ADR architectural meaning
     and MUST govern implementation allowance only.
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0015#INV-0065
@@ -2617,6 +3009,7 @@ entities:
     enforcement_level: must
     declaration_mode: local
     upheld_by_decisions: []
+    supersedes: []
   relationships:
     declared_in:
     - ADR-L-0015
@@ -2631,6 +3024,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -2645,6 +3043,7 @@ entities:
   name: INV-0066
   summary: Derived projections MUST expose only governance IDs and summary metadata
     and MUST NOT invent approvals, risks, or authority-altering interpretations.
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0015#INV-0066
@@ -2662,6 +3061,7 @@ entities:
     enforcement_level: must
     declaration_mode: local
     upheld_by_decisions: []
+    supersedes: []
   relationships:
     declared_in:
     - ADR-L-0015
@@ -2676,6 +3076,11 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
@@ -2691,6 +3096,7 @@ entities:
   summary: Cross-language or out-of-process architecture consumers that rely on the
     file-format contract MUST bootstrap from `adrs/index/architecture-index.yaml`,
     MUST require the minimal ingestion subset of `entity-registry.yaml`,
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0013#INV-0067
@@ -2722,6 +3128,7 @@ entities:
     enforcement_level: must
     declaration_mode: local
     upheld_by_decisions: []
+    supersedes: []
   relationships:
     declared_in:
     - ADR-L-0013
@@ -2736,12 +3143,879 @@ entities:
     supersedes: []
     superseded_by: []
     refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
   completeness:
     status: complete
     missing_fields: []
   provenance:
     source_type: logical_adr
     source_ref: ADR-L-0013#INV-0067
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
+- id: INV-0068
+  entity_type: invariant
+  name: INV-0068
+  summary: Forward authoring ergonomics in adr-architecture-kit MUST target logical,
+    physical-system, and physical-component ADRs, while legacy `ADR-P-*` support remains
+    compatibility-only.
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0017#INV-0068
+    artifact_path: adrs/logical/ADR-L-0017-forward-authoring-ergonomics-for-split-physical-adr-types.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0017
+    scope: global
+    statement: 'Forward authoring ergonomics in adr-architecture-kit MUST target logical,
+
+      physical-system, and physical-component ADRs, while legacy `ADR-P-*`
+
+      support remains compatibility-only.
+
+      '
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions: []
+    supersedes: []
+  relationships:
+    declared_in:
+    - ADR-L-0017
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0017#INV-0068
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
+- id: INV-0069
+  entity_type: invariant
+  name: INV-0069
+  summary: Forward-authoring ADR ID allocation MUST be monotonic and non-reusable.
+    Previously allocated IDs and historical gaps remain consumed history and MUST
+    NOT be reissued.
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0016#INV-0069
+    artifact_path: adrs/logical/ADR-L-0016-deterministic-corpus-query-and-authoring-orientation.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0016
+    scope: global
+    statement: 'Forward-authoring ADR ID allocation MUST be monotonic and non-reusable.
+
+      Previously allocated IDs and historical gaps remain consumed history and
+
+      MUST NOT be reissued.
+
+      '
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions: []
+    supersedes: []
+  relationships:
+    declared_in:
+    - ADR-L-0016
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0016#INV-0069
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
+- id: INV-0070
+  entity_type: invariant
+  name: INV-0070
+  summary: ADR IDs `9000-9999` MUST be treated as a reserved exceptional allocation
+    range for cases such as brownfield imports, retained legacy artifacts pending
+    migration, and other imported records requiring preserved identity. S
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0017#INV-0070
+    artifact_path: adrs/logical/ADR-L-0017-forward-authoring-ergonomics-for-split-physical-adr-types.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0017
+    scope: global
+    statement: 'ADR IDs `9000-9999` MUST be treated as a reserved exceptional allocation
+
+      range for cases such as brownfield imports, retained legacy artifacts
+
+      pending migration, and other imported records requiring preserved
+
+      identity. Standard forward authoring allocation MUST exclude that range.
+
+      '
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions: []
+    supersedes: []
+  relationships:
+    declared_in:
+    - ADR-L-0017
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0017#INV-0070
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
+- id: INV-0071
+  entity_type: invariant
+  name: INV-0071
+  summary: Reserved ADR IDs `9000-9999` MUST NOT participate in standard forward authoring
+    allocation.
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0016#INV-0071
+    artifact_path: adrs/logical/ADR-L-0016-deterministic-corpus-query-and-authoring-orientation.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0016
+    scope: global
+    statement: 'Reserved ADR IDs `9000-9999` MUST NOT participate in standard forward
+
+      authoring allocation.
+
+      '
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions: []
+    supersedes: []
+  relationships:
+    declared_in:
+    - ADR-L-0016
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0016#INV-0071
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
+- id: INV-0072
+  entity_type: invariant
+  name: INV-0072
+  summary: Pull-request and release validation MUST install the project before tests,
+    MUST measure canonical `adr_kit` namespace coverage at no less than 80%, and MUST
+    exercise both a source installation and the exact retained whee
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0003#INV-0072
+    artifact_path: adrs/logical/ADR-L-0003-quality-assurance-and-testing-strategy.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0003
+    scope: global
+    statement: 'Pull-request and release validation MUST install the project before
+      tests,
+
+      MUST measure canonical `adr_kit` namespace coverage at no less than 80%,
+
+      and MUST exercise both a source installation and the exact retained wheel
+
+      on every claimed Python version.
+
+      '
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions: []
+    supersedes: []
+  relationships:
+    declared_in:
+    - ADR-L-0003
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0003#INV-0072
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
+- id: INV-0073
+  entity_type: invariant
+  name: INV-0073
+  summary: Release publication MUST promote exactly one previously tested wheel and
+    one previously tested sdist without rebuilding. Their filenames, sizes, SHA-256
+    hashes, package version, source commit, and `v<version>` tag MUST b
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0003#INV-0073
+    artifact_path: adrs/logical/ADR-L-0003-quality-assurance-and-testing-strategy.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0003
+    scope: global
+    statement: 'Release publication MUST promote exactly one previously tested wheel
+      and
+
+      one previously tested sdist without rebuilding. Their filenames, sizes,
+
+      SHA-256 hashes, package version, source commit, and `v<version>` tag MUST
+
+      be verified before the privileged publish step. Ruff, strict-mypy, and
+
+      Black debt MUST be guarded by committed no-regression baselines that allow
+
+      removals but reject additions or count increases.
+
+      '
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions: []
+    supersedes: []
+  relationships:
+    declared_in:
+    - ADR-L-0003
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0003#INV-0073
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
+- id: INV-0074
+  entity_type: invariant
+  name: INV-0074
+  summary: The supported `adr_kit.api` facade MUST NOT expose `ArchModel`, compiler
+    configuration, compiler passes, frontend or backend objects, emitters, internal
+    output artifacts, mutable diagnostic logs, compiler caches, or othe
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0013#INV-0074
+    artifact_path: adrs/logical/ADR-L-0013-architecture-repository-boundary-and-normalized-semantic-model.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0013
+    scope: global
+    statement: 'The supported `adr_kit.api` facade MUST NOT expose `ArchModel`, compiler
+
+      configuration, compiler passes, frontend or backend objects, emitters,
+
+      internal output artifacts, mutable diagnostic logs, compiler caches, or
+
+      other compiler-internal types through public annotations or runtime result
+
+      object graphs.
+
+      '
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions: []
+    supersedes: []
+  relationships:
+    declared_in:
+    - ADR-L-0013
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0013#INV-0074
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
+- id: INV-0075
+  entity_type: invariant
+  name: INV-0075
+  summary: Source, editable-install, and clean retained-wheel consumers MUST exercise
+    the supported SDK and MUST agree on package, CLI, SDK result, capability, and
+    installed-distribution versions wherever distribution metadata exis
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0003#INV-0075
+    artifact_path: adrs/logical/ADR-L-0003-quality-assurance-and-testing-strategy.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0003
+    scope: global
+    statement: 'Source, editable-install, and clean retained-wheel consumers MUST
+      exercise
+
+      the supported SDK and MUST agree on package, CLI, SDK result, capability,
+
+      and installed-distribution versions wherever distribution metadata exists.
+
+      Direct-source fallback MUST occur only when metadata is absent and MUST NOT
+
+      hide invalid installed metadata or package-resource failures.
+
+      '
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions: []
+    supersedes: []
+  relationships:
+    declared_in:
+    - ADR-L-0003
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0003#INV-0075
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
+- id: INV-0076
+  entity_type: invariant
+  name: INV-0076
+  summary: Only ADR Kit tooling MAY create or modify canonical artifacts, authoring
+    projections, compatibility outputs, or other files inside the `adr-architecture-kit`
+    repository. External runtime or workspace tooling MAY read sup
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0013#INV-0076
+    artifact_path: adrs/logical/ADR-L-0013-architecture-repository-boundary-and-normalized-semantic-model.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0013
+    scope: global
+    statement: 'Only ADR Kit tooling MAY create or modify canonical artifacts, authoring
+
+      projections, compatibility outputs, or other files inside the
+
+      `adr-architecture-kit` repository. External runtime or workspace tooling MAY
+
+      read supported repository contracts but MUST NOT write anywhere inside any
+
+      repository tree. All runtime-derived and workspace-derived state MUST be
+
+      written beneath the workspace-root `.ste-workspace` directory.
+
+      '
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions: []
+    supersedes: []
+  relationships:
+    declared_in:
+    - ADR-L-0013
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0013#INV-0076
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
+- id: INV-0077
+  entity_type: invariant
+  name: INV-0077
+  summary: ADR schema v1.0 MUST remain byte-for-byte frozen. Parser dispatch MUST
+    resolve v1.0 and v1.2 authoring explicitly, MUST preserve the existing provisional
+    v1.1 artifact behavior, and MUST reject unsupported future version
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0018#INV-0077
+    artifact_path: adrs/logical/ADR-L-0018-schema-v12-and-normalized-semantic-foundation.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0018
+    scope: global
+    statement: 'ADR schema v1.0 MUST remain byte-for-byte frozen. Parser dispatch
+      MUST resolve
+
+      v1.0 and v1.2 authoring explicitly, MUST preserve the existing provisional
+
+      v1.1 artifact behavior, and MUST reject unsupported future versions without
+
+      falling back to another schema line.
+
+      '
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions: []
+    supersedes: []
+  relationships:
+    declared_in:
+    - ADR-L-0018
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0018#INV-0077
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
+- id: INV-0078
+  entity_type: invariant
+  name: INV-0078
+  summary: 'Substrate bindings, rule bindings, evidence expectations, and external
+    references MUST remain authored references. ADR Kit MUST NOT load, copy, execute,
+    infer over, or admit external semantic bodies or observed evidence '
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0018#INV-0078
+    artifact_path: adrs/logical/ADR-L-0018-schema-v12-and-normalized-semantic-foundation.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0018
+    scope: global
+    statement: 'Substrate bindings, rule bindings, evidence expectations, and external
+
+      references MUST remain authored references. ADR Kit MUST NOT load, copy,
+
+      execute, infer over, or admit external semantic bodies or observed evidence
+
+      as local architecture authority.
+
+      '
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions: []
+    supersedes: []
+  relationships:
+    declared_in:
+    - ADR-L-0018
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0018#INV-0078
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
+- id: INV-0079
+  entity_type: invariant
+  name: INV-0079
+  summary: Every newly projected relationship assertion MUST receive an `assertion_id`
+    using DEC-0086, while compatibility-preserved `relationship_id` semantics MUST
+    remain unchanged. Phase 2 MUST NOT claim GraphProjectionBundle, s
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0018#INV-0079
+    artifact_path: adrs/logical/ADR-L-0018-schema-v12-and-normalized-semantic-foundation.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0018
+    scope: global
+    statement: 'Every newly projected relationship assertion MUST receive an `assertion_id`
+
+      using DEC-0086, while compatibility-preserved `relationship_id` semantics MUST
+
+      remain unchanged. Phase 2 MUST NOT claim GraphProjectionBundle, snapshot
+
+      replacement, or source-scoped stale-assertion removal semantics.
+
+      '
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions: []
+    supersedes: []
+  relationships:
+    declared_in:
+    - ADR-L-0018
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0018#INV-0079
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
+- id: INV-0080
+  entity_type: invariant
+  name: INV-0080
+  summary: Topology migration MUST be deterministic, idempotent, non-destructive by
+    default, explicit about rewritten references, and fail closed on duplicate IDs,
+    ambiguous names, or dangling endpoints. It MUST NOT use probabilist
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0018#INV-0080
+    artifact_path: adrs/logical/ADR-L-0018-schema-v12-and-normalized-semantic-foundation.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0018
+    scope: global
+    statement: 'Topology migration MUST be deterministic, idempotent, non-destructive
+      by
+
+      default, explicit about rewritten references, and fail closed on duplicate IDs,
+
+      ambiguous names, or dangling endpoints. It MUST NOT use probabilistic or LLM
+
+      resolution.
+
+      '
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions: []
+    supersedes: []
+  relationships:
+    declared_in:
+    - ADR-L-0018
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0018#INV-0080
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
+- id: INV-0081
+  entity_type: invariant
+  name: INV-0081
+  summary: The normalized projectable entity vocabulary MUST be exactly `adr`, `system`,
+    `component`, `decision`, `capability`, `invariant`, `boundary`, `contract`, `interface`,
+    and `implementation_decision` for Phase 2. The relati
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0018#INV-0081
+    artifact_path: adrs/logical/ADR-L-0018-schema-v12-and-normalized-semantic-foundation.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0018
+    scope: global
+    statement: 'The normalized projectable entity vocabulary MUST be exactly `adr`,
+      `system`,
+
+      `component`, `decision`, `capability`, `invariant`, `boundary`, `contract`,
+
+      `interface`, and `implementation_decision` for Phase 2. The relationship
+
+      vocabulary is closed; the only newly authorized verbs are `binds_substrate`,
+
+      `binds_rule`, `expects_evidence`, `provides_interface`, `consumes_interface`,
+
+      and `composed_of`, and a compiler MUST emit one only from an actual authored
+
+      extraction path.
+
+      '
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions: []
+    supersedes: []
+  relationships:
+    declared_in:
+    - ADR-L-0018
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0018#INV-0081
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
+- id: INV-0082
+  entity_type: invariant
+  name: INV-0082
+  summary: ADR Kit MUST own detection and repair of canonical entity-ID collisions
+    in its repository. Allocation MUST be monotonic above the historical high-water
+    mark, MUST permanently reserve retired, removed, remapped, and previ
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0018#INV-0082
+    artifact_path: adrs/logical/ADR-L-0018-schema-v12-and-normalized-semantic-foundation.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0018
+    scope: global
+    statement: 'ADR Kit MUST own detection and repair of canonical entity-ID collisions
+      in its
+
+      repository. Allocation MUST be monotonic above the historical high-water mark,
+
+      MUST permanently reserve retired, removed, remapped, and previously allocated
+
+      IDs, and MUST update every uniquely resolvable schema-typed local reference.
+
+      Ambiguous references MUST fail closed until an explicit occurrence-scoped
+
+      resolution mapping is supplied. Runtime and CI MUST NOT perform canonical
+
+      repair writes.
+
+      '
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions: []
+    supersedes: []
+  relationships:
+    declared_in:
+    - ADR-L-0018
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0018#INV-0082
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index

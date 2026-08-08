@@ -6,8 +6,8 @@ from textwrap import dedent
 import pytest
 from click.testing import CliRunner
 
-from src.adr_kit.compiler.frontend import CachedADRParser
-from src.adr_kit.compiler.passes import (
+from adr_kit.compiler.frontend import CachedADRParser
+from adr_kit.compiler.passes import (
     detect_unresolved,
     DetectUnresolvedPass,
     DeriveRelationshipsPass,
@@ -26,15 +26,15 @@ from src.adr_kit.compiler.passes import (
     score_completeness,
     validate_bundle,
 )
-from src.adr_kit.cli.main import cli
-from src.adr_kit.generators import ArchitectureIndexGenerator
-from src.adr_kit.models import SourceRef
-from src.adr_kit.parser import ADRParser
+from adr_kit.cli.main import cli
+from adr_kit.generators import ArchitectureIndexGenerator
+from adr_kit.models import SourceRef
+from adr_kit.parser import ADRParser
 
 
 def _write_file(path: Path, content: str) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(dedent(content).strip() + "\n", encoding="utf-8")
+    path.write_text(dedent(content).strip() + "\n", encoding="utf-8", newline="\n")
 
 
 def _create_fixture(root: Path, include_namespace: bool = True) -> Path:
@@ -568,8 +568,15 @@ def test_extract_physical_entities_matches_current_fixture_shape(tmp_path):
         "SYS-1000",
         "ADR-PC-1000",
         "COMP-VALIDATOR",
+        "IFACE-1000",
     ]
-    assert [item.allow_reference_merge for item in result.entities] == [True, False, True, False]
+    assert [item.allow_reference_merge for item in result.entities] == [
+        True,
+        False,
+        True,
+        False,
+        False,
+    ]
     assert result.system_ids == {"ADR-PS-1000": "SYS-1000"}
 
 
@@ -937,6 +944,7 @@ def test_fixed_order_pass_runner_matches_current_generator_sequence(tmp_path):
         "SYS-1000",
         "ADR-PC-1000",
         "COMP-VALIDATOR",
+        "IFACE-1000",
     ]
     assert [item.relationship_id for item in result.relationship_derivation.relationships] == [
         item.relationship_id for item in bundle.relationship_registry.relationships

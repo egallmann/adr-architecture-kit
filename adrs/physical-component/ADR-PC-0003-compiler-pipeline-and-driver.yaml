@@ -6,6 +6,7 @@ status: proposed
 created_date: '2026-03-15'
 authors:
 - adr-architecture-kit
+modified_date: '2026-08-05'
 domains:
 - compiler
 - pipeline
@@ -20,6 +21,8 @@ introduces_entities:
 - COMP-0012
 - IFACE-0013
 - IMPL-0013
+- IFACE-0018
+- IMPL-0019
 technologies:
 - python
 - yaml
@@ -27,7 +30,9 @@ technologies:
 context: |
   The compiler driver and explicit pipeline now own deterministic architecture
   compilation across parse, analysis, emission, and recursive scope
-  orchestration. This component documents that public compile boundary.
+  orchestration. The command-line behavior is compatibility-relevant, while the
+  Python compiler pipeline, passes, `ArchModel`, emitters, and result plumbing are
+  internal reference implementation and are not a supported SDK facade.
 technology_stack:
 - category: language
   name: Python
@@ -46,6 +51,7 @@ component_specifications:
     - Execute deterministic pass ordering
     - Emit architecture bundle, manifest, graph, and rendered outputs
     - Support recursive multi-scope compilation and reporting
+    - Preserve existing CLI commands, options, outputs, diagnostics, and exit behavior
   generation_context:
     purpose: Compile canonical architecture artifacts into derived outputs.
     key_responsibilities:
@@ -55,8 +61,10 @@ component_specifications:
     constraints:
     - Derived outputs remain non-authoritative
     - Pass ordering must stay compiler-owned and explicit
+    - Internal compiler types must not cross the supported public facade
     success_criteria:
-    - adr compile remains the authoritative orchestration path
+    - adr compile remains the compatibility-preserved authoring CLI orchestration path
+    - Runtime machine-artifact authority remains owned by ste-runtime
     - Recursive compilation produces scope-local artifacts deterministically
   interfaces:
   - id: IFACE-0013
@@ -67,6 +75,14 @@ component_specifications:
       - adr generate-architecture-index
       - adr generate-manifest
       - adr generate-rendered-docs
+  - id: IFACE-0018
+    type: library_api
+    specification: |
+      A private compilation application service supports a restricted
+      `adr_kit.api.compile_architecture` adapter and a compatibility CLI adapter.
+      The public adapter accepts one explicit scope and only registries, manifest,
+      and markdown groups. The CLI adapter retains graph, recursive, check,
+      strict/lenient, contract-profile, output, diagnostic, and exit behavior.
   implementation_identifiers:
     module_path: src/adr_kit/compiler/driver.py
     service_name: adr-compiler
@@ -92,6 +108,15 @@ implementation_decisions:
 - id: IMPL-0013
   summary: Keep compiler orchestration as a dedicated component
   rationale: |
-    The explicit pipeline and driver are now stable public runtime behavior and
-    should not remain implicit inside a generic toolkit ADR.
+    The explicit pipeline and driver are a dedicated authoring-time implementation
+    component. Their CLI behavior and generated compatibility surfaces are guarded,
+    but their Python internals remain evolvable and must not be described as a
+    stable public runtime API.
+- id: IMPL-0019
+  summary: Contain compiler internals behind public and CLI application-service adapters
+  rationale: |
+    Shared orchestration preserves output and diagnostic semantics without
+    promoting `ArchModel`, compiler configuration, passes, emitters, internal
+    artifacts, or mutable diagnostic logs into the supported SDK. CLI behavioral
+    snapshots guard delegation independently from the narrower facade contract.
 gaps: []

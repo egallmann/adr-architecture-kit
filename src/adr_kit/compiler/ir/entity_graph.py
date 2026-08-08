@@ -5,8 +5,12 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 from typing import Any
 
-from ...models.architecture_discovery import CanonicalSource, Completeness, DiscoveryProvenance, SourceRef
-
+from ...models.architecture_discovery import (
+    CanonicalSource,
+    Completeness,
+    DiscoveryProvenance,
+    SourceRef,
+)
 
 IR_ENTITY_TYPES = (
     "adr",
@@ -38,6 +42,11 @@ ENTITY_RELATIONSHIP_TYPES = (
     "supersedes",
     "superseded_by",
     "refines",
+    "provides_interface",
+    "composed_of",
+    "binds_substrate",
+    "binds_rule",
+    "expects_evidence",
 )
 
 
@@ -52,7 +61,9 @@ class IREntity:
     canonical_source: CanonicalSource
     source_refs: list[SourceRef] = field(default_factory=list)
     metadata: dict[str, Any] = field(default_factory=dict)
-    completeness: Completeness = field(default_factory=lambda: Completeness(status="complete", missing_fields=[]))
+    completeness: Completeness = field(
+        default_factory=lambda: Completeness(status="complete", missing_fields=[])
+    )
     provenance: DiscoveryProvenance = field(
         default_factory=lambda: DiscoveryProvenance(
             source_type="ir",

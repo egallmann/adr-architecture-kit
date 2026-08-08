@@ -5,6 +5,7 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 from typing import Any
 
+from ...identity import derive_assertion_id
 
 RELATIONSHIP_TYPES = (
     "declared_in",
@@ -19,6 +20,11 @@ RELATIONSHIP_TYPES = (
     "supersedes",
     "superseded_by",
     "refines",
+    "provides_interface",
+    "composed_of",
+    "binds_substrate",
+    "binds_rule",
+    "expects_evidence",
 )
 
 
@@ -35,10 +41,22 @@ class IRRelationship:
     confidence: float = 1.0
     metadata: dict[str, Any] = field(default_factory=dict)
     relationship_id: str = ""
+    assertion_id: str = ""
+    source_pointer: str | None = None
 
     def __post_init__(self) -> None:
         if not self.relationship_id:
-            self.relationship_id = f"{self.relationship_type}:{self.from_entity_id}:{self.to_entity_id}"
+            self.relationship_id = (
+                f"{self.relationship_type}:{self.from_entity_id}:{self.to_entity_id}"
+            )
+        if not self.assertion_id:
+            self.assertion_id = derive_assertion_id(
+                self.relationship_type,
+                self.from_entity_id,
+                self.to_entity_id,
+                self.canonical_source_ref,
+                self.source_pointer,
+            )
         self.evidence = sorted(set(self.evidence))
 
 

@@ -81,7 +81,11 @@ def validate_bundle(
         )
 
     for relationship in relationship_registry.relationships:
-        if relationship.from_entity_id not in entity_ids or relationship.to_entity_id not in entity_ids:
+        target_scope = relationship.metadata.get("target_scope")
+        source_is_missing = relationship.from_entity_id not in entity_ids
+        target_is_missing = relationship.to_entity_id not in entity_ids
+        external_target_is_allowed = target_scope in {"external", "expectation"}
+        if source_is_missing or (target_is_missing and not external_target_is_allowed):
             log.error(
                 "E402",
                 f"Relationship references unknown entity: {relationship.relationship_id}",

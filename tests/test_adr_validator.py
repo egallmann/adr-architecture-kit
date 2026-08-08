@@ -5,8 +5,8 @@ import shutil
 import uuid
 from pathlib import Path
 
-from src.adr_kit.validators import ADRValidator, ValidationResult, ValidationError
-from src.adr_kit.scope import ProjectScopeResolver
+from adr_kit.validators import ADRValidator, ValidationResult, ValidationError
+from adr_kit.scope import ProjectScopeResolver
 
 
 class TestADRValidation:

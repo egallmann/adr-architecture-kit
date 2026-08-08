@@ -14,6 +14,8 @@ from ...models import (
     RelationshipRecord,
     StandaloneInvariant,
 )
+from ...models.architecture_discovery import RelationshipType
+from ...models.common import EntityReference, ExternalReference
 
 
 @dataclass(frozen=True)
@@ -82,7 +84,7 @@ def derive_relationships(
     result = RelationshipDerivationResult()
 
     def add_relationship(
-        relationship_type: str,
+        relationship_type: RelationshipType,
         from_id: str,
         to_id: str,
         source_ref: str,
@@ -91,8 +93,12 @@ def derive_relationships(
         classification: str = "explicit",
         confidence: float = 1.0,
         metadata: dict | None = None,
+        source_pointer: str | None = None,
+        allow_nonlocal_target: bool = False,
     ) -> None:
-        if from_id not in entities or to_id not in entities:
+        if from_id not in entities:
+            return
+        if to_id not in entities and not allow_nonlocal_target:
             return
         rel_id = relationship_id(relationship_type, from_id, to_id)
         if rel_id in relationships:
@@ -105,9 +111,25 @@ def derive_relationships(
             provenance_classification=classification,
             evidence=sorted(set(evidence)),
             canonical_source_ref=source_ref,
+            source_pointer=source_pointer,
             confidence=confidence,
             metadata=metadata or {},
         )
+
+    def normalized_binding_reference(
+        reference: EntityReference, *, owner: str, pointer: str
+    ) -> str | dict[str, str]:
+        if isinstance(reference, str):
+            if reference not in entities:
+                raise ValueError(
+                    f"Unresolved local binding reference {reference!r} at " f"{owner}#{pointer}"
+                )
+            return reference
+        if not isinstance(reference, ExternalReference):
+            raise TypeError(f"Unsupported binding reference at {owner}#{pointer}")
+        payload = reference.model_dump(mode="json")
+        payload["qualified_id"] = reference.qualified_id
+        return payload
 
     def add_gap(
         gap_id: str,
@@ -137,7 +159,13 @@ def derive_relationships(
         if entity.entity_type != "adr":
             adr_id = entity.canonical_source.source_ref.split("#")[0]
             if adr_id in entities:
-                add_relationship("declared_in", entity.id, adr_id, entity.canonical_source.source_ref, [entity.canonical_source.source_ref])
+                add_relationship(
+                    "declared_in",
+                    entity.id,
+                    adr_id,
+                    entity.canonical_source.source_ref,
+                    [entity.canonical_source.source_ref],
+                )
 
     for adr, _ in logical_adrs:
         for related in adr.related_adrs:
@@ -146,7 +174,13 @@ def derive_relationships(
         for capability in adr.capabilities:
             for component_id in capability.implemented_by_components:
                 if component_id in entities:
-                    add_relationship("implemented_by", capability.id, component_id, f"{adr.id}#{capability.id}", [adr.id])
+                    add_relationship(
+                        "implemented_by",
+                        capability.id,
+                        component_id,
+                        f"{adr.id}#{capability.id}",
+                        [adr.id],
+                    )
                 else:
                     add_gap(
                         f"GAP-IMPL-{capability.id}-{component_id}",
@@ -158,10 +192,24 @@ def derive_relationships(
                         related_entity_id=component_id,
                         expected_relationship="implemented_by",
                     )
+        for contract in adr.interaction_contracts:
+            for party in contract.parties:
+                if party in entities:
+                    add_relationship(
+                        "related_to",
+                        contract.id,
+                        party,
+                        f"{adr.id}#{contract.id}",
+                        [adr.id],
+                    )
         for decision in adr.decisions:
-            for invariant_id in sorted(set(decision.related_invariants + decision.enforces_invariants)):
+            for invariant_id in sorted(
+                set(decision.related_invariants + decision.enforces_invariants)
+            ):
                 if invariant_id in entities:
-                    add_relationship("enforces", decision.id, invariant_id, f"{adr.id}#{decision.id}", [adr.id])
+                    add_relationship(
+                        "enforces", decision.id, invariant_id, f"{adr.id}#{decision.id}", [adr.id]
+                    )
                 else:
                     add_gap(
                         f"GAP-INV-{decision.id}-{invariant_id}",
@@ -175,8 +223,17 @@ def derive_relationships(
                     )
             for capability_id in decision.enables_capabilities:
                 if capability_id in entities:
-                    add_relationship("enables", decision.id, capability_id, f"{adr.id}#{decision.id}", [adr.id])
-                    add_relationship("enabled_by", capability_id, decision.id, f"{adr.id}#{decision.id}", [adr.id], classification="derived")
+                    add_relationship(
+                        "enables", decision.id, capability_id, f"{adr.id}#{decision.id}", [adr.id]
+                    )
+                    add_relationship(
+                        "enabled_by",
+                        capability_id,
+                        decision.id,
+                        f"{adr.id}#{decision.id}",
+                        [adr.id],
+                        classification="derived",
+                    )
                 else:
                     add_gap(
                         f"GAP-CAP-{decision.id}-{capability_id}",
@@ -190,14 +247,150 @@ def derive_relationships(
                     )
             for component_id in decision.governs_components:
                 if component_id in entities:
-                    add_relationship("governs", decision.id, component_id, f"{adr.id}#{decision.id}", [adr.id])
+                    add_relationship(
+                        "governs", decision.id, component_id, f"{adr.id}#{decision.id}", [adr.id]
+                    )
             for target in decision.supersedes:
                 if target in entities:
-                    add_relationship("supersedes", decision.id, target, f"{adr.id}#{decision.id}", [adr.id])
-                    add_relationship("superseded_by", target, decision.id, f"{adr.id}#{decision.id}", [adr.id], classification="derived")
+                    add_relationship(
+                        "supersedes", decision.id, target, f"{adr.id}#{decision.id}", [adr.id]
+                    )
+                    add_relationship(
+                        "superseded_by",
+                        target,
+                        decision.id,
+                        f"{adr.id}#{decision.id}",
+                        [adr.id],
+                        classification="derived",
+                    )
             for target in decision.refines:
                 if target in entities:
-                    add_relationship("refines", decision.id, target, f"{adr.id}#{decision.id}", [adr.id])
+                    add_relationship(
+                        "refines", decision.id, target, f"{adr.id}#{decision.id}", [adr.id]
+                    )
+        for invariant in adr.invariants:
+            for target in getattr(invariant, "supersedes", []) or []:
+                if target in entities:
+                    add_relationship(
+                        "supersedes", invariant.id, target, f"{adr.id}#{invariant.id}", [adr.id]
+                    )
+                    add_relationship(
+                        "superseded_by",
+                        target,
+                        invariant.id,
+                        f"{adr.id}#{invariant.id}",
+                        [adr.id],
+                        classification="derived",
+                    )
+
+        for index, substrate_binding in enumerate(adr.substrate_bindings):
+            pointer = f"/substrate_bindings/{index}"
+            normalized_binding_reference(
+                substrate_binding.selected_by,
+                owner=adr.id,
+                pointer=f"{pointer}/selected_by",
+            )
+            external_reference = {
+                "namespace": substrate_binding.external_namespace,
+                "id": substrate_binding.artifact_id,
+                "kind": substrate_binding.kind,
+                "fingerprint": substrate_binding.fingerprint,
+                "qualified_id": (
+                    f"{substrate_binding.external_namespace}:"
+                    f"{substrate_binding.artifact_id}"
+                ),
+            }
+            add_relationship(
+                "binds_substrate",
+                adr.id,
+                external_reference["qualified_id"],
+                adr.id,
+                [adr.id],
+                source_pointer=pointer,
+                allow_nonlocal_target=True,
+                metadata={
+                    "target_scope": "external",
+                    "external_reference": external_reference,
+                    "version": substrate_binding.version,
+                    "source_pack": substrate_binding.source_pack,
+                    "role": substrate_binding.role,
+                    "selected_by": substrate_binding.selected_by,
+                    "local_config_ref": substrate_binding.local_config_ref,
+                    "supersedes": [
+                        normalized_binding_reference(
+                            item,
+                            owner=adr.id,
+                            pointer=f"{pointer}/supersedes/{item_index}",
+                        )
+                        for item_index, item in enumerate(substrate_binding.supersedes)
+                    ],
+                },
+            )
+
+        for index, rule_binding in enumerate(adr.rule_bindings):
+            pointer = f"/rule_bindings/{index}"
+            affected_entities = [
+                normalized_binding_reference(
+                    item,
+                    owner=adr.id,
+                    pointer=f"{pointer}/affected_entities/{item_index}",
+                )
+                for item_index, item in enumerate(rule_binding.affected_entities)
+            ]
+            qualified_id = f"{rule_binding.namespace}:{rule_binding.rule_id}"
+            add_relationship(
+                "binds_rule",
+                adr.id,
+                qualified_id,
+                adr.id,
+                [adr.id],
+                source_pointer=pointer,
+                allow_nonlocal_target=True,
+                metadata={
+                    "target_scope": "external",
+                    "external_reference": {
+                        "namespace": rule_binding.namespace,
+                        "id": rule_binding.rule_id,
+                        "kind": "rule",
+                        "fingerprint": rule_binding.fingerprint,
+                        "qualified_id": qualified_id,
+                    },
+                    "version": rule_binding.version,
+                    "disposition": rule_binding.disposition,
+                    "rationale": rule_binding.rationale,
+                    "exception_ref": rule_binding.exception_ref,
+                    "owner": rule_binding.owner,
+                    "affected_entities": affected_entities,
+                    "expected_evidence_ref": rule_binding.expected_evidence_ref,
+                },
+            )
+
+        for index, expectation in enumerate(adr.evidence_expectations):
+            pointer = f"/evidence_expectations/{index}"
+            related_entities = [
+                normalized_binding_reference(
+                    item,
+                    owner=adr.id,
+                    pointer=f"{pointer}/related_entities/{item_index}",
+                )
+                for item_index, item in enumerate(expectation.related_entities)
+            ]
+            add_relationship(
+                "expects_evidence",
+                adr.id,
+                expectation.expectation_id,
+                adr.id,
+                [adr.id],
+                source_pointer=pointer,
+                allow_nonlocal_target=True,
+                metadata={
+                    "target_scope": "expectation",
+                    "kind": expectation.kind,
+                    "description": expectation.description,
+                    "related_entities": related_entities,
+                    "observed_evidence": False,
+                },
+            )
 
     for invariant, _ in standalone_invariants:
         if invariant.id not in entities:
@@ -210,9 +403,23 @@ def derive_relationships(
         if isinstance(adr, PhysicalComponentADR):
             for component in adr.component_specifications:
                 component_id = component.component_id or component.id
+                for interface in component.interfaces:
+                    add_relationship(
+                        "provides_interface",
+                        component_id,
+                        interface.id,
+                        f"{adr.id}#{interface.id}",
+                        [adr.id],
+                    )
                 for capability_id in component.implements_capabilities:
                     if capability_id in entities:
-                        add_relationship("implemented_by", capability_id, component_id, f"{adr.id}#{component_id}", [adr.id])
+                        add_relationship(
+                            "implemented_by",
+                            capability_id,
+                            component_id,
+                            f"{adr.id}#{component_id}",
+                            [adr.id],
+                        )
                     else:
                         add_gap(
                             f"GAP-MISSING-CAP-{component_id}-{capability_id}",
@@ -225,9 +432,17 @@ def derive_relationships(
                             expected_relationship="implemented_by",
                         )
                 for system_id in adr.implements_system:
-                    resolved_system_id = system_ids.get(system_id, f"SYS-{system_id.replace('ADR-PS-', '')}")
+                    resolved_system_id = system_ids.get(
+                        system_id, f"SYS-{system_id.replace('ADR-PS-', '')}"
+                    )
                     if resolved_system_id in entities:
-                        add_relationship("embodied_in", component_id, resolved_system_id, f"{adr.id}#{component_id}", [adr.id])
+                        add_relationship(
+                            "embodied_in",
+                            component_id,
+                            resolved_system_id,
+                            f"{adr.id}#{component_id}",
+                            [adr.id],
+                        )
                     else:
                         add_gap(
                             f"GAP-MISSING-SYS-{component_id}-{system_id}",
@@ -241,11 +456,50 @@ def derive_relationships(
                         )
                 for dep in component.dependencies:
                     if dep in entities:
-                        add_relationship("related_to", component_id, dep, f"{adr.id}#{component_id}", [adr.id], classification="derived", confidence=0.8)
+                        add_relationship(
+                            "related_to",
+                            component_id,
+                            dep,
+                            f"{adr.id}#{component_id}",
+                            [adr.id],
+                            classification="derived",
+                            confidence=0.8,
+                        )
+            for implementation_decision in adr.implementation_decisions:
+                for invariant_id in implementation_decision.implements_invariants:
+                    if invariant_id in entities:
+                        add_relationship(
+                            "enforces",
+                            implementation_decision.id,
+                            invariant_id,
+                            f"{adr.id}#{implementation_decision.id}",
+                            [adr.id],
+                        )
+        if isinstance(adr, PhysicalSystemADR):
+            system_id = system_ids[adr.id]
+            for topology_component in (
+                adr.component_topology.components if adr.component_topology else []
+            ):
+                if topology_component.id is not None:
+                    add_relationship(
+                        "composed_of",
+                        system_id,
+                        topology_component.id,
+                        f"{adr.id}#{topology_component.id}",
+                        [adr.id],
+                    )
         if isinstance(adr, PhysicalSystemADR) and adr.references_components:
             for component_adr in adr.references_components:
                 if component_adr in entities:
-                    add_relationship("related_to", adr.id, component_adr, adr.id, [adr.id], classification="derived", confidence=0.8)
+                    add_relationship(
+                        "related_to",
+                        adr.id,
+                        component_adr,
+                        adr.id,
+                        [adr.id],
+                        classification="derived",
+                        confidence=0.8,
+                    )
 
     result.relationships = sorted(relationships.values(), key=lambda item: item.relationship_id)
     result.generator_gaps.sort(key=lambda item: item.gap_id)

@@ -20,7 +20,7 @@ Thank you for your interest in contributing. This document covers how to set up 
 
 ## Development Setup
 
-**Requirements:** Python 3.11+
+**Requirements:** Python 3.11–3.14
 
 ```bash
 # Clone the repository
@@ -47,6 +47,7 @@ adr --help
 - [`README.md`](README.md) at the repository root is maintained manually.
 - [`SYSTEM-OVERVIEW.md`](SYSTEM-OVERVIEW.md) is **generated**; edit its template/generator in `src/adr_kit/` rather than hand-editing the committed artifact.
 - This repository is expected to work as a **standalone checkout**. The public Architecture IR schema is mirrored at [`contracts/architecture-ir/architecture-ir.schema.json`](contracts/architecture-ir/architecture-ir.schema.json) (see [`contracts/architecture-ir/MIRROR.md`](contracts/architecture-ir/MIRROR.md)); some tests additionally compare against a sibling `ste-spec` checkout when present.
+- If **`git ls-files -v`** shows **`H`** for paths you have edited locally, **`assume-unchanged`** is enabled. Git may omit those paths from **`git status`** until you run **`git update-index --no-assume-unchanged -- <paths>`**. That hides real drift (for example **`schema/`** vs **`src/adr_kit/schema/`** parity) against a fresh clone or CI — clear it before you commit schema or generated-artifact fixes. Avoid blanket-setting assume-unchanged on the whole repository when doing release work (`tests/test_package_schema_parity.py` helps catch bundled drift).
 
 ---
 
@@ -66,15 +67,18 @@ See [`docs/contributors/tdd-workflow.md`](docs/contributors/tdd-workflow.md) for
 
 | Gate | Command |
 |------|---------|
-| Test suite | `pytest` |
-| Coverage (≥80%) | `pytest --cov=adr_kit --cov-report=term-missing` |
-| Lint | `ruff check src/ tests/` |
-| Type check | `mypy src/` |
-| Format | `black --check src/ tests/` |
+| Test suite | `python -m pytest` |
+| Coverage (≥80%) | `python -m pytest --cov=adr_kit --cov-report=term-missing --cov-fail-under=80` |
+| Compatibility | `python scripts/check_compatibility_snapshots.py` |
+| Version consistency | `python scripts/check_version_consistency.py` |
+| Public SDK | `python -m pytest tests/test_public_sdk_contract.py tests/test_public_sdk_operations.py -q` |
+| Quality debt | `python scripts/check_quality_ratchets.py` |
 | Governance | `adr governance-checks` |
 | Schema parity | see below |
 
-**CI vs local:** GitHub Actions enforces ADR validation, `adr governance-checks` (including `pytest`), generated-docs checks, system overview validation, runtime hygiene, and the schema parity step below. The other rows (coverage threshold, `ruff`, `mypy`, `black --check`) are **strongly recommended locally** before merge but are not separate CI jobs today.
+CI enforces every row above, source-installed tests on Python 3.11–3.14,
+dependency audit, build-once release artifacts, retained-wheel smoke tests on all
+four Python versions, fixed-epoch reproducibility, and benchmark determinism.
 
 ---
 
@@ -85,7 +89,7 @@ See [`docs/contributors/tdd-workflow.md`](docs/contributors/tdd-workflow.md) for
 pytest
 
 # With coverage report
-pytest --cov=adr_kit --cov-report=term-missing
+python -m pytest --cov=adr_kit --cov-report=term-missing --cov-fail-under=80
 
 # Specific test file
 pytest tests/test_schema_validation.py -v
@@ -99,6 +103,8 @@ JSON Schemas exist in two locations that must stay in sync:
 
 - `schema/v1.0/` and `schema/v1.1/` — canonical schema sources
 - `src/adr_kit/schema/v1_0/` and `src/adr_kit/schema/v1_1/` — bundled copies shipped with the package
+
+**Implementation attribution evidence:** authoritative schema and CLI validation live in this repository (`schema/v1.1/implementation-attribution-evidence.schema.json` and bundled copy). **`ste-spec`** only carries draft hand-off prose under `contracts/implementation-attribution-evidence/` until promotion—there is no JSON mirror to sync there yet (unlike Architecture IR).
 
 CI verifies byte-level parity. If you update schemas, regenerate the bundled copies:
 
@@ -132,6 +138,19 @@ adr validate-project-metadata
 python scripts/check_runtime_hygiene.py
 ```
 
+When touching implementation linkage or attribution evidence pipelines, smoke-check representative files with **`adr attribution check`** (optional `adr attribution coverage` for corpus-vs-evidence summaries); see README **Implementation linkage** for flags and evidence path defaults.
+
+**Attribution retrofit closure workflow** (multi-repo STE workspace):
+
+1. From **`ste-runtime`**, refresh derived evidence into the workspace-root
+   `.ste-workspace/` directory. The runtime must never write into this repository.
+2. Evidence path: `.ste-workspace/state/adr-architecture-kit/attribution/implementation-attribution-evidence.yaml`
+3. From **`adr-architecture-kit`**: `adr attribution check --scope . --evidence <path above>`
+4. Contract guards: `pytest tests/test_retrofit_contract_guards.py tests/test_attribution_evidence_sync.py -q`
+5. Negative-space sign-off: [`docs/attribution-negative-space.md`](docs/attribution-negative-space.md)
+
+Pre-push runs contract guards always; **`adr attribution check`** runs when workspace evidence exists (otherwise skipped with a message).
+
 ### System overview and unified compile
 
 ```bash
@@ -157,6 +176,9 @@ Or run the checks manually before pushing:
 ```bash
 python scripts/run_local_pre_push_checks.py
 ```
+
+That bundle validates generated-docs integrity and runs a **subset** of `pytest`, including **`tests/test_package_schema_parity.py`** — canonical **`schema/v*.*`** must byte-match **`src/adr_kit/schema/v*_*`** (same check as **`Check package schema parity`** in **`.github/workflows/adr-governance.yml`**). It also runs **`tests/test_retrofit_contract_guards.py`** and **`tests/test_attribution_evidence_sync.py`**, then **`adr attribution check`** when workspace RECON evidence is present under **`.ste-workspace/state/adr-architecture-kit/`**.
+
 
 ---
 
@@ -196,11 +218,19 @@ The **link** is that PyPI trusts *that GitHub repo + that workflow file* to uplo
 
 ### Ship a version
 
-1. Bump **`version`** in [`pyproject.toml`](pyproject.toml) (and keep [`src/adr_kit/__init__.py`](src/adr_kit/__init__.py) `__version__` in sync if you rely on it).
+1. Bump **`version`** only in [`pyproject.toml`](pyproject.toml). Runtime, CLI, and SDK
+   versions resolve from distribution metadata; do not add another version literal.
 2. Update [`CHANGELOG.md`](CHANGELOG.md) with a dated section for that version.
-3. **Merge to `main`** (e.g. via pull request). When that merge includes a change to **`pyproject.toml`**, [`publish-pypi.yml`](.github/workflows/publish-pypi.yml) runs, builds with `python -m build`, and uploads to PyPI.
+3. Merge the reviewed version change to `main` and create the exact tag
+   `v<project-version>` (for example, `v0.1.1`).
+4. The release workflow reruns quality/governance gates, builds one wheel and one
+   sdist, validates metadata, creates a hash manifest, tests the retained wheel on
+   Python 3.11–3.14, and uploads the retained bundle.
+5. The `pypi` job downloads and re-verifies that bundle against the source commit,
+   package version, and tag, then publishes without rebuilding.
 
-Merges to `main` that do **not** touch `pyproject.toml` do not trigger a publish (avoids failed uploads when the version was not bumped). The **first** successful upload creates the PyPI project if it did not exist.
+The workflow does not publish on a branch push or manual dispatch. The first
+successful tagged upload creates the PyPI project if it does not exist.
 
 ### After publish
 

@@ -11,12 +11,16 @@
       "type": "array",
       "items": {
         "type": "object",
-        "required": ["id", "entity_type", "name", "summary", "canonical_source", "source_refs", "metadata", "relationships", "completeness", "provenance"],
+        "required": ["id", "entity_type", "name", "summary", "lifecycle_stage", "canonical_source", "source_refs", "metadata", "relationships", "completeness", "provenance"],
         "properties": {
           "id": {"type": "string"},
           "entity_type": {
             "type": "string",
-            "enum": ["adr", "system", "component", "decision", "capability", "invariant"]
+            "enum": ["adr", "system", "component", "decision", "capability", "invariant", "boundary", "contract", "interface", "implementation_decision"]
+          },
+          "lifecycle_stage": {
+            "type": "string",
+            "enum": ["proposed", "active", "deprecated", "superseded"]
           },
           "name": {"type": "string"},
           "summary": {"type": "string"},

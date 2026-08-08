@@ -51,7 +51,7 @@ technology_stack:
   version: stdlib
   rationale: Cross-platform path handling for scope resolution
 component_specifications:
-- id: COMP-0001
+- id: COMP-0017
   name: Project Scope Resolver
   type: library
   description: |
@@ -64,7 +64,7 @@ component_specifications:
     - Discover sub-module scopes recursively
     - Maintain parent-child scope relationships
   interfaces:
-  - id: IFACE-0001
+  - id: IFACE-0021
     name: ProjectScope
     type: dataclass
     description: Immutable scope metadata
@@ -76,7 +76,7 @@ component_specifications:
     - name: Optional[str] - Project name
     - is_sub_module: bool - Sub-module flag
     - parent_scope: Optional[ProjectScope] - Parent reference
-  - id: IFACE-0002
+  - id: IFACE-0025
     name: ProjectScopeResolver
     type: class
     methods:
@@ -94,7 +94,7 @@ component_specifications:
   - Unit tests for boundary enforcement
   - Unit tests for recursive discovery
   - Integration tests with real directory structures
-- id: COMP-0002
+- id: COMP-0019
   name: Scope-Aware Manifest Generator
   type: library
   description: |
@@ -105,12 +105,12 @@ component_specifications:
     - Generate manifests recursively for all scopes
     - Maintain backward compatibility with single-scope usage
   interfaces:
-  - id: IFACE-0003
+  - id: IFACE-0027
     name: ManifestGenerator.__init__
     parameters:
     - parser: ADRParser (optional)
     - scope_resolver: ProjectScopeResolver (optional)
-  - id: IFACE-0004
+  - id: IFACE-0029
     name: generate_from_directory
     parameters:
     - adr_dir: Path
@@ -138,7 +138,7 @@ component_specifications:
   - Test explicit scope override
   - Test recursive generation
   - Test backward compatibility
-- id: COMP-0003
+- id: COMP-0020
   name: Scope-Aware Validator
   type: library
   description: |
@@ -166,7 +166,7 @@ component_specifications:
   - Test explicit scope override
   - Test recursive validation
   - Test backward compatibility
-- id: COMP-0004
+- id: COMP-0021
   name: Multi-Scope CLI
   type: library
   description: |
@@ -205,7 +205,7 @@ component_specifications:
   - Test error handling
   - Test --help documentation
 implementation_decisions:
-- id: IMPL-0001
+- id: IMPL-0022
   summary: Adopt Red-Green-Refactor TDD Methodology
   rationale: |
     Test-Driven Development is architecturally aligned with STE principles:
@@ -241,7 +241,7 @@ implementation_decisions:
   - Living documentation via tests
   - Confidence in refactoring
   - Provable correctness for critical validation logic
-- id: IMPL-0002
+- id: IMPL-0024
   summary: Use Dataclasses for ProjectScope
   rationale: |
     Dataclasses provide immutable, type-safe scope metadata with minimal
@@ -255,7 +255,7 @@ implementation_decisions:
   - Requires Python 3.7+ (already required)
   - Clear, type-checked scope objects
   - Easy serialization for debugging
-- id: IMPL-0003
+- id: IMPL-0026
   summary: Mirror ste-runtime Marker Hierarchy
   rationale: |
     Consistency across STE ecosystem. Users familiar with ste-runtime
@@ -269,7 +269,7 @@ implementation_decisions:
   - ste.config.json works for both systems
   - Predictable behavior across tools
   - Easier to document and support
-- id: IMPL-0004
+- id: IMPL-0027
   summary: Backward Compatible API
   rationale: |
     Existing single-scope code must continue working without changes.
@@ -379,3 +379,53 @@ notes: |
   2. Boundary enforcement security
   3. Backward compatibility
   4. CLI user experience
+migration_origin:
+  remapped_entities:
+  - entity_type: component
+    from: COMP-0001
+    to: COMP-0017
+    source_pointer: /component_specifications/0/id
+  - entity_type: component
+    from: COMP-0002
+    to: COMP-0019
+    source_pointer: /component_specifications/1/id
+  - entity_type: component
+    from: COMP-0003
+    to: COMP-0020
+    source_pointer: /component_specifications/2/id
+  - entity_type: component
+    from: COMP-0004
+    to: COMP-0021
+    source_pointer: /component_specifications/3/id
+  - entity_type: implementation_decision
+    from: IMPL-0001
+    to: IMPL-0022
+    source_pointer: /implementation_decisions/0/id
+  - entity_type: implementation_decision
+    from: IMPL-0002
+    to: IMPL-0024
+    source_pointer: /implementation_decisions/1/id
+  - entity_type: implementation_decision
+    from: IMPL-0003
+    to: IMPL-0026
+    source_pointer: /implementation_decisions/2/id
+  - entity_type: implementation_decision
+    from: IMPL-0004
+    to: IMPL-0027
+    source_pointer: /implementation_decisions/3/id
+  - entity_type: interface
+    from: IFACE-0001
+    to: IFACE-0021
+    source_pointer: /component_specifications/0/interfaces/0/id
+  - entity_type: interface
+    from: IFACE-0002
+    to: IFACE-0025
+    source_pointer: /component_specifications/0/interfaces/1/id
+  - entity_type: interface
+    from: IFACE-0003
+    to: IFACE-0027
+    source_pointer: /component_specifications/1/interfaces/0/id
+  - entity_type: interface
+    from: IFACE-0004
+    to: IFACE-0029
+    source_pointer: /component_specifications/1/interfaces/1/id

@@ -40,11 +40,15 @@ from ..models import (
     ValidationSummary,
 )
 from ..scope import ProjectScope
-from .backend.projection import PROJECTABLE_ENTITY_TYPES, project_entity, project_relationship, project_unresolved
+from .backend.projection import (
+    PROJECTABLE_ENTITY_TYPES,
+    project_entity,
+    project_relationship,
+    project_unresolved,
+)
 from .diagnostics import DiagnosticLevel, DiagnosticLog
 from .ir import ArchModel
 from .passes import validate_bundle
-
 
 BUNDLE_GENERATOR_ID = "adr-architecture-index"
 
@@ -66,7 +70,9 @@ class ArchitectureDiscoveryBundle:
 def render_bundle_yaml(model) -> str:
     """Render a registry bundle model deterministically."""
 
-    return yaml.safe_dump(model.model_dump(mode="json", exclude_none=True), sort_keys=False, allow_unicode=True)
+    return yaml.safe_dump(
+        model.model_dump(mode="json", exclude_none=True), sort_keys=False, allow_unicode=True
+    )
 
 
 def render_legacy_entity_registry(bundle: ArchitectureDiscoveryBundle, scope: ProjectScope) -> str:
@@ -104,7 +110,11 @@ def assemble_registry_bundle(
     """Assemble the discovery bundle directly from the compiler IR."""
 
     diagnostics = diagnostics or DiagnosticLog()
-    generated_at = generated_at or model.metadata.generated_at or datetime.now(timezone.utc).replace(microsecond=0)
+    generated_at = (
+        generated_at
+        or model.metadata.generated_at
+        or datetime.now(timezone.utc).replace(microsecond=0)
+    )
 
     projected_entities = [
         projected
@@ -112,11 +122,13 @@ def assemble_registry_bundle(
         if entity.entity_type in PROJECTABLE_ENTITY_TYPES
         and (projected := project_entity(entity, model.relationships)) is not None
     ]
-    projected_relationships = [project_relationship(relationship) for relationship in model.relationships.values()]
+    projected_relationships = [
+        project_relationship(relationship) for relationship in model.relationships.values()
+    ]
     projected_unresolved = [project_unresolved(item) for item in model.unresolved.values()]
 
     entity_registry = NormalizedEntityRegistry(
-        entities=sorted(projected_entities, key=lambda item: (item.entity_type, item.id))
+        entities=sorted(projected_entities, key=lambda item: item.id)
     )
     relationship_registry = RelationshipRegistry(
         relationships=sorted(projected_relationships, key=lambda item: item.relationship_id)
@@ -131,7 +143,11 @@ def assemble_registry_bundle(
     system_registry = _filtered(entity_registry, "system")
     legacy_registry = EntityRegistry(
         entities=sorted(
-            [legacy for entity in entity_registry.entities if (legacy := _legacy_entity(entity)) is not None],
+            [
+                legacy
+                for entity in entity_registry.entities
+                if (legacy := _legacy_entity(entity)) is not None
+            ],
             key=lambda item: item.entity_id,
         )
     )
@@ -179,7 +195,9 @@ def assemble_registry_bundle(
 
 
 def _filtered(registry: NormalizedEntityRegistry, entity_type: str) -> NormalizedEntityRegistry:
-    return NormalizedEntityRegistry(entities=[entity for entity in registry.entities if entity.entity_type == entity_type])
+    return NormalizedEntityRegistry(
+        entities=[entity for entity in registry.entities if entity.entity_type == entity_type]
+    )
 
 
 def _legacy_entity(entity: NormalizedEntity) -> Entity | None:
@@ -191,7 +209,9 @@ def _legacy_entity(entity: NormalizedEntity) -> Entity | None:
     }
     if entity.entity_type not in mapping:
         return None
-    if entity.entity_type == "component" and entity.id != entity.metadata.get("legacy_component_id", entity.id):
+    if entity.entity_type == "component" and entity.id != entity.metadata.get(
+        "legacy_component_id", entity.id
+    ):
         return None
 
     introduced_by = entity.canonical_source.source_ref.split("#")[0]
@@ -225,4 +245,3 @@ def _legacy_entity(entity: NormalizedEntity) -> Entity | None:
             realizes=list(entity.relationships.enforces),
         ),
     )
-

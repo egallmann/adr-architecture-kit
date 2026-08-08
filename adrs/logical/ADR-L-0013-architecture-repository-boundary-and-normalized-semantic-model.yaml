@@ -6,6 +6,7 @@ status: accepted
 created_date: '2026-03-14'
 authors:
 - adr-architecture-kit
+modified_date: '2026-08-06'
 domains:
 - repository
 - discovery
@@ -21,11 +22,16 @@ introduces_entities:
 - CAP-0039
 - INV-0067
 - CAP-0044
+- INV-0074
+- CAP-0047
+- INV-0076
 context: |
   adr-architecture-kit now has an explicit compiler pipeline, a compiler IR
   (`ArchModel`), compiled registry bundles, and an additive architecture graph.
   Those pieces are sufficient to produce deterministic machine-facing artifacts,
-  but they do not yet define one required in-process consumer boundary.
+  and ArchitectureRepository already defines the semantic in-process boundary.
+  Phase 1 adds a narrow supported authoring facade that reuses that seam without
+  expanding the normalized model or exposing compiler internals.
 
   Without that boundary, in-process tools can drift into reading raw registries
   directly, interpreting relationships independently, and coupling future
@@ -41,7 +47,7 @@ context: |
   call Python repository APIs.
 decisions:
 - id: DEC-0050
-  summary: Use ArchitectureRepository as the only supported in-process consumer entry point
+  summary: Use ArchitectureRepository as the supported in-process semantic entry point
   rationale: |
     The repository boundary centralizes scope-safe loading, contract
     validation, path hiding, and registry compatibility adaptation. This keeps
@@ -116,6 +122,66 @@ decisions:
     - Additive graph or subset-registry failures can degrade safely without
       redefining the baseline contract
     - The legacy compatibility registry does not silently regain authority
+- id: DEC-0079
+  summary: Preserve the present repository seam and defer any narrow consumer facade
+  rationale: |
+    Phase 0 production hardening does not authorize a new SDK, root export,
+    replacement compilation result, normalized-model revision, or graph API.
+    `ArchitectureRepository` and `NormalizedArchitectureModel` remain the
+    supported in-process seam. The historical `ArchModel` export is retained
+    for compatibility but remains compiler-internal and unsuitable as a new
+    consumer dependency.
+
+    A later phase may introduce a narrow facade over supported interfaces only.
+    Any future Assembler must call that supported boundary and must not bind to
+    `ArchModel`, compiler passes, raw source ADR parsing, or generated-file layout.
+  consequences:
+    positive:
+    - Production controls land without freezing a premature SDK abstraction
+    - Existing imports remain compatible during pre-1.0 hardening
+    - Later facade and Assembler work starts from an explicit dependency boundary
+- id: DEC-0080
+  summary: Establish adr_kit.api as the narrow supported authoring SDK facade
+  rationale: |
+    Phase 1 now has sufficient compatibility, packaging, and release controls to
+    add a deliberately bounded facade. The facade supports single-scope
+    validation, authoring compilation for registries, manifest, and markdown,
+    repository opening, normalized-model consumption, and deterministic local
+    capability discovery. It reuses the existing repository and normalized model
+    contracts while translating compiler results into independent immutable
+    public contracts.
+
+    The Phase 0 deferral in DEC-0079 is therefore complete for this exact facade.
+    Root re-exports, graph or Architecture IR operations, recursive workspaces,
+    runtime evidence, rules, substrate, admission, Assembler, MCP, and LLM
+    capabilities remain unauthorized.
+  consequences:
+    positive:
+    - New Python consumers have one explicit supported authoring boundary
+    - Existing repository and normalized-model contracts remain unchanged
+    - Compiler implementation types remain free to evolve behind translation
+    - Historical deep imports remain compatible without becoming recommended
+- id: DEC-0082
+  summary: Keep repository-local authoring projections separate from workspace runtime state
+  rationale: |
+    Every artifact stored inside the `adr-architecture-kit` repository is owned
+    and written by ADR Kit. External systems may read its canonical ADRs and
+    supported authoring projections, but they must not target the repository as
+    an output location. Runtime-derived graphs, evidence, registries, manifests,
+    and other workspace state belong under the workspace-root `.ste-workspace`
+    directory, which is outside every repository.
+
+    Phase 1 therefore validates only ADR Kit's own deterministic authoring
+    outputs. A repository-targeted runtime refresh is not part of the SDK
+    authority gate. Any runtime command that writes into this repository violates
+    the workspace state boundary and is an external implementation defect rather
+    than authoring output to accept or baseline.
+  consequences:
+    positive:
+    - ADR Kit remains the sole writer of files committed in its repository
+    - Runtime and workspace state cannot invalidate authoring integrity controls
+    - Cross-repository consumers retain read access without sharing write authority
+    - SDK implementation remains independent of runtime graph production
 invariants:
 - id: INV-0059
   statement: |
@@ -150,6 +216,37 @@ invariants:
     Cross-language consumers need an explicit ingestion posture that preserves
     compiler authority, keeps required versus additive surfaces distinct, and
     prevents fallback drift into source-level reinterpretation.
+- id: INV-0074
+  statement: |
+    The supported `adr_kit.api` facade MUST NOT expose `ArchModel`, compiler
+    configuration, compiler passes, frontend or backend objects, emitters,
+    internal output artifacts, mutable diagnostic logs, compiler caches, or
+    other compiler-internal types through public annotations or runtime result
+    object graphs.
+  scope: global
+  enforcement_level: must
+  enforcement_mechanism: test
+  verification_method: automated
+  rationale: |
+    The facade is a stable consumer contract, while compiler orchestration and
+    intermediate representation remain implementation details that must be able
+    to evolve independently.
+- id: INV-0076
+  statement: |
+    Only ADR Kit tooling MAY create or modify canonical artifacts, authoring
+    projections, compatibility outputs, or other files inside the
+    `adr-architecture-kit` repository. External runtime or workspace tooling MAY
+    read supported repository contracts but MUST NOT write anywhere inside any
+    repository tree. All runtime-derived and workspace-derived state MUST be
+    written beneath the workspace-root `.ste-workspace` directory.
+  scope: global
+  enforcement_level: must
+  enforcement_mechanism: design
+  verification_method: automated
+  rationale: |
+    Separate write domains prevent derived runtime state from corrupting
+    canonical authoring state, compatibility bytes, integrity metadata, and
+    repository-local governance evidence.
 capabilities:
 - id: CAP-0039
   name: Stable Repository Semantic Boundary
@@ -175,10 +272,29 @@ capabilities:
   - "subset registries and `architecture-graph.yaml` remain additive"
   - "`manifest.yaml` is used for discovery and freshness orientation, not semantic authority"
   - the legacy compatibility registry remains unavailable for new consumer dependencies
+- id: CAP-0047
+  name: Narrow Supported Authoring SDK
+  description: |
+    Provide a deterministic Python facade for explicit-root validation,
+    authoring compilation of registries, manifest, and markdown, repository
+    loading, normalized-model consumption, and local capability discovery.
+  acceptance_criteria:
+  - "`adr_kit.api` exposes exactly the approved Phase 1 symbol inventory"
+  - validation and compilation return immutable public results without compiler-internal types
+  - preview and write compilation return byte-equivalent artifacts for identical pinned inputs
+  - repository opening returns the existing loaded ArchitectureRepository contract
+  - capability discovery is deterministic, local, resource-backed, and versioned
+  - schema v1.0, provisional v1.1 treatment, CLI behavior, and generated bytes remain compatible
 related_adrs:
 - ADR-L-0009
 - ADR-L-0010
 - ADR-L-0012
+- ADR-L-0018
 - ADR-PC-0005
 - ADR-PC-0001
 gaps: []
+notes: |
+  Explicitly deferred beyond Phase 1: graph bundles, assertion identity,
+  entity/schema expansion, topology identity, bindings, transactional authoring,
+  normalized-model expansion, Assembler implementation, MCP, runtime extraction,
+  rules, substrate, and admission capability.

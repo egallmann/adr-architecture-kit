@@ -6,9 +6,9 @@ from textwrap import dedent
 import pytest
 from click.testing import CliRunner
 
-from src.adr_kit.cli.main import cli
-from src.adr_kit.generators import EntityRegistryGenerator
-from src.adr_kit.parser import ADRParser
+from adr_kit.cli.main import cli
+from adr_kit.generators import EntityRegistryGenerator
+from adr_kit.parser import ADRParser
 
 
 def _write_file(path: Path, content: str) -> None:

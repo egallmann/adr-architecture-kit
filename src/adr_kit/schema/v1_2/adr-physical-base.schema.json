@@ -1,0 +1,218 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://adr-kit.ste.systems/schema/v1.2/adr-physical-base.schema.json",
+  "title": "Physical ADR Base Schema",
+  "description": "Shared base schema for Physical-System and Physical-Component ADRs (STE-compliant, enables AI generation)",
+  
+  "type": "object",
+  "allOf": [
+    {"$ref": "adr-common.schema.json"}
+  ],
+  
+  "required": [
+    "implements_logical",
+    "context",
+    "technology_stack"
+  ],
+  
+  "properties": {
+    "implements_logical": {
+      "type": "array",
+      "items": {
+        "$ref": "types.schema.json#/definitions/adr_id_logical"
+      },
+      "minItems": 1,
+      "description": "Logical ADRs that this physical ADR implements (graph edges)"
+    },
+    
+    "technologies": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Technologies used (for policy propagation and blast radius analysis)"
+    },
+    
+    "context": {
+      "$ref": "types.schema.json#/definitions/markdown_text",
+      "description": "Implementation context and technology choices"
+    },
+    
+    "technology_stack": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["category", "name", "version", "rationale"],
+        "properties": {
+          "category": {
+            "type": "string",
+            "enum": ["language", "framework", "library", "database", "messaging", "infrastructure", "tooling"]
+          },
+          "name": {
+            "type": "string"
+          },
+          "version": {
+            "type": "string"
+          },
+          "rationale": {
+            "$ref": "types.schema.json#/definitions/markdown_text"
+          },
+          "inferred": {
+            "type": "boolean",
+            "description": "True if this was inferred by Specialist Watchdog Agent, false if explicitly specified by human"
+          }
+        }
+      },
+      "minItems": 1,
+      "description": "Technology choices with rationale (can be inferred by Watchdog Agent)"
+    },
+    
+    "deployment_model": {
+      "type": "object",
+      "properties": {
+        "hosting": {
+          "type": "string",
+          "enum": ["cloud", "on-premise", "hybrid", "edge"]
+        },
+        "orchestration": {
+          "type": "string"
+        },
+        "scaling_strategy": {
+          "$ref": "types.schema.json#/definitions/markdown_text"
+        }
+      },
+      "description": "Deployment and orchestration model"
+    },
+    
+    "operational_requirements": {
+      "type": "object",
+      "properties": {
+        "monitoring": {
+          "$ref": "types.schema.json#/definitions/markdown_text"
+        },
+        "logging": {
+          "$ref": "types.schema.json#/definitions/markdown_text"
+        },
+        "backup_recovery": {
+          "$ref": "types.schema.json#/definitions/markdown_text"
+        },
+        "security": {
+          "$ref": "types.schema.json#/definitions/markdown_text"
+        }
+      },
+      "description": "Operational requirements and practices"
+    },
+    
+    "conversation_metadata": {
+      "type": "object",
+      "properties": {
+        "creation_method": {
+          "type": "string",
+          "enum": ["ai_interview", "human_written", "migrated", "watchdog_inferred"],
+          "description": "How this ADR was created"
+        },
+        "interview_transcript_ref": {
+          "type": "string",
+          "description": "Reference to conversation transcript that led to this ADR"
+        },
+        "gaps_resolved": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^GAP-\\d{4}$"
+          },
+          "description": "Gap IDs resolved during ADR creation"
+        },
+        "human_decisions": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["question", "decision"],
+            "properties": {
+              "question": {
+                "type": "string",
+                "description": "Question asked during conversation"
+              },
+              "decision": {
+                "type": "string",
+                "description": "Human's decision"
+              },
+              "rationale": {
+                "type": "string",
+                "description": "Why this decision was made"
+              }
+            }
+          },
+          "description": "Key decisions made during conversational architecture"
+        },
+        "context_signals": {
+          "type": "array",
+          "items": {"type": "string"},
+          "description": "Context signals extracted for rules library activation"
+        },
+        "activated_rules": {
+          "type": "array",
+          "items": {"type": "string"},
+          "description": "Rules from rules library that were activated during generation"
+        }
+      },
+      "description": "Metadata about how this ADR was created through conversation"
+    },
+    
+    "gaps": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "question", "impact", "blocking"],
+        "properties": {
+          "id": {
+            "$ref": "types.schema.json#/definitions/entity_id",
+            "pattern": "^GAP-\\d{4}$"
+          },
+          "question": {
+            "type": "string",
+            "description": "Unresolved design question"
+          },
+          "context": {
+            "$ref": "types.schema.json#/definitions/markdown_text"
+          },
+          "impact": {
+            "$ref": "types.schema.json#/definitions/impact_level"
+          },
+          "blocking": {
+            "type": "boolean",
+            "description": "Does this gap block implementation?"
+          },
+          "affects": {
+            "type": "array",
+            "items": {"type": "string"},
+            "description": "Components or decisions affected by this gap"
+          },
+          "options": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["name"],
+              "properties": {
+                "name": {"type": "string"},
+                "pros": {
+                  "type": "array",
+                  "items": {"type": "string"}
+                },
+                "cons": {
+                  "type": "array",
+                  "items": {"type": "string"}
+                }
+              }
+            }
+          },
+          "decision_required_from": {
+            "type": "string",
+            "description": "Who needs to resolve this gap"
+          }
+        }
+      },
+      "description": "Explicit gaps and unresolved questions (SYS-4: makes incompleteness explicit)"
+    }
+  }
+}

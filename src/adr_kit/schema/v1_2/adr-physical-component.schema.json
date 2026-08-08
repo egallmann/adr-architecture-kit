@@ -1,0 +1,516 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://adr-kit.ste.systems/schema/v1.2/adr-physical-component.schema.json",
+  "title": "Physical-Component ADR Schema",
+  "description": "Schema for Physical-Component ADRs - executable specifications for autonomous code generation (STE-compliant, AI-first, complete specification)",
+  
+  "type": "object",
+  "allOf": [
+    {"$ref": "adr-physical-base.schema.json"}
+  ],
+  
+  "required": [
+    "implements_system",
+    "component_specifications"
+  ],
+  
+  "properties": {
+    "adr_type": {
+      "const": "physical-component"
+    },
+    
+    "id": {
+      "$ref": "types.schema.json#/definitions/adr_id_physical_component"
+    },
+    
+    "implements_system": {
+      "type": "array",
+      "items": {
+        "$ref": "types.schema.json#/definitions/adr_id_physical_system"
+      },
+      "minItems": 1,
+      "description": "Physical-System ADR(s) that this component implements"
+    },
+    
+    "component_specifications": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "name", "type", "responsibilities", "generation_context"],
+        "properties": {
+          "id": {
+            "$ref": "types.schema.json#/definitions/entity_id",
+            "pattern": "^COMP-\\d{4}$"
+          },
+          "component_id": {
+            "type": "string",
+            "pattern": "^COMP-[A-Z0-9-]+$"
+          },
+          "name": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string",
+            "enum": ["service", "library", "database", "queue", "cache", "gateway", "proxy", "worker", "scheduler"]
+          },
+          "responsibilities": {
+            "$ref": "types.schema.json#/definitions/markdown_text"
+          },
+          
+          "generation_context": {
+            "type": "object",
+            "required": ["purpose", "key_responsibilities"],
+            "properties": {
+              "purpose": {
+                "type": "string",
+                "description": "Single sentence: what this component does (AI prompt)"
+              },
+              "key_responsibilities": {
+                "type": "array",
+                "items": {"type": "string"},
+                "minItems": 1,
+                "description": "Bullet list of responsibilities for AI code generation"
+              },
+              "constraints": {
+                "type": "array",
+                "items": {"type": "string"},
+                "description": "Hard constraints AI must respect during generation"
+              },
+              "success_criteria": {
+                "type": "array",
+                "items": {"type": "string"},
+                "description": "How to know if implementation is successful"
+              }
+            },
+            "description": "Context for AI code generation (prompt template)"
+          },
+          
+          "interfaces": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["id", "type", "specification"],
+              "properties": {
+                "id": {
+                  "$ref": "types.schema.json#/definitions/entity_id",
+                  "pattern": "^IFACE-\\d{4}$"
+                },
+                "type": {
+                  "type": "string",
+                  "enum": ["REST", "gRPC", "GraphQL", "message", "event", "stream", "batch", "CLI", "library_api"]
+                },
+                "specification": {
+                  "$ref": "types.schema.json#/definitions/markdown_text",
+                  "description": "Complete interface spec (OpenAPI, proto, GraphQL schema, etc.)"
+                },
+                "contract_reference": {
+                  "type": "string",
+                  "description": "Reference to external contract file (OpenAPI, proto file, etc.)"
+                },
+                "contract_tests": {
+                  "$ref": "types.schema.json#/definitions/markdown_text",
+                  "description": "Contract test specifications"
+                }
+              }
+            },
+            "minItems": 1,
+            "description": "Complete interface specifications (required for AI generation)"
+          },
+          
+          "dependencies": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Component dependencies (graph edges) - component IDs or external service names"
+          },
+          "upstream_services": {
+            "type": "array",
+            "items": {"type": "string"},
+            "description": "Services this component calls (for blast radius analysis)"
+          },
+          "downstream_services": {
+            "type": "array",
+            "items": {"type": "string"},
+            "description": "Services that call this component (for blast radius analysis)"
+          },
+          
+          "implements_capabilities": {
+            "type": "array",
+            "items": {"$ref": "types.schema.json#/definitions/entity_id"},
+            "description": "Capabilities (CAP-XXXX) this component implements"
+          },
+          "realizes_entities": {
+            "type": "array",
+            "items": {"$ref": "types.schema.json#/definitions/entity_id"},
+            "description": "Other entities (BOUND, CONTRACT, etc.) this component realizes"
+          },
+          
+          "implementation_identifiers": {
+            "type": "object",
+            "required": ["module_path"],
+            "properties": {
+              "service_name": {
+                "type": "string",
+                "description": "Runtime service name (Kubernetes, Docker, etc.)"
+              },
+              "repository": {
+                "type": "string",
+                "description": "Source control repository URL"
+              },
+              "module_path": {
+                "type": "string",
+                "description": "Code location within repository (REQUIRED for AI generation)"
+              },
+              "entry_point": {
+                "type": "string",
+                "description": "Main entry point file"
+              },
+              "test_path": {
+                "type": "string",
+                "description": "Test directory location"
+              },
+              "deployment_name": {
+                "type": "string",
+                "description": "Deployment identifier"
+              }
+            },
+            "description": "Identifiers for code generation and EDR matching (REQUIRED)"
+          },
+          
+          "implementation_requirements": {
+            "type": "object",
+            "required": ["error_handling", "observability", "testing_requirements"],
+            "properties": {
+              "algorithms": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "required": ["name", "specification"],
+                  "properties": {
+                    "name": {"type": "string"},
+                    "specification": {
+                      "$ref": "types.schema.json#/definitions/markdown_text",
+                      "description": "Complete algorithm specification for AI implementation"
+                    },
+                    "rationale": {"type": "string"},
+                    "complexity": {"type": "string"},
+                    "edge_cases": {
+                      "type": "array",
+                      "items": {"type": "string"}
+                    }
+                  }
+                },
+                "description": "Key algorithms with complete specifications"
+              },
+              
+              "error_handling": {
+                "type": "object",
+                "required": ["strategy"],
+                "properties": {
+                  "strategy": {
+                    "$ref": "types.schema.json#/definitions/markdown_text",
+                    "description": "Overall error handling strategy"
+                  },
+                  "error_types": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "required": ["type", "http_status", "response_format"],
+                      "properties": {
+                        "type": {"type": "string"},
+                        "http_status": {"type": "integer"},
+                        "response_format": {"type": "string"},
+                        "retry_strategy": {"type": "string"},
+                        "logging_level": {"type": "string"}
+                      }
+                    }
+                  },
+                  "circuit_breaker": {
+                    "type": "object",
+                    "properties": {
+                      "enabled": {"type": "boolean"},
+                      "threshold": {"type": "integer"},
+                      "timeout": {"type": "string"}
+                    }
+                  }
+                },
+                "description": "Complete error handling specification (REQUIRED)"
+              },
+              
+              "observability": {
+                "type": "object",
+                "required": ["logging", "metrics"],
+                "properties": {
+                  "logging": {
+                    "type": "object",
+                    "required": ["level", "structured"],
+                    "properties": {
+                      "level": {"type": "string"},
+                      "structured": {"type": "boolean"},
+                      "correlation_id": {"type": "boolean"},
+                      "sensitive_data_handling": {"type": "string"}
+                    }
+                  },
+                  "metrics": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "required": ["name", "type"],
+                      "properties": {
+                        "name": {"type": "string"},
+                        "type": {"type": "string", "enum": ["counter", "gauge", "histogram", "summary"]},
+                        "description": {"type": "string"},
+                        "labels": {
+                          "type": "array",
+                          "items": {"type": "string"}
+                        }
+                      }
+                    },
+                    "minItems": 1
+                  },
+                  "tracing": {
+                    "type": "object",
+                    "properties": {
+                      "enabled": {"type": "boolean"},
+                      "sampler": {"type": "string"},
+                      "propagation": {"type": "string"}
+                    }
+                  }
+                },
+                "description": "Complete observability specification (REQUIRED)"
+              },
+              
+              "testing_requirements": {
+                "type": "object",
+                "required": ["unit_test_coverage"],
+                "properties": {
+                  "unit_test_coverage": {
+                    "type": "string",
+                    "description": "Minimum coverage (e.g., '>= 80%')"
+                  },
+                  "integration_tests": {
+                    "$ref": "types.schema.json#/definitions/markdown_text",
+                    "description": "Integration test requirements"
+                  },
+                  "contract_tests": {
+                    "$ref": "types.schema.json#/definitions/markdown_text",
+                    "description": "Contract test requirements"
+                  },
+                  "performance_tests": {
+                    "$ref": "types.schema.json#/definitions/markdown_text",
+                    "description": "Performance test requirements"
+                  },
+                  "test_data": {
+                    "$ref": "types.schema.json#/definitions/markdown_text",
+                    "description": "Test data requirements and fixtures"
+                  }
+                },
+                "description": "Complete testing specification (REQUIRED)"
+              },
+              
+              "security_requirements": {
+                "type": "object",
+                "properties": {
+                  "authentication": {
+                    "$ref": "types.schema.json#/definitions/markdown_text"
+                  },
+                  "authorization": {
+                    "$ref": "types.schema.json#/definitions/markdown_text"
+                  },
+                  "data_encryption": {
+                    "$ref": "types.schema.json#/definitions/markdown_text"
+                  },
+                  "input_validation": {
+                    "$ref": "types.schema.json#/definitions/markdown_text"
+                  },
+                  "rate_limiting": {
+                    "type": "object",
+                    "properties": {
+                      "strategy": {"type": "string"},
+                      "limits": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "scope": {"type": "string"},
+                            "limit": {"type": "string"},
+                            "window": {"type": "string"}
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "description": "Security requirements for implementation"
+              },
+              
+              "performance_requirements": {
+                "type": "object",
+                "properties": {
+                  "latency": {
+                    "type": "object",
+                    "properties": {
+                      "p50": {"type": "string"},
+                      "p95": {"type": "string"},
+                      "p99": {"type": "string"}
+                    }
+                  },
+                  "throughput": {"type": "string"},
+                  "resource_limits": {
+                    "type": "object",
+                    "properties": {
+                      "cpu": {"type": "string"},
+                      "memory": {"type": "string"},
+                      "connections": {"type": "integer"}
+                    }
+                  }
+                },
+                "description": "Performance requirements and SLOs"
+              }
+            },
+            "description": "Complete implementation requirements for AI generation (REQUIRED)"
+          }
+        }
+      },
+      "minItems": 1,
+      "description": "Detailed component specifications (REQUIRED, typically 1-3 per ADR)"
+    },
+    
+    "data_architecture": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["entity", "storage"],
+        "properties": {
+          "entity": {
+            "type": "string"
+          },
+          "storage": {
+            "type": "string"
+          },
+          "schema": {
+            "$ref": "types.schema.json#/definitions/markdown_text",
+            "description": "Complete schema definition (SQL DDL, NoSQL schema, etc.)"
+          },
+          "access_patterns": {
+            "$ref": "types.schema.json#/definitions/markdown_text"
+          },
+          "indexes": {
+            "type": "array",
+            "items": {"type": "string"}
+          },
+          "migrations": {
+            "$ref": "types.schema.json#/definitions/markdown_text",
+            "description": "Migration strategy and scripts"
+          }
+        }
+      },
+      "description": "Data architecture and storage (if applicable)"
+    },
+    
+    "implementation_decisions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "summary", "rationale"],
+        "properties": {
+          "id": {
+            "$ref": "types.schema.json#/definitions/entity_id",
+            "pattern": "^IMPL-\\d{4}$"
+          },
+          "summary": {
+            "type": "string"
+          },
+          "rationale": {
+            "$ref": "types.schema.json#/definitions/markdown_text"
+          },
+          "implements_invariants": {
+            "type": "array",
+            "items": {
+              "$ref": "types.schema.json#/definitions/invariant_id"
+            },
+            "description": "Invariants this implementation enforces"
+          },
+          "alternatives_considered": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["name", "rejected_because"],
+              "properties": {
+                "name": {"type": "string"},
+                "rejected_because": {
+                  "$ref": "types.schema.json#/definitions/markdown_text"
+                }
+              }
+            }
+          }
+        }
+      },
+      "description": "Implementation-level decisions"
+    },
+    
+    "integration_points": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "systems", "protocol", "specification"],
+        "properties": {
+          "id": {
+            "$ref": "types.schema.json#/definitions/entity_id",
+            "pattern": "^INTEG-\\d{4}$"
+          },
+          "systems": {
+            "type": "array",
+            "items": {"type": "string"},
+            "minItems": 2
+          },
+          "protocol": {
+            "type": "string"
+          },
+          "specification": {
+            "$ref": "types.schema.json#/definitions/markdown_text"
+          },
+          "contract_adr": {
+            "$ref": "types.schema.json#/definitions/adr_id_any",
+            "description": "ADR defining the integration contract"
+          }
+        }
+      },
+      "description": "Integration points between systems"
+    },
+    
+    "interface_compatibility": {
+      "type": "object",
+      "properties": {
+        "supersedes_adr": {
+          "$ref": "types.schema.json#/definitions/adr_id_physical_component",
+          "description": "Physical-Component ADR being replaced (for migrations)"
+        },
+        "contract_preservation": {
+          "type": "boolean",
+          "description": "True if all interfaces from superseded ADR are preserved"
+        },
+        "breaking_changes": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["interface", "change", "impact"],
+            "properties": {
+              "interface": {"type": "string"},
+              "change": {"type": "string"},
+              "impact": {"type": "string"},
+              "mitigation": {"type": "string"}
+            }
+          },
+          "description": "Breaking changes from superseded ADR"
+        },
+        "migration_strategy": {
+          "$ref": "types.schema.json#/definitions/markdown_text",
+          "description": "How to migrate from superseded ADR"
+        }
+      },
+      "description": "Interface compatibility for component replacement/migration"
+    }
+  }
+}

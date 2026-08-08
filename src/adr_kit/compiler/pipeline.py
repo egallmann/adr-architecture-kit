@@ -16,7 +16,7 @@ from ..models import (
     SourceRef,
     UnresolvedRegistry,
 )
-from ..scope import ProjectScope, ProjectScopeResolver
+from ..scope import ProjectScope
 from .backend.projection import project_entity, project_relationship, project_unresolved
 from .config import CompilerConfig
 from .diagnostics import DiagnosticLog
@@ -101,13 +101,17 @@ class CompilerPipelineState:
             artifact_path=entity.canonical_source.artifact_path,
             mention_role="reference",
         )
-        if (ref.source_ref, ref.mention_role) not in {(item.source_ref, item.mention_role) for item in refs}:
+        if (ref.source_ref, ref.mention_role) not in {
+            (item.source_ref, item.mention_role) for item in refs
+        }:
             refs.append(ref)
             refs.sort(key=lambda item: (item.source_ref, item.mention_role))
 
     def append_source_ref(self, entity: IREntity, ref: SourceRef) -> None:
         refs = self.reference_source_refs.setdefault(entity.id, [])
-        if (ref.source_ref, ref.mention_role) not in {(item.source_ref, item.mention_role) for item in refs}:
+        if (ref.source_ref, ref.mention_role) not in {
+            (item.source_ref, item.mention_role) for item in refs
+        }:
             refs.append(ref)
             refs.sort(key=lambda item: (item.source_ref, item.mention_role))
 
@@ -154,7 +158,9 @@ class CompilerPipelineState:
         related_entity_id: str | None = None,
         expected_relationship: str | None = None,
     ) -> IRUnresolved:
-        provenance = make_provenance("derived_registry", source_ref, "detect_unresolved", classification)
+        provenance = make_provenance(
+            "derived_registry", source_ref, "detect_unresolved", classification
+        )
         return IRUnresolved(
             id=gap_id,
             gap_class=gap_class,
@@ -199,7 +205,10 @@ class CompilerPipelineState:
             entity.source_refs.sort(key=lambda item: (item.source_ref, item.mention_role))
 
     def add_namespace_boundary(self) -> None:
-        self.model.corpus.add(self.scope.root / "PROJECT.yaml", self.parser.parse_yaml(self.scope.root / "PROJECT.yaml"))
+        self.model.corpus.add(
+            self.scope.root / "PROJECT.yaml",
+            self.parser.parse_yaml(self.scope.root / "PROJECT.yaml"),
+        )
         self.model.entities.add(
             IREntity(
                 id=f"{self.namespace}:__namespace__",
@@ -241,18 +250,36 @@ class ADRParsePass:
         state.logical_files = logical_files
         state.physical_files = physical_files
         state.invariant_files = invariant_files
-        state.logical_adrs = [(state.parser.parse_logical_adr(path), path.resolve()) for path in logical_files]
-        state.physical_adrs = [(state.parser.parse_adr(path), path.resolve()) for path in physical_files]
-        state.standalone_invariants = [(state.parser.parse_invariant(path), path.resolve()) for path in invariant_files]
+        state.logical_adrs = [
+            (state.parser.parse_logical_adr(path), path.resolve()) for path in logical_files
+        ]
+        state.physical_adrs = [
+            (state.parser.parse_adr(path), path.resolve()) for path in physical_files
+        ]
+        state.standalone_invariants = [
+            (state.parser.parse_invariant(path), path.resolve()) for path in invariant_files
+        ]
 
-        for artifact, path in [*state.logical_adrs, *state.physical_adrs, *state.standalone_invariants]:
+        for artifact, path in [
+            *state.logical_adrs,
+            *state.physical_adrs,
+            *state.standalone_invariants,
+        ]:
             state.model.corpus.add(path, artifact)
 
         state.coverage = SourceCoverageSummary(
             logical_adrs=len(state.logical_adrs),
-            physical_adrs=sum(1 for adr, _ in state.physical_adrs if adr.__class__.__name__ == "PhysicalADR"),
-            physical_system_adrs=sum(1 for adr, _ in state.physical_adrs if adr.__class__.__name__ == "PhysicalSystemADR"),
-            physical_component_adrs=sum(1 for adr, _ in state.physical_adrs if adr.__class__.__name__ == "PhysicalComponentADR"),
+            physical_adrs=sum(
+                1 for adr, _ in state.physical_adrs if adr.__class__.__name__ == "PhysicalADR"
+            ),
+            physical_system_adrs=sum(
+                1 for adr, _ in state.physical_adrs if adr.__class__.__name__ == "PhysicalSystemADR"
+            ),
+            physical_component_adrs=sum(
+                1
+                for adr, _ in state.physical_adrs
+                if adr.__class__.__name__ == "PhysicalComponentADR"
+            ),
             standalone_invariants=len(state.standalone_invariants),
         )
 
@@ -281,11 +308,15 @@ class LogicalEntityExtractionPass:
             classify_author_gap=classify_author_gap,
         )
         state.invariant_mentions = {
-            inv_id: [(mention.payload, mention.artifact_path, mention.source_ref) for mention in mentions]
+            inv_id: [
+                (mention.payload, mention.artifact_path, mention.source_ref) for mention in mentions
+            ]
             for inv_id, mentions in logical_extraction.invariant_mentions.items()
         }
         for extracted in logical_extraction.entities:
-            state.add_entity(extracted.entity, allow_reference_merge=extracted.allow_reference_merge)
+            state.add_entity(
+                extracted.entity, allow_reference_merge=extracted.allow_reference_merge
+            )
         for unresolved in logical_extraction.unresolved:
             state.model.unresolved.add(
                 state.make_unresolved(
@@ -316,7 +347,9 @@ class InvariantExtractionPass:
             complete=make_completeness,
         )
         for extracted in invariant_resolution.entities:
-            state.add_entity(extracted.entity, allow_reference_merge=extracted.allow_reference_merge)
+            state.add_entity(
+                extracted.entity, allow_reference_merge=extracted.allow_reference_merge
+            )
         for selection in invariant_resolution.selections.values():
             for ref in selection.reference_source_refs:
                 state.append_source_ref(selection.entity, ref)
@@ -337,7 +370,9 @@ class PhysicalEntityExtractionPass:
             system_entity_id=system_entity_id,
         )
         for extracted in physical_extraction.entities:
-            state.add_entity(extracted.entity, allow_reference_merge=extracted.allow_reference_merge)
+            state.add_entity(
+                extracted.entity, allow_reference_merge=extracted.allow_reference_merge
+            )
         state.system_ids.update(physical_extraction.system_ids)
 
 
@@ -369,8 +404,12 @@ class RelationshipInferencePass:
                     evidence=list(item.evidence),
                     confidence=item.confidence,
                     metadata=dict(item.metadata),
+                    assertion_id=item.assertion_id,
+                    source_pointer=item.source_pointer,
                 )
             )
+            if item.metadata.get("target_scope") in {"external", "expectation"}:
+                continue
             source_entity = state.model.entities.get(item.from_entity_id)
             if source_entity is None:
                 continue
@@ -419,7 +458,9 @@ class ValidationPass:
             for entity in state.model.entities.values()
             if (projected := project_entity(entity, state.model.relationships)) is not None
         ]
-        relationship_registry = [project_relationship(item) for item in state.model.relationships.values()]
+        relationship_registry = [
+            project_relationship(item) for item in state.model.relationships.values()
+        ]
         unresolved_registry = [project_unresolved(item) for item in state.model.unresolved.values()]
         result = validate_bundle(
             NormalizedEntityRegistry(entities=entity_registry),

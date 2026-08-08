@@ -8,9 +8,9 @@ import pytest
 import yaml
 from click.testing import CliRunner
 
-from src.adr_kit.cli.main import cli
-from src.adr_kit.generators import ArchitectureIndexGenerator
-from src.adr_kit.repository import ArchitectureRegistryError, ArchitectureRepository
+from adr_kit.cli.main import cli
+from adr_kit.generators import ArchitectureIndexGenerator
+from adr_kit.repository import ArchitectureRegistryError, ArchitectureRepository
 from tests.test_architecture_index_generator import _create_fixture
 
 
@@ -125,6 +125,210 @@ def test_repository_exposes_semantic_relationship_and_provenance_helpers(tmp_pat
     assert provenance is not None
     assert provenance.source_ref == "ADR-L-1000#CAP-1000"
     assert repository.get_unresolved_by_role("CAP-1000", role="any") == []
+    assert repository.find_adrs_referencing_entity("CAP-1000") == ["ADR-L-1000", "ADR-PC-1000"]
+
+
+def test_repository_exposes_manifest_index_and_corpus_summary(tmp_path: Path) -> None:
+    _generate_bundle(tmp_path)
+    runner = CliRunner()
+    manifest_result = runner.invoke(cli, ["generate-manifest", "--scope", str(tmp_path)])
+    assert manifest_result.exit_code == 0, manifest_result.output
+
+    repository = ArchitectureRepository(project_root=tmp_path)
+
+    manifest = repository.get_manifest()
+    index = repository.get_index()
+    summary = repository.get_corpus_summary()
+
+    assert manifest.type == "manifest"
+    assert index.type == "architecture_index"
+    assert summary.mode == "normalized"
+    assert summary.entity_counts["adr"] == 3
+    assert summary.adr_counts_by_type["logical"] == 1
+    assert summary.adr_counts_by_type["physical-system"] == 1
+    assert summary.adr_counts_by_type["physical-component"] == 1
+    assert summary.adr_counts_by_status["accepted"] == 3
+    assert summary.relationship_count > 0
+    assert summary.source_coverage is not None
+
+
+def test_repository_next_id_uses_forward_authoring_directories(tmp_path: Path) -> None:
+    _create_fixture(tmp_path)
+    repository = ArchitectureRepository(project_root=tmp_path)
+
+    assert repository.next_id("logical") == "ADR-L-1001"
+    assert repository.next_id("physical-system") == "ADR-PS-1001"
+    assert repository.next_id("physical-component") == "ADR-PC-1001"
+
+
+def test_repository_next_id_uses_declared_ids_not_filenames(tmp_path: Path) -> None:
+    _create_fixture(tmp_path)
+    logical_path = tmp_path / "adrs" / "logical" / "ADR-L-0001-misleading-name.yaml"
+    logical_path.write_text(
+        "\n".join(
+            [
+                'schema_version: "1.0"',
+                "adr_type: logical",
+                "id: ADR-L-1099",
+                'title: "Declared ID wins"',
+                "status: proposed",
+                'created_date: "2026-04-14"',
+                'authors: ["test.author"]',
+                'domains: ["test"]',
+                "context: |",
+                "  Filename should not drive next-id allocation.",
+                "decisions:",
+                "  - id: DEC-9999",
+                '    summary: "Use declared IDs"',
+                '    rationale: "Canonical identity lives in the artifact body."',
+            ]
+        )
+        + "\n",
+        encoding="utf-8",
+    )
+
+    repository = ArchitectureRepository(project_root=tmp_path)
+
+    assert repository.next_id("logical") == "ADR-L-1100"
+
+
+def test_repository_next_id_ignores_declared_ids_with_other_prefixes(tmp_path: Path) -> None:
+    _create_fixture(tmp_path)
+    stray_path = tmp_path / "adrs" / "logical" / "ADR-L-9999-stray.yaml"
+    stray_path.write_text(
+        "\n".join(
+            [
+                'schema_version: "1.0"',
+                "adr_type: logical",
+                "id: ADR-V-9090",
+                'title: "Vision artifact in logical directory"',
+                "status: proposed",
+                'created_date: "2026-04-14"',
+                'authors: ["test.author"]',
+                'domains: ["test"]',
+                "vision_category: true",
+                "context: |",
+                "  This should not advance ADR-L sequence.",
+            ]
+        )
+        + "\n",
+        encoding="utf-8",
+    )
+
+    repository = ArchitectureRepository(project_root=tmp_path)
+
+    assert repository.next_id("logical") == "ADR-L-1001"
+
+
+def test_repository_next_id_rejects_duplicate_declared_ids(tmp_path: Path) -> None:
+    _create_fixture(tmp_path)
+    duplicate_path = tmp_path / "adrs" / "logical" / "ADR-L-2000-duplicate.yaml"
+    duplicate_path.write_text(
+        "\n".join(
+            [
+                'schema_version: "1.0"',
+                "adr_type: logical",
+                "id: ADR-L-1000",
+                'title: "Duplicate declared ID"',
+                "status: proposed",
+                'created_date: "2026-04-14"',
+                'authors: ["test.author"]',
+                'domains: ["test"]',
+                "context: |",
+                "  Duplicate IDs must fail clearly.",
+                "decisions:",
+                "  - id: DEC-9998",
+                '    summary: "Reject duplicates"',
+                '    rationale: "Declared IDs are authoritative."',
+            ]
+        )
+        + "\n",
+        encoding="utf-8",
+    )
+
+    repository = ArchitectureRepository(project_root=tmp_path)
+
+    with pytest.raises(ArchitectureRegistryError, match="Duplicate ADR ID"):
+        repository.next_id("logical")
+
+
+def test_repository_next_id_is_monotonic_and_non_reusable(tmp_path: Path) -> None:
+    _create_fixture(tmp_path)
+    repository = ArchitectureRepository(project_root=tmp_path)
+    logical_path = tmp_path / "adrs" / "logical" / "ADR-L-1000-discovery.yaml"
+
+    assert repository.next_id("logical") == "ADR-L-1001"
+
+    logical_path.unlink()
+
+    assert repository.next_id("logical") == "ADR-L-1002"
+
+
+def test_repository_next_id_ignores_reserved_range_for_normal_allocation(tmp_path: Path) -> None:
+    _create_fixture(tmp_path)
+    normal_high_path = tmp_path / "adrs" / "logical" / "ADR-L-8001-normal.yaml"
+    normal_high_path.write_text(
+        "\n".join(
+            [
+                'schema_version: "1.0"',
+                "adr_type: logical",
+                "id: ADR-L-8001",
+                'title: "High normal-range ADR"',
+                "status: proposed",
+                'created_date: "2026-04-14"',
+                'authors: ["test.author"]',
+                'domains: ["test"]',
+                "context: |",
+                "  Normal-range artifact below the reserved band.",
+                "decisions:",
+                "  - id: DEC-8001",
+                '    summary: "Still normal"',
+                '    rationale: "IDs below 9000 participate in forward allocation."',
+            ]
+        )
+        + "\n",
+        encoding="utf-8",
+    )
+    reserved_path = tmp_path / "adrs" / "logical" / "ADR-L-9001-reserved.yaml"
+    reserved_path.write_text(
+        "\n".join(
+            [
+                'schema_version: "1.0"',
+                "adr_type: logical",
+                "id: ADR-L-9001",
+                'title: "Reserved exceptional import"',
+                "status: proposed",
+                'created_date: "2026-04-14"',
+                'authors: ["test.author"]',
+                'domains: ["test"]',
+                "context: |",
+                "  Reserved-range artifact.",
+                "decisions:",
+                "  - id: DEC-9001",
+                '    summary: "Reserved range"',
+                '    rationale: "Should not advance normal allocation."',
+            ]
+        )
+        + "\n",
+        encoding="utf-8",
+    )
+
+    repository = ArchitectureRepository(project_root=tmp_path)
+
+    assert repository.next_id("logical") == "ADR-L-8002"
+
+
+def test_repository_next_id_fails_when_normal_band_is_exhausted(tmp_path: Path) -> None:
+    _create_fixture(tmp_path)
+    allocation_state = tmp_path / ".adr-id-allocation.yaml"
+    allocation_state.write_text(
+        "allocation:\n  logical: 8999\n",
+        encoding="utf-8",
+    )
+    repository = ArchitectureRepository(project_root=tmp_path)
+
+    with pytest.raises(ArchitectureRegistryError, match="allocation band exhausted"):
+        repository.next_id("logical")
 
 
 def test_repository_falls_back_to_legacy_mode(tmp_path: Path) -> None:
@@ -325,6 +529,18 @@ def test_entities_cli_uses_repository_in_normalized_mode(tmp_path: Path) -> None
     assert result.exit_code == 0, result.output
     assert "CAP-1000" in result.output
 
+    relationships_result = runner.invoke(
+        cli,
+        ["entities", "relationships", "--scope", str(tmp_path), "--entity", "CAP-1000"],
+    )
+    summary_result = runner.invoke(cli, ["entities", "summary", "--scope", str(tmp_path)])
+
+    assert relationships_result.exit_code == 0, relationships_result.output
+    assert "declared_in:CAP-1000:ADR-L-1000" in relationships_result.output
+    assert summary_result.exit_code == 0, summary_result.output
+    assert "entity_counts:" in summary_result.output
+    assert "adr_counts_by_type:" in summary_result.output
+
 
 def test_entities_cli_uses_repository_in_legacy_mode(tmp_path: Path) -> None:
     _write_legacy_registry(tmp_path)
@@ -340,6 +556,19 @@ def test_entities_cli_uses_repository_in_legacy_mode(tmp_path: Path) -> None:
     assert "Legacy capability" in get_result.output
     assert capabilities_result.exit_code == 0, capabilities_result.output
     assert "CAP-9000" in capabilities_result.output
+
+
+def test_next_id_cli_and_repository_reject_legacy_physical_authoring(tmp_path: Path) -> None:
+    _create_fixture(tmp_path)
+    repository = ArchitectureRepository(project_root=tmp_path)
+    runner = CliRunner()
+
+    with pytest.raises(ArchitectureRegistryError, match="Unsupported ADR type"):
+        repository.next_id("physical")
+
+    result = runner.invoke(cli, ["next-id", "--scope", str(tmp_path), "--type", "logical"])
+    assert result.exit_code == 0, result.output
+    assert result.output.strip() == "ADR-L-1001"
 
 
 def test_cli_no_longer_declares_raw_contract_bundle_loader() -> None:

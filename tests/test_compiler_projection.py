@@ -1,21 +1,21 @@
 from __future__ import annotations
 
-from src.adr_kit.compiler.backend.projection import (
+from adr_kit.compiler.backend.projection import (
     build_relationship_summary,
     project_entity,
     project_relationship,
     project_unresolved,
 )
-from src.adr_kit.compiler.ir import IREntity, IRRelationship, IRUnresolved, RelGraph
-from src.adr_kit.models.architecture_discovery import CanonicalSource, DiscoveryProvenance
-from src.adr_kit.parser import ADRParser
-from src.adr_kit.repository.registry_loader import (
+from adr_kit.compiler.ir import IREntity, IRRelationship, IRUnresolved, RelGraph
+from adr_kit.models.architecture_discovery import CanonicalSource, DiscoveryProvenance
+from adr_kit.parser import ADRParser
+from adr_kit.repository.registry_loader import (
     load_architecture_index,
     load_normalized_entity_registry,
     load_relationship_registry,
     load_unresolved_registry,
 )
-from src.adr_kit.repository.registry_paths import discover_repository_paths, resolve_index_reference
+from adr_kit.repository.registry_paths import discover_repository_paths, resolve_index_reference
 from tests.golden.helpers import generate_deterministic_outputs
 
 
@@ -144,18 +144,18 @@ def test_projection_round_trips_current_registry_models(tmp_path):
 
 def test_project_entity_skips_non_registry_ir_types():
     entity = IREntity(
-        id="BOUND-1000",
-        entity_type="boundary",
-        name="Boundary",
+        id="CONST-1000",
+        entity_type="constraint",
+        name="Constraint",
         summary="Not emitted yet.",
         canonical_source=CanonicalSource(
             source_type="logical_adr",
-            source_ref="ADR-L-0001#BOUND-1000",
+            source_ref="ADR-L-0001#CONST-1000",
             artifact_path="adrs/logical/ADR-L-0001.yaml",
         ),
         provenance=DiscoveryProvenance(
             source_type="logical_adr",
-            source_ref="ADR-L-0001#BOUND-1000",
+            source_ref="ADR-L-0001#CONST-1000",
             extraction_phase="test",
             classification="explicit",
             generator="test",

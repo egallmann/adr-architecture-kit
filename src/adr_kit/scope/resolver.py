@@ -33,6 +33,12 @@ class ProjectScope:
     
     physical_dir: Path
     """Absolute path to adrs/physical/ - place new physical ADRs here"""
+
+    physical_system_dir: Path
+    """Absolute path to adrs/physical-system/ - place new physical-system ADRs here"""
+
+    physical_component_dir: Path
+    """Absolute path to adrs/physical-component/ - place new physical-component ADRs here"""
     
     marker: str
     """Marker file/directory that identified this scope"""
@@ -282,6 +288,8 @@ class ProjectScopeResolver:
         
         logical_dir = adr_dir / 'logical'
         physical_dir = adr_dir / 'physical'
+        physical_system_dir = adr_dir / 'physical-system'
+        physical_component_dir = adr_dir / 'physical-component'
         
         if not name:
             name = root.name
@@ -292,6 +300,8 @@ class ProjectScopeResolver:
             manifest_path=manifest_path,
             logical_dir=logical_dir,
             physical_dir=physical_dir,
+            physical_system_dir=physical_system_dir,
+            physical_component_dir=physical_component_dir,
             marker=marker,
             name=name,
         )

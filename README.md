@@ -14,7 +14,7 @@ There is a deliberate **generation gap** between informal reasoning (including m
 
 ## Quick Start
 
-Requires **Python 3.11+**. Installs the `adr` CLI and the `adr_kit` package.
+Supports **Python 3.11–3.14**. Installs the `adr` CLI and the `adr_kit` package.
 
 ```bash
 pip install adr-architecture-kit
@@ -23,6 +23,20 @@ adr --help
 ```
 
 `adr --help` works from any directory after install. `adr validate` and `adr generate-architecture-index` are project-scoped commands: they require a resolvable project tree with `adrs/` and the expected project markers, or an explicit `--scope PATH`.
+
+New Python integrations should use the narrow supported facade:
+
+```python
+from pathlib import Path
+from adr_kit.api import ValidationRequest, capabilities, validate_architecture
+
+print(capabilities().as_dict())
+result = validate_architecture(ValidationRequest(Path("/absolute/project/root")))
+print(result.success, result.diagnostics)
+```
+
+See the [public SDK guide](docs/public-sdk.md) for preview/write compilation,
+repository queries, diagnostics, and the exact supported inventory.
 
 For a first end-to-end run, use a repository checkout with `adrs/` populated and follow [walkthrough-adr-to-ir.md](docs/walkthrough-adr-to-ir.md). The public example under [`examples/public-v1/`](examples/public-v1/) is included in that walkthrough.
 
@@ -52,7 +66,8 @@ From a checkout with `adrs/` populated, `adr generate-architecture-index` (with 
 - ADR schemas and frontmatter rules for canonical ADR artifacts
 - Pydantic models, parsing, and validation for ADR and invariant sources
 - Authoring-time normalization and deterministic repository discovery outputs
-- Python API over compiled repository bundles (`ArchitectureRepository`, `NormalizedArchitectureModel`)
+- Narrow installed-package SDK (`adr_kit.api`) over validation, authoring compilation,
+  `ArchitectureRepository`, and `NormalizedArchitectureModel`
 - ADR-to-Architecture-IR adapter logic for the public **`ste-spec`** contract
 
 ## Core Workflow
@@ -111,7 +126,7 @@ Full split: [authority-boundary.md](docs/authority-boundary.md).
 
 This project is **pre-1.0 (Alpha)** on PyPI; surfaces may evolve until a **1.0** commitment. Trove classifiers match that posture.
 
-- **Stable v1** — ADR v1.0 schemas, parser/validator behavior, discovery bundle role, supported Python API, IR adapter semantics with **`ste-spec`** owning the Architecture IR schema contract.
+- **Stable ADR v1.0 encoding** — ADR schema versioning is distinct from the package's pre-1.0 SemVer status. The repository/model consumer seam is supported; documented historical imports and CLI behavior are compatibility-snapshotted. See [public surface and stability](docs/public-surface-and-stability.md).
 - **Draft** — v1.1 and evolving registry/IR adapter details; consume with care.
 - **Experimental** — Vision ADRs, migrators, workspace boot examples; not a basis for long-term external dependencies.
 
@@ -124,6 +139,10 @@ Full breakdown: [public-surface-and-stability.md](docs/public-surface-and-stabil
 | Document | Description |
 |----------|-------------|
 | [authority-boundary.md](docs/authority-boundary.md) | Who owns what across `ste-handbook`, `ste-spec`, this kit, `ste-runtime`, and `ste-kernel` |
+| [public-sdk.md](docs/public-sdk.md) | Supported `adr_kit.api` installation and consumer contract |
+| [schema-v1.2.md](docs/schema-v1.2.md) | Additive v1.2 authoring and normalized semantics |
+| [external-bindings.md](docs/external-bindings.md) | External authority binding without ownership absorption |
+| [topology-identity-migration.md](docs/topology-identity-migration.md) | Stable physical topology identity migration |
 | [adr-type-model.md](docs/adr-type-model.md) | ADR taxonomy: `ADR-L`, `ADR-PS`, `ADR-PC`, legacy `ADR-P`, experimental `ADR-V` |
 | [architecture-ir-overview.md](docs/architecture-ir-overview.md) | Three layers: ADR sources, repository discovery bundle, public Architecture IR |
 | [public-surface-and-stability.md](docs/public-surface-and-stability.md) | Stable v1 vs draft vs experimental surfaces |
@@ -142,6 +161,30 @@ Full breakdown: [public-surface-and-stability.md](docs/public-surface-and-stabil
 
 Also [CONTRIBUTING.md](CONTRIBUTING.md) and [schema/v1.0/README.md](schema/v1.0/README.md). **Where to start:** ADR authors — [adr-type-model.md](docs/adr-type-model.md), [schema/v1.0/README.md](schema/v1.0/README.md), [walkthrough-adr-to-ir.md](docs/walkthrough-adr-to-ir.md). Python or cross-repo IR consumers — [architecture-ir-overview.md](docs/architecture-ir-overview.md), [authority-boundary.md](docs/authority-boundary.md); code entry point [`architecture_repository.py`](src/adr_kit/repository/architecture_repository.py). Curated doc index: [docs/README.md](docs/README.md).
 
+## Implementation linkage
+
+Python APIs and CLI entry points declare **architecture implementation intent** beside code using no-op decorators in [`src/adr_kit/decorators.py`](src/adr_kit/decorators.py):
+
+- `@implements_adr("ADR-L-…", …)` — variadic ADR ids
+- `@implements_adrs(["ADR-L-…", …])` — single iterable (matches RECON / TypeScript list style)
+- `@enforces_invariant("INV-…", …)` and `@enforces_invariants(["INV-…", …])`
+
+Normative rationale: [ADR-L-0004](adrs/logical/ADR-L-0004-adr-to-code-traceability-via-decorators.yaml). These decorators only attach `__implements_adrs__` and `__enforces_invariants__`; they do not change control flow.
+
+**ste-runtime** RECON can parse the decorator calls from the AST and emit derived evidence under the workspace-root `.ste-workspace/` state directory, outside every repository. That output is **declared linkage**, not proof of correctness: canonical architecture remains the ADR corpus and contracts in **`ste-spec`**.
+
+**CLI (`adr attribution`)** validates and inspects RECON-derived (or synthetic) attribution evidence YAML against your repository’s canonical ADRs:
+
+- **`adr attribution check`** — Schema + corpus validation (`--profile greenfield|brownfield|migration`, default **greenfield**). Use `--scope PATH` as the project root (default: current directory) and optional `--evidence PATH` for the YAML file.
+- **`adr attribution coverage`** — Prints an informational YAML report of ADRs cited by evidence versus the corpus (same `--scope` / `--evidence`).
+- **`adr attribution generate-shim --language python|typescript`** — Writes linkage decorator shims (`-o`/ stdout).
+
+If `--evidence` is omitted, the CLI resolves the first existing file under `--scope`:
+
+1. `{scope}/state/attribution/implementation-attribution-evidence.yaml`
+2. `{scope}/.ste/state/attribution/implementation-attribution-evidence.yaml`
+
+Normative YAML schema for that evidence artifact is owned by **`adr-architecture-kit`** (see [`schema/v1.1/implementation-attribution-evidence.schema.json`](schema/v1.1/implementation-attribution-evidence.schema.json)). The **`ste-spec`** repository publishes draft hand-off prose under **`contracts/implementation-attribution-evidence/`** until the contract is promoted; there is intentionally no mirrored JSON schema there yet (contrast with the Architecture IR mirror in this repo).
 ## Contributing
 
 Contributions use **Test-Driven Development** (see [`PROJECT.yaml`](PROJECT.yaml), `ADR-L-0003`). Setup, quality gates, schema parity, governance, and PR flow are in [CONTRIBUTING.md](CONTRIBUTING.md). Authoring and placement guides live under [docs/contributors/](docs/contributors/). For authoring-time vs runtime artifact boundaries, see [AUTHORING-SYSTEM.md](AUTHORING-SYSTEM.md).

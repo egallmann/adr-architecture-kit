@@ -39,6 +39,13 @@ class SourceADRGenerator(Generic[T]):
             return adr_dict
         raise ValueError(f"Unknown generation mode: {mode}")
 
+    @classmethod
+    def input_json_schema(cls) -> dict:
+        """Return the structured input schema for this source generator."""
+        if cls.model_class is None:
+            raise ValueError("model_class must be defined by subclasses")
+        return cls.model_class.model_json_schema()
+
     def create_adr_from_file(self, input_path: Union[str, Path], mode: str = "complete") -> Union[dict, T]:
         """Load structured YAML input and create an ADR model."""
         data = self.parser.parse_yaml(input_path)

@@ -6,7 +6,7 @@ from unittest.mock import Mock, patch
 import tempfile
 import shutil
 
-from src.adr_kit.scope import ProjectScopeResolver, ProjectScope
+from adr_kit.scope import ProjectScopeResolver, ProjectScope
 
 
 class TestProjectScopeDetection:
@@ -272,6 +272,22 @@ class TestProjectScopeMetadata:
         assert scope.root.is_absolute()
         assert scope.adr_dir.is_absolute()
         assert scope.manifest_path.is_absolute()
+        assert scope.physical_system_dir.is_absolute()
+        assert scope.physical_component_dir.is_absolute()
+
+    def test_scope_exposes_split_physical_directories(self, tmp_path):
+        """Physical-system and physical-component directories should be explicit scope fields."""
+        project_dir = tmp_path / "test-project"
+        project_dir.mkdir()
+        (project_dir / "PROJECT.yaml").write_text("project:\n  name: test")
+        (project_dir / "adrs").mkdir()
+
+        resolver = ProjectScopeResolver()
+        scope = resolver.resolve(start_dir=project_dir)
+
+        assert scope.physical_dir == project_dir / "adrs" / "physical"
+        assert scope.physical_system_dir == project_dir / "adrs" / "physical-system"
+        assert scope.physical_component_dir == project_dir / "adrs" / "physical-component"
 
 
 class TestRealWorldScenarios:

@@ -18,6 +18,7 @@ from ..validators import ADRValidator, ValidationResult as InternalValidationRes
 from ._contracts import (
     API_CONTRACT_VERSION,
     ARTIFACT_GROUPS,
+    PROMOTION_CONTRACT_VERSIONS,
     VALIDATION_MODES,
     ArtifactDescriptor,
     CapabilityManifest,
@@ -202,6 +203,7 @@ def capabilities() -> CapabilityManifest:
         package_version=__version__,
         api_contract_version=API_CONTRACT_VERSION,
         operations=tuple(operations),
+        supported_promotion_contract_versions=PROMOTION_CONTRACT_VERSIONS,
         validation_modes=VALIDATION_MODES,
         artifact_groups=ARTIFACT_GROUPS,
         supported_adr_schema_versions=("1.0", "1.1", "1.2"),

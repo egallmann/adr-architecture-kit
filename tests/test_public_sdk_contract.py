@@ -218,6 +218,10 @@ def test_capability_manifest_is_exact_and_deterministic() -> None:
         "check_promotion",
         "apply_promotion",
     )
+    assert hasattr(first, "supported_promotion_contract_versions")
+    assert first.supported_promotion_contract_versions == (
+        "ste.design_journal.promotion_contract/v0.1",
+    )
     assert first.validation_modes == ("complete", "structural")
     assert first.artifact_groups == ("registries", "manifest", "markdown")
     assert first.supported_adr_schema_versions == ("1.0", "1.1", "1.2")

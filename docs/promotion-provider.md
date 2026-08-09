@@ -59,8 +59,12 @@ prepare → bind → validate mechanical readiness
 ## Capability discovery
 
 Promotion operations appear in `capabilities().operations` only when the
-behavioral contract is implemented. Schema 1.3 / normalized model 2.0 are
-**not** advertised by this provider.
+behavioral contract is implemented. The provider also reports
+`ste.design_journal.promotion_contract/v0.1` in
+`capabilities().supported_promotion_contract_versions`. This Promotion
+Contract version is independent of ADR authoring schema versions and the
+normalized model version; ADR schema 1.3 and normalized model 2.0 are **not**
+advertised by this provider.
 
 ## Prepared PC handoff
 

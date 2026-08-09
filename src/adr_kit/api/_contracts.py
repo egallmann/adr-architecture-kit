@@ -13,6 +13,7 @@ from ._errors import InvalidRequestError
 API_CONTRACT_VERSION = "1.0"
 VALIDATION_MODES = ("complete", "structural")
 ARTIFACT_GROUPS = ("registries", "manifest", "markdown")
+PROMOTION_CONTRACT_VERSIONS = ("ste.design_journal.promotion_contract/v0.1",)
 
 
 def _normalize_project_root(value: str | Path) -> Path:
@@ -156,6 +157,7 @@ class CapabilityManifest:
     package_version: str
     api_contract_version: str
     operations: tuple[str, ...]
+    supported_promotion_contract_versions: tuple[str, ...]
     validation_modes: tuple[str, ...]
     artifact_groups: tuple[str, ...]
     supported_adr_schema_versions: tuple[str, ...]

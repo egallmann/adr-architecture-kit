@@ -134,6 +134,19 @@ raise `InvalidRequestError` before an operation starts. Unexpected parser,
 compiler, or I/O failures raise a chained `OperationError`.
 `open_repository()` chains repository-loading failures as `RepositoryError`.
 
+## Capability metadata
+
+`capabilities()` reports supported Promotion Contract versions separately from
+ADR authoring schema versions and the normalized model version. The current
+provider supports:
+
+```text
+ste.design_journal.promotion_contract/v0.1
+```
+
+This Promotion Contract version is not an ADR schema version and does not
+advertise ADR schema 1.3 or normalized model 2.0.
+
 ## Exact public inventory
 
 `adr_kit.api.__all__` contains only:

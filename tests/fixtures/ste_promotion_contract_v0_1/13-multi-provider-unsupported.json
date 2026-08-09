@@ -1,0 +1,77 @@
+{
+  "expect": "fail",
+  "note": "v0.1 rejects multi-provider promotion contracts",
+  "contract": {
+    "contract_version": "ste.design_journal.promotion_contract/v0.1",
+    "design_journal_version": "ste.design_journal/v0.1",
+    "journal_id": "DJ-CONF-13",
+    "lifecycle_state": "lock_ready",
+    "provider": "provider-a",
+    "authority_baseline": {
+      "provider": "provider-a",
+      "kind": "git_commit",
+      "value": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+    },
+    "outcomes": [
+      {
+        "id": "O-01",
+        "category": "candidate_decision",
+        "promotion_required": true,
+        "statement": "Targets provider A."
+      },
+      {
+        "id": "O-02",
+        "category": "candidate_decision",
+        "promotion_required": true,
+        "statement": "Targets provider B."
+      }
+    ],
+    "mutations": [
+      {
+        "id": "M-01",
+        "operation": "create",
+        "provider": "provider-a",
+        "provider_target_ref": "artifact:a",
+        "outcome_refs": ["O-01"],
+        "payload_binding": {
+          "ref": "p-a.yaml",
+          "fingerprint": "sha256:1111111111111111111111111111111111111111111111111111111111111111"
+        },
+        "schema_binding": {
+          "ref": "s-a",
+          "fingerprint": "sha256:2222222222222222222222222222222222222222222222222222222222222222"
+        },
+        "validation_evidence": {
+          "payload_fingerprint": "sha256:1111111111111111111111111111111111111111111111111111111111111111",
+          "schema_binding_fingerprint": "sha256:2222222222222222222222222222222222222222222222222222222222222222",
+          "result": "valid"
+        }
+      },
+      {
+        "id": "M-02",
+        "operation": "create",
+        "provider": "provider-b",
+        "provider_target_ref": "artifact:b",
+        "outcome_refs": ["O-02"],
+        "payload_binding": {
+          "ref": "p-b.yaml",
+          "fingerprint": "sha256:3333333333333333333333333333333333333333333333333333333333333333"
+        },
+        "schema_binding": {
+          "ref": "s-b",
+          "fingerprint": "sha256:4444444444444444444444444444444444444444444444444444444444444444"
+        },
+        "validation_evidence": {
+          "payload_fingerprint": "sha256:3333333333333333333333333333333333333333333333333333333333333333",
+          "schema_binding_fingerprint": "sha256:4444444444444444444444444444444444444444444444444444444444444444",
+          "result": "valid"
+        }
+      }
+    ],
+    "blockers": [],
+    "readiness": {
+      "design_lock": true,
+      "mechanical_promotion": true
+    }
+  }
+}

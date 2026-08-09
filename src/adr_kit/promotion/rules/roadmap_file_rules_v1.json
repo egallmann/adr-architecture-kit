@@ -1,0 +1,10 @@
+{
+  "id": "adr-kit.roadmap_file_rules/v1",
+  "description": "Mechanically derivable ROADMAP.md structural rules for promotion binding",
+  "rules": [
+    "utf8_decodable",
+    "non_empty",
+    "contains_markdown_heading",
+    "contains_phase_section"
+  ]
+}

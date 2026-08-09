@@ -23,6 +23,18 @@ EXPECTED_PUBLIC_SYMBOLS = [
     "ValidationResult",
     "CompilationRequest",
     "CompilationResult",
+    "PromotionPrepareRequest",
+    "PromotionPrepareResult",
+    "PromotionCheckRequest",
+    "PromotionCheckResult",
+    "PromotionApplyRequest",
+    "PromotionApplyResult",
+    "PromotionMutationDescriptor",
+    "PromotionBindingDescriptor",
+    "PromotionValidationEvidenceDescriptor",
+    "PromotionBlockerDescriptor",
+    "PromotionBaselineDescriptor",
+    "PromotionExecutionEvidenceDescriptor",
     "Diagnostic",
     "SDKError",
     "InvalidRequestError",
@@ -32,6 +44,9 @@ EXPECTED_PUBLIC_SYMBOLS = [
     "validate_architecture",
     "compile_architecture",
     "open_repository",
+    "prepare_promotion",
+    "check_promotion",
+    "apply_promotion",
 ]
 
 
@@ -145,6 +160,18 @@ def test_public_contracts_are_frozen(tmp_path: Path) -> None:
         "ValidationResult",
         "CompilationRequest",
         "CompilationResult",
+        "PromotionPrepareRequest",
+        "PromotionPrepareResult",
+        "PromotionCheckRequest",
+        "PromotionCheckResult",
+        "PromotionApplyRequest",
+        "PromotionApplyResult",
+        "PromotionMutationDescriptor",
+        "PromotionBindingDescriptor",
+        "PromotionValidationEvidenceDescriptor",
+        "PromotionBlockerDescriptor",
+        "PromotionBaselineDescriptor",
+        "PromotionExecutionEvidenceDescriptor",
         "Diagnostic",
     )
     for name in contract_names:
@@ -187,12 +214,16 @@ def test_capability_manifest_is_exact_and_deterministic() -> None:
         "validate_architecture",
         "compile_architecture",
         "open_repository",
+        "prepare_promotion",
+        "check_promotion",
+        "apply_promotion",
     )
     assert first.validation_modes == ("complete", "structural")
     assert first.artifact_groups == ("registries", "manifest", "markdown")
     assert first.supported_adr_schema_versions == ("1.0", "1.1", "1.2")
     assert first.stable_adr_schema_versions == ("1.0",)
     assert first.provisional_adr_schema_versions == ("1.1", "1.2")
+    assert "1.3" not in first.supported_adr_schema_versions
     assert first.normalized_model_schema_version == "1.1"
     assert list(first.as_dict()) == [field.name for field in fields(first)]
     assert all(not isinstance(value, tuple) for value in first.as_dict().values())

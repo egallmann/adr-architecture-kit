@@ -29,6 +29,14 @@ from ._contracts import (
     _normalize_project_root,
 )
 from ._errors import OperationError, RepositoryError
+from ._promotion_contracts import (
+    PromotionApplyRequest,
+    PromotionApplyResult,
+    PromotionCheckRequest,
+    PromotionCheckResult,
+    PromotionPrepareRequest,
+    PromotionPrepareResult,
+)
 
 Severity = Literal["info", "warning", "error"]
 ValidationFileResults = dict[str, InternalValidationResult]
@@ -180,15 +188,20 @@ def compile_for_cli(
 def capabilities() -> CapabilityManifest:
     """Return deterministic local SDK capability metadata."""
 
+    from ..promotion.service import PROMOTION_OPERATIONS_ADVERTISED
+
+    operations = [
+        "capabilities",
+        "validate_architecture",
+        "compile_architecture",
+        "open_repository",
+    ]
+    if PROMOTION_OPERATIONS_ADVERTISED:
+        operations.extend(["prepare_promotion", "check_promotion", "apply_promotion"])
     return CapabilityManifest(
         package_version=__version__,
         api_contract_version=API_CONTRACT_VERSION,
-        operations=(
-            "capabilities",
-            "validate_architecture",
-            "compile_architecture",
-            "open_repository",
-        ),
+        operations=tuple(operations),
         validation_modes=VALIDATION_MODES,
         artifact_groups=ARTIFACT_GROUPS,
         supported_adr_schema_versions=("1.0", "1.1", "1.2"),
@@ -196,6 +209,36 @@ def capabilities() -> CapabilityManifest:
         provisional_adr_schema_versions=("1.1", "1.2"),
         normalized_model_schema_version="1.1",
     )
+
+
+def prepare_promotion(request: PromotionPrepareRequest) -> PromotionPrepareResult:
+    """Prepare a Promotion Contract into bound post-images without authority writes."""
+
+    if not isinstance(request, PromotionPrepareRequest):
+        raise TypeError("request must be a PromotionPrepareRequest")
+    from ..promotion.service import prepare_promotion as _prepare
+
+    return _prepare(request)
+
+
+def check_promotion(request: PromotionCheckRequest) -> PromotionCheckResult:
+    """Re-evaluate promotion readiness without authority writes."""
+
+    if not isinstance(request, PromotionCheckRequest):
+        raise TypeError("request must be a PromotionCheckRequest")
+    from ..promotion.service import check_promotion as _check
+
+    return _check(request)
+
+
+def apply_promotion(request: PromotionApplyRequest) -> PromotionApplyResult:
+    """Dry-run or commit a locked prepared Promotion Contract."""
+
+    if not isinstance(request, PromotionApplyRequest):
+        raise TypeError("request must be a PromotionApplyRequest")
+    from ..promotion.service import apply_promotion as _apply
+
+    return _apply(request)
 
 
 @implements_adr("ADR-L-0013", "ADR-PC-0002")

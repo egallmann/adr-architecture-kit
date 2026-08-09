@@ -1445,6 +1445,160 @@
         }
       ]
     },
+    "promote": {
+      "help": "Design Journal Promotion Contract operations (thin adapter over adr_kit.api).",
+      "params": []
+    },
+    "promote apply": {
+      "help": "Dry-run or commit a locked prepared Promotion Contract.",
+      "params": [
+        {
+          "count": false,
+          "default": ".",
+          "is_flag": false,
+          "kind": "Option",
+          "multiple": false,
+          "name": "project_root",
+          "nargs": 1,
+          "opts": [
+            "--project-root"
+          ],
+          "required": false,
+          "secondary_opts": [],
+          "type": "directory"
+        },
+        {
+          "count": false,
+          "default": "Sentinel.UNSET",
+          "is_flag": false,
+          "kind": "Option",
+          "multiple": false,
+          "name": "promotion_contract_path",
+          "nargs": 1,
+          "opts": [
+            "--contract"
+          ],
+          "required": true,
+          "secondary_opts": [],
+          "type": "file"
+        },
+        {
+          "count": false,
+          "default": false,
+          "is_flag": true,
+          "kind": "Option",
+          "multiple": false,
+          "name": "commit",
+          "nargs": 1,
+          "opts": [
+            "--commit"
+          ],
+          "required": false,
+          "secondary_opts": [],
+          "type": "boolean"
+        },
+        {
+          "count": false,
+          "default": null,
+          "is_flag": false,
+          "kind": "Option",
+          "multiple": false,
+          "name": "timestamp",
+          "nargs": 1,
+          "opts": [
+            "--timestamp"
+          ],
+          "required": false,
+          "secondary_opts": [],
+          "type": "text"
+        }
+      ]
+    },
+    "promote check": {
+      "help": "Check promotion readiness without authority writes.",
+      "params": [
+        {
+          "count": false,
+          "default": ".",
+          "is_flag": false,
+          "kind": "Option",
+          "multiple": false,
+          "name": "project_root",
+          "nargs": 1,
+          "opts": [
+            "--project-root"
+          ],
+          "required": false,
+          "secondary_opts": [],
+          "type": "directory"
+        },
+        {
+          "count": false,
+          "default": "Sentinel.UNSET",
+          "is_flag": false,
+          "kind": "Option",
+          "multiple": false,
+          "name": "promotion_contract_path",
+          "nargs": 1,
+          "opts": [
+            "--contract"
+          ],
+          "required": true,
+          "secondary_opts": [],
+          "type": "file"
+        }
+      ]
+    },
+    "promote prepare": {
+      "help": "Prepare a Promotion Contract without mutating canonical authority.",
+      "params": [
+        {
+          "count": false,
+          "default": ".",
+          "is_flag": false,
+          "kind": "Option",
+          "multiple": false,
+          "name": "project_root",
+          "nargs": 1,
+          "opts": [
+            "--project-root"
+          ],
+          "required": false,
+          "secondary_opts": [],
+          "type": "directory"
+        },
+        {
+          "count": false,
+          "default": "Sentinel.UNSET",
+          "is_flag": false,
+          "kind": "Option",
+          "multiple": false,
+          "name": "promotion_contract_path",
+          "nargs": 1,
+          "opts": [
+            "--contract"
+          ],
+          "required": true,
+          "secondary_opts": [],
+          "type": "file"
+        },
+        {
+          "count": false,
+          "default": null,
+          "is_flag": false,
+          "kind": "Option",
+          "multiple": false,
+          "name": "prepared_contract_output_path",
+          "nargs": 1,
+          "opts": [
+            "--output"
+          ],
+          "required": false,
+          "secondary_opts": [],
+          "type": "file"
+        }
+      ]
+    },
     "repair-canonical-ids": {
       "help": "Plan, apply, or check monotonic canonical entity-ID repairs.",
       "params": [

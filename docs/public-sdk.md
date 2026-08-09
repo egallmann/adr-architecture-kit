@@ -141,15 +141,24 @@ compiler, or I/O failures raise a chained `OperationError`.
 ```text
 ArchitectureRepository, NormalizedArchitectureModel,
 ArtifactDescriptor, CapabilityManifest, ValidationRequest, ValidationResult,
-CompilationRequest, CompilationResult, Diagnostic,
+CompilationRequest, CompilationResult,
+PromotionPrepareRequest, PromotionPrepareResult,
+PromotionCheckRequest, PromotionCheckResult,
+PromotionApplyRequest, PromotionApplyResult,
+PromotionMutationDescriptor, PromotionBindingDescriptor,
+PromotionValidationEvidenceDescriptor, PromotionBlockerDescriptor,
+PromotionBaselineDescriptor, PromotionExecutionEvidenceDescriptor,
+Diagnostic,
 SDKError, InvalidRequestError, OperationError, RepositoryError,
-capabilities, validate_architecture, compile_architecture, open_repository
+capabilities, validate_architecture, compile_architecture, open_repository,
+prepare_promotion, check_promotion, apply_promotion
 ```
 
 Nothing is re-exported from the `adr_kit` package root except `__version__`.
 Historical imports remain compatible, but new production integrations should use
-this facade. See [public surface and stability](public-surface-and-stability.md)
-and the executable [consumer example](../examples/public_sdk_consumer.py).
+this facade. See [public surface and stability](public-surface-and-stability.md),
+the [promotion provider guide](promotion-provider.md), and the executable
+[consumer example](../examples/public_sdk_consumer.py).
 
 Schema v1.2 and topology migration are provisional package surfaces rather than
 new `adr_kit.api` exports. See [schema v1.2](schema-v1.2.md),

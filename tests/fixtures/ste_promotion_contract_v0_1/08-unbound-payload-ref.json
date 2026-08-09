@@ -1,0 +1,50 @@
+{
+  "expect": "fail",
+  "note": "payload_binding with ref only (no fingerprint/immutable_revision) fails schema/behavior",
+  "contract": {
+    "contract_version": "ste.design_journal.promotion_contract/v0.1",
+    "design_journal_version": "ste.design_journal/v0.1",
+    "journal_id": "DJ-CONF-08",
+    "lifecycle_state": "lock_ready",
+    "provider": "example-authority-provider",
+    "authority_baseline": {
+      "provider": "example-authority-provider",
+      "kind": "git_commit",
+      "value": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+    },
+    "outcomes": [
+      {
+        "id": "O-01",
+        "category": "candidate_decision",
+        "promotion_required": true,
+        "statement": "Needs immutable payload binding."
+      }
+    ],
+    "mutations": [
+      {
+        "id": "M-01",
+        "operation": "create",
+        "provider": "example-authority-provider",
+        "provider_target_ref": "artifact:x",
+        "outcome_refs": ["O-01"],
+        "payload_binding": {
+          "ref": "p.yaml"
+        },
+        "schema_binding": {
+          "ref": "s",
+          "fingerprint": "sha256:2222222222222222222222222222222222222222222222222222222222222222"
+        },
+        "validation_evidence": {
+          "payload_fingerprint": "sha256:1111111111111111111111111111111111111111111111111111111111111111",
+          "schema_binding_fingerprint": "sha256:2222222222222222222222222222222222222222222222222222222222222222",
+          "result": "valid"
+        }
+      }
+    ],
+    "blockers": [],
+    "readiness": {
+      "design_lock": true,
+      "mechanical_promotion": true
+    }
+  }
+}

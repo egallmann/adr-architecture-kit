@@ -1251,9 +1251,7 @@ def repair_canonical_ids(
                 f"{remap.old_id} -> {remap.new_id}"
             )
         for ambiguity in plan.ambiguities:
-            relative = ambiguity.file_path.resolve().relative_to(
-                detected_scope.root.resolve()
-            )
+            relative = ambiguity.file_path.resolve().relative_to(detected_scope.root.resolve())
             click.echo(
                 f"Ambiguous reference: {relative.as_posix()}#"
                 f"{ambiguity.source_pointer} ({ambiguity.entity_id})",
@@ -1272,17 +1270,11 @@ def repair_canonical_ids(
             click.echo("No canonical ID collisions found. No changes made.")
             return
         if not apply_repairs:
-            click.echo(
-                f"Planned {len(plan.remaps)} canonical ID repairs; no files changed."
-            )
+            click.echo(f"Planned {len(plan.remaps)} canonical ID repairs; no files changed.")
             if plan.ambiguities:
-                click.echo(
-                    "Resolve ambiguous references before applying this plan.", err=True
-                )
+                click.echo("Resolve ambiguous references before applying this plan.", err=True)
             return
-        applied = normalizer.repair(
-            detected_scope, apply=True, resolution_map=resolution_map
-        )
+        applied = normalizer.repair(detected_scope, apply=True, resolution_map=resolution_map)
         click.echo(f"Applied {len(applied.remaps)} canonical ID repairs.")
         click.echo(
             f"Allocation ledger: "
@@ -1353,14 +1345,11 @@ def migrate_topology_ids(scope: Optional[Path], apply_migration: bool) -> None:
         for change in plan.changes:
             relative = change.file_path.resolve().relative_to(detected_scope.root.resolve())
             click.echo(
-                f"{relative.as_posix()}#{change.pointer}: "
-                f"{change.before!r} -> {change.after!r}"
+                f"{relative.as_posix()}#{change.pointer}: " f"{change.before!r} -> {change.after!r}"
             )
         if plan.diagnostics:
             for diagnostic in plan.diagnostics:
-                relative = diagnostic.file_path.resolve().relative_to(
-                    detected_scope.root.resolve()
-                )
+                relative = diagnostic.file_path.resolve().relative_to(detected_scope.root.resolve())
                 click.echo(
                     f"{diagnostic.code}: {relative.as_posix()}#"
                     f"{diagnostic.pointer}: {diagnostic.message}",
@@ -1375,9 +1364,7 @@ def migrate_topology_ids(scope: Optional[Path], apply_migration: bool) -> None:
             return
         applied = migrator.apply(detected_scope)
         suffix = "" if len(applied.changed_files) == 1 else "s"
-        click.echo(
-            f"Applied topology migration to {len(applied.changed_files)} file{suffix}."
-        )
+        click.echo(f"Applied topology migration to {len(applied.changed_files)} file{suffix}.")
     except click.exceptions.Exit:
         raise
     except Exception as exc:
@@ -2466,6 +2453,132 @@ def attribution_generate_shim(language: str, output: Optional[Path]):
             click.echo(f"Wrote {language} shim: {output.resolve()}")
     except Exception as e:
         click.echo(f"Error: {e}", err=True)
+        sys.exit(1)
+
+
+@cli.group("promote")
+def promote_group() -> None:
+    """Design Journal Promotion Contract operations (thin adapter over adr_kit.api)."""
+
+
+@promote_group.command("prepare")
+@click.option(
+    "--project-root",
+    type=click.Path(exists=True, file_okay=False, path_type=Path),
+    default=".",
+    show_default=True,
+)
+@click.option(
+    "--contract",
+    "promotion_contract_path",
+    type=click.Path(exists=True, dir_okay=False, path_type=Path),
+    required=True,
+)
+@click.option(
+    "--output",
+    "prepared_contract_output_path",
+    type=click.Path(dir_okay=False, path_type=Path),
+    default=None,
+)
+def promote_prepare(
+    project_root: Path,
+    promotion_contract_path: Path,
+    prepared_contract_output_path: Optional[Path],
+) -> None:
+    """Prepare a Promotion Contract without mutating canonical authority."""
+
+    from ..api import PromotionPrepareRequest, prepare_promotion
+
+    result = prepare_promotion(
+        PromotionPrepareRequest(
+            project_root=project_root,
+            promotion_contract_path=promotion_contract_path,
+            prepared_contract_output_path=prepared_contract_output_path,
+        )
+    )
+    click.echo(
+        f"prepared={result.success} mechanical_ready={result.mechanical_promotion_ready} "
+        f"baseline={result.baseline.equivalent} blockers={len(result.blockers)} "
+        f"fingerprint={result.locked_intent_fingerprint}"
+    )
+    if result.prepared_contract_path:
+        click.echo(f"prepared_contract_path={result.prepared_contract_path}")
+    if not result.success:
+        sys.exit(1)
+
+
+@promote_group.command("check")
+@click.option(
+    "--project-root",
+    type=click.Path(exists=True, file_okay=False, path_type=Path),
+    default=".",
+    show_default=True,
+)
+@click.option(
+    "--contract",
+    "promotion_contract_path",
+    type=click.Path(exists=True, dir_okay=False, path_type=Path),
+    required=True,
+)
+def promote_check(project_root: Path, promotion_contract_path: Path) -> None:
+    """Check promotion readiness without authority writes."""
+
+    from ..api import PromotionCheckRequest, check_promotion
+
+    result = check_promotion(
+        PromotionCheckRequest(
+            project_root=project_root,
+            promotion_contract_path=promotion_contract_path,
+        )
+    )
+    click.echo(
+        f"ok={result.success} mechanical_ready={result.mechanical_promotion_ready} "
+        f"human_lock={result.human_lock_present} blockers={len(result.blockers)}"
+    )
+    if not result.success:
+        sys.exit(1)
+
+
+@promote_group.command("apply")
+@click.option(
+    "--project-root",
+    type=click.Path(exists=True, file_okay=False, path_type=Path),
+    default=".",
+    show_default=True,
+)
+@click.option(
+    "--contract",
+    "promotion_contract_path",
+    type=click.Path(exists=True, dir_okay=False, path_type=Path),
+    required=True,
+)
+@click.option("--commit", is_flag=True, help="Commit authority mutations (requires human_lock)")
+@click.option("--timestamp", default=None, help="RFC3339 UTC timestamp ending in Z")
+def promote_apply(
+    project_root: Path,
+    promotion_contract_path: Path,
+    commit: bool,
+    timestamp: Optional[str],
+) -> None:
+    """Dry-run or commit a locked prepared Promotion Contract."""
+
+    from ..api import PromotionApplyRequest, apply_promotion
+
+    result = apply_promotion(
+        PromotionApplyRequest(
+            project_root=project_root,
+            promotion_contract_path=promotion_contract_path,
+            commit=commit,
+            timestamp=timestamp,
+        )
+    )
+    click.echo(
+        f"success={result.success} state={result.semantic_state} "
+        f"authority_committed={result.authority_committed} "
+        f"evidence={result.apply_execution_evidence_appended} "
+        f"regen={result.regeneration_completed} validation={result.validation_success}"
+    )
+    if not result.success:
         sys.exit(1)
 
 

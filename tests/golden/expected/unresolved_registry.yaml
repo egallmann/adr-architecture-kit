@@ -127,3 +127,18 @@ unresolved:
   evidence:
   - ADR-L-0006
   - Rules & Signal Service not built
+- id: UGAP-ADR-L-0019-GAP-0019
+  gap_class: author_declared
+  gap_type: author_declared_deferred_gap
+  source_entity_id: ADR-L-0019
+  severity: advisory
+  provenance:
+    source_type: derived_registry
+    source_ref: ADR-L-0019#GAP-0019
+    extraction_phase: detect_unresolved
+    classification: explicit
+    generator: adr-architecture-index
+  evidence:
+  - ADR-L-0019
+  - Canonical entity-level updated_at and updated_at>=created_at invariant remain
+    deferred with transactional authoring

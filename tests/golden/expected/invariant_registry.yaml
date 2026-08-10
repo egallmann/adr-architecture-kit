@@ -394,7 +394,11 @@ entities:
     source_type: standalone_invariant
     source_ref: INV-0008
     artifact_path: adrs/invariants/INV-0008-rendered-artifacts-are-derived-only.yaml
-  source_refs: []
+  source_refs:
+  - source_type: logical_adr
+    source_ref: ADR-L-0019#INV-0008
+    artifact_path: adrs/logical/ADR-L-0019-canonical-entity-identity.yaml
+    mention_role: reference
   metadata:
     defined_in: ADR-L-0014
     scope: global
@@ -434,6 +438,242 @@ entities:
   provenance:
     source_type: standalone_invariant
     source_ref: INV-0008
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
+- id: INV-0009
+  entity_type: invariant
+  name: INV-0009
+  summary: A canonical entity UUID is immutable for the entity's lifetime.
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0019#INV-0009
+    artifact_path: adrs/logical/ADR-L-0019-canonical-entity-identity.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0019
+    scope: global
+    statement: A canonical entity UUID is immutable for the entity's lifetime.
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions: []
+    supersedes: []
+  relationships:
+    declared_in:
+    - ADR-L-0019
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0019#INV-0009
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
+- id: INV-0010
+  entity_type: invariant
+  name: INV-0010
+  summary: '`alias_id`, `alias_name`, and derived `alias_ref` are human-recognition
+    surfaces, not canonical machine identity.'
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0019#INV-0010
+    artifact_path: adrs/logical/ADR-L-0019-canonical-entity-identity.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0019
+    scope: global
+    statement: '`alias_id`, `alias_name`, and derived `alias_ref` are human-recognition
+      surfaces, not canonical machine identity.'
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions: []
+    supersedes: []
+  relationships:
+    declared_in:
+    - ADR-L-0019
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0019#INV-0010
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
+- id: INV-0011
+  entity_type: invariant
+  name: INV-0011
+  summary: Canonical authored entity references and normalized relationship endpoints
+    use UUIDs.
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0019#INV-0011
+    artifact_path: adrs/logical/ADR-L-0019-canonical-entity-identity.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0019
+    scope: global
+    statement: Canonical authored entity references and normalized relationship endpoints
+      use UUIDs.
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions: []
+    supersedes: []
+  relationships:
+    declared_in:
+    - ADR-L-0019
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0019#INV-0011
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
+- id: INV-0012
+  entity_type: invariant
+  name: INV-0012
+  summary: An authorized alias change does not change canonical UUID identity.
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0019#INV-0012
+    artifact_path: adrs/logical/ADR-L-0019-canonical-entity-identity.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0019
+    scope: global
+    statement: An authorized alias change does not change canonical UUID identity.
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions: []
+    supersedes: []
+  relationships:
+    declared_in:
+    - ADR-L-0019
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0019#INV-0012
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
+- id: INV-0013
+  entity_type: invariant
+  name: INV-0013
+  summary: An alias change never rewrites canonical UUID references or normalized
+    UUID relationship endpoints; only derived alias presentation regenerates.
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0019#INV-0013
+    artifact_path: adrs/logical/ADR-L-0019-canonical-entity-identity.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0019
+    scope: global
+    statement: An alias change never rewrites canonical UUID references or normalized
+      UUID relationship endpoints; only derived alias presentation regenerates.
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions: []
+    supersedes: []
+  relationships:
+    declared_in:
+    - ADR-L-0019
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0019#INV-0013
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
@@ -2934,6 +3174,103 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
+- id: INV-0062
+  entity_type: invariant
+  name: INV-0062
+  summary: The derived logical URI is a resolver key and is not entity identity.
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0019#INV-0062
+    artifact_path: adrs/logical/ADR-L-0019-canonical-entity-identity.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0019
+    scope: global
+    statement: The derived logical URI is a resolver key and is not entity identity.
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions: []
+    supersedes: []
+  relationships:
+    declared_in:
+    - ADR-L-0019
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0019#INV-0062
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
+- id: INV-0063
+  entity_type: invariant
+  name: INV-0063
+  summary: Every normalized identity-bearing entity exposes explicit type; a polymorphic
+    authored record authors type when enclosing context is insufficient, while monomorphic
+    authored schema position remains canonical type authori
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0019#INV-0063
+    artifact_path: adrs/logical/ADR-L-0019-canonical-entity-identity.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0019
+    scope: global
+    statement: Every normalized identity-bearing entity exposes explicit type; a polymorphic
+      authored record authors type when enclosing context is insufficient, while monomorphic
+      authored schema position remains canonical type authority and `alias_id` alone
+      never determines type.
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions: []
+    supersedes: []
+  relationships:
+    declared_in:
+    - ADR-L-0019
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0019#INV-0063
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
 - id: INV-0064
   entity_type: invariant
   name: INV-0064
@@ -3214,9 +3551,9 @@ entities:
 - id: INV-0069
   entity_type: invariant
   name: INV-0069
-  summary: Forward-authoring ADR ID allocation MUST be monotonic and non-reusable.
-    Previously allocated IDs and historical gaps remain consumed history and MUST
-    NOT be reissued.
+  summary: Forward-authoring governed alias_id allocation MUST be monotonic and non-reusable.
+    Previously allocated aliases and historical gaps remain consumed history and MUST
+    NOT be reissued or used to replace UUID identity.
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -3226,13 +3563,9 @@ entities:
   metadata:
     adr_id: ADR-L-0016
     scope: global
-    statement: 'Forward-authoring ADR ID allocation MUST be monotonic and non-reusable.
-
-      Previously allocated IDs and historical gaps remain consumed history and
-
-      MUST NOT be reissued.
-
-      '
+    statement: Forward-authoring governed alias_id allocation MUST be monotonic and
+      non-reusable. Previously allocated aliases and historical gaps remain consumed
+      history and MUST NOT be reissued or used to replace UUID identity.
     enforcement_level: must
     declaration_mode: local
     upheld_by_decisions: []
@@ -3324,8 +3657,8 @@ entities:
 - id: INV-0071
   entity_type: invariant
   name: INV-0071
-  summary: Reserved ADR IDs `9000-9999` MUST NOT participate in standard forward authoring
-    allocation.
+  summary: Reserved ADR alias IDs `9000-9999` MUST NOT participate in standard forward
+    alias allocation and MUST NOT be treated as UUID machine-identity allocation.
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -3335,11 +3668,8 @@ entities:
   metadata:
     adr_id: ADR-L-0016
     scope: global
-    statement: 'Reserved ADR IDs `9000-9999` MUST NOT participate in standard forward
-
-      authoring allocation.
-
-      '
+    statement: Reserved ADR alias IDs `9000-9999` MUST NOT participate in standard
+      forward alias allocation and MUST NOT be treated as UUID machine-identity allocation.
     enforcement_level: must
     declaration_mode: local
     upheld_by_decisions: []
@@ -3783,9 +4113,9 @@ entities:
 - id: INV-0079
   entity_type: invariant
   name: INV-0079
-  summary: Every newly projected relationship assertion MUST receive an `assertion_id`
-    using DEC-0086, while compatibility-preserved `relationship_id` semantics MUST
-    remain unchanged. Phase 2 MUST NOT claim GraphProjectionBundle, s
+  summary: Every newly projected relationship assertion MUST receive an assertion_id
+    using UUID endpoint and single source-owner inputs from DEC-0086, while compatibility
+    relationship_id semantics remain endpoint-derived from UUIDs
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -3795,15 +4125,9 @@ entities:
   metadata:
     adr_id: ADR-L-0018
     scope: global
-    statement: 'Every newly projected relationship assertion MUST receive an `assertion_id`
-
-      using DEC-0086, while compatibility-preserved `relationship_id` semantics MUST
-
-      remain unchanged. Phase 2 MUST NOT claim GraphProjectionBundle, snapshot
-
-      replacement, or source-scoped stale-assertion removal semantics.
-
-      '
+    statement: Every newly projected relationship assertion MUST receive an assertion_id
+      using UUID endpoint and single source-owner inputs from DEC-0086, while compatibility
+      relationship_id semantics remain endpoint-derived from UUIDs.
     enforcement_level: must
     declaration_mode: local
     upheld_by_decisions: []
@@ -3959,9 +4283,9 @@ entities:
 - id: INV-0082
   entity_type: invariant
   name: INV-0082
-  summary: ADR Kit MUST own detection and repair of canonical entity-ID collisions
-    in its repository. Allocation MUST be monotonic above the historical high-water
-    mark, MUST permanently reserve retired, removed, remapped, and previ
+  summary: ADR Kit MUST fail closed on duplicate UUID identity and MUST limit automatic
+    repair to governed alias allocation/history; alias repair MUST NOT rewrite UUID
+    references or mint replacement UUIDs.
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -3971,22 +4295,9 @@ entities:
   metadata:
     adr_id: ADR-L-0018
     scope: global
-    statement: 'ADR Kit MUST own detection and repair of canonical entity-ID collisions
-      in its
-
-      repository. Allocation MUST be monotonic above the historical high-water mark,
-
-      MUST permanently reserve retired, removed, remapped, and previously allocated
-
-      IDs, and MUST update every uniquely resolvable schema-typed local reference.
-
-      Ambiguous references MUST fail closed until an explicit occurrence-scoped
-
-      resolution mapping is supplied. Runtime and CI MUST NOT perform canonical
-
-      repair writes.
-
-      '
+    statement: ADR Kit MUST fail closed on duplicate UUID identity and MUST limit
+      automatic repair to governed alias allocation/history; alias repair MUST NOT
+      rewrite UUID references or mint replacement UUIDs.
     enforcement_level: must
     declaration_mode: local
     upheld_by_decisions: []
@@ -4076,6 +4387,490 @@ entities:
   provenance:
     source_type: logical_adr
     source_ref: ADR-L-0003#INV-0083
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
+- id: INV-0084
+  entity_type: invariant
+  name: INV-0084
+  summary: '`alias_ref` is always derived from `alias_id` and `alias_name` and is
+    never canonical authored data.'
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0019#INV-0084
+    artifact_path: adrs/logical/ADR-L-0019-canonical-entity-identity.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0019
+    scope: global
+    statement: '`alias_ref` is always derived from `alias_id` and `alias_name` and
+      is never canonical authored data.'
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions: []
+    supersedes: []
+  relationships:
+    declared_in:
+    - ADR-L-0019
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0019#INV-0084
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
+- id: INV-0085
+  entity_type: invariant
+  name: INV-0085
+  summary: '`alias_name` provides recognition metadata and never defines or substitutes
+    for architectural meaning.'
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0019#INV-0085
+    artifact_path: adrs/logical/ADR-L-0019-canonical-entity-identity.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0019
+    scope: global
+    statement: '`alias_name` provides recognition metadata and never defines or substitutes
+      for architectural meaning.'
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions: []
+    supersedes: []
+  relationships:
+    declared_in:
+    - ADR-L-0019
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0019#INV-0085
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
+- id: INV-0086
+  entity_type: invariant
+  name: INV-0086
+  summary: Derived `created_at` denotes the beginning of the v1.3 identity record
+    at UUIDv7 mint time, not historical architecture creation time.
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0019#INV-0086
+    artifact_path: adrs/logical/ADR-L-0019-canonical-entity-identity.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0019
+    scope: global
+    statement: Derived `created_at` denotes the beginning of the v1.3 identity record
+      at UUIDv7 mint time, not historical architecture creation time.
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions: []
+    supersedes: []
+  relationships:
+    declared_in:
+    - ADR-L-0019
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0019#INV-0086
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
+- id: INV-0087
+  entity_type: invariant
+  name: INV-0087
+  summary: Derived `created_at` is decoded from the UUIDv7 Unix-millisecond timestamp,
+    leaving no separately authored value to reconcile.
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0019#INV-0087
+    artifact_path: adrs/logical/ADR-L-0019-canonical-entity-identity.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0019
+    scope: global
+    statement: Derived `created_at` is decoded from the UUIDv7 Unix-millisecond timestamp,
+      leaving no separately authored value to reconcile.
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions: []
+    supersedes: []
+  relationships:
+    declared_in:
+    - ADR-L-0019
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0019#INV-0087
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
+- id: INV-0088
+  entity_type: invariant
+  name: INV-0088
+  summary: The constraint that canonical `updated_at` cannot precede `created_at`
+    is deferred with canonical `updated_at` to transactional-authoring governance
+    and is not a v1.3 identity invariant.
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0019#INV-0088
+    artifact_path: adrs/logical/ADR-L-0019-canonical-entity-identity.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0019
+    scope: global
+    statement: The constraint that canonical `updated_at` cannot precede `created_at`
+      is deferred with canonical `updated_at` to transactional-authoring governance
+      and is not a v1.3 identity invariant.
+    enforcement_level: may
+    declaration_mode: local
+    upheld_by_decisions: []
+    supersedes: []
+  relationships:
+    declared_in:
+    - ADR-L-0019
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0019#INV-0088
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
+- id: INV-0089
+  entity_type: invariant
+  name: INV-0089
+  summary: Regenerating derived artifacts never mutates canonical identity or v1.3
+    identity time semantics.
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0019#INV-0089
+    artifact_path: adrs/logical/ADR-L-0019-canonical-entity-identity.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0019
+    scope: global
+    statement: Regenerating derived artifacts never mutates canonical identity or
+      v1.3 identity time semantics.
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions: []
+    supersedes: []
+  relationships:
+    declared_in:
+    - ADR-L-0019
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0019#INV-0089
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
+- id: INV-0090
+  entity_type: invariant
+  name: INV-0090
+  summary: Two semantically distinct records claiming one UUID fail closed; ADR Kit
+    does not choose a keeper or mint a replacement automatically.
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0019#INV-0090
+    artifact_path: adrs/logical/ADR-L-0019-canonical-entity-identity.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0019
+    scope: global
+    statement: Two semantically distinct records claiming one UUID fail closed; ADR
+      Kit does not choose a keeper or mint a replacement automatically.
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions: []
+    supersedes: []
+  relationships:
+    declared_in:
+    - ADR-L-0019
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0019#INV-0090
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
+- id: INV-0091
+  entity_type: invariant
+  name: INV-0091
+  summary: A duplicate local `alias_id` across distinct UUIDs is a governed allocation
+    conflict; without an admitted incumbent it fails admission pending reviewed allocation,
+    while cross-namespace overlap is not a collision.
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0019#INV-0091
+    artifact_path: adrs/logical/ADR-L-0019-canonical-entity-identity.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0019
+    scope: global
+    statement: A duplicate local `alias_id` across distinct UUIDs is a governed allocation
+      conflict; without an admitted incumbent it fails admission pending reviewed
+      allocation, while cross-namespace overlap is not a collision.
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions: []
+    supersedes: []
+  relationships:
+    declared_in:
+    - ADR-L-0019
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0019#INV-0091
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
+- id: INV-0092
+  entity_type: invariant
+  name: INV-0092
+  summary: Alias recovery or reallocation never replaces an already valid canonical
+    UUID.
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0019#INV-0092
+    artifact_path: adrs/logical/ADR-L-0019-canonical-entity-identity.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0019
+    scope: global
+    statement: Alias recovery or reallocation never replaces an already valid canonical
+      UUID.
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions: []
+    supersedes: []
+  relationships:
+    declared_in:
+    - ADR-L-0019
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0019#INV-0092
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
+- id: INV-0093
+  entity_type: invariant
+  name: INV-0093
+  summary: Alias recovery or reallocation never rewrites canonical UUID relationship
+    endpoints.
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0019#INV-0093
+    artifact_path: adrs/logical/ADR-L-0019-canonical-entity-identity.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0019
+    scope: global
+    statement: Alias recovery or reallocation never rewrites canonical UUID relationship
+      endpoints.
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions: []
+    supersedes: []
+  relationships:
+    declared_in:
+    - ADR-L-0019
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0019#INV-0093
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index

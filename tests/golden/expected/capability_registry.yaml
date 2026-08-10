@@ -1772,8 +1772,9 @@ entities:
 - id: CAP-0038
   entity_type: capability
   name: Federated Qualified Identity Resolution
-  summary: Support unambiguous multi-repository entity references using namespaces
-    and qualified identifiers while preserving bare local references in source ADRs.
+  summary: Support unambiguous multi-repository entity references using architecture_namespace
+    and UUID identity while retaining read-only provider authority and derived human
+    alias qualification.
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -1821,8 +1822,8 @@ entities:
   entity_type: capability
   name: Stable Repository Semantic Boundary
   summary: Provide one scope-safe, deterministic in-process interface that loads compiled
-    architecture bundles and returns a stable normalized semantic model for tools,
-    validators, agents, and future kernel consumers.
+    architecture bundles and returns NormalizedArchitectureModel 2.0 with UUID, alias,
+    and logical URI resolution.
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -2112,8 +2113,9 @@ entities:
 - id: CAP-0045
   entity_type: capability
   name: Deterministic Corpus Orientation Surface
-  summary: Provide one supported API and CLI surface for manifest access, index access,
-    corpus summaries, relationship inspection, and scope-local next ADR ID allocation.
+  summary: Provide one supported API and CLI surface for manifest/index/summary access,
+    UUID and alias lookup/resolve paths, alias inventory, and scope-local governed
+    alias_id allocation.
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -2210,7 +2212,7 @@ entities:
   name: Narrow Supported Authoring SDK
   summary: Provide a deterministic Python facade for explicit-root validation, authoring
     compilation of registries, manifest, and markdown, repository loading, normalized-model
-    consumption, and local capability discovery.
+    consumption, and local capability discovery. The facad
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -2306,8 +2308,8 @@ entities:
 - id: CAP-0049
   entity_type: capability
   name: Expanded Normalized Semantic Model
-  summary: Expose boundary, contract, interface, and implementation-decision entities
-    with deterministic provenance, relationships, repository queries, and fingerprints.
+  summary: Expose the Phase-2/pre-v1.3 expanded normalized model 1.1 contract and
+    admit model 2.0 as the v1.3 UUID/alias compatibility event.
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -2452,9 +2454,9 @@ entities:
     generator: adr-architecture-index
 - id: CAP-0052
   entity_type: capability
-  name: Canonical Entity Identity Repair
-  summary: Detect and repair canonical entity-ID collisions through ADR Kit-owned,
-    monotonic, non-reusing allocation and occurrence-aware reference migration.
+  name: Governed Alias Allocation and UUID Integrity
+  summary: Detect UUID identity collisions and fail closed; limit automatic repair
+    to governed alias allocation/history.
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr

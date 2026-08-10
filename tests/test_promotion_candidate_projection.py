@@ -614,6 +614,8 @@ def test_real_corpus_m02_projection_against_repo_authority() -> None:
         pytest.skip("ADR-L-0001 not present")
     before = yaml.safe_load(path.read_text(encoding="utf-8"))
     after = apply_identity_v13_amend("M-02", copy.deepcopy(before))
+    if after == before:
+        pytest.skip("M-02 is already embodied in the canonical authority")
     errors = assert_amendment_embodied(
         mutation_id="M-02",
         before=before,

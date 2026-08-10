@@ -11,7 +11,12 @@ from adr_kit.api import PromotionPrepareRequest, prepare_promotion
 from adr_kit.promotion.ste_contract import locked_intent_fingerprint, mechanical_ready
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
-PC_PATH = REPO_ROOT / "docs" / "design-journal" / "2026-canonical-entity-identity-v13.promotion-contract.json"
+PC_PATH = (
+    REPO_ROOT
+    / "docs"
+    / "design-journal"
+    / "2026-canonical-entity-identity-v13.promotion-contract.json"
+)
 # Local transient handoff under existing ignored kit state (not Git authority).
 OUT_DIR = REPO_ROOT / ".adr-kit" / "promotion"
 PREPARED_PATH = OUT_DIR / "2026-canonical-entity-identity-v13.prepared.promotion-contract.json"
@@ -23,6 +28,20 @@ def main() -> int:
         print(f"missing promotion contract: {PC_PATH}", file=sys.stderr)
         return 2
     OUT_DIR.mkdir(parents=True, exist_ok=True)
+    # Invalidate any prior invalid prepared handoff before writing a fresh one.
+    for stale in OUT_DIR.glob("2026-canonical-entity-identity-v13*"):
+        if stale.is_file():
+            stale.unlink()
+    store = REPO_ROOT / ".adr-kit" / "promotion"
+    payloads = store / "payloads"
+    if payloads.is_dir():
+        for stale in payloads.glob("M-0*.bin"):
+            stale.unlink()
+        for stale in payloads.glob("M-0*.review.yaml"):
+            stale.unlink()
+        for stale in payloads.glob("M-0*.review.md"):
+            stale.unlink()
+
     result = prepare_promotion(
         PromotionPrepareRequest(
             project_root=REPO_ROOT,
@@ -33,6 +52,28 @@ def main() -> int:
     prepared = result.prepared_contract
     ready, ready_errors = mechanical_ready(prepared)
     fingerprint = locked_intent_fingerprint(prepared)
+
+    # Human-review representations derived from exact bound payload bytes (not authority).
+    reviewable_paths: list[str] = []
+    for mutation in prepared.get("mutations", []):
+        mutation_id = mutation["id"]
+        binding = mutation.get("payload_binding") or {}
+        ref = str(binding.get("ref") or "")
+        if not ref.startswith("payloads/"):
+            continue
+        bin_path = store / ref
+        if not bin_path.is_file():
+            continue
+        raw = bin_path.read_bytes()
+        # Prove review bytes == bound bytes by writing the exact UTF-8 payload.
+        review_path = payloads / f"{mutation_id}.review.yaml"
+        if mutation["provider_target_ref"].startswith("file:"):
+            review_path = payloads / f"{mutation_id}.review.md"
+        review_path.write_bytes(raw)
+        if review_path.read_bytes() != raw:
+            raise SystemExit(f"review representation drift for {mutation_id}")
+        reviewable_paths.append(review_path.as_posix())
+
     review = [
         "# v1.3 Promotion Review Projection",
         "",
@@ -43,10 +84,20 @@ def main() -> int:
         f"- baseline_equivalent: {result.baseline.equivalent}",
         f"- authority_mutated: {result.authority_mutated}",
         f"- blockers: {len(result.blockers)}",
+        f"- reviewable_payloads: {len(reviewable_paths)}",
         "",
-        "## Blockers",
+        "## Reviewable post-images (exact bound bytes)",
         "",
     ]
+    for path in reviewable_paths:
+        review.append(f"- `{path}`")
+    review.extend(
+        [
+            "",
+            "## Blockers",
+            "",
+        ]
+    )
     if result.blockers:
         for blocker in result.blockers:
             review.append(f"- `{blocker.id}` `{blocker.code}`: {blocker.message}")
@@ -82,20 +133,23 @@ def main() -> int:
         ]
     )
     REVIEW_PATH.write_text("\n".join(review), encoding="utf-8")
-    print(json.dumps(
-        {
-            "success": result.success,
-            "mechanical_promotion_ready": bool(result.mechanical_promotion_ready and ready),
-            "baseline_equivalent": result.baseline.equivalent,
-            "authority_mutated": result.authority_mutated,
-            "prepared_contract_path": str(PREPARED_PATH),
-            "review_path": str(REVIEW_PATH),
-            "locked_intent_fingerprint": fingerprint,
-            "blocker_count": len(result.blockers),
-            "HUMAN_PROMOTION_LOCK_REQUIRED": True,
-        },
-        indent=2,
-    ))
+    print(
+        json.dumps(
+            {
+                "success": result.success,
+                "mechanical_promotion_ready": bool(result.mechanical_promotion_ready and ready),
+                "baseline_equivalent": result.baseline.equivalent,
+                "authority_mutated": result.authority_mutated,
+                "prepared_contract_path": str(PREPARED_PATH),
+                "review_path": str(REVIEW_PATH),
+                "locked_intent_fingerprint": fingerprint,
+                "blocker_count": len(result.blockers),
+                "reviewable_payloads": reviewable_paths,
+                "HUMAN_PROMOTION_LOCK_REQUIRED": True,
+            },
+            indent=2,
+        )
+    )
     return 0 if result.authority_mutated is False else 1
 
 

@@ -9,6 +9,8 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Callable
 
+import yaml
+
 from .. import __version__
 from ..api._contracts import API_CONTRACT_VERSION, Diagnostic
 from ..api._errors import InvalidRequestError, OperationError
@@ -36,12 +38,18 @@ from .bindings import (
     roadmap_rules_fingerprint,
     validate_roadmap_content,
 )
+from .amendment_projection import ANNOTATION_ONLY_MARKER, assert_amendment_embodied
 from .candidates import (
     allocate_for_identity_create,
-    build_amend_post_image,
     build_create_adr_post_image,
     build_supersede_post_image,
     resolve_mutation_target,
+)
+from .identity_v13 import (
+    IDENTITY_V13_JOURNAL_ID,
+    apply_identity_v13_amend,
+    build_identity_v13_create_children,
+    deferred_children_are_non_active,
 )
 from .regeneration import regenerate_and_validate
 from .ste_contract import (
@@ -210,6 +218,7 @@ def _build_post_images(
 
     images: dict[str, tuple[str, bytes]] = {}
     outcomes = {item["id"]: item for item in contract.get("outcomes", [])}
+    journal_id = str(contract.get("journal_id") or "")
     for mutation in contract.get("mutations", []):
         operation = mutation["operation"]
         target_ref = mutation["provider_target_ref"]
@@ -218,51 +227,41 @@ def _build_post_images(
             title = "Canonical Entity Identity"
             if adr_id == "ADR-L-0019":
                 dec_ids, inv_ids = allocate_for_identity_create(project_root)
-                d_outcomes = [
+                selected = [
                     outcomes[oid]
                     for oid in mutation.get("outcome_refs", [])
-                    if oid.startswith("D-") and oid in outcomes
+                    if oid in outcomes and (oid.startswith("D-") or oid.startswith("I-"))
                 ]
-                i_outcomes = [
-                    outcomes[oid]
-                    for oid in mutation.get("outcome_refs", [])
-                    if oid.startswith("I-") and oid in outcomes
-                ]
-                # D-12 / I-13 deferred encoding
-                decisions = []
-                for index, outcome in enumerate(sorted(d_outcomes, key=lambda item: item["id"])):
-                    deferred = outcome["id"] in {"D-12"} or outcome.get("disposition") == "deferred"
-                    decisions.append(
-                        {
-                            "id": dec_ids[index],
-                            "summary": outcome.get("statement", outcome["id"])[:120],
-                            "status": "accepted",
-                            "details": ("[DEFERRED v1.3] " if deferred else "")
-                            + outcome.get("statement", ""),
-                        }
-                    )
-                invariants = []
-                for index, outcome in enumerate(sorted(i_outcomes, key=lambda item: item["id"])):
-                    deferred = outcome["id"] in {"I-13"} or outcome.get("disposition") == "deferred"
-                    invariants.append(
-                        {
-                            "id": inv_ids[index],
-                            "statement": ("[DEFERRED v1.3] " if deferred else "")
-                            + outcome.get("statement", outcome["id"]),
-                            "severity": "must",
-                        }
+                decisions, invariants, gaps = build_identity_v13_create_children(
+                    selected,
+                    dec_ids=dec_ids,
+                    inv_ids=inv_ids,
+                )
+                if journal_id == IDENTITY_V13_JOURNAL_ID and not deferred_children_are_non_active(
+                    decisions, invariants, gaps
+                ):
+                    raise OperationError(
+                        "DEFERRED_CHILD_ENCODING_UNSAFE: D-12/I-13 must not assert active "
+                        "v1.3 constraints"
                     )
                 text = build_create_adr_post_image(
                     adr_id=adr_id,
                     title=title,
                     decisions=decisions,
                     invariants=invariants,
+                    gaps=gaps,
                 )
             else:
                 text = build_create_adr_post_image(
                     adr_id=adr_id,
                     title=title,
-                    decisions=[{"id": "DEC-0001", "summary": "created", "status": "accepted"}],
+                    decisions=[
+                        {
+                            "id": "DEC-0001",
+                            "summary": "created",
+                            "rationale": "Created by promotion provider.",
+                        }
+                    ],
                     invariants=[],
                 )
             resolved = resolve_mutation_target(project_root, mutation, create_title=title)
@@ -271,12 +270,13 @@ def _build_post_images(
             resolved = resolve_mutation_target(project_root, mutation)
             current = resolved.absolute_path.read_text(encoding="utf-8")
             if "Phase 2.5" not in current:
-                # Insert Phase 2.5 before Phase 3 if present
                 marker = "## Phase 3"
                 insertion = (
                     "## Phase 2.5 — canonical entity identity and promotion provider\n\n"
                     "Promote the closed v1.3 identity Design Journal through the ADR Kit "
                     "promotion provider before schema/model v1.3 embodiment and corpus migration.\n\n"
+                    "Keep canonical updated_at and general transactional authoring in Phase 3. "
+                    "Phase 3 consumes, and does not redefine, v1.3 entity identity.\n\n"
                 )
                 if marker in current:
                     current = current.replace(marker, insertion + marker, 1)
@@ -285,34 +285,59 @@ def _build_post_images(
             errors = validate_roadmap_content(current)
             if errors:
                 raise OperationError("PROMOTION_CANDIDATE_INVALID: " + "; ".join(errors))
+            if journal_id == IDENTITY_V13_JOURNAL_ID:
+                embody_errors = assert_amendment_embodied(
+                    mutation_id=mutation["id"],
+                    before=None,
+                    after=current,
+                    journal_id=journal_id,
+                )
+                if embody_errors:
+                    raise OperationError(
+                        "PROMOTION_AMENDMENT_NOT_EMBODIED: " + "; ".join(embody_errors)
+                    )
             images[mutation["id"]] = (resolved.relative_path, current.encode("utf-8"))
         elif operation == "amend" and target_ref.startswith("adr:"):
             resolved = resolve_mutation_target(project_root, mutation)
-            # Preserve unscoped authority; apply a scoped notes/status touch only when needed
-            text = build_amend_post_image(
-                resolved.absolute_path,
-                set_fields=None,
-                replace_children=None,
-                preserve_unscoped=True,
-            )
-            # Ensure content changes for identity amendments by appending a governed note once
-            note_marker = "v1.3 identity promotion scope recorded"
-            data = text
-            if note_marker not in data:
-                # Prefer notes field mutation via reload
-                import yaml
-
-                doc = yaml.safe_load(resolved.absolute_path.read_text(encoding="utf-8"))
-                notes = doc.get("notes") or ""
-                if isinstance(notes, str) and note_marker not in notes:
-                    doc["notes"] = (notes.rstrip() + f"\n\n{note_marker}\n").lstrip()
-                text = yaml.safe_dump(doc, sort_keys=False, allow_unicode=True)
+            before = yaml.safe_load(resolved.absolute_path.read_text(encoding="utf-8"))
+            if not isinstance(before, dict):
+                raise OperationError(
+                    f"PROMOTION_INVALID_TARGET: expected mapping in {resolved.relative_path}"
+                )
+            if journal_id == IDENTITY_V13_JOURNAL_ID:
+                try:
+                    after = apply_identity_v13_amend(mutation["id"], before)
+                except (KeyError, ValueError) as exc:
+                    raise OperationError(
+                        f"INCOMPLETE_MUTATION_SPECIFICATION: {mutation['id']}: {exc}"
+                    ) from exc
+                embody_errors = assert_amendment_embodied(
+                    mutation_id=mutation["id"],
+                    before=before,
+                    after=after,
+                    journal_id=journal_id,
+                )
+                if embody_errors:
+                    raise OperationError(
+                        "PROMOTION_AMENDMENT_NOT_EMBODIED: " + "; ".join(embody_errors)
+                    )
+                if ANNOTATION_ONLY_MARKER in yaml.safe_dump(after, sort_keys=False):
+                    # Marker may appear only if somehow reintroduced; fail closed.
+                    before_core = {k: v for k, v in before.items() if k != "notes"}
+                    after_core = {k: v for k, v in after.items() if k != "notes"}
+                    if before_core == after_core:
+                        raise OperationError("ANNOTATION_ONLY_AMENDMENT: scoped amendments missing")
+                text = yaml.safe_dump(after, sort_keys=False, allow_unicode=True)
+            else:
+                # Non-identity journals must not silently annotation-amend.
+                raise OperationError(
+                    "UNSUPPORTED_MUTATION_INSTRUCTION: amend projection requires a "
+                    f"provider mutation specification for journal {journal_id!r}"
+                )
             images[mutation["id"]] = (resolved.relative_path, text.encode("utf-8"))
         elif operation == "supersede" and target_ref.startswith("adr:"):
             resolved = resolve_mutation_target(project_root, mutation)
             import re
-
-            import yaml
 
             doc = yaml.safe_load(resolved.absolute_path.read_text(encoding="utf-8"))
             superseded = None

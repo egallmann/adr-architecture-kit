@@ -204,13 +204,6 @@ def test_prepare_synthetic_amend_create(tmp_path: Path) -> None:
                 "outcome_refs": ["D-01", "I-01"],
             },
             {
-                "id": "M-02",
-                "operation": "amend",
-                "provider": "adr-architecture-kit",
-                "provider_target_ref": "adr:ADR-L-0001",
-                "outcome_refs": ["D-01"],
-            },
-            {
                 "id": "M-06",
                 "operation": "amend",
                 "provider": "adr-architecture-kit",

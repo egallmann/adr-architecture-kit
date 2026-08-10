@@ -48,7 +48,13 @@ Provider mechanical lifecycle:
 
 ```text
 prepare → bind → validate mechanical readiness
+→ provider semantic amendment embodiment checks (fail closed)
 → explicit human lock on the exact prepared PC
+
+For `amend` mutations, candidate construction must project the locked A-N2
+scoped authority changes into a complete post-image. Annotation-only candidates
+(for example appending a notes marker without changing scoped children) are
+rejected and cannot become mechanically promotable.
 → atomic authority apply (all targets or none)
 → append successful apply execution evidence
 → regenerate ADR Kit-owned derived artifacts

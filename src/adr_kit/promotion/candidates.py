@@ -30,17 +30,20 @@ def build_create_adr_post_image(
     title: str,
     decisions: list[dict[str, Any]],
     invariants: list[dict[str, Any]],
+    gaps: list[dict[str, Any]] | None = None,
     schema_version: str = "1.2",
 ) -> str:
     document = {
         "schema_version": schema_version,
+        "adr_type": "logical",
         "id": adr_id,
         "title": title,
         "status": "accepted",
-        "date": "2026-08-09",
+        "created_date": "2026-08-09",
         "decisions": decisions,
         "invariants": invariants,
         "capabilities": [],
+        "gaps": list(gaps or []),
         "notes": "Promoted from Design Journal via adr_kit.api promotion provider.",
     }
     return _dump_yaml(document)

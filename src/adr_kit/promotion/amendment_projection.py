@@ -24,6 +24,7 @@ _MUTATION_MARKERS: dict[str, tuple[str, ...]] = {
         "model 2.0",
         "uuid",
         "alias",
+        "promotion",
     ),
     "M-05": (
         "model 2.0",
@@ -40,7 +41,8 @@ _MUTATION_MARKERS: dict[str, tuple[str, ...]] = {
 
 _FORBIDDEN_ACTIVE_CONTRADICTIONS: dict[str, tuple[str, ...]] = {
     "M-02": ("graph node identity requires unique ids",),
-    "M-03": ("workspacerepokey:adr-l-",),
+    "M-03": ("bare local references remaining valid by default",),
+    "M-04": ("exactly the approved phase 1 symbol inventory",),
     "M-07": ("adr identifiers are architectural identity",),
 }
 

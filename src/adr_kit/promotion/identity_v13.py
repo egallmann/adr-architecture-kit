@@ -159,16 +159,31 @@ def _amend_m03(document: dict[str, Any]) -> dict[str, Any]:
         context = (
             "Pre-v1.3 authoring treated bare local references as the default local rule. " + context
         )
+    # Numbered list form used by ADR-L-0012 (may span lines).
     context = re.sub(
-        r"Bare local references remaining valid by default,[^\n.]*\.",
+        r"(?is)4\.\s*Bare local references remaining valid by default,\s*"
+        r"with qualification only\s*when cross-repo references are intended",
         (
-            "Pre-v1.3 bare local references remain historical authoring ergonomics; "
-            "v1.3 canonical authored references use UUIDs, while human alias "
-            "qualification remains derived."
+            "4. Pre-v1.3 bare local references remained valid by default as historical "
+            "authoring ergonomics; v1.3 canonical authored entity references use UUIDs; "
+            "provider-authoritative machine identity is (architecture_namespace, UUID); "
+            "aliases and legacy IDs remain human-recognition or compatibility surfaces; "
+            "and a workspace repository key is registration/routing/attribution only"
         ),
         context,
         count=1,
-        flags=re.IGNORECASE,
+    )
+    # Non-numbered prose form.
+    context = re.sub(
+        r"(?is)Bare local references remaining valid by default,\s*"
+        r"with qualification only\s*when cross-repo references are intended\.?",
+        (
+            "Pre-v1.3 bare local references remained valid by default as historical "
+            "authoring ergonomics; v1.3 canonical authored entity references use UUIDs, "
+            "while human alias qualification remains derived"
+        ),
+        context,
+        count=1,
     )
     context = context.replace(
         "workspaceRepoKey:ADR-L-XXXX is treated as qualified identity.",
@@ -294,12 +309,39 @@ def _amend_m04(document: dict[str, Any]) -> dict[str, Any]:
 
     cap47 = _find_child(document, "capabilities", "CAP-0047")
     desc47 = str(cap47.get("description") or "")
-    cap47["description"] = (
-        desc47.rstrip()
-        + " Bounded model 2.0 compatibility surface is included without exposing compiler internals."
-    )
-    criteria47 = list(cap47.get("acceptance_criteria") or [])
-    criteria47.append("Bounded model 2.0 compatibility adapters remain on the supported facade")
+    if "promotion-provider" not in desc47.lower() and "promotion provider" not in desc47.lower():
+        cap47["description"] = (
+            desc47.rstrip()
+            + " The facade remains a narrow supported authoring SDK and admits only "
+            "explicitly authorized public symbols for the current API contract, including "
+            "additive promotion-provider operations once separately authorized. Bounded "
+            "model 2.0 compatibility adapters may be exposed without exposing compiler "
+            "internals and without advertising schema/model embodiment as complete."
+        )
+    criteria47: list[Any] = []
+    replaced_phase1 = False
+    for item in list(cap47.get("acceptance_criteria") or []):
+        text = str(item)
+        if "Phase 1 symbol inventory" in text:
+            criteria47.append(
+                "the facade exposes only explicitly authorized supported public symbols "
+                "for the current API contract, including additive promotion-provider "
+                "operations once separately authorized"
+            )
+            replaced_phase1 = True
+        else:
+            criteria47.append(item)
+    if not replaced_phase1 and not any(
+        "promotion-provider" in str(item).lower() or "promotion provider" in str(item).lower()
+        for item in criteria47
+    ):
+        criteria47.append(
+            "the facade exposes only explicitly authorized supported public symbols "
+            "for the current API contract, including additive promotion-provider "
+            "operations once separately authorized"
+        )
+    if not any("model 2.0" in str(item).lower() for item in criteria47):
+        criteria47.append("Bounded model 2.0 compatibility adapters remain on the supported facade")
     cap47["acceptance_criteria"] = criteria47
     _replace_child(document, "capabilities", cap47)
 

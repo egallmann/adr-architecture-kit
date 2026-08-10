@@ -96,9 +96,13 @@ def _minimal_adr_l0012() -> dict:
         "status": "accepted",
         "context": (
             "Bare local IDs must evolve into an unambiguous multi-repository identity "
-            "model. Bare local references remaining valid by default, with qualification "
-            "only when cross-repo references are intended. "
-            "workspaceRepoKey:ADR-L-XXXX is treated as qualified identity."
+            "model without breaking single-repo authoring.\n\n"
+            "What is needed is one explicit ADR that formalizes:\n"
+            "1. Federation as a read-only aggregation step\n"
+            "2. Provider-authoritative conflict resolution\n"
+            "3. A qualified identity model with namespace separated from bare ID\n"
+            "4. Bare local references remaining valid by default, with qualification only\n"
+            "   when cross-repo references are intended\n"
         ),
         "decisions": [
             {
@@ -151,6 +155,74 @@ def _minimal_adr_l0012() -> dict:
                 "rationale": "preserve",
             }
         ],
+    }
+
+
+def _minimal_adr_l0013() -> dict:
+    return {
+        "schema_version": "1.0",
+        "id": "ADR-L-0013",
+        "title": "Repository boundary",
+        "status": "accepted",
+        "decisions": [
+            {
+                "id": "DEC-0050",
+                "summary": "Use ArchitectureRepository as the supported in-process semantic entry point",
+                "rationale": "repository seam",
+            },
+            {
+                "id": "DEC-0051",
+                "summary": "Expose a NormalizedArchitectureModel as the repository semantic payload",
+                "rationale": "normalized model",
+            },
+            {
+                "id": "DEC-0052",
+                "summary": "Keep ArchModel compiler-internal",
+                "rationale": "preserve unscoped",
+            },
+            {
+                "id": "DEC-0080",
+                "summary": "Establish adr_kit.api as the narrow supported authoring SDK facade",
+                "rationale": "narrow facade",
+            },
+        ],
+        "capabilities": [
+            {
+                "id": "CAP-0039",
+                "name": "Stable Repository Semantic Boundary",
+                "description": "stable normalized semantic model",
+                "acceptance_criteria": ["load bundles into NormalizedArchitectureModel"],
+            },
+            {
+                "id": "CAP-0047",
+                "name": "Narrow Supported Authoring SDK",
+                "description": (
+                    "Provide a deterministic Python facade for validation, compilation, "
+                    "repository loading, and capability discovery."
+                ),
+                "acceptance_criteria": [
+                    "`adr_kit.api` exposes exactly the approved Phase 1 symbol inventory",
+                    "validation and compilation return immutable public results",
+                    "capability discovery is deterministic, local, resource-backed, and versioned",
+                ],
+            },
+        ],
+        "invariants": [
+            {
+                "id": "INV-0059",
+                "statement": "Consumers use ArchitectureRepository",
+                "scope": "global",
+                "enforcement_level": "must",
+                "enforcement_mechanism": "design",
+                "verification_method": "manual",
+                "rationale": "preserve",
+            }
+        ],
+        "notes": (
+            "Explicitly deferred beyond Phase 1: graph bundles, assertion identity, "
+            "entity/schema expansion, topology identity, bindings, transactional authoring, "
+            "normalized-model expansion, Assembler, MCP, runtime extraction."
+        ),
     }
 
 
@@ -365,6 +437,49 @@ def test_m03_federation_identity_reconciliation() -> None:
     )
     assert next(item for item in after["invariants"] if item["id"] == "INV-0058") == next(
         item for item in before["invariants"] if item["id"] == "INV-0058"
+    )
+
+
+def test_m03_context_scopes_bare_local_to_prev13() -> None:
+    """A-N2: bare-local default rule must not remain the active v1.3 context claim."""
+    before = _minimal_adr_l0012()
+    after = apply_identity_v13_amend("M-03", copy.deepcopy(before))
+    context = str(after["context"])
+    lowered = context.lower()
+    # Active unscoped bare-local default must be gone.
+    assert "bare local references remaining valid by default" not in lowered
+    # Historical pre-v1.3 scoping and v1.3 UUID semantics must be present.
+    assert "pre-v1.3" in lowered
+    assert "uuid" in lowered
+    assert "architecture_namespace" in lowered
+    # Decisions remain consistent with context.
+    dec47 = next(item for item in after["decisions"] if item["id"] == "DEC-0047")
+    assert "uuid" in yaml.safe_dump(dec47, sort_keys=False).lower()
+    # Unrelated decision preserved.
+    assert next(item for item in after["decisions"] if item["id"] == "DEC-0045") == next(
+        item for item in before["decisions"] if item["id"] == "DEC-0045"
+    )
+
+
+def test_m04_cap0047_reconciles_phase1_symbol_inventory() -> None:
+    """A-N2: CAP-0047 must not timelessly freeze Phase 1 symbols after promotion SDK."""
+    before = _minimal_adr_l0013()
+    after = apply_identity_v13_amend("M-04", copy.deepcopy(before))
+    cap47 = next(item for item in after["capabilities"] if item["id"] == "CAP-0047")
+    criteria = "\n".join(str(item) for item in (cap47.get("acceptance_criteria") or [])).lower()
+    blob = yaml.safe_dump(cap47, sort_keys=False).lower()
+    assert "exactly the approved phase 1 symbol inventory" not in criteria
+    assert "narrow" in before["capabilities"][1]["name"].lower()
+    assert cap47["name"] == "Narrow Supported Authoring SDK"
+    assert "promotion" in criteria or "promotion" in blob
+    assert "authorized" in criteria or "supported public" in criteria
+    assert "schema 1.3 is implemented" not in blob
+    assert "normalized model 2.0 is implemented" not in blob
+    assert "schema 1.3" not in blob
+    assert "graphprojectionbundle" not in blob.replace(" ", "")
+    # Unrelated ArchModel decision preserved.
+    assert next(item for item in after["decisions"] if item["id"] == "DEC-0052") == next(
+        item for item in before["decisions"] if item["id"] == "DEC-0052"
     )
 
 

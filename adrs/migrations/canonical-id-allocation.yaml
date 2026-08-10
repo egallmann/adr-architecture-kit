@@ -2078,23 +2078,23 @@ allocations:
   entity_type: invariant
   adr_id: ADR-L-0003
   file_path: adrs/logical/ADR-L-0003-quality-assurance-and-testing-strategy.yaml
-  source_pointer: /invariants/12/id
+  source_pointer: /invariants/11/id
   state: active
 - id: INV-0096
   entity_type: invariant
   adr_id: ADR-L-0003
   file_path: adrs/logical/ADR-L-0003-quality-assurance-and-testing-strategy.yaml
-  source_pointer: /invariants/13/id
+  source_pointer: /invariants/12/id
   state: active
 - id: INV-0097
   entity_type: invariant
   adr_id: ADR-L-0010
   file_path: adrs/logical/ADR-L-0010-kernel-interface-contract-and-validation-profiles.yaml
-  source_pointer: /invariants/6/id
+  source_pointer: /invariants/3/id
   state: active
 - id: INV-0098
   entity_type: invariant
   adr_id: ADR-L-0002
   file_path: adrs/logical/ADR-L-0002-multi-scope-adr-architecture.yaml
-  source_pointer: /invariants/5/id
+  source_pointer: /invariants/6/id
   state: active

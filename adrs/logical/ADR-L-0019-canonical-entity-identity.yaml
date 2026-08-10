@@ -1,0 +1,516 @@
+schema_version: '1.2'
+adr_type: logical
+id: ADR-L-0019
+title: Canonical Entity Identity
+status: accepted
+created_date: '2026-08-09'
+authors:
+- adr-architecture-kit
+context: 'Canonical entity identity for schema v1.3 is recorded from Design Journal
+  `DJ-adr-kit-canonical-entity-identity-v13` after Phase 1 federation, repository-boundary,
+  and schema v1.2 normalized-semantic foundations.
+
+
+  Problem drivers captured by promotion-required outcomes:
+
+  - D-01 (accepted): Every admitted v1.3 identity-bearing record has an authored lowercase
+  RFC 9562 UUIDv7 in `id` before projection; that UUID is immutable canonical machine
+  identity, encodes neither type nor location, and its ordering is not alias-ownership
+  authority.
+
+  - D-02 (accepted): Every normalized identity-bearing entity materializes `entity_type`;
+  polymorphic authored records author it when context is insufficient, monomorphic
+  schema position remains canonical type authority without duplicate authoring, consumers
+  never infer authoritative type from `alias_id`, and ADR documents retain `adr_type`
+  as their subtype discriminator while projecting normalized `entity_type: adr`.
+
+  - D-03 (accepted): Migration preserves the existing type-prefixed identifier as
+  repository-local governed `alias_id`; admitted aliases are unique, stable by default,
+  changed only by recorded review, never reused after retirement, and never alter
+  UUID identity, with allocation/remap history distinguishing active, retired, reserved,
+  and historical aliases.
+
+  - D-04 (accepted): Every identity-bearing record authors a stable-by-default recognition
+  mnemonic `alias_name` matching `^[a-z][a-z0-9]*(?:-[a-z0-9]+)*$` at 3–96 characters;
+  UUID-shaped values fail hard syntax, parsing validates without silent normalization,
+  generators may propose deterministic normalized values, exact entity-type repetition
+  and the versioned reserved generic set including `decision`, `system`, `repository`,
+  and `identity` fail validation, broader semantic fitness is non-mutating lint, presentation
+  changes do not rename it automatically, and no validator or LLM may rename it or
+  treat it as architectural meaning.
+
+  - D-05 (accepted): `alias_ref` is derived as `alias_id + ":" + alias_name`, may
+  appear only in normalized or human-facing derived output, is never canonical authored
+  authority, and is never a relationship, foreign-key, authority, or canonical-lookup
+  input.
+
+  - D-06 (accepted): V1.3 adds no universal authored `title`; each entity type retains
+  its existing canonical presentation field, normalized models may derive a common
+  presentation value, and presentation edits do not automatically rename `alias_name`.
+
+  - D-07 (accepted): Canonical authored entity references contain UUIDs only; field
+  context or registry resolution supplies type, aliases are resolved only for human
+  presentation, and alias reassignment never rewrites canonical references or retargets
+  relationships.
+
+  - D-08 (accepted): V1.3 relationship endpoints are UUIDs; `relationship_id` is recomputed
+  from relationship type, source UUID, and target UUID, while content-derived `assertion_id`
+  hashes those values plus exactly one canonical source-owner UUID and `source_pointer_or_empty`;
+  validation and migration preflight fail on ambiguous ownership, display text, aliases,
+  paths, and collection order are excluded, and Phase 3 retains multi-source replacement
+  and stale-assertion lifecycle.
+
+  - D-09 (accepted): Intrinsic UUID identity is admitted only for independently addressable
+  durable canonical ADRs, decisions, capabilities, invariants, boundaries, contracts,
+  components, interfaces, implementation decisions, and systems; physical-system authoring
+  gains exactly one authored system identity record preserving its `SYS-*` alias,
+  while topology records, system-boundary records, constraints, NFRs, gaps, integrations,
+  data flows, evidence expectations, external bindings, unresolved records, relationship
+  assertions, and other derived-only records remain non-admitted; topology IDs remain
+  stable local structural handles until later explicit ontology promotion, and preflight
+  resolves multiple occurrences of one semantic invariant to exactly one canonical
+  identity-bearing definition rather than minting one UUID per occurrence.
+
+  - D-10 (accepted): V1.3 derives required normalized URI `adr://<architecture_namespace>/entities/<uuid>`
+  as a stable logical entity-resolution key; it is neither authored, identity, a network
+  location, nor a fetch protocol, and `ArchitectureRepository` resolves it provider-authoritatively
+  without binding identity to paths, storage, or workspace routing.
+
+  - D-11 (accepted): UUIDv7 mint time begins the v1.3 identity record and is decoded
+  at millisecond precision into derived RFC 3339 UTC `created_at` when needed; canonical
+  records do not author a duplicate timestamp, and migration does not infer pre-v1.3
+  creation time from Git.
+
+  - D-12 (deferred): V1.3 does not add canonical entity-level `updated_at` or repository-history
+  freshness; trustworthy update time is deferred to transactional-authoring governance
+  with mutation, base-revision, and history semantics, without weakening existing
+  provenance, ADR `modified_date`, migration timestamps, report fingerprints, or identity
+  stability under regeneration.
+
+  - D-13 (accepted): External v1.3 references use provider-authoritative namespace,
+  UUID, kind, and `sha256:<64 lowercase hexadecimal>` fingerprint; the fingerprint
+  is SHA-256 over the provider''s complete schema-normalized canonical identity-bearing
+  entity record serialized with RFC 8785 JCS while preserving authored array order
+  and excluding derived `alias_ref`, derived logical URI, projection metadata, and
+  containing-document fields outside the entity record; it is a consistency guard,
+  not identity, and migration rewrites only with an authoritative alias-to-UUID map
+  and the same v1.3 fingerprint contract, otherwise failing or reporting a blocker;
+  machine identity is `(architecture_namespace, UUID)` and human qualification is
+  derived.
+
+  - D-14 (accepted): Distinct entities claiming one UUID fail closed as integrity
+  corruption; distinct UUIDs contesting one local alias preserve an admitted incumbent
+  or otherwise fail pending explicit reviewed allocation, never reuse historical aliases,
+  never change UUIDs or UUID endpoints, and never treat cross-namespace overlap as
+  a repairable collision.
+
+  - D-15 (accepted): Migration preflights before minting and records a complete authoritative
+  map from authority namespace, repository-relative path, structural pointer, legacy
+  alias, final alias, and entity type to minted UUID; an abandoned unapplied rerun
+  may mint differently, but migration is dry-run-first, inspectable, atomic across
+  its canonical write set, fully validated after apply, and never silently remints
+  recorded v1.3 identities or infers semantic alias ownership.
+
+  - D-16 (accepted): Migration preserves `alias_id` and proposes `alias_name` deterministically
+  from explicit canonical name, canonical presentation, canonical short description,
+  or explicit review in that order; narrative guessing and generic, rejected, colliding,
+  or normalization-conflicting proposals enter a classified review queue.
+
+  - D-17 (accepted): Migration semantic parity requires one-to-one admitted-entity
+  mapping; preservation of `alias_id`, type, presentation, status/lifecycle, and other
+  non-identity canonical fields except reviewed changes; relationship-multiset equivalence
+  after UUID substitution; no retargeting or new dangling or ambiguous references;
+  unchanged unresolved semantics except reviewed resolutions; changes only to versioned
+  identity, provenance, fingerprints, and regenerated byte representations; and documented
+  authored-system treatment; counts alone are insufficient.
+
+  - D-18 (accepted): V1.0 remains byte-frozen and readable, v1.2 remains readable
+  and migratable, v1.3 is a separate provisional authoring line, readers continue
+  loading normalized 1.1 bundles, and UUID identity advances v1.3 normalized semantics
+  to model 2.0 with UUID IDs/endpoints, explicit UUID/alias lookups, a bounded deprecated
+  unique-alias lookup shim through 0.4.x, versioned outputs, and no removal before
+  0.5.0 plus a separate release decision.
+
+  - D-19 (accepted): `architecture_namespace` is stable provider authority for external
+  identity and logical URI derivation, while a workspace repository key is only local
+  registration/routing; registration resolves the key to the provider namespace, renaming
+  or moving workspace registration never mutates provider UUIDs or namespace, and
+  federation remains provider-authoritative and read-only.
+
+  - I-01 (accepted): Every admitted v1.3 entity''s canonical machine identity is a
+  lowercase RFC 9562 UUIDv7.
+
+  - I-02 (accepted): A canonical entity UUID is immutable for the entity''s lifetime.
+
+  - I-03 (accepted): `alias_id`, `alias_name`, and derived `alias_ref` are human-recognition
+  surfaces, not canonical machine identity.
+
+  - I-04 (accepted): Canonical authored entity references and normalized relationship
+  endpoints use UUIDs.
+
+  - I-05 (accepted): An authorized alias change does not change canonical UUID identity.
+
+  - I-06 (accepted): An alias change never rewrites canonical UUID references or normalized
+  UUID relationship endpoints; only derived alias presentation regenerates.
+
+  - I-07 (accepted): The derived logical URI is a resolver key and is not entity identity.
+
+  - I-08 (accepted): Every normalized identity-bearing entity exposes explicit type;
+  a polymorphic authored record authors type when enclosing context is insufficient,
+  while monomorphic authored schema position remains canonical type authority and
+  `alias_id` alone never determines type.
+
+  - I-09 (accepted): `alias_ref` is always derived from `alias_id` and `alias_name`
+  and is never canonical authored data.
+
+  - I-10 (accepted): `alias_name` provides recognition metadata and never defines
+  or substitutes for architectural meaning.
+
+  - I-11 (accepted): Derived `created_at` denotes the beginning of the v1.3 identity
+  record at UUIDv7 mint time, not historical architecture creation time.
+
+  - I-12 (accepted): Derived `created_at` is decoded from the UUIDv7 Unix-millisecond
+  timestamp, leaving no separately authored value to reconcile.
+
+  - I-13 (deferred): The constraint that canonical `updated_at` cannot precede `created_at`
+  is deferred with canonical `updated_at` to transactional-authoring governance and
+  is not a v1.3 identity invariant.
+
+  - I-14 (accepted): Regenerating derived artifacts never mutates canonical identity
+  or v1.3 identity time semantics.
+
+  - I-15 (accepted): Two semantically distinct records claiming one UUID fail closed;
+  ADR Kit does not choose a keeper or mint a replacement automatically.
+
+  - I-16 (accepted): A duplicate local `alias_id` across distinct UUIDs is a governed
+  allocation conflict; without an admitted incumbent it fails admission pending reviewed
+  allocation, while cross-namespace overlap is not a collision.
+
+  - I-17 (accepted): Alias recovery or reallocation never replaces an already valid
+  canonical UUID.
+
+  - I-18 (accepted): Alias recovery or reallocation never rewrites canonical UUID
+  relationship endpoints.'
+decisions:
+- id: DEC-0089
+  summary: Every admitted v1.3 identity-bearing record has an authored lowercase RFC
+    9562 UUIDv7 in `id` before projection
+  rationale: Every admitted v1.3 identity-bearing record has an authored lowercase
+    RFC 9562 UUIDv7 in `id` before projection; that UUID is immutable canonical machine
+    identity, encodes neither type nor location, and its ordering is not alias-ownership
+    authority.
+- id: DEC-0090
+  summary: Every normalized identity-bearing entity materializes `entity_type`
+  rationale: 'Every normalized identity-bearing entity materializes `entity_type`;
+    polymorphic authored records author it when context is insufficient, monomorphic
+    schema position remains canonical type authority without duplicate authoring,
+    consumers never infer authoritative type from `alias_id`, and ADR documents retain
+    `adr_type` as their subtype discriminator while projecting normalized `entity_type:
+    adr`.'
+- id: DEC-0091
+  summary: Migration preserves the existing type-prefixed identifier as repository-local
+    governed `alias_id`
+  rationale: Migration preserves the existing type-prefixed identifier as repository-local
+    governed `alias_id`; admitted aliases are unique, stable by default, changed only
+    by recorded review, never reused after retirement, and never alter UUID identity,
+    with allocation/remap history distinguishing active, retired, reserved, and historical
+    aliases.
+- id: DEC-0092
+  summary: Every identity-bearing record authors a stable-by-default recognition mnemonic
+    `alias_name` matching `^[a-z][a-z0-9]*(?:-[a-z0-9]+)*$` at 3–96 characters
+  rationale: Every identity-bearing record authors a stable-by-default recognition
+    mnemonic `alias_name` matching `^[a-z][a-z0-9]*(?:-[a-z0-9]+)*$` at 3–96 characters;
+    UUID-shaped values fail hard syntax, parsing validates without silent normalization,
+    generators may propose deterministic normalized values, exact entity-type repetition
+    and the versioned reserved generic set including `decision`, `system`, `repository`,
+    and `identity` fail validation, broader semantic fitness is non-mutating lint,
+    presentation changes do not rename it automatically, and no validator or LLM may
+    rename it or treat it as architectural meaning.
+- id: DEC-0093
+  summary: '`alias_ref` is derived as `alias_id + ":" + alias_name`, may appear only
+    in normalized or human-facing derived output, is never canonical authored authority,
+    an'
+  rationale: '`alias_ref` is derived as `alias_id + ":" + alias_name`, may appear
+    only in normalized or human-facing derived output, is never canonical authored
+    authority, and is never a relationship, foreign-key, authority, or canonical-lookup
+    input.'
+- id: DEC-0094
+  summary: V1.3 adds no universal authored `title`
+  rationale: V1.3 adds no universal authored `title`; each entity type retains its
+    existing canonical presentation field, normalized models may derive a common presentation
+    value, and presentation edits do not automatically rename `alias_name`.
+- id: DEC-0095
+  summary: Canonical authored entity references contain UUIDs only
+  rationale: Canonical authored entity references contain UUIDs only; field context
+    or registry resolution supplies type, aliases are resolved only for human presentation,
+    and alias reassignment never rewrites canonical references or retargets relationships.
+- id: DEC-0096
+  summary: V1.3 relationship endpoints are UUIDs
+  rationale: V1.3 relationship endpoints are UUIDs; `relationship_id` is recomputed
+    from relationship type, source UUID, and target UUID, while content-derived `assertion_id`
+    hashes those values plus exactly one canonical source-owner UUID and `source_pointer_or_empty`;
+    validation and migration preflight fail on ambiguous ownership, display text,
+    aliases, paths, and collection order are excluded, and Phase 3 retains multi-source
+    replacement and stale-assertion lifecycle.
+- id: DEC-0097
+  summary: Intrinsic UUID identity is admitted only for independently addressable
+    durable canonical ADRs, decisions, capabilities, invariants, boundaries, contracts,
+    compo
+  rationale: Intrinsic UUID identity is admitted only for independently addressable
+    durable canonical ADRs, decisions, capabilities, invariants, boundaries, contracts,
+    components, interfaces, implementation decisions, and systems; physical-system
+    authoring gains exactly one authored system identity record preserving its `SYS-*`
+    alias, while topology records, system-boundary records, constraints, NFRs, gaps,
+    integrations, data flows, evidence expectations, external bindings, unresolved
+    records, relationship assertions, and other derived-only records remain non-admitted;
+    topology IDs remain stable local structural handles until later explicit ontology
+    promotion, and preflight resolves multiple occurrences of one semantic invariant
+    to exactly one canonical identity-bearing definition rather than minting one UUID
+    per occurrence.
+- id: DEC-0098
+  summary: V1.3 derives required normalized URI `adr://<architecture_namespace>/entities/<uuid>`
+    as a stable logical entity-resolution key
+  rationale: V1.3 derives required normalized URI `adr://<architecture_namespace>/entities/<uuid>`
+    as a stable logical entity-resolution key; it is neither authored, identity, a
+    network location, nor a fetch protocol, and `ArchitectureRepository` resolves
+    it provider-authoritatively without binding identity to paths, storage, or workspace
+    routing.
+- id: DEC-0099
+  summary: UUIDv7 mint time begins the v1.3 identity record and is decoded at millisecond
+    precision into derived RFC 3339 UTC `created_at` when needed
+  rationale: UUIDv7 mint time begins the v1.3 identity record and is decoded at millisecond
+    precision into derived RFC 3339 UTC `created_at` when needed; canonical records
+    do not author a duplicate timestamp, and migration does not infer pre-v1.3 creation
+    time from Git.
+- id: DEC-0100
+  summary: Defer canonical entity-level updated_at to transactional authoring
+  rationale: 'V1.3 does not add canonical entity-level `updated_at` or repository-history
+    freshness; trustworthy update time is deferred to transactional-authoring governance
+    with mutation, base-revision, and history semantics, without weakening existing
+    provenance, ADR `modified_date`, migration timestamps, report fingerprints, or
+    identity stability under regeneration.
+
+
+    This decision records deferral only; it does not activate updated_at freshness
+    constraints in v1.3.'
+- id: DEC-0101
+  summary: External v1.3 references use provider-authoritative namespace, UUID, kind,
+    and `sha256:<64 lowercase hexadecimal>` fingerprint
+  rationale: External v1.3 references use provider-authoritative namespace, UUID,
+    kind, and `sha256:<64 lowercase hexadecimal>` fingerprint; the fingerprint is
+    SHA-256 over the provider's complete schema-normalized canonical identity-bearing
+    entity record serialized with RFC 8785 JCS while preserving authored array order
+    and excluding derived `alias_ref`, derived logical URI, projection metadata, and
+    containing-document fields outside the entity record; it is a consistency guard,
+    not identity, and migration rewrites only with an authoritative alias-to-UUID
+    map and the same v1.3 fingerprint contract, otherwise failing or reporting a blocker;
+    machine identity is `(architecture_namespace, UUID)` and human qualification is
+    derived.
+- id: DEC-0102
+  summary: Distinct entities claiming one UUID fail closed as integrity corruption
+  rationale: Distinct entities claiming one UUID fail closed as integrity corruption;
+    distinct UUIDs contesting one local alias preserve an admitted incumbent or otherwise
+    fail pending explicit reviewed allocation, never reuse historical aliases, never
+    change UUIDs or UUID endpoints, and never treat cross-namespace overlap as a repairable
+    collision.
+- id: DEC-0103
+  summary: Migration preflights before minting and records a complete authoritative
+    map from authority namespace, repository-relative path, structural pointer, legacy
+    alia
+  rationale: Migration preflights before minting and records a complete authoritative
+    map from authority namespace, repository-relative path, structural pointer, legacy
+    alias, final alias, and entity type to minted UUID; an abandoned unapplied rerun
+    may mint differently, but migration is dry-run-first, inspectable, atomic across
+    its canonical write set, fully validated after apply, and never silently remints
+    recorded v1.3 identities or infers semantic alias ownership.
+- id: DEC-0104
+  summary: Migration preserves `alias_id` and proposes `alias_name` deterministically
+    from explicit canonical name, canonical presentation, canonical short description,
+    or
+  rationale: Migration preserves `alias_id` and proposes `alias_name` deterministically
+    from explicit canonical name, canonical presentation, canonical short description,
+    or explicit review in that order; narrative guessing and generic, rejected, colliding,
+    or normalization-conflicting proposals enter a classified review queue.
+- id: DEC-0105
+  summary: Migration semantic parity requires one-to-one admitted-entity mapping
+  rationale: Migration semantic parity requires one-to-one admitted-entity mapping;
+    preservation of `alias_id`, type, presentation, status/lifecycle, and other non-identity
+    canonical fields except reviewed changes; relationship-multiset equivalence after
+    UUID substitution; no retargeting or new dangling or ambiguous references; unchanged
+    unresolved semantics except reviewed resolutions; changes only to versioned identity,
+    provenance, fingerprints, and regenerated byte representations; and documented
+    authored-system treatment; counts alone are insufficient.
+- id: DEC-0106
+  summary: 'V1.0 remains byte-frozen and readable, v1.2 remains readable and migratable,
+    v1.3 is a separate provisional authoring line, readers continue loading normalized '
+  rationale: V1.0 remains byte-frozen and readable, v1.2 remains readable and migratable,
+    v1.3 is a separate provisional authoring line, readers continue loading normalized
+    1.1 bundles, and UUID identity advances v1.3 normalized semantics to model 2.0
+    with UUID IDs/endpoints, explicit UUID/alias lookups, a bounded deprecated unique-alias
+    lookup shim through 0.4.x, versioned outputs, and no removal before 0.5.0 plus
+    a separate release decision.
+- id: DEC-0107
+  summary: '`architecture_namespace` is stable provider authority for external identity
+    and logical URI derivation, while a workspace repository key is only local registrat'
+  rationale: '`architecture_namespace` is stable provider authority for external identity
+    and logical URI derivation, while a workspace repository key is only local registration/routing;
+    registration resolves the key to the provider namespace, renaming or moving workspace
+    registration never mutates provider UUIDs or namespace, and federation remains
+    provider-authoritative and read-only.'
+invariants:
+- id: INV-0008
+  statement: Every admitted v1.3 entity's canonical machine identity is a lowercase
+    RFC 9562 UUIDv7.
+  scope: global
+  enforcement_level: must
+  enforcement_mechanism: design
+  verification_method: automated
+  rationale: Promoted from Design Journal outcome.
+- id: INV-0009
+  statement: A canonical entity UUID is immutable for the entity's lifetime.
+  scope: global
+  enforcement_level: must
+  enforcement_mechanism: design
+  verification_method: automated
+  rationale: Promoted from Design Journal outcome.
+- id: INV-0010
+  statement: '`alias_id`, `alias_name`, and derived `alias_ref` are human-recognition
+    surfaces, not canonical machine identity.'
+  scope: global
+  enforcement_level: must
+  enforcement_mechanism: design
+  verification_method: automated
+  rationale: Promoted from Design Journal outcome.
+- id: INV-0011
+  statement: Canonical authored entity references and normalized relationship endpoints
+    use UUIDs.
+  scope: global
+  enforcement_level: must
+  enforcement_mechanism: design
+  verification_method: automated
+  rationale: Promoted from Design Journal outcome.
+- id: INV-0012
+  statement: An authorized alias change does not change canonical UUID identity.
+  scope: global
+  enforcement_level: must
+  enforcement_mechanism: design
+  verification_method: automated
+  rationale: Promoted from Design Journal outcome.
+- id: INV-0013
+  statement: An alias change never rewrites canonical UUID references or normalized
+    UUID relationship endpoints; only derived alias presentation regenerates.
+  scope: global
+  enforcement_level: must
+  enforcement_mechanism: design
+  verification_method: automated
+  rationale: Promoted from Design Journal outcome.
+- id: INV-0062
+  statement: The derived logical URI is a resolver key and is not entity identity.
+  scope: global
+  enforcement_level: must
+  enforcement_mechanism: design
+  verification_method: automated
+  rationale: Promoted from Design Journal outcome.
+- id: INV-0063
+  statement: Every normalized identity-bearing entity exposes explicit type; a polymorphic
+    authored record authors type when enclosing context is insufficient, while monomorphic
+    authored schema position remains canonical type authority and `alias_id` alone
+    never determines type.
+  scope: global
+  enforcement_level: must
+  enforcement_mechanism: design
+  verification_method: automated
+  rationale: Promoted from Design Journal outcome.
+- id: INV-0084
+  statement: '`alias_ref` is always derived from `alias_id` and `alias_name` and is
+    never canonical authored data.'
+  scope: global
+  enforcement_level: must
+  enforcement_mechanism: design
+  verification_method: automated
+  rationale: Promoted from Design Journal outcome.
+- id: INV-0085
+  statement: '`alias_name` provides recognition metadata and never defines or substitutes
+    for architectural meaning.'
+  scope: global
+  enforcement_level: must
+  enforcement_mechanism: design
+  verification_method: automated
+  rationale: Promoted from Design Journal outcome.
+- id: INV-0086
+  statement: Derived `created_at` denotes the beginning of the v1.3 identity record
+    at UUIDv7 mint time, not historical architecture creation time.
+  scope: global
+  enforcement_level: must
+  enforcement_mechanism: design
+  verification_method: automated
+  rationale: Promoted from Design Journal outcome.
+- id: INV-0087
+  statement: Derived `created_at` is decoded from the UUIDv7 Unix-millisecond timestamp,
+    leaving no separately authored value to reconcile.
+  scope: global
+  enforcement_level: must
+  enforcement_mechanism: design
+  verification_method: automated
+  rationale: Promoted from Design Journal outcome.
+- id: INV-0088
+  statement: The constraint that canonical `updated_at` cannot precede `created_at`
+    is deferred with canonical `updated_at` to transactional-authoring governance
+    and is not a v1.3 identity invariant.
+  scope: global
+  enforcement_level: may
+  enforcement_mechanism: design
+  verification_method: manual
+  rationale: 'Disposition: deferred. This child records that the updated_at ordering
+    constraint is not an active v1.3 identity invariant.'
+- id: INV-0089
+  statement: Regenerating derived artifacts never mutates canonical identity or v1.3
+    identity time semantics.
+  scope: global
+  enforcement_level: must
+  enforcement_mechanism: design
+  verification_method: automated
+  rationale: Promoted from Design Journal outcome.
+- id: INV-0090
+  statement: Two semantically distinct records claiming one UUID fail closed; ADR
+    Kit does not choose a keeper or mint a replacement automatically.
+  scope: global
+  enforcement_level: must
+  enforcement_mechanism: design
+  verification_method: automated
+  rationale: Promoted from Design Journal outcome.
+- id: INV-0091
+  statement: A duplicate local `alias_id` across distinct UUIDs is a governed allocation
+    conflict; without an admitted incumbent it fails admission pending reviewed allocation,
+    while cross-namespace overlap is not a collision.
+  scope: global
+  enforcement_level: must
+  enforcement_mechanism: design
+  verification_method: automated
+  rationale: Promoted from Design Journal outcome.
+- id: INV-0092
+  statement: Alias recovery or reallocation never replaces an already valid canonical
+    UUID.
+  scope: global
+  enforcement_level: must
+  enforcement_mechanism: design
+  verification_method: automated
+  rationale: Promoted from Design Journal outcome.
+- id: INV-0093
+  statement: Alias recovery or reallocation never rewrites canonical UUID relationship
+    endpoints.
+  scope: global
+  enforcement_level: must
+  enforcement_mechanism: design
+  verification_method: automated
+  rationale: Promoted from Design Journal outcome.
+capabilities: []
+gaps:
+- id: GAP-0019
+  question: Canonical entity-level updated_at and updated_at>=created_at invariant
+    remain deferred with transactional authoring
+  context: 'Classification: deferred gap. D-12/I-13 are recorded as deferred children
+    and must not be treated as active v1.3 identity constraints.'
+  impact: medium
+  blocking: false
+notes: Promoted from Design Journal via adr_kit.api promotion provider.

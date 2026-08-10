@@ -20,33 +20,58 @@ tags:
 introduces_entities:
 - INV-0058
 - CAP-0038
-context: |
+context: 'Pre-v1.3 authoring treated bare local references as the default local rule.
   The current compiler and recursive multi-scope behavior preserve scope-local
+
   compilation boundaries, but the STE ecosystem is moving toward federation
+
   across independently compiled repositories. The planning material establishes
+
   that federation must remain read-only, that each repository is authoritative
+
   over its own entities, and that bare local IDs must evolve into an
+
   unambiguous multi-repository identity model without breaking single-repo
+
   authoring.
 
+
   Those rules are architectural decisions, not temporary implementation notes.
+
   They determine how repositories reference each other, how conflicts are
+
   resolved, and what the federation layer is allowed to do with canonical
+
   per-repo registries.
 
+
   What is needed is one explicit ADR that formalizes:
+
   1. Federation as a read-only aggregation step over independently compiled repos
+
   2. Provider-authoritative conflict resolution for entity definitions
+
   3. A qualified identity model with namespace separated from bare ID
-  4. Bare local references remaining valid by default, with qualification only
-     when cross-repo references are intended
+
+  4. Pre-v1.3 bare local references remained valid by default as historical authoring
+  ergonomics; v1.3 canonical authored entity references use UUIDs; provider-authoritative
+  machine identity is (architecture_namespace, UUID); aliases and legacy IDs remain
+  human-recognition or compatibility surfaces; and a workspace repository key is registration/routing/attribution
+  only
+
+  '
 decisions:
 - id: DEC-0045
-  summary: Treat federation as a read-only aggregation layer over per-repo canonical registries
-  rationale: |
-    Per-repository registries remain the canonical architecture outputs for
+  summary: Treat federation as a read-only aggregation layer over per-repo canonical
+    registries
+  rationale: 'Per-repository registries remain the canonical architecture outputs
+    for
+
     their owning repository. Federation exists to read, index, merge, and query
+
     across those outputs; it must not rewrite or mutate them.
+
+    '
   consequences:
     positive:
     - Repository ownership boundaries remain explicit
@@ -54,65 +79,79 @@ decisions:
     - Global analysis stays traceable to per-repo canonical state
 - id: DEC-0046
   summary: Use provider-authoritative conflict resolution for federated entity definitions
-  rationale: |
-    When one repository references an entity defined by another repository, the
-    defining repository is the authority on that entity's name, status, and
+  rationale: 'When one repository references an entity defined by another repository,
+    the
+
+    defining repository is the authority on that entity''s name, status, and
+
     metadata. Consumers may declare relationships to the entity, but they do
+
     not redefine it.
+
+    '
   consequences:
     positive:
     - Entity ownership remains unambiguous across repository boundaries
     - Consumer references cannot silently override provider truth
     - Conflict handling remains deterministic
 - id: DEC-0047
-  summary: Keep namespace separate from bare ID and use qualification only for cross-repo references
-  rationale: |
-    Single-repo authoring should remain simple and backward compatible, while
-    federation requires globally unambiguous identity. Separating namespace from
-    bare ID preserves local ergonomics while enabling global qualification when
-    needed.
+  summary: Qualify machine identity as (architecture_namespace, UUID); keep human
+    alias qualification derived
+  rationale: V1.3 canonical external identity is the pair (architecture_namespace,
+    UUID). Local v1.3 authored references use UUIDs. Human-recognition aliases may
+    be namespace-qualified for display, but alias qualification remains derived and
+    is not provider namespace identity authority.
   consequences:
     positive:
     - Existing local ADR authoring remains valid
     - Cross-repo references become explicit and machine-parseable
     - Global identity does not require a central ID allocator
 - id: DEC-0077
-  summary: Emit workspace-attribution-federation.yaml as read-only cross-repo attribution index
-  rationale: |
-    Per-repo implementation-attribution-evidence.yaml files use bare ADR ids valid
-    only within each corpus. Workspace reasoning requires a derived federation
-    artifact keyed by qualified_id (workspaceRepoKey:ADR-L-XXXX) so homonymous
-    bare ids across repositories are never merged into a single semantic cluster.
+  summary: Emit workspace-attribution-federation.yaml as read-only cross-repo attribution
+    index keyed by workspace routing identity that resolves to architecture_namespace
+  rationale: Workspace repository keys remain local registration/routing/attribution
+    handles. They resolve to the provider's architecture_namespace and must not be
+    treated as the provider identity namespace. Canonical external identity remains
+    (architecture_namespace, UUID), not a workspace-key-qualified local ADR alias.
   consequences:
     positive:
     - Agents and workspace tools resolve ADR embodiment without bare-id collapse
     - Federation remains derived and does not mutate per-repo evidence
     negative:
-    - Workspace manifest repo keys must remain stable for qualified_id namespaces
+    - Workspace manifest repo keys remain stable for routing/attribution resolution
+      to architecture_namespace, not as UUID identity namespaces
 invariants:
 - id: INV-0058
-  statement: |
-    Federation and aggregation layers MUST treat each repository as
+  statement: 'Federation and aggregation layers MUST treat each repository as
+
     authoritative over its own canonical registries and MUST NOT mutate those
+
     registries during federation.
+
+    '
   scope: global
   enforcement_level: must
   enforcement_mechanism: design
   verification_method: automated
-  rationale: |
-    Multi-repository architecture reasoning depends on repository ownership and
+  rationale: 'Multi-repository architecture reasoning depends on repository ownership
+    and
+
     read-only aggregation remaining explicit.
+
+    '
 capabilities:
 - id: CAP-0038
   name: Federated Qualified Identity Resolution
-  description: |
-    Support unambiguous multi-repository entity references using namespaces and
-    qualified identifiers while preserving bare local references in source ADRs.
+  description: Support unambiguous multi-repository entity references using architecture_namespace
+    and UUID identity while retaining read-only provider authority and derived human
+    alias qualification.
   acceptance_criteria:
-  - Bare local IDs remain valid within a repository
-  - Cross-repo references use namespace-qualified identifiers
+  - Canonical machine identity resolves as (architecture_namespace, UUID)
+  - Local v1.3 authored references use UUID identity
+  - Human alias qualification remains derived and non-canonical
   - Provider repositories remain authoritative for their own entity definitions
   - Federation reads and merges per-repo registries without rewriting them
+  - Workspace repository keys provide routing/attribution only
 related_adrs:
 - ADR-L-0002
 - ADR-L-0007

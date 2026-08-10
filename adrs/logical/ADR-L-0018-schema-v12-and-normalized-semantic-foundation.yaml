@@ -31,81 +31,104 @@ introduces_entities:
 - CAP-0050
 - CAP-0051
 - CAP-0052
-context: |
-  Phase 1 established a narrow supported authoring SDK while explicitly deferring
+context: 'Phase 1 established a narrow supported authoring SDK while explicitly deferring
+
   schema expansion, normalized-model expansion, assertion identity, bindings, and
+
   topology identity. The repository now needs those contracts as an additive
+
   semantic foundation for future consumers, without implementing the Phase 3 graph
+
   bundle or absorbing authority owned by runtime, rules, substrate, or admission
+
   systems.
 
+
   Schema v1.0 is the frozen stable ADR encoding. Schema v1.1 is an existing
+
   provisional discovery, ledger, remediation, and attribution line and must not be
+
   repurposed. The next ADR authoring line is therefore v1.2. Existing source models
+
   already identify boundaries, contracts, interfaces, implementation decisions,
+
   and name-keyed topology, but their normalized identity and migration behavior are
+
   not yet authoritative.
+
+  '
 decisions:
 - id: DEC-0083
   summary: Introduce provisional additive ADR authoring schema v1.2
-  rationale: |
-    Schema v1.2 extends the existing ADR authoring shapes with external-reference,
+  rationale: 'Schema v1.2 extends the existing ADR authoring shapes with external-reference,
+
     binding, evidence-expectation, and topology-ID fields. Version dispatch must be
+
     explicit. Schema v1.0 files remain byte-for-byte frozen and valid; v1.1 retains
+
     its current provisional discovery and ledger role. Unsupported future versions
+
     fail closed rather than falling back to v1.0.
+
+    '
   consequences:
     positive:
     - Existing v1.0 authoring remains compatible
     - V1.2 additions have an explicit provisional contract and package-data surface
     - V1.1 is not silently reinterpreted as an ADR authoring line
 - id: DEC-0084
-  summary: Represent external bindings as qualified references without absorbing authority
-  rationale: |
-    Local entity references remain bare IDs. A cross-repository entity reference is
-    an object containing required `namespace`, `id`, `kind`, and `fingerprint`
-    fields; its normalized display qualification is `namespace:id`. Fingerprints
-    use `sha256:<64 lowercase hexadecimal characters>`.
-
-    A substrate binding is identified within one ADR by
-    `(external_namespace, artifact_id, role)`. A rule binding is identified by
-    `(namespace, rule_id)`. An evidence expectation is identified by
-    `expectation_id`. Duplicate identities are invalid. Rule dispositions are
-    exactly `adopted`, `refined`, `overridden`, `exempted`, or `not_applicable`.
-    Refined, overridden, exempted, and not-applicable dispositions require a
-    rationale; exempted dispositions also require `exception_ref`.
+  summary: Represent external bindings as provider-namespace + UUID references with
+    canonical fingerprint comparability
+  rationale: External v1.3 references use provider-authoritative architecture_namespace,
+    UUID, kind, and sha256:<64 lowercase hexadecimal> fingerprint. The fingerprint
+    is SHA-256 over the provider's complete schema-normalized canonical identity-bearing
+    entity record serialized with RFC 8785 JCS. Local human aliases remain non-canonical
+    recognition surfaces.
   consequences:
     positive:
     - Cross-repository intent is explicit and deterministic
     - Provider authority remains external and traceable
     - No network or external semantic resolution is required for validation
 - id: DEC-0085
-  summary: Promote four already-authored entity types into normalized model version 1.1
-  rationale: |
-    `boundary`, `contract`, `interface`, and `implementation_decision` are already
+  summary: Retain Phase-2 normalized model 1.1 promotion history and admit model 2.0
+    as the v1.3 compatibility event
+  rationale: '`boundary`, `contract`, `interface`, and `implementation_decision` are
+    already
+
     independently identified in canonical ADRs and are useful through repository
+
     queries. They join the existing `adr`, `system`, `component`, `decision`,
+
     `capability`, and `invariant` types. `constraint`, `nfr`, `gap`, and
+
     `integration` remain embedded. Data flow is not promoted in Phase 2.
 
+
     This materially expands the normalized model, so the model reports additive
+
     schema version `1.1`. Existing query helpers keep their previous selection
+
     semantics; new typed helpers are additive.
+
+
+    Model 1.1 remains the Phase-2/pre-v1.3 contract. V1.3 UUID identity advances normalized
+    semantics to model 2.0 without erasing the Phase-2 promotion history.
+
+    '
   consequences:
     positive:
-    - Independently addressable authored meaning reaches the supported repository seam
+    - Independently addressable authored meaning reaches the supported repository
+      seam
     - Existing six-type queries remain stable
     - Phase 3 receives a typed semantic foundation without a graph-bundle dependency
 - id: DEC-0086
-  summary: Add deterministic source-sensitive assertion identity without replacing relationship identity
-  rationale: |
-    Historical `relationship_id` remains the endpoint-derived compatibility key.
-    `assertion_id` is `asrt-` followed by the lowercase SHA-256 hexadecimal digest
-    of the UTF-8 canonical JSON array
-    `[relationship_type, from_entity_id, to_entity_id, canonical_source_ref,
-    source_pointer_or_empty_string]`, serialized with no insignificant whitespace.
-    Display text and collection order are not inputs. Distinct canonical sources
-    therefore produce distinct assertion identities for the same semantic edge.
+  summary: Add deterministic source-sensitive assertion identity without replacing
+    relationship identity
+  rationale: V1.3 relationship endpoints are UUIDs. relationship_id is recomputed
+    from relationship type, source UUID, and target UUID. Content-derived assertion_id
+    hashes those UUID endpoint values plus exactly one canonical source-owner UUID
+    and source_pointer_or_empty. Validation and migration preflight fail closed on
+    ambiguous ownership.
   consequences:
     positive:
     - Assertion identity is deterministic and source-sensitive
@@ -113,46 +136,34 @@ decisions:
     - Phase 3 multi-source semantics remain explicitly deferred
 - id: DEC-0087
   summary: Add optional stable topology IDs and deterministic dry-run-first migration
-  rationale: |
-    V1.2 topology component IDs use the closed pattern
+  rationale: 'V1.2 topology component IDs use the closed pattern
+
     `TOPO-[A-Z0-9][A-Z0-9-]*`. Endpoints and data-flow paths may use IDs or legacy
+
     names, but every reference must resolve exactly once. Migration preserves
+
     existing IDs, allocates first-free sequential `TOPO-0001` identifiers in
+
     canonical component-list order, rewrites uniquely resolvable names, retains
+
     display names, and updates the document to schema v1.2. It is non-destructive
+
     unless explicitly asked to write and is idempotent after a successful write.
+
+    '
   consequences:
     positive:
     - Physical topology gains reviewable stable identity
     - Legacy name-based input remains migratable
     - Ambiguous or dangling references fail without guessed rewrites
 - id: DEC-0088
-  summary: Make ADR Kit the exclusive repair authority for canonical entity-ID collisions
-  rationale: |
-    Promoting independently authored boundaries, contracts, interfaces, and
-    implementation decisions exposed historical bare-ID collisions inside this
-    repository. Repository qualification cannot resolve an intra-repository
-    collision, and runtime-derived qualification must not mutate canonical source.
-
-    ADR Kit therefore detects and repairs every canonical entity-ID collision in
-    its repository. One occurrence retains the historical ID in deterministic
-    canonical order by ADR creation date, ADR ID, repository-relative path, and
-    structural source pointer unless an explicit reviewed resolution mapping
-    selects another keeper. Every other occurrence receives the next monotonic ID
-    for its prefix, defined as one greater than the highest ID ever allocated.
-    Active, retired, removed, reserved, and remapped IDs are never reused.
-
-    ADR Kit rewrites schema-typed references only when their target resolves
-    exactly once. Ambiguous references require an explicit occurrence-scoped
-    resolution mapping; ADR Kit still performs every canonical write. Repair is
-    dry-run-first, atomic, deterministic, idempotent, recorded in canonical
-    allocation and migration ledgers, followed by validation and regeneration of
-    ADR Kit-owned projections. CI validates allocations and drift but does not
-    mutate the repository.
-
-    ste-runtime remains read-only over ADR Kit. It assembles cross-repository
-    identity as the structured pair `(repository_namespace, local_entity_id)`,
-    displayed as `namespace:id`, and never repairs canonical identity.
+  summary: Split UUID integrity corruption (fail closed) from governed alias collision
+    repair
+  rationale: Distinct entities claiming one UUID fail closed as integrity corruption
+    and are never auto-repaired. Distinct UUIDs contesting one local alias preserve
+    an admitted incumbent or otherwise fail pending explicit reviewed alias allocation.
+    Automatic repair is limited to governed alias allocation/history and never changes
+    UUIDs or UUID relationship endpoints.
   consequences:
     positive:
     - Local canonical identity becomes collision-free and historically non-reusable
@@ -162,93 +173,130 @@ decisions:
     - Ambiguous legacy references require a reviewed resolution map before repair
 invariants:
 - id: INV-0077
-  statement: |
-    ADR schema v1.0 MUST remain byte-for-byte frozen. Parser dispatch MUST resolve
+  statement: 'ADR schema v1.0 MUST remain byte-for-byte frozen. Parser dispatch MUST
+    resolve
+
     v1.0 and v1.2 authoring explicitly, MUST preserve the existing provisional
+
     v1.1 artifact behavior, and MUST reject unsupported future versions without
+
     falling back to another schema line.
+
+    '
   scope: global
   enforcement_level: must
   enforcement_mechanism: test
   verification_method: automated
-  rationale: |
-    Additive schema evolution is safe only when version identity and the frozen
+  rationale: 'Additive schema evolution is safe only when version identity and the
+    frozen
+
     compatibility line remain truthful.
+
+    '
 - id: INV-0078
-  statement: |
-    Substrate bindings, rule bindings, evidence expectations, and external
+  statement: 'Substrate bindings, rule bindings, evidence expectations, and external
+
     references MUST remain authored references. ADR Kit MUST NOT load, copy,
+
     execute, infer over, or admit external semantic bodies or observed evidence
+
     as local architecture authority.
+
+    '
   scope: global
   enforcement_level: must
   enforcement_mechanism: design
   verification_method: automated
-  rationale: |
-    Binding external authority is not ownership of that authority.
+  rationale: 'Binding external authority is not ownership of that authority.
+
+    '
 - id: INV-0079
-  statement: |
-    Every newly projected relationship assertion MUST receive an `assertion_id`
-    using DEC-0086, while compatibility-preserved `relationship_id` semantics MUST
-    remain unchanged. Phase 2 MUST NOT claim GraphProjectionBundle, snapshot
-    replacement, or source-scoped stale-assertion removal semantics.
+  statement: Every newly projected relationship assertion MUST receive an assertion_id
+    using UUID endpoint and single source-owner inputs from DEC-0086, while compatibility
+    relationship_id semantics remain endpoint-derived from UUIDs.
   scope: global
   enforcement_level: must
   enforcement_mechanism: test
   verification_method: automated
-  rationale: |
-    Source identity is needed now, but final multi-source graph behavior belongs to
+  rationale: 'Source identity is needed now, but final multi-source graph behavior
+    belongs to
+
     the next phase.
+
+    '
 - id: INV-0080
-  statement: |
-    Topology migration MUST be deterministic, idempotent, non-destructive by
+  statement: 'Topology migration MUST be deterministic, idempotent, non-destructive
+    by
+
     default, explicit about rewritten references, and fail closed on duplicate IDs,
+
     ambiguous names, or dangling endpoints. It MUST NOT use probabilistic or LLM
+
     resolution.
+
+    '
   scope: global
   enforcement_level: must
   enforcement_mechanism: test
   verification_method: automated
-  rationale: |
-    A migration that guesses changes canonical architecture authority incorrectly.
+  rationale: 'A migration that guesses changes canonical architecture authority incorrectly.
+
+    '
 - id: INV-0081
-  statement: |
-    The normalized projectable entity vocabulary MUST be exactly `adr`, `system`,
+  statement: 'The normalized projectable entity vocabulary MUST be exactly `adr`,
+    `system`,
+
     `component`, `decision`, `capability`, `invariant`, `boundary`, `contract`,
+
     `interface`, and `implementation_decision` for Phase 2. The relationship
+
     vocabulary is closed; the only newly authorized verbs are `binds_substrate`,
+
     `binds_rule`, `expects_evidence`, `provides_interface`, `consumes_interface`,
+
     and `composed_of`, and a compiler MUST emit one only from an actual authored
+
     extraction path.
+
+    '
   scope: global
   enforcement_level: must
   enforcement_mechanism: test
   verification_method: automated
-  rationale: |
-    Explicit promotion prevents internal IR richness or future graph needs from
+  rationale: 'Explicit promotion prevents internal IR richness or future graph needs
+    from
+
     silently becoming public semantic authority.
+
+
+    This Phase-2 vocabulary statement remains historical truth for model 1.1; v1.3
+    admission and UUID identity evolve under ADR-L-0019 and model 2.0 without erasing
+    that history.
+
+    '
 - id: INV-0082
-  statement: |
-    ADR Kit MUST own detection and repair of canonical entity-ID collisions in its
-    repository. Allocation MUST be monotonic above the historical high-water mark,
-    MUST permanently reserve retired, removed, remapped, and previously allocated
-    IDs, and MUST update every uniquely resolvable schema-typed local reference.
-    Ambiguous references MUST fail closed until an explicit occurrence-scoped
-    resolution mapping is supplied. Runtime and CI MUST NOT perform canonical
-    repair writes.
+  statement: ADR Kit MUST fail closed on duplicate UUID identity and MUST limit automatic
+    repair to governed alias allocation/history; alias repair MUST NOT rewrite UUID
+    references or mint replacement UUIDs.
   scope: global
   enforcement_level: must
   enforcement_mechanism: test
   verification_method: automated
-  rationale: |
-    Repository-local identity must be unique before runtime qualification, and
+  rationale: 'Repository-local identity must be unique before runtime qualification,
+    and
+
     collision repair cannot safely guess architectural reference intent.
+
+    '
 capabilities:
 - id: CAP-0048
   name: Additive ADR Schema v1.2 Authoring
-  description: |
-    Validate, parse, package, and compile provisional v1.2 ADR authoring while
+  description: 'Validate, parse, package, and compile provisional v1.2 ADR authoring
+    while
+
     preserving frozen v1.0 and the existing provisional v1.1 artifact family.
+
+    '
   acceptance_criteria:
   - V1.2 schemas are discoverable from source and installed wheels
   - Canonical and bundled v1.2 schema bytes match
@@ -256,19 +304,20 @@ capabilities:
   - Existing v1.0 fixtures and generated compatibility surfaces remain valid
 - id: CAP-0049
   name: Expanded Normalized Semantic Model
-  description: |
-    Expose boundary, contract, interface, and implementation-decision entities with
-    deterministic provenance, relationships, repository queries, and fingerprints.
+  description: Expose the Phase-2/pre-v1.3 expanded normalized model 1.1 contract
+    and admit model 2.0 as the v1.3 UUID/alias compatibility event.
   acceptance_criteria:
-  - The normalized model reports schema version 1.1
-  - Existing six entity types retain their behavior
-  - The four promoted types are first-class and queryable
-  - Embedded and Phase 3 types remain unpromoted
+  - Model 1.1 remains readable as the Phase-2 contract
+  - Model 2.0 is the v1.3 compatibility event for UUID/alias semantics
+  - Phase-2 promoted types remain queryable through repository APIs
 - id: CAP-0050
   name: Bind-Only External Authority Contracts
-  description: |
-    Author deterministic substrate, rule, and evidence-expectation bindings without
+  description: 'Author deterministic substrate, rule, and evidence-expectation bindings
+    without
+
     ingesting external semantic bodies or observed evidence.
+
+    '
   acceptance_criteria:
   - Binding families validate and round trip deterministically
   - Cross-repository entity references are explicitly qualified
@@ -276,26 +325,25 @@ capabilities:
   - Validation performs no network access or external rule execution
 - id: CAP-0051
   name: Stable Physical Topology Identity Migration
-  description: |
-    Add optional topology component IDs and migrate uniquely resolvable legacy names
+  description: 'Add optional topology component IDs and migrate uniquely resolvable
+    legacy names
+
     to stable IDs with deterministic diagnostics and output.
+
+    '
   acceptance_criteria:
   - V1.2 accepts stable topology IDs and legacy names where unambiguous
   - Migration is dry-run-first, deterministic, and idempotent
   - Ambiguous names and dangling references do not produce guessed output
   - Migrated documents validate as v1.2
 - id: CAP-0052
-  name: Canonical Entity Identity Repair
-  description: |
-    Detect and repair canonical entity-ID collisions through ADR Kit-owned,
-    monotonic, non-reusing allocation and occurrence-aware reference migration.
+  name: Governed Alias Allocation and UUID Integrity
+  description: Detect UUID identity collisions and fail closed; limit automatic repair
+    to governed alias allocation/history.
   acceptance_criteria:
-  - Every canonical collision enters an ADR Kit-owned repair workflow
-  - Replacement IDs are allocated above the historical prefix high-water mark
-  - Retired, removed, reserved, and remapped IDs are never reused
-  - Uniquely resolvable typed references are rewritten and ambiguous ones fail closed
-  - Allocation and remap evidence is canonical, deterministic, and idempotent
-  - CI validates uniqueness, allocation consistency, reference integrity, and drift
+  - Duplicate UUID identity fails closed and is never auto-repaired
+  - Automatic repair applies only to governed alias allocation/history
+  - Alias repair never rewrites UUID references or UUID relationship endpoints
 related_adrs:
 - ADR-L-0001
 - ADR-L-0003

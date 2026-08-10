@@ -4,13 +4,13 @@
 # generator_id: adr-architecture-graph
 # generator_version: 1
 # hash_algorithm: sha256
-# source_hash: 657c125ac30d437ac07ba82769bf353e12e3838773a286a32e75b31b2430be6e
-# rendered_hash: bb0b8ba5bcb0158be10ad8d147eeb72e2cde9e1eb17f13e04fafe954149e0cf0
+# source_hash: 169c1ba61884529418f35cfdb18d44e14dab8f5af0823d1a06765df00364ea5e
+# rendered_hash: df39029dee4d05961ed56d6b111bcace3b00ed6a6d21914d08067280963eac99
 
 schema_version: '1.0'
 type: architecture_graph
 architecture_namespace: adr-architecture-kit
-generated_at: '2026-08-10T04:05:45Z'
+generated_at: '2026-08-10T04:50:57Z'
 nodes:
 - id: ADR-L-0001
   entity_type: adr
@@ -735,8 +735,10 @@ nodes:
     artifact_path: adrs/logical/ADR-L-0001-ste-compliant-adr-system.yaml
 - id: DEC-0004
   entity_type: decision
-  name: Governed type-prefixed human-recognition aliases (ADR-L-XXXX / ADR-P-XXXX)
+  name: 'Governed type-prefixed human-recognition aliases (ADR-L-XXXX / ADR-P-XXXX)
     with 4-digit numbering; UUID is canonical machine identity
+
+    '
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0001#DEC-0004
@@ -1075,8 +1077,7 @@ nodes:
     artifact_path: adrs/logical/ADR-L-0013-architecture-repository-boundary-and-normalized-semantic-model.yaml
 - id: DEC-0051
   entity_type: decision
-  name: Expose NormalizedArchitectureModel 2.0 as the repository semantic payload
-    carrying UUID/alias/type/URI/time/fingerprint semantics
+  name: Adopt NormalizedArchitectureModel 2.0 as the v1.3 repository semantic payload
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0013#DEC-0051
@@ -1274,8 +1275,10 @@ nodes:
     artifact_path: adrs/logical/ADR-L-0004-adr-to-code-traceability-via-decorators.yaml
 - id: DEC-0077
   entity_type: decision
-  name: Emit workspace-attribution-federation.yaml as read-only cross-repo attribution
+  name: 'Emit workspace-attribution-federation.yaml as read-only cross-repo attribution
     index keyed by workspace routing identity that resolves to architecture_namespace
+
+    '
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0012#DEC-0077
@@ -1325,16 +1328,18 @@ nodes:
     artifact_path: adrs/logical/ADR-L-0018-schema-v12-and-normalized-semantic-foundation.yaml
 - id: DEC-0084
   entity_type: decision
-  name: Represent external bindings as provider-namespace + UUID references with canonical
-    fingerprint comparability
+  name: Represent external bindings as architecture_namespace + UUID references with
+    canonical fingerprint comparability
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0018#DEC-0084
     artifact_path: adrs/logical/ADR-L-0018-schema-v12-and-normalized-semantic-foundation.yaml
 - id: DEC-0085
   entity_type: decision
-  name: Retain Phase-2 normalized model 1.1 promotion history and admit model 2.0
+  name: 'Retain Phase-2 normalized model 1.1 promotion history and admit model 2.0
     as the v1.3 compatibility event
+
+    '
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0018#DEC-0085
@@ -1395,9 +1400,7 @@ nodes:
     artifact_path: adrs/logical/ADR-L-0019-canonical-entity-identity.yaml
 - id: DEC-0093
   entity_type: decision
-  name: '`alias_ref` is derived as `alias_id + ":" + alias_name`, may appear only
-    in normalized or human-facing derived output, is never canonical authored authority,
-    an'
+  name: Keep alias_ref derived and non-authoritative
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0019#DEC-0093
@@ -1425,8 +1428,7 @@ nodes:
     artifact_path: adrs/logical/ADR-L-0019-canonical-entity-identity.yaml
 - id: DEC-0097
   entity_type: decision
-  name: Intrinsic UUID identity is admitted only for independently addressable durable
-    canonical ADRs, decisions, capabilities, invariants, boundaries, contracts, compo
+  name: Admit UUID identity only for independently addressable durable entity kinds
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0019#DEC-0097
@@ -1471,18 +1473,16 @@ nodes:
     artifact_path: adrs/logical/ADR-L-0019-canonical-entity-identity.yaml
 - id: DEC-0103
   entity_type: decision
-  name: Migration preflights before minting and records a complete authoritative map
-    from authority namespace, repository-relative path, structural pointer, legacy
-    alia
+  name: Migration preflights before minting and records a complete authoritative identity
+    map
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0019#DEC-0103
     artifact_path: adrs/logical/ADR-L-0019-canonical-entity-identity.yaml
 - id: DEC-0104
   entity_type: decision
-  name: Migration preserves `alias_id` and proposes `alias_name` deterministically
-    from explicit canonical name, canonical presentation, canonical short description,
-    or
+  name: Migration preserves alias_id and proposes alias_name deterministically from
+    canonical fields
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0019#DEC-0104
@@ -1496,16 +1496,16 @@ nodes:
     artifact_path: adrs/logical/ADR-L-0019-canonical-entity-identity.yaml
 - id: DEC-0106
   entity_type: decision
-  name: 'V1.0 remains byte-frozen and readable, v1.2 remains readable and migratable,
-    v1.3 is a separate provisional authoring line, readers continue loading normalized '
+  name: Keep v1.0 frozen, v1.2 migratable, and v1.3 as a separate provisional authoring
+    line
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0019#DEC-0106
     artifact_path: adrs/logical/ADR-L-0019-canonical-entity-identity.yaml
 - id: DEC-0107
   entity_type: decision
-  name: '`architecture_namespace` is stable provider authority for external identity
-    and logical URI derivation, while a workspace repository key is only local registrat'
+  name: architecture_namespace is stable provider authority; workspace keys are local
+    routing only
   canonical_source:
     source_type: logical_adr
     source_ref: ADR-L-0019#DEC-0107

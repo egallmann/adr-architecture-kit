@@ -1822,8 +1822,8 @@ entities:
   entity_type: capability
   name: Stable Repository Semantic Boundary
   summary: Provide one scope-safe, deterministic in-process interface that loads compiled
-    architecture bundles and returns NormalizedArchitectureModel 2.0 with UUID, alias,
-    and logical URI resolution.
+    architecture bundles and exposes the authorized NormalizedArchitectureModel 2.0
+    semantic payload with UUID, alias, and logical URI resolution
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr

@@ -642,9 +642,9 @@ entities:
 - id: ADR-L-0012
   entity_type: adr
   name: Federation Authority and Qualified Identity Model
-  summary: Pre-v1.3 authoring treated bare local references as the default local rule.
-    The current compiler and recursive multi-scope behavior preserve scope-local compilation
-    boundaries, but the STE ecosystem is moving toward fede
+  summary: The compiler and recursive multi-scope model preserve repository-local
+    compilation boundaries, while STE federation spans independently compiled repositories.
+    Federation therefore requires global identity without weakeni
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -880,8 +880,8 @@ entities:
   entity_type: adr
   name: Deterministic Corpus Query and Authoring Orientation APIs
   summary: Upstream authoring workflows need deterministic ways to inspect the compiled
-    corpus, orient themselves within a scope, and allocate new ADR identifiers without
-    reparsing registry YAML or hand-implementing directory scans
+    corpus, orient themselves within a scope, and allocate governed human-facing ADR
+    aliases without reparsing registry YAML or hand-implementing d
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -1052,9 +1052,9 @@ entities:
 - id: ADR-L-0019
   entity_type: adr
   name: Canonical Entity Identity
-  summary: Canonical entity identity for schema v1.3 is recorded from Design Journal
-    `DJ-adr-kit-canonical-entity-identity-v13` after Phase 1 federation, repository-boundary,
-    and schema v1.2 normalized-semantic foundations. Problem
+  summary: Earlier ADR Kit work established federation, repository boundaries, schema
+    v1.2, and a normalized semantic foundation, but canonical identity still depended
+    on human-oriented, type-prefixed identifiers in roles that also
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -3783,8 +3783,8 @@ entities:
   entity_type: capability
   name: Stable Repository Semantic Boundary
   summary: Provide one scope-safe, deterministic in-process interface that loads compiled
-    architecture bundles and returns NormalizedArchitectureModel 2.0 with UUID, alias,
-    and logical URI resolution.
+    architecture bundles and exposes the authorized NormalizedArchitectureModel 2.0
+    semantic payload with UUID, alias, and logical URI resolution
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -5235,8 +5235,10 @@ entities:
     generator: adr-architecture-index
 - id: DEC-0004
   entity_type: decision
-  name: Governed type-prefixed human-recognition aliases (ADR-L-XXXX / ADR-P-XXXX)
+  name: 'Governed type-prefixed human-recognition aliases (ADR-L-XXXX / ADR-P-XXXX)
     with 4-digit numbering; UUID is canonical machine identity
+
+    '
   summary: '**Human recognition aliases:** - Type-prefixed IDs remain project-local
     governed `alias_id` surfaces - Alias uniqueness and type visibility remain valuable
     for documentation - Alias allocation never alters immutable UUID'
@@ -7517,8 +7519,7 @@ entities:
     generator: adr-architecture-index
 - id: DEC-0051
   entity_type: decision
-  name: Expose NormalizedArchitectureModel 2.0 as the repository semantic payload
-    carrying UUID/alias/type/URI/time/fingerprint semantics
+  name: Adopt NormalizedArchitectureModel 2.0 as the v1.3 repository semantic payload
   summary: A semantic model is needed so consumers depend on architecture meaning
     rather than current registry document shapes. The model must preserve entities,
     relationships, unresolved records, provenance, scope identity, and de
@@ -8781,8 +8782,10 @@ entities:
     generator: adr-architecture-index
 - id: DEC-0077
   entity_type: decision
-  name: Emit workspace-attribution-federation.yaml as read-only cross-repo attribution
+  name: 'Emit workspace-attribution-federation.yaml as read-only cross-repo attribution
     index keyed by workspace routing identity that resolves to architecture_namespace
+
+    '
   summary: Workspace repository keys remain local registration/routing/attribution
     handles. They resolve to the provider's architecture_namespace and must not be
     treated as the provider identity namespace. Canonical external identi
@@ -9119,8 +9122,8 @@ entities:
     generator: adr-architecture-index
 - id: DEC-0084
   entity_type: decision
-  name: Represent external bindings as provider-namespace + UUID references with canonical
-    fingerprint comparability
+  name: Represent external bindings as architecture_namespace + UUID references with
+    canonical fingerprint comparability
   summary: External v1.3 references use provider-authoritative architecture_namespace,
     UUID, kind, and sha256:<64 lowercase hexadecimal> fingerprint. The fingerprint
     is SHA-256 over the provider's complete schema-normalized canonic
@@ -9168,8 +9171,10 @@ entities:
     generator: adr-architecture-index
 - id: DEC-0085
   entity_type: decision
-  name: Retain Phase-2 normalized model 1.1 promotion history and admit model 2.0
+  name: 'Retain Phase-2 normalized model 1.1 promotion history and admit model 2.0
     as the v1.3 compatibility event
+
+    '
   summary: '`boundary`, `contract`, `interface`, and `implementation_decision` are
     already independently identified in canonical ADRs and are useful through repository
     queries. They join the existing `adr`, `system`, `component`, `d'
@@ -9558,9 +9563,7 @@ entities:
     generator: adr-architecture-index
 - id: DEC-0093
   entity_type: decision
-  name: '`alias_ref` is derived as `alias_id + ":" + alias_name`, may appear only
-    in normalized or human-facing derived output, is never canonical authored authority,
-    an'
+  name: Keep alias_ref derived and non-authoritative
   summary: '`alias_ref` is derived as `alias_id + ":" + alias_name`, may appear only
     in normalized or human-facing derived output, is never canonical authored authority,
     and is never a relationship, foreign-key, authority, or canoni'
@@ -9752,8 +9755,7 @@ entities:
     generator: adr-architecture-index
 - id: DEC-0097
   entity_type: decision
-  name: Intrinsic UUID identity is admitted only for independently addressable durable
-    canonical ADRs, decisions, capabilities, invariants, boundaries, contracts, compo
+  name: Admit UUID identity only for independently addressable durable entity kinds
   summary: Intrinsic UUID identity is admitted only for independently addressable
     durable canonical ADRs, decisions, capabilities, invariants, boundaries, contracts,
     components, interfaces, implementation decisions, and systems; ph
@@ -10044,9 +10046,8 @@ entities:
     generator: adr-architecture-index
 - id: DEC-0103
   entity_type: decision
-  name: Migration preflights before minting and records a complete authoritative map
-    from authority namespace, repository-relative path, structural pointer, legacy
-    alia
+  name: Migration preflights before minting and records a complete authoritative identity
+    map
   summary: Migration preflights before minting and records a complete authoritative
     map from authority namespace, repository-relative path, structural pointer, legacy
     alias, final alias, and entity type to minted UUID; an abandoned
@@ -10094,9 +10095,8 @@ entities:
     generator: adr-architecture-index
 - id: DEC-0104
   entity_type: decision
-  name: Migration preserves `alias_id` and proposes `alias_name` deterministically
-    from explicit canonical name, canonical presentation, canonical short description,
-    or
+  name: Migration preserves alias_id and proposes alias_name deterministically from
+    canonical fields
   summary: Migration preserves `alias_id` and proposes `alias_name` deterministically
     from explicit canonical name, canonical presentation, canonical short description,
     or explicit review in that order; narrative guessing and gener
@@ -10192,8 +10192,8 @@ entities:
     generator: adr-architecture-index
 - id: DEC-0106
   entity_type: decision
-  name: 'V1.0 remains byte-frozen and readable, v1.2 remains readable and migratable,
-    v1.3 is a separate provisional authoring line, readers continue loading normalized '
+  name: Keep v1.0 frozen, v1.2 migratable, and v1.3 as a separate provisional authoring
+    line
   summary: V1.0 remains byte-frozen and readable, v1.2 remains readable and migratable,
     v1.3 is a separate provisional authoring line, readers continue loading normalized
     1.1 bundles, and UUID identity advances v1.3 normalized sema
@@ -10241,8 +10241,8 @@ entities:
     generator: adr-architecture-index
 - id: DEC-0107
   entity_type: decision
-  name: '`architecture_namespace` is stable provider authority for external identity
-    and logical URI derivation, while a workspace repository key is only local registrat'
+  name: architecture_namespace is stable provider authority; workspace keys are local
+    routing only
   summary: '`architecture_namespace` is stable provider authority for external identity
     and logical URI derivation, while a workspace repository key is only local registration/routing;
     registration resolves the key to the provider n'
@@ -14734,9 +14734,11 @@ entities:
   metadata:
     adr_id: ADR-L-0016
     scope: global
-    statement: Forward-authoring governed alias_id allocation MUST be monotonic and
+    statement: 'Forward-authoring governed alias_id allocation MUST be monotonic and
       non-reusable. Previously allocated aliases and historical gaps remain consumed
       history and MUST NOT be reissued or used to replace UUID identity.
+
+      '
     enforcement_level: must
     declaration_mode: local
     upheld_by_decisions: []
@@ -14839,8 +14841,10 @@ entities:
   metadata:
     adr_id: ADR-L-0016
     scope: global
-    statement: Reserved ADR alias IDs `9000-9999` MUST NOT participate in standard
+    statement: 'Reserved ADR alias IDs `9000-9999` MUST NOT participate in standard
       forward alias allocation and MUST NOT be treated as UUID machine-identity allocation.
+
+      '
     enforcement_level: must
     declaration_mode: local
     upheld_by_decisions: []
@@ -15296,9 +15300,11 @@ entities:
   metadata:
     adr_id: ADR-L-0018
     scope: global
-    statement: Every newly projected relationship assertion MUST receive an assertion_id
+    statement: 'Every newly projected relationship assertion MUST receive an assertion_id
       using UUID endpoint and single source-owner inputs from DEC-0086, while compatibility
       relationship_id semantics remain endpoint-derived from UUIDs.
+
+      '
     enforcement_level: must
     declaration_mode: local
     upheld_by_decisions: []
@@ -15466,9 +15472,11 @@ entities:
   metadata:
     adr_id: ADR-L-0018
     scope: global
-    statement: ADR Kit MUST fail closed on duplicate UUID identity and MUST limit
+    statement: 'ADR Kit MUST fail closed on duplicate UUID identity and MUST limit
       automatic repair to governed alias allocation/history; alias repair MUST NOT
       rewrite UUID references or mint replacement UUIDs.
+
+      '
     enforcement_level: must
     declaration_mode: local
     upheld_by_decisions: []

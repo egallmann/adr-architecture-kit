@@ -3563,9 +3563,11 @@ entities:
   metadata:
     adr_id: ADR-L-0016
     scope: global
-    statement: Forward-authoring governed alias_id allocation MUST be monotonic and
+    statement: 'Forward-authoring governed alias_id allocation MUST be monotonic and
       non-reusable. Previously allocated aliases and historical gaps remain consumed
       history and MUST NOT be reissued or used to replace UUID identity.
+
+      '
     enforcement_level: must
     declaration_mode: local
     upheld_by_decisions: []
@@ -3668,8 +3670,10 @@ entities:
   metadata:
     adr_id: ADR-L-0016
     scope: global
-    statement: Reserved ADR alias IDs `9000-9999` MUST NOT participate in standard
+    statement: 'Reserved ADR alias IDs `9000-9999` MUST NOT participate in standard
       forward alias allocation and MUST NOT be treated as UUID machine-identity allocation.
+
+      '
     enforcement_level: must
     declaration_mode: local
     upheld_by_decisions: []
@@ -4125,9 +4129,11 @@ entities:
   metadata:
     adr_id: ADR-L-0018
     scope: global
-    statement: Every newly projected relationship assertion MUST receive an assertion_id
+    statement: 'Every newly projected relationship assertion MUST receive an assertion_id
       using UUID endpoint and single source-owner inputs from DEC-0086, while compatibility
       relationship_id semantics remain endpoint-derived from UUIDs.
+
+      '
     enforcement_level: must
     declaration_mode: local
     upheld_by_decisions: []
@@ -4295,9 +4301,11 @@ entities:
   metadata:
     adr_id: ADR-L-0018
     scope: global
-    statement: ADR Kit MUST fail closed on duplicate UUID identity and MUST limit
+    statement: 'ADR Kit MUST fail closed on duplicate UUID identity and MUST limit
       automatic repair to governed alias allocation/history; alias repair MUST NOT
       rewrite UUID references or mint replacement UUIDs.
+
+      '
     enforcement_level: must
     declaration_mode: local
     upheld_by_decisions: []

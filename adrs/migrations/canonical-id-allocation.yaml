@@ -8,7 +8,7 @@ high_water_marks:
   DEC: 9000
   IFACE: 33
   IMPL: 27
-  INV: 83
+  INV: 93
 allocations:
 - id: BOUND-0001
   entity_type: boundary
@@ -1036,6 +1036,120 @@ allocations:
   file_path: adrs/logical/ADR-L-0018-schema-v12-and-normalized-semantic-foundation.yaml
   source_pointer: /decisions/5/id
   state: active
+- id: DEC-0089
+  entity_type: decision
+  adr_id: ADR-L-0019
+  file_path: adrs/logical/ADR-L-0019-canonical-entity-identity.yaml
+  source_pointer: /decisions/0/id
+  state: active
+- id: DEC-0090
+  entity_type: decision
+  adr_id: ADR-L-0019
+  file_path: adrs/logical/ADR-L-0019-canonical-entity-identity.yaml
+  source_pointer: /decisions/1/id
+  state: active
+- id: DEC-0091
+  entity_type: decision
+  adr_id: ADR-L-0019
+  file_path: adrs/logical/ADR-L-0019-canonical-entity-identity.yaml
+  source_pointer: /decisions/2/id
+  state: active
+- id: DEC-0092
+  entity_type: decision
+  adr_id: ADR-L-0019
+  file_path: adrs/logical/ADR-L-0019-canonical-entity-identity.yaml
+  source_pointer: /decisions/3/id
+  state: active
+- id: DEC-0093
+  entity_type: decision
+  adr_id: ADR-L-0019
+  file_path: adrs/logical/ADR-L-0019-canonical-entity-identity.yaml
+  source_pointer: /decisions/4/id
+  state: active
+- id: DEC-0094
+  entity_type: decision
+  adr_id: ADR-L-0019
+  file_path: adrs/logical/ADR-L-0019-canonical-entity-identity.yaml
+  source_pointer: /decisions/5/id
+  state: active
+- id: DEC-0095
+  entity_type: decision
+  adr_id: ADR-L-0019
+  file_path: adrs/logical/ADR-L-0019-canonical-entity-identity.yaml
+  source_pointer: /decisions/6/id
+  state: active
+- id: DEC-0096
+  entity_type: decision
+  adr_id: ADR-L-0019
+  file_path: adrs/logical/ADR-L-0019-canonical-entity-identity.yaml
+  source_pointer: /decisions/7/id
+  state: active
+- id: DEC-0097
+  entity_type: decision
+  adr_id: ADR-L-0019
+  file_path: adrs/logical/ADR-L-0019-canonical-entity-identity.yaml
+  source_pointer: /decisions/8/id
+  state: active
+- id: DEC-0098
+  entity_type: decision
+  adr_id: ADR-L-0019
+  file_path: adrs/logical/ADR-L-0019-canonical-entity-identity.yaml
+  source_pointer: /decisions/9/id
+  state: active
+- id: DEC-0099
+  entity_type: decision
+  adr_id: ADR-L-0019
+  file_path: adrs/logical/ADR-L-0019-canonical-entity-identity.yaml
+  source_pointer: /decisions/10/id
+  state: active
+- id: DEC-0100
+  entity_type: decision
+  adr_id: ADR-L-0019
+  file_path: adrs/logical/ADR-L-0019-canonical-entity-identity.yaml
+  source_pointer: /decisions/11/id
+  state: active
+- id: DEC-0101
+  entity_type: decision
+  adr_id: ADR-L-0019
+  file_path: adrs/logical/ADR-L-0019-canonical-entity-identity.yaml
+  source_pointer: /decisions/12/id
+  state: active
+- id: DEC-0102
+  entity_type: decision
+  adr_id: ADR-L-0019
+  file_path: adrs/logical/ADR-L-0019-canonical-entity-identity.yaml
+  source_pointer: /decisions/13/id
+  state: active
+- id: DEC-0103
+  entity_type: decision
+  adr_id: ADR-L-0019
+  file_path: adrs/logical/ADR-L-0019-canonical-entity-identity.yaml
+  source_pointer: /decisions/14/id
+  state: active
+- id: DEC-0104
+  entity_type: decision
+  adr_id: ADR-L-0019
+  file_path: adrs/logical/ADR-L-0019-canonical-entity-identity.yaml
+  source_pointer: /decisions/15/id
+  state: active
+- id: DEC-0105
+  entity_type: decision
+  adr_id: ADR-L-0019
+  file_path: adrs/logical/ADR-L-0019-canonical-entity-identity.yaml
+  source_pointer: /decisions/16/id
+  state: active
+- id: DEC-0106
+  entity_type: decision
+  adr_id: ADR-L-0019
+  file_path: adrs/logical/ADR-L-0019-canonical-entity-identity.yaml
+  source_pointer: /decisions/17/id
+  state: active
+- id: DEC-0107
+  entity_type: decision
+  adr_id: ADR-L-0019
+  file_path: adrs/logical/ADR-L-0019-canonical-entity-identity.yaml
+  source_pointer: /decisions/18/id
+  state: active
 - id: DEC-9000
   entity_type: decision
   adr_id: ADR-L-9000
@@ -1444,6 +1558,42 @@ allocations:
   file_path: adrs/logical/ADR-L-0001-ste-compliant-adr-system.yaml
   source_pointer: /invariants/6/id
   state: active
+- id: INV-0008
+  entity_type: invariant
+  adr_id: ADR-L-0019
+  file_path: adrs/logical/ADR-L-0019-canonical-entity-identity.yaml
+  source_pointer: /invariants/0/id
+  state: active
+- id: INV-0009
+  entity_type: invariant
+  adr_id: ADR-L-0019
+  file_path: adrs/logical/ADR-L-0019-canonical-entity-identity.yaml
+  source_pointer: /invariants/1/id
+  state: active
+- id: INV-0010
+  entity_type: invariant
+  adr_id: ADR-L-0019
+  file_path: adrs/logical/ADR-L-0019-canonical-entity-identity.yaml
+  source_pointer: /invariants/2/id
+  state: active
+- id: INV-0011
+  entity_type: invariant
+  adr_id: ADR-L-0019
+  file_path: adrs/logical/ADR-L-0019-canonical-entity-identity.yaml
+  source_pointer: /invariants/3/id
+  state: active
+- id: INV-0012
+  entity_type: invariant
+  adr_id: ADR-L-0019
+  file_path: adrs/logical/ADR-L-0019-canonical-entity-identity.yaml
+  source_pointer: /invariants/4/id
+  state: active
+- id: INV-0013
+  entity_type: invariant
+  adr_id: ADR-L-0019
+  file_path: adrs/logical/ADR-L-0019-canonical-entity-identity.yaml
+  source_pointer: /invariants/5/id
+  state: active
 - id: INV-0014
   entity_type: invariant
   adr_id: ADR-L-0002
@@ -1732,6 +1882,18 @@ allocations:
   file_path: adrs/logical/ADR-L-0014-brownfield-onboarding-and-canonicalization-workflow.yaml
   source_pointer: /invariants/1/id
   state: active
+- id: INV-0062
+  entity_type: invariant
+  adr_id: ADR-L-0019
+  file_path: adrs/logical/ADR-L-0019-canonical-entity-identity.yaml
+  source_pointer: /invariants/6/id
+  state: active
+- id: INV-0063
+  entity_type: invariant
+  adr_id: ADR-L-0019
+  file_path: adrs/logical/ADR-L-0019-canonical-entity-identity.yaml
+  source_pointer: /invariants/7/id
+  state: active
 - id: INV-0064
   entity_type: invariant
   adr_id: ADR-L-0015
@@ -1851,4 +2013,64 @@ allocations:
   adr_id: ADR-L-0003
   file_path: adrs/logical/ADR-L-0003-quality-assurance-and-testing-strategy.yaml
   source_pointer: /invariants/10/id
+  state: active
+- id: INV-0084
+  entity_type: invariant
+  adr_id: ADR-L-0019
+  file_path: adrs/logical/ADR-L-0019-canonical-entity-identity.yaml
+  source_pointer: /invariants/8/id
+  state: active
+- id: INV-0085
+  entity_type: invariant
+  adr_id: ADR-L-0019
+  file_path: adrs/logical/ADR-L-0019-canonical-entity-identity.yaml
+  source_pointer: /invariants/9/id
+  state: active
+- id: INV-0086
+  entity_type: invariant
+  adr_id: ADR-L-0019
+  file_path: adrs/logical/ADR-L-0019-canonical-entity-identity.yaml
+  source_pointer: /invariants/10/id
+  state: active
+- id: INV-0087
+  entity_type: invariant
+  adr_id: ADR-L-0019
+  file_path: adrs/logical/ADR-L-0019-canonical-entity-identity.yaml
+  source_pointer: /invariants/11/id
+  state: active
+- id: INV-0088
+  entity_type: invariant
+  adr_id: ADR-L-0019
+  file_path: adrs/logical/ADR-L-0019-canonical-entity-identity.yaml
+  source_pointer: /invariants/12/id
+  state: active
+- id: INV-0089
+  entity_type: invariant
+  adr_id: ADR-L-0019
+  file_path: adrs/logical/ADR-L-0019-canonical-entity-identity.yaml
+  source_pointer: /invariants/13/id
+  state: active
+- id: INV-0090
+  entity_type: invariant
+  adr_id: ADR-L-0019
+  file_path: adrs/logical/ADR-L-0019-canonical-entity-identity.yaml
+  source_pointer: /invariants/14/id
+  state: active
+- id: INV-0091
+  entity_type: invariant
+  adr_id: ADR-L-0019
+  file_path: adrs/logical/ADR-L-0019-canonical-entity-identity.yaml
+  source_pointer: /invariants/15/id
+  state: active
+- id: INV-0092
+  entity_type: invariant
+  adr_id: ADR-L-0019
+  file_path: adrs/logical/ADR-L-0019-canonical-entity-identity.yaml
+  source_pointer: /invariants/16/id
+  state: active
+- id: INV-0093
+  entity_type: invariant
+  adr_id: ADR-L-0019
+  file_path: adrs/logical/ADR-L-0019-canonical-entity-identity.yaml
+  source_pointer: /invariants/17/id
   state: active

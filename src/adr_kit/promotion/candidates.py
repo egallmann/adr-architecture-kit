@@ -10,6 +10,10 @@ import yaml
 
 from ..api._errors import OperationError
 from .allocation import allocate_child_ids
+from .candidate_validation import (
+    default_create_adr_authors,
+    default_create_adr_context,
+)
 from .targets import ResolvedTarget, resolve_target
 
 
@@ -31,6 +35,8 @@ def build_create_adr_post_image(
     decisions: list[dict[str, Any]],
     invariants: list[dict[str, Any]],
     gaps: list[dict[str, Any]] | None = None,
+    authors: list[str] | None = None,
+    context: str | None = None,
     schema_version: str = "1.2",
 ) -> str:
     document = {
@@ -40,6 +46,8 @@ def build_create_adr_post_image(
         "title": title,
         "status": "accepted",
         "created_date": "2026-08-09",
+        "authors": list(authors if authors is not None else default_create_adr_authors()),
+        "context": (context if context is not None else default_create_adr_context()),
         "decisions": decisions,
         "invariants": invariants,
         "capabilities": [],

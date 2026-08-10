@@ -531,6 +531,36 @@ def _amend_m07(document: dict[str, Any]) -> dict[str, Any]:
     return document
 
 
+def build_identity_v13_create_context(
+    *,
+    journal_id: str,
+    outcomes: list[dict[str, Any]],
+) -> str:
+    """Deterministic ADR context for M-01 from Design Journal identity outcomes.
+
+    Logical schema requires ``context``. Content is framed from the journal id and
+    the accepted/deferred outcome statements already bound by the promotion contract.
+    """
+
+    lines = [
+        "Canonical entity identity for schema v1.3 is recorded from Design Journal "
+        f"`{journal_id}` after Phase 1 federation, repository-boundary, and schema "
+        "v1.2 normalized-semantic foundations.",
+        "",
+        "Problem drivers captured by promotion-required outcomes:",
+    ]
+    for outcome in sorted(outcomes, key=lambda item: str(item.get("id", ""))):
+        if not outcome.get("promotion_required"):
+            continue
+        oid = str(outcome.get("id") or "")
+        if not (oid.startswith("D-") or oid.startswith("I-")):
+            continue
+        statement = str(outcome.get("statement") or oid).strip()
+        disposition = str(outcome.get("disposition") or "accepted")
+        lines.append(f"- {oid} ({disposition}): {statement}")
+    return "\n".join(lines)
+
+
 def build_identity_v13_create_children(
     outcomes: list[dict[str, Any]],
     *,

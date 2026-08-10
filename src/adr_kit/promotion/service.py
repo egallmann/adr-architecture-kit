@@ -39,6 +39,11 @@ from .bindings import (
     validate_roadmap_content,
 )
 from .amendment_projection import ANNOTATION_ONLY_MARKER, assert_amendment_embodied
+from .candidate_validation import (
+    candidate_validation_result,
+    validate_adr_payload_bytes,
+    validate_projected_authority_overlay,
+)
 from .candidates import (
     allocate_for_identity_create,
     build_create_adr_post_image,
@@ -49,6 +54,7 @@ from .identity_v13 import (
     IDENTITY_V13_JOURNAL_ID,
     apply_identity_v13_amend,
     build_identity_v13_create_children,
+    build_identity_v13_create_context,
     deferred_children_are_non_active,
 )
 from .regeneration import regenerate_and_validate
@@ -250,6 +256,10 @@ def _build_post_images(
                     decisions=decisions,
                     invariants=invariants,
                     gaps=gaps,
+                    context=build_identity_v13_create_context(
+                        journal_id=journal_id,
+                        outcomes=selected,
+                    ),
                 )
             else:
                 text = build_create_adr_post_image(
@@ -395,22 +405,26 @@ def _bind_prepared_contract(
             )
             # Validate roadmap candidate
             errors = validate_roadmap_content(content.decode("utf-8"))
-            result = "valid" if not errors else "invalid"
-        else:
-            schema_binding = binding_dict(ref=schema_ref, fingerprint=schema_fp)
-            try:
-                tmp = store / "tmp_validate" / f"{mutation_id}.yaml"
-                tmp.parent.mkdir(parents=True, exist_ok=True)
-                tmp.write_bytes(content)
-                _ = tmp.read_text(encoding="utf-8")
-                result = "valid"
-            except Exception as exc:  # noqa: BLE001
-                result = "invalid"
+            result = candidate_validation_result(errors)
+            if errors:
                 blockers.append(
                     {
                         "id": f"B-VAL-{mutation_id}",
                         "code": "candidate_validation_failure",
-                        "message": str(exc),
+                        "message": "; ".join(errors),
+                    }
+                )
+        else:
+            schema_binding = binding_dict(ref=schema_ref, fingerprint=schema_fp)
+            # Validate the exact final bound bytes with the canonical ADR validator.
+            errors = validate_adr_payload_bytes(content, relative_path=relative_path)
+            result = candidate_validation_result(errors)
+            if errors:
+                blockers.append(
+                    {
+                        "id": f"B-VAL-{mutation_id}",
+                        "code": "candidate_validation_failure",
+                        "message": "; ".join(errors),
                     }
                 )
         mutation["schema_binding"] = schema_binding
@@ -441,6 +455,18 @@ def _bind_prepared_contract(
         json.dumps(resolved_map, indent=2, sort_keys=True) + "\n",
         encoding="utf-8",
     )
+
+    # Complete projected corpus must also validate before mechanical readiness.
+    overlay_errors = validate_projected_authority_overlay(project_root, images)
+    if overlay_errors:
+        blockers.append(
+            {
+                "id": "B-VAL-OVERLAY",
+                "code": "candidate_validation_failure",
+                "message": "; ".join(overlay_errors),
+            }
+        )
+
     prepared["blockers"] = [
         item
         for item in prepared.get("blockers", [])
@@ -884,9 +910,14 @@ def apply_promotion(
             if not staged.is_file():
                 raise TransactionAborted(f"staged missing {item.relative_path}")
             if item.relative_path.endswith((".yaml", ".yml")):
-                text = staged.read_text(encoding="utf-8")
-                if "id:" not in text and item.operation != "amend":
-                    raise TransactionAborted(f"staged ADR invalid {item.relative_path}")
+                schema_errors = validate_adr_payload_bytes(
+                    staged.read_bytes(),
+                    relative_path=item.relative_path,
+                )
+                if schema_errors:
+                    raise TransactionAborted(
+                        f"staged ADR invalid {item.relative_path}: " + "; ".join(schema_errors)
+                    )
 
     if not request.commit:
         # Dry-run: stage+validate only

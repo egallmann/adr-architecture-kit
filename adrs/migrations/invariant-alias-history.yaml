@@ -1,0 +1,77 @@
+schema_version: "1.0"
+type: invariant_alias_history
+entries:
+  - historical_alias: INV-0001
+    disposition: duplicate_of
+    canonical_alias: INV-0001
+    retired_surface: standalone_file
+  - historical_alias: INV-0002
+    disposition: moved_to
+    canonical_alias: INV-0095
+    retired_surface: standalone_file
+  - historical_alias: INV-0003
+    disposition: moved_to
+    canonical_alias: INV-0096
+    retired_surface: standalone_file
+  - historical_alias: INV-0004
+    disposition: moved_to
+    canonical_alias: INV-0097
+    retired_surface: standalone_file
+    note: "historical standalone defined_in claimed ADR-L-0012; locked target ADR-L-0010"
+  - historical_alias: INV-0005
+    disposition: moved_to
+    canonical_alias: INV-0098
+    retired_surface: standalone_file
+    note: "historical standalone defined_in claimed ADR-L-0012; locked target ADR-L-0002"
+  - historical_alias: INV-0006
+    disposition: merged_into
+    canonical_alias: INV-0027
+    retired_surface: standalone_file
+  - historical_alias: INV-0007
+    disposition: merged_into
+    canonical_alias: INV-0059
+    retired_surface: standalone_file
+  - historical_alias: INV-0008
+    disposition: merged_into
+    canonical_alias: INV-0061
+    retired_surface: standalone_file
+    permanently_consumed: true
+    conflict_provenance:
+      standalone_commit: "521ac7a"
+      adr_l_0019_reuse_commit: "d0d267c"
+      note: "rendered derived-only meaning predated L-0019 UUID reuse; UUID invariant remapped to INV-0094"
+enrichment_log:
+  - historical_alias: INV-0001
+    enforced_by: ["ADR-P-0002"]
+    canonical_alias: INV-0001
+    classification: ALREADY_REPRESENTED
+    note: "ADR-P-0002 IMPL already implements_invariants INV-0001"
+  - historical_alias: INV-0002
+    enforced_by: ["ADR-P-0001"]
+    canonical_alias: INV-0095
+    classification: PRESERVE_AS_HISTORY_ONLY
+  - historical_alias: INV-0003
+    enforced_by: ["ADR-P-0001"]
+    canonical_alias: INV-0096
+    classification: PRESERVE_AS_HISTORY_ONLY
+  - historical_alias: INV-0004
+    enforced_by: ["ADR-P-0001", "ADR-PC-0001"]
+    canonical_alias: INV-0097
+    classification: PRESERVE_AS_HISTORY_ONLY
+  - historical_alias: INV-0005
+    enforced_by: ["ADR-P-0001"]
+    canonical_alias: INV-0098
+    classification: PRESERVE_AS_HISTORY_ONLY
+  - historical_alias: INV-0006
+    enforced_by: ["ADR-P-0001"]
+    canonical_alias: INV-0027
+    classification: PRESERVE_AS_HISTORY_ONLY
+  - historical_alias: INV-0007
+    enforced_by: ["ADR-P-0001"]
+    canonical_alias: INV-0059
+    classification: PRESERVE_AS_HISTORY_ONLY
+    note: "Do not retarget ADR-P-0002 IMPL-0025 INV-0007 schema cite"
+  - historical_alias: INV-0008
+    enforced_by: ["ADR-PC-0001", "ADR-PC-0005"]
+    canonical_alias: INV-0061
+    classification: PRESERVE_AS_HISTORY_ONLY

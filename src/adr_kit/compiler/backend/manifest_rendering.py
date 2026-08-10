@@ -481,7 +481,6 @@ def discover_manifest_source_inputs(adr_dir: Path) -> List[Path]:
         Path("physical"),
         Path("physical-system"),
         Path("physical-component"),
-        Path("invariants"),
         Path("requirements") / "snapshots",
         Path("decisions") / "ledgers",
         Path("decisions") / "overrides",

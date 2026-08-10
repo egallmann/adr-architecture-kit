@@ -163,23 +163,6 @@ component_specifications:
     implements_capabilities: ["CAP-{suffix}"]
 """,
     )
-    _write_file(
-        root / "adrs" / "invariants" / f"INV-{suffix}-fixture.yaml",
-        f"""
-schema_version: "1.0"
-type: invariant
-id: INV-{suffix}
-statement: "Fixture {suffix} must compile deterministically."
-scope: global
-enforcement_level: must
-enforcement_mechanism: design
-verification_method: automated
-rationale: "Needed for trust."
-defined_in: ADR-L-{suffix}
-enforced_by: ["ADR-PC-{suffix}"]
-declaration_mode: canonical
-""",
-    )
 
 
 def _create_recursive_workspace(root: Path) -> Path:

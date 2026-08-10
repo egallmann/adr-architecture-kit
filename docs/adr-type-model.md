@@ -14,7 +14,7 @@ This document is the canonical public explanation of ADR types in `adr-architect
 | **ADR-P** | Legacy broad physical ADR | Compatibility; not preferred for new work |
 | **ADR-V** | Vision / future-state exploration | Experimental; not part of stable v1 contract |
 
-Standalone **INV-*** invariants are first-class authoring artifacts validated alongside ADRs.
+Invariants are established as children of logical ADRs; the machine index is `adrs/index/invariant-registry.yaml` (derived).
 
 ## Stable types
 

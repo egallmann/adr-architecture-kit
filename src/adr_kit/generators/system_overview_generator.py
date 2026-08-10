@@ -227,7 +227,7 @@ class SystemOverviewGenerator:
             ],
             "artifact_classes": [
                 "ADRs: [`adrs/logical/`](adrs/logical/) and [`adrs/physical/`](adrs/physical/)",
-                "Invariants: [`adrs/invariants/`](adrs/invariants/)",
+                "Invariant index (derived): [`adrs/index/invariant-registry.yaml`](adrs/index/invariant-registry.yaml)",
                 "Repository-normalized discovery bundle: [`adrs/index/`](adrs/index/)",
                 "Derived manifest and discovery aid: [`adrs/manifest.yaml`](adrs/manifest.yaml)",
                 "Legacy compatibility registry: [`adrs/entities/registry.yaml`](adrs/entities/registry.yaml)",
@@ -294,9 +294,8 @@ class SystemOverviewGenerator:
                 "Never classify artifacts by path shape when authoritative document metadata already exists.",
             ],
             "invariants": [
-                "[`INV-0001-schema-validation-required.yaml`](adrs/invariants/INV-0001-schema-validation-required.yaml)",
-                "[`INV-0002-runtime-hygiene-and-dependency-security.yaml`](adrs/invariants/INV-0002-runtime-hygiene-and-dependency-security.yaml)",
-                "[`INV-0003-meaningful-boundary-commits-required.yaml`](adrs/invariants/INV-0003-meaningful-boundary-commits-required.yaml)",
+                "[`adrs/index/invariant-registry.yaml`](adrs/index/invariant-registry.yaml) (derived index of ADR-L established invariants)",
+                "Canonical definitions live in [`adrs/logical/`](adrs/logical/) `invariants[]` children",
             ],
             "fast_target_discovery": [
                 OverviewRule(

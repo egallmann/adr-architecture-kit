@@ -6,6 +6,7 @@ import re
 from pathlib import Path
 
 from ..repository.architecture_repository import AdrIdAllocationBands
+from .invariant_alias_history import load_historical_aliases_from_project
 
 _DEC_RE = re.compile(r"(?m)^\s*-\s*id:\s*[\"']?(DEC-\d{4})[\"']?\s*$")
 _INV_RE = re.compile(r"(?m)^\s*-\s*id:\s*[\"']?(INV-\d{4})[\"']?\s*$")
@@ -23,6 +24,8 @@ def _scan_ids(project_root: Path, prefix: str) -> set[str]:
             continue
         text = path.read_text(encoding="utf-8", errors="replace")
         found.update(pattern.findall(text))
+    if prefix == "INV-":
+        found.update(load_historical_aliases_from_project(project_root))
     return found
 
 

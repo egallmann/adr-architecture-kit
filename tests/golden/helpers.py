@@ -47,7 +47,6 @@ def clone_scope_sources(source_root: Path, destination_root: Path) -> None:
         Path("adrs") / "physical",
         Path("adrs") / "physical-system",
         Path("adrs") / "physical-component",
-        Path("adrs") / "invariants",
         Path("adrs") / "requirements" / "snapshots",
         Path("adrs") / "decisions" / "ledgers",
         Path("adrs") / "decisions" / "reviews",

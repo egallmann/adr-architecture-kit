@@ -193,7 +193,7 @@ decisions:
     registration never mutates provider UUIDs or namespace, and federation remains
     provider-authoritative and read-only.'
 invariants:
-- id: INV-0008
+- id: INV-0094
   statement: Every admitted v1.3 entity's canonical machine identity is a lowercase
     RFC 9562 UUIDv7.
   scope: global

@@ -4,13 +4,13 @@
 # generator_id: adr-architecture-graph
 # generator_version: 1
 # hash_algorithm: sha256
-# source_hash: 169c1ba61884529418f35cfdb18d44e14dab8f5af0823d1a06765df00364ea5e
-# rendered_hash: df39029dee4d05961ed56d6b111bcace3b00ed6a6d21914d08067280963eac99
+# source_hash: 9e6d1d88865bde187f134c836167e6648f9347585492928aa02906c9ac047dbb
+# rendered_hash: b7c70ca910d85ab27c3b4ca465224694d9848e084f4e191d005d570e6db4cb68
 
 schema_version: '1.0'
 type: architecture_graph
 architecture_namespace: adr-architecture-kit
-generated_at: '2026-08-10T04:50:57Z'
+generated_at: '2026-08-10T23:25:42Z'
 nodes:
 - id: ADR-L-0001
   entity_type: adr
@@ -1655,58 +1655,51 @@ nodes:
   entity_type: invariant
   name: INV-0001
   canonical_source:
-    source_type: standalone_invariant
-    source_ref: INV-0001
-    artifact_path: adrs/invariants/INV-0001-schema-validation-required.yaml
+    source_type: logical_adr
+    source_ref: ADR-L-0001#INV-0001
+    artifact_path: adrs/logical/ADR-L-0001-ste-compliant-adr-system.yaml
 - id: INV-0002
   entity_type: invariant
   name: INV-0002
   canonical_source:
-    source_type: standalone_invariant
-    source_ref: INV-0002
-    artifact_path: adrs/invariants/INV-0002-runtime-hygiene-and-dependency-security.yaml
+    source_type: logical_adr
+    source_ref: ADR-L-0001#INV-0002
+    artifact_path: adrs/logical/ADR-L-0001-ste-compliant-adr-system.yaml
 - id: INV-0003
   entity_type: invariant
   name: INV-0003
   canonical_source:
-    source_type: standalone_invariant
-    source_ref: INV-0003
-    artifact_path: adrs/invariants/INV-0003-meaningful-boundary-commits-required.yaml
+    source_type: logical_adr
+    source_ref: ADR-L-0001#INV-0003
+    artifact_path: adrs/logical/ADR-L-0001-ste-compliant-adr-system.yaml
 - id: INV-0004
   entity_type: invariant
   name: INV-0004
   canonical_source:
-    source_type: standalone_invariant
-    source_ref: INV-0004
-    artifact_path: adrs/invariants/INV-0004-deterministic-contract-valid-registry-projection.yaml
+    source_type: logical_adr
+    source_ref: ADR-L-0001#INV-0004
+    artifact_path: adrs/logical/ADR-L-0001-ste-compliant-adr-system.yaml
 - id: INV-0005
   entity_type: invariant
   name: INV-0005
   canonical_source:
-    source_type: standalone_invariant
-    source_ref: INV-0005
-    artifact_path: adrs/invariants/INV-0005-scope-isolated-recursive-compilation.yaml
+    source_type: logical_adr
+    source_ref: ADR-L-0001#INV-0005
+    artifact_path: adrs/logical/ADR-L-0001-ste-compliant-adr-system.yaml
 - id: INV-0006
   entity_type: invariant
   name: INV-0006
   canonical_source:
-    source_type: standalone_invariant
-    source_ref: INV-0006
-    artifact_path: adrs/invariants/INV-0006-implementation-artifacts-must-declare-architectural-authority.yaml
+    source_type: logical_adr
+    source_ref: ADR-L-0001#INV-0006
+    artifact_path: adrs/logical/ADR-L-0001-ste-compliant-adr-system.yaml
 - id: INV-0007
   entity_type: invariant
   name: INV-0007
   canonical_source:
-    source_type: standalone_invariant
-    source_ref: INV-0007
-    artifact_path: adrs/invariants/INV-0007-architecture-consumers-must-use-the-repository-boundary.yaml
-- id: INV-0008
-  entity_type: invariant
-  name: INV-0008
-  canonical_source:
-    source_type: standalone_invariant
-    source_ref: INV-0008
-    artifact_path: adrs/invariants/INV-0008-rendered-artifacts-are-derived-only.yaml
+    source_type: logical_adr
+    source_ref: ADR-L-0001#INV-0007
+    artifact_path: adrs/logical/ADR-L-0001-ste-compliant-adr-system.yaml
 - id: INV-0009
   entity_type: invariant
   name: INV-0009
@@ -2302,6 +2295,41 @@ nodes:
     source_type: logical_adr
     source_ref: ADR-L-0019#INV-0093
     artifact_path: adrs/logical/ADR-L-0019-canonical-entity-identity.yaml
+- id: INV-0094
+  entity_type: invariant
+  name: INV-0094
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0019#INV-0094
+    artifact_path: adrs/logical/ADR-L-0019-canonical-entity-identity.yaml
+- id: INV-0095
+  entity_type: invariant
+  name: INV-0095
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0003#INV-0095
+    artifact_path: adrs/logical/ADR-L-0003-quality-assurance-and-testing-strategy.yaml
+- id: INV-0096
+  entity_type: invariant
+  name: INV-0096
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0003#INV-0096
+    artifact_path: adrs/logical/ADR-L-0003-quality-assurance-and-testing-strategy.yaml
+- id: INV-0097
+  entity_type: invariant
+  name: INV-0097
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0010#INV-0097
+    artifact_path: adrs/logical/ADR-L-0010-kernel-interface-contract-and-validation-profiles.yaml
+- id: INV-0098
+  entity_type: invariant
+  name: INV-0098
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0002#INV-0098
+    artifact_path: adrs/logical/ADR-L-0002-multi-scope-adr-architecture.yaml
 - id: SYS-0001
   entity_type: system
   name: ADR Architecture Kit Discovery and Indexing System
@@ -4462,92 +4490,81 @@ edges:
   canonical_source_ref: ADR-PC-0004#IMPL-0020
   confidence: 1.0
   metadata: {}
-- relationship_id: declared_in:INV-0001:INV-0001
-  assertion_id: asrt-0251514fe91ae27a3c287848c150f0c53bc93bdf4cb7f214c3c361904954d568
+- relationship_id: declared_in:INV-0001:ADR-L-0001
+  assertion_id: asrt-20589e69886b400d75f504150db3a678fc54145ab4b3fd7bfc1c8ff8fcffe5bf
   relationship_type: declared_in
   source_entity_id: INV-0001
-  target_entity_id: INV-0001
+  target_entity_id: ADR-L-0001
   provenance_classification: explicit
   evidence:
-  - INV-0001
-  canonical_source_ref: INV-0001
+  - ADR-L-0001#INV-0001
+  canonical_source_ref: ADR-L-0001#INV-0001
   confidence: 1.0
   metadata: {}
-- relationship_id: declared_in:INV-0002:INV-0002
-  assertion_id: asrt-756eae1dbf52801f8328343e4207715cf610c655dc8e73ee243175a07c4a70fc
+- relationship_id: declared_in:INV-0002:ADR-L-0001
+  assertion_id: asrt-bc2d755b81029446ba28424377f23950b6cc437b653d1c39009835544fad5f67
   relationship_type: declared_in
   source_entity_id: INV-0002
-  target_entity_id: INV-0002
+  target_entity_id: ADR-L-0001
   provenance_classification: explicit
   evidence:
-  - INV-0002
-  canonical_source_ref: INV-0002
+  - ADR-L-0001#INV-0002
+  canonical_source_ref: ADR-L-0001#INV-0002
   confidence: 1.0
   metadata: {}
-- relationship_id: declared_in:INV-0003:INV-0003
-  assertion_id: asrt-fda9c94daa1fb56ab94061a4a04fdf00d51aa6bb05ee66db5382f6775f68958c
+- relationship_id: declared_in:INV-0003:ADR-L-0001
+  assertion_id: asrt-6e29ede842c1419eb88c546f12346b20a3b8fa78e84cbc47b588a518028530fd
   relationship_type: declared_in
   source_entity_id: INV-0003
-  target_entity_id: INV-0003
+  target_entity_id: ADR-L-0001
   provenance_classification: explicit
   evidence:
-  - INV-0003
-  canonical_source_ref: INV-0003
+  - ADR-L-0001#INV-0003
+  canonical_source_ref: ADR-L-0001#INV-0003
   confidence: 1.0
   metadata: {}
-- relationship_id: declared_in:INV-0004:INV-0004
-  assertion_id: asrt-21e5336ea4942b5c923e92ccffa32925ad7fac8ad23fb23dc6bfbb9ed912f81f
+- relationship_id: declared_in:INV-0004:ADR-L-0001
+  assertion_id: asrt-81c78473e10af9a66ffca88d89d303d5553ccb35505abf095fdf61093ac117a9
   relationship_type: declared_in
   source_entity_id: INV-0004
-  target_entity_id: INV-0004
+  target_entity_id: ADR-L-0001
   provenance_classification: explicit
   evidence:
-  - INV-0004
-  canonical_source_ref: INV-0004
+  - ADR-L-0001#INV-0004
+  canonical_source_ref: ADR-L-0001#INV-0004
   confidence: 1.0
   metadata: {}
-- relationship_id: declared_in:INV-0005:INV-0005
-  assertion_id: asrt-9b04479604bda36e00be3268f77a5b18643a05865da743e58aca7f08e7130526
+- relationship_id: declared_in:INV-0005:ADR-L-0001
+  assertion_id: asrt-4dfab11e68147657b6656feb5bb7f2a9428404dcf98a520386612b3c6948dd10
   relationship_type: declared_in
   source_entity_id: INV-0005
-  target_entity_id: INV-0005
+  target_entity_id: ADR-L-0001
   provenance_classification: explicit
   evidence:
-  - INV-0005
-  canonical_source_ref: INV-0005
+  - ADR-L-0001#INV-0005
+  canonical_source_ref: ADR-L-0001#INV-0005
   confidence: 1.0
   metadata: {}
-- relationship_id: declared_in:INV-0006:INV-0006
-  assertion_id: asrt-fa7e54d752a08383bfe455a3b2d9ad44c308e0819edd10d22b2db3823c608fae
+- relationship_id: declared_in:INV-0006:ADR-L-0001
+  assertion_id: asrt-c4827dc380731871b682cade0453a2d35fd7d66b45ceca209335f7d1406a1cdf
   relationship_type: declared_in
   source_entity_id: INV-0006
-  target_entity_id: INV-0006
+  target_entity_id: ADR-L-0001
   provenance_classification: explicit
   evidence:
-  - INV-0006
-  canonical_source_ref: INV-0006
+  - ADR-L-0001#INV-0006
+  canonical_source_ref: ADR-L-0001#INV-0006
   confidence: 1.0
   metadata: {}
-- relationship_id: declared_in:INV-0007:INV-0007
-  assertion_id: asrt-2c976145768fafb12b019ac893d528035c1cb189107a8c066b3af677c35b807f
+- relationship_id: declared_in:INV-0007:ADR-L-0001
+  assertion_id: asrt-c4bd0910c99c7848bb93130c9f7f61a295796cdc805e7ea50f3cc774543526ef
   relationship_type: declared_in
   source_entity_id: INV-0007
-  target_entity_id: INV-0007
+  target_entity_id: ADR-L-0001
   provenance_classification: explicit
   evidence:
-  - INV-0007
-  canonical_source_ref: INV-0007
-  confidence: 1.0
-  metadata: {}
-- relationship_id: declared_in:INV-0008:INV-0008
-  assertion_id: asrt-b2940638a2a778d62667dbf0d1df1671ec5da3e1d278333178ee6dd6e456951c
-  relationship_type: declared_in
-  source_entity_id: INV-0008
-  target_entity_id: INV-0008
-  provenance_classification: explicit
-  evidence:
-  - INV-0008
-  canonical_source_ref: INV-0008
+  - ADR-L-0001#INV-0007
+  canonical_source_ref: ADR-L-0001#INV-0007
   confidence: 1.0
   metadata: {}
 - relationship_id: declared_in:INV-0009:ADR-L-0019
@@ -5485,6 +5502,61 @@ edges:
   canonical_source_ref: ADR-L-0019#INV-0093
   confidence: 1.0
   metadata: {}
+- relationship_id: declared_in:INV-0094:ADR-L-0019
+  assertion_id: asrt-c34c9c2ee19623d607b87bbd8556f40d04887250d397dd5e3cb4f8f344ddd0c0
+  relationship_type: declared_in
+  source_entity_id: INV-0094
+  target_entity_id: ADR-L-0019
+  provenance_classification: explicit
+  evidence:
+  - ADR-L-0019#INV-0094
+  canonical_source_ref: ADR-L-0019#INV-0094
+  confidence: 1.0
+  metadata: {}
+- relationship_id: declared_in:INV-0095:ADR-L-0003
+  assertion_id: asrt-0be309558429f28da67db236605e53a1b598293d90a016a9ff42b87d5403dd6d
+  relationship_type: declared_in
+  source_entity_id: INV-0095
+  target_entity_id: ADR-L-0003
+  provenance_classification: explicit
+  evidence:
+  - ADR-L-0003#INV-0095
+  canonical_source_ref: ADR-L-0003#INV-0095
+  confidence: 1.0
+  metadata: {}
+- relationship_id: declared_in:INV-0096:ADR-L-0003
+  assertion_id: asrt-05fc9e188a6068559b1ae25e13fe63fa3553eb489f5fdf867b0c6ab6541e199d
+  relationship_type: declared_in
+  source_entity_id: INV-0096
+  target_entity_id: ADR-L-0003
+  provenance_classification: explicit
+  evidence:
+  - ADR-L-0003#INV-0096
+  canonical_source_ref: ADR-L-0003#INV-0096
+  confidence: 1.0
+  metadata: {}
+- relationship_id: declared_in:INV-0097:ADR-L-0010
+  assertion_id: asrt-1412c3cf799061646be78f686f60ca03a342827a2a75fb4469113a26719e9088
+  relationship_type: declared_in
+  source_entity_id: INV-0097
+  target_entity_id: ADR-L-0010
+  provenance_classification: explicit
+  evidence:
+  - ADR-L-0010#INV-0097
+  canonical_source_ref: ADR-L-0010#INV-0097
+  confidence: 1.0
+  metadata: {}
+- relationship_id: declared_in:INV-0098:ADR-L-0002
+  assertion_id: asrt-f36813f4f9674483637ee8b1d42bd37d1a9d1eb8583ebc39cf35d133e97d00ac
+  relationship_type: declared_in
+  source_entity_id: INV-0098
+  target_entity_id: ADR-L-0002
+  provenance_classification: explicit
+  evidence:
+  - ADR-L-0002#INV-0098
+  canonical_source_ref: ADR-L-0002#INV-0098
+  confidence: 1.0
+  metadata: {}
 - relationship_id: declared_in:SYS-0001:ADR-PS-0001
   assertion_id: asrt-a799c2831537b2e725e5ae68f9d9fb5e900e7a28584994526dee5ae2cbdb821d
   relationship_type: declared_in
@@ -5725,116 +5797,6 @@ edges:
   evidence:
   - ADR-L-0007
   canonical_source_ref: ADR-L-0007#DEC-0026
-  confidence: 1.0
-  metadata: {}
-- relationship_id: enforces:INV-0001:ADR-P-0002
-  assertion_id: asrt-3516aabf32f3eedbc3cd93da35c00c5b44fc2afb314615baa4d85a1498663fd8
-  relationship_type: enforces
-  source_entity_id: INV-0001
-  target_entity_id: ADR-P-0002
-  provenance_classification: explicit
-  evidence:
-  - INV-0001
-  canonical_source_ref: INV-0001
-  confidence: 1.0
-  metadata: {}
-- relationship_id: enforces:INV-0002:ADR-P-0001
-  assertion_id: asrt-8ba4bb7e78536c7d43887e84e25d6dfbd2dcb811d1bd745b9d3ba707946ca89f
-  relationship_type: enforces
-  source_entity_id: INV-0002
-  target_entity_id: ADR-P-0001
-  provenance_classification: explicit
-  evidence:
-  - INV-0002
-  canonical_source_ref: INV-0002
-  confidence: 1.0
-  metadata: {}
-- relationship_id: enforces:INV-0003:ADR-P-0001
-  assertion_id: asrt-38f20b532486c66e9e7f3376fd1b96b5fc2f717a40ecf950cf8ec5d8b62b817a
-  relationship_type: enforces
-  source_entity_id: INV-0003
-  target_entity_id: ADR-P-0001
-  provenance_classification: explicit
-  evidence:
-  - INV-0003
-  canonical_source_ref: INV-0003
-  confidence: 1.0
-  metadata: {}
-- relationship_id: enforces:INV-0004:ADR-P-0001
-  assertion_id: asrt-8bcab10e1a2e7fdae738b821fd01a14e6320402217dfa095e2ac41492887b8c8
-  relationship_type: enforces
-  source_entity_id: INV-0004
-  target_entity_id: ADR-P-0001
-  provenance_classification: explicit
-  evidence:
-  - INV-0004
-  canonical_source_ref: INV-0004
-  confidence: 1.0
-  metadata: {}
-- relationship_id: enforces:INV-0004:ADR-PC-0001
-  assertion_id: asrt-2a42dffa53839e88446241f5edc00e391b0c86a28398395e153ac4438ed3f11e
-  relationship_type: enforces
-  source_entity_id: INV-0004
-  target_entity_id: ADR-PC-0001
-  provenance_classification: explicit
-  evidence:
-  - INV-0004
-  canonical_source_ref: INV-0004
-  confidence: 1.0
-  metadata: {}
-- relationship_id: enforces:INV-0005:ADR-P-0001
-  assertion_id: asrt-ef92095ea7906bab0d86457fbe1e22581e1c7a905cc9c6abbf4b9d6c0ad13d3b
-  relationship_type: enforces
-  source_entity_id: INV-0005
-  target_entity_id: ADR-P-0001
-  provenance_classification: explicit
-  evidence:
-  - INV-0005
-  canonical_source_ref: INV-0005
-  confidence: 1.0
-  metadata: {}
-- relationship_id: enforces:INV-0006:ADR-P-0001
-  assertion_id: asrt-0784832fa9e056120606ab9e509534e1cbaf4eed7d64c52159e5e63b2f06b147
-  relationship_type: enforces
-  source_entity_id: INV-0006
-  target_entity_id: ADR-P-0001
-  provenance_classification: explicit
-  evidence:
-  - INV-0006
-  canonical_source_ref: INV-0006
-  confidence: 1.0
-  metadata: {}
-- relationship_id: enforces:INV-0007:ADR-P-0001
-  assertion_id: asrt-0769667415d5bde8f454e2f72ad90b656c5125a37b0709c23e4afd0bd4ccb3f2
-  relationship_type: enforces
-  source_entity_id: INV-0007
-  target_entity_id: ADR-P-0001
-  provenance_classification: explicit
-  evidence:
-  - INV-0007
-  canonical_source_ref: INV-0007
-  confidence: 1.0
-  metadata: {}
-- relationship_id: enforces:INV-0008:ADR-PC-0001
-  assertion_id: asrt-0d0a5238d8be81982a9c90e313e68e6dfd7a135e0979ab54e1e8c82f8941bba7
-  relationship_type: enforces
-  source_entity_id: INV-0008
-  target_entity_id: ADR-PC-0001
-  provenance_classification: explicit
-  evidence:
-  - INV-0008
-  canonical_source_ref: INV-0008
-  confidence: 1.0
-  metadata: {}
-- relationship_id: enforces:INV-0008:ADR-PC-0005
-  assertion_id: asrt-010c72754bd91e3483fec0b29e406aefbd234f49f4c8ec07368b30ae9f5cd505
-  relationship_type: enforces
-  source_entity_id: INV-0008
-  target_entity_id: ADR-PC-0005
-  provenance_classification: explicit
-  evidence:
-  - INV-0008
-  canonical_source_ref: INV-0008
   confidence: 1.0
   metadata: {}
 - relationship_id: implemented_by:CAP-0018:COMP-0010

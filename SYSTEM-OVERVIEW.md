@@ -5,8 +5,8 @@ artifact_kind: system_overview
 generator_id: adr-system-overview
 generator_version: 1
 hash_algorithm: sha256
-source_hash: 8a235c4b2b87cad89aed86c02ef35b6276cb85ecaa9aff36d5eb5a40c186656c
-rendered_hash: 6dc98911a89206edc2ae14cfff56f04eec437aeaa2f0f875fbd8fae47956807b
+source_hash: c86e6175bd6e1266198086aa252df0c8460da8ff295807830d7828b08bb6b400
+rendered_hash: 456aca28f8f1b6af359b98f724eb92ff2304328756033ad1585a5a0af96e33f8
 -->
 
 <!--
@@ -121,7 +121,7 @@ Primary CLI capabilities:
 Repository artifact classes:
 
 - ADRs: [`adrs/logical/`](adrs/logical/) and [`adrs/physical/`](adrs/physical/)
-- Invariants: [`adrs/invariants/`](adrs/invariants/)
+- Invariant index (derived): [`adrs/index/invariant-registry.yaml`](adrs/index/invariant-registry.yaml)
 - Repository-normalized discovery bundle: [`adrs/index/`](adrs/index/)
 - Derived manifest and discovery aid: [`adrs/manifest.yaml`](adrs/manifest.yaml)
 - Legacy compatibility registry: [`adrs/entities/registry.yaml`](adrs/entities/registry.yaml)
@@ -233,9 +233,8 @@ See [`placement-convention.md`](docs/contributors/placement-convention.md) for t
 
 Start here when you need the non-negotiables:
 
-- [`INV-0001-schema-validation-required.yaml`](adrs/invariants/INV-0001-schema-validation-required.yaml)
-- [`INV-0002-runtime-hygiene-and-dependency-security.yaml`](adrs/invariants/INV-0002-runtime-hygiene-and-dependency-security.yaml)
-- [`INV-0003-meaningful-boundary-commits-required.yaml`](adrs/invariants/INV-0003-meaningful-boundary-commits-required.yaml)
+- [`adrs/index/invariant-registry.yaml`](adrs/index/invariant-registry.yaml) (derived index of ADR-L established invariants)
+- Canonical definitions live in [`adrs/logical/`](adrs/logical/) `invariants[]` children
 
 Practical meaning:
 

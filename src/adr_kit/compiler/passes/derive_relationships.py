@@ -392,13 +392,6 @@ def derive_relationships(
                 },
             )
 
-    for invariant, _ in standalone_invariants:
-        if invariant.id not in entities:
-            continue
-        for target in invariant.enforced_by:
-            if target in entities:
-                add_relationship("enforces", invariant.id, target, invariant.id, [invariant.id])
-
     for adr, _ in physical_adrs:
         if isinstance(adr, PhysicalComponentADR):
             for component in adr.component_specifications:

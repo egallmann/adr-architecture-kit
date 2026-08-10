@@ -23,15 +23,12 @@ def _write_workspace(workspace: Path, include_submodule: bool = False, name: str
     )
     (workspace / "adrs" / "logical").mkdir(parents=True, exist_ok=True)
     (workspace / "adrs" / "physical").mkdir(parents=True, exist_ok=True)
-    (workspace / "adrs" / "invariants").mkdir(parents=True, exist_ok=True)
 
     logical = Path("tests/fixtures/valid/logical-minimal.yaml").read_text(encoding="utf-8")
     physical = Path("tests/fixtures/valid/physical-minimal.yaml").read_text(encoding="utf-8")
-    invariant = Path("adrs/invariants/INV-0001-schema-validation-required.yaml").read_text(encoding="utf-8")
 
     (workspace / "adrs" / "logical" / "ADR-L-9999-minimal-valid-logical-adr.yaml").write_text(logical, encoding="utf-8")
     (workspace / "adrs" / "physical" / "ADR-P-9999-minimal-valid-physical-adr.yaml").write_text(physical, encoding="utf-8")
-    (workspace / "adrs" / "invariants" / "INV-0001-schema-validation-required.yaml").write_text(invariant, encoding="utf-8")
 
     if include_submodule:
         module = workspace / "module-a"

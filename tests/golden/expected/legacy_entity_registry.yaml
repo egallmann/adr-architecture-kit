@@ -4,8 +4,8 @@
 # generator_id: adr-compiler
 # generator_version: 1
 # hash_algorithm: sha256
-# source_hash: 8c4d99fdf8a89844715248e96aa584e9a6a6c5e15a066d6b94e98dbe19bc232d
-# rendered_hash: 750ef0dca9b850015e4078b7a1c3204356d3d0fc0e0d5def02260e2662b2a07e
+# source_hash: cefcb6f1e10f7bface2bf828da15fd63c969d7fe61c1338685d0fdcf131d2497
+# rendered_hash: 8444f121a31ed885948fb3603b3bdaf1799901062f5917a145769a0e3bacae2a
 
 schema_version: '1.1'
 type: entity_registry
@@ -2582,139 +2582,106 @@ entities:
   name: INV-0001
   introduced_by: ADR-L-0001
   lifecycle_stage: active
-  source_path: adrs/invariants/INV-0001-schema-validation-required.yaml
-  source_artifact_type: standalone_invariant
+  source_path: adrs/logical/ADR-L-0001-ste-compliant-adr-system.yaml
+  source_artifact_type: logical_adr
   domains: []
-  related_adrs:
-  - ADR-L-0001
+  related_adrs: []
   realized_by: []
   relationships:
     depends_on: []
     implements: []
     consumes: []
-    realizes:
-    - ADR-P-0002
+    realizes: []
 - entity_id: INV-0002
   entity_type: invariant
   name: INV-0002
-  introduced_by: ADR-L-0003
+  introduced_by: ADR-L-0001
   lifecycle_stage: active
-  source_path: adrs/invariants/INV-0002-runtime-hygiene-and-dependency-security.yaml
-  source_artifact_type: standalone_invariant
+  source_path: adrs/logical/ADR-L-0001-ste-compliant-adr-system.yaml
+  source_artifact_type: logical_adr
   domains: []
-  related_adrs:
-  - ADR-L-0001
+  related_adrs: []
   realized_by: []
   relationships:
     depends_on: []
     implements: []
     consumes: []
-    realizes:
-    - ADR-P-0001
+    realizes: []
 - entity_id: INV-0003
   entity_type: invariant
   name: INV-0003
-  introduced_by: ADR-L-0003
+  introduced_by: ADR-L-0001
   lifecycle_stage: active
-  source_path: adrs/invariants/INV-0003-meaningful-boundary-commits-required.yaml
-  source_artifact_type: standalone_invariant
+  source_path: adrs/logical/ADR-L-0001-ste-compliant-adr-system.yaml
+  source_artifact_type: logical_adr
   domains: []
-  related_adrs:
-  - ADR-L-0001
+  related_adrs: []
   realized_by: []
   relationships:
     depends_on: []
     implements: []
     consumes: []
-    realizes:
-    - ADR-P-0001
+    realizes: []
 - entity_id: INV-0004
   entity_type: invariant
   name: INV-0004
-  introduced_by: ADR-L-0012
+  introduced_by: ADR-L-0001
   lifecycle_stage: active
-  source_path: adrs/invariants/INV-0004-deterministic-contract-valid-registry-projection.yaml
-  source_artifact_type: standalone_invariant
+  source_path: adrs/logical/ADR-L-0001-ste-compliant-adr-system.yaml
+  source_artifact_type: logical_adr
   domains: []
-  related_adrs:
-  - ADR-L-0001
+  related_adrs: []
   realized_by: []
   relationships:
     depends_on: []
     implements: []
     consumes: []
-    realizes:
-    - ADR-P-0001
-    - ADR-PC-0001
+    realizes: []
 - entity_id: INV-0005
   entity_type: invariant
   name: INV-0005
-  introduced_by: ADR-L-0012
+  introduced_by: ADR-L-0001
   lifecycle_stage: active
-  source_path: adrs/invariants/INV-0005-scope-isolated-recursive-compilation.yaml
-  source_artifact_type: standalone_invariant
+  source_path: adrs/logical/ADR-L-0001-ste-compliant-adr-system.yaml
+  source_artifact_type: logical_adr
   domains: []
-  related_adrs:
-  - ADR-L-0001
+  related_adrs: []
   realized_by: []
   relationships:
     depends_on: []
     implements: []
     consumes: []
-    realizes:
-    - ADR-P-0001
+    realizes: []
 - entity_id: INV-0006
   entity_type: invariant
   name: INV-0006
-  introduced_by: ADR-L-0004
+  introduced_by: ADR-L-0001
   lifecycle_stage: active
-  source_path: adrs/invariants/INV-0006-implementation-artifacts-must-declare-architectural-authority.yaml
-  source_artifact_type: standalone_invariant
+  source_path: adrs/logical/ADR-L-0001-ste-compliant-adr-system.yaml
+  source_artifact_type: logical_adr
   domains: []
-  related_adrs:
-  - ADR-L-0001
+  related_adrs: []
   realized_by: []
   relationships:
     depends_on: []
     implements: []
     consumes: []
-    realizes:
-    - ADR-P-0001
+    realizes: []
 - entity_id: INV-0007
   entity_type: invariant
   name: INV-0007
-  introduced_by: ADR-L-0013
+  introduced_by: ADR-L-0001
   lifecycle_stage: active
-  source_path: adrs/invariants/INV-0007-architecture-consumers-must-use-the-repository-boundary.yaml
-  source_artifact_type: standalone_invariant
+  source_path: adrs/logical/ADR-L-0001-ste-compliant-adr-system.yaml
+  source_artifact_type: logical_adr
   domains: []
-  related_adrs:
-  - ADR-L-0001
+  related_adrs: []
   realized_by: []
   relationships:
     depends_on: []
     implements: []
     consumes: []
-    realizes:
-    - ADR-P-0001
-- entity_id: INV-0008
-  entity_type: invariant
-  name: INV-0008
-  introduced_by: ADR-L-0014
-  lifecycle_stage: active
-  source_path: adrs/invariants/INV-0008-rendered-artifacts-are-derived-only.yaml
-  source_artifact_type: standalone_invariant
-  domains: []
-  related_adrs:
-  - ADR-L-0019
-  realized_by: []
-  relationships:
-    depends_on: []
-    implements: []
-    consumes: []
-    realizes:
-    - ADR-PC-0001
-    - ADR-PC-0005
+    realizes: []
 - entity_id: INV-0009
   entity_type: invariant
   name: INV-0009
@@ -3981,6 +3948,81 @@ entities:
   introduced_by: ADR-L-0019
   lifecycle_stage: active
   source_path: adrs/logical/ADR-L-0019-canonical-entity-identity.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs: []
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: INV-0094
+  entity_type: invariant
+  name: INV-0094
+  introduced_by: ADR-L-0019
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0019-canonical-entity-identity.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs: []
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: INV-0095
+  entity_type: invariant
+  name: INV-0095
+  introduced_by: ADR-L-0003
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0003-quality-assurance-and-testing-strategy.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs: []
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: INV-0096
+  entity_type: invariant
+  name: INV-0096
+  introduced_by: ADR-L-0003
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0003-quality-assurance-and-testing-strategy.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs: []
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: INV-0097
+  entity_type: invariant
+  name: INV-0097
+  introduced_by: ADR-L-0010
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0010-kernel-interface-contract-and-validation-profiles.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs: []
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: INV-0098
+  entity_type: invariant
+  name: INV-0098
+  introduced_by: ADR-L-0002
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0002-multi-scope-adr-architecture.yaml
   source_artifact_type: logical_adr
   domains: []
   related_adrs: []

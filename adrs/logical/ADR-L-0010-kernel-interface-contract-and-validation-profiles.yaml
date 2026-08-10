@@ -152,6 +152,15 @@ invariants:
   verification_method: automated
   rationale: |
     Sentinel-backed content preserves structure, not full operational readiness.
+- id: INV-0097
+  statement: Compiler projection from canonical architecture state to kernel-facing registry artifacts must be deterministic and contract-valid.
+  scope: global
+  enforcement_level: must
+  enforcement_mechanism: test
+  verification_method: automated
+  rationale: |
+    Equivalent canonical inputs must produce equivalent registry outputs that
+    continue to satisfy the explicit kernel contract.
 capabilities:
 - id: CAP-0034
   name: Profile-Aware Contract Validation

@@ -174,26 +174,10 @@ class CompilerPipelineState:
         )
 
     def collect_standalone_invariant_mentions(self) -> None:
-        for invariant, path in self.standalone_invariants:
-            artifact = source_path(self.scope, path)
-            self.invariant_mentions.setdefault(invariant.id, []).append(
-                (
-                    {
-                        "name": invariant.id,
-                        "summary": summarize_text(invariant.statement),
-                        "metadata": {
-                            "defined_in": invariant.defined_in,
-                            "scope": invariant.scope,
-                            "statement": invariant.statement,
-                            "enforcement_level": invariant.enforcement_level.value,
-                            "declaration_mode": invariant.declaration_mode or "canonical",
-                            "upheld_by_decisions": list(invariant.upheld_by_decisions),
-                            "enforced_by": list(invariant.enforced_by),
-                        },
-                    },
-                    artifact,
-                    invariant.id,
-                )
+        """Standalone invariant definition discovery is retired."""
+        if self.standalone_invariants:
+            raise ValueError(
+                "STANDALONE_INVARIANT_AUTHORITY_RETIRED: standalone invariant definitions are not admitted"
             )
 
     def finalize_source_refs(self) -> None:
@@ -256,14 +240,11 @@ class ADRParsePass:
         state.physical_adrs = [
             (state.parser.parse_adr(path), path.resolve()) for path in physical_files
         ]
-        state.standalone_invariants = [
-            (state.parser.parse_invariant(path), path.resolve()) for path in invariant_files
-        ]
+        state.standalone_invariants = []
 
         for artifact, path in [
             *state.logical_adrs,
             *state.physical_adrs,
-            *state.standalone_invariants,
         ]:
             state.model.corpus.add(path, artifact)
 
@@ -280,7 +261,7 @@ class ADRParsePass:
                 for adr, _ in state.physical_adrs
                 if adr.__class__.__name__ == "PhysicalComponentADR"
             ),
-            standalone_invariants=len(state.standalone_invariants),
+            standalone_invariants=0,
         )
 
 

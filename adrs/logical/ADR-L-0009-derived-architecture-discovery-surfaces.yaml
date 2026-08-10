@@ -38,9 +38,11 @@ decisions:
 - id: DEC-0014
   summary: Use derived discovery artifacts for agent-facing architecture lookup
   rationale: |
-    Canonical authority remains in ADRs and standalone invariants, but agents
-    should interact with derived, machine-stable discovery artifacts by
-    default. This reduces scan cost, ambiguity, and ad hoc parsing logic.
+    Canonical authority remains in ADR artifacts (including ADR-established
+    invariant entities). Agents should interact with derived, machine-stable
+    discovery artifacts (including the invariant-registry) by default.
+    Standalone invariant files are not authority. This reduces scan cost,
+    ambiguity, and ad hoc parsing logic.
 - id: DEC-0021
   summary: Treat manifest as a guaranteed discovery surface within the compiler contract family
   rationale: |
@@ -70,15 +72,18 @@ decisions:
 invariants:
 - id: INV-0043
   statement: |
-    Canonical architectural authority MUST remain in ADR and standalone
-    invariant artifacts, not in derived discovery artifacts.
+    Canonical architectural authority MUST remain in ADR artifacts (including
+    invariants established in logical ADRs). Derived discovery artifacts
+    including adrs/index/invariant-registry.yaml MUST NOT independently define
+    or redefine invariants. The adrs/invariants/ authoring directory is retired.
   scope: global
   enforcement_level: must
   enforcement_mechanism: design
   verification_method: automated
   rationale: |
     Derived discovery surfaces are indexes of canonical architecture state,
-    not the source of truth.
+    not the source of truth. The invariant-registry is a complete derived
+    projection of ADR-L invariants only.
 - id: INV-0044
   statement: |
     Derived architecture discovery artifacts MUST be deterministic,

@@ -7,30 +7,24 @@ entities:
   summary: All ADRs must validate against JSON Schema before commit
   lifecycle_stage: active
   canonical_source:
-    source_type: standalone_invariant
-    source_ref: INV-0001
-    artifact_path: adrs/invariants/INV-0001-schema-validation-required.yaml
-  source_refs:
-  - source_type: logical_adr
+    source_type: logical_adr
     source_ref: ADR-L-0001#INV-0001
     artifact_path: adrs/logical/ADR-L-0001-ste-compliant-adr-system.yaml
-    mention_role: reference
+  source_refs: []
   metadata:
-    defined_in: ADR-L-0001
+    adr_id: ADR-L-0001
     scope: global
     statement: All ADRs must validate against JSON Schema before commit
     enforcement_level: must
-    declaration_mode: canonical
+    declaration_mode: local
     upheld_by_decisions: []
-    enforced_by:
-    - ADR-P-0002
+    supersedes: []
   relationships:
     declared_in:
-    - INV-0001
+    - ADR-L-0001
     references: []
     related_to: []
-    enforces:
-    - ADR-P-0002
+    enforces: []
     enabled_by: []
     enables: []
     governs: []
@@ -48,43 +42,35 @@ entities:
     status: complete
     missing_fields: []
   provenance:
-    source_type: standalone_invariant
-    source_ref: INV-0001
+    source_type: logical_adr
+    source_ref: ADR-L-0001#INV-0001
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
 - id: INV-0002
   entity_type: invariant
   name: INV-0002
-  summary: adr_kit MUST not ship deprecated runtime API usage, and its direct dependencies
-    MUST be audited for vulnerabilities and upgrade freshness
+  summary: Logical ADRs must not contain implementation details
   lifecycle_stage: active
   canonical_source:
-    source_type: standalone_invariant
-    source_ref: INV-0002
-    artifact_path: adrs/invariants/INV-0002-runtime-hygiene-and-dependency-security.yaml
-  source_refs:
-  - source_type: logical_adr
+    source_type: logical_adr
     source_ref: ADR-L-0001#INV-0002
     artifact_path: adrs/logical/ADR-L-0001-ste-compliant-adr-system.yaml
-    mention_role: reference
+  source_refs: []
   metadata:
-    defined_in: ADR-L-0003
+    adr_id: ADR-L-0001
     scope: global
-    statement: adr_kit MUST not ship deprecated runtime API usage, and its direct
-      dependencies MUST be audited for vulnerabilities and upgrade freshness
+    statement: Logical ADRs must not contain implementation details
     enforcement_level: must
-    declaration_mode: canonical
+    declaration_mode: local
     upheld_by_decisions: []
-    enforced_by:
-    - ADR-P-0001
+    supersedes: []
   relationships:
     declared_in:
-    - INV-0002
+    - ADR-L-0001
     references: []
     related_to: []
-    enforces:
-    - ADR-P-0001
+    enforces: []
     enabled_by: []
     enables: []
     governs: []
@@ -102,43 +88,35 @@ entities:
     status: complete
     missing_fields: []
   provenance:
-    source_type: standalone_invariant
-    source_ref: INV-0002
+    source_type: logical_adr
+    source_ref: ADR-L-0001#INV-0002
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
 - id: INV-0003
   entity_type: invariant
   name: INV-0003
-  summary: Repository changes must be committed at meaningful verified boundaries
-    rather than accumulated indefinitely.
+  summary: Physical ADRs must reference at least one logical ADR
   lifecycle_stage: active
   canonical_source:
-    source_type: standalone_invariant
-    source_ref: INV-0003
-    artifact_path: adrs/invariants/INV-0003-meaningful-boundary-commits-required.yaml
-  source_refs:
-  - source_type: logical_adr
+    source_type: logical_adr
     source_ref: ADR-L-0001#INV-0003
     artifact_path: adrs/logical/ADR-L-0001-ste-compliant-adr-system.yaml
-    mention_role: reference
+  source_refs: []
   metadata:
-    defined_in: ADR-L-0003
+    adr_id: ADR-L-0001
     scope: global
-    statement: Repository changes must be committed at meaningful verified boundaries
-      rather than accumulated indefinitely.
+    statement: Physical ADRs must reference at least one logical ADR
     enforcement_level: must
-    declaration_mode: canonical
+    declaration_mode: local
     upheld_by_decisions: []
-    enforced_by:
-    - ADR-P-0001
+    supersedes: []
   relationships:
     declared_in:
-    - INV-0003
+    - ADR-L-0001
     references: []
     related_to: []
-    enforces:
-    - ADR-P-0001
+    enforces: []
     enabled_by: []
     enables: []
     governs: []
@@ -156,45 +134,35 @@ entities:
     status: complete
     missing_fields: []
   provenance:
-    source_type: standalone_invariant
-    source_ref: INV-0003
+    source_type: logical_adr
+    source_ref: ADR-L-0001#INV-0003
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
 - id: INV-0004
   entity_type: invariant
   name: INV-0004
-  summary: Compiler projection from canonical architecture state to kernel-facing
-    registry artifacts must be deterministic and contract-valid.
+  summary: Manifest must be regenerated when ADRs change
   lifecycle_stage: active
   canonical_source:
-    source_type: standalone_invariant
-    source_ref: INV-0004
-    artifact_path: adrs/invariants/INV-0004-deterministic-contract-valid-registry-projection.yaml
-  source_refs:
-  - source_type: logical_adr
+    source_type: logical_adr
     source_ref: ADR-L-0001#INV-0004
     artifact_path: adrs/logical/ADR-L-0001-ste-compliant-adr-system.yaml
-    mention_role: reference
+  source_refs: []
   metadata:
-    defined_in: ADR-L-0012
+    adr_id: ADR-L-0001
     scope: global
-    statement: Compiler projection from canonical architecture state to kernel-facing
-      registry artifacts must be deterministic and contract-valid.
+    statement: Manifest must be regenerated when ADRs change
     enforcement_level: must
-    declaration_mode: canonical
+    declaration_mode: local
     upheld_by_decisions: []
-    enforced_by:
-    - ADR-P-0001
-    - ADR-PC-0001
+    supersedes: []
   relationships:
     declared_in:
-    - INV-0004
+    - ADR-L-0001
     references: []
     related_to: []
-    enforces:
-    - ADR-P-0001
-    - ADR-PC-0001
+    enforces: []
     enabled_by: []
     enables: []
     governs: []
@@ -212,43 +180,37 @@ entities:
     status: complete
     missing_fields: []
   provenance:
-    source_type: standalone_invariant
-    source_ref: INV-0004
+    source_type: logical_adr
+    source_ref: ADR-L-0001#INV-0004
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
 - id: INV-0005
   entity_type: invariant
   name: INV-0005
-  summary: Recursive compilation must compile each resolved project scope independently
-    and must not implicitly merge architecture state across scopes.
+  summary: Project-local ADR alias IDs must be unique across the project while canonical
+    machine identity remains UUID
   lifecycle_stage: active
   canonical_source:
-    source_type: standalone_invariant
-    source_ref: INV-0005
-    artifact_path: adrs/invariants/INV-0005-scope-isolated-recursive-compilation.yaml
-  source_refs:
-  - source_type: logical_adr
+    source_type: logical_adr
     source_ref: ADR-L-0001#INV-0005
     artifact_path: adrs/logical/ADR-L-0001-ste-compliant-adr-system.yaml
-    mention_role: reference
+  source_refs: []
   metadata:
-    defined_in: ADR-L-0012
+    adr_id: ADR-L-0001
     scope: global
-    statement: Recursive compilation must compile each resolved project scope independently
-      and must not implicitly merge architecture state across scopes.
+    statement: Project-local ADR alias IDs must be unique across the project while
+      canonical machine identity remains UUID
     enforcement_level: must
-    declaration_mode: canonical
+    declaration_mode: local
     upheld_by_decisions: []
-    enforced_by:
-    - ADR-P-0001
+    supersedes: []
   relationships:
     declared_in:
-    - INV-0005
+    - ADR-L-0001
     references: []
     related_to: []
-    enforces:
-    - ADR-P-0001
+    enforces: []
     enabled_by: []
     enables: []
     governs: []
@@ -266,45 +228,35 @@ entities:
     status: complete
     missing_fields: []
   provenance:
-    source_type: standalone_invariant
-    source_ref: INV-0005
+    source_type: logical_adr
+    source_ref: ADR-L-0001#INV-0005
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
 - id: INV-0006
   entity_type: invariant
   name: INV-0006
-  summary: In-scope implementation artifacts must declare the ADRs that justify their
-    existence through @implements_adr or an equivalent metadata-level attribution
-    mechanism.
+  summary: Schema changes must be documented in ADRs before implementation
   lifecycle_stage: active
   canonical_source:
-    source_type: standalone_invariant
-    source_ref: INV-0006
-    artifact_path: adrs/invariants/INV-0006-implementation-artifacts-must-declare-architectural-authority.yaml
-  source_refs:
-  - source_type: logical_adr
+    source_type: logical_adr
     source_ref: ADR-L-0001#INV-0006
     artifact_path: adrs/logical/ADR-L-0001-ste-compliant-adr-system.yaml
-    mention_role: reference
+  source_refs: []
   metadata:
-    defined_in: ADR-L-0004
+    adr_id: ADR-L-0001
     scope: global
-    statement: In-scope implementation artifacts must declare the ADRs that justify
-      their existence through @implements_adr or an equivalent metadata-level attribution
-      mechanism.
+    statement: Schema changes must be documented in ADRs before implementation
     enforcement_level: must
-    declaration_mode: canonical
+    declaration_mode: local
     upheld_by_decisions: []
-    enforced_by:
-    - ADR-P-0001
+    supersedes: []
   relationships:
     declared_in:
-    - INV-0006
+    - ADR-L-0001
     references: []
     related_to: []
-    enforces:
-    - ADR-P-0001
+    enforces: []
     enabled_by: []
     enables: []
     governs: []
@@ -322,45 +274,36 @@ entities:
     status: complete
     missing_fields: []
   provenance:
-    source_type: standalone_invariant
-    source_ref: INV-0006
+    source_type: logical_adr
+    source_ref: ADR-L-0001#INV-0006
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
 - id: INV-0007
   entity_type: invariant
   name: INV-0007
-  summary: In-process architecture consumers must use ArchitectureRepository and its
-    normalized semantic model rather than interpreting compiled registries ad hoc
-    when the repository boundary is available.
+  summary: Schema evolution must maintain backward compatibility unless major version
   lifecycle_stage: active
   canonical_source:
-    source_type: standalone_invariant
-    source_ref: INV-0007
-    artifact_path: adrs/invariants/INV-0007-architecture-consumers-must-use-the-repository-boundary.yaml
-  source_refs:
-  - source_type: logical_adr
+    source_type: logical_adr
     source_ref: ADR-L-0001#INV-0007
     artifact_path: adrs/logical/ADR-L-0001-ste-compliant-adr-system.yaml
-    mention_role: reference
+  source_refs: []
   metadata:
-    defined_in: ADR-L-0013
+    adr_id: ADR-L-0001
     scope: global
-    statement: In-process architecture consumers must use ArchitectureRepository and
-      its normalized semantic model rather than interpreting compiled registries ad
-      hoc when the repository boundary is available.
+    statement: Schema evolution must maintain backward compatibility unless major
+      version
     enforcement_level: must
-    declaration_mode: canonical
+    declaration_mode: local
     upheld_by_decisions: []
-    enforced_by:
-    - ADR-P-0001
+    supersedes: []
   relationships:
     declared_in:
-    - INV-0007
+    - ADR-L-0001
     references: []
     related_to: []
-    enforces:
-    - ADR-P-0001
+    enforces: []
     enabled_by: []
     enables: []
     governs: []
@@ -378,66 +321,8 @@ entities:
     status: complete
     missing_fields: []
   provenance:
-    source_type: standalone_invariant
-    source_ref: INV-0007
-    extraction_phase: assign_canonical_invariant
-    classification: explicit
-    generator: adr-architecture-index
-- id: INV-0008
-  entity_type: invariant
-  name: INV-0008
-  summary: Rendered markdown artifacts must be treated as derived human-facing projections
-    and must not be used as semantic authority when canonical YAML source artifacts
-    are available.
-  lifecycle_stage: active
-  canonical_source:
-    source_type: standalone_invariant
-    source_ref: INV-0008
-    artifact_path: adrs/invariants/INV-0008-rendered-artifacts-are-derived-only.yaml
-  source_refs:
-  - source_type: logical_adr
-    source_ref: ADR-L-0019#INV-0008
-    artifact_path: adrs/logical/ADR-L-0019-canonical-entity-identity.yaml
-    mention_role: reference
-  metadata:
-    defined_in: ADR-L-0014
-    scope: global
-    statement: Rendered markdown artifacts must be treated as derived human-facing
-      projections and must not be used as semantic authority when canonical YAML source
-      artifacts are available.
-    enforcement_level: must
-    declaration_mode: canonical
-    upheld_by_decisions: []
-    enforced_by:
-    - ADR-PC-0001
-    - ADR-PC-0005
-  relationships:
-    declared_in:
-    - INV-0008
-    references: []
-    related_to: []
-    enforces:
-    - ADR-PC-0001
-    - ADR-PC-0005
-    enabled_by: []
-    enables: []
-    governs: []
-    implemented_by: []
-    embodied_in: []
-    supersedes: []
-    superseded_by: []
-    refines: []
-    provides_interface: []
-    composed_of: []
-    binds_substrate: []
-    binds_rule: []
-    expects_evidence: []
-  completeness:
-    status: complete
-    missing_fields: []
-  provenance:
-    source_type: standalone_invariant
-    source_ref: INV-0008
+    source_type: logical_adr
+    source_ref: ADR-L-0001#INV-0007
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
@@ -2182,8 +2067,9 @@ entities:
 - id: INV-0043
   entity_type: invariant
   name: INV-0043
-  summary: Canonical architectural authority MUST remain in ADR and standalone invariant
-    artifacts, not in derived discovery artifacts.
+  summary: Canonical architectural authority MUST remain in ADR artifacts (including
+    invariants established in logical ADRs). Derived discovery artifacts including
+    adrs/index/invariant-registry.yaml MUST NOT independently define or
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -2193,9 +2079,13 @@ entities:
   metadata:
     adr_id: ADR-L-0009
     scope: global
-    statement: 'Canonical architectural authority MUST remain in ADR and standalone
+    statement: 'Canonical architectural authority MUST remain in ADR artifacts (including
 
-      invariant artifacts, not in derived discovery artifacts.
+      invariants established in logical ADRs). Derived discovery artifacts
+
+      including adrs/index/invariant-registry.yaml MUST NOT independently define
+
+      or redefine invariants. The adrs/invariants/ authoring directory is retired.
 
       '
     enforcement_level: must
@@ -4879,6 +4769,246 @@ entities:
   provenance:
     source_type: logical_adr
     source_ref: ADR-L-0019#INV-0093
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
+- id: INV-0094
+  entity_type: invariant
+  name: INV-0094
+  summary: Every admitted v1.3 entity's canonical machine identity is a lowercase
+    RFC 9562 UUIDv7.
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0019#INV-0094
+    artifact_path: adrs/logical/ADR-L-0019-canonical-entity-identity.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0019
+    scope: global
+    statement: Every admitted v1.3 entity's canonical machine identity is a lowercase
+      RFC 9562 UUIDv7.
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions: []
+    supersedes: []
+  relationships:
+    declared_in:
+    - ADR-L-0019
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0019#INV-0094
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
+- id: INV-0095
+  entity_type: invariant
+  name: INV-0095
+  summary: adr_kit MUST not ship deprecated runtime API usage, and its direct dependencies
+    MUST be audited for vulnerabilities and upgrade freshness
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0003#INV-0095
+    artifact_path: adrs/logical/ADR-L-0003-quality-assurance-and-testing-strategy.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0003
+    scope: global
+    statement: adr_kit MUST not ship deprecated runtime API usage, and its direct
+      dependencies MUST be audited for vulnerabilities and upgrade freshness
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions: []
+    supersedes: []
+  relationships:
+    declared_in:
+    - ADR-L-0003
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0003#INV-0095
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
+- id: INV-0096
+  entity_type: invariant
+  name: INV-0096
+  summary: Repository changes must be committed at meaningful verified boundaries
+    rather than accumulated indefinitely.
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0003#INV-0096
+    artifact_path: adrs/logical/ADR-L-0003-quality-assurance-and-testing-strategy.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0003
+    scope: global
+    statement: Repository changes must be committed at meaningful verified boundaries
+      rather than accumulated indefinitely.
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions: []
+    supersedes: []
+  relationships:
+    declared_in:
+    - ADR-L-0003
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0003#INV-0096
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
+- id: INV-0097
+  entity_type: invariant
+  name: INV-0097
+  summary: Compiler projection from canonical architecture state to kernel-facing
+    registry artifacts must be deterministic and contract-valid.
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0010#INV-0097
+    artifact_path: adrs/logical/ADR-L-0010-kernel-interface-contract-and-validation-profiles.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0010
+    scope: global
+    statement: Compiler projection from canonical architecture state to kernel-facing
+      registry artifacts must be deterministic and contract-valid.
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions: []
+    supersedes: []
+  relationships:
+    declared_in:
+    - ADR-L-0010
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0010#INV-0097
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
+- id: INV-0098
+  entity_type: invariant
+  name: INV-0098
+  summary: Recursive compilation must compile each resolved project scope independently
+    and must not implicitly merge architecture state across scopes.
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: ADR-L-0002#INV-0098
+    artifact_path: adrs/logical/ADR-L-0002-multi-scope-adr-architecture.yaml
+  source_refs: []
+  metadata:
+    adr_id: ADR-L-0002
+    scope: global
+    statement: Recursive compilation must compile each resolved project scope independently
+      and must not implicitly merge architecture state across scopes.
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions: []
+    supersedes: []
+  relationships:
+    declared_in:
+    - ADR-L-0002
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: ADR-L-0002#INV-0098
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index

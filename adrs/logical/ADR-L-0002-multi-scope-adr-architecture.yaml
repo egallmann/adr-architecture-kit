@@ -128,6 +128,15 @@ invariants:
   rationale: |
     Enables comprehensive validation of entire workspace architecture while
     maintaining ability to validate individual scopes
+- id: INV-0098
+  statement: Recursive compilation must compile each resolved project scope independently and must not implicitly merge architecture state across scopes.
+  scope: global
+  enforcement_level: must
+  enforcement_mechanism: design
+  verification_method: automated
+  rationale: |
+    Multi-scope support exists so each project root owns its canonical ADR state.
+    Recursive execution is orchestration, not authorization to collapse scopes.
 capabilities:
 - id: CAP-0019
   name: Automatic Project Scope Detection

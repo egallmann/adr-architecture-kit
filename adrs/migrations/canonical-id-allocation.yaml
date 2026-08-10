@@ -8,7 +8,7 @@ high_water_marks:
   DEC: 9000
   IFACE: 33
   IMPL: 27
-  INV: 93
+  INV: 98
 allocations:
 - id: BOUND-0001
   entity_type: boundary
@@ -1558,7 +1558,7 @@ allocations:
   file_path: adrs/logical/ADR-L-0001-ste-compliant-adr-system.yaml
   source_pointer: /invariants/6/id
   state: active
-- id: INV-0008
+- id: INV-0094
   entity_type: invariant
   adr_id: ADR-L-0019
   file_path: adrs/logical/ADR-L-0019-canonical-entity-identity.yaml
@@ -2073,4 +2073,28 @@ allocations:
   adr_id: ADR-L-0019
   file_path: adrs/logical/ADR-L-0019-canonical-entity-identity.yaml
   source_pointer: /invariants/17/id
+  state: active
+- id: INV-0095
+  entity_type: invariant
+  adr_id: ADR-L-0003
+  file_path: adrs/logical/ADR-L-0003-quality-assurance-and-testing-strategy.yaml
+  source_pointer: /invariants/12/id
+  state: active
+- id: INV-0096
+  entity_type: invariant
+  adr_id: ADR-L-0003
+  file_path: adrs/logical/ADR-L-0003-quality-assurance-and-testing-strategy.yaml
+  source_pointer: /invariants/13/id
+  state: active
+- id: INV-0097
+  entity_type: invariant
+  adr_id: ADR-L-0010
+  file_path: adrs/logical/ADR-L-0010-kernel-interface-contract-and-validation-profiles.yaml
+  source_pointer: /invariants/6/id
+  state: active
+- id: INV-0098
+  entity_type: invariant
+  adr_id: ADR-L-0002
+  file_path: adrs/logical/ADR-L-0002-multi-scope-adr-architecture.yaml
+  source_pointer: /invariants/5/id
   state: active

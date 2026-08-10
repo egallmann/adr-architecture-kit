@@ -329,6 +329,27 @@ invariants:
     Observed on the published `0.3.0` long description: GitHub-valid relative
     README links became invalid PyPI package-description URLs. `twine check`
     validates metadata renderability but not cross-surface link portability.
+- id: INV-0095
+  statement: adr_kit MUST not ship deprecated runtime API usage, and its direct dependencies MUST be audited for vulnerabilities and upgrade freshness
+  scope: global
+  enforcement_level: must
+  enforcement_mechanism: policy
+  verification_method: automated
+  rationale: |
+    adr_kit is a governance and architecture-authority tool. If it relies on
+    deprecated modules, stale runtimes, or vulnerable packages, it undermines
+    its own authority. CI hooks include `scripts/check_runtime_hygiene.py` and
+    `adr audit-runtime`.
+- id: INV-0096
+  statement: Repository changes must be committed at meaningful verified boundaries rather than accumulated indefinitely.
+  scope: global
+  enforcement_level: must
+  enforcement_mechanism: policy
+  verification_method: audit
+  rationale: |
+    Small, verified commits reduce review ambiguity and preserve architectural
+    intent. A meaningful boundary requires a coherent slice, relevant tests and
+    validation, and a reviewable repository state.
 capabilities:
 - id: CAP-0020
   name: Automated Quality Gates
@@ -440,7 +461,7 @@ notes: |
   - Quality gates are broader than generic `pytest` alone because they also enforce
     contract, generated-artifact, and project-metadata integrity
   - Verified implementation slices must be committed at meaningful boundaries in
-    alignment with `INV-0003`
+    alignment with `INV-0096`
   - Release artifacts are built once, retained, installed in clean environments,
     manifested, re-verified, and promoted without rebuilding
   - Ruff, strict-mypy, and Black legacy debt is governed by no-regression ratchets;

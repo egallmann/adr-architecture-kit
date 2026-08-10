@@ -36,27 +36,10 @@ class EntityRegistryGenerator:
     def _discover_artifact_files(
         self, adr_dir: Path
     ) -> tuple[list[Path], list[Path], list[Path]]:
-        """Discover logical ADRs, physical ADRs, and standalone invariants."""
-        logical_files = (
-            sorted((adr_dir / "logical").glob("*.yaml"))
-            if (adr_dir / "logical").exists()
-            else []
-        )
+        """Discover logical and physical ADRs; refuse retired standalone invariants dir."""
+        from ..compiler.frontend.support import discover_source_files
 
-        physical_files: list[Path] = []
-        for dirname in ("physical", "physical-system", "physical-component"):
-            candidate_dir = adr_dir / dirname
-            if candidate_dir.exists():
-                physical_files.extend(sorted(candidate_dir.glob("*.yaml")))
-
-        invariant_files = (
-            sorted((adr_dir / "invariants").glob("*.yaml"))
-            if (adr_dir / "invariants").exists()
-            else []
-        )
-
-        deduped_physical = list(dict.fromkeys(path.resolve() for path in physical_files))
-        return logical_files, [Path(path) for path in deduped_physical], invariant_files
+        return discover_source_files(adr_dir)
 
     def _source_path(self, scope_root: Path, file_path: Path) -> str:
         """Return stable scope-relative source path."""

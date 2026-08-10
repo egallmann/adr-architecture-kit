@@ -54,7 +54,7 @@ def test_builder_projects_current_outputs_with_golden_parity(tmp_path):
     assert projected_unresolved == [item.model_dump(mode="json") for item in bundle.unresolved_registry.unresolved]
 
 
-def test_builder_assigns_standalone_invariant_as_canonical_source():
+def test_builder_assigns_logical_adr_as_canonical_invariant_source():
     scope = ProjectScopeResolver(explicit_scope=_repo_root()).resolve()
     builder = ArchModelBuilder(scope_resolver=ProjectScopeResolver(explicit_scope=scope.root))
 
@@ -63,8 +63,8 @@ def test_builder_assigns_standalone_invariant_as_canonical_source():
 
     assert invariant is not None
     assert invariant.entity_type == "invariant"
-    assert invariant.canonical_source.source_type == "standalone_invariant"
-    assert invariant.canonical_source.source_ref == "INV-0001"
+    assert invariant.canonical_source.source_type == "logical_adr"
+    assert invariant.canonical_source.source_ref == "ADR-L-0001#INV-0001"
 
 
 def test_builder_is_deterministic_across_repeated_runs():

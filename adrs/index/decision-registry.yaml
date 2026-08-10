@@ -647,9 +647,9 @@ entities:
 - id: DEC-0014
   entity_type: decision
   name: Use derived discovery artifacts for agent-facing architecture lookup
-  summary: Canonical authority remains in ADRs and standalone invariants, but agents
-    should interact with derived, machine-stable discovery artifacts by default. This
-    reduces scan cost, ambiguity, and ad hoc parsing logic.
+  summary: Canonical authority remains in ADR artifacts (including ADR-established
+    invariant entities). Agents should interact with derived, machine-stable discovery
+    artifacts (including the invariant-registry) by default. Standalo
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr

@@ -17,7 +17,8 @@ Authority: ADR-L-0007 (DEC-0108, DEC-0109).
 | `artifact_kind` | Remains `rendered_adr_markdown` |
 | Logical `artifact_id` | `rendered-adr:{adr.id}` (canonical machine id; not slug-dependent) |
 | CLI | Preferred `generate-adr-projection`; `generate-rendered-docs` retained as alias |
-| Package / API contract | Unchanged (`0.3.1` / `1.0`) |
+| API contract | Remains `1.0` |
+| Package version | Governed independently by the release process |
 
 ## Intentional diffs
 

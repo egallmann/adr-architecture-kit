@@ -1,8 +1,8 @@
 # Public Python SDK
 
 `adr_kit.api` is the supported installed-package boundary for new Python
-integrations. Its API contract version is `1.0`; the package remains pre-1.0 and
-currently reports package version `0.1.0`.
+integrations. Its API contract version is `1.0`; the package remains pre-1.0.
+The installed package version is reported by `capabilities().package_version`.
 
 ## Install and discover capabilities
 
@@ -150,23 +150,51 @@ advertise ADR schema 1.3 or normalized model 2.0.
 
 ## Exact public inventory
 
-`adr_kit.api.__all__` contains only:
+`adr_kit.api.__all__` contains exactly the following symbols. This inventory must
+match `contracts/compatibility/python-surface.json` (`adr_kit.api`):
 
 ```text
-ArchitectureRepository, NormalizedArchitectureModel,
-ArtifactDescriptor, CapabilityManifest, ValidationRequest, ValidationResult,
-CompilationRequest, CompilationResult,
-PromotionPrepareRequest, PromotionPrepareResult,
-PromotionCheckRequest, PromotionCheckResult,
-PromotionApplyRequest, PromotionApplyResult,
-PromotionMutationDescriptor, PromotionBindingDescriptor,
-PromotionValidationEvidenceDescriptor, PromotionBlockerDescriptor,
-PromotionBaselineDescriptor, PromotionExecutionEvidenceDescriptor,
-Diagnostic,
-SDKError, InvalidRequestError, OperationError, RepositoryError,
-capabilities, validate_architecture, compile_architecture, open_repository,
-prepare_promotion, check_promotion, apply_promotion
+ArchitectureRepository
+NormalizedArchitectureModel
+NormalizedArchitectureModelV2
+ProviderRegistry
+ArtifactDescriptor
+CapabilityManifest
+ValidationRequest
+ValidationResult
+CompilationRequest
+CompilationResult
+PromotionPrepareRequest
+PromotionPrepareResult
+PromotionCheckRequest
+PromotionCheckResult
+PromotionApplyRequest
+PromotionApplyResult
+PromotionMutationDescriptor
+PromotionBindingDescriptor
+PromotionValidationEvidenceDescriptor
+PromotionBlockerDescriptor
+PromotionBaselineDescriptor
+PromotionExecutionEvidenceDescriptor
+Diagnostic
+SDKError
+InvalidRequestError
+OperationError
+RepositoryError
+capabilities
+validate_architecture
+compile_architecture
+open_repository
+open_provider_registry
+prepare_promotion
+check_promotion
+apply_promotion
 ```
+
+`NormalizedArchitectureModelV2`, `ProviderRegistry`, and `open_provider_registry`
+are additive API contract `1.0` symbols for UUID-era model 2.0 / federation lookup.
+Schema v1.3 and normalized model 2.0 remain provisional. Identity migration tooling
+is a provisional package surface outside this facade inventory.
 
 Nothing is re-exported from the `adr_kit` package root except `__version__`.
 Historical imports remain compatible, but new production integrations should use
@@ -174,9 +202,6 @@ this facade. See [public surface and stability](public-surface-and-stability.md)
 the [promotion provider guide](promotion-provider.md), and the executable
 [consumer example](../examples/public_sdk_consumer.py).
 
-Additive API contract `1.0` symbols also include `NormalizedArchitectureModelV2`,
-`ProviderRegistry`, and `open_provider_registry` for UUID-era model 2.0 / federation
-lookup. Schema v1.3 and identity migration are provisional package surfaces. See
-[schema v1.3](schema-v1.3.md), [identity migration](identity-v13-migration.md),
+See also [schema v1.3](schema-v1.3.md), [identity migration](identity-v13-migration.md),
 [schema v1.2](schema-v1.2.md), [external bindings](external-bindings.md), and
 [topology migration](topology-identity-migration.md).

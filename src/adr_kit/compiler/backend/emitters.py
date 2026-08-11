@@ -36,6 +36,7 @@ class RegistryBackendEmitter:
             namespace=self.build_result.namespace,
             generated_at=self.build_result.model.metadata.generated_at,
             diagnostics=diagnostics,
+            model_version=getattr(self.build_result, "model_version", "1.1"),
         )
         self._diagnostics = diagnostics.as_list()
         return emit_registry_artifacts(bundle, scope=self.scope)

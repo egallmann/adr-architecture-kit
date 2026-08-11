@@ -43,6 +43,7 @@ class IRRelationship:
     relationship_id: str = ""
     assertion_id: str = ""
     source_pointer: str | None = None
+    source_owner_id: str | None = None
 
     def __post_init__(self) -> None:
         if not self.relationship_id:

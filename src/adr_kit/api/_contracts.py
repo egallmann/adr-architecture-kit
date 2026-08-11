@@ -164,6 +164,7 @@ class CapabilityManifest:
     stable_adr_schema_versions: tuple[str, ...]
     provisional_adr_schema_versions: tuple[str, ...]
     normalized_model_schema_version: str
+    supported_normalized_model_schema_versions: tuple[str, ...]
 
     def as_dict(self) -> dict[str, object]:
         """Return the ordered JSON-safe Phase 1 serialization contract."""

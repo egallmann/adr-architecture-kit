@@ -6,6 +6,7 @@ from dataclasses import dataclass, field
 from typing import Any
 
 from ...models import NormalizedEntity, SourceRef
+from ..frontend.adr_access import is_logical_adr_source_ref
 from .extract_logical_entities import ExtractedEntity
 
 
@@ -55,7 +56,8 @@ def _is_standalone_definition(inv_id: str, source_ref: str) -> bool:
 
 
 def _is_adr_definition(source_ref: str) -> bool:
-    return "#" in source_ref and source_ref.startswith("ADR-")
+    """ADR-L definitions use ``{adr_id}#{invariant_id}`` (legacy ADR-* or UUID)."""
+    return "#" in source_ref and is_logical_adr_source_ref(source_ref)
 
 
 def _statement_payload(mention: tuple[dict[str, Any], str, str]) -> str:
@@ -120,13 +122,20 @@ def resolve_invariant_canonical(
             )
 
         payload, artifact, source_ref = adr_defs[0]
+        metadata = dict(payload["metadata"])
+        alias_id = metadata.get("alias_id")
+        if isinstance(alias_id, str) and alias_id:
+            metadata["alias_id"] = alias_id
+        alias_name = metadata.get("alias_name")
+        if isinstance(alias_name, str) and alias_name:
+            metadata["alias_name"] = alias_name
         entity = NormalizedEntity(
             id=inv_id,
             entity_type="invariant",
             name=payload["name"],
             summary=payload["summary"],
             canonical_source=canonical("logical_adr", source_ref, artifact),
-            metadata=payload["metadata"],
+            metadata=metadata,
             completeness=complete(),
             provenance=provenance(
                 "logical_adr",
@@ -140,7 +149,9 @@ def resolve_invariant_canonical(
         for _, ref_artifact, ref_source in references:
             refs.append(
                 SourceRef(
-                    source_type="logical_adr" if ref_source.startswith("ADR-") else "derived",
+                    source_type=(
+                        "logical_adr" if is_logical_adr_source_ref(ref_source) else "derived"
+                    ),
                     source_ref=ref_source,
                     artifact_path=ref_artifact,
                     mention_role="reference",

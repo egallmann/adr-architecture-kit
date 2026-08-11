@@ -1,4 +1,4 @@
-# {{ adr.id }}: {{ adr.title }}
+# {{ adr | presentation_id }}: {{ adr.title }}
 
 **Status:** {{ adr.status.value }}  
 **Created:** {{ adr.created_date }}  
@@ -50,7 +50,7 @@
 ## Component Specifications
 
 {% for comp in adr.component_specifications %}
-### {{ comp.id }}: {{ comp.name }} ({{ comp.type }})
+### {{ comp | presentation_id }}: {{ comp.name }} ({{ comp.type }})
 
 **Responsibilities:**
 {{ comp.responsibilities }}
@@ -58,7 +58,7 @@
 {% if comp.interfaces %}
 **Interfaces:**
 {% for iface in comp.interfaces %}
-- **{{ iface.id }}**{% if iface.name %} {{ iface.name }}{% endif %}{% if iface.type %} ({{ iface.type }}){% endif %}: {{ (iface.specification or iface.description or iface.name or "Interface definition")[:100] }}{% if iface.specification or iface.description %}...{% endif %}
+- **{{ iface | presentation_id }}**{% if iface.name %} {{ iface.name }}{% endif %}{% if iface.type %} ({{ iface.type }}){% endif %}: {{ (iface.specification or iface.description or iface.name or "Interface definition")[:100] }}{% if iface.specification or iface.description %}...{% endif %}
 {% endfor %}
 {% endif %}
 
@@ -118,7 +118,7 @@
 ## Implementation Decisions
 
 {% for decision in adr.implementation_decisions %}
-### {{ decision.id }}: {{ decision.summary }}
+### {{ decision | presentation_id }}: {{ decision.summary }}
 
 **Rationale:**
 {{ decision.rationale }}
@@ -141,7 +141,7 @@
 ## Integration Points
 
 {% for integ in adr.integration_points %}
-### {{ integ.id }}
+### {{ integ | presentation_id }}
 
 **Systems:** {{ integ.systems | join(', ') }}  
 **Protocol:** {{ integ.protocol }}
@@ -184,7 +184,7 @@
 ## Gaps
 
 {% for gap in adr.gaps %}
-### {{ gap.id }}: {{ gap.question }}
+### {{ gap | presentation_id }}: {{ gap.question }}
 
 **Impact:** {{ gap.impact.value }}  
 **Blocking:** {{ "Yes" if gap.blocking else "No" }}
@@ -198,4 +198,4 @@
 
 ---
 
-*Generated from {{ adr.id }} by ADR Architecture Kit*
+*Generated from {{ adr | presentation_id }} by ADR Architecture Kit*

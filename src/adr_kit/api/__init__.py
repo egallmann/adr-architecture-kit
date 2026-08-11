@@ -1,7 +1,8 @@
 """Narrow supported Python SDK for ADR Kit authoring consumers."""
 
 from ..models import NormalizedArchitectureModel
-from ..repository import ArchitectureRepository
+from ..models.v2_0 import NormalizedArchitectureModelV2
+from ..repository import ArchitectureRepository, ProviderRegistry
 from ._contracts import (
     ArtifactDescriptor,
     CapabilityManifest,
@@ -17,6 +18,7 @@ from ._operations import (
     capabilities,
     check_promotion,
     compile_architecture,
+    open_provider_registry,
     open_repository,
     prepare_promotion,
     validate_architecture,
@@ -39,6 +41,8 @@ from ._promotion_contracts import (
 __all__ = [
     "ArchitectureRepository",
     "NormalizedArchitectureModel",
+    "NormalizedArchitectureModelV2",
+    "ProviderRegistry",
     "ArtifactDescriptor",
     "CapabilityManifest",
     "ValidationRequest",
@@ -66,6 +70,7 @@ __all__ = [
     "validate_architecture",
     "compile_architecture",
     "open_repository",
+    "open_provider_registry",
     "prepare_promotion",
     "check_promotion",
     "apply_promotion",

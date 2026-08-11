@@ -8,6 +8,16 @@ from typing import Optional
 from ...models import CanonicalSource, Completeness, DiscoveryProvenance
 from ...scope import ProjectScope
 from ..passes.score_completeness import score_completeness
+from .adr_access import (  # noqa: F401 — re-export for callers
+    adr_type_of,
+    field_get,
+    field_list,
+    is_logical_adr_source_ref,
+    is_physical_adr,
+    is_physical_component_adr,
+    is_physical_system_adr,
+    topology_components,
+)
 
 GENERATOR_ID = "adr-architecture-index"
 

@@ -1,0 +1,387 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://adr-kit.ste.systems/schema/v1.3/adr-common.schema.json",
+  "title": "ADR Common Frontmatter Schema (v1.3)",
+  "description": "Shared frontmatter for all ADR types — v1.3 canonical entity identity model",
+
+  "definitions": {
+    "fingerprint": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "local_entity_reference": {
+      "$ref": "types.schema.json#/definitions/uuid_v7"
+    },
+    "external_reference": {
+      "type": "object",
+      "required": ["namespace", "id", "kind", "fingerprint"],
+      "properties": {
+        "namespace": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$"
+        },
+        "id": {
+          "$ref": "types.schema.json#/definitions/uuid_v7"
+        },
+        "kind": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_]*$"
+        },
+        "fingerprint": {
+          "$ref": "#/definitions/fingerprint"
+        }
+      },
+      "additionalProperties": false
+    },
+    "entity_reference": {
+      "oneOf": [
+        {"$ref": "#/definitions/local_entity_reference"},
+        {"$ref": "#/definitions/external_reference"}
+      ]
+    },
+    "identity_envelope": {
+      "type": "object",
+      "required": ["id", "alias_id", "alias_name"],
+      "properties": {
+        "id": {
+          "$ref": "types.schema.json#/definitions/uuid_v7"
+        },
+        "alias_id": {
+          "$ref": "types.schema.json#/definitions/entity_id"
+        },
+        "alias_name": {
+          "$ref": "types.schema.json#/definitions/alias_name"
+        }
+      }
+    }
+  },
+
+  "type": "object",
+  "required": [
+    "schema_version",
+    "adr_type",
+    "id",
+    "alias_id",
+    "alias_name",
+    "title",
+    "status",
+    "created_date",
+    "authors"
+  ],
+
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.3",
+      "description": "ADR schema version"
+    },
+
+    "adr_type": {
+      "type": "string",
+      "enum": ["logical", "physical", "physical-system", "physical-component", "decision"],
+      "description": "Type of ADR"
+    },
+
+    "id": {
+      "$ref": "types.schema.json#/definitions/uuid_v7",
+      "description": "Canonical machine identity (UUIDv7)"
+    },
+
+    "alias_id": {
+      "$ref": "types.schema.json#/definitions/adr_id_any",
+      "description": "Type-prefixed human-recognition alias"
+    },
+
+    "alias_name": {
+      "$ref": "types.schema.json#/definitions/alias_name",
+      "description": "Human-friendly kebab-case alias"
+    },
+
+    "title": {
+      "type": "string",
+      "minLength": 5,
+      "maxLength": 200,
+      "description": "Human-readable ADR title"
+    },
+
+    "status": {
+      "$ref": "types.schema.json#/definitions/status",
+      "description": "ADR lifecycle status"
+    },
+
+    "created_date": {
+      "$ref": "types.schema.json#/definitions/iso_date",
+      "description": "Date ADR was created"
+    },
+
+    "modified_date": {
+      "$ref": "types.schema.json#/definitions/iso_date",
+      "description": "Date ADR was last modified"
+    },
+
+    "authors": {
+      "type": "array",
+      "items": { "type": "string" },
+      "minItems": 1,
+      "description": "List of ADR authors"
+    },
+
+    "domains": {
+      "type": "array",
+      "items": { "type": "string" },
+      "minItems": 1,
+      "description": "Architectural domains"
+    },
+
+    "tags": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Tags for cross-domain discovery"
+    },
+
+    "related_adrs": {
+      "type": "array",
+      "items": { "$ref": "types.schema.json#/definitions/uuid_v7" },
+      "description": "Related ADRs by UUID"
+    },
+
+    "supersedes": {
+      "type": "array",
+      "items": { "$ref": "types.schema.json#/definitions/uuid_v7" },
+      "description": "ADRs that this ADR supersedes (by UUID)"
+    },
+
+    "superseded_by": {
+      "oneOf": [
+        { "type": "null" },
+        { "$ref": "types.schema.json#/definitions/uuid_v7" }
+      ],
+      "description": "ADR that supersedes this one (UUID or null)"
+    },
+
+    "ownership": {
+      "type": "object",
+      "properties": {
+        "architecture_authority": { "type": "string" },
+        "implementation_owners": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      }
+    },
+
+    "governance": {
+      "type": "object",
+      "properties": {
+        "steelman_review_required": { "type": ["boolean", "null"] },
+        "steelman_review_completed": { "type": ["boolean", "null"] },
+        "implementation_authority": {
+          "oneOf": [
+            { "type": "null" },
+            { "$ref": "types.schema.json#/definitions/implementation_authority" }
+          ]
+        },
+        "approved_by": { "type": ["string", "null"] },
+        "approved_date": {
+          "oneOf": [
+            { "type": "null" },
+            { "$ref": "types.schema.json#/definitions/iso_datetime" }
+          ]
+        },
+        "related_reviews": {
+          "type": "array",
+          "items": { "$ref": "types.schema.json#/definitions/review_id" }
+        },
+        "related_overrides": {
+          "type": "array",
+          "items": { "$ref": "types.schema.json#/definitions/override_id" }
+        },
+        "related_ledgers": {
+          "type": "array",
+          "items": { "type": "string", "pattern": "^LEDGER-\\d{4}$" }
+        }
+      }
+    },
+
+    "projection_signals": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+
+    "ai_projectable": {
+      "type": "object",
+      "properties": {
+        "minimal_sections": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "primary_domains": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      }
+    },
+
+    "introduces_entities": {
+      "type": "array",
+      "items": { "$ref": "types.schema.json#/definitions/uuid_v7" }
+    },
+
+    "modifies_entities": {
+      "type": "array",
+      "items": { "$ref": "types.schema.json#/definitions/uuid_v7" }
+    },
+
+    "realizes_entities": {
+      "type": "array",
+      "items": { "$ref": "types.schema.json#/definitions/uuid_v7" }
+    },
+
+    "substrate_bindings": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "external_namespace",
+          "artifact_id",
+          "kind",
+          "version",
+          "fingerprint",
+          "role",
+          "selected_by"
+        ],
+        "properties": {
+          "external_namespace": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$"
+          },
+          "artifact_id": { "type": "string", "minLength": 1 },
+          "kind": { "type": "string", "pattern": "^[a-z][a-z0-9_]*$" },
+          "version": { "type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._+:-]*$" },
+          "fingerprint": { "$ref": "#/definitions/fingerprint" },
+          "source_pack": { "type": "string" },
+          "role": { "type": "string", "pattern": "^[a-z][a-z0-9_]*$" },
+          "selected_by": { "$ref": "#/definitions/local_entity_reference" },
+          "local_config_ref": { "type": "string" },
+          "supersedes": {
+            "type": "array",
+            "items": { "$ref": "#/definitions/external_reference" }
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+
+    "rule_bindings": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "rule_id",
+          "namespace",
+          "version",
+          "fingerprint",
+          "disposition",
+          "affected_entities"
+        ],
+        "properties": {
+          "rule_id": { "type": "string", "minLength": 1 },
+          "namespace": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$"
+          },
+          "version": { "type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._+:-]*$" },
+          "fingerprint": { "$ref": "#/definitions/fingerprint" },
+          "disposition": {
+            "type": "string",
+            "enum": ["adopted", "refined", "overridden", "exempted", "not_applicable"]
+          },
+          "rationale": { "type": "string", "minLength": 1 },
+          "exception_ref": { "type": "string", "minLength": 1 },
+          "owner": { "type": "string" },
+          "affected_entities": {
+            "type": "array",
+            "items": { "$ref": "#/definitions/entity_reference" },
+            "minItems": 1
+          },
+          "expected_evidence_ref": { "type": "string", "pattern": "^EVID-[A-Z0-9-]+$" }
+        },
+        "allOf": [
+          {
+            "if": {
+              "properties": {
+                "disposition": {
+                  "enum": ["refined", "overridden", "exempted", "not_applicable"]
+                }
+              },
+              "required": ["disposition"]
+            },
+            "then": { "required": ["rationale"] }
+          },
+          {
+            "if": {
+              "properties": { "disposition": { "const": "exempted" } },
+              "required": ["disposition"]
+            },
+            "then": { "required": ["exception_ref"] }
+          }
+        ],
+        "additionalProperties": false
+      }
+    },
+
+    "evidence_expectations": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["expectation_id", "kind", "description", "related_entities"],
+        "properties": {
+          "expectation_id": { "type": "string", "pattern": "^EVID-[A-Z0-9-]+$" },
+          "kind": { "type": "string", "pattern": "^[a-z][a-z0-9_]*$" },
+          "description": { "type": "string", "minLength": 1 },
+          "related_entities": {
+            "type": "array",
+            "items": { "$ref": "#/definitions/entity_reference" }
+          }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+
+  "allOf": [
+    {
+      "if": {
+        "properties": { "governance": { "required": ["approved_by"] } }
+      },
+      "then": {
+        "properties": { "governance": { "required": ["approved_date"] } }
+      }
+    },
+    {
+      "if": {
+        "properties": { "governance": { "required": ["approved_date"] } }
+      },
+      "then": {
+        "properties": { "governance": { "required": ["approved_by"] } }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "governance": {
+            "properties": {
+              "implementation_authority": { "const": "implementation_authoritative" }
+            },
+            "required": ["implementation_authority"]
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "governance": { "required": ["approved_by", "approved_date"] }
+        }
+      }
+    }
+  ]
+}

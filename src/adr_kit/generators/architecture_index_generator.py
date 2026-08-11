@@ -275,6 +275,7 @@ class ArchitectureIndexGenerator:
             generated_at=generated_at,
             diagnostics=self.diagnostics,
             generator_id=GENERATOR_ID,
+            model_version=getattr(build_result, "model_version", "1.1"),
         )
         errors = [
             item for item in self.diagnostics.as_list() if item.level == DiagnosticLevel.ERROR

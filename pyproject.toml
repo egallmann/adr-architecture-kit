@@ -28,6 +28,7 @@ dependencies = [
     "jsonschema>=4.0",
     "jinja2>=3.1",
     "click>=8.0",
+    "rfc8785>=0.1.2",
 ]
 
 [project.optional-dependencies]
@@ -63,6 +64,9 @@ where = ["src"]
 "adr_kit.schema.v1_0" = ["*.json"]
 "adr_kit.schema.v1_1" = ["*.json"]
 "adr_kit.schema.v1_2" = ["*.json"]
+"adr_kit.schema.v1_3" = ["*.json"]
+"adr_kit.schema.v2_0" = ["*.json"]
+"adr_kit.schema.migrations" = ["*.json"]
 "adr_kit.templates" = ["*.jinja2"]
 "adr_kit.promotion.rules" = ["*.json"]
 

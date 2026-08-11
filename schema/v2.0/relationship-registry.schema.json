@@ -1,0 +1,17 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://adr-architecture-kit/schema/v2.0/relationship-registry.schema.json",
+  "title": "Relationship Registry v2.0",
+  "description": "Registry of UUID-endpoint relationships.",
+  "type": "object",
+  "required": ["schema_version", "type", "relationships"],
+  "properties": {
+    "schema_version": { "type": "string", "const": "2.0" },
+    "type": { "type": "string", "const": "relationship_registry" },
+    "relationships": {
+      "type": "array",
+      "items": { "$ref": "relationship-record.schema.json" }
+    }
+  },
+  "additionalProperties": false
+}

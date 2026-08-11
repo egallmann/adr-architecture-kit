@@ -27,6 +27,7 @@ def test_compiler_owned_registry_bundle_matches_generator_bundle(tmp_path):
         coverage=build_result.coverage,
         namespace=build_result.namespace,
         generated_at=FIXED_TIMESTAMP,
+        model_version=build_result.model_version,
     )
     with pinned_generation_time():
         generated = ArchitectureIndexGenerator(scope_resolver=ProjectScopeResolver(explicit_scope=scope.root)).generate_from_scope(scope)
@@ -58,12 +59,14 @@ def test_compiler_owned_registry_bundle_is_deterministic(tmp_path):
         coverage=first.coverage,
         namespace=first.namespace,
         generated_at=first.model.metadata.generated_at,
+        model_version=first.model_version,
     )
     second_bundle = assemble_registry_bundle(
         second.model,
         coverage=second.coverage,
         namespace=second.namespace,
         generated_at=second.model.metadata.generated_at,
+        model_version=second.model_version,
     )
 
     assert first_bundle.entity_registry.model_dump(mode="json") == second_bundle.entity_registry.model_dump(mode="json")

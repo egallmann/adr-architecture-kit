@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 from pathlib import Path
-from typing import Union
+from typing import Any, Union
 
 from jinja2 import Environment, FileSystemLoader
 
@@ -19,8 +19,10 @@ from ...integrity import (
     compute_source_hash,
 )
 from ...models import LogicalADR, PhysicalADR, PhysicalComponentADR, PhysicalSystemADR
+from ...models.common import ADRType
 from ...parser import ADRParser
 from ...scope import ProjectScope
+from ..frontend.adr_access import adr_type_of, field_get, presentation_id
 from .common import EmittedArtifact
 
 
@@ -28,14 +30,21 @@ MARKDOWN_GENERATOR_IDENTITY = GeneratorIdentity("adr-rendered-markdown", 1)
 DEFAULT_TEMPLATE_DIR = Path(__file__).resolve().parents[2] / "templates"
 
 
+def _jinja_presentation_id(value: Any) -> str:
+    """Jinja filter: prefer governed alias_id for human-facing markdown ids."""
+    return presentation_id(value)
+
+
 def build_markdown_environment(template_dir: Path | None = None) -> Environment:
     """Build the deterministic Jinja environment for rendered ADR markdown."""
     resolved_template_dir = Path(template_dir or DEFAULT_TEMPLATE_DIR)
-    return Environment(
+    env = Environment(
         loader=FileSystemLoader(str(resolved_template_dir)),
         trim_blocks=True,
         lstrip_blocks=True,
     )
+    env.filters["presentation_id"] = _jinja_presentation_id
+    return env
 
 
 def template_path_for_adr(
@@ -45,9 +54,10 @@ def template_path_for_adr(
 ) -> Path:
     """Return the template path used for one ADR."""
     resolved_template_dir = Path(template_dir or DEFAULT_TEMPLATE_DIR)
-    if isinstance(adr, LogicalADR):
+    adr_type = adr_type_of(adr)
+    if adr_type == ADRType.LOGICAL:
         return resolved_template_dir / "adr-logical.md.jinja2"
-    if isinstance(adr, (PhysicalADR, PhysicalSystemADR, PhysicalComponentADR)):
+    if adr_type in (ADRType.PHYSICAL, ADRType.PHYSICAL_SYSTEM, ADRType.PHYSICAL_COMPONENT):
         return resolved_template_dir / "adr-physical.md.jinja2"
     raise ValueError(f"Unknown ADR type: {type(adr)}")
 
@@ -114,6 +124,11 @@ def build_markdown_integrity_header(
     return build_markdown_header(header_fields)
 
 
+def _source_matches_rendered_stem(adr: Any, stem: str) -> bool:
+    """True when a rendered markdown stem matches UUID id or alias_id."""
+    return bool(field_get(adr, "id") == stem or field_get(adr, "alias_id") == stem)
+
+
 def render_existing_markdown_artifact(
     artifact_path: Path,
     *,
@@ -123,16 +138,33 @@ def render_existing_markdown_artifact(
 ) -> tuple[str, list[Path | HashInput]]:
     """Re-render an existing rendered ADR markdown artifact."""
     adr_id = Path(artifact_path).stem
-    for directory in (scope.logical_dir, scope.physical_dir, scope.adr_dir / "physical-system", scope.adr_dir / "physical-component"):
+    for directory in (
+        scope.logical_dir,
+        scope.physical_dir,
+        scope.adr_dir / "physical-system",
+        scope.adr_dir / "physical-component",
+    ):
         if not directory.exists():
             continue
         matches = sorted(directory.glob(f"{adr_id}-*.yaml"))
-        if not matches:
-            continue
-        source_path = matches[0]
-        adr = parser.parse_adr(source_path)
-        body = render_adr_markdown(adr, template_dir=template_dir)
-        return body, markdown_source_inputs_for_adr(adr, source_path=source_path, template_dir=template_dir)
+        if matches:
+            source_path = matches[0]
+            adr = parser.parse_adr(source_path)
+            body = render_adr_markdown(adr, template_dir=template_dir)
+            return body, markdown_source_inputs_for_adr(
+                adr, source_path=source_path, template_dir=template_dir
+            )
+        for source_path in sorted(path for path in directory.glob("*.yaml") if path.is_file()):
+            try:
+                adr = parser.parse_adr(source_path)
+            except Exception:
+                continue
+            if not _source_matches_rendered_stem(adr, adr_id):
+                continue
+            body = render_adr_markdown(adr, template_dir=template_dir)
+            return body, markdown_source_inputs_for_adr(
+                adr, source_path=source_path, template_dir=template_dir
+            )
     raise ValueError(f"Could not locate source ADR for rendered artifact: {artifact_path}")
 
 

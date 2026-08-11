@@ -16,6 +16,12 @@ from .core import (
     parse_integrity_header,
 )
 from .legacy_registry import LEGACY_ENTITY_REGISTRY_GENERATOR, legacy_entity_registry_source_inputs
+from .transaction import (
+    PlannedWrite,
+    TransactionAborted,
+    commit_all_or_none,
+    recover_interrupted_commit,
+)
 from .validation import (
     GeneratedArtifactStatus,
     GeneratedArtifactValidationResult,
@@ -43,4 +49,8 @@ __all__ = [
     "GeneratedArtifactStatus",
     "GeneratedArtifactValidationResult",
     "GeneratedArtifactValidator",
+    "PlannedWrite",
+    "TransactionAborted",
+    "commit_all_or_none",
+    "recover_interrupted_commit",
 ]

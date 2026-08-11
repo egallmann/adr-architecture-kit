@@ -34,6 +34,7 @@ from ..decorators import implements_adr
 from ..models.implementation_attribution import ImplementationAttributionEvidence
 from ..integrity import GeneratedArtifactStatus
 from ..migrators.canonical_id_normalizer import CanonicalIdNormalizer
+from ..migrators.identity_v13 import IdentityV13Migrator, IdentityMapDocument
 from ..migrators.topology_identity import TopologyIdentityMigrator
 from ..parser import ADRParser
 from ..repository import ArchitectureRepository
@@ -1372,6 +1373,101 @@ def migrate_topology_ids(scope: Optional[Path], apply_migration: bool) -> None:
         raise click.exceptions.Exit(1) from exc
 
 
+@implements_adr("ADR-L-0019")
+@cli.command("migrate-identity-v13")
+@click.option(
+    "--scope",
+    type=click.Path(exists=True, file_okay=False, path_type=Path),
+    help="Explicit project scope (overrides auto-detection)",
+)
+@click.option(
+    "--plan-out",
+    type=click.Path(path_type=Path),
+    help="Write a complete candidate identity map (mint once after green preflight).",
+)
+@click.option(
+    "--identity-map",
+    "identity_map_path",
+    type=click.Path(exists=True, dir_okay=False, path_type=Path),
+    help="Sealed identity map consumed by --apply/--check.",
+)
+@click.option(
+    "--apply",
+    "apply_migration",
+    is_flag=True,
+    help="Atomically apply a sealed identity map (never remints).",
+)
+@click.option(
+    "--check",
+    "check_migration",
+    is_flag=True,
+    help="Verify sealed-map consistency/idempotency without reminting.",
+)
+@click.option(
+    "--recover",
+    "recover_journal",
+    type=click.Path(exists=True, file_okay=False, path_type=Path),
+    help="Recover an interrupted identity-migration journal.",
+)
+def migrate_identity_v13(
+    scope: Optional[Path],
+    plan_out: Optional[Path],
+    identity_map_path: Optional[Path],
+    apply_migration: bool,
+    check_migration: bool,
+    recover_journal: Optional[Path],
+) -> None:
+    """Plan, seal-consume, check, or recover v1.3 identity migration."""
+    try:
+        resolver = ProjectScopeResolver(explicit_scope=scope)
+        detected_scope = resolver.resolve()
+        migrator = IdentityV13Migrator()
+        if recover_journal is not None:
+            migrator.recover(recover_journal, detected_scope)
+            click.echo(f"Recovered interrupted journal: {recover_journal}")
+            return
+        if plan_out is not None:
+            result = migrator.plan(detected_scope)
+            if not result.ok:
+                for diagnostic in result.diagnostics:
+                    click.echo(f"{diagnostic.code}: {diagnostic.message}", err=True)
+                raise click.exceptions.Exit(1)
+            plan_out.parent.mkdir(parents=True, exist_ok=True)
+            plan_out.write_text(
+                yaml.safe_dump(result.identity_map.to_dict(), sort_keys=False, allow_unicode=True),
+                encoding="utf-8",
+            )
+            click.echo(
+                f"Wrote candidate identity map ({len(result.identity_map.entries)} entries) "
+                f"to {plan_out}"
+            )
+            return
+        if identity_map_path is None:
+            raise click.UsageError(
+                "Provide --plan-out, or --identity-map with --apply/--check, or --recover"
+            )
+        payload = yaml.safe_load(identity_map_path.read_text(encoding="utf-8"))
+        identity_map = IdentityMapDocument.from_dict(payload)
+        if apply_migration:
+            writes = migrator.apply(detected_scope, identity_map)
+            click.echo(f"Applied sealed identity map across {len(writes)} write(s)")
+            return
+        if check_migration:
+            errors = migrator.check(detected_scope, identity_map)
+            if errors:
+                for error in errors:
+                    click.echo(error, err=True)
+                raise click.exceptions.Exit(1)
+            click.echo("Identity migration check passed")
+            return
+        raise click.UsageError("--identity-map requires --apply or --check")
+    except click.exceptions.Exit:
+        raise
+    except Exception as e:
+        click.echo(f"Error: {e}", err=True)
+        sys.exit(1)
+
+
 @implements_adr("ADR-L-0002", "ADR-L-0013")
 @cli.command("validate")
 @click.option(
@@ -1695,22 +1791,72 @@ def entities_list(
         sys.exit(1)
 
 
-@implements_adr("ADR-L-0002", "ADR-L-0013")
+@implements_adr("ADR-L-0002", "ADR-L-0013", "ADR-L-0019")
 @entities_cli.command("get")
 @click.argument("entity_id")
+@click.option(
+    "--by",
+    "lookup_by",
+    type=click.Choice(["uuid", "alias-id", "alias-ref", "uri", "auto"]),
+    default="auto",
+    show_default=True,
+    help="Lookup mode (auto is the deprecated unique-alias compatibility path)",
+)
 @click.option(
     "--scope",
     type=click.Path(exists=True, file_okay=False, path_type=Path),
     help="Explicit project scope (overrides auto-detection)",
 )
-def entities_get(entity_id: str, scope: Optional[Path]):
-    """Get an entity by exact ID."""
+def entities_get(entity_id: str, lookup_by: str, scope: Optional[Path]) -> None:
+    """Get an entity by UUID, alias, URI, or auto compatibility lookup."""
     try:
         repository = _load_architecture_repository(scope)
-        entity = repository.find_entity(entity_id)
+        if lookup_by == "auto":
+            entity = repository.find_entity(entity_id)
+        elif lookup_by == "uuid":
+            entity = repository.find_entity_by_uuid(entity_id)
+        elif lookup_by == "alias-id":
+            entity = repository.find_entity_by_alias_id(entity_id)
+        elif lookup_by == "alias-ref":
+            entity = repository.find_entity_by_alias_ref(entity_id)
+        elif lookup_by == "uri":
+            entity = repository.resolve_uri(entity_id)
+        else:
+            raise ValueError(f"Unsupported lookup mode: {lookup_by}")
         if entity is None:
             raise ValueError(f"Entity not found: {entity_id}")
         click.echo(_dump_yaml(entity.model_dump(mode="json", exclude_none=True)))
+    except Exception as e:
+        click.echo(f"Error: {e}", err=True)
+        sys.exit(1)
+
+
+@implements_adr("ADR-L-0002", "ADR-L-0013", "ADR-L-0019")
+@entities_cli.command("aliases")
+@click.option(
+    "--scope",
+    type=click.Path(exists=True, file_okay=False, path_type=Path),
+    help="Explicit project scope (overrides auto-detection)",
+)
+def entities_aliases(scope: Optional[Path]) -> None:
+    """List deterministic alias inventory for model 2.0 entities."""
+    try:
+        repository = _load_architecture_repository(scope)
+        aliases = repository.list_aliases()
+        payload = {
+            "aliases": [
+                {
+                    "uuid": item.uuid,
+                    "alias_id": item.alias_id,
+                    "alias_name": item.alias_name,
+                    "alias_ref": item.alias_ref,
+                    "entity_type": item.entity_type,
+                    "uri": item.uri,
+                }
+                for item in aliases
+            ]
+        }
+        click.echo(_dump_yaml(payload))
     except Exception as e:
         click.echo(f"Error: {e}", err=True)
         sys.exit(1)
@@ -2284,7 +2430,7 @@ def attribution_check_cmd(scope: Optional[Path], evidence: Optional[Path], profi
 
         repo = ArchitectureRepository(project_root=scope_root)
         repo.load()
-        model = repo.get_model()
+        model = repo.get_model_v2() if repo.model_version == "2.0" else repo.get_model()
 
         typed_profile = cast(ContractProfile, profile)
         result = validate_implementation_attribution_evidence(
@@ -2347,8 +2493,17 @@ def attribution_coverage_cmd(scope: Optional[Path], evidence: Optional[Path]):
 
         repo = ArchitectureRepository(project_root=scope_root)
         repo.load()
-        model = repo.get_model()
-        catalog = sorted(model.adr_status_map().keys())
+        if repo.model_version == "2.0":
+            model_v2 = repo.get_model_v2()
+            catalog = sorted(
+                {
+                    entity.alias_id
+                    for entity in model_v2.entities
+                    if entity.entity_type == "adr" and entity.alias_id
+                }
+            )
+        else:
+            catalog = sorted(repo.get_model().adr_status_map().keys())
         unattributed_in_corpus = sorted(set(catalog) - set(cited))
 
         payload = {

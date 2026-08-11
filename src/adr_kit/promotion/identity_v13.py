@@ -42,12 +42,17 @@ _SCOPED_CHILDREN: dict[str, dict[str, tuple[str, ...]]] = {
 }
 
 
+def _child_matches(item: dict[str, Any], child_id: str) -> bool:
+    """Match a scoped child by canonical id or governed alias_id."""
+    return item.get("id") == child_id or item.get("alias_id") == child_id
+
+
 def _find_child(document: dict[str, Any], section: str, child_id: str) -> dict[str, Any]:
     items = document.get(section)
     if not isinstance(items, list):
         raise KeyError(f"missing section {section} for {child_id}")
     for item in items:
-        if isinstance(item, dict) and item.get("id") == child_id:
+        if isinstance(item, dict) and _child_matches(item, child_id):
             return item
     raise KeyError(f"missing scoped child {child_id} in {section}")
 
@@ -57,8 +62,13 @@ def _replace_child(document: dict[str, Any], section: str, child: dict[str, Any]
     if not isinstance(items, list):
         raise KeyError(f"missing section {section}")
     child_id = child["id"]
+    child_alias = child.get("alias_id")
     for index, item in enumerate(items):
-        if isinstance(item, dict) and item.get("id") == child_id:
+        if not isinstance(item, dict):
+            continue
+        if item.get("id") == child_id or (
+            isinstance(child_alias, str) and item.get("alias_id") == child_alias
+        ):
             items[index] = child
             return
     items.append(child)

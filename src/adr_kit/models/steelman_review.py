@@ -32,7 +32,13 @@ class SteelmanReview(BaseModel):
     schema_version: str = Field("1.1", pattern=r"^1\.1$")
     type: str = Field("steelman_review", pattern=r"^steelman_review$")
     id: str = Field(..., pattern=r"^REVIEW-\d{4}$")
-    target_adr: str = Field(..., pattern=r"^ADR-(L|V|P|PS|PC|D)-\d{4}$")
+    target_adr: str = Field(
+        ...,
+        pattern=(
+            r"^(?:ADR-(?:L|V|P|PS|PC|D)-\d{4}|"
+            r"[0-9a-f]{8}-[0-9a-f]{4}-7[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12})$"
+        ),
+    )
     review_kind: str = Field("steelman", pattern=r"^steelman$")
     review_date: date
     reviewed_by: str = Field(..., min_length=1)

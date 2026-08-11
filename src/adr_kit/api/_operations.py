@@ -4,14 +4,14 @@ from __future__ import annotations
 
 from hashlib import sha256
 from pathlib import Path
-from typing import Literal, cast
+from typing import Literal, Mapping, cast
 
 from .. import __version__
 from ..compiler import ArchitectureCompiler, CompilationMode, CompilerConfig, DiagnosticLevel
 from ..compiler.driver import CompilationResult as InternalCompilationResult
 from ..compiler.driver import WorkspaceCompilationResult
 from ..decorators import enforces_invariant, implements_adr
-from ..repository import ArchitectureRegistryError, ArchitectureRepository
+from ..repository import ArchitectureRegistryError, ArchitectureRepository, ProviderRegistry
 from ..repository._normalized_bundle import load_normalized_bundle_from_bytes
 from ..scope import ProjectScope, ProjectScopeResolver
 from ..validators import ADRValidator, ValidationResult as InternalValidationResult
@@ -29,7 +29,7 @@ from ._contracts import (
     ValidationResult,
     _normalize_project_root,
 )
-from ._errors import OperationError, RepositoryError
+from ._errors import InvalidRequestError, OperationError, RepositoryError
 from ._promotion_contracts import (
     PromotionApplyRequest,
     PromotionApplyResult,
@@ -196,6 +196,7 @@ def capabilities() -> CapabilityManifest:
         "validate_architecture",
         "compile_architecture",
         "open_repository",
+        "open_provider_registry",
     ]
     if PROMOTION_OPERATIONS_ADVERTISED:
         operations.extend(["prepare_promotion", "check_promotion", "apply_promotion"])
@@ -206,10 +207,11 @@ def capabilities() -> CapabilityManifest:
         supported_promotion_contract_versions=PROMOTION_CONTRACT_VERSIONS,
         validation_modes=VALIDATION_MODES,
         artifact_groups=ARTIFACT_GROUPS,
-        supported_adr_schema_versions=("1.0", "1.1", "1.2"),
+        supported_adr_schema_versions=("1.0", "1.1", "1.2", "1.3"),
         stable_adr_schema_versions=("1.0",),
-        provisional_adr_schema_versions=("1.1", "1.2"),
+        provisional_adr_schema_versions=("1.1", "1.2", "1.3"),
         normalized_model_schema_version="1.1",
+        supported_normalized_model_schema_versions=("1.1", "2.0"),
     )
 
 
@@ -382,3 +384,22 @@ def open_repository(project_root: str | Path) -> ArchitectureRepository:
         return repository
     except ArchitectureRegistryError as exc:
         raise RepositoryError("Architecture repository could not be opened") from exc
+
+
+@implements_adr("ADR-L-0019", "ADR-L-0012")
+def open_provider_registry(
+    workspace_roots: Mapping[str, str | Path],
+) -> ProviderRegistry:
+    """Open a read-only provider registry keyed by workspace routing identity."""
+
+    if not isinstance(workspace_roots, Mapping) or not workspace_roots:
+        raise InvalidRequestError("workspace_roots must be a non-empty mapping")
+    normalized: dict[str, Path] = {}
+    for key, value in workspace_roots.items():
+        if not isinstance(key, str) or not key:
+            raise InvalidRequestError("workspace routing keys must be non-empty strings")
+        normalized[key] = _normalize_project_root(value)
+    try:
+        return ProviderRegistry.from_workspace_roots(normalized)
+    except ArchitectureRegistryError as exc:
+        raise RepositoryError("Provider registry could not be opened") from exc

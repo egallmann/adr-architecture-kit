@@ -33,7 +33,7 @@ def test_capabilities_advertise_promotion_without_schema_13() -> None:
     assert "prepare_promotion" in manifest.operations
     assert "check_promotion" in manifest.operations
     assert "apply_promotion" in manifest.operations
-    assert "1.3" not in manifest.supported_adr_schema_versions
+    assert "1.3" in manifest.supported_adr_schema_versions
 
 
 def test_prepare_rejects_output_into_adrs(tmp_path: Path) -> None:

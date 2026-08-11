@@ -1,0 +1,95 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://adr-kit.ste.systems/schema/v1.3/adr-physical.schema.json",
+  "title": "Physical ADR Schema (v1.3)",
+  "description": "Legacy Physical ADR schema — v1.3 identity model",
+
+  "type": "object",
+  "allOf": [
+    {"$ref": "adr-common.schema.json"}
+  ],
+
+  "required": [
+    "implements_logical",
+    "context",
+    "technology_stack",
+    "component_specifications"
+  ],
+
+  "properties": {
+    "adr_type": { "const": "physical" },
+
+    "alias_id": {
+      "$ref": "types.schema.json#/definitions/adr_id_physical"
+    },
+
+    "implements_logical": {
+      "type": "array",
+      "items": { "$ref": "types.schema.json#/definitions/uuid_v7" },
+      "minItems": 1
+    },
+
+    "technologies": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+
+    "context": { "$ref": "types.schema.json#/definitions/markdown_text" },
+
+    "technology_stack": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["category", "name", "version", "rationale"],
+        "properties": {
+          "category": {
+            "type": "string",
+            "enum": ["language", "framework", "library", "database", "messaging", "infrastructure", "tooling"]
+          },
+          "name": { "type": "string" },
+          "version": { "type": "string" },
+          "rationale": { "$ref": "types.schema.json#/definitions/markdown_text" }
+        }
+      },
+      "minItems": 1
+    },
+
+    "component_specifications": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "allOf": [{"$ref": "adr-common.schema.json#/definitions/identity_envelope"}],
+        "required": ["id", "alias_id", "alias_name", "name", "type", "responsibilities"],
+        "properties": {
+          "id": { "$ref": "types.schema.json#/definitions/uuid_v7" },
+          "alias_id": { "$ref": "types.schema.json#/definitions/entity_id", "pattern": "^COMP-\\d{4}$" },
+          "alias_name": { "$ref": "types.schema.json#/definitions/alias_name" },
+          "name": { "type": "string" },
+          "type": {
+            "type": "string",
+            "enum": ["service", "library", "database", "queue", "cache", "gateway", "proxy", "worker", "scheduler"]
+          },
+          "responsibilities": { "$ref": "types.schema.json#/definitions/markdown_text" },
+          "interfaces": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "allOf": [{"$ref": "adr-common.schema.json#/definitions/identity_envelope"}],
+              "required": ["id", "alias_id", "alias_name"],
+              "properties": {
+                "id": { "$ref": "types.schema.json#/definitions/uuid_v7" },
+                "alias_id": { "$ref": "types.schema.json#/definitions/entity_id", "pattern": "^IFACE-\\d{4}$" },
+                "alias_name": { "$ref": "types.schema.json#/definitions/alias_name" },
+                "type": { "type": "string" },
+                "specification": { "$ref": "types.schema.json#/definitions/markdown_text" },
+                "name": { "type": "string" },
+                "description": { "$ref": "types.schema.json#/definitions/markdown_text" }
+              }
+            }
+          }
+        }
+      },
+      "minItems": 1
+    }
+  }
+}

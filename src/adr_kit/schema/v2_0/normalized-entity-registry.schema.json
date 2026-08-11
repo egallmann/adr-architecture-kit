@@ -1,0 +1,17 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://adr-architecture-kit/schema/v2.0/normalized-entity-registry.schema.json",
+  "title": "Normalized Entity Registry v2.0",
+  "description": "Registry of UUID-identity-bearing normalized entities.",
+  "type": "object",
+  "required": ["schema_version", "type", "entities"],
+  "properties": {
+    "schema_version": { "type": "string", "const": "2.0" },
+    "type": { "type": "string", "const": "normalized_entity_registry" },
+    "entities": {
+      "type": "array",
+      "items": { "$ref": "normalized-entity.schema.json" }
+    }
+  },
+  "additionalProperties": false
+}

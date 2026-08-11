@@ -1,0 +1,172 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://adr-kit.ste.systems/schema/v1.3/adr-physical-system.schema.json",
+  "title": "Physical-System ADR Schema (v1.3)",
+  "description": "Schema for Physical-System ADRs — v1.3 identity with authored system object",
+
+  "type": "object",
+  "allOf": [
+    {"$ref": "adr-physical-base.schema.json"}
+  ],
+
+  "required": [
+    "system"
+  ],
+
+  "properties": {
+    "adr_type": { "const": "physical-system" },
+
+    "alias_id": {
+      "$ref": "types.schema.json#/definitions/adr_id_physical_system"
+    },
+
+    "system": {
+      "type": "object",
+      "required": ["id", "alias_id", "alias_name"],
+      "properties": {
+        "id": { "$ref": "types.schema.json#/definitions/uuid_v7" },
+        "alias_id": {
+          "type": "string",
+          "pattern": "^SYS-\\d{4}$",
+          "description": "System alias identifier (e.g., SYS-0001)"
+        },
+        "alias_name": { "$ref": "types.schema.json#/definitions/alias_name" }
+      },
+      "description": "Authored system identity object"
+    },
+
+    "system_boundaries": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "name", "description"],
+        "properties": {
+          "id": { "$ref": "types.schema.json#/definitions/entity_id", "pattern": "^SYSBOUND-\\d{4}$" },
+          "name": { "type": "string" },
+          "description": { "$ref": "types.schema.json#/definitions/markdown_text" },
+          "external_dependencies": {
+            "type": "array",
+            "items": { "type": "string" }
+          },
+          "exposed_interfaces": {
+            "type": "array",
+            "items": { "type": "string" }
+          }
+        }
+      },
+      "minItems": 1
+    },
+
+    "component_topology": {
+      "type": "object",
+      "properties": {
+        "components": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["name", "type", "purpose"],
+            "properties": {
+              "id": {
+                "type": "string",
+                "pattern": "^TOPO-[A-Z0-9][A-Z0-9-]*$"
+              },
+              "name": { "type": "string" },
+              "type": {
+                "type": "string",
+                "enum": ["service", "database", "queue", "cache", "gateway", "proxy", "worker", "scheduler"]
+              },
+              "purpose": { "type": "string" },
+              "implements_adr": {
+                "$ref": "types.schema.json#/definitions/uuid_v7"
+              }
+            }
+          }
+        },
+        "relationships": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["from", "to", "type"],
+            "properties": {
+              "from": { "type": "string" },
+              "to": { "type": "string" },
+              "type": {
+                "type": "string",
+                "enum": ["calls", "publishes_to", "subscribes_to", "reads_from", "writes_to", "depends_on"]
+              },
+              "protocol": { "type": "string" },
+              "description": { "type": "string" }
+            }
+          }
+        }
+      }
+    },
+
+    "integration_patterns": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["pattern_name", "application"],
+        "properties": {
+          "pattern_name": { "type": "string" },
+          "application": { "$ref": "types.schema.json#/definitions/markdown_text" },
+          "components_affected": {
+            "type": "array",
+            "items": { "type": "string" }
+          },
+          "rationale": { "$ref": "types.schema.json#/definitions/markdown_text" }
+        }
+      }
+    },
+
+    "data_flows": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "name", "description"],
+        "properties": {
+          "id": { "$ref": "types.schema.json#/definitions/entity_id", "pattern": "^FLOW-\\d{4}$" },
+          "name": { "type": "string" },
+          "description": { "$ref": "types.schema.json#/definitions/markdown_text" },
+          "path": {
+            "type": "array",
+            "items": { "type": "string" }
+          },
+          "data_type": { "type": "string" },
+          "volume": { "type": "string" },
+          "latency_requirements": { "type": "string" }
+        }
+      }
+    },
+
+    "references_components": {
+      "type": "array",
+      "items": { "$ref": "types.schema.json#/definitions/uuid_v7" }
+    },
+
+    "scalability_strategy": {
+      "type": "object",
+      "properties": {
+        "horizontal_scaling": { "$ref": "types.schema.json#/definitions/markdown_text" },
+        "vertical_scaling": { "$ref": "types.schema.json#/definitions/markdown_text" },
+        "bottlenecks": { "type": "array", "items": { "type": "string" } },
+        "capacity_planning": { "$ref": "types.schema.json#/definitions/markdown_text" }
+      }
+    },
+
+    "failure_modes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["scenario", "impact", "mitigation"],
+        "properties": {
+          "scenario": { "type": "string" },
+          "impact": { "$ref": "types.schema.json#/definitions/impact_level" },
+          "mitigation": { "$ref": "types.schema.json#/definitions/markdown_text" },
+          "detection": { "type": "string" },
+          "recovery": { "type": "string" }
+        }
+      }
+    }
+  }
+}

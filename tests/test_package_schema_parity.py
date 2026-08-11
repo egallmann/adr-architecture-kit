@@ -14,7 +14,7 @@ REPO_ROOT = Path(__file__).resolve().parents[1]
 
 def _schema_parity_mismatches(root: Path) -> list[str]:
     mismatches: list[str] = []
-    for version in ("v1.0", "v1.1", "v1.2"):
+    for version in ("v1.0", "v1.1", "v1.2", "v1.3", "v2.0"):
         canonical_dir = root / "schema" / version
         bundled_dir = root / "src" / "adr_kit" / "schema" / version.replace(".", "_")
         for canonical in sorted(canonical_dir.glob("*.json")):
@@ -23,6 +23,14 @@ def _schema_parity_mismatches(root: Path) -> list[str]:
                 mismatches.append(f"MISSING in package bundle: {bundled}")
             elif not filecmp.cmp(canonical, bundled, shallow=False):
                 mismatches.append(f"DRIFT: {canonical} vs {bundled}")
+    migrations_canonical = root / "schema" / "migrations"
+    migrations_bundled = root / "src" / "adr_kit" / "schema" / "migrations"
+    for canonical in sorted(migrations_canonical.glob("*.json")):
+        bundled = migrations_bundled / canonical.name
+        if not bundled.exists():
+            mismatches.append(f"MISSING in package bundle: {bundled}")
+        elif not filecmp.cmp(canonical, bundled, shallow=False):
+            mismatches.append(f"DRIFT: {canonical} vs {bundled}")
     return mismatches
 
 

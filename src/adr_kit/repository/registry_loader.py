@@ -5,7 +5,9 @@ from __future__ import annotations
 import json
 from hashlib import sha256
 from pathlib import Path
-from typing import Any
+from typing import Any, cast
+
+import yaml
 
 from ..decorators import implements_adr
 from ..models import (
@@ -16,43 +18,124 @@ from ..models import (
     RelationshipRegistry,
     UnresolvedRegistry,
 )
+from ..models.v2_0 import (
+    NormalizedEntityRegistryV2,
+    RelationshipRegistryV2,
+    UnresolvedRegistryV2,
+)
 from ..parser import ADRParseError, ADRParser, ADRSchemaValidationError
+
+
+@implements_adr("ADR-L-0013")
+def peek_registry_schema_version(path: Path) -> str:
+    """Return the declared schema_version for a registry YAML file."""
+
+    try:
+        payload = yaml.safe_load(path.read_text(encoding="utf-8"))
+    except Exception as exc:
+        raise ValueError(f"Failed to load registry: {path}: {exc}") from exc
+    if not isinstance(payload, dict):
+        raise ValueError(f"Failed to load registry: {path}: expected mapping")
+    version = payload.get("schema_version")
+    if version in ("1.1", "2.0"):
+        return str(version)
+    raise ValueError(f"Failed to load registry: {path}: unsupported schema_version {version!r}")
 
 
 @implements_adr("ADR-L-0013")
 def load_architecture_index(parser: ADRParser, path: Path) -> ArchitectureIndex:
     """Load and validate an architecture index."""
-    return _wrap_parse(lambda: parser.parse_architecture_index(path), path)
+    return cast(ArchitectureIndex, _wrap_parse(lambda: parser.parse_architecture_index(path), path))
 
 
 @implements_adr("ADR-L-0013")
-def load_normalized_entity_registry(parser: ADRParser, path: Path) -> NormalizedEntityRegistry:
-    """Load and validate a normalized entity registry."""
-    return _wrap_parse(lambda: parser.parse_normalized_entity_registry(path), path)
+def load_normalized_entity_registry(
+    parser: ADRParser, path: Path
+) -> NormalizedEntityRegistry | NormalizedEntityRegistryV2:
+    """Load and validate a normalized entity registry (1.1 or 2.0)."""
+    version = peek_registry_schema_version(path)
+    if version == "2.0":
+        return load_normalized_entity_registry_v2(parser, path)
+    return cast(
+        NormalizedEntityRegistry,
+        _wrap_parse(lambda: parser.parse_normalized_entity_registry(path), path),
+    )
+
+
+@implements_adr("ADR-L-0013", "ADR-L-0019")
+def load_normalized_entity_registry_v2(parser: ADRParser, path: Path) -> NormalizedEntityRegistryV2:
+    """Load and validate a model 2.0 normalized entity registry."""
+    return cast(
+        NormalizedEntityRegistryV2,
+        _wrap_parse(
+            lambda: NormalizedEntityRegistryV2.model_validate(parser.parse_yaml(path)),
+            path,
+        ),
+    )
 
 
 @implements_adr("ADR-L-0013")
-def load_relationship_registry(parser: ADRParser, path: Path) -> RelationshipRegistry:
-    """Load and validate a relationship registry."""
-    return _wrap_parse(lambda: parser.parse_relationship_registry(path), path)
+def load_relationship_registry(
+    parser: ADRParser, path: Path
+) -> RelationshipRegistry | RelationshipRegistryV2:
+    """Load and validate a relationship registry (1.1 or 2.0)."""
+    version = peek_registry_schema_version(path)
+    if version == "2.0":
+        return load_relationship_registry_v2(parser, path)
+    return cast(
+        RelationshipRegistry,
+        _wrap_parse(lambda: parser.parse_relationship_registry(path), path),
+    )
+
+
+@implements_adr("ADR-L-0013", "ADR-L-0019")
+def load_relationship_registry_v2(parser: ADRParser, path: Path) -> RelationshipRegistryV2:
+    """Load and validate a model 2.0 relationship registry."""
+    return cast(
+        RelationshipRegistryV2,
+        _wrap_parse(
+            lambda: RelationshipRegistryV2.model_validate(parser.parse_yaml(path)),
+            path,
+        ),
+    )
 
 
 @implements_adr("ADR-L-0013")
-def load_unresolved_registry(parser: ADRParser, path: Path) -> UnresolvedRegistry:
-    """Load and validate an unresolved registry."""
-    return _wrap_parse(lambda: parser.parse_unresolved_registry(path), path)
+def load_unresolved_registry(
+    parser: ADRParser, path: Path
+) -> UnresolvedRegistry | UnresolvedRegistryV2:
+    """Load and validate an unresolved registry (1.1 or 2.0)."""
+    version = peek_registry_schema_version(path)
+    if version == "2.0":
+        return load_unresolved_registry_v2(parser, path)
+    return cast(
+        UnresolvedRegistry,
+        _wrap_parse(lambda: parser.parse_unresolved_registry(path), path),
+    )
+
+
+@implements_adr("ADR-L-0013", "ADR-L-0019")
+def load_unresolved_registry_v2(parser: ADRParser, path: Path) -> UnresolvedRegistryV2:
+    """Load and validate a model 2.0 unresolved registry."""
+    return cast(
+        UnresolvedRegistryV2,
+        _wrap_parse(
+            lambda: UnresolvedRegistryV2.model_validate(parser.parse_yaml(path)),
+            path,
+        ),
+    )
 
 
 @implements_adr("ADR-L-0013")
 def load_remediation_ledger(parser: ADRParser, path: Path) -> RemediationLedger:
     """Load and validate remediation ledger."""
-    return _wrap_parse(lambda: parser.parse_remediation_ledger(path), path)
+    return cast(RemediationLedger, _wrap_parse(lambda: parser.parse_remediation_ledger(path), path))
 
 
 @implements_adr("ADR-L-0013")
 def load_legacy_entity_registry(parser: ADRParser, path: Path) -> EntityRegistry:
     """Load and validate a legacy entity registry."""
-    return _wrap_parse(lambda: parser.parse_entity_registry(path), path)
+    return cast(EntityRegistry, _wrap_parse(lambda: parser.parse_entity_registry(path), path))
 
 
 @implements_adr("ADR-L-0013")
@@ -85,8 +168,7 @@ def _wrap_parse(loader: Any, path: Path) -> Any:
 def _canonicalize_payload(value: Any, *, parent_key: str | None = None) -> Any:
     if isinstance(value, dict):
         return {
-            key: _canonicalize_payload(item, parent_key=key)
-            for key, item in sorted(value.items())
+            key: _canonicalize_payload(item, parent_key=key) for key, item in sorted(value.items())
         }
 
     if isinstance(value, list):
@@ -104,7 +186,9 @@ def _list_sort_key(parent_key: str | None, items: list[Any]):
         return None
 
     if all(not isinstance(item, (dict, list)) for item in items):
-        return lambda item: json.dumps(item, sort_keys=True, separators=(",", ":"), ensure_ascii=True)
+        return lambda item: json.dumps(
+            item, sort_keys=True, separators=(",", ":"), ensure_ascii=True
+        )
 
     if all(isinstance(item, dict) and "id" in item for item in items):
         return lambda item: str(item["id"])
@@ -136,6 +220,8 @@ def _list_sort_key(parent_key: str | None, items: list[Any]):
         "domains",
         "tags",
     }:
-        return lambda item: json.dumps(item, sort_keys=True, separators=(",", ":"), ensure_ascii=True)
+        return lambda item: json.dumps(
+            item, sort_keys=True, separators=(",", ":"), ensure_ascii=True
+        )
 
     return None

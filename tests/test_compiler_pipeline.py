@@ -39,6 +39,7 @@ def test_default_frontend_pipeline_pass_order():
 
     assert [pipeline_pass.name for pipeline_pass in pipeline.passes] == [
         "adr_parse",
+        "version_detection",
         "adr_normalization",
         "logical_entity_extraction",
         "invariant_extraction",

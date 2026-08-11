@@ -40,8 +40,11 @@ def test_parser_discovers_all_schema_lines_from_package_resources() -> None:
     assert parser.schema_dir.name == "v1_0"
     assert parser.schema_v11_dir.name == "v1_1"
     assert parser.schema_v12_dir.name == "v1_2"
+    assert parser.schema_v13_dir.name == "v1_3"
     assert (parser.schema_v12_dir / "adr-logical.schema.json").is_file()
     assert (parser.schema_v12_dir / "adr-physical-system.schema.json").is_file()
+    assert (parser.schema_v13_dir / "adr-logical.schema.json").is_file()
+    assert (parser.schema_v13_dir / "adr-physical-system.schema.json").is_file()
 
 
 def test_v1_0_fixture_still_parses_and_v1_1_artifact_stays_loadable() -> None:
@@ -53,15 +56,27 @@ def test_v1_0_fixture_still_parses_and_v1_1_artifact_stays_loadable() -> None:
     )
 
     assert logical.schema_version == "1.0"
-    assert registry.schema_version == "1.1"
+    # Current golden corpus is model 2.0 after the v1.3 identity migration.
+    assert registry.schema_version == "2.0"
+    # Legacy 1.1 registry parsing remains available for migration consumers.
+    legacy = parser.parse_normalized_entity_registry_from_data(
+        "\n".join(
+            [
+                "schema_version: '1.1'",
+                "type: normalized_entity_registry",
+                "entities: []",
+            ]
+        )
+    )
+    assert legacy.schema_version == "1.1"
 
 
 def test_capability_manifest_reports_v1_2_as_provisional_without_promoting_v1_1() -> None:
     manifest = capabilities()
 
-    assert manifest.supported_adr_schema_versions == ("1.0", "1.1", "1.2")
+    assert manifest.supported_adr_schema_versions == ("1.0", "1.1", "1.2", "1.3")
     assert manifest.stable_adr_schema_versions == ("1.0",)
-    assert manifest.provisional_adr_schema_versions == ("1.1", "1.2")
+    assert manifest.provisional_adr_schema_versions == ("1.1", "1.2", "1.3")
 
 
 def test_valid_v1_2_logical_and_topology_fixtures_parse() -> None:
@@ -82,7 +97,7 @@ def test_valid_v1_2_logical_and_topology_fixtures_parse() -> None:
     assert physical_system.component_topology.components[0].id == "TOPO-0001"
 
 
-@pytest.mark.parametrize("version", ["1.1", "1.3", "2.0"])
+@pytest.mark.parametrize("version", ["1.1", "2.0"])
 def test_authoring_version_dispatch_rejects_non_authoring_lines(
     tmp_path: Path, version: str
 ) -> None:
@@ -93,6 +108,18 @@ def test_authoring_version_dispatch_rejects_non_authoring_lines(
     )
 
     with pytest.raises(ADRParseError, match=f"Unsupported ADR schema_version '{version}'"):
+        ADRParser().parse_logical_adr(path)
+
+
+def test_v1_3_minimal_without_identity_fails(tmp_path: Path) -> None:
+    """A v1.0-shaped fixture relabeled to 1.3 must fail schema validation."""
+    source = (FIXTURES / "valid" / "logical-minimal.yaml").read_text(encoding="utf-8")
+    path = tmp_path / "v13-missing-identity.yaml"
+    path.write_text(
+        source.replace('schema_version: "1.0"', 'schema_version: "1.3"'), encoding="utf-8"
+    )
+
+    with pytest.raises(ADRSchemaValidationError):
         ADRParser().parse_logical_adr(path)
 
 

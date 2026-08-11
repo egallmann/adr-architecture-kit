@@ -623,7 +623,15 @@ def test_real_corpus_m02_projection_against_repo_authority() -> None:
         journal_id=IDENTITY_V13_JOURNAL_ID,
     )
     assert errors == []
-    # Unscoped CAP-0001 description preserved
-    before_cap = next(item for item in before["capabilities"] if item["id"] == "CAP-0001")
-    after_cap = next(item for item in after["capabilities"] if item["id"] == "CAP-0001")
+    # Unscoped CAP-0001 description preserved (match by id or alias_id)
+    before_cap = next(
+        item
+        for item in before["capabilities"]
+        if item.get("id") == "CAP-0001" or item.get("alias_id") == "CAP-0001"
+    )
+    after_cap = next(
+        item
+        for item in after["capabilities"]
+        if item.get("id") == "CAP-0001" or item.get("alias_id") == "CAP-0001"
+    )
     assert before_cap == after_cap

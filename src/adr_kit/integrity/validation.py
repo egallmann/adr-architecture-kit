@@ -64,7 +64,7 @@ class GeneratedArtifactValidator:
         self.scope_resolver = scope_resolver or ProjectScopeResolver()
 
     def enumerate_scope_artifacts(self, scope: ProjectScope) -> list[GeneratedArtifact]:
-        rendered_dir = scope.adr_dir / "rendered"
+        projection_dir = scope.adr_dir / "adr-projection"
         artifacts: list[GeneratedArtifact] = []
         if scope.manifest_path.exists():
             artifacts.append(GeneratedArtifact(scope.manifest_path, ArtifactKind.MANIFEST, scope))
@@ -77,8 +77,12 @@ class GeneratedArtifactValidator:
         system_overview_path = scope.root / "SYSTEM-OVERVIEW.md"
         if system_overview_path.exists():
             artifacts.append(GeneratedArtifact(system_overview_path, ArtifactKind.SYSTEM_OVERVIEW, scope))
-        for path in sorted(rendered_dir.glob("*.md")) if rendered_dir.exists() else []:
-            if path.is_file() and not path.is_symlink():
+        if projection_dir.exists():
+            for path in sorted(projection_dir.rglob("*.md")):
+                if not path.is_file() or path.is_symlink():
+                    continue
+                if path.name == "README.md":
+                    continue
                 artifacts.append(GeneratedArtifact(path, ArtifactKind.RENDERED_ADR_MARKDOWN, scope))
         return artifacts
 

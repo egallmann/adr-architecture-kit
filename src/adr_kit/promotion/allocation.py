@@ -20,7 +20,15 @@ def _scan_ids(project_root: Path, prefix: str) -> set[str]:
     if not adrs.is_dir():
         return found
     for path in adrs.rglob("*.yaml"):
-        if "index" in path.parts or path.parent.name in {"entities", "rendered"}:
+        if (
+            "index" in path.parts
+            or "adr-projection" in path.parts
+            or path.parent.name
+            in {
+                "entities",
+                "rendered",
+            }
+        ):
             continue
         text = path.read_text(encoding="utf-8", errors="replace")
         found.update(pattern.findall(text))

@@ -5,8 +5,8 @@ artifact_kind: system_overview
 generator_id: adr-system-overview
 generator_version: 1
 hash_algorithm: sha256
-source_hash: 4a18ff8c1b7e42d647ff7b046cd4d06531983a87b514226866612df1b493cde4
-rendered_hash: 456aca28f8f1b6af359b98f724eb92ff2304328756033ad1585a5a0af96e33f8
+source_hash: d6310a07264f84ec9086c757e2a02b29b847addede1bab10d733927139d0dcf1
+rendered_hash: aeccdbea25cecf930e54ebe84eb41dd2310710e831df25f514754fd094312a3c
 -->
 
 <!--
@@ -104,7 +104,7 @@ Primary CLI capabilities:
 - `adr generate-manifest`
 - `adr generate-architecture-index`
 - `adr normalize-canonical-ids`
-- `adr generate-rendered-docs`
+- `adr generate-adr-projection`
 - `adr validate`
 - `adr validate-generated-docs`
 - `adr scope`
@@ -126,7 +126,7 @@ Repository artifact classes:
 - Derived manifest and discovery aid: [`adrs/manifest.yaml`](adrs/manifest.yaml)
 - Legacy compatibility registry: [`adrs/entities/registry.yaml`](adrs/entities/registry.yaml)
 - ADR-derived IR publication example: [`dist/architecture-ir/`](dist/architecture-ir/)
-- Rendered ADR markdown: [`adrs/rendered/`](adrs/rendered/)
+- ADR human projections: [`adrs/adr-projection/`](adrs/adr-projection/)
 - Stable schemas: [`schema/v1.0/`](schema/v1.0/); draft schemas: [`schema/v1.1/`](schema/v1.1/)
 - Project metadata: [`PROJECT.yaml`](PROJECT.yaml)
 - AI-first overview: [`SYSTEM-OVERVIEW.md`](SYSTEM-OVERVIEW.md)
@@ -174,13 +174,13 @@ Run `adr generate-architecture-index`. Treat `adrs/index/` as the primary reposi
 
 Run `adr generate-manifest` or `adr generate-manifest --recursive`. Treat `manifest.yaml` as a discovery and freshness aid, not semantic authority.
 
-### Generate rendered ADR markdown
+### Generate ADR human projections
 
-Run `adr generate-rendered-docs`. Do not hand-edit files under `adrs/rendered/`.
+Run `adr generate-adr-projection` (or compatibility alias `adr generate-rendered-docs`). Do not hand-edit files under `adrs/adr-projection/`.
 
 ### Validate generated documentation
 
-Run `adr validate-generated-docs` after regenerating manifest or rendered ADR markdown artifacts. This does not validate `README.md` or `SYSTEM-OVERVIEW.md`.
+Run `adr validate-generated-docs` after regenerating manifest or ADR human projection artifacts. This does not validate `README.md` or `SYSTEM-OVERVIEW.md`.
 
 ### Validate compiled contract profiles
 

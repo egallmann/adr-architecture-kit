@@ -54,7 +54,7 @@ def test_compiler_manifest_renderer_matches_generator_header():
 def test_compiler_markdown_renderer_matches_generator_body_and_inputs():
     scope = ProjectScopeResolver().resolve()
     parser = ADRParser()
-    artifact_path = Path("adrs/rendered/ADR-L-0001.md")
+    artifact_path = Path("adrs/adr-projection/logical/ADR-L-0001-ste-compliant-machine-verifiable-architecture-decision-record-system.md")
 
     body, source_inputs = render_existing_markdown_artifact(
         artifact_path,
@@ -70,7 +70,7 @@ def test_compiler_markdown_renderer_matches_generator_body_and_inputs():
 def test_compiler_markdown_renderer_matches_generator_header():
     scope = ProjectScopeResolver().resolve()
     parser = ADRParser()
-    artifact_path = Path("adrs/rendered/ADR-L-0001.md")
+    artifact_path = Path("adrs/adr-projection/logical/ADR-L-0001-ste-compliant-machine-verifiable-architecture-decision-record-system.md")
     body, source_inputs = render_existing_markdown_artifact(
         artifact_path,
         scope=scope,

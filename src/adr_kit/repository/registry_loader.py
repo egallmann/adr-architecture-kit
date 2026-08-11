@@ -214,6 +214,7 @@ def _list_sort_key(parent_key: str | None, items: list[Any]):
         "governs",
         "implemented_by",
         "embodied_in",
+        "implements_logical",
         "supersedes",
         "superseded_by",
         "refines",

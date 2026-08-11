@@ -4,8 +4,8 @@
 # generator_id: adr-compiler
 # generator_version: 1
 # hash_algorithm: sha256
-# source_hash: c93f1e13167617fdd6a1df33857172af508ad3d3650fe693504d16ff06d1eb68
-# rendered_hash: ff53ec4610ba88b71cbb72062fad7ab90fb0315538a83049371c2165ae2036c3
+# source_hash: 22954e3dce40beb596583d8206bda7bf672d22d71ad25bd21b8c375a0c187f74
+# rendered_hash: b3658298462c651365fe24d9eeab5c80a144f673f52a124bc48718776cb81455
 
 schema_version: '1.1'
 type: entity_registry
@@ -2709,6 +2709,39 @@ entities:
   domains: []
   related_adrs:
   - ADR-L-0019
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: DEC-0108
+  entity_type: decision
+  name: Emit ADR human projections under typed adr-projection paths with stable SDK
+    artifact identity
+  introduced_by: ADR-L-0007
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0007-deterministic-documentation-projection.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs:
+  - ADR-L-0007
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: DEC-0109
+  entity_type: decision
+  name: Human ADR projections render compiler-derived relationship semantics only
+  introduced_by: ADR-L-0007
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0007-deterministic-documentation-projection.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs:
+  - ADR-L-0007
   realized_by: []
   relationships:
     depends_on: []

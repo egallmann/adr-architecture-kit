@@ -63,6 +63,7 @@ system_boundaries:
   - adr compile
   - adr generate-architecture-index
   - adr generate-manifest
+  - adr generate-adr-projection
   - adr generate-rendered-docs
   - adr generate-entity-registry
   - adr entities *

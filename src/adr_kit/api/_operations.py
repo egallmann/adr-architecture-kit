@@ -96,12 +96,14 @@ def _compiler_diagnostic(project_root: Path, item: object) -> Diagnostic:
 def _artifact_group(relative_path: str) -> str:
     if relative_path == "adrs/manifest.yaml":
         return "manifest"
-    if relative_path.startswith("adrs/rendered/"):
+    if relative_path.startswith("adrs/rendered/") or relative_path.startswith(
+        "adrs/adr-projection/"
+    ):
         return "markdown"
     return "registries"
 
 
-def _artifact_id(relative_path: str) -> str:
+def _artifact_id(relative_path: str, *, logical_id: str | None = None) -> str:
     identities = {
         "adrs/manifest.yaml": "manifest",
         "adrs/index/architecture-index.yaml": "architecture-index",
@@ -117,6 +119,12 @@ def _artifact_id(relative_path: str) -> str:
     }
     if relative_path in identities:
         return identities[relative_path]
+    if relative_path.startswith("adrs/adr-projection/") and relative_path.endswith(".md"):
+        if not logical_id:
+            raise OperationError(
+                f"Markdown projection artifact missing logical_id for path: {relative_path}"
+            )
+        return f"rendered-adr:{logical_id}"
     if relative_path.startswith("adrs/rendered/") and relative_path.endswith(".md"):
         return f"rendered-adr:{Path(relative_path).stem}"
     raise OperationError(f"Unsupported emitted artifact path: {relative_path}")
@@ -326,7 +334,10 @@ def compile_architecture(request: CompilationRequest) -> CompilationResult:
             sorted(
                 (
                     ArtifactDescriptor(
-                        artifact_id=_artifact_id(item.path.as_posix()),
+                        artifact_id=_artifact_id(
+                            item.path.as_posix(),
+                            logical_id=getattr(item, "logical_id", None),
+                        ),
                         group=_artifact_group(item.path.as_posix()),
                         kind=item.kind,
                         relative_path=item.path.as_posix(),

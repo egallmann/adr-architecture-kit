@@ -845,6 +845,41 @@
         }
       ]
     },
+    "generate-adr-projection": {
+      "help": "Generate ADR human projection markdown under adrs/adr-projection/.",
+      "params": [
+        {
+          "count": false,
+          "default": "Sentinel.UNSET",
+          "is_flag": false,
+          "kind": "Option",
+          "multiple": false,
+          "name": "scope",
+          "nargs": 1,
+          "opts": [
+            "--scope"
+          ],
+          "required": false,
+          "secondary_opts": [],
+          "type": "directory"
+        },
+        {
+          "count": false,
+          "default": false,
+          "is_flag": true,
+          "kind": "Option",
+          "multiple": false,
+          "name": "recursive",
+          "nargs": 1,
+          "opts": [
+            "--recursive"
+          ],
+          "required": false,
+          "secondary_opts": [],
+          "type": "boolean"
+        }
+      ]
+    },
     "generate-architecture-index": {
       "help": "Generate normalized architecture discovery artifacts under adrs/index/.",
       "params": [
@@ -1206,7 +1241,7 @@
       ]
     },
     "generate-rendered-docs": {
-      "help": "Generate rendered ADR markdown artifacts with integrity headers.",
+      "help": "Compatibility alias for generate-adr-projection.",
       "params": [
         {
           "count": false,

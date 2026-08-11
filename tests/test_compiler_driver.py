@@ -190,7 +190,7 @@ def test_architecture_compiler_dry_run_emits_default_artifacts(tmp_path):
     assert "adrs/entities/registry.yaml" in artifact_paths
     assert "adrs/manifest.yaml" in artifact_paths
     assert "adrs/index/architecture-graph.yaml" not in artifact_paths
-    assert any(path.startswith("adrs/rendered/") and path.endswith(".md") for path in artifact_paths)
+    assert any(path.startswith("adrs/adr-projection/") and path.endswith(".md") for path in artifact_paths)
     assert not (workspace / "adrs" / "index" / "architecture-index.yaml").exists()
     assert result.statistics.artifacts_emitted == len(result.artifacts)
 

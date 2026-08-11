@@ -47,6 +47,7 @@ class OutputArtifact:
     content: bytes
     kind: str
     integrity_header: str | None = None
+    logical_id: str | None = None
 
 
 @dataclass(frozen=True)
@@ -421,6 +422,7 @@ class ArchitectureCompiler:
                 content=item.content,
                 kind=item.kind,
                 integrity_header=item.integrity_header,
+                logical_id=item.logical_id,
             )
             for item in emitted
         ]

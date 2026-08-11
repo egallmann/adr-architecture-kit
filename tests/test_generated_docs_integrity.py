@@ -114,7 +114,9 @@ def test_generate_and_validate_rendered_docs_cli(tmp_path):
     render_result = runner.invoke(cli, ["generate-rendered-docs", "--scope", str(workspace)])
     assert render_result.exit_code == 0, render_result.output
 
-    rendered_file = workspace / "adrs" / "rendered" / "ADR-L-9999.md"
+    rendered_files = sorted((workspace / "adrs" / "adr-projection").rglob("ADR-L-9999*.md"))
+    assert rendered_files, "expected ADR-L-9999 projection"
+    rendered_file = rendered_files[0]
     rendered_header = parse_integrity_header(rendered_file.read_text(encoding="utf-8"))
     assert rendered_header["artifact_kind"] == "rendered_adr_markdown"
     graph_header = parse_integrity_header((workspace / "adrs" / "index" / "architecture-graph.yaml").read_text(encoding="utf-8"))
@@ -135,7 +137,9 @@ def test_validate_generated_docs_reports_tampered_output(tmp_path):
     assert runner.invoke(cli, ["generate-manifest", "--scope", str(workspace)]).exit_code == 0
     assert runner.invoke(cli, ["generate-entity-registry", "--scope", str(workspace)]).exit_code == 0
     assert runner.invoke(cli, ["generate-rendered-docs", "--scope", str(workspace)]).exit_code == 0
-    rendered_file = workspace / "adrs" / "rendered" / "ADR-L-9999.md"
+    rendered_files = sorted((workspace / "adrs" / "adr-projection").rglob("ADR-L-9999*.md"))
+    assert rendered_files
+    rendered_file = rendered_files[0]
     rendered_file.write_text(
         rendered_file.read_text(encoding="utf-8") + "\nmanual edit\n",
         encoding="utf-8",

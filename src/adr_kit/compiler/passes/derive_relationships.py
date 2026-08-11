@@ -178,6 +178,40 @@ def derive_relationships(
         for related in adr.related_adrs:
             if related in entities:
                 add_relationship("references", adr.id, related, adr.id, [adr.id])
+        for target in field_list(adr, "supersedes"):
+            if target in entities:
+                add_relationship("supersedes", adr.id, target, adr.id, [adr.id])
+                add_relationship(
+                    "superseded_by",
+                    target,
+                    adr.id,
+                    adr.id,
+                    [adr.id],
+                    classification="derived",
+                )
+        superseded_by = field_get(adr, "superseded_by")
+        if isinstance(superseded_by, str) and superseded_by in entities:
+            add_relationship("superseded_by", adr.id, superseded_by, adr.id, [adr.id])
+            add_relationship(
+                "supersedes",
+                superseded_by,
+                adr.id,
+                adr.id,
+                [adr.id],
+                classification="derived",
+            )
+        elif superseded_by:
+            for target in field_list(adr, "superseded_by"):
+                if target in entities:
+                    add_relationship("superseded_by", adr.id, target, adr.id, [adr.id])
+                    add_relationship(
+                        "supersedes",
+                        target,
+                        adr.id,
+                        adr.id,
+                        [adr.id],
+                        classification="derived",
+                    )
         for capability in adr.capabilities:
             for component_id in capability.implemented_by_components:
                 if component_id in entities:
@@ -400,6 +434,39 @@ def derive_relationships(
             )
 
     for physical_adr, _ in physical_adrs:
+        for logical_id in field_list(physical_adr, "implements_logical"):
+            if logical_id in entities:
+                add_relationship(
+                    "implements_logical",
+                    physical_adr.id,
+                    logical_id,
+                    physical_adr.id,
+                    [physical_adr.id],
+                )
+        for target in field_list(physical_adr, "supersedes"):
+            if target in entities:
+                add_relationship("supersedes", physical_adr.id, target, physical_adr.id, [physical_adr.id])
+                add_relationship(
+                    "superseded_by",
+                    target,
+                    physical_adr.id,
+                    physical_adr.id,
+                    [physical_adr.id],
+                    classification="derived",
+                )
+        superseded_by = field_get(physical_adr, "superseded_by")
+        if isinstance(superseded_by, str) and superseded_by in entities:
+            add_relationship(
+                "superseded_by", physical_adr.id, superseded_by, physical_adr.id, [physical_adr.id]
+            )
+            add_relationship(
+                "supersedes",
+                superseded_by,
+                physical_adr.id,
+                physical_adr.id,
+                [physical_adr.id],
+                classification="derived",
+            )
         if is_physical_component_adr(physical_adr):
             for component in field_list(physical_adr, "component_specifications"):
                 component_id = field_get(component, "component_id") or field_get(component, "id")

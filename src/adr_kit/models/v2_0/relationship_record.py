@@ -23,6 +23,7 @@ RelationshipTypeV2 = Literal[
     "governs",
     "implemented_by",
     "embodied_in",
+    "implements_logical",
     "supersedes",
     "superseded_by",
     "refines",

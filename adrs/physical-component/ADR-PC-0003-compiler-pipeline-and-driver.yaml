@@ -88,6 +88,7 @@ component_specifications:
 
       - adr generate-manifest
 
+      - adr generate-adr-projection
       - adr generate-rendered-docs
 
       '

@@ -1884,6 +1884,7 @@ def entities_aliases(scope: Optional[Path]) -> None:
             "governs",
             "implemented_by",
             "embodied_in",
+            "implements_logical",
             "supersedes",
             "superseded_by",
             "refines",
@@ -2248,7 +2249,22 @@ def generate_system_overview(output: Path):
         sys.exit(1)
 
 
-@implements_adr("ADR-L-0002", "ADR-L-0013")
+@implements_adr("ADR-L-0002", "ADR-L-0013", "ADR-L-0007")
+@cli.command("generate-adr-projection")
+@click.option(
+    "--scope",
+    type=click.Path(exists=True, file_okay=False, path_type=Path),
+    help="Explicit project scope (overrides auto-detection)",
+)
+@click.option(
+    "--recursive", is_flag=True, help="Generate ADR human projections for all scopes recursively"
+)
+def generate_adr_projection(scope: Optional[Path], recursive: bool):
+    """Generate ADR human projection markdown under adrs/adr-projection/."""
+    _generate_adr_projection_docs(scope=scope, recursive=recursive, label="ADR projection")
+
+
+@implements_adr("ADR-L-0002", "ADR-L-0013", "ADR-L-0007")
 @cli.command("generate-rendered-docs")
 @click.option(
     "--scope",
@@ -2256,10 +2272,14 @@ def generate_system_overview(output: Path):
     help="Explicit project scope (overrides auto-detection)",
 )
 @click.option(
-    "--recursive", is_flag=True, help="Generate rendered ADR markdown for all scopes recursively"
+    "--recursive", is_flag=True, help="Generate ADR human projections for all scopes recursively"
 )
 def generate_rendered_docs(scope: Optional[Path], recursive: bool):
-    """Generate rendered ADR markdown artifacts with integrity headers."""
+    """Compatibility alias for generate-adr-projection."""
+    _generate_adr_projection_docs(scope=scope, recursive=recursive, label="rendered docs")
+
+
+def _generate_adr_projection_docs(*, scope: Optional[Path], recursive: bool, label: str) -> None:
     try:
         resolver = ProjectScopeResolver(explicit_scope=scope)
         compiler = ArchitectureCompiler(scope_resolver=resolver)
@@ -2271,7 +2291,7 @@ def generate_rendered_docs(scope: Optional[Path], recursive: bool):
                 raise ValueError("Architecture compilation failed")
             total = 0
             for scoped in workspace_result.scope_results:
-                click.echo(f"Generating rendered docs for {scoped.scope.name}...")
+                click.echo(f"Generating {label} for {scoped.scope.name}...")
                 markdown_artifacts = sorted(
                     (
                         artifact
@@ -2283,10 +2303,10 @@ def generate_rendered_docs(scope: Optional[Path], recursive: bool):
                 for artifact in markdown_artifacts:
                     click.echo(f"  Generated: {scoped.scope.root / artifact.path}")
                 total += len(markdown_artifacts)
-            click.echo(f"\nGenerated {total} rendered ADR markdown artifact(s)")
+            click.echo(f"\nGenerated {total} ADR human projection artifact(s)")
         else:
             detected_scope = resolver.resolve()
-            click.echo(f"Generating rendered docs for {detected_scope.name}...")
+            click.echo(f"Generating {label} for {detected_scope.name}...")
             result = compiler.compile(
                 detected_scope,
                 CompilerConfig(emit={"markdown"}),
@@ -2299,7 +2319,7 @@ def generate_rendered_docs(scope: Optional[Path], recursive: bool):
             )
             for artifact in markdown_artifacts:
                 click.echo(f"  Generated: {detected_scope.root / artifact.path}")
-            click.echo(f"\nGenerated {len(markdown_artifacts)} rendered ADR markdown artifact(s)")
+            click.echo(f"\nGenerated {len(markdown_artifacts)} ADR human projection artifact(s)")
     except Exception as e:
         click.echo(f"Error: {e}", err=True)
         sys.exit(1)

@@ -664,6 +664,18 @@ allocations:
   file_path: adrs/logical/ADR-L-0007-deterministic-documentation-projection.yaml
   source_pointer: /decisions/2/id
   state: active
+- id: DEC-0108
+  entity_type: decision
+  adr_id: ADR-L-0007
+  file_path: adrs/logical/ADR-L-0007-deterministic-documentation-projection.yaml
+  source_pointer: /decisions/3/id
+  state: active
+- id: DEC-0109
+  entity_type: decision
+  adr_id: ADR-L-0007
+  file_path: adrs/logical/ADR-L-0007-deterministic-documentation-projection.yaml
+  source_pointer: /decisions/4/id
+  state: active
 - id: DEC-0027
   entity_type: decision
   adr_id: ADR-L-0008

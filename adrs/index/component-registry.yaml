@@ -45,6 +45,7 @@ entities:
     implemented_by: []
     embodied_in:
     - 019fee89-e618-713e-a017-5b417ef9ac9f
+    implements_logical: []
     supersedes: []
     superseded_by: []
     refines: []
@@ -108,6 +109,7 @@ entities:
     implemented_by: []
     embodied_in:
     - 019fee89-e618-713e-a017-5b417ef9ac9f
+    implements_logical: []
     supersedes: []
     superseded_by: []
     refines: []
@@ -173,6 +175,7 @@ entities:
     implemented_by: []
     embodied_in:
     - 019fee89-e618-79df-a73f-edc9dead8526
+    implements_logical: []
     supersedes: []
     superseded_by: []
     refines: []
@@ -235,6 +238,7 @@ entities:
     implemented_by: []
     embodied_in:
     - 019fee89-e618-713e-a017-5b417ef9ac9f
+    implements_logical: []
     supersedes: []
     superseded_by: []
     refines: []
@@ -298,6 +302,7 @@ entities:
     implemented_by: []
     embodied_in:
     - 019fee89-e618-713e-a017-5b417ef9ac9f
+    implements_logical: []
     supersedes: []
     superseded_by: []
     refines: []
@@ -360,6 +365,7 @@ entities:
     implemented_by: []
     embodied_in:
     - 019fee89-e618-713e-a017-5b417ef9ac9f
+    implements_logical: []
     supersedes: []
     superseded_by: []
     refines: []

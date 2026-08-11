@@ -19,7 +19,7 @@ tags:
 context: 'The repository already treats several human-readable artifacts as derived
   state:
 
-  ADR markdown renderings, manifest summaries, and the AI-first SYSTEM-OVERVIEW
+  ADR human projections under adrs/adr-projection/, manifest summaries, and the AI-first SYSTEM-OVERVIEW
 
   are generated from structured or code-defined sources. That behavior now needs
 
@@ -54,7 +54,7 @@ context: 'The repository already treats several human-readable artifacts as deri
 
   including:
 
-  - ADR markdown renderings
+  - ADR human projections (adrs/adr-projection/)
 
   - SYSTEM-OVERVIEW
 
@@ -179,6 +179,70 @@ decisions:
   - 019fee89-e616-77e0-992d-25764a1ed5a2
   alias_id: DEC-0026
   alias_name: require-generator-validator-test-and-ci-enforcement-for-documentation-projection
+- id: 019ff142-dd48-72ff-9e3f-81ca4a779db7
+  summary: Emit ADR human projections under typed adr-projection paths with stable
+    SDK artifact identity
+  rationale: 'Human-facing ADR markdown must be navigable after UUID machine identity.
+
+    Projections live under adrs/adr-projection/{logical,physical,physical-system,physical-component}/
+
+    with filenames {alias_id}-{slug}.md. The SDK markdown group remains markdown;
+
+    artifact_kind remains rendered_adr_markdown; logical artifact_id is
+
+    rendered-adr:{adr.id} and must not become slug-dependent. relative_path values
+
+    migrate intentionally; generate-adr-projection is preferred with
+
+    generate-rendered-docs retained as a compatibility alias. Hard cutover replaces
+
+    adrs/rendered/ after the new tree validates. Projections remain disposable and
+
+    non-authoritative.
+
+    '
+  consequences:
+    positive:
+    - Humans can locate and navigate ADR projections by alias and type
+    - SDK logical identity stays stable across title/slug changes
+    - Path migration is explicit and regenerable
+    negative:
+    - Existing relative_path consumers must accept the adr-projection layout
+  related_invariants:
+  - 019fee89-e616-7bf6-a63f-2fdbec175790
+  - 019fee89-e616-7abd-ad17-f29edbd30959
+  - 019fee89-e616-77e0-992d-25764a1ed5a2
+  alias_id: DEC-0108
+  alias_name: emit-adr-human-projections-under-typed-adr-projection-paths
+- id: 019ff142-dd48-7ef8-8d3e-576f4bb02dc3
+  summary: Human ADR projections render compiler-derived relationship semantics only
+  rationale: 'The human projection must not invent a second relationship ontology.
+
+    Mermaid edges and peer-card relationship verbs come from shared compiler
+
+    derivation (RelGraph / RelationshipType). Required gap closes include ADR-level
+
+    supersedes/superseded_by and implements_logical as a first-class RelationshipType
+
+    (implementing ADR to logical ADR). HumanAdrProjectionContext may enrich with
+
+    prose and aliases but must not reinterpret source fields into alternate graph
+
+    meaning. Presentation-only nesting is limited to the subject ADR authored body.
+
+    '
+  consequences:
+    positive:
+    - One relationship ontology for registries, graphs, and human projections
+    - Peer cards explain how ADRs relate using compiled verbs
+    - Integrity hashes cover the actual render dependency set
+    negative:
+    - Derivation and relationship-type surfaces must stay aligned when fields change
+  related_invariants:
+  - 019fee89-e616-7bf6-a63f-2fdbec175790
+  - 019fee89-e616-7abd-ad17-f29edbd30959
+  alias_id: DEC-0109
+  alias_name: human-adr-projections-render-compiler-derived-relationship-semantics-only
 constraints:
 - id: CONST-0001
   type: technical

@@ -1,4 +1,4 @@
-"""Compiler-owned rendered markdown helpers."""
+"""Compiler-owned ADR human projection markdown helpers."""
 
 from __future__ import annotations
 
@@ -7,6 +7,7 @@ from typing import Any, Union
 
 from jinja2 import Environment, FileSystemLoader
 
+from ...decorators import implements_adr
 from ...integrity import (
     ArtifactKind,
     GENERATED_MARKER,
@@ -22,21 +23,34 @@ from ...models import LogicalADR, PhysicalADR, PhysicalComponentADR, PhysicalSys
 from ...models.common import ADRType
 from ...parser import ADRParser
 from ...scope import ProjectScope
-from ..frontend.adr_access import adr_type_of, field_get, presentation_id
+from ..frontend.adr_access import adr_type_of, field_get
+from ..frontend.builder import ArchModelBuilder
+from ..pipeline import FrontendBuildResult
 from .common import EmittedArtifact
+from .human_adr_projection import (
+    HumanAdrProjectionContext,
+    build_human_adr_projection_context,
+    format_present_ref,
+)
+from .projection_paths import projection_relative_path, stem_matches_adr
 
 
-MARKDOWN_GENERATOR_IDENTITY = GeneratorIdentity("adr-rendered-markdown", 1)
+MARKDOWN_GENERATOR_IDENTITY = GeneratorIdentity("adr-projection-markdown", 2)
 DEFAULT_TEMPLATE_DIR = Path(__file__).resolve().parents[2] / "templates"
 
 
 def _jinja_presentation_id(value: Any) -> str:
-    """Jinja filter: prefer governed alias_id for human-facing markdown ids."""
+    from ..frontend.adr_access import presentation_id
+
     return presentation_id(value)
 
 
-def build_markdown_environment(template_dir: Path | None = None) -> Environment:
-    """Build the deterministic Jinja environment for rendered ADR markdown."""
+def build_markdown_environment(
+    template_dir: Path | None = None,
+    *,
+    ctx: HumanAdrProjectionContext | None = None,
+) -> Environment:
+    """Build the deterministic Jinja environment for ADR human projections."""
     resolved_template_dir = Path(template_dir or DEFAULT_TEMPLATE_DIR)
     env = Environment(
         loader=FileSystemLoader(str(resolved_template_dir)),
@@ -44,6 +58,17 @@ def build_markdown_environment(template_dir: Path | None = None) -> Environment:
         lstrip_blocks=True,
     )
     env.filters["presentation_id"] = _jinja_presentation_id
+
+    def present_ref_filter(value: Any) -> str:
+        ref_id = str(value)
+        if ctx is None:
+            return ref_id
+        ref = ctx.present_refs.get(ref_id)
+        if ref is None:
+            return ref_id
+        return format_present_ref(ref)
+
+    env.filters["present_ref"] = present_ref_filter
     return env
 
 
@@ -62,19 +87,21 @@ def template_path_for_adr(
     raise ValueError(f"Unknown ADR type: {type(adr)}")
 
 
+@implements_adr("ADR-L-0007")
 def render_adr_markdown(
     adr: Union[LogicalADR, PhysicalADR, PhysicalSystemADR, PhysicalComponentADR],
     *,
     template_dir: Path | None = None,
+    ctx: HumanAdrProjectionContext | None = None,
 ) -> str:
     """Render one ADR model to markdown."""
-    env = build_markdown_environment(template_dir)
+    env = build_markdown_environment(template_dir, ctx=ctx)
     template_name = template_path_for_adr(adr, template_dir=template_dir).name
-    return env.get_template(template_name).render(adr=adr)
+    return env.get_template(template_name).render(adr=adr, ctx=ctx)
 
 
 def discover_scope_adr_files(scope: ProjectScope) -> list[Path]:
-    """Discover canonical ADR source files for rendered markdown emission."""
+    """Discover canonical ADR source files for human projection emission."""
     files: list[Path] = []
     for directory in (
         scope.logical_dir,
@@ -84,7 +111,9 @@ def discover_scope_adr_files(scope: ProjectScope) -> list[Path]:
     ):
         if not directory.exists():
             continue
-        files.extend(sorted(path for path in directory.glob("*.yaml") if path.is_file() and not path.is_symlink()))
+        files.extend(
+            sorted(path for path in directory.glob("*.yaml") if path.is_file() and not path.is_symlink())
+        )
     return files
 
 
@@ -93,8 +122,11 @@ def markdown_source_inputs_for_adr(
     *,
     source_path: Path,
     template_dir: Path | None = None,
+    render_dependencies: list[Path | HashInput] | None = None,
 ) -> list[Path | HashInput]:
-    """Return the canonical source inputs for one rendered ADR markdown artifact."""
+    """Return the canonical source inputs for one ADR human projection artifact."""
+    if render_dependencies is not None:
+        return list(render_dependencies)
     template_path = template_path_for_adr(adr, template_dir=template_dir)
     return [
         source_path.resolve(),
@@ -124,20 +156,29 @@ def build_markdown_integrity_header(
     return build_markdown_header(header_fields)
 
 
-def _source_matches_rendered_stem(adr: Any, stem: str) -> bool:
-    """True when a rendered markdown stem matches UUID id or alias_id."""
-    return bool(field_get(adr, "id") == stem or field_get(adr, "alias_id") == stem)
+def _resolve_build_result(
+    *,
+    scope: ProjectScope,
+    build_result: FrontendBuildResult | None,
+) -> FrontendBuildResult:
+    if build_result is not None:
+        return build_result
+    return ArchModelBuilder().build_from_scope(scope)
 
 
+@implements_adr("ADR-L-0007")
 def render_existing_markdown_artifact(
     artifact_path: Path,
     *,
     scope: ProjectScope,
     parser: ADRParser,
     template_dir: Path | None = None,
+    build_result: FrontendBuildResult | None = None,
 ) -> tuple[str, list[Path | HashInput]]:
-    """Re-render an existing rendered ADR markdown artifact."""
-    adr_id = Path(artifact_path).stem
+    """Re-render an existing ADR human projection markdown artifact."""
+    stem = Path(artifact_path).stem
+    resolved_template_dir = Path(template_dir or DEFAULT_TEMPLATE_DIR)
+    frontend = _resolve_build_result(scope=scope, build_result=build_result)
     for directory in (
         scope.logical_dir,
         scope.physical_dir,
@@ -146,47 +187,60 @@ def render_existing_markdown_artifact(
     ):
         if not directory.exists():
             continue
-        matches = sorted(directory.glob(f"{adr_id}-*.yaml"))
-        if matches:
-            source_path = matches[0]
-            adr = parser.parse_adr(source_path)
-            body = render_adr_markdown(adr, template_dir=template_dir)
-            return body, markdown_source_inputs_for_adr(
-                adr, source_path=source_path, template_dir=template_dir
-            )
         for source_path in sorted(path for path in directory.glob("*.yaml") if path.is_file()):
             try:
                 adr = parser.parse_adr(source_path)
             except Exception:
                 continue
-            if not _source_matches_rendered_stem(adr, adr_id):
+            if not stem_matches_adr(adr, stem):
                 continue
-            body = render_adr_markdown(adr, template_dir=template_dir)
-            return body, markdown_source_inputs_for_adr(
-                adr, source_path=source_path, template_dir=template_dir
+            template_name = template_path_for_adr(adr, template_dir=resolved_template_dir).name
+            ctx = build_human_adr_projection_context(
+                adr=adr,
+                source_path=source_path,
+                scope=scope,
+                build_result=frontend,
+                template_dir=resolved_template_dir,
+                template_name=template_name,
             )
-    raise ValueError(f"Could not locate source ADR for rendered artifact: {artifact_path}")
+            body = render_adr_markdown(adr, template_dir=resolved_template_dir, ctx=ctx)
+            return body, list(ctx.render_dependencies)
+    raise ValueError(f"Could not locate source ADR for projection artifact: {artifact_path}")
 
 
+@implements_adr("ADR-L-0007")
 def emit_markdown_artifacts(
     *,
     parser: ADRParser,
     scope: ProjectScope,
     template_dir: Path | None = None,
+    build_result: FrontendBuildResult | None = None,
 ) -> list[EmittedArtifact]:
-    """Serialize rendered ADR markdown artifacts for the selected scope."""
+    """Serialize ADR human projection markdown artifacts for the selected scope."""
+    resolved_template_dir = Path(template_dir or DEFAULT_TEMPLATE_DIR)
+    frontend = _resolve_build_result(scope=scope, build_result=build_result)
     artifacts: list[EmittedArtifact] = []
     for source_path in discover_scope_adr_files(scope):
         adr = parser.parse_adr(source_path)
-        body = render_adr_markdown(adr, template_dir=template_dir)
-        source_inputs = markdown_source_inputs_for_adr(adr, source_path=source_path, template_dir=template_dir)
+        template_name = template_path_for_adr(adr, template_dir=resolved_template_dir).name
+        ctx = build_human_adr_projection_context(
+            adr=adr,
+            source_path=source_path,
+            scope=scope,
+            build_result=frontend,
+            template_dir=resolved_template_dir,
+            template_name=template_name,
+        )
+        body = render_adr_markdown(adr, template_dir=resolved_template_dir, ctx=ctx)
+        source_inputs = list(ctx.render_dependencies)
         header = build_markdown_integrity_header(scope, body, source_inputs)
         artifacts.append(
             EmittedArtifact(
-                path=Path("adrs/rendered") / f"{adr.id}.md",
+                path=projection_relative_path(adr),
                 content=(header + body).encode("utf-8"),
                 kind="markdown",
                 integrity_header=header,
+                logical_id=str(field_get(adr, "id")),
             )
         )
     return artifacts

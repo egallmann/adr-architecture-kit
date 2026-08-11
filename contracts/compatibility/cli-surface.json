@@ -487,6 +487,26 @@
       "help": "Query the generated architecture discovery bundle.",
       "params": []
     },
+    "entities aliases": {
+      "help": "List deterministic alias inventory for model 2.0 entities.",
+      "params": [
+        {
+          "count": false,
+          "default": "Sentinel.UNSET",
+          "is_flag": false,
+          "kind": "Option",
+          "multiple": false,
+          "name": "scope",
+          "nargs": 1,
+          "opts": [
+            "--scope"
+          ],
+          "required": false,
+          "secondary_opts": [],
+          "type": "directory"
+        }
+      ]
+    },
     "entities capabilities": {
       "help": "List capabilities from the generated registry.",
       "params": [
@@ -553,7 +573,7 @@
       ]
     },
     "entities get": {
-      "help": "Get an entity by exact ID.",
+      "help": "Get an entity by UUID, alias, URI, or auto compatibility lookup.",
       "params": [
         {
           "default": "Sentinel.UNSET",
@@ -562,6 +582,21 @@
           "nargs": 1,
           "required": true,
           "type": "text"
+        },
+        {
+          "count": false,
+          "default": "auto",
+          "is_flag": false,
+          "kind": "Option",
+          "multiple": false,
+          "name": "lookup_by",
+          "nargs": 1,
+          "opts": [
+            "--by"
+          ],
+          "required": false,
+          "secondary_opts": [],
+          "type": "choice"
         },
         {
           "count": false,
@@ -1352,6 +1387,101 @@
           "required": false,
           "secondary_opts": [],
           "type": "boolean"
+        }
+      ]
+    },
+    "migrate-identity-v13": {
+      "help": "Plan, seal-consume, check, or recover v1.3 identity migration.",
+      "params": [
+        {
+          "count": false,
+          "default": "Sentinel.UNSET",
+          "is_flag": false,
+          "kind": "Option",
+          "multiple": false,
+          "name": "scope",
+          "nargs": 1,
+          "opts": [
+            "--scope"
+          ],
+          "required": false,
+          "secondary_opts": [],
+          "type": "directory"
+        },
+        {
+          "count": false,
+          "default": "Sentinel.UNSET",
+          "is_flag": false,
+          "kind": "Option",
+          "multiple": false,
+          "name": "plan_out",
+          "nargs": 1,
+          "opts": [
+            "--plan-out"
+          ],
+          "required": false,
+          "secondary_opts": [],
+          "type": "path"
+        },
+        {
+          "count": false,
+          "default": "Sentinel.UNSET",
+          "is_flag": false,
+          "kind": "Option",
+          "multiple": false,
+          "name": "identity_map_path",
+          "nargs": 1,
+          "opts": [
+            "--identity-map"
+          ],
+          "required": false,
+          "secondary_opts": [],
+          "type": "file"
+        },
+        {
+          "count": false,
+          "default": false,
+          "is_flag": true,
+          "kind": "Option",
+          "multiple": false,
+          "name": "apply_migration",
+          "nargs": 1,
+          "opts": [
+            "--apply"
+          ],
+          "required": false,
+          "secondary_opts": [],
+          "type": "boolean"
+        },
+        {
+          "count": false,
+          "default": false,
+          "is_flag": true,
+          "kind": "Option",
+          "multiple": false,
+          "name": "check_migration",
+          "nargs": 1,
+          "opts": [
+            "--check"
+          ],
+          "required": false,
+          "secondary_opts": [],
+          "type": "boolean"
+        },
+        {
+          "count": false,
+          "default": "Sentinel.UNSET",
+          "is_flag": false,
+          "kind": "Option",
+          "multiple": false,
+          "name": "recover_journal",
+          "nargs": 1,
+          "opts": [
+            "--recover"
+          ],
+          "required": false,
+          "secondary_opts": [],
+          "type": "directory"
         }
       ]
     },

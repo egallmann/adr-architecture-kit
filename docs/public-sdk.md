@@ -16,8 +16,9 @@ from adr_kit.api import capabilities
 manifest = capabilities()
 print(manifest.package_version)
 print(manifest.api_contract_version)  # 1.0
-print(manifest.supported_adr_schema_versions)  # ('1.0', '1.1', '1.2')
-print(manifest.normalized_model_schema_version)  # 1.1
+print(manifest.supported_adr_schema_versions)  # ('1.0', '1.1', '1.2', '1.3')
+print(manifest.normalized_model_schema_version)  # 1.1 (native default)
+print(manifest.supported_normalized_model_schema_versions)  # ('1.1', '2.0')
 print(manifest.as_dict())
 ```
 
@@ -173,7 +174,9 @@ this facade. See [public surface and stability](public-surface-and-stability.md)
 the [promotion provider guide](promotion-provider.md), and the executable
 [consumer example](../examples/public_sdk_consumer.py).
 
-Schema v1.2 and topology migration are provisional package surfaces rather than
-new `adr_kit.api` exports. See [schema v1.2](schema-v1.2.md),
-[external bindings](external-bindings.md), and
+Additive API contract `1.0` symbols also include `NormalizedArchitectureModelV2`,
+`ProviderRegistry`, and `open_provider_registry` for UUID-era model 2.0 / federation
+lookup. Schema v1.3 and identity migration are provisional package surfaces. See
+[schema v1.3](schema-v1.3.md), [identity migration](identity-v13-migration.md),
+[schema v1.2](schema-v1.2.md), [external bindings](external-bindings.md), and
 [topology migration](topology-identity-migration.md).

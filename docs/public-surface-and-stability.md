@@ -30,10 +30,11 @@ as a new consumer contract.
 
 Provisional surfaces are public enough for careful integration but may evolve before
 promotion. They include `schema/v1.1/`, discovery/ledger/lifecycle/remediation
-extensions, provisional ADR authoring `schema/v1.2/`, normalized-model contract `1.1`,
-source-sensitive assertion identity, external binding projections, topology identity,
-subset registries, and the additive architecture graph. Provisional material must
-identify migration impact when it changes and is not promoted merely by implementation.
+extensions, provisional ADR authoring `schema/v1.2/` and `schema/v1.3/`, normalized-model
+contracts `1.1` and `2.0`, source-sensitive assertion identity, external binding
+projections, topology identity, subset registries, and the additive architecture graph.
+Provisional material must identify migration impact when it changes and is not promoted
+merely by implementation.
 
 ### Experimental
 

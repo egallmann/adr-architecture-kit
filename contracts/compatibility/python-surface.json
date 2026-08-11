@@ -11,6 +11,7 @@
     "Diagnostic",
     "InvalidRequestError",
     "NormalizedArchitectureModel",
+    "NormalizedArchitectureModelV2",
     "OperationError",
     "PromotionApplyRequest",
     "PromotionApplyResult",
@@ -24,6 +25,7 @@
     "PromotionPrepareRequest",
     "PromotionPrepareResult",
     "PromotionValidationEvidenceDescriptor",
+    "ProviderRegistry",
     "RepositoryError",
     "SDKError",
     "ValidationRequest",
@@ -32,6 +34,7 @@
     "capabilities",
     "check_promotion",
     "compile_architecture",
+    "open_provider_registry",
     "open_repository",
     "prepare_promotion",
     "validate_architecture"
@@ -60,6 +63,7 @@
     "IREntity",
     "IRRelationship",
     "IRUnresolved",
+    "MixedSchemaVersionError",
     "OutputArtifact",
     "ParsedCorpus",
     "QualifiedEntityId",
@@ -230,7 +234,10 @@
   "adr_kit.repository": [
     "ArchitectureRegistryError",
     "ArchitectureRepository",
-    "ContractBundleView"
+    "ContractBundleView",
+    "EntityAliasRecord",
+    "ProviderBinding",
+    "ProviderRegistry"
   ],
   "adr_kit.validators": [
     "ADRValidator",

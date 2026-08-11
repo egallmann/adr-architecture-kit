@@ -1,6 +1,6 @@
-schema_version: '1.0'
+schema_version: '1.3'
 adr_type: physical-component
-id: ADR-PC-0001
+id: 019fee89-e617-7270-ab2f-58a756d2530e
 title: Entity Registry and Discovery Index
 status: proposed
 created_date: '2026-03-13'
@@ -11,29 +11,39 @@ domains:
 - indexing
 - tooling
 implements_system:
-- ADR-PS-0001
+- 019fee89-e618-7b3e-813b-a449881b6adb
 implements_logical:
-- ADR-L-0009
-- ADR-L-0012
+- 019fee89-e616-770c-a025-2c241a720730
+- 019fee89-e616-744f-b63e-5ecddf344faa
 introduces_entities:
-- COMP-0010
-- IFACE-0011
-- IMPL-0011
+- 019fee89-e617-76d8-a333-e21361cd6602
+- 019fee89-e617-70e7-bb17-27b693ad01a8
+- 019fee89-e617-7ee7-9f1f-0a720dc4f1b0
 technologies:
 - python
 - pyyaml
 - click
-context: |
-  The discovery/indexing component now centers on the unified compiler path. It
+context: 'The discovery/indexing component now centers on the unified compiler path.
+  It
+
   generates the normalized discovery bundle under `adrs/index/`, emits the
+
   legacy compatibility registry at `adrs/entities/registry.yaml`, generates
+
   manifest and rendered ADR markdown outputs through the same compiler-owned
+
   path for single-scope use, and exposes exact-ID and filtered CLI query
+
   operations over generated registry state.
 
+
   It also serves as the file-format discovery surface for cross-language or
+
   out-of-process consumers such as `ste-runtime`, which must bootstrap from the
+
   indexed bundle rather than reparsing source ADRs.
+
+  '
 technology_stack:
 - category: language
   name: Python
@@ -48,19 +58,27 @@ technology_stack:
   version: 8.x
   rationale: Existing CLI framework for scope-aware commands.
 component_specifications:
-- id: COMP-0010
+- id: 019fee89-e617-76d8-a333-e21361cd6602
   name: Entity Registry Generator and Query Surface
   type: service
-  responsibilities: |
-    - Compile canonical ADR and invariant artifacts into a normalized discovery bundle
+  responsibilities: '- Compile canonical ADR and invariant artifacts into a normalized
+    discovery bundle
+
     - Emit deterministic `adrs/index/*.yaml` registry artifacts
+
     - Emit deterministic legacy compatibility registry output at `adrs/entities/registry.yaml`
-    - Support manifest and rendered markdown emission through the unified compile path
+
+    - Support manifest and rendered markdown emission through the unified compile
+    path
+
     - Provide CLI query access over generated registry state
+
     - Preserve an index-first discovery posture for cross-language consumers
+
+    '
   implements_capabilities:
-  - CAP-0018
-  - CAP-0044
+  - 019fee89-e616-7121-a63e-0baad0a61fb3
+  - 019fee89-e616-7d30-ae2e-6fee1dbb2712
   generation_context:
     purpose: Generate and query the normalized entity registry for agent discovery.
     key_responsibilities:
@@ -69,34 +87,50 @@ component_specifications:
     - Delegate single-scope generation commands through the unified compiler driver
     - Reject duplicate explicitly introduced entity IDs
     - Support exact entity lookup and filtered list operations from CLI
-    - Keep the required discovery bundle and additive indexed artifacts distinct for downstream consumers
+    - Keep the required discovery bundle and additive indexed artifacts distinct for
+      downstream consumers
     constraints:
     - Discovery outputs are derived and non-authoritative
     - Single-scope generation commands act as compatibility wrappers over `adr compile`
     - CLI must read generated registry artifacts instead of rescanning ADRs
     - Output must be deterministic when inputs are unchanged
-    - "Cross-language consumers bootstrap from `architecture-index.yaml` and the required registry bundle"
-    - "`manifest.yaml` is a guaranteed discovery and freshness surface, not a semantic authority"
-    - "`adrs/entities/registry.yaml` must remain compatibility-only for new consumers"
+    - Cross-language consumers bootstrap from `architecture-index.yaml` and the required
+      registry bundle
+    - '`manifest.yaml` is a guaranteed discovery and freshness surface, not a semantic
+      authority'
+    - '`adrs/entities/registry.yaml` must remain compatibility-only for new consumers'
     success_criteria:
     - Discovery bundle and legacy registry generation are deterministic
     - ADR-L-0008 entities are present in generated discovery output
     - CLI list/get/invariants/capabilities commands query the registry successfully
-    - Cross-language consumers can rely on the indexed bundle without needing raw ADR traversal
+    - Cross-language consumers can rely on the indexed bundle without needing raw
+      ADR traversal
   interfaces:
-  - id: IFACE-0011
+  - id: 019fee89-e617-70e7-bb17-27b693ad01a8
     type: CLI
-    specification: |
-      Commands:
+    specification: 'Commands:
+
       - adr compile
+
       - adr generate-architecture-index
+
       - adr generate-manifest
+
       - adr generate-rendered-docs
+
       - adr generate-entity-registry
+
       - adr entities list
+
       - adr entities get <id>
+
       - adr entities invariants
+
       - adr entities capabilities
+
+      '
+    alias_id: IFACE-0011
+    alias_name: iface-0011
   implementation_identifiers:
     module_path: src/adr_kit/compiler/driver.py
     service_name: adr-compiler
@@ -115,16 +149,30 @@ component_specifications:
         type: counter
     testing_requirements:
       unit_test_coverage: '>= 80%'
-      integration_tests: |
-        - Discovery bundle and legacy registry generation from logical, physical, physical-system, physical-component, and invariant sources
+      integration_tests: '- Discovery bundle and legacy registry generation from logical,
+        physical, physical-system, physical-component, and invariant sources
+
         - CLI query flows against generated registry artifacts
+
+        '
+  alias_id: COMP-0010
+  alias_name: entity-registry-generator-and-query-surface
 implementation_decisions:
-- id: IMPL-0011
+- id: 019fee89-e617-7ee7-9f1f-0a720dc4f1b0
   summary: Route single-scope discovery generation through the unified compiler driver
-  rationale: |
-    The unified compiler path keeps normalized registries, the legacy
+  rationale: 'The unified compiler path keeps normalized registries, the legacy
+
     compatibility registry, manifest generation, and rendered markdown emission
+
     aligned while preserving the older single-scope commands as compatibility
+
     wrappers. Registry backend emission remains compiler-owned rather than
+
     isolated in the older standalone registry generator.
+
+    '
+  alias_id: IMPL-0011
+  alias_name: route-single-scope-discovery-generation-through-the-unified-compiler-driver
 gaps: []
+alias_id: ADR-PC-0001
+alias_name: entity-registry-and-discovery-index

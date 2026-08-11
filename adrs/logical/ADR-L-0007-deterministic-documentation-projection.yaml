@@ -1,6 +1,6 @@
-schema_version: '1.0'
+schema_version: '1.3'
 adr_type: logical
-id: ADR-L-0007
+id: 019fee89-e615-7b9c-8e3f-32ceeda01491
 title: Deterministic Documentation Projection
 status: accepted
 created_date: '2026-03-12'
@@ -16,52 +16,89 @@ tags:
 - deterministic
 - ai-first
 - drift-prevention
-context: |
-  The repository already treats several human-readable artifacts as derived state:
+context: 'The repository already treats several human-readable artifacts as derived
+  state:
+
   ADR markdown renderings, manifest summaries, and the AI-first SYSTEM-OVERVIEW
+
   are generated from structured or code-defined sources. That behavior now needs
+
   explicit architectural authority so future contributors do not reintroduce
+
   manually maintained documentation that drifts from canonical artifacts.
 
+
   The canonical source of truth in this system is structured architecture state:
+
   ADR YAML, invariant YAML, project metadata, schema definitions, and generator
+
   source code where projection rules are intentionally encoded. Human-readable
+
   documentation exists to improve orientation and inspection, but it is not the
+
   authoritative state.
 
+
   Manual maintenance of generated documentation creates several risks:
+
   - drift between canonical artifacts and human-readable views
+
   - ambiguity over whether readers should trust rendered output or source artifacts
+
   - AI contributors missing generators and editing rendered outputs directly
+
   - inconsistent updates across manifest summaries, indexes, and overview files
 
+
   This rule applies to all human-readable architecture documentation projections,
+
   including:
+
   - ADR markdown renderings
+
   - SYSTEM-OVERVIEW
+
   - manifest summaries
+
   - architecture diagrams
+
   - documentation indexes
+
   - future documentation projections introduced later
 
+
   The repository therefore needs an explicit logical rule: structured artifacts
+
   are canonical, documentation renderings are derived, and projection consistency
+
   must be enforced through generators, validators, tests, and CI.
+
+  '
 decisions:
-- id: DEC-0012
+- id: 019fee89-e615-758b-b03f-e4a3dc338589
   summary: Treat human-readable architecture documentation as deterministic derived
     state
-  rationale: |
-    Structured architecture artifacts are the canonical source of truth in this
+  rationale: 'Structured architecture artifacts are the canonical source of truth
+    in this
+
     repository. Human-readable documentation is valuable for comprehension, but
+
     it must be a deterministic rendering derived from those structured artifacts
+
     rather than a parallel authority.
 
+
     This preserves:
+
     - doctrinal clarity about what is authoritative
+
     - deterministic regeneration of documentation from source state
+
     - drift prevention through validation and CI
+
     - reliable AI target discovery, because generators remain the primary workflow
+
+    '
   consequences:
     positive:
     - Canonical architecture state remains explicit and machine-verifiable
@@ -74,19 +111,28 @@ decisions:
     - Small wording changes in rendered documentation now require structured source
       changes
   related_invariants:
-  - INV-0037
-  - INV-0038
-  - INV-0039
-- id: DEC-0019
+  - 019fee89-e616-7bf6-a63f-2fdbec175790
+  - 019fee89-e616-7abd-ad17-f29edbd30959
+  - 019fee89-e616-77e0-992d-25764a1ed5a2
+  alias_id: DEC-0012
+  alias_name: treat-human-readable-architecture-documentation-as-deterministic-derived-state
+- id: 019fee89-e615-7e55-972f-14dd7da851c0
   summary: Prohibit manual edits to generated documentation
-  rationale: |
-    Once an artifact is declared generated, manual edits create ambiguity over
+  rationale: 'Once an artifact is declared generated, manual edits create ambiguity
+    over
+
     whether the generated output or the source artifact should be trusted. That
+
     ambiguity is architecturally unacceptable in a governance repository.
 
+
     Manual edits are therefore prohibited for generated documentation. Changes
+
     must be made by editing the structured source, generator, template, or
+
     projection rules, followed by regeneration and validation.
+
+    '
   consequences:
     positive:
     - Rendered artifacts stay traceable to their generation pipeline
@@ -95,21 +141,31 @@ decisions:
     negative:
     - Contributors must learn the generator path for documentation updates
   related_invariants:
-  - INV-0037
-  - INV-0039
-- id: DEC-0026
+  - 019fee89-e616-7bf6-a63f-2fdbec175790
+  - 019fee89-e616-77e0-992d-25764a1ed5a2
+  alias_id: DEC-0019
+  alias_name: prohibit-manual-edits-to-generated-documentation
+- id: 019fee89-e615-796c-ae1d-a27f1fff021b
   summary: Require generator, validator, test, and CI enforcement for documentation
     projection
-  rationale: |
-    The rule is only durable if it is automated. Deterministic documentation
+  rationale: 'The rule is only durable if it is automated. Deterministic documentation
+
     projection must therefore be enforced through:
+
     - generators that produce rendered documentation
+
     - validators that compare rendered output to generator output
+
     - tests that prove deterministic generation
+
     - CI checks that fail when rendered artifacts drift
 
+
     This makes documentation projection a governed architectural pipeline rather
+
     than a best-effort editorial process.
+
+    '
   consequences:
     positive:
     - Projection consistency becomes automatically enforceable
@@ -119,64 +175,96 @@ decisions:
     - Additional generator and validator maintenance is required as documentation
       artifacts expand
   related_invariants:
-  - INV-0038
-  - INV-0039
+  - 019fee89-e616-7abd-ad17-f29edbd30959
+  - 019fee89-e616-77e0-992d-25764a1ed5a2
+  alias_id: DEC-0026
+  alias_name: require-generator-validator-test-and-ci-enforcement-for-documentation-projection
 constraints:
 - id: CONST-0001
   type: technical
-  description: |
-    Human-readable architecture documentation must be produced from structured
+  description: 'Human-readable architecture documentation must be produced from structured
+
     artifacts or explicit projection code rather than maintained as an
+
     independent source of truth.
-  rationale: |
-    Independent manual documentation introduces drift risk and authority
+
+    '
+  rationale: 'Independent manual documentation introduces drift risk and authority
+
     ambiguity in an architecture governance repository.
+
+    '
 invariants:
-- id: INV-0037
-  statement: |
-    INV-DOC-001: All human-readable architecture documentation must be generated
+- id: 019fee89-e616-7bf6-a63f-2fdbec175790
+  statement: 'INV-DOC-001: All human-readable architecture documentation must be generated
+
     from structured artifacts or explicit projection code that is itself
+
     governed as source state.
+
+    '
   scope: global
   enforcement_level: must
   enforcement_mechanism: design
   verification_method: automated
-  rationale: |
-    Documentation must remain a projection of canonical architecture state, not
+  rationale: 'Documentation must remain a projection of canonical architecture state,
+    not
+
     a competing authority.
-- id: INV-0038
-  statement: |
-    INV-DOC-002: Generated documentation must be deterministic given identical
+
+    '
+  alias_id: INV-0037
+  alias_name: inv-0037
+- id: 019fee89-e616-7abd-ad17-f29edbd30959
+  statement: 'INV-DOC-002: Generated documentation must be deterministic given identical
+
     source artifacts and generator inputs.
+
+    '
   scope: global
   enforcement_level: must
   enforcement_mechanism: test
   verification_method: automated
-  rationale: |
-    Deterministic rendering is required for reliable drift detection, CI
+  rationale: 'Deterministic rendering is required for reliable drift detection, CI
+
     enforcement, and reproducible AI orientation.
-- id: INV-0039
-  statement: |
-    INV-DOC-003: Rendered documentation must never be edited manually; changes
+
+    '
+  alias_id: INV-0038
+  alias_name: inv-0038
+- id: 019fee89-e616-77e0-992d-25764a1ed5a2
+  statement: 'INV-DOC-003: Rendered documentation must never be edited manually; changes
+
     must be made through generators, templates, or structured source artifacts.
+
+    '
   scope: global
   enforcement_level: must
   enforcement_mechanism: policy
   verification_method: automated
-  rationale: |
-    Manual edits to generated documentation destroy traceability and create
+  rationale: 'Manual edits to generated documentation destroy traceability and create
+
     ambiguity over what is authoritative.
+
+    '
+  alias_id: INV-0039
+  alias_name: inv-0039
 capabilities:
-- id: CAP-0014
+- id: 019fee89-e615-7564-933f-0bb0cbbcf41b
   name: Deterministic Documentation Projection
-  description: |
-    The system can generate human-readable architecture documentation from
+  description: 'The system can generate human-readable architecture documentation
+    from
+
     structured source artifacts and verify that rendered output remains in sync.
+
+    '
+  alias_id: CAP-0014
+  alias_name: deterministic-documentation-projection
 related_adrs:
-- ADR-L-0001
-- ADR-L-0003
-- ADR-P-0001
-- ADR-P-0002
+- 019fee89-e615-70a5-861b-b2dde147e5af
+- 019fee89-e615-77f6-9b1f-695732d25443
+- 019fee89-e618-79ed-9d2d-cc35c63bc99a
+- 019fee89-e618-7a2f-aa3e-1f892cdf9410
 gaps: []
 migration_origin:
   remapped_entities:
@@ -189,3 +277,5 @@ migration_origin:
   - entity_type: decision
     from: DEC-0003
     to: DEC-0026
+alias_id: ADR-L-0007
+alias_name: adr-l-0007-deterministic-documentation-projection

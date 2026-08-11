@@ -5,7 +5,7 @@ artifact_kind: system_overview
 generator_id: adr-system-overview
 generator_version: 1
 hash_algorithm: sha256
-source_hash: c86e6175bd6e1266198086aa252df0c8460da8ff295807830d7828b08bb6b400
+source_hash: 4a18ff8c1b7e42d647ff7b046cd4d06531983a87b514226866612df1b493cde4
 rendered_hash: 456aca28f8f1b6af359b98f724eb92ff2304328756033ad1585a5a0af96e33f8
 -->
 

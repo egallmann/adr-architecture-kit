@@ -1,117 +1,177 @@
-schema_version: '1.0'
+schema_version: '1.3'
 adr_type: logical
-id: ADR-L-0012
+id: 019fee89-e616-744f-b63e-5ecddf344faa
 title: Federation Authority and Qualified Identity Model
 status: accepted
 created_date: '2026-03-14'
 modified_date: '2026-06-02'
 authors:
-  - adr-architecture-kit
+- adr-architecture-kit
 domains:
-  - federation
-  - identity
-  - governance
-  - multi-repo
+- federation
+- identity
+- governance
+- multi-repo
 tags:
-  - federation
-  - qualified-id
-  - namespace
-  - authority
+- federation
+- qualified-id
+- namespace
+- authority
 introduces_entities:
-  - INV-0058
-  - CAP-0038
-context: |
-  The compiler and recursive multi-scope model preserve repository-local
+- 019fee89-e616-7cc5-933d-9f7823a0b2b5
+- 019fee89-e616-7396-893e-af8987fa6e03
+context: 'The compiler and recursive multi-scope model preserve repository-local
+
   compilation boundaries, while STE federation spans independently compiled
+
   repositories. Federation therefore requires global identity without weakening
+
   provider authority or allowing the aggregation layer to rewrite canonical
+
   repository state.
 
+
   Earlier authoring treated bare local identifiers as sufficient within a
+
   repository and introduced namespace qualification only when crossing repository
+
   boundaries. Canonical v1.3 identity separates those concerns more precisely:
+
   authored entity references use UUIDs, provider-authoritative external identity
+
   is `(architecture_namespace, UUID)`, human aliases remain recognition surfaces,
+
   and workspace repository keys are used only for registration, routing, and
+
   attribution.
 
+
   This ADR establishes federation as read-only aggregation, preserves each
+
   provider as authority over its entities, and defines the identity boundary used
+
   when architecture is resolved across repositories.
+
+  '
 decisions:
-  - id: DEC-0045
-    summary: Treat federation as a read-only aggregation layer over per-repo canonical registries
-    rationale: |
-      Per-repository registries remain the canonical architecture outputs for
-      their owning repository. Federation exists to read, index, merge, and query
-      across those outputs; it must not rewrite or mutate them.
-    consequences:
-      positive:
-        - Repository ownership boundaries remain explicit
-        - Federation can be added or evolved without changing local compiler output
-        - Global analysis stays traceable to per-repo canonical state
-  - id: DEC-0046
-    summary: Use provider-authoritative conflict resolution for federated entity definitions
-    rationale: |
-      When one repository references an entity defined by another repository, the
-      defining repository is the authority on that entity's name, status, and
-      metadata. Consumers may declare relationships to the entity, but they do
-      not redefine it.
-    consequences:
-      positive:
-        - Entity ownership remains unambiguous across repository boundaries
-        - Consumer references cannot silently override provider truth
-        - Conflict handling remains deterministic
-  - id: DEC-0047
-    summary: Qualify machine identity as (architecture_namespace, UUID); keep human alias qualification derived
-    rationale: |
-      V1.3 canonical external identity is the pair (architecture_namespace, UUID). Local v1.3 authored references use UUIDs. Human-recognition aliases may be namespace-qualified for display, but alias qualification remains derived and is not provider namespace identity authority.
-    consequences:
-      positive:
-        - Pre-v1.3 local authoring remains readable and compatible
-        - Cross-repo references become explicit and machine-parseable
-        - Global identity does not require a central ID allocator
-  - id: DEC-0077
-    summary: |
-      Emit workspace-attribution-federation.yaml as read-only cross-repo attribution index keyed by workspace routing identity that resolves to architecture_namespace
-    rationale: |
-      Workspace repository keys remain local registration/routing/attribution handles. They resolve to the provider's architecture_namespace and must not be treated as the provider identity namespace. Canonical external identity remains (architecture_namespace, UUID), not a workspace-key-qualified local ADR alias.
-    consequences:
-      positive:
-        - Agents and workspace tools resolve ADR embodiment without bare-id collapse
-        - Federation remains derived and does not mutate per-repo evidence
-      negative:
-        - Workspace manifest repo keys remain stable for routing/attribution resolution to architecture_namespace, not as UUID identity namespaces
+- id: 019fee89-e616-7f9b-a12f-e0ab32e9dc16
+  summary: Treat federation as a read-only aggregation layer over per-repo canonical
+    registries
+  rationale: 'Per-repository registries remain the canonical architecture outputs
+    for
+
+    their owning repository. Federation exists to read, index, merge, and query
+
+    across those outputs; it must not rewrite or mutate them.
+
+    '
+  consequences:
+    positive:
+    - Repository ownership boundaries remain explicit
+    - Federation can be added or evolved without changing local compiler output
+    - Global analysis stays traceable to per-repo canonical state
+  alias_id: DEC-0045
+  alias_name: treat-federation-as-a-read-only-aggregation-layer-over-per-repo-canonical-registries
+- id: 019fee89-e616-7b5d-b53c-fa2fc2046cd5
+  summary: Use provider-authoritative conflict resolution for federated entity definitions
+  rationale: 'When one repository references an entity defined by another repository,
+    the
+
+    defining repository is the authority on that entity''s name, status, and
+
+    metadata. Consumers may declare relationships to the entity, but they do
+
+    not redefine it.
+
+    '
+  consequences:
+    positive:
+    - Entity ownership remains unambiguous across repository boundaries
+    - Consumer references cannot silently override provider truth
+    - Conflict handling remains deterministic
+  alias_id: DEC-0046
+  alias_name: use-provider-authoritative-conflict-resolution-for-federated-entity-definitions
+- id: 019fee89-e616-7649-ba3d-86e7fab992d0
+  summary: Qualify machine identity as (architecture_namespace, UUID); keep human
+    alias qualification derived
+  rationale: 'V1.3 canonical external identity is the pair (architecture_namespace,
+    UUID). Local v1.3 authored references use UUIDs. Human-recognition aliases may
+    be namespace-qualified for display, but alias qualification remains derived and
+    is not provider namespace identity authority.
+
+    '
+  consequences:
+    positive:
+    - Pre-v1.3 local authoring remains readable and compatible
+    - Cross-repo references become explicit and machine-parseable
+    - Global identity does not require a central ID allocator
+  alias_id: DEC-0047
+  alias_name: qualify-machine-identity-as-architecture-namespace-uuid-keep-human-alias-qualification-derived
+- id: 019fee89-e616-71e0-b02f-3997db358e10
+  summary: 'Emit workspace-attribution-federation.yaml as read-only cross-repo attribution
+    index keyed by workspace routing identity that resolves to architecture_namespace
+
+    '
+  rationale: 'Workspace repository keys remain local registration/routing/attribution
+    handles. They resolve to the provider''s architecture_namespace and must not be
+    treated as the provider identity namespace. Canonical external identity remains
+    (architecture_namespace, UUID), not a workspace-key-qualified local ADR alias.
+
+    '
+  consequences:
+    positive:
+    - Agents and workspace tools resolve ADR embodiment without bare-id collapse
+    - Federation remains derived and does not mutate per-repo evidence
+    negative:
+    - Workspace manifest repo keys remain stable for routing/attribution resolution
+      to architecture_namespace, not as UUID identity namespaces
+  alias_id: DEC-0077
+  alias_name: dec-0077-decision-migrated
 invariants:
-  - id: INV-0058
-    statement: |
-      Federation and aggregation layers MUST treat each repository as
-      authoritative over its own canonical registries and MUST NOT mutate those
-      registries during federation.
-    scope: global
-    enforcement_level: must
-    enforcement_mechanism: design
-    verification_method: automated
-    rationale: |
-      Multi-repository architecture reasoning depends on repository ownership and
-      read-only aggregation remaining explicit.
+- id: 019fee89-e616-7cc5-933d-9f7823a0b2b5
+  statement: 'Federation and aggregation layers MUST treat each repository as
+
+    authoritative over its own canonical registries and MUST NOT mutate those
+
+    registries during federation.
+
+    '
+  scope: global
+  enforcement_level: must
+  enforcement_mechanism: design
+  verification_method: automated
+  rationale: 'Multi-repository architecture reasoning depends on repository ownership
+    and
+
+    read-only aggregation remaining explicit.
+
+    '
+  alias_id: INV-0058
+  alias_name: inv-0058
 capabilities:
-  - id: CAP-0038
-    name: Federated Qualified Identity Resolution
-    description: |
-      Support unambiguous multi-repository entity references using architecture_namespace and UUID identity while retaining read-only provider authority and derived human alias qualification.
-    acceptance_criteria:
-      - Canonical machine identity resolves as (architecture_namespace, UUID)
-      - Local v1.3 authored references use UUID identity
-      - Human alias qualification remains derived and non-canonical
-      - Provider repositories remain authoritative for their own entity definitions
-      - Federation reads and merges per-repo registries without rewriting them
-      - Workspace repository keys provide routing/attribution only
+- id: 019fee89-e616-7396-893e-af8987fa6e03
+  name: Federated Qualified Identity Resolution
+  description: 'Support unambiguous multi-repository entity references using architecture_namespace
+    and UUID identity while retaining read-only provider authority and derived human
+    alias qualification.
+
+    '
+  acceptance_criteria:
+  - Canonical machine identity resolves as (architecture_namespace, UUID)
+  - Local v1.3 authored references use UUID identity
+  - Human alias qualification remains derived and non-canonical
+  - Provider repositories remain authoritative for their own entity definitions
+  - Federation reads and merges per-repo registries without rewriting them
+  - Workspace repository keys provide routing/attribution only
+  alias_id: CAP-0038
+  alias_name: federated-qualified-identity-resolution
 related_adrs:
-  - ADR-L-0002
-  - ADR-L-0007
-  - ADR-L-0010
-  - ADR-L-0013
-  - ADR-L-0018
-  - ADR-PS-0001
+- 019fee89-e615-7f19-810b-c7b33a9d9e0d
+- 019fee89-e615-7b9c-8e3f-32ceeda01491
+- 019fee89-e616-7d61-8e35-f11ba2ddd75d
+- 019fee89-e616-7c4e-953c-b7349412a784
+- 019fee89-e617-7f4d-811d-4862645a55c5
+- 019fee89-e618-7b3e-813b-a449881b6adb
 gaps: []
+alias_id: ADR-L-0012
+alias_name: federation-authority-and-qualified-identity-model

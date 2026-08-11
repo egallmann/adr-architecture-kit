@@ -1,6 +1,6 @@
-schema_version: '1.0'
+schema_version: '1.3'
 adr_type: physical-component
-id: ADR-PC-0003
+id: 019fee89-e618-7b76-843f-cfe21ceb2ea6
 title: Compiler Pipeline and Driver
 status: proposed
 created_date: '2026-03-15'
@@ -12,27 +12,32 @@ domains:
 - pipeline
 - tooling
 implements_system:
-- ADR-PS-0002
+- 019fee89-e618-7d04-9337-4aa2d3258507
 implements_logical:
-- ADR-L-0007
-- ADR-L-0009
-- ADR-L-0013
+- 019fee89-e615-7b9c-8e3f-32ceeda01491
+- 019fee89-e616-770c-a025-2c241a720730
+- 019fee89-e616-7c4e-953c-b7349412a784
 introduces_entities:
-- COMP-0012
-- IFACE-0013
-- IMPL-0013
-- IFACE-0018
-- IMPL-0019
+- 019fee89-e617-76ad-9336-b3615a6e4bde
+- 019fee89-e617-779d-a12e-7713d58fbc21
+- 019fee89-e618-7c0b-852f-c6d7f5b57322
+- 019fee89-e618-7e7b-813b-2a48de1d809a
+- 019fee89-e618-7113-9b36-4437b97cd744
 technologies:
 - python
 - yaml
 - click
-context: |
-  The compiler driver and explicit pipeline now own deterministic architecture
+context: 'The compiler driver and explicit pipeline now own deterministic architecture
+
   compilation across parse, analysis, emission, and recursive scope
+
   orchestration. The command-line behavior is compatibility-relevant, while the
+
   Python compiler pipeline, passes, `ArchModel`, emitters, and result plumbing are
+
   internal reference implementation and are not a supported SDK facade.
+
+  '
 technology_stack:
 - category: language
   name: Python
@@ -43,15 +48,20 @@ technology_stack:
   version: 8.x
   rationale: CLI orchestration for compile entrypoints.
 component_specifications:
-- id: COMP-0012
+- id: 019fee89-e617-76ad-9336-b3615a6e4bde
   name: Compiler Pipeline and Driver
   type: service
-  responsibilities: |
-    - Build compiler pipeline state from canonical scope inputs
+  responsibilities: '- Build compiler pipeline state from canonical scope inputs
+
     - Execute deterministic pass ordering
+
     - Emit architecture bundle, manifest, graph, and rendered outputs
+
     - Support recursive multi-scope compilation and reporting
+
     - Preserve existing CLI commands, options, outputs, diagnostics, and exit behavior
+
+    '
   generation_context:
     purpose: Compile canonical architecture artifacts into derived outputs.
     key_responsibilities:
@@ -63,26 +73,41 @@ component_specifications:
     - Pass ordering must stay compiler-owned and explicit
     - Internal compiler types must not cross the supported public facade
     success_criteria:
-    - adr compile remains the compatibility-preserved authoring CLI orchestration path
+    - adr compile remains the compatibility-preserved authoring CLI orchestration
+      path
     - Runtime machine-artifact authority remains owned by ste-runtime
     - Recursive compilation produces scope-local artifacts deterministically
   interfaces:
-  - id: IFACE-0013
+  - id: 019fee89-e617-779d-a12e-7713d58fbc21
     type: CLI
-    specification: |
-      Commands:
+    specification: 'Commands:
+
       - adr compile
+
       - adr generate-architecture-index
+
       - adr generate-manifest
+
       - adr generate-rendered-docs
-  - id: IFACE-0018
+
+      '
+    alias_id: IFACE-0013
+    alias_name: iface-0013
+  - id: 019fee89-e618-7e7b-813b-2a48de1d809a
     type: library_api
-    specification: |
-      A private compilation application service supports a restricted
+    specification: 'A private compilation application service supports a restricted
+
       `adr_kit.api.compile_architecture` adapter and a compatibility CLI adapter.
+
       The public adapter accepts one explicit scope and only registries, manifest,
+
       and markdown groups. The CLI adapter retains graph, recursive, check,
+
       strict/lenient, contract-profile, output, diagnostic, and exit behavior.
+
+      '
+    alias_id: IFACE-0018
+    alias_name: iface-0018
   implementation_identifiers:
     module_path: src/adr_kit/compiler/driver.py
     service_name: adr-compiler
@@ -90,7 +115,8 @@ component_specifications:
     test_path: tests/test_compiler_driver.py
   implementation_requirements:
     error_handling:
-      strategy: Surface compilation diagnostics and fail closed on invalid bundles when required.
+      strategy: Surface compilation diagnostics and fail closed on invalid bundles
+        when required.
     observability:
       logging:
         level: info
@@ -100,23 +126,42 @@ component_specifications:
         type: counter
     testing_requirements:
       unit_test_coverage: '>= 80%'
-      integration_tests: |
-        - Single-scope compilation
+      integration_tests: '- Single-scope compilation
+
         - Recursive workspace compilation
+
         - Bundle and graph emission
+
+        '
+  alias_id: COMP-0012
+  alias_name: compiler-pipeline-and-driver
 implementation_decisions:
-- id: IMPL-0013
+- id: 019fee89-e618-7c0b-852f-c6d7f5b57322
   summary: Keep compiler orchestration as a dedicated component
-  rationale: |
-    The explicit pipeline and driver are a dedicated authoring-time implementation
+  rationale: 'The explicit pipeline and driver are a dedicated authoring-time implementation
+
     component. Their CLI behavior and generated compatibility surfaces are guarded,
+
     but their Python internals remain evolvable and must not be described as a
+
     stable public runtime API.
-- id: IMPL-0019
+
+    '
+  alias_id: IMPL-0013
+  alias_name: keep-compiler-orchestration-as-a-dedicated-component
+- id: 019fee89-e618-7113-9b36-4437b97cd744
   summary: Contain compiler internals behind public and CLI application-service adapters
-  rationale: |
-    Shared orchestration preserves output and diagnostic semantics without
+  rationale: 'Shared orchestration preserves output and diagnostic semantics without
+
     promoting `ArchModel`, compiler configuration, passes, emitters, internal
+
     artifacts, or mutable diagnostic logs into the supported SDK. CLI behavioral
+
     snapshots guard delegation independently from the narrower facade contract.
+
+    '
+  alias_id: IMPL-0019
+  alias_name: contain-compiler-internals-behind-public-and-cli-application-service-adapters
 gaps: []
+alias_id: ADR-PC-0003
+alias_name: adr-pc-0003-compiler-pipeline-and-driver

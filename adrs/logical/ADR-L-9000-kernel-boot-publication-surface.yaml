@@ -1,32 +1,44 @@
-schema_version: "1.0"
+schema_version: '1.3'
 adr_type: logical
-id: ADR-L-9000
+id: 019fee89-e617-7ceb-a437-474762adbfc2
 title: Kernel Boot Publication Surface
 status: accepted
-created_date: "2026-03-21"
+created_date: '2026-03-21'
 authors:
-  - adr-architecture-kit
+- adr-architecture-kit
 domains:
-  - kernel
-  - integration
+- kernel
+- integration
 tags:
-  - boot
-  - publication
-context: |
-  The STE workspace needs a deterministic ADR-backed Architecture IR fragment
+- boot
+- publication
+context: 'The STE workspace needs a deterministic ADR-backed Architecture IR fragment
+
   publication surface at a conventional path so ste-kernel can prove boot
+
   readiness across real sibling adapters. This ADR defines only that minimal
+
   publication surface.
+
+  '
 capabilities:
-  - id: CAP-9000
-    name: Kernel Boot Readiness
-    description: Provide a deterministic ADR publication surface for kernel boot-readiness compilation.
+- id: 019fee89-e617-7410-8c37-e302d20b9f8b
+  name: Kernel Boot Readiness
+  description: Provide a deterministic ADR publication surface for kernel boot-readiness
+    compilation.
+  alias_id: CAP-9000
+  alias_name: kernel-boot-readiness
 constraints: []
 invariants: []
 decisions:
-  - id: DEC-9000
-    summary: Publish a deterministic logical ADR fragment for boot readiness.
-    rationale: ste-kernel requires a contract-backed ADR fragment source at a conventional path.
-    enables_capabilities:
-      - CAP-9000
+- id: 019fee89-e617-793a-b537-a492afa6f167
+  summary: Publish a deterministic logical ADR fragment for boot readiness.
+  rationale: ste-kernel requires a contract-backed ADR fragment source at a conventional
+    path.
+  enables_capabilities:
+  - 019fee89-e617-7410-8c37-e302d20b9f8b
+  alias_id: DEC-9000
+  alias_name: publish-a-deterministic-logical-adr-fragment-for-boot-readiness
 gaps: []
+alias_id: ADR-L-9000
+alias_name: kernel-boot-publication-surface

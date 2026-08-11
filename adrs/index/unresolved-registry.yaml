@@ -1,144 +1,144 @@
-schema_version: '1.1'
+schema_version: '2.0'
 type: unresolved_registry
 unresolved:
-- id: UGAP-ADR-L-0004-GAP-0001
+- id: UGAP-019fee89-e615-73a3-8d31-7a4721affae9-GAP-0002
   gap_class: author_declared
   gap_type: author_declared_real_gap
-  source_entity_id: ADR-L-0004
+  source_entity_id: 019fee89-e615-73a3-8d31-7a4721affae9
+  severity: advisory
+  provenance:
+    source_type: derived_registry
+    source_ref: 019fee89-e615-73a3-8d31-7a4721affae9#GAP-0002
+    extraction_phase: detect_unresolved
+    classification: explicit
+    generator: adr-architecture-index
+  evidence:
+  - 019fee89-e615-73a3-8d31-7a4721affae9
+  - Prompt template design needed
+- id: UGAP-019fee89-e615-73a3-8d31-7a4721affae9-GAP-0003
+  gap_class: author_declared
+  gap_type: author_declared_deferred_gap
+  source_entity_id: 019fee89-e615-73a3-8d31-7a4721affae9
+  severity: advisory
+  provenance:
+    source_type: derived_registry
+    source_ref: 019fee89-e615-73a3-8d31-7a4721affae9#GAP-0003
+    extraction_phase: detect_unresolved
+    classification: explicit
+    generator: adr-architecture-index
+  evidence:
+  - 019fee89-e615-73a3-8d31-7a4721affae9
+  - Agent-specific formatters need definition
+- id: UGAP-019fee89-e615-73a3-8d31-7a4721affae9-GAP-0004
+  gap_class: author_declared
+  gap_type: author_declared_deferred_gap
+  source_entity_id: 019fee89-e615-73a3-8d31-7a4721affae9
+  severity: advisory
+  provenance:
+    source_type: derived_registry
+    source_ref: 019fee89-e615-73a3-8d31-7a4721affae9#GAP-0004
+    extraction_phase: detect_unresolved
+    classification: explicit
+    generator: adr-architecture-index
+  evidence:
+  - 019fee89-e615-73a3-8d31-7a4721affae9
+  - Integration with CI/CD for automated implementation
+- id: UGAP-019fee89-e615-7577-8d37-dd0df031bec9-GAP-0001
+  gap_class: author_declared
+  gap_type: author_declared_real_gap
+  source_entity_id: 019fee89-e615-7577-8d37-dd0df031bec9
   severity: important
   provenance:
     source_type: derived_registry
-    source_ref: ADR-L-0004#GAP-0001
+    source_ref: 019fee89-e615-7577-8d37-dd0df031bec9#GAP-0001
     extraction_phase: detect_unresolved
     classification: explicit
     generator: adr-architecture-index
   evidence:
-  - ADR-L-0004
+  - 019fee89-e615-7577-8d37-dd0df031bec9
   - Decorator library not yet implemented
-- id: UGAP-ADR-L-0004-GAP-0002
+- id: UGAP-019fee89-e615-7577-8d37-dd0df031bec9-GAP-0002
   gap_class: author_declared
   gap_type: author_declared_real_gap
-  source_entity_id: ADR-L-0004
+  source_entity_id: 019fee89-e615-7577-8d37-dd0df031bec9
   severity: advisory
   provenance:
     source_type: derived_registry
-    source_ref: ADR-L-0004#GAP-0002
+    source_ref: 019fee89-e615-7577-8d37-dd0df031bec9#GAP-0002
     extraction_phase: detect_unresolved
     classification: explicit
     generator: adr-architecture-index
   evidence:
-  - ADR-L-0004
+  - 019fee89-e615-7577-8d37-dd0df031bec9
   - Downstream implementation attribution evidence requires broader extractor coverage
-- id: UGAP-ADR-L-0004-GAP-0003
+- id: UGAP-019fee89-e615-7577-8d37-dd0df031bec9-GAP-0003
   gap_class: author_declared
   gap_type: author_declared_deferred_gap
-  source_entity_id: ADR-L-0004
+  source_entity_id: 019fee89-e615-7577-8d37-dd0df031bec9
   severity: advisory
   provenance:
     source_type: derived_registry
-    source_ref: ADR-L-0004#GAP-0003
+    source_ref: 019fee89-e615-7577-8d37-dd0df031bec9#GAP-0003
     extraction_phase: detect_unresolved
     classification: explicit
     generator: adr-architecture-index
   evidence:
-  - ADR-L-0004
+  - 019fee89-e615-7577-8d37-dd0df031bec9
   - Legacy onboarding rollout for adr-architecture-kit itself is not yet started
-- id: UGAP-ADR-L-0004-GAP-0004
+- id: UGAP-019fee89-e615-7577-8d37-dd0df031bec9-GAP-0004
   gap_class: author_declared
   gap_type: author_declared_deferred_gap
-  source_entity_id: ADR-L-0004
+  source_entity_id: 019fee89-e615-7577-8d37-dd0df031bec9
   severity: advisory
   provenance:
     source_type: derived_registry
-    source_ref: ADR-L-0004#GAP-0004
+    source_ref: 019fee89-e615-7577-8d37-dd0df031bec9#GAP-0004
     extraction_phase: detect_unresolved
     classification: explicit
     generator: adr-architecture-index
   evidence:
-  - ADR-L-0004
+  - 019fee89-e615-7577-8d37-dd0df031bec9
   - ste-rules-library activation for intent-attribution enforcement remains staged
-- id: UGAP-ADR-L-0005-GAP-0002
+- id: UGAP-019fee89-e615-7b66-b73a-3b99f7d92d4d-GAP-0006
   gap_class: author_declared
   gap_type: author_declared_real_gap
-  source_entity_id: ADR-L-0005
+  source_entity_id: 019fee89-e615-7b66-b73a-3b99f7d92d4d
   severity: advisory
   provenance:
     source_type: derived_registry
-    source_ref: ADR-L-0005#GAP-0002
+    source_ref: 019fee89-e615-7b66-b73a-3b99f7d92d4d#GAP-0006
     extraction_phase: detect_unresolved
     classification: explicit
     generator: adr-architecture-index
   evidence:
-  - ADR-L-0005
-  - Prompt template design needed
-- id: UGAP-ADR-L-0005-GAP-0003
-  gap_class: author_declared
-  gap_type: author_declared_deferred_gap
-  source_entity_id: ADR-L-0005
-  severity: advisory
-  provenance:
-    source_type: derived_registry
-    source_ref: ADR-L-0005#GAP-0003
-    extraction_phase: detect_unresolved
-    classification: explicit
-    generator: adr-architecture-index
-  evidence:
-  - ADR-L-0005
-  - Agent-specific formatters need definition
-- id: UGAP-ADR-L-0005-GAP-0004
-  gap_class: author_declared
-  gap_type: author_declared_deferred_gap
-  source_entity_id: ADR-L-0005
-  severity: advisory
-  provenance:
-    source_type: derived_registry
-    source_ref: ADR-L-0005#GAP-0004
-    extraction_phase: detect_unresolved
-    classification: explicit
-    generator: adr-architecture-index
-  evidence:
-  - ADR-L-0005
-  - Integration with CI/CD for automated implementation
-- id: UGAP-ADR-L-0006-GAP-0006
-  gap_class: author_declared
-  gap_type: author_declared_real_gap
-  source_entity_id: ADR-L-0006
-  severity: advisory
-  provenance:
-    source_type: derived_registry
-    source_ref: ADR-L-0006#GAP-0006
-    extraction_phase: detect_unresolved
-    classification: explicit
-    generator: adr-architecture-index
-  evidence:
-  - ADR-L-0006
+  - 019fee89-e615-7b66-b73a-3b99f7d92d4d
   - Prompt translator COMP-0009 (SignalGenerator) not implemented
-- id: UGAP-ADR-L-0006-GAP-0007
+- id: UGAP-019fee89-e615-7b66-b73a-3b99f7d92d4d-GAP-0007
   gap_class: author_declared
   gap_type: author_declared_deferred_gap
-  source_entity_id: ADR-L-0006
+  source_entity_id: 019fee89-e615-7b66-b73a-3b99f7d92d4d
   severity: advisory
   provenance:
     source_type: derived_registry
-    source_ref: ADR-L-0006#GAP-0007
+    source_ref: 019fee89-e615-7b66-b73a-3b99f7d92d4d#GAP-0007
     extraction_phase: detect_unresolved
     classification: explicit
     generator: adr-architecture-index
   evidence:
-  - ADR-L-0006
+  - 019fee89-e615-7b66-b73a-3b99f7d92d4d
   - Rules & Signal Service not built
-- id: UGAP-ADR-L-0019-GAP-0019
+- id: UGAP-019fee89-e617-78d9-ba3b-b7e3e6db1b12-GAP-0019
   gap_class: author_declared
   gap_type: author_declared_deferred_gap
-  source_entity_id: ADR-L-0019
+  source_entity_id: 019fee89-e617-78d9-ba3b-b7e3e6db1b12
   severity: advisory
   provenance:
     source_type: derived_registry
-    source_ref: ADR-L-0019#GAP-0019
+    source_ref: 019fee89-e617-78d9-ba3b-b7e3e6db1b12#GAP-0019
     extraction_phase: detect_unresolved
     classification: explicit
     generator: adr-architecture-index
   evidence:
-  - ADR-L-0019
+  - 019fee89-e617-78d9-ba3b-b7e3e6db1b12
   - Canonical entity-level updated_at and updated_at>=created_at invariant remain
     deferred with transactional authoring

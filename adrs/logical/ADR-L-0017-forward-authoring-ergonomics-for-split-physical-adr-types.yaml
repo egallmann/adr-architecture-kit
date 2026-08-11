@@ -1,89 +1,135 @@
-schema_version: "1.0"
+schema_version: '1.3'
 adr_type: logical
-id: ADR-L-0017
+id: 019fee89-e617-7ff5-863b-1eef71637b0f
 title: Forward Authoring Ergonomics for Split Physical ADR Types
 status: accepted
-created_date: "2026-04-14"
+created_date: '2026-04-14'
 authors:
-  - adr-architecture-kit
+- adr-architecture-kit
 domains:
-  - authoring
-  - adr-taxonomy
+- authoring
+- adr-taxonomy
 tags:
-  - scaffolding
-  - next-id
-  - physical-types
-context: |
-  adr-architecture-kit now supports multiple physical ADR shapes:
+- scaffolding
+- next-id
+- physical-types
+context: 'adr-architecture-kit now supports multiple physical ADR shapes:
+
   legacy `ADR-P-*`, current `ADR-PS-*`, and current `ADR-PC-*`. Upstream
+
   authoring workflows need structured scaffolds, schema discovery, and next-ID
+
   allocation that reinforce the current split physical taxonomy without breaking
+
   existing legacy parsing and validation.
 
+
   If new ergonomics continue treating legacy `ADR-P-*` as a first-class
+
   creation path, upstream tools will keep steering new authoring toward an
+
   outdated taxonomy even while the repository supports more precise
+
   physical-system and physical-component artifacts.
+
+  '
 decisions:
-  - id: DEC-0071
-    summary: Provide scaffold and schema-surface ergonomics for logical, physical-system, and physical-component ADRs only
-    rationale: |
-      New authoring ergonomics should reinforce the forward taxonomy and expose
-      deterministic structured inputs for the ADR types the repository wants new
-      work to use.
-    consequences:
-      positive:
-        - New workflows are nudged toward `ADR-L-*`, `ADR-PS-*`, and `ADR-PC-*`
-        - Scaffold and schema discovery stay aligned with the current generator surface
-  - id: DEC-0072
-    summary: Retain legacy ADR-P parsing and validation but exclude it from new creation ergonomics
-    rationale: |
-      Existing repositories and tests still contain `ADR-P-*` artifacts, so
-      backward compatibility remains necessary. That compatibility does not
-      require adding new forward-authoring affordances for the legacy type.
-    consequences:
-      positive:
-        - Existing legacy artifacts remain readable and validatable
-        - New ergonomic surfaces do not regress the taxonomy split
-  - id: DEC-0074
-    summary: Reserve ADR IDs 9000-9999 for exceptional allocation and exclude that range from normal forward allocation
-    rationale: |
-      The high ADR ID range is needed for exceptional cases such as brownfield
-      imports, retained legacy artifacts pending migration, and other imported
-      records whose identity must be preserved. Normal authoring allocation
-      should stay below 9000 so it does not drift into that exceptional space.
-    consequences:
-      positive:
-        - Normal authoring remains in a predictable ID range below 9000
-        - The reserved high range stays available for exceptional/manual use
-        - Imported or retained legacy identities do not advance normal allocation counters
+- id: 019fee89-e617-75dd-852f-1d06d442695b
+  summary: Provide scaffold and schema-surface ergonomics for logical, physical-system,
+    and physical-component ADRs only
+  rationale: 'New authoring ergonomics should reinforce the forward taxonomy and expose
+
+    deterministic structured inputs for the ADR types the repository wants new
+
+    work to use.
+
+    '
+  consequences:
+    positive:
+    - New workflows are nudged toward `ADR-L-*`, `ADR-PS-*`, and `ADR-PC-*`
+    - Scaffold and schema discovery stay aligned with the current generator surface
+  alias_id: DEC-0071
+  alias_name: dec-0071-decision-migrated
+- id: 019fee89-e617-748e-863d-42268f44175f
+  summary: Retain legacy ADR-P parsing and validation but exclude it from new creation
+    ergonomics
+  rationale: 'Existing repositories and tests still contain `ADR-P-*` artifacts, so
+
+    backward compatibility remains necessary. That compatibility does not
+
+    require adding new forward-authoring affordances for the legacy type.
+
+    '
+  consequences:
+    positive:
+    - Existing legacy artifacts remain readable and validatable
+    - New ergonomic surfaces do not regress the taxonomy split
+  alias_id: DEC-0072
+  alias_name: retain-legacy-adr-p-parsing-and-validation-but-exclude-it-from-new-creation-ergonomics
+- id: 019fee89-e617-7a09-bc37-afd7ae0f2927
+  summary: Reserve ADR IDs 9000-9999 for exceptional allocation and exclude that range
+    from normal forward allocation
+  rationale: 'The high ADR ID range is needed for exceptional cases such as brownfield
+
+    imports, retained legacy artifacts pending migration, and other imported
+
+    records whose identity must be preserved. Normal authoring allocation
+
+    should stay below 9000 so it does not drift into that exceptional space.
+
+    '
+  consequences:
+    positive:
+    - Normal authoring remains in a predictable ID range below 9000
+    - The reserved high range stays available for exceptional/manual use
+    - Imported or retained legacy identities do not advance normal allocation counters
+  alias_id: DEC-0074
+  alias_name: dec-0074-decision-migrated
 invariants:
-  - id: INV-0068
-    statement: |
-      Forward authoring ergonomics in adr-architecture-kit MUST target logical,
-      physical-system, and physical-component ADRs, while legacy `ADR-P-*`
-      support remains compatibility-only.
-    scope: global
-    enforcement_level: must
-    enforcement_mechanism: design
-    verification_method: automated
-    rationale: |
-      The ergonomic surface must preserve the intended ADR taxonomy instead of
-      accidentally reopening the legacy flat physical path for new authoring.
-  - id: INV-0070
-    statement: |
-      ADR IDs `9000-9999` MUST be treated as a reserved exceptional allocation
-      range for cases such as brownfield imports, retained legacy artifacts
-      pending migration, and other imported records requiring preserved
-      identity. Standard forward authoring allocation MUST exclude that range.
-    scope: global
-    enforcement_level: must
-    enforcement_mechanism: design
-    verification_method: automated
-    rationale: |
-      The allocator must remain aware of the reserved namespace so normal
-      authoring does not collide with imported or exceptional identities.
+- id: 019fee89-e617-761d-950b-c04d97e04c56
+  statement: 'Forward authoring ergonomics in adr-architecture-kit MUST target logical,
+
+    physical-system, and physical-component ADRs, while legacy `ADR-P-*`
+
+    support remains compatibility-only.
+
+    '
+  scope: global
+  enforcement_level: must
+  enforcement_mechanism: design
+  verification_method: automated
+  rationale: 'The ergonomic surface must preserve the intended ADR taxonomy instead
+    of
+
+    accidentally reopening the legacy flat physical path for new authoring.
+
+    '
+  alias_id: INV-0068
+  alias_name: inv-0068
+- id: 019fee89-e617-723f-aa1f-e1c5b7f3a3e5
+  statement: 'ADR IDs `9000-9999` MUST be treated as a reserved exceptional allocation
+
+    range for cases such as brownfield imports, retained legacy artifacts
+
+    pending migration, and other imported records requiring preserved
+
+    identity. Standard forward authoring allocation MUST exclude that range.
+
+    '
+  scope: global
+  enforcement_level: must
+  enforcement_mechanism: design
+  verification_method: automated
+  rationale: 'The allocator must remain aware of the reserved namespace so normal
+
+    authoring does not collide with imported or exceptional identities.
+
+    '
+  alias_id: INV-0070
+  alias_name: inv-0070
 related_adrs:
-  - ADR-L-0002
-  - ADR-L-0016
+- 019fee89-e615-7f19-810b-c7b33a9d9e0d
+- 019fee89-e617-7fe1-8d2c-cc2745c31674
 gaps: []
+alias_id: ADR-L-0017
+alias_name: forward-authoring-ergonomics-for-split-physical-adr-types

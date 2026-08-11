@@ -1,6 +1,6 @@
-schema_version: '1.0'
+schema_version: '1.3'
 adr_type: physical-component
-id: ADR-PC-0004
+id: 019fee89-e618-73ce-aa2d-101276d64e33
 title: Repository Boundary and Normalized Semantic Model
 status: proposed
 created_date: '2026-03-15'
@@ -12,25 +12,29 @@ domains:
 - semantic-model
 - tooling
 implements_system:
-- ADR-PS-0002
+- 019fee89-e618-7d04-9337-4aa2d3258507
 implements_logical:
-- ADR-L-0013
+- 019fee89-e616-7c4e-953c-b7349412a784
 introduces_entities:
-- COMP-0013
-- IFACE-0014
-- IMPL-0014
-- IMPL-0017
-- IFACE-0019
-- IMPL-0020
+- 019fee89-e618-74d1-9a1f-37e2c2982a51
+- 019fee89-e618-74e7-882f-04f858aecaf0
+- 019fee89-e618-7f57-861b-526925c708f6
+- 019fee89-e618-7d01-943b-f749d6ba44ac
+- 019fee89-e618-7dab-893c-05d961de3a7d
+- 019fee89-e618-7b04-b51a-7fbc8721b160
 technologies:
 - python
 - yaml
 - pydantic
-context: |
-  ArchitectureRepository and NormalizedArchitectureModel are the stable
+context: 'ArchitectureRepository and NormalizedArchitectureModel are the stable
+
   in-process semantic boundary for consumers. Phase 1 adds a narrow supported
+
   authoring facade that reuses those contracts without wrapping or changing the
+
   normalized model and without making registry loaders or path helpers public.
+
+  '
 technology_stack:
 - category: language
   name: Python
@@ -41,14 +45,18 @@ technology_stack:
   version: 2.x
   rationale: Typed normalized semantic models.
 component_specifications:
-- id: COMP-0013
+- id: 019fee89-e618-74d1-9a1f-37e2c2982a51
   name: Repository Boundary Component
   type: service
-  responsibilities: |
-    - Load compiled architecture bundle artifacts
+  responsibilities: '- Load compiled architecture bundle artifacts
+
     - Expose normalized semantic queries to in-process consumers
+
     - Centralize provenance, unresolved, and ADR/status lookup logic
+
     - Prevent ad hoc re-interpretation of compiled registries
+
+    '
   generation_context:
     purpose: Provide a stable semantic boundary for in-process consumers.
     key_responsibilities:
@@ -62,20 +70,33 @@ component_specifications:
     - Consumer flows use ArchitectureRepository and NormalizedArchitectureModel
     - Semantic adaptation stays centralized
   interfaces:
-  - id: IFACE-0014
+  - id: 019fee89-e618-74e7-882f-04f858aecaf0
     type: library_api
-    specification: |
-      Public surfaces:
+    specification: 'Public surfaces:
+
       - ArchitectureRepository
+
       - NormalizedArchitectureModel
-  - id: IFACE-0019
+
+      '
+    alias_id: IFACE-0014
+    alias_name: iface-0014
+  - id: 019fee89-e618-7dab-893c-05d961de3a7d
     type: library_api
-    specification: |
-      `adr_kit.api.open_repository` resolves an explicit project root, eagerly
+    specification: '`adr_kit.api.open_repository` resolves an explicit project root,
+      eagerly
+
       loads it, and returns the existing ArchitectureRepository. Capability
+
       discovery is deterministic and local. Compilation model construction
+
       reuses a private normalized-bundle helper shared with repository loading.
+
       Registry loaders, path helpers, and internal registry models are excluded.
+
+      '
+    alias_id: IFACE-0019
+    alias_name: iface-0019
   implementation_identifiers:
     module_path: src/adr_kit/repository/architecture_repository.py
     test_path: tests/test_architecture_repository.py
@@ -91,31 +112,56 @@ component_specifications:
         type: counter
     testing_requirements:
       unit_test_coverage: '>= 80%'
-      integration_tests: |
-        - Repository load and normalized lookup
-        - Scope boundary enforcement
-        - Legacy adaptation parity
-implementation_decisions:
-- id: IMPL-0014
-  summary: Treat the repository/model boundary as a first-class component
-  rationale: |
-    The repository boundary is stable runtime behavior and should be documented
-    as its own component authority.
-- id: IMPL-0017
-  summary: Record the Phase 0 facade deferral and constrain future Assembler dependencies
-  rationale: |
-    Phase 0 preserved `ArchitectureRepository` and
-    `NormalizedArchitectureModel` exactly as the consumer seam and deferred a
-    facade. Phase 1 completes that bounded deferral through IFACE-0019 without
-    wrapping or changing either contract.
-    A future Assembler may depend only on that supported seam and must not bind
-    to compiler IR, compiler passes, raw ADR parsing, or generated-file layout.
-- id: IMPL-0020
-  summary: Reuse private normalized-bundle assembly across repository and SDK compilation
-  rationale: |
-    Constructing the detached SDK model from the same emitted registry bytes and
-    private assembly logic used by ArchitectureRepository prevents semantic and
-    fingerprint drift while preserving the normalized model's existing shape and
-    behavior.
-gaps: []
+      integration_tests: '- Repository load and normalized lookup
 
+        - Scope boundary enforcement
+
+        - Legacy adaptation parity
+
+        '
+  alias_id: COMP-0013
+  alias_name: repository-boundary-component
+implementation_decisions:
+- id: 019fee89-e618-7f57-861b-526925c708f6
+  summary: Treat the repository/model boundary as a first-class component
+  rationale: 'The repository boundary is stable runtime behavior and should be documented
+
+    as its own component authority.
+
+    '
+  alias_id: IMPL-0014
+  alias_name: treat-the-repository-model-boundary-as-a-first-class-component
+- id: 019fee89-e618-7d01-943b-f749d6ba44ac
+  summary: Record the Phase 0 facade deferral and constrain future Assembler dependencies
+  rationale: 'Phase 0 preserved `ArchitectureRepository` and
+
+    `NormalizedArchitectureModel` exactly as the consumer seam and deferred a
+
+    facade. Phase 1 completes that bounded deferral through IFACE-0019 without
+
+    wrapping or changing either contract.
+
+    A future Assembler may depend only on that supported seam and must not bind
+
+    to compiler IR, compiler passes, raw ADR parsing, or generated-file layout.
+
+    '
+  alias_id: IMPL-0017
+  alias_name: record-the-phase-0-facade-deferral-and-constrain-future-assembler-dependencies
+- id: 019fee89-e618-7b04-b51a-7fbc8721b160
+  summary: Reuse private normalized-bundle assembly across repository and SDK compilation
+  rationale: 'Constructing the detached SDK model from the same emitted registry bytes
+    and
+
+    private assembly logic used by ArchitectureRepository prevents semantic and
+
+    fingerprint drift while preserving the normalized model''s existing shape and
+
+    behavior.
+
+    '
+  alias_id: IMPL-0020
+  alias_name: reuse-private-normalized-bundle-assembly-across-repository-and-sdk-compilation
+gaps: []
+alias_id: ADR-PC-0004
+alias_name: repository-boundary-and-normalized-semantic-model

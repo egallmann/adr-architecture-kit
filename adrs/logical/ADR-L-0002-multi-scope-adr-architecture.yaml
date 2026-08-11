@@ -1,36 +1,57 @@
-schema_version: '1.0'
+schema_version: '1.3'
 adr_type: logical
-id: ADR-L-0002
+id: 019fee89-e615-7f19-810b-c7b33a9d9e0d
 title: Multi-Scope ADR Architecture for Sub-Module Development
 status: proposed
 created_date: '2026-03-08'
 authors:
 - adr-architecture-kit
 modified_date: '2026-03-08'
-context: |
-  The adr-architecture-kit is being actively developed in a single workspace alongside
+context: 'The adr-architecture-kit is being actively developed in a single workspace
+  alongside
+
   multiple sub-modules (ste-runtime, future services) that will eventually become
+
   independent services. Each sub-module needs to leverage the ADR system for its own
+
   architectural documentation while being developed in parallel within the monorepo.
 
+
   Current challenges:
+
   1. ADR generators/validators are hardcoded to work at a single project scope
+
   2. Sub-modules cannot maintain their own ADR directories independently
+
   3. No mechanism to discover and validate ADRs at different project levels
+
   4. Tooling assumes a single adrs/ directory at the workspace root
 
+
   The ste-runtime already implements a sophisticated project scope resolution mechanism
+
   (see src/config/index.ts) that:
+
   - Auto-detects project boundaries via markers (package.json, pyproject.toml, etc.)
+
   - Supports both self-analysis and external project modes
+
   - Enforces workspace boundaries to prevent scanning outside intended scope
+
   - Uses ste.config.json as authoritative project marker
 
+
   We need similar scope resolution for ADR generation and validation to support:
+
   - Workspace root ADRs (adr-architecture-kit itself)
+
   - Sub-module ADRs (ste-runtime/adrs/, future-service/adrs/)
+
   - Independent service ADRs (when modules are extracted)
+
   - Parallel development with isolated documentation
+
+  '
 domains:
 - adr
 - architecture
@@ -43,15 +64,21 @@ tags:
 - sub-modules
 - monorepo
 decisions:
-- id: DEC-0007
+- id: 019fee89-e615-7d71-9517-aeb9fe601fd6
   summary: Adopt Scope-Aware ADR Architecture
-  rationale: |
-    ADR generators and validators must support multiple project scopes to enable
+  rationale: 'ADR generators and validators must support multiple project scopes to
+    enable
+
     sub-modules to maintain independent architectural documentation while being
+
     developed in a shared workspace.
 
-    This mirrors the ste-runtime's project scope resolution pattern, providing
+
+    This mirrors the ste-runtime''s project scope resolution pattern, providing
+
     consistent behavior across the STE ecosystem.
+
+    '
   consequences:
     positive:
     - ADR tools can work at any project level (workspace, sub-module, service)
@@ -59,137 +86,209 @@ decisions:
     - Tooling auto-detects project boundaries using standard markers
     - Manifest generation scoped to specific project context
     - Validation can be run at different scopes independently
+  alias_id: DEC-0007
+  alias_name: adopt-scope-aware-adr-architecture
 invariants:
-- id: INV-0014
-  statement: |
-    ADR generators and validators MUST support explicit scope parameter to
+- id: 019fee89-e615-7db0-a219-22110deb7ed0
+  statement: 'ADR generators and validators MUST support explicit scope parameter
+    to
+
     override auto-detection when needed
+
+    '
   scope: global
   enforcement_level: must
   enforcement_mechanism: design
   verification_method: automated
-  rationale: |
-    While auto-detection handles most cases, explicit scope control is needed
+  rationale: 'While auto-detection handles most cases, explicit scope control is needed
+
     for CI/CD, testing, and edge cases where auto-detection may be ambiguous
-- id: INV-0015
-  statement: |
-    Project scope resolution MUST use the same marker hierarchy as ste-runtime:
+
+    '
+  alias_id: INV-0014
+  alias_name: inv-0014
+- id: 019fee89-e615-7478-ab17-36426863f751
+  statement: 'Project scope resolution MUST use the same marker hierarchy as ste-runtime:
+
     1. Explicit --scope parameter (highest priority)
+
     2. ste.config.json in current or parent directories
+
     3. Standard project markers (package.json, pyproject.toml, .git)
+
     4. Current working directory (fallback)
+
+    '
   scope: global
   enforcement_level: must
   enforcement_mechanism: design
   verification_method: automated
-  rationale: |
-    Consistent scope resolution across STE tools prevents confusion and ensures
+  rationale: 'Consistent scope resolution across STE tools prevents confusion and
+    ensures
+
     predictable behavior
-- id: INV-0016
-  statement: |
-    Each project scope MUST maintain its own adrs/ directory and manifest.yaml
+
+    '
+  alias_id: INV-0015
+  alias_name: inv-0015
+- id: 019fee89-e615-7911-ac25-c8772b55ffbb
+  statement: 'Each project scope MUST maintain its own adrs/ directory and manifest.yaml
+
+    '
   scope: global
   enforcement_level: must
   enforcement_mechanism: design
   verification_method: automated
-  rationale: |
-    Independent ADR directories enable sub-modules to document their own
+  rationale: 'Independent ADR directories enable sub-modules to document their own
+
     architecture without interfering with parent or sibling projects
-- id: INV-0017
-  statement: |
-    ADR cross-references between different scopes MUST use fully-qualified
+
+    '
+  alias_id: INV-0016
+  alias_name: inv-0016
+- id: 019fee89-e615-7a25-9d3f-1758c79a12e7
+  statement: 'ADR cross-references between different scopes MUST use fully-qualified
+
     identifiers (e.g., "ste-runtime:ADR-L-0001")
+
+    '
   scope: global
   enforcement_level: should
   enforcement_mechanism: design
   verification_method: automated
-  rationale: |
-    Enables linking between workspace and sub-module ADRs while maintaining
+  rationale: 'Enables linking between workspace and sub-module ADRs while maintaining
+
     clear scope boundaries
-- id: INV-0018
-  statement: |
-    Scope resolution MUST NOT traverse above workspace root to prevent
+
+    '
+  alias_id: INV-0017
+  alias_name: inv-0017
+- id: 019fee89-e615-7f59-842e-2dc1fcfbc380
+  statement: 'Scope resolution MUST NOT traverse above workspace root to prevent
+
     scanning unintended directories
+
+    '
   scope: global
   enforcement_level: must
   enforcement_mechanism: design
   verification_method: automated
-  rationale: |
-    Security and performance - prevents accidental scanning of home directory
+  rationale: 'Security and performance - prevents accidental scanning of home directory
+
     or system directories
-- id: INV-0019
-  statement: |
-    ADR validation at workspace scope SHOULD validate all sub-module ADRs
+
+    '
+  alias_id: INV-0018
+  alias_name: inv-0018
+- id: 019fee89-e615-7169-8a2e-9192ab77b526
+  statement: 'ADR validation at workspace scope SHOULD validate all sub-module ADRs
+
     recursively when --recursive flag is provided
+
+    '
   scope: global
   enforcement_level: should
   enforcement_mechanism: design
   verification_method: automated
-  rationale: |
-    Enables comprehensive validation of entire workspace architecture while
+  rationale: 'Enables comprehensive validation of entire workspace architecture while
+
     maintaining ability to validate individual scopes
-- id: INV-0098
-  statement: Recursive compilation must compile each resolved project scope independently and must not implicitly merge architecture state across scopes.
+
+    '
+  alias_id: INV-0019
+  alias_name: inv-0019
+- id: 019fee89-e615-70ae-af3e-bd510f15d321
+  statement: Recursive compilation must compile each resolved project scope independently
+    and must not implicitly merge architecture state across scopes.
   scope: global
   enforcement_level: must
   enforcement_mechanism: design
   verification_method: automated
-  rationale: |
-    Multi-scope support exists so each project root owns its canonical ADR state.
+  rationale: 'Multi-scope support exists so each project root owns its canonical ADR
+    state.
+
     Recursive execution is orchestration, not authorization to collapse scopes.
+
+    '
+  alias_id: INV-0098
+  alias_name: inv-0098
 capabilities:
-- id: CAP-0019
+- id: 019fee89-e615-78f5-903a-4c5d1bab8f38
   name: Automatic Project Scope Detection
-  description: |
-    Auto-detect project boundaries by searching for markers:
+  description: 'Auto-detect project boundaries by searching for markers:
+
     - ste.config.json (authoritative)
+
     - PROJECT.yaml (ADR-specific marker)
+
     - package.json, pyproject.toml (language markers)
+
     - .git directory (repository root)
+
+    '
   acceptance_criteria:
   - Detects workspace root when run from any subdirectory
   - Detects sub-module root when run from sub-module
   - Respects explicit --scope parameter
   - Fails gracefully with clear error if no project found
-- id: CAP-0022
+  alias_id: CAP-0019
+  alias_name: automatic-project-scope-detection
+- id: 019fee89-e615-7dc5-983a-beb68ed34cde
   name: Scoped Manifest Generation
-  description: |
-    Generate manifest.yaml scoped to specific project, including only ADRs
-    within that project's adrs/ directory
+  description: 'Generate manifest.yaml scoped to specific project, including only
+    ADRs
+
+    within that project''s adrs/ directory
+
+    '
   acceptance_criteria:
   - Manifest includes only ADRs from detected scope
   - File paths in manifest are relative to project root
   - Cross-scope references are validated but not included
   - Generated manifest includes scope metadata
-- id: CAP-0025
+  alias_id: CAP-0022
+  alias_name: scoped-manifest-generation
+- id: 019fee89-e615-7ba4-bd19-1d7abf1a3ed2
   name: Scoped Validation
-  description: |
-    Validate ADRs within specific project scope, with optional recursive
+  description: 'Validate ADRs within specific project scope, with optional recursive
+
     validation of sub-modules
+
+    '
   acceptance_criteria:
   - Validates ADRs in detected scope
   - Validates cross-references within scope
   - Warns on cross-scope references without validation
   - Recursive mode validates all sub-scopes
-- id: CAP-0028
+  alias_id: CAP-0025
+  alias_name: scoped-validation
+- id: 019fee89-e615-7aa2-8817-c4f468c90b66
   name: Multi-Scope CLI Interface
-  description: |
-    Provide CLI commands that work at any scope level with consistent behavior
+  description: 'Provide CLI commands that work at any scope level with consistent
+    behavior
+
+    '
   acceptance_criteria:
   - adr generate-manifest works from any directory
   - adr validate works from any directory
   - '"--scope" parameter overrides auto-detection'
   - '"--recursive" enables multi-scope operations'
+  alias_id: CAP-0028
+  alias_name: multi-scope-cli-interface
 related_adrs:
-- ADR-L-0001
-- ADR-L-0004
+- 019fee89-e615-70a5-861b-b2dde147e5af
+- 019fee89-e615-7577-8d37-dd0df031bec9
 gaps: []
-notes: |
-  Implementation should leverage existing patterns from ste-runtime/src/config/index.ts
+notes: 'Implementation should leverage existing patterns from ste-runtime/src/config/index.ts
+
   for project root detection and boundary validation.
 
+
   Consider future enhancement: ADR aggregation service that can query ADRs across
+
   all scopes in workspace for cross-cutting architectural analysis.
+
+  '
 migration_origin:
   remapped_entities:
   - entity_type: capability
@@ -208,3 +307,5 @@ migration_origin:
     from: DEC-0001
     to: DEC-0007
   original_capability_id: CAP-0001
+alias_id: ADR-L-0002
+alias_name: multi-scope-adr-architecture-for-sub-module-development

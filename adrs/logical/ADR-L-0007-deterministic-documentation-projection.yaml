@@ -243,6 +243,196 @@ decisions:
   - 019fee89-e616-7abd-ad17-f29edbd30959
   alias_id: DEC-0109
   alias_name: human-adr-projections-render-compiler-derived-relationship-semantics-only
+- id: 019ff22a-bb5f-7bfc-851d-938bffc81281
+  summary: Classify documentation-projection inputs as derived facts or authored orientation
+  rationale: 'A generated documentation projection must not establish a second authored
+
+    copy of machine-verifiable facts when an owning structured or provider surface
+
+    already exists. Those facts must be obtained from their owning machine-readable
+
+    source.
+
+
+    Some orientation is inherently explanatory and cannot reasonably be mechanically
+
+    inferred. That authored orientation may be intentional projection input only when
+
+    it is explicit, governed as source state, non-authoritative, distinguishable from
+
+    derived facts, and unable to silently override canonical architecture.
+
+
+    Authored orientation must not become a hidden second authority layer.
+
+    '
+  consequences:
+    positive:
+    - Overview and other projections stay aligned with owning provider/schema surfaces
+    - Explanatory guidance remains intentional without competing with canonical ADRs
+    negative:
+    - Projection authors must classify each input as derived or authored
+  related_invariants:
+  - 019ff22a-bb5f-7c77-a223-1dab5e8c814d
+  - 019ff22a-bb5f-7779-912f-040cdf1b54b8
+  alias_id: DEC-0110
+  alias_name: classify-documentation-projection-inputs-as-derived-or-authored
+- id: 019ff22a-bb5f-7214-8818-40820f8c553e
+  summary: Allow a deterministic semantic intermediate model for documentation projection
+  rationale: 'Projection generation may assemble governed inputs into an explicit deterministic
+
+    intermediate model that represents the complete semantic basis of the rendered
+
+    artifact. That model is derived projection state, not independent architecture
+
+    authority. It must be deterministic and must not carry environmental noise such
+
+    as timestamps or machine-specific absolute paths unless those are part of the
+
+    projection contract.
+
+
+    The intermediate model is the complete semantic basis of rendered content. It is
+
+    not necessarily the complete integrity or freshness basis, because governed
+
+    projection-rule inputs can also change the rendered artifact.
+
+    '
+  consequences:
+    positive:
+    - Projection pipelines can separate semantic assembly from presentation
+    - Tests can assert semantic completeness without treating the model as authority
+    negative:
+    - Implementers must keep semantic model and projection-rule inputs distinct
+  related_invariants:
+  - 019fee89-e616-7abd-ad17-f29edbd30959
+  - 019ff22a-bb5f-7b93-a600-f587022aeffd
+  alias_id: DEC-0111
+  alias_name: allow-deterministic-semantic-intermediate-model-for-documentation-projection
+- id: 019ff22a-bb5f-7d9e-973f-b9008898a8c9
+  summary: Require projection-source closure for generated documentation freshness
+  rationale: 'Generated documentation freshness must close over all governed inputs capable
+
+    of changing the rendered artifact. That includes semantic inputs that determine
+
+    document meaning and projection-rule inputs that can change rendering from the
+
+    same semantic model (templates, generator or renderer rules, and profile
+
+    interpretation logic).
+
+
+    Changing a semantic or projection-rule input must invalidate the projection.
+
+    Unrelated repository changes must not. Whole-repository hashing is not required
+
+    or desirable. Aggregate sources such as a full manifest need not invalidate a
+
+    projection when an unrelated record changes if that record is not part of the
+
+    selected semantic input.
+
+    '
+  consequences:
+    positive:
+    - Freshness tracks true render dependencies rather than coarse repository churn
+    - Template and projection-rule changes remain detectable as stale projections
+    negative:
+    - Source-basis declarations must enumerate semantic and projection-rule inputs
+  related_invariants:
+  - 019ff22a-bb5f-7b93-a600-f587022aeffd
+  - 019fee89-e616-7abd-ad17-f29edbd30959
+  alias_id: DEC-0112
+  alias_name: require-projection-source-closure-for-generated-documentation-freshness
+- id: 019ff22a-bb5f-76eb-8a31-546eeba55dcb
+  summary: Documentation projections reflect supported boundaries without redefining them
+  rationale: 'A documentation projection may describe and route consumers to existing
+
+    supported interfaces, authority boundaries, and lifecycle surfaces. It must not
+
+    create, promote, or redefine those interfaces or authorities. Ownership remains
+
+    with the existing accepted authority for each surface.
+
+    '
+  consequences:
+    positive:
+    - Orientation stays subordinate to provider, repository, and stewardship authority
+    - Overview content cannot silently invent public surfaces
+    negative:
+    - Projection authors must cite existing authority rather than invent boundaries
+  related_invariants:
+  - 019fee89-e616-7bf6-a63f-2fdbec175790
+  - 019ff22a-bb5f-7779-912f-040cdf1b54b8
+  alias_id: DEC-0113
+  alias_name: documentation-projections-reflect-supported-boundaries-without-redefining-them
+- id: 019ff22a-bb5f-77ed-a63f-98f0455fdd1e
+  summary: Isolate repository-specific documentation-projection orientation by scope
+  rationale: 'Repository-specific orientation semantics must not leak into an unrelated
+
+    repository scope. When ADR Kit generates SYSTEM-OVERVIEW for a consuming
+
+    repository, ADR Kit provider orientation must not be rendered into that consumer
+
+    merely because ADR Kit produced the file.
+
+
+    Explicit repository profiles may specialize orientation. Unsupported or
+
+    non-profiled scopes must follow the supported projection-scope rule rather than
+
+    silently inheriting another repository''s provider identity.
+
+    '
+  consequences:
+    positive:
+    - Consumer repositories are not mis-oriented as ADR Kit itself
+    - Profile and scope routing become architecturally mandatory
+    negative:
+    - Generators must select profile or compatibility path by project identity
+  related_invariants:
+  - 019ff22a-bb5f-7fca-b021-b3cbc68ddde2
+  alias_id: DEC-0114
+  alias_name: isolate-repository-specific-documentation-projection-orientation-by-scope
+- id: 019ff22a-bb5f-7926-a33c-b66f72343219
+  summary: Preserve legacy generic SYSTEM-OVERVIEW generation as compatibility-only
+  rationale: 'Evidence on the active branch shows generate-system-overview currently succeeds
+
+    for non-kit, non-runtime project identities and is listed among generation
+
+    commands whose success/failure behavior is preserved. Fail-closed unsupported
+
+    routing would change that observable CLI behavior.
+
+
+    Therefore generic-project generation remains a compatibility obligation for this
+
+    refinement. The legacy generic path must preserve emission success without ADR
+
+    Kit provider framing, without becoming a third product-level generic consumer
+
+    overview design, and without new semantic inference beyond the minimum needed to
+
+    keep the existing contract. Richer corpus-driven generic assembly remains
+
+    deferred. Absence of SYSTEM-OVERVIEW remains valid; integrity validates the file
+
+    only when present.
+
+    '
+  consequences:
+    positive:
+    - Existing CLI success behavior for generic scopes is preserved
+    - Provider isolation remains enforceable for non-kit scopes
+    - Future generic-consumer design stays explicitly deferred
+    negative:
+    - A bounded legacy path must be maintained until replaced by later design
+  related_invariants:
+  - 019ff22a-bb5f-7fca-b021-b3cbc68ddde2
+  - 019ff22a-bb5f-7779-912f-040cdf1b54b8
+  alias_id: DEC-0115
+  alias_name: preserve-legacy-generic-system-overview-generation-as-compatibility-only
 constraints:
 - id: CONST-0001
   type: technical
@@ -313,6 +503,82 @@ invariants:
     '
   alias_id: INV-0039
   alias_name: inv-0039
+- id: 019ff22a-bb5f-7c77-a223-1dab5e8c814d
+  statement: 'INV-DOC-004: A documentation projection must obtain machine-verifiable
+
+    facts from their owning structured or provider surfaces and must not establish
+
+    an independent authored duplicate of those facts.
+
+    '
+  scope: global
+  enforcement_level: must
+  enforcement_mechanism: design
+  verification_method: automated
+  rationale: 'Derived facts already have an owning machine-readable source. Duplicating
+
+    them in projection configuration creates silent drift.
+
+    '
+  alias_id: INV-0099
+  alias_name: inv-0099
+- id: 019ff22a-bb5f-7779-912f-040cdf1b54b8
+  statement: 'INV-DOC-005: Authored orientation used by a documentation projection must
+
+    remain explicit, non-authoritative, and unable to override canonical architecture
+
+    authority.
+
+    '
+  scope: global
+  enforcement_level: must
+  enforcement_mechanism: design
+  verification_method: manual
+  rationale: 'Explanatory orientation is legitimate only when it cannot become a hidden
+
+    second authority layer.
+
+    '
+  alias_id: INV-0100
+  alias_name: inv-0100
+- id: 019ff22a-bb5f-7b93-a600-f587022aeffd
+  statement: 'INV-DOC-006: Generated documentation freshness must close over all governed
+
+    semantic inputs and projection-rule inputs capable of changing the rendered
+
+    artifact, and must not require whole-repository hashing.
+
+    '
+  scope: global
+  enforcement_level: must
+  enforcement_mechanism: test
+  verification_method: automated
+  rationale: 'Freshness must track true render dependencies, including templates and
+
+    projection rules, without invalidating on unrelated repository churn.
+
+    '
+  alias_id: INV-0101
+  alias_name: inv-0101
+- id: 019ff22a-bb5f-7fca-b021-b3cbc68ddde2
+  statement: 'INV-DOC-007: Repository-specific documentation-projection orientation must
+
+    not leak into an unrelated repository scope, including ADR Kit provider
+
+    semantics rendered into an arbitrary consuming repository.
+
+    '
+  scope: global
+  enforcement_level: must
+  enforcement_mechanism: test
+  verification_method: automated
+  rationale: 'Scope isolation prevents consumer repositories from being mis-oriented as
+
+    the authoring provider.
+
+    '
+  alias_id: INV-0102
+  alias_name: inv-0102
 capabilities:
 - id: 019fee89-e615-7564-933f-0bb0cbbcf41b
   name: Deterministic Documentation Projection
@@ -329,6 +595,8 @@ related_adrs:
 - 019fee89-e615-77f6-9b1f-695732d25443
 - 019fee89-e618-79ed-9d2d-cc35c63bc99a
 - 019fee89-e618-7a2f-aa3e-1f892cdf9410
+- 019fee89-e616-7c4e-953c-b7349412a784
+- 019fee89-e618-74b2-a83e-e41c7d8c9f37
 gaps: []
 migration_origin:
   remapped_entities:

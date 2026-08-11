@@ -5982,3 +5982,262 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
+- id: 019ff22a-bb5f-7779-912f-040cdf1b54b8
+  alias_id: INV-0100
+  alias_name: inv-0100
+  alias_ref: INV-0100:inv-0100
+  entity_type: invariant
+  name: INV-0100
+  summary: 'INV-DOC-005: Authored orientation used by a documentation projection must
+    remain explicit, non-authoritative, and unable to override canonical architecture
+    authority.'
+  uri: adr://adr-architecture-kit/entities/019ff22a-bb5f-7779-912f-040cdf1b54b8
+  created_at: '2026-08-11T18:51:54.591Z'
+  entity_fingerprint: sha256:64e34bb0fd57b95082834800bd0638fdb13865aeb23d92bfb3de2e891a44cf8a
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 019fee89-e615-7b9c-8e3f-32ceeda01491#019ff22a-bb5f-7779-912f-040cdf1b54b8
+    artifact_path: adrs/logical/ADR-L-0007-deterministic-documentation-projection.yaml
+  source_refs: []
+  metadata:
+    adr_id: 019fee89-e615-7b9c-8e3f-32ceeda01491
+    adr_alias_id: ADR-L-0007
+    scope: global
+    statement: 'INV-DOC-005: Authored orientation used by a documentation projection
+      must
+
+      remain explicit, non-authoritative, and unable to override canonical architecture
+
+      authority.
+
+      '
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions: []
+    supersedes: []
+    alias_id: INV-0100
+    alias_name: inv-0100
+  relationships:
+    declared_in:
+    - 019fee89-e615-7b9c-8e3f-32ceeda01491
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 019fee89-e615-7b9c-8e3f-32ceeda01491#019ff22a-bb5f-7779-912f-040cdf1b54b8
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
+- id: 019ff22a-bb5f-7b93-a600-f587022aeffd
+  alias_id: INV-0101
+  alias_name: inv-0101
+  alias_ref: INV-0101:inv-0101
+  entity_type: invariant
+  name: INV-0101
+  summary: 'INV-DOC-006: Generated documentation freshness must close over all governed
+    semantic inputs and projection-rule inputs capable of changing the rendered artifact,
+    and must not require whole-repository hashing.'
+  uri: adr://adr-architecture-kit/entities/019ff22a-bb5f-7b93-a600-f587022aeffd
+  created_at: '2026-08-11T18:51:54.591Z'
+  entity_fingerprint: sha256:976e0948bea842840ae81be0b21dfbe52b6cc64661c7bdf80abed780450164d3
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 019fee89-e615-7b9c-8e3f-32ceeda01491#019ff22a-bb5f-7b93-a600-f587022aeffd
+    artifact_path: adrs/logical/ADR-L-0007-deterministic-documentation-projection.yaml
+  source_refs: []
+  metadata:
+    adr_id: 019fee89-e615-7b9c-8e3f-32ceeda01491
+    adr_alias_id: ADR-L-0007
+    scope: global
+    statement: 'INV-DOC-006: Generated documentation freshness must close over all
+      governed
+
+      semantic inputs and projection-rule inputs capable of changing the rendered
+
+      artifact, and must not require whole-repository hashing.
+
+      '
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions: []
+    supersedes: []
+    alias_id: INV-0101
+    alias_name: inv-0101
+  relationships:
+    declared_in:
+    - 019fee89-e615-7b9c-8e3f-32ceeda01491
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 019fee89-e615-7b9c-8e3f-32ceeda01491#019ff22a-bb5f-7b93-a600-f587022aeffd
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
+- id: 019ff22a-bb5f-7c77-a223-1dab5e8c814d
+  alias_id: INV-0099
+  alias_name: inv-0099
+  alias_ref: INV-0099:inv-0099
+  entity_type: invariant
+  name: INV-0099
+  summary: 'INV-DOC-004: A documentation projection must obtain machine-verifiable
+    facts from their owning structured or provider surfaces and must not establish
+    an independent authored duplicate of those facts.'
+  uri: adr://adr-architecture-kit/entities/019ff22a-bb5f-7c77-a223-1dab5e8c814d
+  created_at: '2026-08-11T18:51:54.591Z'
+  entity_fingerprint: sha256:fbbaa92c287d7ac19c4ecf5eaf995e7e7d59677287fa9afde45b884d9468a600
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 019fee89-e615-7b9c-8e3f-32ceeda01491#019ff22a-bb5f-7c77-a223-1dab5e8c814d
+    artifact_path: adrs/logical/ADR-L-0007-deterministic-documentation-projection.yaml
+  source_refs: []
+  metadata:
+    adr_id: 019fee89-e615-7b9c-8e3f-32ceeda01491
+    adr_alias_id: ADR-L-0007
+    scope: global
+    statement: 'INV-DOC-004: A documentation projection must obtain machine-verifiable
+
+      facts from their owning structured or provider surfaces and must not establish
+
+      an independent authored duplicate of those facts.
+
+      '
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions: []
+    supersedes: []
+    alias_id: INV-0099
+    alias_name: inv-0099
+  relationships:
+    declared_in:
+    - 019fee89-e615-7b9c-8e3f-32ceeda01491
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 019fee89-e615-7b9c-8e3f-32ceeda01491#019ff22a-bb5f-7c77-a223-1dab5e8c814d
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
+- id: 019ff22a-bb5f-7fca-b021-b3cbc68ddde2
+  alias_id: INV-0102
+  alias_name: inv-0102
+  alias_ref: INV-0102:inv-0102
+  entity_type: invariant
+  name: INV-0102
+  summary: 'INV-DOC-007: Repository-specific documentation-projection orientation
+    must not leak into an unrelated repository scope, including ADR Kit provider semantics
+    rendered into an arbitrary consuming repository.'
+  uri: adr://adr-architecture-kit/entities/019ff22a-bb5f-7fca-b021-b3cbc68ddde2
+  created_at: '2026-08-11T18:51:54.591Z'
+  entity_fingerprint: sha256:0c5c33bf7e2b0e397d7a8e52ee07fa1ec0c29a7220954a092535e8cffd4a1d52
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 019fee89-e615-7b9c-8e3f-32ceeda01491#019ff22a-bb5f-7fca-b021-b3cbc68ddde2
+    artifact_path: adrs/logical/ADR-L-0007-deterministic-documentation-projection.yaml
+  source_refs: []
+  metadata:
+    adr_id: 019fee89-e615-7b9c-8e3f-32ceeda01491
+    adr_alias_id: ADR-L-0007
+    scope: global
+    statement: 'INV-DOC-007: Repository-specific documentation-projection orientation
+      must
+
+      not leak into an unrelated repository scope, including ADR Kit provider
+
+      semantics rendered into an arbitrary consuming repository.
+
+      '
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions: []
+    supersedes: []
+    alias_id: INV-0102
+    alias_name: inv-0102
+  relationships:
+    declared_in:
+    - 019fee89-e615-7b9c-8e3f-32ceeda01491
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 019fee89-e615-7b9c-8e3f-32ceeda01491#019ff22a-bb5f-7fca-b021-b3cbc68ddde2
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index

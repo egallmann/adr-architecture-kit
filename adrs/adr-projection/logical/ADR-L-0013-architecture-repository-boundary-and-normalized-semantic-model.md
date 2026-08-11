@@ -5,8 +5,8 @@ artifact_kind: rendered_adr_markdown
 generator_id: adr-projection-markdown
 generator_version: 2
 hash_algorithm: sha256
-source_hash: bc529d29793d8f715ceb3e5f0c559ee7463b3da2a7a24db180f74baf3cbb5a18
-rendered_hash: d3451bbf1fb0ed5df4c964279f7c0a140819acd533a209feec49fdecbe28fc69
+source_hash: 9925b0ac5b39b1c479c9ae03f82b30b9f39d0c6412b152d756cbf8258b6cbe77
+rendered_hash: 1670e05da2b1d0f229774ec31c8951803886d5e4f0f4d2812f64edf69cdb1087
 -->
 
 # ADR-L-0013: Architecture Repository Boundary and Normalized Semantic Model
@@ -46,6 +46,7 @@ call Python repository APIs.
 
 ```mermaid
 flowchart LR
+  n_019fee89_e615_7b9c_8e3f_32ceeda01491["ADR-L-0007"]
   n_019fee89_e616_7018_982f_d3d703f29db7["DEC-0079"]
   n_019fee89_e616_7140_bb3f_8b78ab40d018["CAP-0039"]
   n_019fee89_e616_7153_930f_595ce3d9f96d["DEC-0061"]
@@ -99,6 +100,7 @@ flowchart LR
   n_019fee89_e618_74b2_a83e_e41c7d8c9f37 -->|"implements_logical"| n_019fee89_e616_7c4e_953c_b7349412a784
   n_019fee89_e618_7b76_843f_cfe21ceb2ea6 -->|"implements_logical"| n_019fee89_e616_7c4e_953c_b7349412a784
   n_019fee89_e618_7d04_9337_4aa2d3258507 -->|"implements_logical"| n_019fee89_e616_7c4e_953c_b7349412a784
+  n_019fee89_e615_7b9c_8e3f_32ceeda01491 -->|"references"| n_019fee89_e616_7c4e_953c_b7349412a784
   n_019fee89_e616_744f_b63e_5ecddf344faa -->|"references"| n_019fee89_e616_7c4e_953c_b7349412a784
   n_019fee89_e616_7628_913b_a059c1057c36 -->|"references"| n_019fee89_e616_7c4e_953c_b7349412a784
   n_019fee89_e616_770c_a025_2c241a720730 -->|"references"| n_019fee89_e616_7c4e_953c_b7349412a784
@@ -116,6 +118,18 @@ flowchart LR
 
 ## Related ADRs
 
+### ADR-L-0007 — Deterministic Documentation Projection
+
+**Relationships:**
+- 019fee89-e615-7b9c-8e3f-32ceeda01491 -[:references]-> this ADR
+
+**Context:** The repository already treats several human-readable artifacts as derived state:
+ADR human projections under adrs/adr-projection/, manifest summaries, and the AI-first SYSTEM-OVERVIEW
+are generated from structured or code-defined sources. That behavior now needs
+explicit architectural authority so future contributors do not reintroduce
+manually maintained documentation that drifts from canonical artifacts.
+
+[Open projection](ADR-L-0007-deterministic-documentation-projection.md)
 ### ADR-L-0009 — Derived Architecture Discovery Surfaces
 
 **Relationships:**

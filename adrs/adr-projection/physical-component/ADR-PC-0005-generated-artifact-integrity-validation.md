@@ -5,8 +5,8 @@ artifact_kind: rendered_adr_markdown
 generator_id: adr-projection-markdown
 generator_version: 2
 hash_algorithm: sha256
-source_hash: 2f6ccc1252f1aacd6edef17d595403c0bfb273f438e60e8f737fe05e48828b74
-rendered_hash: b60793ba587670e709b68c7b3a79e27c738dad6446e9e90464273e736f67a1cc
+source_hash: 3eca83157aa1b9a306df7d2ff26dfb3953439566c476450245185588c62e4cb9
+rendered_hash: c1e6c1430cc8742cdee2b0df21b8f800f4da00cd82f8c5340c59ab0981afa2c6
 -->
 
 # ADR-PC-0005: Generated Artifact Integrity Validation
@@ -65,6 +65,7 @@ flowchart LR
   n_019fee89_e618_74b2_a83e_e41c7d8c9f37 -->|"implements_logical"| n_019fee89_e615_7b9c_8e3f_32ceeda01491
   n_019fee89_e618_74b2_a83e_e41c7d8c9f37 -->|"implements_logical"| n_019fee89_e616_7c4e_953c_b7349412a784
   n_019fee89_e618_781c_831f_0d5fe24f7d85 -->|"provides_interface"| n_019fee89_e618_783a_8511_196b6a627b3e
+  n_019fee89_e615_7b9c_8e3f_32ceeda01491 -->|"references"| n_019fee89_e618_74b2_a83e_e41c7d8c9f37
   n_019fee89_e616_7c4e_953c_b7349412a784 -->|"references"| n_019fee89_e618_74b2_a83e_e41c7d8c9f37
   n_019fee89_e618_7d04_9337_4aa2d3258507 -->|"related_to"| n_019fee89_e618_74b2_a83e_e41c7d8c9f37
 ```
@@ -75,6 +76,7 @@ flowchart LR
 
 **Relationships:**
 - this ADR -[:implements_logical]-> 019fee89-e615-7b9c-8e3f-32ceeda01491
+- 019fee89-e615-7b9c-8e3f-32ceeda01491 -[:references]-> this ADR
 
 **Context:** The repository already treats several human-readable artifacts as derived state:
 ADR human projections under adrs/adr-projection/, manifest summaries, and the AI-first SYSTEM-OVERVIEW

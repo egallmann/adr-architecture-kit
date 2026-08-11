@@ -4,8 +4,8 @@
 # generator_id: adr-compiler
 # generator_version: 1
 # hash_algorithm: sha256
-# source_hash: 22954e3dce40beb596583d8206bda7bf672d22d71ad25bd21b8c375a0c187f74
-# rendered_hash: b3658298462c651365fe24d9eeab5c80a144f673f52a124bc48718776cb81455
+# source_hash: 6b60f728bfb1d688fc93f026d10f0d0c0bf28d882030ef4653efdd98ef7617be
+# rendered_hash: d7a9104b072013967750e0ad11d9feda0d61d20d34a208811271af969e85992c
 
 schema_version: '1.1'
 type: entity_registry
@@ -2748,6 +2748,103 @@ entities:
     implements: []
     consumes: []
     realizes: []
+- entity_id: DEC-0110
+  entity_type: decision
+  name: Classify documentation-projection inputs as derived facts or authored orientation
+  introduced_by: ADR-L-0007
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0007-deterministic-documentation-projection.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs:
+  - ADR-L-0007
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: DEC-0111
+  entity_type: decision
+  name: Allow a deterministic semantic intermediate model for documentation projection
+  introduced_by: ADR-L-0007
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0007-deterministic-documentation-projection.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs:
+  - ADR-L-0007
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: DEC-0112
+  entity_type: decision
+  name: Require projection-source closure for generated documentation freshness
+  introduced_by: ADR-L-0007
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0007-deterministic-documentation-projection.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs:
+  - ADR-L-0007
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: DEC-0113
+  entity_type: decision
+  name: Documentation projections reflect supported boundaries without redefining
+    them
+  introduced_by: ADR-L-0007
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0007-deterministic-documentation-projection.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs:
+  - ADR-L-0007
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: DEC-0114
+  entity_type: decision
+  name: Isolate repository-specific documentation-projection orientation by scope
+  introduced_by: ADR-L-0007
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0007-deterministic-documentation-projection.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs:
+  - ADR-L-0007
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: DEC-0115
+  entity_type: decision
+  name: Preserve legacy generic SYSTEM-OVERVIEW generation as compatibility-only
+  introduced_by: ADR-L-0007
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0007-deterministic-documentation-projection.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs:
+  - ADR-L-0007
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
 - entity_id: DEC-9000
   entity_type: decision
   name: Publish a deterministic logical ADR fragment for boot readiness.
@@ -4310,6 +4407,70 @@ entities:
   domains: []
   related_adrs:
   - ADR-L-0002
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: INV-0099
+  entity_type: invariant
+  name: INV-0099
+  introduced_by: ADR-L-0007
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0007-deterministic-documentation-projection.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs:
+  - ADR-L-0007
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: INV-0100
+  entity_type: invariant
+  name: INV-0100
+  introduced_by: ADR-L-0007
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0007-deterministic-documentation-projection.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs:
+  - ADR-L-0007
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: INV-0101
+  entity_type: invariant
+  name: INV-0101
+  introduced_by: ADR-L-0007
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0007-deterministic-documentation-projection.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs:
+  - ADR-L-0007
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: INV-0102
+  entity_type: invariant
+  name: INV-0102
+  introduced_by: ADR-L-0007
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0007-deterministic-documentation-projection.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs:
+  - ADR-L-0007
   realized_by: []
   relationships:
     depends_on: []

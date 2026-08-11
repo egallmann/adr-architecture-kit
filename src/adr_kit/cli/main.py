@@ -2241,7 +2241,7 @@ def audit_runtime(requirements: Path, pyproject: Path, fail_on_outdated: bool):
 def generate_system_overview(output: Path):
     """Generate the AI-first SYSTEM-OVERVIEW.md artifact."""
     try:
-        generator = SystemOverviewGenerator()
+        generator = SystemOverviewGenerator(repo_root=Path.cwd())
         generator.save(output)
         click.echo(f"Generated system overview: {output}")
     except Exception as e:
@@ -2338,7 +2338,9 @@ def _generate_adr_projection_docs(*, scope: Optional[Path], recursive: bool, lab
 def validate_system_overview(file_path: Path):
     """Validate that SYSTEM-OVERVIEW.md is generated and current."""
     try:
-        result = SystemOverviewValidator().validate_file(file_path)
+        result = SystemOverviewValidator(
+            generator=SystemOverviewGenerator(repo_root=Path.cwd())
+        ).validate_file(file_path)
         if result.errors:
             for error in result.errors:
                 click.echo(f"ERROR: {error}", err=True)

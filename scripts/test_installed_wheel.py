@@ -46,6 +46,9 @@ assert resources.files('adr_kit.schema.v1_2').joinpath('adr-logical.schema.json'
 assert resources.files('adr_kit.schema.v1_3').joinpath('adr-logical.schema.json').is_file()
 assert resources.files('adr_kit.schema.v2_0').joinpath('normalized-entity.schema.json').is_file()
 assert resources.files('adr_kit.templates').joinpath('adr-logical.md.jinja2').is_file()
+assert resources.files('adr_kit.templates').joinpath('system-overview-adr-architecture-kit.yaml').is_file()
+assert resources.files('adr_kit.templates').joinpath('system-overview-ste-runtime.yaml').is_file()
+assert resources.files('adr_kit.templates').joinpath('system-overview.md.jinja2').is_file()
 from adr_kit.migrators import TopologyIdentityMigrator
 assert TopologyIdentityMigrator.__name__ == 'TopologyIdentityMigrator'
 from adr_kit.migrators.identity_v13 import IdentityV13Migrator

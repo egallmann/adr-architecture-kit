@@ -16,167 +16,259 @@ generation_rule: >
 
 # SYSTEM-OVERVIEW
 
-## Why This File Exists
+## Start Here
 
-This file is the fastest correct orientation path for an AI working in this repository.
+This file is generated AI-first orientation for contributors entering this repository.
 
-Its job is to prevent two common failures:
+It is **not** normative architecture authority. Read it before coupling to repository internals.
+Regenerate with `adr generate-system-overview` and validate with `adr validate-system-overview`.
+Do not hand-edit this file.
 
-1. Missing project-native capabilities that already exist, such as generators, validators, and CLI commands.
-2. Making path, scope, or artifact assumptions that conflict with repository authority.
+{% if profile_kind == "adr-architecture-kit" %}
+## What ADR Kit Is
 
-Read this file before writing code, generating artifacts, or hand-crafting repository outputs.
+{{ profile.system_identity }}
 
-## System Purpose
-
-{{ system_purpose_lead }}
+{{ profile.purpose }}
 
 It provides:
 
-{% for bullet in system_purpose_bullets %}
+{% for bullet in profile.purpose_bullets %}
 - {{ bullet }}
 {% endfor %}
 
-{{ system_purpose_footer }}
+{{ profile.purpose_footer }}
+
+## Responsibility and Authority Boundaries
+
+Authority is responsibility-scoped. Use this compact map when resolving ownership:
+
+| Surface | Meaning |
+| --- | --- |
+{% for item in responsibility_boundaries %}
+| {{ item.subject }}{% if item.link %} ([link]({{ item.link }})){% endif %} | {{ item.detail }} |
+{% endfor %}
+
+## Supported Consumer Surfaces
+
+### Python SDK — primary programmatic boundary
+
+Consume supported programmatic behavior through `{{ provider.primary_module }}`.
+
+Derived provider facts:
+
+- API contract version: `{{ provider.api_contract_version }}`
+- Package version: `{{ provider.package_version }}`
+- Operations: {% for op in provider.operations %}`{{ op }}`{% if not loop.last %}, {% endif %}{% endfor %}
+- Validation modes: {% for mode in provider.validation_modes %}`{{ mode }}`{% if not loop.last %}, {% endif %}{% endfor %}
+- Artifact groups: {% for group in provider.artifact_groups %}`{{ group }}`{% if not loop.last %}, {% endif %}{% endfor %}
+- Supported ADR schema versions: {% for version in provider.supported_adr_schema_versions %}`{{ version }}`{% if not loop.last %}, {% endif %}{% endfor %}
+- Stable ADR schema versions: {% for version in provider.stable_adr_schema_versions %}`{{ version }}`{% if not loop.last %}, {% endif %}{% endfor %}
+- Provisional ADR schema versions: {% for version in provider.provisional_adr_schema_versions %}`{{ version }}`{% if not loop.last %}, {% endif %}{% endfor %}
+- Normalized model schema version: `{{ provider.normalized_model_schema_version }}`
+- Supported normalized model schema versions: {% for version in provider.supported_normalized_model_schema_versions %}`{{ version }}`{% if not loop.last %}, {% endif %}{% endfor %}
+
+Supported semantic/repository contracts include `ArchitectureRepository` and `NormalizedArchitectureModel`.
+
+See [`{{ provider.sdk_doc_link }}`]({{ provider.sdk_doc_link }}).
+
+### CLI — supported workflow adapter
+
+The CLI remains supported for human, local, and automation workflows.
+Use `adr --help` for the live command surface. Prefer selected task routes below over treating the CLI as the only product surface.
+
+### Internal surfaces
+
+Do not couple external consumers to compiler IR, compiler passes, emitters, private validator internals, or deep package implementation modules unless a current public contract explicitly promotes them.
+
+## Architecture and Artifact Layers
+
+1. Canonical authored architecture (`PROJECT.yaml`, accepted ADRs under `adrs/`)
+2. Supported normalized semantic/repository view (`NormalizedArchitectureModel` via `adr_kit.api`)
+3. Derived generated projections (manifests, registries, rendered docs, this overview)
+4. Compatibility/internal surfaces (legacy registries and non-public implementation paths)
+
+Authority differences are explicit: authored accepted artifacts govern; derived views do not become a second authority layer.
+
+## Provider Capabilities
+
+Currently exposed lifecycle capabilities on the public provider surface:
+
+{% for op in provider.operations %}
+- `{{ provider.primary_module }}.{{ op }}`
+{% endfor %}
+
+Selected required CLI workflow membership (validated against the CLI surface snapshot):
+
+{% for command in required_cli_commands %}
+- `adr {{ command }}`
+{% endfor %}
+
+## How to Enter for Common Tasks
+
+| Task | Entry | Surface |
+| --- | --- | --- |
+{% for route in task_routes %}
+| {{ route.task }} | `{{ route.entry }}` | {{ route.surface }} |
+{% endfor %}
+
+## Authority Anchors
+
+Selected accepted authority for orientation (not a second manifest):
+
+{% for anchor in authority_anchors %}
+- [`{{ anchor.id }}`]({{ anchor.path }}) — {{ anchor.title }} (`{{ anchor.status }}`)
+{% endfor %}
+
+## Safe Extension Rules
+
+{% for rule in safe_extension_rules %}
+- {{ rule }}
+{% endfor %}
+
+## Common Category Errors
+
+{% for item in category_errors %}
+- {{ item }}
+{% endfor %}
+
+## Validation Gates
+
+{% for gate in validation_gates %}
+- {{ gate }}
+{% endfor %}
+
+## Read Next
+
+{% for link in read_next %}
+- [`{{ link.label }}`]({{ link.target }})
+{% endfor %}
+
+## One-Line Orientation
+
+{{ profile.one_line_orientation }}
+
+{% elif profile_kind == "ste-runtime" %}
+## What ste-runtime Is
+
+{{ profile.system_identity }}
+
+{{ profile.purpose }}
+
+It provides:
+
+{% for bullet in profile.purpose_bullets %}
+- {{ bullet }}
+{% endfor %}
+
+{{ profile.purpose_footer }}
 
 {% if workspace_highlights %}
 ## Workspace scope and bootstrap ADRs
 
 {% for line in workspace_highlights %}
-{{ line }}
+- {{ line }}
 {% endfor %}
 
 {% endif %}
-## Authority Hierarchy
+## Responsibility and Authority Boundaries
 
-Use this order when resolving ambiguity:
-
-{% for item in authority_hierarchy %}
-{{ loop.index }}. {{ item.title }}
-   {{ item.detail }}
+| Surface | Meaning |
+| --- | --- |
+{% for item in responsibility_boundaries %}
+| {{ item.subject }}{% if item.link %} ([link]({{ item.link }})){% endif %} | {{ item.detail }} |
 {% endfor %}
 
-If code and ADRs disagree, treat the ADRs and project policy as authoritative unless the task is explicitly to correct the ADRs.
+## How to Enter for Common Tasks
 
-## First Discovery Order
-
-When an AI enters this repo cold, use this order:
-
-{% for item in first_discovery_order %}
-{{ loop.index }}. {{ item }}
+| Task | Entry | Surface |
+| --- | --- | --- |
+{% for route in task_routes %}
+| {{ route.task }} | `{{ route.entry }}` | {{ route.surface }} |
 {% endfor %}
 
-Do not start by hand-writing artifacts if a generator or validator already exists.
+## Safe Extension Rules
 
-## Canonical Capabilities
-
-Core implementation areas:
-
-{% for item in capabilities %}
-- {{ item.title }}: {{ item.detail }}
+{% for rule in safe_extension_rules %}
+- {{ rule }}
 {% endfor %}
 
-Primary CLI capabilities:
+## Common Category Errors
 
-{% for item in cli_capabilities %}
+{% for item in category_errors %}
 - {{ item }}
 {% endfor %}
 
-## Artifact Model
+## Validation Gates
 
-Repository artifact classes:
-
-{% for item in artifact_classes %}
-- {{ item }}
+{% for gate in validation_gates %}
+- {{ gate }}
 {% endfor %}
 
-Subtype authority comes from document content, not folders:
+## Read Next
 
-- `adr_type`
-- `id`
-
-Do not infer physical subtype from directory names when frontmatter already tells you the type.
-
-## ADR Taxonomy
-
-Use this type model when reasoning about repository architecture artifacts:
-
-{% for item in adr_taxonomy %}
-- {{ item.title }}: {{ item.detail }}
-{% endfor %}
-
-## Canonical Workflows
-
-{% for item in canonical_workflows %}
-### {{ item.title }}
-
-{{ item.detail }}
-
-{% endfor %}
-## Tooling Priority Rules
-
-These are operational rules for AI contributors:
-
-{% for item in tooling_priority_rules %}
-{{ loop.index }}. {{ item }}
-{% endfor %}
-
-## Path and Scope Rules
-
-These rules are mandatory:
-
-{% for item in path_scope_rules %}
-{{ loop.index }}. {{ item }}
-{% endfor %}
-
-See [`placement-convention.md`](docs/contributors/placement-convention.md) for the full placement rule.
-
-## High-Value Invariants
-
-Start here when you need the non-negotiables:
-
-{% for item in invariants %}
-- {{ item }}
-{% endfor %}
-
-Practical meaning:
-
-- schema-invalid artifacts are not acceptable
-- deprecated runtime APIs are not acceptable
-- dependency security must be checked
-- dependency freshness must be surfaced continuously
-- derived artifacts must be regenerated, not manually drifted
-
-## Fast Target Discovery
-
-Use these heuristics before implementing:
-
-{% for item in fast_target_discovery %}
-- {{ item.title }}:
-  {{ item.detail }}
-{% endfor %}
-
-## Common Failure Modes
-
-Avoid these:
-
-{% for item in common_failure_modes %}
-- {{ item }}
-{% endfor %}
-
-## Completion Criteria
-
-A change is not complete unless relevant checks were run.
-
-Minimum close-out expectation:
-
-{% for item in completion_criteria %}
-- {{ item }}
+{% for link in read_next %}
+- [`{{ link.label }}`]({{ link.target }})
 {% endfor %}
 
 ## One-Line Orientation
 
-If you only remember one thing:
+{{ profile.one_line_orientation }}
 
-This repository is generator-first, validator-first, scope-aware, and frontmatter-authoritative.
-It is also boundary-sensitive: `ste-spec` owns the normative public Architecture IR contract.
+{% else %}
+## Compatibility Orientation
+
+{{ profile.system_identity }}
+
+{{ profile.purpose }}
+
+{% for bullet in profile.purpose_bullets %}
+- {{ bullet }}
+{% endfor %}
+
+{{ profile.purpose_footer }}
+
+## Responsibility and Authority Boundaries
+
+| Surface | Meaning |
+| --- | --- |
+{% for item in responsibility_boundaries %}
+| {{ item.subject }}{% if item.link %} ([link]({{ item.link }})){% endif %} | {{ item.detail }} |
+{% endfor %}
+
+## How to Enter for Common Tasks
+
+| Task | Entry | Surface |
+| --- | --- | --- |
+{% for route in task_routes %}
+| {{ route.task }} | `{{ route.entry }}` | {{ route.surface }} |
+{% endfor %}
+
+## Safe Extension Rules
+
+{% for rule in safe_extension_rules %}
+- {{ rule }}
+{% endfor %}
+
+## Common Category Errors
+
+{% for item in category_errors %}
+- {{ item }}
+{% endfor %}
+
+## Validation Gates
+
+{% for gate in validation_gates %}
+- {{ gate }}
+{% endfor %}
+
+## Read Next
+
+{% for link in read_next %}
+- [`{{ link.label }}`]({{ link.target }})
+{% endfor %}
+
+## One-Line Orientation
+
+{{ profile.one_line_orientation }}
+{% endif %}

@@ -8,7 +8,7 @@ high_water_marks:
   DEC: 9000
   IFACE: 33
   IMPL: 27
-  INV: 98
+  INV: 102
 allocations:
 - id: BOUND-0001
   entity_type: boundary
@@ -675,6 +675,42 @@ allocations:
   adr_id: ADR-L-0007
   file_path: adrs/logical/ADR-L-0007-deterministic-documentation-projection.yaml
   source_pointer: /decisions/4/id
+  state: active
+- id: DEC-0110
+  entity_type: decision
+  adr_id: ADR-L-0007
+  file_path: adrs/logical/ADR-L-0007-deterministic-documentation-projection.yaml
+  source_pointer: /decisions/5/alias_id
+  state: active
+- id: DEC-0111
+  entity_type: decision
+  adr_id: ADR-L-0007
+  file_path: adrs/logical/ADR-L-0007-deterministic-documentation-projection.yaml
+  source_pointer: /decisions/6/alias_id
+  state: active
+- id: DEC-0112
+  entity_type: decision
+  adr_id: ADR-L-0007
+  file_path: adrs/logical/ADR-L-0007-deterministic-documentation-projection.yaml
+  source_pointer: /decisions/7/alias_id
+  state: active
+- id: DEC-0113
+  entity_type: decision
+  adr_id: ADR-L-0007
+  file_path: adrs/logical/ADR-L-0007-deterministic-documentation-projection.yaml
+  source_pointer: /decisions/8/alias_id
+  state: active
+- id: DEC-0114
+  entity_type: decision
+  adr_id: ADR-L-0007
+  file_path: adrs/logical/ADR-L-0007-deterministic-documentation-projection.yaml
+  source_pointer: /decisions/9/alias_id
+  state: active
+- id: DEC-0115
+  entity_type: decision
+  adr_id: ADR-L-0007
+  file_path: adrs/logical/ADR-L-0007-deterministic-documentation-projection.yaml
+  source_pointer: /decisions/10/alias_id
   state: active
 - id: DEC-0027
   entity_type: decision
@@ -1761,6 +1797,30 @@ allocations:
   adr_id: ADR-L-0007
   file_path: adrs/logical/ADR-L-0007-deterministic-documentation-projection.yaml
   source_pointer: /invariants/2/id
+  state: active
+- id: INV-0099
+  entity_type: invariant
+  adr_id: ADR-L-0007
+  file_path: adrs/logical/ADR-L-0007-deterministic-documentation-projection.yaml
+  source_pointer: /invariants/3/alias_id
+  state: active
+- id: INV-0100
+  entity_type: invariant
+  adr_id: ADR-L-0007
+  file_path: adrs/logical/ADR-L-0007-deterministic-documentation-projection.yaml
+  source_pointer: /invariants/4/alias_id
+  state: active
+- id: INV-0101
+  entity_type: invariant
+  adr_id: ADR-L-0007
+  file_path: adrs/logical/ADR-L-0007-deterministic-documentation-projection.yaml
+  source_pointer: /invariants/5/alias_id
+  state: active
+- id: INV-0102
+  entity_type: invariant
+  adr_id: ADR-L-0007
+  file_path: adrs/logical/ADR-L-0007-deterministic-documentation-projection.yaml
+  source_pointer: /invariants/6/alias_id
   state: active
 - id: INV-0040
   entity_type: invariant

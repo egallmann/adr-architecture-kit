@@ -5,8 +5,8 @@ artifact_kind: rendered_adr_markdown
 generator_id: adr-projection-markdown
 generator_version: 2
 hash_algorithm: sha256
-source_hash: b572aeb7f467a252b79acaf03504a62160a6f2daa953a8178f0606a35d8efc72
-rendered_hash: f36526ca6810df93b9d5a40c71da7ac29ca37e66978ad2d9e0d2c1bf28e7517b
+source_hash: 75e311d511957096e664c0723eaf88adcb34902a751c118b628ec20e00382960
+rendered_hash: c6c472cff6141b1cc8cfc7de60057b752af3c3622ebe52058b11c2a3366939ff
 -->
 
 # ADR-L-0014: Brownfield Onboarding and Canonicalization Workflow
@@ -15,7 +15,9 @@ rendered_hash: f36526ca6810df93b9d5a40c71da7ac29ca37e66978ad2d9e0d2c1bf28e7517b
 **Created:** 2026-03-15  
 **Authors:** adr-architecture-kit  
 **Domains:** migration, onboarding, governance, brownfield  
-**Tags:** onboarding, migration, canonicalization, cleanup  **Alias name:** brownfield-onboarding-and-canonicalization-workflow  
+**Tags:** onboarding, migration, canonicalization, cleanup  
+**Alias name:** brownfield-onboarding-and-canonicalization-workflow  
+
 ## Context
 
 STE adoption often begins after meaningful architecture and implementation

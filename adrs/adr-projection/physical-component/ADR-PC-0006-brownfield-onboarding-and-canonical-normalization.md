@@ -5,8 +5,8 @@ artifact_kind: rendered_adr_markdown
 generator_id: adr-projection-markdown
 generator_version: 2
 hash_algorithm: sha256
-source_hash: ead94e467acae8edb5a1c1e2e49d84319443a9dfddd65bf23cb88b80ffbbbed3
-rendered_hash: baec2e771692774cb173da4b0c81fcd9d4122f6e6930319dd506ea9b14a198ab
+source_hash: 68fd92249db4c0c2e383b8c8bf697e39f5a6d7af8713e2d63c99369f3b6e20fc
+rendered_hash: a55a471ed15d31acf4e5ed5aaa4a51e26ec1d1d1fdc37222d240733126ca469a
 -->
 
 # ADR-PC-0006: Brownfield Onboarding and Canonical Normalization
@@ -16,9 +16,12 @@ rendered_hash: baec2e771692774cb173da4b0c81fcd9d4122f6e6930319dd506ea9b14a198ab
 **Authors:** adr-architecture-kit  
 **Domains:** migration, onboarding, normalization  
 **Alias name:** adr-pc-0006-brownfield-onboarding-and-canonical-normalization  
+
 **Implements Logical:** [ADR-L-0011](../logical/ADR-L-0011-metadata-schemas-and-remediation-ledger-enforcement.md), [ADR-L-0014](../logical/ADR-L-0014-brownfield-onboarding-and-canonicalization-workflow.md)  
-**Technologies:** python, yaml, click
-**Implements System:** [ADR-PS-0002](../physical-system/ADR-PS-0002-adr-kit-authoring-compiler-and-validation-system.md)
+**Technologies:** python, yaml, click  
+
+**Implements System:** [ADR-PS-0002](../physical-system/ADR-PS-0002-adr-kit-authoring-compiler-and-validation-system.md)  
+
 ## Context
 
 adr-architecture-kit already includes migration and normalization behavior in

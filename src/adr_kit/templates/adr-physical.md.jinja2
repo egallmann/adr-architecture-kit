@@ -2,19 +2,23 @@
 
 **Status:** {{ adr.status.value }}  
 **Created:** {{ adr.created_date }}  
-{% if adr.modified_date %}**Modified:** {{ adr.modified_date }}  {% endif %}
+{% if adr.modified_date %}**Modified:** {{ adr.modified_date }}  
+{% endif %}
 **Authors:** {{ adr.authors | join(', ') }}  
 **Domains:** {{ adr.domains | join(', ') }}  
-{% if adr.tags %}**Tags:** {{ adr.tags | join(', ') }}  {% endif %}
-{% if adr.alias_name %}**Alias name:** {{ adr.alias_name }}  {% endif %}
+{% if adr.tags %}**Tags:** {{ adr.tags | join(', ') }}  
+{% endif %}
+{% if adr.alias_name %}**Alias name:** {{ adr.alias_name }}  
+{% endif %}
 
 {% if adr.implements_logical %}
 **Implements Logical:** {% for item in adr.implements_logical %}{{ item | present_ref }}{% if not loop.last %}, {% endif %}{% endfor %}  
 {% endif %}
-{% if adr.technologies %}**Technologies:** {{ adr.technologies | join(', ') }}{% endif %}
+{% if adr.technologies %}**Technologies:** {{ adr.technologies | join(', ') }}  
+{% endif %}
 
 {% if adr.implements_system %}
-**Implements System:** {% for item in adr.implements_system %}{{ item | present_ref }}{% if not loop.last %}, {% endif %}{% endfor %}
+**Implements System:** {% for item in adr.implements_system %}{{ item | present_ref }}{% if not loop.last %}, {% endif %}{% endfor %}  
 {% endif %}
 
 ## Context

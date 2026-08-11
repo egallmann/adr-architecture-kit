@@ -5,8 +5,8 @@ artifact_kind: rendered_adr_markdown
 generator_id: adr-projection-markdown
 generator_version: 2
 hash_algorithm: sha256
-source_hash: b4d4aab4430d3fb4a27627ac629fbab81550ba595c086d4d88decea3098d2149
-rendered_hash: 8402c263574573b22afb22bf1c6494f62a055aaca102c0cb9008eb17b44db146
+source_hash: d09e5ab9ae9f9f5a80dc956a609e7e4d9b776d72e9de652445fcdd35bca77818
+rendered_hash: db23c6c60bebcc115b262ace8657091fcb542b8b010af41474a28c30857b5c1a
 -->
 
 # ADR-PC-0001: Entity Registry and Discovery Index
@@ -16,9 +16,12 @@ rendered_hash: 8402c263574573b22afb22bf1c6494f62a055aaca102c0cb9008eb17b44db146
 **Authors:** adr-architecture-kit  
 **Domains:** discovery, indexing, tooling  
 **Alias name:** entity-registry-and-discovery-index  
+
 **Implements Logical:** [ADR-L-0009](../logical/ADR-L-0009-derived-architecture-discovery-surfaces.md), [ADR-L-0012](../logical/ADR-L-0012-federation-authority-and-qualified-identity-model.md)  
-**Technologies:** python, pyyaml, click
-**Implements System:** [ADR-PS-0001](../physical-system/ADR-PS-0001-adr-architecture-kit-discovery-and-indexing-system.md)
+**Technologies:** python, pyyaml, click  
+
+**Implements System:** [ADR-PS-0001](../physical-system/ADR-PS-0001-adr-architecture-kit-discovery-and-indexing-system.md)  
+
 ## Context
 
 The discovery/indexing component now centers on the unified compiler path. It

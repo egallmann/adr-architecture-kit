@@ -5,17 +5,20 @@ artifact_kind: rendered_adr_markdown
 generator_id: adr-projection-markdown
 generator_version: 2
 hash_algorithm: sha256
-source_hash: 2f550dd589c67772b84b736edc1ccb4345fc91280f4582993bc55b685993ae1d
-rendered_hash: 7b3b5df3f830ac66bccf2369e1e4e925e83fe6a8b37374fe8e740791f7370985
+source_hash: 0d746339f5d40a95c1e53aa3ef24407c6942359389d5c3e55c8565a089f9c9a7
+rendered_hash: 8fbe0c002ba20a99fca546d524a8f344c2880af496badf2f06dc288d2d8be8c5
 -->
 
 # ADR-L-0018: Schema v1.2 and Normalized Semantic Foundation
 
 **Status:** accepted  
 **Created:** 2026-08-07  
-**Modified:** 2026-08-07  **Authors:** adr-architecture-kit  
+**Modified:** 2026-08-07  
+**Authors:** adr-architecture-kit  
 **Domains:** authoring, schema, semantic-model, identity, migration  
-**Tags:** schema-v1.2, normalized-model, assertion-identity, external-bindings, topology-identity  **Alias name:** schema-v1-2-and-normalized-semantic-foundation  
+**Tags:** schema-v1.2, normalized-model, assertion-identity, external-bindings, topology-identity  
+**Alias name:** schema-v1-2-and-normalized-semantic-foundation  
+
 ## Context
 
 Phase 1 established a narrow supported authoring SDK while explicitly deferring

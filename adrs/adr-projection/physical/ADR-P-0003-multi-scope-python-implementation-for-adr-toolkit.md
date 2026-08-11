@@ -5,19 +5,23 @@ artifact_kind: rendered_adr_markdown
 generator_id: adr-projection-markdown
 generator_version: 2
 hash_algorithm: sha256
-source_hash: 70f3a5180a22e2d09d5ece40efc6af2851a68fcaaf14999767d57b0c3db869d2
-rendered_hash: 9b56163c5f7184073811551985e8e31ccdb0be7566332387fa8eb49cef572e9a
+source_hash: 642bcb95efa872e7e7dfdec1e518b503bbe06c2f58ffbfe99efd2297ce42914d
+rendered_hash: 994438bed2a3b4f4d8a2de912ae774f5172a5ba4989fa63da9e6b7bf271a37bd
 -->
 
 # ADR-P-0003: Multi-Scope Python Implementation for ADR Toolkit
 
 **Status:** accepted  
 **Created:** 2026-03-08  
-**Modified:** 2026-03-08  **Authors:** adr-architecture-kit  
+**Modified:** 2026-03-08  
+**Authors:** adr-architecture-kit  
 **Domains:** implementation, adr, python, cli  
-**Tags:** python, implementation, scope-resolution, cli, api  **Alias name:** multi-scope-python-implementation-for-adr-toolkit  
+**Tags:** python, implementation, scope-resolution, cli, api  
+**Alias name:** multi-scope-python-implementation-for-adr-toolkit  
+
 **Implements Logical:** [ADR-L-0002](../logical/ADR-L-0002-multi-scope-adr-architecture-for-sub-module-development.md)  
-**Technologies:** python, click, pyyaml, pathlib, dataclasses
+**Technologies:** python, click, pyyaml, pathlib, dataclasses  
+
 
 ## Context
 

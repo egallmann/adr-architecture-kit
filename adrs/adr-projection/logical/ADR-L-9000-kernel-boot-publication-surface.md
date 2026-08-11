@@ -5,8 +5,8 @@ artifact_kind: rendered_adr_markdown
 generator_id: adr-projection-markdown
 generator_version: 2
 hash_algorithm: sha256
-source_hash: 4b2661372fe1cb303cedd3c426a1cb486f0db3edc4a9af652869966075bfe5bf
-rendered_hash: 56b166ac85cf3966a76db45c0088493593c369ee031aa25b4e93ab531f6c29dd
+source_hash: e73610fb44b6af7ea16121c819dce300d940980c397f9b8dd267b6bf1737dc27
+rendered_hash: ccb57699042068f3317e5efaaee25476be026651b43b82d689a85e5e48f01730
 -->
 
 # ADR-L-9000: Kernel Boot Publication Surface
@@ -15,7 +15,9 @@ rendered_hash: 56b166ac85cf3966a76db45c0088493593c369ee031aa25b4e93ab531f6c29dd
 **Created:** 2026-03-21  
 **Authors:** adr-architecture-kit  
 **Domains:** kernel, integration  
-**Tags:** boot, publication  **Alias name:** kernel-boot-publication-surface  
+**Tags:** boot, publication  
+**Alias name:** kernel-boot-publication-surface  
+
 ## Context
 
 The STE workspace needs a deterministic ADR-backed Architecture IR fragment

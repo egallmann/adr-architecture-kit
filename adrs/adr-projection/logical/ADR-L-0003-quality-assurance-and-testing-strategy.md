@@ -5,17 +5,20 @@ artifact_kind: rendered_adr_markdown
 generator_id: adr-projection-markdown
 generator_version: 2
 hash_algorithm: sha256
-source_hash: e298354bed9b08ee386b88b0c77ca98cc7d9c9acf14983851779f64f98896b1f
-rendered_hash: 12b2586b66f608cce7e32de223649051cd5905abfb8f37cbb5a097843c2f1a8d
+source_hash: 50effe42841dba85722284ab7f843962227694b6dd3d649ea8d302108e5ff515
+rendered_hash: 666b267eca28e78b4b79a10dbc4e14c8e0175ded5f856a5cffcd70b60449c563
 -->
 
 # ADR-L-0003: Quality Assurance and Testing Strategy
 
 **Status:** accepted  
 **Created:** 2026-03-08  
-**Modified:** 2026-08-05  **Authors:** adr-architecture-kit  
+**Modified:** 2026-08-05  
+**Authors:** adr-architecture-kit  
 **Domains:** quality-assurance, testing, governance, reliability  
-**Tags:** testing, quality, ci-cd, validation, coverage  **Alias name:** quality-assurance-and-testing-strategy  
+**Tags:** testing, quality, ci-cd, validation, coverage  
+**Alias name:** quality-assurance-and-testing-strategy  
+
 ## Context
 
 The ADR Architecture Kit is a foundational tool for machine-verifiable architecture

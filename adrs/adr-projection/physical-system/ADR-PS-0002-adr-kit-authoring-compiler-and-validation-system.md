@@ -5,19 +5,23 @@ artifact_kind: rendered_adr_markdown
 generator_id: adr-projection-markdown
 generator_version: 2
 hash_algorithm: sha256
-source_hash: ae416fdda7f17737f85ba8aafb3ca2c3b622e1c59f6499bcfa99f62f07930eaa
-rendered_hash: 17f649002d4ab8989d61167f0b09540d3a6a8d3bf98c6234ddb95b55abda932e
+source_hash: e35a312922c288ef89e6e26ad7bee9a43b7bfa1176e6c08b50347984ebdf38a0
+rendered_hash: b829df599048a7035063c02edaa5a75a5f8f6ed16793c76608104cf4f4b5b1e1
 -->
 
 # ADR-PS-0002: ADR Kit Authoring Compiler and Validation System
 
 **Status:** proposed  
 **Created:** 2026-03-15  
-**Modified:** 2026-08-05  **Authors:** adr-architecture-kit  
+**Modified:** 2026-08-05  
+**Authors:** adr-architecture-kit  
 **Domains:** compiler, validation, tooling  
-**Tags:** compiler, validation, authoring, python  **Alias name:** adr-kit-authoring-compiler-and-validation-system  
+**Tags:** compiler, validation, authoring, python  
+**Alias name:** adr-kit-authoring-compiler-and-validation-system  
+
 **Implements Logical:** [ADR-L-0001](../logical/ADR-L-0001-ste-compliant-machine-verifiable-architecture-decision-record-system.md), [ADR-L-0007](../logical/ADR-L-0007-deterministic-documentation-projection.md), [ADR-L-0008](../logical/ADR-L-0008-validation-modes-for-draft-and-complete-adrs.md), [ADR-L-0010](../logical/ADR-L-0010-kernel-interface-contract-and-validation-profiles.md), [ADR-L-0011](../logical/ADR-L-0011-metadata-schemas-and-remediation-ledger-enforcement.md), [ADR-L-0013](../logical/ADR-L-0013-architecture-repository-boundary-and-normalized-semantic-model.md)  
-**Technologies:** python, click, pydantic, yaml, json-schema
+**Technologies:** python, click, pydantic, yaml, json-schema  
+
 
 ## Context
 

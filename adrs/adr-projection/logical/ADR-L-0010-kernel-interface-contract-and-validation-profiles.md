@@ -5,8 +5,8 @@ artifact_kind: rendered_adr_markdown
 generator_id: adr-projection-markdown
 generator_version: 2
 hash_algorithm: sha256
-source_hash: 5714f3bb88c6b1cc4dc1a81bbb9236f2f5e92b69678a2a42ef62d315033f2891
-rendered_hash: b9d044917887940affe0e1e454bd72928d0d3c892917fe6f1172ebe09bee63b4
+source_hash: bd57ad20aeb0ba3e0d6dc7b9b8619894c045dd42ecd7999470d2c0fa52f2f3e0
+rendered_hash: ae031295e73cec4b0ca070a839cb93fad38809fec15fb44df760350885611cfa
 -->
 
 # ADR-L-0010: Kernel Interface Contract and Validation Profiles
@@ -15,7 +15,9 @@ rendered_hash: b9d044917887940affe0e1e454bd72928d0d3c892917fe6f1172ebe09bee63b4
 **Created:** 2026-03-14  
 **Authors:** adr-architecture-kit  
 **Domains:** kernel, contract, governance, validation  
-**Tags:** contract, registries, brownfield, migration, sentinel  **Alias name:** kernel-interface-contract-and-validation-profiles  
+**Tags:** contract, registries, brownfield, migration, sentinel  
+**Alias name:** kernel-interface-contract-and-validation-profiles  
+
 ## Context
 
 adr-architecture-kit is transitioning from an implicit generator toolkit into

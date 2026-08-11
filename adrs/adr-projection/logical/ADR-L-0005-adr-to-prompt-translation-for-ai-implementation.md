@@ -5,17 +5,20 @@ artifact_kind: rendered_adr_markdown
 generator_id: adr-projection-markdown
 generator_version: 2
 hash_algorithm: sha256
-source_hash: 6ab94e8fc5c09c6a35ee7b180ed2ac889723f62477bf3399d25fc0618c0674ba
-rendered_hash: ce3c3484d021dd7c3e4b19bef60ca49bb0f49b64ea592fc0d66ca44f5bca6510
+source_hash: 2bf2aca8944f3cb7a7ed0edc04f4c2d2ba53c5c91f25a39f6fbdc8a09a7a3d43
+rendered_hash: 95e2d3b9e7e4fd294c49dd6768e22a47b3c9ea1dc629fa9d77b2b4dd187c4dd6
 -->
 
 # ADR-L-0005: ADR-to-Prompt Translation for AI Implementation
 
 **Status:** proposed  
 **Created:** 2026-03-08  
-**Modified:** 2026-03-08  **Authors:** adr-architecture-kit  
+**Modified:** 2026-03-08  
+**Authors:** adr-architecture-kit  
 **Domains:** adr, automation, ai-tooling, code-generation  
-**Tags:** prompt-engineering, adr, automation, ai-agents, code-generation, llm  **Alias name:** adr-to-prompt-translation-for-ai-implementation  
+**Tags:** prompt-engineering, adr, automation, ai-agents, code-generation, llm  
+**Alias name:** adr-to-prompt-translation-for-ai-implementation  
+
 ## Context
 
 The ADR Architecture Kit encodes architectural decisions in machine-readable YAML

@@ -5,8 +5,8 @@ artifact_kind: rendered_adr_markdown
 generator_id: adr-projection-markdown
 generator_version: 2
 hash_algorithm: sha256
-source_hash: 58f647dd385cd90dcb70657fca20a75798a545af1116a96a63d7452be49bc45b
-rendered_hash: d3f2528b49e4e318e1da6cead4bafb165aab8028ca50d2cd158fd647c5df3f45
+source_hash: 5433b20ee1e8055558c25cc291167faedb8da98d9b7dd557f1f7c7d074fb6a30
+rendered_hash: d9aeff41fedc181df42e94d215b31307cf407a51dd19a7b59e42f8a220e58d32
 -->
 
 # ADR-PS-0001: ADR Architecture Kit Discovery and Indexing System
@@ -16,8 +16,10 @@ rendered_hash: d3f2528b49e4e318e1da6cead4bafb165aab8028ca50d2cd158fd647c5df3f45
 **Authors:** adr-architecture-kit  
 **Domains:** discovery, indexing, tooling  
 **Alias name:** adr-architecture-kit-discovery-and-indexing-system  
+
 **Implements Logical:** [ADR-L-0009](../logical/ADR-L-0009-derived-architecture-discovery-surfaces.md), [ADR-L-0012](../logical/ADR-L-0012-federation-authority-and-qualified-identity-model.md)  
-**Technologies:** python, pyyaml, click
+**Technologies:** python, pyyaml, click  
+
 
 ## Context
 

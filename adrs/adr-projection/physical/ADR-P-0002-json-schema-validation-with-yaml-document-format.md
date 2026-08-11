@@ -5,8 +5,8 @@ artifact_kind: rendered_adr_markdown
 generator_id: adr-projection-markdown
 generator_version: 2
 hash_algorithm: sha256
-source_hash: 317694e19e89ee6a6a51835e5a98cb4575cbd9865f29eeb4ed5065e6d496a311
-rendered_hash: 646044680e1eec3dadf9b033b046ae1f7e081bfed4546792fb11b5e5cca7999d
+source_hash: a67edf54a9e5d437fa49375a6913b431bf4495e11e669c6dc86ec1e294cbc321
+rendered_hash: 0b0b5ed8d21524574e662253a5d02158348e3ed1f54465c0752ce37c1754f297
 -->
 
 # ADR-P-0002: JSON Schema Validation with YAML Document Format
@@ -15,9 +15,12 @@ rendered_hash: 646044680e1eec3dadf9b033b046ae1f7e081bfed4546792fb11b5e5cca7999d
 **Created:** 2026-03-07  
 **Authors:** erik.gallmann  
 **Domains:** schema, validation, format  
-**Tags:** json-schema, yaml, validation, ste-compliance  **Alias name:** json-schema-validation-with-yaml-document-format  
+**Tags:** json-schema, yaml, validation, ste-compliance  
+**Alias name:** json-schema-validation-with-yaml-document-format  
+
 **Implements Logical:** [ADR-L-0001](../logical/ADR-L-0001-ste-compliant-machine-verifiable-architecture-decision-record-system.md)  
-**Technologies:** json-schema, yaml, jsonschema-python
+**Technologies:** json-schema, yaml, jsonschema-python  
+
 
 ## Context
 

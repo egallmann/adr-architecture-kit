@@ -5,8 +5,8 @@ artifact_kind: rendered_adr_markdown
 generator_id: adr-projection-markdown
 generator_version: 2
 hash_algorithm: sha256
-source_hash: 977b24d638e87e8be25d48c1fc8578406b2d4a6f645bd84750ac3de9fdb1c345
-rendered_hash: 1cb5ad2ecdea73657c2d637da8709d1ae121d531e2b46cab8c51447c61861ae8
+source_hash: 2f6ccc1252f1aacd6edef17d595403c0bfb273f438e60e8f737fe05e48828b74
+rendered_hash: b60793ba587670e709b68c7b3a79e27c738dad6446e9e90464273e736f67a1cc
 -->
 
 # ADR-PC-0005: Generated Artifact Integrity Validation
@@ -16,9 +16,12 @@ rendered_hash: 1cb5ad2ecdea73657c2d637da8709d1ae121d531e2b46cab8c51447c61861ae8
 **Authors:** adr-architecture-kit  
 **Domains:** integrity, validation, projections  
 **Alias name:** adr-pc-0005-generated-artifact-integrity-validation  
+
 **Implements Logical:** [ADR-L-0007](../logical/ADR-L-0007-deterministic-documentation-projection.md), [ADR-L-0013](../logical/ADR-L-0013-architecture-repository-boundary-and-normalized-semantic-model.md)  
-**Technologies:** python, sha256, yaml
-**Implements System:** [ADR-PS-0002](../physical-system/ADR-PS-0002-adr-kit-authoring-compiler-and-validation-system.md)
+**Technologies:** python, sha256, yaml  
+
+**Implements System:** [ADR-PS-0002](../physical-system/ADR-PS-0002-adr-kit-authoring-compiler-and-validation-system.md)  
+
 ## Context
 
 Generated artifact integrity validation verifies freshness, tamper status,

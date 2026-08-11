@@ -5,8 +5,8 @@ artifact_kind: rendered_adr_markdown
 generator_id: adr-projection-markdown
 generator_version: 2
 hash_algorithm: sha256
-source_hash: 185cbf1bf6ebf1fa9c31518de5afc3dedf28bd3a0025b674fbe7c4c150eb3b41
-rendered_hash: 2d9c74e823c2917161bc3f4401bb2857c14249027d061258de5b22f1d0b0f677
+source_hash: 4b4a31761b1ef1b32a6b7c2d90bd3e0c063c913610c6054289dd1b2ab83d1eca
+rendered_hash: aa30bb38cb9e004de50e774e8d7746a5a289fc8d5a31600d30ee90b50cc3a688
 -->
 
 # ADR-L-0009: Derived Architecture Discovery Surfaces
@@ -15,7 +15,9 @@ rendered_hash: 2d9c74e823c2917161bc3f4401bb2857c14249027d061258de5b22f1d0b0f677
 **Created:** 2026-03-13  
 **Authors:** adr-architecture-kit  
 **Domains:** discovery, indexing, governance, ai-first  
-**Tags:** entity-registry, manifest, discovery, agent-tooling  **Alias name:** derived-architecture-discovery-surfaces  
+**Tags:** entity-registry, manifest, discovery, agent-tooling  
+**Alias name:** derived-architecture-discovery-surfaces  
+
 ## Context
 
 adr-architecture-kit is primarily machine-facing tooling used by agents to

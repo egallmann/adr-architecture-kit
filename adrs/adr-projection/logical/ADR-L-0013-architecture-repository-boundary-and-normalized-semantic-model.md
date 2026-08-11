@@ -5,17 +5,20 @@ artifact_kind: rendered_adr_markdown
 generator_id: adr-projection-markdown
 generator_version: 2
 hash_algorithm: sha256
-source_hash: 4b33016c0b813b936d3b712990de7143061d70182789c6f77e92c5c561ef6533
-rendered_hash: 1e5a183378896a2a0dac220f6abfd171fc4c80802349d53eab61f54ce4738e43
+source_hash: bc529d29793d8f715ceb3e5f0c559ee7463b3da2a7a24db180f74baf3cbb5a18
+rendered_hash: d3451bbf1fb0ed5df4c964279f7c0a140819acd533a209feec49fdecbe28fc69
 -->
 
 # ADR-L-0013: Architecture Repository Boundary and Normalized Semantic Model
 
 **Status:** accepted  
 **Created:** 2026-03-14  
-**Modified:** 2026-08-06  **Authors:** adr-architecture-kit  
+**Modified:** 2026-08-06  
+**Authors:** adr-architecture-kit  
 **Domains:** repository, discovery, compiler, kernel  
-**Tags:** repository-boundary, semantic-model, archmodel, registries  **Alias name:** architecture-repository-boundary-and-normalized-semantic-model  
+**Tags:** repository-boundary, semantic-model, archmodel, registries  
+**Alias name:** architecture-repository-boundary-and-normalized-semantic-model  
+
 ## Context
 
 adr-architecture-kit now has an explicit compiler pipeline, a compiler IR

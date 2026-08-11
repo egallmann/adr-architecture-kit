@@ -5,20 +5,24 @@ artifact_kind: rendered_adr_markdown
 generator_id: adr-projection-markdown
 generator_version: 2
 hash_algorithm: sha256
-source_hash: 27b9f31d3bdf5bd5c6197c4e0cec900c965d2b53de779b5642d33b5e5e9d3bff
-rendered_hash: 6ef78ac56975d31c57c2075df9ecc10d7487457bc5f5dc527cc89c20826b39a9
+source_hash: 2ec58f47e54397785417f9b6292c813ea6d7e06da50b06dab416d2fb17a2f1c1
+rendered_hash: 5f434f39f274d4996635e84bcedee7369a6a7b162f30e60995846b497577507d
 -->
 
 # ADR-PC-0003: Compiler Pipeline and Driver
 
 **Status:** proposed  
 **Created:** 2026-03-15  
-**Modified:** 2026-08-05  **Authors:** adr-architecture-kit  
+**Modified:** 2026-08-05  
+**Authors:** adr-architecture-kit  
 **Domains:** compiler, pipeline, tooling  
 **Alias name:** adr-pc-0003-compiler-pipeline-and-driver  
+
 **Implements Logical:** [ADR-L-0007](../logical/ADR-L-0007-deterministic-documentation-projection.md), [ADR-L-0009](../logical/ADR-L-0009-derived-architecture-discovery-surfaces.md), [ADR-L-0013](../logical/ADR-L-0013-architecture-repository-boundary-and-normalized-semantic-model.md)  
-**Technologies:** python, yaml, click
-**Implements System:** [ADR-PS-0002](../physical-system/ADR-PS-0002-adr-kit-authoring-compiler-and-validation-system.md)
+**Technologies:** python, yaml, click  
+
+**Implements System:** [ADR-PS-0002](../physical-system/ADR-PS-0002-adr-kit-authoring-compiler-and-validation-system.md)  
+
 ## Context
 
 The compiler driver and explicit pipeline now own deterministic architecture

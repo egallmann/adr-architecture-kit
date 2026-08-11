@@ -5,8 +5,8 @@ artifact_kind: rendered_adr_markdown
 generator_id: adr-projection-markdown
 generator_version: 2
 hash_algorithm: sha256
-source_hash: 3c8a93acc488c1598997bf788bf0c074d19a2d990b0e6fe17b7b439f0c1d6554
-rendered_hash: fe8b57420763cf2cb02a10557b048d849ea95b38d251ab98562e79fa1aad1b5a
+source_hash: 5be9b9a2ad79d9b877a94256bec50ceed804a51534250d78433b8609bb1b76b2
+rendered_hash: 62fa43c1d265aa3a71724816e2b4b23dfcca4bdeddaa4707e88e5c4bc20d6c0d
 -->
 
 # ADR-L-0017: Forward Authoring Ergonomics for Split Physical ADR Types
@@ -15,7 +15,9 @@ rendered_hash: fe8b57420763cf2cb02a10557b048d849ea95b38d251ab98562e79fa1aad1b5a
 **Created:** 2026-04-14  
 **Authors:** adr-architecture-kit  
 **Domains:** authoring, adr-taxonomy  
-**Tags:** scaffolding, next-id, physical-types  **Alias name:** forward-authoring-ergonomics-for-split-physical-adr-types  
+**Tags:** scaffolding, next-id, physical-types  
+**Alias name:** forward-authoring-ergonomics-for-split-physical-adr-types  
+
 ## Context
 
 adr-architecture-kit now supports multiple physical ADR shapes:

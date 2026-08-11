@@ -5,20 +5,24 @@ artifact_kind: rendered_adr_markdown
 generator_id: adr-projection-markdown
 generator_version: 2
 hash_algorithm: sha256
-source_hash: d69a35184511f3f02deb900ca3377c85b2388c6fb89f941a9a1f9fbbe210ced1
-rendered_hash: 3817edce6daad6007fa132021331dcb03d648c379bdba28876ddc2bbfcc1bae8
+source_hash: 458078d48792ca1347eabb50303ed3cd749a942cedf88b566d0034939ced5dcd
+rendered_hash: 5ce213bd3f8a0d8e272555cdb077d624633594a3fff4af7500696ebee8ccb507
 -->
 
 # ADR-PC-0004: Repository Boundary and Normalized Semantic Model
 
 **Status:** proposed  
 **Created:** 2026-03-15  
-**Modified:** 2026-08-05  **Authors:** adr-architecture-kit  
+**Modified:** 2026-08-05  
+**Authors:** adr-architecture-kit  
 **Domains:** repository, semantic-model, tooling  
 **Alias name:** repository-boundary-and-normalized-semantic-model  
+
 **Implements Logical:** [ADR-L-0013](../logical/ADR-L-0013-architecture-repository-boundary-and-normalized-semantic-model.md)  
-**Technologies:** python, yaml, pydantic
-**Implements System:** [ADR-PS-0002](../physical-system/ADR-PS-0002-adr-kit-authoring-compiler-and-validation-system.md)
+**Technologies:** python, yaml, pydantic  
+
+**Implements System:** [ADR-PS-0002](../physical-system/ADR-PS-0002-adr-kit-authoring-compiler-and-validation-system.md)  
+
 ## Context
 
 ArchitectureRepository and NormalizedArchitectureModel are the stable

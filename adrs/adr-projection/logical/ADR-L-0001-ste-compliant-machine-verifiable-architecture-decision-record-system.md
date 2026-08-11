@@ -5,8 +5,8 @@ artifact_kind: rendered_adr_markdown
 generator_id: adr-projection-markdown
 generator_version: 2
 hash_algorithm: sha256
-source_hash: 98c6828b3ffe78048e43e1cb8d1c98c66d22128094a4913b43e84f610ba474a8
-rendered_hash: f329e26d385041bef01d8b6796e390188b71532dcf1ac2a256362fa7641be976
+source_hash: fcbe7743152a7c9f951f7fe67b2efa2d416c613af37f1b60319dbc49d0bb70e4
+rendered_hash: 2d095b5d4dc702a10087b74512b56d3f1ea887099f17fdab7f4b43abaf236cec
 -->
 
 # ADR-L-0001: STE-Compliant Machine-Verifiable Architecture Decision Record System
@@ -15,7 +15,9 @@ rendered_hash: f329e26d385041bef01d8b6796e390188b71532dcf1ac2a256362fa7641be976
 **Created:** 2026-03-07  
 **Authors:** erik.gallmann  
 **Domains:** architecture, governance  
-**Tags:** ste-compliance, machine-verifiable, ai-first, authoring-subsystem  **Alias name:** ste-compliant-machine-verifiable-architecture-decision-record-system  
+**Tags:** ste-compliance, machine-verifiable, ai-first, authoring-subsystem  
+**Alias name:** ste-compliant-machine-verifiable-architecture-decision-record-system  
+
 ## Context
 
 # ADR Architecture Kit — STE Authoring Subsystem

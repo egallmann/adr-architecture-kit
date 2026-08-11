@@ -5,17 +5,20 @@ artifact_kind: rendered_adr_markdown
 generator_id: adr-projection-markdown
 generator_version: 2
 hash_algorithm: sha256
-source_hash: e00c84aef323ff5fa6eb1c7c6686c6992013e5620f4d47b0113fa94e85e6fcd1
-rendered_hash: 149d817642d1d853bd1511779ae2d54f53ef38dfb28dca7f32e62a8117a9f202
+source_hash: 00ba571423498ed89f561b08effad3bdac8af09748490fc34b4438aeb216126f
+rendered_hash: 17bcdbc698c1bf56f8a85088f70a5c8366600c70e2e561aabee65b9f13392181
 -->
 
 # ADR-L-0004: ADR-to-Implementation Traceability via Decorators and Metadata Attribution
 
 **Status:** proposed  
 **Created:** 2026-03-08  
-**Modified:** 2026-05-27  **Authors:** adr-architecture-kit  
+**Modified:** 2026-05-27  
+**Authors:** adr-architecture-kit  
 **Domains:** architecture, traceability, governance, verification  
-**Tags:** traceability, decorators, verification, drift-detection, embodied-design  **Alias name:** adr-to-implementation-traceability-via-decorators-and-metadata-attribution  
+**Tags:** traceability, decorators, verification, drift-detection, embodied-design  
+**Alias name:** adr-to-implementation-traceability-via-decorators-and-metadata-attribution  
+
 ## Context
 
 Architecture Decision Records document why implementation artifacts exist, but

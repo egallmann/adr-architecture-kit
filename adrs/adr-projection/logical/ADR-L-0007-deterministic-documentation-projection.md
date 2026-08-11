@@ -5,8 +5,8 @@ artifact_kind: rendered_adr_markdown
 generator_id: adr-projection-markdown
 generator_version: 2
 hash_algorithm: sha256
-source_hash: 158e7f6862d290c7c851573959df747c17f5c8aaf0213cdc972847f0d2440366
-rendered_hash: 0655b8df585433527180e85ca57c1ad63913e33b6ef8431fd4fd9b5ad8e2842b
+source_hash: 3aa4a8b22f34533b41868e5fdb4b271ad2f83afce3c364db5f47d5d0a6e9ea33
+rendered_hash: a4be2052f280b465506b3a4fec242ba5aaf1b0c5ff66474b535152cb1994247e
 -->
 
 # ADR-L-0007: Deterministic Documentation Projection
@@ -15,7 +15,9 @@ rendered_hash: 0655b8df585433527180e85ca57c1ad63913e33b6ef8431fd4fd9b5ad8e2842b
 **Created:** 2026-03-12  
 **Authors:** adr-architecture-kit  
 **Domains:** documentation, governance, determinism, projection  
-**Tags:** generated-documentation, deterministic, ai-first, drift-prevention  **Alias name:** adr-l-0007-deterministic-documentation-projection  
+**Tags:** generated-documentation, deterministic, ai-first, drift-prevention  
+**Alias name:** adr-l-0007-deterministic-documentation-projection  
+
 ## Context
 
 The repository already treats several human-readable artifacts as derived state:

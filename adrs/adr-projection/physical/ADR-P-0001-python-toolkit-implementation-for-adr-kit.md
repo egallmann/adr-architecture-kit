@@ -5,8 +5,8 @@ artifact_kind: rendered_adr_markdown
 generator_id: adr-projection-markdown
 generator_version: 2
 hash_algorithm: sha256
-source_hash: 4b3d7051d96f021d1b30b73e6cf52944c3f0a0f60c05126780997340e4cf2ea5
-rendered_hash: 7d197aea668d27ebf1c52a403b268ca06d6e177d8314c8ca121bf9103a40ee27
+source_hash: 94281146861f3ade552b45751aa2744d3b36fe1b250be6b2ce0042d5879c1b01
+rendered_hash: 973928618521457dbdc91ad14ee02e12bb6588f5e5241549782b707b44c2c096
 -->
 
 # ADR-P-0001: Python Toolkit Implementation for ADR Kit
@@ -15,9 +15,12 @@ rendered_hash: 7d197aea668d27ebf1c52a403b268ca06d6e177d8314c8ca121bf9103a40ee27
 **Created:** 2026-03-07  
 **Authors:** erik.gallmann  
 **Domains:** implementation, tooling  
-**Tags:** python, pydantic, yaml, json-schema  **Alias name:** python-toolkit-implementation-for-adr-kit  
+**Tags:** python, pydantic, yaml, json-schema  
+**Alias name:** python-toolkit-implementation-for-adr-kit  
+
 **Implements Logical:** [ADR-L-0001](../logical/ADR-L-0001-ste-compliant-machine-verifiable-architecture-decision-record-system.md)  
-**Technologies:** python, pydantic, pyyaml, jsonschema, jinja2
+**Technologies:** python, pydantic, pyyaml, jsonschema, jinja2  
+
 
 ## Context
 

@@ -5,8 +5,8 @@ artifact_kind: rendered_adr_markdown
 generator_id: adr-projection-markdown
 generator_version: 2
 hash_algorithm: sha256
-source_hash: b169cb64f0144ea8767acff2e2857163313a4a49d8d52cd1677d914812171a67
-rendered_hash: 820815b73f9ce5a9afe0bea18e39f6ddeb304386f3019137111a576fbba95332
+source_hash: 705d7e3535cb7ed830c063294d0bb8a43918aeb9e80b1fb10bbec361e059bf3a
+rendered_hash: f149409e7a67d1da19a94f96acb818982644e12c7cf53bf135cfcdb676ac8278
 -->
 
 # ADR-L-0011: Metadata Schemas and Remediation Ledger Enforcement
@@ -15,7 +15,9 @@ rendered_hash: 820815b73f9ce5a9afe0bea18e39f6ddeb304386f3019137111a576fbba95332
 **Created:** 2026-03-14  
 **Authors:** adr-architecture-kit  
 **Domains:** governance, metadata, migration, brownfield  
-**Tags:** metadata, remediation-ledger, sentinel, approval  **Alias name:** metadata-schemas-and-remediation-ledger-enforcement  
+**Tags:** metadata, remediation-ledger, sentinel, approval  
+**Alias name:** metadata-schemas-and-remediation-ledger-enforcement  
+
 ## Context
 
 The compiler contract now distinguishes fully compliant bundles from

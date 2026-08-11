@@ -5,8 +5,8 @@ artifact_kind: rendered_adr_markdown
 generator_id: adr-projection-markdown
 generator_version: 2
 hash_algorithm: sha256
-source_hash: 3307b0e327e27c5a6766aa5b3d1e9c5973b6e47844cda13ea1a63d660ed3b7c0
-rendered_hash: 0fe2564f484c38ce832c2cfe56347ee0c0b7cae2a297d9032086f8ac6f88b4a1
+source_hash: 3ac00bb5cde23484f0be225f0219259fb983ff7940129c6ad1d76bd7261a0059
+rendered_hash: 8fae660077a175d7d16e81fe93d29bbd5a34f75ac46079283d6ccbd33219210b
 -->
 
 # ADR-L-0019: Canonical Entity Identity
@@ -16,6 +16,7 @@ rendered_hash: 0fe2564f484c38ce832c2cfe56347ee0c0b7cae2a297d9032086f8ac6f88b4a1
 **Authors:** adr-architecture-kit  
 **Domains:**   
 **Alias name:** canonical-entity-identity  
+
 ## Context
 
 Earlier ADR Kit work established federation, repository boundaries, schema

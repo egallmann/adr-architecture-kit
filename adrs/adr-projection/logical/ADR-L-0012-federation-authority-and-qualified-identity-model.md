@@ -5,17 +5,20 @@ artifact_kind: rendered_adr_markdown
 generator_id: adr-projection-markdown
 generator_version: 2
 hash_algorithm: sha256
-source_hash: 19d716749d11a9cdd45bdb41174f19720b1d691926007a4efee6bdef96c7621e
-rendered_hash: dd418ee156f2f015b42e07c9673fa34e9a93b21e08f0098b4b9da812108b375f
+source_hash: 4131c186af4e30252ff55ed0625e5017d073a79d567ebde2ac5707cbf9122f0a
+rendered_hash: d833552c2d8c7004c8ca8baecc5b8c9960e50aab5b00e5cac4a2808594a3caf3
 -->
 
 # ADR-L-0012: Federation Authority and Qualified Identity Model
 
 **Status:** accepted  
 **Created:** 2026-03-14  
-**Modified:** 2026-06-02  **Authors:** adr-architecture-kit  
+**Modified:** 2026-06-02  
+**Authors:** adr-architecture-kit  
 **Domains:** federation, identity, governance, multi-repo  
-**Tags:** federation, qualified-id, namespace, authority  **Alias name:** federation-authority-and-qualified-identity-model  
+**Tags:** federation, qualified-id, namespace, authority  
+**Alias name:** federation-authority-and-qualified-identity-model  
+
 ## Context
 
 The compiler and recursive multi-scope model preserve repository-local

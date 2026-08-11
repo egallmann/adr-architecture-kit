@@ -5,8 +5,8 @@ artifact_kind: rendered_adr_markdown
 generator_id: adr-projection-markdown
 generator_version: 2
 hash_algorithm: sha256
-source_hash: 7dc8408a771845f295b1883bf42d311760fc7e996a38b504ade8eb0c9fa7507c
-rendered_hash: 7903365f3c76ee1e4b9e379b08c302e05ba4729d30bad2ee3a4abebd589203d7
+source_hash: e5a68100a0cd0b17d501baf978fccc98c287ee7e1bcb4d1d0905df941e05efe4
+rendered_hash: f49c0951c8037b1110d2220ebc4c3dfab8760f59398f8bbd2eaa47a2125e3c19
 -->
 
 # ADR-L-0016: Deterministic Corpus Query and Authoring Orientation APIs
@@ -15,7 +15,9 @@ rendered_hash: 7903365f3c76ee1e4b9e379b08c302e05ba4729d30bad2ee3a4abebd589203d7
 **Created:** 2026-04-14  
 **Authors:** adr-architecture-kit  
 **Domains:** repository, discovery, authoring  
-**Tags:** repository-api, corpus-query, authoring-orientation  **Alias name:** deterministic-corpus-query-and-authoring-orientation-apis  
+**Tags:** repository-api, corpus-query, authoring-orientation  
+**Alias name:** deterministic-corpus-query-and-authoring-orientation-apis  
+
 ## Context
 
 Upstream authoring workflows need deterministic ways to inspect the compiled

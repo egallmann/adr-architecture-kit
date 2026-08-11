@@ -5,8 +5,8 @@ artifact_kind: rendered_adr_markdown
 generator_id: adr-projection-markdown
 generator_version: 2
 hash_algorithm: sha256
-source_hash: 0ffc1be8463cdd1d621bb28b35f2f81eff5dd5907f0a5fb1bed41bc47c3f17e9
-rendered_hash: fcdced01b1eb807514d0a48af74a13e2f560275cab277554a745a81c04937280
+source_hash: 6a935f1548e81856aa1f3c1fb49d4e6995cd1e4bea870c8ad5ec62aabd1b024b
+rendered_hash: 237e4ca8b6ff57ae91bde1f4e9d45dc3695f352fd7efdeb72f714813951633c5
 -->
 
 # ADR-L-0015: ADR Governance State and Override Semantics
@@ -15,7 +15,9 @@ rendered_hash: fcdced01b1eb807514d0a48af74a13e2f560275cab277554a745a81c04937280
 **Created:** 2026-03-18  
 **Authors:** adr-architecture-kit  
 **Domains:** governance, validation, approval, overrides  
-**Tags:** governance, override, steelman, approval  **Alias name:** adr-governance-state-and-override-semantics  
+**Tags:** governance, override, steelman, approval  
+**Alias name:** adr-governance-state-and-override-semantics  
+
 ## Context
 
 The repository now has a first-pass governance block on ADRs and a canonical

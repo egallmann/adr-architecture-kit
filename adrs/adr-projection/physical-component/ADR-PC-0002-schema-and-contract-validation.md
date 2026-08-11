@@ -5,20 +5,24 @@ artifact_kind: rendered_adr_markdown
 generator_id: adr-projection-markdown
 generator_version: 2
 hash_algorithm: sha256
-source_hash: 8c75d43cffbb2ce985908454cf4dc3699b74279cc80ddab90d4fe09b4dcc2f2f
-rendered_hash: 7ba41a860a11f127877b3d492d952dd7a28fda54ee8b9ff1842e376c89a2aa8e
+source_hash: 9c76f9c1869f8f33d9f98c1d67b82ed207d0ce7123d5b5185e5deb3e2ee3b10f
+rendered_hash: 81de24ce757337a6b0e2bf14fb0331921a1d5a64f740133da5e5c4f1788293e3
 -->
 
 # ADR-PC-0002: Schema and Contract Validation
 
 **Status:** proposed  
 **Created:** 2026-03-15  
-**Modified:** 2026-08-06  **Authors:** adr-architecture-kit  
+**Modified:** 2026-08-06  
+**Authors:** adr-architecture-kit  
 **Domains:** validation, schema, contracts  
 **Alias name:** schema-and-contract-validation  
+
 **Implements Logical:** [ADR-L-0008](../logical/ADR-L-0008-validation-modes-for-draft-and-complete-adrs.md), [ADR-L-0010](../logical/ADR-L-0010-kernel-interface-contract-and-validation-profiles.md), [ADR-L-0011](../logical/ADR-L-0011-metadata-schemas-and-remediation-ledger-enforcement.md)  
-**Technologies:** python, jsonschema, pydantic
-**Implements System:** [ADR-PS-0002](../physical-system/ADR-PS-0002-adr-kit-authoring-compiler-and-validation-system.md)
+**Technologies:** python, jsonschema, pydantic  
+
+**Implements System:** [ADR-PS-0002](../physical-system/ADR-PS-0002-adr-kit-authoring-compiler-and-validation-system.md)  
+
 ## Context
 
 Schema and contract validation is now a stable component boundary rather than

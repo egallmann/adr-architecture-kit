@@ -253,43 +253,20 @@ def _create_scope_fixture(root: Path) -> Path:
         """,
     )
 
-    _write_file(
-        adr_dir / "invariants" / "INV-1001-ai-first-artifacts.yaml",
-        """
-        schema_version: "1.0"
-        type: invariant
-        id: INV-1001
-        statement: "Canonical and derived architecture artifacts MUST be machine-optimized for deterministic use by agents."
-        scope: "ste-kernel"
-        enforcement_level: must
-        enforcement_mechanism: design
-        verification_method: automated
-        rationale: "The ADR toolkit exists primarily to serve agent workflows."
-        defined_in: ADR-L-1000
-        enforced_by:
-          - ADR-PC-1000
-        related_constraints:
-          - CAP-1000
-        """,
-    )
-
     return adr_dir
 
 
-def test_entity_registry_includes_explicit_entities_and_standalone_invariants(tmp_path):
-    """Registry should normalize explicit introduced entities and standalone invariants."""
+def test_entity_registry_includes_explicit_entities_from_adrs(tmp_path):
+    """Registry should normalize explicit introduced entities from ADR sources."""
     adr_dir = _create_scope_fixture(tmp_path)
 
     registry = EntityRegistryGenerator().generate_from_directory(adr_dir)
     entities = {entity.entity_id: entity for entity in registry.entities}
 
     assert list(entities) == sorted(entities)
-    assert {"CAP-1000", "COMP-1000", "IFACE-1000", "IMPL-1000", "INV-1000", "INV-1001"} <= set(entities)
+    assert {"CAP-1000", "COMP-1000", "IFACE-1000", "IMPL-1000", "INV-1000"} <= set(entities)
     assert entities["CAP-1000"].source_artifact_type.value == "logical_adr"
     assert entities["COMP-1000"].source_artifact_type.value == "physical_component_adr"
-    assert entities["INV-1001"].source_artifact_type.value == "standalone_invariant"
-    assert entities["INV-1001"].source_path == "adrs/invariants/INV-1001-ai-first-artifacts.yaml"
-    assert "ADR-PC-1000" in entities["INV-1001"].realized_by
     assert "CAP-1000" in (entities["COMP-1000"].relationships.implements or [])
     assert "INV-1000" in (entities["COMP-1000"].relationships.realizes or [])
 
@@ -366,11 +343,11 @@ def test_cli_entity_queries_use_generated_registry(tmp_path):
 
     get_result = runner.invoke(
         cli,
-        ["entities", "get", "INV-1001", "--scope", str(scope_root)],
+        ["entities", "get", "INV-1000", "--scope", str(scope_root)],
     )
     assert get_result.exit_code == 0, get_result.output
-    assert "standalone_invariant" in get_result.output
-    assert "INV-1001" in get_result.output
+    assert "logical_adr" in get_result.output or "INV-1000" in get_result.output
+    assert "INV-1000" in get_result.output
 
     invariants_result = runner.invoke(
         cli,
@@ -378,7 +355,6 @@ def test_cli_entity_queries_use_generated_registry(tmp_path):
     )
     assert invariants_result.exit_code == 0, invariants_result.output
     assert "INV-1000" in invariants_result.output
-    assert "INV-1001" in invariants_result.output
 
     capabilities_result = runner.invoke(
         cli,

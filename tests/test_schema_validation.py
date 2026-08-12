@@ -55,7 +55,8 @@ class TestValidLogicalADRs:
         
         adr = parser.parse_logical_adr(adr_path)
         
-        assert adr.id == "ADR-L-0001"
+        assert adr.id == "019fee89-e615-70a5-861b-b2dde147e5af"
+        assert getattr(adr, "alias_id", None) == "ADR-L-0001"
         assert adr.status.value == "accepted"
         assert len(adr.decisions) == 6
         assert len(adr.invariants) == 7
@@ -166,9 +167,10 @@ class TestValidPhysicalADRs:
         
         adr = parser.parse_physical_adr(adr_path)
         
-        assert adr.id == "ADR-P-0001"
+        assert adr.id == "019fee89-e618-79ed-9d2d-cc35c63bc99a"
+        assert getattr(adr, "alias_id", None) == "ADR-P-0001"
         assert adr.status.value == "superseded"
-        assert "ADR-L-0001" in adr.implements_logical
+        assert "019fee89-e615-70a5-861b-b2dde147e5af" in adr.implements_logical
         assert len(adr.component_specifications) == 4
 
 

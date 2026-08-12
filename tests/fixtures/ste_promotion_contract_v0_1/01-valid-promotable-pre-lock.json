@@ -1,0 +1,62 @@
+{
+  "expect": "pass",
+  "note": "Valid promotable pre-lock state; mechanical readiness true; no human_lock yet",
+  "contract": {
+    "contract_version": "ste.design_journal.promotion_contract/v0.1",
+    "design_journal_version": "ste.design_journal/v0.1",
+    "journal_id": "DJ-CONF-01",
+    "lifecycle_state": "lock_ready",
+    "provider": "example-authority-provider",
+    "authority_baseline": {
+      "provider": "example-authority-provider",
+      "kind": "git_commit",
+      "value": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+    },
+    "outcomes": [
+      {
+        "id": "O-01",
+        "category": "candidate_decision",
+        "promotion_required": true,
+        "disposition": "accepted",
+        "statement": "Identity envelope fields are required for create."
+      },
+      {
+        "id": "O-02",
+        "category": "deferred",
+        "promotion_required": false,
+        "disposition": "deferred",
+        "statement": "Optional migration tooling deferred."
+      }
+    ],
+    "mutations": [
+      {
+        "id": "M-01",
+        "operation": "create",
+        "provider": "example-authority-provider",
+        "provider_target_ref": "artifact:envelope-v1",
+        "outcome_refs": ["O-01"],
+        "payload_binding": {
+          "ref": "payloads/M-01.yaml",
+          "fingerprint": "sha256:1111111111111111111111111111111111111111111111111111111111111111"
+        },
+        "schema_binding": {
+          "ref": "schema:authority-artifact-v1",
+          "fingerprint": "sha256:2222222222222222222222222222222222222222222222222222222222222222"
+        },
+        "validation_evidence": {
+          "payload_fingerprint": "sha256:1111111111111111111111111111111111111111111111111111111111111111",
+          "schema_binding_fingerprint": "sha256:2222222222222222222222222222222222222222222222222222222222222222",
+          "result": "valid",
+          "evidence_ref": "evidence/M-01.json"
+        }
+      }
+    ],
+    "blockers": [],
+    "readiness": {
+      "design_lock": true,
+      "mechanical_promotion": true
+    },
+    "human_lock": null,
+    "execution_evidence": []
+  }
+}

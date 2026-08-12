@@ -1,6 +1,6 @@
-schema_version: '1.0'
+schema_version: '1.3'
 adr_type: physical-component
-id: ADR-PC-0002
+id: 019fee89-e617-7d2b-8325-cd85ff814477
 title: Schema and Contract Validation
 status: proposed
 created_date: '2026-03-15'
@@ -12,30 +12,35 @@ domains:
 - schema
 - contracts
 implements_system:
-- ADR-PS-0002
+- 019fee89-e618-7d04-9337-4aa2d3258507
 implements_logical:
-- ADR-L-0008
-- ADR-L-0010
-- ADR-L-0011
+- 019fee89-e616-7066-8d2f-3acc7f469f72
+- 019fee89-e616-7d61-8e35-f11ba2ddd75d
+- 019fee89-e616-7b97-971d-ae165d13bf9c
 related_adrs:
-- ADR-P-0002
+- 019fee89-e618-7a2f-aa3e-1f892cdf9410
 supersedes:
-- ADR-P-0002
+- 019fee89-e618-7a2f-aa3e-1f892cdf9410
 introduces_entities:
-- COMP-0011
-- IFACE-0012
-- IMPL-0012
-- IFACE-0017
-- IMPL-0018
+- 019fee89-e617-7060-8f3f-4ecd46a719da
+- 019fee89-e617-78b8-852f-9b2c984f9300
+- 019fee89-e617-7fce-8823-fdf2ce5b321f
+- 019fee89-e617-74dd-a62f-5ce1a1994d18
+- 019fee89-e617-7dfd-8e36-f98344f19758
 technologies:
 - python
 - jsonschema
 - pydantic
-context: |
-  Schema and contract validation is now a stable component boundary rather than
+context: 'Schema and contract validation is now a stable component boundary rather
+  than
+
   a generic legacy physical slice. It validates canonical ADR structure,
+
   profile-specific contract requirements, project metadata, and implementation
+
   attribution evidence.
+
+  '
 technology_stack:
 - category: language
   name: Python
@@ -50,14 +55,19 @@ technology_stack:
   version: 2.x
   rationale: Typed contract and validation result models.
 component_specifications:
-- id: COMP-0011
+- id: 019fee89-e617-7060-8f3f-4ecd46a719da
   name: Schema and Contract Validation Surface
   type: service
-  responsibilities: |
-    - Validate canonical ADR artifacts against schema and business rules
+  responsibilities: '- Validate canonical ADR artifacts against schema and business
+    rules
+
     - Validate kernel-facing contract profiles
+
     - Validate project metadata and implementation attribution evidence
+
     - Provide CLI entrypoints for validation workflows
+
+    '
   generation_context:
     purpose: Validate canonical architecture artifacts before downstream use.
     key_responsibilities:
@@ -71,29 +81,44 @@ component_specifications:
     - Contract/profile validation runs through shared validation surfaces
     - Validation failures are deterministic and actionable
   interfaces:
-  - id: IFACE-0012
+  - id: 019fee89-e617-78b8-852f-9b2c984f9300
     type: CLI
-    specification: |
-      Commands:
+    specification: 'Commands:
+
       - adr validate
+
       - adr validate-contract
+
       - adr validate-project-metadata
+
       - adr validate-generated-docs
-  - id: IFACE-0017
+
+      '
+    alias_id: IFACE-0012
+    alias_name: iface-0012
+  - id: 019fee89-e617-74dd-a62f-5ce1a1994d18
     type: library_api
-    specification: |
-      A private validation application service supports both the compatibility-
+    specification: 'A private validation application service supports both the compatibility-
+
       preserved CLI adapter and the `adr_kit.api.validate_architecture` adapter.
+
       The public adapter accepts one explicit project root, `complete` or
+
       `structural` mode, and optional cross-reference validation, then translates
+
       completed schema and semantic failures into immutable public diagnostics.
+
+      '
+    alias_id: IFACE-0017
+    alias_name: iface-0017
   implementation_identifiers:
     module_path: src/adr_kit/schema/contract_validation.py
     entry_point: src/adr_kit/cli/main.py
     test_path: tests/test_kernel_contract_validation.py
   implementation_requirements:
     error_handling:
-      strategy: Fail closed on invalid schema, invalid contract input, and invalid attribution evidence.
+      strategy: Fail closed on invalid schema, invalid contract input, and invalid
+        attribution evidence.
     observability:
       logging:
         level: info
@@ -103,22 +128,39 @@ component_specifications:
         type: counter
     testing_requirements:
       unit_test_coverage: '>= 80%'
-      integration_tests: |
-        - Contract validation profile checks
-        - Project metadata validation
-        - Generated docs validation
-implementation_decisions:
-- id: IMPL-0012
-  summary: Treat schema and contract validation as a component boundary
-  rationale: |
-    Validation surfaces are independently public, stable, and reused across CLI
-    and downstream canonicalization workflows.
-- id: IMPL-0018
-  summary: Translate shared validation service results at the public SDK boundary
-  rationale: |
-    CLI presentation and public SDK contracts have different compatibility
-    responsibilities. One private application service prevents divergent
-    validation semantics while adapters preserve CLI bytes and exclude validator
-    implementation objects from the SDK result graph.
-gaps: []
+      integration_tests: '- Contract validation profile checks
 
+        - Project metadata validation
+
+        - Generated docs validation
+
+        '
+  alias_id: COMP-0011
+  alias_name: schema-and-contract-validation-surface
+implementation_decisions:
+- id: 019fee89-e617-7fce-8823-fdf2ce5b321f
+  summary: Treat schema and contract validation as a component boundary
+  rationale: 'Validation surfaces are independently public, stable, and reused across
+    CLI
+
+    and downstream canonicalization workflows.
+
+    '
+  alias_id: IMPL-0012
+  alias_name: treat-schema-and-contract-validation-as-a-component-boundary
+- id: 019fee89-e617-7dfd-8e36-f98344f19758
+  summary: Translate shared validation service results at the public SDK boundary
+  rationale: 'CLI presentation and public SDK contracts have different compatibility
+
+    responsibilities. One private application service prevents divergent
+
+    validation semantics while adapters preserve CLI bytes and exclude validator
+
+    implementation objects from the SDK result graph.
+
+    '
+  alias_id: IMPL-0018
+  alias_name: translate-shared-validation-service-results-at-the-public-sdk-boundary
+gaps: []
+alias_id: ADR-PC-0002
+alias_name: schema-and-contract-validation

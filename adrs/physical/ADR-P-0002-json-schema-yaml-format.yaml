@@ -1,6 +1,6 @@
-schema_version: '1.0'
+schema_version: '1.3'
 adr_type: physical
-id: ADR-P-0002
+id: 019fee89-e618-7a2f-aa3e-1f892cdf9410
 title: JSON Schema Validation with YAML Document Format
 status: superseded
 created_date: '2026-03-07'
@@ -16,182 +16,277 @@ tags:
 - validation
 - ste-compliance
 implements_logical:
-- ADR-L-0001
+- 019fee89-e615-70a5-861b-b2dde147e5af
 technologies:
 - json-schema
 - yaml
 - jsonschema-python
 related_adrs:
-- ADR-P-0001
+- 019fee89-e618-79ed-9d2d-cc35c63bc99a
 supersedes: []
-superseded_by: ADR-PC-0002
+superseded_by: 019fee89-e617-7d2b-8325-cd85ff814477
 ownership:
   architecture_authority: architecture-systems
   implementation_owners:
   - architecture-systems
-context: |
-  This ADR specifies the use of JSON Schema for validation with YAML as the document
+context: 'This ADR specifies the use of JSON Schema for validation with YAML as the
+  document
+
   format. This combination provides deterministic validation (JSON Schema) with
+
   human-readable authoring (YAML with embedded markdown).
 
+
   The choice enables:
+
   - Schema-first design (define structure before implementation)
+
   - Deterministic validation (same input = same result)
+
   - Clear error messages (field paths, expected types)
+
   - Extensibility (schema evolution without breaking changes)
+
   - STE compliance (PRIME-1, PRIME-2, SYS-2)
+
+  '
 technology_stack:
 - category: tooling
   name: JSON Schema
   version: draft-07
-  rationale: |
-    JSON Schema provides:
+  rationale: 'JSON Schema provides:
+
     - Formal schema definition language
+
     - Validation against defined structure
+
     - Type checking and pattern matching
+
     - Cross-reference validation via $ref
+
     - Wide tooling support across languages
+
     - Standard for API contracts (OpenAPI uses JSON Schema)
+
+    '
 - category: library
   name: jsonschema (Python)
   version: 4.x
-  rationale: |
-    Reference JSON Schema validator for Python. Supports draft-07. Extensible
+  rationale: 'Reference JSON Schema validator for Python. Supports draft-07. Extensible
+
     with custom validators. Clear error messages. Wide adoption.
+
+    '
 - category: tooling
   name: YAML
   version: '1.2'
-  rationale: |
-    YAML provides:
+  rationale: 'YAML provides:
+
     - Human-readable syntax
+
     - Multiline strings (markdown embedding)
+
     - Comments support
+
     - Less verbose than JSON
+
     - Version control friendly (readable diffs)
+
     - Native support in Python (PyYAML)
+
+    '
 architecture_patterns:
 - pattern_name: Schema-First Design
-  application: |
-    Define JSON Schemas before writing ADRs or code. Schema becomes contract.
+  application: 'Define JSON Schemas before writing ADRs or code. Schema becomes contract.
+
     Validation happens early (parse time, not runtime). Changes to schema are
+
     versioned and documented.
+
+    '
   components_affected:
   - COMP-0001
   - COMP-0002
 component_specifications:
-- id: COMP-0016
+- id: 019fee89-e618-7d70-831f-0d5a9959a816
   name: JSON Schema Definitions
   type: library
-  responsibilities: |
-    Define structure for all ADR artifact types:
+  responsibilities: 'Define structure for all ADR artifact types:
+
     - types.schema.json (shared types)
+
     - adr-common.schema.json (frontmatter)
+
     - adr-logical.schema.json (logical ADRs)
+
     - adr-physical.schema.json (physical ADRs)
+
     - invariant.schema.json (invariants)
+
     - project-metadata.schema.json (PROJECT.yaml)
+
     - manifest.schema.json (generated manifest)
+
+    '
   interfaces:
-  - id: IFACE-0020
+  - id: 019fee89-e618-70d1-9037-460e1f0f454f
     type: REST
-    specification: |
-      JSON Schema files loaded by validation libraries. Standard JSON Schema
+    specification: 'JSON Schema files loaded by validation libraries. Standard JSON
+      Schema
+
       draft-07 format. $ref for cross-schema references.
+
+      '
+    alias_id: IFACE-0020
+    alias_name: iface-0020
   dependencies: []
   implementation_identifiers:
     module_path: schema/v1.0/
-- id: COMP-0018
+  alias_id: COMP-0016
+  alias_name: json-schema-definitions
+- id: 019fee89-e618-7c2f-a93c-42f545477ebb
   name: Schema Resolver
   type: library
-  responsibilities: |
-    Resolve $ref references between schemas. Load schemas from local filesystem.
+  responsibilities: 'Resolve $ref references between schemas. Load schemas from local
+    filesystem.
+
     Build schema store for RefResolver. Enable cross-schema validation.
+
+    '
   interfaces:
-  - id: IFACE-0024
+  - id: 019fee89-e618-7eaa-b41e-6bc5c5b04bf7
     type: REST
-    specification: |
-      Python API:
+    specification: 'Python API:
+
       ```python
+
       parser = ADRParser(schema_dir=Path("schema/v1.0"))
+
       # Automatically loads schemas and creates resolvers
+
       ```
+
+      '
+    alias_id: IFACE-0024
+    alias_name: iface-0024
   dependencies:
-  - COMP-0016
+  - 019fee89-e618-7d70-831f-0d5a9959a816
   implementation_identifiers:
     module_path: src/adr_kit/parser/yaml_parser.py
+  alias_id: COMP-0018
+  alias_name: schema-resolver
 deployment_model:
   hosting: on-premise
   orchestration: git repository
-  scaling_strategy: |
-    JSON Schema files stored in git. Versioned in schema/v1.0/ directory.
+  scaling_strategy: 'JSON Schema files stored in git. Versioned in schema/v1.0/ directory.
+
     Future versions in schema/v1.1/, schema/v2.0/, etc.
+
+    '
 implementation_decisions:
-- id: IMPL-0021
+- id: 019fee89-e618-794c-9f3a-34dae3cc7ab1
   summary: Use JSON Schema draft-07 (not draft-2020-12)
-  rationale: |
-    draft-07 is widely supported across languages and tools. draft-2020-12 has
+  rationale: 'draft-07 is widely supported across languages and tools. draft-2020-12
+    has
+
     limited tooling support. Python jsonschema library has excellent draft-07
+
     support. Sufficient for our validation needs.
+
+    '
   implements_invariants:
-  - INV-0001
+  - 019fee89-e615-713e-b627-2ee4bf985295
   alternatives_considered:
   - name: JSON Schema draft-2020-12
-    rejected_because: |
-      Limited tooling support. Python jsonschema library support is incomplete.
+    rejected_because: 'Limited tooling support. Python jsonschema library support
+      is incomplete.
+
       No significant features needed from draft-2020-12.
-- id: IMPL-0023
+
+      '
+  alias_id: IMPL-0021
+  alias_name: use-json-schema-draft-07-not-draft-2020-12
+- id: 019fee89-e618-74ee-ad0e-b86604eb69a6
   summary: Use $ref for schema composition (not allOf/oneOf where possible)
-  rationale: |
-    $ref is clearer for schema reuse. allOf can be ambiguous. $ref with RefResolver
+  rationale: '$ref is clearer for schema reuse. allOf can be ambiguous. $ref with
+    RefResolver
+
     enables modular schema design. Common frontmatter defined once, referenced by
+
     logical and physical schemas.
+
+    '
   implements_invariants: []
   alternatives_considered:
   - name: Inline all schemas (no $ref)
-    rejected_because: |
-      Duplication. Harder to maintain. Can't reuse common definitions.
-- id: IMPL-0025
+    rejected_because: 'Duplication. Harder to maintain. Can''t reuse common definitions.
+
+      '
+  alias_id: IMPL-0023
+  alias_name: use-ref-for-schema-composition-not-allof-oneof-where-possible
+- id: 019fee89-e618-7f09-832b-511026fa3850
   summary: Store schemas in schema/v1.0/ directory (version-specific)
-  rationale: |
-    Enables schema evolution. Multiple versions can coexist. Tools can load
+  rationale: 'Enables schema evolution. Multiple versions can coexist. Tools can load
+
     version-specific schemas. Clear migration path (v1.0 → v1.1 → v2.0).
+
+    '
   implements_invariants:
-  - INV-0007
+  - 019fee89-e615-7502-a52f-af65757c9fd2
   alternatives_considered:
   - name: Single schema/ directory (no versioning)
-    rejected_because: |
-      Breaking changes would break all existing ADRs. No migration path.
-      Can't support multiple schema versions simultaneously.
-- id: IMPL-0004
+    rejected_because: 'Breaking changes would break all existing ADRs. No migration
+      path.
+
+      Can''t support multiple schema versions simultaneously.
+
+      '
+  alias_id: IMPL-0025
+  alias_name: store-schemas-in-schema-v1-0-directory-version-specific
+- id: 019fee89-e618-7a41-9327-f45c2d1752b0
   summary: Use RefResolver with schema store for local references
-  rationale: |
-    Prevents network calls (schemas loaded from filesystem). Deterministic
+  rationale: 'Prevents network calls (schemas loaded from filesystem). Deterministic
+
     validation. Fast (no I/O during validation). Schema store built once at
+
     parser initialization.
+
+    '
   implements_invariants:
-  - INV-0001
+  - 019fee89-e615-713e-b627-2ee4bf985295
   alternatives_considered:
   - name: Allow network schema loading
-    rejected_because: |
-      Non-deterministic (network failures). Slow (I/O per validation).
+    rejected_because: 'Non-deterministic (network failures). Slow (I/O per validation).
+
       Security risk (external schema tampering).
+
+      '
+  alias_id: IMPL-0004
+  alias_name: use-refresolver-with-schema-store-for-local-references
 integration_points:
 - id: INTEG-0001
   systems:
   - adr-kit
   - pydantic
   protocol: Python API
-  specification: |
-    Pydantic models must match JSON Schema structure. Field names, types, and
+  specification: 'Pydantic models must match JSON Schema structure. Field names, types,
+    and
+
     constraints must align. Pydantic validation happens after JSON Schema
+
     validation (two-layer validation).
+
+    '
 operational_requirements:
-  monitoring: |
-    No runtime monitoring (library/CLI tool).
-  logging: |
-    Log schema validation errors with field paths and expected formats.
-  security: |
-    Schemas are public. No secrets or credentials in schema definitions.
+  monitoring: 'No runtime monitoring (library/CLI tool).
+
+    '
+  logging: 'Log schema validation errors with field paths and expected formats.
+
+    '
+  security: 'Schemas are public. No secrets or credentials in schema definitions.
+
+    '
 gaps: []
 migration_origin:
   remapped_entities:
@@ -223,3 +318,5 @@ migration_origin:
     from: IFACE-0002
     to: IFACE-0024
     source_pointer: /component_specifications/1/interfaces/0/id
+alias_id: ADR-P-0002
+alias_name: json-schema-validation-with-yaml-document-format

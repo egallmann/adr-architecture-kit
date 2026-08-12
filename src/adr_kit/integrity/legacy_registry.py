@@ -19,7 +19,6 @@ def legacy_entity_registry_source_inputs(scope: ProjectScope) -> list[Path]:
         Path("physical"),
         Path("physical-system"),
         Path("physical-component"),
-        Path("invariants"),
     ):
         base = scope.adr_dir / relative
         if not base.exists():

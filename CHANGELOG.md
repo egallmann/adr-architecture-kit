@@ -7,6 +7,56 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.4.0] — 2026-08-11
+
+### Added
+
+- Provisional ADR schema v1.3 canonical UUIDv7 entity identity
+- `alias_id` / `alias_name` human recognition model
+- v1.3 migration planning, sealing, apply, recovery/check semantics
+- Normalized architecture model 2.0
+- `ProviderRegistry` / `open_provider_registry`
+- Design Journal Promotion Contract provider
+- `prepare_promotion` / `check_promotion` / `apply_promotion`
+- Promotion contract DTOs and evidence descriptors
+- Human ADR projection with typed layout, relationship graph, and peer
+  context/navigation
+- Provider/profile-driven system overview model where appropriate
+
+### Changed
+
+- ADR Kit dogfood corpus migrated uniformly to v1.3
+- Local relationships now normalize to canonical UUID identity
+- Normalized model 2.0 emitted for all-v1.3 scopes
+- Mixed legacy/v1.3 scope handling is fail-closed
+- Generated human ADR documentation moved from `adrs/rendered/` to
+  `adrs/adr-projection/{type}/{alias_id}-{slug}.md`
+- Human projection exposes compiler-derived relationship semantics rather
+  than reconstructing an independent graph
+- System overview derives through explicit projection sources / provider
+  profile surfaces
+- Public SDK inventory expanded additively while API contract remains `1.0`
+
+### Fixed
+
+- Bundle the Design Journal Promotion Contract schema into the installed
+  package so non-editable wheel/site-packages installs can validate
+  promotion contracts without a repository checkout
+
+### Compatibility / Migration
+
+- ADR schema v1.0 remains frozen/readable
+- ADR schema v1.2 remains readable and migratable
+- ADR schema v1.3 is provisional
+- Normalized model 2.0 is provisional
+- API contract remains `1.0`
+- `generate-rendered-docs` remains a compatibility alias for
+  `generate-adr-projection`
+- Markdown SDK artifact group remains `markdown`
+- Logical markdown artifact IDs remain stable independent of slug/path
+- Human projection relative paths intentionally changed; see
+  `docs/adr-projection-path-migration.md`
+
 ## [0.3.1] — 2026-08-08
 
 ### Fixed

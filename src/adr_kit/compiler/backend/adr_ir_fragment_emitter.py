@@ -22,6 +22,8 @@ from .adr_ir_fragment_rendering import (
 
 
 LOGICAL_ADR_IR_PROFILE_VERSION = "logical_adr_ir_fragment.v1"
+SUPPORTED_LOGICAL_ADR_SCHEMA_VERSIONS = frozenset({"1.0", "1.3"})
+# Backward-compatible single-version alias for callers/tests.
 SUPPORTED_LOGICAL_ADR_SCHEMA_VERSION = "1.0"
 DECISION_SUPPORTS_CAPABILITY_RELATIONSHIP = "decision_supports_capability"
 
@@ -334,23 +336,31 @@ def _resolve_source_descriptors(
     return descriptor_map
 
 
+def _presentation_id(obj: Any) -> str:
+    alias = getattr(obj, "alias_id", None)
+    if isinstance(alias, str) and alias:
+        return alias
+    return str(getattr(obj, "id", obj))
+
+
 def _validate_profile_v1(
     raw: dict[str, Any],
     logical: LogicalADR,
     *,
     adapter_schema_version: str,
 ) -> None:
-    if logical.schema_version != SUPPORTED_LOGICAL_ADR_SCHEMA_VERSION:
+    if logical.schema_version not in SUPPORTED_LOGICAL_ADR_SCHEMA_VERSIONS:
         raise AdrIrFragmentCompileError(
-            "Unsupported version pair: ADR schema version must be "
-            f"{SUPPORTED_LOGICAL_ADR_SCHEMA_VERSION!r} when adapter schema version is "
+            "Unsupported version pair: ADR schema version must be one of "
+            f"{sorted(SUPPORTED_LOGICAL_ADR_SCHEMA_VERSIONS)!r} when adapter schema version is "
             f"{adapter_schema_version!r}."
         )
     if logical.adr_type.value != "logical":
         raise AdrIrFragmentCompileError(f"Unsupported adr_type: {logical.adr_type.value}")
-    if not logical.id.startswith("ADR-L-"):
+    presentation = _presentation_id(logical)
+    if not presentation.startswith("ADR-L-"):
         raise AdrIrFragmentCompileError(
-            f"Unsupported logical ADR id for the logical ADR IR profile v1: {logical.id}"
+            f"Unsupported logical ADR id for the logical ADR IR profile v1: {presentation}"
         )
     if "constraints" not in raw or not isinstance(raw["constraints"], list):
         raise AdrIrFragmentCompileError("constraints[] must exist and be an empty array.")

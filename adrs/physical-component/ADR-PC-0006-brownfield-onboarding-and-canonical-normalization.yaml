@@ -1,6 +1,6 @@
-schema_version: '1.0'
+schema_version: '1.3'
 adr_type: physical-component
-id: ADR-PC-0006
+id: 019fee89-e618-7787-b43f-a3e5cb264dd5
 title: Brownfield Onboarding and Canonical Normalization
 status: proposed
 created_date: '2026-03-15'
@@ -11,22 +11,26 @@ domains:
 - onboarding
 - normalization
 implements_system:
-- ADR-PS-0002
+- 019fee89-e618-7d04-9337-4aa2d3258507
 implements_logical:
-- ADR-L-0011
-- ADR-L-0014
+- 019fee89-e616-7b97-971d-ae165d13bf9c
+- 019fee89-e616-7628-913b-a059c1057c36
 introduces_entities:
-- COMP-0015
-- IFACE-0016
-- IMPL-0016
+- 019fee89-e618-7507-953e-19e6335e3b7a
+- 019fee89-e618-7ad6-903b-955fab187e68
+- 019fee89-e618-7b21-ab3d-aaccdca13bfb
 technologies:
 - python
 - yaml
 - click
-context: |
-  adr-architecture-kit already includes migration and normalization behavior in
+context: 'adr-architecture-kit already includes migration and normalization behavior
+  in
+
   its migrator and CLI surfaces. This component makes brownfield onboarding and
+
   canonical normalization an explicit part of the compiler/validation runtime.
+
+  '
 technology_stack:
 - category: language
   name: Python
@@ -37,14 +41,19 @@ technology_stack:
   version: 8.x
   rationale: Existing CLI surface for migration workflows.
 component_specifications:
-- id: COMP-0015
+- id: 019fee89-e618-7507-953e-19e6335e3b7a
   name: Brownfield Onboarding and Canonical Normalization
   type: service
-  responsibilities: |
-    - Detect canonical entity ID collisions
+  responsibilities: '- Detect canonical entity ID collisions
+
     - Apply deterministic canonical ID remaps
+
     - Write canonical migration ledgers
-    - Support brownfield onboarding cleanup as governed normalization rather than ad hoc editing
+
+    - Support brownfield onboarding cleanup as governed normalization rather than
+    ad hoc editing
+
+    '
   generation_context:
     purpose: Normalize brownfield architecture artifacts into canonical STE form.
     key_responsibilities:
@@ -58,20 +67,27 @@ component_specifications:
     - normalize-canonical-ids produces deterministic remaps
     - migration ledgers preserve old-to-new mapping evidence
   interfaces:
-  - id: IFACE-0016
+  - id: 019fee89-e618-7ad6-903b-955fab187e68
     type: CLI
-    specification: |
-      Commands:
+    specification: 'Commands:
+
       - adr normalize-canonical-ids
+
       Public modules:
+
       - src/adr_kit/migrators/canonical_id_normalizer.py
+
+      '
+    alias_id: IFACE-0016
+    alias_name: iface-0016
   implementation_identifiers:
     module_path: src/adr_kit/migrators/canonical_id_normalizer.py
     entry_point: src/adr_kit/cli/main.py
     test_path: tests/test_canonical_id_normalizer.py
   implementation_requirements:
     error_handling:
-      strategy: Apply deterministic remaps only for detected collisions and preserve a machine-readable migration ledger.
+      strategy: Apply deterministic remaps only for detected collisions and preserve
+        a machine-readable migration ledger.
     observability:
       logging:
         level: info
@@ -81,15 +97,29 @@ component_specifications:
         type: counter
     testing_requirements:
       unit_test_coverage: '>= 80%'
-      integration_tests: |
-        - Canonical collision detection
+      integration_tests: '- Canonical collision detection
+
         - Deterministic remap application
+
         - Migration ledger generation
+
+        '
+  alias_id: COMP-0015
+  alias_name: brownfield-onboarding-and-canonical-normalization
 implementation_decisions:
-- id: IMPL-0016
-  summary: Treat brownfield onboarding and canonical normalization as an explicit component capability
-  rationale: |
-    Migration logic is part of the usable onboarding path for STE adoption and
+- id: 019fee89-e618-7b21-ab3d-aaccdca13bfb
+  summary: Treat brownfield onboarding and canonical normalization as an explicit
+    component capability
+  rationale: 'Migration logic is part of the usable onboarding path for STE adoption
+    and
+
     should be documented as an intentional system capability rather than hidden
+
     utility behavior.
+
+    '
+  alias_id: IMPL-0016
+  alias_name: treat-brownfield-onboarding-and-canonical-normalization-as-an-explicit-component-capability
 gaps: []
+alias_id: ADR-PC-0006
+alias_name: adr-pc-0006-brownfield-onboarding-and-canonical-normalization

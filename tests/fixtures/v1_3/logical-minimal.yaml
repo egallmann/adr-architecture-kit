@@ -1,0 +1,21 @@
+schema_version: "1.3"
+adr_type: logical
+id: "019109a0-b1c2-7def-8a00-112233445566"
+alias_id: ADR-L-9990
+alias_name: minimal-v13-logical
+title: "Minimal Valid v1.3 Logical ADR"
+status: proposed
+created_date: "2026-08-10"
+authors: ["test.author"]
+domains: ["test"]
+
+context: |
+  This is a minimal valid v1.3 logical ADR with UUIDv7 identity.
+
+decisions:
+  - id: "019109a0-b1c2-7def-8a00-aabbccddeef0"
+    alias_id: DEC-9990
+    alias_name: test-decision-one
+    summary: "Test decision with UUID identity"
+    rationale: |
+      This is a test decision rationale for v1.3 identity.

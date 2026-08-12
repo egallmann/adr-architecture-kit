@@ -1,0 +1,50 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://adr-architecture-kit/schema/v2.0/normalized-architecture-model.schema.json",
+  "title": "Normalized Architecture Model v2.0",
+  "description": "UUID-identity-bearing normalized architecture model.",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "type",
+    "mode",
+    "scope_root",
+    "fingerprint",
+    "entities",
+    "relationships"
+  ],
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "2.0"
+    },
+    "type": {
+      "type": "string",
+      "const": "normalized_architecture_model"
+    },
+    "mode": {
+      "type": "string",
+      "enum": ["normalized", "legacy"]
+    },
+    "scope_root": { "type": "string" },
+    "architecture_namespace": {
+      "type": ["string", "null"]
+    },
+    "fingerprint": { "type": "string" },
+    "entities": {
+      "type": "array",
+      "items": { "$ref": "normalized-entity.schema.json" }
+    },
+    "relationships": {
+      "type": "array",
+      "items": { "$ref": "relationship-record.schema.json" }
+    },
+    "unresolved": {
+      "type": "array",
+      "items": { "type": "object" }
+    },
+    "validation_summary": { "type": "object" },
+    "source_coverage": { "type": "object" }
+  },
+  "additionalProperties": false
+}

@@ -32,6 +32,7 @@ RelationshipType = Literal[
     "governs",
     "implemented_by",
     "embodied_in",
+    "implements_logical",
     "supersedes",
     "superseded_by",
     "refines",
@@ -104,6 +105,7 @@ class EntityRelationshipSummary(BaseModel):
     governs: List[str] = Field(default_factory=list)
     implemented_by: List[str] = Field(default_factory=list)
     embodied_in: List[str] = Field(default_factory=list)
+    implements_logical: List[str] = Field(default_factory=list)
     supersedes: List[str] = Field(default_factory=list)
     superseded_by: List[str] = Field(default_factory=list)
     refines: List[str] = Field(default_factory=list)

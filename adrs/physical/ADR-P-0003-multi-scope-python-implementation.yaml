@@ -1,6 +1,6 @@
-schema_version: '1.0'
+schema_version: '1.3'
 adr_type: physical
-id: ADR-P-0003
+id: 019fee89-e618-742f-951d-d29401d56c19
 title: Multi-Scope Python Implementation for ADR Toolkit
 status: accepted
 created_date: '2026-03-08'
@@ -8,14 +8,19 @@ authors:
 - adr-architecture-kit
 modified_date: '2026-03-08'
 implements_logical:
-- ADR-L-0002
-context: |
-  ADR-L-0002 defines the logical architecture for multi-scope ADR support.
+- 019fee89-e615-7f19-810b-c7b33a9d9e0d
+context: 'ADR-L-0002 defines the logical architecture for multi-scope ADR support.
+
   This Physical ADR specifies the concrete Python implementation including
+
   module structure, API design, and CLI interface.
 
-  Implementation leverages existing patterns from ste-runtime's scope resolution
+
+  Implementation leverages existing patterns from ste-runtime''s scope resolution
+
   (src/config/index.ts) to maintain consistency across the STE ecosystem.
+
+  '
 domains:
 - implementation
 - adr
@@ -51,20 +56,27 @@ technology_stack:
   version: stdlib
   rationale: Cross-platform path handling for scope resolution
 component_specifications:
-- id: COMP-0017
+- id: 019fee89-e618-719b-bb3a-f13ab0906811
   name: Project Scope Resolver
   type: library
-  description: |
-    Python module implementing project scope detection and resolution
+  description: 'Python module implementing project scope detection and resolution
+
     per ADR-L-0002 INV-0015 marker hierarchy
-  responsibilities: |
-    - Detect project boundaries using marker files
+
+    '
+  responsibilities: '- Detect project boundaries using marker files
+
     - Enforce workspace boundaries (INV-0018)
+
     - Support explicit scope override
+
     - Discover sub-module scopes recursively
+
     - Maintain parent-child scope relationships
+
+    '
   interfaces:
-  - id: IFACE-0021
+  - id: 019fee89-e618-717e-933f-f02a053e8ac5
     name: ProjectScope
     type: dataclass
     description: Immutable scope metadata
@@ -76,12 +88,16 @@ component_specifications:
     - name: Optional[str] - Project name
     - is_sub_module: bool - Sub-module flag
     - parent_scope: Optional[ProjectScope] - Parent reference
-  - id: IFACE-0025
+    alias_id: IFACE-0021
+    alias_name: projectscope
+  - id: 019fee89-e618-79e6-8b3f-27b30946373a
     name: ProjectScopeResolver
     type: class
     methods:
     - resolve(start_dir) -> ProjectScope
     - resolve_recursive(start_dir) -> List[ProjectScope]
+    alias_id: IFACE-0025
+    alias_name: projectscoperesolver
   implementation_identifiers:
     module_path: src/adr_kit/scope/
   dependencies:
@@ -94,40 +110,55 @@ component_specifications:
   - Unit tests for boundary enforcement
   - Unit tests for recursive discovery
   - Integration tests with real directory structures
-- id: COMP-0019
+  alias_id: COMP-0017
+  alias_name: project-scope-resolver
+- id: 019fee89-e618-72ba-961f-a5751e1260ad
   name: Scope-Aware Manifest Generator
   type: library
-  description: |
-    Enhanced ManifestGenerator with scope awareness per ADR-L-0002 CAP-0002
-  responsibilities: |
-    - Generate manifest scoped to specific project
+  description: 'Enhanced ManifestGenerator with scope awareness per ADR-L-0002 CAP-0002
+
+    '
+  responsibilities: '- Generate manifest scoped to specific project
+
     - Support auto-detection and explicit scope
+
     - Generate manifests recursively for all scopes
+
     - Maintain backward compatibility with single-scope usage
+
+    '
   interfaces:
-  - id: IFACE-0027
+  - id: 019fee89-e618-7738-941f-0106d690d258
     name: ManifestGenerator.__init__
     parameters:
     - parser: ADRParser (optional)
     - scope_resolver: ProjectScopeResolver (optional)
-  - id: IFACE-0029
+    alias_id: IFACE-0027
+    alias_name: manifestgenerator-init
+  - id: 019fee89-e618-7edb-901f-e441afba954f
     name: generate_from_directory
     parameters:
     - adr_dir: Path
     - scope: Optional[ProjectScope]
     returns: Manifest
-  - id: IFACE-0005
+    alias_id: IFACE-0029
+    alias_name: generate-from-directory
+  - id: 019fee89-e618-771d-be37-8771d7bd5216
     name: generate_from_scope
     parameters:
     - scope: Optional[ProjectScope]
     returns: Manifest
     description: New method for scope-based generation
-  - id: IFACE-0006
+    alias_id: IFACE-0005
+    alias_name: generate-from-scope
+  - id: 019fee89-e618-7edc-892f-8efe8d7933a3
     name: generate_recursive
     parameters:
     - scope: Optional[ProjectScope]
     returns: Dict[str, Manifest]
     description: New method for recursive generation
+    alias_id: IFACE-0006
+    alias_name: generate-recursive
   implementation_identifiers:
     module_path: src/adr_kit/generators/manifest_generator.py
   dependencies:
@@ -138,24 +169,37 @@ component_specifications:
   - Test explicit scope override
   - Test recursive generation
   - Test backward compatibility
-- id: COMP-0020
+  alias_id: COMP-0019
+  alias_name: scope-aware-manifest-generator
+- id: 019fee89-e618-78d9-9636-42467a3adf70
   name: Scope-Aware Validator
   type: library
-  description: |
-    Enhanced ADRValidator with scope awareness per ADR-L-0002 CAP-0003
-  responsibilities: |
-    - Validate ADRs scoped to specific project
+  description: 'Enhanced ADRValidator with scope awareness per ADR-L-0002 CAP-0003
+
+    '
+  responsibilities: '- Validate ADRs scoped to specific project
+
     - Support auto-detection and explicit scope
+
     - Validate recursively for all scopes (INV-0019)
+
     - Maintain backward compatibility
+
+    '
   interfaces:
-  - id: IFACE-0007
+  - id: 019fee89-e618-7164-b007-18ce1ece2c55
     type: REST
-    specification: |
-      ADRValidator.__init__(parser, project_root, scope_resolver).
+    specification: 'ADRValidator.__init__(parser, project_root, scope_resolver).
+
       validate_directory(adr_dir, scope) -> dict.
+
       validate_scope(scope) -> dict.
+
       validate_recursive(scope) -> Dict[str, dict].
+
+      '
+    alias_id: IFACE-0007
+    alias_name: iface-0007
   implementation_identifiers:
     module_path: src/adr_kit/validators/adr_validator.py
   dependencies:
@@ -166,32 +210,53 @@ component_specifications:
   - Test explicit scope override
   - Test recursive validation
   - Test backward compatibility
-- id: COMP-0021
+  alias_id: COMP-0020
+  alias_name: scope-aware-validator
+- id: 019fee89-e618-7517-9837-04e01a12fbfe
   name: Multi-Scope CLI
   type: library
-  description: |
-    Click-based CLI implementing ADR-L-0002 CAP-0004 multi-scope interface
-  responsibilities: |
-    - Provide scope-aware commands
+  description: 'Click-based CLI implementing ADR-L-0002 CAP-0004 multi-scope interface
+
+    '
+  responsibilities: '- Provide scope-aware commands
+
     - Support --scope parameter for explicit override
+
     - Support --recursive flag for multi-scope operations
+
     - Display clear scope information to users
+
+    '
   interfaces:
-  - id: IFACE-0008
+  - id: 019fee89-e618-7f6e-b13d-9164a7223a57
     type: REST
-    specification: |
-      adr generate-manifest: --scope PATH (optional), --recursive (flag), --output PATH (optional).
+    specification: 'adr generate-manifest: --scope PATH (optional), --recursive (flag),
+      --output PATH (optional).
+
       Generate manifest for scope(s).
-  - id: IFACE-0009
+
+      '
+    alias_id: IFACE-0008
+    alias_name: iface-0008
+  - id: 019fee89-e618-7670-993d-4d74a13032c5
     type: REST
-    specification: |
-      adr validate: --scope PATH (optional), --recursive (flag), --cross-references (flag).
+    specification: 'adr validate: --scope PATH (optional), --recursive (flag), --cross-references
+      (flag).
+
       Validate ADRs in scope(s).
-  - id: IFACE-0010
+
+      '
+    alias_id: IFACE-0009
+    alias_name: iface-0009
+  - id: 019fee89-e618-75e5-a91f-67c21bc93f1e
     type: REST
-    specification: |
-      adr scope: --recursive (flag).
+    specification: 'adr scope: --recursive (flag).
+
       Show detected scope(s).
+
+      '
+    alias_id: IFACE-0010
+    alias_name: iface-0010
   implementation_identifiers:
     module_path: src/adr_kit/cli/
   dependencies:
@@ -204,29 +269,47 @@ component_specifications:
   - Test command output formatting
   - Test error handling
   - Test --help documentation
+  alias_id: COMP-0021
+  alias_name: multi-scope-cli
 implementation_decisions:
-- id: IMPL-0022
+- id: 019fee89-e618-76f2-b72f-5316b89484aa
   summary: Adopt Red-Green-Refactor TDD Methodology
-  rationale: |
-    Test-Driven Development is architecturally aligned with STE principles:
+  rationale: 'Test-Driven Development is architecturally aligned with STE principles:
+
 
     1. **SYS-2 (Deterministic Cognition)**: Tests enforce deterministic behavior
+
     2. **SYS-4 (Drift Prevention)**: Tests detect implementation drift immediately
+
     3. **PRIME-1 (No Implicit Assumptions)**: Tests make behavior explicit
+
     4. **INV-0001 (Schema Validation)**: Tests prove validation correctness
 
+
     This is a governance tool that validates other systems - it MUST be provably
+
     correct. TDD provides:
+
     - Executable specification of behavior
+
     - Immediate feedback on correctness
+
     - Refactoring safety net
+
     - Living documentation
+
     - Design pressure toward testable code
 
+
     Red-Green-Refactor cycle:
+
     1. **Red**: Write failing test (specification)
+
     2. **Green**: Implement minimum code to pass (correctness)
+
     3. **Refactor**: Improve design while maintaining tests (quality)
+
+    '
   alternatives_considered:
   - name: Test-after development
     rejected_because: Risks untestable code, implicit behavior
@@ -241,11 +324,15 @@ implementation_decisions:
   - Living documentation via tests
   - Confidence in refactoring
   - Provable correctness for critical validation logic
-- id: IMPL-0024
+  alias_id: IMPL-0022
+  alias_name: adopt-red-green-refactor-tdd-methodology
+- id: 019fee89-e618-722c-b527-14eb4ee67d88
   summary: Use Dataclasses for ProjectScope
-  rationale: |
-    Dataclasses provide immutable, type-safe scope metadata with minimal
+  rationale: 'Dataclasses provide immutable, type-safe scope metadata with minimal
+
     boilerplate. Aligns with modern Python best practices.
+
+    '
   alternatives_considered:
   - name: Named tuples
     rejected_because: Less readable, no default values
@@ -255,11 +342,15 @@ implementation_decisions:
   - Requires Python 3.7+ (already required)
   - Clear, type-checked scope objects
   - Easy serialization for debugging
-- id: IMPL-0026
+  alias_id: IMPL-0024
+  alias_name: use-dataclasses-for-projectscope
+- id: 019fee89-e618-7160-941f-f8efcbb72478
   summary: Mirror ste-runtime Marker Hierarchy
-  rationale: |
-    Consistency across STE ecosystem. Users familiar with ste-runtime
+  rationale: 'Consistency across STE ecosystem. Users familiar with ste-runtime
+
     scope detection will understand ADR toolkit behavior.
+
+    '
   alternatives_considered:
   - name: Different marker priority
     rejected_because: Would confuse users
@@ -269,11 +360,15 @@ implementation_decisions:
   - ste.config.json works for both systems
   - Predictable behavior across tools
   - Easier to document and support
-- id: IMPL-0027
+  alias_id: IMPL-0026
+  alias_name: mirror-ste-runtime-marker-hierarchy
+- id: 019fee89-e618-7fd5-8d3c-812e4f82e314
   summary: Backward Compatible API
-  rationale: |
-    Existing single-scope code must continue working without changes.
+  rationale: 'Existing single-scope code must continue working without changes.
+
     Scope awareness is opt-in via new methods.
+
+    '
   alternatives_considered:
   - name: Breaking change with migration
     rejected_because: Too disruptive
@@ -283,11 +378,15 @@ implementation_decisions:
   - Existing code works unchanged
   - New code can use scope features
   - Slightly more complex API surface
-- id: IMPL-0005
+  alias_id: IMPL-0027
+  alias_name: backward-compatible-api
+- id: 019fee89-e618-7625-8d3f-2ef2750eca34
   summary: Click for CLI Framework
-  rationale: |
-    Click is already in optional dependencies [cli]. Provides excellent
+  rationale: 'Click is already in optional dependencies [cli]. Provides excellent
+
     parameter handling, help text, and color output.
+
+    '
   alternatives_considered:
   - name: argparse
     rejected_because: More verbose, less features
@@ -297,11 +396,15 @@ implementation_decisions:
   - Professional CLI UX
   - Good help documentation
   - Easy to extend
-- id: IMPL-0006
+  alias_id: IMPL-0005
+  alias_name: click-for-cli-framework
+- id: 019fee89-e618-797d-9c3f-202bd0606ba4
   summary: Auto-Detection by Default
-  rationale: |
-    Zero-configuration experience. Tools "just work" from any directory
+  rationale: 'Zero-configuration experience. Tools "just work" from any directory
+
     without requiring --scope parameter.
+
+    '
   alternatives_considered:
   - name: Always require --scope
     rejected_because: Poor UX
@@ -311,6 +414,8 @@ implementation_decisions:
   - Excellent developer experience
   - Explicit override available when needed
   - Potential for ambiguous cases (mitigated by clear errors)
+  alias_id: IMPL-0006
+  alias_name: auto-detection-by-default
 deployment_model:
   packaging:
   - Python package via setuptools
@@ -326,34 +431,51 @@ deployment_model:
 data_architecture:
 - entity: scope_detection
   storage: File system traversal using pathlib
-  schema: |
-    Marker file detection via Path.exists()
+  schema: 'Marker file detection via Path.exists()
+
     Parent-child relationships via Path.parent
+
+    '
 - entity: state_storage
   storage: Per-scope adrs directories
-  schema: |
-    Each scope maintains own adrs/ directory
+  schema: 'Each scope maintains own adrs/ directory
+
     Each scope has own manifest.yaml
+
     No shared state between scopes
+
+    '
 - entity: cross_scope_references
   storage: Documented pattern
-  schema: |
-    scope-name:ADR-ID pattern
+  schema: 'scope-name:ADR-ID pattern
+
     Validation warns on cross-scope refs
+
     No automatic resolution (future enhancement)
+
+    '
 operational_requirements:
-  performance: |
-    Scope detection: O(depth) file system operations.
+  performance: 'Scope detection: O(depth) file system operations.
+
     Recursive operations: O(scopes) independent operations.
+
     No performance regression for single-scope usage.
-  monitoring: |
-    CLI provides clear progress messages.
+
+    '
+  monitoring: 'CLI provides clear progress messages.
+
     Errors include scope context.
+
     --recursive shows per-scope results.
-  security: |
-    Workspace boundary enforcement (INV-0018).
+
+    '
+  security: 'Workspace boundary enforcement (INV-0018).
+
     No traversal above system directories.
+
     Path validation prevents escape attacks.
+
+    '
 quality_attributes:
 - Maintainability: Mirrors ste-runtime patterns
 - Testability: Clear interfaces, dependency injection
@@ -361,24 +483,35 @@ quality_attributes:
 - Compatibility: Backward compatible, no breaking changes
 - Portability: Pure Python, cross-platform
 related_adrs:
-- ADR-L-0002
-- ADR-P-0001
-- ADR-P-0002
+- 019fee89-e615-7f19-810b-c7b33a9d9e0d
+- 019fee89-e618-79ed-9d2d-cc35c63bc99a
+- 019fee89-e618-7a2f-aa3e-1f892cdf9410
 gaps: []
-notes: |
-  Implementation complete as of 2026-03-08.
+notes: 'Implementation complete as of 2026-03-08.
+
 
   Future enhancements to consider:
+
   - Cross-scope reference resolution
+
   - Scope configuration files (.adr-scope.yaml)
+
   - MCP tool integration for multi-scope queries
+
   - Performance optimization for large workspaces
 
+
   Testing priority:
+
   1. Scope detection edge cases
+
   2. Boundary enforcement security
+
   3. Backward compatibility
+
   4. CLI user experience
+
+  '
 migration_origin:
   remapped_entities:
   - entity_type: component
@@ -429,3 +562,5 @@ migration_origin:
     from: IFACE-0004
     to: IFACE-0029
     source_pointer: /component_specifications/1/interfaces/1/id
+alias_id: ADR-P-0003
+alias_name: multi-scope-python-implementation-for-adr-toolkit

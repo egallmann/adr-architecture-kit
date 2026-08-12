@@ -1,110 +1,157 @@
-schema_version: "1.0"
+schema_version: '1.3'
 adr_type: logical
-id: ADR-L-0016
+id: 019fee89-e617-7fe1-8d2c-cc2745c31674
 title: Deterministic Corpus Query and Authoring Orientation APIs
 status: accepted
-created_date: "2026-04-14"
+created_date: '2026-04-14'
 authors:
-  - adr-architecture-kit
+- adr-architecture-kit
 domains:
-  - repository
-  - discovery
-  - authoring
+- repository
+- discovery
+- authoring
 tags:
-  - repository-api
-  - corpus-query
-  - authoring-orientation
-context: |
-  Upstream authoring workflows need deterministic ways to inspect the compiled
-  corpus, orient themselves within a scope, and allocate new ADR identifiers
-  without reparsing registry YAML or hand-implementing directory scans.
+- repository-api
+- corpus-query
+- authoring-orientation
+context: 'Upstream authoring workflows need deterministic ways to inspect the compiled
 
-  The existing ArchitectureRepository already exposes typed entity and
-  relationship access, but it does not yet provide one compact orientation
-  summary, first-class manifest/index accessors, or a supported next-ID helper
-  for forward authoring workflows.
+  corpus, orient themselves within a scope, and allocate governed human-facing
+
+  ADR aliases without reparsing registry YAML or hand-implementing directory
+
+  scans.
+
+
+  ArchitectureRepository already exposes typed entity and relationship access,
+
+  but forward authoring also needs a compact orientation summary,
+
+  first-class manifest/index accessors, explicit UUID and alias resolution, and
+
+  a supported helper for monotonic ADR alias allocation.
+
+
+  Under v1.3, those allocation helpers govern `alias_id` recognition surfaces;
+
+  they do not allocate or replace canonical UUID machine identity.
+
+  '
 decisions:
-  - id: DEC-0069
-    summary: Extend ArchitectureRepository with deterministic orientation helpers
-    rationale: |
-      Repository consumers should use one in-process boundary for manifest
-      access, architecture index access, corpus summary generation, entity
-      reference lookup, and forward-authoring ID allocation.
-    consequences:
-      positive:
-        - Upstream tools stop duplicating manifest and index loading logic
-        - Corpus orientation becomes one stable typed API instead of ad hoc YAML reads
-        - Next-ID allocation stays scope-aware, deterministic, and monotonic
-  - id: DEC-0070
-    summary: Expose corpus summary and relationships through supported CLI commands
-    rationale: |
-      Human and script consumers need stable CLI ergonomics that mirror the
-      repository boundary without treating raw registry files as the user-facing
-      interface.
-    consequences:
-      positive:
-        - "`adr entities summary` provides one deterministic orientation surface"
-        - "`adr entities relationships` exposes graph-level inspection without custom parsing"
-        - CLI and Python APIs stay aligned around the same repository boundary
-  - id: DEC-0073
-    summary: Make forward-authoring ADR ID allocation monotonic and non-reusable
-    rationale: |
-      ADR identifiers are architectural identity, not recyclable sequence
-      numbers. Once an ID is allocated, gaps must remain consumed history even
-      if an ADR is later deleted, superseded, or removed from the active corpus.
-    consequences:
-      positive:
-        - Historical traceability is preserved
-        - Allocation remains deterministic without gap filling
-        - Deleted artifacts cannot silently reactivate old identities
-  - id: DEC-0075
-    summary: Exclude reserved ADR IDs 9000-9999 from standard forward allocation
-    rationale: |
-      Brownfield onboarding and imported architectural records need a controlled
-      exceptional range where identity can be preserved without perturbing the
-      normal authoring sequence.
-    consequences:
-      positive:
-        - Standard allocation remains predictable below 9000
-        - Brownfield or imported records have a governed preserved-identity range
-        - Reserved-range artifacts do not pollute the normal forward sequence
+- id: 019fee89-e617-7315-9e36-7af95f814c83
+  summary: Extend ArchitectureRepository with deterministic orientation helpers for
+    UUID, alias_id, alias_ref, and URI lookup
+  rationale: 'Repository consumers use one in-process boundary for manifest/index/summary
+    access, entity-reference lookup whose canonical result is UUID, explicit UUID/alias_id/alias_ref/URI
+    resolve paths, alias inventory, and governed alias_id allocation for forward authoring.
+
+    '
+  consequences:
+    positive:
+    - Upstream tools stop duplicating manifest and index loading logic
+    - Corpus orientation becomes one stable typed API instead of ad hoc YAML reads
+    - Alias-ID allocation stays scope-aware, deterministic, and monotonic
+  alias_id: DEC-0069
+  alias_name: dec-0069-decision-migrated
+- id: 019fee89-e617-768d-9e3e-f61039a3d61c
+  summary: Expose corpus summary and relationships through supported CLI commands
+  rationale: 'Human and script consumers need stable CLI ergonomics that mirror the
+
+    repository boundary without treating raw registry files as the user-facing
+
+    interface.
+
+    '
+  consequences:
+    positive:
+    - '`adr entities summary` provides one deterministic orientation surface'
+    - '`adr entities relationships` exposes graph-level inspection without custom
+      parsing'
+    - CLI and Python APIs stay aligned around the same repository boundary
+  alias_id: DEC-0070
+  alias_name: expose-corpus-summary-and-relationships-through-supported-cli-commands
+- id: 019fee89-e617-797f-9e3e-50212acb0456
+  summary: Make forward-authoring type-prefixed ADR alias_id allocation monotonic
+    and non-reusable
+  rationale: 'Forward type-prefixed ADR IDs are governed alias_id allocation handles
+    for human recognition, not canonical machine identity. UUID remains canonical
+    entity identity. Alias allocation stays monotonic and non-reusable and must never
+    replace UUIDs or rewrite UUID references.
+
+    '
+  consequences:
+    positive:
+    - Historical traceability is preserved
+    - Allocation remains deterministic without gap filling
+    - Deleted artifacts cannot silently reactivate old identities
+  alias_id: DEC-0073
+  alias_name: make-forward-authoring-type-prefixed-adr-alias-id-allocation-monotonic-and-non-reusable
+- id: 019fee89-e617-7686-bc3f-536f1b00edfa
+  summary: Exclude reserved ADR alias IDs 9000-9999 from standard forward alias allocation
+  rationale: 'The reserved 9000-9999 range preserves governed alias allocation history
+    for exceptional records. It is not a UUID identity range and must not be treated
+    as canonical machine-identity allocation.
+
+    '
+  consequences:
+    positive:
+    - Standard allocation remains predictable below 9000
+    - Brownfield or imported records have a governed preserved-identity range
+    - Reserved-range artifacts do not pollute the normal forward sequence
+  alias_id: DEC-0075
+  alias_name: exclude-reserved-adr-alias-ids-9000-9999-from-standard-forward-alias-allocation
 capabilities:
-  - id: CAP-0045
-    name: Deterministic Corpus Orientation Surface
-    description: |
-      Provide one supported API and CLI surface for manifest access, index
-      access, corpus summaries, relationship inspection, and scope-local next
-      ADR ID allocation.
-    acceptance_criteria:
-      - ArchitectureRepository exposes manifest, index, corpus summary, and next-ID helpers
-      - "`adr entities summary` and `adr entities relationships` return deterministic output"
-      - forward authoring workflows do not need to read raw registry files to orient themselves
-      - normal-band ADR IDs are allocated monotonically and never reused
+- id: 019fee89-e617-778b-8137-22bcc675b053
+  name: Deterministic Corpus Orientation Surface
+  description: 'Provide one supported API and CLI surface for manifest/index/summary
+    access, UUID and alias lookup/resolve paths, alias inventory, and scope-local
+    governed alias_id allocation.
+
+    '
+  acceptance_criteria:
+  - Entity-reference lookup returns UUID as the canonical result
+  - Explicit UUID, alias_id, alias_ref, and URI resolve paths are available
+  - Normal-band alias_id values allocate monotonically and are never reused
+  - Alias allocation never replaces UUIDs or rewrites UUID references
+  alias_id: CAP-0045
+  alias_name: deterministic-corpus-orientation-surface
 invariants:
-  - id: INV-0069
-    statement: |
-      Forward-authoring ADR ID allocation MUST be monotonic and non-reusable.
-      Previously allocated IDs and historical gaps remain consumed history and
-      MUST NOT be reissued.
-    scope: global
-    enforcement_level: must
-    enforcement_mechanism: design
-    verification_method: automated
-    rationale: |
-      Reusing ADR identities corrupts provenance, historical references, and
-      deterministic traceability.
-  - id: INV-0071
-    statement: |
-      Reserved ADR IDs `9000-9999` MUST NOT participate in standard forward
-      authoring allocation.
-    scope: global
-    enforcement_level: must
-    enforcement_mechanism: design
-    verification_method: automated
-    rationale: |
-      Exceptional identities need a governed range that does not distort the
-      normal forward allocation sequence.
+- id: 019fee89-e617-77bc-8d3f-07c5c91bb5bb
+  statement: 'Forward-authoring governed alias_id allocation MUST be monotonic and
+    non-reusable. Previously allocated aliases and historical gaps remain consumed
+    history and MUST NOT be reissued or used to replace UUID identity.
+
+    '
+  scope: global
+  enforcement_level: must
+  enforcement_mechanism: design
+  verification_method: automated
+  rationale: 'Reusing ADR identities corrupts provenance, historical references, and
+
+    deterministic traceability.
+
+    '
+  alias_id: INV-0069
+  alias_name: inv-0069
+- id: 019fee89-e617-79c9-ad2a-7a26923d678d
+  statement: 'Reserved ADR alias IDs `9000-9999` MUST NOT participate in standard
+    forward alias allocation and MUST NOT be treated as UUID machine-identity allocation.
+
+    '
+  scope: global
+  enforcement_level: must
+  enforcement_mechanism: design
+  verification_method: automated
+  rationale: 'Exceptional identities need a governed range that does not distort the
+
+    normal forward allocation sequence.
+
+    '
+  alias_id: INV-0071
+  alias_name: inv-0071
 related_adrs:
-  - ADR-L-0013
-  - ADR-L-0017
+- 019fee89-e616-7c4e-953c-b7349412a784
+- 019fee89-e617-7ff5-863b-1eef71637b0f
 gaps: []
+alias_id: ADR-L-0016
+alias_name: deterministic-corpus-query-and-authoring-orientation-apis

@@ -8,21 +8,38 @@ from typing import Optional
 from ...models import CanonicalSource, Completeness, DiscoveryProvenance
 from ...scope import ProjectScope
 from ..passes.score_completeness import score_completeness
+from .adr_access import (  # noqa: F401 — re-export for callers
+    adr_type_of,
+    field_get,
+    field_list,
+    is_logical_adr_source_ref,
+    is_physical_adr,
+    is_physical_component_adr,
+    is_physical_system_adr,
+    topology_components,
+)
 
 GENERATOR_ID = "adr-architecture-index"
 
 
 def discover_source_files(adr_dir: Path) -> tuple[list[Path], list[Path], list[Path]]:
-    """Discover logical, physical, and invariant ADR sources deterministically."""
+    """Discover logical and physical ADR sources; refuse retired invariants directory."""
     logical = sorted((adr_dir / "logical").glob("*.yaml")) if (adr_dir / "logical").exists() else []
     physical: list[Path] = []
     for dirname in ("physical", "physical-system", "physical-component"):
         base = adr_dir / dirname
         if base.exists():
             physical.extend(sorted(base.glob("*.yaml")))
-    invariants = sorted((adr_dir / "invariants").glob("*.yaml")) if (adr_dir / "invariants").exists() else []
+    invariants_dir = adr_dir / "invariants"
+    if invariants_dir.exists():
+        leftover = sorted(invariants_dir.glob("*.yaml"))
+        if leftover:
+            raise ValueError(
+                "STANDALONE_INVARIANT_AUTHORITY_RETIRED: "
+                f"adrs/invariants/ must not contain definition YAML ({len(leftover)} file(s) found)"
+            )
     deduped = list(dict.fromkeys(path.resolve() for path in physical))
-    return logical, [Path(path) for path in deduped], invariants
+    return logical, [Path(path) for path in deduped], []
 
 
 def source_path(scope: ProjectScope, file_path: Path) -> str:

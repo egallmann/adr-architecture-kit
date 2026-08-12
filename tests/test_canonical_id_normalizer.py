@@ -450,3 +450,78 @@ def test_allocation_validation_passes_after_repair_and_detects_high_water_drift(
         "high-water mark IFACE must be at least 21" in finding
         for finding in normalizer.validate_allocations(scope)
     )
+
+
+def test_allocation_validation_accepts_v13_uuid_id_with_alias_ledger(tmp_path):
+    """v1.3 UUID ids keep TYPE-NNNN aliases; allocation ledger stays alias-keyed."""
+    _write(
+        tmp_path / "PROJECT.yaml",
+        """
+        schema_version: "1.0"
+        type: project_metadata
+        project:
+          name: v13-allocation
+          description: allocation fixture
+          type: library
+        ownership:
+          team: architecture
+        repository:
+          url: local
+          primary_branch: main
+        architecture_documentation:
+          adr_directory: adrs/
+          manifest_path: adrs/manifest.yaml
+          architecture_namespace: v13-allocation
+        """,
+    )
+    adr_dir = tmp_path / "adrs"
+    _write(
+        adr_dir / "logical" / "ADR-L-0001.yaml",
+        """
+        schema_version: "1.3"
+        adr_type: logical
+        id: 019fee89-e615-70a5-861b-b2dde147e5af
+        title: "V13"
+        status: accepted
+        created_date: "2026-03-13"
+        authors: ["test.author"]
+        domains: ["architecture"]
+        context: |
+          v1.3 allocation fixture.
+        capabilities:
+          - id: 019fee89-e614-7c68-be36-2c84d4579279
+            alias_id: CAP-0001
+            alias_name: machine-verifiable
+            name: "Capability"
+            description: "Capability."
+        decisions: []
+        architectural_boundaries: []
+        interaction_contracts: []
+        constraints: []
+        non_functional_requirements: []
+        invariants: []
+        gaps: []
+        """,
+    )
+    _write(
+        adr_dir / "migrations" / "canonical-id-allocation.yaml",
+        """
+        schema_version: "1.0"
+        type: canonical_id_allocation
+        high_water_marks:
+          CAP: 1
+        allocations:
+          - id: CAP-0001
+            entity_type: capability
+            adr_id: ADR-L-0001
+            file_path: adrs/logical/ADR-L-0001.yaml
+            source_pointer: /capabilities/0/id
+            state: active
+        """,
+    )
+
+    normalizer = CanonicalIdNormalizer()
+    scope = normalizer.scope_resolver.resolve(tmp_path)
+
+    assert normalizer.validate_allocations(scope) == []
+    assert normalizer.detect_collisions(scope) == {}

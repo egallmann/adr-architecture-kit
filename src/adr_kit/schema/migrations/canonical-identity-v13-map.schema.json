@@ -1,0 +1,81 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://adr-architecture-kit/schema/migrations/canonical-identity-v13-map.schema.json",
+  "title": "Canonical Identity v1.3 Map",
+  "description": "Sealed migration authority mapping legacy alias IDs to UUIDv7 identities.",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "type",
+    "architecture_namespace",
+    "baseline_fingerprint",
+    "entries",
+    "review_queues",
+    "seal"
+  ],
+  "properties": {
+    "schema_version": { "type": "string", "const": "1.0" },
+    "type": { "type": "string", "const": "canonical_identity_v13_map" },
+    "architecture_namespace": { "type": "string", "minLength": 1 },
+    "baseline_fingerprint": { "type": "string", "minLength": 1 },
+    "entries": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "occurrence_key",
+          "legacy_alias_id",
+          "entity_type",
+          "uuid",
+          "alias_id",
+          "alias_name",
+          "disposition"
+        ],
+        "properties": {
+          "occurrence_key": { "type": "string" },
+          "source_path": { "type": "string" },
+          "source_pointer": { "type": "string" },
+          "legacy_alias_id": { "type": "string" },
+          "entity_type": { "type": "string" },
+          "uuid": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-7[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+          },
+          "alias_id": { "type": "string" },
+          "alias_name": { "type": "string", "minLength": 3, "maxLength": 96 },
+          "classification": {
+            "type": "string",
+            "enum": ["mechanical", "review_required"]
+          },
+          "disposition": {
+            "type": "string",
+            "enum": ["pending", "accepted", "rejected"]
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "review_queues": {
+      "type": "object",
+      "required": ["alias_conflicts", "source_owners", "external_providers"],
+      "properties": {
+        "alias_conflicts": { "type": "array", "items": { "type": "string" } },
+        "source_owners": { "type": "array", "items": { "type": "string" } },
+        "external_providers": { "type": "array", "items": { "type": "string" } }
+      },
+      "additionalProperties": false
+    },
+    "seal": {
+      "type": "object",
+      "required": ["sealed", "map_fingerprint"],
+      "properties": {
+        "sealed": { "type": "boolean" },
+        "map_fingerprint": { "type": ["string", "null"] },
+        "sealed_at": { "type": ["string", "null"] },
+        "approver": { "type": ["string", "null"] }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

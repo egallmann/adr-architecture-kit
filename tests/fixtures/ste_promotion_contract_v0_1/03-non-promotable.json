@@ -1,0 +1,35 @@
+{
+  "expect": "pass",
+  "note": "Non-promotable journal contract projection; empty mutations OK",
+  "contract": {
+    "contract_version": "ste.design_journal.promotion_contract/v0.1",
+    "design_journal_version": "ste.design_journal/v0.1",
+    "journal_id": "DJ-CONF-03",
+    "lifecycle_state": "lock_ready",
+    "provider": null,
+    "authority_baseline": null,
+    "outcomes": [
+      {
+        "id": "O-01",
+        "category": "working_model",
+        "promotion_required": false,
+        "disposition": "accepted",
+        "statement": "Design-scoped methodology outcome only."
+      }
+    ],
+    "mutations": [],
+    "blockers": [
+      {
+        "id": "B-01",
+        "code": "not_architecture_promotable",
+        "message": "No architecture promotion requested."
+      }
+    ],
+    "readiness": {
+      "design_lock": true,
+      "mechanical_promotion": false
+    },
+    "human_lock": null,
+    "execution_evidence": []
+  }
+}

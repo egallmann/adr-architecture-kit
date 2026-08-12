@@ -79,6 +79,31 @@ def _relative_path(scope: ProjectScope, path: Path) -> str:
     return str(path.resolve().relative_to(scope.root.resolve())).replace("\\", "/")
 
 
+def _allocation_identity(item: dict[str, Any], canonical_field: str) -> str | None:
+    """Return the governed TYPE-NNNN identity used by the allocation ledger.
+
+    Schema v1.3 stores UUIDv7 in ``id``/``component_id`` and keeps the governed
+    presentation identifier in ``alias_id``. Allocation ledgers remain keyed by
+    those presentation IDs.
+    """
+    alias = item.get("alias_id")
+    if isinstance(alias, str) and alias:
+        return alias
+    entity_id = item.get(canonical_field)
+    return entity_id if isinstance(entity_id, str) and entity_id else None
+
+
+def _equivalent_allocation_pointers(pointer: str) -> tuple[str, ...]:
+    """Accept legacy ``.../id`` ledger pointers alongside v1.3 ``.../alias_id``."""
+    if pointer.endswith("/alias_id"):
+        return (pointer, f"{pointer[: -len('/alias_id')]}/id")
+    if pointer.endswith("/id"):
+        return (pointer, f"{pointer[: -len('/id')]}/alias_id")
+    if pointer.endswith("/component_id"):
+        return (pointer, f"{pointer[: -len('/component_id')]}/alias_id")
+    return (pointer,)
+
+
 @dataclass(frozen=True)
 class CanonicalEntityOccurrence:
     """Canonical entity definition at a stable structural source pointer."""
@@ -217,9 +242,14 @@ class CanonicalIdNormalizer:
                     if entity_type == "component" and item.get("component_id")
                     else "id"
                 )
-                entity_id = item.get(canonical_field)
-                if not isinstance(entity_id, str):
+                entity_id = _allocation_identity(item, canonical_field)
+                if entity_id is None:
                     continue
+                identity_field = (
+                    "alias_id"
+                    if isinstance(item.get("alias_id"), str) and item.get("alias_id")
+                    else canonical_field
+                )
                 occurrences.append(
                     CanonicalEntityOccurrence(
                         adr_id=adr_id,
@@ -228,7 +258,7 @@ class CanonicalIdNormalizer:
                         adr_type=adr_type,
                         entity_type=entity_type,
                         entity_id=entity_id,
-                        path=item_path + (canonical_field,),
+                        path=item_path + (identity_field,),
                     )
                 )
         return occurrences
@@ -868,21 +898,26 @@ class CanonicalIdNormalizer:
                 findings.append(f"allocation {entity_id} has unsupported state {state!r}")
 
         for occurrence in occurrences:
-            location = (
-                _relative_path(scope, occurrence.file_path),
-                occurrence.source_pointer,
-            )
-            allocation = active_by_location.get(location)
+            file_rel = _relative_path(scope, occurrence.file_path)
+            location = (file_rel, occurrence.source_pointer)
+            allocation = None
+            matched_pointer = occurrence.source_pointer
+            for pointer in _equivalent_allocation_pointers(occurrence.source_pointer):
+                candidate = active_by_location.get((file_rel, pointer))
+                if candidate is not None:
+                    allocation = candidate
+                    matched_pointer = pointer
+                    break
             if allocation is None:
                 findings.append(f"missing active allocation for {location[0]}#{location[1]}")
                 continue
             if allocation.get("id") != occurrence.entity_id:
                 findings.append(
-                    f"allocation drift at {location[0]}#{location[1]}: "
+                    f"allocation drift at {location[0]}#{matched_pointer}: "
                     f"{allocation.get('id')} != {occurrence.entity_id}"
                 )
             if allocation.get("entity_type") != occurrence.entity_type:
-                findings.append(f"allocation type drift at {location[0]}#{location[1]}")
+                findings.append(f"allocation type drift at {location[0]}#{matched_pointer}")
 
         for entity_id, entries in sorted(allocations_by_id.items()):
             active = [item for item in entries if item.get("state") == "active"]

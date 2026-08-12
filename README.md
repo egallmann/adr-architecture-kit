@@ -84,7 +84,9 @@ ADR sources and invariants
 # Repository-local discovery outputs (derived; do not hand-edit adrs/index/* or manifest)
 adr generate-architecture-index
 adr generate-manifest
-adr generate-rendered-docs
+adr generate-adr-projection
+# compatibility alias:
+# adr generate-rendered-docs
 
 # Example publication path for ADR-derived IR fragments (schema: ste-spec; test mirror under contracts/)
 adr build-ir-fragments

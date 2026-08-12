@@ -1,6 +1,6 @@
-schema_version: '1.0'
+schema_version: '1.3'
 adr_type: logical
-id: ADR-L-0010
+id: 019fee89-e616-7d61-8e35-f11ba2ddd75d
 title: Kernel Interface Contract and Validation Profiles
 status: accepted
 created_date: '2026-03-14'
@@ -18,167 +18,280 @@ tags:
 - migration
 - sentinel
 introduces_entities:
-- INV-0052
-- INV-0053
-- INV-0054
-- CAP-0034
-- CAP-0035
-context: |
-  adr-architecture-kit is transitioning from an implicit generator toolkit into
+- 019fee89-e616-7522-9b1f-8befdee2cbf5
+- 019fee89-e616-7944-ae13-b64c510fc3f4
+- 019fee89-e616-7e1b-8e1e-f150845bbf0e
+- 019fee89-e616-718c-8f1f-c75e9bc215bc
+- 019fee89-e616-7ca5-af3e-0dcd80fe2f9f
+context: 'adr-architecture-kit is transitioning from an implicit generator toolkit
+  into
+
   an explicit architecture compiler with a defined contract boundary to the STE
-  kernel. The plan work established that the compiler's guaranteed contract
-  surface is broader than the kernel's minimal load subset: the contract family
+
+  kernel. The plan work established that the compiler''s guaranteed contract
+
+  surface is broader than the kernel''s minimal load subset: the contract family
+
   is all generated artifacts under `adrs/index/` plus `manifest.yaml`, while
+
   individual consumers may rely on narrower subsets.
 
+
   The same plan work also established that legacy onboarding must be tolerated
+
   without collapsing schema structure. Brownfield architectures need a way to
+
   remain structurally valid while carrying explicit machine-readable placeholders
+
   for unavailable content. At the same time, production kernel loading must not
+
   silently accept incomplete architecture knowledge as fully compliant.
 
+
   What is needed is a formal contract ADR that defines:
+
   1. The minimal compiler-to-kernel contract surface
+
   2. The pre-stable versioning policy for that contract
+
   3. Validation profiles for greenfield, brownfield, and migration use
+
   4. The meaning of `sentinel_compliant` for compilation, CI, and kernel load
+
+  '
 decision:
   deprecated: This field is intentionally absent; decisions are listed below.
 decisions:
-- id: DEC-0036
-  summary: Use the indexed compiler bundle as the contract surface, with four core artifacts as the minimal kernel load subset
-  rationale: |
-    The full guaranteed compiler contract includes all generated artifacts in
+- id: 019fee89-e616-79ec-9432-43a1c8ecc104
+  summary: Use the indexed compiler bundle as the contract surface, with four core
+    artifacts as the minimal kernel load subset
+  rationale: 'The full guaranteed compiler contract includes all generated artifacts
+    in
+
     `adrs/index/` plus `manifest.yaml`. The kernel may rely on a narrower
+
     minimal load subset for bootstrap loading, but that subset must not be
+
     mistaken for the entire guaranteed contract family.
+
+    '
   consequences:
     positive:
     - Kernel loading surface can stay small and explicit
     - The broader guaranteed contract family remains available to downstream consumers
     - Minimal load subset and full contract family are separated cleanly
-- id: DEC-0037
-  summary: Treat the compiler-kernel contract as pre-stable 0.x until intentionally frozen
-  rationale: |
-    The contract is not yet open as a stable external surface. Using 0.x avoids
+  alias_id: DEC-0036
+  alias_name: dec-0036-decision-migrated
+- id: 019fee89-e616-73b2-9139-746451998656
+  summary: Treat the compiler-kernel contract as pre-stable 0.x until intentionally
+    frozen
+  rationale: 'The contract is not yet open as a stable external surface. Using 0.x
+    avoids
+
     pretending the boundary is already semantically frozen while still keeping a
+
     versioned contract and explicit upgrade path.
+
+    '
   consequences:
     positive:
     - Breaking changes remain allowed while the boundary is still internal
     - The transition to 1.0 can be made explicit and intentional
     - Contract drift can still be tracked through version numbers
-- id: DEC-0044
+  alias_id: DEC-0037
+  alias_name: treat-the-compiler-kernel-contract-as-pre-stable-0-x-until-intentionally-frozen
+- id: 019fee89-e616-7e82-8a0f-2c4c6bd0c326
   summary: Promote the contract to 1.0 only through an explicit readiness gate
-  rationale: |
-    Stable status should reflect implemented and verified behavior, not elapsed
+  rationale: 'Stable status should reflect implemented and verified behavior, not
+    elapsed
+
     time or confidence. The transition from 0.x to 1.0 must therefore be tied
+
     to concrete conditions across compiler output, schema conformance, and
+
     actual kernel consumption.
+
+    '
   consequences:
     positive:
     - Stable contract status remains meaningful
     - The kernel boundary is frozen intentionally rather than accidentally
     - Promotion becomes auditable through governance
-- id: DEC-0038
-  summary: Validate compiled output through explicit greenfield, brownfield, and migration profiles
-  rationale: |
-    A single contract schema is not enough to represent the enforcement posture
+  alias_id: DEC-0044
+  alias_name: promote-the-contract-to-1-0-only-through-an-explicit-readiness-gate
+- id: 019fee89-e616-75b8-ba2f-700f93515f95
+  summary: Validate compiled output through explicit greenfield, brownfield, and migration
+    profiles
+  rationale: 'A single contract schema is not enough to represent the enforcement
+    posture
+
     across new systems, legacy imports, and active remediation states. Profiles
+
     allow strict integrity rules to remain universal while allowing quality and
+
     completeness expectations to vary by adoption stage.
+
+    '
   consequences:
     positive:
     - Brownfield import can be structurally valid without pretending to be complete
     - Greenfield enforcement remains strict
     - Migration can tighten policy gradually without schema forks
-- id: DEC-0039
+  alias_id: DEC-0038
+  alias_name: validate-compiled-output-through-explicit-greenfield-brownfield-and-migration-profiles
+- id: 019fee89-e616-7469-aa0f-66411a33dc10
   summary: Classify sentinel-backed bundles as sentinel compliant rather than compliant
-  rationale: |
-    Sentinel-backed content is valid under the right profile, but it is not the
+  rationale: 'Sentinel-backed content is valid under the right profile, but it is
+    not the
+
     same as fully populated architecture knowledge. A separate validator outcome
+
     preserves honesty while keeping the system operational.
+
+    '
   consequences:
     positive:
     - Compile success and contract honesty are both preserved
     - CI behavior can follow the active profile explicitly
     - Production kernel loads can reject sentinel-backed bundles by default
-- id: DEC-0059
-  summary: Treat all `adrs/index/*` artifacts and `manifest.yaml` as the guaranteed contract family
-  rationale: |
-    Downstream bridge and kernel work already depend on the wider indexed
+  alias_id: DEC-0039
+  alias_name: classify-sentinel-backed-bundles-as-sentinel-compliant-rather-than-compliant
+- id: 019fee89-e616-735c-bd3d-c9e51b259031
+  summary: Treat all `adrs/index/*` artifacts and `manifest.yaml` as the guaranteed
+    contract family
+  rationale: 'Downstream bridge and kernel work already depend on the wider indexed
+
     bundle, the manifest, and the additive graph artifact. Guaranteeing the
+
     full family prevents downstream consumers from inventing different notions
+
     of what the compiler publishes.
-- id: DEC-0060
-  summary: Treat `architecture-graph.yaml` as an additive indexed artifact rather than a second architecture authority
-  rationale: |
-    The graph is consumed downstream and belongs to the generated contract
+
+    '
+  alias_id: DEC-0059
+  alias_name: treat-all-adrs-index-artifacts-and-manifest-yaml-as-the-guaranteed-contract-family
+- id: 019fee89-e616-793e-9b16-ae66725cf5ec
+  summary: Treat `architecture-graph.yaml` as an additive indexed artifact rather
+    than a second architecture authority
+  rationale: 'The graph is consumed downstream and belongs to the generated contract
+
     family, but it remains a projection artifact over the same architecture
+
     authority rather than a separate source of meaning.
+
+    '
+  alias_id: DEC-0060
+  alias_name: dec-0060-decision-migrated
 invariants:
-- id: INV-0052
-  statement: |
-    The compiler's guaranteed machine-readable contract surface MUST be defined
+- id: 019fee89-e616-7522-9b1f-8befdee2cbf5
+  statement: 'The compiler''s guaranteed machine-readable contract surface MUST be
+    defined
+
     as all generated artifacts under `adrs/index/` plus `adrs/manifest.yaml`.
+
     Consumers MAY define narrower minimal load subsets, but those subsets MUST
+
     NOT be treated as the full guaranteed contract surface.
+
+    '
   scope: global
   enforcement_level: must
   enforcement_mechanism: design
   verification_method: automated
-  rationale: |
-    The contract boundary must remain explicit without collapsing the broader
-    generated bundle into one consumer's minimal load subset.
-- id: INV-0053
-  statement: |
-    Contract validation MUST support profile-based enforcement for greenfield,
+  rationale: 'The contract boundary must remain explicit without collapsing the broader
+
+    generated bundle into one consumer''s minimal load subset.
+
+    '
+  alias_id: INV-0052
+  alias_name: inv-0052
+- id: 019fee89-e616-7944-ae13-b64c510fc3f4
+  statement: 'Contract validation MUST support profile-based enforcement for greenfield,
+
     brownfield, and migration without forking the registry schema.
+
+    '
   scope: global
   enforcement_level: must
   enforcement_mechanism: design
   verification_method: automated
-  rationale: |
-    Enforcement posture changes across adoption stages, but the contract surface
+  rationale: 'Enforcement posture changes across adoption stages, but the contract
+    surface
+
     must remain one schema.
-- id: INV-0054
-  statement: |
-    Bundles classified as sentinel compliant MUST NOT be admitted to production
+
+    '
+  alias_id: INV-0053
+  alias_name: inv-0053
+- id: 019fee89-e616-7e1b-8e1e-f150845bbf0e
+  statement: 'Bundles classified as sentinel compliant MUST NOT be admitted to production
+
     kernel loads by default, but MAY be loaded by inspection-only or remediation
+
     tooling.
+
+    '
   scope: global
   enforcement_level: must
   enforcement_mechanism: runtime
   verification_method: automated
-  rationale: |
-    Sentinel-backed content preserves structure, not full operational readiness.
+  rationale: 'Sentinel-backed content preserves structure, not full operational readiness.
+
+    '
+  alias_id: INV-0054
+  alias_name: inv-0054
+- id: 019fee89-e616-7cb0-813b-b2651827c986
+  statement: Compiler projection from canonical architecture state to kernel-facing
+    registry artifacts must be deterministic and contract-valid.
+  scope: global
+  enforcement_level: must
+  enforcement_mechanism: test
+  verification_method: automated
+  rationale: 'Equivalent canonical inputs must produce equivalent registry outputs
+    that
+
+    continue to satisfy the explicit kernel contract.
+
+    '
+  alias_id: INV-0097
+  alias_name: inv-0097
 capabilities:
-- id: CAP-0034
+- id: 019fee89-e616-718c-8f1f-c75e9bc215bc
   name: Profile-Aware Contract Validation
-  description: |
-    Validate compiled registry bundles against a single contract schema with
+  description: 'Validate compiled registry bundles against a single contract schema
+    with
+
     profile-specific enforcement for greenfield, brownfield, and migration.
+
+    '
   acceptance_criteria:
   - Core integrity invariants are enforced in every profile
   - Sentinel-backed bundles can be accepted only in brownfield and migration
   - CI behavior is controlled by the selected profile
-- id: CAP-0035
+  alias_id: CAP-0034
+  alias_name: profile-aware-contract-validation
+- id: 019fee89-e616-7ca5-af3e-0dcd80fe2f9f
   name: Production-Safe Kernel Admission
-  description: |
-    Distinguish between contract-valid bundles that are production-safe and
+  description: 'Distinguish between contract-valid bundles that are production-safe
+    and
+
     bundles that are inspection-safe only.
+
+    '
   acceptance_criteria:
   - compliant bundles are loadable in production by default
   - sentinel_compliant bundles are rejected from production kernel loads by default
   - Inspection-only tooling can still load sentinel-backed bundles
+  alias_id: CAP-0035
+  alias_name: production-safe-kernel-admission
 related_adrs:
-- ADR-L-0001
-- ADR-L-0008
-- ADR-L-0009
-- ADR-L-0012
-- ADR-L-0013
-- ADR-P-0001
-- ADR-PC-0001
+- 019fee89-e615-70a5-861b-b2dde147e5af
+- 019fee89-e616-7066-8d2f-3acc7f469f72
+- 019fee89-e616-770c-a025-2c241a720730
+- 019fee89-e616-744f-b63e-5ecddf344faa
+- 019fee89-e616-7c4e-953c-b7349412a784
+- 019fee89-e618-79ed-9d2d-cc35c63bc99a
+- 019fee89-e617-7270-ab2f-58a756d2530e
 gaps: []
 migration_origin:
   remapped_entities:
@@ -197,3 +310,5 @@ migration_origin:
   - entity_type: decision
     from: DEC-0005
     to: DEC-0044
+alias_id: ADR-L-0010
+alias_name: kernel-interface-contract-and-validation-profiles

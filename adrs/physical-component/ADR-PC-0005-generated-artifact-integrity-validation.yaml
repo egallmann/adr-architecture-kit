@@ -1,6 +1,6 @@
-schema_version: '1.0'
+schema_version: '1.3'
 adr_type: physical-component
-id: ADR-PC-0005
+id: 019fee89-e618-74b2-a83e-e41c7d8c9f37
 title: Generated Artifact Integrity Validation
 status: proposed
 created_date: '2026-03-15'
@@ -11,22 +11,25 @@ domains:
 - validation
 - projections
 implements_system:
-- ADR-PS-0002
+- 019fee89-e618-7d04-9337-4aa2d3258507
 implements_logical:
-- ADR-L-0007
-- ADR-L-0013
+- 019fee89-e615-7b9c-8e3f-32ceeda01491
+- 019fee89-e616-7c4e-953c-b7349412a784
 introduces_entities:
-- COMP-0014
-- IFACE-0015
-- IMPL-0015
+- 019fee89-e618-781c-831f-0d5fe24f7d85
+- 019fee89-e618-783a-8511-196b6a627b3e
+- 019fee89-e618-7d0d-ae2e-d65c2d83b72d
 technologies:
 - python
 - sha256
 - yaml
-context: |
-  Generated artifact integrity validation verifies freshness, tamper status,
+context: 'Generated artifact integrity validation verifies freshness, tamper status,
+
   integrity headers, and scope-local generated outputs. It is a distinct public
+
   subsystem used by validator and governance flows.
+
+  '
 technology_stack:
 - category: language
   name: Python
@@ -37,14 +40,18 @@ technology_stack:
   version: 6.x
   rationale: Generated artifact inspection and parsing.
 component_specifications:
-- id: COMP-0014
+- id: 019fee89-e618-781c-831f-0d5fe24f7d85
   name: Generated Artifact Integrity Validation
   type: service
-  responsibilities: |
-    - Enumerate scope-local generated artifacts
+  responsibilities: '- Enumerate scope-local generated artifacts
+
     - Validate integrity headers and source hashes
+
     - Detect stale, tampered, or malformed generated outputs
+
     - Support governance checks over generated artifacts
+
+    '
   generation_context:
     purpose: Protect derived artifacts from silent drift and tampering.
     key_responsibilities:
@@ -57,12 +64,17 @@ component_specifications:
     - Invalid generated outputs are surfaced explicitly
     - Scope-local integrity checks remain deterministic
   interfaces:
-  - id: IFACE-0015
+  - id: 019fee89-e618-783a-8511-196b6a627b3e
     type: library_api
-    specification: |
-      Public surfaces:
+    specification: 'Public surfaces:
+
       - GeneratedArtifactValidator
+
       - generated artifact integrity result models
+
+      '
+    alias_id: IFACE-0015
+    alias_name: iface-0015
   implementation_identifiers:
     module_path: src/adr_kit/integrity/validation.py
     test_path: tests/test_generated_docs_integrity.py
@@ -78,15 +90,25 @@ component_specifications:
         type: counter
     testing_requirements:
       unit_test_coverage: '>= 80%'
-      integration_tests: |
-        - Generated docs integrity checks
-        - Scope-local artifact enumeration
-        - Stale/tampered artifact detection
-implementation_decisions:
-- id: IMPL-0015
-  summary: Separate artifact integrity validation from discovery/indexing authority
-  rationale: |
-    Integrity validation is a runtime concern shared across generated artifact
-    kinds and deserves its own component authority.
-gaps: []
+      integration_tests: '- Generated docs integrity checks
 
+        - Scope-local artifact enumeration
+
+        - Stale/tampered artifact detection
+
+        '
+  alias_id: COMP-0014
+  alias_name: generated-artifact-integrity-validation
+implementation_decisions:
+- id: 019fee89-e618-7d0d-ae2e-d65c2d83b72d
+  summary: Separate artifact integrity validation from discovery/indexing authority
+  rationale: 'Integrity validation is a runtime concern shared across generated artifact
+
+    kinds and deserves its own component authority.
+
+    '
+  alias_id: IMPL-0015
+  alias_name: separate-artifact-integrity-validation-from-discovery-indexing-authority
+gaps: []
+alias_id: ADR-PC-0005
+alias_name: adr-pc-0005-generated-artifact-integrity-validation

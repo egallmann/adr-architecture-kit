@@ -16,6 +16,13 @@ from ...models import (
 )
 from ...models.architecture_discovery import RelationshipType
 from ...models.common import EntityReference, ExternalReference
+from ..frontend.adr_access import (
+    field_get,
+    field_list,
+    is_physical_component_adr,
+    is_physical_system_adr,
+    topology_components,
+)
 
 
 @dataclass(frozen=True)
@@ -171,6 +178,40 @@ def derive_relationships(
         for related in adr.related_adrs:
             if related in entities:
                 add_relationship("references", adr.id, related, adr.id, [adr.id])
+        for target in field_list(adr, "supersedes"):
+            if target in entities:
+                add_relationship("supersedes", adr.id, target, adr.id, [adr.id])
+                add_relationship(
+                    "superseded_by",
+                    target,
+                    adr.id,
+                    adr.id,
+                    [adr.id],
+                    classification="derived",
+                )
+        superseded_by = field_get(adr, "superseded_by")
+        if isinstance(superseded_by, str) and superseded_by in entities:
+            add_relationship("superseded_by", adr.id, superseded_by, adr.id, [adr.id])
+            add_relationship(
+                "supersedes",
+                superseded_by,
+                adr.id,
+                adr.id,
+                [adr.id],
+                classification="derived",
+            )
+        elif superseded_by:
+            for target in field_list(adr, "superseded_by"):
+                if target in entities:
+                    add_relationship("superseded_by", adr.id, target, adr.id, [adr.id])
+                    add_relationship(
+                        "supersedes",
+                        target,
+                        adr.id,
+                        adr.id,
+                        [adr.id],
+                        classification="derived",
+                    )
         for capability in adr.capabilities:
             for component_id in capability.implemented_by_components:
                 if component_id in entities:
@@ -392,33 +433,60 @@ def derive_relationships(
                 },
             )
 
-    for invariant, _ in standalone_invariants:
-        if invariant.id not in entities:
-            continue
-        for target in invariant.enforced_by:
+    for physical_adr, _ in physical_adrs:
+        for logical_id in field_list(physical_adr, "implements_logical"):
+            if logical_id in entities:
+                add_relationship(
+                    "implements_logical",
+                    physical_adr.id,
+                    logical_id,
+                    physical_adr.id,
+                    [physical_adr.id],
+                )
+        for target in field_list(physical_adr, "supersedes"):
             if target in entities:
-                add_relationship("enforces", invariant.id, target, invariant.id, [invariant.id])
-
-    for adr, _ in physical_adrs:
-        if isinstance(adr, PhysicalComponentADR):
-            for component in adr.component_specifications:
-                component_id = component.component_id or component.id
-                for interface in component.interfaces:
+                add_relationship("supersedes", physical_adr.id, target, physical_adr.id, [physical_adr.id])
+                add_relationship(
+                    "superseded_by",
+                    target,
+                    physical_adr.id,
+                    physical_adr.id,
+                    [physical_adr.id],
+                    classification="derived",
+                )
+        superseded_by = field_get(physical_adr, "superseded_by")
+        if isinstance(superseded_by, str) and superseded_by in entities:
+            add_relationship(
+                "superseded_by", physical_adr.id, superseded_by, physical_adr.id, [physical_adr.id]
+            )
+            add_relationship(
+                "supersedes",
+                superseded_by,
+                physical_adr.id,
+                physical_adr.id,
+                [physical_adr.id],
+                classification="derived",
+            )
+        if is_physical_component_adr(physical_adr):
+            for component in field_list(physical_adr, "component_specifications"):
+                component_id = field_get(component, "component_id") or field_get(component, "id")
+                for interface in field_list(component, "interfaces"):
+                    interface_id = field_get(interface, "id")
                     add_relationship(
                         "provides_interface",
                         component_id,
-                        interface.id,
-                        f"{adr.id}#{interface.id}",
-                        [adr.id],
+                        interface_id,
+                        f"{physical_adr.id}#{interface_id}",
+                        [physical_adr.id],
                     )
-                for capability_id in component.implements_capabilities:
+                for capability_id in field_list(component, "implements_capabilities"):
                     if capability_id in entities:
                         add_relationship(
                             "implemented_by",
                             capability_id,
                             component_id,
-                            f"{adr.id}#{component_id}",
-                            [adr.id],
+                            f"{physical_adr.id}#{component_id}",
+                            [physical_adr.id],
                         )
                     else:
                         add_gap(
@@ -426,22 +494,26 @@ def derive_relationships(
                             "unresolved_reference",
                             component_id,
                             "important",
-                            f"{adr.id}#{component_id}",
-                            [adr.id, capability_id],
+                            f"{physical_adr.id}#{component_id}",
+                            [physical_adr.id, capability_id],
                             related_entity_id=capability_id,
                             expected_relationship="implemented_by",
                         )
-                for system_id in adr.implements_system:
-                    resolved_system_id = system_ids.get(
-                        system_id, f"SYS-{system_id.replace('ADR-PS-', '')}"
-                    )
+                for system_id in field_list(physical_adr, "implements_system"):
+                    resolved_system_id = system_ids.get(system_id)
+                    if resolved_system_id is None and isinstance(system_id, str):
+                        # Legacy ADR-PS-* refs derive SYS-*; UUID refs must hit system_ids.
+                        if system_id.startswith("ADR-PS-"):
+                            resolved_system_id = f"SYS-{system_id.replace('ADR-PS-', '')}"
+                        else:
+                            resolved_system_id = system_id
                     if resolved_system_id in entities:
                         add_relationship(
                             "embodied_in",
                             component_id,
                             resolved_system_id,
-                            f"{adr.id}#{component_id}",
-                            [adr.id],
+                            f"{physical_adr.id}#{component_id}",
+                            [physical_adr.id],
                         )
                     else:
                         add_gap(
@@ -449,54 +521,53 @@ def derive_relationships(
                             "component_without_system",
                             component_id,
                             "important",
-                            f"{adr.id}#{component_id}",
-                            [adr.id, system_id],
+                            f"{physical_adr.id}#{component_id}",
+                            [physical_adr.id, system_id],
                             related_entity_id=system_id,
                             expected_relationship="embodied_in",
                         )
-                for dep in component.dependencies:
+                for dep in field_list(component, "dependencies"):
                     if dep in entities:
                         add_relationship(
                             "related_to",
                             component_id,
                             dep,
-                            f"{adr.id}#{component_id}",
-                            [adr.id],
+                            f"{physical_adr.id}#{component_id}",
+                            [physical_adr.id],
                             classification="derived",
                             confidence=0.8,
                         )
-            for implementation_decision in adr.implementation_decisions:
-                for invariant_id in implementation_decision.implements_invariants:
+            for implementation_decision in field_list(physical_adr, "implementation_decisions"):
+                decision_id = field_get(implementation_decision, "id")
+                for invariant_id in field_list(implementation_decision, "implements_invariants"):
                     if invariant_id in entities:
                         add_relationship(
                             "enforces",
-                            implementation_decision.id,
+                            decision_id,
                             invariant_id,
-                            f"{adr.id}#{implementation_decision.id}",
-                            [adr.id],
+                            f"{physical_adr.id}#{decision_id}",
+                            [physical_adr.id],
                         )
-        if isinstance(adr, PhysicalSystemADR):
-            system_id = system_ids[adr.id]
-            for topology_component in (
-                adr.component_topology.components if adr.component_topology else []
-            ):
-                if topology_component.id is not None:
+        if is_physical_system_adr(physical_adr):
+            system_id = system_ids[physical_adr.id]
+            for topology_component in topology_components(physical_adr):
+                topology_id = field_get(topology_component, "id")
+                if topology_id is not None:
                     add_relationship(
                         "composed_of",
                         system_id,
-                        topology_component.id,
-                        f"{adr.id}#{topology_component.id}",
-                        [adr.id],
+                        topology_id,
+                        f"{physical_adr.id}#{topology_id}",
+                        [physical_adr.id],
                     )
-        if isinstance(adr, PhysicalSystemADR) and adr.references_components:
-            for component_adr in adr.references_components:
+            for component_adr in field_list(physical_adr, "references_components"):
                 if component_adr in entities:
                     add_relationship(
                         "related_to",
-                        adr.id,
+                        physical_adr.id,
                         component_adr,
-                        adr.id,
-                        [adr.id],
+                        physical_adr.id,
+                        [physical_adr.id],
                         classification="derived",
                         confidence=0.8,
                     )

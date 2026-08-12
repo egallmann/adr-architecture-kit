@@ -1,47 +1,74 @@
-schema_version: '1.0'
+schema_version: '1.3'
 adr_type: logical
-id: ADR-L-0006
+id: 019fee89-e615-7b66-b73a-3b99f7d92d4d
 title: Rule Library Sub-Module with Cooperative Signals
 status: proposed
 created_date: '2026-03-08'
 authors:
 - adr-architecture-kit
 modified_date: '2026-03-08'
-context: |
-  ADR-L-0004 defines a multi-tier governance architecture where a rule-library
+context: 'ADR-L-0004 defines a multi-tier governance architecture where a rule-library
+
   sub-module activates and projects rules via MCP. The Rules & Signal Service
+
   (Tier 2) parses ADRs and generates enforcement rules; the rule-library (Tier 3)
+
   receives, activates, and serves those rules to consumers.
 
+
   A proof-of-concept rules-library exists at _poc_rules-library with a three-layer
+
   activation model, signal-driven rule selection, and submodule protocol. The POC
-  solves the "activation problem": rules exist but aren't applied consistently.
+
+  solves the "activation problem": rules exist but aren''t applied consistently.
+
 
   Separately, the prompt translator (ADR-L-0005, ADR-P-0004) generates cooperative
+
   signals for parallel AI agent coordination: claim, progress, complete,
+
   wave_complete, validation_ready. These file-based signals enable agents to
+
   coordinate without a server until the Rules & Signal Service is built.
+
 
   ## The Opportunity
 
+
   The rule-library can serve as the **coordination hub** for file-based tooling:
+
   - Define canonical signal schema (cooperative + context)
+
   - Provide signal emission patterns for prompt translator
+
   - Read/validate signals from agent workspaces
+
   - Eventually receive rules from Rules & Signal Service
 
+
   Building from POC principles allows:
+
   1. Correct integration with STE ecosystem (adr-architecture-kit, ste-runtime)
+
   2. Cooperative signals as first-class capability
+
   3. Prompt translator integration (signal instructions in generated prompts)
+
   4. Independent repo and submodule for reuse across projects
+
 
   ## Problems Solved
 
-  1. **Activation problem**: Rules exist but aren't applied (POC insight)
+
+  1. **Activation problem**: Rules exist but aren''t applied (POC insight)
+
   2. **Coordination gap**: Agents need signals to coordinate (prompt translator)
+
   3. **Schema authority**: Who defines signal format? (rule-library)
+
   4. **Integration**: Prompt translator, decorators, ste-runtime need shared hub
+
+  '
 domains:
 - governance
 - rules
@@ -58,187 +85,280 @@ tags:
 - submodule
 - mcp
 decisions:
-- id: DEC-0011
+- id: 019fee89-e615-775e-8b3b-87bd8305b453
   summary: Build from POC Principles
-  rationale: |
-    Build ste-rules-library from POC design principles.
+  rationale: 'Build ste-rules-library from POC design principles.
+
 
     Adopt from POC:
+
     - Three-layer activation (context signals drive rule selection)
+
     - Signal-driven projection (only relevant rules)
+
     - Submodule protocol with bootstrap
+
     - Meta-governance (ADRs govern rules, not self-governed)
+
     - Conflict detection (escalate, never auto-resolve)
 
+
     Adapt for STE:
+
     - ADR-derived rules (from Rules & Signal Service when built)
+
     - Cooperative signals (agent coordination)
+
     - Integration with adr-architecture-kit decorators
+
     - Integration with prompt translator
+
+    '
   consequences:
     positive:
     - New standalone rule-library repo
     - 'Design doc: docs/RULE-LIBRARY-DESIGN.md'
-- id: DEC-0018
+  alias_id: DEC-0011
+  alias_name: build-from-poc-principles
+- id: 019fee89-e615-7e63-a71d-04283e66cb51
   summary: Cooperative Signals as First-Class
-  rationale: |
-    rule-library defines and supports cooperative signals alongside context
+  rationale: 'rule-library defines and supports cooperative signals alongside context
+
     signals. Two signal semantics:
 
+
     **Context signals** (from POC): Drive rule selection
+
     - file_pattern, language, domain
+
     - "What rules apply to this context?"
 
+
     **Cooperative signals** (from prompt translator): Agent coordination
+
     - claim, progress, complete, wave_complete, validation_ready
+
     - "Who is doing what? When can I start?"
 
+
     rule-library provides:
+
     - Canonical signal schema (schema/signal.schema.json)
+
     - Signal emission CLI for agents
+
     - Signal read/validate for monitoring
+
+    '
   consequences:
     positive:
     - schema/signal.schema.json in rule-library
     - scripts/emit-signal.py for agents
     - File-based until MCP/RSS
-- id: DEC-0025
+  alias_id: DEC-0018
+  alias_name: cooperative-signals-as-first-class
+- id: 019fee89-e615-70ab-bf3d-3a9879ef1fa3
   summary: Prompt Translator Integration
-  rationale: |
-    Prompt translator (adr-architecture-kit) generates implementation prompts
+  rationale: 'Prompt translator (adr-architecture-kit) generates implementation prompts
+
     that include signal emission instructions. rule-library is the schema
+
     authority for those instructions.
 
+
     Flow:
+
     1. rule-library defines signal.schema.json
+
     2. Prompt translator templates reference schema
+
     3. Generated prompts include "emit claim", "emit complete" instructions
+
     4. Agents emit to .codex/signals/, .cursor/signals/
+
     5. rule-library (or monitor) reads signals
 
+
     This makes the prompt translator the "code generator" for cooperative
+
     flow control until proper Rules & Signal Service exists.
+
+    '
   consequences:
     positive:
     - rule-library schema consumed by prompt translator
     - ADR-P-0004 templates include signal instructions
     - docs/COOPERATIVE-SIGNALS.md aligns with rule-library schema
-- id: DEC-0031
+  alias_id: DEC-0025
+  alias_name: prompt-translator-integration
+- id: 019fee89-e615-7cbc-b53e-42784e9f3081
   summary: Standalone Repo, Submodule Consumption
-  rationale: |
-    rule-library as standalone repo enables:
+  rationale: 'rule-library as standalone repo enables:
+
     - Independent versioning
+
     - Clean dependency boundary
+
     - Submodule into adr-architecture-kit, ste-runtime, any STE project
+
     - No monorepo coupling
 
+
     Consumption:
+
     - git submodule add <rule-library-url> rule-library
+
     - python rule-library/scripts/bootstrap.py
+
     - Project gets rule index, signal schema, integration snippet
+
+    '
   consequences:
     positive:
     - 'New GitHub/GitLab repo: rule-library'
     - Submodule protocol (adapted from POC ADR-008)
     - Bootstrap generates project config
-- id: DEC-0034
+  alias_id: DEC-0031
+  alias_name: standalone-repo-submodule-consumption
+- id: 019fee89-e615-7762-a91e-f7d5d71acc18
   summary: File-Based First, MCP Later
-  rationale: |
-    Phase 1: File-based rules and signals. No server. Works with existing
+  rationale: 'Phase 1: File-based rules and signals. No server. Works with existing
+
     prompt translator, codex-implement.py, bootstrap prompts.
 
+
     Phase 2: MCP server for rule projection. get_rules, emit_signal tools.
+
     File-based remains fallback for offline/development.
 
+
     This allows incremental adoption without blocking on infrastructure.
+
+    '
   consequences:
     positive:
     - No MCP required for initial use
     - MCP is enhancement, not dependency
     - Offline/air-gapped scenarios supported
+  alias_id: DEC-0034
+  alias_name: file-based-first-mcp-later
 invariants:
-- id: INV-0033
-  statement: |
-    rule-library MUST define canonical schema for cooperative signals
+- id: 019fee89-e615-7688-953b-19e6aae687a4
+  statement: 'rule-library MUST define canonical schema for cooperative signals
+
+    '
   scope: global
   enforcement_level: must
   enforcement_mechanism: design
   verification_method: automated
-  rationale: |
-    Signal format must be authoritative. Prompt translator and agents
+  rationale: 'Signal format must be authoritative. Prompt translator and agents
+
     consume this schema. Single source of truth.
-- id: INV-0034
-  statement: |
-    rule-library MUST support file-based rule and signal handling
+
+    '
+  alias_id: INV-0033
+  alias_name: inv-0033
+- id: 019fee89-e615-70fd-9622-a4e35697ad39
+  statement: 'rule-library MUST support file-based rule and signal handling
+
+    '
   scope: global
   enforcement_level: must
   enforcement_mechanism: design
   verification_method: automated
-  rationale: |
-    Works without Rules & Signal Service or MCP. Enables development
+  rationale: 'Works without Rules & Signal Service or MCP. Enables development
+
     and offline scenarios.
-- id: INV-0035
-  statement: |
-    rule-library MUST NOT self-govern; it is governed by ADRs
+
+    '
+  alias_id: INV-0034
+  alias_name: inv-0034
+- id: 019fee89-e615-7602-8d3e-153b2a57947d
+  statement: 'rule-library MUST NOT self-govern; it is governed by ADRs
+
+    '
   scope: global
   enforcement_level: must
   enforcement_mechanism: policy
   verification_method: manual
-  rationale: |
-    Meta-governance: rules can be wrong. ADRs (in consuming project or
+  rationale: 'Meta-governance: rules can be wrong. ADRs (in consuming project or
+
     rule-library itself) define correctness. Aligns with POC ADR-003.
-- id: INV-0036
-  statement: |
-    Cooperative signal schema MUST include claim, progress, complete,
+
+    '
+  alias_id: INV-0035
+  alias_name: inv-0035
+- id: 019fee89-e615-71bc-a727-e0403c74783d
+  statement: 'Cooperative signal schema MUST include claim, progress, complete,
+
     wave_complete, validation_ready types
+
+    '
   scope: global
   enforcement_level: must
   enforcement_mechanism: design
   verification_method: automated
-  rationale: |
-    These types enable parallel agent coordination per docs/COOPERATIVE-SIGNALS.md.
+  rationale: 'These types enable parallel agent coordination per docs/COOPERATIVE-SIGNALS.md.
+
     Prompt translator generates instructions for these.
+
+    '
+  alias_id: INV-0036
+  alias_name: inv-0036
 capabilities:
-- id: CAP-0010
+- id: 019fee89-e615-7fef-a81d-ffbcc5c11de8
   name: Signal Schema Authority
-  description: |
-    rule-library defines canonical schema for context and cooperative signals.
+  description: 'rule-library defines canonical schema for context and cooperative
+    signals.
+
+    '
   acceptance_criteria:
   - schema/signal.schema.json exists
   - Schema includes cooperative signal types
   - Schema includes context signal types
   - Prompt translator can consume schema
-- id: CAP-0011
+  alias_id: CAP-0010
+  alias_name: signal-schema-authority
+- id: 019fee89-e615-7199-be3b-64c7a82f3c4c
   name: Signal Emission CLI
-  description: |
-    CLI for agents to emit cooperative signals without writing JSON manually.
+  description: 'CLI for agents to emit cooperative signals without writing JSON manually.
+
+    '
   acceptance_criteria:
   - scripts/emit-signal.py or equivalent
   - Supports claim, progress, complete, wave_complete, validation_ready
   - Writes to .codex/signals/ or .cursor/signals/
   - Validates against schema before write
-- id: CAP-0012
+  alias_id: CAP-0011
+  alias_name: signal-emission-cli
+- id: 019fee89-e615-77b5-b73c-7db427c64a68
   name: Rule Activation and Projection
-  description: |
-    Context signals drive rule selection; rules projected for consumption.
+  description: 'Context signals drive rule selection; rules projected for consumption.
+
+    '
   acceptance_criteria:
   - Rule index from file-based rules
   - Context signal detection
   - Rule projection (format for AI/tools)
   - Conflict detection (escalate)
-- id: CAP-0013
+  alias_id: CAP-0012
+  alias_name: rule-activation-and-projection
+- id: 019fee89-e615-7ce1-aa20-4b16a485eb1a
   name: Submodule Bootstrap
-  description: |
-    Bootstrap script for projects adding rule-library as submodule.
+  description: 'Bootstrap script for projects adding rule-library as submodule.
+
+    '
   acceptance_criteria:
   - scripts/bootstrap.py
   - Generates project rule index
   - Generates integration snippet
   - Compatible with .cursorrules, .codex/INSTRUCTIONS.md
+  alias_id: CAP-0013
+  alias_name: submodule-bootstrap
 related_adrs:
-- ADR-L-0004
-- ADR-L-0005
-- ADR-P-0004
+- 019fee89-e615-7577-8d37-dd0df031bec9
+- 019fee89-e615-73a3-8d31-7a4721affae9
+- 019fee89-e618-703b-a136-3cb5c991e3c4
 gaps:
 - id: GAP-0006
   question: Prompt translator COMP-0009 (SignalGenerator) not implemented
@@ -252,20 +372,31 @@ gaps:
     outside the current repo-local discovery implementation.'
   impact: medium
   blocking: false
-notes: |
-  Implementation order:
+notes: 'Implementation order:
+
 
   1. Create rule-library repo (standalone)
+
   2. Add PROJECT.yaml, schema/signal.schema.json
+
   3. Add scripts/emit-signal.py
+
   4. Add bootstrap script
+
   5. Add rule activation logic (file-based)
+
   6. adr-architecture-kit: add rule-library submodule
+
   7. Prompt translator: consume signal schema, generate instructions
+
   8. MCP server (Phase 2)
 
+
   POC reference: _poc_rules-library/ai-rules-library/ai-rules-library/
+
   Design doc: docs/RULE-LIBRARY-DESIGN.md
+
+  '
 migration_origin:
   remapped_entities:
   - entity_type: decision
@@ -283,3 +414,5 @@ migration_origin:
   - entity_type: decision
     from: DEC-0005
     to: DEC-0034
+alias_id: ADR-L-0006
+alias_name: rule-library-sub-module-with-cooperative-signals

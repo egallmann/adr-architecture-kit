@@ -186,7 +186,7 @@ class EvidenceExpectation(BaseModel):
 class ADRFrontmatter(BaseModel):
     """Common frontmatter for all ADR types (STE-compliant, PRIME-1, PRIME-2)."""
     
-    schema_version: str = Field("1.0", pattern=r"^(1\.0|1\.2)$")
+    schema_version: str = Field("1.0", pattern=r"^(1\.0|1\.2|1\.3)$")
     adr_type: ADRType
     id: str = Field(..., pattern=r"^ADR-(L|V|P|PS|PC|D)-\d{4}$")
     title: str = Field(..., min_length=5, max_length=200)

@@ -34,6 +34,7 @@ from ..decorators import implements_adr
 from ..models.implementation_attribution import ImplementationAttributionEvidence
 from ..integrity import GeneratedArtifactStatus
 from ..migrators.canonical_id_normalizer import CanonicalIdNormalizer
+from ..migrators.identity_v13 import IdentityV13Migrator, IdentityMapDocument
 from ..migrators.topology_identity import TopologyIdentityMigrator
 from ..parser import ADRParser
 from ..repository import ArchitectureRepository
@@ -1251,9 +1252,7 @@ def repair_canonical_ids(
                 f"{remap.old_id} -> {remap.new_id}"
             )
         for ambiguity in plan.ambiguities:
-            relative = ambiguity.file_path.resolve().relative_to(
-                detected_scope.root.resolve()
-            )
+            relative = ambiguity.file_path.resolve().relative_to(detected_scope.root.resolve())
             click.echo(
                 f"Ambiguous reference: {relative.as_posix()}#"
                 f"{ambiguity.source_pointer} ({ambiguity.entity_id})",
@@ -1272,17 +1271,11 @@ def repair_canonical_ids(
             click.echo("No canonical ID collisions found. No changes made.")
             return
         if not apply_repairs:
-            click.echo(
-                f"Planned {len(plan.remaps)} canonical ID repairs; no files changed."
-            )
+            click.echo(f"Planned {len(plan.remaps)} canonical ID repairs; no files changed.")
             if plan.ambiguities:
-                click.echo(
-                    "Resolve ambiguous references before applying this plan.", err=True
-                )
+                click.echo("Resolve ambiguous references before applying this plan.", err=True)
             return
-        applied = normalizer.repair(
-            detected_scope, apply=True, resolution_map=resolution_map
-        )
+        applied = normalizer.repair(detected_scope, apply=True, resolution_map=resolution_map)
         click.echo(f"Applied {len(applied.remaps)} canonical ID repairs.")
         click.echo(
             f"Allocation ledger: "
@@ -1353,14 +1346,11 @@ def migrate_topology_ids(scope: Optional[Path], apply_migration: bool) -> None:
         for change in plan.changes:
             relative = change.file_path.resolve().relative_to(detected_scope.root.resolve())
             click.echo(
-                f"{relative.as_posix()}#{change.pointer}: "
-                f"{change.before!r} -> {change.after!r}"
+                f"{relative.as_posix()}#{change.pointer}: " f"{change.before!r} -> {change.after!r}"
             )
         if plan.diagnostics:
             for diagnostic in plan.diagnostics:
-                relative = diagnostic.file_path.resolve().relative_to(
-                    detected_scope.root.resolve()
-                )
+                relative = diagnostic.file_path.resolve().relative_to(detected_scope.root.resolve())
                 click.echo(
                     f"{diagnostic.code}: {relative.as_posix()}#"
                     f"{diagnostic.pointer}: {diagnostic.message}",
@@ -1375,14 +1365,107 @@ def migrate_topology_ids(scope: Optional[Path], apply_migration: bool) -> None:
             return
         applied = migrator.apply(detected_scope)
         suffix = "" if len(applied.changed_files) == 1 else "s"
-        click.echo(
-            f"Applied topology migration to {len(applied.changed_files)} file{suffix}."
-        )
+        click.echo(f"Applied topology migration to {len(applied.changed_files)} file{suffix}.")
     except click.exceptions.Exit:
         raise
     except Exception as exc:
         click.echo(f"Error: {exc}", err=True)
         raise click.exceptions.Exit(1) from exc
+
+
+@implements_adr("ADR-L-0019")
+@cli.command("migrate-identity-v13")
+@click.option(
+    "--scope",
+    type=click.Path(exists=True, file_okay=False, path_type=Path),
+    help="Explicit project scope (overrides auto-detection)",
+)
+@click.option(
+    "--plan-out",
+    type=click.Path(path_type=Path),
+    help="Write a complete candidate identity map (mint once after green preflight).",
+)
+@click.option(
+    "--identity-map",
+    "identity_map_path",
+    type=click.Path(exists=True, dir_okay=False, path_type=Path),
+    help="Sealed identity map consumed by --apply/--check.",
+)
+@click.option(
+    "--apply",
+    "apply_migration",
+    is_flag=True,
+    help="Atomically apply a sealed identity map (never remints).",
+)
+@click.option(
+    "--check",
+    "check_migration",
+    is_flag=True,
+    help="Verify sealed-map consistency/idempotency without reminting.",
+)
+@click.option(
+    "--recover",
+    "recover_journal",
+    type=click.Path(exists=True, file_okay=False, path_type=Path),
+    help="Recover an interrupted identity-migration journal.",
+)
+def migrate_identity_v13(
+    scope: Optional[Path],
+    plan_out: Optional[Path],
+    identity_map_path: Optional[Path],
+    apply_migration: bool,
+    check_migration: bool,
+    recover_journal: Optional[Path],
+) -> None:
+    """Plan, seal-consume, check, or recover v1.3 identity migration."""
+    try:
+        resolver = ProjectScopeResolver(explicit_scope=scope)
+        detected_scope = resolver.resolve()
+        migrator = IdentityV13Migrator()
+        if recover_journal is not None:
+            migrator.recover(recover_journal, detected_scope)
+            click.echo(f"Recovered interrupted journal: {recover_journal}")
+            return
+        if plan_out is not None:
+            result = migrator.plan(detected_scope)
+            if not result.ok:
+                for diagnostic in result.diagnostics:
+                    click.echo(f"{diagnostic.code}: {diagnostic.message}", err=True)
+                raise click.exceptions.Exit(1)
+            plan_out.parent.mkdir(parents=True, exist_ok=True)
+            plan_out.write_text(
+                yaml.safe_dump(result.identity_map.to_dict(), sort_keys=False, allow_unicode=True),
+                encoding="utf-8",
+            )
+            click.echo(
+                f"Wrote candidate identity map ({len(result.identity_map.entries)} entries) "
+                f"to {plan_out}"
+            )
+            return
+        if identity_map_path is None:
+            raise click.UsageError(
+                "Provide --plan-out, or --identity-map with --apply/--check, or --recover"
+            )
+        payload = yaml.safe_load(identity_map_path.read_text(encoding="utf-8"))
+        identity_map = IdentityMapDocument.from_dict(payload)
+        if apply_migration:
+            writes = migrator.apply(detected_scope, identity_map)
+            click.echo(f"Applied sealed identity map across {len(writes)} write(s)")
+            return
+        if check_migration:
+            errors = migrator.check(detected_scope, identity_map)
+            if errors:
+                for error in errors:
+                    click.echo(error, err=True)
+                raise click.exceptions.Exit(1)
+            click.echo("Identity migration check passed")
+            return
+        raise click.UsageError("--identity-map requires --apply or --check")
+    except click.exceptions.Exit:
+        raise
+    except Exception as e:
+        click.echo(f"Error: {e}", err=True)
+        sys.exit(1)
 
 
 @implements_adr("ADR-L-0002", "ADR-L-0013")
@@ -1708,22 +1791,72 @@ def entities_list(
         sys.exit(1)
 
 
-@implements_adr("ADR-L-0002", "ADR-L-0013")
+@implements_adr("ADR-L-0002", "ADR-L-0013", "ADR-L-0019")
 @entities_cli.command("get")
 @click.argument("entity_id")
+@click.option(
+    "--by",
+    "lookup_by",
+    type=click.Choice(["uuid", "alias-id", "alias-ref", "uri", "auto"]),
+    default="auto",
+    show_default=True,
+    help="Lookup mode (auto is the deprecated unique-alias compatibility path)",
+)
 @click.option(
     "--scope",
     type=click.Path(exists=True, file_okay=False, path_type=Path),
     help="Explicit project scope (overrides auto-detection)",
 )
-def entities_get(entity_id: str, scope: Optional[Path]):
-    """Get an entity by exact ID."""
+def entities_get(entity_id: str, lookup_by: str, scope: Optional[Path]) -> None:
+    """Get an entity by UUID, alias, URI, or auto compatibility lookup."""
     try:
         repository = _load_architecture_repository(scope)
-        entity = repository.find_entity(entity_id)
+        if lookup_by == "auto":
+            entity = repository.find_entity(entity_id)
+        elif lookup_by == "uuid":
+            entity = repository.find_entity_by_uuid(entity_id)
+        elif lookup_by == "alias-id":
+            entity = repository.find_entity_by_alias_id(entity_id)
+        elif lookup_by == "alias-ref":
+            entity = repository.find_entity_by_alias_ref(entity_id)
+        elif lookup_by == "uri":
+            entity = repository.resolve_uri(entity_id)
+        else:
+            raise ValueError(f"Unsupported lookup mode: {lookup_by}")
         if entity is None:
             raise ValueError(f"Entity not found: {entity_id}")
         click.echo(_dump_yaml(entity.model_dump(mode="json", exclude_none=True)))
+    except Exception as e:
+        click.echo(f"Error: {e}", err=True)
+        sys.exit(1)
+
+
+@implements_adr("ADR-L-0002", "ADR-L-0013", "ADR-L-0019")
+@entities_cli.command("aliases")
+@click.option(
+    "--scope",
+    type=click.Path(exists=True, file_okay=False, path_type=Path),
+    help="Explicit project scope (overrides auto-detection)",
+)
+def entities_aliases(scope: Optional[Path]) -> None:
+    """List deterministic alias inventory for model 2.0 entities."""
+    try:
+        repository = _load_architecture_repository(scope)
+        aliases = repository.list_aliases()
+        payload = {
+            "aliases": [
+                {
+                    "uuid": item.uuid,
+                    "alias_id": item.alias_id,
+                    "alias_name": item.alias_name,
+                    "alias_ref": item.alias_ref,
+                    "entity_type": item.entity_type,
+                    "uri": item.uri,
+                }
+                for item in aliases
+            ]
+        }
+        click.echo(_dump_yaml(payload))
     except Exception as e:
         click.echo(f"Error: {e}", err=True)
         sys.exit(1)
@@ -1751,6 +1884,7 @@ def entities_get(entity_id: str, scope: Optional[Path]):
             "governs",
             "implemented_by",
             "embodied_in",
+            "implements_logical",
             "supersedes",
             "superseded_by",
             "refines",
@@ -2107,7 +2241,7 @@ def audit_runtime(requirements: Path, pyproject: Path, fail_on_outdated: bool):
 def generate_system_overview(output: Path):
     """Generate the AI-first SYSTEM-OVERVIEW.md artifact."""
     try:
-        generator = SystemOverviewGenerator()
+        generator = SystemOverviewGenerator(repo_root=Path.cwd())
         generator.save(output)
         click.echo(f"Generated system overview: {output}")
     except Exception as e:
@@ -2115,7 +2249,22 @@ def generate_system_overview(output: Path):
         sys.exit(1)
 
 
-@implements_adr("ADR-L-0002", "ADR-L-0013")
+@implements_adr("ADR-L-0002", "ADR-L-0013", "ADR-L-0007")
+@cli.command("generate-adr-projection")
+@click.option(
+    "--scope",
+    type=click.Path(exists=True, file_okay=False, path_type=Path),
+    help="Explicit project scope (overrides auto-detection)",
+)
+@click.option(
+    "--recursive", is_flag=True, help="Generate ADR human projections for all scopes recursively"
+)
+def generate_adr_projection(scope: Optional[Path], recursive: bool):
+    """Generate ADR human projection markdown under adrs/adr-projection/."""
+    _generate_adr_projection_docs(scope=scope, recursive=recursive, label="ADR projection")
+
+
+@implements_adr("ADR-L-0002", "ADR-L-0013", "ADR-L-0007")
 @cli.command("generate-rendered-docs")
 @click.option(
     "--scope",
@@ -2123,10 +2272,14 @@ def generate_system_overview(output: Path):
     help="Explicit project scope (overrides auto-detection)",
 )
 @click.option(
-    "--recursive", is_flag=True, help="Generate rendered ADR markdown for all scopes recursively"
+    "--recursive", is_flag=True, help="Generate ADR human projections for all scopes recursively"
 )
 def generate_rendered_docs(scope: Optional[Path], recursive: bool):
-    """Generate rendered ADR markdown artifacts with integrity headers."""
+    """Compatibility alias for generate-adr-projection."""
+    _generate_adr_projection_docs(scope=scope, recursive=recursive, label="rendered docs")
+
+
+def _generate_adr_projection_docs(*, scope: Optional[Path], recursive: bool, label: str) -> None:
     try:
         resolver = ProjectScopeResolver(explicit_scope=scope)
         compiler = ArchitectureCompiler(scope_resolver=resolver)
@@ -2138,7 +2291,7 @@ def generate_rendered_docs(scope: Optional[Path], recursive: bool):
                 raise ValueError("Architecture compilation failed")
             total = 0
             for scoped in workspace_result.scope_results:
-                click.echo(f"Generating rendered docs for {scoped.scope.name}...")
+                click.echo(f"Generating {label} for {scoped.scope.name}...")
                 markdown_artifacts = sorted(
                     (
                         artifact
@@ -2150,10 +2303,10 @@ def generate_rendered_docs(scope: Optional[Path], recursive: bool):
                 for artifact in markdown_artifacts:
                     click.echo(f"  Generated: {scoped.scope.root / artifact.path}")
                 total += len(markdown_artifacts)
-            click.echo(f"\nGenerated {total} rendered ADR markdown artifact(s)")
+            click.echo(f"\nGenerated {total} ADR human projection artifact(s)")
         else:
             detected_scope = resolver.resolve()
-            click.echo(f"Generating rendered docs for {detected_scope.name}...")
+            click.echo(f"Generating {label} for {detected_scope.name}...")
             result = compiler.compile(
                 detected_scope,
                 CompilerConfig(emit={"markdown"}),
@@ -2166,7 +2319,7 @@ def generate_rendered_docs(scope: Optional[Path], recursive: bool):
             )
             for artifact in markdown_artifacts:
                 click.echo(f"  Generated: {detected_scope.root / artifact.path}")
-            click.echo(f"\nGenerated {len(markdown_artifacts)} rendered ADR markdown artifact(s)")
+            click.echo(f"\nGenerated {len(markdown_artifacts)} ADR human projection artifact(s)")
     except Exception as e:
         click.echo(f"Error: {e}", err=True)
         sys.exit(1)
@@ -2185,7 +2338,9 @@ def generate_rendered_docs(scope: Optional[Path], recursive: bool):
 def validate_system_overview(file_path: Path):
     """Validate that SYSTEM-OVERVIEW.md is generated and current."""
     try:
-        result = SystemOverviewValidator().validate_file(file_path)
+        result = SystemOverviewValidator(
+            generator=SystemOverviewGenerator(repo_root=Path.cwd())
+        ).validate_file(file_path)
         if result.errors:
             for error in result.errors:
                 click.echo(f"ERROR: {error}", err=True)
@@ -2297,7 +2452,7 @@ def attribution_check_cmd(scope: Optional[Path], evidence: Optional[Path], profi
 
         repo = ArchitectureRepository(project_root=scope_root)
         repo.load()
-        model = repo.get_model()
+        model = repo.get_model_v2() if repo.model_version == "2.0" else repo.get_model()
 
         typed_profile = cast(ContractProfile, profile)
         result = validate_implementation_attribution_evidence(
@@ -2360,8 +2515,17 @@ def attribution_coverage_cmd(scope: Optional[Path], evidence: Optional[Path]):
 
         repo = ArchitectureRepository(project_root=scope_root)
         repo.load()
-        model = repo.get_model()
-        catalog = sorted(model.adr_status_map().keys())
+        if repo.model_version == "2.0":
+            model_v2 = repo.get_model_v2()
+            catalog = sorted(
+                {
+                    entity.alias_id
+                    for entity in model_v2.entities
+                    if entity.entity_type == "adr" and entity.alias_id
+                }
+            )
+        else:
+            catalog = sorted(repo.get_model().adr_status_map().keys())
         unattributed_in_corpus = sorted(set(catalog) - set(cited))
 
         payload = {
@@ -2466,6 +2630,132 @@ def attribution_generate_shim(language: str, output: Optional[Path]):
             click.echo(f"Wrote {language} shim: {output.resolve()}")
     except Exception as e:
         click.echo(f"Error: {e}", err=True)
+        sys.exit(1)
+
+
+@cli.group("promote")
+def promote_group() -> None:
+    """Design Journal Promotion Contract operations (thin adapter over adr_kit.api)."""
+
+
+@promote_group.command("prepare")
+@click.option(
+    "--project-root",
+    type=click.Path(exists=True, file_okay=False, path_type=Path),
+    default=".",
+    show_default=True,
+)
+@click.option(
+    "--contract",
+    "promotion_contract_path",
+    type=click.Path(exists=True, dir_okay=False, path_type=Path),
+    required=True,
+)
+@click.option(
+    "--output",
+    "prepared_contract_output_path",
+    type=click.Path(dir_okay=False, path_type=Path),
+    default=None,
+)
+def promote_prepare(
+    project_root: Path,
+    promotion_contract_path: Path,
+    prepared_contract_output_path: Optional[Path],
+) -> None:
+    """Prepare a Promotion Contract without mutating canonical authority."""
+
+    from ..api import PromotionPrepareRequest, prepare_promotion
+
+    result = prepare_promotion(
+        PromotionPrepareRequest(
+            project_root=project_root,
+            promotion_contract_path=promotion_contract_path,
+            prepared_contract_output_path=prepared_contract_output_path,
+        )
+    )
+    click.echo(
+        f"prepared={result.success} mechanical_ready={result.mechanical_promotion_ready} "
+        f"baseline={result.baseline.equivalent} blockers={len(result.blockers)} "
+        f"fingerprint={result.locked_intent_fingerprint}"
+    )
+    if result.prepared_contract_path:
+        click.echo(f"prepared_contract_path={result.prepared_contract_path}")
+    if not result.success:
+        sys.exit(1)
+
+
+@promote_group.command("check")
+@click.option(
+    "--project-root",
+    type=click.Path(exists=True, file_okay=False, path_type=Path),
+    default=".",
+    show_default=True,
+)
+@click.option(
+    "--contract",
+    "promotion_contract_path",
+    type=click.Path(exists=True, dir_okay=False, path_type=Path),
+    required=True,
+)
+def promote_check(project_root: Path, promotion_contract_path: Path) -> None:
+    """Check promotion readiness without authority writes."""
+
+    from ..api import PromotionCheckRequest, check_promotion
+
+    result = check_promotion(
+        PromotionCheckRequest(
+            project_root=project_root,
+            promotion_contract_path=promotion_contract_path,
+        )
+    )
+    click.echo(
+        f"ok={result.success} mechanical_ready={result.mechanical_promotion_ready} "
+        f"human_lock={result.human_lock_present} blockers={len(result.blockers)}"
+    )
+    if not result.success:
+        sys.exit(1)
+
+
+@promote_group.command("apply")
+@click.option(
+    "--project-root",
+    type=click.Path(exists=True, file_okay=False, path_type=Path),
+    default=".",
+    show_default=True,
+)
+@click.option(
+    "--contract",
+    "promotion_contract_path",
+    type=click.Path(exists=True, dir_okay=False, path_type=Path),
+    required=True,
+)
+@click.option("--commit", is_flag=True, help="Commit authority mutations (requires human_lock)")
+@click.option("--timestamp", default=None, help="RFC3339 UTC timestamp ending in Z")
+def promote_apply(
+    project_root: Path,
+    promotion_contract_path: Path,
+    commit: bool,
+    timestamp: Optional[str],
+) -> None:
+    """Dry-run or commit a locked prepared Promotion Contract."""
+
+    from ..api import PromotionApplyRequest, apply_promotion
+
+    result = apply_promotion(
+        PromotionApplyRequest(
+            project_root=project_root,
+            promotion_contract_path=promotion_contract_path,
+            commit=commit,
+            timestamp=timestamp,
+        )
+    )
+    click.echo(
+        f"success={result.success} state={result.semantic_state} "
+        f"authority_committed={result.authority_committed} "
+        f"evidence={result.apply_execution_evidence_appended} "
+        f"regen={result.regeneration_completed} validation={result.validation_success}"
+    )
+    if not result.success:
         sys.exit(1)
 
 

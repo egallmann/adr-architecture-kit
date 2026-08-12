@@ -37,11 +37,16 @@ PHASE1_FILES = (
     "src/adr_kit/api/_errors.py",
     "src/adr_kit/api/_operations.py",
     "src/adr_kit/repository/_normalized_bundle.py",
+    "src/adr_kit/repository/provider_registry.py",
+    "src/adr_kit/migrators/identity_v13.py",
+    "src/adr_kit/integrity/transaction.py",
     "scripts/test_sdk_consumer.py",
     "tests/test_public_sdk_contract.py",
     "tests/test_public_sdk_operations.py",
     "tests/test_cli_application_delegation.py",
     "tests/test_version_authority.py",
+    "tests/test_v13_provider_resolution.py",
+    "tests/test_identity_v13_migrator.py",
 )
 PHASE0_MYPY_ARGS = (
     "-m",

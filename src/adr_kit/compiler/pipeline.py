@@ -4,9 +4,10 @@ from __future__ import annotations
 
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import Dict, List, Protocol
+from typing import Any, Dict, List, Protocol, cast
 
 from ..decorators import implements_adr
+from ..identity import UUIDV7_PATTERN
 from ..models import (
     CanonicalSource,
     DiscoveryProvenance,
@@ -20,6 +21,11 @@ from ..scope import ProjectScope
 from .backend.projection import project_entity, project_relationship, project_unresolved
 from .config import CompilerConfig
 from .diagnostics import DiagnosticLog
+from .frontend.adr_access import (
+    is_physical_adr,
+    is_physical_component_adr,
+    is_physical_system_adr,
+)
 from .frontend.parser import CachedADRParser
 from .frontend.support import (
     GENERATOR_ID,
@@ -42,6 +48,10 @@ from .passes.resolve_invariant_canonical import resolve_invariant_canonical
 from .passes.validate_bundle import validate_bundle
 
 
+class MixedSchemaVersionError(ValueError):
+    """Raised when a scope mixes v1.3 and legacy schema versions."""
+
+
 @dataclass
 class FrontendBuildResult:
     """Output of a frontend pipeline run."""
@@ -49,6 +59,7 @@ class FrontendBuildResult:
     model: ArchModel
     coverage: SourceCoverageSummary
     namespace: str
+    model_version: str = "1.1"
 
 
 @dataclass
@@ -70,6 +81,8 @@ class CompilerPipelineState:
             standalone_invariants=0,
         )
     )
+    detected_schema_versions: set[str] = field(default_factory=set)
+    model_version: str = "1.1"
     logical_files: list[Path] = field(default_factory=list)
     physical_files: list[Path] = field(default_factory=list)
     invariant_files: list[Path] = field(default_factory=list)
@@ -79,6 +92,7 @@ class CompilerPipelineState:
     invariant_mentions: Dict[str, List[tuple[dict, str, str]]] = field(default_factory=dict)
     system_ids: Dict[str, str] = field(default_factory=dict)
     reference_source_refs: Dict[str, list[SourceRef]] = field(default_factory=dict)
+    adr_uuid_map: Dict[str, str] = field(default_factory=dict)
 
     def initialize_model(self) -> None:
         self.model.metadata.scope_root = str(self.scope.root)
@@ -174,26 +188,10 @@ class CompilerPipelineState:
         )
 
     def collect_standalone_invariant_mentions(self) -> None:
-        for invariant, path in self.standalone_invariants:
-            artifact = source_path(self.scope, path)
-            self.invariant_mentions.setdefault(invariant.id, []).append(
-                (
-                    {
-                        "name": invariant.id,
-                        "summary": summarize_text(invariant.statement),
-                        "metadata": {
-                            "defined_in": invariant.defined_in,
-                            "scope": invariant.scope,
-                            "statement": invariant.statement,
-                            "enforcement_level": invariant.enforcement_level.value,
-                            "declaration_mode": invariant.declaration_mode or "canonical",
-                            "upheld_by_decisions": list(invariant.upheld_by_decisions),
-                            "enforced_by": list(invariant.enforced_by),
-                        },
-                    },
-                    artifact,
-                    invariant.id,
-                )
+        """Standalone invariant definition discovery is retired."""
+        if self.standalone_invariants:
+            raise ValueError(
+                "STANDALONE_INVARIANT_AUTHORITY_RETIRED: standalone invariant definitions are not admitted"
             )
 
     def finalize_source_refs(self) -> None:
@@ -256,32 +254,46 @@ class ADRParsePass:
         state.physical_adrs = [
             (state.parser.parse_adr(path), path.resolve()) for path in physical_files
         ]
-        state.standalone_invariants = [
-            (state.parser.parse_invariant(path), path.resolve()) for path in invariant_files
-        ]
+        state.standalone_invariants = []
 
         for artifact, path in [
             *state.logical_adrs,
             *state.physical_adrs,
-            *state.standalone_invariants,
         ]:
             state.model.corpus.add(path, artifact)
+            sv = getattr(artifact, "schema_version", "1.0")
+            state.detected_schema_versions.add(sv)
 
         state.coverage = SourceCoverageSummary(
             logical_adrs=len(state.logical_adrs),
-            physical_adrs=sum(
-                1 for adr, _ in state.physical_adrs if adr.__class__.__name__ == "PhysicalADR"
-            ),
+            physical_adrs=sum(1 for adr, _ in state.physical_adrs if is_physical_adr(adr)),
             physical_system_adrs=sum(
-                1 for adr, _ in state.physical_adrs if adr.__class__.__name__ == "PhysicalSystemADR"
+                1 for adr, _ in state.physical_adrs if is_physical_system_adr(adr)
             ),
             physical_component_adrs=sum(
-                1
-                for adr, _ in state.physical_adrs
-                if adr.__class__.__name__ == "PhysicalComponentADR"
+                1 for adr, _ in state.physical_adrs if is_physical_component_adr(adr)
             ),
-            standalone_invariants=len(state.standalone_invariants),
+            standalone_invariants=0,
         )
+
+
+@dataclass(frozen=True)
+class VersionDetectionPass:
+    name: str = "version_detection"
+
+    def run(self, state: CompilerPipelineState) -> None:
+        versions = state.detected_schema_versions
+        has_v13 = "1.3" in versions
+        has_legacy = bool(versions - {"1.3"})
+
+        if has_v13 and has_legacy:
+            raise MixedSchemaVersionError(
+                f"Scope mixes v1.3 and legacy ADR schema versions "
+                f"({', '.join(sorted(versions))}). "
+                f"All ADRs must use the same schema line for compilation."
+            )
+
+        state.model_version = "2.0" if has_v13 and not has_legacy else "1.1"
 
 
 @dataclass(frozen=True)
@@ -314,6 +326,29 @@ class LogicalEntityExtractionPass:
             for inv_id, mentions in logical_extraction.invariant_mentions.items()
         }
         for extracted in logical_extraction.entities:
+            if state.model_version == "2.0":
+                alias_id = extracted.entity.id if not UUIDV7_PATTERN.match(extracted.entity.id) else None
+                if alias_id is None:
+                    for adr, _ in state.logical_adrs:
+                        if getattr(adr, "id", None) == extracted.entity.id:
+                            alias_id = getattr(adr, "alias_id", extracted.entity.id)
+                            alias_name = getattr(adr, "alias_name", None)
+                            if alias_name:
+                                extracted.entity.metadata["alias_name"] = alias_name
+                            break
+                        for collection_name in ("capabilities", "decisions", "invariants", "architectural_boundaries", "interaction_contracts"):
+                            for item in getattr(adr, collection_name, []):
+                                if getattr(item, "id", None) == extracted.entity.id:
+                                    alias_id = getattr(item, "alias_id", extracted.entity.id)
+                                    alias_name = getattr(item, "alias_name", None)
+                                    if alias_name:
+                                        extracted.entity.metadata["alias_name"] = alias_name
+                                    break
+                            if alias_id and alias_id != extracted.entity.id:
+                                break
+                if alias_id:
+                    extracted.entity.metadata["alias_id"] = alias_id
+                    state.adr_uuid_map[alias_id] = extracted.entity.id
             state.add_entity(
                 extracted.entity, allow_reference_merge=extracted.allow_reference_merge
             )
@@ -347,6 +382,11 @@ class InvariantExtractionPass:
             complete=make_completeness,
         )
         for extracted in invariant_resolution.entities:
+            if state.model_version == "2.0":
+                metadata = extracted.entity.metadata
+                alias_id = metadata.get("alias_id") if isinstance(metadata, dict) else None
+                if isinstance(alias_id, str) and alias_id:
+                    state.adr_uuid_map[alias_id] = extracted.entity.id
             state.add_entity(
                 extracted.entity, allow_reference_merge=extracted.allow_reference_merge
             )
@@ -360,6 +400,7 @@ class PhysicalEntityExtractionPass:
     name: str = "physical_entity_extraction"
 
     def run(self, state: CompilerPipelineState) -> None:
+        # extract_physical_entities prefers authored v1.3 system.id; fallback mints SYS-*.
         physical_extraction = extract_physical_entities(
             state.physical_adrs,
             source_path=lambda path: source_path(state.scope, path),
@@ -370,10 +411,50 @@ class PhysicalEntityExtractionPass:
             system_entity_id=system_entity_id,
         )
         for extracted in physical_extraction.entities:
+            if state.model_version == "2.0":
+                alias_id = self._extract_alias_id(extracted.entity)
+                if alias_id:
+                    extracted.entity.metadata["alias_id"] = alias_id
+                    alias_name = self._extract_alias_name(extracted.entity)
+                    if alias_name:
+                        extracted.entity.metadata["alias_name"] = alias_name
+                    state.adr_uuid_map[alias_id] = extracted.entity.id
             state.add_entity(
                 extracted.entity, allow_reference_merge=extracted.allow_reference_merge
             )
         state.system_ids.update(physical_extraction.system_ids)
+
+        if state.model_version == "2.0":
+            for adr, _ in state.physical_adrs:
+                if is_physical_system_adr(adr):
+                    alias_id = getattr(adr, "alias_id", None)
+                    if isinstance(alias_id, str) and alias_id:
+                        state.adr_uuid_map[alias_id] = adr.id
+                    authored = getattr(adr, "system", None)
+                    if authored is not None:
+                        sys_alias = getattr(authored, "alias_id", None)
+                        sys_id = getattr(authored, "id", None)
+                        if isinstance(sys_alias, str) and isinstance(sys_id, str):
+                            state.adr_uuid_map[sys_alias] = sys_id
+
+    @staticmethod
+    def _extract_alias_id(entity: Any) -> str | None:
+        metadata = getattr(entity, "metadata", None)
+        if isinstance(metadata, dict) and "alias_id" in metadata:
+            value = metadata["alias_id"]
+            return value if isinstance(value, str) else None
+        entity_id = getattr(entity, "id", "")
+        if isinstance(entity_id, str) and not UUIDV7_PATTERN.match(entity_id):
+            return entity_id
+        return None
+
+    @staticmethod
+    def _extract_alias_name(entity: Any) -> str | None:
+        metadata = getattr(entity, "metadata", None)
+        if isinstance(metadata, dict) and "alias_name" in metadata:
+            value = metadata["alias_name"]
+            return value if isinstance(value, str) else None
+        return None
 
 
 @dataclass(frozen=True)
@@ -394,6 +475,7 @@ class RelationshipInferencePass:
             relationship_id=state.relationship_id,
         )
         for item in result.relationships:
+            owner_id = self._resolve_owner(state, item) if state.model_version == "2.0" else None
             state.model.relationships.add(
                 IRRelationship(
                     relationship_type=item.relationship_type,
@@ -406,6 +488,7 @@ class RelationshipInferencePass:
                     metadata=dict(item.metadata),
                     assertion_id=item.assertion_id,
                     source_pointer=item.source_pointer,
+                    source_owner_id=owner_id,
                 )
             )
             if item.metadata.get("target_scope") in {"external", "expectation"}:
@@ -418,6 +501,17 @@ class RelationshipInferencePass:
                 summary_list.append(item.to_entity_id)
                 summary_list.sort()
         state._generator_gaps = result.generator_gaps
+
+    @staticmethod
+    def _resolve_owner(state: CompilerPipelineState, item: Any) -> str | None:
+        ref = str(getattr(item, "canonical_source_ref", ""))
+        adr_ref = ref.split("#")[0] if "#" in ref else ref
+        if UUIDV7_PATTERN.match(adr_ref):
+            return adr_ref
+        entity = state.model.entities.get(adr_ref)
+        if entity is not None and UUIDV7_PATTERN.match(entity.id):
+            return entity.id
+        return state.adr_uuid_map.get(adr_ref)
 
 
 @dataclass(frozen=True)
@@ -487,14 +581,17 @@ class CompilerPipeline:
             model=state.model,
             coverage=state.coverage,
             namespace=state.namespace,
+            model_version=state.model_version,
         )
 
 
 def build_default_frontend_pipeline() -> CompilerPipeline:
     """Build the canonical discovery pipeline used by the compiler frontend."""
-    return CompilerPipeline(
-        passes=[
+    passes = cast(
+        list[CompilerPipelinePass],
+        [
             ADRParsePass(),
+            VersionDetectionPass(),
             ADRNormalizationPass(),
             LogicalEntityExtractionPass(),
             InvariantExtractionPass(),
@@ -502,8 +599,9 @@ def build_default_frontend_pipeline() -> CompilerPipeline:
             RelationshipInferencePass(),
             UnresolvedDetectionPass(),
             ValidationPass(),
-        ]
+        ],
     )
+    return CompilerPipeline(passes=passes)
 
 
 @implements_adr("ADR-L-0009", "ADR-L-0013")

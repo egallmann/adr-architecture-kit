@@ -4,20 +4,21 @@ from __future__ import annotations
 
 from hashlib import sha256
 from pathlib import Path
-from typing import Literal, cast
+from typing import Literal, Mapping, cast
 
 from .. import __version__
 from ..compiler import ArchitectureCompiler, CompilationMode, CompilerConfig, DiagnosticLevel
 from ..compiler.driver import CompilationResult as InternalCompilationResult
 from ..compiler.driver import WorkspaceCompilationResult
 from ..decorators import enforces_invariant, implements_adr
-from ..repository import ArchitectureRegistryError, ArchitectureRepository
+from ..repository import ArchitectureRegistryError, ArchitectureRepository, ProviderRegistry
 from ..repository._normalized_bundle import load_normalized_bundle_from_bytes
 from ..scope import ProjectScope, ProjectScopeResolver
 from ..validators import ADRValidator, ValidationResult as InternalValidationResult
 from ._contracts import (
     API_CONTRACT_VERSION,
     ARTIFACT_GROUPS,
+    PROMOTION_CONTRACT_VERSIONS,
     VALIDATION_MODES,
     ArtifactDescriptor,
     CapabilityManifest,
@@ -28,7 +29,15 @@ from ._contracts import (
     ValidationResult,
     _normalize_project_root,
 )
-from ._errors import OperationError, RepositoryError
+from ._errors import InvalidRequestError, OperationError, RepositoryError
+from ._promotion_contracts import (
+    PromotionApplyRequest,
+    PromotionApplyResult,
+    PromotionCheckRequest,
+    PromotionCheckResult,
+    PromotionPrepareRequest,
+    PromotionPrepareResult,
+)
 
 Severity = Literal["info", "warning", "error"]
 ValidationFileResults = dict[str, InternalValidationResult]
@@ -87,12 +96,14 @@ def _compiler_diagnostic(project_root: Path, item: object) -> Diagnostic:
 def _artifact_group(relative_path: str) -> str:
     if relative_path == "adrs/manifest.yaml":
         return "manifest"
-    if relative_path.startswith("adrs/rendered/"):
+    if relative_path.startswith("adrs/rendered/") or relative_path.startswith(
+        "adrs/adr-projection/"
+    ):
         return "markdown"
     return "registries"
 
 
-def _artifact_id(relative_path: str) -> str:
+def _artifact_id(relative_path: str, *, logical_id: str | None = None) -> str:
     identities = {
         "adrs/manifest.yaml": "manifest",
         "adrs/index/architecture-index.yaml": "architecture-index",
@@ -108,6 +119,12 @@ def _artifact_id(relative_path: str) -> str:
     }
     if relative_path in identities:
         return identities[relative_path]
+    if relative_path.startswith("adrs/adr-projection/") and relative_path.endswith(".md"):
+        if not logical_id:
+            raise OperationError(
+                f"Markdown projection artifact missing logical_id for path: {relative_path}"
+            )
+        return f"rendered-adr:{logical_id}"
     if relative_path.startswith("adrs/rendered/") and relative_path.endswith(".md"):
         return f"rendered-adr:{Path(relative_path).stem}"
     raise OperationError(f"Unsupported emitted artifact path: {relative_path}")
@@ -180,22 +197,60 @@ def compile_for_cli(
 def capabilities() -> CapabilityManifest:
     """Return deterministic local SDK capability metadata."""
 
+    from ..promotion.service import PROMOTION_OPERATIONS_ADVERTISED
+
+    operations = [
+        "capabilities",
+        "validate_architecture",
+        "compile_architecture",
+        "open_repository",
+        "open_provider_registry",
+    ]
+    if PROMOTION_OPERATIONS_ADVERTISED:
+        operations.extend(["prepare_promotion", "check_promotion", "apply_promotion"])
     return CapabilityManifest(
         package_version=__version__,
         api_contract_version=API_CONTRACT_VERSION,
-        operations=(
-            "capabilities",
-            "validate_architecture",
-            "compile_architecture",
-            "open_repository",
-        ),
+        operations=tuple(operations),
+        supported_promotion_contract_versions=PROMOTION_CONTRACT_VERSIONS,
         validation_modes=VALIDATION_MODES,
         artifact_groups=ARTIFACT_GROUPS,
-        supported_adr_schema_versions=("1.0", "1.1", "1.2"),
+        supported_adr_schema_versions=("1.0", "1.1", "1.2", "1.3"),
         stable_adr_schema_versions=("1.0",),
-        provisional_adr_schema_versions=("1.1", "1.2"),
+        provisional_adr_schema_versions=("1.1", "1.2", "1.3"),
         normalized_model_schema_version="1.1",
+        supported_normalized_model_schema_versions=("1.1", "2.0"),
     )
+
+
+def prepare_promotion(request: PromotionPrepareRequest) -> PromotionPrepareResult:
+    """Prepare a Promotion Contract into bound post-images without authority writes."""
+
+    if not isinstance(request, PromotionPrepareRequest):
+        raise TypeError("request must be a PromotionPrepareRequest")
+    from ..promotion.service import prepare_promotion as _prepare
+
+    return _prepare(request)
+
+
+def check_promotion(request: PromotionCheckRequest) -> PromotionCheckResult:
+    """Re-evaluate promotion readiness without authority writes."""
+
+    if not isinstance(request, PromotionCheckRequest):
+        raise TypeError("request must be a PromotionCheckRequest")
+    from ..promotion.service import check_promotion as _check
+
+    return _check(request)
+
+
+def apply_promotion(request: PromotionApplyRequest) -> PromotionApplyResult:
+    """Dry-run or commit a locked prepared Promotion Contract."""
+
+    if not isinstance(request, PromotionApplyRequest):
+        raise TypeError("request must be a PromotionApplyRequest")
+    from ..promotion.service import apply_promotion as _apply
+
+    return _apply(request)
 
 
 @implements_adr("ADR-L-0013", "ADR-PC-0002")
@@ -279,7 +334,10 @@ def compile_architecture(request: CompilationRequest) -> CompilationResult:
             sorted(
                 (
                     ArtifactDescriptor(
-                        artifact_id=_artifact_id(item.path.as_posix()),
+                        artifact_id=_artifact_id(
+                            item.path.as_posix(),
+                            logical_id=getattr(item, "logical_id", None),
+                        ),
                         group=_artifact_group(item.path.as_posix()),
                         kind=item.kind,
                         relative_path=item.path.as_posix(),
@@ -337,3 +395,22 @@ def open_repository(project_root: str | Path) -> ArchitectureRepository:
         return repository
     except ArchitectureRegistryError as exc:
         raise RepositoryError("Architecture repository could not be opened") from exc
+
+
+@implements_adr("ADR-L-0019", "ADR-L-0012")
+def open_provider_registry(
+    workspace_roots: Mapping[str, str | Path],
+) -> ProviderRegistry:
+    """Open a read-only provider registry keyed by workspace routing identity."""
+
+    if not isinstance(workspace_roots, Mapping) or not workspace_roots:
+        raise InvalidRequestError("workspace_roots must be a non-empty mapping")
+    normalized: dict[str, Path] = {}
+    for key, value in workspace_roots.items():
+        if not isinstance(key, str) or not key:
+            raise InvalidRequestError("workspace routing keys must be non-empty strings")
+        normalized[key] = _normalize_project_root(value)
+    try:
+        return ProviderRegistry.from_workspace_roots(normalized)
+    except ArchitectureRegistryError as exc:
+        raise RepositoryError("Provider registry could not be opened") from exc

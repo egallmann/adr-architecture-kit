@@ -431,3 +431,9 @@ entries:
   file_path: adrs/logical/ADR-L-0005-adr-to-prompt-translation.yaml
   from: INV-0032
   to: INV-0051
+- entity_type: invariant
+  adr_id: ADR-L-0019
+  file_path: adrs/logical/ADR-L-0019-canonical-entity-identity.yaml
+  source_pointer: /invariants/0/id
+  from: INV-0008
+  to: INV-0094

@@ -13,7 +13,7 @@ conform to the contract shape, not that the contract shape itself is correct.
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import Literal
+from typing import Any, Literal, Protocol
 
 from adr_kit.decorators import implements_adr
 from adr_kit.models.architecture_discovery import (
@@ -24,6 +24,11 @@ from adr_kit.models.architecture_discovery import (
     UnresolvedRegistry,
 )
 from adr_kit.models.remediation_ledger import RemediationLedger
+from adr_kit.models.v2_0 import NormalizedEntityRegistryV2, NormalizedEntityV2
+
+
+class _EntityRegistryLike(Protocol):
+    entities: list[Any]
 
 ContractProfile = Literal["greenfield", "brownfield", "migration"]
 ContractValidationOutcome = Literal["compliant", "sentinel_compliant", "non_compliant"]
@@ -98,9 +103,9 @@ class ContractValidationError(ValueError):
 @implements_adr("ADR-L-0010", "ADR-L-0011")
 def validate_adr_contract_bundle(
     architecture_index: ArchitectureIndex,
-    entity_registry: NormalizedEntityRegistry,
-    relationship_registry: RelationshipRegistry,
-    unresolved_registry: UnresolvedRegistry,
+    entity_registry: NormalizedEntityRegistry | NormalizedEntityRegistryV2 | _EntityRegistryLike,
+    relationship_registry: RelationshipRegistry | Any,
+    unresolved_registry: UnresolvedRegistry | Any,
     *,
     profile: ContractProfile = "greenfield",
     remediation_ledger: RemediationLedger | None = None,
@@ -163,7 +168,10 @@ def validate_adr_contract_bundle(
 validate_kernel_contract_bundle = validate_adr_contract_bundle
 
 
-def _validate_entity_metadata(entity: NormalizedEntity, index: int) -> list[ContractValidationIssue]:
+def _validate_entity_metadata(
+    entity: NormalizedEntity | NormalizedEntityV2,
+    index: int,
+) -> list[ContractValidationIssue]:
     required = REQUIRED_METADATA_KEYS.get(entity.entity_type, set())
     metadata_keys = set(entity.metadata)
     missing = sorted(required - metadata_keys)
@@ -177,7 +185,7 @@ def _validate_entity_metadata(entity: NormalizedEntity, index: int) -> list[Cont
 
 
 def _validate_entity_completeness(
-    entity: NormalizedEntity,
+    entity: NormalizedEntity | NormalizedEntityV2,
     index: int,
     *,
     profile: ContractProfile,
@@ -201,7 +209,7 @@ def _validate_entity_completeness(
 
 
 def _validate_entity_sentinels(
-    entity: NormalizedEntity,
+    entity: NormalizedEntity | NormalizedEntityV2,
     index: int,
     *,
     profile: ContractProfile,

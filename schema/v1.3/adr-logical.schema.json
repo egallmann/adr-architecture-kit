@@ -1,0 +1,284 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://adr-kit.ste.systems/schema/v1.3/adr-logical.schema.json",
+  "title": "Logical ADR Schema (v1.3)",
+  "description": "Schema for Logical ADRs — v1.3 canonical entity identity model",
+
+  "type": "object",
+  "allOf": [
+    {"$ref": "adr-common.schema.json"},
+    {
+      "properties": {
+        "adr_type": { "const": "logical" }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "alias_id": { "$ref": "types.schema.json#/definitions/adr_id_logical" }
+        }
+      },
+      "then": {
+        "required": ["context", "decisions"]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "alias_id": { "$ref": "types.schema.json#/definitions/adr_id_vision" }
+        }
+      },
+      "then": {
+        "required": ["context", "vision_category"],
+        "properties": {
+          "vision_category": { "const": true }
+        }
+      }
+    }
+  ],
+
+  "properties": {
+    "context": {
+      "$ref": "types.schema.json#/definitions/markdown_text"
+    },
+
+    "vision_category": {
+      "type": "boolean"
+    },
+
+    "promotable_to_logical": {
+      "type": "boolean"
+    },
+
+    "capabilities": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "allOf": [{"$ref": "adr-common.schema.json#/definitions/identity_envelope"}],
+        "required": ["id", "alias_id", "alias_name", "name", "description"],
+        "properties": {
+          "id": { "$ref": "types.schema.json#/definitions/uuid_v7" },
+          "alias_id": { "$ref": "types.schema.json#/definitions/entity_id", "pattern": "^CAP-\\d{4}$" },
+          "alias_name": { "$ref": "types.schema.json#/definitions/alias_name" },
+          "name": { "type": "string" },
+          "description": { "$ref": "types.schema.json#/definitions/markdown_text" },
+          "implemented_by_components": {
+            "type": "array",
+            "items": { "type": "string" }
+          },
+          "enabled_by_decisions": {
+            "type": "array",
+            "items": { "$ref": "types.schema.json#/definitions/uuid_v7" }
+          }
+        }
+      }
+    },
+
+    "architectural_boundaries": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "allOf": [{"$ref": "adr-common.schema.json#/definitions/identity_envelope"}],
+        "required": ["id", "alias_id", "alias_name", "name", "description", "rationale"],
+        "properties": {
+          "id": { "$ref": "types.schema.json#/definitions/uuid_v7" },
+          "alias_id": { "$ref": "types.schema.json#/definitions/entity_id", "pattern": "^BOUND-\\d{4}$" },
+          "alias_name": { "$ref": "types.schema.json#/definitions/alias_name" },
+          "name": { "type": "string" },
+          "description": { "$ref": "types.schema.json#/definitions/markdown_text" },
+          "rationale": { "$ref": "types.schema.json#/definitions/markdown_text" }
+        }
+      }
+    },
+
+    "interaction_contracts": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "allOf": [{"$ref": "adr-common.schema.json#/definitions/identity_envelope"}],
+        "required": ["id", "alias_id", "alias_name", "parties", "protocol", "guarantees"],
+        "properties": {
+          "id": { "$ref": "types.schema.json#/definitions/uuid_v7" },
+          "alias_id": { "$ref": "types.schema.json#/definitions/entity_id", "pattern": "^CONTRACT-\\d{4}$" },
+          "alias_name": { "$ref": "types.schema.json#/definitions/alias_name" },
+          "parties": {
+            "type": "array",
+            "items": { "type": "string" },
+            "minItems": 2
+          },
+          "protocol": { "type": "string" },
+          "guarantees": { "$ref": "types.schema.json#/definitions/markdown_text" }
+        }
+      }
+    },
+
+    "constraints": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "type", "description", "rationale"],
+        "properties": {
+          "id": { "$ref": "types.schema.json#/definitions/entity_id", "pattern": "^CONST-\\d{4}$" },
+          "type": {
+            "type": "string",
+            "enum": ["technical", "business", "regulatory", "performance", "security"]
+          },
+          "description": { "$ref": "types.schema.json#/definitions/markdown_text" },
+          "rationale": { "$ref": "types.schema.json#/definitions/markdown_text" }
+        }
+      }
+    },
+
+    "invariants": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "allOf": [{"$ref": "adr-common.schema.json#/definitions/identity_envelope"}],
+        "required": ["id", "alias_id", "alias_name", "statement", "scope", "enforcement_level", "enforcement_mechanism", "verification_method", "rationale"],
+        "properties": {
+          "id": { "$ref": "types.schema.json#/definitions/uuid_v7" },
+          "alias_id": { "$ref": "types.schema.json#/definitions/invariant_id" },
+          "alias_name": { "$ref": "types.schema.json#/definitions/alias_name" },
+          "statement": { "type": "string" },
+          "scope": { "type": "string" },
+          "enforcement_level": { "$ref": "types.schema.json#/definitions/enforcement_level" },
+          "enforcement_mechanism": {
+            "type": "string",
+            "enum": ["design", "runtime", "test", "policy"]
+          },
+          "verification_method": {
+            "type": "string",
+            "enum": ["automated", "manual", "audit"]
+          },
+          "rationale": { "$ref": "types.schema.json#/definitions/markdown_text" },
+          "declaration_mode": {
+            "type": "string",
+            "enum": ["canonical", "local", "reference"]
+          },
+          "upheld_by_decisions": {
+            "type": "array",
+            "items": { "$ref": "types.schema.json#/definitions/uuid_v7" }
+          },
+          "policy_reference": { "type": "string" },
+          "compliance_frameworks": {
+            "type": "array",
+            "items": { "type": "string" }
+          },
+          "exceptions": {
+            "type": "array",
+            "items": { "type": "string" }
+          },
+          "supersedes": {
+            "type": "array",
+            "items": { "$ref": "types.schema.json#/definitions/uuid_v7" }
+          }
+        }
+      }
+    },
+
+    "non_functional_requirements": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "category", "requirement", "acceptance_criteria"],
+        "properties": {
+          "id": { "$ref": "types.schema.json#/definitions/entity_id", "pattern": "^NFR-\\d{4}$" },
+          "category": {
+            "type": "string",
+            "enum": ["performance", "security", "scalability", "reliability", "maintainability", "usability"]
+          },
+          "requirement": { "$ref": "types.schema.json#/definitions/markdown_text" },
+          "acceptance_criteria": { "$ref": "types.schema.json#/definitions/markdown_text" }
+        }
+      }
+    },
+
+    "decisions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "allOf": [{"$ref": "adr-common.schema.json#/definitions/identity_envelope"}],
+        "required": ["id", "alias_id", "alias_name", "summary", "rationale"],
+        "properties": {
+          "id": { "$ref": "types.schema.json#/definitions/uuid_v7" },
+          "alias_id": { "$ref": "types.schema.json#/definitions/entity_id", "pattern": "^DEC-\\d{4}$" },
+          "alias_name": { "$ref": "types.schema.json#/definitions/alias_name" },
+          "summary": { "type": "string" },
+          "rationale": { "$ref": "types.schema.json#/definitions/markdown_text" },
+          "alternatives_considered": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["name", "rejected_because"],
+              "properties": {
+                "name": { "type": "string" },
+                "rejected_because": { "$ref": "types.schema.json#/definitions/markdown_text" }
+              }
+            }
+          },
+          "consequences": {
+            "type": "object",
+            "properties": {
+              "positive": { "type": "array", "items": { "type": "string" } },
+              "negative": { "type": "array", "items": { "type": "string" } }
+            }
+          },
+          "related_invariants": {
+            "type": "array",
+            "items": { "$ref": "types.schema.json#/definitions/uuid_v7" }
+          },
+          "enforces_invariants": {
+            "type": "array",
+            "items": { "$ref": "types.schema.json#/definitions/uuid_v7" }
+          },
+          "enables_capabilities": {
+            "type": "array",
+            "items": { "$ref": "types.schema.json#/definitions/uuid_v7" }
+          },
+          "governs_components": {
+            "type": "array",
+            "items": { "type": "string" }
+          },
+          "supersedes": {
+            "type": "array",
+            "items": { "$ref": "types.schema.json#/definitions/uuid_v7" }
+          },
+          "refines": {
+            "type": "array",
+            "items": { "$ref": "types.schema.json#/definitions/uuid_v7" }
+          }
+        }
+      },
+      "minItems": 1
+    },
+
+    "gaps": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "question", "impact", "blocking"],
+        "properties": {
+          "id": { "$ref": "types.schema.json#/definitions/entity_id", "pattern": "^GAP-\\d{4}$" },
+          "question": { "type": "string" },
+          "context": { "$ref": "types.schema.json#/definitions/markdown_text" },
+          "impact": { "$ref": "types.schema.json#/definitions/impact_level" },
+          "blocking": { "type": "boolean" },
+          "affects": { "type": "array", "items": { "type": "string" } },
+          "options": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["name"],
+              "properties": {
+                "name": { "type": "string" },
+                "pros": { "type": "array", "items": { "type": "string" } },
+                "cons": { "type": "array", "items": { "type": "string" } }
+              }
+            }
+          },
+          "decision_required_from": { "type": "string" }
+        }
+      }
+    }
+  }
+}

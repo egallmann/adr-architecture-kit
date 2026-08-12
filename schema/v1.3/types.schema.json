@@ -1,0 +1,147 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://adr-kit.ste.systems/schema/v1.3/types.schema.json",
+  "title": "ADR Kit Shared Type Definitions (v1.3)",
+  "description": "Common type definitions used across ADR schemas — v1.3 identity model",
+
+  "definitions": {
+    "uuid_v7": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-7[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$",
+      "description": "Lowercase RFC 9562 UUIDv7"
+    },
+
+    "alias_id_adr": {
+      "type": "string",
+      "pattern": "^ADR-(L|V|P|PS|PC|D)-\\d{4}$",
+      "description": "Type-prefixed ADR alias identifier (human-recognition)"
+    },
+
+    "alias_id_entity": {
+      "type": "string",
+      "pattern": "^[A-Z]+-\\d{4}$",
+      "description": "Type-prefixed entity alias identifier (e.g., CAP-0001, COMP-0001)"
+    },
+
+    "alias_name": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9]*(?:-[a-z0-9]+)*$",
+      "minLength": 3,
+      "maxLength": 96,
+      "description": "Human-friendly kebab-case alias name (3–96 chars)"
+    },
+
+    "adr_id_logical": {
+      "type": "string",
+      "pattern": "^ADR-L-\\d{4}$",
+      "description": "Logical ADR alias identifier"
+    },
+
+    "adr_id_vision": {
+      "type": "string",
+      "pattern": "^ADR-V-\\d{4}$",
+      "description": "Vision ADR alias identifier"
+    },
+
+    "adr_id_physical": {
+      "type": "string",
+      "pattern": "^ADR-P-\\d{4}$",
+      "description": "Physical ADR alias identifier (legacy)"
+    },
+
+    "adr_id_physical_system": {
+      "type": "string",
+      "pattern": "^ADR-PS-\\d{4}$",
+      "description": "Physical-System ADR alias identifier"
+    },
+
+    "adr_id_physical_component": {
+      "type": "string",
+      "pattern": "^ADR-PC-\\d{4}$",
+      "description": "Physical-Component ADR alias identifier"
+    },
+
+    "adr_id_decision": {
+      "type": "string",
+      "pattern": "^ADR-D-\\d{4}$",
+      "description": "Decision ADR alias identifier"
+    },
+
+    "adr_id_any": {
+      "type": "string",
+      "pattern": "^ADR-(L|V|P|PS|PC|D)-\\d{4}$",
+      "description": "Any ADR alias identifier"
+    },
+
+    "invariant_id": {
+      "type": "string",
+      "pattern": "^INV-\\d{4}$",
+      "description": "Invariant alias identifier"
+    },
+
+    "entity_id": {
+      "type": "string",
+      "pattern": "^[A-Z]+-\\d{4}$",
+      "description": "Generic entity alias identifier"
+    },
+
+    "override_id": {
+      "type": "string",
+      "pattern": "^OVERRIDE-\\d{4}$",
+      "description": "Objection override identifier"
+    },
+
+    "review_id": {
+      "type": "string",
+      "pattern": "^REVIEW-\\d{4}$",
+      "description": "Review artifact identifier"
+    },
+
+    "iso_date": {
+      "type": "string",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
+      "description": "ISO 8601 date (YYYY-MM-DD)"
+    },
+
+    "iso_datetime": {
+      "type": "string",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(Z|[+-]\\d{2}:\\d{2})$",
+      "description": "ISO 8601 datetime with timezone"
+    },
+
+    "implementation_authority": {
+      "type": "string",
+      "enum": ["none", "advisory", "implementation_authoritative"],
+      "description": "Implementation authority level for one ADR"
+    },
+
+    "status": {
+      "type": "string",
+      "enum": ["proposed", "accepted", "deprecated", "superseded"],
+      "description": "ADR lifecycle status"
+    },
+
+    "enforcement_level": {
+      "type": "string",
+      "enum": ["must", "should", "may"],
+      "description": "RFC 2119 enforcement level for invariants"
+    },
+
+    "impact_level": {
+      "type": "string",
+      "enum": ["high", "medium", "low"],
+      "description": "Impact assessment level"
+    },
+
+    "markdown_text": {
+      "type": "string",
+      "description": "Markdown-formatted text content"
+    },
+
+    "url": {
+      "type": "string",
+      "format": "uri",
+      "description": "Valid URL"
+    }
+  }
+}

@@ -487,6 +487,26 @@
       "help": "Query the generated architecture discovery bundle.",
       "params": []
     },
+    "entities aliases": {
+      "help": "List deterministic alias inventory for model 2.0 entities.",
+      "params": [
+        {
+          "count": false,
+          "default": "Sentinel.UNSET",
+          "is_flag": false,
+          "kind": "Option",
+          "multiple": false,
+          "name": "scope",
+          "nargs": 1,
+          "opts": [
+            "--scope"
+          ],
+          "required": false,
+          "secondary_opts": [],
+          "type": "directory"
+        }
+      ]
+    },
     "entities capabilities": {
       "help": "List capabilities from the generated registry.",
       "params": [
@@ -553,7 +573,7 @@
       ]
     },
     "entities get": {
-      "help": "Get an entity by exact ID.",
+      "help": "Get an entity by UUID, alias, URI, or auto compatibility lookup.",
       "params": [
         {
           "default": "Sentinel.UNSET",
@@ -562,6 +582,21 @@
           "nargs": 1,
           "required": true,
           "type": "text"
+        },
+        {
+          "count": false,
+          "default": "auto",
+          "is_flag": false,
+          "kind": "Option",
+          "multiple": false,
+          "name": "lookup_by",
+          "nargs": 1,
+          "opts": [
+            "--by"
+          ],
+          "required": false,
+          "secondary_opts": [],
+          "type": "choice"
         },
         {
           "count": false,
@@ -807,6 +842,41 @@
           "required": false,
           "secondary_opts": [],
           "type": "directory"
+        }
+      ]
+    },
+    "generate-adr-projection": {
+      "help": "Generate ADR human projection markdown under adrs/adr-projection/.",
+      "params": [
+        {
+          "count": false,
+          "default": "Sentinel.UNSET",
+          "is_flag": false,
+          "kind": "Option",
+          "multiple": false,
+          "name": "scope",
+          "nargs": 1,
+          "opts": [
+            "--scope"
+          ],
+          "required": false,
+          "secondary_opts": [],
+          "type": "directory"
+        },
+        {
+          "count": false,
+          "default": false,
+          "is_flag": true,
+          "kind": "Option",
+          "multiple": false,
+          "name": "recursive",
+          "nargs": 1,
+          "opts": [
+            "--recursive"
+          ],
+          "required": false,
+          "secondary_opts": [],
+          "type": "boolean"
         }
       ]
     },
@@ -1171,7 +1241,7 @@
       ]
     },
     "generate-rendered-docs": {
-      "help": "Generate rendered ADR markdown artifacts with integrity headers.",
+      "help": "Compatibility alias for generate-adr-projection.",
       "params": [
         {
           "count": false,
@@ -1355,6 +1425,101 @@
         }
       ]
     },
+    "migrate-identity-v13": {
+      "help": "Plan, seal-consume, check, or recover v1.3 identity migration.",
+      "params": [
+        {
+          "count": false,
+          "default": "Sentinel.UNSET",
+          "is_flag": false,
+          "kind": "Option",
+          "multiple": false,
+          "name": "scope",
+          "nargs": 1,
+          "opts": [
+            "--scope"
+          ],
+          "required": false,
+          "secondary_opts": [],
+          "type": "directory"
+        },
+        {
+          "count": false,
+          "default": "Sentinel.UNSET",
+          "is_flag": false,
+          "kind": "Option",
+          "multiple": false,
+          "name": "plan_out",
+          "nargs": 1,
+          "opts": [
+            "--plan-out"
+          ],
+          "required": false,
+          "secondary_opts": [],
+          "type": "path"
+        },
+        {
+          "count": false,
+          "default": "Sentinel.UNSET",
+          "is_flag": false,
+          "kind": "Option",
+          "multiple": false,
+          "name": "identity_map_path",
+          "nargs": 1,
+          "opts": [
+            "--identity-map"
+          ],
+          "required": false,
+          "secondary_opts": [],
+          "type": "file"
+        },
+        {
+          "count": false,
+          "default": false,
+          "is_flag": true,
+          "kind": "Option",
+          "multiple": false,
+          "name": "apply_migration",
+          "nargs": 1,
+          "opts": [
+            "--apply"
+          ],
+          "required": false,
+          "secondary_opts": [],
+          "type": "boolean"
+        },
+        {
+          "count": false,
+          "default": false,
+          "is_flag": true,
+          "kind": "Option",
+          "multiple": false,
+          "name": "check_migration",
+          "nargs": 1,
+          "opts": [
+            "--check"
+          ],
+          "required": false,
+          "secondary_opts": [],
+          "type": "boolean"
+        },
+        {
+          "count": false,
+          "default": "Sentinel.UNSET",
+          "is_flag": false,
+          "kind": "Option",
+          "multiple": false,
+          "name": "recover_journal",
+          "nargs": 1,
+          "opts": [
+            "--recover"
+          ],
+          "required": false,
+          "secondary_opts": [],
+          "type": "directory"
+        }
+      ]
+    },
     "migrate-topology-ids": {
       "help": "Plan or apply stable physical-topology identity migration.",
       "params": [
@@ -1442,6 +1607,160 @@
           "required": false,
           "secondary_opts": [],
           "type": "directory"
+        }
+      ]
+    },
+    "promote": {
+      "help": "Design Journal Promotion Contract operations (thin adapter over adr_kit.api).",
+      "params": []
+    },
+    "promote apply": {
+      "help": "Dry-run or commit a locked prepared Promotion Contract.",
+      "params": [
+        {
+          "count": false,
+          "default": ".",
+          "is_flag": false,
+          "kind": "Option",
+          "multiple": false,
+          "name": "project_root",
+          "nargs": 1,
+          "opts": [
+            "--project-root"
+          ],
+          "required": false,
+          "secondary_opts": [],
+          "type": "directory"
+        },
+        {
+          "count": false,
+          "default": "Sentinel.UNSET",
+          "is_flag": false,
+          "kind": "Option",
+          "multiple": false,
+          "name": "promotion_contract_path",
+          "nargs": 1,
+          "opts": [
+            "--contract"
+          ],
+          "required": true,
+          "secondary_opts": [],
+          "type": "file"
+        },
+        {
+          "count": false,
+          "default": false,
+          "is_flag": true,
+          "kind": "Option",
+          "multiple": false,
+          "name": "commit",
+          "nargs": 1,
+          "opts": [
+            "--commit"
+          ],
+          "required": false,
+          "secondary_opts": [],
+          "type": "boolean"
+        },
+        {
+          "count": false,
+          "default": null,
+          "is_flag": false,
+          "kind": "Option",
+          "multiple": false,
+          "name": "timestamp",
+          "nargs": 1,
+          "opts": [
+            "--timestamp"
+          ],
+          "required": false,
+          "secondary_opts": [],
+          "type": "text"
+        }
+      ]
+    },
+    "promote check": {
+      "help": "Check promotion readiness without authority writes.",
+      "params": [
+        {
+          "count": false,
+          "default": ".",
+          "is_flag": false,
+          "kind": "Option",
+          "multiple": false,
+          "name": "project_root",
+          "nargs": 1,
+          "opts": [
+            "--project-root"
+          ],
+          "required": false,
+          "secondary_opts": [],
+          "type": "directory"
+        },
+        {
+          "count": false,
+          "default": "Sentinel.UNSET",
+          "is_flag": false,
+          "kind": "Option",
+          "multiple": false,
+          "name": "promotion_contract_path",
+          "nargs": 1,
+          "opts": [
+            "--contract"
+          ],
+          "required": true,
+          "secondary_opts": [],
+          "type": "file"
+        }
+      ]
+    },
+    "promote prepare": {
+      "help": "Prepare a Promotion Contract without mutating canonical authority.",
+      "params": [
+        {
+          "count": false,
+          "default": ".",
+          "is_flag": false,
+          "kind": "Option",
+          "multiple": false,
+          "name": "project_root",
+          "nargs": 1,
+          "opts": [
+            "--project-root"
+          ],
+          "required": false,
+          "secondary_opts": [],
+          "type": "directory"
+        },
+        {
+          "count": false,
+          "default": "Sentinel.UNSET",
+          "is_flag": false,
+          "kind": "Option",
+          "multiple": false,
+          "name": "promotion_contract_path",
+          "nargs": 1,
+          "opts": [
+            "--contract"
+          ],
+          "required": true,
+          "secondary_opts": [],
+          "type": "file"
+        },
+        {
+          "count": false,
+          "default": null,
+          "is_flag": false,
+          "kind": "Option",
+          "multiple": false,
+          "name": "prepared_contract_output_path",
+          "nargs": 1,
+          "opts": [
+            "--output"
+          ],
+          "required": false,
+          "secondary_opts": [],
+          "type": "file"
         }
       ]
     },

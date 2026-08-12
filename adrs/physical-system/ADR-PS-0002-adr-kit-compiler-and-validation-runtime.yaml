@@ -1,6 +1,6 @@
-schema_version: '1.0'
+schema_version: '1.3'
 adr_type: physical-system
-id: ADR-PS-0002
+id: 019fee89-e618-7d04-9337-4aa2d3258507
 title: ADR Kit Authoring Compiler and Validation System
 status: proposed
 created_date: '2026-03-15'
@@ -17,44 +17,58 @@ tags:
 - authoring
 - python
 implements_logical:
-- ADR-L-0001
-- ADR-L-0007
-- ADR-L-0008
-- ADR-L-0010
-- ADR-L-0011
-- ADR-L-0013
+- 019fee89-e615-70a5-861b-b2dde147e5af
+- 019fee89-e615-7b9c-8e3f-32ceeda01491
+- 019fee89-e616-7066-8d2f-3acc7f469f72
+- 019fee89-e616-7d61-8e35-f11ba2ddd75d
+- 019fee89-e616-7b97-971d-ae165d13bf9c
+- 019fee89-e616-7c4e-953c-b7349412a784
 references_components:
-- ADR-PC-0002
-- ADR-PC-0003
-- ADR-PC-0004
-- ADR-PC-0005
+- 019fee89-e617-7d2b-8325-cd85ff814477
+- 019fee89-e618-7b76-843f-cfe21ceb2ea6
+- 019fee89-e618-73ce-aa2d-101276d64e33
+- 019fee89-e618-74b2-a83e-e41c7d8c9f37
 related_adrs:
-- ADR-P-0001
-- ADR-P-0002
+- 019fee89-e618-79ed-9d2d-cc35c63bc99a
+- 019fee89-e618-7a2f-aa3e-1f892cdf9410
 supersedes:
-- ADR-P-0001
+- 019fee89-e618-79ed-9d2d-cc35c63bc99a
 technologies:
 - python
 - click
 - pydantic
 - yaml
 - json-schema
-context: |
-  adr-architecture-kit operates as an authoring-time compiler and validation system rather
+context: 'adr-architecture-kit operates as an authoring-time compiler and validation
+  system rather
+
   than a collection of unrelated generators. The implementation includes an
+
   explicit compiler pipeline, contract validation, normalized repository/model
+
   access, integrity verification, and CLI orchestration over those surfaces.
 
+
   This ADR establishes the concrete authoring/compiler system boundary for those public
+
   capabilities. Discovery and indexing remain covered by ADR-PS-0001; this ADR
+
   covers the authoring/compiler implementation that powers canonical parsing,
+
   compilation, repository loading, contract checks, artifact integrity, and the
+
   narrow `adr_kit.api` authoring SDK.
 
+
   The boundary explicitly excludes Assembler behavior, runtime observation or
+
   evidence extraction, rules execution, substrate management, admission decisions,
+
   MCP surfaces, and LLM responsibilities. Those belong to later work or sibling
+
   systems and must not be introduced by the Phase 1 SDK.
+
+  '
 technology_stack:
 - category: language
   name: Python
@@ -75,13 +89,20 @@ technology_stack:
 system_boundaries:
 - id: SYSBOUND-0002
   name: Authoring Compiler and Validation Boundary
-  description: |
-    Encapsulates canonical ADR parsing, compiler orchestration, schema and
+  description: 'Encapsulates canonical ADR parsing, compiler orchestration, schema
+    and
+
     contract validation, normalized repository access, and generated artifact
+
     integrity validation. It exposes a narrow Python authoring SDK over supported
+
     validation, compilation, repository, model, and capability contracts. It does
+
     not perform runtime extraction, rules, substrate, admission, MCP, LLM, or
+
     Assembler responsibilities.
+
+    '
   external_dependencies:
   - Canonical ADR artifacts
   - Canonical invariant artifacts
@@ -98,19 +119,19 @@ component_topology:
   - name: Schema and Contract Validation Component
     type: service
     purpose: Validates canonical ADR structure and contract expectations.
-    implements_adr: ADR-PC-0002
+    implements_adr: 019fee89-e617-7d2b-8325-cd85ff814477
   - name: Compiler Pipeline Component
     type: service
     purpose: Builds and emits deterministic architecture compilation outputs.
-    implements_adr: ADR-PC-0003
+    implements_adr: 019fee89-e618-7b76-843f-cfe21ceb2ea6
   - name: Repository Boundary Component
     type: service
     purpose: Loads and serves normalized semantic state for in-process consumers.
-    implements_adr: ADR-PC-0004
+    implements_adr: 019fee89-e618-73ce-aa2d-101276d64e33
   - name: Integrity Validation Component
     type: service
     purpose: Verifies generated artifact freshness and tamper integrity.
-    implements_adr: ADR-PC-0005
+    implements_adr: 019fee89-e618-74b2-a83e-e41c7d8c9f37
   relationships:
   - from: Canonical ADR artifacts
     to: Schema and Contract Validation Component
@@ -132,4 +153,10 @@ operational_requirements:
   monitoring: Deterministic validation and compilation output with explicit diagnostics.
   logging: CLI-visible diagnostic logging with fail-closed validation behavior.
 gaps: []
-
+alias_id: ADR-PS-0002
+alias_name: adr-kit-authoring-compiler-and-validation-system
+system:
+  id: 019fee89-e618-713e-a017-5b417ef9ac9f
+  alias_id: SYS-0002
+  alias_name: sys-0002-adr-kit-authoring-compiler-and-validation-system
+  name: ADR Kit Authoring Compiler and Validation System

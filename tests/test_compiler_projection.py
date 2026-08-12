@@ -3,11 +3,14 @@ from __future__ import annotations
 from adr_kit.compiler.backend.projection import (
     build_relationship_summary,
     project_entity,
+    project_entity_v2,
     project_relationship,
+    project_relationship_v2,
     project_unresolved,
 )
 from adr_kit.compiler.ir import IREntity, IRRelationship, IRUnresolved, RelGraph
 from adr_kit.models.architecture_discovery import CanonicalSource, DiscoveryProvenance
+from adr_kit.models.v2_0 import NormalizedEntityV2
 from adr_kit.parser import ADRParser
 from adr_kit.repository.registry_loader import (
     load_architecture_index,
@@ -68,10 +71,15 @@ def test_build_relationship_summary_matches_current_registry_shape(tmp_path):
 
 def test_projection_round_trips_current_registry_models(tmp_path):
     generate_deterministic_outputs(_repo_root(), tmp_path / "workspace")
-    _, entity_registry, relationship_registry, unresolved_registry = _load_generated_bundle(tmp_path / "workspace")
+    architecture_index, entity_registry, relationship_registry, unresolved_registry = _load_generated_bundle(
+        tmp_path / "workspace"
+    )
 
     rel_graph = RelGraph()
     for relationship in relationship_registry.relationships:
+        source_owner = None
+        if hasattr(relationship, "source_owner_id"):
+            source_owner = relationship.source_owner_id
         rel_graph.add(
             IRRelationship(
                 relationship_id=relationship.relationship_id,
@@ -83,42 +91,84 @@ def test_projection_round_trips_current_registry_models(tmp_path):
                 canonical_source_ref=relationship.canonical_source_ref,
                 confidence=relationship.confidence,
                 metadata=dict(relationship.metadata),
+                source_owner_id=source_owner,
             )
         )
 
-    projected_entities = [
-        project_entity(
-            IREntity(
-                id=entity.id,
-                entity_type=entity.entity_type,
-                name=entity.name,
-                summary=entity.summary,
-                canonical_source=entity.canonical_source,
-                source_refs=list(entity.source_refs),
-                metadata=dict(entity.metadata),
-                completeness=entity.completeness,
-                provenance=entity.provenance,
-            ),
-            rel_graph,
-        ).model_dump(mode="json")
-        for entity in entity_registry.entities
-    ]
-    projected_relationships = [
-        project_relationship(
-            IRRelationship(
-                relationship_id=relationship.relationship_id,
-                relationship_type=relationship.relationship_type,
-                from_entity_id=relationship.from_entity_id,
-                to_entity_id=relationship.to_entity_id,
-                provenance_classification=relationship.provenance_classification,
-                evidence=list(relationship.evidence),
-                canonical_source_ref=relationship.canonical_source_ref,
-                confidence=relationship.confidence,
-                metadata=dict(relationship.metadata),
-            )
-        ).model_dump(mode="json")
-        for relationship in relationship_registry.relationships
-    ]
+    is_v2 = isinstance(entity_registry.entities[0], NormalizedEntityV2) if entity_registry.entities else False
+    namespace = architecture_index.architecture_namespace
+
+    if is_v2:
+        projected_entities = [
+            project_entity_v2(
+                IREntity(
+                    id=entity.id,
+                    entity_type=entity.entity_type,
+                    name=entity.name,
+                    summary=entity.summary,
+                    canonical_source=entity.canonical_source,
+                    source_refs=list(entity.source_refs),
+                    metadata=dict(entity.metadata),
+                    completeness=entity.completeness,
+                    provenance=entity.provenance,
+                ),
+                rel_graph,
+                namespace,
+            ).model_dump(mode="json")
+            for entity in entity_registry.entities
+        ]
+        projected_relationships = [
+            project_relationship_v2(
+                IRRelationship(
+                    relationship_id=relationship.relationship_id,
+                    relationship_type=relationship.relationship_type,
+                    from_entity_id=relationship.from_entity_id,
+                    to_entity_id=relationship.to_entity_id,
+                    provenance_classification=relationship.provenance_classification,
+                    evidence=list(relationship.evidence),
+                    canonical_source_ref=relationship.canonical_source_ref,
+                    confidence=relationship.confidence,
+                    metadata=dict(relationship.metadata),
+                    source_owner_id=relationship.source_owner_id,
+                )
+            ).model_dump(mode="json")
+            for relationship in relationship_registry.relationships
+        ]
+    else:
+        projected_entities = [
+            project_entity(
+                IREntity(
+                    id=entity.id,
+                    entity_type=entity.entity_type,
+                    name=entity.name,
+                    summary=entity.summary,
+                    canonical_source=entity.canonical_source,
+                    source_refs=list(entity.source_refs),
+                    metadata=dict(entity.metadata),
+                    completeness=entity.completeness,
+                    provenance=entity.provenance,
+                ),
+                rel_graph,
+            ).model_dump(mode="json")
+            for entity in entity_registry.entities
+        ]
+        projected_relationships = [
+            project_relationship(
+                IRRelationship(
+                    relationship_id=relationship.relationship_id,
+                    relationship_type=relationship.relationship_type,
+                    from_entity_id=relationship.from_entity_id,
+                    to_entity_id=relationship.to_entity_id,
+                    provenance_classification=relationship.provenance_classification,
+                    evidence=list(relationship.evidence),
+                    canonical_source_ref=relationship.canonical_source_ref,
+                    confidence=relationship.confidence,
+                    metadata=dict(relationship.metadata),
+                )
+            ).model_dump(mode="json")
+            for relationship in relationship_registry.relationships
+        ]
+
     projected_unresolved = [
         project_unresolved(
             IRUnresolved(

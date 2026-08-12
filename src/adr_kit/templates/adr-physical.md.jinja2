@@ -1,25 +1,31 @@
-# {{ adr.id }}: {{ adr.title }}
+# {{ adr | presentation_id }}: {{ adr.title }}
 
 **Status:** {{ adr.status.value }}  
 **Created:** {{ adr.created_date }}  
-{% if adr.modified_date %}**Modified:** {{ adr.modified_date }}  {% endif %}
+{% if adr.modified_date %}**Modified:** {{ adr.modified_date }}  
+{% endif %}
 **Authors:** {{ adr.authors | join(', ') }}  
 **Domains:** {{ adr.domains | join(', ') }}  
-{% if adr.tags %}**Tags:** {{ adr.tags | join(', ') }}  {% endif %}
-
-**Implements Logical:** {{ adr.implements_logical | join(', ') }}  
-**Technologies:** {{ adr.technologies | join(', ') }}
-
-{% if adr.related_adrs %}
-**Related ADRs:** {{ adr.related_adrs | join(', ') }}
+{% if adr.tags %}**Tags:** {{ adr.tags | join(', ') }}  
+{% endif %}
+{% if adr.alias_name %}**Alias name:** {{ adr.alias_name }}  
 {% endif %}
 
----
+{% if adr.implements_logical %}
+**Implements Logical:** {% for item in adr.implements_logical %}{{ item | present_ref }}{% if not loop.last %}, {% endif %}{% endfor %}  
+{% endif %}
+{% if adr.technologies %}**Technologies:** {{ adr.technologies | join(', ') }}  
+{% endif %}
+
+{% if adr.implements_system %}
+**Implements System:** {% for item in adr.implements_system %}{{ item | present_ref }}{% if not loop.last %}, {% endif %}{% endfor %}  
+{% endif %}
 
 ## Context
 
 {{ adr.context }}
 
+{% if adr.technology_stack %}
 ## Technology Stack
 
 {% for tech in adr.technology_stack %}
@@ -31,6 +37,36 @@
 {{ tech.rationale }}
 
 {% endfor %}
+{% endif %}
+
+{% if ctx and ctx.graphs %}
+## Relationship graph
+
+{% for graph in ctx.graphs %}
+```mermaid
+{{ graph }}```
+{% endfor %}
+{% endif %}
+
+{% if ctx and ctx.peer_cards %}
+## Related ADRs
+
+{% for card in ctx.peer_cards %}
+### {{ card.alias_id }} — {{ card.title }}
+
+{% if card.relationships %}
+**Relationships:**
+{% for rel in card.relationships %}
+- {{ rel.label }}
+{% endfor %}
+{% endif %}
+
+**Context:** {{ card.context_summary }}
+
+{% if card.link %}[Open projection]({{ card.link }}){% else %}*(projection link unavailable)*{% endif %}
+
+{% endfor %}
+{% endif %}
 
 {% if adr.architecture_patterns %}
 ## Architecture Patterns
@@ -47,10 +83,11 @@
 {% endfor %}
 {% endif %}
 
+{% if adr.component_specifications %}
 ## Component Specifications
 
 {% for comp in adr.component_specifications %}
-### {{ comp.id }}: {{ comp.name }} ({{ comp.type }})
+### {{ comp | presentation_id }}: {{ comp.name }} ({{ comp.type }})
 
 **Responsibilities:**
 {{ comp.responsibilities }}
@@ -58,7 +95,7 @@
 {% if comp.interfaces %}
 **Interfaces:**
 {% for iface in comp.interfaces %}
-- **{{ iface.id }}**{% if iface.name %} {{ iface.name }}{% endif %}{% if iface.type %} ({{ iface.type }}){% endif %}: {{ (iface.specification or iface.description or iface.name or "Interface definition")[:100] }}{% if iface.specification or iface.description %}...{% endif %}
+- **{{ iface | presentation_id }}**{% if iface.name %} {{ iface.name }}{% endif %}{% if iface.type %} ({{ iface.type }}){% endif %}: {{ (iface.specification or iface.description or iface.name or "Interface definition")[:100] }}{% if iface.specification or iface.description %}...{% endif %}
 {% endfor %}
 {% endif %}
 
@@ -80,6 +117,7 @@
 {% endif %}
 
 {% endfor %}
+{% endif %}
 
 {% if adr.deployment_model %}
 ## Deployment Model
@@ -118,7 +156,7 @@
 ## Implementation Decisions
 
 {% for decision in adr.implementation_decisions %}
-### {{ decision.id }}: {{ decision.summary }}
+### {{ decision | presentation_id }}: {{ decision.summary }}
 
 **Rationale:**
 {{ decision.rationale }}
@@ -131,7 +169,7 @@
 {% endif %}
 
 {% if decision.implements_invariants %}
-**Implements Invariants:** {{ decision.implements_invariants | join(', ') }}
+**Implements Invariants:** {% for inv in decision.implements_invariants %}{{ inv | present_ref }}{% if not loop.last %}, {% endif %}{% endfor %}
 {% endif %}
 
 {% endfor %}
@@ -141,7 +179,7 @@
 ## Integration Points
 
 {% for integ in adr.integration_points %}
-### {{ integ.id }}
+### {{ integ | presentation_id }}
 
 **Systems:** {{ integ.systems | join(', ') }}  
 **Protocol:** {{ integ.protocol }}
@@ -150,7 +188,7 @@
 {{ integ.specification }}
 
 {% if integ.contract_adr %}
-**Contract ADR:** {{ integ.contract_adr }}
+**Contract ADR:** {{ integ.contract_adr | present_ref }}
 {% endif %}
 
 {% endfor %}
@@ -184,7 +222,7 @@
 ## Gaps
 
 {% for gap in adr.gaps %}
-### {{ gap.id }}: {{ gap.question }}
+### {{ gap | presentation_id }}: {{ gap.question }}
 
 **Impact:** {{ gap.impact.value }}  
 **Blocking:** {{ "Yes" if gap.blocking else "No" }}
@@ -198,4 +236,4 @@
 
 ---
 
-*Generated from {{ adr.id }} by ADR Architecture Kit*
+*Generated from {{ adr | presentation_id }} by ADR Architecture Kit*

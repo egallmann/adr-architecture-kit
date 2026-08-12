@@ -5,7 +5,7 @@ from __future__ import annotations
 from collections.abc import Mapping
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Any, Callable, TypeVar
+from typing import Any, Callable, Literal, TypeVar, cast
 
 import yaml
 from pydantic import BaseModel
@@ -20,15 +20,26 @@ from ..models import (
     RelationshipRegistry,
     UnresolvedRegistry,
 )
+from ..models.v2_0 import (
+    NormalizedArchitectureModelV2,
+    NormalizedEntityRegistryV2,
+    NormalizedEntityV2,
+    RelationshipRegistryV2,
+    UnresolvedRegistryV2,
+)
 from ..parser import ADRParser
 from .registry_loader import (
     fingerprint_payload,
     load_architecture_index,
     load_normalized_entity_registry,
-    load_remediation_ledger,
+    load_normalized_entity_registry_v2,
     load_relationship_registry,
+    load_relationship_registry_v2,
+    load_remediation_ledger,
     load_unresolved_registry,
+    load_unresolved_registry_v2,
     model_payload,
+    peek_registry_schema_version,
 )
 from .registry_paths import discover_repository_paths, resolve_index_reference
 
@@ -41,6 +52,7 @@ SUBSET_TYPES: dict[str, tuple[str, str]] = {
 }
 
 ModelT = TypeVar("ModelT", bound=BaseModel)
+NormalizedModelVersion = Literal["1.1", "2.0"]
 
 
 @dataclass(frozen=True)
@@ -55,6 +67,22 @@ class NormalizedBundle:
     subsets: dict[str, list[NormalizedEntity]]
     fingerprint: str
     model: NormalizedArchitectureModel
+    model_version: NormalizedModelVersion = "1.1"
+
+
+@dataclass(frozen=True)
+class NormalizedBundleV2:
+    """Private loaded representation for model 2.0 UUID identity bundles."""
+
+    architecture_index: ArchitectureIndex
+    entity_registry: NormalizedEntityRegistryV2
+    relationship_registry: RelationshipRegistryV2
+    unresolved_registry: UnresolvedRegistryV2
+    remediation_ledger: RemediationLedger | None
+    subsets: dict[str, list[NormalizedEntityV2]]
+    fingerprint: str
+    model: NormalizedArchitectureModelV2
+    model_version: NormalizedModelVersion = "2.0"
 
 
 def _validate_subset(
@@ -135,34 +163,147 @@ def _assemble(
     )
 
 
+def _validate_subset_v2(
+    registry: NormalizedEntityRegistryV2,
+    subset_name: str,
+    expected_type: str,
+    primary_by_id: dict[str, NormalizedEntityV2],
+) -> None:
+    for entity in registry.entities:
+        primary_entity = primary_by_id.get(entity.id)
+        if primary_entity is None:
+            raise ValueError(
+                f"Subset registry {subset_name} references unknown entity ID: {entity.id}"
+            )
+        if entity.entity_type != expected_type:
+            raise ValueError(
+                f"Subset registry {subset_name} has mismatched entity_type for {entity.id}: "
+                f"expected {expected_type}, got {entity.entity_type}"
+            )
+        if entity.canonical_source.source_ref != primary_entity.canonical_source.source_ref:
+            raise ValueError(
+                f"Subset registry {subset_name} has mismatched canonical_source.source_ref "
+                f"for {entity.id}"
+            )
+
+
+def _assemble_v2(
+    scope_root: Path,
+    architecture_index: ArchitectureIndex,
+    load_registry: Callable[[str], NormalizedEntityRegistryV2],
+    relationship_registry: RelationshipRegistryV2,
+    unresolved_registry: UnresolvedRegistryV2,
+    remediation_ledger: RemediationLedger | None,
+) -> NormalizedBundleV2:
+    primary_registry = load_registry(architecture_index.entity_registry_path)
+    primary_by_id = {entity.id: entity for entity in primary_registry.entities}
+    subsets: dict[str, list[NormalizedEntityV2]] = {}
+    subset_models: dict[str, NormalizedEntityRegistryV2] = {}
+    for field_name, (subset_name, expected_type) in SUBSET_TYPES.items():
+        registry = load_registry(str(getattr(architecture_index, field_name)))
+        _validate_subset_v2(registry, subset_name, expected_type, primary_by_id)
+        subsets[subset_name] = list(registry.entities)
+        subset_models[subset_name] = registry
+
+    fingerprint = fingerprint_payload(
+        {
+            "mode": "normalized",
+            "model_version": "2.0",
+            "architecture_index": model_payload(architecture_index),
+            "entity_registry": model_payload(primary_registry),
+            "relationship_registry": model_payload(relationship_registry),
+            "unresolved_registry": model_payload(unresolved_registry),
+            "remediation_ledger": model_payload(remediation_ledger),
+            "subset_registries": {
+                name: model_payload(model) for name, model in sorted(subset_models.items())
+            },
+        }
+    )
+    model = NormalizedArchitectureModelV2(
+        mode="normalized",
+        scope_root=str(scope_root),
+        architecture_namespace=architecture_index.architecture_namespace,
+        fingerprint=fingerprint,
+        entities=list(primary_registry.entities),
+        relationships=list(relationship_registry.relationships),
+        unresolved=list(unresolved_registry.unresolved),
+        validation_summary=architecture_index.validation_summary,
+        source_coverage=architecture_index.source_coverage,
+    )
+    return NormalizedBundleV2(
+        architecture_index=architecture_index,
+        entity_registry=primary_registry,
+        relationship_registry=relationship_registry,
+        unresolved_registry=unresolved_registry,
+        remediation_ledger=remediation_ledger,
+        subsets=subsets,
+        fingerprint=fingerprint,
+        model=model,
+    )
+
+
 @implements_adr("ADR-L-0013", "ADR-PC-0004")
 def load_normalized_bundle_from_paths(
     parser: ADRParser,
     scope_root: Path,
     index_path: Path,
-) -> NormalizedBundle:
+) -> NormalizedBundle | NormalizedBundleV2:
     """Load one normalized bundle from repository-owned artifact paths."""
 
     root = Path(scope_root).resolve()
     index = load_architecture_index(parser, index_path)
-
-    def load_registry(relative_path: str) -> NormalizedEntityRegistry:
-        return load_normalized_entity_registry(
-            parser,
-            resolve_index_reference(root, relative_path),
-        )
-
-    relationship_registry = load_relationship_registry(
-        parser,
-        resolve_index_reference(root, index.relationship_registry_path),
-    )
-    unresolved_registry = load_unresolved_registry(
-        parser,
-        resolve_index_reference(root, index.unresolved_registry_path),
-    )
+    entity_registry_path = resolve_index_reference(root, index.entity_registry_path)
+    model_version = peek_registry_schema_version(entity_registry_path)
     remediation_path = discover_repository_paths(root).remediation_ledger
     remediation = (
         load_remediation_ledger(parser, remediation_path) if remediation_path.exists() else None
+    )
+
+    if model_version == "2.0":
+
+        def load_registry_v2(relative_path: str) -> NormalizedEntityRegistryV2:
+            return load_normalized_entity_registry_v2(
+                parser,
+                resolve_index_reference(root, relative_path),
+            )
+
+        relationship_registry_v2 = load_relationship_registry_v2(
+            parser,
+            resolve_index_reference(root, index.relationship_registry_path),
+        )
+        unresolved_registry_v2 = load_unresolved_registry_v2(
+            parser,
+            resolve_index_reference(root, index.unresolved_registry_path),
+        )
+        return _assemble_v2(
+            root,
+            index,
+            load_registry_v2,
+            relationship_registry_v2,
+            unresolved_registry_v2,
+            remediation,
+        )
+
+    def load_registry(relative_path: str) -> NormalizedEntityRegistry:
+        loaded = load_normalized_entity_registry(
+            parser,
+            resolve_index_reference(root, relative_path),
+        )
+        return cast(NormalizedEntityRegistry, loaded)
+
+    relationship_registry = cast(
+        RelationshipRegistry,
+        load_relationship_registry(
+            parser,
+            resolve_index_reference(root, index.relationship_registry_path),
+        ),
+    )
+    unresolved_registry = cast(
+        UnresolvedRegistry,
+        load_unresolved_registry(
+            parser,
+            resolve_index_reference(root, index.unresolved_registry_path),
+        ),
     )
     return _assemble(
         root,

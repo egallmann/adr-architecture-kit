@@ -1,0 +1,82 @@
+profile_version: 1
+project: ste-runtime
+
+purpose: >
+  ste-runtime implements STE runtime workflows including RECON, RSS, and MCP integration.
+
+system_identity: >
+  ste-runtime is the runtime extraction and evidence surface for STE workspaces.
+  Normative STE doctrine remains in ste-spec when present.
+
+purpose_bullets:
+  - TypeScript sources under src/ with a phased RECON reconciliation pipeline
+  - NPM package entrypoints (ste, recon, rss) defined in package.json
+  - Architecture authority under adrs/ with regeneration via the adr CLI
+  - Automated quality gates via Vitest and ESLint (npm run test, npm run lint)
+
+purpose_footer: >
+  Normative STE doctrine remains in ste-spec when that repository is present in your workspace.
+
+one_line_orientation: >
+  ste-runtime owns runtime extraction, factual evidence, and derived workspace state;
+  regenerate this overview with ADR Kit and do not treat it as architecture authority.
+
+workspace_highlight_ids:
+  - ADR-L-0009
+  - ADR-L-0010
+
+workspace_highlight_extras:
+  - "**INV-0014**: Scope is a workspace (declared in ADR-L-0009; supersedes INV-0001)."
+
+responsibility_boundaries:
+  - subject: Project ADR authority
+    detail: Accepted ADRs under adrs/ are canonical project intent for their declared scope.
+  - subject: ste-runtime
+    detail: Owns RECON/RSS/MCP runtime extraction and derived runtime/workspace state assigned to it.
+  - subject: ADR Kit
+    detail: Provides authoring-side validation/generation tooling used against this repository; it does not own runtime evidence.
+  - subject: ste-spec
+    detail: Owns normative STE doctrine and cross-repository semantic contracts where assigned.
+  - subject: Derived outputs
+    detail: Generated docs, graphs, and .ste state are derived unless a governing contract says otherwise.
+
+task_routes:
+  - task: Human/local ADR validation
+    entry: adr validate
+    surface: cli
+  - task: Regenerate this overview
+    entry: adr generate-system-overview
+    surface: cli
+  - task: Validate this overview
+    entry: adr validate-system-overview
+    surface: cli
+  - task: Runtime extraction / evidence
+    entry: ste / recon / rss workflows in this repository
+    surface: runtime
+
+safe_extension_rules:
+  - Prefer current ADR Kit records in adrs/ and this overview over legacy narrative docs.
+  - Do not hand-edit generated SYSTEM-OVERVIEW.md.
+  - Do not treat derived runtime state as architecture admission.
+
+category_errors:
+  - Treating runtime evidence as architecture admission
+  - Hand-editing generated SYSTEM-OVERVIEW.md
+  - Treating ADR Kit provider docs as if this repository were adr-architecture-kit
+
+validation_gates:
+  - npm run test / npm run lint as applicable
+  - adr validate
+  - adr generate-system-overview
+  - adr validate-system-overview
+
+read_next:
+  - label: PROJECT.yaml
+    target: PROJECT.yaml
+    category: related
+  - label: CONTRIBUTING.md
+    target: CONTRIBUTING.md
+    category: related
+  - label: COMPILER-AUTHORITY.md
+    target: COMPILER-AUTHORITY.md
+    category: related

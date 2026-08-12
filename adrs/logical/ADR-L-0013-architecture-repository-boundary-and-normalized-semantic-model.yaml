@@ -1,6 +1,6 @@
-schema_version: '1.0'
+schema_version: '1.3'
 adr_type: logical
-id: ADR-L-0013
+id: 019fee89-e616-7c4e-953c-b7349412a784
 title: Architecture Repository Boundary and Normalized Semantic Model
 status: accepted
 created_date: '2026-03-14'
@@ -18,283 +18,502 @@ tags:
 - archmodel
 - registries
 introduces_entities:
-- INV-0059
-- CAP-0039
-- INV-0067
-- CAP-0044
-- INV-0074
-- CAP-0047
-- INV-0076
-context: |
-  adr-architecture-kit now has an explicit compiler pipeline, a compiler IR
+- 019fee89-e616-72be-b22f-784bf7f19434
+- 019fee89-e616-7140-bb3f-8b78ab40d018
+- 019fee89-e616-71e8-8619-6d6dde59a698
+- 019fee89-e616-7d30-ae2e-6fee1dbb2712
+- 019fee89-e616-765f-a51d-a19f2cfa383b
+- 019fee89-e616-73a1-9d27-96afd11520ad
+- 019fee89-e616-7174-bc0f-0812c51d1d0c
+context: 'adr-architecture-kit now has an explicit compiler pipeline, a compiler IR
+
   (`ArchModel`), compiled registry bundles, and an additive architecture graph.
+
   Those pieces are sufficient to produce deterministic machine-facing artifacts,
+
   and ArchitectureRepository already defines the semantic in-process boundary.
+
   Phase 1 adds a narrow supported authoring facade that reuses that seam without
+
   expanding the normalized model or exposing compiler internals.
 
+
   Without that boundary, in-process tools can drift into reading raw registries
+
   directly, interpreting relationships independently, and coupling future
+
   kernel or graph consumers to current file layouts and registry schemas. That
+
   would undermine determinism, make schema evolution expensive, and allow
+
   semantic drift between canonical ADR authority and downstream machine
+
   consumers.
 
+
   A stabilizing move is needed now while the system is still small enough to
+
   evolve safely: one repository boundary that loads compiled artifacts and
+
   exposes one stable semantic model to in-process consumers, while still making
+
   the cross-language file-format contract explicit for consumers that cannot
+
   call Python repository APIs.
+
+  '
 decisions:
-- id: DEC-0050
+- id: 019fee89-e616-7c74-922b-f871dc663b59
   summary: Use ArchitectureRepository as the supported in-process semantic entry point
-  rationale: |
-    The repository boundary centralizes scope-safe loading, contract
+    with UUID, governed alias, and logical URI lookup
+  rationale: 'The repository boundary centralizes scope-safe loading, contract
+
     validation, path hiding, and registry compatibility adaptation. This keeps
+
     consumers from binding directly to registry files and current layout.
+
+
+    Repository lookup/resolution supports UUID, governed aliases, and logical URI
+    forms while canonical machine operations resolve to UUID.
+
+    '
   consequences:
     positive:
     - Consumer logic stops duplicating bundle loading behavior
     - Registry schema and layout evolution can be absorbed behind one boundary
     - Future kernel consumers can target one trusted seam
-- id: DEC-0051
-  summary: Expose a NormalizedArchitectureModel as the repository semantic payload
-  rationale: |
-    A semantic model is needed so consumers depend on architecture meaning
+  alias_id: DEC-0050
+  alias_name: dec-0050-decision-migrated
+- id: 019fee89-e616-7da4-9e1f-eb49b97c42ca
+  summary: Adopt NormalizedArchitectureModel 2.0 as the v1.3 repository semantic payload
+  rationale: 'A semantic model is needed so consumers depend on architecture meaning
+
     rather than current registry document shapes. The model must preserve
+
     entities, relationships, unresolved records, provenance, scope identity,
+
     and deterministic fingerprinting.
+
+
+    V1.3 authority advances normalized semantics to model 2.0 with UUID
+
+    identities and endpoints, explicit UUID/alias lookup, and versioned
+
+    compatibility adapters. Embodiment of that contract is subsequent v1.3
+
+    implementation work.
+
+    '
   consequences:
     positive:
     - Consumers use one typed semantic contract
     - Future graph compilation has a stable landing zone
     - Unresolved and provenance semantics remain explicit
-- id: DEC-0052
-  summary: Keep ArchModel compiler-internal and do not promote it to the public consumer API
-  rationale: |
-    The current `ArchModel` is the compiler IR. It reflects pass orchestration
+  alias_id: DEC-0051
+  alias_name: adopt-normalizedarchitecturemodel-2-0-as-the-v1-3-repository-semantic-payload
+- id: 019fee89-e616-7b02-9c1e-5028e84c85e1
+  summary: Keep ArchModel compiler-internal and do not promote it to the public consumer
+    API
+  rationale: 'The current `ArchModel` is the compiler IR. It reflects pass orchestration
+
     and extraction concerns and may evolve as compiler internals change. Making
+
     it the public consumer contract would freeze the wrong abstraction too
+
     early.
+
+    '
   consequences:
     positive:
     - Compiler internals remain evolvable
     - Consumer semantics stay narrower and more stable
     - ADR-Kit avoids becoming an accidental proto-kernel
-- id: DEC-0061
-  summary: Permit direct `adrs/index/*` consumption for cross-language or out-of-process consumers
-  rationale: |
-    Cross-language consumers such as `ste-runtime` cannot call a Python
+  alias_id: DEC-0052
+  alias_name: keep-archmodel-compiler-internal-and-do-not-promote-it-to-the-public-consumer-api
+- id: 019fee89-e616-7153-930f-595ce3d9f96d
+  summary: Permit direct `adrs/index/*` consumption for cross-language or out-of-process
+    consumers
+  rationale: 'Cross-language consumers such as `ste-runtime` cannot call a Python
+
     repository API directly. They still consume the same generated authority
+
     surface, but through the file-format contract rather than the in-process
+
     repository seam.
-- id: DEC-0062
+
+    '
+  alias_id: DEC-0061
+  alias_name: permit-direct-adrs-index-consumption-for-cross-language-or-out-of-process-consumers
+- id: 019fee89-e616-7340-a61b-57b9c79eca96
   summary: Treat repository-backed graph access as the intended Python graph seam
-  rationale: |
-    Python consumers should not hardcode the graph artifact path once the
+  rationale: 'Python consumers should not hardcode the graph artifact path once the
+
     repository boundary can expose it as part of the indexed contract family.
+
     This preserves a coherent semantic seam for in-process consumers.
-- id: DEC-0067
-  summary: Define an index-first minimal runtime ingestion subset for cross-language architecture consumers
-  rationale: |
-    Cross-language consumers such as `ste-runtime` need an explicit baseline
+
+    '
+  alias_id: DEC-0062
+  alias_name: treat-repository-backed-graph-access-as-the-intended-python-graph-seam
+- id: 019fee89-e616-755b-843e-689f9ffa2091
+  summary: Define an index-first minimal runtime ingestion subset for cross-language
+    architecture consumers
+  rationale: 'Cross-language consumers such as `ste-runtime` need an explicit baseline
+
     ingestion contract so they do not guess which generated artifacts are
+
     required for architecture-aware operation. The baseline subset is
+
     `architecture-index.yaml`, `entity-registry.yaml`,
+
     `relationship-registry.yaml`, `unresolved-registry.yaml`, and
+
     `manifest.yaml`.
+
+    '
   consequences:
     positive:
     - Cross-language runtime ingestion starts from one named bundle contract
     - Required bundle failure becomes explicit instead of implicit drift
     - Downstream runtime implementation can remain smaller and more deterministic
-- id: DEC-0068
-  summary: Require cross-language runtime ingestion to remain index-first, manifest-aware, and additive-safe
-  rationale: |
-    The runtime bridge must preserve compiler authority even when a consumer
+  alias_id: DEC-0067
+  alias_name: define-an-index-first-minimal-runtime-ingestion-subset-for-cross-language-architecture-consumers
+- id: 019fee89-e616-77c3-9137-1750a4d9bca5
+  summary: Require cross-language runtime ingestion to remain index-first, manifest-aware,
+    and additive-safe
+  rationale: 'The runtime bridge must preserve compiler authority even when a consumer
+
     uses file-format contracts directly. Cross-language consumers should
+
     bootstrap from the architecture index, treat manifest as a discovery and
+
     freshness aid, treat subset registries and `architecture-graph.yaml` as
+
     additive, and refuse to reconstruct authority by reparsing source ADR YAML.
+
+    '
   consequences:
     positive:
     - Compiler authority remains upstream of runtime projection behavior
-    - Additive graph or subset-registry failures can degrade safely without
-      redefining the baseline contract
+    - Additive graph or subset-registry failures can degrade safely without redefining
+      the baseline contract
     - The legacy compatibility registry does not silently regain authority
-- id: DEC-0079
+  alias_id: DEC-0068
+  alias_name: require-cross-language-runtime-ingestion-to-remain-index-first-manifest-aware-and-additive-safe
+- id: 019fee89-e616-7018-982f-d3d703f29db7
   summary: Preserve the present repository seam and defer any narrow consumer facade
-  rationale: |
-    Phase 0 production hardening does not authorize a new SDK, root export,
+  rationale: 'Phase 0 production hardening does not authorize a new SDK, root export,
+
     replacement compilation result, normalized-model revision, or graph API.
+
     `ArchitectureRepository` and `NormalizedArchitectureModel` remain the
+
     supported in-process seam. The historical `ArchModel` export is retained
+
     for compatibility but remains compiler-internal and unsuitable as a new
+
     consumer dependency.
 
+
     A later phase may introduce a narrow facade over supported interfaces only.
+
     Any future Assembler must call that supported boundary and must not bind to
+
     `ArchModel`, compiler passes, raw source ADR parsing, or generated-file layout.
+
+    '
   consequences:
     positive:
     - Production controls land without freezing a premature SDK abstraction
     - Existing imports remain compatible during pre-1.0 hardening
     - Later facade and Assembler work starts from an explicit dependency boundary
-- id: DEC-0080
+  alias_id: DEC-0079
+  alias_name: preserve-the-present-repository-seam-and-defer-any-narrow-consumer-facade
+- id: 019fee89-e616-7c36-b43f-6e4c45a4faf4
   summary: Establish adr_kit.api as the narrow supported authoring SDK facade
-  rationale: |
-    Phase 1 now has sufficient compatibility, packaging, and release controls to
+  rationale: 'Phase 1 now has sufficient compatibility, packaging, and release controls
+    to
+
     add a deliberately bounded facade. The facade supports single-scope
+
     validation, authoring compilation for registries, manifest, and markdown,
+
     repository opening, normalized-model consumption, and deterministic local
+
     capability discovery. It reuses the existing repository and normalized model
+
     contracts while translating compiler results into independent immutable
+
     public contracts.
 
+
     The Phase 0 deferral in DEC-0079 is therefore complete for this exact facade.
+
     Root re-exports, graph or Architecture IR operations, recursive workspaces,
+
     runtime evidence, rules, substrate, admission, Assembler, MCP, and LLM
+
     capabilities remain unauthorized.
+
+
+    The supported facade evolves repository/model consumption for model 2.0 compatibility
+    adapters without exposing compiler internals or ArchModel.
+
+    '
   consequences:
     positive:
     - New Python consumers have one explicit supported authoring boundary
     - Existing repository and normalized-model contracts remain unchanged
     - Compiler implementation types remain free to evolve behind translation
     - Historical deep imports remain compatible without becoming recommended
-- id: DEC-0082
-  summary: Keep repository-local authoring projections separate from workspace runtime state
-  rationale: |
-    Every artifact stored inside the `adr-architecture-kit` repository is owned
+  alias_id: DEC-0080
+  alias_name: establish-adr-kit-api-as-the-narrow-supported-authoring-sdk-facade
+- id: 019fee89-e616-7a7c-883f-b36edf94a1d8
+  summary: Keep repository-local authoring projections separate from workspace runtime
+    state
+  rationale: 'Every artifact stored inside the `adr-architecture-kit` repository is
+    owned
+
     and written by ADR Kit. External systems may read its canonical ADRs and
+
     supported authoring projections, but they must not target the repository as
+
     an output location. Runtime-derived graphs, evidence, registries, manifests,
+
     and other workspace state belong under the workspace-root `.ste-workspace`
+
     directory, which is outside every repository.
 
-    Phase 1 therefore validates only ADR Kit's own deterministic authoring
+
+    Phase 1 therefore validates only ADR Kit''s own deterministic authoring
+
     outputs. A repository-targeted runtime refresh is not part of the SDK
+
     authority gate. Any runtime command that writes into this repository violates
+
     the workspace state boundary and is an external implementation defect rather
+
     than authoring output to accept or baseline.
+
+    '
   consequences:
     positive:
     - ADR Kit remains the sole writer of files committed in its repository
     - Runtime and workspace state cannot invalidate authoring integrity controls
     - Cross-repository consumers retain read access without sharing write authority
     - SDK implementation remains independent of runtime graph production
+  alias_id: DEC-0082
+  alias_name: keep-repository-local-authoring-projections-separate-from-workspace-runtime-state
 invariants:
-- id: INV-0059
-  statement: |
-    In-process architecture consumers MUST use the ArchitectureRepository
+- id: 019fee89-e616-72be-b22f-784bf7f19434
+  statement: 'In-process architecture consumers MUST use the ArchitectureRepository
+
     boundary instead of inventing ad hoc compiled-registry interpretation when
+
     a repository boundary is available. Cross-language or out-of-process
+
     consumers MAY consume generated `adrs/index/*` artifacts directly when the
+
     repository boundary is not available to them.
+
+    '
   scope: global
   enforcement_level: must
   enforcement_mechanism: design
   verification_method: automated
-  rationale: |
-    Centralized loading and semantic adaptation are required to prevent
+  rationale: 'Centralized loading and semantic adaptation are required to prevent
+
     consumer fragmentation and long-term registry drift.
-- id: INV-0067
-  statement: |
-    Cross-language or out-of-process architecture consumers that rely on the
+
+    '
+  alias_id: INV-0059
+  alias_name: inv-0059
+- id: 019fee89-e616-71e8-8619-6d6dde59a698
+  statement: 'Cross-language or out-of-process architecture consumers that rely on
+    the
+
     file-format contract MUST bootstrap from `adrs/index/architecture-index.yaml`,
+
     MUST require the minimal ingestion subset of `entity-registry.yaml`,
+
     `relationship-registry.yaml`, `unresolved-registry.yaml`, and
+
     `adrs/manifest.yaml`, and MUST NOT recreate architecture authority by
+
     reparsing ADR source YAML when the generated contract bundle is expected.
+
     Subset registries and `architecture-graph.yaml` MAY be consumed only as
+
     additive artifacts, and `adrs/entities/registry.yaml` MUST remain
+
     compatibility-only.
+
+    '
   scope: global
   enforcement_level: must
   enforcement_mechanism: design
   verification_method: automated
-  rationale: |
-    Cross-language consumers need an explicit ingestion posture that preserves
+  rationale: 'Cross-language consumers need an explicit ingestion posture that preserves
+
     compiler authority, keeps required versus additive surfaces distinct, and
+
     prevents fallback drift into source-level reinterpretation.
-- id: INV-0074
-  statement: |
-    The supported `adr_kit.api` facade MUST NOT expose `ArchModel`, compiler
+
+    '
+  alias_id: INV-0067
+  alias_name: inv-0067
+- id: 019fee89-e616-765f-a51d-a19f2cfa383b
+  statement: 'The supported `adr_kit.api` facade MUST NOT expose `ArchModel`, compiler
+
     configuration, compiler passes, frontend or backend objects, emitters,
+
     internal output artifacts, mutable diagnostic logs, compiler caches, or
+
     other compiler-internal types through public annotations or runtime result
+
     object graphs.
+
+    '
   scope: global
   enforcement_level: must
   enforcement_mechanism: test
   verification_method: automated
-  rationale: |
-    The facade is a stable consumer contract, while compiler orchestration and
+  rationale: 'The facade is a stable consumer contract, while compiler orchestration
+    and
+
     intermediate representation remain implementation details that must be able
+
     to evolve independently.
-- id: INV-0076
-  statement: |
-    Only ADR Kit tooling MAY create or modify canonical artifacts, authoring
+
+    '
+  alias_id: INV-0074
+  alias_name: inv-0074
+- id: 019fee89-e616-7174-bc0f-0812c51d1d0c
+  statement: 'Only ADR Kit tooling MAY create or modify canonical artifacts, authoring
+
     projections, compatibility outputs, or other files inside the
+
     `adr-architecture-kit` repository. External runtime or workspace tooling MAY
+
     read supported repository contracts but MUST NOT write anywhere inside any
+
     repository tree. All runtime-derived and workspace-derived state MUST be
+
     written beneath the workspace-root `.ste-workspace` directory.
+
+    '
   scope: global
   enforcement_level: must
   enforcement_mechanism: design
   verification_method: automated
-  rationale: |
-    Separate write domains prevent derived runtime state from corrupting
+  rationale: 'Separate write domains prevent derived runtime state from corrupting
+
     canonical authoring state, compatibility bytes, integrity metadata, and
+
     repository-local governance evidence.
+
+    '
+  alias_id: INV-0076
+  alias_name: inv-0076
 capabilities:
-- id: CAP-0039
+- id: 019fee89-e616-7140-bb3f-8b78ab40d018
   name: Stable Repository Semantic Boundary
-  description: |
-    Provide one scope-safe, deterministic in-process interface that loads
-    compiled architecture bundles and returns a stable normalized semantic
-    model for tools, validators, agents, and future kernel consumers.
+  description: 'Provide one scope-safe, deterministic in-process interface that loads
+
+    compiled architecture bundles and exposes the authorized
+
+    NormalizedArchitectureModel 2.0 semantic payload with UUID, alias, and
+
+    logical URI resolution.
+
+    '
   acceptance_criteria:
   - ArchitectureRepository loads compiled bundles and validates them at load time
   - Consumers can retrieve a NormalizedArchitectureModel without reading raw YAML
   - Unresolved records and provenance remain first-class in the semantic model
   - Compiler-internal ArchModel is not required by normal consumer workflows
-  - Repository evolution remains the preferred in-process seam for graph access once implemented
-- id: CAP-0044
+  - Repository evolution remains the preferred in-process seam for graph access once
+    implemented
+  - The v1.3 repository embodiment exposes model 2.0 UUID/alias/URI resolution
+  alias_id: CAP-0039
+  alias_name: stable-repository-semantic-boundary
+- id: 019fee89-e616-7d30-ae2e-6fee1dbb2712
   name: Cross-Language Runtime Ingestion Contract
-  description: |
-    Provide one explicit file-format ingestion posture for cross-language or
+  description: 'Provide one explicit file-format ingestion posture for cross-language
+    or
+
     out-of-process runtime consumers so they can consume compiler-owned
+
     Architecture IR without redefining architecture semantics locally.
+
+    '
   acceptance_criteria:
-  - "cross-language consumers bootstrap from `architecture-index.yaml`"
-  - the required runtime ingestion subset is explicit and smaller than the full guaranteed contract family
-  - "subset registries and `architecture-graph.yaml` remain additive"
-  - "`manifest.yaml` is used for discovery and freshness orientation, not semantic authority"
+  - cross-language consumers bootstrap from `architecture-index.yaml`
+  - the required runtime ingestion subset is explicit and smaller than the full guaranteed
+    contract family
+  - subset registries and `architecture-graph.yaml` remain additive
+  - '`manifest.yaml` is used for discovery and freshness orientation, not semantic
+    authority'
   - the legacy compatibility registry remains unavailable for new consumer dependencies
-- id: CAP-0047
+  alias_id: CAP-0044
+  alias_name: cross-language-runtime-ingestion-contract
+- id: 019fee89-e616-73a1-9d27-96afd11520ad
   name: Narrow Supported Authoring SDK
-  description: |
-    Provide a deterministic Python facade for explicit-root validation,
+  description: 'Provide a deterministic Python facade for explicit-root validation,
+
     authoring compilation of registries, manifest, and markdown, repository
-    loading, normalized-model consumption, and local capability discovery.
+
+    loading, normalized-model consumption, and local capability discovery. The facade
+    remains a narrow supported authoring SDK and admits only explicitly authorized
+    public symbols for the current API contract, including additive promotion-provider
+    operations once separately authorized. Bounded model 2.0 compatibility adapters
+    may be exposed without exposing compiler internals and without advertising schema/model
+    embodiment as complete.
+
+    '
   acceptance_criteria:
-  - "`adr_kit.api` exposes exactly the approved Phase 1 symbol inventory"
-  - validation and compilation return immutable public results without compiler-internal types
-  - preview and write compilation return byte-equivalent artifacts for identical pinned inputs
+  - the facade exposes only explicitly authorized supported public symbols for the
+    current API contract, including additive promotion-provider operations once separately
+    authorized
+  - validation and compilation return immutable public results without compiler-internal
+    types
+  - preview and write compilation return byte-equivalent artifacts for identical pinned
+    inputs
   - repository opening returns the existing loaded ArchitectureRepository contract
   - capability discovery is deterministic, local, resource-backed, and versioned
-  - schema v1.0, provisional v1.1 treatment, CLI behavior, and generated bytes remain compatible
+  - schema v1.0, provisional v1.1 treatment, CLI behavior, and generated bytes remain
+    compatible
+  - When model 2.0 compatibility adapters are embodied, they remain on the supported
+    facade
+  alias_id: CAP-0047
+  alias_name: narrow-supported-authoring-sdk
 related_adrs:
-- ADR-L-0009
-- ADR-L-0010
-- ADR-L-0012
-- ADR-L-0018
-- ADR-PC-0005
-- ADR-PC-0001
+- 019fee89-e616-770c-a025-2c241a720730
+- 019fee89-e616-7d61-8e35-f11ba2ddd75d
+- 019fee89-e616-744f-b63e-5ecddf344faa
+- 019fee89-e617-7f4d-811d-4862645a55c5
+- 019fee89-e618-74b2-a83e-e41c7d8c9f37
+- 019fee89-e617-7270-ab2f-58a756d2530e
 gaps: []
-notes: |
-  Explicitly deferred beyond Phase 1: graph bundles, assertion identity,
-  entity/schema expansion, topology identity, bindings, transactional authoring,
-  normalized-model expansion, Assembler implementation, MCP, runtime extraction,
-  rules, substrate, and admission capability.
+notes: 'Explicitly deferred beyond Phase 2 / into Phase 3 or later: graph bundles,
+
+  transactional authoring, Assembler implementation, MCP, runtime extraction,
+
+  rules, substrate, and admission capability. Topology remains
+
+  structural-ID-only; intrinsic UUID identity for topology records remains
+
+  deferred.
+
+
+  Phase 2 completed assertion identity, entity/schema expansion, bindings, and
+
+  normalized-model expansion to model 1.1. ADR-L-0019 subsequently authorizes
+
+  model 2.0 as the v1.3 UUID/alias compatibility event; its embodiment remains
+
+  v1.3 implementation work.
+
+  '
+alias_id: ADR-L-0013
+alias_name: architecture-repository-boundary-and-normalized-semantic-model

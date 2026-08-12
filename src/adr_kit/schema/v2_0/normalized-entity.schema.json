@@ -1,0 +1,132 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://adr-architecture-kit/schema/v2.0/normalized-entity.schema.json",
+  "title": "Normalized Entity v2.0",
+  "description": "UUID-identity-bearing normalized entity for model 2.0.",
+  "type": "object",
+  "required": [
+    "id",
+    "alias_id",
+    "alias_name",
+    "alias_ref",
+    "entity_type",
+    "name",
+    "summary",
+    "uri",
+    "created_at",
+    "entity_fingerprint",
+    "lifecycle_stage",
+    "canonical_source",
+    "completeness",
+    "provenance"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-7[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$",
+      "description": "Canonical UUIDv7 identity."
+    },
+    "alias_id": {
+      "type": "string",
+      "description": "Legacy prefixed alias identifier."
+    },
+    "alias_name": {
+      "type": "string",
+      "minLength": 3,
+      "maxLength": 96,
+      "pattern": "^[a-z][a-z0-9]*(?:-[a-z0-9]+)*$"
+    },
+    "alias_ref": {
+      "type": "string",
+      "description": "Derived alias_id:alias_name reference."
+    },
+    "entity_type": {
+      "type": "string",
+      "enum": [
+        "adr",
+        "system",
+        "component",
+        "decision",
+        "capability",
+        "invariant",
+        "boundary",
+        "contract",
+        "interface",
+        "implementation_decision"
+      ]
+    },
+    "name": { "type": "string" },
+    "summary": { "type": "string" },
+    "uri": {
+      "type": "string",
+      "pattern": "^adr://[a-z0-9._-]+/entities/[0-9a-f]{8}-[0-9a-f]{4}-7[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+    },
+    "created_at": {
+      "type": "string",
+      "description": "RFC 3339 UTC timestamp decoded from UUIDv7."
+    },
+    "entity_fingerprint": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "lifecycle_stage": {
+      "type": "string",
+      "enum": ["proposed", "active", "deprecated", "superseded"]
+    },
+    "canonical_source": {
+      "type": "object",
+      "required": ["source_type", "source_ref", "artifact_path"],
+      "properties": {
+        "source_type": { "type": "string" },
+        "source_ref": { "type": "string" },
+        "artifact_path": { "type": "string" }
+      },
+      "additionalProperties": false
+    },
+    "source_refs": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["source_type", "source_ref", "artifact_path", "mention_role"],
+        "properties": {
+          "source_type": { "type": "string" },
+          "source_ref": { "type": "string" },
+          "artifact_path": { "type": "string" },
+          "mention_role": { "type": "string" }
+        },
+        "additionalProperties": false
+      }
+    },
+    "metadata": { "type": "object" },
+    "relationships": { "type": "object" },
+    "completeness": {
+      "type": "object",
+      "required": ["status"],
+      "properties": {
+        "status": {
+          "type": "string",
+          "enum": ["complete", "partial", "reference_only", "conflicted"]
+        },
+        "missing_fields": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      }
+    },
+    "provenance": {
+      "type": "object",
+      "required": ["source_type", "source_ref", "extraction_phase", "classification", "generator"],
+      "properties": {
+        "source_type": { "type": "string" },
+        "source_ref": { "type": "string" },
+        "extraction_phase": { "type": "string" },
+        "classification": {
+          "type": "string",
+          "enum": ["explicit", "derived", "heuristic"]
+        },
+        "generator": { "type": "string" }
+      }
+    }
+  },
+  "additionalProperties": false
+}

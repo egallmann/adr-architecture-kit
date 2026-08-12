@@ -1,39 +1,54 @@
-# {{ adr.id }}: {{ adr.title }}
+# {{ adr | presentation_id }}: {{ adr.title }}
 
 **Status:** {{ adr.status.value }}  
 **Created:** {{ adr.created_date }}  
-{% if adr.modified_date %}**Modified:** {{ adr.modified_date }}  {% endif %}
+{% if adr.modified_date %}**Modified:** {{ adr.modified_date }}  
+{% endif %}
 **Authors:** {{ adr.authors | join(', ') }}  
 **Domains:** {{ adr.domains | join(', ') }}  
-{% if adr.tags %}**Tags:** {{ adr.tags | join(', ') }}  {% endif %}
-
-{% if adr.implements_logical %}
-**Implements:** {{ adr.implements_logical | join(', ') }}
+{% if adr.tags %}**Tags:** {{ adr.tags | join(', ') }}  
 {% endif %}
-
-{% if adr.related_adrs %}
-**Related ADRs:** {{ adr.related_adrs | join(', ') }}
+{% if adr.alias_name %}**Alias name:** {{ adr.alias_name }}  
 {% endif %}
-
-{% if adr.supersedes %}
-**Supersedes:** {{ adr.supersedes | join(', ') }}
-{% endif %}
-
-{% if adr.superseded_by %}
-**Superseded by:** {{ adr.superseded_by }}
-{% endif %}
-
----
 
 ## Context
 
 {{ adr.context }}
 
+{% if ctx and ctx.graphs %}
+## Relationship graph
+
+{% for graph in ctx.graphs %}
+```mermaid
+{{ graph }}```
+{% endfor %}
+{% endif %}
+
+{% if ctx and ctx.peer_cards %}
+## Related ADRs
+
+{% for card in ctx.peer_cards %}
+### {{ card.alias_id }} — {{ card.title }}
+
+{% if card.relationships %}
+**Relationships:**
+{% for rel in card.relationships %}
+- {{ rel.label }}
+{% endfor %}
+{% endif %}
+
+**Context:** {{ card.context_summary }}
+
+{% if card.link %}[Open projection]({{ card.link }}){% else %}*(projection link unavailable)*{% endif %}
+
+{% endfor %}
+{% endif %}
+
 {% if adr.capabilities %}
 ## Capabilities
 
 {% for cap in adr.capabilities %}
-### {{ cap.id }}: {{ cap.name }}
+### {{ cap | presentation_id }}: {{ cap.name }}
 
 {{ cap.description }}
 
@@ -44,7 +59,7 @@
 ## Architectural Boundaries
 
 {% for boundary in adr.architectural_boundaries %}
-### {{ boundary.id }}: {{ boundary.name }}
+### {{ boundary | presentation_id }}: {{ boundary.name }}
 
 **Description:**
 {{ boundary.description }}
@@ -59,7 +74,7 @@
 ## Interaction Contracts
 
 {% for contract in adr.interaction_contracts %}
-### {{ contract.id }}
+### {{ contract | presentation_id }}
 
 **Parties:** {{ contract.parties | join(', ') }}  
 **Protocol:** {{ contract.protocol }}
@@ -74,7 +89,7 @@
 ## Constraints
 
 {% for constraint in adr.constraints %}
-### {{ constraint.id }} ({{ constraint.type }})
+### {{ constraint | presentation_id }} ({{ constraint.type }})
 
 **Description:**
 {{ constraint.description }}
@@ -89,7 +104,7 @@
 ## Invariants
 
 {% for inv in adr.invariants %}
-### {{ inv.id }}
+### {{ inv | presentation_id }}
 
 **Statement:** {{ inv.statement }}  
 **Scope:** {{ inv.scope }}  
@@ -114,7 +129,7 @@
 ## Non-Functional Requirements
 
 {% for nfr in adr.non_functional_requirements %}
-### {{ nfr.id }}: {{ nfr.category }}
+### {{ nfr | presentation_id }}: {{ nfr.category }}
 
 **Requirement:**
 {{ nfr.requirement }}
@@ -129,7 +144,7 @@
 ## Decisions
 
 {% for decision in adr.decisions %}
-### {{ decision.id }}: {{ decision.summary }}
+### {{ decision | presentation_id }}: {{ decision.summary }}
 
 **Rationale:**
 {{ decision.rationale }}
@@ -161,7 +176,7 @@
 {% endif %}
 
 {% if decision.related_invariants %}
-**Related Invariants:** {{ decision.related_invariants | join(', ') }}
+**Related Invariants:** {% for inv in decision.related_invariants %}{{ inv | present_ref }}{% if not loop.last %}, {% endif %}{% endfor %}
 {% endif %}
 
 {% endfor %}
@@ -176,7 +191,7 @@ This vision ADR is intentionally lightweight and does not yet formalize architec
 ## Gaps
 
 {% for gap in adr.gaps %}
-### {{ gap.id }}: {{ gap.question }}
+### {{ gap | presentation_id }}: {{ gap.question }}
 
 **Impact:** {{ gap.impact.value }}  
 **Blocking:** {{ "Yes" if gap.blocking else "No" }}
@@ -212,4 +227,4 @@ This vision ADR is intentionally lightweight and does not yet formalize architec
 
 ---
 
-*Generated from {{ adr.id }} by ADR Architecture Kit*
+*Generated from {{ adr | presentation_id }} by ADR Architecture Kit*

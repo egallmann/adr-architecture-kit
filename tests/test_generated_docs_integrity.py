@@ -23,15 +23,12 @@ def _write_workspace(workspace: Path, include_submodule: bool = False, name: str
     )
     (workspace / "adrs" / "logical").mkdir(parents=True, exist_ok=True)
     (workspace / "adrs" / "physical").mkdir(parents=True, exist_ok=True)
-    (workspace / "adrs" / "invariants").mkdir(parents=True, exist_ok=True)
 
     logical = Path("tests/fixtures/valid/logical-minimal.yaml").read_text(encoding="utf-8")
     physical = Path("tests/fixtures/valid/physical-minimal.yaml").read_text(encoding="utf-8")
-    invariant = Path("adrs/invariants/INV-0001-schema-validation-required.yaml").read_text(encoding="utf-8")
 
     (workspace / "adrs" / "logical" / "ADR-L-9999-minimal-valid-logical-adr.yaml").write_text(logical, encoding="utf-8")
     (workspace / "adrs" / "physical" / "ADR-P-9999-minimal-valid-physical-adr.yaml").write_text(physical, encoding="utf-8")
-    (workspace / "adrs" / "invariants" / "INV-0001-schema-validation-required.yaml").write_text(invariant, encoding="utf-8")
 
     if include_submodule:
         module = workspace / "module-a"
@@ -117,7 +114,9 @@ def test_generate_and_validate_rendered_docs_cli(tmp_path):
     render_result = runner.invoke(cli, ["generate-rendered-docs", "--scope", str(workspace)])
     assert render_result.exit_code == 0, render_result.output
 
-    rendered_file = workspace / "adrs" / "rendered" / "ADR-L-9999.md"
+    rendered_files = sorted((workspace / "adrs" / "adr-projection").rglob("ADR-L-9999*.md"))
+    assert rendered_files, "expected ADR-L-9999 projection"
+    rendered_file = rendered_files[0]
     rendered_header = parse_integrity_header(rendered_file.read_text(encoding="utf-8"))
     assert rendered_header["artifact_kind"] == "rendered_adr_markdown"
     graph_header = parse_integrity_header((workspace / "adrs" / "index" / "architecture-graph.yaml").read_text(encoding="utf-8"))
@@ -138,7 +137,9 @@ def test_validate_generated_docs_reports_tampered_output(tmp_path):
     assert runner.invoke(cli, ["generate-manifest", "--scope", str(workspace)]).exit_code == 0
     assert runner.invoke(cli, ["generate-entity-registry", "--scope", str(workspace)]).exit_code == 0
     assert runner.invoke(cli, ["generate-rendered-docs", "--scope", str(workspace)]).exit_code == 0
-    rendered_file = workspace / "adrs" / "rendered" / "ADR-L-9999.md"
+    rendered_files = sorted((workspace / "adrs" / "adr-projection").rglob("ADR-L-9999*.md"))
+    assert rendered_files
+    rendered_file = rendered_files[0]
     rendered_file.write_text(
         rendered_file.read_text(encoding="utf-8") + "\nmanual edit\n",
         encoding="utf-8",

@@ -17,6 +17,7 @@ RELATIONSHIP_TYPES = (
     "governs",
     "implemented_by",
     "embodied_in",
+    "implements_logical",
     "supersedes",
     "superseded_by",
     "refines",
@@ -43,6 +44,7 @@ class IRRelationship:
     relationship_id: str = ""
     assertion_id: str = ""
     source_pointer: str | None = None
+    source_owner_id: str | None = None
 
     def __post_init__(self) -> None:
         if not self.relationship_id:

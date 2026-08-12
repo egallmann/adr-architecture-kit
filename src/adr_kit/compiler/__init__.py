@@ -56,6 +56,7 @@ __all__ = [
     "CompilerPipeline",
     "CompilerPipelinePass",
     "CompilerPipelineState",
+    "MixedSchemaVersionError",
     "build_default_frontend_pipeline",
 ]
 
@@ -124,12 +125,14 @@ def __getattr__(name: str):
         "CompilerPipeline",
         "CompilerPipelinePass",
         "CompilerPipelineState",
+        "MixedSchemaVersionError",
         "build_default_frontend_pipeline",
     }:
         from .pipeline import (
             CompilerPipeline,
             CompilerPipelinePass,
             CompilerPipelineState,
+            MixedSchemaVersionError,
             build_default_frontend_pipeline,
         )
 
@@ -137,6 +140,7 @@ def __getattr__(name: str):
             "CompilerPipeline": CompilerPipeline,
             "CompilerPipelinePass": CompilerPipelinePass,
             "CompilerPipelineState": CompilerPipelineState,
+            "MixedSchemaVersionError": MixedSchemaVersionError,
             "build_default_frontend_pipeline": build_default_frontend_pipeline,
         }
         return exports[name]

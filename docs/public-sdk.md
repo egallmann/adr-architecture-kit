@@ -1,8 +1,8 @@
 # Public Python SDK
 
 `adr_kit.api` is the supported installed-package boundary for new Python
-integrations. Its API contract version is `1.0`; the package remains pre-1.0 and
-currently reports package version `0.1.0`.
+integrations. Its API contract version is `1.0`; the package remains pre-1.0.
+The installed package version is reported by `capabilities().package_version`.
 
 ## Install and discover capabilities
 
@@ -16,8 +16,9 @@ from adr_kit.api import capabilities
 manifest = capabilities()
 print(manifest.package_version)
 print(manifest.api_contract_version)  # 1.0
-print(manifest.supported_adr_schema_versions)  # ('1.0', '1.1', '1.2')
-print(manifest.normalized_model_schema_version)  # 1.1
+print(manifest.supported_adr_schema_versions)  # ('1.0', '1.1', '1.2', '1.3')
+print(manifest.normalized_model_schema_version)  # 1.1 (native default)
+print(manifest.supported_normalized_model_schema_versions)  # ('1.1', '2.0')
 print(manifest.as_dict())
 ```
 
@@ -134,24 +135,73 @@ raise `InvalidRequestError` before an operation starts. Unexpected parser,
 compiler, or I/O failures raise a chained `OperationError`.
 `open_repository()` chains repository-loading failures as `RepositoryError`.
 
-## Exact public inventory
+## Capability metadata
 
-`adr_kit.api.__all__` contains only:
+`capabilities()` reports supported Promotion Contract versions separately from
+ADR authoring schema versions and the normalized model version. The current
+provider supports:
 
 ```text
-ArchitectureRepository, NormalizedArchitectureModel,
-ArtifactDescriptor, CapabilityManifest, ValidationRequest, ValidationResult,
-CompilationRequest, CompilationResult, Diagnostic,
-SDKError, InvalidRequestError, OperationError, RepositoryError,
-capabilities, validate_architecture, compile_architecture, open_repository
+ste.design_journal.promotion_contract/v0.1
 ```
+
+This Promotion Contract version is not an ADR schema version and does not
+advertise ADR schema 1.3 or normalized model 2.0.
+
+## Exact public inventory
+
+`adr_kit.api.__all__` contains exactly the following symbols. This inventory must
+match `contracts/compatibility/python-surface.json` (`adr_kit.api`):
+
+```text
+ArchitectureRepository
+NormalizedArchitectureModel
+NormalizedArchitectureModelV2
+ProviderRegistry
+ArtifactDescriptor
+CapabilityManifest
+ValidationRequest
+ValidationResult
+CompilationRequest
+CompilationResult
+PromotionPrepareRequest
+PromotionPrepareResult
+PromotionCheckRequest
+PromotionCheckResult
+PromotionApplyRequest
+PromotionApplyResult
+PromotionMutationDescriptor
+PromotionBindingDescriptor
+PromotionValidationEvidenceDescriptor
+PromotionBlockerDescriptor
+PromotionBaselineDescriptor
+PromotionExecutionEvidenceDescriptor
+Diagnostic
+SDKError
+InvalidRequestError
+OperationError
+RepositoryError
+capabilities
+validate_architecture
+compile_architecture
+open_repository
+open_provider_registry
+prepare_promotion
+check_promotion
+apply_promotion
+```
+
+`NormalizedArchitectureModelV2`, `ProviderRegistry`, and `open_provider_registry`
+are additive API contract `1.0` symbols for UUID-era model 2.0 / federation lookup.
+Schema v1.3 and normalized model 2.0 remain provisional. Identity migration tooling
+is a provisional package surface outside this facade inventory.
 
 Nothing is re-exported from the `adr_kit` package root except `__version__`.
 Historical imports remain compatible, but new production integrations should use
-this facade. See [public surface and stability](public-surface-and-stability.md)
-and the executable [consumer example](../examples/public_sdk_consumer.py).
+this facade. See [public surface and stability](public-surface-and-stability.md),
+the [promotion provider guide](promotion-provider.md), and the executable
+[consumer example](../examples/public_sdk_consumer.py).
 
-Schema v1.2 and topology migration are provisional package surfaces rather than
-new `adr_kit.api` exports. See [schema v1.2](schema-v1.2.md),
-[external bindings](external-bindings.md), and
+See also [schema v1.3](schema-v1.3.md), [identity migration](identity-v13-migration.md),
+[schema v1.2](schema-v1.2.md), [external bindings](external-bindings.md), and
 [topology migration](topology-identity-migration.md).

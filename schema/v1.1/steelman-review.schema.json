@@ -28,7 +28,14 @@
       "$ref": "../v1.0/types.schema.json#/definitions/review_id"
     },
     "target_adr": {
-      "$ref": "../v1.0/types.schema.json#/definitions/adr_id_any"
+      "oneOf": [
+        { "$ref": "../v1.0/types.schema.json#/definitions/adr_id_any" },
+        {
+          "type": "string",
+          "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-7[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$",
+          "description": "v1.3 ADR UUID target"
+        }
+      ]
     },
     "review_kind": {
       "type": "string",

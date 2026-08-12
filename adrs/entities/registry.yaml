@@ -4,8 +4,8 @@
 # generator_id: adr-compiler
 # generator_version: 1
 # hash_algorithm: sha256
-# source_hash: 1e8fd5e36829500dd6843c915547c0382dba65e60c8b1fb459959f333ebcc93b
-# rendered_hash: 761673fd801e46798ca8a59741bf0475a5f5e177e5b37637f37d6518f62b4e2f
+# source_hash: 6b60f728bfb1d688fc93f026d10f0d0c0bf28d882030ef4653efdd98ef7617be
+# rendered_hash: d7a9104b072013967750e0ad11d9feda0d61d20d34a208811271af969e85992c
 
 schema_version: '1.1'
 type: entity_registry
@@ -18,7 +18,8 @@ entities:
   source_path: adrs/logical/ADR-L-0001-ste-compliant-adr-system.yaml
   source_artifact_type: logical_adr
   domains: []
-  related_adrs: []
+  related_adrs:
+  - ADR-L-0001
   realized_by: []
   relationships:
     depends_on: []
@@ -33,7 +34,8 @@ entities:
   source_path: adrs/logical/ADR-L-0001-ste-compliant-adr-system.yaml
   source_artifact_type: logical_adr
   domains: []
-  related_adrs: []
+  related_adrs:
+  - ADR-L-0001
   realized_by: []
   relationships:
     depends_on: []
@@ -48,7 +50,8 @@ entities:
   source_path: adrs/logical/ADR-L-0001-ste-compliant-adr-system.yaml
   source_artifact_type: logical_adr
   domains: []
-  related_adrs: []
+  related_adrs:
+  - ADR-L-0001
   realized_by: []
   relationships:
     depends_on: []
@@ -63,7 +66,8 @@ entities:
   source_path: adrs/logical/ADR-L-0001-ste-compliant-adr-system.yaml
   source_artifact_type: logical_adr
   domains: []
-  related_adrs: []
+  related_adrs:
+  - ADR-L-0001
   realized_by: []
   relationships:
     depends_on: []
@@ -78,7 +82,8 @@ entities:
   source_path: adrs/logical/ADR-L-0001-ste-compliant-adr-system.yaml
   source_artifact_type: logical_adr
   domains: []
-  related_adrs: []
+  related_adrs:
+  - ADR-L-0001
   realized_by: []
   relationships:
     depends_on: []
@@ -93,7 +98,8 @@ entities:
   source_path: adrs/logical/ADR-L-0001-ste-compliant-adr-system.yaml
   source_artifact_type: logical_adr
   domains: []
-  related_adrs: []
+  related_adrs:
+  - ADR-L-0001
   realized_by: []
   relationships:
     depends_on: []
@@ -108,7 +114,8 @@ entities:
   source_path: adrs/logical/ADR-L-0001-ste-compliant-adr-system.yaml
   source_artifact_type: logical_adr
   domains: []
-  related_adrs: []
+  related_adrs:
+  - ADR-L-0001
   realized_by: []
   relationships:
     depends_on: []
@@ -123,7 +130,8 @@ entities:
   source_path: adrs/logical/ADR-L-0005-adr-to-prompt-translation.yaml
   source_artifact_type: logical_adr
   domains: []
-  related_adrs: []
+  related_adrs:
+  - ADR-L-0005
   realized_by: []
   relationships:
     depends_on: []
@@ -138,7 +146,8 @@ entities:
   source_path: adrs/logical/ADR-L-0005-adr-to-prompt-translation.yaml
   source_artifact_type: logical_adr
   domains: []
-  related_adrs: []
+  related_adrs:
+  - ADR-L-0005
   realized_by: []
   relationships:
     depends_on: []
@@ -153,7 +162,8 @@ entities:
   source_path: adrs/logical/ADR-L-0006-rule-library-sub-module.yaml
   source_artifact_type: logical_adr
   domains: []
-  related_adrs: []
+  related_adrs:
+  - ADR-L-0006
   realized_by: []
   relationships:
     depends_on: []
@@ -168,7 +178,8 @@ entities:
   source_path: adrs/logical/ADR-L-0006-rule-library-sub-module.yaml
   source_artifact_type: logical_adr
   domains: []
-  related_adrs: []
+  related_adrs:
+  - ADR-L-0006
   realized_by: []
   relationships:
     depends_on: []
@@ -183,7 +194,8 @@ entities:
   source_path: adrs/logical/ADR-L-0006-rule-library-sub-module.yaml
   source_artifact_type: logical_adr
   domains: []
-  related_adrs: []
+  related_adrs:
+  - ADR-L-0006
   realized_by: []
   relationships:
     depends_on: []
@@ -198,7 +210,8 @@ entities:
   source_path: adrs/logical/ADR-L-0006-rule-library-sub-module.yaml
   source_artifact_type: logical_adr
   domains: []
-  related_adrs: []
+  related_adrs:
+  - ADR-L-0006
   realized_by: []
   relationships:
     depends_on: []
@@ -213,7 +226,8 @@ entities:
   source_path: adrs/logical/ADR-L-0007-deterministic-documentation-projection.yaml
   source_artifact_type: logical_adr
   domains: []
-  related_adrs: []
+  related_adrs:
+  - ADR-L-0007
   realized_by: []
   relationships:
     depends_on: []
@@ -228,7 +242,8 @@ entities:
   source_path: adrs/logical/ADR-L-0008-validation-modes-for-draft-and-complete-adrs.yaml
   source_artifact_type: logical_adr
   domains: []
-  related_adrs: []
+  related_adrs:
+  - ADR-L-0008
   realized_by: []
   relationships:
     depends_on: []
@@ -243,7 +258,8 @@ entities:
   source_path: adrs/logical/ADR-L-0008-validation-modes-for-draft-and-complete-adrs.yaml
   source_artifact_type: logical_adr
   domains: []
-  related_adrs: []
+  related_adrs:
+  - ADR-L-0008
   realized_by: []
   relationships:
     depends_on: []
@@ -258,7 +274,8 @@ entities:
   source_path: adrs/logical/ADR-L-0009-derived-architecture-discovery-surfaces.yaml
   source_artifact_type: logical_adr
   domains: []
-  related_adrs: []
+  related_adrs:
+  - ADR-L-0009
   realized_by: []
   relationships:
     depends_on: []
@@ -273,7 +290,8 @@ entities:
   source_path: adrs/logical/ADR-L-0009-derived-architecture-discovery-surfaces.yaml
   source_artifact_type: logical_adr
   domains: []
-  related_adrs: []
+  related_adrs:
+  - ADR-L-0009
   realized_by: []
   relationships:
     depends_on: []
@@ -288,7 +306,8 @@ entities:
   source_path: adrs/logical/ADR-L-0002-multi-scope-adr-architecture.yaml
   source_artifact_type: logical_adr
   domains: []
-  related_adrs: []
+  related_adrs:
+  - ADR-L-0002
   realized_by: []
   relationships:
     depends_on: []
@@ -303,7 +322,8 @@ entities:
   source_path: adrs/logical/ADR-L-0003-quality-assurance-and-testing-strategy.yaml
   source_artifact_type: logical_adr
   domains: []
-  related_adrs: []
+  related_adrs:
+  - ADR-L-0003
   realized_by: []
   relationships:
     depends_on: []
@@ -318,7 +338,8 @@ entities:
   source_path: adrs/logical/ADR-L-0004-adr-to-code-traceability-via-decorators.yaml
   source_artifact_type: logical_adr
   domains: []
-  related_adrs: []
+  related_adrs:
+  - ADR-L-0004
   realized_by: []
   relationships:
     depends_on: []
@@ -333,7 +354,8 @@ entities:
   source_path: adrs/logical/ADR-L-0002-multi-scope-adr-architecture.yaml
   source_artifact_type: logical_adr
   domains: []
-  related_adrs: []
+  related_adrs:
+  - ADR-L-0002
   realized_by: []
   relationships:
     depends_on: []
@@ -348,7 +370,8 @@ entities:
   source_path: adrs/logical/ADR-L-0003-quality-assurance-and-testing-strategy.yaml
   source_artifact_type: logical_adr
   domains: []
-  related_adrs: []
+  related_adrs:
+  - ADR-L-0003
   realized_by: []
   relationships:
     depends_on: []
@@ -363,7 +386,8 @@ entities:
   source_path: adrs/logical/ADR-L-0004-adr-to-code-traceability-via-decorators.yaml
   source_artifact_type: logical_adr
   domains: []
-  related_adrs: []
+  related_adrs:
+  - ADR-L-0004
   realized_by: []
   relationships:
     depends_on: []
@@ -378,7 +402,8 @@ entities:
   source_path: adrs/logical/ADR-L-0002-multi-scope-adr-architecture.yaml
   source_artifact_type: logical_adr
   domains: []
-  related_adrs: []
+  related_adrs:
+  - ADR-L-0002
   realized_by: []
   relationships:
     depends_on: []
@@ -393,7 +418,8 @@ entities:
   source_path: adrs/logical/ADR-L-0003-quality-assurance-and-testing-strategy.yaml
   source_artifact_type: logical_adr
   domains: []
-  related_adrs: []
+  related_adrs:
+  - ADR-L-0003
   realized_by: []
   relationships:
     depends_on: []
@@ -408,7 +434,8 @@ entities:
   source_path: adrs/logical/ADR-L-0004-adr-to-code-traceability-via-decorators.yaml
   source_artifact_type: logical_adr
   domains: []
-  related_adrs: []
+  related_adrs:
+  - ADR-L-0004
   realized_by: []
   relationships:
     depends_on: []
@@ -423,7 +450,8 @@ entities:
   source_path: adrs/logical/ADR-L-0002-multi-scope-adr-architecture.yaml
   source_artifact_type: logical_adr
   domains: []
-  related_adrs: []
+  related_adrs:
+  - ADR-L-0002
   realized_by: []
   relationships:
     depends_on: []
@@ -438,7 +466,8 @@ entities:
   source_path: adrs/logical/ADR-L-0003-quality-assurance-and-testing-strategy.yaml
   source_artifact_type: logical_adr
   domains: []
-  related_adrs: []
+  related_adrs:
+  - ADR-L-0003
   realized_by: []
   relationships:
     depends_on: []
@@ -453,7 +482,8 @@ entities:
   source_path: adrs/logical/ADR-L-0004-adr-to-code-traceability-via-decorators.yaml
   source_artifact_type: logical_adr
   domains: []
-  related_adrs: []
+  related_adrs:
+  - ADR-L-0004
   realized_by: []
   relationships:
     depends_on: []
@@ -468,7 +498,8 @@ entities:
   source_path: adrs/logical/ADR-L-0005-adr-to-prompt-translation.yaml
   source_artifact_type: logical_adr
   domains: []
-  related_adrs: []
+  related_adrs:
+  - ADR-L-0005
   realized_by: []
   relationships:
     depends_on: []
@@ -483,7 +514,8 @@ entities:
   source_path: adrs/logical/ADR-L-0005-adr-to-prompt-translation.yaml
   source_artifact_type: logical_adr
   domains: []
-  related_adrs: []
+  related_adrs:
+  - ADR-L-0005
   realized_by: []
   relationships:
     depends_on: []
@@ -498,7 +530,8 @@ entities:
   source_path: adrs/logical/ADR-L-0005-adr-to-prompt-translation.yaml
   source_artifact_type: logical_adr
   domains: []
-  related_adrs: []
+  related_adrs:
+  - ADR-L-0005
   realized_by: []
   relationships:
     depends_on: []
@@ -513,7 +546,8 @@ entities:
   source_path: adrs/logical/ADR-L-0010-kernel-interface-contract-and-validation-profiles.yaml
   source_artifact_type: logical_adr
   domains: []
-  related_adrs: []
+  related_adrs:
+  - ADR-L-0010
   realized_by: []
   relationships:
     depends_on: []
@@ -528,7 +562,8 @@ entities:
   source_path: adrs/logical/ADR-L-0010-kernel-interface-contract-and-validation-profiles.yaml
   source_artifact_type: logical_adr
   domains: []
-  related_adrs: []
+  related_adrs:
+  - ADR-L-0010
   realized_by: []
   relationships:
     depends_on: []
@@ -543,7 +578,8 @@ entities:
   source_path: adrs/logical/ADR-L-0011-metadata-schemas-and-remediation-ledger-enforcement.yaml
   source_artifact_type: logical_adr
   domains: []
-  related_adrs: []
+  related_adrs:
+  - ADR-L-0011
   realized_by: []
   relationships:
     depends_on: []
@@ -558,7 +594,8 @@ entities:
   source_path: adrs/logical/ADR-L-0011-metadata-schemas-and-remediation-ledger-enforcement.yaml
   source_artifact_type: logical_adr
   domains: []
-  related_adrs: []
+  related_adrs:
+  - ADR-L-0011
   realized_by: []
   relationships:
     depends_on: []
@@ -573,7 +610,8 @@ entities:
   source_path: adrs/logical/ADR-L-0012-federation-authority-and-qualified-identity.yaml
   source_artifact_type: logical_adr
   domains: []
-  related_adrs: []
+  related_adrs:
+  - ADR-L-0012
   realized_by: []
   relationships:
     depends_on: []
@@ -588,7 +626,8 @@ entities:
   source_path: adrs/logical/ADR-L-0013-architecture-repository-boundary-and-normalized-semantic-model.yaml
   source_artifact_type: logical_adr
   domains: []
-  related_adrs: []
+  related_adrs:
+  - ADR-L-0013
   realized_by: []
   relationships:
     depends_on: []
@@ -603,7 +642,8 @@ entities:
   source_path: adrs/logical/ADR-L-0014-brownfield-onboarding-and-canonicalization-workflow.yaml
   source_artifact_type: logical_adr
   domains: []
-  related_adrs: []
+  related_adrs:
+  - ADR-L-0014
   realized_by: []
   relationships:
     depends_on: []
@@ -618,7 +658,8 @@ entities:
   source_path: adrs/logical/ADR-L-0014-brownfield-onboarding-and-canonicalization-workflow.yaml
   source_artifact_type: logical_adr
   domains: []
-  related_adrs: []
+  related_adrs:
+  - ADR-L-0014
   realized_by: []
   relationships:
     depends_on: []
@@ -633,7 +674,8 @@ entities:
   source_path: adrs/logical/ADR-L-0015-adr-governance-state-and-override-semantics.yaml
   source_artifact_type: logical_adr
   domains: []
-  related_adrs: []
+  related_adrs:
+  - ADR-L-0015
   realized_by: []
   relationships:
     depends_on: []
@@ -648,7 +690,8 @@ entities:
   source_path: adrs/logical/ADR-L-0015-adr-governance-state-and-override-semantics.yaml
   source_artifact_type: logical_adr
   domains: []
-  related_adrs: []
+  related_adrs:
+  - ADR-L-0015
   realized_by: []
   relationships:
     depends_on: []
@@ -663,7 +706,8 @@ entities:
   source_path: adrs/logical/ADR-L-0013-architecture-repository-boundary-and-normalized-semantic-model.yaml
   source_artifact_type: logical_adr
   domains: []
-  related_adrs: []
+  related_adrs:
+  - ADR-L-0013
   realized_by: []
   relationships:
     depends_on: []
@@ -678,7 +722,8 @@ entities:
   source_path: adrs/logical/ADR-L-0016-deterministic-corpus-query-and-authoring-orientation.yaml
   source_artifact_type: logical_adr
   domains: []
-  related_adrs: []
+  related_adrs:
+  - ADR-L-0016
   realized_by: []
   relationships:
     depends_on: []
@@ -693,7 +738,8 @@ entities:
   source_path: adrs/logical/ADR-L-0003-quality-assurance-and-testing-strategy.yaml
   source_artifact_type: logical_adr
   domains: []
-  related_adrs: []
+  related_adrs:
+  - ADR-L-0003
   realized_by: []
   relationships:
     depends_on: []
@@ -708,7 +754,8 @@ entities:
   source_path: adrs/logical/ADR-L-0013-architecture-repository-boundary-and-normalized-semantic-model.yaml
   source_artifact_type: logical_adr
   domains: []
-  related_adrs: []
+  related_adrs:
+  - ADR-L-0013
   realized_by: []
   relationships:
     depends_on: []
@@ -723,7 +770,8 @@ entities:
   source_path: adrs/logical/ADR-L-0018-schema-v12-and-normalized-semantic-foundation.yaml
   source_artifact_type: logical_adr
   domains: []
-  related_adrs: []
+  related_adrs:
+  - ADR-L-0018
   realized_by: []
   relationships:
     depends_on: []
@@ -738,7 +786,8 @@ entities:
   source_path: adrs/logical/ADR-L-0018-schema-v12-and-normalized-semantic-foundation.yaml
   source_artifact_type: logical_adr
   domains: []
-  related_adrs: []
+  related_adrs:
+  - ADR-L-0018
   realized_by: []
   relationships:
     depends_on: []
@@ -753,7 +802,8 @@ entities:
   source_path: adrs/logical/ADR-L-0018-schema-v12-and-normalized-semantic-foundation.yaml
   source_artifact_type: logical_adr
   domains: []
-  related_adrs: []
+  related_adrs:
+  - ADR-L-0018
   realized_by: []
   relationships:
     depends_on: []
@@ -768,7 +818,8 @@ entities:
   source_path: adrs/logical/ADR-L-0018-schema-v12-and-normalized-semantic-foundation.yaml
   source_artifact_type: logical_adr
   domains: []
-  related_adrs: []
+  related_adrs:
+  - ADR-L-0018
   realized_by: []
   relationships:
     depends_on: []
@@ -777,13 +828,14 @@ entities:
     realizes: []
 - entity_id: CAP-0052
   entity_type: capability
-  name: Canonical Entity Identity Repair
+  name: Governed Alias Allocation and UUID Integrity
   introduced_by: ADR-L-0018
   lifecycle_stage: active
   source_path: adrs/logical/ADR-L-0018-schema-v12-and-normalized-semantic-foundation.yaml
   source_artifact_type: logical_adr
   domains: []
-  related_adrs: []
+  related_adrs:
+  - ADR-L-0018
   realized_by: []
   relationships:
     depends_on: []
@@ -798,7 +850,8 @@ entities:
   source_path: adrs/logical/ADR-L-9000-kernel-boot-publication-surface.yaml
   source_artifact_type: logical_adr
   domains: []
-  related_adrs: []
+  related_adrs:
+  - ADR-L-9000
   realized_by: []
   relationships:
     depends_on: []
@@ -813,7 +866,8 @@ entities:
   source_path: adrs/physical-component/ADR-PC-0001-entity-registry-and-discovery-index.yaml
   source_artifact_type: physical_component_adr
   domains: []
-  related_adrs: []
+  related_adrs:
+  - ADR-PC-0001
   realized_by: []
   relationships:
     depends_on: []
@@ -828,7 +882,8 @@ entities:
   source_path: adrs/physical-component/ADR-PC-0002-schema-and-contract-validation.yaml
   source_artifact_type: physical_component_adr
   domains: []
-  related_adrs: []
+  related_adrs:
+  - ADR-PC-0002
   realized_by: []
   relationships:
     depends_on: []
@@ -843,7 +898,8 @@ entities:
   source_path: adrs/physical-component/ADR-PC-0003-compiler-pipeline-and-driver.yaml
   source_artifact_type: physical_component_adr
   domains: []
-  related_adrs: []
+  related_adrs:
+  - ADR-PC-0003
   realized_by: []
   relationships:
     depends_on: []
@@ -858,7 +914,8 @@ entities:
   source_path: adrs/physical-component/ADR-PC-0004-repository-boundary-and-normalized-model.yaml
   source_artifact_type: physical_component_adr
   domains: []
-  related_adrs: []
+  related_adrs:
+  - ADR-PC-0004
   realized_by: []
   relationships:
     depends_on: []
@@ -873,7 +930,8 @@ entities:
   source_path: adrs/physical-component/ADR-PC-0005-generated-artifact-integrity-validation.yaml
   source_artifact_type: physical_component_adr
   domains: []
-  related_adrs: []
+  related_adrs:
+  - ADR-PC-0005
   realized_by: []
   relationships:
     depends_on: []
@@ -888,7 +946,8 @@ entities:
   source_path: adrs/physical-component/ADR-PC-0006-brownfield-onboarding-and-canonical-normalization.yaml
   source_artifact_type: physical_component_adr
   domains: []
-  related_adrs: []
+  related_adrs:
+  - ADR-PC-0006
   realized_by: []
   relationships:
     depends_on: []
@@ -903,14 +962,14 @@ entities:
   source_path: adrs/logical/ADR-L-0001-ste-compliant-adr-system.yaml
   source_artifact_type: logical_adr
   domains: []
-  related_adrs: []
+  related_adrs:
+  - ADR-L-0001
   realized_by: []
   relationships:
     depends_on: []
     implements: []
     consumes: []
-    realizes:
-    - INV-0001
+    realizes: []
 - entity_id: DEC-0002
   entity_type: decision
   name: Separate logical and physical ADRs with distinct schemas
@@ -919,15 +978,14 @@ entities:
   source_path: adrs/logical/ADR-L-0001-ste-compliant-adr-system.yaml
   source_artifact_type: logical_adr
   domains: []
-  related_adrs: []
+  related_adrs:
+  - ADR-L-0001
   realized_by: []
   relationships:
     depends_on: []
     implements: []
     consumes: []
-    realizes:
-    - INV-0002
-    - INV-0003
+    realizes: []
 - entity_id: DEC-0003
   entity_type: decision
   name: Rich frontmatter as authoritative metadata, manifest as derived view
@@ -936,30 +994,33 @@ entities:
   source_path: adrs/logical/ADR-L-0001-ste-compliant-adr-system.yaml
   source_artifact_type: logical_adr
   domains: []
-  related_adrs: []
+  related_adrs:
+  - ADR-L-0001
   realized_by: []
   relationships:
     depends_on: []
     implements: []
     consumes: []
-    realizes:
-    - INV-0004
+    realizes: []
 - entity_id: DEC-0004
   entity_type: decision
-  name: Type-prefixed IDs (ADR-L-XXXX, ADR-P-XXXX) with 4-digit numbering
+  name: 'Governed type-prefixed human-recognition aliases (ADR-L-XXXX / ADR-P-XXXX)
+    with 4-digit numbering; UUID is canonical machine identity
+
+    '
   introduced_by: ADR-L-0001
   lifecycle_stage: active
   source_path: adrs/logical/ADR-L-0001-ste-compliant-adr-system.yaml
   source_artifact_type: logical_adr
   domains: []
-  related_adrs: []
+  related_adrs:
+  - ADR-L-0001
   realized_by: []
   relationships:
     depends_on: []
     implements: []
     consumes: []
-    realizes:
-    - INV-0005
+    realizes: []
 - entity_id: DEC-0005
   entity_type: decision
   name: PROJECT.yaml for project-level metadata, separate from ADR metadata
@@ -968,7 +1029,8 @@ entities:
   source_path: adrs/logical/ADR-L-0001-ste-compliant-adr-system.yaml
   source_artifact_type: logical_adr
   domains: []
-  related_adrs: []
+  related_adrs:
+  - ADR-L-0001
   realized_by: []
   relationships:
     depends_on: []
@@ -983,7 +1045,8 @@ entities:
   source_path: adrs/logical/ADR-L-0001-ste-compliant-adr-system.yaml
   source_artifact_type: logical_adr
   domains: []
-  related_adrs: []
+  related_adrs:
+  - ADR-L-0001
   realized_by: []
   relationships:
     depends_on: []
@@ -998,7 +1061,8 @@ entities:
   source_path: adrs/logical/ADR-L-0002-multi-scope-adr-architecture.yaml
   source_artifact_type: logical_adr
   domains: []
-  related_adrs: []
+  related_adrs:
+  - ADR-L-0002
   realized_by: []
   relationships:
     depends_on: []
@@ -1013,7 +1077,8 @@ entities:
   source_path: adrs/logical/ADR-L-0003-quality-assurance-and-testing-strategy.yaml
   source_artifact_type: logical_adr
   domains: []
-  related_adrs: []
+  related_adrs:
+  - ADR-L-0003
   realized_by: []
   relationships:
     depends_on: []
@@ -1028,7 +1093,8 @@ entities:
   source_path: adrs/logical/ADR-L-0004-adr-to-code-traceability-via-decorators.yaml
   source_artifact_type: logical_adr
   domains: []
-  related_adrs: []
+  related_adrs:
+  - ADR-L-0004
   realized_by: []
   relationships:
     depends_on: []
@@ -1043,7 +1109,8 @@ entities:
   source_path: adrs/logical/ADR-L-0005-adr-to-prompt-translation.yaml
   source_artifact_type: logical_adr
   domains: []
-  related_adrs: []
+  related_adrs:
+  - ADR-L-0005
   realized_by: []
   relationships:
     depends_on: []
@@ -1058,7 +1125,8 @@ entities:
   source_path: adrs/logical/ADR-L-0006-rule-library-sub-module.yaml
   source_artifact_type: logical_adr
   domains: []
-  related_adrs: []
+  related_adrs:
+  - ADR-L-0006
   realized_by: []
   relationships:
     depends_on: []
@@ -1073,16 +1141,14 @@ entities:
   source_path: adrs/logical/ADR-L-0007-deterministic-documentation-projection.yaml
   source_artifact_type: logical_adr
   domains: []
-  related_adrs: []
+  related_adrs:
+  - ADR-L-0007
   realized_by: []
   relationships:
     depends_on: []
     implements: []
     consumes: []
-    realizes:
-    - INV-0037
-    - INV-0038
-    - INV-0039
+    realizes: []
 - entity_id: DEC-0013
   entity_type: decision
   name: Use one validator with explicit validation modes
@@ -1091,7 +1157,8 @@ entities:
   source_path: adrs/logical/ADR-L-0008-validation-modes-for-draft-and-complete-adrs.yaml
   source_artifact_type: logical_adr
   domains: []
-  related_adrs: []
+  related_adrs:
+  - ADR-L-0008
   realized_by: []
   relationships:
     depends_on: []
@@ -1106,7 +1173,8 @@ entities:
   source_path: adrs/logical/ADR-L-0009-derived-architecture-discovery-surfaces.yaml
   source_artifact_type: logical_adr
   domains: []
-  related_adrs: []
+  related_adrs:
+  - ADR-L-0009
   realized_by: []
   relationships:
     depends_on: []
@@ -1121,7 +1189,8 @@ entities:
   source_path: adrs/logical/ADR-L-0003-quality-assurance-and-testing-strategy.yaml
   source_artifact_type: logical_adr
   domains: []
-  related_adrs: []
+  related_adrs:
+  - ADR-L-0003
   realized_by: []
   relationships:
     depends_on: []
@@ -1137,7 +1206,8 @@ entities:
   source_path: adrs/logical/ADR-L-0004-adr-to-code-traceability-via-decorators.yaml
   source_artifact_type: logical_adr
   domains: []
-  related_adrs: []
+  related_adrs:
+  - ADR-L-0004
   realized_by: []
   relationships:
     depends_on: []
@@ -1152,7 +1222,8 @@ entities:
   source_path: adrs/logical/ADR-L-0005-adr-to-prompt-translation.yaml
   source_artifact_type: logical_adr
   domains: []
-  related_adrs: []
+  related_adrs:
+  - ADR-L-0005
   realized_by: []
   relationships:
     depends_on: []
@@ -1167,7 +1238,8 @@ entities:
   source_path: adrs/logical/ADR-L-0006-rule-library-sub-module.yaml
   source_artifact_type: logical_adr
   domains: []
-  related_adrs: []
+  related_adrs:
+  - ADR-L-0006
   realized_by: []
   relationships:
     depends_on: []
@@ -1182,15 +1254,14 @@ entities:
   source_path: adrs/logical/ADR-L-0007-deterministic-documentation-projection.yaml
   source_artifact_type: logical_adr
   domains: []
-  related_adrs: []
+  related_adrs:
+  - ADR-L-0007
   realized_by: []
   relationships:
     depends_on: []
     implements: []
     consumes: []
-    realizes:
-    - INV-0037
-    - INV-0039
+    realizes: []
 - entity_id: DEC-0020
   entity_type: decision
   name: Define structural mode for schema-aligned drafts
@@ -1199,7 +1270,8 @@ entities:
   source_path: adrs/logical/ADR-L-0008-validation-modes-for-draft-and-complete-adrs.yaml
   source_artifact_type: logical_adr
   domains: []
-  related_adrs: []
+  related_adrs:
+  - ADR-L-0008
   realized_by: []
   relationships:
     depends_on: []
@@ -1215,7 +1287,8 @@ entities:
   source_path: adrs/logical/ADR-L-0009-derived-architecture-discovery-surfaces.yaml
   source_artifact_type: logical_adr
   domains: []
-  related_adrs: []
+  related_adrs:
+  - ADR-L-0009
   realized_by: []
   relationships:
     depends_on: []
@@ -1230,7 +1303,8 @@ entities:
   source_path: adrs/logical/ADR-L-0003-quality-assurance-and-testing-strategy.yaml
   source_artifact_type: logical_adr
   domains: []
-  related_adrs: []
+  related_adrs:
+  - ADR-L-0003
   realized_by: []
   relationships:
     depends_on: []
@@ -1245,7 +1319,8 @@ entities:
   source_path: adrs/logical/ADR-L-0004-adr-to-code-traceability-via-decorators.yaml
   source_artifact_type: logical_adr
   domains: []
-  related_adrs: []
+  related_adrs:
+  - ADR-L-0004
   realized_by: []
   relationships:
     depends_on: []
@@ -1260,7 +1335,8 @@ entities:
   source_path: adrs/logical/ADR-L-0005-adr-to-prompt-translation.yaml
   source_artifact_type: logical_adr
   domains: []
-  related_adrs: []
+  related_adrs:
+  - ADR-L-0005
   realized_by: []
   relationships:
     depends_on: []
@@ -1275,7 +1351,8 @@ entities:
   source_path: adrs/logical/ADR-L-0006-rule-library-sub-module.yaml
   source_artifact_type: logical_adr
   domains: []
-  related_adrs: []
+  related_adrs:
+  - ADR-L-0006
   realized_by: []
   relationships:
     depends_on: []
@@ -1290,15 +1367,14 @@ entities:
   source_path: adrs/logical/ADR-L-0007-deterministic-documentation-projection.yaml
   source_artifact_type: logical_adr
   domains: []
-  related_adrs: []
+  related_adrs:
+  - ADR-L-0007
   realized_by: []
   relationships:
     depends_on: []
     implements: []
     consumes: []
-    realizes:
-    - INV-0038
-    - INV-0039
+    realizes: []
 - entity_id: DEC-0027
   entity_type: decision
   name: Define complete mode for population readiness
@@ -1307,7 +1383,8 @@ entities:
   source_path: adrs/logical/ADR-L-0008-validation-modes-for-draft-and-complete-adrs.yaml
   source_artifact_type: logical_adr
   domains: []
-  related_adrs: []
+  related_adrs:
+  - ADR-L-0008
   realized_by: []
   relationships:
     depends_on: []
@@ -1323,7 +1400,8 @@ entities:
   source_path: adrs/logical/ADR-L-0009-derived-architecture-discovery-surfaces.yaml
   source_artifact_type: logical_adr
   domains: []
-  related_adrs: []
+  related_adrs:
+  - ADR-L-0009
   realized_by: []
   relationships:
     depends_on: []
@@ -1338,7 +1416,8 @@ entities:
   source_path: adrs/logical/ADR-L-0003-quality-assurance-and-testing-strategy.yaml
   source_artifact_type: logical_adr
   domains: []
-  related_adrs: []
+  related_adrs:
+  - ADR-L-0003
   realized_by: []
   relationships:
     depends_on: []
@@ -1353,7 +1432,8 @@ entities:
   source_path: adrs/logical/ADR-L-0005-adr-to-prompt-translation.yaml
   source_artifact_type: logical_adr
   domains: []
-  related_adrs: []
+  related_adrs:
+  - ADR-L-0005
   realized_by: []
   relationships:
     depends_on: []
@@ -1368,7 +1448,8 @@ entities:
   source_path: adrs/logical/ADR-L-0006-rule-library-sub-module.yaml
   source_artifact_type: logical_adr
   domains: []
-  related_adrs: []
+  related_adrs:
+  - ADR-L-0006
   realized_by: []
   relationships:
     depends_on: []
@@ -1383,7 +1464,8 @@ entities:
   source_path: adrs/logical/ADR-L-0008-validation-modes-for-draft-and-complete-adrs.yaml
   source_artifact_type: logical_adr
   domains: []
-  related_adrs: []
+  related_adrs:
+  - ADR-L-0008
   realized_by: []
   relationships:
     depends_on: []
@@ -1398,7 +1480,8 @@ entities:
   source_path: adrs/logical/ADR-L-0003-quality-assurance-and-testing-strategy.yaml
   source_artifact_type: logical_adr
   domains: []
-  related_adrs: []
+  related_adrs:
+  - ADR-L-0003
   realized_by: []
   relationships:
     depends_on: []
@@ -1413,7 +1496,8 @@ entities:
   source_path: adrs/logical/ADR-L-0006-rule-library-sub-module.yaml
   source_artifact_type: logical_adr
   domains: []
-  related_adrs: []
+  related_adrs:
+  - ADR-L-0006
   realized_by: []
   relationships:
     depends_on: []
@@ -1428,7 +1512,8 @@ entities:
   source_path: adrs/logical/ADR-L-0008-validation-modes-for-draft-and-complete-adrs.yaml
   source_artifact_type: logical_adr
   domains: []
-  related_adrs: []
+  related_adrs:
+  - ADR-L-0008
   realized_by: []
   relationships:
     depends_on: []
@@ -1444,7 +1529,8 @@ entities:
   source_path: adrs/logical/ADR-L-0010-kernel-interface-contract-and-validation-profiles.yaml
   source_artifact_type: logical_adr
   domains: []
-  related_adrs: []
+  related_adrs:
+  - ADR-L-0010
   realized_by: []
   relationships:
     depends_on: []
@@ -1459,7 +1545,8 @@ entities:
   source_path: adrs/logical/ADR-L-0010-kernel-interface-contract-and-validation-profiles.yaml
   source_artifact_type: logical_adr
   domains: []
-  related_adrs: []
+  related_adrs:
+  - ADR-L-0010
   realized_by: []
   relationships:
     depends_on: []
@@ -1475,7 +1562,8 @@ entities:
   source_path: adrs/logical/ADR-L-0010-kernel-interface-contract-and-validation-profiles.yaml
   source_artifact_type: logical_adr
   domains: []
-  related_adrs: []
+  related_adrs:
+  - ADR-L-0010
   realized_by: []
   relationships:
     depends_on: []
@@ -1490,7 +1578,8 @@ entities:
   source_path: adrs/logical/ADR-L-0010-kernel-interface-contract-and-validation-profiles.yaml
   source_artifact_type: logical_adr
   domains: []
-  related_adrs: []
+  related_adrs:
+  - ADR-L-0010
   realized_by: []
   relationships:
     depends_on: []
@@ -1506,7 +1595,8 @@ entities:
   source_path: adrs/logical/ADR-L-0011-metadata-schemas-and-remediation-ledger-enforcement.yaml
   source_artifact_type: logical_adr
   domains: []
-  related_adrs: []
+  related_adrs:
+  - ADR-L-0011
   realized_by: []
   relationships:
     depends_on: []
@@ -1521,7 +1611,8 @@ entities:
   source_path: adrs/logical/ADR-L-0011-metadata-schemas-and-remediation-ledger-enforcement.yaml
   source_artifact_type: logical_adr
   domains: []
-  related_adrs: []
+  related_adrs:
+  - ADR-L-0011
   realized_by: []
   relationships:
     depends_on: []
@@ -1536,7 +1627,8 @@ entities:
   source_path: adrs/logical/ADR-L-0011-metadata-schemas-and-remediation-ledger-enforcement.yaml
   source_artifact_type: logical_adr
   domains: []
-  related_adrs: []
+  related_adrs:
+  - ADR-L-0011
   realized_by: []
   relationships:
     depends_on: []
@@ -1552,7 +1644,8 @@ entities:
   source_path: adrs/logical/ADR-L-0011-metadata-schemas-and-remediation-ledger-enforcement.yaml
   source_artifact_type: logical_adr
   domains: []
-  related_adrs: []
+  related_adrs:
+  - ADR-L-0011
   realized_by: []
   relationships:
     depends_on: []
@@ -1567,7 +1660,8 @@ entities:
   source_path: adrs/logical/ADR-L-0010-kernel-interface-contract-and-validation-profiles.yaml
   source_artifact_type: logical_adr
   domains: []
-  related_adrs: []
+  related_adrs:
+  - ADR-L-0010
   realized_by: []
   relationships:
     depends_on: []
@@ -1583,7 +1677,8 @@ entities:
   source_path: adrs/logical/ADR-L-0012-federation-authority-and-qualified-identity.yaml
   source_artifact_type: logical_adr
   domains: []
-  related_adrs: []
+  related_adrs:
+  - ADR-L-0012
   realized_by: []
   relationships:
     depends_on: []
@@ -1598,7 +1693,8 @@ entities:
   source_path: adrs/logical/ADR-L-0012-federation-authority-and-qualified-identity.yaml
   source_artifact_type: logical_adr
   domains: []
-  related_adrs: []
+  related_adrs:
+  - ADR-L-0012
   realized_by: []
   relationships:
     depends_on: []
@@ -1607,14 +1703,15 @@ entities:
     realizes: []
 - entity_id: DEC-0047
   entity_type: decision
-  name: Keep namespace separate from bare ID and use qualification only for cross-repo
-    references
+  name: Qualify machine identity as (architecture_namespace, UUID); keep human alias
+    qualification derived
   introduced_by: ADR-L-0012
   lifecycle_stage: active
   source_path: adrs/logical/ADR-L-0012-federation-authority-and-qualified-identity.yaml
   source_artifact_type: logical_adr
   domains: []
-  related_adrs: []
+  related_adrs:
+  - ADR-L-0012
   realized_by: []
   relationships:
     depends_on: []
@@ -1629,7 +1726,8 @@ entities:
   source_path: adrs/logical/ADR-L-0004-adr-to-code-traceability-via-decorators.yaml
   source_artifact_type: logical_adr
   domains: []
-  related_adrs: []
+  related_adrs:
+  - ADR-L-0004
   realized_by: []
   relationships:
     depends_on: []
@@ -1644,7 +1742,8 @@ entities:
   source_path: adrs/logical/ADR-L-0004-adr-to-code-traceability-via-decorators.yaml
   source_artifact_type: logical_adr
   domains: []
-  related_adrs: []
+  related_adrs:
+  - ADR-L-0004
   realized_by: []
   relationships:
     depends_on: []
@@ -1654,12 +1753,14 @@ entities:
 - entity_id: DEC-0050
   entity_type: decision
   name: Use ArchitectureRepository as the supported in-process semantic entry point
+    with UUID, governed alias, and logical URI lookup
   introduced_by: ADR-L-0013
   lifecycle_stage: active
   source_path: adrs/logical/ADR-L-0013-architecture-repository-boundary-and-normalized-semantic-model.yaml
   source_artifact_type: logical_adr
   domains: []
-  related_adrs: []
+  related_adrs:
+  - ADR-L-0013
   realized_by: []
   relationships:
     depends_on: []
@@ -1668,13 +1769,14 @@ entities:
     realizes: []
 - entity_id: DEC-0051
   entity_type: decision
-  name: Expose a NormalizedArchitectureModel as the repository semantic payload
+  name: Adopt NormalizedArchitectureModel 2.0 as the v1.3 repository semantic payload
   introduced_by: ADR-L-0013
   lifecycle_stage: active
   source_path: adrs/logical/ADR-L-0013-architecture-repository-boundary-and-normalized-semantic-model.yaml
   source_artifact_type: logical_adr
   domains: []
-  related_adrs: []
+  related_adrs:
+  - ADR-L-0013
   realized_by: []
   relationships:
     depends_on: []
@@ -1690,7 +1792,8 @@ entities:
   source_path: adrs/logical/ADR-L-0013-architecture-repository-boundary-and-normalized-semantic-model.yaml
   source_artifact_type: logical_adr
   domains: []
-  related_adrs: []
+  related_adrs:
+  - ADR-L-0013
   realized_by: []
   relationships:
     depends_on: []
@@ -1705,7 +1808,8 @@ entities:
   source_path: adrs/logical/ADR-L-0014-brownfield-onboarding-and-canonicalization-workflow.yaml
   source_artifact_type: logical_adr
   domains: []
-  related_adrs: []
+  related_adrs:
+  - ADR-L-0014
   realized_by: []
   relationships:
     depends_on: []
@@ -1721,7 +1825,8 @@ entities:
   source_path: adrs/logical/ADR-L-0014-brownfield-onboarding-and-canonicalization-workflow.yaml
   source_artifact_type: logical_adr
   domains: []
-  related_adrs: []
+  related_adrs:
+  - ADR-L-0014
   realized_by: []
   relationships:
     depends_on: []
@@ -1737,7 +1842,8 @@ entities:
   source_path: adrs/logical/ADR-L-0014-brownfield-onboarding-and-canonicalization-workflow.yaml
   source_artifact_type: logical_adr
   domains: []
-  related_adrs: []
+  related_adrs:
+  - ADR-L-0014
   realized_by: []
   relationships:
     depends_on: []
@@ -1753,7 +1859,8 @@ entities:
   source_path: adrs/logical/ADR-L-0014-brownfield-onboarding-and-canonicalization-workflow.yaml
   source_artifact_type: logical_adr
   domains: []
-  related_adrs: []
+  related_adrs:
+  - ADR-L-0014
   realized_by: []
   relationships:
     depends_on: []
@@ -1769,7 +1876,8 @@ entities:
   source_path: adrs/logical/ADR-L-0009-derived-architecture-discovery-surfaces.yaml
   source_artifact_type: logical_adr
   domains: []
-  related_adrs: []
+  related_adrs:
+  - ADR-L-0009
   realized_by: []
   relationships:
     depends_on: []
@@ -1784,7 +1892,8 @@ entities:
   source_path: adrs/logical/ADR-L-0009-derived-architecture-discovery-surfaces.yaml
   source_artifact_type: logical_adr
   domains: []
-  related_adrs: []
+  related_adrs:
+  - ADR-L-0009
   realized_by: []
   relationships:
     depends_on: []
@@ -1800,7 +1909,8 @@ entities:
   source_path: adrs/logical/ADR-L-0010-kernel-interface-contract-and-validation-profiles.yaml
   source_artifact_type: logical_adr
   domains: []
-  related_adrs: []
+  related_adrs:
+  - ADR-L-0010
   realized_by: []
   relationships:
     depends_on: []
@@ -1816,7 +1926,8 @@ entities:
   source_path: adrs/logical/ADR-L-0010-kernel-interface-contract-and-validation-profiles.yaml
   source_artifact_type: logical_adr
   domains: []
-  related_adrs: []
+  related_adrs:
+  - ADR-L-0010
   realized_by: []
   relationships:
     depends_on: []
@@ -1832,7 +1943,8 @@ entities:
   source_path: adrs/logical/ADR-L-0013-architecture-repository-boundary-and-normalized-semantic-model.yaml
   source_artifact_type: logical_adr
   domains: []
-  related_adrs: []
+  related_adrs:
+  - ADR-L-0013
   realized_by: []
   relationships:
     depends_on: []
@@ -1847,7 +1959,8 @@ entities:
   source_path: adrs/logical/ADR-L-0013-architecture-repository-boundary-and-normalized-semantic-model.yaml
   source_artifact_type: logical_adr
   domains: []
-  related_adrs: []
+  related_adrs:
+  - ADR-L-0013
   realized_by: []
   relationships:
     depends_on: []
@@ -1863,7 +1976,8 @@ entities:
   source_path: adrs/logical/ADR-L-0015-adr-governance-state-and-override-semantics.yaml
   source_artifact_type: logical_adr
   domains: []
-  related_adrs: []
+  related_adrs:
+  - ADR-L-0015
   realized_by: []
   relationships:
     depends_on: []
@@ -1878,7 +1992,8 @@ entities:
   source_path: adrs/logical/ADR-L-0015-adr-governance-state-and-override-semantics.yaml
   source_artifact_type: logical_adr
   domains: []
-  related_adrs: []
+  related_adrs:
+  - ADR-L-0015
   realized_by: []
   relationships:
     depends_on: []
@@ -1893,7 +2008,8 @@ entities:
   source_path: adrs/logical/ADR-L-0015-adr-governance-state-and-override-semantics.yaml
   source_artifact_type: logical_adr
   domains: []
-  related_adrs: []
+  related_adrs:
+  - ADR-L-0015
   realized_by: []
   relationships:
     depends_on: []
@@ -1908,7 +2024,8 @@ entities:
   source_path: adrs/logical/ADR-L-0015-adr-governance-state-and-override-semantics.yaml
   source_artifact_type: logical_adr
   domains: []
-  related_adrs: []
+  related_adrs:
+  - ADR-L-0015
   realized_by: []
   relationships:
     depends_on: []
@@ -1924,7 +2041,8 @@ entities:
   source_path: adrs/logical/ADR-L-0013-architecture-repository-boundary-and-normalized-semantic-model.yaml
   source_artifact_type: logical_adr
   domains: []
-  related_adrs: []
+  related_adrs:
+  - ADR-L-0013
   realized_by: []
   relationships:
     depends_on: []
@@ -1940,7 +2058,8 @@ entities:
   source_path: adrs/logical/ADR-L-0013-architecture-repository-boundary-and-normalized-semantic-model.yaml
   source_artifact_type: logical_adr
   domains: []
-  related_adrs: []
+  related_adrs:
+  - ADR-L-0013
   realized_by: []
   relationships:
     depends_on: []
@@ -1949,13 +2068,15 @@ entities:
     realizes: []
 - entity_id: DEC-0069
   entity_type: decision
-  name: Extend ArchitectureRepository with deterministic orientation helpers
+  name: Extend ArchitectureRepository with deterministic orientation helpers for UUID,
+    alias_id, alias_ref, and URI lookup
   introduced_by: ADR-L-0016
   lifecycle_stage: active
   source_path: adrs/logical/ADR-L-0016-deterministic-corpus-query-and-authoring-orientation.yaml
   source_artifact_type: logical_adr
   domains: []
-  related_adrs: []
+  related_adrs:
+  - ADR-L-0016
   realized_by: []
   relationships:
     depends_on: []
@@ -1970,7 +2091,8 @@ entities:
   source_path: adrs/logical/ADR-L-0016-deterministic-corpus-query-and-authoring-orientation.yaml
   source_artifact_type: logical_adr
   domains: []
-  related_adrs: []
+  related_adrs:
+  - ADR-L-0016
   realized_by: []
   relationships:
     depends_on: []
@@ -1986,7 +2108,8 @@ entities:
   source_path: adrs/logical/ADR-L-0017-forward-authoring-ergonomics-for-split-physical-adr-types.yaml
   source_artifact_type: logical_adr
   domains: []
-  related_adrs: []
+  related_adrs:
+  - ADR-L-0017
   realized_by: []
   relationships:
     depends_on: []
@@ -2002,7 +2125,8 @@ entities:
   source_path: adrs/logical/ADR-L-0017-forward-authoring-ergonomics-for-split-physical-adr-types.yaml
   source_artifact_type: logical_adr
   domains: []
-  related_adrs: []
+  related_adrs:
+  - ADR-L-0017
   realized_by: []
   relationships:
     depends_on: []
@@ -2011,13 +2135,15 @@ entities:
     realizes: []
 - entity_id: DEC-0073
   entity_type: decision
-  name: Make forward-authoring ADR ID allocation monotonic and non-reusable
+  name: Make forward-authoring type-prefixed ADR alias_id allocation monotonic and
+    non-reusable
   introduced_by: ADR-L-0016
   lifecycle_stage: active
   source_path: adrs/logical/ADR-L-0016-deterministic-corpus-query-and-authoring-orientation.yaml
   source_artifact_type: logical_adr
   domains: []
-  related_adrs: []
+  related_adrs:
+  - ADR-L-0016
   realized_by: []
   relationships:
     depends_on: []
@@ -2033,7 +2159,8 @@ entities:
   source_path: adrs/logical/ADR-L-0017-forward-authoring-ergonomics-for-split-physical-adr-types.yaml
   source_artifact_type: logical_adr
   domains: []
-  related_adrs: []
+  related_adrs:
+  - ADR-L-0017
   realized_by: []
   relationships:
     depends_on: []
@@ -2042,13 +2169,14 @@ entities:
     realizes: []
 - entity_id: DEC-0075
   entity_type: decision
-  name: Exclude reserved ADR IDs 9000-9999 from standard forward allocation
+  name: Exclude reserved ADR alias IDs 9000-9999 from standard forward alias allocation
   introduced_by: ADR-L-0016
   lifecycle_stage: active
   source_path: adrs/logical/ADR-L-0016-deterministic-corpus-query-and-authoring-orientation.yaml
   source_artifact_type: logical_adr
   domains: []
-  related_adrs: []
+  related_adrs:
+  - ADR-L-0016
   realized_by: []
   relationships:
     depends_on: []
@@ -2063,7 +2191,8 @@ entities:
   source_path: adrs/logical/ADR-L-0004-adr-to-code-traceability-via-decorators.yaml
   source_artifact_type: logical_adr
   domains: []
-  related_adrs: []
+  related_adrs:
+  - ADR-L-0004
   realized_by: []
   relationships:
     depends_on: []
@@ -2072,14 +2201,17 @@ entities:
     realizes: []
 - entity_id: DEC-0077
   entity_type: decision
-  name: Emit workspace-attribution-federation.yaml as read-only cross-repo attribution
-    index
+  name: 'Emit workspace-attribution-federation.yaml as read-only cross-repo attribution
+    index keyed by workspace routing identity that resolves to architecture_namespace
+
+    '
   introduced_by: ADR-L-0012
   lifecycle_stage: active
   source_path: adrs/logical/ADR-L-0012-federation-authority-and-qualified-identity.yaml
   source_artifact_type: logical_adr
   domains: []
-  related_adrs: []
+  related_adrs:
+  - ADR-L-0012
   realized_by: []
   relationships:
     depends_on: []
@@ -2094,7 +2226,8 @@ entities:
   source_path: adrs/logical/ADR-L-0003-quality-assurance-and-testing-strategy.yaml
   source_artifact_type: logical_adr
   domains: []
-  related_adrs: []
+  related_adrs:
+  - ADR-L-0003
   realized_by: []
   relationships:
     depends_on: []
@@ -2109,7 +2242,8 @@ entities:
   source_path: adrs/logical/ADR-L-0013-architecture-repository-boundary-and-normalized-semantic-model.yaml
   source_artifact_type: logical_adr
   domains: []
-  related_adrs: []
+  related_adrs:
+  - ADR-L-0013
   realized_by: []
   relationships:
     depends_on: []
@@ -2124,7 +2258,8 @@ entities:
   source_path: adrs/logical/ADR-L-0013-architecture-repository-boundary-and-normalized-semantic-model.yaml
   source_artifact_type: logical_adr
   domains: []
-  related_adrs: []
+  related_adrs:
+  - ADR-L-0013
   realized_by: []
   relationships:
     depends_on: []
@@ -2139,7 +2274,8 @@ entities:
   source_path: adrs/logical/ADR-L-0003-quality-assurance-and-testing-strategy.yaml
   source_artifact_type: logical_adr
   domains: []
-  related_adrs: []
+  related_adrs:
+  - ADR-L-0003
   realized_by: []
   relationships:
     depends_on: []
@@ -2155,7 +2291,8 @@ entities:
   source_path: adrs/logical/ADR-L-0013-architecture-repository-boundary-and-normalized-semantic-model.yaml
   source_artifact_type: logical_adr
   domains: []
-  related_adrs: []
+  related_adrs:
+  - ADR-L-0013
   realized_by: []
   relationships:
     depends_on: []
@@ -2170,7 +2307,8 @@ entities:
   source_path: adrs/logical/ADR-L-0018-schema-v12-and-normalized-semantic-foundation.yaml
   source_artifact_type: logical_adr
   domains: []
-  related_adrs: []
+  related_adrs:
+  - ADR-L-0018
   realized_by: []
   relationships:
     depends_on: []
@@ -2179,13 +2317,15 @@ entities:
     realizes: []
 - entity_id: DEC-0084
   entity_type: decision
-  name: Represent external bindings as qualified references without absorbing authority
+  name: Represent external bindings as architecture_namespace + UUID references with
+    canonical fingerprint comparability
   introduced_by: ADR-L-0018
   lifecycle_stage: active
   source_path: adrs/logical/ADR-L-0018-schema-v12-and-normalized-semantic-foundation.yaml
   source_artifact_type: logical_adr
   domains: []
-  related_adrs: []
+  related_adrs:
+  - ADR-L-0018
   realized_by: []
   relationships:
     depends_on: []
@@ -2194,13 +2334,17 @@ entities:
     realizes: []
 - entity_id: DEC-0085
   entity_type: decision
-  name: Promote four already-authored entity types into normalized model version 1.1
+  name: 'Retain Phase-2 normalized model 1.1 promotion history and admit model 2.0
+    as the v1.3 compatibility event
+
+    '
   introduced_by: ADR-L-0018
   lifecycle_stage: active
   source_path: adrs/logical/ADR-L-0018-schema-v12-and-normalized-semantic-foundation.yaml
   source_artifact_type: logical_adr
   domains: []
-  related_adrs: []
+  related_adrs:
+  - ADR-L-0018
   realized_by: []
   relationships:
     depends_on: []
@@ -2216,7 +2360,8 @@ entities:
   source_path: adrs/logical/ADR-L-0018-schema-v12-and-normalized-semantic-foundation.yaml
   source_artifact_type: logical_adr
   domains: []
-  related_adrs: []
+  related_adrs:
+  - ADR-L-0018
   realized_by: []
   relationships:
     depends_on: []
@@ -2231,7 +2376,8 @@ entities:
   source_path: adrs/logical/ADR-L-0018-schema-v12-and-normalized-semantic-foundation.yaml
   source_artifact_type: logical_adr
   domains: []
-  related_adrs: []
+  related_adrs:
+  - ADR-L-0018
   realized_by: []
   relationships:
     depends_on: []
@@ -2240,13 +2386,459 @@ entities:
     realizes: []
 - entity_id: DEC-0088
   entity_type: decision
-  name: Make ADR Kit the exclusive repair authority for canonical entity-ID collisions
+  name: Split UUID integrity corruption (fail closed) from governed alias collision
+    repair
   introduced_by: ADR-L-0018
   lifecycle_stage: active
   source_path: adrs/logical/ADR-L-0018-schema-v12-and-normalized-semantic-foundation.yaml
   source_artifact_type: logical_adr
   domains: []
-  related_adrs: []
+  related_adrs:
+  - ADR-L-0018
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: DEC-0089
+  entity_type: decision
+  name: Every admitted v1.3 identity-bearing record has an authored lowercase RFC
+    9562 UUIDv7 in `id` before projection
+  introduced_by: ADR-L-0019
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0019-canonical-entity-identity.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs:
+  - ADR-L-0019
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: DEC-0090
+  entity_type: decision
+  name: Every normalized identity-bearing entity materializes `entity_type`
+  introduced_by: ADR-L-0019
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0019-canonical-entity-identity.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs:
+  - ADR-L-0019
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: DEC-0091
+  entity_type: decision
+  name: Migration preserves the existing type-prefixed identifier as repository-local
+    governed `alias_id`
+  introduced_by: ADR-L-0019
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0019-canonical-entity-identity.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs:
+  - ADR-L-0019
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: DEC-0092
+  entity_type: decision
+  name: Every identity-bearing record authors a stable-by-default recognition mnemonic
+    `alias_name` matching `^[a-z][a-z0-9]*(?:-[a-z0-9]+)*$` at 3–96 characters
+  introduced_by: ADR-L-0019
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0019-canonical-entity-identity.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs:
+  - ADR-L-0019
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: DEC-0093
+  entity_type: decision
+  name: Keep alias_ref derived and non-authoritative
+  introduced_by: ADR-L-0019
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0019-canonical-entity-identity.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs:
+  - ADR-L-0019
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: DEC-0094
+  entity_type: decision
+  name: V1.3 adds no universal authored `title`
+  introduced_by: ADR-L-0019
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0019-canonical-entity-identity.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs:
+  - ADR-L-0019
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: DEC-0095
+  entity_type: decision
+  name: Canonical authored entity references contain UUIDs only
+  introduced_by: ADR-L-0019
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0019-canonical-entity-identity.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs:
+  - ADR-L-0019
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: DEC-0096
+  entity_type: decision
+  name: V1.3 relationship endpoints are UUIDs
+  introduced_by: ADR-L-0019
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0019-canonical-entity-identity.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs:
+  - ADR-L-0019
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: DEC-0097
+  entity_type: decision
+  name: Admit UUID identity only for independently addressable durable entity kinds
+  introduced_by: ADR-L-0019
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0019-canonical-entity-identity.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs:
+  - ADR-L-0019
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: DEC-0098
+  entity_type: decision
+  name: V1.3 derives required normalized URI `adr://<architecture_namespace>/entities/<uuid>`
+    as a stable logical entity-resolution key
+  introduced_by: ADR-L-0019
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0019-canonical-entity-identity.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs:
+  - ADR-L-0019
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: DEC-0099
+  entity_type: decision
+  name: UUIDv7 mint time begins the v1.3 identity record and is decoded at millisecond
+    precision into derived RFC 3339 UTC `created_at` when needed
+  introduced_by: ADR-L-0019
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0019-canonical-entity-identity.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs:
+  - ADR-L-0019
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: DEC-0100
+  entity_type: decision
+  name: Defer canonical entity-level updated_at to transactional authoring
+  introduced_by: ADR-L-0019
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0019-canonical-entity-identity.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs:
+  - ADR-L-0019
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: DEC-0101
+  entity_type: decision
+  name: External v1.3 references use provider-authoritative namespace, UUID, kind,
+    and `sha256:<64 lowercase hexadecimal>` fingerprint
+  introduced_by: ADR-L-0019
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0019-canonical-entity-identity.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs:
+  - ADR-L-0019
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: DEC-0102
+  entity_type: decision
+  name: Distinct entities claiming one UUID fail closed as integrity corruption
+  introduced_by: ADR-L-0019
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0019-canonical-entity-identity.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs:
+  - ADR-L-0019
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: DEC-0103
+  entity_type: decision
+  name: Migration preflights before minting and records a complete authoritative identity
+    map
+  introduced_by: ADR-L-0019
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0019-canonical-entity-identity.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs:
+  - ADR-L-0019
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: DEC-0104
+  entity_type: decision
+  name: Migration preserves alias_id and proposes alias_name deterministically from
+    canonical fields
+  introduced_by: ADR-L-0019
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0019-canonical-entity-identity.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs:
+  - ADR-L-0019
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: DEC-0105
+  entity_type: decision
+  name: Migration semantic parity requires one-to-one admitted-entity mapping
+  introduced_by: ADR-L-0019
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0019-canonical-entity-identity.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs:
+  - ADR-L-0019
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: DEC-0106
+  entity_type: decision
+  name: Keep v1.0 frozen, v1.2 migratable, and v1.3 as a separate provisional authoring
+    line
+  introduced_by: ADR-L-0019
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0019-canonical-entity-identity.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs:
+  - ADR-L-0019
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: DEC-0107
+  entity_type: decision
+  name: architecture_namespace is stable provider authority; workspace keys are local
+    routing only
+  introduced_by: ADR-L-0019
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0019-canonical-entity-identity.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs:
+  - ADR-L-0019
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: DEC-0108
+  entity_type: decision
+  name: Emit ADR human projections under typed adr-projection paths with stable SDK
+    artifact identity
+  introduced_by: ADR-L-0007
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0007-deterministic-documentation-projection.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs:
+  - ADR-L-0007
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: DEC-0109
+  entity_type: decision
+  name: Human ADR projections render compiler-derived relationship semantics only
+  introduced_by: ADR-L-0007
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0007-deterministic-documentation-projection.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs:
+  - ADR-L-0007
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: DEC-0110
+  entity_type: decision
+  name: Classify documentation-projection inputs as derived facts or authored orientation
+  introduced_by: ADR-L-0007
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0007-deterministic-documentation-projection.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs:
+  - ADR-L-0007
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: DEC-0111
+  entity_type: decision
+  name: Allow a deterministic semantic intermediate model for documentation projection
+  introduced_by: ADR-L-0007
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0007-deterministic-documentation-projection.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs:
+  - ADR-L-0007
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: DEC-0112
+  entity_type: decision
+  name: Require projection-source closure for generated documentation freshness
+  introduced_by: ADR-L-0007
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0007-deterministic-documentation-projection.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs:
+  - ADR-L-0007
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: DEC-0113
+  entity_type: decision
+  name: Documentation projections reflect supported boundaries without redefining
+    them
+  introduced_by: ADR-L-0007
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0007-deterministic-documentation-projection.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs:
+  - ADR-L-0007
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: DEC-0114
+  entity_type: decision
+  name: Isolate repository-specific documentation-projection orientation by scope
+  introduced_by: ADR-L-0007
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0007-deterministic-documentation-projection.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs:
+  - ADR-L-0007
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: DEC-0115
+  entity_type: decision
+  name: Preserve legacy generic SYSTEM-OVERVIEW generation as compatibility-only
+  introduced_by: ADR-L-0007
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0007-deterministic-documentation-projection.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs:
+  - ADR-L-0007
   realized_by: []
   relationships:
     depends_on: []
@@ -2261,12 +2853,12 @@ entities:
   source_path: adrs/logical/ADR-L-9000-kernel-boot-publication-surface.yaml
   source_artifact_type: logical_adr
   domains: []
-  related_adrs: []
+  related_adrs:
+  - ADR-L-9000
   realized_by: []
   relationships:
     depends_on: []
-    implements:
-    - CAP-9000
+    implements: []
     consumes: []
     realizes: []
 - entity_id: INV-0001
@@ -2274,8 +2866,8 @@ entities:
   name: INV-0001
   introduced_by: ADR-L-0001
   lifecycle_stage: active
-  source_path: adrs/invariants/INV-0001-schema-validation-required.yaml
-  source_artifact_type: standalone_invariant
+  source_path: adrs/logical/ADR-L-0001-ste-compliant-adr-system.yaml
+  source_artifact_type: logical_adr
   domains: []
   related_adrs:
   - ADR-L-0001
@@ -2284,15 +2876,14 @@ entities:
     depends_on: []
     implements: []
     consumes: []
-    realizes:
-    - ADR-P-0002
+    realizes: []
 - entity_id: INV-0002
   entity_type: invariant
   name: INV-0002
-  introduced_by: ADR-L-0003
+  introduced_by: ADR-L-0001
   lifecycle_stage: active
-  source_path: adrs/invariants/INV-0002-runtime-hygiene-and-dependency-security.yaml
-  source_artifact_type: standalone_invariant
+  source_path: adrs/logical/ADR-L-0001-ste-compliant-adr-system.yaml
+  source_artifact_type: logical_adr
   domains: []
   related_adrs:
   - ADR-L-0001
@@ -2301,15 +2892,14 @@ entities:
     depends_on: []
     implements: []
     consumes: []
-    realizes:
-    - ADR-P-0001
+    realizes: []
 - entity_id: INV-0003
   entity_type: invariant
   name: INV-0003
-  introduced_by: ADR-L-0003
+  introduced_by: ADR-L-0001
   lifecycle_stage: active
-  source_path: adrs/invariants/INV-0003-meaningful-boundary-commits-required.yaml
-  source_artifact_type: standalone_invariant
+  source_path: adrs/logical/ADR-L-0001-ste-compliant-adr-system.yaml
+  source_artifact_type: logical_adr
   domains: []
   related_adrs:
   - ADR-L-0001
@@ -2318,15 +2908,14 @@ entities:
     depends_on: []
     implements: []
     consumes: []
-    realizes:
-    - ADR-P-0001
+    realizes: []
 - entity_id: INV-0004
   entity_type: invariant
   name: INV-0004
-  introduced_by: ADR-L-0012
+  introduced_by: ADR-L-0001
   lifecycle_stage: active
-  source_path: adrs/invariants/INV-0004-deterministic-contract-valid-registry-projection.yaml
-  source_artifact_type: standalone_invariant
+  source_path: adrs/logical/ADR-L-0001-ste-compliant-adr-system.yaml
+  source_artifact_type: logical_adr
   domains: []
   related_adrs:
   - ADR-L-0001
@@ -2335,16 +2924,14 @@ entities:
     depends_on: []
     implements: []
     consumes: []
-    realizes:
-    - ADR-P-0001
-    - ADR-PC-0001
+    realizes: []
 - entity_id: INV-0005
   entity_type: invariant
   name: INV-0005
-  introduced_by: ADR-L-0012
+  introduced_by: ADR-L-0001
   lifecycle_stage: active
-  source_path: adrs/invariants/INV-0005-scope-isolated-recursive-compilation.yaml
-  source_artifact_type: standalone_invariant
+  source_path: adrs/logical/ADR-L-0001-ste-compliant-adr-system.yaml
+  source_artifact_type: logical_adr
   domains: []
   related_adrs:
   - ADR-L-0001
@@ -2353,15 +2940,14 @@ entities:
     depends_on: []
     implements: []
     consumes: []
-    realizes:
-    - ADR-P-0001
+    realizes: []
 - entity_id: INV-0006
   entity_type: invariant
   name: INV-0006
-  introduced_by: ADR-L-0004
+  introduced_by: ADR-L-0001
   lifecycle_stage: active
-  source_path: adrs/invariants/INV-0006-implementation-artifacts-must-declare-architectural-authority.yaml
-  source_artifact_type: standalone_invariant
+  source_path: adrs/logical/ADR-L-0001-ste-compliant-adr-system.yaml
+  source_artifact_type: logical_adr
   domains: []
   related_adrs:
   - ADR-L-0001
@@ -2370,15 +2956,14 @@ entities:
     depends_on: []
     implements: []
     consumes: []
-    realizes:
-    - ADR-P-0001
+    realizes: []
 - entity_id: INV-0007
   entity_type: invariant
   name: INV-0007
-  introduced_by: ADR-L-0013
+  introduced_by: ADR-L-0001
   lifecycle_stage: active
-  source_path: adrs/invariants/INV-0007-architecture-consumers-must-use-the-repository-boundary.yaml
-  source_artifact_type: standalone_invariant
+  source_path: adrs/logical/ADR-L-0001-ste-compliant-adr-system.yaml
+  source_artifact_type: logical_adr
   domains: []
   related_adrs:
   - ADR-L-0001
@@ -2387,25 +2972,87 @@ entities:
     depends_on: []
     implements: []
     consumes: []
-    realizes:
-    - ADR-P-0001
-- entity_id: INV-0008
+    realizes: []
+- entity_id: INV-0009
   entity_type: invariant
-  name: INV-0008
-  introduced_by: ADR-L-0014
+  name: INV-0009
+  introduced_by: ADR-L-0019
   lifecycle_stage: active
-  source_path: adrs/invariants/INV-0008-rendered-artifacts-are-derived-only.yaml
-  source_artifact_type: standalone_invariant
+  source_path: adrs/logical/ADR-L-0019-canonical-entity-identity.yaml
+  source_artifact_type: logical_adr
   domains: []
-  related_adrs: []
+  related_adrs:
+  - ADR-L-0019
   realized_by: []
   relationships:
     depends_on: []
     implements: []
     consumes: []
-    realizes:
-    - ADR-PC-0001
-    - ADR-PC-0005
+    realizes: []
+- entity_id: INV-0010
+  entity_type: invariant
+  name: INV-0010
+  introduced_by: ADR-L-0019
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0019-canonical-entity-identity.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs:
+  - ADR-L-0019
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: INV-0011
+  entity_type: invariant
+  name: INV-0011
+  introduced_by: ADR-L-0019
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0019-canonical-entity-identity.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs:
+  - ADR-L-0019
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: INV-0012
+  entity_type: invariant
+  name: INV-0012
+  introduced_by: ADR-L-0019
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0019-canonical-entity-identity.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs:
+  - ADR-L-0019
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: INV-0013
+  entity_type: invariant
+  name: INV-0013
+  introduced_by: ADR-L-0019
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0019-canonical-entity-identity.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs:
+  - ADR-L-0019
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
 - entity_id: INV-0014
   entity_type: invariant
   name: INV-0014
@@ -2414,7 +3061,8 @@ entities:
   source_path: adrs/logical/ADR-L-0002-multi-scope-adr-architecture.yaml
   source_artifact_type: logical_adr
   domains: []
-  related_adrs: []
+  related_adrs:
+  - ADR-L-0002
   realized_by: []
   relationships:
     depends_on: []
@@ -2429,7 +3077,8 @@ entities:
   source_path: adrs/logical/ADR-L-0002-multi-scope-adr-architecture.yaml
   source_artifact_type: logical_adr
   domains: []
-  related_adrs: []
+  related_adrs:
+  - ADR-L-0002
   realized_by: []
   relationships:
     depends_on: []
@@ -2444,7 +3093,8 @@ entities:
   source_path: adrs/logical/ADR-L-0002-multi-scope-adr-architecture.yaml
   source_artifact_type: logical_adr
   domains: []
-  related_adrs: []
+  related_adrs:
+  - ADR-L-0002
   realized_by: []
   relationships:
     depends_on: []
@@ -2459,7 +3109,8 @@ entities:
   source_path: adrs/logical/ADR-L-0002-multi-scope-adr-architecture.yaml
   source_artifact_type: logical_adr
   domains: []
-  related_adrs: []
+  related_adrs:
+  - ADR-L-0002
   realized_by: []
   relationships:
     depends_on: []
@@ -2474,7 +3125,8 @@ entities:
   source_path: adrs/logical/ADR-L-0002-multi-scope-adr-architecture.yaml
   source_artifact_type: logical_adr
   domains: []
-  related_adrs: []
+  related_adrs:
+  - ADR-L-0002
   realized_by: []
   relationships:
     depends_on: []
@@ -2489,7 +3141,8 @@ entities:
   source_path: adrs/logical/ADR-L-0002-multi-scope-adr-architecture.yaml
   source_artifact_type: logical_adr
   domains: []
-  related_adrs: []
+  related_adrs:
+  - ADR-L-0002
   realized_by: []
   relationships:
     depends_on: []
@@ -2504,7 +3157,8 @@ entities:
   source_path: adrs/logical/ADR-L-0003-quality-assurance-and-testing-strategy.yaml
   source_artifact_type: logical_adr
   domains: []
-  related_adrs: []
+  related_adrs:
+  - ADR-L-0003
   realized_by: []
   relationships:
     depends_on: []
@@ -2519,7 +3173,8 @@ entities:
   source_path: adrs/logical/ADR-L-0003-quality-assurance-and-testing-strategy.yaml
   source_artifact_type: logical_adr
   domains: []
-  related_adrs: []
+  related_adrs:
+  - ADR-L-0003
   realized_by: []
   relationships:
     depends_on: []
@@ -2534,7 +3189,8 @@ entities:
   source_path: adrs/logical/ADR-L-0003-quality-assurance-and-testing-strategy.yaml
   source_artifact_type: logical_adr
   domains: []
-  related_adrs: []
+  related_adrs:
+  - ADR-L-0003
   realized_by: []
   relationships:
     depends_on: []
@@ -2549,7 +3205,8 @@ entities:
   source_path: adrs/logical/ADR-L-0003-quality-assurance-and-testing-strategy.yaml
   source_artifact_type: logical_adr
   domains: []
-  related_adrs: []
+  related_adrs:
+  - ADR-L-0003
   realized_by: []
   relationships:
     depends_on: []
@@ -2564,7 +3221,8 @@ entities:
   source_path: adrs/logical/ADR-L-0003-quality-assurance-and-testing-strategy.yaml
   source_artifact_type: logical_adr
   domains: []
-  related_adrs: []
+  related_adrs:
+  - ADR-L-0003
   realized_by: []
   relationships:
     depends_on: []
@@ -2579,7 +3237,8 @@ entities:
   source_path: adrs/logical/ADR-L-0003-quality-assurance-and-testing-strategy.yaml
   source_artifact_type: logical_adr
   domains: []
-  related_adrs: []
+  related_adrs:
+  - ADR-L-0003
   realized_by: []
   relationships:
     depends_on: []
@@ -2594,7 +3253,8 @@ entities:
   source_path: adrs/logical/ADR-L-0003-quality-assurance-and-testing-strategy.yaml
   source_artifact_type: logical_adr
   domains: []
-  related_adrs: []
+  related_adrs:
+  - ADR-L-0003
   realized_by: []
   relationships:
     depends_on: []
@@ -2609,7 +3269,8 @@ entities:
   source_path: adrs/logical/ADR-L-0004-adr-to-code-traceability-via-decorators.yaml
   source_artifact_type: logical_adr
   domains: []
-  related_adrs: []
+  related_adrs:
+  - ADR-L-0004
   realized_by: []
   relationships:
     depends_on: []
@@ -2624,7 +3285,8 @@ entities:
   source_path: adrs/logical/ADR-L-0004-adr-to-code-traceability-via-decorators.yaml
   source_artifact_type: logical_adr
   domains: []
-  related_adrs: []
+  related_adrs:
+  - ADR-L-0004
   realized_by: []
   relationships:
     depends_on: []
@@ -2639,7 +3301,8 @@ entities:
   source_path: adrs/logical/ADR-L-0004-adr-to-code-traceability-via-decorators.yaml
   source_artifact_type: logical_adr
   domains: []
-  related_adrs: []
+  related_adrs:
+  - ADR-L-0004
   realized_by: []
   relationships:
     depends_on: []
@@ -2654,7 +3317,8 @@ entities:
   source_path: adrs/logical/ADR-L-0004-adr-to-code-traceability-via-decorators.yaml
   source_artifact_type: logical_adr
   domains: []
-  related_adrs: []
+  related_adrs:
+  - ADR-L-0004
   realized_by: []
   relationships:
     depends_on: []
@@ -2669,7 +3333,8 @@ entities:
   source_path: adrs/logical/ADR-L-0004-adr-to-code-traceability-via-decorators.yaml
   source_artifact_type: logical_adr
   domains: []
-  related_adrs: []
+  related_adrs:
+  - ADR-L-0004
   realized_by: []
   relationships:
     depends_on: []
@@ -2684,7 +3349,8 @@ entities:
   source_path: adrs/logical/ADR-L-0004-adr-to-code-traceability-via-decorators.yaml
   source_artifact_type: logical_adr
   domains: []
-  related_adrs: []
+  related_adrs:
+  - ADR-L-0004
   realized_by: []
   relationships:
     depends_on: []
@@ -2699,7 +3365,8 @@ entities:
   source_path: adrs/logical/ADR-L-0006-rule-library-sub-module.yaml
   source_artifact_type: logical_adr
   domains: []
-  related_adrs: []
+  related_adrs:
+  - ADR-L-0006
   realized_by: []
   relationships:
     depends_on: []
@@ -2714,7 +3381,8 @@ entities:
   source_path: adrs/logical/ADR-L-0006-rule-library-sub-module.yaml
   source_artifact_type: logical_adr
   domains: []
-  related_adrs: []
+  related_adrs:
+  - ADR-L-0006
   realized_by: []
   relationships:
     depends_on: []
@@ -2729,7 +3397,8 @@ entities:
   source_path: adrs/logical/ADR-L-0006-rule-library-sub-module.yaml
   source_artifact_type: logical_adr
   domains: []
-  related_adrs: []
+  related_adrs:
+  - ADR-L-0006
   realized_by: []
   relationships:
     depends_on: []
@@ -2744,7 +3413,8 @@ entities:
   source_path: adrs/logical/ADR-L-0006-rule-library-sub-module.yaml
   source_artifact_type: logical_adr
   domains: []
-  related_adrs: []
+  related_adrs:
+  - ADR-L-0006
   realized_by: []
   relationships:
     depends_on: []
@@ -2759,7 +3429,8 @@ entities:
   source_path: adrs/logical/ADR-L-0007-deterministic-documentation-projection.yaml
   source_artifact_type: logical_adr
   domains: []
-  related_adrs: []
+  related_adrs:
+  - ADR-L-0007
   realized_by: []
   relationships:
     depends_on: []
@@ -2774,7 +3445,8 @@ entities:
   source_path: adrs/logical/ADR-L-0007-deterministic-documentation-projection.yaml
   source_artifact_type: logical_adr
   domains: []
-  related_adrs: []
+  related_adrs:
+  - ADR-L-0007
   realized_by: []
   relationships:
     depends_on: []
@@ -2789,7 +3461,8 @@ entities:
   source_path: adrs/logical/ADR-L-0007-deterministic-documentation-projection.yaml
   source_artifact_type: logical_adr
   domains: []
-  related_adrs: []
+  related_adrs:
+  - ADR-L-0007
   realized_by: []
   relationships:
     depends_on: []
@@ -2804,7 +3477,8 @@ entities:
   source_path: adrs/logical/ADR-L-0008-validation-modes-for-draft-and-complete-adrs.yaml
   source_artifact_type: logical_adr
   domains: []
-  related_adrs: []
+  related_adrs:
+  - ADR-L-0008
   realized_by: []
   relationships:
     depends_on: []
@@ -2819,7 +3493,8 @@ entities:
   source_path: adrs/logical/ADR-L-0008-validation-modes-for-draft-and-complete-adrs.yaml
   source_artifact_type: logical_adr
   domains: []
-  related_adrs: []
+  related_adrs:
+  - ADR-L-0008
   realized_by: []
   relationships:
     depends_on: []
@@ -2834,7 +3509,8 @@ entities:
   source_path: adrs/logical/ADR-L-0008-validation-modes-for-draft-and-complete-adrs.yaml
   source_artifact_type: logical_adr
   domains: []
-  related_adrs: []
+  related_adrs:
+  - ADR-L-0008
   realized_by: []
   relationships:
     depends_on: []
@@ -2849,7 +3525,8 @@ entities:
   source_path: adrs/logical/ADR-L-0009-derived-architecture-discovery-surfaces.yaml
   source_artifact_type: logical_adr
   domains: []
-  related_adrs: []
+  related_adrs:
+  - ADR-L-0009
   realized_by: []
   relationships:
     depends_on: []
@@ -2864,7 +3541,8 @@ entities:
   source_path: adrs/logical/ADR-L-0009-derived-architecture-discovery-surfaces.yaml
   source_artifact_type: logical_adr
   domains: []
-  related_adrs: []
+  related_adrs:
+  - ADR-L-0009
   realized_by: []
   relationships:
     depends_on: []
@@ -2879,7 +3557,8 @@ entities:
   source_path: adrs/logical/ADR-L-0009-derived-architecture-discovery-surfaces.yaml
   source_artifact_type: logical_adr
   domains: []
-  related_adrs: []
+  related_adrs:
+  - ADR-L-0009
   realized_by: []
   relationships:
     depends_on: []
@@ -2894,7 +3573,8 @@ entities:
   source_path: adrs/logical/ADR-L-0005-adr-to-prompt-translation.yaml
   source_artifact_type: logical_adr
   domains: []
-  related_adrs: []
+  related_adrs:
+  - ADR-L-0005
   realized_by: []
   relationships:
     depends_on: []
@@ -2909,7 +3589,8 @@ entities:
   source_path: adrs/logical/ADR-L-0005-adr-to-prompt-translation.yaml
   source_artifact_type: logical_adr
   domains: []
-  related_adrs: []
+  related_adrs:
+  - ADR-L-0005
   realized_by: []
   relationships:
     depends_on: []
@@ -2924,7 +3605,8 @@ entities:
   source_path: adrs/logical/ADR-L-0005-adr-to-prompt-translation.yaml
   source_artifact_type: logical_adr
   domains: []
-  related_adrs: []
+  related_adrs:
+  - ADR-L-0005
   realized_by: []
   relationships:
     depends_on: []
@@ -2939,7 +3621,8 @@ entities:
   source_path: adrs/logical/ADR-L-0005-adr-to-prompt-translation.yaml
   source_artifact_type: logical_adr
   domains: []
-  related_adrs: []
+  related_adrs:
+  - ADR-L-0005
   realized_by: []
   relationships:
     depends_on: []
@@ -2954,7 +3637,8 @@ entities:
   source_path: adrs/logical/ADR-L-0005-adr-to-prompt-translation.yaml
   source_artifact_type: logical_adr
   domains: []
-  related_adrs: []
+  related_adrs:
+  - ADR-L-0005
   realized_by: []
   relationships:
     depends_on: []
@@ -2969,7 +3653,8 @@ entities:
   source_path: adrs/logical/ADR-L-0005-adr-to-prompt-translation.yaml
   source_artifact_type: logical_adr
   domains: []
-  related_adrs: []
+  related_adrs:
+  - ADR-L-0005
   realized_by: []
   relationships:
     depends_on: []
@@ -2984,7 +3669,8 @@ entities:
   source_path: adrs/logical/ADR-L-0010-kernel-interface-contract-and-validation-profiles.yaml
   source_artifact_type: logical_adr
   domains: []
-  related_adrs: []
+  related_adrs:
+  - ADR-L-0010
   realized_by: []
   relationships:
     depends_on: []
@@ -2999,7 +3685,8 @@ entities:
   source_path: adrs/logical/ADR-L-0010-kernel-interface-contract-and-validation-profiles.yaml
   source_artifact_type: logical_adr
   domains: []
-  related_adrs: []
+  related_adrs:
+  - ADR-L-0010
   realized_by: []
   relationships:
     depends_on: []
@@ -3014,7 +3701,8 @@ entities:
   source_path: adrs/logical/ADR-L-0010-kernel-interface-contract-and-validation-profiles.yaml
   source_artifact_type: logical_adr
   domains: []
-  related_adrs: []
+  related_adrs:
+  - ADR-L-0010
   realized_by: []
   relationships:
     depends_on: []
@@ -3029,7 +3717,8 @@ entities:
   source_path: adrs/logical/ADR-L-0011-metadata-schemas-and-remediation-ledger-enforcement.yaml
   source_artifact_type: logical_adr
   domains: []
-  related_adrs: []
+  related_adrs:
+  - ADR-L-0011
   realized_by: []
   relationships:
     depends_on: []
@@ -3044,7 +3733,8 @@ entities:
   source_path: adrs/logical/ADR-L-0011-metadata-schemas-and-remediation-ledger-enforcement.yaml
   source_artifact_type: logical_adr
   domains: []
-  related_adrs: []
+  related_adrs:
+  - ADR-L-0011
   realized_by: []
   relationships:
     depends_on: []
@@ -3059,7 +3749,8 @@ entities:
   source_path: adrs/logical/ADR-L-0011-metadata-schemas-and-remediation-ledger-enforcement.yaml
   source_artifact_type: logical_adr
   domains: []
-  related_adrs: []
+  related_adrs:
+  - ADR-L-0011
   realized_by: []
   relationships:
     depends_on: []
@@ -3074,7 +3765,8 @@ entities:
   source_path: adrs/logical/ADR-L-0012-federation-authority-and-qualified-identity.yaml
   source_artifact_type: logical_adr
   domains: []
-  related_adrs: []
+  related_adrs:
+  - ADR-L-0012
   realized_by: []
   relationships:
     depends_on: []
@@ -3089,7 +3781,8 @@ entities:
   source_path: adrs/logical/ADR-L-0013-architecture-repository-boundary-and-normalized-semantic-model.yaml
   source_artifact_type: logical_adr
   domains: []
-  related_adrs: []
+  related_adrs:
+  - ADR-L-0013
   realized_by: []
   relationships:
     depends_on: []
@@ -3104,7 +3797,8 @@ entities:
   source_path: adrs/logical/ADR-L-0014-brownfield-onboarding-and-canonicalization-workflow.yaml
   source_artifact_type: logical_adr
   domains: []
-  related_adrs: []
+  related_adrs:
+  - ADR-L-0014
   realized_by: []
   relationships:
     depends_on: []
@@ -3119,7 +3813,40 @@ entities:
   source_path: adrs/logical/ADR-L-0014-brownfield-onboarding-and-canonicalization-workflow.yaml
   source_artifact_type: logical_adr
   domains: []
-  related_adrs: []
+  related_adrs:
+  - ADR-L-0014
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: INV-0062
+  entity_type: invariant
+  name: INV-0062
+  introduced_by: ADR-L-0019
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0019-canonical-entity-identity.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs:
+  - ADR-L-0019
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: INV-0063
+  entity_type: invariant
+  name: INV-0063
+  introduced_by: ADR-L-0019
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0019-canonical-entity-identity.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs:
+  - ADR-L-0019
   realized_by: []
   relationships:
     depends_on: []
@@ -3134,7 +3861,8 @@ entities:
   source_path: adrs/logical/ADR-L-0015-adr-governance-state-and-override-semantics.yaml
   source_artifact_type: logical_adr
   domains: []
-  related_adrs: []
+  related_adrs:
+  - ADR-L-0015
   realized_by: []
   relationships:
     depends_on: []
@@ -3149,7 +3877,8 @@ entities:
   source_path: adrs/logical/ADR-L-0015-adr-governance-state-and-override-semantics.yaml
   source_artifact_type: logical_adr
   domains: []
-  related_adrs: []
+  related_adrs:
+  - ADR-L-0015
   realized_by: []
   relationships:
     depends_on: []
@@ -3164,7 +3893,8 @@ entities:
   source_path: adrs/logical/ADR-L-0015-adr-governance-state-and-override-semantics.yaml
   source_artifact_type: logical_adr
   domains: []
-  related_adrs: []
+  related_adrs:
+  - ADR-L-0015
   realized_by: []
   relationships:
     depends_on: []
@@ -3179,7 +3909,8 @@ entities:
   source_path: adrs/logical/ADR-L-0013-architecture-repository-boundary-and-normalized-semantic-model.yaml
   source_artifact_type: logical_adr
   domains: []
-  related_adrs: []
+  related_adrs:
+  - ADR-L-0013
   realized_by: []
   relationships:
     depends_on: []
@@ -3194,7 +3925,8 @@ entities:
   source_path: adrs/logical/ADR-L-0017-forward-authoring-ergonomics-for-split-physical-adr-types.yaml
   source_artifact_type: logical_adr
   domains: []
-  related_adrs: []
+  related_adrs:
+  - ADR-L-0017
   realized_by: []
   relationships:
     depends_on: []
@@ -3209,7 +3941,8 @@ entities:
   source_path: adrs/logical/ADR-L-0016-deterministic-corpus-query-and-authoring-orientation.yaml
   source_artifact_type: logical_adr
   domains: []
-  related_adrs: []
+  related_adrs:
+  - ADR-L-0016
   realized_by: []
   relationships:
     depends_on: []
@@ -3224,7 +3957,8 @@ entities:
   source_path: adrs/logical/ADR-L-0017-forward-authoring-ergonomics-for-split-physical-adr-types.yaml
   source_artifact_type: logical_adr
   domains: []
-  related_adrs: []
+  related_adrs:
+  - ADR-L-0017
   realized_by: []
   relationships:
     depends_on: []
@@ -3239,7 +3973,8 @@ entities:
   source_path: adrs/logical/ADR-L-0016-deterministic-corpus-query-and-authoring-orientation.yaml
   source_artifact_type: logical_adr
   domains: []
-  related_adrs: []
+  related_adrs:
+  - ADR-L-0016
   realized_by: []
   relationships:
     depends_on: []
@@ -3254,7 +3989,8 @@ entities:
   source_path: adrs/logical/ADR-L-0003-quality-assurance-and-testing-strategy.yaml
   source_artifact_type: logical_adr
   domains: []
-  related_adrs: []
+  related_adrs:
+  - ADR-L-0003
   realized_by: []
   relationships:
     depends_on: []
@@ -3269,7 +4005,8 @@ entities:
   source_path: adrs/logical/ADR-L-0003-quality-assurance-and-testing-strategy.yaml
   source_artifact_type: logical_adr
   domains: []
-  related_adrs: []
+  related_adrs:
+  - ADR-L-0003
   realized_by: []
   relationships:
     depends_on: []
@@ -3284,7 +4021,8 @@ entities:
   source_path: adrs/logical/ADR-L-0013-architecture-repository-boundary-and-normalized-semantic-model.yaml
   source_artifact_type: logical_adr
   domains: []
-  related_adrs: []
+  related_adrs:
+  - ADR-L-0013
   realized_by: []
   relationships:
     depends_on: []
@@ -3299,7 +4037,8 @@ entities:
   source_path: adrs/logical/ADR-L-0003-quality-assurance-and-testing-strategy.yaml
   source_artifact_type: logical_adr
   domains: []
-  related_adrs: []
+  related_adrs:
+  - ADR-L-0003
   realized_by: []
   relationships:
     depends_on: []
@@ -3314,7 +4053,8 @@ entities:
   source_path: adrs/logical/ADR-L-0013-architecture-repository-boundary-and-normalized-semantic-model.yaml
   source_artifact_type: logical_adr
   domains: []
-  related_adrs: []
+  related_adrs:
+  - ADR-L-0013
   realized_by: []
   relationships:
     depends_on: []
@@ -3329,7 +4069,8 @@ entities:
   source_path: adrs/logical/ADR-L-0018-schema-v12-and-normalized-semantic-foundation.yaml
   source_artifact_type: logical_adr
   domains: []
-  related_adrs: []
+  related_adrs:
+  - ADR-L-0018
   realized_by: []
   relationships:
     depends_on: []
@@ -3344,7 +4085,8 @@ entities:
   source_path: adrs/logical/ADR-L-0018-schema-v12-and-normalized-semantic-foundation.yaml
   source_artifact_type: logical_adr
   domains: []
-  related_adrs: []
+  related_adrs:
+  - ADR-L-0018
   realized_by: []
   relationships:
     depends_on: []
@@ -3359,7 +4101,8 @@ entities:
   source_path: adrs/logical/ADR-L-0018-schema-v12-and-normalized-semantic-foundation.yaml
   source_artifact_type: logical_adr
   domains: []
-  related_adrs: []
+  related_adrs:
+  - ADR-L-0018
   realized_by: []
   relationships:
     depends_on: []
@@ -3374,7 +4117,8 @@ entities:
   source_path: adrs/logical/ADR-L-0018-schema-v12-and-normalized-semantic-foundation.yaml
   source_artifact_type: logical_adr
   domains: []
-  related_adrs: []
+  related_adrs:
+  - ADR-L-0018
   realized_by: []
   relationships:
     depends_on: []
@@ -3389,7 +4133,8 @@ entities:
   source_path: adrs/logical/ADR-L-0018-schema-v12-and-normalized-semantic-foundation.yaml
   source_artifact_type: logical_adr
   domains: []
-  related_adrs: []
+  related_adrs:
+  - ADR-L-0018
   realized_by: []
   relationships:
     depends_on: []
@@ -3404,7 +4149,8 @@ entities:
   source_path: adrs/logical/ADR-L-0018-schema-v12-and-normalized-semantic-foundation.yaml
   source_artifact_type: logical_adr
   domains: []
-  related_adrs: []
+  related_adrs:
+  - ADR-L-0018
   realized_by: []
   relationships:
     depends_on: []
@@ -3419,7 +4165,312 @@ entities:
   source_path: adrs/logical/ADR-L-0003-quality-assurance-and-testing-strategy.yaml
   source_artifact_type: logical_adr
   domains: []
-  related_adrs: []
+  related_adrs:
+  - ADR-L-0003
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: INV-0084
+  entity_type: invariant
+  name: INV-0084
+  introduced_by: ADR-L-0019
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0019-canonical-entity-identity.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs:
+  - ADR-L-0019
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: INV-0085
+  entity_type: invariant
+  name: INV-0085
+  introduced_by: ADR-L-0019
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0019-canonical-entity-identity.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs:
+  - ADR-L-0019
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: INV-0086
+  entity_type: invariant
+  name: INV-0086
+  introduced_by: ADR-L-0019
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0019-canonical-entity-identity.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs:
+  - ADR-L-0019
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: INV-0087
+  entity_type: invariant
+  name: INV-0087
+  introduced_by: ADR-L-0019
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0019-canonical-entity-identity.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs:
+  - ADR-L-0019
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: INV-0088
+  entity_type: invariant
+  name: INV-0088
+  introduced_by: ADR-L-0019
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0019-canonical-entity-identity.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs:
+  - ADR-L-0019
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: INV-0089
+  entity_type: invariant
+  name: INV-0089
+  introduced_by: ADR-L-0019
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0019-canonical-entity-identity.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs:
+  - ADR-L-0019
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: INV-0090
+  entity_type: invariant
+  name: INV-0090
+  introduced_by: ADR-L-0019
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0019-canonical-entity-identity.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs:
+  - ADR-L-0019
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: INV-0091
+  entity_type: invariant
+  name: INV-0091
+  introduced_by: ADR-L-0019
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0019-canonical-entity-identity.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs:
+  - ADR-L-0019
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: INV-0092
+  entity_type: invariant
+  name: INV-0092
+  introduced_by: ADR-L-0019
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0019-canonical-entity-identity.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs:
+  - ADR-L-0019
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: INV-0093
+  entity_type: invariant
+  name: INV-0093
+  introduced_by: ADR-L-0019
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0019-canonical-entity-identity.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs:
+  - ADR-L-0019
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: INV-0094
+  entity_type: invariant
+  name: INV-0094
+  introduced_by: ADR-L-0019
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0019-canonical-entity-identity.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs:
+  - ADR-L-0019
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: INV-0095
+  entity_type: invariant
+  name: INV-0095
+  introduced_by: ADR-L-0003
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0003-quality-assurance-and-testing-strategy.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs:
+  - ADR-L-0003
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: INV-0096
+  entity_type: invariant
+  name: INV-0096
+  introduced_by: ADR-L-0003
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0003-quality-assurance-and-testing-strategy.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs:
+  - ADR-L-0003
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: INV-0097
+  entity_type: invariant
+  name: INV-0097
+  introduced_by: ADR-L-0010
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0010-kernel-interface-contract-and-validation-profiles.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs:
+  - ADR-L-0010
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: INV-0098
+  entity_type: invariant
+  name: INV-0098
+  introduced_by: ADR-L-0002
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0002-multi-scope-adr-architecture.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs:
+  - ADR-L-0002
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: INV-0099
+  entity_type: invariant
+  name: INV-0099
+  introduced_by: ADR-L-0007
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0007-deterministic-documentation-projection.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs:
+  - ADR-L-0007
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: INV-0100
+  entity_type: invariant
+  name: INV-0100
+  introduced_by: ADR-L-0007
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0007-deterministic-documentation-projection.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs:
+  - ADR-L-0007
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: INV-0101
+  entity_type: invariant
+  name: INV-0101
+  introduced_by: ADR-L-0007
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0007-deterministic-documentation-projection.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs:
+  - ADR-L-0007
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: INV-0102
+  entity_type: invariant
+  name: INV-0102
+  introduced_by: ADR-L-0007
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0007-deterministic-documentation-projection.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs:
+  - ADR-L-0007
   realized_by: []
   relationships:
     depends_on: []

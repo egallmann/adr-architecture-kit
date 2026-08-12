@@ -1,0 +1,144 @@
+profile_version: 1
+project: adr-architecture-kit
+
+purpose: >
+  ADR Kit is STE's authoring-side provider for structured architectural intent
+  and deterministic authoring operations. This overview orients AI-first
+  contributors to supported surfaces; it is generated and not normative authority.
+
+system_identity: >
+  Consume supported programmatic behavior through adr_kit.api, treat accepted
+  authored artifacts as canonical intent for their scope, and treat normalized
+  models and generated artifacts as derived semantic surfaces rather than
+  independent authority.
+
+purpose_bullets:
+  - Validate, compile, query, migrate, and promote through supported provider operations
+  - Keep accepted project ADRs as canonical project intent for their declared scope
+  - Keep ste-spec as normative cross-repository semantic contracts where assigned
+  - Keep ste-runtime as runtime extraction, factual evidence, and derived runtime state
+
+purpose_footer: >
+  Implementation embodies accepted authority; it does not silently redefine it.
+  Authority is responsibility-scoped, not a single global precedence chain.
+
+one_line_orientation: >
+  ADR Kit is STE's authoring-side provider: consume supported programmatic
+  behavior through adr_kit.api, treat accepted authored artifacts as canonical
+  intent for their scope, and treat normalized models and generated artifacts
+  as derived semantic surfaces rather than independent authority.
+
+responsibility_boundaries:
+  - subject: Project ADR authority
+    detail: Accepted project ADR artifacts are canonical project intent for their declared scope.
+    link: adrs/
+  - subject: ADR Kit
+    detail: Owns authoring-side representation, validation, compilation, migration, and supported repository/provider mechanics assigned to it.
+    link: docs/authority-boundary.md
+  - subject: ste-spec
+    detail: Owns normative cross-repository semantic contracts where authority is explicitly assigned there.
+  - subject: ste-runtime
+    detail: Owns runtime extraction, factual evidence, and derived runtime/workspace state assigned to it.
+  - subject: Derived outputs
+    detail: Normalized models, registries, manifests, rendered docs, graphs, and other projections are derived unless a governing contract says otherwise.
+
+authority_anchor_ids:
+  - ADR-L-0003
+  - ADR-L-0007
+  - ADR-L-0013
+  - ADR-L-0019
+
+required_cli_commands:
+  - validate
+  - compile
+  - generate-system-overview
+  - validate-system-overview
+  - governance-checks
+  - promote prepare
+  - promote check
+  - promote apply
+  - migrate-identity-v13
+
+task_routes:
+  - task: Programmatic validation
+    entry: adr_kit.api.validate_architecture
+    surface: sdk
+  - task: Programmatic compilation
+    entry: adr_kit.api.compile_architecture
+    surface: sdk
+  - task: Read normalized architecture
+    entry: adr_kit.api.open_repository
+    surface: sdk
+  - task: Human/local validation
+    entry: adr validate
+    surface: cli
+  - task: Human/local compilation
+    entry: adr compile
+    surface: cli
+  - task: Promotion prepare/check/apply
+    entry: adr promote prepare|check|apply
+    surface: cli
+  - task: Identity migration
+    entry: adr migrate-identity-v13
+    surface: cli
+  - task: Change canonical architecture
+    entry: edit owning authored artifacts, then validate/regenerate
+    surface: authoring
+  - task: Change generated output
+    entry: change source/generator/profile/template, never the output file
+    surface: authoring
+  - task: Runtime evidence / extraction
+    entry: ste-runtime (not ADR Kit)
+    surface: external
+  - task: Normative cross-repository semantic contract
+    entry: ste-spec where that authority is assigned
+    surface: external
+
+safe_extension_rules:
+  - Start from the public boundary (adr_kit.api) before internals.
+  - Use existing models/contracts before inventing new shapes.
+  - Canonical changes require owning authority.
+  - Generated outputs are not hand-edited.
+  - Public surface additions require compatibility consideration.
+  - Derived views must not become hidden authority.
+  - Prefer extending provider/application services before adding CLI-only business logic.
+  - CLI should adapt supported machinery rather than become the sole implementation.
+
+category_errors:
+  - Treating generated registries as canonical ADR authority
+  - Treating NormalizedArchitectureModel as a second authoring source
+  - Treating runtime evidence as architecture admission
+  - Treating compiler internals as public SDK
+  - Treating aliases/display identifiers as machine identity when identity authority says otherwise
+  - Treating the CLI as the only product surface
+  - Hand-editing generated artifacts
+  - Inferring authority from folder layout when canonical metadata says otherwise
+
+validation_gates:
+  - targeted tests for the changed area
+  - adr validate
+  - adr governance-checks
+  - regenerate derived artifacts when sources change
+  - adr generate-system-overview
+  - adr validate-system-overview
+  - applicable compatibility/package gates
+
+read_next:
+  - label: PROJECT.yaml
+    target: PROJECT.yaml
+    category: related
+  - label: AUTHORING-SYSTEM.md
+    target: AUTHORING-SYSTEM.md
+    category: related
+  - label: Authority boundary
+    target: docs/authority-boundary.md
+    category: related
+  - label: Public surface and stability
+    target: docs/public-surface-and-stability.md
+    category: related
+  - label: Public SDK
+    target: docs/public-sdk.md
+    category: related
+  - label: Schema documentation
+    target: schema/
+    category: related

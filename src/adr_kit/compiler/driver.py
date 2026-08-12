@@ -12,6 +12,16 @@ from unittest.mock import patch
 import yaml
 
 from ..decorators import implements_adr
+from ..models import (
+    NormalizedEntityRegistry,
+    RelationshipRegistry,
+    UnresolvedRegistry,
+)
+from ..models.v2_0 import (
+    NormalizedEntityRegistryV2,
+    RelationshipRegistryV2,
+    UnresolvedRegistryV2,
+)
 from ..parser import ADRParser
 from ..schema.contract_validation import validate_adr_contract_bundle
 from ..scope import ProjectScope, ProjectScopeResolver
@@ -37,6 +47,7 @@ class OutputArtifact:
     content: bytes
     kind: str
     integrity_header: str | None = None
+    logical_id: str | None = None
 
 
 @dataclass(frozen=True)
@@ -313,14 +324,14 @@ class ArchitectureCompiler:
         architecture_index = parser.parse_architecture_index_from_data(
             architecture_index_artifact.content.decode("utf-8")
         )
-        entity_registry = parser.parse_normalized_entity_registry_from_data(
-            entity_registry_artifact.content.decode("utf-8")
+        entity_registry = self._parse_entity_registry_artifact(
+            parser, entity_registry_artifact.content.decode("utf-8")
         )
-        relationship_registry = parser.parse_relationship_registry_from_data(
-            relationship_registry_artifact.content.decode("utf-8")
+        relationship_registry = self._parse_relationship_registry_artifact(
+            parser, relationship_registry_artifact.content.decode("utf-8")
         )
-        unresolved_registry = parser.parse_unresolved_registry_from_data(
-            unresolved_registry_artifact.content.decode("utf-8")
+        unresolved_registry = self._parse_unresolved_registry_artifact(
+            parser, unresolved_registry_artifact.content.decode("utf-8")
         )
 
         remediation_ledger = None
@@ -343,6 +354,41 @@ class ArchitectureCompiler:
                 "W704",
                 f"Contract validation passed with sentinel-backed content under profile={result.profile}",
             )
+
+    @staticmethod
+    def _peek_schema_version(yaml_text: str) -> str | None:
+        data = yaml.safe_load(yaml_text)
+        if not isinstance(data, dict):
+            raise ValueError("Expected mapping for registry artifact")
+        version = data.get("schema_version")
+        return str(version) if version is not None else None
+
+    @classmethod
+    def _parse_entity_registry_artifact(
+        cls, parser: ADRParser, yaml_text: str
+    ) -> NormalizedEntityRegistry | NormalizedEntityRegistryV2:
+        if cls._peek_schema_version(yaml_text) == "2.0":
+            data = yaml.safe_load(yaml_text)
+            return NormalizedEntityRegistryV2.model_validate(data)
+        return parser.parse_normalized_entity_registry_from_data(yaml_text)
+
+    @classmethod
+    def _parse_relationship_registry_artifact(
+        cls, parser: ADRParser, yaml_text: str
+    ) -> RelationshipRegistry | RelationshipRegistryV2:
+        if cls._peek_schema_version(yaml_text) == "2.0":
+            data = yaml.safe_load(yaml_text)
+            return RelationshipRegistryV2.model_validate(data)
+        return parser.parse_relationship_registry_from_data(yaml_text)
+
+    @classmethod
+    def _parse_unresolved_registry_artifact(
+        cls, parser: ADRParser, yaml_text: str
+    ) -> UnresolvedRegistry | UnresolvedRegistryV2:
+        if cls._peek_schema_version(yaml_text) == "2.0":
+            data = yaml.safe_load(yaml_text)
+            return UnresolvedRegistryV2.model_validate(data)
+        return parser.parse_unresolved_registry_from_data(yaml_text)
 
     def _resolve_scope(self, scope: Path | ProjectScope | None, config: CompilerConfig) -> ProjectScope:
         if isinstance(scope, ProjectScope):
@@ -376,6 +422,7 @@ class ArchitectureCompiler:
                 content=item.content,
                 kind=item.kind,
                 integrity_header=item.integrity_header,
+                logical_id=item.logical_id,
             )
             for item in emitted
         ]

@@ -119,6 +119,13 @@
           "title": "Embodied In",
           "type": "array"
         },
+        "implements_logical": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Implements Logical",
+          "type": "array"
+        },
         "enabled_by": {
           "items": {
             "type": "string"

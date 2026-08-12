@@ -87,3 +87,16 @@ scripts/pre-prompt-hook.py
 lifecycle-proof/
 coverage/
 reports/
+
+# Promotion provider local state (prepared PCs, evidence, journals, recovery)
+.adr-kit/
+
+# STE Design Journal local convergence / promotion handoff (non-authority).
+# Tracked explanatory process notes under docs/design-journal/ remain versioned
+# documentation only — they are not STE Design Journal durable architecture authority.
+docs/design-journal/*
+!docs/design-journal/README.md
+!docs/design-journal/2026-phase-1-public-sdk.md
+!docs/design-journal/2026-phase-2-schema-v12.md
+!docs/design-journal/2026-production-hardening.md
+

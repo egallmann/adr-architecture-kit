@@ -1,6 +1,6 @@
-schema_version: '1.0'
+schema_version: '1.3'
 adr_type: logical
-id: ADR-L-0007
+id: 019fee89-e615-7b9c-8e3f-32ceeda01491
 title: Deterministic Documentation Projection
 status: accepted
 created_date: '2026-03-12'
@@ -16,52 +16,89 @@ tags:
 - deterministic
 - ai-first
 - drift-prevention
-context: |
-  The repository already treats several human-readable artifacts as derived state:
-  ADR markdown renderings, manifest summaries, and the AI-first SYSTEM-OVERVIEW
+context: 'The repository already treats several human-readable artifacts as derived
+  state:
+
+  ADR human projections under adrs/adr-projection/, manifest summaries, and the AI-first SYSTEM-OVERVIEW
+
   are generated from structured or code-defined sources. That behavior now needs
+
   explicit architectural authority so future contributors do not reintroduce
+
   manually maintained documentation that drifts from canonical artifacts.
 
+
   The canonical source of truth in this system is structured architecture state:
+
   ADR YAML, invariant YAML, project metadata, schema definitions, and generator
+
   source code where projection rules are intentionally encoded. Human-readable
+
   documentation exists to improve orientation and inspection, but it is not the
+
   authoritative state.
 
+
   Manual maintenance of generated documentation creates several risks:
+
   - drift between canonical artifacts and human-readable views
+
   - ambiguity over whether readers should trust rendered output or source artifacts
+
   - AI contributors missing generators and editing rendered outputs directly
+
   - inconsistent updates across manifest summaries, indexes, and overview files
 
+
   This rule applies to all human-readable architecture documentation projections,
+
   including:
-  - ADR markdown renderings
+
+  - ADR human projections (adrs/adr-projection/)
+
   - SYSTEM-OVERVIEW
+
   - manifest summaries
+
   - architecture diagrams
+
   - documentation indexes
+
   - future documentation projections introduced later
 
+
   The repository therefore needs an explicit logical rule: structured artifacts
+
   are canonical, documentation renderings are derived, and projection consistency
+
   must be enforced through generators, validators, tests, and CI.
+
+  '
 decisions:
-- id: DEC-0012
+- id: 019fee89-e615-758b-b03f-e4a3dc338589
   summary: Treat human-readable architecture documentation as deterministic derived
     state
-  rationale: |
-    Structured architecture artifacts are the canonical source of truth in this
+  rationale: 'Structured architecture artifacts are the canonical source of truth
+    in this
+
     repository. Human-readable documentation is valuable for comprehension, but
+
     it must be a deterministic rendering derived from those structured artifacts
+
     rather than a parallel authority.
 
+
     This preserves:
+
     - doctrinal clarity about what is authoritative
+
     - deterministic regeneration of documentation from source state
+
     - drift prevention through validation and CI
+
     - reliable AI target discovery, because generators remain the primary workflow
+
+    '
   consequences:
     positive:
     - Canonical architecture state remains explicit and machine-verifiable
@@ -74,19 +111,28 @@ decisions:
     - Small wording changes in rendered documentation now require structured source
       changes
   related_invariants:
-  - INV-0037
-  - INV-0038
-  - INV-0039
-- id: DEC-0019
+  - 019fee89-e616-7bf6-a63f-2fdbec175790
+  - 019fee89-e616-7abd-ad17-f29edbd30959
+  - 019fee89-e616-77e0-992d-25764a1ed5a2
+  alias_id: DEC-0012
+  alias_name: treat-human-readable-architecture-documentation-as-deterministic-derived-state
+- id: 019fee89-e615-7e55-972f-14dd7da851c0
   summary: Prohibit manual edits to generated documentation
-  rationale: |
-    Once an artifact is declared generated, manual edits create ambiguity over
+  rationale: 'Once an artifact is declared generated, manual edits create ambiguity
+    over
+
     whether the generated output or the source artifact should be trusted. That
+
     ambiguity is architecturally unacceptable in a governance repository.
 
+
     Manual edits are therefore prohibited for generated documentation. Changes
+
     must be made by editing the structured source, generator, template, or
+
     projection rules, followed by regeneration and validation.
+
+    '
   consequences:
     positive:
     - Rendered artifacts stay traceable to their generation pipeline
@@ -95,21 +141,31 @@ decisions:
     negative:
     - Contributors must learn the generator path for documentation updates
   related_invariants:
-  - INV-0037
-  - INV-0039
-- id: DEC-0026
+  - 019fee89-e616-7bf6-a63f-2fdbec175790
+  - 019fee89-e616-77e0-992d-25764a1ed5a2
+  alias_id: DEC-0019
+  alias_name: prohibit-manual-edits-to-generated-documentation
+- id: 019fee89-e615-796c-ae1d-a27f1fff021b
   summary: Require generator, validator, test, and CI enforcement for documentation
     projection
-  rationale: |
-    The rule is only durable if it is automated. Deterministic documentation
+  rationale: 'The rule is only durable if it is automated. Deterministic documentation
+
     projection must therefore be enforced through:
+
     - generators that produce rendered documentation
+
     - validators that compare rendered output to generator output
+
     - tests that prove deterministic generation
+
     - CI checks that fail when rendered artifacts drift
 
+
     This makes documentation projection a governed architectural pipeline rather
+
     than a best-effort editorial process.
+
+    '
   consequences:
     positive:
     - Projection consistency becomes automatically enforceable
@@ -119,64 +175,428 @@ decisions:
     - Additional generator and validator maintenance is required as documentation
       artifacts expand
   related_invariants:
-  - INV-0038
-  - INV-0039
+  - 019fee89-e616-7abd-ad17-f29edbd30959
+  - 019fee89-e616-77e0-992d-25764a1ed5a2
+  alias_id: DEC-0026
+  alias_name: require-generator-validator-test-and-ci-enforcement-for-documentation-projection
+- id: 019ff142-dd48-72ff-9e3f-81ca4a779db7
+  summary: Emit ADR human projections under typed adr-projection paths with stable
+    SDK artifact identity
+  rationale: 'Human-facing ADR markdown must be navigable after UUID machine identity.
+
+    Projections live under adrs/adr-projection/{logical,physical,physical-system,physical-component}/
+
+    with filenames {alias_id}-{slug}.md. The SDK markdown group remains markdown;
+
+    artifact_kind remains rendered_adr_markdown; logical artifact_id is
+
+    rendered-adr:{adr.id} and must not become slug-dependent. relative_path values
+
+    migrate intentionally; generate-adr-projection is preferred with
+
+    generate-rendered-docs retained as a compatibility alias. Hard cutover replaces
+
+    adrs/rendered/ after the new tree validates. Projections remain disposable and
+
+    non-authoritative.
+
+    '
+  consequences:
+    positive:
+    - Humans can locate and navigate ADR projections by alias and type
+    - SDK logical identity stays stable across title/slug changes
+    - Path migration is explicit and regenerable
+    negative:
+    - Existing relative_path consumers must accept the adr-projection layout
+  related_invariants:
+  - 019fee89-e616-7bf6-a63f-2fdbec175790
+  - 019fee89-e616-7abd-ad17-f29edbd30959
+  - 019fee89-e616-77e0-992d-25764a1ed5a2
+  alias_id: DEC-0108
+  alias_name: emit-adr-human-projections-under-typed-adr-projection-paths
+- id: 019ff142-dd48-7ef8-8d3e-576f4bb02dc3
+  summary: Human ADR projections render compiler-derived relationship semantics only
+  rationale: 'The human projection must not invent a second relationship ontology.
+
+    Mermaid edges and peer-card relationship verbs come from shared compiler
+
+    derivation (RelGraph / RelationshipType). Required gap closes include ADR-level
+
+    supersedes/superseded_by and implements_logical as a first-class RelationshipType
+
+    (implementing ADR to logical ADR). HumanAdrProjectionContext may enrich with
+
+    prose and aliases but must not reinterpret source fields into alternate graph
+
+    meaning. Presentation-only nesting is limited to the subject ADR authored body.
+
+    '
+  consequences:
+    positive:
+    - One relationship ontology for registries, graphs, and human projections
+    - Peer cards explain how ADRs relate using compiled verbs
+    - Integrity hashes cover the actual render dependency set
+    negative:
+    - Derivation and relationship-type surfaces must stay aligned when fields change
+  related_invariants:
+  - 019fee89-e616-7bf6-a63f-2fdbec175790
+  - 019fee89-e616-7abd-ad17-f29edbd30959
+  alias_id: DEC-0109
+  alias_name: human-adr-projections-render-compiler-derived-relationship-semantics-only
+- id: 019ff22a-bb5f-7bfc-851d-938bffc81281
+  summary: Classify documentation-projection inputs as derived facts or authored orientation
+  rationale: 'A generated documentation projection must not establish a second authored
+
+    copy of machine-verifiable facts when an owning structured or provider surface
+
+    already exists. Those facts must be obtained from their owning machine-readable
+
+    source.
+
+
+    Some orientation is inherently explanatory and cannot reasonably be mechanically
+
+    inferred. That authored orientation may be intentional projection input only when
+
+    it is explicit, governed as source state, non-authoritative, distinguishable from
+
+    derived facts, and unable to silently override canonical architecture.
+
+
+    Authored orientation must not become a hidden second authority layer.
+
+    '
+  consequences:
+    positive:
+    - Overview and other projections stay aligned with owning provider/schema surfaces
+    - Explanatory guidance remains intentional without competing with canonical ADRs
+    negative:
+    - Projection authors must classify each input as derived or authored
+  related_invariants:
+  - 019ff22a-bb5f-7c77-a223-1dab5e8c814d
+  - 019ff22a-bb5f-7779-912f-040cdf1b54b8
+  alias_id: DEC-0110
+  alias_name: classify-documentation-projection-inputs-as-derived-or-authored
+- id: 019ff22a-bb5f-7214-8818-40820f8c553e
+  summary: Allow a deterministic semantic intermediate model for documentation projection
+  rationale: 'Projection generation may assemble governed inputs into an explicit deterministic
+
+    intermediate model that represents the complete semantic basis of the rendered
+
+    artifact. That model is derived projection state, not independent architecture
+
+    authority. It must be deterministic and must not carry environmental noise such
+
+    as timestamps or machine-specific absolute paths unless those are part of the
+
+    projection contract.
+
+
+    The intermediate model is the complete semantic basis of rendered content. It is
+
+    not necessarily the complete integrity or freshness basis, because governed
+
+    projection-rule inputs can also change the rendered artifact.
+
+    '
+  consequences:
+    positive:
+    - Projection pipelines can separate semantic assembly from presentation
+    - Tests can assert semantic completeness without treating the model as authority
+    negative:
+    - Implementers must keep semantic model and projection-rule inputs distinct
+  related_invariants:
+  - 019fee89-e616-7abd-ad17-f29edbd30959
+  - 019ff22a-bb5f-7b93-a600-f587022aeffd
+  alias_id: DEC-0111
+  alias_name: allow-deterministic-semantic-intermediate-model-for-documentation-projection
+- id: 019ff22a-bb5f-7d9e-973f-b9008898a8c9
+  summary: Require projection-source closure for generated documentation freshness
+  rationale: 'Generated documentation freshness must close over all governed inputs capable
+
+    of changing the rendered artifact. That includes semantic inputs that determine
+
+    document meaning and projection-rule inputs that can change rendering from the
+
+    same semantic model (templates, generator or renderer rules, and profile
+
+    interpretation logic).
+
+
+    Changing a semantic or projection-rule input must invalidate the projection.
+
+    Unrelated repository changes must not. Whole-repository hashing is not required
+
+    or desirable. Aggregate sources such as a full manifest need not invalidate a
+
+    projection when an unrelated record changes if that record is not part of the
+
+    selected semantic input.
+
+    '
+  consequences:
+    positive:
+    - Freshness tracks true render dependencies rather than coarse repository churn
+    - Template and projection-rule changes remain detectable as stale projections
+    negative:
+    - Source-basis declarations must enumerate semantic and projection-rule inputs
+  related_invariants:
+  - 019ff22a-bb5f-7b93-a600-f587022aeffd
+  - 019fee89-e616-7abd-ad17-f29edbd30959
+  alias_id: DEC-0112
+  alias_name: require-projection-source-closure-for-generated-documentation-freshness
+- id: 019ff22a-bb5f-76eb-8a31-546eeba55dcb
+  summary: Documentation projections reflect supported boundaries without redefining them
+  rationale: 'A documentation projection may describe and route consumers to existing
+
+    supported interfaces, authority boundaries, and lifecycle surfaces. It must not
+
+    create, promote, or redefine those interfaces or authorities. Ownership remains
+
+    with the existing accepted authority for each surface.
+
+    '
+  consequences:
+    positive:
+    - Orientation stays subordinate to provider, repository, and stewardship authority
+    - Overview content cannot silently invent public surfaces
+    negative:
+    - Projection authors must cite existing authority rather than invent boundaries
+  related_invariants:
+  - 019fee89-e616-7bf6-a63f-2fdbec175790
+  - 019ff22a-bb5f-7779-912f-040cdf1b54b8
+  alias_id: DEC-0113
+  alias_name: documentation-projections-reflect-supported-boundaries-without-redefining-them
+- id: 019ff22a-bb5f-77ed-a63f-98f0455fdd1e
+  summary: Isolate repository-specific documentation-projection orientation by scope
+  rationale: 'Repository-specific orientation semantics must not leak into an unrelated
+
+    repository scope. When ADR Kit generates SYSTEM-OVERVIEW for a consuming
+
+    repository, ADR Kit provider orientation must not be rendered into that consumer
+
+    merely because ADR Kit produced the file.
+
+
+    Explicit repository profiles may specialize orientation. Unsupported or
+
+    non-profiled scopes must follow the supported projection-scope rule rather than
+
+    silently inheriting another repository''s provider identity.
+
+    '
+  consequences:
+    positive:
+    - Consumer repositories are not mis-oriented as ADR Kit itself
+    - Profile and scope routing become architecturally mandatory
+    negative:
+    - Generators must select profile or compatibility path by project identity
+  related_invariants:
+  - 019ff22a-bb5f-7fca-b021-b3cbc68ddde2
+  alias_id: DEC-0114
+  alias_name: isolate-repository-specific-documentation-projection-orientation-by-scope
+- id: 019ff22a-bb5f-7926-a33c-b66f72343219
+  summary: Preserve legacy generic SYSTEM-OVERVIEW generation as compatibility-only
+  rationale: 'Evidence on the active branch shows generate-system-overview currently succeeds
+
+    for non-kit, non-runtime project identities and is listed among generation
+
+    commands whose success/failure behavior is preserved. Fail-closed unsupported
+
+    routing would change that observable CLI behavior.
+
+
+    Therefore generic-project generation remains a compatibility obligation for this
+
+    refinement. The legacy generic path must preserve emission success without ADR
+
+    Kit provider framing, without becoming a third product-level generic consumer
+
+    overview design, and without new semantic inference beyond the minimum needed to
+
+    keep the existing contract. Richer corpus-driven generic assembly remains
+
+    deferred. Absence of SYSTEM-OVERVIEW remains valid; integrity validates the file
+
+    only when present.
+
+    '
+  consequences:
+    positive:
+    - Existing CLI success behavior for generic scopes is preserved
+    - Provider isolation remains enforceable for non-kit scopes
+    - Future generic-consumer design stays explicitly deferred
+    negative:
+    - A bounded legacy path must be maintained until replaced by later design
+  related_invariants:
+  - 019ff22a-bb5f-7fca-b021-b3cbc68ddde2
+  - 019ff22a-bb5f-7779-912f-040cdf1b54b8
+  alias_id: DEC-0115
+  alias_name: preserve-legacy-generic-system-overview-generation-as-compatibility-only
 constraints:
 - id: CONST-0001
   type: technical
-  description: |
-    Human-readable architecture documentation must be produced from structured
+  description: 'Human-readable architecture documentation must be produced from structured
+
     artifacts or explicit projection code rather than maintained as an
+
     independent source of truth.
-  rationale: |
-    Independent manual documentation introduces drift risk and authority
+
+    '
+  rationale: 'Independent manual documentation introduces drift risk and authority
+
     ambiguity in an architecture governance repository.
+
+    '
 invariants:
-- id: INV-0037
-  statement: |
-    INV-DOC-001: All human-readable architecture documentation must be generated
+- id: 019fee89-e616-7bf6-a63f-2fdbec175790
+  statement: 'INV-DOC-001: All human-readable architecture documentation must be generated
+
     from structured artifacts or explicit projection code that is itself
+
     governed as source state.
+
+    '
   scope: global
   enforcement_level: must
   enforcement_mechanism: design
   verification_method: automated
-  rationale: |
-    Documentation must remain a projection of canonical architecture state, not
+  rationale: 'Documentation must remain a projection of canonical architecture state,
+    not
+
     a competing authority.
-- id: INV-0038
-  statement: |
-    INV-DOC-002: Generated documentation must be deterministic given identical
+
+    '
+  alias_id: INV-0037
+  alias_name: inv-0037
+- id: 019fee89-e616-7abd-ad17-f29edbd30959
+  statement: 'INV-DOC-002: Generated documentation must be deterministic given identical
+
     source artifacts and generator inputs.
+
+    '
   scope: global
   enforcement_level: must
   enforcement_mechanism: test
   verification_method: automated
-  rationale: |
-    Deterministic rendering is required for reliable drift detection, CI
+  rationale: 'Deterministic rendering is required for reliable drift detection, CI
+
     enforcement, and reproducible AI orientation.
-- id: INV-0039
-  statement: |
-    INV-DOC-003: Rendered documentation must never be edited manually; changes
+
+    '
+  alias_id: INV-0038
+  alias_name: inv-0038
+- id: 019fee89-e616-77e0-992d-25764a1ed5a2
+  statement: 'INV-DOC-003: Rendered documentation must never be edited manually; changes
+
     must be made through generators, templates, or structured source artifacts.
+
+    '
   scope: global
   enforcement_level: must
   enforcement_mechanism: policy
   verification_method: automated
-  rationale: |
-    Manual edits to generated documentation destroy traceability and create
+  rationale: 'Manual edits to generated documentation destroy traceability and create
+
     ambiguity over what is authoritative.
+
+    '
+  alias_id: INV-0039
+  alias_name: inv-0039
+- id: 019ff22a-bb5f-7c77-a223-1dab5e8c814d
+  statement: 'INV-DOC-004: A documentation projection must obtain machine-verifiable
+
+    facts from their owning structured or provider surfaces and must not establish
+
+    an independent authored duplicate of those facts.
+
+    '
+  scope: global
+  enforcement_level: must
+  enforcement_mechanism: design
+  verification_method: automated
+  rationale: 'Derived facts already have an owning machine-readable source. Duplicating
+
+    them in projection configuration creates silent drift.
+
+    '
+  alias_id: INV-0099
+  alias_name: inv-0099
+- id: 019ff22a-bb5f-7779-912f-040cdf1b54b8
+  statement: 'INV-DOC-005: Authored orientation used by a documentation projection must
+
+    remain explicit, non-authoritative, and unable to override canonical architecture
+
+    authority.
+
+    '
+  scope: global
+  enforcement_level: must
+  enforcement_mechanism: design
+  verification_method: manual
+  rationale: 'Explanatory orientation is legitimate only when it cannot become a hidden
+
+    second authority layer.
+
+    '
+  alias_id: INV-0100
+  alias_name: inv-0100
+- id: 019ff22a-bb5f-7b93-a600-f587022aeffd
+  statement: 'INV-DOC-006: Generated documentation freshness must close over all governed
+
+    semantic inputs and projection-rule inputs capable of changing the rendered
+
+    artifact, and must not require whole-repository hashing.
+
+    '
+  scope: global
+  enforcement_level: must
+  enforcement_mechanism: test
+  verification_method: automated
+  rationale: 'Freshness must track true render dependencies, including templates and
+
+    projection rules, without invalidating on unrelated repository churn.
+
+    '
+  alias_id: INV-0101
+  alias_name: inv-0101
+- id: 019ff22a-bb5f-7fca-b021-b3cbc68ddde2
+  statement: 'INV-DOC-007: Repository-specific documentation-projection orientation must
+
+    not leak into an unrelated repository scope, including ADR Kit provider
+
+    semantics rendered into an arbitrary consuming repository.
+
+    '
+  scope: global
+  enforcement_level: must
+  enforcement_mechanism: test
+  verification_method: automated
+  rationale: 'Scope isolation prevents consumer repositories from being mis-oriented as
+
+    the authoring provider.
+
+    '
+  alias_id: INV-0102
+  alias_name: inv-0102
 capabilities:
-- id: CAP-0014
+- id: 019fee89-e615-7564-933f-0bb0cbbcf41b
   name: Deterministic Documentation Projection
-  description: |
-    The system can generate human-readable architecture documentation from
+  description: 'The system can generate human-readable architecture documentation
+    from
+
     structured source artifacts and verify that rendered output remains in sync.
+
+    '
+  alias_id: CAP-0014
+  alias_name: deterministic-documentation-projection
 related_adrs:
-- ADR-L-0001
-- ADR-L-0003
-- ADR-P-0001
-- ADR-P-0002
+- 019fee89-e615-70a5-861b-b2dde147e5af
+- 019fee89-e615-77f6-9b1f-695732d25443
+- 019fee89-e618-79ed-9d2d-cc35c63bc99a
+- 019fee89-e618-7a2f-aa3e-1f892cdf9410
+- 019fee89-e616-7c4e-953c-b7349412a784
+- 019fee89-e618-74b2-a83e-e41c7d8c9f37
 gaps: []
 migration_origin:
   remapped_entities:
@@ -189,3 +609,5 @@ migration_origin:
   - entity_type: decision
     from: DEC-0003
     to: DEC-0026
+alias_id: ADR-L-0007
+alias_name: adr-l-0007-deterministic-documentation-projection

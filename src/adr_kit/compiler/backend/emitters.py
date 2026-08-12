@@ -36,6 +36,7 @@ class RegistryBackendEmitter:
             namespace=self.build_result.namespace,
             generated_at=self.build_result.model.metadata.generated_at,
             diagnostics=diagnostics,
+            model_version=getattr(self.build_result, "model_version", "1.1"),
         )
         self._diagnostics = diagnostics.as_list()
         return emit_registry_artifacts(bundle, scope=self.scope)
@@ -70,16 +71,21 @@ class ManifestBackendEmitter:
 
 @dataclass
 class MarkdownBackendEmitter:
-    """Emit rendered ADR markdown artifacts for the selected scope."""
+    """Emit ADR human projection markdown artifacts for the selected scope."""
 
     parser: ADRParser
     scope: ProjectScope
+    build_result: FrontendBuildResult
 
     name: str = "markdown"
     artifact_group: str = "markdown"
 
     def emit(self) -> list[EmittedArtifact]:
-        return emit_markdown_artifacts(parser=self.parser, scope=self.scope)
+        return emit_markdown_artifacts(
+            parser=self.parser,
+            scope=self.scope,
+            build_result=self.build_result,
+        )
 
     def diagnostics(self) -> list[Diagnostic]:
         return []
@@ -114,6 +120,6 @@ def build_backend_emitters(
     return {
         "registries": RegistryBackendEmitter(parser=parser, scope=scope, build_result=build_result),
         "manifest": ManifestBackendEmitter(parser=parser, scope=scope, build_result=build_result),
-        "markdown": MarkdownBackendEmitter(parser=parser, scope=scope),
+        "markdown": MarkdownBackendEmitter(parser=parser, scope=scope, build_result=build_result),
         "graph": GraphBackendEmitter(parser=parser, scope=scope, build_result=build_result),
     }

@@ -39,6 +39,12 @@ and migration, and ADR Kit-owned canonical collision repair. V1.0 remains frozen
 external authority remains external, and runtime state remains outside repositories.
 GraphProjectionBundle and multi-source assertion replacement remain Phase 3 concerns.
 
+## Phase 2.5 — canonical entity identity and promotion provider
+
+Promote the closed v1.3 identity Design Journal through the ADR Kit promotion provider before schema/model v1.3 embodiment and corpus migration.
+
+Keep canonical updated_at and general transactional authoring in Phase 3. Phase 3 consumes, and does not redefine, v1.3 entity identity.
+
 ## Phase 3 — graph bundle and transactional authoring decisions
 
 Entry requires approved Phase 2 contracts. First evaluate GraphProjectionBundle,

@@ -42,6 +42,7 @@ from adr_kit.compiler.registry_bundle import assemble_registry_bundle, render_bu
 from adr_kit.generators import ArchitectureIndexGenerator
 from adr_kit.identity import derive_assertion_id
 from adr_kit.migrators import TopologyIdentityMigrator
+from adr_kit.migrators.identity_v13 import IdentityV13Migrator
 from adr_kit.parser import ADRParser
 from adr_kit.repository import ArchitectureRepository
 from adr_kit.scope import ProjectScope, ProjectScopeResolver
@@ -69,6 +70,10 @@ PHASE2_STAGE_NAMES = (
     "semantic_compilation",
     "assertion_derivation_1000",
     "topology_migration_plan",
+    "v13_identity_preflight",
+    "v13_identity_plan",
+    "v13_model2_compile",
+    "v13_model2_repository_load",
 )
 SOURCE_DIRS = ("logical", "physical", "physical-system", "physical-component", "invariants")
 T = TypeVar("T")
@@ -164,6 +169,55 @@ def _phase2_case(base: Path) -> CorpusCase:
         destination.parent.mkdir(parents=True, exist_ok=True)
         shutil.copy2(fixture_root / source_name, destination)
     return _case("phase2-semantic", root)
+
+
+def _v13_model2_case(base: Path) -> CorpusCase:
+    """Tiny authored v1.3 corpus for model 2.0 compile/load timing."""
+    root = base / "phase2-v13-model2"
+    logical = root / "adrs" / "logical"
+    logical.mkdir(parents=True)
+    _write_project(root, "phase2-v13-model2")
+    payload = {
+        "schema_version": "1.3",
+        "adr_type": "logical",
+        "id": "019fee89-e615-70a5-861b-b2dde147e5af",
+        "alias_id": "ADR-L-7001",
+        "alias_name": "benchmark-v13",
+        "title": "Benchmark v1.3 logical ADR",
+        "status": "accepted",
+        "created_date": "2026-01-01",
+        "authors": ["phase0-benchmark"],
+        "domains": ["benchmark"],
+        "context": "Deterministic v1.3 model 2.0 benchmark input.",
+        "capabilities": [
+            {
+                "id": "019fee89-e614-7c68-be36-2c84d4579279",
+                "alias_id": "CAP-7001",
+                "alias_name": "benchmark-capability",
+                "name": "Benchmark capability",
+                "description": "Deterministic capability for model 2.0 timing.",
+            }
+        ],
+        "decisions": [
+            {
+                "id": "019fee89-e615-7bb9-ad3b-93d12b0f65b6",
+                "alias_id": "DEC-7001",
+                "alias_name": "benchmark-decision",
+                "summary": "Benchmark decision",
+                "rationale": "Deterministic decision for model 2.0 timing.",
+                "enables_capabilities": ["019fee89-e614-7c68-be36-2c84d4579279"],
+            }
+        ],
+        "architectural_boundaries": [],
+        "interaction_contracts": [],
+        "constraints": [],
+        "non_functional_requirements": [],
+        "invariants": [],
+        "gaps": [],
+    }
+    path = logical / "ADR-L-7001-benchmark-v13.yaml"
+    path.write_text(yaml.safe_dump(payload, sort_keys=False), encoding="utf-8")
+    return _case("phase2-v13-model2", root)
 
 
 def _case(name: str, root: Path) -> CorpusCase:
@@ -276,7 +330,9 @@ def _run_iteration(
     return timings, model.fingerprint, sdk_timings, evidence
 
 
-def _run_phase2_iteration(case: CorpusCase) -> tuple[dict[str, float], dict[str, object]]:
+def _run_phase2_iteration(
+    case: CorpusCase, v13_case: CorpusCase
+) -> tuple[dict[str, float], dict[str, object]]:
     timings: dict[str, float] = {}
     resolver = ProjectScopeResolver(explicit_scope=case.root)
     scope = resolver.resolve()
@@ -304,6 +360,35 @@ def _run_phase2_iteration(case: CorpusCase) -> tuple[dict[str, float], dict[str,
     timings["assertion_derivation_1000"], assertion_ids = _measure(assertions)
     migrator = TopologyIdentityMigrator()
     timings["topology_migration_plan"], migration_plan = _measure(lambda: migrator.plan(scope))
+
+    identity_migrator = IdentityV13Migrator()
+    timings["v13_identity_preflight"], preflight = _measure(
+        lambda: identity_migrator.preflight(scope)
+    )
+    timings["v13_identity_plan"], identity_plan = _measure(lambda: identity_migrator.plan(scope))
+
+    v13_resolver = ProjectScopeResolver(explicit_scope=v13_case.root)
+    v13_scope = v13_resolver.resolve()
+    v13_compiler = ArchitectureCompiler(scope_resolver=v13_resolver)
+    timings["v13_model2_compile"], v13_compilation = _measure(
+        lambda: v13_compiler.compile(
+            v13_scope,
+            CompilerConfig(emit={"registries", "manifest"}, pinned_timestamp=FIXED_TIMESTAMP),
+        )
+    )
+    if not v13_compilation.success:
+        raise RuntimeError(
+            "v1.3 model 2.0 benchmark compile failed: "
+            + "; ".join(item.message for item in v13_compilation.diagnostics)
+        )
+
+    def load_v13_repository() -> ArchitectureRepository:
+        repository = ArchitectureRepository(project_root=v13_case.root)
+        repository.load()
+        return repository
+
+    timings["v13_model2_repository_load"], v13_repository = _measure(load_v13_repository)
+
     relationships = bundle.relationship_registry.relationships
     evidence = {
         "parsed_types": [type(item).__name__ for item in parsed],
@@ -327,6 +412,12 @@ def _run_phase2_iteration(case: CorpusCase) -> tuple[dict[str, float], dict[str,
             (item.pointer, item.before, item.after) for item in migration_plan.changes
         ],
         "migration_diagnostics": [item.message for item in migration_plan.diagnostics],
+        "v13_preflight_ok": preflight.ok,
+        "v13_plan_ok": identity_plan.ok,
+        "v13_plan_entry_count": len(identity_plan.identity_map.entries),
+        "v13_compile_success": v13_compilation.success,
+        "v13_repository_model_version": v13_repository.model_version,
+        "v13_entity_count": len(v13_repository.get_entities()),
     }
     return timings, evidence
 
@@ -357,6 +448,7 @@ def run(corpus: str, sizes: list[int], warmups: int, repeats: int) -> dict[str, 
     with tempfile.TemporaryDirectory(prefix="adr-kit-phase0-benchmark-") as temporary:
         base = Path(temporary)
         phase2_case = _phase2_case(base)
+        v13_case = _v13_model2_case(base)
         cases: list[CorpusCase] = []
         if corpus in ("all", "repository"):
             cases.append(_copy_case(base, "repository", ROOT / "adrs"))
@@ -401,11 +493,11 @@ def run(corpus: str, sizes: list[int], warmups: int, repeats: int) -> dict[str, 
                 }
             )
         for _ in range(warmups):
-            _run_phase2_iteration(phase2_case)
+            _run_phase2_iteration(phase2_case, v13_case)
         phase2_samples: list[dict[str, float]] = []
         phase2_evidence_samples: list[dict[str, object]] = []
         for _ in range(repeats + 1):
-            timings, evidence = _run_phase2_iteration(phase2_case)
+            timings, evidence = _run_phase2_iteration(phase2_case, v13_case)
             phase2_samples.append(timings)
             phase2_evidence_samples.append(evidence)
         phase2_deterministic = all(

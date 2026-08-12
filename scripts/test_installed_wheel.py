@@ -43,21 +43,42 @@ assert 'site-packages' in package_path.as_posix().lower(), package_path
 assert resources.files('adr_kit.schema.v1_0').joinpath('adr-logical.schema.json').is_file()
 assert resources.files('adr_kit.schema.v1_1').joinpath('architecture-index.schema.json').is_file()
 assert resources.files('adr_kit.schema.v1_2').joinpath('adr-logical.schema.json').is_file()
+assert resources.files('adr_kit.schema.v1_3').joinpath('adr-logical.schema.json').is_file()
+assert resources.files('adr_kit.schema.v2_0').joinpath('normalized-entity.schema.json').is_file()
 assert resources.files('adr_kit.templates').joinpath('adr-logical.md.jinja2').is_file()
+assert resources.files('adr_kit.templates').joinpath('system-overview-adr-architecture-kit.yaml').is_file()
+assert resources.files('adr_kit.templates').joinpath('system-overview-ste-runtime.yaml').is_file()
+assert resources.files('adr_kit.templates').joinpath('system-overview.md.jinja2').is_file()
+assert resources.files('adr_kit.promotion.rules').joinpath('roadmap_file_rules_v1.json').is_file()
+assert resources.files('adr_kit.promotion.schemas').joinpath('promotion_contract_v0_1.json').is_file()
 from adr_kit.migrators import TopologyIdentityMigrator
 assert TopologyIdentityMigrator.__name__ == 'TopologyIdentityMigrator'
+from adr_kit.migrators.identity_v13 import IdentityV13Migrator
+assert IdentityV13Migrator.__name__ == 'IdentityV13Migrator'
+from adr_kit.promotion.ste_contract import load_promotion_contract_schema
+assert isinstance(load_promotion_contract_schema(), dict)
 print(adr_kit.__version__)
 """
 PHASE2_PROBE = """
 import os
 import yaml
 from pathlib import Path
-from adr_kit.api import capabilities, open_repository
+from adr_kit.api import (
+    NormalizedArchitectureModelV2,
+    ProviderRegistry,
+    capabilities,
+    open_provider_registry,
+    open_repository,
+)
 
 root = Path(os.environ['ADR_PHASE2_FIXTURE'])
 manifest = capabilities()
-assert manifest.supported_adr_schema_versions == ('1.0', '1.1', '1.2')
+assert manifest.supported_adr_schema_versions == ('1.0', '1.1', '1.2', '1.3')
 assert manifest.normalized_model_schema_version == '1.1'
+assert manifest.supported_normalized_model_schema_versions == ('1.1', '2.0')
+assert NormalizedArchitectureModelV2 is not None
+assert ProviderRegistry is not None
+assert callable(open_provider_registry)
 repository = open_repository(root)
 assert [item.id for item in repository.get_boundaries()] == ['BOUND-9801']
 assert [item.id for item in repository.get_contracts()] == ['CONTRACT-9801']

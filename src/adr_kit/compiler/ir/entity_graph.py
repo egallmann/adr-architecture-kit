@@ -39,6 +39,7 @@ ENTITY_RELATIONSHIP_TYPES = (
     "governs",
     "implemented_by",
     "embodied_in",
+    "implements_logical",
     "supersedes",
     "superseded_by",
     "refines",

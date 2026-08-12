@@ -30,10 +30,11 @@ as a new consumer contract.
 
 Provisional surfaces are public enough for careful integration but may evolve before
 promotion. They include `schema/v1.1/`, discovery/ledger/lifecycle/remediation
-extensions, provisional ADR authoring `schema/v1.2/`, normalized-model contract `1.1`,
-source-sensitive assertion identity, external binding projections, topology identity,
-subset registries, and the additive architecture graph. Provisional material must
-identify migration impact when it changes and is not promoted merely by implementation.
+extensions, provisional ADR authoring `schema/v1.2/` and `schema/v1.3/`, normalized-model
+contracts `1.1` and `2.0`, source-sensitive assertion identity, external binding
+projections, topology identity, subset registries, and the additive architecture graph.
+Provisional material must identify migration impact when it changes and is not promoted
+merely by implementation.
 
 ### Experimental
 
@@ -59,11 +60,14 @@ Phase 1 adds no root export beyond `__version__`; the supported facade is the se
 
 ### Supported SDK
 
-`adr_kit.api` is the recommended boundary for new Python integrations. Its exact
-17-symbol inventory and API contract version `1.0` are compatibility tested. Public
+`adr_kit.api` is the recommended boundary for new Python integrations.
+`adr_kit.api` has an explicit compatibility-tested symbol inventory recorded in
+`contracts/compatibility/python-surface.json` and documented in
+[Public Python SDK](public-sdk.md). Its API contract version is `1.0`. Public
 annotations and returned object graphs exclude compiler internals. The supported
 operations are local capability discovery, one-scope validation, restricted authoring
-compilation, and eager repository opening. See [Public Python SDK](public-sdk.md).
+compilation, eager repository opening, provider-registry opening, and Design Journal
+promotion prepare/check/apply.
 
 ### Generated compatibility
 

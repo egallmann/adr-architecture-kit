@@ -1,0 +1,82 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://adr-architecture-kit/schema/v2.0/relationship-record.schema.json",
+  "title": "Relationship Record v2.0",
+  "description": "UUID-endpoint relationship record for model 2.0.",
+  "type": "object",
+  "required": [
+    "relationship_id",
+    "assertion_id",
+    "relationship_type",
+    "from_entity_id",
+    "to_entity_id",
+    "source_owner_id",
+    "provenance_classification",
+    "canonical_source_ref"
+  ],
+  "properties": {
+    "relationship_id": {
+      "type": "string",
+      "description": "Derived type:source_uuid:target_uuid."
+    },
+    "assertion_id": {
+      "type": "string",
+      "pattern": "^asrt-[0-9a-f]{64}$"
+    },
+    "relationship_type": {
+      "type": "string",
+      "enum": [
+        "declared_in",
+        "references",
+        "related_to",
+        "enforces",
+        "enabled_by",
+        "enables",
+        "governs",
+        "implemented_by",
+        "embodied_in", "implements_logical",
+        "supersedes",
+        "superseded_by",
+        "refines",
+        "provides_interface",
+        "composed_of",
+        "binds_substrate",
+        "binds_rule",
+        "expects_evidence"
+      ]
+    },
+    "from_entity_id": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-7[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+    },
+    "to_entity_id": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-7[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+    },
+    "source_owner_id": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-7[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$",
+      "description": "UUID of the owning ADR entity."
+    },
+    "source_pointer": {
+      "type": ["string", "null"],
+      "description": "JSON pointer within the source ADR."
+    },
+    "provenance_classification": {
+      "type": "string",
+      "enum": ["explicit", "derived", "heuristic"]
+    },
+    "evidence": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "canonical_source_ref": { "type": "string" },
+    "confidence": {
+      "type": "number",
+      "minimum": 0.0,
+      "maximum": 1.0
+    },
+    "metadata": { "type": "object" }
+  },
+  "additionalProperties": false
+}

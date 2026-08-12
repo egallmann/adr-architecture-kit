@@ -1,0 +1,91 @@
+{
+  "expect": "pass",
+  "expect_fingerprint_stable_after_evidence_append": true,
+  "note": "Valid locked state; append-only evidence must not change locked-intent fingerprint",
+  "contract": {
+    "contract_version": "ste.design_journal.promotion_contract/v0.1",
+    "design_journal_version": "ste.design_journal/v0.1",
+    "journal_id": "DJ-CONF-02",
+    "lifecycle_state": "locked",
+    "provider": "example-authority-provider",
+    "source_artifact_revision": "git:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+    "authority_baseline": {
+      "provider": "example-authority-provider",
+      "kind": "git_commit",
+      "value": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+    },
+    "outcomes": [
+      {
+        "id": "O-01",
+        "category": "candidate_decision",
+        "promotion_required": true,
+        "disposition": "accepted",
+        "statement": "Create authority envelope artifact."
+      }
+    ],
+    "mutations": [
+      {
+        "id": "M-01",
+        "operation": "create",
+        "provider": "example-authority-provider",
+        "provider_target_ref": "artifact:envelope-v1",
+        "outcome_refs": ["O-01"],
+        "payload_binding": {
+          "ref": "payloads/M-01.yaml",
+          "fingerprint": "sha256:1111111111111111111111111111111111111111111111111111111111111111"
+        },
+        "schema_binding": {
+          "ref": "schema:authority-artifact-v1",
+          "fingerprint": "sha256:2222222222222222222222222222222222222222222222222222222222222222"
+        },
+        "validation_evidence": {
+          "payload_fingerprint": "sha256:1111111111111111111111111111111111111111111111111111111111111111",
+          "schema_binding_fingerprint": "sha256:2222222222222222222222222222222222222222222222222222222222222222",
+          "result": "valid",
+          "evidence_ref": "evidence/M-01.json"
+        }
+      }
+    ],
+    "blockers": [],
+    "readiness": {
+      "design_lock": true,
+      "mechanical_promotion": true
+    },
+    "human_lock": {
+      "approved": true,
+      "approver": "human@example",
+      "approved_at": "2026-08-09T00:00:00Z",
+      "journal_id": "DJ-CONF-02",
+      "source_artifact_revision": "git:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+      "locked_intent_fingerprint": "sha256:cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+      "authority_baseline": {
+        "provider": "example-authority-provider",
+        "kind": "git_commit",
+        "value": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+      },
+      "promotion_scope": {
+        "outcome_ids": ["O-01"],
+        "mutation_ids": ["M-01"]
+      },
+      "payload_bindings": [
+        {
+          "ref": "payloads/M-01.yaml",
+          "fingerprint": "sha256:1111111111111111111111111111111111111111111111111111111111111111"
+        }
+      ],
+      "schema_bindings": [
+        {
+          "ref": "schema:authority-artifact-v1",
+          "fingerprint": "sha256:2222222222222222222222222222222222222222222222222222222222222222"
+        }
+      ]
+    },
+    "execution_evidence": [
+      {
+        "attempt_id": "attempt-1",
+        "class": "D",
+        "message": "transient provider unavailable"
+      }
+    ]
+  }
+}

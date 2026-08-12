@@ -163,23 +163,6 @@ component_specifications:
     implements_capabilities: ["CAP-{suffix}"]
 """,
     )
-    _write_file(
-        root / "adrs" / "invariants" / f"INV-{suffix}-fixture.yaml",
-        f"""
-schema_version: "1.0"
-type: invariant
-id: INV-{suffix}
-statement: "Fixture {suffix} must compile deterministically."
-scope: global
-enforcement_level: must
-enforcement_mechanism: design
-verification_method: automated
-rationale: "Needed for trust."
-defined_in: ADR-L-{suffix}
-enforced_by: ["ADR-PC-{suffix}"]
-declaration_mode: canonical
-""",
-    )
 
 
 def _create_recursive_workspace(root: Path) -> Path:
@@ -207,7 +190,7 @@ def test_architecture_compiler_dry_run_emits_default_artifacts(tmp_path):
     assert "adrs/entities/registry.yaml" in artifact_paths
     assert "adrs/manifest.yaml" in artifact_paths
     assert "adrs/index/architecture-graph.yaml" not in artifact_paths
-    assert any(path.startswith("adrs/rendered/ADR-") for path in artifact_paths)
+    assert any(path.startswith("adrs/adr-projection/") and path.endswith(".md") for path in artifact_paths)
     assert not (workspace / "adrs" / "index" / "architecture-index.yaml").exists()
     assert result.statistics.artifacts_emitted == len(result.artifacts)
 

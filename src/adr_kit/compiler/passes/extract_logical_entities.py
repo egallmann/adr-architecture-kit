@@ -128,6 +128,7 @@ def extract_logical_entities(
                         canonical_source=canonical("logical_adr", source_ref, artifact),
                         metadata={
                             "adr_id": adr.id,
+                            "adr_alias_id": getattr(adr, "alias_id", adr.id),
                             "domains": list(adr.domains),
                             "implemented_by_components": list(capability.implemented_by_components),
                             "enabled_by_decisions": list(capability.enabled_by_decisions),
@@ -151,6 +152,7 @@ def extract_logical_entities(
                         canonical_source=canonical("logical_adr", source_ref, artifact),
                         metadata={
                             "adr_id": adr.id,
+                            "adr_alias_id": getattr(adr, "alias_id", adr.id),
                             "domains": list(adr.domains),
                             "rationale": boundary.rationale,
                         },
@@ -175,6 +177,7 @@ def extract_logical_entities(
                         canonical_source=canonical("logical_adr", source_ref, artifact),
                         metadata={
                             "adr_id": adr.id,
+                            "adr_alias_id": getattr(adr, "alias_id", adr.id),
                             "domains": list(adr.domains),
                             "parties": list(contract.parties),
                             "protocol": contract.protocol,
@@ -200,6 +203,7 @@ def extract_logical_entities(
                         canonical_source=canonical("logical_adr", source_ref, artifact),
                         metadata={
                             "adr_id": adr.id,
+                            "adr_alias_id": getattr(adr, "alias_id", adr.id),
                             "related_invariants": list(decision.related_invariants),
                             "enforces_invariants": list(decision.enforces_invariants),
                             "enables_capabilities": list(decision.enables_capabilities),
@@ -214,20 +218,28 @@ def extract_logical_entities(
             )
 
         for invariant in adr.invariants:
+            alias_id = getattr(invariant, "alias_id", None)
+            alias_name = getattr(invariant, "alias_name", None)
+            metadata = {
+                "adr_id": adr.id,
+                "adr_alias_id": getattr(adr, "alias_id", adr.id),
+                "scope": invariant.scope,
+                "statement": invariant.statement,
+                "enforcement_level": invariant.enforcement_level.value,
+                "declaration_mode": invariant.declaration_mode or "local",
+                "upheld_by_decisions": list(invariant.upheld_by_decisions),
+                "supersedes": list(getattr(invariant, "supersedes", []) or []),
+            }
+            if isinstance(alias_id, str) and alias_id:
+                metadata["alias_id"] = alias_id
+            if isinstance(alias_name, str) and alias_name:
+                metadata["alias_name"] = alias_name
             result.invariant_mentions.setdefault(invariant.id, []).append(
                 InvariantMention(
                     payload={
-                        "name": invariant.id,
+                        "name": alias_id if isinstance(alias_id, str) and alias_id else invariant.id,
                         "summary": summary(invariant.statement),
-                        "metadata": {
-                            "adr_id": adr.id,
-                            "scope": invariant.scope,
-                            "statement": invariant.statement,
-                            "enforcement_level": invariant.enforcement_level.value,
-                            "declaration_mode": invariant.declaration_mode or "local",
-                            "upheld_by_decisions": list(invariant.upheld_by_decisions),
-                            "supersedes": list(getattr(invariant, "supersedes", []) or []),
-                        },
+                        "metadata": metadata,
                     },
                     artifact_path=artifact,
                     source_ref=f"{adr.id}#{invariant.id}",

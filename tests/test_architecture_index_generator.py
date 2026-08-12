@@ -187,23 +187,6 @@ def _create_fixture(root: Path, include_namespace: bool = True) -> Path:
             implements_capabilities: ["CAP-1000"]
         """,
     )
-    _write_file(
-        adr_dir / "invariants" / "INV-1000-deterministic.yaml",
-        """
-        schema_version: "1.0"
-        type: invariant
-        id: INV-1000
-        statement: "Discovery must be deterministic."
-        scope: global
-        enforcement_level: must
-        enforcement_mechanism: design
-        verification_method: automated
-        rationale: "Needed for trust."
-        defined_in: ADR-L-1000
-        enforced_by: ["ADR-PC-1000"]
-        declaration_mode: canonical
-        """,
-    )
     return adr_dir
 
 
@@ -216,8 +199,8 @@ def test_architecture_index_generation_emits_normalized_artifacts(tmp_path):
     entity_ids = {entity.id for entity in bundle.entity_registry.entities}
     assert {"ADR-L-1000", "ADR-PS-1000", "ADR-PC-1000", "SYS-1000", "CAP-1000", "DEC-1000", "INV-1000", "COMP-VALIDATOR"} <= entity_ids
     invariant = next(entity for entity in bundle.entity_registry.entities if entity.id == "INV-1000")
-    assert invariant.canonical_source.source_type == "standalone_invariant"
-    assert any(ref.source_ref == "ADR-L-1000#INV-1000" for ref in invariant.source_refs)
+    assert invariant.canonical_source.source_type == "logical_adr"
+    assert invariant.canonical_source.source_ref == "ADR-L-1000#INV-1000"
     assert any(rel.relationship_type == "implemented_by" and rel.to_entity_id == "COMP-VALIDATOR" for rel in bundle.relationship_registry.relationships)
     assert any(item.id == "UGAP-ADR-L-1000-GAP-1000" for item in bundle.unresolved_registry.unresolved)
 
@@ -386,7 +369,7 @@ def test_architecture_index_generator_uses_cached_parser_across_repeated_runs(tm
     assert tracking_parser.calls.count(("parse_logical_adr", str((adr_dir / "logical" / "ADR-L-1000-discovery.yaml").resolve()))) == 1
     assert tracking_parser.calls.count(("parse_adr", str((adr_dir / "physical-system" / "ADR-PS-1000-system.yaml").resolve()))) == 1
     assert tracking_parser.calls.count(("parse_adr", str((adr_dir / "physical-component" / "ADR-PC-1000-component.yaml").resolve()))) == 1
-    assert tracking_parser.calls.count(("parse_invariant", str((adr_dir / "invariants" / "INV-1000-deterministic.yaml").resolve()))) == 1
+    assert tracking_parser.calls.count(("parse_invariant", str((adr_dir / "invariants" / "INV-1000-deterministic.yaml").resolve()))) == 0
 
 
 def test_architecture_index_generator_clears_diagnostics_each_run(tmp_path):
@@ -610,48 +593,28 @@ def test_extract_physical_entities_pass_matches_helper(tmp_path):
     assert direct.system_ids == via_pass.system_ids
 
 
-def test_resolve_invariant_canonical_prefers_standalone_and_preserves_references(tmp_path):
-    adr_dir = _create_fixture(tmp_path)
+def test_resolve_invariant_canonical_uses_logical_adr_as_canonical_source(tmp_path):
     generator = ArchitectureIndexGenerator()
-    logical_files, _, invariant_files = generator._discover_source_files(adr_dir)
-    logical_adrs = [(generator.parser.parse_logical_adr(path), path.resolve()) for path in logical_files]
-    standalone_invariants = [(generator.parser.parse_invariant(path), path.resolve()) for path in invariant_files]
-    scope = generator.scope_resolver.resolve(tmp_path)
-
-    logical_result = extract_logical_entities(
-        logical_adrs,
-        source_path=lambda file_path: generator._source_path(scope, file_path),
-        canonical=generator._canonical,
-        provenance=generator._provenance,
-        summary=generator._summary,
-        complete=generator._complete,
-        classify_author_gap=generator._classify_author_gap,
-    )
     invariant_mentions = {
-        inv_id: [(mention.payload, mention.artifact_path, mention.source_ref) for mention in mentions]
-        for inv_id, mentions in logical_result.invariant_mentions.items()
-    }
-    for invariant, path in standalone_invariants:
-        artifact = generator._source_path(scope, path)
-        invariant_mentions.setdefault(invariant.id, []).append(
+        "INV-1000": [
             (
                 {
-                    "name": invariant.id,
-                    "summary": generator._summary(invariant.statement),
+                    "name": "INV-1000",
+                    "summary": "Discovery must be deterministic.",
                     "metadata": {
-                        "defined_in": invariant.defined_in,
-                        "scope": invariant.scope,
-                        "statement": invariant.statement,
-                        "enforcement_level": invariant.enforcement_level.value,
-                        "declaration_mode": invariant.declaration_mode or "canonical",
-                        "upheld_by_decisions": list(invariant.upheld_by_decisions),
-                        "enforced_by": list(invariant.enforced_by),
+                        "adr_id": "ADR-L-1000",
+                        "scope": "global",
+                        "statement": "Discovery must be deterministic.",
+                        "enforcement_level": "must",
+                        "declaration_mode": "local",
+                        "upheld_by_decisions": [],
                     },
                 },
-                artifact,
-                invariant.id,
+                "adrs/logical/ADR-L-1000-discovery.yaml",
+                "ADR-L-1000#INV-1000",
             )
-        )
+        ]
+    }
 
     result = resolve_invariant_canonical(
         invariant_mentions,
@@ -661,9 +624,8 @@ def test_resolve_invariant_canonical_prefers_standalone_and_preserves_references
     )
 
     selection = result.selections["INV-1000"]
-    assert selection.entity.canonical_source.source_type == "standalone_invariant"
-    assert selection.entity.canonical_source.source_ref == "INV-1000"
-    assert [ref.source_ref for ref in selection.reference_source_refs] == ["ADR-L-1000#INV-1000"]
+    assert selection.entity.canonical_source.source_type == "logical_adr"
+    assert selection.entity.canonical_source.source_ref == "ADR-L-1000#INV-1000"
 
 
 def test_resolve_invariant_canonical_pass_matches_helper(tmp_path):

@@ -5,12 +5,14 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 from enum import StrEnum
 from pathlib import Path
-from typing import Callable
+from typing import Callable, Sequence
 
 from ..decorators import enforces_invariant, implements_adr
 from ..scope import ProjectScope, ProjectScopeResolver
 from .artifacts import ArtifactKind, GeneratedArtifact, ScopeProjectionArtifacts
 from .core import (
+    GeneratorIdentity,
+    HashInput,
     IntegrityHeaderError,
     compute_rendered_hash,
     extract_body_without_header,
@@ -54,7 +56,13 @@ class GeneratedArtifactValidator:
 
     def __init__(
         self,
-        inspector: Callable[[GeneratedArtifact], tuple[str, list[Path], object]] | None = None,
+        inspector: (
+            Callable[
+                [GeneratedArtifact],
+                tuple[str, Sequence[Path | HashInput], GeneratorIdentity],
+            ]
+            | None
+        ) = None,
         scope_resolver: ProjectScopeResolver | None = None,
     ):
         from ..projection import ProjectionInspector
@@ -64,21 +72,33 @@ class GeneratedArtifactValidator:
         self.scope_resolver = scope_resolver or ProjectScopeResolver()
 
     def enumerate_scope_artifacts(self, scope: ProjectScope) -> list[GeneratedArtifact]:
-        rendered_dir = scope.adr_dir / "rendered"
+        projection_dir = scope.adr_dir / "adr-projection"
         artifacts: list[GeneratedArtifact] = []
         if scope.manifest_path.exists():
             artifacts.append(GeneratedArtifact(scope.manifest_path, ArtifactKind.MANIFEST, scope))
         architecture_graph = scope.adr_dir / "index" / "architecture-graph.yaml"
         if architecture_graph.exists():
-            artifacts.append(GeneratedArtifact(architecture_graph, ArtifactKind.ARCHITECTURE_GRAPH, scope))
+            artifacts.append(
+                GeneratedArtifact(architecture_graph, ArtifactKind.ARCHITECTURE_GRAPH, scope)
+            )
         legacy_entity_registry = scope.adr_dir / "entities" / "registry.yaml"
         if legacy_entity_registry.exists():
-            artifacts.append(GeneratedArtifact(legacy_entity_registry, ArtifactKind.LEGACY_ENTITY_REGISTRY, scope))
+            artifacts.append(
+                GeneratedArtifact(
+                    legacy_entity_registry, ArtifactKind.LEGACY_ENTITY_REGISTRY, scope
+                )
+            )
         system_overview_path = scope.root / "SYSTEM-OVERVIEW.md"
         if system_overview_path.exists():
-            artifacts.append(GeneratedArtifact(system_overview_path, ArtifactKind.SYSTEM_OVERVIEW, scope))
-        for path in sorted(rendered_dir.glob("*.md")) if rendered_dir.exists() else []:
-            if path.is_file() and not path.is_symlink():
+            artifacts.append(
+                GeneratedArtifact(system_overview_path, ArtifactKind.SYSTEM_OVERVIEW, scope)
+            )
+        if projection_dir.exists():
+            for path in sorted(projection_dir.rglob("*.md")):
+                if not path.is_file() or path.is_symlink():
+                    continue
+                if path.name == "README.md":
+                    continue
                 artifacts.append(GeneratedArtifact(path, ArtifactKind.RENDERED_ADR_MARKDOWN, scope))
         return artifacts
 
@@ -159,8 +179,12 @@ class GeneratedArtifactValidator:
         )
 
     def validate_scope(self, scope: ProjectScope) -> list[GeneratedArtifactValidationResult]:
-        return [self.validate_artifact(artifact) for artifact in self.enumerate_scope_artifacts(scope)]
+        return [
+            self.validate_artifact(artifact) for artifact in self.enumerate_scope_artifacts(scope)
+        ]
 
-    def validate_recursive(self, start_dir: Path | None = None) -> dict[str, list[GeneratedArtifactValidationResult]]:
+    def validate_recursive(
+        self, start_dir: Path | None = None
+    ) -> dict[str, list[GeneratedArtifactValidationResult]]:
         scopes = self.scope_resolver.resolve_recursive(start_dir)
         return {scope.name or str(scope.root): self.validate_scope(scope) for scope in scopes}

@@ -11,6 +11,8 @@ Contributor-oriented guides (TDD, authoring, placement) live under [`contributor
 | [authority-boundary.md](authority-boundary.md) | Who owns what across `ste-handbook`, `ste-spec`, this kit, `ste-runtime`, and `ste-kernel` |
 | [public-sdk.md](public-sdk.md) | Supported `adr_kit.api` facade, contracts, examples, and exclusions |
 | [schema-v1.2.md](schema-v1.2.md) | Provisional additive authoring schema and normalized semantic contract |
+| [schema-v1.3.md](schema-v1.3.md) | UUID identity authoring schema and model 2.0 linkage |
+| [identity-v13-migration.md](identity-v13-migration.md) | Sealed UUID identity migration lifecycle and dogfood evidence |
 | [external-bindings.md](external-bindings.md) | Bind-only substrate, rule, evidence, and external-reference semantics |
 | [topology-identity-migration.md](topology-identity-migration.md) | Stable topology IDs and deterministic migration workflow |
 | [adr-type-model.md](adr-type-model.md) | ADR taxonomy: `ADR-L`, `ADR-PS`, `ADR-PC`, legacy `ADR-P`, experimental `ADR-V` |

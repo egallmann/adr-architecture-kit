@@ -17,6 +17,7 @@ class EmittedArtifact:
     content: bytes
     kind: str
     integrity_header: str | None = None
+    logical_id: str | None = None
 
 
 class BackendEmitter(Protocol):

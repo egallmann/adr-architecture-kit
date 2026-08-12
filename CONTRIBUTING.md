@@ -184,11 +184,19 @@ That bundle validates generated-docs integrity and runs a **subset** of `pytest`
 
 ## Submitting Changes
 
-1. Fork the repository and create a branch from `main`.
+This repository uses a controlled feature → develop → release → main flow:
+
+1. Branch from current `develop` for normal feature work
+   (`feature/<short-name>`).
 2. Follow the TDD methodology — write tests before implementation.
 3. Ensure all quality gates pass locally.
 4. Update `CHANGELOG.md` under `[Unreleased]`.
-5. Open a pull request against `main`. The PR template will prompt you for the required checklist.
+5. Open a feature pull request against `develop`. The PR template will prompt
+   you for the required checklist.
+6. Release branches are cut from admitted `develop`, prepare package version /
+   changelog only, and open a release PR against `main`.
+7. `main` is publication/release admission. Create the release tag only after
+   the release PR is admitted to `main`.
 
 For non-trivial changes, consider opening an issue first to discuss the approach.
 
@@ -218,15 +226,17 @@ The **link** is that PyPI trusts *that GitHub repo + that workflow file* to uplo
 
 ### Ship a version
 
-1. Bump **`version`** only in [`pyproject.toml`](pyproject.toml). Runtime, CLI, and SDK
+1. Cut a `release/<version>` branch from admitted `develop`.
+2. Bump **`version`** only in [`pyproject.toml`](pyproject.toml). Runtime, CLI, and SDK
    versions resolve from distribution metadata; do not add another version literal.
-2. Update [`CHANGELOG.md`](CHANGELOG.md) with a dated section for that version.
-3. Merge the reviewed version change to `main` and create the exact tag
-   `v<project-version>` (for example, `v0.1.1`).
-4. The release workflow reruns quality/governance gates, builds one wheel and one
+3. Convert [`CHANGELOG.md`](CHANGELOG.md) `[Unreleased]` into a dated section for that
+   version and restore an empty `[Unreleased]` heading.
+4. Open a release pull request against `main`. After admission, create the exact tag
+   `v<project-version>` (for example, `v0.4.0`) on the admitted `main` commit.
+5. The release workflow reruns quality/governance gates, builds one wheel and one
    sdist, validates metadata, creates a hash manifest, tests the retained wheel on
    Python 3.11–3.14, and uploads the retained bundle.
-5. The `pypi` job downloads and re-verifies that bundle against the source commit,
+6. The `pypi` job downloads and re-verifies that bundle against the source commit,
    package version, and tag, then publishes without rebuilding.
 
 The workflow does not publish on a branch push or manual dispatch. The first

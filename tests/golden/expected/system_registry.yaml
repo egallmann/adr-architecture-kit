@@ -1,85 +1,45 @@
-schema_version: '1.1'
+schema_version: '2.0'
 type: normalized_entity_registry
 entities:
-- id: SYS-0001
-  entity_type: system
-  name: ADR Architecture Kit Discovery and Indexing System
-  summary: The discovery and indexing subsystem provides the derived surfaces that
-    agents query instead of scanning raw ADR bodies by default. It now includes normalized
-    discovery bundle generation under `adrs/index/`, legacy compa
-  lifecycle_stage: active
-  canonical_source:
-    source_type: physical_system_adr
-    source_ref: ADR-PS-0001
-    artifact_path: adrs/physical-system/ADR-PS-0001-adr-architecture-kit-discovery-and-indexing-system.yaml
-  source_refs: []
-  metadata:
-    adr_id: ADR-PS-0001
-    implements_logical:
-    - ADR-L-0009
-    - ADR-L-0012
-    technologies:
-    - python
-    - pyyaml
-    - click
-  relationships:
-    declared_in:
-    - ADR-PS-0001
-    references: []
-    related_to: []
-    enforces: []
-    enabled_by: []
-    enables: []
-    governs: []
-    implemented_by: []
-    embodied_in: []
-    supersedes: []
-    superseded_by: []
-    refines: []
-    provides_interface: []
-    composed_of: []
-    binds_substrate: []
-    binds_rule: []
-    expects_evidence: []
-  completeness:
-    status: complete
-    missing_fields: []
-  provenance:
-    source_type: physical_system_adr
-    source_ref: ADR-PS-0001
-    extraction_phase: extract_system
-    classification: explicit
-    generator: adr-architecture-index
-- id: SYS-0002
+- id: 019fee89-e618-713e-a017-5b417ef9ac9f
+  alias_id: SYS-0002
+  alias_name: sys-0002-adr-kit-authoring-compiler-and-validation-system
+  alias_ref: SYS-0002:sys-0002-adr-kit-authoring-compiler-and-validation-system
   entity_type: system
   name: ADR Kit Authoring Compiler and Validation System
   summary: adr-architecture-kit operates as an authoring-time compiler and validation
     system rather than a collection of unrelated generators. The implementation includes
     an explicit compiler pipeline, contract validation, normaliz
+  uri: adr://adr-architecture-kit/entities/019fee89-e618-713e-a017-5b417ef9ac9f
+  created_at: '2026-08-11T01:57:22.584Z'
+  entity_fingerprint: sha256:7b94569053894e4764c7e3f6336e853abf3ec2da634bcd035e75f4ecf84a803f
   lifecycle_stage: active
   canonical_source:
     source_type: physical_system_adr
-    source_ref: ADR-PS-0002
+    source_ref: 019fee89-e618-7d04-9337-4aa2d3258507
     artifact_path: adrs/physical-system/ADR-PS-0002-adr-kit-compiler-and-validation-runtime.yaml
   source_refs: []
   metadata:
-    adr_id: ADR-PS-0002
+    adr_id: 019fee89-e618-7d04-9337-4aa2d3258507
+    adr_alias_id: ADR-PS-0002
     implements_logical:
-    - ADR-L-0001
-    - ADR-L-0007
-    - ADR-L-0008
-    - ADR-L-0010
-    - ADR-L-0011
-    - ADR-L-0013
+    - 019fee89-e615-70a5-861b-b2dde147e5af
+    - 019fee89-e615-7b9c-8e3f-32ceeda01491
+    - 019fee89-e616-7066-8d2f-3acc7f469f72
+    - 019fee89-e616-7d61-8e35-f11ba2ddd75d
+    - 019fee89-e616-7b97-971d-ae165d13bf9c
+    - 019fee89-e616-7c4e-953c-b7349412a784
     technologies:
     - python
     - click
     - pydantic
     - yaml
     - json-schema
+    alias_id: SYS-0002
+    alias_name: sys-0002-adr-kit-authoring-compiler-and-validation-system
   relationships:
     declared_in:
-    - ADR-PS-0002
+    - 019fee89-e618-7d04-9337-4aa2d3258507
     references: []
     related_to: []
     enforces: []
@@ -88,6 +48,7 @@ entities:
     governs: []
     implemented_by: []
     embodied_in: []
+    implements_logical: []
     supersedes: []
     superseded_by: []
     refines: []
@@ -101,7 +62,66 @@ entities:
     missing_fields: []
   provenance:
     source_type: physical_system_adr
-    source_ref: ADR-PS-0002
+    source_ref: 019fee89-e618-7d04-9337-4aa2d3258507
+    extraction_phase: extract_system
+    classification: explicit
+    generator: adr-architecture-index
+- id: 019fee89-e618-79df-a73f-edc9dead8526
+  alias_id: SYS-0001
+  alias_name: sys-0001-adr-architecture-kit-discovery-and-indexing-system
+  alias_ref: SYS-0001:sys-0001-adr-architecture-kit-discovery-and-indexing-system
+  entity_type: system
+  name: ADR Architecture Kit Discovery and Indexing System
+  summary: The discovery and indexing subsystem provides the derived surfaces that
+    agents query instead of scanning raw ADR bodies by default. It now includes normalized
+    discovery bundle generation under `adrs/index/`, legacy compa
+  uri: adr://adr-architecture-kit/entities/019fee89-e618-79df-a73f-edc9dead8526
+  created_at: '2026-08-11T01:57:22.584Z'
+  entity_fingerprint: sha256:443bc9839691141160801f77dab28830fc8c10c99fb1a940b8adc4fb7623c8b4
+  lifecycle_stage: active
+  canonical_source:
+    source_type: physical_system_adr
+    source_ref: 019fee89-e618-7b3e-813b-a449881b6adb
+    artifact_path: adrs/physical-system/ADR-PS-0001-adr-architecture-kit-discovery-and-indexing-system.yaml
+  source_refs: []
+  metadata:
+    adr_id: 019fee89-e618-7b3e-813b-a449881b6adb
+    adr_alias_id: ADR-PS-0001
+    implements_logical:
+    - 019fee89-e616-770c-a025-2c241a720730
+    - 019fee89-e616-744f-b63e-5ecddf344faa
+    technologies:
+    - python
+    - pyyaml
+    - click
+    alias_id: SYS-0001
+    alias_name: sys-0001-adr-architecture-kit-discovery-and-indexing-system
+  relationships:
+    declared_in:
+    - 019fee89-e618-7b3e-813b-a449881b6adb
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: physical_system_adr
+    source_ref: 019fee89-e618-7b3e-813b-a449881b6adb
     extraction_phase: extract_system
     classification: explicit
     generator: adr-architecture-index

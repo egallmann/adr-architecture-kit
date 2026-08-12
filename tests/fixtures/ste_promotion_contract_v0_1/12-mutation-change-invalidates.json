@@ -1,0 +1,63 @@
+{
+  "expect": "pass",
+  "expect_fingerprint_changes_when": "mutation",
+  "contract": {
+    "contract_version": "ste.design_journal.promotion_contract/v0.1",
+    "design_journal_version": "ste.design_journal/v0.1",
+    "journal_id": "DJ-CONF-12",
+    "lifecycle_state": "locked",
+    "provider": "example-authority-provider",
+    "authority_baseline": {
+      "provider": "example-authority-provider",
+      "kind": "git_commit",
+      "value": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+    },
+    "outcomes": [
+      {
+        "id": "O-01",
+        "category": "candidate_decision",
+        "promotion_required": true,
+        "statement": "Mutation target change invalidates intent."
+      }
+    ],
+    "mutations": [
+      {
+        "id": "M-01",
+        "operation": "amend",
+        "provider": "example-authority-provider",
+        "provider_target_ref": "artifact:original",
+        "outcome_refs": ["O-01"],
+        "payload_binding": {
+          "ref": "p.yaml",
+          "fingerprint": "sha256:1111111111111111111111111111111111111111111111111111111111111111"
+        },
+        "schema_binding": {
+          "ref": "s",
+          "fingerprint": "sha256:2222222222222222222222222222222222222222222222222222222222222222"
+        },
+        "validation_evidence": {
+          "payload_fingerprint": "sha256:1111111111111111111111111111111111111111111111111111111111111111",
+          "schema_binding_fingerprint": "sha256:2222222222222222222222222222222222222222222222222222222222222222",
+          "result": "valid"
+        }
+      }
+    ],
+    "blockers": [],
+    "readiness": {
+      "design_lock": true,
+      "mechanical_promotion": true
+    },
+    "human_lock": {
+      "approved": true,
+      "approver": "human@example",
+      "approved_at": "2026-08-09T00:00:00Z",
+      "journal_id": "DJ-CONF-12",
+      "locked_intent_fingerprint": "sha256:eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+      "promotion_scope": {
+        "outcome_ids": ["O-01"],
+        "mutation_ids": ["M-01"]
+      }
+    },
+    "execution_evidence": []
+  }
+}

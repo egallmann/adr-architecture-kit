@@ -1,0 +1,65 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "ste.design_journal/v0.1/schema.json",
+  "title": "STE Design Journal Reference Model v0.1",
+  "type": "object",
+  "additionalProperties": true,
+  "required": ["design_journal_version", "journal_id"],
+  "properties": {
+    "design_journal_version": {
+      "const": "ste.design_journal/v0.1"
+    },
+    "journal_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "status": {
+      "type": "string"
+    },
+    "lifecycle_state": {
+      "type": "string",
+      "enum": [
+        "exploring",
+        "converging",
+        "lock_ready",
+        "locked",
+        "promoting",
+        "promoted",
+        "closed"
+      ]
+    },
+    "source_artifact_revision": {
+      "type": "string"
+    },
+    "outcomes": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/outcome" }
+    }
+  },
+  "$defs": {
+    "outcome": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["id", "category", "promotion_required"],
+      "properties": {
+        "id": { "type": "string", "minLength": 1 },
+        "category": { "type": "string", "minLength": 1 },
+        "promotion_required": { "type": "boolean" },
+        "disposition": { "type": "string" },
+        "statement": { "type": "string", "minLength": 1 },
+        "semantic_binding": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["ref", "fingerprint"],
+          "properties": {
+            "ref": { "type": "string", "minLength": 1 },
+            "fingerprint": {
+              "type": "string",
+              "pattern": "^sha256:[0-9a-f]+$"
+            }
+          }
+        }
+      }
+    }
+  }
+}

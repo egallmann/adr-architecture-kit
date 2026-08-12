@@ -1,6 +1,6 @@
-schema_version: '1.0'
+schema_version: '1.3'
 adr_type: logical
-id: ADR-L-0011
+id: 019fee89-e616-7b97-971d-ae165d13bf9c
 title: Metadata Schemas and Remediation Ledger Enforcement
 status: proposed
 created_date: '2026-03-14'
@@ -17,131 +17,180 @@ tags:
 - sentinel
 - approval
 introduces_entities:
-- INV-0055
-- INV-0056
-- INV-0057
-- CAP-0036
-- CAP-0037
-context: |
-  The compiler contract now distinguishes fully compliant bundles from
-  sentinel-backed brownfield and migration bundles. That boundary is only safe
-  if sentinel use is narrow, explicitly tracked, and moved toward approved
-  canonical content through a monotonic workflow.
-
-  The plan work established several key rules:
-  1. Sentinel values are allowed only in narrative content fields
-  2. Structural, referential, and governance fields may never contain sentinels
-  3. Remediation state should live in a separate governance artifact rather than
-     be embedded in ADR content
-  4. Approved content must not regress back to sentinel-backed state
-
-  What remains is to formalize those rules as an architectural decision that
-  binds metadata schema work, sentinel usage, and remediation workflow together.
+- 019fee89-e616-713a-b73d-fec9a62b6bfb
+- 019fee89-e616-71a8-bd3f-d739b5ccf91e
+- 019fee89-e616-7a17-850f-ce32ede3c9c5
+- 019fee89-e616-7755-bd39-ab6dde87eb86
+- 019fee89-e616-79ea-b43e-32a8705441ec
+context: "The compiler contract now distinguishes fully compliant bundles from\nsentinel-backed\
+  \ brownfield and migration bundles. That boundary is only safe\nif sentinel use\
+  \ is narrow, explicitly tracked, and moved toward approved\ncanonical content through\
+  \ a monotonic workflow.\n\nThe plan work established several key rules:\n1. Sentinel\
+  \ values are allowed only in narrative content fields\n2. Structural, referential,\
+  \ and governance fields may never contain sentinels\n3. Remediation state should\
+  \ live in a separate governance artifact rather than\n   be embedded in ADR content\n\
+  4. Approved content must not regress back to sentinel-backed state\n\nWhat remains\
+  \ is to formalize those rules as an architectural decision that\nbinds metadata\
+  \ schema work, sentinel usage, and remediation workflow together.\n"
 decisions:
-- id: DEC-0040
-  summary: Define per-entity metadata through typed schemas rather than an unconstrained metadata bag
-  rationale: |
-    Registry metadata is currently too weak as a contract surface. Different
+- id: 019fee89-e616-7de2-b63b-577b2c2d53f4
+  summary: Define per-entity metadata through typed schemas rather than an unconstrained
+    metadata bag
+  rationale: 'Registry metadata is currently too weak as a contract surface. Different
+
     entity types carry different keys, and without typed expectations the kernel
+
     and compiler can drift silently.
+
+    '
   consequences:
     positive:
     - Metadata becomes part of the contract rather than convention
     - Profile-aware validation can reason about missingness explicitly
     - Kernel consumers gain predictable field expectations
     - The initial 0.x contract can be anchored to currently generated metadata keys
-- id: DEC-0041
+  alias_id: DEC-0040
+  alias_name: define-per-entity-metadata-through-typed-schemas-rather-than-an-unconstrained-metadata-bag
+- id: 019fee89-e616-7a04-a927-19a373014476
   summary: Restrict sentinel values to narrative fields and sections only
-  rationale: |
-    Sentinel values are useful for preserving structure where knowledge is
+  rationale: 'Sentinel values are useful for preserving structure where knowledge
+    is
+
     missing, but they are dangerous in identifiers, references, enums, or
+
     governance fields. Narrow placement keeps them honest and machine-safe.
+
+    '
   consequences:
     positive:
     - Referential integrity remains trustworthy
     - Brownfield tolerance does not degrade structural meaning
     - Validator behavior stays deterministic
-- id: DEC-0042
+  alias_id: DEC-0041
+  alias_name: restrict-sentinel-values-to-narrative-fields-and-sections-only
+- id: 019fee89-e616-7d89-8e31-8090d0f91310
   summary: Enforce remediation through a separate canonical remediation ledger
-  rationale: |
-    Current architecture content and remediation workflow state should not be
+  rationale: 'Current architecture content and remediation workflow state should not
+    be
+
     mixed. A separate remediation ledger preserves auditability, avoids process
+
     leakage into ADR text, and provides a stable mechanism for no-regression
+
     enforcement.
+
+    '
   consequences:
     positive:
     - Approval state is queryable without mutating architecture semantics
     - Legacy recovery history remains visible
     - The system can prove changes were not shaped solely by encoding pressure
-- id: DEC-0043
-  summary: Require staged approval before replacement content becomes protected canonical content
-  rationale: |
-    Non-sentinel replacement content may be better than a sentinel without yet
+  alias_id: DEC-0042
+  alias_name: enforce-remediation-through-a-separate-canonical-remediation-ledger
+- id: 019fee89-e616-748c-a114-227a14f5fef8
+  summary: Require staged approval before replacement content becomes protected canonical
+    content
+  rationale: 'Non-sentinel replacement content may be better than a sentinel without
+    yet
+
     being authoritative. Staged approval prevents accidental promotion and keeps
+
     the no-regression rule tied to explicit governance.
+
+    '
   consequences:
     positive:
     - Replacement content can be introduced before final approval
     - Approval remains explicit and auditable
     - Monotonic remediation protects only governed content
+  alias_id: DEC-0043
+  alias_name: require-staged-approval-before-replacement-content-becomes-protected-canonical-content
 invariants:
-- id: INV-0055
-  statement: |
-    Reserved sentinel values MUST be allowed only in narrative fields or
+- id: 019fee89-e616-713a-b73d-fec9a62b6bfb
+  statement: 'Reserved sentinel values MUST be allowed only in narrative fields or
+
     sections explicitly designated as sentinel-capable by schema or policy.
+
+    '
   scope: global
   enforcement_level: must
   enforcement_mechanism: policy
   verification_method: automated
-  rationale: |
-    Sentinel tolerance must preserve narrative structure without weakening
+  rationale: 'Sentinel tolerance must preserve narrative structure without weakening
+
     structural semantics.
-- id: INV-0056
-  statement: |
-    Remediation workflow state MUST be recorded in a separate canonical
+
+    '
+  alias_id: INV-0055
+  alias_name: inv-0055
+- id: 019fee89-e616-71a8-bd3f-d739b5ccf91e
+  statement: 'Remediation workflow state MUST be recorded in a separate canonical
+
     remediation ledger rather than in ADR content fields.
+
+    '
   scope: global
   enforcement_level: must
   enforcement_mechanism: design
   verification_method: automated
-  rationale: |
-    Workflow state and architecture state must remain distinct.
-- id: INV-0057
-  statement: |
-    Once a field or section has an approved remediation-ledger entry for
+  rationale: 'Workflow state and architecture state must remain distinct.
+
+    '
+  alias_id: INV-0056
+  alias_name: inv-0056
+- id: 019fee89-e616-7a17-850f-ce32ede3c9c5
+  statement: 'Once a field or section has an approved remediation-ledger entry for
+
     non-sentinel canonical content, that field or section MUST NOT regress to a
+
     sentinel state under normal validation.
+
+    '
   scope: global
   enforcement_level: must
   enforcement_mechanism: policy
   verification_method: automated
-  rationale: |
-    Brownfield tolerance must ratchet toward stronger compliance rather than
+  rationale: 'Brownfield tolerance must ratchet toward stronger compliance rather
+    than
+
     remain a permanent escape hatch.
+
+    '
+  alias_id: INV-0057
+  alias_name: inv-0057
 capabilities:
-- id: CAP-0036
+- id: 019fee89-e616-7755-bd39-ab6dde87eb86
   name: Typed Metadata Contract Enforcement
-  description: |
-    Validate entity metadata against entity-type-specific schema expectations
+  description: 'Validate entity metadata against entity-type-specific schema expectations
+
     under the active enforcement profile.
+
+    '
   acceptance_criteria:
   - Metadata keys are evaluated by entity type
   - Brownfield and migration can represent missing narrative content explicitly
   - Structural metadata fields remain sentinel-forbidden
-- id: CAP-0037
+  alias_id: CAP-0036
+  alias_name: typed-metadata-contract-enforcement
+- id: 019fee89-e616-79ea-b43e-32a8705441ec
   name: Remediation Ledger Governance
-  description: |
-    Track sentinel usage, replacement, approval, and no-regression state in a
+  description: 'Track sentinel usage, replacement, approval, and no-regression state
+    in a
+
     canonical governance artifact.
+
+    '
   acceptance_criteria:
   - Ledger state supports sentinel, pending_approval, and approved
   - Approved content cannot regress to sentinel without explicit override
-  - Authority reference, approver, and approval timestamp are recorded for approved state
+  - Authority reference, approver, and approval timestamp are recorded for approved
+    state
+  alias_id: CAP-0037
+  alias_name: remediation-ledger-governance
 related_adrs:
-- ADR-L-0001
-- ADR-L-0008
-- ADR-L-0010
-- ADR-V-0013
+- 019fee89-e615-70a5-861b-b2dde147e5af
+- 019fee89-e616-7066-8d2f-3acc7f469f72
+- 019fee89-e616-7d61-8e35-f11ba2ddd75d
 gaps: []
 migration_origin:
   remapped_entities:
@@ -157,3 +206,5 @@ migration_origin:
   - entity_type: decision
     from: DEC-0004
     to: DEC-0043
+alias_id: ADR-L-0011
+alias_name: metadata-schemas-and-remediation-ledger-enforcement

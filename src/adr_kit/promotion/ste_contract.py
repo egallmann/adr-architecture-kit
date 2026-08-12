@@ -5,6 +5,7 @@ from __future__ import annotations
 import hashlib
 import json
 from functools import lru_cache
+from importlib import resources
 from pathlib import Path
 from typing import Any
 
@@ -15,9 +16,10 @@ DESIGN_JOURNAL_VERSION = "ste.design_journal/v0.1"
 PROVIDER_ID = "adr-architecture-kit"
 
 _REPO_ROOT = Path(__file__).resolve().parents[3]
+_BUNDLED_SCHEMA_NAME = "promotion_contract_v0_1.json"
 _SCHEMA_CANDIDATES = (
     _REPO_ROOT / "contracts" / "design-journal-promotion-contract" / "v0.1" / "schema.json",
-    Path(__file__).resolve().parent / "schemas" / "promotion_contract_v0_1.json",
+    Path(__file__).resolve().parent / "schemas" / _BUNDLED_SCHEMA_NAME,
 )
 
 
@@ -42,6 +44,14 @@ def load_promotion_contract_schema() -> dict[str, Any]:
             loaded = load_json(candidate)
             if isinstance(loaded, dict):
                 return loaded
+    try:
+        packaged = resources.files("adr_kit.promotion.schemas").joinpath(_BUNDLED_SCHEMA_NAME)
+        with packaged.open("r", encoding="utf-8") as handle:
+            loaded = json.load(handle)
+        if isinstance(loaded, dict):
+            return loaded
+    except (FileNotFoundError, ModuleNotFoundError, OSError, json.JSONDecodeError):
+        pass
     raise FileNotFoundError("STE promotion contract schema mirror not found")
 
 

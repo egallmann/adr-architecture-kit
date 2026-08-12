@@ -49,10 +49,14 @@ assert resources.files('adr_kit.templates').joinpath('adr-logical.md.jinja2').is
 assert resources.files('adr_kit.templates').joinpath('system-overview-adr-architecture-kit.yaml').is_file()
 assert resources.files('adr_kit.templates').joinpath('system-overview-ste-runtime.yaml').is_file()
 assert resources.files('adr_kit.templates').joinpath('system-overview.md.jinja2').is_file()
+assert resources.files('adr_kit.promotion.rules').joinpath('roadmap_file_rules_v1.json').is_file()
+assert resources.files('adr_kit.promotion.schemas').joinpath('promotion_contract_v0_1.json').is_file()
 from adr_kit.migrators import TopologyIdentityMigrator
 assert TopologyIdentityMigrator.__name__ == 'TopologyIdentityMigrator'
 from adr_kit.migrators.identity_v13 import IdentityV13Migrator
 assert IdentityV13Migrator.__name__ == 'IdentityV13Migrator'
+from adr_kit.promotion.ste_contract import load_promotion_contract_schema
+assert isinstance(load_promotion_contract_schema(), dict)
 print(adr_kit.__version__)
 """
 PHASE2_PROBE = """

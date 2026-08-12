@@ -35,6 +35,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   profile surfaces
 - Public SDK inventory expanded additively while API contract remains `1.0`
 
+### Fixed
+
+- Bundle the Design Journal Promotion Contract schema into the installed
+  package so non-editable wheel/site-packages installs can validate
+  promotion contracts without a repository checkout
+
 ### Compatibility / Migration
 
 - ADR schema v1.0 remains frozen/readable

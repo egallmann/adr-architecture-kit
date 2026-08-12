@@ -40,3 +40,27 @@ def test_package_json_schema_canonical_matches_bundled_copies():
         "schema/ must byte-match src/adr_kit/schema/ (see adr-governance.yml):\n  "
         + "\n  ".join(mismatches)
     )
+
+
+def test_promotion_contract_schema_mirror_matches_bundled_copy():
+    canonical = (
+        REPO_ROOT
+        / "contracts"
+        / "design-journal-promotion-contract"
+        / "v0.1"
+        / "schema.json"
+    )
+    bundled = (
+        REPO_ROOT
+        / "src"
+        / "adr_kit"
+        / "promotion"
+        / "schemas"
+        / "promotion_contract_v0_1.json"
+    )
+    assert canonical.is_file(), f"missing canonical mirror: {canonical}"
+    assert bundled.is_file(), f"missing packaged bundle: {bundled}"
+    assert filecmp.cmp(canonical, bundled, shallow=False), (
+        "contracts/design-journal-promotion-contract/v0.1/schema.json must byte-match "
+        "src/adr_kit/promotion/schemas/promotion_contract_v0_1.json"
+    )

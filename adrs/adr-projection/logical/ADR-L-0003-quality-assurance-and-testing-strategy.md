@@ -5,8 +5,8 @@ artifact_kind: rendered_adr_markdown
 generator_id: adr-projection-markdown
 generator_version: 2
 hash_algorithm: sha256
-source_hash: 6f54d2ed2761786276d8ac91a33c9cfa651ff8bfeee24e26fb51a559ad534ba2
-rendered_hash: 666b267eca28e78b4b79a10dbc4e14c8e0175ded5f856a5cffcd70b60449c563
+source_hash: d6ed205a3880a44b475a3a60330bab0b40e99ba62eb17d89b47387b4888cd6c8
+rendered_hash: 8e3c98b063e9ca30aa574294202dd712a5e43eafca6592e1aa5cc63615b0f55d
 -->
 
 # ADR-L-0003: Quality Assurance and Testing Strategy
@@ -412,6 +412,13 @@ SHA-256 hashes, package version, source commit, and `v<version>` tag MUST
 be verified before the privileged publish step. Ruff, strict-mypy, and
 Black debt MUST be guarded by committed no-regression baselines that allow
 removals but reject additions or count increases.
+
+When a successful qualification already exists for the exact tagged source
+commit and its retained release bundle, the tag publication path MUST act as
+a promotion and identity-verification boundary only. It MUST NOT rebuild
+distributions or re-run the independent qualification suite solely because a
+tag was created. Publication MUST fail closed if successful qualification
+evidence or the retained bundle for that exact commit cannot be proven.
   
 **Scope:** global  
 **Enforcement:** must (test)  
@@ -650,6 +657,13 @@ description: repository-relative README links resolve on GitHub but break
 when rendered under the PyPI project page. Release qualification therefore
 also requires portable link forms in the README used as `project.readme`.
 
+Release qualification may complete for an exact source commit and its exact
+retained distribution before a release tag exists, provided every required
+qualification gate has already passed for that commit and artifact. Creating
+`v<version>` does not, by itself, require a second independent qualification
+of the same commit and artifact. Tag publication is the promotion boundary for
+a previously qualified retained bundle.
+
 
 
 **Consequences:**
@@ -660,6 +674,7 @@ also requires portable link forms in the README used as `project.readme`.
 - Existing quality debt can only stay level or decrease
 - Supported Python claims are backed by source and wheel execution
 - PyPI package-description links remain valid independently of GitHub rendering
+- Tag publication promotes previously qualified artifacts without requalifying
 
 
 

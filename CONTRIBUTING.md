@@ -231,13 +231,22 @@ The **link** is that PyPI trusts *that GitHub repo + that workflow file* to uplo
    versions resolve from distribution metadata; do not add another version literal.
 3. Convert [`CHANGELOG.md`](CHANGELOG.md) `[Unreleased]` into a dated section for that
    version and restore an empty `[Unreleased]` heading.
-4. Open a release pull request against `main`. After admission, create the exact tag
-   `v<project-version>` (for example, `v0.4.0`) on the admitted `main` commit.
-5. The release workflow reruns quality/governance gates, builds one wheel and one
-   sdist, validates metadata, creates a hash manifest, tests the retained wheel on
-   Python 3.11–3.14, and uploads the retained bundle.
-6. The `pypi` job downloads and re-verifies that bundle against the source commit,
-   package version, and tag, then publishes without rebuilding.
+4. Open a release pull request against `main`. After admission, **wait for the successful
+   ADR Governance `push` run on that `main` commit** (release-eligible qualification).
+5. Only then create the exact tag `v<project-version>` (for example, `v0.4.0`) on that
+   admitted `main` commit while the qualifying `release-bundle` artifact is still retained.
+6. The tag workflow is promotion-only: it resolves the successful **main `push`** ADR
+   Governance run for the tagged SHA, downloads that exact retained bundle, verifies
+   source commit / package version / tag / hashes, and publishes without rebuilding or
+   re-running pytest, coverage, governance, OS matrices, or the retained-wheel matrix.
+   PR and develop qualification runs are **not** release-eligible, even for the same SHA.
+
+Qualification evidence axes on a release-eligible `main` push:
+
+- Ubuntu 3.12 complete suite + coverage
+- Ubuntu 3.11–3.14 focused source/SDK compatibility
+- Windows/macOS 3.12 complete suite (behavior/OS portability)
+- Exact retained wheel on Ubuntu 3.11–3.14 and on Windows/macOS 3.12
 
 The workflow does not publish on a branch push or manual dispatch. The first
 successful tagged upload creates the PyPI project if it does not exist.

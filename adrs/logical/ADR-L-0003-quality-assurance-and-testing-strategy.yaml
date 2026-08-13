@@ -190,6 +190,19 @@ decisions:
 
     also requires portable link forms in the README used as `project.readme`.
 
+
+    Release qualification may complete for an exact source commit and its exact
+
+    retained distribution before a release tag exists, provided every required
+
+    qualification gate has already passed for that commit and artifact. Creating
+
+    `v<version>` does not, by itself, require a second independent qualification
+
+    of the same commit and artifact. Tag publication is the promotion boundary for
+
+    a previously qualified retained bundle.
+
     '
   consequences:
     positive:
@@ -198,6 +211,7 @@ decisions:
     - Existing quality debt can only stay level or decrease
     - Supported Python claims are backed by source and wheel execution
     - PyPI package-description links remain valid independently of GitHub rendering
+    - Tag publication promotes previously qualified artifacts without requalifying
   alias_id: DEC-0078
   alias_name: require-retained-release-artifact-testing-and-no-regression-quality-controls
 - id: 019fee89-e615-713f-a73d-10442c1dc6b9
@@ -398,6 +412,19 @@ invariants:
 
     removals but reject additions or count increases.
 
+
+    When a successful qualification already exists for the exact tagged source
+
+    commit and its retained release bundle, the tag publication path MUST act as
+
+    a promotion and identity-verification boundary only. It MUST NOT rebuild
+
+    distributions or re-run the independent qualification suite solely because a
+
+    tag was created. Publication MUST fail closed if successful qualification
+
+    evidence or the retained bundle for that exact commit cannot be proven.
+
     '
   scope: global
   enforcement_level: must
@@ -574,6 +601,16 @@ capabilities:
     publication
   - the PyPI-facing package description (`project.readme`) contains only portable
     link forms valid outside GitHub repository-relative rendering
+  - tag publication promotes a previously qualified retained bundle for the exact
+    tagged SHA
+  - re-qualification is not required solely because a release tag was created
+  - publication fails closed when qualification evidence or the retained bundle is
+    missing or fails identity verification
+  - release-eligible qualification includes OS-portability evidence on Ubuntu/Linux,
+    Windows, and macOS as separate axes from Python-version compatibility
+  - Windows/macOS Python 3.12 complete-suite evidence proves source/runtime OS
+    portability; the exact retained wheel additionally passes the installed-wheel
+    harness on Windows/macOS Python 3.12 without rebuilding per OS
   alias_id: CAP-0046
   alias_name: verified-build-once-release-promotion
 related_adrs:
@@ -596,21 +633,35 @@ notes: "Testing strategy implementation:\n\nTest organization:\n```\ntests/\n  t
   \ integrity\nadr validate-system-overview\n\n# PROJECT.yaml integrity\nadr validate-project-metadata\n\
   \n# Targeted pytest usage for local development\npytest tests/ -v\npytest tests/\
   \ --cov=adr_kit --cov-report=html --cov-report=term --cov-fail-under=80\npytest\
-  \ tests/ -k \"scope\" -v\n```\n\nCI/CD integration:\n- GitHub Actions installs the\
-  \ project and runs the full suite on Python\n  3.11, 3.12, 3.13, and 3.14\n- `adr\
-  \ validate --cross-references` must pass\n- `adr governance-checks` must pass\n\
-  - `adr validate-generated-docs` must pass for manifest and rendered ADR output\n\
-  - `adr validate-system-overview` must pass for `SYSTEM-OVERVIEW.md`\n- `adr validate-project-metadata`\
-  \ must pass for `PROJECT.yaml`\n- Quality gates are broader than generic `pytest`\
-  \ alone because they also enforce\n  contract, generated-artifact, and project-metadata\
-  \ integrity\n- Verified implementation slices must be committed at meaningful boundaries\
-  \ in\n  alignment with `INV-0096`\n- Release artifacts are built once, retained,\
-  \ installed in clean environments,\n  manifested, re-verified, and promoted without\
-  \ rebuilding\n- Ruff, strict-mypy, and Black legacy debt is governed by no-regression\
-  \ ratchets;\n  new Phase 0 Python files must be clean under all three tools\n\n\
-  Future enhancements:\n- Property-based testing (hypothesis) for generators\n- Mutation\
-  \ testing to verify test quality\n- Performance benchmarks to detect regressions\n\
-  - Contract testing for API stability\n"
+  \ tests/ -k \"scope\" -v\n```\n\nCI/CD integration (orthogonal evidence axes):\n\
+  - Canonical correctness: Ubuntu + Python 3.12 runs the complete suite with coverage\
+  \ (`--cov=adr_kit --cov-fail-under=80`) exactly once\n- Python-version compatibility:\
+  \ Ubuntu runs focused source/install/SDK compatibility on Python 3.11–3.14 (not\
+  \ a second full suite on each interpreter)\n- OS behavior / source-runtime portability:\
+  \ Windows and macOS at Python 3.12 each run the complete suite (no coverage gate);\
+  \ Ubuntu 3.12 suite is owned by the coverage job and is not duplicated\n- Retained-wheel\
+  \ Python compatibility: exact retained wheel via `scripts/test_installed_wheel.py`\
+  \ on Ubuntu Python 3.11–3.14\n- Retained-wheel OS portability: the exact same retained\
+  \ wheel via `scripts/test_installed_wheel.py` on Windows and macOS at Python 3.12;\
+  \ the wheel MUST NOT be rebuilt per OS\n- These axes are orthogonal and MUST NOT\
+  \ imply that all supported Python versions execute on every OS\n- Linux-only execution\
+  \ is insufficient evidence for an OS-agnostic package claim\n- PR qualification\
+  \ = proposed-change evidence; develop qualification = integration evidence; only\
+  \ a successful completed `push` of ADR Governance on `main` for the exact tagged\
+  \ SHA is release-eligible; tag publication is promotion/identity verification only\n\
+  - `adr governance-checks --skip-tests` must pass in CI when the complete suite is\
+  \ already owned by the coverage job\n- `adr validate-generated-docs` must pass for\
+  \ manifest and rendered ADR output\n- `adr validate-system-overview` must pass for\
+  \ `SYSTEM-OVERVIEW.md`\n- `adr validate-project-metadata` must pass for `PROJECT.yaml`\n\
+  - Quality gates are broader than generic `pytest` alone because they also enforce\n\
+  \  contract, generated-artifact, and project-metadata integrity\n- Verified implementation\
+  \ slices must be committed at meaningful boundaries in\n  alignment with `INV-0096`\n\
+  - Release artifacts are built once, retained, installed in clean environments,\n\
+  \  manifested, re-verified, and promoted without rebuilding\n- Ruff, strict-mypy,\
+  \ and Black legacy debt is governed by no-regression ratchets;\n  new Phase 0 Python\
+  \ files must be clean under all three tools\n\nFuture enhancements:\n- Property-based\
+  \ testing (hypothesis) for generators\n- Mutation testing to verify test quality\n\
+  - Performance benchmarks to detect regressions\n- Contract testing for API stability\n"
 migration_origin:
   remapped_entities:
   - entity_type: capability

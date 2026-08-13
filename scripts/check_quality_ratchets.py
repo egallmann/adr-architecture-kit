@@ -22,12 +22,16 @@ PHASE0_FILES = (
     "scripts/check_version_consistency.py",
     "scripts/check_quality_ratchets.py",
     "scripts/release_manifest.py",
+    "scripts/resolve_qualified_release_bundle.py",
+    "scripts/run_source_compat.py",
     "scripts/test_installed_wheel.py",
     "benchmarks/phase0.py",
     "tests/test_import_namespace.py",
     "tests/test_phase0_compatibility.py",
     "tests/test_quality_ratchets.py",
     "tests/test_release_controls.py",
+    "tests/test_resolve_qualified_release_bundle.py",
+    "tests/test_run_source_compat.py",
     "tests/test_benchmark_phase0.py",
 )
 PHASE1_FILES = (

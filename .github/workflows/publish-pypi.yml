@@ -10,79 +10,106 @@ env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
 jobs:
-  quality:
-    name: Release quality and governance gates
+  resolve-bundle:
+    name: Resolve and verify retained release bundle
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      actions: read
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-      - run: python -m pip install --upgrade pip
-      - run: python -m pip install .[dev]
-      - run: python -m pytest
-      - run: python -m pytest --cov=adr_kit --cov-report=term-missing --cov-fail-under=80
-      - run: adr validate --cross-references
-      - run: adr governance-checks
-      - run: adr validate-generated-docs
-      - run: adr validate-system-overview
-      - run: python scripts/check_quality_ratchets.py
-      - run: python -m pip_audit .
-
-  build-release:
-    name: Build the publishable bundle once
-    needs: quality
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
-        with:
-          python-version: "3.12"
-      - run: python -m pip install --upgrade pip
-      - run: python -m pip install .[dev]
-      - run: python scripts/check_version_consistency.py
-      - name: Build release bundle once
+      - name: Resolve release-eligible main qualification
+        id: resolve
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
         run: |
-          export SOURCE_DATE_EPOCH="$(git log -1 --format=%ct)"
-          python -m build --outdir python-dist
-          python scripts/release_manifest.py normalize-sdist --sdist "$(find python-dist -maxdepth 1 -name '*.tar.gz' -print -quit)" --source-date-epoch "${SOURCE_DATE_EPOCH}"
-      - run: python -m twine check python-dist/*
-      - name: Verify tag and create release manifest
-        run: |
-          VERSION="$(python -c 'import tomllib; print(tomllib.load(open("pyproject.toml", "rb"))["project"]["version"])')"
-          test "${GITHUB_REF_NAME}" = "v${VERSION}"
-          python scripts/release_manifest.py create --dist-dir python-dist --output release-manifest.json --source-commit "${GITHUB_SHA}" --version "${VERSION}"
-          python scripts/release_manifest.py verify --dist-dir python-dist --manifest release-manifest.json --expected-source-commit "${GITHUB_SHA}" --expected-version "${VERSION}" --expected-tag "${GITHUB_REF_NAME}"
-      - uses: actions/upload-artifact@v4
-        with:
-          name: release-bundle
-          path: |
-            python-dist/
-            release-manifest.json
-          if-no-files-found: error
+          python - <<'PY'
+          import os
+          import subprocess
+          import sys
 
-  test-release:
-    name: Retained release wheel / Python ${{ matrix.python-version }}
-    needs: build-release
-    runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        python-version: ["3.11", "3.12", "3.13", "3.14"]
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
-        with:
-          python-version: ${{ matrix.python-version }}
+          completed = subprocess.run(
+              [
+                  sys.executable,
+                  "scripts/resolve_qualified_release_bundle.py",
+                  "resolve",
+                  "--sha",
+                  os.environ["GITHUB_SHA"],
+                  "--workflow",
+                  "adr-governance.yml",
+                  "--branch",
+                  "main",
+                  "--event",
+                  "push",
+                  "--artifact-name",
+                  "release-bundle",
+              ],
+              text=True,
+              capture_output=True,
+              check=False,
+          )
+          sys.stderr.write(completed.stderr)
+          sys.stdout.write(completed.stdout)
+          if completed.returncode != 0:
+              raise SystemExit(completed.returncode)
+          run_id = None
+          for line in completed.stdout.splitlines():
+              if line.startswith("run_id="):
+                  run_id = line.split("=", 1)[1].strip()
+          if not run_id:
+              raise SystemExit("resolver did not emit run_id")
+          with open(os.environ["GITHUB_OUTPUT"], "a", encoding="utf-8") as handle:
+              handle.write(f"run_id={run_id}\n")
+          PY
       - uses: actions/download-artifact@v4
         with:
           name: release-bundle
           path: release-bundle
-      - run: python scripts/test_installed_wheel.py --wheel "$(find release-bundle/python-dist -maxdepth 1 -name '*.whl' -print -quit)"
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          run-id: ${{ steps.resolve.outputs.run_id }}
+      - name: Verify retained release bundle
+        run: |
+          python - <<'PY'
+          import os
+          import subprocess
+          import sys
+          import tomllib
+          from pathlib import Path
+
+          version = tomllib.loads(Path("pyproject.toml").read_text(encoding="utf-8"))["project"]["version"]
+          subprocess.check_call(
+              [
+                  sys.executable,
+                  "scripts/release_manifest.py",
+                  "verify",
+                  "--dist-dir",
+                  "release-bundle/python-dist",
+                  "--manifest",
+                  "release-bundle/release-manifest.json",
+                  "--expected-source-commit",
+                  os.environ["GITHUB_SHA"],
+                  "--expected-version",
+                  version,
+                  "--expected-tag",
+                  os.environ["GITHUB_REF_NAME"],
+              ]
+          )
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: release-bundle
+          path: |
+            release-bundle/python-dist/
+            release-bundle/release-manifest.json
+          if-no-files-found: error
 
   publish:
     name: Publish retained bundle to PyPI
-    needs: [build-release, test-release]
+    needs: [resolve-bundle]
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -101,9 +128,54 @@ jobs:
           path: release-bundle
       - name: Re-verify retained release bundle
         run: |
-          VERSION="$(python -c 'import tomllib; print(tomllib.load(open("pyproject.toml", "rb"))["project"]["version"])')"
-          python scripts/release_manifest.py verify --dist-dir release-bundle/python-dist --manifest release-bundle/release-manifest.json --expected-source-commit "${GITHUB_SHA}" --expected-version "${VERSION}" --expected-tag "${GITHUB_REF_NAME}"
+          python - <<'PY'
+          import os
+          import subprocess
+          import sys
+          import tomllib
+          from pathlib import Path
+
+          version = tomllib.loads(Path("pyproject.toml").read_text(encoding="utf-8"))["project"]["version"]
+          root = Path("release-bundle")
+          # upload-artifact may preserve or flatten the release-bundle/ prefix.
+          dist_candidates = [root / "python-dist", root / "release-bundle" / "python-dist"]
+          manifest_candidates = [
+              root / "release-manifest.json",
+              root / "release-bundle" / "release-manifest.json",
+          ]
+          dist_dir = next(path for path in dist_candidates if path.is_dir())
+          manifest = next(path for path in manifest_candidates if path.is_file())
+          subprocess.check_call(
+              [
+                  sys.executable,
+                  "scripts/release_manifest.py",
+                  "verify",
+                  "--dist-dir",
+                  str(dist_dir),
+                  "--manifest",
+                  str(manifest),
+                  "--expected-source-commit",
+                  os.environ["GITHUB_SHA"],
+                  "--expected-version",
+                  version,
+                  "--expected-tag",
+                  os.environ["GITHUB_REF_NAME"],
+              ]
+          )
+          # Normalize layout for the publisher.
+          target = Path("publish-dist")
+          if target.exists():
+              import shutil
+
+              shutil.rmtree(target)
+          target.mkdir()
+          import shutil
+
+          for path in dist_dir.iterdir():
+              if path.is_file():
+                  shutil.copy2(path, target / path.name)
+          PY
       - name: Publish without rebuilding
         uses: pypa/gh-action-pypi-publish@release/v1
         with:
-          packages-dir: release-bundle/python-dist
+          packages-dir: publish-dist

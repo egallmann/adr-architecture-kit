@@ -18,6 +18,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   without rebuild or requalification (`ADR-L-0003`)
 - Document release-eligible evidence as successful `main` push only; PR and
   `develop` qualification runs are not publication admission
+- Strengthen public-repo security posture: Dependabot alerts, secret scanning
+  with push protection, private vulnerability reporting, CodeQL workflow, and
+  a human-admitted finding triage policy in `SECURITY.md`
 
 ### Fixed
 

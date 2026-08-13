@@ -4,13 +4,13 @@
 # generator_id: adr-architecture-graph
 # generator_version: 1
 # hash_algorithm: sha256
-# source_hash: 4e70eef2b004b1f6c07545638e994358f29d729e9a4b34c8a3cedc9e3b35fc93
-# rendered_hash: 03b96557ae175800417f29dacb522d1f44282c1523e2e6b2d06d5a217ab1e5b4
+# source_hash: a7bbaaf19a16d02017888f3ce0107c4e38fa69fd1961138d1386984ff472509c
+# rendered_hash: c35c2d0d02812080df9f4bf33a3d100427762346ec206d28b64ab90237b1ca59
 
 schema_version: '1.0'
 type: architecture_graph
 architecture_namespace: adr-architecture-kit
-generated_at: '2026-01-01T00:00:00Z'
+generated_at: '2026-08-13T00:48:37Z'
 nodes:
 - id: 019fee89-e614-707f-8d3f-7a814d286ce6
   entity_type: capability

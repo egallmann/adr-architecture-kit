@@ -65,6 +65,31 @@ def test_cli_snapshot_output_normalizes_all_host_newlines(
     assert normalize_output(captured, tmp_path) == "first\nsecond\n"
 
 
+def test_cli_snapshot_output_normalizes_macos_private_prefix(tmp_path: Path) -> None:
+    root = (tmp_path / "fixture").resolve()
+    root.mkdir(parents=True, exist_ok=True)
+    posix = root.as_posix()
+    if not posix.startswith("/"):
+        pytest.skip("macOS /private path aliasing is POSIX-only")
+
+    if posix.startswith("/private/"):
+        held = Path(posix.removeprefix("/private"))
+        printed = posix
+    else:
+        held = root
+        printed = f"/private{posix}"
+
+    captured = (
+        f"Project scope: arch-test ({printed})\n"
+        f"ERROR {printed}/adrs/logical/ADR-L-1000-discovery.yaml\n"
+    ).encode("utf-8")
+
+    assert normalize_output(captured, held) == (
+        "Project scope: arch-test (<FIXTURE_ROOT>)\n"
+        "ERROR <FIXTURE_ROOT>/adrs/logical/ADR-L-1000-discovery.yaml\n"
+    )
+
+
 def test_snapshot_writer_canonicalizes_nested_text_and_physical_newlines(tmp_path: Path) -> None:
     snapshot = tmp_path / "snapshot.json"
 

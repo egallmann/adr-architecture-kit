@@ -5,10 +5,15 @@ from __future__ import annotations
 import gzip
 import io
 import json
+import re
 import subprocess
 import sys
 import tarfile
 from pathlib import Path
+
+from typing import Any
+
+import yaml
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -40,6 +45,29 @@ def _write_sdist(path: Path, timestamp: int) -> None:
         member.uname = "builder"
         member.gname = "builder"
         archive.addfile(member, io.BytesIO(payload))
+
+
+def _load_workflow(name: str) -> dict[str, Any]:
+    path = ROOT / ".github" / "workflows" / name
+    assert path.is_file(), f"missing workflow {name}"
+    payload = yaml.safe_load(path.read_text(encoding="utf-8"))
+    assert isinstance(payload, dict)
+    return payload
+
+
+def _job_steps_text(job: dict[str, Any]) -> str:
+    chunks: list[str] = []
+    for step in job.get("steps") or []:
+        if not isinstance(step, dict):
+            continue
+        for key in ("run", "uses", "name"):
+            value = step.get(key)
+            if isinstance(value, str):
+                chunks.append(value)
+        with_block = step.get("with")
+        if isinstance(with_block, dict):
+            chunks.extend(str(value) for value in with_block.values())
+    return "\n".join(chunks)
 
 
 def test_release_manifest_rejects_missing_extra_hash_tag_and_version_mismatches(
@@ -209,27 +237,56 @@ def test_installed_wheel_harness_declares_all_consumer_probes() -> None:
         assert probe in result.stdout
 
 
-def test_publish_workflow_promotes_without_rebuilding_and_scopes_privilege() -> None:
-    workflow = (ROOT / ".github" / "workflows" / "publish-pypi.yml").read_text(encoding="utf-8")
-    assert "tags:" in workflow and '"v*"' in workflow
-    assert "download-artifact" in workflow
-    publish_section = workflow[workflow.index("  publish:") :]
-    assert "python -m build" not in publish_section
-    assert "id-token: write" in publish_section
-    assert "environment:" in publish_section and "name: pypi" in publish_section
-    pre_publish = workflow[: workflow.index("  publish:")]
-    assert "id-token: write" not in pre_publish
-    assert "normalize-sdist" in pre_publish
+def test_publish_workflow_is_promotion_only_and_scopes_oidc() -> None:
+    workflow = _load_workflow("publish-pypi.yml")
+    jobs = workflow["jobs"]
+    assert set(jobs) == {"resolve-bundle", "publish"}
+
+    resolve = jobs["resolve-bundle"]
+    publish = jobs["publish"]
+    assert resolve["permissions"]["contents"] == "read"
+    assert resolve["permissions"]["actions"] == "read"
+    assert "id-token" not in resolve.get("permissions", {})
+    assert publish["permissions"]["contents"] == "read"
+    assert publish["permissions"]["id-token"] == "write"
+    assert publish["environment"]["name"] == "pypi"
+    assert publish["needs"] == ["resolve-bundle"]
+    assert "concurrency" not in workflow
+
+    resolve_text = _job_steps_text(resolve)
+    publish_text = _job_steps_text(publish)
+    for text in (resolve_text, publish_text):
+        assert "actions/checkout@" in text
+        assert "actions/setup-python@" in text
+        assert "3.12" in text
+        assert "release_manifest.py" in text
+        assert "verify" in text
+        assert "expected-source-commit" in text
+        assert "expected-version" in text
+        assert "expected-tag" in text
+        assert "pip install .[dev]" not in text
+        assert "python -m build" not in text
+        assert '-m", "build"' not in text and '("-m", "build")' not in text
+        assert "pytest" not in text
+        assert "governance-checks" not in text
+        assert "pip_audit" not in text
+    assert "resolve_qualified_release_bundle.py" in resolve_text
+    assert "download-artifact" in resolve_text
+    assert "download-artifact" in publish_text
+    assert "gh-action-pypi-publish" in publish_text
+    assert "os-portability" not in yaml.dump(workflow)
+    assert "os-wheel-smoke" not in yaml.dump(workflow)
 
 
-def test_pr_workflow_has_source_wheel_quality_security_and_reproducibility_gates() -> None:
-    workflow = (ROOT / ".github" / "workflows" / "adr-governance.yml").read_text(encoding="utf-8")
-    for version in ('"3.11"', '"3.12"', '"3.13"', '"3.14"'):
-        assert version in workflow
-    for contract in (
+def test_pr_workflow_has_orthogonal_qualification_owners() -> None:
+    workflow = _load_workflow("adr-governance.yml")
+    jobs = workflow["jobs"]
+    for name in (
         "source-tests",
         "governance",
         "coverage",
+        "os-portability",
+        "os-wheel-smoke",
         "quality-ratchets",
         "dependency-audit",
         "release-artifacts",
@@ -237,17 +294,75 @@ def test_pr_workflow_has_source_wheel_quality_security_and_reproducibility_gates
         "reproducibility",
         "benchmark-smoke",
     ):
-        assert f"  {contract}:" in workflow
-    assert workflow.count("normalize-sdist") >= 3
-    source_section = workflow[workflow.index("  source-tests:") : workflow.index("  governance:")]
-    assert "scripts/test_sdk_consumer.py" in source_section
-    assert "python -m pip install -e ." in source_section
-    assert source_section.count("scripts/test_sdk_consumer.py") >= 2
-    wheel_section = workflow[
-        workflow.index("  wheel-smoke:") : workflow.index("  reproducibility:")
-    ]
-    assert "scripts/test_installed_wheel.py" in wheel_section
-    assert "sdk-consumer" in workflow
+        assert name in jobs
+
+    concurrency = workflow["concurrency"]
+    assert concurrency["group"] == "${{ github.workflow }}-${{ github.ref }}"
+    cancel = concurrency["cancel-in-progress"]
+    assert "pull_request" in cancel
+    assert "refs/heads/develop" in cancel
+    assert "refs/heads/main" not in cancel or "||" in cancel
+    # Main must not cancel: expression is true only for PR or develop.
+    assert cancel == (
+        "${{ github.event_name == 'pull_request' || github.ref == 'refs/heads/develop' }}"
+    )
+
+    coverage = jobs["coverage"]
+    coverage_text = _job_steps_text(coverage)
+    assert coverage.get("runs-on") == "ubuntu-latest"
+    assert "3.12" in coverage_text
+    assert "--cov=adr_kit" in coverage_text
+    assert "--cov-fail-under=80" in coverage_text
+
+    source = jobs["source-tests"]
+    source_matrix = source["strategy"]["matrix"]["python-version"]
+    assert source_matrix == ["3.11", "3.12", "3.13", "3.14"]
+    source_text = _job_steps_text(source)
+    assert "run_source_compat.py" in source_text
+    assert re.search(r"(?m)^\s*python -m pytest\s*$", source_text) is None
+    assert "mkdir -p" not in source_text
+    assert "env -u PYTHONPATH" not in source_text
+
+    governance_text = _job_steps_text(jobs["governance"])
+    assert "governance-checks --skip-tests" in governance_text
+    assert "run_local_pre_push_checks.py" not in governance_text
+    assert "adr validate --cross-references" not in governance_text
+
+    os_port = jobs["os-portability"]
+    assert "needs" not in os_port
+    assert set(os_port["strategy"]["matrix"]["os"]) == {"windows-latest", "macos-latest"}
+    os_port_text = _job_steps_text(os_port)
+    assert "3.12" in os_port_text
+    assert "python -m pytest" in os_port_text
+    assert "--cov=" not in os_port_text
+    assert "python -m build" not in os_port_text
+
+    release = jobs["release-artifacts"]
+    release_text = _job_steps_text(release)
+    assert "build" in release_text and "normalize-sdist" in release_text
+    assert "--output" in release_text and "release-manifest.json" in release_text
+    assert "python-dist/release-manifest.json" not in release_text
+
+    wheel = jobs["wheel-smoke"]
+    assert wheel["needs"] in ("release-artifacts", ["release-artifacts"])
+    assert wheel["strategy"]["matrix"]["python-version"] == ["3.11", "3.12", "3.13", "3.14"]
+    assert "scripts/test_installed_wheel.py" in _job_steps_text(wheel)
+
+    os_wheel = jobs["os-wheel-smoke"]
+    assert os_wheel["needs"] in ("release-artifacts", ["release-artifacts"])
+    assert set(os_wheel["strategy"]["matrix"]["os"]) == {"windows-latest", "macos-latest"}
+    os_wheel_text = _job_steps_text(os_wheel)
+    assert "3.12" in os_wheel_text
+    assert "download-artifact" in os_wheel_text
+    assert "release-bundle" in os_wheel_text
+    assert "scripts/test_installed_wheel.py" in os_wheel_text
+    assert "python -m build" not in os_wheel_text
+    assert "python -m pytest" not in os_wheel_text
+    assert "pip install .[dev]" not in os_wheel_text
+
+    # No Python×OS Cartesian retained-wheel matrix.
+    assert "os" not in wheel["strategy"]["matrix"]
+    assert "python-version" not in os_wheel["strategy"]["matrix"]
 
 
 def test_local_pre_push_checks_include_readme_pypi_portability() -> None:

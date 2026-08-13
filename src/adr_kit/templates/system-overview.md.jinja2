@@ -109,7 +109,7 @@ Selected required CLI workflow membership (validated against the CLI surface sna
 | Task | Entry | Surface |
 | --- | --- | --- |
 {% for route in task_routes %}
-| {{ route.task }} | `{{ route.entry }}` | {{ route.surface }} |
+| {{ route.task }} | `{{ route.entry | replace("|", "\\|") }}` | {{ route.surface }} |
 {% endfor %}
 
 ## Authority Anchors
@@ -184,7 +184,7 @@ It provides:
 | Task | Entry | Surface |
 | --- | --- | --- |
 {% for route in task_routes %}
-| {{ route.task }} | `{{ route.entry }}` | {{ route.surface }} |
+| {{ route.task }} | `{{ route.entry | replace("|", "\\|") }}` | {{ route.surface }} |
 {% endfor %}
 
 ## Safe Extension Rules
@@ -241,7 +241,7 @@ It provides:
 | Task | Entry | Surface |
 | --- | --- | --- |
 {% for route in task_routes %}
-| {{ route.task }} | `{{ route.entry }}` | {{ route.surface }} |
+| {{ route.task }} | `{{ route.entry | replace("|", "\\|") }}` | {{ route.surface }} |
 {% endfor %}
 
 ## Safe Extension Rules

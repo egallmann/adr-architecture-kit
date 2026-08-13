@@ -5,8 +5,8 @@ artifact_kind: system_overview
 generator_id: adr-system-overview
 generator_version: 2
 hash_algorithm: sha256
-source_hash: f910486d79a9b8c9aefc98610874317e89ee0a49a102c9a612576803397fbd8e
-rendered_hash: b1f08885300f9eb15ff4f8d9a5296927256f236aff5c58b358b19362e1ef97b3
+source_hash: c48d64fd7a9266070da4a643bdbda09b9b0bb5956b440cbd39690800b52ccd13
+rendered_hash: 48400a887efa1d86c55f339e97f967d6c93ce966689617fe2d75258cea977685
 -->
 
 <!--
@@ -131,7 +131,7 @@ Selected required CLI workflow membership (validated against the CLI surface sna
 | Read normalized architecture | `adr_kit.api.open_repository` | sdk |
 | Human/local validation | `adr validate` | cli |
 | Human/local compilation | `adr compile` | cli |
-| Promotion prepare/check/apply | `adr promote prepare|check|apply` | cli |
+| Promotion prepare/check/apply | `adr promote prepare/check/apply` | cli |
 | Identity migration | `adr migrate-identity-v13` | cli |
 | Change canonical architecture | `edit owning authored artifacts, then validate/regenerate` | authoring |
 | Change generated output | `change source/generator/profile/template, never the output file` | authoring |

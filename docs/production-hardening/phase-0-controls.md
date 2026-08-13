@@ -48,10 +48,21 @@ python scripts/test_installed_wheel.py --wheel <wheel-path>
 ```
 
 The manifest requires exactly one wheel and one sdist and verifies filenames, sizes,
-SHA-256 hashes, source commit, package version, and tag. Release publishing downloads
-and re-verifies that retained bundle. Sdist normalization removes build-clock and
-owner metadata using the source commit epoch before hashing. The privileged job never
-rebuilds it.
+SHA-256 hashes, source commit, package version, and tag.
+
+Release publishing downloads the retained `release-bundle` from the successful **main
+`push`** ADR Governance qualification for the tagged SHA (not a tag-side rebuild; not a
+PR or develop run). Python-version compatibility and OS portability are separate
+evidence axes: Ubuntu owns the Python 3.11–3.14 focused compatibility and retained-wheel
+Python matrix; Windows/macOS at Python 3.12 own complete-suite behavior portability and
+exact retained-wheel OS portability via `scripts/test_installed_wheel.py`. The retained
+wheel is not rebuilt per OS. Tag publication does not rerun platform qualification.
+README/package-description portability remains part of qualification (coverage suite /
+local pre-push), not publish requalification. GitHub Actions artifact retention means
+tags must be cut while the qualifying artifact still exists; missing, expired, or
+ambiguous bundles fail closed. Sdist normalization removes build-clock and owner
+metadata using the source commit epoch before hashing. The privileged job never
+rebuilds the bundle.
 
 ## 0.3.0 release finding: PyPI README link portability
 
@@ -66,7 +77,7 @@ across rendering surfaces.
 **Resulting control:** The PyPI-facing package description (`project.readme`) must
 contain only link forms valid independently of GitHub repository-relative rendering
 (`INV-0083`; enforced by `tests/test_readme_pypi_portability.py` in the local pre-push
-bundle and full pytest on publish quality).
+bundle and the canonical qualification coverage suite).
 
 **Future release-protocol implication:** README/package-description portability is part
 of release qualification. The deferred `capture-release-protocol` contributor skill

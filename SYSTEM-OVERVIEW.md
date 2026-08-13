@@ -5,8 +5,8 @@ artifact_kind: system_overview
 generator_id: adr-system-overview
 generator_version: 2
 hash_algorithm: sha256
-source_hash: aef8910529351cc8d4681e97decb64bc38e3876933f7de559515ef467d3384a4
-rendered_hash: 5c0c604442d2847c00c9b695eb459fce61881c32c53ff89c8e8dae71bd54d63f
+source_hash: 09fcbd455259fed815663765e93ed39bfc5c46140b1a9417ff3372d47cc40e2d
+rendered_hash: d0aa8d918ea7c0cd950c3f94af620a2154bc8cee1bce18faee372f79f342789a
 -->
 
 <!--
@@ -72,7 +72,7 @@ Consume supported programmatic behavior through `adr_kit.api`.
 Derived provider facts:
 
 - API contract version: `1.0`
-- Package version: `0.4.0`
+- Package version: `0.4.1`
 - Operations: `capabilities`, `validate_architecture`, `compile_architecture`, `open_repository`, `open_provider_registry`, `prepare_promotion`, `check_promotion`, `apply_promotion`- Validation modes: `complete`, `structural`- Artifact groups: `registries`, `manifest`, `markdown`- Supported ADR schema versions: `1.0`, `1.1`, `1.2`, `1.3`- Stable ADR schema versions: `1.0`- Provisional ADR schema versions: `1.1`, `1.2`, `1.3`- Normalized model schema version: `1.1`
 - Supported normalized model schema versions: `1.1`, `2.0`
 Supported semantic/repository contracts include `ArchitectureRepository` and `NormalizedArchitectureModel`.
@@ -131,7 +131,7 @@ Selected required CLI workflow membership (validated against the CLI surface sna
 | Read normalized architecture | `adr_kit.api.open_repository` | sdk |
 | Human/local validation | `adr validate` | cli |
 | Human/local compilation | `adr compile` | cli |
-| Promotion prepare/check/apply | `adr promote prepare|check|apply` | cli |
+| Promotion prepare/check/apply | `adr promote prepare/check/apply` | cli |
 | Identity migration | `adr migrate-identity-v13` | cli |
 | Change canonical architecture | `edit owning authored artifacts, then validate/regenerate` | authoring |
 | Change generated output | `change source/generator/profile/template, never the output file` | authoring |

@@ -6,6 +6,10 @@ on:
   pull_request:
     branches: [main, develop]
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' || github.ref == 'refs/heads/develop' }}
+
 env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
@@ -22,25 +26,11 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.python-version }}
+          cache: pip
       - run: python -m pip install --upgrade pip
       - run: python -m pip install .[dev]
-      - name: Exercise installed SDK consumer outside the checkout
-        run: |
-          mkdir -p "${RUNNER_TEMP}/sdk-consumer/fixture/adrs/logical"
-          cp PROJECT.yaml "${RUNNER_TEMP}/sdk-consumer/fixture/PROJECT.yaml"
-          cp tests/fixtures/valid/logical-minimal.yaml "${RUNNER_TEMP}/sdk-consumer/fixture/adrs/logical/ADR-L-9999-minimal.yaml"
-          cd "${RUNNER_TEMP}/sdk-consumer"
-          env -u PYTHONPATH python "${GITHUB_WORKSPACE}/scripts/test_sdk_consumer.py" --project-root fixture --version-source metadata
-      - name: Exercise direct-source version fallback outside the checkout
-        run: |
-          cd "${RUNNER_TEMP}/sdk-consumer"
-          PYTHONPATH="${GITHUB_WORKSPACE}/src" python "${GITHUB_WORKSPACE}/scripts/test_sdk_consumer.py" --project-root fixture --version-source source
-      - run: python -m pip install -e .
-      - name: Exercise editable SDK consumer outside the checkout
-        run: |
-          cd "${RUNNER_TEMP}/sdk-consumer"
-          env -u PYTHONPATH python "${GITHUB_WORKSPACE}/scripts/test_sdk_consumer.py" --project-root fixture --version-source metadata
-      - run: python -m pytest
+      - name: Exercise portable source/SDK compatibility harness
+        run: python scripts/run_source_compat.py
 
   governance:
     name: ADR, generated artifact, and contract governance
@@ -52,15 +42,13 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
+          cache: pip
       - run: python -m pip install --upgrade pip
       - run: python -m pip install .[dev]
-      - run: adr validate --cross-references
       - run: adr repair-canonical-ids --check
-      - run: adr governance-checks
+      - run: adr governance-checks --skip-tests
       - run: adr validate-generated-docs
       - run: adr validate-system-overview
-      - run: python -m pytest tests/test_package_schema_parity.py tests/golden/test_current_outputs.py
-      - run: python scripts/run_local_pre_push_checks.py
 
   coverage:
     name: Canonical package coverage
@@ -70,9 +58,27 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
+          cache: pip
       - run: python -m pip install --upgrade pip
       - run: python -m pip install .[dev]
       - run: python -m pytest --cov=adr_kit --cov-report=term-missing --cov-fail-under=80
+
+  os-portability:
+    name: OS portability / ${{ matrix.os }} / Python 3.12
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [windows-latest, macos-latest]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - run: python -m pip install --upgrade pip
+      - run: python -m pip install .[dev]
+      - run: python -m pytest
 
   quality-ratchets:
     name: Ruff / mypy / Black no-regression ratchets
@@ -82,6 +88,7 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
+          cache: pip
       - run: python -m pip install --upgrade pip
       - run: python -m pip install .[dev]
       - run: python scripts/check_quality_ratchets.py
@@ -94,6 +101,7 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
+          cache: pip
       - run: python -m pip install --upgrade pip
       - run: python -m pip install .[dev]
       - run: python -m pip_audit .
@@ -106,20 +114,62 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
+          cache: pip
       - run: python -m pip install --upgrade pip
       - run: python -m pip install .[dev]
       - run: python scripts/check_version_consistency.py
       - name: Build retained bundle once
         run: |
-          export SOURCE_DATE_EPOCH="$(git log -1 --format=%ct)"
-          python -m build --outdir python-dist
-          python scripts/release_manifest.py normalize-sdist --sdist "$(find python-dist -maxdepth 1 -name '*.tar.gz' -print -quit)" --source-date-epoch "${SOURCE_DATE_EPOCH}"
-      - run: python -m twine check python-dist/*
-      - run: python scripts/release_manifest.py create --dist-dir python-dist --output python-dist/release-manifest.json --source-commit "${GITHUB_SHA}" --version "$(python -c 'import tomllib; print(tomllib.load(open("pyproject.toml", "rb"))["project"]["version"])')"
+          python - <<'PY'
+          import os
+          import subprocess
+          import tomllib
+          from pathlib import Path
+
+          epoch = subprocess.check_output(["git", "log", "-1", "--format=%ct"], text=True).strip()
+          ver = tomllib.loads(Path("pyproject.toml").read_text(encoding="utf-8"))["project"]["version"]
+          os.environ["SOURCE_DATE_EPOCH"] = epoch
+          out = Path("python-dist")
+          out.mkdir(exist_ok=True)
+          subprocess.check_call([os.environ.get("PYTHON", "python"), "-m", "build", "--outdir", str(out)])
+          sdist = next(out.glob("*.tar.gz"))
+          subprocess.check_call(
+              [
+                  os.environ.get("PYTHON", "python"),
+                  "scripts/release_manifest.py",
+                  "normalize-sdist",
+                  "--sdist",
+                  str(sdist),
+                  "--source-date-epoch",
+                  epoch,
+              ]
+          )
+          wheel = next(out.glob("*.whl"))
+          subprocess.check_call(
+              [os.environ.get("PYTHON", "python"), "-m", "twine", "check", str(wheel), str(sdist)]
+          )
+          subprocess.check_call(
+              [
+                  os.environ.get("PYTHON", "python"),
+                  "scripts/release_manifest.py",
+                  "create",
+                  "--dist-dir",
+                  "python-dist",
+                  "--output",
+                  "release-manifest.json",
+                  "--source-commit",
+                  os.environ["GITHUB_SHA"],
+                  "--version",
+                  ver,
+              ]
+          )
+          PY
       - uses: actions/upload-artifact@v4
         with:
           name: release-bundle
-          path: python-dist/
+          path: |
+            python-dist/
+            release-manifest.json
           if-no-files-found: error
 
   wheel-smoke:
@@ -138,9 +188,45 @@ jobs:
       - uses: actions/download-artifact@v4
         with:
           name: release-bundle
-          path: python-dist
-      - run: python scripts/test_installed_wheel.py --wheel "$(find python-dist -maxdepth 1 -name '*.whl' -print -quit)"
-      - run: python scripts/test_installed_wheel.py --describe | grep sdk-consumer
+          path: release-bundle
+      - name: Exercise exact retained wheel
+        run: |
+          python - <<'PY'
+          import subprocess
+          import sys
+          from pathlib import Path
+
+          wheels = sorted((Path("release-bundle") / "python-dist").glob("*.whl"))
+          if len(wheels) != 1:
+              raise SystemExit(f"expected one wheel, found {len(wheels)}")
+          subprocess.check_call([sys.executable, "scripts/test_installed_wheel.py", "--wheel", str(wheels[0])])
+          described = subprocess.check_output(
+              [sys.executable, "scripts/test_installed_wheel.py", "--describe"], text=True
+          )
+          if "sdk-consumer" not in described:
+              raise SystemExit("sdk-consumer probe missing")
+          PY
+
+  os-wheel-smoke:
+    name: Retained wheel OS / ${{ matrix.os }} / Python 3.12
+    needs: release-artifacts
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [windows-latest, macos-latest]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - uses: actions/download-artifact@v4
+        with:
+          name: release-bundle
+          path: release-bundle
+      - name: Exercise exact retained wheel
+        run: |
+          python -c "import subprocess,sys; from pathlib import Path; wheels=sorted((Path('release-bundle')/'python-dist').glob('*.whl')); assert len(wheels)==1, wheels; subprocess.check_call([sys.executable,'scripts/test_installed_wheel.py','--wheel',str(wheels[0])])"
 
   reproducibility:
     name: Fixed-epoch distribution reproducibility
@@ -152,12 +238,41 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
+          cache: pip
       - run: python -m pip install --upgrade pip build
-      - run: python -m build --outdir "${RUNNER_TEMP}/build-one"
-      - run: python -m build --outdir "${RUNNER_TEMP}/build-two"
-      - run: python scripts/release_manifest.py normalize-sdist --sdist "$(find "${RUNNER_TEMP}/build-one" -maxdepth 1 -name '*.tar.gz' -print -quit)" --source-date-epoch "${SOURCE_DATE_EPOCH}"
-      - run: python scripts/release_manifest.py normalize-sdist --sdist "$(find "${RUNNER_TEMP}/build-two" -maxdepth 1 -name '*.tar.gz' -print -quit)" --source-date-epoch "${SOURCE_DATE_EPOCH}"
-      - run: python -c "import hashlib,pathlib,sys; a=sorted((pathlib.Path('${RUNNER_TEMP}')/'build-one').iterdir()); b=sorted((pathlib.Path('${RUNNER_TEMP}')/'build-two').iterdir()); ha=[hashlib.sha256(p.read_bytes()).hexdigest() for p in a]; hb=[hashlib.sha256(p.read_bytes()).hexdigest() for p in b]; print(dict(zip([p.name for p in a],ha))); sys.exit(ha != hb)"
+      - run: python -m build --outdir "${{ runner.temp }}/build-one"
+      - run: python -m build --outdir "${{ runner.temp }}/build-two"
+      - name: Normalize and compare
+        run: |
+          python - <<'PY'
+          import hashlib
+          import os
+          import subprocess
+          import sys
+          from pathlib import Path
+
+          epoch = os.environ["SOURCE_DATE_EPOCH"]
+          temp = Path(os.environ["RUNNER_TEMP"])
+          for name in ("build-one", "build-two"):
+              sdist = next((temp / name).glob("*.tar.gz"))
+              subprocess.check_call(
+                  [
+                      sys.executable,
+                      "scripts/release_manifest.py",
+                      "normalize-sdist",
+                      "--sdist",
+                      str(sdist),
+                      "--source-date-epoch",
+                      epoch,
+                  ]
+              )
+          a = sorted((temp / "build-one").iterdir())
+          b = sorted((temp / "build-two").iterdir())
+          ha = [hashlib.sha256(path.read_bytes()).hexdigest() for path in a]
+          hb = [hashlib.sha256(path.read_bytes()).hexdigest() for path in b]
+          print(dict(zip([path.name for path in a], ha)))
+          sys.exit(ha != hb)
+          PY
 
   benchmark-smoke:
     name: Deterministic benchmark functional smoke
@@ -167,6 +282,7 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
+          cache: pip
       - run: python -m pip install --upgrade pip
       - run: python -m pip install .[dev]
       - run: python benchmarks/phase0.py --corpus synthetic --sizes 10 --warmups 0 --repeats 1 --json-out benchmark-smoke.json

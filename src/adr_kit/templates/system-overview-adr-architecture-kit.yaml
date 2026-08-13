@@ -76,7 +76,7 @@ task_routes:
     entry: adr compile
     surface: cli
   - task: Promotion prepare/check/apply
-    entry: adr promote prepare|check|apply
+    entry: adr promote prepare/check/apply
     surface: cli
   - task: Identity migration
     entry: adr migrate-identity-v13

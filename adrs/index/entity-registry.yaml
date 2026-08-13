@@ -2578,6 +2578,19 @@ entities:
 
       removals but reject additions or count increases.
 
+
+      When a successful qualification already exists for the exact tagged source
+
+      commit and its retained release bundle, the tag publication path MUST act as
+
+      a promotion and identity-verification boundary only. It MUST NOT rebuild
+
+      distributions or re-run the independent qualification suite solely because a
+
+      tag was created. Publication MUST fail closed if successful qualification
+
+      evidence or the retained bundle for that exact commit cannot be proven.
+
       '
     enforcement_level: must
     declaration_mode: local

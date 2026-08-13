@@ -152,20 +152,50 @@ def _generated_hashes(root: Path) -> dict[str, str]:
     }
 
 
-def _normalize_output(value: bytes, fixture_root: Path) -> str:
-    text = value.decode("utf-8").replace("\r\n", "\n").replace("\r", "\n")
-    for root_text in (str(fixture_root), fixture_root.as_posix()):
+def _fixture_root_aliases(fixture_root: Path) -> list[str]:
+    """Return path spellings that may appear in CLI output for one fixture root.
+
+    macOS often resolves `/var/...` to `/private/var/...`. Snapshot capture may
+    hold either form while printed scope/error paths use the other.
+    """
+
+    aliases: set[str] = set()
+    candidates = [fixture_root]
+    try:
+        candidates.append(fixture_root.resolve())
+    except OSError:
+        pass
+
+    for candidate in candidates:
+        posix = candidate.as_posix()
+        aliases.update((str(candidate), posix))
+        if posix.startswith("/private/"):
+            stripped = posix.removeprefix("/private")
+            aliases.update((stripped, str(Path(stripped))))
+        elif posix.startswith("/"):
+            prefixed = f"/private{posix}"
+            aliases.update((prefixed, str(Path(prefixed))))
+
+    return sorted(aliases, key=len, reverse=True)
+
+
+def _normalize_path_token(value: str, fixture_root: Path) -> str:
+    text = value
+    for root_text in _fixture_root_aliases(fixture_root):
         text = text.replace(root_text, "<FIXTURE_ROOT>")
     return text.replace("\\", "/")
+
+
+def _normalize_output(value: bytes, fixture_root: Path) -> str:
+    text = value.decode("utf-8").replace("\r\n", "\n").replace("\r", "\n")
+    return _normalize_path_token(text, fixture_root)
 
 
 def _invoke(argv: list[str], fixture_root: Path) -> dict[str, Any]:
     runner = CliRunner()
     result = runner.invoke(cli, argv, color=False)
     return {
-        "argv": [
-            item.replace(str(fixture_root), "<FIXTURE_ROOT>").replace("\\", "/") for item in argv
-        ],
+        "argv": [_normalize_path_token(item, fixture_root) for item in argv],
         "exit_code": result.exit_code,
         "stdout": _normalize_output(result.stdout_bytes, fixture_root),
         "stderr": _normalize_output(result.stderr_bytes, fixture_root),

@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.4.0] — 2026-08-11
+
 ### Added
 
 - Provisional ADR schema v1.3 canonical UUIDv7 entity identity

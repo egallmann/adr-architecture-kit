@@ -169,7 +169,7 @@ Or run the checks manually before pushing:
 python scripts/run_local_pre_push_checks.py
 ```
 
-That bundle validates generated-docs integrity and runs a **subset** of `pytest`, including **`tests/test_package_schema_parity.py`** — canonical **`schema/v*.*`** must byte-match **`src/adr_kit/schema/v*_*`** (same check as **`Check package schema parity`** in **`.github/workflows/adr-governance.yml`**). It also runs **`tests/test_retrofit_contract_guards.py`** and **`tests/test_attribution_evidence_sync.py`**, then **`adr attribution check`** when workspace RECON evidence is present under **`.ste-workspace/state/adr-architecture-kit/`**.
+That bundle validates generated-docs integrity and runs a **subset** of `pytest`, including **`tests/test_package_schema_parity.py`** — canonical **`schema/v*.*`** must byte-match **`src/adr_kit/schema/v*_*`** (same check as **`Check package schema parity`** in **`.github/workflows/adr-governance.yml`**). It also runs **`tests/test_retrofit_contract_guards.py`**, **`tests/test_attribution_evidence_sync.py`**, README attribution-doc consistency, and the v1.5 semantic-attribution invariant tests (vocabulary/matrix parity, shim parity, 1.0/1.2 normalization, UUID resolution, decorator separation, dual-encode guard, and `next_id()` alias allocation). When workspace RECON evidence is present under **`.ste-workspace/state/adr-architecture-kit/`**, the script passes that file to **`adr attribution check --evidence`**; the CLI does not search `.ste-workspace` on its own.
 
 
 ---

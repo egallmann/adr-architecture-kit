@@ -41,6 +41,13 @@ class TestUUIDv7Validation:
         valid = "019109a0-b1c2-7def-8a00-112233445566"
         assert parse_uuidv7(valid) == valid
 
+    def test_uuidv7_pattern_is_shared_leaf_export(self) -> None:
+        from adr_kit._uuidv7 import UUIDV7_PATTERN as leaf_pattern
+        from adr_kit.decorators import UUIDV7_PATTERN as decorator_pattern
+
+        assert UUIDV7_PATTERN is leaf_pattern is decorator_pattern
+        assert UUIDV7_PATTERN.match("019109a0-b1c2-7def-8a00-112233445566")
+
 
 class TestMintUUIDv7:
     def test_mint_returns_valid_uuidv7(self) -> None:

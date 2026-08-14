@@ -11,15 +11,12 @@ from __future__ import annotations
 
 from collections.abc import Callable, Sequence
 from typing import TypeVar
-import re
 
+from ._uuidv7 import UUIDV7_PATTERN
 
 Decorated = TypeVar("Decorated")
 
 CANONICAL_CLAIMS_ATTR = "__architecture_attribution_claims__"
-UUIDV7_PATTERN = re.compile(
-    r"^[0-9a-f]{8}-[0-9a-f]{4}-7[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
-)
 
 
 def implements_adr(*adr_ids: str) -> Callable[[Decorated], Decorated]:

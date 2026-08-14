@@ -12,6 +12,16 @@ v1.5 is a **semantic attribution evidence** line. It is not ADR authoring schema
 
 Do not add `1.5` to `supported_adr_schema_versions`. Attribution 1.0/1.2 remains readable under [`schema/v1.1/implementation-attribution-evidence.schema.json`](../schema/v1.1/implementation-attribution-evidence.schema.json).
 
+## Evidence locations
+
+These paths are not interchangeable:
+
+- **Workspace-derived RECON evidence** may live under the workspace-root `.ste-workspace/` tree, outside the repository. Pass that file to `adr attribution check` / `coverage` with `--evidence`. The CLI does not search `.ste-workspace` automatically.
+- **Project-local default lookup** (when `--evidence` is omitted) checks only under `--scope`:
+  1. `{scope}/state/attribution/implementation-attribution-evidence.yaml`
+  2. `{scope}/.ste/state/attribution/implementation-attribution-evidence.yaml`
+- **Local pre-push** (`scripts/run_local_pre_push_checks.py`) knows the ADR Kit workspace evidence path and supplies it via `--evidence`.
+
 ## Raw claim shape
 
 Each claim requires:

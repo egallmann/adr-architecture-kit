@@ -24,6 +24,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   policy from 0.4.1.
 - `ArchitectureRepository.next_id` sequences v1.3 `alias_id` while preserving
   legacy patterned `id` allocation.
+- Deduplicate README attribution-evidence docs; distinguish project-local CLI
+  default lookup from workspace-root `.ste-workspace` RECON evidence.
+- Include v1.5 semantic-attribution invariant tests in the local pre-push subset.
 - Move production-hardening phase logs out of the public docs index; durable
   release controls are pointed from contributor docs.
 

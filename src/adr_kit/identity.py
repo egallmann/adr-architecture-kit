@@ -13,6 +13,7 @@ import json
 
 import rfc8785
 
+from ._uuidv7 import UUIDV7_PATTERN as UUIDV7_PATTERN
 from .decorators import implements, implements_adr
 
 # ---------------------------------------------------------------------------
@@ -42,10 +43,6 @@ def derive_assertion_id(
 # ---------------------------------------------------------------------------
 # v1.3  —  UUIDv7  (RFC 9562)
 # ---------------------------------------------------------------------------
-
-UUIDV7_PATTERN = re.compile(
-    r"^[0-9a-f]{8}-[0-9a-f]{4}-7[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
-)
 
 
 @implements_adr("ADR-L-0019")

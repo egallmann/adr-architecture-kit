@@ -126,6 +126,56 @@
         }
       ]
     },
+    "attribution normalize-evidence": {
+      "help": "Normalize 1.0/1.2 or 1.5 evidence to canonical v1.5 YAML. Does not write by default.",
+      "params": [
+        {
+          "count": false,
+          "default": "Sentinel.UNSET",
+          "is_flag": false,
+          "kind": "Option",
+          "multiple": false,
+          "name": "scope",
+          "nargs": 1,
+          "opts": [
+            "--scope"
+          ],
+          "required": true,
+          "secondary_opts": [],
+          "type": "directory"
+        },
+        {
+          "count": false,
+          "default": "Sentinel.UNSET",
+          "is_flag": false,
+          "kind": "Option",
+          "multiple": false,
+          "name": "input_path",
+          "nargs": 1,
+          "opts": [
+            "--input"
+          ],
+          "required": true,
+          "secondary_opts": [],
+          "type": "file"
+        },
+        {
+          "count": false,
+          "default": null,
+          "is_flag": false,
+          "kind": "Option",
+          "multiple": false,
+          "name": "output",
+          "nargs": 1,
+          "opts": [
+            "--output"
+          ],
+          "required": false,
+          "secondary_opts": [],
+          "type": "file"
+        }
+      ]
+    },
     "attribution workspace-report": {
       "help": "Build workspace attribution federation index (qualified ADR ids across repos).",
       "params": [

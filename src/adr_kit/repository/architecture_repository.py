@@ -50,7 +50,7 @@ from ._normalized_bundle import (
     load_normalized_bundle_from_paths,
 )
 from .semantic_adapter import coerce_to_normalized_model
-from ..decorators import implements_adr
+from ..decorators import implements, implements_adr
 
 
 class ArchitectureRegistryError(Exception):
@@ -527,6 +527,7 @@ class ArchitectureRepository:
             return "physical"
         return "unknown"
 
+    @implements("019fee89-e617-7fe1-8d2c-cc2745c31674")
     def next_id(self, adr_type: str) -> str:
         """Allocate the next normal-band ADR ID for a supported forward-authoring type."""
         if adr_type not in self._ADR_TYPE_PATTERNS:
@@ -551,18 +552,18 @@ class ArchitectureRepository:
                         f"Failed to read ADR header from {path}: {exc}"
                     ) from exc
 
-                declared_id = data.get("id")
-                if not isinstance(declared_id, str):
+                effective_alias = self._effective_allocation_alias(data, pattern)
+                if effective_alias is None:
                     continue
 
-                existing_path = seen_ids.get(declared_id)
+                existing_path = seen_ids.get(effective_alias)
                 if existing_path is not None:
                     raise ArchitectureRegistryError(
-                        f"Duplicate ADR ID in {target_dir}: {declared_id} declared in both {existing_path.name} and {path.name}"
+                        f"Duplicate ADR ID in {target_dir}: {effective_alias} declared in both {existing_path.name} and {path.name}"
                     )
-                seen_ids[declared_id] = path
+                seen_ids[effective_alias] = path
 
-                match = pattern.match(declared_id)
+                match = pattern.match(effective_alias)
                 if match:
                     sequence = int(match.group(1))
                     if self._ADR_ID_BANDS.normal_start <= sequence <= self._ADR_ID_BANDS.normal_end:
@@ -577,6 +578,24 @@ class ArchitectureRepository:
 
         self._save_allocation_high_water(scope.root, adr_type, next_sequence)
         return f"{prefix}{next_sequence:04d}"
+
+    @staticmethod
+    def _effective_allocation_alias(data: dict[str, Any], pattern: re.Pattern[str]) -> str | None:
+        """Return the human ADR alias used for next-id occupancy, if any.
+
+        v1.3 documents sequence from ``alias_id``. Legacy documents sequence from
+        a patterned ``id``. A UUID-valued ``id`` never participates.
+        """
+
+        alias_id = data.get("alias_id")
+        if isinstance(alias_id, str) and alias_id.strip():
+            candidate = alias_id.strip()
+            return candidate if pattern.match(candidate) else None
+
+        declared_id = data.get("id")
+        if isinstance(declared_id, str) and pattern.match(declared_id):
+            return declared_id
+        return None
 
     def _allocation_state_path(self, scope_root: Path) -> Path:
         """Return the repo-local ADR allocation state file path."""

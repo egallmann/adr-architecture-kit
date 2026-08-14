@@ -1,0 +1,83 @@
+{
+  "schema_version": "1.5",
+  "type": "semantic_attribution_vocabulary",
+  "canonical_claims_attribute": "__architecture_attribution_claims__",
+  "relationships": {
+    "implements": {
+      "allowed_target_entity_types": [
+        "adr",
+        "decision",
+        "capability",
+        "contract",
+        "interface",
+        "implementation_decision"
+      ],
+      "uuid_decorator": "implements",
+      "uuid_sequence_decorator": "implements_uuids"
+    },
+    "enforces": {
+      "allowed_target_entity_types": [
+        "invariant"
+      ],
+      "uuid_decorator": "enforces",
+      "uuid_sequence_decorator": "enforces_uuids"
+    },
+    "embodies": {
+      "allowed_target_entity_types": [
+        "system",
+        "component",
+        "boundary"
+      ],
+      "uuid_decorator": "embodies",
+      "uuid_sequence_decorator": "embodies_uuids"
+    }
+  },
+  "legacy_decorators": {
+    "implements_adr": {
+      "attribute": "__implements_adrs__",
+      "label": "ADR",
+      "variadic": true
+    },
+    "implements_adrs": {
+      "attribute": "__implements_adrs__",
+      "label": "ADR",
+      "variadic": false
+    },
+    "enforces_invariant": {
+      "attribute": "__enforces_invariants__",
+      "label": "invariant",
+      "variadic": true
+    },
+    "enforces_invariants": {
+      "attribute": "__enforces_invariants__",
+      "label": "invariant",
+      "variadic": false
+    }
+  },
+  "confidence_levels": ["declared", "inferred", "heuristic"],
+  "implementation_entity_types": [
+    "function",
+    "class",
+    "module",
+    "service",
+    "workflow",
+    "infrastructure_template",
+    "configuration_file",
+    "schema_definition",
+    "pipeline",
+    "script",
+    "data_model"
+  ],
+  "resolved_target_entity_types": [
+    "adr",
+    "system",
+    "component",
+    "decision",
+    "capability",
+    "invariant",
+    "boundary",
+    "contract",
+    "interface",
+    "implementation_decision"
+  ]
+}

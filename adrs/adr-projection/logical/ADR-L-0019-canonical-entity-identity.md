@@ -5,8 +5,8 @@ artifact_kind: rendered_adr_markdown
 generator_id: adr-projection-markdown
 generator_version: 2
 hash_algorithm: sha256
-source_hash: 3ac00bb5cde23484f0be225f0219259fb983ff7940129c6ad1d76bd7261a0059
-rendered_hash: 8fae660077a175d7d16e81fe93d29bbd5a34f75ac46079283d6ccbd33219210b
+source_hash: 8dcb38d934d7e04b834dfb4c1afdb04547a3c78b7c392ee4f63dcf0a87437c42
+rendered_hash: ac66738997f24ae1a84f2384142a6a81519b306d7b8fc623ef9e521882840bf7
 -->
 
 # ADR-L-0019: Canonical Entity Identity
@@ -92,6 +92,7 @@ flowchart LR
   n_019fee89_e617_7ed0_9c17_6def51de03a3["INV-0086"]
   n_019fee89_e617_7f80_823f_9e52a6176f77["DEC-0090"]
   n_019fee89_e617_7faa_813b_d8e882418d4e["DEC-0093"]
+  n_019ffdba_3c42_7c4a_a737_f6751a265d60["ADR-L-0020"]
   n_019fee89_e617_702b_b51b_719234187415 -->|"declared_in"| n_019fee89_e617_78d9_ba3b_b7e3e6db1b12
   n_019fee89_e617_707d_bb3e_959ff33027b8 -->|"declared_in"| n_019fee89_e617_78d9_ba3b_b7e3e6db1b12
   n_019fee89_e617_70d5_9035_ffeda9070001 -->|"declared_in"| n_019fee89_e617_78d9_ba3b_b7e3e6db1b12
@@ -129,8 +130,22 @@ flowchart LR
   n_019fee89_e617_7ed0_9c17_6def51de03a3 -->|"declared_in"| n_019fee89_e617_78d9_ba3b_b7e3e6db1b12
   n_019fee89_e617_7f80_823f_9e52a6176f77 -->|"declared_in"| n_019fee89_e617_78d9_ba3b_b7e3e6db1b12
   n_019fee89_e617_7faa_813b_d8e882418d4e -->|"declared_in"| n_019fee89_e617_78d9_ba3b_b7e3e6db1b12
+  n_019ffdba_3c42_7c4a_a737_f6751a265d60 -->|"references"| n_019fee89_e617_78d9_ba3b_b7e3e6db1b12
 ```
 
+## Related ADRs
+
+### ADR-L-0020 — Semantic Implementation Attribution and Cross-Layer Architecture Relationships
+
+**Relationships:**
+- 019ffdba-3c42-7c4a-a737-f6751a265d60 -[:references]-> this ADR
+
+**Context:** ADR-L-0004 established implementation attribution as an explicit intent
+surface. ADR-L-0019 made canonical machine identity a lowercase UUIDv7.
+Attribution evidence still cited human aliases (`ADR-L-*`, `INV-*`) and
+could not name typed relationships to nested architecture entities.
+
+[Open projection](ADR-L-0020-semantic-implementation-attribution-and-cross-layer-architecture-relationships.md)
 
 
 
@@ -409,7 +424,7 @@ V1.3 adds no universal authored `title`; each entity type retains its existing c
 ### DEC-0095: Canonical authored entity references contain UUIDs only
 
 **Rationale:**
-Canonical authored entity references contain UUIDs only; field context or registry resolution supplies type, aliases are resolved only for human presentation, and alias reassignment never rewrites canonical references or retargets relationships.
+Canonical authored entity references contain UUIDs only; field context or registry resolution supplies type, aliases are resolved only for human presentation, 1.0/1.2 implementation-attribution translation, and reports; v1.5 attribution claims identify targets by UUID; alias reassignment never rewrites canonical references, retargets relationships, or retargets semantic attribution claims.
 
 
 

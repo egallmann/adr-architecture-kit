@@ -12,17 +12,16 @@ Contributor-oriented guides (TDD, authoring, placement) live under [`contributor
 | [public-sdk.md](public-sdk.md) | Supported `adr_kit.api` facade, contracts, examples, and exclusions |
 | [schema-v1.2.md](schema-v1.2.md) | Provisional additive authoring schema and normalized semantic contract |
 | [schema-v1.3.md](schema-v1.3.md) | UUID identity authoring schema and model 2.0 linkage |
+| [schema-v1.5.md](schema-v1.5.md) | Semantic implementation attribution evidence (UUID claims) |
 | [identity-v13-migration.md](identity-v13-migration.md) | Sealed UUID identity migration lifecycle and dogfood evidence |
 | [external-bindings.md](external-bindings.md) | Bind-only substrate, rule, evidence, and external-reference semantics |
 | [topology-identity-migration.md](topology-identity-migration.md) | Stable topology IDs and deterministic migration workflow |
 | [adr-type-model.md](adr-type-model.md) | ADR taxonomy: `ADR-L`, `ADR-PS`, `ADR-PC`, legacy `ADR-P`, experimental `ADR-V` |
 | [architecture-ir-overview.md](architecture-ir-overview.md) | Three layers: ADR sources, repository discovery bundle, public Architecture IR |
 | [public-surface-and-stability.md](public-surface-and-stability.md) | Pre-1.0 compatibility categories and migration rules |
-| [production-hardening/phase-0-controls.md](production-hardening/phase-0-controls.md) | Quality, release-manifest, installed-wheel, and benchmark controls |
-| [production-hardening/benchmark-baseline.md](production-hardening/benchmark-baseline.md) | Phase 0 corpus identities, fingerprints, and measured timings |
-| [production-hardening/phase-2-benchmark-baseline.md](production-hardening/phase-2-benchmark-baseline.md) | Phase 2 v1.2 semantic benchmark observations |
-| [production-hardening/phase-2-closeout.md](production-hardening/phase-2-closeout.md) | Phase 2 implementation and verification closeout |
 | [walkthrough-adr-to-ir.md](walkthrough-adr-to-ir.md) | End-to-end flow with the [`examples/public-v1/`](../examples/public-v1/) example |
+
+Phase closeout logs and benchmark captures remain under [`production-hardening/`](production-hardening/) for history; they are not part of the public spine.
 
 ## Contributor reference
 
@@ -33,6 +32,8 @@ Contributor-oriented guides (TDD, authoring, placement) live under [`contributor
 | [contributors/physical-adr-guide.md](contributors/physical-adr-guide.md) | Physical ADR families (`ADR-PS`, `ADR-PC`, legacy `ADR-P`) |
 | [contributors/schema-guide.md](contributors/schema-guide.md) | Long-form schema and validation notes |
 | [contributors/placement-convention.md](contributors/placement-convention.md) | Placement rules for ADRs, manifest, and index paths |
+| [contributors/release-controls.md](contributors/release-controls.md) | Durable quality, wheel, and release-control pointers |
+| [production-hardening/public-surface-inventory.md](production-hardening/public-surface-inventory.md) | Frozen compatibility snapshot |
 
 Also see [CONTRIBUTING.md](../CONTRIBUTING.md) and [schema/v1.0/README.md](../schema/v1.0/README.md).
 

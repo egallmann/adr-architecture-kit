@@ -5,8 +5,8 @@ artifact_kind: rendered_adr_markdown
 generator_id: adr-projection-markdown
 generator_version: 2
 hash_algorithm: sha256
-source_hash: 9c76f9c1869f8f33d9f98c1d67b82ed207d0ce7123d5b5185e5deb3e2ee3b10f
-rendered_hash: 81de24ce757337a6b0e2bf14fb0331921a1d5a64f740133da5e5c4f1788293e3
+source_hash: b55eb441e5bc45e6878308fc24b75b1a7e794cec9d05703f9fecaeffb5b49bf5
+rendered_hash: 8779e6718c66462dd9967d690e673bd6a546cda4b3f23136e1ffbe9e5a48c4d2
 -->
 
 # ADR-PC-0002: Schema and Contract Validation
@@ -18,7 +18,7 @@ rendered_hash: 81de24ce757337a6b0e2bf14fb0331921a1d5a64f740133da5e5c4f1788293e3
 **Domains:** validation, schema, contracts  
 **Alias name:** schema-and-contract-validation  
 
-**Implements Logical:** [ADR-L-0008](../logical/ADR-L-0008-validation-modes-for-draft-and-complete-adrs.md), [ADR-L-0010](../logical/ADR-L-0010-kernel-interface-contract-and-validation-profiles.md), [ADR-L-0011](../logical/ADR-L-0011-metadata-schemas-and-remediation-ledger-enforcement.md)  
+**Implements Logical:** [ADR-L-0008](../logical/ADR-L-0008-validation-modes-for-draft-and-complete-adrs.md), [ADR-L-0010](../logical/ADR-L-0010-kernel-interface-contract-and-validation-profiles.md), [ADR-L-0011](../logical/ADR-L-0011-metadata-schemas-and-remediation-ledger-enforcement.md), [ADR-L-0020](../logical/ADR-L-0020-semantic-implementation-attribution-and-cross-layer-architecture-relationships.md)  
 **Technologies:** python, jsonschema, pydantic  
 
 **Implements System:** [ADR-PS-0002](../physical-system/ADR-PS-0002-adr-kit-authoring-compiler-and-validation-system.md)  
@@ -28,7 +28,7 @@ rendered_hash: 81de24ce757337a6b0e2bf14fb0331921a1d5a64f740133da5e5c4f1788293e3
 Schema and contract validation is now a stable component boundary rather than
 a generic legacy physical slice. It validates canonical ADR structure,
 profile-specific contract requirements, project metadata, and implementation
-attribution evidence.
+attribution evidence. Validation of that evidence is structural for schema shape and architecture-aware when claims must resolve to canonical UUIDs and entity types. Legacy 1.0/1.2 evidence normalizes to the v1.5 claim shape only with repository or model 2.0 context.
 
 
 ## Technology Stack
@@ -72,6 +72,7 @@ flowchart LR
   n_019fee89_e618_713e_a017_5b417ef9ac9f["SYS-0002"]
   n_019fee89_e618_7a2f_aa3e_1f892cdf9410["ADR-P-0002"]
   n_019fee89_e618_7d04_9337_4aa2d3258507["ADR-PS-0002"]
+  n_019ffdba_3c42_7c4a_a737_f6751a265d60["ADR-L-0020"]
   n_019fee89_e617_7060_8f3f_4ecd46a719da -->|"declared_in"| n_019fee89_e617_7d2b_8325_cd85ff814477
   n_019fee89_e617_74dd_a62f_5ce1a1994d18 -->|"declared_in"| n_019fee89_e617_7d2b_8325_cd85ff814477
   n_019fee89_e617_78b8_852f_9b2c984f9300 -->|"declared_in"| n_019fee89_e617_7d2b_8325_cd85ff814477
@@ -81,9 +82,11 @@ flowchart LR
   n_019fee89_e617_7d2b_8325_cd85ff814477 -->|"implements_logical"| n_019fee89_e616_7066_8d2f_3acc7f469f72
   n_019fee89_e617_7d2b_8325_cd85ff814477 -->|"implements_logical"| n_019fee89_e616_7b97_971d_ae165d13bf9c
   n_019fee89_e617_7d2b_8325_cd85ff814477 -->|"implements_logical"| n_019fee89_e616_7d61_8e35_f11ba2ddd75d
+  n_019fee89_e617_7d2b_8325_cd85ff814477 -->|"implements_logical"| n_019ffdba_3c42_7c4a_a737_f6751a265d60
   n_019fee89_e617_7060_8f3f_4ecd46a719da -->|"provides_interface"| n_019fee89_e617_74dd_a62f_5ce1a1994d18
   n_019fee89_e617_7060_8f3f_4ecd46a719da -->|"provides_interface"| n_019fee89_e617_78b8_852f_9b2c984f9300
   n_019fee89_e617_7f4d_811d_4862645a55c5 -->|"references"| n_019fee89_e617_7d2b_8325_cd85ff814477
+  n_019ffdba_3c42_7c4a_a737_f6751a265d60 -->|"references"| n_019fee89_e617_7d2b_8325_cd85ff814477
   n_019fee89_e618_7d04_9337_4aa2d3258507 -->|"related_to"| n_019fee89_e617_7d2b_8325_cd85ff814477
   n_019fee89_e618_7a2f_aa3e_1f892cdf9410 -->|"superseded_by"| n_019fee89_e617_7d2b_8325_cd85ff814477
   n_019fee89_e617_7d2b_8325_cd85ff814477 -->|"supersedes"| n_019fee89_e618_7a2f_aa3e_1f892cdf9410
@@ -138,6 +141,18 @@ bundle or absorbing authority owned by runtime, rules, substrate, or admission
 systems.
 
 [Open projection](../logical/ADR-L-0018-schema-v1-2-and-normalized-semantic-foundation.md)
+### ADR-L-0020 — Semantic Implementation Attribution and Cross-Layer Architecture Relationships
+
+**Relationships:**
+- this ADR -[:implements_logical]-> 019ffdba-3c42-7c4a-a737-f6751a265d60
+- 019ffdba-3c42-7c4a-a737-f6751a265d60 -[:references]-> this ADR
+
+**Context:** ADR-L-0004 established implementation attribution as an explicit intent
+surface. ADR-L-0019 made canonical machine identity a lowercase UUIDv7.
+Attribution evidence still cited human aliases (`ADR-L-*`, `INV-*`) and
+could not name typed relationships to nested architecture entities.
+
+[Open projection](../logical/ADR-L-0020-semantic-implementation-attribution-and-cross-layer-architecture-relationships.md)
 ### ADR-P-0002 — JSON Schema Validation with YAML Document Format
 
 **Relationships:**

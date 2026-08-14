@@ -4,8 +4,8 @@
 # generator_id: adr-compiler
 # generator_version: 1
 # hash_algorithm: sha256
-# source_hash: 78c7b5c82c58da2455de07805ecb2b24f168e5ae3ad1cd95ad585e746805e8a5
-# rendered_hash: d7a9104b072013967750e0ad11d9feda0d61d20d34a208811271af969e85992c
+# source_hash: fa5952151ddbf54637f9a520ca6015cf6d51aa3ed92c21dd9c8d1a0b9ca86297
+# rendered_hash: da55c462b263037e9e4045429488a6612c1f789777f7c2526b03051c9dda4c40
 
 schema_version: '1.1'
 type: entity_registry
@@ -842,6 +842,54 @@ entities:
     implements: []
     consumes: []
     realizes: []
+- entity_id: CAP-0053
+  entity_type: capability
+  name: Semantic Implementation Attribution
+  introduced_by: ADR-L-0020
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0020-semantic-implementation-attribution.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs:
+  - ADR-L-0020
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: CAP-0054
+  entity_type: capability
+  name: Repository-Aware Attribution Normalization
+  introduced_by: ADR-L-0020
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0020-semantic-implementation-attribution.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs:
+  - ADR-L-0020
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: CAP-0055
+  entity_type: capability
+  name: Unique-Link Attribution Coverage
+  introduced_by: ADR-L-0020
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0020-semantic-implementation-attribution.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs:
+  - ADR-L-0020
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
 - entity_id: CAP-9000
   entity_type: capability
   name: Kernel Boot Readiness
@@ -948,6 +996,22 @@ entities:
   domains: []
   related_adrs:
   - ADR-PC-0006
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: COMP-0022
+  entity_type: component
+  name: Semantic Attribution Embodiment
+  introduced_by: ADR-PC-0007
+  lifecycle_stage: active
+  source_path: adrs/physical-component/ADR-PC-0007-semantic-attribution-embodiment.yaml
+  source_artifact_type: physical_component_adr
+  domains: []
+  related_adrs:
+  - ADR-PC-0007
   realized_by: []
   relationships:
     depends_on: []
@@ -2845,6 +2909,150 @@ entities:
     implements: []
     consumes: []
     realizes: []
+- entity_id: DEC-0116
+  entity_type: decision
+  name: Canonical v1.5 claims require relationship, target UUID, and confidence
+  introduced_by: ADR-L-0020
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0020-semantic-implementation-attribution.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs:
+  - ADR-L-0020
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: DEC-0117
+  entity_type: decision
+  name: Raw evidence must not require target entity type
+  introduced_by: ADR-L-0020
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0020-semantic-implementation-attribution.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs:
+  - ADR-L-0020
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: DEC-0118
+  entity_type: decision
+  name: Apply the attribution matrix to repository-resolved entity type
+  introduced_by: ADR-L-0020
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0020-semantic-implementation-attribution.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs:
+  - ADR-L-0020
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: DEC-0119
+  entity_type: decision
+  name: Evidence claim verbs are not architecture relationship types
+  introduced_by: ADR-L-0020
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0020-semantic-implementation-attribution.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs:
+  - ADR-L-0020
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: DEC-0120
+  entity_type: decision
+  name: Legacy 1.0/1.2 evidence normalizes only with architecture state
+  introduced_by: ADR-L-0020
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0020-semantic-implementation-attribution.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs:
+  - ADR-L-0020
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: DEC-0121
+  entity_type: decision
+  name: Canonical output order is deterministic and idempotent
+  introduced_by: ADR-L-0020
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0020-semantic-implementation-attribution.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs:
+  - ADR-L-0020
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: DEC-0122
+  entity_type: decision
+  name: Duplicate semantic claims follow provenance-aware fail-closed rules
+  introduced_by: ADR-L-0020
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0020-semantic-implementation-attribution.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs:
+  - ADR-L-0020
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: DEC-0123
+  entity_type: decision
+  name: Coverage distinguishes unique semantic links from evidence occurrence
+  introduced_by: ADR-L-0020
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0020-semantic-implementation-attribution.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs:
+  - ADR-L-0020
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: DEC-0124
+  entity_type: decision
+  name: Extractors and legacy decorators must not load architecture state
+  introduced_by: ADR-L-0020
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0020-semantic-implementation-attribution.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs:
+  - ADR-L-0020
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
 - entity_id: DEC-9000
   entity_type: decision
   name: Publish a deterministic logical ADR fragment for boot readiness.
@@ -4471,6 +4679,166 @@ entities:
   domains: []
   related_adrs:
   - ADR-L-0007
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: INV-0103
+  entity_type: invariant
+  name: INV-0103
+  introduced_by: ADR-L-0020
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0020-semantic-implementation-attribution.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs:
+  - ADR-L-0020
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: INV-0104
+  entity_type: invariant
+  name: INV-0104
+  introduced_by: ADR-L-0020
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0020-semantic-implementation-attribution.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs:
+  - ADR-L-0020
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: INV-0105
+  entity_type: invariant
+  name: INV-0105
+  introduced_by: ADR-L-0020
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0020-semantic-implementation-attribution.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs:
+  - ADR-L-0020
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: INV-0106
+  entity_type: invariant
+  name: INV-0106
+  introduced_by: ADR-L-0020
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0020-semantic-implementation-attribution.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs:
+  - ADR-L-0020
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: INV-0107
+  entity_type: invariant
+  name: INV-0107
+  introduced_by: ADR-L-0020
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0020-semantic-implementation-attribution.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs:
+  - ADR-L-0020
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: INV-0108
+  entity_type: invariant
+  name: INV-0108
+  introduced_by: ADR-L-0020
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0020-semantic-implementation-attribution.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs:
+  - ADR-L-0020
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: INV-0109
+  entity_type: invariant
+  name: INV-0109
+  introduced_by: ADR-L-0020
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0020-semantic-implementation-attribution.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs:
+  - ADR-L-0020
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: INV-0110
+  entity_type: invariant
+  name: INV-0110
+  introduced_by: ADR-L-0020
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0020-semantic-implementation-attribution.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs:
+  - ADR-L-0020
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: INV-0111
+  entity_type: invariant
+  name: INV-0111
+  introduced_by: ADR-L-0020
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0020-semantic-implementation-attribution.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs:
+  - ADR-L-0020
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: INV-0112
+  entity_type: invariant
+  name: INV-0112
+  introduced_by: ADR-L-0020
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0020-semantic-implementation-attribution.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs:
+  - ADR-L-0020
   realized_by: []
   relationships:
     depends_on: []

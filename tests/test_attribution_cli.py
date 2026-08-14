@@ -214,6 +214,8 @@ def test_attribution_coverage_cmd(tmp_path: Path):
 
     assert result.exit_code == 0
     assert "evidence_schema_version" in result.output
+    assert "semantic_unique_claim_counts_by_relationship" in result.output
+    assert "semantic_evidence_occurrence_counts_by_relationship" in result.output
     assert "ADR-L-0999" in result.output or "ADR" in result.output
 
 
@@ -240,3 +242,18 @@ def test_legacy_schema_1_point_0_evidence_round_trips_via_pydantic() -> None:
     assert obj.records[0].confidence == "declared"
     assert obj.records[0].attributed_capabilities == []
     assert obj.records[0].attribution_source_language is None
+
+
+def test_attribution_normalize_evidence_writes_only_when_output_set(tmp_path: Path) -> None:
+    from tests.test_legacy_attribution_normalization import _legacy_doc, _lookup
+    from adr_kit.semantic_attribution import evidence_to_canonical_dict, normalize_attribution_evidence
+
+    canonical = normalize_attribution_evidence(_legacy_doc(), _lookup())
+    dumped = evidence_to_canonical_dict(canonical)
+    assert dumped["records"][0]["implementation_entity_id"] == "function.other"
+
+    runner = CliRunner()
+    result = runner.invoke(cli, ["attribution", "normalize-evidence", "--help"])
+    assert result.exit_code == 0
+    assert "--input" in result.output
+    assert "stdout" in result.output.lower()

@@ -32,7 +32,8 @@ Provisional surfaces are public enough for careful integration but may evolve be
 promotion. They include `schema/v1.1/`, discovery/ledger/lifecycle/remediation
 extensions, provisional ADR authoring `schema/v1.2/` and `schema/v1.3/`, normalized-model
 contracts `1.1` and `2.0`, source-sensitive assertion identity, external binding
-projections, topology identity, subset registries, and the additive architecture graph.
+projections, topology identity, subset registries, the additive architecture graph,
+and implementation-attribution evidence `schema/v1.5/` (semantic UUID claims).
 Provisional material must identify migration impact when it changes and is not promoted
 merely by implementation.
 
@@ -98,7 +99,9 @@ explicit non-release sentinel `0+unknown`.
 
 - ADR v1.0 encoding is stable. ADR v1.1 discovery, ledger, graph, and attribution
   material remains provisional or draft. ADR authoring v1.2 and normalized model 1.1
-  are additive provisional contracts authorized by ADR-L-0018.
+  are additive provisional contracts authorized by ADR-L-0018. Attribution evidence
+  v1.5 is a provisional semantic-claim line authorized by ADR-L-0020; it is not ADR
+  authoring schema 1.5.
 - Existing CLI command names, options, defaults, exit codes, diagnostics, and
   machine-readable shapes are de facto public. Additive developer controls do not
   redefine existing commands.

@@ -5,8 +5,8 @@ artifact_kind: rendered_adr_markdown
 generator_id: adr-projection-markdown
 generator_version: 2
 hash_algorithm: sha256
-source_hash: 9925b0ac5b39b1c479c9ae03f82b30b9f39d0c6412b152d756cbf8258b6cbe77
-rendered_hash: 1670e05da2b1d0f229774ec31c8951803886d5e4f0f4d2812f64edf69cdb1087
+source_hash: 655e9c781a28f24d3bef24d1e93f1d26b094e8a7a56861ec379a0439681d98ec
+rendered_hash: 11e4a996ab881585ea4731725173ca74b4463dca45cfba4ed4e3a8953bd5d2c6
 -->
 
 # ADR-L-0013: Architecture Repository Boundary and Normalized Semantic Model
@@ -78,6 +78,7 @@ flowchart LR
   n_019fee89_e618_74b2_a83e_e41c7d8c9f37["ADR-PC-0005"]
   n_019fee89_e618_7b76_843f_cfe21ceb2ea6["ADR-PC-0003"]
   n_019fee89_e618_7d04_9337_4aa2d3258507["ADR-PS-0002"]
+  n_019ffdba_3c42_7c4a_a737_f6751a265d60["ADR-L-0020"]
   n_019fee89_e616_7018_982f_d3d703f29db7 -->|"declared_in"| n_019fee89_e616_7c4e_953c_b7349412a784
   n_019fee89_e616_7140_bb3f_8b78ab40d018 -->|"declared_in"| n_019fee89_e616_7c4e_953c_b7349412a784
   n_019fee89_e616_7153_930f_595ce3d9f96d -->|"declared_in"| n_019fee89_e616_7c4e_953c_b7349412a784
@@ -114,6 +115,7 @@ flowchart LR
   n_019fee89_e617_7e69_861a_f3040f70c2d9 -->|"references"| n_019fee89_e616_7c4e_953c_b7349412a784
   n_019fee89_e617_7f4d_811d_4862645a55c5 -->|"references"| n_019fee89_e616_7c4e_953c_b7349412a784
   n_019fee89_e617_7fe1_8d2c_cc2745c31674 -->|"references"| n_019fee89_e616_7c4e_953c_b7349412a784
+  n_019ffdba_3c42_7c4a_a737_f6751a265d60 -->|"references"| n_019fee89_e616_7c4e_953c_b7349412a784
 ```
 
 ## Related ADRs
@@ -218,6 +220,17 @@ bundle or absorbing authority owned by runtime, rules, substrate, or admission
 systems.
 
 [Open projection](ADR-L-0018-schema-v1-2-and-normalized-semantic-foundation.md)
+### ADR-L-0020 — Semantic Implementation Attribution and Cross-Layer Architecture Relationships
+
+**Relationships:**
+- 019ffdba-3c42-7c4a-a737-f6751a265d60 -[:references]-> this ADR
+
+**Context:** ADR-L-0004 established implementation attribution as an explicit intent
+surface. ADR-L-0019 made canonical machine identity a lowercase UUIDv7.
+Attribution evidence still cited human aliases (`ADR-L-*`, `INV-*`) and
+could not name typed relationships to nested architecture entities.
+
+[Open projection](ADR-L-0020-semantic-implementation-attribution-and-cross-layer-architecture-relationships.md)
 ### ADR-PC-0001 — Entity Registry and Discovery Index
 
 **Relationships:**

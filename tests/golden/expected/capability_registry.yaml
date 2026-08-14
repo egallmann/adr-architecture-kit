@@ -3078,3 +3078,177 @@ entities:
     extraction_phase: extract_capability
     classification: explicit
     generator: adr-architecture-index
+- id: 019ffdba-3c42-71ba-b81f-a2a24830abd6
+  alias_id: CAP-0054
+  alias_name: repository-aware-attribution-normalization
+  alias_ref: CAP-0054:repository-aware-attribution-normalization
+  entity_type: capability
+  name: Repository-Aware Attribution Normalization
+  summary: Translate 1.0/1.2 alias evidence into canonical v1.5 claims using governed
+    architecture lookup.
+  uri: adr://adr-architecture-kit/entities/019ffdba-3c42-71ba-b81f-a2a24830abd6
+  created_at: '2026-08-14T00:44:28.610Z'
+  entity_fingerprint: sha256:56ae8297e5fb81c2cb03b4593dd247154a5057cd41aa129dc7cb92081f178f1b
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 019ffdba-3c42-7c4a-a737-f6751a265d60#019ffdba-3c42-71ba-b81f-a2a24830abd6
+    artifact_path: adrs/logical/ADR-L-0020-semantic-implementation-attribution.yaml
+  source_refs: []
+  metadata:
+    adr_id: 019ffdba-3c42-7c4a-a737-f6751a265d60
+    adr_alias_id: ADR-L-0020
+    domains:
+    - architecture
+    - traceability
+    - governance
+    - identity
+    implemented_by_components: []
+    enabled_by_decisions: []
+    alias_name: repository-aware-attribution-normalization
+    alias_id: CAP-0054
+  relationships:
+    declared_in:
+    - 019ffdba-3c42-7c4a-a737-f6751a265d60
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 019ffdba-3c42-7c4a-a737-f6751a265d60#019ffdba-3c42-71ba-b81f-a2a24830abd6
+    extraction_phase: extract_capability
+    classification: explicit
+    generator: adr-architecture-index
+- id: 019ffdba-3c42-745c-9e37-85f7696cd43c
+  alias_id: CAP-0055
+  alias_name: unique-link-attribution-coverage
+  alias_ref: CAP-0055:unique-link-attribution-coverage
+  entity_type: capability
+  name: Unique-Link Attribution Coverage
+  summary: Informational coverage that preserves ADR catalog keys and reports unique
+    semantic links separately from evidence occurrence.
+  uri: adr://adr-architecture-kit/entities/019ffdba-3c42-745c-9e37-85f7696cd43c
+  created_at: '2026-08-14T00:44:28.610Z'
+  entity_fingerprint: sha256:683ac16f30fa2ed5cfafadebfaad009737cb1c7733a89298a0141db1f5e72d3a
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 019ffdba-3c42-7c4a-a737-f6751a265d60#019ffdba-3c42-745c-9e37-85f7696cd43c
+    artifact_path: adrs/logical/ADR-L-0020-semantic-implementation-attribution.yaml
+  source_refs: []
+  metadata:
+    adr_id: 019ffdba-3c42-7c4a-a737-f6751a265d60
+    adr_alias_id: ADR-L-0020
+    domains:
+    - architecture
+    - traceability
+    - governance
+    - identity
+    implemented_by_components: []
+    enabled_by_decisions: []
+    alias_name: unique-link-attribution-coverage
+    alias_id: CAP-0055
+  relationships:
+    declared_in:
+    - 019ffdba-3c42-7c4a-a737-f6751a265d60
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 019ffdba-3c42-7c4a-a737-f6751a265d60#019ffdba-3c42-745c-9e37-85f7696cd43c
+    extraction_phase: extract_capability
+    classification: explicit
+    generator: adr-architecture-index
+- id: 019ffdba-3c42-7578-b43f-ad19109d59d9
+  alias_id: CAP-0053
+  alias_name: semantic-implementation-attribution
+  alias_ref: CAP-0053:semantic-implementation-attribution
+  entity_type: capability
+  name: Semantic Implementation Attribution
+  summary: UUID-canonical typed claims connecting implementation surfaces to architecture
+    entities without collapsing evidence into authority.
+  uri: adr://adr-architecture-kit/entities/019ffdba-3c42-7578-b43f-ad19109d59d9
+  created_at: '2026-08-14T00:44:28.610Z'
+  entity_fingerprint: sha256:5d7df596d1843adedb38b8b12bb234e6feac3642bfb8a90ed51e102f131d846e
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 019ffdba-3c42-7c4a-a737-f6751a265d60#019ffdba-3c42-7578-b43f-ad19109d59d9
+    artifact_path: adrs/logical/ADR-L-0020-semantic-implementation-attribution.yaml
+  source_refs: []
+  metadata:
+    adr_id: 019ffdba-3c42-7c4a-a737-f6751a265d60
+    adr_alias_id: ADR-L-0020
+    domains:
+    - architecture
+    - traceability
+    - governance
+    - identity
+    implemented_by_components: []
+    enabled_by_decisions: []
+    alias_name: semantic-implementation-attribution
+    alias_id: CAP-0053
+  relationships:
+    declared_in:
+    - 019ffdba-3c42-7c4a-a737-f6751a265d60
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 019ffdba-3c42-7c4a-a737-f6751a265d60#019ffdba-3c42-7578-b43f-ad19109d59d9
+    extraction_phase: extract_capability
+    classification: explicit
+    generator: adr-architecture-index

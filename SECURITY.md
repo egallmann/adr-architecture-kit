@@ -26,11 +26,13 @@ You can expect an acknowledgement within **5 business days** and a status update
 
 ## Scope
 
-This package is a developer tool for authoring and validating Architecture Decision Records. It reads YAML and JSON files from the local filesystem and runs validation logic. The primary attack surfaces are:
+This package is a developer tool for authoring and validating Architecture Decision Records. It reads YAML and JSON from the local filesystem, writes generated discovery/projection artifacts when those commands are invoked, and ships GitHub Actions for CI, CodeQL, and release publishing. The primary attack surfaces are:
 
 - **YAML parsing** — malicious YAML files passed to the parser
 - **JSON Schema validation** — untrusted schema or ADR inputs
-- **CLI argument handling** — paths and flags passed to the `adr` CLI
+- **CLI path handling** — `--scope`, `--evidence`, and output paths that can overwrite generated artifacts
+- **Generated artifact writes** — index, manifest, projection, and shim files written under an explicit project tree
+- **Release trust** — GitHub Actions OIDC / PyPI trusted publishing and workflow `permissions` (human-gated; see admission rules below)
 
 If you identify a vulnerability in a dependency (e.g. PyYAML, jsonschema, Pydantic), please report it upstream to that project and notify us so we can update the dependency.
 

@@ -45,6 +45,10 @@ Promote the closed v1.3 identity Design Journal through the ADR Kit promotion pr
 
 Keep canonical updated_at and general transactional authoring in Phase 3. Phase 3 consumes, and does not redefine, v1.3 entity identity.
 
+Semantic implementation attribution (evidence schema v1.5, ADR-L-0020) is a
+provisional evidence line on top of v1.3 identity. It does **not** open Phase 3
+GraphProjectionBundle, multi-source assertion replacement, or transactional authoring.
+
 ## Phase 3 — graph bundle and transactional authoring decisions
 
 Entry requires approved Phase 2 contracts. First evaluate GraphProjectionBundle,

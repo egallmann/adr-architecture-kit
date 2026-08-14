@@ -384,3 +384,68 @@ entities:
     extraction_phase: extract_component
     classification: explicit
     generator: adr-architecture-index
+- id: 019ffdba-3c42-75d5-b93b-f32f35152e32
+  alias_id: COMP-0022
+  alias_name: semantic-attribution-embodiment
+  alias_ref: COMP-0022:semantic-attribution-embodiment
+  entity_type: component
+  name: Semantic Attribution Embodiment
+  summary: '- Load the mechanical v1.5 semantic attribution vocabulary - Parse and
+    validate 1.0/1.2/1.5 implementation attribution evidence - Provide UUID claim
+    decorators and vocabulary-driven Python/TypeScript shims - Resolve clai'
+  uri: adr://adr-architecture-kit/entities/019ffdba-3c42-75d5-b93b-f32f35152e32
+  created_at: '2026-08-14T00:44:28.610Z'
+  entity_fingerprint: sha256:835eaeacc700be019da08095552b6c852967ff31a91f71e4669404eab6a53fe5
+  lifecycle_stage: active
+  canonical_source:
+    source_type: physical_component_adr
+    source_ref: 019ffdba-3c42-70da-b33d-efc003269c42#019ffdba-3c42-75d5-b93b-f32f35152e32
+    artifact_path: adrs/physical-component/ADR-PC-0007-semantic-attribution-embodiment.yaml
+  source_refs: []
+  metadata:
+    adr_id: 019ffdba-3c42-70da-b33d-efc003269c42
+    adr_alias_id: ADR-PC-0007
+    legacy_component_id: 019ffdba-3c42-75d5-b93b-f32f35152e32
+    technologies:
+    - python
+    - jsonschema
+    - pydantic
+    - typescript
+    module_path: src/adr_kit/decorators.py
+    implements_capabilities: []
+    implements_system:
+    - 019fee89-e618-7d04-9337-4aa2d3258507
+    alias_id: COMP-0022
+    alias_name: semantic-attribution-embodiment
+  relationships:
+    declared_in:
+    - 019ffdba-3c42-70da-b33d-efc003269c42
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in:
+    - 019fee89-e618-713e-a017-5b417ef9ac9f
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface:
+    - 019ffdba-3c42-77f6-903f-7753342c5b5f
+    - 019ffdba-3c42-7d5b-b52f-b36c3000f299
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: physical_component_adr
+    source_ref: 019ffdba-3c42-70da-b33d-efc003269c42#019ffdba-3c42-75d5-b93b-f32f35152e32
+    extraction_phase: extract_component
+    classification: explicit
+    generator: adr-architecture-index

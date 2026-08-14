@@ -47,7 +47,7 @@ unresolved:
   gap_class: author_declared
   gap_type: author_declared_real_gap
   source_entity_id: 019fee89-e615-7577-8d37-dd0df031bec9
-  severity: important
+  severity: advisory
   provenance:
     source_type: derived_registry
     source_ref: 019fee89-e615-7577-8d37-dd0df031bec9#GAP-0001
@@ -73,7 +73,7 @@ unresolved:
   - Downstream implementation attribution evidence requires broader extractor coverage
 - id: UGAP-019fee89-e615-7577-8d37-dd0df031bec9-GAP-0003
   gap_class: author_declared
-  gap_type: author_declared_deferred_gap
+  gap_type: author_declared_real_gap
   source_entity_id: 019fee89-e615-7577-8d37-dd0df031bec9
   severity: advisory
   provenance:

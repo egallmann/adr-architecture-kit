@@ -128,8 +128,8 @@ Full split: [authority-boundary.md](https://github.com/egallmann/adr-architectur
 
 This project is **pre-1.0 (Alpha)** on PyPI; surfaces may evolve until a **1.0** commitment. Trove classifiers match that posture.
 
-- **Stable ADR v1.0 encoding** — ADR schema versioning is distinct from the package's pre-1.0 SemVer status. The repository/model consumer seam is supported; documented historical imports and CLI behavior are compatibility-snapshotted. See [public surface and stability](https://github.com/egallmann/adr-architecture-kit/blob/main/docs/public-surface-and-stability.md).
-- **Draft** — v1.1 and evolving registry/IR adapter details; consume with care.
+- **Stable** — ADR v1.0 encoding, the repository/model consumer seam (`ArchitectureRepository` and `NormalizedArchitectureModel`), traceability decorators, and the documented discovery-bundle role. See [public surface and stability](https://github.com/egallmann/adr-architecture-kit/blob/main/docs/public-surface-and-stability.md).
+- **Provisional** — ADR authoring v1.1–v1.3, normalized models 1.1 and 2.0, discovery/ledger/lifecycle extensions, and implementation-attribution evidence (including the v1.5 semantic claim line). Consume with a migration note when these change.
 - **Experimental** — Vision ADRs, migrators, workspace boot examples; not a basis for long-term external dependencies.
 
 Full breakdown: [public-surface-and-stability.md](https://github.com/egallmann/adr-architecture-kit/blob/main/docs/public-surface-and-stability.md).
@@ -143,6 +143,9 @@ Full breakdown: [public-surface-and-stability.md](https://github.com/egallmann/a
 | [authority-boundary.md](https://github.com/egallmann/adr-architecture-kit/blob/main/docs/authority-boundary.md) | Who owns what across `ste-handbook`, `ste-spec`, this kit, `ste-runtime`, and `ste-kernel` |
 | [public-sdk.md](https://github.com/egallmann/adr-architecture-kit/blob/main/docs/public-sdk.md) | Supported `adr_kit.api` installation and consumer contract |
 | [schema-v1.2.md](https://github.com/egallmann/adr-architecture-kit/blob/main/docs/schema-v1.2.md) | Additive v1.2 authoring and normalized semantics |
+| [schema-v1.3.md](https://github.com/egallmann/adr-architecture-kit/blob/main/docs/schema-v1.3.md) | UUID identity authoring schema and model 2.0 linkage |
+| [schema-v1.5.md](https://github.com/egallmann/adr-architecture-kit/blob/main/docs/schema-v1.5.md) | Semantic implementation attribution evidence (UUID claims) |
+| [identity-v13-migration.md](https://github.com/egallmann/adr-architecture-kit/blob/main/docs/identity-v13-migration.md) | Sealed UUID identity migration lifecycle |
 | [external-bindings.md](https://github.com/egallmann/adr-architecture-kit/blob/main/docs/external-bindings.md) | External authority binding without ownership absorption |
 | [topology-identity-migration.md](https://github.com/egallmann/adr-architecture-kit/blob/main/docs/topology-identity-migration.md) | Stable physical topology identity migration |
 | [adr-type-model.md](https://github.com/egallmann/adr-architecture-kit/blob/main/docs/adr-type-model.md) | ADR taxonomy: `ADR-L`, `ADR-PS`, `ADR-PC`, legacy `ADR-P`, experimental `ADR-V` |
@@ -167,19 +170,28 @@ Also [CONTRIBUTING.md](https://github.com/egallmann/adr-architecture-kit/blob/ma
 
 Python APIs and CLI entry points declare **architecture implementation intent** beside code using no-op decorators in [`src/adr_kit/decorators.py`](https://github.com/egallmann/adr-architecture-kit/blob/main/src/adr_kit/decorators.py):
 
-- `@implements_adr("ADR-L-…", …)` — variadic ADR ids
-- `@implements_adrs(["ADR-L-…", …])` — single iterable (matches RECON / TypeScript list style)
-- `@enforces_invariant("INV-…", …)` and `@enforces_invariants(["INV-…", …])`
+- `@implements_adr("ADR-L-…", …)` / `@implements_adrs(["ADR-L-…", …])` — legacy alias metadata (`__implements_adrs__`)
+- `@enforces_invariant("INV-…", …)` / `@enforces_invariants(["INV-…", …])` — legacy alias metadata (`__enforces_invariants__`)
+- `@implements("<uuid>")` / `@enforces("<uuid>")` / `@embodies("<uuid>")` — UUID-canonical claims (`__architecture_attribution_claims__`, `confidence: declared`)
 
-Normative rationale: [ADR-L-0004](https://github.com/egallmann/adr-architecture-kit/blob/main/adrs/logical/ADR-L-0004-adr-to-code-traceability-via-decorators.yaml). These decorators only attach `__implements_adrs__` and `__enforces_invariants__`; they do not change control flow.
+Normative rationale: [ADR-L-0004](https://github.com/egallmann/adr-architecture-kit/blob/main/adrs/logical/ADR-L-0004-adr-to-code-traceability-via-decorators.yaml) and [ADR-L-0020](https://github.com/egallmann/adr-architecture-kit/blob/main/adrs/logical/ADR-L-0020-semantic-implementation-attribution.yaml). These decorators only attach metadata; they do not change control flow. A declaration is evidence of intent, not proof.
 
 **ste-runtime** RECON can parse the decorator calls from the AST and emit derived evidence under the workspace-root `.ste-workspace/` state directory, outside every repository. That output is **declared linkage**, not proof of correctness: canonical architecture remains the ADR corpus and contracts in **`ste-spec`**.
 
 **CLI (`adr attribution`)** validates and inspects RECON-derived (or synthetic) attribution evidence YAML against your repository’s canonical ADRs:
 
 - **`adr attribution check`** — Schema + corpus validation (`--profile greenfield|brownfield|migration`, default **greenfield**). Use `--scope PATH` as the project root (default: current directory) and optional `--evidence PATH` for the YAML file.
-- **`adr attribution coverage`** — Prints an informational YAML report of ADRs cited by evidence versus the corpus (same `--scope` / `--evidence`).
+- **`adr attribution coverage`** — Prints an informational YAML report of ADRs cited by evidence versus the corpus (same `--scope` / `--evidence`), plus unique-link counts distinct from evidence occurrence.
+- **`adr attribution workspace-report`** — Builds a workspace federation index of qualified ADR ids across registered repos.
 - **`adr attribution generate-shim --language python|typescript`** — Writes linkage decorator shims (`-o`/ stdout).
+- **`adr attribution normalize-evidence --scope PATH --input FILE`** — Prints canonical v1.5 YAML to stdout; `--output` writes only that path.
+
+If `--evidence` is omitted, the CLI resolves the first existing file under `--scope`:
+
+1. `{scope}/state/attribution/implementation-attribution-evidence.yaml`
+2. `{scope}/.ste/state/attribution/implementation-attribution-evidence.yaml`
+
+Normative YAML schema for that evidence artifact is owned by **`adr-architecture-kit`**. 1.0/1.2 remain under [`schema/v1.1/implementation-attribution-evidence.schema.json`](https://github.com/egallmann/adr-architecture-kit/blob/main/schema/v1.1/implementation-attribution-evidence.schema.json). Canonical 1.5 lives in [`schema/v1.5/`](https://github.com/egallmann/adr-architecture-kit/blob/main/schema/v1.5/) ([schema-v1.5.md](https://github.com/egallmann/adr-architecture-kit/blob/main/docs/schema-v1.5.md)). The **`ste-spec`** repository publishes draft hand-off prose under **`contracts/implementation-attribution-evidence/`** until the contract is promoted; there is intentionally no mirrored JSON schema there yet (contrast with the Architecture IR mirror in this repo).
 
 If `--evidence` is omitted, the CLI resolves the first existing file under `--scope`:
 

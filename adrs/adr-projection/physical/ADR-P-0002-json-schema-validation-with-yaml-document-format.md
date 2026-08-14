@@ -5,8 +5,8 @@ artifact_kind: rendered_adr_markdown
 generator_id: adr-projection-markdown
 generator_version: 2
 hash_algorithm: sha256
-source_hash: bca95e779f76e2b49cff89cbf40261a769b840978b8978a083635046e42c2fa9
-rendered_hash: 0b0b5ed8d21524574e662253a5d02158348e3ed1f54465c0752ce37c1754f297
+source_hash: 820e4461b1205607d241871ab1d0758e9461b239e1522e2b8809f9f63302b48f
+rendered_hash: f9f46b028c365835d62ad922dc5c13ddb6952485a098a11e33ae8efc25eee5ef
 -->
 
 # ADR-P-0002: JSON Schema Validation with YAML Document Format
@@ -133,7 +133,7 @@ strict for the actual design workflow used in this workspace.
 **Context:** Schema and contract validation is now a stable component boundary rather than
 a generic legacy physical slice. It validates canonical ADR structure,
 profile-specific contract requirements, project metadata, and implementation
-attribution evidence.
+attribution evidence. Validation of that evidence is structural for schema shape and architecture-aware when claims must resolve to canonical UUIDs and entity types. Legacy 1.0/1.2 evidence normalizes to the v1.5 claim shape only with repository or model 2.0 context.
 
 [Open projection](../physical-component/ADR-PC-0002-schema-and-contract-validation.md)
 

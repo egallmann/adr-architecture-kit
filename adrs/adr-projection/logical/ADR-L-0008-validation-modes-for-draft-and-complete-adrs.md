@@ -5,8 +5,8 @@ artifact_kind: rendered_adr_markdown
 generator_id: adr-projection-markdown
 generator_version: 2
 hash_algorithm: sha256
-source_hash: e20e18cc584c43f83da7e4fa132699c4b204f29eff619290dcfad3fe5fd2b14f
-rendered_hash: d9293322660ae094f8ee0697da1cdafed8258272b0bca5356e505f52894cbb20
+source_hash: 2abde5cbc7505bc74f1592667271ff91631ba72da6314de46889c95d6dd4bcca
+rendered_hash: c99ef9da9f3392bacfc75e8b82e752b54f8e4b78d1578c5fc577c11db734c912
 -->
 
 # ADR-L-0008: Validation Modes for Draft and Complete ADRs
@@ -194,7 +194,7 @@ module structure, API design, and CLI interface.
 **Context:** Schema and contract validation is now a stable component boundary rather than
 a generic legacy physical slice. It validates canonical ADR structure,
 profile-specific contract requirements, project metadata, and implementation
-attribution evidence.
+attribution evidence. Validation of that evidence is structural for schema shape and architecture-aware when claims must resolve to canonical UUIDs and entity types. Legacy 1.0/1.2 evidence normalizes to the v1.5 claim shape only with repository or model 2.0 context.
 
 [Open projection](../physical-component/ADR-PC-0002-schema-and-contract-validation.md)
 ### ADR-PS-0002 — ADR Kit Authoring Compiler and Validation System

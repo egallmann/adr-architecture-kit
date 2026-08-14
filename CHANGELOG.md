@@ -7,6 +7,26 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- Semantic implementation attribution evidence line (schema v1.5): UUID-canonical
+  claims, mechanical vocabulary, repository-aware 1.0/1.2 normalization, UUID
+  decorators, vocabulary-driven shims, and unique-link coverage fields
+  (`ADR-L-0020`, `ADR-PC-0007`).
+
+### Changed
+
+- Align README stability language and documentation index with the current
+  public-surface contract (Stable / Provisional / Experimental), including
+  schema v1.3, identity migration, and `adr attribution workspace-report`.
+- Expand SECURITY.md scope to generated writes, CLI path handling, and
+  release-trust surfaces while keeping enabled-tooling and human-admission
+  policy from 0.4.1.
+- `ArchitectureRepository.next_id` sequences v1.3 `alias_id` while preserving
+  legacy patterned `id` allocation.
+- Move production-hardening phase logs out of the public docs index; durable
+  release controls are pointed from contributor docs.
+
 ## [0.4.1] — 2026-08-12
 
 ### Changed

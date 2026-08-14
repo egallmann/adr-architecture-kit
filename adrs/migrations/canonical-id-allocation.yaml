@@ -3,12 +3,12 @@ type: canonical_id_allocation
 high_water_marks:
   BOUND: 4
   CAP: 9000
-  COMP: 21
+  COMP: 22
   CONTRACT: 5
   DEC: 9000
-  IFACE: 33
-  IMPL: 27
-  INV: 102
+  IFACE: 35
+  IMPL: 29
+  INV: 112
 allocations:
 - id: BOUND-0001
   entity_type: boundary
@@ -346,6 +346,24 @@ allocations:
   file_path: adrs/logical/ADR-L-0018-schema-v12-and-normalized-semantic-foundation.yaml
   source_pointer: /capabilities/4/id
   state: active
+- id: CAP-0053
+  entity_type: capability
+  adr_id: 019ffdba-3c42-7c4a-a737-f6751a265d60
+  file_path: adrs/logical/ADR-L-0020-semantic-implementation-attribution.yaml
+  source_pointer: /capabilities/0/alias_id
+  state: active
+- id: CAP-0054
+  entity_type: capability
+  adr_id: 019ffdba-3c42-7c4a-a737-f6751a265d60
+  file_path: adrs/logical/ADR-L-0020-semantic-implementation-attribution.yaml
+  source_pointer: /capabilities/1/alias_id
+  state: active
+- id: CAP-0055
+  entity_type: capability
+  adr_id: 019ffdba-3c42-7c4a-a737-f6751a265d60
+  file_path: adrs/logical/ADR-L-0020-semantic-implementation-attribution.yaml
+  source_pointer: /capabilities/2/alias_id
+  state: active
 - id: CAP-9000
   entity_type: capability
   adr_id: ADR-L-9000
@@ -477,6 +495,12 @@ allocations:
   adr_id: ADR-P-0003
   file_path: adrs/physical/ADR-P-0003-multi-scope-python-implementation.yaml
   source_pointer: /component_specifications/3/id
+  state: active
+- id: COMP-0022
+  entity_type: component
+  adr_id: 019ffdba-3c42-70da-b33d-efc003269c42
+  file_path: adrs/physical-component/ADR-PC-0007-semantic-attribution-embodiment.yaml
+  source_pointer: /component_specifications/0/alias_id
   state: active
 - id: CONTRACT-0001
   entity_type: contract
@@ -663,54 +687,6 @@ allocations:
   adr_id: ADR-L-0007
   file_path: adrs/logical/ADR-L-0007-deterministic-documentation-projection.yaml
   source_pointer: /decisions/2/id
-  state: active
-- id: DEC-0108
-  entity_type: decision
-  adr_id: ADR-L-0007
-  file_path: adrs/logical/ADR-L-0007-deterministic-documentation-projection.yaml
-  source_pointer: /decisions/3/id
-  state: active
-- id: DEC-0109
-  entity_type: decision
-  adr_id: ADR-L-0007
-  file_path: adrs/logical/ADR-L-0007-deterministic-documentation-projection.yaml
-  source_pointer: /decisions/4/id
-  state: active
-- id: DEC-0110
-  entity_type: decision
-  adr_id: ADR-L-0007
-  file_path: adrs/logical/ADR-L-0007-deterministic-documentation-projection.yaml
-  source_pointer: /decisions/5/alias_id
-  state: active
-- id: DEC-0111
-  entity_type: decision
-  adr_id: ADR-L-0007
-  file_path: adrs/logical/ADR-L-0007-deterministic-documentation-projection.yaml
-  source_pointer: /decisions/6/alias_id
-  state: active
-- id: DEC-0112
-  entity_type: decision
-  adr_id: ADR-L-0007
-  file_path: adrs/logical/ADR-L-0007-deterministic-documentation-projection.yaml
-  source_pointer: /decisions/7/alias_id
-  state: active
-- id: DEC-0113
-  entity_type: decision
-  adr_id: ADR-L-0007
-  file_path: adrs/logical/ADR-L-0007-deterministic-documentation-projection.yaml
-  source_pointer: /decisions/8/alias_id
-  state: active
-- id: DEC-0114
-  entity_type: decision
-  adr_id: ADR-L-0007
-  file_path: adrs/logical/ADR-L-0007-deterministic-documentation-projection.yaml
-  source_pointer: /decisions/9/alias_id
-  state: active
-- id: DEC-0115
-  entity_type: decision
-  adr_id: ADR-L-0007
-  file_path: adrs/logical/ADR-L-0007-deterministic-documentation-projection.yaml
-  source_pointer: /decisions/10/alias_id
   state: active
 - id: DEC-0027
   entity_type: decision
@@ -1198,6 +1174,108 @@ allocations:
   file_path: adrs/logical/ADR-L-0019-canonical-entity-identity.yaml
   source_pointer: /decisions/18/id
   state: active
+- id: DEC-0108
+  entity_type: decision
+  adr_id: ADR-L-0007
+  file_path: adrs/logical/ADR-L-0007-deterministic-documentation-projection.yaml
+  source_pointer: /decisions/3/id
+  state: active
+- id: DEC-0109
+  entity_type: decision
+  adr_id: ADR-L-0007
+  file_path: adrs/logical/ADR-L-0007-deterministic-documentation-projection.yaml
+  source_pointer: /decisions/4/id
+  state: active
+- id: DEC-0110
+  entity_type: decision
+  adr_id: ADR-L-0007
+  file_path: adrs/logical/ADR-L-0007-deterministic-documentation-projection.yaml
+  source_pointer: /decisions/5/alias_id
+  state: active
+- id: DEC-0111
+  entity_type: decision
+  adr_id: ADR-L-0007
+  file_path: adrs/logical/ADR-L-0007-deterministic-documentation-projection.yaml
+  source_pointer: /decisions/6/alias_id
+  state: active
+- id: DEC-0112
+  entity_type: decision
+  adr_id: ADR-L-0007
+  file_path: adrs/logical/ADR-L-0007-deterministic-documentation-projection.yaml
+  source_pointer: /decisions/7/alias_id
+  state: active
+- id: DEC-0113
+  entity_type: decision
+  adr_id: ADR-L-0007
+  file_path: adrs/logical/ADR-L-0007-deterministic-documentation-projection.yaml
+  source_pointer: /decisions/8/alias_id
+  state: active
+- id: DEC-0114
+  entity_type: decision
+  adr_id: ADR-L-0007
+  file_path: adrs/logical/ADR-L-0007-deterministic-documentation-projection.yaml
+  source_pointer: /decisions/9/alias_id
+  state: active
+- id: DEC-0115
+  entity_type: decision
+  adr_id: ADR-L-0007
+  file_path: adrs/logical/ADR-L-0007-deterministic-documentation-projection.yaml
+  source_pointer: /decisions/10/alias_id
+  state: active
+- id: DEC-0116
+  entity_type: decision
+  adr_id: 019ffdba-3c42-7c4a-a737-f6751a265d60
+  file_path: adrs/logical/ADR-L-0020-semantic-implementation-attribution.yaml
+  source_pointer: /decisions/0/alias_id
+  state: active
+- id: DEC-0117
+  entity_type: decision
+  adr_id: 019ffdba-3c42-7c4a-a737-f6751a265d60
+  file_path: adrs/logical/ADR-L-0020-semantic-implementation-attribution.yaml
+  source_pointer: /decisions/1/alias_id
+  state: active
+- id: DEC-0118
+  entity_type: decision
+  adr_id: 019ffdba-3c42-7c4a-a737-f6751a265d60
+  file_path: adrs/logical/ADR-L-0020-semantic-implementation-attribution.yaml
+  source_pointer: /decisions/2/alias_id
+  state: active
+- id: DEC-0119
+  entity_type: decision
+  adr_id: 019ffdba-3c42-7c4a-a737-f6751a265d60
+  file_path: adrs/logical/ADR-L-0020-semantic-implementation-attribution.yaml
+  source_pointer: /decisions/3/alias_id
+  state: active
+- id: DEC-0120
+  entity_type: decision
+  adr_id: 019ffdba-3c42-7c4a-a737-f6751a265d60
+  file_path: adrs/logical/ADR-L-0020-semantic-implementation-attribution.yaml
+  source_pointer: /decisions/4/alias_id
+  state: active
+- id: DEC-0121
+  entity_type: decision
+  adr_id: 019ffdba-3c42-7c4a-a737-f6751a265d60
+  file_path: adrs/logical/ADR-L-0020-semantic-implementation-attribution.yaml
+  source_pointer: /decisions/5/alias_id
+  state: active
+- id: DEC-0122
+  entity_type: decision
+  adr_id: 019ffdba-3c42-7c4a-a737-f6751a265d60
+  file_path: adrs/logical/ADR-L-0020-semantic-implementation-attribution.yaml
+  source_pointer: /decisions/6/alias_id
+  state: active
+- id: DEC-0123
+  entity_type: decision
+  adr_id: 019ffdba-3c42-7c4a-a737-f6751a265d60
+  file_path: adrs/logical/ADR-L-0020-semantic-implementation-attribution.yaml
+  source_pointer: /decisions/7/alias_id
+  state: active
+- id: DEC-0124
+  entity_type: decision
+  adr_id: 019ffdba-3c42-7c4a-a737-f6751a265d60
+  file_path: adrs/logical/ADR-L-0020-semantic-implementation-attribution.yaml
+  source_pointer: /decisions/8/alias_id
+  state: active
 - id: DEC-9000
   entity_type: decision
   adr_id: ADR-L-9000
@@ -1402,6 +1480,18 @@ allocations:
   file_path: adrs/physical/ADR-P-0004-prompt-translator-implementation.yaml
   source_pointer: /component_specifications/3/interfaces/0/id
   state: active
+- id: IFACE-0034
+  entity_type: interface
+  adr_id: 019ffdba-3c42-70da-b33d-efc003269c42
+  file_path: adrs/physical-component/ADR-PC-0007-semantic-attribution-embodiment.yaml
+  source_pointer: /component_specifications/0/interfaces/0/alias_id
+  state: active
+- id: IFACE-0035
+  entity_type: interface
+  adr_id: 019ffdba-3c42-70da-b33d-efc003269c42
+  file_path: adrs/physical-component/ADR-PC-0007-semantic-attribution-embodiment.yaml
+  source_pointer: /component_specifications/0/interfaces/1/alias_id
+  state: active
 - id: IMPL-0001
   entity_type: implementation_decision
   adr_id: ADR-P-0001
@@ -1564,6 +1654,18 @@ allocations:
   file_path: adrs/physical/ADR-P-0003-multi-scope-python-implementation.yaml
   source_pointer: /implementation_decisions/3/id
   state: active
+- id: IMPL-0028
+  entity_type: implementation_decision
+  adr_id: 019ffdba-3c42-70da-b33d-efc003269c42
+  file_path: adrs/physical-component/ADR-PC-0007-semantic-attribution-embodiment.yaml
+  source_pointer: /implementation_decisions/0/alias_id
+  state: active
+- id: IMPL-0029
+  entity_type: implementation_decision
+  adr_id: 019ffdba-3c42-70da-b33d-efc003269c42
+  file_path: adrs/physical-component/ADR-PC-0007-semantic-attribution-embodiment.yaml
+  source_pointer: /implementation_decisions/1/alias_id
+  state: active
 - id: INV-0001
   entity_type: invariant
   adr_id: ADR-L-0001
@@ -1605,12 +1707,6 @@ allocations:
   adr_id: ADR-L-0001
   file_path: adrs/logical/ADR-L-0001-ste-compliant-adr-system.yaml
   source_pointer: /invariants/6/id
-  state: active
-- id: INV-0094
-  entity_type: invariant
-  adr_id: ADR-L-0019
-  file_path: adrs/logical/ADR-L-0019-canonical-entity-identity.yaml
-  source_pointer: /invariants/0/id
   state: active
 - id: INV-0009
   entity_type: invariant
@@ -1797,30 +1893,6 @@ allocations:
   adr_id: ADR-L-0007
   file_path: adrs/logical/ADR-L-0007-deterministic-documentation-projection.yaml
   source_pointer: /invariants/2/id
-  state: active
-- id: INV-0099
-  entity_type: invariant
-  adr_id: ADR-L-0007
-  file_path: adrs/logical/ADR-L-0007-deterministic-documentation-projection.yaml
-  source_pointer: /invariants/3/alias_id
-  state: active
-- id: INV-0100
-  entity_type: invariant
-  adr_id: ADR-L-0007
-  file_path: adrs/logical/ADR-L-0007-deterministic-documentation-projection.yaml
-  source_pointer: /invariants/4/alias_id
-  state: active
-- id: INV-0101
-  entity_type: invariant
-  adr_id: ADR-L-0007
-  file_path: adrs/logical/ADR-L-0007-deterministic-documentation-projection.yaml
-  source_pointer: /invariants/5/alias_id
-  state: active
-- id: INV-0102
-  entity_type: invariant
-  adr_id: ADR-L-0007
-  file_path: adrs/logical/ADR-L-0007-deterministic-documentation-projection.yaml
-  source_pointer: /invariants/6/alias_id
   state: active
 - id: INV-0040
   entity_type: invariant
@@ -2146,6 +2218,12 @@ allocations:
   file_path: adrs/logical/ADR-L-0019-canonical-entity-identity.yaml
   source_pointer: /invariants/17/id
   state: active
+- id: INV-0094
+  entity_type: invariant
+  adr_id: ADR-L-0019
+  file_path: adrs/logical/ADR-L-0019-canonical-entity-identity.yaml
+  source_pointer: /invariants/0/id
+  state: active
 - id: INV-0095
   entity_type: invariant
   adr_id: ADR-L-0003
@@ -2169,4 +2247,88 @@ allocations:
   adr_id: ADR-L-0002
   file_path: adrs/logical/ADR-L-0002-multi-scope-adr-architecture.yaml
   source_pointer: /invariants/6/id
+  state: active
+- id: INV-0099
+  entity_type: invariant
+  adr_id: ADR-L-0007
+  file_path: adrs/logical/ADR-L-0007-deterministic-documentation-projection.yaml
+  source_pointer: /invariants/3/alias_id
+  state: active
+- id: INV-0100
+  entity_type: invariant
+  adr_id: ADR-L-0007
+  file_path: adrs/logical/ADR-L-0007-deterministic-documentation-projection.yaml
+  source_pointer: /invariants/4/alias_id
+  state: active
+- id: INV-0101
+  entity_type: invariant
+  adr_id: ADR-L-0007
+  file_path: adrs/logical/ADR-L-0007-deterministic-documentation-projection.yaml
+  source_pointer: /invariants/5/alias_id
+  state: active
+- id: INV-0102
+  entity_type: invariant
+  adr_id: ADR-L-0007
+  file_path: adrs/logical/ADR-L-0007-deterministic-documentation-projection.yaml
+  source_pointer: /invariants/6/alias_id
+  state: active
+- id: INV-0103
+  entity_type: invariant
+  adr_id: 019ffdba-3c42-7c4a-a737-f6751a265d60
+  file_path: adrs/logical/ADR-L-0020-semantic-implementation-attribution.yaml
+  source_pointer: /invariants/0/alias_id
+  state: active
+- id: INV-0104
+  entity_type: invariant
+  adr_id: 019ffdba-3c42-7c4a-a737-f6751a265d60
+  file_path: adrs/logical/ADR-L-0020-semantic-implementation-attribution.yaml
+  source_pointer: /invariants/1/alias_id
+  state: active
+- id: INV-0105
+  entity_type: invariant
+  adr_id: 019ffdba-3c42-7c4a-a737-f6751a265d60
+  file_path: adrs/logical/ADR-L-0020-semantic-implementation-attribution.yaml
+  source_pointer: /invariants/2/alias_id
+  state: active
+- id: INV-0106
+  entity_type: invariant
+  adr_id: 019ffdba-3c42-7c4a-a737-f6751a265d60
+  file_path: adrs/logical/ADR-L-0020-semantic-implementation-attribution.yaml
+  source_pointer: /invariants/3/alias_id
+  state: active
+- id: INV-0107
+  entity_type: invariant
+  adr_id: 019ffdba-3c42-7c4a-a737-f6751a265d60
+  file_path: adrs/logical/ADR-L-0020-semantic-implementation-attribution.yaml
+  source_pointer: /invariants/4/alias_id
+  state: active
+- id: INV-0108
+  entity_type: invariant
+  adr_id: 019ffdba-3c42-7c4a-a737-f6751a265d60
+  file_path: adrs/logical/ADR-L-0020-semantic-implementation-attribution.yaml
+  source_pointer: /invariants/5/alias_id
+  state: active
+- id: INV-0109
+  entity_type: invariant
+  adr_id: 019ffdba-3c42-7c4a-a737-f6751a265d60
+  file_path: adrs/logical/ADR-L-0020-semantic-implementation-attribution.yaml
+  source_pointer: /invariants/6/alias_id
+  state: active
+- id: INV-0110
+  entity_type: invariant
+  adr_id: 019ffdba-3c42-7c4a-a737-f6751a265d60
+  file_path: adrs/logical/ADR-L-0020-semantic-implementation-attribution.yaml
+  source_pointer: /invariants/7/alias_id
+  state: active
+- id: INV-0111
+  entity_type: invariant
+  adr_id: 019ffdba-3c42-7c4a-a737-f6751a265d60
+  file_path: adrs/logical/ADR-L-0020-semantic-implementation-attribution.yaml
+  source_pointer: /invariants/8/alias_id
+  state: active
+- id: INV-0112
+  entity_type: invariant
+  adr_id: 019ffdba-3c42-7c4a-a737-f6751a265d60
+  file_path: adrs/logical/ADR-L-0020-semantic-implementation-attribution.yaml
+  source_pointer: /invariants/9/alias_id
   state: active

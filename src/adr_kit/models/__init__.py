@@ -154,10 +154,17 @@ from .remediation_ledger import (
     RemediationLedgerEntry,
 )
 from .implementation_attribution import (
+    AttributionConfidenceLevel,
+    AttributionEvidenceDocument,
     ImplementationAttributionEvidence,
+    ImplementationAttributionEvidenceV15,
     ImplementationAttributionProvenance,
     ImplementationAttributionRecord,
+    ImplementationAttributionRecordV15,
     ImplementationEntityType,
+    ResolvedTargetEntityType,
+    SemanticAttributionClaim,
+    SemanticAttributionRelationship,
 )
 from .normalized_architecture_model import NormalizedArchitectureModel
 
@@ -308,8 +315,15 @@ __all__ = [
     "RemediationLedger",
     "RemediationLedgerEntry",
     "ImplementationAttributionEvidence",
+    "ImplementationAttributionEvidenceV15",
     "ImplementationAttributionProvenance",
     "ImplementationAttributionRecord",
+    "ImplementationAttributionRecordV15",
     "ImplementationEntityType",
+    "AttributionConfidenceLevel",
+    "AttributionEvidenceDocument",
+    "ResolvedTargetEntityType",
+    "SemanticAttributionClaim",
+    "SemanticAttributionRelationship",
     "NormalizedArchitectureModel",
 ]

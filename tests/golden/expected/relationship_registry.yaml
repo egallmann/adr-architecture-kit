@@ -3997,6 +3997,66 @@ relationships:
   canonical_source_ref: 019ffdba-3c42-7c4a-a737-f6751a265d60#019ffdba-3c42-7f40-b339-204a447bec81
   confidence: 1.0
   metadata: {}
+- relationship_id: declared_in:01a00627-97d8-7280-81f3-e22a264bc7c3:01a00626-c5cd-7064-8a74-e54d0179e4b9
+  assertion_id: asrt-0ed7555f40341919b4d3ebfdeb6e8dadef5f8d42eb3ebc9f3e99b6497674f3d2
+  relationship_type: declared_in
+  from_entity_id: 01a00627-97d8-7280-81f3-e22a264bc7c3
+  to_entity_id: 01a00626-c5cd-7064-8a74-e54d0179e4b9
+  source_owner_id: 01a00626-c5cd-7064-8a74-e54d0179e4b9
+  provenance_classification: explicit
+  evidence:
+  - 01a00626-c5cd-7064-8a74-e54d0179e4b9#01a00627-97d8-7280-81f3-e22a264bc7c3
+  canonical_source_ref: 01a00626-c5cd-7064-8a74-e54d0179e4b9#01a00627-97d8-7280-81f3-e22a264bc7c3
+  confidence: 1.0
+  metadata: {}
+- relationship_id: declared_in:01a00627-97d8-73c0-8ef4-f0e87ad8c19b:01a00626-c5cd-7064-8a74-e54d0179e4b9
+  assertion_id: asrt-74ee7e634c398be4aa670d307f62a45f82e8717ae4f2b32bde25ec4dc5bc7fdf
+  relationship_type: declared_in
+  from_entity_id: 01a00627-97d8-73c0-8ef4-f0e87ad8c19b
+  to_entity_id: 01a00626-c5cd-7064-8a74-e54d0179e4b9
+  source_owner_id: 01a00626-c5cd-7064-8a74-e54d0179e4b9
+  provenance_classification: explicit
+  evidence:
+  - 01a00626-c5cd-7064-8a74-e54d0179e4b9#01a00627-97d8-73c0-8ef4-f0e87ad8c19b
+  canonical_source_ref: 01a00626-c5cd-7064-8a74-e54d0179e4b9#01a00627-97d8-73c0-8ef4-f0e87ad8c19b
+  confidence: 1.0
+  metadata: {}
+- relationship_id: declared_in:01a00627-97d8-7528-9748-aaa7df6c2fe2:01a00626-c5cd-7064-8a74-e54d0179e4b9
+  assertion_id: asrt-4656dfdd94b026d3d1b6e7021d5b6af890620e03936cbc191d31f4e3a02a591b
+  relationship_type: declared_in
+  from_entity_id: 01a00627-97d8-7528-9748-aaa7df6c2fe2
+  to_entity_id: 01a00626-c5cd-7064-8a74-e54d0179e4b9
+  source_owner_id: 01a00626-c5cd-7064-8a74-e54d0179e4b9
+  provenance_classification: explicit
+  evidence:
+  - 01a00626-c5cd-7064-8a74-e54d0179e4b9#01a00627-97d8-7528-9748-aaa7df6c2fe2
+  canonical_source_ref: 01a00626-c5cd-7064-8a74-e54d0179e4b9#01a00627-97d8-7528-9748-aaa7df6c2fe2
+  confidence: 1.0
+  metadata: {}
+- relationship_id: declared_in:01a00627-97d8-76cd-853b-3e17275c4b76:01a00626-c5cd-7064-8a74-e54d0179e4b9
+  assertion_id: asrt-337bb5f51c289a690e82d7aab8489de0b11c5ff5a7190081db6a65e48239bc29
+  relationship_type: declared_in
+  from_entity_id: 01a00627-97d8-76cd-853b-3e17275c4b76
+  to_entity_id: 01a00626-c5cd-7064-8a74-e54d0179e4b9
+  source_owner_id: 01a00626-c5cd-7064-8a74-e54d0179e4b9
+  provenance_classification: explicit
+  evidence:
+  - 01a00626-c5cd-7064-8a74-e54d0179e4b9#01a00627-97d8-76cd-853b-3e17275c4b76
+  canonical_source_ref: 01a00626-c5cd-7064-8a74-e54d0179e4b9#01a00627-97d8-76cd-853b-3e17275c4b76
+  confidence: 1.0
+  metadata: {}
+- relationship_id: declared_in:01a00627-97d8-7e92-a0ca-e572a89fef75:01a00626-c5cd-7064-8a74-e54d0179e4b9
+  assertion_id: asrt-08786f124dff2de785a5f5f4adbf1cf3ed7ea1409f71fea12e89bb869f92bf5c
+  relationship_type: declared_in
+  from_entity_id: 01a00627-97d8-7e92-a0ca-e572a89fef75
+  to_entity_id: 01a00626-c5cd-7064-8a74-e54d0179e4b9
+  source_owner_id: 01a00626-c5cd-7064-8a74-e54d0179e4b9
+  provenance_classification: explicit
+  evidence:
+  - 01a00626-c5cd-7064-8a74-e54d0179e4b9#01a00627-97d8-7e92-a0ca-e572a89fef75
+  canonical_source_ref: 01a00626-c5cd-7064-8a74-e54d0179e4b9#01a00627-97d8-7e92-a0ca-e572a89fef75
+  confidence: 1.0
+  metadata: {}
 - relationship_id: embodied_in:019fee89-e617-7060-8f3f-4ecd46a719da:019fee89-e618-713e-a017-5b417ef9ac9f
   assertion_id: asrt-bcc74697605d360e278cbb43f69e958311f78e1e2a95fb1ab20f9ecf29d8893a
   relationship_type: embodied_in

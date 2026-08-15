@@ -4,8 +4,8 @@
 # generator_id: adr-compiler
 # generator_version: 1
 # hash_algorithm: sha256
-# source_hash: fa5952151ddbf54637f9a520ca6015cf6d51aa3ed92c21dd9c8d1a0b9ca86297
-# rendered_hash: da55c462b263037e9e4045429488a6612c1f789777f7c2526b03051c9dda4c40
+# source_hash: f8214b2e9a4a6e938886337e5ded99ff7430ca6f2d6c27373aacd37e60f7cb0f
+# rendered_hash: 8d4acbe5ef240bc9154a96ef8962bd3a1964be9b3554b9c7183400a2c8448f77
 
 schema_version: '1.1'
 type: entity_registry
@@ -3053,6 +3053,54 @@ entities:
     implements: []
     consumes: []
     realizes: []
+- entity_id: DEC-0125
+  entity_type: decision
+  name: Canonical schema placement is family-first with family-scoped versions
+  introduced_by: ADR-L-0021
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0021-schema-contract-taxonomy.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs:
+  - ADR-L-0021
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: DEC-0126
+  entity_type: decision
+  name: Canonical repository schemas are the single schema authority
+  introduced_by: ADR-L-0021
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0021-schema-contract-taxonomy.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs:
+  - ADR-L-0021
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: DEC-0127
+  entity_type: decision
+  name: Taxonomy relocation is semantic and runtime neutral
+  introduced_by: ADR-L-0021
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0021-schema-contract-taxonomy.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs:
+  - ADR-L-0021
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
 - entity_id: DEC-9000
   entity_type: decision
   name: Publish a deterministic logical ADR fragment for boot readiness.
@@ -4839,6 +4887,38 @@ entities:
   domains: []
   related_adrs:
   - ADR-L-0020
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: INV-0128
+  entity_type: invariant
+  name: INV-0128
+  introduced_by: ADR-L-0021
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0021-schema-contract-taxonomy.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs:
+  - ADR-L-0021
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: INV-0129
+  entity_type: invariant
+  name: INV-0129
+  introduced_by: ADR-L-0021
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0021-schema-contract-taxonomy.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs:
+  - ADR-L-0021
   realized_by: []
   relationships:
     depends_on: []

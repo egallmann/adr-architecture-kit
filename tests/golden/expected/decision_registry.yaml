@@ -7306,8 +7306,8 @@ entities:
   entity_type: decision
   name: Apply the attribution matrix to repository-resolved entity type
   summary: 'After `ArchitectureRepository.find_entity_by_uuid` (model 2.0), the mechanical
-    vocabulary in `schema/evidence-attribution/v1.5/semantic-attribution-vocabulary.json` admits: `implements`
-    to adr, decision, capability, contract, interface, impl'
+    vocabulary in `schema/evidence-attribution/v1.5/semantic-attribution-vocabulary.json`
+    admits: `implements` to adr, decision, capability, cont'
   uri: adr://adr-architecture-kit/entities/019ffdba-3c42-7f40-b339-204a447bec81
   created_at: '2026-08-14T00:44:28.610Z'
   entity_fingerprint: sha256:725269dc638da123a4eb3ff28dbac590f7af4c576b49aa1a41bbaafa055528a9
@@ -7354,6 +7354,180 @@ entities:
   provenance:
     source_type: logical_adr
     source_ref: 019ffdba-3c42-7c4a-a737-f6751a265d60#019ffdba-3c42-7f40-b339-204a447bec81
+    extraction_phase: extract_decision
+    classification: explicit
+    generator: adr-architecture-index
+- id: 01a00627-97d8-7280-81f3-e22a264bc7c3
+  alias_id: DEC-0126
+  alias_name: canonical-repository-schema-authority
+  alias_ref: DEC-0126:canonical-repository-schema-authority
+  entity_type: decision
+  name: Canonical repository schemas are the single schema authority
+  summary: The accepted ADR governs family and version policy; schema/... owns the
+    actual contract bytes; README files orient humans. Installed package mirrors under
+    src/adr_kit/schema/v*_* are compatibility resources and remain in
+  uri: adr://adr-architecture-kit/entities/01a00627-97d8-7280-81f3-e22a264bc7c3
+  created_at: '2026-08-15T16:00:53.208Z'
+  entity_fingerprint: sha256:616a6874eb00cccf5ad46e59cde9e13bc813a77d372837bfe1a2f9bd7a276157
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a00626-c5cd-7064-8a74-e54d0179e4b9#01a00627-97d8-7280-81f3-e22a264bc7c3
+    artifact_path: adrs/logical/ADR-L-0021-schema-contract-taxonomy.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a00626-c5cd-7064-8a74-e54d0179e4b9
+    adr_alias_id: ADR-L-0021
+    related_invariants: []
+    enforces_invariants: []
+    enables_capabilities: []
+    governs_components: []
+    supersedes: []
+    refines: []
+    alias_name: canonical-repository-schema-authority
+    alias_id: DEC-0126
+  relationships:
+    declared_in:
+    - 01a00626-c5cd-7064-8a74-e54d0179e4b9
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a00626-c5cd-7064-8a74-e54d0179e4b9#01a00627-97d8-7280-81f3-e22a264bc7c3
+    extraction_phase: extract_decision
+    classification: explicit
+    generator: adr-architecture-index
+- id: 01a00627-97d8-73c0-8ef4-f0e87ad8c19b
+  alias_id: DEC-0125
+  alias_name: family-first-canonical-schema-placement
+  alias_ref: DEC-0125:family-first-canonical-schema-placement
+  entity_type: decision
+  name: Canonical schema placement is family-first with family-scoped versions
+  summary: Place authoring, architecture-discovery, normalized-model, governance,
+    and evidence-attribution contracts beneath their family roots. Preserve schema/v1.0
+    as the sole stable bare numeric compatibility exception, and reta
+  uri: adr://adr-architecture-kit/entities/01a00627-97d8-73c0-8ef4-f0e87ad8c19b
+  created_at: '2026-08-15T16:00:53.208Z'
+  entity_fingerprint: sha256:1f7c73406743775593456b739c0d3b226eb1a8ce4e9e97f8b7cfd5e4d1f124d5
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a00626-c5cd-7064-8a74-e54d0179e4b9#01a00627-97d8-73c0-8ef4-f0e87ad8c19b
+    artifact_path: adrs/logical/ADR-L-0021-schema-contract-taxonomy.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a00626-c5cd-7064-8a74-e54d0179e4b9
+    adr_alias_id: ADR-L-0021
+    related_invariants: []
+    enforces_invariants: []
+    enables_capabilities: []
+    governs_components: []
+    supersedes: []
+    refines: []
+    alias_name: family-first-canonical-schema-placement
+    alias_id: DEC-0125
+  relationships:
+    declared_in:
+    - 01a00626-c5cd-7064-8a74-e54d0179e4b9
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a00626-c5cd-7064-8a74-e54d0179e4b9#01a00627-97d8-73c0-8ef4-f0e87ad8c19b
+    extraction_phase: extract_decision
+    classification: explicit
+    generator: adr-architecture-index
+- id: 01a00627-97d8-7528-9748-aaa7df6c2fe2
+  alias_id: DEC-0127
+  alias_name: taxonomy-relocation-is-semantic-neutral
+  alias_ref: DEC-0127:taxonomy-relocation-is-semantic-neutral
+  entity_type: decision
+  name: Taxonomy relocation is semantic and runtime neutral
+  summary: Relocation must preserve schema JSON bytes, $id and $ref semantics, parser/runtime
+    behavior, SDK and CLI behavior, wheel behavior, package version, and ADR corpus.
+    Any production behavior change is outside this ADR and i
+  uri: adr://adr-architecture-kit/entities/01a00627-97d8-7528-9748-aaa7df6c2fe2
+  created_at: '2026-08-15T16:00:53.208Z'
+  entity_fingerprint: sha256:d1e79aca999c82cd9ef665932efc4d0c63affaf0e7034c6e7b6c4a8af9e34881
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a00626-c5cd-7064-8a74-e54d0179e4b9#01a00627-97d8-7528-9748-aaa7df6c2fe2
+    artifact_path: adrs/logical/ADR-L-0021-schema-contract-taxonomy.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a00626-c5cd-7064-8a74-e54d0179e4b9
+    adr_alias_id: ADR-L-0021
+    related_invariants: []
+    enforces_invariants: []
+    enables_capabilities: []
+    governs_components: []
+    supersedes: []
+    refines: []
+    alias_name: taxonomy-relocation-is-semantic-neutral
+    alias_id: DEC-0127
+  relationships:
+    declared_in:
+    - 01a00626-c5cd-7064-8a74-e54d0179e4b9
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a00626-c5cd-7064-8a74-e54d0179e4b9#01a00627-97d8-7528-9748-aaa7df6c2fe2
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index

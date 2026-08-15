@@ -13,6 +13,8 @@ import yaml
 UUIDV7_RE = re.compile(
     r"^[0-9a-f]{8}-[0-9a-f]{4}-7[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
 )
+ALIAS_ID_RE = re.compile(r"^[A-Z][A-Z0-9]*(?:-[A-Z0-9]+)*-\d{4}$")
+ALIAS_NAME_RE = re.compile(r"^[a-z][a-z0-9]*(?:-[a-z0-9]+)*$")
 FIXTURE_PATH = Path(__file__).parent / "fixtures" / "universal-graph-identity-baseline.json"
 
 
@@ -48,10 +50,12 @@ def _identity_errors(record: dict[str, Any], location: str) -> list[str]:
     errors: list[str] = []
     if not UUIDV7_RE.fullmatch(str(record.get("id", ""))):
         errors.append(f"{location}: id is not UUIDv7")
-    if not record.get("alias_id"):
-        errors.append(f"{location}: alias_id is missing")
-    if not record.get("alias_name"):
-        errors.append(f"{location}: alias_name is missing")
+    alias_id = str(record.get("alias_id", ""))
+    if not ALIAS_ID_RE.fullmatch(alias_id):
+        errors.append(f"{location}: alias_id is missing or not governed")
+    alias_name = str(record.get("alias_name", ""))
+    if not ALIAS_NAME_RE.fullmatch(alias_name) or not 3 <= len(alias_name) <= 96:
+        errors.append(f"{location}: alias_name is missing or not governed")
     return errors
 
 

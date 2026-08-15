@@ -368,3 +368,22 @@ def test_pr_workflow_has_orthogonal_qualification_owners() -> None:
 def test_local_pre_push_checks_include_readme_pypi_portability() -> None:
     script = (ROOT / "scripts" / "run_local_pre_push_checks.py").read_text(encoding="utf-8")
     assert "tests/test_readme_pypi_portability.py" in script
+
+
+def test_local_pre_push_checks_include_v15_attribution_invariants() -> None:
+    script = (ROOT / "scripts" / "run_local_pre_push_checks.py").read_text(encoding="utf-8")
+    for path in (
+        "tests/test_readme_attribution_docs.py",
+        "tests/test_semantic_attribution_matrix.py",
+        "tests/test_semantic_attribution_vocabulary_parity.py",
+        "tests/test_attribution_shim_parity.py",
+        "tests/test_legacy_attribution_normalization.py",
+        "tests/test_attribution_resolution.py",
+        "tests/test_decorators.py",
+        "tests/test_attribution_dual_encode_guard.py",
+        "tests/test_next_id_v13_alias_allocation.py",
+        "tests/test_package_schema_parity.py",
+        "tests/test_implementation_attribution_validation.py",
+        "tests/test_attribution_cli.py",
+    ):
+        assert path in script

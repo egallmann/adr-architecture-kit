@@ -5,8 +5,8 @@ artifact_kind: rendered_adr_markdown
 generator_id: adr-projection-markdown
 generator_version: 2
 hash_algorithm: sha256
-source_hash: c90e629b7adef66b62666d4ddd494bdbf1e0f402299b3ee8d525d8a1c7d7bdb7
-rendered_hash: b829df599048a7035063c02edaa5a75a5f8f6ed16793c76608104cf4f4b5b1e1
+source_hash: 1bec6d4ff22ee04180c077b798f1a0b98aa43a21aa2d19f414e17fd88b2a42fe
+rendered_hash: cc1f62389f13d565f264a797387fab978295e9f6667bfa23b211a53a2fff82e9
 -->
 
 # ADR-PS-0002: ADR Kit Authoring Compiler and Validation System
@@ -96,12 +96,16 @@ flowchart LR
   n_019fee89_e618_79ed_9d2d_cc35c63bc99a["ADR-P-0001"]
   n_019fee89_e618_7b76_843f_cfe21ceb2ea6["ADR-PC-0003"]
   n_019fee89_e618_7d04_9337_4aa2d3258507["ADR-PS-0002"]
+  n_019ffdba_3c42_70da_b33d_efc003269c42["ADR-PC-0007"]
+  n_019ffdba_3c42_75d5_b93b_f32f35152e32["COMP-0022"]
+  n_019ffdba_3c42_7c4a_a737_f6751a265d60["ADR-L-0020"]
   n_019fee89_e618_713e_a017_5b417ef9ac9f -->|"declared_in"| n_019fee89_e618_7d04_9337_4aa2d3258507
   n_019fee89_e617_7060_8f3f_4ecd46a719da -->|"embodied_in"| n_019fee89_e618_713e_a017_5b417ef9ac9f
   n_019fee89_e617_76ad_9336_b3615a6e4bde -->|"embodied_in"| n_019fee89_e618_713e_a017_5b417ef9ac9f
   n_019fee89_e618_74d1_9a1f_37e2c2982a51 -->|"embodied_in"| n_019fee89_e618_713e_a017_5b417ef9ac9f
   n_019fee89_e618_7507_953e_19e6335e3b7a -->|"embodied_in"| n_019fee89_e618_713e_a017_5b417ef9ac9f
   n_019fee89_e618_781c_831f_0d5fe24f7d85 -->|"embodied_in"| n_019fee89_e618_713e_a017_5b417ef9ac9f
+  n_019ffdba_3c42_75d5_b93b_f32f35152e32 -->|"embodied_in"| n_019fee89_e618_713e_a017_5b417ef9ac9f
   n_019fee89_e618_7d04_9337_4aa2d3258507 -->|"implements_logical"| n_019fee89_e615_70a5_861b_b2dde147e5af
   n_019fee89_e618_7d04_9337_4aa2d3258507 -->|"implements_logical"| n_019fee89_e615_7b9c_8e3f_32ceeda01491
   n_019fee89_e618_7d04_9337_4aa2d3258507 -->|"implements_logical"| n_019fee89_e616_7066_8d2f_3acc7f469f72
@@ -109,10 +113,12 @@ flowchart LR
   n_019fee89_e618_7d04_9337_4aa2d3258507 -->|"implements_logical"| n_019fee89_e616_7c4e_953c_b7349412a784
   n_019fee89_e618_7d04_9337_4aa2d3258507 -->|"implements_logical"| n_019fee89_e616_7d61_8e35_f11ba2ddd75d
   n_019fee89_e617_7f4d_811d_4862645a55c5 -->|"references"| n_019fee89_e618_7d04_9337_4aa2d3258507
+  n_019ffdba_3c42_7c4a_a737_f6751a265d60 -->|"references"| n_019fee89_e618_7d04_9337_4aa2d3258507
   n_019fee89_e618_7d04_9337_4aa2d3258507 -->|"related_to"| n_019fee89_e617_7d2b_8325_cd85ff814477
   n_019fee89_e618_7d04_9337_4aa2d3258507 -->|"related_to"| n_019fee89_e618_73ce_aa2d_101276d64e33
   n_019fee89_e618_7d04_9337_4aa2d3258507 -->|"related_to"| n_019fee89_e618_74b2_a83e_e41c7d8c9f37
   n_019fee89_e618_7d04_9337_4aa2d3258507 -->|"related_to"| n_019fee89_e618_7b76_843f_cfe21ceb2ea6
+  n_019fee89_e618_7d04_9337_4aa2d3258507 -->|"related_to"| n_019ffdba_3c42_70da_b33d_efc003269c42
   n_019fee89_e618_79ed_9d2d_cc35c63bc99a -->|"superseded_by"| n_019fee89_e618_7d04_9337_4aa2d3258507
   n_019fee89_e618_7d04_9337_4aa2d3258507 -->|"supersedes"| n_019fee89_e618_79ed_9d2d_cc35c63bc99a
 ```
@@ -199,6 +205,17 @@ bundle or absorbing authority owned by runtime, rules, substrate, or admission
 systems.
 
 [Open projection](../logical/ADR-L-0018-schema-v1-2-and-normalized-semantic-foundation.md)
+### ADR-L-0020 — Semantic Implementation Attribution and Cross-Layer Architecture Relationships
+
+**Relationships:**
+- 019ffdba-3c42-7c4a-a737-f6751a265d60 -[:references]-> this ADR
+
+**Context:** ADR-L-0004 established implementation attribution as an explicit intent
+surface. ADR-L-0019 made canonical machine identity a lowercase UUIDv7.
+Attribution evidence still cited human aliases (`ADR-L-*`, `INV-*`) and
+could not name typed relationships to nested architecture entities.
+
+[Open projection](../logical/ADR-L-0020-semantic-implementation-attribution-and-cross-layer-architecture-relationships.md)
 ### ADR-P-0001 — Python Toolkit Implementation for ADR Kit
 
 **Relationships:**
@@ -218,7 +235,7 @@ Pydantic models, and view generation.
 **Context:** Schema and contract validation is now a stable component boundary rather than
 a generic legacy physical slice. It validates canonical ADR structure,
 profile-specific contract requirements, project metadata, and implementation
-attribution evidence.
+attribution evidence. Validation of that evidence is structural for schema shape and architecture-aware when claims must resolve to canonical UUIDs and entity types. Legacy 1.0/1.2 evidence normalizes to the v1.5 claim shape only with repository or model 2.0 context.
 
 [Open projection](../physical-component/ADR-PC-0002-schema-and-contract-validation.md)
 ### ADR-PC-0003 — Compiler Pipeline and Driver
@@ -254,6 +271,17 @@ integrity headers, and scope-local generated outputs. It is a distinct public
 subsystem used by validator and governance flows.
 
 [Open projection](../physical-component/ADR-PC-0005-generated-artifact-integrity-validation.md)
+### ADR-PC-0007 — Semantic Attribution Embodiment
+
+**Relationships:**
+- this ADR -[:related_to]-> 019ffdba-3c42-70da-b33d-efc003269c42
+
+**Context:** Semantic attribution needs a kit-owned embodiment for vocabulary, evidence
+models, UUID decorators, standalone shims, architecture-aware validation,
+and repository-aware 1.0/1.2 normalization. This component does not parse
+consumer source code and does not own RECON extraction.
+
+[Open projection](../physical-component/ADR-PC-0007-semantic-attribution-embodiment.md)
 
 
 

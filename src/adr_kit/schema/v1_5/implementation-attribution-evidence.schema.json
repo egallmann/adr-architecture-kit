@@ -1,0 +1,95 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://adr-kit.ste.systems/schema/v1.5/implementation-attribution-evidence.schema.json",
+  "title": "Implementation Attribution Evidence Schema (v1.5)",
+  "type": "object",
+  "required": ["schema_version", "type", "records"],
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.5"
+    },
+    "type": {"const": "implementation_attribution_evidence"},
+    "records": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "implementation_entity_id",
+          "implementation_entity_type",
+          "provenance",
+          "claims"
+        ],
+        "properties": {
+          "implementation_entity_id": {"type": "string"},
+          "implementation_entity_type": {
+            "type": "string",
+            "enum": [
+              "function",
+              "class",
+              "module",
+              "service",
+              "workflow",
+              "infrastructure_template",
+              "configuration_file",
+              "schema_definition",
+              "pipeline",
+              "script",
+              "data_model"
+            ]
+          },
+          "provenance": {
+            "type": "object",
+            "required": ["source_file", "extractor"],
+            "properties": {
+              "source_file": {"type": "string"},
+              "extractor": {"type": "string"},
+              "commit": {"type": ["string", "null"]}
+            }
+          },
+          "claims": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["relationship", "target_entity_id", "confidence"],
+              "properties": {
+                "relationship": {
+                  "type": "string",
+                  "enum": ["implements", "enforces", "embodies"]
+                },
+                "target_entity_id": {
+                  "type": "string",
+                  "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-7[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+                },
+                "confidence": {
+                  "type": "string",
+                  "enum": ["declared", "inferred", "heuristic"]
+                },
+                "asserted_target_entity_type": {
+                  "type": "string",
+                  "enum": [
+                    "adr",
+                    "system",
+                    "component",
+                    "decision",
+                    "capability",
+                    "invariant",
+                    "boundary",
+                    "contract",
+                    "interface",
+                    "implementation_decision"
+                  ]
+                }
+              }
+            }
+          },
+          "metadata": {"type": "object"},
+          "attribution_source_language": {
+            "type": "string",
+            "enum": ["python", "typescript", "cloudformation", "csharp", "unknown"]
+          }
+        }
+      }
+    }
+  }
+}

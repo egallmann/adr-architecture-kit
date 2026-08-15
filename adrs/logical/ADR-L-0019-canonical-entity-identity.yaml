@@ -124,7 +124,9 @@ decisions:
   summary: Canonical authored entity references contain UUIDs only
   rationale: Canonical authored entity references contain UUIDs only; field context
     or registry resolution supplies type, aliases are resolved only for human presentation,
-    and alias reassignment never rewrites canonical references or retargets relationships.
+    1.0/1.2 implementation-attribution translation, and reports; v1.5 attribution
+    claims identify targets by UUID; alias reassignment never rewrites canonical
+    references, retargets relationships, or retargets semantic attribution claims.
   alias_id: DEC-0095
   alias_name: canonical-authored-entity-references-contain-uuids-only
 - id: 019fee89-e617-7e88-a71f-db36a33c65e7

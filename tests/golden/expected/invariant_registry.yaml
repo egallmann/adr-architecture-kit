@@ -193,8 +193,8 @@ entities:
   entity_type: invariant
   name: INV-0027
   summary: Greenfield in-scope implementation artifacts MUST declare architectural
-    authority through @implements_adr or an equivalent metadata-level attribution
-    mechanism; brownfield and migration may stage adoption under profile-s
+    authority through @implements_adr, a UUID semantic claim decorator, or an equivalent
+    metadata-level attribution mechanism; equivalent semantic decla
   uri: adr://adr-architecture-kit/entities/019fee89-e615-7129-ac3e-8120e0d7c106
   created_at: '2026-08-11T01:57:22.581Z'
   entity_fingerprint: sha256:e4155ebd1db096af8561ed77273d0e84691b342ed98a6a448663e1e66dbd62af
@@ -210,11 +210,13 @@ entities:
     scope: global
     statement: 'Greenfield in-scope implementation artifacts MUST declare architectural
 
-      authority through @implements_adr or an equivalent metadata-level
+      authority through @implements_adr, a UUID semantic claim decorator, or an
 
-      attribution mechanism; brownfield and migration may stage adoption under
+      equivalent metadata-level attribution mechanism; equivalent semantic
 
-      profile-specific governance
+      declarations MUST NOT be dual-encoded on the same surface; brownfield and
+
+      migration may stage adoption under profile-specific governance
 
       '
     enforcement_level: must
@@ -2351,8 +2353,8 @@ entities:
   alias_ref: INV-0030:inv-0030
   entity_type: invariant
   name: INV-0030
-  summary: Code decorated with @enforces_invariant MUST implement validation logic
-    for that invariant
+  summary: A declaration that code enforces an invariant is a claim of intent, not
+    kit-automated proof that the enforcement logic exists
   uri: adr://adr-architecture-kit/entities/019fee89-e615-7e2e-bf3f-577dc4ade891
   created_at: '2026-08-11T01:57:22.581Z'
   entity_fingerprint: sha256:2f9b03fca21fbb5ddf12a23b62007b1fc847ee5eb078ef498178bd2c38152404
@@ -2366,10 +2368,9 @@ entities:
     adr_id: 019fee89-e615-7577-8d37-dd0df031bec9
     adr_alias_id: ADR-L-0004
     scope: global
-    statement: 'Code decorated with @enforces_invariant MUST implement validation
-      logic
+    statement: 'A declaration that code enforces an invariant is a claim of intent,
 
-      for that invariant
+      not kit-automated proof that the enforcement logic exists
 
       '
     enforcement_level: must
@@ -6251,6 +6252,627 @@ entities:
   provenance:
     source_type: logical_adr
     source_ref: 019fee89-e615-7b9c-8e3f-32ceeda01491#019ff22a-bb5f-7fca-b021-b3cbc68ddde2
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
+- id: 019ffdba-3c42-7230-8d39-ef047f583291
+  alias_id: INV-0111
+  alias_name: inv-0111
+  alias_ref: INV-0111:inv-0111
+  entity_type: invariant
+  name: INV-0111
+  summary: Canonical normalized v1.5 output MUST be sorted by the documented total
+    order and MUST be idempotent under repeated normalization
+  uri: adr://adr-architecture-kit/entities/019ffdba-3c42-7230-8d39-ef047f583291
+  created_at: '2026-08-14T00:44:28.610Z'
+  entity_fingerprint: sha256:d3a950032bbd6aeea7f35934f0063f8368f0858220ae9a9726c2d21cc656bf08
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 019ffdba-3c42-7c4a-a737-f6751a265d60#019ffdba-3c42-7230-8d39-ef047f583291
+    artifact_path: adrs/logical/ADR-L-0020-semantic-implementation-attribution.yaml
+  source_refs: []
+  metadata:
+    adr_id: 019ffdba-3c42-7c4a-a737-f6751a265d60
+    adr_alias_id: ADR-L-0020
+    scope: global
+    statement: 'Canonical normalized v1.5 output MUST be sorted by the documented
+      total
+
+      order and MUST be idempotent under repeated normalization
+
+      '
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions: []
+    supersedes: []
+    alias_id: INV-0111
+    alias_name: inv-0111
+  relationships:
+    declared_in:
+    - 019ffdba-3c42-7c4a-a737-f6751a265d60
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 019ffdba-3c42-7c4a-a737-f6751a265d60#019ffdba-3c42-7230-8d39-ef047f583291
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
+- id: 019ffdba-3c42-72d4-982d-88224ca69e68
+  alias_id: INV-0112
+  alias_name: inv-0112
+  alias_ref: INV-0112:inv-0112
+  entity_type: invariant
+  name: INV-0112
+  summary: Equivalent legacy-alias and UUID declarations for the same implementation
+    edge MUST NOT be dual-encoded on one surface
+  uri: adr://adr-architecture-kit/entities/019ffdba-3c42-72d4-982d-88224ca69e68
+  created_at: '2026-08-14T00:44:28.610Z'
+  entity_fingerprint: sha256:451ddde2909f64fcf2bba4e907983bb40266141e33aea3ef19d03578a69c09de
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 019ffdba-3c42-7c4a-a737-f6751a265d60#019ffdba-3c42-72d4-982d-88224ca69e68
+    artifact_path: adrs/logical/ADR-L-0020-semantic-implementation-attribution.yaml
+  source_refs: []
+  metadata:
+    adr_id: 019ffdba-3c42-7c4a-a737-f6751a265d60
+    adr_alias_id: ADR-L-0020
+    scope: global
+    statement: 'Equivalent legacy-alias and UUID declarations for the same implementation
+
+      edge MUST NOT be dual-encoded on one surface
+
+      '
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions: []
+    supersedes: []
+    alias_id: INV-0112
+    alias_name: inv-0112
+  relationships:
+    declared_in:
+    - 019ffdba-3c42-7c4a-a737-f6751a265d60
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 019ffdba-3c42-7c4a-a737-f6751a265d60#019ffdba-3c42-72d4-982d-88224ca69e68
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
+- id: 019ffdba-3c42-74ea-993d-990027e528c0
+  alias_id: INV-0106
+  alias_name: inv-0106
+  alias_ref: INV-0106:inv-0106
+  entity_type: invariant
+  name: INV-0106
+  summary: v1.5 evidence verbs MUST NOT be written into architecture relationship
+    registries or treated as RelationshipRecordV2.relationship_type
+  uri: adr://adr-architecture-kit/entities/019ffdba-3c42-74ea-993d-990027e528c0
+  created_at: '2026-08-14T00:44:28.610Z'
+  entity_fingerprint: sha256:afdc60554a900f1ce668dd729accabb5b0f5f77c010a039da7b1b334841a4a2c
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 019ffdba-3c42-7c4a-a737-f6751a265d60#019ffdba-3c42-74ea-993d-990027e528c0
+    artifact_path: adrs/logical/ADR-L-0020-semantic-implementation-attribution.yaml
+  source_refs: []
+  metadata:
+    adr_id: 019ffdba-3c42-7c4a-a737-f6751a265d60
+    adr_alias_id: ADR-L-0020
+    scope: global
+    statement: 'v1.5 evidence verbs MUST NOT be written into architecture relationship
+
+      registries or treated as RelationshipRecordV2.relationship_type
+
+      '
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions: []
+    supersedes: []
+    alias_id: INV-0106
+    alias_name: inv-0106
+  relationships:
+    declared_in:
+    - 019ffdba-3c42-7c4a-a737-f6751a265d60
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 019ffdba-3c42-7c4a-a737-f6751a265d60#019ffdba-3c42-74ea-993d-990027e528c0
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
+- id: 019ffdba-3c42-7a6d-9717-d8d96b6fa75d
+  alias_id: INV-0110
+  alias_name: inv-0110
+  alias_ref: INV-0110:inv-0110
+  entity_type: invariant
+  name: INV-0110
+  summary: Legacy alias decorators and evidence extractors MUST NOT load ArchitectureRepository
+    or synthesize canonical UUID claim metadata from alias arguments
+  uri: adr://adr-architecture-kit/entities/019ffdba-3c42-7a6d-9717-d8d96b6fa75d
+  created_at: '2026-08-14T00:44:28.610Z'
+  entity_fingerprint: sha256:d97150bd6fb5ab5e08dff6be52b8bdbb2445debe510de555d2dcc249f38f5273
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 019ffdba-3c42-7c4a-a737-f6751a265d60#019ffdba-3c42-7a6d-9717-d8d96b6fa75d
+    artifact_path: adrs/logical/ADR-L-0020-semantic-implementation-attribution.yaml
+  source_refs: []
+  metadata:
+    adr_id: 019ffdba-3c42-7c4a-a737-f6751a265d60
+    adr_alias_id: ADR-L-0020
+    scope: global
+    statement: 'Legacy alias decorators and evidence extractors MUST NOT load
+
+      ArchitectureRepository or synthesize canonical UUID claim metadata from
+
+      alias arguments
+
+      '
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions: []
+    supersedes: []
+    alias_id: INV-0110
+    alias_name: inv-0110
+  relationships:
+    declared_in:
+    - 019ffdba-3c42-7c4a-a737-f6751a265d60
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 019ffdba-3c42-7c4a-a737-f6751a265d60#019ffdba-3c42-7a6d-9717-d8d96b6fa75d
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
+- id: 019ffdba-3c42-7c85-a63f-689e71c5236a
+  alias_id: INV-0104
+  alias_name: inv-0104
+  alias_ref: INV-0104:inv-0104
+  entity_type: invariant
+  name: INV-0104
+  summary: Architecture-aware v1.5 validation MUST fail closed when a claim UUID is
+    missing, an alias or alias_ref is used as target_entity_id, or optional asserted
+    type mismatches the resolved type
+  uri: adr://adr-architecture-kit/entities/019ffdba-3c42-7c85-a63f-689e71c5236a
+  created_at: '2026-08-14T00:44:28.610Z'
+  entity_fingerprint: sha256:7b1ab1413f5032e6b5e4ebdff9013cfd595a7de37c191c0a3b06c164bd8abea9
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 019ffdba-3c42-7c4a-a737-f6751a265d60#019ffdba-3c42-7c85-a63f-689e71c5236a
+    artifact_path: adrs/logical/ADR-L-0020-semantic-implementation-attribution.yaml
+  source_refs: []
+  metadata:
+    adr_id: 019ffdba-3c42-7c4a-a737-f6751a265d60
+    adr_alias_id: ADR-L-0020
+    scope: global
+    statement: 'Architecture-aware v1.5 validation MUST fail closed when a claim UUID
+      is
+
+      missing, an alias or alias_ref is used as target_entity_id, or optional
+
+      asserted type mismatches the resolved type
+
+      '
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions: []
+    supersedes: []
+    alias_id: INV-0104
+    alias_name: inv-0104
+  relationships:
+    declared_in:
+    - 019ffdba-3c42-7c4a-a737-f6751a265d60
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 019ffdba-3c42-7c4a-a737-f6751a265d60#019ffdba-3c42-7c85-a63f-689e71c5236a
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
+- id: 019ffdba-3c42-7cbe-a121-06d3437129ed
+  alias_id: INV-0103
+  alias_name: inv-0103
+  alias_ref: INV-0103:inv-0103
+  entity_type: invariant
+  name: INV-0103
+  summary: Raw v1.5 attribution claims MUST include relationship, lowercase UUIDv7
+    target_entity_id, and confidence
+  uri: adr://adr-architecture-kit/entities/019ffdba-3c42-7cbe-a121-06d3437129ed
+  created_at: '2026-08-14T00:44:28.610Z'
+  entity_fingerprint: sha256:73b22aac3b8247689c9fd32505e38b5367030fbac5609569a3ec635ee7fd2dc2
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 019ffdba-3c42-7c4a-a737-f6751a265d60#019ffdba-3c42-7cbe-a121-06d3437129ed
+    artifact_path: adrs/logical/ADR-L-0020-semantic-implementation-attribution.yaml
+  source_refs: []
+  metadata:
+    adr_id: 019ffdba-3c42-7c4a-a737-f6751a265d60
+    adr_alias_id: ADR-L-0020
+    scope: global
+    statement: 'Raw v1.5 attribution claims MUST include relationship, lowercase UUIDv7
+
+      target_entity_id, and confidence
+
+      '
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions: []
+    supersedes: []
+    alias_id: INV-0103
+    alias_name: inv-0103
+  relationships:
+    declared_in:
+    - 019ffdba-3c42-7c4a-a737-f6751a265d60
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 019ffdba-3c42-7c4a-a737-f6751a265d60#019ffdba-3c42-7cbe-a121-06d3437129ed
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
+- id: 019ffdba-3c42-7d33-9e1b-e22bc168fa7c
+  alias_id: INV-0105
+  alias_name: inv-0105
+  alias_ref: INV-0105:inv-0105
+  entity_type: invariant
+  name: INV-0105
+  summary: A v1.5 claim MUST be rejected when the resolved target entity type is not
+    admitted for that relationship by the mechanical vocabulary
+  uri: adr://adr-architecture-kit/entities/019ffdba-3c42-7d33-9e1b-e22bc168fa7c
+  created_at: '2026-08-14T00:44:28.610Z'
+  entity_fingerprint: sha256:850c7a1f5c22a3d26b0c42023d770239d22c260be42dca549ba3368cbc319e6b
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 019ffdba-3c42-7c4a-a737-f6751a265d60#019ffdba-3c42-7d33-9e1b-e22bc168fa7c
+    artifact_path: adrs/logical/ADR-L-0020-semantic-implementation-attribution.yaml
+  source_refs: []
+  metadata:
+    adr_id: 019ffdba-3c42-7c4a-a737-f6751a265d60
+    adr_alias_id: ADR-L-0020
+    scope: global
+    statement: 'A v1.5 claim MUST be rejected when the resolved target entity type
+      is not
+
+      admitted for that relationship by the mechanical vocabulary
+
+      '
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions: []
+    supersedes: []
+    alias_id: INV-0105
+    alias_name: inv-0105
+  relationships:
+    declared_in:
+    - 019ffdba-3c42-7c4a-a737-f6751a265d60
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 019ffdba-3c42-7c4a-a737-f6751a265d60#019ffdba-3c42-7d33-9e1b-e22bc168fa7c
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
+- id: 019ffdba-3c42-7da9-ac3e-879c2e5a88a4
+  alias_id: INV-0108
+  alias_name: inv-0108
+  alias_ref: INV-0108:inv-0108
+  entity_type: invariant
+  name: INV-0108
+  summary: Identical semantic triple and identical provenance across records MUST
+    be an error; distinct provenance MUST keep both records
+  uri: adr://adr-architecture-kit/entities/019ffdba-3c42-7da9-ac3e-879c2e5a88a4
+  created_at: '2026-08-14T00:44:28.610Z'
+  entity_fingerprint: sha256:5c9a2e411dfd4403e0ebb4010f072b75b4e63b1aa4ec4c8baa1b83648dae4776
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 019ffdba-3c42-7c4a-a737-f6751a265d60#019ffdba-3c42-7da9-ac3e-879c2e5a88a4
+    artifact_path: adrs/logical/ADR-L-0020-semantic-implementation-attribution.yaml
+  source_refs: []
+  metadata:
+    adr_id: 019ffdba-3c42-7c4a-a737-f6751a265d60
+    adr_alias_id: ADR-L-0020
+    scope: global
+    statement: 'Identical semantic triple and identical provenance across records
+      MUST be
+
+      an error; distinct provenance MUST keep both records
+
+      '
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions: []
+    supersedes: []
+    alias_id: INV-0108
+    alias_name: inv-0108
+  relationships:
+    declared_in:
+    - 019ffdba-3c42-7c4a-a737-f6751a265d60
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 019ffdba-3c42-7c4a-a737-f6751a265d60#019ffdba-3c42-7da9-ac3e-879c2e5a88a4
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
+- id: 019ffdba-3c42-7e3a-a037-3b6c3087ef0a
+  alias_id: INV-0107
+  alias_name: inv-0107
+  alias_ref: INV-0107:inv-0107
+  entity_type: invariant
+  name: INV-0107
+  summary: Duplicate (relationship, target_entity_id) within one attribution record
+    MUST be an error
+  uri: adr://adr-architecture-kit/entities/019ffdba-3c42-7e3a-a037-3b6c3087ef0a
+  created_at: '2026-08-14T00:44:28.610Z'
+  entity_fingerprint: sha256:045dc42f8de6e18e47cf23a8230e83b8cb811ea74b79abd9ad2c0311c186942e
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 019ffdba-3c42-7c4a-a737-f6751a265d60#019ffdba-3c42-7e3a-a037-3b6c3087ef0a
+    artifact_path: adrs/logical/ADR-L-0020-semantic-implementation-attribution.yaml
+  source_refs: []
+  metadata:
+    adr_id: 019ffdba-3c42-7c4a-a737-f6751a265d60
+    adr_alias_id: ADR-L-0020
+    scope: global
+    statement: 'Duplicate (relationship, target_entity_id) within one attribution
+      record
+
+      MUST be an error
+
+      '
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions: []
+    supersedes: []
+    alias_id: INV-0107
+    alias_name: inv-0107
+  relationships:
+    declared_in:
+    - 019ffdba-3c42-7c4a-a737-f6751a265d60
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 019ffdba-3c42-7c4a-a737-f6751a265d60#019ffdba-3c42-7e3a-a037-3b6c3087ef0a
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
+- id: 019ffdba-3c42-7ec4-852c-06396e99d050
+  alias_id: INV-0109
+  alias_name: inv-0109
+  alias_ref: INV-0109:inv-0109
+  entity_type: invariant
+  name: INV-0109
+  summary: Implementation attribution declarations MUST NOT be treated as proof that
+    the named architecture constraint is enforced
+  uri: adr://adr-architecture-kit/entities/019ffdba-3c42-7ec4-852c-06396e99d050
+  created_at: '2026-08-14T00:44:28.610Z'
+  entity_fingerprint: sha256:f253edc4716319d7650ee133ce2aa2151f36cb9a8b87b6c33bb090d6c494f502
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 019ffdba-3c42-7c4a-a737-f6751a265d60#019ffdba-3c42-7ec4-852c-06396e99d050
+    artifact_path: adrs/logical/ADR-L-0020-semantic-implementation-attribution.yaml
+  source_refs: []
+  metadata:
+    adr_id: 019ffdba-3c42-7c4a-a737-f6751a265d60
+    adr_alias_id: ADR-L-0020
+    scope: global
+    statement: 'Implementation attribution declarations MUST NOT be treated as proof
+      that
+
+      the named architecture constraint is enforced
+
+      '
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions: []
+    supersedes: []
+    alias_id: INV-0109
+    alias_name: inv-0109
+  relationships:
+    declared_in:
+    - 019ffdba-3c42-7c4a-a737-f6751a265d60
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 019ffdba-3c42-7c4a-a737-f6751a265d60#019ffdba-3c42-7ec4-852c-06396e99d050
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index

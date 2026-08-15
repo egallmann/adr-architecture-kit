@@ -13,7 +13,8 @@ import json
 
 import rfc8785
 
-from .decorators import implements_adr
+from ._uuidv7 import UUIDV7_PATTERN as UUIDV7_PATTERN
+from .decorators import implements, implements_adr
 
 # ---------------------------------------------------------------------------
 # v1.0 / v1.1  —  assertion identity (unchanged)
@@ -43,12 +44,9 @@ def derive_assertion_id(
 # v1.3  —  UUIDv7  (RFC 9562)
 # ---------------------------------------------------------------------------
 
-UUIDV7_PATTERN = re.compile(
-    r"^[0-9a-f]{8}-[0-9a-f]{4}-7[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
-)
-
 
 @implements_adr("ADR-L-0019")
+@implements("019fee89-e617-7b55-931f-d0126c67c176")
 def validate_uuidv7(value: str) -> str:
     """Validate *value* as a lowercase RFC 9562 UUIDv7 and return it."""
     if not isinstance(value, str) or not UUIDV7_PATTERN.match(value):
@@ -57,12 +55,14 @@ def validate_uuidv7(value: str) -> str:
 
 
 @implements_adr("ADR-L-0019")
+@implements("019fee89-e617-7b55-931f-d0126c67c176")
 def parse_uuidv7(value: str) -> str:
     """Alias for :func:`validate_uuidv7`."""
     return validate_uuidv7(value)
 
 
 @implements_adr("ADR-L-0019")
+@implements("019fee89-e617-7b55-931f-d0126c67c176")
 def mint_uuidv7(
     *,
     timestamp_ms: int | None = None,

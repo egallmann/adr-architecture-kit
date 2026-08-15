@@ -1,0 +1,316 @@
+schema_version: '1.3'
+adr_type: logical
+id: 019ffdba-3c42-7c4a-a737-f6751a265d60
+title: Semantic Implementation Attribution and Cross-Layer Architecture Relationships
+status: proposed
+created_date: '2026-08-13'
+authors:
+- adr-architecture-kit
+context: |
+  ADR-L-0004 established implementation attribution as an explicit intent
+  surface. ADR-L-0019 made canonical machine identity a lowercase UUIDv7.
+  Attribution evidence still cited human aliases (`ADR-L-*`, `INV-*`) and
+  could not name typed relationships to nested architecture entities.
+
+  This ADR authorizes a UUID-canonical semantic attribution evidence line
+  (schema_version 1.5). It does not create ADR authoring schema 1.5, does
+  not create normalized model 3.0, and does not collapse extractor evidence
+  into architecture authority. A declaration is evidence of intent, not proof
+  of enforcement or correctness.
+
+  Architecture YAML remains authority. Decorators and extracted YAML are
+  untrusted declarations. ste-runtime must emit claims without loading ADR Kit
+  architecture state. Validation never mutates ADRs, registries, or graph
+  state.
+domains:
+- architecture
+- traceability
+- governance
+- identity
+tags:
+- attribution
+- semantic-claims
+- uuid
+- evidence
+decisions:
+- id: 019ffdba-3c42-700c-ac3f-8135e0139dfb
+  summary: Canonical v1.5 claims require relationship, target UUID, and confidence
+  rationale: |
+    Each raw claim requires `relationship` (`implements` | `enforces` |
+    `embodies`), `target_entity_id` (lowercase UUIDv7), and `confidence`
+    (`declared` | `inferred` | `heuristic`). Records also require
+    `implementation_entity_id`, `implementation_entity_type`, and
+    `provenance` (`source_file`, `extractor`, optional `commit`). The
+    document uses `schema_version: "1.5"` and
+    `type: implementation_attribution_evidence`. Decorator-generated claims
+    always use `confidence: declared`. `inferred` and `heuristic` are for
+    extractors, not a v1.5 decorator parameter.
+  alias_id: DEC-0116
+  alias_name: canonical-v15-claims-require-relationship-target-uuid-and-confidence
+- id: 019ffdba-3c42-73c1-b11c-d0a177cd522b
+  summary: Raw evidence must not require target entity type
+  rationale: |
+    Extractors and UUID decorators carry identity, not architecture type.
+    Optional `asserted_target_entity_type` is redundant evidence. If present,
+    architecture-aware validation compares it to the repository-resolved type
+    and fails on mismatch. It is never authority. Derived
+    `resolved_target_entity_type` belongs on validation results and coverage
+    reports, not on the required extractor schema.
+  alias_id: DEC-0117
+  alias_name: raw-evidence-must-not-require-target-entity-type
+- id: 019ffdba-3c42-7f40-b339-204a447bec81
+  summary: Apply the attribution matrix to repository-resolved entity type
+  rationale: |
+    After `ArchitectureRepository.find_entity_by_uuid` (model 2.0), the
+    mechanical vocabulary in `schema/v1.5/semantic-attribution-vocabulary.json`
+    admits: `implements` to adr, decision, capability, contract, interface,
+    implementation_decision; `enforces` to invariant only; `embodies` to
+    system, component, boundary. Unknown relationship, illegal resolved type,
+    or unresolved UUID fails closed. `superseded` and `deprecated` targets
+    warn (INV-0028 posture).
+  alias_id: DEC-0118
+  alias_name: apply-the-attribution-matrix-to-repository-resolved-entity-type
+- id: 019ffdba-3c42-7751-a81c-d738f411b299
+  summary: Evidence claim verbs are not architecture relationship types
+  rationale: |
+    v1.5 relationship names are evidence claim verbs. They are not
+    `RelationshipRecordV2.relationship_type` values and must not be written
+    into architecture relationship registries or Architecture IR.
+    `implementation_entity_id` remains extractor-owned and is not an admitted
+    model 2.0 architecture UUID (ADR-L-0019 DEC-0097). Shared English
+    (`implements`, `embodies`) does not project implementation surfaces into
+    the canonical graph.
+  alias_id: DEC-0119
+  alias_name: evidence-claim-verbs-are-not-architecture-relationship-types
+- id: 019ffdba-3c42-7282-931f-92503f4079cb
+  summary: Legacy 1.0/1.2 evidence normalizes only with architecture state
+  rationale: |
+    Attribution 1.0/1.2 remains readable under the v1.1 evidence schema.
+    `normalize_attribution_evidence` requires a repository or model 2.0
+    context. Aliases resolve through governed `alias_id` lookup; UUID values
+    resolve directly; unresolved or ambiguous aliases fail closed. Output
+    claims omit required target type. Canonical output is sorted and
+    idempotent. The converter never rewrites `.ste-workspace` in place.
+  alias_id: DEC-0120
+  alias_name: legacy-evidence-normalizes-only-with-architecture-state
+- id: 019ffdba-3c42-705f-9935-76ed45c32cd7
+  summary: Canonical output order is deterministic and idempotent
+  rationale: |
+    Record order is `(implementation_entity_id, source_file, extractor,
+    commit or "")`. Claim order is `(relationship, target_entity_id,
+    asserted_target_entity_type or "")`. Unsorted raw input is valid.
+    Repeated canonicalization is idempotent for semantic content and
+    serialized canonical output.
+  alias_id: DEC-0121
+  alias_name: canonical-output-order-is-deterministic-and-idempotent
+- id: 019ffdba-3c42-7690-8f1b-ad8deaeed484
+  summary: Duplicate semantic claims follow provenance-aware fail-closed rules
+  rationale: |
+    Within one record, duplicate `(relationship, target_entity_id)` is an
+    error. Across records with distinct provenance, the same semantic triple
+    is independent evidence and must be kept. Identical semantic triple and
+    identical provenance is an error. This rule is not weakened for dogfood.
+  alias_id: DEC-0122
+  alias_name: duplicate-semantic-claims-follow-provenance-aware-fail-closed-rules
+- id: 019ffdba-3c42-7304-ab2f-bcd01cc6f9d3
+  summary: Coverage distinguishes unique semantic links from evidence occurrence
+  rationale: |
+    Existing coverage YAML keys remain. For v1.5 input, ADR fields fill from
+    claims whose resolved type is `adr`. Additive unique-link counts use
+    `(implementation_entity_id, relationship, target_entity_id)` after
+    normalize/resolve. Occurrence counts, if present, must be named so they
+    cannot be mistaken for coverage. Neither metric proves correctness.
+  alias_id: DEC-0123
+  alias_name: coverage-distinguishes-unique-semantic-links-from-evidence-occurrence
+- id: 019ffdba-3c42-729a-a83f-a40c53d278fd
+  summary: Extractors and legacy decorators must not load architecture state
+  rationale: |
+    ste-runtime and other extractors emit UUID claims without loading ADR Kit
+    architecture. Legacy alias decorators remain metadata producers
+    (`__implements_adrs__` / `__enforces_invariants__`) and must not resolve
+    aliases, load `ArchitectureRepository`, or synthesize
+    `__architecture_attribution_claims__`. Canonical UUID decorators alone
+    populate that claims attribute, with local UUIDv7 validation only.
+  alias_id: DEC-0124
+  alias_name: extractors-and-legacy-decorators-must-not-load-architecture-state
+invariants:
+- id: 019ffdba-3c42-7cbe-a121-06d3437129ed
+  statement: |
+    Raw v1.5 attribution claims MUST include relationship, lowercase UUIDv7
+    target_entity_id, and confidence
+  scope: global
+  enforcement_level: must
+  enforcement_mechanism: test
+  verification_method: automated
+  rationale: |
+    Extractors cannot invent architecture type; identity and declared
+    relationship are the required claim surface.
+  alias_id: INV-0103
+  alias_name: inv-0103
+- id: 019ffdba-3c42-7c85-a63f-689e71c5236a
+  statement: |
+    Architecture-aware v1.5 validation MUST fail closed when a claim UUID is
+    missing, an alias or alias_ref is used as target_entity_id, or optional
+    asserted type mismatches the resolved type
+  scope: global
+  enforcement_level: must
+  enforcement_mechanism: test
+  verification_method: automated
+  rationale: |
+    Canonical identity is UUID. Aliases are presentation and 1.0/1.2
+    translation input only.
+  alias_id: INV-0104
+  alias_name: inv-0104
+- id: 019ffdba-3c42-7d33-9e1b-e22bc168fa7c
+  statement: |
+    A v1.5 claim MUST be rejected when the resolved target entity type is not
+    admitted for that relationship by the mechanical vocabulary
+  scope: global
+  enforcement_level: must
+  enforcement_mechanism: test
+  verification_method: automated
+  rationale: |
+    The matrix is architecture authority, not extractor opinion.
+  alias_id: INV-0105
+  alias_name: inv-0105
+- id: 019ffdba-3c42-74ea-993d-990027e528c0
+  statement: |
+    v1.5 evidence verbs MUST NOT be written into architecture relationship
+    registries or treated as RelationshipRecordV2.relationship_type
+  scope: global
+  enforcement_level: must
+  enforcement_mechanism: design
+  verification_method: automated
+  rationale: |
+    Implementation surfaces are not admitted architecture entities.
+  alias_id: INV-0106
+  alias_name: inv-0106
+- id: 019ffdba-3c42-7e3a-a037-3b6c3087ef0a
+  statement: |
+    Duplicate (relationship, target_entity_id) within one attribution record
+    MUST be an error
+  scope: global
+  enforcement_level: must
+  enforcement_mechanism: test
+  verification_method: automated
+  rationale: |
+    One record cannot independently restate the same semantic edge.
+  alias_id: INV-0107
+  alias_name: inv-0107
+- id: 019ffdba-3c42-7da9-ac3e-879c2e5a88a4
+  statement: |
+    Identical semantic triple and identical provenance across records MUST be
+    an error; distinct provenance MUST keep both records
+  scope: global
+  enforcement_level: must
+  enforcement_mechanism: test
+  verification_method: automated
+  rationale: |
+    Independent extractors may observe the same edge; copy-paste duplicates
+    must not.
+  alias_id: INV-0108
+  alias_name: inv-0108
+- id: 019ffdba-3c42-7ec4-852c-06396e99d050
+  statement: |
+    Implementation attribution declarations MUST NOT be treated as proof that
+    the named architecture constraint is enforced
+  scope: global
+  enforcement_level: must
+  enforcement_mechanism: design
+  verification_method: manual
+  rationale: |
+    ADR Kit does not parse implementation source to prove behavior. INV-0030
+    remains a declared claim, not kit-automated proof.
+  alias_id: INV-0109
+  alias_name: inv-0109
+- id: 019ffdba-3c42-7a6d-9717-d8d96b6fa75d
+  statement: |
+    Legacy alias decorators and evidence extractors MUST NOT load
+    ArchitectureRepository or synthesize canonical UUID claim metadata from
+    alias arguments
+  scope: global
+  enforcement_level: must
+  enforcement_mechanism: design
+  verification_method: automated
+  rationale: |
+    Architecture resolution is a validation/normalization concern, not a
+    decorator or extractor concern.
+  alias_id: INV-0110
+  alias_name: inv-0110
+- id: 019ffdba-3c42-7230-8d39-ef047f583291
+  statement: |
+    Canonical normalized v1.5 output MUST be sorted by the documented total
+    order and MUST be idempotent under repeated normalization
+  scope: global
+  enforcement_level: must
+  enforcement_mechanism: test
+  verification_method: automated
+  rationale: |
+    Deterministic serialization is required for diffs and federation, but
+    unsorted producer input remains valid.
+  alias_id: INV-0111
+  alias_name: inv-0111
+- id: 019ffdba-3c42-72d4-982d-88224ca69e68
+  statement: |
+    Equivalent legacy-alias and UUID declarations for the same implementation
+    edge MUST NOT be dual-encoded on one surface
+  scope: global
+  enforcement_level: must
+  enforcement_mechanism: design
+  verification_method: automated
+  rationale: |
+    True-duplicate errors stay in force. Dogfood may keep a legacy ADR-level
+    edge or migrate it to UUID, not both.
+  alias_id: INV-0112
+  alias_name: inv-0112
+capabilities:
+- id: 019ffdba-3c42-7578-b43f-ad19109d59d9
+  name: Semantic Implementation Attribution
+  description: |
+    UUID-canonical typed claims connecting implementation surfaces to
+    architecture entities without collapsing evidence into authority.
+  acceptance_criteria:
+  - raw claims require relationship, target UUID, and confidence
+  - resolved type is derived after repository lookup
+  - matrix rejects illegal relationship/type pairs
+  - declaration is not treated as proof
+  alias_id: CAP-0053
+  alias_name: semantic-implementation-attribution
+- id: 019ffdba-3c42-71ba-b81f-a2a24830abd6
+  name: Repository-Aware Attribution Normalization
+  description: |
+    Translate 1.0/1.2 alias evidence into canonical v1.5 claims using
+    governed architecture lookup.
+  acceptance_criteria:
+  - unresolved or ambiguous aliases fail closed
+  - output omits required target type
+  - normalize(normalize(x)) equals normalize(x)
+  - default CLI path does not write workspace evidence
+  alias_id: CAP-0054
+  alias_name: repository-aware-attribution-normalization
+- id: 019ffdba-3c42-745c-9e37-85f7696cd43c
+  name: Unique-Link Attribution Coverage
+  description: |
+    Informational coverage that preserves ADR catalog keys and reports unique
+    semantic links separately from evidence occurrence.
+  acceptance_criteria:
+  - existing five coverage YAML keys remain
+  - v1.5 ADR keys fill from resolved type adr
+  - unique-link counts are distinct from occurrence counts
+  alias_id: CAP-0055
+  alias_name: unique-link-attribution-coverage
+related_adrs:
+- 019fee89-e615-7577-8d37-dd0df031bec9
+- 019fee89-e616-7c4e-953c-b7349412a784
+- 019fee89-e617-78d9-ba3b-b7e3e6db1b12
+- 019fee89-e617-7d2b-8325-cd85ff814477
+- 019ffdba-3c42-70da-b33d-efc003269c42
+- 019fee89-e618-7d04-9337-4aa2d3258507
+gaps: []
+notes: |
+  Embodiment is ADR-PC-0007. Schema authority remains this repository.
+  ste-spec draft hand-off prose is pre-normative. Do not add 1.5 to
+  supported_adr_schema_versions. v1.1 relationship-registry enum drift is
+  quarantined and is not repaired by this ADR.
+alias_id: ADR-L-0020
+alias_name: semantic-implementation-attribution-and-cross-layer-architecture-relationships

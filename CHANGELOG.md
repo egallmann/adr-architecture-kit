@@ -7,6 +7,28 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.4.1] — 2026-08-12
+
+### Changed
+
+- Qualify a source commit once across orthogonal CI evidence axes (canonical
+  Ubuntu 3.12 coverage suite, Ubuntu Python source/SDK compatibility,
+  Windows/macOS behavior portability, and exact retained-wheel Python + OS
+  cells); tag publication promotes that retained `release-bundle` fail-closed
+  without rebuild or requalification (`ADR-L-0003`)
+- Document release-eligible evidence as successful `main` push only; PR and
+  `develop` qualification runs are not publication admission
+- Strengthen public-repo security posture: Dependabot alerts, secret scanning
+  with push protection, private vulnerability reporting, CodeQL workflow, and
+  a human-admitted finding triage policy in `SECURITY.md`
+
+### Fixed
+
+- Normalize macOS `/private`-prefixed fixture paths in CLI compatibility
+  snapshots so OS-portability suites match Linux goldens
+- Keep the system-overview promote prepare/check/apply entry intact in the
+  markdown task table (avoid raw `|` alternatives that split table columns)
+
 ## [0.4.0] — 2026-08-11
 
 ### Added

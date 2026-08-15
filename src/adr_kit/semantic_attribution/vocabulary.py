@@ -16,7 +16,7 @@ class SemanticAttributionVocabularyError(ValueError):
 
 @lru_cache(maxsize=1)
 def load_semantic_attribution_vocabulary() -> dict[str, Any]:
-    """Load the packaged mechanical vocabulary (byte-identical to schema/v1.5/)."""
+    """Load the packaged v1.5 vocabulary (byte-identical to canonical evidence-attribution)."""
 
     payload = (
         resources.files("adr_kit.schema.v1_5")

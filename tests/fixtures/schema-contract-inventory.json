@@ -1,0 +1,505 @@
+{
+  "baseline_sha": "499b0d253659a4851d4f5400cbc2286eefbeef6f",
+  "expected_counts": {
+    "canonical": 49,
+    "package_mirrors": 45
+  },
+  "discovered_counts": {
+    "canonical": 49,
+    "package_mirrors": 45
+  },
+  "authority": "NON-AUTHORITATIVE VERIFICATION SNAPSHOT",
+  "records": [
+    {
+      "canonical_path": "schema/kernel/architecture-index.schema.json",
+      "target_path": "schema/kernel/architecture-index.schema.json",
+      "family": "special",
+      "family_version": null,
+      "schema_id": null,
+      "sha256": "081ae08229d02e11cdc42e294dfd94437306ade33e3615863d4241096d8832bf",
+      "package_mirror_path": null,
+      "mirror_disposition": "no-mirror"
+    },
+    {
+      "canonical_path": "schema/kernel/entity-registry.schema.json",
+      "target_path": "schema/kernel/entity-registry.schema.json",
+      "family": "special",
+      "family_version": null,
+      "schema_id": null,
+      "sha256": "7c58cbe1f212e9a695d307ac1b09908315d87a2b7ca985812e14e7e482157dea",
+      "package_mirror_path": null,
+      "mirror_disposition": "no-mirror"
+    },
+    {
+      "canonical_path": "schema/kernel/relationship-registry.schema.json",
+      "target_path": "schema/kernel/relationship-registry.schema.json",
+      "family": "special",
+      "family_version": null,
+      "schema_id": null,
+      "sha256": "cc160629d8360cf349f6afc582be93586e0a4ce0f1ac6e110ac2277e12c48618",
+      "package_mirror_path": null,
+      "mirror_disposition": "no-mirror"
+    },
+    {
+      "canonical_path": "schema/kernel/unresolved-registry.schema.json",
+      "target_path": "schema/kernel/unresolved-registry.schema.json",
+      "family": "special",
+      "family_version": null,
+      "schema_id": null,
+      "sha256": "69207168f54422cef640d0819ff15e5267837f2e862d6c670c34890701924860",
+      "package_mirror_path": null,
+      "mirror_disposition": "no-mirror"
+    },
+    {
+      "canonical_path": "schema/migrations/canonical-identity-v13-map.schema.json",
+      "target_path": "schema/migrations/canonical-identity-v13-map.schema.json",
+      "family": "special",
+      "family_version": null,
+      "schema_id": null,
+      "sha256": "7fd000e09004875a75965bca60e39238d7d2c2c9d296ffcf32d188b4c66ed5fe",
+      "package_mirror_path": "src/adr_kit/schema/migrations/canonical-identity-v13-map.schema.json",
+      "mirror_disposition": "mirror"
+    },
+    {
+      "canonical_path": "schema/v1.0/adr-common.schema.json",
+      "target_path": "schema/v1.0/adr-common.schema.json",
+      "family": "stable-authoring-compatibility",
+      "family_version": "v1.0",
+      "schema_id": null,
+      "sha256": "cf9e6460ce53ef2ae8a566dbc383f881bcc0d8f4ac1c5ee8a0d10f0009c5c35d",
+      "package_mirror_path": "src/adr_kit/schema/v1_0/adr-common.schema.json",
+      "mirror_disposition": "mirror"
+    },
+    {
+      "canonical_path": "schema/v1.0/adr-logical.schema.json",
+      "target_path": "schema/v1.0/adr-logical.schema.json",
+      "family": "stable-authoring-compatibility",
+      "family_version": "v1.0",
+      "schema_id": null,
+      "sha256": "c49d5cebbbd83ed3faa2524ab3af8291606eeaaa9450610efa12e9e392b92c71",
+      "package_mirror_path": "src/adr_kit/schema/v1_0/adr-logical.schema.json",
+      "mirror_disposition": "mirror"
+    },
+    {
+      "canonical_path": "schema/v1.0/adr-physical-base.schema.json",
+      "target_path": "schema/v1.0/adr-physical-base.schema.json",
+      "family": "stable-authoring-compatibility",
+      "family_version": "v1.0",
+      "schema_id": null,
+      "sha256": "89105a66cec6eddba617192258e44917d0c02956ad8778ac7c6f603e7717d6f5",
+      "package_mirror_path": "src/adr_kit/schema/v1_0/adr-physical-base.schema.json",
+      "mirror_disposition": "mirror"
+    },
+    {
+      "canonical_path": "schema/v1.0/adr-physical-component.schema.json",
+      "target_path": "schema/v1.0/adr-physical-component.schema.json",
+      "family": "stable-authoring-compatibility",
+      "family_version": "v1.0",
+      "schema_id": null,
+      "sha256": "f2c922a781aaed64459e661c3bd91f2952288f78ec3b0e089a13f5522390d2c1",
+      "package_mirror_path": "src/adr_kit/schema/v1_0/adr-physical-component.schema.json",
+      "mirror_disposition": "mirror"
+    },
+    {
+      "canonical_path": "schema/v1.0/adr-physical-system.schema.json",
+      "target_path": "schema/v1.0/adr-physical-system.schema.json",
+      "family": "stable-authoring-compatibility",
+      "family_version": "v1.0",
+      "schema_id": null,
+      "sha256": "93c2ddb3fcae2a7f3a9f3b7d876ea4cb1b1fb09e659e0de7ad12ca526be7044e",
+      "package_mirror_path": "src/adr_kit/schema/v1_0/adr-physical-system.schema.json",
+      "mirror_disposition": "mirror"
+    },
+    {
+      "canonical_path": "schema/v1.0/adr-physical.schema.json",
+      "target_path": "schema/v1.0/adr-physical.schema.json",
+      "family": "stable-authoring-compatibility",
+      "family_version": "v1.0",
+      "schema_id": null,
+      "sha256": "44c461b49a48483fb1555c53e62544e838ae0eba17608ec3dbf4ccb6ece10470",
+      "package_mirror_path": "src/adr_kit/schema/v1_0/adr-physical.schema.json",
+      "mirror_disposition": "mirror"
+    },
+    {
+      "canonical_path": "schema/v1.0/invariant.schema.json",
+      "target_path": "schema/v1.0/invariant.schema.json",
+      "family": "stable-authoring-compatibility",
+      "family_version": "v1.0",
+      "schema_id": null,
+      "sha256": "5e61818ece9eee3169ab51c24b8ad599a01fd220d336fd4cab4ca64b40a630a1",
+      "package_mirror_path": "src/adr_kit/schema/v1_0/invariant.schema.json",
+      "mirror_disposition": "mirror"
+    },
+    {
+      "canonical_path": "schema/v1.0/manifest.schema.json",
+      "target_path": "schema/v1.0/manifest.schema.json",
+      "family": "stable-authoring-compatibility",
+      "family_version": "v1.0",
+      "schema_id": null,
+      "sha256": "15e02c4053e7d6d7f415e70feab703bc7a37cd02c69c1f6203beccb061da32a2",
+      "package_mirror_path": "src/adr_kit/schema/v1_0/manifest.schema.json",
+      "mirror_disposition": "mirror"
+    },
+    {
+      "canonical_path": "schema/v1.0/project-metadata.schema.json",
+      "target_path": "schema/v1.0/project-metadata.schema.json",
+      "family": "stable-authoring-compatibility",
+      "family_version": "v1.0",
+      "schema_id": null,
+      "sha256": "882a883abe9ccb3267c6d61c1081138145a6e0d26898bc42d1a8d181e4e0764a",
+      "package_mirror_path": "src/adr_kit/schema/v1_0/project-metadata.schema.json",
+      "mirror_disposition": "mirror"
+    },
+    {
+      "canonical_path": "schema/v1.0/types.schema.json",
+      "target_path": "schema/v1.0/types.schema.json",
+      "family": "stable-authoring-compatibility",
+      "family_version": "v1.0",
+      "schema_id": null,
+      "sha256": "fae298fafd55e0c1bd0eb2233380086f7f85710d83809a7876d1da1f2a736bca",
+      "package_mirror_path": "src/adr_kit/schema/v1_0/types.schema.json",
+      "mirror_disposition": "mirror"
+    },
+    {
+      "canonical_path": "schema/v1.1/architecture-index.schema.json",
+      "target_path": "schema/architecture-discovery/v1.1/architecture-index.schema.json",
+      "family": "architecture-discovery",
+      "family_version": "v1.1",
+      "schema_id": null,
+      "sha256": "054efe34a12d94d321ec5690860029252fa252433b74340c616ccd424f33cc5a",
+      "package_mirror_path": "src/adr_kit/schema/v1_1/architecture-index.schema.json",
+      "mirror_disposition": "mirror"
+    },
+    {
+      "canonical_path": "schema/v1.1/decision-ledger.schema.json",
+      "target_path": "schema/governance/v1.1/decision-ledger.schema.json",
+      "family": "governance",
+      "family_version": "v1.1",
+      "schema_id": null,
+      "sha256": "4be1eeabd76f2827feda9f0a78ec417f55e2521675b3b3f2da02af5dd63bc63d",
+      "package_mirror_path": "src/adr_kit/schema/v1_1/decision-ledger.schema.json",
+      "mirror_disposition": "mirror"
+    },
+    {
+      "canonical_path": "schema/v1.1/entity-registry.schema.json",
+      "target_path": "schema/architecture-discovery/v1.1/entity-registry.schema.json",
+      "family": "architecture-discovery",
+      "family_version": "v1.1",
+      "schema_id": null,
+      "sha256": "ab0c5b1b6a05d773642a4a8ef7145f1e95ff872bc9dc5ddbc640698db15fa157",
+      "package_mirror_path": "src/adr_kit/schema/v1_1/entity-registry.schema.json",
+      "mirror_disposition": "mirror"
+    },
+    {
+      "canonical_path": "schema/v1.1/implementation-attribution-evidence.schema.json",
+      "target_path": "schema/evidence-attribution/v1.1/implementation-attribution-evidence.schema.json",
+      "family": "evidence-attribution",
+      "family_version": "v1.1",
+      "schema_id": null,
+      "sha256": "a02188bad22cc5d0a5244cee8f717d900187e30c17db18cccf91c0a642fa643c",
+      "package_mirror_path": "src/adr_kit/schema/v1_1/implementation-attribution-evidence.schema.json",
+      "mirror_disposition": "mirror"
+    },
+    {
+      "canonical_path": "schema/v1.1/normalized-entity-registry.schema.json",
+      "target_path": "schema/normalized-model/v1.1/normalized-entity-registry.schema.json",
+      "family": "normalized-model",
+      "family_version": "v1.1",
+      "schema_id": null,
+      "sha256": "28fb788393021fc584cac5f36688d0b8fb787216785cee9dbbe0f4ab82407854",
+      "package_mirror_path": "src/adr_kit/schema/v1_1/normalized-entity-registry.schema.json",
+      "mirror_disposition": "mirror"
+    },
+    {
+      "canonical_path": "schema/v1.1/objection-override.schema.json",
+      "target_path": "schema/governance/v1.1/objection-override.schema.json",
+      "family": "governance",
+      "family_version": "v1.1",
+      "schema_id": null,
+      "sha256": "56717aaafc6c8cddaf8626da34eec48dd80d721fd83df54c49304c45102bd872",
+      "package_mirror_path": "src/adr_kit/schema/v1_1/objection-override.schema.json",
+      "mirror_disposition": "mirror"
+    },
+    {
+      "canonical_path": "schema/v1.1/relationship-registry.schema.json",
+      "target_path": "schema/normalized-model/v1.1/relationship-registry.schema.json",
+      "family": "normalized-model",
+      "family_version": "v1.1",
+      "schema_id": null,
+      "sha256": "06e853f1586528f6bb11036cbaa26bc16a12f1b957699d257641d75783be3d20",
+      "package_mirror_path": "src/adr_kit/schema/v1_1/relationship-registry.schema.json",
+      "mirror_disposition": "mirror"
+    },
+    {
+      "canonical_path": "schema/v1.1/remediation-ledger.schema.json",
+      "target_path": "schema/governance/v1.1/remediation-ledger.schema.json",
+      "family": "governance",
+      "family_version": "v1.1",
+      "schema_id": null,
+      "sha256": "3f5d96938b32ba7b4c9c77736e2b9554b2056731d0ad07047997c300065ce2fc",
+      "package_mirror_path": "src/adr_kit/schema/v1_1/remediation-ledger.schema.json",
+      "mirror_disposition": "mirror"
+    },
+    {
+      "canonical_path": "schema/v1.1/requirements-snapshot.schema.json",
+      "target_path": "schema/governance/v1.1/requirements-snapshot.schema.json",
+      "family": "governance",
+      "family_version": "v1.1",
+      "schema_id": null,
+      "sha256": "706543829adccbcb8752975211cc121957abf4a95f8472e04cfbb64b64dd7af1",
+      "package_mirror_path": "src/adr_kit/schema/v1_1/requirements-snapshot.schema.json",
+      "mirror_disposition": "mirror"
+    },
+    {
+      "canonical_path": "schema/v1.1/steelman-review.schema.json",
+      "target_path": "schema/governance/v1.1/steelman-review.schema.json",
+      "family": "governance",
+      "family_version": "v1.1",
+      "schema_id": null,
+      "sha256": "75293aef35c4ead5e2389615db3bf2809d368a8c9b2d19c2c942adcca53c1af1",
+      "package_mirror_path": "src/adr_kit/schema/v1_1/steelman-review.schema.json",
+      "mirror_disposition": "mirror"
+    },
+    {
+      "canonical_path": "schema/v1.1/unresolved-registry.schema.json",
+      "target_path": "schema/normalized-model/v1.1/unresolved-registry.schema.json",
+      "family": "normalized-model",
+      "family_version": "v1.1",
+      "schema_id": null,
+      "sha256": "897c603f9d7ac7d4550dad8a9da17e2ee2a9ae19926ea8508abec3619d982dbd",
+      "package_mirror_path": "src/adr_kit/schema/v1_1/unresolved-registry.schema.json",
+      "mirror_disposition": "mirror"
+    },
+    {
+      "canonical_path": "schema/v1.1/workspace-attribution-federation.schema.json",
+      "target_path": "schema/evidence-attribution/v1.1/workspace-attribution-federation.schema.json",
+      "family": "evidence-attribution",
+      "family_version": "v1.1",
+      "schema_id": null,
+      "sha256": "39b78dab7db88edc878be7dce3ae947de30a53338c589f4484f3996c22514506",
+      "package_mirror_path": "src/adr_kit/schema/v1_1/workspace-attribution-federation.schema.json",
+      "mirror_disposition": "mirror"
+    },
+    {
+      "canonical_path": "schema/v1.2/adr-common.schema.json",
+      "target_path": "schema/authoring/v1.2/adr-common.schema.json",
+      "family": "authoring",
+      "family_version": "v1.2",
+      "schema_id": null,
+      "sha256": "6e79e045fa8c1cd01e0d233d8fb80d0d6d0b082ca6b4bde481da60fe0238738a",
+      "package_mirror_path": "src/adr_kit/schema/v1_2/adr-common.schema.json",
+      "mirror_disposition": "mirror"
+    },
+    {
+      "canonical_path": "schema/v1.2/adr-logical.schema.json",
+      "target_path": "schema/authoring/v1.2/adr-logical.schema.json",
+      "family": "authoring",
+      "family_version": "v1.2",
+      "schema_id": null,
+      "sha256": "e57a86e3c8d069c10b61fc34455917f353f2856a821e295430b1dd0ad499e0f8",
+      "package_mirror_path": "src/adr_kit/schema/v1_2/adr-logical.schema.json",
+      "mirror_disposition": "mirror"
+    },
+    {
+      "canonical_path": "schema/v1.2/adr-physical-base.schema.json",
+      "target_path": "schema/authoring/v1.2/adr-physical-base.schema.json",
+      "family": "authoring",
+      "family_version": "v1.2",
+      "schema_id": null,
+      "sha256": "9623715b9077c66a63d88baab0810167eeb536b7e637aea85196ed946036a16f",
+      "package_mirror_path": "src/adr_kit/schema/v1_2/adr-physical-base.schema.json",
+      "mirror_disposition": "mirror"
+    },
+    {
+      "canonical_path": "schema/v1.2/adr-physical-component.schema.json",
+      "target_path": "schema/authoring/v1.2/adr-physical-component.schema.json",
+      "family": "authoring",
+      "family_version": "v1.2",
+      "schema_id": null,
+      "sha256": "cd3c0fae5e8f6359d3b130f012b66aee33f7ab84baad833cc621c7a846a30ea0",
+      "package_mirror_path": "src/adr_kit/schema/v1_2/adr-physical-component.schema.json",
+      "mirror_disposition": "mirror"
+    },
+    {
+      "canonical_path": "schema/v1.2/adr-physical-system.schema.json",
+      "target_path": "schema/authoring/v1.2/adr-physical-system.schema.json",
+      "family": "authoring",
+      "family_version": "v1.2",
+      "schema_id": null,
+      "sha256": "e456955adcd40a12d144a01fca631ea7f21403e2504cb3bf689a99c26f631865",
+      "package_mirror_path": "src/adr_kit/schema/v1_2/adr-physical-system.schema.json",
+      "mirror_disposition": "mirror"
+    },
+    {
+      "canonical_path": "schema/v1.2/adr-physical.schema.json",
+      "target_path": "schema/authoring/v1.2/adr-physical.schema.json",
+      "family": "authoring",
+      "family_version": "v1.2",
+      "schema_id": null,
+      "sha256": "721c998383db7226319c95768914d1a2d7a46ab9996804d75aad92bc11cfa562",
+      "package_mirror_path": "src/adr_kit/schema/v1_2/adr-physical.schema.json",
+      "mirror_disposition": "mirror"
+    },
+    {
+      "canonical_path": "schema/v1.2/invariant.schema.json",
+      "target_path": "schema/authoring/v1.2/invariant.schema.json",
+      "family": "authoring",
+      "family_version": "v1.2",
+      "schema_id": null,
+      "sha256": "c7a34c2aa3ac51a7ad750c7fe2dcb617a8fde63d2ed46b402f1f404abfa44323",
+      "package_mirror_path": "src/adr_kit/schema/v1_2/invariant.schema.json",
+      "mirror_disposition": "mirror"
+    },
+    {
+      "canonical_path": "schema/v1.2/types.schema.json",
+      "target_path": "schema/authoring/v1.2/types.schema.json",
+      "family": "authoring",
+      "family_version": "v1.2",
+      "schema_id": null,
+      "sha256": "4a252d8a8fe58e085bb46441d0e41fb984ec6a63bf2e861d8f1f93b1f4859f32",
+      "package_mirror_path": "src/adr_kit/schema/v1_2/types.schema.json",
+      "mirror_disposition": "mirror"
+    },
+    {
+      "canonical_path": "schema/v1.3/adr-common.schema.json",
+      "target_path": "schema/authoring/v1.3/adr-common.schema.json",
+      "family": "authoring",
+      "family_version": "v1.3",
+      "schema_id": null,
+      "sha256": "9f66f7f85c866dd23763ec2a2a7a9e290a6f121af92feb9654cc589a82438620",
+      "package_mirror_path": "src/adr_kit/schema/v1_3/adr-common.schema.json",
+      "mirror_disposition": "mirror"
+    },
+    {
+      "canonical_path": "schema/v1.3/adr-logical.schema.json",
+      "target_path": "schema/authoring/v1.3/adr-logical.schema.json",
+      "family": "authoring",
+      "family_version": "v1.3",
+      "schema_id": null,
+      "sha256": "c9937806fa58a9f92c63ecc217c94538ee8f1424e621a41972a785f008416734",
+      "package_mirror_path": "src/adr_kit/schema/v1_3/adr-logical.schema.json",
+      "mirror_disposition": "mirror"
+    },
+    {
+      "canonical_path": "schema/v1.3/adr-physical-base.schema.json",
+      "target_path": "schema/authoring/v1.3/adr-physical-base.schema.json",
+      "family": "authoring",
+      "family_version": "v1.3",
+      "schema_id": null,
+      "sha256": "95de01d3c489d1b45854ca5e9881cfd9d7d15ae8c93e29974b27629c2d7a9192",
+      "package_mirror_path": "src/adr_kit/schema/v1_3/adr-physical-base.schema.json",
+      "mirror_disposition": "mirror"
+    },
+    {
+      "canonical_path": "schema/v1.3/adr-physical-component.schema.json",
+      "target_path": "schema/authoring/v1.3/adr-physical-component.schema.json",
+      "family": "authoring",
+      "family_version": "v1.3",
+      "schema_id": null,
+      "sha256": "3e6e6882773f886c49abe778f3afec3b967af084780da2b6c268ffd3abd00aa8",
+      "package_mirror_path": "src/adr_kit/schema/v1_3/adr-physical-component.schema.json",
+      "mirror_disposition": "mirror"
+    },
+    {
+      "canonical_path": "schema/v1.3/adr-physical-system.schema.json",
+      "target_path": "schema/authoring/v1.3/adr-physical-system.schema.json",
+      "family": "authoring",
+      "family_version": "v1.3",
+      "schema_id": null,
+      "sha256": "6de19bc0086a67f9dd75bacb04da5f888fbd6d2186ac725417a1ff6c42d50c2e",
+      "package_mirror_path": "src/adr_kit/schema/v1_3/adr-physical-system.schema.json",
+      "mirror_disposition": "mirror"
+    },
+    {
+      "canonical_path": "schema/v1.3/adr-physical.schema.json",
+      "target_path": "schema/authoring/v1.3/adr-physical.schema.json",
+      "family": "authoring",
+      "family_version": "v1.3",
+      "schema_id": null,
+      "sha256": "912e4d4e8a127a26274730e6470ac629568d28203abc8f8b5398b203bbb00400",
+      "package_mirror_path": "src/adr_kit/schema/v1_3/adr-physical.schema.json",
+      "mirror_disposition": "mirror"
+    },
+    {
+      "canonical_path": "schema/v1.3/types.schema.json",
+      "target_path": "schema/authoring/v1.3/types.schema.json",
+      "family": "authoring",
+      "family_version": "v1.3",
+      "schema_id": null,
+      "sha256": "0d7669da2571371806c4080e0924d631e1a57a0d95738fc95926be223dfaff91",
+      "package_mirror_path": "src/adr_kit/schema/v1_3/types.schema.json",
+      "mirror_disposition": "mirror"
+    },
+    {
+      "canonical_path": "schema/v1.5/implementation-attribution-evidence.schema.json",
+      "target_path": "schema/evidence-attribution/v1.5/implementation-attribution-evidence.schema.json",
+      "family": "evidence-attribution",
+      "family_version": "v1.5",
+      "schema_id": null,
+      "sha256": "7d9b7480de71b5dacce2902f5e37f788a261c656127786e7771da46bf8f29cc4",
+      "package_mirror_path": "src/adr_kit/schema/v1_5/implementation-attribution-evidence.schema.json",
+      "mirror_disposition": "mirror"
+    },
+    {
+      "canonical_path": "schema/v1.5/semantic-attribution-vocabulary.json",
+      "target_path": "schema/evidence-attribution/v1.5/semantic-attribution-vocabulary.json",
+      "family": "evidence-attribution",
+      "family_version": "v1.5",
+      "schema_id": null,
+      "sha256": "b6f3615b17b4b59ffe40df4a8394299f8fb501187fefb0ec6ee083fdcf0af37a",
+      "package_mirror_path": "src/adr_kit/schema/v1_5/semantic-attribution-vocabulary.json",
+      "mirror_disposition": "mirror"
+    },
+    {
+      "canonical_path": "schema/v2.0/normalized-architecture-model.schema.json",
+      "target_path": "schema/normalized-model/v2.0/normalized-architecture-model.schema.json",
+      "family": "normalized-model",
+      "family_version": "v2.0",
+      "schema_id": null,
+      "sha256": "8f8e53130bdef4ed679372f6f771e6674522ca3e5557ef0f2fea4f3fb0bd1892",
+      "package_mirror_path": "src/adr_kit/schema/v2_0/normalized-architecture-model.schema.json",
+      "mirror_disposition": "mirror"
+    },
+    {
+      "canonical_path": "schema/v2.0/normalized-entity-registry.schema.json",
+      "target_path": "schema/normalized-model/v2.0/normalized-entity-registry.schema.json",
+      "family": "normalized-model",
+      "family_version": "v2.0",
+      "schema_id": null,
+      "sha256": "5ad6d59330c01fabdef430700b516bb5e5c13d4a6ec3e15c6bbfb79714b4eaf3",
+      "package_mirror_path": "src/adr_kit/schema/v2_0/normalized-entity-registry.schema.json",
+      "mirror_disposition": "mirror"
+    },
+    {
+      "canonical_path": "schema/v2.0/normalized-entity.schema.json",
+      "target_path": "schema/normalized-model/v2.0/normalized-entity.schema.json",
+      "family": "normalized-model",
+      "family_version": "v2.0",
+      "schema_id": null,
+      "sha256": "df8a034a2de108bf58f6b22c9b4604f92039478af50b678a4ba21a5fb93774c7",
+      "package_mirror_path": "src/adr_kit/schema/v2_0/normalized-entity.schema.json",
+      "mirror_disposition": "mirror"
+    },
+    {
+      "canonical_path": "schema/v2.0/relationship-record.schema.json",
+      "target_path": "schema/normalized-model/v2.0/relationship-record.schema.json",
+      "family": "normalized-model",
+      "family_version": "v2.0",
+      "schema_id": null,
+      "sha256": "a33a7a556a0b2f09908f8934b70ecc414753e3c3b0a9da3e60e66b614659bb2b",
+      "package_mirror_path": "src/adr_kit/schema/v2_0/relationship-record.schema.json",
+      "mirror_disposition": "mirror"
+    },
+    {
+      "canonical_path": "schema/v2.0/relationship-registry.schema.json",
+      "target_path": "schema/normalized-model/v2.0/relationship-registry.schema.json",
+      "family": "normalized-model",
+      "family_version": "v2.0",
+      "schema_id": null,
+      "sha256": "f23a3dc227f28acbc649f994629446741e1a8ac7dffc348c522796f9a298257c",
+      "package_mirror_path": "src/adr_kit/schema/v2_0/relationship-registry.schema.json",
+      "mirror_disposition": "mirror"
+    }
+  ]
+}
+

@@ -87,10 +87,10 @@ class ADRParser:
 
         Args:
             schema_dir: Path to v1.0 schema directory (defaults to package-bundled schema/v1.0)
-            schema_v11_dir: Path to v1.1 schema directory (defaults to package-bundled schema/v1.1)
-            schema_v12_dir: Path to v1.2 schema directory (defaults to package-bundled schema/v1.2)
-            schema_v13_dir: Path to v1.3 schema directory (defaults to package-bundled schema/v1.3)
-            schema_v15_dir: Path to v1.5 schema directory (defaults to package-bundled schema/v1.5)
+            schema_v11_dir: Path to v1.1 schema directory (defaults to package-bundled v1_1 resources)
+            schema_v12_dir: Path to v1.2 schema directory (defaults to package-bundled v1_2 resources)
+            schema_v13_dir: Path to v1.3 schema directory (defaults to package-bundled v1_3 resources)
+            schema_v15_dir: Path to v1.5 schema directory (defaults to package-bundled v1_5 resources)
         """
         if schema_dir is None:
             schema_dir = _package_schema_dir("adr_kit.schema.v1_0")

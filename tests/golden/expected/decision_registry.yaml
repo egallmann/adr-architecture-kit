@@ -7306,7 +7306,7 @@ entities:
   entity_type: decision
   name: Apply the attribution matrix to repository-resolved entity type
   summary: 'After `ArchitectureRepository.find_entity_by_uuid` (model 2.0), the mechanical
-    vocabulary in `schema/v1.5/semantic-attribution-vocabulary.json` admits: `implements`
+    vocabulary in `schema/evidence-attribution/v1.5/semantic-attribution-vocabulary.json` admits: `implements`
     to adr, decision, capability, contract, interface, impl'
   uri: adr://adr-architecture-kit/entities/019ffdba-3c42-7f40-b339-204a447bec81
   created_at: '2026-08-14T00:44:28.610Z'

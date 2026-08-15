@@ -1,0 +1,95 @@
+schema_version: '1.3'
+adr_type: logical
+id: 01a00626-c5cd-7064-8a74-e54d0179e4b9
+alias_id: ADR-L-0021
+alias_name: family-first-schema-contract-taxonomy
+title: Family-First Schema Contract Taxonomy and Authority
+status: proposed
+created_date: '2026-08-15'
+authors:
+- adr-architecture-kit
+domains:
+- architecture
+- schema
+tags:
+- schema-taxonomy
+- authority
+- compatibility
+context: |
+  Canonical JSON schemas currently use version-only root directories while
+  the accepted architecture distinguishes authoring, normalized-model,
+  governance, architecture-discovery, and evidence-attribution contracts.
+  This ADR establishes a family-first repository taxonomy without changing
+  schema semantics, JSON bytes, package resources, runtime behavior, or the
+  installed package namespace. Semantic attribution evidence v1.5 is not an
+  ADR authoring schema v1.5 and is not a normalized model version.
+decisions:
+- id: 01a00627-97d8-73c0-8ef4-f0e87ad8c19b
+  summary: Canonical schema placement is family-first with family-scoped versions
+  rationale: |
+    Place authoring, architecture-discovery, normalized-model, governance,
+    and evidence-attribution contracts beneath their family roots. Preserve
+    schema/v1.0 as the sole stable bare numeric compatibility exception, and
+    retain kernel/ and migrations/ as special families.
+  alias_id: DEC-0125
+  alias_name: family-first-canonical-schema-placement
+- id: 01a00627-97d8-7280-81f3-e22a264bc7c3
+  summary: Canonical repository schemas are the single schema authority
+  rationale: |
+    The accepted ADR governs family and version policy; schema/... owns the
+    actual contract bytes; README files orient humans. Installed package
+    mirrors under src/adr_kit/schema/v*_* are compatibility resources and
+    remain independently named. The test inventory fixture is a derived,
+    non-authoritative verification snapshot only.
+  alias_id: DEC-0126
+  alias_name: canonical-repository-schema-authority
+- id: 01a00627-97d8-7528-9748-aaa7df6c2fe2
+  summary: Taxonomy relocation is semantic and runtime neutral
+  rationale: |
+    Relocation must preserve schema JSON bytes, $id and $ref semantics,
+    parser/runtime behavior, SDK and CLI behavior, wheel behavior, package
+    version, and ADR corpus. Any production behavior change is outside this
+    ADR and is a stop condition.
+  alias_id: DEC-0127
+  alias_name: taxonomy-relocation-is-semantic-neutral
+constraints:
+- id: CONST-0021
+  type: technical
+  description: Schema/v1.0 remains at its existing path as the stable compatibility exception.
+  rationale: Existing authoring consumers rely on the stable v1.0 path.
+- id: CONST-0022
+  type: technical
+  description: Package resources remain under src/adr_kit/schema/v*_* and are not relocated.
+  rationale: Installed resource namespaces are an independent compatibility surface.
+- id: CONST-0023
+  type: technical
+  description: No new bare root version directory may be introduced.
+  rationale: Family-first placement prevents version-only taxonomy ambiguity.
+- id: CONST-0024
+  type: regulatory
+  description: The taxonomy inventory fixture is verification data, never semantic authority.
+  rationale: Canonical schema bytes and the accepted ADR retain authority.
+invariants:
+- id: 01a00627-97d8-7e92-a0ca-e572a89fef75
+  statement: Canonical schema membership and SHA-256 fingerprints are unchanged by taxonomy relocation.
+  scope: global
+  enforcement_level: must
+  enforcement_mechanism: test
+  verification_method: automated
+  rationale: Byte-preserving relocation is required for semantic neutrality.
+  alias_id: INV-0128
+  alias_name: taxonomy-preserves-schema-membership-and-bytes
+- id: 01a00627-97d8-76cd-853b-3e17275c4b76
+  statement: Every canonical schema artifact has one authoritative repository path and at most one explicit package mirror mapping.
+  scope: global
+  enforcement_level: must
+  enforcement_mechanism: test
+  verification_method: automated
+  rationale: Authority must not be duplicated by topology or by the verification fixture.
+  alias_id: INV-0129
+  alias_name: one-canonical-schema-authority
+capabilities: []
+architectural_boundaries: []
+interaction_contracts: []
+non_functional_requirements: []
+gaps: []

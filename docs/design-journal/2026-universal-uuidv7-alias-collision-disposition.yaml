@@ -1,0 +1,108 @@
+schema_version: '1.0'
+artifact: universal_uuidv7_alias_collision_disposition
+classification: DESIGN-CLOSURE-REVIEW-ARTIFACT
+governing_adrs:
+  - ADR-L-0019
+  - ADR-L-0022
+source_fixture: tests/fixtures/universal-graph-identity-baseline.json
+status: REQUIRES-HUMAN-REVIEW
+policy: >-
+  Legacy aliases are historical evidence. They do not automatically become final
+  aliases when multiple future entities claim the same value. The migration allocator
+  must select a repository-unique final alias after human disposition and must never
+  change the canonical UUID because an alias changes.
+collisions:
+  - legacy_alias: CONST-0001
+    claims:
+      - canonical_path: adrs/logical/ADR-L-0001-ste-compliant-adr-system.yaml
+        pointer: /constraints/0
+        kind: constraint
+      - canonical_path: adrs/logical/ADR-L-0007-deterministic-documentation-projection.yaml
+        pointer: /constraints/0
+        kind: constraint
+    selected_incumbent: null
+    proposed_replacements:
+      allocation_rule: next-unused-CONST-prefix-alias-after-human-disposition
+      candidates:
+        - CONST-0005
+        - CONST-0006
+    rationale: No accepted authority establishes ownership between the two constraints.
+    status: REQUIRES-HUMAN-REVIEW
+  - legacy_alias: GAP-0001
+    claims:
+      - canonical_path: adrs/logical/ADR-L-0004-adr-to-code-traceability-via-decorators.yaml
+        pointer: /gaps/0
+        kind: gap
+      - canonical_path: adrs/physical/ADR-P-0004-prompt-translator-implementation.yaml
+        pointer: /gaps/0
+        kind: gap
+    selected_incumbent: null
+    proposed_replacements:
+      allocation_rule: next-unused-GAP-prefix-alias-after-human-disposition
+      candidates:
+        - GAP-0008
+        - GAP-0009
+    rationale: Logical and physical gaps have independent ownership and lifecycle.
+    status: REQUIRES-HUMAN-REVIEW
+  - legacy_alias: GAP-0002
+    claims:
+      - canonical_path: adrs/logical/ADR-L-0004-adr-to-code-traceability-via-decorators.yaml
+        pointer: /gaps/1
+        kind: gap
+      - canonical_path: adrs/logical/ADR-L-0005-adr-to-prompt-translation.yaml
+        pointer: /gaps/0
+        kind: gap
+      - canonical_path: adrs/physical/ADR-P-0004-prompt-translator-implementation.yaml
+        pointer: /gaps/1
+        kind: gap
+    selected_incumbent: null
+    proposed_replacements:
+      allocation_rule: next-unused-GAP-prefix-alias-after-human-disposition
+      candidates:
+        - GAP-0008
+        - GAP-0009
+        - GAP-0010
+    rationale: Three independently owned gaps claim one historical label.
+    status: REQUIRES-HUMAN-REVIEW
+  - legacy_alias: GAP-0003
+    claims:
+      - canonical_path: adrs/logical/ADR-L-0004-adr-to-code-traceability-via-decorators.yaml
+        pointer: /gaps/2
+        kind: gap
+      - canonical_path: adrs/logical/ADR-L-0005-adr-to-prompt-translation.yaml
+        pointer: /gaps/1
+        kind: gap
+      - canonical_path: adrs/physical/ADR-P-0004-prompt-translator-implementation.yaml
+        pointer: /gaps/2
+        kind: gap
+    selected_incumbent: null
+    proposed_replacements:
+      allocation_rule: next-unused-GAP-prefix-alias-after-human-disposition
+      candidates:
+        - GAP-0011
+        - GAP-0012
+        - GAP-0013
+    rationale: Three independently owned gaps claim one historical label.
+    status: REQUIRES-HUMAN-REVIEW
+  - legacy_alias: GAP-0004
+    claims:
+      - canonical_path: adrs/logical/ADR-L-0004-adr-to-code-traceability-via-decorators.yaml
+        pointer: /gaps/3
+        kind: gap
+      - canonical_path: adrs/logical/ADR-L-0005-adr-to-prompt-translation.yaml
+        pointer: /gaps/2
+        kind: gap
+    selected_incumbent: null
+    proposed_replacements:
+      allocation_rule: next-unused-GAP-prefix-alias-after-human-disposition
+      candidates:
+        - GAP-0014
+        - GAP-0015
+    rationale: No accepted authority establishes an incumbent between the two gaps.
+    status: REQUIRES-HUMAN-REVIEW
+resolution_gate:
+  all_claims_mapped: true
+  selected_incumbents_reviewed: false
+  final_aliases_allocated: false
+  retired_aliases_recorded: false
+  map_sealing_allowed: false

@@ -1,0 +1,234 @@
+schema_version: '1.3'
+adr_type: logical
+id: 01a00643-1bfc-788c-911b-83a4725a8de1
+title: Universal UUIDv7 Entity Identity
+status: accepted
+created_date: '2026-08-15'
+authors:
+- adr-architecture-kit
+domains:
+- architecture
+- identity
+- schema-governance
+related_adrs:
+- 019fee89-e617-78d9-ba3b-b7e3e6db1b12
+context: 'ADR-L-0019 correctly separated immutable UUIDv7 machine identity from
+  human-oriented aliases, but DEC-0097 admitted that identity envelope for only a
+  selected set of entity kinds. Other durable ADR-domain records still expose
+  alias-shaped values as `id`, use alias references across artifacts, or omit identity
+  entirely. Requirements snapshots, requirement items, decision ledgers, ledger
+  decisions, reviews, overrides, constraints, non-functional requirements, gaps,
+  system boundaries, data flows, and evidence expectations are examples.
+
+  That split creates an accumulating identity tax. A consumer cannot determine from
+  the name `id` whether a field is immutable canonical identity, a human alias, a
+  content-derived projection key, or an owner-local structural handle. New schema
+  families such as rules could repeat the ambiguity unless schema admission is bound
+  to one universal entity-identity invariant.
+
+  This ADR extends ADR-L-0019 rather than replacing its successful UUID, alias,
+  reference, namespace, collision, and migration semantics. It supersedes the narrow
+  entity-kind boundary in DEC-0097, establishes a structural test for entityhood,
+  distinguishes canonical entities from local value objects and derived projections,
+  and requires future schema contracts to make that classification explicit.
+  Semantic schema versions, package namespaces, corpus migration, and removal of old
+  compatibility surfaces remain implementation decisions that must be reviewed before
+  destructive application.
+  '
+decisions:
+- id: 01a00643-1bfc-7c3d-b935-01f39da8a0a5
+  summary: Require the ADR-L-0019 identity envelope for every canonical independently
+    addressable ADR-domain entity
+  rationale: 'Every canonical independently addressable ADR-domain entity authors an
+    immutable lowercase RFC 9562 UUIDv7 in `id`, a governed type-prefixed `alias_id`,
+    and a stable-by-default human-oriented `alias_name`. This supersedes DEC-0097''s
+    closed entity-kind allowlist without weakening the existing identity, alias,
+    namespace, collision, or migration rules.'
+  supersedes:
+  - 019fee89-e617-7bdc-b136-032978d92661
+  alias_id: DEC-0130
+  alias_name: require-universal-uuidv7-entity-identity-envelope
+- id: 01a00643-1bfc-7676-812e-219c659674b2
+  summary: Define entityhood by actual or potential participation in the system graph
+  rationale: 'Any record that participates, or may later participate, as a node or edge
+    in the system graph is an entity and must have the universal identity envelope
+    before graph admission. Independent addressability, cross-artifact references,
+    lifecycle, provenance, admission, governance meaning, and durable semantic
+    continuity are evidence of graph eligibility. Uncertainty resolves toward entity
+    identity; only records explicitly prohibited from graph participation may be
+    classified as value objects.'
+  alias_id: DEC-0131
+  alias_name: define-entityhood-by-independent-addressability
+- id: 01a00643-1bfc-7922-9c18-f6938ee01c41
+  summary: Require canonical entity references to use UUIDs while aliases remain orientation
+  rationale: 'Canonical local references and relationship endpoints use the target
+    entity UUID. Cross-namespace references use provider namespace, UUID, kind, and
+    fingerprint. `alias_id`, `alias_name`, and derived `alias_ref` are human orientation
+    and lookup presentation only and never foreign keys or retargetable identity.'
+  alias_id: DEC-0132
+  alias_name: require-uuid-canonical-entity-references
+- id: 01a00643-1bfc-7b7e-883d-6c7dfff3325f
+  summary: Keep owner-local value objects free of entity identity
+  rationale: 'A record may remain a value object only when its contract explicitly
+    excludes it from present and future graph participation and it has no independent
+    lifecycle, authority, cross-owner reference, or durable semantic continuity. It has
+    no `id`, `alias_id`, or `alias_name`. An owner-local structural handle is named
+    `key` or `<role>_key`, is scoped to its owner, and cannot enter graph output. Any
+    later graph eligibility requires promotion to an entity through a schema version
+    and migration before graph admission.'
+  alias_id: DEC-0133
+  alias_name: keep-owner-local-value-objects-identity-free
+- id: 01a00643-1bfc-72a1-af3d-7cca88f676f7
+  summary: Require stable UUIDv7 identity for every graph node and edge projection
+  rationale: 'A graph projection reuses the persisted UUID and aliases of its canonical
+    node or edge entity. Relationship assertions, topology nodes and edges, unresolved
+    findings, bindings, evidence claims, or other derived candidates cannot enter the
+    system graph until canonical authority has allocated and persisted their UUIDv7
+    identity. Content hashes remain fingerprints or deduplication keys, never identity.
+    Purely non-graph diagnostics may use deterministic keys, and generators never mint
+    authoritative UUIDs opportunistically during regeneration.'
+  alias_id: DEC-0134
+  alias_name: distinguish-projection-keys-from-entity-identity
+- id: 01a00643-1bfc-71ef-8e1f-694949767d59
+  summary: Promote current durable alias-identified authoring and governance records to entities
+  rationale: 'Constraints, non-functional requirements, authored gaps, system boundaries,
+    data flows, evidence expectations, requirements snapshots and their referencable
+    requirement items, decision ledgers and ledger decisions, steelman reviews and
+    referencable objections, objection overrides, remediation ledgers, and independently
+    governed remediation entries are graph-eligible records and therefore receive the
+    universal identity envelope in their next semantic contract version. Topology nodes
+    and edges, relationship assertions, unresolved findings, bindings, and evidence
+    claims also require the envelope whenever they can participate in the graph.'
+  alias_id: DEC-0135
+  alias_name: promote-durable-authoring-and-governance-records
+- id: 01a00643-1bfc-729a-833f-5a3bca5af998
+  summary: Bind future rule evidence and other entity schemas to the same invariant
+  rationale: 'Every new schema that models records eligible for graph participation,
+    including rule, evidence, governance, authoring, and normalized-model contracts,
+    must require the universal identity envelope. Rule instances, evidence entities,
+    and graph-participating binding or assertion records use UUID identity; external
+    references add provider namespace, kind, and fingerprint. A JSON Schema `$id` is
+    contract URI identity and does not substitute for instance entity identity.'
+  alias_id: DEC-0136
+  alias_name: bind-all-future-entity-schemas-to-universal-identity
+- id: 01a00643-1bfc-7e7a-af3f-0484ebc351c9
+  summary: Require semantic version boundaries and explicit package mappings for identity migration
+  rationale: 'Changing alias-only identity, adding required UUID and alias fields,
+    changing canonical references, or reclassifying `id` as `key` is a semantic contract
+    change and must occur in a new family-scoped schema version. Canonical repository
+    and installed-package resource paths are explicit mappings rather than inferred
+    from an unqualified version label. Existing contract bytes are not silently
+    rewritten in place.'
+  alias_id: DEC-0137
+  alias_name: version-universal-identity-as-semantic-contract-change
+- id: 01a00643-1bfc-7528-951b-a457433ae5f4
+  summary: Migrate identity with a sealed reviewable map and semantic parity proof
+  rationale: 'Migration inventories every promoted entity and reference before minting,
+    records owner path and structural pointer, preserves the human alias, proposes an
+    alias name deterministically, mints each UUID once into a sealed map, rewrites
+    canonical references atomically, validates the entire write set, and proves
+    idempotence and semantic parity. Counts alone are not proof and a migration cannot
+    silently remint or retarget an entity.'
+  alias_id: DEC-0138
+  alias_name: migrate-with-sealed-map-and-semantic-parity
+- id: 01a00643-1bfc-7936-bb29-afde4c57721d
+  summary: Remove obsolete compatibility surfaces only through an explicit reviewed gate
+  rationale: 'Being the sole current external consumer permits a clean break but does
+    not make deletion implicit. Exact schema versions, parser modes, package namespaces,
+    public API shims, migration inputs, and corpus formats proposed for removal must be
+    enumerated with dependency evidence and approved before deletion. Identity admission
+    does not create a release tag or publication authority.'
+  alias_id: DEC-0139
+  alias_name: gate-obsolete-compatibility-removal-explicitly
+invariants:
+- id: 01a00643-1bfc-757c-ba3a-63a007e981d0
+  statement: Every record that participates or may participate as a node or edge in the
+    system graph has an immutable lowercase RFC 9562 UUIDv7 `id`, a governed `alias_id`,
+    and a human-oriented `alias_name` before graph admission.
+  scope: global
+  enforcement_level: must
+  enforcement_mechanism: design
+  verification_method: automated
+  rationale: Universal canonical identity prevents new alias-only identity debt.
+  alias_id: INV-0130
+  alias_name: every-canonical-entity-has-universal-identity-envelope
+- id: 01a00643-1bfc-766c-ba3c-2f5aa66d59f6
+  statement: Canonical entity references and relationship endpoints use UUIDs rather
+    than aliases or owner-local keys.
+  scope: global
+  enforcement_level: must
+  enforcement_mechanism: design
+  verification_method: automated
+  rationale: Reference stability must not depend on presentation or local structure.
+  alias_id: INV-0131
+  alias_name: canonical-entity-references-use-uuids
+- id: 01a00643-1bfc-7dd1-a439-31a110f8ed50
+  statement: Human aliases orient and resolve for presentation but never define canonical
+    identity or retarget a reference.
+  scope: global
+  enforcement_level: must
+  enforcement_mechanism: design
+  verification_method: automated
+  rationale: Alias evolution must remain independent from identity.
+  alias_id: INV-0132
+  alias_name: aliases-never-define-or-retarget-identity
+- id: 01a00643-1bfc-715b-a837-a062f86a6192
+  statement: Owner-local value objects are explicitly ineligible for graph participation,
+    have no entity identity, and name any local structural handle as a key rather than an id.
+  scope: global
+  enforcement_level: must
+  enforcement_mechanism: design
+  verification_method: automated
+  rationale: Field vocabulary must reveal whether a value is canonical identity.
+  alias_id: INV-0133
+  alias_name: local-value-objects-use-keys-not-ids
+- id: 01a00643-1bfc-7545-b11f-aebc124672f4
+  statement: Every graph projection reuses a persisted canonical node or edge UUID;
+    only explicitly non-graph diagnostics may use deterministic keys, and generators
+    do not mint canonical identity without canonical authority.
+  scope: global
+  enforcement_level: must
+  enforcement_mechanism: design
+  verification_method: automated
+  rationale: Derived state cannot become an accidental authority source.
+  alias_id: INV-0134
+  alias_name: projections-reuse-uuid-or-use-deterministic-keys
+- id: 01a00643-1bfc-7f05-b617-6960fa562bea
+  statement: Every new or revised schema declares graph eligibility and entity value-object
+    and projection boundaries and mechanically enforces the universal identity invariant.
+  scope: global
+  enforcement_level: must
+  enforcement_mechanism: policy
+  verification_method: automated
+  rationale: The invariant applies to rules and future schema families as well as ADR authoring.
+  alias_id: INV-0135
+  alias_name: schema-admission-declares-and-enforces-identity-boundaries
+- id: 01a00643-1bfc-7017-a03d-b61439e4cb2b
+  statement: Identity migration mints each entity UUID once from a reviewed sealed map
+    and proves reference and semantic parity after atomic application.
+  scope: global
+  enforcement_level: must
+  enforcement_mechanism: policy
+  verification_method: automated
+  rationale: A migration must not remint retarget or partially apply canonical identity.
+  alias_id: INV-0136
+  alias_name: identity-migration-is-sealed-atomic-and-parity-proven
+- id: 01a00643-1bfc-7840-811f-831007e661b2
+  statement: No legacy schema package namespace parser mode public compatibility shim or
+    corpus format is removed without explicit reviewed disposition.
+  scope: global
+  enforcement_level: must
+  enforcement_mechanism: policy
+  verification_method: automated
+  rationale: Clean-break authority must be precise rather than inferred.
+  alias_id: INV-0137
+  alias_name: compatibility-removal-requires-explicit-reviewed-disposition
+capabilities: []
+gaps: []
+notes: 'Accepted from the 2026-08-15 human lock that every record which participates
+  or may participate in the system graph requires stable UUIDv7 identity. Exact
+  semantic-version, package-namespace, corpus-migration, and obsolete-surface
+  dispositions remain explicit implementation gates recorded in
+  docs/design-journal/2026-universal-uuidv7-entity-identity.md.'
+alias_id: ADR-L-0022
+alias_name: universal-uuidv7-entity-identity

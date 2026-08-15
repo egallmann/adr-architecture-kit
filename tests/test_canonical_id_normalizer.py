@@ -340,6 +340,98 @@ def test_repair_apply_writes_definitions_ledgers_and_is_idempotent(tmp_path):
     )
 
 
+def test_repair_apply_syncs_new_allocations_without_requiring_a_collision(tmp_path):
+    adr_dir = _promoted_collision_fixture(tmp_path)
+    normalizer = CanonicalIdNormalizer()
+    scope = normalizer.scope_resolver.resolve(tmp_path)
+    normalizer.repair(scope, apply=True)
+    _write(
+        adr_dir / "logical" / "ADR-L-2002-no-collision.yaml",
+        """
+        schema_version: "1.0"
+        adr_type: logical
+        id: ADR-L-2002
+        title: Newly admitted allocation
+        status: accepted
+        created_date: "2026-01-03"
+        authors: [test.author]
+        domains: [architecture]
+        context: New canonical entity with no collision.
+        architectural_boundaries:
+          - id: BOUND-0099
+            name: New boundary
+            description: New independently addressable boundary.
+            rationale: Prove allocation-ledger admission without a remap.
+        interaction_contracts: []
+        """,
+    )
+
+    assert any(
+        "missing active allocation" in finding
+        for finding in normalizer.validate_allocations(scope)
+    )
+    plan = normalizer.repair(scope, apply=True)
+
+    assert plan.remaps == []
+    assert normalizer.validate_allocations(scope) == []
+    allocation = ADRParser().parse_yaml(
+        adr_dir / "migrations" / "canonical-id-allocation.yaml"
+    )
+    assert allocation["high_water_marks"]["BOUND"] == 99
+    assert any(
+        item["id"] == "BOUND-0099"
+        and item["file_path"] == "adrs/logical/ADR-L-2002-no-collision.yaml"
+        and item["state"] == "active"
+        for item in allocation["allocations"]
+    )
+    historical = [
+        item
+        for item in allocation["allocations"]
+        if item["id"] == "BOUND-0001"
+        and item["file_path"] == "adrs/logical/ADR-L-2000-a.yaml"
+    ]
+    assert len(historical) == 1
+    assert historical[0]["source_pointer"] == "/architectural_boundaries/0/id"
+    assert historical[0]["state"] == "active"
+
+
+def test_repair_cli_apply_syncs_allocation_ledger_when_no_collision_exists(tmp_path):
+    adr_dir = _promoted_collision_fixture(tmp_path)
+    normalizer = CanonicalIdNormalizer()
+    scope = normalizer.scope_resolver.resolve(tmp_path)
+    normalizer.repair(scope, apply=True)
+    _write(
+        adr_dir / "logical" / "ADR-L-2002-no-collision.yaml",
+        """
+        schema_version: "1.0"
+        adr_type: logical
+        id: ADR-L-2002
+        title: CLI allocation admission
+        status: accepted
+        created_date: "2026-01-03"
+        authors: [test.author]
+        domains: [architecture]
+        context: Exercise the governed CLI synchronization path.
+        architectural_boundaries:
+          - id: BOUND-0099
+            name: CLI boundary
+            description: New independently addressable boundary.
+            rationale: Prove CLI allocation-ledger admission without a remap.
+        interaction_contracts: []
+        """,
+    )
+
+    result = CliRunner().invoke(
+        cli,
+        ["repair-canonical-ids", "--scope", str(tmp_path), "--apply"],
+    )
+
+    assert result.exit_code == 0, result.output
+    assert "Applied 0 canonical ID repairs." in result.output
+    assert "Synchronized the canonical ID allocation ledger." in result.output
+    assert normalizer.validate_allocations(scope) == []
+
+
 def test_repair_fails_closed_for_ambiguous_typed_reference(tmp_path):
     adr_dir = _promoted_collision_fixture(tmp_path)
     target = adr_dir / "logical" / "ADR-L-2002-reference.yaml"

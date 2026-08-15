@@ -5,8 +5,8 @@ artifact_kind: rendered_adr_markdown
 generator_id: adr-projection-markdown
 generator_version: 2
 hash_algorithm: sha256
-source_hash: 8dcb38d934d7e04b834dfb4c1afdb04547a3c78b7c392ee4f63dcf0a87437c42
-rendered_hash: ac66738997f24ae1a84f2384142a6a81519b306d7b8fc623ef9e521882840bf7
+source_hash: c8a261fbfe668a8ae4aff387d7dc925c3a75bec6786407ada2dc0f2be66a2f2e
+rendered_hash: 56b0976dc39263ae0c57d9dba13af94553ff11463d8352253939b78c11a1547e
 -->
 
 # ADR-L-0019: Canonical Entity Identity
@@ -92,7 +92,6 @@ flowchart LR
   n_019fee89_e617_7ed0_9c17_6def51de03a3["INV-0086"]
   n_019fee89_e617_7f80_823f_9e52a6176f77["DEC-0090"]
   n_019fee89_e617_7faa_813b_d8e882418d4e["DEC-0093"]
-  n_019ffdba_3c42_7c4a_a737_f6751a265d60["ADR-L-0020"]
   n_019fee89_e617_702b_b51b_719234187415 -->|"declared_in"| n_019fee89_e617_78d9_ba3b_b7e3e6db1b12
   n_019fee89_e617_707d_bb3e_959ff33027b8 -->|"declared_in"| n_019fee89_e617_78d9_ba3b_b7e3e6db1b12
   n_019fee89_e617_70d5_9035_ffeda9070001 -->|"declared_in"| n_019fee89_e617_78d9_ba3b_b7e3e6db1b12
@@ -130,7 +129,26 @@ flowchart LR
   n_019fee89_e617_7ed0_9c17_6def51de03a3 -->|"declared_in"| n_019fee89_e617_78d9_ba3b_b7e3e6db1b12
   n_019fee89_e617_7f80_823f_9e52a6176f77 -->|"declared_in"| n_019fee89_e617_78d9_ba3b_b7e3e6db1b12
   n_019fee89_e617_7faa_813b_d8e882418d4e -->|"declared_in"| n_019fee89_e617_78d9_ba3b_b7e3e6db1b12
+```
+```mermaid
+flowchart LR
+  n_019fee89_e617_78d9_ba3b_b7e3e6db1b12["ADR-L-0019"]
+  n_019ffdba_3c42_7c4a_a737_f6751a265d60["ADR-L-0020"]
+  n_01a00643_1bfc_788c_911b_83a4725a8de1["ADR-L-0022"]
   n_019ffdba_3c42_7c4a_a737_f6751a265d60 -->|"references"| n_019fee89_e617_78d9_ba3b_b7e3e6db1b12
+  n_01a00643_1bfc_788c_911b_83a4725a8de1 -->|"references"| n_019fee89_e617_78d9_ba3b_b7e3e6db1b12
+```
+```mermaid
+flowchart LR
+  n_019fee89_e617_7bdc_b136_032978d92661["DEC-0097"]
+  n_01a00643_1bfc_7c3d_b935_01f39da8a0a5["DEC-0130"]
+  n_019fee89_e617_7bdc_b136_032978d92661 -->|"superseded_by"| n_01a00643_1bfc_7c3d_b935_01f39da8a0a5
+```
+```mermaid
+flowchart LR
+  n_019fee89_e617_7bdc_b136_032978d92661["DEC-0097"]
+  n_01a00643_1bfc_7c3d_b935_01f39da8a0a5["DEC-0130"]
+  n_01a00643_1bfc_7c3d_b935_01f39da8a0a5 -->|"supersedes"| n_019fee89_e617_7bdc_b136_032978d92661
 ```
 
 ## Related ADRs
@@ -146,6 +164,14 @@ Attribution evidence still cited human aliases (`ADR-L-*`, `INV-*`) and
 could not name typed relationships to nested architecture entities.
 
 [Open projection](ADR-L-0020-semantic-implementation-attribution-and-cross-layer-architecture-relationships.md)
+### ADR-L-0022 — Universal UUIDv7 Entity Identity
+
+**Relationships:**
+- 01a00643-1bfc-788c-911b-83a4725a8de1 -[:references]-> this ADR
+
+**Context:** ADR-L-0019 correctly separated immutable UUIDv7 machine identity from human-oriented aliases, but DEC-0097 admitted that identity envelope for only a selected set of entity kinds. Other durable ADR-domain records still expose alias-shaped values as `id`, use alias references across artifacts, or omit identity entirely. Requirements snapshots, requirement items, decision ledgers, ledger decisions, reviews, overrides, constraints, non-functional requirements, gaps, system boundaries, data flows,…
+
+[Open projection](ADR-L-0022-universal-uuidv7-entity-identity.md)
 
 
 

@@ -6876,3 +6876,473 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
+- id: 01a00643-1bfc-7017-a03d-b61439e4cb2b
+  alias_id: INV-0136
+  alias_name: identity-migration-is-sealed-atomic-and-parity-proven
+  alias_ref: INV-0136:identity-migration-is-sealed-atomic-and-parity-proven
+  entity_type: invariant
+  name: INV-0136
+  summary: Identity migration mints each entity UUID once from a reviewed sealed map
+    and proves reference and semantic parity after atomic application.
+  uri: adr://adr-architecture-kit/entities/01a00643-1bfc-7017-a03d-b61439e4cb2b
+  created_at: '2026-08-15T16:30:56.508Z'
+  entity_fingerprint: sha256:8ae7621c520f57c77a95134fcba91d85f78265b8608ce825de3f4697c9762536
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a00643-1bfc-788c-911b-83a4725a8de1#01a00643-1bfc-7017-a03d-b61439e4cb2b
+    artifact_path: adrs/logical/ADR-L-0022-universal-uuidv7-entity-identity.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a00643-1bfc-788c-911b-83a4725a8de1
+    adr_alias_id: ADR-L-0022
+    scope: global
+    statement: Identity migration mints each entity UUID once from a reviewed sealed
+      map and proves reference and semantic parity after atomic application.
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions: []
+    supersedes: []
+    alias_id: INV-0136
+    alias_name: identity-migration-is-sealed-atomic-and-parity-proven
+  relationships:
+    declared_in:
+    - 01a00643-1bfc-788c-911b-83a4725a8de1
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a00643-1bfc-788c-911b-83a4725a8de1#01a00643-1bfc-7017-a03d-b61439e4cb2b
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
+- id: 01a00643-1bfc-715b-a837-a062f86a6192
+  alias_id: INV-0133
+  alias_name: local-value-objects-use-keys-not-ids
+  alias_ref: INV-0133:local-value-objects-use-keys-not-ids
+  entity_type: invariant
+  name: INV-0133
+  summary: Owner-local value objects are explicitly ineligible for graph participation,
+    have no entity identity, and name any local structural handle as a key rather
+    than an id.
+  uri: adr://adr-architecture-kit/entities/01a00643-1bfc-715b-a837-a062f86a6192
+  created_at: '2026-08-15T16:30:56.508Z'
+  entity_fingerprint: sha256:6967046f9752abf579acfe4498f72d5b73223075990a94ea751eb3242317b6ac
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a00643-1bfc-788c-911b-83a4725a8de1#01a00643-1bfc-715b-a837-a062f86a6192
+    artifact_path: adrs/logical/ADR-L-0022-universal-uuidv7-entity-identity.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a00643-1bfc-788c-911b-83a4725a8de1
+    adr_alias_id: ADR-L-0022
+    scope: global
+    statement: Owner-local value objects are explicitly ineligible for graph participation,
+      have no entity identity, and name any local structural handle as a key rather
+      than an id.
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions: []
+    supersedes: []
+    alias_id: INV-0133
+    alias_name: local-value-objects-use-keys-not-ids
+  relationships:
+    declared_in:
+    - 01a00643-1bfc-788c-911b-83a4725a8de1
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a00643-1bfc-788c-911b-83a4725a8de1#01a00643-1bfc-715b-a837-a062f86a6192
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
+- id: 01a00643-1bfc-7545-b11f-aebc124672f4
+  alias_id: INV-0134
+  alias_name: projections-reuse-uuid-or-use-deterministic-keys
+  alias_ref: INV-0134:projections-reuse-uuid-or-use-deterministic-keys
+  entity_type: invariant
+  name: INV-0134
+  summary: Every graph projection reuses a persisted canonical node or edge UUID;
+    only explicitly non-graph diagnostics may use deterministic keys, and generators
+    do not mint canonical identity without canonical authority.
+  uri: adr://adr-architecture-kit/entities/01a00643-1bfc-7545-b11f-aebc124672f4
+  created_at: '2026-08-15T16:30:56.508Z'
+  entity_fingerprint: sha256:397a5e7c5bab62113e6e8b792d3242cafcca0b8cbc15d81c7746042f56733529
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a00643-1bfc-788c-911b-83a4725a8de1#01a00643-1bfc-7545-b11f-aebc124672f4
+    artifact_path: adrs/logical/ADR-L-0022-universal-uuidv7-entity-identity.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a00643-1bfc-788c-911b-83a4725a8de1
+    adr_alias_id: ADR-L-0022
+    scope: global
+    statement: Every graph projection reuses a persisted canonical node or edge UUID;
+      only explicitly non-graph diagnostics may use deterministic keys, and generators
+      do not mint canonical identity without canonical authority.
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions: []
+    supersedes: []
+    alias_id: INV-0134
+    alias_name: projections-reuse-uuid-or-use-deterministic-keys
+  relationships:
+    declared_in:
+    - 01a00643-1bfc-788c-911b-83a4725a8de1
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a00643-1bfc-788c-911b-83a4725a8de1#01a00643-1bfc-7545-b11f-aebc124672f4
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
+- id: 01a00643-1bfc-757c-ba3a-63a007e981d0
+  alias_id: INV-0130
+  alias_name: every-canonical-entity-has-universal-identity-envelope
+  alias_ref: INV-0130:every-canonical-entity-has-universal-identity-envelope
+  entity_type: invariant
+  name: INV-0130
+  summary: Every record that participates or may participate as a node or edge in
+    the system graph has an immutable lowercase RFC 9562 UUIDv7 `id`, a governed `alias_id`,
+    and a human-oriented `alias_name` before graph admission.
+  uri: adr://adr-architecture-kit/entities/01a00643-1bfc-757c-ba3a-63a007e981d0
+  created_at: '2026-08-15T16:30:56.508Z'
+  entity_fingerprint: sha256:8a43cf24e84d6f0eb61bed83f54aecf855a1e19bb257c88e2567b98835cc32db
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a00643-1bfc-788c-911b-83a4725a8de1#01a00643-1bfc-757c-ba3a-63a007e981d0
+    artifact_path: adrs/logical/ADR-L-0022-universal-uuidv7-entity-identity.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a00643-1bfc-788c-911b-83a4725a8de1
+    adr_alias_id: ADR-L-0022
+    scope: global
+    statement: Every record that participates or may participate as a node or edge
+      in the system graph has an immutable lowercase RFC 9562 UUIDv7 `id`, a governed
+      `alias_id`, and a human-oriented `alias_name` before graph admission.
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions: []
+    supersedes: []
+    alias_id: INV-0130
+    alias_name: every-canonical-entity-has-universal-identity-envelope
+  relationships:
+    declared_in:
+    - 01a00643-1bfc-788c-911b-83a4725a8de1
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a00643-1bfc-788c-911b-83a4725a8de1#01a00643-1bfc-757c-ba3a-63a007e981d0
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
+- id: 01a00643-1bfc-766c-ba3c-2f5aa66d59f6
+  alias_id: INV-0131
+  alias_name: canonical-entity-references-use-uuids
+  alias_ref: INV-0131:canonical-entity-references-use-uuids
+  entity_type: invariant
+  name: INV-0131
+  summary: Canonical entity references and relationship endpoints use UUIDs rather
+    than aliases or owner-local keys.
+  uri: adr://adr-architecture-kit/entities/01a00643-1bfc-766c-ba3c-2f5aa66d59f6
+  created_at: '2026-08-15T16:30:56.508Z'
+  entity_fingerprint: sha256:1da7bed05a123d34deee8e96f290d96d3cc37ac608a85a5ec54a89410cb69f70
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a00643-1bfc-788c-911b-83a4725a8de1#01a00643-1bfc-766c-ba3c-2f5aa66d59f6
+    artifact_path: adrs/logical/ADR-L-0022-universal-uuidv7-entity-identity.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a00643-1bfc-788c-911b-83a4725a8de1
+    adr_alias_id: ADR-L-0022
+    scope: global
+    statement: Canonical entity references and relationship endpoints use UUIDs rather
+      than aliases or owner-local keys.
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions: []
+    supersedes: []
+    alias_id: INV-0131
+    alias_name: canonical-entity-references-use-uuids
+  relationships:
+    declared_in:
+    - 01a00643-1bfc-788c-911b-83a4725a8de1
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a00643-1bfc-788c-911b-83a4725a8de1#01a00643-1bfc-766c-ba3c-2f5aa66d59f6
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
+- id: 01a00643-1bfc-7840-811f-831007e661b2
+  alias_id: INV-0137
+  alias_name: compatibility-removal-requires-explicit-reviewed-disposition
+  alias_ref: INV-0137:compatibility-removal-requires-explicit-reviewed-disposition
+  entity_type: invariant
+  name: INV-0137
+  summary: No legacy schema package namespace parser mode public compatibility shim
+    or corpus format is removed without explicit reviewed disposition.
+  uri: adr://adr-architecture-kit/entities/01a00643-1bfc-7840-811f-831007e661b2
+  created_at: '2026-08-15T16:30:56.508Z'
+  entity_fingerprint: sha256:f85ba4c3eb25b4934b3d67e881f026509351929fb2750cfd82741f757c0884ff
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a00643-1bfc-788c-911b-83a4725a8de1#01a00643-1bfc-7840-811f-831007e661b2
+    artifact_path: adrs/logical/ADR-L-0022-universal-uuidv7-entity-identity.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a00643-1bfc-788c-911b-83a4725a8de1
+    adr_alias_id: ADR-L-0022
+    scope: global
+    statement: No legacy schema package namespace parser mode public compatibility
+      shim or corpus format is removed without explicit reviewed disposition.
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions: []
+    supersedes: []
+    alias_id: INV-0137
+    alias_name: compatibility-removal-requires-explicit-reviewed-disposition
+  relationships:
+    declared_in:
+    - 01a00643-1bfc-788c-911b-83a4725a8de1
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a00643-1bfc-788c-911b-83a4725a8de1#01a00643-1bfc-7840-811f-831007e661b2
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
+- id: 01a00643-1bfc-7dd1-a439-31a110f8ed50
+  alias_id: INV-0132
+  alias_name: aliases-never-define-or-retarget-identity
+  alias_ref: INV-0132:aliases-never-define-or-retarget-identity
+  entity_type: invariant
+  name: INV-0132
+  summary: Human aliases orient and resolve for presentation but never define canonical
+    identity or retarget a reference.
+  uri: adr://adr-architecture-kit/entities/01a00643-1bfc-7dd1-a439-31a110f8ed50
+  created_at: '2026-08-15T16:30:56.508Z'
+  entity_fingerprint: sha256:8372edf6368cbc6d22fe9913ad736dd1130b826b154d743f8c341aed33d2458a
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a00643-1bfc-788c-911b-83a4725a8de1#01a00643-1bfc-7dd1-a439-31a110f8ed50
+    artifact_path: adrs/logical/ADR-L-0022-universal-uuidv7-entity-identity.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a00643-1bfc-788c-911b-83a4725a8de1
+    adr_alias_id: ADR-L-0022
+    scope: global
+    statement: Human aliases orient and resolve for presentation but never define
+      canonical identity or retarget a reference.
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions: []
+    supersedes: []
+    alias_id: INV-0132
+    alias_name: aliases-never-define-or-retarget-identity
+  relationships:
+    declared_in:
+    - 01a00643-1bfc-788c-911b-83a4725a8de1
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a00643-1bfc-788c-911b-83a4725a8de1#01a00643-1bfc-7dd1-a439-31a110f8ed50
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
+- id: 01a00643-1bfc-7f05-b617-6960fa562bea
+  alias_id: INV-0135
+  alias_name: schema-admission-declares-and-enforces-identity-boundaries
+  alias_ref: INV-0135:schema-admission-declares-and-enforces-identity-boundaries
+  entity_type: invariant
+  name: INV-0135
+  summary: Every new or revised schema declares graph eligibility and entity value-object
+    and projection boundaries and mechanically enforces the universal identity invariant.
+  uri: adr://adr-architecture-kit/entities/01a00643-1bfc-7f05-b617-6960fa562bea
+  created_at: '2026-08-15T16:30:56.508Z'
+  entity_fingerprint: sha256:4e0ecdd956712c359b8c736539ac66985f0f63074f072547357616f079dc4719
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a00643-1bfc-788c-911b-83a4725a8de1#01a00643-1bfc-7f05-b617-6960fa562bea
+    artifact_path: adrs/logical/ADR-L-0022-universal-uuidv7-entity-identity.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a00643-1bfc-788c-911b-83a4725a8de1
+    adr_alias_id: ADR-L-0022
+    scope: global
+    statement: Every new or revised schema declares graph eligibility and entity value-object
+      and projection boundaries and mechanically enforces the universal identity invariant.
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions: []
+    supersedes: []
+    alias_id: INV-0135
+    alias_name: schema-admission-declares-and-enforces-identity-boundaries
+  relationships:
+    declared_in:
+    - 01a00643-1bfc-788c-911b-83a4725a8de1
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a00643-1bfc-788c-911b-83a4725a8de1#01a00643-1bfc-7f05-b617-6960fa562bea
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index

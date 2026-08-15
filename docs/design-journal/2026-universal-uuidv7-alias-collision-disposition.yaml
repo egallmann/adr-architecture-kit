@@ -24,8 +24,8 @@ collisions:
     proposed_replacements:
       allocation_rule: next-unused-CONST-prefix-alias-after-human-disposition
       candidates:
-        - CONST-0005
-        - CONST-0006
+        - CONST-0025
+        - CONST-0026
     rationale: No accepted authority establishes ownership between the two constraints.
     status: REQUIRES-HUMAN-REVIEW
   - legacy_alias: GAP-0001
@@ -40,8 +40,8 @@ collisions:
     proposed_replacements:
       allocation_rule: next-unused-GAP-prefix-alias-after-human-disposition
       candidates:
-        - GAP-0008
-        - GAP-0009
+        - GAP-0020
+        - GAP-0021
     rationale: Logical and physical gaps have independent ownership and lifecycle.
     status: REQUIRES-HUMAN-REVIEW
   - legacy_alias: GAP-0002
@@ -59,9 +59,9 @@ collisions:
     proposed_replacements:
       allocation_rule: next-unused-GAP-prefix-alias-after-human-disposition
       candidates:
-        - GAP-0008
-        - GAP-0009
-        - GAP-0010
+        - GAP-0022
+        - GAP-0023
+        - GAP-0024
     rationale: Three independently owned gaps claim one historical label.
     status: REQUIRES-HUMAN-REVIEW
   - legacy_alias: GAP-0003
@@ -79,9 +79,9 @@ collisions:
     proposed_replacements:
       allocation_rule: next-unused-GAP-prefix-alias-after-human-disposition
       candidates:
-        - GAP-0011
-        - GAP-0012
-        - GAP-0013
+        - GAP-0025
+        - GAP-0026
+        - GAP-0027
     rationale: Three independently owned gaps claim one historical label.
     status: REQUIRES-HUMAN-REVIEW
   - legacy_alias: GAP-0004
@@ -96,8 +96,8 @@ collisions:
     proposed_replacements:
       allocation_rule: next-unused-GAP-prefix-alias-after-human-disposition
       candidates:
-        - GAP-0014
-        - GAP-0015
+        - GAP-0028
+        - GAP-0029
     rationale: No accepted authority establishes an incumbent between the two gaps.
     status: REQUIRES-HUMAN-REVIEW
 resolution_gate:
@@ -106,3 +106,36 @@ resolution_gate:
   final_aliases_allocated: false
   retired_aliases_recorded: false
   map_sealing_allowed: false
+
+# Candidate validation is a repository scan, not an allocation.  The scan
+# excluded this artifact's former proposal values and examined canonical ADR
+# sources, migration/allocation ledgers, retirement history, and committed
+# tests/fixtures for already-admitted or reserved values.
+candidate_validation:
+  checkpoint: 20a79f7ed848ea304142e6d06c66d63f28d857b0
+  permanent_allocation: false
+  namespaces:
+    CONST:
+      highest_observed_or_retired: CONST-0024
+      candidates:
+        - CONST-0025
+        - CONST-0026
+      candidate_collisions: []
+      reused_retired_aliases: []
+    GAP:
+      highest_observed_or_retired: GAP-0019
+      candidates:
+        - GAP-0020
+        - GAP-0021
+        - GAP-0022
+        - GAP-0023
+        - GAP-0024
+        - GAP-0025
+        - GAP-0026
+        - GAP-0027
+        - GAP-0028
+        - GAP-0029
+      candidate_collisions: []
+      reused_retired_aliases: []
+  uniqueness_across_groups: true
+  monotonic_after_high_water_marks: true

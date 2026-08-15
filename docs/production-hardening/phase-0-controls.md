@@ -98,5 +98,6 @@ python benchmarks/phase0.py \
 ```
 
 Timing is evidence, not a Phase 0 CI threshold. CI runs a small functional smoke and
-requires deterministic repeated fingerprints. The initial full measurement is recorded
-in [benchmark-baseline.md](benchmark-baseline.md).
+requires deterministic repeated fingerprints. Historical benchmark measurements are
+retained in Git history; this document keeps the current benchmark method and release
+controls without treating a phase snapshot as durable authority.

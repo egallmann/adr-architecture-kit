@@ -5,8 +5,8 @@ artifact_kind: rendered_adr_markdown
 generator_id: adr-projection-markdown
 generator_version: 2
 hash_algorithm: sha256
-source_hash: 2e2d29aee8d545a06705d467752890e135f7b2313c140427b2be3657c968f316
-rendered_hash: 8fbe0c002ba20a99fca546d524a8f344c2880af496badf2f06dc288d2d8be8c5
+source_hash: 3cf7642ffa53b76e28f882a8b0a2ea592446ac9c2092bf5480ee09502d4090c8
+rendered_hash: 03a168fd260060919ea11d5310c68fc757d577c54e79f0ecd88838d005a7ffc6
 -->
 
 # ADR-L-0018: Schema v1.2 and Normalized Semantic Foundation
@@ -183,7 +183,7 @@ existing legacy parsing and validation.
 **Context:** Schema and contract validation is now a stable component boundary rather than
 a generic legacy physical slice. It validates canonical ADR structure,
 profile-specific contract requirements, project metadata, and implementation
-attribution evidence.
+attribution evidence. Validation of that evidence is structural for schema shape and architecture-aware when claims must resolve to canonical UUIDs and entity types. Legacy 1.0/1.2 evidence normalizes to the v1.5 claim shape only with repository or model 2.0 context.
 
 [Open projection](../physical-component/ADR-PC-0002-schema-and-contract-validation.md)
 ### ADR-PC-0003 — Compiler Pipeline and Driver

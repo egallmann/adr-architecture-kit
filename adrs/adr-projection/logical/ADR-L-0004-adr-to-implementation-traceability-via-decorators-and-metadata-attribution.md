@@ -5,15 +5,15 @@ artifact_kind: rendered_adr_markdown
 generator_id: adr-projection-markdown
 generator_version: 2
 hash_algorithm: sha256
-source_hash: 26d3073e720abef79fc481dc527bd55427ffafc9640362550886f7f84019e6c9
-rendered_hash: 17bcdbc698c1bf56f8a85088f70a5c8366600c70e2e561aabee65b9f13392181
+source_hash: a2ee38f9e5e2d9c67722d0839f9d6f13b5cde3de6881a5293ead37607308e295
+rendered_hash: 32032683c00d781dc86397c75c8a46cc9904a16ccd9a6eca7c40dc51102dc004
 -->
 
 # ADR-L-0004: ADR-to-Implementation Traceability via Decorators and Metadata Attribution
 
 **Status:** proposed  
 **Created:** 2026-03-08  
-**Modified:** 2026-05-27  
+**Modified:** 2026-08-13  
 **Authors:** adr-architecture-kit  
 **Domains:** architecture, traceability, governance, verification  
 **Tags:** traceability, decorators, verification, drift-detection, embodied-design  
@@ -102,6 +102,8 @@ flowchart LR
   n_019fee89_e615_7f19_810b_c7b33a9d9e0d["ADR-L-0002"]
   n_019fee89_e616_744f_b63e_5ecddf344faa["ADR-L-0012"]
   n_019fee89_e616_7d61_8e35_f11ba2ddd75d["ADR-L-0010"]
+  n_019ffdba_3c42_70da_b33d_efc003269c42["ADR-PC-0007"]
+  n_019ffdba_3c42_7c4a_a737_f6751a265d60["ADR-L-0020"]
   n_019fee89_e615_7129_ac3e_8120e0d7c106 -->|"declared_in"| n_019fee89_e615_7577_8d37_dd0df031bec9
   n_019fee89_e615_727f_a31e_9b8f4c153dc3 -->|"declared_in"| n_019fee89_e615_7577_8d37_dd0df031bec9
   n_019fee89_e615_7288_b21b_9452d0e7faef -->|"declared_in"| n_019fee89_e615_7577_8d37_dd0df031bec9
@@ -118,14 +120,18 @@ flowchart LR
   n_019fee89_e615_7e2e_bf3f_577dc4ade891 -->|"declared_in"| n_019fee89_e615_7577_8d37_dd0df031bec9
   n_019fee89_e615_7e6c_8a2f_8bcd9c148dce -->|"declared_in"| n_019fee89_e615_7577_8d37_dd0df031bec9
   n_019fee89_e615_7e73_a30e_6f029c9cb1b3 -->|"declared_in"| n_019fee89_e615_7577_8d37_dd0df031bec9
+  n_019ffdba_3c42_70da_b33d_efc003269c42 -->|"implements_logical"| n_019fee89_e615_7577_8d37_dd0df031bec9
   n_019fee89_e615_73a3_8d31_7a4721affae9 -->|"references"| n_019fee89_e615_7577_8d37_dd0df031bec9
   n_019fee89_e615_7577_8d37_dd0df031bec9 -->|"references"| n_019fee89_e615_70a5_861b_b2dde147e5af
   n_019fee89_e615_7577_8d37_dd0df031bec9 -->|"references"| n_019fee89_e615_77f6_9b1f_695732d25443
   n_019fee89_e615_7577_8d37_dd0df031bec9 -->|"references"| n_019fee89_e615_7f19_810b_c7b33a9d9e0d
   n_019fee89_e615_7577_8d37_dd0df031bec9 -->|"references"| n_019fee89_e616_744f_b63e_5ecddf344faa
   n_019fee89_e615_7577_8d37_dd0df031bec9 -->|"references"| n_019fee89_e616_7d61_8e35_f11ba2ddd75d
+  n_019fee89_e615_7577_8d37_dd0df031bec9 -->|"references"| n_019ffdba_3c42_70da_b33d_efc003269c42
+  n_019fee89_e615_7577_8d37_dd0df031bec9 -->|"references"| n_019ffdba_3c42_7c4a_a737_f6751a265d60
   n_019fee89_e615_7b66_b73a_3b99f7d92d4d -->|"references"| n_019fee89_e615_7577_8d37_dd0df031bec9
   n_019fee89_e615_7f19_810b_c7b33a9d9e0d -->|"references"| n_019fee89_e615_7577_8d37_dd0df031bec9
+  n_019ffdba_3c42_7c4a_a737_f6751a265d60 -->|"references"| n_019fee89_e615_7577_8d37_dd0df031bec9
 ```
 
 ## Related ADRs
@@ -206,6 +212,30 @@ provider authority or allowing the aggregation layer to rewrite canonical
 repository state.
 
 [Open projection](ADR-L-0012-federation-authority-and-qualified-identity-model.md)
+### ADR-L-0020 — Semantic Implementation Attribution and Cross-Layer Architecture Relationships
+
+**Relationships:**
+- 019ffdba-3c42-7c4a-a737-f6751a265d60 -[:references]-> this ADR
+- this ADR -[:references]-> 019ffdba-3c42-7c4a-a737-f6751a265d60
+
+**Context:** ADR-L-0004 established implementation attribution as an explicit intent
+surface. ADR-L-0019 made canonical machine identity a lowercase UUIDv7.
+Attribution evidence still cited human aliases (`ADR-L-*`, `INV-*`) and
+could not name typed relationships to nested architecture entities.
+
+[Open projection](ADR-L-0020-semantic-implementation-attribution-and-cross-layer-architecture-relationships.md)
+### ADR-PC-0007 — Semantic Attribution Embodiment
+
+**Relationships:**
+- 019ffdba-3c42-70da-b33d-efc003269c42 -[:implements_logical]-> this ADR
+- this ADR -[:references]-> 019ffdba-3c42-70da-b33d-efc003269c42
+
+**Context:** Semantic attribution needs a kit-owned embodiment for vocabulary, evidence
+models, UUID decorators, standalone shims, architecture-aware validation,
+and repository-aware 1.0/1.2 normalization. This component does not parse
+consumer source code and does not own RECON extraction.
+
+[Open projection](../physical-component/ADR-PC-0007-semantic-attribution-embodiment.md)
 
 ## Capabilities
 
@@ -242,9 +272,10 @@ implementation-to-ADR attribution claims and provenance.
 ### INV-0027
 
 **Statement:** Greenfield in-scope implementation artifacts MUST declare architectural
-authority through @implements_adr or an equivalent metadata-level
-attribution mechanism; brownfield and migration may stage adoption under
-profile-specific governance
+authority through @implements_adr, a UUID semantic claim decorator, or an
+equivalent metadata-level attribution mechanism; equivalent semantic
+declarations MUST NOT be dual-encoded on the same surface; brownfield and
+migration may stage adoption under profile-specific governance
   
 **Scope:** global  
 **Enforcement:** must (design)  
@@ -291,16 +322,17 @@ drift analysis, or trustworthy agent reasoning.
 
 ### INV-0030
 
-**Statement:** Code decorated with @enforces_invariant MUST implement validation logic
-for that invariant
+**Statement:** A declaration that code enforces an invariant is a claim of intent,
+not kit-automated proof that the enforcement logic exists
   
 **Scope:** global  
 **Enforcement:** must (design)  
-**Verification:** automated
+**Verification:** manual
 
 **Rationale:**
-Claiming to enforce an invariant without actually implementing the
-enforcement is architectural drift.
+adr-architecture-kit does not parse implementation source to prove
+enforcement. Downstream extractors and human review may pursue proof;
+the kit validates that the declared target exists and is an invariant.
 
 
 
@@ -349,6 +381,7 @@ Implementation surfaces need explicit, extractable architecture authority.
 For code, decorators remain the canonical mechanism:
 - `@implements_adr(...)`
 - `@enforces_invariant(...)`
+- `@implements(...)` / `@enforces(...)` / `@embodies(...)` for UUID-canonical semantic claims (ADR-L-0020)
 
 For infrastructure and adjacent non-code artifacts, the same intent is
 expressed through metadata-level declarations rather than per-resource
@@ -482,11 +515,11 @@ rather than creating a second transition taxonomy.
 
 ### GAP-0001: Decorator library not yet implemented
 
-**Impact:** high  
-**Blocking:** Yes
+**Impact:** low  
+**Blocking:** No
 
 **Context:**
-Classification: real gap. No adr_kit.decorators module exists yet.
+Classification: closed. adr_kit.decorators exists and is a Stable surface; UUID claim APIs are added under ADR-L-0020 / ADR-PC-0007.
 
 
 
@@ -504,11 +537,11 @@ Classification: narrowed gap. ste-runtime / RECON now emits architecture-intent 
 
 ### GAP-0003: Legacy onboarding rollout for adr-architecture-kit itself is not yet started
 
-**Impact:** medium  
+**Impact:** low  
 **Blocking:** No
 
 **Context:**
-Classification: deferred gap. The repo needs an explicit first-wave annotation plan before broad decorator rollout.
+Classification: narrowed gap. Selective high-authority dogfood is in place; remaining surfaces stay in attribution-negative-space rather than whole-repo decoration.
 
 
 

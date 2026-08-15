@@ -31,7 +31,13 @@ from ..compiler import (
     compile_logical_adr_ir_fragments,
 )
 from ..decorators import implements_adr
-from ..models.implementation_attribution import ImplementationAttributionEvidence
+from ..models.implementation_attribution import ImplementationAttributionEvidenceV15
+from adr_kit.semantic_attribution.normalize import (
+    evidence_to_canonical_dict,
+    normalize_attribution_evidence,
+    relationship_occurrence_counts,
+    unique_semantic_edges,
+)
 from ..integrity import GeneratedArtifactStatus
 from ..migrators.canonical_id_normalizer import CanonicalIdNormalizer
 from ..migrators.identity_v13 import IdentityV13Migrator, IdentityMapDocument
@@ -2412,6 +2418,30 @@ def _resolve_attribution_evidence_path(scope_root: Path, evidence: Optional[Path
     )
 
 
+def _coverage_from_v15(
+    evidence: ImplementationAttributionEvidenceV15,
+    repo: ArchitectureRepository,
+) -> tuple[list[str], dict[str, int], dict[str, int], dict[str, int]]:
+    unique_edges = unique_semantic_edges(evidence)
+    unique_by_relationship = {"implements": 0, "enforces": 0, "embodies": 0}
+    unique_by_type: dict[str, int] = {}
+    cited: set[str] = set()
+    for _impl, relationship, target in unique_edges:
+        unique_by_relationship[relationship] = unique_by_relationship.get(relationship, 0) + 1
+        entity = repo.find_entity_by_uuid(target)
+        if entity is None:
+            continue
+        unique_by_type[entity.entity_type] = unique_by_type.get(entity.entity_type, 0) + 1
+        if entity.entity_type == "adr" and entity.alias_id:
+            cited.add(entity.alias_id)
+    return (
+        sorted(cited),
+        unique_by_relationship,
+        unique_by_type,
+        relationship_occurrence_counts(evidence),
+    )
+
+
 @implements_adr("ADR-L-0002", "ADR-L-0013", "ADR-L-0004")
 @cli.group("attribution")
 def attribution_cli():
@@ -2447,16 +2477,15 @@ def attribution_check_cmd(scope: Optional[Path], evidence: Optional[Path], profi
     try:
         scope_root = Path(scope).resolve() if scope else Path.cwd().resolve()
         ev_path = _resolve_attribution_evidence_path(scope_root, evidence)
-        data = yaml.safe_load(ev_path.read_text(encoding="utf-8"))
-        evidence_obj = ImplementationAttributionEvidence.model_validate(data)
+        parser = ADRParser()
+        evidence_obj = parser.parse_implementation_attribution_evidence(ev_path)
 
         repo = ArchitectureRepository(project_root=scope_root)
         repo.load()
-        model = repo.get_model_v2() if repo.model_version == "2.0" else repo.get_model()
 
         typed_profile = cast(ContractProfile, profile)
         result = validate_implementation_attribution_evidence(
-            model,
+            repo,
             evidence_obj,
             profile=typed_profile,
         )
@@ -2500,18 +2529,48 @@ def attribution_coverage_cmd(scope: Optional[Path], evidence: Optional[Path]):
         scope_root = Path(scope).resolve() if scope else Path.cwd().resolve()
         cited: list[str] = []
         schema_version = "unknown"
+        unique_by_relationship: dict[str, int] = {
+            "implements": 0,
+            "enforces": 0,
+            "embodies": 0,
+        }
+        unique_by_type: dict[str, int] = {}
+        occurrence_by_relationship: dict[str, int] = {
+            "implements": 0,
+            "enforces": 0,
+            "embodies": 0,
+        }
         try:
             ev_path = _resolve_attribution_evidence_path(scope_root, evidence)
-            data = yaml.safe_load(ev_path.read_text(encoding="utf-8"))
-            evidence_obj = ImplementationAttributionEvidence.model_validate(data)
+            parser = ADRParser()
+            evidence_obj = parser.parse_implementation_attribution_evidence(ev_path)
             schema_version = str(evidence_obj.schema_version)
-            seen: set[str] = set()
-            for rec in evidence_obj.records:
-                for adr_id in rec.attributed_adrs:
-                    seen.add(adr_id)
-            cited = sorted(seen)
+            repo = ArchitectureRepository(project_root=scope_root)
+            repo.load()
+            if isinstance(evidence_obj, ImplementationAttributionEvidenceV15):
+                cited, unique_by_relationship, unique_by_type, occurrence_by_relationship = (
+                    _coverage_from_v15(evidence_obj, repo)
+                )
+            else:
+                seen: set[str] = set()
+                unique_edges: set[tuple[str, str, str]] = set()
+                for rec in evidence_obj.records:
+                    for adr_id in rec.attributed_adrs:
+                        seen.add(adr_id)
+                        unique_edges.add((rec.implementation_entity_id, "implements", adr_id))
+                        occurrence_by_relationship["implements"] += 1
+                    for inv_id in rec.enforced_invariants:
+                        unique_edges.add((rec.implementation_entity_id, "enforces", inv_id))
+                        occurrence_by_relationship["enforces"] += 1
+                    for cap_id in rec.attributed_capabilities:
+                        unique_edges.add((rec.implementation_entity_id, "implements", cap_id))
+                        occurrence_by_relationship["implements"] += 1
+                cited = sorted(seen)
+                for _impl, rel, _target in unique_edges:
+                    unique_by_relationship[rel] = unique_by_relationship.get(rel, 0) + 1
         except FileNotFoundError:
-            pass
+            repo = ArchitectureRepository(project_root=scope_root)
+            repo.load()
 
         repo = ArchitectureRepository(project_root=scope_root)
         repo.load()
@@ -2534,6 +2593,17 @@ def attribution_coverage_cmd(scope: Optional[Path], evidence: Optional[Path]):
             "adrs_with_attribution_claims": cited,
             "adr_corpus_total": len(catalog),
             "catalog_adrs_not_cited_by_evidence": unattributed_in_corpus,
+            "semantic_unique_claim_counts_by_relationship": {
+                key: unique_by_relationship.get(key, 0)
+                for key in ("implements", "enforces", "embodies")
+            },
+            "semantic_unique_claim_counts_by_resolved_target_entity_type": dict(
+                sorted(unique_by_type.items())
+            ),
+            "semantic_evidence_occurrence_counts_by_relationship": {
+                key: occurrence_by_relationship.get(key, 0)
+                for key in ("implements", "enforces", "embodies")
+            },
         }
         click.echo(yaml.safe_dump(payload, sort_keys=False, allow_unicode=True).rstrip())
     except Exception as e:
@@ -2597,6 +2667,53 @@ def attribution_workspace_report_cmd(
                 sort_keys=False,
             ).rstrip(),
         )
+    except Exception as e:
+        click.echo(f"Error: {e}", err=True)
+        sys.exit(1)
+
+
+@implements_adr("ADR-L-0002", "ADR-L-0013", "ADR-L-0004", "ADR-L-0020")
+@attribution_cli.command("normalize-evidence")
+@click.option(
+    "--scope",
+    type=click.Path(exists=True, file_okay=False, path_type=Path),
+    required=True,
+    help="Project root used to resolve aliases and UUIDs.",
+)
+@click.option(
+    "--input",
+    "input_path",
+    type=click.Path(exists=True, dir_okay=False, path_type=Path),
+    required=True,
+    help="Attribution evidence YAML to normalize.",
+)
+@click.option(
+    "--output",
+    type=click.Path(dir_okay=False, path_type=Path),
+    default=None,
+    help="Write canonical v1.5 YAML to this path. Omit to print to stdout.",
+)
+def attribution_normalize_evidence_cmd(
+    scope: Path,
+    input_path: Path,
+    output: Optional[Path],
+) -> None:
+    """Normalize 1.0/1.2 or 1.5 evidence to canonical v1.5 YAML. Does not write by default."""
+    try:
+        parser = ADRParser()
+        evidence_obj = parser.parse_implementation_attribution_evidence(input_path)
+        repo = ArchitectureRepository(project_root=Path(scope).resolve())
+        repo.load()
+        canonical = normalize_attribution_evidence(evidence_obj, repo)
+        payload = evidence_to_canonical_dict(canonical)
+        rendered = yaml.safe_dump(payload, sort_keys=False, allow_unicode=True)
+        if output is None:
+            click.echo(rendered.rstrip())
+            return
+        output_path = Path(output)
+        output_path.parent.mkdir(parents=True, exist_ok=True)
+        output_path.write_text(rendered, encoding="utf-8")
+        click.echo(f"Wrote canonical v1.5 evidence: {output_path.resolve()}")
     except Exception as e:
         click.echo(f"Error: {e}", err=True)
         sys.exit(1)

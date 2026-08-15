@@ -17,6 +17,7 @@ implements_logical:
 - 019fee89-e616-7066-8d2f-3acc7f469f72
 - 019fee89-e616-7d61-8e35-f11ba2ddd75d
 - 019fee89-e616-7b97-971d-ae165d13bf9c
+- 019ffdba-3c42-7c4a-a737-f6751a265d60
 related_adrs:
 - 019fee89-e618-7a2f-aa3e-1f892cdf9410
 supersedes:
@@ -38,7 +39,10 @@ context: 'Schema and contract validation is now a stable component boundary rath
 
   profile-specific contract requirements, project metadata, and implementation
 
-  attribution evidence.
+  attribution evidence. Validation of that evidence is structural for schema
+  shape and architecture-aware when claims must resolve to canonical UUIDs and
+  entity types. Legacy 1.0/1.2 evidence normalizes to the v1.5 claim shape only
+  with repository or model 2.0 context.
 
   '
 technology_stack:

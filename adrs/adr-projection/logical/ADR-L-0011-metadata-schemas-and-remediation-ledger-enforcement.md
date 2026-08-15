@@ -5,8 +5,8 @@ artifact_kind: rendered_adr_markdown
 generator_id: adr-projection-markdown
 generator_version: 2
 hash_algorithm: sha256
-source_hash: 705d7e3535cb7ed830c063294d0bb8a43918aeb9e80b1fb10bbec361e059bf3a
-rendered_hash: f149409e7a67d1da19a94f96acb818982644e12c7cf53bf135cfcdb676ac8278
+source_hash: 4e5a9d16fd7a81404934ee651fbce3b5ef8ee65acbf14ed0194a1dcc55466768
+rendered_hash: ac948a34cae3206b19c42ef2763a4991cb187c407a734290cb336e9e8f640c57
 -->
 
 # ADR-L-0011: Metadata Schemas and Remediation Ledger Enforcement
@@ -141,7 +141,7 @@ available, but it left several important questions under-specified:
 **Context:** Schema and contract validation is now a stable component boundary rather than
 a generic legacy physical slice. It validates canonical ADR structure,
 profile-specific contract requirements, project metadata, and implementation
-attribution evidence.
+attribution evidence. Validation of that evidence is structural for schema shape and architecture-aware when claims must resolve to canonical UUIDs and entity types. Legacy 1.0/1.2 evidence normalizes to the v1.5 claim shape only with repository or model 2.0 context.
 
 [Open projection](../physical-component/ADR-PC-0002-schema-and-contract-validation.md)
 ### ADR-PC-0006 — Brownfield Onboarding and Canonical Normalization

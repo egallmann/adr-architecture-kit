@@ -19,6 +19,7 @@ from ..models import (
     DecisionLedger,
     EntityRegistry,
     ImplementationAttributionEvidence,
+    ImplementationAttributionEvidenceV15,
     LogicalADR,
     Manifest,
     NormalizedEntityRegistry,
@@ -80,6 +81,7 @@ class ADRParser:
         schema_v11_dir: Path | None = None,
         schema_v12_dir: Path | None = None,
         schema_v13_dir: Path | None = None,
+        schema_v15_dir: Path | None = None,
     ):
         """Initialize parser with schema directory.
 
@@ -88,6 +90,7 @@ class ADRParser:
             schema_v11_dir: Path to v1.1 schema directory (defaults to package-bundled schema/v1.1)
             schema_v12_dir: Path to v1.2 schema directory (defaults to package-bundled schema/v1.2)
             schema_v13_dir: Path to v1.3 schema directory (defaults to package-bundled schema/v1.3)
+            schema_v15_dir: Path to v1.5 schema directory (defaults to package-bundled schema/v1.5)
         """
         if schema_dir is None:
             schema_dir = _package_schema_dir("adr_kit.schema.v1_0")
@@ -97,11 +100,14 @@ class ADRParser:
             schema_v12_dir = _package_schema_dir("adr_kit.schema.v1_2")
         if schema_v13_dir is None:
             schema_v13_dir = _package_schema_dir("adr_kit.schema.v1_3")
+        if schema_v15_dir is None:
+            schema_v15_dir = _package_schema_dir("adr_kit.schema.v1_5")
         
         self.schema_dir = Path(schema_dir)
         self.schema_v11_dir = Path(schema_v11_dir)
         self.schema_v12_dir = Path(schema_v12_dir)
         self.schema_v13_dir = Path(schema_v13_dir)
+        self.schema_v15_dir = Path(schema_v15_dir)
         self._schemas = {}
         self._validators = {}
         self._structural_validators = {}
@@ -172,6 +178,10 @@ class ADRParser:
             "physical_system_v1_3": "adr-physical-system.schema.json",
             "physical_component_v1_3": "adr-physical-component.schema.json",
         }
+
+        schema_v15_files = {
+            "implementation_attribution_evidence_v1_5": "implementation-attribution-evidence.schema.json",
+        }
         
         # Load v1.0 schemas
         for name, filename in schema_files.items():
@@ -197,6 +207,12 @@ class ADRParser:
         # Load provisional v1.3 ADR authoring schemas.
         for name, filename in schema_v13_files.items():
             schema_path = self.schema_v13_dir / filename
+            if schema_path.exists():
+                with open(schema_path) as f:
+                    self._schemas[name] = json.load(f)
+
+        for name, filename in schema_v15_files.items():
+            schema_path = self.schema_v15_dir / filename
             if schema_path.exists():
                 with open(schema_path) as f:
                     self._schemas[name] = json.load(f)
@@ -668,27 +684,41 @@ class ADRParser:
     def parse_implementation_attribution_evidence(
         self,
         file_path: Union[str, Path],
-    ) -> ImplementationAttributionEvidence:
+    ) -> ImplementationAttributionEvidence | ImplementationAttributionEvidenceV15:
         """Parse and validate implementation attribution evidence."""
         data = self.parse_yaml(file_path)
-        self.validate_against_schema(data, "implementation_attribution_evidence")
-
-        try:
-            return ImplementationAttributionEvidence(**data)
-        except ValidationError as e:
-            raise ADRParseError(f"Pydantic validation failed: {e}")
+        return self._parse_implementation_attribution_evidence_data(data)
 
     def parse_implementation_attribution_evidence_from_data(
         self,
         yaml_text: str,
-    ) -> ImplementationAttributionEvidence:
+    ) -> ImplementationAttributionEvidence | ImplementationAttributionEvidenceV15:
         """Parse and validate implementation attribution evidence from YAML text."""
         data = yaml.safe_load(yaml_text)
-        self.validate_against_schema(data, "implementation_attribution_evidence")
-        try:
-            return ImplementationAttributionEvidence(**data)
-        except ValidationError as e:
-            raise ADRParseError(f"Pydantic validation failed: {e}")
+        return self._parse_implementation_attribution_evidence_data(data)
+
+    def _parse_implementation_attribution_evidence_data(
+        self,
+        data: object,
+    ) -> ImplementationAttributionEvidence | ImplementationAttributionEvidenceV15:
+        if not isinstance(data, dict):
+            raise ADRParseError("Expected YAML object for implementation attribution evidence")
+        version = data.get("schema_version")
+        if version in ("1.0", "1.2"):
+            self.validate_against_schema(data, "implementation_attribution_evidence")
+            try:
+                return ImplementationAttributionEvidence(**data)
+            except ValidationError as e:
+                raise ADRParseError(f"Pydantic validation failed: {e}") from e
+        if version == "1.5":
+            self.validate_against_schema(data, "implementation_attribution_evidence_v1_5")
+            try:
+                return ImplementationAttributionEvidenceV15(**data)
+            except ValidationError as e:
+                raise ADRParseError(f"Pydantic validation failed: {e}") from e
+        raise ADRParseError(
+            f"Unsupported implementation attribution evidence schema_version {version!r}"
+        )
     
     def parse_requirements_snapshot(self, file_path: Union[str, Path]) -> RequirementsSnapshot:
         """Parse and validate requirements snapshot.

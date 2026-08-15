@@ -160,3 +160,16 @@ def test_helper_module_no_longer_declares_private_model_coercion() -> None:
     ).read_text(encoding="utf-8")
 
     assert "def _coerce_model(" not in source
+
+
+def test_old_call_shape_accepts_mapping_registry_and_model() -> None:
+    mapping = {"ADR-L-0001": "accepted"}
+    registry = NormalizedEntityRegistry(entities=[_adr_entity("ADR-L-0001")])
+    model = _model(_adr_entity("ADR-L-0001"))
+    evidence = _evidence(_record("ADR-L-0001"))
+
+    for context in (mapping, registry, model):
+        result = validate_implementation_attribution_evidence(context, evidence, profile="greenfield")
+        assert result.is_valid is True
+        assert result.error_count == 0
+

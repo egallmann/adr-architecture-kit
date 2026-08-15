@@ -33,17 +33,20 @@ PROBE = """
 from importlib import resources
 from pathlib import Path
 import adr_kit
-from adr_kit.decorators import enforces_invariant, implements_adr
+from adr_kit.decorators import embodies, enforces, enforces_invariant, implements, implements_adr
 from adr_kit.models import NormalizedArchitectureModel
 from adr_kit.parser import ADRParser
 from adr_kit.repository import ArchitectureRepository
 
 package_path = Path(adr_kit.__file__).resolve()
 assert 'site-packages' in package_path.as_posix().lower(), package_path
+assert callable(implements) and callable(enforces) and callable(embodies)
 assert resources.files('adr_kit.schema.v1_0').joinpath('adr-logical.schema.json').is_file()
 assert resources.files('adr_kit.schema.v1_1').joinpath('architecture-index.schema.json').is_file()
 assert resources.files('adr_kit.schema.v1_2').joinpath('adr-logical.schema.json').is_file()
 assert resources.files('adr_kit.schema.v1_3').joinpath('adr-logical.schema.json').is_file()
+assert resources.files('adr_kit.schema.v1_5').joinpath('implementation-attribution-evidence.schema.json').is_file()
+assert resources.files('adr_kit.schema.v1_5').joinpath('semantic-attribution-vocabulary.json').is_file()
 assert resources.files('adr_kit.schema.v2_0').joinpath('normalized-entity.schema.json').is_file()
 assert resources.files('adr_kit.templates').joinpath('adr-logical.md.jinja2').is_file()
 assert resources.files('adr_kit.templates').joinpath('system-overview-adr-architecture-kit.yaml').is_file()

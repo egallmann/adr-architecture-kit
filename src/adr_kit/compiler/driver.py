@@ -11,7 +11,7 @@ from unittest.mock import patch
 
 import yaml
 
-from ..decorators import implements_adr
+from ..decorators import embodies, implements_adr
 from ..models import (
     NormalizedEntityRegistry,
     RelationshipRegistry,
@@ -122,6 +122,7 @@ class _FixedDateTime(datetime):
 
 
 @implements_adr("ADR-L-0009", "ADR-L-0013")
+@embodies("019fee89-e618-7d04-9337-4aa2d3258507")
 class ArchitectureCompiler:
     """Single-scope architecture compiler driver."""
 

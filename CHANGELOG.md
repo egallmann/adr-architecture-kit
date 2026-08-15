@@ -16,6 +16,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+- Relocate canonical provisional contracts into family-first schema namespaces
+  under `schema/`, preserving `schema/v1.0/`, package resources, and all
+  schema bytes; record the taxonomy authority and verification snapshot in
+  `ADR-L-0021`.
 - Align README stability language and documentation index with the current
   public-surface contract (Stable / Provisional / Experimental), including
   schema v1.3, identity migration, and `adr attribution workspace-report`.

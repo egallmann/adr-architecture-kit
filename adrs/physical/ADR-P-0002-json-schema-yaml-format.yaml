@@ -180,7 +180,9 @@ deployment_model:
   orchestration: git repository
   scaling_strategy: 'JSON Schema files stored in git. Versioned in schema/v1.0/ directory.
 
-    Future versions in schema/v1.1/, schema/v2.0/, etc.
+    Future contracts use family-first namespaces such as
+    schema/authoring/v1.2/ and schema/normalized-model/v2.0/; the stable
+    schema/v1.0/ compatibility location remains unchanged.
 
     '
 implementation_decisions:

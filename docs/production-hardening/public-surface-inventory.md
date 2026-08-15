@@ -66,7 +66,7 @@ existing code with different meaning.
 | --- | --- | --- |
 | `schema/v1.0/*.json` | Stable ADR encoding | Backward-compatible changes only; canonical source |
 | `adr_kit.schema.v1_0/*.json` | Generated/package mirror | Byte parity with canonical v1.0 files |
-| `schema/v1.1/*.json` | Provisional/draft | No promotion during Phase 0 |
+| `schema/architecture-discovery/v1.1/`, `schema/governance/v1.1/`, `schema/evidence-attribution/v1.1/`, `schema/normalized-model/v1.1/*.json` | Provisional/draft | No promotion during Phase 0 |
 | `adr_kit.schema.v1_1/*.json` | Generated/package mirror | Byte parity with canonical v1.1 files |
 | `adr_kit.templates/*.jinja2` | Package data, de facto public | Must exist and load through `importlib.resources` in a clean wheel |
 | `contracts/architecture-ir/*` | Mirrored sibling contract | Guarded mirror; `ste-spec` remains authoritative |
@@ -100,7 +100,7 @@ fingerprints, and manifest metadata are compatibility-relevant.
 ## Deprecated, provisional, experimental, and internal surfaces
 
 - No surface is removed in Phase 0.
-- `schema/v1.1`, ledger/lifecycle/remediation extensions, subset registries, and the
+- family-scoped v1.1 discovery, ledger/lifecycle/remediation extensions, subset registries, and the
   additive graph remain provisional.
 - migrators, vision ADRs, boot-publication examples, and self-publication scripts
   remain experimental.

@@ -6876,6 +6876,122 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
+- id: 01a00627-97d8-76cd-853b-3e17275c4b76
+  alias_id: INV-0129
+  alias_name: one-canonical-schema-authority
+  alias_ref: INV-0129:one-canonical-schema-authority
+  entity_type: invariant
+  name: INV-0129
+  summary: Every canonical schema artifact has one authoritative repository path and
+    at most one explicit package mirror mapping.
+  uri: adr://adr-architecture-kit/entities/01a00627-97d8-76cd-853b-3e17275c4b76
+  created_at: '2026-08-15T16:00:53.208Z'
+  entity_fingerprint: sha256:2f12cd470b7dd25c93c5e7c3bf653d22ffba2390c4722c14a7131797a15d3e60
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a00626-c5cd-7064-8a74-e54d0179e4b9#01a00627-97d8-76cd-853b-3e17275c4b76
+    artifact_path: adrs/logical/ADR-L-0021-schema-contract-taxonomy.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a00626-c5cd-7064-8a74-e54d0179e4b9
+    adr_alias_id: ADR-L-0021
+    scope: global
+    statement: Every canonical schema artifact has one authoritative repository path
+      and at most one explicit package mirror mapping.
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions: []
+    supersedes: []
+    alias_id: INV-0129
+    alias_name: one-canonical-schema-authority
+  relationships:
+    declared_in:
+    - 01a00626-c5cd-7064-8a74-e54d0179e4b9
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a00626-c5cd-7064-8a74-e54d0179e4b9#01a00627-97d8-76cd-853b-3e17275c4b76
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
+- id: 01a00627-97d8-7e92-a0ca-e572a89fef75
+  alias_id: INV-0128
+  alias_name: taxonomy-preserves-schema-membership-and-bytes
+  alias_ref: INV-0128:taxonomy-preserves-schema-membership-and-bytes
+  entity_type: invariant
+  name: INV-0128
+  summary: Canonical schema membership and SHA-256 fingerprints are unchanged by taxonomy
+    relocation.
+  uri: adr://adr-architecture-kit/entities/01a00627-97d8-7e92-a0ca-e572a89fef75
+  created_at: '2026-08-15T16:00:53.208Z'
+  entity_fingerprint: sha256:92b6131f6a63a61c1c82e68539daeb1eddeb252bcad43691aba8c67c0383c1a7
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a00626-c5cd-7064-8a74-e54d0179e4b9#01a00627-97d8-7e92-a0ca-e572a89fef75
+    artifact_path: adrs/logical/ADR-L-0021-schema-contract-taxonomy.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a00626-c5cd-7064-8a74-e54d0179e4b9
+    adr_alias_id: ADR-L-0021
+    scope: global
+    statement: Canonical schema membership and SHA-256 fingerprints are unchanged
+      by taxonomy relocation.
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions: []
+    supersedes: []
+    alias_id: INV-0128
+    alias_name: taxonomy-preserves-schema-membership-and-bytes
+  relationships:
+    declared_in:
+    - 01a00626-c5cd-7064-8a74-e54d0179e4b9
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a00626-c5cd-7064-8a74-e54d0179e4b9#01a00627-97d8-7e92-a0ca-e572a89fef75
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
 - id: 01a00643-1bfc-7017-a03d-b61439e4cb2b
   alias_id: INV-0136
   alias_name: identity-migration-is-sealed-atomic-and-parity-proven

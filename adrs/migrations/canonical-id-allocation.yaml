@@ -1276,6 +1276,24 @@ allocations:
   file_path: adrs/logical/ADR-L-0020-semantic-implementation-attribution.yaml
   source_pointer: /decisions/8/alias_id
   state: active
+- id: DEC-0125
+  entity_type: decision
+  adr_id: 01a00626-c5cd-7064-8a74-e54d0179e4b9
+  file_path: adrs/logical/ADR-L-0021-schema-contract-taxonomy.yaml
+  source_pointer: /decisions/0/alias_id
+  state: active
+- id: DEC-0126
+  entity_type: decision
+  adr_id: 01a00626-c5cd-7064-8a74-e54d0179e4b9
+  file_path: adrs/logical/ADR-L-0021-schema-contract-taxonomy.yaml
+  source_pointer: /decisions/1/alias_id
+  state: active
+- id: DEC-0127
+  entity_type: decision
+  adr_id: 01a00626-c5cd-7064-8a74-e54d0179e4b9
+  file_path: adrs/logical/ADR-L-0021-schema-contract-taxonomy.yaml
+  source_pointer: /decisions/2/alias_id
+  state: active
 - id: DEC-0130
   entity_type: decision
   adr_id: 01a00643-1bfc-788c-911b-83a4725a8de1
@@ -2391,6 +2409,18 @@ allocations:
   adr_id: 019ffdba-3c42-7c4a-a737-f6751a265d60
   file_path: adrs/logical/ADR-L-0020-semantic-implementation-attribution.yaml
   source_pointer: /invariants/9/alias_id
+  state: active
+- id: INV-0128
+  entity_type: invariant
+  adr_id: 01a00626-c5cd-7064-8a74-e54d0179e4b9
+  file_path: adrs/logical/ADR-L-0021-schema-contract-taxonomy.yaml
+  source_pointer: /invariants/0/alias_id
+  state: active
+- id: INV-0129
+  entity_type: invariant
+  adr_id: 01a00626-c5cd-7064-8a74-e54d0179e4b9
+  file_path: adrs/logical/ADR-L-0021-schema-contract-taxonomy.yaml
+  source_pointer: /invariants/1/alias_id
   state: active
 - id: INV-0130
   entity_type: invariant

@@ -101,12 +101,12 @@ pytest tests/test_schema_validation.py -v
 
 JSON Schemas exist in two locations that must stay in sync:
 
-- `schema/v1.0/` through `schema/v1.5/` and `schema/v2.0/` — canonical schema sources
+- `schema/v1.0/`, family-first `schema/authoring/`, `schema/architecture-discovery/`, `schema/normalized-model/`, `schema/governance/`, and `schema/evidence-attribution/` — canonical schema sources
 - `src/adr_kit/schema/v1_0/` through `v1_5/` and `v2_0/` — bundled copies shipped with the package
 
 Mirrors are **manual**: copy canonical JSON into the package tree and run `tests/test_package_schema_parity.py`. Do not use `scripts/generate_repository_schemas.py` for these package mirrors (that script is kernel-facing).
 
-**Implementation attribution evidence:** 1.0/1.2 live in `schema/v1.1/implementation-attribution-evidence.schema.json`; canonical 1.5 lives in `schema/v1.5/` with a packaged `v1_5` mirror. **`ste-spec`** only carries draft hand-off prose under `contracts/implementation-attribution-evidence/` until promotion—there is no JSON mirror to sync there yet (unlike Architecture IR).
+**Implementation attribution evidence:** 1.0/1.2 live in `schema/evidence-attribution/v1.1/implementation-attribution-evidence.schema.json`; canonical 1.5 lives in `schema/evidence-attribution/v1.5/` with a packaged `v1_5` mirror. **`ste-spec`** only carries draft hand-off prose under `contracts/implementation-attribution-evidence/` until promotion—there is no JSON mirror to sync there yet (unlike Architecture IR).
 
 CI verifies byte-level parity (`tests/test_package_schema_parity.py` and **`Check package schema parity`** in **`.github/workflows/adr-governance.yml`**).
 
@@ -169,7 +169,7 @@ Or run the checks manually before pushing:
 python scripts/run_local_pre_push_checks.py
 ```
 
-That bundle validates generated-docs integrity and runs a **subset** of `pytest`, including **`tests/test_package_schema_parity.py`** — canonical **`schema/v*.*`** must byte-match **`src/adr_kit/schema/v*_*`** (same check as **`Check package schema parity`** in **`.github/workflows/adr-governance.yml`**). It also runs **`tests/test_retrofit_contract_guards.py`**, **`tests/test_attribution_evidence_sync.py`**, README attribution-doc consistency, and the v1.5 semantic-attribution invariant tests (vocabulary/matrix parity, shim parity, 1.0/1.2 normalization, UUID resolution, decorator separation, dual-encode guard, and `next_id()` alias allocation). When workspace RECON evidence is present under **`.ste-workspace/state/adr-architecture-kit/`**, the script passes that file to **`adr attribution check --evidence`**; the CLI does not search `.ste-workspace` on its own.
+That bundle validates generated-docs integrity and runs a **subset** of `pytest`, including **`tests/test_package_schema_parity.py`** — explicit fixture mappings must byte-match canonical `schema/...` artifacts to their `src/adr_kit/schema/v*_*` mirrors (same check as **`Check package schema parity`** in **`.github/workflows/adr-governance.yml`**). It also runs **`tests/test_retrofit_contract_guards.py`**, **`tests/test_attribution_evidence_sync.py`**, README attribution-doc consistency, and the v1.5 semantic-attribution invariant tests (vocabulary/matrix parity, shim parity, 1.0/1.2 normalization, UUID resolution, decorator separation, dual-encode guard, and `next_id()` alias allocation). When workspace RECON evidence is present under **`.ste-workspace/state/adr-architecture-kit/`**, the script passes that file to **`adr attribution check --evidence`**; the CLI does not search `.ste-workspace` on its own.
 
 
 ---

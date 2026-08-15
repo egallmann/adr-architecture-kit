@@ -4,13 +4,13 @@ v1.5 is a **semantic attribution evidence** line. It is not ADR authoring schema
 
 ## Authority
 
-- Canonical JSON: [`schema/v1.5/implementation-attribution-evidence.schema.json`](../schema/v1.5/implementation-attribution-evidence.schema.json)
-- Mechanical vocabulary: [`schema/v1.5/semantic-attribution-vocabulary.json`](../schema/v1.5/semantic-attribution-vocabulary.json)
+- Canonical JSON: [`schema/evidence-attribution/v1.5/implementation-attribution-evidence.schema.json`](../schema/evidence-attribution/v1.5/implementation-attribution-evidence.schema.json)
+- Mechanical vocabulary: [`schema/evidence-attribution/v1.5/semantic-attribution-vocabulary.json`](../schema/evidence-attribution/v1.5/semantic-attribution-vocabulary.json)
 - Package mirrors: `src/adr_kit/schema/v1_5/` (byte-identical; see `tests/test_package_schema_parity.py`)
 - Architecture authority remains authored ADR YAML and model 2.0
 - Extracted YAML and decorators are untrusted declarations, not proof
 
-Do not add `1.5` to `supported_adr_schema_versions`. Attribution 1.0/1.2 remains readable under [`schema/v1.1/implementation-attribution-evidence.schema.json`](../schema/v1.1/implementation-attribution-evidence.schema.json).
+Do not add `1.5` to `supported_adr_schema_versions`. Attribution 1.0/1.2 remains readable under [`schema/evidence-attribution/v1.1/implementation-attribution-evidence.schema.json`](../schema/evidence-attribution/v1.1/implementation-attribution-evidence.schema.json).
 
 ## Evidence locations
 

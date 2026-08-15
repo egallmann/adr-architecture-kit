@@ -5,8 +5,8 @@ artifact_kind: rendered_adr_markdown
 generator_id: adr-projection-markdown
 generator_version: 2
 hash_algorithm: sha256
-source_hash: afc640be673ada4414b22a7f9db1519dbebf9411c149a501d8563eaa5721bd02
-rendered_hash: f2a8c1a8490d43a7a784750ebc16fa8043685fba5882dde5df870967a387f036
+source_hash: 965a6ace122ff1908a97586731f200e776334ca97a36945534f1b980edc048f6
+rendered_hash: eb8f1b5bc04845560862ce51bef8ebc25435aa667f7e8a1a9becc331f3c4d75e
 -->
 
 # ADR-L-0022: Universal UUIDv7 Entity Identity
@@ -29,6 +29,16 @@ This ADR extends ADR-L-0019 rather than replacing its successful UUID, alias, re
 flowchart LR
   n_019fee89_e617_78d9_ba3b_b7e3e6db1b12["ADR-L-0019"]
   n_019fee89_e617_7bdc_b136_032978d92661["DEC-0097"]
+  n_01a002b7_e001_7010_8401_010101010101["DEC-0140"]
+  n_01a002b7_e002_7020_8802_020202020202["DEC-0141"]
+  n_01a002b7_e003_7030_8c03_030303030303["DEC-0142"]
+  n_01a002b7_e004_7040_9004_040404040404["DEC-0143"]
+  n_01a002b7_e005_7050_9405_050505050505["DEC-0144"]
+  n_01a002b7_e006_7060_9806_060606060606["DEC-0145"]
+  n_01a002b7_e007_7070_9c07_070707070707["DEC-0146"]
+  n_01a002b7_e008_7080_a008_080808080808["INV-0138"]
+  n_01a002b7_e009_7090_a409_090909090909["INV-0139"]
+  n_01a002b7_e00a_70a0_a80a_0a0a0a0a0a0a["INV-0140"]
   n_01a00643_1bfc_7017_a03d_b61439e4cb2b["INV-0136"]
   n_01a00643_1bfc_715b_a837_a062f86a6192["INV-0133"]
   n_01a00643_1bfc_71ef_8e1f_694949767d59["DEC-0135"]
@@ -48,6 +58,16 @@ flowchart LR
   n_01a00643_1bfc_7dd1_a439_31a110f8ed50["INV-0132"]
   n_01a00643_1bfc_7e7a_af3f_0484ebc351c9["DEC-0137"]
   n_01a00643_1bfc_7f05_b617_6960fa562bea["INV-0135"]
+  n_01a002b7_e001_7010_8401_010101010101 -->|"declared_in"| n_01a00643_1bfc_788c_911b_83a4725a8de1
+  n_01a002b7_e002_7020_8802_020202020202 -->|"declared_in"| n_01a00643_1bfc_788c_911b_83a4725a8de1
+  n_01a002b7_e003_7030_8c03_030303030303 -->|"declared_in"| n_01a00643_1bfc_788c_911b_83a4725a8de1
+  n_01a002b7_e004_7040_9004_040404040404 -->|"declared_in"| n_01a00643_1bfc_788c_911b_83a4725a8de1
+  n_01a002b7_e005_7050_9405_050505050505 -->|"declared_in"| n_01a00643_1bfc_788c_911b_83a4725a8de1
+  n_01a002b7_e006_7060_9806_060606060606 -->|"declared_in"| n_01a00643_1bfc_788c_911b_83a4725a8de1
+  n_01a002b7_e007_7070_9c07_070707070707 -->|"declared_in"| n_01a00643_1bfc_788c_911b_83a4725a8de1
+  n_01a002b7_e008_7080_a008_080808080808 -->|"declared_in"| n_01a00643_1bfc_788c_911b_83a4725a8de1
+  n_01a002b7_e009_7090_a409_090909090909 -->|"declared_in"| n_01a00643_1bfc_788c_911b_83a4725a8de1
+  n_01a002b7_e00a_70a0_a80a_0a0a0a0a0a0a -->|"declared_in"| n_01a00643_1bfc_788c_911b_83a4725a8de1
   n_01a00643_1bfc_7017_a03d_b61439e4cb2b -->|"declared_in"| n_01a00643_1bfc_788c_911b_83a4725a8de1
   n_01a00643_1bfc_715b_a837_a062f86a6192 -->|"declared_in"| n_01a00643_1bfc_788c_911b_83a4725a8de1
   n_01a00643_1bfc_71ef_8e1f_694949767d59 -->|"declared_in"| n_01a00643_1bfc_788c_911b_83a4725a8de1
@@ -190,6 +210,42 @@ Clean-break authority must be precise rather than inferred.
 
 
 
+### INV-0138
+
+**Statement:** Effective relationships and relationship assertions are distinct graph-eligible entities, each with its own UUIDv7 identity and alias envelope; fingerprints are not identity.  
+**Scope:** global  
+**Enforcement:** must (design)  
+**Verification:** automated
+
+**Rationale:**
+Multiple assertions may explain one effective relationship without collapsing their independent provenance or governance lifecycle.
+
+
+
+### INV-0139
+
+**Statement:** Generated inverse traversal reuses the effective relationship UUID and is a DERIVED_PROJECTION unless an independently authored inverse is governed as a separate entity.  
+**Scope:** global  
+**Enforcement:** must (design)  
+**Verification:** automated
+
+**Rationale:**
+Traversal views must not create duplicate canonical identity.
+
+
+
+### INV-0140
+
+**Statement:** Universal identity migration remains blocked until collision, vNext, graph, allocation-contract, and allocation-map seal gates are explicitly approved and evidence is sealed.  
+**Scope:** global  
+**Enforcement:** must (policy)  
+**Verification:** automated
+
+**Rationale:**
+Architectural closure and implementation readiness are separate states.
+
+
+
 
 
 ## Decisions
@@ -270,6 +326,62 @@ Migration inventories every promoted entity and reference before minting, record
 
 **Rationale:**
 Being the sole current external consumer permits a clean break but does not make deletion implicit. Exact schema versions, parser modes, package namespaces, public API shims, migration inputs, and corpus formats proposed for removal must be enumerated with dependency evidence and approved before deletion. Identity admission does not create a release tag or publication authority.
+
+
+
+
+### DEC-0140: Treat effective relationships and relationship assertions as distinct entities
+
+**Rationale:**
+An effective relationship is an ENTITY and graph-eligible record with its own UUIDv7 identity and stable alias envelope. A relationship assertion is also a graph-eligible ENTITY with its own UUIDv7 identity and assertion alias; one effective relationship may therefore have multiple assertions that are independently governed. A content fingerprint such as `relationship_id` or `assertion_id` is a deduplication and provenance key, never a substitute for canonical entity identity. A VALUE_OBJECT is excluded from graph participation and a DERIVED_PROJECTION reuses canonical identity.
+
+
+
+
+### DEC-0141: Model generated inverse traversal as a derived projection unless independently authored
+
+**Rationale:**
+An inverse edge generated from an effective relationship reuses the persisted relationship UUID and is a DERIVED_PROJECTION, not a second canonical entity. An independently authored or governed inverse relationship is a separate ENTITY only when its own lifecycle, authority, or provenance warrants it. Generators do not mint UUIDs to materialize a traversal view. Any exception requires explicit human approval.
+
+
+
+
+### DEC-0142: Govern aliases for newly promoted entity families as an explicit namespace contract
+
+**Rationale:**
+Every newly promoted entity kind receives a unique governed type-prefixed alias namespace before migration. Namespace allocation, high-water marks, collision dispositions, and retired aliases are recorded in the migration contract; aliases remain human orientation and never become canonical references. Unknown or colliding legacy aliases block sealing rather than being silently reassigned.
+
+
+
+
+### DEC-0143: Bind identity changes to family-scoped semantic versions and explicit package mappings
+
+**Rationale:**
+The vNext identity contract is family-scoped: authoring, architecture-discovery, normalized-model, governance, and evidence-attribution versions advance independently when their identity semantics change. Canonical repository paths and installed package resource paths are explicit mappings, not labels inferred from a version number; existing schema bytes and the stable authoring compatibility surface remain intact until a reviewed version admission changes them.
+
+
+
+
+### DEC-0144: Preserve a graph-vNext compatibility posture while identity contracts advance
+
+**Rationale:**
+Graph-vNext may expose canonical UUID identity, relationship/assertion distinction, and derived inverse projections while retaining a deterministic compatibility projection for existing graph consumers. A graph projection is derived state; graph-vNext admission requires semantic parity evidence and does not authorize corpus migration, package behavior changes, or opportunistic UUID minting.
+
+
+
+
+### DEC-0145: Define the universal allocation map as a sealed, reviewable lifecycle artifact
+
+**Rationale:**
+The allocation map records canonical owner path, structural pointer, entity kind, legacy alias, proposed UUIDv7, final alias, disposition, and provenance. It progresses through draft, collision-review, approved, and SEALED states; sealing is one-way for a migration pass and requires exact inventory, collision dispositions, vNext contract approval, graph posture approval, and semantic-parity evidence.
+
+
+
+
+### DEC-0146: Keep universal identity migration blocked until every human gate is explicit
+
+**Rationale:**
+No universal corpus migration may mint UUIDs, rewrite references, or remove compatibility surfaces while alias collisions, family-scoped vNext contracts, graph-vNext posture, allocation-map contract, or map sealing remain unapproved. Working review packets are evidence for human decisions only and are not durable architecture authority; each gate requires explicit human approval before migration.
 
 
 

@@ -140,6 +140,72 @@ decisions:
     does not create a release tag or publication authority.'
   alias_id: DEC-0139
   alias_name: gate-obsolete-compatibility-removal-explicitly
+- id: 01a002b7-e001-7010-8401-010101010101
+  summary: Treat effective relationships and relationship assertions as distinct entities
+  rationale: 'An effective relationship is an ENTITY and graph-eligible record with its own UUIDv7
+    identity and stable alias envelope. A relationship assertion is also a graph-eligible
+    ENTITY with its own UUIDv7 identity and assertion alias; one effective relationship
+    may therefore have multiple assertions that are independently governed. A content fingerprint
+    such as `relationship_id` or `assertion_id` is a deduplication and provenance key,
+    never a substitute for canonical entity identity. A VALUE_OBJECT is excluded from
+    graph participation and a DERIVED_PROJECTION reuses canonical identity.'
+  alias_id: DEC-0140
+  alias_name: distinguish-effective-relationships-from-assertions
+- id: 01a002b7-e002-7020-8802-020202020202
+  summary: Model generated inverse traversal as a derived projection unless independently authored
+  rationale: 'An inverse edge generated from an effective relationship reuses the persisted
+    relationship UUID and is a DERIVED_PROJECTION, not a second canonical entity. An
+    independently authored or governed inverse relationship is a separate ENTITY only
+    when its own lifecycle, authority, or provenance warrants it. Generators do not mint
+    UUIDs to materialize a traversal view. Any exception requires explicit human approval.'
+  alias_id: DEC-0141
+  alias_name: inverse-traversal-reuses-effective-relationship-identity
+- id: 01a002b7-e003-7030-8c03-030303030303
+  summary: Govern aliases for newly promoted entity families as an explicit namespace contract
+  rationale: 'Every newly promoted entity kind receives a unique governed type-prefixed
+    alias namespace before migration. Namespace allocation, high-water marks, collision
+    dispositions, and retired aliases are recorded in the migration contract; aliases
+    remain human orientation and never become canonical references. Unknown or colliding
+    legacy aliases block sealing rather than being silently reassigned.'
+  alias_id: DEC-0142
+  alias_name: govern-new-entity-alias-namespaces-explicitly
+- id: 01a002b7-e004-7040-9004-040404040404
+  summary: Bind identity changes to family-scoped semantic versions and explicit package mappings
+  rationale: 'The vNext identity contract is family-scoped: authoring, architecture-discovery,
+    normalized-model, governance, and evidence-attribution versions advance independently
+    when their identity semantics change. Canonical repository paths and installed package
+    resource paths are explicit mappings, not labels inferred from a version number;
+    existing schema bytes and the stable authoring compatibility surface remain intact
+    until a reviewed version admission changes them.'
+  alias_id: DEC-0143
+  alias_name: bind-identity-changes-to-family-scoped-versions
+- id: 01a002b7-e005-7050-9405-050505050505
+  summary: Preserve a graph-vNext compatibility posture while identity contracts advance
+  rationale: 'Graph-vNext may expose canonical UUID identity, relationship/assertion
+    distinction, and derived inverse projections while retaining a deterministic
+    compatibility projection for existing graph consumers. A graph projection is
+    derived state; graph-vNext admission requires semantic parity evidence and does not
+    authorize corpus migration, package behavior changes, or opportunistic UUID minting.'
+  alias_id: DEC-0144
+  alias_name: preserve-graph-vnext-compatibility-posture
+- id: 01a002b7-e006-7060-9806-060606060606
+  summary: Define the universal allocation map as a sealed, reviewable lifecycle artifact
+  rationale: 'The allocation map records canonical owner path, structural pointer, entity
+    kind, legacy alias, proposed UUIDv7, final alias, disposition, and provenance. It
+    progresses through draft, collision-review, approved, and SEALED states; sealing is
+    one-way for a migration pass and requires exact inventory, collision dispositions,
+    vNext contract approval, graph posture approval, and semantic-parity evidence.'
+  alias_id: DEC-0145
+  alias_name: define-sealed-universal-allocation-map-lifecycle
+- id: 01a002b7-e007-7070-9c07-070707070707
+  summary: Keep universal identity migration blocked until every human gate is explicit
+  rationale: 'No universal corpus migration may mint UUIDs, rewrite references, or remove
+    compatibility surfaces while alias collisions, family-scoped vNext contracts,
+    graph-vNext posture, allocation-map contract, or map sealing remain unapproved.
+    Working review packets are evidence for human decisions only and are not durable
+    architecture authority; each gate requires explicit human approval before migration.'
+  alias_id: DEC-0146
+  alias_name: block-universal-migration-until-human-gates-close
 invariants:
 - id: 01a00643-1bfc-757c-ba3a-63a007e981d0
   statement: Every record that participates or may participate as a node or edge in the
@@ -223,12 +289,44 @@ invariants:
   rationale: Clean-break authority must be precise rather than inferred.
   alias_id: INV-0137
   alias_name: compatibility-removal-requires-explicit-reviewed-disposition
+- id: 01a002b7-e008-7080-a008-080808080808
+  statement: Effective relationships and relationship assertions are distinct graph-eligible
+    entities, each with its own UUIDv7 identity and alias envelope; fingerprints are not identity.
+  scope: global
+  enforcement_level: must
+  enforcement_mechanism: design
+  verification_method: automated
+  rationale: Multiple assertions may explain one effective relationship without collapsing
+    their independent provenance or governance lifecycle.
+  alias_id: INV-0138
+  alias_name: relationship-and-assertion-identities-are-distinct
+- id: 01a002b7-e009-7090-a409-090909090909
+  statement: Generated inverse traversal reuses the effective relationship UUID and is a
+    DERIVED_PROJECTION unless an independently authored inverse is governed as a separate entity.
+  scope: global
+  enforcement_level: must
+  enforcement_mechanism: design
+  verification_method: automated
+  rationale: Traversal views must not create duplicate canonical identity.
+  alias_id: INV-0139
+  alias_name: derived-inverses-reuse-effective-relationship-identity
+- id: 01a002b7-e00a-70a0-a80a-0a0a0a0a0a0a
+  statement: Universal identity migration remains blocked until collision, vNext, graph,
+    allocation-contract, and allocation-map seal gates are explicitly approved and evidence is sealed.
+  scope: global
+  enforcement_level: must
+  enforcement_mechanism: policy
+  verification_method: automated
+  rationale: Architectural closure and implementation readiness are separate states.
+  alias_id: INV-0140
+  alias_name: migration-requires-explicit-human-gates-and-sealed-evidence
 capabilities: []
 gaps: []
 notes: 'Accepted from the 2026-08-15 human lock that every record which participates
-  or may participate in the system graph requires stable UUIDv7 identity. Exact
+  or may participate in the system graph requires stable UUIDv7 identity. This ADR is
+  the durable authority for the identity doctrine and its admission gates. Exact
   semantic-version, package-namespace, corpus-migration, and obsolete-surface
-  dispositions remain explicit implementation gates recorded in
-  docs/design-journal/2026-universal-uuidv7-entity-identity.md.'
+  dispositions must be promoted through governed contracts and explicit human approval;
+  local design journals and review packets are non-authoritative working state.'
 alias_id: ADR-L-0022
 alias_name: universal-uuidv7-entity-identity

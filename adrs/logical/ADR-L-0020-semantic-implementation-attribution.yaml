@@ -62,7 +62,7 @@ decisions:
   summary: Apply the attribution matrix to repository-resolved entity type
   rationale: |
     After `ArchitectureRepository.find_entity_by_uuid` (model 2.0), the
-    mechanical vocabulary in `schema/v1.5/semantic-attribution-vocabulary.json`
+    mechanical vocabulary in `schema/evidence-attribution/v1.5/semantic-attribution-vocabulary.json`
     admits: `implements` to adr, decision, capability, contract, interface,
     implementation_decision; `enforces` to invariant only; `embodies` to
     system, component, boundary. Unknown relationship, illegal resolved type,

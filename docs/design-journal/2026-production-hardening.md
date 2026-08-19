@@ -84,7 +84,8 @@ substrate, and admission remain outside Phase 0.
 Phase 1 subsequently authorized and implemented the narrow `adr_kit.api` facade and
 metadata-first runtime version authority. The other deferrals remain in force. See
 [the Phase 1 design journal](2026-phase-1-public-sdk.md) and
-[closeout](../production-hardening/phase-1-closeout.md).
+The phase closeout is preserved in Git history rather than as a current active-tree
+document.
 
 ## Lock readiness
 

@@ -1273,7 +1273,7 @@ def repair_canonical_ids(
                 raise click.exceptions.Exit(1)
             click.echo("Canonical ID allocation and collision check passed.")
             return
-        if not plan.remaps:
+        if not plan.remaps and not apply_repairs:
             click.echo("No canonical ID collisions found. No changes made.")
             return
         if not apply_repairs:
@@ -1283,6 +1283,8 @@ def repair_canonical_ids(
             return
         applied = normalizer.repair(detected_scope, apply=True, resolution_map=resolution_map)
         click.echo(f"Applied {len(applied.remaps)} canonical ID repairs.")
+        if not applied.remaps:
+            click.echo("Synchronized the canonical ID allocation ledger.")
         click.echo(
             f"Allocation ledger: "
             f"{detected_scope.adr_dir / 'migrations' / 'canonical-id-allocation.yaml'}"

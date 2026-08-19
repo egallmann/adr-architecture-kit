@@ -5,8 +5,8 @@ artifact_kind: rendered_adr_markdown
 generator_id: adr-projection-markdown
 generator_version: 2
 hash_algorithm: sha256
-source_hash: 820e4461b1205607d241871ab1d0758e9461b239e1522e2b8809f9f63302b48f
-rendered_hash: f9f46b028c365835d62ad922dc5c13ddb6952485a098a11e33ae8efc25eee5ef
+source_hash: a84ae6049520eceb3b8c9c191340e33c49b9c29cb51f156f2f3c86bca4066cdb
+rendered_hash: a85dcd79968cae9a2c45c9dc4130e2cd0f918a9e206bea7db7f4e6e2c1bfff19
 -->
 
 # ADR-P-0002: JSON Schema Validation with YAML Document Format
@@ -194,7 +194,7 @@ parser = ADRParser(schema_dir=Path("schema/v1.0"))
 **Hosting:** on-premise  **Orchestration:** git repository  
 **Scaling Strategy:**
 JSON Schema files stored in git. Versioned in schema/v1.0/ directory.
-Future versions in schema/v1.1/, schema/v2.0/, etc.
+Future contracts use family-first namespaces such as schema/authoring/v1.2/ and schema/normalized-model/v2.0/; the stable schema/v1.0/ compatibility location remains unchanged.
 
 
 

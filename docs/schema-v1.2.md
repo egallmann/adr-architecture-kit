@@ -9,8 +9,8 @@ not repurpose the provisional v1.1 discovery and ledger schemas.
 | Line | Purpose | Stability |
 |---|---|---|
 | `schema/v1.0/` | ADR authoring encoding | Stable and frozen |
-| `schema/v1.1/` | Discovery, ledger, remediation, and attribution contracts | Provisional |
-| `schema/v1.2/` | Additive ADR authoring encoding | Provisional |
+| `schema/architecture-discovery/v1.1/`, `schema/governance/v1.1/`, `schema/evidence-attribution/v1.1/`, `schema/normalized-model/v1.1/` | Discovery, ledger, remediation, attribution, and normalized-model contracts | Provisional |
+| `schema/authoring/v1.2/` | Additive ADR authoring encoding | Provisional |
 
 Parsers dispatch `schema_version: '1.2'` explicitly. Unsupported future
 versions fail closed rather than falling back to v1.0.

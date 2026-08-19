@@ -10,13 +10,10 @@ Durable release-quality controls live in this repository's Git history. The publ
 - Compatibility snapshots: `contracts/compatibility/`
 - Local pre-push bundle: `python scripts/run_local_pre_push_checks.py`
 
-## Phase logs (not public spine)
+## Historical execution records
 
-These files remain in Git for history and are not linked from the public docs index:
-
-- `docs/production-hardening/phase-0-baseline.md`
-- `docs/production-hardening/phase-1-*.md`
-- `docs/production-hardening/phase-2-*.md`
-- `docs/production-hardening/benchmark-baseline.md`
+Completed phase baselines, closeouts, and one-time benchmark captures are preserved
+in Git history rather than the active documentation tree. Current controls and the
+compatibility inventory above are the maintained references.
 
 v1.5 semantic attribution does not reopen Phase 3 GraphProjectionBundle. See [`../../ROADMAP.md`](../../ROADMAP.md).

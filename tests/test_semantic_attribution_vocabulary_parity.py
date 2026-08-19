@@ -17,9 +17,19 @@ from adr_kit.semantic_attribution.vocabulary import (
 )
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
-CANONICAL = REPO_ROOT / "schema" / "v1.5" / "semantic-attribution-vocabulary.json"
-EVIDENCE_SCHEMA = REPO_ROOT / "schema" / "v1.5" / "implementation-attribution-evidence.schema.json"
-RELATIONSHIP_REGISTRY = REPO_ROOT / "schema" / "v1.1" / "relationship-registry.schema.json"
+CANONICAL = (
+    REPO_ROOT / "schema" / "evidence-attribution" / "v1.5" / "semantic-attribution-vocabulary.json"
+)
+EVIDENCE_SCHEMA = (
+    REPO_ROOT
+    / "schema"
+    / "evidence-attribution"
+    / "v1.5"
+    / "implementation-attribution-evidence.schema.json"
+)
+RELATIONSHIP_REGISTRY = (
+    REPO_ROOT / "schema" / "normalized-model" / "v1.1" / "relationship-registry.schema.json"
+)
 
 
 def test_packaged_vocabulary_matches_canonical_bytes() -> None:

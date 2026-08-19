@@ -21,7 +21,45 @@ Contributor-oriented guides (TDD, authoring, placement) live under [`contributor
 | [public-surface-and-stability.md](public-surface-and-stability.md) | Pre-1.0 compatibility categories and migration rules |
 | [walkthrough-adr-to-ir.md](walkthrough-adr-to-ir.md) | End-to-end flow with the [`examples/public-v1/`](../examples/public-v1/) example |
 
-Phase closeout logs and benchmark captures remain under [`production-hardening/`](production-hardening/) for history; they are not part of the public spine.
+Current release controls and the frozen compatibility inventory remain under
+[`production-hardening/`](production-hardening/); completed phase closeouts and
+transient benchmark captures remain available through Git history only.
+
+## Documentation authority taxonomy
+
+Tracked durable authority includes accepted ADRs, canonical schemas and contracts,
+public/reference and contributor documentation, security and release controls,
+compatibility contracts, intentionally committed generated projections, stable
+migration guidance, and engineering evidence that has a current reproducibility or
+quality purpose. An artifact does not become durable authority merely because it was
+useful during design.
+
+Local ignored working state includes design journals, prepared promotion contracts,
+implementation plans, agent scratch and review packets, unresolved human-decision
+packets, temporary migration previews, and disposable allocation previews. Historical
+phase journals, execution closeouts, transient benchmark snapshots, and progress
+reports are historical-only; Git history preserves them without making them current
+architecture authority. Durable architecture must remain reconstructable from ADRs,
+schemas/contracts, governed repository artifacts, tests, and their generated
+projections without requiring a historical Design Journal.
+
+## Documentation authority taxonomy
+
+Tracked durable authority includes accepted ADRs, canonical schemas and contracts,
+public/reference and contributor documentation, security and release controls,
+compatibility contracts, intentionally committed generated projections, stable
+migration guidance, and engineering evidence that has a current reproducibility or
+quality purpose. An artifact does not become durable authority merely because it was
+useful during design.
+
+Local ignored working state includes design journals, prepared promotion contracts,
+implementation plans, agent scratch and review packets, unresolved human-decision
+packets, temporary migration previews, and disposable allocation previews. Historical
+phase journals, execution closeouts, transient benchmark snapshots, and progress
+reports are historical-only; Git history preserves them without making them current
+architecture authority. Durable architecture must remain reconstructable from ADRs,
+schemas/contracts, governed repository artifacts, tests, and their generated
+projections without requiring a historical Design Journal.
 
 ## Contributor reference
 

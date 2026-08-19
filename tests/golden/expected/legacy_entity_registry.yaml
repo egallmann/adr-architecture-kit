@@ -4,8 +4,8 @@
 # generator_id: adr-compiler
 # generator_version: 1
 # hash_algorithm: sha256
-# source_hash: fa5952151ddbf54637f9a520ca6015cf6d51aa3ed92c21dd9c8d1a0b9ca86297
-# rendered_hash: da55c462b263037e9e4045429488a6612c1f789777f7c2526b03051c9dda4c40
+# source_hash: ca059b15c3dfcf421aa230d691221d3980b606517b0b3654bf1e98be222208ad
+# rendered_hash: e4ec55c4c6a69f6408e51e262afbef85e62c311c3eb47b2aa96c83ed484947d1
 
 schema_version: '1.1'
 type: entity_registry
@@ -3053,6 +3053,332 @@ entities:
     implements: []
     consumes: []
     realizes: []
+- entity_id: DEC-0125
+  entity_type: decision
+  name: Canonical schema placement is family-first with family-scoped versions
+  introduced_by: ADR-L-0021
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0021-schema-contract-taxonomy.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs:
+  - ADR-L-0021
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: DEC-0126
+  entity_type: decision
+  name: Canonical repository schemas are the single schema authority
+  introduced_by: ADR-L-0021
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0021-schema-contract-taxonomy.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs:
+  - ADR-L-0021
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: DEC-0127
+  entity_type: decision
+  name: Taxonomy relocation is semantic and runtime neutral
+  introduced_by: ADR-L-0021
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0021-schema-contract-taxonomy.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs:
+  - ADR-L-0021
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: DEC-0130
+  entity_type: decision
+  name: Require the ADR-L-0019 identity envelope for every canonical independently
+    addressable ADR-domain entity
+  introduced_by: ADR-L-0022
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0022-universal-uuidv7-entity-identity.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs:
+  - ADR-L-0022
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: DEC-0131
+  entity_type: decision
+  name: Define entityhood by actual or potential participation in the system graph
+  introduced_by: ADR-L-0022
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0022-universal-uuidv7-entity-identity.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs:
+  - ADR-L-0022
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: DEC-0132
+  entity_type: decision
+  name: Require canonical entity references to use UUIDs while aliases remain orientation
+  introduced_by: ADR-L-0022
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0022-universal-uuidv7-entity-identity.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs:
+  - ADR-L-0022
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: DEC-0133
+  entity_type: decision
+  name: Keep owner-local value objects free of entity identity
+  introduced_by: ADR-L-0022
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0022-universal-uuidv7-entity-identity.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs:
+  - ADR-L-0022
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: DEC-0134
+  entity_type: decision
+  name: Require stable UUIDv7 identity for every graph node and edge projection
+  introduced_by: ADR-L-0022
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0022-universal-uuidv7-entity-identity.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs:
+  - ADR-L-0022
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: DEC-0135
+  entity_type: decision
+  name: Promote current durable alias-identified authoring and governance records
+    to entities
+  introduced_by: ADR-L-0022
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0022-universal-uuidv7-entity-identity.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs:
+  - ADR-L-0022
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: DEC-0136
+  entity_type: decision
+  name: Bind future rule evidence and other entity schemas to the same invariant
+  introduced_by: ADR-L-0022
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0022-universal-uuidv7-entity-identity.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs:
+  - ADR-L-0022
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: DEC-0137
+  entity_type: decision
+  name: Require semantic version boundaries and explicit package mappings for identity
+    migration
+  introduced_by: ADR-L-0022
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0022-universal-uuidv7-entity-identity.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs:
+  - ADR-L-0022
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: DEC-0138
+  entity_type: decision
+  name: Migrate identity with a sealed reviewable map and semantic parity proof
+  introduced_by: ADR-L-0022
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0022-universal-uuidv7-entity-identity.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs:
+  - ADR-L-0022
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: DEC-0139
+  entity_type: decision
+  name: Remove obsolete compatibility surfaces only through an explicit reviewed gate
+  introduced_by: ADR-L-0022
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0022-universal-uuidv7-entity-identity.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs:
+  - ADR-L-0022
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: DEC-0140
+  entity_type: decision
+  name: Treat effective relationships and relationship assertions as distinct entities
+  introduced_by: ADR-L-0022
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0022-universal-uuidv7-entity-identity.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs:
+  - ADR-L-0022
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: DEC-0141
+  entity_type: decision
+  name: Model generated inverse traversal as a derived projection unless independently
+    authored
+  introduced_by: ADR-L-0022
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0022-universal-uuidv7-entity-identity.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs:
+  - ADR-L-0022
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: DEC-0142
+  entity_type: decision
+  name: Govern aliases for newly promoted entity families as an explicit namespace
+    contract
+  introduced_by: ADR-L-0022
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0022-universal-uuidv7-entity-identity.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs:
+  - ADR-L-0022
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: DEC-0143
+  entity_type: decision
+  name: Bind identity changes to family-scoped semantic versions and explicit package
+    mappings
+  introduced_by: ADR-L-0022
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0022-universal-uuidv7-entity-identity.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs:
+  - ADR-L-0022
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: DEC-0144
+  entity_type: decision
+  name: Preserve a graph-vNext compatibility posture while identity contracts advance
+  introduced_by: ADR-L-0022
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0022-universal-uuidv7-entity-identity.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs:
+  - ADR-L-0022
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: DEC-0145
+  entity_type: decision
+  name: Define the universal allocation map as a sealed, reviewable lifecycle artifact
+  introduced_by: ADR-L-0022
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0022-universal-uuidv7-entity-identity.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs:
+  - ADR-L-0022
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: DEC-0146
+  entity_type: decision
+  name: Keep universal identity migration blocked until every human gate is explicit
+  introduced_by: ADR-L-0022
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0022-universal-uuidv7-entity-identity.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs:
+  - ADR-L-0022
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
 - entity_id: DEC-9000
   entity_type: decision
   name: Publish a deterministic logical ADR fragment for boot readiness.
@@ -4839,6 +5165,214 @@ entities:
   domains: []
   related_adrs:
   - ADR-L-0020
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: INV-0128
+  entity_type: invariant
+  name: INV-0128
+  introduced_by: ADR-L-0021
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0021-schema-contract-taxonomy.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs:
+  - ADR-L-0021
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: INV-0129
+  entity_type: invariant
+  name: INV-0129
+  introduced_by: ADR-L-0021
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0021-schema-contract-taxonomy.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs:
+  - ADR-L-0021
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: INV-0130
+  entity_type: invariant
+  name: INV-0130
+  introduced_by: ADR-L-0022
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0022-universal-uuidv7-entity-identity.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs:
+  - ADR-L-0022
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: INV-0131
+  entity_type: invariant
+  name: INV-0131
+  introduced_by: ADR-L-0022
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0022-universal-uuidv7-entity-identity.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs:
+  - ADR-L-0022
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: INV-0132
+  entity_type: invariant
+  name: INV-0132
+  introduced_by: ADR-L-0022
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0022-universal-uuidv7-entity-identity.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs:
+  - ADR-L-0022
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: INV-0133
+  entity_type: invariant
+  name: INV-0133
+  introduced_by: ADR-L-0022
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0022-universal-uuidv7-entity-identity.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs:
+  - ADR-L-0022
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: INV-0134
+  entity_type: invariant
+  name: INV-0134
+  introduced_by: ADR-L-0022
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0022-universal-uuidv7-entity-identity.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs:
+  - ADR-L-0022
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: INV-0135
+  entity_type: invariant
+  name: INV-0135
+  introduced_by: ADR-L-0022
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0022-universal-uuidv7-entity-identity.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs:
+  - ADR-L-0022
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: INV-0136
+  entity_type: invariant
+  name: INV-0136
+  introduced_by: ADR-L-0022
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0022-universal-uuidv7-entity-identity.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs:
+  - ADR-L-0022
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: INV-0137
+  entity_type: invariant
+  name: INV-0137
+  introduced_by: ADR-L-0022
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0022-universal-uuidv7-entity-identity.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs:
+  - ADR-L-0022
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: INV-0138
+  entity_type: invariant
+  name: INV-0138
+  introduced_by: ADR-L-0022
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0022-universal-uuidv7-entity-identity.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs:
+  - ADR-L-0022
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: INV-0139
+  entity_type: invariant
+  name: INV-0139
+  introduced_by: ADR-L-0022
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0022-universal-uuidv7-entity-identity.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs:
+  - ADR-L-0022
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: INV-0140
+  entity_type: invariant
+  name: INV-0140
+  introduced_by: ADR-L-0022
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0022-universal-uuidv7-entity-identity.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs:
+  - ADR-L-0022
   realized_by: []
   relationships:
     depends_on: []

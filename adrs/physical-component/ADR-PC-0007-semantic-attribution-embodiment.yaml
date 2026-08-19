@@ -78,7 +78,7 @@ component_specifications:
       - adr_kit.decorators legacy implements_adr / enforces_invariant APIs
       - validate_implementation_attribution_evidence
       - normalize_attribution_evidence
-      - schema/v1.5 vocabulary and evidence JSON
+      - schema/evidence-attribution/v1.5 vocabulary and evidence JSON
     alias_id: IFACE-0034
     alias_name: iface-0034
   - id: 019ffdba-3c42-7d5b-b52f-b36c3000f299

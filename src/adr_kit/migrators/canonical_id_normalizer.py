@@ -710,19 +710,37 @@ class CanonicalIdNormalizer:
             if isinstance(item, dict)
         }
         active: dict[tuple[str, str], dict[str, Any]] = {}
+        consumed_prior: set[tuple[str, str]] = set()
         for file_path, data in file_data.items():
             for occurrence in self._iter_occurrences(data, file_path):
-                key = (_relative_path(scope, file_path), occurrence.source_pointer)
-                active[key] = {
+                file_rel = _relative_path(scope, file_path)
+                equivalent_keys = [
+                    (file_rel, pointer)
+                    for pointer in _equivalent_allocation_pointers(
+                        occurrence.source_pointer
+                    )
+                ]
+                prior_keys = [key for key in equivalent_keys if key in prior]
+                # Preserve the historical ledger location when an in-place v1.3
+                # promotion moved the presentation identity from ``id`` to
+                # ``alias_id``. Both pointers name the same allocation.
+                key = min(
+                    prior_keys or [equivalent_keys[0]],
+                    key=lambda item: (not item[1].endswith("/id"), item[1]),
+                )
+                consumed_prior.update(prior_keys)
+                entry = dict(prior.get(key, {}))
+                entry.update({
                     "id": occurrence.entity_id,
                     "entity_type": occurrence.entity_type,
-                    "adr_id": occurrence.adr_id,
                     "file_path": key[0],
                     "source_pointer": key[1],
                     "state": "active",
-                }
+                })
+                entry.setdefault("adr_id", occurrence.adr_id)
+                active[key] = entry
         for key, item in prior.items():
-            if key not in active:
+            if key not in consumed_prior and key not in active:
                 item["state"] = "retired"
                 active[key] = item
 
@@ -775,7 +793,7 @@ class CanonicalIdNormalizer:
         """Plan repairs and optionally apply them through ADR Kit-owned writes."""
         scope = scope or self.scope_resolver.resolve()
         plan = self.plan(scope, resolution_map=resolution_map)
-        if not apply or not plan.remaps:
+        if not apply:
             return plan
         if plan.ambiguities:
             details = ", ".join(
@@ -819,12 +837,13 @@ class CanonicalIdNormalizer:
                 rewrite.new_id,
             )
 
-        remap_ledger = self._updated_remap_ledger(scope, plan.remaps)
         allocation_ledger = self._updated_allocation_ledger(scope, file_data, plan.high_water_marks)
         payloads = {path: self._render_yaml(file_data[path]) for path in changed_paths}
-        payloads[scope.adr_dir / "migrations" / "canonical-id-remap.yaml"] = self._render_yaml(
-            remap_ledger
-        )
+        if plan.remaps:
+            remap_ledger = self._updated_remap_ledger(scope, plan.remaps)
+            payloads[scope.adr_dir / "migrations" / "canonical-id-remap.yaml"] = (
+                self._render_yaml(remap_ledger)
+            )
         payloads[scope.adr_dir / "migrations" / "canonical-id-allocation.yaml"] = self._render_yaml(
             allocation_ledger
         )

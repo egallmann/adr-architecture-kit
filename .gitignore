@@ -92,8 +92,9 @@ reports/
 .adr-kit/
 
 # STE Design Journal local convergence / promotion handoff (non-authority).
-# Tracked explanatory process notes under docs/design-journal/ remain versioned
-# documentation only — they are not STE Design Journal durable architecture authority.
+# The governance test permits only the four explanatory/public notes below to
+# remain tracked; active journals, handoffs, review packets, and prepared
+# promotion contracts must stay ignored.
 docs/design-journal/*
 !docs/design-journal/README.md
 !docs/design-journal/2026-phase-1-public-sdk.md

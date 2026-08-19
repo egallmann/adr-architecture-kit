@@ -1,11 +1,11 @@
 # Schema v1.1 — Package-Bundled Copy
 
 These JSON Schema files are **package-bundled copies** of the authoring schemas
-from `schema/v1.1/` at the repository root.
+from the family-scoped v1.1 schemas at the repository root.
 
 ## Canonical Source
 
-The repository root `schema/v1.1/` directory is the canonical source of truth.
+The repository root `schema/` family directories are the canonical source of truth.
 Do not edit the files in this directory directly.
 
 ## Purpose
@@ -16,6 +16,6 @@ tree). They are kept in sync with the repository root copies by CI.
 
 ## Sync Rule
 
-When any file in `schema/v1.1/` is updated, the corresponding file in
-`src/adr_kit/schema/v1.1/` must be updated in the same commit. CI validates
-byte-for-byte parity between the two directories.
+When any mirrored v1.1 file in `schema/` is updated, the corresponding file in
+`src/adr_kit/schema/v1_1/` must be updated in the same commit. CI validates
+byte-for-byte parity through the explicit inventory mappings.

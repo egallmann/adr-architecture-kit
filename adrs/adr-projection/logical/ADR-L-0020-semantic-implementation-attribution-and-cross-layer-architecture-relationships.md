@@ -5,8 +5,8 @@ artifact_kind: rendered_adr_markdown
 generator_id: adr-projection-markdown
 generator_version: 2
 hash_algorithm: sha256
-source_hash: 18c2ad08fa5aa53eaec6a785ffef2e5b4966fe949b3da7efa07e5f5db6deb568
-rendered_hash: 175af9f34440a038725c4b43c465624d8ec9b776927161fd28332684eeed73ee
+source_hash: 27d20d3ed99449bab789c3a72b36cf846388fca628f801917c52e99a05254b76
+rendered_hash: df001be0b5fc4dfdde21bee3412712bdd77507503a35982169c65ab291e46c7f
 -->
 
 # ADR-L-0020: Semantic Implementation Attribution and Cross-Layer Architecture Relationships
@@ -404,7 +404,7 @@ reports, not on the required extractor schema.
 
 **Rationale:**
 After `ArchitectureRepository.find_entity_by_uuid` (model 2.0), the
-mechanical vocabulary in `schema/v1.5/semantic-attribution-vocabulary.json`
+mechanical vocabulary in `schema/evidence-attribution/v1.5/semantic-attribution-vocabulary.json`
 admits: `implements` to adr, decision, capability, contract, interface,
 implementation_decision; `enforces` to invariant only; `embodies` to
 system, component, boundary. Unknown relationship, illegal resolved type,

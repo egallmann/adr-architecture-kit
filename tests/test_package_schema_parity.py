@@ -1,4 +1,4 @@
-"""Canonical ``schema/v*.*`` JSON must match bundled ``src/adr_kit/schema/v*_*``.
+"""Canonical schema JSON must match explicit package mirror mappings.
 
 Mirrors ``Check package schema parity`` in ``.github/workflows/adr-governance.yml``.
 Keeps installs that load schemas via ``importlib.resources`` aligned with repo-root authority.
@@ -7,26 +7,22 @@ Keeps installs that load schemas via ``importlib.resources`` aligned with repo-r
 from __future__ import annotations
 
 import filecmp
+import json
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
+INVENTORY = REPO_ROOT / "tests" / "fixtures" / "schema-contract-inventory.json"
 
 
 def _schema_parity_mismatches(root: Path) -> list[str]:
     mismatches: list[str] = []
-    for version in ("v1.0", "v1.1", "v1.2", "v1.3", "v1.5", "v2.0"):
-        canonical_dir = root / "schema" / version
-        bundled_dir = root / "src" / "adr_kit" / "schema" / version.replace(".", "_")
-        for canonical in sorted(canonical_dir.glob("*.json")):
-            bundled = bundled_dir / canonical.name
-            if not bundled.exists():
-                mismatches.append(f"MISSING in package bundle: {bundled}")
-            elif not filecmp.cmp(canonical, bundled, shallow=False):
-                mismatches.append(f"DRIFT: {canonical} vs {bundled}")
-    migrations_canonical = root / "schema" / "migrations"
-    migrations_bundled = root / "src" / "adr_kit" / "schema" / "migrations"
-    for canonical in sorted(migrations_canonical.glob("*.json")):
-        bundled = migrations_bundled / canonical.name
+    inventory = json.loads(INVENTORY.read_text(encoding="utf-8"))
+    for record in inventory["records"]:
+        mirror = record["package_mirror_path"]
+        if not mirror:
+            continue
+        canonical = root / record["target_path"]
+        bundled = root / mirror
         if not bundled.exists():
             mismatches.append(f"MISSING in package bundle: {bundled}")
         elif not filecmp.cmp(canonical, bundled, shallow=False):

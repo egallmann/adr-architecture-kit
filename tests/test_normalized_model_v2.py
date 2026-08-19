@@ -321,7 +321,9 @@ class TestSchemaV2Parity:
             assert canonical_data == mirror_data, f"Drift: {schema_file.name}"
 
     def test_v2_normalized_entity_schema_requires_uuid(self) -> None:
-        schema_path = REPO_ROOT / "schema" / "normalized-model" / "v2.0" / "normalized-entity.schema.json"
+        schema_path = (
+            REPO_ROOT / "schema" / "normalized-model" / "v2.0" / "normalized-entity.schema.json"
+        )
         schema = json.loads(schema_path.read_text())
         assert "id" in schema["required"]
         assert "uri" in schema["required"]
@@ -330,7 +332,9 @@ class TestSchemaV2Parity:
         assert schema["properties"]["id"]["pattern"].startswith("^[0-9a-f]")
 
     def test_v2_relationship_schema_requires_owner(self) -> None:
-        schema_path = REPO_ROOT / "schema" / "normalized-model" / "v2.0" / "relationship-record.schema.json"
+        schema_path = (
+            REPO_ROOT / "schema" / "normalized-model" / "v2.0" / "relationship-record.schema.json"
+        )
         schema = json.loads(schema_path.read_text())
         assert "source_owner_id" in schema["required"]
         assert "from_entity_id" in schema["required"]

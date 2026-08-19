@@ -1,29 +1,29 @@
 {
   "classification": "NON-AUTHORITATIVE VERIFICATION SNAPSHOT",
-  "purpose": "Sealed evidence for the ADR-L-0022 UUIDv7 entity-identity migration; this file verifies canonical artifacts and never defines entity or graph semantics.",
+  "purpose": "Sealed evidence for the ADR-L-0022 UUIDv7 entity-identity admission checkpoint; this file verifies canonical artifacts and never defines entity or graph semantics.",
   "governing_adr": "ADR-L-0022",
-  "baseline_sha": "614b678",
+  "baseline_sha": "b998bfc",
   "architecture_graph": {
     "path": "adrs/index/architecture-graph.yaml",
-    "source_sha256": "c5751de14c05454563b6e856553c956390a7c22021f6608616cb74bddf6a0f87",
-    "node_count": 392,
-    "edge_count": 531,
-    "node_semantic_sha256": "b10c861fa8a97c36d3e4b5c002c2a3c248289b86239499e9399b290d07c81c4d",
-    "edge_semantic_sha256": "a82a374529987ba8eb376ddba2e7d45106e9ba6bc27596a7b6ad6d00b797daf9",
+    "source_sha256": "fa681e8b8934284bdc27b588c4b07d1a63d315f75ffee87df8fba2bdb37bc9e0",
+    "node_count": 402,
+    "edge_count": 541,
+    "node_semantic_sha256": "cb0b83728be18b613616bdb4129fef12ce128a498cefd9d74f3cae0fba769a24",
+    "edge_semantic_sha256": "0be574c5a57f6ce514352de446d34ba9abd8dc1aa9ff520d4cd864437ad4a79a",
     "node_types": {
       "adr": 36,
       "boundary": 4,
       "capability": 56,
       "component": 7,
       "contract": 5,
-      "decision": 138,
+      "decision": 145,
       "implementation_decision": 12,
       "interface": 11,
-      "invariant": 121,
+      "invariant": 124,
       "system": 2
     },
     "edge_types": {
-      "declared_in": 356,
+      "declared_in": 366,
       "embodied_in": 7,
       "enabled_by": 1,
       "enables": 1,
@@ -37,7 +37,7 @@
       "supersedes": 3
     },
     "baseline_identity_evidence": {
-      "uuidv7_nodes": 392,
+      "uuidv7_nodes": 402,
       "nodes_with_alias_envelope": 0,
       "uuidv7_edges": 0,
       "edges_with_alias_envelope": 0
@@ -53,13 +53,13 @@
     "adrs/logical/ADR-L-0007-deterministic-documentation-projection.yaml": "d0aa69f1e119100afaae775ab01472876314d5a84d07aa3234b6cd368f45d7e9",
     "adrs/logical/ADR-L-0019-canonical-entity-identity.yaml": "8e1a2c2249413cc4a66968c02704ab8c9d8d2aca8e558edc95bfd301af0212f7",
     "adrs/logical/ADR-L-0021-schema-contract-taxonomy.yaml": "7cde26ca25ed4064c25356f9f3e9025b75cbe403b7194ea5cd305820a6631bbb",
-    "adrs/logical/ADR-L-0022-universal-uuidv7-entity-identity.yaml": "06407d58eda1a72e7403fd41e90072249c326ed054ae41e96ff39d85c3596299",
+    "adrs/logical/ADR-L-0022-universal-uuidv7-entity-identity.yaml": "8dcd021888ac11d396924982940dff088245afbc67882f5ad00e313714b0242f",
     "adrs/physical/ADR-P-0004-prompt-translator-implementation.yaml": "10aa8c7bcb637812128596a67da11d5a2e1406d3a06062f4d39b52eafab56667",
     "adrs/physical-system/ADR-PS-0001-adr-architecture-kit-discovery-and-indexing-system.yaml": "d1c92082f35845315b6d2385601ac93171a56d649ab11fbbd138822b72f333ca",
     "adrs/physical-system/ADR-PS-0002-adr-kit-compiler-and-validation-runtime.yaml": "55005275cb6fc16fb5c03f10f959944f9ba524a6b229522593b27d000381e24a"
   },
   "graph_eligible_corpus_records": [
-    {"path": "PROJECT.yaml", "pointer": "/architecture_documentation", "kind": "project_namespace_boundary", "legacy_alias": "adr-architecture-kit"},
+    {"path": "PROJECT.yaml", "pointer": "/architecture_documentation", "kind": "project_namespace_boundary", "legacy_alias": null},
     {"path": "adrs/decisions/reviews/REVIEW-0001.yaml", "pointer": "/", "kind": "steelman_review", "legacy_alias": "REVIEW-0001"},
     {"path": "adrs/decisions/reviews/REVIEW-0001.yaml", "pointer": "/objections/0", "kind": "review_objection", "legacy_alias": null},
     {"path": "adrs/decisions/reviews/REVIEW-0001.yaml", "pointer": "/objections/1", "kind": "review_objection", "legacy_alias": null},

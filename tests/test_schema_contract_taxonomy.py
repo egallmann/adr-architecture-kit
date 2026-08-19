@@ -57,9 +57,7 @@ def test_explicit_package_mirror_mappings_are_byte_equal() -> None:
         mirror = record["package_mirror_path"]
         if not mirror:
             continue
-        assert (REPO_ROOT / mirror).read_bytes() == (
-            REPO_ROOT / record["target_path"]
-        ).read_bytes()
+        assert (REPO_ROOT / mirror).read_bytes() == (REPO_ROOT / record["target_path"]).read_bytes()
 
 
 def test_schema_refs_are_uri_well_formed_and_local_targets_exist() -> None:
@@ -114,4 +112,6 @@ def test_active_references_do_not_use_retired_canonical_paths() -> None:
             text = path.read_text(encoding="utf-8", errors="ignore")
             if any(token in text for token in retired):
                 offenders.append(str(path.relative_to(REPO_ROOT)))
-    assert not offenders, "retired canonical schema paths remain in active files: " + ", ".join(offenders)
+    assert not offenders, "retired canonical schema paths remain in active files: " + ", ".join(
+        offenders
+    )

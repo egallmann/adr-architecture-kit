@@ -28,7 +28,10 @@ def test_readme_has_one_default_evidence_lookup_explanation() -> None:
 
 
 def test_readme_documents_both_attribution_schema_lineages_once() -> None:
-    assert "schema/evidence-attribution/v1.1/implementation-attribution-evidence.schema.json" in IMPLEMENTATION_LINKAGE
+    assert (
+        "schema/evidence-attribution/v1.1/implementation-attribution-evidence.schema.json"
+        in IMPLEMENTATION_LINKAGE
+    )
     assert IMPLEMENTATION_LINKAGE.count("1.0/1.2 remain") == 1
     assert IMPLEMENTATION_LINKAGE.count("Canonical 1.5 lives") == 1
     assert "schema/evidence-attribution/v1.5/" in IMPLEMENTATION_LINKAGE

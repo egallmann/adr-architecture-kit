@@ -9,12 +9,7 @@ from typing import Any
 
 import yaml
 
-
-UUIDV7_RE = re.compile(
-    r"^[0-9a-f]{8}-[0-9a-f]{4}-7[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
-)
-ALIAS_ID_RE = re.compile(r"^[A-Z][A-Z0-9]*(?:-[A-Z0-9]+)*-\d{4}$")
-ALIAS_NAME_RE = re.compile(r"^[a-z][a-z0-9]*(?:-[a-z0-9]+)*$")
+UUIDV7_RE = re.compile(r"^[0-9a-f]{8}-[0-9a-f]{4}-7[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$")
 FIXTURE_PATH = Path(__file__).parent / "fixtures" / "universal-graph-identity-baseline.json"
 
 
@@ -46,16 +41,10 @@ def _resolve_pointer(document: Any, pointer: str) -> Any:
     return value
 
 
-def _identity_errors(record: dict[str, Any], location: str) -> list[str]:
+def _uuid_errors(record: dict[str, Any], location: str) -> list[str]:
     errors: list[str] = []
     if not UUIDV7_RE.fullmatch(str(record.get("id", ""))):
         errors.append(f"{location}: id is not UUIDv7")
-    alias_id = str(record.get("alias_id", ""))
-    if not ALIAS_ID_RE.fullmatch(alias_id):
-        errors.append(f"{location}: alias_id is missing or not governed")
-    alias_name = str(record.get("alias_name", ""))
-    if not ALIAS_NAME_RE.fullmatch(alias_name) or not 3 <= len(alias_name) <= 96:
-        errors.append(f"{location}: alias_name is missing or not governed")
     return errors
 
 
@@ -65,8 +54,7 @@ def test_identity_inventory_is_explicitly_non_authoritative_and_unique() -> None
     assert fixture["classification"] == "NON-AUTHORITATIVE VERIFICATION SNAPSHOT"
     assert fixture["governing_adr"] == "ADR-L-0022"
     locations = [
-        (item["path"], item["pointer"])
-        for item in fixture["graph_eligible_corpus_records"]
+        (item["path"], item["pointer"]) for item in fixture["graph_eligible_corpus_records"]
     ]
     assert len(locations) == 40
     assert len(locations) == len(set(locations))
@@ -109,14 +97,25 @@ def test_architecture_graph_preserves_baseline_semantics_and_uses_entity_identit
 
     errors: list[str] = []
     for index, node in enumerate(nodes):
-        errors.extend(_identity_errors(node, f"nodes[{index}]"))
+        errors.extend(_uuid_errors(node, f"nodes[{index}]"))
     for index, edge in enumerate(edges):
-        relationship = {"id": edge.get("relationship_id"), **edge}
-        errors.extend(_identity_errors(relationship, f"edges[{index}]"))
+        errors.extend(
+            _uuid_errors(
+                {"id": edge.get("source_entity_id")},
+                f"edges[{index}].source_entity_id",
+            )
+        )
+        errors.extend(
+            _uuid_errors(
+                {"id": edge.get("target_entity_id")},
+                f"edges[{index}].target_entity_id",
+            )
+        )
     assert not errors, "\n".join(errors[:50])
 
 
-def test_all_known_graph_eligible_corpus_records_have_entity_identity() -> None:
+def test_graph_eligible_corpus_records_remain_legacy_until_migration_gate() -> None:
+    """The admitted graph identity does not silently migrate authoring sources."""
     errors: list[str] = []
     for item in _fixture()["graph_eligible_corpus_records"]:
         path = _repo_root() / item["path"]
@@ -126,11 +125,15 @@ def test_all_known_graph_eligible_corpus_records_have_entity_identity() -> None:
         if not isinstance(record, dict):
             errors.append(f"{location}: expected an object")
             continue
-        errors.extend(_identity_errors(record, location))
         legacy_alias = item["legacy_alias"]
-        if legacy_alias and record.get("alias_id") != legacy_alias:
+        if legacy_alias:
+            if record.get("id") != legacy_alias:
+                errors.append(f"{location}: source id must preserve legacy alias {legacy_alias!r}")
+        elif "id" in record:
+            errors.append(f"{location}: owner-local source record must not gain an id")
+        if "alias_id" in record or "alias_name" in record:
             errors.append(
-                f"{location}: alias_id must preserve legacy alias {legacy_alias!r}"
+                f"{location}: source identity envelope requires the reviewed migration gate"
             )
 
     assert not errors, "\n".join(errors)

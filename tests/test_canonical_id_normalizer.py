@@ -367,16 +367,13 @@ def test_repair_apply_syncs_new_allocations_without_requiring_a_collision(tmp_pa
     )
 
     assert any(
-        "missing active allocation" in finding
-        for finding in normalizer.validate_allocations(scope)
+        "missing active allocation" in finding for finding in normalizer.validate_allocations(scope)
     )
     plan = normalizer.repair(scope, apply=True)
 
     assert plan.remaps == []
     assert normalizer.validate_allocations(scope) == []
-    allocation = ADRParser().parse_yaml(
-        adr_dir / "migrations" / "canonical-id-allocation.yaml"
-    )
+    allocation = ADRParser().parse_yaml(adr_dir / "migrations" / "canonical-id-allocation.yaml")
     assert allocation["high_water_marks"]["BOUND"] == 99
     assert any(
         item["id"] == "BOUND-0099"
@@ -387,8 +384,7 @@ def test_repair_apply_syncs_new_allocations_without_requiring_a_collision(tmp_pa
     historical = [
         item
         for item in allocation["allocations"]
-        if item["id"] == "BOUND-0001"
-        and item["file_path"] == "adrs/logical/ADR-L-2000-a.yaml"
+        if item["id"] == "BOUND-0001" and item["file_path"] == "adrs/logical/ADR-L-2000-a.yaml"
     ]
     assert len(historical) == 1
     assert historical[0]["source_pointer"] == "/architectural_boundaries/0/id"

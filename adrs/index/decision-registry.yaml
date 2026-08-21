@@ -6900,9 +6900,9 @@ entities:
   alias_ref: DEC-0121:canonical-output-order-is-deterministic-and-idempotent
   entity_type: decision
   name: Canonical output order is deterministic and idempotent
-  summary: Record order is `(implementation_entity_id, source_file, extractor, commit
-    or "")`. Claim order is `(relationship, target_entity_id, asserted_target_entity_type
-    or "")`. Unsorted raw input is valid. Repeated canonicaliza
+  summary: Record order is `(implementation_entity_id, source_file, source_pointer,
+    start_line, end_line, extractor, commit or "")`. Claim order is `(relationship,
+    target_entity_id, asserted_target_entity_type or "")`. Unsorted raw
   uri: adr://adr-architecture-kit/entities/019ffdba-3c42-705f-9935-76ed45c32cd7
   created_at: '2026-08-14T00:44:28.610Z'
   entity_fingerprint: sha256:2a3ef79da791e5bfbd12834973aceff23a2135ba165dc3e5a92be92321478495
@@ -6958,9 +6958,9 @@ entities:
   alias_ref: DEC-0120:legacy-evidence-normalizes-only-with-architecture-state
   entity_type: decision
   name: Legacy 1.0/1.2 evidence normalizes only with architecture state
-  summary: Attribution 1.0/1.2 remains readable under the v1.1 evidence schema. `normalize_attribution_evidence`
-    requires a repository or model 2.0 context. Aliases resolve through governed `alias_id`
-    lookup; UUID values resolve di
+  summary: Attribution 1.0/1.2 remains readable under the v1.1 evidence schema and
+    normalizes through governed repository lookup. Targets 1.5 and 1.6 are explicit;
+    1.5 remains the CLI default. Conversion preserves confidence exactl
   uri: adr://adr-architecture-kit/entities/019ffdba-3c42-7282-931f-92503f4079cb
   created_at: '2026-08-14T00:44:28.610Z'
   entity_fingerprint: sha256:21eb83cd0f7e6abbeb5f9606aa0647fe449a7eebbbe4924522cfc2244acf848c
@@ -7074,9 +7074,9 @@ entities:
   alias_ref: DEC-0123:coverage-distinguishes-unique-semantic-links-from-evidence-occurrence
   entity_type: decision
   name: Coverage distinguishes unique semantic links from evidence occurrence
-  summary: Existing coverage YAML keys remain. For v1.5 input, ADR fields fill from
-    claims whose resolved type is `adr`. Additive unique-link counts use `(implementation_entity_id,
-    relationship, target_entity_id)` after normalize/r
+  summary: Existing coverage YAML keys remain. For v1.5/v1.6 input, ADR fields fill
+    from claims whose resolved type is `adr`. Additive unique-link counts use `(implementation_entity_id,
+    relationship, target_entity_id)` after normal
   uri: adr://adr-architecture-kit/entities/019ffdba-3c42-7304-ab2f-bcd01cc6f9d3
   created_at: '2026-08-14T00:44:28.610Z'
   entity_fingerprint: sha256:0c8de08f33235c78adfefc503c954d5ddc6865f4c80013840f700b70ccd45c67
@@ -7190,9 +7190,9 @@ entities:
   alias_ref: DEC-0122:duplicate-semantic-claims-follow-provenance-aware-fail-closed-rules
   entity_type: decision
   name: Duplicate semantic claims follow provenance-aware fail-closed rules
-  summary: Within one record, duplicate `(relationship, target_entity_id)` is an error.
-    Across records with distinct provenance, the same semantic triple is independent
-    evidence and must be kept. Identical semantic triple and ident
+  summary: The unique linkage key is `(implementation_entity_id, relationship, target_entity_id)`.
+    Across records with distinct provenance, occurrences aggregate behind that link.
+    Exact repeated claim-and-provenance occurrences and
   uri: adr://adr-architecture-kit/entities/019ffdba-3c42-7690-8f1b-ad8deaeed484
   created_at: '2026-08-14T00:44:28.610Z'
   entity_fingerprint: sha256:8bf0cc69db0f720dd91e9b9cb61db9f4927ce604daef1657362acf491dcab21d
@@ -7248,9 +7248,9 @@ entities:
   alias_ref: DEC-0119:evidence-claim-verbs-are-not-architecture-relationship-types
   entity_type: decision
   name: Evidence claim verbs are not architecture relationship types
-  summary: v1.5 relationship names are evidence claim verbs. They are not `RelationshipRecordV2.relationship_type`
-    values and must not be written into architecture relationship registries or Architecture
-    IR. `implementation_entity_
+  summary: Evidence relationship names and the bidirectional linkage projection are
+    derived evidence. They are not `RelationshipRecordV2.relationship_type` values
+    and must not be written into architecture relationship registries or
   uri: adr://adr-architecture-kit/entities/019ffdba-3c42-7751-a81c-d738f411b299
   created_at: '2026-08-14T00:44:28.610Z'
   entity_fingerprint: sha256:fa7489daa3f2f0124f8fb3f67c638470b4ac4389fd20cfc1dadc7d852200304d
@@ -7306,9 +7306,9 @@ entities:
   alias_ref: DEC-0118:apply-the-attribution-matrix-to-repository-resolved-entity-type
   entity_type: decision
   name: Apply the attribution matrix to repository-resolved entity type
-  summary: 'After `ArchitectureRepository.find_entity_by_uuid` (model 2.0), the mechanical
-    vocabulary in `schema/evidence-attribution/v1.5/semantic-attribution-vocabulary.json`
-    admits: `implements` to adr, decision, capability, cont'
+  summary: 'After `ArchitectureRepository.find_entity_by_uuid` (model 2.0), the versioned
+    mechanical vocabulary admits: `implements` to adr, decision, capability, contract,
+    interface, implementation_decision; `enforces` to invariant'
   uri: adr://adr-architecture-kit/entities/019ffdba-3c42-7f40-b339-204a447bec81
   created_at: '2026-08-14T00:44:28.610Z'
   entity_fingerprint: sha256:725269dc638da123a4eb3ff28dbac590f7af4c576b49aa1a41bbaafa055528a9

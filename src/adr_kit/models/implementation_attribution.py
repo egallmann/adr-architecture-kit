@@ -4,10 +4,9 @@ from __future__ import annotations
 
 from typing import Any, Literal
 
-from pydantic import BaseModel, Field, field_validator
+from pydantic import BaseModel, Field, field_validator, model_validator
 
 from adr_kit.identity import UUIDV7_PATTERN
-
 
 ImplementationEntityType = Literal[
     "function",
@@ -108,4 +107,50 @@ class ImplementationAttributionEvidenceV15(BaseModel):
     records: list[ImplementationAttributionRecordV15] = Field(default_factory=list)
 
 
-AttributionEvidenceDocument = ImplementationAttributionEvidence | ImplementationAttributionEvidenceV15
+class ImplementationAttributionProvenanceV16(BaseModel):
+    """Extraction provenance with optional source orientation (schema 1.6)."""
+
+    source_file: str
+    extractor: str
+    commit: str | None = None
+    source_pointer: str | None = None
+    start_line: int | None = Field(default=None, ge=1)
+    end_line: int | None = Field(default=None, ge=1)
+
+    @model_validator(mode="after")
+    def _validate_span(self) -> "ImplementationAttributionProvenanceV16":
+        if self.end_line is not None and self.start_line is None:
+            raise ValueError("end_line requires start_line")
+        if (
+            self.start_line is not None
+            and self.end_line is not None
+            and self.end_line < self.start_line
+        ):
+            raise ValueError("end_line must be greater than or equal to start_line")
+        return self
+
+
+class ImplementationAttributionRecordV16(BaseModel):
+    """A single implementation surface with v1.6 semantic claims."""
+
+    implementation_entity_id: str
+    implementation_entity_type: ImplementationEntityType
+    provenance: ImplementationAttributionProvenanceV16
+    claims: list[SemanticAttributionClaim] = Field(default_factory=list)
+    metadata: dict[str, Any] = Field(default_factory=dict)
+    attribution_source_language: AttributionSourceLanguage | None = None
+
+
+class ImplementationAttributionEvidenceV16(BaseModel):
+    """Collection of UUID-canonical implementation attribution claims (schema 1.6)."""
+
+    schema_version: Literal["1.6"] = "1.6"
+    type: Literal["implementation_attribution_evidence"] = "implementation_attribution_evidence"
+    records: list[ImplementationAttributionRecordV16] = Field(default_factory=list)
+
+
+AttributionEvidenceDocument = (
+    ImplementationAttributionEvidence
+    | ImplementationAttributionEvidenceV15
+    | ImplementationAttributionEvidenceV16
+)

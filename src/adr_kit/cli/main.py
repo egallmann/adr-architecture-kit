@@ -16,7 +16,7 @@ except ImportError:
 
 import yaml
 
-from ..api import _operations as application_service
+from ..api import LinkageProvenance, _operations as application_service
 from ..generators import (
     LogicalADRGenerator,
     PhysicalComponentADRGenerator,
@@ -31,7 +31,10 @@ from ..compiler import (
     compile_logical_adr_ir_fragments,
 )
 from ..decorators import implements_adr
-from ..models.implementation_attribution import ImplementationAttributionEvidenceV15
+from ..models.implementation_attribution import (
+    ImplementationAttributionEvidenceV15,
+    ImplementationAttributionEvidenceV16,
+)
 from adr_kit.semantic_attribution.normalize import (
     evidence_to_canonical_dict,
     normalize_attribution_evidence,
@@ -2421,7 +2424,7 @@ def _resolve_attribution_evidence_path(scope_root: Path, evidence: Optional[Path
 
 
 def _coverage_from_v15(
-    evidence: ImplementationAttributionEvidenceV15,
+    evidence: ImplementationAttributionEvidenceV15 | ImplementationAttributionEvidenceV16,
     repo: ArchitectureRepository,
 ) -> tuple[list[str], dict[str, int], dict[str, int], dict[str, int]]:
     unique_edges = unique_semantic_edges(evidence)
@@ -2542,6 +2545,9 @@ def attribution_coverage_cmd(scope: Optional[Path], evidence: Optional[Path]):
             "enforces": 0,
             "embodies": 0,
         }
+        validated_link_count = 0
+        warning_link_count = 0
+        rejected_claim_count = 0
         try:
             ev_path = _resolve_attribution_evidence_path(scope_root, evidence)
             parser = ADRParser()
@@ -2549,10 +2555,27 @@ def attribution_coverage_cmd(scope: Optional[Path], evidence: Optional[Path]):
             schema_version = str(evidence_obj.schema_version)
             repo = ArchitectureRepository(project_root=scope_root)
             repo.load()
-            if isinstance(evidence_obj, ImplementationAttributionEvidenceV15):
+            if isinstance(
+                evidence_obj,
+                (ImplementationAttributionEvidenceV15, ImplementationAttributionEvidenceV16),
+            ):
                 cited, unique_by_relationship, unique_by_type, occurrence_by_relationship = (
                     _coverage_from_v15(evidence_obj, repo)
                 )
+                from ..api import EmbodimentLinkageRequest, build_embodiment_linkage
+
+                linkage = build_embodiment_linkage(
+                    EmbodimentLinkageRequest(
+                        project_root=scope_root,
+                        evidence_path=ev_path,
+                        profile="brownfield",
+                    )
+                )
+                validated_link_count = len(linkage.links)
+                warning_link_count = sum(
+                    link.validation_status == "warning" for link in linkage.links
+                )
+                rejected_claim_count = len(linkage.rejected_claims)
             else:
                 seen: set[str] = set()
                 unique_edges: set[tuple[str, str, str]] = set()
@@ -2606,6 +2629,9 @@ def attribution_coverage_cmd(scope: Optional[Path], evidence: Optional[Path]):
                 key: occurrence_by_relationship.get(key, 0)
                 for key in ("implements", "enforces", "embodies")
             },
+            "validated_semantic_link_count": validated_link_count,
+            "warning_semantic_link_count": warning_link_count,
+            "rejected_semantic_claim_count": rejected_claim_count,
         }
         click.echo(yaml.safe_dump(payload, sort_keys=False, allow_unicode=True).rstrip())
     except Exception as e:
@@ -2693,20 +2719,32 @@ def attribution_workspace_report_cmd(
     "--output",
     type=click.Path(dir_okay=False, path_type=Path),
     default=None,
-    help="Write canonical v1.5 YAML to this path. Omit to print to stdout.",
+    help="Write canonical evidence to this path. Omit to print to stdout.",
+)
+@click.option(
+    "--target-version",
+    type=click.Choice(["1.5", "1.6"]),
+    default="1.5",
+    show_default=True,
+    help="Canonical evidence target; v1.5 remains the compatibility default.",
 )
 def attribution_normalize_evidence_cmd(
     scope: Path,
     input_path: Path,
     output: Optional[Path],
+    target_version: str,
 ) -> None:
-    """Normalize 1.0/1.2 or 1.5 evidence to canonical v1.5 YAML. Does not write by default."""
+    """Normalize supported evidence losslessly. Does not write by default."""
     try:
         parser = ADRParser()
         evidence_obj = parser.parse_implementation_attribution_evidence(input_path)
         repo = ArchitectureRepository(project_root=Path(scope).resolve())
         repo.load()
-        canonical = normalize_attribution_evidence(evidence_obj, repo)
+        canonical = normalize_attribution_evidence(
+            evidence_obj,
+            repo,
+            target_version=target_version,
+        )
         payload = evidence_to_canonical_dict(canonical)
         rendered = yaml.safe_dump(payload, sort_keys=False, allow_unicode=True)
         if output is None:
@@ -2715,10 +2753,123 @@ def attribution_normalize_evidence_cmd(
         output_path = Path(output)
         output_path.parent.mkdir(parents=True, exist_ok=True)
         output_path.write_text(rendered, encoding="utf-8")
-        click.echo(f"Wrote canonical v1.5 evidence: {output_path.resolve()}")
+        click.echo(f"Wrote canonical v{target_version} evidence: {output_path.resolve()}")
     except Exception as e:
         click.echo(f"Error: {e}", err=True)
         sys.exit(1)
+
+
+@implements_adr("ADR-L-0004", "ADR-L-0020", "ADR-PC-0007")
+@attribution_cli.command("linkage-report")
+@click.option(
+    "--scope",
+    type=click.Path(exists=True, file_okay=False, path_type=Path),
+    required=True,
+)
+@click.option(
+    "--evidence",
+    type=click.Path(exists=True, dir_okay=False, path_type=Path),
+    required=True,
+)
+@click.option(
+    "--profile",
+    type=click.Choice(["greenfield", "brownfield", "migration"]),
+    default="greenfield",
+    show_default=True,
+)
+@click.option("--implementation-entity-id", default=None)
+@click.option("--intent-entity-id", default=None)
+@click.option(
+    "--relationship", type=click.Choice(["implements", "enforces", "embodies"]), default=None
+)
+def attribution_linkage_report_cmd(
+    scope: Path,
+    evidence: Path,
+    profile: str,
+    implementation_entity_id: Optional[str],
+    intent_entity_id: Optional[str],
+    relationship: Optional[str],
+) -> None:
+    """Build a deterministic, non-authoritative embodiment linkage report."""
+    if implementation_entity_id and intent_entity_id:
+        raise click.UsageError(
+            "--implementation-entity-id and --intent-entity-id are mutually exclusive"
+        )
+    from ..api import EmbodimentLinkageRequest, build_embodiment_linkage
+
+    result = build_embodiment_linkage(
+        EmbodimentLinkageRequest(
+            project_root=scope,
+            evidence_path=evidence,
+            profile=cast(ContractProfile, profile),
+        )
+    )
+    links = result.links
+    if implementation_entity_id:
+        links = result.links_for_implementation(implementation_entity_id)
+    elif intent_entity_id:
+        links = result.implementations_for_intent(intent_entity_id)
+    if relationship:
+        links = tuple(link for link in links if link.relationship == relationship)
+
+    def provenance_payload(value: LinkageProvenance) -> dict[str, object]:
+        return {
+            key: item
+            for key, item in {
+                "source_file": value.source_file,
+                "source_pointer": value.source_pointer,
+                "start_line": value.start_line,
+                "end_line": value.end_line,
+                "extractor": value.extractor,
+                "commit": value.commit,
+            }.items()
+            if item is not None
+        }
+
+    payload = {
+        "evidence_file": str(result.request.evidence_path),
+        "evidence_schema_version": result.evidence_schema_version,
+        "success": result.success,
+        "authority_ceiling": "validated_derived_evidence",
+        "graph_admission_status": "not_admitted",
+        "links": [
+            {
+                "implementation_entity_id": link.implementation_entity_id,
+                "implementation_entity_type": link.implementation_entity_type,
+                "relationship": link.relationship,
+                "target_entity_id": link.target_entity_id,
+                "target_entity_type": link.target_entity_type,
+                "target_alias_id": link.target_alias_id,
+                "target_alias_name": link.target_alias_name,
+                "target_lifecycle": link.target_lifecycle,
+                "validation_status": link.validation_status,
+                "occurrences": [
+                    {
+                        "confidence": occurrence.confidence,
+                        "provenance": provenance_payload(occurrence.provenance),
+                    }
+                    for occurrence in link.occurrences
+                ],
+            }
+            for link in links
+        ],
+        "rejected_claims": [
+            {
+                "implementation_entity_id": item.implementation_entity_id,
+                "relationship": item.relationship,
+                "target_entity_id": item.target_entity_id,
+                "confidence": item.confidence,
+                "provenance": provenance_payload(item.provenance),
+                "diagnostics": [diagnostic.message for diagnostic in item.diagnostics],
+            }
+            for item in result.rejected_claims
+        ],
+        "error_count": result.error_count,
+        "warning_count": result.warning_count,
+    }
+    click.echo(yaml.safe_dump(payload, sort_keys=False, allow_unicode=True).rstrip())
+    if not result.success:
+        raise click.exceptions.Exit(1)
 
 
 @implements_adr("ADR-L-0002", "ADR-L-0013", "ADR-L-0004")

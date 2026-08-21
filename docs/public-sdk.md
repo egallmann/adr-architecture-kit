@@ -19,11 +19,35 @@ print(manifest.api_contract_version)  # 1.0
 print(manifest.supported_adr_schema_versions)  # ('1.0', '1.1', '1.2', '1.3')
 print(manifest.normalized_model_schema_version)  # 1.1 (native default)
 print(manifest.supported_normalized_model_schema_versions)  # ('1.1', '2.0')
+print(manifest.supported_evidence_attribution_versions)  # ('1.5', '1.6')
+print(manifest.preferred_evidence_attribution_version)  # 1.6
 print(manifest.as_dict())
 ```
 
 Capability discovery is local and deterministic. It performs no network access,
 repository discovery, validation, compilation, or writes.
+
+## Build validated embodiment linkage
+
+```python
+from pathlib import Path
+from adr_kit.api import EmbodimentLinkageRequest, build_embodiment_linkage
+
+result = build_embodiment_linkage(
+    EmbodimentLinkageRequest(
+        project_root=Path("/absolute/path/to/project"),
+        evidence_path=Path("/absolute/workspace/state/evidence.yaml"),
+    )
+)
+for link in result.links_for_implementation("package.module:callable"):
+    print(link.relationship, link.target_alias_id, link.occurrences)
+```
+
+The evidence file is explicit, read-only, and may live outside `project_root`.
+Valid links and rejected claims can coexist in a partial result. Links are validated
+derived evidence with `graph_admission_status="not_admitted"`; the operation never
+persists linkage or writes Architecture IR or graph state. Evidence v1.6 is preferred
+for new producers while v1.5 remains supported under its historical semantics.
 
 ## Validate one repository
 
@@ -177,11 +201,18 @@ PromotionBlockerDescriptor
 PromotionBaselineDescriptor
 PromotionExecutionEvidenceDescriptor
 Diagnostic
+EmbodimentLinkageRequest
+LinkageProvenance
+LinkageOccurrence
+EmbodimentIntentLink
+RejectedEmbodimentClaim
+EmbodimentLinkageResult
 SDKError
 InvalidRequestError
 OperationError
 RepositoryError
 capabilities
+build_embodiment_linkage
 validate_architecture
 compile_architecture
 open_repository

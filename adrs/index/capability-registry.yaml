@@ -3084,8 +3084,8 @@ entities:
   alias_ref: CAP-0054:repository-aware-attribution-normalization
   entity_type: capability
   name: Repository-Aware Attribution Normalization
-  summary: Translate 1.0/1.2 alias evidence into canonical v1.5 claims using governed
-    architecture lookup.
+  summary: Translate supported evidence into explicitly selected canonical v1.5 or
+    v1.6 claims using governed architecture lookup and lossless conversion.
   uri: adr://adr-architecture-kit/entities/019ffdba-3c42-71ba-b81f-a2a24830abd6
   created_at: '2026-08-14T00:44:28.610Z'
   entity_fingerprint: sha256:56ae8297e5fb81c2cb03b4593dd247154a5057cd41aa129dc7cb92081f178f1b
@@ -3142,8 +3142,8 @@ entities:
   alias_ref: CAP-0055:unique-link-attribution-coverage
   entity_type: capability
   name: Unique-Link Attribution Coverage
-  summary: Informational coverage that preserves ADR catalog keys and reports unique
-    semantic links separately from evidence occurrence.
+  summary: Informational coverage and public linkage traversal that preserve ADR catalog
+    keys and report unique semantic links separately from occurrences.
   uri: adr://adr-architecture-kit/entities/019ffdba-3c42-745c-9e37-85f7696cd43c
   created_at: '2026-08-14T00:44:28.610Z'
   entity_fingerprint: sha256:683ac16f30fa2ed5cfafadebfaad009737cb1c7733a89298a0141db1f5e72d3a
@@ -3201,7 +3201,8 @@ entities:
   entity_type: capability
   name: Semantic Implementation Attribution
   summary: UUID-canonical typed claims connecting implementation surfaces to architecture
-    entities without collapsing evidence into authority.
+    entities plus a validated, bidirectionally queryable derived projection without
+    collapsing evidence into authority.
   uri: adr://adr-architecture-kit/entities/019ffdba-3c42-7578-b43f-ad19109d59d9
   created_at: '2026-08-14T00:44:28.610Z'
   entity_fingerprint: sha256:5d7df596d1843adedb38b8b12bb234e6feac3642bfb8a90ed51e102f131d846e

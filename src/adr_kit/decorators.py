@@ -17,6 +17,7 @@ from ._uuidv7 import UUIDV7_PATTERN
 Decorated = TypeVar("Decorated")
 
 CANONICAL_CLAIMS_ATTR = "__architecture_attribution_claims__"
+_RELATIONSHIP_ORDER = {"implements": 0, "enforces": 1, "embodies": 2}
 
 
 def implements_adr(*adr_ids: str) -> Callable[[Decorated], Decorated]:
@@ -127,6 +128,19 @@ def _uuid_claim_decorator(
     def decorator(target: Decorated) -> Decorated:
         existing = getattr(target, attr, ())
         composed = list(existing) if isinstance(existing, (list, tuple)) else []
+        existing_pairs = {
+            (claim.get("relationship"), claim.get("target_entity_id"))
+            for claim in composed
+            if isinstance(claim, dict)
+        }
+        incoming_pairs = {(relationship, target_entity_id) for target_entity_id in normalized}
+        duplicates = sorted(existing_pairs & incoming_pairs)
+        if duplicates:
+            duplicate_relationship, duplicate_target = duplicates[0]
+            raise ValueError(
+                "duplicate architecture attribution claim: "
+                f"({duplicate_relationship}, {duplicate_target})"
+            )
         for target_entity_id in normalized:
             composed.append(
                 {
@@ -135,6 +149,12 @@ def _uuid_claim_decorator(
                     "confidence": "declared",
                 }
             )
+        composed.sort(
+            key=lambda claim: (
+                _RELATIONSHIP_ORDER.get(str(claim.get("relationship")), 99),
+                str(claim.get("target_entity_id", "")),
+            )
+        )
         setattr(target, attr, tuple(composed))
         return target
 

@@ -126,8 +126,103 @@
         }
       ]
     },
+    "attribution linkage-report": {
+      "help": "Build a deterministic, non-authoritative embodiment linkage report.",
+      "params": [
+        {
+          "count": false,
+          "default": "Sentinel.UNSET",
+          "is_flag": false,
+          "kind": "Option",
+          "multiple": false,
+          "name": "scope",
+          "nargs": 1,
+          "opts": [
+            "--scope"
+          ],
+          "required": true,
+          "secondary_opts": [],
+          "type": "directory"
+        },
+        {
+          "count": false,
+          "default": "Sentinel.UNSET",
+          "is_flag": false,
+          "kind": "Option",
+          "multiple": false,
+          "name": "evidence",
+          "nargs": 1,
+          "opts": [
+            "--evidence"
+          ],
+          "required": true,
+          "secondary_opts": [],
+          "type": "file"
+        },
+        {
+          "count": false,
+          "default": "greenfield",
+          "is_flag": false,
+          "kind": "Option",
+          "multiple": false,
+          "name": "profile",
+          "nargs": 1,
+          "opts": [
+            "--profile"
+          ],
+          "required": false,
+          "secondary_opts": [],
+          "type": "choice"
+        },
+        {
+          "count": false,
+          "default": null,
+          "is_flag": false,
+          "kind": "Option",
+          "multiple": false,
+          "name": "implementation_entity_id",
+          "nargs": 1,
+          "opts": [
+            "--implementation-entity-id"
+          ],
+          "required": false,
+          "secondary_opts": [],
+          "type": "text"
+        },
+        {
+          "count": false,
+          "default": null,
+          "is_flag": false,
+          "kind": "Option",
+          "multiple": false,
+          "name": "intent_entity_id",
+          "nargs": 1,
+          "opts": [
+            "--intent-entity-id"
+          ],
+          "required": false,
+          "secondary_opts": [],
+          "type": "text"
+        },
+        {
+          "count": false,
+          "default": null,
+          "is_flag": false,
+          "kind": "Option",
+          "multiple": false,
+          "name": "relationship",
+          "nargs": 1,
+          "opts": [
+            "--relationship"
+          ],
+          "required": false,
+          "secondary_opts": [],
+          "type": "choice"
+        }
+      ]
+    },
     "attribution normalize-evidence": {
-      "help": "Normalize 1.0/1.2 or 1.5 evidence to canonical v1.5 YAML. Does not write by default.",
+      "help": "Normalize supported evidence losslessly. Does not write by default.",
       "params": [
         {
           "count": false,
@@ -173,6 +268,21 @@
           "required": false,
           "secondary_opts": [],
           "type": "file"
+        },
+        {
+          "count": false,
+          "default": "1.5",
+          "is_flag": false,
+          "kind": "Option",
+          "multiple": false,
+          "name": "target_version",
+          "nargs": 1,
+          "opts": [
+            "--target-version"
+          ],
+          "required": false,
+          "secondary_opts": [],
+          "type": "choice"
         }
       ]
     },

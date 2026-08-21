@@ -1,12 +1,12 @@
 {
   "baseline_sha": "499b0d253659a4851d4f5400cbc2286eefbeef6f",
   "expected_counts": {
-    "canonical": 49,
-    "package_mirrors": 45
+    "canonical": 51,
+    "package_mirrors": 47
   },
   "discovered_counts": {
-    "canonical": 49,
-    "package_mirrors": 45
+    "canonical": 51,
+    "package_mirrors": 47
   },
   "authority": "NON-AUTHORITATIVE VERIFICATION SNAPSHOT",
   "records": [
@@ -448,6 +448,26 @@
       "schema_id": null,
       "sha256": "e4cd5dbaa3d11b432994ea090d6d09c2872d81d0cde761e1d8702a087e4980b8",
       "package_mirror_path": "src/adr_kit/schema/v1_5/semantic-attribution-vocabulary.json",
+      "mirror_disposition": "mirror"
+    },
+    {
+      "canonical_path": "schema/evidence-attribution/v1.6/implementation-attribution-evidence.schema.json",
+      "target_path": "schema/evidence-attribution/v1.6/implementation-attribution-evidence.schema.json",
+      "family": "evidence-attribution",
+      "family_version": "v1.6",
+      "schema_id": "https://adr-kit.ste.systems/schema/evidence-attribution/v1.6/implementation-attribution-evidence.schema.json",
+      "sha256": "abba77be29fcd3c4cabd80cd55b528dd519f7650cb2dcf7e5883a7fe1631fe0f",
+      "package_mirror_path": "src/adr_kit/schema/v1_6/implementation-attribution-evidence.schema.json",
+      "mirror_disposition": "mirror"
+    },
+    {
+      "canonical_path": "schema/evidence-attribution/v1.6/semantic-attribution-vocabulary.json",
+      "target_path": "schema/evidence-attribution/v1.6/semantic-attribution-vocabulary.json",
+      "family": "evidence-attribution",
+      "family_version": "v1.6",
+      "schema_id": null,
+      "sha256": "0a16d6ed2bcc6c1a4b7ca44fd9ff34ce63783dde23aebc55902bdf3805b87bd5",
+      "package_mirror_path": "src/adr_kit/schema/v1_6/semantic-attribution-vocabulary.json",
       "mirror_disposition": "mirror"
     },
     {

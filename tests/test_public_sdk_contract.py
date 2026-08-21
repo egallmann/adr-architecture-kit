@@ -38,11 +38,18 @@ EXPECTED_PUBLIC_SYMBOLS = [
     "PromotionBaselineDescriptor",
     "PromotionExecutionEvidenceDescriptor",
     "Diagnostic",
+    "EmbodimentLinkageRequest",
+    "LinkageProvenance",
+    "LinkageOccurrence",
+    "EmbodimentIntentLink",
+    "RejectedEmbodimentClaim",
+    "EmbodimentLinkageResult",
     "SDKError",
     "InvalidRequestError",
     "OperationError",
     "RepositoryError",
     "capabilities",
+    "build_embodiment_linkage",
     "validate_architecture",
     "compile_architecture",
     "open_repository",
@@ -176,6 +183,12 @@ def test_public_contracts_are_frozen(tmp_path: Path) -> None:
         "PromotionBaselineDescriptor",
         "PromotionExecutionEvidenceDescriptor",
         "Diagnostic",
+        "EmbodimentLinkageRequest",
+        "LinkageProvenance",
+        "LinkageOccurrence",
+        "EmbodimentIntentLink",
+        "RejectedEmbodimentClaim",
+        "EmbodimentLinkageResult",
     )
     for name in contract_names:
         contract = getattr(api, name)
@@ -218,6 +231,7 @@ def test_capability_manifest_is_exact_and_deterministic() -> None:
         "compile_architecture",
         "open_repository",
         "open_provider_registry",
+        "build_embodiment_linkage",
         "prepare_promotion",
         "check_promotion",
         "apply_promotion",
@@ -234,6 +248,8 @@ def test_capability_manifest_is_exact_and_deterministic() -> None:
     assert "1.3" in first.supported_adr_schema_versions
     assert first.normalized_model_schema_version == "1.1"
     assert first.supported_normalized_model_schema_versions == ("1.1", "2.0")
+    assert first.supported_evidence_attribution_versions == ("1.5", "1.6")
+    assert first.preferred_evidence_attribution_version == "1.6"
     assert list(first.as_dict()) == [field.name for field in fields(first)]
     assert all(not isinstance(value, tuple) for value in first.as_dict().values())
 

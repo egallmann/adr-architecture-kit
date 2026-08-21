@@ -5,8 +5,8 @@ artifact_kind: rendered_adr_markdown
 generator_id: adr-projection-markdown
 generator_version: 2
 hash_algorithm: sha256
-source_hash: e5077d96a2ce2ccbab68ca3379d987b2334a78817dbc37cbe508508e74c47511
-rendered_hash: f1e5722c1eb90dcc64d732272db8dabaec1fd36699963420402151d7a7141adc
+source_hash: 9f18016e60504b67a238e7a4fb31242a2d72642a7887302e9b7c9eb3adaf6b7b
+rendered_hash: f554381691206bd9958ad54abf07e6abae449976b8a62d5cdf452cec7eb54657
 -->
 
 # ADR-L-0020: Semantic Implementation Attribution and Cross-Layer Architecture Relationships
@@ -379,7 +379,7 @@ edge or migrate it to UUID, not both.
 
 ## Decisions
 
-### DEC-0116: Canonical v1.5 and v1.6 claims require relationship, target UUID, and confidence
+### DEC-0116: Canonical v1.5 claims require relationship, target UUID, and confidence
 
 **Rationale:**
 Each raw claim requires `relationship` (`implements` | `enforces` |
@@ -411,7 +411,7 @@ reports, not on the required extractor schema.
 
 
 
-### DEC-0118: Apply version-aware confidence and relationship matrices after resolution
+### DEC-0118: Apply the attribution matrix to repository-resolved entity type
 
 **Rationale:**
 After `ArchitectureRepository.find_entity_by_uuid` (model 2.0), the
@@ -427,7 +427,7 @@ or heuristic `enforces`; version 1.5 is not retroactively reinterpreted.
 
 
 
-### DEC-0119: Validated evidence links are not architecture relationship types
+### DEC-0119: Evidence claim verbs are not architecture relationship types
 
 **Rationale:**
 Evidence relationship names and the bidirectional linkage projection are
@@ -444,7 +444,7 @@ allocates graph identities, or performs graph admission.
 
 
 
-### DEC-0120: Evidence normalization is explicit, version-aware, and lossless
+### DEC-0120: Legacy 1.0/1.2 evidence normalizes only with architecture state
 
 **Rationale:**
 Attribution 1.0/1.2 remains readable under the v1.1 evidence schema and
@@ -472,7 +472,7 @@ serialized canonical output.
 
 
 
-### DEC-0122: Semantic links aggregate independent occurrences while duplicates fail closed
+### DEC-0122: Duplicate semantic claims follow provenance-aware fail-closed rules
 
 **Rationale:**
 The unique linkage key is `(implementation_entity_id, relationship,
@@ -486,7 +486,7 @@ graph identity. This rule is not weakened for dogfood.
 
 
 
-### DEC-0123: Public linkage projection distinguishes semantic links from occurrences
+### DEC-0123: Coverage distinguishes unique semantic links from evidence occurrence
 
 **Rationale:**
 Existing coverage YAML keys remain. For v1.5/v1.6 input, ADR fields fill from

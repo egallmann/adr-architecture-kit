@@ -390,9 +390,9 @@ entities:
   alias_ref: COMP-0022:semantic-attribution-embodiment
   entity_type: component
   name: Semantic Attribution Embodiment
-  summary: '- Load the mechanical v1.5 semantic attribution vocabulary - Parse and
-    validate 1.0/1.2/1.5 implementation attribution evidence - Provide UUID claim
-    decorators and vocabulary-driven Python/TypeScript shims - Resolve clai'
+  summary: '- Load versioned mechanical v1.5/v1.6 semantic attribution vocabularies
+    - Parse and validate 1.0/1.2/1.5/1.6 implementation attribution evidence - Provide
+    UUID claim decorators and vocabulary-driven Python/TypeScript shi'
   uri: adr://adr-architecture-kit/entities/019ffdba-3c42-75d5-b93b-f32f35152e32
   created_at: '2026-08-14T00:44:28.610Z'
   entity_fingerprint: sha256:835eaeacc700be019da08095552b6c852967ff31a91f71e4669404eab6a53fe5

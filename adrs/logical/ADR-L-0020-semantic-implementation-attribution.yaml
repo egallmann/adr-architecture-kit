@@ -40,7 +40,7 @@ tags:
 - evidence
 decisions:
 - id: 019ffdba-3c42-700c-ac3f-8135e0139dfb
-  summary: Canonical v1.5 and v1.6 claims require relationship, target UUID, and confidence
+  summary: Canonical v1.5 claims require relationship, target UUID, and confidence
   rationale: |
     Each raw claim requires `relationship` (`implements` | `enforces` |
     `embodies`), `target_entity_id` (lowercase UUIDv7), and `confidence`
@@ -66,7 +66,7 @@ decisions:
   alias_id: DEC-0117
   alias_name: raw-evidence-must-not-require-target-entity-type
 - id: 019ffdba-3c42-7f40-b339-204a447bec81
-  summary: Apply version-aware confidence and relationship matrices after resolution
+  summary: Apply the attribution matrix to repository-resolved entity type
   rationale: |
     After `ArchitectureRepository.find_entity_by_uuid` (model 2.0), the
     versioned mechanical vocabulary
@@ -79,7 +79,7 @@ decisions:
   alias_id: DEC-0118
   alias_name: apply-the-attribution-matrix-to-repository-resolved-entity-type
 - id: 019ffdba-3c42-7751-a81c-d738f411b299
-  summary: Validated evidence links are not architecture relationship types
+  summary: Evidence claim verbs are not architecture relationship types
   rationale: |
     Evidence relationship names and the bidirectional linkage projection are
     derived evidence. They are not
@@ -93,7 +93,7 @@ decisions:
   alias_id: DEC-0119
   alias_name: evidence-claim-verbs-are-not-architecture-relationship-types
 - id: 019ffdba-3c42-7282-931f-92503f4079cb
-  summary: Evidence normalization is explicit, version-aware, and lossless
+  summary: Legacy 1.0/1.2 evidence normalizes only with architecture state
   rationale: |
     Attribution 1.0/1.2 remains readable under the v1.1 evidence schema and
     normalizes through governed repository lookup. Targets 1.5 and 1.6 are
@@ -115,7 +115,7 @@ decisions:
   alias_id: DEC-0121
   alias_name: canonical-output-order-is-deterministic-and-idempotent
 - id: 019ffdba-3c42-7690-8f1b-ad8deaeed484
-  summary: Semantic links aggregate independent occurrences while duplicates fail closed
+  summary: Duplicate semantic claims follow provenance-aware fail-closed rules
   rationale: |
     The unique linkage key is `(implementation_entity_id, relationship,
     target_entity_id)`. Across records with distinct provenance, occurrences
@@ -126,7 +126,7 @@ decisions:
   alias_id: DEC-0122
   alias_name: duplicate-semantic-claims-follow-provenance-aware-fail-closed-rules
 - id: 019ffdba-3c42-7304-ab2f-bcd01cc6f9d3
-  summary: Public linkage projection distinguishes semantic links from occurrences
+  summary: Coverage distinguishes unique semantic links from evidence occurrence
   rationale: |
     Existing coverage YAML keys remain. For v1.5/v1.6 input, ADR fields fill from
     claims whose resolved type is `adr`. Additive unique-link counts use

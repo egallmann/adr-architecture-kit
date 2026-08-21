@@ -128,7 +128,7 @@ component_specifications:
   alias_name: semantic-attribution-embodiment
 implementation_decisions:
 - id: 019ffdba-3c42-7e86-a03e-f7df07da6757
-  summary: Generate Python and TypeScript shims from the preferred vocabulary
+  summary: Generate Python and TypeScript shims from the v1.5 vocabulary
   rationale: |
     Hand-copied shim strings drift from native decorators. One mechanical
     versioned vocabulary is the source for relationship names, allowed types,

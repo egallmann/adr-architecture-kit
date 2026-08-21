@@ -5,8 +5,8 @@ artifact_kind: rendered_adr_markdown
 generator_id: adr-projection-markdown
 generator_version: 2
 hash_algorithm: sha256
-source_hash: 3245817cad7c2074c5013c98e3b041654f43b06b1a30bbe3feb0cd5631005954
-rendered_hash: 56a166744e0d2e0079db18f02114e66159a7ecb64bcb596bff030c1cd2385f66
+source_hash: 486a6c1dfa51ddfd6ef47848dd064aa1b7b151635aa0220a468941cdd8184de9
+rendered_hash: bfbdd07d6a4e7044cba649e3db02aff5dbe4813ee4af709ea986c7a7d27b3c1a
 -->
 
 # ADR-PC-0007: Semantic Attribution Embodiment
@@ -156,7 +156,7 @@ access, integrity verification, and CLI orchestration over those surfaces.
 
 ## Implementation Decisions
 
-### IMPL-0028: Generate Python and TypeScript shims from the preferred vocabulary
+### IMPL-0028: Generate Python and TypeScript shims from the v1.5 vocabulary
 
 **Rationale:**
 Hand-copied shim strings drift from native decorators. One mechanical

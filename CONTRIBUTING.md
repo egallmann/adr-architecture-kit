@@ -102,11 +102,11 @@ pytest tests/test_schema_validation.py -v
 JSON Schemas exist in two locations that must stay in sync:
 
 - `schema/v1.0/`, family-first `schema/authoring/`, `schema/architecture-discovery/`, `schema/normalized-model/`, `schema/governance/`, and `schema/evidence-attribution/` — canonical schema sources
-- `src/adr_kit/schema/v1_0/` through `v1_5/` and `v2_0/` — bundled copies shipped with the package
+- `src/adr_kit/schema/v1_0/` through `v1_6/` and `v2_0/` — bundled copies shipped with the package
 
 Mirrors are **manual**: copy canonical JSON into the package tree and run `tests/test_package_schema_parity.py`. Do not use `scripts/generate_repository_schemas.py` for these package mirrors (that script is kernel-facing).
 
-**Implementation attribution evidence:** 1.0/1.2 live in `schema/evidence-attribution/v1.1/implementation-attribution-evidence.schema.json`; canonical 1.5 lives in `schema/evidence-attribution/v1.5/` with a packaged `v1_5` mirror. **`ste-spec`** only carries draft hand-off prose under `contracts/implementation-attribution-evidence/` until promotion—there is no JSON mirror to sync there yet (unlike Architecture IR).
+**Implementation attribution evidence:** 1.0/1.2 live in `schema/evidence-attribution/v1.1/implementation-attribution-evidence.schema.json`; canonical 1.5 and provisional preferred-producer 1.6 live in their corresponding `schema/evidence-attribution/` directories with packaged `v1_5` and `v1_6` mirrors. **`ste-spec`** only carries draft hand-off prose under `contracts/implementation-attribution-evidence/` until promotion—there is no JSON mirror to sync there yet (unlike Architecture IR).
 
 CI verifies byte-level parity (`tests/test_package_schema_parity.py` and **`Check package schema parity`** in **`.github/workflows/adr-governance.yml`**).
 

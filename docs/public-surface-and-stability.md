@@ -35,7 +35,8 @@ and normalized-model v1.1 contracts, provisional ADR authoring
 `1.1` and `2.0`, source-sensitive assertion identity, external binding projections,
 topology identity, subset registries, the additive architecture graph, and
 implementation-attribution evidence `schema/evidence-attribution/v1.5/` (semantic
-UUID claims).
+UUID claims) and preferred-producer v1.6 (optional source pointers/spans and
+version-aware confidence).
 Provisional material must identify migration impact when it changes and is not promoted
 merely by implementation.
 
@@ -70,7 +71,9 @@ Phase 1 adds no root export beyond `__version__`; the supported facade is the se
 annotations and returned object graphs exclude compiler internals. The supported
 operations are local capability discovery, one-scope validation, restricted authoring
 compilation, eager repository opening, provider-registry opening, and Design Journal
-promotion prepare/check/apply.
+promotion prepare/check/apply. `build_embodiment_linkage` and its immutable request,
+link, occurrence, rejection, and result contracts are also supported SDK surfaces;
+the evidence schemas they consume remain provisional.
 
 ### Generated compatibility
 
@@ -102,8 +105,9 @@ explicit non-release sentinel `0+unknown`.
 - ADR v1.0 encoding is stable. ADR v1.1 discovery, ledger, graph, and attribution
   material remains provisional or draft. ADR authoring v1.2 and normalized model 1.1
   are additive provisional contracts authorized by ADR-L-0018. Attribution evidence
-  v1.5 is a provisional semantic-claim line authorized by ADR-L-0020; it is not ADR
-  authoring schema 1.5.
+  v1.5 and v1.6 are provisional semantic-claim lines authorized by ADR-L-0020; neither
+  is an ADR authoring schema. v1.6 being preferred for producers does not promote it
+  to stable authority.
 - Existing CLI command names, options, defaults, exit codes, diagnostics, and
   machine-readable shapes are de facto public. Additive developer controls do not
   redefine existing commands.

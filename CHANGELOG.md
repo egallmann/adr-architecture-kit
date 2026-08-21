@@ -13,6 +13,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   claims, mechanical vocabulary, repository-aware 1.0/1.2 normalization, UUID
   decorators, vocabulary-driven shims, and unique-link coverage fields
   (`ADR-L-0020`, `ADR-PC-0007`).
+- Preferred-producer evidence-attribution v1.6 with optional source pointers/spans,
+  version-aware confidence and lossless normalization, deterministic occurrence-rich
+  linkage, supported `adr_kit.api.build_embodiment_linkage` contracts, capability
+  discovery, and `adr attribution linkage-report` (`ADR-L-0004`, `ADR-L-0020`,
+  `ADR-PC-0007`).
 
 ### Changed
 
@@ -31,6 +36,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Deduplicate README attribution-evidence docs; distinguish project-local CLI
   default lookup from workspace-root `.ste-workspace` RECON evidence.
 - Include v1.5 semantic-attribution invariant tests in the local pre-push subset.
+- Preserve v1.5 bytes and historical confidence semantics while rejecting lossy or
+  epistemically incompatible v1.6 conversion.
 - Move production-hardening phase logs out of the public docs index; durable
   release controls are pointed from contributor docs.
 

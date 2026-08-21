@@ -129,7 +129,7 @@ Full split: [authority-boundary.md](https://github.com/egallmann/adr-architectur
 This project is **pre-1.0 (Alpha)** on PyPI; surfaces may evolve until a **1.0** commitment. Trove classifiers match that posture.
 
 - **Stable** — ADR v1.0 encoding, the repository/model consumer seam (`ArchitectureRepository` and `NormalizedArchitectureModel`), traceability decorators, and the documented discovery-bundle role. See [public surface and stability](https://github.com/egallmann/adr-architecture-kit/blob/main/docs/public-surface-and-stability.md).
-- **Provisional** — ADR authoring v1.1–v1.3, normalized models 1.1 and 2.0, discovery/ledger/lifecycle extensions, and implementation-attribution evidence (including the v1.5 semantic claim line). Consume with a migration note when these change.
+- **Provisional** — ADR authoring v1.1–v1.3, normalized models 1.1 and 2.0, discovery/ledger/lifecycle extensions, and implementation-attribution evidence v1.5/v1.6. v1.6 is preferred for new evidence producers but remains provisional.
 - **Experimental** — Vision ADRs, migrators, workspace boot examples; not a basis for long-term external dependencies.
 
 Full breakdown: [public-surface-and-stability.md](https://github.com/egallmann/adr-architecture-kit/blob/main/docs/public-surface-and-stability.md).
@@ -145,6 +145,8 @@ Full breakdown: [public-surface-and-stability.md](https://github.com/egallmann/a
 | [schema-v1.2.md](https://github.com/egallmann/adr-architecture-kit/blob/main/docs/schema-v1.2.md) | Additive v1.2 authoring and normalized semantics |
 | [schema-v1.3.md](https://github.com/egallmann/adr-architecture-kit/blob/main/docs/schema-v1.3.md) | UUID identity authoring schema and model 2.0 linkage |
 | [schema-v1.5.md](https://github.com/egallmann/adr-architecture-kit/blob/main/docs/schema-v1.5.md) | Semantic implementation attribution evidence (UUID claims) |
+| [schema-v1.6.md](https://github.com/egallmann/adr-architecture-kit/blob/main/docs/schema-v1.6.md) | Preferred producer evidence, provenance spans, confidence, and lossless conversion |
+| [ste-runtime-semantic-linkage-handoff.md](https://github.com/egallmann/adr-architecture-kit/blob/main/docs/ste-runtime-semantic-linkage-handoff.md) | Downstream extraction contract for ste-runtime |
 | [identity-v13-migration.md](https://github.com/egallmann/adr-architecture-kit/blob/main/docs/identity-v13-migration.md) | Sealed UUID identity migration lifecycle |
 | [external-bindings.md](https://github.com/egallmann/adr-architecture-kit/blob/main/docs/external-bindings.md) | External authority binding without ownership absorption |
 | [topology-identity-migration.md](https://github.com/egallmann/adr-architecture-kit/blob/main/docs/topology-identity-migration.md) | Stable physical topology identity migration |
@@ -184,7 +186,8 @@ Normative rationale: [ADR-L-0004](https://github.com/egallmann/adr-architecture-
 - **`adr attribution coverage`** — Prints an informational YAML report of ADRs cited by evidence versus the corpus (same `--scope` / `--evidence`), plus unique-link counts distinct from evidence occurrence.
 - **`adr attribution workspace-report`** — Builds a workspace federation index of qualified ADR ids across registered repos.
 - **`adr attribution generate-shim --language python|typescript`** — Writes linkage decorator shims (`-o`/ stdout).
-- **`adr attribution normalize-evidence --scope PATH --input FILE`** — Prints canonical v1.5 YAML to stdout; `--output` writes only that path.
+- **`adr attribution normalize-evidence --scope PATH --input FILE --target-version 1.5|1.6`** — Selects a lossless canonical target; v1.5 remains the default.
+- **`adr attribution linkage-report --scope PATH --evidence FILE`** — Builds the deterministic non-authoritative projection, with optional implementation, intent, and relationship filters.
 
 If `--evidence` is omitted, `check` and `coverage` resolve the first existing **project-local** file under `--scope` (not the workspace-root `.ste-workspace` tree):
 
@@ -193,7 +196,7 @@ If `--evidence` is omitted, `check` and `coverage` resolve the first existing **
 
 Local pre-push (`scripts/run_local_pre_push_checks.py`) looks up workspace-derived RECON evidence at `{workspace}/.ste-workspace/state/adr-architecture-kit/attribution/implementation-attribution-evidence.yaml` and passes that path via `--evidence`.
 
-v1.5 is **semantic implementation-attribution evidence**, not ADR authoring schema 1.5. Normative YAML for that evidence artifact is owned by **`adr-architecture-kit`**. 1.0/1.2 remain under [`schema/evidence-attribution/v1.1/implementation-attribution-evidence.schema.json`](https://github.com/egallmann/adr-architecture-kit/blob/main/schema/evidence-attribution/v1.1/implementation-attribution-evidence.schema.json). Canonical 1.5 lives in [`schema/evidence-attribution/v1.5/`](https://github.com/egallmann/adr-architecture-kit/blob/main/schema/evidence-attribution/v1.5/) ([schema-v1.5.md](https://github.com/egallmann/adr-architecture-kit/blob/main/docs/schema-v1.5.md)). The **`ste-spec`** repository publishes draft hand-off prose under **`contracts/implementation-attribution-evidence/`** until the contract is promoted; there is intentionally no mirrored JSON schema there yet (contrast with the Architecture IR mirror in this repo).
+v1.5 and v1.6 are **semantic implementation-attribution evidence**, not ADR authoring schemas; in particular, v1.5 is not ADR authoring schema 1.5. 1.0/1.2 remain under `schema/evidence-attribution/v1.1/implementation-attribution-evidence.schema.json`. Canonical 1.5 lives under `schema/evidence-attribution/v1.5/`, while preferred-producer 1.6 lives under `schema/evidence-attribution/v1.6/`. v1.5 retains historical semantics; v1.6 adds optional source pointers/spans and declared-only enforcement confidence. `adr_kit.api.build_embodiment_linkage` consumes an explicitly supplied evidence path—even outside the repository—and returns immutable valid links plus rejected claims without writing evidence, Architecture IR, or graph state. Its authority ceiling is validated derived evidence and its graph admission status is not admitted.
 
 ## Contributing
 

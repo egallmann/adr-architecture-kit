@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import argparse
+import json
 import os
 import shutil
 import subprocess
@@ -10,8 +11,6 @@ import sys
 import tempfile
 from collections.abc import Sequence
 from pathlib import Path
-
-import yaml
 
 ROOT = Path(__file__).resolve().parents[1]
 PROBES = (
@@ -230,7 +229,7 @@ def run_harness(wheel: Path, python: Path) -> None:
         _run([str(venv_python), "-c", PHASE2_PROBE], consumer, isolated_environment)
         linkage_evidence = consumer / "external-linkage-evidence.yaml"
         linkage_evidence.write_text(
-            yaml.safe_dump(
+            json.dumps(
                 {
                     "schema_version": "1.6",
                     "type": "implementation_attribution_evidence",
@@ -253,13 +252,13 @@ def run_harness(wheel: Path, python: Path) -> None:
                         }
                     ],
                 },
-                sort_keys=False,
+                indent=2,
             ),
             encoding="utf-8",
         )
         linkage_evidence_v15 = consumer / "external-linkage-evidence-v15.yaml"
         linkage_evidence_v15.write_text(
-            yaml.safe_dump(
+            json.dumps(
                 {
                     "schema_version": "1.5",
                     "type": "implementation_attribution_evidence",
@@ -281,7 +280,7 @@ def run_harness(wheel: Path, python: Path) -> None:
                         }
                     ],
                 },
-                sort_keys=False,
+                indent=2,
             ),
             encoding="utf-8",
         )

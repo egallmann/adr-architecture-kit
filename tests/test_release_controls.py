@@ -237,6 +237,18 @@ def test_installed_wheel_harness_declares_all_consumer_probes() -> None:
         assert probe in result.stdout
 
 
+def test_installed_wheel_harness_starts_without_site_packages() -> None:
+    script = ROOT / "scripts" / "test_installed_wheel.py"
+    result = subprocess.run(
+        [sys.executable, "-I", "-S", str(script), "--describe"],
+        cwd=ROOT,
+        text=True,
+        capture_output=True,
+        check=False,
+    )
+    assert result.returncode == 0, result.stdout + result.stderr
+
+
 def test_publish_workflow_is_promotion_only_and_scopes_oidc() -> None:
     workflow = _load_workflow("publish-pypi.yml")
     jobs = workflow["jobs"]

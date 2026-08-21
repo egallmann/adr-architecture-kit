@@ -2,8 +2,9 @@ schema_version: '1.3'
 adr_type: physical-component
 id: 019ffdba-3c42-70da-b33d-efc003269c42
 title: Semantic Attribution Embodiment
-status: proposed
+status: accepted
 created_date: '2026-08-13'
+modified_date: '2026-08-20'
 authors:
 - adr-architecture-kit
 domains:
@@ -29,8 +30,9 @@ technologies:
 context: |
   Semantic attribution needs a kit-owned embodiment for vocabulary, evidence
   models, UUID decorators, standalone shims, architecture-aware validation,
-  and repository-aware 1.0/1.2 normalization. This component does not parse
-  consumer source code and does not own RECON extraction.
+  repository-aware versioned normalization, and a supported bidirectional
+  linkage facade. This component does not parse consumer source code, does not
+  own RECON extraction, and does not admit evidence to the architecture graph.
 technology_stack:
 - category: language
   name: Python
@@ -43,31 +45,35 @@ technology_stack:
 - category: library
   name: jsonschema
   version: 4.x
-  rationale: Structural schema validation for 1.0/1.2/1.5 evidence.
+  rationale: Structural schema validation for 1.0/1.2/1.5/1.6 evidence.
 component_specifications:
 - id: 019ffdba-3c42-75d5-b93b-f32f35152e32
   name: Semantic Attribution Embodiment
   type: library
   responsibilities: |
-    - Load the mechanical v1.5 semantic attribution vocabulary
-    - Parse and validate 1.0/1.2/1.5 implementation attribution evidence
+    - Load versioned mechanical v1.5/v1.6 semantic attribution vocabularies
+    - Parse and validate 1.0/1.2/1.5/1.6 implementation attribution evidence
     - Provide UUID claim decorators and vocabulary-driven Python/TypeScript shims
     - Resolve claim targets against ArchitectureRepository / model 2.0
-    - Normalize legacy alias evidence into canonical v1.5 claims
+    - Normalize supported evidence into explicitly selected lossless targets
+    - Build a deterministic non-authoritative bidirectional linkage projection
   generation_context:
     purpose: Embody ADR-L-0020 without moving source parsing into this repository.
     key_responsibilities:
     - Keep legacy alias decorators as metadata-only producers
     - Compose `__architecture_attribution_claims__` only from UUID decorators
     - Fail closed on unresolved UUIDs, illegal matrix pairs, and true duplicates
+    - Preserve independent evidence occurrences behind unique semantic links
     constraints:
     - Must not load architecture state from legacy decorators or shim generation
     - Must not write relationship registries or Architecture IR from evidence verbs
-    - Must not add an adr_kit.api attribution operation in this slice
+    - Must expose only immutable supported contracts through `adr_kit.api`
+    - Must not write evidence input, Architecture IR relationships, or graph state
     success_criteria:
     - 1.0/1.2 callers of validate_implementation_attribution_evidence remain compatible
-    - v1.5 validation requires UUID/type-capable context
+    - v1.5 validation keeps historical behavior; v1.6 adds declared-only enforcement
     - Python and TypeScript shims are generated from one vocabulary
+    - installed-wheel consumers use the linkage feature without private imports
   interfaces:
   - id: 019ffdba-3c42-77f6-903f-7753342c5b5f
     type: library_api
@@ -78,7 +84,8 @@ component_specifications:
       - adr_kit.decorators legacy implements_adr / enforces_invariant APIs
       - validate_implementation_attribution_evidence
       - normalize_attribution_evidence
-      - schema/evidence-attribution/v1.5 vocabulary and evidence JSON
+      - adr_kit.api build_embodiment_linkage and immutable request/result contracts
+      - schema/evidence-attribution/v1.5 and v1.6 vocabulary/evidence JSON
     alias_id: IFACE-0034
     alias_name: iface-0034
   - id: 019ffdba-3c42-7d5b-b52f-b36c3000f299
@@ -90,7 +97,8 @@ component_specifications:
       - adr attribution coverage
       - adr attribution generate-shim
       - adr attribution workspace-report
-      - adr attribution normalize-evidence --scope --input [--output]
+      - adr attribution normalize-evidence --scope --input [--output] [--target-version]
+      - adr attribution linkage-report --scope --evidence [direction filters]
     alias_id: IFACE-0035
     alias_name: iface-0035
   implementation_identifiers:
@@ -111,17 +119,21 @@ component_specifications:
       unit_test_coverage: '>= 80%'
       integration_tests: |
         - Vocabulary parity across schema, Pydantic, decorators, and shims
+        - Version-aware confidence and loss-aware normalization matrices
+        - Public bidirectional linkage and partial-result behavior
+        - Retained-wheel public consumer and packaged v1.6 resource checks
         - Legacy decorator no architecture load
         - Repository-aware 1.0/1.2 normalization idempotency
   alias_id: COMP-0022
   alias_name: semantic-attribution-embodiment
 implementation_decisions:
 - id: 019ffdba-3c42-7e86-a03e-f7df07da6757
-  summary: Generate Python and TypeScript shims from the v1.5 vocabulary
+  summary: Generate Python and TypeScript shims from the preferred vocabulary
   rationale: |
     Hand-copied shim strings drift from native decorators. One mechanical
-    vocabulary is the source for relationship names, allowed types, and
-    generated standalone shims.
+    versioned vocabulary is the source for relationship names, allowed types,
+    confidence policy, and generated standalone shims. Explicit native
+    functions remain stable and parity tests prevent runtime vocabulary drift.
   alias_id: IMPL-0028
   alias_name: generate-python-and-typescript-shims-from-the-v15-vocabulary
 - id: 019ffdba-3c42-7021-923f-bf8e6bd06d07

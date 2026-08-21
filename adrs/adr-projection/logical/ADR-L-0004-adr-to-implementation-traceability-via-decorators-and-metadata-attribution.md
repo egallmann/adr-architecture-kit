@@ -5,15 +5,15 @@ artifact_kind: rendered_adr_markdown
 generator_id: adr-projection-markdown
 generator_version: 2
 hash_algorithm: sha256
-source_hash: f021298ef5b8b4a4301f68af1c4d6f2c8851f1efdef95a50e98984e76d36f77f
-rendered_hash: 32032683c00d781dc86397c75c8a46cc9904a16ccd9a6eca7c40dc51102dc004
+source_hash: 0c7fab5db2dafb034485fc291c836fd31b6a349d724ed17220f7fa58e53c5190
+rendered_hash: a1280f909df4674dd717656882530f8c36f4f84b21ede89fad7560b59b0885d3
 -->
 
 # ADR-L-0004: ADR-to-Implementation Traceability via Decorators and Metadata Attribution
 
-**Status:** proposed  
+**Status:** accepted  
 **Created:** 2026-03-08  
-**Modified:** 2026-08-13  
+**Modified:** 2026-08-20  
 **Authors:** adr-architecture-kit  
 **Domains:** architecture, traceability, governance, verification  
 **Tags:** traceability, decorators, verification, drift-detection, embodied-design  
@@ -232,8 +232,9 @@ could not name typed relationships to nested architecture entities.
 
 **Context:** Semantic attribution needs a kit-owned embodiment for vocabulary, evidence
 models, UUID decorators, standalone shims, architecture-aware validation,
-and repository-aware 1.0/1.2 normalization. This component does not parse
-consumer source code and does not own RECON extraction.
+repository-aware versioned normalization, and a supported bidirectional
+linkage facade. This component does not parse consumer source code, does not
+own RECON extraction, and does not admit evidence to the architecture graph.
 
 [Open projection](../physical-component/ADR-PC-0007-semantic-attribution-embodiment.md)
 
@@ -437,7 +438,7 @@ state.
 
 **Positive:**
 - RECON can supply extracted attribution claims for validation
-- ADR-Kit validates raw attribution evidence against canonical ADR authoring state before any validated linkage is projected into Architecture IR
+- ADR-Kit validates raw attribution evidence against canonical ADR authoring state and exposes a non-authoritative linkage projection without writing Architecture IR
 - Runtime extraction can evolve by language without redefining attribution semantics
 
 

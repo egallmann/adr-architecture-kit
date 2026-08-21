@@ -5,8 +5,8 @@ artifact_kind: rendered_adr_markdown
 generator_id: adr-projection-markdown
 generator_version: 2
 hash_algorithm: sha256
-source_hash: 1b874174786a5529100eb6223ed9258b552e39c67a17fe5ab095174e292db319
-rendered_hash: cc1f62389f13d565f264a797387fab978295e9f6667bfa23b211a53a2fff82e9
+source_hash: 16ca7bab17d479f6cb9a837f519d2b249441ad9555060688259137eaea66df9d
+rendered_hash: 29b33e73475f423ad3dd4f5be554ac31d87f2acaee7c3ad817546cec2985f7f3
 -->
 
 # ADR-PS-0002: ADR Kit Authoring Compiler and Validation System
@@ -278,8 +278,9 @@ subsystem used by validator and governance flows.
 
 **Context:** Semantic attribution needs a kit-owned embodiment for vocabulary, evidence
 models, UUID decorators, standalone shims, architecture-aware validation,
-and repository-aware 1.0/1.2 normalization. This component does not parse
-consumer source code and does not own RECON extraction.
+repository-aware versioned normalization, and a supported bidirectional
+linkage facade. This component does not parse consumer source code, does not
+own RECON extraction, and does not admit evidence to the architecture graph.
 
 [Open projection](../physical-component/ADR-PC-0007-semantic-attribution-embodiment.md)
 

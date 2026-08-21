@@ -5,14 +5,15 @@ artifact_kind: rendered_adr_markdown
 generator_id: adr-projection-markdown
 generator_version: 2
 hash_algorithm: sha256
-source_hash: da558356aa891e7c6d301783542005c6b673f0b19e23dd9bb8e19131f9e50c38
-rendered_hash: 9fa1c297bb3d623b8fdf3827bd5476d666b2c2c5df77376db16704e4ea39dce8
+source_hash: 3245817cad7c2074c5013c98e3b041654f43b06b1a30bbe3feb0cd5631005954
+rendered_hash: 56a166744e0d2e0079db18f02114e66159a7ecb64bcb596bff030c1cd2385f66
 -->
 
 # ADR-PC-0007: Semantic Attribution Embodiment
 
-**Status:** proposed  
+**Status:** accepted  
 **Created:** 2026-08-13  
+**Modified:** 2026-08-20  
 **Authors:** adr-architecture-kit  
 **Domains:** attribution, validation, decorators  
 **Alias name:** semantic-attribution-embodiment  
@@ -26,8 +27,9 @@ rendered_hash: 9fa1c297bb3d623b8fdf3827bd5476d666b2c2c5df77376db16704e4ea39dce8
 
 Semantic attribution needs a kit-owned embodiment for vocabulary, evidence
 models, UUID decorators, standalone shims, architecture-aware validation,
-and repository-aware 1.0/1.2 normalization. This component does not parse
-consumer source code and does not own RECON extraction.
+repository-aware versioned normalization, and a supported bidirectional
+linkage facade. This component does not parse consumer source code, does not
+own RECON extraction, and does not admit evidence to the architecture graph.
 
 
 ## Technology Stack
@@ -51,7 +53,7 @@ Typed evidence and claim models.
 **Version:** 4.x
 
 **Rationale:**
-Structural schema validation for 1.0/1.2/1.5 evidence.
+Structural schema validation for 1.0/1.2/1.5/1.6 evidence.
 
 
 ## Relationship graph
@@ -127,11 +129,12 @@ access, integrity verification, and CLI orchestration over those surfaces.
 ### COMP-0022: Semantic Attribution Embodiment (library)
 
 **Responsibilities:**
-- Load the mechanical v1.5 semantic attribution vocabulary
-- Parse and validate 1.0/1.2/1.5 implementation attribution evidence
+- Load versioned mechanical v1.5/v1.6 semantic attribution vocabularies
+- Parse and validate 1.0/1.2/1.5/1.6 implementation attribution evidence
 - Provide UUID claim decorators and vocabulary-driven Python/TypeScript shims
 - Resolve claim targets against ArchitectureRepository / model 2.0
-- Normalize legacy alias evidence into canonical v1.5 claims
+- Normalize supported evidence into explicitly selected lossless targets
+- Build a deterministic non-authoritative bidirectional linkage projection
 
 
 **Interfaces:**
@@ -153,12 +156,13 @@ access, integrity verification, and CLI orchestration over those surfaces.
 
 ## Implementation Decisions
 
-### IMPL-0028: Generate Python and TypeScript shims from the v1.5 vocabulary
+### IMPL-0028: Generate Python and TypeScript shims from the preferred vocabulary
 
 **Rationale:**
 Hand-copied shim strings drift from native decorators. One mechanical
-vocabulary is the source for relationship names, allowed types, and
-generated standalone shims.
+versioned vocabulary is the source for relationship names, allowed types,
+confidence policy, and generated standalone shims. Explicit native
+functions remain stable and parity tests prevent runtime vocabulary drift.
 
 
 

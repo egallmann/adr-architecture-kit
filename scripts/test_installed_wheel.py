@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import argparse
+import json
 import os
 import shutil
 import subprocess
@@ -25,6 +26,7 @@ PROBES = (
     "compiler-containment",
     "v1.2-schemas",
     "v1.2-compilation",
+    "semantic-linkage-v1.5-v1.6",
     "promoted-entity-queries",
     "external-bindings",
     "topology-migration-entrypoint",
@@ -47,6 +49,8 @@ assert resources.files('adr_kit.schema.v1_2').joinpath('adr-logical.schema.json'
 assert resources.files('adr_kit.schema.v1_3').joinpath('adr-logical.schema.json').is_file()
 assert resources.files('adr_kit.schema.v1_5').joinpath('implementation-attribution-evidence.schema.json').is_file()
 assert resources.files('adr_kit.schema.v1_5').joinpath('semantic-attribution-vocabulary.json').is_file()
+assert resources.files('adr_kit.schema.v1_6').joinpath('implementation-attribution-evidence.schema.json').is_file()
+assert resources.files('adr_kit.schema.v1_6').joinpath('semantic-attribution-vocabulary.json').is_file()
 assert resources.files('adr_kit.schema.v2_0').joinpath('normalized-entity.schema.json').is_file()
 assert resources.files('adr_kit.templates').joinpath('adr-logical.md.jinja2').is_file()
 assert resources.files('adr_kit.templates').joinpath('system-overview-adr-architecture-kit.yaml').is_file()
@@ -61,6 +65,46 @@ assert IdentityV13Migrator.__name__ == 'IdentityV13Migrator'
 from adr_kit.promotion.ste_contract import load_promotion_contract_schema
 assert isinstance(load_promotion_contract_schema(), dict)
 print(adr_kit.__version__)
+"""
+LINKAGE_PROBE = """
+import os
+from importlib import resources
+from pathlib import Path
+from adr_kit.api import (
+    EmbodimentIntentLink,
+    EmbodimentLinkageRequest,
+    EmbodimentLinkageResult,
+    LinkageOccurrence,
+    LinkageProvenance,
+    RejectedEmbodimentClaim,
+    build_embodiment_linkage,
+    capabilities,
+)
+
+project_root = Path(os.environ['ADR_LINKAGE_PROJECT_ROOT'])
+evidence_path = Path(os.environ['ADR_LINKAGE_EVIDENCE_PATH'])
+v15_evidence_path = Path(os.environ['ADR_LINKAGE_V15_EVIDENCE_PATH'])
+manifest = capabilities()
+assert 'build_embodiment_linkage' in manifest.operations
+assert manifest.supported_evidence_attribution_versions == ('1.5', '1.6')
+assert manifest.preferred_evidence_attribution_version == '1.6'
+canonical = (project_root / 'schema/evidence-attribution/v1.6/implementation-attribution-evidence.schema.json').read_bytes()
+packaged = resources.files('adr_kit.schema.v1_6').joinpath('implementation-attribution-evidence.schema.json').read_bytes()
+assert canonical == packaged
+canonical_vocabulary = (project_root / 'schema/evidence-attribution/v1.6/semantic-attribution-vocabulary.json').read_bytes()
+packaged_vocabulary = resources.files('adr_kit.schema.v1_6').joinpath('semantic-attribution-vocabulary.json').read_bytes()
+assert canonical_vocabulary == packaged_vocabulary
+result = build_embodiment_linkage(EmbodimentLinkageRequest(project_root, evidence_path))
+assert isinstance(result, EmbodimentLinkageResult)
+assert result.success and len(result.links) == 1
+assert isinstance(result.links[0], EmbodimentIntentLink)
+assert isinstance(result.links[0].occurrences[0], LinkageOccurrence)
+assert isinstance(result.links[0].occurrences[0].provenance, LinkageProvenance)
+assert result.links[0].graph_admission_status == 'not_admitted'
+v15_result = build_embodiment_linkage(EmbodimentLinkageRequest(project_root, v15_evidence_path))
+assert isinstance(v15_result, EmbodimentLinkageResult)
+assert v15_result.success and v15_result.evidence_schema_version == '1.5'
+assert RejectedEmbodimentClaim is not None
 """
 PHASE2_PROBE = """
 import os
@@ -183,6 +227,68 @@ def run_harness(wheel: Path, python: Path) -> None:
         )
         isolated_environment["ADR_PHASE2_FIXTURE"] = str(fixture)
         _run([str(venv_python), "-c", PHASE2_PROBE], consumer, isolated_environment)
+        linkage_evidence = consumer / "external-linkage-evidence.yaml"
+        linkage_evidence.write_text(
+            json.dumps(
+                {
+                    "schema_version": "1.6",
+                    "type": "implementation_attribution_evidence",
+                    "records": [
+                        {
+                            "implementation_entity_id": "wheel.consumer:run",
+                            "implementation_entity_type": "function",
+                            "provenance": {
+                                "source_file": "consumer.py",
+                                "extractor": "wheel-smoke",
+                                "source_pointer": "wheel.consumer:run",
+                            },
+                            "claims": [
+                                {
+                                    "relationship": "implements",
+                                    "target_entity_id": "019ffdba-3c42-7c4a-a737-f6751a265d60",
+                                    "confidence": "declared",
+                                }
+                            ],
+                        }
+                    ],
+                },
+                indent=2,
+            ),
+            encoding="utf-8",
+        )
+        linkage_evidence_v15 = consumer / "external-linkage-evidence-v15.yaml"
+        linkage_evidence_v15.write_text(
+            json.dumps(
+                {
+                    "schema_version": "1.5",
+                    "type": "implementation_attribution_evidence",
+                    "records": [
+                        {
+                            "implementation_entity_id": "wheel.consumer:v15",
+                            "implementation_entity_type": "function",
+                            "provenance": {
+                                "source_file": "consumer-v15.py",
+                                "extractor": "wheel-smoke",
+                            },
+                            "claims": [
+                                {
+                                    "relationship": "implements",
+                                    "target_entity_id": "019ffdba-3c42-7c4a-a737-f6751a265d60",
+                                    "confidence": "inferred",
+                                }
+                            ],
+                        }
+                    ],
+                },
+                indent=2,
+            ),
+            encoding="utf-8",
+        )
+        isolated_environment["ADR_LINKAGE_PROJECT_ROOT"] = str(ROOT)
+        isolated_environment["ADR_LINKAGE_EVIDENCE_PATH"] = str(linkage_evidence)
+        isolated_environment["ADR_LINKAGE_V15_EVIDENCE_PATH"] = str(linkage_evidence_v15)
+        _run([str(venv_python), "-c", LINKAGE_PROBE], consumer, isolated_environment)
+        _run([str(adr), "attribution", "linkage-report", "--help"], consumer, isolated_environment)
         _run([str(adr), "migrate-topology-ids", "--help"], consumer, isolated_environment)
 
 

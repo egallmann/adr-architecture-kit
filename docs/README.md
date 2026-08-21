@@ -13,6 +13,8 @@ Contributor-oriented guides (TDD, authoring, placement) live under [`contributor
 | [schema-v1.2.md](schema-v1.2.md) | Provisional additive authoring schema and normalized semantic contract |
 | [schema-v1.3.md](schema-v1.3.md) | UUID identity authoring schema and model 2.0 linkage |
 | [schema-v1.5.md](schema-v1.5.md) | Semantic implementation attribution evidence (UUID claims) |
+| [schema-v1.6.md](schema-v1.6.md) | Preferred producer evidence, provenance spans, confidence, and lossless conversion |
+| [ste-runtime-semantic-linkage-handoff.md](ste-runtime-semantic-linkage-handoff.md) | Mechanical downstream extraction contract for ste-runtime |
 | [identity-v13-migration.md](identity-v13-migration.md) | Sealed UUID identity migration lifecycle and dogfood evidence |
 | [external-bindings.md](external-bindings.md) | Bind-only substrate, rule, evidence, and external-reference semantics |
 | [topology-identity-migration.md](topology-identity-migration.md) | Stable topology IDs and deterministic migration workflow |

@@ -205,6 +205,7 @@ def capabilities() -> CapabilityManifest:
         "compile_architecture",
         "open_repository",
         "open_provider_registry",
+        "build_embodiment_linkage",
     ]
     if PROMOTION_OPERATIONS_ADVERTISED:
         operations.extend(["prepare_promotion", "check_promotion", "apply_promotion"])
@@ -220,6 +221,8 @@ def capabilities() -> CapabilityManifest:
         provisional_adr_schema_versions=("1.1", "1.2", "1.3"),
         normalized_model_schema_version="1.1",
         supported_normalized_model_schema_versions=("1.1", "2.0"),
+        supported_evidence_attribution_versions=("1.5", "1.6"),
+        preferred_evidence_attribution_version="1.6",
     )
 
 

@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+import pytest
+
 from adr_kit.attribution_shim_generator import generate_python_shim, generate_typescript_shim
 from adr_kit.decorators import embodies, enforces, implements
 from adr_kit.semantic_attribution.vocabulary import canonical_claims_attribute
@@ -28,6 +30,27 @@ def test_python_shim_executes_and_composes_declared_claims() -> None:
             "confidence": "declared",
         },
     )
+
+
+def test_python_shim_stacking_is_order_independent_and_duplicate_safe() -> None:
+    namespace: dict[str, object] = {}
+    exec(compile(generate_python_shim(), "<shim>", "exec"), namespace)
+    implements_fn = namespace["implements"]
+    embodies_fn = namespace["embodies"]
+
+    @implements_fn(SAMPLE_UUID)  # type: ignore[misc]
+    @embodies_fn("019fee89-e618-7d04-9337-4aa2d3258507")  # type: ignore[misc]
+    def first() -> None:
+        pass
+
+    @embodies_fn("019fee89-e618-7d04-9337-4aa2d3258507")  # type: ignore[misc]
+    @implements_fn(SAMPLE_UUID)  # type: ignore[misc]
+    def second() -> None:
+        pass
+
+    assert first.__architecture_attribution_claims__ == second.__architecture_attribution_claims__
+    with pytest.raises(ValueError, match="duplicate architecture attribution claim"):
+        implements_fn(SAMPLE_UUID)(first)  # type: ignore[misc]
 
 
 def test_typescript_shim_exports_uuid_and_legacy_names() -> None:

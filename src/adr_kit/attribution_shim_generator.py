@@ -90,6 +90,7 @@ Decorated = TypeVar("Decorated")
 
 UUIDV7_PATTERN = re.compile({UUIDV7_REGEX!r})
 CANONICAL_CLAIMS_ATTR = {claims_attr!r}
+RELATIONSHIP_ORDER = {{"implements": 0, "enforces": 1, "embodies": 2}}
 
 
 {chr(10).join(legacy_blocks)}
@@ -103,6 +104,19 @@ def _uuid_claim_decorator(
     def decorator(target: Decorated) -> Decorated:
         existing = getattr(target, CANONICAL_CLAIMS_ATTR, ())
         composed = list(existing) if isinstance(existing, (list, tuple)) else []
+        existing_pairs = {{
+            (claim.get("relationship"), claim.get("target_entity_id"))
+            for claim in composed
+            if isinstance(claim, dict)
+        }}
+        incoming_pairs = {{(relationship, value) for value in normalized}}
+        duplicates = sorted(existing_pairs & incoming_pairs)
+        if duplicates:
+            duplicate_relationship, duplicate_target = duplicates[0]
+            raise ValueError(
+                "duplicate architecture attribution claim: "
+                f"({{duplicate_relationship}}, {{duplicate_target}})"
+            )
         for target_entity_id in normalized:
             composed.append(
                 {{
@@ -111,6 +125,12 @@ def _uuid_claim_decorator(
                     "confidence": "declared",
                 }}
             )
+        composed.sort(
+            key=lambda claim: (
+                RELATIONSHIP_ORDER.get(str(claim.get("relationship")), 99),
+                str(claim.get("target_entity_id", "")),
+            )
+        )
         setattr(target, CANONICAL_CLAIMS_ATTR, tuple(composed))
         return target
 
@@ -175,9 +195,7 @@ def generate_typescript_shim() -> str:
             param = f"..._{spec['label']}Ids: string[]"
         else:
             param = f"_{spec['label']}Ids: string[]"
-        lines.append(
-            f"export function {name}({param}): MethodDecorator & ClassDecorator {{"
-        )
+        lines.append(f"export function {name}({param}): MethodDecorator & ClassDecorator {{")
         lines.append("  return (): void => {};")
         lines.append("}")
         lines.append("")

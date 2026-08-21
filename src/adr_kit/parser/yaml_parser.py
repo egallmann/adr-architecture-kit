@@ -20,6 +20,7 @@ from ..models import (
     EntityRegistry,
     ImplementationAttributionEvidence,
     ImplementationAttributionEvidenceV15,
+    ImplementationAttributionEvidenceV16,
     LogicalADR,
     Manifest,
     NormalizedEntityRegistry,
@@ -63,18 +64,20 @@ def _package_schema_dir(package: str) -> Path:
 
 class ADRParseError(Exception):
     """Error parsing ADR artifact."""
+
     pass
 
 
 class ADRSchemaValidationError(Exception):
     """Error validating ADR against JSON Schema."""
+
     pass
 
 
 @implements_adr("ADR-L-0001")
 class ADRParser:
     """Parser for ADR YAML artifacts with schema validation."""
-    
+
     def __init__(
         self,
         schema_dir: Path | None = None,
@@ -82,6 +85,7 @@ class ADRParser:
         schema_v12_dir: Path | None = None,
         schema_v13_dir: Path | None = None,
         schema_v15_dir: Path | None = None,
+        schema_v16_dir: Path | None = None,
     ):
         """Initialize parser with schema directory.
 
@@ -102,12 +106,15 @@ class ADRParser:
             schema_v13_dir = _package_schema_dir("adr_kit.schema.v1_3")
         if schema_v15_dir is None:
             schema_v15_dir = _package_schema_dir("adr_kit.schema.v1_5")
-        
+        if schema_v16_dir is None:
+            schema_v16_dir = _package_schema_dir("adr_kit.schema.v1_6")
+
         self.schema_dir = Path(schema_dir)
         self.schema_v11_dir = Path(schema_v11_dir)
         self.schema_v12_dir = Path(schema_v12_dir)
         self.schema_v13_dir = Path(schema_v13_dir)
         self.schema_v15_dir = Path(schema_v15_dir)
+        self.schema_v16_dir = Path(schema_v16_dir)
         self._schemas = {}
         self._validators = {}
         self._structural_validators = {}
@@ -128,7 +135,7 @@ class ADRParser:
 
         relax(structural_schema)
         return structural_schema
-    
+
     def _load_schemas(self):
         """Load all JSON schemas and create resolvers."""
         schema_files = {
@@ -143,7 +150,7 @@ class ADRParser:
             "project": "project-metadata.schema.json",
             "manifest": "manifest.schema.json",
         }
-        
+
         schema_v11_files = {
             "architecture_index": "architecture-index.schema.json",
             "entity_registry": "entity-registry.schema.json",
@@ -182,14 +189,17 @@ class ADRParser:
         schema_v15_files = {
             "implementation_attribution_evidence_v1_5": "implementation-attribution-evidence.schema.json",
         }
-        
+        schema_v16_files = {
+            "implementation_attribution_evidence_v1_6": "implementation-attribution-evidence.schema.json",
+        }
+
         # Load v1.0 schemas
         for name, filename in schema_files.items():
             schema_path = self.schema_dir / filename
             if schema_path.exists():
                 with open(schema_path) as f:
                     self._schemas[name] = json.load(f)
-        
+
         # Load v1.1 schemas
         for name, filename in schema_v11_files.items():
             schema_path = self.schema_v11_dir / filename
@@ -216,12 +226,19 @@ class ADRParser:
             if schema_path.exists():
                 with open(schema_path) as f:
                     self._schemas[name] = json.load(f)
-        
+        for name, filename in schema_v16_files.items():
+            schema_path = self.schema_v16_dir / filename
+            if schema_path.exists():
+                with open(schema_path) as f:
+                    self._schemas[name] = json.load(f)
+
         resources = []
         for schema in self._schemas.values():
             schema_id = schema.get("$id")
             if schema_id:
-                resources.append((schema_id, Resource.from_contents(schema, default_specification=DRAFT7)))
+                resources.append(
+                    (schema_id, Resource.from_contents(schema, default_specification=DRAFT7))
+                )
 
         registry = Registry().with_resources(resources)
 
@@ -233,7 +250,10 @@ class ADRParser:
                 structural_schema = self._build_structural_schema(schema)
                 structural_schemas[schema_id] = structural_schema
                 structural_resources.append(
-                    (schema_id, Resource.from_contents(structural_schema, default_specification=DRAFT7))
+                    (
+                        schema_id,
+                        Resource.from_contents(structural_schema, default_specification=DRAFT7),
+                    )
                 )
 
         structural_registry = Registry().with_resources(structural_resources)
@@ -241,21 +261,23 @@ class ADRParser:
         for name, schema in self._schemas.items():
             self._validators[name] = Draft7Validator(schema, registry=registry)
             structural_schema = self._build_structural_schema(schema)
-            self._structural_validators[name] = Draft7Validator(structural_schema, registry=structural_registry)
+            self._structural_validators[name] = Draft7Validator(
+                structural_schema, registry=structural_registry
+            )
 
     def validate_against_schema(self, data: dict, schema_name: str, mode: str = "complete"):
         """Validate data against JSON Schema.
-        
+
         Args:
             data: Parsed YAML data
             schema_name: Schema to validate against (logical, physical, etc.)
-            
+
         Raises:
             ADRSchemaValidationError: If validation fails
         """
         if schema_name not in self._schemas:
             raise ADRParseError(f"Schema '{schema_name}' not found")
-        
+
         try:
             if mode == "complete":
                 validator = self._validators.get(schema_name)
@@ -272,31 +294,31 @@ class ADRParser:
             raise ADRSchemaValidationError(
                 f"Schema validation failed: {e.message}\nPath: {'.'.join(str(p) for p in e.path)}"
             ) from e
-    
+
     def parse_yaml(self, file_path: Union[str, Path]) -> dict:
         """Parse YAML file.
-        
+
         Args:
             file_path: Path to YAML file
-            
+
         Returns:
             Parsed YAML data as dict
-            
+
         Raises:
             ADRParseError: If YAML parsing fails
         """
         file_path = Path(file_path)
-        
+
         if not file_path.exists():
             raise ADRParseError(f"File not found: {file_path}")
-        
+
         try:
-            with open(file_path, 'r', encoding='utf-8') as f:
+            with open(file_path, "r", encoding="utf-8") as f:
                 data = yaml.safe_load(f)
-            
+
             if not isinstance(data, dict):
                 raise ADRParseError(f"Expected YAML object, got {type(data)}")
-            
+
             return data
         except yaml.YAMLError as e:
             raise ADRParseError(f"YAML parsing failed: {e}") from e
@@ -315,58 +337,58 @@ class ADRParser:
             f"Unsupported ADR schema_version '{version}' for adr_type "
             f"'{data.get('adr_type', base_name)}'"
         )
-    
+
     def parse_logical_adr(self, file_path: Union[str, Path]) -> LogicalADR:
         """Parse and validate logical ADR.
 
         Schema v1.3 returns a ``LogicalADRv13`` instance at runtime; the
         declared return type stays ``LogicalADR`` so legacy call sites remain
         mypy-compatible under duck typing.
-        
+
         Args:
             file_path: Path to logical ADR YAML file
-            
+
         Returns:
             Validated LogicalADR (v1.0/v1.2) or LogicalADRv13 model
-            
+
         Raises:
             ADRParseError: If parsing fails
             ADRSchemaValidationError: If schema validation fails
             ValidationError: If Pydantic validation fails
         """
         data = self.parse_yaml(file_path)
-        
+
         self.validate_against_schema(data, self._authoring_schema_name(data, "logical"))
-        
+
         try:
             if data.get("schema_version") == "1.3":
                 return cast(LogicalADR, LogicalADRv13(**data))
             return LogicalADR(**data)
         except ValidationError as e:
             raise ADRParseError(f"Pydantic validation failed: {e}") from e
-    
+
     def parse_physical_adr(self, file_path: Union[str, Path]) -> PhysicalADR:
         """Parse and validate physical ADR.
 
         Schema v1.3 returns ``PhysicalADRv13`` at runtime; the declared return
         type stays ``PhysicalADR`` for legacy mypy compatibility.
-        
+
         Args:
             file_path: Path to physical ADR YAML file
-            
+
         Returns:
             Validated PhysicalADR model
-            
+
         Raises:
             ADRParseError: If parsing fails
             ADRSchemaValidationError: If schema validation fails
             ValidationError: If Pydantic validation fails
         """
         data = self.parse_yaml(file_path)
-        
+
         # Validate against JSON Schema
         self.validate_against_schema(data, self._authoring_schema_name(data, "physical"))
-        
+
         # Parse into Pydantic model
         try:
             if data.get("schema_version") == "1.3":
@@ -374,59 +396,57 @@ class ADRParser:
             return PhysicalADR(**data)
         except ValidationError as e:
             raise ADRParseError(f"Pydantic validation failed: {e}") from e
-    
-    def parse_physical_system_adr(
-        self, file_path: Union[str, Path]
-    ) -> PhysicalSystemADR:
+
+    def parse_physical_system_adr(self, file_path: Union[str, Path]) -> PhysicalSystemADR:
         """Parse and validate physical-system ADR.
 
         Schema v1.3 returns ``PhysicalSystemADRv13`` at runtime; the declared
         return type stays ``PhysicalSystemADR`` for legacy mypy compatibility.
-        
+
         Args:
             file_path: Path to physical-system ADR YAML file
-            
+
         Returns:
             Validated PhysicalSystemADR (v1.0/v1.2) or PhysicalSystemADRv13 model
-            
+
         Raises:
             ADRParseError: If parsing fails
             ADRSchemaValidationError: If schema validation fails
             ValidationError: If Pydantic validation fails
         """
         data = self.parse_yaml(file_path)
-        
+
         self.validate_against_schema(data, self._authoring_schema_name(data, "physical_system"))
-        
+
         try:
             if data.get("schema_version") == "1.3":
                 return cast(PhysicalSystemADR, PhysicalSystemADRv13(**data))
             return PhysicalSystemADR(**data)
         except ValidationError as e:
             raise ADRParseError(f"Pydantic validation failed: {e}") from e
-    
+
     def parse_physical_component_adr(self, file_path: Union[str, Path]) -> PhysicalComponentADR:
         """Parse and validate physical-component ADR.
 
         Schema v1.3 returns ``PhysicalComponentADRv13`` at runtime; the declared
         return type stays ``PhysicalComponentADR`` for legacy mypy compatibility.
-        
+
         Args:
             file_path: Path to physical-component ADR YAML file
-            
+
         Returns:
             Validated PhysicalComponentADR model
-            
+
         Raises:
             ADRParseError: If parsing fails
             ADRSchemaValidationError: If schema validation fails
             ValidationError: If Pydantic validation fails
         """
         data = self.parse_yaml(file_path)
-        
+
         # Validate against JSON Schema
         self.validate_against_schema(data, self._authoring_schema_name(data, "physical_component"))
-        
+
         # Parse into Pydantic model
         try:
             if data.get("schema_version") == "1.3":
@@ -434,122 +454,122 @@ class ADRParser:
             return PhysicalComponentADR(**data)
         except ValidationError as e:
             raise ADRParseError(f"Pydantic validation failed: {e}") from e
-    
+
     def parse_invariant(self, file_path: Union[str, Path]) -> StandaloneInvariant:
         """Parse and validate standalone invariant.
-        
+
         Args:
             file_path: Path to invariant YAML file
-            
+
         Returns:
             Validated StandaloneInvariant model
-            
+
         Raises:
             ADRParseError: If parsing fails
             ADRSchemaValidationError: If schema validation fails
             ValidationError: If Pydantic validation fails
         """
         data = self.parse_yaml(file_path)
-        
+
         # Validate against JSON Schema
         self.validate_against_schema(data, self._authoring_schema_name(data, "invariant"))
-        
+
         # Parse into Pydantic model
         try:
             return StandaloneInvariant(**data)
         except ValidationError as e:
             raise ADRParseError(f"Pydantic validation failed: {e}") from e
-    
+
     def parse_project_metadata(self, file_path: Union[str, Path]) -> ProjectMetadata:
         """Parse and validate PROJECT.yaml.
-        
+
         Args:
             file_path: Path to PROJECT.yaml file
-            
+
         Returns:
             Validated ProjectMetadata model
-            
+
         Raises:
             ADRParseError: If parsing fails
             ADRSchemaValidationError: If schema validation fails
             ValidationError: If Pydantic validation fails
         """
         data = self.parse_yaml(file_path)
-        
+
         # Validate against JSON Schema
         self.validate_against_schema(data, "project")
-        
+
         # Parse into Pydantic model
         try:
             return ProjectMetadata(**data)
         except ValidationError as e:
             raise ADRParseError(f"Pydantic validation failed: {e}") from e
-    
+
     def parse_manifest(self, file_path: Union[str, Path]) -> Manifest:
         """Parse and validate manifest.yaml.
-        
+
         Args:
             file_path: Path to manifest.yaml file
-            
+
         Returns:
             Validated Manifest model
-            
+
         Raises:
             ADRParseError: If parsing fails
             ADRSchemaValidationError: If schema validation fails
             ValidationError: If Pydantic validation fails
         """
         data = self.parse_yaml(file_path)
-        
+
         # Validate against JSON Schema
         self.validate_against_schema(data, "manifest")
-        
+
         # Parse into Pydantic model
         try:
             return Manifest(**data)
         except ValidationError as e:
             raise ADRParseError(f"Pydantic validation failed: {e}") from e
-    
+
     def parse_adr(
         self, file_path: Union[str, Path]
     ) -> Union[LogicalADR, PhysicalADR, PhysicalSystemADR, PhysicalComponentADR]:
         """Parse ADR (auto-detect type).
-        
+
         Args:
             file_path: Path to ADR YAML file
-            
+
         Returns:
             Validated LogicalADR, PhysicalADR, PhysicalSystemADR, or PhysicalComponentADR model
-            
+
         Raises:
             ADRParseError: If parsing fails or type unknown
         """
         data = self.parse_yaml(file_path)
-        
-        adr_type = data.get('adr_type')
-        
-        if adr_type == 'logical':
+
+        adr_type = data.get("adr_type")
+
+        if adr_type == "logical":
             return self.parse_logical_adr(file_path)
-        elif adr_type == 'physical':
+        elif adr_type == "physical":
             return self.parse_physical_adr(file_path)
-        elif adr_type == 'physical-system':
+        elif adr_type == "physical-system":
             return self.parse_physical_system_adr(file_path)
-        elif adr_type == 'physical-component':
+        elif adr_type == "physical-component":
             return self.parse_physical_component_adr(file_path)
-        elif adr_type == 'decision':
+        elif adr_type == "decision":
             raise ADRParseError("Decision ADRs not yet implemented")
         else:
             raise ADRParseError(f"Unknown adr_type: {adr_type}")
-    
+
     def parse_entity_registry(self, file_path: Union[str, Path]) -> EntityRegistry:
         """Parse and validate entity registry.
-        
+
         Args:
             file_path: Path to entity registry YAML file
-            
+
         Returns:
             Validated EntityRegistry model
-            
+
         Raises:
             ADRParseError: If parsing fails
             ADRSchemaValidationError: If schema validation fails
@@ -557,7 +577,7 @@ class ADRParser:
         """
         data = self.parse_yaml(file_path)
         self.validate_against_schema(data, "entity_registry")
-        
+
         try:
             return EntityRegistry(**data)
         except ValidationError as e:
@@ -684,7 +704,11 @@ class ADRParser:
     def parse_implementation_attribution_evidence(
         self,
         file_path: Union[str, Path],
-    ) -> ImplementationAttributionEvidence | ImplementationAttributionEvidenceV15:
+    ) -> (
+        ImplementationAttributionEvidence
+        | ImplementationAttributionEvidenceV15
+        | ImplementationAttributionEvidenceV16
+    ):
         """Parse and validate implementation attribution evidence."""
         data = self.parse_yaml(file_path)
         return self._parse_implementation_attribution_evidence_data(data)
@@ -692,7 +716,11 @@ class ADRParser:
     def parse_implementation_attribution_evidence_from_data(
         self,
         yaml_text: str,
-    ) -> ImplementationAttributionEvidence | ImplementationAttributionEvidenceV15:
+    ) -> (
+        ImplementationAttributionEvidence
+        | ImplementationAttributionEvidenceV15
+        | ImplementationAttributionEvidenceV16
+    ):
         """Parse and validate implementation attribution evidence from YAML text."""
         data = yaml.safe_load(yaml_text)
         return self._parse_implementation_attribution_evidence_data(data)
@@ -700,7 +728,11 @@ class ADRParser:
     def _parse_implementation_attribution_evidence_data(
         self,
         data: object,
-    ) -> ImplementationAttributionEvidence | ImplementationAttributionEvidenceV15:
+    ) -> (
+        ImplementationAttributionEvidence
+        | ImplementationAttributionEvidenceV15
+        | ImplementationAttributionEvidenceV16
+    ):
         if not isinstance(data, dict):
             raise ADRParseError("Expected YAML object for implementation attribution evidence")
         version = data.get("schema_version")
@@ -716,19 +748,25 @@ class ADRParser:
                 return ImplementationAttributionEvidenceV15(**data)
             except ValidationError as e:
                 raise ADRParseError(f"Pydantic validation failed: {e}") from e
+        if version == "1.6":
+            self.validate_against_schema(data, "implementation_attribution_evidence_v1_6")
+            try:
+                return ImplementationAttributionEvidenceV16(**data)
+            except ValidationError as e:
+                raise ADRParseError(f"Pydantic validation failed: {e}") from e
         raise ADRParseError(
             f"Unsupported implementation attribution evidence schema_version {version!r}"
         )
-    
+
     def parse_requirements_snapshot(self, file_path: Union[str, Path]) -> RequirementsSnapshot:
         """Parse and validate requirements snapshot.
-        
+
         Args:
             file_path: Path to requirements snapshot YAML file
-            
+
         Returns:
             Validated RequirementsSnapshot model
-            
+
         Raises:
             ADRParseError: If parsing fails
             ADRSchemaValidationError: If schema validation fails
@@ -736,21 +774,21 @@ class ADRParser:
         """
         data = self.parse_yaml(file_path)
         self.validate_against_schema(data, "requirements_snapshot")
-        
+
         try:
             return RequirementsSnapshot(**data)
         except ValidationError as e:
             raise ADRParseError(f"Pydantic validation failed: {e}")
-    
+
     def parse_decision_ledger(self, file_path: Union[str, Path]) -> DecisionLedger:
         """Parse and validate decision ledger.
-        
+
         Args:
             file_path: Path to decision ledger YAML file
-            
+
         Returns:
             Validated DecisionLedger model
-            
+
         Raises:
             ADRParseError: If parsing fails
             ADRSchemaValidationError: If schema validation fails
@@ -758,7 +796,7 @@ class ADRParser:
         """
         data = self.parse_yaml(file_path)
         self.validate_against_schema(data, "decision_ledger")
-        
+
         try:
             return DecisionLedger(**data)
         except ValidationError as e:

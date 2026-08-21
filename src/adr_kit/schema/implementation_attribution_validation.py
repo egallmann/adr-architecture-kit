@@ -10,13 +10,14 @@ from adr_kit.identity import UUIDV7_PATTERN
 from adr_kit.models import (
     ImplementationAttributionEvidence,
     ImplementationAttributionEvidenceV15,
+    ImplementationAttributionEvidenceV16,
     NormalizedArchitectureModel,
     NormalizedEntityRegistry,
 )
 from adr_kit.models.v2_0 import NormalizedArchitectureModelV2, NormalizedEntityV2
 from adr_kit.repository.semantic_adapter import coerce_to_normalized_model
 from adr_kit.schema.contract_validation import ContractProfile
-from adr_kit.semantic_attribution.normalize import collect_duplicate_errors
+from adr_kit.semantic_attribution.normalize import collect_duplicate_errors, semantic_records
 from adr_kit.semantic_attribution.vocabulary import allowed_target_entity_types
 
 ImplementationAttributionSeverity = Literal["error", "warning"]
@@ -158,12 +159,18 @@ def validate_implementation_attribution_evidence(
         | Mapping[str, str]
         | object
     ),
-    evidence: ImplementationAttributionEvidence | ImplementationAttributionEvidenceV15,
+    evidence: (
+        ImplementationAttributionEvidence
+        | ImplementationAttributionEvidenceV15
+        | ImplementationAttributionEvidenceV16
+    ),
     *,
     profile: ContractProfile = "greenfield",
 ) -> ImplementationAttributionValidationResult:
     """Validate implementation attribution claims against canonical ADR state."""
-    if isinstance(evidence, ImplementationAttributionEvidenceV15):
+    if isinstance(
+        evidence, (ImplementationAttributionEvidenceV15, ImplementationAttributionEvidenceV16)
+    ):
         return _validate_v15(architecture_context, evidence, profile=profile)
     return _validate_legacy(architecture_context, evidence, profile=profile)
 
@@ -229,7 +236,7 @@ def _validate_legacy(
 
 def _validate_v15(
     architecture_context: object,
-    evidence: ImplementationAttributionEvidenceV15,
+    evidence: ImplementationAttributionEvidenceV15 | ImplementationAttributionEvidenceV16,
     *,
     profile: ContractProfile,
 ) -> ImplementationAttributionValidationResult:
@@ -253,7 +260,7 @@ def _validate_v15(
             ImplementationAttributionIssue(severity="error", path="records", message=message)
         )
 
-    for index, record in enumerate(evidence.records):
+    for index, record in enumerate(semantic_records(evidence)):
         if not record.claims:
             severity: ImplementationAttributionSeverity = (
                 "error" if profile == "greenfield" else "warning"
@@ -268,13 +275,26 @@ def _validate_v15(
             continue
         for claim_index, claim in enumerate(record.claims):
             path = f"records[{index}].claims[{claim_index}]"
+            if (
+                evidence.schema_version == "1.6"
+                and claim.relationship == "enforces"
+                and claim.confidence != "declared"
+            ):
+                issues.append(
+                    ImplementationAttributionIssue(
+                        severity="error",
+                        path=f"{path}.confidence",
+                        message="v1.6 enforces claims require confidence declared",
+                    )
+                )
+                continue
             target = claim.target_entity_id
             if not UUIDV7_PATTERN.match(target):
                 issues.append(
                     ImplementationAttributionIssue(
                         severity="error",
                         path=f"{path}.target_entity_id",
-                        message=f"v1.5 target_entity_id must be a lowercase UUIDv7, not an alias: {target}",
+                        message=f"v{evidence.schema_version} target_entity_id must be a lowercase UUIDv7, not an alias: {target}",
                     )
                 )
                 continue

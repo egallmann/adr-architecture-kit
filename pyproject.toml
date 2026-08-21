@@ -1,6 +1,6 @@
 [project]
 name = "adr-architecture-kit"
-version = "0.4.1"
+version = "0.5.0"
 description = "Authoring-time STE toolkit: validate structured ADR YAML, emit discovery outputs and Architecture IR fragments (ste-spec). Pre-1.0 Alpha."
 authors = [{name = "Erik Gallmann"}]
 maintainers = [{name = "Erik Gallmann"}]
@@ -66,6 +66,7 @@ where = ["src"]
 "adr_kit.schema.v1_2" = ["*.json"]
 "adr_kit.schema.v1_3" = ["*.json"]
 "adr_kit.schema.v1_5" = ["*.json"]
+"adr_kit.schema.v1_6" = ["*.json"]
 "adr_kit.schema.v2_0" = ["*.json"]
 "adr_kit.schema.migrations" = ["*.json"]
 "adr_kit.templates" = ["*.jinja2", "*.yaml"]

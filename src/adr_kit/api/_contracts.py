@@ -54,6 +54,98 @@ class Diagnostic:
 
 
 @dataclass(frozen=True, slots=True)
+class EmbodimentLinkageRequest:
+    """Inputs for one read-only embodiment-to-intent projection."""
+
+    project_root: Path
+    evidence_path: Path
+    profile: Literal["greenfield", "brownfield", "migration"] = "greenfield"
+
+    def __post_init__(self) -> None:
+        object.__setattr__(self, "project_root", _normalize_project_root(self.project_root))
+        evidence = Path(self.evidence_path).expanduser().resolve()
+        if not evidence.is_file():
+            raise InvalidRequestError(f"Evidence path is not a readable file: {evidence}")
+        object.__setattr__(self, "evidence_path", evidence)
+        if self.profile not in {"greenfield", "brownfield", "migration"}:
+            raise InvalidRequestError(f"Unsupported attribution profile: {self.profile}")
+
+
+@dataclass(frozen=True, slots=True)
+class LinkageProvenance:
+    source_file: str
+    extractor: str
+    commit: str | None = None
+    source_pointer: str | None = None
+    start_line: int | None = None
+    end_line: int | None = None
+
+
+@dataclass(frozen=True, slots=True)
+class LinkageOccurrence:
+    confidence: Literal["declared", "inferred", "heuristic"]
+    provenance: LinkageProvenance
+    source_language: str | None = None
+
+
+@dataclass(frozen=True, slots=True)
+class EmbodimentIntentLink:
+    implementation_entity_id: str
+    implementation_entity_type: str
+    relationship: Literal["implements", "enforces", "embodies"]
+    target_entity_id: str
+    target_entity_type: str
+    target_alias_id: str
+    target_alias_name: str
+    target_lifecycle: str
+    occurrences: tuple[LinkageOccurrence, ...]
+    validation_status: Literal["valid", "warning"]
+    diagnostics: tuple[Diagnostic, ...]
+    authority_ceiling: str = "validated_derived_evidence"
+    graph_admission_status: str = "not_admitted"
+
+
+@dataclass(frozen=True, slots=True)
+class RejectedEmbodimentClaim:
+    implementation_entity_id: str
+    implementation_entity_type: str
+    relationship: str
+    target_entity_id: str
+    confidence: str
+    provenance: LinkageProvenance
+    diagnostics: tuple[Diagnostic, ...]
+    validation_status: Literal["invalid"] = "invalid"
+
+
+@dataclass(frozen=True, slots=True)
+class EmbodimentLinkageResult:
+    request: EmbodimentLinkageRequest
+    success: bool
+    evidence_schema_version: str
+    architecture_fingerprint: str | None
+    links: tuple[EmbodimentIntentLink, ...]
+    rejected_claims: tuple[RejectedEmbodimentClaim, ...]
+    diagnostics: tuple[Diagnostic, ...]
+    error_count: int
+    warning_count: int
+    package_version: str
+    api_contract_version: str
+
+    def links_for_implementation(
+        self, implementation_entity_id: str
+    ) -> tuple[EmbodimentIntentLink, ...]:
+        return tuple(
+            link for link in self.links if link.implementation_entity_id == implementation_entity_id
+        )
+
+    def implementations_for_intent(self, target_entity_id: str) -> tuple[EmbodimentIntentLink, ...]:
+        return tuple(link for link in self.links if link.target_entity_id == target_entity_id)
+
+    def links_by_relationship(self, relationship: str) -> tuple[EmbodimentIntentLink, ...]:
+        return tuple(link for link in self.links if link.relationship == relationship)
+
+
+@dataclass(frozen=True, slots=True)
 class ValidationRequest:
     """Inputs for validating one explicit ADR repository scope."""
 
@@ -165,6 +257,8 @@ class CapabilityManifest:
     provisional_adr_schema_versions: tuple[str, ...]
     normalized_model_schema_version: str
     supported_normalized_model_schema_versions: tuple[str, ...]
+    supported_evidence_attribution_versions: tuple[str, ...]
+    preferred_evidence_attribution_version: str
 
     def as_dict(self) -> dict[str, object]:
         """Return the ordered JSON-safe Phase 1 serialization contract."""

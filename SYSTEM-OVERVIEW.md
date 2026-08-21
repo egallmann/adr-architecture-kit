@@ -5,8 +5,8 @@ artifact_kind: system_overview
 generator_id: adr-system-overview
 generator_version: 2
 hash_algorithm: sha256
-source_hash: 09fcbd455259fed815663765e93ed39bfc5c46140b1a9417ff3372d47cc40e2d
-rendered_hash: d0aa8d918ea7c0cd950c3f94af620a2154bc8cee1bce18faee372f79f342789a
+source_hash: 2f5364e619793f70f2923d785718b7913fb187ce75c2e6d74a02a706e1121b94
+rendered_hash: 630cb3c41bad8e6c49315f3944234479579aa9264ab7b18dc3e2a0e853eca102
 -->
 
 <!--
@@ -72,8 +72,8 @@ Consume supported programmatic behavior through `adr_kit.api`.
 Derived provider facts:
 
 - API contract version: `1.0`
-- Package version: `0.4.1`
-- Operations: `capabilities`, `validate_architecture`, `compile_architecture`, `open_repository`, `open_provider_registry`, `prepare_promotion`, `check_promotion`, `apply_promotion`- Validation modes: `complete`, `structural`- Artifact groups: `registries`, `manifest`, `markdown`- Supported ADR schema versions: `1.0`, `1.1`, `1.2`, `1.3`- Stable ADR schema versions: `1.0`- Provisional ADR schema versions: `1.1`, `1.2`, `1.3`- Normalized model schema version: `1.1`
+- Package version: `0.5.0`
+- Operations: `capabilities`, `validate_architecture`, `compile_architecture`, `open_repository`, `open_provider_registry`, `build_embodiment_linkage`, `prepare_promotion`, `check_promotion`, `apply_promotion`- Validation modes: `complete`, `structural`- Artifact groups: `registries`, `manifest`, `markdown`- Supported ADR schema versions: `1.0`, `1.1`, `1.2`, `1.3`- Stable ADR schema versions: `1.0`- Provisional ADR schema versions: `1.1`, `1.2`, `1.3`- Normalized model schema version: `1.1`
 - Supported normalized model schema versions: `1.1`, `2.0`
 Supported semantic/repository contracts include `ArchitectureRepository` and `NormalizedArchitectureModel`.
 
@@ -106,6 +106,7 @@ Currently exposed lifecycle capabilities on the public provider surface:
 - `adr_kit.api.compile_architecture`
 - `adr_kit.api.open_repository`
 - `adr_kit.api.open_provider_registry`
+- `adr_kit.api.build_embodiment_linkage`
 - `adr_kit.api.prepare_promotion`
 - `adr_kit.api.check_promotion`
 - `adr_kit.api.apply_promotion`

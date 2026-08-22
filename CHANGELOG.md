@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.6.0] — 2026-08-22
+
 ### Added
 
 - Authoring schema v1.4 and normalized-model v2.1 contracts for consumer semantic
@@ -16,6 +18,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Canonical UUIDv7 identity for authored extension relationships, with a mechanically
   distinct compatibility projection for legacy hash relationship/assertion keys.
 - Consumer semantic extension documentation and the ADR-L-0023 contract authority.
+
+### Changed
+
+- Compiler and projection projectability now preserves valid unknown namespaced
+  extension types; normalized repository loading, querying, and traversal retain
+  their explicit payloads.
+- Capability discovery advertises authoring v1.4 and normalized-model v2.1; relationship
+  handling explicitly separates canonical UUID identity from compatibility hashes.
+
+## [0.5.0] — 2026-08-21
+
+### Added
+
 - Semantic implementation attribution evidence line (schema v1.5): UUID-canonical
   claims, mechanical vocabulary, repository-aware 1.0/1.2 normalization, UUID
   decorators, vocabulary-driven shims, and unique-link coverage fields
@@ -28,11 +43,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
-- Compiler and projection projectability now preserves valid unknown namespaced
-  extension types; normalized repository loading, querying, and traversal retain
-  their explicit payloads.
-- Capability discovery advertises authoring v1.4 and normalized-model v2.1; relationship
-  handling explicitly separates canonical UUID identity from compatibility hashes.
 - Relocate canonical provisional contracts into family-first schema namespaces
   under `schema/`, preserving `schema/v1.0/`, package resources, and all
   schema bytes; record the taxonomy authority and verification snapshot in

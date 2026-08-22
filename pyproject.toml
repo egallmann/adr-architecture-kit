@@ -1,6 +1,6 @@
 [project]
 name = "adr-architecture-kit"
-version = "0.4.1"
+version = "0.6.0"
 description = "Authoring-time STE toolkit: validate structured ADR YAML, emit discovery outputs and Architecture IR fragments (ste-spec). Pre-1.0 Alpha."
 authors = [{name = "Erik Gallmann"}]
 maintainers = [{name = "Erik Gallmann"}]

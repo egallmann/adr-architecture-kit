@@ -50,7 +50,9 @@ def collision_report(records: list[Mapping[str, Any]]) -> tuple[AliasAllocationD
             value = item[key]
             prior = seen.get(f"{key}:{value}")
             if prior is not None:
-                diagnostics.append(AliasAllocationDiagnostic("collision", f"Duplicate {key}: {value}"))
+                diagnostics.append(
+                    AliasAllocationDiagnostic("collision", f"Duplicate {key}: {value}")
+                )
             seen[f"{key}:{value}"] = item["id"]
     return tuple(diagnostics)
 
@@ -75,24 +77,32 @@ def validate_consumer_alias_allocations(
     if not isinstance(raw, Mapping):
         return ConsumerAllocationReport(
             registrations={},
-            diagnostics=(AliasAllocationDiagnostic("invalid_scope", "registrations must be a mapping"),),
+            diagnostics=(
+                AliasAllocationDiagnostic("invalid_scope", "registrations must be a mapping"),
+            ),
             candidate_inventory=(),
         )
     for semantic_type, prefix in raw.items():
         if not isinstance(semantic_type, str) or not isinstance(prefix, str):
-            diagnostics.append(AliasAllocationDiagnostic("invalid_registration", "type and prefix must be strings"))
+            diagnostics.append(
+                AliasAllocationDiagnostic("invalid_registration", "type and prefix must be strings")
+            )
             continue
         try:
             validate_alias_registration(
                 semantic_type=semantic_type,
                 alias_id=f"{prefix}-0001",
-                architecture_namespace=architecture_namespace if isinstance(architecture_namespace, str) else None,
+                architecture_namespace=(
+                    architecture_namespace if isinstance(architecture_namespace, str) else None
+                ),
                 registrations=registrations,
                 reserved_prefixes=reserved_prefixes,
             )
             registrations[semantic_type] = prefix
         except ExtensionValidationError as exc:
-            diagnostics.append(AliasAllocationDiagnostic("invalid_registration", str(exc), semantic_type))
+            diagnostics.append(
+                AliasAllocationDiagnostic("invalid_registration", str(exc), semantic_type)
+            )
     candidates = tuple(
         {"semantic_type": semantic_type, "alias_prefix": prefix}
         for semantic_type, prefix in sorted(registrations.items())

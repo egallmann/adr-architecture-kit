@@ -77,7 +77,9 @@ def extract_extension_entities(
                         "properties": dict(item.get("properties") or {}),
                         "rationale": rationale,
                     },
-                    provenance=provenance("extension_entity", source_ref, "extract_extension", "explicit"),
+                    provenance=provenance(
+                        "extension_entity", source_ref, "extract_extension", "explicit"
+                    ),
                 )
             )
 
@@ -111,8 +113,10 @@ def extract_extension_entities(
 
     entity_ids = known_ids | {entity.id for entity in entities}
     for relationship in relationships:
-        if relationship.from_entity_id not in entity_ids or relationship.to_entity_id not in entity_ids:
+        if (
+            relationship.from_entity_id not in entity_ids
+            or relationship.to_entity_id not in entity_ids
+        ):
             # Core UUID endpoints are resolved by the caller after core extraction.
             continue
     return ExtensionExtractionResult(tuple(entities), tuple(relationships))
-

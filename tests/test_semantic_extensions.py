@@ -16,7 +16,6 @@ from adr_kit.models.v2_1 import (
 )
 from adr_kit.semantic_extensions import ExtensionValidationError, validate_extension_type
 
-
 UUID_A = "018f4f20-0000-7000-8000-000000000001"
 UUID_B = "018f4f20-0000-7000-8000-000000000002"
 UUID_R = "018f4f20-0000-7000-8000-000000000003"
@@ -39,7 +38,10 @@ def test_extension_type_requires_containing_namespace_and_rejects_core_shadowing
 
 
 def test_extension_payload_is_typed_and_round_trips_exactly() -> None:
-    authored = {"properties": {"region": "us-east", "rank": 2, "flags": ["a", "b"]}, "rationale": "consumer-owned meaning"}
+    authored = {
+        "properties": {"region": "us-east", "rank": 2, "flags": ["a", "b"]},
+        "rationale": "consumer-owned meaning",
+    }
     payload = ExtensionPayloadV21.model_validate(authored)
     assert payload.model_dump(mode="json") == authored
     entity = ExtensionEntityV14(
@@ -61,9 +63,19 @@ def test_extension_payload_is_typed_and_round_trips_exactly() -> None:
         uri="adr://acme/entities/018f4f20-0000-7000-8000-000000000001",
         created_at="2024-01-01T00:00:00Z",
         entity_fingerprint="sha256:" + "0" * 64,
-        canonical_source={"source_type": "logical_adr", "source_ref": "ADR-L-0001", "artifact_path": "x.yaml"},
+        canonical_source={
+            "source_type": "logical_adr",
+            "source_ref": "ADR-L-0001",
+            "artifact_path": "x.yaml",
+        },
         completeness={"status": "complete", "missing_fields": []},
-        provenance={"source_type": "compiler", "source_ref": "x", "extraction_phase": "projection", "classification": "derived", "generator": "test"},
+        provenance={
+            "source_type": "compiler",
+            "source_ref": "x",
+            "extraction_phase": "projection",
+            "classification": "derived",
+            "generator": "test",
+        },
         extension=payload,
     )
     assert normalized.extension is not None
@@ -84,9 +96,19 @@ def test_core_normalized_entity_cannot_acquire_extension_payload() -> None:
             uri="adr://acme/entities/018f4f20-0000-7000-8000-000000000001",
             created_at="2024-01-01T00:00:00Z",
             entity_fingerprint="sha256:" + "0" * 64,
-            canonical_source={"source_type": "logical_adr", "source_ref": "ADR-L-0001", "artifact_path": "x.yaml"},
+            canonical_source={
+                "source_type": "logical_adr",
+                "source_ref": "ADR-L-0001",
+                "artifact_path": "x.yaml",
+            },
             completeness={"status": "complete", "missing_fields": []},
-            provenance={"source_type": "compiler", "source_ref": "x", "extraction_phase": "projection", "classification": "derived", "generator": "test"},
+            provenance={
+                "source_type": "compiler",
+                "source_ref": "x",
+                "extraction_phase": "projection",
+                "classification": "derived",
+                "generator": "test",
+            },
             extension={"properties": {}, "rationale": "invalid on core"},
         )
 
@@ -135,6 +157,8 @@ def test_feature_gate_can_stop_before_sealed_migration() -> None:
     report = validate_consumer_alias_allocations({"registrations": {"acme:widget": "WID"}})
     assert report.valid
     assert report.candidate_inventory
-    assert collision_report([{"id": UUID_A, "alias_id": "WID-0001"}, {"id": UUID_A, "alias_id": "WID-0001"}])
+    assert collision_report(
+        [{"id": UUID_A, "alias_id": "WID-0001"}, {"id": UUID_A, "alias_id": "WID-0001"}]
+    )
     with pytest.raises(ValueError, match="not SEALED"):
         verify_sealed_map({"status": "candidate"})

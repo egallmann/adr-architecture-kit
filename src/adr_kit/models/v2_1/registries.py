@@ -32,4 +32,3 @@ class UnresolvedRegistryV21(BaseModel):
     schema_version: str = "2.1"
     type: Literal["unresolved_registry"] = "unresolved_registry"
     unresolved: list[UnresolvedRecord] = Field(default_factory=list)
-

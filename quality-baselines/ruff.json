@@ -1,36 +1,6 @@
 {
-  "finding_count": 68,
+  "finding_count": 56,
   "findings": [
-    {
-      "code": "F401",
-      "count": 1,
-      "message": "`..generators.ArchitectureIndexGenerator` imported but unused",
-      "path": "src/adr_kit/cli/main.py"
-    },
-    {
-      "code": "F401",
-      "count": 1,
-      "message": "`..generators.EntityRegistryGenerator` imported but unused",
-      "path": "src/adr_kit/cli/main.py"
-    },
-    {
-      "code": "F401",
-      "count": 1,
-      "message": "`..generators.views.MarkdownGenerator` imported but unused",
-      "path": "src/adr_kit/cli/main.py"
-    },
-    {
-      "code": "F541",
-      "count": 2,
-      "message": "f-string without any placeholders",
-      "path": "src/adr_kit/cli/main.py"
-    },
-    {
-      "code": "F401",
-      "count": 1,
-      "message": "`.markdown_rendering.discover_scope_adr_files` imported but unused",
-      "path": "src/adr_kit/compiler/backend/markdown_emitter.py"
-    },
     {
       "code": "F401",
       "count": 1,
@@ -60,12 +30,6 @@
       "count": 1,
       "message": "`...models.SourceRef` imported but unused",
       "path": "src/adr_kit/compiler/passes/fixed_order.py"
-    },
-    {
-      "code": "F401",
-      "count": 1,
-      "message": "`..scope.ProjectScopeResolver` imported but unused",
-      "path": "src/adr_kit/compiler/pipeline.py"
     },
     {
       "code": "F401",
@@ -142,32 +106,8 @@
     {
       "code": "F401",
       "count": 1,
-      "message": "`typing.List` imported but unused",
-      "path": "src/adr_kit/generators/system_overview_generator.py"
-    },
-    {
-      "code": "F401",
-      "count": 1,
       "message": "`.artifacts.ScopeProjectionArtifacts` imported but unused",
       "path": "src/adr_kit/integrity/validation.py"
-    },
-    {
-      "code": "F401",
-      "count": 1,
-      "message": "`typing.Dict` imported but unused",
-      "path": "src/adr_kit/migrators/canonical_id_normalizer.py"
-    },
-    {
-      "code": "F401",
-      "count": 1,
-      "message": "`typing.List` imported but unused",
-      "path": "src/adr_kit/migrators/canonical_id_normalizer.py"
-    },
-    {
-      "code": "F841",
-      "count": 1,
-      "message": "Local variable `keeper` is assigned to but never used",
-      "path": "src/adr_kit/migrators/canonical_id_normalizer.py"
     },
     {
       "code": "F401",
@@ -228,12 +168,6 @@
       "count": 2,
       "message": "Local variable `workspace_root` is assigned to but never used",
       "path": "tests/test_adr_validator.py"
-    },
-    {
-      "code": "F841",
-      "count": 1,
-      "message": "Local variable `adr_dir` is assigned to but never used",
-      "path": "tests/test_canonical_id_normalizer.py"
     },
     {
       "code": "F401",

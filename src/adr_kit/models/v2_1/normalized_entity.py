@@ -4,7 +4,11 @@ from __future__ import annotations
 
 from pydantic import BaseModel, ConfigDict, Field, model_validator
 
-from ...semantic_extensions import validate_extension_type, validate_property_map, validate_rationale
+from ...semantic_extensions import (
+    validate_extension_type,
+    validate_property_map,
+    validate_rationale,
+)
 from ..v2_0.normalized_entity import NormalizedEntityV2
 from ..v1_4.extension import ExtensionPropertyValue
 
@@ -40,4 +44,3 @@ class NormalizedEntityV21(NormalizedEntityV2):
         elif self.extension is not None:
             raise ValueError("Core normalized entities cannot carry an extension payload")
         return self
-

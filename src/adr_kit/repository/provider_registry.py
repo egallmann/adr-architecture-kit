@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Mapping
+from typing import Mapping, cast
 
 import yaml
 
@@ -117,7 +117,7 @@ class ProviderRegistry:
             raise ArchitectureRegistryError(
                 f"Provider URI mismatch for {uuid}: expected {expected_uri}, got {entity.uri}"
             )
-        return entity
+        return cast(NormalizedEntityV2, entity)
 
     def resolve_uri(self, uri: str) -> NormalizedEntityV2:
         """Resolve an adr:// URI by provider namespace ownership."""

@@ -12,4 +12,3 @@ class PhysicalSystemADRv14(PhysicalSystemADRv13):
     schema_version: str = Field("1.4", pattern=r"^1\.4$")
     extension_entities: list[ExtensionEntityV14] = Field(default_factory=list)
     extension_relationships: list[ExtensionRelationshipV14] = Field(default_factory=list)
-

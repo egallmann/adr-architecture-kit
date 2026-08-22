@@ -21,4 +21,3 @@ class LogicalADRv14(LogicalADRv13):
     gaps: list[GapV14] = Field(default_factory=list)
     extension_entities: list[ExtensionEntityV14] = Field(default_factory=list)
     extension_relationships: list[ExtensionRelationshipV14] = Field(default_factory=list)
-

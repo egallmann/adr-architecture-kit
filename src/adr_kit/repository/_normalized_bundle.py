@@ -284,9 +284,13 @@ def _assemble_v21(
         for entity in registry.entities:
             primary_entity = primary_by_id.get(entity.id)
             if primary_entity is None:
-                raise ValueError(f"Subset registry {subset_name} references unknown entity ID: {entity.id}")
+                raise ValueError(
+                    f"Subset registry {subset_name} references unknown entity ID: {entity.id}"
+                )
             if entity.entity_type != expected_type:
-                raise ValueError(f"Subset registry {subset_name} has mismatched entity_type for {entity.id}")
+                raise ValueError(
+                    f"Subset registry {subset_name} has mismatched entity_type for {entity.id}"
+                )
         subsets[subset_name] = list(registry.entities)
         subset_models[subset_name] = registry
     fingerprint = fingerprint_payload(
@@ -298,7 +302,9 @@ def _assemble_v21(
             "relationship_registry": model_payload(relationship_registry),
             "unresolved_registry": model_payload(unresolved_registry),
             "remediation_ledger": model_payload(remediation_ledger),
-            "subset_registries": {name: model_payload(model) for name, model in sorted(subset_models.items())},
+            "subset_registries": {
+                name: model_payload(model) for name, model in sorted(subset_models.items())
+            },
         }
     )
     model = NormalizedArchitectureModelV21(
@@ -448,16 +454,30 @@ def load_normalized_bundle_from_bytes(
     index = _model_from_bytes(ArchitectureIndex, content(index_path), index_path)
 
     entity_registry_payload = yaml.safe_load(content(index.entity_registry_path).decode("utf-8"))
-    if isinstance(entity_registry_payload, dict) and entity_registry_payload.get("schema_version") == "2.1":
+    if (
+        isinstance(entity_registry_payload, dict)
+        and entity_registry_payload.get("schema_version") == "2.1"
+    ):
+
         def load_registry_v21(relative_path: str) -> NormalizedEntityRegistryV21:
-            return _model_from_bytes(NormalizedEntityRegistryV21, content(relative_path), relative_path)
+            return _model_from_bytes(
+                NormalizedEntityRegistryV21, content(relative_path), relative_path
+            )
 
         return _assemble_v21(
             root,
             index,
             load_registry_v21,
-            _model_from_bytes(RelationshipRegistryV21, content(index.relationship_registry_path), index.relationship_registry_path),
-            _model_from_bytes(UnresolvedRegistryV21, content(index.unresolved_registry_path), index.unresolved_registry_path),
+            _model_from_bytes(
+                RelationshipRegistryV21,
+                content(index.relationship_registry_path),
+                index.relationship_registry_path,
+            ),
+            _model_from_bytes(
+                UnresolvedRegistryV21,
+                content(index.unresolved_registry_path),
+                index.unresolved_registry_path,
+            ),
             None,
         )
 

@@ -36,7 +36,7 @@
       "family": "special",
       "family_version": null,
       "schema_id": null,
-      "sha256": "081ae08229d02e11cdc42e294dfd94437306ade33e3615863d4241096d8832bf",
+      "sha256": "38c158e51c14cda310d5e84fb765e3ddd1b0926ab2ccd92509a2d50b84cbd285",
       "package_mirror_path": null,
       "mirror_disposition": "no-mirror"
     },
@@ -46,7 +46,7 @@
       "family": "special",
       "family_version": null,
       "schema_id": null,
-      "sha256": "7c58cbe1f212e9a695d307ac1b09908315d87a2b7ca985812e14e7e482157dea",
+      "sha256": "426ecfc67ba5450e1461fdf81abdf6dd07fb168f242d24fd6d5120d3e8e561fe",
       "package_mirror_path": null,
       "mirror_disposition": "no-mirror"
     },
@@ -56,7 +56,7 @@
       "family": "special",
       "family_version": null,
       "schema_id": null,
-      "sha256": "cc160629d8360cf349f6afc582be93586e0a4ce0f1ac6e110ac2277e12c48618",
+      "sha256": "960ee0df5d6e5a1cd0e3b96b18c1b8e4fea4a7e49dacdd6604189c1862aa876c",
       "package_mirror_path": null,
       "mirror_disposition": "no-mirror"
     },
@@ -66,7 +66,7 @@
       "family": "special",
       "family_version": null,
       "schema_id": null,
-      "sha256": "69207168f54422cef640d0819ff15e5267837f2e862d6c670c34890701924860",
+      "sha256": "34b20ebe2f2c5f0d746fc0f4a3289409d2d8e2ed15b1cb135da02f17eb8ceb86",
       "package_mirror_path": null,
       "mirror_disposition": "no-mirror"
     },
@@ -76,7 +76,7 @@
       "family": "special",
       "family_version": null,
       "schema_id": null,
-      "sha256": "7fd000e09004875a75965bca60e39238d7d2c2c9d296ffcf32d188b4c66ed5fe",
+      "sha256": "61de7bf2f72c3c86a7a67825a6e24e0502d1052c8c34d8ada00c9481c34316a3",
       "package_mirror_path": "src/adr_kit/schema/migrations/canonical-identity-v13-map.schema.json",
       "mirror_disposition": "mirror"
     },
@@ -186,7 +186,7 @@
       "family": "architecture-discovery",
       "family_version": "v1.1",
       "schema_id": null,
-      "sha256": "054efe34a12d94d321ec5690860029252fa252433b74340c616ccd424f33cc5a",
+      "sha256": "5a08df6f01a0a37a2fa681acb9b7828cb7720c7287d8367a4d0fadf7fb6e5e80",
       "package_mirror_path": "src/adr_kit/schema/v1_1/architecture-index.schema.json",
       "mirror_disposition": "mirror"
     },
@@ -196,7 +196,7 @@
       "family": "governance",
       "family_version": "v1.1",
       "schema_id": null,
-      "sha256": "4be1eeabd76f2827feda9f0a78ec417f55e2521675b3b3f2da02af5dd63bc63d",
+      "sha256": "9e5e80da0bf173a4df240e10969f2d420ffa39ac67fc07bd90934db3fbeb2d3d",
       "package_mirror_path": "src/adr_kit/schema/v1_1/decision-ledger.schema.json",
       "mirror_disposition": "mirror"
     },
@@ -206,7 +206,7 @@
       "family": "architecture-discovery",
       "family_version": "v1.1",
       "schema_id": null,
-      "sha256": "ab0c5b1b6a05d773642a4a8ef7145f1e95ff872bc9dc5ddbc640698db15fa157",
+      "sha256": "98795b46e167affbd35c5415c9f7947d8784c273b918530376d22590d90a047b",
       "package_mirror_path": "src/adr_kit/schema/v1_1/entity-registry.schema.json",
       "mirror_disposition": "mirror"
     },
@@ -216,7 +216,7 @@
       "family": "evidence-attribution",
       "family_version": "v1.1",
       "schema_id": null,
-      "sha256": "a02188bad22cc5d0a5244cee8f717d900187e30c17db18cccf91c0a642fa643c",
+      "sha256": "a51f8b0d8f7b50a6d7747102f88a333eb029356230113223080c50f02c8b0197",
       "package_mirror_path": "src/adr_kit/schema/v1_1/implementation-attribution-evidence.schema.json",
       "mirror_disposition": "mirror"
     },
@@ -226,7 +226,7 @@
       "family": "normalized-model",
       "family_version": "v1.1",
       "schema_id": null,
-      "sha256": "28fb788393021fc584cac5f36688d0b8fb787216785cee9dbbe0f4ab82407854",
+      "sha256": "f1b107105d81fef441083cb70a19d56d828af195be8df8e1c10655a162749300",
       "package_mirror_path": "src/adr_kit/schema/v1_1/normalized-entity-registry.schema.json",
       "mirror_disposition": "mirror"
     },
@@ -236,7 +236,7 @@
       "family": "governance",
       "family_version": "v1.1",
       "schema_id": null,
-      "sha256": "56717aaafc6c8cddaf8626da34eec48dd80d721fd83df54c49304c45102bd872",
+      "sha256": "4e1ffbbc6ad7a32b7e91221aa15c69f00e2d169ba1df5752f3ad384c5aacd684",
       "package_mirror_path": "src/adr_kit/schema/v1_1/objection-override.schema.json",
       "mirror_disposition": "mirror"
     },
@@ -246,7 +246,7 @@
       "family": "normalized-model",
       "family_version": "v1.1",
       "schema_id": null,
-      "sha256": "06e853f1586528f6bb11036cbaa26bc16a12f1b957699d257641d75783be3d20",
+      "sha256": "a730b8991cf09967ebbe56b96d315b0f662d51f2e560ab7f61d8b3801ff6b5cf",
       "package_mirror_path": "src/adr_kit/schema/v1_1/relationship-registry.schema.json",
       "mirror_disposition": "mirror"
     },
@@ -256,7 +256,7 @@
       "family": "governance",
       "family_version": "v1.1",
       "schema_id": null,
-      "sha256": "3f5d96938b32ba7b4c9c77736e2b9554b2056731d0ad07047997c300065ce2fc",
+      "sha256": "495b2f2292518f5f8e087df7b3ce54a9319f2216bd42e2598b3bb30e3bfb117a",
       "package_mirror_path": "src/adr_kit/schema/v1_1/remediation-ledger.schema.json",
       "mirror_disposition": "mirror"
     },
@@ -266,7 +266,7 @@
       "family": "governance",
       "family_version": "v1.1",
       "schema_id": null,
-      "sha256": "706543829adccbcb8752975211cc121957abf4a95f8472e04cfbb64b64dd7af1",
+      "sha256": "10e20552cf1816187ee0109c5b74b5135f0fc41ac1cfbbcecde5772e41937efc",
       "package_mirror_path": "src/adr_kit/schema/v1_1/requirements-snapshot.schema.json",
       "mirror_disposition": "mirror"
     },
@@ -276,7 +276,7 @@
       "family": "governance",
       "family_version": "v1.1",
       "schema_id": null,
-      "sha256": "75293aef35c4ead5e2389615db3bf2809d368a8c9b2d19c2c942adcca53c1af1",
+      "sha256": "8516ed977ae552dc8a750c5fc53ebe9b23220893b75fbc3a280939701ba3f50c",
       "package_mirror_path": "src/adr_kit/schema/v1_1/steelman-review.schema.json",
       "mirror_disposition": "mirror"
     },
@@ -286,7 +286,7 @@
       "family": "normalized-model",
       "family_version": "v1.1",
       "schema_id": null,
-      "sha256": "897c603f9d7ac7d4550dad8a9da17e2ee2a9ae19926ea8508abec3619d982dbd",
+      "sha256": "23c124becd7ef37a7b4edf49679965d689e8431786f07d69525e95d07df2beae",
       "package_mirror_path": "src/adr_kit/schema/v1_1/unresolved-registry.schema.json",
       "mirror_disposition": "mirror"
     },
@@ -296,7 +296,7 @@
       "family": "evidence-attribution",
       "family_version": "v1.1",
       "schema_id": null,
-      "sha256": "39b78dab7db88edc878be7dce3ae947de30a53338c589f4484f3996c22514506",
+      "sha256": "838397ce2fde3ed3d643b4b96aa4e6358ab2dabfbe61c2c8033cae8ff0ef9593",
       "package_mirror_path": "src/adr_kit/schema/v1_1/workspace-attribution-federation.schema.json",
       "mirror_disposition": "mirror"
     },
@@ -306,7 +306,7 @@
       "family": "authoring",
       "family_version": "v1.2",
       "schema_id": null,
-      "sha256": "6e79e045fa8c1cd01e0d233d8fb80d0d6d0b082ca6b4bde481da60fe0238738a",
+      "sha256": "a91a351c4e7c8ddf85c3395d366f1de9782fb1fdd89466dade5522567cd3d50c",
       "package_mirror_path": "src/adr_kit/schema/v1_2/adr-common.schema.json",
       "mirror_disposition": "mirror"
     },
@@ -316,7 +316,7 @@
       "family": "authoring",
       "family_version": "v1.2",
       "schema_id": null,
-      "sha256": "e57a86e3c8d069c10b61fc34455917f353f2856a821e295430b1dd0ad499e0f8",
+      "sha256": "f8b62b44e19e03be6b8c17c6b9cbc8ae26cc0e59d5c50f1149abb8fcccd13ba1",
       "package_mirror_path": "src/adr_kit/schema/v1_2/adr-logical.schema.json",
       "mirror_disposition": "mirror"
     },
@@ -326,7 +326,7 @@
       "family": "authoring",
       "family_version": "v1.2",
       "schema_id": null,
-      "sha256": "9623715b9077c66a63d88baab0810167eeb536b7e637aea85196ed946036a16f",
+      "sha256": "7be1399209bc7fac890786ff8807ed071d0e0aa90767c0129776a025b67a5d36",
       "package_mirror_path": "src/adr_kit/schema/v1_2/adr-physical-base.schema.json",
       "mirror_disposition": "mirror"
     },
@@ -336,7 +336,7 @@
       "family": "authoring",
       "family_version": "v1.2",
       "schema_id": null,
-      "sha256": "cd3c0fae5e8f6359d3b130f012b66aee33f7ab84baad833cc621c7a846a30ea0",
+      "sha256": "93979efe12c8ba4e1d79b197ee1dbf1985bfc3523835c30592027bf2307c985d",
       "package_mirror_path": "src/adr_kit/schema/v1_2/adr-physical-component.schema.json",
       "mirror_disposition": "mirror"
     },
@@ -346,7 +346,7 @@
       "family": "authoring",
       "family_version": "v1.2",
       "schema_id": null,
-      "sha256": "e456955adcd40a12d144a01fca631ea7f21403e2504cb3bf689a99c26f631865",
+      "sha256": "4ea0ca069bb0e8780c32947d3b8bbc32d91b3aff7b1b1b612298131bf61afc06",
       "package_mirror_path": "src/adr_kit/schema/v1_2/adr-physical-system.schema.json",
       "mirror_disposition": "mirror"
     },
@@ -356,7 +356,7 @@
       "family": "authoring",
       "family_version": "v1.2",
       "schema_id": null,
-      "sha256": "721c998383db7226319c95768914d1a2d7a46ab9996804d75aad92bc11cfa562",
+      "sha256": "6452e57d0d24381bf051e674e12fe96ca1c973aad72f531236cb67339f970533",
       "package_mirror_path": "src/adr_kit/schema/v1_2/adr-physical.schema.json",
       "mirror_disposition": "mirror"
     },
@@ -366,7 +366,7 @@
       "family": "authoring",
       "family_version": "v1.2",
       "schema_id": null,
-      "sha256": "c7a34c2aa3ac51a7ad750c7fe2dcb617a8fde63d2ed46b402f1f404abfa44323",
+      "sha256": "210cc15723c9e5437673991e3e4a0154fb3ca529adf032088924bdd7890b7deb",
       "package_mirror_path": "src/adr_kit/schema/v1_2/invariant.schema.json",
       "mirror_disposition": "mirror"
     },
@@ -376,7 +376,7 @@
       "family": "authoring",
       "family_version": "v1.2",
       "schema_id": null,
-      "sha256": "4a252d8a8fe58e085bb46441d0e41fb984ec6a63bf2e861d8f1f93b1f4859f32",
+      "sha256": "6c433753a43c8dd279f5aec12e81b8876c9360a04db8d817bca10246f2a00f8a",
       "package_mirror_path": "src/adr_kit/schema/v1_2/types.schema.json",
       "mirror_disposition": "mirror"
     },
@@ -386,7 +386,7 @@
       "family": "authoring",
       "family_version": "v1.3",
       "schema_id": null,
-      "sha256": "9f66f7f85c866dd23763ec2a2a7a9e290a6f121af92feb9654cc589a82438620",
+      "sha256": "a585ba26a5d1cb326d09f7e8da59d3a05a4bccac1aabe02b9a8d6b82bf5926e9",
       "package_mirror_path": "src/adr_kit/schema/v1_3/adr-common.schema.json",
       "mirror_disposition": "mirror"
     },
@@ -396,7 +396,7 @@
       "family": "authoring",
       "family_version": "v1.3",
       "schema_id": null,
-      "sha256": "c9937806fa58a9f92c63ecc217c94538ee8f1424e621a41972a785f008416734",
+      "sha256": "fccec445b37f43458ccfc7d524d26fb3f609e8765089383c2beea9df802e22f0",
       "package_mirror_path": "src/adr_kit/schema/v1_3/adr-logical.schema.json",
       "mirror_disposition": "mirror"
     },
@@ -406,7 +406,7 @@
       "family": "authoring",
       "family_version": "v1.3",
       "schema_id": null,
-      "sha256": "95de01d3c489d1b45854ca5e9881cfd9d7d15ae8c93e29974b27629c2d7a9192",
+      "sha256": "0360b15e07bb91639e3b382578e3116cacbc97f30ad7e0f7ff7b91803257083f",
       "package_mirror_path": "src/adr_kit/schema/v1_3/adr-physical-base.schema.json",
       "mirror_disposition": "mirror"
     },
@@ -416,7 +416,7 @@
       "family": "authoring",
       "family_version": "v1.3",
       "schema_id": null,
-      "sha256": "3e6e6882773f886c49abe778f3afec3b967af084780da2b6c268ffd3abd00aa8",
+      "sha256": "e96fef221b66484b17993361618b6b219d6ed6a567f335948f068ae1f3ad31da",
       "package_mirror_path": "src/adr_kit/schema/v1_3/adr-physical-component.schema.json",
       "mirror_disposition": "mirror"
     },
@@ -426,7 +426,7 @@
       "family": "authoring",
       "family_version": "v1.3",
       "schema_id": null,
-      "sha256": "6de19bc0086a67f9dd75bacb04da5f888fbd6d2186ac725417a1ff6c42d50c2e",
+      "sha256": "86f0ceaa9c84ab64be908ce7f87b302db04ee12f842e69bc0126dde0f1ee5b09",
       "package_mirror_path": "src/adr_kit/schema/v1_3/adr-physical-system.schema.json",
       "mirror_disposition": "mirror"
     },
@@ -436,7 +436,7 @@
       "family": "authoring",
       "family_version": "v1.3",
       "schema_id": null,
-      "sha256": "912e4d4e8a127a26274730e6470ac629568d28203abc8f8b5398b203bbb00400",
+      "sha256": "094d65d02cdd08cda70cb9e000326a9204bce73c7cbaae135225ec6568a669f4",
       "package_mirror_path": "src/adr_kit/schema/v1_3/adr-physical.schema.json",
       "mirror_disposition": "mirror"
     },
@@ -446,7 +446,7 @@
       "family": "authoring",
       "family_version": "v1.3",
       "schema_id": null,
-      "sha256": "0d7669da2571371806c4080e0924d631e1a57a0d95738fc95926be223dfaff91",
+      "sha256": "612d73a201177db340bbb8beab7abd83b1b940f9d262abe85bb4ea5457369816",
       "package_mirror_path": "src/adr_kit/schema/v1_3/types.schema.json",
       "mirror_disposition": "mirror"
     },
@@ -526,7 +526,7 @@
       "family": "evidence-attribution",
       "family_version": "v1.5",
       "schema_id": null,
-      "sha256": "7d9b7480de71b5dacce2902f5e37f788a261c656127786e7771da46bf8f29cc4",
+      "sha256": "a626acf60834d55fc18defad99ee82d572bc3b87f1cd7c435c4b003c46e01cbc",
       "package_mirror_path": "src/adr_kit/schema/v1_5/implementation-attribution-evidence.schema.json",
       "mirror_disposition": "mirror"
     },
@@ -536,7 +536,7 @@
       "family": "evidence-attribution",
       "family_version": "v1.5",
       "schema_id": null,
-      "sha256": "b6f3615b17b4b59ffe40df4a8394299f8fb501187fefb0ec6ee083fdcf0af37a",
+      "sha256": "e4cd5dbaa3d11b432994ea090d6d09c2872d81d0cde761e1d8702a087e4980b8",
       "package_mirror_path": "src/adr_kit/schema/v1_5/semantic-attribution-vocabulary.json",
       "mirror_disposition": "mirror"
     },
@@ -546,7 +546,7 @@
       "family": "normalized-model",
       "family_version": "v2.0",
       "schema_id": null,
-      "sha256": "8f8e53130bdef4ed679372f6f771e6674522ca3e5557ef0f2fea4f3fb0bd1892",
+      "sha256": "792e2e82545d0b115466923b00795e8dda08126d7b7aea7c4af571286aa67ab5",
       "package_mirror_path": "src/adr_kit/schema/v2_0/normalized-architecture-model.schema.json",
       "mirror_disposition": "mirror"
     },
@@ -556,7 +556,7 @@
       "family": "normalized-model",
       "family_version": "v2.0",
       "schema_id": null,
-      "sha256": "5ad6d59330c01fabdef430700b516bb5e5c13d4a6ec3e15c6bbfb79714b4eaf3",
+      "sha256": "38f9002a76517eb16d4e35fd6b14bdf6492e910a7567520da6da52d4b2df2dd6",
       "package_mirror_path": "src/adr_kit/schema/v2_0/normalized-entity-registry.schema.json",
       "mirror_disposition": "mirror"
     },
@@ -566,7 +566,7 @@
       "family": "normalized-model",
       "family_version": "v2.0",
       "schema_id": null,
-      "sha256": "df8a034a2de108bf58f6b22c9b4604f92039478af50b678a4ba21a5fb93774c7",
+      "sha256": "2fb728c722e8edd18595c04278150d444cab65cc68e9a5187c83026ab4786ac2",
       "package_mirror_path": "src/adr_kit/schema/v2_0/normalized-entity.schema.json",
       "mirror_disposition": "mirror"
     },
@@ -576,7 +576,7 @@
       "family": "normalized-model",
       "family_version": "v2.0",
       "schema_id": null,
-      "sha256": "a33a7a556a0b2f09908f8934b70ecc414753e3c3b0a9da3e60e66b614659bb2b",
+      "sha256": "5fa2fce23ad17792318d40e287299af35b31ae4d501d0a50df257d682ffd8a0f",
       "package_mirror_path": "src/adr_kit/schema/v2_0/relationship-record.schema.json",
       "mirror_disposition": "mirror"
     },
@@ -586,7 +586,7 @@
       "family": "normalized-model",
       "family_version": "v2.0",
       "schema_id": null,
-      "sha256": "f23a3dc227f28acbc649f994629446741e1a8ac7dffc348c522796f9a298257c",
+      "sha256": "c563f373dd410e9441736bd12f7837d3a2f8548a9d32073591ca98bc32b0805f",
       "package_mirror_path": "src/adr_kit/schema/v2_0/relationship-registry.schema.json",
       "mirror_disposition": "mirror"
     },

@@ -6,24 +6,24 @@
   "architecture_graph": {
     "path": "adrs/index/architecture-graph.yaml",
     "source_sha256": "fa681e8b8934284bdc27b588c4b07d1a63d315f75ffee87df8fba2bdb37bc9e0",
-    "node_count": 402,
-    "edge_count": 541,
-    "node_semantic_sha256": "cb0b83728be18b613616bdb4129fef12ce128a498cefd9d74f3cae0fba769a24",
-    "edge_semantic_sha256": "0be574c5a57f6ce514352de446d34ba9abd8dc1aa9ff520d4cd864437ad4a79a",
+    "node_count": 419,
+    "edge_count": 559,
+    "node_semantic_sha256": "5122a99d74a0fe830b35202132bb1195d3df0c9a2adadd2f077b52eef1da3fe9",
+    "edge_semantic_sha256": "e29d5138f889b3777152ad5a0dc30026445218f9ea904269b4ba136e83202f69",
     "node_types": {
-      "adr": 36,
+      "adr": 37,
       "boundary": 4,
       "capability": 56,
       "component": 7,
       "contract": 5,
-      "decision": 145,
+      "decision": 153,
       "implementation_decision": 12,
       "interface": 11,
-      "invariant": 124,
+      "invariant": 132,
       "system": 2
     },
     "edge_types": {
-      "declared_in": 366,
+      "declared_in": 382,
       "embodied_in": 7,
       "enabled_by": 1,
       "enables": 1,
@@ -31,13 +31,13 @@
       "implemented_by": 2,
       "implements_logical": 28,
       "provides_interface": 11,
-      "references": 85,
+      "references": 87,
       "related_to": 6,
       "superseded_by": 3,
       "supersedes": 3
     },
     "baseline_identity_evidence": {
-      "uuidv7_nodes": 402,
+      "uuidv7_nodes": 419,
       "nodes_with_alias_envelope": 0,
       "uuidv7_edges": 0,
       "edges_with_alias_envelope": 0

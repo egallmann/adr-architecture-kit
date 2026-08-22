@@ -42,7 +42,10 @@ def test_frozen_inventory_is_exact_and_target_membership_is_preserved() -> None:
         assert target.read_bytes()  # the fixture must never describe an empty contract
         import hashlib
 
-        assert hashlib.sha256(target.read_bytes()).hexdigest() == record["sha256"]
+        # The frozen digest is over the canonical LF representation so the
+        # verification remains identical on Windows checkouts with CRLF.
+        canonical_bytes = target.read_bytes().replace(b"\r\n", b"\n")
+        assert hashlib.sha256(canonical_bytes).hexdigest() == record["sha256"]
 
 
 def test_only_stable_v1_is_a_bare_numeric_root_exception() -> None:

@@ -214,7 +214,9 @@ class TestVersionDetection:
             diagnostics=DiagnosticLog(),
         )
         state.detected_schema_versions = {"1.0", "1.3"}
-        with pytest.raises(MixedSchemaVersionError, match="mixes v1.3 and legacy"):
+        with pytest.raises(
+            MixedSchemaVersionError, match="mixes incompatible authoring schema versions"
+        ):
             VersionDetectionPass().run(state)
 
     def test_empty_scope_selects_1_1(self, _stub_scope: ProjectScope) -> None:

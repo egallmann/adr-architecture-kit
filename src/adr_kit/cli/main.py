@@ -2599,8 +2599,8 @@ def attribution_coverage_cmd(scope: Optional[Path], evidence: Optional[Path]):
 
         repo = ArchitectureRepository(project_root=scope_root)
         repo.load()
-        if repo.model_version == "2.0":
-            model_v2 = repo.get_model_v2()
+        if repo.model_version in {"2.0", "2.1"}:
+            model_v2 = repo.get_model_v21() if repo.model_version == "2.1" else repo.get_model_v2()
             catalog = sorted(
                 {
                     entity.alias_id

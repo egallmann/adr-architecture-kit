@@ -62,6 +62,7 @@ class IREntity:
     canonical_source: CanonicalSource
     source_refs: list[SourceRef] = field(default_factory=list)
     metadata: dict[str, Any] = field(default_factory=dict)
+    extension: dict[str, Any] | None = None
     completeness: Completeness = field(
         default_factory=lambda: Completeness(status="complete", missing_fields=[])
     )

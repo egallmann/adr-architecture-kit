@@ -40,6 +40,10 @@ def build_relationship_summary(entity_id: str, rel_graph: RelGraph) -> EntityRel
     for relationship in rel_graph.outgoing(entity_id):
         if relationship.metadata.get("target_scope") in {"external", "expectation"}:
             continue
+        if relationship.relationship_type not in buckets:
+            # Namespaced extension relationships have their own canonical
+            # relationship registry and never pollute the closed core summary.
+            continue
         buckets[relationship.relationship_type].append(relationship.to_entity_id)
     for values in buckets.values():
         values.sort()
@@ -167,6 +171,76 @@ def project_entity_v2(
     )
 
 
+def project_entity_v21(
+    entity: IREntity,
+    rel_graph: RelGraph | None,
+    architecture_namespace: str,
+):
+    """Project core or qualified extension entities to normalized v2.1."""
+    from ...identity import (
+        derive_alias_ref,
+        derive_entity_uri,
+        entity_fingerprint as compute_fp,
+        uuidv7_created_at,
+        validate_uuidv7,
+    )
+    from ...models.v2_1 import ExtensionPayloadV21, NormalizedEntityV21
+    from ...semantic_extensions import is_extension_type, validate_extension_type
+
+    if (
+        not is_projectable_entity(entity)
+        or entity.canonical_source.source_type == "project_metadata"
+    ):
+        return None
+    try:
+        validate_uuidv7(entity.id)
+    except ValueError:
+        return None
+    alias_id = entity.metadata.get("alias_id", entity.id)
+    alias_name = entity.metadata.get("alias_name") or entity.name.lower().replace(" ", "-")[:96]
+    if len(alias_name) < 3:
+        alias_name = f"{entity.entity_type.replace(':', '-')}-entity"
+    extension = None
+    if is_extension_type(entity.entity_type, kind="entity"):
+        validate_extension_type(entity.entity_type, architecture_namespace=architecture_namespace)
+        extension = ExtensionPayloadV21.model_validate(entity.extension or {})
+    fp_record = {
+        "id": entity.id,
+        "alias_id": alias_id,
+        "alias_name": alias_name,
+        "entity_type": entity.entity_type,
+        "name": entity.name,
+        "extension": extension.model_dump(mode="json") if extension else None,
+    }
+    return NormalizedEntityV21(
+        id=entity.id,
+        alias_id=alias_id,
+        alias_name=alias_name,
+        alias_ref=derive_alias_ref(alias_id, alias_name),
+        entity_type=entity.entity_type,
+        name=entity.name,
+        summary=entity.summary,
+        uri=derive_entity_uri(architecture_namespace, entity.id),
+        created_at=uuidv7_created_at(entity.id),
+        entity_fingerprint=compute_fp(fp_record),
+        lifecycle_stage=cast(
+            Literal["proposed", "active", "deprecated", "superseded"],
+            _lifecycle_stage_for_projection(entity),
+        ),
+        canonical_source=entity.canonical_source,
+        source_refs=list(entity.source_refs),
+        metadata=dict(entity.metadata),
+        relationships=(
+            build_relationship_summary(entity.id, rel_graph)
+            if rel_graph is not None
+            else EntityRelationshipSummary()
+        ),
+        completeness=entity.completeness,
+        provenance=entity.provenance,
+        extension=extension,
+    )
+
+
 def project_relationship_v2(
     relationship: IRRelationship,
 ) -> "RelationshipRecordV2 | None":
@@ -218,6 +292,68 @@ def project_relationship_v2(
         canonical_source_ref=relationship.canonical_source_ref,
         confidence=relationship.confidence,
         metadata=dict(relationship.metadata),
+    )
+
+
+def project_relationship_v21(relationship: IRRelationship):
+    """Project canonical authored or compatibility relationships for v2.1."""
+    from ...models.v2_1 import CanonicalRelationshipV21, CompatibilityRelationshipV21, ExtensionPayloadV21
+    from ...identity import validate_uuidv7
+
+    try:
+        validate_uuidv7(relationship.from_entity_id)
+        validate_uuidv7(relationship.to_entity_id)
+    except ValueError:
+        return None
+    if relationship.record_kind == "canonical" and relationship.id:
+        try:
+            validate_uuidv7(relationship.id)
+        except ValueError:
+            return None
+        extension = (
+            ExtensionPayloadV21.model_validate(relationship.extension)
+            if ":" in relationship.relationship_type
+            else None
+        )
+        return CanonicalRelationshipV21(
+            id=relationship.id,
+            alias_id=relationship.alias_id,
+            alias_name=relationship.alias_name,
+            relationship_type=relationship.relationship_type,
+            from_entity_id=relationship.from_entity_id,
+            to_entity_id=relationship.to_entity_id,
+            source_owner_id=relationship.source_owner_id,
+            source_pointer=relationship.source_pointer,
+            provenance_classification=relationship.provenance_classification,
+            evidence=list(relationship.evidence),
+            canonical_source_ref=relationship.canonical_source_ref,
+            confidence=relationship.confidence,
+            extension=extension,
+        )
+    if relationship.record_kind == "compatibility":
+        return CompatibilityRelationshipV21(
+            relationship_id=relationship.relationship_id,
+            assertion_id=relationship.assertion_id,
+            relationship_type=relationship.relationship_type,
+            from_entity_id=relationship.from_entity_id,
+            to_entity_id=relationship.to_entity_id,
+            source_owner_id=relationship.source_owner_id,
+            source_pointer=relationship.source_pointer,
+            provenance_classification=relationship.provenance_classification,
+            evidence=list(relationship.evidence),
+            canonical_source_ref=relationship.canonical_source_ref,
+            confidence=relationship.confidence,
+            metadata=dict(relationship.metadata),
+        )
+    return None
+
+
+def is_projectable_entity(entity: IREntity) -> bool:
+    """Return v2.1 projectability without closing qualified consumer types."""
+    from ...semantic_extensions import is_extension_type
+
+    return entity.entity_type in PROJECTABLE_ENTITY_TYPES or is_extension_type(
+        entity.entity_type, kind="entity"
     )
 
 

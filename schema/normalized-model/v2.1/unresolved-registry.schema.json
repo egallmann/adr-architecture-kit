@@ -1,0 +1,9 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://adr-kit.ste.systems/schema/normalized-model/v2.1/unresolved-registry.schema.json",
+  "title": "Unresolved Registry v2.1",
+  "type": "object",
+  "required": ["schema_version", "type", "unresolved"],
+  "properties": {"schema_version": {"const": "2.1"}, "type": {"const": "unresolved_registry"}, "unresolved": {"type": "array"}},
+  "additionalProperties": false
+}

@@ -44,6 +44,7 @@ from .passes.detect_unresolved import detect_unresolved
 from .passes.derive_relationships import derive_relationships
 from .passes.extract_logical_entities import extract_logical_entities
 from .passes.extract_physical_entities import extract_physical_entities
+from .passes.extract_extension_entities import extract_extension_entities
 from .passes.resolve_invariant_canonical import resolve_invariant_canonical
 from .passes.validate_bundle import validate_bundle
 
@@ -283,17 +284,21 @@ class VersionDetectionPass:
 
     def run(self, state: CompilerPipelineState) -> None:
         versions = state.detected_schema_versions
-        has_v13 = "1.3" in versions
-        has_legacy = bool(versions - {"1.3"})
+        authoring_versions = versions & {"1.3", "1.4"}
+        has_v13 = "1.3" in authoring_versions
+        has_v14 = "1.4" in authoring_versions
+        has_legacy = bool(versions - {"1.3", "1.4"})
 
-        if has_v13 and has_legacy:
+        if len(authoring_versions) > 1 or (authoring_versions and has_legacy):
             raise MixedSchemaVersionError(
-                f"Scope mixes v1.3 and legacy ADR schema versions "
+                f"Scope mixes incompatible authoring schema versions "
                 f"({', '.join(sorted(versions))}). "
                 f"All ADRs must use the same schema line for compilation."
             )
 
-        state.model_version = "2.0" if has_v13 and not has_legacy else "1.1"
+        state.model_version = (
+            "2.1" if has_v14 and not has_legacy else "2.0" if has_v13 else "1.1"
+        )
 
 
 @dataclass(frozen=True)
@@ -326,7 +331,7 @@ class LogicalEntityExtractionPass:
             for inv_id, mentions in logical_extraction.invariant_mentions.items()
         }
         for extracted in logical_extraction.entities:
-            if state.model_version == "2.0":
+            if state.model_version in {"2.0", "2.1"}:
                 alias_id = extracted.entity.id if not UUIDV7_PATTERN.match(extracted.entity.id) else None
                 if alias_id is None:
                     for adr, _ in state.logical_adrs:
@@ -382,7 +387,7 @@ class InvariantExtractionPass:
             complete=make_completeness,
         )
         for extracted in invariant_resolution.entities:
-            if state.model_version == "2.0":
+            if state.model_version in {"2.0", "2.1"}:
                 metadata = extracted.entity.metadata
                 alias_id = metadata.get("alias_id") if isinstance(metadata, dict) else None
                 if isinstance(alias_id, str) and alias_id:
@@ -411,7 +416,7 @@ class PhysicalEntityExtractionPass:
             system_entity_id=system_entity_id,
         )
         for extracted in physical_extraction.entities:
-            if state.model_version == "2.0":
+            if state.model_version in {"2.0", "2.1"}:
                 alias_id = self._extract_alias_id(extracted.entity)
                 if alias_id:
                     extracted.entity.metadata["alias_id"] = alias_id
@@ -424,7 +429,7 @@ class PhysicalEntityExtractionPass:
             )
         state.system_ids.update(physical_extraction.system_ids)
 
-        if state.model_version == "2.0":
+        if state.model_version in {"2.0", "2.1"}:
             for adr, _ in state.physical_adrs:
                 if is_physical_system_adr(adr):
                     alias_id = getattr(adr, "alias_id", None)
@@ -458,6 +463,32 @@ class PhysicalEntityExtractionPass:
 
 
 @dataclass(frozen=True)
+class ExtensionEntityExtractionPass:
+    name: str = "extension_entity_extraction"
+
+    def run(self, state: CompilerPipelineState) -> None:
+        result = extract_extension_entities(
+            [*state.logical_adrs, *state.physical_adrs],
+            architecture_namespace=state.namespace,
+            source_path=lambda path: source_path(state.scope, path),
+            canonical=make_canonical,
+            provenance=make_provenance,
+        )
+        for entity in result.entities:
+            state.add_entity(entity)
+        for relationship in result.relationships:
+            if (
+                state.model.entities.get(relationship.from_entity_id) is None
+                or state.model.entities.get(relationship.to_entity_id) is None
+            ):
+                raise ValueError(
+                    "Extension relationship endpoint does not resolve to a compiled entity: "
+                    f"{relationship.from_entity_id} -> {relationship.to_entity_id}"
+                )
+            state.model.relationships.add(relationship)
+
+
+@dataclass(frozen=True)
 class RelationshipInferencePass:
     name: str = "relationship_inference"
 
@@ -475,7 +506,7 @@ class RelationshipInferencePass:
             relationship_id=state.relationship_id,
         )
         for item in result.relationships:
-            owner_id = self._resolve_owner(state, item) if state.model_version == "2.0" else None
+            owner_id = self._resolve_owner(state, item) if state.model_version in {"2.0", "2.1"} else None
             state.model.relationships.add(
                 IRRelationship(
                     relationship_type=item.relationship_type,
@@ -596,6 +627,7 @@ def build_default_frontend_pipeline() -> CompilerPipeline:
             LogicalEntityExtractionPass(),
             InvariantExtractionPass(),
             PhysicalEntityExtractionPass(),
+            ExtensionEntityExtractionPass(),
             RelationshipInferencePass(),
             UnresolvedDetectionPass(),
             ValidationPass(),

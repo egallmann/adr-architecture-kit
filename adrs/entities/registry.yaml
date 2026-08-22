@@ -4,8 +4,8 @@
 # generator_id: adr-compiler
 # generator_version: 1
 # hash_algorithm: sha256
-# source_hash: 7644da0d4091981bcd1cd77ce380f6ca9469e31fcbdb6e62d8454fa5eb3001f3
-# rendered_hash: e4ec55c4c6a69f6408e51e262afbef85e62c311c3eb47b2aa96c83ed484947d1
+# source_hash: 3b551614f6f0b9fb059e151921692e97a0c695abfcc914a24cbcb33b1cff7490
+# rendered_hash: 103da8ffdb1733d637c0d11e1bf5e18d72dd59bf67493d455929ccce5b492bdc
 
 schema_version: '1.1'
 type: entity_registry
@@ -3379,6 +3379,139 @@ entities:
     implements: []
     consumes: []
     realizes: []
+- entity_id: DEC-0147
+  entity_type: decision
+  name: Canonize the universal envelope while opening a qualified consumer semantic
+    namespace
+  introduced_by: ADR-L-0023
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0023-consumer-semantic-extension-contract.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs:
+  - ADR-L-0023
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: DEC-0148
+  entity_type: decision
+  name: Author extensions through explicit extension_entities and extension_relationships
+    sections
+  introduced_by: ADR-L-0023
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0023-consumer-semantic-extension-contract.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs:
+  - ADR-L-0023
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: DEC-0149
+  entity_type: decision
+  name: Require consumer extension types to be qualified by the owning architecture
+    namespace
+  introduced_by: ADR-L-0023
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0023-consumer-semantic-extension-contract.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs:
+  - ADR-L-0023
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: DEC-0150
+  entity_type: decision
+  name: Bound extension properties to scalar JSON-like values and require rationale
+  introduced_by: ADR-L-0023
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0023-consumer-semantic-extension-contract.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs:
+  - ADR-L-0023
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: DEC-0151
+  entity_type: decision
+  name: Require authored extension relationships for graph semantics
+  introduced_by: ADR-L-0023
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0023-consumer-semantic-extension-contract.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs:
+  - ADR-L-0023
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: DEC-0152
+  entity_type: decision
+  name: Validate consumer-owned alias registrations without centralizing them in ADR-Kit
+  introduced_by: ADR-L-0023
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0023-consumer-semantic-extension-contract.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs:
+  - ADR-L-0023
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: DEC-0153
+  entity_type: decision
+  name: Keep persisted canonical relationship identity mechanically distinct from
+    hash compatibility projections
+  introduced_by: ADR-L-0023
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0023-consumer-semantic-extension-contract.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs:
+  - ADR-L-0023
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: DEC-0154
+  entity_type: decision
+  name: Preserve every valid unknown extension through parse, compile, normalization,
+    and repository loading
+  introduced_by: ADR-L-0023
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0023-consumer-semantic-extension-contract.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs:
+  - ADR-L-0023
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
 - entity_id: DEC-9000
   entity_type: decision
   name: Publish a deterministic logical ADR fragment for boot readiness.
@@ -5373,6 +5506,134 @@ entities:
   domains: []
   related_adrs:
   - ADR-L-0022
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: INV-0141
+  entity_type: invariant
+  name: INV-0141
+  introduced_by: ADR-L-0023
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0023-consumer-semantic-extension-contract.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs:
+  - ADR-L-0023
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: INV-0142
+  entity_type: invariant
+  name: INV-0142
+  introduced_by: ADR-L-0023
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0023-consumer-semantic-extension-contract.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs:
+  - ADR-L-0023
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: INV-0143
+  entity_type: invariant
+  name: INV-0143
+  introduced_by: ADR-L-0023
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0023-consumer-semantic-extension-contract.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs:
+  - ADR-L-0023
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: INV-0144
+  entity_type: invariant
+  name: INV-0144
+  introduced_by: ADR-L-0023
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0023-consumer-semantic-extension-contract.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs:
+  - ADR-L-0023
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: INV-0145
+  entity_type: invariant
+  name: INV-0145
+  introduced_by: ADR-L-0023
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0023-consumer-semantic-extension-contract.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs:
+  - ADR-L-0023
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: INV-0146
+  entity_type: invariant
+  name: INV-0146
+  introduced_by: ADR-L-0023
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0023-consumer-semantic-extension-contract.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs:
+  - ADR-L-0023
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: INV-0147
+  entity_type: invariant
+  name: INV-0147
+  introduced_by: ADR-L-0023
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0023-consumer-semantic-extension-contract.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs:
+  - ADR-L-0023
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: INV-0148
+  entity_type: invariant
+  name: INV-0148
+  introduced_by: ADR-L-0023
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0023-consumer-semantic-extension-contract.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs:
+  - ADR-L-0023
   realized_by: []
   relationships:
     depends_on: []

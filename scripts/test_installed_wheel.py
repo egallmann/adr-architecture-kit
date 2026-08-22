@@ -120,9 +120,9 @@ from adr_kit.api import (
 
 root = Path(os.environ['ADR_PHASE2_FIXTURE'])
 manifest = capabilities()
-assert manifest.supported_adr_schema_versions == ('1.0', '1.1', '1.2', '1.3')
+assert manifest.supported_adr_schema_versions == ('1.0', '1.1', '1.2', '1.3', '1.4')
 assert manifest.normalized_model_schema_version == '1.1'
-assert manifest.supported_normalized_model_schema_versions == ('1.1', '2.0')
+assert manifest.supported_normalized_model_schema_versions == ('1.1', '2.0', '2.1')
 assert NormalizedArchitectureModelV2 is not None
 assert ProviderRegistry is not None
 assert callable(open_provider_registry)

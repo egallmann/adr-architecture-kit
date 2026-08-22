@@ -22,6 +22,11 @@ from ..models.v2_0 import (
     RelationshipRegistryV2,
     UnresolvedRegistryV2,
 )
+from ..models.v2_1 import (
+    NormalizedEntityRegistryV21,
+    RelationshipRegistryV21,
+    UnresolvedRegistryV21,
+)
 from ..parser import ADRParser
 from ..schema.contract_validation import validate_adr_contract_bundle
 from ..scope import ProjectScope, ProjectScopeResolver
@@ -367,7 +372,10 @@ class ArchitectureCompiler:
     @classmethod
     def _parse_entity_registry_artifact(
         cls, parser: ADRParser, yaml_text: str
-    ) -> NormalizedEntityRegistry | NormalizedEntityRegistryV2:
+    ) -> NormalizedEntityRegistry | NormalizedEntityRegistryV2 | NormalizedEntityRegistryV21:
+        if cls._peek_schema_version(yaml_text) == "2.1":
+            data = yaml.safe_load(yaml_text)
+            return NormalizedEntityRegistryV21.model_validate(data)
         if cls._peek_schema_version(yaml_text) == "2.0":
             data = yaml.safe_load(yaml_text)
             return NormalizedEntityRegistryV2.model_validate(data)
@@ -376,7 +384,10 @@ class ArchitectureCompiler:
     @classmethod
     def _parse_relationship_registry_artifact(
         cls, parser: ADRParser, yaml_text: str
-    ) -> RelationshipRegistry | RelationshipRegistryV2:
+    ) -> RelationshipRegistry | RelationshipRegistryV2 | RelationshipRegistryV21:
+        if cls._peek_schema_version(yaml_text) == "2.1":
+            data = yaml.safe_load(yaml_text)
+            return RelationshipRegistryV21.model_validate(data)
         if cls._peek_schema_version(yaml_text) == "2.0":
             data = yaml.safe_load(yaml_text)
             return RelationshipRegistryV2.model_validate(data)
@@ -385,7 +396,10 @@ class ArchitectureCompiler:
     @classmethod
     def _parse_unresolved_registry_artifact(
         cls, parser: ADRParser, yaml_text: str
-    ) -> UnresolvedRegistry | UnresolvedRegistryV2:
+    ) -> UnresolvedRegistry | UnresolvedRegistryV2 | UnresolvedRegistryV21:
+        if cls._peek_schema_version(yaml_text) == "2.1":
+            data = yaml.safe_load(yaml_text)
+            return UnresolvedRegistryV21.model_validate(data)
         if cls._peek_schema_version(yaml_text) == "2.0":
             data = yaml.safe_load(yaml_text)
             return UnresolvedRegistryV2.model_validate(data)

@@ -27,17 +27,27 @@ from ..models.v2_0 import (
     RelationshipRegistryV2,
     UnresolvedRegistryV2,
 )
+from ..models.v2_1 import (
+    NormalizedArchitectureModelV21,
+    NormalizedEntityRegistryV21,
+    NormalizedEntityV21,
+    RelationshipRegistryV21,
+    UnresolvedRegistryV21,
+)
 from ..parser import ADRParser
 from .registry_loader import (
     fingerprint_payload,
     load_architecture_index,
     load_normalized_entity_registry,
     load_normalized_entity_registry_v2,
+    load_normalized_entity_registry_v21,
     load_relationship_registry,
     load_relationship_registry_v2,
+    load_relationship_registry_v21,
     load_remediation_ledger,
     load_unresolved_registry,
     load_unresolved_registry_v2,
+    load_unresolved_registry_v21,
     model_payload,
     peek_registry_schema_version,
 )
@@ -52,7 +62,7 @@ SUBSET_TYPES: dict[str, tuple[str, str]] = {
 }
 
 ModelT = TypeVar("ModelT", bound=BaseModel)
-NormalizedModelVersion = Literal["1.1", "2.0"]
+NormalizedModelVersion = Literal["1.1", "2.0", "2.1"]
 
 
 @dataclass(frozen=True)
@@ -83,6 +93,21 @@ class NormalizedBundleV2:
     fingerprint: str
     model: NormalizedArchitectureModelV2
     model_version: NormalizedModelVersion = "2.0"
+
+
+@dataclass(frozen=True)
+class NormalizedBundleV21:
+    """Private loaded representation for the explicit model 2.1 boundary."""
+
+    architecture_index: ArchitectureIndex
+    entity_registry: NormalizedEntityRegistryV21
+    relationship_registry: RelationshipRegistryV21
+    unresolved_registry: UnresolvedRegistryV21
+    remediation_ledger: RemediationLedger | None
+    subsets: dict[str, list[NormalizedEntityV21]]
+    fingerprint: str
+    model: NormalizedArchitectureModelV21
+    model_version: NormalizedModelVersion = "2.1"
 
 
 def _validate_subset(
@@ -242,12 +267,75 @@ def _assemble_v2(
     )
 
 
+def _assemble_v21(
+    scope_root: Path,
+    architecture_index: ArchitectureIndex,
+    load_registry: Callable[[str], NormalizedEntityRegistryV21],
+    relationship_registry: RelationshipRegistryV21,
+    unresolved_registry: UnresolvedRegistryV21,
+    remediation_ledger: RemediationLedger | None,
+) -> NormalizedBundleV21:
+    primary_registry = load_registry(architecture_index.entity_registry_path)
+    primary_by_id = {entity.id: entity for entity in primary_registry.entities}
+    subsets: dict[str, list[NormalizedEntityV21]] = {}
+    subset_models: dict[str, NormalizedEntityRegistryV21] = {}
+    for field_name, (subset_name, expected_type) in SUBSET_TYPES.items():
+        registry = load_registry(str(getattr(architecture_index, field_name)))
+        for entity in registry.entities:
+            primary_entity = primary_by_id.get(entity.id)
+            if primary_entity is None:
+                raise ValueError(
+                    f"Subset registry {subset_name} references unknown entity ID: {entity.id}"
+                )
+            if entity.entity_type != expected_type:
+                raise ValueError(
+                    f"Subset registry {subset_name} has mismatched entity_type for {entity.id}"
+                )
+        subsets[subset_name] = list(registry.entities)
+        subset_models[subset_name] = registry
+    fingerprint = fingerprint_payload(
+        {
+            "mode": "normalized",
+            "model_version": "2.1",
+            "architecture_index": model_payload(architecture_index),
+            "entity_registry": model_payload(primary_registry),
+            "relationship_registry": model_payload(relationship_registry),
+            "unresolved_registry": model_payload(unresolved_registry),
+            "remediation_ledger": model_payload(remediation_ledger),
+            "subset_registries": {
+                name: model_payload(model) for name, model in sorted(subset_models.items())
+            },
+        }
+    )
+    model = NormalizedArchitectureModelV21(
+        mode="normalized",
+        scope_root=str(scope_root),
+        architecture_namespace=architecture_index.architecture_namespace,
+        fingerprint=fingerprint,
+        entities=list(primary_registry.entities),
+        relationships=list(relationship_registry.relationships),
+        unresolved=list(unresolved_registry.unresolved),
+        validation_summary=architecture_index.validation_summary,
+        source_coverage=architecture_index.source_coverage,
+    )
+    return NormalizedBundleV21(
+        architecture_index=architecture_index,
+        entity_registry=primary_registry,
+        relationship_registry=relationship_registry,
+        unresolved_registry=unresolved_registry,
+        remediation_ledger=remediation_ledger,
+        subsets=subsets,
+        fingerprint=fingerprint,
+        model=model,
+    )
+
+
 @implements_adr("ADR-L-0013", "ADR-PC-0004")
 def load_normalized_bundle_from_paths(
     parser: ADRParser,
     scope_root: Path,
     index_path: Path,
-) -> NormalizedBundle | NormalizedBundleV2:
+) -> NormalizedBundle | NormalizedBundleV2 | NormalizedBundleV21:
     """Load one normalized bundle from repository-owned artifact paths."""
 
     root = Path(scope_root).resolve()
@@ -258,6 +346,29 @@ def load_normalized_bundle_from_paths(
     remediation = (
         load_remediation_ledger(parser, remediation_path) if remediation_path.exists() else None
     )
+
+    if model_version == "2.1":
+
+        def load_registry_v21(relative_path: str) -> NormalizedEntityRegistryV21:
+            return load_normalized_entity_registry_v21(
+                parser,
+                resolve_index_reference(root, relative_path),
+            )
+
+        return _assemble_v21(
+            root,
+            index,
+            load_registry_v21,
+            load_relationship_registry_v21(
+                parser,
+                resolve_index_reference(root, index.relationship_registry_path),
+            ),
+            load_unresolved_registry_v21(
+                parser,
+                resolve_index_reference(root, index.unresolved_registry_path),
+            ),
+            remediation,
+        )
 
     if model_version == "2.0":
 
@@ -327,7 +438,7 @@ def _model_from_bytes(model_type: type[ModelT], content: bytes, relative_path: s
 def load_normalized_bundle_from_bytes(
     scope_root: Path,
     artifacts: Mapping[str, bytes],
-) -> NormalizedBundle:
+) -> NormalizedBundle | NormalizedBundleV21:
     """Build a detached normalized bundle directly from emitted artifact bytes."""
 
     root = Path(scope_root).resolve()
@@ -341,6 +452,34 @@ def load_normalized_bundle_from_bytes(
 
     index_path = "adrs/index/architecture-index.yaml"
     index = _model_from_bytes(ArchitectureIndex, content(index_path), index_path)
+
+    entity_registry_payload = yaml.safe_load(content(index.entity_registry_path).decode("utf-8"))
+    if (
+        isinstance(entity_registry_payload, dict)
+        and entity_registry_payload.get("schema_version") == "2.1"
+    ):
+
+        def load_registry_v21(relative_path: str) -> NormalizedEntityRegistryV21:
+            return _model_from_bytes(
+                NormalizedEntityRegistryV21, content(relative_path), relative_path
+            )
+
+        return _assemble_v21(
+            root,
+            index,
+            load_registry_v21,
+            _model_from_bytes(
+                RelationshipRegistryV21,
+                content(index.relationship_registry_path),
+                index.relationship_registry_path,
+            ),
+            _model_from_bytes(
+                UnresolvedRegistryV21,
+                content(index.unresolved_registry_path),
+                index.unresolved_registry_path,
+            ),
+            None,
+        )
 
     def load_registry(relative_path: str) -> NormalizedEntityRegistry:
         return _model_from_bytes(

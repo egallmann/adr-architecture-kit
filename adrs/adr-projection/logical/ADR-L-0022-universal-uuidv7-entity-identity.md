@@ -5,8 +5,8 @@ artifact_kind: rendered_adr_markdown
 generator_id: adr-projection-markdown
 generator_version: 2
 hash_algorithm: sha256
-source_hash: 965a6ace122ff1908a97586731f200e776334ca97a36945534f1b980edc048f6
-rendered_hash: eb8f1b5bc04845560862ce51bef8ebc25435aa667f7e8a1a9becc331f3c4d75e
+source_hash: c3600c8605838c5302115ff87562bdf2c36f75c24bf5188fc38b0f92c910dd60
+rendered_hash: 4efdf98c158b2501fc786fe38187903e9314d32777a95d919e68b1ae4d09e0db
 -->
 
 # ADR-L-0022: Universal UUIDv7 Entity Identity
@@ -58,6 +58,7 @@ flowchart LR
   n_01a00643_1bfc_7dd1_a439_31a110f8ed50["INV-0132"]
   n_01a00643_1bfc_7e7a_af3f_0484ebc351c9["DEC-0137"]
   n_01a00643_1bfc_7f05_b617_6960fa562bea["INV-0135"]
+  n_01a00644_1bfc_7abc_8aaa_111111111111["ADR-L-0023"]
   n_01a002b7_e001_7010_8401_010101010101 -->|"declared_in"| n_01a00643_1bfc_788c_911b_83a4725a8de1
   n_01a002b7_e002_7020_8802_020202020202 -->|"declared_in"| n_01a00643_1bfc_788c_911b_83a4725a8de1
   n_01a002b7_e003_7030_8c03_030303030303 -->|"declared_in"| n_01a00643_1bfc_788c_911b_83a4725a8de1
@@ -87,6 +88,7 @@ flowchart LR
   n_01a00643_1bfc_7e7a_af3f_0484ebc351c9 -->|"declared_in"| n_01a00643_1bfc_788c_911b_83a4725a8de1
   n_01a00643_1bfc_7f05_b617_6960fa562bea -->|"declared_in"| n_01a00643_1bfc_788c_911b_83a4725a8de1
   n_01a00643_1bfc_788c_911b_83a4725a8de1 -->|"references"| n_019fee89_e617_78d9_ba3b_b7e3e6db1b12
+  n_01a00644_1bfc_7abc_8aaa_111111111111 -->|"references"| n_01a00643_1bfc_788c_911b_83a4725a8de1
   n_019fee89_e617_7bdc_b136_032978d92661 -->|"superseded_by"| n_01a00643_1bfc_7c3d_b935_01f39da8a0a5
   n_01a00643_1bfc_7c3d_b935_01f39da8a0a5 -->|"supersedes"| n_019fee89_e617_7bdc_b136_032978d92661
 ```
@@ -107,6 +109,18 @@ independently and left alias changes or repository concerns too close to
 canonical machine semantics.
 
 [Open projection](ADR-L-0019-canonical-entity-identity.md)
+### ADR-L-0023 — Consumer Semantic Extension Contract
+
+**Relationships:**
+- 01a00644-1bfc-7abc-8aaa-111111111111 -[:references]-> this ADR
+
+**Context:** ADR-Kit owns the universal envelope, structural validation, references,
+provenance eligibility, and deterministic projections, while consumers have
+legitimate semantic types that are not universal enough for first-class
+ontology promotion. A safe extension must preserve those boundaries without
+creating a second graph or a schema-less metadata escape hatch.
+
+[Open projection](ADR-L-0023-consumer-semantic-extension-contract.md)
 
 
 

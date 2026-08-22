@@ -7652,3 +7652,466 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
+- id: 01a00644-1c05-7abc-8aaa-aaaaaaaaaaaa
+  alias_id: INV-0141
+  alias_name: every-extension-record-has-universal-envelope
+  alias_ref: INV-0141:every-extension-record-has-universal-envelope
+  entity_type: invariant
+  name: INV-0141
+  summary: Every extension entity and canonical extension relationship has UUID identity
+    and governed alias orientation before graph admission.
+  uri: adr://adr-architecture-kit/entities/01a00644-1c05-7abc-8aaa-aaaaaaaaaaaa
+  created_at: '2026-08-15T16:32:02.053Z'
+  entity_fingerprint: sha256:367078da0a53df07756a9ce358767e5c79995c95304c387ca355c26f83f9846f
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a00644-1bfc-7abc-8aaa-111111111111#01a00644-1c05-7abc-8aaa-aaaaaaaaaaaa
+    artifact_path: adrs/logical/ADR-L-0023-consumer-semantic-extension-contract.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a00644-1bfc-7abc-8aaa-111111111111
+    adr_alias_id: ADR-L-0023
+    scope: global
+    statement: Every extension entity and canonical extension relationship has UUID
+      identity and governed alias orientation before graph admission.
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions: []
+    supersedes: []
+    alias_id: INV-0141
+    alias_name: every-extension-record-has-universal-envelope
+  relationships:
+    declared_in:
+    - 01a00644-1bfc-7abc-8aaa-111111111111
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a00644-1bfc-7abc-8aaa-111111111111#01a00644-1c05-7abc-8aaa-aaaaaaaaaaaa
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
+- id: 01a00644-1c06-7abc-8aaa-bbbbbbbbbbbb
+  alias_id: INV-0142
+  alias_name: extension-types-are-qualified-and-consumer-owned
+  alias_ref: INV-0142:extension-types-are-qualified-and-consumer-owned
+  entity_type: invariant
+  name: INV-0142
+  summary: Every locally authored extension semantic type is qualified by the containing
+    architecture namespace and validated against consumer-owned allocation state.
+  uri: adr://adr-architecture-kit/entities/01a00644-1c06-7abc-8aaa-bbbbbbbbbbbb
+  created_at: '2026-08-15T16:32:02.054Z'
+  entity_fingerprint: sha256:328532e35620248f97b5313752aeba674e593f7e2bc6353e26027b130c4b73aa
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a00644-1bfc-7abc-8aaa-111111111111#01a00644-1c06-7abc-8aaa-bbbbbbbbbbbb
+    artifact_path: adrs/logical/ADR-L-0023-consumer-semantic-extension-contract.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a00644-1bfc-7abc-8aaa-111111111111
+    adr_alias_id: ADR-L-0023
+    scope: global
+    statement: Every locally authored extension semantic type is qualified by the
+      containing architecture namespace and validated against consumer-owned allocation
+      state.
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions: []
+    supersedes: []
+    alias_id: INV-0142
+    alias_name: extension-types-are-qualified-and-consumer-owned
+  relationships:
+    declared_in:
+    - 01a00644-1bfc-7abc-8aaa-111111111111
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a00644-1bfc-7abc-8aaa-111111111111#01a00644-1c06-7abc-8aaa-bbbbbbbbbbbb
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
+- id: 01a00644-1c07-7abc-8aaa-cccccccccccc
+  alias_id: INV-0143
+  alias_name: extension-properties-never-imply-relationships
+  alias_ref: INV-0143:extension-properties-never-imply-relationships
+  entity_type: invariant
+  name: INV-0143
+  summary: Extension property values never imply graph relationships.
+  uri: adr://adr-architecture-kit/entities/01a00644-1c07-7abc-8aaa-cccccccccccc
+  created_at: '2026-08-15T16:32:02.055Z'
+  entity_fingerprint: sha256:c574ce53c7392c37ceaf8ca5dc6aba25723a14375f2fcf152e7ee84689235c08
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a00644-1bfc-7abc-8aaa-111111111111#01a00644-1c07-7abc-8aaa-cccccccccccc
+    artifact_path: adrs/logical/ADR-L-0023-consumer-semantic-extension-contract.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a00644-1bfc-7abc-8aaa-111111111111
+    adr_alias_id: ADR-L-0023
+    scope: global
+    statement: Extension property values never imply graph relationships.
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions: []
+    supersedes: []
+    alias_id: INV-0143
+    alias_name: extension-properties-never-imply-relationships
+  relationships:
+    declared_in:
+    - 01a00644-1bfc-7abc-8aaa-111111111111
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a00644-1bfc-7abc-8aaa-111111111111#01a00644-1c07-7abc-8aaa-cccccccccccc
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
+- id: 01a00644-1c08-7abc-8aaa-dddddddddddd
+  alias_id: INV-0144
+  alias_name: extension-payload-is-explicit-and-opaque
+  alias_ref: INV-0144:extension-payload-is-explicit-and-opaque
+  entity_type: invariant
+  name: INV-0144
+  summary: Normalized extension payload is represented in a typed extension field
+    and is preserved without ADR-Kit semantic interpretation.
+  uri: adr://adr-architecture-kit/entities/01a00644-1c08-7abc-8aaa-dddddddddddd
+  created_at: '2026-08-15T16:32:02.056Z'
+  entity_fingerprint: sha256:bb06543b98f7584b6eda1651a80356449d48c5b01a5976837cc3e4df6a075c45
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a00644-1bfc-7abc-8aaa-111111111111#01a00644-1c08-7abc-8aaa-dddddddddddd
+    artifact_path: adrs/logical/ADR-L-0023-consumer-semantic-extension-contract.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a00644-1bfc-7abc-8aaa-111111111111
+    adr_alias_id: ADR-L-0023
+    scope: global
+    statement: Normalized extension payload is represented in a typed extension field
+      and is preserved without ADR-Kit semantic interpretation.
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions: []
+    supersedes: []
+    alias_id: INV-0144
+    alias_name: extension-payload-is-explicit-and-opaque
+  relationships:
+    declared_in:
+    - 01a00644-1bfc-7abc-8aaa-111111111111
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a00644-1bfc-7abc-8aaa-111111111111#01a00644-1c08-7abc-8aaa-dddddddddddd
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
+- id: 01a00644-1c09-7abc-8aaa-eeeeeeeeeeee
+  alias_id: INV-0145
+  alias_name: canonical-relationship-identity-is-persisted
+  alias_ref: INV-0145:canonical-relationship-identity-is-persisted
+  entity_type: invariant
+  name: INV-0145
+  summary: A relationship lacking persisted canonical UUID identity cannot enter the
+    canonical v2.1 graph surface.
+  uri: adr://adr-architecture-kit/entities/01a00644-1c09-7abc-8aaa-eeeeeeeeeeee
+  created_at: '2026-08-15T16:32:02.057Z'
+  entity_fingerprint: sha256:10027a583c5b47154405c241743509cc7998e6a2a8eb7c814e59f342fc236bd0
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a00644-1bfc-7abc-8aaa-111111111111#01a00644-1c09-7abc-8aaa-eeeeeeeeeeee
+    artifact_path: adrs/logical/ADR-L-0023-consumer-semantic-extension-contract.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a00644-1bfc-7abc-8aaa-111111111111
+    adr_alias_id: ADR-L-0023
+    scope: global
+    statement: A relationship lacking persisted canonical UUID identity cannot enter
+      the canonical v2.1 graph surface.
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions: []
+    supersedes: []
+    alias_id: INV-0145
+    alias_name: canonical-relationship-identity-is-persisted
+  relationships:
+    declared_in:
+    - 01a00644-1bfc-7abc-8aaa-111111111111
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a00644-1bfc-7abc-8aaa-111111111111#01a00644-1c09-7abc-8aaa-eeeeeeeeeeee
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
+- id: 01a00644-1c0a-7abc-8aaa-ffffffffffff
+  alias_id: INV-0146
+  alias_name: valid-extensions-round-trip-without-loss
+  alias_ref: INV-0146:valid-extensions-round-trip-without-loss
+  entity_type: invariant
+  name: INV-0146
+  summary: Valid extension types, properties, rationale, and explicit relationships
+    round-trip deterministically through normalized repository surfaces.
+  uri: adr://adr-architecture-kit/entities/01a00644-1c0a-7abc-8aaa-ffffffffffff
+  created_at: '2026-08-15T16:32:02.058Z'
+  entity_fingerprint: sha256:f3375eb53c73b087a1a30f1716bdd8296b157555abe5cff25fc70ef6bc28d039
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a00644-1bfc-7abc-8aaa-111111111111#01a00644-1c0a-7abc-8aaa-ffffffffffff
+    artifact_path: adrs/logical/ADR-L-0023-consumer-semantic-extension-contract.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a00644-1bfc-7abc-8aaa-111111111111
+    adr_alias_id: ADR-L-0023
+    scope: global
+    statement: Valid extension types, properties, rationale, and explicit relationships
+      round-trip deterministically through normalized repository surfaces.
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions: []
+    supersedes: []
+    alias_id: INV-0146
+    alias_name: valid-extensions-round-trip-without-loss
+  relationships:
+    declared_in:
+    - 01a00644-1bfc-7abc-8aaa-111111111111
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a00644-1bfc-7abc-8aaa-111111111111#01a00644-1c0a-7abc-8aaa-ffffffffffff
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
+- id: 01a00644-1c0b-7abc-8aaa-121212121212
+  alias_id: INV-0147
+  alias_name: generators-never-mint-extension-identity
+  alias_ref: INV-0147:generators-never-mint-extension-identity
+  entity_type: invariant
+  name: INV-0147
+  summary: Compiler and projection stages never mint authoritative extension entity
+    or relationship UUIDs.
+  uri: adr://adr-architecture-kit/entities/01a00644-1c0b-7abc-8aaa-121212121212
+  created_at: '2026-08-15T16:32:02.059Z'
+  entity_fingerprint: sha256:defd13b45ec981b2bbe8e1ffa090b625bb67124b4146ae5121a78dd68fba9e93
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a00644-1bfc-7abc-8aaa-111111111111#01a00644-1c0b-7abc-8aaa-121212121212
+    artifact_path: adrs/logical/ADR-L-0023-consumer-semantic-extension-contract.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a00644-1bfc-7abc-8aaa-111111111111
+    adr_alias_id: ADR-L-0023
+    scope: global
+    statement: Compiler and projection stages never mint authoritative extension entity
+      or relationship UUIDs.
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions: []
+    supersedes: []
+    alias_id: INV-0147
+    alias_name: generators-never-mint-extension-identity
+  relationships:
+    declared_in:
+    - 01a00644-1bfc-7abc-8aaa-111111111111
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a00644-1bfc-7abc-8aaa-111111111111#01a00644-1c0b-7abc-8aaa-121212121212
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
+- id: 01a00644-1c0c-7abc-8aaa-131313131313
+  alias_id: INV-0148
+  alias_name: local-extension-endpoints-are-uuid-canonical
+  alias_ref: INV-0148:local-extension-endpoints-are-uuid-canonical
+  entity_type: invariant
+  name: INV-0148
+  summary: v1.4 authored extension relationship endpoints are local UUIDv7 references;
+    future cross-namespace support uses the qualified external-reference contract.
+  uri: adr://adr-architecture-kit/entities/01a00644-1c0c-7abc-8aaa-131313131313
+  created_at: '2026-08-15T16:32:02.060Z'
+  entity_fingerprint: sha256:6b124125a4c2faff068ea1ece47612d6b1b60ccb16a18eded89f11be4bca5c06
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a00644-1bfc-7abc-8aaa-111111111111#01a00644-1c0c-7abc-8aaa-131313131313
+    artifact_path: adrs/logical/ADR-L-0023-consumer-semantic-extension-contract.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a00644-1bfc-7abc-8aaa-111111111111
+    adr_alias_id: ADR-L-0023
+    scope: global
+    statement: v1.4 authored extension relationship endpoints are local UUIDv7 references;
+      future cross-namespace support uses the qualified external-reference contract.
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions: []
+    supersedes: []
+    alias_id: INV-0148
+    alias_name: local-extension-endpoints-are-uuid-canonical
+  relationships:
+    declared_in:
+    - 01a00644-1bfc-7abc-8aaa-111111111111
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a00644-1bfc-7abc-8aaa-111111111111#01a00644-1c0c-7abc-8aaa-131313131313
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index

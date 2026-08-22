@@ -5,13 +5,13 @@ artifact_kind: rendered_adr_markdown
 generator_id: adr-projection-markdown
 generator_version: 2
 hash_algorithm: sha256
-source_hash: c9d643e42fb9dc339177c074ef5cd31d54018c717895da7db9dafba8f6aefe15
-rendered_hash: c67f89614e602c60bb6236ecad2472043365a0035fd51e0f02fa96db222bde1a
+source_hash: 6b79e5f94d38f935a94235164daaece4a3b6b0b3451e476ae9a70e78e0b0e9c1
+rendered_hash: 7d8c806e762a90fc03fb70e58c6402fc1acb74ada60b13ba16623d9743fcb4e6
 -->
 
 # ADR-L-0021: Family-First Schema Contract Taxonomy and Authority
 
-**Status:** proposed  
+**Status:** accepted  
 **Created:** 2026-08-15  
 **Authors:** adr-architecture-kit  
 **Domains:** architecture, schema  

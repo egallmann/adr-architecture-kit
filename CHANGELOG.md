@@ -7,6 +7,26 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.6.0] — 2026-08-22
+
+### Added
+
+- Authoring schema v1.4 and normalized-model v2.1 contracts for consumer semantic
+  extensions, including explicit extension entities and relationships.
+- Namespaced unknown-type round-trip support with bounded typed extension properties,
+  explicit rationale, and consumer-owned governed alias-allocation validation.
+- Canonical UUIDv7 identity for authored extension relationships, with a mechanically
+  distinct compatibility projection for legacy hash relationship/assertion keys.
+- Consumer semantic extension documentation and the ADR-L-0023 contract authority.
+
+### Changed
+
+- Compiler and projection projectability now preserves valid unknown namespaced
+  extension types; normalized repository loading, querying, and traversal retain
+  their explicit payloads.
+- Capability discovery advertises authoring v1.4 and normalized-model v2.1; relationship
+  handling explicitly separates canonical UUID identity from compatibility hashes.
+
 ## [0.5.0] — 2026-08-21
 
 ### Added

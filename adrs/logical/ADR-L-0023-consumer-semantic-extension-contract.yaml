@@ -1,0 +1,139 @@
+schema_version: '1.3'
+adr_type: logical
+id: 01a00644-1bfc-7abc-8aaa-111111111111
+alias_id: ADR-L-0023
+alias_name: consumer-semantic-extension-contract
+title: Consumer Semantic Extension Contract
+status: accepted
+created_date: '2026-08-21'
+authors:
+- adr-architecture-kit
+domains:
+- architecture
+- schema-governance
+- extensibility
+related_adrs:
+- 019fee89-e617-78d9-ba3b-b7e3e6db1b12
+- 01a00643-1bfc-788c-911b-83a4725a8de1
+context: |
+  ADR-Kit owns the universal envelope, structural validation, references,
+  provenance eligibility, and deterministic projections, while consumers have
+  legitimate semantic types that are not universal enough for first-class
+  ontology promotion. A safe extension must preserve those boundaries without
+  creating a second graph or a schema-less metadata escape hatch.
+decisions:
+- id: 01a00644-1bfd-7abc-8aaa-222222222222
+  alias_id: DEC-0147
+  alias_name: canonize-envelope-open-qualified-semantic-namespace
+  summary: Canonize the universal envelope while opening a qualified consumer semantic namespace
+  rationale: ADR-Kit can preserve unknown consumer meaning without interpreting it.
+- id: 01a00644-1bfe-7abc-8aaa-333333333333
+  alias_id: DEC-0148
+  alias_name: author-explicit-extension-entity-and-relationship-sections
+  summary: Author extensions through explicit extension_entities and extension_relationships sections
+  rationale: Explicit sections preserve strict first-class schemas and prevent arbitrary field escape hatches.
+- id: 01a00644-1bff-7abc-8aaa-444444444444
+  alias_id: DEC-0149
+  alias_name: require-consumer-owned-qualified-extension-types
+  summary: Require consumer extension types to be qualified by the owning architecture namespace
+  rationale: Qualification prevents future collision with ADR-Kit controlled vocabulary.
+- id: 01a00644-1c00-7abc-8aaa-555555555555
+  alias_id: DEC-0150
+  alias_name: bound-extension-properties-and-require-rationale
+  summary: Bound extension properties to scalar JSON-like values and require rationale
+  rationale: ADR-Kit validates deterministic shape while leaving domain meaning opaque.
+- id: 01a00644-1c01-7abc-8aaa-666666666666
+  alias_id: DEC-0151
+  alias_name: make-extension-graph-semantics-explicit
+  summary: Require authored extension relationships for graph semantics
+  rationale: Property values never imply graph edges.
+- id: 01a00644-1c02-7abc-8aaa-777777777777
+  alias_id: DEC-0152
+  alias_name: preserve-consumer-alias-allocation-authority
+  summary: Validate consumer-owned alias registrations without centralizing them in ADR-Kit
+  rationale: Each architecture corpus retains authority for its own alias allocation scope.
+- id: 01a00644-1c03-7abc-8aaa-888888888888
+  alias_id: DEC-0153
+  alias_name: distinguish-canonical-and-compatibility-relationships
+  summary: Keep persisted canonical relationship identity mechanically distinct from hash compatibility projections
+  rationale: Hash identifiers cannot become canonical graph identity by implication.
+- id: 01a00644-1c04-7abc-8aaa-999999999999
+  alias_id: DEC-0154
+  alias_name: preserve-unknown-valid-extensions-through-normalization
+  summary: Preserve every valid unknown extension through parse, compile, normalization, and repository loading
+  rationale: Downstream consumers must not pre-register semantic types to consume validated records.
+invariants:
+- id: 01a00644-1c05-7abc-8aaa-aaaaaaaaaaaa
+  alias_id: INV-0141
+  alias_name: every-extension-record-has-universal-envelope
+  statement: Every extension entity and canonical extension relationship has UUID identity and governed alias orientation before graph admission.
+  scope: global
+  enforcement_level: must
+  enforcement_mechanism: design
+  verification_method: automated
+  rationale: Extensions participate in the same identity system as first-class entities.
+- id: 01a00644-1c06-7abc-8aaa-bbbbbbbbbbbb
+  alias_id: INV-0142
+  alias_name: extension-types-are-qualified-and-consumer-owned
+  statement: Every locally authored extension semantic type is qualified by the containing architecture namespace and validated against consumer-owned allocation state.
+  scope: global
+  enforcement_level: must
+  enforcement_mechanism: design
+  verification_method: automated
+  rationale: ADR-Kit validates ownership without becoming a central semantic registry.
+- id: 01a00644-1c07-7abc-8aaa-cccccccccccc
+  alias_id: INV-0143
+  alias_name: extension-properties-never-imply-relationships
+  statement: Extension property values never imply graph relationships.
+  scope: global
+  enforcement_level: must
+  enforcement_mechanism: design
+  verification_method: automated
+  rationale: Explicit authored relationships keep graph construction deterministic.
+- id: 01a00644-1c08-7abc-8aaa-dddddddddddd
+  alias_id: INV-0144
+  alias_name: extension-payload-is-explicit-and-opaque
+  statement: Normalized extension payload is represented in a typed extension field and is preserved without ADR-Kit semantic interpretation.
+  scope: global
+  enforcement_level: must
+  enforcement_mechanism: design
+  verification_method: automated
+  rationale: Generic metadata must not become the extension contract.
+- id: 01a00644-1c09-7abc-8aaa-eeeeeeeeeeee
+  alias_id: INV-0145
+  alias_name: canonical-relationship-identity-is-persisted
+  statement: A relationship lacking persisted canonical UUID identity cannot enter the canonical v2.1 graph surface.
+  scope: global
+  enforcement_level: must
+  enforcement_mechanism: design
+  verification_method: automated
+  rationale: Compatibility hashes remain derived projections only.
+- id: 01a00644-1c0a-7abc-8aaa-ffffffffffff
+  alias_id: INV-0146
+  alias_name: valid-extensions-round-trip-without-loss
+  statement: Valid extension types, properties, rationale, and explicit relationships round-trip deterministically through normalized repository surfaces.
+  scope: global
+  enforcement_level: must
+  enforcement_mechanism: test
+  verification_method: automated
+  rationale: Unknown valid types are a supported consumer capability.
+- id: 01a00644-1c0b-7abc-8aaa-121212121212
+  alias_id: INV-0147
+  alias_name: generators-never-mint-extension-identity
+  statement: Compiler and projection stages never mint authoritative extension entity or relationship UUIDs.
+  scope: global
+  enforcement_level: must
+  enforcement_mechanism: design
+  verification_method: automated
+  rationale: Identity allocation remains canonical-authority work.
+- id: 01a00644-1c0c-7abc-8aaa-131313131313
+  alias_id: INV-0148
+  alias_name: local-extension-endpoints-are-uuid-canonical
+  statement: v1.4 authored extension relationship endpoints are local UUIDv7 references; future cross-namespace support uses the qualified external-reference contract.
+  scope: global
+  enforcement_level: must
+  enforcement_mechanism: design
+  verification_method: automated
+  rationale: The local-only v1 boundary must not create an alias or hidden-property reference path.
+capabilities: []
+gaps: []

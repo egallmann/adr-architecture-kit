@@ -4,7 +4,7 @@ id: 01a00626-c5cd-7064-8a74-e54d0179e4b9
 alias_id: ADR-L-0021
 alias_name: family-first-schema-contract-taxonomy
 title: Family-First Schema Contract Taxonomy and Authority
-status: proposed
+status: accepted
 created_date: '2026-08-15'
 authors:
 - adr-architecture-kit

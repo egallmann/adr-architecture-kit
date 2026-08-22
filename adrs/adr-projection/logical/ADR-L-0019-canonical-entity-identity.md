@@ -5,8 +5,8 @@ artifact_kind: rendered_adr_markdown
 generator_id: adr-projection-markdown
 generator_version: 2
 hash_algorithm: sha256
-source_hash: fcefec7f80141b680208ba70d918af29c1b5febb2a9c373fbe02256beee03a88
-rendered_hash: 56b0976dc39263ae0c57d9dba13af94553ff11463d8352253939b78c11a1547e
+source_hash: fbbee631c43163598a0dccbe60012a0fc966c5a06e4da779dd2f76c183a8e9eb
+rendered_hash: e848fbd955f9b9b9aa907eb471c866957386e73260a75cba0b863266560d7fb2
 -->
 
 # ADR-L-0019: Canonical Entity Identity
@@ -135,8 +135,10 @@ flowchart LR
   n_019fee89_e617_78d9_ba3b_b7e3e6db1b12["ADR-L-0019"]
   n_019ffdba_3c42_7c4a_a737_f6751a265d60["ADR-L-0020"]
   n_01a00643_1bfc_788c_911b_83a4725a8de1["ADR-L-0022"]
+  n_01a00644_1bfc_7abc_8aaa_111111111111["ADR-L-0023"]
   n_019ffdba_3c42_7c4a_a737_f6751a265d60 -->|"references"| n_019fee89_e617_78d9_ba3b_b7e3e6db1b12
   n_01a00643_1bfc_788c_911b_83a4725a8de1 -->|"references"| n_019fee89_e617_78d9_ba3b_b7e3e6db1b12
+  n_01a00644_1bfc_7abc_8aaa_111111111111 -->|"references"| n_019fee89_e617_78d9_ba3b_b7e3e6db1b12
 ```
 ```mermaid
 flowchart LR
@@ -172,6 +174,18 @@ could not name typed relationships to nested architecture entities.
 **Context:** ADR-L-0019 correctly separated immutable UUIDv7 machine identity from human-oriented aliases, but DEC-0097 admitted that identity envelope for only a selected set of entity kinds. Other durable ADR-domain records still expose alias-shaped values as `id`, use alias references across artifacts, or omit identity entirely. Requirements snapshots, requirement items, decision ledgers, ledger decisions, reviews, overrides, constraints, non-functional requirements, gaps, system boundaries, data flows,…
 
 [Open projection](ADR-L-0022-universal-uuidv7-entity-identity.md)
+### ADR-L-0023 — Consumer Semantic Extension Contract
+
+**Relationships:**
+- 01a00644-1bfc-7abc-8aaa-111111111111 -[:references]-> this ADR
+
+**Context:** ADR-Kit owns the universal envelope, structural validation, references,
+provenance eligibility, and deterministic projections, while consumers have
+legitimate semantic types that are not universal enough for first-class
+ontology promotion. A safe extension must preserve those boundaries without
+creating a second graph or a schema-less metadata escape hatch.
+
+[Open projection](ADR-L-0023-consumer-semantic-extension-contract.md)
 
 
 

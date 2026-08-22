@@ -13,6 +13,7 @@ from .extract_physical_entities import (
     PhysicalExtractionResult,
     extract_physical_entities,
 )
+from .extract_extension_entities import ExtensionExtractionResult, extract_extension_entities
 from .derive_relationships import (
     DerivedGapSignal,
     DeriveRelationshipsPass,
@@ -48,6 +49,7 @@ __all__ = [
     "InvariantMention",
     "LogicalExtractionResult",
     "PhysicalExtractionResult",
+    "ExtensionExtractionResult",
     "RelationshipDerivationResult",
     "ResolveInvariantCanonicalPass",
     "ScoreCompletenessPass",
@@ -57,6 +59,7 @@ __all__ = [
     "derive_relationships",
     "extract_logical_entities",
     "extract_physical_entities",
+    "extract_extension_entities",
     "resolve_invariant_canonical",
     "score_completeness",
     "validate_bundle",

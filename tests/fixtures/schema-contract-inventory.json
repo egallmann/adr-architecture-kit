@@ -1,15 +1,35 @@
 {
-  "baseline_sha": "499b0d253659a4851d4f5400cbc2286eefbeef6f",
+  "baseline_sha": "d4a9c3966c4300558f66c6c0b15985f80e601f8c",
   "expected_counts": {
-    "canonical": 51,
-    "package_mirrors": 47
+    "canonical": 64,
+    "package_mirrors": 60
   },
   "discovered_counts": {
-    "canonical": 51,
-    "package_mirrors": 47
+    "canonical": 64,
+    "package_mirrors": 60
   },
   "authority": "NON-AUTHORITATIVE VERIFICATION SNAPSHOT",
   "records": [
+    {
+      "canonical_path": "schema/evidence-attribution/v1.6/implementation-attribution-evidence.schema.json",
+      "target_path": "schema/evidence-attribution/v1.6/implementation-attribution-evidence.schema.json",
+      "family": "evidence-attribution",
+      "family_version": "v1.6",
+      "schema_id": "https://adr-kit.ste.systems/schema/evidence-attribution/v1.6/implementation-attribution-evidence.schema.json",
+      "sha256": "abba77be29fcd3c4cabd80cd55b528dd519f7650cb2dcf7e5883a7fe1631fe0f",
+      "package_mirror_path": "src/adr_kit/schema/v1_6/implementation-attribution-evidence.schema.json",
+      "mirror_disposition": "mirror"
+    },
+    {
+      "canonical_path": "schema/evidence-attribution/v1.6/semantic-attribution-vocabulary.json",
+      "target_path": "schema/evidence-attribution/v1.6/semantic-attribution-vocabulary.json",
+      "family": "evidence-attribution",
+      "family_version": "v1.6",
+      "schema_id": null,
+      "sha256": "0a16d6ed2bcc6c1a4b7ca44fd9ff34ce63783dde23aebc55902bdf3805b87bd5",
+      "package_mirror_path": "src/adr_kit/schema/v1_6/semantic-attribution-vocabulary.json",
+      "mirror_disposition": "mirror"
+    },
     {
       "canonical_path": "schema/kernel/architecture-index.schema.json",
       "target_path": "schema/kernel/architecture-index.schema.json",
@@ -431,6 +451,76 @@
       "mirror_disposition": "mirror"
     },
     {
+      "canonical_path": "schema/v1.4/adr-common.schema.json",
+      "target_path": "schema/authoring/v1.4/adr-common.schema.json",
+      "family": "authoring",
+      "family_version": "v1.4",
+      "schema_id": null,
+      "sha256": "8d80bf29c59b4e04e6dbe42b0ff2339ee16ce43c5228af71a409ece597a00c98",
+      "package_mirror_path": "src/adr_kit/schema/v1_4/adr-common.schema.json",
+      "mirror_disposition": "mirror"
+    },
+    {
+      "canonical_path": "schema/v1.4/adr-logical.schema.json",
+      "target_path": "schema/authoring/v1.4/adr-logical.schema.json",
+      "family": "authoring",
+      "family_version": "v1.4",
+      "schema_id": null,
+      "sha256": "c413604d70e8750f5f1d6f6b78dcc5e207a2756a603940dfc4a7eb719b757c50",
+      "package_mirror_path": "src/adr_kit/schema/v1_4/adr-logical.schema.json",
+      "mirror_disposition": "mirror"
+    },
+    {
+      "canonical_path": "schema/v1.4/adr-physical-base.schema.json",
+      "target_path": "schema/authoring/v1.4/adr-physical-base.schema.json",
+      "family": "authoring",
+      "family_version": "v1.4",
+      "schema_id": null,
+      "sha256": "1ec099dd24aa752b9d8c6c008505505ab3e4627a998d35851e9b74f7f6a4c3f1",
+      "package_mirror_path": "src/adr_kit/schema/v1_4/adr-physical-base.schema.json",
+      "mirror_disposition": "mirror"
+    },
+    {
+      "canonical_path": "schema/v1.4/adr-physical-component.schema.json",
+      "target_path": "schema/authoring/v1.4/adr-physical-component.schema.json",
+      "family": "authoring",
+      "family_version": "v1.4",
+      "schema_id": null,
+      "sha256": "803e856979690a4f7a1eb1983aa5ac2486137eb5f7286ac1d58294bef7115fe8",
+      "package_mirror_path": "src/adr_kit/schema/v1_4/adr-physical-component.schema.json",
+      "mirror_disposition": "mirror"
+    },
+    {
+      "canonical_path": "schema/v1.4/adr-physical-system.schema.json",
+      "target_path": "schema/authoring/v1.4/adr-physical-system.schema.json",
+      "family": "authoring",
+      "family_version": "v1.4",
+      "schema_id": null,
+      "sha256": "529e0ef9519b6a93850d7a8960e554ad99491105ae537e7b6e2313339ccc86e2",
+      "package_mirror_path": "src/adr_kit/schema/v1_4/adr-physical-system.schema.json",
+      "mirror_disposition": "mirror"
+    },
+    {
+      "canonical_path": "schema/v1.4/adr-physical.schema.json",
+      "target_path": "schema/authoring/v1.4/adr-physical.schema.json",
+      "family": "authoring",
+      "family_version": "v1.4",
+      "schema_id": null,
+      "sha256": "4301e8e10c2ead982015de4dcb79f429466d4e4045f84cf94a4ec5d52ba44b14",
+      "package_mirror_path": "src/adr_kit/schema/v1_4/adr-physical.schema.json",
+      "mirror_disposition": "mirror"
+    },
+    {
+      "canonical_path": "schema/v1.4/types.schema.json",
+      "target_path": "schema/authoring/v1.4/types.schema.json",
+      "family": "authoring",
+      "family_version": "v1.4",
+      "schema_id": null,
+      "sha256": "7dd94ff95772355bfcc7a2ba281d6a6ba9894bb6e12544214e28d173420b2fbc",
+      "package_mirror_path": "src/adr_kit/schema/v1_4/types.schema.json",
+      "mirror_disposition": "mirror"
+    },
+    {
       "canonical_path": "schema/v1.5/implementation-attribution-evidence.schema.json",
       "target_path": "schema/evidence-attribution/v1.5/implementation-attribution-evidence.schema.json",
       "family": "evidence-attribution",
@@ -448,26 +538,6 @@
       "schema_id": null,
       "sha256": "e4cd5dbaa3d11b432994ea090d6d09c2872d81d0cde761e1d8702a087e4980b8",
       "package_mirror_path": "src/adr_kit/schema/v1_5/semantic-attribution-vocabulary.json",
-      "mirror_disposition": "mirror"
-    },
-    {
-      "canonical_path": "schema/evidence-attribution/v1.6/implementation-attribution-evidence.schema.json",
-      "target_path": "schema/evidence-attribution/v1.6/implementation-attribution-evidence.schema.json",
-      "family": "evidence-attribution",
-      "family_version": "v1.6",
-      "schema_id": "https://adr-kit.ste.systems/schema/evidence-attribution/v1.6/implementation-attribution-evidence.schema.json",
-      "sha256": "abba77be29fcd3c4cabd80cd55b528dd519f7650cb2dcf7e5883a7fe1631fe0f",
-      "package_mirror_path": "src/adr_kit/schema/v1_6/implementation-attribution-evidence.schema.json",
-      "mirror_disposition": "mirror"
-    },
-    {
-      "canonical_path": "schema/evidence-attribution/v1.6/semantic-attribution-vocabulary.json",
-      "target_path": "schema/evidence-attribution/v1.6/semantic-attribution-vocabulary.json",
-      "family": "evidence-attribution",
-      "family_version": "v1.6",
-      "schema_id": null,
-      "sha256": "0a16d6ed2bcc6c1a4b7ca44fd9ff34ce63783dde23aebc55902bdf3805b87bd5",
-      "package_mirror_path": "src/adr_kit/schema/v1_6/semantic-attribution-vocabulary.json",
       "mirror_disposition": "mirror"
     },
     {
@@ -519,7 +589,66 @@
       "sha256": "c563f373dd410e9441736bd12f7837d3a2f8548a9d32073591ca98bc32b0805f",
       "package_mirror_path": "src/adr_kit/schema/v2_0/relationship-registry.schema.json",
       "mirror_disposition": "mirror"
+    },
+    {
+      "canonical_path": "schema/v2.1/normalized-architecture-model.schema.json",
+      "target_path": "schema/normalized-model/v2.1/normalized-architecture-model.schema.json",
+      "family": "normalized-model",
+      "family_version": "v2.1",
+      "schema_id": null,
+      "sha256": "1b35846435e7adc056812e1562368884da0606b1d1f4c5e0cd265c7009a532a0",
+      "package_mirror_path": "src/adr_kit/schema/v2_1/normalized-architecture-model.schema.json",
+      "mirror_disposition": "mirror"
+    },
+    {
+      "canonical_path": "schema/v2.1/normalized-entity-registry.schema.json",
+      "target_path": "schema/normalized-model/v2.1/normalized-entity-registry.schema.json",
+      "family": "normalized-model",
+      "family_version": "v2.1",
+      "schema_id": null,
+      "sha256": "bff8c7c3e7bd21fbde30f20af6f604f4b6fb8fba1071fd0734ad6456d56f2eaf",
+      "package_mirror_path": "src/adr_kit/schema/v2_1/normalized-entity-registry.schema.json",
+      "mirror_disposition": "mirror"
+    },
+    {
+      "canonical_path": "schema/v2.1/normalized-entity.schema.json",
+      "target_path": "schema/normalized-model/v2.1/normalized-entity.schema.json",
+      "family": "normalized-model",
+      "family_version": "v2.1",
+      "schema_id": null,
+      "sha256": "0ec2e9692aeca7e21e536147ee541e72891a59cdf563fed16b5215833c1ed661",
+      "package_mirror_path": "src/adr_kit/schema/v2_1/normalized-entity.schema.json",
+      "mirror_disposition": "mirror"
+    },
+    {
+      "canonical_path": "schema/v2.1/relationship-record.schema.json",
+      "target_path": "schema/normalized-model/v2.1/relationship-record.schema.json",
+      "family": "normalized-model",
+      "family_version": "v2.1",
+      "schema_id": null,
+      "sha256": "706fa80f1c96173dbc3552a28dd0f71af5fa1791e93d53c11e615cd75ea7a3f1",
+      "package_mirror_path": "src/adr_kit/schema/v2_1/relationship-record.schema.json",
+      "mirror_disposition": "mirror"
+    },
+    {
+      "canonical_path": "schema/v2.1/relationship-registry.schema.json",
+      "target_path": "schema/normalized-model/v2.1/relationship-registry.schema.json",
+      "family": "normalized-model",
+      "family_version": "v2.1",
+      "schema_id": null,
+      "sha256": "5372cfb8b5625e468a9a9a9cd9994ad2591829c8ceb44594fceb3cdbf67a1583",
+      "package_mirror_path": "src/adr_kit/schema/v2_1/relationship-registry.schema.json",
+      "mirror_disposition": "mirror"
+    },
+    {
+      "canonical_path": "schema/v2.1/unresolved-registry.schema.json",
+      "target_path": "schema/normalized-model/v2.1/unresolved-registry.schema.json",
+      "family": "normalized-model",
+      "family_version": "v2.1",
+      "schema_id": null,
+      "sha256": "77991b0cdfac9ab12979a66e3945a3faab6923031a06efa68b36a334e4f068b2",
+      "package_mirror_path": "src/adr_kit/schema/v2_1/unresolved-registry.schema.json",
+      "mirror_disposition": "mirror"
     }
   ]
 }
-

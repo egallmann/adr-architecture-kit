@@ -8,6 +8,7 @@ from pathlib import Path
 from typing import Literal
 
 from ..models import NormalizedArchitectureModel
+from ..models.v2_1 import NormalizedArchitectureModelV21
 from ._errors import InvalidRequestError
 
 API_CONTRACT_VERSION = "1.0"
@@ -230,7 +231,7 @@ class CompilationResult:
     partial: bool
     artifacts: tuple[ArtifactDescriptor, ...]
     diagnostics: tuple[Diagnostic, ...]
-    model: NormalizedArchitectureModel | None
+    model: NormalizedArchitectureModel | NormalizedArchitectureModelV21 | None
     fingerprint: str | None
     source_files: int
     parse_errors: int

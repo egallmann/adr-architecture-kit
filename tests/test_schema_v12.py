@@ -74,9 +74,9 @@ def test_v1_0_fixture_still_parses_and_v1_1_artifact_stays_loadable() -> None:
 def test_capability_manifest_reports_v1_2_as_provisional_without_promoting_v1_1() -> None:
     manifest = capabilities()
 
-    assert manifest.supported_adr_schema_versions == ("1.0", "1.1", "1.2", "1.3")
+    assert manifest.supported_adr_schema_versions == ("1.0", "1.1", "1.2", "1.3", "1.4")
     assert manifest.stable_adr_schema_versions == ("1.0",)
-    assert manifest.provisional_adr_schema_versions == ("1.1", "1.2", "1.3")
+    assert manifest.provisional_adr_schema_versions == ("1.1", "1.2", "1.3", "1.4")
 
 
 def test_valid_v1_2_logical_and_topology_fixtures_parse() -> None:

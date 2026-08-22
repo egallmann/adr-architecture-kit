@@ -1,0 +1,14 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://adr-kit.ste.systems/schema/authoring/v1.4/adr-physical-base.schema.json",
+  "title": "Physical ADR Base Schema (authoring v1.4)",
+  "allOf": [{"$ref": "adr-common.schema.json"}],
+  "type": "object",
+  "required": ["implements_logical", "context", "technology_stack"],
+  "properties": {
+    "implements_logical": {"type": "array", "items": {"$ref": "types.schema.json#/definitions/uuid_v7"}, "minItems": 1},
+    "context": {"type": "string"},
+    "technology_stack": {"type": "array", "minItems": 1}
+  },
+  "additionalProperties": true
+}

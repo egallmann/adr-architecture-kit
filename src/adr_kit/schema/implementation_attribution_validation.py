@@ -84,7 +84,14 @@ def _resolve_adr_status_map(
     ),
 ) -> dict[str, str]:
     get_model_v2 = getattr(entity_registry, "get_model_v2", None)
+    get_model_v21 = getattr(entity_registry, "get_model_v21", None)
     model_version = getattr(entity_registry, "model_version", None)
+    if callable(get_model_v21) and model_version == "2.1":
+        return {
+            entity.alias_id: str(entity.metadata.get("status") or entity.lifecycle_stage)
+            for entity in get_model_v21().entities
+            if entity.entity_type == "adr"
+        }
     if callable(get_model_v2) and model_version == "2.0":
         return _adr_status_map_from_v2(get_model_v2())
     get_model = getattr(entity_registry, "get_model", None)

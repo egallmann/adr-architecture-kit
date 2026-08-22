@@ -8526,3 +8526,459 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
+- id: 01a00644-1bfd-7abc-8aaa-222222222222
+  alias_id: DEC-0147
+  alias_name: canonize-envelope-open-qualified-semantic-namespace
+  alias_ref: DEC-0147:canonize-envelope-open-qualified-semantic-namespace
+  entity_type: decision
+  name: Canonize the universal envelope while opening a qualified consumer semantic
+    namespace
+  summary: ADR-Kit can preserve unknown consumer meaning without interpreting it.
+  uri: adr://adr-architecture-kit/entities/01a00644-1bfd-7abc-8aaa-222222222222
+  created_at: '2026-08-15T16:32:02.045Z'
+  entity_fingerprint: sha256:99ec3ce553223fa9af55767a26319c33f575c9fb9506a766ca343663a7ddbd02
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a00644-1bfc-7abc-8aaa-111111111111#01a00644-1bfd-7abc-8aaa-222222222222
+    artifact_path: adrs/logical/ADR-L-0023-consumer-semantic-extension-contract.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a00644-1bfc-7abc-8aaa-111111111111
+    adr_alias_id: ADR-L-0023
+    related_invariants: []
+    enforces_invariants: []
+    enables_capabilities: []
+    governs_components: []
+    supersedes: []
+    refines: []
+    alias_name: canonize-envelope-open-qualified-semantic-namespace
+    alias_id: DEC-0147
+  relationships:
+    declared_in:
+    - 01a00644-1bfc-7abc-8aaa-111111111111
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a00644-1bfc-7abc-8aaa-111111111111#01a00644-1bfd-7abc-8aaa-222222222222
+    extraction_phase: extract_decision
+    classification: explicit
+    generator: adr-architecture-index
+- id: 01a00644-1bfe-7abc-8aaa-333333333333
+  alias_id: DEC-0148
+  alias_name: author-explicit-extension-entity-and-relationship-sections
+  alias_ref: DEC-0148:author-explicit-extension-entity-and-relationship-sections
+  entity_type: decision
+  name: Author extensions through explicit extension_entities and extension_relationships
+    sections
+  summary: Explicit sections preserve strict first-class schemas and prevent arbitrary
+    field escape hatches.
+  uri: adr://adr-architecture-kit/entities/01a00644-1bfe-7abc-8aaa-333333333333
+  created_at: '2026-08-15T16:32:02.046Z'
+  entity_fingerprint: sha256:7399ea55df1357f84b8b92815a70bf5c0b9514d6a47ab15b28708cac088f0d36
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a00644-1bfc-7abc-8aaa-111111111111#01a00644-1bfe-7abc-8aaa-333333333333
+    artifact_path: adrs/logical/ADR-L-0023-consumer-semantic-extension-contract.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a00644-1bfc-7abc-8aaa-111111111111
+    adr_alias_id: ADR-L-0023
+    related_invariants: []
+    enforces_invariants: []
+    enables_capabilities: []
+    governs_components: []
+    supersedes: []
+    refines: []
+    alias_name: author-explicit-extension-entity-and-relationship-sections
+    alias_id: DEC-0148
+  relationships:
+    declared_in:
+    - 01a00644-1bfc-7abc-8aaa-111111111111
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a00644-1bfc-7abc-8aaa-111111111111#01a00644-1bfe-7abc-8aaa-333333333333
+    extraction_phase: extract_decision
+    classification: explicit
+    generator: adr-architecture-index
+- id: 01a00644-1bff-7abc-8aaa-444444444444
+  alias_id: DEC-0149
+  alias_name: require-consumer-owned-qualified-extension-types
+  alias_ref: DEC-0149:require-consumer-owned-qualified-extension-types
+  entity_type: decision
+  name: Require consumer extension types to be qualified by the owning architecture
+    namespace
+  summary: Qualification prevents future collision with ADR-Kit controlled vocabulary.
+  uri: adr://adr-architecture-kit/entities/01a00644-1bff-7abc-8aaa-444444444444
+  created_at: '2026-08-15T16:32:02.047Z'
+  entity_fingerprint: sha256:9644d6d2ea591adafb736043ace533a54b9004d1cf7607234e697a0246773705
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a00644-1bfc-7abc-8aaa-111111111111#01a00644-1bff-7abc-8aaa-444444444444
+    artifact_path: adrs/logical/ADR-L-0023-consumer-semantic-extension-contract.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a00644-1bfc-7abc-8aaa-111111111111
+    adr_alias_id: ADR-L-0023
+    related_invariants: []
+    enforces_invariants: []
+    enables_capabilities: []
+    governs_components: []
+    supersedes: []
+    refines: []
+    alias_name: require-consumer-owned-qualified-extension-types
+    alias_id: DEC-0149
+  relationships:
+    declared_in:
+    - 01a00644-1bfc-7abc-8aaa-111111111111
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a00644-1bfc-7abc-8aaa-111111111111#01a00644-1bff-7abc-8aaa-444444444444
+    extraction_phase: extract_decision
+    classification: explicit
+    generator: adr-architecture-index
+- id: 01a00644-1c00-7abc-8aaa-555555555555
+  alias_id: DEC-0150
+  alias_name: bound-extension-properties-and-require-rationale
+  alias_ref: DEC-0150:bound-extension-properties-and-require-rationale
+  entity_type: decision
+  name: Bound extension properties to scalar JSON-like values and require rationale
+  summary: ADR-Kit validates deterministic shape while leaving domain meaning opaque.
+  uri: adr://adr-architecture-kit/entities/01a00644-1c00-7abc-8aaa-555555555555
+  created_at: '2026-08-15T16:32:02.048Z'
+  entity_fingerprint: sha256:5ab3a16952bb6f36eab7828613461e93164195444c0a7ee0cf0e1f8f21d1b63c
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a00644-1bfc-7abc-8aaa-111111111111#01a00644-1c00-7abc-8aaa-555555555555
+    artifact_path: adrs/logical/ADR-L-0023-consumer-semantic-extension-contract.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a00644-1bfc-7abc-8aaa-111111111111
+    adr_alias_id: ADR-L-0023
+    related_invariants: []
+    enforces_invariants: []
+    enables_capabilities: []
+    governs_components: []
+    supersedes: []
+    refines: []
+    alias_name: bound-extension-properties-and-require-rationale
+    alias_id: DEC-0150
+  relationships:
+    declared_in:
+    - 01a00644-1bfc-7abc-8aaa-111111111111
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a00644-1bfc-7abc-8aaa-111111111111#01a00644-1c00-7abc-8aaa-555555555555
+    extraction_phase: extract_decision
+    classification: explicit
+    generator: adr-architecture-index
+- id: 01a00644-1c01-7abc-8aaa-666666666666
+  alias_id: DEC-0151
+  alias_name: make-extension-graph-semantics-explicit
+  alias_ref: DEC-0151:make-extension-graph-semantics-explicit
+  entity_type: decision
+  name: Require authored extension relationships for graph semantics
+  summary: Property values never imply graph edges.
+  uri: adr://adr-architecture-kit/entities/01a00644-1c01-7abc-8aaa-666666666666
+  created_at: '2026-08-15T16:32:02.049Z'
+  entity_fingerprint: sha256:42d1fb65b1b5f5312197a3d032474b06c869c9bbae8f0773fa15cd2c9c630dd2
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a00644-1bfc-7abc-8aaa-111111111111#01a00644-1c01-7abc-8aaa-666666666666
+    artifact_path: adrs/logical/ADR-L-0023-consumer-semantic-extension-contract.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a00644-1bfc-7abc-8aaa-111111111111
+    adr_alias_id: ADR-L-0023
+    related_invariants: []
+    enforces_invariants: []
+    enables_capabilities: []
+    governs_components: []
+    supersedes: []
+    refines: []
+    alias_name: make-extension-graph-semantics-explicit
+    alias_id: DEC-0151
+  relationships:
+    declared_in:
+    - 01a00644-1bfc-7abc-8aaa-111111111111
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a00644-1bfc-7abc-8aaa-111111111111#01a00644-1c01-7abc-8aaa-666666666666
+    extraction_phase: extract_decision
+    classification: explicit
+    generator: adr-architecture-index
+- id: 01a00644-1c02-7abc-8aaa-777777777777
+  alias_id: DEC-0152
+  alias_name: preserve-consumer-alias-allocation-authority
+  alias_ref: DEC-0152:preserve-consumer-alias-allocation-authority
+  entity_type: decision
+  name: Validate consumer-owned alias registrations without centralizing them in ADR-Kit
+  summary: Each architecture corpus retains authority for its own alias allocation
+    scope.
+  uri: adr://adr-architecture-kit/entities/01a00644-1c02-7abc-8aaa-777777777777
+  created_at: '2026-08-15T16:32:02.050Z'
+  entity_fingerprint: sha256:01a5f2b94e3b179b5df519df842118bc786e1be410d38dbbc46136a9eb010dbe
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a00644-1bfc-7abc-8aaa-111111111111#01a00644-1c02-7abc-8aaa-777777777777
+    artifact_path: adrs/logical/ADR-L-0023-consumer-semantic-extension-contract.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a00644-1bfc-7abc-8aaa-111111111111
+    adr_alias_id: ADR-L-0023
+    related_invariants: []
+    enforces_invariants: []
+    enables_capabilities: []
+    governs_components: []
+    supersedes: []
+    refines: []
+    alias_name: preserve-consumer-alias-allocation-authority
+    alias_id: DEC-0152
+  relationships:
+    declared_in:
+    - 01a00644-1bfc-7abc-8aaa-111111111111
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a00644-1bfc-7abc-8aaa-111111111111#01a00644-1c02-7abc-8aaa-777777777777
+    extraction_phase: extract_decision
+    classification: explicit
+    generator: adr-architecture-index
+- id: 01a00644-1c03-7abc-8aaa-888888888888
+  alias_id: DEC-0153
+  alias_name: distinguish-canonical-and-compatibility-relationships
+  alias_ref: DEC-0153:distinguish-canonical-and-compatibility-relationships
+  entity_type: decision
+  name: Keep persisted canonical relationship identity mechanically distinct from
+    hash compatibility projections
+  summary: Hash identifiers cannot become canonical graph identity by implication.
+  uri: adr://adr-architecture-kit/entities/01a00644-1c03-7abc-8aaa-888888888888
+  created_at: '2026-08-15T16:32:02.051Z'
+  entity_fingerprint: sha256:7b4d637e8e3f3fd0de8e20e075515e2508821851973ac67cfd0ac859ef90aff4
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a00644-1bfc-7abc-8aaa-111111111111#01a00644-1c03-7abc-8aaa-888888888888
+    artifact_path: adrs/logical/ADR-L-0023-consumer-semantic-extension-contract.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a00644-1bfc-7abc-8aaa-111111111111
+    adr_alias_id: ADR-L-0023
+    related_invariants: []
+    enforces_invariants: []
+    enables_capabilities: []
+    governs_components: []
+    supersedes: []
+    refines: []
+    alias_name: distinguish-canonical-and-compatibility-relationships
+    alias_id: DEC-0153
+  relationships:
+    declared_in:
+    - 01a00644-1bfc-7abc-8aaa-111111111111
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a00644-1bfc-7abc-8aaa-111111111111#01a00644-1c03-7abc-8aaa-888888888888
+    extraction_phase: extract_decision
+    classification: explicit
+    generator: adr-architecture-index
+- id: 01a00644-1c04-7abc-8aaa-999999999999
+  alias_id: DEC-0154
+  alias_name: preserve-unknown-valid-extensions-through-normalization
+  alias_ref: DEC-0154:preserve-unknown-valid-extensions-through-normalization
+  entity_type: decision
+  name: Preserve every valid unknown extension through parse, compile, normalization,
+    and repository loading
+  summary: Downstream consumers must not pre-register semantic types to consume validated
+    records.
+  uri: adr://adr-architecture-kit/entities/01a00644-1c04-7abc-8aaa-999999999999
+  created_at: '2026-08-15T16:32:02.052Z'
+  entity_fingerprint: sha256:fef926402455a25785e8244a68677ebe7468c3a1b0b17a83a824a5bba888d3a5
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a00644-1bfc-7abc-8aaa-111111111111#01a00644-1c04-7abc-8aaa-999999999999
+    artifact_path: adrs/logical/ADR-L-0023-consumer-semantic-extension-contract.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a00644-1bfc-7abc-8aaa-111111111111
+    adr_alias_id: ADR-L-0023
+    related_invariants: []
+    enforces_invariants: []
+    enables_capabilities: []
+    governs_components: []
+    supersedes: []
+    refines: []
+    alias_name: preserve-unknown-valid-extensions-through-normalization
+    alias_id: DEC-0154
+  relationships:
+    declared_in:
+    - 01a00644-1bfc-7abc-8aaa-111111111111
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a00644-1bfc-7abc-8aaa-111111111111#01a00644-1c04-7abc-8aaa-999999999999
+    extraction_phase: extract_decision
+    classification: explicit
+    generator: adr-architecture-index

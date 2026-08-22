@@ -48,6 +48,11 @@ from ..models.v2_0 import (
     RelationshipRegistryV2,
     UnresolvedRegistryV2,
 )
+from ..models.v2_1 import (
+    NormalizedEntityRegistryV21,
+    RelationshipRegistryV21,
+    UnresolvedRegistryV21,
+)
 from ..scope import ProjectScope
 from .backend.projection import (
     PROJECTABLE_ENTITY_TYPES,
@@ -55,6 +60,9 @@ from .backend.projection import (
     project_entity_v2,
     project_relationship,
     project_relationship_v2,
+    is_projectable_entity,
+    project_entity_v21,
+    project_relationship_v21,
     project_unresolved,
 )
 from .diagnostics import DiagnosticLevel, DiagnosticLog
@@ -68,14 +76,14 @@ BUNDLE_GENERATOR_ID = "adr-architecture-index"
 @dataclass
 class ArchitectureDiscoveryBundle:
     architecture_index: ArchitectureIndex
-    entity_registry: NormalizedEntityRegistry | NormalizedEntityRegistryV2
-    relationship_registry: RelationshipRegistry | RelationshipRegistryV2
-    unresolved_registry: UnresolvedRegistry | UnresolvedRegistryV2
-    decision_registry: NormalizedEntityRegistry | NormalizedEntityRegistryV2
-    capability_registry: NormalizedEntityRegistry | NormalizedEntityRegistryV2
-    invariant_registry: NormalizedEntityRegistry | NormalizedEntityRegistryV2
-    component_registry: NormalizedEntityRegistry | NormalizedEntityRegistryV2
-    system_registry: NormalizedEntityRegistry | NormalizedEntityRegistryV2
+    entity_registry: NormalizedEntityRegistry | NormalizedEntityRegistryV2 | NormalizedEntityRegistryV21
+    relationship_registry: RelationshipRegistry | RelationshipRegistryV2 | RelationshipRegistryV21
+    unresolved_registry: UnresolvedRegistry | UnresolvedRegistryV2 | UnresolvedRegistryV21
+    decision_registry: NormalizedEntityRegistry | NormalizedEntityRegistryV2 | NormalizedEntityRegistryV21
+    capability_registry: NormalizedEntityRegistry | NormalizedEntityRegistryV2 | NormalizedEntityRegistryV21
+    invariant_registry: NormalizedEntityRegistry | NormalizedEntityRegistryV2 | NormalizedEntityRegistryV21
+    component_registry: NormalizedEntityRegistry | NormalizedEntityRegistryV2 | NormalizedEntityRegistryV21
+    system_registry: NormalizedEntityRegistry | NormalizedEntityRegistryV2 | NormalizedEntityRegistryV21
     legacy_entity_registry: EntityRegistry
 
 
@@ -129,6 +137,15 @@ def assemble_registry_bundle(
         or datetime.now(timezone.utc).replace(microsecond=0)
     )
 
+    if model_version == "2.1":
+        return _assemble_registry_bundle_v21(
+            model,
+            coverage=coverage,
+            namespace=namespace,
+            generated_at=generated_at,
+            diagnostics=diagnostics,
+            generator_id=generator_id,
+        )
     if model_version == "2.0":
         return _assemble_registry_bundle_v2(
             model,
@@ -334,6 +351,86 @@ def _assemble_registry_bundle_v2(
     )
 
 
+def _assemble_registry_bundle_v21(
+    model: ArchModel,
+    *,
+    coverage: SourceCoverageSummary,
+    namespace: str,
+    generated_at: datetime,
+    diagnostics: DiagnosticLog,
+    generator_id: str,
+) -> ArchitectureDiscoveryBundle:
+    """Assemble the explicit canonical/compatibility model 2.1 boundary."""
+
+    projected_entities = [
+        projected
+        for entity in model.entities.values()
+        if is_projectable_entity(entity)
+        and (projected := project_entity_v21(entity, model.relationships, namespace)) is not None
+    ]
+    projected_relationships = [
+        projected
+        for relationship in model.relationships.values()
+        if (projected := project_relationship_v21(relationship)) is not None
+    ]
+    projected_unresolved = [project_unresolved(item) for item in model.unresolved.values()]
+
+    entity_registry = NormalizedEntityRegistryV21(
+        entities=sorted(projected_entities, key=lambda item: item.id)
+    )
+    relationship_registry = RelationshipRegistryV21(
+        relationships=sorted(
+            projected_relationships,
+            key=lambda item: (getattr(item, "id", None) or getattr(item, "relationship_id", "")),
+        )
+    )
+    unresolved_registry = UnresolvedRegistryV21(
+        unresolved=sorted(projected_unresolved, key=lambda item: item.id)
+    )
+
+    # Core validation remains on the existing validator surface.  The v2.1
+    # models themselves enforce the canonical/compatibility identity boundary.
+    decision_registry = _filtered_v21(entity_registry, "decision")
+    capability_registry = _filtered_v21(entity_registry, "capability")
+    invariant_registry = _filtered_v21(entity_registry, "invariant")
+    component_registry = _filtered_v21(entity_registry, "component")
+    system_registry = _filtered_v21(entity_registry, "system")
+    legacy_registry = EntityRegistry(entities=[])
+    hard_failures = sum(1 for item in diagnostics.as_list() if item.level == DiagnosticLevel.ERROR)
+    warnings = sum(1 for item in diagnostics.as_list() if item.level == DiagnosticLevel.WARNING)
+    index = ArchitectureIndex(
+        architecture_namespace=namespace,
+        generated_at=generated_at,
+        generator=generator_id,
+        entity_registry_path="adrs/index/entity-registry.yaml",
+        relationship_registry_path="adrs/index/relationship-registry.yaml",
+        unresolved_registry_path="adrs/index/unresolved-registry.yaml",
+        decision_registry_path="adrs/index/decision-registry.yaml",
+        capability_registry_path="adrs/index/capability-registry.yaml",
+        invariant_registry_path="adrs/index/invariant-registry.yaml",
+        component_registry_path="adrs/index/component-registry.yaml",
+        system_registry_path="adrs/index/system-registry.yaml",
+        validation_summary=ValidationSummary(
+            hard_failures=hard_failures,
+            warnings=warnings,
+            unresolved_entries=len(unresolved_registry.unresolved),
+        ),
+        source_coverage=coverage,
+    )
+    return ArchitectureDiscoveryBundle(
+        architecture_index=index,
+        entity_registry=entity_registry,
+        relationship_registry=relationship_registry,
+        unresolved_registry=unresolved_registry,
+        decision_registry=decision_registry,
+        capability_registry=capability_registry,
+        invariant_registry=invariant_registry,
+        component_registry=component_registry,
+        system_registry=system_registry,
+        legacy_entity_registry=legacy_registry,
+    )
+
+
 def _filtered(registry: NormalizedEntityRegistry, entity_type: str) -> NormalizedEntityRegistry:
     return NormalizedEntityRegistry(
         entities=[entity for entity in registry.entities if entity.entity_type == entity_type]
@@ -344,6 +441,14 @@ def _filtered_v2(
     registry: NormalizedEntityRegistryV2, entity_type: str
 ) -> NormalizedEntityRegistryV2:
     return NormalizedEntityRegistryV2(
+        entities=[entity for entity in registry.entities if entity.entity_type == entity_type]
+    )
+
+
+def _filtered_v21(
+    registry: NormalizedEntityRegistryV21, entity_type: str
+) -> NormalizedEntityRegistryV21:
+    return NormalizedEntityRegistryV21(
         entities=[entity for entity in registry.entities if entity.entity_type == entity_type]
     )
 

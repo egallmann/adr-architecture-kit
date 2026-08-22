@@ -1,0 +1,62 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://adr-kit.ste.systems/schema/authoring/v1.4/adr-common.schema.json",
+  "title": "ADR Common Frontmatter Schema (authoring v1.4)",
+  "definitions": {
+    "identity_envelope": {
+      "type": "object",
+      "required": ["id", "alias_id", "alias_name"],
+      "properties": {
+        "id": {"$ref": "types.schema.json#/definitions/uuid_v7"},
+        "alias_id": {"type": "string", "pattern": "^[A-Z][A-Z0-9-]*-[0-9]{4}$"},
+        "alias_name": {"$ref": "types.schema.json#/definitions/alias_name"}
+      },
+      "additionalProperties": true
+    },
+    "extension_entity": {
+      "type": "object",
+      "required": ["id", "alias_id", "alias_name", "entity_type", "properties", "rationale"],
+      "properties": {
+        "id": {"$ref": "types.schema.json#/definitions/uuid_v7"},
+        "alias_id": {"$ref": "types.schema.json#/definitions/extension_alias"},
+        "alias_name": {"$ref": "types.schema.json#/definitions/alias_name"},
+        "entity_type": {"$ref": "types.schema.json#/definitions/extension_type"},
+        "properties": {"$ref": "types.schema.json#/definitions/extension_properties"},
+        "rationale": {"type": "string", "minLength": 1}
+      },
+      "additionalProperties": false
+    },
+    "extension_relationship": {
+      "type": "object",
+      "required": ["id", "alias_id", "alias_name", "relationship_type", "from_entity_id", "to_entity_id", "properties", "rationale"],
+      "properties": {
+        "id": {"$ref": "types.schema.json#/definitions/uuid_v7"},
+        "alias_id": {"$ref": "types.schema.json#/definitions/extension_alias"},
+        "alias_name": {"$ref": "types.schema.json#/definitions/alias_name"},
+        "relationship_type": {"$ref": "types.schema.json#/definitions/extension_type"},
+        "from_entity_id": {"$ref": "types.schema.json#/definitions/uuid_v7"},
+        "to_entity_id": {"$ref": "types.schema.json#/definitions/uuid_v7"},
+        "properties": {"$ref": "types.schema.json#/definitions/extension_properties"},
+        "rationale": {"type": "string", "minLength": 1}
+      },
+      "additionalProperties": false
+    }
+  },
+  "type": "object",
+  "required": ["schema_version", "adr_type", "id", "alias_id", "alias_name", "title", "status", "created_date", "authors"],
+  "properties": {
+    "schema_version": {"const": "1.4"},
+    "adr_type": {"enum": ["logical", "physical", "physical-system", "physical-component", "decision"]},
+    "id": {"$ref": "types.schema.json#/definitions/uuid_v7"},
+    "alias_id": {"type": "string", "pattern": "^ADR-(L|V|P|PS|PC|D)-[0-9]{4}$"},
+    "alias_name": {"$ref": "types.schema.json#/definitions/alias_name"},
+    "title": {"type": "string", "minLength": 5, "maxLength": 200},
+    "status": {"$ref": "types.schema.json#/definitions/status"},
+    "created_date": {"$ref": "types.schema.json#/definitions/iso_date"},
+    "modified_date": {"$ref": "types.schema.json#/definitions/iso_date"},
+    "authors": {"type": "array", "items": {"type": "string"}, "minItems": 1},
+    "extension_entities": {"type": "array", "items": {"$ref": "#/definitions/extension_entity"}},
+    "extension_relationships": {"type": "array", "items": {"$ref": "#/definitions/extension_relationship"}}
+  },
+  "additionalProperties": true
+}

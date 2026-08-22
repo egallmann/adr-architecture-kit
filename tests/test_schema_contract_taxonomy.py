@@ -31,10 +31,10 @@ def _walk_refs(value: object) -> list[str]:
 def test_frozen_inventory_is_exact_and_target_membership_is_preserved() -> None:
     inventory = _inventory()
     records = inventory["records"]
-    assert inventory["discovered_counts"] == {"canonical": 51, "package_mirrors": 47}
-    assert len(records) == 51
-    assert len({record["canonical_path"] for record in records}) == 51
-    assert len({record["target_path"] for record in records}) == 51
+    assert inventory["discovered_counts"] == {"canonical": 64, "package_mirrors": 60}
+    assert len(records) == 64
+    assert len({record["canonical_path"] for record in records}) == 64
+    assert len({record["target_path"] for record in records}) == 64
 
     for record in records:
         target = REPO_ROOT / record["target_path"]

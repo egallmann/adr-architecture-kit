@@ -45,8 +45,15 @@ class IRRelationship:
     assertion_id: str = ""
     source_pointer: str | None = None
     source_owner_id: str | None = None
+    id: str = ""
+    alias_id: str = ""
+    alias_name: str = ""
+    extension: dict[str, Any] | None = None
+    record_kind: str = "compatibility"
 
     def __post_init__(self) -> None:
+        if self.id:
+            self.record_kind = "canonical"
         if not self.relationship_id:
             self.relationship_id = (
                 f"{self.relationship_type}:{self.from_entity_id}:{self.to_entity_id}"

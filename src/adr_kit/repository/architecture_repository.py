@@ -21,7 +21,6 @@ from ..models import (
     NormalizedEntityRegistry,
     RemediationLedger,
     RelationshipRegistry,
-    RelationshipRecord,
     SourceRef,
     UnresolvedRegistry,
     UnresolvedRecord,
@@ -30,9 +29,15 @@ from ..models.v2_0 import (
     NormalizedArchitectureModelV2,
     NormalizedEntityRegistryV2,
     NormalizedEntityV2,
-    RelationshipRecordV2,
     RelationshipRegistryV2,
     UnresolvedRegistryV2,
+)
+from ..models.v2_1 import (
+    NormalizedArchitectureModelV21,
+    NormalizedEntityRegistryV21,
+    NormalizedEntityV21,
+    RelationshipRegistryV21,
+    UnresolvedRegistryV21,
 )
 from ..parser import ADRParser
 from ..scope import ProjectScopeResolver
@@ -46,6 +51,7 @@ from ._normalized_bundle import (
     SUBSET_TYPES,
     NormalizedBundle,
     NormalizedBundleV2,
+    NormalizedBundleV21,
     NormalizedModelVersion,
     load_normalized_bundle_from_paths,
 )
@@ -62,9 +68,9 @@ class ContractBundleView:
     """Repository-facing typed contract bundle for consumer workflows."""
 
     architecture_index: ArchitectureIndex
-    entity_registry: NormalizedEntityRegistry | NormalizedEntityRegistryV2
-    relationship_registry: RelationshipRegistry | RelationshipRegistryV2
-    unresolved_registry: UnresolvedRegistry | UnresolvedRegistryV2
+    entity_registry: NormalizedEntityRegistry | NormalizedEntityRegistryV2 | NormalizedEntityRegistryV21
+    relationship_registry: RelationshipRegistry | RelationshipRegistryV2 | RelationshipRegistryV21
+    unresolved_registry: UnresolvedRegistry | UnresolvedRegistryV2 | UnresolvedRegistryV21
     remediation_ledger: RemediationLedger | None
 
 
@@ -96,21 +102,22 @@ class ArchitectureRepository:
 
     _scope_root: Path | None
     architecture_index: ArchitectureIndex | None
-    primary_entity_registry: NormalizedEntityRegistry | NormalizedEntityRegistryV2 | None
-    relationship_registry: RelationshipRegistry | RelationshipRegistryV2 | None
-    unresolved_registry: UnresolvedRegistry | UnresolvedRegistryV2 | None
+    primary_entity_registry: NormalizedEntityRegistry | NormalizedEntityRegistryV2 | NormalizedEntityRegistryV21 | None
+    relationship_registry: RelationshipRegistry | RelationshipRegistryV2 | RelationshipRegistryV21 | None
+    unresolved_registry: UnresolvedRegistry | UnresolvedRegistryV2 | UnresolvedRegistryV21 | None
     remediation_ledger: RemediationLedger | None
     legacy_entity_registry: EntityRegistry | None
     _model: NormalizedArchitectureModel | None
     _model_v2: NormalizedArchitectureModelV2 | None
+    _model_v21: NormalizedArchitectureModelV21 | None
     _model_version: NormalizedModelVersion | None
-    _entities: list[NormalizedEntity | NormalizedEntityV2]
-    _entities_by_id: dict[str, NormalizedEntity | NormalizedEntityV2]
-    _entities_by_alias_id: dict[str, list[NormalizedEntityV2]]
-    _entities_by_alias_ref: dict[str, list[NormalizedEntityV2]]
-    _entities_by_uri: dict[str, NormalizedEntityV2]
-    _relationships: list[RelationshipRecord | RelationshipRecordV2]
-    _subsets: dict[str, list[NormalizedEntity | NormalizedEntityV2]]
+    _entities: list[NormalizedEntity | NormalizedEntityV2 | NormalizedEntityV21]
+    _entities_by_id: dict[str, NormalizedEntity | NormalizedEntityV2 | NormalizedEntityV21]
+    _entities_by_alias_id: dict[str, list[Any]]
+    _entities_by_alias_ref: dict[str, list[Any]]
+    _entities_by_uri: dict[str, Any]
+    _relationships: list[Any]
+    _subsets: dict[str, list[Any]]
 
     _SUBSET_TYPES = SUBSET_TYPES
     _ADR_TYPE_PATTERNS: dict[str, tuple[str, str]] = {
@@ -161,6 +168,10 @@ class ArchitectureRepository:
         """Return the normalized semantic boundary for a model 1.1 loaded scope."""
 
         self.load()
+        if self._model_version == "2.1":
+            raise ArchitectureRegistryError(
+                "Loaded model version is 2.1; use get_model_v21() for canonical/compatibility relationships"
+            )
         if self._model_version == "2.0":
             raise ArchitectureRegistryError(
                 "Loaded model version is 2.0; use get_model_v2() for UUID-identity models"
@@ -180,6 +191,13 @@ class ArchitectureRepository:
                 "Normalized architecture model 2.0 unavailable for this scope"
             )
         return self._model_v2
+
+    def get_model_v21(self) -> NormalizedArchitectureModelV21:
+        """Return the model 2.1 canonical/compatibility semantic boundary."""
+        self.load()
+        if self._model_v21 is None:
+            raise ArchitectureRegistryError("Normalized model 2.1 unavailable for this scope")
+        return self._model_v21
 
     @property
     def model_version(self) -> NormalizedModelVersion:
@@ -213,9 +231,11 @@ class ArchitectureRepository:
             )
         return self.architecture_index
 
-    def get_entities(self) -> list[NormalizedEntity | NormalizedEntityV2]:
+    def get_entities(self) -> list[Any]:
         self.load()
-        if self._model_version == "2.0":
+        if self._model_version in {"2.0", "2.1"}:
+            if self._model_version == "2.1":
+                return list(self.get_model_v21().entities)
             return list(self.get_model_v2().entities)
         return list(self.get_model().entities)
 
@@ -226,10 +246,17 @@ class ArchitectureRepository:
         adr: str | None = None,
         domain: str | None = None,
         status: str | None = None,
-    ) -> list[NormalizedEntity | NormalizedEntityV2]:
+    ) -> list[Any]:
         """Return deterministically filtered semantic entities."""
 
-        if self.model_version == "2.0":
+        if self.model_version in {"2.0", "2.1"}:
+            if self.model_version == "2.1":
+                entities: list[Any] = sorted(self.get_model_v21().entities, key=lambda entity: entity.id)
+                if entity_type:
+                    entities = [entity for entity in entities if entity.entity_type == entity_type]
+                if status:
+                    entities = [entity for entity in entities if entity.lifecycle_stage == status]
+                return entities
             entities: list[NormalizedEntity | NormalizedEntityV2] = sorted(
                 self.get_model_v2().entities, key=lambda entity: entity.id
             )
@@ -302,11 +329,27 @@ class ArchitectureRepository:
     def get_implementation_decisions(self) -> list[NormalizedEntity | NormalizedEntityV2]:
         return self.query_entities(entity_type="implementation_decision")
 
-    def get_relationships(self) -> list[RelationshipRecord | RelationshipRecordV2]:
+    def get_extension_entities(self, entity_type: str | None = None) -> list[Any]:
+        """Return qualified consumer entities without closing the type namespace."""
+        entities = [entity for entity in self.get_entities() if ":" in entity.entity_type]
+        if entity_type is not None:
+            entities = [entity for entity in entities if entity.entity_type == entity_type]
+        return sorted(entities, key=lambda entity: entity.id)
+
+    def get_relationships(self) -> list[Any]:
         self.load()
+        if self._model_version == "2.1":
+            return list(self.get_model_v21().relationships)
         if self._model_version == "2.0":
             return list(self.get_model_v2().relationships)
         return list(self.get_model().relationships)
+
+    def get_extension_relationships(self, relationship_type: str | None = None) -> list[Any]:
+        """Return canonical qualified consumer relationships only."""
+        relationships = [item for item in self.get_relationships() if ":" in item.relationship_type]
+        if relationship_type is not None:
+            relationships = [item for item in relationships if item.relationship_type == relationship_type]
+        return sorted(relationships, key=lambda item: getattr(item, "id", ""))
 
     def get_relationships_for_entity(
         self,
@@ -314,8 +357,15 @@ class ArchitectureRepository:
         *,
         relationship_type: str | None = None,
         direction: Literal["any", "incoming", "outgoing"] = "any",
-    ) -> list[RelationshipRecord | RelationshipRecordV2]:
-        if self.model_version == "2.0":
+    ) -> list[Any]:
+        if self.model_version in {"2.0", "2.1"}:
+            if self.model_version == "2.1":
+                relationships = list(self.get_model_v21().relationships)
+                return [
+                    item for item in relationships
+                    if relationship_type is None or item.relationship_type == relationship_type
+                    if (direction == "any" or (direction == "outgoing" and item.from_entity_id == entity_id) or (direction == "incoming" and item.to_entity_id == entity_id))
+                ]
             return list(
                 self.get_model_v2().relationships_for_entity(
                     entity_id,
@@ -351,7 +401,9 @@ class ArchitectureRepository:
         return sorted(references)
 
     def get_unresolved_for_entity(self, entity_id: str) -> list[UnresolvedRecord]:
-        if self.model_version == "2.0":
+        if self.model_version in {"2.0", "2.1"}:
+            if self.model_version == "2.1":
+                return [item for item in self.get_model_v21().unresolved if item.source_entity_id == entity_id or item.related_entity_id == entity_id]
             return [
                 item
                 for item in self.get_model_v2().unresolved
@@ -366,7 +418,14 @@ class ArchitectureRepository:
         *,
         role: Literal["source", "related", "any"] = "source",
     ) -> list[UnresolvedRecord]:
-        if self.model_version == "2.0":
+        if self.model_version in {"2.0", "2.1"}:
+            if self.model_version == "2.1":
+                unresolved = self.get_model_v21().unresolved
+                if role == "source":
+                    return [item for item in unresolved if item.source_entity_id == entity_id]
+                if role == "related":
+                    return [item for item in unresolved if item.related_entity_id == entity_id]
+                return [item for item in unresolved if item.source_entity_id == entity_id or item.related_entity_id == entity_id]
             unresolved = self.get_model_v2().unresolved
             if role == "source":
                 return [item for item in unresolved if item.source_entity_id == entity_id]
@@ -380,7 +439,10 @@ class ArchitectureRepository:
         return self.get_model().unresolved_for_entity(entity_id, role=role)
 
     def get_adr_status(self, adr_id: str) -> str | None:
-        if self.model_version == "2.0":
+        if self.model_version in {"2.0", "2.1"}:
+            if self.model_version == "2.1":
+                entity = self.find_entity_by_alias_id(adr_id) or self.find_entity_by_uuid(adr_id)
+                return None if entity is None else str(entity.metadata.get("status") or entity.lifecycle_stage)
             entity = self.find_entity_by_alias_id(adr_id)
             if entity is None:
                 entity = self.find_entity_by_uuid(adr_id)
@@ -406,9 +468,9 @@ class ArchitectureRepository:
         return list(entity.source_refs)
 
     def get_entity_adr_refs(self, entity_id: str) -> list[str]:
-        if self.model_version == "2.0":
+        if self.model_version in {"2.0", "2.1"}:
             entity = self._require_entity(entity_id)
-            if isinstance(entity, NormalizedEntityV2):
+            if isinstance(entity, (NormalizedEntityV2, NormalizedEntityV21)):
                 refs = {
                     ref
                     for ref in (
@@ -439,10 +501,10 @@ class ArchitectureRepository:
                 "Compiled contract bundle unavailable before successful normalized load"
             )
         if not isinstance(
-            self.relationship_registry, (RelationshipRegistry, RelationshipRegistryV2)
+            self.relationship_registry, (RelationshipRegistry, RelationshipRegistryV2, RelationshipRegistryV21)
         ):
             raise ArchitectureRegistryError("Relationship registry type is unsupported")
-        if not isinstance(self.unresolved_registry, (UnresolvedRegistry, UnresolvedRegistryV2)):
+        if not isinstance(self.unresolved_registry, (UnresolvedRegistry, UnresolvedRegistryV2, UnresolvedRegistryV21)):
             raise ArchitectureRegistryError("Unresolved registry type is unsupported")
         return ContractBundleView(
             architecture_index=self.architecture_index,
@@ -454,6 +516,31 @@ class ArchitectureRepository:
 
     def get_corpus_summary(self) -> CorpusSummary:
         """Return deterministic corpus orientation data for the current scope."""
+        if self.model_version == "2.1":
+            model_v21 = self.get_model_v21()
+            entity_counts: dict[str, int] = {}
+            adr_counts_by_type: dict[str, int] = {}
+            adr_counts_by_status: dict[str, int] = {}
+            for entity in model_v21.entities:
+                entity_counts[entity.entity_type] = entity_counts.get(entity.entity_type, 0) + 1
+                if entity.entity_type == "adr":
+                    adr_type = self._adr_type_for_id(entity.alias_id)
+                    adr_counts_by_type[adr_type] = adr_counts_by_type.get(adr_type, 0) + 1
+                    status = str(entity.metadata.get("status") or entity.lifecycle_stage)
+                    adr_counts_by_status[status] = adr_counts_by_status.get(status, 0) + 1
+            return CorpusSummary(
+                scope_root=model_v21.scope_root,
+                architecture_namespace=model_v21.architecture_namespace,
+                fingerprint=model_v21.fingerprint,
+                mode=model_v21.mode,
+                entity_counts=dict(sorted(entity_counts.items())),
+                adr_counts_by_type=dict(sorted(adr_counts_by_type.items())),
+                adr_counts_by_status=dict(sorted(adr_counts_by_status.items())),
+                relationship_count=len(model_v21.relationships),
+                unresolved_count=len(model_v21.unresolved),
+                source_coverage=model_v21.source_coverage,
+                validation_summary=model_v21.validation_summary,
+            )
         if self.model_version == "2.0":
             model_v2 = self.get_model_v2()
             entity_counts: dict[str, int] = {}
@@ -644,11 +731,11 @@ class ArchitectureRepository:
             encoding="utf-8",
         )
 
-    def find_entity(self, entity_id: str) -> NormalizedEntity | NormalizedEntityV2 | None:
+    def find_entity(self, entity_id: str) -> NormalizedEntity | NormalizedEntityV2 | NormalizedEntityV21 | None:
         """Locate an entity by canonical UUID or unique alias compatibility shim."""
 
         self.load()
-        if self._model_version == "2.0":
+        if self._model_version in {"2.0", "2.1"}:
             by_uuid = self.find_entity_by_uuid(entity_id)
             if by_uuid is not None:
                 return by_uuid
@@ -666,10 +753,10 @@ class ArchitectureRepository:
                     f"Ambiguous alias_id {entity_id!r}: matches {len(matches)} entities"
                 )
             return None
-        return self.get_model().find_entity(entity_id)
+        return self.get_model_v21().find_entity(entity_id) if self._model_version == "2.1" else self.get_model().find_entity(entity_id)
 
     @implements_adr("ADR-L-0019", "ADR-L-0016")
-    def find_entity_by_uuid(self, uuid: str) -> NormalizedEntityV2 | None:
+    def find_entity_by_uuid(self, uuid: str) -> Any | None:
         """Find a model 2.0 entity by canonical UUIDv7."""
 
         self.load()
@@ -677,10 +764,10 @@ class ArchitectureRepository:
         if not isinstance(uuid, str) or not UUIDV7_PATTERN.match(uuid):
             return None
         entity = self._entities_by_id.get(uuid)
-        return entity if isinstance(entity, NormalizedEntityV2) else None
+        return entity if isinstance(entity, (NormalizedEntityV2, NormalizedEntityV21)) else None
 
     @implements_adr("ADR-L-0019", "ADR-L-0016")
-    def find_entity_by_alias_id(self, alias_id: str) -> NormalizedEntityV2 | None:
+    def find_entity_by_alias_id(self, alias_id: str) -> Any | None:
         """Find a model 2.0 entity by unique alias_id; fail on ambiguity."""
 
         self.load()
@@ -695,7 +782,7 @@ class ArchitectureRepository:
         return matches[0]
 
     @implements_adr("ADR-L-0019", "ADR-L-0016")
-    def find_entity_by_alias_ref(self, alias_ref: str) -> NormalizedEntityV2 | None:
+    def find_entity_by_alias_ref(self, alias_ref: str) -> Any | None:
         """Find a model 2.0 entity by unique alias_ref; fail on ambiguity."""
 
         self.load()
@@ -710,7 +797,7 @@ class ArchitectureRepository:
         return matches[0]
 
     @implements_adr("ADR-L-0019", "ADR-L-0016")
-    def resolve_uri(self, uri: str) -> NormalizedEntityV2:
+    def resolve_uri(self, uri: str) -> Any:
         """Resolve an adr:// URI within this provider repository."""
 
         self.load()
@@ -718,7 +805,7 @@ class ArchitectureRepository:
         entity = self._entities_by_uri.get(uri)
         if entity is None:
             raise ArchitectureRegistryError(f"Entity URI not found: {uri}")
-        namespace = self.get_model_v2().architecture_namespace
+        namespace = self.get_model_v21().architecture_namespace if self._model_version == "2.1" else self.get_model_v2().architecture_namespace
         if namespace and not uri.startswith(f"adr://{namespace}/entities/"):
             raise ArchitectureRegistryError(
                 f"URI namespace does not match provider architecture_namespace {namespace!r}"
@@ -731,6 +818,9 @@ class ArchitectureRepository:
 
         self.load()
         self._require_model_v2()
+        model_entities = (
+            self.get_model_v21().entities if self._model_version == "2.1" else self.get_model_v2().entities
+        )
         records = [
             EntityAliasRecord(
                 uuid=entity.id,
@@ -740,7 +830,7 @@ class ArchitectureRepository:
                 entity_type=entity.entity_type,
                 uri=entity.uri,
             )
-            for entity in self.get_model_v2().entities
+            for entity in model_entities
         ]
         return sorted(records, key=lambda item: (item.alias_id, item.uuid))
 
@@ -767,18 +857,22 @@ class ArchitectureRepository:
         raise ArchitectureRegistryError(f"Entity reference not found: {reference}")
 
     def _require_model_v2(self) -> None:
+        if self._model_version == "2.1":
+            if self._model_v21 is None:
+                raise ArchitectureRegistryError("UUID/alias/URI identity APIs require a loaded model 2.1 bundle")
+            return
         if self._model_version != "2.0" or self._model_v2 is None:
             raise ArchitectureRegistryError(
                 "UUID/alias/URI identity APIs require a loaded model 2.0 bundle"
             )
 
-    def _require_entity(self, entity_id: str) -> NormalizedEntity | NormalizedEntityV2:
+    def _require_entity(self, entity_id: str) -> Any:
         entity = self.find_entity(entity_id)
         if entity is None:
             raise ArchitectureRegistryError(f"Entity not found: {entity_id}")
         return entity
 
-    def _get_subset(self, name: str) -> list[NormalizedEntity | NormalizedEntityV2]:
+    def _get_subset(self, name: str) -> list[Any]:
         self.load()
         return list(self._subsets.get(name, []))
 
@@ -814,7 +908,16 @@ class ArchitectureRepository:
         self.legacy_entity_registry = None
         self._fingerprint = bundle.fingerprint
         self._model_version = bundle.model_version
-        if isinstance(bundle, NormalizedBundleV2):
+        if isinstance(bundle, NormalizedBundleV21):
+            self._model = None
+            self._model_v2 = None
+            self._model_v21 = bundle.model
+            self._entities = list(bundle.entity_registry.entities)
+            self._entities_by_id = {entity.id: entity for entity in bundle.entity_registry.entities}
+            self._relationships = list(bundle.relationship_registry.relationships)
+            self._subsets = {name: list(values) for name, values in bundle.subsets.items()}
+            self._index_v2_aliases(bundle.entity_registry.entities)
+        elif isinstance(bundle, NormalizedBundleV2):
             self._model = None
             self._model_v2 = bundle.model
             self._entities = list(bundle.entity_registry.entities)
@@ -825,6 +928,7 @@ class ArchitectureRepository:
         elif isinstance(bundle, NormalizedBundle):
             self._model = bundle.model
             self._model_v2 = None
+            self._model_v21 = None
             self._entities = list(bundle.entity_registry.entities)
             self._entities_by_id = {entity.id: entity for entity in bundle.entity_registry.entities}
             self._relationships = list(bundle.relationship_registry.relationships)
@@ -835,10 +939,10 @@ class ArchitectureRepository:
         else:
             raise ArchitectureRegistryError("Unsupported normalized bundle type")
 
-    def _index_v2_aliases(self, entities: list[NormalizedEntityV2]) -> None:
-        by_alias_id: dict[str, list[NormalizedEntityV2]] = {}
-        by_alias_ref: dict[str, list[NormalizedEntityV2]] = {}
-        by_uri: dict[str, NormalizedEntityV2] = {}
+    def _index_v2_aliases(self, entities: list[Any]) -> None:
+        by_alias_id: dict[str, list[Any]] = {}
+        by_alias_ref: dict[str, list[Any]] = {}
+        by_uri: dict[str, Any] = {}
         for entity in entities:
             by_alias_id.setdefault(entity.alias_id, []).append(entity)
             alias_ref = entity.alias_ref or derive_alias_ref(entity.alias_id, entity.alias_name)
@@ -894,6 +998,7 @@ class ArchitectureRepository:
         )
         self._model = adapted_model.model_copy(update={"fingerprint": self._fingerprint})
         self._model_v2 = None
+        self._model_v21 = None
         self._model_version = "1.1"
         self._entities_by_alias_id = {}
         self._entities_by_alias_ref = {}
@@ -909,6 +1014,7 @@ class ArchitectureRepository:
         self.legacy_entity_registry = None
         self._model = None
         self._model_v2 = None
+        self._model_v21 = None
         self._model_version = None
         self._entities = []
         self._entities_by_id = {}

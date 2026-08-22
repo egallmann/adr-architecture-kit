@@ -1,0 +1,9 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://adr-kit.ste.systems/schema/authoring/v1.4/adr-physical-system.schema.json",
+  "title": "Physical-System ADR Schema (authoring v1.4)",
+  "allOf": [{"$ref": "adr-common.schema.json"}],
+  "type": "object",
+  "properties": {"adr_type": {"const": "physical-system"}},
+  "additionalProperties": true
+}

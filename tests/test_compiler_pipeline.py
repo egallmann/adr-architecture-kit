@@ -42,9 +42,10 @@ def test_default_frontend_pipeline_pass_order():
         "version_detection",
         "adr_normalization",
         "logical_entity_extraction",
-        "invariant_extraction",
-        "physical_entity_extraction",
-        "relationship_inference",
+            "invariant_extraction",
+            "physical_entity_extraction",
+            "extension_entity_extraction",
+            "relationship_inference",
         "unresolved_detection",
         "validation",
     ]

@@ -5,6 +5,8 @@ from __future__ import annotations
 import re
 from importlib import import_module, metadata
 from pathlib import Path
+import subprocess
+import sys
 from types import ModuleType
 
 import pytest
@@ -65,6 +67,19 @@ def test_cli_runtime_and_capability_versions_match() -> None:
     assert adr_kit.__version__ == metadata.version("adr-architecture-kit")
     assert cli_version == adr_kit.__version__
     assert api.capabilities().package_version == adr_kit.__version__
+
+
+def test_node_package_versions_follow_pyproject_authority() -> None:
+    script = ROOT / "scripts" / "sync_node_package_version.py"
+    result = subprocess.run(
+        [sys.executable, str(script), "--check"],
+        cwd=ROOT,
+        text=True,
+        capture_output=True,
+        check=False,
+    )
+
+    assert result.returncode == 0, result.stdout + result.stderr
 
 
 def test_missing_metadata_and_source_returns_unknown_sentinel(

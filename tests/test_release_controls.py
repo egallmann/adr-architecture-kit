@@ -11,7 +11,7 @@ import sys
 import tarfile
 from pathlib import Path
 
-from typing import Any
+from typing import Any, cast
 
 import yaml
 
@@ -288,6 +288,33 @@ def test_publish_workflow_is_promotion_only_and_scopes_oidc() -> None:
     assert "gh-action-pypi-publish" in publish_text
     assert "os-portability" not in yaml.dump(workflow)
     assert "os-wheel-smoke" not in yaml.dump(workflow)
+
+
+def test_npm_publish_workflow_is_promotion_only_and_uses_trusted_publishing_runtime() -> None:
+    workflow = _load_workflow("publish-npm.yml")
+    jobs = workflow["jobs"]
+    resolve = jobs["resolve-bundle"]
+    publish = jobs["publish"]
+
+    trigger = workflow.get("on")
+    if trigger is None:
+        trigger = workflow.get(cast(Any, True))
+    assert isinstance(trigger, dict)
+    assert trigger["push"]["tags"] == ["v*"]
+    assert resolve["permissions"] == {"contents": "read", "actions": "read"}
+    assert publish["permissions"] == {"contents": "read", "id-token": "write"}
+    assert publish["environment"]["name"] == "npm"
+    assert publish["needs"] == ["resolve-bundle"]
+
+    publish_text = _job_steps_text(publish)
+    assert "22.14.0" in publish_text
+    assert "npm@11.15.0" in publish_text
+    assert "npm publish" in publish_text
+    assert "--provenance" in publish_text
+    assert "download-artifact" in publish_text
+    assert "npm run build" not in publish_text
+    assert "npm ci" not in publish_text
+    assert "python -m build" not in publish_text
 
 
 def test_pr_workflow_has_orthogonal_qualification_owners() -> None:

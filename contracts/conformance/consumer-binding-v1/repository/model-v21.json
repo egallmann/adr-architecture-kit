@@ -1,0 +1,97 @@
+{
+  "input": {
+    "schema_version": "2.1",
+    "type": "normalized_architecture_model",
+    "mode": "normalized",
+    "scope_root": "/fixture/repository",
+    "architecture_namespace": "fixture",
+    "fingerprint": "sha256:fixture-python-binding-local",
+    "entities": [
+      {
+        "id": "018f2c9a-5f2a-7e11-8b3c-1234567890ab",
+        "alias_id": "ADR-0001",
+        "alias_name": "fixture-architecture",
+        "alias_ref": "ADR-0001:fixture-architecture",
+        "entity_type": "adr",
+        "name": "Fixture Architecture",
+        "summary": "A canonical conformance fixture.",
+        "uri": "adr://fixture/entities/018f2c9a-5f2a-7e11-8b3c-1234567890ab",
+        "created_at": "2026-08-23T00:00:00Z",
+        "entity_fingerprint": "sha256:0000000000000000000000000000000000000000000000000000000000000001",
+        "lifecycle_stage": "active",
+        "canonical_source": {"path": "adrs/logical/ADR-L-0001-fixture.yaml"},
+        "completeness": {"status": "complete"},
+        "provenance": {"source": "fixture"}
+      },
+      {
+        "id": "018f2c9a-5f2a-7e12-8b3c-1234567890ac",
+        "alias_id": "EXT-0001",
+        "alias_name": "fixture-worker",
+        "alias_ref": "EXT-0001:fixture-worker",
+        "entity_type": "fixture:worker",
+        "name": "Fixture Worker",
+        "summary": "An unknown qualified extension type.",
+        "uri": "adr://fixture/entities/018f2c9a-5f2a-7e12-8b3c-1234567890ac",
+        "created_at": "2026-08-23T00:00:00Z",
+        "entity_fingerprint": "sha256:0000000000000000000000000000000000000000000000000000000000000002",
+        "lifecycle_stage": "proposed",
+        "canonical_source": {"path": "extensions/worker.yaml"},
+        "completeness": {"status": "complete"},
+        "provenance": {"source": "fixture"},
+        "extension": {
+          "properties": {"flags": [true, false], "retries": 3, "labels": ["blue", "fast"]},
+          "rationale": "The fixture proves opaque qualified extension preservation."
+        }
+      }
+    ],
+    "relationships": [
+      {
+        "record_kind": "canonical",
+        "id": "018f2c9a-5f2a-7e13-8b3c-1234567890ad",
+        "alias_id": "REL-0001",
+        "alias_name": "fixture-implements",
+        "relationship_type": "implements_logical",
+        "from_entity_id": "018f2c9a-5f2a-7e12-8b3c-1234567890ac",
+        "to_entity_id": "018f2c9a-5f2a-7e11-8b3c-1234567890ab",
+        "source_owner_id": null,
+        "source_pointer": null,
+        "provenance_classification": "explicit",
+        "evidence": [],
+        "canonical_source_ref": "fixture:relationship/1",
+        "confidence": 1.0,
+        "extension": {"properties": {"mode": "fixture"}, "rationale": "Explicit extension relationship payload."}
+      },
+      {
+        "record_kind": "compatibility",
+        "relationship_id": "compat:fixture:1",
+        "assertion_id": "asrt-0000000000000000000000000000000000000000000000000000000000000001",
+        "relationship_type": "related_to",
+        "from_entity_id": "018f2c9a-5f2a-7e12-8b3c-1234567890ac",
+        "to_entity_id": "018f2c9a-5f2a-7e11-8b3c-1234567890ab",
+        "source_owner_id": null,
+        "source_pointer": null,
+        "provenance_classification": "derived",
+        "evidence": [],
+        "canonical_source_ref": "fixture:relationship/compatibility/1",
+        "confidence": 0.5,
+        "metadata": {"compatibility_only": true}
+      }
+    ],
+    "unresolved": [
+      {"kind": "entity_reference", "token": "fixture:missing", "reason": "fixture unresolved target"}
+    ]
+  },
+  "expected_observable_semantic_result": {
+    "schema_version": "2.1",
+    "entity_ids": ["018f2c9a-5f2a-7e11-8b3c-1234567890ab", "018f2c9a-5f2a-7e12-8b3c-1234567890ac"],
+    "entity_types": ["adr", "fixture:worker"],
+    "alias_resolution": {"ADR-0001": "018f2c9a-5f2a-7e11-8b3c-1234567890ab", "EXT-0001": "018f2c9a-5f2a-7e12-8b3c-1234567890ac"},
+    "relationship_record_kinds": ["canonical", "compatibility"],
+    "unresolved_count": 1,
+    "extension_boolean_array": [true, false],
+    "fingerprint_comparison": "not_required_across_bindings"
+  },
+  "authority_references": ["ADR-L-0013", "ADR-L-0019", "ADR-L-0023", "ADR-L-0024", "schema/normalized-model/v2.1"],
+  "capability": "normalized_model:2.1",
+  "contract_version": "1.0"
+}

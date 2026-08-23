@@ -1,0 +1,7 @@
+{
+  "input": {"schema_version": "1.1", "type": "normalized_architecture_model", "entities": [], "relationships": [], "unresolved": []},
+  "expected_observable_semantic_result": {"classification": "unsupported_contract_version", "stable_code": "contract.unsupported_version"},
+  "authority_references": ["ADR-L-0024", "schema/normalized-model/v2.1"],
+  "capability": "normalized_model:unsupported",
+  "contract_version": "1.0"
+}

@@ -1,4 +1,4 @@
-"""Mechanical v1.5 semantic attribution vocabulary."""
+"""Versioned semantic attribution vocabulary selection."""
 
 from __future__ import annotations
 
@@ -14,12 +14,16 @@ class SemanticAttributionVocabularyError(ValueError):
     """Vocabulary document is missing or malformed."""
 
 
-@lru_cache(maxsize=1)
-def load_semantic_attribution_vocabulary() -> dict[str, Any]:
-    """Load the packaged v1.5 vocabulary (byte-identical to canonical evidence-attribution)."""
+@lru_cache(maxsize=2)
+def load_semantic_attribution_vocabulary(version: str = "1.5") -> dict[str, Any]:
+    """Load the canonical vocabulary for one supported evidence schema version."""
+
+    if version not in {"1.5", "1.6"}:
+        raise SemanticAttributionVocabularyError(f"unsupported vocabulary version: {version!r}")
+    package = f"adr_kit.schema.v{version.replace('.', '_')}"
 
     payload = (
-        resources.files("adr_kit.schema.v1_5")
+        resources.files(package)
         .joinpath("semantic-attribution-vocabulary.json")
         .read_text(encoding="utf-8")
     )
@@ -32,14 +36,14 @@ def load_semantic_attribution_vocabulary() -> dict[str, Any]:
     return data
 
 
-def relationship_names() -> tuple[str, ...]:
-    vocabulary = load_semantic_attribution_vocabulary()
+def relationship_names(version: str = "1.5") -> tuple[str, ...]:
+    vocabulary = load_semantic_attribution_vocabulary(version)
     names = tuple(vocabulary["relationships"].keys())
     return names
 
 
-def allowed_target_entity_types(relationship: str) -> frozenset[str]:
-    vocabulary = load_semantic_attribution_vocabulary()
+def allowed_target_entity_types(relationship: str, *, version: str = "1.5") -> frozenset[str]:
+    vocabulary = load_semantic_attribution_vocabulary(version)
     spec = vocabulary["relationships"].get(relationship)
     if not isinstance(spec, Mapping):
         raise SemanticAttributionVocabularyError(f"unknown relationship: {relationship}")
@@ -51,16 +55,16 @@ def allowed_target_entity_types(relationship: str) -> frozenset[str]:
     return frozenset(allowed)
 
 
-def canonical_claims_attribute() -> str:
-    vocabulary = load_semantic_attribution_vocabulary()
+def canonical_claims_attribute(version: str = "1.5") -> str:
+    vocabulary = load_semantic_attribution_vocabulary(version)
     name = vocabulary.get("canonical_claims_attribute", "__architecture_attribution_claims__")
     if not isinstance(name, str) or not name:
         raise SemanticAttributionVocabularyError("canonical_claims_attribute must be a string")
     return name
 
 
-def uuid_decorator_name(relationship: str) -> str:
-    vocabulary = load_semantic_attribution_vocabulary()
+def uuid_decorator_name(relationship: str, *, version: str = "1.5") -> str:
+    vocabulary = load_semantic_attribution_vocabulary(version)
     spec = vocabulary["relationships"][relationship]
     name = spec["uuid_decorator"]
     if not isinstance(name, str):
@@ -68,8 +72,8 @@ def uuid_decorator_name(relationship: str) -> str:
     return name
 
 
-def uuid_sequence_decorator_name(relationship: str) -> str:
-    vocabulary = load_semantic_attribution_vocabulary()
+def uuid_sequence_decorator_name(relationship: str, *, version: str = "1.5") -> str:
+    vocabulary = load_semantic_attribution_vocabulary(version)
     spec = vocabulary["relationships"][relationship]
     name = spec["uuid_sequence_decorator"]
     if not isinstance(name, str):

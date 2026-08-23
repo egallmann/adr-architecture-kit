@@ -212,7 +212,9 @@ def build_embodiment_linkage(request: EmbodimentLinkageRequest) -> EmbodimentLin
                             path,
                         )
                     )
-                if entity.entity_type not in allowed_target_entity_types(claim.relationship):
+                if entity.entity_type not in allowed_target_entity_types(
+                    claim.relationship, version=evidence.schema_version
+                ):
                     claim_diagnostics.append(
                         _diagnostic(
                             "attribution.illegal_target_type",

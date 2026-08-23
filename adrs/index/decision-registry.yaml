@@ -8982,3 +8982,757 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
+- id: 01a02d38-7cf3-700a-880b-182eb0956a24
+  alias_id: DEC-0159
+  alias_name: conformance-levels-are-distinct
+  alias_ref: DEC-0159:conformance-levels-are-distinct
+  entity_type: decision
+  name: Consumer Binding Contract 1.0 distinguishes structural semantic behavioral
+    diagnostic and serialization equivalence
+  summary: Structural and semantic agreement must not silently impose exact exception
+    classes, bytes, hashes, or object layout.
+  uri: adr://adr-architecture-kit/entities/01a02d38-7cf3-700a-880b-182eb0956a24
+  created_at: '2026-08-23T06:04:31.859Z'
+  entity_fingerprint: sha256:de107beca479479adf3980caf84a0aec70c398b0c52ce3540f64405afd088607
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a02d38-7cf3-7b3c-87ec-1c5f08490c6e#01a02d38-7cf3-700a-880b-182eb0956a24
+    artifact_path: adrs/logical/ADR-L-0024-cross-language-consumer-bindings-and-typescript-distribution.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a02d38-7cf3-7b3c-87ec-1c5f08490c6e
+    adr_alias_id: ADR-L-0024
+    related_invariants: []
+    enforces_invariants: []
+    enables_capabilities: []
+    governs_components: []
+    supersedes: []
+    refines: []
+    alias_name: conformance-levels-are-distinct
+    alias_id: DEC-0159
+  relationships:
+    declared_in:
+    - 01a02d38-7cf3-7b3c-87ec-1c5f08490c6e
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a02d38-7cf3-7b3c-87ec-1c5f08490c6e#01a02d38-7cf3-700a-880b-182eb0956a24
+    extraction_phase: extract_decision
+    classification: explicit
+    generator: adr-architecture-index
+- id: 01a02d38-7cf3-7177-8edc-dfc953ae9947
+  alias_id: DEC-0166
+  alias_name: node-linkage-remains-derived-evidence
+  alias_ref: DEC-0166:node-linkage-remains-derived-evidence
+  entity_type: decision
+  name: Node embodiment linkage preserves validated-derived-evidence authority ceiling
+    and not-admitted graph status
+  summary: Evidence declarations and validated links do not become canonical architecture
+    graph authority.
+  uri: adr://adr-architecture-kit/entities/01a02d38-7cf3-7177-8edc-dfc953ae9947
+  created_at: '2026-08-23T06:04:31.859Z'
+  entity_fingerprint: sha256:8f578a2c02d2a8035e13b08fee1e52c3d109c08a3c32799136fe09db14032602
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a02d38-7cf3-7b3c-87ec-1c5f08490c6e#01a02d38-7cf3-7177-8edc-dfc953ae9947
+    artifact_path: adrs/logical/ADR-L-0024-cross-language-consumer-bindings-and-typescript-distribution.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a02d38-7cf3-7b3c-87ec-1c5f08490c6e
+    adr_alias_id: ADR-L-0024
+    related_invariants: []
+    enforces_invariants: []
+    enables_capabilities: []
+    governs_components: []
+    supersedes: []
+    refines: []
+    alias_name: node-linkage-remains-derived-evidence
+    alias_id: DEC-0166
+  relationships:
+    declared_in:
+    - 01a02d38-7cf3-7b3c-87ec-1c5f08490c6e
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a02d38-7cf3-7b3c-87ec-1c5f08490c6e#01a02d38-7cf3-7177-8edc-dfc953ae9947
+    extraction_phase: extract_decision
+    classification: explicit
+    generator: adr-architecture-index
+- id: 01a02d38-7cf3-7194-8e04-4339c496d93a
+  alias_id: DEC-0155
+  alias_name: language-neutral-adr-kit-semantic-authority
+  alias_ref: DEC-0155:language-neutral-adr-kit-semantic-authority
+  entity_type: decision
+  name: Accepted ADRs canonical schemas vocabularies and promoted binding contracts
+    are language-neutral semantic authority
+  summary: Python and TypeScript implement authority; neither implementation becomes
+    authoritative by existing.
+  uri: adr://adr-architecture-kit/entities/01a02d38-7cf3-7194-8e04-4339c496d93a
+  created_at: '2026-08-23T06:04:31.859Z'
+  entity_fingerprint: sha256:14486eb0e0bece0295571ca3b5c0570bd8e12ef074f78f58feed3380945feaf2
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a02d38-7cf3-7b3c-87ec-1c5f08490c6e#01a02d38-7cf3-7194-8e04-4339c496d93a
+    artifact_path: adrs/logical/ADR-L-0024-cross-language-consumer-bindings-and-typescript-distribution.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a02d38-7cf3-7b3c-87ec-1c5f08490c6e
+    adr_alias_id: ADR-L-0024
+    related_invariants: []
+    enforces_invariants: []
+    enables_capabilities: []
+    governs_components: []
+    supersedes: []
+    refines: []
+    alias_name: language-neutral-adr-kit-semantic-authority
+    alias_id: DEC-0155
+  relationships:
+    declared_in:
+    - 01a02d38-7cf3-7b3c-87ec-1c5f08490c6e
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a02d38-7cf3-7b3c-87ec-1c5f08490c6e#01a02d38-7cf3-7194-8e04-4339c496d93a
+    extraction_phase: extract_decision
+    classification: explicit
+    generator: adr-architecture-index
+- id: 01a02d38-7cf3-724d-83e0-8739d6eeeeb5
+  alias_id: DEC-0162
+  alias_name: explicit-browser-node-boundaries
+  alias_ref: DEC-0162:explicit-browser-node-boundaries
+  entity_type: decision
+  name: Browser-safe entry points exclude Node built-ins and filesystem behavior is
+    available only through explicit Node subpaths
+  summary: Angular is a consumer environment, not an ADR-Kit framework dependency,
+    and the browser is not filesystem authority.
+  uri: adr://adr-architecture-kit/entities/01a02d38-7cf3-724d-83e0-8739d6eeeeb5
+  created_at: '2026-08-23T06:04:31.859Z'
+  entity_fingerprint: sha256:205c1575efa83e7ea82a07ed25869074c364801097fbcc3f152a85ff086c2015
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a02d38-7cf3-7b3c-87ec-1c5f08490c6e#01a02d38-7cf3-724d-83e0-8739d6eeeeb5
+    artifact_path: adrs/logical/ADR-L-0024-cross-language-consumer-bindings-and-typescript-distribution.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a02d38-7cf3-7b3c-87ec-1c5f08490c6e
+    adr_alias_id: ADR-L-0024
+    related_invariants: []
+    enforces_invariants: []
+    enables_capabilities: []
+    governs_components: []
+    supersedes: []
+    refines: []
+    alias_name: explicit-browser-node-boundaries
+    alias_id: DEC-0162
+  relationships:
+    declared_in:
+    - 01a02d38-7cf3-7b3c-87ec-1c5f08490c6e
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a02d38-7cf3-7b3c-87ec-1c5f08490c6e#01a02d38-7cf3-724d-83e0-8739d6eeeeb5
+    extraction_phase: extract_decision
+    classification: explicit
+    generator: adr-architecture-index
+- id: 01a02d38-7cf3-7271-8b60-20c2a3f50ae6
+  alias_id: DEC-0165
+  alias_name: node-index-first-repository-loading
+  alias_ref: DEC-0165:node-index-first-repository-loading
+  entity_type: decision
+  name: Node repository loading is index-first manifest-aware additive-safe and never
+    reparses source ADR YAML as a fallback
+  summary: Cross-language consumers must preserve compiler-owned discovery authority
+    and required baseline ingestion.
+  uri: adr://adr-architecture-kit/entities/01a02d38-7cf3-7271-8b60-20c2a3f50ae6
+  created_at: '2026-08-23T06:04:31.859Z'
+  entity_fingerprint: sha256:f53c15b214f8ebb13f4bd10afec61731ef3a93fbbb90396cb7417263b6a08e07
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a02d38-7cf3-7b3c-87ec-1c5f08490c6e#01a02d38-7cf3-7271-8b60-20c2a3f50ae6
+    artifact_path: adrs/logical/ADR-L-0024-cross-language-consumer-bindings-and-typescript-distribution.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a02d38-7cf3-7b3c-87ec-1c5f08490c6e
+    adr_alias_id: ADR-L-0024
+    related_invariants: []
+    enforces_invariants: []
+    enables_capabilities: []
+    governs_components: []
+    supersedes: []
+    refines: []
+    alias_name: node-index-first-repository-loading
+    alias_id: DEC-0165
+  relationships:
+    declared_in:
+    - 01a02d38-7cf3-7b3c-87ec-1c5f08490c6e
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a02d38-7cf3-7b3c-87ec-1c5f08490c6e#01a02d38-7cf3-7271-8b60-20c2a3f50ae6
+    extraction_phase: extract_decision
+    classification: explicit
+    generator: adr-architecture-index
+- id: 01a02d38-7cf3-7418-8bba-4fa7ecdd2151
+  alias_id: DEC-0158
+  alias_name: capability-scoped-conformance
+  alias_ref: DEC-0158:capability-scoped-conformance
+  entity_type: decision
+  name: Conformance is required only for the intersection of capabilities and contract
+    versions advertised by bindings
+  summary: A narrow binding may qualify honestly without implementing every operation
+    exposed by another binding.
+  uri: adr://adr-architecture-kit/entities/01a02d38-7cf3-7418-8bba-4fa7ecdd2151
+  created_at: '2026-08-23T06:04:31.859Z'
+  entity_fingerprint: sha256:6073e14c54ec7bc61b1ea091fc1e46b2131c04f70cd49b55d0cfeb34c7403fe5
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a02d38-7cf3-7b3c-87ec-1c5f08490c6e#01a02d38-7cf3-7418-8bba-4fa7ecdd2151
+    artifact_path: adrs/logical/ADR-L-0024-cross-language-consumer-bindings-and-typescript-distribution.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a02d38-7cf3-7b3c-87ec-1c5f08490c6e
+    adr_alias_id: ADR-L-0024
+    related_invariants: []
+    enforces_invariants: []
+    enables_capabilities: []
+    governs_components: []
+    supersedes: []
+    refines: []
+    alias_name: capability-scoped-conformance
+    alias_id: DEC-0158
+  relationships:
+    declared_in:
+    - 01a02d38-7cf3-7b3c-87ec-1c5f08490c6e
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a02d38-7cf3-7b3c-87ec-1c5f08490c6e#01a02d38-7cf3-7418-8bba-4fa7ecdd2151
+    extraction_phase: extract_decision
+    classification: explicit
+    generator: adr-architecture-index
+- id: 01a02d38-7cf3-74b3-8297-f3df87d11f35
+  alias_id: DEC-0163
+  alias_name: typescript-contract-support-is-narrow
+  alias_ref: DEC-0163:typescript-contract-support-is-narrow
+  entity_type: decision
+  name: TypeScript v1 supports normalized model 2.1 evidence attribution 1.5 and 1.6
+    discovery loading and normalized semantic extensions
+  summary: Unsupported versions must fail explicitly rather than being accepted through
+    historical implementation parity.
+  uri: adr://adr-architecture-kit/entities/01a02d38-7cf3-74b3-8297-f3df87d11f35
+  created_at: '2026-08-23T06:04:31.859Z'
+  entity_fingerprint: sha256:591304d7e7f09d141f1d13563185032706e7985cfeb56cd8e223d157010eee3f
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a02d38-7cf3-7b3c-87ec-1c5f08490c6e#01a02d38-7cf3-74b3-8297-f3df87d11f35
+    artifact_path: adrs/logical/ADR-L-0024-cross-language-consumer-bindings-and-typescript-distribution.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a02d38-7cf3-7b3c-87ec-1c5f08490c6e
+    adr_alias_id: ADR-L-0024
+    related_invariants: []
+    enforces_invariants: []
+    enables_capabilities: []
+    governs_components: []
+    supersedes: []
+    refines: []
+    alias_name: typescript-contract-support-is-narrow
+    alias_id: DEC-0163
+  relationships:
+    declared_in:
+    - 01a02d38-7cf3-7b3c-87ec-1c5f08490c6e
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a02d38-7cf3-7b3c-87ec-1c5f08490c6e#01a02d38-7cf3-74b3-8297-f3df87d11f35
+    extraction_phase: extract_decision
+    classification: explicit
+    generator: adr-architecture-index
+- id: 01a02d38-7cf3-7532-8d1e-2c81adf25864
+  alias_id: DEC-0167
+  alias_name: shared-release-lineage
+  alias_ref: DEC-0167:shared-release-lineage
+  entity_type: decision
+  name: PyPI and npm artifacts represent one ADR-Kit source release and do not create
+    independent semantic version lineages
+  summary: Consumers need one release identity while package publication remains an
+    operational release step.
+  uri: adr://adr-architecture-kit/entities/01a02d38-7cf3-7532-8d1e-2c81adf25864
+  created_at: '2026-08-23T06:04:31.859Z'
+  entity_fingerprint: sha256:ddf6fc5042d0b7dc8189c00cf522d41dd49f901872230b1e18e9b474924ca051
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a02d38-7cf3-7b3c-87ec-1c5f08490c6e#01a02d38-7cf3-7532-8d1e-2c81adf25864
+    artifact_path: adrs/logical/ADR-L-0024-cross-language-consumer-bindings-and-typescript-distribution.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a02d38-7cf3-7b3c-87ec-1c5f08490c6e
+    adr_alias_id: ADR-L-0024
+    related_invariants: []
+    enforces_invariants: []
+    enables_capabilities: []
+    governs_components: []
+    supersedes: []
+    refines: []
+    alias_name: shared-release-lineage
+    alias_id: DEC-0167
+  relationships:
+    declared_in:
+    - 01a02d38-7cf3-7b3c-87ec-1c5f08490c6e
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a02d38-7cf3-7b3c-87ec-1c5f08490c6e#01a02d38-7cf3-7532-8d1e-2c81adf25864
+    extraction_phase: extract_decision
+    classification: explicit
+    generator: adr-architecture-index
+- id: 01a02d38-7cf3-7765-8a96-0cdd35f55df5
+  alias_id: DEC-0161
+  alias_name: read-only-typescript-release-boundary
+  alias_ref: DEC-0161:read-only-typescript-release-boundary
+  entity_type: decision
+  name: The first TypeScript release is read-only and excludes authoring identity
+    allocation graph admission CLI MCP and repository writes
+  summary: Consumer safety and authority ownership require a deliberately bounded
+    first release.
+  uri: adr://adr-architecture-kit/entities/01a02d38-7cf3-7765-8a96-0cdd35f55df5
+  created_at: '2026-08-23T06:04:31.859Z'
+  entity_fingerprint: sha256:0e1112ff410370eb8e2b639110ef4c96971bf707f3180feaced63a450d8973b5
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a02d38-7cf3-7b3c-87ec-1c5f08490c6e#01a02d38-7cf3-7765-8a96-0cdd35f55df5
+    artifact_path: adrs/logical/ADR-L-0024-cross-language-consumer-bindings-and-typescript-distribution.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a02d38-7cf3-7b3c-87ec-1c5f08490c6e
+    adr_alias_id: ADR-L-0024
+    related_invariants: []
+    enforces_invariants: []
+    enables_capabilities: []
+    governs_components: []
+    supersedes: []
+    refines: []
+    alias_name: read-only-typescript-release-boundary
+    alias_id: DEC-0161
+  relationships:
+    declared_in:
+    - 01a02d38-7cf3-7b3c-87ec-1c5f08490c6e
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a02d38-7cf3-7b3c-87ec-1c5f08490c6e#01a02d38-7cf3-7765-8a96-0cdd35f55df5
+    extraction_phase: extract_decision
+    classification: explicit
+    generator: adr-architecture-index
+- id: 01a02d38-7cf3-78dc-8d0f-4d4a41000fe3
+  alias_id: DEC-0160
+  alias_name: canonical-schema-bytes-remain-shared
+  alias_ref: DEC-0160:canonical-schema-bytes-remain-shared
+  entity_type: decision
+  name: TypeScript consumes copy-exact generated mirrors of canonical schema bytes
+    from schema/
+  summary: Generated mirrors can serve packaging but cannot become a second schema
+    authority.
+  uri: adr://adr-architecture-kit/entities/01a02d38-7cf3-78dc-8d0f-4d4a41000fe3
+  created_at: '2026-08-23T06:04:31.859Z'
+  entity_fingerprint: sha256:51c95655256be9e3c449e4f3013b87339db18e05331e62dee97031e3012dd7b1
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a02d38-7cf3-7b3c-87ec-1c5f08490c6e#01a02d38-7cf3-78dc-8d0f-4d4a41000fe3
+    artifact_path: adrs/logical/ADR-L-0024-cross-language-consumer-bindings-and-typescript-distribution.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a02d38-7cf3-7b3c-87ec-1c5f08490c6e
+    adr_alias_id: ADR-L-0024
+    related_invariants: []
+    enforces_invariants: []
+    enables_capabilities: []
+    governs_components: []
+    supersedes: []
+    refines: []
+    alias_name: canonical-schema-bytes-remain-shared
+    alias_id: DEC-0160
+  relationships:
+    declared_in:
+    - 01a02d38-7cf3-7b3c-87ec-1c5f08490c6e
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a02d38-7cf3-7b3c-87ec-1c5f08490c6e#01a02d38-7cf3-78dc-8d0f-4d4a41000fe3
+    extraction_phase: extract_decision
+    classification: explicit
+    generator: adr-architecture-index
+- id: 01a02d38-7cf3-7a6f-8b71-a3624877c1b3
+  alias_id: DEC-0156
+  alias_name: official-typescript-consumer-package
+  alias_ref: DEC-0156:official-typescript-consumer-package
+  entity_type: decision
+  name: The official TypeScript consumer binding is distributed as @system-of-thought/adr-kit
+    from this repository
+  summary: A shared repository and release lineage prevent a sibling semantic authority
+    and independent language versioning.
+  uri: adr://adr-architecture-kit/entities/01a02d38-7cf3-7a6f-8b71-a3624877c1b3
+  created_at: '2026-08-23T06:04:31.859Z'
+  entity_fingerprint: sha256:1db52f83bc00b85e82d13cd5887580e43ee2823f46de57d9b5e662094c590c56
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a02d38-7cf3-7b3c-87ec-1c5f08490c6e#01a02d38-7cf3-7a6f-8b71-a3624877c1b3
+    artifact_path: adrs/logical/ADR-L-0024-cross-language-consumer-bindings-and-typescript-distribution.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a02d38-7cf3-7b3c-87ec-1c5f08490c6e
+    adr_alias_id: ADR-L-0024
+    related_invariants: []
+    enforces_invariants: []
+    enables_capabilities: []
+    governs_components: []
+    supersedes: []
+    refines: []
+    alias_name: official-typescript-consumer-package
+    alias_id: DEC-0156
+  relationships:
+    declared_in:
+    - 01a02d38-7cf3-7b3c-87ec-1c5f08490c6e
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a02d38-7cf3-7b3c-87ec-1c5f08490c6e#01a02d38-7cf3-7a6f-8b71-a3624877c1b3
+    extraction_phase: extract_decision
+    classification: explicit
+    generator: adr-architecture-index
+- id: 01a02d38-7cf3-7b62-80b7-c907b9f972d6
+  alias_id: DEC-0157
+  alias_name: consumer-binding-contract-one-point-zero
+  alias_ref: DEC-0157:consumer-binding-contract-one-point-zero
+  entity_type: decision
+  name: Consumer Binding Contract 1.0 governs conformance across supported language
+    bindings
+  summary: An explicit contract makes capability overlap and observable equivalence
+    testable without requiring implementation identity.
+  uri: adr://adr-architecture-kit/entities/01a02d38-7cf3-7b62-80b7-c907b9f972d6
+  created_at: '2026-08-23T06:04:31.859Z'
+  entity_fingerprint: sha256:ec18a45630f683352d1a2119b7e73c4f4233d96084c1ab4a8509799e80b1bff5
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a02d38-7cf3-7b3c-87ec-1c5f08490c6e#01a02d38-7cf3-7b62-80b7-c907b9f972d6
+    artifact_path: adrs/logical/ADR-L-0024-cross-language-consumer-bindings-and-typescript-distribution.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a02d38-7cf3-7b3c-87ec-1c5f08490c6e
+    adr_alias_id: ADR-L-0024
+    related_invariants: []
+    enforces_invariants: []
+    enables_capabilities: []
+    governs_components: []
+    supersedes: []
+    refines: []
+    alias_name: consumer-binding-contract-one-point-zero
+    alias_id: DEC-0157
+  relationships:
+    declared_in:
+    - 01a02d38-7cf3-7b3c-87ec-1c5f08490c6e
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a02d38-7cf3-7b3c-87ec-1c5f08490c6e#01a02d38-7cf3-7b62-80b7-c907b9f972d6
+    extraction_phase: extract_decision
+    classification: explicit
+    generator: adr-architecture-index
+- id: 01a02d38-7cf3-7c3b-85b4-f2e1328d8363
+  alias_id: DEC-0164
+  alias_name: binding-local-fingerprints
+  alias_ref: DEC-0164:binding-local-fingerprints
+  entity_type: decision
+  name: Binding-local deterministic fingerprints may be exposed but Python and TypeScript
+    fingerprint equality is not a contract
+  summary: A portable architecture snapshot digest would require a separate promoted
+    decision and must not be invented here.
+  uri: adr://adr-architecture-kit/entities/01a02d38-7cf3-7c3b-85b4-f2e1328d8363
+  created_at: '2026-08-23T06:04:31.859Z'
+  entity_fingerprint: sha256:2700b35ce00d0c59bd9a2f5cb8c47631b56d474efe095959d12d6ab75b9ae99d
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a02d38-7cf3-7b3c-87ec-1c5f08490c6e#01a02d38-7cf3-7c3b-85b4-f2e1328d8363
+    artifact_path: adrs/logical/ADR-L-0024-cross-language-consumer-bindings-and-typescript-distribution.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a02d38-7cf3-7b3c-87ec-1c5f08490c6e
+    adr_alias_id: ADR-L-0024
+    related_invariants: []
+    enforces_invariants: []
+    enables_capabilities: []
+    governs_components: []
+    supersedes: []
+    refines: []
+    alias_name: binding-local-fingerprints
+    alias_id: DEC-0164
+  relationships:
+    declared_in:
+    - 01a02d38-7cf3-7b3c-87ec-1c5f08490c6e
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a02d38-7cf3-7b3c-87ec-1c5f08490c6e#01a02d38-7cf3-7c3b-85b4-f2e1328d8363
+    extraction_phase: extract_decision
+    classification: explicit
+    generator: adr-architecture-index

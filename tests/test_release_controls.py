@@ -317,6 +317,31 @@ def test_npm_publish_workflow_is_promotion_only_and_uses_trusted_publishing_runt
     assert "python -m build" not in publish_text
 
 
+def test_codeql_analyzes_python_and_typescript_consumer_binding_separately() -> None:
+    workflow = _load_workflow("codeql.yml")
+    jobs = workflow["jobs"]
+    analyze = jobs["analyze"]
+    matrix = analyze["strategy"]["matrix"]["language"]
+    assert matrix == ["python", "javascript-typescript"]
+    assert analyze["name"] == "Analyze (${{ matrix.language }})"
+
+    steps_text = _job_steps_text(analyze)
+    assert "github/codeql-action/init@v3" in steps_text
+    assert "${{ matrix.language }}" in steps_text
+    assert "security-extended" in steps_text
+    assert "github/codeql-action/autobuild@v3" in steps_text
+    assert "github/codeql-action/analyze@v3" in steps_text
+    assert "/language:${{ matrix.language }}" in steps_text
+
+    trigger = workflow.get("on")
+    if trigger is None:
+        trigger = workflow.get(cast(Any, True))
+    assert isinstance(trigger, dict)
+    assert trigger["push"]["branches"] == ["main", "develop"]
+    assert trigger["pull_request"]["branches"] == ["main", "develop"]
+    assert trigger["schedule"] == [{"cron": "17 7 * * 1"}]
+
+
 def test_pr_workflow_has_orthogonal_qualification_owners() -> None:
     workflow = _load_workflow("adr-governance.yml")
     jobs = workflow["jobs"]

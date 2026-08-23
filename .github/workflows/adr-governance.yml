@@ -32,6 +32,40 @@ jobs:
       - name: Exercise portable source/SDK compatibility harness
         run: python scripts/run_source_compat.py
 
+  typescript-consumer-binding:
+    name: TypeScript Consumer Binding / Node 20
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: npm
+          cache-dependency-path: packages/node/package-lock.json
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - run: python -m pip install --upgrade pip
+      - run: python -m pip install .[dev]
+      - run: npm ci
+        working-directory: packages/node
+      - name: Audit Node dependencies
+        run: npm audit --audit-level=moderate
+        working-directory: packages/node
+      - run: npm run build
+        working-directory: packages/node
+      - run: npm run typecheck
+        working-directory: packages/node
+      - run: npm test
+        working-directory: packages/node
+      - name: Consumer Binding Contract conformance
+        run: python -m pytest -q tests/test_consumer_binding_conformance.py tests/test_consumer_binding_vocabulary_versions.py
+      - run: npm run browser:check
+        working-directory: packages/node
+      - run: npm run pack:check
+        working-directory: packages/node
+
   governance:
     name: ADR, generated artifact, and contract governance
     runs-on: ubuntu-latest
@@ -43,6 +77,11 @@ jobs:
         with:
           python-version: "3.12"
           cache: pip
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: npm
+          cache-dependency-path: packages/node/package-lock.json
       - run: python -m pip install --upgrade pip
       - run: python -m pip install .[dev]
       - run: adr repair-canonical-ids --check
@@ -164,11 +203,24 @@ jobs:
               ]
           )
           PY
+      - name: Build retained npm bundle once
+        working-directory: packages/node
+        run: |
+          npm ci
+          npm run build
+          mkdir -p ../../node-dist
+          npm pack --pack-destination ../../node-dist
+      - name: Verify retained npm bundle
+        run: |
+          tarball="$(find node-dist -maxdepth 1 -type f -name '*.tgz' -print -quit)"
+          test -n "$tarball"
+          python scripts/verify_npm_tarball.py --tarball "$tarball"
       - uses: actions/upload-artifact@v4
         with:
           name: release-bundle
           path: |
             python-dist/
+            node-dist/
             release-manifest.json
           if-no-files-found: error
 

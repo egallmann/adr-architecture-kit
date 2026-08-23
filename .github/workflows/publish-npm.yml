@@ -104,8 +104,20 @@ jobs:
         with:
           name: npm-release-bundle
           path: npm-release-bundle
-      - name: Publish without rebuilding
+      - name: Publish or confirm exact retained bundle without rebuilding
         run: |
           tarball="$(find npm-release-bundle -maxdepth 2 -type f -name '*.tgz' -print -quit)"
           test -n "$tarball"
-          npm publish "$tarball" --provenance --access public --registry https://registry.npmjs.org
+          publication_status="$(python scripts/check_npm_publication.py --tarball "$tarball")"
+          case "$publication_status" in
+            publish)
+              npm publish "$tarball" --provenance --access public --registry https://registry.npmjs.org
+              ;;
+            noop)
+              echo "exact npm version already exists; publication is an intentional no-op"
+              ;;
+            *)
+              echo "unexpected npm publication status: $publication_status" >&2
+              exit 1
+              ;;
+          esac

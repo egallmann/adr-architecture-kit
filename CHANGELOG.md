@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- TypeScript Consumer Binding Contract 1.0 and the read-only
+  `@system-of-thought/adr-kit` browser/Node package, including capability-scoped
+  validation, normalized-model queries, index-first repository loading, and
+  non-admitting embodiment linkage.
+
 ## [0.6.0] — 2026-08-22
 
 ### Added

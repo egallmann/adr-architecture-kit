@@ -8,8 +8,8 @@ import tarfile
 import tomllib
 from pathlib import Path
 
-
 DEFAULT_PACKAGE_NAME = "@system-of-thought/adr-kit"
+EXPECTED_REPOSITORY_URL = "https://github.com/egallmann/adr-architecture-kit"
 REQUIRED_FILES = (
     "package.json",
     "dist/index.js",
@@ -45,11 +45,21 @@ def verify(tarball: Path, package_name: str, package_version: str) -> int:
             raise SystemExit(
                 f"npm package version mismatch: {package.get('version')!r} != {package_version!r}"
             )
+        repository = package.get("repository")
+        repository_url = repository.get("url") if isinstance(repository, dict) else None
+        if repository_url != EXPECTED_REPOSITORY_URL:
+            raise SystemExit(
+                "npm package repository mismatch: "
+                f"{repository_url!r} != {EXPECTED_REPOSITORY_URL!r}"
+            )
 
         missing = [prefix + path for path in REQUIRED_FILES if prefix + path not in members]
         if missing:
             raise SystemExit(f"npm package is missing required files: {', '.join(missing)}")
-        if any(name == prefix + "node_modules" or name.startswith(prefix + "node_modules/") for name in members):
+        if any(
+            name == prefix + "node_modules" or name.startswith(prefix + "node_modules/")
+            for name in members
+        ):
             raise SystemExit("npm package must not contain node_modules")
 
     print(f"verified npm package {package_name}@{package_version} ({len(members)} files)")

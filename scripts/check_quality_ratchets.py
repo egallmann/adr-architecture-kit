@@ -20,6 +20,7 @@ MYPY_TARGETS = ("src/adr_kit", "scripts")
 PHASE0_FILES = (
     "scripts/check_compatibility_snapshots.py",
     "scripts/check_version_consistency.py",
+    "scripts/sync_node_package_version.py",
     "scripts/check_quality_ratchets.py",
     "scripts/release_manifest.py",
     "scripts/resolve_qualified_release_bundle.py",

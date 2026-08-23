@@ -47,3 +47,11 @@ npm run pack:check
 The build copies canonical schema bytes into the package and records their
 SHA-256 manifest. The package version must match the repository version in
 `pyproject.toml`.
+
+The governance workflow runs these Node, browser, packaging, and overlapping
+Consumer Binding Contract conformance gates alongside the existing Python and
+governance gates. Release qualification builds the npm tarball once and
+retains it with the Python release bundle. The tag-only npm promotion workflow
+publishes that retained tarball through npm Trusted Publishing after resolving
+the successful `main` qualification; it does not rebuild or publish from
+`develop`.

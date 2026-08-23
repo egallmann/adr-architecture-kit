@@ -451,6 +451,18 @@ def test_repository_rejects_subset_canonical_source_mismatch(tmp_path: Path) -> 
         repository.load()
 
 
+def test_repository_keeps_baseline_usable_when_additive_subset_is_missing(tmp_path: Path) -> None:
+    paths = _generate_bundle(tmp_path)
+    paths["component_registry"].unlink()
+
+    repository = ArchitectureRepository(project_root=tmp_path)
+    repository.load()
+
+    assert repository.get_entities()
+    assert repository.get_components()
+    assert repository._get_subset("components") == []
+
+
 def test_repository_rejects_index_path_traversal_outside_scope(tmp_path: Path) -> None:
     paths = _generate_bundle(tmp_path)
     index_data = yaml.safe_load(paths["architecture_index"].read_text(encoding="utf-8"))

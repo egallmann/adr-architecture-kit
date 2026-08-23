@@ -147,7 +147,10 @@ def _assemble(
     subsets: dict[str, list[NormalizedEntity]] = {}
     subset_models: dict[str, NormalizedEntityRegistry] = {}
     for field_name, (subset_name, expected_type) in SUBSET_TYPES.items():
-        registry = load_registry(str(getattr(architecture_index, field_name)))
+        relative_path = str(getattr(architecture_index, field_name))
+        if not resolve_index_reference(scope_root, relative_path).exists():
+            continue
+        registry = load_registry(relative_path)
         _validate_subset(registry, subset_name, expected_type, primary_by_id)
         subsets[subset_name] = list(registry.entities)
         subset_models[subset_name] = registry
@@ -225,7 +228,10 @@ def _assemble_v2(
     subsets: dict[str, list[NormalizedEntityV2]] = {}
     subset_models: dict[str, NormalizedEntityRegistryV2] = {}
     for field_name, (subset_name, expected_type) in SUBSET_TYPES.items():
-        registry = load_registry(str(getattr(architecture_index, field_name)))
+        relative_path = str(getattr(architecture_index, field_name))
+        if not resolve_index_reference(scope_root, relative_path).exists():
+            continue
+        registry = load_registry(relative_path)
         _validate_subset_v2(registry, subset_name, expected_type, primary_by_id)
         subsets[subset_name] = list(registry.entities)
         subset_models[subset_name] = registry
@@ -280,7 +286,10 @@ def _assemble_v21(
     subsets: dict[str, list[NormalizedEntityV21]] = {}
     subset_models: dict[str, NormalizedEntityRegistryV21] = {}
     for field_name, (subset_name, expected_type) in SUBSET_TYPES.items():
-        registry = load_registry(str(getattr(architecture_index, field_name)))
+        relative_path = str(getattr(architecture_index, field_name))
+        if not resolve_index_reference(scope_root, relative_path).exists():
+            continue
+        registry = load_registry(relative_path)
         for entity in registry.entities:
             primary_entity = primary_by_id.get(entity.id)
             if primary_entity is None:

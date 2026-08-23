@@ -312,6 +312,9 @@ def test_npm_publish_workflow_is_promotion_only_and_uses_trusted_publishing_runt
     assert "npm publish" in publish_text
     assert "--provenance" in publish_text
     assert "download-artifact" in publish_text
+    assert "check_npm_publication.py" in publish_text
+    assert "publication_status" in publish_text
+    assert "noop" in publish_text
     assert "npm run build" not in publish_text
     assert "npm ci" not in publish_text
     assert "python -m build" not in publish_text

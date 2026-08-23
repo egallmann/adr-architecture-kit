@@ -2,7 +2,7 @@
   "classification": "NON-AUTHORITATIVE VERIFICATION SNAPSHOT",
   "purpose": "Sealed evidence for the ADR-L-0022 UUIDv7 entity-identity admission checkpoint; this file verifies canonical artifacts and never defines entity or graph semantics.",
   "governing_adr": "ADR-L-0022",
-  "baseline_sha": "5ae9ae5",
+  "baseline_sha": "b998bfc",
   "architecture_graph": {
     "path": "adrs/index/architecture-graph.yaml",
     "source_sha256": "6acd80640f483476ae3a4baf425daa830e2a936df615dc8ae46303450a58ca60",

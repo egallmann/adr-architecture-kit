@@ -4,6 +4,11 @@
 integrations. Its API contract version is `1.0`; the package remains pre-1.0.
 The installed package version is reported by `capabilities().package_version`.
 
+The corresponding cross-language consumer boundary is the read-only
+`@system-of-thought/adr-kit` package, governed by Consumer Binding Contract 1.0.
+It is implemented in this repository and shares ADR-Kit release lineage with the
+Python package; it does not create a second semantic authority.
+
 ## Install and discover capabilities
 
 ```bash

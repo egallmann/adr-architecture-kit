@@ -1,0 +1,7 @@
+{
+  "input": {"record_kinds": ["canonical", "compatibility"], "canonical_id": "018f2c9a-5f2a-7e13-8b3c-1234567890ad", "compatibility_assertion_id": "asrt-0000000000000000000000000000000000000000000000000000000000000001"},
+  "expected_observable_semantic_result": {"canonical_identity_kind": "persisted_uuidv7", "compatibility_identity_kind": "derived_assertion", "synthesized_canonical_uuid": false},
+  "authority_references": ["ADR-L-0019", "ADR-L-0023", "schema/normalized-model/v2.1/relationship-record.schema.json"],
+  "capability": "relationships:2.1",
+  "contract_version": "1.0"
+}

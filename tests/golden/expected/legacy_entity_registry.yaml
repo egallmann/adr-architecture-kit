@@ -4,8 +4,8 @@
 # generator_id: adr-compiler
 # generator_version: 1
 # hash_algorithm: sha256
-# source_hash: 3b551614f6f0b9fb059e151921692e97a0c695abfcc914a24cbcb33b1cff7490
-# rendered_hash: 103da8ffdb1733d637c0d11e1bf5e18d72dd59bf67493d455929ccce5b492bdc
+# source_hash: 76d3b5f6a112a120d9c258bd6e7c5f1fdfe9bbcd95e111e029ebcad43f14386a
+# rendered_hash: e09896dad88d36d999ac00b6d060a78cf27697f54719c508f5142e85b0ccf4f4
 
 schema_version: '1.1'
 type: entity_registry
@@ -900,6 +900,38 @@ entities:
   domains: []
   related_adrs:
   - ADR-L-9000
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: CAP-9001
+  entity_type: capability
+  name: Capability-Scoped Consumer Binding
+  introduced_by: ADR-L-0024
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0024-cross-language-consumer-bindings-and-typescript-distribution.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs:
+  - ADR-L-0024
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: CAP-9002
+  entity_type: capability
+  name: TypeScript Node and Browser Consumer Distribution
+  introduced_by: ADR-L-0024
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0024-cross-language-consumer-bindings-and-typescript-distribution.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs:
+  - ADR-L-0024
   realized_by: []
   relationships:
     depends_on: []
@@ -3512,6 +3544,227 @@ entities:
     implements: []
     consumes: []
     realizes: []
+- entity_id: DEC-0155
+  entity_type: decision
+  name: Accepted ADRs canonical schemas vocabularies and promoted binding contracts
+    are language-neutral semantic authority
+  introduced_by: ADR-L-0024
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0024-cross-language-consumer-bindings-and-typescript-distribution.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs:
+  - ADR-L-0024
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: DEC-0156
+  entity_type: decision
+  name: The official TypeScript consumer binding is distributed as @system-of-thought/adr-kit
+    from this repository
+  introduced_by: ADR-L-0024
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0024-cross-language-consumer-bindings-and-typescript-distribution.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs:
+  - ADR-L-0024
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: DEC-0157
+  entity_type: decision
+  name: Consumer Binding Contract 1.0 governs conformance across supported language
+    bindings
+  introduced_by: ADR-L-0024
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0024-cross-language-consumer-bindings-and-typescript-distribution.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs:
+  - ADR-L-0024
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: DEC-0158
+  entity_type: decision
+  name: Conformance is required only for the intersection of capabilities and contract
+    versions advertised by bindings
+  introduced_by: ADR-L-0024
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0024-cross-language-consumer-bindings-and-typescript-distribution.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs:
+  - ADR-L-0024
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: DEC-0159
+  entity_type: decision
+  name: Consumer Binding Contract 1.0 distinguishes structural semantic behavioral
+    diagnostic and serialization equivalence
+  introduced_by: ADR-L-0024
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0024-cross-language-consumer-bindings-and-typescript-distribution.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs:
+  - ADR-L-0024
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: DEC-0160
+  entity_type: decision
+  name: TypeScript consumes copy-exact generated mirrors of canonical schema bytes
+    from schema/
+  introduced_by: ADR-L-0024
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0024-cross-language-consumer-bindings-and-typescript-distribution.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs:
+  - ADR-L-0024
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: DEC-0161
+  entity_type: decision
+  name: The first TypeScript release is read-only and excludes authoring identity
+    allocation graph admission CLI MCP and repository writes
+  introduced_by: ADR-L-0024
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0024-cross-language-consumer-bindings-and-typescript-distribution.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs:
+  - ADR-L-0024
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: DEC-0162
+  entity_type: decision
+  name: Browser-safe entry points exclude Node built-ins and filesystem behavior is
+    available only through explicit Node subpaths
+  introduced_by: ADR-L-0024
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0024-cross-language-consumer-bindings-and-typescript-distribution.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs:
+  - ADR-L-0024
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: DEC-0163
+  entity_type: decision
+  name: TypeScript v1 supports normalized model 2.1 evidence attribution 1.5 and 1.6
+    discovery loading and normalized semantic extensions
+  introduced_by: ADR-L-0024
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0024-cross-language-consumer-bindings-and-typescript-distribution.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs:
+  - ADR-L-0024
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: DEC-0164
+  entity_type: decision
+  name: Binding-local deterministic fingerprints may be exposed but Python and TypeScript
+    fingerprint equality is not a contract
+  introduced_by: ADR-L-0024
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0024-cross-language-consumer-bindings-and-typescript-distribution.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs:
+  - ADR-L-0024
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: DEC-0165
+  entity_type: decision
+  name: Node repository loading is index-first manifest-aware additive-safe and never
+    reparses source ADR YAML as a fallback
+  introduced_by: ADR-L-0024
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0024-cross-language-consumer-bindings-and-typescript-distribution.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs:
+  - ADR-L-0024
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: DEC-0166
+  entity_type: decision
+  name: Node embodiment linkage preserves validated-derived-evidence authority ceiling
+    and not-admitted graph status
+  introduced_by: ADR-L-0024
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0024-cross-language-consumer-bindings-and-typescript-distribution.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs:
+  - ADR-L-0024
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: DEC-0167
+  entity_type: decision
+  name: PyPI and npm artifacts represent one ADR-Kit source release and do not create
+    independent semantic version lineages
+  introduced_by: ADR-L-0024
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0024-cross-language-consumer-bindings-and-typescript-distribution.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs:
+  - ADR-L-0024
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
 - entity_id: DEC-9000
   entity_type: decision
   name: Publish a deterministic logical ADR fragment for boot readiness.
@@ -5634,6 +5887,134 @@ entities:
   domains: []
   related_adrs:
   - ADR-L-0023
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: INV-0149
+  entity_type: invariant
+  name: INV-0149
+  introduced_by: ADR-L-0024
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0024-cross-language-consumer-bindings-and-typescript-distribution.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs:
+  - ADR-L-0024
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: INV-0150
+  entity_type: invariant
+  name: INV-0150
+  introduced_by: ADR-L-0024
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0024-cross-language-consumer-bindings-and-typescript-distribution.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs:
+  - ADR-L-0024
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: INV-0151
+  entity_type: invariant
+  name: INV-0151
+  introduced_by: ADR-L-0024
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0024-cross-language-consumer-bindings-and-typescript-distribution.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs:
+  - ADR-L-0024
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: INV-0152
+  entity_type: invariant
+  name: INV-0152
+  introduced_by: ADR-L-0024
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0024-cross-language-consumer-bindings-and-typescript-distribution.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs:
+  - ADR-L-0024
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: INV-0153
+  entity_type: invariant
+  name: INV-0153
+  introduced_by: ADR-L-0024
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0024-cross-language-consumer-bindings-and-typescript-distribution.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs:
+  - ADR-L-0024
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: INV-0154
+  entity_type: invariant
+  name: INV-0154
+  introduced_by: ADR-L-0024
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0024-cross-language-consumer-bindings-and-typescript-distribution.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs:
+  - ADR-L-0024
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: INV-0155
+  entity_type: invariant
+  name: INV-0155
+  introduced_by: ADR-L-0024
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0024-cross-language-consumer-bindings-and-typescript-distribution.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs:
+  - ADR-L-0024
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: INV-0156
+  entity_type: invariant
+  name: INV-0156
+  introduced_by: ADR-L-0024
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0024-cross-language-consumer-bindings-and-typescript-distribution.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs:
+  - ADR-L-0024
   realized_by: []
   relationships:
     depends_on: []

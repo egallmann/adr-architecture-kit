@@ -5,8 +5,8 @@ artifact_kind: rendered_adr_markdown
 generator_id: adr-projection-markdown
 generator_version: 2
 hash_algorithm: sha256
-source_hash: 19089e82a8115082bcb08c8a8968976051aa3685496fdb6f1b4cfdf475cf40b2
-rendered_hash: 11e4a996ab881585ea4731725173ca74b4463dca45cfba4ed4e3a8953bd5d2c6
+source_hash: bf6f95bc7db14f54296af83d8c115d031fd2b0b7b75ed1bf8a5c7efd74c88f18
+rendered_hash: 51be6bfe8a0e0198a435b745296e57101bf8dce5a4e3537da13f2cc147404c40
 -->
 
 # ADR-L-0013: Architecture Repository Boundary and Normalized Semantic Model
@@ -79,6 +79,7 @@ flowchart LR
   n_019fee89_e618_7b76_843f_cfe21ceb2ea6["ADR-PC-0003"]
   n_019fee89_e618_7d04_9337_4aa2d3258507["ADR-PS-0002"]
   n_019ffdba_3c42_7c4a_a737_f6751a265d60["ADR-L-0020"]
+  n_01a02d38_7cf3_7b3c_87ec_1c5f08490c6e["ADR-L-0024"]
   n_019fee89_e616_7018_982f_d3d703f29db7 -->|"declared_in"| n_019fee89_e616_7c4e_953c_b7349412a784
   n_019fee89_e616_7140_bb3f_8b78ab40d018 -->|"declared_in"| n_019fee89_e616_7c4e_953c_b7349412a784
   n_019fee89_e616_7153_930f_595ce3d9f96d -->|"declared_in"| n_019fee89_e616_7c4e_953c_b7349412a784
@@ -116,6 +117,7 @@ flowchart LR
   n_019fee89_e617_7f4d_811d_4862645a55c5 -->|"references"| n_019fee89_e616_7c4e_953c_b7349412a784
   n_019fee89_e617_7fe1_8d2c_cc2745c31674 -->|"references"| n_019fee89_e616_7c4e_953c_b7349412a784
   n_019ffdba_3c42_7c4a_a737_f6751a265d60 -->|"references"| n_019fee89_e616_7c4e_953c_b7349412a784
+  n_01a02d38_7cf3_7b3c_87ec_1c5f08490c6e -->|"references"| n_019fee89_e616_7c4e_953c_b7349412a784
 ```
 
 ## Related ADRs
@@ -231,6 +233,20 @@ Attribution evidence still cited human aliases (`ADR-L-*`, `INV-*`) and
 could not name typed relationships to nested architecture entities.
 
 [Open projection](ADR-L-0020-semantic-implementation-attribution-and-cross-layer-architecture-relationships.md)
+### ADR-L-0024 — Cross-Language Consumer Bindings and TypeScript Distribution
+
+**Relationships:**
+- 01a02d38-7cf3-7b3c-87ec-1c5f08490c6e -[:references]-> this ADR
+
+**Context:** ADR-Kit already owns accepted ADR authority, canonical schema bytes, semantic
+vocabularies, the repository discovery contract, the normalized model, and
+validated derived embodiment evidence. Python is the existing implementation
+of those contracts, but it is not their semantic owner. Node services,
+engineering-agent integrations, and browser applications need a supported
+read-only consumer binding without reparsing ADR source YAML, depending on
+compiler internals, or importing Node authority…
+
+[Open projection](ADR-L-0024-cross-language-consumer-bindings-and-typescript-distribution.md)
 ### ADR-PC-0001 — Entity Registry and Discovery Index
 
 **Relationships:**

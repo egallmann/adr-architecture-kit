@@ -1,0 +1,7 @@
+{
+  "input": {"schema_version": "1.6", "type": "implementation_attribution_evidence", "records": [{"implementation_entity_id": "module:fixture", "implementation_entity_type": "module", "provenance": {"source_file": "fixture.ts", "extractor": "fixture", "source_pointer": "module:fixture", "start_line": 1, "end_line": 2}, "claims": [{"relationship": "enforces", "target_entity_id": "018f2c9a-5f2a-7e11-8b3c-1234567890ab", "confidence": "declared"}]}]},
+  "expected_observable_semantic_result": {"accepted": true, "relationship": "enforces", "confidence": "declared", "authority_ceiling": "validated_derived_evidence", "graph_admission_status": "not_admitted"},
+  "authority_references": ["ADR-L-0020", "ADR-L-0024", "schema/evidence-attribution/v1.6"],
+  "capability": "evidence_attribution:1.6",
+  "contract_version": "1.0"
+}

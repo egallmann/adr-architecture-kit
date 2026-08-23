@@ -1,0 +1,43 @@
+{
+  "package": "@system-of-thought/adr-kit",
+  "package_version_source": "pyproject.toml",
+  "binding": "typescript",
+  "consumer_binding_contract_version": "1.0",
+  "module_format": "esm",
+  "side_effects": false,
+  "subpaths": {
+    ".": ["AdrKitError", "ContractValidationError", "UnsupportedContractVersionError", "capabilities", "createArchitectureModel"],
+    "./model": ["ArchitectureModelView", "NormalizedArchitectureModelV21", "NormalizedEntityV21", "RelationshipV21", "createArchitectureModel"],
+    "./schemas": ["canonicalSchemas", "schemaManifest", "getCanonicalSchema", "getSemanticAttributionVocabulary"],
+    "./validation": ["assertValidContract", "validateContract", "ValidationResult"],
+    "./node": ["openRepository", "ArchitectureRepository", "RepositoryError", "RepositoryPathError", "AmbiguousAliasError"],
+    "./node/linkage": ["buildEmbodimentLinkage", "BuildEmbodimentLinkageRequest", "EmbodimentLinkageResult", "LinkageError"]
+  },
+  "errors": [
+    "contract.validation",
+    "contract.unsupported_version",
+    "repository.path",
+    "repository.ambiguous_alias",
+    "repository.missing_artifact",
+    "linkage.profile",
+    "attribution.duplicate_claim",
+    "attribution.duplicate_occurrence",
+    "attribution.v16_enforces_confidence",
+    "attribution.unresolved_target",
+    "attribution.asserted_type_mismatch",
+    "attribution.illegal_target_type",
+    "attribution.lifecycle_warning"
+  ],
+  "capability_manifest_fields": [
+    "package_version",
+    "binding",
+    "consumer_binding_contract_version",
+    "execution_environments",
+    "supported_architecture_discovery_versions",
+    "supported_normalized_model_versions",
+    "supported_evidence_attribution_versions",
+    "preferred_evidence_attribution_version",
+    "browser_safe_entrypoints",
+    "node_entrypoints"
+  ]
+}

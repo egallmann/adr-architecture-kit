@@ -14,6 +14,7 @@ Thank you for your interest in contributing. This document covers how to set up 
 - [Pre-push Hook](#pre-push-hook)
 - [Submitting Changes](#submitting-changes)
 - [Publishing to PyPI (maintainers)](#publishing-to-pypi-maintainers)
+- [Publishing to npm (maintainers)](#publishing-to-npm-maintainers)
 - [ADR Authority](#adr-authority)
 
 ---
@@ -255,6 +256,21 @@ adr --help
 ### Optional: TestPyPI first
 
 To practice uploads, configure a second workflow or `repository-url` for TestPyPI as in [Using TestPyPI](https://packaging.python.org/en/guides/using-testpypi/); not required for production once you trust the flow.
+
+## Publishing to npm (maintainers)
+
+The scoped package `@system-of-thought/adr-kit` is published by
+`.github/workflows/publish-npm.yml` only for an exact `v*` tag. The workflow
+resolves the successful `main` push run of `adr-governance.yml`, downloads its
+retained `node-dist` tarball, verifies its package name/version and contents,
+and publishes that tarball without rebuilding. The npm version is checked
+against `pyproject.toml`; feature and `develop` runs never publish.
+
+Before the first release, configure npm Trusted Publishing for package
+`@system-of-thought/adr-kit` with GitHub owner `egallmann`, repository
+`adr-architecture-kit`, workflow `publish-npm.yml`, and GitHub environment
+`npm`. The package must be available for public scoped publication. The
+workflow uses GitHub OIDC (`id-token: write`) and stores no npm token.
 
 ---
 

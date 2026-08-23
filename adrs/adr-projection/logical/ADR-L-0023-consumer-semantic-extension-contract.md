@@ -5,8 +5,8 @@ artifact_kind: rendered_adr_markdown
 generator_id: adr-projection-markdown
 generator_version: 2
 hash_algorithm: sha256
-source_hash: c3600c8605838c5302115ff87562bdf2c36f75c24bf5188fc38b0f92c910dd60
-rendered_hash: f266f9d55ee4f87f0f252cc13454fe9dd0536ce89e235738dc4ed812e5d50adb
+source_hash: 644ae3039a8c8d1c36c5c2c823b6b7b8db4aa0292888262879f200d6f11c3d4d
+rendered_hash: 3e445512270433b33c59d142efac1213f1251b33683a879f5ea73e9092e1aa46
 -->
 
 # ADR-L-0023: Consumer Semantic Extension Contract
@@ -49,6 +49,7 @@ flowchart LR
   n_01a00644_1c0a_7abc_8aaa_ffffffffffff["INV-0146"]
   n_01a00644_1c0b_7abc_8aaa_121212121212["INV-0147"]
   n_01a00644_1c0c_7abc_8aaa_131313131313["INV-0148"]
+  n_01a02d38_7cf3_7b3c_87ec_1c5f08490c6e["ADR-L-0024"]
   n_01a00644_1bfd_7abc_8aaa_222222222222 -->|"declared_in"| n_01a00644_1bfc_7abc_8aaa_111111111111
   n_01a00644_1bfe_7abc_8aaa_333333333333 -->|"declared_in"| n_01a00644_1bfc_7abc_8aaa_111111111111
   n_01a00644_1bff_7abc_8aaa_444444444444 -->|"declared_in"| n_01a00644_1bfc_7abc_8aaa_111111111111
@@ -67,6 +68,7 @@ flowchart LR
   n_01a00644_1c0c_7abc_8aaa_131313131313 -->|"declared_in"| n_01a00644_1bfc_7abc_8aaa_111111111111
   n_01a00644_1bfc_7abc_8aaa_111111111111 -->|"references"| n_019fee89_e617_78d9_ba3b_b7e3e6db1b12
   n_01a00644_1bfc_7abc_8aaa_111111111111 -->|"references"| n_01a00643_1bfc_788c_911b_83a4725a8de1
+  n_01a02d38_7cf3_7b3c_87ec_1c5f08490c6e -->|"references"| n_01a00644_1bfc_7abc_8aaa_111111111111
 ```
 
 ## Related ADRs
@@ -93,6 +95,20 @@ canonical machine semantics.
 **Context:** ADR-L-0019 correctly separated immutable UUIDv7 machine identity from human-oriented aliases, but DEC-0097 admitted that identity envelope for only a selected set of entity kinds. Other durable ADR-domain records still expose alias-shaped values as `id`, use alias references across artifacts, or omit identity entirely. Requirements snapshots, requirement items, decision ledgers, ledger decisions, reviews, overrides, constraints, non-functional requirements, gaps, system boundaries, data flows,…
 
 [Open projection](ADR-L-0022-universal-uuidv7-entity-identity.md)
+### ADR-L-0024 — Cross-Language Consumer Bindings and TypeScript Distribution
+
+**Relationships:**
+- 01a02d38-7cf3-7b3c-87ec-1c5f08490c6e -[:references]-> this ADR
+
+**Context:** ADR-Kit already owns accepted ADR authority, canonical schema bytes, semantic
+vocabularies, the repository discovery contract, the normalized model, and
+validated derived embodiment evidence. Python is the existing implementation
+of those contracts, but it is not their semantic owner. Node services,
+engineering-agent integrations, and browser applications need a supported
+read-only consumer binding without reparsing ADR source YAML, depending on
+compiler internals, or importing Node authority…
+
+[Open projection](ADR-L-0024-cross-language-consumer-bindings-and-typescript-distribution.md)
 
 
 

@@ -331,7 +331,9 @@ def _validate_v15(
                     )
                 )
                 continue
-            allowed = allowed_target_entity_types(claim.relationship)
+            allowed = allowed_target_entity_types(
+                claim.relationship, version=evidence.schema_version
+            )
             if resolved_type not in allowed:
                 issues.append(
                     ImplementationAttributionIssue(

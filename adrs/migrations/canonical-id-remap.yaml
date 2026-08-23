@@ -82,6 +82,18 @@ entries:
   file_path: adrs/logical/ADR-L-0005-adr-to-prompt-translation.yaml
   from: CAP-0007
   to: CAP-0033
+- entity_type: capability
+  adr_id: 01a02d38-7cf3-7b3c-87ec-1c5f08490c6e
+  file_path: adrs/logical/ADR-L-0024-cross-language-consumer-bindings-and-typescript-distribution.yaml
+  source_pointer: /capabilities/0/alias_id
+  from: CAP-0050
+  to: CAP-9001
+- entity_type: capability
+  adr_id: 01a02d38-7cf3-7b3c-87ec-1c5f08490c6e
+  file_path: adrs/logical/ADR-L-0024-cross-language-consumer-bindings-and-typescript-distribution.yaml
+  source_pointer: /capabilities/1/alias_id
+  from: CAP-0051
+  to: CAP-9002
 - entity_type: component
   adr_id: ADR-P-0002
   file_path: adrs/physical/ADR-P-0002-json-schema-yaml-format.yaml
@@ -402,6 +414,12 @@ entries:
   from: IFACE-0007
   to: IFACE-0033
 - entity_type: invariant
+  adr_id: ADR-L-0019
+  file_path: adrs/logical/ADR-L-0019-canonical-entity-identity.yaml
+  source_pointer: /invariants/0/id
+  from: INV-0008
+  to: INV-0094
+- entity_type: invariant
   adr_id: ADR-L-0005
   file_path: adrs/logical/ADR-L-0005-adr-to-prompt-translation.yaml
   from: INV-0027
@@ -431,9 +449,3 @@ entries:
   file_path: adrs/logical/ADR-L-0005-adr-to-prompt-translation.yaml
   from: INV-0032
   to: INV-0051
-- entity_type: invariant
-  adr_id: ADR-L-0019
-  file_path: adrs/logical/ADR-L-0019-canonical-entity-identity.yaml
-  source_pointer: /invariants/0/id
-  from: INV-0008
-  to: INV-0094

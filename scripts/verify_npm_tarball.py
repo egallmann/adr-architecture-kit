@@ -32,7 +32,10 @@ def verify(tarball: Path, package_name: str, package_version: str) -> int:
         prefix = "package/"
         package_json_name = prefix + "package.json"
         package_member = archive.getmember(package_json_name)
-        package = json.loads(archive.extractfile(package_member).read())
+        package_file = archive.extractfile(package_member)
+        if package_file is None:
+            raise SystemExit("npm package does not contain readable package.json")
+        package = json.loads(package_file.read())
 
         if package.get("name") != package_name:
             raise SystemExit(

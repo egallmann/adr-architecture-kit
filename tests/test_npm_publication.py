@@ -17,28 +17,37 @@ def _integrity(payload: bytes) -> str:
 
 def test_missing_package_or_version_requires_publication() -> None:
     integrity = _integrity(b"qualified tarball")
-    assert decide_publication(
-        package_name="@system-of-thought/adr-kit",
-        package_version="0.6.0",
-        tarball_integrity=integrity,
-        metadata=None,
-    ) == "publish"
-    assert decide_publication(
-        package_name="@system-of-thought/adr-kit",
-        package_version="0.6.0",
-        tarball_integrity=integrity,
-        metadata={"versions": {}},
-    ) == "publish"
+    assert (
+        decide_publication(
+            package_name="@system-of-thought/adr-kit",
+            package_version="0.6.0",
+            tarball_integrity=integrity,
+            metadata=None,
+        )
+        == "publish"
+    )
+    assert (
+        decide_publication(
+            package_name="@system-of-thought/adr-kit",
+            package_version="0.6.0",
+            tarball_integrity=integrity,
+            metadata={"versions": {}},
+        )
+        == "publish"
+    )
 
 
 def test_exact_existing_version_is_an_intentional_noop() -> None:
     integrity = _integrity(b"qualified tarball")
-    assert decide_publication(
-        package_name="@system-of-thought/adr-kit",
-        package_version="0.6.0",
-        tarball_integrity=integrity,
-        metadata={"versions": {"0.6.0": {"dist": {"integrity": integrity}}}},
-    ) == "noop"
+    assert (
+        decide_publication(
+            package_name="@system-of-thought/adr-kit",
+            package_version="0.6.0",
+            tarball_integrity=integrity,
+            metadata={"versions": {"0.6.0": {"dist": {"integrity": integrity}}}},
+        )
+        == "noop"
+    )
 
 
 def test_mismatched_existing_version_fails_closed() -> None:
@@ -48,9 +57,7 @@ def test_mismatched_existing_version_fails_closed() -> None:
             package_version="0.6.0",
             tarball_integrity=_integrity(b"qualified tarball"),
             metadata={
-                "versions": {
-                    "0.6.0": {"dist": {"integrity": _integrity(b"different tarball")}}
-                }
+                "versions": {"0.6.0": {"dist": {"integrity": _integrity(b"different tarball")}}}
             },
         )
 

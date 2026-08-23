@@ -120,7 +120,9 @@ def validate_property_map(properties: Mapping[str, Any]) -> dict[str, Any]:
         if isinstance(value, bool) or isinstance(value, (str, int, float)):
             checked[key] = value
             continue
-        if isinstance(value, list) and all(isinstance(item, (str, int, float, bool)) for item in value):
+        if isinstance(value, list) and all(
+            isinstance(item, (str, int, float, bool)) for item in value
+        ):
             checked[key] = list(value)
             continue
         raise ExtensionValidationError(

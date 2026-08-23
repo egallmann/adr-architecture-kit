@@ -5,8 +5,8 @@ artifact_kind: rendered_adr_markdown
 generator_id: adr-projection-markdown
 generator_version: 2
 hash_algorithm: sha256
-source_hash: 1dd6dae0d494305c466a10cb84557ec682fb76b81aee52534f1e1232a46959d4
-rendered_hash: 80a7a07fd2900d898f6f61aca6494d620bd0e0e68881cd2e1050ea6314ed86c0
+source_hash: a1b92770cd3502c1cf3b47eb933eaff87238c81dd2b14c25b02c6eebd0a31f95
+rendered_hash: 915e89e322926f30d8055c56319ffbfb3e131656ad1159a89abf1795590445c5
 -->
 
 # ADR-L-0024: Cross-Language Consumer Bindings and TypeScript Distribution
@@ -56,7 +56,7 @@ flowchart LR
   n_01a02d38_7cf3_74b3_8297_f3df87d11f35["DEC-0163"]
   n_01a02d38_7cf3_74eb_896e_01f6f7dd53c1["INV-0152"]
   n_01a02d38_7cf3_7532_8d1e_2c81adf25864["DEC-0167"]
-  n_01a02d38_7cf3_7625_8e95_7fc0f62d7b09["CAP-0051"]
+  n_01a02d38_7cf3_7625_8e95_7fc0f62d7b09["CAP-9002"]
   n_01a02d38_7cf3_7696_8323_e760deca8334["INV-0153"]
   n_01a02d38_7cf3_769e_8b24_6c0df4edf9af["INV-0156"]
   n_01a02d38_7cf3_7765_8a96_0cdd35f55df5["DEC-0161"]
@@ -67,7 +67,7 @@ flowchart LR
   n_01a02d38_7cf3_7b3c_87ec_1c5f08490c6e["ADR-L-0024"]
   n_01a02d38_7cf3_7b62_80b7_c907b9f972d6["DEC-0157"]
   n_01a02d38_7cf3_7c3b_85b4_f2e1328d8363["DEC-0164"]
-  n_01a02d38_7cf3_7dfe_80d8_28c51db97e18["CAP-0050"]
+  n_01a02d38_7cf3_7dfe_80d8_28c51db97e18["CAP-9001"]
   n_01a02d38_7cf3_7e8e_8a34_0865a8dd73af["INV-0150"]
   n_01a02d38_7cf3_700a_880b_182eb0956a24 -->|"declared_in"| n_01a02d38_7cf3_7b3c_87ec_1c5f08490c6e
   n_01a02d38_7cf3_7017_8767_4978a49c35f0 -->|"declared_in"| n_01a02d38_7cf3_7b3c_87ec_1c5f08490c6e
@@ -153,11 +153,11 @@ creating a second graph or a schema-less metadata escape hatch.
 
 ## Capabilities
 
-### CAP-0050: Capability-Scoped Consumer Binding
+### CAP-9001: Capability-Scoped Consumer Binding
 
 Provide an explicit contract and capability manifest for conforming language bindings over ADR-Kit authority.
 
-### CAP-0051: TypeScript Node and Browser Consumer Distribution
+### CAP-9002: TypeScript Node and Browser Consumer Distribution
 
 Provide a read-only framework-neutral TypeScript package with explicit browser-safe and Node-only subpaths.
 

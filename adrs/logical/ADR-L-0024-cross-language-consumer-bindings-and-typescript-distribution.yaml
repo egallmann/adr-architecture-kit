@@ -45,73 +45,101 @@ decisions:
 - id: 01a02d38-7cf3-7194-8e04-4339c496d93a
   alias_id: DEC-0155
   alias_name: language-neutral-adr-kit-semantic-authority
-  summary: Accepted ADRs canonical schemas vocabularies and promoted binding contracts are language-neutral semantic authority
-  rationale: Python and TypeScript implement authority; neither implementation becomes authoritative by existing.
+  summary: Accepted ADRs canonical schemas vocabularies and promoted binding contracts
+    are language-neutral semantic authority
+  rationale: Python and TypeScript implement authority; neither implementation becomes
+    authoritative by existing.
 - id: 01a02d38-7cf3-7a6f-8b71-a3624877c1b3
   alias_id: DEC-0156
   alias_name: official-typescript-consumer-package
-  summary: The official TypeScript consumer binding is distributed as @system-of-thought/adr-kit from this repository
-  rationale: A shared repository and release lineage prevent a sibling semantic authority and independent language versioning.
+  summary: The official TypeScript consumer binding is distributed as @system-of-thought/adr-kit
+    from this repository
+  rationale: A shared repository and release lineage prevent a sibling semantic authority
+    and independent language versioning.
 - id: 01a02d38-7cf3-7b62-80b7-c907b9f972d6
   alias_id: DEC-0157
   alias_name: consumer-binding-contract-one-point-zero
-  summary: Consumer Binding Contract 1.0 governs conformance across supported language bindings
-  rationale: An explicit contract makes capability overlap and observable equivalence testable without requiring implementation identity.
+  summary: Consumer Binding Contract 1.0 governs conformance across supported language
+    bindings
+  rationale: An explicit contract makes capability overlap and observable equivalence
+    testable without requiring implementation identity.
 - id: 01a02d38-7cf3-7418-8bba-4fa7ecdd2151
   alias_id: DEC-0158
   alias_name: capability-scoped-conformance
-  summary: Conformance is required only for the intersection of capabilities and contract versions advertised by bindings
-  rationale: A narrow binding may qualify honestly without implementing every operation exposed by another binding.
+  summary: Conformance is required only for the intersection of capabilities and contract
+    versions advertised by bindings
+  rationale: A narrow binding may qualify honestly without implementing every operation
+    exposed by another binding.
 - id: 01a02d38-7cf3-700a-880b-182eb0956a24
   alias_id: DEC-0159
   alias_name: conformance-levels-are-distinct
-  summary: Consumer Binding Contract 1.0 distinguishes structural semantic behavioral diagnostic and serialization equivalence
-  rationale: Structural and semantic agreement must not silently impose exact exception classes, bytes, hashes, or object layout.
+  summary: Consumer Binding Contract 1.0 distinguishes structural semantic behavioral
+    diagnostic and serialization equivalence
+  rationale: Structural and semantic agreement must not silently impose exact exception
+    classes, bytes, hashes, or object layout.
 - id: 01a02d38-7cf3-78dc-8d0f-4d4a41000fe3
   alias_id: DEC-0160
   alias_name: canonical-schema-bytes-remain-shared
-  summary: TypeScript consumes copy-exact generated mirrors of canonical schema bytes from schema/
-  rationale: Generated mirrors can serve packaging but cannot become a second schema authority.
+  summary: TypeScript consumes copy-exact generated mirrors of canonical schema bytes
+    from schema/
+  rationale: Generated mirrors can serve packaging but cannot become a second schema
+    authority.
 - id: 01a02d38-7cf3-7765-8a96-0cdd35f55df5
   alias_id: DEC-0161
   alias_name: read-only-typescript-release-boundary
-  summary: The first TypeScript release is read-only and excludes authoring identity allocation graph admission CLI MCP and repository writes
-  rationale: Consumer safety and authority ownership require a deliberately bounded first release.
+  summary: The first TypeScript release is read-only and excludes authoring identity
+    allocation graph admission CLI MCP and repository writes
+  rationale: Consumer safety and authority ownership require a deliberately bounded
+    first release.
 - id: 01a02d38-7cf3-724d-83e0-8739d6eeeeb5
   alias_id: DEC-0162
   alias_name: explicit-browser-node-boundaries
-  summary: Browser-safe entry points exclude Node built-ins and filesystem behavior is available only through explicit Node subpaths
-  rationale: Angular is a consumer environment, not an ADR-Kit framework dependency, and the browser is not filesystem authority.
+  summary: Browser-safe entry points exclude Node built-ins and filesystem behavior
+    is available only through explicit Node subpaths
+  rationale: Angular is a consumer environment, not an ADR-Kit framework dependency,
+    and the browser is not filesystem authority.
 - id: 01a02d38-7cf3-74b3-8297-f3df87d11f35
   alias_id: DEC-0163
   alias_name: typescript-contract-support-is-narrow
-  summary: TypeScript v1 supports normalized model 2.1 evidence attribution 1.5 and 1.6 discovery loading and normalized semantic extensions
-  rationale: Unsupported versions must fail explicitly rather than being accepted through historical implementation parity.
+  summary: TypeScript v1 supports normalized model 2.1 evidence attribution 1.5 and
+    1.6 discovery loading and normalized semantic extensions
+  rationale: Unsupported versions must fail explicitly rather than being accepted
+    through historical implementation parity.
 - id: 01a02d38-7cf3-7c3b-85b4-f2e1328d8363
   alias_id: DEC-0164
   alias_name: binding-local-fingerprints
-  summary: Binding-local deterministic fingerprints may be exposed but Python and TypeScript fingerprint equality is not a contract
-  rationale: A portable architecture snapshot digest would require a separate promoted decision and must not be invented here.
+  summary: Binding-local deterministic fingerprints may be exposed but Python and
+    TypeScript fingerprint equality is not a contract
+  rationale: A portable architecture snapshot digest would require a separate promoted
+    decision and must not be invented here.
 - id: 01a02d38-7cf3-7271-8b60-20c2a3f50ae6
   alias_id: DEC-0165
   alias_name: node-index-first-repository-loading
-  summary: Node repository loading is index-first manifest-aware additive-safe and never reparses source ADR YAML as a fallback
-  rationale: Cross-language consumers must preserve compiler-owned discovery authority and required baseline ingestion.
+  summary: Node repository loading is index-first manifest-aware additive-safe and
+    never reparses source ADR YAML as a fallback
+  rationale: Cross-language consumers must preserve compiler-owned discovery authority
+    and required baseline ingestion.
 - id: 01a02d38-7cf3-7177-8edc-dfc953ae9947
   alias_id: DEC-0166
   alias_name: node-linkage-remains-derived-evidence
-  summary: Node embodiment linkage preserves validated-derived-evidence authority ceiling and not-admitted graph status
-  rationale: Evidence declarations and validated links do not become canonical architecture graph authority.
+  summary: Node embodiment linkage preserves validated-derived-evidence authority
+    ceiling and not-admitted graph status
+  rationale: Evidence declarations and validated links do not become canonical architecture
+    graph authority.
 - id: 01a02d38-7cf3-7532-8d1e-2c81adf25864
   alias_id: DEC-0167
   alias_name: shared-release-lineage
-  summary: PyPI and npm artifacts represent one ADR-Kit source release and do not create independent semantic version lineages
-  rationale: Consumers need one release identity while package publication remains an operational release step.
+  summary: PyPI and npm artifacts represent one ADR-Kit source release and do not
+    create independent semantic version lineages
+  rationale: Consumers need one release identity while package publication remains
+    an operational release step.
 invariants:
 - id: 01a02d38-7cf3-790b-8493-b1499943f075
   alias_id: INV-0149
   alias_name: bindings-never-redefine-semantic-authority
-  statement: Language bindings MUST implement accepted ADR schema vocabulary and explicitly promoted consumer contracts without redefining canonical identity or architecture semantics.
+  statement: Language bindings MUST implement accepted ADR schema vocabulary and explicitly
+    promoted consumer contracts without redefining canonical identity or architecture
+    semantics.
   scope: global
   enforcement_level: must
   enforcement_mechanism: design
@@ -120,7 +148,8 @@ invariants:
 - id: 01a02d38-7cf3-7e8e-8a34-0865a8dd73af
   alias_id: INV-0150
   alias_name: conformance-is-capability-intersection-scoped
-  statement: Cross-language qualification MUST compare only capabilities and contract versions advertised by both bindings.
+  statement: Cross-language qualification MUST compare only capabilities and contract
+    versions advertised by both bindings.
   scope: global
   enforcement_level: must
   enforcement_mechanism: test
@@ -129,7 +158,8 @@ invariants:
 - id: 01a02d38-7cf3-7155-8973-148ceb722f1b
   alias_id: INV-0151
   alias_name: canonical-schema-mirror-is-byte-exact
-  statement: Packaged TypeScript schema assets MUST preserve the bytes of their canonical counterparts under root schema/.
+  statement: Packaged TypeScript schema assets MUST preserve the bytes of their canonical
+    counterparts under root schema/.
   scope: global
   enforcement_level: must
   enforcement_mechanism: test
@@ -138,7 +168,8 @@ invariants:
 - id: 01a02d38-7cf3-74eb-896e-01f6f7dd53c1
   alias_id: INV-0152
   alias_name: browser-entrypoints-are-node-free
-  statement: Browser-safe package entry points MUST have no reachable Node built-in dependency and MUST have no Angular framework dependency.
+  statement: Browser-safe package entry points MUST have no reachable Node built-in
+    dependency and MUST have no Angular framework dependency.
   scope: global
   enforcement_level: must
   enforcement_mechanism: test
@@ -147,7 +178,8 @@ invariants:
 - id: 01a02d38-7cf3-7696-8323-e760deca8334
   alias_id: INV-0153
   alias_name: typescript-v1-is-read-only
-  statement: TypeScript v1 MUST perform no repository writes identity allocation graph admission authoring mutation network access or import-time side effects.
+  statement: TypeScript v1 MUST perform no repository writes identity allocation graph
+    admission authoring mutation network access or import-time side effects.
   scope: global
   enforcement_level: must
   enforcement_mechanism: test
@@ -156,7 +188,9 @@ invariants:
 - id: 01a02d38-7cf3-7017-8767-4978a49c35f0
   alias_id: INV-0154
   alias_name: node-loading-requires-baseline-contracts
-  statement: Node repository loading MUST require architecture-index.yaml manifest.yaml and the primary entity relationship and unresolved registries, while treating additive subsets as non-authoritative.
+  statement: Node repository loading MUST require architecture-index.yaml manifest.yaml
+    and the primary entity relationship and unresolved registries, while treating
+    additive subsets as non-authoritative.
   scope: global
   enforcement_level: must
   enforcement_mechanism: test
@@ -165,7 +199,8 @@ invariants:
 - id: 01a02d38-7cf3-79cf-8174-b9f50adaf0bf
   alias_id: INV-0155
   alias_name: linkage-never-enters-graph-authority
-  statement: Embodiment linkage MUST preserve authority_ceiling validated_derived_evidence and graph_admission_status not_admitted and MUST perform no graph writes.
+  statement: Embodiment linkage MUST preserve authority_ceiling validated_derived_evidence
+    and graph_admission_status not_admitted and MUST perform no graph writes.
   scope: global
   enforcement_level: must
   enforcement_mechanism: test
@@ -174,29 +209,46 @@ invariants:
 - id: 01a02d38-7cf3-769e-8b24-6c0df4edf9af
   alias_id: INV-0156
   alias_name: unsupported-contract-versions-fail-explicitly
-  statement: A binding MUST reject unsupported schema or contract versions explicitly and MUST NOT silently coerce them into a supported semantic version.
+  statement: A binding MUST reject unsupported schema or contract versions explicitly
+    and MUST NOT silently coerce them into a supported semantic version.
   scope: global
   enforcement_level: must
   enforcement_mechanism: test
   verification_method: automated
-  rationale: Explicit failure prevents historical implementation behavior from becoming accidental authority.
+  rationale: Explicit failure prevents historical implementation behavior from becoming
+    accidental authority.
 capabilities:
 - id: 01a02d38-7cf3-7dfe-80d8-28c51db97e18
-  alias_id: CAP-0050
+  alias_id: CAP-9001
   alias_name: capability-scoped-consumer-binding
   name: Capability-Scoped Consumer Binding
-  description: Provide an explicit contract and capability manifest for conforming language bindings over ADR-Kit authority.
+  description: Provide an explicit contract and capability manifest for conforming
+    language bindings over ADR-Kit authority.
   acceptance_criteria:
-  - overlapping binding capabilities are qualified by structural semantic behavioral and diagnostic equivalence
+  - overlapping binding capabilities are qualified by structural semantic behavioral
+    and diagnostic equivalence
   - binding-local fingerprints are not treated as portable architecture identity
   - unsupported capabilities and versions fail explicitly
 - id: 01a02d38-7cf3-7625-8e95-7fc0f62d7b09
-  alias_id: CAP-0051
+  alias_id: CAP-9002
   alias_name: typescript-node-browser-consumer-distribution
   name: TypeScript Node and Browser Consumer Distribution
-  description: Provide a read-only framework-neutral TypeScript package with explicit browser-safe and Node-only subpaths.
+  description: Provide a read-only framework-neutral TypeScript package with explicit
+    browser-safe and Node-only subpaths.
   acceptance_criteria:
   - browser-safe entry points bundle without Node built-ins or Angular framework dependencies
   - Node repository and linkage behavior preserve accepted ADR authority
   - npm and PyPI release metadata share one source release lineage
-notes: Promoted from the locked Consumer Binding design brief by the ADR Kit promotion boundary.
+notes: Promoted from the locked Consumer Binding design brief by the ADR Kit promotion
+  boundary.
+migration_origin:
+  remapped_entities:
+  - entity_type: capability
+    from: CAP-0050
+    to: CAP-9001
+    source_pointer: /capabilities/0/alias_id
+  - entity_type: capability
+    from: CAP-0051
+    to: CAP-9002
+    source_pointer: /capabilities/1/alias_id
+  original_capability_id: CAP-0050

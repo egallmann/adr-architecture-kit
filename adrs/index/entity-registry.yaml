@@ -25735,16 +25735,16 @@ entities:
     classification: explicit
     generator: adr-architecture-index
 - id: 01a02d38-7cf3-7625-8e95-7fc0f62d7b09
-  alias_id: CAP-0051
+  alias_id: CAP-9002
   alias_name: typescript-node-browser-consumer-distribution
-  alias_ref: CAP-0051:typescript-node-browser-consumer-distribution
+  alias_ref: CAP-9002:typescript-node-browser-consumer-distribution
   entity_type: capability
   name: TypeScript Node and Browser Consumer Distribution
   summary: Provide a read-only framework-neutral TypeScript package with explicit
     browser-safe and Node-only subpaths.
   uri: adr://adr-architecture-kit/entities/01a02d38-7cf3-7625-8e95-7fc0f62d7b09
   created_at: '2026-08-23T06:04:31.859Z'
-  entity_fingerprint: sha256:2c7a16610a0fdbc754170bee743af1443f0c92e7bd25f57564d2aea6c8375814
+  entity_fingerprint: sha256:b9a9a71c82ae6d68487334bf5dde33d0a613517632f13b3713d8d7bc55dfcd80
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -25762,7 +25762,7 @@ entities:
     implemented_by_components: []
     enabled_by_decisions: []
     alias_name: typescript-node-browser-consumer-distribution
-    alias_id: CAP-0051
+    alias_id: CAP-9002
   relationships:
     declared_in:
     - 01a02d38-7cf3-7b3c-87ec-1c5f08490c6e
@@ -26386,16 +26386,16 @@ entities:
     classification: explicit
     generator: adr-architecture-index
 - id: 01a02d38-7cf3-7dfe-80d8-28c51db97e18
-  alias_id: CAP-0050
+  alias_id: CAP-9001
   alias_name: capability-scoped-consumer-binding
-  alias_ref: CAP-0050:capability-scoped-consumer-binding
+  alias_ref: CAP-9001:capability-scoped-consumer-binding
   entity_type: capability
   name: Capability-Scoped Consumer Binding
   summary: Provide an explicit contract and capability manifest for conforming language
     bindings over ADR-Kit authority.
   uri: adr://adr-architecture-kit/entities/01a02d38-7cf3-7dfe-80d8-28c51db97e18
   created_at: '2026-08-23T06:04:31.859Z'
-  entity_fingerprint: sha256:6a1cff0a4685d2de3ff9dc65801609e7bd50e752dbf735a4e1ab63e7526b2a6b
+  entity_fingerprint: sha256:e739065cb0325009cc406bd0d4a7a035ee21af8c27c4c2165d76eec548f9a066
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -26413,7 +26413,7 @@ entities:
     implemented_by_components: []
     enabled_by_decisions: []
     alias_name: capability-scoped-consumer-binding
-    alias_id: CAP-0050
+    alias_id: CAP-9001
   relationships:
     declared_in:
     - 01a02d38-7cf3-7b3c-87ec-1c5f08490c6e

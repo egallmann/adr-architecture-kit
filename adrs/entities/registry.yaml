@@ -4,8 +4,8 @@
 # generator_id: adr-compiler
 # generator_version: 1
 # hash_algorithm: sha256
-# source_hash: c360be686d51fca46df106a476dc40cd9dd1e1689fb7eacbe65f2c14a2309658
-# rendered_hash: 642a910d4d921828274e18a9b2021a37024c23fcbbd0593171aad6ec232bcc1d
+# source_hash: 76d3b5f6a112a120d9c258bd6e7c5f1fdfe9bbcd95e111e029ebcad43f14386a
+# rendered_hash: e09896dad88d36d999ac00b6d060a78cf27697f54719c508f5142e85b0ccf4f4
 
 schema_version: '1.1'
 type: entity_registry
@@ -810,22 +810,6 @@ entities:
     implements: []
     consumes: []
     realizes: []
-- entity_id: CAP-0050
-  entity_type: capability
-  name: Capability-Scoped Consumer Binding
-  introduced_by: ADR-L-0024
-  lifecycle_stage: active
-  source_path: adrs/logical/ADR-L-0024-cross-language-consumer-bindings-and-typescript-distribution.yaml
-  source_artifact_type: logical_adr
-  domains: []
-  related_adrs:
-  - ADR-L-0024
-  realized_by: []
-  relationships:
-    depends_on: []
-    implements: []
-    consumes: []
-    realizes: []
 - entity_id: CAP-0051
   entity_type: capability
   name: Stable Physical Topology Identity Migration
@@ -836,22 +820,6 @@ entities:
   domains: []
   related_adrs:
   - ADR-L-0018
-  realized_by: []
-  relationships:
-    depends_on: []
-    implements: []
-    consumes: []
-    realizes: []
-- entity_id: CAP-0051
-  entity_type: capability
-  name: TypeScript Node and Browser Consumer Distribution
-  introduced_by: ADR-L-0024
-  lifecycle_stage: active
-  source_path: adrs/logical/ADR-L-0024-cross-language-consumer-bindings-and-typescript-distribution.yaml
-  source_artifact_type: logical_adr
-  domains: []
-  related_adrs:
-  - ADR-L-0024
   realized_by: []
   relationships:
     depends_on: []
@@ -932,6 +900,38 @@ entities:
   domains: []
   related_adrs:
   - ADR-L-9000
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: CAP-9001
+  entity_type: capability
+  name: Capability-Scoped Consumer Binding
+  introduced_by: ADR-L-0024
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0024-cross-language-consumer-bindings-and-typescript-distribution.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs:
+  - ADR-L-0024
+  realized_by: []
+  relationships:
+    depends_on: []
+    implements: []
+    consumes: []
+    realizes: []
+- entity_id: CAP-9002
+  entity_type: capability
+  name: TypeScript Node and Browser Consumer Distribution
+  introduced_by: ADR-L-0024
+  lifecycle_stage: active
+  source_path: adrs/logical/ADR-L-0024-cross-language-consumer-bindings-and-typescript-distribution.yaml
+  source_artifact_type: logical_adr
+  domains: []
+  related_adrs:
+  - ADR-L-0024
   realized_by: []
   relationships:
     depends_on: []

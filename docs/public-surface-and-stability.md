@@ -75,6 +75,16 @@ promotion prepare/check/apply. `build_embodiment_linkage` and its immutable requ
 link, occurrence, rejection, and result contracts are also supported SDK surfaces;
 the evidence schemas they consume remain provisional.
 
+### TypeScript consumer binding
+
+`@system-of-thought/adr-kit` is the official read-only TypeScript consumer binding.
+It is governed by Consumer Binding Contract 1.0 and advertises capability-scoped
+support for normalized model 2.1, evidence attribution 1.5/1.6, repository
+discovery, semantic extensions, and canonical/compatibility relationships. The
+browser-safe entry points are framework-neutral ESM; filesystem repository loading
+and embodiment linkage are explicit Node-only subpaths. TypeScript and Python
+fingerprints are binding-local and are not required to match.
+
 ### Generated compatibility
 
 Committed registries, manifest, architecture index, rendered ADRs, system overview,

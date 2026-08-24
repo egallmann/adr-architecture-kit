@@ -141,13 +141,22 @@ def _assemble(
     relationship_registry: RelationshipRegistry,
     unresolved_registry: UnresolvedRegistry,
     remediation_ledger: RemediationLedger | None,
+    available_paths: set[str] | None = None,
 ) -> NormalizedBundle:
     primary_registry = load_registry(architecture_index.entity_registry_path)
     primary_by_id = {entity.id: entity for entity in primary_registry.entities}
     subsets: dict[str, list[NormalizedEntity]] = {}
     subset_models: dict[str, NormalizedEntityRegistry] = {}
     for field_name, (subset_name, expected_type) in SUBSET_TYPES.items():
-        registry = load_registry(str(getattr(architecture_index, field_name)))
+        relative_path = str(getattr(architecture_index, field_name))
+        exists = (
+            relative_path in available_paths
+            if available_paths is not None
+            else resolve_index_reference(scope_root, relative_path).exists()
+        )
+        if not exists:
+            continue
+        registry = load_registry(relative_path)
         _validate_subset(registry, subset_name, expected_type, primary_by_id)
         subsets[subset_name] = list(registry.entities)
         subset_models[subset_name] = registry
@@ -219,13 +228,22 @@ def _assemble_v2(
     relationship_registry: RelationshipRegistryV2,
     unresolved_registry: UnresolvedRegistryV2,
     remediation_ledger: RemediationLedger | None,
+    available_paths: set[str] | None = None,
 ) -> NormalizedBundleV2:
     primary_registry = load_registry(architecture_index.entity_registry_path)
     primary_by_id = {entity.id: entity for entity in primary_registry.entities}
     subsets: dict[str, list[NormalizedEntityV2]] = {}
     subset_models: dict[str, NormalizedEntityRegistryV2] = {}
     for field_name, (subset_name, expected_type) in SUBSET_TYPES.items():
-        registry = load_registry(str(getattr(architecture_index, field_name)))
+        relative_path = str(getattr(architecture_index, field_name))
+        exists = (
+            relative_path in available_paths
+            if available_paths is not None
+            else resolve_index_reference(scope_root, relative_path).exists()
+        )
+        if not exists:
+            continue
+        registry = load_registry(relative_path)
         _validate_subset_v2(registry, subset_name, expected_type, primary_by_id)
         subsets[subset_name] = list(registry.entities)
         subset_models[subset_name] = registry
@@ -274,13 +292,22 @@ def _assemble_v21(
     relationship_registry: RelationshipRegistryV21,
     unresolved_registry: UnresolvedRegistryV21,
     remediation_ledger: RemediationLedger | None,
+    available_paths: set[str] | None = None,
 ) -> NormalizedBundleV21:
     primary_registry = load_registry(architecture_index.entity_registry_path)
     primary_by_id = {entity.id: entity for entity in primary_registry.entities}
     subsets: dict[str, list[NormalizedEntityV21]] = {}
     subset_models: dict[str, NormalizedEntityRegistryV21] = {}
     for field_name, (subset_name, expected_type) in SUBSET_TYPES.items():
-        registry = load_registry(str(getattr(architecture_index, field_name)))
+        relative_path = str(getattr(architecture_index, field_name))
+        exists = (
+            relative_path in available_paths
+            if available_paths is not None
+            else resolve_index_reference(scope_root, relative_path).exists()
+        )
+        if not exists:
+            continue
+        registry = load_registry(relative_path)
         for entity in registry.entities:
             primary_entity = primary_by_id.get(entity.id)
             if primary_entity is None:
@@ -479,6 +506,7 @@ def load_normalized_bundle_from_bytes(
                 index.unresolved_registry_path,
             ),
             None,
+            set(artifacts),
         )
 
     def load_registry(relative_path: str) -> NormalizedEntityRegistry:
@@ -505,4 +533,5 @@ def load_normalized_bundle_from_bytes(
         relationship_registry,
         unresolved_registry,
         None,
+        set(artifacts),
     )

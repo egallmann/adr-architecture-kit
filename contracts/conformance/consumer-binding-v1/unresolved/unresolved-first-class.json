@@ -1,0 +1,7 @@
+{
+  "input": {"unresolved": [{"kind": "entity_reference", "token": "fixture:missing", "reason": "fixture unresolved target"}]},
+  "expected_observable_semantic_result": {"unresolved_count": 1, "preserved": true, "lookup_outcome": "unresolved"},
+  "authority_references": ["ADR-L-0013", "ADR-L-0024", "schema/normalized-model/v2.1/unresolved-registry.schema.json"],
+  "capability": "unresolved:2.1",
+  "contract_version": "1.0"
+}

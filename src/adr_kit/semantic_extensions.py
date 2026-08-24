@@ -121,7 +121,7 @@ def validate_property_map(properties: Mapping[str, Any]) -> dict[str, Any]:
             checked[key] = value
             continue
         if isinstance(value, list) and all(
-            isinstance(item, (str, int, float)) and not isinstance(item, bool) for item in value
+            isinstance(item, (str, int, float, bool)) for item in value
         ):
             checked[key] = list(value)
             continue

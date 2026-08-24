@@ -8115,3 +8115,471 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
+- id: 01a02d38-7cf3-7017-8767-4978a49c35f0
+  alias_id: INV-0154
+  alias_name: node-loading-requires-baseline-contracts
+  alias_ref: INV-0154:node-loading-requires-baseline-contracts
+  entity_type: invariant
+  name: INV-0154
+  summary: Node repository loading MUST require architecture-index.yaml manifest.yaml
+    and the primary entity relationship and unresolved registries, while treating
+    additive subsets as non-authoritative.
+  uri: adr://adr-architecture-kit/entities/01a02d38-7cf3-7017-8767-4978a49c35f0
+  created_at: '2026-08-23T06:04:31.859Z'
+  entity_fingerprint: sha256:1c38ea84eaea6ce9580e474d4f5e7acf8a4df8c3684aa8ca49bd7c66b24a983a
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a02d38-7cf3-7b3c-87ec-1c5f08490c6e#01a02d38-7cf3-7017-8767-4978a49c35f0
+    artifact_path: adrs/logical/ADR-L-0024-cross-language-consumer-bindings-and-typescript-distribution.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a02d38-7cf3-7b3c-87ec-1c5f08490c6e
+    adr_alias_id: ADR-L-0024
+    scope: global
+    statement: Node repository loading MUST require architecture-index.yaml manifest.yaml
+      and the primary entity relationship and unresolved registries, while treating
+      additive subsets as non-authoritative.
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions: []
+    supersedes: []
+    alias_id: INV-0154
+    alias_name: node-loading-requires-baseline-contracts
+  relationships:
+    declared_in:
+    - 01a02d38-7cf3-7b3c-87ec-1c5f08490c6e
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a02d38-7cf3-7b3c-87ec-1c5f08490c6e#01a02d38-7cf3-7017-8767-4978a49c35f0
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
+- id: 01a02d38-7cf3-7155-8973-148ceb722f1b
+  alias_id: INV-0151
+  alias_name: canonical-schema-mirror-is-byte-exact
+  alias_ref: INV-0151:canonical-schema-mirror-is-byte-exact
+  entity_type: invariant
+  name: INV-0151
+  summary: Packaged TypeScript schema assets MUST preserve the bytes of their canonical
+    counterparts under root schema/.
+  uri: adr://adr-architecture-kit/entities/01a02d38-7cf3-7155-8973-148ceb722f1b
+  created_at: '2026-08-23T06:04:31.859Z'
+  entity_fingerprint: sha256:b51404880ccdb9c27305b12fa0a4c855046c325cc2c264b70b8830026db224f7
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a02d38-7cf3-7b3c-87ec-1c5f08490c6e#01a02d38-7cf3-7155-8973-148ceb722f1b
+    artifact_path: adrs/logical/ADR-L-0024-cross-language-consumer-bindings-and-typescript-distribution.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a02d38-7cf3-7b3c-87ec-1c5f08490c6e
+    adr_alias_id: ADR-L-0024
+    scope: global
+    statement: Packaged TypeScript schema assets MUST preserve the bytes of their
+      canonical counterparts under root schema/.
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions: []
+    supersedes: []
+    alias_id: INV-0151
+    alias_name: canonical-schema-mirror-is-byte-exact
+  relationships:
+    declared_in:
+    - 01a02d38-7cf3-7b3c-87ec-1c5f08490c6e
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a02d38-7cf3-7b3c-87ec-1c5f08490c6e#01a02d38-7cf3-7155-8973-148ceb722f1b
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
+- id: 01a02d38-7cf3-74eb-896e-01f6f7dd53c1
+  alias_id: INV-0152
+  alias_name: browser-entrypoints-are-node-free
+  alias_ref: INV-0152:browser-entrypoints-are-node-free
+  entity_type: invariant
+  name: INV-0152
+  summary: Browser-safe package entry points MUST have no reachable Node built-in
+    dependency and MUST have no Angular framework dependency.
+  uri: adr://adr-architecture-kit/entities/01a02d38-7cf3-74eb-896e-01f6f7dd53c1
+  created_at: '2026-08-23T06:04:31.859Z'
+  entity_fingerprint: sha256:cbd7d6e2f9be08678beeb187494eb3751455c4f25bda89ecbcd6d13d9743035b
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a02d38-7cf3-7b3c-87ec-1c5f08490c6e#01a02d38-7cf3-74eb-896e-01f6f7dd53c1
+    artifact_path: adrs/logical/ADR-L-0024-cross-language-consumer-bindings-and-typescript-distribution.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a02d38-7cf3-7b3c-87ec-1c5f08490c6e
+    adr_alias_id: ADR-L-0024
+    scope: global
+    statement: Browser-safe package entry points MUST have no reachable Node built-in
+      dependency and MUST have no Angular framework dependency.
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions: []
+    supersedes: []
+    alias_id: INV-0152
+    alias_name: browser-entrypoints-are-node-free
+  relationships:
+    declared_in:
+    - 01a02d38-7cf3-7b3c-87ec-1c5f08490c6e
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a02d38-7cf3-7b3c-87ec-1c5f08490c6e#01a02d38-7cf3-74eb-896e-01f6f7dd53c1
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
+- id: 01a02d38-7cf3-7696-8323-e760deca8334
+  alias_id: INV-0153
+  alias_name: typescript-v1-is-read-only
+  alias_ref: INV-0153:typescript-v1-is-read-only
+  entity_type: invariant
+  name: INV-0153
+  summary: TypeScript v1 MUST perform no repository writes identity allocation graph
+    admission authoring mutation network access or import-time side effects.
+  uri: adr://adr-architecture-kit/entities/01a02d38-7cf3-7696-8323-e760deca8334
+  created_at: '2026-08-23T06:04:31.859Z'
+  entity_fingerprint: sha256:f908242c73eb542440890f77d9af0df1ed0f311f9a849059c5d669c20005e53a
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a02d38-7cf3-7b3c-87ec-1c5f08490c6e#01a02d38-7cf3-7696-8323-e760deca8334
+    artifact_path: adrs/logical/ADR-L-0024-cross-language-consumer-bindings-and-typescript-distribution.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a02d38-7cf3-7b3c-87ec-1c5f08490c6e
+    adr_alias_id: ADR-L-0024
+    scope: global
+    statement: TypeScript v1 MUST perform no repository writes identity allocation
+      graph admission authoring mutation network access or import-time side effects.
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions: []
+    supersedes: []
+    alias_id: INV-0153
+    alias_name: typescript-v1-is-read-only
+  relationships:
+    declared_in:
+    - 01a02d38-7cf3-7b3c-87ec-1c5f08490c6e
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a02d38-7cf3-7b3c-87ec-1c5f08490c6e#01a02d38-7cf3-7696-8323-e760deca8334
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
+- id: 01a02d38-7cf3-769e-8b24-6c0df4edf9af
+  alias_id: INV-0156
+  alias_name: unsupported-contract-versions-fail-explicitly
+  alias_ref: INV-0156:unsupported-contract-versions-fail-explicitly
+  entity_type: invariant
+  name: INV-0156
+  summary: A binding MUST reject unsupported schema or contract versions explicitly
+    and MUST NOT silently coerce them into a supported semantic version.
+  uri: adr://adr-architecture-kit/entities/01a02d38-7cf3-769e-8b24-6c0df4edf9af
+  created_at: '2026-08-23T06:04:31.859Z'
+  entity_fingerprint: sha256:450d2e93db6128d638c84b456cea2e5126b72ac7f4835e6897fe515bd990ab2e
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a02d38-7cf3-7b3c-87ec-1c5f08490c6e#01a02d38-7cf3-769e-8b24-6c0df4edf9af
+    artifact_path: adrs/logical/ADR-L-0024-cross-language-consumer-bindings-and-typescript-distribution.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a02d38-7cf3-7b3c-87ec-1c5f08490c6e
+    adr_alias_id: ADR-L-0024
+    scope: global
+    statement: A binding MUST reject unsupported schema or contract versions explicitly
+      and MUST NOT silently coerce them into a supported semantic version.
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions: []
+    supersedes: []
+    alias_id: INV-0156
+    alias_name: unsupported-contract-versions-fail-explicitly
+  relationships:
+    declared_in:
+    - 01a02d38-7cf3-7b3c-87ec-1c5f08490c6e
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a02d38-7cf3-7b3c-87ec-1c5f08490c6e#01a02d38-7cf3-769e-8b24-6c0df4edf9af
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
+- id: 01a02d38-7cf3-790b-8493-b1499943f075
+  alias_id: INV-0149
+  alias_name: bindings-never-redefine-semantic-authority
+  alias_ref: INV-0149:bindings-never-redefine-semantic-authority
+  entity_type: invariant
+  name: INV-0149
+  summary: Language bindings MUST implement accepted ADR schema vocabulary and explicitly
+    promoted consumer contracts without redefining canonical identity or architecture
+    semantics.
+  uri: adr://adr-architecture-kit/entities/01a02d38-7cf3-790b-8493-b1499943f075
+  created_at: '2026-08-23T06:04:31.859Z'
+  entity_fingerprint: sha256:e3bdd3e7a9b364ca51ffd44e603a1d9cc9f4662c8c63d45d93442d192dd0f29e
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a02d38-7cf3-7b3c-87ec-1c5f08490c6e#01a02d38-7cf3-790b-8493-b1499943f075
+    artifact_path: adrs/logical/ADR-L-0024-cross-language-consumer-bindings-and-typescript-distribution.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a02d38-7cf3-7b3c-87ec-1c5f08490c6e
+    adr_alias_id: ADR-L-0024
+    scope: global
+    statement: Language bindings MUST implement accepted ADR schema vocabulary and
+      explicitly promoted consumer contracts without redefining canonical identity
+      or architecture semantics.
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions: []
+    supersedes: []
+    alias_id: INV-0149
+    alias_name: bindings-never-redefine-semantic-authority
+  relationships:
+    declared_in:
+    - 01a02d38-7cf3-7b3c-87ec-1c5f08490c6e
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a02d38-7cf3-7b3c-87ec-1c5f08490c6e#01a02d38-7cf3-790b-8493-b1499943f075
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
+- id: 01a02d38-7cf3-79cf-8174-b9f50adaf0bf
+  alias_id: INV-0155
+  alias_name: linkage-never-enters-graph-authority
+  alias_ref: INV-0155:linkage-never-enters-graph-authority
+  entity_type: invariant
+  name: INV-0155
+  summary: Embodiment linkage MUST preserve authority_ceiling validated_derived_evidence
+    and graph_admission_status not_admitted and MUST perform no graph writes.
+  uri: adr://adr-architecture-kit/entities/01a02d38-7cf3-79cf-8174-b9f50adaf0bf
+  created_at: '2026-08-23T06:04:31.859Z'
+  entity_fingerprint: sha256:9fd922b46b90c6f896d44fbb2ce6f60a87a600338ee77ac9b9739ee48369577c
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a02d38-7cf3-7b3c-87ec-1c5f08490c6e#01a02d38-7cf3-79cf-8174-b9f50adaf0bf
+    artifact_path: adrs/logical/ADR-L-0024-cross-language-consumer-bindings-and-typescript-distribution.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a02d38-7cf3-7b3c-87ec-1c5f08490c6e
+    adr_alias_id: ADR-L-0024
+    scope: global
+    statement: Embodiment linkage MUST preserve authority_ceiling validated_derived_evidence
+      and graph_admission_status not_admitted and MUST perform no graph writes.
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions: []
+    supersedes: []
+    alias_id: INV-0155
+    alias_name: linkage-never-enters-graph-authority
+  relationships:
+    declared_in:
+    - 01a02d38-7cf3-7b3c-87ec-1c5f08490c6e
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a02d38-7cf3-7b3c-87ec-1c5f08490c6e#01a02d38-7cf3-79cf-8174-b9f50adaf0bf
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
+- id: 01a02d38-7cf3-7e8e-8a34-0865a8dd73af
+  alias_id: INV-0150
+  alias_name: conformance-is-capability-intersection-scoped
+  alias_ref: INV-0150:conformance-is-capability-intersection-scoped
+  entity_type: invariant
+  name: INV-0150
+  summary: Cross-language qualification MUST compare only capabilities and contract
+    versions advertised by both bindings.
+  uri: adr://adr-architecture-kit/entities/01a02d38-7cf3-7e8e-8a34-0865a8dd73af
+  created_at: '2026-08-23T06:04:31.859Z'
+  entity_fingerprint: sha256:bdc347751922f5cd9fafd5775d471021180e5da0d477c11aa8ac8ae649ba1425
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a02d38-7cf3-7b3c-87ec-1c5f08490c6e#01a02d38-7cf3-7e8e-8a34-0865a8dd73af
+    artifact_path: adrs/logical/ADR-L-0024-cross-language-consumer-bindings-and-typescript-distribution.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a02d38-7cf3-7b3c-87ec-1c5f08490c6e
+    adr_alias_id: ADR-L-0024
+    scope: global
+    statement: Cross-language qualification MUST compare only capabilities and contract
+      versions advertised by both bindings.
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions: []
+    supersedes: []
+    alias_id: INV-0150
+    alias_name: conformance-is-capability-intersection-scoped
+  relationships:
+    declared_in:
+    - 01a02d38-7cf3-7b3c-87ec-1c5f08490c6e
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a02d38-7cf3-7b3c-87ec-1c5f08490c6e#01a02d38-7cf3-7e8e-8a34-0865a8dd73af
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index

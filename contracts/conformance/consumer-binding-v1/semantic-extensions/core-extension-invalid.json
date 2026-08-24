@@ -1,0 +1,7 @@
+{
+  "input": {"entity_type": "component", "extension": {"properties": {"enabled": true}, "rationale": "Core entities cannot carry extension payload."}},
+  "expected_observable_semantic_result": {"accepted": false, "classification": "contract_violation", "stable_code": "contract.extension_core_entity"},
+  "authority_references": ["ADR-L-0023", "schema/normalized-model/v2.1/normalized-entity.schema.json"],
+  "capability": "semantic_extensions:2.1",
+  "contract_version": "1.0"
+}

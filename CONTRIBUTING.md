@@ -14,6 +14,7 @@ Thank you for your interest in contributing. This document covers how to set up 
 - [Pre-push Hook](#pre-push-hook)
 - [Submitting Changes](#submitting-changes)
 - [Publishing to PyPI (maintainers)](#publishing-to-pypi-maintainers)
+- [Publishing to npm (maintainers)](#publishing-to-npm-maintainers)
 - [ADR Authority](#adr-authority)
 
 ---
@@ -219,15 +220,26 @@ The **link** is that PyPI trusts *that GitHub repo + that workflow file* to uplo
 ### Ship a version
 
 1. Cut a `release/<version>` branch from admitted `develop`.
-2. Bump **`version`** only in [`pyproject.toml`](pyproject.toml). Runtime, CLI, and SDK
-   versions resolve from distribution metadata; do not add another version literal.
-3. Convert [`CHANGELOG.md`](CHANGELOG.md) `[Unreleased]` into a dated section for that
+2. Bump **`version`** only in [`pyproject.toml`](pyproject.toml). This is the single
+   manually edited package-version authority; do not hand-edit a second release version.
+3. Synchronize the checked-in Node package metadata and lockfile from that authority:
+
+   ```bash
+   python scripts/sync_node_package_version.py --write
+   ```
+
+   The command updates `packages/node/package.json` and the root package version fields
+   in `packages/node/package-lock.json`. CI and release-artifact qualification run the
+   same command in `--check` mode and fail closed on drift. Runtime, CLI, SDK, and
+   generated capability versions continue to resolve from the Python distribution
+   authority.
+4. Convert [`CHANGELOG.md`](CHANGELOG.md) `[Unreleased]` into a dated section for that
    version and restore an empty `[Unreleased]` heading.
-4. Open a release pull request against `main`. After admission, **wait for the successful
+5. Open a release pull request against `main`. After admission, **wait for the successful
    ADR Governance `push` run on that `main` commit** (release-eligible qualification).
-5. Only then create the exact tag `v<project-version>` (for example, `v0.4.0`) on that
+6. Only then create the exact tag `v<project-version>` (for example, `v0.4.0`) on that
    admitted `main` commit while the qualifying `release-bundle` artifact is still retained.
-6. The tag workflow is promotion-only: it resolves the successful **main `push`** ADR
+7. The tag workflow is promotion-only: it resolves the successful **main `push`** ADR
    Governance run for the tagged SHA, downloads that exact retained bundle, verifies
    source commit / package version / tag / hashes, and publishes without rebuilding or
    re-running pytest, coverage, governance, OS matrices, or the retained-wheel matrix.
@@ -255,6 +267,60 @@ adr --help
 ### Optional: TestPyPI first
 
 To practice uploads, configure a second workflow or `repository-url` for TestPyPI as in [Using TestPyPI](https://packaging.python.org/en/guides/using-testpypi/); not required for production once you trust the flow.
+
+## Publishing to npm (maintainers)
+
+The scoped package `@system-of-thought/adr-kit` is published by
+`.github/workflows/publish-npm.yml` only for an exact `v*` tag. The workflow
+resolves the successful `main` push run of `adr-governance.yml`, downloads its
+retained `node-dist` tarball, verifies its package name/version and contents,
+and publishes that tarball without rebuilding. The npm version is checked
+against `pyproject.toml`; `packages/node/package.json` and
+`packages/node/package-lock.json` are synchronized from that authority by
+`scripts/sync_node_package_version.py`; feature and `develop` runs never publish.
+
+### One-time npm bootstrap
+
+The npm organization `system-of-thought` must own the scope, and the human
+maintainer performing this step must have package write access and account-level
+2FA enabled. The package does not currently exist on the public registry, so
+the first package creation is a human-authenticated exception to the normal
+tag-only publisher:
+
+1. From the exact retained `node-dist` tarball for the first release version,
+   run `npm publish <qualified-tarball> --access public` while authenticated as
+   the npm scope maintainer. Do not use a long-lived automation token. Do not
+   manually alter the package version; it must already match `pyproject.toml`.
+2. After the package exists, configure its npm Trusted Publisher either in the
+   package settings UI or with npm CLI 11.15+:
+
+   ```bash
+   npm trust github @system-of-thought/adr-kit \
+     --file publish-npm.yml \
+     --repository egallmann/adr-architecture-kit \
+     --environment npm \
+     --allow-publish
+   ```
+
+   The exact values are: GitHub owner `egallmann`, repository
+   `adr-architecture-kit`, workflow filename `publish-npm.yml` (filename only,
+   not `.github/workflows/publish-npm.yml`), environment `npm`, package
+   `@system-of-thought/adr-kit`, and allowed action `npm publish`.
+3. Do not create a tag that would cause the tag publisher to attempt a second
+   upload of the manually bootstrapped version. Start the normal release flow
+   with the next not-yet-published package version after the bootstrap package
+   and Trusted Publisher are confirmed.
+
+The GitHub repository must also contain an `npm` environment before the first
+tagged npm publication. The exact human control-plane action is **Settings →
+Environments → New environment**, name it exactly `npm`, enable **Required
+reviewers** for a package-release maintainer or team who is not the tag actor,
+and enable **Prevent self-review**. The current repository has only one
+collaborator, so this environment is intentionally not created automatically;
+an independent reviewer must be added first. Do not replace this gate with an
+unprotected environment. The workflow uses GitHub OIDC (`id-token: write`),
+publishes the retained tarball without rebuilding, and requires no long-lived
+npm token for normal future releases.
 
 ---
 

@@ -5,8 +5,8 @@ artifact_kind: rendered_adr_markdown
 generator_id: adr-projection-markdown
 generator_version: 2
 hash_algorithm: sha256
-source_hash: fbbee631c43163598a0dccbe60012a0fc966c5a06e4da779dd2f76c183a8e9eb
-rendered_hash: e848fbd955f9b9b9aa907eb471c866957386e73260a75cba0b863266560d7fb2
+source_hash: b97922d9cd41f53d51aa8bb866fccf7149d05883abb7c8d55827406c984f5403
+rendered_hash: 8693aca9321c0f08892a0a19c77e5181b689b60137b3fae65918ccfb16a63c18
 -->
 
 # ADR-L-0019: Canonical Entity Identity
@@ -136,9 +136,11 @@ flowchart LR
   n_019ffdba_3c42_7c4a_a737_f6751a265d60["ADR-L-0020"]
   n_01a00643_1bfc_788c_911b_83a4725a8de1["ADR-L-0022"]
   n_01a00644_1bfc_7abc_8aaa_111111111111["ADR-L-0023"]
+  n_01a02d38_7cf3_7b3c_87ec_1c5f08490c6e["ADR-L-0024"]
   n_019ffdba_3c42_7c4a_a737_f6751a265d60 -->|"references"| n_019fee89_e617_78d9_ba3b_b7e3e6db1b12
   n_01a00643_1bfc_788c_911b_83a4725a8de1 -->|"references"| n_019fee89_e617_78d9_ba3b_b7e3e6db1b12
   n_01a00644_1bfc_7abc_8aaa_111111111111 -->|"references"| n_019fee89_e617_78d9_ba3b_b7e3e6db1b12
+  n_01a02d38_7cf3_7b3c_87ec_1c5f08490c6e -->|"references"| n_019fee89_e617_78d9_ba3b_b7e3e6db1b12
 ```
 ```mermaid
 flowchart LR
@@ -186,6 +188,20 @@ ontology promotion. A safe extension must preserve those boundaries without
 creating a second graph or a schema-less metadata escape hatch.
 
 [Open projection](ADR-L-0023-consumer-semantic-extension-contract.md)
+### ADR-L-0024 — Cross-Language Consumer Bindings and TypeScript Distribution
+
+**Relationships:**
+- 01a02d38-7cf3-7b3c-87ec-1c5f08490c6e -[:references]-> this ADR
+
+**Context:** ADR-Kit already owns accepted ADR authority, canonical schema bytes, semantic
+vocabularies, the repository discovery contract, the normalized model, and
+validated derived embodiment evidence. Python is the existing implementation
+of those contracts, but it is not their semantic owner. Node services,
+engineering-agent integrations, and browser applications need a supported
+read-only consumer binding without reparsing ADR source YAML, depending on
+compiler internals, or importing Node authority…
+
+[Open projection](ADR-L-0024-cross-language-consumer-bindings-and-typescript-distribution.md)
 
 
 

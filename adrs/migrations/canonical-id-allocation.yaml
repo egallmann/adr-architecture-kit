@@ -2,13 +2,13 @@ schema_version: '1.0'
 type: canonical_id_allocation
 high_water_marks:
   BOUND: 4
-  CAP: 9000
+  CAP: 9002
   COMP: 22
   CONTRACT: 5
   DEC: 9000
   IFACE: 35
   IMPL: 29
-  INV: 148
+  INV: 156
 allocations:
 - id: BOUND-0001
   entity_type: boundary
@@ -370,6 +370,18 @@ allocations:
   file_path: adrs/logical/ADR-L-9000-kernel-boot-publication-surface.yaml
   source_pointer: /capabilities/0/id
   state: active
+- id: CAP-9001
+  entity_type: capability
+  file_path: adrs/logical/ADR-L-0024-cross-language-consumer-bindings-and-typescript-distribution.yaml
+  source_pointer: /capabilities/0/alias_id
+  state: active
+  adr_id: 01a02d38-7cf3-7b3c-87ec-1c5f08490c6e
+- id: CAP-9002
+  entity_type: capability
+  file_path: adrs/logical/ADR-L-0024-cross-language-consumer-bindings-and-typescript-distribution.yaml
+  source_pointer: /capabilities/1/alias_id
+  state: active
+  adr_id: 01a02d38-7cf3-7b3c-87ec-1c5f08490c6e
 - id: COMP-0001
   entity_type: component
   adr_id: ADR-P-0001
@@ -1396,6 +1408,132 @@ allocations:
   source_pointer: /decisions/16/alias_id
   state: active
   adr_id: 01a00643-1bfc-788c-911b-83a4725a8de1
+- id: DEC-0147
+  entity_type: decision
+  adr_id: 01a00644-1bfc-7abc-8aaa-111111111111
+  file_path: adrs/logical/ADR-L-0023-consumer-semantic-extension-contract.yaml
+  source_pointer: /decisions/0/alias_id
+  state: active
+- id: DEC-0148
+  entity_type: decision
+  adr_id: 01a00644-1bfc-7abc-8aaa-111111111111
+  file_path: adrs/logical/ADR-L-0023-consumer-semantic-extension-contract.yaml
+  source_pointer: /decisions/1/alias_id
+  state: active
+- id: DEC-0149
+  entity_type: decision
+  adr_id: 01a00644-1bfc-7abc-8aaa-111111111111
+  file_path: adrs/logical/ADR-L-0023-consumer-semantic-extension-contract.yaml
+  source_pointer: /decisions/2/alias_id
+  state: active
+- id: DEC-0150
+  entity_type: decision
+  adr_id: 01a00644-1bfc-7abc-8aaa-111111111111
+  file_path: adrs/logical/ADR-L-0023-consumer-semantic-extension-contract.yaml
+  source_pointer: /decisions/3/alias_id
+  state: active
+- id: DEC-0151
+  entity_type: decision
+  adr_id: 01a00644-1bfc-7abc-8aaa-111111111111
+  file_path: adrs/logical/ADR-L-0023-consumer-semantic-extension-contract.yaml
+  source_pointer: /decisions/4/alias_id
+  state: active
+- id: DEC-0152
+  entity_type: decision
+  adr_id: 01a00644-1bfc-7abc-8aaa-111111111111
+  file_path: adrs/logical/ADR-L-0023-consumer-semantic-extension-contract.yaml
+  source_pointer: /decisions/5/alias_id
+  state: active
+- id: DEC-0153
+  entity_type: decision
+  adr_id: 01a00644-1bfc-7abc-8aaa-111111111111
+  file_path: adrs/logical/ADR-L-0023-consumer-semantic-extension-contract.yaml
+  source_pointer: /decisions/6/alias_id
+  state: active
+- id: DEC-0154
+  entity_type: decision
+  adr_id: 01a00644-1bfc-7abc-8aaa-111111111111
+  file_path: adrs/logical/ADR-L-0023-consumer-semantic-extension-contract.yaml
+  source_pointer: /decisions/7/alias_id
+  state: active
+- id: DEC-0155
+  entity_type: decision
+  file_path: adrs/logical/ADR-L-0024-cross-language-consumer-bindings-and-typescript-distribution.yaml
+  source_pointer: /decisions/0/alias_id
+  state: active
+  adr_id: 01a02d38-7cf3-7b3c-87ec-1c5f08490c6e
+- id: DEC-0156
+  entity_type: decision
+  file_path: adrs/logical/ADR-L-0024-cross-language-consumer-bindings-and-typescript-distribution.yaml
+  source_pointer: /decisions/1/alias_id
+  state: active
+  adr_id: 01a02d38-7cf3-7b3c-87ec-1c5f08490c6e
+- id: DEC-0157
+  entity_type: decision
+  file_path: adrs/logical/ADR-L-0024-cross-language-consumer-bindings-and-typescript-distribution.yaml
+  source_pointer: /decisions/2/alias_id
+  state: active
+  adr_id: 01a02d38-7cf3-7b3c-87ec-1c5f08490c6e
+- id: DEC-0158
+  entity_type: decision
+  file_path: adrs/logical/ADR-L-0024-cross-language-consumer-bindings-and-typescript-distribution.yaml
+  source_pointer: /decisions/3/alias_id
+  state: active
+  adr_id: 01a02d38-7cf3-7b3c-87ec-1c5f08490c6e
+- id: DEC-0159
+  entity_type: decision
+  file_path: adrs/logical/ADR-L-0024-cross-language-consumer-bindings-and-typescript-distribution.yaml
+  source_pointer: /decisions/4/alias_id
+  state: active
+  adr_id: 01a02d38-7cf3-7b3c-87ec-1c5f08490c6e
+- id: DEC-0160
+  entity_type: decision
+  file_path: adrs/logical/ADR-L-0024-cross-language-consumer-bindings-and-typescript-distribution.yaml
+  source_pointer: /decisions/5/alias_id
+  state: active
+  adr_id: 01a02d38-7cf3-7b3c-87ec-1c5f08490c6e
+- id: DEC-0161
+  entity_type: decision
+  file_path: adrs/logical/ADR-L-0024-cross-language-consumer-bindings-and-typescript-distribution.yaml
+  source_pointer: /decisions/6/alias_id
+  state: active
+  adr_id: 01a02d38-7cf3-7b3c-87ec-1c5f08490c6e
+- id: DEC-0162
+  entity_type: decision
+  file_path: adrs/logical/ADR-L-0024-cross-language-consumer-bindings-and-typescript-distribution.yaml
+  source_pointer: /decisions/7/alias_id
+  state: active
+  adr_id: 01a02d38-7cf3-7b3c-87ec-1c5f08490c6e
+- id: DEC-0163
+  entity_type: decision
+  file_path: adrs/logical/ADR-L-0024-cross-language-consumer-bindings-and-typescript-distribution.yaml
+  source_pointer: /decisions/8/alias_id
+  state: active
+  adr_id: 01a02d38-7cf3-7b3c-87ec-1c5f08490c6e
+- id: DEC-0164
+  entity_type: decision
+  file_path: adrs/logical/ADR-L-0024-cross-language-consumer-bindings-and-typescript-distribution.yaml
+  source_pointer: /decisions/9/alias_id
+  state: active
+  adr_id: 01a02d38-7cf3-7b3c-87ec-1c5f08490c6e
+- id: DEC-0165
+  entity_type: decision
+  file_path: adrs/logical/ADR-L-0024-cross-language-consumer-bindings-and-typescript-distribution.yaml
+  source_pointer: /decisions/10/alias_id
+  state: active
+  adr_id: 01a02d38-7cf3-7b3c-87ec-1c5f08490c6e
+- id: DEC-0166
+  entity_type: decision
+  file_path: adrs/logical/ADR-L-0024-cross-language-consumer-bindings-and-typescript-distribution.yaml
+  source_pointer: /decisions/11/alias_id
+  state: active
+  adr_id: 01a02d38-7cf3-7b3c-87ec-1c5f08490c6e
+- id: DEC-0167
+  entity_type: decision
+  file_path: adrs/logical/ADR-L-0024-cross-language-consumer-bindings-and-typescript-distribution.yaml
+  source_pointer: /decisions/12/alias_id
+  state: active
+  adr_id: 01a02d38-7cf3-7b3c-87ec-1c5f08490c6e
 - id: DEC-9000
   entity_type: decision
   adr_id: ADR-L-9000
@@ -2530,54 +2668,6 @@ allocations:
   source_pointer: /invariants/10/alias_id
   state: active
   adr_id: 01a00643-1bfc-788c-911b-83a4725a8de1
-- id: DEC-0147
-  entity_type: decision
-  adr_id: 01a00644-1bfc-7abc-8aaa-111111111111
-  file_path: adrs/logical/ADR-L-0023-consumer-semantic-extension-contract.yaml
-  source_pointer: /decisions/0/alias_id
-  state: active
-- id: DEC-0148
-  entity_type: decision
-  adr_id: 01a00644-1bfc-7abc-8aaa-111111111111
-  file_path: adrs/logical/ADR-L-0023-consumer-semantic-extension-contract.yaml
-  source_pointer: /decisions/1/alias_id
-  state: active
-- id: DEC-0149
-  entity_type: decision
-  adr_id: 01a00644-1bfc-7abc-8aaa-111111111111
-  file_path: adrs/logical/ADR-L-0023-consumer-semantic-extension-contract.yaml
-  source_pointer: /decisions/2/alias_id
-  state: active
-- id: DEC-0150
-  entity_type: decision
-  adr_id: 01a00644-1bfc-7abc-8aaa-111111111111
-  file_path: adrs/logical/ADR-L-0023-consumer-semantic-extension-contract.yaml
-  source_pointer: /decisions/3/alias_id
-  state: active
-- id: DEC-0151
-  entity_type: decision
-  adr_id: 01a00644-1bfc-7abc-8aaa-111111111111
-  file_path: adrs/logical/ADR-L-0023-consumer-semantic-extension-contract.yaml
-  source_pointer: /decisions/4/alias_id
-  state: active
-- id: DEC-0152
-  entity_type: decision
-  adr_id: 01a00644-1bfc-7abc-8aaa-111111111111
-  file_path: adrs/logical/ADR-L-0023-consumer-semantic-extension-contract.yaml
-  source_pointer: /decisions/5/alias_id
-  state: active
-- id: DEC-0153
-  entity_type: decision
-  adr_id: 01a00644-1bfc-7abc-8aaa-111111111111
-  file_path: adrs/logical/ADR-L-0023-consumer-semantic-extension-contract.yaml
-  source_pointer: /decisions/6/alias_id
-  state: active
-- id: DEC-0154
-  entity_type: decision
-  adr_id: 01a00644-1bfc-7abc-8aaa-111111111111
-  file_path: adrs/logical/ADR-L-0023-consumer-semantic-extension-contract.yaml
-  source_pointer: /decisions/7/alias_id
-  state: active
 - id: INV-0141
   entity_type: invariant
   adr_id: 01a00644-1bfc-7abc-8aaa-111111111111
@@ -2626,3 +2716,51 @@ allocations:
   file_path: adrs/logical/ADR-L-0023-consumer-semantic-extension-contract.yaml
   source_pointer: /invariants/7/alias_id
   state: active
+- id: INV-0149
+  entity_type: invariant
+  file_path: adrs/logical/ADR-L-0024-cross-language-consumer-bindings-and-typescript-distribution.yaml
+  source_pointer: /invariants/0/alias_id
+  state: active
+  adr_id: 01a02d38-7cf3-7b3c-87ec-1c5f08490c6e
+- id: INV-0150
+  entity_type: invariant
+  file_path: adrs/logical/ADR-L-0024-cross-language-consumer-bindings-and-typescript-distribution.yaml
+  source_pointer: /invariants/1/alias_id
+  state: active
+  adr_id: 01a02d38-7cf3-7b3c-87ec-1c5f08490c6e
+- id: INV-0151
+  entity_type: invariant
+  file_path: adrs/logical/ADR-L-0024-cross-language-consumer-bindings-and-typescript-distribution.yaml
+  source_pointer: /invariants/2/alias_id
+  state: active
+  adr_id: 01a02d38-7cf3-7b3c-87ec-1c5f08490c6e
+- id: INV-0152
+  entity_type: invariant
+  file_path: adrs/logical/ADR-L-0024-cross-language-consumer-bindings-and-typescript-distribution.yaml
+  source_pointer: /invariants/3/alias_id
+  state: active
+  adr_id: 01a02d38-7cf3-7b3c-87ec-1c5f08490c6e
+- id: INV-0153
+  entity_type: invariant
+  file_path: adrs/logical/ADR-L-0024-cross-language-consumer-bindings-and-typescript-distribution.yaml
+  source_pointer: /invariants/4/alias_id
+  state: active
+  adr_id: 01a02d38-7cf3-7b3c-87ec-1c5f08490c6e
+- id: INV-0154
+  entity_type: invariant
+  file_path: adrs/logical/ADR-L-0024-cross-language-consumer-bindings-and-typescript-distribution.yaml
+  source_pointer: /invariants/5/alias_id
+  state: active
+  adr_id: 01a02d38-7cf3-7b3c-87ec-1c5f08490c6e
+- id: INV-0155
+  entity_type: invariant
+  file_path: adrs/logical/ADR-L-0024-cross-language-consumer-bindings-and-typescript-distribution.yaml
+  source_pointer: /invariants/6/alias_id
+  state: active
+  adr_id: 01a02d38-7cf3-7b3c-87ec-1c5f08490c6e
+- id: INV-0156
+  entity_type: invariant
+  file_path: adrs/logical/ADR-L-0024-cross-language-consumer-bindings-and-typescript-distribution.yaml
+  source_pointer: /invariants/7/alias_id
+  state: active
+  adr_id: 01a02d38-7cf3-7b3c-87ec-1c5f08490c6e

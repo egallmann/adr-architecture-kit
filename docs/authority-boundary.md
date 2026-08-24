@@ -18,6 +18,10 @@ Owns the canonical ADR encoding model, authoring validation, authoring-time norm
 repository projections, the narrow `adr_kit.api` authoring SDK, the Python repository
 boundary, and adapter/compiler logic that turns ADR authority into IR-compatible outputs.
 
+ADR-Kit also owns the language-neutral Consumer Binding Contract 1.0. The official
+TypeScript package is a read-only binding over this authority; it does not own ADR
+semantics, canonical identity, graph admission, or repository writes.
+
 ### `ste-runtime`
 
 Owns runtime observation, evidence extraction, and composition. Its derived state
@@ -56,6 +60,9 @@ baselines.
 The SDK compilation groups (`registries`, `manifest`, and `markdown`) remain ADR Kit
 authoring projections. They do not authorize runtime graph or evidence emission into
 this repository.
+
+Browser consumers use only browser-safe ESM entry points. Node filesystem access and
+embodiment linkage are explicit Node binding capabilities, not browser authority.
 
 ADR Kit is also the sole repair authority for collisions among repository-local
 canonical entity IDs. It detects collisions, preserves one deterministic keeper,

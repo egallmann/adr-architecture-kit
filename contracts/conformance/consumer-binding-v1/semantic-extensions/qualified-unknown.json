@@ -1,0 +1,7 @@
+{
+  "input": {"entity_type": "fixture:worker", "extension": {"properties": {"flags": [true, false], "enabled": true, "labels": ["blue", "fast"]}, "rationale": "Preserve this opaque payload."}},
+  "expected_observable_semantic_result": {"accepted": true, "extension_type": "fixture:worker", "flags": [true, false], "inferred_relationships": 0},
+  "authority_references": ["ADR-L-0023", "ADR-L-0024", "schema/normalized-model/v2.1/normalized-entity.schema.json"],
+  "capability": "semantic_extensions:2.1",
+  "contract_version": "1.0"
+}

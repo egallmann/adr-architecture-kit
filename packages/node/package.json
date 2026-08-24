@@ -1,0 +1,65 @@
+{
+  "name": "@system-of-thought/adr-kit",
+  "version": "0.7.0",
+  "description": "Read-only ADR-Kit semantic consumer binding for browser and Node applications.",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/egallmann/adr-architecture-kit"
+  },
+  "type": "module",
+  "license": "Apache-2.0",
+  "sideEffects": false,
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./model": {
+      "types": "./dist/model/index.d.ts",
+      "import": "./dist/model/index.js"
+    },
+    "./schemas": {
+      "types": "./dist/schemas/index.d.ts",
+      "import": "./dist/schemas/index.js"
+    },
+    "./validation": {
+      "types": "./dist/validation/index.d.ts",
+      "import": "./dist/validation/index.js"
+    },
+    "./node": {
+      "types": "./dist/node/index.d.ts",
+      "import": "./dist/node/index.js"
+    },
+    "./node/linkage": {
+      "types": "./dist/node/linkage.d.ts",
+      "import": "./dist/node/linkage.js"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "generate": "node scripts/copy-canonical-schemas.mjs",
+    "build": "npm run generate && tsc -p tsconfig.json && node scripts/copy-dist-schemas.mjs",
+    "typecheck": "npm run generate && tsc -p tsconfig.json --noEmit",
+    "lint": "npm run typecheck",
+    "browser:check": "npm run build && node scripts/check-browser-bundle.mjs",
+    "test": "npm run build && node --test test/*.test.mjs",
+    "pack:check": "npm run build && npm pack --dry-run"
+  },
+  "dependencies": {
+    "ajv": "^8.17.1",
+    "ajv-formats": "^3.0.1",
+    "yaml": "^2.6.1"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.2",
+    "esbuild": "^0.28.2",
+    "typescript": "^5.7.2"
+  }
+}

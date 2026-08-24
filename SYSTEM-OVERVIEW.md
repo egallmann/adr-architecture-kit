@@ -5,8 +5,8 @@ artifact_kind: system_overview
 generator_id: adr-system-overview
 generator_version: 2
 hash_algorithm: sha256
-source_hash: d373d6387172bd4e3a6edf9701e528d2f2714f09c061a29eeac31a40f4061743
-rendered_hash: 9501faa0f31779c4f2b0eb4df25dddbfe6261e5a222467c88b45e5daa7171b3e
+source_hash: 277e00b9c47c386a313a48f8e46fce987c6ca5c18a086a041f3a331c4e73cf48
+rendered_hash: 3c34ae7dc5163d35747e857db53799a4709c1524737aed113fce9f5b98caced4
 -->
 
 <!--
@@ -72,7 +72,7 @@ Consume supported programmatic behavior through `adr_kit.api`.
 Derived provider facts:
 
 - API contract version: `1.0`
-- Package version: `0.6.0`
+- Package version: `0.7.0`
 - Operations: `capabilities`, `validate_architecture`, `compile_architecture`, `open_repository`, `open_provider_registry`, `build_embodiment_linkage`, `prepare_promotion`, `check_promotion`, `apply_promotion`- Validation modes: `complete`, `structural`- Artifact groups: `registries`, `manifest`, `markdown`- Supported ADR schema versions: `1.0`, `1.1`, `1.2`, `1.3`, `1.4`- Stable ADR schema versions: `1.0`- Provisional ADR schema versions: `1.1`, `1.2`, `1.3`, `1.4`- Normalized model schema version: `1.1`
 - Supported normalized model schema versions: `1.1`, `2.0`, `2.1`
 Supported semantic/repository contracts include `ArchitectureRepository` and `NormalizedArchitectureModel`.

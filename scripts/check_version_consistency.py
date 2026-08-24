@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import sys
+import json
 import re
 import tomllib
 from importlib.metadata import PackageNotFoundError
@@ -17,6 +18,19 @@ from adr_kit.api import capabilities
 from adr_kit.cli.main import cli
 
 ROOT = Path(__file__).resolve().parents[1]
+
+
+def _node_package_versions() -> dict[str, str]:
+    package_path = ROOT / "packages" / "node" / "package.json"
+    lock_path = ROOT / "packages" / "node" / "package-lock.json"
+    package = json.loads(package_path.read_text(encoding="utf-8"))
+    lock = json.loads(lock_path.read_text(encoding="utf-8"))
+    lock_root = lock["packages"][""]
+    return {
+        "packages/node/package.json": str(package["version"]),
+        "packages/node/package-lock.json": str(lock["version"]),
+        "packages/node/package-lock.json packages['']": str(lock_root["version"]),
+    }
 
 
 def _project_metadata() -> tuple[str, str]:
@@ -53,6 +67,7 @@ def main() -> int:
         "adr_kit.__version__": runtime,
         "adr --version": cli_version,
         "adr_kit.api capabilities": capabilities().package_version,
+        **_node_package_versions(),
     }
     if metadata is not None:
         versions["installed metadata"] = metadata

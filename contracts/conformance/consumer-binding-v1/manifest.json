@@ -1,0 +1,28 @@
+{
+  "contract_version": "ADR-Kit Consumer Binding Contract 1.0",
+  "corpus_role": "verification_evidence",
+  "authority_references": [
+    "ADR-L-0013",
+    "ADR-L-0019",
+    "ADR-L-0020",
+    "ADR-L-0021",
+    "ADR-L-0023",
+    "ADR-L-0024",
+    "schema/normalized-model/v2.1",
+    "schema/evidence-attribution/v1.5",
+    "schema/evidence-attribution/v1.6"
+  ],
+  "levels": ["structural", "semantic", "behavioral", "diagnostic", "serialization"],
+  "fingerprint_rule": "binding_local_determinism_only",
+  "fixtures": [
+    {"id": "model-v21-extensions-and-relationships", "path": "repository/model-v21.json", "capability": "normalized_model:2.1", "levels": ["structural", "semantic"]},
+    {"id": "unsupported-model-version", "path": "repository/unsupported-model.json", "capability": "normalized_model:unsupported", "levels": ["structural", "diagnostic"]},
+    {"id": "qualified-extension-with-boolean-array", "path": "semantic-extensions/qualified-unknown.json", "capability": "semantic_extensions:2.1", "levels": ["structural", "semantic"]},
+    {"id": "core-extension-rejected", "path": "semantic-extensions/core-extension-invalid.json", "capability": "semantic_extensions:2.1", "levels": ["structural", "diagnostic"]},
+    {"id": "canonical-and-compatibility-relationships", "path": "relationships/canonical-and-compatibility.json", "capability": "relationships:2.1", "levels": ["semantic", "behavioral"]},
+    {"id": "unresolved-is-first-class", "path": "unresolved/unresolved-first-class.json", "capability": "unresolved:2.1", "levels": ["semantic", "behavioral"]},
+    {"id": "evidence-v15-valid", "path": "embodiment-linkage/evidence-v15.json", "capability": "evidence_attribution:1.5", "levels": ["structural", "behavioral"]},
+    {"id": "evidence-v16-valid", "path": "embodiment-linkage/evidence-v16.json", "capability": "evidence_attribution:1.6", "levels": ["structural", "behavioral"]},
+    {"id": "evidence-v16-enforces-confidence", "path": "embodiment-linkage/evidence-v16-enforces-inferred.json", "capability": "evidence_attribution:1.6", "levels": ["structural", "diagnostic"]}
+  ]
+}

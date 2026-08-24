@@ -104,6 +104,7 @@ jobs:
           name: release-bundle
           path: |
             release-bundle/python-dist/
+            release-bundle/node-dist/
             release-bundle/release-manifest.json
           if-no-files-found: error
 

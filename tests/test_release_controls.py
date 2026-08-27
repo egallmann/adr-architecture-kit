@@ -270,7 +270,9 @@ def test_publish_workflow_is_promotion_only_and_scopes_oidc() -> None:
     for text in (resolve_text, publish_text):
         assert "actions/checkout@" in text
         assert "actions/setup-python@" in text
-        assert "3.12" in text
+        assert "3.14" in text
+        assert "Record interpreter" in text
+        assert "python --version" in text
         assert "release_manifest.py" in text
         assert "verify" in text
         assert "expected-source-commit" in text
@@ -377,21 +379,27 @@ def test_pr_workflow_has_orthogonal_qualification_owners() -> None:
     coverage = jobs["coverage"]
     coverage_text = _job_steps_text(coverage)
     assert coverage.get("runs-on") == "ubuntu-latest"
-    assert "3.12" in coverage_text
+    assert "3.14" in coverage_text
     assert "--cov=adr_kit" in coverage_text
     assert "--cov-fail-under=80" in coverage_text
+    assert "Record interpreter" in coverage_text
+    assert "python --version" in coverage_text
 
     source = jobs["source-tests"]
     source_matrix = source["strategy"]["matrix"]["python-version"]
-    assert source_matrix == ["3.11", "3.12", "3.13", "3.14"]
+    assert source_matrix == ["3.14"]
     source_text = _job_steps_text(source)
     assert "run_source_compat.py" in source_text
+    assert "Record interpreter" in source_text
+    assert "python --version" in source_text
     assert re.search(r"(?m)^\s*python -m pytest\s*$", source_text) is None
     assert "mkdir -p" not in source_text
     assert "env -u PYTHONPATH" not in source_text
 
     governance_text = _job_steps_text(jobs["governance"])
     assert "governance-checks --skip-tests" in governance_text
+    assert "Record interpreter" in governance_text
+    assert "python --version" in governance_text
     assert "run_local_pre_push_checks.py" not in governance_text
     assert "adr validate --cross-references" not in governance_text
 
@@ -399,7 +407,9 @@ def test_pr_workflow_has_orthogonal_qualification_owners() -> None:
     assert "needs" not in os_port
     assert set(os_port["strategy"]["matrix"]["os"]) == {"windows-latest", "macos-latest"}
     os_port_text = _job_steps_text(os_port)
-    assert "3.12" in os_port_text
+    assert "3.14" in os_port_text
+    assert "Record interpreter" in os_port_text
+    assert "python --version" in os_port_text
     assert "python -m pytest" in os_port_text
     assert "--cov=" not in os_port_text
     assert "python -m build" not in os_port_text
@@ -409,17 +419,36 @@ def test_pr_workflow_has_orthogonal_qualification_owners() -> None:
     assert "build" in release_text and "normalize-sdist" in release_text
     assert "--output" in release_text and "release-manifest.json" in release_text
     assert "python-dist/release-manifest.json" not in release_text
+    assert "Record interpreter" in release_text
+    assert "python --version" in release_text
 
     wheel = jobs["wheel-smoke"]
     assert wheel["needs"] in ("release-artifacts", ["release-artifacts"])
-    assert wheel["strategy"]["matrix"]["python-version"] == ["3.11", "3.12", "3.13", "3.14"]
-    assert "scripts/test_installed_wheel.py" in _job_steps_text(wheel)
+    assert wheel["strategy"]["matrix"]["python-version"] == ["3.14"]
+    wheel_text = _job_steps_text(wheel)
+    assert "scripts/test_installed_wheel.py" in wheel_text
+    assert "Record interpreter" in wheel_text
+    assert "python --version" in wheel_text
+
+    for job_name in (
+        "quality-ratchets",
+        "dependency-audit",
+        "reproducibility",
+        "benchmark-smoke",
+        "typescript-consumer-binding",
+    ):
+        job_text = _job_steps_text(jobs[job_name])
+        assert "Record interpreter" in job_text
+        assert "python --version" in job_text
+        assert "3.14" in job_text
 
     os_wheel = jobs["os-wheel-smoke"]
     assert os_wheel["needs"] in ("release-artifacts", ["release-artifacts"])
     assert set(os_wheel["strategy"]["matrix"]["os"]) == {"windows-latest", "macos-latest"}
     os_wheel_text = _job_steps_text(os_wheel)
-    assert "3.12" in os_wheel_text
+    assert "3.14" in os_wheel_text
+    assert "Record interpreter" in os_wheel_text
+    assert "python --version" in os_wheel_text
     assert "download-artifact" in os_wheel_text
     assert "release-bundle" in os_wheel_text
     assert "scripts/test_installed_wheel.py" in os_wheel_text

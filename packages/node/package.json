@@ -1,6 +1,6 @@
 {
   "name": "@system-of-thought/adr-kit",
-  "version": "0.7.0",
+  "version": "0.8.0",
   "description": "Read-only ADR-Kit semantic consumer binding for browser and Node applications.",
   "repository": {
     "type": "git",

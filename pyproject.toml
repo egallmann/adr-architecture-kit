@@ -1,21 +1,18 @@
 [project]
 name = "adr-architecture-kit"
-version = "0.7.0"
+version = "0.8.0"
 description = "Authoring-time STE toolkit: validate structured ADR YAML, emit discovery outputs and Architecture IR fragments (ste-spec). Pre-1.0 Alpha."
 authors = [{name = "Erik Gallmann"}]
 maintainers = [{name = "Erik Gallmann"}]
 license = "Apache-2.0"
 license-files = ["LICENSE"]
-requires-python = ">=3.11"
+requires-python = ">=3.14"
 readme = "README.md"
 keywords = ["architecture", "adr", "ste", "decision-records", "governance", "architecture-decision-records"]
 classifiers = [
     "Development Status :: 3 - Alpha",
     "Intended Audience :: Developers",
     "Programming Language :: Python :: 3",
-    "Programming Language :: Python :: 3.11",
-    "Programming Language :: Python :: 3.12",
-    "Programming Language :: Python :: 3.13",
     "Programming Language :: Python :: 3.14",
     "Topic :: Software Development :: Documentation",
     "Topic :: Software Development :: Libraries :: Python Modules",
@@ -77,14 +74,14 @@ where = ["src"]
 
 [tool.black]
 line-length = 100
-target-version = ['py311']
+target-version = ['py314']
 
 [tool.ruff]
 line-length = 100
-target-version = "py311"
+target-version = "py314"
 
 [tool.mypy]
-python_version = "3.11"
+python_version = "3.14"
 strict = true
 warn_return_any = true
 warn_unused_configs = true

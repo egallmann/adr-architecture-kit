@@ -4,10 +4,12 @@
 
 | Version | Supported |
 |---------|-----------|
-| 0.4.x (latest) | Yes |
-| older than 0.4 | No |
+| Latest published pre-1.0 release | Supported |
+| Earlier pre-1.0 releases | Not supported |
 
-This project is pre-1.0. Security fixes are applied to the latest release only.
+This project is pre-1.0. Security fixes are applied to the latest published release only.
+
+Security support applies to the ADR-Kit source release and its published supported distributions together — PyPI `adr-architecture-kit` and npm `@system-of-thought/adr-kit` — as a shared release lineage (ADR-L-0024), not as independent product lines.
 
 ## Reporting a Vulnerability
 
@@ -26,13 +28,19 @@ You can expect an acknowledgement within **5 business days** and a status update
 
 ## Scope
 
-This package is a developer tool for authoring and validating Architecture Decision Records. It reads YAML and JSON from the local filesystem, writes generated discovery/projection artifacts when those commands are invoked, and ships GitHub Actions for CI, CodeQL, and release publishing. The primary attack surfaces are:
+This package is a developer tool for authoring and validating Architecture Decision Records. The Python toolkit reads YAML and JSON from the local filesystem, writes generated discovery/projection artifacts when those commands are invoked, and ships GitHub Actions for CI, CodeQL, and release publishing. The official TypeScript consumer binding (`@system-of-thought/adr-kit`) is a read-only projection of accepted ADR-Kit authority (ADR-L-0024): no network access, no identity allocation, no graph admission, and no repository writes.
+
+Primary attack surfaces include:
 
 - **YAML parsing** — malicious YAML files passed to the parser
 - **JSON Schema validation** — untrusted schema or ADR inputs
 - **CLI path handling** — `--scope`, `--evidence`, and output paths that can overwrite generated artifacts
 - **Generated artifact writes** — index, manifest, projection, and shim files written under an explicit project tree
-- **Release trust** — GitHub Actions OIDC / PyPI trusted publishing and workflow `permissions` (human-gated; see admission rules below)
+- **npm package / release artifact integrity** — retained bundle identity and provenance for `@system-of-thought/adr-kit`
+- **Node filesystem repository loading** — local ADR repository reads through Node entry points
+- **Packaged canonical schema mirrors** — schema bytes shipped inside the npm package
+- **Browser-safe vs Node-only entry-point isolation** — ensuring browser bundles cannot reach Node-only filesystem loaders
+- **Release trust** — GitHub Actions OIDC / PyPI and npm trusted publishing and workflow `permissions` (human-gated; see admission rules below)
 
 If you identify a vulnerability in a dependency (e.g. PyYAML, jsonschema, Pydantic), please report it upstream to that project and notify us so we can update the dependency.
 
@@ -40,6 +48,7 @@ If you identify a vulnerability in a dependency (e.g. PyYAML, jsonschema, Pydant
 
 - Issues in development tools (`pytest`, `ruff`, `black`, `mypy`) used only in dev environments
 - Theoretical vulnerabilities without a practical exploit path
+- TypeScript surfaces that would require network access, identity minting, graph admission, or repository writes (not exposed by the v1 consumer binding)
 
 ## Security tooling (enabled posture)
 
@@ -79,7 +88,7 @@ Findings may be triaged with AI assistance. **Admission is human.**
 
 1. **No silent closes.** Every dismiss/close needs finding ID/URL, severity, rationale, residual risk, and admitted disposition.
 2. **Secret scanning is `stop_the_line`.** Confirm, rotate if real, remediate; do not dismiss as noise.
-3. **Release/publish trust is human-gated.** OIDC, PyPI trusted publishing, GitHub Environments, and workflow `permissions:` changes are never “alert cleanup.”
+3. **Release/publish trust is human-gated.** OIDC, PyPI/npm trusted publishing, GitHub Environments, and workflow `permissions:` changes are never “alert cleanup.”
 4. **Minimal diffs.** Prefer the smallest safe fix. No opportunistic refactors in security PRs.
 5. **Session habit.** When working in this repo, check open security alerts and clear or schedule them before considering the session done if alerts are in scope for the task.
 

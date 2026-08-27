@@ -4,7 +4,7 @@ id: 019ffdba-3c42-70da-b33d-efc003269c42
 title: Semantic Attribution Embodiment
 status: accepted
 created_date: '2026-08-13'
-modified_date: '2026-08-20'
+modified_date: '2026-08-27'
 authors:
 - adr-architecture-kit
 domains:
@@ -36,8 +36,12 @@ context: |
 technology_stack:
 - category: language
   name: Python
-  version: '3.11'
-  rationale: Existing implementation language.
+  version: '>=3.14'
+  rationale: 'Minimum supported Python minor is 3.14 (`requires-python >=3.14`); currently
+    qualified released minor line is 3.14; repository reference interpreter is currently
+    3.14.7; new GA Python minors require explicit qualification before support is
+    advertised.
+    '
 - category: library
   name: Pydantic
   version: 2.x

@@ -5,13 +5,13 @@ artifact_kind: rendered_adr_markdown
 generator_id: adr-projection-markdown
 generator_version: 2
 hash_algorithm: sha256
-source_hash: 9979816175ad3fc56ab7fa6c18fae4e75e1b183d3ac779505795a1b18c20026f
-rendered_hash: c99ef9da9f3392bacfc75e8b82e752b54f8e4b78d1578c5fc577c11db734c912
+source_hash: d436aa0cbee04635c7db5af68c135e2b48e6999a7ea2717d5f410111dfe5b282
+rendered_hash: 3f8ac2861d15d3de405e575bb47b56de699c4c0aeea669a5dbf3711cf8adb81b
 -->
 
 # ADR-L-0008: Validation Modes for Draft and Complete ADRs
 
-**Status:** proposed  
+**Status:** accepted  
 **Created:** 2026-03-13  
 **Authors:** adr-architecture-kit  
 **Domains:** validation, adr, workflow, governance  

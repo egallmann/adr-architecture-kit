@@ -1939,14 +1939,14 @@ entities:
   uri: adr://adr-architecture-kit/entities/019fee89-e615-73a3-8d31-7a4721affae9
   created_at: '2026-08-11T01:57:22.581Z'
   entity_fingerprint: sha256:1b1463dbd946df1c892705f9ddde18319a361a3fe5f467b2b84293b8c7ea303f
-  lifecycle_stage: proposed
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: 019fee89-e615-73a3-8d31-7a4721affae9
     artifact_path: adrs/logical/ADR-L-0005-adr-to-prompt-translation.yaml
   source_refs: []
   metadata:
-    status: proposed
+    status: accepted
     domains:
     - adr
     - automation
@@ -5075,14 +5075,14 @@ entities:
   uri: adr://adr-architecture-kit/entities/019fee89-e615-7b66-b73a-3b99f7d92d4d
   created_at: '2026-08-11T01:57:22.581Z'
   entity_fingerprint: sha256:85eafe0d95cd6eb9f82df93b7c49b90c16154f6cdfca06d4a985db15f2b649c1
-  lifecycle_stage: proposed
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: 019fee89-e615-7b66-b73a-3b99f7d92d4d
     artifact_path: adrs/logical/ADR-L-0006-rule-library-sub-module.yaml
   source_refs: []
   metadata:
-    status: proposed
+    status: accepted
     domains:
     - governance
     - rules
@@ -6977,14 +6977,14 @@ entities:
   uri: adr://adr-architecture-kit/entities/019fee89-e615-7f19-810b-c7b33a9d9e0d
   created_at: '2026-08-11T01:57:22.581Z'
   entity_fingerprint: sha256:c68c64f7b721d463c791f1e7cb93a2b4beadeefbf2cefadcd605d693c4713a7b
-  lifecycle_stage: proposed
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: 019fee89-e615-7f19-810b-c7b33a9d9e0d
     artifact_path: adrs/logical/ADR-L-0002-multi-scope-adr-architecture.yaml
   source_refs: []
   metadata:
-    status: proposed
+    status: accepted
     domains:
     - adr
     - architecture
@@ -7457,14 +7457,14 @@ entities:
   uri: adr://adr-architecture-kit/entities/019fee89-e616-7066-8d2f-3acc7f469f72
   created_at: '2026-08-11T01:57:22.582Z'
   entity_fingerprint: sha256:65ea1cb343767318797aeba803cad2e0743abbf7c1e9f0e1a4d22426a9821a92
-  lifecycle_stage: proposed
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: 019fee89-e616-7066-8d2f-3acc7f469f72
     artifact_path: adrs/logical/ADR-L-0008-validation-modes-for-draft-and-complete-adrs.yaml
   source_refs: []
   metadata:
-    status: proposed
+    status: accepted
     domains:
     - validation
     - adr
@@ -9478,14 +9478,14 @@ entities:
   uri: adr://adr-architecture-kit/entities/019fee89-e616-7628-913b-a059c1057c36
   created_at: '2026-08-11T01:57:22.582Z'
   entity_fingerprint: sha256:0fa8011d3eb1e10be2eae46d5b328c955a5d505bf9f5ff2ebf8c7dabe77f8e0e
-  lifecycle_stage: proposed
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: 019fee89-e616-7628-913b-a059c1057c36
     artifact_path: adrs/logical/ADR-L-0014-brownfield-onboarding-and-canonicalization-workflow.yaml
   source_refs: []
   metadata:
-    status: proposed
+    status: accepted
     domains:
     - migration
     - onboarding
@@ -11172,14 +11172,14 @@ entities:
   uri: adr://adr-architecture-kit/entities/019fee89-e616-7b97-971d-ae165d13bf9c
   created_at: '2026-08-11T01:57:22.582Z'
   entity_fingerprint: sha256:e21f4b3da827f6e45cef48f8f6027a7b2ce9f400082b3ebdf6b5c451c5a2b796
-  lifecycle_stage: proposed
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: 019fee89-e616-7b97-971d-ae165d13bf9c
     artifact_path: adrs/logical/ADR-L-0011-metadata-schemas-and-remediation-ledger-enforcement.yaml
   source_refs: []
   metadata:
-    status: proposed
+    status: accepted
     domains:
     - governance
     - metadata
@@ -13281,14 +13281,14 @@ entities:
   uri: adr://adr-architecture-kit/entities/019fee89-e617-7270-ab2f-58a756d2530e
   created_at: '2026-08-11T01:57:22.583Z'
   entity_fingerprint: sha256:5a4d3fbb143a224893d95ed1ab1e68086fd76f7e8f11f10d3cf1c0fc97c05698
-  lifecycle_stage: proposed
+  lifecycle_stage: active
   canonical_source:
     source_type: physical_component_adr
     source_ref: 019fee89-e617-7270-ab2f-58a756d2530e
     artifact_path: adrs/physical-component/ADR-PC-0001-entity-registry-and-discovery-index.yaml
   source_refs: []
   metadata:
-    status: proposed
+    status: accepted
     domains:
     - discovery
     - indexing
@@ -16781,14 +16781,14 @@ entities:
   uri: adr://adr-architecture-kit/entities/019fee89-e617-7d2b-8325-cd85ff814477
   created_at: '2026-08-11T01:57:22.583Z'
   entity_fingerprint: sha256:9877e784853ac8bba1576ade2f3d2fd947a80dc8361b2839aa7a2b36bbf7cf9f
-  lifecycle_stage: proposed
+  lifecycle_stage: active
   canonical_source:
     source_type: physical_component_adr
     source_ref: 019fee89-e617-7d2b-8325-cd85ff814477
     artifact_path: adrs/physical-component/ADR-PC-0002-schema-and-contract-validation.yaml
   source_refs: []
   metadata:
-    status: proposed
+    status: accepted
     domains:
     - validation
     - schema
@@ -17139,14 +17139,14 @@ entities:
   uri: adr://adr-architecture-kit/entities/019fee89-e617-7e69-861a-f3040f70c2d9
   created_at: '2026-08-11T01:57:22.583Z'
   entity_fingerprint: sha256:7f156cc3109c9b8476b509fc999b9793b4692181a92b0f78a7ddf2b3a1e22a04
-  lifecycle_stage: proposed
+  lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
     source_ref: 019fee89-e617-7e69-861a-f3040f70c2d9
     artifact_path: adrs/logical/ADR-L-0015-adr-governance-state-and-override-semantics.yaml
   source_refs: []
   metadata:
-    status: proposed
+    status: accepted
     domains:
     - governance
     - validation
@@ -18169,14 +18169,14 @@ entities:
   uri: adr://adr-architecture-kit/entities/019fee89-e618-73ce-aa2d-101276d64e33
   created_at: '2026-08-11T01:57:22.584Z'
   entity_fingerprint: sha256:3afebee9894e7ccc2cee7f4503f9fee21b34015a4186836be5027b0705e2450f
-  lifecycle_stage: proposed
+  lifecycle_stage: active
   canonical_source:
     source_type: physical_component_adr
     source_ref: 019fee89-e618-73ce-aa2d-101276d64e33
     artifact_path: adrs/physical-component/ADR-PC-0004-repository-boundary-and-normalized-model.yaml
   source_refs: []
   metadata:
-    status: proposed
+    status: accepted
     domains:
     - repository
     - semantic-model
@@ -18293,14 +18293,14 @@ entities:
   uri: adr://adr-architecture-kit/entities/019fee89-e618-74b2-a83e-e41c7d8c9f37
   created_at: '2026-08-11T01:57:22.584Z'
   entity_fingerprint: sha256:1ed5823ea601aa4341a9f43b7b7430a7144e27823f9ec9c359827c15dc767ccc
-  lifecycle_stage: proposed
+  lifecycle_stage: active
   canonical_source:
     source_type: physical_component_adr
     source_ref: 019fee89-e618-74b2-a83e-e41c7d8c9f37
     artifact_path: adrs/physical-component/ADR-PC-0005-generated-artifact-integrity-validation.yaml
   source_refs: []
   metadata:
-    status: proposed
+    status: accepted
     domains:
     - integrity
     - validation
@@ -18534,14 +18534,14 @@ entities:
   uri: adr://adr-architecture-kit/entities/019fee89-e618-7787-b43f-a3e5cb264dd5
   created_at: '2026-08-11T01:57:22.584Z'
   entity_fingerprint: sha256:6d0d14331bb0ee3a6971073354e2da0e237d94f2bac27b9006fedb49d0e75fb0
-  lifecycle_stage: proposed
+  lifecycle_stage: active
   canonical_source:
     source_type: physical_component_adr
     source_ref: 019fee89-e618-7787-b43f-a3e5cb264dd5
     artifact_path: adrs/physical-component/ADR-PC-0006-brownfield-onboarding-and-canonical-normalization.yaml
   source_refs: []
   metadata:
-    status: proposed
+    status: accepted
     domains:
     - migration
     - onboarding
@@ -19059,14 +19059,14 @@ entities:
   uri: adr://adr-architecture-kit/entities/019fee89-e618-7b3e-813b-a449881b6adb
   created_at: '2026-08-11T01:57:22.584Z'
   entity_fingerprint: sha256:045ce9b743835f52533be4bb5093bd25dffe830fce06b674f313153390e56cb4
-  lifecycle_stage: proposed
+  lifecycle_stage: active
   canonical_source:
     source_type: physical_system_adr
     source_ref: 019fee89-e618-7b3e-813b-a449881b6adb
     artifact_path: adrs/physical-system/ADR-PS-0001-adr-architecture-kit-discovery-and-indexing-system.yaml
   source_refs: []
   metadata:
-    status: proposed
+    status: accepted
     domains:
     - discovery
     - indexing
@@ -19120,14 +19120,14 @@ entities:
   uri: adr://adr-architecture-kit/entities/019fee89-e618-7b76-843f-cfe21ceb2ea6
   created_at: '2026-08-11T01:57:22.584Z'
   entity_fingerprint: sha256:d473a31337ee0151a66f5425070c9e368c841f4a332141f87d4fa0dc9f460dbf
-  lifecycle_stage: proposed
+  lifecycle_stage: active
   canonical_source:
     source_type: physical_component_adr
     source_ref: 019fee89-e618-7b76-843f-cfe21ceb2ea6
     artifact_path: adrs/physical-component/ADR-PC-0003-compiler-pipeline-and-driver.yaml
   source_refs: []
   metadata:
-    status: proposed
+    status: accepted
     domains:
     - compiler
     - pipeline
@@ -19287,14 +19287,14 @@ entities:
   uri: adr://adr-architecture-kit/entities/019fee89-e618-7d04-9337-4aa2d3258507
   created_at: '2026-08-11T01:57:22.584Z'
   entity_fingerprint: sha256:4cbaaf4a6c94a9a05c23f60a847cede2ee3ebf1b6be03fd686116c01f8814a8d
-  lifecycle_stage: proposed
+  lifecycle_stage: active
   canonical_source:
     source_type: physical_system_adr
     source_ref: 019fee89-e618-7d04-9337-4aa2d3258507
     artifact_path: adrs/physical-system/ADR-PS-0002-adr-kit-compiler-and-validation-runtime.yaml
   source_refs: []
   metadata:
-    status: proposed
+    status: accepted
     domains:
     - compiler
     - validation

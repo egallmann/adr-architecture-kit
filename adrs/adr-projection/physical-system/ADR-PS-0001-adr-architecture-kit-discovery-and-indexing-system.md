@@ -5,14 +5,15 @@ artifact_kind: rendered_adr_markdown
 generator_id: adr-projection-markdown
 generator_version: 2
 hash_algorithm: sha256
-source_hash: 5433b20ee1e8055558c25cc291167faedb8da98d9b7dd557f1f7c7d074fb6a30
-rendered_hash: d9aeff41fedc181df42e94d215b31307cf407a51dd19a7b59e42f8a220e58d32
+source_hash: f996b3d68d6c0766a49e09cec948b59bc26be08704d04a0af1c705982dfb7aee
+rendered_hash: bdb627c1e12f9cd2de9760c66fee39fa7e78d173138d617d7a0259be88b2e6d2
 -->
 
 # ADR-PS-0001: ADR Architecture Kit Discovery and Indexing System
 
-**Status:** proposed  
+**Status:** accepted  
 **Created:** 2026-03-13  
+**Modified:** 2026-08-27  
 **Authors:** adr-architecture-kit  
 **Domains:** discovery, indexing, tooling  
 **Alias name:** adr-architecture-kit-discovery-and-indexing-system  
@@ -36,10 +37,10 @@ that emits these derived discovery artifacts together.
 
 ### Python (language)
 
-**Version:** 3.11
+**Version:** >=3.14
 
 **Rationale:**
-Existing adr-architecture-kit implementation language.
+Minimum supported Python minor is 3.14 (`requires-python >=3.14`); currently qualified released minor line is 3.14; repository reference interpreter is currently 3.14.7; new GA Python minors require explicit qualification before support is advertised. 
 
 ### PyYAML (library)
 

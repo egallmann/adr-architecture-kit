@@ -2,7 +2,7 @@ schema_version: '1.3'
 adr_type: logical
 id: 019fee89-e616-7b97-971d-ae165d13bf9c
 title: Metadata Schemas and Remediation Ledger Enforcement
-status: proposed
+status: accepted
 created_date: '2026-03-14'
 authors:
 - adr-architecture-kit

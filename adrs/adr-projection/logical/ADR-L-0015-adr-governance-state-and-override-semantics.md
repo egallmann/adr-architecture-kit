@@ -5,13 +5,13 @@ artifact_kind: rendered_adr_markdown
 generator_id: adr-projection-markdown
 generator_version: 2
 hash_algorithm: sha256
-source_hash: 6a935f1548e81856aa1f3c1fb49d4e6995cd1e4bea870c8ad5ec62aabd1b024b
-rendered_hash: 237e4ca8b6ff57ae91bde1f4e9d45dc3695f352fd7efdeb72f714813951633c5
+source_hash: 6507fa03ec3ec9c9d9cbffac4a82935eeac631cf815af9d02671e3af88a84a07
+rendered_hash: 588538e8b59ecc831430444299a158d36119ae7e98a27193145b0a12653fabf3
 -->
 
 # ADR-L-0015: ADR Governance State and Override Semantics
 
-**Status:** proposed  
+**Status:** accepted  
 **Created:** 2026-03-18  
 **Authors:** adr-architecture-kit  
 **Domains:** governance, validation, approval, overrides  

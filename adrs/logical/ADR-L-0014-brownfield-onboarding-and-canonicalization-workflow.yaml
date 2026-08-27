@@ -2,7 +2,7 @@ schema_version: '1.3'
 adr_type: logical
 id: 019fee89-e616-7628-913b-a059c1057c36
 title: Brownfield Onboarding and Canonicalization Workflow
-status: proposed
+status: accepted
 created_date: '2026-03-15'
 authors:
 - adr-architecture-kit

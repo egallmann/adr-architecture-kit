@@ -5,15 +5,15 @@ artifact_kind: rendered_adr_markdown
 generator_id: adr-projection-markdown
 generator_version: 2
 hash_algorithm: sha256
-source_hash: 4447a7d18244b7b2c03321338404ff6b0f5893f9217ab7910f5ad1a0e9508229
-rendered_hash: 8779e6718c66462dd9967d690e673bd6a546cda4b3f23136e1ffbe9e5a48c4d2
+source_hash: 8bc27854aef7f84513ba6ceceef4ce3a75bc444de52303ecbd27464d4884ef03
+rendered_hash: f7686dae0990fb5495ff679556c35f7dfab39c495bf65ab65cf3899d0aa954bd
 -->
 
 # ADR-PC-0002: Schema and Contract Validation
 
-**Status:** proposed  
+**Status:** accepted  
 **Created:** 2026-03-15  
-**Modified:** 2026-08-06  
+**Modified:** 2026-08-27  
 **Authors:** adr-architecture-kit  
 **Domains:** validation, schema, contracts  
 **Alias name:** schema-and-contract-validation  
@@ -35,10 +35,10 @@ attribution evidence. Validation of that evidence is structural for schema shape
 
 ### Python (language)
 
-**Version:** 3.11
+**Version:** >=3.14
 
 **Rationale:**
-Existing implementation language.
+Minimum supported Python minor is 3.14 (`requires-python >=3.14`); currently qualified released minor line is 3.14; repository reference interpreter is currently 3.14.7; new GA Python minors require explicit qualification before support is advertised. 
 
 ### jsonschema (library)
 

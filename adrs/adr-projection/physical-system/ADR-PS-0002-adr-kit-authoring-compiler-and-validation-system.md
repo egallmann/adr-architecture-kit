@@ -5,15 +5,15 @@ artifact_kind: rendered_adr_markdown
 generator_id: adr-projection-markdown
 generator_version: 2
 hash_algorithm: sha256
-source_hash: 21f7fc0b33d9026d5e3ca4547bc4bd21d926a3d5f50dd5385db394e7270fc547
-rendered_hash: 29b33e73475f423ad3dd4f5be554ac31d87f2acaee7c3ad817546cec2985f7f3
+source_hash: 90e9c15b5adabbffe5360f23720e8560a50047b9e8c84725347366eb5bc7a85f
+rendered_hash: bd41b4bbafaa874f221b3f284f15fe1392d90a72e6017280fe79a3671a73373f
 -->
 
 # ADR-PS-0002: ADR Kit Authoring Compiler and Validation System
 
-**Status:** proposed  
+**Status:** accepted  
 **Created:** 2026-03-15  
-**Modified:** 2026-08-05  
+**Modified:** 2026-08-27  
 **Authors:** adr-architecture-kit  
 **Domains:** compiler, validation, tooling  
 **Tags:** compiler, validation, authoring, python  
@@ -46,10 +46,10 @@ systems and must not be introduced by the Phase 1 SDK.
 
 ### Python (language)
 
-**Version:** 3.11
+**Version:** >=3.14
 
 **Rationale:**
-Existing implementation language for compiler and validator code.
+Minimum supported Python minor is 3.14 (`requires-python >=3.14`); currently qualified released minor line is 3.14; repository reference interpreter is currently 3.14.7; new GA Python minors require explicit qualification before support is advertised. 
 
 ### Click (tooling)
 

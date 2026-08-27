@@ -5,14 +5,15 @@ artifact_kind: rendered_adr_markdown
 generator_id: adr-projection-markdown
 generator_version: 2
 hash_algorithm: sha256
-source_hash: d09e5ab9ae9f9f5a80dc956a609e7e4d9b776d72e9de652445fcdd35bca77818
-rendered_hash: db23c6c60bebcc115b262ace8657091fcb542b8b010af41474a28c30857b5c1a
+source_hash: 0dfa0512312fb956793c01030309774612c68d1a924fef52835ae79ca9ce0f17
+rendered_hash: 7a5715e2df926c830d8a301e8c618d000d7f24908bd8ae1b700a1c243c75e4b1
 -->
 
 # ADR-PC-0001: Entity Registry and Discovery Index
 
-**Status:** proposed  
+**Status:** accepted  
 **Created:** 2026-03-13  
+**Modified:** 2026-08-27  
 **Authors:** adr-architecture-kit  
 **Domains:** discovery, indexing, tooling  
 **Alias name:** entity-registry-and-discovery-index  
@@ -40,10 +41,10 @@ indexed bundle rather than reparsing source ADRs.
 
 ### Python (language)
 
-**Version:** 3.11
+**Version:** >=3.14
 
 **Rationale:**
-Existing adr-architecture-kit implementation language.
+Minimum supported Python minor is 3.14 (`requires-python >=3.14`); currently qualified released minor line is 3.14; repository reference interpreter is currently 3.14.7; new GA Python minors require explicit qualification before support is advertised. 
 
 ### PyYAML (library)
 

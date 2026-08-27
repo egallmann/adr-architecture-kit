@@ -5,15 +5,15 @@ artifact_kind: rendered_adr_markdown
 generator_id: adr-projection-markdown
 generator_version: 2
 hash_algorithm: sha256
-source_hash: 486a6c1dfa51ddfd6ef47848dd064aa1b7b151635aa0220a468941cdd8184de9
-rendered_hash: bfbdd07d6a4e7044cba649e3db02aff5dbe4813ee4af709ea986c7a7d27b3c1a
+source_hash: fa1a3167d078ba1a25267301e26576ee181f5fa50bc2cebe81c9265e6e85515b
+rendered_hash: 4c6b10e3cb0258e9ff2ba699733aa264683ea9db3a811d0b8af27972f41cb5c3
 -->
 
 # ADR-PC-0007: Semantic Attribution Embodiment
 
 **Status:** accepted  
 **Created:** 2026-08-13  
-**Modified:** 2026-08-20  
+**Modified:** 2026-08-27  
 **Authors:** adr-architecture-kit  
 **Domains:** attribution, validation, decorators  
 **Alias name:** semantic-attribution-embodiment  
@@ -36,10 +36,10 @@ own RECON extraction, and does not admit evidence to the architecture graph.
 
 ### Python (language)
 
-**Version:** 3.11
+**Version:** >=3.14
 
 **Rationale:**
-Existing implementation language.
+Minimum supported Python minor is 3.14 (`requires-python >=3.14`); currently qualified released minor line is 3.14; repository reference interpreter is currently 3.14.7; new GA Python minors require explicit qualification before support is advertised. 
 
 ### Pydantic (library)
 

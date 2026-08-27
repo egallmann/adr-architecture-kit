@@ -5,13 +5,13 @@ artifact_kind: rendered_adr_markdown
 generator_id: adr-projection-markdown
 generator_version: 2
 hash_algorithm: sha256
-source_hash: c1c03737455dabe6b87afcb91add0c40d010edea7ef13a337e21eb55caca63c2
-rendered_hash: abffa9980b75004909ff6f8505d65b2b24c4e62f65f505463e335751d454c796
+source_hash: 5e706aa54b915aa531224a44866c0112b29a62de538ac630716b865de115fd4a
+rendered_hash: 0fd618d0106bef0d79f4bf7ada224037c62b5aace688debf9be3fb0650bd737b
 -->
 
 # ADR-L-0006: Rule Library Sub-Module with Cooperative Signals
 
-**Status:** proposed  
+**Status:** accepted  
 **Created:** 2026-03-08  
 **Modified:** 2026-03-08  
 **Authors:** adr-architecture-kit  

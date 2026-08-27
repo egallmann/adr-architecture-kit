@@ -21,7 +21,7 @@ Thank you for your interest in contributing. This document covers how to set up 
 
 ## Development Setup
 
-**Requirements:** Python 3.11–3.14
+**Requirements:** Python 3.14+ (`requires-python >=3.14`; currently qualified 3.14.x; reference interpreter 3.14.7)
 
 ```bash
 # Clone the repository
@@ -77,9 +77,10 @@ See [`docs/contributors/tdd-workflow.md`](docs/contributors/tdd-workflow.md) for
 | Governance | `adr governance-checks` |
 | Schema parity | see below |
 
-CI enforces every row above, source-installed tests on Python 3.11–3.14,
-dependency audit, build-once release artifacts, retained-wheel smoke tests on all
-four Python versions, fixed-epoch reproducibility, and benchmark determinism.
+CI enforces every row above, source-installed tests on the currently qualified
+Python 3.14 line, dependency audit, build-once release artifacts, retained-wheel
+smoke tests on that qualified line, fixed-epoch reproducibility, and benchmark
+determinism.
 
 ---
 
@@ -247,10 +248,10 @@ The **link** is that PyPI trusts *that GitHub repo + that workflow file* to uplo
 
 Qualification evidence axes on a release-eligible `main` push:
 
-- Ubuntu 3.12 complete suite + coverage
-- Ubuntu 3.11–3.14 focused source/SDK compatibility
-- Windows/macOS 3.12 complete suite (behavior/OS portability)
-- Exact retained wheel on Ubuntu 3.11–3.14 and on Windows/macOS 3.12
+- Ubuntu 3.14 complete suite + coverage
+- Ubuntu 3.14 focused source/SDK compatibility
+- Windows/macOS 3.14 complete suite (behavior/OS portability)
+- Exact retained wheel on Ubuntu 3.14 and on Windows/macOS 3.14
 
 The workflow does not publish on a branch push or manual dispatch. The first
 successful tagged upload creates the PyPI project if it does not exist.

@@ -23,7 +23,7 @@ def _source_version() -> str:
             return UNKNOWN_VERSION
         version = project.get("version")
         return version if isinstance(version, str) and version else UNKNOWN_VERSION
-    except (OSError, KeyError, TypeError, tomllib.TOMLDecodeError):
+    except OSError, KeyError, TypeError, tomllib.TOMLDecodeError:
         return UNKNOWN_VERSION
 
 

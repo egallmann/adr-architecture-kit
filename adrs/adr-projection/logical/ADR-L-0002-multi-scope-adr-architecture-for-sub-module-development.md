@@ -5,13 +5,13 @@ artifact_kind: rendered_adr_markdown
 generator_id: adr-projection-markdown
 generator_version: 2
 hash_algorithm: sha256
-source_hash: 18fe6f319e5d1000ee8d04068a32c37d5049898153b23136d638e435448b155b
-rendered_hash: d165feaffe85bf4e092e1800eb0e511e652316a26132a933bec95dee2fef8a3e
+source_hash: 4a0183a332b16319043c3aca674a274ca327b5b0f6ead9613e808480a3704a3b
+rendered_hash: 750d892bb7f712adfd0dc02c76a229cb5beba3a6e6930590c1632616acaab4a2
 -->
 
 # ADR-L-0002: Multi-Scope ADR Architecture for Sub-Module Development
 
-**Status:** proposed  
+**Status:** accepted  
 **Created:** 2026-03-08  
 **Modified:** 2026-03-08  
 **Authors:** adr-architecture-kit  

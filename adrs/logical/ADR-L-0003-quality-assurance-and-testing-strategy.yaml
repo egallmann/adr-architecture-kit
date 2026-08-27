@@ -592,8 +592,10 @@ capabilities:
 
     '
   acceptance_criteria:
-  - CI supports Python 3.11, 3.12, 3.13, and 3.14 only after source and retained-wheel
-    jobs pass
+  - minimum supported Python minor is 3.14 (`requires-python >=3.14`); currently
+    qualified released minor line is 3.14; source and retained-wheel qualification
+    execute on that line; repository reference interpreter is currently 3.14.7;
+    new GA Python minors require explicit admission to the qualification matrix
   - canonical package coverage remains at or above 80%
   - Ruff, strict-mypy, and Black controls reject new debt
   - the release manifest requires exactly one wheel and one sdist
@@ -608,9 +610,11 @@ capabilities:
     missing or fails identity verification
   - release-eligible qualification includes OS-portability evidence on Ubuntu/Linux,
     Windows, and macOS as separate axes from Python-version compatibility
-  - Windows/macOS Python 3.12 complete-suite evidence proves source/runtime OS
+  - Windows/macOS Python 3.14 complete-suite evidence proves source/runtime OS
     portability; the exact retained wheel additionally passes the installed-wheel
-    harness on Windows/macOS Python 3.12 without rebuilding per OS
+    harness on Windows/macOS Python 3.14 without rebuilding per OS
+  - UUIDv7 mint mechanism remains implementation-owned and is not part of
+    ADR-L-0003 identity semantics
   alias_id: CAP-0046
   alias_name: verified-build-once-release-promotion
 related_adrs:
@@ -634,17 +638,23 @@ notes: "Testing strategy implementation:\n\nTest organization:\n```\ntests/\n  t
   \n# Targeted pytest usage for local development\npytest tests/ -v\npytest tests/\
   \ --cov=adr_kit --cov-report=html --cov-report=term --cov-fail-under=80\npytest\
   \ tests/ -k \"scope\" -v\n```\n\nCI/CD integration (orthogonal evidence axes):\n\
-  - Canonical correctness: Ubuntu + Python 3.12 runs the complete suite with coverage\
+  - Minimum supported Python minor is 3.14 (`requires-python >=3.14`); currently\
+  \ qualified released minor line is 3.14; reference interpreter is currently 3.14.7;\
+  \ new GA Python minors require explicit admission to the qualification matrix\n\
+  - Canonical correctness: Ubuntu + Python 3.14 runs the complete suite with coverage\
   \ (`--cov=adr_kit --cov-fail-under=80`) exactly once\n- Python-version compatibility:\
-  \ Ubuntu runs focused source/install/SDK compatibility on Python 3.11–3.14 (not\
-  \ a second full suite on each interpreter)\n- OS behavior / source-runtime portability:\
-  \ Windows and macOS at Python 3.12 each run the complete suite (no coverage gate);\
-  \ Ubuntu 3.12 suite is owned by the coverage job and is not duplicated\n- Retained-wheel\
-  \ Python compatibility: exact retained wheel via `scripts/test_installed_wheel.py`\
-  \ on Ubuntu Python 3.11–3.14\n- Retained-wheel OS portability: the exact same retained\
-  \ wheel via `scripts/test_installed_wheel.py` on Windows and macOS at Python 3.12;\
-  \ the wheel MUST NOT be rebuilt per OS\n- These axes are orthogonal and MUST NOT\
-  \ imply that all supported Python versions execute on every OS\n- Linux-only execution\
+  \ Ubuntu runs focused source/install/SDK compatibility on the currently qualified\
+  \ released minor line (Python 3.14; not a second full suite on each interpreter)\n\
+  - OS behavior / source-runtime portability: Windows and macOS at Python 3.14 each\
+  \ run the complete suite (no coverage gate); Ubuntu 3.14 suite is owned by the\
+  \ coverage job and is not duplicated\n- Retained-wheel Python compatibility: exact\
+  \ retained wheel via `scripts/test_installed_wheel.py` on Ubuntu Python 3.14\n\
+  - Retained-wheel OS portability: the exact same retained wheel via\
+  \ `scripts/test_installed_wheel.py` on Windows and macOS at Python 3.14; the\
+  \ wheel MUST NOT be rebuilt per OS\n- UUIDv7 mint mechanism remains\
+  \ implementation-owned and is not part of ADR-L-0003 identity semantics\n- These\
+  \ axes are orthogonal and MUST NOT imply that all supported Python versions\
+  \ execute on every OS\n- Linux-only execution\
   \ is insufficient evidence for an OS-agnostic package claim\n- PR qualification\
   \ = proposed-change evidence; develop qualification = integration evidence; only\
   \ a successful completed `push` of ADR Governance on `main` for the exact tagged\

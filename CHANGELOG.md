@@ -7,12 +7,40 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+- Minimum supported Python runtime is now 3.14 (`requires-python >=3.14`).
+  Currently qualified released minor line: 3.14.x. Reference interpreter: 3.14.7.
+- Production UUIDv7 minting uses the Python 3.14 standard library `uuid.uuid7()`.
+- Canonical UUIDv7 identity semantics, validation, migration maps, and persisted UUIDs are unchanged.
+
+## [0.7.0] — 2026-08-23
+
 ### Added
 
-- TypeScript Consumer Binding Contract 1.0 and the read-only
-  `@system-of-thought/adr-kit` browser/Node package, including capability-scoped
-  validation, normalized-model queries, index-first repository loading, and
-  non-admitting embodiment linkage.
+- The official read-only TypeScript consumer binding and npm distribution
+  `@system-of-thought/adr-kit`, including browser-safe surfaces and the
+  Node-only `/node` and `/node/linkage` subpaths.
+- Consumer Binding Contract 1.0 conformance across overlapping Python and
+  TypeScript capabilities, with structural, semantic, behavioral, diagnostic,
+  and serialization parity where advertised.
+- Canonical schema distribution and parity for normalized-model v2.1, semantic
+  extensions, and evidence-attribution consumption across the supported
+  bindings.
+
+### Changed
+
+- Python and npm distributions now share the 0.7.0 release lineage, with
+  `pyproject.toml` remaining the single manually edited version authority.
+
+### Release engineering
+
+- Release qualification retains the exact Python and npm artifacts for
+  promotion without publication-time rebuilding.
+- npm publication uses GitHub OIDC / Trusted Publishing and verifies retained
+  artifact integrity, including an intentional no-op for an exact existing
+  npm version and fail-closed behavior for any mismatch.
+- CodeQL independently analyzes Python and JavaScript/TypeScript sources.
 
 ## [0.6.0] — 2026-08-22
 

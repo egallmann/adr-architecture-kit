@@ -5,15 +5,15 @@ artifact_kind: rendered_adr_markdown
 generator_id: adr-projection-markdown
 generator_version: 2
 hash_algorithm: sha256
-source_hash: bc6ca8d9c4e9b7f89bf9f0eeec1db17e45d0696ea6aa22c66779fde7144539c0
-rendered_hash: 5ce213bd3f8a0d8e272555cdb077d624633594a3fff4af7500696ebee8ccb507
+source_hash: 06f32209a24fbabbe56700395805e36dc14ae1a21539580146092339197658af
+rendered_hash: df32ff82c580b3fa31d97acdc68736d1bff19c6e3d37ce9e3c94fd9050739b6b
 -->
 
 # ADR-PC-0004: Repository Boundary and Normalized Semantic Model
 
-**Status:** proposed  
+**Status:** accepted  
 **Created:** 2026-03-15  
-**Modified:** 2026-08-05  
+**Modified:** 2026-08-27  
 **Authors:** adr-architecture-kit  
 **Domains:** repository, semantic-model, tooling  
 **Alias name:** repository-boundary-and-normalized-semantic-model  
@@ -35,10 +35,10 @@ normalized model and without making registry loaders or path helpers public.
 
 ### Python (language)
 
-**Version:** 3.11
+**Version:** >=3.14
 
 **Rationale:**
-Existing implementation language.
+Minimum supported Python minor is 3.14 (`requires-python >=3.14`); currently qualified released minor line is 3.14; repository reference interpreter is currently 3.14.7; new GA Python minors require explicit qualification before support is advertised. 
 
 ### Pydantic (library)
 

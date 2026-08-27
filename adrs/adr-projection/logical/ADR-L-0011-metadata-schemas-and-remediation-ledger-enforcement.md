@@ -5,13 +5,13 @@ artifact_kind: rendered_adr_markdown
 generator_id: adr-projection-markdown
 generator_version: 2
 hash_algorithm: sha256
-source_hash: 4e5a9d16fd7a81404934ee651fbce3b5ef8ee65acbf14ed0194a1dcc55466768
-rendered_hash: ac948a34cae3206b19c42ef2763a4991cb187c407a734290cb336e9e8f640c57
+source_hash: 46e7239cd8654a402c9d95429c8e66849e77be29a6d59648519149cf6a927f98
+rendered_hash: 4f4c952b813c7a08c010027adcb52a799f2dde19cafd1aa768236346fa59dbab
 -->
 
 # ADR-L-0011: Metadata Schemas and Remediation Ledger Enforcement
 
-**Status:** proposed  
+**Status:** accepted  
 **Created:** 2026-03-14  
 **Authors:** adr-architecture-kit  
 **Domains:** governance, metadata, migration, brownfield  

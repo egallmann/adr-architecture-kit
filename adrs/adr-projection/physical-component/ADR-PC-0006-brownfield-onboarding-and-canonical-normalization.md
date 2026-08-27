@@ -5,14 +5,15 @@ artifact_kind: rendered_adr_markdown
 generator_id: adr-projection-markdown
 generator_version: 2
 hash_algorithm: sha256
-source_hash: 68fd92249db4c0c2e383b8c8bf697e39f5a6d7af8713e2d63c99369f3b6e20fc
-rendered_hash: a55a471ed15d31acf4e5ed5aaa4a51e26ec1d1d1fdc37222d240733126ca469a
+source_hash: f3aeaf7829757857eacb3ff0a2e0a481c091e555365e62872da6538aa5ab5fcf
+rendered_hash: 49fb9b5078c7415695e54a05192958fe9a55f4a11562508ace99f2f3140dca52
 -->
 
 # ADR-PC-0006: Brownfield Onboarding and Canonical Normalization
 
-**Status:** proposed  
+**Status:** accepted  
 **Created:** 2026-03-15  
+**Modified:** 2026-08-27  
 **Authors:** adr-architecture-kit  
 **Domains:** migration, onboarding, normalization  
 **Alias name:** adr-pc-0006-brownfield-onboarding-and-canonical-normalization  
@@ -33,10 +34,10 @@ canonical normalization an explicit part of the compiler/validation runtime.
 
 ### Python (language)
 
-**Version:** 3.11
+**Version:** >=3.14
 
 **Rationale:**
-Existing implementation language.
+Minimum supported Python minor is 3.14 (`requires-python >=3.14`); currently qualified released minor line is 3.14; repository reference interpreter is currently 3.14.7; new GA Python minors require explicit qualification before support is advertised. 
 
 ### Click (tooling)
 

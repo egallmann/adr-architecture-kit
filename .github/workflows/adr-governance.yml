@@ -20,13 +20,15 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        python-version: ["3.11", "3.12", "3.13", "3.14"]
+        python-version: ["3.14"]
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.python-version }}
           cache: pip
+      - name: Record interpreter
+        run: python --version
       - run: python -m pip install --upgrade pip
       - run: python -m pip install .[dev]
       - name: Exercise portable source/SDK compatibility harness
@@ -44,8 +46,10 @@ jobs:
           cache-dependency-path: packages/node/package-lock.json
       - uses: actions/setup-python@v5
         with:
-          python-version: "3.12"
+          python-version: "3.14"
           cache: pip
+      - name: Record interpreter
+        run: python --version
       - run: python -m pip install --upgrade pip
       - run: python -m pip install .[dev]
       - run: npm ci
@@ -75,8 +79,10 @@ jobs:
           submodules: recursive
       - uses: actions/setup-python@v5
         with:
-          python-version: "3.12"
+          python-version: "3.14"
           cache: pip
+      - name: Record interpreter
+        run: python --version
       - uses: actions/setup-node@v4
         with:
           node-version: "20"
@@ -96,14 +102,16 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
-          python-version: "3.12"
+          python-version: "3.14"
           cache: pip
+      - name: Record interpreter
+        run: python --version
       - run: python -m pip install --upgrade pip
       - run: python -m pip install .[dev]
       - run: python -m pytest --cov=adr_kit --cov-report=term-missing --cov-fail-under=80
 
   os-portability:
-    name: OS portability / ${{ matrix.os }} / Python 3.12
+    name: OS portability / ${{ matrix.os }} / Python 3.14
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
@@ -113,8 +121,10 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
-          python-version: "3.12"
+          python-version: "3.14"
           cache: pip
+      - name: Record interpreter
+        run: python --version
       - run: python -m pip install --upgrade pip
       - run: python -m pip install .[dev]
       - run: python -m pytest
@@ -126,8 +136,10 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
-          python-version: "3.12"
+          python-version: "3.14"
           cache: pip
+      - name: Record interpreter
+        run: python --version
       - run: python -m pip install --upgrade pip
       - run: python -m pip install .[dev]
       - run: python scripts/check_quality_ratchets.py
@@ -139,8 +151,10 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
-          python-version: "3.12"
+          python-version: "3.14"
           cache: pip
+      - name: Record interpreter
+        run: python --version
       - run: python -m pip install --upgrade pip
       - run: python -m pip install .[dev]
       - run: python -m pip_audit .
@@ -152,8 +166,10 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
-          python-version: "3.12"
+          python-version: "3.14"
           cache: pip
+      - name: Record interpreter
+        run: python --version
       - run: python -m pip install --upgrade pip
       - run: python -m pip install .[dev]
       - run: python scripts/check_version_consistency.py
@@ -232,12 +248,14 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        python-version: ["3.11", "3.12", "3.13", "3.14"]
+        python-version: ["3.14"]
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.python-version }}
+      - name: Record interpreter
+        run: python --version
       - uses: actions/download-artifact@v4
         with:
           name: release-bundle
@@ -261,7 +279,7 @@ jobs:
           PY
 
   os-wheel-smoke:
-    name: Retained wheel OS / ${{ matrix.os }} / Python 3.12
+    name: Retained wheel OS / ${{ matrix.os }} / Python 3.14
     needs: release-artifacts
     runs-on: ${{ matrix.os }}
     strategy:
@@ -272,7 +290,9 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
-          python-version: "3.12"
+          python-version: "3.14"
+      - name: Record interpreter
+        run: python --version
       - uses: actions/download-artifact@v4
         with:
           name: release-bundle
@@ -290,8 +310,10 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
-          python-version: "3.12"
+          python-version: "3.14"
           cache: pip
+      - name: Record interpreter
+        run: python --version
       - run: python -m pip install --upgrade pip build
       - run: python -m build --outdir "${{ runner.temp }}/build-one"
       - run: python -m build --outdir "${{ runner.temp }}/build-two"
@@ -334,8 +356,10 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
-          python-version: "3.12"
+          python-version: "3.14"
           cache: pip
+      - name: Record interpreter
+        run: python --version
       - run: python -m pip install --upgrade pip
       - run: python -m pip install .[dev]
       - run: python benchmarks/phase0.py --corpus synthetic --sizes 10 --warmups 0 --repeats 1 --json-out benchmark-smoke.json

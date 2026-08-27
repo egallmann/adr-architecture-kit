@@ -5,14 +5,15 @@ artifact_kind: rendered_adr_markdown
 generator_id: adr-projection-markdown
 generator_version: 2
 hash_algorithm: sha256
-source_hash: 4670034aa34fe55be7e274c7c46a7a119c80f137d95f5dcc87fec1e0e02ea539
-rendered_hash: c1e6c1430cc8742cdee2b0df21b8f800f4da00cd82f8c5340c59ab0981afa2c6
+source_hash: 95d05319466478310ed2cd3376b36fd8cbc1c5b4967d5f7c26af0ff39e2d08b9
+rendered_hash: d4b0843f1817361dfaa439b97536c96b6da3e8471734fc5df6c48e093297970b
 -->
 
 # ADR-PC-0005: Generated Artifact Integrity Validation
 
-**Status:** proposed  
+**Status:** accepted  
 **Created:** 2026-03-15  
+**Modified:** 2026-08-27  
 **Authors:** adr-architecture-kit  
 **Domains:** integrity, validation, projections  
 **Alias name:** adr-pc-0005-generated-artifact-integrity-validation  
@@ -33,10 +34,10 @@ subsystem used by validator and governance flows.
 
 ### Python (language)
 
-**Version:** 3.11
+**Version:** >=3.14
 
 **Rationale:**
-Existing implementation language.
+Minimum supported Python minor is 3.14 (`requires-python >=3.14`); currently qualified released minor line is 3.14; repository reference interpreter is currently 3.14.7; new GA Python minors require explicit qualification before support is advertised. 
 
 ### PyYAML (library)
 

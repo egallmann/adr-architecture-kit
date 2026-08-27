@@ -2,17 +2,24 @@
 
 from __future__ import annotations
 
+import uuid
+
 import pytest
 
 from adr_kit.identity import (
     UUIDV7_PATTERN,
+    derive_assertion_id_v13,
     derive_entity_uri,
     derive_relationship_id_v13,
-    derive_assertion_id_v13,
     mint_uuidv7,
     parse_uuidv7,
     uuidv7_created_at,
     validate_uuidv7,
+)
+from tests.support.uuidv7_fixtures import (
+    UUIDV7_CREATED_AT,
+    UUIDV7_TIMESTAMP_FIXTURE,
+    UUIDV7_TIMESTAMP_MS,
 )
 
 
@@ -48,6 +55,11 @@ class TestUUIDv7Validation:
         assert UUIDV7_PATTERN is leaf_pattern is decorator_pattern
         assert UUIDV7_PATTERN.match("019109a0-b1c2-7def-8a00-112233445566")
 
+    def test_stdlib_timestamp_fixture_is_uuidv7(self) -> None:
+        parsed = uuid.UUID(UUIDV7_TIMESTAMP_FIXTURE)
+        assert parsed.version == 7
+        assert parsed.time == UUIDV7_TIMESTAMP_MS
+
 
 class TestMintUUIDv7:
     def test_mint_returns_valid_uuidv7(self) -> None:
@@ -55,27 +67,9 @@ class TestMintUUIDv7:
         assert UUIDV7_PATTERN.match(result)
         validate_uuidv7(result)
 
-    def test_injectable_timestamp(self) -> None:
-        ts_ms = 1723334400000  # fixed epoch ms
-        result = mint_uuidv7(timestamp_ms=ts_ms)
-        assert UUIDV7_PATTERN.match(result)
-
-    def test_injectable_random(self) -> None:
-        rand = b"\x01\x02\x03\x04\x05\x06\x07\x08\x09\x0a"
-        r1 = mint_uuidv7(timestamp_ms=1000, rand_bytes=rand)
-        r2 = mint_uuidv7(timestamp_ms=1000, rand_bytes=rand)
-        assert r1 == r2
-
-    def test_wrong_rand_length_raises(self) -> None:
-        with pytest.raises(ValueError, match="10 bytes"):
-            mint_uuidv7(rand_bytes=b"\x00" * 5)
-
-    def test_deterministic_with_same_inputs(self) -> None:
-        rand = bytes(range(10))
-        ts = 1700000000000
-        a = mint_uuidv7(timestamp_ms=ts, rand_bytes=rand)
-        b = mint_uuidv7(timestamp_ms=ts, rand_bytes=rand)
-        assert a == b
+    def test_mint_rejects_removed_generation_controls(self) -> None:
+        with pytest.raises(TypeError):
+            mint_uuidv7(timestamp_ms=1723334400123)
 
     def test_version_nibble_is_7(self) -> None:
         result = mint_uuidv7()
@@ -89,11 +83,8 @@ class TestMintUUIDv7:
 
 class TestUUIDv7CreatedAt:
     def test_decode_known_timestamp(self) -> None:
-        ts_ms = 1723334400123
-        rand = bytes(10)
-        uuid_str = mint_uuidv7(timestamp_ms=ts_ms, rand_bytes=rand)
-        created = uuidv7_created_at(uuid_str)
-        assert created == "2024-08-11T00:00:00.123Z"
+        created = uuidv7_created_at(UUIDV7_TIMESTAMP_FIXTURE)
+        assert created == UUIDV7_CREATED_AT
 
     def test_invalid_uuid_raises(self) -> None:
         with pytest.raises(ValueError):
@@ -102,9 +93,9 @@ class TestUUIDv7CreatedAt:
 
 class TestDeriveEntityUri:
     def test_basic_uri(self) -> None:
-        uuid = "019109a0-b1c2-7def-8a00-112233445566"
-        uri = derive_entity_uri("provider-architecture", uuid)
-        assert uri == f"adr://provider-architecture/entities/{uuid}"
+        uuid_value = "019109a0-b1c2-7def-8a00-112233445566"
+        uri = derive_entity_uri("provider-architecture", uuid_value)
+        assert uri == f"adr://provider-architecture/entities/{uuid_value}"
 
     def test_invalid_uuid_raises(self) -> None:
         with pytest.raises(ValueError):

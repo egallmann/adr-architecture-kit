@@ -5,13 +5,13 @@ artifact_kind: rendered_adr_markdown
 generator_id: adr-projection-markdown
 generator_version: 2
 hash_algorithm: sha256
-source_hash: 9d60c0eb1276516815a5aad1d563d1f90ede884c7181f2b76ce5cdde8b87a54f
-rendered_hash: 95e2d3b9e7e4fd294c49dd6768e22a47b3c9ea1dc629fa9d77b2b4dd187c4dd6
+source_hash: 1896e0d945fbabc833403c86544567530b5b8d0c30bf7a6dc5b2ae3b78ff2a03
+rendered_hash: 1d620fa72b81fe5ec50434912237f9d24d8b4c30a33dd2d8247fa70e41bd181e
 -->
 
 # ADR-L-0005: ADR-to-Prompt Translation for AI Implementation
 
-**Status:** proposed  
+**Status:** accepted  
 **Created:** 2026-03-08  
 **Modified:** 2026-03-08  
 **Authors:** adr-architecture-kit  

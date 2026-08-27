@@ -5,15 +5,15 @@ artifact_kind: rendered_adr_markdown
 generator_id: adr-projection-markdown
 generator_version: 2
 hash_algorithm: sha256
-source_hash: 71f5c9bc3c51a456e501b9e8695889fe15fa2ec0973b2c12b9fb3ea0d9aba44e
-rendered_hash: 5f434f39f274d4996635e84bcedee7369a6a7b162f30e60995846b497577507d
+source_hash: 6fcee94fcfd7b86b8aae0c066dfee0445919c179a9816d2c9518e946e9db90fb
+rendered_hash: 07a833d2f1cc4cfdcec817777f94d0c2b103f8a9761fc9e08b27cf7f4dd9abf5
 -->
 
 # ADR-PC-0003: Compiler Pipeline and Driver
 
-**Status:** proposed  
+**Status:** accepted  
 **Created:** 2026-03-15  
-**Modified:** 2026-08-05  
+**Modified:** 2026-08-27  
 **Authors:** adr-architecture-kit  
 **Domains:** compiler, pipeline, tooling  
 **Alias name:** adr-pc-0003-compiler-pipeline-and-driver  
@@ -36,10 +36,10 @@ internal reference implementation and are not a supported SDK facade.
 
 ### Python (language)
 
-**Version:** 3.11
+**Version:** >=3.14
 
 **Rationale:**
-Existing compiler implementation language.
+Minimum supported Python minor is 3.14 (`requires-python >=3.14`); currently qualified released minor line is 3.14; repository reference interpreter is currently 3.14.7; new GA Python minors require explicit qualification before support is advertised. 
 
 ### Click (tooling)
 

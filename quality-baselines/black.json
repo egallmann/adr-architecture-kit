@@ -25,6 +25,7 @@
     "src/adr_kit/generators/manifest_generator.py",
     "src/adr_kit/generators/scaffold_generator.py",
     "src/adr_kit/generators/source_adr_generator.py",
+    "src/adr_kit/generators/system_overview_generator.py",
     "src/adr_kit/generators/views/markdown.py",
     "src/adr_kit/integrity/core.py",
     "src/adr_kit/migrators/canonical_id_normalizer.py",
@@ -44,6 +45,7 @@
     "src/adr_kit/models/project_metadata.py",
     "src/adr_kit/models/remediation_ledger.py",
     "src/adr_kit/models/requirements_snapshot.py",
+    "src/adr_kit/promotion/ste_contract.py",
     "src/adr_kit/repository/architecture_repository.py",
     "src/adr_kit/repository/registry_loader.py",
     "src/adr_kit/schema/contract_validation.py",
@@ -88,6 +90,6 @@
     "tests/test_source_generators.py",
     "tests/test_workspace_attribution_federation.py"
   ],
-  "finding_count": 87,
+  "finding_count": 89,
   "tool": "black"
 }

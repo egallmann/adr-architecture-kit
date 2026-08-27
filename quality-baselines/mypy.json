@@ -1,5 +1,5 @@
 {
-  "finding_count": 284,
+  "finding_count": 287,
   "findings": [
     {
       "code": "import-not-found",
@@ -1067,6 +1067,24 @@
       "code": "type-arg",
       "count": 5,
       "message": "Missing type arguments for generic type \"dict\"",
+      "path": "src/adr_kit/validators/adr_validator.py"
+    },
+    {
+      "code": "var-annotated",
+      "count": 1,
+      "message": "Need type annotation for \"physical_adrs\" (hint: \"physical_adrs: dict[<type>, <type>] = ...\")",
+      "path": "src/adr_kit/validators/adr_validator.py"
+    },
+    {
+      "code": "var-annotated",
+      "count": 1,
+      "message": "Need type annotation for \"physical_component_adrs\" (hint: \"physical_component_adrs: dict[<type>, <type>] = ...\")",
+      "path": "src/adr_kit/validators/adr_validator.py"
+    },
+    {
+      "code": "var-annotated",
+      "count": 1,
+      "message": "Need type annotation for \"physical_system_adrs\" (hint: \"physical_system_adrs: dict[<type>, <type>] = ...\")",
       "path": "src/adr_kit/validators/adr_validator.py"
     },
     {

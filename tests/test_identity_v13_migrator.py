@@ -6,8 +6,8 @@ from pathlib import Path
 
 import pytest
 
-from adr_kit.identity import mint_uuidv7
 from adr_kit.migrators.identity_v13 import IdentityV13Migrator
+from tests.support.uuidv7_fixtures import UUIDV7_SEQUENCE, sequential_mint
 
 
 def _write_project(root: Path) -> None:
@@ -72,12 +72,11 @@ def test_preflight_does_not_mint_on_blockers(tmp_path: Path) -> None:
         encoding="utf-8",
     )
     counter = {"n": 0}
+    base_mint = sequential_mint(UUIDV7_SEQUENCE)
 
     def mint() -> str:
         counter["n"] += 1
-        return mint_uuidv7(
-            timestamp_ms=1_700_000_000_000 + counter["n"], rand_bytes=bytes([counter["n"]] * 10)
-        )
+        return base_mint()
 
     migrator = IdentityV13Migrator(mint=mint)
     result = migrator.preflight(tmp_path)
@@ -93,12 +92,11 @@ def test_plan_mints_once_after_green_preflight(tmp_path: Path) -> None:
     _write_project(tmp_path)
     _write_logical(tmp_path)
     counter = {"n": 0}
+    base_mint = sequential_mint(UUIDV7_SEQUENCE)
 
     def mint() -> str:
         counter["n"] += 1
-        return mint_uuidv7(
-            timestamp_ms=1_700_000_000_000 + counter["n"], rand_bytes=bytes([counter["n"]] * 10)
-        )
+        return base_mint()
 
     migrator = IdentityV13Migrator(mint=mint)
     result = migrator.plan(tmp_path)
@@ -114,22 +112,7 @@ def test_plan_mints_once_after_green_preflight(tmp_path: Path) -> None:
 def test_seal_requires_closed_judgment_queues(tmp_path: Path) -> None:
     _write_project(tmp_path)
     _write_logical(tmp_path)
-    migrator = IdentityV13Migrator(
-        mint=lambda: mint_uuidv7(timestamp_ms=1_700_000_000_000, rand_bytes=b"\x01" * 10)
-    )
-    # Force deterministic unique mints
-    values = [
-        mint_uuidv7(timestamp_ms=1_700_000_000_000 + i, rand_bytes=bytes([i] * 10))
-        for i in range(1, 20)
-    ]
-    idx = {"i": 0}
-
-    def mint() -> str:
-        value = values[idx["i"]]
-        idx["i"] += 1
-        return value
-
-    migrator = IdentityV13Migrator(mint=mint)
+    migrator = IdentityV13Migrator(mint=sequential_mint(UUIDV7_SEQUENCE))
     planned = migrator.plan(tmp_path).identity_map
     for entry in planned.entries:
         if entry.classification == "review_required":

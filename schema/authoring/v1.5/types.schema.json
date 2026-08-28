@@ -1,0 +1,75 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://adr-kit.ste.systems/schema/authoring/v1.5/types.schema.json",
+  "title": "ADR Kit Shared Type Definitions (authoring v1.5)",
+  "definitions": {
+    "uuid_v7": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-7[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+    },
+    "alias_name": {
+      "type": "string",
+      "minLength": 3,
+      "maxLength": 96,
+      "pattern": "^[a-z][a-z0-9]*(?:-[a-z0-9]+)*$"
+    },
+    "extension_type": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*:[a-z][a-z0-9_]{1,63}$"
+    },
+    "extension_alias": {
+      "type": "string",
+      "pattern": "^[A-Z][A-Z0-9]{0,15}-[0-9]{4}$"
+    },
+    "extension_property_scalar": {
+      "type": ["string", "integer", "number", "boolean"]
+    },
+    "extension_property_value": {
+      "oneOf": [
+        {"$ref": "#/definitions/extension_property_scalar"},
+        {"type": "array", "items": {"$ref": "#/definitions/extension_property_scalar"}}
+      ]
+    },
+    "extension_properties": {
+      "type": "object",
+      "propertyNames": {"pattern": "^[a-z][a-z0-9_]*$"},
+      "additionalProperties": {"$ref": "#/definitions/extension_property_value"}
+    },
+    "status": {"type": "string", "enum": ["proposed", "accepted", "deprecated", "superseded"]},
+    "iso_date": {"type": "string", "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"},
+    "adr_id_logical": {
+      "type": "string",
+      "pattern": "^ADR-(L|V)-[0-9]{4}$",
+      "description": "Logical or vision ADR alias identifier"
+    },
+    "adr_id_physical_system": {
+      "type": "string",
+      "pattern": "^ADR-PS-[0-9]{4}$",
+      "description": "Physical-System ADR alias identifier"
+    },
+    "adr_id_physical_component": {
+      "type": "string",
+      "pattern": "^ADR-PC-[0-9]{4}$",
+      "description": "Physical-Component ADR alias identifier"
+    },
+    "topo_handle": {
+      "type": "string",
+      "pattern": "^TOPO-[A-Z0-9][A-Z0-9-]*$",
+      "description": "Local topology handle within a physical-system ADR; not canonical entity identity"
+    },
+    "entity_id": {
+      "type": "string",
+      "pattern": "^[A-Z]+-[0-9]{4}$",
+      "description": "Type-prefixed entity alias identifier (e.g., CAP-0001, COMP-0001)"
+    },
+    "markdown_text": {
+      "type": "string",
+      "description": "Markdown-formatted text content"
+    },
+    "impact_level": {
+      "type": "string",
+      "enum": ["high", "medium", "low"],
+      "description": "Impact assessment level"
+    }
+  }
+}

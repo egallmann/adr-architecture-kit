@@ -1,0 +1,30 @@
+schema_version: "1.5"
+adr_type: physical-system
+id: "019109a0-b1c2-7def-8a00-112233445566"
+alias_id: ADR-PS-0002
+alias_name: invalid-topology-name
+title: "Invalid topology component with name field"
+status: proposed
+created_date: "2026-08-28"
+authors:
+  - test.author
+implements_logical:
+  - "019109a0-b1c2-7def-8a00-aabbccddeef0"
+context: |
+  Topology components must not carry independent name authority in v1.5.
+technology_stack:
+  - category: language
+    name: Python
+    version: "3.12"
+    rationale: Test fixture.
+system:
+  id: "019109a0-b1c2-7def-8a00-223344556677"
+  alias_id: SYS-0001
+  alias_name: test-system
+component_topology:
+  components:
+    - id: TOPO-0001
+      component_ref: "019109a0-b1c2-7def-8a00-334455667788"
+      purpose: Gateway role.
+      name: gateway
+  relationships: []

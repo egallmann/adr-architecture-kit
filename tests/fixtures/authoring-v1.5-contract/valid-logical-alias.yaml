@@ -1,0 +1,14 @@
+schema_version: "1.5"
+adr_type: logical
+id: "019109a0-b1c2-7def-8a00-112233445566"
+alias_id: ADR-L-0001
+alias_name: valid-logical-alias
+title: "Valid v1.5 Logical ADR"
+status: proposed
+created_date: "2026-08-28"
+authors:
+  - test.author
+context: |
+  Minimal valid v1.5 logical ADR with ADR-L alias.
+decisions:
+  - summary: "Test decision"

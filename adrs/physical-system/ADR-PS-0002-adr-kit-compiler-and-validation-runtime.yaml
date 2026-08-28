@@ -1,4 +1,4 @@
-schema_version: '1.3'
+schema_version: '1.5'
 adr_type: physical-system
 id: 019fee89-e618-7d04-9337-4aa2d3258507
 title: ADR Kit Authoring Compiler and Validation System
@@ -23,17 +23,7 @@ implements_logical:
 - 019fee89-e616-7d61-8e35-f11ba2ddd75d
 - 019fee89-e616-7b97-971d-ae165d13bf9c
 - 019fee89-e616-7c4e-953c-b7349412a784
-references_components:
-- 019fee89-e617-7d2b-8325-cd85ff814477
-- 019fee89-e618-7b76-843f-cfe21ceb2ea6
-- 019fee89-e618-73ce-aa2d-101276d64e33
-- 019fee89-e618-74b2-a83e-e41c7d8c9f37
-- 019ffdba-3c42-70da-b33d-efc003269c42
-related_adrs:
-- 019fee89-e618-79ed-9d2d-cc35c63bc99a
-- 019fee89-e618-7a2f-aa3e-1f892cdf9410
-supersedes:
-- 019fee89-e618-79ed-9d2d-cc35c63bc99a
+- 019fee89-e615-7f19-810b-c7b33a9d9e0d
 technologies:
 - python
 - click
@@ -121,39 +111,28 @@ system_boundaries:
   - adr_kit.api
 component_topology:
   components:
-  - name: Schema and Contract Validation Component
-    type: service
+  - id: TOPO-0001
+    component_ref: 019fee89-e617-7060-8f3f-4ecd46a719da
     purpose: Validates canonical ADR structure and contract expectations.
-    implements_adr: 019fee89-e617-7d2b-8325-cd85ff814477
-  - name: Compiler Pipeline Component
-    type: service
+  - id: TOPO-0002
+    component_ref: 019fee89-e617-76ad-9336-b3615a6e4bde
     purpose: Builds and emits deterministic architecture compilation outputs.
-    implements_adr: 019fee89-e618-7b76-843f-cfe21ceb2ea6
-  - name: Repository Boundary Component
-    type: service
+  - id: TOPO-0003
+    component_ref: 019fee89-e618-74d1-9a1f-37e2c2982a51
     purpose: Loads and serves normalized semantic state for in-process consumers.
-    implements_adr: 019fee89-e618-73ce-aa2d-101276d64e33
-  - name: Integrity Validation Component
-    type: service
+  - id: TOPO-0004
+    component_ref: 019fee89-e618-781c-831f-0d5fe24f7d85
     purpose: Verifies generated artifact freshness and tamper integrity.
-    implements_adr: 019fee89-e618-74b2-a83e-e41c7d8c9f37
   relationships:
-  - from: Canonical ADR artifacts
-    to: Schema and Contract Validation Component
+  - from: TOPO-0002
+    to: TOPO-0001
     type: depends_on
-    description: Validation consumes canonical source artifacts.
-  - from: Schema and Contract Validation Component
-    to: Compiler Pipeline Component
+  - from: TOPO-0003
+    to: TOPO-0002
     type: depends_on
-    description: Compilation assumes structurally valid canonical input.
-  - from: Compiler Pipeline Component
-    to: Repository Boundary Component
+  - from: TOPO-0004
+    to: TOPO-0002
     type: depends_on
-    description: Repository consumers rely on compiled bundle artifacts.
-  - from: Compiler Pipeline Component
-    to: Integrity Validation Component
-    type: depends_on
-    description: Integrity validation checks compiler-owned artifacts.
 operational_requirements:
   monitoring: Deterministic validation and compilation output with explicit diagnostics.
   logging: CLI-visible diagnostic logging with fail-closed validation behavior.

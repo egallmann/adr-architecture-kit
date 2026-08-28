@@ -1,0 +1,99 @@
+schema_version: '1.3'
+adr_type: logical
+id: 01a048d8-454a-7464-bcaa-718e58dfb9c2
+alias_id: ADR-L-0025
+alias_name: topology-and-contract-succession-authority
+title: Topology and Contract Succession Authority (Authoring v1.5 / Normalized v2.2)
+status: accepted
+created_date: '2026-08-28'
+authors:
+- adr-architecture-kit
+domains:
+- architecture
+- schema-governance
+- topology
+- normalization
+tags:
+- projection-v3
+- authoring-v1.5
+- normalized-v2.2
+- topology
+related_adrs:
+- 019fee89-e615-70a5-861b-b2dde147e5af
+- 019fee89-e615-7b9c-8e3f-32ceeda01491
+- 01a00644-1bfc-7abc-8aaa-111111111111
+- 01a02d38-7cf3-7b3c-87ec-1c5f08490c6e
+context: |
+  Projection v3 and the ADR-P retirement boundary require durable logical authority
+  for authoring contract succession (v1.5) and normalized model succession (v2.2).
+  This ADR governs topology semantics, cross-document invariants, and endpoint-type
+  rules without encoding production implementation.
+
+  Authoring v1.5 extends v1.4 and retires generic physical ADR authoring. Normalized
+  v2.2 extends v2.1 and introduces topology verb vocabulary with explicit provenance.
+decisions:
+- id: 01a048e9-bf60-7620-ad03-5af81c48c443
+  alias_id: DEC-0168
+  alias_name: promote-authoring-v1-5-from-v1-4
+  summary: Authoring v1.5 succeeds v1.4 as current authoring contract
+  rationale: |
+    v1.4 remains released and frozen (ADR-L-0023 extension semantics). v1.5 extends
+    v1.4 preserving extension_entities and extension_relationships while introducing
+    slim topology component records and closed ADR taxonomy (logical, physical-system,
+    physical-component only).
+- id: 01a048e9-bf60-7620-ad03-5af9dca56890
+  alias_id: DEC-0169
+  alias_name: promote-normalized-v2-2-from-v2-1
+  summary: Normalized model v2.2 succeeds v2.1 as topology-capable semantic contract
+  rationale: |
+    v2.1 remains released and frozen. v2.2 preserves canonical and compatibility
+    relationship identity classes and extension payloads while adding topology verbs,
+    consumes_interface, composed_of, and explicit provenance posture.
+- id: 01a048e9-bf60-7620-ad03-5afa0d062cf8
+  alias_id: DEC-0170
+  alias_name: topo-local-handles-component-ref-identity
+  summary: TOPO handles are local; component_ref resolves to admitted COMP entity UUID
+  rationale: |
+    Topology components in physical-system ADRs use local TOPO handles (id, component_ref,
+    purpose). component_ref is the canonical admitted component entity UUIDv7, not an
+    ADR document UUID. TOPO must not become normalized component entities.
+- id: 01a048e9-bf60-7620-ad03-5afb9ba51d1c
+  alias_id: DEC-0171
+  alias_name: sys-composed-of-comp-only
+  summary: composed_of is SYS UUID to COMP UUID only
+  rationale: |
+    Normalized composed_of relationships connect system entities to component entities.
+    TOPO handles never appear as normalized relationship endpoints.
+- id: 01a048e9-bf60-7620-ad03-5afc854d365b
+  alias_id: DEC-0172
+  alias_name: six-topology-verbs-grammatical-direction
+  summary: Six topology verbs with grammatical FROM verb TO direction
+  rationale: |
+    Physical-system topology relationships use depends_on, calls, publishes_to,
+    subscribes_to, reads_from, writes_to, and consumes_interface with explicit
+    FROM -> VERB -> TO grammatical direction.
+- id: 01a048e9-bf60-7620-ad03-5afd8acec9ee
+  alias_id: DEC-0173
+  alias_name: explicit-provenance-compatibility-identity
+  summary: Topology-sourced compatibility relationships use explicit provenance and stable identity posture
+  rationale: |
+    Compatibility relationships derived from authored topology carry
+    provenance_classification explicit and preserve protocol/description metadata.
+- id: 01a048e9-bf60-7620-ad03-5afe983c297e
+  alias_id: DEC-0174
+  alias_name: cross-document-ps-pc-topology-invariant
+  summary: PS topology component_ref must agree with owning PC implements_system
+  rationale: |
+    Cross-document invariant: every component_ref in a physical-system topology must
+    reference a component entity whose owning physical-component ADR implements_system
+    includes that system. Contradiction fails validation. JSON Schema validates local
+    structure only; mechanical enforcement belongs to production validator implementation.
+- id: 01a048e9-bf60-7620-ad03-5affd0982697
+  alias_id: DEC-0175
+  alias_name: endpoint-type-semantic-rules-v2-2
+  summary: v2.2 endpoint-type semantics are normative beyond JSON Schema shape
+  rationale: |
+    Schema-valid relationship records do not prove endpoint entity type. composed_of
+    requires system source and component target. Topology verbs require component endpoints.
+    Production semantic validation must prove endpoint existence and permitted types.
+gaps: []

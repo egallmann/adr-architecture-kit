@@ -15,6 +15,7 @@ domains:
 related_adrs:
 - 019fee89-e617-78d9-ba3b-b7e3e6db1b12
 - 01a00643-1bfc-788c-911b-83a4725a8de1
+- 01a048d8-454a-7464-bcaa-718e58dfb9c2
 context: |
   ADR-Kit owns the universal envelope, structural validation, references,
   provenance eligibility, and deterministic projections, while consumers have

@@ -14,7 +14,8 @@ tags:
 - machine-verifiable
 - ai-first
 - authoring-subsystem
-related_adrs: []
+related_adrs:
+- 01a048d8-454a-7464-bcaa-718e58dfb9c2
 supersedes: []
 superseded_by: null
 ownership:
@@ -72,7 +73,9 @@ capabilities:
   name: Two-Layer Architecture Model
   description: 'Separate conceptual design (logical ADRs) from implementation specifications
 
-    (physical ADRs). Logical ADRs define capabilities, boundaries, contracts, and
+    - Physical architecture is authored as ADR-PS (physical-system) and ADR-PC
+      (physical-component) documents; generic ADR-P authoring is retired from current
+      authority (historical identity preserved via retirement map)
 
     invariants without implementation details. Physical ADRs operationalize logical
 
@@ -202,8 +205,8 @@ interaction_contracts:
 
     - Schema-validated before commit
 
-    - Type-prefixed human-recognition aliases (ADR-L-XXXX, ADR-P-XXXX) distinct from
-    canonical UUID machine identity
+    - Type-prefixed human-recognition aliases (ADR-L-XXXX, ADR-PS-XXXX, ADR-PC-XXXX)
+      distinct from canonical UUID machine identity
 
     - Explicit relationships (array fields for graph edges)
 
@@ -264,7 +267,7 @@ constraints:
     '
 - id: CONST-0002
   type: technical
-  description: 'Type-prefixed IDs (ADR-L-XXXX, ADR-P-XXXX) are governed human-recognition
+  description: 'Type-prefixed IDs (ADR-L-XXXX, ADR-PS-XXXX, ADR-PC-XXXX) are governed human-recognition
     aliases with 4-digit numbering; canonical machine identity is UUID.
 
     '
@@ -617,7 +620,7 @@ decisions:
   alias_id: DEC-0003
   alias_name: rich-frontmatter-as-authoritative-metadata-manifest-as-derived-view
 - id: 019fee89-e615-7899-8d3b-0ecfe4490994
-  summary: 'Governed type-prefixed human-recognition aliases (ADR-L-XXXX / ADR-P-XXXX)
+  summary: 'Governed type-prefixed human-recognition aliases (ADR-L-XXXX / ADR-PS-XXXX / ADR-PC-XXXX)
     with 4-digit numbering; UUID is canonical machine identity
 
     '

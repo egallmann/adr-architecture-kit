@@ -1,6 +1,6 @@
 # Test-Driven Development Workflow for ADR Kit
 
-**Authority**: ADR-L-0003 DEC-0005, ADR-P-0003 IMPL-0001
+**Authority**: ADR-L-0003 DEC-0033 (TDD methodology); scope-resolution embodiment ADR-PC-0008 IMPL-0022
 
 ## Why TDD for ADR Kit?
 

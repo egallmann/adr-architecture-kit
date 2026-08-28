@@ -1585,7 +1585,7 @@ allocations:
 - id: DEC-0176
   entity_type: decision
   file_path: adrs/logical/ADR-L-0007-deterministic-documentation-projection.yaml
-  source_pointer: /decisions/12/alias_id
+  source_pointer: /decisions/11/alias_id
   state: active
   adr_id: 019fee89-e615-7b9c-8e3f-32ceeda01491
 - id: DEC-9000

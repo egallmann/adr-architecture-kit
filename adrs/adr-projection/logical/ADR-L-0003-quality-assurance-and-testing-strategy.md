@@ -5,8 +5,8 @@ artifact_kind: rendered_adr_markdown
 generator_id: adr-projection-markdown
 generator_version: 3
 hash_algorithm: sha256
-source_hash: 4bdd918e6d4688efab2238ea89c93543aa6ff9009d723366b4662699aaa2a6b9
-rendered_hash: 3e84d06ce3547a45ea7e0d2d0f23931cbd95b55f8b31573d83e9a87788674405
+source_hash: 66a81acce256397eb4541173aab73a98aecedc56c5962e084038efe4fb2aee79
+rendered_hash: f039bd6a467c6beebb84891bbc47bdbbbf22fdfb6f5dd46b41c73a472769bb64
 -->
 
 # ADR-L-0003: Quality Assurance and Testing Strategy
@@ -92,22 +92,22 @@ Testing must balance:
 
 ```mermaid
 flowchart TB
-  n_019fee89_e615_77f6_9b1f_695732d25443["ADR-L-0003"]
+  n_019fee89_e615_77f6_9b1f_695732d25443["ADR-L-0003<br/>Quality Assurance and Testing Strategy"]
   subgraph sg_capability["capability"]
-    n_019fee89_e615_7498_9825_b465a8830d8a["CAP-0020"]
-    n_019fee89_e615_7958_822b_bbd40f3a5ebc["CAP-0023"]
-    n_019fee89_e615_7d32_8d01_f61b4d7aae40["CAP-0026"]
-    n_019fee89_e615_722d_bf3a_9ed33338beaf["CAP-0029"]
-    n_019fee89_e615_7402_b43f_a03be950d0b3["CAP-0046"]
+    n_019fee89_e615_7498_9825_b465a8830d8a["CAP-0020<br/>Automated Quality Gates"]
+    n_019fee89_e615_7958_822b_bbd40f3a5ebc["CAP-0023<br/>Test-Driven Development Support"]
+    n_019fee89_e615_7d32_8d01_f61b4d7aae40["CAP-0026<br/>Regression Prevention"]
+    n_019fee89_e615_722d_bf3a_9ed33338beaf["CAP-0029<br/>Documentation via Tests"]
+    n_019fee89_e615_7402_b43f_a03be950d0b3["CAP-0046<br/>Verified Build-Once Release Promotion"]
   end
   subgraph sg_decision["decision"]
-    n_019fee89_e615_79a1_be3d_03af8c291326["DEC-0008"]
-    n_019fee89_e615_7d1d_a33d_ca62fdaad0be["DEC-0015"]
-    n_019fee89_e615_78ee_a53f_99d85ea925a3["DEC-0022"]
-    n_019fee89_e615_7e99_8137_8ac8d0972e1b["DEC-0029"]
-    n_019fee89_e615_760b_a43f_b3fe08e0d6ef["DEC-0033"]
-    n_019fee89_e615_7e36_8e3f_c0e37def8629["DEC-0078"]
-    n_019fee89_e615_713f_a73d_10442c1dc6b9["DEC-0081"]
+    n_019fee89_e615_79a1_be3d_03af8c291326["DEC-0008<br/>Adopt Multi-Layer Testing Strategy"]
+    n_019fee89_e615_7d1d_a33d_ca62fdaad0be["DEC-0015<br/>Require Tests for All New Components"]
+    n_019fee89_e615_78ee_a53f_99d85ea925a3["DEC-0022<br/>Test Against Real Workspace ADRs"]
+    n_019fee89_e615_7e99_8137_8ac8d0972e1b["DEC-0029<br/>Enforce Testing in CI/CD Pipeline"]
+    n_019fee89_e615_760b_a43f_b3fe08e0d6ef["DEC-0033<br/>Adopt Test-Driven Development (TDD) Methodology"]
+    n_019fee89_e615_7e36_8e3f_c0e37def8629["DEC-0078<br/>Require retained release-artifact testing and no-regression quality controls"]
+    n_019fee89_e615_713f_a73d_10442c1dc6b9["DEC-0081<br/>Make installed distribution metadata the runtime package-version authority"]
   end
   subgraph sg_invariant["invariant"]
     n_019fee89_e615_7c97_a633_fbfd69ffa030["INV-0020"]

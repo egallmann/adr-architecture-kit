@@ -5,8 +5,8 @@ artifact_kind: rendered_adr_markdown
 generator_id: adr-projection-markdown
 generator_version: 3
 hash_algorithm: sha256
-source_hash: 68a5957644697620b688561ca4283af87f01d76e10d90a851cbe1a2855027ded
-rendered_hash: dc581eaa21973ee156f569f2749ed1050721a6f17338b335a1f3b0786ec76564
+source_hash: f236da39bca2c99e563940c614531d3187203d4132f110066f81d0684742aa9f
+rendered_hash: 6902f57946fbfca73d3ae448b0ed2cbf4fc35fa4753d3d8c9e43f931672c62da
 -->
 
 # ADR-L-0006: Rule Library Sub-Module with Cooperative Signals
@@ -84,19 +84,19 @@ Building from POC principles allows:
 
 ```mermaid
 flowchart TB
-  n_019fee89_e615_7b66_b73a_3b99f7d92d4d["ADR-L-0006"]
+  n_019fee89_e615_7b66_b73a_3b99f7d92d4d["ADR-L-0006<br/>Rule Library Sub-Module with Cooperative Signals"]
   subgraph sg_capability["capability"]
-    n_019fee89_e615_7fef_a81d_ffbcc5c11de8["CAP-0010"]
-    n_019fee89_e615_7199_be3b_64c7a82f3c4c["CAP-0011"]
-    n_019fee89_e615_77b5_b73c_7db427c64a68["CAP-0012"]
-    n_019fee89_e615_7ce1_aa20_4b16a485eb1a["CAP-0013"]
+    n_019fee89_e615_7fef_a81d_ffbcc5c11de8["CAP-0010<br/>Signal Schema Authority"]
+    n_019fee89_e615_7199_be3b_64c7a82f3c4c["CAP-0011<br/>Signal Emission CLI"]
+    n_019fee89_e615_77b5_b73c_7db427c64a68["CAP-0012<br/>Rule Activation and Projection"]
+    n_019fee89_e615_7ce1_aa20_4b16a485eb1a["CAP-0013<br/>Submodule Bootstrap"]
   end
   subgraph sg_decision["decision"]
-    n_019fee89_e615_775e_8b3b_87bd8305b453["DEC-0011"]
-    n_019fee89_e615_7e63_a71d_04283e66cb51["DEC-0018"]
-    n_019fee89_e615_70ab_bf3d_3a9879ef1fa3["DEC-0025"]
-    n_019fee89_e615_7cbc_b53e_42784e9f3081["DEC-0031"]
-    n_019fee89_e615_7762_a91e_f7d5d71acc18["DEC-0034"]
+    n_019fee89_e615_775e_8b3b_87bd8305b453["DEC-0011<br/>Build from POC Principles"]
+    n_019fee89_e615_7e63_a71d_04283e66cb51["DEC-0018<br/>Cooperative Signals as First-Class"]
+    n_019fee89_e615_70ab_bf3d_3a9879ef1fa3["DEC-0025<br/>Prompt Translator Integration"]
+    n_019fee89_e615_7cbc_b53e_42784e9f3081["DEC-0031<br/>Standalone Repo, Submodule Consumption"]
+    n_019fee89_e615_7762_a91e_f7d5d71acc18["DEC-0034<br/>File-Based First, MCP Later"]
   end
   subgraph sg_invariant["invariant"]
     n_019fee89_e615_7688_953b_19e6aae687a4["INV-0033"]

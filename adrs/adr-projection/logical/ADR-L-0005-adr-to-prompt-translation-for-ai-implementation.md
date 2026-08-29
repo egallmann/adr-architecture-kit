@@ -5,8 +5,8 @@ artifact_kind: rendered_adr_markdown
 generator_id: adr-projection-markdown
 generator_version: 3
 hash_algorithm: sha256
-source_hash: fc664499fcc7a7d6171c0d7e2f63557823b3b690def7bd26dd3090bac0f53b69
-rendered_hash: 3beb4b1b321764b56bcfa5c47e3d38576858bdfdc9eb999a047a6f110849770e
+source_hash: 573de4bf494473d1b125ea487dfadda45db9623b30a24ade887fa7b26f292784
+rendered_hash: 3bde8fcfda4c065101413bb79d061ece60f9fc76eafdaa78be89d89744baee82
 -->
 
 # ADR-L-0005: ADR-to-Prompt Translation for AI Implementation
@@ -98,19 +98,19 @@ AI agents receive complete, accurate specifications.
 
 ```mermaid
 flowchart TB
-  n_019fee89_e615_73a3_8d31_7a4721affae9["ADR-L-0005"]
+  n_019fee89_e615_73a3_8d31_7a4721affae9["ADR-L-0005<br/>ADR-to-Prompt Translation for AI Implementation"]
   subgraph sg_capability["capability"]
-    n_019fee89_e615_7695_923e_7ae538b2d1d5["CAP-0008"]
-    n_019fee89_e615_76f9_9627_02674f7f34cc["CAP-0009"]
-    n_019fee89_e615_71de_ad3f_2d5d886efee2["CAP-0031"]
-    n_019fee89_e615_7c78_8337_ff658fd422f8["CAP-0032"]
-    n_019fee89_e615_7e34_900f_7e37891efa10["CAP-0033"]
+    n_019fee89_e615_7695_923e_7ae538b2d1d5["CAP-0008<br/>Multi-Agent Prompt Generation"]
+    n_019fee89_e615_76f9_9627_02674f7f34cc["CAP-0009<br/>Prompt Format Adaptation"]
+    n_019fee89_e615_71de_ad3f_2d5d886efee2["CAP-0031<br/>Parse Physical ADR Components"]
+    n_019fee89_e615_7c78_8337_ff658fd422f8["CAP-0032<br/>Generate Implementation Prompt"]
+    n_019fee89_e615_7e34_900f_7e37891efa10["CAP-0033<br/>Generate Validation Checklist"]
   end
   subgraph sg_decision["decision"]
-    n_019fee89_e615_71c4_b71d_61aed9baa000["DEC-0010"]
-    n_019fee89_e615_7102_8f0f_d4652f6da679["DEC-0017"]
-    n_019fee89_e615_76e9_973a_af0e2b391d35["DEC-0024"]
-    n_019fee89_e615_753d_8537_efcdb8369a99["DEC-0030"]
+    n_019fee89_e615_71c4_b71d_61aed9baa000["DEC-0010<br/>Create ADR-to-Prompt Translator"]
+    n_019fee89_e615_7102_8f0f_d4652f6da679["DEC-0017<br/>Generate Prompts Per Component"]
+    n_019fee89_e615_76e9_973a_af0e2b391d35["DEC-0024<br/>Include Validation Criteria in Prompts"]
+    n_019fee89_e615_753d_8537_efcdb8369a99["DEC-0030<br/>Support Multiple Target Agents"]
   end
   subgraph sg_invariant["invariant"]
     n_019fee89_e615_7e07_9f3f_9204fcab0da7["INV-0046"]
@@ -121,7 +121,7 @@ flowchart TB
     n_019fee89_e615_7603_ab3f_2ec4a655831c["INV-0051"]
   end
   subgraph sg_boundary["boundary"]
-    n_019fee89_e615_796d_a21f_4b1a70916550["BOUND-0004"]
+    n_019fee89_e615_796d_a21f_4b1a70916550["BOUND-0004<br/>Prompt Translator"]
   end
   subgraph sg_contract["contract"]
     n_019fee89_e615_7c3b_b907_7fbb48d31a2b["CONTRACT-0003"]
@@ -155,9 +155,9 @@ flowchart TB
 - `capability` CAP-0031 — Parse Physical ADR Components
 - `capability` CAP-0032 — Generate Implementation Prompt
 - `capability` CAP-0033 — Generate Validation Checklist
-- `contract` CONTRACT-0003 — 019fee89-e615-7c3b-b907-7fbb48d31a2b
-- `contract` CONTRACT-0004 — 019fee89-e615-70d5-ac2e-d1456d710acd
-- `contract` CONTRACT-0005 — 019fee89-e615-7827-a11b-5864ad24f136
+- `contract` CONTRACT-0003 — CONTRACT-0003
+- `contract` CONTRACT-0004 — CONTRACT-0004
+- `contract` CONTRACT-0005 — CONTRACT-0005
 - `decision` DEC-0010 — Create ADR-to-Prompt Translator
 - `decision` DEC-0017 — Generate Prompts Per Component
 - `decision` DEC-0024 — Include Validation Criteria in Prompts

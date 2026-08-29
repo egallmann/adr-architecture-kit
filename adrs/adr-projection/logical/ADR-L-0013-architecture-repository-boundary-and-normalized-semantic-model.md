@@ -5,8 +5,8 @@ artifact_kind: rendered_adr_markdown
 generator_id: adr-projection-markdown
 generator_version: 3
 hash_algorithm: sha256
-source_hash: c86b4a65234bd33f961aedd2fe205ee27a903df833f4b27bda0e8db88b8ede17
-rendered_hash: d6fd17e35974d20f8629937746e2b46dc9ba3e32d4f9dc2aef2c42739899ccf0
+source_hash: 817483827152d11a35271d76c15d80d9f2eaed6df725c22fed2a80b278ad433a
+rendered_hash: 554227474a28973c5127da9f52ff271372d1736a7c6889c99f0ab01987ade188
 -->
 
 # ADR-L-0013: Architecture Repository Boundary and Normalized Semantic Model
@@ -30,10 +30,10 @@ Logical architecture authority for this subject. Neighborhood paths use structur
 
 ```mermaid
 flowchart LR
-  n_019fee89_e616_7c4e_953c_b7349412a784["ADR-L-0013"]
-  n_019fee89_e616_7d30_ae2e_6fee1dbb2712["CAP-0044"]
-  n_019fee89_e617_7270_ab2f_58a756d2530e["ADR-PC-0001"]
-  n_019fee89_e617_76d8_a333_e21361cd6602["COMP-0010"]
+  n_019fee89_e616_7c4e_953c_b7349412a784["ADR-L-0013<br/>Architecture Repository Boundary and Normalized Semantic Model"]
+  n_019fee89_e616_7d30_ae2e_6fee1dbb2712["CAP-0044<br/>Cross-Language Runtime Ingestion Contract"]
+  n_019fee89_e617_7270_ab2f_58a756d2530e["ADR-PC-0001<br/>Entity Registry and Discovery Index"]
+  n_019fee89_e617_76d8_a333_e21361cd6602["COMP-0010<br/>Entity Registry Generator and Query Surface"]
   n_019fee89_e616_7d30_ae2e_6fee1dbb2712 -->|"declared_in"| n_019fee89_e616_7c4e_953c_b7349412a784
   n_019fee89_e617_76d8_a333_e21361cd6602 -->|"declared_in"| n_019fee89_e617_7270_ab2f_58a756d2530e
   n_019fee89_e616_7d30_ae2e_6fee1dbb2712 -->|"implemented_by"| n_019fee89_e617_76d8_a333_e21361cd6602
@@ -41,11 +41,11 @@ flowchart LR
 
 ```mermaid
 flowchart LR
-  n_019fee89_e616_7c4e_953c_b7349412a784["ADR-L-0013"]
-  n_019fee89_e618_73ce_aa2d_101276d64e33["ADR-PC-0004"]
-  n_019fee89_e618_74b2_a83e_e41c7d8c9f37["ADR-PC-0005"]
-  n_019fee89_e618_7b76_843f_cfe21ceb2ea6["ADR-PC-0003"]
-  n_019fee89_e618_7d04_9337_4aa2d3258507["ADR-PS-0002"]
+  n_019fee89_e616_7c4e_953c_b7349412a784["ADR-L-0013<br/>Architecture Repository Boundary and Normalized Semantic Model"]
+  n_019fee89_e618_73ce_aa2d_101276d64e33["ADR-PC-0004<br/>Repository Boundary and Normalized Semantic Model"]
+  n_019fee89_e618_74b2_a83e_e41c7d8c9f37["ADR-PC-0005<br/>Generated Artifact Integrity Validation"]
+  n_019fee89_e618_7b76_843f_cfe21ceb2ea6["ADR-PC-0003<br/>Compiler Pipeline and Driver"]
+  n_019fee89_e618_7d04_9337_4aa2d3258507["ADR-PS-0002<br/>ADR Kit Authoring Compiler and Validation System"]
   n_019fee89_e618_73ce_aa2d_101276d64e33 -->|"implements_logical"| n_019fee89_e616_7c4e_953c_b7349412a784
   n_019fee89_e618_74b2_a83e_e41c7d8c9f37 -->|"implements_logical"| n_019fee89_e616_7c4e_953c_b7349412a784
   n_019fee89_e618_7b76_843f_cfe21ceb2ea6 -->|"implements_logical"| n_019fee89_e616_7c4e_953c_b7349412a784
@@ -65,7 +65,7 @@ flowchart LR
 
 ### ADR-PC-0001 — Entity Registry and Discovery Index
 
-- CAP-0044 -[:implemented_by]-> COMP-0010 (peer ADR-PC-0001)
+- CAP-0044 -[:implemented_by]-> COMP-0010
 
 **Context:** The discovery/indexing component now centers on the unified compiler path. It
 generates the normalized discovery bundle under `adrs/index/`, emits the
@@ -77,7 +77,7 @@ operations over generated registry state.
 [Open projection](../physical-component/ADR-PC-0001-entity-registry-and-discovery-index.md)
 ### ADR-PC-0003 — Compiler Pipeline and Driver
 
-- ADR-PC-0003 -[:implements_logical]-> ADR-L-0013 (peer ADR-PC-0003)
+- ADR-PC-0003 -[:implements_logical]-> ADR-L-0013
 
 **Context:** The compiler driver and explicit pipeline now own deterministic architecture
 compilation across parse, analysis, emission, and recursive scope
@@ -88,7 +88,7 @@ internal reference implementation and are not a supported SDK facade.
 [Open projection](../physical-component/ADR-PC-0003-compiler-pipeline-and-driver.md)
 ### ADR-PC-0004 — Repository Boundary and Normalized Semantic Model
 
-- ADR-PC-0004 -[:implements_logical]-> ADR-L-0013 (peer ADR-PC-0004)
+- ADR-PC-0004 -[:implements_logical]-> ADR-L-0013
 
 **Context:** ArchitectureRepository and NormalizedArchitectureModel are the stable
 in-process semantic boundary for consumers. Phase 1 adds a narrow supported
@@ -98,7 +98,7 @@ normalized model and without making registry loaders or path helpers public.
 [Open projection](../physical-component/ADR-PC-0004-repository-boundary-and-normalized-semantic-model.md)
 ### ADR-PC-0005 — Generated Artifact Integrity Validation
 
-- ADR-PC-0005 -[:implements_logical]-> ADR-L-0013 (peer ADR-PC-0005)
+- ADR-PC-0005 -[:implements_logical]-> ADR-L-0013
 
 **Context:** Generated artifact integrity validation verifies freshness, tamper status,
 integrity headers, and scope-local generated outputs. It is a distinct public
@@ -107,7 +107,7 @@ subsystem used by validator and governance flows.
 [Open projection](../physical-component/ADR-PC-0005-generated-artifact-integrity-validation.md)
 ### ADR-PS-0002 — ADR Kit Authoring Compiler and Validation System
 
-- ADR-PS-0002 -[:implements_logical]-> ADR-L-0013 (peer ADR-PS-0002)
+- ADR-PS-0002 -[:implements_logical]-> ADR-L-0013
 
 **Context:** adr-architecture-kit operates as an authoring-time compiler and validation system rather
 than a collection of unrelated generators. The implementation includes an
@@ -162,23 +162,23 @@ call Python repository APIs.
 
 ```mermaid
 flowchart TB
-  n_019fee89_e616_7c4e_953c_b7349412a784["ADR-L-0013"]
+  n_019fee89_e616_7c4e_953c_b7349412a784["ADR-L-0013<br/>Architecture Repository Boundary and Normalized Semantic Model"]
   subgraph sg_capability["capability"]
-    n_019fee89_e616_7140_bb3f_8b78ab40d018["CAP-0039"]
-    n_019fee89_e616_7d30_ae2e_6fee1dbb2712["CAP-0044"]
-    n_019fee89_e616_73a1_9d27_96afd11520ad["CAP-0047"]
+    n_019fee89_e616_7140_bb3f_8b78ab40d018["CAP-0039<br/>Stable Repository Semantic Boundary"]
+    n_019fee89_e616_7d30_ae2e_6fee1dbb2712["CAP-0044<br/>Cross-Language Runtime Ingestion Contract"]
+    n_019fee89_e616_73a1_9d27_96afd11520ad["CAP-0047<br/>Narrow Supported Authoring SDK"]
   end
   subgraph sg_decision["decision"]
-    n_019fee89_e616_7c74_922b_f871dc663b59["DEC-0050"]
-    n_019fee89_e616_7da4_9e1f_eb49b97c42ca["DEC-0051"]
-    n_019fee89_e616_7b02_9c1e_5028e84c85e1["DEC-0052"]
-    n_019fee89_e616_7153_930f_595ce3d9f96d["DEC-0061"]
-    n_019fee89_e616_7340_a61b_57b9c79eca96["DEC-0062"]
-    n_019fee89_e616_755b_843e_689f9ffa2091["DEC-0067"]
-    n_019fee89_e616_77c3_9137_1750a4d9bca5["DEC-0068"]
-    n_019fee89_e616_7018_982f_d3d703f29db7["DEC-0079"]
-    n_019fee89_e616_7c36_b43f_6e4c45a4faf4["DEC-0080"]
-    n_019fee89_e616_7a7c_883f_b36edf94a1d8["DEC-0082"]
+    n_019fee89_e616_7c74_922b_f871dc663b59["DEC-0050<br/>Use ArchitectureRepository as the supported in-process semantic entry point with UUID, governed alias, and logical URI lookup"]
+    n_019fee89_e616_7da4_9e1f_eb49b97c42ca["DEC-0051<br/>Adopt NormalizedArchitectureModel 2.0 as the v1.3 repository semantic payload"]
+    n_019fee89_e616_7b02_9c1e_5028e84c85e1["DEC-0052<br/>Keep ArchModel compiler-internal and do not promote it to the public consumer API"]
+    n_019fee89_e616_7153_930f_595ce3d9f96d["DEC-0061<br/>Permit direct `adrs/index/*` consumption for cross-language or out-of-process consumers"]
+    n_019fee89_e616_7340_a61b_57b9c79eca96["DEC-0062<br/>Treat repository-backed graph access as the intended Python graph seam"]
+    n_019fee89_e616_755b_843e_689f9ffa2091["DEC-0067<br/>Define an index-first minimal runtime ingestion subset for cross-language architecture consumers"]
+    n_019fee89_e616_77c3_9137_1750a4d9bca5["DEC-0068<br/>Require cross-language runtime ingestion to remain index-first, manifest-aware, and additive-safe"]
+    n_019fee89_e616_7018_982f_d3d703f29db7["DEC-0079<br/>Preserve the present repository seam and defer any narrow consumer facade"]
+    n_019fee89_e616_7c36_b43f_6e4c45a4faf4["DEC-0080<br/>Establish adr_kit.api as the narrow supported authoring SDK facade"]
+    n_019fee89_e616_7a7c_883f_b36edf94a1d8["DEC-0082<br/>Keep repository-local authoring projections separate from workspace runtime state"]
   end
   subgraph sg_invariant["invariant"]
     n_019fee89_e616_72be_b22f_784bf7f19434["INV-0059"]

@@ -5,8 +5,8 @@ artifact_kind: rendered_adr_markdown
 generator_id: adr-projection-markdown
 generator_version: 3
 hash_algorithm: sha256
-source_hash: 0a296bf8b68b4882d89a4776ffad4d46a696f7691f25bdef492161d2b974f3a1
-rendered_hash: 4b0cac0c53da76b546b1d7e76a75790ea3723fd5887cd61410f7bf040d43eb04
+source_hash: 807237bf9f3067e723b17e18dcb6ad65f037f17e70293c113c3004376a2ee089
+rendered_hash: ffbc61c22567a1b56067a5a28d535e5d2093b2d720d4689707e57e4630f7a1b0
 -->
 
 # ADR-L-0004: ADR-to-Implementation Traceability via Decorators and Metadata Attribution
@@ -30,8 +30,8 @@ Logical architecture authority for this subject. Neighborhood paths use structur
 
 ```mermaid
 flowchart LR
-  n_019fee89_e615_7577_8d37_dd0df031bec9["ADR-L-0004"]
-  n_019ffdba_3c42_70da_b33d_efc003269c42["ADR-PC-0007"]
+  n_019fee89_e615_7577_8d37_dd0df031bec9["ADR-L-0004<br/>ADR-to-Implementation Traceability via Decorators and Metadata Attribution"]
+  n_019ffdba_3c42_70da_b33d_efc003269c42["ADR-PC-0007<br/>Semantic Attribution Embodiment"]
   n_019ffdba_3c42_70da_b33d_efc003269c42 -->|"implements_logical"| n_019fee89_e615_7577_8d37_dd0df031bec9
 ```
 
@@ -44,7 +44,7 @@ flowchart LR
 
 ### ADR-PC-0007 — Semantic Attribution Embodiment
 
-- ADR-PC-0007 -[:implements_logical]-> ADR-L-0004 (peer ADR-PC-0007)
+- ADR-PC-0007 -[:implements_logical]-> ADR-L-0004
 
 **Context:** Semantic attribution needs a kit-owned embodiment for vocabulary, evidence
 models, UUID decorators, standalone shims, architecture-aware validation,
@@ -127,20 +127,20 @@ current slice. That remains downstream work for ste-runtime / RECON.
 
 ```mermaid
 flowchart TB
-  n_019fee89_e615_7577_8d37_dd0df031bec9["ADR-L-0004"]
+  n_019fee89_e615_7577_8d37_dd0df031bec9["ADR-L-0004<br/>ADR-to-Implementation Traceability via Decorators and Metadata Attribution"]
   subgraph sg_capability["capability"]
-    n_019fee89_e615_7dd6_b137_8546c4e74c22["CAP-0021"]
-    n_019fee89_e615_7804_ad2e_184eeaf6ea0f["CAP-0024"]
-    n_019fee89_e615_7e73_a30e_6f029c9cb1b3["CAP-0027"]
-    n_019fee89_e615_7476_a31e_769637c9b7d1["CAP-0030"]
+    n_019fee89_e615_7dd6_b137_8546c4e74c22["CAP-0021<br/>Architecture Intent Attribution"]
+    n_019fee89_e615_7804_ad2e_184eeaf6ea0f["CAP-0024<br/>Bidirectional Traceability Verification"]
+    n_019fee89_e615_7e73_a30e_6f029c9cb1b3["CAP-0027<br/>Profile-Aware Legacy Onboarding for Intent Attribution"]
+    n_019fee89_e615_7476_a31e_769637c9b7d1["CAP-0030<br/>Implementation Attribution Evidence Handoff"]
   end
   subgraph sg_decision["decision"]
-    n_019fee89_e615_7e6c_8a2f_8bcd9c148dce["DEC-0009"]
-    n_019fee89_e615_727f_a31e_9b8f4c153dc3["DEC-0016"]
-    n_019fee89_e615_7a6b_843f_3cec701087f8["DEC-0023"]
-    n_019fee89_e615_7c19_b73f_0741bf060af1["DEC-0048"]
-    n_019fee89_e615_7cdd_ad21_34d0a44bec33["DEC-0049"]
-    n_019fee89_e615_7332_892e_e723d9f13237["DEC-0076"]
+    n_019fee89_e615_7e6c_8a2f_8bcd9c148dce["DEC-0009<br/>Adopt explicit architecture intent attribution for implementation artifacts"]
+    n_019fee89_e615_727f_a31e_9b8f4c153dc3["DEC-0016<br/>Stage downstream extraction and rule activation after ADR-Kit authority is defined"]
+    n_019fee89_e615_7a6b_843f_3cec701087f8["DEC-0023<br/>Support Bidirectional Verification"]
+    n_019fee89_e615_7c19_b73f_0741bf060af1["DEC-0048<br/>Define a compiler-owned implementation attribution evidence contract"]
+    n_019fee89_e615_7cdd_ad21_34d0a44bec33["DEC-0049<br/>Use existing contract profiles for legacy intent-attribution onboarding"]
+    n_019fee89_e615_7332_892e_e723d9f13237["DEC-0076<br/>Treat runtime-emitted implementation attribution as downstream evidence"]
   end
   subgraph sg_invariant["invariant"]
     n_019fee89_e615_7129_ac3e_8120e0d7c106["INV-0027"]

@@ -5,8 +5,8 @@ artifact_kind: rendered_adr_markdown
 generator_id: adr-projection-markdown
 generator_version: 3
 hash_algorithm: sha256
-source_hash: a1fc6112d4803bb8f0cf167ffe3677fbff02252be4b018f0a83c8e9cb95fc6a5
-rendered_hash: ba5bab76e1ea412e341a775d20afdcfe86a86b45ba7d40b0dd24203675f8bdd3
+source_hash: a47755c0f60726780062a31e855ce5f93f2d5cc317ecb3adcd22d0aa0867e11e
+rendered_hash: 995c1d81d8f466130ba5756f3d8c1e1abb5916aefb80c0f4335033b865d13c6a
 -->
 
 # ADR-L-0023: Consumer Semantic Extension Contract
@@ -57,16 +57,16 @@ creating a second graph or a schema-less metadata escape hatch.
 
 ```mermaid
 flowchart TB
-  n_01a00644_1bfc_7abc_8aaa_111111111111["ADR-L-0023"]
+  n_01a00644_1bfc_7abc_8aaa_111111111111["ADR-L-0023<br/>Consumer Semantic Extension Contract"]
   subgraph sg_decision["decision"]
-    n_01a00644_1bfd_7abc_8aaa_222222222222["DEC-0147"]
-    n_01a00644_1bfe_7abc_8aaa_333333333333["DEC-0148"]
-    n_01a00644_1bff_7abc_8aaa_444444444444["DEC-0149"]
-    n_01a00644_1c00_7abc_8aaa_555555555555["DEC-0150"]
-    n_01a00644_1c01_7abc_8aaa_666666666666["DEC-0151"]
-    n_01a00644_1c02_7abc_8aaa_777777777777["DEC-0152"]
-    n_01a00644_1c03_7abc_8aaa_888888888888["DEC-0153"]
-    n_01a00644_1c04_7abc_8aaa_999999999999["DEC-0154"]
+    n_01a00644_1bfd_7abc_8aaa_222222222222["DEC-0147<br/>Canonize the universal envelope while opening a qualified consumer semantic namespace"]
+    n_01a00644_1bfe_7abc_8aaa_333333333333["DEC-0148<br/>Author extensions through explicit extension_entities and extension_relationships sections"]
+    n_01a00644_1bff_7abc_8aaa_444444444444["DEC-0149<br/>Require consumer extension types to be qualified by the owning architecture namespace"]
+    n_01a00644_1c00_7abc_8aaa_555555555555["DEC-0150<br/>Bound extension properties to scalar JSON-like values and require rationale"]
+    n_01a00644_1c01_7abc_8aaa_666666666666["DEC-0151<br/>Require authored extension relationships for graph semantics"]
+    n_01a00644_1c02_7abc_8aaa_777777777777["DEC-0152<br/>Validate consumer-owned alias registrations without centralizing them in ADR-Kit"]
+    n_01a00644_1c03_7abc_8aaa_888888888888["DEC-0153<br/>Keep persisted canonical relationship identity mechanically distinct from hash compatibility projections"]
+    n_01a00644_1c04_7abc_8aaa_999999999999["DEC-0154<br/>Preserve every valid unknown extension through parse, compile, normalization, and repository loading"]
   end
   subgraph sg_invariant["invariant"]
     n_01a00644_1c05_7abc_8aaa_aaaaaaaaaaaa["INV-0141"]

@@ -5,8 +5,8 @@ artifact_kind: rendered_adr_markdown
 generator_id: adr-projection-markdown
 generator_version: 3
 hash_algorithm: sha256
-source_hash: 395b967dac914142c0dfc45edc608833680b301b0e36d618d48a7e528ceacd74
-rendered_hash: 84f15cf864b10b99e8e1fc4c0900eacdd15744add5ed7b06d0724a32b1786354
+source_hash: 289da6e6b4f061a9ad7225bb96e54a0842177af969a8614a84bb3c03f34278c7
+rendered_hash: 6a47c8dbb7c2772dd0d04f65f9208ef62509255b2f5952b59274de6471a4a055
 -->
 
 # ADR-L-0020: Semantic Implementation Attribution and Cross-Layer Architecture Relationships
@@ -30,9 +30,9 @@ Logical architecture authority for this subject. Neighborhood paths use structur
 
 ```mermaid
 flowchart LR
-  n_019fee89_e617_7d2b_8325_cd85ff814477["ADR-PC-0002"]
-  n_019ffdba_3c42_70da_b33d_efc003269c42["ADR-PC-0007"]
-  n_019ffdba_3c42_7c4a_a737_f6751a265d60["ADR-L-0020"]
+  n_019fee89_e617_7d2b_8325_cd85ff814477["ADR-PC-0002<br/>Schema and Contract Validation"]
+  n_019ffdba_3c42_70da_b33d_efc003269c42["ADR-PC-0007<br/>Semantic Attribution Embodiment"]
+  n_019ffdba_3c42_7c4a_a737_f6751a265d60["ADR-L-0020<br/>Semantic Implementation Attribution and Cross-Layer Architecture Relationships"]
   n_019fee89_e617_7d2b_8325_cd85ff814477 -->|"implements_logical"| n_019ffdba_3c42_7c4a_a737_f6751a265d60
   n_019ffdba_3c42_70da_b33d_efc003269c42 -->|"implements_logical"| n_019ffdba_3c42_7c4a_a737_f6751a265d60
 ```
@@ -47,7 +47,7 @@ flowchart LR
 
 ### ADR-PC-0002 — Schema and Contract Validation
 
-- ADR-PC-0002 -[:implements_logical]-> ADR-L-0020 (peer ADR-PC-0002)
+- ADR-PC-0002 -[:implements_logical]-> ADR-L-0020
 
 **Context:** Schema and contract validation is now a stable component boundary rather than
 a generic legacy physical slice. It validates canonical ADR structure,
@@ -57,7 +57,7 @@ attribution evidence. Validation of that evidence is structural for schema shape
 [Open projection](../physical-component/ADR-PC-0002-schema-and-contract-validation.md)
 ### ADR-PC-0007 — Semantic Attribution Embodiment
 
-- ADR-PC-0007 -[:implements_logical]-> ADR-L-0020 (peer ADR-PC-0007)
+- ADR-PC-0007 -[:implements_logical]-> ADR-L-0020
 
 **Context:** Semantic attribution needs a kit-owned embodiment for vocabulary, evidence
 models, UUID decorators, standalone shims, architecture-aware validation,
@@ -106,22 +106,22 @@ ceiling of validated derived evidence and is explicitly not admitted to the grap
 
 ```mermaid
 flowchart TB
-  n_019ffdba_3c42_7c4a_a737_f6751a265d60["ADR-L-0020"]
+  n_019ffdba_3c42_7c4a_a737_f6751a265d60["ADR-L-0020<br/>Semantic Implementation Attribution and Cross-Layer Architecture Relationships"]
   subgraph sg_capability["capability"]
-    n_019ffdba_3c42_7578_b43f_ad19109d59d9["CAP-0053"]
-    n_019ffdba_3c42_71ba_b81f_a2a24830abd6["CAP-0054"]
-    n_019ffdba_3c42_745c_9e37_85f7696cd43c["CAP-0055"]
+    n_019ffdba_3c42_7578_b43f_ad19109d59d9["CAP-0053<br/>Semantic Implementation Attribution"]
+    n_019ffdba_3c42_71ba_b81f_a2a24830abd6["CAP-0054<br/>Repository-Aware Attribution Normalization"]
+    n_019ffdba_3c42_745c_9e37_85f7696cd43c["CAP-0055<br/>Unique-Link Attribution Coverage"]
   end
   subgraph sg_decision["decision"]
-    n_019ffdba_3c42_700c_ac3f_8135e0139dfb["DEC-0116"]
-    n_019ffdba_3c42_73c1_b11c_d0a177cd522b["DEC-0117"]
-    n_019ffdba_3c42_7f40_b339_204a447bec81["DEC-0118"]
-    n_019ffdba_3c42_7751_a81c_d738f411b299["DEC-0119"]
-    n_019ffdba_3c42_7282_931f_92503f4079cb["DEC-0120"]
-    n_019ffdba_3c42_705f_9935_76ed45c32cd7["DEC-0121"]
-    n_019ffdba_3c42_7690_8f1b_ad8deaeed484["DEC-0122"]
-    n_019ffdba_3c42_7304_ab2f_bcd01cc6f9d3["DEC-0123"]
-    n_019ffdba_3c42_729a_a83f_a40c53d278fd["DEC-0124"]
+    n_019ffdba_3c42_700c_ac3f_8135e0139dfb["DEC-0116<br/>Canonical v1.5 claims require relationship, target UUID, and confidence"]
+    n_019ffdba_3c42_73c1_b11c_d0a177cd522b["DEC-0117<br/>Raw evidence must not require target entity type"]
+    n_019ffdba_3c42_7f40_b339_204a447bec81["DEC-0118<br/>Apply the attribution matrix to repository-resolved entity type"]
+    n_019ffdba_3c42_7751_a81c_d738f411b299["DEC-0119<br/>Evidence claim verbs are not architecture relationship types"]
+    n_019ffdba_3c42_7282_931f_92503f4079cb["DEC-0120<br/>Legacy 1.0/1.2 evidence normalizes only with architecture state"]
+    n_019ffdba_3c42_705f_9935_76ed45c32cd7["DEC-0121<br/>Canonical output order is deterministic and idempotent"]
+    n_019ffdba_3c42_7690_8f1b_ad8deaeed484["DEC-0122<br/>Duplicate semantic claims follow provenance-aware fail-closed rules"]
+    n_019ffdba_3c42_7304_ab2f_bcd01cc6f9d3["DEC-0123<br/>Coverage distinguishes unique semantic links from evidence occurrence"]
+    n_019ffdba_3c42_729a_a83f_a40c53d278fd["DEC-0124<br/>Extractors and legacy decorators must not load architecture state"]
   end
   subgraph sg_invariant["invariant"]
     n_019ffdba_3c42_7cbe_a121_06d3437129ed["INV-0103"]

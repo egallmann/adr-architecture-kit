@@ -5,8 +5,8 @@ artifact_kind: rendered_adr_markdown
 generator_id: adr-projection-markdown
 generator_version: 3
 hash_algorithm: sha256
-source_hash: acdbe79549cd7c113726f18050656c587fb785958b85fc21fcdbd96770fe1195
-rendered_hash: 52309e50a1712625c61993ec546214d9dc4d391c025e861eb3b8594c2cb8c71f
+source_hash: adb4222b92be7ad398e641138fd9198bbbbc367fbd1e6d57257ec0252216d55b
+rendered_hash: d4c6b99d8fa15ad4f9a060af330fa31f2a171d7872898d8b52d54d3dace85441
 -->
 
 # ADR-PS-0001: ADR Architecture Kit Discovery and Indexing System
@@ -30,10 +30,10 @@ Physical-system membership is `composed_of` from the system entity to admitted c
 
 ```mermaid
 flowchart LR
-  n_019fee89_e616_7c4e_953c_b7349412a784["ADR-L-0013"]
-  n_019fee89_e616_7d30_ae2e_6fee1dbb2712["CAP-0044"]
-  n_019fee89_e617_7270_ab2f_58a756d2530e["ADR-PC-0001"]
-  n_019fee89_e617_76d8_a333_e21361cd6602["COMP-0010"]
+  n_019fee89_e616_7c4e_953c_b7349412a784["ADR-L-0013<br/>Architecture Repository Boundary and Normalized Semantic Model"]
+  n_019fee89_e616_7d30_ae2e_6fee1dbb2712["CAP-0044<br/>Cross-Language Runtime Ingestion Contract"]
+  n_019fee89_e617_7270_ab2f_58a756d2530e["ADR-PC-0001<br/>Entity Registry and Discovery Index"]
+  n_019fee89_e617_76d8_a333_e21361cd6602["COMP-0010<br/>Entity Registry Generator and Query Surface"]
   n_019fee89_e616_7d30_ae2e_6fee1dbb2712 -->|"declared_in"| n_019fee89_e616_7c4e_953c_b7349412a784
   n_019fee89_e617_76d8_a333_e21361cd6602 -->|"declared_in"| n_019fee89_e617_7270_ab2f_58a756d2530e
   n_019fee89_e616_7d30_ae2e_6fee1dbb2712 -->|"implemented_by"| n_019fee89_e617_76d8_a333_e21361cd6602
@@ -41,10 +41,10 @@ flowchart LR
 
 ```mermaid
 flowchart LR
-  n_019fee89_e615_7f19_810b_c7b33a9d9e0d["ADR-L-0002"]
-  n_019fee89_e616_744f_b63e_5ecddf344faa["ADR-L-0012"]
-  n_019fee89_e616_770c_a025_2c241a720730["ADR-L-0009"]
-  n_019fee89_e618_7b3e_813b_a449881b6adb["ADR-PS-0001"]
+  n_019fee89_e615_7f19_810b_c7b33a9d9e0d["ADR-L-0002<br/>Multi-Scope ADR Architecture for Sub-Module Development"]
+  n_019fee89_e616_744f_b63e_5ecddf344faa["ADR-L-0012<br/>Federation Authority and Qualified Identity Model"]
+  n_019fee89_e616_770c_a025_2c241a720730["ADR-L-0009<br/>Derived Architecture Discovery Surfaces"]
+  n_019fee89_e618_7b3e_813b_a449881b6adb["ADR-PS-0001<br/>ADR Architecture Kit Discovery and Indexing System"]
   n_019fee89_e618_7b3e_813b_a449881b6adb -->|"implements_logical"| n_019fee89_e615_7f19_810b_c7b33a9d9e0d
   n_019fee89_e618_7b3e_813b_a449881b6adb -->|"implements_logical"| n_019fee89_e616_744f_b63e_5ecddf344faa
   n_019fee89_e618_7b3e_813b_a449881b6adb -->|"implements_logical"| n_019fee89_e616_770c_a025_2c241a720730
@@ -52,9 +52,9 @@ flowchart LR
 
 ```mermaid
 flowchart LR
-  n_019fee89_e617_70e7_bb17_27b693ad01a8["IFACE-0011"]
-  n_019fee89_e617_7270_ab2f_58a756d2530e["ADR-PC-0001"]
-  n_019fee89_e617_76d8_a333_e21361cd6602["COMP-0010"]
+  n_019fee89_e617_70e7_bb17_27b693ad01a8["IFACE-0011<br/>CLI"]
+  n_019fee89_e617_7270_ab2f_58a756d2530e["ADR-PC-0001<br/>Entity Registry and Discovery Index"]
+  n_019fee89_e617_76d8_a333_e21361cd6602["COMP-0010<br/>Entity Registry Generator and Query Surface"]
   n_019fee89_e617_70e7_bb17_27b693ad01a8 -->|"declared_in"| n_019fee89_e617_7270_ab2f_58a756d2530e
   n_019fee89_e617_76d8_a333_e21361cd6602 -->|"declared_in"| n_019fee89_e617_7270_ab2f_58a756d2530e
   n_019fee89_e617_76d8_a333_e21361cd6602 -->|"provides_interface"| n_019fee89_e617_70e7_bb17_27b693ad01a8
@@ -73,7 +73,7 @@ flowchart LR
 
 ### ADR-L-0002 — Multi-Scope ADR Architecture for Sub-Module Development
 
-- ADR-PS-0001 -[:implements_logical]-> ADR-L-0002 (peer ADR-L-0002)
+- ADR-PS-0001 -[:implements_logical]-> ADR-L-0002
 
 **Context:** The adr-architecture-kit is being actively developed in a single workspace alongside
 multiple sub-modules (ste-runtime, future services) that will eventually become
@@ -83,7 +83,7 @@ architectural documentation while being developed in parallel within the monorep
 [Open projection](../logical/ADR-L-0002-multi-scope-adr-architecture-for-sub-module-development.md)
 ### ADR-L-0009 — Derived Architecture Discovery Surfaces
 
-- ADR-PS-0001 -[:implements_logical]-> ADR-L-0009 (peer ADR-L-0009)
+- ADR-PS-0001 -[:implements_logical]-> ADR-L-0009
 
 **Context:** adr-architecture-kit is primarily machine-facing tooling used by agents to
 reason over canonical architecture artifacts. Relying on agents to scan raw
@@ -94,7 +94,7 @@ and derived from canonical authority.
 [Open projection](../logical/ADR-L-0009-derived-architecture-discovery-surfaces.md)
 ### ADR-L-0012 — Federation Authority and Qualified Identity Model
 
-- ADR-PS-0001 -[:implements_logical]-> ADR-L-0012 (peer ADR-L-0012)
+- ADR-PS-0001 -[:implements_logical]-> ADR-L-0012
 
 **Context:** The compiler and recursive multi-scope model preserve repository-local
 compilation boundaries, while STE federation spans independently compiled
@@ -105,7 +105,7 @@ repository state.
 [Open projection](../logical/ADR-L-0012-federation-authority-and-qualified-identity-model.md)
 ### ADR-L-0013 — Architecture Repository Boundary and Normalized Semantic Model
 
-- CAP-0044 -[:implemented_by]-> COMP-0010 (peer ADR-L-0013)
+- CAP-0044 -[:implemented_by]-> COMP-0010
 
 **Context:** adr-architecture-kit now has an explicit compiler pipeline, a compiler IR
 (`ArchModel`), compiled registry bundles, and an additive architecture graph.
@@ -117,7 +117,7 @@ expanding the normalized model or exposing compiler internals.
 [Open projection](../logical/ADR-L-0013-architecture-repository-boundary-and-normalized-semantic-model.md)
 ### ADR-PC-0001 — Entity Registry and Discovery Index
 
-- COMP-0010 -[:provides_interface]-> IFACE-0011 (peer ADR-PC-0001)
+- COMP-0010 -[:provides_interface]-> IFACE-0011
 
 **Context:** The discovery/indexing component now centers on the unified compiler path. It
 generates the normalized discovery bundle under `adrs/index/`, emits the

@@ -5,8 +5,8 @@ artifact_kind: rendered_adr_markdown
 generator_id: adr-projection-markdown
 generator_version: 3
 hash_algorithm: sha256
-source_hash: 1b013284d595b0f25999514a81b1c3f7890522c3f226df528d5f222ec3b509ab
-rendered_hash: 8382d0a0b55f26693cf33c254687c3bd5e047339da6681d139e2187a45ffaae5
+source_hash: a3fa8b82d3354b0a4161df4695e76c8013769897ae0af790a82f7eb79d7458e6
+rendered_hash: f2cf1c5cc8c0941620bcd0bfcb20e2b3a5766d6813ebb4ac42ae1ccb351f47be
 -->
 
 # ADR-L-0007: Deterministic Documentation Projection
@@ -29,10 +29,10 @@ Logical architecture authority for this subject. Neighborhood paths use structur
 
 ```mermaid
 flowchart LR
-  n_019fee89_e615_7b9c_8e3f_32ceeda01491["ADR-L-0007"]
-  n_019fee89_e618_74b2_a83e_e41c7d8c9f37["ADR-PC-0005"]
-  n_019fee89_e618_7b76_843f_cfe21ceb2ea6["ADR-PC-0003"]
-  n_019fee89_e618_7d04_9337_4aa2d3258507["ADR-PS-0002"]
+  n_019fee89_e615_7b9c_8e3f_32ceeda01491["ADR-L-0007<br/>Deterministic Documentation Projection"]
+  n_019fee89_e618_74b2_a83e_e41c7d8c9f37["ADR-PC-0005<br/>Generated Artifact Integrity Validation"]
+  n_019fee89_e618_7b76_843f_cfe21ceb2ea6["ADR-PC-0003<br/>Compiler Pipeline and Driver"]
+  n_019fee89_e618_7d04_9337_4aa2d3258507["ADR-PS-0002<br/>ADR Kit Authoring Compiler and Validation System"]
   n_019fee89_e618_74b2_a83e_e41c7d8c9f37 -->|"implements_logical"| n_019fee89_e615_7b9c_8e3f_32ceeda01491
   n_019fee89_e618_7b76_843f_cfe21ceb2ea6 -->|"implements_logical"| n_019fee89_e615_7b9c_8e3f_32ceeda01491
   n_019fee89_e618_7d04_9337_4aa2d3258507 -->|"implements_logical"| n_019fee89_e615_7b9c_8e3f_32ceeda01491
@@ -49,7 +49,7 @@ flowchart LR
 
 ### ADR-PC-0003 — Compiler Pipeline and Driver
 
-- ADR-PC-0003 -[:implements_logical]-> ADR-L-0007 (peer ADR-PC-0003)
+- ADR-PC-0003 -[:implements_logical]-> ADR-L-0007
 
 **Context:** The compiler driver and explicit pipeline now own deterministic architecture
 compilation across parse, analysis, emission, and recursive scope
@@ -60,7 +60,7 @@ internal reference implementation and are not a supported SDK facade.
 [Open projection](../physical-component/ADR-PC-0003-compiler-pipeline-and-driver.md)
 ### ADR-PC-0005 — Generated Artifact Integrity Validation
 
-- ADR-PC-0005 -[:implements_logical]-> ADR-L-0007 (peer ADR-PC-0005)
+- ADR-PC-0005 -[:implements_logical]-> ADR-L-0007
 
 **Context:** Generated artifact integrity validation verifies freshness, tamper status,
 integrity headers, and scope-local generated outputs. It is a distinct public
@@ -69,7 +69,7 @@ subsystem used by validator and governance flows.
 [Open projection](../physical-component/ADR-PC-0005-generated-artifact-integrity-validation.md)
 ### ADR-PS-0002 — ADR Kit Authoring Compiler and Validation System
 
-- ADR-PS-0002 -[:implements_logical]-> ADR-L-0007 (peer ADR-PS-0002)
+- ADR-PS-0002 -[:implements_logical]-> ADR-L-0007
 
 **Context:** adr-architecture-kit operates as an authoring-time compiler and validation system rather
 than a collection of unrelated generators. The implementation includes an
@@ -128,23 +128,23 @@ must be enforced through generators, validators, tests, and CI.
 
 ```mermaid
 flowchart TB
-  n_019fee89_e615_7b9c_8e3f_32ceeda01491["ADR-L-0007"]
+  n_019fee89_e615_7b9c_8e3f_32ceeda01491["ADR-L-0007<br/>Deterministic Documentation Projection"]
   subgraph sg_capability["capability"]
-    n_019fee89_e615_7564_933f_0bb0cbbcf41b["CAP-0014"]
+    n_019fee89_e615_7564_933f_0bb0cbbcf41b["CAP-0014<br/>Deterministic Documentation Projection"]
   end
   subgraph sg_decision["decision"]
-    n_019fee89_e615_758b_b03f_e4a3dc338589["DEC-0012"]
-    n_019fee89_e615_7e55_972f_14dd7da851c0["DEC-0019"]
-    n_019fee89_e615_796c_ae1d_a27f1fff021b["DEC-0026"]
-    n_019ff142_dd48_72ff_9e3f_81ca4a779db7["DEC-0108"]
-    n_019ff142_dd48_7ef8_8d3e_576f4bb02dc3["DEC-0109"]
-    n_019ff22a_bb5f_7bfc_851d_938bffc81281["DEC-0110"]
-    n_019ff22a_bb5f_7214_8818_40820f8c553e["DEC-0111"]
-    n_019ff22a_bb5f_7d9e_973f_b9008898a8c9["DEC-0112"]
-    n_019ff22a_bb5f_76eb_8a31_546eeba55dcb["DEC-0113"]
-    n_019ff22a_bb5f_77ed_a63f_98f0455fdd1e["DEC-0114"]
-    n_019ff22a_bb5f_7926_a33c_b66f72343219["DEC-0115"]
-    n_01a048f5_b197_75ab_a812_6e3361333731["DEC-0176"]
+    n_019fee89_e615_758b_b03f_e4a3dc338589["DEC-0012<br/>Treat human-readable architecture documentation as deterministic derived state"]
+    n_019fee89_e615_7e55_972f_14dd7da851c0["DEC-0019<br/>Prohibit manual edits to generated documentation"]
+    n_019fee89_e615_796c_ae1d_a27f1fff021b["DEC-0026<br/>Require generator, validator, test, and CI enforcement for documentation projection"]
+    n_019ff142_dd48_72ff_9e3f_81ca4a779db7["DEC-0108<br/>Emit ADR human projections under typed adr-projection paths with stable SDK artifact identity"]
+    n_019ff142_dd48_7ef8_8d3e_576f4bb02dc3["DEC-0109<br/>Human ADR projections render compiler-derived relationship semantics only"]
+    n_019ff22a_bb5f_7bfc_851d_938bffc81281["DEC-0110<br/>Classify documentation-projection inputs as derived facts or authored orientation"]
+    n_019ff22a_bb5f_7214_8818_40820f8c553e["DEC-0111<br/>Allow a deterministic semantic intermediate model for documentation projection"]
+    n_019ff22a_bb5f_7d9e_973f_b9008898a8c9["DEC-0112<br/>Require projection-source closure for generated documentation freshness"]
+    n_019ff22a_bb5f_76eb_8a31_546eeba55dcb["DEC-0113<br/>Documentation projections reflect supported boundaries without redefining them"]
+    n_019ff22a_bb5f_77ed_a63f_98f0455fdd1e["DEC-0114<br/>Isolate repository-specific documentation-projection orientation by scope"]
+    n_019ff22a_bb5f_7926_a33c_b66f72343219["DEC-0115<br/>Preserve legacy generic SYSTEM-OVERVIEW generation as compatibility-only"]
+    n_01a048f5_b197_75ab_a812_6e3361333731["DEC-0176<br/>Encode projection v3 renderer contract for normalized v2.2 topology semantics"]
   end
   subgraph sg_invariant["invariant"]
     n_019fee89_e616_7bf6_a63f_2fdbec175790["INV-0037"]

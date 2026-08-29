@@ -5,8 +5,8 @@ artifact_kind: rendered_adr_markdown
 generator_id: adr-projection-markdown
 generator_version: 3
 hash_algorithm: sha256
-source_hash: 9d40ab2adffe4578075fa06c77b643cc7e77ba8a8349e3a64627ba6be0550053
-rendered_hash: c6a567d50ae5ebcaabb45a6f429048e7ebba83645d4ba16fd3c47ce4322be683
+source_hash: e049f65af1b21e76ff27ed9e4f1b76cf09c014de15f333a7665bc6d1b9363287
+rendered_hash: c7295b9f1801b986538639c6382b3dad594be287a32d935a1eb70dc4cb713546
 -->
 
 # ADR-L-0018: Schema v1.2 and Normalized Semantic Foundation
@@ -78,21 +78,21 @@ transitions into the v1.3/model-2.0 compatibility event.
 
 ```mermaid
 flowchart TB
-  n_019fee89_e617_7f4d_811d_4862645a55c5["ADR-L-0018"]
+  n_019fee89_e617_7f4d_811d_4862645a55c5["ADR-L-0018<br/>Schema v1.2 and Normalized Semantic Foundation"]
   subgraph sg_capability["capability"]
-    n_019fee89_e617_710a_b91f_e749ebab9a95["CAP-0048"]
-    n_019fee89_e617_7fcb_b717_247f38d13206["CAP-0049"]
-    n_019fee89_e617_74cd_9331_2954d78dccf3["CAP-0050"]
-    n_019fee89_e617_7ac8_803e_e3514c4e329a["CAP-0051"]
-    n_019fee89_e617_7bff_b43f_2fae0178d1be["CAP-0052"]
+    n_019fee89_e617_710a_b91f_e749ebab9a95["CAP-0048<br/>Additive ADR Schema v1.2 Authoring"]
+    n_019fee89_e617_7fcb_b717_247f38d13206["CAP-0049<br/>Expanded Normalized Semantic Model"]
+    n_019fee89_e617_74cd_9331_2954d78dccf3["CAP-0050<br/>Bind-Only External Authority Contracts"]
+    n_019fee89_e617_7ac8_803e_e3514c4e329a["CAP-0051<br/>Stable Physical Topology Identity Migration"]
+    n_019fee89_e617_7bff_b43f_2fae0178d1be["CAP-0052<br/>Governed Alias Allocation and UUID Integrity"]
   end
   subgraph sg_decision["decision"]
-    n_019fee89_e617_7736_a637_e6e472c4d4e6["DEC-0083"]
-    n_019fee89_e617_7c51_b52d_b348897b7c3d["DEC-0084"]
-    n_019fee89_e617_7727_a81f_08c3a998a85c["DEC-0085"]
-    n_019fee89_e617_7bd0_9d3c_066089251acd["DEC-0086"]
-    n_019fee89_e617_7f8c_813f_95975602bd7d["DEC-0087"]
-    n_019fee89_e617_7a8f_823b_debcf147e747["DEC-0088"]
+    n_019fee89_e617_7736_a637_e6e472c4d4e6["DEC-0083<br/>Introduce provisional additive ADR authoring schema v1.2"]
+    n_019fee89_e617_7c51_b52d_b348897b7c3d["DEC-0084<br/>Represent external bindings as architecture_namespace + UUID references with canonical fingerprint comparability"]
+    n_019fee89_e617_7727_a81f_08c3a998a85c["DEC-0085<br/>Retain Phase-2 normalized model 1.1 promotion history and admit model 2.0 as the v1.3 compatibility event"]
+    n_019fee89_e617_7bd0_9d3c_066089251acd["DEC-0086<br/>Add deterministic source-sensitive assertion identity without replacing relationship identity"]
+    n_019fee89_e617_7f8c_813f_95975602bd7d["DEC-0087<br/>Add optional stable topology IDs and deterministic dry-run-first migration"]
+    n_019fee89_e617_7a8f_823b_debcf147e747["DEC-0088<br/>Split UUID integrity corruption (fail closed) from governed alias collision repair"]
   end
   subgraph sg_invariant["invariant"]
     n_019fee89_e617_7aef_9f37_6e9c557332b3["INV-0077"]
@@ -129,7 +129,6 @@ flowchart TB
 - `decision` DEC-0083 — Introduce provisional additive ADR authoring schema v1.2
 - `decision` DEC-0084 — Represent external bindings as architecture_namespace + UUID references with canonical fingerprint comparability
 - `decision` DEC-0085 — Retain Phase-2 normalized model 1.1 promotion history and admit model 2.0 as the v1.3 compatibility event
-
 - `decision` DEC-0086 — Add deterministic source-sensitive assertion identity without replacing relationship identity
 - `decision` DEC-0087 — Add optional stable topology IDs and deterministic dry-run-first migration
 - `decision` DEC-0088 — Split UUID integrity corruption (fail closed) from governed alias collision repair

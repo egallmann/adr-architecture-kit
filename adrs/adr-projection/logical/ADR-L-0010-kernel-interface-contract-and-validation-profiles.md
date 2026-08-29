@@ -5,8 +5,8 @@ artifact_kind: rendered_adr_markdown
 generator_id: adr-projection-markdown
 generator_version: 3
 hash_algorithm: sha256
-source_hash: 4ccfa956c98e38d9f16c9ff9b0f6c3b6d0d4d30e6e48601e3403b7ed9fc7b0a4
-rendered_hash: 2dccd7552bd0bfd664f47f46c86795d2d2cf359352549131484b933daf6d56b3
+source_hash: 8f66930478217914040644e4b7d3c19b717a9ea67637107b0df33d0e4537cdaf
+rendered_hash: 4f9296cb137fe7260f7a8bb3d515713e509f429d5b071e2f1df9e46778e87e41
 -->
 
 # ADR-L-0010: Kernel Interface Contract and Validation Profiles
@@ -29,9 +29,9 @@ Logical architecture authority for this subject. Neighborhood paths use structur
 
 ```mermaid
 flowchart LR
-  n_019fee89_e616_7d61_8e35_f11ba2ddd75d["ADR-L-0010"]
-  n_019fee89_e617_7d2b_8325_cd85ff814477["ADR-PC-0002"]
-  n_019fee89_e618_7d04_9337_4aa2d3258507["ADR-PS-0002"]
+  n_019fee89_e616_7d61_8e35_f11ba2ddd75d["ADR-L-0010<br/>Kernel Interface Contract and Validation Profiles"]
+  n_019fee89_e617_7d2b_8325_cd85ff814477["ADR-PC-0002<br/>Schema and Contract Validation"]
+  n_019fee89_e618_7d04_9337_4aa2d3258507["ADR-PS-0002<br/>ADR Kit Authoring Compiler and Validation System"]
   n_019fee89_e617_7d2b_8325_cd85ff814477 -->|"implements_logical"| n_019fee89_e616_7d61_8e35_f11ba2ddd75d
   n_019fee89_e618_7d04_9337_4aa2d3258507 -->|"implements_logical"| n_019fee89_e616_7d61_8e35_f11ba2ddd75d
 ```
@@ -46,7 +46,7 @@ flowchart LR
 
 ### ADR-PC-0002 — Schema and Contract Validation
 
-- ADR-PC-0002 -[:implements_logical]-> ADR-L-0010 (peer ADR-PC-0002)
+- ADR-PC-0002 -[:implements_logical]-> ADR-L-0010
 
 **Context:** Schema and contract validation is now a stable component boundary rather than
 a generic legacy physical slice. It validates canonical ADR structure,
@@ -56,7 +56,7 @@ attribution evidence. Validation of that evidence is structural for schema shape
 [Open projection](../physical-component/ADR-PC-0002-schema-and-contract-validation.md)
 ### ADR-PS-0002 — ADR Kit Authoring Compiler and Validation System
 
-- ADR-PS-0002 -[:implements_logical]-> ADR-L-0010 (peer ADR-PS-0002)
+- ADR-PS-0002 -[:implements_logical]-> ADR-L-0010
 
 **Context:** adr-architecture-kit operates as an authoring-time compiler and validation system rather
 than a collection of unrelated generators. The implementation includes an
@@ -107,19 +107,19 @@ What is needed is a formal contract ADR that defines:
 
 ```mermaid
 flowchart TB
-  n_019fee89_e616_7d61_8e35_f11ba2ddd75d["ADR-L-0010"]
+  n_019fee89_e616_7d61_8e35_f11ba2ddd75d["ADR-L-0010<br/>Kernel Interface Contract and Validation Profiles"]
   subgraph sg_capability["capability"]
-    n_019fee89_e616_718c_8f1f_c75e9bc215bc["CAP-0034"]
-    n_019fee89_e616_7ca5_af3e_0dcd80fe2f9f["CAP-0035"]
+    n_019fee89_e616_718c_8f1f_c75e9bc215bc["CAP-0034<br/>Profile-Aware Contract Validation"]
+    n_019fee89_e616_7ca5_af3e_0dcd80fe2f9f["CAP-0035<br/>Production-Safe Kernel Admission"]
   end
   subgraph sg_decision["decision"]
-    n_019fee89_e616_79ec_9432_43a1c8ecc104["DEC-0036"]
-    n_019fee89_e616_73b2_9139_746451998656["DEC-0037"]
-    n_019fee89_e616_75b8_ba2f_700f93515f95["DEC-0038"]
-    n_019fee89_e616_7469_aa0f_66411a33dc10["DEC-0039"]
-    n_019fee89_e616_7e82_8a0f_2c4c6bd0c326["DEC-0044"]
-    n_019fee89_e616_735c_bd3d_c9e51b259031["DEC-0059"]
-    n_019fee89_e616_793e_9b16_ae66725cf5ec["DEC-0060"]
+    n_019fee89_e616_79ec_9432_43a1c8ecc104["DEC-0036<br/>Use the indexed compiler bundle as the contract surface, with four core artifacts as the minimal kernel load subset"]
+    n_019fee89_e616_73b2_9139_746451998656["DEC-0037<br/>Treat the compiler-kernel contract as pre-stable 0.x until intentionally frozen"]
+    n_019fee89_e616_75b8_ba2f_700f93515f95["DEC-0038<br/>Validate compiled output through explicit greenfield, brownfield, and migration profiles"]
+    n_019fee89_e616_7469_aa0f_66411a33dc10["DEC-0039<br/>Classify sentinel-backed bundles as sentinel compliant rather than compliant"]
+    n_019fee89_e616_7e82_8a0f_2c4c6bd0c326["DEC-0044<br/>Promote the contract to 1.0 only through an explicit readiness gate"]
+    n_019fee89_e616_735c_bd3d_c9e51b259031["DEC-0059<br/>Treat all `adrs/index/*` artifacts and `manifest.yaml` as the guaranteed contract family"]
+    n_019fee89_e616_793e_9b16_ae66725cf5ec["DEC-0060<br/>Treat `architecture-graph.yaml` as an additive indexed artifact rather than a second architecture authority"]
   end
   subgraph sg_invariant["invariant"]
     n_019fee89_e616_7522_9b1f_8befdee2cbf5["INV-0052"]

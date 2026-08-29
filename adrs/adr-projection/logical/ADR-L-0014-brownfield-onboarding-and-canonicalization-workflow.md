@@ -5,8 +5,8 @@ artifact_kind: rendered_adr_markdown
 generator_id: adr-projection-markdown
 generator_version: 3
 hash_algorithm: sha256
-source_hash: 1a3745e1f540d0607587c3d9755ba95bac4b3d17382e672b6b153e987c710162
-rendered_hash: b557f5831562c57ec972f47765b364864e5b559b0ba0e55db540fbb5dac457fa
+source_hash: 5f30ae93e0b8f5421a063dfe4b67ef7c8147725d2744a7116486f93c7119f2a3
+rendered_hash: b9fff6adeed182e491ca2721d5a98e54133e04dc59f6503964104c951059135d
 -->
 
 # ADR-L-0014: Brownfield Onboarding and Canonicalization Workflow
@@ -29,8 +29,8 @@ Logical architecture authority for this subject. Neighborhood paths use structur
 
 ```mermaid
 flowchart LR
-  n_019fee89_e616_7628_913b_a059c1057c36["ADR-L-0014"]
-  n_019fee89_e618_7787_b43f_a3e5cb264dd5["ADR-PC-0006"]
+  n_019fee89_e616_7628_913b_a059c1057c36["ADR-L-0014<br/>Brownfield Onboarding and Canonicalization Workflow"]
+  n_019fee89_e618_7787_b43f_a3e5cb264dd5["ADR-PC-0006<br/>Brownfield Onboarding and Canonical Normalization"]
   n_019fee89_e618_7787_b43f_a3e5cb264dd5 -->|"implements_logical"| n_019fee89_e616_7628_913b_a059c1057c36
 ```
 
@@ -43,7 +43,7 @@ flowchart LR
 
 ### ADR-PC-0006 — Brownfield Onboarding and Canonical Normalization
 
-- ADR-PC-0006 -[:implements_logical]-> ADR-L-0014 (peer ADR-PC-0006)
+- ADR-PC-0006 -[:implements_logical]-> ADR-L-0014
 
 **Context:** adr-architecture-kit already includes migration and normalization behavior in
 its migrator and CLI surfaces. This component makes brownfield onboarding and
@@ -80,16 +80,16 @@ migration as a first-class STE workflow rather than an ad hoc repair pass.
 
 ```mermaid
 flowchart TB
-  n_019fee89_e616_7628_913b_a059c1057c36["ADR-L-0014"]
+  n_019fee89_e616_7628_913b_a059c1057c36["ADR-L-0014<br/>Brownfield Onboarding and Canonicalization Workflow"]
   subgraph sg_capability["capability"]
-    n_019fee89_e616_74f9_813b_7610fca4342c["CAP-0040"]
-    n_019fee89_e616_76ce_9a36_55eac88b762e["CAP-0041"]
+    n_019fee89_e616_74f9_813b_7610fca4342c["CAP-0040<br/>Brownfield Onboarding Workflow"]
+    n_019fee89_e616_76ce_9a36_55eac88b762e["CAP-0041<br/>Canonical Migration Evidence"]
   end
   subgraph sg_decision["decision"]
-    n_019fee89_e616_7a1d_a13f_8595d35af213["DEC-0053"]
-    n_019fee89_e616_73b2_bd3f_a096727abcad["DEC-0054"]
-    n_019fee89_e616_7571_b83f_b20a3bd0b42e["DEC-0055"]
-    n_019fee89_e616_760d_8437_78860d2de944["DEC-0056"]
+    n_019fee89_e616_7a1d_a13f_8595d35af213["DEC-0053<br/>Treat brownfield onboarding as a first-class canonicalization workflow"]
+    n_019fee89_e616_73b2_bd3f_a096727abcad["DEC-0054<br/>Separate onboarding into discovery, normalization, canonization, regeneration, and validation phases"]
+    n_019fee89_e616_7571_b83f_b20a3bd0b42e["DEC-0055<br/>Record deterministic brownfield remaps and cleanup transitions in canonical migration artifacts"]
+    n_019fee89_e616_760d_8437_78860d2de944["DEC-0056<br/>Keep rendered artifacts as disposable human projections and forbid them as semantic authority when canonical YAML exists"]
   end
   subgraph sg_invariant["invariant"]
     n_019fee89_e616_76a4_891b_d8316114e7a9["INV-0060"]

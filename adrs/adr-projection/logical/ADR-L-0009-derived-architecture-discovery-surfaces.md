@@ -5,8 +5,8 @@ artifact_kind: rendered_adr_markdown
 generator_id: adr-projection-markdown
 generator_version: 3
 hash_algorithm: sha256
-source_hash: 20536358b523b433652296bd7eafabaf0d6d726e9646142c4a4a769904d0d495
-rendered_hash: 30993bd5076492bbc9cb048cadf6ff3af90523ea4113975e7e606c71edd589df
+source_hash: 8fd1c7b766ed7b478c3d434e64ae217d6c94485fe7352013dfccad0db672e158
+rendered_hash: 37c3f8edf8921f3491e9e5902149cd8e7b6943c313f206bacb6bbcc6685645b8
 -->
 
 # ADR-L-0009: Derived Architecture Discovery Surfaces
@@ -29,10 +29,10 @@ Logical architecture authority for this subject. Neighborhood paths use structur
 
 ```mermaid
 flowchart LR
-  n_019fee89_e616_7121_a63e_0baad0a61fb3["CAP-0018"]
-  n_019fee89_e616_770c_a025_2c241a720730["ADR-L-0009"]
-  n_019fee89_e617_7270_ab2f_58a756d2530e["ADR-PC-0001"]
-  n_019fee89_e617_76d8_a333_e21361cd6602["COMP-0010"]
+  n_019fee89_e616_7121_a63e_0baad0a61fb3["CAP-0018<br/>Normalized Entity Lookup Surface"]
+  n_019fee89_e616_770c_a025_2c241a720730["ADR-L-0009<br/>Derived Architecture Discovery Surfaces"]
+  n_019fee89_e617_7270_ab2f_58a756d2530e["ADR-PC-0001<br/>Entity Registry and Discovery Index"]
+  n_019fee89_e617_76d8_a333_e21361cd6602["COMP-0010<br/>Entity Registry Generator and Query Surface"]
   n_019fee89_e616_7121_a63e_0baad0a61fb3 -->|"declared_in"| n_019fee89_e616_770c_a025_2c241a720730
   n_019fee89_e617_76d8_a333_e21361cd6602 -->|"declared_in"| n_019fee89_e617_7270_ab2f_58a756d2530e
   n_019fee89_e616_7121_a63e_0baad0a61fb3 -->|"implemented_by"| n_019fee89_e617_76d8_a333_e21361cd6602
@@ -40,9 +40,9 @@ flowchart LR
 
 ```mermaid
 flowchart LR
-  n_019fee89_e616_770c_a025_2c241a720730["ADR-L-0009"]
-  n_019fee89_e618_7b3e_813b_a449881b6adb["ADR-PS-0001"]
-  n_019fee89_e618_7b76_843f_cfe21ceb2ea6["ADR-PC-0003"]
+  n_019fee89_e616_770c_a025_2c241a720730["ADR-L-0009<br/>Derived Architecture Discovery Surfaces"]
+  n_019fee89_e618_7b3e_813b_a449881b6adb["ADR-PS-0001<br/>ADR Architecture Kit Discovery and Indexing System"]
+  n_019fee89_e618_7b76_843f_cfe21ceb2ea6["ADR-PC-0003<br/>Compiler Pipeline and Driver"]
   n_019fee89_e618_7b3e_813b_a449881b6adb -->|"implements_logical"| n_019fee89_e616_770c_a025_2c241a720730
   n_019fee89_e618_7b76_843f_cfe21ceb2ea6 -->|"implements_logical"| n_019fee89_e616_770c_a025_2c241a720730
 ```
@@ -58,7 +58,7 @@ flowchart LR
 
 ### ADR-PC-0001 — Entity Registry and Discovery Index
 
-- CAP-0018 -[:implemented_by]-> COMP-0010 (peer ADR-PC-0001)
+- CAP-0018 -[:implemented_by]-> COMP-0010
 
 **Context:** The discovery/indexing component now centers on the unified compiler path. It
 generates the normalized discovery bundle under `adrs/index/`, emits the
@@ -70,7 +70,7 @@ operations over generated registry state.
 [Open projection](../physical-component/ADR-PC-0001-entity-registry-and-discovery-index.md)
 ### ADR-PC-0003 — Compiler Pipeline and Driver
 
-- ADR-PC-0003 -[:implements_logical]-> ADR-L-0009 (peer ADR-PC-0003)
+- ADR-PC-0003 -[:implements_logical]-> ADR-L-0009
 
 **Context:** The compiler driver and explicit pipeline now own deterministic architecture
 compilation across parse, analysis, emission, and recursive scope
@@ -81,7 +81,7 @@ internal reference implementation and are not a supported SDK facade.
 [Open projection](../physical-component/ADR-PC-0003-compiler-pipeline-and-driver.md)
 ### ADR-PS-0001 — ADR Architecture Kit Discovery and Indexing System
 
-- ADR-PS-0001 -[:implements_logical]-> ADR-L-0009 (peer ADR-PS-0001)
+- ADR-PS-0001 -[:implements_logical]-> ADR-L-0009
 
 **Context:** The discovery and indexing subsystem provides the derived surfaces that agents
 query instead of scanning raw ADR bodies by default. It now includes
@@ -124,17 +124,17 @@ downstream consumers do not guess which generated surfaces are authoritative.
 
 ```mermaid
 flowchart TB
-  n_019fee89_e616_770c_a025_2c241a720730["ADR-L-0009"]
+  n_019fee89_e616_770c_a025_2c241a720730["ADR-L-0009<br/>Derived Architecture Discovery Surfaces"]
   subgraph sg_capability["capability"]
-    n_019fee89_e616_7607_9312_8aa8d1816be9["CAP-0017"]
-    n_019fee89_e616_7121_a63e_0baad0a61fb3["CAP-0018"]
+    n_019fee89_e616_7607_9312_8aa8d1816be9["CAP-0017<br/>Summary Discovery Surface"]
+    n_019fee89_e616_7121_a63e_0baad0a61fb3["CAP-0018<br/>Normalized Entity Lookup Surface"]
   end
   subgraph sg_decision["decision"]
-    n_019fee89_e616_71a7_b73f_33795a11494e["DEC-0014"]
-    n_019fee89_e616_7763_be39_197b4590ca50["DEC-0021"]
-    n_019fee89_e616_77a2_8a1b_ad4d3a7e4265["DEC-0028"]
-    n_019fee89_e616_74a6_ae3d_39c2dacd91ae["DEC-0057"]
-    n_019fee89_e616_79f5_a127_b16d5485af23["DEC-0058"]
+    n_019fee89_e616_71a7_b73f_33795a11494e["DEC-0014<br/>Use derived discovery artifacts for agent-facing architecture lookup"]
+    n_019fee89_e616_7763_be39_197b4590ca50["DEC-0021<br/>Treat manifest as a guaranteed discovery surface within the compiler contract family"]
+    n_019fee89_e616_77a2_8a1b_ad4d3a7e4265["DEC-0028<br/>Use `adrs/index/entity-registry.yaml` as the normalized lookup surface and keep legacy registry as compatibility-only"]
+    n_019fee89_e616_74a6_ae3d_39c2dacd91ae["DEC-0057<br/>Classify compiler discovery outputs by guaranteed, optional, and deprecated stability tiers"]
+    n_019fee89_e616_79f5_a127_b16d5485af23["DEC-0058<br/>Deprecate `adrs/entities/registry.yaml` as a legacy compatibility projection"]
   end
   subgraph sg_invariant["invariant"]
     n_019fee89_e616_7196_a92f_bec6b05d3d47["INV-0043"]

@@ -5,8 +5,8 @@ artifact_kind: rendered_adr_markdown
 generator_id: adr-projection-markdown
 generator_version: 3
 hash_algorithm: sha256
-source_hash: 1175a4e1e7f8fcdec9a0554d911cf9ccb77920b159be0816474efc4bfcd7c8f9
-rendered_hash: 5338c96b3ca0dc7463a4c56ed10b9f76eebf5916f665f40a89deafaebb83fbbe
+source_hash: 01224fd8d0a31836664113c88b79cc818a4a3785a8dea00d2a271f505ded8322
+rendered_hash: 940fc7b917e1302a0af94560fd78b74641431e53708fb3d3118f56253521e633
 -->
 
 # ADR-L-0015: ADR Governance State and Override Semantics
@@ -65,16 +65,16 @@ validator, and projection behavior stay aligned.
 
 ```mermaid
 flowchart TB
-  n_019fee89_e617_7e69_861a_f3040f70c2d9["ADR-L-0015"]
+  n_019fee89_e617_7e69_861a_f3040f70c2d9["ADR-L-0015<br/>ADR Governance State and Override Semantics"]
   subgraph sg_capability["capability"]
-    n_019fee89_e616_7ee9_9b0f_2da3ee16636b["CAP-0042"]
-    n_019fee89_e616_7f80_903e_36b6d56f86fe["CAP-0043"]
+    n_019fee89_e616_7ee9_9b0f_2da3ee16636b["CAP-0042<br/>Deterministic ADR Governance Validation"]
+    n_019fee89_e616_7f80_903e_36b6d56f86fe["CAP-0043<br/>Governance Summary Projection"]
   end
   subgraph sg_decision["decision"]
-    n_019fee89_e616_7fa2_a13f_a0bab2411ff7["DEC-0063"]
-    n_019fee89_e617_77cf_a43e_5f0912b04a8a["DEC-0064"]
-    n_019fee89_e617_7dbb_b23f_872b9ffc75d8["DEC-0065"]
-    n_019fee89_e617_7aae_ac34_86b62c25289b["DEC-0066"]
+    n_019fee89_e616_7fa2_a13f_a0bab2411ff7["DEC-0063<br/>Define ADR governance as a canonical nested metadata block with explicit implementation-authority levels"]
+    n_019fee89_e617_77cf_a43e_5f0912b04a8a["DEC-0064<br/>Record implementation exceptions in separate objection override artifacts"]
+    n_019fee89_e617_7dbb_b23f_872b9ffc75d8["DEC-0065<br/>Bind override review validity to ADR modified_date and warn on stale coupling"]
+    n_019fee89_e617_7aae_ac34_86b62c25289b["DEC-0066<br/>Allow projections to expose governance references and summary metadata only"]
   end
   subgraph sg_invariant["invariant"]
     n_019fee89_e617_7ec8_b235_dda998054d7c["INV-0064"]

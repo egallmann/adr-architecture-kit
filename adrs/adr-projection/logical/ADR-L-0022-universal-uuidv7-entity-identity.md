@@ -5,8 +5,8 @@ artifact_kind: rendered_adr_markdown
 generator_id: adr-projection-markdown
 generator_version: 3
 hash_algorithm: sha256
-source_hash: 3203a6b177df9044af8d7dcebeb919ca79192752f23df21825a87b7e8e91f9c2
-rendered_hash: 568e6966f19753458184c5eb00a9fabe30e3f70795384bb646540ecffef87442
+source_hash: fdde7ebe465f20d7cad999b91fdb367823613442b93fbfdde160a90f359c29fa
+rendered_hash: eb4b05f80b0c37fcf6d1fea65018998b56f79ce0d1ca5acaaf20e38480b3eb53
 -->
 
 # ADR-L-0022: Universal UUIDv7 Entity Identity
@@ -51,25 +51,25 @@ This ADR extends ADR-L-0019 rather than replacing its successful UUID, alias, re
 
 ```mermaid
 flowchart TB
-  n_01a00643_1bfc_788c_911b_83a4725a8de1["ADR-L-0022"]
+  n_01a00643_1bfc_788c_911b_83a4725a8de1["ADR-L-0022<br/>Universal UUIDv7 Entity Identity"]
   subgraph sg_decision["decision"]
-    n_01a00643_1bfc_7c3d_b935_01f39da8a0a5["DEC-0130"]
-    n_01a00643_1bfc_7676_812e_219c659674b2["DEC-0131"]
-    n_01a00643_1bfc_7922_9c18_f6938ee01c41["DEC-0132"]
-    n_01a00643_1bfc_7b7e_883d_6c7dfff3325f["DEC-0133"]
-    n_01a00643_1bfc_72a1_af3d_7cca88f676f7["DEC-0134"]
-    n_01a00643_1bfc_71ef_8e1f_694949767d59["DEC-0135"]
-    n_01a00643_1bfc_729a_833f_5a3bca5af998["DEC-0136"]
-    n_01a00643_1bfc_7e7a_af3f_0484ebc351c9["DEC-0137"]
-    n_01a00643_1bfc_7528_951b_a457433ae5f4["DEC-0138"]
-    n_01a00643_1bfc_7936_bb29_afde4c57721d["DEC-0139"]
-    n_01a002b7_e001_7010_8401_010101010101["DEC-0140"]
-    n_01a002b7_e002_7020_8802_020202020202["DEC-0141"]
-    n_01a002b7_e003_7030_8c03_030303030303["DEC-0142"]
-    n_01a002b7_e004_7040_9004_040404040404["DEC-0143"]
-    n_01a002b7_e005_7050_9405_050505050505["DEC-0144"]
-    n_01a002b7_e006_7060_9806_060606060606["DEC-0145"]
-    n_01a002b7_e007_7070_9c07_070707070707["DEC-0146"]
+    n_01a00643_1bfc_7c3d_b935_01f39da8a0a5["DEC-0130<br/>Require the ADR-L-0019 identity envelope for every canonical independently addressable ADR-domain entity"]
+    n_01a00643_1bfc_7676_812e_219c659674b2["DEC-0131<br/>Define entityhood by actual or potential participation in the system graph"]
+    n_01a00643_1bfc_7922_9c18_f6938ee01c41["DEC-0132<br/>Require canonical entity references to use UUIDs while aliases remain orientation"]
+    n_01a00643_1bfc_7b7e_883d_6c7dfff3325f["DEC-0133<br/>Keep owner-local value objects free of entity identity"]
+    n_01a00643_1bfc_72a1_af3d_7cca88f676f7["DEC-0134<br/>Require stable UUIDv7 identity for every graph node and edge projection"]
+    n_01a00643_1bfc_71ef_8e1f_694949767d59["DEC-0135<br/>Promote current durable alias-identified authoring and governance records to entities"]
+    n_01a00643_1bfc_729a_833f_5a3bca5af998["DEC-0136<br/>Bind future rule evidence and other entity schemas to the same invariant"]
+    n_01a00643_1bfc_7e7a_af3f_0484ebc351c9["DEC-0137<br/>Require semantic version boundaries and explicit package mappings for identity migration"]
+    n_01a00643_1bfc_7528_951b_a457433ae5f4["DEC-0138<br/>Migrate identity with a sealed reviewable map and semantic parity proof"]
+    n_01a00643_1bfc_7936_bb29_afde4c57721d["DEC-0139<br/>Remove obsolete compatibility surfaces only through an explicit reviewed gate"]
+    n_01a002b7_e001_7010_8401_010101010101["DEC-0140<br/>Treat effective relationships and relationship assertions as distinct entities"]
+    n_01a002b7_e002_7020_8802_020202020202["DEC-0141<br/>Model generated inverse traversal as a derived projection unless independently authored"]
+    n_01a002b7_e003_7030_8c03_030303030303["DEC-0142<br/>Govern aliases for newly promoted entity families as an explicit namespace contract"]
+    n_01a002b7_e004_7040_9004_040404040404["DEC-0143<br/>Bind identity changes to family-scoped semantic versions and explicit package mappings"]
+    n_01a002b7_e005_7050_9405_050505050505["DEC-0144<br/>Preserve a graph-vNext compatibility posture while identity contracts advance"]
+    n_01a002b7_e006_7060_9806_060606060606["DEC-0145<br/>Define the universal allocation map as a sealed, reviewable lifecycle artifact"]
+    n_01a002b7_e007_7070_9c07_070707070707["DEC-0146<br/>Keep universal identity migration blocked until every human gate is explicit"]
   end
   subgraph sg_invariant["invariant"]
     n_01a00643_1bfc_757c_ba3a_63a007e981d0["INV-0130"]

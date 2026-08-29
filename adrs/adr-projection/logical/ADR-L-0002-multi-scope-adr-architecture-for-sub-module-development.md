@@ -5,8 +5,8 @@ artifact_kind: rendered_adr_markdown
 generator_id: adr-projection-markdown
 generator_version: 3
 hash_algorithm: sha256
-source_hash: c30cafc6ebc602df38320cb8542750d2cf766016e6a3dc3eb366a4fd8b6a5ff8
-rendered_hash: 494f2bf7c949c767111a0e2bdb945a5a08e42011e180c338bda9d76300f1c48c
+source_hash: d74dd41376dc643075645d838aa263bcf8ca04f05ce8f719894743a792677f3a
+rendered_hash: 4cca3f27c01bcdb17b0c1ca626ba3439cc6e6291608ea5ab183a9593f2ed5c7f
 -->
 
 # ADR-L-0002: Multi-Scope ADR Architecture for Sub-Module Development
@@ -30,13 +30,13 @@ Logical architecture authority for this subject. Neighborhood paths use structur
 
 ```mermaid
 flowchart LR
-  n_019fee89_e615_7f19_810b_c7b33a9d9e0d["ADR-L-0002"]
-  n_019fee89_e617_7270_ab2f_58a756d2530e["ADR-PC-0001"]
-  n_019fee89_e617_7d2b_8325_cd85ff814477["ADR-PC-0002"]
-  n_019fee89_e618_7b3e_813b_a449881b6adb["ADR-PS-0001"]
-  n_019fee89_e618_7b76_843f_cfe21ceb2ea6["ADR-PC-0003"]
-  n_019fee89_e618_7d04_9337_4aa2d3258507["ADR-PS-0002"]
-  n_01a048d8_454a_7464_bcaa_718fa77bed6a["ADR-PC-0008"]
+  n_019fee89_e615_7f19_810b_c7b33a9d9e0d["ADR-L-0002<br/>Multi-Scope ADR Architecture for Sub-Module Development"]
+  n_019fee89_e617_7270_ab2f_58a756d2530e["ADR-PC-0001<br/>Entity Registry and Discovery Index"]
+  n_019fee89_e617_7d2b_8325_cd85ff814477["ADR-PC-0002<br/>Schema and Contract Validation"]
+  n_019fee89_e618_7b3e_813b_a449881b6adb["ADR-PS-0001<br/>ADR Architecture Kit Discovery and Indexing System"]
+  n_019fee89_e618_7b76_843f_cfe21ceb2ea6["ADR-PC-0003<br/>Compiler Pipeline and Driver"]
+  n_019fee89_e618_7d04_9337_4aa2d3258507["ADR-PS-0002<br/>ADR Kit Authoring Compiler and Validation System"]
+  n_01a048d8_454a_7464_bcaa_718fa77bed6a["ADR-PC-0008<br/>Project Scope Resolution"]
   n_019fee89_e617_7270_ab2f_58a756d2530e -->|"implements_logical"| n_019fee89_e615_7f19_810b_c7b33a9d9e0d
   n_019fee89_e617_7d2b_8325_cd85ff814477 -->|"implements_logical"| n_019fee89_e615_7f19_810b_c7b33a9d9e0d
   n_019fee89_e618_7b3e_813b_a449881b6adb -->|"implements_logical"| n_019fee89_e615_7f19_810b_c7b33a9d9e0d
@@ -59,7 +59,7 @@ flowchart LR
 
 ### ADR-PC-0001 — Entity Registry and Discovery Index
 
-- ADR-PC-0001 -[:implements_logical]-> ADR-L-0002 (peer ADR-PC-0001)
+- ADR-PC-0001 -[:implements_logical]-> ADR-L-0002
 
 **Context:** The discovery/indexing component now centers on the unified compiler path. It
 generates the normalized discovery bundle under `adrs/index/`, emits the
@@ -71,7 +71,7 @@ operations over generated registry state.
 [Open projection](../physical-component/ADR-PC-0001-entity-registry-and-discovery-index.md)
 ### ADR-PC-0002 — Schema and Contract Validation
 
-- ADR-PC-0002 -[:implements_logical]-> ADR-L-0002 (peer ADR-PC-0002)
+- ADR-PC-0002 -[:implements_logical]-> ADR-L-0002
 
 **Context:** Schema and contract validation is now a stable component boundary rather than
 a generic legacy physical slice. It validates canonical ADR structure,
@@ -81,7 +81,7 @@ attribution evidence. Validation of that evidence is structural for schema shape
 [Open projection](../physical-component/ADR-PC-0002-schema-and-contract-validation.md)
 ### ADR-PC-0003 — Compiler Pipeline and Driver
 
-- ADR-PC-0003 -[:implements_logical]-> ADR-L-0002 (peer ADR-PC-0003)
+- ADR-PC-0003 -[:implements_logical]-> ADR-L-0002
 
 **Context:** The compiler driver and explicit pipeline now own deterministic architecture
 compilation across parse, analysis, emission, and recursive scope
@@ -92,7 +92,7 @@ internal reference implementation and are not a supported SDK facade.
 [Open projection](../physical-component/ADR-PC-0003-compiler-pipeline-and-driver.md)
 ### ADR-PC-0008 — Project Scope Resolution
 
-- ADR-PC-0008 -[:implements_logical]-> ADR-L-0002 (peer ADR-PC-0008)
+- ADR-PC-0008 -[:implements_logical]-> ADR-L-0002
 
 **Context:** Permanent physical-component authority for multi-scope project-root detection,
 scope boundary validation, and scope-resolution semantics per ADR-L-0002.
@@ -102,7 +102,7 @@ governed PS+PC authority without topology authoring in this document.
 [Open projection](../physical-component/ADR-PC-0008-project-scope-resolution.md)
 ### ADR-PS-0001 — ADR Architecture Kit Discovery and Indexing System
 
-- ADR-PS-0001 -[:implements_logical]-> ADR-L-0002 (peer ADR-PS-0001)
+- ADR-PS-0001 -[:implements_logical]-> ADR-L-0002
 
 **Context:** The discovery and indexing subsystem provides the derived surfaces that agents
 query instead of scanning raw ADR bodies by default. It now includes
@@ -115,7 +115,7 @@ that emits these derived discovery artifacts together.
 [Open projection](../physical-system/ADR-PS-0001-adr-architecture-kit-discovery-and-indexing-system.md)
 ### ADR-PS-0002 — ADR Kit Authoring Compiler and Validation System
 
-- ADR-PS-0002 -[:implements_logical]-> ADR-L-0002 (peer ADR-PS-0002)
+- ADR-PS-0002 -[:implements_logical]-> ADR-L-0002
 
 **Context:** adr-architecture-kit operates as an authoring-time compiler and validation system rather
 than a collection of unrelated generators. The implementation includes an
@@ -164,15 +164,15 @@ We need similar scope resolution for ADR generation and validation to support:
 
 ```mermaid
 flowchart TB
-  n_019fee89_e615_7f19_810b_c7b33a9d9e0d["ADR-L-0002"]
+  n_019fee89_e615_7f19_810b_c7b33a9d9e0d["ADR-L-0002<br/>Multi-Scope ADR Architecture for Sub-Module Development"]
   subgraph sg_capability["capability"]
-    n_019fee89_e615_78f5_903a_4c5d1bab8f38["CAP-0019"]
-    n_019fee89_e615_7dc5_983a_beb68ed34cde["CAP-0022"]
-    n_019fee89_e615_7ba4_bd19_1d7abf1a3ed2["CAP-0025"]
-    n_019fee89_e615_7aa2_8817_c4f468c90b66["CAP-0028"]
+    n_019fee89_e615_78f5_903a_4c5d1bab8f38["CAP-0019<br/>Automatic Project Scope Detection"]
+    n_019fee89_e615_7dc5_983a_beb68ed34cde["CAP-0022<br/>Scoped Manifest Generation"]
+    n_019fee89_e615_7ba4_bd19_1d7abf1a3ed2["CAP-0025<br/>Scoped Validation"]
+    n_019fee89_e615_7aa2_8817_c4f468c90b66["CAP-0028<br/>Multi-Scope CLI Interface"]
   end
   subgraph sg_decision["decision"]
-    n_019fee89_e615_7d71_9517_aeb9fe601fd6["DEC-0007"]
+    n_019fee89_e615_7d71_9517_aeb9fe601fd6["DEC-0007<br/>Adopt Scope-Aware ADR Architecture"]
   end
   subgraph sg_invariant["invariant"]
     n_019fee89_e615_7db0_a219_22110deb7ed0["INV-0014"]

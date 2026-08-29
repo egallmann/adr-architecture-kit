@@ -5,8 +5,8 @@ artifact_kind: rendered_adr_markdown
 generator_id: adr-projection-markdown
 generator_version: 3
 hash_algorithm: sha256
-source_hash: fe0acfbc737dc88527c7faa15c3266724ad67b0b10a340c32d2b7a9d920af816
-rendered_hash: 6eff7d4382a7926a38002694f635b250b1dcb0d15740c53e8ddbf45c4d3efa92
+source_hash: d705d038b9d12a5c21cf68396b8d994ae22a377a9644241679bf12a8a15b0cdc
+rendered_hash: ae927f8a97cd7fe475b225749931325f0790166c6c03ba1444d9dda5d20aeec8
 -->
 
 # ADR-L-0011: Metadata Schemas and Remediation Ledger Enforcement
@@ -29,10 +29,10 @@ Logical architecture authority for this subject. Neighborhood paths use structur
 
 ```mermaid
 flowchart LR
-  n_019fee89_e616_7b97_971d_ae165d13bf9c["ADR-L-0011"]
-  n_019fee89_e617_7d2b_8325_cd85ff814477["ADR-PC-0002"]
-  n_019fee89_e618_7787_b43f_a3e5cb264dd5["ADR-PC-0006"]
-  n_019fee89_e618_7d04_9337_4aa2d3258507["ADR-PS-0002"]
+  n_019fee89_e616_7b97_971d_ae165d13bf9c["ADR-L-0011<br/>Metadata Schemas and Remediation Ledger Enforcement"]
+  n_019fee89_e617_7d2b_8325_cd85ff814477["ADR-PC-0002<br/>Schema and Contract Validation"]
+  n_019fee89_e618_7787_b43f_a3e5cb264dd5["ADR-PC-0006<br/>Brownfield Onboarding and Canonical Normalization"]
+  n_019fee89_e618_7d04_9337_4aa2d3258507["ADR-PS-0002<br/>ADR Kit Authoring Compiler and Validation System"]
   n_019fee89_e617_7d2b_8325_cd85ff814477 -->|"implements_logical"| n_019fee89_e616_7b97_971d_ae165d13bf9c
   n_019fee89_e618_7787_b43f_a3e5cb264dd5 -->|"implements_logical"| n_019fee89_e616_7b97_971d_ae165d13bf9c
   n_019fee89_e618_7d04_9337_4aa2d3258507 -->|"implements_logical"| n_019fee89_e616_7b97_971d_ae165d13bf9c
@@ -49,7 +49,7 @@ flowchart LR
 
 ### ADR-PC-0002 — Schema and Contract Validation
 
-- ADR-PC-0002 -[:implements_logical]-> ADR-L-0011 (peer ADR-PC-0002)
+- ADR-PC-0002 -[:implements_logical]-> ADR-L-0011
 
 **Context:** Schema and contract validation is now a stable component boundary rather than
 a generic legacy physical slice. It validates canonical ADR structure,
@@ -59,7 +59,7 @@ attribution evidence. Validation of that evidence is structural for schema shape
 [Open projection](../physical-component/ADR-PC-0002-schema-and-contract-validation.md)
 ### ADR-PC-0006 — Brownfield Onboarding and Canonical Normalization
 
-- ADR-PC-0006 -[:implements_logical]-> ADR-L-0011 (peer ADR-PC-0006)
+- ADR-PC-0006 -[:implements_logical]-> ADR-L-0011
 
 **Context:** adr-architecture-kit already includes migration and normalization behavior in
 its migrator and CLI surfaces. This component makes brownfield onboarding and
@@ -68,7 +68,7 @@ canonical normalization an explicit part of the compiler/validation runtime.
 [Open projection](../physical-component/ADR-PC-0006-brownfield-onboarding-and-canonical-normalization.md)
 ### ADR-PS-0002 — ADR Kit Authoring Compiler and Validation System
 
-- ADR-PS-0002 -[:implements_logical]-> ADR-L-0011 (peer ADR-PS-0002)
+- ADR-PS-0002 -[:implements_logical]-> ADR-L-0011
 
 **Context:** adr-architecture-kit operates as an authoring-time compiler and validation system rather
 than a collection of unrelated generators. The implementation includes an
@@ -107,16 +107,16 @@ binds metadata schema work, sentinel usage, and remediation workflow together.
 
 ```mermaid
 flowchart TB
-  n_019fee89_e616_7b97_971d_ae165d13bf9c["ADR-L-0011"]
+  n_019fee89_e616_7b97_971d_ae165d13bf9c["ADR-L-0011<br/>Metadata Schemas and Remediation Ledger Enforcement"]
   subgraph sg_capability["capability"]
-    n_019fee89_e616_7755_bd39_ab6dde87eb86["CAP-0036"]
-    n_019fee89_e616_79ea_b43e_32a8705441ec["CAP-0037"]
+    n_019fee89_e616_7755_bd39_ab6dde87eb86["CAP-0036<br/>Typed Metadata Contract Enforcement"]
+    n_019fee89_e616_79ea_b43e_32a8705441ec["CAP-0037<br/>Remediation Ledger Governance"]
   end
   subgraph sg_decision["decision"]
-    n_019fee89_e616_7de2_b63b_577b2c2d53f4["DEC-0040"]
-    n_019fee89_e616_7a04_a927_19a373014476["DEC-0041"]
-    n_019fee89_e616_7d89_8e31_8090d0f91310["DEC-0042"]
-    n_019fee89_e616_748c_a114_227a14f5fef8["DEC-0043"]
+    n_019fee89_e616_7de2_b63b_577b2c2d53f4["DEC-0040<br/>Define per-entity metadata through typed schemas rather than an unconstrained metadata bag"]
+    n_019fee89_e616_7a04_a927_19a373014476["DEC-0041<br/>Restrict sentinel values to narrative fields and sections only"]
+    n_019fee89_e616_7d89_8e31_8090d0f91310["DEC-0042<br/>Enforce remediation through a separate canonical remediation ledger"]
+    n_019fee89_e616_748c_a114_227a14f5fef8["DEC-0043<br/>Require staged approval before replacement content becomes protected canonical content"]
   end
   subgraph sg_invariant["invariant"]
     n_019fee89_e616_713a_b73d_fec9a62b6bfb["INV-0055"]

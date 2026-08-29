@@ -5,8 +5,8 @@ artifact_kind: rendered_adr_markdown
 generator_id: adr-projection-markdown
 generator_version: 3
 hash_algorithm: sha256
-source_hash: da3694397d58c8660ecb031a7c4aa9b20bc313d34faf4deec1a5c58d2f736177
-rendered_hash: 8e97b6685bd7e23ef986b29f966fa7249f59142760c0421bdd7e9065815d7083
+source_hash: 3cdf303e5df00e3774f431d4df302c547a805e9c1e7e879c9dd5b56163501e54
+rendered_hash: b33f45dcb6dae3f05af6c9523c075866fffbbf6789b073aba9e0de07783f90b4
 -->
 
 # ADR-L-0017: Forward Authoring Ergonomics for Split Physical ADR Types
@@ -61,11 +61,11 @@ physical-system and physical-component artifacts.
 
 ```mermaid
 flowchart TB
-  n_019fee89_e617_7ff5_863b_1eef71637b0f["ADR-L-0017"]
+  n_019fee89_e617_7ff5_863b_1eef71637b0f["ADR-L-0017<br/>Forward Authoring Ergonomics for Split Physical ADR Types"]
   subgraph sg_decision["decision"]
-    n_019fee89_e617_75dd_852f_1d06d442695b["DEC-0071"]
-    n_019fee89_e617_748e_863d_42268f44175f["DEC-0072"]
-    n_019fee89_e617_7a09_bc37_afd7ae0f2927["DEC-0074"]
+    n_019fee89_e617_75dd_852f_1d06d442695b["DEC-0071<br/>Provide scaffold and schema-surface ergonomics for logical, physical-system, and physical-component ADRs only"]
+    n_019fee89_e617_748e_863d_42268f44175f["DEC-0072<br/>Retain legacy ADR-P parsing and validation but exclude it from new creation ergonomics"]
+    n_019fee89_e617_7a09_bc37_afd7ae0f2927["DEC-0074<br/>Reserve ADR IDs 9000-9999 for exceptional allocation and exclude that range from normal forward allocation"]
   end
   subgraph sg_invariant["invariant"]
     n_019fee89_e617_761d_950b_c04d97e04c56["INV-0068"]

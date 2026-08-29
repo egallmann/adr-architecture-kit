@@ -5,8 +5,8 @@ artifact_kind: rendered_adr_markdown
 generator_id: adr-projection-markdown
 generator_version: 3
 hash_algorithm: sha256
-source_hash: 692ff5c8a11daf71c32ded5d312326180d182c4377b554c4035a95270b643c28
-rendered_hash: c2b1ad9495f5fb010e66a5b74785eab9057805346d06630c76fb3402f7246102
+source_hash: bef8f9984e020df6bb0f37f5375142fac3aaa63d8aa1c4689cdc61ccacc1872e
+rendered_hash: 4bdb577225c10b34841ecb770d661d1297b9747bd6a4c286418e612b2bdf9f91
 -->
 
 # ADR-L-0016: Deterministic Corpus Query and Authoring Orientation APIs
@@ -62,15 +62,15 @@ they do not allocate or replace canonical UUID machine identity.
 
 ```mermaid
 flowchart TB
-  n_019fee89_e617_7fe1_8d2c_cc2745c31674["ADR-L-0016"]
+  n_019fee89_e617_7fe1_8d2c_cc2745c31674["ADR-L-0016<br/>Deterministic Corpus Query and Authoring Orientation APIs"]
   subgraph sg_capability["capability"]
-    n_019fee89_e617_778b_8137_22bcc675b053["CAP-0045"]
+    n_019fee89_e617_778b_8137_22bcc675b053["CAP-0045<br/>Deterministic Corpus Orientation Surface"]
   end
   subgraph sg_decision["decision"]
-    n_019fee89_e617_7315_9e36_7af95f814c83["DEC-0069"]
-    n_019fee89_e617_768d_9e3e_f61039a3d61c["DEC-0070"]
-    n_019fee89_e617_797f_9e3e_50212acb0456["DEC-0073"]
-    n_019fee89_e617_7686_bc3f_536f1b00edfa["DEC-0075"]
+    n_019fee89_e617_7315_9e36_7af95f814c83["DEC-0069<br/>Extend ArchitectureRepository with deterministic orientation helpers for UUID, alias_id, alias_ref, and URI lookup"]
+    n_019fee89_e617_768d_9e3e_f61039a3d61c["DEC-0070<br/>Expose corpus summary and relationships through supported CLI commands"]
+    n_019fee89_e617_797f_9e3e_50212acb0456["DEC-0073<br/>Make forward-authoring type-prefixed ADR alias_id allocation monotonic and non-reusable"]
+    n_019fee89_e617_7686_bc3f_536f1b00edfa["DEC-0075<br/>Exclude reserved ADR alias IDs 9000-9999 from standard forward alias allocation"]
   end
   subgraph sg_invariant["invariant"]
     n_019fee89_e617_77bc_8d3f_07c5c91bb5bb["INV-0069"]

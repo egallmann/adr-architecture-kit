@@ -5,8 +5,8 @@ artifact_kind: rendered_adr_markdown
 generator_id: adr-projection-markdown
 generator_version: 3
 hash_algorithm: sha256
-source_hash: a1b01bc6c51d5b0c6f0e69b896a8cb65c08bdf810073dbb8c6b9afb348f181d5
-rendered_hash: 677f1a8dd400080be08cc0ddc35a00d30357189be7aff35f130c187893786019
+source_hash: fe0e58ac3232b85297954e18d0565b1af9d8a835e9e4b8b4c6e3565f42b3ba2d
+rendered_hash: d4f923218c33afd41cba61ee8f2516a194a2bbaca4c4e9db1d24bd4e4144f17b
 -->
 
 # ADR-L-0021: Family-First Schema Contract Taxonomy and Authority
@@ -52,11 +52,11 @@ ADR authoring schema v1.5 and is not a normalized model version.
 
 ```mermaid
 flowchart TB
-  n_01a00626_c5cd_7064_8a74_e54d0179e4b9["ADR-L-0021"]
+  n_01a00626_c5cd_7064_8a74_e54d0179e4b9["ADR-L-0021<br/>Family-First Schema Contract Taxonomy and Authority"]
   subgraph sg_decision["decision"]
-    n_01a00627_97d8_73c0_8ef4_f0e87ad8c19b["DEC-0125"]
-    n_01a00627_97d8_7280_81f3_e22a264bc7c3["DEC-0126"]
-    n_01a00627_97d8_7528_9748_aaa7df6c2fe2["DEC-0127"]
+    n_01a00627_97d8_73c0_8ef4_f0e87ad8c19b["DEC-0125<br/>Canonical schema placement is family-first with family-scoped versions"]
+    n_01a00627_97d8_7280_81f3_e22a264bc7c3["DEC-0126<br/>Canonical repository schemas are the single schema authority"]
+    n_01a00627_97d8_7528_9748_aaa7df6c2fe2["DEC-0127<br/>Taxonomy relocation is semantic and runtime neutral"]
   end
   subgraph sg_invariant["invariant"]
     n_01a00627_97d8_7e92_a0ca_e572a89fef75["INV-0128"]

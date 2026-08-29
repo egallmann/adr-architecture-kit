@@ -5,8 +5,8 @@ artifact_kind: rendered_adr_markdown
 generator_id: adr-projection-markdown
 generator_version: 3
 hash_algorithm: sha256
-source_hash: f4d01dc7ad7d0921fc448fbe2c50ec31cbea019fd8e83f04b6aa4cee6c555ebe
-rendered_hash: d07ca88012ee56508e1f5518382c2a006969d36417b34602b1956a460c5f7465
+source_hash: 0117a6bdf84963b20dcf63ec39d1a68f59e240a7064697da3736f00cd773f838
+rendered_hash: 86632cad04e6c21b7b4ac7f5c7402c338d49eaaa710d960445a566a8651c3f99
 -->
 
 # ADR-L-0012: Federation Authority and Qualified Identity Model
@@ -30,9 +30,9 @@ Logical architecture authority for this subject. Neighborhood paths use structur
 
 ```mermaid
 flowchart LR
-  n_019fee89_e616_744f_b63e_5ecddf344faa["ADR-L-0012"]
-  n_019fee89_e617_7270_ab2f_58a756d2530e["ADR-PC-0001"]
-  n_019fee89_e618_7b3e_813b_a449881b6adb["ADR-PS-0001"]
+  n_019fee89_e616_744f_b63e_5ecddf344faa["ADR-L-0012<br/>Federation Authority and Qualified Identity Model"]
+  n_019fee89_e617_7270_ab2f_58a756d2530e["ADR-PC-0001<br/>Entity Registry and Discovery Index"]
+  n_019fee89_e618_7b3e_813b_a449881b6adb["ADR-PS-0001<br/>ADR Architecture Kit Discovery and Indexing System"]
   n_019fee89_e617_7270_ab2f_58a756d2530e -->|"implements_logical"| n_019fee89_e616_744f_b63e_5ecddf344faa
   n_019fee89_e618_7b3e_813b_a449881b6adb -->|"implements_logical"| n_019fee89_e616_744f_b63e_5ecddf344faa
 ```
@@ -47,7 +47,7 @@ flowchart LR
 
 ### ADR-PC-0001 — Entity Registry and Discovery Index
 
-- ADR-PC-0001 -[:implements_logical]-> ADR-L-0012 (peer ADR-PC-0001)
+- ADR-PC-0001 -[:implements_logical]-> ADR-L-0012
 
 **Context:** The discovery/indexing component now centers on the unified compiler path. It
 generates the normalized discovery bundle under `adrs/index/`, emits the
@@ -59,7 +59,7 @@ operations over generated registry state.
 [Open projection](../physical-component/ADR-PC-0001-entity-registry-and-discovery-index.md)
 ### ADR-PS-0001 — ADR Architecture Kit Discovery and Indexing System
 
-- ADR-PS-0001 -[:implements_logical]-> ADR-L-0012 (peer ADR-PS-0001)
+- ADR-PS-0001 -[:implements_logical]-> ADR-L-0012
 
 **Context:** The discovery and indexing subsystem provides the derived surfaces that agents
 query instead of scanning raw ADR bodies by default. It now includes
@@ -109,15 +109,15 @@ when architecture is resolved across repositories.
 
 ```mermaid
 flowchart TB
-  n_019fee89_e616_744f_b63e_5ecddf344faa["ADR-L-0012"]
+  n_019fee89_e616_744f_b63e_5ecddf344faa["ADR-L-0012<br/>Federation Authority and Qualified Identity Model"]
   subgraph sg_capability["capability"]
-    n_019fee89_e616_7396_893e_af8987fa6e03["CAP-0038"]
+    n_019fee89_e616_7396_893e_af8987fa6e03["CAP-0038<br/>Federated Qualified Identity Resolution"]
   end
   subgraph sg_decision["decision"]
-    n_019fee89_e616_7f9b_a12f_e0ab32e9dc16["DEC-0045"]
-    n_019fee89_e616_7b5d_b53c_fa2fc2046cd5["DEC-0046"]
-    n_019fee89_e616_7649_ba3d_86e7fab992d0["DEC-0047"]
-    n_019fee89_e616_71e0_b02f_3997db358e10["DEC-0077"]
+    n_019fee89_e616_7f9b_a12f_e0ab32e9dc16["DEC-0045<br/>Treat federation as a read-only aggregation layer over per-repo canonical registries"]
+    n_019fee89_e616_7b5d_b53c_fa2fc2046cd5["DEC-0046<br/>Use provider-authoritative conflict resolution for federated entity definitions"]
+    n_019fee89_e616_7649_ba3d_86e7fab992d0["DEC-0047<br/>Qualify machine identity as (architecture_namespace, UUID); keep human alias qualification derived"]
+    n_019fee89_e616_71e0_b02f_3997db358e10["DEC-0077<br/>Emit workspace-attribution-federation.yaml as read-only cross-repo attribution index keyed by workspace routing identity that resolves to architecture_namespace"]
   end
   subgraph sg_invariant["invariant"]
     n_019fee89_e616_7cc5_933d_9f7823a0b2b5["INV-0058"]
@@ -135,7 +135,6 @@ flowchart TB
 - `decision` DEC-0046 — Use provider-authoritative conflict resolution for federated entity definitions
 - `decision` DEC-0047 — Qualify machine identity as (architecture_namespace, UUID); keep human alias qualification derived
 - `decision` DEC-0077 — Emit workspace-attribution-federation.yaml as read-only cross-repo attribution index keyed by workspace routing identity that resolves to architecture_namespace
-
 - `invariant` INV-0058 — INV-0058
 
 ## Capabilities

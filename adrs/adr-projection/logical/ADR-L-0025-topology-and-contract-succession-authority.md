@@ -5,8 +5,8 @@ artifact_kind: rendered_adr_markdown
 generator_id: adr-projection-markdown
 generator_version: 3
 hash_algorithm: sha256
-source_hash: acbc4a820aade59700c30f46fe25eca6afae08d8a726e7a43aca1e6d39796f4d
-rendered_hash: 8a23006389c0ebe48add165c87c919a498bd3067627702ef3578762c8a016cee
+source_hash: 6c790cabc43add190b312691c75d587a99f1ea7847536f10fb47664ee05e2d2e
+rendered_hash: 5a30ec98ef8187dda1de2b157eb2ec6b57d827524c62658138bfb628ed616cbe
 -->
 
 # ADR-L-0025: Topology and Contract Succession Authority (Authoring v1.5 / Normalized v2.2)
@@ -61,16 +61,16 @@ v2.2 extends v2.1 and introduces topology verb vocabulary with explicit provenan
 
 ```mermaid
 flowchart TB
-  n_01a048d8_454a_7464_bcaa_718e58dfb9c2["ADR-L-0025"]
+  n_01a048d8_454a_7464_bcaa_718e58dfb9c2["ADR-L-0025<br/>Topology and Contract Succession Authority (Authoring v1.5 / Normalized v2.2)"]
   subgraph sg_decision["decision"]
-    n_01a048e9_bf60_7620_ad03_5af81c48c443["DEC-0168"]
-    n_01a048e9_bf60_7620_ad03_5af9dca56890["DEC-0169"]
-    n_01a048e9_bf60_7620_ad03_5afa0d062cf8["DEC-0170"]
-    n_01a048e9_bf60_7620_ad03_5afb9ba51d1c["DEC-0171"]
-    n_01a048e9_bf60_7620_ad03_5afc854d365b["DEC-0172"]
-    n_01a048e9_bf60_7620_ad03_5afd8acec9ee["DEC-0173"]
-    n_01a048e9_bf60_7620_ad03_5afe983c297e["DEC-0174"]
-    n_01a048e9_bf60_7620_ad03_5affd0982697["DEC-0175"]
+    n_01a048e9_bf60_7620_ad03_5af81c48c443["DEC-0168<br/>Authoring v1.5 succeeds v1.4 as current authoring contract"]
+    n_01a048e9_bf60_7620_ad03_5af9dca56890["DEC-0169<br/>Normalized model v2.2 succeeds v2.1 as topology-capable semantic contract"]
+    n_01a048e9_bf60_7620_ad03_5afa0d062cf8["DEC-0170<br/>TOPO handles are local; component_ref resolves to admitted COMP entity UUID"]
+    n_01a048e9_bf60_7620_ad03_5afb9ba51d1c["DEC-0171<br/>composed_of is SYS UUID to COMP UUID only"]
+    n_01a048e9_bf60_7620_ad03_5afc854d365b["DEC-0172<br/>Six topology verbs with grammatical FROM verb TO direction"]
+    n_01a048e9_bf60_7620_ad03_5afd8acec9ee["DEC-0173<br/>Topology-sourced compatibility relationships use explicit provenance and stable identity posture"]
+    n_01a048e9_bf60_7620_ad03_5afe983c297e["DEC-0174<br/>PS topology component_ref must agree with owning PC implements_system"]
+    n_01a048e9_bf60_7620_ad03_5affd0982697["DEC-0175<br/>v2.2 endpoint-type semantics are normative beyond JSON Schema shape"]
   end
   n_01a048e9_bf60_7620_ad03_5af81c48c443 -->|"declared_in"| n_01a048d8_454a_7464_bcaa_718e58dfb9c2
   n_01a048e9_bf60_7620_ad03_5af9dca56890 -->|"declared_in"| n_01a048d8_454a_7464_bcaa_718e58dfb9c2

@@ -5,8 +5,8 @@ artifact_kind: rendered_adr_markdown
 generator_id: adr-projection-markdown
 generator_version: 3
 hash_algorithm: sha256
-source_hash: f837754dfee392e8ea30510e623ed43c4eb507e6bd2a72f58dfe934f461e4c7a
-rendered_hash: decd50164011cc0f4c81ba0137bf6fac097c4c39cb22b71836ec9a988939c3df
+source_hash: 405ace7e225890e7edadfc49c5f9769272cfbcc2d479b6b5f83578a03ecc2a29
+rendered_hash: c1f5ffc6a14c5a3e20ddccae66794d029f2aa2d027c11c5d1fa351ed5b6c00c9
 -->
 
 # ADR-L-0019: Canonical Entity Identity
@@ -80,27 +80,27 @@ work.
 
 ```mermaid
 flowchart TB
-  n_019fee89_e617_78d9_ba3b_b7e3e6db1b12["ADR-L-0019"]
+  n_019fee89_e617_78d9_ba3b_b7e3e6db1b12["ADR-L-0019<br/>Canonical Entity Identity"]
   subgraph sg_decision["decision"]
-    n_019fee89_e617_7b55_931f_d0126c67c176["DEC-0089"]
-    n_019fee89_e617_7f80_823f_9e52a6176f77["DEC-0090"]
-    n_019fee89_e617_7a42_973f_626f9aa8c2c4["DEC-0091"]
-    n_019fee89_e617_7861_a53f_f050b9452bcf["DEC-0092"]
-    n_019fee89_e617_7faa_813b_d8e882418d4e["DEC-0093"]
-    n_019fee89_e617_7155_843f_9d4e2fd9fd00["DEC-0094"]
-    n_019fee89_e617_702b_b51b_719234187415["DEC-0095"]
-    n_019fee89_e617_7e88_a71f_db36a33c65e7["DEC-0096"]
-    n_019fee89_e617_7bdc_b136_032978d92661["DEC-0097"]
-    n_019fee89_e617_76fa_bb3e_5c088c73ebdf["DEC-0098"]
-    n_019fee89_e617_75e2_a23c_f14b6602dbda["DEC-0099"]
-    n_019fee89_e617_719d_b917_c98100049ad2["DEC-0100"]
-    n_019fee89_e617_769f_8f3f_5a1fa0356ea4["DEC-0101"]
-    n_019fee89_e617_74e8_862b_b5a6013a306e["DEC-0102"]
-    n_019fee89_e617_7cb0_ba1c_d370072adc7c["DEC-0103"]
-    n_019fee89_e617_7d26_8b2d_38c2321712ef["DEC-0104"]
-    n_019fee89_e617_75ee_b00e_64074f87263b["DEC-0105"]
-    n_019fee89_e617_707d_bb3e_959ff33027b8["DEC-0106"]
-    n_019fee89_e617_7dd5_811d_5f16482f2c3a["DEC-0107"]
+    n_019fee89_e617_7b55_931f_d0126c67c176["DEC-0089<br/>Every admitted v1.3 identity-bearing record has an authored lowercase RFC 9562 UUIDv7 in `id` before projection"]
+    n_019fee89_e617_7f80_823f_9e52a6176f77["DEC-0090<br/>Every normalized identity-bearing entity materializes `entity_type`"]
+    n_019fee89_e617_7a42_973f_626f9aa8c2c4["DEC-0091<br/>Migration preserves the existing type-prefixed identifier as repository-local governed `alias_id`"]
+    n_019fee89_e617_7861_a53f_f050b9452bcf["DEC-0092<br/>Every identity-bearing record authors a stable-by-default recognition mnemonic `alias_name` matching `^[a-z][a-z0-9]*(?:-[a-z0-9]+)*$` at 3–96 characters"]
+    n_019fee89_e617_7faa_813b_d8e882418d4e["DEC-0093<br/>Keep alias_ref derived and non-authoritative"]
+    n_019fee89_e617_7155_843f_9d4e2fd9fd00["DEC-0094<br/>V1.3 adds no universal authored `title`"]
+    n_019fee89_e617_702b_b51b_719234187415["DEC-0095<br/>Canonical authored entity references contain UUIDs only"]
+    n_019fee89_e617_7e88_a71f_db36a33c65e7["DEC-0096<br/>V1.3 relationship endpoints are UUIDs"]
+    n_019fee89_e617_7bdc_b136_032978d92661["DEC-0097<br/>Admit UUID identity only for independently addressable durable entity kinds"]
+    n_019fee89_e617_76fa_bb3e_5c088c73ebdf["DEC-0098<br/>V1.3 derives required normalized URI `adr://<architecture_namespace>/entities/<uuid>` as a stable logical entity-resolution key"]
+    n_019fee89_e617_75e2_a23c_f14b6602dbda["DEC-0099<br/>UUIDv7 mint time begins the v1.3 identity record and is decoded at millisecond precision into derived RFC 3339 UTC `created_at` when needed"]
+    n_019fee89_e617_719d_b917_c98100049ad2["DEC-0100<br/>Defer canonical entity-level updated_at to transactional authoring"]
+    n_019fee89_e617_769f_8f3f_5a1fa0356ea4["DEC-0101<br/>External v1.3 references use provider-authoritative namespace, UUID, kind, and `sha256:<64 lowercase hexadecimal>` fingerprint"]
+    n_019fee89_e617_74e8_862b_b5a6013a306e["DEC-0102<br/>Distinct entities claiming one UUID fail closed as integrity corruption"]
+    n_019fee89_e617_7cb0_ba1c_d370072adc7c["DEC-0103<br/>Migration preflights before minting and records a complete authoritative identity map"]
+    n_019fee89_e617_7d26_8b2d_38c2321712ef["DEC-0104<br/>Migration preserves alias_id and proposes alias_name deterministically from canonical fields"]
+    n_019fee89_e617_75ee_b00e_64074f87263b["DEC-0105<br/>Migration semantic parity requires one-to-one admitted-entity mapping"]
+    n_019fee89_e617_707d_bb3e_959ff33027b8["DEC-0106<br/>Keep v1.0 frozen, v1.2 migratable, and v1.3 as a separate provisional authoring line"]
+    n_019fee89_e617_7dd5_811d_5f16482f2c3a["DEC-0107<br/>architecture_namespace is stable provider authority; workspace keys are local routing only"]
   end
   subgraph sg_invariant["invariant"]
     n_019fee89_e617_72db_a33f_8a6826928686["INV-0009"]

@@ -5,8 +5,8 @@ artifact_kind: rendered_adr_markdown
 generator_id: adr-projection-markdown
 generator_version: 3
 hash_algorithm: sha256
-source_hash: 62eb83eab08b682c4b944cd2599c4fba7e87b6df7cad426065c900d2137b5be1
-rendered_hash: 6c0ee12f1460bb63fe1cea040e855f360e499d67ba8a85f7a3b528460cf8b408
+source_hash: b2973c21cd396e47ea5add15ec0898e00a0d792aacd2bdc54f6b011a6c2cceb9
+rendered_hash: d78ce2aa58aa3c6424519dde4df926aa4748337dcbca496939c027b95636a100
 -->
 
 # ADR-L-9000: Kernel Boot Publication Surface
@@ -49,12 +49,12 @@ publication surface.
 
 ```mermaid
 flowchart TB
-  n_019fee89_e617_7ceb_a437_474762adbfc2["ADR-L-9000"]
+  n_019fee89_e617_7ceb_a437_474762adbfc2["ADR-L-9000<br/>Kernel Boot Publication Surface"]
   subgraph sg_capability["capability"]
-    n_019fee89_e617_7410_8c37_e302d20b9f8b["CAP-9000"]
+    n_019fee89_e617_7410_8c37_e302d20b9f8b["CAP-9000<br/>Kernel Boot Readiness"]
   end
   subgraph sg_decision["decision"]
-    n_019fee89_e617_793a_b537_a492afa6f167["DEC-9000"]
+    n_019fee89_e617_793a_b537_a492afa6f167["DEC-9000<br/>Publish a deterministic logical ADR fragment for boot readiness."]
   end
   n_019fee89_e617_7410_8c37_e302d20b9f8b -->|"declared_in"| n_019fee89_e617_7ceb_a437_474762adbfc2
   n_019fee89_e617_793a_b537_a492afa6f167 -->|"declared_in"| n_019fee89_e617_7ceb_a437_474762adbfc2

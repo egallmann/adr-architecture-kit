@@ -5,8 +5,8 @@ artifact_kind: rendered_adr_markdown
 generator_id: adr-projection-markdown
 generator_version: 3
 hash_algorithm: sha256
-source_hash: 6760a464a81fe67962a1a2066cfb561bd3bf7b75b861f396472f1e7a052eb604
-rendered_hash: a907a7dd0c04e96ec3507b4bd20fb6d950e03e68127833718db79c6149748fd7
+source_hash: 7382fd086dd206962a3251fd34a96a18ecb0e8406dd8f3a81d460931a6f08975
+rendered_hash: 9e69c243458de5a7028ab73e11b2c5ee57c5cea32c850f9ddba3300d10a7b2a0
 -->
 
 # ADR-L-0008: Validation Modes for Draft and Complete ADRs
@@ -29,9 +29,9 @@ Logical architecture authority for this subject. Neighborhood paths use structur
 
 ```mermaid
 flowchart LR
-  n_019fee89_e616_7066_8d2f_3acc7f469f72["ADR-L-0008"]
-  n_019fee89_e617_7d2b_8325_cd85ff814477["ADR-PC-0002"]
-  n_019fee89_e618_7d04_9337_4aa2d3258507["ADR-PS-0002"]
+  n_019fee89_e616_7066_8d2f_3acc7f469f72["ADR-L-0008<br/>Validation Modes for Draft and Complete ADRs"]
+  n_019fee89_e617_7d2b_8325_cd85ff814477["ADR-PC-0002<br/>Schema and Contract Validation"]
+  n_019fee89_e618_7d04_9337_4aa2d3258507["ADR-PS-0002<br/>ADR Kit Authoring Compiler and Validation System"]
   n_019fee89_e617_7d2b_8325_cd85ff814477 -->|"implements_logical"| n_019fee89_e616_7066_8d2f_3acc7f469f72
   n_019fee89_e618_7d04_9337_4aa2d3258507 -->|"implements_logical"| n_019fee89_e616_7066_8d2f_3acc7f469f72
 ```
@@ -46,7 +46,7 @@ flowchart LR
 
 ### ADR-PC-0002 — Schema and Contract Validation
 
-- ADR-PC-0002 -[:implements_logical]-> ADR-L-0008 (peer ADR-PC-0002)
+- ADR-PC-0002 -[:implements_logical]-> ADR-L-0008
 
 **Context:** Schema and contract validation is now a stable component boundary rather than
 a generic legacy physical slice. It validates canonical ADR structure,
@@ -56,7 +56,7 @@ attribution evidence. Validation of that evidence is structural for schema shape
 [Open projection](../physical-component/ADR-PC-0002-schema-and-contract-validation.md)
 ### ADR-PS-0002 — ADR Kit Authoring Compiler and Validation System
 
-- ADR-PS-0002 -[:implements_logical]-> ADR-L-0008 (peer ADR-PS-0002)
+- ADR-PS-0002 -[:implements_logical]-> ADR-L-0008
 
 **Context:** adr-architecture-kit operates as an authoring-time compiler and validation system rather
 than a collection of unrelated generators. The implementation includes an
@@ -106,17 +106,17 @@ acting as fast review signals.
 
 ```mermaid
 flowchart TB
-  n_019fee89_e616_7066_8d2f_3acc7f469f72["ADR-L-0008"]
+  n_019fee89_e616_7066_8d2f_3acc7f469f72["ADR-L-0008<br/>Validation Modes for Draft and Complete ADRs"]
   subgraph sg_capability["capability"]
-    n_019fee89_e616_7abc_a63c_13e917ef49d8["CAP-0015"]
-    n_019fee89_e616_705d_9a3d_4341d19e1541["CAP-0016"]
+    n_019fee89_e616_7abc_a63c_13e917ef49d8["CAP-0015<br/>Mode-Aware ADR Validation"]
+    n_019fee89_e616_705d_9a3d_4341d19e1541["CAP-0016<br/>Draft-Preserving Source Generation"]
   end
   subgraph sg_decision["decision"]
-    n_019fee89_e616_7ede_823e_bf6a70fc3814["DEC-0013"]
-    n_019fee89_e616_78cd_b936_3357c12efad1["DEC-0020"]
-    n_019fee89_e616_7ef2_8f0f_5593e9025be3["DEC-0027"]
-    n_019fee89_e616_72f3_943b_62146272e78f["DEC-0032"]
-    n_019fee89_e616_7172_a93e_95eb4cac9011["DEC-0035"]
+    n_019fee89_e616_7ede_823e_bf6a70fc3814["DEC-0013<br/>Use one validator with explicit validation modes"]
+    n_019fee89_e616_78cd_b936_3357c12efad1["DEC-0020<br/>Define structural mode for schema-aligned drafts"]
+    n_019fee89_e616_7ef2_8f0f_5593e9025be3["DEC-0027<br/>Define complete mode for population readiness"]
+    n_019fee89_e616_72f3_943b_62146272e78f["DEC-0032<br/>Keep steelman review separate from deterministic validation"]
+    n_019fee89_e616_7172_a93e_95eb4cac9011["DEC-0035<br/>Allow generators to preserve explicit empty sections when requested"]
   end
   subgraph sg_invariant["invariant"]
     n_019fee89_e616_7868_b425_c7f5680872b7["INV-0040"]

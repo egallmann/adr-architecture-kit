@@ -5,8 +5,8 @@ artifact_kind: rendered_adr_markdown
 generator_id: adr-projection-markdown
 generator_version: 3
 hash_algorithm: sha256
-source_hash: 33d78281c3993d789f980afa1c0ad3580a0c81d5486d68b22d81da58cf24c99b
-rendered_hash: f44fc917f533b370d66c05de98fe13ea17f6aec8ddda7bb642248e712a342c10
+source_hash: fb5c610e4e6aa769dc9c560f95ad16f2defab9574e083ea4119028d9a812514b
+rendered_hash: 9bafe1f28113a504f51969bf8d17025b01ce47d19d4161a72034504a2e50f21d
 -->
 
 # ADR-L-0024: Cross-Language Consumer Bindings and TypeScript Distribution
@@ -67,25 +67,25 @@ remain framework-neutral for browser and Angular consumers.
 
 ```mermaid
 flowchart TB
-  n_01a02d38_7cf3_7b3c_87ec_1c5f08490c6e["ADR-L-0024"]
+  n_01a02d38_7cf3_7b3c_87ec_1c5f08490c6e["ADR-L-0024<br/>Cross-Language Consumer Bindings and TypeScript Distribution"]
   subgraph sg_capability["capability"]
-    n_01a02d38_7cf3_7dfe_80d8_28c51db97e18["CAP-9001"]
-    n_01a02d38_7cf3_7625_8e95_7fc0f62d7b09["CAP-9002"]
+    n_01a02d38_7cf3_7dfe_80d8_28c51db97e18["CAP-9001<br/>Capability-Scoped Consumer Binding"]
+    n_01a02d38_7cf3_7625_8e95_7fc0f62d7b09["CAP-9002<br/>TypeScript Node and Browser Consumer Distribution"]
   end
   subgraph sg_decision["decision"]
-    n_01a02d38_7cf3_7194_8e04_4339c496d93a["DEC-0155"]
-    n_01a02d38_7cf3_7a6f_8b71_a3624877c1b3["DEC-0156"]
-    n_01a02d38_7cf3_7b62_80b7_c907b9f972d6["DEC-0157"]
-    n_01a02d38_7cf3_7418_8bba_4fa7ecdd2151["DEC-0158"]
-    n_01a02d38_7cf3_700a_880b_182eb0956a24["DEC-0159"]
-    n_01a02d38_7cf3_78dc_8d0f_4d4a41000fe3["DEC-0160"]
-    n_01a02d38_7cf3_7765_8a96_0cdd35f55df5["DEC-0161"]
-    n_01a02d38_7cf3_724d_83e0_8739d6eeeeb5["DEC-0162"]
-    n_01a02d38_7cf3_74b3_8297_f3df87d11f35["DEC-0163"]
-    n_01a02d38_7cf3_7c3b_85b4_f2e1328d8363["DEC-0164"]
-    n_01a02d38_7cf3_7271_8b60_20c2a3f50ae6["DEC-0165"]
-    n_01a02d38_7cf3_7177_8edc_dfc953ae9947["DEC-0166"]
-    n_01a02d38_7cf3_7532_8d1e_2c81adf25864["DEC-0167"]
+    n_01a02d38_7cf3_7194_8e04_4339c496d93a["DEC-0155<br/>Accepted ADRs canonical schemas vocabularies and promoted binding contracts are language-neutral semantic authority"]
+    n_01a02d38_7cf3_7a6f_8b71_a3624877c1b3["DEC-0156<br/>The official TypeScript consumer binding is distributed as @system-of-thought/adr-kit from this repository"]
+    n_01a02d38_7cf3_7b62_80b7_c907b9f972d6["DEC-0157<br/>Consumer Binding Contract 1.0 governs conformance across supported language bindings"]
+    n_01a02d38_7cf3_7418_8bba_4fa7ecdd2151["DEC-0158<br/>Conformance is required only for the intersection of capabilities and contract versions advertised by bindings"]
+    n_01a02d38_7cf3_700a_880b_182eb0956a24["DEC-0159<br/>Consumer Binding Contract 1.0 distinguishes structural semantic behavioral diagnostic and serialization equivalence"]
+    n_01a02d38_7cf3_78dc_8d0f_4d4a41000fe3["DEC-0160<br/>TypeScript consumes copy-exact generated mirrors of canonical schema bytes from schema/"]
+    n_01a02d38_7cf3_7765_8a96_0cdd35f55df5["DEC-0161<br/>The first TypeScript release is read-only and excludes authoring identity allocation graph admission CLI MCP and repository writes"]
+    n_01a02d38_7cf3_724d_83e0_8739d6eeeeb5["DEC-0162<br/>Browser-safe entry points exclude Node built-ins and filesystem behavior is available only through explicit Node subpaths"]
+    n_01a02d38_7cf3_74b3_8297_f3df87d11f35["DEC-0163<br/>TypeScript v1 supports normalized model 2.1 evidence attribution 1.5 and 1.6 discovery loading and normalized semantic extensions"]
+    n_01a02d38_7cf3_7c3b_85b4_f2e1328d8363["DEC-0164<br/>Binding-local deterministic fingerprints may be exposed but Python and TypeScript fingerprint equality is not a contract"]
+    n_01a02d38_7cf3_7271_8b60_20c2a3f50ae6["DEC-0165<br/>Node repository loading is index-first manifest-aware additive-safe and never reparses source ADR YAML as a fallback"]
+    n_01a02d38_7cf3_7177_8edc_dfc953ae9947["DEC-0166<br/>Node embodiment linkage preserves validated-derived-evidence authority ceiling and not-admitted graph status"]
+    n_01a02d38_7cf3_7532_8d1e_2c81adf25864["DEC-0167<br/>PyPI and npm artifacts represent one ADR-Kit source release and do not create independent semantic version lineages"]
   end
   subgraph sg_invariant["invariant"]
     n_01a02d38_7cf3_790b_8493_b1499943f075["INV-0149"]

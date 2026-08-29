@@ -5,8 +5,8 @@ artifact_kind: rendered_adr_markdown
 generator_id: adr-projection-markdown
 generator_version: 3
 hash_algorithm: sha256
-source_hash: 0e44b6f1af9ba13aa38be7caba86bdb5197290da7ef7d8833dbf85b5a70bd730
-rendered_hash: 726e3171fed2cdb6fe0d9cf473c3c2271c9aa913e78fc237bcc05e93b94f78fd
+source_hash: ab0c7d4c43a992592c03ad9da3fd93893c526c0e0772322d288568cddb574a2b
+rendered_hash: d412d600bdd8eb6474a3200716c6592b9a9aae97b6eb7400316d604a7413b8d9
 -->
 
 # ADR-L-0001: STE-Compliant Machine-Verifiable Architecture Decision Record System
@@ -29,8 +29,8 @@ Logical architecture authority for this subject. Neighborhood paths use structur
 
 ```mermaid
 flowchart LR
-  n_019fee89_e615_70a5_861b_b2dde147e5af["ADR-L-0001"]
-  n_019fee89_e618_7d04_9337_4aa2d3258507["ADR-PS-0002"]
+  n_019fee89_e615_70a5_861b_b2dde147e5af["ADR-L-0001<br/>STE-Compliant Machine-Verifiable Architecture Decision Record System"]
+  n_019fee89_e618_7d04_9337_4aa2d3258507["ADR-PS-0002<br/>ADR Kit Authoring Compiler and Validation System"]
   n_019fee89_e618_7d04_9337_4aa2d3258507 -->|"implements_logical"| n_019fee89_e615_70a5_861b_b2dde147e5af
 ```
 
@@ -43,7 +43,7 @@ flowchart LR
 
 ### ADR-PS-0002 — ADR Kit Authoring Compiler and Validation System
 
-- ADR-PS-0002 -[:implements_logical]-> ADR-L-0001 (peer ADR-PS-0002)
+- ADR-PS-0002 -[:implements_logical]-> ADR-L-0001
 
 **Context:** adr-architecture-kit operates as an authoring-time compiler and validation system rather
 than a collection of unrelated generators. The implementation includes an
@@ -130,23 +130,23 @@ ste-kernel (admission and governance over compiled inputs)
 
 ```mermaid
 flowchart TB
-  n_019fee89_e615_70a5_861b_b2dde147e5af["ADR-L-0001"]
+  n_019fee89_e615_70a5_861b_b2dde147e5af["ADR-L-0001<br/>STE-Compliant Machine-Verifiable Architecture Decision Record System"]
   subgraph sg_capability["capability"]
-    n_019fee89_e614_7c68_be36_2c84d4579279["CAP-0001"]
-    n_019fee89_e614_707f_8d3f_7a814d286ce6["CAP-0002"]
-    n_019fee89_e614_7485_bb12_e90f01c3968e["CAP-0003"]
-    n_019fee89_e614_733f_9e37_fbd70087182d["CAP-0004"]
-    n_019fee89_e615_7c41_b23f_a324d60b48e1["CAP-0005"]
-    n_019fee89_e615_7946_a53f_af6bf655dc11["CAP-0006"]
-    n_019fee89_e615_7b72_b72b_d07441bebf10["CAP-0007"]
+    n_019fee89_e614_7c68_be36_2c84d4579279["CAP-0001<br/>Machine-Verifiable Architecture Documentation"]
+    n_019fee89_e614_707f_8d3f_7a814d286ce6["CAP-0002<br/>Two-Layer Architecture Model"]
+    n_019fee89_e614_7485_bb12_e90f01c3968e["CAP-0003<br/>Semantic Graph Integration"]
+    n_019fee89_e614_733f_9e37_fbd70087182d["CAP-0004<br/>Explicit Gap Tracking"]
+    n_019fee89_e615_7c41_b23f_a324d60b48e1["CAP-0005<br/>Derived Manifest Generation"]
+    n_019fee89_e615_7946_a53f_af6bf655dc11["CAP-0006<br/>Policy Integration Readiness"]
+    n_019fee89_e615_7b72_b72b_d07441bebf10["CAP-0007<br/>Correction Agent Context"]
   end
   subgraph sg_decision["decision"]
-    n_019fee89_e615_7bb9_ad3b_93d12b0f65b6["DEC-0001"]
-    n_019fee89_e615_76f6_a33f_33eef61e39a9["DEC-0002"]
-    n_019fee89_e615_7a31_b11f_daf8feef12d9["DEC-0003"]
-    n_019fee89_e615_7899_8d3b_0ecfe4490994["DEC-0004"]
-    n_019fee89_e615_7f04_931e_170f4cbef292["DEC-0005"]
-    n_019fee89_e615_7d96_880f_40f6e38f3e88["DEC-0006"]
+    n_019fee89_e615_7bb9_ad3b_93d12b0f65b6["DEC-0001<br/>Use YAML with embedded markdown, not markdown with YAML frontmatter"]
+    n_019fee89_e615_76f6_a33f_33eef61e39a9["DEC-0002<br/>Separate logical and physical ADRs with distinct schemas"]
+    n_019fee89_e615_7a31_b11f_daf8feef12d9["DEC-0003<br/>Rich frontmatter as authoritative metadata, manifest as derived view"]
+    n_019fee89_e615_7899_8d3b_0ecfe4490994["DEC-0004<br/>Governed type-prefixed human-recognition aliases (ADR-L-XXXX / ADR-PS-XXXX / ADR-PC-XXXX) with 4-digit numbering; UUID is canonical machine identity"]
+    n_019fee89_e615_7f04_931e_170f4cbef292["DEC-0005<br/>PROJECT.yaml for project-level metadata, separate from ADR metadata"]
+    n_019fee89_e615_7d96_880f_40f6e38f3e88["DEC-0006<br/>Dogfooding strategy - document this project using ADR Kit"]
   end
   subgraph sg_invariant["invariant"]
     n_019fee89_e615_713e_b627_2ee4bf985295["INV-0001"]
@@ -158,9 +158,9 @@ flowchart TB
     n_019fee89_e615_7502_a52f_af65757c9fd2["INV-0007"]
   end
   subgraph sg_boundary["boundary"]
-    n_019fee89_e614_7304_881c_fdc95e14e704["BOUND-0001"]
-    n_019fee89_e614_795f_a62b_d6d1ebcdd6ac["BOUND-0002"]
-    n_019fee89_e614_7a79_aa1e_8ad7395cf4f2["BOUND-0003"]
+    n_019fee89_e614_7304_881c_fdc95e14e704["BOUND-0001<br/>Logical vs Physical Separation"]
+    n_019fee89_e614_795f_a62b_d6d1ebcdd6ac["BOUND-0002<br/>ADR Kit vs ste-runtime Separation"]
+    n_019fee89_e614_7a79_aa1e_8ad7395cf4f2["BOUND-0003<br/>Frontmatter as Authority"]
   end
   subgraph sg_contract["contract"]
     n_019fee89_e615_74df_8433_acb8769aa8a6["CONTRACT-0001"]
@@ -208,13 +208,12 @@ flowchart TB
 - `capability` CAP-0005 — Derived Manifest Generation
 - `capability` CAP-0006 — Policy Integration Readiness
 - `capability` CAP-0007 — Correction Agent Context
-- `contract` CONTRACT-0001 — 019fee89-e615-74df-8433-acb8769aa8a6
-- `contract` CONTRACT-0002 — 019fee89-e615-70d2-ad37-4be4c7277ebc
+- `contract` CONTRACT-0001 — CONTRACT-0001
+- `contract` CONTRACT-0002 — CONTRACT-0002
 - `decision` DEC-0001 — Use YAML with embedded markdown, not markdown with YAML frontmatter
 - `decision` DEC-0002 — Separate logical and physical ADRs with distinct schemas
 - `decision` DEC-0003 — Rich frontmatter as authoritative metadata, manifest as derived view
 - `decision` DEC-0004 — Governed type-prefixed human-recognition aliases (ADR-L-XXXX / ADR-PS-XXXX / ADR-PC-XXXX) with 4-digit numbering; UUID is canonical machine identity
-
 - `decision` DEC-0005 — PROJECT.yaml for project-level metadata, separate from ADR metadata
 - `decision` DEC-0006 — Dogfooding strategy - document this project using ADR Kit
 - `invariant` INV-0001 — INV-0001

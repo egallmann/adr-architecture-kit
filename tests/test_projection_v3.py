@@ -207,7 +207,7 @@ def test_projection_v3_canaries_for_kit_corpus() -> None:
     assert "binds_substrate" not in l13.split("## Governance")[0]
     assert l13.count("`implements_logical`: ADR-PS-0002 → ADR-L-0013") == 1
     implemented_by_graph = l13.split("```mermaid")[1].split("```")[0]
-    assert '["ADR-L-0013"]' in implemented_by_graph
+    assert "ADR-L-0013" in implemented_by_graph
     assert '|"declared_in"|' in implemented_by_graph
     assert '|"implemented_by"|' in implemented_by_graph
 
@@ -221,7 +221,7 @@ def test_projection_v3_canaries_for_kit_corpus() -> None:
     provides = next(block for block in ps1_blocks if '|"provides_interface"|' in block)
     assert '["ADR-PS-0001"]' not in impl_by
     assert '["ADR-PS-0001"]' not in provides
-    assert '["ADR-PS-0001"]' in impl_logical
+    assert "ADR-PS-0001" in impl_logical
 
     l3 = _artifact_text(result.artifacts, folder="logical", alias="ADR-L-0003")
     assert "```mermaid" not in l3.split("## Internal Structure")[0]
@@ -229,15 +229,15 @@ def test_projection_v3_canaries_for_kit_corpus() -> None:
     l8 = _artifact_text(result.artifacts, folder="logical", alias="ADR-L-0008")
     internal = l8.split("## Internal Structure", 1)[1]
     assert "```mermaid" in internal
-    assert '["CAP-0015"]' in internal
-    assert '["DEC-0013"]' in internal
+    assert "CAP-0015" in internal
+    assert "DEC-0013" in internal
     assert '|"declared_in"|' in internal
 
     pc1 = _artifact_text(result.artifacts, folder="physical-component", alias="ADR-PC-0001")
     pc1_internal = pc1.split("## Internal Structure", 1)[1]
     assert "```mermaid" in pc1_internal
-    assert '["COMP-0010"]' in pc1_internal
-    assert '["IFACE-0011"]' in pc1_internal
+    assert "COMP-0010" in pc1_internal
+    assert "IFACE-0011" in pc1_internal
     assert '|"provides_interface"|' in pc1_internal
     assert '|"declared_in"|' in pc1_internal
     assert "depends_on" not in pc1_internal.split("## Technology Stack")[0]

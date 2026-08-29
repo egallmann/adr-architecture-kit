@@ -1,21 +1,84 @@
 # {{ adr | presentation_id }}: {{ adr.title }}
+{% set pc = ctx.physical_component if ctx else none %}
 
 ## Identity / Status
 
+{% if pc and pc.identity_rows %}
+{% for row in pc.identity_rows %}
+**{{ row.label }}:** {{ row.value }}  
+{% endfor %}
+{% else %}
 **Type:** {{ ctx.adr_type if ctx else adr.adr_type }}  
 **Status:** {{ adr.status.value }}  
 **Alias:** {{ adr | presentation_id }}  
-{% if adr.alias_name %}**Alias name:** {{ adr.alias_name }}  
-{% endif %}
 **Created:** {{ adr.created_date }}  
-{% if adr.implements_logical %}**Implements Logical:** {% for item in adr.implements_logical %}{{ item | present_ref }}{% if not loop.last %}, {% endif %}{% endfor %}  
-{% endif %}
-{% if adr.implements_system %}**Implements System:** {% for item in adr.implements_system %}{{ item | present_ref }}{% if not loop.last %}, {% endif %}{% endfor %}  
 {% endif %}
 
 ## Architecture Position
 
+{% if pc %}
+{{ pc.architecture_position.note }}
+
+{% if pc.architecture_position.containing_systems %}
+**Containing system(s):**
+{% for item in pc.architecture_position.containing_systems %}
+- {{ item }}
+{% endfor %}
+
+{% endif %}
+{% if pc.architecture_position.logical_authority %}
+**Logical authority implemented:**
+{% for item in pc.architecture_position.logical_authority %}
+- {{ item }}
+{% endfor %}
+
+{% endif %}
+{% if pc.architecture_position.owned_components %}
+**Component(s) owned by this ADR:**
+{% for item in pc.architecture_position.owned_components %}
+- {{ item }}
+{% endfor %}
+
+{% endif %}
+{% if pc.architecture_position.component_types %}
+**Component type(s):** {{ pc.architecture_position.component_types | join(', ') }}
+
+{% endif %}
+{% if pc.architecture_position.purposes %}
+**Authored purpose:**
+{% for item in pc.architecture_position.purposes %}
+- {{ item }}
+{% endfor %}
+
+{% endif %}
+{% if pc.architecture_position.outgoing_dependencies %}
+**Depends on:**
+{% for item in pc.architecture_position.outgoing_dependencies %}
+- {{ item }}
+{% endfor %}
+
+{% endif %}
+{% if pc.architecture_position.incoming_dependents %}
+**Depended on by:**
+{% for item in pc.architecture_position.incoming_dependents %}
+- {{ item }}
+{% endfor %}
+
+{% endif %}
+{% if pc.architecture_position.provided_interface_types %}
+**Provided interface types:** {{ pc.architecture_position.provided_interface_types | join(', ') }}
+
+{% endif %}
+{% if pc.architecture_position.implementation_locations %}
+**Implementation location(s):**
+{% for item in pc.architecture_position.implementation_locations %}
+- {{ item }}
+{% endfor %}
+
+{% endif %}
+{% else %}
 Physical-component ADRs author component, interface, and implementation entities. Topology is not authored here; neighborhood uses compiled semantic architecture edges plus structural bridges.
+{% endif %}
 
 ## Architecture Neighborhood
 
@@ -37,6 +100,19 @@ Physical-component ADRs author component, interface, and implementation entities
 - None
 {% endif %}
 
+{% if pc and pc.architecture_position.relationship_groups %}
+### Component Relationships
+
+{% for group in pc.architecture_position.relationship_groups %}
+**{{ group.heading }}**
+{% for item in group.items %}
+- {{ item.label }}
+  - `{{ item.canonical_path }}`
+{% endfor %}
+
+{% endfor %}
+{% endif %}
+
 ## Neighbor Relationships
 
 {% if ctx and ctx.peer_cards %}
@@ -45,11 +121,15 @@ Physical-component ADRs author component, interface, and implementation entities
 
 {% if card.relationships %}
 {% for rel in card.relationships %}
-- {{ rel.label }}
+{{ rel.from_display }}
+    -[:{{ rel.verb }}]->
+{{ rel.to_display }}
+
+`{{ rel.canonical_path }}`
 {% endfor %}
 {% endif %}
 
-**Context:** {{ card.context_summary }}
+**Peer context:** {{ card.context_summary }}
 
 {% if card.link %}[Open projection]({{ card.link }}){% else %}*(projection link unavailable)*{% endif %}
 
@@ -69,48 +149,319 @@ No grammatical peer neighborhood for this subject.
 {{ ctx.internal_graph }}```
 
 {% endif %}
-{% if adr.component_specifications %}
-{% for comp in adr.component_specifications %}
-### {{ comp | presentation_id }}: {{ comp.name }} ({{ comp.type }})
-
-**Responsibilities:**
-{{ comp.responsibilities }}
-
-{% if comp.interfaces %}
-**Interfaces:**
-{% for iface in comp.interfaces %}
-- **{{ iface | presentation_id }}**{% if iface.type %} ({{ iface.type }}){% endif %}: {{ iface.specification or iface.description or iface.name or "Interface definition" }}
-{% endfor %}
-{% endif %}
-
-{% if comp.implementation_identifiers %}
-**Implementation Identifiers:**
-{% if comp.implementation_identifiers.module_path %}
-- Module Path: `{{ comp.implementation_identifiers.module_path }}`
-{% endif %}
-{% endif %}
-
-{% endfor %}
-{% endif %}
-
 {% if ctx and ctx.internal_entities %}
 {% for row in ctx.internal_entities %}
-- `{{ row.entity_type }}` {{ row.alias }} — {{ row.name }}
+- `{{ row.entity_type }}` {{ row.alias }}{% if row.name %} — {{ row.name }}{% endif %}
+
 {% endfor %}
 {% endif %}
 
-{% if adr.technology_stack %}
+## Type-specific Detail
+
+{% if pc %}
+{% for block in pc.change_safety_blocks %}
+{% if block.must_preserve or block.public_interfaces or block.depends_on or block.depended_on_by or block.verify_with or block.known_gaps %}
+### Before You Change This Component{% if block.component_alias %} ({{ block.component_alias }}){% endif %}
+
+{% if block.must_preserve %}
+**Must preserve:**
+{% for item in block.must_preserve %}
+- {{ item }}
+{% endfor %}
+
+{% endif %}
+{% if block.public_interfaces %}
+**Public / exposed interfaces:**
+{% for item in block.public_interfaces %}
+- {{ item }}
+{% endfor %}
+
+{% endif %}
+{% if block.depends_on %}
+**Depends on:**
+{% for item in block.depends_on %}
+- {{ item }}
+{% endfor %}
+
+{% endif %}
+{% if block.depended_on_by %}
+**Depended on by:**
+{% for item in block.depended_on_by %}
+- {{ item }}
+{% endfor %}
+
+{% endif %}
+{% if block.verify_with %}
+**Verify with:**
+{% for item in block.verify_with %}
+- {{ item }}
+{% endfor %}
+
+{% endif %}
+{% if block.known_gaps %}
+**Known gaps:**
+{% for item in block.known_gaps %}
+- {{ item }}
+{% endfor %}
+
+{% endif %}
+{% endif %}
+{% endfor %}
+
+{% for comp in pc.component_contracts %}
+### {{ comp.alias_id }}: {{ comp.name }}
+
+{% if comp.component_type %}
+**Type:** {{ comp.component_type }}
+
+{% endif %}
+{% if comp.description %}
+**Description:**
+
+{{ comp.description }}
+
+{% endif %}
+{% if comp.purpose %}
+**Purpose:**
+
+{{ comp.purpose }}
+
+{% endif %}
+{% if comp.responsibilities %}
+**Responsibilities:**
+
+{{ comp.responsibilities }}
+
+{% endif %}
+{% if comp.key_responsibilities %}
+**Key Responsibilities:**
+{% for item in comp.key_responsibilities %}
+- {{ item }}
+{% endfor %}
+
+{% endif %}
+{% if comp.constraints %}
+**Must Remain True:**
+{% for item in comp.constraints %}
+- {{ item }}
+{% endfor %}
+
+{% endif %}
+{% if comp.success_criteria %}
+**Success Criteria:**
+{% for item in comp.success_criteria %}
+- {{ item }}
+{% endfor %}
+
+{% endif %}
+{% if comp.implements_capabilities %}
+**Implements Capabilities:**
+{% for item in comp.implements_capabilities %}
+- {{ item }}
+{% endfor %}
+
+{% endif %}
+{% endfor %}
+
+{% if pc.interfaces %}
+{% for iface in pc.interfaces %}
+### {{ iface.heading }}
+
+{% if iface.interface_type %}
+**Type:** {{ iface.interface_type }}
+
+{% endif %}
+**Specification:**
+
+{{ iface.specification }}
+
+{% if iface.contract_reference %}
+**Contract reference:** {{ iface.contract_reference }}
+
+{% endif %}
+{% if iface.contract_tests %}
+**Contract tests:**
+
+{{ iface.contract_tests }}
+
+{% endif %}
+{% endfor %}
+{% endif %}
+
+{% if pc.implementation_decisions %}
+{% for decision in pc.implementation_decisions %}
+### {{ decision.heading }}
+
+**Decision:**
+
+{{ decision.summary }}
+
+{% if decision.rationale %}
+**Rationale:**
+
+{{ decision.rationale }}
+
+{% endif %}
+{% if decision.alternatives %}
+**Alternatives Considered:**
+
+| Alternative | Rejected Because |
+| --- | --- |
+{% for alt in decision.alternatives %}
+| {{ alt.name }} | {{ alt.rejected_because }} |
+{% endfor %}
+
+{% endif %}
+{% if decision.consequences %}
+**Consequences:**
+{% for item in decision.consequences %}
+- {{ item }}
+{% endfor %}
+
+{% endif %}
+{% endfor %}
+{% endif %}
+
+{% if pc.engineering_contracts %}
+## Engineering Contract
+
+{% for alias, contract in pc.engineering_contracts %}
+{% if pc.engineering_contracts | length > 1 %}
+### {{ alias }}
+
+{% endif %}
+{% if contract.failure_semantics %}
+### Failure Semantics
+
+{{ contract.failure_semantics }}
+
+{% endif %}
+{% if contract.logging or contract.metrics %}
+### Observability
+
+{% if contract.logging %}
+**Logging:**
+{% if contract.logging.level %}
+- Level: {{ contract.logging.level }}
+{% endif %}
+{% if contract.logging.structured %}
+- Structured: {{ contract.logging.structured }}
+{% endif %}
+
+{% endif %}
+{% if contract.metrics %}
+**Metrics:**
+{% for metric in contract.metrics %}
+- {{ metric.name }}{% if metric.metric_type %} ({{ metric.metric_type }}){% endif %}{% if metric.description %} — {{ metric.description }}{% endif %}
+
+{% endfor %}
+
+{% endif %}
+{% endif %}
+{% if contract.unit_test_coverage or contract.nested_integration_tests or contract.component_testing_requirements %}
+### Verification
+
+{% if contract.unit_test_coverage %}
+**Unit test coverage:** {{ contract.unit_test_coverage }}
+
+{% endif %}
+{% if contract.nested_integration_tests %}
+**Integration tests:**
+
+{{ contract.nested_integration_tests }}
+
+{% endif %}
+{% if contract.component_testing_requirements %}
+**Testing requirements:**
+{% for item in contract.component_testing_requirements %}
+- {{ item }}
+{% endfor %}
+
+{% endif %}
+{% endif %}
+{% if contract.dependencies or contract.upstream_services or contract.downstream_services %}
+### Dependencies
+{% for item in contract.dependencies %}
+- {{ item }}
+{% endfor %}
+{% for item in contract.upstream_services %}
+- Upstream: {{ item }}
+{% endfor %}
+{% for item in contract.downstream_services %}
+- Downstream: {{ item }}
+{% endfor %}
+
+{% endif %}
+{% if contract.algorithms %}
+### Algorithms
+{% for item in contract.algorithms %}
+**{{ item.label }}**
+
+{{ item.value }}
+
+{% endfor %}
+{% endif %}
+{% if contract.extra_requirement_rows %}
+{% for item in contract.extra_requirement_rows %}
+**{{ item.label }}:** {{ item.value }}
+
+{% endfor %}
+{% endif %}
+{% endfor %}
+{% endif %}
+
+{% if pc.implementation_locations %}
+## Implementation Locations
+
+{% for alias, rows in pc.implementation_locations %}
+{% if pc.implementation_locations | length > 1 %}
+### {{ alias }}
+
+{% endif %}
+| Role | Location |
+| --- | --- |
+{% for row in rows %}
+| {{ row.role }} | `{{ row.location }}` |
+{% endfor %}
+
+{% endfor %}
+{% endif %}
+
+{% if pc.migration_rows %}
+## Lineage / Migration
+
+| Entity Type | Historical Alias | Current Alias | Source |
+| --- | --- | --- | --- |
+{% for row in pc.migration_rows %}
+| {{ row.entity_type }} | {{ row.historical_alias }} | {{ row.current_alias }} | {{ row.source }} |
+{% endfor %}
+
+{% endif %}
+
+{% if pc.technology_stack %}
 ## Technology Stack
 
-{% for tech in adr.technology_stack %}
-### {{ tech.name }} ({{ tech.category }})
+{% for tech in pc.technology_stack %}
+### {{ tech.name }}{% if tech.category %} ({{ tech.category }}){% endif %}
 
+{% if tech.version %}
 **Version:** {{ tech.version }}
 
+{% endif %}
+{% if tech.rationale %}
 **Rationale:**
 {{ tech.rationale }}
 
+{% endif %}
 {% endfor %}
+{% endif %}
+
+{% if pc.notes %}
+## Notes
+
+{{ pc.notes }}
+
+{% endif %}
 {% endif %}
 
 {% if ctx and ctx.governance_rows %}
@@ -118,6 +469,32 @@ No grammatical peer neighborhood for this subject.
 
 {% for row in ctx.governance_rows %}
 - {{ row }}
+{% endfor %}
+{% endif %}
+
+{% if pc and pc.architecture_impact_rows %}
+## Architecture Impact
+
+{% for row in pc.architecture_impact_rows %}
+**{{ row.label }}:** {{ row.value }}
+{% endfor %}
+
+{% endif %}
+
+{% if pc and pc.gaps %}
+## Gaps
+
+{% for gap in pc.gaps %}
+### {{ gap.heading }}
+
+{% if gap.body %}
+{{ gap.body }}
+
+{% endif %}
+{% for item in gap.fields %}
+**{{ item.label }}:** {{ item.value }}
+{% endfor %}
+
 {% endfor %}
 {% endif %}
 

@@ -68,6 +68,35 @@ _PREFIX_RULES: tuple[tuple[str, Disposition], ...] = (
     ("/system_boundaries", "RENDER_DETAIL"),
     ("/component_topology", "PROJECTION_CONTROL_INPUT"),
     ("/component_specifications", "RENDER_SUMMARY_AND_DETAIL"),
+    ("/component_specifications/id", "GOVERNANCE_METADATA"),
+    ("/component_specifications/alias_id", "RENDER_PRIMARY"),
+    ("/component_specifications/alias_name", "RENDER_PRIMARY"),
+    ("/component_specifications/name", "RENDER_PRIMARY"),
+    ("/component_specifications/type", "RENDER_PRIMARY"),
+    ("/component_specifications/description", "RENDER_DETAIL"),
+    ("/component_specifications/responsibilities", "RENDER_SUMMARY_AND_DETAIL"),
+    ("/component_specifications/implements_capabilities", "RENDER_AS_RELATIONSHIP"),
+    ("/component_specifications/generation_context", "RENDER_SUMMARY_AND_DETAIL"),
+    ("/component_specifications/generation_context/purpose", "RENDER_PRIMARY"),
+    ("/component_specifications/generation_context/key_responsibilities", "RENDER_PRIMARY"),
+    ("/component_specifications/generation_context/constraints", "RENDER_PRIMARY"),
+    ("/component_specifications/generation_context/success_criteria", "RENDER_PRIMARY"),
+    ("/component_specifications/interfaces", "RENDER_SUMMARY_AND_DETAIL"),
+    ("/component_specifications/interfaces/id", "GOVERNANCE_METADATA"),
+    ("/component_specifications/interfaces/alias_id", "RENDER_PRIMARY"),
+    ("/component_specifications/interfaces/alias_name", "RENDER_PRIMARY"),
+    ("/component_specifications/interfaces/type", "RENDER_PRIMARY"),
+    ("/component_specifications/interfaces/specification", "RENDER_DETAIL"),
+    ("/component_specifications/interfaces/contract_reference", "RENDER_DETAIL"),
+    ("/component_specifications/interfaces/contract_tests", "RENDER_DETAIL"),
+    ("/component_specifications/implementation_identifiers", "RENDER_DETAIL"),
+    ("/component_specifications/implementation_requirements", "RENDER_DETAIL"),
+    ("/component_specifications/dependencies", "RENDER_DETAIL"),
+    ("/component_specifications/testing_requirements", "RENDER_DETAIL"),
+    ("/component_specifications/upstream_services", "RENDER_DETAIL"),
+    ("/component_specifications/downstream_services", "RENDER_DETAIL"),
+    ("/component_specifications/component_id", "GOVERNANCE_METADATA"),
+    ("/component_specifications/realizes_entities", "INTENTIONALLY_NOT_RENDERED"),
     ("/substrate_bindings", "GOVERNANCE_METADATA"),
     ("/rule_bindings", "GOVERNANCE_METADATA"),
     ("/evidence_expectations", "GOVERNANCE_METADATA"),
@@ -93,13 +122,35 @@ _PREFIX_RULES: tuple[tuple[str, Disposition], ...] = (
     ("/architecture_patterns", "RENDER_DETAIL"),
     ("/data_architecture", "RENDER_DETAIL"),
     ("/implementation_decisions", "RENDER_DETAIL"),
+    ("/implementation_decisions/id", "GOVERNANCE_METADATA"),
+    ("/implementation_decisions/alias_id", "RENDER_PRIMARY"),
+    ("/implementation_decisions/alias_name", "RENDER_PRIMARY"),
+    ("/implementation_decisions/summary", "RENDER_SUMMARY_AND_DETAIL"),
+    ("/implementation_decisions/rationale", "RENDER_DETAIL"),
+    ("/implementation_decisions/alternatives_considered", "RENDER_DETAIL"),
+    ("/implementation_decisions/consequences", "RENDER_DETAIL"),
+    ("/implementation_decisions/implements_invariants", "RENDER_AS_RELATIONSHIP"),
     ("/integration_points", "RENDER_DETAIL"),
     ("/exposed_interfaces", "RENDER_DETAIL"),
     ("/external_dependencies", "RENDER_DETAIL"),
     ("/notes", "RENDER_DETAIL"),
     ("/decision", "RENDER_SUMMARY_AND_DETAIL"),
     ("/migration_origin", "GOVERNANCE_METADATA"),
+    ("/migration_origin/remapped_entities", "RENDER_DETAIL"),
 )
+
+_PC_OVERRIDES: dict[str, Disposition] = {
+    "/schema_version": "RENDER_PRIMARY",
+    "/created_date": "RENDER_PRIMARY",
+    "/modified_date": "RENDER_PRIMARY",
+    "/authors": "RENDER_PRIMARY",
+    "/domains": "RENDER_PRIMARY",
+    "/tags": "RENDER_PRIMARY",
+    "/technologies": "INTENTIONALLY_NOT_RENDERED",
+    "/implementation_decisions": "RENDER_SUMMARY_AND_DETAIL",
+    "/migration_origin": "RENDER_DETAIL",
+    "/component_topology": "UNSUPPORTED_OR_STALE",
+}
 
 
 class CoverageRegistryError(ValueError):
@@ -213,7 +264,7 @@ def built_in_registry() -> dict[str, dict[str, Disposition]]:
             pointer: _default_disposition(pointer) for pointer in sorted(pointers)
         }
         if adr_type == "physical-component":
-            table["/component_topology"] = "UNSUPPORTED_OR_STALE"
+            table.update(_PC_OVERRIDES)
         elif adr_type == "logical":
             table.pop("/component_topology", None)
         registry[adr_type] = table

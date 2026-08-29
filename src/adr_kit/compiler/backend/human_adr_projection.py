@@ -17,7 +17,6 @@ from .coverage_registry import assert_current_authoring_coverage
 from .neighbor_paths import (
     GOVERNANCE,
     LIFECYCLE_ASSOCIATION,
-    SEMANTIC_ARCHITECTURE,
     select_neighbor_paths,
 )
 from .projection_paths import (
@@ -46,6 +45,9 @@ class PeerRelationship:
     direction_token: str
     other_endpoint_id: str
     label: str
+    from_display: str
+    to_display: str
+    canonical_path: str
 
 
 @dataclass
@@ -99,6 +101,7 @@ class HumanAdrProjectionContext:
     internal_graph: str | None
     lifecycle_rows: list[str]
     governance_rows: list[str]
+    physical_component: Any | None = None
 
 
 def context_summary_from_text(text: str | None) -> str:
@@ -216,6 +219,13 @@ def build_human_adr_projection_context(
         to_entity = entities.get(path.to_id)
         from_label = presentation_id(from_entity) if from_entity else path.from_id
         to_label = presentation_id(to_entity) if to_entity else path.to_id
+        from_display = _endpoint_heading(
+            path.from_id, entities=entities, adr_models_by_id=adr_models_by_id
+        )
+        to_display = _endpoint_heading(
+            path.to_id, entities=entities, adr_models_by_id=adr_models_by_id
+        )
+        canonical_path = f"{from_label} -[:{path.semantic_verb}]-> {to_label}"
         inventory_key = (path.semantic_verb, path.from_id, path.to_id)
         if inventory_key not in inventory_keys:
             inventory_keys.add(inventory_key)
@@ -233,10 +243,10 @@ def build_human_adr_projection_context(
                 verb=path.semantic_verb,
                 direction_token="semantic",
                 other_endpoint_id=path.to_id,
-                label=(
-                    f"{from_label} -[:{path.semantic_verb}]-> {to_label} "
-                    f"(peer {presentation_id(adr_models_by_id.get(path.peer_adr_id) or path.peer_adr_id)})"
-                ),
+                label=canonical_path,
+                from_display=from_display,
+                to_display=to_display,
+                canonical_path=canonical_path,
             )
         )
     neighborhood_inventory.sort(key=lambda row: (row.verb, row.from_id, row.to_id))
@@ -310,6 +320,10 @@ def build_human_adr_projection_context(
     superseded_by = field_get(adr, "superseded_by")
     if isinstance(superseded_by, str) and superseded_by:
         resolve_present_ref(superseded_by)
+    for component in field_get(adr, "component_specifications") or []:
+        for cap_id in field_get(component, "implements_capabilities") or []:
+            if isinstance(cap_id, str) and cap_id:
+                resolve_present_ref(cap_id)
 
     graphs = _build_mermaid_graphs(
         one_hop=path_relationships,
@@ -325,7 +339,7 @@ def build_human_adr_projection_context(
             entity_id=entity.id,
             alias=presentation_id(entity),
             entity_type=entity.entity_type,
-            name=entity.name,
+            name=_inventory_name(entity.id, entities=entities, adr_models_by_id=adr_models_by_id),
         )
         for entity in entities.values()
         if any(
@@ -337,6 +351,22 @@ def build_human_adr_projection_context(
     ]
     internal_entities.sort(key=lambda row: (row.entity_type, row.alias, row.entity_id))
     adr_type = _adr_type_value(adr)
+    physical_component = None
+    if adr_type == "physical-component":
+        from .physical_component_projection import build_physical_component_projection
+
+        physical_component = build_physical_component_projection(
+            adr=adr,
+            subject_id=subject_id,
+            alias_id=alias_id,
+            adr_type=adr_type,
+            status=_status_value(adr),
+            entities=entities,
+            relationships=list(relationships),
+            adr_models_by_id=adr_models_by_id,
+            resolve_present_ref=resolve_present_ref,
+            format_present_ref=format_present_ref,
+        )
     internal_graph = None
     if adr_type in {"logical", "physical-component"}:
         internal_graph = _build_internal_structure_graph(
@@ -377,10 +407,12 @@ def build_human_adr_projection_context(
     paths_module = Path(__file__).resolve().parent / "projection_paths.py"
     neighbor_module = Path(__file__).resolve().parent / "neighbor_paths.py"
     coverage_module = Path(__file__).resolve().parent / "coverage_registry" / "__init__.py"
+    pc_module = Path(__file__).resolve().parent / "physical_component_projection.py"
     dependency_keys[f"__generator__/modules/{this_module.name}"] = _module_hash_input(this_module)
     dependency_keys[f"__generator__/modules/{paths_module.name}"] = _module_hash_input(paths_module)
     dependency_keys[f"__generator__/modules/{neighbor_module.name}"] = _module_hash_input(neighbor_module)
     dependency_keys[f"__generator__/modules/{coverage_module.name}"] = _module_hash_input(coverage_module)
+    dependency_keys[f"__generator__/modules/{pc_module.name}"] = _module_hash_input(pc_module)
 
     inventory_payload = "\n".join(
         f"{row.verb}|{row.from_id}|{row.to_id}" for row in neighborhood_inventory
@@ -431,6 +463,33 @@ def build_human_adr_projection_context(
         internal_graph=internal_graph,
         lifecycle_rows=lifecycle_rows,
         governance_rows=governance_rows,
+        physical_component=physical_component,
+    )
+
+
+def _endpoint_heading(
+    entity_id: str,
+    *,
+    entities: Any,
+    adr_models_by_id: dict[str, Any],
+) -> str:
+    from .physical_component_projection import human_endpoint_heading
+
+    return human_endpoint_heading(
+        entity_id, entities=entities, adr_models_by_id=adr_models_by_id
+    )
+
+
+def _inventory_name(
+    entity_id: str,
+    *,
+    entities: Any,
+    adr_models_by_id: dict[str, Any],
+) -> str:
+    from .physical_component_projection import human_inventory_name
+
+    return human_inventory_name(
+        entity_id, entities=entities, adr_models_by_id=adr_models_by_id
     )
 
 
@@ -440,18 +499,9 @@ def _entity_label(
     entities: Any,
     adr_models_by_id: dict[str, Any],
 ) -> str:
-    model = adr_models_by_id.get(entity_id)
-    if model is not None:
-        return human_label_for_adr(model)
-    entity = entities.get(entity_id)
-    if entity is not None:
-        alias = entity.metadata.get("alias_id") if isinstance(entity.metadata, dict) else None
-        if isinstance(alias, str) and alias:
-            return alias
-        return presentation_id(entity)
-    if len(entity_id) > 12:
-        return entity_id[:8]
-    return entity_id
+    from .physical_component_projection import human_node_label
+
+    return human_node_label(entity_id, entities=entities, adr_models_by_id=adr_models_by_id)
 
 
 _LOGICAL_INTERNAL_VERBS = frozenset(
@@ -515,7 +565,9 @@ def _build_internal_structure_graph(
         lines.append(f'  subgraph {subgraph_id}["{escape_mermaid_label(entity_type)}"]')
         for row in grouped[entity_type]:
             node = mermaid_node_id(row.entity_id)
-            label = escape_mermaid_label(row.alias)
+            label = escape_mermaid_label(
+                _entity_label(row.entity_id, entities=entities, adr_models_by_id=adr_models_by_id)
+            )
             lines.append(f'    {node}["{label}"]')
         lines.append("  end")
     for relationship in structure_edges:

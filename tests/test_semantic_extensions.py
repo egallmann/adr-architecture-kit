@@ -15,6 +15,7 @@ from adr_kit.models.v2_1 import (
     NormalizedEntityV21,
 )
 from adr_kit.semantic_extensions import ExtensionValidationError, validate_extension_type
+from pydantic import ValidationError
 
 UUID_A = "018f4f20-0000-7000-8000-000000000001"
 UUID_B = "018f4f20-0000-7000-8000-000000000002"
@@ -162,3 +163,52 @@ def test_feature_gate_can_stop_before_sealed_migration() -> None:
     )
     with pytest.raises(ValueError, match="not SEALED"):
         verify_sealed_map({"status": "candidate"})
+
+
+def test_version_aware_reserved_core_relationships() -> None:
+    from adr_kit.models.v1_4.extension import ExtensionRelationshipV14
+    from adr_kit.models.v1_5.extension import ExtensionRelationshipV15
+    from adr_kit.models.v2_2 import CanonicalRelationshipV22
+    from adr_kit.semantic_extensions import reserved_core_relationships
+
+    assert "depends_on" not in reserved_core_relationships()
+    assert "depends_on" in reserved_core_relationships(authoring_version="1.5")
+    assert "depends_on" in reserved_core_relationships(model_version="2.2")
+
+    common = dict(
+        id=UUID_R,
+        alias_id="REL-0001",
+        alias_name="depends-on-extension",
+        relationship_type="acme:depends_on",
+        from_entity_id=UUID_A,
+        to_entity_id=UUID_B,
+        properties={"kind": "runtime"},
+        rationale="historical namespaced depends_on",
+    )
+    v14 = ExtensionRelationshipV14.model_validate(common)
+    assert v14.relationship_type == "acme:depends_on"
+    with pytest.raises((ValidationError, ExtensionValidationError, ValueError), match="shadows reserved core"):
+        ExtensionRelationshipV15.model_validate(common)
+
+    payload = {"properties": {"kind": "runtime"}, "rationale": "consumer relationship"}
+    CanonicalRelationshipV21(
+        id=UUID_R,
+        alias_id="REL-0001",
+        alias_name="depends-on-extension",
+        relationship_type="acme:depends_on",
+        from_entity_id=UUID_A,
+        to_entity_id=UUID_B,
+        canonical_source_ref="ADR-L-0001#extension_relationships[0]",
+        extension=payload,
+    )
+    with pytest.raises(ValueError, match="shadows reserved core"):
+        CanonicalRelationshipV22(
+            id=UUID_R,
+            alias_id="REL-0001",
+            alias_name="depends-on-extension",
+            relationship_type="acme:depends_on",
+            from_entity_id=UUID_A,
+            to_entity_id=UUID_B,
+            canonical_source_ref="ADR-L-0001#extension_relationships[0]",
+            extension=payload,
+        )

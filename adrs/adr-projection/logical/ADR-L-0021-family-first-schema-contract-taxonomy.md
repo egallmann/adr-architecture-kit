@@ -3,20 +3,39 @@ integrity_schema_version: 1
 generated: deterministic_projection_v1
 artifact_kind: rendered_adr_markdown
 generator_id: adr-projection-markdown
-generator_version: 2
+generator_version: 3
 hash_algorithm: sha256
-source_hash: 6b79e5f94d38f935a94235164daaece4a3b6b0b3451e476ae9a70e78e0b0e9c1
-rendered_hash: 7d8c806e762a90fc03fb70e58c6402fc1acb74ada60b13ba16623d9743fcb4e6
+source_hash: a1b01bc6c51d5b0c6f0e69b896a8cb65c08bdf810073dbb8c6b9afb348f181d5
+rendered_hash: 677f1a8dd400080be08cc0ddc35a00d30357189be7aff35f130c187893786019
 -->
 
 # ADR-L-0021: Family-First Schema Contract Taxonomy and Authority
 
+## Identity / Status
+
+**Type:** logical  
 **Status:** accepted  
+**Alias:** ADR-L-0021  
+**Alias name:** family-first-schema-contract-taxonomy  
 **Created:** 2026-08-15  
 **Authors:** adr-architecture-kit  
 **Domains:** architecture, schema  
-**Tags:** schema-taxonomy, authority, compatibility  
-**Alias name:** family-first-schema-contract-taxonomy  
+
+## Architecture Position
+
+Logical architecture authority for this subject. Neighborhood paths use structural bridges plus exactly one semantic architecture edge; they never invent ADR-to-ADR verbs.
+
+## Architecture Neighborhood
+
+
+### Semantic architecture inventory
+
+- None
+
+## Neighbor Relationships
+
+No grammatical peer neighborhood for this subject.
+
 
 ## Context
 
@@ -29,16 +48,20 @@ installed package namespace. Semantic attribution evidence v1.5 is not an
 ADR authoring schema v1.5 and is not a normalized model version.
 
 
-## Relationship graph
+## Internal Structure
 
 ```mermaid
-flowchart LR
+flowchart TB
   n_01a00626_c5cd_7064_8a74_e54d0179e4b9["ADR-L-0021"]
-  n_01a00627_97d8_7280_81f3_e22a264bc7c3["DEC-0126"]
-  n_01a00627_97d8_73c0_8ef4_f0e87ad8c19b["DEC-0125"]
-  n_01a00627_97d8_7528_9748_aaa7df6c2fe2["DEC-0127"]
-  n_01a00627_97d8_76cd_853b_3e17275c4b76["INV-0129"]
-  n_01a00627_97d8_7e92_a0ca_e572a89fef75["INV-0128"]
+  subgraph sg_decision["decision"]
+    n_01a00627_97d8_73c0_8ef4_f0e87ad8c19b["DEC-0125"]
+    n_01a00627_97d8_7280_81f3_e22a264bc7c3["DEC-0126"]
+    n_01a00627_97d8_7528_9748_aaa7df6c2fe2["DEC-0127"]
+  end
+  subgraph sg_invariant["invariant"]
+    n_01a00627_97d8_7e92_a0ca_e572a89fef75["INV-0128"]
+    n_01a00627_97d8_76cd_853b_3e17275c4b76["INV-0129"]
+  end
   n_01a00627_97d8_7280_81f3_e22a264bc7c3 -->|"declared_in"| n_01a00626_c5cd_7064_8a74_e54d0179e4b9
   n_01a00627_97d8_73c0_8ef4_f0e87ad8c19b -->|"declared_in"| n_01a00626_c5cd_7064_8a74_e54d0179e4b9
   n_01a00627_97d8_7528_9748_aaa7df6c2fe2 -->|"declared_in"| n_01a00626_c5cd_7064_8a74_e54d0179e4b9
@@ -46,71 +69,11 @@ flowchart LR
   n_01a00627_97d8_7e92_a0ca_e572a89fef75 -->|"declared_in"| n_01a00626_c5cd_7064_8a74_e54d0179e4b9
 ```
 
-
-
-
-
-## Constraints
-
-### CONST-0021 (technical)
-
-**Description:**
-Schema/v1.0 remains at its existing path as the stable compatibility exception.
-
-**Rationale:**
-Existing authoring consumers rely on the stable v1.0 path.
-
-### CONST-0022 (technical)
-
-**Description:**
-Package resources remain under src/adr_kit/schema/v*_* and are not relocated.
-
-**Rationale:**
-Installed resource namespaces are an independent compatibility surface.
-
-### CONST-0023 (technical)
-
-**Description:**
-No new bare root version directory may be introduced.
-
-**Rationale:**
-Family-first placement prevents version-only taxonomy ambiguity.
-
-### CONST-0024 (regulatory)
-
-**Description:**
-The taxonomy inventory fixture is verification data, never semantic authority.
-
-**Rationale:**
-Canonical schema bytes and the accepted ADR retain authority.
-
-
-## Invariants
-
-### INV-0128
-
-**Statement:** Canonical schema membership and SHA-256 fingerprints are unchanged by taxonomy relocation.  
-**Scope:** global  
-**Enforcement:** must (test)  
-**Verification:** automated
-
-**Rationale:**
-Byte-preserving relocation is required for semantic neutrality.
-
-
-
-### INV-0129
-
-**Statement:** Every canonical schema artifact has one authoritative repository path and at most one explicit package mirror mapping.  
-**Scope:** global  
-**Enforcement:** must (test)  
-**Verification:** automated
-
-**Rationale:**
-Authority must not be duplicated by topology or by the verification fixture.
-
-
-
+- `decision` DEC-0125 — Canonical schema placement is family-first with family-scoped versions
+- `decision` DEC-0126 — Canonical repository schemas are the single schema authority
+- `decision` DEC-0127 — Taxonomy relocation is semantic and runtime neutral
+- `invariant` INV-0128 — INV-0128
+- `invariant` INV-0129 — INV-0129
 
 
 ## Decisions
@@ -122,7 +85,6 @@ Place authoring, architecture-discovery, normalized-model, governance,
 and evidence-attribution contracts beneath their family roots. Preserve
 schema/v1.0 as the sole stable bare numeric compatibility exception, and
 retain kernel/ and migrations/ as special families.
-
 
 
 
@@ -139,7 +101,6 @@ non-authoritative verification snapshot only.
 
 
 
-
 ### DEC-0127: Taxonomy relocation is semantic and runtime neutral
 
 **Rationale:**
@@ -152,8 +113,48 @@ ADR and is a stop condition.
 
 
 
+## Invariants
+
+### INV-0128
+
+**Statement:** Canonical schema membership and SHA-256 fingerprints are unchanged by taxonomy relocation.  
+**Scope:** global  
+**Enforcement:** must (test)
+
+**Rationale:**
+Byte-preserving relocation is required for semantic neutrality.
+
+### INV-0129
+
+**Statement:** Every canonical schema artifact has one authoritative repository path and at most one explicit package mirror mapping.  
+**Scope:** global  
+**Enforcement:** must (test)
+
+**Rationale:**
+Authority must not be duplicated by topology or by the verification fixture.
+
+
+## Constraints
+
+### CONST-0021
+
+Schema/v1.0 remains at its existing path as the stable compatibility exception.
+
+### CONST-0022
+
+Package resources remain under src/adr_kit/schema/v*_* and are not relocated.
+
+### CONST-0023
+
+No new bare root version directory may be introduced.
+
+### CONST-0024
+
+The taxonomy inventory fixture is verification data, never semantic authority.
+
+
 
 
 ---
 
-*Generated from ADR-L-0021 by ADR Architecture Kit*
+*Generated from ADR-L-0021 by ADR Architecture Kit (projection v3)*

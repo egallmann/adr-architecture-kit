@@ -1,4 +1,4 @@
-schema_version: '2.0'
+schema_version: '2.2'
 type: normalized_entity_registry
 entities:
 - id: 019fee89-e618-713e-a017-5b417ef9ac9f
@@ -12,7 +12,7 @@ entities:
     an explicit compiler pipeline, contract validation, normaliz
   uri: adr://adr-architecture-kit/entities/019fee89-e618-713e-a017-5b417ef9ac9f
   created_at: '2026-08-11T01:57:22.584Z'
-  entity_fingerprint: sha256:7b94569053894e4764c7e3f6336e853abf3ec2da634bcd035e75f4ecf84a803f
+  entity_fingerprint: sha256:91a2fe66f94b88288bd95c6af8fdb17281ca1fc1c769682881ec5f023cc3bee0
   lifecycle_stage: active
   canonical_source:
     source_type: physical_system_adr
@@ -29,6 +29,7 @@ entities:
     - 019fee89-e616-7d61-8e35-f11ba2ddd75d
     - 019fee89-e616-7b97-971d-ae165d13bf9c
     - 019fee89-e616-7c4e-953c-b7349412a784
+    - 019fee89-e615-7f19-810b-c7b33a9d9e0d
     technologies:
     - python
     - click
@@ -53,7 +54,11 @@ entities:
     superseded_by: []
     refines: []
     provides_interface: []
-    composed_of: []
+    composed_of:
+    - 019fee89-e617-7060-8f3f-4ecd46a719da
+    - 019fee89-e617-76ad-9336-b3615a6e4bde
+    - 019fee89-e618-74d1-9a1f-37e2c2982a51
+    - 019fee89-e618-781c-831f-0d5fe24f7d85
     binds_substrate: []
     binds_rule: []
     expects_evidence: []
@@ -66,6 +71,7 @@ entities:
     extraction_phase: extract_system
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 019fee89-e618-79df-a73f-edc9dead8526
   alias_id: SYS-0001
   alias_name: sys-0001-adr-architecture-kit-discovery-and-indexing-system
@@ -77,7 +83,7 @@ entities:
     discovery bundle generation under `adrs/index/`, legacy compa
   uri: adr://adr-architecture-kit/entities/019fee89-e618-79df-a73f-edc9dead8526
   created_at: '2026-08-11T01:57:22.584Z'
-  entity_fingerprint: sha256:443bc9839691141160801f77dab28830fc8c10c99fb1a940b8adc4fb7623c8b4
+  entity_fingerprint: sha256:affe13608bb398fcd3b97b570c9a18c4a3af80f5c6f8b62c5432ccfe09889b50
   lifecycle_stage: active
   canonical_source:
     source_type: physical_system_adr
@@ -90,6 +96,7 @@ entities:
     implements_logical:
     - 019fee89-e616-770c-a025-2c241a720730
     - 019fee89-e616-744f-b63e-5ecddf344faa
+    - 019fee89-e615-7f19-810b-c7b33a9d9e0d
     technologies:
     - python
     - pyyaml
@@ -112,7 +119,8 @@ entities:
     superseded_by: []
     refines: []
     provides_interface: []
-    composed_of: []
+    composed_of:
+    - 019fee89-e617-76d8-a333-e21361cd6602
     binds_substrate: []
     binds_rule: []
     expects_evidence: []
@@ -125,3 +133,4 @@ entities:
     extraction_phase: extract_system
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'

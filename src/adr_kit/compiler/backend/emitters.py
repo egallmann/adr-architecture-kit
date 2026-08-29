@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass, field
+from pathlib import Path
 
 from ...parser import ADRParser
 from ...scope import ProjectScope
@@ -76,16 +77,24 @@ class MarkdownBackendEmitter:
     parser: ADRParser
     scope: ProjectScope
     build_result: FrontendBuildResult
+    include_system_overview: bool = True
 
     name: str = "markdown"
     artifact_group: str = "markdown"
 
     def emit(self) -> list[EmittedArtifact]:
-        return emit_markdown_artifacts(
+        artifacts = emit_markdown_artifacts(
             parser=self.parser,
             scope=self.scope,
             build_result=self.build_result,
         )
+        if self.include_system_overview:
+            artifacts.extend(
+                _emit_system_overview_artifact(
+                    scope=self.scope, build_result=self.build_result
+                )
+            )
+        return artifacts
 
     def diagnostics(self) -> list[Diagnostic]:
         return []
@@ -109,17 +118,45 @@ class GraphBackendEmitter:
         return []
 
 
+def _emit_system_overview_artifact(
+    *,
+    scope: ProjectScope,
+    build_result: FrontendBuildResult,
+) -> list[EmittedArtifact]:
+    from ...generators.system_overview_generator import SystemOverviewGenerator
+
+    generator = SystemOverviewGenerator(scope=scope, build_result=build_result)
+    output_path = Path("SYSTEM-OVERVIEW.md")
+    body, source_inputs = generator.render_with_inputs(scope.root / output_path)
+    header = generator.build_integrity_header(scope.root / output_path, body, source_inputs)
+    return [
+        EmittedArtifact(
+            path=output_path,
+            content=(header + body).encode("utf-8"),
+            kind="markdown",
+            integrity_header=header,
+            logical_id="system-overview",
+        )
+    ]
+
+
 def build_backend_emitters(
     *,
     parser: ADRParser,
     scope: ProjectScope,
     build_result: FrontendBuildResult,
+    include_system_overview: bool = True,
 ) -> dict[str, BackendEmitter]:
     """Build the static backend-emitter map used by the compiler driver."""
 
     return {
         "registries": RegistryBackendEmitter(parser=parser, scope=scope, build_result=build_result),
         "manifest": ManifestBackendEmitter(parser=parser, scope=scope, build_result=build_result),
-        "markdown": MarkdownBackendEmitter(parser=parser, scope=scope, build_result=build_result),
+        "markdown": MarkdownBackendEmitter(
+            parser=parser,
+            scope=scope,
+            build_result=build_result,
+            include_system_overview=include_system_overview,
+        ),
         "graph": GraphBackendEmitter(parser=parser, scope=scope, build_result=build_result),
     }

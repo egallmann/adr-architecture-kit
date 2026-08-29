@@ -1,4 +1,4 @@
-schema_version: '1.3'
+schema_version: '1.5'
 adr_type: logical
 id: 019fee89-e615-7b9c-8e3f-32ceeda01491
 title: Deterministic Documentation Projection

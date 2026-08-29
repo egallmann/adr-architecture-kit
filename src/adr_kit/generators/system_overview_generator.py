@@ -4,7 +4,6 @@ from __future__ import annotations
 
 import json
 from collections.abc import Callable
-from importlib import resources
 from pathlib import Path
 from typing import Any
 
@@ -62,13 +61,23 @@ class SystemOverviewGenerator:
         repo_root: Path | None = None,
         template_dir: Path | None = None,
         capabilities_provider: CapabilitiesProvider | None = None,
+        scope: Any | None = None,
+        build_result: Any | None = None,
+        manifest_records: dict[str, dict[str, Any]] | None = None,
     ):
         if template_dir is None:
             template_dir = Path(__file__).parent.parent / "templates"
 
         self.template_dir = Path(template_dir)
-        self.repo_root = Path(repo_root) if repo_root is not None else Path.cwd()
+        if scope is not None:
+            self.repo_root = Path(scope.root)
+        elif repo_root is not None:
+            self.repo_root = Path(repo_root)
+        else:
+            self.repo_root = Path.cwd()
         self.capabilities_provider = capabilities_provider or _default_capabilities
+        self._build_result = build_result
+        self._manifest_override = manifest_records
         self.env = Environment(
             loader=FileSystemLoader(str(self.template_dir)),
             trim_blocks=True,
@@ -110,6 +119,38 @@ class SystemOverviewGenerator:
         return data, path
 
     def _manifest_records(self) -> dict[str, dict[str, Any]]:
+        if self._manifest_override is not None:
+            return self._manifest_override
+        if self._build_result is not None:
+            from ..compiler.frontend.adr_access import field_get
+
+            records: dict[str, dict[str, Any]] = {}
+            for path_str, artifact in self._build_result.model.corpus.artifacts.items():
+                adr_id = field_get(artifact, "id")
+                if not isinstance(adr_id, str) or not adr_id:
+                    continue
+                if field_get(artifact, "adr_type") is None:
+                    continue
+                status = field_get(artifact, "status")
+                if hasattr(status, "value"):
+                    status = status.value
+                rel = Path(path_str)
+                try:
+                    rel = rel.resolve().relative_to(self.repo_root.resolve()).as_posix()
+                except ValueError:
+                    rel = Path(path_str).as_posix()
+                alias = field_get(artifact, "alias_id")
+                record = {
+                    "id": adr_id,
+                    "title": field_get(artifact, "title") or adr_id,
+                    "status": str(status or ""),
+                    "file_path": rel,
+                    "alias_id": alias if isinstance(alias, str) else None,
+                }
+                records[adr_id] = record
+                if isinstance(alias, str) and alias:
+                    records.setdefault(alias, record)
+            return records
         manifest = self.repo_root / "adrs" / "manifest.yaml"
         if not manifest.is_file():
             return {}
@@ -121,6 +162,9 @@ class SystemOverviewGenerator:
         for adr in data.get("adrs", []):
             if isinstance(adr, dict) and isinstance(adr.get("id"), str):
                 records[adr["id"]] = adr
+                alias = adr.get("alias_id")
+                if isinstance(alias, str) and alias:
+                    records.setdefault(alias, adr)
         return records
 
     def _resolve_authority_anchors(
@@ -151,6 +195,37 @@ class SystemOverviewGenerator:
             )
         return tuple(anchors)
 
+    def _openable_repo_file_target(self, target: str | None) -> str | None:
+        """Return a repo-relative file path an editor can open, or None.
+
+        Directory hrefs fail in VS Code/Cursor with "the file is a directory".
+        Prefer ``README.md`` inside a directory when that file exists.
+        """
+        if target is None:
+            return None
+        stripped = str(target).strip()
+        if not stripped:
+            return None
+        if "://" in stripped:
+            return stripped
+        path_part, sep, fragment = stripped.partition("#")
+        suffix = f"#{fragment}" if sep else ""
+        rel = path_part.rstrip("/")
+        if not rel:
+            return None
+        posix = Path(rel).as_posix()
+        candidate = self.repo_root / posix
+        if candidate.is_file():
+            return f"{posix}{suffix}"
+        if candidate.is_dir():
+            readme = candidate / "README.md"
+            if readme.is_file():
+                return f"{posix}/README.md{suffix}"
+            return None
+        if path_part.endswith("/"):
+            return None
+        return f"{posix}{suffix}"
+
     def _parse_boundaries(self, raw: list[Any]) -> tuple[ResponsibilityBoundary, ...]:
         items: list[ResponsibilityBoundary] = []
         for entry in raw:
@@ -165,7 +240,7 @@ class SystemOverviewGenerator:
                 ResponsibilityBoundary(
                     subject=subject,
                     detail=detail,
-                    link=str(link) if link else None,
+                    link=self._openable_repo_file_target(str(link) if link else None),
                 )
             )
         return tuple(items)
@@ -189,7 +264,7 @@ class SystemOverviewGenerator:
             if not isinstance(entry, dict):
                 continue
             label = str(entry.get("label") or "").strip()
-            target = str(entry.get("target") or "").strip()
+            target = self._openable_repo_file_target(str(entry.get("target") or "").strip())
             if not label or not target:
                 continue
             category_raw = entry.get("category") or "related"
@@ -205,26 +280,10 @@ class SystemOverviewGenerator:
         return tuple(str(item).strip() for item in raw if str(item).strip())
 
     def _packaged_adr_schema_versions(self) -> set[str]:
-        versions: set[str] = set()
-        schema_root = Path(__file__).resolve().parent.parent / "schema"
-        if schema_root.is_dir():
-            for child in schema_root.iterdir():
-                if child.is_dir() and child.name.startswith("v") and "_" in child.name:
-                    # packaged module style v1_0
-                    dotted = child.name[1:].replace("_", ".")
-                    versions.add(dotted)
-                elif child.is_dir() and child.name.startswith("v") and "." in child.name:
-                    versions.add(child.name[1:])
-        # Also discover importable package namespaces used by the wheel.
-        try:
-            schema_pkg = resources.files("adr_kit.schema")
-        except (ModuleNotFoundError, TypeError, AttributeError):
-            return versions
-        for entry in schema_pkg.iterdir():
-            name = getattr(entry, "name", "")
-            if name.startswith("v") and "_" in name and entry.is_dir():
-                versions.add(name[1:].replace("_", "."))
-        return versions
+        from ..schema.family_inventory import packaged_authoring_schema_versions
+
+        # 1.1 is discovery/governance in capabilities, not an ADR YAML family.
+        return set(packaged_authoring_schema_versions()) | {"1.1"}
 
     def _cli_surface_command_names(self) -> set[str]:
         candidates = [
@@ -429,7 +488,7 @@ class SystemOverviewGenerator:
                 ResponsibilityBoundary(
                     subject="Project ADR authority",
                     detail="Accepted ADRs under adrs/ are canonical project intent for their declared scope.",
-                    link="adrs/",
+                    link=self._openable_repo_file_target("adrs/"),
                 ),
                 ResponsibilityBoundary(
                     subject="Derived outputs",
@@ -464,9 +523,16 @@ class SystemOverviewGenerator:
                 "adr generate-system-overview",
                 "adr validate-system-overview",
             ),
-            read_next=(
-                OverviewLink(label="PROJECT.yaml", target="PROJECT.yaml"),
-                OverviewLink(label="ADRs", target="adrs/"),
+            read_next=tuple(
+                link
+                for link in (
+                    OverviewLink(label="PROJECT.yaml", target="PROJECT.yaml"),
+                    OverviewLink(
+                        label="ADRs",
+                        target=self._openable_repo_file_target("adrs/") or "",
+                    ),
+                )
+                if link.target
             ),
             source_basis_labels=("PROJECT.yaml", "legacy-generic compatibility path"),
         )

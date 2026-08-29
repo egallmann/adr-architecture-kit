@@ -3,20 +3,92 @@ integrity_schema_version: 1
 generated: deterministic_projection_v1
 artifact_kind: rendered_adr_markdown
 generator_id: adr-projection-markdown
-generator_version: 2
+generator_version: 3
 hash_algorithm: sha256
-source_hash: 9a9833288c3826526ebdbad487f30a4cf97c801906fd400e78530a5e03e0f56a
-rendered_hash: c3585a2a1e8eb10f5ee5714e901bfe7aebcfbd60938ce10e53710179c716b8ba
+source_hash: 1b013284d595b0f25999514a81b1c3f7890522c3f226df528d5f222ec3b509ab
+rendered_hash: 8382d0a0b55f26693cf33c254687c3bd5e047339da6681d139e2187a45ffaae5
 -->
 
 # ADR-L-0007: Deterministic Documentation Projection
 
+## Identity / Status
+
+**Type:** logical  
 **Status:** accepted  
+**Alias:** ADR-L-0007  
+**Alias name:** adr-l-0007-deterministic-documentation-projection  
 **Created:** 2026-03-12  
 **Authors:** adr-architecture-kit  
 **Domains:** documentation, governance, determinism, projection  
-**Tags:** generated-documentation, deterministic, ai-first, drift-prevention  
-**Alias name:** adr-l-0007-deterministic-documentation-projection  
+
+## Architecture Position
+
+Logical architecture authority for this subject. Neighborhood paths use structural bridges plus exactly one semantic architecture edge; they never invent ADR-to-ADR verbs.
+
+## Architecture Neighborhood
+
+```mermaid
+flowchart LR
+  n_019fee89_e615_7b9c_8e3f_32ceeda01491["ADR-L-0007"]
+  n_019fee89_e618_74b2_a83e_e41c7d8c9f37["ADR-PC-0005"]
+  n_019fee89_e618_7b76_843f_cfe21ceb2ea6["ADR-PC-0003"]
+  n_019fee89_e618_7d04_9337_4aa2d3258507["ADR-PS-0002"]
+  n_019fee89_e618_74b2_a83e_e41c7d8c9f37 -->|"implements_logical"| n_019fee89_e615_7b9c_8e3f_32ceeda01491
+  n_019fee89_e618_7b76_843f_cfe21ceb2ea6 -->|"implements_logical"| n_019fee89_e615_7b9c_8e3f_32ceeda01491
+  n_019fee89_e618_7d04_9337_4aa2d3258507 -->|"implements_logical"| n_019fee89_e615_7b9c_8e3f_32ceeda01491
+```
+
+
+### Semantic architecture inventory
+
+- `implements_logical`: ADR-PC-0005 → ADR-L-0007
+- `implements_logical`: ADR-PC-0003 → ADR-L-0007
+- `implements_logical`: ADR-PS-0002 → ADR-L-0007
+
+## Neighbor Relationships
+
+### ADR-PC-0003 — Compiler Pipeline and Driver
+
+- ADR-PC-0003 -[:implements_logical]-> ADR-L-0007 (peer ADR-PC-0003)
+
+**Context:** The compiler driver and explicit pipeline now own deterministic architecture
+compilation across parse, analysis, emission, and recursive scope
+orchestration. The command-line behavior is compatibility-relevant, while the
+Python compiler pipeline, passes, `ArchModel`, emitters, and result plumbing are
+internal reference implementation and are not a supported SDK facade.
+
+[Open projection](../physical-component/ADR-PC-0003-compiler-pipeline-and-driver.md)
+### ADR-PC-0005 — Generated Artifact Integrity Validation
+
+- ADR-PC-0005 -[:implements_logical]-> ADR-L-0007 (peer ADR-PC-0005)
+
+**Context:** Generated artifact integrity validation verifies freshness, tamper status,
+integrity headers, and scope-local generated outputs. It is a distinct public
+subsystem used by validator and governance flows.
+
+[Open projection](../physical-component/ADR-PC-0005-generated-artifact-integrity-validation.md)
+### ADR-PS-0002 — ADR Kit Authoring Compiler and Validation System
+
+- ADR-PS-0002 -[:implements_logical]-> ADR-L-0007 (peer ADR-PS-0002)
+
+**Context:** adr-architecture-kit operates as an authoring-time compiler and validation system rather
+than a collection of unrelated generators. The implementation includes an
+explicit compiler pipeline, contract validation, normalized repository/model
+access, integrity verification, and CLI orchestration over those surfaces.
+
+[Open projection](../physical-system/ADR-PS-0002-adr-kit-authoring-compiler-and-validation-system.md)
+
+### Lifecycle / association
+
+- ADR-L-0007 -[:references]-> ADR-L-0001
+- ADR-L-0007 -[:references]-> ADR-L-0003
+- ADR-L-0007 -[:references]-> ADR-L-0013
+- ADR-L-0007 -[:references]-> ADR-PC-0002
+- ADR-L-0007 -[:references]-> ADR-PC-0005
+- ADR-L-0007 -[:references]-> ADR-PS-0002
+- ADR-L-0007 -[:references]-> ADR-L-0025
+- ADR-L-0012 -[:references]-> ADR-L-0007
+- ADR-L-0025 -[:references]-> ADR-L-0007
 
 ## Context
 
@@ -52,39 +124,37 @@ are canonical, documentation renderings are derived, and projection consistency
 must be enforced through generators, validators, tests, and CI.
 
 
-## Relationship graph
+## Internal Structure
 
 ```mermaid
-flowchart LR
-  n_019fee89_e615_70a5_861b_b2dde147e5af["ADR-L-0001"]
-  n_019fee89_e615_7564_933f_0bb0cbbcf41b["CAP-0014"]
-  n_019fee89_e615_758b_b03f_e4a3dc338589["DEC-0012"]
-  n_019fee89_e615_77f6_9b1f_695732d25443["ADR-L-0003"]
-  n_019fee89_e615_796c_ae1d_a27f1fff021b["DEC-0026"]
+flowchart TB
   n_019fee89_e615_7b9c_8e3f_32ceeda01491["ADR-L-0007"]
-  n_019fee89_e615_7e55_972f_14dd7da851c0["DEC-0019"]
-  n_019fee89_e616_744f_b63e_5ecddf344faa["ADR-L-0012"]
-  n_019fee89_e616_77e0_992d_25764a1ed5a2["INV-0039"]
-  n_019fee89_e616_7abd_ad17_f29edbd30959["INV-0038"]
-  n_019fee89_e616_7bf6_a63f_2fdbec175790["INV-0037"]
-  n_019fee89_e616_7c4e_953c_b7349412a784["ADR-L-0013"]
-  n_019fee89_e618_74b2_a83e_e41c7d8c9f37["ADR-PC-0005"]
-  n_019fee89_e618_79ed_9d2d_cc35c63bc99a["ADR-P-0001"]
-  n_019fee89_e618_7a2f_aa3e_1f892cdf9410["ADR-P-0002"]
-  n_019fee89_e618_7b76_843f_cfe21ceb2ea6["ADR-PC-0003"]
-  n_019fee89_e618_7d04_9337_4aa2d3258507["ADR-PS-0002"]
-  n_019ff142_dd48_72ff_9e3f_81ca4a779db7["DEC-0108"]
-  n_019ff142_dd48_7ef8_8d3e_576f4bb02dc3["DEC-0109"]
-  n_019ff22a_bb5f_7214_8818_40820f8c553e["DEC-0111"]
-  n_019ff22a_bb5f_76eb_8a31_546eeba55dcb["DEC-0113"]
-  n_019ff22a_bb5f_7779_912f_040cdf1b54b8["INV-0100"]
-  n_019ff22a_bb5f_77ed_a63f_98f0455fdd1e["DEC-0114"]
-  n_019ff22a_bb5f_7926_a33c_b66f72343219["DEC-0115"]
-  n_019ff22a_bb5f_7b93_a600_f587022aeffd["INV-0101"]
-  n_019ff22a_bb5f_7bfc_851d_938bffc81281["DEC-0110"]
-  n_019ff22a_bb5f_7c77_a223_1dab5e8c814d["INV-0099"]
-  n_019ff22a_bb5f_7d9e_973f_b9008898a8c9["DEC-0112"]
-  n_019ff22a_bb5f_7fca_b021_b3cbc68ddde2["INV-0102"]
+  subgraph sg_capability["capability"]
+    n_019fee89_e615_7564_933f_0bb0cbbcf41b["CAP-0014"]
+  end
+  subgraph sg_decision["decision"]
+    n_019fee89_e615_758b_b03f_e4a3dc338589["DEC-0012"]
+    n_019fee89_e615_7e55_972f_14dd7da851c0["DEC-0019"]
+    n_019fee89_e615_796c_ae1d_a27f1fff021b["DEC-0026"]
+    n_019ff142_dd48_72ff_9e3f_81ca4a779db7["DEC-0108"]
+    n_019ff142_dd48_7ef8_8d3e_576f4bb02dc3["DEC-0109"]
+    n_019ff22a_bb5f_7bfc_851d_938bffc81281["DEC-0110"]
+    n_019ff22a_bb5f_7214_8818_40820f8c553e["DEC-0111"]
+    n_019ff22a_bb5f_7d9e_973f_b9008898a8c9["DEC-0112"]
+    n_019ff22a_bb5f_76eb_8a31_546eeba55dcb["DEC-0113"]
+    n_019ff22a_bb5f_77ed_a63f_98f0455fdd1e["DEC-0114"]
+    n_019ff22a_bb5f_7926_a33c_b66f72343219["DEC-0115"]
+    n_01a048f5_b197_75ab_a812_6e3361333731["DEC-0176"]
+  end
+  subgraph sg_invariant["invariant"]
+    n_019fee89_e616_7bf6_a63f_2fdbec175790["INV-0037"]
+    n_019fee89_e616_7abd_ad17_f29edbd30959["INV-0038"]
+    n_019fee89_e616_77e0_992d_25764a1ed5a2["INV-0039"]
+    n_019ff22a_bb5f_7c77_a223_1dab5e8c814d["INV-0099"]
+    n_019ff22a_bb5f_7779_912f_040cdf1b54b8["INV-0100"]
+    n_019ff22a_bb5f_7b93_a600_f587022aeffd["INV-0101"]
+    n_019ff22a_bb5f_7fca_b021_b3cbc68ddde2["INV-0102"]
+  end
   n_019fee89_e615_7564_933f_0bb0cbbcf41b -->|"declared_in"| n_019fee89_e615_7b9c_8e3f_32ceeda01491
   n_019fee89_e615_758b_b03f_e4a3dc338589 -->|"declared_in"| n_019fee89_e615_7b9c_8e3f_32ceeda01491
   n_019fee89_e615_796c_ae1d_a27f1fff021b -->|"declared_in"| n_019fee89_e615_7b9c_8e3f_32ceeda01491
@@ -104,6 +174,7 @@ flowchart LR
   n_019ff22a_bb5f_7c77_a223_1dab5e8c814d -->|"declared_in"| n_019fee89_e615_7b9c_8e3f_32ceeda01491
   n_019ff22a_bb5f_7d9e_973f_b9008898a8c9 -->|"declared_in"| n_019fee89_e615_7b9c_8e3f_32ceeda01491
   n_019ff22a_bb5f_7fca_b021_b3cbc68ddde2 -->|"declared_in"| n_019fee89_e615_7b9c_8e3f_32ceeda01491
+  n_01a048f5_b197_75ab_a812_6e3361333731 -->|"declared_in"| n_019fee89_e615_7b9c_8e3f_32ceeda01491
   n_019fee89_e615_758b_b03f_e4a3dc338589 -->|"enforces"| n_019fee89_e616_77e0_992d_25764a1ed5a2
   n_019fee89_e615_758b_b03f_e4a3dc338589 -->|"enforces"| n_019fee89_e616_7abd_ad17_f29edbd30959
   n_019fee89_e615_758b_b03f_e4a3dc338589 -->|"enforces"| n_019fee89_e616_7bf6_a63f_2fdbec175790
@@ -127,117 +198,30 @@ flowchart LR
   n_019ff22a_bb5f_7bfc_851d_938bffc81281 -->|"enforces"| n_019ff22a_bb5f_7c77_a223_1dab5e8c814d
   n_019ff22a_bb5f_7d9e_973f_b9008898a8c9 -->|"enforces"| n_019fee89_e616_7abd_ad17_f29edbd30959
   n_019ff22a_bb5f_7d9e_973f_b9008898a8c9 -->|"enforces"| n_019ff22a_bb5f_7b93_a600_f587022aeffd
-  n_019fee89_e618_74b2_a83e_e41c7d8c9f37 -->|"implements_logical"| n_019fee89_e615_7b9c_8e3f_32ceeda01491
-  n_019fee89_e618_7b76_843f_cfe21ceb2ea6 -->|"implements_logical"| n_019fee89_e615_7b9c_8e3f_32ceeda01491
-  n_019fee89_e618_7d04_9337_4aa2d3258507 -->|"implements_logical"| n_019fee89_e615_7b9c_8e3f_32ceeda01491
-  n_019fee89_e615_7b9c_8e3f_32ceeda01491 -->|"references"| n_019fee89_e615_70a5_861b_b2dde147e5af
-  n_019fee89_e615_7b9c_8e3f_32ceeda01491 -->|"references"| n_019fee89_e615_77f6_9b1f_695732d25443
-  n_019fee89_e615_7b9c_8e3f_32ceeda01491 -->|"references"| n_019fee89_e616_7c4e_953c_b7349412a784
-  n_019fee89_e615_7b9c_8e3f_32ceeda01491 -->|"references"| n_019fee89_e618_74b2_a83e_e41c7d8c9f37
-  n_019fee89_e615_7b9c_8e3f_32ceeda01491 -->|"references"| n_019fee89_e618_79ed_9d2d_cc35c63bc99a
-  n_019fee89_e615_7b9c_8e3f_32ceeda01491 -->|"references"| n_019fee89_e618_7a2f_aa3e_1f892cdf9410
-  n_019fee89_e616_744f_b63e_5ecddf344faa -->|"references"| n_019fee89_e615_7b9c_8e3f_32ceeda01491
+  n_01a048f5_b197_75ab_a812_6e3361333731 -->|"enforces"| n_019fee89_e616_77e0_992d_25764a1ed5a2
+  n_01a048f5_b197_75ab_a812_6e3361333731 -->|"enforces"| n_019fee89_e616_7abd_ad17_f29edbd30959
 ```
 
-## Related ADRs
-
-### ADR-L-0001 — STE-Compliant Machine-Verifiable Architecture Decision Record System
-
-**Relationships:**
-- this ADR -[:references]-> 019fee89-e615-70a5-861b-b2dde147e5af
-
-**Context:** # ADR Architecture Kit — STE Authoring Subsystem
-
-[Open projection](ADR-L-0001-ste-compliant-machine-verifiable-architecture-decision-record-system.md)
-### ADR-L-0003 — Quality Assurance and Testing Strategy
-
-**Relationships:**
-- this ADR -[:references]-> 019fee89-e615-77f6-9b1f-695732d25443
-
-**Context:** The ADR Architecture Kit is a foundational tool for machine-verifiable architecture
-documentation. As such, it must maintain high quality standards to ensure reliability,
-correctness, and trust in the architectural governance it provides.
-
-[Open projection](ADR-L-0003-quality-assurance-and-testing-strategy.md)
-### ADR-L-0012 — Federation Authority and Qualified Identity Model
-
-**Relationships:**
-- 019fee89-e616-744f-b63e-5ecddf344faa -[:references]-> this ADR
-
-**Context:** The compiler and recursive multi-scope model preserve repository-local
-compilation boundaries, while STE federation spans independently compiled
-repositories. Federation therefore requires global identity without weakening
-provider authority or allowing the aggregation layer to rewrite canonical
-repository state.
-
-[Open projection](ADR-L-0012-federation-authority-and-qualified-identity-model.md)
-### ADR-L-0013 — Architecture Repository Boundary and Normalized Semantic Model
-
-**Relationships:**
-- this ADR -[:references]-> 019fee89-e616-7c4e-953c-b7349412a784
-
-**Context:** adr-architecture-kit now has an explicit compiler pipeline, a compiler IR
-(`ArchModel`), compiled registry bundles, and an additive architecture graph.
-Those pieces are sufficient to produce deterministic machine-facing artifacts,
-and ArchitectureRepository already defines the semantic in-process boundary.
-Phase 1 adds a narrow supported authoring facade that reuses that seam without
-expanding the normalized model or exposing compiler internals.
-
-[Open projection](ADR-L-0013-architecture-repository-boundary-and-normalized-semantic-model.md)
-### ADR-P-0001 — Python Toolkit Implementation for ADR Kit
-
-**Relationships:**
-- this ADR -[:references]-> 019fee89-e618-79ed-9d2d-cc35c63bc99a
-
-**Context:** This ADR specifies the implementation of ADR Kit using Python ecosystem and modern
-Python tooling. The implementation must support schema validation, YAML parsing,
-Pydantic models, and view generation.
-
-[Open projection](../physical/ADR-P-0001-python-toolkit-implementation-for-adr-kit.md)
-### ADR-P-0002 — JSON Schema Validation with YAML Document Format
-
-**Relationships:**
-- this ADR -[:references]-> 019fee89-e618-7a2f-aa3e-1f892cdf9410
-
-**Context:** This ADR specifies the use of JSON Schema for validation with YAML as the document
-format. This combination provides deterministic validation (JSON Schema) with
-human-readable authoring (YAML with embedded markdown).
-
-[Open projection](../physical/ADR-P-0002-json-schema-validation-with-yaml-document-format.md)
-### ADR-PC-0003 — Compiler Pipeline and Driver
-
-**Relationships:**
-- 019fee89-e618-7b76-843f-cfe21ceb2ea6 -[:implements_logical]-> this ADR
-
-**Context:** The compiler driver and explicit pipeline now own deterministic architecture
-compilation across parse, analysis, emission, and recursive scope
-orchestration. The command-line behavior is compatibility-relevant, while the
-Python compiler pipeline, passes, `ArchModel`, emitters, and result plumbing are
-internal reference implementation and are not a supported SDK facade.
-
-[Open projection](../physical-component/ADR-PC-0003-compiler-pipeline-and-driver.md)
-### ADR-PC-0005 — Generated Artifact Integrity Validation
-
-**Relationships:**
-- 019fee89-e618-74b2-a83e-e41c7d8c9f37 -[:implements_logical]-> this ADR
-- this ADR -[:references]-> 019fee89-e618-74b2-a83e-e41c7d8c9f37
-
-**Context:** Generated artifact integrity validation verifies freshness, tamper status,
-integrity headers, and scope-local generated outputs. It is a distinct public
-subsystem used by validator and governance flows.
-
-[Open projection](../physical-component/ADR-PC-0005-generated-artifact-integrity-validation.md)
-### ADR-PS-0002 — ADR Kit Authoring Compiler and Validation System
-
-**Relationships:**
-- 019fee89-e618-7d04-9337-4aa2d3258507 -[:implements_logical]-> this ADR
-
-**Context:** adr-architecture-kit operates as an authoring-time compiler and validation system rather
-than a collection of unrelated generators. The implementation includes an
-explicit compiler pipeline, contract validation, normalized repository/model
-access, integrity verification, and CLI orchestration over those surfaces.
-
-[Open projection](../physical-system/ADR-PS-0002-adr-kit-authoring-compiler-and-validation-system.md)
+- `capability` CAP-0014 — Deterministic Documentation Projection
+- `decision` DEC-0012 — Treat human-readable architecture documentation as deterministic derived state
+- `decision` DEC-0019 — Prohibit manual edits to generated documentation
+- `decision` DEC-0026 — Require generator, validator, test, and CI enforcement for documentation projection
+- `decision` DEC-0108 — Emit ADR human projections under typed adr-projection paths with stable SDK artifact identity
+- `decision` DEC-0109 — Human ADR projections render compiler-derived relationship semantics only
+- `decision` DEC-0110 — Classify documentation-projection inputs as derived facts or authored orientation
+- `decision` DEC-0111 — Allow a deterministic semantic intermediate model for documentation projection
+- `decision` DEC-0112 — Require projection-source closure for generated documentation freshness
+- `decision` DEC-0113 — Documentation projections reflect supported boundaries without redefining them
+- `decision` DEC-0114 — Isolate repository-specific documentation-projection orientation by scope
+- `decision` DEC-0115 — Preserve legacy generic SYSTEM-OVERVIEW generation as compatibility-only
+- `decision` DEC-0176 — Encode projection v3 renderer contract for normalized v2.2 topology semantics
+- `invariant` INV-0037 — INV-0037
+- `invariant` INV-0038 — INV-0038
+- `invariant` INV-0039 — INV-0039
+- `invariant` INV-0099 — INV-0099
+- `invariant` INV-0100 — INV-0100
+- `invariant` INV-0101 — INV-0101
+- `invariant` INV-0102 — INV-0102
 
 ## Capabilities
 
@@ -245,145 +229,6 @@ access, integrity verification, and CLI orchestration over those surfaces.
 
 The system can generate human-readable architecture documentation from
 structured source artifacts and verify that rendered output remains in sync.
-
-
-
-
-
-## Constraints
-
-### CONST-0001 (technical)
-
-**Description:**
-Human-readable architecture documentation must be produced from structured
-artifacts or explicit projection code rather than maintained as an
-independent source of truth.
-
-
-**Rationale:**
-Independent manual documentation introduces drift risk and authority
-ambiguity in an architecture governance repository.
-
-
-
-## Invariants
-
-### INV-0037
-
-**Statement:** INV-DOC-001: All human-readable architecture documentation must be generated
-from structured artifacts or explicit projection code that is itself
-governed as source state.
-  
-**Scope:** global  
-**Enforcement:** must (design)  
-**Verification:** automated
-
-**Rationale:**
-Documentation must remain a projection of canonical architecture state, not
-a competing authority.
-
-
-
-
-### INV-0038
-
-**Statement:** INV-DOC-002: Generated documentation must be deterministic given identical
-source artifacts and generator inputs.
-  
-**Scope:** global  
-**Enforcement:** must (test)  
-**Verification:** automated
-
-**Rationale:**
-Deterministic rendering is required for reliable drift detection, CI
-enforcement, and reproducible AI orientation.
-
-
-
-
-### INV-0039
-
-**Statement:** INV-DOC-003: Rendered documentation must never be edited manually; changes
-must be made through generators, templates, or structured source artifacts.
-  
-**Scope:** global  
-**Enforcement:** must (policy)  
-**Verification:** automated
-
-**Rationale:**
-Manual edits to generated documentation destroy traceability and create
-ambiguity over what is authoritative.
-
-
-
-
-### INV-0099
-
-**Statement:** INV-DOC-004: A documentation projection must obtain machine-verifiable
-facts from their owning structured or provider surfaces and must not establish
-an independent authored duplicate of those facts.
-  
-**Scope:** global  
-**Enforcement:** must (design)  
-**Verification:** automated
-
-**Rationale:**
-Derived facts already have an owning machine-readable source. Duplicating
-them in projection configuration creates silent drift.
-
-
-
-
-### INV-0100
-
-**Statement:** INV-DOC-005: Authored orientation used by a documentation projection must
-remain explicit, non-authoritative, and unable to override canonical architecture
-authority.
-  
-**Scope:** global  
-**Enforcement:** must (design)  
-**Verification:** manual
-
-**Rationale:**
-Explanatory orientation is legitimate only when it cannot become a hidden
-second authority layer.
-
-
-
-
-### INV-0101
-
-**Statement:** INV-DOC-006: Generated documentation freshness must close over all governed
-semantic inputs and projection-rule inputs capable of changing the rendered
-artifact, and must not require whole-repository hashing.
-  
-**Scope:** global  
-**Enforcement:** must (test)  
-**Verification:** automated
-
-**Rationale:**
-Freshness must track true render dependencies, including templates and
-projection rules, without invalidating on unrelated repository churn.
-
-
-
-
-### INV-0102
-
-**Statement:** INV-DOC-007: Repository-specific documentation-projection orientation must
-not leak into an unrelated repository scope, including ADR Kit provider
-semantics rendered into an arbitrary consuming repository.
-  
-**Scope:** global  
-**Enforcement:** must (test)  
-**Verification:** automated
-
-**Rationale:**
-Scope isolation prevents consumer repositories from being mis-oriented as
-the authoring provider.
-
-
-
 
 
 
@@ -405,18 +250,6 @@ This preserves:
 
 
 
-**Consequences:**
-
-**Positive:**
-- Canonical architecture state remains explicit and machine-verifiable
-- Rendered documentation can be regenerated consistently
-- Documentation drift becomes detectable and enforceable
-- AI contributors are directed toward generators rather than manual edits
-
-**Negative:**
-- Documentation changes may require generator or template updates instead of direct edits
-- Small wording changes in rendered documentation now require structured source changes
-
 **Related Invariants:** 019fee89-e616-7bf6-a63f-2fdbec175790, 019fee89-e616-7abd-ad17-f29edbd30959, 019fee89-e616-77e0-992d-25764a1ed5a2
 ### DEC-0019: Prohibit manual edits to generated documentation
 
@@ -430,16 +263,6 @@ must be made by editing the structured source, generator, template, or
 projection rules, followed by regeneration and validation.
 
 
-
-**Consequences:**
-
-**Positive:**
-- Rendered artifacts stay traceable to their generation pipeline
-- Reviewers can reason about documentation changes from source changes
-- CI can enforce freshness deterministically
-
-**Negative:**
-- Contributors must learn the generator path for documentation updates
 
 **Related Invariants:** 019fee89-e616-7bf6-a63f-2fdbec175790, 019fee89-e616-77e0-992d-25764a1ed5a2
 ### DEC-0026: Require generator, validator, test, and CI enforcement for documentation projection
@@ -457,16 +280,6 @@ than a best-effort editorial process.
 
 
 
-**Consequences:**
-
-**Positive:**
-- Projection consistency becomes automatically enforceable
-- Drift is surfaced immediately in development and CI
-- Future AI-first artifacts can adopt the same pattern
-
-**Negative:**
-- Additional generator and validator maintenance is required as documentation artifacts expand
-
 **Related Invariants:** 019fee89-e616-7abd-ad17-f29edbd30959, 019fee89-e616-77e0-992d-25764a1ed5a2
 ### DEC-0108: Emit ADR human projections under typed adr-projection paths with stable SDK artifact identity
 
@@ -483,16 +296,6 @@ non-authoritative.
 
 
 
-**Consequences:**
-
-**Positive:**
-- Humans can locate and navigate ADR projections by alias and type
-- SDK logical identity stays stable across title/slug changes
-- Path migration is explicit and regenerable
-
-**Negative:**
-- Existing relative_path consumers must accept the adr-projection layout
-
 **Related Invariants:** 019fee89-e616-7bf6-a63f-2fdbec175790, 019fee89-e616-7abd-ad17-f29edbd30959, 019fee89-e616-77e0-992d-25764a1ed5a2
 ### DEC-0109: Human ADR projections render compiler-derived relationship semantics only
 
@@ -506,16 +309,6 @@ prose and aliases but must not reinterpret source fields into alternate graph
 meaning. Presentation-only nesting is limited to the subject ADR authored body.
 
 
-
-**Consequences:**
-
-**Positive:**
-- One relationship ontology for registries, graphs, and human projections
-- Peer cards explain how ADRs relate using compiled verbs
-- Integrity hashes cover the actual render dependency set
-
-**Negative:**
-- Derivation and relationship-type surfaces must stay aligned when fields change
 
 **Related Invariants:** 019fee89-e616-7bf6-a63f-2fdbec175790, 019fee89-e616-7abd-ad17-f29edbd30959
 ### DEC-0110: Classify documentation-projection inputs as derived facts or authored orientation
@@ -535,15 +328,6 @@ Authored orientation must not become a hidden second authority layer.
 
 
 
-**Consequences:**
-
-**Positive:**
-- Overview and other projections stay aligned with owning provider/schema surfaces
-- Explanatory guidance remains intentional without competing with canonical ADRs
-
-**Negative:**
-- Projection authors must classify each input as derived or authored
-
 **Related Invariants:** 019ff22a-bb5f-7c77-a223-1dab5e8c814d, 019ff22a-bb5f-7779-912f-040cdf1b54b8
 ### DEC-0111: Allow a deterministic semantic intermediate model for documentation projection
 
@@ -560,15 +344,6 @@ not necessarily the complete integrity or freshness basis, because governed
 projection-rule inputs can also change the rendered artifact.
 
 
-
-**Consequences:**
-
-**Positive:**
-- Projection pipelines can separate semantic assembly from presentation
-- Tests can assert semantic completeness without treating the model as authority
-
-**Negative:**
-- Implementers must keep semantic model and projection-rule inputs distinct
 
 **Related Invariants:** 019fee89-e616-7abd-ad17-f29edbd30959, 019ff22a-bb5f-7b93-a600-f587022aeffd
 ### DEC-0112: Require projection-source closure for generated documentation freshness
@@ -588,15 +363,6 @@ selected semantic input.
 
 
 
-**Consequences:**
-
-**Positive:**
-- Freshness tracks true render dependencies rather than coarse repository churn
-- Template and projection-rule changes remain detectable as stale projections
-
-**Negative:**
-- Source-basis declarations must enumerate semantic and projection-rule inputs
-
 **Related Invariants:** 019ff22a-bb5f-7b93-a600-f587022aeffd, 019fee89-e616-7abd-ad17-f29edbd30959
 ### DEC-0113: Documentation projections reflect supported boundaries without redefining them
 
@@ -607,15 +373,6 @@ create, promote, or redefine those interfaces or authorities. Ownership remains
 with the existing accepted authority for each surface.
 
 
-
-**Consequences:**
-
-**Positive:**
-- Orientation stays subordinate to provider, repository, and stewardship authority
-- Overview content cannot silently invent public surfaces
-
-**Negative:**
-- Projection authors must cite existing authority rather than invent boundaries
 
 **Related Invariants:** 019fee89-e616-7bf6-a63f-2fdbec175790, 019ff22a-bb5f-7779-912f-040cdf1b54b8
 ### DEC-0114: Isolate repository-specific documentation-projection orientation by scope
@@ -631,15 +388,6 @@ non-profiled scopes must follow the supported projection-scope rule rather than
 silently inheriting another repository's provider identity.
 
 
-
-**Consequences:**
-
-**Positive:**
-- Consumer repositories are not mis-oriented as ADR Kit itself
-- Profile and scope routing become architecturally mandatory
-
-**Negative:**
-- Generators must select profile or compatibility path by project identity
 
 **Related Invariants:** 019ff22a-bb5f-7fca-b021-b3cbc68ddde2
 ### DEC-0115: Preserve legacy generic SYSTEM-OVERVIEW generation as compatibility-only
@@ -660,19 +408,127 @@ only when present.
 
 
 
-**Consequences:**
-
-**Positive:**
-- Existing CLI success behavior for generic scopes is preserved
-- Provider isolation remains enforceable for non-kit scopes
-- Future generic-consumer design stays explicitly deferred
-
-**Negative:**
-- A bounded legacy path must be maintained until replaced by later design
-
 **Related Invariants:** 019ff22a-bb5f-7fca-b021-b3cbc68ddde2, 019ff22a-bb5f-7779-912f-040cdf1b54b8
+### DEC-0176: Encode projection v3 renderer contract for normalized v2.2 topology semantics
+
+**Rationale:**
+Projection v3 renders deterministic human documentation from normalized v2.2 inputs using compiler-derived relationship semantics only. Topology inventory, compatibility rows, and peer-card verbs must follow ADR-L-0025 topology and contract succession authority without inventing pseudo-edges or ADR-level fake topology. Coverage registry posture and SYSTEM-OVERVIEW integration remain sequenced post-substrate; this decision governs authority only, not implementation modules or templates.
+
+
+
+**Related Invariants:** 019fee89-e616-7abd-ad17-f29edbd30959, 019fee89-e616-77e0-992d-25764a1ed5a2
+
+## Invariants
+
+### INV-0037
+
+**Statement:** INV-DOC-001: All human-readable architecture documentation must be generated
+from structured artifacts or explicit projection code that is itself
+governed as source state.
+  
+**Scope:** global  
+**Enforcement:** must (design)
+
+**Rationale:**
+Documentation must remain a projection of canonical architecture state, not
+a competing authority.
+
+
+### INV-0038
+
+**Statement:** INV-DOC-002: Generated documentation must be deterministic given identical
+source artifacts and generator inputs.
+  
+**Scope:** global  
+**Enforcement:** must (test)
+
+**Rationale:**
+Deterministic rendering is required for reliable drift detection, CI
+enforcement, and reproducible AI orientation.
+
+
+### INV-0039
+
+**Statement:** INV-DOC-003: Rendered documentation must never be edited manually; changes
+must be made through generators, templates, or structured source artifacts.
+  
+**Scope:** global  
+**Enforcement:** must (policy)
+
+**Rationale:**
+Manual edits to generated documentation destroy traceability and create
+ambiguity over what is authoritative.
+
+
+### INV-0099
+
+**Statement:** INV-DOC-004: A documentation projection must obtain machine-verifiable
+facts from their owning structured or provider surfaces and must not establish
+an independent authored duplicate of those facts.
+  
+**Scope:** global  
+**Enforcement:** must (design)
+
+**Rationale:**
+Derived facts already have an owning machine-readable source. Duplicating
+them in projection configuration creates silent drift.
+
+
+### INV-0100
+
+**Statement:** INV-DOC-005: Authored orientation used by a documentation projection must
+remain explicit, non-authoritative, and unable to override canonical architecture
+authority.
+  
+**Scope:** global  
+**Enforcement:** must (design)
+
+**Rationale:**
+Explanatory orientation is legitimate only when it cannot become a hidden
+second authority layer.
+
+
+### INV-0101
+
+**Statement:** INV-DOC-006: Generated documentation freshness must close over all governed
+semantic inputs and projection-rule inputs capable of changing the rendered
+artifact, and must not require whole-repository hashing.
+  
+**Scope:** global  
+**Enforcement:** must (test)
+
+**Rationale:**
+Freshness must track true render dependencies, including templates and
+projection rules, without invalidating on unrelated repository churn.
+
+
+### INV-0102
+
+**Statement:** INV-DOC-007: Repository-specific documentation-projection orientation must
+not leak into an unrelated repository scope, including ADR Kit provider
+semantics rendered into an arbitrary consuming repository.
+  
+**Scope:** global  
+**Enforcement:** must (test)
+
+**Rationale:**
+Scope isolation prevents consumer repositories from being mis-oriented as
+the authoring provider.
+
+
+
+## Constraints
+
+### CONST-0001
+
+Human-readable architecture documentation must be produced from structured
+artifacts or explicit projection code rather than maintained as an
+independent source of truth.
+
+
+
 
 
 ---
 
-*Generated from ADR-L-0007 by ADR Architecture Kit*
+*Generated from ADR-L-0007 by ADR Architecture Kit (projection v3)*

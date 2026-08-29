@@ -1,4 +1,4 @@
-schema_version: '1.3'
+schema_version: '1.5'
 adr_type: logical
 id: 019fee89-e617-78d9-ba3b-b7e3e6db1b12
 title: Canonical Entity Identity

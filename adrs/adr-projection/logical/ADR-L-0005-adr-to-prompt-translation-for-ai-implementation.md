@@ -3,21 +3,49 @@ integrity_schema_version: 1
 generated: deterministic_projection_v1
 artifact_kind: rendered_adr_markdown
 generator_id: adr-projection-markdown
-generator_version: 2
+generator_version: 3
 hash_algorithm: sha256
-source_hash: 1896e0d945fbabc833403c86544567530b5b8d0c30bf7a6dc5b2ae3b78ff2a03
-rendered_hash: 1d620fa72b81fe5ec50434912237f9d24d8b4c30a33dd2d8247fa70e41bd181e
+source_hash: fc664499fcc7a7d6171c0d7e2f63557823b3b690def7bd26dd3090bac0f53b69
+rendered_hash: 3beb4b1b321764b56bcfa5c47e3d38576858bdfdc9eb999a047a6f110849770e
 -->
 
 # ADR-L-0005: ADR-to-Prompt Translation for AI Implementation
 
+## Identity / Status
+
+**Type:** logical  
 **Status:** accepted  
+**Alias:** ADR-L-0005  
+**Alias name:** adr-to-prompt-translation-for-ai-implementation  
 **Created:** 2026-03-08  
 **Modified:** 2026-03-08  
 **Authors:** adr-architecture-kit  
 **Domains:** adr, automation, ai-tooling, code-generation  
-**Tags:** prompt-engineering, adr, automation, ai-agents, code-generation, llm  
-**Alias name:** adr-to-prompt-translation-for-ai-implementation  
+
+## Architecture Position
+
+Logical architecture authority for this subject. Neighborhood paths use structural bridges plus exactly one semantic architecture edge; they never invent ADR-to-ADR verbs.
+
+## Architecture Neighborhood
+
+
+### Semantic architecture inventory
+
+- None
+
+## Neighbor Relationships
+
+No grammatical peer neighborhood for this subject.
+
+### Lifecycle / association
+
+- ADR-L-0005 -[:references]-> ADR-L-0004
+- ADR-L-0005 -[:references]-> ADR-L-0003
+- ADR-L-0005 -[:references]-> ADR-PC-0001
+- ADR-L-0005 -[:references]-> ADR-PC-0002
+- ADR-L-0005 -[:references]-> ADR-PC-0003
+- ADR-L-0005 -[:references]-> ADR-PC-0008
+- ADR-L-0006 -[:references]-> ADR-L-0005
 
 ## Context
 
@@ -66,35 +94,40 @@ The prompt translator becomes a **code generator for AI instructions**, ensuring
 AI agents receive complete, accurate specifications.
 
 
-## Relationship graph
+## Internal Structure
 
 ```mermaid
-flowchart LR
-  n_019fee89_e615_70d5_ac2e_d1456d710acd["CONTRACT-0004"]
-  n_019fee89_e615_7102_8f0f_d4652f6da679["DEC-0017"]
-  n_019fee89_e615_71c4_b71d_61aed9baa000["DEC-0010"]
-  n_019fee89_e615_71de_ad3f_2d5d886efee2["CAP-0031"]
+flowchart TB
   n_019fee89_e615_73a3_8d31_7a4721affae9["ADR-L-0005"]
-  n_019fee89_e615_753d_8537_efcdb8369a99["DEC-0030"]
-  n_019fee89_e615_755a_af33_7d2524161a7a["INV-0047"]
-  n_019fee89_e615_7572_b71e_6720464e70af["INV-0049"]
-  n_019fee89_e615_7577_8d37_dd0df031bec9["ADR-L-0004"]
-  n_019fee89_e615_7603_ab3f_2ec4a655831c["INV-0051"]
-  n_019fee89_e615_7695_923e_7ae538b2d1d5["CAP-0008"]
-  n_019fee89_e615_76e9_973a_af0e2b391d35["DEC-0024"]
-  n_019fee89_e615_76f9_9627_02674f7f34cc["CAP-0009"]
-  n_019fee89_e615_77f6_9b1f_695732d25443["ADR-L-0003"]
-  n_019fee89_e615_7827_a11b_5864ad24f136["CONTRACT-0005"]
-  n_019fee89_e615_796d_a21f_4b1a70916550["BOUND-0004"]
-  n_019fee89_e615_7b66_b73a_3b99f7d92d4d["ADR-L-0006"]
-  n_019fee89_e615_7c3b_b907_7fbb48d31a2b["CONTRACT-0003"]
-  n_019fee89_e615_7c78_8337_ff658fd422f8["CAP-0032"]
-  n_019fee89_e615_7d44_8f3a_c6db615e9e28["INV-0050"]
-  n_019fee89_e615_7e07_9f3f_9204fcab0da7["INV-0046"]
-  n_019fee89_e615_7e34_900f_7e37891efa10["CAP-0033"]
-  n_019fee89_e615_7f70_901f_75cfe9860b82["INV-0048"]
-  n_019fee89_e618_703b_a136_3cb5c991e3c4["ADR-P-0004"]
-  n_019fee89_e618_742f_951d_d29401d56c19["ADR-P-0003"]
+  subgraph sg_capability["capability"]
+    n_019fee89_e615_7695_923e_7ae538b2d1d5["CAP-0008"]
+    n_019fee89_e615_76f9_9627_02674f7f34cc["CAP-0009"]
+    n_019fee89_e615_71de_ad3f_2d5d886efee2["CAP-0031"]
+    n_019fee89_e615_7c78_8337_ff658fd422f8["CAP-0032"]
+    n_019fee89_e615_7e34_900f_7e37891efa10["CAP-0033"]
+  end
+  subgraph sg_decision["decision"]
+    n_019fee89_e615_71c4_b71d_61aed9baa000["DEC-0010"]
+    n_019fee89_e615_7102_8f0f_d4652f6da679["DEC-0017"]
+    n_019fee89_e615_76e9_973a_af0e2b391d35["DEC-0024"]
+    n_019fee89_e615_753d_8537_efcdb8369a99["DEC-0030"]
+  end
+  subgraph sg_invariant["invariant"]
+    n_019fee89_e615_7e07_9f3f_9204fcab0da7["INV-0046"]
+    n_019fee89_e615_755a_af33_7d2524161a7a["INV-0047"]
+    n_019fee89_e615_7f70_901f_75cfe9860b82["INV-0048"]
+    n_019fee89_e615_7572_b71e_6720464e70af["INV-0049"]
+    n_019fee89_e615_7d44_8f3a_c6db615e9e28["INV-0050"]
+    n_019fee89_e615_7603_ab3f_2ec4a655831c["INV-0051"]
+  end
+  subgraph sg_boundary["boundary"]
+    n_019fee89_e615_796d_a21f_4b1a70916550["BOUND-0004"]
+  end
+  subgraph sg_contract["contract"]
+    n_019fee89_e615_7c3b_b907_7fbb48d31a2b["CONTRACT-0003"]
+    n_019fee89_e615_70d5_ac2e_d1456d710acd["CONTRACT-0004"]
+    n_019fee89_e615_7827_a11b_5864ad24f136["CONTRACT-0005"]
+  end
   n_019fee89_e615_70d5_ac2e_d1456d710acd -->|"declared_in"| n_019fee89_e615_73a3_8d31_7a4721affae9
   n_019fee89_e615_7102_8f0f_d4652f6da679 -->|"declared_in"| n_019fee89_e615_73a3_8d31_7a4721affae9
   n_019fee89_e615_71c4_b71d_61aed9baa000 -->|"declared_in"| n_019fee89_e615_73a3_8d31_7a4721affae9
@@ -114,67 +147,27 @@ flowchart LR
   n_019fee89_e615_7e07_9f3f_9204fcab0da7 -->|"declared_in"| n_019fee89_e615_73a3_8d31_7a4721affae9
   n_019fee89_e615_7e34_900f_7e37891efa10 -->|"declared_in"| n_019fee89_e615_73a3_8d31_7a4721affae9
   n_019fee89_e615_7f70_901f_75cfe9860b82 -->|"declared_in"| n_019fee89_e615_73a3_8d31_7a4721affae9
-  n_019fee89_e618_703b_a136_3cb5c991e3c4 -->|"implements_logical"| n_019fee89_e615_73a3_8d31_7a4721affae9
-  n_019fee89_e615_73a3_8d31_7a4721affae9 -->|"references"| n_019fee89_e615_7577_8d37_dd0df031bec9
-  n_019fee89_e615_73a3_8d31_7a4721affae9 -->|"references"| n_019fee89_e615_77f6_9b1f_695732d25443
-  n_019fee89_e615_73a3_8d31_7a4721affae9 -->|"references"| n_019fee89_e618_742f_951d_d29401d56c19
-  n_019fee89_e615_7b66_b73a_3b99f7d92d4d -->|"references"| n_019fee89_e615_73a3_8d31_7a4721affae9
 ```
 
-## Related ADRs
-
-### ADR-L-0003 — Quality Assurance and Testing Strategy
-
-**Relationships:**
-- this ADR -[:references]-> 019fee89-e615-77f6-9b1f-695732d25443
-
-**Context:** The ADR Architecture Kit is a foundational tool for machine-verifiable architecture
-documentation. As such, it must maintain high quality standards to ensure reliability,
-correctness, and trust in the architectural governance it provides.
-
-[Open projection](ADR-L-0003-quality-assurance-and-testing-strategy.md)
-### ADR-L-0004 — ADR-to-Implementation Traceability via Decorators and Metadata Attribution
-
-**Relationships:**
-- this ADR -[:references]-> 019fee89-e615-7577-8d37-dd0df031bec9
-
-**Context:** Architecture Decision Records document why implementation artifacts exist, but
-the repo still lacks a universal, machine-verifiable way to trace code,
-infrastructure, configuration, schemas, pipelines, and scripts back to the
-ADRs that justify them.
-
-[Open projection](ADR-L-0004-adr-to-implementation-traceability-via-decorators-and-metadata-attribution.md)
-### ADR-L-0006 — Rule Library Sub-Module with Cooperative Signals
-
-**Relationships:**
-- 019fee89-e615-7b66-b73a-3b99f7d92d4d -[:references]-> this ADR
-
-**Context:** ADR-L-0004 defines a multi-tier governance architecture where a rule-library
-sub-module activates and projects rules via MCP. The Rules & Signal Service
-(Tier 2) parses ADRs and generates enforcement rules; the rule-library (Tier 3)
-receives, activates, and serves those rules to consumers.
-
-[Open projection](ADR-L-0006-rule-library-sub-module-with-cooperative-signals.md)
-### ADR-P-0003 — Multi-Scope Python Implementation for ADR Toolkit
-
-**Relationships:**
-- this ADR -[:references]-> 019fee89-e618-742f-951d-d29401d56c19
-
-**Context:** ADR-L-0002 defines the logical architecture for multi-scope ADR support.
-This Physical ADR specifies the concrete Python implementation including
-module structure, API design, and CLI interface.
-
-[Open projection](../physical/ADR-P-0003-multi-scope-python-implementation-for-adr-toolkit.md)
-### ADR-P-0004 — Prompt Translator Implementation for AI-Driven Development
-
-**Relationships:**
-- 019fee89-e618-703b-a136-3cb5c991e3c4 -[:implements_logical]-> this ADR
-
-**Context:** ADR-L-0005 defines the logical architecture for translating ADRs into
-implementation prompts for AI agents. This Physical ADR specifies the
-concrete Python implementation.
-
-[Open projection](../physical/ADR-P-0004-prompt-translator-implementation-for-ai-driven-development.md)
+- `boundary` BOUND-0004 — Prompt Translator
+- `capability` CAP-0008 — Multi-Agent Prompt Generation
+- `capability` CAP-0009 — Prompt Format Adaptation
+- `capability` CAP-0031 — Parse Physical ADR Components
+- `capability` CAP-0032 — Generate Implementation Prompt
+- `capability` CAP-0033 — Generate Validation Checklist
+- `contract` CONTRACT-0003 — 019fee89-e615-7c3b-b907-7fbb48d31a2b
+- `contract` CONTRACT-0004 — 019fee89-e615-70d5-ac2e-d1456d710acd
+- `contract` CONTRACT-0005 — 019fee89-e615-7827-a11b-5864ad24f136
+- `decision` DEC-0010 — Create ADR-to-Prompt Translator
+- `decision` DEC-0017 — Generate Prompts Per Component
+- `decision` DEC-0024 — Include Validation Criteria in Prompts
+- `decision` DEC-0030 — Support Multiple Target Agents
+- `invariant` INV-0046 — INV-0046
+- `invariant` INV-0047 — INV-0047
+- `invariant` INV-0048 — INV-0048
+- `invariant` INV-0049 — INV-0049
+- `invariant` INV-0050 — INV-0050
+- `invariant` INV-0051 — INV-0051
 
 ## Capabilities
 
@@ -224,158 +217,6 @@ while maintaining core content consistency
 
 
 
-## Architectural Boundaries
-
-### BOUND-0004: Prompt Translator
-
-**Description:**
-Translates ADRs into implementation prompts
-
-
-**Rationale:**
-Separates ADR parsing from prompt generation for single responsibility.
-
-
-
-## Interaction Contracts
-
-### CONTRACT-0004
-
-**Parties:** ADR Parser, Prompt Generator  
-**Protocol:** Structured component data transfer
-
-**Guarantees:**
-Parser extracts component specifications.
-Parser validates ADR completeness.
-Generator receives validated component data.
-Generator produces structured prompt.
-
-
-### CONTRACT-0005
-
-**Parties:** Prompt Generator, AI Agent  
-**Protocol:** Self-contained prompt delivery
-
-**Guarantees:**
-Prompt is self-contained (no external references needed).
-Prompt includes validation criteria.
-Prompt references source ADR for traceability.
-Agent can execute prompt independently.
-
-
-### CONTRACT-0003
-
-**Parties:** AI Implementation, Validator  
-**Protocol:** Checklist-based validation
-
-**Guarantees:**
-Validator uses generated checklist.
-Validator verifies against ADR invariants.
-Validator reports compliance status.
-- Validator references specific ADR sections
-
-
-
-
-## Invariants
-
-### INV-0046
-
-**Statement:** Generated prompts MUST include all invariants from the source ADR with
-their enforcement levels (must/should/may)
-  
-**Scope:** global  
-**Enforcement:** must (design)  
-**Verification:** automated
-
-**Rationale:**
-Invariants are architectural constraints that MUST be enforced in implementation.
-Missing invariants in prompts leads to non-compliant code.
-
-
-
-
-### INV-0047
-
-**Statement:** Generated prompts MUST include component specifications with complete
-interface definitions (methods, parameters, return types)
-  
-**Scope:** global  
-**Enforcement:** must (design)  
-**Verification:** automated
-
-**Rationale:**
-Component specs define what to build. Incomplete specs lead to incorrect
-implementations that don't match the architecture.
-
-
-
-
-### INV-0048
-
-**Statement:** Generated prompts MUST reference the source ADR ID and specific sections
-(invariant IDs, component IDs) for traceability
-  
-**Scope:** global  
-**Enforcement:** must (design)  
-**Verification:** automated
-
-**Rationale:**
-Traceability enables validation of implementation against original ADR
-and helps AI agents understand authority chain.
-
-
-
-
-### INV-0049
-
-**Statement:** Generated prompts MUST include test requirements from the ADR
-  
-**Scope:** global  
-**Enforcement:** must (design)  
-**Verification:** automated
-
-**Rationale:**
-Tests are part of the specification. Per ADR-L-0003, TDD methodology
-requires tests to be specified before implementation.
-
-
-
-
-### INV-0050
-
-**Statement:** Generated prompts SHOULD include implementation strategy guidance
-(e.g., TDD cycle, dependency injection patterns)
-  
-**Scope:** global  
-**Enforcement:** should (design)  
-**Verification:** automated
-
-**Rationale:**
-Implementation patterns help AI agents produce consistent, high-quality
-code that follows project conventions.
-
-
-
-
-### INV-0051
-
-**Statement:** Prompt generator MUST be deterministic - same ADR input always produces
-same prompt output
-  
-**Scope:** global  
-**Enforcement:** must (design)  
-**Verification:** automated
-
-**Rationale:**
-Non-deterministic generation violates SYS-2 (Deterministic Cognition).
-Prompts must be reproducible for validation and debugging.
-
-
-
-
-
-
 ## Decisions
 
 ### DEC-0010: Create ADR-to-Prompt Translator
@@ -399,16 +240,6 @@ Benefits:
 - **Template-based generation**: Less flexible, hard to maintain
 - **LLM-based translation**: Non-deterministic, requires validation
 
-**Consequences:**
-
-**Positive:**
-- Prompts are generated, not hand-crafted
-- ADR changes automatically propagate to prompts
-- AI agents receive consistent, complete specifications
-- Reduces cognitive load on architects
-- Enables automated implementation pipelines
-
-
 
 ### DEC-0017: Generate Prompts Per Component
 
@@ -422,14 +253,6 @@ component should have its own implementation prompt to enable:
 
 
 
-**Consequences:**
-
-**Positive:**
-- One Physical ADR → Multiple prompts (one per component)
-- Prompts reference parent ADR for context
-- Prompts can be executed independently or sequentially
-
-
 
 ### DEC-0024: Include Validation Criteria in Prompts
 
@@ -438,14 +261,6 @@ Each prompt should include explicit validation criteria so the implementing
 agent knows when it's done and how to verify correctness. This enables
 self-validation and reduces iteration cycles.
 
-
-
-**Consequences:**
-
-**Positive:**
-- Prompts are self-contained with success criteria
-- AI agents can self-validate before handoff
-- Reduces back-and-forth between design and implementation
 
 
 
@@ -462,12 +277,85 @@ for specific target agents.
 - **Single universal prompt**: May not leverage agent-specific features
 - **Manual per-agent prompts**: Not scalable
 
-**Consequences:**
 
-**Positive:**
-- Translator has agent-specific formatters
-- Can optimize for agent strengths
-- Maintains core content consistency across formats
+
+## Invariants
+
+### INV-0046
+
+**Statement:** Generated prompts MUST include all invariants from the source ADR with
+their enforcement levels (must/should/may)
+  
+**Scope:** global  
+**Enforcement:** must (design)
+
+**Rationale:**
+Invariants are architectural constraints that MUST be enforced in implementation.
+Missing invariants in prompts leads to non-compliant code.
+
+
+### INV-0047
+
+**Statement:** Generated prompts MUST include component specifications with complete
+interface definitions (methods, parameters, return types)
+  
+**Scope:** global  
+**Enforcement:** must (design)
+
+**Rationale:**
+Component specs define what to build. Incomplete specs lead to incorrect
+implementations that don't match the architecture.
+
+
+### INV-0048
+
+**Statement:** Generated prompts MUST reference the source ADR ID and specific sections
+(invariant IDs, component IDs) for traceability
+  
+**Scope:** global  
+**Enforcement:** must (design)
+
+**Rationale:**
+Traceability enables validation of implementation against original ADR
+and helps AI agents understand authority chain.
+
+
+### INV-0049
+
+**Statement:** Generated prompts MUST include test requirements from the ADR
+  
+**Scope:** global  
+**Enforcement:** must (design)
+
+**Rationale:**
+Tests are part of the specification. Per ADR-L-0003, TDD methodology
+requires tests to be specified before implementation.
+
+
+### INV-0050
+
+**Statement:** Generated prompts SHOULD include implementation strategy guidance
+(e.g., TDD cycle, dependency injection patterns)
+  
+**Scope:** global  
+**Enforcement:** should (design)
+
+**Rationale:**
+Implementation patterns help AI agents produce consistent, high-quality
+code that follows project conventions.
+
+
+### INV-0051
+
+**Statement:** Prompt generator MUST be deterministic - same ADR input always produces
+same prompt output
+  
+**Scope:** global  
+**Enforcement:** must (design)
+
+**Rationale:**
+Non-deterministic generation violates SYS-2 (Deterministic Cognition).
+Prompts must be reproducible for validation and debugging.
 
 
 
@@ -476,38 +364,18 @@ for specific target agents.
 
 ### GAP-0002: Prompt template design needed
 
-**Impact:** medium  
-**Blocking:** No
-
-**Context:**
 Classification: real gap. Prompt generation exists architecturally, but the production prompt-template set is not implemented in this repo yet.
-
-
-
 
 ### GAP-0003: Agent-specific formatters need definition
 
-**Impact:** medium  
-**Blocking:** No
-
-**Context:**
 Classification: deferred gap. Core prompt generation can proceed before per-agent optimizations are added.
-
-
-
 
 ### GAP-0004: Integration with CI/CD for automated implementation
 
-**Impact:** medium  
-**Blocking:** No
-
-**Context:**
 Classification: deferred gap. This is downstream workflow automation, not a blocker for the architecture-index subsystem.
-
-
 
 
 
 ---
 
-*Generated from ADR-L-0005 by ADR Architecture Kit*
+*Generated from ADR-L-0005 by ADR Architecture Kit (projection v3)*

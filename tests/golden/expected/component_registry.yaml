@@ -1,4 +1,4 @@
-schema_version: '2.0'
+schema_version: '2.2'
 type: normalized_entity_registry
 entities:
 - id: 019fee89-e617-7060-8f3f-4ecd46a719da
@@ -12,7 +12,7 @@ entities:
     attribution evidence - Provide CLI entrypoints for validation'
   uri: adr://adr-architecture-kit/entities/019fee89-e617-7060-8f3f-4ecd46a719da
   created_at: '2026-08-11T01:57:22.583Z'
-  entity_fingerprint: sha256:60fc3b95e700bd3210cb35d70d1ce460cda781a91adff5f21f705ba97c218f18
+  entity_fingerprint: sha256:dcec6df2f1a30734f49eea0ab58617eb33804428fae2d7ee0f47d61ead03a23a
   lifecycle_stage: active
   canonical_source:
     source_type: physical_component_adr
@@ -65,6 +65,7 @@ entities:
     extraction_phase: extract_component
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 019fee89-e617-76ad-9336-b3615a6e4bde
   alias_id: COMP-0012
   alias_name: compiler-pipeline-and-driver
@@ -76,7 +77,7 @@ entities:
     outputs - Support recursive multi-scope compilation and reportin'
   uri: adr://adr-architecture-kit/entities/019fee89-e617-76ad-9336-b3615a6e4bde
   created_at: '2026-08-11T01:57:22.583Z'
-  entity_fingerprint: sha256:e61b85755cfbee12d5f72eaf74d6a2deb5b857f40f554f1de8b8c0cd68582998
+  entity_fingerprint: sha256:e772bee0d9e8655170f0915c659b80808224b18189cd34a4430094422b88d3f5
   lifecycle_stage: active
   canonical_source:
     source_type: physical_component_adr
@@ -129,6 +130,7 @@ entities:
     extraction_phase: extract_component
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 019fee89-e617-76d8-a333-e21361cd6602
   alias_id: COMP-0010
   alias_name: entity-registry-generator-and-query-surface
@@ -140,7 +142,7 @@ entities:
     legacy compatibility registry output at `adrs/entities/r'
   uri: adr://adr-architecture-kit/entities/019fee89-e617-76d8-a333-e21361cd6602
   created_at: '2026-08-11T01:57:22.583Z'
-  entity_fingerprint: sha256:b7bb1e237a5c2af8d03b988dca3c59a892e7dbd428794cab5ec028bc0def9e8e
+  entity_fingerprint: sha256:2e3fb3e16374474aea60ff7821df30431534b88bc42e1890af30ff56f5197b15
   lifecycle_stage: active
   canonical_source:
     source_type: physical_component_adr
@@ -194,6 +196,76 @@ entities:
     extraction_phase: extract_component
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
+- id: 019fee89-e618-719b-bb3a-f13ab0906811
+  alias_id: COMP-0017
+  alias_name: project-scope-resolver
+  alias_ref: COMP-0017:project-scope-resolver
+  entity_type: component
+  name: Project Scope Resolver
+  summary: '- Detect project boundaries using marker files - Enforce workspace boundaries
+    (INV-0018) - Support explicit scope override - Discover sub-module scopes recursively
+    - Maintain parent-child scope relationships'
+  uri: adr://adr-architecture-kit/entities/019fee89-e618-719b-bb3a-f13ab0906811
+  created_at: '2026-08-11T01:57:22.584Z'
+  entity_fingerprint: sha256:187d0a758effa1d37b473e92734a77338381e4a1c6c2ff12e3213ba611d80d12
+  lifecycle_stage: active
+  canonical_source:
+    source_type: physical_component_adr
+    source_ref: 01a048d8-454a-7464-bcaa-718fa77bed6a#019fee89-e618-719b-bb3a-f13ab0906811
+    artifact_path: adrs/physical-component/ADR-PC-0008-project-scope-resolution.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a048d8-454a-7464-bcaa-718fa77bed6a
+    adr_alias_id: ADR-PC-0008
+    legacy_component_id: 019fee89-e618-719b-bb3a-f13ab0906811
+    technologies:
+    - python
+    - click
+    - pyyaml
+    - pathlib
+    - dataclasses
+    module_path: src/adr_kit/scope/
+    implements_capabilities: []
+    implements_system:
+    - 019fee89-e618-7b3e-813b-a449881b6adb
+    - 019fee89-e618-7d04-9337-4aa2d3258507
+    alias_id: COMP-0017
+    alias_name: project-scope-resolver
+  relationships:
+    declared_in:
+    - 01a048d8-454a-7464-bcaa-718fa77bed6a
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in:
+    - 019fee89-e618-713e-a017-5b417ef9ac9f
+    - 019fee89-e618-79df-a73f-edc9dead8526
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface:
+    - 019fee89-e618-717e-933f-f02a053e8ac5
+    - 019fee89-e618-79e6-8b3f-27b30946373a
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: physical_component_adr
+    source_ref: 01a048d8-454a-7464-bcaa-718fa77bed6a#019fee89-e618-719b-bb3a-f13ab0906811
+    extraction_phase: extract_component
+    classification: explicit
+    generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 019fee89-e618-74d1-9a1f-37e2c2982a51
   alias_id: COMP-0013
   alias_name: repository-boundary-component
@@ -205,7 +277,7 @@ entities:
     lookup logic - Prevent ad hoc re-interpretation of compiled r'
   uri: adr://adr-architecture-kit/entities/019fee89-e618-74d1-9a1f-37e2c2982a51
   created_at: '2026-08-11T01:57:22.584Z'
-  entity_fingerprint: sha256:966a64fde5ef7493a766caa92f89c6499e4b41b17c094b196f26650d168ef99d
+  entity_fingerprint: sha256:e8738b8eaaa711f448ecc9b17930bbce4320802c9350de1f3bd3f0857d627f6d
   lifecycle_stage: active
   canonical_source:
     source_type: physical_component_adr
@@ -258,6 +330,7 @@ entities:
     extraction_phase: extract_component
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 019fee89-e618-7507-953e-19e6335e3b7a
   alias_id: COMP-0015
   alias_name: brownfield-onboarding-and-canonical-normalization
@@ -269,7 +342,7 @@ entities:
     cleanup as governed normalization rather than ad hoc editing'
   uri: adr://adr-architecture-kit/entities/019fee89-e618-7507-953e-19e6335e3b7a
   created_at: '2026-08-11T01:57:22.584Z'
-  entity_fingerprint: sha256:b557cc56b700930cb3760045100c9c72c014c3ed0b6042cb9c5db8775e81dee2
+  entity_fingerprint: sha256:c19c1284ab72690581167709904332f256938aeaf0af13495bd0709865c1a9d5
   lifecycle_stage: active
   canonical_source:
     source_type: physical_component_adr
@@ -321,6 +394,7 @@ entities:
     extraction_phase: extract_component
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 019fee89-e618-781c-831f-0d5fe24f7d85
   alias_id: COMP-0014
   alias_name: generated-artifact-integrity-validation
@@ -332,7 +406,7 @@ entities:
     governance checks over generated artifacts'
   uri: adr://adr-architecture-kit/entities/019fee89-e618-781c-831f-0d5fe24f7d85
   created_at: '2026-08-11T01:57:22.584Z'
-  entity_fingerprint: sha256:dc804bd61f0b8cc668e9a40240f24452c3ca4efaacd296b20d6cc0079e42319a
+  entity_fingerprint: sha256:e6a945992255293005536e0e87d267e2bae8ddf3ff982f3efc74716acbc271e9
   lifecycle_stage: active
   canonical_source:
     source_type: physical_component_adr
@@ -384,6 +458,7 @@ entities:
     extraction_phase: extract_component
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 019ffdba-3c42-75d5-b93b-f32f35152e32
   alias_id: COMP-0022
   alias_name: semantic-attribution-embodiment
@@ -395,7 +470,7 @@ entities:
     UUID claim decorators and vocabulary-driven Python/TypeScript shi'
   uri: adr://adr-architecture-kit/entities/019ffdba-3c42-75d5-b93b-f32f35152e32
   created_at: '2026-08-14T00:44:28.610Z'
-  entity_fingerprint: sha256:835eaeacc700be019da08095552b6c852967ff31a91f71e4669404eab6a53fe5
+  entity_fingerprint: sha256:8b2359d2f69bd4fdd408d6877a2dbf216fa13d7e0df3cce7f0b98409ff3d76b2
   lifecycle_stage: active
   canonical_source:
     source_type: physical_component_adr
@@ -449,3 +524,4 @@ entities:
     extraction_phase: extract_component
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'

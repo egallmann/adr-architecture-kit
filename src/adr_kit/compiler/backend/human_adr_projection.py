@@ -13,6 +13,13 @@ from ...scope import ProjectScope
 from ..frontend.adr_access import field_get, presentation_id
 from ..ir.rel_graph import IRRelationship
 from ..pipeline import FrontendBuildResult
+from .coverage_registry import assert_current_authoring_coverage
+from .neighbor_paths import (
+    GOVERNANCE,
+    LIFECYCLE_ASSOCIATION,
+    SEMANTIC_ARCHITECTURE,
+    select_neighbor_paths,
+)
 from .projection_paths import (
     human_label_for_adr,
     projection_relative_path,
@@ -20,7 +27,6 @@ from .projection_paths import (
 
 _MERMAID_UNSAFE = re.compile(r'["\\]')
 _NODE_SAFE = re.compile(r"[^A-Za-z0-9_]")
-_MAX_GRAPH_NODES = 40
 
 
 @dataclass(frozen=True)
@@ -54,6 +60,23 @@ class PeerCard:
     link: str | None
 
 
+@dataclass(frozen=True)
+class NeighborhoodRow:
+    verb: str
+    from_label: str
+    to_label: str
+    from_id: str
+    to_id: str
+
+
+@dataclass(frozen=True)
+class InternalEntityRow:
+    entity_id: str
+    alias: str
+    entity_type: str
+    name: str
+
+
 @dataclass
 class HumanAdrProjectionContext:
     """Disposable human projection model for one ADR."""
@@ -71,6 +94,11 @@ class HumanAdrProjectionContext:
     render_dependencies: list[Path | HashInput]
     source_path: Path
     projection_path: Path
+    neighborhood_inventory: list[NeighborhoodRow]
+    internal_entities: list[InternalEntityRow]
+    internal_graph: str | None
+    lifecycle_rows: list[str]
+    governance_rows: list[str]
 
 
 def context_summary_from_text(text: str | None) -> str:
@@ -146,8 +174,11 @@ def build_human_adr_projection_context(
     title = str(field_get(adr, "title") or "")
     projection_path = projection_relative_path(adr)
 
+    assert_current_authoring_coverage(adr)
+
     entities = build_result.model.entities
     relationships = build_result.model.relationships.values()
+    entity_types = {entity.id: entity.entity_type for entity in entities.values()}
 
     adr_models_by_id: dict[str, Any] = {}
     adr_paths_by_id: dict[str, Path] = {}
@@ -169,40 +200,46 @@ def build_human_adr_projection_context(
             adr_models_by_id.setdefault(alias, artifact)
             adr_paths_by_id.setdefault(alias, path)
 
-    ego_ids = {subject_id}
-    for relationship in relationships:
-        if (
-            relationship.relationship_type == "declared_in"
-            and relationship.to_entity_id == subject_id
-        ):
-            ego_ids.add(relationship.from_entity_id)
-
-    one_hop: list[IRRelationship] = []
-    for relationship in relationships:
-        if relationship.from_entity_id in ego_ids or relationship.to_entity_id in ego_ids:
-            one_hop.append(relationship)
+    neighbor_paths = select_neighbor_paths(
+        subject_id=subject_id,
+        relationships=list(relationships),
+        entity_types=entity_types,
+    )
 
     peer_rel_map: dict[str, list[PeerRelationship]] = {}
-    for relationship in one_hop:
-        for endpoint in (relationship.from_entity_id, relationship.to_entity_id):
-            if endpoint in ego_ids:
-                continue
-            entity = entities.get(endpoint)
-            if entity is None or entity.entity_type != "adr":
-                continue
-            direction = "out" if relationship.from_entity_id in ego_ids else "in"
-            if direction == "out":
-                label = f"this ADR -[:{relationship.relationship_type}]-> {presentation_id(entity)}"
-            else:
-                label = f"{presentation_id(entity)} -[:{relationship.relationship_type}]-> this ADR"
-            peer_rel_map.setdefault(endpoint, []).append(
-                PeerRelationship(
-                    verb=relationship.relationship_type,
-                    direction_token=direction,
-                    other_endpoint_id=endpoint,
-                    label=label,
+    neighborhood_inventory: list[NeighborhoodRow] = []
+    path_relationships: list[IRRelationship] = []
+    inventory_keys: set[tuple[str, str, str]] = set()
+    for path in neighbor_paths:
+        path_relationships.append(path.relationship)
+        from_entity = entities.get(path.from_id)
+        to_entity = entities.get(path.to_id)
+        from_label = presentation_id(from_entity) if from_entity else path.from_id
+        to_label = presentation_id(to_entity) if to_entity else path.to_id
+        inventory_key = (path.semantic_verb, path.from_id, path.to_id)
+        if inventory_key not in inventory_keys:
+            inventory_keys.add(inventory_key)
+            neighborhood_inventory.append(
+                NeighborhoodRow(
+                    verb=path.semantic_verb,
+                    from_label=from_label,
+                    to_label=to_label,
+                    from_id=path.from_id,
+                    to_id=path.to_id,
                 )
             )
+        peer_rel_map.setdefault(path.peer_adr_id, []).append(
+            PeerRelationship(
+                verb=path.semantic_verb,
+                direction_token="semantic",
+                other_endpoint_id=path.to_id,
+                label=(
+                    f"{from_label} -[:{path.semantic_verb}]-> {to_label} "
+                    f"(peer {presentation_id(adr_models_by_id.get(path.peer_adr_id) or path.peer_adr_id)})"
+                ),
+            )
+        )
+    neighborhood_inventory.sort(key=lambda row: (row.verb, row.from_id, row.to_id))
 
     peer_cards: list[PeerCard] = []
     for peer_id, rels in peer_rel_map.items():
@@ -275,11 +312,58 @@ def build_human_adr_projection_context(
         resolve_present_ref(superseded_by)
 
     graphs = _build_mermaid_graphs(
-        one_hop=one_hop,
+        one_hop=path_relationships,
+        relationships=list(relationships),
         entities=entities,
+        entity_types=entity_types,
         adr_models_by_id=adr_models_by_id,
         subject_id=subject_id,
     )
+
+    internal_entities = [
+        InternalEntityRow(
+            entity_id=entity.id,
+            alias=presentation_id(entity),
+            entity_type=entity.entity_type,
+            name=entity.name,
+        )
+        for entity in entities.values()
+        if any(
+            rel.relationship_type == "declared_in"
+            and rel.from_entity_id == entity.id
+            and rel.to_entity_id == subject_id
+            for rel in relationships
+        )
+    ]
+    internal_entities.sort(key=lambda row: (row.entity_type, row.alias, row.entity_id))
+    adr_type = _adr_type_value(adr)
+    internal_graph = None
+    if adr_type in {"logical", "physical-component"}:
+        internal_graph = _build_internal_structure_graph(
+            subject_id=subject_id,
+            adr_type=adr_type,
+            internal_entities=internal_entities,
+            relationships=list(relationships),
+            entities=entities,
+            adr_models_by_id=adr_models_by_id,
+        )
+
+    lifecycle_rows = [
+        f"{presentation_id(entities.get(rel.from_entity_id) or rel.from_entity_id)} "
+        f"-[:{rel.relationship_type}]-> "
+        f"{presentation_id(entities.get(rel.to_entity_id) or rel.to_entity_id)}"
+        for rel in relationships
+        if rel.relationship_type in LIFECYCLE_ASSOCIATION
+        and (rel.from_entity_id == subject_id or rel.to_entity_id == subject_id)
+    ]
+    governance_rows = [
+        f"{presentation_id(entities.get(rel.from_entity_id) or rel.from_entity_id)} "
+        f"-[:{rel.relationship_type}]-> "
+        f"{presentation_id(entities.get(rel.to_entity_id) or rel.to_entity_id)}"
+        for rel in relationships
+        if rel.relationship_type in GOVERNANCE
+        and (rel.from_entity_id == subject_id or rel.to_entity_id == subject_id)
+    ]
 
     dependency_keys: dict[str, Path | HashInput] = {}
     source_resolved = Path(source_path).resolve()
@@ -291,9 +375,24 @@ def build_human_adr_projection_context(
     )
     this_module = Path(__file__).resolve()
     paths_module = Path(__file__).resolve().parent / "projection_paths.py"
+    neighbor_module = Path(__file__).resolve().parent / "neighbor_paths.py"
+    coverage_module = Path(__file__).resolve().parent / "coverage_registry" / "__init__.py"
     dependency_keys[f"__generator__/modules/{this_module.name}"] = _module_hash_input(this_module)
     dependency_keys[f"__generator__/modules/{paths_module.name}"] = _module_hash_input(paths_module)
+    dependency_keys[f"__generator__/modules/{neighbor_module.name}"] = _module_hash_input(neighbor_module)
+    dependency_keys[f"__generator__/modules/{coverage_module.name}"] = _module_hash_input(coverage_module)
 
+    inventory_payload = "\n".join(
+        f"{row.verb}|{row.from_id}|{row.to_id}" for row in neighborhood_inventory
+    ).encode("utf-8")
+    dependency_keys["__generator__/neighborhood"] = HashInput(
+        "__generator__/neighborhood",
+        inventory_payload,
+    )
+    dependency_keys["__generator__/internal-structure"] = HashInput(
+        "__generator__/internal-structure",
+        (internal_graph or "").encode("utf-8"),
+    )
     for card in peer_cards:
         peer_path = adr_paths_by_id.get(card.peer_id)
         if peer_path is not None:
@@ -301,7 +400,7 @@ def build_human_adr_projection_context(
 
     endpoint_ids = {
         endpoint
-        for relationship in one_hop
+        for relationship in path_relationships
         for endpoint in (relationship.from_entity_id, relationship.to_entity_id)
     }
     for endpoint in endpoint_ids:
@@ -318,7 +417,7 @@ def build_human_adr_projection_context(
         subject_id=subject_id,
         alias_id=alias_id,
         title=title,
-        adr_type=_adr_type_value(adr),
+        adr_type=adr_type,
         status=_status_value(adr),
         peer_cards=peer_cards,
         graphs=graphs,
@@ -327,6 +426,11 @@ def build_human_adr_projection_context(
         render_dependencies=render_dependencies,
         source_path=source_resolved,
         projection_path=projection_path,
+        neighborhood_inventory=neighborhood_inventory,
+        internal_entities=internal_entities,
+        internal_graph=internal_graph,
+        lifecycle_rows=lifecycle_rows,
+        governance_rows=governance_rows,
     )
 
 
@@ -350,22 +454,90 @@ def _entity_label(
     return entity_id
 
 
-def _build_mermaid_graphs(
+_LOGICAL_INTERNAL_VERBS = frozenset(
+    {
+        "declared_in",
+        "enables",
+        "enabled_by",
+        "enforces",
+        "governs",
+        "implemented_by",
+        "refines",
+    }
+)
+_PC_INTERNAL_VERBS = frozenset({"declared_in", "provides_interface"})
+_LOGICAL_TYPE_ORDER = ("capability", "decision", "invariant", "constraint", "gap")
+_PC_TYPE_ORDER = ("component", "interface", "implementation_decision")
+
+
+def _build_internal_structure_graph(
     *,
-    one_hop: list[IRRelationship],
+    subject_id: str,
+    adr_type: str,
+    internal_entities: list[InternalEntityRow],
+    relationships: list[IRRelationship],
     entities: Any,
     adr_models_by_id: dict[str, Any],
-    subject_id: str,
-) -> list[str]:
-    if not one_hop:
-        subject_node = mermaid_node_id(subject_id)
-        subject_label = escape_mermaid_label(
-            _entity_label(subject_id, entities=entities, adr_models_by_id=adr_models_by_id)
-        )
-        return [f'flowchart LR\n  {subject_node}["{subject_label}"]\n']
+) -> str | None:
+    if not internal_entities:
+        return None
+    if adr_type == "physical-component":
+        verbs = _PC_INTERNAL_VERBS
+        type_rank = _PC_TYPE_ORDER
+    else:
+        verbs = _LOGICAL_INTERNAL_VERBS
+        type_rank = _LOGICAL_TYPE_ORDER
+    owned = {row.entity_id for row in internal_entities}
+    display_ids = owned | {subject_id}
+    structure_edges = _unique_relationships(
+        [
+            rel
+            for rel in relationships
+            if rel.relationship_type in verbs
+            and rel.from_entity_id in display_ids
+            and rel.to_entity_id in display_ids
+        ]
+    )
+    grouped: dict[str, list[InternalEntityRow]] = {}
+    for row in internal_entities:
+        grouped.setdefault(row.entity_type, []).append(row)
+    type_order = [item for item in type_rank if item in grouped]
+    type_order.extend(sorted(key for key in grouped if key not in type_rank))
 
-    sorted_edges = sorted(
-        one_hop,
+    lines = ["flowchart TB"]
+    subject_node = mermaid_node_id(subject_id)
+    subject_label = escape_mermaid_label(
+        _entity_label(subject_id, entities=entities, adr_models_by_id=adr_models_by_id)
+    )
+    lines.append(f'  {subject_node}["{subject_label}"]')
+    for entity_type in type_order:
+        subgraph_id = mermaid_node_id(f"sg_{entity_type}")
+        lines.append(f'  subgraph {subgraph_id}["{escape_mermaid_label(entity_type)}"]')
+        for row in grouped[entity_type]:
+            node = mermaid_node_id(row.entity_id)
+            label = escape_mermaid_label(row.alias)
+            lines.append(f'    {node}["{label}"]')
+        lines.append("  end")
+    for relationship in structure_edges:
+        src = mermaid_node_id(relationship.from_entity_id)
+        dst = mermaid_node_id(relationship.to_entity_id)
+        verb = escape_mermaid_label(relationship.relationship_type)
+        lines.append(f'  {src} -->|"{verb}"| {dst}')
+    lines.append("")
+    return "\n".join(lines)
+
+
+def _unique_relationships(edges: list[IRRelationship]) -> list[IRRelationship]:
+    unique: dict[tuple[str, str, str], IRRelationship] = {}
+    for relationship in edges:
+        key = (
+            relationship.relationship_type,
+            relationship.from_entity_id,
+            relationship.to_entity_id,
+        )
+        unique.setdefault(key, relationship)
+    return sorted(
+        unique.values(),
         key=lambda item: (
             item.relationship_type,
             item.from_entity_id,
@@ -373,19 +545,61 @@ def _build_mermaid_graphs(
             item.relationship_id,
         ),
     )
-    node_ids = sorted(
-        {
-            endpoint
-            for relationship in sorted_edges
-            for endpoint in (relationship.from_entity_id, relationship.to_entity_id)
-        }
-    )
+
+
+def _declared_in_bridges(
+    *,
+    endpoints: set[str],
+    relationships: list[IRRelationship],
+    entity_types: dict[str, str],
+) -> list[IRRelationship]:
+    non_adr_endpoints = {
+        endpoint for endpoint in endpoints if entity_types.get(endpoint) != "adr"
+    }
+    bridges: list[IRRelationship] = []
+    for relationship in relationships:
+        if relationship.relationship_type != "declared_in":
+            continue
+        if entity_types.get(relationship.to_entity_id) != "adr":
+            continue
+        if relationship.from_entity_id in non_adr_endpoints:
+            bridges.append(relationship)
+    return _unique_relationships(bridges)
+
+
+def _build_mermaid_graphs(
+    *,
+    one_hop: list[IRRelationship],
+    relationships: list[IRRelationship],
+    entities: Any,
+    entity_types: dict[str, str],
+    adr_models_by_id: dict[str, Any],
+    subject_id: str,
+) -> list[str]:
+    semantic_edges = _unique_relationships(one_hop)
+    if not semantic_edges:
+        return []
 
     def render_edge_group(edges: list[IRRelationship]) -> str:
+        endpoints = {
+            endpoint
+            for relationship in edges
+            for endpoint in (relationship.from_entity_id, relationship.to_entity_id)
+        }
+        display_edges = _unique_relationships(
+            [
+                *edges,
+                *_declared_in_bridges(
+                    endpoints=endpoints,
+                    relationships=relationships,
+                    entity_types=entity_types,
+                ),
+            ]
+        )
         local_nodes = sorted(
             {
                 endpoint
-                for relationship in edges
+                for relationship in display_edges
                 for endpoint in (relationship.from_entity_id, relationship.to_entity_id)
             }
         )
@@ -396,7 +610,7 @@ def _build_mermaid_graphs(
                 _entity_label(entity_id, entities=entities, adr_models_by_id=adr_models_by_id)
             )
             lines.append(f'  {node}["{label}"]')
-        for relationship in edges:
+        for relationship in display_edges:
             src = mermaid_node_id(relationship.from_entity_id)
             dst = mermaid_node_id(relationship.to_entity_id)
             verb = escape_mermaid_label(relationship.relationship_type)
@@ -404,39 +618,11 @@ def _build_mermaid_graphs(
         lines.append("")
         return "\n".join(lines)
 
-    if len(node_ids) <= _MAX_GRAPH_NODES:
-        return [render_edge_group(sorted_edges)]
-
     by_verb: dict[str, list[IRRelationship]] = {}
-    for relationship in sorted_edges:
+    for relationship in semantic_edges:
         by_verb.setdefault(relationship.relationship_type, []).append(relationship)
 
-    graphs: list[str] = []
-    for verb in sorted(by_verb):
-        edges = by_verb[verb]
-        verb_nodes = {
-            endpoint
-            for relationship in edges
-            for endpoint in (relationship.from_entity_id, relationship.to_entity_id)
-        }
-        if len(verb_nodes) <= _MAX_GRAPH_NODES:
-            graphs.append(render_edge_group(edges))
-            continue
-        # Chunk by sorted edges while never omitting.
-        chunk: list[IRRelationship] = []
-        chunk_nodes: set[str] = set()
-        for relationship in edges:
-            endpoints = {relationship.from_entity_id, relationship.to_entity_id}
-            projected = chunk_nodes | endpoints
-            if chunk and len(projected) > _MAX_GRAPH_NODES:
-                graphs.append(render_edge_group(chunk))
-                chunk = []
-                chunk_nodes = set()
-            chunk.append(relationship)
-            chunk_nodes |= endpoints
-        if chunk:
-            graphs.append(render_edge_group(chunk))
-    return graphs
+    return [render_edge_group(by_verb[verb]) for verb in sorted(by_verb)]
 
 
 def format_present_ref(ref: PresentRef) -> str:

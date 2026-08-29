@@ -1,4 +1,4 @@
-schema_version: '1.3'
+schema_version: '1.5'
 adr_type: physical-component
 id: 019fee89-e618-7787-b43f-a3e5cb264dd5
 title: Brownfield Onboarding and Canonical Normalization

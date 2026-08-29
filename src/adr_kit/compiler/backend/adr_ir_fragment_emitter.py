@@ -22,7 +22,7 @@ from .adr_ir_fragment_rendering import (
 
 
 LOGICAL_ADR_IR_PROFILE_VERSION = "logical_adr_ir_fragment.v1"
-SUPPORTED_LOGICAL_ADR_SCHEMA_VERSIONS = frozenset({"1.0", "1.3", "1.4"})
+SUPPORTED_LOGICAL_ADR_SCHEMA_VERSIONS = frozenset({"1.0", "1.3", "1.4", "1.5"})
 # Backward-compatible single-version alias for callers/tests.
 SUPPORTED_LOGICAL_ADR_SCHEMA_VERSION = "1.0"
 DECISION_SUPPORTS_CAPABILITY_RELATIONSHIP = "decision_supports_capability"

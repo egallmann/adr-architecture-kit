@@ -1,0 +1,126 @@
+# {{ adr | presentation_id }}: {{ adr.title }}
+
+## Identity / Status
+
+**Type:** {{ ctx.adr_type if ctx else adr.adr_type }}  
+**Status:** {{ adr.status.value }}  
+**Alias:** {{ adr | presentation_id }}  
+{% if adr.alias_name %}**Alias name:** {{ adr.alias_name }}  
+{% endif %}
+**Created:** {{ adr.created_date }}  
+{% if adr.implements_logical %}**Implements Logical:** {% for item in adr.implements_logical %}{{ item | present_ref }}{% if not loop.last %}, {% endif %}{% endfor %}  
+{% endif %}
+{% if adr.implements_system %}**Implements System:** {% for item in adr.implements_system %}{{ item | present_ref }}{% if not loop.last %}, {% endif %}{% endfor %}  
+{% endif %}
+
+## Architecture Position
+
+Physical-component ADRs author component, interface, and implementation entities. Topology is not authored here; neighborhood uses compiled semantic architecture edges plus structural bridges.
+
+## Architecture Neighborhood
+
+{% if ctx and ctx.graphs %}
+{% for graph in ctx.graphs %}
+```mermaid
+{{ graph }}```
+
+{% endfor %}
+{% endif %}
+
+### Semantic architecture inventory
+
+{% if ctx and ctx.neighborhood_inventory %}
+{% for row in ctx.neighborhood_inventory %}
+- `{{ row.verb }}`: {{ row.from_label }} → {{ row.to_label }}
+{% endfor %}
+{% else %}
+- None
+{% endif %}
+
+## Neighbor Relationships
+
+{% if ctx and ctx.peer_cards %}
+{% for card in ctx.peer_cards %}
+### {{ card.alias_id }} — {{ card.title }}
+
+{% if card.relationships %}
+{% for rel in card.relationships %}
+- {{ rel.label }}
+{% endfor %}
+{% endif %}
+
+**Context:** {{ card.context_summary }}
+
+{% if card.link %}[Open projection]({{ card.link }}){% else %}*(projection link unavailable)*{% endif %}
+
+{% endfor %}
+{% else %}
+No grammatical peer neighborhood for this subject.
+{% endif %}
+
+## Context
+
+{{ adr.context }}
+
+## Internal Structure
+
+{% if ctx and ctx.internal_graph %}
+```mermaid
+{{ ctx.internal_graph }}```
+
+{% endif %}
+{% if adr.component_specifications %}
+{% for comp in adr.component_specifications %}
+### {{ comp | presentation_id }}: {{ comp.name }} ({{ comp.type }})
+
+**Responsibilities:**
+{{ comp.responsibilities }}
+
+{% if comp.interfaces %}
+**Interfaces:**
+{% for iface in comp.interfaces %}
+- **{{ iface | presentation_id }}**{% if iface.type %} ({{ iface.type }}){% endif %}: {{ iface.specification or iface.description or iface.name or "Interface definition" }}
+{% endfor %}
+{% endif %}
+
+{% if comp.implementation_identifiers %}
+**Implementation Identifiers:**
+{% if comp.implementation_identifiers.module_path %}
+- Module Path: `{{ comp.implementation_identifiers.module_path }}`
+{% endif %}
+{% endif %}
+
+{% endfor %}
+{% endif %}
+
+{% if ctx and ctx.internal_entities %}
+{% for row in ctx.internal_entities %}
+- `{{ row.entity_type }}` {{ row.alias }} — {{ row.name }}
+{% endfor %}
+{% endif %}
+
+{% if adr.technology_stack %}
+## Technology Stack
+
+{% for tech in adr.technology_stack %}
+### {{ tech.name }} ({{ tech.category }})
+
+**Version:** {{ tech.version }}
+
+**Rationale:**
+{{ tech.rationale }}
+
+{% endfor %}
+{% endif %}
+
+{% if ctx and ctx.governance_rows %}
+## Governance / Bindings / Evidence
+
+{% for row in ctx.governance_rows %}
+- {{ row }}
+{% endfor %}
+{% endif %}
+
+---
+
+*Generated from {{ adr | presentation_id }} by ADR Architecture Kit (projection v3)*

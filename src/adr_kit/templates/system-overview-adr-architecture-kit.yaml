@@ -31,7 +31,7 @@ one_line_orientation: >
 responsibility_boundaries:
   - subject: Project ADR authority
     detail: Accepted project ADR artifacts are canonical project intent for their declared scope.
-    link: adrs/
+    link: AUTHORING-SYSTEM.md
   - subject: ADR Kit
     detail: Owns authoring-side representation, validation, compilation, migration, and supported repository/provider mechanics assigned to it.
     link: docs/authority-boundary.md
@@ -140,5 +140,5 @@ read_next:
     target: docs/public-sdk.md
     category: related
   - label: Schema documentation
-    target: schema/
+    target: schema/README.md
     category: related

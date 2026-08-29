@@ -1,0 +1,173 @@
+# {{ adr | presentation_id }}: {{ adr.title }}
+
+## Identity / Status
+
+**Type:** {{ ctx.adr_type if ctx else adr.adr_type }}  
+**Status:** {{ adr.status.value }}  
+**Alias:** {{ adr | presentation_id }}  
+{% if adr.alias_name %}**Alias name:** {{ adr.alias_name }}  
+{% endif %}
+**Created:** {{ adr.created_date }}  
+{% if adr.modified_date %}**Modified:** {{ adr.modified_date }}  
+{% endif %}
+**Authors:** {{ adr.authors | join(', ') }}  
+**Domains:** {{ adr.domains | join(', ') }}  
+
+## Architecture Position
+
+Logical architecture authority for this subject. Neighborhood paths use structural bridges plus exactly one semantic architecture edge; they never invent ADR-to-ADR verbs.
+
+## Architecture Neighborhood
+
+{% if ctx and ctx.graphs %}
+{% for graph in ctx.graphs %}
+```mermaid
+{{ graph }}```
+
+{% endfor %}
+{% endif %}
+
+### Semantic architecture inventory
+
+{% if ctx and ctx.neighborhood_inventory %}
+{% for row in ctx.neighborhood_inventory %}
+- `{{ row.verb }}`: {{ row.from_label }} → {{ row.to_label }}
+{% endfor %}
+{% else %}
+- None
+{% endif %}
+
+## Neighbor Relationships
+
+{% if ctx and ctx.peer_cards %}
+{% for card in ctx.peer_cards %}
+### {{ card.alias_id }} — {{ card.title }}
+
+{% if card.relationships %}
+{% for rel in card.relationships %}
+- {{ rel.label }}
+{% endfor %}
+{% endif %}
+
+**Context:** {{ card.context_summary }}
+
+{% if card.link %}[Open projection]({{ card.link }}){% else %}*(projection link unavailable)*{% endif %}
+
+{% endfor %}
+{% else %}
+No grammatical peer neighborhood for this subject.
+{% endif %}
+
+{% if ctx and ctx.lifecycle_rows %}
+### Lifecycle / association
+
+{% for row in ctx.lifecycle_rows %}
+- {{ row }}
+{% endfor %}
+{% endif %}
+
+## Context
+
+{{ adr.context }}
+
+## Internal Structure
+
+{% if ctx and ctx.internal_graph %}
+```mermaid
+{{ ctx.internal_graph }}```
+
+{% endif %}
+{% if ctx and ctx.internal_entities %}
+{% for row in ctx.internal_entities %}
+- `{{ row.entity_type }}` {{ row.alias }} — {{ row.name }}
+{% endfor %}
+{% else %}
+- None
+{% endif %}
+
+{% if adr.capabilities %}
+## Capabilities
+
+{% for cap in adr.capabilities %}
+### {{ cap | presentation_id }}: {{ cap.name }}
+
+{{ cap.description }}
+
+{% endfor %}
+{% endif %}
+
+{% if adr.decisions %}
+## Decisions
+
+{% for decision in adr.decisions %}
+### {{ decision | presentation_id }}: {{ decision.summary }}
+
+**Rationale:**
+{{ decision.rationale }}
+
+{% if decision.alternatives_considered %}
+**Alternatives Considered:**
+
+{% for alt in decision.alternatives_considered %}
+- **{{ alt.name }}**: {{ alt.rejected_because }}
+{% endfor %}
+{% endif %}
+
+{% if decision.related_invariants %}
+**Related Invariants:** {% for inv in decision.related_invariants %}{{ inv | present_ref }}{% if not loop.last %}, {% endif %}{% endfor %}
+{% endif %}
+
+{% endfor %}
+{% endif %}
+
+{% if adr.invariants %}
+## Invariants
+
+{% for inv in adr.invariants %}
+### {{ inv | presentation_id }}
+
+**Statement:** {{ inv.statement }}  
+**Scope:** {{ inv.scope }}  
+**Enforcement:** {{ inv.enforcement_level.value }} ({{ inv.enforcement_mechanism }})
+
+**Rationale:**
+{{ inv.rationale }}
+
+{% endfor %}
+{% endif %}
+
+{% if adr.constraints %}
+## Constraints
+
+{% for constraint in adr.constraints %}
+### {{ constraint.id if constraint.id is defined else constraint }}
+
+{{ constraint.description if constraint.description is defined else constraint }}
+
+{% endfor %}
+{% endif %}
+
+{% if adr.gaps %}
+## Gaps
+
+{% for gap in adr.gaps %}
+### {{ gap.id if gap.id is defined else loop.index }}: {{ gap.question if gap.question is defined else gap }}
+
+{% if gap.context is defined and gap.context %}
+{{ gap.context }}
+{% endif %}
+
+{% endfor %}
+{% endif %}
+
+{% if ctx and ctx.governance_rows %}
+## Governance / Bindings / Evidence
+
+{% for row in ctx.governance_rows %}
+- {{ row }}
+{% endfor %}
+{% endif %}
+
+---
+
+*Generated from {{ adr | presentation_id }} by ADR Architecture Kit (projection v3)*

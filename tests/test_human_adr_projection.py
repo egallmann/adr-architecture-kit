@@ -23,9 +23,9 @@ from adr_kit.parser import ADRParser
 from adr_kit.scope import ProjectScopeResolver
 
 
-def test_generator_identity_is_projection_v2():
+def test_generator_identity_is_projection_v3():
     assert MARKDOWN_GENERATOR_IDENTITY.generator_id == "adr-projection-markdown"
-    assert MARKDOWN_GENERATOR_IDENTITY.generator_version == 2
+    assert MARKDOWN_GENERATOR_IDENTITY.generator_version == 3
 
 
 def test_projection_path_uses_alias_slug_and_type(tmp_path: Path):
@@ -99,7 +99,8 @@ def test_emit_markdown_uses_adr_projection_layout():
         text = artifact.content.decode("utf-8")
         assert "artifact_kind: rendered_adr_markdown" in text
         assert "generator_id: adr-projection-markdown" in text
-        assert "```mermaid" in text
+        assert "## Architecture Neighborhood" in text
+        assert "```mermaid" in text or "No grammatical peer neighborhood" in text
         assert "## Context" in text
 
 

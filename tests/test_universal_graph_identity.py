@@ -56,7 +56,7 @@ def test_identity_inventory_is_explicitly_non_authoritative_and_unique() -> None
     locations = [
         (item["path"], item["pointer"]) for item in fixture["graph_eligible_corpus_records"]
     ]
-    assert len(locations) == 40
+    assert len(locations) == 35
     assert len(locations) == len(set(locations))
 
 

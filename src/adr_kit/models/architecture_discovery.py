@@ -189,7 +189,7 @@ class ArchitectureGraphEdge(BaseModel):
 
     relationship_id: str
     assertion_id: str = Field(pattern=r"^asrt-[0-9a-f]{64}$")
-    relationship_type: RelationshipType
+    relationship_type: str
     source_entity_id: str
     target_entity_id: str
     provenance_classification: Literal["explicit", "derived", "heuristic"]

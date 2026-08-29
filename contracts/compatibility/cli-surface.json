@@ -1436,11 +1436,11 @@
       ]
     },
     "generate-system-overview": {
-      "help": "Generate the AI-first SYSTEM-OVERVIEW.md artifact.",
+      "help": "Generate the AI-first SYSTEM-OVERVIEW.md artifact for one scope.",
       "params": [
         {
           "count": false,
-          "default": "SYSTEM-OVERVIEW.md",
+          "default": null,
           "is_flag": false,
           "kind": "Option",
           "multiple": false,
@@ -1452,6 +1452,21 @@
           "required": false,
           "secondary_opts": [],
           "type": "file"
+        },
+        {
+          "count": false,
+          "default": "Sentinel.UNSET",
+          "is_flag": false,
+          "kind": "Option",
+          "multiple": false,
+          "name": "scope",
+          "nargs": 1,
+          "opts": [
+            "--scope"
+          ],
+          "required": false,
+          "secondary_opts": [],
+          "type": "directory"
         }
       ]
     },

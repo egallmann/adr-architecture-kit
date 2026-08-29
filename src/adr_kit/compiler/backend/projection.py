@@ -357,6 +357,95 @@ def is_projectable_entity(entity: IREntity) -> bool:
     )
 
 
+def project_entity_v22(
+    entity: IREntity,
+    rel_graph: RelGraph | None,
+    architecture_namespace: str,
+):
+    """Project core or qualified extension entities to normalized v2.2."""
+    from ...models.v2_2 import NormalizedEntityV22
+
+    projected = project_entity_v21(entity, rel_graph, architecture_namespace)
+    if projected is None:
+        return None
+    payload = projected.model_dump(mode="python")
+    payload["schema_version"] = "2.2"
+    return NormalizedEntityV22.model_validate(payload)
+
+
+def project_relationship_v22(relationship: IRRelationship):
+    """Project canonical authored or compatibility relationships for v2.2."""
+    from ...models.v2_2 import CanonicalRelationshipV22, CompatibilityRelationshipV22
+    from ...models.v2_1 import ExtensionPayloadV21
+    from ...identity import derive_assertion_id_v13, derive_relationship_id_v13, validate_uuidv7
+
+    try:
+        validate_uuidv7(relationship.from_entity_id)
+        validate_uuidv7(relationship.to_entity_id)
+    except ValueError:
+        return None
+    if relationship.record_kind == "canonical" and relationship.id:
+        try:
+            validate_uuidv7(relationship.id)
+        except ValueError:
+            return None
+        extension = (
+            ExtensionPayloadV21.model_validate(relationship.extension)
+            if ":" in relationship.relationship_type
+            else None
+        )
+        return CanonicalRelationshipV22(
+            id=relationship.id,
+            alias_id=relationship.alias_id,
+            alias_name=relationship.alias_name,
+            relationship_type=relationship.relationship_type,
+            from_entity_id=relationship.from_entity_id,
+            to_entity_id=relationship.to_entity_id,
+            source_owner_id=relationship.source_owner_id,
+            source_pointer=relationship.source_pointer,
+            provenance_classification=relationship.provenance_classification,
+            evidence=list(relationship.evidence),
+            canonical_source_ref=relationship.canonical_source_ref,
+            confidence=relationship.confidence,
+            extension=extension,
+        )
+    if relationship.record_kind == "compatibility":
+        owner_id = relationship.source_owner_id
+        if owner_id is None:
+            return None
+        try:
+            validate_uuidv7(owner_id)
+        except ValueError:
+            return None
+        rel_id = derive_relationship_id_v13(
+            relationship.relationship_type,
+            relationship.from_entity_id,
+            relationship.to_entity_id,
+        )
+        asrt_id = derive_assertion_id_v13(
+            relationship.relationship_type,
+            relationship.from_entity_id,
+            relationship.to_entity_id,
+            owner_id,
+            relationship.source_pointer,
+        )
+        return CompatibilityRelationshipV22(
+            relationship_id=rel_id,
+            assertion_id=asrt_id,
+            relationship_type=relationship.relationship_type,
+            from_entity_id=relationship.from_entity_id,
+            to_entity_id=relationship.to_entity_id,
+            source_owner_id=owner_id,
+            source_pointer=relationship.source_pointer,
+            provenance_classification=relationship.provenance_classification,
+            evidence=list(relationship.evidence),
+            canonical_source_ref=relationship.canonical_source_ref,
+            confidence=relationship.confidence,
+            metadata=dict(relationship.metadata),
+        )
+    return None
+
+
 def project_unresolved(item: IRUnresolved) -> UnresolvedRecord:
     """Project an IR unresolved item to the registry shape."""
     return UnresolvedRecord(

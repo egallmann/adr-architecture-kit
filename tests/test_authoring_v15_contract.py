@@ -66,6 +66,7 @@ def test_authoring_v15_positive_fixtures(fixture_name: str, schema_name: str) ->
         ("invalid-logical-adr-p-alias.yaml", "adr-logical.schema.json"),
         ("invalid-ps-cross-type-alias.yaml", "adr-physical-system.schema.json"),
         ("invalid-topology-with-name.yaml", "adr-physical-system.schema.json"),
+        ("invalid-pc-component-topology.yaml", "adr-physical-component.schema.json"),
     ],
 )
 def test_authoring_v15_negative_fixtures(fixture_name: str, schema_name: str) -> None:

@@ -1,4 +1,4 @@
-schema_version: '1.3'
+schema_version: '1.5'
 adr_type: physical-component
 id: 019fee89-e618-74b2-a83e-e41c7d8c9f37
 title: Generated Artifact Integrity Validation

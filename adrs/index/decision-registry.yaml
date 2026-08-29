@@ -1,4 +1,4 @@
-schema_version: '2.0'
+schema_version: '2.2'
 type: normalized_entity_registry
 entities:
 - id: 019fee89-e615-70ab-bf3d-3a9879ef1fa3
@@ -12,7 +12,7 @@ entities:
     for those instructions. Flow: 1. rule-library defines signal.schem'
   uri: adr://adr-architecture-kit/entities/019fee89-e615-70ab-bf3d-3a9879ef1fa3
   created_at: '2026-08-11T01:57:22.581Z'
-  entity_fingerprint: sha256:0979cba75d4f0327697da6a248a37a5cdeeaadbb84444ac7a22544c16147836b
+  entity_fingerprint: sha256:590d8a0dc8d0959221d92fba692da83f5e95be91e1f1d086666ffcd823cafdbc
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -59,6 +59,7 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 019fee89-e615-7102-8f0f-d4652f6da679
   alias_id: DEC-0017
   alias_name: generate-prompts-per-component
@@ -70,7 +71,7 @@ entities:
     (one component at a time) - Parallel implementation (multiple'
   uri: adr://adr-architecture-kit/entities/019fee89-e615-7102-8f0f-d4652f6da679
   created_at: '2026-08-11T01:57:22.581Z'
-  entity_fingerprint: sha256:88853b05c242e7959dd5c2cabe5cc643656aebc8b789360873fd80755b75b58f
+  entity_fingerprint: sha256:db107c8ed27e45b37958f00f4dec6af79744480d1be716c69ceb8d32d51bcd9a
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -117,6 +118,7 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 019fee89-e615-713f-a73d-10442c1dc6b9
   alias_id: DEC-0081
   alias_name: make-installed-distribution-metadata-the-runtime-package-version-authority
@@ -128,7 +130,7 @@ entities:
     result, and capability versions therefore resolve from installed `
   uri: adr://adr-architecture-kit/entities/019fee89-e615-713f-a73d-10442c1dc6b9
   created_at: '2026-08-11T01:57:22.581Z'
-  entity_fingerprint: sha256:c0afb1398431beec1da6e0a665233438b49fb4e262674674c538504d6ff6197d
+  entity_fingerprint: sha256:16eaa55794aa9a54ec308f3eef93afb958d9d95938cfce9541c5fb9a3dc65982
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -175,6 +177,7 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 019fee89-e615-71c4-b71d-61aed9baa000
   alias_id: DEC-0010
   alias_name: create-adr-to-prompt-translator
@@ -186,7 +189,7 @@ entities:
     Same ADR always generates same prompt structure - **Completenes'
   uri: adr://adr-architecture-kit/entities/019fee89-e615-71c4-b71d-61aed9baa000
   created_at: '2026-08-11T01:57:22.581Z'
-  entity_fingerprint: sha256:6119503f1b4a01fefc97bdf9e1a8a8feca22616601c0ef0f16423ee22c7a34fc
+  entity_fingerprint: sha256:ea26368039d3b91f2f06fd38e0a3f91a570ca17554d059670eaecd1b31cc22cc
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -233,6 +236,7 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 019fee89-e615-727f-a31e-9b8f4c153dc3
   alias_id: DEC-0016
   alias_name: stage-downstream-extraction-and-rule-activation-after-adr-kit-authority-is-defined
@@ -245,7 +249,7 @@ entities:
     and any shared ecosystem delivery should build on that a
   uri: adr://adr-architecture-kit/entities/019fee89-e615-727f-a31e-9b8f4c153dc3
   created_at: '2026-08-11T01:57:22.581Z'
-  entity_fingerprint: sha256:90d4ec4d9d60268a639119de75db43bd4a91414a71b4a141d8c5185e47723383
+  entity_fingerprint: sha256:5fef024f27901b7e5b2b62f6af147281a32a2d851b9e27adb2837dbc57a4b07f
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -292,6 +296,7 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 019fee89-e615-7332-892e-e723d9f13237
   alias_id: DEC-0076
   alias_name: treat-runtime-emitted-implementation-attribution-as-downstream-evidence
@@ -303,7 +308,7 @@ entities:
     moving attribution authority into ste-runtime. adr-architecture-
   uri: adr://adr-architecture-kit/entities/019fee89-e615-7332-892e-e723d9f13237
   created_at: '2026-08-11T01:57:22.581Z'
-  entity_fingerprint: sha256:db76ce11fa12e7686eb658bf684007e4703613add264fff5a169688121400810
+  entity_fingerprint: sha256:981d08cdb6d71d10ae461aea70f90e917926bb4068c5ea248f4360f292ff33c2
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -350,6 +355,7 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 019fee89-e615-753d-8537-efcdb8369a99
   alias_id: DEC-0030
   alias_name: support-multiple-target-agents
@@ -361,7 +367,7 @@ entities:
     for specific target agents.
   uri: adr://adr-architecture-kit/entities/019fee89-e615-753d-8537-efcdb8369a99
   created_at: '2026-08-11T01:57:22.581Z'
-  entity_fingerprint: sha256:5a916fd5dbcf15c7af782b8da0ccb215fb23982fb1c82175cba36fecf5f7cf4b
+  entity_fingerprint: sha256:62e44fc7b2940f44bf14636f15bdf70df3dbcbe35af0dffaf681e6b1f7525551
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -408,6 +414,7 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 019fee89-e615-758b-b03f-e4a3dc338589
   alias_id: DEC-0012
   alias_name: treat-human-readable-architecture-documentation-as-deterministic-derived-state
@@ -419,7 +426,7 @@ entities:
     it must be a deterministic rendering derived from those structured a
   uri: adr://adr-architecture-kit/entities/019fee89-e615-758b-b03f-e4a3dc338589
   created_at: '2026-08-11T01:57:22.581Z'
-  entity_fingerprint: sha256:0feaec5dc03542d38ad9ca77514e5385c443e1109506badf581ac541f467443d
+  entity_fingerprint: sha256:0e299f7ad402c9915f17d68f2362508eb27fa79d4caaaabcd9f8b82d9eeee713
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -472,6 +479,7 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 019fee89-e615-760b-a43f-b3fe08e0d6ef
   alias_id: DEC-0033
   alias_name: adopt-test-driven-development-tdd-methodology
@@ -483,7 +491,7 @@ entities:
     behavior - SYS-4 (Drift Prevention): Tests detect drift imme'
   uri: adr://adr-architecture-kit/entities/019fee89-e615-760b-a43f-b3fe08e0d6ef
   created_at: '2026-08-11T01:57:22.581Z'
-  entity_fingerprint: sha256:93b4f8d6cb6e7caa89ec908b9137dcd72a0705926e6a9e6dfb56771fd1585202
+  entity_fingerprint: sha256:a0917287885655790b0fb9932c339a215ef60717297e46372fcd895c5d7e5e41
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -530,6 +538,7 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 019fee89-e615-76e9-973a-af0e2b391d35
   alias_id: DEC-0024
   alias_name: include-validation-criteria-in-prompts
@@ -541,7 +550,7 @@ entities:
     and reduces iteration cycles.
   uri: adr://adr-architecture-kit/entities/019fee89-e615-76e9-973a-af0e2b391d35
   created_at: '2026-08-11T01:57:22.581Z'
-  entity_fingerprint: sha256:5297d169a412efe8c845612eeba0a31cdbfee3e08946877e220f367d2947eb25
+  entity_fingerprint: sha256:2dc9cc53ce25632382990d1dd409a9b774dab71ae296d372ea505b0a1938a4b0
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -588,6 +597,7 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 019fee89-e615-76f6-a33f-33eef61e39a9
   alias_id: DEC-0002
   alias_name: separate-logical-and-physical-adrs-with-distinct-schemas
@@ -599,7 +609,7 @@ entities:
     different validation rules per type - Clear semantic distinction fo'
   uri: adr://adr-architecture-kit/entities/019fee89-e615-76f6-a33f-33eef61e39a9
   created_at: '2026-08-11T01:57:22.581Z'
-  entity_fingerprint: sha256:16756ecc8b075141f320a1a7dd5fa53b2df232b5ba62c0c3c5b8b51d116ff6bd
+  entity_fingerprint: sha256:d21bec7564f590950700e837bde1fdd6916169e15c97dacd6d2d8fd942bdf07b
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -650,6 +660,7 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 019fee89-e615-775e-8b3b-87bd8305b453
   alias_id: DEC-0011
   alias_name: build-from-poc-principles
@@ -661,7 +672,7 @@ entities:
     projection (only relevant rules) - Submodule protocol with bootstrap - M'
   uri: adr://adr-architecture-kit/entities/019fee89-e615-775e-8b3b-87bd8305b453
   created_at: '2026-08-11T01:57:22.581Z'
-  entity_fingerprint: sha256:d2285963844a60fd9c17bff6699455ce5cbed253d4bc4a94f230366dc4e82979
+  entity_fingerprint: sha256:c9fae221dcc385d1c2cf84b2e3495813cd9f2d6aa5b30ed56bd88df8a5b5252d
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -708,6 +719,7 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 019fee89-e615-7762-a91e-f7d5d71acc18
   alias_id: DEC-0034
   alias_name: file-based-first-mcp-later
@@ -719,7 +731,7 @@ entities:
     for rule projection. get_rules, emit_signal tools. File-based remains fa'
   uri: adr://adr-architecture-kit/entities/019fee89-e615-7762-a91e-f7d5d71acc18
   created_at: '2026-08-11T01:57:22.581Z'
-  entity_fingerprint: sha256:dd5be3002abb9ea05e9958be6cb5fbe57dfe8533133818c1c893f859a96a796c
+  entity_fingerprint: sha256:dbbf653a4ea9231640e64e73e5ad962b15f256058fe5bad9883941e1efe99456
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -766,13 +778,14 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 019fee89-e615-7899-8d3b-0ecfe4490994
   alias_id: DEC-0004
   alias_name: decision-migrated
   alias_ref: DEC-0004:decision-migrated
   entity_type: decision
-  name: 'Governed type-prefixed human-recognition aliases (ADR-L-XXXX / ADR-P-XXXX)
-    with 4-digit numbering; UUID is canonical machine identity
+  name: 'Governed type-prefixed human-recognition aliases (ADR-L-XXXX / ADR-PS-XXXX
+    / ADR-PC-XXXX) with 4-digit numbering; UUID is canonical machine identity
 
     '
   summary: '**Human recognition aliases:** - Type-prefixed IDs remain project-local
@@ -780,7 +793,7 @@ entities:
     for documentation - Alias allocation never alters immutable UUID'
   uri: adr://adr-architecture-kit/entities/019fee89-e615-7899-8d3b-0ecfe4490994
   created_at: '2026-08-11T01:57:22.581Z'
-  entity_fingerprint: sha256:480910ed6412ec0b70fa80f74320b69433fe08076b92fffc3bee2e4c1ca242a4
+  entity_fingerprint: sha256:b8ac0c46dac67f0ece56c7ae126c3981777783d4ad71c25b96d54bb0909cd7b1
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -829,6 +842,7 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 019fee89-e615-78ee-a53f-99d85ea925a3
   alias_id: DEC-0022
   alias_name: test-against-real-workspace-adrs
@@ -840,7 +854,7 @@ entities:
     integration issues. This provides dogfooding and ensures the toolk
   uri: adr://adr-architecture-kit/entities/019fee89-e615-78ee-a53f-99d85ea925a3
   created_at: '2026-08-11T01:57:22.581Z'
-  entity_fingerprint: sha256:146864f52ecdaa295a33dee0690b7bf6301b10a4c1beac65c19f8f5b494e62f6
+  entity_fingerprint: sha256:cfb44f6757e77192afcc82bfdcf246f1e77de44eb49c449767e0478386d96411
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -887,6 +901,7 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 019fee89-e615-796c-ae1d-a27f1fff021b
   alias_id: DEC-0026
   alias_name: require-generator-validator-test-and-ci-enforcement-for-documentation-projection
@@ -898,7 +913,7 @@ entities:
     documentation - validators that compare rendered output to genera'
   uri: adr://adr-architecture-kit/entities/019fee89-e615-796c-ae1d-a27f1fff021b
   created_at: '2026-08-11T01:57:22.581Z'
-  entity_fingerprint: sha256:ba05b53c70dc16d81c760799b6754137e8d62cfffa570acfb4827248212d0e80
+  entity_fingerprint: sha256:d0a0b7e344a6f848feae251e2cdd85b72d13e6dbf5fca34538e7a61be2ed859c
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -949,6 +964,7 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 019fee89-e615-79a1-be3d-03af8c291326
   alias_id: DEC-0008
   alias_name: adopt-multi-layer-testing-strategy
@@ -960,7 +976,7 @@ entities:
     1. **Unit tests**: Fast, isolated, test individual functions/methods 2.'
   uri: adr://adr-architecture-kit/entities/019fee89-e615-79a1-be3d-03af8c291326
   created_at: '2026-08-11T01:57:22.581Z'
-  entity_fingerprint: sha256:e395be152fa20f6931f2d1562a90fa360e2324767604641dfed331a3812dca80
+  entity_fingerprint: sha256:dfd0ed2209142c5245a2be70fe3793301706920f02b0df8510f297f3092b5632
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -1007,6 +1023,7 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 019fee89-e615-7a31-b11f-daf8feef12d9
   alias_id: DEC-0003
   alias_name: rich-frontmatter-as-authoritative-metadata-manifest-as-derived-view
@@ -1018,7 +1035,7 @@ entities:
     together) - Version controlled metadata - Schema validated correctne'
   uri: adr://adr-architecture-kit/entities/019fee89-e615-7a31-b11f-daf8feef12d9
   created_at: '2026-08-11T01:57:22.581Z'
-  entity_fingerprint: sha256:a53f0ceff0de6cf361797d13dd429d02b80439f2006c84591f49fae3011789bc
+  entity_fingerprint: sha256:4a0eb9ec0a852fe81bf8831273435ae5346f8366d7328f4b06e5bc47d4625a23
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -1067,6 +1084,7 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 019fee89-e615-7a6b-843f-3cec701087f8
   alias_id: DEC-0023
   alias_name: support-bidirectional-verification
@@ -1078,7 +1096,7 @@ entities:
     attribution evidence resolves to the declared authori'
   uri: adr://adr-architecture-kit/entities/019fee89-e615-7a6b-843f-3cec701087f8
   created_at: '2026-08-11T01:57:22.581Z'
-  entity_fingerprint: sha256:4339fc96aac162f2b81786168f9ff2b9908ee0135fecad43c0b0d50396fb76e2
+  entity_fingerprint: sha256:ecdc987500f575689a9ac8daa313fe59673ee320652dbfdf44bc56c4f7b4e28a
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -1125,6 +1143,7 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 019fee89-e615-7bb9-ad3b-93d12b0f65b6
   alias_id: DEC-0001
   alias_name: use-yaml-with-embedded-markdown-not-markdown-with-yaml-frontmatter
@@ -1136,7 +1155,7 @@ entities:
     before processing - Clear separation of metadata vs content - G'
   uri: adr://adr-architecture-kit/entities/019fee89-e615-7bb9-ad3b-93d12b0f65b6
   created_at: '2026-08-11T01:57:22.581Z'
-  entity_fingerprint: sha256:02b14cc7a945e61328b09b469b5896902c7f68ced93f79b391d23507518e92b8
+  entity_fingerprint: sha256:db22b50da4dce857f441a69375bb2346333d6193d0e22462cc2afc0c93525541
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -1185,6 +1204,7 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 019fee89-e615-7c19-b73f-0741bf060af1
   alias_id: DEC-0048
   alias_name: define-a-compiler-owned-implementation-attribution-evidence-contract
@@ -1196,7 +1216,7 @@ entities:
     schema and model let downstream extractors emit consistent a
   uri: adr://adr-architecture-kit/entities/019fee89-e615-7c19-b73f-0741bf060af1
   created_at: '2026-08-11T01:57:22.581Z'
-  entity_fingerprint: sha256:d0363e938dabd576379425e123aa84053e53faff0898f0be455c15bee5cb7bdd
+  entity_fingerprint: sha256:7098c04d7208a1fa5f8c2c046d1e9fe4af333e94309214ddb2fa42f6d9bb03a2
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -1243,6 +1263,7 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 019fee89-e615-7cbc-b53e-42784e9f3081
   alias_id: DEC-0031
   alias_name: standalone-repo-submodule-consumption
@@ -1254,7 +1275,7 @@ entities:
     project - No monorepo coupling Consumption: - git submodule add <r'
   uri: adr://adr-architecture-kit/entities/019fee89-e615-7cbc-b53e-42784e9f3081
   created_at: '2026-08-11T01:57:22.581Z'
-  entity_fingerprint: sha256:bf0d6750ce3c6a767c49a81925336aca88fad718a0a9c2f22e32f7d7f59188ae
+  entity_fingerprint: sha256:759970822d4896759edd25228a41355d3a1815379ea7129800d3dea0c0f2911f
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -1301,6 +1322,7 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 019fee89-e615-7cdd-ad21-34d0a44bec33
   alias_id: DEC-0049
   alias_name: use-existing-contract-profiles-for-legacy-intent-attribution-onboarding
@@ -1312,7 +1334,7 @@ entities:
     than creating a second transition taxonomy.
   uri: adr://adr-architecture-kit/entities/019fee89-e615-7cdd-ad21-34d0a44bec33
   created_at: '2026-08-11T01:57:22.581Z'
-  entity_fingerprint: sha256:726ed48775f0a2380d467ce551157d5b82cc688f0064f383730da6aada3d3ae2
+  entity_fingerprint: sha256:3cdb14f79cab08ba359fe43b7d3fe85f1c3f2ae494cd65f51d42cf0a3b7fca4d
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -1359,6 +1381,7 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 019fee89-e615-7d1d-a33d-ca62fdaad0be
   alias_id: DEC-0015
   alias_name: require-tests-for-all-new-components
@@ -1370,7 +1393,7 @@ entities:
     debt accumulation and ensures new features are immediately verifiable.
   uri: adr://adr-architecture-kit/entities/019fee89-e615-7d1d-a33d-ca62fdaad0be
   created_at: '2026-08-11T01:57:22.581Z'
-  entity_fingerprint: sha256:951ce27e02ec2aadf9cb20930921f97ad5b9a2b1a6acf1f259144f0dd3ae1f7e
+  entity_fingerprint: sha256:6b7cda615e6cdffef5fb97a28c12ae343b76f757f3c1f21c43d8a7244bc41263
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -1417,6 +1440,7 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 019fee89-e615-7d71-9517-aeb9fe601fd6
   alias_id: DEC-0007
   alias_name: adopt-scope-aware-adr-architecture
@@ -1428,7 +1452,7 @@ entities:
     in a shared workspace. This mirrors the ste-runtime's pro
   uri: adr://adr-architecture-kit/entities/019fee89-e615-7d71-9517-aeb9fe601fd6
   created_at: '2026-08-11T01:57:22.581Z'
-  entity_fingerprint: sha256:1e6ecb36c8c27e3e1c37abd7c5f59d08535d7660e5aa06514cf00b18d717caa9
+  entity_fingerprint: sha256:fdab8468cdcde5c88e575e7047c041f48a66f3651f42ee23c54b4361106c7808
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -1475,6 +1499,7 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 019fee89-e615-7d96-880f-40f6e38f3e88
   alias_id: DEC-0006
   alias_name: dogfooding-strategy-document-this-project-using-adr-kit
@@ -1486,7 +1511,7 @@ entities:
     compliance through practice **Living specification:** - Project ADRs'
   uri: adr://adr-architecture-kit/entities/019fee89-e615-7d96-880f-40f6e38f3e88
   created_at: '2026-08-11T01:57:22.581Z'
-  entity_fingerprint: sha256:401d68812a0c0c4158f0ac1cc9eee04f084cadd85870419a40a837c289240754
+  entity_fingerprint: sha256:72ae91786b28eb18169fcbae1c9deddf7fd6da3d1d4b47a3dc1baa389d5c702f
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -1533,6 +1558,7 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 019fee89-e615-7e36-8e3f-c0e37def8629
   alias_id: DEC-0078
   alias_name: require-retained-release-artifact-testing-and-no-regression-quality-controls
@@ -1544,7 +1570,7 @@ entities:
     the identity between tested and published artifacts. Existing
   uri: adr://adr-architecture-kit/entities/019fee89-e615-7e36-8e3f-c0e37def8629
   created_at: '2026-08-11T01:57:22.581Z'
-  entity_fingerprint: sha256:4fac521dd2fda81f9c26378aa00e83169ed7df48316d32065f6a9aef65e5c34c
+  entity_fingerprint: sha256:56eba9014814d481ba9bafe2a53ad491cb42c1b9608cc931bbd0dd771646e0e7
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -1591,6 +1617,7 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 019fee89-e615-7e55-972f-14dd7da851c0
   alias_id: DEC-0019
   alias_name: prohibit-manual-edits-to-generated-documentation
@@ -1602,7 +1629,7 @@ entities:
     is architecturally unacceptable in a governance repository.
   uri: adr://adr-architecture-kit/entities/019fee89-e615-7e55-972f-14dd7da851c0
   created_at: '2026-08-11T01:57:22.581Z'
-  entity_fingerprint: sha256:d89b31fe01fe4ec9a5ed24b36d1c22f50166d6be22b8afb03414a926bdd4df1b
+  entity_fingerprint: sha256:5cac4e18c84535e47a74bd17d15c1fceb85303171cf000cbd135aa4600470f1b
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -1653,6 +1680,7 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 019fee89-e615-7e63-a71d-04283e66cb51
   alias_id: DEC-0018
   alias_name: cooperative-signals-as-first-class
@@ -1664,7 +1692,7 @@ entities:
     - file_pattern, language, domain - "What rules apply to this con'
   uri: adr://adr-architecture-kit/entities/019fee89-e615-7e63-a71d-04283e66cb51
   created_at: '2026-08-11T01:57:22.581Z'
-  entity_fingerprint: sha256:df6b0295341026277620aa38a5f47632325bb6bb16e8d8e7fdddb3b95bc8a529
+  entity_fingerprint: sha256:cc198554e7a5f803fe5faf31c2c3bdc2b5c94933423348745a0983d989ff3d53
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -1711,6 +1739,7 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 019fee89-e615-7e6c-8a2f-8bcd9c148dce
   alias_id: DEC-0009
   alias_name: adopt-explicit-architecture-intent-attribution-for-implementation-artifacts
@@ -1722,7 +1751,7 @@ entities:
     - `@enforces_invariant(...)` - `@implements(...)` / `@enforces(...)'
   uri: adr://adr-architecture-kit/entities/019fee89-e615-7e6c-8a2f-8bcd9c148dce
   created_at: '2026-08-11T01:57:22.581Z'
-  entity_fingerprint: sha256:84c84ed8c1f31d0f0f63422cf61d8e6a2bb38407ed285b13492e8c6979e05df9
+  entity_fingerprint: sha256:711bfeb6353aeff4e573dbff357392626a188e37e7fa38f72b33144038f4afa2
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -1769,6 +1798,7 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 019fee89-e615-7e99-8137-8ac8d0972e1b
   alias_id: DEC-0029
   alias_name: enforce-testing-in-ci-cd-pipeline
@@ -1779,7 +1809,7 @@ entities:
     maintain quality standards. Manual testing is insufficient for a governance tool.
   uri: adr://adr-architecture-kit/entities/019fee89-e615-7e99-8137-8ac8d0972e1b
   created_at: '2026-08-11T01:57:22.581Z'
-  entity_fingerprint: sha256:ec6cefd9fade36f63a80d5aeae5304110921304f32d6ecd3e1294a886f277ad8
+  entity_fingerprint: sha256:9808bab9955364566acd426f039407cd0b1be19ca1a4c515ec20b10c39c16f06
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -1826,6 +1856,7 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 019fee89-e615-7f04-931e-170f4cbef292
   alias_id: DEC-0005
   alias_name: project-yaml-for-project-level-metadata-separate-from-adr-metadata
@@ -1837,7 +1868,7 @@ entities:
     operational metadata **Executable configuration:** - CI reads PROJECT'
   uri: adr://adr-architecture-kit/entities/019fee89-e615-7f04-931e-170f4cbef292
   created_at: '2026-08-11T01:57:22.581Z'
-  entity_fingerprint: sha256:42174fc94f86abf24d619d03ab1279cffac4497be1fefb7be804e53b8b95c93e
+  entity_fingerprint: sha256:e43b76d58aa6228ef3da4f4c5f92351a0f6ff4984641f54b49ee150bdf3509ca
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -1884,6 +1915,7 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 019fee89-e616-7018-982f-d3d703f29db7
   alias_id: DEC-0079
   alias_name: preserve-the-present-repository-seam-and-defer-any-narrow-consumer-facade
@@ -1895,7 +1927,7 @@ entities:
     and `NormalizedArchitectureModel` remain the suppo
   uri: adr://adr-architecture-kit/entities/019fee89-e616-7018-982f-d3d703f29db7
   created_at: '2026-08-11T01:57:22.582Z'
-  entity_fingerprint: sha256:5f5bdb6ecad7f162af54513863966ba1dc4f27c64fd79a46a8288080e9c7b435
+  entity_fingerprint: sha256:dd45a3e6e5cf7414d9c86269854585f78b07c4cebbae695c0a29632afc6e9c50
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -1942,6 +1974,7 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 019fee89-e616-7153-930f-595ce3d9f96d
   alias_id: DEC-0061
   alias_name: permit-direct-adrs-index-consumption-for-cross-language-or-out-of-process-consumers
@@ -1954,7 +1987,7 @@ entities:
     the file-format contract rather than the in-process reposi
   uri: adr://adr-architecture-kit/entities/019fee89-e616-7153-930f-595ce3d9f96d
   created_at: '2026-08-11T01:57:22.582Z'
-  entity_fingerprint: sha256:628a019963c5ab94d976fd7add2bd794a9848068f3f275b4a24b78f96f92b7a6
+  entity_fingerprint: sha256:aa9a645fb1ee08103752a16b1c61b74b0127d7e1caaa21852ade71824fd3cc0c
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -2001,6 +2034,7 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 019fee89-e616-7172-a93e-95eb4cac9011
   alias_id: DEC-0035
   alias_name: allow-generators-to-preserve-explicit-empty-sections-when-requested
@@ -2012,7 +2046,7 @@ entities:
     the author is intentionally emitting a draft artifact.
   uri: adr://adr-architecture-kit/entities/019fee89-e616-7172-a93e-95eb4cac9011
   created_at: '2026-08-11T01:57:22.582Z'
-  entity_fingerprint: sha256:a9db078eaba0e4c009865fb59a9169fd7f5d141bf083e61a134e70a87e734437
+  entity_fingerprint: sha256:a47b625246bc44a2597b642d5e6226543fa57081fc216a33ecaaa64090947d09
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -2059,6 +2093,7 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 019fee89-e616-71a7-b73f-33795a11494e
   alias_id: DEC-0014
   alias_name: use-derived-discovery-artifacts-for-agent-facing-architecture-lookup
@@ -2070,7 +2105,7 @@ entities:
     artifacts (including the invariant-registry) by default. Standalo
   uri: adr://adr-architecture-kit/entities/019fee89-e616-71a7-b73f-33795a11494e
   created_at: '2026-08-11T01:57:22.582Z'
-  entity_fingerprint: sha256:e13807cae24f9ad73eeddc76aa7b5a1733ec3f44388e905c335086f080e3480e
+  entity_fingerprint: sha256:7d3ad7c7d74f0c9edaa3b0ea57df67d4c9de4c2e7131d503d0cd6ea123d07d0e
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -2117,6 +2152,7 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 019fee89-e616-71e0-b02f-3997db358e10
   alias_id: DEC-0077
   alias_name: dec-0077-decision-migrated
@@ -2131,7 +2167,7 @@ entities:
     treated as the provider identity namespace. Canonical external identi
   uri: adr://adr-architecture-kit/entities/019fee89-e616-71e0-b02f-3997db358e10
   created_at: '2026-08-11T01:57:22.582Z'
-  entity_fingerprint: sha256:7dea26ec8f3f097c811eeb4d75131d529ddf4e977776960c0525e52923096616
+  entity_fingerprint: sha256:7e00411868f9ecc7604b9baf6e5256dc098dce392f97c863a91bb4f650142bf5
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -2178,6 +2214,7 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 019fee89-e616-72f3-943b-62146272e78f
   alias_id: DEC-0032
   alias_name: keep-steelman-review-separate-from-deterministic-validation
@@ -2189,7 +2226,7 @@ entities:
     population, and it should remain a separate LLM-backed review pa
   uri: adr://adr-architecture-kit/entities/019fee89-e616-72f3-943b-62146272e78f
   created_at: '2026-08-11T01:57:22.582Z'
-  entity_fingerprint: sha256:fa5fa7946c264f2142e8429e9e53db8b9484fbba409458b51236486fe1d8537e
+  entity_fingerprint: sha256:a7d2089208475c764c8a5b8251bc2121718c9e53e5cabbbb2f23a16931ee4f30
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -2236,6 +2273,7 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 019fee89-e616-7340-a61b-57b9c79eca96
   alias_id: DEC-0062
   alias_name: treat-repository-backed-graph-access-as-the-intended-python-graph-seam
@@ -2247,7 +2285,7 @@ entities:
     a coherent semantic seam for in-process consumers.
   uri: adr://adr-architecture-kit/entities/019fee89-e616-7340-a61b-57b9c79eca96
   created_at: '2026-08-11T01:57:22.582Z'
-  entity_fingerprint: sha256:df8101712832414d58eacbf5c6129859d7aa69242271b56256b7108d67dddcdd
+  entity_fingerprint: sha256:cb827ca0fd1c6dd4de1632efab4720d1d0d38460b36eff98d5be8891c71543dc
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -2294,6 +2332,7 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 019fee89-e616-735c-bd3d-c9e51b259031
   alias_id: DEC-0059
   alias_name: treat-all-adrs-index-artifacts-and-manifest-yaml-as-the-guaranteed-contract-family
@@ -2306,7 +2345,7 @@ entities:
     prevents downstream consumers from inventing different notions of '
   uri: adr://adr-architecture-kit/entities/019fee89-e616-735c-bd3d-c9e51b259031
   created_at: '2026-08-11T01:57:22.582Z'
-  entity_fingerprint: sha256:f06d048bee0af87355068ec9e0e3c828885f0938477d6c928da8215b878a12da
+  entity_fingerprint: sha256:b59ab92ca2a4239e13cd9a3a5da7853a616b828e7c6853be078e1c2c24936079
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -2353,6 +2392,7 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 019fee89-e616-73b2-9139-746451998656
   alias_id: DEC-0037
   alias_name: treat-the-compiler-kernel-contract-as-pre-stable-0-x-until-intentionally-frozen
@@ -2364,7 +2404,7 @@ entities:
     contract and explicit upgrade path.
   uri: adr://adr-architecture-kit/entities/019fee89-e616-73b2-9139-746451998656
   created_at: '2026-08-11T01:57:22.582Z'
-  entity_fingerprint: sha256:3e1a4ce465c626917a7fddfd0e4ad74fdb467328aa1dd402d972d5341ad6f7a9
+  entity_fingerprint: sha256:8c749fdde9b3c60ca2e394d1bbcdb79b0852446864aab788c1f68fb09ab329a0
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -2411,6 +2451,7 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 019fee89-e616-73b2-bd3f-a096727abcad
   alias_id: DEC-0054
   alias_name: separate-onboarding-into-discovery-normalization-canonization-regeneration-and-validation-phases
@@ -2423,7 +2464,7 @@ entities:
     metadata, canonization creates or updates canonical ADRs, regener'
   uri: adr://adr-architecture-kit/entities/019fee89-e616-73b2-bd3f-a096727abcad
   created_at: '2026-08-11T01:57:22.582Z'
-  entity_fingerprint: sha256:d8e10ff65400c9cb34be172e520ba4e6edc3cd2137596cebb1e4cd1ceebd66e2
+  entity_fingerprint: sha256:fbc9bfcbb823bfcd2d1f278dc5edb21aa3024d0308b04678145b6816145acd13
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -2470,6 +2511,7 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 019fee89-e616-7469-aa0f-66411a33dc10
   alias_id: DEC-0039
   alias_name: classify-sentinel-backed-bundles-as-sentinel-compliant-rather-than-compliant
@@ -2481,7 +2523,7 @@ entities:
     preserves honesty while keeping the system operational.
   uri: adr://adr-architecture-kit/entities/019fee89-e616-7469-aa0f-66411a33dc10
   created_at: '2026-08-11T01:57:22.582Z'
-  entity_fingerprint: sha256:38f4cbc3d9a5dc43c35d80c2ec07a1e640640d733505a9d38f9eda6f339befb8
+  entity_fingerprint: sha256:b574284a72f5449a1f04bd38774f0045092f91c5ef3dea302f498a5cceaadf63
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -2528,6 +2570,7 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 019fee89-e616-748c-a114-227a14f5fef8
   alias_id: DEC-0043
   alias_name: require-staged-approval-before-replacement-content-becomes-protected-canonical-content
@@ -2540,7 +2583,7 @@ entities:
     the no-regression rule tied to explicit governance.
   uri: adr://adr-architecture-kit/entities/019fee89-e616-748c-a114-227a14f5fef8
   created_at: '2026-08-11T01:57:22.582Z'
-  entity_fingerprint: sha256:ef215404edd40eb831104a64b1728dfda4434943b3012b3921187c8567320aff
+  entity_fingerprint: sha256:fa54621d999e5f7336826fd8fb50d9ea24d953028fcb86b9cc735c5d0a77dd87
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -2587,6 +2630,7 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 019fee89-e616-74a6-ae3d-39c2dacd91ae
   alias_id: DEC-0057
   alias_name: classify-compiler-discovery-outputs-by-guaranteed-optional-and-deprecated-stability-tiers
@@ -2599,7 +2643,7 @@ entities:
     compatibility artifacts.
   uri: adr://adr-architecture-kit/entities/019fee89-e616-74a6-ae3d-39c2dacd91ae
   created_at: '2026-08-11T01:57:22.582Z'
-  entity_fingerprint: sha256:ba905b2a25838affffe214062d06c4c6ac3cd6ef7f75771490133ccd01b65d74
+  entity_fingerprint: sha256:718cf7d8c805e11f1ed115c2afc4d40bfc49301422ac1bfeffbd55f915728766
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -2646,6 +2690,7 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 019fee89-e616-755b-843e-689f9ffa2091
   alias_id: DEC-0067
   alias_name: define-an-index-first-minimal-runtime-ingestion-subset-for-cross-language-architecture-consumers
@@ -2658,7 +2703,7 @@ entities:
     for architecture-aware operation. The baseline subset is `architectu
   uri: adr://adr-architecture-kit/entities/019fee89-e616-755b-843e-689f9ffa2091
   created_at: '2026-08-11T01:57:22.582Z'
-  entity_fingerprint: sha256:9419408ea318443fa595b5ea9f16157134b87fa1c9597e7698c783974267d830
+  entity_fingerprint: sha256:38bb82efe672d0ee4d0f8edc43afd184280632ad7d34097d62fe9dbd624fe1b8
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -2705,6 +2750,7 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 019fee89-e616-7571-b83f-b20a3bd0b42e
   alias_id: DEC-0055
   alias_name: record-deterministic-brownfield-remaps-and-cleanup-transitions-in-canonical-migration-artifacts
@@ -2717,7 +2763,7 @@ entities:
     and structures map into current canonical state.
   uri: adr://adr-architecture-kit/entities/019fee89-e616-7571-b83f-b20a3bd0b42e
   created_at: '2026-08-11T01:57:22.582Z'
-  entity_fingerprint: sha256:7d5a323e34b964a321d7b0b6183e1bfefa6cea174ef58824dd2c7bbdc6115a11
+  entity_fingerprint: sha256:b5cda8762c0783400e6aadce754d98e2517e945c2af246d53405d26c613f9588
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -2764,6 +2810,7 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 019fee89-e616-75b8-ba2f-700f93515f95
   alias_id: DEC-0038
   alias_name: validate-compiled-output-through-explicit-greenfield-brownfield-and-migration-profiles
@@ -2776,7 +2823,7 @@ entities:
     strict integrity rules to remain universal while allowing qual
   uri: adr://adr-architecture-kit/entities/019fee89-e616-75b8-ba2f-700f93515f95
   created_at: '2026-08-11T01:57:22.582Z'
-  entity_fingerprint: sha256:a6f30eba5206ad51568ad4a3566e3c5b7c7633e4166229d73b35e8d58aa31325
+  entity_fingerprint: sha256:5161befed1474de58aaff4ad280f60f910de8d2bede5b32d80723f31e270672c
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -2823,6 +2870,7 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 019fee89-e616-760d-8437-78860d2de944
   alias_id: DEC-0056
   alias_name: dec-0056-decision-migrated
@@ -2835,7 +2883,7 @@ entities:
     when canonical ADR artifacts are available.
   uri: adr://adr-architecture-kit/entities/019fee89-e616-760d-8437-78860d2de944
   created_at: '2026-08-11T01:57:22.582Z'
-  entity_fingerprint: sha256:8bddee5fb08faccc4fd45bec2193322f82cfe4ffa7112daccdc12f5715b92b7e
+  entity_fingerprint: sha256:0dd775c257bdd878b3167670f0fff6cf6706507336a16645516a9d1cfaf7e56c
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -2882,6 +2930,7 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 019fee89-e616-7649-ba3d-86e7fab992d0
   alias_id: DEC-0047
   alias_name: qualify-machine-identity-as-architecture-namespace-uuid-keep-human-alias-qualification-derived
@@ -2894,7 +2943,7 @@ entities:
     for display, but alias qualification remains der
   uri: adr://adr-architecture-kit/entities/019fee89-e616-7649-ba3d-86e7fab992d0
   created_at: '2026-08-11T01:57:22.582Z'
-  entity_fingerprint: sha256:703013f1e9a24e619fc5cc89fc2fbdb849675c3fc4ef1a7b712195b8abd190d7
+  entity_fingerprint: sha256:a295914019ad918cc649c7a69c57e1da1a013287b211ee6e203356fad5bd9e7d
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -2941,6 +2990,7 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 019fee89-e616-7763-be39-197b4590ca50
   alias_id: DEC-0021
   alias_name: treat-manifest-as-a-guaranteed-discovery-surface-within-the-compiler-contract-family
@@ -2953,7 +3003,7 @@ entities:
     artifact rather than a normalized semantic payload, but its pre
   uri: adr://adr-architecture-kit/entities/019fee89-e616-7763-be39-197b4590ca50
   created_at: '2026-08-11T01:57:22.582Z'
-  entity_fingerprint: sha256:865b9341ca6148e2c81fd73aa91403e2f9bc0d25eb7f4d4f7af2d88532737f53
+  entity_fingerprint: sha256:03d34ae1327c473fbb919db09d8b45e27369e4e77b5c72d02b2d8a7283a82e54
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -3000,6 +3050,7 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 019fee89-e616-77a2-8a1b-ad4d3a7e4265
   alias_id: DEC-0028
   alias_name: dec-0028-decision-migrated
@@ -3012,7 +3063,7 @@ entities:
     path remains compatibility-only and should not gain new cons
   uri: adr://adr-architecture-kit/entities/019fee89-e616-77a2-8a1b-ad4d3a7e4265
   created_at: '2026-08-11T01:57:22.582Z'
-  entity_fingerprint: sha256:dc8dac369299cc08e18afc2f58e559fbce638cf727889b64b20f80792ce7be88
+  entity_fingerprint: sha256:228b7d126cb6d5cee9cd2547e4f3473932a3e29773bf9dcd94ddad791e4ec302
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -3059,6 +3110,7 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 019fee89-e616-77c3-9137-1750a4d9bca5
   alias_id: DEC-0068
   alias_name: require-cross-language-runtime-ingestion-to-remain-index-first-manifest-aware-and-additive-safe
@@ -3071,7 +3123,7 @@ entities:
     from the architecture index, treat manifest as a discovery and fresh
   uri: adr://adr-architecture-kit/entities/019fee89-e616-77c3-9137-1750a4d9bca5
   created_at: '2026-08-11T01:57:22.582Z'
-  entity_fingerprint: sha256:72295c69c4f22cc64df7d24af4b0c3e7145bae96a3bbd81711bbbde7a4597fdb
+  entity_fingerprint: sha256:cc626f6135a93a577ca1ea8e40aa65595dbc0e80c2894b52efc2e3edd5f2791b
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -3118,6 +3170,7 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 019fee89-e616-78cd-b936-3357c12efad1
   alias_id: DEC-0020
   alias_name: define-structural-mode-for-schema-aligned-drafts
@@ -3129,7 +3182,7 @@ entities:
     while decisions are still being pinned down. Structural mode keeps
   uri: adr://adr-architecture-kit/entities/019fee89-e616-78cd-b936-3357c12efad1
   created_at: '2026-08-11T01:57:22.582Z'
-  entity_fingerprint: sha256:849306e812cd3f2ec26bc658a18289f9360714c6d0d2189706429e3e5352c868
+  entity_fingerprint: sha256:d58cdd9c614e3cfc7b7a6b075313320fe4a581538eae8d3fc75bf991c9fa6602
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -3176,6 +3229,7 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 019fee89-e616-793e-9b16-ae66725cf5ec
   alias_id: DEC-0060
   alias_name: dec-0060-decision-migrated
@@ -3188,7 +3242,7 @@ entities:
     rather than a separate source of meaning.
   uri: adr://adr-architecture-kit/entities/019fee89-e616-793e-9b16-ae66725cf5ec
   created_at: '2026-08-11T01:57:22.582Z'
-  entity_fingerprint: sha256:b5132e76e8cf74fa4ef5ccf67ae11ad8f93c74d00281d20d73df1ca18b48082d
+  entity_fingerprint: sha256:0940f673100cdf1f63e740589ffb9a8f90ec787a1396291e8d71dcf5ee806ced
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -3235,6 +3289,7 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 019fee89-e616-79ec-9432-43a1c8ecc104
   alias_id: DEC-0036
   alias_name: dec-0036-decision-migrated
@@ -3247,7 +3302,7 @@ entities:
     load subset for bootstrap loading, but that subset must not be mista
   uri: adr://adr-architecture-kit/entities/019fee89-e616-79ec-9432-43a1c8ecc104
   created_at: '2026-08-11T01:57:22.582Z'
-  entity_fingerprint: sha256:5892af066cf7b2092d9ecd224cab0e5fca4753fe30db20a81e80a2445f50699e
+  entity_fingerprint: sha256:1a41f26bcdc53653a2ae64db933064e3c360182340b09f9cfcdbf9209857f807
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -3294,6 +3349,7 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 019fee89-e616-79f5-a127-b16d5485af23
   alias_id: DEC-0058
   alias_name: deprecate-adrs-entities-registry-yaml-as-a-legacy-compatibility-projection
@@ -3305,7 +3361,7 @@ entities:
     marked deprecated to prevent contract ambiguity.
   uri: adr://adr-architecture-kit/entities/019fee89-e616-79f5-a127-b16d5485af23
   created_at: '2026-08-11T01:57:22.582Z'
-  entity_fingerprint: sha256:7165ecae52d069b956084f096a22154bc3b3c15dbf40719347a8f1c6491263dc
+  entity_fingerprint: sha256:f057a32135d02a4dc453d153d4a60aaaf009de1a8d25d8d9acde7f10db0276fc
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -3352,6 +3408,7 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 019fee89-e616-7a04-a927-19a373014476
   alias_id: DEC-0041
   alias_name: restrict-sentinel-values-to-narrative-fields-and-sections-only
@@ -3363,7 +3420,7 @@ entities:
     fields. Narrow placement keeps them honest and machine-safe.
   uri: adr://adr-architecture-kit/entities/019fee89-e616-7a04-a927-19a373014476
   created_at: '2026-08-11T01:57:22.582Z'
-  entity_fingerprint: sha256:d7c8830e84c9b81ac774cad07801bd6aaa0cfe54d5b7e759c5e6c2a2f5b2c5f7
+  entity_fingerprint: sha256:c79c4f4900378b0476dae29edad96e00124e6bb3121d02aef27559698c21c37f
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -3410,6 +3467,7 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 019fee89-e616-7a1d-a13f-8595d35af213
   alias_id: DEC-0053
   alias_name: treat-brownfield-onboarding-as-a-first-class-canonicalization-workflow
@@ -3421,7 +3479,7 @@ entities:
     without pretending the implementation invented the architec
   uri: adr://adr-architecture-kit/entities/019fee89-e616-7a1d-a13f-8595d35af213
   created_at: '2026-08-11T01:57:22.582Z'
-  entity_fingerprint: sha256:946dc1283edf1944ef3fe9076c43e0d75ebc62722f69df7b9ff3b71256fb49e6
+  entity_fingerprint: sha256:11e48f06ab160c8c1029f69de4deb4a7741513f7884434f21f6aed817ac06f19
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -3468,6 +3526,7 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 019fee89-e616-7a7c-883f-b36edf94a1d8
   alias_id: DEC-0082
   alias_name: keep-repository-local-authoring-projections-separate-from-workspace-runtime-state
@@ -3480,7 +3539,7 @@ entities:
     authoring projections, but they must not target the repositor
   uri: adr://adr-architecture-kit/entities/019fee89-e616-7a7c-883f-b36edf94a1d8
   created_at: '2026-08-11T01:57:22.582Z'
-  entity_fingerprint: sha256:ea0db5c817cd78c5700622cca2c67af935200c6a7786ffe4949011101e9d5aec
+  entity_fingerprint: sha256:9b9b0f52f3ddad61137c7bc2d6bbbcd3b385536cbf7a9241ebe49ff7403223a5
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -3527,6 +3586,7 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 019fee89-e616-7b02-9c1e-5028e84c85e1
   alias_id: DEC-0052
   alias_name: keep-archmodel-compiler-internal-and-do-not-promote-it-to-the-public-consumer-api
@@ -3539,7 +3599,7 @@ entities:
     the public consumer contract would freeze the wrong abstraction to
   uri: adr://adr-architecture-kit/entities/019fee89-e616-7b02-9c1e-5028e84c85e1
   created_at: '2026-08-11T01:57:22.582Z'
-  entity_fingerprint: sha256:75b899220cd20046f34af72b481311d3ee11aebfb0a69992ec33db73bbfbc6ed
+  entity_fingerprint: sha256:6da4adc217a3e0683b6a79952ef24fbd5ad1144e450acb708dcc57158674cf6d
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -3586,6 +3646,7 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 019fee89-e616-7b5d-b53c-fa2fc2046cd5
   alias_id: DEC-0046
   alias_name: use-provider-authoritative-conflict-resolution-for-federated-entity-definitions
@@ -3597,7 +3658,7 @@ entities:
     Consumers may declare relationships to the entity, but they do
   uri: adr://adr-architecture-kit/entities/019fee89-e616-7b5d-b53c-fa2fc2046cd5
   created_at: '2026-08-11T01:57:22.582Z'
-  entity_fingerprint: sha256:05fee1fb01c293a153104fe128e4c07421b215cdd1c9e691555132c805512af0
+  entity_fingerprint: sha256:0d443492c6e6898c8533cfa79c72a3399e57b0e06d20f43eb2fa262e906d1a28
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -3644,6 +3705,7 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 019fee89-e616-7c36-b43f-6e4c45a4faf4
   alias_id: DEC-0080
   alias_name: establish-adr-kit-api-as-the-narrow-supported-authoring-sdk-facade
@@ -3655,7 +3717,7 @@ entities:
     authoring compilation for registries, manifest, and markdown, r
   uri: adr://adr-architecture-kit/entities/019fee89-e616-7c36-b43f-6e4c45a4faf4
   created_at: '2026-08-11T01:57:22.582Z'
-  entity_fingerprint: sha256:d06683a1f0202f5be7f84b750dc54288ee6705858ab501d48aef1c954e563ff1
+  entity_fingerprint: sha256:09340d0eda38285c4fb663da5312d5716cf754053467a728df65a21d2e15d582
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -3702,6 +3764,7 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 019fee89-e616-7c74-922b-f871dc663b59
   alias_id: DEC-0050
   alias_name: dec-0050-decision-migrated
@@ -3714,7 +3777,7 @@ entities:
     binding directly to registry files and current layout. Repository
   uri: adr://adr-architecture-kit/entities/019fee89-e616-7c74-922b-f871dc663b59
   created_at: '2026-08-11T01:57:22.582Z'
-  entity_fingerprint: sha256:4e25ecd0789d59a8ca93b5f1d268e0d9c100a0ad5e47c8019349f009032cf75b
+  entity_fingerprint: sha256:be6e48033a1e856397b7d02b808a5a12a3e82144a185b51544a935a150cb182f
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -3761,6 +3824,7 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 019fee89-e616-7d89-8e31-8090d0f91310
   alias_id: DEC-0042
   alias_name: enforce-remediation-through-a-separate-canonical-remediation-ledger
@@ -3772,7 +3836,7 @@ entities:
     leakage into ADR text, and provides a stable mechanism for no-regressi
   uri: adr://adr-architecture-kit/entities/019fee89-e616-7d89-8e31-8090d0f91310
   created_at: '2026-08-11T01:57:22.582Z'
-  entity_fingerprint: sha256:4d9d2e7618eaabaabfee90997c591f57a18472dbffaca4b253ad5405aa5ee8f3
+  entity_fingerprint: sha256:2916a4c81ac3ea3fbcd704a45532b2bbca2a9701edaa5e6ecf845fa3f3e1f7de
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -3819,6 +3883,7 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 019fee89-e616-7da4-9e1f-eb49b97c42ca
   alias_id: DEC-0051
   alias_name: adopt-normalizedarchitecturemodel-2-0-as-the-v1-3-repository-semantic-payload
@@ -3830,7 +3895,7 @@ entities:
     relationships, unresolved records, provenance, scope identity, and de
   uri: adr://adr-architecture-kit/entities/019fee89-e616-7da4-9e1f-eb49b97c42ca
   created_at: '2026-08-11T01:57:22.582Z'
-  entity_fingerprint: sha256:2e038f35259062099bb00d27f743eb7690035d14153f82e0b4115cd074416dbd
+  entity_fingerprint: sha256:c523e5f5f942e5bb0aa2323a6455f8475947426e3fbd284b9e53c7e61189ac3e
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -3877,6 +3942,7 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 019fee89-e616-7de2-b63b-577b2c2d53f4
   alias_id: DEC-0040
   alias_name: define-per-entity-metadata-through-typed-schemas-rather-than-an-unconstrained-metadata-bag
@@ -3889,7 +3955,7 @@ entities:
     compiler can drift silently.
   uri: adr://adr-architecture-kit/entities/019fee89-e616-7de2-b63b-577b2c2d53f4
   created_at: '2026-08-11T01:57:22.582Z'
-  entity_fingerprint: sha256:f9dae115188e76deca4452ef24cb4cc489db87868f3e52160bafeb763524a1b0
+  entity_fingerprint: sha256:79e6d532bfdd25311eb637ed12b28002fa7cd1a7390a49ff05f8ea44ae44b765
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -3936,6 +4002,7 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 019fee89-e616-7e82-8a0f-2c4c6bd0c326
   alias_id: DEC-0044
   alias_name: promote-the-contract-to-1-0-only-through-an-explicit-readiness-gate
@@ -3947,7 +4014,7 @@ entities:
     conditions across compiler output, schema conformance, and
   uri: adr://adr-architecture-kit/entities/019fee89-e616-7e82-8a0f-2c4c6bd0c326
   created_at: '2026-08-11T01:57:22.582Z'
-  entity_fingerprint: sha256:48b41e95a3b1f5f40437d7c56b78ce0d331c1aec62a18af5af9ac30287069487
+  entity_fingerprint: sha256:a2b5562cf32ee54f5ad8ed219df14c1c79b7aaff7ad7b55bca663c12bb1100d8
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -3994,6 +4061,7 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 019fee89-e616-7ede-823e-bf6a70fc3814
   alias_id: DEC-0013
   alias_name: use-one-validator-with-explicit-validation-modes
@@ -4005,7 +4073,7 @@ entities:
     coherent and avoids duplicating parsing and reporting logic.
   uri: adr://adr-architecture-kit/entities/019fee89-e616-7ede-823e-bf6a70fc3814
   created_at: '2026-08-11T01:57:22.582Z'
-  entity_fingerprint: sha256:5efbcd9a5e2990bfc5f0e57ee8b4facf96aa387d96c47891d025430f4c4d2c81
+  entity_fingerprint: sha256:a6fe6cc9ab58c8549cce4a83c8fa6b6c9dd8859b349e2e68845443ac056819d1
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -4052,6 +4120,7 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 019fee89-e616-7ef2-8f0f-5593e9025be3
   alias_id: DEC-0027
   alias_name: define-complete-mode-for-population-readiness
@@ -4063,7 +4132,7 @@ entities:
     not a correctness gate.
   uri: adr://adr-architecture-kit/entities/019fee89-e616-7ef2-8f0f-5593e9025be3
   created_at: '2026-08-11T01:57:22.582Z'
-  entity_fingerprint: sha256:fc59ccd464ebc21c3711a56f155c9c25f06c10ef5ccf92f6040ac687924cb905
+  entity_fingerprint: sha256:6530e583b4dab92b18dd5c75b8c1339df7451c56f5fbe6f087119b7312384685
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -4110,6 +4179,7 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 019fee89-e616-7f9b-a12f-e0ab32e9dc16
   alias_id: DEC-0045
   alias_name: treat-federation-as-a-read-only-aggregation-layer-over-per-repo-canonical-registries
@@ -4122,7 +4192,7 @@ entities:
     those outputs; it must not rewrite or mutate them.
   uri: adr://adr-architecture-kit/entities/019fee89-e616-7f9b-a12f-e0ab32e9dc16
   created_at: '2026-08-11T01:57:22.582Z'
-  entity_fingerprint: sha256:eeef544ee9c5bcccb5534b2da85da7dbccc8888e845fb97821f6d9cec5ba9291
+  entity_fingerprint: sha256:37f3109fa90a4199e7ca2a1da34a0d6d6fb67357a4ccb32e1d4b070d931df49c
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -4169,6 +4239,7 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 019fee89-e616-7fa2-a13f-a0bab2411ff7
   alias_id: DEC-0063
   alias_name: dec-0063-decision-migrated
@@ -4181,7 +4252,7 @@ entities:
     approval and implementation gating explicit without turning derived
   uri: adr://adr-architecture-kit/entities/019fee89-e616-7fa2-a13f-a0bab2411ff7
   created_at: '2026-08-11T01:57:22.582Z'
-  entity_fingerprint: sha256:eeee27dc89c9ecbeaadb7bb66ba23bcfca9c5918b30abe2625c2b3cc7e8833c9
+  entity_fingerprint: sha256:c94f51d842af5250e4aaee2a89c3fee49b38c80f0e9e9ad1d3db3b6a5dd7c1b3
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -4228,6 +4299,7 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 019fee89-e617-702b-b51b-719234187415
   alias_id: DEC-0095
   alias_name: canonical-authored-entity-references-contain-uuids-only
@@ -4239,7 +4311,7 @@ entities:
     1.0/1.2 implementation-attribution translation, and reports; '
   uri: adr://adr-architecture-kit/entities/019fee89-e617-702b-b51b-719234187415
   created_at: '2026-08-11T01:57:22.583Z'
-  entity_fingerprint: sha256:aaec8c7250b0b4f572a129b729d100f5fb638e2cf3bfa4f570e2cbd8b8c13eb9
+  entity_fingerprint: sha256:a6301b5871f0a8b1426deab8b9e1b22557b47d7fa872ad878c8dbdedeb7e2370
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -4286,6 +4358,7 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 019fee89-e617-707d-bb3e-959ff33027b8
   alias_id: DEC-0106
   alias_name: keep-v1-0-frozen-v1-2-migratable-and-v1-3-as-a-separate-provisional-authoring-line
@@ -4298,7 +4371,7 @@ entities:
     1.1 bundles, and UUID identity advances v1.3 normalized sema
   uri: adr://adr-architecture-kit/entities/019fee89-e617-707d-bb3e-959ff33027b8
   created_at: '2026-08-11T01:57:22.583Z'
-  entity_fingerprint: sha256:b2e4688c67a8734496e899370fecd4bc973ad55dd14c857e50db2ccc63e9a8de
+  entity_fingerprint: sha256:ea4dabb4a91d1da3b81953d005eec2d1dd3e0d504e09e70f31eb2ef272c18041
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -4345,6 +4418,7 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 019fee89-e617-7155-843f-9d4e2fd9fd00
   alias_id: DEC-0094
   alias_name: v1-3-adds-no-universal-authored-title
@@ -4356,7 +4430,7 @@ entities:
     value, and presentation edits do not automatically rename `a
   uri: adr://adr-architecture-kit/entities/019fee89-e617-7155-843f-9d4e2fd9fd00
   created_at: '2026-08-11T01:57:22.583Z'
-  entity_fingerprint: sha256:d5b47e4e6e1b569216c53dc155059e1795696f22f3442ea377f3027917624cab
+  entity_fingerprint: sha256:0619fc563547dbb41eca858cf64146fee592a2c595abec4d10ff399c7e1d713b
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -4403,6 +4477,7 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 019fee89-e617-719d-b917-c98100049ad2
   alias_id: DEC-0100
   alias_name: defer-canonical-entity-level-updated-at-to-transactional-authoring
@@ -4414,7 +4489,7 @@ entities:
     with mutation, base-revision, and history semantics, withou
   uri: adr://adr-architecture-kit/entities/019fee89-e617-719d-b917-c98100049ad2
   created_at: '2026-08-11T01:57:22.583Z'
-  entity_fingerprint: sha256:9251fed43b43c7ef013f881f8e2b93d01624c209fbfc1f6959b3b04960c304f4
+  entity_fingerprint: sha256:0285154aa5282da38664993b955a95ecc224209d8395c64e049a3d83300cbde6
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -4461,6 +4536,7 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 019fee89-e617-7315-9e36-7af95f814c83
   alias_id: DEC-0069
   alias_name: dec-0069-decision-migrated
@@ -4473,7 +4549,7 @@ entities:
     resolve paths, alias inventory, and governe
   uri: adr://adr-architecture-kit/entities/019fee89-e617-7315-9e36-7af95f814c83
   created_at: '2026-08-11T01:57:22.583Z'
-  entity_fingerprint: sha256:8d45e373aa9fb3b2e18a4a5bc615186beefd3247264f34ce7728266a1c9a4e51
+  entity_fingerprint: sha256:d7c604d7908a38a98e4d2bdb4746f273f50f58153e7f6e98d233ac7b3c20941c
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -4520,6 +4596,7 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 019fee89-e617-748e-863d-42268f44175f
   alias_id: DEC-0072
   alias_name: retain-legacy-adr-p-parsing-and-validation-but-exclude-it-from-new-creation-ergonomics
@@ -4532,7 +4609,7 @@ entities:
     forward-authoring affordances for the legacy type.
   uri: adr://adr-architecture-kit/entities/019fee89-e617-748e-863d-42268f44175f
   created_at: '2026-08-11T01:57:22.583Z'
-  entity_fingerprint: sha256:480c48bc109476b2bb7f14d5cd6f8f0f2ad599595836119739298adabad80323
+  entity_fingerprint: sha256:fd48837f964490cbf64d85c22c3c74cf064921423e668dda29087d31f10d52ba
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -4579,6 +4656,7 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 019fee89-e617-74e8-862b-b5a6013a306e
   alias_id: DEC-0102
   alias_name: distinct-entities-claiming-one-uuid-fail-closed-as-integrity-corruption
@@ -4590,7 +4668,7 @@ entities:
     fail pending explicit reviewed allocation, never reuse histor
   uri: adr://adr-architecture-kit/entities/019fee89-e617-74e8-862b-b5a6013a306e
   created_at: '2026-08-11T01:57:22.583Z'
-  entity_fingerprint: sha256:dd558ff9d59fdf44fe461dffa407b54eb85fb1f25aadeb41bf4cc56c6521a7bd
+  entity_fingerprint: sha256:79e24d00f16533355f9a55bc1197918b31aeb6f3ff4e55667f1b006d57586eb1
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -4637,6 +4715,7 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 019fee89-e617-75dd-852f-1d06d442695b
   alias_id: DEC-0071
   alias_name: dec-0071-decision-migrated
@@ -4649,7 +4728,7 @@ entities:
     to use.
   uri: adr://adr-architecture-kit/entities/019fee89-e617-75dd-852f-1d06d442695b
   created_at: '2026-08-11T01:57:22.583Z'
-  entity_fingerprint: sha256:dcd857a6c903b78947daa42ee97fced590e4597f697e48e3f2d95897574a0c83
+  entity_fingerprint: sha256:ae366e0e8b53439e731c8f94260e6c61634b7353c687b8c611bc730525084372
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -4696,6 +4775,7 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 019fee89-e617-75e2-a23c-f14b6602dbda
   alias_id: DEC-0099
   alias_name: dec-0099-decision-migrated
@@ -4708,7 +4788,7 @@ entities:
     do not author a duplicate timestamp, and migration does not i
   uri: adr://adr-architecture-kit/entities/019fee89-e617-75e2-a23c-f14b6602dbda
   created_at: '2026-08-11T01:57:22.583Z'
-  entity_fingerprint: sha256:8d4d7ddb18251554717563b0c91ff00ea19f5fe535dd83c021404453806d5a2b
+  entity_fingerprint: sha256:b3b1ba6db6d7211c6a2c37c2732e27a82d930ff692e14d12e48e9cd39c28b8c4
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -4755,6 +4835,7 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 019fee89-e617-75ee-b00e-64074f87263b
   alias_id: DEC-0105
   alias_name: migration-semantic-parity-requires-one-to-one-admitted-entity-mapping
@@ -4766,7 +4847,7 @@ entities:
     canonical fields except reviewed changes; relationship-multi
   uri: adr://adr-architecture-kit/entities/019fee89-e617-75ee-b00e-64074f87263b
   created_at: '2026-08-11T01:57:22.583Z'
-  entity_fingerprint: sha256:87058e29c95b6f0cec396555ce4cb93f7626bf9b8cbd22b5da0f44fcaa39bf35
+  entity_fingerprint: sha256:0ba323b3fd46eac800c09b03af83b634609533a2fd0d3d60480a32af0c6e8cd3
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -4813,6 +4894,7 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 019fee89-e617-7686-bc3f-536f1b00edfa
   alias_id: DEC-0075
   alias_name: exclude-reserved-adr-alias-ids-9000-9999-from-standard-forward-alias-allocation
@@ -4824,7 +4906,7 @@ entities:
     as canonical machine-identity allocation.
   uri: adr://adr-architecture-kit/entities/019fee89-e617-7686-bc3f-536f1b00edfa
   created_at: '2026-08-11T01:57:22.583Z'
-  entity_fingerprint: sha256:d6de64f75880364c1f7872acf7c5bcc512f88c6f6efe5ffcf3e8f06f2288dba3
+  entity_fingerprint: sha256:3e5ba65ac04b209326d6266210dad0c15d58b5063d2e8c2f6f6fe06622ffb07c
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -4871,6 +4953,7 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 019fee89-e617-768d-9e3e-f61039a3d61c
   alias_id: DEC-0070
   alias_name: expose-corpus-summary-and-relationships-through-supported-cli-commands
@@ -4881,7 +4964,7 @@ entities:
     boundary without treating raw registry files as the user-facing interface.
   uri: adr://adr-architecture-kit/entities/019fee89-e617-768d-9e3e-f61039a3d61c
   created_at: '2026-08-11T01:57:22.583Z'
-  entity_fingerprint: sha256:4556d08b511d0b84785605943feaed372498518f25c16904379906d9974d9de8
+  entity_fingerprint: sha256:831f28151faedb29519a2a17384ce2354a4fb85ba9710bb8cebdaf131a7300a6
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -4928,6 +5011,7 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 019fee89-e617-769f-8f3f-5a1fa0356ea4
   alias_id: DEC-0101
   alias_name: dec-0101-decision-migrated
@@ -4940,7 +5024,7 @@ entities:
     over the provider's complete schema-normalized canonical identity
   uri: adr://adr-architecture-kit/entities/019fee89-e617-769f-8f3f-5a1fa0356ea4
   created_at: '2026-08-11T01:57:22.583Z'
-  entity_fingerprint: sha256:47e99a499cb8960b7005958accdfcb5f91c10bb6b04a163ae3e705db53f8c7b2
+  entity_fingerprint: sha256:e35957f1ff2b9802833441e7130fee6daccf6af507ed0b96dc6e160521cfec84
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -4987,6 +5071,7 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 019fee89-e617-76fa-bb3e-5c088c73ebdf
   alias_id: DEC-0098
   alias_name: dec-0098-decision-migrated
@@ -4999,7 +5084,7 @@ entities:
     network location, nor a fetch protocol, and `Architectu
   uri: adr://adr-architecture-kit/entities/019fee89-e617-76fa-bb3e-5c088c73ebdf
   created_at: '2026-08-11T01:57:22.583Z'
-  entity_fingerprint: sha256:f6c5b7a23817ea9810a91c3647c7207e08680b7eddd307078f494039b3a5309c
+  entity_fingerprint: sha256:0f286c6a5bb9f5c508935392e14c0f8b0e2c108732392e154d5c4ca4fae70405
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -5046,6 +5131,7 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 019fee89-e617-7727-a81f-08c3a998a85c
   alias_id: DEC-0085
   alias_name: dec-0085-decision-migrated
@@ -5060,7 +5146,7 @@ entities:
     queries. They join the existing `adr`, `system`, `component`, `d'
   uri: adr://adr-architecture-kit/entities/019fee89-e617-7727-a81f-08c3a998a85c
   created_at: '2026-08-11T01:57:22.583Z'
-  entity_fingerprint: sha256:3d952509faec4f55cdbe804b930ca8c61107cfc6e8c6f17b28a9a0f591c39a2f
+  entity_fingerprint: sha256:10b9df3753e7ebf6d40bd357ccfcb61d40ee751822b8ac46c6ae039eaf80fa6f
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -5107,6 +5193,7 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 019fee89-e617-7736-a637-e6e472c4d4e6
   alias_id: DEC-0083
   alias_name: introduce-provisional-additive-adr-authoring-schema-v1-2
@@ -5118,7 +5205,7 @@ entities:
     explicit. Schema v1.0 files remain byte-for-byte frozen and v
   uri: adr://adr-architecture-kit/entities/019fee89-e617-7736-a637-e6e472c4d4e6
   created_at: '2026-08-11T01:57:22.583Z'
-  entity_fingerprint: sha256:caba4754eb8212a4668e1a7b54edff28e2f81a1ab80b992a13bb54327600ef85
+  entity_fingerprint: sha256:fbfe302e6516e37e382d6b7a3f1376b025b9a96211a776ac6ff19656408f7372
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -5165,6 +5252,7 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 019fee89-e617-77cf-a43e-5f0912b04a8a
   alias_id: DEC-0064
   alias_name: record-implementation-exceptions-in-separate-objection-override-artifacts
@@ -5176,7 +5264,7 @@ entities:
     artifacts keep exception handling explicit and auditable.
   uri: adr://adr-architecture-kit/entities/019fee89-e617-77cf-a43e-5f0912b04a8a
   created_at: '2026-08-11T01:57:22.583Z'
-  entity_fingerprint: sha256:cd42043fb782c1a221df8499c22e99e0b9f859da5f2def302853e69583ce66fc
+  entity_fingerprint: sha256:9e13d924655cccf7ea5547caeb8d192c995d3feffad0e74d122dea449041667e
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -5223,6 +5311,7 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 019fee89-e617-7861-a53f-f050b9452bcf
   alias_id: DEC-0092
   alias_name: dec-0092-decision-migrated
@@ -5235,7 +5324,7 @@ entities:
     values fail hard syntax, parsing validates without si
   uri: adr://adr-architecture-kit/entities/019fee89-e617-7861-a53f-f050b9452bcf
   created_at: '2026-08-11T01:57:22.583Z'
-  entity_fingerprint: sha256:36f5c7ea9b9506b7bbd98d816186a158e5a7799233effc27e7a3b337290c5b58
+  entity_fingerprint: sha256:e9365ae986db00fdd22408d6a6f2a9ba706a6d0344d0c5d247422f33720d2602
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -5282,6 +5371,7 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 019fee89-e617-793a-b537-a492afa6f167
   alias_id: DEC-9000
   alias_name: publish-a-deterministic-logical-adr-fragment-for-boot-readiness
@@ -5292,7 +5382,7 @@ entities:
     path.
   uri: adr://adr-architecture-kit/entities/019fee89-e617-793a-b537-a492afa6f167
   created_at: '2026-08-11T01:57:22.583Z'
-  entity_fingerprint: sha256:4d030d13e64b0a6fe6c80c052b462bf922dd1cd6c3689d4a8e174891387070d6
+  entity_fingerprint: sha256:73bfce5af851a35b9c07d5e4e26fa4f469d1b6bd1b16031981b674c64ce6ce62
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -5341,6 +5431,7 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 019fee89-e617-797f-9e3e-50212acb0456
   alias_id: DEC-0073
   alias_name: make-forward-authoring-type-prefixed-adr-alias-id-allocation-monotonic-and-non-reusable
@@ -5353,7 +5444,7 @@ entities:
     entity identity. Alias allocation stays monotonic and non-reusable and '
   uri: adr://adr-architecture-kit/entities/019fee89-e617-797f-9e3e-50212acb0456
   created_at: '2026-08-11T01:57:22.583Z'
-  entity_fingerprint: sha256:fa5645c9babab66755e63aa4bb1026af31c09ae952b539a4a23481d48dce7024
+  entity_fingerprint: sha256:3c4f6dede87d38ab36bf36cd0315937b974b3ee9d5eef3974c6fe306ab6f695a
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -5400,6 +5491,7 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 019fee89-e617-7a09-bc37-afd7ae0f2927
   alias_id: DEC-0074
   alias_name: dec-0074-decision-migrated
@@ -5412,7 +5504,7 @@ entities:
     whose identity must be preserved. Normal authoring allocation shou
   uri: adr://adr-architecture-kit/entities/019fee89-e617-7a09-bc37-afd7ae0f2927
   created_at: '2026-08-11T01:57:22.583Z'
-  entity_fingerprint: sha256:fdfd8ff969e06d2d9c326c7d1647d14e5bdf7c546c3df67b98c47aff39a3bdfc
+  entity_fingerprint: sha256:affe5be3d2000beb01a0815af976e6dc8d4ff05df3f4541f758edd88d42f78f9
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -5459,6 +5551,7 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 019fee89-e617-7a42-973f-626f9aa8c2c4
   alias_id: DEC-0091
   alias_name: migration-preserves-the-existing-type-prefixed-identifier-as-repository-local-governed-alias-id
@@ -5471,7 +5564,7 @@ entities:
     by recorded review, never reused after retirement, and never
   uri: adr://adr-architecture-kit/entities/019fee89-e617-7a42-973f-626f9aa8c2c4
   created_at: '2026-08-11T01:57:22.583Z'
-  entity_fingerprint: sha256:16d7673af91a7fdb575e00edeb587cf6ece9d1950c19f703aed000fe91d4abbe
+  entity_fingerprint: sha256:9e7482b321e7aecf98d6a1697100606ba9bd673d21002790d1ddb33aa6aefdfc
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -5518,6 +5611,7 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 019fee89-e617-7a8f-823b-debcf147e747
   alias_id: DEC-0088
   alias_name: split-uuid-integrity-corruption-fail-closed-from-governed-alias-collision-repair
@@ -5530,7 +5624,7 @@ entities:
     an admitted incumbent or otherwise fail pending explicit reviewed al
   uri: adr://adr-architecture-kit/entities/019fee89-e617-7a8f-823b-debcf147e747
   created_at: '2026-08-11T01:57:22.583Z'
-  entity_fingerprint: sha256:157ad131594664419fc799aeba068a03c6b18a8998aa737a6d1e26952c6a054b
+  entity_fingerprint: sha256:f6116c43a507a2131ae29b1fed4d9c8befb6acaa08fd6f113d0d99aafd4eedc4
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -5577,6 +5671,7 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 019fee89-e617-7aae-ac34-86b62c25289b
   alias_id: DEC-0066
   alias_name: allow-projections-to-expose-governance-references-and-summary-metadata-only
@@ -5588,7 +5683,7 @@ entities:
     explicitly say.
   uri: adr://adr-architecture-kit/entities/019fee89-e617-7aae-ac34-86b62c25289b
   created_at: '2026-08-11T01:57:22.583Z'
-  entity_fingerprint: sha256:39b2f6199d107d4318323eba31416d93c0469132b6426c5816ce6aab30e3dbe2
+  entity_fingerprint: sha256:1424dec4b7bc689f0a7e2cb276e755001470336ba280407a285b555dd1ed71cc
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -5635,6 +5730,7 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 019fee89-e617-7b55-931f-d0126c67c176
   alias_id: DEC-0089
   alias_name: dec-0089-decision-migrated
@@ -5647,7 +5743,7 @@ entities:
     identity, encodes neither type nor location, and its ordering is n
   uri: adr://adr-architecture-kit/entities/019fee89-e617-7b55-931f-d0126c67c176
   created_at: '2026-08-11T01:57:22.583Z'
-  entity_fingerprint: sha256:19b5c7728890fdcf9cc51323438b41ee84af714f9c1ef2b34affe97009ca90ca
+  entity_fingerprint: sha256:37482d1df31f147de5f1ea2b70f1d087e78531ed0f3d5a17a31655e4098fb3ac
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -5694,6 +5790,7 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 019fee89-e617-7bd0-9d3c-066089251acd
   alias_id: DEC-0086
   alias_name: add-deterministic-source-sensitive-assertion-identity-without-replacing-relationship-identity
@@ -5706,7 +5803,7 @@ entities:
     hashes those UUID endpoint values plus exactly one canonical source-
   uri: adr://adr-architecture-kit/entities/019fee89-e617-7bd0-9d3c-066089251acd
   created_at: '2026-08-11T01:57:22.583Z'
-  entity_fingerprint: sha256:332099411e359aecefbc46748dd31699a50302a93276527b7f53ddd318164eca
+  entity_fingerprint: sha256:00b381abde8f0f99ec4932fb52e06c01ae3809a11a870e48dbf1aaa1ecafc4c0
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -5753,6 +5850,7 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 019fee89-e617-7bdc-b136-032978d92661
   alias_id: DEC-0097
   alias_name: admit-uuid-identity-only-for-independently-addressable-durable-entity-kinds
@@ -5764,7 +5862,7 @@ entities:
     components, interfaces, implementation decisions, and systems; ph
   uri: adr://adr-architecture-kit/entities/019fee89-e617-7bdc-b136-032978d92661
   created_at: '2026-08-11T01:57:22.583Z'
-  entity_fingerprint: sha256:b8b4d9996598b737f7a3d69c1214250e99655bb78f0035adc1a7dacb0d9a3534
+  entity_fingerprint: sha256:0a89b2b43ac029d837e5a52f013c3403ca496aaefa323adfbd71cf509b7f4ac0
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -5812,6 +5910,7 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 019fee89-e617-7c51-b52d-b348897b7c3d
   alias_id: DEC-0084
   alias_name: dec-0084-decision-migrated
@@ -5824,7 +5923,7 @@ entities:
     is SHA-256 over the provider's complete schema-normalized canonic
   uri: adr://adr-architecture-kit/entities/019fee89-e617-7c51-b52d-b348897b7c3d
   created_at: '2026-08-11T01:57:22.583Z'
-  entity_fingerprint: sha256:2e6c726ba687035e1e5d410f70bf38bf457633be89ff2b9e76543d57fba19fd9
+  entity_fingerprint: sha256:04e3c5607f84ec0e02401ef45ccb7d92b722bbbcda8f15ea6279655ad0077b42
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -5871,6 +5970,7 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 019fee89-e617-7cb0-ba1c-d370072adc7c
   alias_id: DEC-0103
   alias_name: migration-preflights-before-minting-and-records-a-complete-authoritative-identity-map
@@ -5883,7 +5983,7 @@ entities:
     alias, final alias, and entity type to minted UUID; an abandoned
   uri: adr://adr-architecture-kit/entities/019fee89-e617-7cb0-ba1c-d370072adc7c
   created_at: '2026-08-11T01:57:22.583Z'
-  entity_fingerprint: sha256:c420a112e021fbd9d51a9f1319a59aa91669eb6206764f8d7ed70856c7e58fe2
+  entity_fingerprint: sha256:d4b99ad801b4ac4c9f2fe50f9dc0ac7f732a0a6fa6df59a4b416daff9de86a19
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -5930,6 +6030,7 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 019fee89-e617-7d26-8b2d-38c2321712ef
   alias_id: DEC-0104
   alias_name: migration-preserves-alias-id-and-proposes-alias-name-deterministically-from-canonical-fields
@@ -5942,7 +6043,7 @@ entities:
     or explicit review in that order; narrative guessing and gener
   uri: adr://adr-architecture-kit/entities/019fee89-e617-7d26-8b2d-38c2321712ef
   created_at: '2026-08-11T01:57:22.583Z'
-  entity_fingerprint: sha256:9e1f9fbdde368914cd53ac08d8903c5ce19c36a2e58f720b821d50752105acd6
+  entity_fingerprint: sha256:6ad0a7e936b8586b5cd6baf7aad5d335ee6026c2d190ffdad4b585772946a8e5
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -5989,6 +6090,7 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 019fee89-e617-7dbb-b23f-872b9ffc75d8
   alias_id: DEC-0065
   alias_name: bind-override-review-validity-to-adr-modified-date-and-warn-on-stale-coupling
@@ -6000,7 +6102,7 @@ entities:
     coupling point that works with the current schema line.
   uri: adr://adr-architecture-kit/entities/019fee89-e617-7dbb-b23f-872b9ffc75d8
   created_at: '2026-08-11T01:57:22.583Z'
-  entity_fingerprint: sha256:92381a65851376bc4312fa19c0451991cf9ac3a2e4e795ccc9d26b93e90cc95b
+  entity_fingerprint: sha256:95734cbf93905a3c6cfe8325d4cc649d1098d4c6c4d10698c9fd1ab3d4aaadec
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -6047,6 +6149,7 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 019fee89-e617-7dd5-811d-5f16482f2c3a
   alias_id: DEC-0107
   alias_name: architecture-namespace-is-stable-provider-authority-workspace-keys-are-local-routing-only
@@ -6059,7 +6162,7 @@ entities:
     registration resolves the key to the provider n'
   uri: adr://adr-architecture-kit/entities/019fee89-e617-7dd5-811d-5f16482f2c3a
   created_at: '2026-08-11T01:57:22.583Z'
-  entity_fingerprint: sha256:6c3a32c7f7c3d8756261d5f69cb8c1dfe66551242310a9e596811856b080ccac
+  entity_fingerprint: sha256:3af2e00fe8ed21a90618dbc0d2451a6ebf679f87fa5b876a8a55688468fcb3eb
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -6106,6 +6209,7 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 019fee89-e617-7e88-a71f-db36a33c65e7
   alias_id: DEC-0096
   alias_name: v1-3-relationship-endpoints-are-uuids
@@ -6117,7 +6221,7 @@ entities:
     hashes those values plus exactly one canonical source-owne
   uri: adr://adr-architecture-kit/entities/019fee89-e617-7e88-a71f-db36a33c65e7
   created_at: '2026-08-11T01:57:22.583Z'
-  entity_fingerprint: sha256:32ca517d811da4a9a4c60761ff762469f1677025506b0b7a1a68009077a3ea2d
+  entity_fingerprint: sha256:d0f0671e21785d6b7f6eef6ba75a5c61dbde856f8a73ea1cd19391743434e263
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -6164,6 +6268,7 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 019fee89-e617-7f80-823f-9e52a6176f77
   alias_id: DEC-0090
   alias_name: every-normalized-identity-bearing-entity-materializes-entity-type
@@ -6175,7 +6280,7 @@ entities:
     remains canonical type authority without duplicate aut
   uri: adr://adr-architecture-kit/entities/019fee89-e617-7f80-823f-9e52a6176f77
   created_at: '2026-08-11T01:57:22.583Z'
-  entity_fingerprint: sha256:d0474aac947703ae8082d4b133b5c84bbc4a6f9bafe8a6094ee029c4ab43eb17
+  entity_fingerprint: sha256:f762089a07002f0d119b5e583b9224938ee28cc35a7995cc12143e1578aa4911
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -6222,6 +6327,7 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 019fee89-e617-7f8c-813f-95975602bd7d
   alias_id: DEC-0087
   alias_name: add-optional-stable-topology-ids-and-deterministic-dry-run-first-migration
@@ -6233,7 +6339,7 @@ entities:
     must resolve exactly once. Migration preserves existing IDs, al
   uri: adr://adr-architecture-kit/entities/019fee89-e617-7f8c-813f-95975602bd7d
   created_at: '2026-08-11T01:57:22.583Z'
-  entity_fingerprint: sha256:99b4605eb366c622acfdae8b9e844906d0c07281311466af0930f735d9caf46d
+  entity_fingerprint: sha256:73ee14d1511eb1fd6d092c971ac59e397caf5e24a608bf035c1acc2924edf79e
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -6280,6 +6386,7 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 019fee89-e617-7faa-813b-d8e882418d4e
   alias_id: DEC-0093
   alias_name: keep-alias-ref-derived-and-non-authoritative
@@ -6291,7 +6398,7 @@ entities:
     and is never a relationship, foreign-key, authority, or canoni'
   uri: adr://adr-architecture-kit/entities/019fee89-e617-7faa-813b-d8e882418d4e
   created_at: '2026-08-11T01:57:22.583Z'
-  entity_fingerprint: sha256:975d65a8c24bbc63e3c5627d909c58fffa026dc94514fb745bb692788b7a0441
+  entity_fingerprint: sha256:ba07f318b4b74db41619bd23d620c4e2c2c4d086377ee59b03bdd8013d2b92c4
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -6338,6 +6445,7 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 019ff142-dd48-72ff-9e3f-81ca4a779db7
   alias_id: DEC-0108
   alias_name: emit-adr-human-projections-under-typed-adr-projection-paths
@@ -6350,7 +6458,7 @@ entities:
     with filenames {alias_id}-{slug}.md. The SDK mark
   uri: adr://adr-architecture-kit/entities/019ff142-dd48-72ff-9e3f-81ca4a779db7
   created_at: '2026-08-11T14:38:38.920Z'
-  entity_fingerprint: sha256:81c476f046a8e2d890004aea629bf35910c74a2fcb70efff8037644ba3b28fa0
+  entity_fingerprint: sha256:111cbf7792d051fdb619b83e37b8566ce91adcd148cdc64d0313b91026041f07
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -6403,6 +6511,7 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 019ff142-dd48-7ef8-8d3e-576f4bb02dc3
   alias_id: DEC-0109
   alias_name: human-adr-projections-render-compiler-derived-relationship-semantics-only
@@ -6414,7 +6523,7 @@ entities:
     / RelationshipType). Required gap closes include ADR-leve
   uri: adr://adr-architecture-kit/entities/019ff142-dd48-7ef8-8d3e-576f4bb02dc3
   created_at: '2026-08-11T14:38:38.920Z'
-  entity_fingerprint: sha256:452730f6314dd3b3e0a2d6b73f4ca6e7bb9af409b84a820e1844f43222db4588
+  entity_fingerprint: sha256:3d2acb3493fef5f9b8211274aa899100c37e9fccecfd92df6581ef90957698c5
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -6465,6 +6574,7 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 019ff22a-bb5f-7214-8818-40820f8c553e
   alias_id: DEC-0111
   alias_name: allow-deterministic-semantic-intermediate-model-for-documentation-projection
@@ -6476,7 +6586,7 @@ entities:
     artifact. That model is derived projection state, not indep
   uri: adr://adr-architecture-kit/entities/019ff22a-bb5f-7214-8818-40820f8c553e
   created_at: '2026-08-11T18:51:54.591Z'
-  entity_fingerprint: sha256:1df874f5293122888453b22eb68863a95fef71645543dfeb418e1516596c1236
+  entity_fingerprint: sha256:9bb5ac10138a37ed9b0ae7bf3ba92d11f2984a23aaa040b5ddcc28fd642aaa91
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -6527,6 +6637,7 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 019ff22a-bb5f-76eb-8a31-546eeba55dcb
   alias_id: DEC-0113
   alias_name: documentation-projections-reflect-supported-boundaries-without-redefining-them
@@ -6539,7 +6650,7 @@ entities:
     create, promote, or redefine those interfaces or authorities. Owners
   uri: adr://adr-architecture-kit/entities/019ff22a-bb5f-76eb-8a31-546eeba55dcb
   created_at: '2026-08-11T18:51:54.591Z'
-  entity_fingerprint: sha256:aa6bfdf1e7d88557fb2cfdb26068b4c38bc985289de149587d450f7189ee567d
+  entity_fingerprint: sha256:a2ffda55dcab785a5b0999e6bc7050939759955410057fe001a32f63dc704f96
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -6590,6 +6701,7 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 019ff22a-bb5f-77ed-a63f-98f0455fdd1e
   alias_id: DEC-0114
   alias_name: isolate-repository-specific-documentation-projection-orientation-by-scope
@@ -6601,7 +6713,7 @@ entities:
     ADR Kit provider orientation must not be rendered into that c
   uri: adr://adr-architecture-kit/entities/019ff22a-bb5f-77ed-a63f-98f0455fdd1e
   created_at: '2026-08-11T18:51:54.591Z'
-  entity_fingerprint: sha256:616230009b7f3eb989f5ed0c1fe97c5b9b98ae832355e2abab2e20e41c715a0b
+  entity_fingerprint: sha256:bc11fd0be4cee70398f2a9bb8fb25882fefd9f97aaf46a9583d9deaeaadb1119
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -6650,6 +6762,7 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 019ff22a-bb5f-7926-a33c-b66f72343219
   alias_id: DEC-0115
   alias_name: preserve-legacy-generic-system-overview-generation-as-compatibility-only
@@ -6661,7 +6774,7 @@ entities:
     commands whose success/failure behavior is preserved. Fail-closed
   uri: adr://adr-architecture-kit/entities/019ff22a-bb5f-7926-a33c-b66f72343219
   created_at: '2026-08-11T18:51:54.591Z'
-  entity_fingerprint: sha256:27c04371665af3323e6c9189daa750e019747b53d353901f32c68a6aa6853891
+  entity_fingerprint: sha256:ef37d5b430aa17bc7316d7ecae09b6f4a42d13b9c88360d34bee79a9e3cbeac5
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -6712,6 +6825,7 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 019ff22a-bb5f-7bfc-851d-938bffc81281
   alias_id: DEC-0110
   alias_name: classify-documentation-projection-inputs-as-derived-or-authored
@@ -6723,7 +6837,7 @@ entities:
     already exists. Those facts must be obtained from their owning mach
   uri: adr://adr-architecture-kit/entities/019ff22a-bb5f-7bfc-851d-938bffc81281
   created_at: '2026-08-11T18:51:54.591Z'
-  entity_fingerprint: sha256:201dd07be36a06e9b16c64d3525fc055421f6f5fd60627f6a4fec8995e54bb78
+  entity_fingerprint: sha256:58d747171a49a95a7db702e26007cbc267e6455ff95ae1d8561454aeb47e4056
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -6774,6 +6888,7 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 019ff22a-bb5f-7d9e-973f-b9008898a8c9
   alias_id: DEC-0112
   alias_name: require-projection-source-closure-for-generated-documentation-freshness
@@ -6785,7 +6900,7 @@ entities:
     document meaning and projection-rule inputs that can change re
   uri: adr://adr-architecture-kit/entities/019ff22a-bb5f-7d9e-973f-b9008898a8c9
   created_at: '2026-08-11T18:51:54.591Z'
-  entity_fingerprint: sha256:34c242cc4253e7302ef05874029b6d0faeae3ca85a83e9e53570e81b0508138b
+  entity_fingerprint: sha256:e03817f4bf0527098201e8d8120815145a5f424961b4ad63effe3fc54261cb51
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -6836,6 +6951,7 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 019ffdba-3c42-700c-ac3f-8135e0139dfb
   alias_id: DEC-0116
   alias_name: canonical-v15-claims-require-relationship-target-uuid-and-confidence
@@ -6847,7 +6963,7 @@ entities:
     | `heuristic`). Records also require `implementation_entit
   uri: adr://adr-architecture-kit/entities/019ffdba-3c42-700c-ac3f-8135e0139dfb
   created_at: '2026-08-14T00:44:28.610Z'
-  entity_fingerprint: sha256:23abacdb02d72a88159a5d7e869a1371f96def6f3a5d070874d9ee644f0641db
+  entity_fingerprint: sha256:06e8cd3323986cc49a8de13f1f6151241421aef07cc90fbf80973b594e921b87
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -6894,6 +7010,7 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 019ffdba-3c42-705f-9935-76ed45c32cd7
   alias_id: DEC-0121
   alias_name: canonical-output-order-is-deterministic-and-idempotent
@@ -6905,7 +7022,7 @@ entities:
     target_entity_id, asserted_target_entity_type or "")`. Unsorted raw
   uri: adr://adr-architecture-kit/entities/019ffdba-3c42-705f-9935-76ed45c32cd7
   created_at: '2026-08-14T00:44:28.610Z'
-  entity_fingerprint: sha256:2a3ef79da791e5bfbd12834973aceff23a2135ba165dc3e5a92be92321478495
+  entity_fingerprint: sha256:c5482f94299320813492d76b9184324efcc485821550de91c3da523aa05486ec
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -6952,6 +7069,7 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 019ffdba-3c42-7282-931f-92503f4079cb
   alias_id: DEC-0120
   alias_name: legacy-evidence-normalizes-only-with-architecture-state
@@ -6963,7 +7081,7 @@ entities:
     1.5 remains the CLI default. Conversion preserves confidence exactl
   uri: adr://adr-architecture-kit/entities/019ffdba-3c42-7282-931f-92503f4079cb
   created_at: '2026-08-14T00:44:28.610Z'
-  entity_fingerprint: sha256:21eb83cd0f7e6abbeb5f9606aa0647fe449a7eebbbe4924522cfc2244acf848c
+  entity_fingerprint: sha256:e162ce62a6677549a7ef287cd2bc75c9c6e7f3ffa5e06d419480bc9f08bc80d7
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -7010,6 +7128,7 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 019ffdba-3c42-729a-a83f-a40c53d278fd
   alias_id: DEC-0124
   alias_name: extractors-and-legacy-decorators-must-not-load-architecture-state
@@ -7021,7 +7140,7 @@ entities:
     / `__enforces_invariants__`) and must not resolve aliases, '
   uri: adr://adr-architecture-kit/entities/019ffdba-3c42-729a-a83f-a40c53d278fd
   created_at: '2026-08-14T00:44:28.610Z'
-  entity_fingerprint: sha256:6d44e5254ac0ef1365442a1e9b1621d45a0d427c96856e770260d27049f6198a
+  entity_fingerprint: sha256:e29c475a2c0bfcea374c96736245790de4f993f888b5bade4def43e30da78a74
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -7068,6 +7187,7 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 019ffdba-3c42-7304-ab2f-bcd01cc6f9d3
   alias_id: DEC-0123
   alias_name: coverage-distinguishes-unique-semantic-links-from-evidence-occurrence
@@ -7079,7 +7199,7 @@ entities:
     relationship, target_entity_id)` after normal
   uri: adr://adr-architecture-kit/entities/019ffdba-3c42-7304-ab2f-bcd01cc6f9d3
   created_at: '2026-08-14T00:44:28.610Z'
-  entity_fingerprint: sha256:0c8de08f33235c78adfefc503c954d5ddc6865f4c80013840f700b70ccd45c67
+  entity_fingerprint: sha256:c08d423a12beaa9553ab7abb977ca0c50e5bf67231f9458c601681436b717bb7
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -7126,6 +7246,7 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 019ffdba-3c42-73c1-b11c-d0a177cd522b
   alias_id: DEC-0117
   alias_name: raw-evidence-must-not-require-target-entity-type
@@ -7137,7 +7258,7 @@ entities:
     validation compares it to the repository-resolved type an
   uri: adr://adr-architecture-kit/entities/019ffdba-3c42-73c1-b11c-d0a177cd522b
   created_at: '2026-08-14T00:44:28.610Z'
-  entity_fingerprint: sha256:acfe89027a00caa1b30b6fadb0dc763034076d78d3734bf8de2894ddfa5f5bd3
+  entity_fingerprint: sha256:bfc5b36354c9c66e74cd1fd9a82a004dfa737e2633f8212bda8fb703c142312b
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -7184,6 +7305,7 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 019ffdba-3c42-7690-8f1b-ad8deaeed484
   alias_id: DEC-0122
   alias_name: duplicate-semantic-claims-follow-provenance-aware-fail-closed-rules
@@ -7195,7 +7317,7 @@ entities:
     Exact repeated claim-and-provenance occurrences and
   uri: adr://adr-architecture-kit/entities/019ffdba-3c42-7690-8f1b-ad8deaeed484
   created_at: '2026-08-14T00:44:28.610Z'
-  entity_fingerprint: sha256:8bf0cc69db0f720dd91e9b9cb61db9f4927ce604daef1657362acf491dcab21d
+  entity_fingerprint: sha256:cd934a7c3d4b14b154c2da02de0501748dcbbe53cb81764231b51953b122d45e
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -7242,6 +7364,7 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 019ffdba-3c42-7751-a81c-d738f411b299
   alias_id: DEC-0119
   alias_name: evidence-claim-verbs-are-not-architecture-relationship-types
@@ -7253,7 +7376,7 @@ entities:
     and must not be written into architecture relationship registries or
   uri: adr://adr-architecture-kit/entities/019ffdba-3c42-7751-a81c-d738f411b299
   created_at: '2026-08-14T00:44:28.610Z'
-  entity_fingerprint: sha256:fa7489daa3f2f0124f8fb3f67c638470b4ac4389fd20cfc1dadc7d852200304d
+  entity_fingerprint: sha256:a840a913c38b4a8c3154edb4b47d1009eb96514527dcc7c76d39a8d6ed696b07
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -7300,6 +7423,7 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 019ffdba-3c42-7f40-b339-204a447bec81
   alias_id: DEC-0118
   alias_name: apply-the-attribution-matrix-to-repository-resolved-entity-type
@@ -7311,7 +7435,7 @@ entities:
     interface, implementation_decision; `enforces` to invariant'
   uri: adr://adr-architecture-kit/entities/019ffdba-3c42-7f40-b339-204a447bec81
   created_at: '2026-08-14T00:44:28.610Z'
-  entity_fingerprint: sha256:725269dc638da123a4eb3ff28dbac590f7af4c576b49aa1a41bbaafa055528a9
+  entity_fingerprint: sha256:11418caa1977892b2de2930839281b05f5e3f4b17e556231ef1189b2b018eb8d
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -7358,6 +7482,7 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 01a002b7-e001-7010-8401-010101010101
   alias_id: DEC-0140
   alias_name: distinguish-effective-relationships-from-assertions
@@ -7369,7 +7494,7 @@ entities:
     a graph-eligible ENTITY with its own UUIDv7 identity and assertion
   uri: adr://adr-architecture-kit/entities/01a002b7-e001-7010-8401-010101010101
   created_at: '2026-08-15T00:00:00.001Z'
-  entity_fingerprint: sha256:92ca767c98692109e877bc28f907e6f9b69b83d82abe2ce2fe05171f656923c8
+  entity_fingerprint: sha256:0b9fc441f52210055dcd90cc7face6aeb996c4c4e422c71293fc9b7c5ad70991
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -7416,6 +7541,7 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 01a002b7-e002-7020-8802-020202020202
   alias_id: DEC-0141
   alias_name: inverse-traversal-reuses-effective-relationship-identity
@@ -7428,7 +7554,7 @@ entities:
     An independently authored or governed inverse relationship is a '
   uri: adr://adr-architecture-kit/entities/01a002b7-e002-7020-8802-020202020202
   created_at: '2026-08-15T00:00:00.002Z'
-  entity_fingerprint: sha256:c046bf3c04b6e7b506a1f53a33345f6218544fc1c49ef01f95f2d51c324ab24e
+  entity_fingerprint: sha256:8169fad926dca21439035ef19d0a8c8ed8af2bca79663164861f6ef8896b4504
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -7475,6 +7601,7 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 01a002b7-e003-7030-8c03-030303030303
   alias_id: DEC-0142
   alias_name: govern-new-entity-alias-namespaces-explicitly
@@ -7487,7 +7614,7 @@ entities:
     dispositions, and retired aliases are recorded in the migratio
   uri: adr://adr-architecture-kit/entities/01a002b7-e003-7030-8c03-030303030303
   created_at: '2026-08-15T00:00:00.003Z'
-  entity_fingerprint: sha256:eb9ff94d3256a87c06a5d47d9be22740e1747fc3c25d9cac030f775fe884f0c6
+  entity_fingerprint: sha256:6c19252272785b0433baf94eb85b2c630c37c42e5b684a2141ae39046efb23c0
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -7534,6 +7661,7 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 01a002b7-e004-7040-9004-040404040404
   alias_id: DEC-0143
   alias_name: bind-identity-changes-to-family-scoped-versions
@@ -7546,7 +7674,7 @@ entities:
     when their identity semantics change. Canonical repos'
   uri: adr://adr-architecture-kit/entities/01a002b7-e004-7040-9004-040404040404
   created_at: '2026-08-15T00:00:00.004Z'
-  entity_fingerprint: sha256:11f36cf8033cfe132ae41d34894e197334f294d347ab949126fb6cccef904170
+  entity_fingerprint: sha256:eec71b33df242672d68d89358d2a2b01f9792988bd9f14576b591010ade1722b
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -7593,6 +7721,7 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 01a002b7-e005-7050-9405-050505050505
   alias_id: DEC-0144
   alias_name: preserve-graph-vnext-compatibility-posture
@@ -7604,7 +7733,7 @@ entities:
     projection for existing graph consumers. A graph projectio
   uri: adr://adr-architecture-kit/entities/01a002b7-e005-7050-9405-050505050505
   created_at: '2026-08-15T00:00:00.005Z'
-  entity_fingerprint: sha256:33cff11a7cb9629d21660d80fbe411575601cc08219957f9ed9cbed5d075478e
+  entity_fingerprint: sha256:f49d16c4f76e4ae51aa93b9b02e0298aac893c9f19efb84623bed47aa6295f34
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -7651,6 +7780,7 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 01a002b7-e006-7060-9806-060606060606
   alias_id: DEC-0145
   alias_name: define-sealed-universal-allocation-map-lifecycle
@@ -7662,7 +7792,7 @@ entities:
     It progresses through draft, collision-review, approved, and SEAL
   uri: adr://adr-architecture-kit/entities/01a002b7-e006-7060-9806-060606060606
   created_at: '2026-08-15T00:00:00.006Z'
-  entity_fingerprint: sha256:f22053b7bbf95881823a0e9f0c1ccc55dae2aa73e515c27ee1ac321439c7c6ab
+  entity_fingerprint: sha256:4c8cb96233e172b7142bd96433c8515f5720eba5c415d22c16f8fd4d9a4340ed
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -7709,6 +7839,7 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 01a002b7-e007-7070-9c07-070707070707
   alias_id: DEC-0146
   alias_name: block-universal-migration-until-human-gates-close
@@ -7720,7 +7851,7 @@ entities:
     graph-vNext posture, allocation-map contract, or map sealing remai
   uri: adr://adr-architecture-kit/entities/01a002b7-e007-7070-9c07-070707070707
   created_at: '2026-08-15T00:00:00.007Z'
-  entity_fingerprint: sha256:af5825f42f703a15863ef9d2e0620cce6efb4931a9ed4f3715fcc0c1adb5ebdb
+  entity_fingerprint: sha256:99f4699fc4d1de7c992b3046630656e302c1e838c61e91ea27f14f4f04d037a0
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -7767,6 +7898,7 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 01a00627-97d8-7280-81f3-e22a264bc7c3
   alias_id: DEC-0126
   alias_name: canonical-repository-schema-authority
@@ -7778,7 +7910,7 @@ entities:
     src/adr_kit/schema/v*_* are compatibility resources and remain in
   uri: adr://adr-architecture-kit/entities/01a00627-97d8-7280-81f3-e22a264bc7c3
   created_at: '2026-08-15T16:00:53.208Z'
-  entity_fingerprint: sha256:616a6874eb00cccf5ad46e59cde9e13bc813a77d372837bfe1a2f9bd7a276157
+  entity_fingerprint: sha256:9f16ec3a0efa314af685081932e58bac675ce2c079a4abc9f937f24778e47478
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -7825,6 +7957,7 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 01a00627-97d8-73c0-8ef4-f0e87ad8c19b
   alias_id: DEC-0125
   alias_name: family-first-canonical-schema-placement
@@ -7836,7 +7969,7 @@ entities:
     as the sole stable bare numeric compatibility exception, and reta
   uri: adr://adr-architecture-kit/entities/01a00627-97d8-73c0-8ef4-f0e87ad8c19b
   created_at: '2026-08-15T16:00:53.208Z'
-  entity_fingerprint: sha256:1f7c73406743775593456b739c0d3b226eb1a8ce4e9e97f8b7cfd5e4d1f124d5
+  entity_fingerprint: sha256:04b56325c47ac7dc8c9aea13ce3b85c104ac15f44ac036bd17275c2de2bb689d
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -7883,6 +8016,7 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 01a00627-97d8-7528-9748-aaa7df6c2fe2
   alias_id: DEC-0127
   alias_name: taxonomy-relocation-is-semantic-neutral
@@ -7894,7 +8028,7 @@ entities:
     Any production behavior change is outside this ADR and i
   uri: adr://adr-architecture-kit/entities/01a00627-97d8-7528-9748-aaa7df6c2fe2
   created_at: '2026-08-15T16:00:53.208Z'
-  entity_fingerprint: sha256:d1e79aca999c82cd9ef665932efc4d0c63affaf0e7034c6e7b6c4a8af9e34881
+  entity_fingerprint: sha256:bcf33b4c661002dcf0d5c68e792707a8904467b08b62fe0766c906ed9ac2521f
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -7941,6 +8075,7 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 01a00643-1bfc-71ef-8e1f-694949767d59
   alias_id: DEC-0135
   alias_name: promote-durable-authoring-and-governance-records
@@ -7953,7 +8088,7 @@ entities:
     requirement items, decision ledgers and ledger decisions, steel
   uri: adr://adr-architecture-kit/entities/01a00643-1bfc-71ef-8e1f-694949767d59
   created_at: '2026-08-15T16:30:56.508Z'
-  entity_fingerprint: sha256:ff02be8c858967f0a595b53bc8ce973743c3af5d7cc0fa90ec4e1cbb74b1c5cf
+  entity_fingerprint: sha256:73538668bd6969d357980f7a7c1adbc23a2940970051ffb0c553a179734a6996
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -8000,6 +8135,7 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 01a00643-1bfc-729a-833f-5a3bca5af998
   alias_id: DEC-0136
   alias_name: bind-all-future-entity-schemas-to-universal-identity
@@ -8011,7 +8147,7 @@ entities:
     must require the universal identity envelope. Rule instances, eviden
   uri: adr://adr-architecture-kit/entities/01a00643-1bfc-729a-833f-5a3bca5af998
   created_at: '2026-08-15T16:30:56.508Z'
-  entity_fingerprint: sha256:54110242d57e27e13d7c484f628f785217382d4d73d4e562865e179bc02852d6
+  entity_fingerprint: sha256:a30f0c18471aa2d27c5d17b06381788823adf7dd84171e0546d775da1dd7141b
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -8058,6 +8194,7 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 01a00643-1bfc-72a1-af3d-7cca88f676f7
   alias_id: DEC-0134
   alias_name: distinguish-projection-keys-from-entity-identity
@@ -8069,7 +8206,7 @@ entities:
     findings, bindings, evidence claims, or other derived candidate
   uri: adr://adr-architecture-kit/entities/01a00643-1bfc-72a1-af3d-7cca88f676f7
   created_at: '2026-08-15T16:30:56.508Z'
-  entity_fingerprint: sha256:2c5427a8ced3498e0f344d76856070636ca6500ab56119d6764591ae1256a933
+  entity_fingerprint: sha256:324ee5e844b9e0d3e82f227cc11a180d30b5bbb3a6b7d795d96a0598f998293d
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -8116,6 +8253,7 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 01a00643-1bfc-7528-951b-a457433ae5f4
   alias_id: DEC-0138
   alias_name: migrate-with-sealed-map-and-semantic-parity
@@ -8127,7 +8265,7 @@ entities:
     an alias name deterministically, mints each UUID once into a sealed
   uri: adr://adr-architecture-kit/entities/01a00643-1bfc-7528-951b-a457433ae5f4
   created_at: '2026-08-15T16:30:56.508Z'
-  entity_fingerprint: sha256:b60e3707c6c5db4b37e5c5590c2b9a2c482329cccb51711f35b37d287bfacaad
+  entity_fingerprint: sha256:45254ae055ea8b6c4265af1ac809c7424d4aa724b993d1454a9a81c7df7ca67e
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -8174,6 +8312,7 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 01a00643-1bfc-7676-812e-219c659674b2
   alias_id: DEC-0131
   alias_name: define-entityhood-by-independent-addressability
@@ -8185,7 +8324,7 @@ entities:
     before graph admission. Independent addressability, cross-artifact '
   uri: adr://adr-architecture-kit/entities/01a00643-1bfc-7676-812e-219c659674b2
   created_at: '2026-08-15T16:30:56.508Z'
-  entity_fingerprint: sha256:e5f1d3b283a05071488158a69571dbd40f08a73e57cad2d06bff4826410efdfe
+  entity_fingerprint: sha256:2ae72effb8d69f967614d1d05ba522309f1ac08d0b20eca7eb5130b14bcc6077
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -8232,6 +8371,7 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 01a00643-1bfc-7922-9c18-f6938ee01c41
   alias_id: DEC-0132
   alias_name: require-uuid-canonical-entity-references
@@ -8243,7 +8383,7 @@ entities:
     `alias_id`, `alias_name`, and derived `alias_ref` are huma
   uri: adr://adr-architecture-kit/entities/01a00643-1bfc-7922-9c18-f6938ee01c41
   created_at: '2026-08-15T16:30:56.508Z'
-  entity_fingerprint: sha256:70f4997379a19a669f1af712542ed569f4749516991c8057c746905d29747c80
+  entity_fingerprint: sha256:b397d264b8af7521e378cce7875e3c9ee7f9394fb70976ca34d0e27dfd6f7ea5
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -8290,6 +8430,7 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 01a00643-1bfc-7936-bb29-afde4c57721d
   alias_id: DEC-0139
   alias_name: gate-obsolete-compatibility-removal-explicitly
@@ -8301,7 +8442,7 @@ entities:
     public API shims, migration inputs, and corpus formats proposed
   uri: adr://adr-architecture-kit/entities/01a00643-1bfc-7936-bb29-afde4c57721d
   created_at: '2026-08-15T16:30:56.508Z'
-  entity_fingerprint: sha256:41860c298f2d93f8b241904a9676f2cca9d25fe2c033d871c8387fd8b13fcc71
+  entity_fingerprint: sha256:5c59da70b8de18f03aba8412a504c5262b4fa17483bf61ec72eb145d468e205e
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -8348,6 +8489,7 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 01a00643-1bfc-7b7e-883d-6c7dfff3325f
   alias_id: DEC-0133
   alias_name: keep-owner-local-value-objects-identity-free
@@ -8359,7 +8501,7 @@ entities:
     authority, cross-owner reference, or durable semantic cont
   uri: adr://adr-architecture-kit/entities/01a00643-1bfc-7b7e-883d-6c7dfff3325f
   created_at: '2026-08-15T16:30:56.508Z'
-  entity_fingerprint: sha256:9fb9f4a62920e993dfa2d1ef2aec387c96e38310f4f20af8c680b898e72cc33c
+  entity_fingerprint: sha256:3c820b981c9f0f4cba63a73a6f8cedab3eff361f6d4a10374363f88e7ca9b1c1
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -8406,6 +8548,7 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 01a00643-1bfc-7c3d-b935-01f39da8a0a5
   alias_id: DEC-0130
   alias_name: require-universal-uuidv7-entity-identity-envelope
@@ -8418,7 +8561,7 @@ entities:
     and a stable-by-default human-oriented `alias_name`. This supersede
   uri: adr://adr-architecture-kit/entities/01a00643-1bfc-7c3d-b935-01f39da8a0a5
   created_at: '2026-08-15T16:30:56.508Z'
-  entity_fingerprint: sha256:f7a7e7f6f8111d79383364194b411e7c98d4226fe9eea8796b12482ee16440f4
+  entity_fingerprint: sha256:ecb6a86d1a89b51be1fa7df81b8d62fa40b26416810b136668bfbf3ea801c079
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -8467,6 +8610,7 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 01a00643-1bfc-7e7a-af3f-0484ebc351c9
   alias_id: DEC-0137
   alias_name: version-universal-identity-as-semantic-contract-change
@@ -8479,7 +8623,7 @@ entities:
     and must occur in a new family-scoped schema version. Canon
   uri: adr://adr-architecture-kit/entities/01a00643-1bfc-7e7a-af3f-0484ebc351c9
   created_at: '2026-08-15T16:30:56.508Z'
-  entity_fingerprint: sha256:15841931c4e046ca98660c2ad72b00cdab091b1f880a321ace3523e41b2714f1
+  entity_fingerprint: sha256:baff91df9be199e8ae9feae3aaf3a9789eb4f3ab8d47717109b4b228a7c5be87
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -8526,6 +8670,7 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 01a00644-1bfd-7abc-8aaa-222222222222
   alias_id: DEC-0147
   alias_name: canonize-envelope-open-qualified-semantic-namespace
@@ -8536,7 +8681,7 @@ entities:
   summary: ADR-Kit can preserve unknown consumer meaning without interpreting it.
   uri: adr://adr-architecture-kit/entities/01a00644-1bfd-7abc-8aaa-222222222222
   created_at: '2026-08-15T16:32:02.045Z'
-  entity_fingerprint: sha256:99ec3ce553223fa9af55767a26319c33f575c9fb9506a766ca343663a7ddbd02
+  entity_fingerprint: sha256:d931fc64b81e0c01d23d6a66abaac0a97acf1b6be934d941d5c92c8c1835a93a
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -8583,6 +8728,7 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 01a00644-1bfe-7abc-8aaa-333333333333
   alias_id: DEC-0148
   alias_name: author-explicit-extension-entity-and-relationship-sections
@@ -8594,7 +8740,7 @@ entities:
     field escape hatches.
   uri: adr://adr-architecture-kit/entities/01a00644-1bfe-7abc-8aaa-333333333333
   created_at: '2026-08-15T16:32:02.046Z'
-  entity_fingerprint: sha256:7399ea55df1357f84b8b92815a70bf5c0b9514d6a47ab15b28708cac088f0d36
+  entity_fingerprint: sha256:412f18ec22c16c900e94c5ebc16bb72777425913acdb32550d49e453d830a094
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -8641,6 +8787,7 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 01a00644-1bff-7abc-8aaa-444444444444
   alias_id: DEC-0149
   alias_name: require-consumer-owned-qualified-extension-types
@@ -8651,7 +8798,7 @@ entities:
   summary: Qualification prevents future collision with ADR-Kit controlled vocabulary.
   uri: adr://adr-architecture-kit/entities/01a00644-1bff-7abc-8aaa-444444444444
   created_at: '2026-08-15T16:32:02.047Z'
-  entity_fingerprint: sha256:9644d6d2ea591adafb736043ace533a54b9004d1cf7607234e697a0246773705
+  entity_fingerprint: sha256:73433f0e0d7067b4e6fdc22123da5239324674eae23a868b29d556510ed48bae
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -8698,6 +8845,7 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 01a00644-1c00-7abc-8aaa-555555555555
   alias_id: DEC-0150
   alias_name: bound-extension-properties-and-require-rationale
@@ -8707,7 +8855,7 @@ entities:
   summary: ADR-Kit validates deterministic shape while leaving domain meaning opaque.
   uri: adr://adr-architecture-kit/entities/01a00644-1c00-7abc-8aaa-555555555555
   created_at: '2026-08-15T16:32:02.048Z'
-  entity_fingerprint: sha256:5ab3a16952bb6f36eab7828613461e93164195444c0a7ee0cf0e1f8f21d1b63c
+  entity_fingerprint: sha256:068241415867362e2e35b662104cd4a6142fe93c16f87a167a6c56536da60cf5
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -8754,6 +8902,7 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 01a00644-1c01-7abc-8aaa-666666666666
   alias_id: DEC-0151
   alias_name: make-extension-graph-semantics-explicit
@@ -8763,7 +8912,7 @@ entities:
   summary: Property values never imply graph edges.
   uri: adr://adr-architecture-kit/entities/01a00644-1c01-7abc-8aaa-666666666666
   created_at: '2026-08-15T16:32:02.049Z'
-  entity_fingerprint: sha256:42d1fb65b1b5f5312197a3d032474b06c869c9bbae8f0773fa15cd2c9c630dd2
+  entity_fingerprint: sha256:7ba058c94d6324d80fbdaaafd19336552976f3ede61a852d826bc8f861967e8f
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -8810,6 +8959,7 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 01a00644-1c02-7abc-8aaa-777777777777
   alias_id: DEC-0152
   alias_name: preserve-consumer-alias-allocation-authority
@@ -8820,7 +8970,7 @@ entities:
     scope.
   uri: adr://adr-architecture-kit/entities/01a00644-1c02-7abc-8aaa-777777777777
   created_at: '2026-08-15T16:32:02.050Z'
-  entity_fingerprint: sha256:01a5f2b94e3b179b5df519df842118bc786e1be410d38dbbc46136a9eb010dbe
+  entity_fingerprint: sha256:20c140e60e3b28aa484d8a88036b7c4e635ff235181475cdb90a8b831dd2c9a0
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -8867,6 +9017,7 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 01a00644-1c03-7abc-8aaa-888888888888
   alias_id: DEC-0153
   alias_name: distinguish-canonical-and-compatibility-relationships
@@ -8877,7 +9028,7 @@ entities:
   summary: Hash identifiers cannot become canonical graph identity by implication.
   uri: adr://adr-architecture-kit/entities/01a00644-1c03-7abc-8aaa-888888888888
   created_at: '2026-08-15T16:32:02.051Z'
-  entity_fingerprint: sha256:7b4d637e8e3f3fd0de8e20e075515e2508821851973ac67cfd0ac859ef90aff4
+  entity_fingerprint: sha256:86fe37076e3c30c792d6be60b09fa273019f90811ac43198f4a8beed91698553
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -8924,6 +9075,7 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 01a00644-1c04-7abc-8aaa-999999999999
   alias_id: DEC-0154
   alias_name: preserve-unknown-valid-extensions-through-normalization
@@ -8935,7 +9087,7 @@ entities:
     records.
   uri: adr://adr-architecture-kit/entities/01a00644-1c04-7abc-8aaa-999999999999
   created_at: '2026-08-15T16:32:02.052Z'
-  entity_fingerprint: sha256:fef926402455a25785e8244a68677ebe7468c3a1b0b17a83a824a5bba888d3a5
+  entity_fingerprint: sha256:8ceb371552f6faa97b017edfe61d764f8c8c682259d96d67d2601218932d78d2
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -8982,6 +9134,7 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 01a02d38-7cf3-700a-880b-182eb0956a24
   alias_id: DEC-0159
   alias_name: conformance-levels-are-distinct
@@ -8993,7 +9146,7 @@ entities:
     classes, bytes, hashes, or object layout.
   uri: adr://adr-architecture-kit/entities/01a02d38-7cf3-700a-880b-182eb0956a24
   created_at: '2026-08-23T06:04:31.859Z'
-  entity_fingerprint: sha256:de107beca479479adf3980caf84a0aec70c398b0c52ce3540f64405afd088607
+  entity_fingerprint: sha256:ee5920095dfe2926b5bed95efd96d5c643cf06e079a58c4a6d882c400b421f03
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -9040,6 +9193,7 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 01a02d38-7cf3-7177-8edc-dfc953ae9947
   alias_id: DEC-0166
   alias_name: node-linkage-remains-derived-evidence
@@ -9051,7 +9205,7 @@ entities:
     graph authority.
   uri: adr://adr-architecture-kit/entities/01a02d38-7cf3-7177-8edc-dfc953ae9947
   created_at: '2026-08-23T06:04:31.859Z'
-  entity_fingerprint: sha256:8f578a2c02d2a8035e13b08fee1e52c3d109c08a3c32799136fe09db14032602
+  entity_fingerprint: sha256:5144afd660649ee9b622c2b3218164dcf3dfab4e78e58039dddebf7346c33a01
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -9098,6 +9252,7 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 01a02d38-7cf3-7194-8e04-4339c496d93a
   alias_id: DEC-0155
   alias_name: language-neutral-adr-kit-semantic-authority
@@ -9109,7 +9264,7 @@ entities:
     authoritative by existing.
   uri: adr://adr-architecture-kit/entities/01a02d38-7cf3-7194-8e04-4339c496d93a
   created_at: '2026-08-23T06:04:31.859Z'
-  entity_fingerprint: sha256:14486eb0e0bece0295571ca3b5c0570bd8e12ef074f78f58feed3380945feaf2
+  entity_fingerprint: sha256:2e7cea941c2be8a10a2a7def282be5bfb188cfa99cf6c0d02a794f649057a83e
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -9156,6 +9311,7 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 01a02d38-7cf3-724d-83e0-8739d6eeeeb5
   alias_id: DEC-0162
   alias_name: explicit-browser-node-boundaries
@@ -9167,7 +9323,7 @@ entities:
     and the browser is not filesystem authority.
   uri: adr://adr-architecture-kit/entities/01a02d38-7cf3-724d-83e0-8739d6eeeeb5
   created_at: '2026-08-23T06:04:31.859Z'
-  entity_fingerprint: sha256:205c1575efa83e7ea82a07ed25869074c364801097fbcc3f152a85ff086c2015
+  entity_fingerprint: sha256:4ab7f1231d426c143ff17178432e7683783a2eba84180f3f3f61431fad77e9b1
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -9214,6 +9370,7 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 01a02d38-7cf3-7271-8b60-20c2a3f50ae6
   alias_id: DEC-0165
   alias_name: node-index-first-repository-loading
@@ -9225,7 +9382,7 @@ entities:
     and required baseline ingestion.
   uri: adr://adr-architecture-kit/entities/01a02d38-7cf3-7271-8b60-20c2a3f50ae6
   created_at: '2026-08-23T06:04:31.859Z'
-  entity_fingerprint: sha256:f53c15b214f8ebb13f4bd10afec61731ef3a93fbbb90396cb7417263b6a08e07
+  entity_fingerprint: sha256:af7faf436b71607d186766bea5d04375fcbf49795e3abcb81ba3a44631a55e6f
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -9272,6 +9429,7 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 01a02d38-7cf3-7418-8bba-4fa7ecdd2151
   alias_id: DEC-0158
   alias_name: capability-scoped-conformance
@@ -9283,7 +9441,7 @@ entities:
     exposed by another binding.
   uri: adr://adr-architecture-kit/entities/01a02d38-7cf3-7418-8bba-4fa7ecdd2151
   created_at: '2026-08-23T06:04:31.859Z'
-  entity_fingerprint: sha256:6073e14c54ec7bc61b1ea091fc1e46b2131c04f70cd49b55d0cfeb34c7403fe5
+  entity_fingerprint: sha256:9e0f3ffa61abdf5594346c449e9fe72a4b937fd33a43cd62511d56ec7a67582f
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -9330,6 +9488,7 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 01a02d38-7cf3-74b3-8297-f3df87d11f35
   alias_id: DEC-0163
   alias_name: typescript-contract-support-is-narrow
@@ -9341,7 +9500,7 @@ entities:
     historical implementation parity.
   uri: adr://adr-architecture-kit/entities/01a02d38-7cf3-74b3-8297-f3df87d11f35
   created_at: '2026-08-23T06:04:31.859Z'
-  entity_fingerprint: sha256:591304d7e7f09d141f1d13563185032706e7985cfeb56cd8e223d157010eee3f
+  entity_fingerprint: sha256:416113b5ecb06f0209238de0dd55e90b5bb31ca8793616646f5836d1980f0a3b
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -9388,6 +9547,7 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 01a02d38-7cf3-7532-8d1e-2c81adf25864
   alias_id: DEC-0167
   alias_name: shared-release-lineage
@@ -9399,7 +9559,7 @@ entities:
     operational release step.
   uri: adr://adr-architecture-kit/entities/01a02d38-7cf3-7532-8d1e-2c81adf25864
   created_at: '2026-08-23T06:04:31.859Z'
-  entity_fingerprint: sha256:ddf6fc5042d0b7dc8189c00cf522d41dd49f901872230b1e18e9b474924ca051
+  entity_fingerprint: sha256:7a6464f357a93a9afaaed80f8149ae49512e0325de7567f6145820e0df878447
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -9446,6 +9606,7 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 01a02d38-7cf3-7765-8a96-0cdd35f55df5
   alias_id: DEC-0161
   alias_name: read-only-typescript-release-boundary
@@ -9457,7 +9618,7 @@ entities:
     first release.
   uri: adr://adr-architecture-kit/entities/01a02d38-7cf3-7765-8a96-0cdd35f55df5
   created_at: '2026-08-23T06:04:31.859Z'
-  entity_fingerprint: sha256:0e1112ff410370eb8e2b639110ef4c96971bf707f3180feaced63a450d8973b5
+  entity_fingerprint: sha256:474bc93ed2ab37731a940fd3ea34f517dccb965aed8d180b8a9fa58f5a2b77cd
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -9504,6 +9665,7 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 01a02d38-7cf3-78dc-8d0f-4d4a41000fe3
   alias_id: DEC-0160
   alias_name: canonical-schema-bytes-remain-shared
@@ -9515,7 +9677,7 @@ entities:
     authority.
   uri: adr://adr-architecture-kit/entities/01a02d38-7cf3-78dc-8d0f-4d4a41000fe3
   created_at: '2026-08-23T06:04:31.859Z'
-  entity_fingerprint: sha256:51c95655256be9e3c449e4f3013b87339db18e05331e62dee97031e3012dd7b1
+  entity_fingerprint: sha256:73f1f6a8fd57508860744d5f4490c803d3566e3a8d787983d247c20788c3653f
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -9562,6 +9724,7 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 01a02d38-7cf3-7a6f-8b71-a3624877c1b3
   alias_id: DEC-0156
   alias_name: official-typescript-consumer-package
@@ -9573,7 +9736,7 @@ entities:
     and independent language versioning.
   uri: adr://adr-architecture-kit/entities/01a02d38-7cf3-7a6f-8b71-a3624877c1b3
   created_at: '2026-08-23T06:04:31.859Z'
-  entity_fingerprint: sha256:1db52f83bc00b85e82d13cd5887580e43ee2823f46de57d9b5e662094c590c56
+  entity_fingerprint: sha256:83079850619155959070e7f1b561bbabd6f9f21b0a3679bce6161b8fe9bef47b
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -9620,6 +9783,7 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 01a02d38-7cf3-7b62-80b7-c907b9f972d6
   alias_id: DEC-0157
   alias_name: consumer-binding-contract-one-point-zero
@@ -9631,7 +9795,7 @@ entities:
     testable without requiring implementation identity.
   uri: adr://adr-architecture-kit/entities/01a02d38-7cf3-7b62-80b7-c907b9f972d6
   created_at: '2026-08-23T06:04:31.859Z'
-  entity_fingerprint: sha256:ec18a45630f683352d1a2119b7e73c4f4233d96084c1ab4a8509799e80b1bff5
+  entity_fingerprint: sha256:17011e1fac69dbbd86e889c563fce5baed9cab54d468a86cdcc13ce87366d1cf
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -9678,6 +9842,7 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 01a02d38-7cf3-7c3b-85b4-f2e1328d8363
   alias_id: DEC-0164
   alias_name: binding-local-fingerprints
@@ -9689,7 +9854,7 @@ entities:
     decision and must not be invented here.
   uri: adr://adr-architecture-kit/entities/01a02d38-7cf3-7c3b-85b4-f2e1328d8363
   created_at: '2026-08-23T06:04:31.859Z'
-  entity_fingerprint: sha256:2700b35ce00d0c59bd9a2f5cb8c47631b56d474efe095959d12d6ab75b9ae99d
+  entity_fingerprint: sha256:56eacd9f7b4c1485c9eb0dbff410117e5ce8cc0d17a90314d21a885f4d1ebd01
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -9736,3 +9901,538 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
+- id: 01a048e9-bf60-7620-ad03-5af81c48c443
+  alias_id: DEC-0168
+  alias_name: promote-authoring-v1-5-from-v1-4
+  alias_ref: DEC-0168:promote-authoring-v1-5-from-v1-4
+  entity_type: decision
+  name: Authoring v1.5 succeeds v1.4 as current authoring contract
+  summary: v1.4 remains released and frozen (ADR-L-0023 extension semantics). v1.5
+    extends v1.4 preserving extension_entities and extension_relationships while introducing
+    slim topology component records and closed ADR taxonomy (lo
+  uri: adr://adr-architecture-kit/entities/01a048e9-bf60-7620-ad03-5af81c48c443
+  created_at: '2026-08-28T15:07:53.568Z'
+  entity_fingerprint: sha256:b80654103c9b9a41a96c44b04e15e87ac6fa21c254fc4e04834a3d1d80c11749
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a048d8-454a-7464-bcaa-718e58dfb9c2#01a048e9-bf60-7620-ad03-5af81c48c443
+    artifact_path: adrs/logical/ADR-L-0025-topology-and-contract-succession-authority.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a048d8-454a-7464-bcaa-718e58dfb9c2
+    adr_alias_id: ADR-L-0025
+    related_invariants: []
+    enforces_invariants: []
+    enables_capabilities: []
+    governs_components: []
+    supersedes: []
+    refines: []
+    alias_name: promote-authoring-v1-5-from-v1-4
+    alias_id: DEC-0168
+  relationships:
+    declared_in:
+    - 01a048d8-454a-7464-bcaa-718e58dfb9c2
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a048d8-454a-7464-bcaa-718e58dfb9c2#01a048e9-bf60-7620-ad03-5af81c48c443
+    extraction_phase: extract_decision
+    classification: explicit
+    generator: adr-architecture-index
+  schema_version: '2.2'
+- id: 01a048e9-bf60-7620-ad03-5af9dca56890
+  alias_id: DEC-0169
+  alias_name: promote-normalized-v2-2-from-v2-1
+  alias_ref: DEC-0169:promote-normalized-v2-2-from-v2-1
+  entity_type: decision
+  name: Normalized model v2.2 succeeds v2.1 as topology-capable semantic contract
+  summary: v2.1 remains released and frozen. v2.2 preserves canonical and compatibility
+    relationship identity classes and extension payloads while adding topology verbs,
+    consumes_interface, composed_of, and explicit provenance post
+  uri: adr://adr-architecture-kit/entities/01a048e9-bf60-7620-ad03-5af9dca56890
+  created_at: '2026-08-28T15:07:53.568Z'
+  entity_fingerprint: sha256:c4d9e8e673f36bf7ae72257fb8163d9e4543f2d04c83ead44c255104111fb72a
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a048d8-454a-7464-bcaa-718e58dfb9c2#01a048e9-bf60-7620-ad03-5af9dca56890
+    artifact_path: adrs/logical/ADR-L-0025-topology-and-contract-succession-authority.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a048d8-454a-7464-bcaa-718e58dfb9c2
+    adr_alias_id: ADR-L-0025
+    related_invariants: []
+    enforces_invariants: []
+    enables_capabilities: []
+    governs_components: []
+    supersedes: []
+    refines: []
+    alias_name: promote-normalized-v2-2-from-v2-1
+    alias_id: DEC-0169
+  relationships:
+    declared_in:
+    - 01a048d8-454a-7464-bcaa-718e58dfb9c2
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a048d8-454a-7464-bcaa-718e58dfb9c2#01a048e9-bf60-7620-ad03-5af9dca56890
+    extraction_phase: extract_decision
+    classification: explicit
+    generator: adr-architecture-index
+  schema_version: '2.2'
+- id: 01a048e9-bf60-7620-ad03-5afa0d062cf8
+  alias_id: DEC-0170
+  alias_name: topo-local-handles-component-ref-identity
+  alias_ref: DEC-0170:topo-local-handles-component-ref-identity
+  entity_type: decision
+  name: TOPO handles are local; component_ref resolves to admitted COMP entity UUID
+  summary: 'Topology components in physical-system ADRs use local TOPO handles (id,
+    component_ref, purpose). component_ref is the canonical admitted component entity
+    UUIDv7, not an ADR document UUID. TOPO must not become normalized '
+  uri: adr://adr-architecture-kit/entities/01a048e9-bf60-7620-ad03-5afa0d062cf8
+  created_at: '2026-08-28T15:07:53.568Z'
+  entity_fingerprint: sha256:b3fafd6378b6e0ef3932bd5acbb7d6209301fae05645b4efc02a456ad70fe36e
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a048d8-454a-7464-bcaa-718e58dfb9c2#01a048e9-bf60-7620-ad03-5afa0d062cf8
+    artifact_path: adrs/logical/ADR-L-0025-topology-and-contract-succession-authority.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a048d8-454a-7464-bcaa-718e58dfb9c2
+    adr_alias_id: ADR-L-0025
+    related_invariants: []
+    enforces_invariants: []
+    enables_capabilities: []
+    governs_components: []
+    supersedes: []
+    refines: []
+    alias_name: topo-local-handles-component-ref-identity
+    alias_id: DEC-0170
+  relationships:
+    declared_in:
+    - 01a048d8-454a-7464-bcaa-718e58dfb9c2
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a048d8-454a-7464-bcaa-718e58dfb9c2#01a048e9-bf60-7620-ad03-5afa0d062cf8
+    extraction_phase: extract_decision
+    classification: explicit
+    generator: adr-architecture-index
+  schema_version: '2.2'
+- id: 01a048e9-bf60-7620-ad03-5afb9ba51d1c
+  alias_id: DEC-0171
+  alias_name: sys-composed-of-comp-only
+  alias_ref: DEC-0171:sys-composed-of-comp-only
+  entity_type: decision
+  name: composed_of is SYS UUID to COMP UUID only
+  summary: Normalized composed_of relationships connect system entities to component
+    entities. TOPO handles never appear as normalized relationship endpoints.
+  uri: adr://adr-architecture-kit/entities/01a048e9-bf60-7620-ad03-5afb9ba51d1c
+  created_at: '2026-08-28T15:07:53.568Z'
+  entity_fingerprint: sha256:e41eb6c687cdb2994ee81ad95163053911ad8f09e8294cbb3ec7704ae8d4d825
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a048d8-454a-7464-bcaa-718e58dfb9c2#01a048e9-bf60-7620-ad03-5afb9ba51d1c
+    artifact_path: adrs/logical/ADR-L-0025-topology-and-contract-succession-authority.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a048d8-454a-7464-bcaa-718e58dfb9c2
+    adr_alias_id: ADR-L-0025
+    related_invariants: []
+    enforces_invariants: []
+    enables_capabilities: []
+    governs_components: []
+    supersedes: []
+    refines: []
+    alias_name: sys-composed-of-comp-only
+    alias_id: DEC-0171
+  relationships:
+    declared_in:
+    - 01a048d8-454a-7464-bcaa-718e58dfb9c2
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a048d8-454a-7464-bcaa-718e58dfb9c2#01a048e9-bf60-7620-ad03-5afb9ba51d1c
+    extraction_phase: extract_decision
+    classification: explicit
+    generator: adr-architecture-index
+  schema_version: '2.2'
+- id: 01a048e9-bf60-7620-ad03-5afc854d365b
+  alias_id: DEC-0172
+  alias_name: six-topology-verbs-grammatical-direction
+  alias_ref: DEC-0172:six-topology-verbs-grammatical-direction
+  entity_type: decision
+  name: Six topology verbs with grammatical FROM verb TO direction
+  summary: Physical-system topology relationships use depends_on, calls, publishes_to,
+    subscribes_to, reads_from, writes_to, and consumes_interface with explicit FROM
+    -> VERB -> TO grammatical direction.
+  uri: adr://adr-architecture-kit/entities/01a048e9-bf60-7620-ad03-5afc854d365b
+  created_at: '2026-08-28T15:07:53.568Z'
+  entity_fingerprint: sha256:b33644d447fc9b811d5a41022a08094c187ff8f815a8aa2fedadfe693de62bb0
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a048d8-454a-7464-bcaa-718e58dfb9c2#01a048e9-bf60-7620-ad03-5afc854d365b
+    artifact_path: adrs/logical/ADR-L-0025-topology-and-contract-succession-authority.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a048d8-454a-7464-bcaa-718e58dfb9c2
+    adr_alias_id: ADR-L-0025
+    related_invariants: []
+    enforces_invariants: []
+    enables_capabilities: []
+    governs_components: []
+    supersedes: []
+    refines: []
+    alias_name: six-topology-verbs-grammatical-direction
+    alias_id: DEC-0172
+  relationships:
+    declared_in:
+    - 01a048d8-454a-7464-bcaa-718e58dfb9c2
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a048d8-454a-7464-bcaa-718e58dfb9c2#01a048e9-bf60-7620-ad03-5afc854d365b
+    extraction_phase: extract_decision
+    classification: explicit
+    generator: adr-architecture-index
+  schema_version: '2.2'
+- id: 01a048e9-bf60-7620-ad03-5afd8acec9ee
+  alias_id: DEC-0173
+  alias_name: explicit-provenance-compatibility-identity
+  alias_ref: DEC-0173:explicit-provenance-compatibility-identity
+  entity_type: decision
+  name: Topology-sourced compatibility relationships use explicit provenance and stable
+    identity posture
+  summary: Compatibility relationships derived from authored topology carry provenance_classification
+    explicit and preserve protocol/description metadata.
+  uri: adr://adr-architecture-kit/entities/01a048e9-bf60-7620-ad03-5afd8acec9ee
+  created_at: '2026-08-28T15:07:53.568Z'
+  entity_fingerprint: sha256:998968ef245086317ce22cbb9d534c59ce97fb64cb9ff256d2423f5d8dcebc5d
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a048d8-454a-7464-bcaa-718e58dfb9c2#01a048e9-bf60-7620-ad03-5afd8acec9ee
+    artifact_path: adrs/logical/ADR-L-0025-topology-and-contract-succession-authority.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a048d8-454a-7464-bcaa-718e58dfb9c2
+    adr_alias_id: ADR-L-0025
+    related_invariants: []
+    enforces_invariants: []
+    enables_capabilities: []
+    governs_components: []
+    supersedes: []
+    refines: []
+    alias_name: explicit-provenance-compatibility-identity
+    alias_id: DEC-0173
+  relationships:
+    declared_in:
+    - 01a048d8-454a-7464-bcaa-718e58dfb9c2
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a048d8-454a-7464-bcaa-718e58dfb9c2#01a048e9-bf60-7620-ad03-5afd8acec9ee
+    extraction_phase: extract_decision
+    classification: explicit
+    generator: adr-architecture-index
+  schema_version: '2.2'
+- id: 01a048e9-bf60-7620-ad03-5afe983c297e
+  alias_id: DEC-0174
+  alias_name: cross-document-ps-pc-topology-invariant
+  alias_ref: DEC-0174:cross-document-ps-pc-topology-invariant
+  entity_type: decision
+  name: PS topology component_ref must agree with owning PC implements_system
+  summary: 'Cross-document invariant: every component_ref in a physical-system topology
+    must reference a component entity whose owning physical-component ADR implements_system
+    includes that system. Contradiction fails validation. JS'
+  uri: adr://adr-architecture-kit/entities/01a048e9-bf60-7620-ad03-5afe983c297e
+  created_at: '2026-08-28T15:07:53.568Z'
+  entity_fingerprint: sha256:350c0e5593f0c61ce66ec6b5010771fc611c5853a02f5dc3b37f5418fa164425
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a048d8-454a-7464-bcaa-718e58dfb9c2#01a048e9-bf60-7620-ad03-5afe983c297e
+    artifact_path: adrs/logical/ADR-L-0025-topology-and-contract-succession-authority.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a048d8-454a-7464-bcaa-718e58dfb9c2
+    adr_alias_id: ADR-L-0025
+    related_invariants: []
+    enforces_invariants: []
+    enables_capabilities: []
+    governs_components: []
+    supersedes: []
+    refines: []
+    alias_name: cross-document-ps-pc-topology-invariant
+    alias_id: DEC-0174
+  relationships:
+    declared_in:
+    - 01a048d8-454a-7464-bcaa-718e58dfb9c2
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a048d8-454a-7464-bcaa-718e58dfb9c2#01a048e9-bf60-7620-ad03-5afe983c297e
+    extraction_phase: extract_decision
+    classification: explicit
+    generator: adr-architecture-index
+  schema_version: '2.2'
+- id: 01a048e9-bf60-7620-ad03-5affd0982697
+  alias_id: DEC-0175
+  alias_name: endpoint-type-semantic-rules-v2-2
+  alias_ref: DEC-0175:endpoint-type-semantic-rules-v2-2
+  entity_type: decision
+  name: v2.2 endpoint-type semantics are normative beyond JSON Schema shape
+  summary: Schema-valid relationship records do not prove endpoint entity type. composed_of
+    requires system source and component target. Topology verbs require component
+    endpoints. Production semantic validation must prove endpoint
+  uri: adr://adr-architecture-kit/entities/01a048e9-bf60-7620-ad03-5affd0982697
+  created_at: '2026-08-28T15:07:53.568Z'
+  entity_fingerprint: sha256:38eec1162caec0d76607bcfe2506ec5911316f11073aa4c819f5094bcca84e86
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a048d8-454a-7464-bcaa-718e58dfb9c2#01a048e9-bf60-7620-ad03-5affd0982697
+    artifact_path: adrs/logical/ADR-L-0025-topology-and-contract-succession-authority.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a048d8-454a-7464-bcaa-718e58dfb9c2
+    adr_alias_id: ADR-L-0025
+    related_invariants: []
+    enforces_invariants: []
+    enables_capabilities: []
+    governs_components: []
+    supersedes: []
+    refines: []
+    alias_name: endpoint-type-semantic-rules-v2-2
+    alias_id: DEC-0175
+  relationships:
+    declared_in:
+    - 01a048d8-454a-7464-bcaa-718e58dfb9c2
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a048d8-454a-7464-bcaa-718e58dfb9c2#01a048e9-bf60-7620-ad03-5affd0982697
+    extraction_phase: extract_decision
+    classification: explicit
+    generator: adr-architecture-index
+  schema_version: '2.2'
+- id: 01a048f5-b197-75ab-a812-6e3361333731
+  alias_id: DEC-0176
+  alias_name: encode-projection-v3-renderer-contract-for-normalized-v2-2
+  alias_ref: DEC-0176:encode-projection-v3-renderer-contract-for-normalized-v2-2
+  entity_type: decision
+  name: Encode projection v3 renderer contract for normalized v2.2 topology semantics
+  summary: Projection v3 renders deterministic human documentation from normalized
+    v2.2 inputs using compiler-derived relationship semantics only. Topology inventory,
+    compatibility rows, and peer-card verbs must follow ADR-L-0025 t
+  uri: adr://adr-architecture-kit/entities/01a048f5-b197-75ab-a812-6e3361333731
+  created_at: '2026-08-28T15:20:56.471Z'
+  entity_fingerprint: sha256:9662073d73d506c0acdbd0e9b7933afbc901909605887b262da0e24efefa531b
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 019fee89-e615-7b9c-8e3f-32ceeda01491#01a048f5-b197-75ab-a812-6e3361333731
+    artifact_path: adrs/logical/ADR-L-0007-deterministic-documentation-projection.yaml
+  source_refs: []
+  metadata:
+    adr_id: 019fee89-e615-7b9c-8e3f-32ceeda01491
+    adr_alias_id: ADR-L-0007
+    related_invariants:
+    - 019fee89-e616-7abd-ad17-f29edbd30959
+    - 019fee89-e616-77e0-992d-25764a1ed5a2
+    enforces_invariants: []
+    enables_capabilities: []
+    governs_components: []
+    supersedes: []
+    refines: []
+    alias_name: encode-projection-v3-renderer-contract-for-normalized-v2-2
+    alias_id: DEC-0176
+  relationships:
+    declared_in:
+    - 019fee89-e615-7b9c-8e3f-32ceeda01491
+    references: []
+    related_to: []
+    enforces:
+    - 019fee89-e616-77e0-992d-25764a1ed5a2
+    - 019fee89-e616-7abd-ad17-f29edbd30959
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    composed_of: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 019fee89-e615-7b9c-8e3f-32ceeda01491#01a048f5-b197-75ab-a812-6e3361333731
+    extraction_phase: extract_decision
+    classification: explicit
+    generator: adr-architecture-index
+  schema_version: '2.2'

@@ -5,8 +5,8 @@ artifact_kind: system_overview
 generator_id: adr-system-overview
 generator_version: 2
 hash_algorithm: sha256
-source_hash: 037edef23e8f5a46ef2c6bef5c54379b586f5ec72c984c10b71c09b5b599ece3
-rendered_hash: abfca31a61c583f7b3d860daf05022250828afdfac013d9c88b718c663c1a2d1
+source_hash: e89ff61240f4fa65f9b54b81c161d47b113795aa565f766e3437a8c92ac28a69
+rendered_hash: 76f41d515116ab29cfb55c8530dadb6e8ad6717029b7d869bab9dd8714d4435c
 -->
 
 <!--
@@ -57,7 +57,7 @@ Authority is responsibility-scoped. Use this compact map when resolving ownershi
 
 | Surface | Meaning |
 | --- | --- |
-| Project ADR authority ([link](adrs/)) | Accepted project ADR artifacts are canonical project intent for their declared scope. |
+| Project ADR authority ([link](AUTHORING-SYSTEM.md)) | Accepted project ADR artifacts are canonical project intent for their declared scope. |
 | ADR Kit ([link](docs/authority-boundary.md)) | Owns authoring-side representation, validation, compilation, migration, and supported repository/provider mechanics assigned to it. |
 | ste-spec | Owns normative cross-repository semantic contracts where authority is explicitly assigned there. |
 | ste-runtime | Owns runtime extraction, factual evidence, and derived runtime/workspace state assigned to it. |
@@ -73,8 +73,8 @@ Derived provider facts:
 
 - API contract version: `1.0`
 - Package version: `0.8.0`
-- Operations: `capabilities`, `validate_architecture`, `compile_architecture`, `open_repository`, `open_provider_registry`, `build_embodiment_linkage`, `prepare_promotion`, `check_promotion`, `apply_promotion`- Validation modes: `complete`, `structural`- Artifact groups: `registries`, `manifest`, `markdown`- Supported ADR schema versions: `1.0`, `1.1`, `1.2`, `1.3`, `1.4`- Stable ADR schema versions: `1.0`- Provisional ADR schema versions: `1.1`, `1.2`, `1.3`, `1.4`- Normalized model schema version: `1.1`
-- Supported normalized model schema versions: `1.1`, `2.0`, `2.1`
+- Operations: `capabilities`, `validate_architecture`, `compile_architecture`, `open_repository`, `open_provider_registry`, `build_embodiment_linkage`, `prepare_promotion`, `check_promotion`, `apply_promotion`- Validation modes: `complete`, `structural`- Artifact groups: `registries`, `manifest`, `markdown`- Supported ADR schema versions: `1.0`, `1.1`, `1.2`, `1.3`, `1.4`, `1.5`- Stable ADR schema versions: `1.0`- Provisional ADR schema versions: `1.1`, `1.2`, `1.3`, `1.4`, `1.5`- Normalized model schema version: `1.1`
+- Supported normalized model schema versions: `1.1`, `2.0`, `2.1`, `2.2`
 Supported semantic/repository contracts include `ArchitectureRepository` and `NormalizedArchitectureModel`.
 
 See [`docs/public-sdk.md`](docs/public-sdk.md).
@@ -187,7 +187,7 @@ Selected accepted authority for orientation (not a second manifest):
 - [`Authority boundary`](docs/authority-boundary.md)
 - [`Public surface and stability`](docs/public-surface-and-stability.md)
 - [`Public SDK`](docs/public-sdk.md)
-- [`Schema documentation`](schema/)
+- [`Schema documentation`](schema/README.md)
 
 ## One-Line Orientation
 

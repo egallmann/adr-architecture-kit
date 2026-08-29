@@ -1,0 +1,26 @@
+schema_version: "1.5"
+adr_type: logical
+id: "019109a0-b1c2-7def-8a00-000000000001"
+alias_id: ADR-L-9001
+alias_name: pc-projection-logical-authority
+title: "PC Projection Logical Authority"
+status: accepted
+created_date: "2026-08-29"
+authors:
+  - fixture.author
+domains:
+  - projection-fixture
+context: |
+  Logical authority for the ADR-PC human projection maximal fixture.
+decisions:
+  - id: "019109a0-b1c2-7def-8a00-000000000033"
+    alias_id: DEC-9001
+    alias_name: fixture-decision
+    summary: Author a capability the physical component implements
+    rationale: Implements-capabilities resolution needs a canonical capability.
+capabilities:
+  - id: "019109a0-b1c2-7def-8a00-000000000040"
+    alias_id: CAP-9001
+    alias_name: fixture-capability
+    name: Fixture Capability
+    description: Capability implemented by the maximal physical component.

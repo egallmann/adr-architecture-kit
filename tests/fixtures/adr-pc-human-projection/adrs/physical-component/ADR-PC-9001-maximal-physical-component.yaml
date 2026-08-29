@@ -1,0 +1,172 @@
+schema_version: "1.5"
+adr_type: physical-component
+id: "019109a0-b1c2-7def-8a00-000000000004"
+alias_id: ADR-PC-9001
+alias_name: maximal-physical-component
+title: "Maximal Physical Component"
+status: accepted
+created_date: "2026-08-29"
+modified_date: "2026-08-29"
+authors:
+  - fixture.author
+domains:
+  - DOMAIN_SENTINEL
+tags:
+  - TAG_SENTINEL
+implements_system:
+  - "019109a0-b1c2-7def-8a00-000000000002"
+implements_logical:
+  - "019109a0-b1c2-7def-8a00-000000000001"
+related_adrs:
+  - "019109a0-b1c2-7def-8a00-000000000005"
+technologies:
+  - python
+context: |
+  Maximal ADR-PC fixture for generic human projection coverage.
+technology_stack:
+  - category: language
+    name: Python
+    version: ">=3.14"
+    rationale: Fixture language choice.
+component_specifications:
+  - id: "019109a0-b1c2-7def-8a00-000000000010"
+    alias_id: COMP-9001
+    alias_name: alpha-component
+    name: Alpha Component
+    type: service
+    description: DESC_ALPHA component description.
+    responsibilities: |
+      RESPONSIBILITIES_ALPHA
+      - Own alpha behavior
+    implements_capabilities:
+      - "019109a0-b1c2-7def-8a00-000000000040"
+    generation_context:
+      purpose: PURPOSE_ALPHA generate and expose alpha behavior.
+      key_responsibilities:
+        - KEY_RESP_ALPHA keep alpha deterministic
+      constraints:
+        - CONSTRAINT_ALPHA must remain true
+      success_criteria:
+        - SUCCESS_ALPHA projection includes authored purpose
+    interfaces:
+      - id: "019109a0-b1c2-7def-8a00-000000000020"
+        alias_id: IFACE-9001
+        alias_name: alpha-cli
+        type: CLI
+        specification: |
+          Commands:
+
+          - adr alpha
+          - adr beta
+          - adr gamma
+      - id: "019109a0-b1c2-7def-8a00-000000000021"
+        alias_id: IFACE-9002
+        alias_name: alpha-library
+        type: library_api
+        specification: |
+          Public adapter:
+
+          - open_repository
+          - compile_architecture
+    implementation_identifiers:
+      module_path: MODULE_PATH_ALPHA
+      service_name: SERVICE_ALPHA
+      entry_point: ENTRY_ALPHA
+      test_path: TEST_PATH_ALPHA
+      repository: REPO_ALPHA
+    implementation_requirements:
+      error_handling:
+        strategy: ERROR_STRATEGY fail closed on invalid input.
+      observability:
+        logging:
+          level: info
+          structured: true
+        metrics:
+          - name: METRIC_NAME
+            type: counter
+      testing_requirements:
+        unit_test_coverage: ">= 91%"
+        integration_tests: INTEGRATION_NESTED against the peer component
+    dependencies:
+      - DEP_PATHLIB
+      - dataclasses.dataclass
+    testing_requirements:
+      - COMPONENT_TEST_ITEM unit tests for marker detection
+  - id: "019109a0-b1c2-7def-8a00-000000000011"
+    alias_id: COMP-9002
+    alias_name: beta-component
+    name: Beta Component
+    type: library
+    responsibilities: RESPONSIBILITIES_BETA
+    generation_context:
+      purpose: PURPOSE_BETA isolate beta contract rendering.
+      key_responsibilities:
+        - KEY_RESP_BETA render a second complete contract
+      constraints:
+        - CONSTRAINT_BETA keep contracts distinct
+      success_criteria:
+        - SUCCESS_BETA two component contracts appear
+    interfaces:
+      - id: "019109a0-b1c2-7def-8a00-000000000022"
+        alias_id: IFACE-9003
+        alias_name: beta-api
+        type: REST
+        specification: |
+          Paths:
+
+          - GET /beta
+    implementation_identifiers:
+      module_path: MODULE_PATH_BETA
+    implementation_requirements:
+      error_handling:
+        strategy: ERROR_STRATEGY_BETA
+      observability:
+        logging:
+          level: warn
+          structured: false
+        metrics:
+          - name: METRIC_BETA
+            type: gauge
+      testing_requirements:
+        unit_test_coverage: ">= 70%"
+implementation_decisions:
+  - id: "019109a0-b1c2-7def-8a00-000000000030"
+    alias_id: IMPL-9001
+    alias_name: choose-alpha-runtime
+    summary: Choose a deterministic alpha runtime
+    rationale: |
+      RATIONALE_FULL_TEXT remains complete and untruncated across paragraphs.
+
+      Second paragraph of rationale stays in the projection.
+    alternatives_considered:
+      - name: ALT_NAME
+        rejected_because: ALT_REJECTED heuristic summarization
+    consequences:
+      - CONSEQUENCE_ONE accepted operational cost
+      - CONSEQUENCE_TWO accepted test burden
+  - id: "019109a0-b1c2-7def-8a00-000000000031"
+    alias_id: IMPL-9002
+    alias_name: keep-beta-separate
+    summary: Keep beta as a second component specification
+    rationale: RATIONALE_BETA proves multiple decisions render.
+gaps:
+  - id: GAP-9001
+    question: GAP_QUESTION unresolved verification threshold
+    context: Gap remains unresolved pending measurement.
+    impact: low
+    blocking: false
+    status: unresolved
+migration_origin:
+  remapped_entities:
+    - entity_type: component
+      from: COMP-8901
+      to: COMP-9001
+      source_pointer: /component_specifications/0/id
+    - entity_type: interface
+      from: IFACE-8901
+      to: IFACE-9001
+      source_pointer: /component_specifications/0/interfaces/0/id
+    - entity_type: implementation_decision
+      from: IMPL-8901
+      to: IMPL-9001
+      source_pointer: /implementation_decisions/0/id

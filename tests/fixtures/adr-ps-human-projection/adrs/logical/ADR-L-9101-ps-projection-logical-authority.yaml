@@ -1,0 +1,20 @@
+schema_version: "1.5"
+adr_type: logical
+id: "019209b0-c2d3-7e00-8000-000000000001"
+alias_id: ADR-L-9101
+alias_name: ps-projection-logical-authority
+title: "PS Projection Logical Authority"
+status: accepted
+created_date: "2026-08-30"
+authors:
+  - fixture.author
+domains:
+  - projection-fixture
+context: |
+  Logical authority for the ADR-PS human projection generic fixtures.
+decisions:
+  - id: "019209b0-c2d3-7e00-8000-000000000002"
+    alias_id: DEC-9101
+    alias_name: fixture-system-decision
+    summary: Admit a physical system for generic projection coverage
+    rationale: Physical-system projection tests need a canonical logical authority.

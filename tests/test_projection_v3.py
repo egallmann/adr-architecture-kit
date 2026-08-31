@@ -43,6 +43,22 @@ def test_coverage_registry_covers_authoring_v15_schema_fields() -> None:
     assert disposition_for(adr_type="physical-component", pointer="/component_topology") == (
         "UNSUPPORTED_OR_STALE"
     )
+    assert disposition_for(adr_type="physical-system", pointer="/component_topology/components/id") == (
+        "PROJECTION_CONTROL_INPUT"
+    )
+    assert disposition_for(
+        adr_type="physical-system", pointer="/component_topology/components/component_ref"
+    ) == "RENDER_AS_RELATIONSHIP"
+    assert disposition_for(
+        adr_type="physical-system", pointer="/component_topology/relationships"
+    ) == "RENDER_AS_RELATIONSHIP"
+    assert disposition_for(adr_type="physical-system", pointer="/data_flows") == "RENDER_DETAIL"
+    assert disposition_for(adr_type="physical-system", pointer="/references_components") == (
+        "UNSUPPORTED_OR_STALE"
+    )
+    assert disposition_for(adr_type="physical-system", pointer="/technologies") == (
+        "INTENTIONALLY_NOT_RENDERED"
+    )
     assert disposition_for(adr_type="logical", pointer="/domains") == "RENDER_DETAIL"
     assert disposition_for(adr_type="logical", pointer="/notes") == "RENDER_DETAIL"
     assert "provides_interface" in SEMANTIC_ARCHITECTURE
@@ -243,7 +259,11 @@ def test_projection_v3_canaries_for_kit_corpus() -> None:
     assert "depends_on" not in pc1_internal.split("## Technology Stack")[0]
 
     ps1_internal = ps1.split("## Internal Structure", 1)[1] if "## Internal Structure" in ps1 else ""
-    assert "```mermaid" not in ps1_internal
+    assert "```mermaid" in ps1_internal
+    ps1_topology = ps1_internal.split("```mermaid", 1)[1].split("```", 1)[0]
+    assert "COMP-0010" in ps1_topology
+    assert "TOPO-0001" not in ps1_topology
+    assert "Entity Registry Generator and Query Surface" in ps1
 
     assert any("ADR-L-0025" in item.relative_path for item in result.artifacts)
     assert any("ADR-PC-0008" in item.relative_path for item in result.artifacts)

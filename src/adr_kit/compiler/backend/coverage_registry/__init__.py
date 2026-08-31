@@ -152,6 +152,38 @@ _PC_OVERRIDES: dict[str, Disposition] = {
     "/component_topology": "UNSUPPORTED_OR_STALE",
 }
 
+_PS_OVERRIDES: dict[str, Disposition] = {
+    "/schema_version": "RENDER_PRIMARY",
+    "/created_date": "RENDER_PRIMARY",
+    "/modified_date": "RENDER_PRIMARY",
+    "/authors": "RENDER_PRIMARY",
+    "/domains": "RENDER_PRIMARY",
+    "/tags": "RENDER_PRIMARY",
+    "/technologies": "INTENTIONALLY_NOT_RENDERED",
+    "/system/id": "GOVERNANCE_METADATA",
+    "/system/alias_id": "RENDER_PRIMARY",
+    "/system/alias_name": "RENDER_PRIMARY",
+    "/system/name": "RENDER_PRIMARY",
+    "/component_topology": "PROJECTION_CONTROL_INPUT",
+    "/component_topology/components": "RENDER_SUMMARY_AND_DETAIL",
+    "/component_topology/components/id": "PROJECTION_CONTROL_INPUT",
+    "/component_topology/components/component_ref": "RENDER_AS_RELATIONSHIP",
+    "/component_topology/components/purpose": "RENDER_PRIMARY",
+    "/component_topology/relationships": "RENDER_AS_RELATIONSHIP",
+    "/component_topology/relationships/from": "PROJECTION_CONTROL_INPUT",
+    "/component_topology/relationships/to": "PROJECTION_CONTROL_INPUT",
+    "/component_topology/relationships/type": "RENDER_AS_RELATIONSHIP",
+    "/component_topology/relationships/protocol": "RENDER_DETAIL",
+    "/component_topology/relationships/description": "RENDER_DETAIL",
+    "/data_flows": "RENDER_DETAIL",
+    "/data_flows/path": "RENDER_DETAIL",
+    "/integration_patterns": "RENDER_DETAIL",
+    "/integration_patterns/components_affected": "RENDER_DETAIL",
+    "/references_components": "UNSUPPORTED_OR_STALE",
+    "/operational_requirements": "RENDER_DETAIL",
+    "/deployment_model": "RENDER_DETAIL",
+}
+
 
 class CoverageRegistryError(ValueError):
     """Raised when a current-authoring field lacks a coverage disposition."""
@@ -265,6 +297,8 @@ def built_in_registry() -> dict[str, dict[str, Disposition]]:
         }
         if adr_type == "physical-component":
             table.update(_PC_OVERRIDES)
+        elif adr_type == "physical-system":
+            table.update(_PS_OVERRIDES)
         elif adr_type == "logical":
             table.pop("/component_topology", None)
         registry[adr_type] = table

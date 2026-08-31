@@ -102,6 +102,7 @@ class HumanAdrProjectionContext:
     lifecycle_rows: list[str]
     governance_rows: list[str]
     physical_component: Any | None = None
+    physical_system: Any | None = None
 
 
 def context_summary_from_text(text: str | None) -> str:
@@ -352,10 +353,26 @@ def build_human_adr_projection_context(
     internal_entities.sort(key=lambda row: (row.entity_type, row.alias, row.entity_id))
     adr_type = _adr_type_value(adr)
     physical_component = None
+    physical_system = None
     if adr_type == "physical-component":
         from .physical_component_projection import build_physical_component_projection
 
         physical_component = build_physical_component_projection(
+            adr=adr,
+            subject_id=subject_id,
+            alias_id=alias_id,
+            adr_type=adr_type,
+            status=_status_value(adr),
+            entities=entities,
+            relationships=list(relationships),
+            adr_models_by_id=adr_models_by_id,
+            resolve_present_ref=resolve_present_ref,
+            format_present_ref=format_present_ref,
+        )
+    elif adr_type == "physical-system":
+        from .physical_system_projection import build_physical_system_projection
+
+        physical_system = build_physical_system_projection(
             adr=adr,
             subject_id=subject_id,
             alias_id=alias_id,
@@ -408,11 +425,13 @@ def build_human_adr_projection_context(
     neighbor_module = Path(__file__).resolve().parent / "neighbor_paths.py"
     coverage_module = Path(__file__).resolve().parent / "coverage_registry" / "__init__.py"
     pc_module = Path(__file__).resolve().parent / "physical_component_projection.py"
+    ps_module = Path(__file__).resolve().parent / "physical_system_projection.py"
     dependency_keys[f"__generator__/modules/{this_module.name}"] = _module_hash_input(this_module)
     dependency_keys[f"__generator__/modules/{paths_module.name}"] = _module_hash_input(paths_module)
     dependency_keys[f"__generator__/modules/{neighbor_module.name}"] = _module_hash_input(neighbor_module)
     dependency_keys[f"__generator__/modules/{coverage_module.name}"] = _module_hash_input(coverage_module)
     dependency_keys[f"__generator__/modules/{pc_module.name}"] = _module_hash_input(pc_module)
+    dependency_keys[f"__generator__/modules/{ps_module.name}"] = _module_hash_input(ps_module)
 
     inventory_payload = "\n".join(
         f"{row.verb}|{row.from_id}|{row.to_id}" for row in neighborhood_inventory
@@ -424,6 +443,13 @@ def build_human_adr_projection_context(
     dependency_keys["__generator__/internal-structure"] = HashInput(
         "__generator__/internal-structure",
         (internal_graph or "").encode("utf-8"),
+    )
+    system_topology = ""
+    if physical_system is not None:
+        system_topology = "\n".join(physical_system.topology_graphs)
+    dependency_keys["__generator__/system-topology"] = HashInput(
+        "__generator__/system-topology",
+        system_topology.encode("utf-8"),
     )
     for card in peer_cards:
         peer_path = adr_paths_by_id.get(card.peer_id)
@@ -464,6 +490,7 @@ def build_human_adr_projection_context(
         lifecycle_rows=lifecycle_rows,
         governance_rows=governance_rows,
         physical_component=physical_component,
+        physical_system=physical_system,
     )
 
 

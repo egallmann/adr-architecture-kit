@@ -5,8 +5,8 @@ artifact_kind: rendered_adr_markdown
 generator_id: adr-projection-markdown
 generator_version: 3
 hash_algorithm: sha256
-source_hash: 5d646152f68606c3e03e2f64ef0178c23ccf245175102e7f82967847feeeb133
-rendered_hash: 2a46c3a37df341a9ef2f2f5d65960df1372e441c1bd724a366adbe6553d5998b
+source_hash: 0e0bd80cf71d57daa0abf011bc2b21f9e805c6a5a00cca77a04e8ec6ec5d77bf
+rendered_hash: 61cb2ac960052f5787f8e41fba4999f5af03b3649ff3d5a536e81809cb3eca88
 -->
 
 # ADR-PS-0002: ADR Kit Authoring Compiler and Validation System
@@ -16,15 +16,201 @@ rendered_hash: 2a46c3a37df341a9ef2f2f5d65960df1372e441c1bd724a366adbe6553d5998b
 **Type:** physical-system  
 **Status:** accepted  
 **Alias:** ADR-PS-0002  
-**Alias name:** adr-kit-authoring-compiler-and-validation-system  
+**System:** SYS-0002 — ADR Kit Authoring Compiler and Validation System  
+**Authoring contract:** authoring v1.5  
 **Created:** 2026-03-15  
+**Modified:** 2026-08-27  
+**Authors:** adr-architecture-kit  
+**Domains:** compiler, validation, tooling  
+**Tags:** compiler, validation, authoring, python  
 **Implements Logical:** [ADR-L-0001](../logical/ADR-L-0001-ste-compliant-machine-verifiable-architecture-decision-record-system.md), [ADR-L-0007](../logical/ADR-L-0007-deterministic-documentation-projection.md), [ADR-L-0008](../logical/ADR-L-0008-validation-modes-for-draft-and-complete-adrs.md), [ADR-L-0010](../logical/ADR-L-0010-kernel-interface-contract-and-validation-profiles.md), [ADR-L-0011](../logical/ADR-L-0011-metadata-schemas-and-remediation-ledger-enforcement.md), [ADR-L-0013](../logical/ADR-L-0013-architecture-repository-boundary-and-normalized-semantic-model.md), [ADR-L-0002](../logical/ADR-L-0002-multi-scope-adr-architecture-for-sub-module-development.md)  
 
 ## Architecture Position
 
-Physical-system membership is `composed_of` from the system entity to admitted components. Topology handles are local authoring labels, not graph identities.
+Topology handles are local authoring labels, not graph identities.
 
 **System:** SYS-0002 — ADR Kit Authoring Compiler and Validation System
+**Components:** 4
+**Boundaries:** 1
+**Internal topology relationships:** 3
+**External dependencies:** 3
+
+**Logical authority:**
+- [ADR-L-0001](../logical/ADR-L-0001-ste-compliant-machine-verifiable-architecture-decision-record-system.md)
+- [ADR-L-0007](../logical/ADR-L-0007-deterministic-documentation-projection.md)
+- [ADR-L-0008](../logical/ADR-L-0008-validation-modes-for-draft-and-complete-adrs.md)
+- [ADR-L-0010](../logical/ADR-L-0010-kernel-interface-contract-and-validation-profiles.md)
+- [ADR-L-0011](../logical/ADR-L-0011-metadata-schemas-and-remediation-ledger-enforcement.md)
+- [ADR-L-0013](../logical/ADR-L-0013-architecture-repository-boundary-and-normalized-semantic-model.md)
+- [ADR-L-0002](../logical/ADR-L-0002-multi-scope-adr-architecture-for-sub-module-development.md)
+
+**Exposed surfaces:**
+- `adr compile`
+- `adr validate`
+- `adr validate-contract`
+- `adr validate-project-metadata`
+- `adr entities *`
+- `adr_kit.api`
+
+**Topology relationship types:** depends_on
+
+
+## Context
+
+adr-architecture-kit operates as an authoring-time compiler and validation system rather
+than a collection of unrelated generators. The implementation includes an
+explicit compiler pipeline, contract validation, normalized repository/model
+access, integrity verification, and CLI orchestration over those surfaces.
+
+This ADR establishes the concrete authoring/compiler system boundary for those public
+capabilities. Discovery and indexing remain covered by ADR-PS-0001; this ADR
+covers the authoring/compiler implementation that powers canonical parsing,
+compilation, repository loading, contract checks, artifact integrity, and the
+narrow `adr_kit.api` authoring SDK.
+
+The boundary explicitly excludes Assembler behavior, runtime observation or
+evidence extraction, rules execution, substrate management, admission decisions,
+MCP surfaces, and LLM responsibilities. Those belong to later work or sibling
+systems and must not be introduced by the Phase 1 SDK.
+
+
+## Internal Structure
+
+### System Components
+
+| Component | Type | Role in this System | Authority |
+| --- | --- | --- | --- |
+| COMP-0011 — Schema and Contract Validation Surface | service | Validates canonical ADR structure and contract expectations. | [ADR-PC-0002](../physical-component/ADR-PC-0002-schema-and-contract-validation.md) |
+| COMP-0012 — Compiler Pipeline and Driver | service | Builds and emits deterministic architecture compilation outputs. | [ADR-PC-0003](../physical-component/ADR-PC-0003-compiler-pipeline-and-driver.md) |
+| COMP-0013 — Repository Boundary Component | service | Loads and serves normalized semantic state for in-process consumers. | [ADR-PC-0004](../physical-component/ADR-PC-0004-repository-boundary-and-normalized-semantic-model.md) |
+| COMP-0014 — Generated Artifact Integrity Validation | service | Verifies generated artifact freshness and tamper integrity. | [ADR-PC-0005](../physical-component/ADR-PC-0005-generated-artifact-integrity-validation.md) |
+
+Local topology handles:
+- `TOPO-0001` → COMP-0011 — Schema and Contract Validation Surface
+- `TOPO-0002` → COMP-0012 — Compiler Pipeline and Driver
+- `TOPO-0003` → COMP-0013 — Repository Boundary Component
+- `TOPO-0004` → COMP-0014 — Generated Artifact Integrity Validation
+
+### System Topology
+
+```mermaid
+flowchart LR
+  n_019fee89_e617_7060_8f3f_4ecd46a719da["COMP-0011<br/>Schema and Contract Validation Surface"]
+  n_019fee89_e617_76ad_9336_b3615a6e4bde["COMP-0012<br/>Compiler Pipeline and Driver"]
+  n_019fee89_e618_74d1_9a1f_37e2c2982a51["COMP-0013<br/>Repository Boundary Component"]
+  n_019fee89_e618_781c_831f_0d5fe24f7d85["COMP-0014<br/>Generated Artifact Integrity Validation"]
+  n_019fee89_e617_76ad_9336_b3615a6e4bde -->|"depends_on"| n_019fee89_e617_7060_8f3f_4ecd46a719da
+  n_019fee89_e618_74d1_9a1f_37e2c2982a51 -->|"depends_on"| n_019fee89_e617_76ad_9336_b3615a6e4bde
+  n_019fee89_e618_781c_831f_0d5fe24f7d85 -->|"depends_on"| n_019fee89_e617_76ad_9336_b3615a6e4bde
+```
+
+### Component Interactions
+
+| From | Relationship | To | Protocol | Description |
+| --- | --- | --- | --- | --- |
+| COMP-0012 — Compiler Pipeline and Driver | depends on (`depends_on`) | COMP-0011 — Schema and Contract Validation Surface | — | — |
+| COMP-0013 — Repository Boundary Component | depends on (`depends_on`) | COMP-0012 — Compiler Pipeline and Driver | — | — |
+| COMP-0014 — Generated Artifact Integrity Validation | depends on (`depends_on`) | COMP-0012 — Compiler Pipeline and Driver | — | — |
+
+
+## System Boundaries
+
+### SYSBOUND-0002 — Authoring Compiler and Validation Boundary
+
+Encapsulates canonical ADR parsing, compiler orchestration, schema and
+contract validation, normalized repository access, and generated artifact
+integrity validation. It exposes a narrow Python authoring SDK over supported
+validation, compilation, repository, model, and capability contracts. It does
+not perform runtime extraction, rules, substrate, admission, MCP, LLM, or
+Assembler responsibilities.
+
+**External Dependencies**
+- Canonical ADR artifacts
+- Canonical invariant artifacts
+- Generated registry bundles
+
+**Exposed Interfaces**
+- `adr compile`
+- `adr validate`
+- `adr validate-contract`
+- `adr validate-project-metadata`
+- `adr entities *`
+- `adr_kit.api`
+
+
+## Before You Change This System
+
+**Logical contracts implemented**
+- [ADR-L-0001](../logical/ADR-L-0001-ste-compliant-machine-verifiable-architecture-decision-record-system.md)
+- [ADR-L-0007](../logical/ADR-L-0007-deterministic-documentation-projection.md)
+- [ADR-L-0008](../logical/ADR-L-0008-validation-modes-for-draft-and-complete-adrs.md)
+- [ADR-L-0010](../logical/ADR-L-0010-kernel-interface-contract-and-validation-profiles.md)
+- [ADR-L-0011](../logical/ADR-L-0011-metadata-schemas-and-remediation-ledger-enforcement.md)
+- [ADR-L-0013](../logical/ADR-L-0013-architecture-repository-boundary-and-normalized-semantic-model.md)
+- [ADR-L-0002](../logical/ADR-L-0002-multi-scope-adr-architecture-for-sub-module-development.md)
+
+**Constituent components**
+- COMP-0011 — Schema and Contract Validation Surface
+- COMP-0012 — Compiler Pipeline and Driver
+- COMP-0013 — Repository Boundary Component
+- COMP-0014 — Generated Artifact Integrity Validation
+
+**Internal relationships**
+- COMP-0012 — Compiler Pipeline and Driver depends on COMP-0011 — Schema and Contract Validation Surface
+- COMP-0013 — Repository Boundary Component depends on COMP-0012 — Compiler Pipeline and Driver
+- COMP-0014 — Generated Artifact Integrity Validation depends on COMP-0012 — Compiler Pipeline and Driver
+
+**External dependencies**
+- Canonical ADR artifacts
+- Canonical invariant artifacts
+- Generated registry bundles
+
+**Exposed interfaces**
+- `adr compile`
+- `adr validate`
+- `adr validate-contract`
+- `adr validate-project-metadata`
+- `adr entities *`
+- `adr_kit.api`
+
+**Operational requirements**
+- Monitoring: Deterministic validation and compilation output with explicit diagnostics.
+- Logging: CLI-visible diagnostic logging with fail-closed validation behavior.
+
+## Operational Requirements
+
+**Monitoring**
+Deterministic validation and compilation output with explicit diagnostics.
+
+**Logging**
+CLI-visible diagnostic logging with fail-closed validation behavior.
+
+## Technology Stack
+
+### Python (language)
+**Version:** >=3.14
+
+**Rationale:**
+Minimum supported Python minor is 3.14 (`requires-python >=3.14`); currently qualified released minor line is 3.14; repository reference interpreter is currently 3.14.7; new GA Python minors require explicit qualification before support is advertised.
+
+### Click (tooling)
+**Version:** 8.x
+
+**Rationale:**
+Existing CLI surface for compile and validate operations.
+
+### Pydantic (library)
+**Version:** 2.x
+
+**Rationale:**
+Typed canonical models and validation.
+
+### jsonschema (library)
+**Version:** 4.x
+
+**Rationale:**
+Structural schema validation for canonical artifacts.
+
 
 ## Architecture Neighborhood
 
@@ -92,16 +278,24 @@ flowchart LR
 
 ### ADR-L-0001 — STE-Compliant Machine-Verifiable Architecture Decision Record System
 
-- ADR-PS-0002 -[:implements_logical]-> ADR-L-0001
+ADR Kit Authoring Compiler and Validation System (ADR-PS-0002)
+    -[:implements_logical]->
+STE-Compliant Machine-Verifiable Architecture Decision Record System (ADR-L-0001)
 
-**Context:** # ADR Architecture Kit — STE Authoring Subsystem
+`ADR-PS-0002 -[:implements_logical]-> ADR-L-0001`
+
+**Peer context:** # ADR Architecture Kit — STE Authoring Subsystem
 
 [Open projection](../logical/ADR-L-0001-ste-compliant-machine-verifiable-architecture-decision-record-system.md)
 ### ADR-L-0002 — Multi-Scope ADR Architecture for Sub-Module Development
 
-- ADR-PS-0002 -[:implements_logical]-> ADR-L-0002
+ADR Kit Authoring Compiler and Validation System (ADR-PS-0002)
+    -[:implements_logical]->
+Multi-Scope ADR Architecture for Sub-Module Development (ADR-L-0002)
 
-**Context:** The adr-architecture-kit is being actively developed in a single workspace alongside
+`ADR-PS-0002 -[:implements_logical]-> ADR-L-0002`
+
+**Peer context:** The adr-architecture-kit is being actively developed in a single workspace alongside
 multiple sub-modules (ste-runtime, future services) that will eventually become
 independent services. Each sub-module needs to leverage the ADR system for its own
 architectural documentation while being developed in parallel within the monorepo.
@@ -109,9 +303,13 @@ architectural documentation while being developed in parallel within the monorep
 [Open projection](../logical/ADR-L-0002-multi-scope-adr-architecture-for-sub-module-development.md)
 ### ADR-L-0007 — Deterministic Documentation Projection
 
-- ADR-PS-0002 -[:implements_logical]-> ADR-L-0007
+ADR Kit Authoring Compiler and Validation System (ADR-PS-0002)
+    -[:implements_logical]->
+Deterministic Documentation Projection (ADR-L-0007)
 
-**Context:** The repository already treats several human-readable artifacts as derived state:
+`ADR-PS-0002 -[:implements_logical]-> ADR-L-0007`
+
+**Peer context:** The repository already treats several human-readable artifacts as derived state:
 ADR human projections under adrs/adr-projection/, manifest summaries, and the AI-first SYSTEM-OVERVIEW
 are generated from structured or code-defined sources. That behavior now needs
 explicit architectural authority so future contributors do not reintroduce
@@ -120,18 +318,26 @@ manually maintained documentation that drifts from canonical artifacts.
 [Open projection](../logical/ADR-L-0007-deterministic-documentation-projection.md)
 ### ADR-L-0008 — Validation Modes for Draft and Complete ADRs
 
-- ADR-PS-0002 -[:implements_logical]-> ADR-L-0008
+ADR Kit Authoring Compiler and Validation System (ADR-PS-0002)
+    -[:implements_logical]->
+Validation Modes for Draft and Complete ADRs (ADR-L-0008)
 
-**Context:** The ADR Architecture Kit currently couples schema validation to completeness for
+`ADR-PS-0002 -[:implements_logical]-> ADR-L-0008`
+
+**Peer context:** The ADR Architecture Kit currently couples schema validation to completeness for
 several ADR types. That behavior is useful for acceptance gates, but it is too
 strict for the actual design workflow used in this workspace.
 
 [Open projection](../logical/ADR-L-0008-validation-modes-for-draft-and-complete-adrs.md)
 ### ADR-L-0009 — Derived Architecture Discovery Surfaces
 
-- ADR-PC-0003 -[:implements_logical]-> ADR-L-0009
+Compiler Pipeline and Driver (ADR-PC-0003)
+    -[:implements_logical]->
+Derived Architecture Discovery Surfaces (ADR-L-0009)
 
-**Context:** adr-architecture-kit is primarily machine-facing tooling used by agents to
+`ADR-PC-0003 -[:implements_logical]-> ADR-L-0009`
+
+**Peer context:** adr-architecture-kit is primarily machine-facing tooling used by agents to
 reason over canonical architecture artifacts. Relying on agents to scan raw
 ADR bodies for discovery is inconsistent with the toolkit's AI-first design
 theory: discovery surfaces should be explicit, deterministic, cheap to query,
@@ -140,9 +346,13 @@ and derived from canonical authority.
 [Open projection](../logical/ADR-L-0009-derived-architecture-discovery-surfaces.md)
 ### ADR-L-0010 — Kernel Interface Contract and Validation Profiles
 
-- ADR-PS-0002 -[:implements_logical]-> ADR-L-0010
+ADR Kit Authoring Compiler and Validation System (ADR-PS-0002)
+    -[:implements_logical]->
+Kernel Interface Contract and Validation Profiles (ADR-L-0010)
 
-**Context:** adr-architecture-kit is transitioning from an implicit generator toolkit into
+`ADR-PS-0002 -[:implements_logical]-> ADR-L-0010`
+
+**Peer context:** adr-architecture-kit is transitioning from an implicit generator toolkit into
 an explicit architecture compiler with a defined contract boundary to the STE
 kernel. The plan work established that the compiler's guaranteed contract
 surface is broader than the kernel's minimal load subset: the contract family
@@ -152,9 +362,13 @@ individual consumers may rely on narrower subsets.
 [Open projection](../logical/ADR-L-0010-kernel-interface-contract-and-validation-profiles.md)
 ### ADR-L-0011 — Metadata Schemas and Remediation Ledger Enforcement
 
-- ADR-PS-0002 -[:implements_logical]-> ADR-L-0011
+ADR Kit Authoring Compiler and Validation System (ADR-PS-0002)
+    -[:implements_logical]->
+Metadata Schemas and Remediation Ledger Enforcement (ADR-L-0011)
 
-**Context:** The compiler contract now distinguishes fully compliant bundles from
+`ADR-PS-0002 -[:implements_logical]-> ADR-L-0011`
+
+**Peer context:** The compiler contract now distinguishes fully compliant bundles from
 sentinel-backed brownfield and migration bundles. That boundary is only safe
 if sentinel use is narrow, explicitly tracked, and moved toward approved
 canonical content through a monotonic workflow.
@@ -162,9 +376,13 @@ canonical content through a monotonic workflow.
 [Open projection](../logical/ADR-L-0011-metadata-schemas-and-remediation-ledger-enforcement.md)
 ### ADR-L-0013 — Architecture Repository Boundary and Normalized Semantic Model
 
-- ADR-PS-0002 -[:implements_logical]-> ADR-L-0013
+ADR Kit Authoring Compiler and Validation System (ADR-PS-0002)
+    -[:implements_logical]->
+Architecture Repository Boundary and Normalized Semantic Model (ADR-L-0013)
 
-**Context:** adr-architecture-kit now has an explicit compiler pipeline, a compiler IR
+`ADR-PS-0002 -[:implements_logical]-> ADR-L-0013`
+
+**Peer context:** adr-architecture-kit now has an explicit compiler pipeline, a compiler IR
 (`ArchModel`), compiled registry bundles, and an additive architecture graph.
 Those pieces are sufficient to produce deterministic machine-facing artifacts,
 and ArchitectureRepository already defines the semantic in-process boundary.
@@ -174,9 +392,13 @@ expanding the normalized model or exposing compiler internals.
 [Open projection](../logical/ADR-L-0013-architecture-repository-boundary-and-normalized-semantic-model.md)
 ### ADR-L-0020 — Semantic Implementation Attribution and Cross-Layer Architecture Relationships
 
-- ADR-PC-0002 -[:implements_logical]-> ADR-L-0020
+Schema and Contract Validation (ADR-PC-0002)
+    -[:implements_logical]->
+Semantic Implementation Attribution and Cross-Layer Architecture Relationships (ADR-L-0020)
 
-**Context:** ADR-L-0004 established implementation attribution as an explicit intent
+`ADR-PC-0002 -[:implements_logical]-> ADR-L-0020`
+
+**Peer context:** ADR-L-0004 established implementation attribution as an explicit intent
 surface. ADR-L-0019 made canonical machine identity a lowercase UUIDv7.
 Attribution evidence still cited human aliases (`ADR-L-*`, `INV-*`) and
 could not name typed relationships to nested architecture entities.
@@ -184,9 +406,13 @@ could not name typed relationships to nested architecture entities.
 [Open projection](../logical/ADR-L-0020-semantic-implementation-attribution-and-cross-layer-architecture-relationships.md)
 ### ADR-PC-0002 — Schema and Contract Validation
 
-- COMP-0012 -[:depends_on]-> COMP-0011
+Compiler Pipeline and Driver (COMP-0012)
+    -[:depends_on]->
+Schema and Contract Validation Surface (COMP-0011)
 
-**Context:** Schema and contract validation is now a stable component boundary rather than
+`COMP-0012 -[:depends_on]-> COMP-0011`
+
+**Peer context:** Schema and contract validation is now a stable component boundary rather than
 a generic legacy physical slice. It validates canonical ADR structure,
 profile-specific contract requirements, project metadata, and implementation
 attribution evidence. Validation of that evidence is structural for schema shape and architecture-aware when claims must resolve to canonical UUIDs and entity types. Legacy 1.0/1.2 evidence normalizes to the v1.5 claim shape only with repository or model 2.0 context.
@@ -194,9 +420,13 @@ attribution evidence. Validation of that evidence is structural for schema shape
 [Open projection](../physical-component/ADR-PC-0002-schema-and-contract-validation.md)
 ### ADR-PC-0003 — Compiler Pipeline and Driver
 
-- COMP-0012 -[:depends_on]-> COMP-0011
+Compiler Pipeline and Driver (COMP-0012)
+    -[:depends_on]->
+Schema and Contract Validation Surface (COMP-0011)
 
-**Context:** The compiler driver and explicit pipeline now own deterministic architecture
+`COMP-0012 -[:depends_on]-> COMP-0011`
+
+**Peer context:** The compiler driver and explicit pipeline now own deterministic architecture
 compilation across parse, analysis, emission, and recursive scope
 orchestration. The command-line behavior is compatibility-relevant, while the
 Python compiler pipeline, passes, `ArchModel`, emitters, and result plumbing are
@@ -205,9 +435,13 @@ internal reference implementation and are not a supported SDK facade.
 [Open projection](../physical-component/ADR-PC-0003-compiler-pipeline-and-driver.md)
 ### ADR-PC-0004 — Repository Boundary and Normalized Semantic Model
 
-- COMP-0013 -[:depends_on]-> COMP-0012
+Repository Boundary Component (COMP-0013)
+    -[:depends_on]->
+Compiler Pipeline and Driver (COMP-0012)
 
-**Context:** ArchitectureRepository and NormalizedArchitectureModel are the stable
+`COMP-0013 -[:depends_on]-> COMP-0012`
+
+**Peer context:** ArchitectureRepository and NormalizedArchitectureModel are the stable
 in-process semantic boundary for consumers. Phase 1 adds a narrow supported
 authoring facade that reuses those contracts without wrapping or changing the
 normalized model and without making registry loaders or path helpers public.
@@ -215,88 +449,18 @@ normalized model and without making registry loaders or path helpers public.
 [Open projection](../physical-component/ADR-PC-0004-repository-boundary-and-normalized-semantic-model.md)
 ### ADR-PC-0005 — Generated Artifact Integrity Validation
 
-- COMP-0014 -[:depends_on]-> COMP-0012
+Generated Artifact Integrity Validation (COMP-0014)
+    -[:depends_on]->
+Compiler Pipeline and Driver (COMP-0012)
 
-**Context:** Generated artifact integrity validation verifies freshness, tamper status,
+`COMP-0014 -[:depends_on]-> COMP-0012`
+
+**Peer context:** Generated artifact integrity validation verifies freshness, tamper status,
 integrity headers, and scope-local generated outputs. It is a distinct public
 subsystem used by validator and governance flows.
 
 [Open projection](../physical-component/ADR-PC-0005-generated-artifact-integrity-validation.md)
 
-## Context
-
-adr-architecture-kit operates as an authoring-time compiler and validation system rather
-than a collection of unrelated generators. The implementation includes an
-explicit compiler pipeline, contract validation, normalized repository/model
-access, integrity verification, and CLI orchestration over those surfaces.
-
-This ADR establishes the concrete authoring/compiler system boundary for those public
-capabilities. Discovery and indexing remain covered by ADR-PS-0001; this ADR
-covers the authoring/compiler implementation that powers canonical parsing,
-compilation, repository loading, contract checks, artifact integrity, and the
-narrow `adr_kit.api` authoring SDK.
-
-The boundary explicitly excludes Assembler behavior, runtime observation or
-evidence extraction, rules execution, substrate management, admission decisions,
-MCP surfaces, and LLM responsibilities. Those belong to later work or sibling
-systems and must not be introduced by the Phase 1 SDK.
-
-
-## Internal Structure
-
-### Topology membership
-
-- Handle `TOPO-0001` → component `019fee89-e617-7060-8f3f-4ecd46a719da` — Validates canonical ADR structure and contract expectations.
-- Handle `TOPO-0002` → component `019fee89-e617-76ad-9336-b3615a6e4bde` — Builds and emits deterministic architecture compilation outputs.
-- Handle `TOPO-0003` → component `019fee89-e618-74d1-9a1f-37e2c2982a51` — Loads and serves normalized semantic state for in-process consumers.
-- Handle `TOPO-0004` → component `019fee89-e618-781c-831f-0d5fe24f7d85` — Verifies generated artifact freshness and tamper integrity.
-
-- `system` SYS-0002 — ADR Kit Authoring Compiler and Validation System
-
-## System Boundaries
-
-### Authoring Compiler and Validation Boundary
-
-Encapsulates canonical ADR parsing, compiler orchestration, schema and
-contract validation, normalized repository access, and generated artifact
-integrity validation. It exposes a narrow Python authoring SDK over supported
-validation, compilation, repository, model, and capability contracts. It does
-not perform runtime extraction, rules, substrate, admission, MCP, LLM, or
-Assembler responsibilities.
-
-
-**External dependencies:** Canonical ADR artifacts, Canonical invariant artifacts, Generated registry bundles
-
-
-## Technology Stack
-
-### Python (language)
-
-**Version:** >=3.14
-
-**Rationale:**
-Minimum supported Python minor is 3.14 (`requires-python >=3.14`); currently qualified released minor line is 3.14; repository reference interpreter is currently 3.14.7; new GA Python minors require explicit qualification before support is advertised. 
-
-### Click (tooling)
-
-**Version:** 8.x
-
-**Rationale:**
-Existing CLI surface for compile and validate operations.
-
-### Pydantic (library)
-
-**Version:** 2.x
-
-**Rationale:**
-Typed canonical models and validation.
-
-### jsonschema (library)
-
-**Version:** 4.x
-
-**Rationale:**
-Structural schema validation for canonical artifacts.
 
 
 

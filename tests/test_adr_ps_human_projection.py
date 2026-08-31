@@ -243,6 +243,10 @@ def test_maximal_fixture_generic_projection_contract(tmp_path: Path) -> None:
         assert f'|"{verb}"|' in topology
 
     interactions = content.split("### Component Interactions", 1)[1].split("## System Boundaries", 1)[0]
+    assert "| --- | --- | --- | --- | --- |" in interactions
+    header = next(line for line in interactions.splitlines() if line.startswith("| From |"))
+    separator = next(line for line in interactions.splitlines() if line.startswith("| ---"))
+    assert header.count("|") == separator.count("|") == 6
     assert "calls (`calls`)" in interactions
     assert "publishes to (`publishes_to`)" in interactions
     assert "subscribes to (`subscribes_to`)" in interactions
@@ -369,6 +373,7 @@ def test_kit_corpus_ps_canaries_expose_authored_fields() -> None:
     assert "ADR-PC-0004" in ps2
     assert "ADR-PC-0005" in ps2
     assert "depends on (`depends_on`)" in ps2
+    assert "| --- | --- | --- | --- | --- |" in ps2.split("### Component Interactions", 1)[1]
     assert "COMP-0012 — Compiler Pipeline and Driver" in ps2
     assert "adr compile" in ps2
     assert "adr_kit.api" in ps2

@@ -85,7 +85,7 @@ Local topology handles:
 ### Component Interactions
 
 | From | Relationship | To | Protocol | Description |
-| --- | --- | --- | --- |
+| --- | --- | --- | --- | --- |
 {% for rel in ps.relationships %}
 | {{ rel.from_heading | replace('|', '\\|') }} | {{ rel.human_phrase }} (`{{ rel.verb }}`) | {{ rel.to_heading | replace('|', '\\|') }} | {{ rel.protocol | replace('|', '\\|') if rel.protocol else '—' }} | {{ rel.description | replace('\n', '<br>') | replace('|', '\\|') if rel.description else '—' }} |
 {% endfor %}
@@ -173,7 +173,6 @@ Local topology handles:
 
 {% endif %}
 {% endif %}
-
 {% if ps and ps.integration_patterns %}
 ## Integration Patterns
 
@@ -197,7 +196,6 @@ Local topology handles:
 {% endif %}
 {% endfor %}
 {% endif %}
-
 {% if ps and ps.data_flows %}
 ## Data Flows
 
@@ -228,7 +226,6 @@ Local topology handles:
 
 {% endfor %}
 {% endif %}
-
 {% if ps and ps.scalability %}
 ## Scalability
 
@@ -255,7 +252,6 @@ Local topology handles:
 
 {% endif %}
 {% endif %}
-
 {% if ps and ps.failure_modes %}
 ## Failure Modes
 
@@ -286,7 +282,6 @@ Local topology handles:
 
 {% endif %}
 {% endif %}
-
 {% if ps and ps.operational_requirements %}
 ## Operational Requirements
 
@@ -296,7 +291,6 @@ Local topology handles:
 
 {% endfor %}
 {% endif %}
-
 {% if ps and ps.deployment_rows %}
 ## Deployment
 
@@ -306,7 +300,6 @@ Local topology handles:
 
 {% endfor %}
 {% endif %}
-
 {% if ps and ps.technology_stack %}
 ## Technology Stack
 

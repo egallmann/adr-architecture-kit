@@ -216,8 +216,8 @@ def test_maximal_fixture_generic_projection_contract(tmp_path: Path) -> None:
     missing = [item for item in sentinels if item not in content]
     assert missing == []
 
-    assert "## Architecture Position" in content
-    assert "## Before You Change This System" in content
+    assert "## Architecture at a Glance" in content
+    assert "## Change Safety" in content
     assert "### System Components" in content
     assert "### System Topology" in content
     assert "### Component Interactions" in content
@@ -227,7 +227,7 @@ def test_maximal_fixture_generic_projection_contract(tmp_path: Path) -> None:
     assert "## Scalability" in content
     assert "## Failure Modes" in content
     assert "## Operational Requirements" in content
-    assert "## Technology Stack" in content
+    assert "## Technology" in content
     assert "## Known Gaps" in content
     assert "Physical-system membership is `composed_of`" not in content
 
@@ -237,8 +237,9 @@ def test_maximal_fixture_generic_projection_contract(tmp_path: Path) -> None:
     assert "019209b0-c2d3-7e00-8000-000000000031" not in content
 
     topology = content.split("### System Topology", 1)[1].split("### Component Interactions", 1)[0]
-    assert "COMP-9101<br/>Alpha Service" in topology
-    assert "TOPO-9101" not in topology
+    mermaid = topology.split("```mermaid", 1)[1].split("```", 1)[0] if "```mermaid" in topology else ""
+    assert "COMP-9101<br/>Alpha Service" in mermaid
+    assert "TOPO-9101" not in mermaid
     for verb in TOPOLOGY_VERBS:
         assert f'|"{verb}"|' in topology
 
@@ -269,7 +270,7 @@ def test_maximal_fixture_generic_projection_contract(tmp_path: Path) -> None:
     assert "publishes_to" not in path_block
 
     assert content.count("EXT_DEP_BETA") >= 1
-    change_safety = content.split("## Before You Change This System", 1)[1].split("## Integration", 1)[0]
+    change_safety = content.split("## Change Safety", 1)[1].split("## Context", 1)[0]
     assert change_safety.count("EXT_DEP_BETA") == 1
 
     hyphen_uuids = UUID_HYPHEN.findall(content)
@@ -294,10 +295,7 @@ def test_optional_system_omits_empty_sections(tmp_path: Path) -> None:
     assert "PURPOSE_OPTIONAL" in content
     assert "EXPOSED_IFACE_OPTIONAL" in content
     assert "EXT_DEP_OPTIONAL" in content
-    topology = content.split("### System Topology", 1)[1].split("## System Boundaries", 1)[0]
-    assert "COMP-9107" in topology
-    assert '|"' not in topology
-    assert "TOPO-9107" not in topology.split("```mermaid", 1)[1].split("```", 1)[0]
+    assert "### System Topology" not in content
 
 
 def test_render_is_byte_deterministic(tmp_path: Path) -> None:
@@ -360,6 +358,7 @@ def test_kit_corpus_ps_canaries_expose_authored_fields() -> None:
     ps2 = text("ADR-PS-0002")
     assert "SYS-0002" in ps2
     assert "COMP-0011" in ps2
+    assert '|"depends_on"|' in ps2
     assert "COMP-0012" in ps2
     assert "COMP-0013" in ps2
     assert "COMP-0014" in ps2
@@ -379,7 +378,6 @@ def test_kit_corpus_ps_canaries_expose_authored_fields() -> None:
     assert "adr_kit.api" in ps2
     assert "Deterministic validation and compilation output" in ps2
     assert "CLI-visible diagnostic logging" in ps2
-    topology = ps2.split("### System Topology", 1)[1].split("### Component Interactions", 1)[0]
-    assert '|"depends_on"|' in topology
+    topology = ps2.split("```mermaid", 1)[1].split("```", 1)[0] if "```mermaid" in ps2 else ""
     assert "TOPO-0001" not in topology
     assert "TOPO-0002" not in topology

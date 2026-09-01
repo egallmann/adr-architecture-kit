@@ -171,17 +171,16 @@ def test_maximal_fixture_generic_projection_contract(tmp_path: Path) -> None:
 
     assert content.count("### COMP-9001: Alpha Component") == 1
     assert content.count("### COMP-9002: Beta Component") == 1
-    assert "**Responsibilities:**" in content
-    assert "**Key Responsibilities:**" in content
-    assert "**Must Remain True:**" in content
-    assert "**Success Criteria:**" in content
-    assert "### Before You Change This Component" in content
-    assert "### IFACE-9001 — CLI" in content
+    assert "## Architecture at a Glance" in content
+    assert "## Change Safety" in content
+    assert "### Before You Change This Component" not in content
+    assert "## Component Contract" in content
+    assert "## Interfaces" in content
     assert "### IMPL-9001 — Choose a deterministic alpha runtime" in content
     assert "## Engineering Contract" in content
-    assert "## Implementation Locations" in content
+    assert "## Implementation Map" in content
     assert "## Lineage / Migration" in content
-    assert "## Gaps" in content
+    assert "## Known Gaps" in content
     assert "CAP-9001" in content
     assert "Fixture Capability" in content
     assert "- `component` COMP-9001 — Alpha Component\n" in content

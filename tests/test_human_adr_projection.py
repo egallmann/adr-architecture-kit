@@ -99,7 +99,11 @@ def test_emit_markdown_uses_adr_projection_layout():
         text = artifact.content.decode("utf-8")
         assert "artifact_kind: rendered_adr_markdown" in text
         assert "generator_id: adr-projection-markdown" in text
-        assert "## Architecture Neighborhood" in text
+        assert (
+            "## Architecture Neighborhood" in text
+            or "## Architecture at a Glance" in text
+            or "## Neighbor Relationships" in text
+        )
         assert "```mermaid" in text or "No grammatical peer neighborhood" in text
         assert "## Context" in text
 

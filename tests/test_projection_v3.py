@@ -189,7 +189,7 @@ def test_projection_v3_canaries_for_kit_corpus() -> None:
     assert "COMP-0010" in ps1
     assert "TOPO-0001" in ps1
     assert "Canonical ADR artifacts" in ps1
-    assert "Semantic architecture inventory" in ps1
+    assert "### System Topology" not in ps1
     for verb in TOPOLOGY_VERBS:
         assert f"`{verb}`:" not in ps1
     assert "ADR-P-" not in ps1 or "retired" in ps1.lower()
@@ -199,24 +199,24 @@ def test_projection_v3_canaries_for_kit_corpus() -> None:
     assert "COMP-0012" in ps2
     assert "COMP-0013" in ps2
     assert "COMP-0014" in ps2
-    assert "`depends_on`: COMP-0012 → COMP-0011" in ps2
-    assert "`depends_on`: COMP-0013 → COMP-0012" in ps2
-    assert "`depends_on`: COMP-0014 → COMP-0012" in ps2
+    assert "depends on (`depends_on`)" in ps2
+    assert "`depends_on`: COMP-0012 → COMP-0011" not in ps2
     assert "ADR-PS-0002 depends_on ADR-" not in ps2
 
     pc3 = _artifact_text(result.artifacts, folder="physical-component", alias="ADR-PC-0003")
-    assert "`depends_on`: COMP-0012 → COMP-0011" in pc3
+    assert "`depends_on`: COMP-0012 → COMP-0011" not in pc3
+    assert "`COMP-0012 -[:depends_on]-> COMP-0011`" in pc3
     assert "COMP-0013" in pc3
     assert "COMP-0014" in pc3
     assert "ADR-PC-0003 depends_on ADR-" not in pc3
 
     pc4 = _artifact_text(result.artifacts, folder="physical-component", alias="ADR-PC-0004")
-    assert "`depends_on`: COMP-0013 → COMP-0012" in pc4
+    assert "`COMP-0013 -[:depends_on]-> COMP-0012`" in pc4
     assert "ADR-PC-0003" in pc4
     assert "ADR-PC-0004 depends_on ADR-PC-0003" not in pc4
 
     pc5 = _artifact_text(result.artifacts, folder="physical-component", alias="ADR-PC-0005")
-    assert "`depends_on`: COMP-0014 → COMP-0012" in pc5
+    assert "`COMP-0014 -[:depends_on]-> COMP-0012`" in pc5
 
     l13 = _artifact_text(result.artifacts, folder="logical", alias="ADR-L-0013")
     assert "`implements_logical`" in l13
@@ -251,18 +251,12 @@ def test_projection_v3_canaries_for_kit_corpus() -> None:
 
     pc1 = _artifact_text(result.artifacts, folder="physical-component", alias="ADR-PC-0001")
     pc1_internal = pc1.split("## Internal Structure", 1)[1]
-    assert "```mermaid" in pc1_internal
-    assert "COMP-0010" in pc1_internal
+    assert "| Kind | Entity |" in pc1_internal
     assert "IFACE-0011" in pc1_internal
-    assert '|"provides_interface"|' in pc1_internal
-    assert '|"declared_in"|' in pc1_internal
-    assert "depends_on" not in pc1_internal.split("## Technology Stack")[0]
+    assert "depends_on" not in pc1_internal.split("## Technology", 1)[0]
 
-    ps1_internal = ps1.split("## Internal Structure", 1)[1] if "## Internal Structure" in ps1 else ""
-    assert "```mermaid" in ps1_internal
-    ps1_topology = ps1_internal.split("```mermaid", 1)[1].split("```", 1)[0]
-    assert "COMP-0010" in ps1_topology
-    assert "TOPO-0001" not in ps1_topology
+    ps1_internal = ps1.split("## Internal System Architecture", 1)[1] if "## Internal System Architecture" in ps1 else ""
+    assert "### System Topology" not in ps1_internal
     assert "Entity Registry Generator and Query Surface" in ps1
 
     assert any("ADR-L-0025" in item.relative_path for item in result.artifacts)

@@ -5,8 +5,8 @@ artifact_kind: rendered_adr_markdown
 generator_id: adr-projection-markdown
 generator_version: 3
 hash_algorithm: sha256
-source_hash: c1614ef7fd2770b4f865df4a5aed3d9d34e30126661cd74fc930e2b16ebee7a6
-rendered_hash: 554227474a28973c5127da9f52ff271372d1736a7c6889c99f0ab01987ade188
+source_hash: 8644acf38472e9d827058b612d500efc8c3a44906b141ac159ec36245ab904c5
+rendered_hash: 505cbbe25e55660b993d5cb480146996b56f014e5f641d65fd85e99b7d414d00
 -->
 
 # ADR-L-0013: Architecture Repository Boundary and Normalized Semantic Model
@@ -63,58 +63,14 @@ flowchart LR
 
 ## Neighbor Relationships
 
-### ADR-PC-0001 — Entity Registry and Discovery Index
+| Neighbor | Relationship | Exact Path |
+| --- | --- | --- |
+| [ADR-PC-0001 — Entity Registry and Discovery Index](../physical-component/ADR-PC-0001-entity-registry-and-discovery-index.md) | CAP-0044 -[:implemented_by]-> COMP-0010 | `CAP-0044 -[:implemented_by]-> COMP-0010` |
+| [ADR-PC-0003 — Compiler Pipeline and Driver](../physical-component/ADR-PC-0003-compiler-pipeline-and-driver.md) | ADR-PC-0003 -[:implements_logical]-> ADR-L-0013 | `ADR-PC-0003 -[:implements_logical]-> ADR-L-0013` |
+| [ADR-PC-0004 — Repository Boundary and Normalized Semantic Model](../physical-component/ADR-PC-0004-repository-boundary-and-normalized-semantic-model.md) | ADR-PC-0004 -[:implements_logical]-> ADR-L-0013 | `ADR-PC-0004 -[:implements_logical]-> ADR-L-0013` |
+| [ADR-PC-0005 — Generated Artifact Integrity Validation](../physical-component/ADR-PC-0005-generated-artifact-integrity-validation.md) | ADR-PC-0005 -[:implements_logical]-> ADR-L-0013 | `ADR-PC-0005 -[:implements_logical]-> ADR-L-0013` |
+| [ADR-PS-0002 — ADR Kit Authoring Compiler and Validation System](../physical-system/ADR-PS-0002-adr-kit-authoring-compiler-and-validation-system.md) | ADR-PS-0002 -[:implements_logical]-> ADR-L-0013 | `ADR-PS-0002 -[:implements_logical]-> ADR-L-0013` |
 
-- CAP-0044 -[:implemented_by]-> COMP-0010
-
-**Context:** The discovery/indexing component now centers on the unified compiler path. It
-generates the normalized discovery bundle under `adrs/index/`, emits the
-legacy compatibility registry at `adrs/entities/registry.yaml`, generates
-manifest and rendered ADR markdown outputs through the same compiler-owned
-path for single-scope use, and exposes exact-ID and filtered CLI query
-operations over generated registry state.
-
-[Open projection](../physical-component/ADR-PC-0001-entity-registry-and-discovery-index.md)
-### ADR-PC-0003 — Compiler Pipeline and Driver
-
-- ADR-PC-0003 -[:implements_logical]-> ADR-L-0013
-
-**Context:** The compiler driver and explicit pipeline now own deterministic architecture
-compilation across parse, analysis, emission, and recursive scope
-orchestration. The command-line behavior is compatibility-relevant, while the
-Python compiler pipeline, passes, `ArchModel`, emitters, and result plumbing are
-internal reference implementation and are not a supported SDK facade.
-
-[Open projection](../physical-component/ADR-PC-0003-compiler-pipeline-and-driver.md)
-### ADR-PC-0004 — Repository Boundary and Normalized Semantic Model
-
-- ADR-PC-0004 -[:implements_logical]-> ADR-L-0013
-
-**Context:** ArchitectureRepository and NormalizedArchitectureModel are the stable
-in-process semantic boundary for consumers. Phase 1 adds a narrow supported
-authoring facade that reuses those contracts without wrapping or changing the
-normalized model and without making registry loaders or path helpers public.
-
-[Open projection](../physical-component/ADR-PC-0004-repository-boundary-and-normalized-semantic-model.md)
-### ADR-PC-0005 — Generated Artifact Integrity Validation
-
-- ADR-PC-0005 -[:implements_logical]-> ADR-L-0013
-
-**Context:** Generated artifact integrity validation verifies freshness, tamper status,
-integrity headers, and scope-local generated outputs. It is a distinct public
-subsystem used by validator and governance flows.
-
-[Open projection](../physical-component/ADR-PC-0005-generated-artifact-integrity-validation.md)
-### ADR-PS-0002 — ADR Kit Authoring Compiler and Validation System
-
-- ADR-PS-0002 -[:implements_logical]-> ADR-L-0013
-
-**Context:** adr-architecture-kit operates as an authoring-time compiler and validation system rather
-than a collection of unrelated generators. The implementation includes an
-explicit compiler pipeline, contract validation, normalized repository/model
-access, integrity verification, and CLI orchestration over those surfaces.
-
-[Open projection](../physical-system/ADR-PS-0002-adr-kit-authoring-compiler-and-validation-system.md)
 
 ### Lifecycle / association
 

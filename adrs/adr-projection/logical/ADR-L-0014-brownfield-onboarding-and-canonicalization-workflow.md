@@ -5,8 +5,8 @@ artifact_kind: rendered_adr_markdown
 generator_id: adr-projection-markdown
 generator_version: 3
 hash_algorithm: sha256
-source_hash: 6c1eb33b9a87dfda55eb47e90fc98febbdc2020b50aa6e4bca3e2a3163dd249c
-rendered_hash: b9fff6adeed182e491ca2721d5a98e54133e04dc59f6503964104c951059135d
+source_hash: 126d577df86f959a1704d1d0d199d4b821d3f2e898722e97b6c334362fdef102
+rendered_hash: 08e570408f358fad9271839659d24e761799d2bd3bee95fdcc3c545098ab5e90
 -->
 
 # ADR-L-0014: Brownfield Onboarding and Canonicalization Workflow
@@ -27,13 +27,6 @@ Logical architecture authority for this subject. Neighborhood paths use structur
 
 ## Architecture Neighborhood
 
-```mermaid
-flowchart LR
-  n_019fee89_e616_7628_913b_a059c1057c36["ADR-L-0014<br/>Brownfield Onboarding and Canonicalization Workflow"]
-  n_019fee89_e618_7787_b43f_a3e5cb264dd5["ADR-PC-0006<br/>Brownfield Onboarding and Canonical Normalization"]
-  n_019fee89_e618_7787_b43f_a3e5cb264dd5 -->|"implements_logical"| n_019fee89_e616_7628_913b_a059c1057c36
-```
-
 
 ### Semantic architecture inventory
 
@@ -41,15 +34,10 @@ flowchart LR
 
 ## Neighbor Relationships
 
-### ADR-PC-0006 — Brownfield Onboarding and Canonical Normalization
+| Neighbor | Relationship | Exact Path |
+| --- | --- | --- |
+| [ADR-PC-0006 — Brownfield Onboarding and Canonical Normalization](../physical-component/ADR-PC-0006-brownfield-onboarding-and-canonical-normalization.md) | ADR-PC-0006 -[:implements_logical]-> ADR-L-0014 | `ADR-PC-0006 -[:implements_logical]-> ADR-L-0014` |
 
-- ADR-PC-0006 -[:implements_logical]-> ADR-L-0014
-
-**Context:** adr-architecture-kit already includes migration and normalization behavior in
-its migrator and CLI surfaces. This component makes brownfield onboarding and
-canonical normalization an explicit part of the compiler/validation runtime.
-
-[Open projection](../physical-component/ADR-PC-0006-brownfield-onboarding-and-canonical-normalization.md)
 
 ### Lifecycle / association
 

@@ -5,8 +5,8 @@ artifact_kind: rendered_adr_markdown
 generator_id: adr-projection-markdown
 generator_version: 3
 hash_algorithm: sha256
-source_hash: 4171c0232c227811bbae0694ac87d14e540bc42c4022d682072344dbe3caec4f
-rendered_hash: 37c3f8edf8921f3491e9e5902149cd8e7b6943c313f206bacb6bbcc6685645b8
+source_hash: e6e1c3ecf04617e4fca2a08c92e24b187223249d06baa886f72d28caad7269c6
+rendered_hash: c9291e8d531db4dfd74373c531f11d80099c46eabd257a5fc452b99525b3787f
 -->
 
 # ADR-L-0009: Derived Architecture Discovery Surfaces
@@ -56,42 +56,12 @@ flowchart LR
 
 ## Neighbor Relationships
 
-### ADR-PC-0001 — Entity Registry and Discovery Index
+| Neighbor | Relationship | Exact Path |
+| --- | --- | --- |
+| [ADR-PC-0001 — Entity Registry and Discovery Index](../physical-component/ADR-PC-0001-entity-registry-and-discovery-index.md) | CAP-0018 -[:implemented_by]-> COMP-0010 | `CAP-0018 -[:implemented_by]-> COMP-0010` |
+| [ADR-PC-0003 — Compiler Pipeline and Driver](../physical-component/ADR-PC-0003-compiler-pipeline-and-driver.md) | ADR-PC-0003 -[:implements_logical]-> ADR-L-0009 | `ADR-PC-0003 -[:implements_logical]-> ADR-L-0009` |
+| [ADR-PS-0001 — ADR Architecture Kit Discovery and Indexing System](../physical-system/ADR-PS-0001-adr-architecture-kit-discovery-and-indexing-system.md) | ADR-PS-0001 -[:implements_logical]-> ADR-L-0009 | `ADR-PS-0001 -[:implements_logical]-> ADR-L-0009` |
 
-- CAP-0018 -[:implemented_by]-> COMP-0010
-
-**Context:** The discovery/indexing component now centers on the unified compiler path. It
-generates the normalized discovery bundle under `adrs/index/`, emits the
-legacy compatibility registry at `adrs/entities/registry.yaml`, generates
-manifest and rendered ADR markdown outputs through the same compiler-owned
-path for single-scope use, and exposes exact-ID and filtered CLI query
-operations over generated registry state.
-
-[Open projection](../physical-component/ADR-PC-0001-entity-registry-and-discovery-index.md)
-### ADR-PC-0003 — Compiler Pipeline and Driver
-
-- ADR-PC-0003 -[:implements_logical]-> ADR-L-0009
-
-**Context:** The compiler driver and explicit pipeline now own deterministic architecture
-compilation across parse, analysis, emission, and recursive scope
-orchestration. The command-line behavior is compatibility-relevant, while the
-Python compiler pipeline, passes, `ArchModel`, emitters, and result plumbing are
-internal reference implementation and are not a supported SDK facade.
-
-[Open projection](../physical-component/ADR-PC-0003-compiler-pipeline-and-driver.md)
-### ADR-PS-0001 — ADR Architecture Kit Discovery and Indexing System
-
-- ADR-PS-0001 -[:implements_logical]-> ADR-L-0009
-
-**Context:** The discovery and indexing subsystem provides the derived surfaces that agents
-query instead of scanning raw ADR bodies by default. It now includes
-normalized discovery bundle generation under `adrs/index/`, legacy
-compatibility registry generation under `adrs/entities/registry.yaml`,
-manifest generation, rendered ADR markdown generation, CLI query surfaces over
-generated registry state, and the unified `adr compile` orchestration path
-that emits these derived discovery artifacts together.
-
-[Open projection](../physical-system/ADR-PS-0001-adr-architecture-kit-discovery-and-indexing-system.md)
 
 ### Lifecycle / association
 

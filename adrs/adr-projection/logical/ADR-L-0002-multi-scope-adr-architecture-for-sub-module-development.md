@@ -5,8 +5,8 @@ artifact_kind: rendered_adr_markdown
 generator_id: adr-projection-markdown
 generator_version: 3
 hash_algorithm: sha256
-source_hash: bcfa5488232ecc5aeba19ccc06fc0417e597e5db040914e227bf7107848e99a4
-rendered_hash: 4cca3f27c01bcdb17b0c1ca626ba3439cc6e6291608ea5ab183a9593f2ed5c7f
+source_hash: 81f12db0540d349e7299ad7e20271685881b3ed6af8181a849571dff005e5890
+rendered_hash: 5f6e96f4b6cf8cab5b8447ce118dd64feddfbac97b8896891feb40d18a37b438
 -->
 
 # ADR-L-0002: Multi-Scope ADR Architecture for Sub-Module Development
@@ -28,23 +28,6 @@ Logical architecture authority for this subject. Neighborhood paths use structur
 
 ## Architecture Neighborhood
 
-```mermaid
-flowchart LR
-  n_019fee89_e615_7f19_810b_c7b33a9d9e0d["ADR-L-0002<br/>Multi-Scope ADR Architecture for Sub-Module Development"]
-  n_019fee89_e617_7270_ab2f_58a756d2530e["ADR-PC-0001<br/>Entity Registry and Discovery Index"]
-  n_019fee89_e617_7d2b_8325_cd85ff814477["ADR-PC-0002<br/>Schema and Contract Validation"]
-  n_019fee89_e618_7b3e_813b_a449881b6adb["ADR-PS-0001<br/>ADR Architecture Kit Discovery and Indexing System"]
-  n_019fee89_e618_7b76_843f_cfe21ceb2ea6["ADR-PC-0003<br/>Compiler Pipeline and Driver"]
-  n_019fee89_e618_7d04_9337_4aa2d3258507["ADR-PS-0002<br/>ADR Kit Authoring Compiler and Validation System"]
-  n_01a048d8_454a_7464_bcaa_718fa77bed6a["ADR-PC-0008<br/>Project Scope Resolution"]
-  n_019fee89_e617_7270_ab2f_58a756d2530e -->|"implements_logical"| n_019fee89_e615_7f19_810b_c7b33a9d9e0d
-  n_019fee89_e617_7d2b_8325_cd85ff814477 -->|"implements_logical"| n_019fee89_e615_7f19_810b_c7b33a9d9e0d
-  n_019fee89_e618_7b3e_813b_a449881b6adb -->|"implements_logical"| n_019fee89_e615_7f19_810b_c7b33a9d9e0d
-  n_019fee89_e618_7b76_843f_cfe21ceb2ea6 -->|"implements_logical"| n_019fee89_e615_7f19_810b_c7b33a9d9e0d
-  n_019fee89_e618_7d04_9337_4aa2d3258507 -->|"implements_logical"| n_019fee89_e615_7f19_810b_c7b33a9d9e0d
-  n_01a048d8_454a_7464_bcaa_718fa77bed6a -->|"implements_logical"| n_019fee89_e615_7f19_810b_c7b33a9d9e0d
-```
-
 
 ### Semantic architecture inventory
 
@@ -57,72 +40,15 @@ flowchart LR
 
 ## Neighbor Relationships
 
-### ADR-PC-0001 — Entity Registry and Discovery Index
+| Neighbor | Relationship | Exact Path |
+| --- | --- | --- |
+| [ADR-PC-0001 — Entity Registry and Discovery Index](../physical-component/ADR-PC-0001-entity-registry-and-discovery-index.md) | ADR-PC-0001 -[:implements_logical]-> ADR-L-0002 | `ADR-PC-0001 -[:implements_logical]-> ADR-L-0002` |
+| [ADR-PC-0002 — Schema and Contract Validation](../physical-component/ADR-PC-0002-schema-and-contract-validation.md) | ADR-PC-0002 -[:implements_logical]-> ADR-L-0002 | `ADR-PC-0002 -[:implements_logical]-> ADR-L-0002` |
+| [ADR-PC-0003 — Compiler Pipeline and Driver](../physical-component/ADR-PC-0003-compiler-pipeline-and-driver.md) | ADR-PC-0003 -[:implements_logical]-> ADR-L-0002 | `ADR-PC-0003 -[:implements_logical]-> ADR-L-0002` |
+| [ADR-PC-0008 — Project Scope Resolution](../physical-component/ADR-PC-0008-project-scope-resolution.md) | ADR-PC-0008 -[:implements_logical]-> ADR-L-0002 | `ADR-PC-0008 -[:implements_logical]-> ADR-L-0002` |
+| [ADR-PS-0001 — ADR Architecture Kit Discovery and Indexing System](../physical-system/ADR-PS-0001-adr-architecture-kit-discovery-and-indexing-system.md) | ADR-PS-0001 -[:implements_logical]-> ADR-L-0002 | `ADR-PS-0001 -[:implements_logical]-> ADR-L-0002` |
+| [ADR-PS-0002 — ADR Kit Authoring Compiler and Validation System](../physical-system/ADR-PS-0002-adr-kit-authoring-compiler-and-validation-system.md) | ADR-PS-0002 -[:implements_logical]-> ADR-L-0002 | `ADR-PS-0002 -[:implements_logical]-> ADR-L-0002` |
 
-- ADR-PC-0001 -[:implements_logical]-> ADR-L-0002
-
-**Context:** The discovery/indexing component now centers on the unified compiler path. It
-generates the normalized discovery bundle under `adrs/index/`, emits the
-legacy compatibility registry at `adrs/entities/registry.yaml`, generates
-manifest and rendered ADR markdown outputs through the same compiler-owned
-path for single-scope use, and exposes exact-ID and filtered CLI query
-operations over generated registry state.
-
-[Open projection](../physical-component/ADR-PC-0001-entity-registry-and-discovery-index.md)
-### ADR-PC-0002 — Schema and Contract Validation
-
-- ADR-PC-0002 -[:implements_logical]-> ADR-L-0002
-
-**Context:** Schema and contract validation is now a stable component boundary rather than
-a generic legacy physical slice. It validates canonical ADR structure,
-profile-specific contract requirements, project metadata, and implementation
-attribution evidence. Validation of that evidence is structural for schema shape and architecture-aware when claims must resolve to canonical UUIDs and entity types. Legacy 1.0/1.2 evidence normalizes to the v1.5 claim shape only with repository or model 2.0 context.
-
-[Open projection](../physical-component/ADR-PC-0002-schema-and-contract-validation.md)
-### ADR-PC-0003 — Compiler Pipeline and Driver
-
-- ADR-PC-0003 -[:implements_logical]-> ADR-L-0002
-
-**Context:** The compiler driver and explicit pipeline now own deterministic architecture
-compilation across parse, analysis, emission, and recursive scope
-orchestration. The command-line behavior is compatibility-relevant, while the
-Python compiler pipeline, passes, `ArchModel`, emitters, and result plumbing are
-internal reference implementation and are not a supported SDK facade.
-
-[Open projection](../physical-component/ADR-PC-0003-compiler-pipeline-and-driver.md)
-### ADR-PC-0008 — Project Scope Resolution
-
-- ADR-PC-0008 -[:implements_logical]-> ADR-L-0002
-
-**Context:** Permanent physical-component authority for multi-scope project-root detection,
-scope boundary validation, and scope-resolution semantics per ADR-L-0002.
-Rehomes preserved nested identity from retired ADR-P-0003 (COMP-0017) into
-governed PS+PC authority without topology authoring in this document.
-
-[Open projection](../physical-component/ADR-PC-0008-project-scope-resolution.md)
-### ADR-PS-0001 — ADR Architecture Kit Discovery and Indexing System
-
-- ADR-PS-0001 -[:implements_logical]-> ADR-L-0002
-
-**Context:** The discovery and indexing subsystem provides the derived surfaces that agents
-query instead of scanning raw ADR bodies by default. It now includes
-normalized discovery bundle generation under `adrs/index/`, legacy
-compatibility registry generation under `adrs/entities/registry.yaml`,
-manifest generation, rendered ADR markdown generation, CLI query surfaces over
-generated registry state, and the unified `adr compile` orchestration path
-that emits these derived discovery artifacts together.
-
-[Open projection](../physical-system/ADR-PS-0001-adr-architecture-kit-discovery-and-indexing-system.md)
-### ADR-PS-0002 — ADR Kit Authoring Compiler and Validation System
-
-- ADR-PS-0002 -[:implements_logical]-> ADR-L-0002
-
-**Context:** adr-architecture-kit operates as an authoring-time compiler and validation system rather
-than a collection of unrelated generators. The implementation includes an
-explicit compiler pipeline, contract validation, normalized repository/model
-access, integrity verification, and CLI orchestration over those surfaces.
-
-[Open projection](../physical-system/ADR-PS-0002-adr-kit-authoring-compiler-and-validation-system.md)
 
 ### Lifecycle / association
 

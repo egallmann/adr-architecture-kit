@@ -5,8 +5,8 @@ artifact_kind: rendered_adr_markdown
 generator_id: adr-projection-markdown
 generator_version: 3
 hash_algorithm: sha256
-source_hash: a4e31195ff7a4de059ed3dfb625183ba855a2321435d91b1f47d5038b1a07aab
-rendered_hash: ffbc61c22567a1b56067a5a28d535e5d2093b2d720d4689707e57e4630f7a1b0
+source_hash: b3ea256e138eb9ab2585092f0cd8c1a1a173afe7d42b2ed79d244216c838d078
+rendered_hash: f80a54553f76b713fd5c3ee047b65ab2fc3bb6fcf5fed2a0675d7c5745d7bde5
 -->
 
 # ADR-L-0004: ADR-to-Implementation Traceability via Decorators and Metadata Attribution
@@ -28,13 +28,6 @@ Logical architecture authority for this subject. Neighborhood paths use structur
 
 ## Architecture Neighborhood
 
-```mermaid
-flowchart LR
-  n_019fee89_e615_7577_8d37_dd0df031bec9["ADR-L-0004<br/>ADR-to-Implementation Traceability via Decorators and Metadata Attribution"]
-  n_019ffdba_3c42_70da_b33d_efc003269c42["ADR-PC-0007<br/>Semantic Attribution Embodiment"]
-  n_019ffdba_3c42_70da_b33d_efc003269c42 -->|"implements_logical"| n_019fee89_e615_7577_8d37_dd0df031bec9
-```
-
 
 ### Semantic architecture inventory
 
@@ -42,17 +35,10 @@ flowchart LR
 
 ## Neighbor Relationships
 
-### ADR-PC-0007 — Semantic Attribution Embodiment
+| Neighbor | Relationship | Exact Path |
+| --- | --- | --- |
+| [ADR-PC-0007 — Semantic Attribution Embodiment](../physical-component/ADR-PC-0007-semantic-attribution-embodiment.md) | ADR-PC-0007 -[:implements_logical]-> ADR-L-0004 | `ADR-PC-0007 -[:implements_logical]-> ADR-L-0004` |
 
-- ADR-PC-0007 -[:implements_logical]-> ADR-L-0004
-
-**Context:** Semantic attribution needs a kit-owned embodiment for vocabulary, evidence
-models, UUID decorators, standalone shims, architecture-aware validation,
-repository-aware versioned normalization, and a supported bidirectional
-linkage facade. This component does not parse consumer source code, does not
-own RECON extraction, and does not admit evidence to the architecture graph.
-
-[Open projection](../physical-component/ADR-PC-0007-semantic-attribution-embodiment.md)
 
 ### Lifecycle / association
 

@@ -5,8 +5,8 @@ artifact_kind: rendered_adr_markdown
 generator_id: adr-projection-markdown
 generator_version: 3
 hash_algorithm: sha256
-source_hash: 855439624875a2c2182cf5b2282c0519b1ca97daaf6f6b69d51058ebf5044f17
-rendered_hash: 6a47c8dbb7c2772dd0d04f65f9208ef62509255b2f5952b59274de6471a4a055
+source_hash: a9e224f9e50cb13a1cd56d6595f1068c05264b6ee05edbc7d8cfda4fb5140a8a
+rendered_hash: 2a5801305e1207aa41b1dc25c4d0d3e52ac3a188ba9f1e82debff2855383f6f5
 -->
 
 # ADR-L-0020: Semantic Implementation Attribution and Cross-Layer Architecture Relationships
@@ -28,15 +28,6 @@ Logical architecture authority for this subject. Neighborhood paths use structur
 
 ## Architecture Neighborhood
 
-```mermaid
-flowchart LR
-  n_019fee89_e617_7d2b_8325_cd85ff814477["ADR-PC-0002<br/>Schema and Contract Validation"]
-  n_019ffdba_3c42_70da_b33d_efc003269c42["ADR-PC-0007<br/>Semantic Attribution Embodiment"]
-  n_019ffdba_3c42_7c4a_a737_f6751a265d60["ADR-L-0020<br/>Semantic Implementation Attribution and Cross-Layer Architecture Relationships"]
-  n_019fee89_e617_7d2b_8325_cd85ff814477 -->|"implements_logical"| n_019ffdba_3c42_7c4a_a737_f6751a265d60
-  n_019ffdba_3c42_70da_b33d_efc003269c42 -->|"implements_logical"| n_019ffdba_3c42_7c4a_a737_f6751a265d60
-```
-
 
 ### Semantic architecture inventory
 
@@ -45,27 +36,11 @@ flowchart LR
 
 ## Neighbor Relationships
 
-### ADR-PC-0002 — Schema and Contract Validation
+| Neighbor | Relationship | Exact Path |
+| --- | --- | --- |
+| [ADR-PC-0002 — Schema and Contract Validation](../physical-component/ADR-PC-0002-schema-and-contract-validation.md) | ADR-PC-0002 -[:implements_logical]-> ADR-L-0020 | `ADR-PC-0002 -[:implements_logical]-> ADR-L-0020` |
+| [ADR-PC-0007 — Semantic Attribution Embodiment](../physical-component/ADR-PC-0007-semantic-attribution-embodiment.md) | ADR-PC-0007 -[:implements_logical]-> ADR-L-0020 | `ADR-PC-0007 -[:implements_logical]-> ADR-L-0020` |
 
-- ADR-PC-0002 -[:implements_logical]-> ADR-L-0020
-
-**Context:** Schema and contract validation is now a stable component boundary rather than
-a generic legacy physical slice. It validates canonical ADR structure,
-profile-specific contract requirements, project metadata, and implementation
-attribution evidence. Validation of that evidence is structural for schema shape and architecture-aware when claims must resolve to canonical UUIDs and entity types. Legacy 1.0/1.2 evidence normalizes to the v1.5 claim shape only with repository or model 2.0 context.
-
-[Open projection](../physical-component/ADR-PC-0002-schema-and-contract-validation.md)
-### ADR-PC-0007 — Semantic Attribution Embodiment
-
-- ADR-PC-0007 -[:implements_logical]-> ADR-L-0020
-
-**Context:** Semantic attribution needs a kit-owned embodiment for vocabulary, evidence
-models, UUID decorators, standalone shims, architecture-aware validation,
-repository-aware versioned normalization, and a supported bidirectional
-linkage facade. This component does not parse consumer source code, does not
-own RECON extraction, and does not admit evidence to the architecture graph.
-
-[Open projection](../physical-component/ADR-PC-0007-semantic-attribution-embodiment.md)
 
 ### Lifecycle / association
 

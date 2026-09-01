@@ -5,8 +5,8 @@ artifact_kind: rendered_adr_markdown
 generator_id: adr-projection-markdown
 generator_version: 3
 hash_algorithm: sha256
-source_hash: d5684343e7ad1ee3abf2a10a6886f03c618dd77d341501e5c48de58905ab478e
-rendered_hash: 9e69c243458de5a7028ab73e11b2c5ee57c5cea32c850f9ddba3300d10a7b2a0
+source_hash: 5d01ccb256f082d408bae467f0dbcafaacb09f2ebadfa9f6026e5a82024eea2f
+rendered_hash: a7c7eb5408311bff0666f124491d97a5c289033f53face95d322c8e79b1da996
 -->
 
 # ADR-L-0008: Validation Modes for Draft and Complete ADRs
@@ -27,15 +27,6 @@ Logical architecture authority for this subject. Neighborhood paths use structur
 
 ## Architecture Neighborhood
 
-```mermaid
-flowchart LR
-  n_019fee89_e616_7066_8d2f_3acc7f469f72["ADR-L-0008<br/>Validation Modes for Draft and Complete ADRs"]
-  n_019fee89_e617_7d2b_8325_cd85ff814477["ADR-PC-0002<br/>Schema and Contract Validation"]
-  n_019fee89_e618_7d04_9337_4aa2d3258507["ADR-PS-0002<br/>ADR Kit Authoring Compiler and Validation System"]
-  n_019fee89_e617_7d2b_8325_cd85ff814477 -->|"implements_logical"| n_019fee89_e616_7066_8d2f_3acc7f469f72
-  n_019fee89_e618_7d04_9337_4aa2d3258507 -->|"implements_logical"| n_019fee89_e616_7066_8d2f_3acc7f469f72
-```
-
 
 ### Semantic architecture inventory
 
@@ -44,26 +35,11 @@ flowchart LR
 
 ## Neighbor Relationships
 
-### ADR-PC-0002 — Schema and Contract Validation
+| Neighbor | Relationship | Exact Path |
+| --- | --- | --- |
+| [ADR-PC-0002 — Schema and Contract Validation](../physical-component/ADR-PC-0002-schema-and-contract-validation.md) | ADR-PC-0002 -[:implements_logical]-> ADR-L-0008 | `ADR-PC-0002 -[:implements_logical]-> ADR-L-0008` |
+| [ADR-PS-0002 — ADR Kit Authoring Compiler and Validation System](../physical-system/ADR-PS-0002-adr-kit-authoring-compiler-and-validation-system.md) | ADR-PS-0002 -[:implements_logical]-> ADR-L-0008 | `ADR-PS-0002 -[:implements_logical]-> ADR-L-0008` |
 
-- ADR-PC-0002 -[:implements_logical]-> ADR-L-0008
-
-**Context:** Schema and contract validation is now a stable component boundary rather than
-a generic legacy physical slice. It validates canonical ADR structure,
-profile-specific contract requirements, project metadata, and implementation
-attribution evidence. Validation of that evidence is structural for schema shape and architecture-aware when claims must resolve to canonical UUIDs and entity types. Legacy 1.0/1.2 evidence normalizes to the v1.5 claim shape only with repository or model 2.0 context.
-
-[Open projection](../physical-component/ADR-PC-0002-schema-and-contract-validation.md)
-### ADR-PS-0002 — ADR Kit Authoring Compiler and Validation System
-
-- ADR-PS-0002 -[:implements_logical]-> ADR-L-0008
-
-**Context:** adr-architecture-kit operates as an authoring-time compiler and validation system rather
-than a collection of unrelated generators. The implementation includes an
-explicit compiler pipeline, contract validation, normalized repository/model
-access, integrity verification, and CLI orchestration over those surfaces.
-
-[Open projection](../physical-system/ADR-PS-0002-adr-kit-authoring-compiler-and-validation-system.md)
 
 ### Lifecycle / association
 

@@ -5,8 +5,8 @@ artifact_kind: rendered_adr_markdown
 generator_id: adr-projection-markdown
 generator_version: 3
 hash_algorithm: sha256
-source_hash: 412f2960b1c672a262946fbf4b98d87595f1ace9a9a58455705db0d086b97e09
-rendered_hash: f2cf1c5cc8c0941620bcd0bfcb20e2b3a5766d6813ebb4ac42ae1ccb351f47be
+source_hash: e1a107c7af4adc1616146d3e364352cdf6ce16e36ae7f0176908cd77c79d2862
+rendered_hash: 40731b01eb904ea16ee71c01a799405c2e3cfdc1e59b0faecc9000eb876e6f89
 -->
 
 # ADR-L-0007: Deterministic Documentation Projection
@@ -27,17 +27,6 @@ Logical architecture authority for this subject. Neighborhood paths use structur
 
 ## Architecture Neighborhood
 
-```mermaid
-flowchart LR
-  n_019fee89_e615_7b9c_8e3f_32ceeda01491["ADR-L-0007<br/>Deterministic Documentation Projection"]
-  n_019fee89_e618_74b2_a83e_e41c7d8c9f37["ADR-PC-0005<br/>Generated Artifact Integrity Validation"]
-  n_019fee89_e618_7b76_843f_cfe21ceb2ea6["ADR-PC-0003<br/>Compiler Pipeline and Driver"]
-  n_019fee89_e618_7d04_9337_4aa2d3258507["ADR-PS-0002<br/>ADR Kit Authoring Compiler and Validation System"]
-  n_019fee89_e618_74b2_a83e_e41c7d8c9f37 -->|"implements_logical"| n_019fee89_e615_7b9c_8e3f_32ceeda01491
-  n_019fee89_e618_7b76_843f_cfe21ceb2ea6 -->|"implements_logical"| n_019fee89_e615_7b9c_8e3f_32ceeda01491
-  n_019fee89_e618_7d04_9337_4aa2d3258507 -->|"implements_logical"| n_019fee89_e615_7b9c_8e3f_32ceeda01491
-```
-
 
 ### Semantic architecture inventory
 
@@ -47,36 +36,12 @@ flowchart LR
 
 ## Neighbor Relationships
 
-### ADR-PC-0003 — Compiler Pipeline and Driver
+| Neighbor | Relationship | Exact Path |
+| --- | --- | --- |
+| [ADR-PC-0003 — Compiler Pipeline and Driver](../physical-component/ADR-PC-0003-compiler-pipeline-and-driver.md) | ADR-PC-0003 -[:implements_logical]-> ADR-L-0007 | `ADR-PC-0003 -[:implements_logical]-> ADR-L-0007` |
+| [ADR-PC-0005 — Generated Artifact Integrity Validation](../physical-component/ADR-PC-0005-generated-artifact-integrity-validation.md) | ADR-PC-0005 -[:implements_logical]-> ADR-L-0007 | `ADR-PC-0005 -[:implements_logical]-> ADR-L-0007` |
+| [ADR-PS-0002 — ADR Kit Authoring Compiler and Validation System](../physical-system/ADR-PS-0002-adr-kit-authoring-compiler-and-validation-system.md) | ADR-PS-0002 -[:implements_logical]-> ADR-L-0007 | `ADR-PS-0002 -[:implements_logical]-> ADR-L-0007` |
 
-- ADR-PC-0003 -[:implements_logical]-> ADR-L-0007
-
-**Context:** The compiler driver and explicit pipeline now own deterministic architecture
-compilation across parse, analysis, emission, and recursive scope
-orchestration. The command-line behavior is compatibility-relevant, while the
-Python compiler pipeline, passes, `ArchModel`, emitters, and result plumbing are
-internal reference implementation and are not a supported SDK facade.
-
-[Open projection](../physical-component/ADR-PC-0003-compiler-pipeline-and-driver.md)
-### ADR-PC-0005 — Generated Artifact Integrity Validation
-
-- ADR-PC-0005 -[:implements_logical]-> ADR-L-0007
-
-**Context:** Generated artifact integrity validation verifies freshness, tamper status,
-integrity headers, and scope-local generated outputs. It is a distinct public
-subsystem used by validator and governance flows.
-
-[Open projection](../physical-component/ADR-PC-0005-generated-artifact-integrity-validation.md)
-### ADR-PS-0002 — ADR Kit Authoring Compiler and Validation System
-
-- ADR-PS-0002 -[:implements_logical]-> ADR-L-0007
-
-**Context:** adr-architecture-kit operates as an authoring-time compiler and validation system rather
-than a collection of unrelated generators. The implementation includes an
-explicit compiler pipeline, contract validation, normalized repository/model
-access, integrity verification, and CLI orchestration over those surfaces.
-
-[Open projection](../physical-system/ADR-PS-0002-adr-kit-authoring-compiler-and-validation-system.md)
 
 ### Lifecycle / association
 

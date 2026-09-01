@@ -5,8 +5,8 @@ artifact_kind: rendered_adr_markdown
 generator_id: adr-projection-markdown
 generator_version: 3
 hash_algorithm: sha256
-source_hash: 0d66a9f2119fa60b07fb2a133f28aa47a59adbad04d53d5e727eb1fea84a0533
-rendered_hash: d412d600bdd8eb6474a3200716c6592b9a9aae97b6eb7400316d604a7413b8d9
+source_hash: 1feb37ce8bfb52ab206e3fdbf70258ad08fbff03084b4c304f583ba62a0091ba
+rendered_hash: c07a523826054e95a130e4d811e787e1ce47dedbc4e11efffdbdb5143a48f27d
 -->
 
 # ADR-L-0001: STE-Compliant Machine-Verifiable Architecture Decision Record System
@@ -27,13 +27,6 @@ Logical architecture authority for this subject. Neighborhood paths use structur
 
 ## Architecture Neighborhood
 
-```mermaid
-flowchart LR
-  n_019fee89_e615_70a5_861b_b2dde147e5af["ADR-L-0001<br/>STE-Compliant Machine-Verifiable Architecture Decision Record System"]
-  n_019fee89_e618_7d04_9337_4aa2d3258507["ADR-PS-0002<br/>ADR Kit Authoring Compiler and Validation System"]
-  n_019fee89_e618_7d04_9337_4aa2d3258507 -->|"implements_logical"| n_019fee89_e615_70a5_861b_b2dde147e5af
-```
-
 
 ### Semantic architecture inventory
 
@@ -41,16 +34,10 @@ flowchart LR
 
 ## Neighbor Relationships
 
-### ADR-PS-0002 — ADR Kit Authoring Compiler and Validation System
+| Neighbor | Relationship | Exact Path |
+| --- | --- | --- |
+| [ADR-PS-0002 — ADR Kit Authoring Compiler and Validation System](../physical-system/ADR-PS-0002-adr-kit-authoring-compiler-and-validation-system.md) | ADR-PS-0002 -[:implements_logical]-> ADR-L-0001 | `ADR-PS-0002 -[:implements_logical]-> ADR-L-0001` |
 
-- ADR-PS-0002 -[:implements_logical]-> ADR-L-0001
-
-**Context:** adr-architecture-kit operates as an authoring-time compiler and validation system rather
-than a collection of unrelated generators. The implementation includes an
-explicit compiler pipeline, contract validation, normalized repository/model
-access, integrity verification, and CLI orchestration over those surfaces.
-
-[Open projection](../physical-system/ADR-PS-0002-adr-kit-authoring-compiler-and-validation-system.md)
 
 ### Lifecycle / association
 

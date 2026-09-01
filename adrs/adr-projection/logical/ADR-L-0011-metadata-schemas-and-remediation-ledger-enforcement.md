@@ -5,8 +5,8 @@ artifact_kind: rendered_adr_markdown
 generator_id: adr-projection-markdown
 generator_version: 3
 hash_algorithm: sha256
-source_hash: a72307d3e367f6b91857eb58d6d7893cf18b0e7d6ed8e479c339987144774749
-rendered_hash: ae927f8a97cd7fe475b225749931325f0790166c6c03ba1444d9dda5d20aeec8
+source_hash: 592eea98eba9de37aab437f624f014e492943ae7e4ba96a7742166207da1a5dd
+rendered_hash: 6fa64fc4125e4b3cff52a4a56741ece263fe742130bc6e3b5c0ff478a839ce4e
 -->
 
 # ADR-L-0011: Metadata Schemas and Remediation Ledger Enforcement
@@ -27,17 +27,6 @@ Logical architecture authority for this subject. Neighborhood paths use structur
 
 ## Architecture Neighborhood
 
-```mermaid
-flowchart LR
-  n_019fee89_e616_7b97_971d_ae165d13bf9c["ADR-L-0011<br/>Metadata Schemas and Remediation Ledger Enforcement"]
-  n_019fee89_e617_7d2b_8325_cd85ff814477["ADR-PC-0002<br/>Schema and Contract Validation"]
-  n_019fee89_e618_7787_b43f_a3e5cb264dd5["ADR-PC-0006<br/>Brownfield Onboarding and Canonical Normalization"]
-  n_019fee89_e618_7d04_9337_4aa2d3258507["ADR-PS-0002<br/>ADR Kit Authoring Compiler and Validation System"]
-  n_019fee89_e617_7d2b_8325_cd85ff814477 -->|"implements_logical"| n_019fee89_e616_7b97_971d_ae165d13bf9c
-  n_019fee89_e618_7787_b43f_a3e5cb264dd5 -->|"implements_logical"| n_019fee89_e616_7b97_971d_ae165d13bf9c
-  n_019fee89_e618_7d04_9337_4aa2d3258507 -->|"implements_logical"| n_019fee89_e616_7b97_971d_ae165d13bf9c
-```
-
 
 ### Semantic architecture inventory
 
@@ -47,35 +36,12 @@ flowchart LR
 
 ## Neighbor Relationships
 
-### ADR-PC-0002 — Schema and Contract Validation
+| Neighbor | Relationship | Exact Path |
+| --- | --- | --- |
+| [ADR-PC-0002 — Schema and Contract Validation](../physical-component/ADR-PC-0002-schema-and-contract-validation.md) | ADR-PC-0002 -[:implements_logical]-> ADR-L-0011 | `ADR-PC-0002 -[:implements_logical]-> ADR-L-0011` |
+| [ADR-PC-0006 — Brownfield Onboarding and Canonical Normalization](../physical-component/ADR-PC-0006-brownfield-onboarding-and-canonical-normalization.md) | ADR-PC-0006 -[:implements_logical]-> ADR-L-0011 | `ADR-PC-0006 -[:implements_logical]-> ADR-L-0011` |
+| [ADR-PS-0002 — ADR Kit Authoring Compiler and Validation System](../physical-system/ADR-PS-0002-adr-kit-authoring-compiler-and-validation-system.md) | ADR-PS-0002 -[:implements_logical]-> ADR-L-0011 | `ADR-PS-0002 -[:implements_logical]-> ADR-L-0011` |
 
-- ADR-PC-0002 -[:implements_logical]-> ADR-L-0011
-
-**Context:** Schema and contract validation is now a stable component boundary rather than
-a generic legacy physical slice. It validates canonical ADR structure,
-profile-specific contract requirements, project metadata, and implementation
-attribution evidence. Validation of that evidence is structural for schema shape and architecture-aware when claims must resolve to canonical UUIDs and entity types. Legacy 1.0/1.2 evidence normalizes to the v1.5 claim shape only with repository or model 2.0 context.
-
-[Open projection](../physical-component/ADR-PC-0002-schema-and-contract-validation.md)
-### ADR-PC-0006 — Brownfield Onboarding and Canonical Normalization
-
-- ADR-PC-0006 -[:implements_logical]-> ADR-L-0011
-
-**Context:** adr-architecture-kit already includes migration and normalization behavior in
-its migrator and CLI surfaces. This component makes brownfield onboarding and
-canonical normalization an explicit part of the compiler/validation runtime.
-
-[Open projection](../physical-component/ADR-PC-0006-brownfield-onboarding-and-canonical-normalization.md)
-### ADR-PS-0002 — ADR Kit Authoring Compiler and Validation System
-
-- ADR-PS-0002 -[:implements_logical]-> ADR-L-0011
-
-**Context:** adr-architecture-kit operates as an authoring-time compiler and validation system rather
-than a collection of unrelated generators. The implementation includes an
-explicit compiler pipeline, contract validation, normalized repository/model
-access, integrity verification, and CLI orchestration over those surfaces.
-
-[Open projection](../physical-system/ADR-PS-0002-adr-kit-authoring-compiler-and-validation-system.md)
 
 ### Lifecycle / association
 

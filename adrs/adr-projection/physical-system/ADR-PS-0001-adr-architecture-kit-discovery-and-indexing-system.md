@@ -5,8 +5,8 @@ artifact_kind: rendered_adr_markdown
 generator_id: adr-projection-markdown
 generator_version: 3
 hash_algorithm: sha256
-source_hash: 0a926e70e5017dd33d5968937d2cca73cfd17a8cd8604cd982df36d1798c1d9d
-rendered_hash: a0276bc8cb982da7aab332f9d2089747b716f9ee3c359dca529ab1cfa42931b8
+source_hash: 71fea80a3646739fd377052280568bbd73a9b17eed3a3042877e2c00f5c3592d
+rendered_hash: 1ee486757b597caa5395787efabbe71abe82c163f5e33aae15c117f4b89ac497
 -->
 
 # ADR-PS-0001: ADR Architecture Kit Discovery and Indexing System
@@ -24,22 +24,38 @@ rendered_hash: a0276bc8cb982da7aab332f9d2089747b716f9ee3c359dca529ab1cfa42931b8
 **Domains:** discovery, indexing, tooling  
 **Implements Logical:** [ADR-L-0009](../logical/ADR-L-0009-derived-architecture-discovery-surfaces.md), [ADR-L-0012](../logical/ADR-L-0012-federation-authority-and-qualified-identity-model.md), [ADR-L-0002](../logical/ADR-L-0002-multi-scope-adr-architecture-for-sub-module-development.md)  
 
-## Architecture Position
+## Architecture at a Glance
 
-Topology handles are local authoring labels, not graph identities.
+| | |
+| --- | --- |
+| System | SYS-0001 — ADR Architecture Kit Discovery and Indexing System |
+| Components | 1 |
+| Boundaries | 1 |
+| Internal relationships | 0 |
+| External dependencies | 2 |
+| Exposed surfaces | 7 |
 
-**System:** SYS-0001 — ADR Architecture Kit Discovery and Indexing System
-**Components:** 1
-**Boundaries:** 1
-**Internal topology relationships:** 0
-**External dependencies:** 2
-
-**Logical authority:**
+**Logical authority**
 - [ADR-L-0009](../logical/ADR-L-0009-derived-architecture-discovery-surfaces.md)
 - [ADR-L-0012](../logical/ADR-L-0012-federation-authority-and-qualified-identity-model.md)
 - [ADR-L-0002](../logical/ADR-L-0002-multi-scope-adr-architecture-for-sub-module-development.md)
 
-**Exposed surfaces:**
+
+## Change Safety
+
+**Logical contracts**
+- [ADR-L-0009](../logical/ADR-L-0009-derived-architecture-discovery-surfaces.md)
+- [ADR-L-0012](../logical/ADR-L-0012-federation-authority-and-qualified-identity-model.md)
+- [ADR-L-0002](../logical/ADR-L-0002-multi-scope-adr-architecture-for-sub-module-development.md)
+
+**Constituent components**
+- COMP-0010 — Entity Registry Generator and Query Surface
+
+**External dependencies**
+- Canonical ADR artifacts
+- Standalone invariant artifacts
+
+**Exposed interfaces**
 - `adr compile`
 - `adr generate-architecture-index`
 - `adr generate-manifest`
@@ -60,7 +76,7 @@ generated registry state, and the unified `adr compile` orchestration path
 that emits these derived discovery artifacts together.
 
 
-## Internal Structure
+## Internal System Architecture
 
 ### System Components
 
@@ -68,15 +84,10 @@ that emits these derived discovery artifacts together.
 | --- | --- | --- | --- |
 | COMP-0010 — Entity Registry Generator and Query Surface | service | Compile, emit, and query derived discovery artifacts for architecture indexing. | [ADR-PC-0001](../physical-component/ADR-PC-0001-entity-registry-and-discovery-index.md) |
 
+*Topology handles are local authoring labels, not graph identities.*
+
 Local topology handles:
 - `TOPO-0001` → COMP-0010 — Entity Registry Generator and Query Surface
-
-### System Topology
-
-```mermaid
-flowchart LR
-  n_019fee89_e617_76d8_a333_e21361cd6602["COMP-0010<br/>Entity Registry Generator and Query Surface"]
-```
 
 
 ## System Boundaries
@@ -100,51 +111,8 @@ changing canonical ADR authority.
 - `adr entities *`
 
 
-## Before You Change This System
 
-**Logical contracts implemented**
-- [ADR-L-0009](../logical/ADR-L-0009-derived-architecture-discovery-surfaces.md)
-- [ADR-L-0012](../logical/ADR-L-0012-federation-authority-and-qualified-identity-model.md)
-- [ADR-L-0002](../logical/ADR-L-0002-multi-scope-adr-architecture-for-sub-module-development.md)
-
-**Constituent components**
-- COMP-0010 — Entity Registry Generator and Query Surface
-
-**External dependencies**
-- Canonical ADR artifacts
-- Standalone invariant artifacts
-
-**Exposed interfaces**
-- `adr compile`
-- `adr generate-architecture-index`
-- `adr generate-manifest`
-- `adr generate-adr-projection`
-- `adr generate-rendered-docs`
-- `adr generate-entity-registry`
-- `adr entities *`
-
-## Technology Stack
-
-### Python (language)
-**Version:** >=3.14
-
-**Rationale:**
-Minimum supported Python minor is 3.14 (`requires-python >=3.14`); currently qualified released minor line is 3.14; repository reference interpreter is currently 3.14.7; new GA Python minors require explicit qualification before support is advertised.
-
-### PyYAML (library)
-**Version:** 6.x
-
-**Rationale:**
-Deterministic YAML parsing and rendering for derived artifacts.
-
-### Click (tooling)
-**Version:** 8.x
-
-**Rationale:**
-Existing CLI surface for agent and human invocation.
-
-
-## Architecture Neighborhood
+## Architecture Relationships
 
 ```mermaid
 flowchart LR
@@ -179,93 +147,38 @@ flowchart LR
 ```
 
 
-### Semantic architecture inventory
+## Technology
 
-- `implemented_by`: CAP-0044 → COMP-0010
-- `implements_logical`: ADR-PS-0001 → ADR-L-0002
-- `implements_logical`: ADR-PS-0001 → ADR-L-0012
-- `implements_logical`: ADR-PS-0001 → ADR-L-0009
-- `provides_interface`: COMP-0010 → IFACE-0011
+### Python (language)
+**Version:** >=3.14
+
+**Rationale:**
+Minimum supported Python minor is 3.14 (`requires-python >=3.14`); currently qualified released minor line is 3.14; repository reference interpreter is currently 3.14.7; new GA Python minors require explicit qualification before support is advertised.
+
+### PyYAML (library)
+**Version:** 6.x
+
+**Rationale:**
+Deterministic YAML parsing and rendering for derived artifacts.
+
+### Click (tooling)
+**Version:** 8.x
+
+**Rationale:**
+Existing CLI surface for agent and human invocation.
+
+
+
 
 ## Neighbor Relationships
 
-### ADR-L-0002 — Multi-Scope ADR Architecture for Sub-Module Development
-
-ADR Architecture Kit Discovery and Indexing System (ADR-PS-0001)
-    -[:implements_logical]->
-Multi-Scope ADR Architecture for Sub-Module Development (ADR-L-0002)
-
-`ADR-PS-0001 -[:implements_logical]-> ADR-L-0002`
-
-**Peer context:** The adr-architecture-kit is being actively developed in a single workspace alongside
-multiple sub-modules (ste-runtime, future services) that will eventually become
-independent services. Each sub-module needs to leverage the ADR system for its own
-architectural documentation while being developed in parallel within the monorepo.
-
-[Open projection](../logical/ADR-L-0002-multi-scope-adr-architecture-for-sub-module-development.md)
-### ADR-L-0009 — Derived Architecture Discovery Surfaces
-
-ADR Architecture Kit Discovery and Indexing System (ADR-PS-0001)
-    -[:implements_logical]->
-Derived Architecture Discovery Surfaces (ADR-L-0009)
-
-`ADR-PS-0001 -[:implements_logical]-> ADR-L-0009`
-
-**Peer context:** adr-architecture-kit is primarily machine-facing tooling used by agents to
-reason over canonical architecture artifacts. Relying on agents to scan raw
-ADR bodies for discovery is inconsistent with the toolkit's AI-first design
-theory: discovery surfaces should be explicit, deterministic, cheap to query,
-and derived from canonical authority.
-
-[Open projection](../logical/ADR-L-0009-derived-architecture-discovery-surfaces.md)
-### ADR-L-0012 — Federation Authority and Qualified Identity Model
-
-ADR Architecture Kit Discovery and Indexing System (ADR-PS-0001)
-    -[:implements_logical]->
-Federation Authority and Qualified Identity Model (ADR-L-0012)
-
-`ADR-PS-0001 -[:implements_logical]-> ADR-L-0012`
-
-**Peer context:** The compiler and recursive multi-scope model preserve repository-local
-compilation boundaries, while STE federation spans independently compiled
-repositories. Federation therefore requires global identity without weakening
-provider authority or allowing the aggregation layer to rewrite canonical
-repository state.
-
-[Open projection](../logical/ADR-L-0012-federation-authority-and-qualified-identity-model.md)
-### ADR-L-0013 — Architecture Repository Boundary and Normalized Semantic Model
-
-Cross-Language Runtime Ingestion Contract (CAP-0044)
-    -[:implemented_by]->
-Entity Registry Generator and Query Surface (COMP-0010)
-
-`CAP-0044 -[:implemented_by]-> COMP-0010`
-
-**Peer context:** adr-architecture-kit now has an explicit compiler pipeline, a compiler IR
-(`ArchModel`), compiled registry bundles, and an additive architecture graph.
-Those pieces are sufficient to produce deterministic machine-facing artifacts,
-and ArchitectureRepository already defines the semantic in-process boundary.
-Phase 1 adds a narrow supported authoring facade that reuses that seam without
-expanding the normalized model or exposing compiler internals.
-
-[Open projection](../logical/ADR-L-0013-architecture-repository-boundary-and-normalized-semantic-model.md)
-### ADR-PC-0001 — Entity Registry and Discovery Index
-
-Entity Registry Generator and Query Surface (COMP-0010)
-    -[:provides_interface]->
-CLI (IFACE-0011)
-
-`COMP-0010 -[:provides_interface]-> IFACE-0011`
-
-**Peer context:** The discovery/indexing component now centers on the unified compiler path. It
-generates the normalized discovery bundle under `adrs/index/`, emits the
-legacy compatibility registry at `adrs/entities/registry.yaml`, generates
-manifest and rendered ADR markdown outputs through the same compiler-owned
-path for single-scope use, and exposes exact-ID and filtered CLI query
-operations over generated registry state.
-
-[Open projection](../physical-component/ADR-PC-0001-entity-registry-and-discovery-index.md)
-
+| Neighbor | Relationship | Exact Path |
+| --- | --- | --- |
+| [ADR-L-0002 — Multi-Scope ADR Architecture for Sub-Module Development](../logical/ADR-L-0002-multi-scope-adr-architecture-for-sub-module-development.md) | ADR Architecture Kit Discovery and Indexing System (ADR-PS-0001) → Multi-Scope ADR Architecture for Sub-Module Development (ADR-L-0002) | `ADR-PS-0001 -[:implements_logical]-> ADR-L-0002` |
+| [ADR-L-0009 — Derived Architecture Discovery Surfaces](../logical/ADR-L-0009-derived-architecture-discovery-surfaces.md) | ADR Architecture Kit Discovery and Indexing System (ADR-PS-0001) → Derived Architecture Discovery Surfaces (ADR-L-0009) | `ADR-PS-0001 -[:implements_logical]-> ADR-L-0009` |
+| [ADR-L-0012 — Federation Authority and Qualified Identity Model](../logical/ADR-L-0012-federation-authority-and-qualified-identity-model.md) | ADR Architecture Kit Discovery and Indexing System (ADR-PS-0001) → Federation Authority and Qualified Identity Model (ADR-L-0012) | `ADR-PS-0001 -[:implements_logical]-> ADR-L-0012` |
+| [ADR-L-0013 — Architecture Repository Boundary and Normalized Semantic Model](../logical/ADR-L-0013-architecture-repository-boundary-and-normalized-semantic-model.md) | Cross-Language Runtime Ingestion Contract (CAP-0044) → Entity Registry Generator and Query Surface (COMP-0010) | `CAP-0044 -[:implemented_by]-> COMP-0010` |
+| [ADR-PC-0001 — Entity Registry and Discovery Index](../physical-component/ADR-PC-0001-entity-registry-and-discovery-index.md) | Entity Registry Generator and Query Surface (COMP-0010) → CLI (IFACE-0011) | `COMP-0010 -[:provides_interface]-> IFACE-0011` |
 
 
 

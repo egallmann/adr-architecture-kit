@@ -5,8 +5,8 @@ artifact_kind: rendered_adr_markdown
 generator_id: adr-projection-markdown
 generator_version: 3
 hash_algorithm: sha256
-source_hash: 215e05f6e952ceb4501e19cf44d4acab387358e9c79d74abf7ef1ea15c72b6b9
-rendered_hash: 23df5fd026329864dd4f18a6d3375caab41a112aad692088b2497eab2d9ffed6
+source_hash: 667c7b45439f43388c1daa38d81f8759bd2969e43e11fb074de2c8a9b583ad54
+rendered_hash: 9f9f6e2506ad959a8657bfd6e20030d7fb8fc194015214729d769dc189cf6613
 -->
 
 # ADR-PC-0008: Project Scope Resolution
@@ -24,74 +24,35 @@ rendered_hash: 23df5fd026329864dd4f18a6d3375caab41a112aad692088b2497eab2d9ffed6
 **Implements Logical:** [ADR-L-0002](../logical/ADR-L-0002-multi-scope-adr-architecture-for-sub-module-development.md)  
 **Implements System:** [ADR-PS-0001](../physical-system/ADR-PS-0001-adr-architecture-kit-discovery-and-indexing-system.md), [ADR-PS-0002](../physical-system/ADR-PS-0002-adr-kit-authoring-compiler-and-validation-system.md)  
 
-## Architecture Position
+## Architecture at a Glance
 
-Physical-component ADRs author component, interface, and implementation entities. Topology is not authored here; neighborhood uses compiled semantic architecture edges plus structural bridges.
+| | |
+| --- | --- |
+| Component | COMP-0017 — Project Scope Resolver |
+| Type | library |
+| System | [ADR-PS-0001](../physical-system/ADR-PS-0001-adr-architecture-kit-discovery-and-indexing-system.md) |
+| Purpose | Resolve project scope boundaries for multi-scope ADR operations. |
+| Interfaces | IFACE-0021 — library_api; IFACE-0025 — library_api |
+| Primary implementation | `src/adr_kit/scope/` |
 
-**Containing system(s):**
-- [ADR-PS-0001](../physical-system/ADR-PS-0001-adr-architecture-kit-discovery-and-indexing-system.md)
-- [ADR-PS-0002](../physical-system/ADR-PS-0002-adr-kit-authoring-compiler-and-validation-system.md)
-
-**Logical authority implemented:**
+**Logical authority**
 - [ADR-L-0002](../logical/ADR-L-0002-multi-scope-adr-architecture-for-sub-module-development.md)
 
-**Component(s) owned by this ADR:**
-- COMP-0017 — Project Scope Resolver (library)
 
-**Component type(s):** library
-
-**Authored purpose:**
-- Resolve project scope boundaries for multi-scope ADR operations.
-
-**Provided interface types:** library_api
-
-**Implementation location(s):**
-- Primary implementation: src/adr_kit/scope/
+## Change Safety
 
 
-## Architecture Neighborhood
+**Must preserve**
+- Scope metadata must remain deterministic for unchanged repository layout
+- Parent-child scope relationships must be explicit and testable
 
-```mermaid
-flowchart LR
-  n_019fee89_e615_7f19_810b_c7b33a9d9e0d["ADR-L-0002<br/>Multi-Scope ADR Architecture for Sub-Module Development"]
-  n_01a048d8_454a_7464_bcaa_718fa77bed6a["ADR-PC-0008<br/>Project Scope Resolution"]
-  n_01a048d8_454a_7464_bcaa_718fa77bed6a -->|"implements_logical"| n_019fee89_e615_7f19_810b_c7b33a9d9e0d
-```
+**Known architectural surface**
+- Provided interfaces: IFACE-0021 — library_api; IFACE-0025 — library_api
 
+**Verification**
+- Success criteria: 2
+- Integration checks: 4
 
-### Semantic architecture inventory
-
-- `implements_logical`: ADR-PC-0008 → ADR-L-0002
-
-### Component Relationships
-
-**Provides interface**
-- library_api (IFACE-0021)
-  - `COMP-0017 -[:provides_interface]-> IFACE-0021`
-- library_api (IFACE-0025)
-  - `COMP-0017 -[:provides_interface]-> IFACE-0025`
-
-**Implements logical authority**
-- Multi-Scope ADR Architecture for Sub-Module Development (ADR-L-0002)
-  - `ADR-PC-0008 -[:implements_logical]-> ADR-L-0002`
-
-
-## Neighbor Relationships
-
-### ADR-L-0002 — Multi-Scope ADR Architecture for Sub-Module Development
-
-Project Scope Resolution (ADR-PC-0008)
-    -[:implements_logical]->
-Multi-Scope ADR Architecture for Sub-Module Development (ADR-L-0002)
-
-`ADR-PC-0008 -[:implements_logical]-> ADR-L-0002`
-
-**Peer context:** The adr-architecture-kit is being actively developed in a single workspace alongside
-multiple sub-modules (ste-runtime, future services) that will eventually become
-independent services. Each sub-module needs to leverage the ADR system for its own
-architectural documentation while being developed in parallel within the monorepo.
-
-[Open projection](../logical/ADR-L-0002-multi-scope-adr-architecture-for-sub-module-development.md)
 
 ## Context
 
@@ -101,56 +62,36 @@ Rehomes preserved nested identity from retired ADR-P-0003 (COMP-0017) into
 governed PS+PC authority without topology authoring in this document.
 
 
-## Internal Structure
+## Architecture & Relationships
 
 ```mermaid
-flowchart TB
-  n_01a048d8_454a_7464_bcaa_718fa77bed6a["ADR-PC-0008<br/>Project Scope Resolution"]
-  subgraph sg_component["component"]
+flowchart LR
+  subgraph subject["Owned by this ADR"]
     n_019fee89_e618_719b_bb3a_f13ab0906811["COMP-0017<br/>Project Scope Resolver"]
   end
-  subgraph sg_interface["interface"]
-    n_019fee89_e618_717e_933f_f02a053e8ac5["IFACE-0021<br/>library_api"]
-    n_019fee89_e618_79e6_8b3f_27b30946373a["IFACE-0025<br/>library_api"]
-  end
-  subgraph sg_implementation_decision["implementation_decision"]
-    n_019fee89_e618_76f2_b72f_5316b89484aa["IMPL-0022<br/>Adopt Red-Green-Refactor TDD Methodology"]
-    n_019fee89_e618_722c_b527_14eb4ee67d88["IMPL-0024<br/>Use Dataclasses for ProjectScope"]
-  end
-  n_019fee89_e618_717e_933f_f02a053e8ac5 -->|"declared_in"| n_01a048d8_454a_7464_bcaa_718fa77bed6a
-  n_019fee89_e618_719b_bb3a_f13ab0906811 -->|"declared_in"| n_01a048d8_454a_7464_bcaa_718fa77bed6a
-  n_019fee89_e618_722c_b527_14eb4ee67d88 -->|"declared_in"| n_01a048d8_454a_7464_bcaa_718fa77bed6a
-  n_019fee89_e618_76f2_b72f_5316b89484aa -->|"declared_in"| n_01a048d8_454a_7464_bcaa_718fa77bed6a
-  n_019fee89_e618_79e6_8b3f_27b30946373a -->|"declared_in"| n_01a048d8_454a_7464_bcaa_718fa77bed6a
+  n_019fee89_e618_717e_933f_f02a053e8ac5["IFACE-0021<br/>library_api"]
+  n_019fee89_e618_79e6_8b3f_27b30946373a["IFACE-0025<br/>library_api"]
   n_019fee89_e618_719b_bb3a_f13ab0906811 -->|"provides_interface"| n_019fee89_e618_717e_933f_f02a053e8ac5
   n_019fee89_e618_719b_bb3a_f13ab0906811 -->|"provides_interface"| n_019fee89_e618_79e6_8b3f_27b30946373a
 ```
 
-- `component` COMP-0017 — Project Scope Resolver
-- `implementation_decision` IMPL-0022 — Adopt Red-Green-Refactor TDD Methodology
-- `implementation_decision` IMPL-0024 — Use Dataclasses for ProjectScope
-- `interface` IFACE-0021 — library_api
-- `interface` IFACE-0025 — library_api
+### Component Relationships
 
-## Type-specific Detail
+**Provides interface**
+- library_api (IFACE-0021)
 
-### Before You Change This Component
-**Must preserve:**
-- Scope metadata must remain deterministic for unchanged repository layout
-- Parent-child scope relationships must be explicit and testable
+  `COMP-0017 -[:provides_interface]-> IFACE-0021`
+- library_api (IFACE-0025)
 
-**Public / exposed interfaces:**
-- IFACE-0021 — library_api
-- IFACE-0025 — library_api
+  `COMP-0017 -[:provides_interface]-> IFACE-0025`
 
-**Verify with:**
-- Scope auto-detection works from any nested working directory
-- Recursive discovery returns independent per-scope metadata
-- Unit tests for marker detection
-- Unit tests for boundary enforcement
-- Unit tests for recursive discovery
-- Integration tests with real directory structures
+**Implements logical authority**
+- Multi-Scope ADR Architecture for Sub-Module Development (ADR-L-0002)
 
+  `ADR-PC-0008 -[:implements_logical]-> ADR-L-0002`
+
+
+## Component Contract
 
 ### COMP-0017: Project Scope Resolver
 
@@ -178,14 +119,12 @@ Resolve project scope boundaries for multi-scope ADR operations.
 - Enforce workspace boundaries (INV-0018)
 - Support explicit scope override and recursive discovery
 
-**Must Remain True:**
-- Scope metadata must remain deterministic for unchanged repository layout
-- Parent-child scope relationships must be explicit and testable
-
 **Success Criteria:**
 - Scope auto-detection works from any nested working directory
 - Recursive discovery returns independent per-scope metadata
 
+
+## Interfaces
 
 ### IFACE-0021 — library_api
 
@@ -204,11 +143,9 @@ ProjectScope dataclass exposes immutable scope metadata: root, adr_dir, manifest
 ProjectScopeResolver.resolve(start_dir) -> ProjectScope and resolve_recursive(start_dir) -> List[ProjectScope].
 
 
+## Implementation Decisions
+
 ### IMPL-0022 — Adopt Red-Green-Refactor TDD Methodology
-
-**Decision:**
-
-Adopt Red-Green-Refactor TDD Methodology
 
 **Rationale:**
 
@@ -223,10 +160,6 @@ correct. TDD provides executable specification, immediate feedback, refactoring
 safety, and living documentation.
 
 ### IMPL-0024 — Use Dataclasses for ProjectScope
-
-**Decision:**
-
-Use Dataclasses for ProjectScope
 
 **Rationale:**
 
@@ -263,7 +196,7 @@ boilerplate. Aligns with modern Python best practices.
 - yaml (for PROJECT.yaml parsing)
 
 
-## Implementation Locations
+## Implementation Map
 
 | Role | Location |
 | --- | --- |
@@ -281,7 +214,7 @@ boilerplate. Aligns with modern Python best practices.
 | interface | IFACE-0002 | IFACE-0025 | /component_specifications/0/interfaces/1/id |
 
 
-## Technology Stack
+## Technology & Dependencies
 
 ### Python (language)
 **Version:** >=3.14
@@ -308,11 +241,30 @@ ADR YAML parsing; schema validation
 Cross-platform path handling for scope resolution
 
 
-
-
 ## Architecture Impact
 
 **Related ADRs:** [ADR-L-0002](../logical/ADR-L-0002-multi-scope-adr-architecture-for-sub-module-development.md)
+
+
+
+
+## Internal Structure
+
+| Kind | Entity |
+| --- | --- |
+| Component | COMP-0017 — Project Scope Resolver |
+| Implementation Decision | IMPL-0022 — Adopt Red-Green-Refactor TDD Methodology |
+| Implementation Decision | IMPL-0024 — Use Dataclasses for ProjectScope |
+| Interface | IFACE-0021 — library_api |
+| Interface | IFACE-0025 — library_api |
+
+
+
+## Neighbor Relationships
+
+| Neighbor | Relationship | Exact Path |
+| --- | --- | --- |
+| [ADR-L-0002 — Multi-Scope ADR Architecture for Sub-Module Development](../logical/ADR-L-0002-multi-scope-adr-architecture-for-sub-module-development.md) | Project Scope Resolution (ADR-PC-0008) → Multi-Scope ADR Architecture for Sub-Module Development (ADR-L-0002) | `ADR-PC-0008 -[:implements_logical]-> ADR-L-0002` |
 
 
 

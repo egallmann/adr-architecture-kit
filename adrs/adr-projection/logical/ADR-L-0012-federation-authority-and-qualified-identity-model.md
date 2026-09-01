@@ -5,8 +5,8 @@ artifact_kind: rendered_adr_markdown
 generator_id: adr-projection-markdown
 generator_version: 3
 hash_algorithm: sha256
-source_hash: d6fde87a7853bcdf697050afa134537fef3aa48b3a27355e5f38995dd4456e82
-rendered_hash: 86632cad04e6c21b7b4ac7f5c7402c338d49eaaa710d960445a566a8651c3f99
+source_hash: 94100e8b51654038726162c93635bfa27fc4691e26b4c65b4e35c9ac08693917
+rendered_hash: f0617cac39b876453e94528792da8452108080658a8ec4fe2e1a135ee13d1801
 -->
 
 # ADR-L-0012: Federation Authority and Qualified Identity Model
@@ -28,15 +28,6 @@ Logical architecture authority for this subject. Neighborhood paths use structur
 
 ## Architecture Neighborhood
 
-```mermaid
-flowchart LR
-  n_019fee89_e616_744f_b63e_5ecddf344faa["ADR-L-0012<br/>Federation Authority and Qualified Identity Model"]
-  n_019fee89_e617_7270_ab2f_58a756d2530e["ADR-PC-0001<br/>Entity Registry and Discovery Index"]
-  n_019fee89_e618_7b3e_813b_a449881b6adb["ADR-PS-0001<br/>ADR Architecture Kit Discovery and Indexing System"]
-  n_019fee89_e617_7270_ab2f_58a756d2530e -->|"implements_logical"| n_019fee89_e616_744f_b63e_5ecddf344faa
-  n_019fee89_e618_7b3e_813b_a449881b6adb -->|"implements_logical"| n_019fee89_e616_744f_b63e_5ecddf344faa
-```
-
 
 ### Semantic architecture inventory
 
@@ -45,31 +36,11 @@ flowchart LR
 
 ## Neighbor Relationships
 
-### ADR-PC-0001 — Entity Registry and Discovery Index
+| Neighbor | Relationship | Exact Path |
+| --- | --- | --- |
+| [ADR-PC-0001 — Entity Registry and Discovery Index](../physical-component/ADR-PC-0001-entity-registry-and-discovery-index.md) | ADR-PC-0001 -[:implements_logical]-> ADR-L-0012 | `ADR-PC-0001 -[:implements_logical]-> ADR-L-0012` |
+| [ADR-PS-0001 — ADR Architecture Kit Discovery and Indexing System](../physical-system/ADR-PS-0001-adr-architecture-kit-discovery-and-indexing-system.md) | ADR-PS-0001 -[:implements_logical]-> ADR-L-0012 | `ADR-PS-0001 -[:implements_logical]-> ADR-L-0012` |
 
-- ADR-PC-0001 -[:implements_logical]-> ADR-L-0012
-
-**Context:** The discovery/indexing component now centers on the unified compiler path. It
-generates the normalized discovery bundle under `adrs/index/`, emits the
-legacy compatibility registry at `adrs/entities/registry.yaml`, generates
-manifest and rendered ADR markdown outputs through the same compiler-owned
-path for single-scope use, and exposes exact-ID and filtered CLI query
-operations over generated registry state.
-
-[Open projection](../physical-component/ADR-PC-0001-entity-registry-and-discovery-index.md)
-### ADR-PS-0001 — ADR Architecture Kit Discovery and Indexing System
-
-- ADR-PS-0001 -[:implements_logical]-> ADR-L-0012
-
-**Context:** The discovery and indexing subsystem provides the derived surfaces that agents
-query instead of scanning raw ADR bodies by default. It now includes
-normalized discovery bundle generation under `adrs/index/`, legacy
-compatibility registry generation under `adrs/entities/registry.yaml`,
-manifest generation, rendered ADR markdown generation, CLI query surfaces over
-generated registry state, and the unified `adr compile` orchestration path
-that emits these derived discovery artifacts together.
-
-[Open projection](../physical-system/ADR-PS-0001-adr-architecture-kit-discovery-and-indexing-system.md)
 
 ### Lifecycle / association
 

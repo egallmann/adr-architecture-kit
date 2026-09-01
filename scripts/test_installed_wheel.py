@@ -34,6 +34,7 @@ PROBES = (
     "coverage-registry",
     "projection-generation",
     "governance-cli",
+    "system-overview",
 )
 PROBE = """
 from importlib import resources
@@ -124,6 +125,18 @@ subprocess.check_call([sys.executable, "-m", "adr_kit.cli.main", "validate", "--
 subprocess.check_call(
     [sys.executable, "-m", "adr_kit.cli.main", "generate-adr-projection", "--scope", str(fixture)]
 )
+"""
+SYSTEM_OVERVIEW_PROBE = """
+import os
+from pathlib import Path
+from adr_kit.compatibility import load_cli_surface_snapshot
+from adr_kit.generators.system_overview_generator import SystemOverviewGenerator
+
+fixture = Path(os.environ["ADR_WHEEL_FIXTURE"])
+payload = load_cli_surface_snapshot()
+assert "generate-system-overview" in payload["commands"]
+generator = SystemOverviewGenerator(repo_root=fixture)
+assert "validate" in generator._cli_surface_command_names()
 """
 LINKAGE_PROBE = """
 import os
@@ -261,6 +274,7 @@ def run_harness(wheel: Path, python: Path) -> None:
         _run([str(venv_python), "-c", COVERAGE_PROBE], consumer, isolated_environment)
         _run([str(venv_python), "-c", PROJECTION_PROBE], consumer, isolated_environment)
         _run([str(venv_python), "-c", GOVERNANCE_PROBE], consumer, isolated_environment)
+        _run([str(venv_python), "-c", SYSTEM_OVERVIEW_PROBE], consumer, isolated_environment)
         _run(
             [
                 str(venv_python),

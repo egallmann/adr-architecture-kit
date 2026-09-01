@@ -43,15 +43,19 @@ def test_coverage_registry_covers_authoring_v15_schema_fields() -> None:
     assert disposition_for(adr_type="physical-component", pointer="/component_topology") == (
         "UNSUPPORTED_OR_STALE"
     )
-    assert disposition_for(adr_type="physical-system", pointer="/component_topology/components/id") == (
-        "PROJECTION_CONTROL_INPUT"
+    assert disposition_for(
+        adr_type="physical-system", pointer="/component_topology/components/id"
+    ) == ("PROJECTION_CONTROL_INPUT")
+    assert (
+        disposition_for(
+            adr_type="physical-system", pointer="/component_topology/components/component_ref"
+        )
+        == "RENDER_AS_RELATIONSHIP"
     )
-    assert disposition_for(
-        adr_type="physical-system", pointer="/component_topology/components/component_ref"
-    ) == "RENDER_AS_RELATIONSHIP"
-    assert disposition_for(
-        adr_type="physical-system", pointer="/component_topology/relationships"
-    ) == "RENDER_AS_RELATIONSHIP"
+    assert (
+        disposition_for(adr_type="physical-system", pointer="/component_topology/relationships")
+        == "RENDER_AS_RELATIONSHIP"
+    )
     assert disposition_for(adr_type="physical-system", pointer="/data_flows") == "RENDER_DETAIL"
     assert disposition_for(adr_type="physical-system", pointer="/references_components") == (
         "UNSUPPORTED_OR_STALE"
@@ -59,7 +63,7 @@ def test_coverage_registry_covers_authoring_v15_schema_fields() -> None:
     assert disposition_for(adr_type="physical-system", pointer="/technologies") == (
         "INTENTIONALLY_NOT_RENDERED"
     )
-    assert disposition_for(adr_type="logical", pointer="/domains") == "RENDER_DETAIL"
+    assert disposition_for(adr_type="logical", pointer="/domains") == "RENDER_PRIMARY"
     assert disposition_for(adr_type="logical", pointer="/notes") == "RENDER_DETAIL"
     assert "provides_interface" in SEMANTIC_ARCHITECTURE
     assert "provides_interface" not in STRUCTURAL_BRIDGES
@@ -181,7 +185,9 @@ def test_projection_v3_canaries_for_kit_corpus() -> None:
     )
     assert result.success, result.diagnostics
     paths = {item.relative_path.replace("\\", "/") for item in result.artifacts}
-    assert any(path.endswith("SYSTEM-OVERVIEW.md") or path == "SYSTEM-OVERVIEW.md" for path in paths)
+    assert any(
+        path.endswith("SYSTEM-OVERVIEW.md") or path == "SYSTEM-OVERVIEW.md" for path in paths
+    )
     overview = next(item for item in result.artifacts if item.artifact_id == "system-overview")
     assert overview.group == "markdown"
 
@@ -219,16 +225,14 @@ def test_projection_v3_canaries_for_kit_corpus() -> None:
     assert "`COMP-0014 -[:depends_on]-> COMP-0012`" in pc5
 
     l13 = _artifact_text(result.artifacts, folder="logical", alias="ADR-L-0013")
-    assert "`implements_logical`" in l13
+    assert "## Physical Realization" in l13
+    for alias in ("ADR-PS-0002", "ADR-PC-0003", "ADR-PC-0004", "ADR-PC-0005"):
+        assert alias in l13
     assert "binds_substrate" not in l13.split("## Governance")[0]
-    assert l13.count("`implements_logical`: ADR-PS-0002 → ADR-L-0013") == 1
-    implemented_by_graph = l13.split("```mermaid")[1].split("```")[0]
-    assert "ADR-L-0013" in implemented_by_graph
-    assert '|"declared_in"|' in implemented_by_graph
-    assert '|"implemented_by"|' in implemented_by_graph
 
     l1 = _artifact_text(result.artifacts, folder="logical", alias="ADR-L-0001")
-    assert l1.count("`implements_logical`: ADR-PS-0002 → ADR-L-0001") == 1
+    assert "## Physical Realization" in l1
+    assert "ADR-PS-0002" in l1
     assert "peer ADR-PC-0002" not in l1
 
     ps1_blocks = [block.split("```", 1)[0] for block in ps1.split("```mermaid")[1:]]
@@ -240,14 +244,14 @@ def test_projection_v3_canaries_for_kit_corpus() -> None:
     assert "ADR-PS-0001" in impl_logical
 
     l3 = _artifact_text(result.artifacts, folder="logical", alias="ADR-L-0003")
-    assert "```mermaid" not in l3.split("## Internal Structure")[0]
-    assert "No grammatical peer neighborhood" in l3
+    assert "## Internal Structure" not in l3
+    assert "## Architecture Neighborhood" not in l3
+    assert "```mermaid" not in l3
     l8 = _artifact_text(result.artifacts, folder="logical", alias="ADR-L-0008")
-    internal = l8.split("## Internal Structure", 1)[1]
-    assert "```mermaid" in internal
-    assert "CAP-0015" in internal
-    assert "DEC-0013" in internal
-    assert '|"declared_in"|' in internal
+    assert "## Internal Structure" not in l8
+    assert "## Capabilities" in l8
+    assert "CAP-0015" in l8
+    assert "DEC-0013" in l8
 
     pc1 = _artifact_text(result.artifacts, folder="physical-component", alias="ADR-PC-0001")
     pc1_internal = pc1.split("## Internal Structure", 1)[1]
@@ -255,13 +259,19 @@ def test_projection_v3_canaries_for_kit_corpus() -> None:
     assert "IFACE-0011" in pc1_internal
     assert "depends_on" not in pc1_internal.split("## Technology", 1)[0]
 
-    ps1_internal = ps1.split("## Internal System Architecture", 1)[1] if "## Internal System Architecture" in ps1 else ""
+    ps1_internal = (
+        ps1.split("## Internal System Architecture", 1)[1]
+        if "## Internal System Architecture" in ps1
+        else ""
+    )
     assert "### System Topology" not in ps1_internal
     assert "Entity Registry Generator and Query Surface" in ps1
 
     assert any("ADR-L-0025" in item.relative_path for item in result.artifacts)
     assert any("ADR-PC-0008" in item.relative_path for item in result.artifacts)
-    assert not any("/physical/ADR-P-" in item.relative_path.replace("\\", "/") for item in result.artifacts)
+    assert not any(
+        "/physical/ADR-P-" in item.relative_path.replace("\\", "/") for item in result.artifacts
+    )
     projection_markdown = [
         item
         for item in result.artifacts
@@ -269,4 +279,6 @@ def test_projection_v3_canaries_for_kit_corpus() -> None:
         and item.relative_path.replace("\\", "/").endswith(".md")
     ]
     assert projection_markdown
-    assert all("generator_version: 3" in item.content.decode("utf-8") for item in projection_markdown)
+    assert all(
+        "generator_version: 3" in item.content.decode("utf-8") for item in projection_markdown
+    )

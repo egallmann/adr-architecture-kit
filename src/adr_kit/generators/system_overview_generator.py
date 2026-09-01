@@ -286,23 +286,12 @@ class SystemOverviewGenerator:
         return set(packaged_authoring_schema_versions()) | {"1.1"}
 
     def _cli_surface_command_names(self) -> set[str]:
-        candidates = [
-            self.repo_root / "contracts" / "compatibility" / "cli-surface.json",
-            Path(__file__).resolve().parents[3]
-            / "contracts"
-            / "compatibility"
-            / "cli-surface.json",
-        ]
-        for path in candidates:
-            if not path.is_file():
-                continue
-            try:
-                data = json.loads(path.read_text(encoding="utf-8"))
-            except (OSError, json.JSONDecodeError):
-                continue
-            commands = data.get("commands")
-            if isinstance(commands, dict):
-                return {str(name) for name in commands}
+        from ..compatibility import load_cli_surface_snapshot
+
+        data = load_cli_surface_snapshot()
+        commands = data.get("commands")
+        if isinstance(commands, dict):
+            return {str(name) for name in commands}
         raise SystemOverviewSourceError(
             "Unable to load CLI surface snapshot for overview consistency"
         )
@@ -401,7 +390,7 @@ class SystemOverviewGenerator:
                 "PROJECT.yaml",
                 "adrs/manifest.yaml (selected anchors)",
                 "adr_kit.api.capabilities()",
-                "contracts/compatibility/cli-surface.json",
+                "adr_kit.compatibility.cli-surface.json",
                 KIT_PROFILE_NAME,
             ),
         )

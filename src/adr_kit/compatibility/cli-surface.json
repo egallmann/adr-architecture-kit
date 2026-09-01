@@ -1,0 +1,2391 @@
+{
+  "commands": {
+    "attribution": {
+      "help": "Implementation attribution evidence helpers.",
+      "params": []
+    },
+    "attribution check": {
+      "help": "Validate implementation attribution evidence against the canonical ADR corpus.",
+      "params": [
+        {
+          "count": false,
+          "default": null,
+          "is_flag": false,
+          "kind": "Option",
+          "multiple": false,
+          "name": "scope",
+          "nargs": 1,
+          "opts": [
+            "--scope"
+          ],
+          "required": false,
+          "secondary_opts": [],
+          "type": "directory"
+        },
+        {
+          "count": false,
+          "default": null,
+          "is_flag": false,
+          "kind": "Option",
+          "multiple": false,
+          "name": "evidence",
+          "nargs": 1,
+          "opts": [
+            "--evidence"
+          ],
+          "required": false,
+          "secondary_opts": [],
+          "type": "file"
+        },
+        {
+          "count": false,
+          "default": "greenfield",
+          "is_flag": false,
+          "kind": "Option",
+          "multiple": false,
+          "name": "profile",
+          "nargs": 1,
+          "opts": [
+            "--profile"
+          ],
+          "required": false,
+          "secondary_opts": [],
+          "type": "choice"
+        }
+      ]
+    },
+    "attribution coverage": {
+      "help": "Report ADRs cited by attribution evidence vs ADR corpus (informational).",
+      "params": [
+        {
+          "count": false,
+          "default": null,
+          "is_flag": false,
+          "kind": "Option",
+          "multiple": false,
+          "name": "scope",
+          "nargs": 1,
+          "opts": [
+            "--scope"
+          ],
+          "required": false,
+          "secondary_opts": [],
+          "type": "directory"
+        },
+        {
+          "count": false,
+          "default": null,
+          "is_flag": false,
+          "kind": "Option",
+          "multiple": false,
+          "name": "evidence",
+          "nargs": 1,
+          "opts": [
+            "--evidence"
+          ],
+          "required": false,
+          "secondary_opts": [],
+          "type": "file"
+        }
+      ]
+    },
+    "attribution generate-shim": {
+      "help": "Emit a standalone no-op implementation-linkage shim (Python or TypeScript).",
+      "params": [
+        {
+          "count": false,
+          "default": "Sentinel.UNSET",
+          "is_flag": false,
+          "kind": "Option",
+          "multiple": false,
+          "name": "language",
+          "nargs": 1,
+          "opts": [
+            "--lang",
+            "--language"
+          ],
+          "required": true,
+          "secondary_opts": [],
+          "type": "choice"
+        },
+        {
+          "count": false,
+          "default": null,
+          "is_flag": false,
+          "kind": "Option",
+          "multiple": false,
+          "name": "output",
+          "nargs": 1,
+          "opts": [
+            "--output",
+            "-o"
+          ],
+          "required": false,
+          "secondary_opts": [],
+          "type": "file"
+        }
+      ]
+    },
+    "attribution linkage-report": {
+      "help": "Build a deterministic, non-authoritative embodiment linkage report.",
+      "params": [
+        {
+          "count": false,
+          "default": "Sentinel.UNSET",
+          "is_flag": false,
+          "kind": "Option",
+          "multiple": false,
+          "name": "scope",
+          "nargs": 1,
+          "opts": [
+            "--scope"
+          ],
+          "required": true,
+          "secondary_opts": [],
+          "type": "directory"
+        },
+        {
+          "count": false,
+          "default": "Sentinel.UNSET",
+          "is_flag": false,
+          "kind": "Option",
+          "multiple": false,
+          "name": "evidence",
+          "nargs": 1,
+          "opts": [
+            "--evidence"
+          ],
+          "required": true,
+          "secondary_opts": [],
+          "type": "file"
+        },
+        {
+          "count": false,
+          "default": "greenfield",
+          "is_flag": false,
+          "kind": "Option",
+          "multiple": false,
+          "name": "profile",
+          "nargs": 1,
+          "opts": [
+            "--profile"
+          ],
+          "required": false,
+          "secondary_opts": [],
+          "type": "choice"
+        },
+        {
+          "count": false,
+          "default": null,
+          "is_flag": false,
+          "kind": "Option",
+          "multiple": false,
+          "name": "implementation_entity_id",
+          "nargs": 1,
+          "opts": [
+            "--implementation-entity-id"
+          ],
+          "required": false,
+          "secondary_opts": [],
+          "type": "text"
+        },
+        {
+          "count": false,
+          "default": null,
+          "is_flag": false,
+          "kind": "Option",
+          "multiple": false,
+          "name": "intent_entity_id",
+          "nargs": 1,
+          "opts": [
+            "--intent-entity-id"
+          ],
+          "required": false,
+          "secondary_opts": [],
+          "type": "text"
+        },
+        {
+          "count": false,
+          "default": null,
+          "is_flag": false,
+          "kind": "Option",
+          "multiple": false,
+          "name": "relationship",
+          "nargs": 1,
+          "opts": [
+            "--relationship"
+          ],
+          "required": false,
+          "secondary_opts": [],
+          "type": "choice"
+        }
+      ]
+    },
+    "attribution normalize-evidence": {
+      "help": "Normalize supported evidence losslessly. Does not write by default.",
+      "params": [
+        {
+          "count": false,
+          "default": "Sentinel.UNSET",
+          "is_flag": false,
+          "kind": "Option",
+          "multiple": false,
+          "name": "scope",
+          "nargs": 1,
+          "opts": [
+            "--scope"
+          ],
+          "required": true,
+          "secondary_opts": [],
+          "type": "directory"
+        },
+        {
+          "count": false,
+          "default": "Sentinel.UNSET",
+          "is_flag": false,
+          "kind": "Option",
+          "multiple": false,
+          "name": "input_path",
+          "nargs": 1,
+          "opts": [
+            "--input"
+          ],
+          "required": true,
+          "secondary_opts": [],
+          "type": "file"
+        },
+        {
+          "count": false,
+          "default": null,
+          "is_flag": false,
+          "kind": "Option",
+          "multiple": false,
+          "name": "output",
+          "nargs": 1,
+          "opts": [
+            "--output"
+          ],
+          "required": false,
+          "secondary_opts": [],
+          "type": "file"
+        },
+        {
+          "count": false,
+          "default": "1.5",
+          "is_flag": false,
+          "kind": "Option",
+          "multiple": false,
+          "name": "target_version",
+          "nargs": 1,
+          "opts": [
+            "--target-version"
+          ],
+          "required": false,
+          "secondary_opts": [],
+          "type": "choice"
+        }
+      ]
+    },
+    "attribution workspace-report": {
+      "help": "Build workspace attribution federation index (qualified ADR ids across repos).",
+      "params": [
+        {
+          "count": false,
+          "default": ".",
+          "is_flag": false,
+          "kind": "Option",
+          "multiple": false,
+          "name": "workspace_root",
+          "nargs": 1,
+          "opts": [
+            "--workspace-root"
+          ],
+          "required": false,
+          "secondary_opts": [],
+          "type": "directory"
+        },
+        {
+          "count": false,
+          "default": null,
+          "is_flag": false,
+          "kind": "Option",
+          "multiple": false,
+          "name": "state_dir",
+          "nargs": 1,
+          "opts": [
+            "--state-dir"
+          ],
+          "required": false,
+          "secondary_opts": [],
+          "type": "directory"
+        },
+        {
+          "count": false,
+          "default": null,
+          "is_flag": false,
+          "kind": "Option",
+          "multiple": false,
+          "name": "output",
+          "nargs": 1,
+          "opts": [
+            "--output",
+            "-o"
+          ],
+          "required": false,
+          "secondary_opts": [],
+          "type": "file"
+        }
+      ]
+    },
+    "audit-runtime": {
+      "help": "Audit deprecated APIs and dependency posture.",
+      "params": [
+        {
+          "count": false,
+          "default": "requirements.txt",
+          "is_flag": false,
+          "kind": "Option",
+          "multiple": false,
+          "name": "requirements",
+          "nargs": 1,
+          "opts": [
+            "--requirements"
+          ],
+          "required": false,
+          "secondary_opts": [],
+          "type": "file"
+        },
+        {
+          "count": false,
+          "default": "pyproject.toml",
+          "is_flag": false,
+          "kind": "Option",
+          "multiple": false,
+          "name": "pyproject",
+          "nargs": 1,
+          "opts": [
+            "--pyproject"
+          ],
+          "required": false,
+          "secondary_opts": [],
+          "type": "file"
+        },
+        {
+          "count": false,
+          "default": false,
+          "is_flag": true,
+          "kind": "Option",
+          "multiple": false,
+          "name": "fail_on_outdated",
+          "nargs": 1,
+          "opts": [
+            "--fail-on-outdated"
+          ],
+          "required": false,
+          "secondary_opts": [
+            "--warn-on-outdated"
+          ],
+          "type": "boolean"
+        }
+      ]
+    },
+    "build-ir-fragments": {
+      "help": "Repository self-publication example. Not a generic consumer command.\n\nBuilds the ADR IR fragment publication artifact for the adr-architecture-kit\nrepository itself, using hardcoded repo-specific paths (ADR-L-9000, dist/).\n\nThis command is an example of how a repository publishes its own ADR-derived\nIR fragments. It is not intended for use in other repositories or as a\ngeneric product API. For parameterized IR fragment compilation, use the\n`compile-ir-fragments` command instead.",
+      "params": []
+    },
+    "compile": {
+      "help": "Compile selected architecture artifacts through the unified compiler driver.",
+      "params": [
+        {
+          "count": false,
+          "default": "Sentinel.UNSET",
+          "is_flag": false,
+          "kind": "Option",
+          "multiple": false,
+          "name": "scope",
+          "nargs": 1,
+          "opts": [
+            "--scope"
+          ],
+          "required": false,
+          "secondary_opts": [],
+          "type": "directory"
+        },
+        {
+          "count": false,
+          "default": "registries,manifest,markdown",
+          "is_flag": false,
+          "kind": "Option",
+          "multiple": false,
+          "name": "emit",
+          "nargs": 1,
+          "opts": [
+            "--emit"
+          ],
+          "required": false,
+          "secondary_opts": [],
+          "type": "text"
+        },
+        {
+          "count": false,
+          "default": null,
+          "is_flag": false,
+          "kind": "Option",
+          "multiple": false,
+          "name": "timestamp",
+          "nargs": 1,
+          "opts": [
+            "--timestamp"
+          ],
+          "required": false,
+          "secondary_opts": [],
+          "type": "text"
+        },
+        {
+          "count": false,
+          "default": "normal",
+          "is_flag": false,
+          "kind": "Option",
+          "multiple": false,
+          "name": "mode",
+          "nargs": 1,
+          "opts": [
+            "--mode"
+          ],
+          "required": false,
+          "secondary_opts": [],
+          "type": "choice"
+        },
+        {
+          "count": false,
+          "default": "Sentinel.UNSET",
+          "is_flag": true,
+          "kind": "Option",
+          "multiple": false,
+          "name": "dry_run",
+          "nargs": 1,
+          "opts": [
+            "--dry-run"
+          ],
+          "required": false,
+          "secondary_opts": [],
+          "type": "boolean"
+        },
+        {
+          "count": false,
+          "default": "Sentinel.UNSET",
+          "is_flag": true,
+          "kind": "Option",
+          "multiple": false,
+          "name": "check",
+          "nargs": 1,
+          "opts": [
+            "--check"
+          ],
+          "required": false,
+          "secondary_opts": [],
+          "type": "boolean"
+        },
+        {
+          "count": false,
+          "default": "Sentinel.UNSET",
+          "is_flag": true,
+          "kind": "Option",
+          "multiple": false,
+          "name": "validate_contract",
+          "nargs": 1,
+          "opts": [
+            "--validate-contract"
+          ],
+          "required": false,
+          "secondary_opts": [],
+          "type": "boolean"
+        },
+        {
+          "count": false,
+          "default": "greenfield",
+          "is_flag": false,
+          "kind": "Option",
+          "multiple": false,
+          "name": "contract_profile",
+          "nargs": 1,
+          "opts": [
+            "--contract-profile"
+          ],
+          "required": false,
+          "secondary_opts": [],
+          "type": "choice"
+        },
+        {
+          "count": false,
+          "default": "Sentinel.UNSET",
+          "is_flag": true,
+          "kind": "Option",
+          "multiple": false,
+          "name": "recursive",
+          "nargs": 1,
+          "opts": [
+            "--recursive"
+          ],
+          "required": false,
+          "secondary_opts": [],
+          "type": "boolean"
+        }
+      ]
+    },
+    "compile-ir-fragments": {
+      "help": "Compile explicit Logical ADR files into deterministic Architecture IR fragments.",
+      "params": [
+        {
+          "count": false,
+          "default": "Sentinel.UNSET",
+          "is_flag": false,
+          "kind": "Option",
+          "multiple": false,
+          "name": "scope_root",
+          "nargs": 1,
+          "opts": [
+            "--scope-root"
+          ],
+          "required": false,
+          "secondary_opts": [],
+          "type": "directory"
+        },
+        {
+          "count": false,
+          "default": "Sentinel.UNSET",
+          "is_flag": false,
+          "kind": "Option",
+          "multiple": true,
+          "name": "adr_files",
+          "nargs": 1,
+          "opts": [
+            "--adr-file"
+          ],
+          "required": true,
+          "secondary_opts": [],
+          "type": "file"
+        },
+        {
+          "count": false,
+          "default": "Sentinel.UNSET",
+          "is_flag": false,
+          "kind": "Option",
+          "multiple": false,
+          "name": "namespace",
+          "nargs": 1,
+          "opts": [
+            "--namespace"
+          ],
+          "required": true,
+          "secondary_opts": [],
+          "type": "text"
+        },
+        {
+          "count": false,
+          "default": "Sentinel.UNSET",
+          "is_flag": false,
+          "kind": "Option",
+          "multiple": false,
+          "name": "artifact_kind",
+          "nargs": 1,
+          "opts": [
+            "--artifact-kind"
+          ],
+          "required": true,
+          "secondary_opts": [],
+          "type": "text"
+        },
+        {
+          "count": false,
+          "default": "Sentinel.UNSET",
+          "is_flag": false,
+          "kind": "Option",
+          "multiple": false,
+          "name": "last_updated",
+          "nargs": 1,
+          "opts": [
+            "--last-updated"
+          ],
+          "required": true,
+          "secondary_opts": [],
+          "type": "text"
+        },
+        {
+          "count": false,
+          "default": "logical_adr_ir_fragment.v1",
+          "is_flag": false,
+          "kind": "Option",
+          "multiple": false,
+          "name": "adapter_schema_version",
+          "nargs": 1,
+          "opts": [
+            "--adapter-schema-version"
+          ],
+          "required": false,
+          "secondary_opts": [],
+          "type": "text"
+        },
+        {
+          "count": false,
+          "default": "Sentinel.UNSET",
+          "is_flag": false,
+          "kind": "Option",
+          "multiple": false,
+          "name": "output",
+          "nargs": 1,
+          "opts": [
+            "--output"
+          ],
+          "required": true,
+          "secondary_opts": [],
+          "type": "file"
+        }
+      ]
+    },
+    "entities": {
+      "help": "Query the generated architecture discovery bundle.",
+      "params": []
+    },
+    "entities aliases": {
+      "help": "List deterministic alias inventory for model 2.0 entities.",
+      "params": [
+        {
+          "count": false,
+          "default": "Sentinel.UNSET",
+          "is_flag": false,
+          "kind": "Option",
+          "multiple": false,
+          "name": "scope",
+          "nargs": 1,
+          "opts": [
+            "--scope"
+          ],
+          "required": false,
+          "secondary_opts": [],
+          "type": "directory"
+        }
+      ]
+    },
+    "entities capabilities": {
+      "help": "List capabilities from the generated registry.",
+      "params": [
+        {
+          "count": false,
+          "default": "Sentinel.UNSET",
+          "is_flag": false,
+          "kind": "Option",
+          "multiple": false,
+          "name": "scope",
+          "nargs": 1,
+          "opts": [
+            "--scope"
+          ],
+          "required": false,
+          "secondary_opts": [],
+          "type": "directory"
+        },
+        {
+          "count": false,
+          "default": "Sentinel.UNSET",
+          "is_flag": false,
+          "kind": "Option",
+          "multiple": false,
+          "name": "adr_id",
+          "nargs": 1,
+          "opts": [
+            "--adr"
+          ],
+          "required": false,
+          "secondary_opts": [],
+          "type": "text"
+        },
+        {
+          "count": false,
+          "default": "Sentinel.UNSET",
+          "is_flag": false,
+          "kind": "Option",
+          "multiple": false,
+          "name": "domain",
+          "nargs": 1,
+          "opts": [
+            "--domain"
+          ],
+          "required": false,
+          "secondary_opts": [],
+          "type": "text"
+        },
+        {
+          "count": false,
+          "default": "Sentinel.UNSET",
+          "is_flag": false,
+          "kind": "Option",
+          "multiple": false,
+          "name": "status",
+          "nargs": 1,
+          "opts": [
+            "--status"
+          ],
+          "required": false,
+          "secondary_opts": [],
+          "type": "choice"
+        }
+      ]
+    },
+    "entities get": {
+      "help": "Get an entity by UUID, alias, URI, or auto compatibility lookup.",
+      "params": [
+        {
+          "default": "Sentinel.UNSET",
+          "kind": "Argument",
+          "name": "entity_id",
+          "nargs": 1,
+          "required": true,
+          "type": "text"
+        },
+        {
+          "count": false,
+          "default": "auto",
+          "is_flag": false,
+          "kind": "Option",
+          "multiple": false,
+          "name": "lookup_by",
+          "nargs": 1,
+          "opts": [
+            "--by"
+          ],
+          "required": false,
+          "secondary_opts": [],
+          "type": "choice"
+        },
+        {
+          "count": false,
+          "default": "Sentinel.UNSET",
+          "is_flag": false,
+          "kind": "Option",
+          "multiple": false,
+          "name": "scope",
+          "nargs": 1,
+          "opts": [
+            "--scope"
+          ],
+          "required": false,
+          "secondary_opts": [],
+          "type": "directory"
+        }
+      ]
+    },
+    "entities invariants": {
+      "help": "List invariants from the generated registry.",
+      "params": [
+        {
+          "count": false,
+          "default": "Sentinel.UNSET",
+          "is_flag": false,
+          "kind": "Option",
+          "multiple": false,
+          "name": "scope",
+          "nargs": 1,
+          "opts": [
+            "--scope"
+          ],
+          "required": false,
+          "secondary_opts": [],
+          "type": "directory"
+        },
+        {
+          "count": false,
+          "default": "Sentinel.UNSET",
+          "is_flag": false,
+          "kind": "Option",
+          "multiple": false,
+          "name": "adr_id",
+          "nargs": 1,
+          "opts": [
+            "--adr"
+          ],
+          "required": false,
+          "secondary_opts": [],
+          "type": "text"
+        },
+        {
+          "count": false,
+          "default": "Sentinel.UNSET",
+          "is_flag": false,
+          "kind": "Option",
+          "multiple": false,
+          "name": "domain",
+          "nargs": 1,
+          "opts": [
+            "--domain"
+          ],
+          "required": false,
+          "secondary_opts": [],
+          "type": "text"
+        },
+        {
+          "count": false,
+          "default": "Sentinel.UNSET",
+          "is_flag": false,
+          "kind": "Option",
+          "multiple": false,
+          "name": "status",
+          "nargs": 1,
+          "opts": [
+            "--status"
+          ],
+          "required": false,
+          "secondary_opts": [],
+          "type": "choice"
+        }
+      ]
+    },
+    "entities list": {
+      "help": "List entities from the generated registry.",
+      "params": [
+        {
+          "count": false,
+          "default": "Sentinel.UNSET",
+          "is_flag": false,
+          "kind": "Option",
+          "multiple": false,
+          "name": "scope",
+          "nargs": 1,
+          "opts": [
+            "--scope"
+          ],
+          "required": false,
+          "secondary_opts": [],
+          "type": "directory"
+        },
+        {
+          "count": false,
+          "default": "Sentinel.UNSET",
+          "is_flag": false,
+          "kind": "Option",
+          "multiple": false,
+          "name": "entity_type",
+          "nargs": 1,
+          "opts": [
+            "--type"
+          ],
+          "required": false,
+          "secondary_opts": [],
+          "type": "choice"
+        },
+        {
+          "count": false,
+          "default": "Sentinel.UNSET",
+          "is_flag": false,
+          "kind": "Option",
+          "multiple": false,
+          "name": "adr_id",
+          "nargs": 1,
+          "opts": [
+            "--adr"
+          ],
+          "required": false,
+          "secondary_opts": [],
+          "type": "text"
+        },
+        {
+          "count": false,
+          "default": "Sentinel.UNSET",
+          "is_flag": false,
+          "kind": "Option",
+          "multiple": false,
+          "name": "domain",
+          "nargs": 1,
+          "opts": [
+            "--domain"
+          ],
+          "required": false,
+          "secondary_opts": [],
+          "type": "text"
+        },
+        {
+          "count": false,
+          "default": "Sentinel.UNSET",
+          "is_flag": false,
+          "kind": "Option",
+          "multiple": false,
+          "name": "status",
+          "nargs": 1,
+          "opts": [
+            "--status"
+          ],
+          "required": false,
+          "secondary_opts": [],
+          "type": "choice"
+        }
+      ]
+    },
+    "entities relationships": {
+      "help": "List repository relationship records.",
+      "params": [
+        {
+          "count": false,
+          "default": "Sentinel.UNSET",
+          "is_flag": false,
+          "kind": "Option",
+          "multiple": false,
+          "name": "scope",
+          "nargs": 1,
+          "opts": [
+            "--scope"
+          ],
+          "required": false,
+          "secondary_opts": [],
+          "type": "directory"
+        },
+        {
+          "count": false,
+          "default": "Sentinel.UNSET",
+          "is_flag": false,
+          "kind": "Option",
+          "multiple": false,
+          "name": "entity_id",
+          "nargs": 1,
+          "opts": [
+            "--entity"
+          ],
+          "required": false,
+          "secondary_opts": [],
+          "type": "text"
+        },
+        {
+          "count": false,
+          "default": "Sentinel.UNSET",
+          "is_flag": false,
+          "kind": "Option",
+          "multiple": false,
+          "name": "relationship_type",
+          "nargs": 1,
+          "opts": [
+            "--type"
+          ],
+          "required": false,
+          "secondary_opts": [],
+          "type": "choice"
+        },
+        {
+          "count": false,
+          "default": "any",
+          "is_flag": false,
+          "kind": "Option",
+          "multiple": false,
+          "name": "direction",
+          "nargs": 1,
+          "opts": [
+            "--direction"
+          ],
+          "required": false,
+          "secondary_opts": [],
+          "type": "choice"
+        }
+      ]
+    },
+    "entities summary": {
+      "help": "Summarize the generated architecture corpus for the current scope.",
+      "params": [
+        {
+          "count": false,
+          "default": "Sentinel.UNSET",
+          "is_flag": false,
+          "kind": "Option",
+          "multiple": false,
+          "name": "scope",
+          "nargs": 1,
+          "opts": [
+            "--scope"
+          ],
+          "required": false,
+          "secondary_opts": [],
+          "type": "directory"
+        }
+      ]
+    },
+    "generate-adr-projection": {
+      "help": "Generate ADR human projection markdown under adrs/adr-projection/.",
+      "params": [
+        {
+          "count": false,
+          "default": "Sentinel.UNSET",
+          "is_flag": false,
+          "kind": "Option",
+          "multiple": false,
+          "name": "scope",
+          "nargs": 1,
+          "opts": [
+            "--scope"
+          ],
+          "required": false,
+          "secondary_opts": [],
+          "type": "directory"
+        },
+        {
+          "count": false,
+          "default": "Sentinel.UNSET",
+          "is_flag": true,
+          "kind": "Option",
+          "multiple": false,
+          "name": "recursive",
+          "nargs": 1,
+          "opts": [
+            "--recursive"
+          ],
+          "required": false,
+          "secondary_opts": [],
+          "type": "boolean"
+        }
+      ]
+    },
+    "generate-architecture-index": {
+      "help": "Generate normalized architecture discovery artifacts under adrs/index/.",
+      "params": [
+        {
+          "count": false,
+          "default": "Sentinel.UNSET",
+          "is_flag": false,
+          "kind": "Option",
+          "multiple": false,
+          "name": "scope",
+          "nargs": 1,
+          "opts": [
+            "--scope"
+          ],
+          "required": false,
+          "secondary_opts": [],
+          "type": "directory"
+        }
+      ]
+    },
+    "generate-entity-registry": {
+      "help": "Generate the legacy entity-registry.yaml compatibility artifact.",
+      "params": [
+        {
+          "count": false,
+          "default": "Sentinel.UNSET",
+          "is_flag": false,
+          "kind": "Option",
+          "multiple": false,
+          "name": "scope",
+          "nargs": 1,
+          "opts": [
+            "--scope"
+          ],
+          "required": false,
+          "secondary_opts": [],
+          "type": "directory"
+        },
+        {
+          "count": false,
+          "default": "Sentinel.UNSET",
+          "is_flag": true,
+          "kind": "Option",
+          "multiple": false,
+          "name": "recursive",
+          "nargs": 1,
+          "opts": [
+            "--recursive"
+          ],
+          "required": false,
+          "secondary_opts": [],
+          "type": "boolean"
+        },
+        {
+          "count": false,
+          "default": "Sentinel.UNSET",
+          "is_flag": false,
+          "kind": "Option",
+          "multiple": false,
+          "name": "output",
+          "nargs": 1,
+          "opts": [
+            "--output"
+          ],
+          "required": false,
+          "secondary_opts": [],
+          "type": "path"
+        }
+      ]
+    },
+    "generate-logical": {
+      "help": "Generate a Logical ADR YAML file from structured input.",
+      "params": [
+        {
+          "count": false,
+          "default": "Sentinel.UNSET",
+          "is_flag": false,
+          "kind": "Option",
+          "multiple": false,
+          "name": "input_path",
+          "nargs": 1,
+          "opts": [
+            "--input"
+          ],
+          "required": false,
+          "secondary_opts": [],
+          "type": "file"
+        },
+        {
+          "count": false,
+          "default": "Sentinel.UNSET",
+          "is_flag": false,
+          "kind": "Option",
+          "multiple": false,
+          "name": "output",
+          "nargs": 1,
+          "opts": [
+            "--output"
+          ],
+          "required": false,
+          "secondary_opts": [],
+          "type": "file"
+        },
+        {
+          "count": false,
+          "default": "complete",
+          "is_flag": false,
+          "kind": "Option",
+          "multiple": false,
+          "name": "validation_mode",
+          "nargs": 1,
+          "opts": [
+            "--validation-mode"
+          ],
+          "required": false,
+          "secondary_opts": [],
+          "type": "choice"
+        },
+        {
+          "count": false,
+          "default": "Sentinel.UNSET",
+          "is_flag": true,
+          "kind": "Option",
+          "multiple": false,
+          "name": "preserve_empty_sections",
+          "nargs": 1,
+          "opts": [
+            "--preserve-empty-sections"
+          ],
+          "required": false,
+          "secondary_opts": [],
+          "type": "boolean"
+        },
+        {
+          "count": false,
+          "default": "Sentinel.UNSET",
+          "is_flag": true,
+          "kind": "Option",
+          "multiple": false,
+          "name": "show_input_schema",
+          "nargs": 1,
+          "opts": [
+            "--show-input-schema"
+          ],
+          "required": false,
+          "secondary_opts": [],
+          "type": "boolean"
+        }
+      ]
+    },
+    "generate-manifest": {
+      "help": "Generate manifest.yaml from ADRs (ADR-L-0002: CAP-0002).\n\nAuto-detects project scope by default. Use --scope to override.\nUse --recursive to generate manifests for all sub-modules.",
+      "params": [
+        {
+          "count": false,
+          "default": "Sentinel.UNSET",
+          "is_flag": false,
+          "kind": "Option",
+          "multiple": false,
+          "name": "scope",
+          "nargs": 1,
+          "opts": [
+            "--scope"
+          ],
+          "required": false,
+          "secondary_opts": [],
+          "type": "directory"
+        },
+        {
+          "count": false,
+          "default": "Sentinel.UNSET",
+          "is_flag": true,
+          "kind": "Option",
+          "multiple": false,
+          "name": "recursive",
+          "nargs": 1,
+          "opts": [
+            "--recursive"
+          ],
+          "required": false,
+          "secondary_opts": [],
+          "type": "boolean"
+        },
+        {
+          "count": false,
+          "default": "Sentinel.UNSET",
+          "is_flag": false,
+          "kind": "Option",
+          "multiple": false,
+          "name": "output",
+          "nargs": 1,
+          "opts": [
+            "--output"
+          ],
+          "required": false,
+          "secondary_opts": [],
+          "type": "path"
+        }
+      ]
+    },
+    "generate-physical-component": {
+      "help": "Generate a Physical-Component ADR YAML file from structured input.",
+      "params": [
+        {
+          "count": false,
+          "default": "Sentinel.UNSET",
+          "is_flag": false,
+          "kind": "Option",
+          "multiple": false,
+          "name": "input_path",
+          "nargs": 1,
+          "opts": [
+            "--input"
+          ],
+          "required": false,
+          "secondary_opts": [],
+          "type": "file"
+        },
+        {
+          "count": false,
+          "default": "Sentinel.UNSET",
+          "is_flag": false,
+          "kind": "Option",
+          "multiple": false,
+          "name": "output",
+          "nargs": 1,
+          "opts": [
+            "--output"
+          ],
+          "required": false,
+          "secondary_opts": [],
+          "type": "file"
+        },
+        {
+          "count": false,
+          "default": "complete",
+          "is_flag": false,
+          "kind": "Option",
+          "multiple": false,
+          "name": "validation_mode",
+          "nargs": 1,
+          "opts": [
+            "--validation-mode"
+          ],
+          "required": false,
+          "secondary_opts": [],
+          "type": "choice"
+        },
+        {
+          "count": false,
+          "default": "Sentinel.UNSET",
+          "is_flag": true,
+          "kind": "Option",
+          "multiple": false,
+          "name": "preserve_empty_sections",
+          "nargs": 1,
+          "opts": [
+            "--preserve-empty-sections"
+          ],
+          "required": false,
+          "secondary_opts": [],
+          "type": "boolean"
+        },
+        {
+          "count": false,
+          "default": "Sentinel.UNSET",
+          "is_flag": true,
+          "kind": "Option",
+          "multiple": false,
+          "name": "show_input_schema",
+          "nargs": 1,
+          "opts": [
+            "--show-input-schema"
+          ],
+          "required": false,
+          "secondary_opts": [],
+          "type": "boolean"
+        }
+      ]
+    },
+    "generate-physical-system": {
+      "help": "Generate a Physical-System ADR YAML file from structured input.",
+      "params": [
+        {
+          "count": false,
+          "default": "Sentinel.UNSET",
+          "is_flag": false,
+          "kind": "Option",
+          "multiple": false,
+          "name": "input_path",
+          "nargs": 1,
+          "opts": [
+            "--input"
+          ],
+          "required": false,
+          "secondary_opts": [],
+          "type": "file"
+        },
+        {
+          "count": false,
+          "default": "Sentinel.UNSET",
+          "is_flag": false,
+          "kind": "Option",
+          "multiple": false,
+          "name": "output",
+          "nargs": 1,
+          "opts": [
+            "--output"
+          ],
+          "required": false,
+          "secondary_opts": [],
+          "type": "file"
+        },
+        {
+          "count": false,
+          "default": "complete",
+          "is_flag": false,
+          "kind": "Option",
+          "multiple": false,
+          "name": "validation_mode",
+          "nargs": 1,
+          "opts": [
+            "--validation-mode"
+          ],
+          "required": false,
+          "secondary_opts": [],
+          "type": "choice"
+        },
+        {
+          "count": false,
+          "default": "Sentinel.UNSET",
+          "is_flag": true,
+          "kind": "Option",
+          "multiple": false,
+          "name": "preserve_empty_sections",
+          "nargs": 1,
+          "opts": [
+            "--preserve-empty-sections"
+          ],
+          "required": false,
+          "secondary_opts": [],
+          "type": "boolean"
+        },
+        {
+          "count": false,
+          "default": "Sentinel.UNSET",
+          "is_flag": true,
+          "kind": "Option",
+          "multiple": false,
+          "name": "show_input_schema",
+          "nargs": 1,
+          "opts": [
+            "--show-input-schema"
+          ],
+          "required": false,
+          "secondary_opts": [],
+          "type": "boolean"
+        }
+      ]
+    },
+    "generate-rendered-docs": {
+      "help": "Compatibility alias for generate-adr-projection.",
+      "params": [
+        {
+          "count": false,
+          "default": "Sentinel.UNSET",
+          "is_flag": false,
+          "kind": "Option",
+          "multiple": false,
+          "name": "scope",
+          "nargs": 1,
+          "opts": [
+            "--scope"
+          ],
+          "required": false,
+          "secondary_opts": [],
+          "type": "directory"
+        },
+        {
+          "count": false,
+          "default": "Sentinel.UNSET",
+          "is_flag": true,
+          "kind": "Option",
+          "multiple": false,
+          "name": "recursive",
+          "nargs": 1,
+          "opts": [
+            "--recursive"
+          ],
+          "required": false,
+          "secondary_opts": [],
+          "type": "boolean"
+        }
+      ]
+    },
+    "generate-system-overview": {
+      "help": "Generate the AI-first SYSTEM-OVERVIEW.md artifact for one scope.",
+      "params": [
+        {
+          "count": false,
+          "default": null,
+          "is_flag": false,
+          "kind": "Option",
+          "multiple": false,
+          "name": "output",
+          "nargs": 1,
+          "opts": [
+            "--output"
+          ],
+          "required": false,
+          "secondary_opts": [],
+          "type": "file"
+        },
+        {
+          "count": false,
+          "default": "Sentinel.UNSET",
+          "is_flag": false,
+          "kind": "Option",
+          "multiple": false,
+          "name": "scope",
+          "nargs": 1,
+          "opts": [
+            "--scope"
+          ],
+          "required": false,
+          "secondary_opts": [],
+          "type": "directory"
+        }
+      ]
+    },
+    "generate-vision": {
+      "help": "Generate a Vision ADR YAML file from structured input.",
+      "params": [
+        {
+          "count": false,
+          "default": "Sentinel.UNSET",
+          "is_flag": false,
+          "kind": "Option",
+          "multiple": false,
+          "name": "input_path",
+          "nargs": 1,
+          "opts": [
+            "--input"
+          ],
+          "required": false,
+          "secondary_opts": [],
+          "type": "file"
+        },
+        {
+          "count": false,
+          "default": "Sentinel.UNSET",
+          "is_flag": false,
+          "kind": "Option",
+          "multiple": false,
+          "name": "output",
+          "nargs": 1,
+          "opts": [
+            "--output"
+          ],
+          "required": false,
+          "secondary_opts": [],
+          "type": "file"
+        },
+        {
+          "count": false,
+          "default": "complete",
+          "is_flag": false,
+          "kind": "Option",
+          "multiple": false,
+          "name": "validation_mode",
+          "nargs": 1,
+          "opts": [
+            "--validation-mode"
+          ],
+          "required": false,
+          "secondary_opts": [],
+          "type": "choice"
+        },
+        {
+          "count": false,
+          "default": "Sentinel.UNSET",
+          "is_flag": true,
+          "kind": "Option",
+          "multiple": false,
+          "name": "preserve_empty_sections",
+          "nargs": 1,
+          "opts": [
+            "--preserve-empty-sections"
+          ],
+          "required": false,
+          "secondary_opts": [],
+          "type": "boolean"
+        },
+        {
+          "count": false,
+          "default": "Sentinel.UNSET",
+          "is_flag": true,
+          "kind": "Option",
+          "multiple": false,
+          "name": "show_input_schema",
+          "nargs": 1,
+          "opts": [
+            "--show-input-schema"
+          ],
+          "required": false,
+          "secondary_opts": [],
+          "type": "boolean"
+        }
+      ]
+    },
+    "governance-checks": {
+      "help": "Run the standard local governance validation bundle.",
+      "params": [
+        {
+          "count": false,
+          "default": ".",
+          "is_flag": false,
+          "kind": "Option",
+          "multiple": false,
+          "name": "scope",
+          "nargs": 1,
+          "opts": [
+            "--scope"
+          ],
+          "required": false,
+          "secondary_opts": [],
+          "type": "directory"
+        },
+        {
+          "count": false,
+          "default": "Sentinel.UNSET",
+          "is_flag": true,
+          "kind": "Option",
+          "multiple": false,
+          "name": "skip_tests",
+          "nargs": 1,
+          "opts": [
+            "--skip-tests"
+          ],
+          "required": false,
+          "secondary_opts": [],
+          "type": "boolean"
+        },
+        {
+          "count": false,
+          "default": "Sentinel.UNSET",
+          "is_flag": true,
+          "kind": "Option",
+          "multiple": false,
+          "name": "recursive",
+          "nargs": 1,
+          "opts": [
+            "--recursive"
+          ],
+          "required": false,
+          "secondary_opts": [],
+          "type": "boolean"
+        }
+      ]
+    },
+    "migrate-identity-v13": {
+      "help": "Plan, seal-consume, check, or recover v1.3 identity migration.",
+      "params": [
+        {
+          "count": false,
+          "default": "Sentinel.UNSET",
+          "is_flag": false,
+          "kind": "Option",
+          "multiple": false,
+          "name": "scope",
+          "nargs": 1,
+          "opts": [
+            "--scope"
+          ],
+          "required": false,
+          "secondary_opts": [],
+          "type": "directory"
+        },
+        {
+          "count": false,
+          "default": "Sentinel.UNSET",
+          "is_flag": false,
+          "kind": "Option",
+          "multiple": false,
+          "name": "plan_out",
+          "nargs": 1,
+          "opts": [
+            "--plan-out"
+          ],
+          "required": false,
+          "secondary_opts": [],
+          "type": "path"
+        },
+        {
+          "count": false,
+          "default": "Sentinel.UNSET",
+          "is_flag": false,
+          "kind": "Option",
+          "multiple": false,
+          "name": "identity_map_path",
+          "nargs": 1,
+          "opts": [
+            "--identity-map"
+          ],
+          "required": false,
+          "secondary_opts": [],
+          "type": "file"
+        },
+        {
+          "count": false,
+          "default": "Sentinel.UNSET",
+          "is_flag": true,
+          "kind": "Option",
+          "multiple": false,
+          "name": "apply_migration",
+          "nargs": 1,
+          "opts": [
+            "--apply"
+          ],
+          "required": false,
+          "secondary_opts": [],
+          "type": "boolean"
+        },
+        {
+          "count": false,
+          "default": "Sentinel.UNSET",
+          "is_flag": true,
+          "kind": "Option",
+          "multiple": false,
+          "name": "check_migration",
+          "nargs": 1,
+          "opts": [
+            "--check"
+          ],
+          "required": false,
+          "secondary_opts": [],
+          "type": "boolean"
+        },
+        {
+          "count": false,
+          "default": "Sentinel.UNSET",
+          "is_flag": false,
+          "kind": "Option",
+          "multiple": false,
+          "name": "recover_journal",
+          "nargs": 1,
+          "opts": [
+            "--recover"
+          ],
+          "required": false,
+          "secondary_opts": [],
+          "type": "directory"
+        }
+      ]
+    },
+    "migrate-topology-ids": {
+      "help": "Plan or apply stable physical-topology identity migration.",
+      "params": [
+        {
+          "count": false,
+          "default": "Sentinel.UNSET",
+          "is_flag": false,
+          "kind": "Option",
+          "multiple": false,
+          "name": "scope",
+          "nargs": 1,
+          "opts": [
+            "--scope"
+          ],
+          "required": false,
+          "secondary_opts": [],
+          "type": "directory"
+        },
+        {
+          "count": false,
+          "default": "Sentinel.UNSET",
+          "is_flag": true,
+          "kind": "Option",
+          "multiple": false,
+          "name": "apply_migration",
+          "nargs": 1,
+          "opts": [
+            "--apply"
+          ],
+          "required": false,
+          "secondary_opts": [],
+          "type": "boolean"
+        }
+      ]
+    },
+    "next-id": {
+      "help": "Print the next available ADR ID for forward-authoring ADR types.",
+      "params": [
+        {
+          "count": false,
+          "default": "Sentinel.UNSET",
+          "is_flag": false,
+          "kind": "Option",
+          "multiple": false,
+          "name": "scope",
+          "nargs": 1,
+          "opts": [
+            "--scope"
+          ],
+          "required": false,
+          "secondary_opts": [],
+          "type": "directory"
+        },
+        {
+          "count": false,
+          "default": "Sentinel.UNSET",
+          "is_flag": false,
+          "kind": "Option",
+          "multiple": false,
+          "name": "adr_type",
+          "nargs": 1,
+          "opts": [
+            "--type"
+          ],
+          "required": true,
+          "secondary_opts": [],
+          "type": "choice"
+        }
+      ]
+    },
+    "normalize-canonical-ids": {
+      "help": "Normalize canonical entity ID collisions across ADR YAML files.",
+      "params": [
+        {
+          "count": false,
+          "default": "Sentinel.UNSET",
+          "is_flag": false,
+          "kind": "Option",
+          "multiple": false,
+          "name": "scope",
+          "nargs": 1,
+          "opts": [
+            "--scope"
+          ],
+          "required": false,
+          "secondary_opts": [],
+          "type": "directory"
+        }
+      ]
+    },
+    "promote": {
+      "help": "Design Journal Promotion Contract operations (thin adapter over adr_kit.api).",
+      "params": []
+    },
+    "promote apply": {
+      "help": "Dry-run or commit a locked prepared Promotion Contract.",
+      "params": [
+        {
+          "count": false,
+          "default": ".",
+          "is_flag": false,
+          "kind": "Option",
+          "multiple": false,
+          "name": "project_root",
+          "nargs": 1,
+          "opts": [
+            "--project-root"
+          ],
+          "required": false,
+          "secondary_opts": [],
+          "type": "directory"
+        },
+        {
+          "count": false,
+          "default": "Sentinel.UNSET",
+          "is_flag": false,
+          "kind": "Option",
+          "multiple": false,
+          "name": "promotion_contract_path",
+          "nargs": 1,
+          "opts": [
+            "--contract"
+          ],
+          "required": true,
+          "secondary_opts": [],
+          "type": "file"
+        },
+        {
+          "count": false,
+          "default": "Sentinel.UNSET",
+          "is_flag": true,
+          "kind": "Option",
+          "multiple": false,
+          "name": "commit",
+          "nargs": 1,
+          "opts": [
+            "--commit"
+          ],
+          "required": false,
+          "secondary_opts": [],
+          "type": "boolean"
+        },
+        {
+          "count": false,
+          "default": null,
+          "is_flag": false,
+          "kind": "Option",
+          "multiple": false,
+          "name": "timestamp",
+          "nargs": 1,
+          "opts": [
+            "--timestamp"
+          ],
+          "required": false,
+          "secondary_opts": [],
+          "type": "text"
+        }
+      ]
+    },
+    "promote check": {
+      "help": "Check promotion readiness without authority writes.",
+      "params": [
+        {
+          "count": false,
+          "default": ".",
+          "is_flag": false,
+          "kind": "Option",
+          "multiple": false,
+          "name": "project_root",
+          "nargs": 1,
+          "opts": [
+            "--project-root"
+          ],
+          "required": false,
+          "secondary_opts": [],
+          "type": "directory"
+        },
+        {
+          "count": false,
+          "default": "Sentinel.UNSET",
+          "is_flag": false,
+          "kind": "Option",
+          "multiple": false,
+          "name": "promotion_contract_path",
+          "nargs": 1,
+          "opts": [
+            "--contract"
+          ],
+          "required": true,
+          "secondary_opts": [],
+          "type": "file"
+        }
+      ]
+    },
+    "promote prepare": {
+      "help": "Prepare a Promotion Contract without mutating canonical authority.",
+      "params": [
+        {
+          "count": false,
+          "default": ".",
+          "is_flag": false,
+          "kind": "Option",
+          "multiple": false,
+          "name": "project_root",
+          "nargs": 1,
+          "opts": [
+            "--project-root"
+          ],
+          "required": false,
+          "secondary_opts": [],
+          "type": "directory"
+        },
+        {
+          "count": false,
+          "default": "Sentinel.UNSET",
+          "is_flag": false,
+          "kind": "Option",
+          "multiple": false,
+          "name": "promotion_contract_path",
+          "nargs": 1,
+          "opts": [
+            "--contract"
+          ],
+          "required": true,
+          "secondary_opts": [],
+          "type": "file"
+        },
+        {
+          "count": false,
+          "default": null,
+          "is_flag": false,
+          "kind": "Option",
+          "multiple": false,
+          "name": "prepared_contract_output_path",
+          "nargs": 1,
+          "opts": [
+            "--output"
+          ],
+          "required": false,
+          "secondary_opts": [],
+          "type": "file"
+        }
+      ]
+    },
+    "repair-canonical-ids": {
+      "help": "Plan, apply, or check monotonic canonical entity-ID repairs.",
+      "params": [
+        {
+          "count": false,
+          "default": "Sentinel.UNSET",
+          "is_flag": false,
+          "kind": "Option",
+          "multiple": false,
+          "name": "scope",
+          "nargs": 1,
+          "opts": [
+            "--scope"
+          ],
+          "required": false,
+          "secondary_opts": [],
+          "type": "directory"
+        },
+        {
+          "count": false,
+          "default": "Sentinel.UNSET",
+          "is_flag": true,
+          "kind": "Option",
+          "multiple": false,
+          "name": "apply_repairs",
+          "nargs": 1,
+          "opts": [
+            "--apply"
+          ],
+          "required": false,
+          "secondary_opts": [],
+          "type": "boolean"
+        },
+        {
+          "count": false,
+          "default": "Sentinel.UNSET",
+          "is_flag": true,
+          "kind": "Option",
+          "multiple": false,
+          "name": "check",
+          "nargs": 1,
+          "opts": [
+            "--check"
+          ],
+          "required": false,
+          "secondary_opts": [],
+          "type": "boolean"
+        },
+        {
+          "count": false,
+          "default": "Sentinel.UNSET",
+          "is_flag": false,
+          "kind": "Option",
+          "multiple": false,
+          "name": "resolution_map",
+          "nargs": 1,
+          "opts": [
+            "--resolution-map"
+          ],
+          "required": false,
+          "secondary_opts": [],
+          "type": "file"
+        }
+      ]
+    },
+    "scaffold": {
+      "help": "Generate a structured ADR input scaffold.",
+      "params": [
+        {
+          "count": false,
+          "default": "Sentinel.UNSET",
+          "is_flag": false,
+          "kind": "Option",
+          "multiple": false,
+          "name": "scope",
+          "nargs": 1,
+          "opts": [
+            "--scope"
+          ],
+          "required": false,
+          "secondary_opts": [],
+          "type": "directory"
+        },
+        {
+          "count": false,
+          "default": "Sentinel.UNSET",
+          "is_flag": false,
+          "kind": "Option",
+          "multiple": false,
+          "name": "adr_type",
+          "nargs": 1,
+          "opts": [
+            "--type"
+          ],
+          "required": true,
+          "secondary_opts": [],
+          "type": "choice"
+        },
+        {
+          "count": false,
+          "default": "Sentinel.UNSET",
+          "is_flag": false,
+          "kind": "Option",
+          "multiple": false,
+          "name": "adr_id",
+          "nargs": 1,
+          "opts": [
+            "--id"
+          ],
+          "required": false,
+          "secondary_opts": [],
+          "type": "text"
+        },
+        {
+          "count": false,
+          "default": "Sentinel.UNSET",
+          "is_flag": false,
+          "kind": "Option",
+          "multiple": false,
+          "name": "title",
+          "nargs": 1,
+          "opts": [
+            "--title"
+          ],
+          "required": false,
+          "secondary_opts": [],
+          "type": "text"
+        },
+        {
+          "count": false,
+          "default": "Sentinel.UNSET",
+          "is_flag": true,
+          "kind": "Option",
+          "multiple": false,
+          "name": "include_optional",
+          "nargs": 1,
+          "opts": [
+            "--include-optional"
+          ],
+          "required": false,
+          "secondary_opts": [],
+          "type": "boolean"
+        },
+        {
+          "count": false,
+          "default": "Sentinel.UNSET",
+          "is_flag": false,
+          "kind": "Option",
+          "multiple": false,
+          "name": "output",
+          "nargs": 1,
+          "opts": [
+            "--output"
+          ],
+          "required": false,
+          "secondary_opts": [],
+          "type": "file"
+        }
+      ]
+    },
+    "scope": {
+      "help": "Show detected project scope(s) (ADR-L-0002: CAP-0001).\n\nDisplays project boundaries and ADR directory locations.",
+      "params": [
+        {
+          "count": false,
+          "default": "Sentinel.UNSET",
+          "is_flag": true,
+          "kind": "Option",
+          "multiple": false,
+          "name": "recursive",
+          "nargs": 1,
+          "opts": [
+            "--recursive"
+          ],
+          "required": false,
+          "secondary_opts": [],
+          "type": "boolean"
+        }
+      ]
+    },
+    "validate": {
+      "help": "Validate ADRs against schema and business rules (ADR-L-0002: CAP-0003).\n\nAuto-detects project scope by default. Use --scope to override.\nUse --recursive to validate all sub-modules (ADR-L-0002: INV-0019).",
+      "params": [
+        {
+          "count": false,
+          "default": "Sentinel.UNSET",
+          "is_flag": false,
+          "kind": "Option",
+          "multiple": false,
+          "name": "scope",
+          "nargs": 1,
+          "opts": [
+            "--scope"
+          ],
+          "required": false,
+          "secondary_opts": [],
+          "type": "directory"
+        },
+        {
+          "count": false,
+          "default": "Sentinel.UNSET",
+          "is_flag": true,
+          "kind": "Option",
+          "multiple": false,
+          "name": "recursive",
+          "nargs": 1,
+          "opts": [
+            "--recursive"
+          ],
+          "required": false,
+          "secondary_opts": [],
+          "type": "boolean"
+        },
+        {
+          "count": false,
+          "default": "Sentinel.UNSET",
+          "is_flag": true,
+          "kind": "Option",
+          "multiple": false,
+          "name": "cross_references",
+          "nargs": 1,
+          "opts": [
+            "--cross-references"
+          ],
+          "required": false,
+          "secondary_opts": [],
+          "type": "boolean"
+        },
+        {
+          "count": false,
+          "default": "complete",
+          "is_flag": false,
+          "kind": "Option",
+          "multiple": false,
+          "name": "mode",
+          "nargs": 1,
+          "opts": [
+            "--mode"
+          ],
+          "required": false,
+          "secondary_opts": [],
+          "type": "choice"
+        }
+      ]
+    },
+    "validate-contract": {
+      "help": "Validate the compiled repository contract bundle for the selected profile.",
+      "params": [
+        {
+          "count": false,
+          "default": "Sentinel.UNSET",
+          "is_flag": false,
+          "kind": "Option",
+          "multiple": false,
+          "name": "scope",
+          "nargs": 1,
+          "opts": [
+            "--scope"
+          ],
+          "required": false,
+          "secondary_opts": [],
+          "type": "directory"
+        },
+        {
+          "count": false,
+          "default": "greenfield",
+          "is_flag": false,
+          "kind": "Option",
+          "multiple": false,
+          "name": "contract_profile",
+          "nargs": 1,
+          "opts": [
+            "--contract-profile"
+          ],
+          "required": false,
+          "secondary_opts": [],
+          "type": "choice"
+        },
+        {
+          "count": false,
+          "default": null,
+          "is_flag": false,
+          "kind": "Option",
+          "multiple": false,
+          "name": "max_sentinel_fields",
+          "nargs": 1,
+          "opts": [
+            "--max-sentinel-fields"
+          ],
+          "required": false,
+          "secondary_opts": [],
+          "type": "integer"
+        },
+        {
+          "count": false,
+          "default": null,
+          "is_flag": false,
+          "kind": "Option",
+          "multiple": false,
+          "name": "max_non_complete_entities",
+          "nargs": 1,
+          "opts": [
+            "--max-non-complete-entities"
+          ],
+          "required": false,
+          "secondary_opts": [],
+          "type": "integer"
+        },
+        {
+          "count": false,
+          "default": "Sentinel.UNSET",
+          "is_flag": true,
+          "kind": "Option",
+          "multiple": false,
+          "name": "recursive",
+          "nargs": 1,
+          "opts": [
+            "--recursive"
+          ],
+          "required": false,
+          "secondary_opts": [],
+          "type": "boolean"
+        }
+      ]
+    },
+    "validate-generated-docs": {
+      "help": "Validate covered generated documentation artifacts.",
+      "params": [
+        {
+          "count": false,
+          "default": "Sentinel.UNSET",
+          "is_flag": false,
+          "kind": "Option",
+          "multiple": false,
+          "name": "scope",
+          "nargs": 1,
+          "opts": [
+            "--scope"
+          ],
+          "required": false,
+          "secondary_opts": [],
+          "type": "directory"
+        },
+        {
+          "count": false,
+          "default": "Sentinel.UNSET",
+          "is_flag": true,
+          "kind": "Option",
+          "multiple": false,
+          "name": "recursive",
+          "nargs": 1,
+          "opts": [
+            "--recursive"
+          ],
+          "required": false,
+          "secondary_opts": [],
+          "type": "boolean"
+        }
+      ]
+    },
+    "validate-project-metadata": {
+      "help": "Validate PROJECT.yaml against schema and model rules.",
+      "params": [
+        {
+          "count": false,
+          "default": "Sentinel.UNSET",
+          "is_flag": false,
+          "kind": "Option",
+          "multiple": false,
+          "name": "scope",
+          "nargs": 1,
+          "opts": [
+            "--scope"
+          ],
+          "required": false,
+          "secondary_opts": [],
+          "type": "directory"
+        },
+        {
+          "count": false,
+          "default": "PROJECT.yaml",
+          "is_flag": false,
+          "kind": "Option",
+          "multiple": false,
+          "name": "file_path",
+          "nargs": 1,
+          "opts": [
+            "--file"
+          ],
+          "required": false,
+          "secondary_opts": [],
+          "type": "file"
+        },
+        {
+          "count": false,
+          "default": "Sentinel.UNSET",
+          "is_flag": true,
+          "kind": "Option",
+          "multiple": false,
+          "name": "recursive",
+          "nargs": 1,
+          "opts": [
+            "--recursive"
+          ],
+          "required": false,
+          "secondary_opts": [],
+          "type": "boolean"
+        }
+      ]
+    },
+    "validate-system-overview": {
+      "help": "Validate that SYSTEM-OVERVIEW.md is generated and current.",
+      "params": [
+        {
+          "count": false,
+          "default": "SYSTEM-OVERVIEW.md",
+          "is_flag": false,
+          "kind": "Option",
+          "multiple": false,
+          "name": "file_path",
+          "nargs": 1,
+          "opts": [
+            "--file"
+          ],
+          "required": false,
+          "secondary_opts": [],
+          "type": "file"
+        }
+      ]
+    }
+  },
+  "entry_point": "adr_kit.cli.main:cli",
+  "params": [
+    {
+      "count": false,
+      "default": "Sentinel.UNSET",
+      "is_flag": true,
+      "kind": "Option",
+      "multiple": false,
+      "name": "version",
+      "nargs": 1,
+      "opts": [
+        "--version"
+      ],
+      "required": false,
+      "secondary_opts": [],
+      "type": "boolean"
+    }
+  ]
+}

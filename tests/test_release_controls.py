@@ -237,6 +237,7 @@ def test_installed_wheel_harness_declares_all_consumer_probes() -> None:
         "coverage-registry",
         "projection-generation",
         "governance-cli",
+        "system-overview",
     ):
         assert probe in result.stdout
 

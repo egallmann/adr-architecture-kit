@@ -19,9 +19,11 @@ PRODUCTION_RENDERER_PATHS = (
     ROOT / "src" / "adr_kit" / "compiler" / "backend" / "human_adr_projection.py",
     ROOT / "src" / "adr_kit" / "compiler" / "backend" / "physical_component_projection.py",
     ROOT / "src" / "adr_kit" / "compiler" / "backend" / "physical_system_projection.py",
+    ROOT / "src" / "adr_kit" / "compiler" / "backend" / "logical_projection.py",
     ROOT / "src" / "adr_kit" / "compiler" / "backend" / "projection_editorial.py",
     ROOT / "src" / "adr_kit" / "templates" / "adr-physical-component-v3.md.jinja2",
     ROOT / "src" / "adr_kit" / "templates" / "adr-physical-system-v3.md.jinja2",
+    ROOT / "src" / "adr_kit" / "templates" / "adr-logical-v3.md.jinja2",
 )
 
 

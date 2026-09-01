@@ -1,0 +1,28 @@
+schema_version: "1.5"
+adr_type: physical-system
+id: "019209a0-b1c2-7def-8a00-000000000003"
+alias_id: ADR-PS-9001
+alias_name: l-projection-system
+title: "L Projection Physical System"
+status: accepted
+created_date: "2026-08-29"
+authors:
+  - fixture.author
+domains:
+  - projection-fixture
+technologies:
+  - python
+implements_logical:
+  - "019209a0-b1c2-7def-8a00-000000000001"
+context: |
+  Physical system realizing the maximal logical authority fixture.
+technology_stack:
+  - category: language
+    name: Python
+    version: ">=3.14"
+    rationale: Fixture language choice.
+system:
+  id: "019209a0-b1c2-7def-8a00-000000000013"
+  alias_id: SYS-9001
+  alias_name: l-projection-system
+  name: L Projection System

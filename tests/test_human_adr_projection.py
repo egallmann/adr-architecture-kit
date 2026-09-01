@@ -103,8 +103,12 @@ def test_emit_markdown_uses_adr_projection_layout():
             "## Architecture Neighborhood" in text
             or "## Architecture at a Glance" in text
             or "## Neighbor Relationships" in text
+            or "## Architecture Relationships" in text
         )
-        assert "```mermaid" in text or "No grammatical peer neighborhood" in text
+        if "adr-projection/logical/" in artifact.path.as_posix():
+            assert "## Context" in text
+        else:
+            assert "```mermaid" in text or "No grammatical peer neighborhood" in text
         assert "## Context" in text
 
 
@@ -115,6 +119,6 @@ def test_human_projection_readability_contains_decisions_and_peers():
     artifacts = emit_markdown_artifacts(parser=parser, scope=scope, build_result=build)
     l7 = next(item for item in artifacts if "ADR-L-0007" in item.path.as_posix())
     body = l7.content.decode("utf-8")
-    assert "## Decisions" in body
-    assert "**Rationale:**" in body
+    assert "## Decisions" in body or "## Architectural Decisions" in body
+    assert "**Rationale**" in body or "**Rationale:**" in body
     assert "## Related ADRs" in body or "```mermaid" in body

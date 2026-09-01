@@ -10,6 +10,7 @@ from ...models.architecture_discovery import (
     Completeness,
     DiscoveryProvenance,
     SourceRef,
+    TOPOLOGY_RELATIONSHIP_TYPES,
 )
 
 IR_ENTITY_TYPES = (
@@ -44,7 +45,9 @@ ENTITY_RELATIONSHIP_TYPES = (
     "superseded_by",
     "refines",
     "provides_interface",
+    "consumes_interface",
     "composed_of",
+    *TOPOLOGY_RELATIONSHIP_TYPES,
     "binds_substrate",
     "binds_rule",
     "expects_evidence",

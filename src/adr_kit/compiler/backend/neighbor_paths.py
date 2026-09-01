@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from collections import defaultdict, deque
 from dataclasses import dataclass
-from typing import Any, Iterable
+from typing import Iterable
 
 from ...decorators import implements_adr
 from ..ir.rel_graph import IRRelationship

@@ -5,7 +5,6 @@ from __future__ import annotations
 from typing import Any
 
 from ...decorators import implements_adr
-from ...identity import UUIDV7_PATTERN
 from ..frontend.adr_access import (
     field_get,
     field_list,

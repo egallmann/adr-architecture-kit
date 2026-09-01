@@ -5,12 +5,10 @@ from __future__ import annotations
 from pathlib import Path
 
 import pytest
-from pydantic import ValidationError
 
 from adr_kit.api import CompilationRequest, compile_architecture
 from adr_kit.compiler.backend.projection import project_relationship, project_relationship_v22
 from adr_kit.compiler.ir.rel_graph import IRRelationship
-from adr_kit.models.architecture_discovery import RelationshipRecord
 from adr_kit.models.v2_0.relationship_record import RelationshipRecordV2
 from adr_kit.models.v2_2 import NormalizedArchitectureModelV22
 from adr_kit.repository._normalized_bundle import load_normalized_bundle_from_bytes
@@ -22,7 +20,7 @@ UUID_B = "018f4f20-0000-7000-8000-000000000002"
 OWNER = "018f4f20-0000-7000-8000-000000000003"
 
 
-def test_depends_on_is_rejected_by_legacy_normalized_contracts() -> None:
+def test_depends_on_is_projected_through_normalized_contracts() -> None:
     ir = IRRelationship(
         relationship_type="depends_on",
         from_entity_id=UUID_A,
@@ -33,28 +31,19 @@ def test_depends_on_is_rejected_by_legacy_normalized_contracts() -> None:
         source_pointer="/component_topology/relationships/0",
         record_kind="compatibility",
     )
-    with pytest.raises(ValidationError):
-        project_relationship(ir)
-    with pytest.raises(ValidationError):
-        RelationshipRecord(
-            relationship_id="depends_on:a:b",
-            relationship_type="depends_on",  # type: ignore[arg-type]
-            from_entity_id=UUID_A,
-            to_entity_id=UUID_B,
-            provenance_classification="explicit",
-            canonical_source_ref=OWNER,
-        )
-    with pytest.raises(ValidationError):
-        RelationshipRecordV2(
-            relationship_id="depends_on:a:b",
-            assertion_id="asrt-" + "0" * 64,
-            relationship_type="depends_on",  # type: ignore[arg-type]
-            from_entity_id=UUID_A,
-            to_entity_id=UUID_B,
-            source_owner_id=OWNER,
-            provenance_classification="explicit",
-            canonical_source_ref=OWNER,
-        )
+    projected_v11 = project_relationship(ir)
+    assert projected_v11.relationship_type == "depends_on"
+    projected_v20 = RelationshipRecordV2(
+        relationship_id="depends_on:a:b",
+        assertion_id="asrt-" + "0" * 64,
+        relationship_type="depends_on",  # type: ignore[arg-type]
+        from_entity_id=UUID_A,
+        to_entity_id=UUID_B,
+        source_owner_id=OWNER,
+        provenance_classification="explicit",
+        canonical_source_ref=OWNER,
+    )
+    assert projected_v20.relationship_type == "depends_on"
     projected = project_relationship_v22(ir)
     assert projected is not None
     assert projected.relationship_type == "depends_on"

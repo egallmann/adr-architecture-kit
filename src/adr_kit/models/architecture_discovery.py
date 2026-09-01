@@ -37,11 +37,27 @@ RelationshipType = Literal[
     "superseded_by",
     "refines",
     "provides_interface",
+    "consumes_interface",
     "composed_of",
+    "depends_on",
+    "calls",
+    "publishes_to",
+    "subscribes_to",
+    "reads_from",
+    "writes_to",
     "binds_substrate",
     "binds_rule",
     "expects_evidence",
 ]
+
+TOPOLOGY_RELATIONSHIP_TYPES = (
+    "depends_on",
+    "calls",
+    "publishes_to",
+    "subscribes_to",
+    "reads_from",
+    "writes_to",
+)
 
 
 def lifecycle_stage_from_adr_status(status: Optional[str]) -> LifecycleStageNormalized:
@@ -110,7 +126,14 @@ class EntityRelationshipSummary(BaseModel):
     superseded_by: List[str] = Field(default_factory=list)
     refines: List[str] = Field(default_factory=list)
     provides_interface: List[str] = Field(default_factory=list)
+    consumes_interface: List[str] = Field(default_factory=list)
     composed_of: List[str] = Field(default_factory=list)
+    depends_on: List[str] = Field(default_factory=list)
+    calls: List[str] = Field(default_factory=list)
+    publishes_to: List[str] = Field(default_factory=list)
+    subscribes_to: List[str] = Field(default_factory=list)
+    reads_from: List[str] = Field(default_factory=list)
+    writes_to: List[str] = Field(default_factory=list)
     binds_substrate: List[str] = Field(default_factory=list)
     binds_rule: List[str] = Field(default_factory=list)
     expects_evidence: List[str] = Field(default_factory=list)

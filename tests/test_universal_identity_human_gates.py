@@ -48,7 +48,7 @@ def test_relationship_deduplication_guard_is_durable_and_runtime_unchanged() -> 
         for field in ("summary", "rationale")
     )
 
-    assert "relationships: dict[str, RelationshipRecord]" in source
+    assert "relationships: dict[str, DerivedRelationship]" in source
     assert "if rel_id in relationships:" in source
     assert "multiple assertions" in text
     assert "inverse" in text

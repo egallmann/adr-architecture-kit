@@ -54,11 +54,18 @@ entities:
     superseded_by: []
     refines: []
     provides_interface: []
+    consumes_interface: []
     composed_of:
     - 019fee89-e617-7060-8f3f-4ecd46a719da
     - 019fee89-e617-76ad-9336-b3615a6e4bde
     - 019fee89-e618-74d1-9a1f-37e2c2982a51
     - 019fee89-e618-781c-831f-0d5fe24f7d85
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
     binds_substrate: []
     binds_rule: []
     expects_evidence: []
@@ -119,8 +126,15 @@ entities:
     superseded_by: []
     refines: []
     provides_interface: []
+    consumes_interface: []
     composed_of:
     - 019fee89-e617-76d8-a333-e21361cd6602
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
     binds_substrate: []
     binds_rule: []
     expects_evidence: []

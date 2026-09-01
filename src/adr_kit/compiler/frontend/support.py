@@ -84,8 +84,6 @@ def summarize_text(text: str, limit: int = 220) -> str:
 
 def classify_author_gap(gap) -> str:
     """Classify an author-declared ADR gap using current semantics."""
-    from .adr_access import field_get
-
     context = str(field_get(gap, "context") or "").lower()
     if "classification: deferred" in context:
         return "author_declared_deferred_gap"

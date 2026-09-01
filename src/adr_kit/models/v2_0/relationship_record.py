@@ -13,6 +13,7 @@ from ...identity import (
     validate_uuidv7,
 )
 
+
 RelationshipTypeV2 = Literal[
     "declared_in",
     "references",
@@ -28,7 +29,14 @@ RelationshipTypeV2 = Literal[
     "superseded_by",
     "refines",
     "provides_interface",
+    "consumes_interface",
     "composed_of",
+    "depends_on",
+    "calls",
+    "publishes_to",
+    "subscribes_to",
+    "reads_from",
+    "writes_to",
     "binds_substrate",
     "binds_rule",
     "expects_evidence",

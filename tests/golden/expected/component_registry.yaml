@@ -52,7 +52,14 @@ entities:
     provides_interface:
     - 019fee89-e617-74dd-a62f-5ce1a1994d18
     - 019fee89-e617-78b8-852f-9b2c984f9300
+    consumes_interface: []
     composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
     binds_substrate: []
     binds_rule: []
     expects_evidence: []
@@ -117,7 +124,15 @@ entities:
     provides_interface:
     - 019fee89-e617-779d-a12e-7713d58fbc21
     - 019fee89-e618-7e7b-813b-2a48de1d809a
+    consumes_interface: []
     composed_of: []
+    depends_on:
+    - 019fee89-e617-7060-8f3f-4ecd46a719da
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
     binds_substrate: []
     binds_rule: []
     expects_evidence: []
@@ -183,7 +198,14 @@ entities:
     refines: []
     provides_interface:
     - 019fee89-e617-70e7-bb17-27b693ad01a8
+    consumes_interface: []
     composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
     binds_substrate: []
     binds_rule: []
     expects_evidence: []
@@ -252,7 +274,14 @@ entities:
     provides_interface:
     - 019fee89-e618-717e-933f-f02a053e8ac5
     - 019fee89-e618-79e6-8b3f-27b30946373a
+    consumes_interface: []
     composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
     binds_substrate: []
     binds_rule: []
     expects_evidence: []
@@ -317,7 +346,15 @@ entities:
     provides_interface:
     - 019fee89-e618-74e7-882f-04f858aecaf0
     - 019fee89-e618-7dab-893c-05d961de3a7d
+    consumes_interface: []
     composed_of: []
+    depends_on:
+    - 019fee89-e617-76ad-9336-b3615a6e4bde
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
     binds_substrate: []
     binds_rule: []
     expects_evidence: []
@@ -381,7 +418,14 @@ entities:
     refines: []
     provides_interface:
     - 019fee89-e618-7ad6-903b-955fab187e68
+    consumes_interface: []
     composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
     binds_substrate: []
     binds_rule: []
     expects_evidence: []
@@ -445,7 +489,15 @@ entities:
     refines: []
     provides_interface:
     - 019fee89-e618-783a-8511-196b6a627b3e
+    consumes_interface: []
     composed_of: []
+    depends_on:
+    - 019fee89-e617-76ad-9336-b3615a6e4bde
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
     binds_substrate: []
     binds_rule: []
     expects_evidence: []
@@ -511,7 +563,14 @@ entities:
     provides_interface:
     - 019ffdba-3c42-77f6-903f-7753342c5b5f
     - 019ffdba-3c42-7d5b-b52f-b36c3000f299
+    consumes_interface: []
     composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
     binds_substrate: []
     binds_rule: []
     expects_evidence: []

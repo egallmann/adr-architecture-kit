@@ -233,7 +233,13 @@ class CompilationResult:
     partial: bool
     artifacts: tuple[ArtifactDescriptor, ...]
     diagnostics: tuple[Diagnostic, ...]
-    model: NormalizedArchitectureModel | NormalizedArchitectureModelV2 | NormalizedArchitectureModelV21 | NormalizedArchitectureModelV22 | None
+    model: (
+        NormalizedArchitectureModel
+        | NormalizedArchitectureModelV2
+        | NormalizedArchitectureModelV21
+        | NormalizedArchitectureModelV22
+        | None
+    )
     fingerprint: str | None
     source_files: int
     parse_errors: int

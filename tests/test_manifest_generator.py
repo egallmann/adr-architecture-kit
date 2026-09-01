@@ -40,7 +40,7 @@ class TestManifestGeneration:
         manifest = generator.generate_from_directory(Path("adrs"))
         
         assert "ADR-L-0001" in manifest.logical_to_physical_map
-        assert "ADR-P-0001" in manifest.logical_to_physical_map["ADR-L-0001"]
+        assert "ADR-PS-0002" in manifest.logical_to_physical_map["ADR-L-0001"]
     
     def test_manifest_statistics(self, generator):
         """Test manifest statistics are computed correctly."""

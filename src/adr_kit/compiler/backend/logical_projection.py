@@ -5,11 +5,17 @@ Not a public SDK contract. Field X exists -> view field Y -> template section Z.
 
 from __future__ import annotations
 
-from dataclasses import dataclass, field
+from dataclasses import dataclass
+from pathlib import Path
 from typing import Any, Callable, Iterable
 
 from ...decorators import implements_adr
 from ..frontend.adr_access import field_get, presentation_id
+from ..frontend.authoring_source_access import (
+    capability_field_from_source,
+    index_raw_capabilities,
+    load_authoring_yaml,
+)
 from ..ir.rel_graph import IRRelationship
 from .human_adr_projection import escape_mermaid_label, mermaid_node_id
 from .physical_component_projection import (
@@ -358,6 +364,7 @@ def _capability_view(
     capability: Any,
     *,
     format_ref: Callable[[str], str],
+    raw_by_key: dict[str, dict[str, Any]] | None = None,
 ) -> CapabilityView:
     alias_id = _nonempty_text(field_get(capability, "alias_id")) or _text(
         field_get(capability, "id") or "capability"
@@ -365,8 +372,17 @@ def _capability_view(
     if looks_like_uuid(alias_id):
         alias_id = _nonempty_text(field_get(capability, "name")) or alias_id
     name = _nonempty_text(field_get(capability, "name")) or alias_id
-    heading = f"{alias_id} — {name}" if alias_id and name and alias_id != name else (name or alias_id)
-    acceptance = _string_list(field_get(capability, "acceptance_criteria"))
+    heading = (
+        f"{alias_id} — {name}" if alias_id and name and alias_id != name else (name or alias_id)
+    )
+    raw_index = raw_by_key or {}
+    acceptance = _string_list(
+        capability_field_from_source(
+            capability,
+            "acceptance_criteria",
+            raw_by_key=raw_index,
+        )
+    )
     implemented_by = tuple(
         format_ref(item)
         for item in field_get(capability, "implemented_by_components") or []
@@ -429,11 +445,6 @@ def _invariant_view(
     enforcement_mechanism = _nonempty_text(field_get(invariant, "enforcement_mechanism")) or ""
     verification_method = _nonempty_text(field_get(invariant, "verification_method")) or ""
     statement = preserve_markdown(field_get(invariant, "statement") or "")
-    enforcement_display = (
-        f"{enforcement_level.upper()} / {enforcement_mechanism}"
-        if enforcement_level and enforcement_mechanism
-        else enforcement_level or enforcement_mechanism
-    )
     return InvariantView(
         alias_id=alias_id,
         heading=alias_id,
@@ -585,9 +596,7 @@ def _build_semantic_graph(
     format_ref: Callable[[str], str],
     title: str | None = None,
 ) -> str | None:
-    semantic = [
-        rel for rel in edges if rel.relationship_type in _LOGICAL_TRACEABILITY_VERBS
-    ]
+    semantic = [rel for rel in edges if rel.relationship_type in _LOGICAL_TRACEABILITY_VERBS]
     semantic = _unique_relationships(semantic)
     if not semantic:
         return None
@@ -600,7 +609,7 @@ def _build_semantic_graph(
     )
     lines = ["flowchart LR"]
     if title:
-        lines.append(f'  %% {title}')
+        lines.append(f"  %% {title}")
     for entity_id in local_nodes:
         node = mermaid_node_id(entity_id)
         label = escape_mermaid_label(
@@ -630,8 +639,8 @@ def _physical_realization(
     adr_models_by_id: dict[str, Any],
     format_ref: Callable[[str], str],
 ) -> PhysicalRealizationView | None:
-    systems: list[str] = []
-    components: list[str] = []
+    system_displays: list[str] = []
+    component_displays: list[str] = []
     capability_ids = {
         _text(field_get(cap, "id"))
         for cap in _as_items(field_get(adr, "capabilities"))
@@ -646,16 +655,16 @@ def _physical_realization(
         adr_type = _text(field_get(peer, "adr_type"))
         display = format_ref(rel.from_entity_id)
         if adr_type == "physical-system":
-            systems.append(display)
+            system_displays.append(display)
         elif adr_type == "physical-component":
-            components.append(display)
-    capability_realizations: list[CapabilityRealizationRow] = []
+            component_displays.append(display)
+    capability_realization_rows: list[CapabilityRealizationRow] = []
     for rel in relationships:
         if rel.relationship_type != "implemented_by":
             continue
         if rel.from_entity_id not in capability_ids:
             continue
-        capability_realizations.append(
+        capability_realization_rows.append(
             CapabilityRealizationRow(
                 capability_display=format_ref(rel.from_entity_id),
                 component_display=format_ref(rel.to_entity_id),
@@ -673,19 +682,22 @@ def _physical_realization(
             if not isinstance(component_id, str):
                 continue
             path = f"{cap_display} → {format_ref(component_id)}"
-            if any(row.canonical_path.endswith(path) for row in capability_realizations):
+            if any(row.canonical_path.endswith(path) for row in capability_realization_rows):
                 continue
-            capability_realizations.append(
+            capability_realization_rows.append(
                 CapabilityRealizationRow(
                     capability_display=cap_display,
                     component_display=format_ref(component_id),
                     canonical_path=path,
                 )
             )
-    systems = _join_unique(systems)
-    components = _join_unique(components)
+    systems = _join_unique(system_displays)
+    components = _join_unique(component_displays)
     capability_realizations = tuple(
-        sorted(capability_realizations, key=lambda row: (row.capability_display, row.component_display))
+        sorted(
+            capability_realization_rows,
+            key=lambda row: (row.capability_display, row.component_display),
+        )
     )
     if not systems and not components and not capability_realizations:
         return None
@@ -711,7 +723,9 @@ def _physical_realization(
     )
 
 
-def _governance_sections(adr: Any, *, format_ref: Callable[[str], str]) -> tuple[GovernanceSectionView, ...]:
+def _governance_sections(
+    adr: Any, *, format_ref: Callable[[str], str]
+) -> tuple[GovernanceSectionView, ...]:
     sections: list[GovernanceSectionView] = []
     ownership = field_get(adr, "ownership")
     if ownership is not None:
@@ -844,7 +858,9 @@ def _extension_entities(adr: Any) -> tuple[ExtensionEntityView, ...]:
             continue
         entity_type = _nonempty_text(mapping.get("entity_type")) or "extension"
         namespace = entity_type.split(":", 1)[0] if ":" in entity_type else entity_type
-        entity_id = _nonempty_text(mapping.get("alias_id")) or _nonempty_text(mapping.get("id")) or ""
+        entity_id = (
+            _nonempty_text(mapping.get("alias_id")) or _nonempty_text(mapping.get("id")) or ""
+        )
         rows: list[LabeledValue] = []
         if entity_type:
             rows.append(LabeledValue("Entity type", entity_type))
@@ -870,7 +886,9 @@ def _extension_entities(adr: Any) -> tuple[ExtensionEntityView, ...]:
     return tuple(views)
 
 
-def _extension_relationships(adr: Any, *, format_ref: Callable[[str], str]) -> tuple[ExtensionRelationshipView, ...]:
+def _extension_relationships(
+    adr: Any, *, format_ref: Callable[[str], str]
+) -> tuple[ExtensionRelationshipView, ...]:
     views: list[ExtensionRelationshipView] = []
     for item in _as_items(field_get(adr, "extension_relationships")):
         mapping = _as_mapping(item)
@@ -915,9 +933,13 @@ def build_logical_projection(
     resolve_present_ref: Callable[[str], Any],
     format_present_ref: Callable[[Any], str],
     peer_cards: Iterable[Any],
+    source_path: Path | None = None,
 ) -> LogicalProjection:
     """Extract a disposable ADR-L presentation model from authored + compiled state."""
     relationship_list = list(relationships)
+    raw_by_key = (
+        index_raw_capabilities(load_authoring_yaml(source_path)) if source_path is not None else {}
+    )
 
     def format_ref(ref_id: str) -> str:
         return _format_ref(
@@ -942,10 +964,13 @@ def build_logical_projection(
         if view is not None
     )
     capabilities = tuple(
-        _capability_view(capability, format_ref=format_ref)
+        _capability_view(capability, format_ref=format_ref, raw_by_key=raw_by_key)
         for capability in _as_items(field_get(adr, "capabilities"))
     )
-    boundaries = tuple(_boundary_view(boundary) for boundary in _as_items(field_get(adr, "architectural_boundaries")))
+    boundaries = tuple(
+        _boundary_view(boundary)
+        for boundary in _as_items(field_get(adr, "architectural_boundaries"))
+    )
     contracts = tuple(
         _contract_view(contract) for contract in _as_items(field_get(adr, "interaction_contracts"))
     )
@@ -955,7 +980,9 @@ def build_logical_projection(
     )
     nfrs = tuple(
         view
-        for index, item in enumerate(_as_items(field_get(adr, "non_functional_requirements")), start=1)
+        for index, item in enumerate(
+            _as_items(field_get(adr, "non_functional_requirements")), start=1
+        )
         for view in [_nfr_view(item, index)]
         if view is not None
     )
@@ -1005,7 +1032,7 @@ def build_logical_projection(
         format_ref=format_ref,
     )
     if physical is not None:
-        realization_bits = []
+        realization_bits: list[str] = []
         if physical.systems:
             realization_bits.extend(physical.systems)
         if physical.components:
@@ -1061,10 +1088,7 @@ def build_logical_projection(
         format_ref=format_ref,
     )
     has_inventory = bool(
-        compressed
-        or physical is not None
-        or decision_traceability_graph
-        or lifecycle
+        compressed or physical is not None or decision_traceability_graph or lifecycle
     )
     notes = _nonempty_text(field_get(adr, "notes"))
     tags = tuple(_string_list(field_get(adr, "tags")))

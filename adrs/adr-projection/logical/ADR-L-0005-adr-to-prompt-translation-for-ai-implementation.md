@@ -5,8 +5,8 @@ artifact_kind: rendered_adr_markdown
 generator_id: adr-projection-markdown
 generator_version: 3
 hash_algorithm: sha256
-source_hash: f990c5801197d2c9ef353b8f3b0ee41722a674d13d2d1d62eb407317a29efc0d
-rendered_hash: 276a84edeef6be0e996df36b0b7f09649d61b820c35e95c32d5a6f2a20ca5e33
+source_hash: fc0af7c0351cdcbbe95bd516e5eaae4318c73ad22bbfd3a2de4fd3c7f61f30b2
+rendered_hash: 9a195159ae2fac358bbf27d9d8a39904d209a83dd99dd3f3cd1c1031374a64c8
 -->
 
 # ADR-L-0005: ADR-to-Prompt Translation for AI Implementation
@@ -190,6 +190,12 @@ Parse Physical ADRs to extract component specifications, including:
 - Dependencies
 - Testing requirements
 
+**Acceptance criteria**
+- Extracts all COMP-* sections from Physical ADR
+- Parses interface definitions into structured data
+- Validates component specification completeness
+- Returns structured component metadata
+
 ### CAP-0032 — Generate Implementation Prompt
 
 Generate implementation prompt for a specific component that includes:
@@ -199,6 +205,13 @@ Generate implementation prompt for a specific component that includes:
 - Test requirements (what to verify)
 - Implementation strategy (how to build)
 - Validation criteria (how to verify correctness)
+
+**Acceptance criteria**
+- Prompt includes all relevant invariants
+- Prompt includes complete component spec
+- Prompt includes test requirements
+- Prompt references source ADR
+- Prompt is self-contained and executable
 
 ### CAP-0033 — Generate Validation Checklist
 
@@ -210,15 +223,33 @@ including checks for:
 - Integration testing (works in real environment)
 - Documentation (docstrings, type hints)
 
+**Acceptance criteria**
+- Checklist covers all invariants
+- Checklist covers all capabilities
+- Checklist covers all components
+- Checklist is actionable (clear pass/fail)
+
 ### CAP-0008 — Multi-Agent Prompt Generation
 
 Generate prompts for multiple components that can be executed in parallel
 by different AI agents, with clear dependency ordering
 
+**Acceptance criteria**
+- Identifies component dependencies
+- Generates execution order
+- Prompts can be executed independently
+- Dependency information included
+
 ### CAP-0009 — Prompt Format Adaptation
 
 Adapt prompt format for different target AI agents (CODEX, Cursor, Claude, GPT)
 while maintaining core content consistency
+
+**Acceptance criteria**
+- Supports multiple target formats
+- Core content identical across formats
+- Format optimized for target agent
+- Easy to add new formats
 
 
 ## Architectural Boundaries

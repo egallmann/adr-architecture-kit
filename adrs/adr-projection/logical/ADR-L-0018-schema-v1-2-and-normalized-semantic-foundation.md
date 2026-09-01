@@ -5,8 +5,8 @@ artifact_kind: rendered_adr_markdown
 generator_id: adr-projection-markdown
 generator_version: 3
 hash_algorithm: sha256
-source_hash: 9fcec4462549d65abe1b3fdfe07acd068f95ed165d47c68545b59d13c0ab7375
-rendered_hash: c035bc91bed5cc9c92ce441515d6fdeb7b311657c32052277d1d7da665103a4d
+source_hash: 7695e1920cd3ed841507cd9e05912c0da821b748c8246fde99430169dfcdaf33
+rendered_hash: 778785d9b0ff29d490c47f8f090957e3b24f54367378bfac8dc1fc7676429f25
 -->
 
 # ADR-L-0018: Schema v1.2 and Normalized Semantic Foundation
@@ -174,23 +174,51 @@ Negative:
 Validate, parse, package, and compile provisional v1.2 ADR authoring while
 preserving frozen v1.0 and the existing provisional v1.1 artifact family.
 
+**Acceptance criteria**
+- V1.2 schemas are discoverable from source and installed wheels
+- Canonical and bundled v1.2 schema bytes match
+- Version negotiation is explicit and future versions fail closed
+- Existing v1.0 fixtures and generated compatibility surfaces remain valid
+
 ### CAP-0049 — Expanded Normalized Semantic Model
 
 Expose the Phase-2/pre-v1.3 expanded normalized model 1.1 contract and admit model 2.0 as the v1.3 UUID/alias compatibility event.
+
+**Acceptance criteria**
+- Model 1.1 remains readable as the Phase-2 contract
+- Model 2.0 is the v1.3 compatibility event for UUID/alias semantics
+- Phase-2 promoted types remain queryable through repository APIs
 
 ### CAP-0050 — Bind-Only External Authority Contracts
 
 Author deterministic substrate, rule, and evidence-expectation bindings without
 ingesting external semantic bodies or observed evidence.
 
+**Acceptance criteria**
+- Binding families validate and round trip deterministically
+- External entity references carry architecture_namespace, UUID, kind, and canonical fingerprint
+- Invalid disposition, duplicate identity, or unresolved local entity fails closed
+- Validation performs no network access or external rule execution
+
 ### CAP-0051 — Stable Physical Topology Identity Migration
 
 Add optional topology component IDs and migrate uniquely resolvable legacy names
 to stable IDs with deterministic diagnostics and output.
 
+**Acceptance criteria**
+- V1.2 accepts stable topology IDs and legacy names where unambiguous
+- Migration is dry-run-first, deterministic, and idempotent
+- Ambiguous names and dangling references do not produce guessed output
+- Migrated documents validate as v1.2
+
 ### CAP-0052 — Governed Alias Allocation and UUID Integrity
 
 Detect UUID identity collisions and fail closed; limit automatic repair to governed alias allocation/history.
+
+**Acceptance criteria**
+- Duplicate UUID identity fails closed and is never auto-repaired
+- Automatic repair applies only to governed alias allocation/history
+- Alias repair never rewrites UUID references or UUID relationship endpoints
 
 
 

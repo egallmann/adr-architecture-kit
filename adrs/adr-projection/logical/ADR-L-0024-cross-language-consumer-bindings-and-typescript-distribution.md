@@ -5,8 +5,8 @@ artifact_kind: rendered_adr_markdown
 generator_id: adr-projection-markdown
 generator_version: 3
 hash_algorithm: sha256
-source_hash: f8169b4be41791a17b60753261dea97c76a44a49d2df983f46c2fa5a3fb7f685
-rendered_hash: 9d726a637272cf7b9e4bad03c1d08918d11d72d953caa7613f1ee0318f17f87a
+source_hash: ce9164797957e06a7fdf4aafa0450538d1862245c1ff1706415eaca2d69123f8
+rendered_hash: 75c001ef5ac8fda2eb725adcfc167ec5d7d82933ad3417079dfd1059b08ca294
 -->
 
 # ADR-L-0024: Cross-Language Consumer Bindings and TypeScript Distribution
@@ -153,9 +153,19 @@ Consumers need one release identity while package publication remains an operati
 
 Provide an explicit contract and capability manifest for conforming language bindings over ADR-Kit authority.
 
+**Acceptance criteria**
+- overlapping binding capabilities are qualified by structural semantic behavioral and diagnostic equivalence
+- binding-local fingerprints are not treated as portable architecture identity
+- unsupported capabilities and versions fail explicitly
+
 ### CAP-9002 — TypeScript Node and Browser Consumer Distribution
 
 Provide a read-only framework-neutral TypeScript package with explicit browser-safe and Node-only subpaths.
+
+**Acceptance criteria**
+- browser-safe entry points bundle without Node built-ins or Angular framework dependencies
+- Node repository and linkage behavior preserve accepted ADR authority
+- npm and PyPI release metadata share one source release lineage
 
 
 

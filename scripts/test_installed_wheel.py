@@ -30,6 +30,10 @@ PROBES = (
     "promoted-entity-queries",
     "external-bindings",
     "topology-migration-entrypoint",
+    "public-api",
+    "coverage-registry",
+    "projection-generation",
+    "governance-cli",
 )
 PROBE = """
 from importlib import resources
@@ -64,7 +68,62 @@ from adr_kit.migrators.identity_v13 import IdentityV13Migrator
 assert IdentityV13Migrator.__name__ == 'IdentityV13Migrator'
 from adr_kit.promotion.ste_contract import load_promotion_contract_schema
 assert isinstance(load_promotion_contract_schema(), dict)
+from adr_kit.api import capabilities as public_capabilities
+assert callable(public_capabilities)
+from adr_kit.compiler.backend.coverage_registry import collect_schema_field_pointers, disposition_for
+assert collect_schema_field_pointers("logical")
+assert disposition_for(adr_type="logical", pointer="/capabilities/acceptance_criteria") == "RENDER_DETAIL"
 print(adr_kit.__version__)
+"""
+PUBLIC_API_PROBE = """
+from adr_kit.api import (
+    EmbodimentLinkageRequest,
+    EmbodimentLinkageResult,
+    build_embodiment_linkage,
+    capabilities,
+    open_repository,
+)
+assert callable(build_embodiment_linkage)
+assert callable(open_repository)
+manifest = capabilities()
+assert manifest.supported_adr_schema_versions
+"""
+COVERAGE_PROBE = """
+from adr_kit.compiler.backend.coverage_registry import (
+    collect_schema_field_pointers,
+    disposition_for,
+)
+assert collect_schema_field_pointers("logical")
+assert disposition_for(adr_type="logical", pointer="/capabilities/acceptance_criteria") == "RENDER_DETAIL"
+"""
+PROJECTION_PROBE = """
+import os
+from pathlib import Path
+from adr_kit.compiler.backend.coverage_registry import collect_schema_field_pointers
+from adr_kit.compiler.backend.markdown_rendering import emit_markdown_artifacts
+from adr_kit.compiler.frontend.builder import ArchModelBuilder
+from adr_kit.parser import ADRParser
+from adr_kit.scope import ProjectScopeResolver
+
+fixture = Path(os.environ["ADR_WHEEL_FIXTURE"])
+assert collect_schema_field_pointers("logical")
+parser = ADRParser()
+scope = ProjectScopeResolver(explicit_scope=fixture).resolve()
+build = ArchModelBuilder().build_from_scope(scope)
+artifacts = emit_markdown_artifacts(parser=parser, scope=scope, build_result=build)
+assert any("adr-projection" in artifact.path.as_posix() for artifact in artifacts)
+"""
+GOVERNANCE_PROBE = """
+import os
+from pathlib import Path
+import subprocess
+import sys
+
+fixture = Path(os.environ["ADR_WHEEL_FIXTURE"])
+subprocess.check_call([sys.executable, "-m", "adr_kit.cli.main", "validate", "--scope", str(fixture)])
+subprocess.check_call(
+    [sys.executable, "-m", "adr_kit.cli.main", "generate-adr-projection", "--scope", str(fixture)]
+)
 """
 LINKAGE_PROBE = """
 import os
@@ -197,6 +256,11 @@ def run_harness(wheel: Path, python: Path) -> None:
         consumer_script = consumer / "test_sdk_consumer.py"
         shutil.copy2(ROOT / "scripts" / "test_sdk_consumer.py", consumer_script)
         _run([str(venv_python), "-c", PROBE], consumer, isolated_environment)
+        isolated_environment["ADR_WHEEL_FIXTURE"] = str(fixture)
+        _run([str(venv_python), "-c", PUBLIC_API_PROBE], consumer, isolated_environment)
+        _run([str(venv_python), "-c", COVERAGE_PROBE], consumer, isolated_environment)
+        _run([str(venv_python), "-c", PROJECTION_PROBE], consumer, isolated_environment)
+        _run([str(venv_python), "-c", GOVERNANCE_PROBE], consumer, isolated_environment)
         _run(
             [
                 str(venv_python),

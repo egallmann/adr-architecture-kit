@@ -5,8 +5,8 @@ artifact_kind: rendered_adr_markdown
 generator_id: adr-projection-markdown
 generator_version: 3
 hash_algorithm: sha256
-source_hash: ec9fc1384553bb921b970ffea15658a23dc3de9bb056e00752a6f1905bde10be
-rendered_hash: c06d12094b9d950bf996ab6fc22377f5b20ec02e36c9060b2b49c835e4923fe7
+source_hash: 1107add6de90fa8d9c94f1722ef8fcc275c057693b2528e4c1db7bcad3e1dc75
+rendered_hash: a03512e37da2d58b56e4b4d01c0756f5bc68d3bf5fb5b0e9159e3288afa14d72
 -->
 
 # ADR-L-0003: Quality Assurance and Testing Strategy
@@ -266,26 +266,63 @@ Positive:
 CI/CD pipeline automatically runs test suite on every commit and PR.
 Prevents merging code that fails tests or reduces coverage.
 
+**Acceptance criteria**
+- All tests pass before merge
+- Coverage does not decrease
+- Linting passes (code quality)
+- Type checking passes (mypy)
+
 ### CAP-0023 — Test-Driven Development Support
 
 Test infrastructure supports TDD workflow - write failing test, implement
 feature, test passes. Fast test execution enables rapid iteration.
+
+**Acceptance criteria**
+- Tests run in under 30 seconds
+- Clear test output (pass/fail/error)
+- Easy to run subset of tests
+- Good test isolation (no shared state)
 
 ### CAP-0026 — Regression Prevention
 
 Once a bug is fixed, a test is added to prevent reintroduction. Test
 suite grows to cover discovered edge cases.
 
+**Acceptance criteria**
+- Bug fixes include regression test
+- Regression tests documented with issue reference
+- Tests prevent reintroduction of bug
+
 ### CAP-0029 — Documentation via Tests
 
 Tests serve as executable documentation showing how to use components.
 Examples in tests demonstrate API usage patterns.
+
+**Acceptance criteria**
+- Tests show common usage patterns
+- Tests demonstrate error handling
+- Tests illustrate edge cases
+- Test names clearly describe behavior
 
 ### CAP-0046 — Verified Build-Once Release Promotion
 
 Build one release bundle, verify its metadata and identity, exercise the
 retained wheel across the supported Python matrix, and publish that exact
 bundle without a second build.
+
+**Acceptance criteria**
+- minimum supported Python minor is 3.14 (`requires-python >=3.14`); currently qualified released minor line is 3.14; source and retained-wheel qualification execute on that line; repository reference interpreter is currently 3.14.7; new GA Python minors require explicit admission to the qualification matrix
+- canonical package coverage remains at or above 80%
+- Ruff, strict-mypy, and Black controls reject new debt
+- the release manifest requires exactly one wheel and one sdist
+- the publish job has no build step and confines OIDC and the PyPI environment to publication
+- the PyPI-facing package description (`project.readme`) contains only portable link forms valid outside GitHub repository-relative rendering
+- tag publication promotes a previously qualified retained bundle for the exact tagged SHA
+- re-qualification is not required solely because a release tag was created
+- publication fails closed when qualification evidence or the retained bundle is missing or fails identity verification
+- release-eligible qualification includes OS-portability evidence on Ubuntu/Linux, Windows, and macOS as separate axes from Python-version compatibility
+- Windows/macOS Python 3.14 complete-suite evidence proves source/runtime OS portability; the exact retained wheel additionally passes the installed-wheel harness on Windows/macOS Python 3.14 without rebuilding per OS
+- UUIDv7 mint mechanism remains implementation-owned and is not part of ADR-L-0003 identity semantics
 
 
 

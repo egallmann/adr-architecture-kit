@@ -5,8 +5,8 @@ artifact_kind: rendered_adr_markdown
 generator_id: adr-projection-markdown
 generator_version: 3
 hash_algorithm: sha256
-source_hash: dc3accf9107bf20c2d51c8d455999e6cb48e5962517f092f6d44de2eabc4d081
-rendered_hash: 1855d9257dda1beacdb5dd644de0c22ce525e855463ad4f0f48579e0f36e9bf0
+source_hash: bac119a6321d2813f11411dceb1ce89c8565149eece8bc8164316cbf80f536bf
+rendered_hash: 52f2eccdd3ba90af2dae34619847d7140476e9237afcf0a6e35d829b135a1a23
 -->
 
 # ADR-L-0008: Validation Modes for Draft and Complete ADRs
@@ -151,10 +151,20 @@ Positive:
 The validator accepts a mode argument and returns findings appropriate to
 structural or complete validation.
 
+**Acceptance criteria**
+- Structural mode accepts explicit empty required collections
+- Complete mode preserves strict population checks
+- Result format remains consistent across modes
+
 ### CAP-0016 — Draft-Preserving Source Generation
 
 Source ADR generators can preserve explicit empty sections when generating
 draft artifacts for review.
+
+**Acceptance criteria**
+- Empty arrays and objects can be preserved on request
+- Preserved drafts can be validated in structural mode
+- Existing strict generation workflows remain available
 
 
 

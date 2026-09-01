@@ -79,6 +79,8 @@ capabilities:
       - "019209a0-b1c2-7def-8a00-000000000050"
     enabled_by_decisions:
       - "019209a0-b1c2-7def-8a00-000000000010"
+    acceptance_criteria:
+      - CAP_ACCEPTANCE_ALPHA fixture acceptance criteria render from authoring source.
   - id: "019209a0-b1c2-7def-8a00-000000000041"
     alias_id: CAP-9002
     alias_name: beta-capability

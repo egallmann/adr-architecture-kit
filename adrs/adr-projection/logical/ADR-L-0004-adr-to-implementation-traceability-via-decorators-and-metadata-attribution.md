@@ -5,8 +5,8 @@ artifact_kind: rendered_adr_markdown
 generator_id: adr-projection-markdown
 generator_version: 3
 hash_algorithm: sha256
-source_hash: 678cc9f9cc28ee829db5ec447f5a0c2aa79d9270f0b1fc6e1e9b33f781030e88
-rendered_hash: e5b9d0ab4b78af3ffa3411dfa3d733adc54e5a59ed4f35b8c9ec19db3743c6d6
+source_hash: db3bf83efccbfc2d45e8671735eeae9bb870e7a36c2e7cb4a45d180236547780
+rendered_hash: c5bdfbc7153bd4a2e1acc640cb66db2dcc2d2e18fd6c68339fc229c66d3b19e1
 -->
 
 # ADR-L-0004: ADR-to-Implementation Traceability via Decorators and Metadata Attribution
@@ -225,20 +225,49 @@ Positive:
 Explicit declaration of architectural authority across code and other
 implementation artifacts through decorators or metadata-level attribution.
 
+**Acceptance criteria**
+- @implements_adr(adr_id, ...) decorator available
+- @enforces_invariant(inv_id, ...) decorator available
+- @implements / @enforces / @embodies UUID claim decorators available
+- infrastructure/config/schema/pipeline/script artifacts can declare ADR IDs through metadata
+- attribution metadata does not alter runtime behavior
+- attribution is extractable by downstream tooling
+
 ### CAP-0024 — Bidirectional Traceability Verification
 
 Automated verification that implementation attribution and ADR declarations
 agree in both directions.
+
+**Acceptance criteria**
+- Query validated implementation-to-intent links in both directions
+- Preserve independent evidence occurrences behind each unique semantic linkage
+- Verify attribution references valid architecture UUIDs
+- Detect orphaned implementation (no ADR reference)
+- Detect phantom declarations (ADR but no implementation evidence)
+- Report traceability violations
 
 ### CAP-0027 — Profile-Aware Legacy Onboarding for Intent Attribution
 
 Govern intent-attribution adoption with the existing greenfield,
 brownfield, and migration profiles instead of a separate legacy mode.
 
+**Acceptance criteria**
+- greenfield treats missing required attribution as an error
+- brownfield and migration can surface onboarding gaps as warnings
+- missing ADR references still fail regardless of profile
+- superseded ADR references are visible without blocking onboarding
+
 ### CAP-0030 — Implementation Attribution Evidence Handoff
 
 A compiler-owned evidence contract that downstream extractors populate with
 implementation-to-ADR attribution claims and provenance.
+
+**Acceptance criteria**
+- evidence records include implementation entity ID and type
+- evidence records include typed relationship claims to canonical architecture UUIDs
+- evidence records preserve source, extractor, commit, pointer, and optional line span
+- optional invariant claims can be carried without schema forks
+- ste-runtime can emit the contract without adr-architecture-kit parsing source code directly
 
 
 

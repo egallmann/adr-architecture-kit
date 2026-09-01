@@ -5,8 +5,8 @@ artifact_kind: rendered_adr_markdown
 generator_id: adr-projection-markdown
 generator_version: 3
 hash_algorithm: sha256
-source_hash: 4f13dc95454e4aa8645b4c096fbd7e0ca747bc76d7e15d4f0859e5e379a390f2
-rendered_hash: 3f267dd046df06d55aec7132749481aa43a22a9f4efd829b220e9bb1a5d2989b
+source_hash: c31adc6b73a99311e4b8b7d2c30d2d07d4d796837d3bc26dda87964f29ec4f47
+rendered_hash: c34366f3ec2d154effa1af416fa4997b92ab67118236f72f2f9e3b9c9ecc324d
 -->
 
 # ADR-L-0020: Semantic Implementation Attribution and Cross-Layer Architecture Relationships
@@ -189,15 +189,36 @@ UUID-canonical typed claims connecting implementation surfaces to
 architecture entities plus a validated, bidirectionally queryable derived
 projection without collapsing evidence into authority.
 
+**Acceptance criteria**
+- raw claims require relationship, target UUID, and confidence
+- resolved type is derived after repository lookup
+- matrix rejects illegal relationship/type pairs
+- v1.6 rejects non-declared enforcement claims without changing v1.5 semantics
+- public SDK results expose authority ceiling and graph non-admission
+- declaration is not treated as proof
+
 ### CAP-0054 — Repository-Aware Attribution Normalization
 
 Translate supported evidence into explicitly selected canonical v1.5 or
 v1.6 claims using governed architecture lookup and lossless conversion.
 
+**Acceptance criteria**
+- unresolved or ambiguous aliases fail closed
+- output omits required target type
+- normalize(normalize(x)) equals normalize(x)
+- incompatible confidence or lossy downgrade fails deterministically
+- default CLI path does not write workspace evidence
+
 ### CAP-0055 — Unique-Link Attribution Coverage
 
 Informational coverage and public linkage traversal that preserve ADR
 catalog keys and report unique semantic links separately from occurrences.
+
+**Acceptance criteria**
+- existing five coverage YAML keys remain
+- v1.5/v1.6 ADR keys fill from resolved type adr
+- unique-link counts are distinct from occurrence counts
+- forward and reverse traversal return the same ordered link objects
 
 
 

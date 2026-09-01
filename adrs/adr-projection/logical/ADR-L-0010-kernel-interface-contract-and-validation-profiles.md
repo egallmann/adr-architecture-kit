@@ -5,8 +5,8 @@ artifact_kind: rendered_adr_markdown
 generator_id: adr-projection-markdown
 generator_version: 3
 hash_algorithm: sha256
-source_hash: e86a16c3f69d75621ec9d4adac0b7d1777ab3ef186667771a9dee347701433a0
-rendered_hash: 9c92c36ddb8080f036a06dd07e1dc873cc6990189b544281e91ebea8ff622fab
+source_hash: 5c85d9022e215824da02932e77d2d0700944f862bd91894043a59ea915e27597
+rendered_hash: 0329cb847a8bd49053571591eee890e3252871fcc72eb03c3e8cfc9c77b37618
 -->
 
 # ADR-L-0010: Kernel Interface Contract and Validation Profiles
@@ -169,10 +169,20 @@ authority rather than a separate source of meaning.
 Validate compiled registry bundles against a single contract schema with
 profile-specific enforcement for greenfield, brownfield, and migration.
 
+**Acceptance criteria**
+- Core integrity invariants are enforced in every profile
+- Sentinel-backed bundles can be accepted only in brownfield and migration
+- CI behavior is controlled by the selected profile
+
 ### CAP-0035 — Production-Safe Kernel Admission
 
 Distinguish between contract-valid bundles that are production-safe and
 bundles that are inspection-safe only.
+
+**Acceptance criteria**
+- compliant bundles are loadable in production by default
+- sentinel_compliant bundles are rejected from production kernel loads by default
+- Inspection-only tooling can still load sentinel-backed bundles
 
 
 

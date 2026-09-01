@@ -404,6 +404,7 @@ def build_human_adr_projection_context(
             resolve_present_ref=resolve_present_ref,
             format_present_ref=format_present_ref,
             peer_cards=peer_cards,
+            source_path=source_path,
         )
         for card in peer_cards:
             card.context_summary = ""

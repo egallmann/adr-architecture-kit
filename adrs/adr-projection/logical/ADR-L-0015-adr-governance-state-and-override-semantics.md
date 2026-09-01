@@ -5,8 +5,8 @@ artifact_kind: rendered_adr_markdown
 generator_id: adr-projection-markdown
 generator_version: 3
 hash_algorithm: sha256
-source_hash: 472c7248e60689eb306042e9e9396373f7a33e3900855efee9aad1adc1d7fbd4
-rendered_hash: a5568869c11556c8f6fbdfa2e791b31a5cd48203de2cb01e780057094384e9ce
+source_hash: 31304e6779e2c68380f1e7da6c7c24b410ad6e9ff23f731c0add039e3bef9427
+rendered_hash: 742196f879988e6b18414a5a2eb3604667e4c71c53cd918632237b7e15bae772
 -->
 
 # ADR-L-0015: ADR Governance State and Override Semantics
@@ -127,10 +127,20 @@ Validate ADR governance metadata, approval pairings, implementation
 authority, override references, and stale revision coupling through
 deterministic rules.
 
+**Acceptance criteria**
+- Invalid governance pairings fail validation
+- Missing override artifacts fail cross-reference validation
+- Stale override coupling is surfaced as a warning in the MVP
+
 ### CAP-0043 — Governance Summary Projection
 
 Expose ADR governance references and override summaries in manifest and
 discovery surfaces without leaking rationale or accepted risk text.
+
+**Acceptance criteria**
+- ADR summaries expose implementation authority and related override IDs
+- Override summaries expose IDs and bounded effect metadata only
+- Projections remain semantically aligned with canonical artifacts
 
 
 

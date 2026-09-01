@@ -5,8 +5,8 @@ artifact_kind: rendered_adr_markdown
 generator_id: adr-projection-markdown
 generator_version: 3
 hash_algorithm: sha256
-source_hash: 45cde1fd7bcf49c32615454a93565470054792057d75cceab8bd35950f7c9bb0
-rendered_hash: 2b0c81d8c7d9d0e440591fe8da0c2fba18532818b05c4beebb3eb0c656b1ad97
+source_hash: 1c9c20413a3a396a76b8eff69f7e3e2e4141d7a35711a628b613e0f65b4f2d6f
+rendered_hash: b3a9f80386661063a10c9193b9237da320ab4b4026349ecf283cd3ffe8bc1503
 -->
 
 # ADR-L-0014: Brownfield Onboarding and Canonicalization Workflow
@@ -130,10 +130,20 @@ Provide an explicit workflow for migrating existing repositories into STE
 canonical architecture authority through phased discovery, normalization,
 canonization, regeneration, and validation.
 
+**Acceptance criteria**
+- The workflow distinguishes discovery from canonization
+- Canonical migration evidence is produced for deterministic cleanup steps
+- Derived artifacts are regenerated only after canonical updates
+
 ### CAP-0041 — Canonical Migration Evidence
 
 Record deterministic remaps, onboarding cleanup results, and legacy-to-
 canonical transitions in machine-readable migration artifacts.
+
+**Acceptance criteria**
+- Canonical ID remaps are written to migration artifacts
+- Migration artifacts explain old-to-new mappings
+- Derived discovery can surface migration provenance where useful
 
 
 

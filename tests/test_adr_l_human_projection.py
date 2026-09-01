@@ -144,6 +144,8 @@ def test_maximal_fixture_generic_projection_contract(tmp_path: Path) -> None:
     assert context_pos < relationships_pos
     assert "## Architectural Decisions" in content
     assert "## Capabilities" in content
+    assert "**Acceptance criteria**" in content
+    assert "CAP_ACCEPTANCE_ALPHA" in content
     assert "## Architectural Boundaries" in content
     assert "## Interaction Contracts" in content
     assert "## Invariants" in content
@@ -179,7 +181,9 @@ def test_decision_traceability_graph_renders_when_semantic_edges_exist(tmp_path:
     workspace = _copy_fixture(tmp_path)
     artifacts, _scope, _build = _compile_fixture(workspace)
     content = _logical_body(artifacts, "ADR-L-9001").split("-->", 1)[-1]
-    trace = content.split("## Decision / Intent Traceability", 1)[1].split("## Physical Realization", 1)[0]
+    trace = content.split("## Decision / Intent Traceability", 1)[1].split(
+        "## Physical Realization", 1
+    )[0]
     assert "```mermaid" in trace
     assert "enforces" in trace or "enables" in trace
 

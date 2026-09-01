@@ -5,8 +5,8 @@ artifact_kind: rendered_adr_markdown
 generator_id: adr-projection-markdown
 generator_version: 3
 hash_algorithm: sha256
-source_hash: 728acc72ce16ad9fb6875bfb5e97656e79bb98c004431c1103a0267b21400b5c
-rendered_hash: 98edad81f36c6c69256108444500b081ddf058889dbc8b43df6c3d1e35ca71fb
+source_hash: 4fc37ec14c3ea2399b5789101afa97d3bede02d6365ccc616cd9cf0d04356dc2
+rendered_hash: 3ff691a2c932f89eb4849b4bb85423f403f5e72bad2e11490fda412c4271775c
 -->
 
 # ADR-L-0012: Federation Authority and Qualified Identity Model
@@ -128,6 +128,14 @@ Negative:
 ### CAP-0038 — Federated Qualified Identity Resolution
 
 Support unambiguous multi-repository entity references using architecture_namespace and UUID identity while retaining read-only provider authority and derived human alias qualification.
+
+**Acceptance criteria**
+- Canonical machine identity resolves as (architecture_namespace, UUID)
+- Local v1.3 authored references use UUID identity
+- Human alias qualification remains derived and non-canonical
+- Provider repositories remain authoritative for their own entity definitions
+- Federation reads and merges per-repo registries without rewriting them
+- Workspace repository keys provide routing/attribution only
 
 
 

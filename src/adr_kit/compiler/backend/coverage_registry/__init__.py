@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import importlib.resources
 import json
 from pathlib import Path
 from typing import Any, Iterable, Literal
@@ -33,7 +34,7 @@ DISPOSITIONS: frozenset[str] = frozenset(
 )
 
 REGISTRY_PATH = Path(__file__).resolve().parent / "authoring_v1_5.yaml"
-SCHEMA_DIR = Path(__file__).resolve().parents[5] / "schema" / "authoring" / "v1.5"
+SCHEMA_DIR = Path(str(importlib.resources.files("adr_kit.schema.authoring.v1_5")))
 
 _PREFIX_RULES: tuple[tuple[str, Disposition], ...] = (
     ("/schema_version", "GOVERNANCE_METADATA"),
@@ -171,6 +172,7 @@ _L_OVERRIDES: dict[str, Disposition] = {
     "/decisions/related_invariants": "RENDER_AS_RELATIONSHIP",
     "/capabilities/name": "RENDER_PRIMARY",
     "/capabilities/description": "RENDER_DETAIL",
+    "/capabilities/acceptance_criteria": "RENDER_DETAIL",
     "/capabilities/implemented_by_components": "RENDER_AS_RELATIONSHIP",
     "/capabilities/enabled_by_decisions": "RENDER_AS_RELATIONSHIP",
     "/architectural_boundaries/name": "RENDER_PRIMARY",

@@ -5,8 +5,8 @@ artifact_kind: rendered_adr_markdown
 generator_id: adr-projection-markdown
 generator_version: 3
 hash_algorithm: sha256
-source_hash: c40c3e368958c7a0d02c455d5306bf0a9df1ef59f5399aa4088751487cab694b
-rendered_hash: 3ccbf138e56b2917692c3cbba5e2e46ef2a0f25e4257a2f23b857251740b8c74
+source_hash: 32fd7f5e476d8c7c027cf6757aadd737db5d1cfd1bd3e79e2e81da9b39cbc9d4
+rendered_hash: 8e0d7f4033a7dcd6b01efabbdc1e31ea6f265ee57b462e85e9ba389ead751fd3
 -->
 
 # ADR-L-0002: Multi-Scope ADR Architecture for Sub-Module Development
@@ -93,19 +93,43 @@ Auto-detect project boundaries by searching for markers:
 - package.json, pyproject.toml (language markers)
 - .git directory (repository root)
 
+**Acceptance criteria**
+- Detects workspace root when run from any subdirectory
+- Detects sub-module root when run from sub-module
+- Respects explicit --scope parameter
+- Fails gracefully with clear error if no project found
+
 ### CAP-0022 — Scoped Manifest Generation
 
 Generate manifest.yaml scoped to specific project, including only ADRs
 within that project's adrs/ directory
+
+**Acceptance criteria**
+- Manifest includes only ADRs from detected scope
+- File paths in manifest are relative to project root
+- Cross-scope references are validated but not included
+- Generated manifest includes scope metadata
 
 ### CAP-0025 — Scoped Validation
 
 Validate ADRs within specific project scope, with optional recursive
 validation of sub-modules
 
+**Acceptance criteria**
+- Validates ADRs in detected scope
+- Validates cross-references within scope
+- Warns on cross-scope references without validation
+- Recursive mode validates all sub-scopes
+
 ### CAP-0028 — Multi-Scope CLI Interface
 
 Provide CLI commands that work at any scope level with consistent behavior
+
+**Acceptance criteria**
+- adr generate-manifest works from any directory
+- adr validate works from any directory
+- "--scope" parameter overrides auto-detection
+- "--recursive" enables multi-scope operations
 
 
 

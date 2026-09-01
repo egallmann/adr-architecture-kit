@@ -5,8 +5,8 @@ artifact_kind: rendered_adr_markdown
 generator_id: adr-projection-markdown
 generator_version: 3
 hash_algorithm: sha256
-source_hash: 5ec789f07e8bc8d7e767f1e2995e731c75c60ed8f0222263d8a220969906a20e
-rendered_hash: 4a340bd95c69ddf17a413f507d3ec18668b6bd767061e7cd50a9693f0ef61f85
+source_hash: bef155c7a9dcae8d802cc56d7cee5db10e5978f29ef3ee11105d799bc09fe34d
+rendered_hash: 5d7aa22b68ce33abd58bc4dfdea96cf3c7fbf6acc551f58a5567a10a456516c3
 -->
 
 # ADR-L-0006: Rule Library Sub-Module with Cooperative Signals
@@ -205,17 +205,41 @@ Positive:
 
 rule-library defines canonical schema for context and cooperative signals.
 
+**Acceptance criteria**
+- schema/signal.schema.json exists
+- Schema includes cooperative signal types
+- Schema includes context signal types
+- Prompt translator can consume schema
+
 ### CAP-0011 — Signal Emission CLI
 
 CLI for agents to emit cooperative signals without writing JSON manually.
+
+**Acceptance criteria**
+- scripts/emit-signal.py or equivalent
+- Supports claim, progress, complete, wave_complete, validation_ready
+- Writes to .codex/signals/ or .cursor/signals/
+- Validates against schema before write
 
 ### CAP-0012 — Rule Activation and Projection
 
 Context signals drive rule selection; rules projected for consumption.
 
+**Acceptance criteria**
+- Rule index from file-based rules
+- Context signal detection
+- Rule projection (format for AI/tools)
+- Conflict detection (escalate)
+
 ### CAP-0013 — Submodule Bootstrap
 
 Bootstrap script for projects adding rule-library as submodule.
+
+**Acceptance criteria**
+- scripts/bootstrap.py
+- Generates project rule index
+- Generates integration snippet
+- Compatible with .cursorrules, .codex/INSTRUCTIONS.md
 
 
 

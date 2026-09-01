@@ -5,8 +5,8 @@ artifact_kind: rendered_adr_markdown
 generator_id: adr-projection-markdown
 generator_version: 3
 hash_algorithm: sha256
-source_hash: a0212c07ad9ab1fa836e5e4ee8762a6ce00a91c51732a8d542918e3f5b6ec8a8
-rendered_hash: bc0f6f11bb5dab8875b544aaa46a087594601b2bd350163cfc08d8607e5cffcc
+source_hash: d63e9fa8a1af3ece11e8a604a647bd6428b68f0b26c03cd2f95ccaf199888792
+rendered_hash: 75fbfd25454ae2500bb6cedfeb644a2a67d9a7e665db06adcd98fe86d9ca0c22
 -->
 
 # ADR-L-0009: Derived Architecture Discovery Surfaces
@@ -113,6 +113,10 @@ metadata through `manifest.yaml`.
 
 Provide deterministic lookup for normalized architecture entities through
 `adrs/index/entity-registry.yaml`.
+
+**Acceptance criteria**
+- normalized entity lookup is served from the indexed contract family
+- the legacy entity registry is treated as compatibility-only
 
 
 

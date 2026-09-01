@@ -5,8 +5,8 @@ artifact_kind: rendered_adr_markdown
 generator_id: adr-projection-markdown
 generator_version: 3
 hash_algorithm: sha256
-source_hash: 09c6c76827a2ed554f8a9f6f5cf044bc08ffd7bcaf7b1c05018ee416b77169e8
-rendered_hash: 5224aa99d19bd34198e451c1e9b3c1efbddea0b709a9bc85bea8a3b1e91c7f4a
+source_hash: addd93060fbcbb54c097db7269b59253d65f1ac9f4d69a011e035bc8ccdd479e
+rendered_hash: a8f3fb06729ee30fde3999788e05e4889abd6b9723fd063a53fe4a4294465cbc
 -->
 
 # ADR-L-0011: Metadata Schemas and Remediation Ledger Enforcement
@@ -129,10 +129,20 @@ Positive:
 Validate entity metadata against entity-type-specific schema expectations
 under the active enforcement profile.
 
+**Acceptance criteria**
+- Metadata keys are evaluated by entity type
+- Brownfield and migration can represent missing narrative content explicitly
+- Structural metadata fields remain sentinel-forbidden
+
 ### CAP-0037 — Remediation Ledger Governance
 
 Track sentinel usage, replacement, approval, and no-regression state in a
 canonical governance artifact.
+
+**Acceptance criteria**
+- Ledger state supports sentinel, pending_approval, and approved
+- Approved content cannot regress to sentinel without explicit override
+- Authority reference, approver, and approval timestamp are recorded for approved state
 
 
 

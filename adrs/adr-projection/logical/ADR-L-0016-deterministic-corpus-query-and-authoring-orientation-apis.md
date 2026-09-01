@@ -5,8 +5,8 @@ artifact_kind: rendered_adr_markdown
 generator_id: adr-projection-markdown
 generator_version: 3
 hash_algorithm: sha256
-source_hash: 7337063c402553da726aa782feff676769b3d3c79c794cdb0d19602fabf62774
-rendered_hash: d82c6b555db8c2ff880f2a98e5fcc22ecee673fce82632396f6bd0697d073f77
+source_hash: ee656888386a1b1e046e284f63fc98cc4f3978ad9458452cd03839d90eb1be19
+rendered_hash: dfac9130c3d109f2cd21d6e04e27df4b6144dc6b696a53a07977bb938077e93a
 -->
 
 # ADR-L-0016: Deterministic Corpus Query and Authoring Orientation APIs
@@ -116,6 +116,12 @@ Positive:
 ### CAP-0045 — Deterministic Corpus Orientation Surface
 
 Provide one supported API and CLI surface for manifest/index/summary access, UUID and alias lookup/resolve paths, alias inventory, and scope-local governed alias_id allocation.
+
+**Acceptance criteria**
+- Entity-reference lookup returns UUID as the canonical result
+- Explicit UUID, alias_id, alias_ref, and URI resolve paths are available
+- Normal-band alias_id values allocate monotonically and are never reused
+- Alias allocation never replaces UUIDs or rewrites UUID references
 
 
 

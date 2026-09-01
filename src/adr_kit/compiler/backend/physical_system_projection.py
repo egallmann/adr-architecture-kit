@@ -15,6 +15,7 @@ from ...decorators import implements_adr
 from ..frontend.adr_access import field_get, topology_components, topology_edge_fields, topology_relationships
 from ..ir.rel_graph import IRRelationship
 from .human_adr_projection import escape_mermaid_label, mermaid_node_id
+from .projection_editorial import is_trivial_ps_topology
 from .physical_component_projection import (
     GapView,
     LabeledValue,
@@ -67,6 +68,7 @@ DEPLOYMENT_LABELS: dict[str, str] = {
 ARCHITECTURE_POSITION_NOTE = (
     "Topology handles are local authoring labels, not graph identities."
 )
+TOPOLOGY_HANDLE_NOTE = ARCHITECTURE_POSITION_NOTE
 _EDGE_SPLIT_THRESHOLD = 16
 _FAILURE_CARD_MITIGATION_LENGTH = 160
 
@@ -225,6 +227,7 @@ class PhysicalSystemProjection:
 
     identity_rows: tuple[LabeledValue, ...]
     architecture_position: ArchitecturePositionView
+    topology_handle_note: str | None
     system: SystemIdentityView | None
     components: tuple[SystemComponentMembershipView, ...]
     topology_graphs: tuple[str, ...]
@@ -406,6 +409,8 @@ def _topology_graphs(
     adr_models_by_id: dict[str, Any],
 ) -> tuple[str, ...]:
     if not components:
+        return ()
+    if is_trivial_ps_topology(len(components), len(relationships)):
         return ()
 
     def render(
@@ -745,6 +750,7 @@ def build_physical_system_projection(
     return PhysicalSystemProjection(
         identity_rows=tuple(identity),
         architecture_position=position,
+        topology_handle_note=TOPOLOGY_HANDLE_NOTE if members else None,
         system=system,
         components=members,
         topology_graphs=_topology_graphs(

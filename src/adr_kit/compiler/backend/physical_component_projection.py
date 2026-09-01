@@ -213,6 +213,7 @@ class ImplementationDecisionView:
     alias_id: str
     heading: str
     summary: str
+    show_summary_body: bool
     rationale: str
     alternatives: tuple[AlternativeRow, ...]
     consequences: tuple[str, ...]
@@ -268,14 +269,35 @@ class GapView:
 
 
 @dataclass(frozen=True)
+class ChangeSafetyVerificationView:
+    primary_tests: str | None
+    unit_coverage: str | None
+    success_criteria: tuple[str, ...]
+    integration_checks: tuple[str, ...]
+
+
+@dataclass(frozen=True)
 class ChangeSafetyView:
     component_alias: str | None
     must_preserve: tuple[str, ...]
     public_interfaces: tuple[str, ...]
     depends_on: tuple[str, ...]
     depended_on_by: tuple[str, ...]
-    verify_with: tuple[str, ...]
+    known_consumers: tuple[str, ...]
+    verification: ChangeSafetyVerificationView | None
     known_gaps: tuple[str, ...]
+
+
+@dataclass(frozen=True)
+class ComponentGlanceRow:
+    component_display: str
+    component_type: str
+    system_display: str | None
+    purpose: str | None
+    depends_on: tuple[str, ...]
+    depended_on_by: tuple[str, ...]
+    interfaces: tuple[str, ...]
+    primary_implementation: str | None
 
 
 @dataclass(frozen=True)
@@ -309,6 +331,7 @@ class PhysicalComponentProjection:
     """Type-specific disposable presentation model for one ADR-PC."""
 
     identity_rows: tuple[LabeledValue, ...]
+    glance_rows: tuple[ComponentGlanceRow, ...]
     architecture_position: ArchitecturePositionView
     component_contracts: tuple[ComponentContractView, ...]
     change_safety_blocks: tuple[ChangeSafetyView, ...]
@@ -727,6 +750,21 @@ def _engineering_contract(component: Any) -> EngineeringContractView | None:
     )
 
 
+def _heading_includes_summary(heading: str, summary: str, alias_id: str) -> bool:
+    normalized_heading = heading.strip()
+    normalized_summary = summary.strip()
+    if not normalized_summary:
+        return True
+    if normalized_heading == normalized_summary:
+        return True
+    if alias_id:
+        for separator in (" — ", ": "):
+            combined = f"{alias_id}{separator}{normalized_summary}"
+            if normalized_heading == combined:
+                return True
+    return False
+
+
 def _decision_view(decision: Any) -> ImplementationDecisionView | None:
     alias_id = _nonempty_text(field_get(decision, "alias_id")) or _text(
         field_get(decision, "id") or "decision"
@@ -763,10 +801,12 @@ def _decision_view(decision: Any) -> ImplementationDecisionView | None:
             formatted = _format_nested_value(value)
             if formatted:
                 consequences.append(f"{humanize_key(str(key))}: {formatted}")
+    show_summary_body = bool(summary) and not _heading_includes_summary(heading, summary, alias_id)
     return ImplementationDecisionView(
         alias_id=alias_id,
         heading=heading,
         summary=summary,
+        show_summary_body=show_summary_body,
         rationale=preserve_markdown(field_get(decision, "rationale") or ""),
         alternatives=tuple(alternatives),
         consequences=tuple(consequences),
@@ -971,6 +1011,19 @@ def _component_depends(
     return _join_unique(outgoing), _join_unique(incoming)
 
 
+def _integration_check_lines(value: str | None) -> tuple[str, ...]:
+    if not value:
+        return ()
+    lines = [line.strip() for line in preserve_markdown(value).splitlines() if line.strip()]
+    checks: list[str] = []
+    for line in lines:
+        if line.startswith("- "):
+            checks.append(line[2:].strip())
+        else:
+            checks.append(line)
+    return tuple(checks)
+
+
 def _change_safety(
     *,
     component: Any,
@@ -982,18 +1035,26 @@ def _change_safety(
 ) -> ChangeSafetyView:
     generation = _as_mapping(field_get(component, "generation_context"))
     constraints = tuple(_string_list(generation.get("constraints")))
-    success = list(_string_list(generation.get("success_criteria")))
+    success_criteria = tuple(_string_list(generation.get("success_criteria")))
     locations = _implementation_locations(field_get(component, "implementation_identifiers"))
-    for row in locations:
-        if row.role == "Primary tests":
-            success.append(row.location)
+    primary_tests = next((row.location for row in locations if row.role == "Primary tests"), None)
     engineering = _engineering_contract(component)
+    unit_coverage = engineering.unit_test_coverage if engineering else None
+    integration_checks: tuple[str, ...] = ()
     if engineering:
-        if engineering.unit_test_coverage:
-            success.append(engineering.unit_test_coverage)
-        if engineering.nested_integration_tests:
-            success.append(engineering.nested_integration_tests)
-        success.extend(engineering.component_testing_requirements)
+        integration_checks = _integration_check_lines(engineering.nested_integration_tests)
+        if engineering.component_testing_requirements:
+            integration_checks = _join_unique(
+                [*integration_checks, *engineering.component_testing_requirements]
+            )
+    verification = None
+    if any([primary_tests, unit_coverage, success_criteria, integration_checks]):
+        verification = ChangeSafetyVerificationView(
+            primary_tests=primary_tests,
+            unit_coverage=unit_coverage,
+            success_criteria=success_criteria,
+            integration_checks=integration_checks,
+        )
     public_interfaces = tuple(
         f"{iface.alias_id} — {iface.interface_type}" if iface.interface_type else iface.alias_id
         for iface in interfaces
@@ -1006,7 +1067,8 @@ def _change_safety(
         public_interfaces=public_interfaces,
         depends_on=outgoing,
         depended_on_by=incoming,
-        verify_with=_join_unique(success),
+        known_consumers=(),
+        verification=verification,
         known_gaps=gap_headings,
     )
 
@@ -1073,6 +1135,7 @@ def build_physical_component_projection(
     )
 
     component_contracts: list[ComponentContractView] = []
+    glance_rows: list[ComponentGlanceRow] = []
     all_interfaces: list[InterfaceView] = []
     engineering_contracts: list[tuple[str, EngineeringContractView]] = []
     location_groups: list[tuple[str, tuple[ImplementationLocationRow, ...]]] = []
@@ -1123,6 +1186,27 @@ def build_physical_component_projection(
             relationships=relationship_list,
             entities=entities,
             adr_models_by_id=adr_models_by_id,
+        )
+        primary_impl = next(
+            (row.location for row in locations if row.role == "Primary implementation"),
+            None,
+        )
+        iface_summary = tuple(
+            f"{iface.alias_id} — {iface.interface_type}" if iface.interface_type else iface.alias_id
+            for iface in interfaces
+            if iface.alias_id
+        )
+        glance_rows.append(
+            ComponentGlanceRow(
+                component_display=f"{alias} — {name}",
+                component_type=component_type,
+                system_display=containing_systems[0] if containing_systems else None,
+                purpose=purpose,
+                depends_on=cap_outgoing,
+                depended_on_by=cap_incoming,
+                interfaces=iface_summary,
+                primary_implementation=primary_impl,
+            )
         )
         change_safety = _change_safety(
             component=component,
@@ -1199,6 +1283,7 @@ def build_physical_component_projection(
 
     return PhysicalComponentProjection(
         identity_rows=identity_rows,
+        glance_rows=tuple(glance_rows),
         architecture_position=position,
         component_contracts=tuple(component_contracts),
         change_safety_blocks=change_blocks,

@@ -40,17 +40,25 @@ Logical architecture authority for this subject. Neighborhood paths use structur
 ## Neighbor Relationships
 
 {% if ctx and ctx.peer_cards %}
-{% for card in ctx.peer_cards %}
+{% set table_cards = ctx.peer_cards | selectattr('use_table') | list %}
+{% set expanded_cards = ctx.peer_cards | rejectattr('use_table') | list %}
+{% if table_cards %}
+| Neighbor | Relationship | Exact Path |
+| --- | --- | --- |
+{% for card in table_cards %}
+{% set rel = card.relationships[0] %}
+| {% if card.link %}[{{ card.alias_id }} — {{ card.title }}]({{ card.link }}){% else %}{{ card.alias_id }} — {{ card.title }}{% endif %} | {{ rel.label }} | `{{ rel.canonical_path }}` |
+{% endfor %}
+
+{% endif %}
+{% for card in expanded_cards %}
 ### {{ card.alias_id }} — {{ card.title }}
 
-{% if card.relationships %}
 {% for rel in card.relationships %}
 - {{ rel.label }}
+
+  `{{ rel.canonical_path }}`
 {% endfor %}
-{% endif %}
-
-**Context:** {{ card.context_summary }}
-
 {% if card.link %}[Open projection]({{ card.link }}){% else %}*(projection link unavailable)*{% endif %}
 
 {% endfor %}

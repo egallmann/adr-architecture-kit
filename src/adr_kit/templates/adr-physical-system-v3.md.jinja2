@@ -14,110 +14,32 @@
 **Created:** {{ adr.created_date }}  
 {% endif %}
 
-## Architecture Position
-
 {% if ps %}
-{{ ps.architecture_position.note }}
+## Architecture at a Glance
 
-{% if ps.architecture_position.system_heading %}
-**System:** {{ ps.architecture_position.system_heading }}
-{% endif %}
-**Components:** {{ ps.architecture_position.component_count }}
-**Boundaries:** {{ ps.architecture_position.boundary_count }}
-**Internal topology relationships:** {{ ps.architecture_position.relationship_count }}
-**External dependencies:** {{ ps.architecture_position.external_dependency_count }}
+| | |
+| --- | --- |
+{% if ps.architecture_position.system_heading %}| System | {{ ps.architecture_position.system_heading }} |
+{% endif %}| Components | {{ ps.architecture_position.component_count }} |
+| Boundaries | {{ ps.architecture_position.boundary_count }} |
+| Internal relationships | {{ ps.architecture_position.relationship_count }} |
+| External dependencies | {{ ps.architecture_position.external_dependency_count }} |
+| Exposed surfaces | {{ ps.architecture_position.exposed_surfaces | length }} |
 
 {% if ps.architecture_position.logical_authority %}
-**Logical authority:**
+**Logical authority**
 {% for item in ps.architecture_position.logical_authority %}
 - {{ item }}
 {% endfor %}
 
 {% endif %}
-{% if ps.architecture_position.exposed_surfaces %}
-**Exposed surfaces:**
-{% for item in ps.architecture_position.exposed_surfaces %}
-- `{{ item }}`
-{% endfor %}
-
-{% endif %}
-{% if ps.architecture_position.topology_verbs %}
-**Topology relationship types:** {{ ps.architecture_position.topology_verbs | join(', ') }}
-
-{% endif %}
-{% else %}
-Topology handles are local authoring labels, not graph identities.
-{% endif %}
-
-## Context
-
-{{ adr.context }}
-
-## Internal Structure
-
-{% if ps and ps.components %}
-### System Components
-
-| Component | Type | Role in this System | Authority |
-| --- | --- | --- | --- |
-{% for member in ps.components %}
-| {{ member.heading | replace('|', '\\|') }} | {{ member.component_type | replace('|', '\\|') if member.component_type else '—' }} | {{ member.purpose | replace('\n', '<br>') | replace('|', '\\|') }} | {{ member.authority_display if member.authority_display else '—' }} |
-{% endfor %}
-
-{% if ps.handle_index %}
-Local topology handles:
-{% for item in ps.handle_index %}
-- `{{ item.label }}` → {{ item.value }}
-{% endfor %}
-
-{% endif %}
-{% endif %}
-{% if ps and ps.topology_graphs %}
-### System Topology
-
-{% for graph in ps.topology_graphs %}
-```mermaid
-{{ graph }}```
-
-{% endfor %}
-{% endif %}
-{% if ps and ps.relationships %}
-### Component Interactions
-
-| From | Relationship | To | Protocol | Description |
-| --- | --- | --- | --- | --- |
-{% for rel in ps.relationships %}
-| {{ rel.from_heading | replace('|', '\\|') }} | {{ rel.human_phrase }} (`{{ rel.verb }}`) | {{ rel.to_heading | replace('|', '\\|') }} | {{ rel.protocol | replace('|', '\\|') if rel.protocol else '—' }} | {{ rel.description | replace('\n', '<br>') | replace('|', '\\|') if rel.description else '—' }} |
-{% endfor %}
-
-{% endif %}
-
-{% if ps and ps.boundaries %}
-## System Boundaries
-
-{% for boundary in ps.boundaries %}
-### {{ boundary.heading }}
-
-{{ boundary.description }}
-
-**External Dependencies**
-{% for item in boundary.external_dependencies %}
-- {{ item }}
-{% endfor %}
-
-**Exposed Interfaces**
-{% for item in boundary.exposed_interfaces %}
-- `{{ item }}`
-{% endfor %}
-
-{% endfor %}
 {% endif %}
 
 {% if ps %}
-## Before You Change This System
+## Change Safety
 
 {% if ps.change_safety.logical_contracts %}
-**Logical contracts implemented**
+**Logical contracts**
 {% for item in ps.change_safety.logical_contracts %}
 - {{ item }}
 {% endfor %}
@@ -173,6 +95,78 @@ Local topology handles:
 
 {% endif %}
 {% endif %}
+
+## Context
+
+{{ adr.context }}
+
+{% if ps and ps.components %}
+## Internal System Architecture
+
+### System Components
+
+| Component | Type | Role in this System | Authority |
+| --- | --- | --- | --- |
+{% for member in ps.components %}
+| {{ member.heading | replace('|', '\\|') }} | {{ member.component_type | replace('|', '\\|') if member.component_type else '—' }} | {{ member.purpose | replace('\n', '<br>') | replace('|', '\\|') }} | {{ member.authority_display if member.authority_display else '—' }} |
+{% endfor %}
+
+{% if ps.topology_graphs %}
+### System Topology
+
+{% if ps.topology_handle_note %}
+*{{ ps.topology_handle_note }}*
+
+{% endif %}
+{% for graph in ps.topology_graphs %}
+```mermaid
+{{ graph }}```
+
+{% endfor %}
+{% elif ps.handle_index and ps.topology_handle_note %}
+*{{ ps.topology_handle_note }}*
+
+{% endif %}
+{% if ps.handle_index %}
+Local topology handles:
+{% for item in ps.handle_index %}
+- `{{ item.label }}` → {{ item.value }}
+{% endfor %}
+
+{% endif %}
+{% if ps.relationships %}
+### Component Interactions
+
+| From | Relationship | To | Protocol | Description |
+| --- | --- | --- | --- | --- |
+{% for rel in ps.relationships %}
+| {{ rel.from_heading | replace('|', '\\|') }} | {{ rel.human_phrase }} (`{{ rel.verb }}`) | {{ rel.to_heading | replace('|', '\\|') }} | {{ rel.protocol | replace('|', '\\|') if rel.protocol else '—' }} | {{ rel.description | replace('\n', '<br>') | replace('|', '\\|') if rel.description else '—' }} |
+{% endfor %}
+
+{% endif %}
+{% endif %}
+
+{% if ps and ps.boundaries %}
+## System Boundaries
+
+{% for boundary in ps.boundaries %}
+### {{ boundary.heading }}
+
+{{ boundary.description }}
+
+**External Dependencies**
+{% for item in boundary.external_dependencies %}
+- {{ item }}
+{% endfor %}
+
+**Exposed Interfaces**
+{% for item in boundary.exposed_interfaces %}
+- `{{ item }}`
+{% endfor %}
+
+{% endfor %}
+{% endif %}
+
 {% if ps and ps.integration_patterns %}
 ## Integration Patterns
 
@@ -300,8 +294,19 @@ Local topology handles:
 
 {% endfor %}
 {% endif %}
+
+{% if ctx and ctx.graphs %}
+## Architecture Relationships
+
+{% for graph in ctx.graphs %}
+```mermaid
+{{ graph }}```
+
+{% endfor %}
+{% endif %}
+
 {% if ps and ps.technology_stack %}
-## Technology Stack
+## Technology
 
 {% for tech in ps.technology_stack %}
 ### {{ tech.name }}{% if tech.category %} ({{ tech.category }}){% endif %}
@@ -315,59 +320,6 @@ Local topology handles:
 {{ tech.rationale }}
 
 {% endif %}
-{% endfor %}
-{% endif %}
-
-## Architecture Neighborhood
-
-{% if ctx and ctx.graphs %}
-{% for graph in ctx.graphs %}
-```mermaid
-{{ graph }}```
-
-{% endfor %}
-{% endif %}
-
-### Semantic architecture inventory
-
-{% if ctx and ctx.neighborhood_inventory %}
-{% for row in ctx.neighborhood_inventory %}
-- `{{ row.verb }}`: {{ row.from_label }} → {{ row.to_label }}
-{% endfor %}
-{% else %}
-- None
-{% endif %}
-
-## Neighbor Relationships
-
-{% if ctx and ctx.peer_cards %}
-{% for card in ctx.peer_cards %}
-### {{ card.alias_id }} — {{ card.title }}
-
-{% if card.relationships %}
-{% for rel in card.relationships %}
-{{ rel.from_display }}
-    -[:{{ rel.verb }}]->
-{{ rel.to_display }}
-
-`{{ rel.canonical_path }}`
-{% endfor %}
-{% endif %}
-
-**Peer context:** {{ card.context_summary }}
-
-{% if card.link %}[Open projection]({{ card.link }}){% else %}*(projection link unavailable)*{% endif %}
-
-{% endfor %}
-{% else %}
-No grammatical peer neighborhood for this subject.
-{% endif %}
-
-{% if ctx and ctx.governance_rows %}
-## Governance / Bindings / Evidence
-
-{% for row in ctx.governance_rows %}
-- {{ row }}
 {% endfor %}
 {% endif %}
 
@@ -394,6 +346,49 @@ No grammatical peer neighborhood for this subject.
 **{{ item.label }}:** {{ item.value }}
 {% endfor %}
 
+{% endfor %}
+{% endif %}
+
+{% if ctx and ctx.peer_cards %}
+## Neighbor Relationships
+
+{% set table_cards = ctx.peer_cards | selectattr('use_table') | list %}
+{% set expanded_cards = ctx.peer_cards | rejectattr('use_table') | list %}
+{% if table_cards %}
+| Neighbor | Relationship | Exact Path |
+| --- | --- | --- |
+{% for card in table_cards %}
+{% set rel = card.relationships[0] %}
+| {% if card.link %}[{{ card.alias_id }} — {{ card.title }}]({{ card.link }}){% else %}{{ card.alias_id }} — {{ card.title }}{% endif %} | {{ rel.from_display }} → {{ rel.to_display }} | `{{ rel.canonical_path }}` |
+{% endfor %}
+
+{% endif %}
+{% for card in expanded_cards %}
+### {{ card.alias_id }} — {{ card.title }}
+
+{% for rel in card.relationships %}
+**Relationship**
+{{ rel.from_display }}
+{{ rel.verb | replace('_', ' ') }}
+{{ rel.to_display }}
+
+`{{ rel.canonical_path }}`
+
+{% endfor %}
+{% if card.link %}[Open projection]({{ card.link }}){% else %}*(projection link unavailable)*{% endif %}
+
+{% endfor %}
+{% elif ctx %}
+## Neighbor Relationships
+
+No grammatical peer neighborhood for this subject.
+{% endif %}
+
+{% if ctx and ctx.governance_rows %}
+## Governance / Bindings / Evidence
+
+{% for row in ctx.governance_rows %}
+- {{ row }}
 {% endfor %}
 {% endif %}
 

@@ -14,192 +14,66 @@
 **Created:** {{ adr.created_date }}  
 {% endif %}
 
-## Architecture Position
+{% if pc and pc.glance_rows %}
+## Architecture at a Glance
 
-{% if pc %}
-{{ pc.architecture_position.note }}
-
-{% if pc.architecture_position.containing_systems %}
-**Containing system(s):**
-{% for item in pc.architecture_position.containing_systems %}
-- {{ item }}
-{% endfor %}
-
+{% for row in pc.glance_rows %}
+| | |
+| --- | --- |
+| Component | {{ row.component_display }} |
+{% if row.component_type %}| Type | {{ row.component_type }} |
+{% endif %}{% if row.system_display %}| System | {{ row.system_display }} |
+{% endif %}{% if row.purpose %}| Purpose | {{ row.purpose }} |
+{% endif %}{% if row.depends_on %}| Depends on | {{ row.depends_on | join('; ') }} |
+{% endif %}{% if row.depended_on_by %}| Depended on by | {{ row.depended_on_by | join('; ') }} |
+{% endif %}{% if row.interfaces %}| Interfaces | {{ row.interfaces | join('; ') }} |
+{% endif %}{% if row.primary_implementation %}| Primary implementation | `{{ row.primary_implementation }}` |
 {% endif %}
+
+{% endfor %}
 {% if pc.architecture_position.logical_authority %}
-**Logical authority implemented:**
+**Logical authority**
 {% for item in pc.architecture_position.logical_authority %}
 - {{ item }}
 {% endfor %}
 
 {% endif %}
-{% if pc.architecture_position.owned_components %}
-**Component(s) owned by this ADR:**
-{% for item in pc.architecture_position.owned_components %}
-- {{ item }}
-{% endfor %}
-
-{% endif %}
-{% if pc.architecture_position.component_types %}
-**Component type(s):** {{ pc.architecture_position.component_types | join(', ') }}
-
-{% endif %}
-{% if pc.architecture_position.purposes %}
-**Authored purpose:**
-{% for item in pc.architecture_position.purposes %}
-- {{ item }}
-{% endfor %}
-
-{% endif %}
-{% if pc.architecture_position.outgoing_dependencies %}
-**Depends on:**
-{% for item in pc.architecture_position.outgoing_dependencies %}
-- {{ item }}
-{% endfor %}
-
-{% endif %}
-{% if pc.architecture_position.incoming_dependents %}
-**Depended on by:**
-{% for item in pc.architecture_position.incoming_dependents %}
-- {{ item }}
-{% endfor %}
-
-{% endif %}
-{% if pc.architecture_position.provided_interface_types %}
-**Provided interface types:** {{ pc.architecture_position.provided_interface_types | join(', ') }}
-
-{% endif %}
-{% if pc.architecture_position.implementation_locations %}
-**Implementation location(s):**
-{% for item in pc.architecture_position.implementation_locations %}
-- {{ item }}
-{% endfor %}
-
-{% endif %}
-{% else %}
-Physical-component ADRs author component, interface, and implementation entities. Topology is not authored here; neighborhood uses compiled semantic architecture edges plus structural bridges.
 {% endif %}
 
-## Architecture Neighborhood
+{% if pc and pc.change_safety_blocks %}
+## Change Safety
 
-{% if ctx and ctx.graphs %}
-{% for graph in ctx.graphs %}
-```mermaid
-{{ graph }}```
-
-{% endfor %}
-{% endif %}
-
-### Semantic architecture inventory
-
-{% if ctx and ctx.neighborhood_inventory %}
-{% for row in ctx.neighborhood_inventory %}
-- `{{ row.verb }}`: {{ row.from_label }} → {{ row.to_label }}
-{% endfor %}
-{% else %}
-- None
-{% endif %}
-
-{% if pc and pc.architecture_position.relationship_groups %}
-### Component Relationships
-
-{% for group in pc.architecture_position.relationship_groups %}
-**{{ group.heading }}**
-{% for item in group.items %}
-- {{ item.label }}
-  - `{{ item.canonical_path }}`
-{% endfor %}
-
-{% endfor %}
-{% endif %}
-
-## Neighbor Relationships
-
-{% if ctx and ctx.peer_cards %}
-{% for card in ctx.peer_cards %}
-### {{ card.alias_id }} — {{ card.title }}
-
-{% if card.relationships %}
-{% for rel in card.relationships %}
-{{ rel.from_display }}
-    -[:{{ rel.verb }}]->
-{{ rel.to_display }}
-
-`{{ rel.canonical_path }}`
-{% endfor %}
-{% endif %}
-
-**Peer context:** {{ card.context_summary }}
-
-{% if card.link %}[Open projection]({{ card.link }}){% else %}*(projection link unavailable)*{% endif %}
-
-{% endfor %}
-{% else %}
-No grammatical peer neighborhood for this subject.
-{% endif %}
-
-## Context
-
-{{ adr.context }}
-
-## Internal Structure
-
-{% if ctx and ctx.internal_graph %}
-```mermaid
-{{ ctx.internal_graph }}```
-
-{% endif %}
-{% if ctx and ctx.internal_entities %}
-{% for row in ctx.internal_entities %}
-- `{{ row.entity_type }}` {{ row.alias }}{% if row.name %} — {{ row.name }}{% endif %}
-
-{% endfor %}
-{% endif %}
-
-## Type-specific Detail
-
-{% if pc %}
 {% for block in pc.change_safety_blocks %}
-{% if block.must_preserve or block.public_interfaces or block.depends_on or block.depended_on_by or block.verify_with or block.known_gaps %}
-### Before You Change This Component{% if block.component_alias %} ({{ block.component_alias }}){% endif %}
+{% if block.must_preserve or block.public_interfaces or block.depends_on or block.depended_on_by or block.verification or block.known_gaps %}
+{% if block.component_alias %}### {{ block.component_alias }}{% endif %}
 
 {% if block.must_preserve %}
-**Must preserve:**
+**Must preserve**
 {% for item in block.must_preserve %}
 - {{ item }}
 {% endfor %}
 
 {% endif %}
-{% if block.public_interfaces %}
-**Public / exposed interfaces:**
-{% for item in block.public_interfaces %}
-- {{ item }}
-{% endfor %}
+{% if block.depends_on or block.depended_on_by or block.public_interfaces or block.known_consumers %}
+**Known architectural surface**
+{% if block.depends_on %}- Depends on: {{ block.depends_on | join('; ') }}
+{% endif %}{% if block.depended_on_by %}- Depended on by: {{ block.depended_on_by | join('; ') }}
+{% endif %}{% if block.public_interfaces %}- Provided interfaces: {{ block.public_interfaces | join('; ') }}
+{% endif %}{% if block.known_consumers %}- Known consumers: {{ block.known_consumers | join('; ') }}
+{% endif %}
 
 {% endif %}
-{% if block.depends_on %}
-**Depends on:**
-{% for item in block.depends_on %}
-- {{ item }}
-{% endfor %}
-
+{% if block.verification %}
+**Verification**
+{% if block.verification.primary_tests %}- Primary tests: `{{ block.verification.primary_tests }}`
+{% endif %}{% if block.verification.unit_coverage %}- Unit coverage: {{ block.verification.unit_coverage }}
+{% endif %}{% if block.verification.success_criteria %}- Success criteria: {{ block.verification.success_criteria | length }}
+{% endif %}{% if block.verification.integration_checks %}- Integration checks: {{ block.verification.integration_checks | length }}
 {% endif %}
-{% if block.depended_on_by %}
-**Depended on by:**
-{% for item in block.depended_on_by %}
-- {{ item }}
-{% endfor %}
-
-{% endif %}
-{% if block.verify_with %}
-**Verify with:**
-{% for item in block.verify_with %}
-- {{ item }}
-{% endfor %}
 
 {% endif %}
 {% if block.known_gaps %}
-**Known gaps:**
+**Known gaps**
 {% for item in block.known_gaps %}
 - {{ item }}
 {% endfor %}
@@ -207,6 +81,37 @@ No grammatical peer neighborhood for this subject.
 {% endif %}
 {% endif %}
 {% endfor %}
+{% endif %}
+
+## Context
+
+{{ adr.context }}
+
+{% if ctx and (ctx.primary_architecture_graph or (pc and pc.architecture_position.relationship_groups)) %}
+## Architecture & Relationships
+
+{% if ctx.primary_architecture_graph %}
+```mermaid
+{{ ctx.primary_architecture_graph }}```
+
+{% endif %}
+{% if pc and pc.architecture_position.relationship_groups %}
+### Component Relationships
+
+{% for group in pc.architecture_position.relationship_groups %}
+**{{ group.heading }}**
+{% for item in group.items %}
+- {{ item.label }}
+
+  `{{ item.canonical_path }}`
+{% endfor %}
+
+{% endfor %}
+{% endif %}
+{% endif %}
+
+{% if pc and pc.component_contracts %}
+## Component Contract
 
 {% for comp in pc.component_contracts %}
 ### {{ comp.alias_id }}: {{ comp.name }}
@@ -240,13 +145,6 @@ No grammatical peer neighborhood for this subject.
 {% endfor %}
 
 {% endif %}
-{% if comp.constraints %}
-**Must Remain True:**
-{% for item in comp.constraints %}
-- {{ item }}
-{% endfor %}
-
-{% endif %}
 {% if comp.success_criteria %}
 **Success Criteria:**
 {% for item in comp.success_criteria %}
@@ -262,8 +160,11 @@ No grammatical peer neighborhood for this subject.
 
 {% endif %}
 {% endfor %}
+{% endif %}
 
-{% if pc.interfaces %}
+{% if pc and pc.interfaces %}
+## Interfaces
+
 {% for iface in pc.interfaces %}
 ### {{ iface.heading }}
 
@@ -288,14 +189,18 @@ No grammatical peer neighborhood for this subject.
 {% endfor %}
 {% endif %}
 
-{% if pc.implementation_decisions %}
+{% if pc and pc.implementation_decisions %}
+## Implementation Decisions
+
 {% for decision in pc.implementation_decisions %}
 ### {{ decision.heading }}
 
+{% if decision.show_summary_body %}
 **Decision:**
 
 {{ decision.summary }}
 
+{% endif %}
 {% if decision.rationale %}
 **Rationale:**
 
@@ -322,7 +227,7 @@ No grammatical peer neighborhood for this subject.
 {% endfor %}
 {% endif %}
 
-{% if pc.engineering_contracts %}
+{% if pc and pc.engineering_contracts %}
 ## Engineering Contract
 
 {% for alias, contract in pc.engineering_contracts %}
@@ -358,7 +263,7 @@ No grammatical peer neighborhood for this subject.
 
 {% endif %}
 {% endif %}
-{% if contract.unit_test_coverage or contract.nested_integration_tests or contract.component_testing_requirements %}
+{% if contract.unit_test_coverage or contract.nested_integration_tests or contract.component_testing_requirements or contract.extra_requirement_rows %}
 ### Verification
 
 {% if contract.unit_test_coverage %}
@@ -378,6 +283,10 @@ No grammatical peer neighborhood for this subject.
 {% endfor %}
 
 {% endif %}
+{% for item in contract.extra_requirement_rows %}
+**{{ item.label }}:** {{ item.value }}
+
+{% endfor %}
 {% endif %}
 {% if contract.dependencies or contract.upstream_services or contract.downstream_services %}
 ### Dependencies
@@ -401,17 +310,11 @@ No grammatical peer neighborhood for this subject.
 
 {% endfor %}
 {% endif %}
-{% if contract.extra_requirement_rows %}
-{% for item in contract.extra_requirement_rows %}
-**{{ item.label }}:** {{ item.value }}
-
-{% endfor %}
-{% endif %}
 {% endfor %}
 {% endif %}
 
-{% if pc.implementation_locations %}
-## Implementation Locations
+{% if pc and pc.implementation_locations %}
+## Implementation Map
 
 {% for alias, rows in pc.implementation_locations %}
 {% if pc.implementation_locations | length > 1 %}
@@ -427,7 +330,7 @@ No grammatical peer neighborhood for this subject.
 {% endfor %}
 {% endif %}
 
-{% if pc.migration_rows %}
+{% if pc and pc.migration_rows %}
 ## Lineage / Migration
 
 | Entity Type | Historical Alias | Current Alias | Source |
@@ -438,8 +341,8 @@ No grammatical peer neighborhood for this subject.
 
 {% endif %}
 
-{% if pc.technology_stack %}
-## Technology Stack
+{% if pc and pc.technology_stack %}
+## Technology & Dependencies
 
 {% for tech in pc.technology_stack %}
 ### {{ tech.name }}{% if tech.category %} ({{ tech.category }}){% endif %}
@@ -456,22 +359,6 @@ No grammatical peer neighborhood for this subject.
 {% endfor %}
 {% endif %}
 
-{% if pc.notes %}
-## Notes
-
-{{ pc.notes }}
-
-{% endif %}
-{% endif %}
-
-{% if ctx and ctx.governance_rows %}
-## Governance / Bindings / Evidence
-
-{% for row in ctx.governance_rows %}
-- {{ row }}
-{% endfor %}
-{% endif %}
-
 {% if pc and pc.architecture_impact_rows %}
 ## Architecture Impact
 
@@ -482,7 +369,7 @@ No grammatical peer neighborhood for this subject.
 {% endif %}
 
 {% if pc and pc.gaps %}
-## Gaps
+## Known Gaps
 
 {% for gap in pc.gaps %}
 ### {{ gap.heading }}
@@ -495,6 +382,98 @@ No grammatical peer neighborhood for this subject.
 **{{ item.label }}:** {{ item.value }}
 {% endfor %}
 
+{% endfor %}
+{% endif %}
+
+{% if pc and pc.notes %}
+## Notes
+
+{{ pc.notes }}
+
+{% endif %}
+
+{% if ctx and ctx.internal_entities %}
+## Internal Structure
+
+{% if ctx.use_internal_structure_table %}
+| Kind | Entity |
+| --- | --- |
+{% for row in ctx.internal_entities %}
+| {{ row.entity_type | replace('_', ' ') | title }} | {{ row.alias }}{% if row.name %} — {{ row.name }}{% endif %} |
+{% endfor %}
+
+{% else %}
+{% if ctx.internal_graph %}
+```mermaid
+{{ ctx.internal_graph }}```
+
+{% endif %}
+{% for row in ctx.internal_entities %}
+- `{{ row.entity_type }}` {{ row.alias }}{% if row.name %} — {{ row.name }}{% endif %}
+
+{% endfor %}
+{% endif %}
+{% endif %}
+
+{% if ctx and ctx.graphs %}
+## Architecture Neighborhood
+
+{% for graph in ctx.graphs %}
+```mermaid
+{{ graph }}```
+
+{% endfor %}
+{% if ctx.show_semantic_inventory %}
+### Semantic architecture inventory
+
+{% if ctx.neighborhood_inventory %}
+{% for row in ctx.neighborhood_inventory %}
+- `{{ row.verb }}`: {{ row.from_label }} → {{ row.to_label }}
+{% endfor %}
+{% endif %}
+{% endif %}
+{% endif %}
+
+{% if ctx and ctx.peer_cards %}
+## Neighbor Relationships
+
+{% set table_cards = ctx.peer_cards | selectattr('use_table') | list %}
+{% set expanded_cards = ctx.peer_cards | rejectattr('use_table') | list %}
+{% if table_cards %}
+| Neighbor | Relationship | Exact Path |
+| --- | --- | --- |
+{% for card in table_cards %}
+{% set rel = card.relationships[0] %}
+| {% if card.link %}[{{ card.alias_id }} — {{ card.title }}]({{ card.link }}){% else %}{{ card.alias_id }} — {{ card.title }}{% endif %} | {{ rel.from_display }} → {{ rel.to_display }} | `{{ rel.canonical_path }}` |
+{% endfor %}
+
+{% endif %}
+{% for card in expanded_cards %}
+### {{ card.alias_id }} — {{ card.title }}
+
+{% for rel in card.relationships %}
+**Relationship**
+{{ rel.from_display }}
+{{ rel.verb | replace('_', ' ') }}
+{{ rel.to_display }}
+
+`{{ rel.canonical_path }}`
+
+{% endfor %}
+{% if card.link %}[Open projection]({{ card.link }}){% else %}*(projection link unavailable)*{% endif %}
+
+{% endfor %}
+{% elif ctx %}
+## Neighbor Relationships
+
+No grammatical peer neighborhood for this subject.
+{% endif %}
+
+{% if ctx and ctx.governance_rows %}
+## Governance / Bindings / Evidence
+
+{% for row in ctx.governance_rows %}
+- {{ row }}
 {% endfor %}
 {% endif %}
 

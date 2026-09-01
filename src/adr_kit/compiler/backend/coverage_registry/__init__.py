@@ -152,6 +152,52 @@ _PC_OVERRIDES: dict[str, Disposition] = {
     "/component_topology": "UNSUPPORTED_OR_STALE",
 }
 
+_L_OVERRIDES: dict[str, Disposition] = {
+    "/schema_version": "RENDER_PRIMARY",
+    "/created_date": "RENDER_PRIMARY",
+    "/modified_date": "RENDER_PRIMARY",
+    "/authors": "RENDER_PRIMARY",
+    "/domains": "RENDER_PRIMARY",
+    "/tags": "RENDER_PRIMARY",
+    "/decisions/summary": "RENDER_SUMMARY_AND_DETAIL",
+    "/decisions/rationale": "RENDER_DETAIL",
+    "/decisions/alternatives_considered": "RENDER_DETAIL",
+    "/decisions/consequences": "RENDER_DETAIL",
+    "/decisions/enforces_invariants": "RENDER_AS_RELATIONSHIP",
+    "/decisions/enables_capabilities": "RENDER_AS_RELATIONSHIP",
+    "/decisions/governs_components": "RENDER_AS_RELATIONSHIP",
+    "/decisions/refines": "RENDER_AS_RELATIONSHIP",
+    "/decisions/supersedes": "RENDER_AS_RELATIONSHIP",
+    "/decisions/related_invariants": "RENDER_AS_RELATIONSHIP",
+    "/capabilities/name": "RENDER_PRIMARY",
+    "/capabilities/description": "RENDER_DETAIL",
+    "/capabilities/implemented_by_components": "RENDER_AS_RELATIONSHIP",
+    "/capabilities/enabled_by_decisions": "RENDER_AS_RELATIONSHIP",
+    "/architectural_boundaries/name": "RENDER_PRIMARY",
+    "/architectural_boundaries/description": "RENDER_DETAIL",
+    "/architectural_boundaries/rationale": "RENDER_DETAIL",
+    "/interaction_contracts/parties": "RENDER_DETAIL",
+    "/interaction_contracts/protocol": "RENDER_DETAIL",
+    "/interaction_contracts/guarantees": "RENDER_DETAIL",
+    "/invariants/statement": "RENDER_PRIMARY",
+    "/invariants/enforcement_level": "RENDER_DETAIL",
+    "/invariants/enforcement_mechanism": "RENDER_DETAIL",
+    "/invariants/verification_method": "RENDER_DETAIL",
+    "/invariants/rationale": "RENDER_DETAIL",
+    "/invariants/declaration_mode": "RENDER_DETAIL",
+    "/invariants/upheld_by_decisions": "RENDER_AS_RELATIONSHIP",
+    "/invariants/policy_reference": "RENDER_DETAIL",
+    "/invariants/compliance_frameworks": "RENDER_DETAIL",
+    "/invariants/exceptions": "RENDER_DETAIL",
+    "/invariants/supersedes": "RENDER_AS_RELATIONSHIP",
+    "/constraints/type": "RENDER_DETAIL",
+    "/constraints/rationale": "RENDER_DETAIL",
+    "/non_functional_requirements/category": "RENDER_DETAIL",
+    "/non_functional_requirements/requirement": "RENDER_DETAIL",
+    "/non_functional_requirements/acceptance_criteria": "RENDER_DETAIL",
+    "/notes": "RENDER_DETAIL",
+}
+
 _PS_OVERRIDES: dict[str, Disposition] = {
     "/schema_version": "RENDER_PRIMARY",
     "/created_date": "RENDER_PRIMARY",
@@ -301,6 +347,7 @@ def built_in_registry() -> dict[str, dict[str, Disposition]]:
             table.update(_PS_OVERRIDES)
         elif adr_type == "logical":
             table.pop("/component_topology", None)
+            table.update(_L_OVERRIDES)
         registry[adr_type] = table
     return registry
 

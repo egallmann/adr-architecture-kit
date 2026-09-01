@@ -107,6 +107,7 @@ class HumanAdrProjectionContext:
     governance_rows: list[str]
     physical_component: Any | None = None
     physical_system: Any | None = None
+    logical: Any | None = None
 
 
 def context_summary_from_text(text: str | None) -> str:
@@ -357,6 +358,7 @@ def build_human_adr_projection_context(
     adr_type = _adr_type_value(adr)
     physical_component = None
     physical_system = None
+    logical = None
     if adr_type == "physical-component":
         from .physical_component_projection import build_physical_component_projection
 
@@ -387,6 +389,24 @@ def build_human_adr_projection_context(
             resolve_present_ref=resolve_present_ref,
             format_present_ref=format_present_ref,
         )
+    elif adr_type == "logical":
+        from .logical_projection import build_logical_projection
+
+        logical = build_logical_projection(
+            adr=adr,
+            subject_id=subject_id,
+            alias_id=alias_id,
+            adr_type=adr_type,
+            status=_status_value(adr),
+            entities=entities,
+            relationships=list(relationships),
+            adr_models_by_id=adr_models_by_id,
+            resolve_present_ref=resolve_present_ref,
+            format_present_ref=format_present_ref,
+            peer_cards=peer_cards,
+        )
+        for card in peer_cards:
+            card.context_summary = ""
 
     ego = _ego_ids(subject_id, adr) if adr_type == "physical-component" else {subject_id}
     has_human_relationship_inventory = False
@@ -394,6 +414,8 @@ def build_human_adr_projection_context(
         has_human_relationship_inventory = bool(
             physical_component.architecture_position.relationship_groups
         )
+    elif logical is not None:
+        has_human_relationship_inventory = logical.has_human_relationship_inventory
 
     graphs = _build_mermaid_graphs(
         one_hop=path_relationships,
@@ -435,7 +457,7 @@ def build_human_adr_projection_context(
     internal_entities.sort(key=lambda row: (row.entity_type, row.alias, row.entity_id))
     use_internal_structure_table = False
     internal_graph = None
-    if adr_type in {"logical", "physical-component"}:
+    if adr_type == "physical-component":
         owned_component_count = sum(
             1 for row in internal_entities if row.entity_type == "component"
         )
@@ -445,15 +467,14 @@ def build_human_adr_projection_context(
             [
                 rel
                 for rel in relationships
-                if rel.relationship_type
-                in (_PC_INTERNAL_VERBS if adr_type == "physical-component" else _LOGICAL_INTERNAL_VERBS)
+                if rel.relationship_type in _PC_INTERNAL_VERBS
                 and rel.from_entity_id in display_ids
                 and rel.to_entity_id in display_ids
             ]
         )
         from .projection_editorial import should_render_pc_internal_graph
 
-        if adr_type == "physical-component" and not should_render_pc_internal_graph(
+        if not should_render_pc_internal_graph(
             owned_component_count=owned_component_count,
             structure_edges=structure_edges,
         ):
@@ -499,6 +520,7 @@ def build_human_adr_projection_context(
     coverage_module = Path(__file__).resolve().parent / "coverage_registry" / "__init__.py"
     pc_module = Path(__file__).resolve().parent / "physical_component_projection.py"
     ps_module = Path(__file__).resolve().parent / "physical_system_projection.py"
+    logical_module = Path(__file__).resolve().parent / "logical_projection.py"
     editorial_module = Path(__file__).resolve().parent / "projection_editorial.py"
     dependency_keys[f"__generator__/modules/{this_module.name}"] = _module_hash_input(this_module)
     dependency_keys[f"__generator__/modules/{paths_module.name}"] = _module_hash_input(paths_module)
@@ -506,6 +528,9 @@ def build_human_adr_projection_context(
     dependency_keys[f"__generator__/modules/{coverage_module.name}"] = _module_hash_input(coverage_module)
     dependency_keys[f"__generator__/modules/{pc_module.name}"] = _module_hash_input(pc_module)
     dependency_keys[f"__generator__/modules/{ps_module.name}"] = _module_hash_input(ps_module)
+    dependency_keys[f"__generator__/modules/{logical_module.name}"] = _module_hash_input(
+        logical_module
+    )
     dependency_keys[f"__generator__/modules/{editorial_module.name}"] = _module_hash_input(
         editorial_module
     )
@@ -556,7 +581,7 @@ def build_human_adr_projection_context(
     render_dependencies = [dependency_keys[key] for key in sorted(dependency_keys)]
 
     show_semantic_inventory = not has_human_relationship_inventory
-    if adr_type in {"physical-component", "physical-system"} and has_human_relationship_inventory:
+    if adr_type in {"physical-component", "physical-system", "logical"} and has_human_relationship_inventory:
         show_semantic_inventory = False
 
     return HumanAdrProjectionContext(
@@ -583,6 +608,7 @@ def build_human_adr_projection_context(
         governance_rows=governance_rows,
         physical_component=physical_component,
         physical_system=physical_system,
+        logical=logical,
     )
 
 
@@ -882,7 +908,7 @@ def _build_mermaid_graphs(
         by_verb.setdefault(relationship.relationship_type, []).append(relationship)
 
     graphs = [render_edge_group(by_verb[verb]) for verb in sorted(by_verb)]
-    if adr_type in {"physical-component", "physical-system"}:
+    if adr_type in {"physical-component", "physical-system", "logical"}:
         return [graph for graph in graphs if graph.strip()]
     return graphs
 

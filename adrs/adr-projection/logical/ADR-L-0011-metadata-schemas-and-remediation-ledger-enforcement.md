@@ -5,8 +5,8 @@ artifact_kind: rendered_adr_markdown
 generator_id: adr-projection-markdown
 generator_version: 3
 hash_algorithm: sha256
-source_hash: 3da3c58fa80310951277abb7b14833077943faad4fdf424fbbd2c63c3df28cec
-rendered_hash: 6fa64fc4125e4b3cff52a4a56741ece263fe742130bc6e3b5c0ff478a839ce4e
+source_hash: 09c6c76827a2ed554f8a9f6f5cf044bc08ffd7bcaf7b1c05018ee416b77169e8
+rendered_hash: 5224aa99d19bd34198e451c1e9b3c1efbddea0b709a9bc85bea8a3b1e91c7f4a
 -->
 
 # ADR-L-0011: Metadata Schemas and Remediation Ledger Enforcement
@@ -16,40 +16,23 @@ rendered_hash: 6fa64fc4125e4b3cff52a4a56741ece263fe742130bc6e3b5c0ff478a839ce4e
 **Type:** logical  
 **Status:** accepted  
 **Alias:** ADR-L-0011  
-**Alias name:** metadata-schemas-and-remediation-ledger-enforcement  
+**Authoring contract:** authoring v1.5  
 **Created:** 2026-03-14  
 **Authors:** adr-architecture-kit  
 **Domains:** governance, metadata, migration, brownfield  
+**Tags:** metadata, remediation-ledger, sentinel, approval  
 
-## Architecture Position
+## Architecture at a Glance
 
-Logical architecture authority for this subject. Neighborhood paths use structural bridges plus exactly one semantic architecture edge; they never invent ADR-to-ADR verbs.
+| | |
+| --- | --- |
+| Logical authority | ADR-L-0011 |
+| Status | accepted |
+| Decisions | 4 |
+| Capabilities | 2 |
+| Invariants | 3 |
+| Physical realizations | [ADR-PS-0002](../physical-system/ADR-PS-0002-adr-kit-authoring-compiler-and-validation-system.md), [ADR-PC-0002](../physical-component/ADR-PC-0002-schema-and-contract-validation.md), [ADR-PC-0006](../physical-component/ADR-PC-0006-brownfield-onboarding-and-canonical-normalization.md) |
 
-## Architecture Neighborhood
-
-
-### Semantic architecture inventory
-
-- `implements_logical`: ADR-PC-0002 → ADR-L-0011
-- `implements_logical`: ADR-PC-0006 → ADR-L-0011
-- `implements_logical`: ADR-PS-0002 → ADR-L-0011
-
-## Neighbor Relationships
-
-| Neighbor | Relationship | Exact Path |
-| --- | --- | --- |
-| [ADR-PC-0002 — Schema and Contract Validation](../physical-component/ADR-PC-0002-schema-and-contract-validation.md) | ADR-PC-0002 -[:implements_logical]-> ADR-L-0011 | `ADR-PC-0002 -[:implements_logical]-> ADR-L-0011` |
-| [ADR-PC-0006 — Brownfield Onboarding and Canonical Normalization](../physical-component/ADR-PC-0006-brownfield-onboarding-and-canonical-normalization.md) | ADR-PC-0006 -[:implements_logical]-> ADR-L-0011 | `ADR-PC-0006 -[:implements_logical]-> ADR-L-0011` |
-| [ADR-PS-0002 — ADR Kit Authoring Compiler and Validation System](../physical-system/ADR-PS-0002-adr-kit-authoring-compiler-and-validation-system.md) | ADR-PS-0002 -[:implements_logical]-> ADR-L-0011 | `ADR-PS-0002 -[:implements_logical]-> ADR-L-0011` |
-
-
-### Lifecycle / association
-
-- ADR-L-0014 -[:references]-> ADR-L-0011
-- ADR-L-0011 -[:references]-> ADR-L-0001
-- ADR-L-0011 -[:references]-> ADR-L-0008
-- ADR-L-0011 -[:references]-> ADR-L-0010
-- ADR-L-0015 -[:references]-> ADR-L-0011
 
 ## Context
 
@@ -67,148 +50,189 @@ The plan work established several key rules:
 
 What remains is to formalize those rules as an architectural decision that
 binds metadata schema work, sentinel usage, and remediation workflow together.
+## Architectural Decisions
 
+| Decision | Choice | Traceability |
+| --- | --- | --- |
+| DEC-0040 | Define per-entity metadata through typed schemas rather than an unconstrained metadata bag | — |
+| DEC-0041 | Restrict sentinel values to narrative fields and sections only | — |
+| DEC-0042 | Enforce remediation through a separate canonical remediation ledger | — |
+| DEC-0043 | Require staged approval before replacement content becomes protected canonical content | — |
 
-## Internal Structure
+### DEC-0040 — Define per-entity metadata through typed schemas rather than an unconstrained metadata bag
 
-```mermaid
-flowchart TB
-  n_019fee89_e616_7b97_971d_ae165d13bf9c["ADR-L-0011<br/>Metadata Schemas and Remediation Ledger Enforcement"]
-  subgraph sg_capability["capability"]
-    n_019fee89_e616_7755_bd39_ab6dde87eb86["CAP-0036<br/>Typed Metadata Contract Enforcement"]
-    n_019fee89_e616_79ea_b43e_32a8705441ec["CAP-0037<br/>Remediation Ledger Governance"]
-  end
-  subgraph sg_decision["decision"]
-    n_019fee89_e616_7de2_b63b_577b2c2d53f4["DEC-0040<br/>Define per-entity metadata through typed schemas rather than an unconstrained metadata bag"]
-    n_019fee89_e616_7a04_a927_19a373014476["DEC-0041<br/>Restrict sentinel values to narrative fields and sections only"]
-    n_019fee89_e616_7d89_8e31_8090d0f91310["DEC-0042<br/>Enforce remediation through a separate canonical remediation ledger"]
-    n_019fee89_e616_748c_a114_227a14f5fef8["DEC-0043<br/>Require staged approval before replacement content becomes protected canonical content"]
-  end
-  subgraph sg_invariant["invariant"]
-    n_019fee89_e616_713a_b73d_fec9a62b6bfb["INV-0055"]
-    n_019fee89_e616_71a8_bd3f_d739b5ccf91e["INV-0056"]
-    n_019fee89_e616_7a17_850f_ce32ede3c9c5["INV-0057"]
-  end
-  n_019fee89_e616_713a_b73d_fec9a62b6bfb -->|"declared_in"| n_019fee89_e616_7b97_971d_ae165d13bf9c
-  n_019fee89_e616_71a8_bd3f_d739b5ccf91e -->|"declared_in"| n_019fee89_e616_7b97_971d_ae165d13bf9c
-  n_019fee89_e616_748c_a114_227a14f5fef8 -->|"declared_in"| n_019fee89_e616_7b97_971d_ae165d13bf9c
-  n_019fee89_e616_7755_bd39_ab6dde87eb86 -->|"declared_in"| n_019fee89_e616_7b97_971d_ae165d13bf9c
-  n_019fee89_e616_79ea_b43e_32a8705441ec -->|"declared_in"| n_019fee89_e616_7b97_971d_ae165d13bf9c
-  n_019fee89_e616_7a04_a927_19a373014476 -->|"declared_in"| n_019fee89_e616_7b97_971d_ae165d13bf9c
-  n_019fee89_e616_7a17_850f_ce32ede3c9c5 -->|"declared_in"| n_019fee89_e616_7b97_971d_ae165d13bf9c
-  n_019fee89_e616_7d89_8e31_8090d0f91310 -->|"declared_in"| n_019fee89_e616_7b97_971d_ae165d13bf9c
-  n_019fee89_e616_7de2_b63b_577b2c2d53f4 -->|"declared_in"| n_019fee89_e616_7b97_971d_ae165d13bf9c
-```
+**Rationale**
 
-- `capability` CAP-0036 — Typed Metadata Contract Enforcement
-- `capability` CAP-0037 — Remediation Ledger Governance
-- `decision` DEC-0040 — Define per-entity metadata through typed schemas rather than an unconstrained metadata bag
-- `decision` DEC-0041 — Restrict sentinel values to narrative fields and sections only
-- `decision` DEC-0042 — Enforce remediation through a separate canonical remediation ledger
-- `decision` DEC-0043 — Require staged approval before replacement content becomes protected canonical content
-- `invariant` INV-0055 — INV-0055
-- `invariant` INV-0056 — INV-0056
-- `invariant` INV-0057 — INV-0057
+Registry metadata is currently too weak as a contract surface. Different
+entity types carry different keys, and without typed expectations the kernel
+and compiler can drift silently.
+
+**Consequences**
+
+Positive:
+- Metadata becomes part of the contract rather than convention
+- Profile-aware validation can reason about missingness explicitly
+- Kernel consumers gain predictable field expectations
+- The initial 0.x contract can be anchored to currently generated metadata keys
+
+### DEC-0041 — Restrict sentinel values to narrative fields and sections only
+
+**Rationale**
+
+Sentinel values are useful for preserving structure where knowledge is
+missing, but they are dangerous in identifiers, references, enums, or
+governance fields. Narrow placement keeps them honest and machine-safe.
+
+**Consequences**
+
+Positive:
+- Referential integrity remains trustworthy
+- Brownfield tolerance does not degrade structural meaning
+- Validator behavior stays deterministic
+
+### DEC-0042 — Enforce remediation through a separate canonical remediation ledger
+
+**Rationale**
+
+Current architecture content and remediation workflow state should not be
+mixed. A separate remediation ledger preserves auditability, avoids process
+leakage into ADR text, and provides a stable mechanism for no-regression
+enforcement.
+
+**Consequences**
+
+Positive:
+- Approval state is queryable without mutating architecture semantics
+- Legacy recovery history remains visible
+- The system can prove changes were not shaped solely by encoding pressure
+
+### DEC-0043 — Require staged approval before replacement content becomes protected canonical content
+
+**Rationale**
+
+Non-sentinel replacement content may be better than a sentinel without yet
+being authoritative. Staged approval prevents accidental promotion and keeps
+the no-regression rule tied to explicit governance.
+
+**Consequences**
+
+Positive:
+- Replacement content can be introduced before final approval
+- Approval remains explicit and auditable
+- Monotonic remediation protects only governed content
+
 
 ## Capabilities
 
-### CAP-0036: Typed Metadata Contract Enforcement
+### CAP-0036 — Typed Metadata Contract Enforcement
 
 Validate entity metadata against entity-type-specific schema expectations
 under the active enforcement profile.
 
-
-### CAP-0037: Remediation Ledger Governance
+### CAP-0037 — Remediation Ledger Governance
 
 Track sentinel usage, replacement, approval, and no-regression state in a
 canonical governance artifact.
 
 
 
-## Decisions
-
-### DEC-0040: Define per-entity metadata through typed schemas rather than an unconstrained metadata bag
-
-**Rationale:**
-Registry metadata is currently too weak as a contract surface. Different
-entity types carry different keys, and without typed expectations the kernel
-and compiler can drift silently.
-
-
-
-
-### DEC-0041: Restrict sentinel values to narrative fields and sections only
-
-**Rationale:**
-Sentinel values are useful for preserving structure where knowledge is
-missing, but they are dangerous in identifiers, references, enums, or
-governance fields. Narrow placement keeps them honest and machine-safe.
-
-
-
-
-### DEC-0042: Enforce remediation through a separate canonical remediation ledger
-
-**Rationale:**
-Current architecture content and remediation workflow state should not be
-mixed. A separate remediation ledger preserves auditability, avoids process
-leakage into ADR text, and provides a stable mechanism for no-regression
-enforcement.
-
-
-
-
-### DEC-0043: Require staged approval before replacement content becomes protected canonical content
-
-**Rationale:**
-Non-sentinel replacement content may be better than a sentinel without yet
-being authoritative. Staged approval prevents accidental promotion and keeps
-the no-regression rule tied to explicit governance.
-
-
-
-
 
 ## Invariants
 
+| Invariant | Requirement | Enforcement | Verification |
+| --- | --- | --- | --- |
+| INV-0055 | Reserved sentinel values MUST be allowed only in narrative fields or sections explicitly designated as… | MUST / policy | automated |
+| INV-0056 | Remediation workflow state MUST be recorded in a separate canonical remediation ledger rather than in ADR content… | MUST / design | automated |
+| INV-0057 | Once a field or section has an approved remediation-ledger entry for non-sentinel canonical content, that field or… | MUST / policy | automated |
+
 ### INV-0055
 
-**Statement:** Reserved sentinel values MUST be allowed only in narrative fields or
-sections explicitly designated as sentinel-capable by schema or policy.
-  
-**Scope:** global  
-**Enforcement:** must (policy)
+**Statement**
 
-**Rationale:**
+Reserved sentinel values MUST be allowed only in narrative fields or
+sections explicitly designated as sentinel-capable by schema or policy.
+
+**Scope:** global
+
+**Enforcement:** MUST (policy)
+**Verification:** automated
+
+**Rationale**
+
 Sentinel tolerance must preserve narrative structure without weakening
 structural semantics.
 
-
 ### INV-0056
 
-**Statement:** Remediation workflow state MUST be recorded in a separate canonical
+**Statement**
+
+Remediation workflow state MUST be recorded in a separate canonical
 remediation ledger rather than in ADR content fields.
-  
-**Scope:** global  
-**Enforcement:** must (design)
 
-**Rationale:**
+**Scope:** global
+
+**Enforcement:** MUST (design)
+**Verification:** automated
+
+**Rationale**
+
 Workflow state and architecture state must remain distinct.
-
 
 ### INV-0057
 
-**Statement:** Once a field or section has an approved remediation-ledger entry for
+**Statement**
+
+Once a field or section has an approved remediation-ledger entry for
 non-sentinel canonical content, that field or section MUST NOT regress to a
 sentinel state under normal validation.
-  
-**Scope:** global  
-**Enforcement:** must (policy)
 
-**Rationale:**
+**Scope:** global
+
+**Enforcement:** MUST (policy)
+**Verification:** automated
+
+**Rationale**
+
 Brownfield tolerance must ratchet toward stronger compliance rather than
 remain a permanent escape hatch.
 
+
+
+
+## Physical Realization
+
+**Systems**
+- [ADR-PS-0002](../physical-system/ADR-PS-0002-adr-kit-authoring-compiler-and-validation-system.md)
+
+**Components**
+- [ADR-PC-0002](../physical-component/ADR-PC-0002-schema-and-contract-validation.md)
+- [ADR-PC-0006](../physical-component/ADR-PC-0006-brownfield-onboarding-and-canonical-normalization.md)
+
+
+
+
+## Lifecycle / Related Architecture
+
+**Related ADRs**
+- [ADR-L-0001](ADR-L-0001-ste-compliant-machine-verifiable-architecture-decision-record-system.md)
+- [ADR-L-0008](ADR-L-0008-validation-modes-for-draft-and-complete-adrs.md)
+- [ADR-L-0010](ADR-L-0010-kernel-interface-contract-and-validation-profiles.md)
+
+**References**
+- [ADR-L-0014](ADR-L-0014-brownfield-onboarding-and-canonicalization-workflow.md)
+- [ADR-L-0001](ADR-L-0001-ste-compliant-machine-verifiable-architecture-decision-record-system.md)
+- [ADR-L-0008](ADR-L-0008-validation-modes-for-draft-and-complete-adrs.md)
+- [ADR-L-0010](ADR-L-0010-kernel-interface-contract-and-validation-profiles.md)
+- [ADR-L-0015](ADR-L-0015-adr-governance-state-and-override-semantics.md)
+
+
+## Architecture Relationships
+
+| Neighbor | Relationship | Exact Path |
+| --- | --- | --- |
+| [ADR-PC-0002 — Schema and Contract Validation](../physical-component/ADR-PC-0002-schema-and-contract-validation.md) | implements this logical authority | `ADR-PC-0002 -[:implements_logical]-> ADR-L-0011` |
+| [ADR-PC-0006 — Brownfield Onboarding and Canonical Normalization](../physical-component/ADR-PC-0006-brownfield-onboarding-and-canonical-normalization.md) | implements this logical authority | `ADR-PC-0006 -[:implements_logical]-> ADR-L-0011` |
+| [ADR-PS-0002 — ADR Kit Authoring Compiler and Validation System](../physical-system/ADR-PS-0002-adr-kit-authoring-compiler-and-validation-system.md) | implements this logical authority | `ADR-PS-0002 -[:implements_logical]-> ADR-L-0011` |
 
 
 

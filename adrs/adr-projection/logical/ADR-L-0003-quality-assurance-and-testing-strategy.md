@@ -5,8 +5,8 @@ artifact_kind: rendered_adr_markdown
 generator_id: adr-projection-markdown
 generator_version: 3
 hash_algorithm: sha256
-source_hash: 490375405c11304b3cd99f3962713c612aed6c70a3ceedd3a2cb6043b027b1e9
-rendered_hash: f039bd6a467c6beebb84891bbc47bdbbbf22fdfb6f5dd46b41c73a472769bb64
+source_hash: ec9fc1384553bb921b970ffea15658a23dc3de9bb056e00752a6f1905bde10be
+rendered_hash: c06d12094b9d950bf996ab6fc22377f5b20ec02e36c9060b2b49c835e4923fe7
 -->
 
 # ADR-L-0003: Quality Assurance and Testing Strategy
@@ -16,39 +16,23 @@ rendered_hash: f039bd6a467c6beebb84891bbc47bdbbbf22fdfb6f5dd46b41c73a472769bb64
 **Type:** logical  
 **Status:** accepted  
 **Alias:** ADR-L-0003  
-**Alias name:** quality-assurance-and-testing-strategy  
+**Authoring contract:** authoring v1.5  
 **Created:** 2026-03-08  
 **Modified:** 2026-08-05  
 **Authors:** adr-architecture-kit  
 **Domains:** quality-assurance, testing, governance, reliability  
+**Tags:** testing, quality, ci-cd, validation, coverage  
 
-## Architecture Position
+## Architecture at a Glance
 
-Logical architecture authority for this subject. Neighborhood paths use structural bridges plus exactly one semantic architecture edge; they never invent ADR-to-ADR verbs.
+| | |
+| --- | --- |
+| Logical authority | ADR-L-0003 |
+| Status | accepted |
+| Decisions | 7 |
+| Capabilities | 5 |
+| Invariants | 13 |
 
-## Architecture Neighborhood
-
-
-### Semantic architecture inventory
-
-- None
-
-## Neighbor Relationships
-
-No grammatical peer neighborhood for this subject.
-
-### Lifecycle / association
-
-- ADR-L-0005 -[:references]-> ADR-L-0003
-- ADR-L-0004 -[:references]-> ADR-L-0003
-- ADR-L-0003 -[:references]-> ADR-L-0001
-- ADR-L-0003 -[:references]-> ADR-L-0002
-- ADR-L-0003 -[:references]-> ADR-PC-0001
-- ADR-L-0003 -[:references]-> ADR-PS-0002
-- ADR-L-0003 -[:references]-> ADR-PC-0008
-- ADR-L-0007 -[:references]-> ADR-L-0003
-- ADR-L-0008 -[:references]-> ADR-L-0003
-- ADR-L-0018 -[:references]-> ADR-L-0003
 
 ## Context
 
@@ -86,136 +70,22 @@ Testing must balance:
 - Isolated unit tests vs. real-world integration tests
 - Fast feedback vs. thorough validation
 - Maintainability vs. exhaustive edge case coverage
+## Architectural Decisions
 
+| Decision | Choice | Traceability |
+| --- | --- | --- |
+| DEC-0008 | Adopt Multi-Layer Testing Strategy | — |
+| DEC-0015 | Require Tests for All New Components | — |
+| DEC-0022 | Test Against Real Workspace ADRs | — |
+| DEC-0029 | Enforce Testing in CI/CD Pipeline | — |
+| DEC-0033 | Adopt Test-Driven Development (TDD) Methodology | — |
+| DEC-0078 | Require retained release-artifact testing and no-regression quality controls | — |
+| DEC-0081 | Make installed distribution metadata the runtime package-version authority | — |
 
-## Internal Structure
+### DEC-0008 — Adopt Multi-Layer Testing Strategy
 
-```mermaid
-flowchart TB
-  n_019fee89_e615_77f6_9b1f_695732d25443["ADR-L-0003<br/>Quality Assurance and Testing Strategy"]
-  subgraph sg_capability["capability"]
-    n_019fee89_e615_7498_9825_b465a8830d8a["CAP-0020<br/>Automated Quality Gates"]
-    n_019fee89_e615_7958_822b_bbd40f3a5ebc["CAP-0023<br/>Test-Driven Development Support"]
-    n_019fee89_e615_7d32_8d01_f61b4d7aae40["CAP-0026<br/>Regression Prevention"]
-    n_019fee89_e615_722d_bf3a_9ed33338beaf["CAP-0029<br/>Documentation via Tests"]
-    n_019fee89_e615_7402_b43f_a03be950d0b3["CAP-0046<br/>Verified Build-Once Release Promotion"]
-  end
-  subgraph sg_decision["decision"]
-    n_019fee89_e615_79a1_be3d_03af8c291326["DEC-0008<br/>Adopt Multi-Layer Testing Strategy"]
-    n_019fee89_e615_7d1d_a33d_ca62fdaad0be["DEC-0015<br/>Require Tests for All New Components"]
-    n_019fee89_e615_78ee_a53f_99d85ea925a3["DEC-0022<br/>Test Against Real Workspace ADRs"]
-    n_019fee89_e615_7e99_8137_8ac8d0972e1b["DEC-0029<br/>Enforce Testing in CI/CD Pipeline"]
-    n_019fee89_e615_760b_a43f_b3fe08e0d6ef["DEC-0033<br/>Adopt Test-Driven Development (TDD) Methodology"]
-    n_019fee89_e615_7e36_8e3f_c0e37def8629["DEC-0078<br/>Require retained release-artifact testing and no-regression quality controls"]
-    n_019fee89_e615_713f_a73d_10442c1dc6b9["DEC-0081<br/>Make installed distribution metadata the runtime package-version authority"]
-  end
-  subgraph sg_invariant["invariant"]
-    n_019fee89_e615_7c97_a633_fbfd69ffa030["INV-0020"]
-    n_019fee89_e615_74c8_a813_5f18ee19f9a8["INV-0021"]
-    n_019fee89_e615_729d_873d_f2bf925d1846["INV-0022"]
-    n_019fee89_e615_758b_a31f_a0dcb8d9d09a["INV-0023"]
-    n_019fee89_e615_7871_b719_23a5128874ae["INV-0024"]
-    n_019fee89_e615_75e2_a33f_645d3f0970a1["INV-0025"]
-    n_019fee89_e615_7a08_8b0f_d2b2ed57eacb["INV-0026"]
-    n_019fee89_e615_74af_a113_f1a7a9e5d49e["INV-0072"]
-    n_019fee89_e615_7519_972f_504bac832107["INV-0073"]
-    n_019fee89_e615_701c_8e3e_d463d56f89ce["INV-0075"]
-    n_019fee89_e615_7235_8135_9a274f82afc8["INV-0083"]
-    n_019fee89_e615_74f0_9826_fcaa4052cfdc["INV-0095"]
-    n_019fee89_e615_792a_aa3e_a9f0f34c1b93["INV-0096"]
-  end
-  n_019fee89_e615_701c_8e3e_d463d56f89ce -->|"declared_in"| n_019fee89_e615_77f6_9b1f_695732d25443
-  n_019fee89_e615_713f_a73d_10442c1dc6b9 -->|"declared_in"| n_019fee89_e615_77f6_9b1f_695732d25443
-  n_019fee89_e615_722d_bf3a_9ed33338beaf -->|"declared_in"| n_019fee89_e615_77f6_9b1f_695732d25443
-  n_019fee89_e615_7235_8135_9a274f82afc8 -->|"declared_in"| n_019fee89_e615_77f6_9b1f_695732d25443
-  n_019fee89_e615_729d_873d_f2bf925d1846 -->|"declared_in"| n_019fee89_e615_77f6_9b1f_695732d25443
-  n_019fee89_e615_7402_b43f_a03be950d0b3 -->|"declared_in"| n_019fee89_e615_77f6_9b1f_695732d25443
-  n_019fee89_e615_7498_9825_b465a8830d8a -->|"declared_in"| n_019fee89_e615_77f6_9b1f_695732d25443
-  n_019fee89_e615_74af_a113_f1a7a9e5d49e -->|"declared_in"| n_019fee89_e615_77f6_9b1f_695732d25443
-  n_019fee89_e615_74c8_a813_5f18ee19f9a8 -->|"declared_in"| n_019fee89_e615_77f6_9b1f_695732d25443
-  n_019fee89_e615_74f0_9826_fcaa4052cfdc -->|"declared_in"| n_019fee89_e615_77f6_9b1f_695732d25443
-  n_019fee89_e615_7519_972f_504bac832107 -->|"declared_in"| n_019fee89_e615_77f6_9b1f_695732d25443
-  n_019fee89_e615_758b_a31f_a0dcb8d9d09a -->|"declared_in"| n_019fee89_e615_77f6_9b1f_695732d25443
-  n_019fee89_e615_75e2_a33f_645d3f0970a1 -->|"declared_in"| n_019fee89_e615_77f6_9b1f_695732d25443
-  n_019fee89_e615_760b_a43f_b3fe08e0d6ef -->|"declared_in"| n_019fee89_e615_77f6_9b1f_695732d25443
-  n_019fee89_e615_7871_b719_23a5128874ae -->|"declared_in"| n_019fee89_e615_77f6_9b1f_695732d25443
-  n_019fee89_e615_78ee_a53f_99d85ea925a3 -->|"declared_in"| n_019fee89_e615_77f6_9b1f_695732d25443
-  n_019fee89_e615_792a_aa3e_a9f0f34c1b93 -->|"declared_in"| n_019fee89_e615_77f6_9b1f_695732d25443
-  n_019fee89_e615_7958_822b_bbd40f3a5ebc -->|"declared_in"| n_019fee89_e615_77f6_9b1f_695732d25443
-  n_019fee89_e615_79a1_be3d_03af8c291326 -->|"declared_in"| n_019fee89_e615_77f6_9b1f_695732d25443
-  n_019fee89_e615_7a08_8b0f_d2b2ed57eacb -->|"declared_in"| n_019fee89_e615_77f6_9b1f_695732d25443
-  n_019fee89_e615_7c97_a633_fbfd69ffa030 -->|"declared_in"| n_019fee89_e615_77f6_9b1f_695732d25443
-  n_019fee89_e615_7d1d_a33d_ca62fdaad0be -->|"declared_in"| n_019fee89_e615_77f6_9b1f_695732d25443
-  n_019fee89_e615_7d32_8d01_f61b4d7aae40 -->|"declared_in"| n_019fee89_e615_77f6_9b1f_695732d25443
-  n_019fee89_e615_7e36_8e3f_c0e37def8629 -->|"declared_in"| n_019fee89_e615_77f6_9b1f_695732d25443
-  n_019fee89_e615_7e99_8137_8ac8d0972e1b -->|"declared_in"| n_019fee89_e615_77f6_9b1f_695732d25443
-```
+**Rationale**
 
-- `capability` CAP-0020 — Automated Quality Gates
-- `capability` CAP-0023 — Test-Driven Development Support
-- `capability` CAP-0026 — Regression Prevention
-- `capability` CAP-0029 — Documentation via Tests
-- `capability` CAP-0046 — Verified Build-Once Release Promotion
-- `decision` DEC-0008 — Adopt Multi-Layer Testing Strategy
-- `decision` DEC-0015 — Require Tests for All New Components
-- `decision` DEC-0022 — Test Against Real Workspace ADRs
-- `decision` DEC-0029 — Enforce Testing in CI/CD Pipeline
-- `decision` DEC-0033 — Adopt Test-Driven Development (TDD) Methodology
-- `decision` DEC-0078 — Require retained release-artifact testing and no-regression quality controls
-- `decision` DEC-0081 — Make installed distribution metadata the runtime package-version authority
-- `invariant` INV-0020 — INV-0020
-- `invariant` INV-0021 — INV-0021
-- `invariant` INV-0022 — INV-0022
-- `invariant` INV-0023 — INV-0023
-- `invariant` INV-0024 — INV-0024
-- `invariant` INV-0025 — INV-0025
-- `invariant` INV-0026 — INV-0026
-- `invariant` INV-0072 — INV-0072
-- `invariant` INV-0073 — INV-0073
-- `invariant` INV-0075 — INV-0075
-- `invariant` INV-0083 — INV-0083
-- `invariant` INV-0095 — INV-0095
-- `invariant` INV-0096 — INV-0096
-
-## Capabilities
-
-### CAP-0020: Automated Quality Gates
-
-CI/CD pipeline automatically runs test suite on every commit and PR.
-Prevents merging code that fails tests or reduces coverage.
-
-
-### CAP-0023: Test-Driven Development Support
-
-Test infrastructure supports TDD workflow - write failing test, implement
-feature, test passes. Fast test execution enables rapid iteration.
-
-
-### CAP-0026: Regression Prevention
-
-Once a bug is fixed, a test is added to prevent reintroduction. Test
-suite grows to cover discovered edge cases.
-
-
-### CAP-0029: Documentation via Tests
-
-Tests serve as executable documentation showing how to use components.
-Examples in tests demonstrate API usage patterns.
-
-
-### CAP-0046: Verified Build-Once Release Promotion
-
-Build one release bundle, verify its metadata and identity, exercise the
-retained wheel across the supported Python matrix, and publish that exact
-bundle without a second build.
-
-
-
-## Decisions
-
-### DEC-0008: Adopt Multi-Layer Testing Strategy
-
-**Rationale:**
 Different types of tests serve different purposes. A layered approach provides
 comprehensive coverage while maintaining fast feedback loops.
 
@@ -225,24 +95,37 @@ Layers:
 3. **Real-world tests**: Test against actual workspace ADRs
 4. **Regression tests**: Prevent reintroduction of fixed bugs
 
+**Consequences**
 
+Positive:
+- Clear test organization and purpose
+- Fast unit tests for rapid development
+- Integration tests catch interaction bugs
+- Real-world tests ensure practical usability
+- Test suite grows with system complexity
 
+### DEC-0015 — Require Tests for All New Components
 
-### DEC-0015: Require Tests for All New Components
+**Rationale**
 
-**Rationale:**
 Every new component must include tests before acceptance. This ensures
 quality is built in from the start, not retrofitted later.
 
 Prevents technical debt accumulation and ensures new features are
 immediately verifiable.
 
+**Consequences**
 
+Positive:
+- Slower initial development (offset by fewer bugs)
+- Higher confidence in new features
+- Easier refactoring with test safety net
+- Documentation via test examples
 
+### DEC-0022 — Test Against Real Workspace ADRs
 
-### DEC-0022: Test Against Real Workspace ADRs
+**Rationale**
 
-**Rationale:**
 The toolkit must work with actual ADRs in the workspace. Testing against
 synthetic fixtures alone is insufficient - real-world ADRs expose edge
 cases and integration issues.
@@ -250,22 +133,34 @@ cases and integration issues.
 This provides dogfooding and ensures the toolkit works on its own
 documentation.
 
+**Consequences**
 
+Positive:
+- Tests depend on workspace ADR quality
+- Tests may break when ADRs change (intentional)
+- Immediate feedback on ADR schema changes
+- Confidence in real-world usability
 
+### DEC-0029 — Enforce Testing in CI/CD Pipeline
 
-### DEC-0029: Enforce Testing in CI/CD Pipeline
+**Rationale**
 
-**Rationale:**
 Automated testing in CI/CD prevents regressions and ensures all
 contributors maintain quality standards. Manual testing is insufficient
 for a governance tool.
 
+**Consequences**
 
+Positive:
+- PRs cannot merge without passing tests
+- Consistent quality across contributions
+- Automated regression detection
+- Slower PR merge (acceptable trade-off)
 
+### DEC-0033 — Adopt Test-Driven Development (TDD) Methodology
 
-### DEC-0033: Adopt Test-Driven Development (TDD) Methodology
+**Rationale**
 
-**Rationale:**
 TDD (Red-Green-Refactor) is architecturally aligned with STE principles:
 
 **Alignment with STE**:
@@ -293,12 +188,21 @@ TDD (Red-Green-Refactor) is architecturally aligned with STE principles:
 - API design improves (testability forces good interfaces)
 - Documentation via test examples
 
+**Consequences**
 
+Positive:
+- Development workflow changes: test-first, not test-after
+- Initial development may feel slower (pays off in debugging time)
+- Forces thinking about behavior before implementation
+- Creates comprehensive test suite organically
+- Reduces debugging time (tests isolate issues)
+- Higher confidence in correctness
+- Better API design (testability constraint)
 
+### DEC-0078 — Require retained release-artifact testing and no-regression quality controls
 
-### DEC-0078: Require retained release-artifact testing and no-regression quality controls
+**Rationale**
 
-**Rationale:**
 Source-tree tests alone cannot prove that an installed distribution contains
 the documented modules and package data, and rebuilding during publication
 breaks the identity between tested and published artifacts. Existing Ruff,
@@ -321,12 +225,20 @@ qualification gate has already passed for that commit and artifact. Creating
 of the same commit and artifact. Tag publication is the promotion boundary for
 a previously qualified retained bundle.
 
+**Consequences**
 
+Positive:
+- Installed-package behavior becomes release evidence rather than an assumption
+- Published artifacts are byte-identical to the tested release bundle
+- Existing quality debt can only stay level or decrease
+- Supported Python claims are backed by source and wheel execution
+- PyPI package-description links remain valid independently of GitHub rendering
+- Tag publication promotes previously qualified artifacts without requalifying
 
+### DEC-0081 — Make installed distribution metadata the runtime package-version authority
 
-### DEC-0081: Make installed distribution metadata the runtime package-version authority
+**Rationale**
 
-**Rationale:**
 A manually synchronized package literal can drift from build metadata and
 from the artifact exercised by an installed consumer. Runtime package, CLI,
 SDK result, and capability versions therefore resolve from installed
@@ -339,126 +251,211 @@ or invalid source fallback returns the explicit non-release sentinel
 version. Editable and wheel tests must prove metadata resolution rather than
 silently relying on source-tree importability.
 
+**Consequences**
+
+Positive:
+- Package, CLI, SDK, and installed-distribution version reports share one authority
+- Direct-source execution remains supported without masking packaging defects
+- Release evidence detects drift instead of synchronizing duplicate literals
+
+
+## Capabilities
+
+### CAP-0020 — Automated Quality Gates
+
+CI/CD pipeline automatically runs test suite on every commit and PR.
+Prevents merging code that fails tests or reduces coverage.
+
+### CAP-0023 — Test-Driven Development Support
+
+Test infrastructure supports TDD workflow - write failing test, implement
+feature, test passes. Fast test execution enables rapid iteration.
+
+### CAP-0026 — Regression Prevention
+
+Once a bug is fixed, a test is added to prevent reintroduction. Test
+suite grows to cover discovered edge cases.
+
+### CAP-0029 — Documentation via Tests
+
+Tests serve as executable documentation showing how to use components.
+Examples in tests demonstrate API usage patterns.
+
+### CAP-0046 — Verified Build-Once Release Promotion
+
+Build one release bundle, verify its metadata and identity, exercise the
+retained wheel across the supported Python matrix, and publish that exact
+bundle without a second build.
 
 
 
 
 ## Invariants
 
+| Invariant | Requirement | Enforcement | Verification |
+| --- | --- | --- | --- |
+| INV-0020 | Every component with public API MUST have unit tests covering: - Happy path (valid inputs) - Error cases (invalid… | MUST / test | automated |
+| INV-0021 | Schema validators MUST have tests proving correctness against: - Valid ADRs (should pass) - Invalid ADRs (should… | MUST / test | automated |
+| INV-0022 | Multi-scope functionality MUST have tests covering: - Single scope (backward compatibility) - Multiple scopes… | MUST / test | automated |
+| INV-0023 | Test suite MUST complete in under 30 seconds for fast feedback | SHOULD / test | automated |
+| INV-0024 | Tests MUST be deterministic - same input always produces same output | MUST / test | automated |
+| INV-0025 | Breaking changes to public APIs MUST be detected by tests | MUST / test | automated |
+| INV-0026 | Test coverage SHOULD be measured and tracked, with minimum 80% coverage for critical components (parsers,… | SHOULD / test | automated |
+| INV-0072 | Pull-request and release validation MUST install the project before tests, MUST measure canonical `adr_kit`… | MUST / test | automated |
+| INV-0073 | Release publication MUST promote exactly one previously tested wheel and one previously tested sdist without… | MUST / test | automated |
+| INV-0075 | Source, editable-install, and clean retained-wheel consumers MUST exercise the supported SDK and MUST agree on… | MUST / test | automated |
+| INV-0083 | The PyPI-facing package description (the file declared as `project.readme`) MUST contain only Markdown link and… | MUST / test | automated |
+| INV-0095 | adr_kit MUST not ship deprecated runtime API usage, and its direct dependencies MUST be audited for vulnerabilities… | MUST / policy | automated |
+| INV-0096 | Repository changes must be committed at meaningful verified boundaries rather than accumulated indefinitely. | MUST / policy | audit |
+
 ### INV-0020
 
-**Statement:** Every component with public API MUST have unit tests covering:
+**Statement**
+
+Every component with public API MUST have unit tests covering:
 - Happy path (valid inputs)
 - Error cases (invalid inputs)
 - Edge cases (boundary conditions)
 - Backward compatibility (when applicable)
-  
-**Scope:** global  
-**Enforcement:** must (test)
 
-**Rationale:**
+**Scope:** global
+
+**Enforcement:** MUST (test)
+**Verification:** automated
+
+**Rationale**
+
 Public APIs are contracts. Tests document expected behavior and prevent
 breaking changes.
 
-
 ### INV-0021
 
-**Statement:** Schema validators MUST have tests proving correctness against:
+**Statement**
+
+Schema validators MUST have tests proving correctness against:
 - Valid ADRs (should pass)
 - Invalid ADRs (should fail with clear errors)
 - Edge cases (empty fields, special characters, etc.)
-  
-**Scope:** global  
-**Enforcement:** must (test)
 
-**Rationale:**
+**Scope:** global
+
+**Enforcement:** MUST (test)
+**Verification:** automated
+
+**Rationale**
+
 Schema validation is the foundation of machine-verifiable architecture.
 Incorrect validation undermines the entire system.
 
-
 ### INV-0022
 
-**Statement:** Multi-scope functionality MUST have tests covering:
+**Statement**
+
+Multi-scope functionality MUST have tests covering:
 - Single scope (backward compatibility)
 - Multiple scopes (recursive operations)
 - Scope boundary enforcement (security)
 - Parent-child relationships
-  
-**Scope:** global  
-**Enforcement:** must (test)
 
-**Rationale:**
+**Scope:** global
+
+**Enforcement:** MUST (test)
+**Verification:** automated
+
+**Rationale**
+
 Multi-scope is complex and affects multiple projects. Comprehensive
 testing prevents cross-project contamination and security issues.
 
-
 ### INV-0023
 
-**Statement:** Test suite MUST complete in under 30 seconds for fast feedback
-  
-**Scope:** global  
-**Enforcement:** should (test)
+**Statement**
 
-**Rationale:**
+Test suite MUST complete in under 30 seconds for fast feedback
+
+**Scope:** global
+
+**Enforcement:** SHOULD (test)
+**Verification:** automated
+
+**Rationale**
+
 Slow tests discourage running them frequently. Fast feedback enables
 test-driven development and rapid iteration.
 
-
 ### INV-0024
 
-**Statement:** Tests MUST be deterministic - same input always produces same output
-  
-**Scope:** global  
-**Enforcement:** must (test)
+**Statement**
 
-**Rationale:**
+Tests MUST be deterministic - same input always produces same output
+
+**Scope:** global
+
+**Enforcement:** MUST (test)
+**Verification:** automated
+
+**Rationale**
+
 Non-deterministic tests (flaky tests) erode trust and waste time.
 Aligns with SYS-2 (deterministic cognition).
 
-
 ### INV-0025
 
-**Statement:** Breaking changes to public APIs MUST be detected by tests
-  
-**Scope:** global  
-**Enforcement:** must (test)
+**Statement**
 
-**Rationale:**
+Breaking changes to public APIs MUST be detected by tests
+
+**Scope:** global
+
+**Enforcement:** MUST (test)
+**Verification:** automated
+
+**Rationale**
+
 Backward compatibility is critical for existing users. Tests should
 fail when APIs change incompatibly.
 
-
 ### INV-0026
 
-**Statement:** Test coverage SHOULD be measured and tracked, with minimum 80% coverage
-for critical components (parsers, validators, generators)
-  
-**Scope:** global  
-**Enforcement:** should (test)
+**Statement**
 
-**Rationale:**
+Test coverage SHOULD be measured and tracked, with minimum 80% coverage
+for critical components (parsers, validators, generators)
+
+**Scope:** global
+
+**Enforcement:** SHOULD (test)
+**Verification:** automated
+
+**Rationale**
+
 Coverage metrics identify untested code paths. 80% is pragmatic balance
 between thoroughness and diminishing returns.
 
-
 ### INV-0072
 
-**Statement:** Pull-request and release validation MUST install the project before tests,
+**Statement**
+
+Pull-request and release validation MUST install the project before tests,
 MUST measure canonical `adr_kit` namespace coverage at no less than 80%,
 and MUST exercise both a source installation and the exact retained wheel
 on every claimed Python version.
-  
-**Scope:** global  
-**Enforcement:** must (test)
 
-**Rationale:**
+**Scope:** global
+
+**Enforcement:** MUST (test)
+**Verification:** automated
+
+**Rationale**
+
 Source-package leakage and namespace aliases can produce misleading
 coverage and allow incomplete wheels to pass repository-local tests.
 
-
 ### INV-0073
 
-**Statement:** Release publication MUST promote exactly one previously tested wheel and
+**Statement**
+
+Release publication MUST promote exactly one previously tested wheel and
 one previously tested sdist without rebuilding. Their filenames, sizes,
 SHA-256 hashes, package version, source commit, and `v<version>` tag MUST
 be verified before the privileged publish step. Ruff, strict-mypy, and
@@ -471,70 +468,91 @@ a promotion and identity-verification boundary only. It MUST NOT rebuild
 distributions or re-run the independent qualification suite solely because a
 tag was created. Publication MUST fail closed if successful qualification
 evidence or the retained bundle for that exact commit cannot be proven.
-  
-**Scope:** global  
-**Enforcement:** must (test)
 
-**Rationale:**
+**Scope:** global
+
+**Enforcement:** MUST (test)
+**Verification:** automated
+
+**Rationale**
+
 Artifact identity and truthful quality measurements are required for a
 trustworthy release chain while pre-existing debt is retired incrementally.
 
-
 ### INV-0075
 
-**Statement:** Source, editable-install, and clean retained-wheel consumers MUST exercise
+**Statement**
+
+Source, editable-install, and clean retained-wheel consumers MUST exercise
 the supported SDK and MUST agree on package, CLI, SDK result, capability,
 and installed-distribution versions wherever distribution metadata exists.
 Direct-source fallback MUST occur only when metadata is absent and MUST NOT
 hide invalid installed metadata or package-resource failures.
-  
-**Scope:** global  
-**Enforcement:** must (test)
 
-**Rationale:**
+**Scope:** global
+
+**Enforcement:** MUST (test)
+**Verification:** automated
+
+**Rationale**
+
 A supported SDK and release chain require equivalent behavior from the
 checkout, editable installation, and the exact artifact selected for
 promotion.
 
-
 ### INV-0083
 
-**Statement:** The PyPI-facing package description (the file declared as `project.readme`)
+**Statement**
+
+The PyPI-facing package description (the file declared as `project.readme`)
 MUST contain only Markdown link and image targets that resolve independently
 of GitHub repository-relative rendering: same-document anchors, absolute
 `https://` URLs (optional fragment), and `mailto:` URIs. Repository-relative
 file or directory targets and `http://` URLs MUST be rejected by automated
 release qualification before merge or publication.
-  
-**Scope:** global  
-**Enforcement:** must (test)
 
-**Rationale:**
+**Scope:** global
+
+**Enforcement:** MUST (test)
+**Verification:** automated
+
+**Rationale**
+
 Observed on the published `0.3.0` long description: GitHub-valid relative
 README links became invalid PyPI package-description URLs. `twine check`
 validates metadata renderability but not cross-surface link portability.
 
-
 ### INV-0095
 
-**Statement:** adr_kit MUST not ship deprecated runtime API usage, and its direct dependencies MUST be audited for vulnerabilities and upgrade freshness  
-**Scope:** global  
-**Enforcement:** must (policy)
+**Statement**
 
-**Rationale:**
+adr_kit MUST not ship deprecated runtime API usage, and its direct dependencies MUST be audited for vulnerabilities and upgrade freshness
+
+**Scope:** global
+
+**Enforcement:** MUST (policy)
+**Verification:** automated
+
+**Rationale**
+
 adr_kit is a governance and architecture-authority tool. If it relies on
 deprecated modules, stale runtimes, or vulnerable packages, it undermines
 its own authority. CI hooks include `scripts/check_runtime_hygiene.py` and
 `adr audit-runtime`.
 
-
 ### INV-0096
 
-**Statement:** Repository changes must be committed at meaningful verified boundaries rather than accumulated indefinitely.  
-**Scope:** global  
-**Enforcement:** must (policy)
+**Statement**
 
-**Rationale:**
+Repository changes must be committed at meaningful verified boundaries rather than accumulated indefinitely.
+
+**Scope:** global
+
+**Enforcement:** MUST (policy)
+**Verification:** audit
+
+**Rationale**
+
 Small, verified commits reduce review ambiguity and preserve architectural
 intent. A meaningful boundary requires a coherent slice, relevant tests and
 validation, and a reviewable repository state.
@@ -542,6 +560,104 @@ validation, and a reviewable repository state.
 
 
 
+
+
+
+## Lifecycle / Related Architecture
+
+**Related ADRs**
+- [ADR-L-0001](ADR-L-0001-ste-compliant-machine-verifiable-architecture-decision-record-system.md)
+- [ADR-L-0002](ADR-L-0002-multi-scope-adr-architecture-for-sub-module-development.md)
+- [ADR-PS-0002](../physical-system/ADR-PS-0002-adr-kit-authoring-compiler-and-validation-system.md)
+- [ADR-PC-0001](../physical-component/ADR-PC-0001-entity-registry-and-discovery-index.md)
+- [ADR-PC-0008](../physical-component/ADR-PC-0008-project-scope-resolution.md)
+
+**References**
+- [ADR-L-0005](ADR-L-0005-adr-to-prompt-translation-for-ai-implementation.md)
+- [ADR-L-0004](ADR-L-0004-adr-to-implementation-traceability-via-decorators-and-metadata-attribution.md)
+- [ADR-L-0001](ADR-L-0001-ste-compliant-machine-verifiable-architecture-decision-record-system.md)
+- [ADR-L-0002](ADR-L-0002-multi-scope-adr-architecture-for-sub-module-development.md)
+- [ADR-PC-0001](../physical-component/ADR-PC-0001-entity-registry-and-discovery-index.md)
+- [ADR-PS-0002](../physical-system/ADR-PS-0002-adr-kit-authoring-compiler-and-validation-system.md)
+- [ADR-PC-0008](../physical-component/ADR-PC-0008-project-scope-resolution.md)
+- [ADR-L-0007](ADR-L-0007-deterministic-documentation-projection.md)
+- [ADR-L-0008](ADR-L-0008-validation-modes-for-draft-and-complete-adrs.md)
+- [ADR-L-0018](ADR-L-0018-schema-v1-2-and-normalized-semantic-foundation.md)
+
+
+
+
+
+## Notes
+
+Testing strategy implementation:
+
+Test organization:
+```
+tests/
+  test_scope_resolver.py      # Unit + integration tests for scope detection
+  test_adr_validator.py        # Unit tests for validation logic
+  test_multi_scope_generator.py # Integration tests for scoped generation
+  test_manifest_generator.py   # Unit tests for manifest generation
+  test_markdown_generator.py   # Unit tests for view generation
+  test_schema_validation.py    # Schema validation correctness
+```
+
+Test execution:
+```bash
+# Standard local governance bundle
+adr governance-checks
+
+# Strict contract gate
+adr validate-contract --contract-profile greenfield
+
+# Ratcheted brownfield contract gate
+adr validate-contract --contract-profile brownfield --max-sentinel-fields 0 --max-non-complete-entities 0
+
+# Generated artifact integrity (manifest + rendered ADR markdown)
+adr validate-generated-docs
+
+# Generated system overview integrity
+adr validate-system-overview
+
+# PROJECT.yaml integrity
+adr validate-project-metadata
+
+# Targeted pytest usage for local development
+pytest tests/ -v
+pytest tests/ --cov=adr_kit --cov-report=html --cov-report=term --cov-fail-under=80
+pytest tests/ -k "scope" -v
+```
+
+CI/CD integration (orthogonal evidence axes):
+- Minimum supported Python minor is 3.14 (`requires-python >=3.14`); currently qualified released minor line is 3.14; reference interpreter is currently 3.14.7; new GA Python minors require explicit admission to the qualification matrix
+- Canonical correctness: Ubuntu + Python 3.14 runs the complete suite with coverage (`--cov=adr_kit --cov-fail-under=80`) exactly once
+- Python-version compatibility: Ubuntu runs focused source/install/SDK compatibility on the currently qualified released minor line (Python 3.14; not a second full suite on each interpreter)
+- OS behavior / source-runtime portability: Windows and macOS at Python 3.14 each run the complete suite (no coverage gate); Ubuntu 3.14 suite is owned by the coverage job and is not duplicated
+- Retained-wheel Python compatibility: exact retained wheel via `scripts/test_installed_wheel.py` on Ubuntu Python 3.14
+- Retained-wheel OS portability: the exact same retained wheel via `scripts/test_installed_wheel.py` on Windows and macOS at Python 3.14; the wheel MUST NOT be rebuilt per OS
+- UUIDv7 mint mechanism remains implementation-owned and is not part of ADR-L-0003 identity semantics
+- These axes are orthogonal and MUST NOT imply that all supported Python versions execute on every OS
+- Linux-only execution is insufficient evidence for an OS-agnostic package claim
+- PR qualification = proposed-change evidence; develop qualification = integration evidence; only a successful completed `push` of ADR Governance on `main` for the exact tagged SHA is release-eligible; tag publication is promotion/identity verification only
+- `adr governance-checks --skip-tests` must pass in CI when the complete suite is already owned by the coverage job
+- `adr validate-generated-docs` must pass for manifest and rendered ADR output
+- `adr validate-system-overview` must pass for `SYSTEM-OVERVIEW.md`
+- `adr validate-project-metadata` must pass for `PROJECT.yaml`
+- Quality gates are broader than generic `pytest` alone because they also enforce
+  contract, generated-artifact, and project-metadata integrity
+- Verified implementation slices must be committed at meaningful boundaries in
+  alignment with `INV-0096`
+- Release artifacts are built once, retained, installed in clean environments,
+  manifested, re-verified, and promoted without rebuilding
+- Ruff, strict-mypy, and Black legacy debt is governed by no-regression ratchets;
+  new Phase 0 Python files must be clean under all three tools
+
+Future enhancements:
+- Property-based testing (hypothesis) for generators
+- Mutation testing to verify test quality
+- Performance benchmarks to detect regressions
+- Contract testing for API stability
 
 
 ---

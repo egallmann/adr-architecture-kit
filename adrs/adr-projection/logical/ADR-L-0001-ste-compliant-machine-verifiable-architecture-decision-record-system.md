@@ -5,8 +5,8 @@ artifact_kind: rendered_adr_markdown
 generator_id: adr-projection-markdown
 generator_version: 3
 hash_algorithm: sha256
-source_hash: b7a189aa275010e0806317cbeb64b512417fb7845a9f20356f897e614703f046
-rendered_hash: c07a523826054e95a130e4d811e787e1ce47dedbc4e11efffdbdb5143a48f27d
+source_hash: a800f597e04b313e98caf50966b20fbfecf40fcc41f711fedcbd025b8f8eca7d
+rendered_hash: 82bb287bb088d9a133c500cdcc155d8568d30b915c400c65b60a62491dde4426
 -->
 
 # ADR-L-0001: STE-Compliant Machine-Verifiable Architecture Decision Record System
@@ -16,42 +16,26 @@ rendered_hash: c07a523826054e95a130e4d811e787e1ce47dedbc4e11efffdbdb5143a48f27d
 **Type:** logical  
 **Status:** accepted  
 **Alias:** ADR-L-0001  
-**Alias name:** ste-compliant-machine-verifiable-architecture-decision-record-system  
+**Authoring contract:** authoring v1.5  
 **Created:** 2026-03-07  
 **Authors:** erik.gallmann  
 **Domains:** architecture, governance  
+**Tags:** ste-compliance, machine-verifiable, ai-first, authoring-subsystem  
 
-## Architecture Position
+## Architecture at a Glance
 
-Logical architecture authority for this subject. Neighborhood paths use structural bridges plus exactly one semantic architecture edge; they never invent ADR-to-ADR verbs.
+| | |
+| --- | --- |
+| Logical authority | ADR-L-0001 |
+| Status | accepted |
+| Decisions | 6 |
+| Capabilities | 7 |
+| Invariants | 7 |
+| Boundaries | 3 |
+| Interaction contracts | 2 |
+| Non-functional requirements | 4 |
+| Physical realizations | [ADR-PS-0002](../physical-system/ADR-PS-0002-adr-kit-authoring-compiler-and-validation-system.md) |
 
-## Architecture Neighborhood
-
-
-### Semantic architecture inventory
-
-- `implements_logical`: ADR-PS-0002 → ADR-L-0001
-
-## Neighbor Relationships
-
-| Neighbor | Relationship | Exact Path |
-| --- | --- | --- |
-| [ADR-PS-0002 — ADR Kit Authoring Compiler and Validation System](../physical-system/ADR-PS-0002-adr-kit-authoring-compiler-and-validation-system.md) | ADR-PS-0002 -[:implements_logical]-> ADR-L-0001 | `ADR-PS-0002 -[:implements_logical]-> ADR-L-0001` |
-
-
-### Lifecycle / association
-
-- ADR-L-0001 -[:references]-> ADR-L-0025
-- ADR-L-0004 -[:references]-> ADR-L-0001
-- ADR-L-0003 -[:references]-> ADR-L-0001
-- ADR-L-0007 -[:references]-> ADR-L-0001
-- ADR-L-0002 -[:references]-> ADR-L-0001
-- ADR-L-0008 -[:references]-> ADR-L-0001
-- ADR-L-0009 -[:references]-> ADR-L-0001
-- ADR-L-0011 -[:references]-> ADR-L-0001
-- ADR-L-0010 -[:references]-> ADR-L-0001
-- ADR-L-0018 -[:references]-> ADR-L-0001
-- ADR-L-0025 -[:references]-> ADR-L-0001
 
 ## Context
 
@@ -111,163 +95,21 @@ ste-runtime (runtime evidence extraction and composition)
     ↓ provides evidence to
 ste-kernel (admission and governance over compiled inputs)
 ```
+## Architectural Decisions
 
+| Decision | Choice | Traceability |
+| --- | --- | --- |
+| DEC-0001 | Use YAML with embedded markdown, not markdown with YAML frontmatter | Related INV-0001 |
+| DEC-0002 | Separate logical and physical ADRs with distinct schemas | Related INV-0002, INV-0003 |
+| DEC-0003 | Rich frontmatter as authoritative metadata, manifest as derived view | Related INV-0004 |
+| DEC-0004 | Governed type-prefixed human-recognition aliases (ADR-L-XXXX / ADR-PS-XXXX / ADR-PC-XXXX) with 4-digit numbering; UUID is canonical machine identity | Related INV-0005 |
+| DEC-0005 | PROJECT.yaml for project-level metadata, separate from ADR metadata | — |
+| DEC-0006 | Dogfooding strategy - document this project using ADR Kit | — |
 
-## Internal Structure
+### DEC-0001 — Use YAML with embedded markdown, not markdown with YAML frontmatter
 
-```mermaid
-flowchart TB
-  n_019fee89_e615_70a5_861b_b2dde147e5af["ADR-L-0001<br/>STE-Compliant Machine-Verifiable Architecture Decision Record System"]
-  subgraph sg_capability["capability"]
-    n_019fee89_e614_7c68_be36_2c84d4579279["CAP-0001<br/>Machine-Verifiable Architecture Documentation"]
-    n_019fee89_e614_707f_8d3f_7a814d286ce6["CAP-0002<br/>Two-Layer Architecture Model"]
-    n_019fee89_e614_7485_bb12_e90f01c3968e["CAP-0003<br/>Semantic Graph Integration"]
-    n_019fee89_e614_733f_9e37_fbd70087182d["CAP-0004<br/>Explicit Gap Tracking"]
-    n_019fee89_e615_7c41_b23f_a324d60b48e1["CAP-0005<br/>Derived Manifest Generation"]
-    n_019fee89_e615_7946_a53f_af6bf655dc11["CAP-0006<br/>Policy Integration Readiness"]
-    n_019fee89_e615_7b72_b72b_d07441bebf10["CAP-0007<br/>Correction Agent Context"]
-  end
-  subgraph sg_decision["decision"]
-    n_019fee89_e615_7bb9_ad3b_93d12b0f65b6["DEC-0001<br/>Use YAML with embedded markdown, not markdown with YAML frontmatter"]
-    n_019fee89_e615_76f6_a33f_33eef61e39a9["DEC-0002<br/>Separate logical and physical ADRs with distinct schemas"]
-    n_019fee89_e615_7a31_b11f_daf8feef12d9["DEC-0003<br/>Rich frontmatter as authoritative metadata, manifest as derived view"]
-    n_019fee89_e615_7899_8d3b_0ecfe4490994["DEC-0004<br/>Governed type-prefixed human-recognition aliases (ADR-L-XXXX / ADR-PS-XXXX / ADR-PC-XXXX) with 4-digit numbering; UUID is canonical machine identity"]
-    n_019fee89_e615_7f04_931e_170f4cbef292["DEC-0005<br/>PROJECT.yaml for project-level metadata, separate from ADR metadata"]
-    n_019fee89_e615_7d96_880f_40f6e38f3e88["DEC-0006<br/>Dogfooding strategy - document this project using ADR Kit"]
-  end
-  subgraph sg_invariant["invariant"]
-    n_019fee89_e615_713e_b627_2ee4bf985295["INV-0001"]
-    n_019fee89_e615_7ea2_bc3e_a0ef2ccfc13a["INV-0002"]
-    n_019fee89_e615_798a_9837_f96eab766747["INV-0003"]
-    n_019fee89_e615_76c9_932b_d2c94632b373["INV-0004"]
-    n_019fee89_e615_7f6f_9b2e_d7c959fa8909["INV-0005"]
-    n_019fee89_e615_7287_b737_ec91d4115b04["INV-0006"]
-    n_019fee89_e615_7502_a52f_af65757c9fd2["INV-0007"]
-  end
-  subgraph sg_boundary["boundary"]
-    n_019fee89_e614_7304_881c_fdc95e14e704["BOUND-0001<br/>Logical vs Physical Separation"]
-    n_019fee89_e614_795f_a62b_d6d1ebcdd6ac["BOUND-0002<br/>ADR Kit vs ste-runtime Separation"]
-    n_019fee89_e614_7a79_aa1e_8ad7395cf4f2["BOUND-0003<br/>Frontmatter as Authority"]
-  end
-  subgraph sg_contract["contract"]
-    n_019fee89_e615_74df_8433_acb8769aa8a6["CONTRACT-0001"]
-    n_019fee89_e615_70d2_ad37_4be4c7277ebc["CONTRACT-0002"]
-  end
-  n_019fee89_e614_707f_8d3f_7a814d286ce6 -->|"declared_in"| n_019fee89_e615_70a5_861b_b2dde147e5af
-  n_019fee89_e614_7304_881c_fdc95e14e704 -->|"declared_in"| n_019fee89_e615_70a5_861b_b2dde147e5af
-  n_019fee89_e614_733f_9e37_fbd70087182d -->|"declared_in"| n_019fee89_e615_70a5_861b_b2dde147e5af
-  n_019fee89_e614_7485_bb12_e90f01c3968e -->|"declared_in"| n_019fee89_e615_70a5_861b_b2dde147e5af
-  n_019fee89_e614_795f_a62b_d6d1ebcdd6ac -->|"declared_in"| n_019fee89_e615_70a5_861b_b2dde147e5af
-  n_019fee89_e614_7a79_aa1e_8ad7395cf4f2 -->|"declared_in"| n_019fee89_e615_70a5_861b_b2dde147e5af
-  n_019fee89_e614_7c68_be36_2c84d4579279 -->|"declared_in"| n_019fee89_e615_70a5_861b_b2dde147e5af
-  n_019fee89_e615_70d2_ad37_4be4c7277ebc -->|"declared_in"| n_019fee89_e615_70a5_861b_b2dde147e5af
-  n_019fee89_e615_713e_b627_2ee4bf985295 -->|"declared_in"| n_019fee89_e615_70a5_861b_b2dde147e5af
-  n_019fee89_e615_7287_b737_ec91d4115b04 -->|"declared_in"| n_019fee89_e615_70a5_861b_b2dde147e5af
-  n_019fee89_e615_74df_8433_acb8769aa8a6 -->|"declared_in"| n_019fee89_e615_70a5_861b_b2dde147e5af
-  n_019fee89_e615_7502_a52f_af65757c9fd2 -->|"declared_in"| n_019fee89_e615_70a5_861b_b2dde147e5af
-  n_019fee89_e615_76c9_932b_d2c94632b373 -->|"declared_in"| n_019fee89_e615_70a5_861b_b2dde147e5af
-  n_019fee89_e615_76f6_a33f_33eef61e39a9 -->|"declared_in"| n_019fee89_e615_70a5_861b_b2dde147e5af
-  n_019fee89_e615_7899_8d3b_0ecfe4490994 -->|"declared_in"| n_019fee89_e615_70a5_861b_b2dde147e5af
-  n_019fee89_e615_7946_a53f_af6bf655dc11 -->|"declared_in"| n_019fee89_e615_70a5_861b_b2dde147e5af
-  n_019fee89_e615_798a_9837_f96eab766747 -->|"declared_in"| n_019fee89_e615_70a5_861b_b2dde147e5af
-  n_019fee89_e615_7a31_b11f_daf8feef12d9 -->|"declared_in"| n_019fee89_e615_70a5_861b_b2dde147e5af
-  n_019fee89_e615_7b72_b72b_d07441bebf10 -->|"declared_in"| n_019fee89_e615_70a5_861b_b2dde147e5af
-  n_019fee89_e615_7bb9_ad3b_93d12b0f65b6 -->|"declared_in"| n_019fee89_e615_70a5_861b_b2dde147e5af
-  n_019fee89_e615_7c41_b23f_a324d60b48e1 -->|"declared_in"| n_019fee89_e615_70a5_861b_b2dde147e5af
-  n_019fee89_e615_7d96_880f_40f6e38f3e88 -->|"declared_in"| n_019fee89_e615_70a5_861b_b2dde147e5af
-  n_019fee89_e615_7ea2_bc3e_a0ef2ccfc13a -->|"declared_in"| n_019fee89_e615_70a5_861b_b2dde147e5af
-  n_019fee89_e615_7f04_931e_170f4cbef292 -->|"declared_in"| n_019fee89_e615_70a5_861b_b2dde147e5af
-  n_019fee89_e615_7f6f_9b2e_d7c959fa8909 -->|"declared_in"| n_019fee89_e615_70a5_861b_b2dde147e5af
-  n_019fee89_e615_76f6_a33f_33eef61e39a9 -->|"enforces"| n_019fee89_e615_798a_9837_f96eab766747
-  n_019fee89_e615_76f6_a33f_33eef61e39a9 -->|"enforces"| n_019fee89_e615_7ea2_bc3e_a0ef2ccfc13a
-  n_019fee89_e615_7899_8d3b_0ecfe4490994 -->|"enforces"| n_019fee89_e615_7f6f_9b2e_d7c959fa8909
-  n_019fee89_e615_7a31_b11f_daf8feef12d9 -->|"enforces"| n_019fee89_e615_76c9_932b_d2c94632b373
-  n_019fee89_e615_7bb9_ad3b_93d12b0f65b6 -->|"enforces"| n_019fee89_e615_713e_b627_2ee4bf985295
-```
+**Rationale**
 
-- `boundary` BOUND-0001 — Logical vs Physical Separation
-- `boundary` BOUND-0002 — ADR Kit vs ste-runtime Separation
-- `boundary` BOUND-0003 — Frontmatter as Authority
-- `capability` CAP-0001 — Machine-Verifiable Architecture Documentation
-- `capability` CAP-0002 — Two-Layer Architecture Model
-- `capability` CAP-0003 — Semantic Graph Integration
-- `capability` CAP-0004 — Explicit Gap Tracking
-- `capability` CAP-0005 — Derived Manifest Generation
-- `capability` CAP-0006 — Policy Integration Readiness
-- `capability` CAP-0007 — Correction Agent Context
-- `contract` CONTRACT-0001 — CONTRACT-0001
-- `contract` CONTRACT-0002 — CONTRACT-0002
-- `decision` DEC-0001 — Use YAML with embedded markdown, not markdown with YAML frontmatter
-- `decision` DEC-0002 — Separate logical and physical ADRs with distinct schemas
-- `decision` DEC-0003 — Rich frontmatter as authoritative metadata, manifest as derived view
-- `decision` DEC-0004 — Governed type-prefixed human-recognition aliases (ADR-L-XXXX / ADR-PS-XXXX / ADR-PC-XXXX) with 4-digit numbering; UUID is canonical machine identity
-- `decision` DEC-0005 — PROJECT.yaml for project-level metadata, separate from ADR metadata
-- `decision` DEC-0006 — Dogfooding strategy - document this project using ADR Kit
-- `invariant` INV-0001 — INV-0001
-- `invariant` INV-0002 — INV-0002
-- `invariant` INV-0003 — INV-0003
-- `invariant` INV-0004 — INV-0004
-- `invariant` INV-0005 — INV-0005
-- `invariant` INV-0006 — INV-0006
-- `invariant` INV-0007 — INV-0007
-
-## Capabilities
-
-### CAP-0001: Machine-Verifiable Architecture Documentation
-
-Enable AI systems to deterministically reason over architecture decisions through
-structured, schema-validated artifacts. No ambiguous markdown parsing, no implicit
-assumptions, no narrative drift.
-
-
-### CAP-0002: Two-Layer Architecture Model
-
-Separate conceptual design (logical ADRs) from implementation specifications
-- Physical architecture is authored as ADR-PS (physical-system) and ADR-PC (physical-component) documents; generic ADR-P authoring is retired from current authority (historical identity preserved via retirement map)
-invariants without implementation details. Physical ADRs operationalize logical
-designs with technology choices and component specifications.
-
-
-### CAP-0003: Semantic Graph Integration
-
-Architecture artifacts participate in ste-runtime semantic graph through RECON
-extraction. ADRs become graph nodes with typed edges (implements, relates_to,
-enforces), enabling graph queries, blast radius analysis, and policy propagation.
-
-
-### CAP-0004: Explicit Gap Tracking
-
-Incomplete designs are first-class schema elements. Gaps are structured with
-impact assessment, blocking status, and decision ownership. Convergence validation
-ensures gaps are resolved or explicitly tracked.
-
-
-### CAP-0005: Derived Manifest Generation
-
-Manifest is generated from authoritative ADRs, never manually edited. Provides
-fast discovery without reading all ADRs. CI validates manifest freshness (SYS-14).
-
-
-### CAP-0006: Policy Integration Readiness
-
-Schema includes policy_reference, enforcement_level, compliance_frameworks fields
-to enable future Rules & Signal Service validation. Invariants can be extracted
-into requirement registry and validated against organizational policy.
-
-
-### CAP-0007: Correction Agent Context
-
-Schema includes implementation_identifiers, ownership, automation flags to enable
-future correction agents. Agents can locate code, understand boundaries, and
-operate within safety constraints.
-
-
-
-## Decisions
-
-### DEC-0001: Use YAML with embedded markdown, not markdown with YAML frontmatter
-
-**Rationale:**
 **AI reasoning advantages:**
 - Deterministic structure (no markdown parsing ambiguity)
 - Direct field access (adr.decisions[0].rationale)
@@ -281,21 +123,34 @@ operate within safety constraints.
 - Version control friendly
 - Generate beautiful views from structured data
 
+**Alternatives Considered**
 
-**Alternatives Considered:**
+| Alternative | Rejected because |
+| --- | --- |
+| Markdown with YAML frontmatter | Markdown structure is ambiguous. Heading levels vary. Content parsing is<br>non-deterministic. Schema validation is difficult. Graph extraction requires<br>complex markdown parsing. |
+| Pure JSON | Not human-friendly for writing. No rich prose support. Verbose for long<br>text content. Poor version control diffs. |
 
-- **Markdown with YAML frontmatter**: Markdown structure is ambiguous. Heading levels vary. Content parsing is
-non-deterministic. Schema validation is difficult. Graph extraction requires
-complex markdown parsing.
+**Consequences**
 
-- **Pure JSON**: Not human-friendly for writing. No rich prose support. Verbose for long
-text content. Poor version control diffs.
+Positive:
+- Deterministic parsing and validation
+- Direct field access for AI reasoning
+- Schema validation before use
+- Graph extraction is straightforward
+- Human-readable source format
 
+Negative:
+- Learning curve for YAML syntax
+- Requires tooling for view generation
+- Less familiar than pure markdown
 
-**Related Invariants:** 019fee89-e615-713e-b627-2ee4bf985295
-### DEC-0002: Separate logical and physical ADRs with distinct schemas
+**Traceability**
+- Related invariants: INV-0001
 
-**Rationale:**
+### DEC-0002 — Separate logical and physical ADRs with distinct schemas
+
+**Rationale**
+
 **Architectural discipline:**
 - Enforces separation of concerns (intent vs implementation)
 - Prevents implementation bias in conceptual design
@@ -312,21 +167,33 @@ text content. Poor version control diffs.
 - Technology migrations don't change logical architecture
 - A/B testing of implementation approaches
 
+**Alternatives Considered**
 
-**Alternatives Considered:**
+| Alternative | Rejected because |
+| --- | --- |
+| Single unified ADR schema | Cannot enforce logical/physical separation. Implementation details leak into<br>conceptual design. Validation rules conflict (logical forbids impl details,<br>physical requires them). |
+| Separate document types (not ADRs) | Loses semantic relationship. Traceability becomes manual. Graph extraction<br>more complex. Violates principle of unified architecture documentation. |
 
-- **Single unified ADR schema**: Cannot enforce logical/physical separation. Implementation details leak into
-conceptual design. Validation rules conflict (logical forbids impl details,
-physical requires them).
+**Consequences**
 
-- **Separate document types (not ADRs)**: Loses semantic relationship. Traceability becomes manual. Graph extraction
-more complex. Violates principle of unified architecture documentation.
+Positive:
+- Enforced architectural discipline
+- Clear traceability (implements_logical edges)
+- Supports multiple implementations
+- Different validation rules per type
 
+Negative:
+- More complex schema (two types instead of one)
+- Requires understanding of logical vs physical distinction
 
-**Related Invariants:** 019fee89-e615-7ea2-bc3e-a0ef2ccfc13a, 019fee89-e615-798a-9837-f96eab766747
-### DEC-0003: Rich frontmatter as authoritative metadata, manifest as derived view
+**Traceability**
+- Related invariants: INV-0002
+- Related invariants: INV-0003
 
-**Rationale:**
+### DEC-0003 — Rich frontmatter as authoritative metadata, manifest as derived view
+
+**Rationale**
+
 **Single source of truth:**
 - All discovery metadata in ADR frontmatter
 - No drift between ADR and manifest
@@ -346,21 +213,32 @@ more complex. Violates principle of unified architecture documentation.
 - Read ADRs only when needed
 - Graph queries for complex reasoning
 
+**Alternatives Considered**
 
-**Alternatives Considered:**
+| Alternative | Rejected because |
+| --- | --- |
+| Lightweight frontmatter, rich manifest | Manifest becomes authoritative. Drift risk (manifest not updated). Metadata<br>changes not version controlled. Schema validation only on manifest, not ADRs. |
+| No manifest, always read ADRs | Slow discovery (must read all ADRs). No fast lookup. Violates SYS-14<br>(Index Currency requirement). |
 
-- **Lightweight frontmatter, rich manifest**: Manifest becomes authoritative. Drift risk (manifest not updated). Metadata
-changes not version controlled. Schema validation only on manifest, not ADRs.
+**Consequences**
 
-- **No manifest, always read ADRs**: Slow discovery (must read all ADRs). No fast lookup. Violates SYS-14
-(Index Currency requirement).
+Positive:
+- No drift possible (manifest derived from ADRs)
+- Metadata version controlled
+- Fast discovery via manifest
+- ADRs remain authoritative
 
+Negative:
+- Must regenerate manifest after ADR changes
+- CI complexity (validate manifest freshness)
 
-**Related Invariants:** 019fee89-e615-76c9-932b-d2c94632b373
-### DEC-0004: Governed type-prefixed human-recognition aliases (ADR-L-XXXX / ADR-PS-XXXX / ADR-PC-XXXX) with 4-digit numbering; UUID is canonical machine identity
+**Traceability**
+- Related invariants: INV-0004
 
+### DEC-0004 — Governed type-prefixed human-recognition aliases (ADR-L-XXXX / ADR-PS-XXXX / ADR-PC-XXXX) with 4-digit numbering; UUID is canonical machine identity
 
-**Rationale:**
+**Rationale**
+
 **Human recognition aliases:**
 - Type-prefixed IDs remain project-local governed `alias_id` surfaces
 - Alias uniqueness and type visibility remain valuable for documentation
@@ -370,21 +248,31 @@ changes not version controlled. Schema validation only on manifest, not ADRs.
 - Admitted identity-bearing records use lowercase RFC 9562 UUIDv7 in `id`
 - Graph / machine operations resolve to UUID, not type-prefixed aliases
 
+**Alternatives Considered**
 
-**Alternatives Considered:**
+| Alternative | Rejected because |
+| --- | --- |
+| Shared numbering (ADR-0001, ADR-0002) | Collision risk (logical and physical share namespace). Type not visible<br>in ID. Requires reading ADR to know type. |
+| UUID-only human-facing identifiers | UUIDs are poor human-recognition and documentation surfaces. UUID remains<br>canonical machine identity, while type-prefixed values continue as governed<br>human-recognition aliases rather than substitutes for UUID. |
 
-- **Shared numbering (ADR-0001, ADR-0002)**: Collision risk (logical and physical share namespace). Type not visible
-in ID. Requires reading ADR to know type.
+**Consequences**
 
-- **UUID-only human-facing identifiers**: UUIDs are poor human-recognition and documentation surfaces. UUID remains
-canonical machine identity, while type-prefixed values continue as governed
-human-recognition aliases rather than substitutes for UUID.
+Positive:
+- Project-local alias collisions are prevented by governed allocation
+- Type remains visible in the human-recognition alias
+- Human-facing references remain readable and memorable
+- Canonical machine and graph identity remains stable when aliases change
 
+Negative:
+- Slightly longer IDs (ADR-L-0001 vs ADR-0001)
 
-**Related Invariants:** 019fee89-e615-7f6f-9b2e-d7c959fa8909
-### DEC-0005: PROJECT.yaml for project-level metadata, separate from ADR metadata
+**Traceability**
+- Related invariants: INV-0005
 
-**Rationale:**
+### DEC-0005 — PROJECT.yaml for project-level metadata, separate from ADR metadata
+
+**Rationale**
+
 **Right level of granularity:**
 - Ownership, automation, integrations belong at project level
 - Not repeated in every ADR
@@ -403,20 +291,29 @@ human-recognition aliases rather than substitutes for UUID.
 **Reduced duplication:**
 - Team changes? Update one file, not 50 ADRs
 
+**Alternatives Considered**
 
-**Alternatives Considered:**
+| Alternative | Rejected because |
+| --- | --- |
+| Ownership in every ADR frontmatter | Wrong granularity. Duplication across ADRs. Team changes require updating<br>all ADRs. Operational metadata mixed with architectural metadata. |
+| Separate config files per concern | Fragmentation. Multiple files to update. No single source of truth. Harder<br>for correction agents to understand context. |
 
-- **Ownership in every ADR frontmatter**: Wrong granularity. Duplication across ADRs. Team changes require updating
-all ADRs. Operational metadata mixed with architectural metadata.
+**Consequences**
 
-- **Separate config files per concern**: Fragmentation. Multiple files to update. No single source of truth. Harder
-for correction agents to understand context.
+Positive:
+- Single source of truth for project metadata
+- Enables self-service infrastructure provisioning
+- Correction agents have clear context
+- Reduced duplication
 
+Negative:
+- Additional artifact type to maintain
+- Schema complexity (one more schema)
 
+### DEC-0006 — Dogfooding strategy - document this project using ADR Kit
 
-### DEC-0006: Dogfooding strategy - document this project using ADR Kit
+**Rationale**
 
-**Rationale:**
 **Real friction drives design:**
 - If we can't document our decisions, schema is incomplete
 - Actual usage reveals gaps and awkwardness
@@ -433,114 +330,388 @@ for correction agents to understand context.
 - Tests manifest generation
 - Proves view generation works
 
+**Alternatives Considered**
 
-**Alternatives Considered:**
+| Alternative | Rejected because |
+| --- | --- |
+| Artificial examples only | Examples don't reveal real friction. No execution pressure. Incomplete<br>validation of schema. Not a living specification. |
 
-- **Artificial examples only**: Examples don't reveal real friction. No execution pressure. Incomplete
-validation of schema. Not a living specification.
+**Consequences**
+
+Positive:
+- Real usage validates schema
+- Friction reveals gaps
+- Living specification
+- Reference implementation
+
+Negative:
+- Bootstrap complexity (need minimal schema first)
+- Iterative refinement required
 
 
+## Capabilities
+
+### CAP-0001 — Machine-Verifiable Architecture Documentation
+
+Enable AI systems to deterministically reason over architecture decisions through
+structured, schema-validated artifacts. No ambiguous markdown parsing, no implicit
+assumptions, no narrative drift.
+
+### CAP-0002 — Two-Layer Architecture Model
+
+Separate conceptual design (logical ADRs) from implementation specifications
+- Physical architecture is authored as ADR-PS (physical-system) and ADR-PC (physical-component) documents; generic ADR-P authoring is retired from current authority (historical identity preserved via retirement map)
+invariants without implementation details. Physical ADRs operationalize logical
+designs with technology choices and component specifications.
+
+### CAP-0003 — Semantic Graph Integration
+
+Architecture artifacts participate in ste-runtime semantic graph through RECON
+extraction. ADRs become graph nodes with typed edges (implements, relates_to,
+enforces), enabling graph queries, blast radius analysis, and policy propagation.
+
+### CAP-0004 — Explicit Gap Tracking
+
+Incomplete designs are first-class schema elements. Gaps are structured with
+impact assessment, blocking status, and decision ownership. Convergence validation
+ensures gaps are resolved or explicitly tracked.
+
+### CAP-0005 — Derived Manifest Generation
+
+Manifest is generated from authoritative ADRs, never manually edited. Provides
+fast discovery without reading all ADRs. CI validates manifest freshness (SYS-14).
+
+### CAP-0006 — Policy Integration Readiness
+
+Schema includes policy_reference, enforcement_level, compliance_frameworks fields
+to enable future Rules & Signal Service validation. Invariants can be extracted
+into requirement registry and validated against organizational policy.
+
+### CAP-0007 — Correction Agent Context
+
+Schema includes implementation_identifiers, ownership, automation flags to enable
+future correction agents. Agents can locate code, understand boundaries, and
+operate within safety constraints.
+
+
+## Architectural Boundaries
+
+### BOUND-0001 — Logical vs Physical Separation
+
+**Boundary**
+
+Strict separation between conceptual design (logical) and implementation
+specifications (physical). Enforced through distinct schemas and validation.
+
+**Why this boundary exists**
+
+Prevents implementation bias in architectural thinking. Enables architectural
+decisions to be made independently of technology constraints. Supports multiple
+physical implementations of a single logical design.
+
+### BOUND-0002 — ADR Kit vs ste-runtime Separation
+
+**Boundary**
+
+ADR Kit defines structure and validates schema. ste-runtime extracts graph
+via RECON. Clear separation of concerns.
+
+**Why this boundary exists**
+
+ADR Kit focuses on artifact structure and validation. Graph extraction is
+ste-runtime's responsibility. Enables independent evolution of schema and
+graph implementation.
+
+### BOUND-0003 — Frontmatter as Authority
+
+**Boundary**
+
+All discovery metadata lives in ADR frontmatter (single source of truth).
+Manifest is derived, never manually edited.
+
+**Why this boundary exists**
+
+Prevents drift between ADR and manifest. Atomic updates (metadata + content
+change together). Version controlled metadata. Schema-validated correctness.
+
+
+## Interaction Contracts
+
+### CONTRACT-0001
+
+**Parties:** adr-kit, ste-runtime
+
+**Protocol:** YAML artifact structure
+
+**Guarantees**
+
+ADR Kit guarantees:
+- Valid YAML with explicit structure
+- Schema-validated before commit
+- Type-prefixed human-recognition aliases (ADR-L-XXXX, ADR-PS-XXXX, ADR-PC-XXXX) distinct from canonical UUID machine identity
+- Explicit relationships (array fields for graph edges)
+- Rich frontmatter with all metadata
+
+ste-runtime guarantees:
+- RECON discovers adrs/ directory
+- Parses YAML into graph nodes and edges
+- Exposes graph via MCP for queries
+- Validates graph extraction success
+
+### CONTRACT-0002
+
+**Parties:** adr-kit, json-schema
+
+**Protocol:** JSON Schema validation
+
+**Guarantees**
+
+ADR Kit guarantees:
+- All ADRs validate against schema before commit
+- Schema violations = CI failure
+- No ambiguous or optional validation
+
+JSON Schema guarantees:
+- Deterministic validation (same input = same result)
+- Clear error messages with field paths
+- Extensible for future schema evolution
 
 
 ## Invariants
 
+| Invariant | Requirement | Enforcement | Verification |
+| --- | --- | --- | --- |
+| INV-0001 | All ADRs must validate against JSON Schema before commit | MUST / policy | automated |
+| INV-0002 | Logical ADRs must not contain implementation details | MUST / design | manual |
+| INV-0003 | Physical ADRs must reference at least one logical ADR | MUST / design | automated |
+| INV-0004 | Manifest must be regenerated when ADRs change | MUST / policy | automated |
+| INV-0005 | Project-local ADR alias IDs must be unique across the project while canonical machine identity remains UUID | MUST / design | automated |
+| INV-0006 | Schema changes must be documented in ADRs before implementation | MUST / policy | manual |
+| INV-0007 | Schema evolution must maintain backward compatibility unless major version | MUST / design | automated |
+
 ### INV-0001
 
-**Statement:** All ADRs must validate against JSON Schema before commit  
-**Scope:** global  
-**Enforcement:** must (policy)
+**Statement**
 
-**Rationale:**
+All ADRs must validate against JSON Schema before commit
+
+**Scope:** global
+
+**Enforcement:** MUST (policy)
+**Verification:** automated
+
+**Rationale**
+
 Schema validation ensures structural integrity, STE compliance, and prevents
 divergence. CI must fail on schema violations (SYS-4: Drift Prevention).
 
-
 ### INV-0002
 
-**Statement:** Logical ADRs must not contain implementation details  
-**Scope:** global  
-**Enforcement:** must (design)
+**Statement**
 
-**Rationale:**
+Logical ADRs must not contain implementation details
+
+**Scope:** global
+
+**Enforcement:** MUST (design)
+**Verification:** manual
+
+**Rationale**
+
 Enforces architectural discipline. Prevents implementation bias in conceptual
 design. Enables multiple physical implementations of logical designs.
 
-
 ### INV-0003
 
-**Statement:** Physical ADRs must reference at least one logical ADR  
-**Scope:** global  
-**Enforcement:** must (design)
+**Statement**
 
-**Rationale:**
+Physical ADRs must reference at least one logical ADR
+
+**Scope:** global
+
+**Enforcement:** MUST (design)
+**Verification:** automated
+
+**Rationale**
+
 Ensures traceability from implementation to intent. Every implementation must
 have architectural rationale. Enables impact analysis via graph traversal.
 
-
 ### INV-0004
 
-**Statement:** Manifest must be regenerated when ADRs change  
-**Scope:** global  
-**Enforcement:** must (policy)
+**Statement**
 
-**Rationale:**
+Manifest must be regenerated when ADRs change
+
+**Scope:** global
+
+**Enforcement:** MUST (policy)
+**Verification:** automated
+
+**Rationale**
+
 SYS-14: Index Currency. Stale manifest = divergence. CI validates manifest
 freshness. Manifest is derived, never manually edited.
 
-
 ### INV-0005
 
-**Statement:** Project-local ADR alias IDs must be unique across the project while canonical machine identity remains UUID  
-**Scope:** global  
-**Enforcement:** must (design)
+**Statement**
 
-**Rationale:**
+Project-local ADR alias IDs must be unique across the project while canonical machine identity remains UUID
+
+**Scope:** global
+
+**Enforcement:** MUST (design)
+**Verification:** automated
+
+**Rationale**
+
 Governed type-prefixed aliases require project-local uniqueness for human recognition and documentation. Alias uniqueness does not make type-prefixed values graph node identity; machine identity and relationship targets use UUID.
-
 
 ### INV-0006
 
-**Statement:** Schema changes must be documented in ADRs before implementation  
-**Scope:** global  
-**Enforcement:** must (policy)
+**Statement**
 
-**Rationale:**
+Schema changes must be documented in ADRs before implementation
+
+**Scope:** global
+
+**Enforcement:** MUST (policy)
+**Verification:** manual
+
+**Rationale**
+
 ADR Kit is meta-system - schema authority. Schema changes affect all projects.
 Changes must be documented with rationale, alternatives, and consequences.
 
-
 ### INV-0007
 
-**Statement:** Schema evolution must maintain backward compatibility unless major version  
-**Scope:** global  
-**Enforcement:** must (design)
+**Statement**
 
-**Rationale:**
+Schema evolution must maintain backward compatibility unless major version
+
+**Scope:** global
+
+**Enforcement:** MUST (design)
+**Verification:** automated
+
+**Rationale**
+
 Enables gradual migration. Old tools read new ADRs (skip unknown fields).
 New tools read old ADRs (provide defaults). Breaking changes only in v2.0+.
 
 
+## Non-Functional Requirements
+
+| NFR | Category | Requirement | Acceptance |
+| --- | --- | --- | --- |
+| NFR-0001 | performance | Schema validation must complete in <100ms per ADR for files <100KB | Benchmark tests show p95 latency <100ms for typical ADR files |
+| NFR-0002 | reliability | Parser must be deterministic (same input = same output every time) | Running parser 100 times on same ADR produces identical Pydantic models |
+| NFR-0003 | maintainability | Schema must be extensible without breaking existing ADRs | Adding optional fields to schema doesn't invalidate existing ADRs |
+| NFR-0004 | usability | Schema validation errors must be actionable (clear field path and expected format) | Error messages include field path, expected type/pattern, and actual value |
+
+
+## Decision / Intent Traceability
+
+### Decision Traceability
+
+```mermaid
+flowchart LR
+  %% Decision traceability
+  n_019fee89_e615_713e_b627_2ee4bf985295["INV-0001"]
+  n_019fee89_e615_76c9_932b_d2c94632b373["INV-0004"]
+  n_019fee89_e615_76f6_a33f_33eef61e39a9["Separate logical and physical ADRs with distinct schemas (DEC-0002)"]
+  n_019fee89_e615_7899_8d3b_0ecfe4490994["Governed type-prefixed human-recognition aliases (ADR-L-XXXX / ADR-PS-XXXX / ADR-PC-XXXX) with 4-digit numbering; UUID is canonical machine identity (DEC-0004)"]
+  n_019fee89_e615_798a_9837_f96eab766747["INV-0003"]
+  n_019fee89_e615_7a31_b11f_daf8feef12d9["Rich frontmatter as authoritative metadata, manifest as derived view (DEC-0003)"]
+  n_019fee89_e615_7bb9_ad3b_93d12b0f65b6["Use YAML with embedded markdown, not markdown with YAML frontmatter (DEC-0001)"]
+  n_019fee89_e615_7ea2_bc3e_a0ef2ccfc13a["INV-0002"]
+  n_019fee89_e615_7f6f_9b2e_d7c959fa8909["INV-0005"]
+  n_019fee89_e615_76f6_a33f_33eef61e39a9 -->|"enforces"| n_019fee89_e615_798a_9837_f96eab766747
+  n_019fee89_e615_76f6_a33f_33eef61e39a9 -->|"enforces"| n_019fee89_e615_7ea2_bc3e_a0ef2ccfc13a
+  n_019fee89_e615_7899_8d3b_0ecfe4490994 -->|"enforces"| n_019fee89_e615_7f6f_9b2e_d7c959fa8909
+  n_019fee89_e615_7a31_b11f_daf8feef12d9 -->|"enforces"| n_019fee89_e615_76c9_932b_d2c94632b373
+  n_019fee89_e615_7bb9_ad3b_93d12b0f65b6 -->|"enforces"| n_019fee89_e615_713e_b627_2ee4bf985295
+```
+
+
+## Physical Realization
+
+**Systems**
+- [ADR-PS-0002](../physical-system/ADR-PS-0002-adr-kit-authoring-compiler-and-validation-system.md)
+
 
 ## Constraints
 
-### CONST-0001
+### CONST-0001 — technical
 
 YAML with embedded markdown, not markdown with YAML frontmatter.
 
+**Rationale**
 
-### CONST-0002
+Deterministic structure for AI reasoning. Direct field access without markdown
+parsing ambiguity. Schema validation before processing. Clear separation of
+metadata vs content.
+
+### CONST-0002 — technical
 
 Type-prefixed IDs (ADR-L-XXXX, ADR-PS-XXXX, ADR-PC-XXXX) are governed human-recognition aliases with 4-digit numbering; canonical machine identity is UUID.
 
+**Rationale**
 
-### CONST-0003
+Prevents alias collision between logical and physical ADRs while keeping type visible in the human alias. Canonical machine operations and graph node identity resolve to UUID, not the type-prefixed alias.
+
+### CONST-0003 — business
 
 Dogfooding from day 1 - this project documents itself using ADR Kit.
 
+**Rationale**
 
-### CONST-0004
+Real friction drives design. If we can't document our decisions, the schema is
+incomplete. Validates STE compliance through actual usage. Living specification.
+
+### CONST-0004 — technical
 
 Schema must support future use cases without breaking changes.
+
+**Rationale**
+
+ADR Kit is meta-system - schema authority for architecture encoding. Schema
+evolution must be backward compatible (optional fields, version signaling).
+Enables PROJECT.yaml, Decision ADRs, policy validation, correction agents.
+
+
+## Governance / Bindings / Evidence
+
+### Ownership
+
+**Architecture authority:** architecture-systems
+**Implementation owners:** architecture-systems
+
+
+## Lifecycle / Related Architecture
+
+**Related ADRs**
+- [ADR-L-0025](ADR-L-0025-topology-and-contract-succession-authority.md)
+
+**References**
+- [ADR-L-0025](ADR-L-0025-topology-and-contract-succession-authority.md)
+- [ADR-L-0004](ADR-L-0004-adr-to-implementation-traceability-via-decorators-and-metadata-attribution.md)
+- [ADR-L-0003](ADR-L-0003-quality-assurance-and-testing-strategy.md)
+- [ADR-L-0007](ADR-L-0007-deterministic-documentation-projection.md)
+- [ADR-L-0002](ADR-L-0002-multi-scope-adr-architecture-for-sub-module-development.md)
+- [ADR-L-0008](ADR-L-0008-validation-modes-for-draft-and-complete-adrs.md)
+- [ADR-L-0009](ADR-L-0009-derived-architecture-discovery-surfaces.md)
+- [ADR-L-0011](ADR-L-0011-metadata-schemas-and-remediation-ledger-enforcement.md)
+- [ADR-L-0010](ADR-L-0010-kernel-interface-contract-and-validation-profiles.md)
+- [ADR-L-0018](ADR-L-0018-schema-v1-2-and-normalized-semantic-foundation.md)
+
+
+## Architecture Relationships
+
+| Neighbor | Relationship | Exact Path |
+| --- | --- | --- |
+| [ADR-PS-0002 — ADR Kit Authoring Compiler and Validation System](../physical-system/ADR-PS-0002-adr-kit-authoring-compiler-and-validation-system.md) | implements this logical authority | `ADR-PS-0002 -[:implements_logical]-> ADR-L-0001` |
 
 
 

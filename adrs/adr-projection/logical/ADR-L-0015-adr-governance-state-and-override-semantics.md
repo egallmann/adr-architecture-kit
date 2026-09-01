@@ -5,8 +5,8 @@ artifact_kind: rendered_adr_markdown
 generator_id: adr-projection-markdown
 generator_version: 3
 hash_algorithm: sha256
-source_hash: c79b9fd6a31c5c6e41ab35b92d7f57f092b0bcb4dff15a1e308e4c8903fd2408
-rendered_hash: 940fc7b917e1302a0af94560fd78b74641431e53708fb3d3118f56253521e633
+source_hash: 472c7248e60689eb306042e9e9396373f7a33e3900855efee9aad1adc1d7fbd4
+rendered_hash: a5568869c11556c8f6fbdfa2e791b31a5cd48203de2cb01e780057094384e9ce
 -->
 
 # ADR-L-0015: ADR Governance State and Override Semantics
@@ -16,33 +16,22 @@ rendered_hash: 940fc7b917e1302a0af94560fd78b74641431e53708fb3d3118f56253521e633
 **Type:** logical  
 **Status:** accepted  
 **Alias:** ADR-L-0015  
-**Alias name:** adr-governance-state-and-override-semantics  
+**Authoring contract:** authoring v1.5  
 **Created:** 2026-03-18  
 **Authors:** adr-architecture-kit  
 **Domains:** governance, validation, approval, overrides  
+**Tags:** governance, override, steelman, approval  
 
-## Architecture Position
+## Architecture at a Glance
 
-Logical architecture authority for this subject. Neighborhood paths use structural bridges plus exactly one semantic architecture edge; they never invent ADR-to-ADR verbs.
+| | |
+| --- | --- |
+| Logical authority | ADR-L-0015 |
+| Status | accepted |
+| Decisions | 4 |
+| Capabilities | 2 |
+| Invariants | 3 |
 
-## Architecture Neighborhood
-
-
-### Semantic architecture inventory
-
-- None
-
-## Neighbor Relationships
-
-No grammatical peer neighborhood for this subject.
-
-### Lifecycle / association
-
-- ADR-L-0015 -[:references]-> ADR-L-0008
-- ADR-L-0015 -[:references]-> ADR-L-0009
-- ADR-L-0015 -[:references]-> ADR-L-0011
-- ADR-L-0015 -[:references]-> ADR-L-0013
-- ADR-L-0015 -[:references]-> ADR-L-0010
 
 ## Context
 
@@ -59,145 +48,179 @@ available, but it left several important questions under-specified:
 Those questions materially affect acceptance gating, implementation behavior,
 and deterministic validation. They need a single canonical decision so schema,
 validator, and projection behavior stay aligned.
+## Architectural Decisions
 
+| Decision | Choice | Traceability |
+| --- | --- | --- |
+| DEC-0063 | Define ADR governance as a canonical nested metadata block with explicit implementation-authority levels | — |
+| DEC-0064 | Record implementation exceptions in separate objection override artifacts | — |
+| DEC-0065 | Bind override review validity to ADR modified_date and warn on stale coupling | — |
+| DEC-0066 | Allow projections to expose governance references and summary metadata only | — |
 
-## Internal Structure
+### DEC-0063 — Define ADR governance as a canonical nested metadata block with explicit implementation-authority levels
 
-```mermaid
-flowchart TB
-  n_019fee89_e617_7e69_861a_f3040f70c2d9["ADR-L-0015<br/>ADR Governance State and Override Semantics"]
-  subgraph sg_capability["capability"]
-    n_019fee89_e616_7ee9_9b0f_2da3ee16636b["CAP-0042<br/>Deterministic ADR Governance Validation"]
-    n_019fee89_e616_7f80_903e_36b6d56f86fe["CAP-0043<br/>Governance Summary Projection"]
-  end
-  subgraph sg_decision["decision"]
-    n_019fee89_e616_7fa2_a13f_a0bab2411ff7["DEC-0063<br/>Define ADR governance as a canonical nested metadata block with explicit implementation-authority levels"]
-    n_019fee89_e617_77cf_a43e_5f0912b04a8a["DEC-0064<br/>Record implementation exceptions in separate objection override artifacts"]
-    n_019fee89_e617_7dbb_b23f_872b9ffc75d8["DEC-0065<br/>Bind override review validity to ADR modified_date and warn on stale coupling"]
-    n_019fee89_e617_7aae_ac34_86b62c25289b["DEC-0066<br/>Allow projections to expose governance references and summary metadata only"]
-  end
-  subgraph sg_invariant["invariant"]
-    n_019fee89_e617_7ec8_b235_dda998054d7c["INV-0064"]
-    n_019fee89_e617_7f99_930b_dee9dcfa8a1f["INV-0065"]
-    n_019fee89_e617_7761_9a2a_5f1cd94d2de5["INV-0066"]
-  end
-  n_019fee89_e616_7ee9_9b0f_2da3ee16636b -->|"declared_in"| n_019fee89_e617_7e69_861a_f3040f70c2d9
-  n_019fee89_e616_7f80_903e_36b6d56f86fe -->|"declared_in"| n_019fee89_e617_7e69_861a_f3040f70c2d9
-  n_019fee89_e616_7fa2_a13f_a0bab2411ff7 -->|"declared_in"| n_019fee89_e617_7e69_861a_f3040f70c2d9
-  n_019fee89_e617_7761_9a2a_5f1cd94d2de5 -->|"declared_in"| n_019fee89_e617_7e69_861a_f3040f70c2d9
-  n_019fee89_e617_77cf_a43e_5f0912b04a8a -->|"declared_in"| n_019fee89_e617_7e69_861a_f3040f70c2d9
-  n_019fee89_e617_7aae_ac34_86b62c25289b -->|"declared_in"| n_019fee89_e617_7e69_861a_f3040f70c2d9
-  n_019fee89_e617_7dbb_b23f_872b9ffc75d8 -->|"declared_in"| n_019fee89_e617_7e69_861a_f3040f70c2d9
-  n_019fee89_e617_7ec8_b235_dda998054d7c -->|"declared_in"| n_019fee89_e617_7e69_861a_f3040f70c2d9
-  n_019fee89_e617_7f99_930b_dee9dcfa8a1f -->|"declared_in"| n_019fee89_e617_7e69_861a_f3040f70c2d9
-```
+**Rationale**
 
-- `capability` CAP-0042 — Deterministic ADR Governance Validation
-- `capability` CAP-0043 — Governance Summary Projection
-- `decision` DEC-0063 — Define ADR governance as a canonical nested metadata block with explicit implementation-authority levels
-- `decision` DEC-0064 — Record implementation exceptions in separate objection override artifacts
-- `decision` DEC-0065 — Bind override review validity to ADR modified_date and warn on stale coupling
-- `decision` DEC-0066 — Allow projections to expose governance references and summary metadata only
-- `invariant` INV-0064 — INV-0064
-- `invariant` INV-0065 — INV-0065
-- `invariant` INV-0066 — INV-0066
+Governance state is part of canonical ADR meaning, but it is not the same
+thing as ADR lifecycle or architecture intent. A nested governance block
+keeps approval and implementation gating explicit without turning derived
+projections into authority.
+
+**Consequences**
+
+Positive:
+- Approval and implementation status become machine-detectable
+- Authority stays on the ADR rather than migrating into indexes
+- Future governance fields can be extended without overloading lifecycle status
+
+### DEC-0064 — Record implementation exceptions in separate objection override artifacts
+
+**Rationale**
+
+Override rationale, risk, and exception posture should remain canonical, but
+they should not bloat ADR text or rewrite architecture intent. Separate
+override artifacts keep exception handling explicit and auditable.
+
+**Consequences**
+
+Positive:
+- ADR meaning remains stable while implementation exceptions are recorded separately
+- Override approval and accepted risk are queryable
+- ADRs can reference overrides by ID without carrying inline exception prose
+
+### DEC-0065 — Bind override review validity to ADR modified_date and warn on stale coupling
+
+**Rationale**
+
+Overrides should not silently continue applying after the ADR they depend on
+has materially changed. Using ADR modified_date provides a minimal canonical
+coupling point that works with the current schema line.
+
+**Consequences**
+
+Positive:
+- Validators can detect likely stale exceptions deterministically
+- The MVP avoids inventing a new ADR revision field prematurely
+- Governance review remains visible when ADR meaning evolves
+
+### DEC-0066 — Allow projections to expose governance references and summary metadata only
+
+**Rationale**
+
+Projections need to support lookup and orchestration, but they must not
+synthesize approvals, risks, or override semantics beyond what the canonical
+artifacts explicitly say.
+
+**Consequences**
+
+Positive:
+- Manifests and indexes stay useful for tooling
+- Projections do not become alternate governance authority
+- Validation can compare projection output directly to canonical sources
+
 
 ## Capabilities
 
-### CAP-0042: Deterministic ADR Governance Validation
+### CAP-0042 — Deterministic ADR Governance Validation
 
 Validate ADR governance metadata, approval pairings, implementation
 authority, override references, and stale revision coupling through
 deterministic rules.
 
-
-### CAP-0043: Governance Summary Projection
+### CAP-0043 — Governance Summary Projection
 
 Expose ADR governance references and override summaries in manifest and
 discovery surfaces without leaking rationale or accepted risk text.
 
 
 
-## Decisions
-
-### DEC-0063: Define ADR governance as a canonical nested metadata block with explicit implementation-authority levels
-
-**Rationale:**
-Governance state is part of canonical ADR meaning, but it is not the same
-thing as ADR lifecycle or architecture intent. A nested governance block
-keeps approval and implementation gating explicit without turning derived
-projections into authority.
-
-
-
-
-### DEC-0064: Record implementation exceptions in separate objection override artifacts
-
-**Rationale:**
-Override rationale, risk, and exception posture should remain canonical, but
-they should not bloat ADR text or rewrite architecture intent. Separate
-override artifacts keep exception handling explicit and auditable.
-
-
-
-
-### DEC-0065: Bind override review validity to ADR modified_date and warn on stale coupling
-
-**Rationale:**
-Overrides should not silently continue applying after the ADR they depend on
-has materially changed. Using ADR modified_date provides a minimal canonical
-coupling point that works with the current schema line.
-
-
-
-
-### DEC-0066: Allow projections to expose governance references and summary metadata only
-
-**Rationale:**
-Projections need to support lookup and orchestration, but they must not
-synthesize approvals, risks, or override semantics beyond what the canonical
-artifacts explicitly say.
-
-
-
-
 
 ## Invariants
 
+| Invariant | Requirement | Enforcement | Verification |
+| --- | --- | --- | --- |
+| INV-0064 | Absence of ADR governance approval fields MUST NOT be interpreted as approval or implementation authority. | MUST / policy | automated |
+| INV-0065 | Objection override artifacts MUST NOT change ADR architectural meaning and MUST govern implementation allowance only. | MUST / design | automated |
+| INV-0066 | Derived projections MUST expose only governance IDs and summary metadata and MUST NOT invent approvals, risks, or… | MUST / policy | automated |
+
 ### INV-0064
 
-**Statement:** Absence of ADR governance approval fields MUST NOT be interpreted as
+**Statement**
+
+Absence of ADR governance approval fields MUST NOT be interpreted as
 approval or implementation authority.
-  
-**Scope:** global  
-**Enforcement:** must (policy)
 
-**Rationale:**
+**Scope:** global
+
+**Enforcement:** MUST (policy)
+**Verification:** automated
+
+**Rationale**
+
 Governance state must be explicit, not inferred by omission.
-
 
 ### INV-0065
 
-**Statement:** Objection override artifacts MUST NOT change ADR architectural meaning and
+**Statement**
+
+Objection override artifacts MUST NOT change ADR architectural meaning and
 MUST govern implementation allowance only.
-  
-**Scope:** global  
-**Enforcement:** must (design)
 
-**Rationale:**
+**Scope:** global
+
+**Enforcement:** MUST (design)
+**Verification:** automated
+
+**Rationale**
+
 Override records are exception control, not alternate architecture authority.
-
 
 ### INV-0066
 
-**Statement:** Derived projections MUST expose only governance IDs and summary metadata and
-MUST NOT invent approvals, risks, or authority-altering interpretations.
-  
-**Scope:** global  
-**Enforcement:** must (policy)
+**Statement**
 
-**Rationale:**
+Derived projections MUST expose only governance IDs and summary metadata and
+MUST NOT invent approvals, risks, or authority-altering interpretations.
+
+**Scope:** global
+
+**Enforcement:** MUST (policy)
+**Verification:** automated
+
+**Rationale**
+
 Lookup surfaces must remain projections over canonical governance state.
+
+
+
+
+
+
+## Governance / Bindings / Evidence
+
+### Governance
+
+**Implementation authority:** ImplementationAuthority.ADVISORY
+**Related reviews:** REVIEW-0001
+**Steelman review completed:** true
+**Steelman review required:** true
+
+
+## Lifecycle / Related Architecture
+
+**Related ADRs**
+- [ADR-L-0008](ADR-L-0008-validation-modes-for-draft-and-complete-adrs.md)
+- [ADR-L-0009](ADR-L-0009-derived-architecture-discovery-surfaces.md)
+- [ADR-L-0010](ADR-L-0010-kernel-interface-contract-and-validation-profiles.md)
+- [ADR-L-0011](ADR-L-0011-metadata-schemas-and-remediation-ledger-enforcement.md)
+- [ADR-L-0013](ADR-L-0013-architecture-repository-boundary-and-normalized-semantic-model.md)
+
+**References**
+- [ADR-L-0008](ADR-L-0008-validation-modes-for-draft-and-complete-adrs.md)
+- [ADR-L-0009](ADR-L-0009-derived-architecture-discovery-surfaces.md)
+- [ADR-L-0011](ADR-L-0011-metadata-schemas-and-remediation-ledger-enforcement.md)
+- [ADR-L-0013](ADR-L-0013-architecture-repository-boundary-and-normalized-semantic-model.md)
+- [ADR-L-0010](ADR-L-0010-kernel-interface-contract-and-validation-profiles.md)
 
 
 

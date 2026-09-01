@@ -5,8 +5,8 @@ artifact_kind: rendered_adr_markdown
 generator_id: adr-projection-markdown
 generator_version: 3
 hash_algorithm: sha256
-source_hash: 2a24fb9d59e54d43a33d92e4bc04c2cba5317f7773f2ed739a97aa5220709e0b
-rendered_hash: b33f45dcb6dae3f05af6c9523c075866fffbbf6789b073aba9e0de07783f90b4
+source_hash: 8c8b8d4563cfa6c44675a775f6d4c646fc17cffe377d7405b412a4a9cec217a8
+rendered_hash: 9425dd21a19695fbf1bea440492f5695f4e1eb0d6f561e0606fa8c476bb88d5b
 -->
 
 # ADR-L-0017: Forward Authoring Ergonomics for Split Physical ADR Types
@@ -16,32 +16,21 @@ rendered_hash: b33f45dcb6dae3f05af6c9523c075866fffbbf6789b073aba9e0de07783f90b4
 **Type:** logical  
 **Status:** accepted  
 **Alias:** ADR-L-0017  
-**Alias name:** forward-authoring-ergonomics-for-split-physical-adr-types  
+**Authoring contract:** authoring v1.5  
 **Created:** 2026-04-14  
 **Authors:** adr-architecture-kit  
 **Domains:** authoring, adr-taxonomy  
+**Tags:** scaffolding, next-id, physical-types  
 
-## Architecture Position
+## Architecture at a Glance
 
-Logical architecture authority for this subject. Neighborhood paths use structural bridges plus exactly one semantic architecture edge; they never invent ADR-to-ADR verbs.
+| | |
+| --- | --- |
+| Logical authority | ADR-L-0017 |
+| Status | accepted |
+| Decisions | 3 |
+| Invariants | 2 |
 
-## Architecture Neighborhood
-
-
-### Semantic architecture inventory
-
-- None
-
-## Neighbor Relationships
-
-No grammatical peer neighborhood for this subject.
-
-### Lifecycle / association
-
-- ADR-L-0018 -[:references]-> ADR-L-0017
-- ADR-L-0016 -[:references]-> ADR-L-0017
-- ADR-L-0017 -[:references]-> ADR-L-0002
-- ADR-L-0017 -[:references]-> ADR-L-0016
 
 ## Context
 
@@ -55,65 +44,57 @@ If new ergonomics continue treating legacy `ADR-P-*` as a first-class
 creation path, upstream tools will keep steering new authoring toward an
 outdated taxonomy even while the repository supports more precise
 physical-system and physical-component artifacts.
+## Architectural Decisions
 
+| Decision | Choice | Traceability |
+| --- | --- | --- |
+| DEC-0071 | Provide scaffold and schema-surface ergonomics for logical, physical-system, and physical-component ADRs only | — |
+| DEC-0072 | Retain legacy ADR-P parsing and validation but exclude it from new creation ergonomics | — |
+| DEC-0074 | Reserve ADR IDs 9000-9999 for exceptional allocation and exclude that range from normal forward allocation | — |
 
-## Internal Structure
+### DEC-0071 — Provide scaffold and schema-surface ergonomics for logical, physical-system, and physical-component ADRs only
 
-```mermaid
-flowchart TB
-  n_019fee89_e617_7ff5_863b_1eef71637b0f["ADR-L-0017<br/>Forward Authoring Ergonomics for Split Physical ADR Types"]
-  subgraph sg_decision["decision"]
-    n_019fee89_e617_75dd_852f_1d06d442695b["DEC-0071<br/>Provide scaffold and schema-surface ergonomics for logical, physical-system, and physical-component ADRs only"]
-    n_019fee89_e617_748e_863d_42268f44175f["DEC-0072<br/>Retain legacy ADR-P parsing and validation but exclude it from new creation ergonomics"]
-    n_019fee89_e617_7a09_bc37_afd7ae0f2927["DEC-0074<br/>Reserve ADR IDs 9000-9999 for exceptional allocation and exclude that range from normal forward allocation"]
-  end
-  subgraph sg_invariant["invariant"]
-    n_019fee89_e617_761d_950b_c04d97e04c56["INV-0068"]
-    n_019fee89_e617_723f_aa1f_e1c5b7f3a3e5["INV-0070"]
-  end
-  n_019fee89_e617_723f_aa1f_e1c5b7f3a3e5 -->|"declared_in"| n_019fee89_e617_7ff5_863b_1eef71637b0f
-  n_019fee89_e617_748e_863d_42268f44175f -->|"declared_in"| n_019fee89_e617_7ff5_863b_1eef71637b0f
-  n_019fee89_e617_75dd_852f_1d06d442695b -->|"declared_in"| n_019fee89_e617_7ff5_863b_1eef71637b0f
-  n_019fee89_e617_761d_950b_c04d97e04c56 -->|"declared_in"| n_019fee89_e617_7ff5_863b_1eef71637b0f
-  n_019fee89_e617_7a09_bc37_afd7ae0f2927 -->|"declared_in"| n_019fee89_e617_7ff5_863b_1eef71637b0f
-```
+**Rationale**
 
-- `decision` DEC-0071 — Provide scaffold and schema-surface ergonomics for logical, physical-system, and physical-component ADRs only
-- `decision` DEC-0072 — Retain legacy ADR-P parsing and validation but exclude it from new creation ergonomics
-- `decision` DEC-0074 — Reserve ADR IDs 9000-9999 for exceptional allocation and exclude that range from normal forward allocation
-- `invariant` INV-0068 — INV-0068
-- `invariant` INV-0070 — INV-0070
-
-
-## Decisions
-
-### DEC-0071: Provide scaffold and schema-surface ergonomics for logical, physical-system, and physical-component ADRs only
-
-**Rationale:**
 New authoring ergonomics should reinforce the forward taxonomy and expose
 deterministic structured inputs for the ADR types the repository wants new
 work to use.
 
+**Consequences**
 
+Positive:
+- New workflows are nudged toward `ADR-L-*`, `ADR-PS-*`, and `ADR-PC-*`
+- Scaffold and schema discovery stay aligned with the current generator surface
 
+### DEC-0072 — Retain legacy ADR-P parsing and validation but exclude it from new creation ergonomics
 
-### DEC-0072: Retain legacy ADR-P parsing and validation but exclude it from new creation ergonomics
+**Rationale**
 
-**Rationale:**
 Existing repositories and tests still contain `ADR-P-*` artifacts, so
 backward compatibility remains necessary. That compatibility does not
 require adding new forward-authoring affordances for the legacy type.
 
+**Consequences**
 
+Positive:
+- Existing legacy artifacts remain readable and validatable
+- New ergonomic surfaces do not regress the taxonomy split
 
+### DEC-0074 — Reserve ADR IDs 9000-9999 for exceptional allocation and exclude that range from normal forward allocation
 
-### DEC-0074: Reserve ADR IDs 9000-9999 for exceptional allocation and exclude that range from normal forward allocation
+**Rationale**
 
-**Rationale:**
 The high ADR ID range is needed for exceptional cases such as brownfield
 imports, retained legacy artifacts pending migration, and other imported
 records whose identity must be preserved. Normal authoring allocation
 should stay below 9000 so it does not drift into that exceptional space.
+
+**Consequences**
+
+Positive:
+- Normal authoring remains in a predictable ID range below 9000
+- The reserved high range stays available for exceptional/manual use
+- Imported or retained legacy identities do not advance normal allocation counters
 
 
 
@@ -121,33 +102,64 @@ should stay below 9000 so it does not drift into that exceptional space.
 
 ## Invariants
 
+| Invariant | Requirement | Enforcement | Verification |
+| --- | --- | --- | --- |
+| INV-0068 | Forward authoring ergonomics in adr-architecture-kit MUST target logical, physical-system, and physical-component… | MUST / design | automated |
+| INV-0070 | ADR IDs `9000-9999` MUST be treated as a reserved exceptional allocation range for cases such as brownfield imports,… | MUST / design | automated |
+
 ### INV-0068
 
-**Statement:** Forward authoring ergonomics in adr-architecture-kit MUST target logical,
+**Statement**
+
+Forward authoring ergonomics in adr-architecture-kit MUST target logical,
 physical-system, and physical-component ADRs, while legacy `ADR-P-*`
 support remains compatibility-only.
-  
-**Scope:** global  
-**Enforcement:** must (design)
 
-**Rationale:**
+**Scope:** global
+
+**Enforcement:** MUST (design)
+**Verification:** automated
+
+**Rationale**
+
 The ergonomic surface must preserve the intended ADR taxonomy instead of
 accidentally reopening the legacy flat physical path for new authoring.
 
-
 ### INV-0070
 
-**Statement:** ADR IDs `9000-9999` MUST be treated as a reserved exceptional allocation
+**Statement**
+
+ADR IDs `9000-9999` MUST be treated as a reserved exceptional allocation
 range for cases such as brownfield imports, retained legacy artifacts
 pending migration, and other imported records requiring preserved
 identity. Standard forward authoring allocation MUST exclude that range.
-  
-**Scope:** global  
-**Enforcement:** must (design)
 
-**Rationale:**
+**Scope:** global
+
+**Enforcement:** MUST (design)
+**Verification:** automated
+
+**Rationale**
+
 The allocator must remain aware of the reserved namespace so normal
 authoring does not collide with imported or exceptional identities.
+
+
+
+
+
+
+
+## Lifecycle / Related Architecture
+
+**Related ADRs**
+- [ADR-L-0002](ADR-L-0002-multi-scope-adr-architecture-for-sub-module-development.md)
+- [ADR-L-0016](ADR-L-0016-deterministic-corpus-query-and-authoring-orientation-apis.md)
+
+**References**
+- [ADR-L-0018](ADR-L-0018-schema-v1-2-and-normalized-semantic-foundation.md)
+- [ADR-L-0016](ADR-L-0016-deterministic-corpus-query-and-authoring-orientation-apis.md)
+- [ADR-L-0002](ADR-L-0002-multi-scope-adr-architecture-for-sub-module-development.md)
 
 
 

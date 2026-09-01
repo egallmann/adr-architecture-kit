@@ -5,8 +5,8 @@ artifact_kind: rendered_adr_markdown
 generator_id: adr-projection-markdown
 generator_version: 3
 hash_algorithm: sha256
-source_hash: f3830d6863c06a0594fd047b6292cce3b470eaa09b7d6d8d7901e1e639b9bc0a
-rendered_hash: 4bdb577225c10b34841ecb770d661d1297b9747bd6a4c286418e612b2bdf9f91
+source_hash: 7337063c402553da726aa782feff676769b3d3c79c794cdb0d19602fabf62774
+rendered_hash: d82c6b555db8c2ff880f2a98e5fcc22ecee673fce82632396f6bd0697d073f77
 -->
 
 # ADR-L-0016: Deterministic Corpus Query and Authoring Orientation APIs
@@ -16,31 +16,22 @@ rendered_hash: 4bdb577225c10b34841ecb770d661d1297b9747bd6a4c286418e612b2bdf9f91
 **Type:** logical  
 **Status:** accepted  
 **Alias:** ADR-L-0016  
-**Alias name:** deterministic-corpus-query-and-authoring-orientation-apis  
+**Authoring contract:** authoring v1.5  
 **Created:** 2026-04-14  
 **Authors:** adr-architecture-kit  
 **Domains:** repository, discovery, authoring  
+**Tags:** repository-api, corpus-query, authoring-orientation  
 
-## Architecture Position
+## Architecture at a Glance
 
-Logical architecture authority for this subject. Neighborhood paths use structural bridges plus exactly one semantic architecture edge; they never invent ADR-to-ADR verbs.
+| | |
+| --- | --- |
+| Logical authority | ADR-L-0016 |
+| Status | accepted |
+| Decisions | 4 |
+| Capabilities | 1 |
+| Invariants | 2 |
 
-## Architecture Neighborhood
-
-
-### Semantic architecture inventory
-
-- None
-
-## Neighbor Relationships
-
-No grammatical peer neighborhood for this subject.
-
-### Lifecycle / association
-
-- ADR-L-0016 -[:references]-> ADR-L-0013
-- ADR-L-0016 -[:references]-> ADR-L-0017
-- ADR-L-0017 -[:references]-> ADR-L-0016
 
 ## Context
 
@@ -56,112 +47,133 @@ a supported helper for monotonic ADR alias allocation.
 
 Under v1.3, those allocation helpers govern `alias_id` recognition surfaces;
 they do not allocate or replace canonical UUID machine identity.
+## Architectural Decisions
 
+| Decision | Choice | Traceability |
+| --- | --- | --- |
+| DEC-0069 | Extend ArchitectureRepository with deterministic orientation helpers for UUID, alias_id, alias_ref, and URI lookup | — |
+| DEC-0070 | Expose corpus summary and relationships through supported CLI commands | — |
+| DEC-0073 | Make forward-authoring type-prefixed ADR alias_id allocation monotonic and non-reusable | — |
+| DEC-0075 | Exclude reserved ADR alias IDs 9000-9999 from standard forward alias allocation | — |
 
-## Internal Structure
+### DEC-0069 — Extend ArchitectureRepository with deterministic orientation helpers for UUID, alias_id, alias_ref, and URI lookup
 
-```mermaid
-flowchart TB
-  n_019fee89_e617_7fe1_8d2c_cc2745c31674["ADR-L-0016<br/>Deterministic Corpus Query and Authoring Orientation APIs"]
-  subgraph sg_capability["capability"]
-    n_019fee89_e617_778b_8137_22bcc675b053["CAP-0045<br/>Deterministic Corpus Orientation Surface"]
-  end
-  subgraph sg_decision["decision"]
-    n_019fee89_e617_7315_9e36_7af95f814c83["DEC-0069<br/>Extend ArchitectureRepository with deterministic orientation helpers for UUID, alias_id, alias_ref, and URI lookup"]
-    n_019fee89_e617_768d_9e3e_f61039a3d61c["DEC-0070<br/>Expose corpus summary and relationships through supported CLI commands"]
-    n_019fee89_e617_797f_9e3e_50212acb0456["DEC-0073<br/>Make forward-authoring type-prefixed ADR alias_id allocation monotonic and non-reusable"]
-    n_019fee89_e617_7686_bc3f_536f1b00edfa["DEC-0075<br/>Exclude reserved ADR alias IDs 9000-9999 from standard forward alias allocation"]
-  end
-  subgraph sg_invariant["invariant"]
-    n_019fee89_e617_77bc_8d3f_07c5c91bb5bb["INV-0069"]
-    n_019fee89_e617_79c9_ad2a_7a26923d678d["INV-0071"]
-  end
-  n_019fee89_e617_7315_9e36_7af95f814c83 -->|"declared_in"| n_019fee89_e617_7fe1_8d2c_cc2745c31674
-  n_019fee89_e617_7686_bc3f_536f1b00edfa -->|"declared_in"| n_019fee89_e617_7fe1_8d2c_cc2745c31674
-  n_019fee89_e617_768d_9e3e_f61039a3d61c -->|"declared_in"| n_019fee89_e617_7fe1_8d2c_cc2745c31674
-  n_019fee89_e617_778b_8137_22bcc675b053 -->|"declared_in"| n_019fee89_e617_7fe1_8d2c_cc2745c31674
-  n_019fee89_e617_77bc_8d3f_07c5c91bb5bb -->|"declared_in"| n_019fee89_e617_7fe1_8d2c_cc2745c31674
-  n_019fee89_e617_797f_9e3e_50212acb0456 -->|"declared_in"| n_019fee89_e617_7fe1_8d2c_cc2745c31674
-  n_019fee89_e617_79c9_ad2a_7a26923d678d -->|"declared_in"| n_019fee89_e617_7fe1_8d2c_cc2745c31674
-```
+**Rationale**
 
-- `capability` CAP-0045 — Deterministic Corpus Orientation Surface
-- `decision` DEC-0069 — Extend ArchitectureRepository with deterministic orientation helpers for UUID, alias_id, alias_ref, and URI lookup
-- `decision` DEC-0070 — Expose corpus summary and relationships through supported CLI commands
-- `decision` DEC-0073 — Make forward-authoring type-prefixed ADR alias_id allocation monotonic and non-reusable
-- `decision` DEC-0075 — Exclude reserved ADR alias IDs 9000-9999 from standard forward alias allocation
-- `invariant` INV-0069 — INV-0069
-- `invariant` INV-0071 — INV-0071
-
-## Capabilities
-
-### CAP-0045: Deterministic Corpus Orientation Surface
-
-Provide one supported API and CLI surface for manifest/index/summary access, UUID and alias lookup/resolve paths, alias inventory, and scope-local governed alias_id allocation.
-
-
-
-## Decisions
-
-### DEC-0069: Extend ArchitectureRepository with deterministic orientation helpers for UUID, alias_id, alias_ref, and URI lookup
-
-**Rationale:**
 Repository consumers use one in-process boundary for manifest/index/summary access, entity-reference lookup whose canonical result is UUID, explicit UUID/alias_id/alias_ref/URI resolve paths, alias inventory, and governed alias_id allocation for forward authoring.
 
+**Consequences**
 
+Positive:
+- Upstream tools stop duplicating manifest and index loading logic
+- Corpus orientation becomes one stable typed API instead of ad hoc YAML reads
+- Alias-ID allocation stays scope-aware, deterministic, and monotonic
 
+### DEC-0070 — Expose corpus summary and relationships through supported CLI commands
 
-### DEC-0070: Expose corpus summary and relationships through supported CLI commands
+**Rationale**
 
-**Rationale:**
 Human and script consumers need stable CLI ergonomics that mirror the
 repository boundary without treating raw registry files as the user-facing
 interface.
 
+**Consequences**
 
+Positive:
+- `adr entities summary` provides one deterministic orientation surface
+- `adr entities relationships` exposes graph-level inspection without custom parsing
+- CLI and Python APIs stay aligned around the same repository boundary
 
+### DEC-0073 — Make forward-authoring type-prefixed ADR alias_id allocation monotonic and non-reusable
 
-### DEC-0073: Make forward-authoring type-prefixed ADR alias_id allocation monotonic and non-reusable
+**Rationale**
 
-**Rationale:**
 Forward type-prefixed ADR IDs are governed alias_id allocation handles for human recognition, not canonical machine identity. UUID remains canonical entity identity. Alias allocation stays monotonic and non-reusable and must never replace UUIDs or rewrite UUID references.
 
+**Consequences**
 
+Positive:
+- Historical traceability is preserved
+- Allocation remains deterministic without gap filling
+- Deleted artifacts cannot silently reactivate old identities
 
+### DEC-0075 — Exclude reserved ADR alias IDs 9000-9999 from standard forward alias allocation
 
-### DEC-0075: Exclude reserved ADR alias IDs 9000-9999 from standard forward alias allocation
+**Rationale**
 
-**Rationale:**
 The reserved 9000-9999 range preserves governed alias allocation history for exceptional records. It is not a UUID identity range and must not be treated as canonical machine-identity allocation.
 
+**Consequences**
+
+Positive:
+- Standard allocation remains predictable below 9000
+- Brownfield or imported records have a governed preserved-identity range
+- Reserved-range artifacts do not pollute the normal forward sequence
+
+
+## Capabilities
+
+### CAP-0045 — Deterministic Corpus Orientation Surface
+
+Provide one supported API and CLI surface for manifest/index/summary access, UUID and alias lookup/resolve paths, alias inventory, and scope-local governed alias_id allocation.
 
 
 
 
 ## Invariants
 
+| Invariant | Requirement | Enforcement | Verification |
+| --- | --- | --- | --- |
+| INV-0069 | Forward-authoring governed alias_id allocation MUST be monotonic and non-reusable. Previously allocated aliases and… | MUST / design | automated |
+| INV-0071 | Reserved ADR alias IDs `9000-9999` MUST NOT participate in standard forward alias allocation and MUST NOT be treated… | MUST / design | automated |
+
 ### INV-0069
 
-**Statement:** Forward-authoring governed alias_id allocation MUST be monotonic and non-reusable. Previously allocated aliases and historical gaps remain consumed history and MUST NOT be reissued or used to replace UUID identity.
-  
-**Scope:** global  
-**Enforcement:** must (design)
+**Statement**
 
-**Rationale:**
+Forward-authoring governed alias_id allocation MUST be monotonic and non-reusable. Previously allocated aliases and historical gaps remain consumed history and MUST NOT be reissued or used to replace UUID identity.
+
+**Scope:** global
+
+**Enforcement:** MUST (design)
+**Verification:** automated
+
+**Rationale**
+
 Reusing ADR identities corrupts provenance, historical references, and
 deterministic traceability.
 
-
 ### INV-0071
 
-**Statement:** Reserved ADR alias IDs `9000-9999` MUST NOT participate in standard forward alias allocation and MUST NOT be treated as UUID machine-identity allocation.
-  
-**Scope:** global  
-**Enforcement:** must (design)
+**Statement**
 
-**Rationale:**
+Reserved ADR alias IDs `9000-9999` MUST NOT participate in standard forward alias allocation and MUST NOT be treated as UUID machine-identity allocation.
+
+**Scope:** global
+
+**Enforcement:** MUST (design)
+**Verification:** automated
+
+**Rationale**
+
 Exceptional identities need a governed range that does not distort the
 normal forward allocation sequence.
+
+
+
+
+
+
+
+## Lifecycle / Related Architecture
+
+**Related ADRs**
+- [ADR-L-0013](ADR-L-0013-architecture-repository-boundary-and-normalized-semantic-model.md)
+- [ADR-L-0017](ADR-L-0017-forward-authoring-ergonomics-for-split-physical-adr-types.md)
+
+**References**
+- [ADR-L-0013](ADR-L-0013-architecture-repository-boundary-and-normalized-semantic-model.md)
+- [ADR-L-0017](ADR-L-0017-forward-authoring-ergonomics-for-split-physical-adr-types.md)
 
 
 

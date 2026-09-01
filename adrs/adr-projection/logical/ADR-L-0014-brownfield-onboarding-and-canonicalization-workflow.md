@@ -5,8 +5,8 @@ artifact_kind: rendered_adr_markdown
 generator_id: adr-projection-markdown
 generator_version: 3
 hash_algorithm: sha256
-source_hash: 1c1d28beec3d818007ff6fe9a1ebfad95c625d59398001cb39dfbdf456a3cb72
-rendered_hash: 08e570408f358fad9271839659d24e761799d2bd3bee95fdcc3c545098ab5e90
+source_hash: 45cde1fd7bcf49c32615454a93565470054792057d75cceab8bd35950f7c9bb0
+rendered_hash: 2b0c81d8c7d9d0e440591fe8da0c2fba18532818b05c4beebb3eb0c656b1ad97
 -->
 
 # ADR-L-0014: Brownfield Onboarding and Canonicalization Workflow
@@ -16,34 +16,23 @@ rendered_hash: 08e570408f358fad9271839659d24e761799d2bd3bee95fdcc3c545098ab5e90
 **Type:** logical  
 **Status:** accepted  
 **Alias:** ADR-L-0014  
-**Alias name:** brownfield-onboarding-and-canonicalization-workflow  
+**Authoring contract:** authoring v1.5  
 **Created:** 2026-03-15  
 **Authors:** adr-architecture-kit  
 **Domains:** migration, onboarding, governance, brownfield  
+**Tags:** onboarding, migration, canonicalization, cleanup  
 
-## Architecture Position
+## Architecture at a Glance
 
-Logical architecture authority for this subject. Neighborhood paths use structural bridges plus exactly one semantic architecture edge; they never invent ADR-to-ADR verbs.
+| | |
+| --- | --- |
+| Logical authority | ADR-L-0014 |
+| Status | accepted |
+| Decisions | 4 |
+| Capabilities | 2 |
+| Invariants | 2 |
+| Physical realizations | [ADR-PC-0006](../physical-component/ADR-PC-0006-brownfield-onboarding-and-canonical-normalization.md) |
 
-## Architecture Neighborhood
-
-
-### Semantic architecture inventory
-
-- `implements_logical`: ADR-PC-0006 → ADR-L-0014
-
-## Neighbor Relationships
-
-| Neighbor | Relationship | Exact Path |
-| --- | --- | --- |
-| [ADR-PC-0006 — Brownfield Onboarding and Canonical Normalization](../physical-component/ADR-PC-0006-brownfield-onboarding-and-canonical-normalization.md) | ADR-PC-0006 -[:implements_logical]-> ADR-L-0014 | `ADR-PC-0006 -[:implements_logical]-> ADR-L-0014` |
-
-
-### Lifecycle / association
-
-- ADR-L-0014 -[:references]-> ADR-L-0009
-- ADR-L-0014 -[:references]-> ADR-L-0011
-- ADR-L-0014 -[:references]-> ADR-L-0013
 
 ## Context
 
@@ -62,135 +51,165 @@ adr-architecture-kit already contains pieces of this workflow:
 
 What is missing is one explicit logical decision that defines onboarding and
 migration as a first-class STE workflow rather than an ad hoc repair pass.
+## Architectural Decisions
 
+| Decision | Choice | Traceability |
+| --- | --- | --- |
+| DEC-0053 | Treat brownfield onboarding as a first-class canonicalization workflow | — |
+| DEC-0054 | Separate onboarding into discovery, normalization, canonization, regeneration, and validation phases | — |
+| DEC-0055 | Record deterministic brownfield remaps and cleanup transitions in canonical migration artifacts | — |
+| DEC-0056 | Keep rendered artifacts as disposable human projections and forbid them as semantic authority when canonical YAML exists | — |
 
-## Internal Structure
+### DEC-0053 — Treat brownfield onboarding as a first-class canonicalization workflow
 
-```mermaid
-flowchart TB
-  n_019fee89_e616_7628_913b_a059c1057c36["ADR-L-0014<br/>Brownfield Onboarding and Canonicalization Workflow"]
-  subgraph sg_capability["capability"]
-    n_019fee89_e616_74f9_813b_7610fca4342c["CAP-0040<br/>Brownfield Onboarding Workflow"]
-    n_019fee89_e616_76ce_9a36_55eac88b762e["CAP-0041<br/>Canonical Migration Evidence"]
-  end
-  subgraph sg_decision["decision"]
-    n_019fee89_e616_7a1d_a13f_8595d35af213["DEC-0053<br/>Treat brownfield onboarding as a first-class canonicalization workflow"]
-    n_019fee89_e616_73b2_bd3f_a096727abcad["DEC-0054<br/>Separate onboarding into discovery, normalization, canonization, regeneration, and validation phases"]
-    n_019fee89_e616_7571_b83f_b20a3bd0b42e["DEC-0055<br/>Record deterministic brownfield remaps and cleanup transitions in canonical migration artifacts"]
-    n_019fee89_e616_760d_8437_78860d2de944["DEC-0056<br/>Keep rendered artifacts as disposable human projections and forbid them as semantic authority when canonical YAML exists"]
-  end
-  subgraph sg_invariant["invariant"]
-    n_019fee89_e616_76a4_891b_d8316114e7a9["INV-0060"]
-    n_019fee89_e616_7aca_b328_94a4de1887d6["INV-0061"]
-  end
-  n_019fee89_e616_73b2_bd3f_a096727abcad -->|"declared_in"| n_019fee89_e616_7628_913b_a059c1057c36
-  n_019fee89_e616_74f9_813b_7610fca4342c -->|"declared_in"| n_019fee89_e616_7628_913b_a059c1057c36
-  n_019fee89_e616_7571_b83f_b20a3bd0b42e -->|"declared_in"| n_019fee89_e616_7628_913b_a059c1057c36
-  n_019fee89_e616_760d_8437_78860d2de944 -->|"declared_in"| n_019fee89_e616_7628_913b_a059c1057c36
-  n_019fee89_e616_76a4_891b_d8316114e7a9 -->|"declared_in"| n_019fee89_e616_7628_913b_a059c1057c36
-  n_019fee89_e616_76ce_9a36_55eac88b762e -->|"declared_in"| n_019fee89_e616_7628_913b_a059c1057c36
-  n_019fee89_e616_7a1d_a13f_8595d35af213 -->|"declared_in"| n_019fee89_e616_7628_913b_a059c1057c36
-  n_019fee89_e616_7aca_b328_94a4de1887d6 -->|"declared_in"| n_019fee89_e616_7628_913b_a059c1057c36
-```
+**Rationale**
 
-- `capability` CAP-0040 — Brownfield Onboarding Workflow
-- `capability` CAP-0041 — Canonical Migration Evidence
-- `decision` DEC-0053 — Treat brownfield onboarding as a first-class canonicalization workflow
-- `decision` DEC-0054 — Separate onboarding into discovery, normalization, canonization, regeneration, and validation phases
-- `decision` DEC-0055 — Record deterministic brownfield remaps and cleanup transitions in canonical migration artifacts
-- `decision` DEC-0056 — Keep rendered artifacts as disposable human projections and forbid them as semantic authority when canonical YAML exists
-- `invariant` INV-0060 — INV-0060
-- `invariant` INV-0061 — INV-0061
+Existing architecture can be informally decided but not yet canonicalized.
+STE needs an explicit workflow for converting that state into canonical ADR
+authority without pretending the implementation invented the architecture.
+
+**Consequences**
+
+Positive:
+- Legacy-to-canonical onboarding gains a governed path
+- Architecture capture can proceed without redesigning already-made decisions
+- Cleanup work becomes auditable rather than ad hoc
+
+### DEC-0054 — Separate onboarding into discovery, normalization, canonization, regeneration, and validation phases
+
+**Rationale**
+
+Brownfield onboarding mixes several concerns that should not be collapsed:
+discovery identifies what exists, normalization resolves collisions and
+missing metadata, canonization creates or updates canonical ADRs,
+regeneration rebuilds derived artifacts, and validation verifies the result.
+
+**Consequences**
+
+Positive:
+- Automation can be applied safely to the normalization phase
+- Human review remains focused on architectural classification decisions
+- Migration evidence can be attached to the correct stage
+
+### DEC-0055 — Record deterministic brownfield remaps and cleanup transitions in canonical migration artifacts
+
+**Rationale**
+
+Canonical ID remaps, onboarding normalization, and controlled cleanup
+transitions should produce durable evidence so future consumers can explain
+how legacy identifiers and structures map into current canonical state.
+
+**Consequences**
+
+Positive:
+- Historical continuity is preserved
+- Query surfaces can explain old-to-new mappings
+- Cleanup automation gains an auditable output
+
+### DEC-0056 — Keep rendered artifacts as disposable human projections and forbid them as semantic authority when canonical YAML exists
+
+**Rationale**
+
+Rendered markdown is useful for review and browsing, but it is structurally
+weaker than canonical YAML and should never become the semantic source of
+truth when canonical ADR artifacts are available.
+
+**Consequences**
+
+Positive:
+- Human-friendly projections remain useful without weakening authority
+- Discovery and graphing stay grounded in canonical YAML and controlled registries
+- Agents are less likely to reintroduce narrative ambiguity through markdown parsing
+
 
 ## Capabilities
 
-### CAP-0040: Brownfield Onboarding Workflow
+### CAP-0040 — Brownfield Onboarding Workflow
 
 Provide an explicit workflow for migrating existing repositories into STE
 canonical architecture authority through phased discovery, normalization,
 canonization, regeneration, and validation.
 
-
-### CAP-0041: Canonical Migration Evidence
+### CAP-0041 — Canonical Migration Evidence
 
 Record deterministic remaps, onboarding cleanup results, and legacy-to-
 canonical transitions in machine-readable migration artifacts.
 
 
 
-## Decisions
-
-### DEC-0053: Treat brownfield onboarding as a first-class canonicalization workflow
-
-**Rationale:**
-Existing architecture can be informally decided but not yet canonicalized.
-STE needs an explicit workflow for converting that state into canonical ADR
-authority without pretending the implementation invented the architecture.
-
-
-
-
-### DEC-0054: Separate onboarding into discovery, normalization, canonization, regeneration, and validation phases
-
-**Rationale:**
-Brownfield onboarding mixes several concerns that should not be collapsed:
-discovery identifies what exists, normalization resolves collisions and
-missing metadata, canonization creates or updates canonical ADRs,
-regeneration rebuilds derived artifacts, and validation verifies the result.
-
-
-
-
-### DEC-0055: Record deterministic brownfield remaps and cleanup transitions in canonical migration artifacts
-
-**Rationale:**
-Canonical ID remaps, onboarding normalization, and controlled cleanup
-transitions should produce durable evidence so future consumers can explain
-how legacy identifiers and structures map into current canonical state.
-
-
-
-
-### DEC-0056: Keep rendered artifacts as disposable human projections and forbid them as semantic authority when canonical YAML exists
-
-**Rationale:**
-Rendered markdown is useful for review and browsing, but it is structurally
-weaker than canonical YAML and should never become the semantic source of
-truth when canonical ADR artifacts are available.
-
-
-
-
 
 ## Invariants
 
+| Invariant | Requirement | Enforcement | Verification |
+| --- | --- | --- | --- |
+| INV-0060 | STE onboarding workflows MUST treat discovery, normalization, canonization, regeneration, and validation as distinct… | MUST / design | automated |
+| INV-0061 | Rendered markdown artifacts MUST be treated as derived human-facing projections and MUST NOT be used as semantic… | MUST / policy | automated |
+
 ### INV-0060
 
-**Statement:** STE onboarding workflows MUST treat discovery, normalization, canonization,
+**Statement**
+
+STE onboarding workflows MUST treat discovery, normalization, canonization,
 regeneration, and validation as distinct phases with canonical artifacts
 updated before derived artifacts are refreshed.
-  
-**Scope:** global  
-**Enforcement:** must (design)
 
-**Rationale:**
+**Scope:** global
+
+**Enforcement:** MUST (design)
+**Verification:** automated
+
+**Rationale**
+
 Canonical artifacts must remain the source of truth throughout brownfield
 onboarding and cleanup.
 
-
 ### INV-0061
 
-**Statement:** Rendered markdown artifacts MUST be treated as derived human-facing
+**Statement**
+
+Rendered markdown artifacts MUST be treated as derived human-facing
 projections and MUST NOT be used as semantic authority when canonical YAML
 source artifacts are available.
-  
-**Scope:** global  
-**Enforcement:** must (policy)
 
-**Rationale:**
+**Scope:** global
+
+**Enforcement:** MUST (policy)
+**Verification:** automated
+
+**Rationale**
+
 Rendered markdown is a convenience surface, not a trustworthy semantic
 contract when canonical structured artifacts exist.
 
+
+
+
+## Physical Realization
+
+**Components**
+- [ADR-PC-0006](../physical-component/ADR-PC-0006-brownfield-onboarding-and-canonical-normalization.md)
+
+
+
+
+## Lifecycle / Related Architecture
+
+**Related ADRs**
+- [ADR-L-0009](ADR-L-0009-derived-architecture-discovery-surfaces.md)
+- [ADR-L-0011](ADR-L-0011-metadata-schemas-and-remediation-ledger-enforcement.md)
+- [ADR-L-0013](ADR-L-0013-architecture-repository-boundary-and-normalized-semantic-model.md)
+
+**References**
+- [ADR-L-0009](ADR-L-0009-derived-architecture-discovery-surfaces.md)
+- [ADR-L-0011](ADR-L-0011-metadata-schemas-and-remediation-ledger-enforcement.md)
+- [ADR-L-0013](ADR-L-0013-architecture-repository-boundary-and-normalized-semantic-model.md)
+
+
+## Architecture Relationships
+
+| Neighbor | Relationship | Exact Path |
+| --- | --- | --- |
+| [ADR-PC-0006 — Brownfield Onboarding and Canonical Normalization](../physical-component/ADR-PC-0006-brownfield-onboarding-and-canonical-normalization.md) | implements this logical authority | `ADR-PC-0006 -[:implements_logical]-> ADR-L-0014` |
 
 
 

@@ -5,8 +5,8 @@ artifact_kind: rendered_adr_markdown
 generator_id: adr-projection-markdown
 generator_version: 3
 hash_algorithm: sha256
-source_hash: 219384f0e0486fab15e1db407dc746f9d35b7c4181eb67d659fc4e026b31a43e
-rendered_hash: d4f923218c33afd41cba61ee8f2516a194a2bbaca4c4e9db1d24bd4e4144f17b
+source_hash: e7466a4c8609182ece5b89123c6020093af0fc2a0c810f659eecb39924d6b265
+rendered_hash: d859865805c98e115357b80169cd03ffbe00c13c0577cdb9c31059cefc472b2a
 -->
 
 # ADR-L-0021: Family-First Schema Contract Taxonomy and Authority
@@ -16,25 +16,20 @@ rendered_hash: d4f923218c33afd41cba61ee8f2516a194a2bbaca4c4e9db1d24bd4e4144f17b
 **Type:** logical  
 **Status:** accepted  
 **Alias:** ADR-L-0021  
-**Alias name:** family-first-schema-contract-taxonomy  
+**Authoring contract:** authoring v1.5  
 **Created:** 2026-08-15  
 **Authors:** adr-architecture-kit  
 **Domains:** architecture, schema  
+**Tags:** schema-taxonomy, authority, compatibility  
 
-## Architecture Position
+## Architecture at a Glance
 
-Logical architecture authority for this subject. Neighborhood paths use structural bridges plus exactly one semantic architecture edge; they never invent ADR-to-ADR verbs.
-
-## Architecture Neighborhood
-
-
-### Semantic architecture inventory
-
-- None
-
-## Neighbor Relationships
-
-No grammatical peer neighborhood for this subject.
+| | |
+| --- | --- |
+| Logical authority | ADR-L-0021 |
+| Status | accepted |
+| Decisions | 3 |
+| Invariants | 2 |
 
 
 ## Context
@@ -46,64 +41,37 @@ This ADR establishes a family-first repository taxonomy without changing
 schema semantics, JSON bytes, package resources, runtime behavior, or the
 installed package namespace. Semantic attribution evidence v1.5 is not an
 ADR authoring schema v1.5 and is not a normalized model version.
+## Architectural Decisions
 
+| Decision | Choice | Traceability |
+| --- | --- | --- |
+| DEC-0125 | Canonical schema placement is family-first with family-scoped versions | — |
+| DEC-0126 | Canonical repository schemas are the single schema authority | — |
+| DEC-0127 | Taxonomy relocation is semantic and runtime neutral | — |
 
-## Internal Structure
+### DEC-0125 — Canonical schema placement is family-first with family-scoped versions
 
-```mermaid
-flowchart TB
-  n_01a00626_c5cd_7064_8a74_e54d0179e4b9["ADR-L-0021<br/>Family-First Schema Contract Taxonomy and Authority"]
-  subgraph sg_decision["decision"]
-    n_01a00627_97d8_73c0_8ef4_f0e87ad8c19b["DEC-0125<br/>Canonical schema placement is family-first with family-scoped versions"]
-    n_01a00627_97d8_7280_81f3_e22a264bc7c3["DEC-0126<br/>Canonical repository schemas are the single schema authority"]
-    n_01a00627_97d8_7528_9748_aaa7df6c2fe2["DEC-0127<br/>Taxonomy relocation is semantic and runtime neutral"]
-  end
-  subgraph sg_invariant["invariant"]
-    n_01a00627_97d8_7e92_a0ca_e572a89fef75["INV-0128"]
-    n_01a00627_97d8_76cd_853b_3e17275c4b76["INV-0129"]
-  end
-  n_01a00627_97d8_7280_81f3_e22a264bc7c3 -->|"declared_in"| n_01a00626_c5cd_7064_8a74_e54d0179e4b9
-  n_01a00627_97d8_73c0_8ef4_f0e87ad8c19b -->|"declared_in"| n_01a00626_c5cd_7064_8a74_e54d0179e4b9
-  n_01a00627_97d8_7528_9748_aaa7df6c2fe2 -->|"declared_in"| n_01a00626_c5cd_7064_8a74_e54d0179e4b9
-  n_01a00627_97d8_76cd_853b_3e17275c4b76 -->|"declared_in"| n_01a00626_c5cd_7064_8a74_e54d0179e4b9
-  n_01a00627_97d8_7e92_a0ca_e572a89fef75 -->|"declared_in"| n_01a00626_c5cd_7064_8a74_e54d0179e4b9
-```
+**Rationale**
 
-- `decision` DEC-0125 — Canonical schema placement is family-first with family-scoped versions
-- `decision` DEC-0126 — Canonical repository schemas are the single schema authority
-- `decision` DEC-0127 — Taxonomy relocation is semantic and runtime neutral
-- `invariant` INV-0128 — INV-0128
-- `invariant` INV-0129 — INV-0129
-
-
-## Decisions
-
-### DEC-0125: Canonical schema placement is family-first with family-scoped versions
-
-**Rationale:**
 Place authoring, architecture-discovery, normalized-model, governance,
 and evidence-attribution contracts beneath their family roots. Preserve
 schema/v1.0 as the sole stable bare numeric compatibility exception, and
 retain kernel/ and migrations/ as special families.
 
+### DEC-0126 — Canonical repository schemas are the single schema authority
 
+**Rationale**
 
-
-### DEC-0126: Canonical repository schemas are the single schema authority
-
-**Rationale:**
 The accepted ADR governs family and version policy; schema/... owns the
 actual contract bytes; README files orient humans. Installed package
 mirrors under src/adr_kit/schema/v*_* are compatibility resources and
 remain independently named. The test inventory fixture is a derived,
 non-authoritative verification snapshot only.
 
+### DEC-0127 — Taxonomy relocation is semantic and runtime neutral
 
+**Rationale**
 
-
-### DEC-0127: Taxonomy relocation is semantic and runtime neutral
-
-**Rationale:**
 Relocation must preserve schema JSON bytes, $id and $ref semantics,
 parser/runtime behavior, SDK and CLI behavior, wheel behavior, package
 version, and ADR corpus. Any production behavior change is outside this
@@ -115,42 +83,82 @@ ADR and is a stop condition.
 
 ## Invariants
 
+| Invariant | Requirement | Enforcement | Verification |
+| --- | --- | --- | --- |
+| INV-0128 | Canonical schema membership and SHA-256 fingerprints are unchanged by taxonomy relocation. | MUST / test | automated |
+| INV-0129 | Every canonical schema artifact has one authoritative repository path and at most one explicit package mirror mapping. | MUST / test | automated |
+
 ### INV-0128
 
-**Statement:** Canonical schema membership and SHA-256 fingerprints are unchanged by taxonomy relocation.  
-**Scope:** global  
-**Enforcement:** must (test)
+**Statement**
 
-**Rationale:**
+Canonical schema membership and SHA-256 fingerprints are unchanged by taxonomy relocation.
+
+**Scope:** global
+
+**Enforcement:** MUST (test)
+**Verification:** automated
+
+**Rationale**
+
 Byte-preserving relocation is required for semantic neutrality.
 
 ### INV-0129
 
-**Statement:** Every canonical schema artifact has one authoritative repository path and at most one explicit package mirror mapping.  
-**Scope:** global  
-**Enforcement:** must (test)
+**Statement**
 
-**Rationale:**
+Every canonical schema artifact has one authoritative repository path and at most one explicit package mirror mapping.
+
+**Scope:** global
+
+**Enforcement:** MUST (test)
+**Verification:** automated
+
+**Rationale**
+
 Authority must not be duplicated by topology or by the verification fixture.
+
+
+
 
 
 ## Constraints
 
-### CONST-0021
+### CONST-0021 — technical
 
 Schema/v1.0 remains at its existing path as the stable compatibility exception.
 
-### CONST-0022
+**Rationale**
+
+Existing authoring consumers rely on the stable v1.0 path.
+
+### CONST-0022 — technical
 
 Package resources remain under src/adr_kit/schema/v*_* and are not relocated.
 
-### CONST-0023
+**Rationale**
+
+Installed resource namespaces are an independent compatibility surface.
+
+### CONST-0023 — technical
 
 No new bare root version directory may be introduced.
 
-### CONST-0024
+**Rationale**
+
+Family-first placement prevents version-only taxonomy ambiguity.
+
+### CONST-0024 — regulatory
 
 The taxonomy inventory fixture is verification data, never semantic authority.
+
+**Rationale**
+
+Canonical schema bytes and the accepted ADR retain authority.
+
+
+
+
 
 
 

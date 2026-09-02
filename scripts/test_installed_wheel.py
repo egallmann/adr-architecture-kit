@@ -13,6 +13,10 @@ from collections.abc import Sequence
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
+EXTERNAL_CONSUMER_PROJECT_YAML = (
+    ROOT / "tests" / "fixtures" / "external-consumer-sdk" / "PROJECT.yaml"
+)
+LOGICAL_ADR_SOURCE = ROOT / "tests" / "fixtures" / "valid" / "logical-minimal.yaml"
 PROBES = (
     "imports",
     "cli",
@@ -214,6 +218,15 @@ assert all(item['assertion_id'].startswith('asrt-') for item in relationships['r
 """
 
 
+def _materialize_external_consumer_fixture(destination: Path) -> Path:
+    project_root = destination / "fixture"
+    logical = project_root / "adrs" / "logical"
+    logical.mkdir(parents=True, exist_ok=True)
+    shutil.copy2(EXTERNAL_CONSUMER_PROJECT_YAML, project_root / "PROJECT.yaml")
+    shutil.copy2(LOGICAL_ADR_SOURCE, logical / "ADR-L-9999-minimal.yaml")
+    return project_root
+
+
 def _venv_paths(environment: Path) -> tuple[Path, Path, Path]:
     if os.name == "nt":
         scripts = environment / "Scripts"
@@ -242,13 +255,7 @@ def run_harness(wheel: Path, python: Path) -> None:
 
         _run([str(pip), "install", str(wheel)], root, isolated_environment)
         consumer = root / "consumer"
-        fixture = consumer / "fixture"
-        (fixture / "adrs" / "logical").mkdir(parents=True)
-        shutil.copy2(ROOT / "PROJECT.yaml", fixture / "PROJECT.yaml")
-        shutil.copy2(
-            ROOT / "tests" / "fixtures" / "valid" / "logical-minimal.yaml",
-            fixture / "adrs" / "logical" / "ADR-L-9999-minimal.yaml",
-        )
+        fixture = _materialize_external_consumer_fixture(consumer)
         fixture_sources = (
             ("logical-bindings.yaml", "logical", "ADR-L-9801-bindings.yaml"),
             (

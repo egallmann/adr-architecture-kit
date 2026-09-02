@@ -1,4 +1,5 @@
 contracts/compatibility/*.json text eol=lf
+src/adr_kit/compatibility/*.json text eol=lf
 tests/golden/expected/*.yaml text eol=lf
 schema/v1.0/*.json text eol=lf
 src/adr_kit/schema/v1_0/*.json text eol=lf

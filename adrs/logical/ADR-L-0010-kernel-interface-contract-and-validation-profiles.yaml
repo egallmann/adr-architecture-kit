@@ -1,4 +1,4 @@
-schema_version: '1.3'
+schema_version: '1.5'
 adr_type: logical
 id: 019fee89-e616-7d61-8e35-f11ba2ddd75d
 title: Kernel Interface Contract and Validation Profiles
@@ -290,7 +290,7 @@ related_adrs:
 - 019fee89-e616-770c-a025-2c241a720730
 - 019fee89-e616-744f-b63e-5ecddf344faa
 - 019fee89-e616-7c4e-953c-b7349412a784
-- 019fee89-e618-79ed-9d2d-cc35c63bc99a
+- 019fee89-e618-7d04-9337-4aa2d3258507
 - 019fee89-e617-7270-ab2f-58a756d2530e
 gaps: []
 migration_origin:

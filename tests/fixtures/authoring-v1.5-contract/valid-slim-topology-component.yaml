@@ -1,0 +1,29 @@
+schema_version: "1.5"
+adr_type: physical-system
+id: "019109a0-b1c2-7def-8a00-112233445566"
+alias_id: ADR-PS-0001
+alias_name: valid-slim-topology
+title: "Valid PS ADR with slim topology component"
+status: proposed
+created_date: "2026-08-28"
+authors:
+  - test.author
+implements_logical:
+  - "019109a0-b1c2-7def-8a00-aabbccddeef0"
+context: |
+  Physical-system ADR with slim topology component record.
+technology_stack:
+  - category: language
+    name: Python
+    version: "3.12"
+    rationale: Test fixture.
+system:
+  id: "019109a0-b1c2-7def-8a00-223344556677"
+  alias_id: SYS-0001
+  alias_name: test-system
+component_topology:
+  components:
+    - id: TOPO-0001
+      component_ref: "019109a0-b1c2-7def-8a00-334455667788"
+      purpose: Accept and route requests in this system context.
+  relationships: []

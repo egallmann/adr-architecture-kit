@@ -1,0 +1,39 @@
+schema_version: "1.5"
+adr_type: physical-system
+id: "019209b0-c2d3-7e00-8000-000000000012"
+alias_id: ADR-PS-9102
+alias_name: optional-physical-system
+title: "Optional Physical System"
+status: accepted
+created_date: "2026-08-30"
+authors:
+  - fixture.author
+implements_logical:
+  - "019209b0-c2d3-7e00-8000-000000000001"
+context: |
+  Optional ADR-PS fixture used to prove absent sections disappear.
+technology_stack:
+  - category: language
+    name: Python
+    version: ">=3.14"
+    rationale: Fixture language choice.
+system:
+  id: "019209b0-c2d3-7e00-8000-000000000013"
+  alias_id: SYS-9102
+  alias_name: optional-physical-system
+  name: Optional Physical System
+system_boundaries:
+  - id: SYSBOUND-9103
+    name: Optional Fixture Boundary
+    description: BOUNDARY_DESC_OPTIONAL
+    external_dependencies:
+      - EXT_DEP_OPTIONAL
+    exposed_interfaces:
+      - EXPOSED_IFACE_OPTIONAL
+component_topology:
+  components:
+    - id: TOPO-9107
+      component_ref: "019209b0-c2d3-7e00-8000-000000000037"
+      purpose: PURPOSE_OPTIONAL lone member
+  relationships: []
+gaps: []

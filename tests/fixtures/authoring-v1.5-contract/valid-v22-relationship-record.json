@@ -1,0 +1,15 @@
+{
+  "record_kind": "compatibility",
+  "relationship_id": "depends_on:019109a0-b1c2-7def-8a00-334455667788:019109a0-b1c2-7def-8a00-445566778899",
+  "assertion_id": "asrt-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  "relationship_type": "depends_on",
+  "from_entity_id": "019109a0-b1c2-7def-8a00-334455667788",
+  "to_entity_id": "019109a0-b1c2-7def-8a00-445566778899",
+  "provenance_classification": "explicit",
+  "canonical_source_ref": "adr://physical-system/ADR-PS-0002",
+  "confidence": 1.0,
+  "metadata": {
+    "protocol": "grpc",
+    "description": "Worker depends on gateway"
+  }
+}

@@ -1,0 +1,47 @@
+schema_version: "1.5"
+adr_type: physical-component
+id: "019209a0-b1c2-7def-8a00-000000000004"
+alias_id: ADR-PC-9001
+alias_name: l-projection-component
+title: "L Projection Physical Component"
+status: accepted
+created_date: "2026-08-29"
+authors:
+  - fixture.author
+domains:
+  - projection-fixture
+technologies:
+  - python
+implements_logical:
+  - "019209a0-b1c2-7def-8a00-000000000001"
+implements_system:
+  - "019209a0-b1c2-7def-8a00-000000000003"
+context: |
+  Physical component realizing capability alpha for the maximal logical fixture.
+technology_stack:
+  - category: language
+    name: Python
+    version: ">=3.14"
+    rationale: Fixture language choice.
+component_specifications:
+  - id: "019209a0-b1c2-7def-8a00-000000000050"
+    alias_id: COMP-9001
+    alias_name: alpha-component
+    name: Alpha Component
+    type: service
+    description: Implements CAP-9001 for the logical fixture.
+    responsibilities: |
+      Implement CAP-9001 for the logical projection fixture.
+    generation_context:
+      purpose: Realize alpha capability for ADR-L-9001.
+      key_responsibilities:
+        - Serve CAP-9001
+    interfaces:
+      - id: "019209a0-b1c2-7def-8a00-000000000051"
+        alias_id: IFACE-9001
+        alias_name: alpha-api
+        type: library_api
+        specification: |
+          - open_fixture
+    implements_capabilities:
+      - "019209a0-b1c2-7def-8a00-000000000040"

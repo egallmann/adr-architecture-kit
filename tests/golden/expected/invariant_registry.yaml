@@ -1,4 +1,4 @@
-schema_version: '2.0'
+schema_version: '2.2'
 type: normalized_entity_registry
 entities:
 - id: 019fee89-e615-701c-8e3e-d463d56f89ce
@@ -12,7 +12,7 @@ entities:
     installed-distribution versions wherever distribution metadata exis
   uri: adr://adr-architecture-kit/entities/019fee89-e615-701c-8e3e-d463d56f89ce
   created_at: '2026-08-11T01:57:22.581Z'
-  entity_fingerprint: sha256:fd3381320532448785f37f4d8a2435550cc7f3787fe06e52d92ed7900bf4ffae
+  entity_fingerprint: sha256:b8601767f1968bdb908982e36d0d1ea156a318a7278cc0bb66daec43cd053265
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -57,7 +57,14 @@ entities:
     superseded_by: []
     refines: []
     provides_interface: []
+    consumes_interface: []
     composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
     binds_substrate: []
     binds_rule: []
     expects_evidence: []
@@ -70,6 +77,7 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 019fee89-e615-70ae-af3e-bd510f15d321
   alias_id: INV-0098
   alias_name: inv-0098
@@ -80,7 +88,7 @@ entities:
     and must not implicitly merge architecture state across scopes.
   uri: adr://adr-architecture-kit/entities/019fee89-e615-70ae-af3e-bd510f15d321
   created_at: '2026-08-11T01:57:22.581Z'
-  entity_fingerprint: sha256:5208c20f6693b4d5e47fff6be5f961f704da6e801c5c2ddeb9fb6a6bbf3b82bc
+  entity_fingerprint: sha256:70c3475b33455383f73be35485c46a5990bea8f833777c061488bc8509581600
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -115,7 +123,14 @@ entities:
     superseded_by: []
     refines: []
     provides_interface: []
+    consumes_interface: []
     composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
     binds_substrate: []
     binds_rule: []
     expects_evidence: []
@@ -128,6 +143,7 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 019fee89-e615-70fd-9622-a4e35697ad39
   alias_id: INV-0034
   alias_name: inv-0034
@@ -137,7 +153,7 @@ entities:
   summary: rule-library MUST support file-based rule and signal handling
   uri: adr://adr-architecture-kit/entities/019fee89-e615-70fd-9622-a4e35697ad39
   created_at: '2026-08-11T01:57:22.581Z'
-  entity_fingerprint: sha256:242db4815f15449eac5ae1d6c23d064329d4ae43309e03671886a4095c69adb8
+  entity_fingerprint: sha256:f1d3c5f47ec74c1e58b1be3f0e6f29a79ead5215d018a7104a8744d8e877db82
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -173,7 +189,14 @@ entities:
     superseded_by: []
     refines: []
     provides_interface: []
+    consumes_interface: []
     composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
     binds_substrate: []
     binds_rule: []
     expects_evidence: []
@@ -186,6 +209,7 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 019fee89-e615-7129-ac3e-8120e0d7c106
   alias_id: INV-0027
   alias_name: inv-0027
@@ -197,7 +221,7 @@ entities:
     metadata-level attribution mechanism; equivalent semantic decla
   uri: adr://adr-architecture-kit/entities/019fee89-e615-7129-ac3e-8120e0d7c106
   created_at: '2026-08-11T01:57:22.581Z'
-  entity_fingerprint: sha256:e4155ebd1db096af8561ed77273d0e84691b342ed98a6a448663e1e66dbd62af
+  entity_fingerprint: sha256:d51653f12ca8e14aecdb572a4a3ae12ddcf18231cdbd02e088d940e721effe48
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -241,7 +265,14 @@ entities:
     superseded_by: []
     refines: []
     provides_interface: []
+    consumes_interface: []
     composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
     binds_substrate: []
     binds_rule: []
     expects_evidence: []
@@ -254,6 +285,7 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 019fee89-e615-713e-b627-2ee4bf985295
   alias_id: INV-0001
   alias_name: inv-0001
@@ -263,7 +295,7 @@ entities:
   summary: All ADRs must validate against JSON Schema before commit
   uri: adr://adr-architecture-kit/entities/019fee89-e615-713e-b627-2ee4bf985295
   created_at: '2026-08-11T01:57:22.581Z'
-  entity_fingerprint: sha256:a93a45a2b889b96a76cdb45b29a3ea22e05d3c27e16cb80f3322e8ef0a62a0f4
+  entity_fingerprint: sha256:b784f95bacf34bb01e03bee3cd39db9f1b041712969d43178114917e8f946299
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -297,7 +329,14 @@ entities:
     superseded_by: []
     refines: []
     provides_interface: []
+    consumes_interface: []
     composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
     binds_substrate: []
     binds_rule: []
     expects_evidence: []
@@ -310,6 +349,7 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 019fee89-e615-7169-8a2e-9192ab77b526
   alias_id: INV-0019
   alias_name: inv-0019
@@ -320,7 +360,7 @@ entities:
     when --recursive flag is provided
   uri: adr://adr-architecture-kit/entities/019fee89-e615-7169-8a2e-9192ab77b526
   created_at: '2026-08-11T01:57:22.581Z'
-  entity_fingerprint: sha256:055629e4be9975f693daad14864f1d17af298a22235d911e08a824bddbb382c5
+  entity_fingerprint: sha256:700ba6e0dc55c2daf2d8eb7ef4867edd47d17082fadeab43417c23aa9c76ab3f
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -358,7 +398,14 @@ entities:
     superseded_by: []
     refines: []
     provides_interface: []
+    consumes_interface: []
     composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
     binds_substrate: []
     binds_rule: []
     expects_evidence: []
@@ -371,6 +418,7 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 019fee89-e615-71bc-a727-e0403c74783d
   alias_id: INV-0036
   alias_name: inv-0036
@@ -381,7 +429,7 @@ entities:
     validation_ready types
   uri: adr://adr-architecture-kit/entities/019fee89-e615-71bc-a727-e0403c74783d
   created_at: '2026-08-11T01:57:22.581Z'
-  entity_fingerprint: sha256:85056c3b5bc0a177b411600f77546a25dd0f377e8fff0e119bf4f4d3c5f96ae4
+  entity_fingerprint: sha256:94dc8e50431b8137009b22a114fd184c4e680c33b19e3d1c697e6fbdce5cf703
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -419,7 +467,14 @@ entities:
     superseded_by: []
     refines: []
     provides_interface: []
+    consumes_interface: []
     composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
     binds_substrate: []
     binds_rule: []
     expects_evidence: []
@@ -432,6 +487,7 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 019fee89-e615-7235-8135-9a274f82afc8
   alias_id: INV-0083
   alias_name: inv-0083
@@ -443,7 +499,7 @@ entities:
     GitHub repository-relative rendering: same-document anchors, abs'
   uri: adr://adr-architecture-kit/entities/019fee89-e615-7235-8135-9a274f82afc8
   created_at: '2026-08-11T01:57:22.581Z'
-  entity_fingerprint: sha256:d677c70750061d5e77b7c792d001d091243feaa65de5c56f2d09a00a88522c9e
+  entity_fingerprint: sha256:752661f86b03f595fd451f826250003b753ded33f89474375e03facdc829fb6a
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -489,7 +545,14 @@ entities:
     superseded_by: []
     refines: []
     provides_interface: []
+    consumes_interface: []
     composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
     binds_substrate: []
     binds_rule: []
     expects_evidence: []
@@ -502,6 +565,7 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 019fee89-e615-7287-b737-ec91d4115b04
   alias_id: INV-0006
   alias_name: inv-0006
@@ -511,7 +575,7 @@ entities:
   summary: Schema changes must be documented in ADRs before implementation
   uri: adr://adr-architecture-kit/entities/019fee89-e615-7287-b737-ec91d4115b04
   created_at: '2026-08-11T01:57:22.581Z'
-  entity_fingerprint: sha256:50f44c602bf916cc17bdae71e230dc368c3197b946d2d2d8bcddd7417db08420
+  entity_fingerprint: sha256:a949904b730c582bb8289f1aa0cf3a41ecfc40da2bbf805c9291f23fc58c03bb
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -545,7 +609,14 @@ entities:
     superseded_by: []
     refines: []
     provides_interface: []
+    consumes_interface: []
     composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
     binds_substrate: []
     binds_rule: []
     expects_evidence: []
@@ -558,6 +629,7 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 019fee89-e615-7288-b21b-9452d0e7faef
   alias_id: INV-0032
   alias_name: inv-0032
@@ -568,7 +640,7 @@ entities:
     attribution contracts rather than redefining them independently
   uri: adr://adr-architecture-kit/entities/019fee89-e615-7288-b21b-9452d0e7faef
   created_at: '2026-08-11T01:57:22.581Z'
-  entity_fingerprint: sha256:6e9e4e3d10612dfc45a3e9a2d6102b558d2272f495b94a8080992e6474b17a10
+  entity_fingerprint: sha256:19fb6cc8ac4c25dd72428deba3e9a32d2d0216da1816c8adc43a4871c3e12895
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -606,7 +678,14 @@ entities:
     superseded_by: []
     refines: []
     provides_interface: []
+    consumes_interface: []
     composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
     binds_substrate: []
     binds_rule: []
     expects_evidence: []
@@ -619,6 +698,7 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 019fee89-e615-729d-873d-f2bf925d1846
   alias_id: INV-0022
   alias_name: inv-0022
@@ -630,7 +710,7 @@ entities:
     (security) - Parent-child relationships'
   uri: adr://adr-architecture-kit/entities/019fee89-e615-729d-873d-f2bf925d1846
   created_at: '2026-08-11T01:57:22.581Z'
-  entity_fingerprint: sha256:daed80a0c743b454df832958a09fa14221715a192612ec2bbf2cd10a1aca5305
+  entity_fingerprint: sha256:663e2615946948b8ac7d6a2cd7b81539547fd7c4b47651fa24d675e8db04276b
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -674,7 +754,14 @@ entities:
     superseded_by: []
     refines: []
     provides_interface: []
+    consumes_interface: []
     composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
     binds_substrate: []
     binds_rule: []
     expects_evidence: []
@@ -687,6 +774,7 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 019fee89-e615-72db-8f32-3888e597d5c3
   alias_id: INV-0028
   alias_name: inv-0028
@@ -697,7 +785,7 @@ entities:
     references to superseded ADRs MUST be surfaced as governance warnings
   uri: adr://adr-architecture-kit/entities/019fee89-e615-72db-8f32-3888e597d5c3
   created_at: '2026-08-11T01:57:22.581Z'
-  entity_fingerprint: sha256:49a69c7aea2fc868357e0ba9b548c35b323c7ebb29ad6b8ea2253b8d13d7213d
+  entity_fingerprint: sha256:ad6cf2f379728baae72f0c9de7e1caf17206d665fd5e0661430a5b48352ea043
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -736,7 +824,14 @@ entities:
     superseded_by: []
     refines: []
     provides_interface: []
+    consumes_interface: []
     composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
     binds_substrate: []
     binds_rule: []
     expects_evidence: []
@@ -749,6 +844,7 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 019fee89-e615-7361-b717-6a0aae8df756
   alias_id: INV-0031
   alias_name: inv-0031
@@ -760,7 +856,7 @@ entities:
     for downstream repositories
   uri: adr://adr-architecture-kit/entities/019fee89-e615-7361-b717-6a0aae8df756
   created_at: '2026-08-11T01:57:22.581Z'
-  entity_fingerprint: sha256:a736feab2dab0d1d9632af9e21cd95778332bf3a93d418790056b52e8287b947
+  entity_fingerprint: sha256:d4cf92f1cf4fe002bee163f70bef8caf745e483eca5c18ebe37ad47a715b0091
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -800,7 +896,14 @@ entities:
     superseded_by: []
     refines: []
     provides_interface: []
+    consumes_interface: []
     composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
     binds_substrate: []
     binds_rule: []
     expects_evidence: []
@@ -813,6 +916,7 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 019fee89-e615-7478-ab17-36426863f751
   alias_id: INV-0015
   alias_name: inv-0015
@@ -824,7 +928,7 @@ entities:
     or parent directories 3. Standard project markers (package.json, '
   uri: adr://adr-architecture-kit/entities/019fee89-e615-7478-ab17-36426863f751
   created_at: '2026-08-11T01:57:22.581Z'
-  entity_fingerprint: sha256:5f315e28e80abbc56f3ed811eb255b72876413a4ca98b788badd5ecba3e27e97
+  entity_fingerprint: sha256:a485988aae9d84b69a38bf716be191ff68d5581c46e73fe43ea5d6f18aee4b12
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -868,7 +972,14 @@ entities:
     superseded_by: []
     refines: []
     provides_interface: []
+    consumes_interface: []
     composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
     binds_substrate: []
     binds_rule: []
     expects_evidence: []
@@ -881,6 +992,7 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 019fee89-e615-74af-a113-f1a7a9e5d49e
   alias_id: INV-0072
   alias_name: inv-0072
@@ -892,7 +1004,7 @@ entities:
     exercise both a source installation and the exact retained whee
   uri: adr://adr-architecture-kit/entities/019fee89-e615-74af-a113-f1a7a9e5d49e
   created_at: '2026-08-11T01:57:22.581Z'
-  entity_fingerprint: sha256:f0ab20cb4a1578864a6f0872af6dde05afbc2a728ca6960f92052e2872138b43
+  entity_fingerprint: sha256:dd9ef0e0f99387b90bb2ac2bae5ecc5ec09ca928b228ac82477887060b52f070
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -935,7 +1047,14 @@ entities:
     superseded_by: []
     refines: []
     provides_interface: []
+    consumes_interface: []
     composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
     binds_substrate: []
     binds_rule: []
     expects_evidence: []
@@ -948,6 +1067,7 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 019fee89-e615-74c8-a813-5f18ee19f9a8
   alias_id: INV-0021
   alias_name: inv-0021
@@ -959,7 +1079,7 @@ entities:
     (empty fields, special characters, etc.)'
   uri: adr://adr-architecture-kit/entities/019fee89-e615-74c8-a813-5f18ee19f9a8
   created_at: '2026-08-11T01:57:22.581Z'
-  entity_fingerprint: sha256:a4088e10aa79d7c31d1a719a6ac71935e33b1c30aeca5ce368245d87a642b137
+  entity_fingerprint: sha256:677ca306ada7d49a05dc721196fa3fbb1986d8db297217ed7c4d1c05223ac2d9
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -1001,7 +1121,14 @@ entities:
     superseded_by: []
     refines: []
     provides_interface: []
+    consumes_interface: []
     composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
     binds_substrate: []
     binds_rule: []
     expects_evidence: []
@@ -1014,6 +1141,7 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 019fee89-e615-74f0-9826-fcaa4052cfdc
   alias_id: INV-0095
   alias_name: inv-0095
@@ -1024,7 +1152,7 @@ entities:
     MUST be audited for vulnerabilities and upgrade freshness
   uri: adr://adr-architecture-kit/entities/019fee89-e615-74f0-9826-fcaa4052cfdc
   created_at: '2026-08-11T01:57:22.581Z'
-  entity_fingerprint: sha256:013b00e553fa710d5c6e1fe37dfde9da388986d08c15c3968a635371ba21b957
+  entity_fingerprint: sha256:534db4ca7128a616967e7782451ff6aa86de26b3e89133f159cc91200f951318
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -1059,7 +1187,14 @@ entities:
     superseded_by: []
     refines: []
     provides_interface: []
+    consumes_interface: []
     composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
     binds_substrate: []
     binds_rule: []
     expects_evidence: []
@@ -1072,6 +1207,7 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 019fee89-e615-7502-a52f-af65757c9fd2
   alias_id: INV-0007
   alias_name: inv-0007
@@ -1081,7 +1217,7 @@ entities:
   summary: Schema evolution must maintain backward compatibility unless major version
   uri: adr://adr-architecture-kit/entities/019fee89-e615-7502-a52f-af65757c9fd2
   created_at: '2026-08-11T01:57:22.581Z'
-  entity_fingerprint: sha256:d7f28f7d29def518361deed3352f2fd4bf0e424e2e6e7cf83248e78338abf0d9
+  entity_fingerprint: sha256:4de78cf6a93b594034957d13c76900402d15284a2eee33990835ce661ce22c4c
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -1116,7 +1252,14 @@ entities:
     superseded_by: []
     refines: []
     provides_interface: []
+    consumes_interface: []
     composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
     binds_substrate: []
     binds_rule: []
     expects_evidence: []
@@ -1129,6 +1272,7 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 019fee89-e615-7519-972f-504bac832107
   alias_id: INV-0073
   alias_name: inv-0073
@@ -1140,7 +1284,7 @@ entities:
     hashes, package version, source commit, and `v<version>` tag MUST b
   uri: adr://adr-architecture-kit/entities/019fee89-e615-7519-972f-504bac832107
   created_at: '2026-08-11T01:57:22.581Z'
-  entity_fingerprint: sha256:fe4b4fa1261d501487cb9bb2437e18af1b22d99b80a253fd3f948601cc2b4ec2
+  entity_fingerprint: sha256:5d5228c75a1dcfc20ec1f09e91d09cd73f4de3f93c6b30ecb7ca88955d166f6f
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -1200,7 +1344,14 @@ entities:
     superseded_by: []
     refines: []
     provides_interface: []
+    consumes_interface: []
     composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
     binds_substrate: []
     binds_rule: []
     expects_evidence: []
@@ -1213,6 +1364,7 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 019fee89-e615-755a-af33-7d2524161a7a
   alias_id: INV-0047
   alias_name: inv-0047
@@ -1223,7 +1375,7 @@ entities:
     definitions (methods, parameters, return types)
   uri: adr://adr-architecture-kit/entities/019fee89-e615-755a-af33-7d2524161a7a
   created_at: '2026-08-11T01:57:22.581Z'
-  entity_fingerprint: sha256:e2a21ef0563cb9c33ec5c7f1289537340332f087b62dcd4cf70f3e885d02b8f9
+  entity_fingerprint: sha256:69b490bd97e06ba3848dfcfc072a9b16deaea287ff912a1156518be17d96d63a
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -1261,7 +1413,14 @@ entities:
     superseded_by: []
     refines: []
     provides_interface: []
+    consumes_interface: []
     composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
     binds_substrate: []
     binds_rule: []
     expects_evidence: []
@@ -1274,6 +1433,7 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 019fee89-e615-7572-b71e-6720464e70af
   alias_id: INV-0049
   alias_name: inv-0049
@@ -1283,7 +1443,7 @@ entities:
   summary: Generated prompts MUST include test requirements from the ADR
   uri: adr://adr-architecture-kit/entities/019fee89-e615-7572-b71e-6720464e70af
   created_at: '2026-08-11T01:57:22.581Z'
-  entity_fingerprint: sha256:0edc623370da5d709f26088d3b6d4fcde9596bd7c7fdffc09c07af25e5a644e1
+  entity_fingerprint: sha256:baae34d3bb96715b37f99a33b4419ed37d0fc4b35e115c9b584dc39169d28cc0
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -1319,7 +1479,14 @@ entities:
     superseded_by: []
     refines: []
     provides_interface: []
+    consumes_interface: []
     composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
     binds_substrate: []
     binds_rule: []
     expects_evidence: []
@@ -1332,6 +1499,7 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 019fee89-e615-758b-a31f-a0dcb8d9d09a
   alias_id: INV-0023
   alias_name: inv-0023
@@ -1341,7 +1509,7 @@ entities:
   summary: Test suite MUST complete in under 30 seconds for fast feedback
   uri: adr://adr-architecture-kit/entities/019fee89-e615-758b-a31f-a0dcb8d9d09a
   created_at: '2026-08-11T01:57:22.581Z'
-  entity_fingerprint: sha256:0f02d6bcd111d54ba5a4161df1bc0719bc8a649a79e0ff3b8a8d34fb8d6bf125
+  entity_fingerprint: sha256:17d1a5f4c52158a41a3a32804d45b64fb1a659d2304257314b23860b9181caeb
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -1377,7 +1545,14 @@ entities:
     superseded_by: []
     refines: []
     provides_interface: []
+    consumes_interface: []
     composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
     binds_substrate: []
     binds_rule: []
     expects_evidence: []
@@ -1390,6 +1565,7 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 019fee89-e615-75c7-aa3f-b6489db09c24
   alias_id: INV-0029
   alias_name: inv-0029
@@ -1400,7 +1576,7 @@ entities:
     the source artifact and extractor responsible for the claim
   uri: adr://adr-architecture-kit/entities/019fee89-e615-75c7-aa3f-b6489db09c24
   created_at: '2026-08-11T01:57:22.581Z'
-  entity_fingerprint: sha256:8d022bbb44734932b140d94b91f02e62ae40d20b2705937887e3a31e95cca372
+  entity_fingerprint: sha256:57d7443aad13c27946f73b260e718b45d9daee0b1bdd54a5b93e5a67ab5c3b0b
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -1438,7 +1614,14 @@ entities:
     superseded_by: []
     refines: []
     provides_interface: []
+    consumes_interface: []
     composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
     binds_substrate: []
     binds_rule: []
     expects_evidence: []
@@ -1451,6 +1634,7 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 019fee89-e615-75e2-a33f-645d3f0970a1
   alias_id: INV-0025
   alias_name: inv-0025
@@ -1460,7 +1644,7 @@ entities:
   summary: Breaking changes to public APIs MUST be detected by tests
   uri: adr://adr-architecture-kit/entities/019fee89-e615-75e2-a33f-645d3f0970a1
   created_at: '2026-08-11T01:57:22.581Z'
-  entity_fingerprint: sha256:8d00a64d9d04c649d2bbb8af9b855aa36701dcc804fe3ba75d0c5bc60fcc52db
+  entity_fingerprint: sha256:58f891b4ec725eee2f9a028e451733898a1c13b4e5769806148d37d8712f5fdf
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -1496,7 +1680,14 @@ entities:
     superseded_by: []
     refines: []
     provides_interface: []
+    consumes_interface: []
     composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
     binds_substrate: []
     binds_rule: []
     expects_evidence: []
@@ -1509,6 +1700,7 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 019fee89-e615-7602-8d3e-153b2a57947d
   alias_id: INV-0035
   alias_name: inv-0035
@@ -1518,7 +1710,7 @@ entities:
   summary: rule-library MUST NOT self-govern; it is governed by ADRs
   uri: adr://adr-architecture-kit/entities/019fee89-e615-7602-8d3e-153b2a57947d
   created_at: '2026-08-11T01:57:22.581Z'
-  entity_fingerprint: sha256:63a3683390e806a137dea7aeb90114a8c288767e41b3cab44b9fdca9ff5634cc
+  entity_fingerprint: sha256:7e533bb3bc2141b142558a971fcdf69fe6d02475164c4024445b5e8f4b41b593
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -1554,7 +1746,14 @@ entities:
     superseded_by: []
     refines: []
     provides_interface: []
+    consumes_interface: []
     composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
     binds_substrate: []
     binds_rule: []
     expects_evidence: []
@@ -1567,6 +1766,7 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 019fee89-e615-7603-ab3f-2ec4a655831c
   alias_id: INV-0051
   alias_name: inv-0051
@@ -1577,7 +1777,7 @@ entities:
     same prompt output
   uri: adr://adr-architecture-kit/entities/019fee89-e615-7603-ab3f-2ec4a655831c
   created_at: '2026-08-11T01:57:22.581Z'
-  entity_fingerprint: sha256:ed4c5461f215ddbd666c556d60f8ebab1dc72c302a485e6bad189cbcd101797d
+  entity_fingerprint: sha256:0d6d3297d7bf584075a73e9f6e214dc863a8b94fc3a436a34f0960531c1397a0
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -1615,7 +1815,14 @@ entities:
     superseded_by: []
     refines: []
     provides_interface: []
+    consumes_interface: []
     composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
     binds_substrate: []
     binds_rule: []
     expects_evidence: []
@@ -1628,6 +1835,7 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 019fee89-e615-7688-953b-19e6aae687a4
   alias_id: INV-0033
   alias_name: inv-0033
@@ -1637,7 +1845,7 @@ entities:
   summary: rule-library MUST define canonical schema for cooperative signals
   uri: adr://adr-architecture-kit/entities/019fee89-e615-7688-953b-19e6aae687a4
   created_at: '2026-08-11T01:57:22.581Z'
-  entity_fingerprint: sha256:d45870f9f3f75be0789509c164ccf091ff9df831517ebb2fca13776a0364548e
+  entity_fingerprint: sha256:c2611aa30a345e5e86fe0e091b734cefefeedd1fb79b18c4397fc518c0f8fbef
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -1673,7 +1881,14 @@ entities:
     superseded_by: []
     refines: []
     provides_interface: []
+    consumes_interface: []
     composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
     binds_substrate: []
     binds_rule: []
     expects_evidence: []
@@ -1686,6 +1901,7 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 019fee89-e615-76c9-932b-d2c94632b373
   alias_id: INV-0004
   alias_name: inv-0004
@@ -1695,7 +1911,7 @@ entities:
   summary: Manifest must be regenerated when ADRs change
   uri: adr://adr-architecture-kit/entities/019fee89-e615-76c9-932b-d2c94632b373
   created_at: '2026-08-11T01:57:22.581Z'
-  entity_fingerprint: sha256:8a120989a6b8e3b5b8d229754a0f39fe468b9c9a94cd15f2e659a7e9f62d9f8b
+  entity_fingerprint: sha256:0fa0f29e211893d6ca0c923e71de623fedaaf5f818caed8dac55aa7a573a1530
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -1729,7 +1945,14 @@ entities:
     superseded_by: []
     refines: []
     provides_interface: []
+    consumes_interface: []
     composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
     binds_substrate: []
     binds_rule: []
     expects_evidence: []
@@ -1742,6 +1965,7 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 019fee89-e615-7871-b719-23a5128874ae
   alias_id: INV-0024
   alias_name: inv-0024
@@ -1751,7 +1975,7 @@ entities:
   summary: Tests MUST be deterministic - same input always produces same output
   uri: adr://adr-architecture-kit/entities/019fee89-e615-7871-b719-23a5128874ae
   created_at: '2026-08-11T01:57:22.581Z'
-  entity_fingerprint: sha256:4371fc72c3b135c07e01d32329847c257e74cc473aa7eae00929ba493d9e6deb
+  entity_fingerprint: sha256:6b0a49986fa7c5989c670dcb7ef7da3abe649eef49c4a77d1e22c5fa1b738362
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -1787,7 +2011,14 @@ entities:
     superseded_by: []
     refines: []
     provides_interface: []
+    consumes_interface: []
     composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
     binds_substrate: []
     binds_rule: []
     expects_evidence: []
@@ -1800,6 +2031,7 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 019fee89-e615-7911-ac25-c8772b55ffbb
   alias_id: INV-0016
   alias_name: inv-0016
@@ -1809,7 +2041,7 @@ entities:
   summary: Each project scope MUST maintain its own adrs/ directory and manifest.yaml
   uri: adr://adr-architecture-kit/entities/019fee89-e615-7911-ac25-c8772b55ffbb
   created_at: '2026-08-11T01:57:22.581Z'
-  entity_fingerprint: sha256:50710e1b8e879c480e69df992c52cb6b0e6c5deff12dd33f9f20b3a34d2f8de9
+  entity_fingerprint: sha256:5b137cb12d6ced38a27f713cb7833207bb6d2091bcb0b933a109cad74b72f551
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -1845,7 +2077,14 @@ entities:
     superseded_by: []
     refines: []
     provides_interface: []
+    consumes_interface: []
     composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
     binds_substrate: []
     binds_rule: []
     expects_evidence: []
@@ -1858,6 +2097,7 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 019fee89-e615-792a-aa3e-a9f0f34c1b93
   alias_id: INV-0096
   alias_name: inv-0096
@@ -1868,7 +2108,7 @@ entities:
     rather than accumulated indefinitely.
   uri: adr://adr-architecture-kit/entities/019fee89-e615-792a-aa3e-a9f0f34c1b93
   created_at: '2026-08-11T01:57:22.581Z'
-  entity_fingerprint: sha256:ed1e40d3e0cf5510d5cf8073bce30e851278aa9782330ba6d5f2fc65e4cf284e
+  entity_fingerprint: sha256:1d56a67cc1f1d0dce9933c55338c1c032abf15680f709c873ea021c1ce3bbfae
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -1903,7 +2143,14 @@ entities:
     superseded_by: []
     refines: []
     provides_interface: []
+    consumes_interface: []
     composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
     binds_substrate: []
     binds_rule: []
     expects_evidence: []
@@ -1916,6 +2163,7 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 019fee89-e615-798a-9837-f96eab766747
   alias_id: INV-0003
   alias_name: inv-0003
@@ -1925,7 +2173,7 @@ entities:
   summary: Physical ADRs must reference at least one logical ADR
   uri: adr://adr-architecture-kit/entities/019fee89-e615-798a-9837-f96eab766747
   created_at: '2026-08-11T01:57:22.581Z'
-  entity_fingerprint: sha256:0b40527936828321b3023b5c349997e62d378143ee1fd1b27fce31c6f63c1e92
+  entity_fingerprint: sha256:bdd6756a4c8af607b337fb49aacccc77b34b5927f6ac265d96a89ef4c52703e5
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -1959,7 +2207,14 @@ entities:
     superseded_by: []
     refines: []
     provides_interface: []
+    consumes_interface: []
     composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
     binds_substrate: []
     binds_rule: []
     expects_evidence: []
@@ -1972,6 +2227,7 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 019fee89-e615-7a08-8b0f-d2b2ed57eacb
   alias_id: INV-0026
   alias_name: inv-0026
@@ -1982,7 +2238,7 @@ entities:
     for critical components (parsers, validators, generators)
   uri: adr://adr-architecture-kit/entities/019fee89-e615-7a08-8b0f-d2b2ed57eacb
   created_at: '2026-08-11T01:57:22.581Z'
-  entity_fingerprint: sha256:597f1c31042a4effb490c7ffd569031ed29ddb8799da761b4e92c551f7f9cc8d
+  entity_fingerprint: sha256:0d831c780363b3e127d8fa5d320789fad838483659a08d1646e72bee937dcccb
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -2020,7 +2276,14 @@ entities:
     superseded_by: []
     refines: []
     provides_interface: []
+    consumes_interface: []
     composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
     binds_substrate: []
     binds_rule: []
     expects_evidence: []
@@ -2033,6 +2296,7 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 019fee89-e615-7a25-9d3f-1758c79a12e7
   alias_id: INV-0017
   alias_name: inv-0017
@@ -2043,7 +2307,7 @@ entities:
     identifiers (e.g., "ste-runtime:ADR-L-0001")
   uri: adr://adr-architecture-kit/entities/019fee89-e615-7a25-9d3f-1758c79a12e7
   created_at: '2026-08-11T01:57:22.581Z'
-  entity_fingerprint: sha256:b0c9c5ec9c676489c04b9e3a3856d951d983f43997cbdccfc8ad38a60224ab06
+  entity_fingerprint: sha256:d928e6e7be6f9bf16aec4f094664fd63e775f2f441f6ca4e4e0e537cb7b7d256
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -2081,7 +2345,14 @@ entities:
     superseded_by: []
     refines: []
     provides_interface: []
+    consumes_interface: []
     composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
     binds_substrate: []
     binds_rule: []
     expects_evidence: []
@@ -2094,6 +2365,7 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 019fee89-e615-7c97-a633-fbfd69ffa030
   alias_id: INV-0020
   alias_name: inv-0020
@@ -2105,7 +2377,7 @@ entities:
     - Backward compatibility (when applicable)'
   uri: adr://adr-architecture-kit/entities/019fee89-e615-7c97-a633-fbfd69ffa030
   created_at: '2026-08-11T01:57:22.581Z'
-  entity_fingerprint: sha256:180e4161900480b4a43cae5705cbc844b2d92557e505d6ed146dc09ad6d4bef2
+  entity_fingerprint: sha256:f522b91529a4ddf04d98bcef47b7d4bf02feeb7cb15431f2afc59e92b8ef89fa
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -2149,7 +2421,14 @@ entities:
     superseded_by: []
     refines: []
     provides_interface: []
+    consumes_interface: []
     composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
     binds_substrate: []
     binds_rule: []
     expects_evidence: []
@@ -2162,6 +2441,7 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 019fee89-e615-7d44-8f3a-c6db615e9e28
   alias_id: INV-0050
   alias_name: inv-0050
@@ -2172,7 +2452,7 @@ entities:
     TDD cycle, dependency injection patterns)
   uri: adr://adr-architecture-kit/entities/019fee89-e615-7d44-8f3a-c6db615e9e28
   created_at: '2026-08-11T01:57:22.581Z'
-  entity_fingerprint: sha256:8315976d6008627495ec1fc78f2e66a58f6745f404170a243a26708194fc4613
+  entity_fingerprint: sha256:6ffaea7291f17b1d053e065e96370abde14bbdae2b6de84264cc8e3ee22cfcb2
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -2210,7 +2490,14 @@ entities:
     superseded_by: []
     refines: []
     provides_interface: []
+    consumes_interface: []
     composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
     binds_substrate: []
     binds_rule: []
     expects_evidence: []
@@ -2223,6 +2510,7 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 019fee89-e615-7db0-a219-22110deb7ed0
   alias_id: INV-0014
   alias_name: inv-0014
@@ -2233,7 +2521,7 @@ entities:
     override auto-detection when needed
   uri: adr://adr-architecture-kit/entities/019fee89-e615-7db0-a219-22110deb7ed0
   created_at: '2026-08-11T01:57:22.581Z'
-  entity_fingerprint: sha256:6089ab5e5a62a6af2f72479d60d13d8459ee61bff98ef153337f1baca00425bc
+  entity_fingerprint: sha256:9da417db874b1d71ec340dfe9be31fb0fb9f7b0d1f47abcb015e0fd954dc25b1
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -2272,7 +2560,14 @@ entities:
     superseded_by: []
     refines: []
     provides_interface: []
+    consumes_interface: []
     composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
     binds_substrate: []
     binds_rule: []
     expects_evidence: []
@@ -2285,6 +2580,7 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 019fee89-e615-7e07-9f3f-9204fcab0da7
   alias_id: INV-0046
   alias_name: inv-0046
@@ -2295,7 +2591,7 @@ entities:
     their enforcement levels (must/should/may)
   uri: adr://adr-architecture-kit/entities/019fee89-e615-7e07-9f3f-9204fcab0da7
   created_at: '2026-08-11T01:57:22.581Z'
-  entity_fingerprint: sha256:d4ade38158741f291d699a03f54a0ac139c0621fdaf7381d8ffe0a392dce41c1
+  entity_fingerprint: sha256:dea957846c33379986004ecdaed662ed7d22640597179b20662ded8b7c0bc70a
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -2334,7 +2630,14 @@ entities:
     superseded_by: []
     refines: []
     provides_interface: []
+    consumes_interface: []
     composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
     binds_substrate: []
     binds_rule: []
     expects_evidence: []
@@ -2347,6 +2650,7 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 019fee89-e615-7e2e-bf3f-577dc4ade891
   alias_id: INV-0030
   alias_name: inv-0030
@@ -2357,7 +2661,7 @@ entities:
     kit-automated proof that the enforcement logic exists
   uri: adr://adr-architecture-kit/entities/019fee89-e615-7e2e-bf3f-577dc4ade891
   created_at: '2026-08-11T01:57:22.581Z'
-  entity_fingerprint: sha256:2f9b03fca21fbb5ddf12a23b62007b1fc847ee5eb078ef498178bd2c38152404
+  entity_fingerprint: sha256:18e00f0d701635cd8bb5cf6598b55fb008f28914fa2b1971e29a22f0111b0e8d
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -2395,7 +2699,14 @@ entities:
     superseded_by: []
     refines: []
     provides_interface: []
+    consumes_interface: []
     composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
     binds_substrate: []
     binds_rule: []
     expects_evidence: []
@@ -2408,6 +2719,7 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 019fee89-e615-7ea2-bc3e-a0ef2ccfc13a
   alias_id: INV-0002
   alias_name: inv-0002
@@ -2417,7 +2729,7 @@ entities:
   summary: Logical ADRs must not contain implementation details
   uri: adr://adr-architecture-kit/entities/019fee89-e615-7ea2-bc3e-a0ef2ccfc13a
   created_at: '2026-08-11T01:57:22.581Z'
-  entity_fingerprint: sha256:13700e63c00eb97d3a3208050c7ed79e3acc042b671a85f887eaf9326d654bf3
+  entity_fingerprint: sha256:5e4db9340022fc3819bdc9df3eff125c838b73b0b0673a948d745c1a4653451a
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -2451,7 +2763,14 @@ entities:
     superseded_by: []
     refines: []
     provides_interface: []
+    consumes_interface: []
     composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
     binds_substrate: []
     binds_rule: []
     expects_evidence: []
@@ -2464,6 +2783,7 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 019fee89-e615-7f59-842e-2dc1fcfbc380
   alias_id: INV-0018
   alias_name: inv-0018
@@ -2474,7 +2794,7 @@ entities:
     unintended directories
   uri: adr://adr-architecture-kit/entities/019fee89-e615-7f59-842e-2dc1fcfbc380
   created_at: '2026-08-11T01:57:22.581Z'
-  entity_fingerprint: sha256:3451f14cb58af2763d157b09ebb94ef476fa28b0360d79fb36226ba5e8d54e91
+  entity_fingerprint: sha256:90c106d6322fe416eb31693935717f0d934320a34a76fd2842bd1aa019e1b1c9
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -2512,7 +2832,14 @@ entities:
     superseded_by: []
     refines: []
     provides_interface: []
+    consumes_interface: []
     composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
     binds_substrate: []
     binds_rule: []
     expects_evidence: []
@@ -2525,6 +2852,7 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 019fee89-e615-7f6f-9b2e-d7c959fa8909
   alias_id: INV-0005
   alias_name: inv-0005
@@ -2535,7 +2863,7 @@ entities:
     machine identity remains UUID
   uri: adr://adr-architecture-kit/entities/019fee89-e615-7f6f-9b2e-d7c959fa8909
   created_at: '2026-08-11T01:57:22.581Z'
-  entity_fingerprint: sha256:218d8f312787ae8332ba17420486b402dae6a4838971270c3fab92effa9a8790
+  entity_fingerprint: sha256:11a3eb9bb04dd47ffe159d78619dd1f60ce8a30b02f4dadbf0bf966a4bdff806
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -2570,7 +2898,14 @@ entities:
     superseded_by: []
     refines: []
     provides_interface: []
+    consumes_interface: []
     composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
     binds_substrate: []
     binds_rule: []
     expects_evidence: []
@@ -2583,6 +2918,7 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 019fee89-e615-7f70-901f-75cfe9860b82
   alias_id: INV-0048
   alias_name: inv-0048
@@ -2593,7 +2929,7 @@ entities:
     (invariant IDs, component IDs) for traceability
   uri: adr://adr-architecture-kit/entities/019fee89-e615-7f70-901f-75cfe9860b82
   created_at: '2026-08-11T01:57:22.581Z'
-  entity_fingerprint: sha256:1f048bd6a4d98ef326fe1922f6232bbea2ab2e0b9e67c985246acdc65d1adcf5
+  entity_fingerprint: sha256:2a5a414730cdad5de6ac846b13f8e5d22b814d1d949e3080392b2ad29d400ae0
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -2631,7 +2967,14 @@ entities:
     superseded_by: []
     refines: []
     provides_interface: []
+    consumes_interface: []
     composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
     binds_substrate: []
     binds_rule: []
     expects_evidence: []
@@ -2644,6 +2987,7 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 019fee89-e616-7037-8f0f-52c403f9f539
   alias_id: INV-0044
   alias_name: inv-0044
@@ -2654,7 +2998,7 @@ entities:
     and disposable.
   uri: adr://adr-architecture-kit/entities/019fee89-e616-7037-8f0f-52c403f9f539
   created_at: '2026-08-11T01:57:22.582Z'
-  entity_fingerprint: sha256:8e3a6423183e885a90cbfb179054c2066f51f145492694e26a75cb5d262c610b
+  entity_fingerprint: sha256:d09f27c02c8a00586eda417004ca994d1becdca7629c2febcb32f50e41aaca54
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -2692,7 +3036,14 @@ entities:
     superseded_by: []
     refines: []
     provides_interface: []
+    consumes_interface: []
     composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
     binds_substrate: []
     binds_rule: []
     expects_evidence: []
@@ -2705,6 +3056,7 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 019fee89-e616-713a-b73d-fec9a62b6bfb
   alias_id: INV-0055
   alias_name: inv-0055
@@ -2715,7 +3067,7 @@ entities:
     explicitly designated as sentinel-capable by schema or policy.
   uri: adr://adr-architecture-kit/entities/019fee89-e616-713a-b73d-fec9a62b6bfb
   created_at: '2026-08-11T01:57:22.582Z'
-  entity_fingerprint: sha256:bccf941ac75e22df512207667c325e8084cfc53947ae9be30a00f95dad0dd11c
+  entity_fingerprint: sha256:ca55da23e7172feb360921cf706541a21f50ebdbceb7d2d3914dddf4becfa185
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -2754,7 +3106,14 @@ entities:
     superseded_by: []
     refines: []
     provides_interface: []
+    consumes_interface: []
     composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
     binds_substrate: []
     binds_rule: []
     expects_evidence: []
@@ -2767,6 +3126,7 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 019fee89-e616-7174-bc0f-0812c51d1d0c
   alias_id: INV-0076
   alias_name: inv-0076
@@ -2778,7 +3138,7 @@ entities:
     repository. External runtime or workspace tooling MAY read sup
   uri: adr://adr-architecture-kit/entities/019fee89-e616-7174-bc0f-0812c51d1d0c
   created_at: '2026-08-11T01:57:22.582Z'
-  entity_fingerprint: sha256:b393de16d5571017c1c296667d6b84d54d136dcfdbc4ecde1fc38fbec368e900
+  entity_fingerprint: sha256:3950f253060b4c8dba24f764431e005a496c3b61e10874ce3f2d7dcbc2f3ce51
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -2824,7 +3184,14 @@ entities:
     superseded_by: []
     refines: []
     provides_interface: []
+    consumes_interface: []
     composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
     binds_substrate: []
     binds_rule: []
     expects_evidence: []
@@ -2837,6 +3204,7 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 019fee89-e616-7196-a92f-bec6b05d3d47
   alias_id: INV-0043
   alias_name: inv-0043
@@ -2848,7 +3216,7 @@ entities:
     adrs/index/invariant-registry.yaml MUST NOT independently define or
   uri: adr://adr-architecture-kit/entities/019fee89-e616-7196-a92f-bec6b05d3d47
   created_at: '2026-08-11T01:57:22.582Z'
-  entity_fingerprint: sha256:03f79b13c4a6bf6331a74cc3c2a9998826eee55487b4382bf2bcbabfcb73e409
+  entity_fingerprint: sha256:7c3ed5851e4c2d214f4cbd1ed57f33ad94095385c7e8d226d944314453e80928
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -2890,7 +3258,14 @@ entities:
     superseded_by: []
     refines: []
     provides_interface: []
+    consumes_interface: []
     composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
     binds_substrate: []
     binds_rule: []
     expects_evidence: []
@@ -2903,6 +3278,7 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 019fee89-e616-71a8-bd3f-d739b5ccf91e
   alias_id: INV-0056
   alias_name: inv-0056
@@ -2913,7 +3289,7 @@ entities:
     ledger rather than in ADR content fields.
   uri: adr://adr-architecture-kit/entities/019fee89-e616-71a8-bd3f-d739b5ccf91e
   created_at: '2026-08-11T01:57:22.582Z'
-  entity_fingerprint: sha256:9a2b3c37fe7a9040ac49cc3beb87587afa55c5ed4282e763126f8d63d9588f98
+  entity_fingerprint: sha256:e1e67cec1c79342fb64eec9db9dc44e1d21a5f9ac9f5e5fd0c31a8845838f5a1
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -2951,7 +3327,14 @@ entities:
     superseded_by: []
     refines: []
     provides_interface: []
+    consumes_interface: []
     composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
     binds_substrate: []
     binds_rule: []
     expects_evidence: []
@@ -2964,6 +3347,7 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 019fee89-e616-71e8-8619-6d6dde59a698
   alias_id: INV-0067
   alias_name: inv-0067
@@ -2975,7 +3359,7 @@ entities:
     MUST require the minimal ingestion subset of `entity-registry.yaml`,
   uri: adr://adr-architecture-kit/entities/019fee89-e616-71e8-8619-6d6dde59a698
   created_at: '2026-08-11T01:57:22.582Z'
-  entity_fingerprint: sha256:b76d56fdac6b2f4a0a085de46e0af781497332094b516a6177796e3817567ae1
+  entity_fingerprint: sha256:f39e141e9af94fe321fb54a161e4759f13583e4d32c99bc1d23b3547966f7418
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -3028,7 +3412,14 @@ entities:
     superseded_by: []
     refines: []
     provides_interface: []
+    consumes_interface: []
     composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
     binds_substrate: []
     binds_rule: []
     expects_evidence: []
@@ -3041,6 +3432,7 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 019fee89-e616-72be-b22f-784bf7f19434
   alias_id: INV-0059
   alias_name: inv-0059
@@ -3052,7 +3444,7 @@ entities:
     boundary is available. Cross-language or out-of-process consum
   uri: adr://adr-architecture-kit/entities/019fee89-e616-72be-b22f-784bf7f19434
   created_at: '2026-08-11T01:57:22.582Z'
-  entity_fingerprint: sha256:b7a866ff4fb0aac4007634a99377b1f961a42d86db868e92910793991834a2ab
+  entity_fingerprint: sha256:185b10f00e8912e4be2b74ecdf0ba3f94cce0caf05b38dad7392572cc91e9dfd
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -3096,7 +3488,14 @@ entities:
     superseded_by: []
     refines: []
     provides_interface: []
+    consumes_interface: []
     composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
     binds_substrate: []
     binds_rule: []
     expects_evidence: []
@@ -3109,6 +3508,7 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 019fee89-e616-7385-a83e-931f9da2d4db
   alias_id: INV-0042
   alias_name: inv-0042
@@ -3119,7 +3519,7 @@ entities:
     and MUST NOT be conflated with schema validation.
   uri: adr://adr-architecture-kit/entities/019fee89-e616-7385-a83e-931f9da2d4db
   created_at: '2026-08-11T01:57:22.582Z'
-  entity_fingerprint: sha256:504bec76ad45af89c5984beaa2413625f445614835af00739b22ce515bc71ba1
+  entity_fingerprint: sha256:9f605d83ee8586e62c832fd6d07c198c40bb5693cd40fa57c88f3809b7a51101
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -3158,7 +3558,14 @@ entities:
     superseded_by: []
     refines: []
     provides_interface: []
+    consumes_interface: []
     composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
     binds_substrate: []
     binds_rule: []
     expects_evidence: []
@@ -3171,6 +3578,7 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 019fee89-e616-7522-9b1f-8befdee2cbf5
   alias_id: INV-0052
   alias_name: inv-0052
@@ -3182,7 +3590,7 @@ entities:
     MAY define narrower minimal load subsets, but those subsets '
   uri: adr://adr-architecture-kit/entities/019fee89-e616-7522-9b1f-8befdee2cbf5
   created_at: '2026-08-11T01:57:22.582Z'
-  entity_fingerprint: sha256:9f472e6a0e564e934e1e336eb276b5a585e8a6ca6dfc6e2960e8233b40e35401
+  entity_fingerprint: sha256:6129796c7887ae30dd6e56cad5fb4f5d69ef0a21f4fced79d83fb9d06a40909b
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -3225,7 +3633,14 @@ entities:
     superseded_by: []
     refines: []
     provides_interface: []
+    consumes_interface: []
     composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
     binds_substrate: []
     binds_rule: []
     expects_evidence: []
@@ -3238,6 +3653,7 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 019fee89-e616-765f-a51d-a19f2cfa383b
   alias_id: INV-0074
   alias_name: inv-0074
@@ -3249,7 +3665,7 @@ entities:
     output artifacts, mutable diagnostic logs, compiler caches, or othe
   uri: adr://adr-architecture-kit/entities/019fee89-e616-765f-a51d-a19f2cfa383b
   created_at: '2026-08-11T01:57:22.582Z'
-  entity_fingerprint: sha256:ba6275957d7e57b7af0b02a215a61364de0d6618f1bc7170c8dc43ce130237e9
+  entity_fingerprint: sha256:2862115d21bbf34825f55eb73c80b88400408cd9ffafd4aa1771346ef7557b61
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -3293,7 +3709,14 @@ entities:
     superseded_by: []
     refines: []
     provides_interface: []
+    consumes_interface: []
     composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
     binds_substrate: []
     binds_rule: []
     expects_evidence: []
@@ -3306,6 +3729,7 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 019fee89-e616-76a4-891b-d8316114e7a9
   alias_id: INV-0060
   alias_name: inv-0060
@@ -3317,7 +3741,7 @@ entities:
     before derived artifacts are refreshed.
   uri: adr://adr-architecture-kit/entities/019fee89-e616-76a4-891b-d8316114e7a9
   created_at: '2026-08-11T01:57:22.582Z'
-  entity_fingerprint: sha256:14e7b5f13a823642fc3a506c793dbf685d9d2ca40b2e79d3673d3894abf04737
+  entity_fingerprint: sha256:a119bba31af1b3147abd7f550ad57505cb1cd302e3828860210c100e03b1570b
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -3357,7 +3781,14 @@ entities:
     superseded_by: []
     refines: []
     provides_interface: []
+    consumes_interface: []
     composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
     binds_substrate: []
     binds_rule: []
     expects_evidence: []
@@ -3370,6 +3801,7 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 019fee89-e616-77e0-992d-25764a1ed5a2
   alias_id: INV-0039
   alias_name: inv-0039
@@ -3380,7 +3812,7 @@ entities:
     must be made through generators, templates, or structured source artifacts.'
   uri: adr://adr-architecture-kit/entities/019fee89-e616-77e0-992d-25764a1ed5a2
   created_at: '2026-08-11T01:57:22.582Z'
-  entity_fingerprint: sha256:1d71b93a1d5c5ddd51b3a317055881c79ac67271aee857c87dcd07e67dc3a909
+  entity_fingerprint: sha256:14b7e96f2130ae56f88e0c886d5d83059532d9f97e60e99f539e32b5d8b33b07
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -3419,7 +3851,14 @@ entities:
     superseded_by: []
     refines: []
     provides_interface: []
+    consumes_interface: []
     composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
     binds_substrate: []
     binds_rule: []
     expects_evidence: []
@@ -3432,6 +3871,7 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 019fee89-e616-7868-b425-c7f5680872b7
   alias_id: INV-0040
   alias_name: inv-0040
@@ -3442,7 +3882,7 @@ entities:
     incomplete drafts when their schema shape is otherwise valid.
   uri: adr://adr-architecture-kit/entities/019fee89-e616-7868-b425-c7f5680872b7
   created_at: '2026-08-11T01:57:22.582Z'
-  entity_fingerprint: sha256:f6daffa50be892f7463a95abc8cb3e1509c381af2b71fdb6a1ece61bc9960d01
+  entity_fingerprint: sha256:e5802e26844a60ad4d7eda57d8648c26df0a39a08278b860554a38faceb9e65f
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -3480,7 +3920,14 @@ entities:
     superseded_by: []
     refines: []
     provides_interface: []
+    consumes_interface: []
     composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
     binds_substrate: []
     binds_rule: []
     expects_evidence: []
@@ -3493,6 +3940,7 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 019fee89-e616-78b2-8f3d-005067fed51f
   alias_id: INV-0041
   alias_name: inv-0041
@@ -3503,7 +3951,7 @@ entities:
     reasoning.
   uri: adr://adr-architecture-kit/entities/019fee89-e616-78b2-8f3d-005067fed51f
   created_at: '2026-08-11T01:57:22.582Z'
-  entity_fingerprint: sha256:10cd14aa484a16c9b2911b443c83272075e12b82f58704c2da4ec33cb5ed5e72
+  entity_fingerprint: sha256:41c5da5a9c5c0e65b10cefba738dc393d7a0e69da93da3512e3c736e1e93c70a
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -3542,7 +3990,14 @@ entities:
     superseded_by: []
     refines: []
     provides_interface: []
+    consumes_interface: []
     composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
     binds_substrate: []
     binds_rule: []
     expects_evidence: []
@@ -3555,6 +4010,7 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 019fee89-e616-7944-ae13-b64c510fc3f4
   alias_id: INV-0053
   alias_name: inv-0053
@@ -3565,7 +4021,7 @@ entities:
     brownfield, and migration without forking the registry schema.
   uri: adr://adr-architecture-kit/entities/019fee89-e616-7944-ae13-b64c510fc3f4
   created_at: '2026-08-11T01:57:22.582Z'
-  entity_fingerprint: sha256:586264ed083503539764eaf610a8da1b1b2756eb5377e0bd7f4cf5be118c0e3b
+  entity_fingerprint: sha256:14bd598c702faf607fff57a5d9244203a30d22953003fc89b26c21988731231f
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -3603,7 +4059,14 @@ entities:
     superseded_by: []
     refines: []
     provides_interface: []
+    consumes_interface: []
     composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
     binds_substrate: []
     binds_rule: []
     expects_evidence: []
@@ -3616,6 +4079,7 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 019fee89-e616-7a17-850f-ce32ede3c9c5
   alias_id: INV-0057
   alias_name: inv-0057
@@ -3627,7 +4091,7 @@ entities:
     under normal validation.
   uri: adr://adr-architecture-kit/entities/019fee89-e616-7a17-850f-ce32ede3c9c5
   created_at: '2026-08-11T01:57:22.582Z'
-  entity_fingerprint: sha256:4ea2d30ee2c9dd70a337551612980faa025d15fd2bb25e38a9d83cdec0481b5b
+  entity_fingerprint: sha256:fd8b91c5bc36cb0f7d735bdd78b4bc1a700413da1ba01983cf120cdb7ab49f79
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -3667,7 +4131,14 @@ entities:
     superseded_by: []
     refines: []
     provides_interface: []
+    consumes_interface: []
     composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
     binds_substrate: []
     binds_rule: []
     expects_evidence: []
@@ -3680,6 +4151,7 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 019fee89-e616-7abd-ad17-f29edbd30959
   alias_id: INV-0038
   alias_name: inv-0038
@@ -3690,7 +4162,7 @@ entities:
     source artifacts and generator inputs.'
   uri: adr://adr-architecture-kit/entities/019fee89-e616-7abd-ad17-f29edbd30959
   created_at: '2026-08-11T01:57:22.582Z'
-  entity_fingerprint: sha256:c31e91ed4fca733e437240879d034a65b26290ab18a8c7e2d6b57b924544cfd6
+  entity_fingerprint: sha256:50a3fcb937702dddc2bec095618aa1746e0c6498a79c76366b242f3e31f3c24f
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -3728,7 +4200,14 @@ entities:
     superseded_by: []
     refines: []
     provides_interface: []
+    consumes_interface: []
     composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
     binds_substrate: []
     binds_rule: []
     expects_evidence: []
@@ -3741,6 +4220,7 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 019fee89-e616-7aca-b328-94a4de1887d6
   alias_id: INV-0061
   alias_name: inv-0061
@@ -3752,7 +4232,7 @@ entities:
     are available.
   uri: adr://adr-architecture-kit/entities/019fee89-e616-7aca-b328-94a4de1887d6
   created_at: '2026-08-11T01:57:22.582Z'
-  entity_fingerprint: sha256:a539e87b496cf524677ee2242d52098f71769bfcac41d068657d5f88cc47f340
+  entity_fingerprint: sha256:59eb63926fac96ecf453ffc5ae32af097e1dcfc12bd6237136a0a2488d6daaf8
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -3792,7 +4272,14 @@ entities:
     superseded_by: []
     refines: []
     provides_interface: []
+    consumes_interface: []
     composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
     binds_substrate: []
     binds_rule: []
     expects_evidence: []
@@ -3805,6 +4292,7 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 019fee89-e616-7bf6-a63f-2fdbec175790
   alias_id: INV-0037
   alias_name: inv-0037
@@ -3816,7 +4304,7 @@ entities:
     as source state.'
   uri: adr://adr-architecture-kit/entities/019fee89-e616-7bf6-a63f-2fdbec175790
   created_at: '2026-08-11T01:57:22.582Z'
-  entity_fingerprint: sha256:936808828653807ede8bcecbf9c755c7e09d6a29d4aac7b441ea93b337dfa41f
+  entity_fingerprint: sha256:42b22eeaa811a55c8e3424b2f038d3888049d36eee3a40ff9f25532efa81bb3b
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -3857,7 +4345,14 @@ entities:
     superseded_by: []
     refines: []
     provides_interface: []
+    consumes_interface: []
     composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
     binds_substrate: []
     binds_rule: []
     expects_evidence: []
@@ -3870,6 +4365,7 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 019fee89-e616-7cb0-813b-b2651827c986
   alias_id: INV-0097
   alias_name: inv-0097
@@ -3880,7 +4376,7 @@ entities:
     registry artifacts must be deterministic and contract-valid.
   uri: adr://adr-architecture-kit/entities/019fee89-e616-7cb0-813b-b2651827c986
   created_at: '2026-08-11T01:57:22.582Z'
-  entity_fingerprint: sha256:fe39063a3524d643223f774bcded43630e5473332a6292d5a386c4bd976adced
+  entity_fingerprint: sha256:d7c73bc2958c0f5f3ce29d3e8714b200615b92665dfa51fc5df11616bba65fce
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -3915,7 +4411,14 @@ entities:
     superseded_by: []
     refines: []
     provides_interface: []
+    consumes_interface: []
     composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
     binds_substrate: []
     binds_rule: []
     expects_evidence: []
@@ -3928,6 +4431,7 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 019fee89-e616-7cc5-933d-9f7823a0b2b5
   alias_id: INV-0058
   alias_name: inv-0058
@@ -3939,7 +4443,7 @@ entities:
     federation.
   uri: adr://adr-architecture-kit/entities/019fee89-e616-7cc5-933d-9f7823a0b2b5
   created_at: '2026-08-11T01:57:22.582Z'
-  entity_fingerprint: sha256:c06b60e91a76c9cdf9be446b997248a88ccb9389a8d877d3ce486d04b403e47a
+  entity_fingerprint: sha256:0974b0e1a0a30b77a78a674e4f0e617cb6204269e7c99aecc37ac1ce5ddfc20e
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -3979,7 +4483,14 @@ entities:
     superseded_by: []
     refines: []
     provides_interface: []
+    consumes_interface: []
     composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
     binds_substrate: []
     binds_rule: []
     expects_evidence: []
@@ -3992,6 +4503,7 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 019fee89-e616-7dc8-bd2e-10db13af0951
   alias_id: INV-0045
   alias_name: inv-0045
@@ -4002,7 +4514,7 @@ entities:
     over raw ADR body traversal by default.
   uri: adr://adr-architecture-kit/entities/019fee89-e616-7dc8-bd2e-10db13af0951
   created_at: '2026-08-11T01:57:22.582Z'
-  entity_fingerprint: sha256:03eb107571216fc213e5fd798328856698e93bbe7e2472aae00335b1271406b4
+  entity_fingerprint: sha256:4b4bed8d0355d838921e1dcf113441194ca56779e3dd20cd45f595a6e63145c5
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -4040,7 +4552,14 @@ entities:
     superseded_by: []
     refines: []
     provides_interface: []
+    consumes_interface: []
     composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
     binds_substrate: []
     binds_rule: []
     expects_evidence: []
@@ -4053,6 +4572,7 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 019fee89-e616-7e1b-8e1e-f150845bbf0e
   alias_id: INV-0054
   alias_name: inv-0054
@@ -4063,7 +4583,7 @@ entities:
     kernel loads by default, but MAY be loaded by inspection-only or remediation tooling.
   uri: adr://adr-architecture-kit/entities/019fee89-e616-7e1b-8e1e-f150845bbf0e
   created_at: '2026-08-11T01:57:22.582Z'
-  entity_fingerprint: sha256:44c565e6b10ba9bb1cc3d6d17bccb38efa93271fdca9a4597dd0b0ca5f45a01b
+  entity_fingerprint: sha256:e0d5be494f58a01c79f8aff82730da11236d2166b497e2c342e43c95fa7aabdd
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -4103,7 +4623,14 @@ entities:
     superseded_by: []
     refines: []
     provides_interface: []
+    consumes_interface: []
     composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
     binds_substrate: []
     binds_rule: []
     expects_evidence: []
@@ -4116,6 +4643,7 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 019fee89-e617-70d5-9035-ffeda9070001
   alias_id: INV-0090
   alias_name: inv-0090
@@ -4126,7 +4654,7 @@ entities:
     does not choose a keeper or mint a replacement automatically.
   uri: adr://adr-architecture-kit/entities/019fee89-e617-70d5-9035-ffeda9070001
   created_at: '2026-08-11T01:57:22.583Z'
-  entity_fingerprint: sha256:894d3479623b6d33eb010b8832b5e344b7c27807ba348b5ed9cad712542a1031
+  entity_fingerprint: sha256:684f10d87cc496daabfa0fe7e5dc4ae16574646dd59f13dab8e2c8d70d23870f
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -4161,7 +4689,14 @@ entities:
     superseded_by: []
     refines: []
     provides_interface: []
+    consumes_interface: []
     composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
     binds_substrate: []
     binds_rule: []
     expects_evidence: []
@@ -4174,6 +4709,7 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 019fee89-e617-7127-b03e-cb2f18ab6f9f
   alias_id: INV-0078
   alias_name: inv-0078
@@ -4185,7 +4721,7 @@ entities:
     infer over, or admit external semantic bodies or observed evidence '
   uri: adr://adr-architecture-kit/entities/019fee89-e617-7127-b03e-cb2f18ab6f9f
   created_at: '2026-08-11T01:57:22.583Z'
-  entity_fingerprint: sha256:f1a2bc44ac5ed9418acf9cf95baf2401abd6015443954a0ae880159b6558ad89
+  entity_fingerprint: sha256:78e5fe0456f900061ea820d372ecac92ba942aaa877b450feec341fe1a80aef8
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -4227,7 +4763,14 @@ entities:
     superseded_by: []
     refines: []
     provides_interface: []
+    consumes_interface: []
     composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
     binds_substrate: []
     binds_rule: []
     expects_evidence: []
@@ -4240,6 +4783,7 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 019fee89-e617-714f-bd26-d37fed143bc8
   alias_id: INV-0010
   alias_name: inv-0010
@@ -4250,7 +4794,7 @@ entities:
     surfaces, not canonical machine identity.'
   uri: adr://adr-architecture-kit/entities/019fee89-e617-714f-bd26-d37fed143bc8
   created_at: '2026-08-11T01:57:22.583Z'
-  entity_fingerprint: sha256:3aac107afdaf7fd95ca7a7dba50a524b121867324a0a14241a13249c613df824
+  entity_fingerprint: sha256:f1e4d416cc1522533994f4ff25dea567f9074135f728d39b16ae250758d28c68
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -4285,7 +4829,14 @@ entities:
     superseded_by: []
     refines: []
     provides_interface: []
+    consumes_interface: []
     composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
     binds_substrate: []
     binds_rule: []
     expects_evidence: []
@@ -4298,6 +4849,7 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 019fee89-e617-7158-882f-29384411df69
   alias_id: INV-0089
   alias_name: inv-0089
@@ -4308,7 +4860,7 @@ entities:
     identity time semantics.
   uri: adr://adr-architecture-kit/entities/019fee89-e617-7158-882f-29384411df69
   created_at: '2026-08-11T01:57:22.583Z'
-  entity_fingerprint: sha256:1077686ecf0b8b9681968ef000f6667c797a9b0832d3ab38a35a500c6b7901af
+  entity_fingerprint: sha256:2077ee304dea4184aa547a66fcf0345f4c03dc664a222dfa65f9a38347b4229f
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -4343,7 +4895,14 @@ entities:
     superseded_by: []
     refines: []
     provides_interface: []
+    consumes_interface: []
     composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
     binds_substrate: []
     binds_rule: []
     expects_evidence: []
@@ -4356,6 +4915,7 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 019fee89-e617-723b-963b-54252f233ddc
   alias_id: INV-0062
   alias_name: inv-0062
@@ -4365,7 +4925,7 @@ entities:
   summary: The derived logical URI is a resolver key and is not entity identity.
   uri: adr://adr-architecture-kit/entities/019fee89-e617-723b-963b-54252f233ddc
   created_at: '2026-08-11T01:57:22.583Z'
-  entity_fingerprint: sha256:318e84eea96be82d7e5ae4ac73ba80bdb7835238400a74cc66a947bce9e9f249
+  entity_fingerprint: sha256:821fda98b8aa297c4b224f096376106b2513e65e4b364ae616c6bb29550d6cfa
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -4399,7 +4959,14 @@ entities:
     superseded_by: []
     refines: []
     provides_interface: []
+    consumes_interface: []
     composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
     binds_substrate: []
     binds_rule: []
     expects_evidence: []
@@ -4412,6 +4979,7 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 019fee89-e617-723f-aa1f-e1c5b7f3a3e5
   alias_id: INV-0070
   alias_name: inv-0070
@@ -4423,7 +4991,7 @@ entities:
     migration, and other imported records requiring preserved identity. S
   uri: adr://adr-architecture-kit/entities/019fee89-e617-723f-aa1f-e1c5b7f3a3e5
   created_at: '2026-08-11T01:57:22.583Z'
-  entity_fingerprint: sha256:ca429f90a141c98c237f27a0c0dba2453bc223e5c8bd3125964e0d5624a75c5d
+  entity_fingerprint: sha256:b5ae08536400d95f747139edb33f005399997108c57d7f74e2a87e19b0a4e3fb
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -4465,7 +5033,14 @@ entities:
     superseded_by: []
     refines: []
     provides_interface: []
+    consumes_interface: []
     composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
     binds_substrate: []
     binds_rule: []
     expects_evidence: []
@@ -4478,6 +5053,7 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 019fee89-e617-7285-b13f-2450ad706244
   alias_id: INV-0079
   alias_name: inv-0079
@@ -4489,7 +5065,7 @@ entities:
     relationship_id semantics remain endpoint-derived from UUIDs
   uri: adr://adr-architecture-kit/entities/019fee89-e617-7285-b13f-2450ad706244
   created_at: '2026-08-11T01:57:22.583Z'
-  entity_fingerprint: sha256:6fb3ad80961a0ccc12be903c68147e81224e8e898107f0c3194196f81ac987ef
+  entity_fingerprint: sha256:f82416e46564a2358d6b248581d056528de1f3e5cde685abdec7bf55130b7eca
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -4527,7 +5103,14 @@ entities:
     superseded_by: []
     refines: []
     provides_interface: []
+    consumes_interface: []
     composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
     binds_substrate: []
     binds_rule: []
     expects_evidence: []
@@ -4540,6 +5123,7 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 019fee89-e617-72db-a33f-8a6826928686
   alias_id: INV-0009
   alias_name: inv-0009
@@ -4549,7 +5133,7 @@ entities:
   summary: A canonical entity UUID is immutable for the entity's lifetime.
   uri: adr://adr-architecture-kit/entities/019fee89-e617-72db-a33f-8a6826928686
   created_at: '2026-08-11T01:57:22.583Z'
-  entity_fingerprint: sha256:1612c2ba208f4af88a6d098dbb5fd8068beb99e41417989883136e3e4d676d48
+  entity_fingerprint: sha256:a09ca261792b9cd0409063afee8c3425c30d95257b5e56cf2ef2368700e49f13
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -4583,7 +5167,14 @@ entities:
     superseded_by: []
     refines: []
     provides_interface: []
+    consumes_interface: []
     composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
     binds_substrate: []
     binds_rule: []
     expects_evidence: []
@@ -4596,6 +5187,7 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 019fee89-e617-73df-8f39-2651671bb6f8
   alias_id: INV-0085
   alias_name: inv-0085
@@ -4606,7 +5198,7 @@ entities:
     for architectural meaning.'
   uri: adr://adr-architecture-kit/entities/019fee89-e617-73df-8f39-2651671bb6f8
   created_at: '2026-08-11T01:57:22.583Z'
-  entity_fingerprint: sha256:a50aa44efe891d06771dfbcdb522b437439cb31b8303f92d4c1373bab4218d8b
+  entity_fingerprint: sha256:522d118623dae50ea2c100dbd9e160a7bb77f0c98f480cc125fff2e4132aac09
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -4641,7 +5233,14 @@ entities:
     superseded_by: []
     refines: []
     provides_interface: []
+    consumes_interface: []
     composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
     binds_substrate: []
     binds_rule: []
     expects_evidence: []
@@ -4654,6 +5253,7 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 019fee89-e617-73ec-853c-81e5cd2e879a
   alias_id: INV-0013
   alias_name: inv-0013
@@ -4664,7 +5264,7 @@ entities:
     UUID relationship endpoints; only derived alias presentation regenerates.
   uri: adr://adr-architecture-kit/entities/019fee89-e617-73ec-853c-81e5cd2e879a
   created_at: '2026-08-11T01:57:22.583Z'
-  entity_fingerprint: sha256:693ec878319d5e7b7e85cabbedea18fa4afe67caff0af93531c031f3f0930c7e
+  entity_fingerprint: sha256:b9ed1237765138144f88ac91d0ff12dfc9ce4e8b6b857bf2af83e6f40889f06f
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -4699,7 +5299,14 @@ entities:
     superseded_by: []
     refines: []
     provides_interface: []
+    consumes_interface: []
     composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
     binds_substrate: []
     binds_rule: []
     expects_evidence: []
@@ -4712,6 +5319,7 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 019fee89-e617-7484-923b-bb5d16ad3be1
   alias_id: INV-0092
   alias_name: inv-0092
@@ -4722,7 +5330,7 @@ entities:
     UUID.
   uri: adr://adr-architecture-kit/entities/019fee89-e617-7484-923b-bb5d16ad3be1
   created_at: '2026-08-11T01:57:22.583Z'
-  entity_fingerprint: sha256:de007bc6cedc5832d4f42d412b6d2b204b62266edd8ed66cebd0ada1cb7110b0
+  entity_fingerprint: sha256:4600673248f6380ab7a646c25f2542181ca39fdc75e5c2046b03c0f912f99164
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -4757,7 +5365,14 @@ entities:
     superseded_by: []
     refines: []
     provides_interface: []
+    consumes_interface: []
     composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
     binds_substrate: []
     binds_rule: []
     expects_evidence: []
@@ -4770,6 +5385,7 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 019fee89-e617-761d-950b-c04d97e04c56
   alias_id: INV-0068
   alias_name: inv-0068
@@ -4781,7 +5397,7 @@ entities:
     compatibility-only.
   uri: adr://adr-architecture-kit/entities/019fee89-e617-761d-950b-c04d97e04c56
   created_at: '2026-08-11T01:57:22.583Z'
-  entity_fingerprint: sha256:4516beb0cb718e587c4e64d40811025c526ad1d37b19214a967c0a13f532d6b7
+  entity_fingerprint: sha256:1b914986d77380670acf1a9c94333b73f10e186f8976b08a201212069ddac224
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -4821,7 +5437,14 @@ entities:
     superseded_by: []
     refines: []
     provides_interface: []
+    consumes_interface: []
     composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
     binds_substrate: []
     binds_rule: []
     expects_evidence: []
@@ -4834,6 +5457,7 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 019fee89-e617-7643-be38-0815d7dc6e58
   alias_id: INV-0094
   alias_name: inv-0094
@@ -4844,7 +5468,7 @@ entities:
     RFC 9562 UUIDv7.
   uri: adr://adr-architecture-kit/entities/019fee89-e617-7643-be38-0815d7dc6e58
   created_at: '2026-08-11T01:57:22.583Z'
-  entity_fingerprint: sha256:db35c6cfd2883d20427fbb61facff39fd62b1e9bf81323c62f3db92dd5de6ee4
+  entity_fingerprint: sha256:a7f8d75576178e9d5c5aa865a6495e5c4a7f5a847dddb21c9007da0e96f076c7
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -4879,7 +5503,14 @@ entities:
     superseded_by: []
     refines: []
     provides_interface: []
+    consumes_interface: []
     composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
     binds_substrate: []
     binds_rule: []
     expects_evidence: []
@@ -4892,6 +5523,7 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 019fee89-e617-7692-822b-3df6136ce156
   alias_id: INV-0081
   alias_name: inv-0081
@@ -4903,7 +5535,7 @@ entities:
     and `implementation_decision` for Phase 2. The relati
   uri: adr://adr-architecture-kit/entities/019fee89-e617-7692-822b-3df6136ce156
   created_at: '2026-08-11T01:57:22.583Z'
-  entity_fingerprint: sha256:313f832a67d926610b6e734b429f372867444e649bd4ea8f9a7cdeea540cd320
+  entity_fingerprint: sha256:717a31f74ba5e0362cea8ce8e230c29c1a484d66aeb45ce5ba2dc0b446a46801
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -4952,7 +5584,14 @@ entities:
     superseded_by: []
     refines: []
     provides_interface: []
+    consumes_interface: []
     composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
     binds_substrate: []
     binds_rule: []
     expects_evidence: []
@@ -4965,6 +5604,7 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 019fee89-e617-7761-9a2a-5f1cd94d2de5
   alias_id: INV-0066
   alias_name: inv-0066
@@ -4975,7 +5615,7 @@ entities:
     and MUST NOT invent approvals, risks, or authority-altering interpretations.
   uri: adr://adr-architecture-kit/entities/019fee89-e617-7761-9a2a-5f1cd94d2de5
   created_at: '2026-08-11T01:57:22.583Z'
-  entity_fingerprint: sha256:4153721466356d05286c82a6a2b67d149cc9472c571c3b06c55aa613fee9deee
+  entity_fingerprint: sha256:d07b0b3dcbb9a95f52d9182a921770a305efa37049c34c801ffa900658930c3e
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -5014,7 +5654,14 @@ entities:
     superseded_by: []
     refines: []
     provides_interface: []
+    consumes_interface: []
     composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
     binds_substrate: []
     binds_rule: []
     expects_evidence: []
@@ -5027,6 +5674,7 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 019fee89-e617-77b8-b337-17c9851e36fd
   alias_id: INV-0088
   alias_name: inv-0088
@@ -5038,7 +5686,7 @@ entities:
     and is not a v1.3 identity invariant.
   uri: adr://adr-architecture-kit/entities/019fee89-e617-77b8-b337-17c9851e36fd
   created_at: '2026-08-11T01:57:22.583Z'
-  entity_fingerprint: sha256:5d5d99a6a830ed66f72f0dc01326e0911658285c9c0d28001e0788c547876a2d
+  entity_fingerprint: sha256:c05e6384cb5a1820a2287cc7fa1f06f67c5ba132bce940a92b39e84e2d894a5b
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -5074,7 +5722,14 @@ entities:
     superseded_by: []
     refines: []
     provides_interface: []
+    consumes_interface: []
     composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
     binds_substrate: []
     binds_rule: []
     expects_evidence: []
@@ -5087,6 +5742,7 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 019fee89-e617-77bc-8d3f-07c5c91bb5bb
   alias_id: INV-0069
   alias_name: inv-0069
@@ -5098,7 +5754,7 @@ entities:
     NOT be reissued or used to replace UUID identity.
   uri: adr://adr-architecture-kit/entities/019fee89-e617-77bc-8d3f-07c5c91bb5bb
   created_at: '2026-08-11T01:57:22.583Z'
-  entity_fingerprint: sha256:3f6fc445985fc338f7e03662637a89d6d586040a89db13c305b8acc052eca581
+  entity_fingerprint: sha256:b378455bf1e8260e2b07aeeab552ffd09ea6a6a6f9adf775cc7eb2122c1a83e7
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -5136,7 +5792,14 @@ entities:
     superseded_by: []
     refines: []
     provides_interface: []
+    consumes_interface: []
     composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
     binds_substrate: []
     binds_rule: []
     expects_evidence: []
@@ -5149,6 +5812,7 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 019fee89-e617-7847-b03e-35cd4d2b64e1
   alias_id: INV-0063
   alias_name: inv-0063
@@ -5160,7 +5824,7 @@ entities:
     authored schema position remains canonical type authori
   uri: adr://adr-architecture-kit/entities/019fee89-e617-7847-b03e-35cd4d2b64e1
   created_at: '2026-08-11T01:57:22.583Z'
-  entity_fingerprint: sha256:3b1f7c1d5fe45d520468ee7f06ce2b4babab08d20e3ebc17d96d595d3d4af3b1
+  entity_fingerprint: sha256:d89337445f5f765e86da961d5ef4bb7945345f755870eb2e9646ec1b019fa23e
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -5197,7 +5861,14 @@ entities:
     superseded_by: []
     refines: []
     provides_interface: []
+    consumes_interface: []
     composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
     binds_substrate: []
     binds_rule: []
     expects_evidence: []
@@ -5210,6 +5881,7 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 019fee89-e617-79af-950e-70ffbb8c5c43
   alias_id: INV-0091
   alias_name: inv-0091
@@ -5221,7 +5893,7 @@ entities:
     while cross-namespace overlap is not a collision.
   uri: adr://adr-architecture-kit/entities/019fee89-e617-79af-950e-70ffbb8c5c43
   created_at: '2026-08-11T01:57:22.583Z'
-  entity_fingerprint: sha256:f2d6d1f1070b03b07fe81af2f958a4dba848b6ceb5c10f35877c50172b864af2
+  entity_fingerprint: sha256:1bd587cbe74f9ab43f565576f7ea592af3eb591d272b90c953c0702a70d7fb18
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -5257,7 +5929,14 @@ entities:
     superseded_by: []
     refines: []
     provides_interface: []
+    consumes_interface: []
     composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
     binds_substrate: []
     binds_rule: []
     expects_evidence: []
@@ -5270,6 +5949,7 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 019fee89-e617-79c9-ad2a-7a26923d678d
   alias_id: INV-0071
   alias_name: inv-0071
@@ -5280,7 +5960,7 @@ entities:
     alias allocation and MUST NOT be treated as UUID machine-identity allocation.
   uri: adr://adr-architecture-kit/entities/019fee89-e617-79c9-ad2a-7a26923d678d
   created_at: '2026-08-11T01:57:22.583Z'
-  entity_fingerprint: sha256:35d3f16c9c21525001b90281e26ebab792c66b7f9ae8694484a0c4cadad13b64
+  entity_fingerprint: sha256:cb7e02f108f7d98daa93dced1bc3cdebf05e9064be460b8d7ea11c08360b8f51
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -5317,7 +5997,14 @@ entities:
     superseded_by: []
     refines: []
     provides_interface: []
+    consumes_interface: []
     composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
     binds_substrate: []
     binds_rule: []
     expects_evidence: []
@@ -5330,6 +6017,7 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 019fee89-e617-79e8-a312-992a10d3e43b
   alias_id: INV-0087
   alias_name: inv-0087
@@ -5340,7 +6028,7 @@ entities:
     leaving no separately authored value to reconcile.
   uri: adr://adr-architecture-kit/entities/019fee89-e617-79e8-a312-992a10d3e43b
   created_at: '2026-08-11T01:57:22.583Z'
-  entity_fingerprint: sha256:49a84aba742bef636d88bdedde78f5b75b5558a2ea27f6c353755d49f28f630b
+  entity_fingerprint: sha256:fac8df8c1c0cd6777043ea2fea7e02ea09e0ab927e8d091bdadb4df7bbf327f9
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -5375,7 +6063,14 @@ entities:
     superseded_by: []
     refines: []
     provides_interface: []
+    consumes_interface: []
     composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
     binds_substrate: []
     binds_rule: []
     expects_evidence: []
@@ -5388,6 +6083,7 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 019fee89-e617-7abf-8f16-a6ad1f38722c
   alias_id: INV-0082
   alias_name: inv-0082
@@ -5399,7 +6095,7 @@ entities:
     references or mint replacement UUIDs.
   uri: adr://adr-architecture-kit/entities/019fee89-e617-7abf-8f16-a6ad1f38722c
   created_at: '2026-08-11T01:57:22.583Z'
-  entity_fingerprint: sha256:3c4036d65726507fa087e45a5a085f3226a774a88fbfc0f21e36c1ddf2fd7ae1
+  entity_fingerprint: sha256:4c21c2fc72233ff7aa8e6fba9febb61f6796db0d38aca2c27326c4bc93477173
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -5437,7 +6133,14 @@ entities:
     superseded_by: []
     refines: []
     provides_interface: []
+    consumes_interface: []
     composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
     binds_substrate: []
     binds_rule: []
     expects_evidence: []
@@ -5450,6 +6153,7 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 019fee89-e617-7aed-9a0f-a55d76a3a87a
   alias_id: INV-0012
   alias_name: inv-0012
@@ -5459,7 +6163,7 @@ entities:
   summary: An authorized alias change does not change canonical UUID identity.
   uri: adr://adr-architecture-kit/entities/019fee89-e617-7aed-9a0f-a55d76a3a87a
   created_at: '2026-08-11T01:57:22.583Z'
-  entity_fingerprint: sha256:245a11592569667b4d0d23405dd7a3f9a55db542da4a7d5b63006cb19145765a
+  entity_fingerprint: sha256:472585355935961c9150bd53539509be1c0f89aee29cd1c187b45cb66a6019ac
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -5493,7 +6197,14 @@ entities:
     superseded_by: []
     refines: []
     provides_interface: []
+    consumes_interface: []
     composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
     binds_substrate: []
     binds_rule: []
     expects_evidence: []
@@ -5506,6 +6217,7 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 019fee89-e617-7aef-9f37-6e9c557332b3
   alias_id: INV-0077
   alias_name: inv-0077
@@ -5517,7 +6229,7 @@ entities:
     v1.1 artifact behavior, and MUST reject unsupported future version
   uri: adr://adr-architecture-kit/entities/019fee89-e617-7aef-9f37-6e9c557332b3
   created_at: '2026-08-11T01:57:22.583Z'
-  entity_fingerprint: sha256:bbdfb34036ac9911f80c8901c1529f64867f7424b4dc6cf9224b4af3c9a96ed5
+  entity_fingerprint: sha256:7fe02f822f8b90406e547395bc768f8efa7138918897543a2f4b97aad0c3e809
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -5560,7 +6272,14 @@ entities:
     superseded_by: []
     refines: []
     provides_interface: []
+    consumes_interface: []
     composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
     binds_substrate: []
     binds_rule: []
     expects_evidence: []
@@ -5573,6 +6292,7 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 019fee89-e617-7b44-973e-c177e15805b2
   alias_id: INV-0093
   alias_name: inv-0093
@@ -5583,7 +6303,7 @@ entities:
     endpoints.
   uri: adr://adr-architecture-kit/entities/019fee89-e617-7b44-973e-c177e15805b2
   created_at: '2026-08-11T01:57:22.583Z'
-  entity_fingerprint: sha256:4fc17b8ee7f73759d03a520a4ff37e587c1152aa18e7ddc7caf5829cea6af702
+  entity_fingerprint: sha256:c5177f73d9018f562e92f15d76457ad938dc86f41029223928f32da77481bd24
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -5618,7 +6338,14 @@ entities:
     superseded_by: []
     refines: []
     provides_interface: []
+    consumes_interface: []
     composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
     binds_substrate: []
     binds_rule: []
     expects_evidence: []
@@ -5631,6 +6358,7 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 019fee89-e617-7b53-bf3f-cf8e0c7fdaef
   alias_id: INV-0011
   alias_name: inv-0011
@@ -5641,7 +6369,7 @@ entities:
     use UUIDs.
   uri: adr://adr-architecture-kit/entities/019fee89-e617-7b53-bf3f-cf8e0c7fdaef
   created_at: '2026-08-11T01:57:22.583Z'
-  entity_fingerprint: sha256:89711c1fa500852c7edd28f30df7a49efb3ed16a64c3d94f2deae7555862d3f4
+  entity_fingerprint: sha256:e2802fe1bcca47a5606b7b06077bb9f72aa16ae70b23c0f5113e8e9089378ca3
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -5676,7 +6404,14 @@ entities:
     superseded_by: []
     refines: []
     provides_interface: []
+    consumes_interface: []
     composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
     binds_substrate: []
     binds_rule: []
     expects_evidence: []
@@ -5689,6 +6424,7 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 019fee89-e617-7e19-b51f-c06c900905ec
   alias_id: INV-0080
   alias_name: inv-0080
@@ -5700,7 +6436,7 @@ entities:
     ambiguous names, or dangling endpoints. It MUST NOT use probabilist
   uri: adr://adr-architecture-kit/entities/019fee89-e617-7e19-b51f-c06c900905ec
   created_at: '2026-08-11T01:57:22.583Z'
-  entity_fingerprint: sha256:afe294b8bccfd628543b0682b526116d5d4dcffac0405a5ae4e2814bc31ad6d0
+  entity_fingerprint: sha256:f3a0895e9b6c88af2ca660bc434edca4848685438519800c43f7cf532fd6d341
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -5743,7 +6479,14 @@ entities:
     superseded_by: []
     refines: []
     provides_interface: []
+    consumes_interface: []
     composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
     binds_substrate: []
     binds_rule: []
     expects_evidence: []
@@ -5756,6 +6499,7 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 019fee89-e617-7e4e-b23f-6494cd1f2359
   alias_id: INV-0084
   alias_name: inv-0084
@@ -5766,7 +6510,7 @@ entities:
     never canonical authored data.'
   uri: adr://adr-architecture-kit/entities/019fee89-e617-7e4e-b23f-6494cd1f2359
   created_at: '2026-08-11T01:57:22.583Z'
-  entity_fingerprint: sha256:0acaae6d61d0d6a2e20b1b439e316982785148fbe62199619a009909acda3fde
+  entity_fingerprint: sha256:d70dfe4d7764f2d016da910103fae5a2afee7809d20467717b0a429e9578416e
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -5801,7 +6545,14 @@ entities:
     superseded_by: []
     refines: []
     provides_interface: []
+    consumes_interface: []
     composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
     binds_substrate: []
     binds_rule: []
     expects_evidence: []
@@ -5814,6 +6565,7 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 019fee89-e617-7ec8-b235-dda998054d7c
   alias_id: INV-0064
   alias_name: inv-0064
@@ -5824,7 +6576,7 @@ entities:
     or implementation authority.
   uri: adr://adr-architecture-kit/entities/019fee89-e617-7ec8-b235-dda998054d7c
   created_at: '2026-08-11T01:57:22.583Z'
-  entity_fingerprint: sha256:de731df0ad04136dc6304e51bf0eba947a2048729754607ad14ed992d9ac5d15
+  entity_fingerprint: sha256:c38886ea8e8e408db532f2c7231e96b82656687f79d0a6eb4107a56b908aa29a
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -5863,7 +6615,14 @@ entities:
     superseded_by: []
     refines: []
     provides_interface: []
+    consumes_interface: []
     composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
     binds_substrate: []
     binds_rule: []
     expects_evidence: []
@@ -5876,6 +6635,7 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 019fee89-e617-7ed0-9c17-6def51de03a3
   alias_id: INV-0086
   alias_name: inv-0086
@@ -5886,7 +6646,7 @@ entities:
     at UUIDv7 mint time, not historical architecture creation time.
   uri: adr://adr-architecture-kit/entities/019fee89-e617-7ed0-9c17-6def51de03a3
   created_at: '2026-08-11T01:57:22.583Z'
-  entity_fingerprint: sha256:df0c3604d25dd957d289a8b134e8e185f165edcce228e9e30c462974672cccca
+  entity_fingerprint: sha256:033f4d159604930d551993acd670d93bc6cc4b61bf530d2bc1dceb8891e0004e
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -5921,7 +6681,14 @@ entities:
     superseded_by: []
     refines: []
     provides_interface: []
+    consumes_interface: []
     composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
     binds_substrate: []
     binds_rule: []
     expects_evidence: []
@@ -5934,6 +6701,7 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 019fee89-e617-7f99-930b-dee9dcfa8a1f
   alias_id: INV-0065
   alias_name: inv-0065
@@ -5944,7 +6712,7 @@ entities:
     and MUST govern implementation allowance only.
   uri: adr://adr-architecture-kit/entities/019fee89-e617-7f99-930b-dee9dcfa8a1f
   created_at: '2026-08-11T01:57:22.583Z'
-  entity_fingerprint: sha256:f401dd5efdf004f389eb3830f7fe3c8569193da17edc28e1402e1f5dad52b2f1
+  entity_fingerprint: sha256:8b4ad0ed4d5af1a776370490465a3dcc67ae618a7a7932c965723f0a594cb9d5
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -5983,7 +6751,14 @@ entities:
     superseded_by: []
     refines: []
     provides_interface: []
+    consumes_interface: []
     composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
     binds_substrate: []
     binds_rule: []
     expects_evidence: []
@@ -5996,6 +6771,7 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 019ff22a-bb5f-7779-912f-040cdf1b54b8
   alias_id: INV-0100
   alias_name: inv-0100
@@ -6007,7 +6783,7 @@ entities:
     authority.'
   uri: adr://adr-architecture-kit/entities/019ff22a-bb5f-7779-912f-040cdf1b54b8
   created_at: '2026-08-11T18:51:54.591Z'
-  entity_fingerprint: sha256:64e34bb0fd57b95082834800bd0638fdb13865aeb23d92bfb3de2e891a44cf8a
+  entity_fingerprint: sha256:97a1307593ba14856b6a040d481a5a71480ed113ad53185ba1ebb8f5bfeeae9d
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -6048,7 +6824,14 @@ entities:
     superseded_by: []
     refines: []
     provides_interface: []
+    consumes_interface: []
     composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
     binds_substrate: []
     binds_rule: []
     expects_evidence: []
@@ -6061,6 +6844,7 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 019ff22a-bb5f-7b93-a600-f587022aeffd
   alias_id: INV-0101
   alias_name: inv-0101
@@ -6072,7 +6856,7 @@ entities:
     and must not require whole-repository hashing.'
   uri: adr://adr-architecture-kit/entities/019ff22a-bb5f-7b93-a600-f587022aeffd
   created_at: '2026-08-11T18:51:54.591Z'
-  entity_fingerprint: sha256:976e0948bea842840ae81be0b21dfbe52b6cc64661c7bdf80abed780450164d3
+  entity_fingerprint: sha256:5b1479efc4f0f262437ca676b93fe528c664e54e6d0bfe79a403c2edf9261a4b
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -6113,7 +6897,14 @@ entities:
     superseded_by: []
     refines: []
     provides_interface: []
+    consumes_interface: []
     composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
     binds_substrate: []
     binds_rule: []
     expects_evidence: []
@@ -6126,6 +6917,7 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 019ff22a-bb5f-7c77-a223-1dab5e8c814d
   alias_id: INV-0099
   alias_name: inv-0099
@@ -6137,7 +6929,7 @@ entities:
     an independent authored duplicate of those facts.'
   uri: adr://adr-architecture-kit/entities/019ff22a-bb5f-7c77-a223-1dab5e8c814d
   created_at: '2026-08-11T18:51:54.591Z'
-  entity_fingerprint: sha256:fbbaa92c287d7ac19c4ecf5eaf995e7e7d59677287fa9afde45b884d9468a600
+  entity_fingerprint: sha256:cdfbacc141034c7a4cefda4eaa0444e54727a14ed8f2c542c8d533036d64d692
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -6177,7 +6969,14 @@ entities:
     superseded_by: []
     refines: []
     provides_interface: []
+    consumes_interface: []
     composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
     binds_substrate: []
     binds_rule: []
     expects_evidence: []
@@ -6190,6 +6989,7 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 019ff22a-bb5f-7fca-b021-b3cbc68ddde2
   alias_id: INV-0102
   alias_name: inv-0102
@@ -6201,7 +7001,7 @@ entities:
     rendered into an arbitrary consuming repository.'
   uri: adr://adr-architecture-kit/entities/019ff22a-bb5f-7fca-b021-b3cbc68ddde2
   created_at: '2026-08-11T18:51:54.591Z'
-  entity_fingerprint: sha256:0c5c33bf7e2b0e397d7a8e52ee07fa1ec0c29a7220954a092535e8cffd4a1d52
+  entity_fingerprint: sha256:229f299c8b7b72cc7295b0ac69b5f24dd90c09ec42d4a1c1753bf2d13f79bd10
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -6242,7 +7042,14 @@ entities:
     superseded_by: []
     refines: []
     provides_interface: []
+    consumes_interface: []
     composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
     binds_substrate: []
     binds_rule: []
     expects_evidence: []
@@ -6255,6 +7062,7 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 019ffdba-3c42-7230-8d39-ef047f583291
   alias_id: INV-0111
   alias_name: inv-0111
@@ -6265,7 +7073,7 @@ entities:
     total order, preserve confidence, reject lossy conversion, and be idempotent
   uri: adr://adr-architecture-kit/entities/019ffdba-3c42-7230-8d39-ef047f583291
   created_at: '2026-08-14T00:44:28.610Z'
-  entity_fingerprint: sha256:d3a950032bbd6aeea7f35934f0063f8368f0858220ae9a9726c2d21cc656bf08
+  entity_fingerprint: sha256:eae8ebff8ea7686e81ada9d628805b94d6d3ddc54f991f5d097736130fe26a8c
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -6304,7 +7112,14 @@ entities:
     superseded_by: []
     refines: []
     provides_interface: []
+    consumes_interface: []
     composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
     binds_substrate: []
     binds_rule: []
     expects_evidence: []
@@ -6317,6 +7132,7 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 019ffdba-3c42-72d4-982d-88224ca69e68
   alias_id: INV-0112
   alias_name: inv-0112
@@ -6327,7 +7143,7 @@ entities:
     edge MUST NOT be dual-encoded on one surface
   uri: adr://adr-architecture-kit/entities/019ffdba-3c42-72d4-982d-88224ca69e68
   created_at: '2026-08-14T00:44:28.610Z'
-  entity_fingerprint: sha256:451ddde2909f64fcf2bba4e907983bb40266141e33aea3ef19d03578a69c09de
+  entity_fingerprint: sha256:5d4c669f9dd2ffe1a79e555f703ba009e6239332c465f628973769a5af86a7ba
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -6365,7 +7181,14 @@ entities:
     superseded_by: []
     refines: []
     provides_interface: []
+    consumes_interface: []
     composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
     binds_substrate: []
     binds_rule: []
     expects_evidence: []
@@ -6378,6 +7201,7 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 019ffdba-3c42-74ea-993d-990027e528c0
   alias_id: INV-0106
   alias_name: inv-0106
@@ -6389,7 +7213,7 @@ entities:
     or graph-admitted
   uri: adr://adr-architecture-kit/entities/019ffdba-3c42-74ea-993d-990027e528c0
   created_at: '2026-08-14T00:44:28.610Z'
-  entity_fingerprint: sha256:afdc60554a900f1ce668dd729accabb5b0f5f77c010a039da7b1b334841a4a2c
+  entity_fingerprint: sha256:8c57c7f155c4476baec329666e70de4f8cb285f3a76fb8f9ccdfe8163fd7f28a
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -6430,7 +7254,14 @@ entities:
     superseded_by: []
     refines: []
     provides_interface: []
+    consumes_interface: []
     composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
     binds_substrate: []
     binds_rule: []
     expects_evidence: []
@@ -6443,6 +7274,7 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 019ffdba-3c42-7a6d-9717-d8d96b6fa75d
   alias_id: INV-0110
   alias_name: inv-0110
@@ -6453,7 +7285,7 @@ entities:
     or synthesize canonical UUID claim metadata from alias arguments
   uri: adr://adr-architecture-kit/entities/019ffdba-3c42-7a6d-9717-d8d96b6fa75d
   created_at: '2026-08-14T00:44:28.610Z'
-  entity_fingerprint: sha256:d97150bd6fb5ab5e08dff6be52b8bdbb2445debe510de555d2dcc249f38f5273
+  entity_fingerprint: sha256:7f09dd9d414d84f629629bf67804e7111929516b62656491d50dc24147998001
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -6493,7 +7325,14 @@ entities:
     superseded_by: []
     refines: []
     provides_interface: []
+    consumes_interface: []
     composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
     binds_substrate: []
     binds_rule: []
     expects_evidence: []
@@ -6506,6 +7345,7 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 019ffdba-3c42-7c85-a63f-689e71c5236a
   alias_id: INV-0104
   alias_name: inv-0104
@@ -6517,7 +7357,7 @@ entities:
     type mismatches the resolved type
   uri: adr://adr-architecture-kit/entities/019ffdba-3c42-7c85-a63f-689e71c5236a
   created_at: '2026-08-14T00:44:28.610Z'
-  entity_fingerprint: sha256:7b1ab1413f5032e6b5e4ebdff9013cfd595a7de37c191c0a3b06c164bd8abea9
+  entity_fingerprint: sha256:a8e0c37652aeeda2860190fd992d88f5574f9cca9d39369f795125c2996429ce
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -6558,7 +7398,14 @@ entities:
     superseded_by: []
     refines: []
     provides_interface: []
+    consumes_interface: []
     composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
     binds_substrate: []
     binds_rule: []
     expects_evidence: []
@@ -6571,6 +7418,7 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 019ffdba-3c42-7cbe-a121-06d3437129ed
   alias_id: INV-0103
   alias_name: inv-0103
@@ -6581,7 +7429,7 @@ entities:
     UUIDv7 target_entity_id, and confidence
   uri: adr://adr-architecture-kit/entities/019ffdba-3c42-7cbe-a121-06d3437129ed
   created_at: '2026-08-14T00:44:28.610Z'
-  entity_fingerprint: sha256:73b22aac3b8247689c9fd32505e38b5367030fbac5609569a3ec635ee7fd2dc2
+  entity_fingerprint: sha256:886e976883ee64c1482a58c72c32e8d881dbc1ee8a35f008f2c74850ab132bf4
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -6620,7 +7468,14 @@ entities:
     superseded_by: []
     refines: []
     provides_interface: []
+    consumes_interface: []
     composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
     binds_substrate: []
     binds_rule: []
     expects_evidence: []
@@ -6633,6 +7488,7 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 019ffdba-3c42-7d33-9e1b-e22bc168fa7c
   alias_id: INV-0105
   alias_name: inv-0105
@@ -6644,7 +7500,7 @@ entities:
     also reject inferred or heuristic `enforces` claims without changin
   uri: adr://adr-architecture-kit/entities/019ffdba-3c42-7d33-9e1b-e22bc168fa7c
   created_at: '2026-08-14T00:44:28.610Z'
-  entity_fingerprint: sha256:850c7a1f5c22a3d26b0c42023d770239d22c260be42dca549ba3368cbc319e6b
+  entity_fingerprint: sha256:5c5116e609545c1bdd373deae075e9d01efcb767cce569016f841a9fb50cc5a9
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -6685,7 +7541,14 @@ entities:
     superseded_by: []
     refines: []
     provides_interface: []
+    consumes_interface: []
     composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
     binds_substrate: []
     binds_rule: []
     expects_evidence: []
@@ -6698,6 +7561,7 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 019ffdba-3c42-7da9-ac3e-879c2e5a88a4
   alias_id: INV-0108
   alias_name: inv-0108
@@ -6709,7 +7573,7 @@ entities:
     link
   uri: adr://adr-architecture-kit/entities/019ffdba-3c42-7da9-ac3e-879c2e5a88a4
   created_at: '2026-08-14T00:44:28.610Z'
-  entity_fingerprint: sha256:5c9a2e411dfd4403e0ebb4010f072b75b4e63b1aa4ec4c8baa1b83648dae4776
+  entity_fingerprint: sha256:cb709fafe4bf1b5c5b5b7c01554d8db30374fdd56b92d7053af6c19e1dc5c100
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -6749,7 +7613,14 @@ entities:
     superseded_by: []
     refines: []
     provides_interface: []
+    consumes_interface: []
     composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
     binds_substrate: []
     binds_rule: []
     expects_evidence: []
@@ -6762,6 +7633,7 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 019ffdba-3c42-7e3a-a037-3b6c3087ef0a
   alias_id: INV-0107
   alias_name: inv-0107
@@ -6772,7 +7644,7 @@ entities:
     MUST be an error
   uri: adr://adr-architecture-kit/entities/019ffdba-3c42-7e3a-a037-3b6c3087ef0a
   created_at: '2026-08-14T00:44:28.610Z'
-  entity_fingerprint: sha256:045dc42f8de6e18e47cf23a8230e83b8cb811ea74b79abd9ad2c0311c186942e
+  entity_fingerprint: sha256:53a7294ce636723067e42561d45c85f1ca61367bf4db2ad756b0d8decf1bc7fa
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -6811,7 +7683,14 @@ entities:
     superseded_by: []
     refines: []
     provides_interface: []
+    consumes_interface: []
     composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
     binds_substrate: []
     binds_rule: []
     expects_evidence: []
@@ -6824,6 +7703,7 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 019ffdba-3c42-7ec4-852c-06396e99d050
   alias_id: INV-0109
   alias_name: inv-0109
@@ -6834,7 +7714,7 @@ entities:
     the named architecture constraint is enforced
   uri: adr://adr-architecture-kit/entities/019ffdba-3c42-7ec4-852c-06396e99d050
   created_at: '2026-08-14T00:44:28.610Z'
-  entity_fingerprint: sha256:f253edc4716319d7650ee133ce2aa2151f36cb9a8b87b6c33bb090d6c494f502
+  entity_fingerprint: sha256:ed6d344770a00ff0f483acdb30a60e899414cafcb0e025dad120afd7262df3b2
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -6873,7 +7753,14 @@ entities:
     superseded_by: []
     refines: []
     provides_interface: []
+    consumes_interface: []
     composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
     binds_substrate: []
     binds_rule: []
     expects_evidence: []
@@ -6886,6 +7773,7 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 01a002b7-e008-7080-a008-080808080808
   alias_id: INV-0138
   alias_name: relationship-and-assertion-identities-are-distinct
@@ -6897,7 +7785,7 @@ entities:
     not identity.
   uri: adr://adr-architecture-kit/entities/01a002b7-e008-7080-a008-080808080808
   created_at: '2026-08-15T00:00:00.008Z'
-  entity_fingerprint: sha256:75a101274369b2fbfdecbae2dbc9bd36c37af12eed0dd0e2d2960c635725b161
+  entity_fingerprint: sha256:668000283f2fd92bbc61114debc2254619c98b733a02ea966f65e18d6903291d
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -6933,7 +7821,14 @@ entities:
     superseded_by: []
     refines: []
     provides_interface: []
+    consumes_interface: []
     composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
     binds_substrate: []
     binds_rule: []
     expects_evidence: []
@@ -6946,6 +7841,7 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 01a002b7-e009-7090-a409-090909090909
   alias_id: INV-0139
   alias_name: derived-inverses-reuse-effective-relationship-identity
@@ -6957,7 +7853,7 @@ entities:
     a separate entity.
   uri: adr://adr-architecture-kit/entities/01a002b7-e009-7090-a409-090909090909
   created_at: '2026-08-15T00:00:00.009Z'
-  entity_fingerprint: sha256:08c65c2f3ce88a23f8ca1b09a18f06e0cbf71ca10a42cd6bbfb055cacb00798d
+  entity_fingerprint: sha256:ed209523251408e8f5eff6bf74c28d0f85f08d222fdb5c9e709cbabf03dac6f8
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -6993,7 +7889,14 @@ entities:
     superseded_by: []
     refines: []
     provides_interface: []
+    consumes_interface: []
     composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
     binds_substrate: []
     binds_rule: []
     expects_evidence: []
@@ -7006,6 +7909,7 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 01a002b7-e00a-70a0-a80a-0a0a0a0a0a0a
   alias_id: INV-0140
   alias_name: migration-requires-explicit-human-gates-and-sealed-evidence
@@ -7017,7 +7921,7 @@ entities:
     evidence is sealed.
   uri: adr://adr-architecture-kit/entities/01a002b7-e00a-70a0-a80a-0a0a0a0a0a0a
   created_at: '2026-08-15T00:00:00.010Z'
-  entity_fingerprint: sha256:5e477b7ec175ea7a506b3fd002d69e3addc75bd1b9b817666bc19de0ea8acff4
+  entity_fingerprint: sha256:0dc91c88dad8b4277d7381228699e605c617cdef84f4c7a9a8120f8e289fb1b7
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -7053,7 +7957,14 @@ entities:
     superseded_by: []
     refines: []
     provides_interface: []
+    consumes_interface: []
     composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
     binds_substrate: []
     binds_rule: []
     expects_evidence: []
@@ -7066,6 +7977,7 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 01a00627-97d8-76cd-853b-3e17275c4b76
   alias_id: INV-0129
   alias_name: one-canonical-schema-authority
@@ -7076,7 +7988,7 @@ entities:
     at most one explicit package mirror mapping.
   uri: adr://adr-architecture-kit/entities/01a00627-97d8-76cd-853b-3e17275c4b76
   created_at: '2026-08-15T16:00:53.208Z'
-  entity_fingerprint: sha256:2f12cd470b7dd25c93c5e7c3bf653d22ffba2390c4722c14a7131797a15d3e60
+  entity_fingerprint: sha256:872ed0819d2877b37382538d3167ec170225a48b96ab3cf5e654ce834125e9b3
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -7111,7 +8023,14 @@ entities:
     superseded_by: []
     refines: []
     provides_interface: []
+    consumes_interface: []
     composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
     binds_substrate: []
     binds_rule: []
     expects_evidence: []
@@ -7124,6 +8043,7 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 01a00627-97d8-7e92-a0ca-e572a89fef75
   alias_id: INV-0128
   alias_name: taxonomy-preserves-schema-membership-and-bytes
@@ -7134,7 +8054,7 @@ entities:
     relocation.
   uri: adr://adr-architecture-kit/entities/01a00627-97d8-7e92-a0ca-e572a89fef75
   created_at: '2026-08-15T16:00:53.208Z'
-  entity_fingerprint: sha256:92b6131f6a63a61c1c82e68539daeb1eddeb252bcad43691aba8c67c0383c1a7
+  entity_fingerprint: sha256:58efec4b1446089c12bbe6e9e9d9b7d8b7ef6b1f0d252f699bb53d25390b51b6
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -7169,7 +8089,14 @@ entities:
     superseded_by: []
     refines: []
     provides_interface: []
+    consumes_interface: []
     composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
     binds_substrate: []
     binds_rule: []
     expects_evidence: []
@@ -7182,6 +8109,7 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 01a00643-1bfc-7017-a03d-b61439e4cb2b
   alias_id: INV-0136
   alias_name: identity-migration-is-sealed-atomic-and-parity-proven
@@ -7192,7 +8120,7 @@ entities:
     and proves reference and semantic parity after atomic application.
   uri: adr://adr-architecture-kit/entities/01a00643-1bfc-7017-a03d-b61439e4cb2b
   created_at: '2026-08-15T16:30:56.508Z'
-  entity_fingerprint: sha256:8ae7621c520f57c77a95134fcba91d85f78265b8608ce825de3f4697c9762536
+  entity_fingerprint: sha256:a0c5c0b214a146673d7ca40f976e27a0920007cbd0882920e307905ca657e026
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -7227,7 +8155,14 @@ entities:
     superseded_by: []
     refines: []
     provides_interface: []
+    consumes_interface: []
     composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
     binds_substrate: []
     binds_rule: []
     expects_evidence: []
@@ -7240,6 +8175,7 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 01a00643-1bfc-715b-a837-a062f86a6192
   alias_id: INV-0133
   alias_name: local-value-objects-use-keys-not-ids
@@ -7251,7 +8187,7 @@ entities:
     than an id.
   uri: adr://adr-architecture-kit/entities/01a00643-1bfc-715b-a837-a062f86a6192
   created_at: '2026-08-15T16:30:56.508Z'
-  entity_fingerprint: sha256:6967046f9752abf579acfe4498f72d5b73223075990a94ea751eb3242317b6ac
+  entity_fingerprint: sha256:30fc5da498462328f51f6d0b8b6f41790d590d53daa3a09abf79078724d370c4
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -7287,7 +8223,14 @@ entities:
     superseded_by: []
     refines: []
     provides_interface: []
+    consumes_interface: []
     composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
     binds_substrate: []
     binds_rule: []
     expects_evidence: []
@@ -7300,6 +8243,7 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 01a00643-1bfc-7545-b11f-aebc124672f4
   alias_id: INV-0134
   alias_name: projections-reuse-uuid-or-use-deterministic-keys
@@ -7311,7 +8255,7 @@ entities:
     do not mint canonical identity without canonical authority.
   uri: adr://adr-architecture-kit/entities/01a00643-1bfc-7545-b11f-aebc124672f4
   created_at: '2026-08-15T16:30:56.508Z'
-  entity_fingerprint: sha256:397a5e7c5bab62113e6e8b792d3242cafcca0b8cbc15d81c7746042f56733529
+  entity_fingerprint: sha256:82e14c94d03b449e5d5cca0ec0011d66eb18bd1ef79d14c1273ad71809fc84fe
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -7347,7 +8291,14 @@ entities:
     superseded_by: []
     refines: []
     provides_interface: []
+    consumes_interface: []
     composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
     binds_substrate: []
     binds_rule: []
     expects_evidence: []
@@ -7360,6 +8311,7 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 01a00643-1bfc-757c-ba3a-63a007e981d0
   alias_id: INV-0130
   alias_name: every-canonical-entity-has-universal-identity-envelope
@@ -7371,7 +8323,7 @@ entities:
     and a human-oriented `alias_name` before graph admission.
   uri: adr://adr-architecture-kit/entities/01a00643-1bfc-757c-ba3a-63a007e981d0
   created_at: '2026-08-15T16:30:56.508Z'
-  entity_fingerprint: sha256:8a43cf24e84d6f0eb61bed83f54aecf855a1e19bb257c88e2567b98835cc32db
+  entity_fingerprint: sha256:def7391533eb5f68ec51128e3ef69ca5bd78adfc6ed581455a3d00132920762c
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -7407,7 +8359,14 @@ entities:
     superseded_by: []
     refines: []
     provides_interface: []
+    consumes_interface: []
     composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
     binds_substrate: []
     binds_rule: []
     expects_evidence: []
@@ -7420,6 +8379,7 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 01a00643-1bfc-766c-ba3c-2f5aa66d59f6
   alias_id: INV-0131
   alias_name: canonical-entity-references-use-uuids
@@ -7430,7 +8390,7 @@ entities:
     than aliases or owner-local keys.
   uri: adr://adr-architecture-kit/entities/01a00643-1bfc-766c-ba3c-2f5aa66d59f6
   created_at: '2026-08-15T16:30:56.508Z'
-  entity_fingerprint: sha256:1da7bed05a123d34deee8e96f290d96d3cc37ac608a85a5ec54a89410cb69f70
+  entity_fingerprint: sha256:e6e1f6dc37cc7025bca962bd56731af0a6c1326ec4eb594ed1be4036913ef554
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -7465,7 +8425,14 @@ entities:
     superseded_by: []
     refines: []
     provides_interface: []
+    consumes_interface: []
     composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
     binds_substrate: []
     binds_rule: []
     expects_evidence: []
@@ -7478,6 +8445,7 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 01a00643-1bfc-7840-811f-831007e661b2
   alias_id: INV-0137
   alias_name: compatibility-removal-requires-explicit-reviewed-disposition
@@ -7488,7 +8456,7 @@ entities:
     or corpus format is removed without explicit reviewed disposition.
   uri: adr://adr-architecture-kit/entities/01a00643-1bfc-7840-811f-831007e661b2
   created_at: '2026-08-15T16:30:56.508Z'
-  entity_fingerprint: sha256:f85ba4c3eb25b4934b3d67e881f026509351929fb2750cfd82741f757c0884ff
+  entity_fingerprint: sha256:1c522047e01c1325cde261f930a277fbdb16022acdda20b918b5664db91fdc75
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -7523,7 +8491,14 @@ entities:
     superseded_by: []
     refines: []
     provides_interface: []
+    consumes_interface: []
     composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
     binds_substrate: []
     binds_rule: []
     expects_evidence: []
@@ -7536,6 +8511,7 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 01a00643-1bfc-7dd1-a439-31a110f8ed50
   alias_id: INV-0132
   alias_name: aliases-never-define-or-retarget-identity
@@ -7546,7 +8522,7 @@ entities:
     identity or retarget a reference.
   uri: adr://adr-architecture-kit/entities/01a00643-1bfc-7dd1-a439-31a110f8ed50
   created_at: '2026-08-15T16:30:56.508Z'
-  entity_fingerprint: sha256:8372edf6368cbc6d22fe9913ad736dd1130b826b154d743f8c341aed33d2458a
+  entity_fingerprint: sha256:197f15348c6cce3547a64ce585445a79a8fbbd8cadb2017fb266360d8f6415fe
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -7581,7 +8557,14 @@ entities:
     superseded_by: []
     refines: []
     provides_interface: []
+    consumes_interface: []
     composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
     binds_substrate: []
     binds_rule: []
     expects_evidence: []
@@ -7594,6 +8577,7 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 01a00643-1bfc-7f05-b617-6960fa562bea
   alias_id: INV-0135
   alias_name: schema-admission-declares-and-enforces-identity-boundaries
@@ -7604,7 +8588,7 @@ entities:
     and projection boundaries and mechanically enforces the universal identity invariant.
   uri: adr://adr-architecture-kit/entities/01a00643-1bfc-7f05-b617-6960fa562bea
   created_at: '2026-08-15T16:30:56.508Z'
-  entity_fingerprint: sha256:4e0ecdd956712c359b8c736539ac66985f0f63074f072547357616f079dc4719
+  entity_fingerprint: sha256:005be62df58659fc452e2dd8eb219cef5ab06958ddf6657a5d8ceb7f258f8467
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -7639,7 +8623,14 @@ entities:
     superseded_by: []
     refines: []
     provides_interface: []
+    consumes_interface: []
     composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
     binds_substrate: []
     binds_rule: []
     expects_evidence: []
@@ -7652,6 +8643,7 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 01a00644-1c05-7abc-8aaa-aaaaaaaaaaaa
   alias_id: INV-0141
   alias_name: every-extension-record-has-universal-envelope
@@ -7662,7 +8654,7 @@ entities:
     and governed alias orientation before graph admission.
   uri: adr://adr-architecture-kit/entities/01a00644-1c05-7abc-8aaa-aaaaaaaaaaaa
   created_at: '2026-08-15T16:32:02.053Z'
-  entity_fingerprint: sha256:367078da0a53df07756a9ce358767e5c79995c95304c387ca355c26f83f9846f
+  entity_fingerprint: sha256:e8e6819b0b1551164b302bf4d48a3839c4aa7c6021d8f3f169b1402df0352090
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -7697,7 +8689,14 @@ entities:
     superseded_by: []
     refines: []
     provides_interface: []
+    consumes_interface: []
     composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
     binds_substrate: []
     binds_rule: []
     expects_evidence: []
@@ -7710,6 +8709,7 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 01a00644-1c06-7abc-8aaa-bbbbbbbbbbbb
   alias_id: INV-0142
   alias_name: extension-types-are-qualified-and-consumer-owned
@@ -7720,7 +8720,7 @@ entities:
     architecture namespace and validated against consumer-owned allocation state.
   uri: adr://adr-architecture-kit/entities/01a00644-1c06-7abc-8aaa-bbbbbbbbbbbb
   created_at: '2026-08-15T16:32:02.054Z'
-  entity_fingerprint: sha256:328532e35620248f97b5313752aeba674e593f7e2bc6353e26027b130c4b73aa
+  entity_fingerprint: sha256:b1ddba171f84904a83fb995c0619d8de4de57f07ebc3413d54d74a51335cc293
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -7756,7 +8756,14 @@ entities:
     superseded_by: []
     refines: []
     provides_interface: []
+    consumes_interface: []
     composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
     binds_substrate: []
     binds_rule: []
     expects_evidence: []
@@ -7769,6 +8776,7 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 01a00644-1c07-7abc-8aaa-cccccccccccc
   alias_id: INV-0143
   alias_name: extension-properties-never-imply-relationships
@@ -7778,7 +8786,7 @@ entities:
   summary: Extension property values never imply graph relationships.
   uri: adr://adr-architecture-kit/entities/01a00644-1c07-7abc-8aaa-cccccccccccc
   created_at: '2026-08-15T16:32:02.055Z'
-  entity_fingerprint: sha256:c574ce53c7392c37ceaf8ca5dc6aba25723a14375f2fcf152e7ee84689235c08
+  entity_fingerprint: sha256:6bafb769862e9f946134196d9f29ca37ed66255a4be51c27d38dcf0491236b10
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -7812,7 +8820,14 @@ entities:
     superseded_by: []
     refines: []
     provides_interface: []
+    consumes_interface: []
     composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
     binds_substrate: []
     binds_rule: []
     expects_evidence: []
@@ -7825,6 +8840,7 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 01a00644-1c08-7abc-8aaa-dddddddddddd
   alias_id: INV-0144
   alias_name: extension-payload-is-explicit-and-opaque
@@ -7835,7 +8851,7 @@ entities:
     and is preserved without ADR-Kit semantic interpretation.
   uri: adr://adr-architecture-kit/entities/01a00644-1c08-7abc-8aaa-dddddddddddd
   created_at: '2026-08-15T16:32:02.056Z'
-  entity_fingerprint: sha256:bb06543b98f7584b6eda1651a80356449d48c5b01a5976837cc3e4df6a075c45
+  entity_fingerprint: sha256:e449cfaa4bb9a3471d8c16d831f8386e74c363a76e711e21e8bf73e4509cb75d
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -7870,7 +8886,14 @@ entities:
     superseded_by: []
     refines: []
     provides_interface: []
+    consumes_interface: []
     composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
     binds_substrate: []
     binds_rule: []
     expects_evidence: []
@@ -7883,6 +8906,7 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 01a00644-1c09-7abc-8aaa-eeeeeeeeeeee
   alias_id: INV-0145
   alias_name: canonical-relationship-identity-is-persisted
@@ -7893,7 +8917,7 @@ entities:
     canonical v2.1 graph surface.
   uri: adr://adr-architecture-kit/entities/01a00644-1c09-7abc-8aaa-eeeeeeeeeeee
   created_at: '2026-08-15T16:32:02.057Z'
-  entity_fingerprint: sha256:10027a583c5b47154405c241743509cc7998e6a2a8eb7c814e59f342fc236bd0
+  entity_fingerprint: sha256:efa79f813d30077a4b1349f1a7d61b8244d78d3dfdfb7dfdcadd9eb550b8ef4f
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -7928,7 +8952,14 @@ entities:
     superseded_by: []
     refines: []
     provides_interface: []
+    consumes_interface: []
     composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
     binds_substrate: []
     binds_rule: []
     expects_evidence: []
@@ -7941,6 +8972,7 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 01a00644-1c0a-7abc-8aaa-ffffffffffff
   alias_id: INV-0146
   alias_name: valid-extensions-round-trip-without-loss
@@ -7951,7 +8983,7 @@ entities:
     round-trip deterministically through normalized repository surfaces.
   uri: adr://adr-architecture-kit/entities/01a00644-1c0a-7abc-8aaa-ffffffffffff
   created_at: '2026-08-15T16:32:02.058Z'
-  entity_fingerprint: sha256:f3375eb53c73b087a1a30f1716bdd8296b157555abe5cff25fc70ef6bc28d039
+  entity_fingerprint: sha256:a58a6ca2132a9f71bd2206a42834480ef56a486a45965f341f394cb3b55805ee
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -7986,7 +9018,14 @@ entities:
     superseded_by: []
     refines: []
     provides_interface: []
+    consumes_interface: []
     composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
     binds_substrate: []
     binds_rule: []
     expects_evidence: []
@@ -7999,6 +9038,7 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 01a00644-1c0b-7abc-8aaa-121212121212
   alias_id: INV-0147
   alias_name: generators-never-mint-extension-identity
@@ -8009,7 +9049,7 @@ entities:
     or relationship UUIDs.
   uri: adr://adr-architecture-kit/entities/01a00644-1c0b-7abc-8aaa-121212121212
   created_at: '2026-08-15T16:32:02.059Z'
-  entity_fingerprint: sha256:defd13b45ec981b2bbe8e1ffa090b625bb67124b4146ae5121a78dd68fba9e93
+  entity_fingerprint: sha256:df301014c2acb5ee89233d805fd402ca1eec5c9a8b2c1ef9a3990605aa1fb6b9
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -8044,7 +9084,14 @@ entities:
     superseded_by: []
     refines: []
     provides_interface: []
+    consumes_interface: []
     composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
     binds_substrate: []
     binds_rule: []
     expects_evidence: []
@@ -8057,6 +9104,7 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 01a00644-1c0c-7abc-8aaa-131313131313
   alias_id: INV-0148
   alias_name: local-extension-endpoints-are-uuid-canonical
@@ -8067,7 +9115,7 @@ entities:
     future cross-namespace support uses the qualified external-reference contract.
   uri: adr://adr-architecture-kit/entities/01a00644-1c0c-7abc-8aaa-131313131313
   created_at: '2026-08-15T16:32:02.060Z'
-  entity_fingerprint: sha256:6b124125a4c2faff068ea1ece47612d6b1b60ccb16a18eded89f11be4bca5c06
+  entity_fingerprint: sha256:77f0d1545355b9030d963afd7518545d8c44dc6a2f9108008a5cf6d293cbb827
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -8102,7 +9150,14 @@ entities:
     superseded_by: []
     refines: []
     provides_interface: []
+    consumes_interface: []
     composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
     binds_substrate: []
     binds_rule: []
     expects_evidence: []
@@ -8115,6 +9170,7 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 01a02d38-7cf3-7017-8767-4978a49c35f0
   alias_id: INV-0154
   alias_name: node-loading-requires-baseline-contracts
@@ -8126,7 +9182,7 @@ entities:
     additive subsets as non-authoritative.
   uri: adr://adr-architecture-kit/entities/01a02d38-7cf3-7017-8767-4978a49c35f0
   created_at: '2026-08-23T06:04:31.859Z'
-  entity_fingerprint: sha256:1c38ea84eaea6ce9580e474d4f5e7acf8a4df8c3684aa8ca49bd7c66b24a983a
+  entity_fingerprint: sha256:5b2aecd0df066edfd6299308fe2c910909a476525c50bad19a738891b62c4a27
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -8162,7 +9218,14 @@ entities:
     superseded_by: []
     refines: []
     provides_interface: []
+    consumes_interface: []
     composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
     binds_substrate: []
     binds_rule: []
     expects_evidence: []
@@ -8175,6 +9238,7 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 01a02d38-7cf3-7155-8973-148ceb722f1b
   alias_id: INV-0151
   alias_name: canonical-schema-mirror-is-byte-exact
@@ -8185,7 +9249,7 @@ entities:
     counterparts under root schema/.
   uri: adr://adr-architecture-kit/entities/01a02d38-7cf3-7155-8973-148ceb722f1b
   created_at: '2026-08-23T06:04:31.859Z'
-  entity_fingerprint: sha256:b51404880ccdb9c27305b12fa0a4c855046c325cc2c264b70b8830026db224f7
+  entity_fingerprint: sha256:865a99e7109f6bfe8ae27975c6b357ffecfdcc103e31ea8424d9a114cadba2d8
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -8220,7 +9284,14 @@ entities:
     superseded_by: []
     refines: []
     provides_interface: []
+    consumes_interface: []
     composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
     binds_substrate: []
     binds_rule: []
     expects_evidence: []
@@ -8233,6 +9304,7 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 01a02d38-7cf3-74eb-896e-01f6f7dd53c1
   alias_id: INV-0152
   alias_name: browser-entrypoints-are-node-free
@@ -8243,7 +9315,7 @@ entities:
     dependency and MUST have no Angular framework dependency.
   uri: adr://adr-architecture-kit/entities/01a02d38-7cf3-74eb-896e-01f6f7dd53c1
   created_at: '2026-08-23T06:04:31.859Z'
-  entity_fingerprint: sha256:cbd7d6e2f9be08678beeb187494eb3751455c4f25bda89ecbcd6d13d9743035b
+  entity_fingerprint: sha256:d500617feba79b0b159ec8a26989c62ce3663d89741c92f6834de1d95491455a
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -8278,7 +9350,14 @@ entities:
     superseded_by: []
     refines: []
     provides_interface: []
+    consumes_interface: []
     composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
     binds_substrate: []
     binds_rule: []
     expects_evidence: []
@@ -8291,6 +9370,7 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 01a02d38-7cf3-7696-8323-e760deca8334
   alias_id: INV-0153
   alias_name: typescript-v1-is-read-only
@@ -8301,7 +9381,7 @@ entities:
     admission authoring mutation network access or import-time side effects.
   uri: adr://adr-architecture-kit/entities/01a02d38-7cf3-7696-8323-e760deca8334
   created_at: '2026-08-23T06:04:31.859Z'
-  entity_fingerprint: sha256:f908242c73eb542440890f77d9af0df1ed0f311f9a849059c5d669c20005e53a
+  entity_fingerprint: sha256:8bbcd7a7729cf32a10cd6e551dc54b092b3b855b3df6a5397e3f7b24899a33f2
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -8336,7 +9416,14 @@ entities:
     superseded_by: []
     refines: []
     provides_interface: []
+    consumes_interface: []
     composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
     binds_substrate: []
     binds_rule: []
     expects_evidence: []
@@ -8349,6 +9436,7 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 01a02d38-7cf3-769e-8b24-6c0df4edf9af
   alias_id: INV-0156
   alias_name: unsupported-contract-versions-fail-explicitly
@@ -8359,7 +9447,7 @@ entities:
     and MUST NOT silently coerce them into a supported semantic version.
   uri: adr://adr-architecture-kit/entities/01a02d38-7cf3-769e-8b24-6c0df4edf9af
   created_at: '2026-08-23T06:04:31.859Z'
-  entity_fingerprint: sha256:450d2e93db6128d638c84b456cea2e5126b72ac7f4835e6897fe515bd990ab2e
+  entity_fingerprint: sha256:ea01db096a05cea2fe45b35464eba0853e47d7bcb239cf3ed0cc015fbd63d062
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -8394,7 +9482,14 @@ entities:
     superseded_by: []
     refines: []
     provides_interface: []
+    consumes_interface: []
     composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
     binds_substrate: []
     binds_rule: []
     expects_evidence: []
@@ -8407,6 +9502,7 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 01a02d38-7cf3-790b-8493-b1499943f075
   alias_id: INV-0149
   alias_name: bindings-never-redefine-semantic-authority
@@ -8418,7 +9514,7 @@ entities:
     semantics.
   uri: adr://adr-architecture-kit/entities/01a02d38-7cf3-790b-8493-b1499943f075
   created_at: '2026-08-23T06:04:31.859Z'
-  entity_fingerprint: sha256:e3bdd3e7a9b364ca51ffd44e603a1d9cc9f4662c8c63d45d93442d192dd0f29e
+  entity_fingerprint: sha256:92bbfd06b18d98ec98ebdcf71e33e4ae27b2eadca513ecc824c964a240b23f80
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -8454,7 +9550,14 @@ entities:
     superseded_by: []
     refines: []
     provides_interface: []
+    consumes_interface: []
     composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
     binds_substrate: []
     binds_rule: []
     expects_evidence: []
@@ -8467,6 +9570,7 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 01a02d38-7cf3-79cf-8174-b9f50adaf0bf
   alias_id: INV-0155
   alias_name: linkage-never-enters-graph-authority
@@ -8477,7 +9581,7 @@ entities:
     and graph_admission_status not_admitted and MUST perform no graph writes.
   uri: adr://adr-architecture-kit/entities/01a02d38-7cf3-79cf-8174-b9f50adaf0bf
   created_at: '2026-08-23T06:04:31.859Z'
-  entity_fingerprint: sha256:9fd922b46b90c6f896d44fbb2ce6f60a87a600338ee77ac9b9739ee48369577c
+  entity_fingerprint: sha256:2cc467b3d3e7b2f6029cb2cd5caf1175f62d688f1bfe8c37778044548834ccdb
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -8512,7 +9616,14 @@ entities:
     superseded_by: []
     refines: []
     provides_interface: []
+    consumes_interface: []
     composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
     binds_substrate: []
     binds_rule: []
     expects_evidence: []
@@ -8525,6 +9636,7 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'
 - id: 01a02d38-7cf3-7e8e-8a34-0865a8dd73af
   alias_id: INV-0150
   alias_name: conformance-is-capability-intersection-scoped
@@ -8535,7 +9647,7 @@ entities:
     versions advertised by both bindings.
   uri: adr://adr-architecture-kit/entities/01a02d38-7cf3-7e8e-8a34-0865a8dd73af
   created_at: '2026-08-23T06:04:31.859Z'
-  entity_fingerprint: sha256:bdc347751922f5cd9fafd5775d471021180e5da0d477c11aa8ac8ae649ba1425
+  entity_fingerprint: sha256:68bf2d6b6cddae42b814e9c06814b48988da699c401c5015ca59a38c7901f229
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -8570,7 +9682,14 @@ entities:
     superseded_by: []
     refines: []
     provides_interface: []
+    consumes_interface: []
     composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
     binds_substrate: []
     binds_rule: []
     expects_evidence: []
@@ -8583,3 +9702,4 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
+  schema_version: '2.2'

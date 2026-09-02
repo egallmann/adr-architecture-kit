@@ -1,4 +1,4 @@
-schema_version: '1.3'
+schema_version: '1.5'
 adr_type: logical
 id: 019fee89-e615-73a3-8d31-7a4721affae9
 title: ADR-to-Prompt Translation for AI Implementation
@@ -419,7 +419,10 @@ interaction_contracts:
 related_adrs:
 - 019fee89-e615-77f6-9b1f-695732d25443
 - 019fee89-e615-7577-8d37-dd0df031bec9
-- 019fee89-e618-742f-951d-d29401d56c19
+- 019fee89-e617-7270-ab2f-58a756d2530e
+- 019fee89-e617-7d2b-8325-cd85ff814477
+- 019fee89-e618-7b76-843f-cfe21ceb2ea6
+- 01a048d8-454a-7464-bcaa-718fa77bed6a
 gaps:
 - id: GAP-0002
   question: Prompt template design needed
@@ -446,7 +449,7 @@ notes: 'This capability transforms ADRs from passive documentation into **active
 
   The prompt translator is itself a component that should be:
 
-  - Specified in a Physical ADR (ADR-P-0004 or ADR-P-0005)
+  - Specified in permanent physical-component ADR authority (ADR-PC-*)
 
   - Implemented following TDD methodology (ADR-L-0003)
 
@@ -468,7 +471,7 @@ notes: 'This capability transforms ADRs from passive documentation into **active
 
   # Generate prompts from Physical ADR
 
-  adr generate-prompts ADR-P-0003 --target codex --output prompts/
+  adr generate-prompts ADR-PC-0008 --target codex --output prompts/
 
 
   # Generates:
@@ -491,7 +494,7 @@ notes: 'This capability transforms ADRs from passive documentation into **active
 
   # Validate implementation
 
-  adr validate-implementation ADR-P-0003 --checklist prompts/validation-checklist.md
+  adr validate-implementation ADR-PC-0008 --checklist prompts/validation-checklist.md
 
   ```
 

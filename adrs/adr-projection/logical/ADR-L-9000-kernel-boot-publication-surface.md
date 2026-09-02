@@ -3,20 +3,34 @@ integrity_schema_version: 1
 generated: deterministic_projection_v1
 artifact_kind: rendered_adr_markdown
 generator_id: adr-projection-markdown
-generator_version: 2
+generator_version: 3
 hash_algorithm: sha256
-source_hash: e73610fb44b6af7ea16121c819dce300d940980c397f9b8dd267b6bf1737dc27
-rendered_hash: ccb57699042068f3317e5efaaee25476be026651b43b82d689a85e5e48f01730
+source_hash: 19139073a655d178580382a5290ee0f49e560128b7abe7709113a2c3a462d445
+rendered_hash: 21b5cbd48a35bfa076775470e5c51624bbbdef0076bc05c8941adda2438d1339
 -->
 
 # ADR-L-9000: Kernel Boot Publication Surface
 
+## Identity / Status
+
+**Type:** logical  
 **Status:** accepted  
+**Alias:** ADR-L-9000  
+**Authoring contract:** authoring v1.5  
 **Created:** 2026-03-21  
 **Authors:** adr-architecture-kit  
 **Domains:** kernel, integration  
 **Tags:** boot, publication  
-**Alias name:** kernel-boot-publication-surface  
+
+## Architecture at a Glance
+
+| | |
+| --- | --- |
+| Logical authority | ADR-L-9000 |
+| Status | accepted |
+| Decisions | 1 |
+| Capabilities | 1 |
+
 
 ## Context
 
@@ -24,25 +38,21 @@ The STE workspace needs a deterministic ADR-backed Architecture IR fragment
 publication surface at a conventional path so ste-kernel can prove boot
 readiness across real sibling adapters. This ADR defines only that minimal
 publication surface.
+## Architectural Decisions
 
+### DEC-9000 — Publish a deterministic logical ADR fragment for boot readiness.
 
-## Relationship graph
+**Rationale**
 
-```mermaid
-flowchart LR
-  n_019fee89_e617_7410_8c37_e302d20b9f8b["CAP-9000"]
-  n_019fee89_e617_793a_b537_a492afa6f167["DEC-9000"]
-  n_019fee89_e617_7ceb_a437_474762adbfc2["ADR-L-9000"]
-  n_019fee89_e617_7410_8c37_e302d20b9f8b -->|"declared_in"| n_019fee89_e617_7ceb_a437_474762adbfc2
-  n_019fee89_e617_793a_b537_a492afa6f167 -->|"declared_in"| n_019fee89_e617_7ceb_a437_474762adbfc2
-  n_019fee89_e617_7410_8c37_e302d20b9f8b -->|"enabled_by"| n_019fee89_e617_793a_b537_a492afa6f167
-  n_019fee89_e617_793a_b537_a492afa6f167 -->|"enables"| n_019fee89_e617_7410_8c37_e302d20b9f8b
-```
+ste-kernel requires a contract-backed ADR fragment source at a conventional path.
+
+**Traceability**
+- Enables: Kernel Boot Readiness (CAP-9000)
 
 
 ## Capabilities
 
-### CAP-9000: Kernel Boot Readiness
+### CAP-9000 — Kernel Boot Readiness
 
 Provide a deterministic ADR publication surface for kernel boot-readiness compilation.
 
@@ -51,13 +61,22 @@ Provide a deterministic ADR publication surface for kernel boot-readiness compil
 
 
 
+## Decision / Intent Traceability
 
-## Decisions
+### Decision Traceability
 
-### DEC-9000: Publish a deterministic logical ADR fragment for boot readiness.
+```mermaid
+flowchart LR
+  %% Decision traceability
+  n_019fee89_e617_7410_8c37_e302d20b9f8b["Kernel Boot Readiness (CAP-9000)"]
+  n_019fee89_e617_793a_b537_a492afa6f167["Publish a deterministic logical ADR fragment for boot readiness. (DEC-9000)"]
+  n_019fee89_e617_7410_8c37_e302d20b9f8b -->|"enabled_by"| n_019fee89_e617_793a_b537_a492afa6f167
+  n_019fee89_e617_793a_b537_a492afa6f167 -->|"enables"| n_019fee89_e617_7410_8c37_e302d20b9f8b
+```
 
-**Rationale:**
-ste-kernel requires a contract-backed ADR fragment source at a conventional path.
+
+
+
 
 
 
@@ -66,4 +85,4 @@ ste-kernel requires a contract-backed ADR fragment source at a conventional path
 
 ---
 
-*Generated from ADR-L-9000 by ADR Architecture Kit*
+*Generated from ADR-L-9000 by ADR Architecture Kit (projection v3)*

@@ -30,6 +30,11 @@ def presentation_id(obj: Any) -> str:
     alias = field_get(obj, "alias_id")
     if isinstance(alias, str) and alias:
         return alias
+    metadata = field_get(obj, "metadata")
+    if isinstance(metadata, dict):
+        meta_alias = metadata.get("alias_id")
+        if isinstance(meta_alias, str) and meta_alias:
+            return meta_alias
     value = field_get(obj, "id")
     if isinstance(value, str) and value:
         return value
@@ -83,3 +88,32 @@ def topology_components(adr: Any) -> list[Any]:
     if isinstance(topo, dict):
         return list(topo.get("components") or [])
     return list(getattr(topo, "components", None) or [])
+
+
+def topology_relationships(adr: Any) -> list[Any]:
+    """Return topology relationship entries from typed or dict component_topology."""
+    topo = getattr(adr, "component_topology", None)
+    if topo is None:
+        return []
+    if isinstance(topo, dict):
+        return list(topo.get("relationships") or [])
+    return list(getattr(topo, "relationships", None) or [])
+
+
+def topology_edge_fields(rel: Any) -> tuple[str | None, str | None, str | None, str | None, str | None]:
+    """Return (from, to, type, protocol, description) for a topology edge."""
+    if isinstance(rel, dict):
+        return (
+            rel.get("from"),
+            rel.get("to"),
+            rel.get("type"),
+            rel.get("protocol"),
+            rel.get("description"),
+        )
+    return (
+        getattr(rel, "from_", None) or getattr(rel, "from", None),
+        getattr(rel, "to", None),
+        getattr(rel, "type", None),
+        getattr(rel, "protocol", None),
+        getattr(rel, "description", None),
+    )

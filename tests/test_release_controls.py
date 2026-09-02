@@ -233,6 +233,11 @@ def test_installed_wheel_harness_declares_all_consumer_probes() -> None:
         "promoted-entity-queries",
         "external-bindings",
         "topology-migration-entrypoint",
+        "public-api",
+        "coverage-registry",
+        "projection-generation",
+        "governance-cli",
+        "system-overview",
     ):
         assert probe in result.stdout
 

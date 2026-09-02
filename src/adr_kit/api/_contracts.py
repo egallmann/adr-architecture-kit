@@ -9,6 +9,8 @@ from typing import Literal
 
 from ..models import NormalizedArchitectureModel
 from ..models.v2_1 import NormalizedArchitectureModelV21
+from ..models.v2_2 import NormalizedArchitectureModelV22
+from ..models.v2_0 import NormalizedArchitectureModelV2
 from ._errors import InvalidRequestError
 
 API_CONTRACT_VERSION = "1.0"
@@ -231,7 +233,13 @@ class CompilationResult:
     partial: bool
     artifacts: tuple[ArtifactDescriptor, ...]
     diagnostics: tuple[Diagnostic, ...]
-    model: NormalizedArchitectureModel | NormalizedArchitectureModelV21 | None
+    model: (
+        NormalizedArchitectureModel
+        | NormalizedArchitectureModelV2
+        | NormalizedArchitectureModelV21
+        | NormalizedArchitectureModelV22
+        | None
+    )
     fingerprint: str | None
     source_files: int
     parse_errors: int

@@ -1,0 +1,44 @@
+schema_version: "1.5"
+adr_type: physical-system
+id: "019109a0-b1c2-7def-8a00-000000000002"
+alias_id: ADR-PS-9001
+alias_name: pc-projection-system
+title: "PC Projection System"
+status: accepted
+created_date: "2026-08-29"
+authors:
+  - fixture.author
+domains:
+  - projection-fixture
+implements_logical:
+  - "019109a0-b1c2-7def-8a00-000000000001"
+context: |
+  Physical system that admits the maximal and peer physical components.
+technology_stack:
+  - category: language
+    name: Python
+    version: ">=3.14"
+    rationale: Fixture runtime.
+system:
+  id: "019109a0-b1c2-7def-8a00-000000000003"
+  alias_id: SYS-9001
+  alias_name: pc-projection-system
+  name: PC Projection System
+component_topology:
+  components:
+    - id: TOPO-9001
+      component_ref: "019109a0-b1c2-7def-8a00-000000000010"
+      purpose: Primary maximal component.
+    - id: TOPO-9002
+      component_ref: "019109a0-b1c2-7def-8a00-000000000011"
+      purpose: Second maximal component.
+    - id: TOPO-9003
+      component_ref: "019109a0-b1c2-7def-8a00-000000000012"
+      purpose: Peer dependent component.
+  relationships:
+    - from: TOPO-9001
+      to: TOPO-9002
+      type: depends_on
+    - from: TOPO-9003
+      to: TOPO-9001
+      type: depends_on

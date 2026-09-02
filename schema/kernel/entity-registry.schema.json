@@ -98,11 +98,25 @@
           "title": "Binds Substrate",
           "type": "array"
         },
+        "calls": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Calls",
+          "type": "array"
+        },
         "composed_of": {
           "items": {
             "type": "string"
           },
           "title": "Composed Of",
+          "type": "array"
+        },
+        "consumes_interface": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Consumes Interface",
           "type": "array"
         },
         "declared_in": {
@@ -112,18 +126,18 @@
           "title": "Declared In",
           "type": "array"
         },
+        "depends_on": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Depends On",
+          "type": "array"
+        },
         "embodied_in": {
           "items": {
             "type": "string"
           },
           "title": "Embodied In",
-          "type": "array"
-        },
-        "implements_logical": {
-          "items": {
-            "type": "string"
-          },
-          "title": "Implements Logical",
           "type": "array"
         },
         "enabled_by": {
@@ -168,11 +182,32 @@
           "title": "Implemented By",
           "type": "array"
         },
+        "implements_logical": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Implements Logical",
+          "type": "array"
+        },
         "provides_interface": {
           "items": {
             "type": "string"
           },
           "title": "Provides Interface",
+          "type": "array"
+        },
+        "publishes_to": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Publishes To",
+          "type": "array"
+        },
+        "reads_from": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Reads From",
           "type": "array"
         },
         "references": {
@@ -196,6 +231,13 @@
           "title": "Related To",
           "type": "array"
         },
+        "subscribes_to": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Subscribes To",
+          "type": "array"
+        },
         "superseded_by": {
           "items": {
             "type": "string"
@@ -208,6 +250,13 @@
             "type": "string"
           },
           "title": "Supersedes",
+          "type": "array"
+        },
+        "writes_to": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Writes To",
           "type": "array"
         }
       },

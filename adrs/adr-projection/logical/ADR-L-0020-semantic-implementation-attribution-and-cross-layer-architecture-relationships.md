@@ -3,21 +3,37 @@ integrity_schema_version: 1
 generated: deterministic_projection_v1
 artifact_kind: rendered_adr_markdown
 generator_id: adr-projection-markdown
-generator_version: 2
+generator_version: 3
 hash_algorithm: sha256
-source_hash: 78da8be65cb39fd1c1cc67080c60bb704e7983623f89adc7293c1558c10e8b4f
-rendered_hash: d49668886d27046141a90549b5ee6a4662803dc3af2bfb909869b7910073d4e1
+source_hash: c31adc6b73a99311e4b8b7d2c30d2d07d4d796837d3bc26dda87964f29ec4f47
+rendered_hash: c34366f3ec2d154effa1af416fa4997b92ab67118236f72f2f9e3b9c9ecc324d
 -->
 
 # ADR-L-0020: Semantic Implementation Attribution and Cross-Layer Architecture Relationships
 
+## Identity / Status
+
+**Type:** logical  
 **Status:** accepted  
+**Alias:** ADR-L-0020  
+**Authoring contract:** authoring v1.5  
 **Created:** 2026-08-13  
 **Modified:** 2026-08-20  
 **Authors:** adr-architecture-kit  
 **Domains:** architecture, traceability, governance, identity  
 **Tags:** attribution, semantic-claims, uuid, evidence  
-**Alias name:** semantic-implementation-attribution-and-cross-layer-architecture-relationships  
+
+## Architecture at a Glance
+
+| | |
+| --- | --- |
+| Logical authority | ADR-L-0020 |
+| Status | accepted |
+| Decisions | 9 |
+| Capabilities | 3 |
+| Invariants | 10 |
+| Physical realizations | [ADR-PC-0002](../physical-component/ADR-PC-0002-schema-and-contract-validation.md), [ADR-PC-0007](../physical-component/ADR-PC-0007-semantic-attribution-embodiment.md) |
+
 
 ## Context
 
@@ -41,363 +57,24 @@ untrusted declarations. ste-runtime must emit claims without loading ADR Kit
 architecture state. Validation never mutates ADRs, registries, evidence input,
 Architecture IR, or graph state. The validated projection has an authority
 ceiling of validated derived evidence and is explicitly not admitted to the graph.
+## Architectural Decisions
+
+| Decision | Choice | Traceability |
+| --- | --- | --- |
+| DEC-0116 | Canonical v1.5 claims require relationship, target UUID, and confidence | — |
+| DEC-0117 | Raw evidence must not require target entity type | — |
+| DEC-0118 | Apply the attribution matrix to repository-resolved entity type | — |
+| DEC-0119 | Evidence claim verbs are not architecture relationship types | — |
+| DEC-0120 | Legacy 1.0/1.2 evidence normalizes only with architecture state | — |
+| DEC-0121 | Canonical output order is deterministic and idempotent | — |
+| DEC-0122 | Duplicate semantic claims follow provenance-aware fail-closed rules | — |
+| DEC-0123 | Coverage distinguishes unique semantic links from evidence occurrence | — |
+| DEC-0124 | Extractors and legacy decorators must not load architecture state | — |
+
+### DEC-0116 — Canonical v1.5 claims require relationship, target UUID, and confidence
+
+**Rationale**
 
-
-## Relationship graph
-
-```mermaid
-flowchart LR
-  n_019fee89_e615_7577_8d37_dd0df031bec9["ADR-L-0004"]
-  n_019fee89_e616_7c4e_953c_b7349412a784["ADR-L-0013"]
-  n_019fee89_e617_78d9_ba3b_b7e3e6db1b12["ADR-L-0019"]
-  n_019fee89_e617_7d2b_8325_cd85ff814477["ADR-PC-0002"]
-  n_019fee89_e618_7d04_9337_4aa2d3258507["ADR-PS-0002"]
-  n_019ffdba_3c42_700c_ac3f_8135e0139dfb["DEC-0116"]
-  n_019ffdba_3c42_705f_9935_76ed45c32cd7["DEC-0121"]
-  n_019ffdba_3c42_70da_b33d_efc003269c42["ADR-PC-0007"]
-  n_019ffdba_3c42_71ba_b81f_a2a24830abd6["CAP-0054"]
-  n_019ffdba_3c42_7230_8d39_ef047f583291["INV-0111"]
-  n_019ffdba_3c42_7282_931f_92503f4079cb["DEC-0120"]
-  n_019ffdba_3c42_729a_a83f_a40c53d278fd["DEC-0124"]
-  n_019ffdba_3c42_72d4_982d_88224ca69e68["INV-0112"]
-  n_019ffdba_3c42_7304_ab2f_bcd01cc6f9d3["DEC-0123"]
-  n_019ffdba_3c42_73c1_b11c_d0a177cd522b["DEC-0117"]
-  n_019ffdba_3c42_745c_9e37_85f7696cd43c["CAP-0055"]
-  n_019ffdba_3c42_74ea_993d_990027e528c0["INV-0106"]
-  n_019ffdba_3c42_7578_b43f_ad19109d59d9["CAP-0053"]
-  n_019ffdba_3c42_7690_8f1b_ad8deaeed484["DEC-0122"]
-  n_019ffdba_3c42_7751_a81c_d738f411b299["DEC-0119"]
-  n_019ffdba_3c42_7a6d_9717_d8d96b6fa75d["INV-0110"]
-  n_019ffdba_3c42_7c4a_a737_f6751a265d60["ADR-L-0020"]
-  n_019ffdba_3c42_7c85_a63f_689e71c5236a["INV-0104"]
-  n_019ffdba_3c42_7cbe_a121_06d3437129ed["INV-0103"]
-  n_019ffdba_3c42_7d33_9e1b_e22bc168fa7c["INV-0105"]
-  n_019ffdba_3c42_7da9_ac3e_879c2e5a88a4["INV-0108"]
-  n_019ffdba_3c42_7e3a_a037_3b6c3087ef0a["INV-0107"]
-  n_019ffdba_3c42_7ec4_852c_06396e99d050["INV-0109"]
-  n_019ffdba_3c42_7f40_b339_204a447bec81["DEC-0118"]
-  n_01a02d38_7cf3_7b3c_87ec_1c5f08490c6e["ADR-L-0024"]
-  n_019ffdba_3c42_700c_ac3f_8135e0139dfb -->|"declared_in"| n_019ffdba_3c42_7c4a_a737_f6751a265d60
-  n_019ffdba_3c42_705f_9935_76ed45c32cd7 -->|"declared_in"| n_019ffdba_3c42_7c4a_a737_f6751a265d60
-  n_019ffdba_3c42_71ba_b81f_a2a24830abd6 -->|"declared_in"| n_019ffdba_3c42_7c4a_a737_f6751a265d60
-  n_019ffdba_3c42_7230_8d39_ef047f583291 -->|"declared_in"| n_019ffdba_3c42_7c4a_a737_f6751a265d60
-  n_019ffdba_3c42_7282_931f_92503f4079cb -->|"declared_in"| n_019ffdba_3c42_7c4a_a737_f6751a265d60
-  n_019ffdba_3c42_729a_a83f_a40c53d278fd -->|"declared_in"| n_019ffdba_3c42_7c4a_a737_f6751a265d60
-  n_019ffdba_3c42_72d4_982d_88224ca69e68 -->|"declared_in"| n_019ffdba_3c42_7c4a_a737_f6751a265d60
-  n_019ffdba_3c42_7304_ab2f_bcd01cc6f9d3 -->|"declared_in"| n_019ffdba_3c42_7c4a_a737_f6751a265d60
-  n_019ffdba_3c42_73c1_b11c_d0a177cd522b -->|"declared_in"| n_019ffdba_3c42_7c4a_a737_f6751a265d60
-  n_019ffdba_3c42_745c_9e37_85f7696cd43c -->|"declared_in"| n_019ffdba_3c42_7c4a_a737_f6751a265d60
-  n_019ffdba_3c42_74ea_993d_990027e528c0 -->|"declared_in"| n_019ffdba_3c42_7c4a_a737_f6751a265d60
-  n_019ffdba_3c42_7578_b43f_ad19109d59d9 -->|"declared_in"| n_019ffdba_3c42_7c4a_a737_f6751a265d60
-  n_019ffdba_3c42_7690_8f1b_ad8deaeed484 -->|"declared_in"| n_019ffdba_3c42_7c4a_a737_f6751a265d60
-  n_019ffdba_3c42_7751_a81c_d738f411b299 -->|"declared_in"| n_019ffdba_3c42_7c4a_a737_f6751a265d60
-  n_019ffdba_3c42_7a6d_9717_d8d96b6fa75d -->|"declared_in"| n_019ffdba_3c42_7c4a_a737_f6751a265d60
-  n_019ffdba_3c42_7c85_a63f_689e71c5236a -->|"declared_in"| n_019ffdba_3c42_7c4a_a737_f6751a265d60
-  n_019ffdba_3c42_7cbe_a121_06d3437129ed -->|"declared_in"| n_019ffdba_3c42_7c4a_a737_f6751a265d60
-  n_019ffdba_3c42_7d33_9e1b_e22bc168fa7c -->|"declared_in"| n_019ffdba_3c42_7c4a_a737_f6751a265d60
-  n_019ffdba_3c42_7da9_ac3e_879c2e5a88a4 -->|"declared_in"| n_019ffdba_3c42_7c4a_a737_f6751a265d60
-  n_019ffdba_3c42_7e3a_a037_3b6c3087ef0a -->|"declared_in"| n_019ffdba_3c42_7c4a_a737_f6751a265d60
-  n_019ffdba_3c42_7ec4_852c_06396e99d050 -->|"declared_in"| n_019ffdba_3c42_7c4a_a737_f6751a265d60
-  n_019ffdba_3c42_7f40_b339_204a447bec81 -->|"declared_in"| n_019ffdba_3c42_7c4a_a737_f6751a265d60
-  n_019fee89_e617_7d2b_8325_cd85ff814477 -->|"implements_logical"| n_019ffdba_3c42_7c4a_a737_f6751a265d60
-  n_019ffdba_3c42_70da_b33d_efc003269c42 -->|"implements_logical"| n_019ffdba_3c42_7c4a_a737_f6751a265d60
-  n_019fee89_e615_7577_8d37_dd0df031bec9 -->|"references"| n_019ffdba_3c42_7c4a_a737_f6751a265d60
-  n_019ffdba_3c42_7c4a_a737_f6751a265d60 -->|"references"| n_019fee89_e615_7577_8d37_dd0df031bec9
-  n_019ffdba_3c42_7c4a_a737_f6751a265d60 -->|"references"| n_019fee89_e616_7c4e_953c_b7349412a784
-  n_019ffdba_3c42_7c4a_a737_f6751a265d60 -->|"references"| n_019fee89_e617_78d9_ba3b_b7e3e6db1b12
-  n_019ffdba_3c42_7c4a_a737_f6751a265d60 -->|"references"| n_019fee89_e617_7d2b_8325_cd85ff814477
-  n_019ffdba_3c42_7c4a_a737_f6751a265d60 -->|"references"| n_019fee89_e618_7d04_9337_4aa2d3258507
-  n_019ffdba_3c42_7c4a_a737_f6751a265d60 -->|"references"| n_019ffdba_3c42_70da_b33d_efc003269c42
-  n_01a02d38_7cf3_7b3c_87ec_1c5f08490c6e -->|"references"| n_019ffdba_3c42_7c4a_a737_f6751a265d60
-```
-
-## Related ADRs
-
-### ADR-L-0004 — ADR-to-Implementation Traceability via Decorators and Metadata Attribution
-
-**Relationships:**
-- 019fee89-e615-7577-8d37-dd0df031bec9 -[:references]-> this ADR
-- this ADR -[:references]-> 019fee89-e615-7577-8d37-dd0df031bec9
-
-**Context:** Architecture Decision Records document why implementation artifacts exist, but
-the repo still lacks a universal, machine-verifiable way to trace code,
-infrastructure, configuration, schemas, pipelines, and scripts back to the
-ADRs that justify them.
-
-[Open projection](ADR-L-0004-adr-to-implementation-traceability-via-decorators-and-metadata-attribution.md)
-### ADR-L-0013 — Architecture Repository Boundary and Normalized Semantic Model
-
-**Relationships:**
-- this ADR -[:references]-> 019fee89-e616-7c4e-953c-b7349412a784
-
-**Context:** adr-architecture-kit now has an explicit compiler pipeline, a compiler IR
-(`ArchModel`), compiled registry bundles, and an additive architecture graph.
-Those pieces are sufficient to produce deterministic machine-facing artifacts,
-and ArchitectureRepository already defines the semantic in-process boundary.
-Phase 1 adds a narrow supported authoring facade that reuses that seam without
-expanding the normalized model or exposing compiler internals.
-
-[Open projection](ADR-L-0013-architecture-repository-boundary-and-normalized-semantic-model.md)
-### ADR-L-0019 — Canonical Entity Identity
-
-**Relationships:**
-- this ADR -[:references]-> 019fee89-e617-78d9-ba3b-b7e3e6db1b12
-
-**Context:** Earlier ADR Kit work established federation, repository boundaries, schema
-v1.2, and a normalized semantic foundation, but canonical identity still
-depended on human-oriented, type-prefixed identifiers in roles that also
-served machine references, relationship endpoints, and federation. That
-coupling made recognition, identity, location, and routing harder to evolve
-independently and left alias changes or repository concerns too close to
-canonical machine semantics.
-
-[Open projection](ADR-L-0019-canonical-entity-identity.md)
-### ADR-L-0024 — Cross-Language Consumer Bindings and TypeScript Distribution
-
-**Relationships:**
-- 01a02d38-7cf3-7b3c-87ec-1c5f08490c6e -[:references]-> this ADR
-
-**Context:** ADR-Kit already owns accepted ADR authority, canonical schema bytes, semantic
-vocabularies, the repository discovery contract, the normalized model, and
-validated derived embodiment evidence. Python is the existing implementation
-of those contracts, but it is not their semantic owner. Node services,
-engineering-agent integrations, and browser applications need a supported
-read-only consumer binding without reparsing ADR source YAML, depending on
-compiler internals, or importing Node authority…
-
-[Open projection](ADR-L-0024-cross-language-consumer-bindings-and-typescript-distribution.md)
-### ADR-PC-0002 — Schema and Contract Validation
-
-**Relationships:**
-- 019fee89-e617-7d2b-8325-cd85ff814477 -[:implements_logical]-> this ADR
-- this ADR -[:references]-> 019fee89-e617-7d2b-8325-cd85ff814477
-
-**Context:** Schema and contract validation is now a stable component boundary rather than
-a generic legacy physical slice. It validates canonical ADR structure,
-profile-specific contract requirements, project metadata, and implementation
-attribution evidence. Validation of that evidence is structural for schema shape and architecture-aware when claims must resolve to canonical UUIDs and entity types. Legacy 1.0/1.2 evidence normalizes to the v1.5 claim shape only with repository or model 2.0 context.
-
-[Open projection](../physical-component/ADR-PC-0002-schema-and-contract-validation.md)
-### ADR-PC-0007 — Semantic Attribution Embodiment
-
-**Relationships:**
-- 019ffdba-3c42-70da-b33d-efc003269c42 -[:implements_logical]-> this ADR
-- this ADR -[:references]-> 019ffdba-3c42-70da-b33d-efc003269c42
-
-**Context:** Semantic attribution needs a kit-owned embodiment for vocabulary, evidence
-models, UUID decorators, standalone shims, architecture-aware validation,
-repository-aware versioned normalization, and a supported bidirectional
-linkage facade. This component does not parse consumer source code, does not
-own RECON extraction, and does not admit evidence to the architecture graph.
-
-[Open projection](../physical-component/ADR-PC-0007-semantic-attribution-embodiment.md)
-### ADR-PS-0002 — ADR Kit Authoring Compiler and Validation System
-
-**Relationships:**
-- this ADR -[:references]-> 019fee89-e618-7d04-9337-4aa2d3258507
-
-**Context:** adr-architecture-kit operates as an authoring-time compiler and validation system rather
-than a collection of unrelated generators. The implementation includes an
-explicit compiler pipeline, contract validation, normalized repository/model
-access, integrity verification, and CLI orchestration over those surfaces.
-
-[Open projection](../physical-system/ADR-PS-0002-adr-kit-authoring-compiler-and-validation-system.md)
-
-## Capabilities
-
-### CAP-0053: Semantic Implementation Attribution
-
-UUID-canonical typed claims connecting implementation surfaces to
-architecture entities plus a validated, bidirectionally queryable derived
-projection without collapsing evidence into authority.
-
-
-### CAP-0054: Repository-Aware Attribution Normalization
-
-Translate supported evidence into explicitly selected canonical v1.5 or
-v1.6 claims using governed architecture lookup and lossless conversion.
-
-
-### CAP-0055: Unique-Link Attribution Coverage
-
-Informational coverage and public linkage traversal that preserve ADR
-catalog keys and report unique semantic links separately from occurrences.
-
-
-
-
-
-
-## Invariants
-
-### INV-0103
-
-**Statement:** Raw v1.5 and v1.6 attribution claims MUST include relationship, lowercase UUIDv7
-target_entity_id, and confidence
-  
-**Scope:** global  
-**Enforcement:** must (test)  
-**Verification:** automated
-
-**Rationale:**
-Extractors cannot invent architecture type; identity and declared
-relationship are the required claim surface.
-
-
-
-
-### INV-0104
-
-**Statement:** Architecture-aware v1.5 validation MUST fail closed when a claim UUID is
-missing, an alias or alias_ref is used as target_entity_id, or optional
-asserted type mismatches the resolved type
-  
-**Scope:** global  
-**Enforcement:** must (test)  
-**Verification:** automated
-
-**Rationale:**
-Canonical identity is UUID. Aliases are presentation and 1.0/1.2
-translation input only.
-
-
-
-
-### INV-0105
-
-**Statement:** A v1.5 or v1.6 claim MUST be rejected when the resolved target entity type is not
-admitted for that relationship by the mechanical vocabulary; v1.6 MUST also
-reject inferred or heuristic `enforces` claims without changing v1.5 behavior
-  
-**Scope:** global  
-**Enforcement:** must (test)  
-**Verification:** automated
-
-**Rationale:**
-The matrix is architecture authority, not extractor opinion.
-
-
-
-
-### INV-0106
-
-**Statement:** Attribution evidence verbs and validated linkage projections MUST NOT be
-written into architecture relationship registries, treated as
-RelationshipRecordV2.relationship_type, or graph-admitted
-  
-**Scope:** global  
-**Enforcement:** must (design)  
-**Verification:** automated
-
-**Rationale:**
-Implementation surfaces are not admitted architecture entities.
-
-
-
-
-### INV-0107
-
-**Statement:** Duplicate (relationship, target_entity_id) within one attribution record
-MUST be an error
-  
-**Scope:** global  
-**Enforcement:** must (test)  
-**Verification:** automated
-
-**Rationale:**
-One record cannot independently restate the same semantic edge.
-
-
-
-
-### INV-0108
-
-**Statement:** Identical semantic triple and occurrence provenance across records MUST be
-an error; distinct provenance MUST remain as independent occurrences of one link
-  
-**Scope:** global  
-**Enforcement:** must (test)  
-**Verification:** automated
-
-**Rationale:**
-Independent extractors may observe the same edge; copy-paste duplicates
-must not.
-
-
-
-
-### INV-0109
-
-**Statement:** Implementation attribution declarations MUST NOT be treated as proof that
-the named architecture constraint is enforced
-  
-**Scope:** global  
-**Enforcement:** must (design)  
-**Verification:** manual
-
-**Rationale:**
-ADR Kit does not parse implementation source to prove behavior. INV-0030
-remains a declared claim, not kit-automated proof.
-
-
-
-
-### INV-0110
-
-**Statement:** Legacy alias decorators and evidence extractors MUST NOT load
-ArchitectureRepository or synthesize canonical UUID claim metadata from
-alias arguments
-  
-**Scope:** global  
-**Enforcement:** must (design)  
-**Verification:** automated
-
-**Rationale:**
-Architecture resolution is a validation/normalization concern, not a
-decorator or extractor concern.
-
-
-
-
-### INV-0111
-
-**Statement:** Canonical normalized v1.5/v1.6 output MUST be sorted by its documented total
-order, preserve confidence, reject lossy conversion, and be idempotent
-  
-**Scope:** global  
-**Enforcement:** must (test)  
-**Verification:** automated
-
-**Rationale:**
-Deterministic serialization is required for diffs and federation, but
-unsorted producer input remains valid.
-
-
-
-
-### INV-0112
-
-**Statement:** Equivalent legacy-alias and UUID declarations for the same implementation
-edge MUST NOT be dual-encoded on one surface
-  
-**Scope:** global  
-**Enforcement:** must (design)  
-**Verification:** automated
-
-**Rationale:**
-True-duplicate errors stay in force. Dogfood may keep a legacy ADR-level
-edge or migrate it to UUID, not both.
-
-
-
-
-
-
-## Decisions
-
-### DEC-0116: Canonical v1.5 claims require relationship, target UUID, and confidence
-
-**Rationale:**
 Each raw claim requires `relationship` (`implements` | `enforces` |
 `embodies`), `target_entity_id` (lowercase UUIDv7), and `confidence`
 (`declared` | `inferred` | `heuristic`). Records also require
@@ -409,13 +86,10 @@ always use `confidence: declared`. Under v1.6, `implements` and `embodies`
 admit declared, inferred, or heuristic confidence while `enforces` admits
 declared only. Version 1.5 retains its historical confidence semantics.
 
+### DEC-0117 — Raw evidence must not require target entity type
 
+**Rationale**
 
-
-
-### DEC-0117: Raw evidence must not require target entity type
-
-**Rationale:**
 Extractors and UUID decorators carry identity, not architecture type.
 Optional `asserted_target_entity_type` is redundant evidence. If present,
 architecture-aware validation compares it to the repository-resolved type
@@ -423,13 +97,10 @@ and fails on mismatch. It is never authority. Derived
 `resolved_target_entity_type` belongs on validation results and coverage
 reports, not on the required extractor schema.
 
+### DEC-0118 — Apply the attribution matrix to repository-resolved entity type
 
+**Rationale**
 
-
-
-### DEC-0118: Apply the attribution matrix to repository-resolved entity type
-
-**Rationale:**
 After `ArchitectureRepository.find_entity_by_uuid` (model 2.0), the
 versioned mechanical vocabulary
 admits: `implements` to adr, decision, capability, contract, interface,
@@ -439,13 +110,10 @@ or unresolved UUID fails closed. Version 1.6 additionally rejects inferred
 or heuristic `enforces`; version 1.5 is not retroactively reinterpreted.
 `superseded` and `deprecated` targets warn (INV-0028 posture).
 
+### DEC-0119 — Evidence claim verbs are not architecture relationship types
 
+**Rationale**
 
-
-
-### DEC-0119: Evidence claim verbs are not architecture relationship types
-
-**Rationale:**
 Evidence relationship names and the bidirectional linkage projection are
 derived evidence. They are not
 `RelationshipRecordV2.relationship_type` values and must not be written
@@ -456,13 +124,10 @@ model 2.0 architecture UUID (ADR-L-0019 DEC-0097). Shared English
 the canonical graph. `build_embodiment_linkage` never persists links,
 allocates graph identities, or performs graph admission.
 
+### DEC-0120 — Legacy 1.0/1.2 evidence normalizes only with architecture state
 
+**Rationale**
 
-
-
-### DEC-0120: Legacy 1.0/1.2 evidence normalizes only with architecture state
-
-**Rationale:**
 Attribution 1.0/1.2 remains readable under the v1.1 evidence schema and
 normalizes through governed repository lookup. Targets 1.5 and 1.6 are
 explicit; 1.5 remains the CLI default. Conversion preserves confidence
@@ -471,26 +136,20 @@ A conversion that would violate the target confidence policy or discard
 v1.6-only provenance fails deterministically. The converter never rewrites
 `.ste-workspace` or any supplied evidence file in place.
 
+### DEC-0121 — Canonical output order is deterministic and idempotent
 
+**Rationale**
 
-
-
-### DEC-0121: Canonical output order is deterministic and idempotent
-
-**Rationale:**
 Record order is `(implementation_entity_id, source_file, source_pointer,
 start_line, end_line, extractor, commit or "")`. Claim order is `(relationship, target_entity_id,
 asserted_target_entity_type or "")`. Unsorted raw input is valid.
 Repeated canonicalization is idempotent for semantic content and
 serialized canonical output.
 
+### DEC-0122 — Duplicate semantic claims follow provenance-aware fail-closed rules
 
+**Rationale**
 
-
-
-### DEC-0122: Duplicate semantic claims follow provenance-aware fail-closed rules
-
-**Rationale:**
 The unique linkage key is `(implementation_entity_id, relationship,
 target_entity_id)`. Across records with distinct provenance, occurrences
 aggregate behind that link. Exact repeated claim-and-provenance occurrences
@@ -498,13 +157,10 @@ and conflicting qualifiers at the same occurrence fail closed. Provenance
 participates only in occurrence ordering/fingerprinting, never semantic or
 graph identity. This rule is not weakened for dogfood.
 
+### DEC-0123 — Coverage distinguishes unique semantic links from evidence occurrence
 
+**Rationale**
 
-
-
-### DEC-0123: Coverage distinguishes unique semantic links from evidence occurrence
-
-**Rationale:**
 Existing coverage YAML keys remain. For v1.5/v1.6 input, ADR fields fill from
 claims whose resolved type is `adr`. Additive unique-link counts use
 `(implementation_entity_id, relationship, target_entity_id)` after
@@ -513,13 +169,10 @@ cannot be mistaken for coverage. The supported `adr_kit.api` facade exposes
 immutable request/result contracts, forward and reverse traversal, partial
 results, and explicit non-admission fields. Neither metric proves correctness.
 
+### DEC-0124 — Extractors and legacy decorators must not load architecture state
 
+**Rationale**
 
-
-
-### DEC-0124: Extractors and legacy decorators must not load architecture state
-
-**Rationale:**
 ste-runtime and other extractors emit UUID claims without loading ADR Kit
 architecture. Legacy alias decorators remain metadata producers
 (`__implements_adrs__` / `__enforces_invariants__`) and must not resolve
@@ -528,11 +181,287 @@ aliases, load `ArchitectureRepository`, or synthesize
 populate that claims attribute, with local UUIDv7 validation only.
 
 
+## Capabilities
+
+### CAP-0053 — Semantic Implementation Attribution
+
+UUID-canonical typed claims connecting implementation surfaces to
+architecture entities plus a validated, bidirectionally queryable derived
+projection without collapsing evidence into authority.
+
+**Acceptance criteria**
+- raw claims require relationship, target UUID, and confidence
+- resolved type is derived after repository lookup
+- matrix rejects illegal relationship/type pairs
+- v1.6 rejects non-declared enforcement claims without changing v1.5 semantics
+- public SDK results expose authority ceiling and graph non-admission
+- declaration is not treated as proof
+
+### CAP-0054 — Repository-Aware Attribution Normalization
+
+Translate supported evidence into explicitly selected canonical v1.5 or
+v1.6 claims using governed architecture lookup and lossless conversion.
+
+**Acceptance criteria**
+- unresolved or ambiguous aliases fail closed
+- output omits required target type
+- normalize(normalize(x)) equals normalize(x)
+- incompatible confidence or lossy downgrade fails deterministically
+- default CLI path does not write workspace evidence
+
+### CAP-0055 — Unique-Link Attribution Coverage
+
+Informational coverage and public linkage traversal that preserve ADR
+catalog keys and report unique semantic links separately from occurrences.
+
+**Acceptance criteria**
+- existing five coverage YAML keys remain
+- v1.5/v1.6 ADR keys fill from resolved type adr
+- unique-link counts are distinct from occurrence counts
+- forward and reverse traversal return the same ordered link objects
 
 
 
+
+## Invariants
+
+| Invariant | Requirement | Enforcement | Verification |
+| --- | --- | --- | --- |
+| INV-0103 | Raw v1.5 and v1.6 attribution claims MUST include relationship, lowercase UUIDv7 target_entity_id, and confidence | MUST / test | automated |
+| INV-0104 | Architecture-aware v1.5 validation MUST fail closed when a claim UUID is missing, an alias or alias_ref is used as… | MUST / test | automated |
+| INV-0105 | A v1.5 or v1.6 claim MUST be rejected when the resolved target entity type is not admitted for that relationship by… | MUST / test | automated |
+| INV-0106 | Attribution evidence verbs and validated linkage projections MUST NOT be written into architecture relationship… | MUST / design | automated |
+| INV-0107 | Duplicate (relationship, target_entity_id) within one attribution record MUST be an error | MUST / test | automated |
+| INV-0108 | Identical semantic triple and occurrence provenance across records MUST be an error; distinct provenance MUST remain… | MUST / test | automated |
+| INV-0109 | Implementation attribution declarations MUST NOT be treated as proof that the named architecture constraint is enforced | MUST / design | manual |
+| INV-0110 | Legacy alias decorators and evidence extractors MUST NOT load ArchitectureRepository or synthesize canonical UUID… | MUST / design | automated |
+| INV-0111 | Canonical normalized v1.5/v1.6 output MUST be sorted by its documented total order, preserve confidence, reject… | MUST / test | automated |
+| INV-0112 | Equivalent legacy-alias and UUID declarations for the same implementation edge MUST NOT be dual-encoded on one surface | MUST / design | automated |
+
+### INV-0103
+
+**Statement**
+
+Raw v1.5 and v1.6 attribution claims MUST include relationship, lowercase UUIDv7
+target_entity_id, and confidence
+
+**Scope:** global
+
+**Enforcement:** MUST (test)
+**Verification:** automated
+
+**Rationale**
+
+Extractors cannot invent architecture type; identity and declared
+relationship are the required claim surface.
+
+### INV-0104
+
+**Statement**
+
+Architecture-aware v1.5 validation MUST fail closed when a claim UUID is
+missing, an alias or alias_ref is used as target_entity_id, or optional
+asserted type mismatches the resolved type
+
+**Scope:** global
+
+**Enforcement:** MUST (test)
+**Verification:** automated
+
+**Rationale**
+
+Canonical identity is UUID. Aliases are presentation and 1.0/1.2
+translation input only.
+
+### INV-0105
+
+**Statement**
+
+A v1.5 or v1.6 claim MUST be rejected when the resolved target entity type is not
+admitted for that relationship by the mechanical vocabulary; v1.6 MUST also
+reject inferred or heuristic `enforces` claims without changing v1.5 behavior
+
+**Scope:** global
+
+**Enforcement:** MUST (test)
+**Verification:** automated
+
+**Rationale**
+
+The matrix is architecture authority, not extractor opinion.
+
+### INV-0106
+
+**Statement**
+
+Attribution evidence verbs and validated linkage projections MUST NOT be
+written into architecture relationship registries, treated as
+RelationshipRecordV2.relationship_type, or graph-admitted
+
+**Scope:** global
+
+**Enforcement:** MUST (design)
+**Verification:** automated
+
+**Rationale**
+
+Implementation surfaces are not admitted architecture entities.
+
+### INV-0107
+
+**Statement**
+
+Duplicate (relationship, target_entity_id) within one attribution record
+MUST be an error
+
+**Scope:** global
+
+**Enforcement:** MUST (test)
+**Verification:** automated
+
+**Rationale**
+
+One record cannot independently restate the same semantic edge.
+
+### INV-0108
+
+**Statement**
+
+Identical semantic triple and occurrence provenance across records MUST be
+an error; distinct provenance MUST remain as independent occurrences of one link
+
+**Scope:** global
+
+**Enforcement:** MUST (test)
+**Verification:** automated
+
+**Rationale**
+
+Independent extractors may observe the same edge; copy-paste duplicates
+must not.
+
+### INV-0109
+
+**Statement**
+
+Implementation attribution declarations MUST NOT be treated as proof that
+the named architecture constraint is enforced
+
+**Scope:** global
+
+**Enforcement:** MUST (design)
+**Verification:** manual
+
+**Rationale**
+
+ADR Kit does not parse implementation source to prove behavior. INV-0030
+remains a declared claim, not kit-automated proof.
+
+### INV-0110
+
+**Statement**
+
+Legacy alias decorators and evidence extractors MUST NOT load
+ArchitectureRepository or synthesize canonical UUID claim metadata from
+alias arguments
+
+**Scope:** global
+
+**Enforcement:** MUST (design)
+**Verification:** automated
+
+**Rationale**
+
+Architecture resolution is a validation/normalization concern, not a
+decorator or extractor concern.
+
+### INV-0111
+
+**Statement**
+
+Canonical normalized v1.5/v1.6 output MUST be sorted by its documented total
+order, preserve confidence, reject lossy conversion, and be idempotent
+
+**Scope:** global
+
+**Enforcement:** MUST (test)
+**Verification:** automated
+
+**Rationale**
+
+Deterministic serialization is required for diffs and federation, but
+unsorted producer input remains valid.
+
+### INV-0112
+
+**Statement**
+
+Equivalent legacy-alias and UUID declarations for the same implementation
+edge MUST NOT be dual-encoded on one surface
+
+**Scope:** global
+
+**Enforcement:** MUST (design)
+**Verification:** automated
+
+**Rationale**
+
+True-duplicate errors stay in force. Dogfood may keep a legacy ADR-level
+edge or migrate it to UUID, not both.
+
+
+
+
+## Physical Realization
+
+**Components**
+- [ADR-PC-0002](../physical-component/ADR-PC-0002-schema-and-contract-validation.md)
+- [ADR-PC-0007](../physical-component/ADR-PC-0007-semantic-attribution-embodiment.md)
+
+
+
+
+## Lifecycle / Related Architecture
+
+**Related ADRs**
+- [ADR-L-0004](ADR-L-0004-adr-to-implementation-traceability-via-decorators-and-metadata-attribution.md)
+- [ADR-L-0013](ADR-L-0013-architecture-repository-boundary-and-normalized-semantic-model.md)
+- [ADR-L-0019](ADR-L-0019-canonical-entity-identity.md)
+- [ADR-PC-0002](../physical-component/ADR-PC-0002-schema-and-contract-validation.md)
+- [ADR-PC-0007](../physical-component/ADR-PC-0007-semantic-attribution-embodiment.md)
+- [ADR-PS-0002](../physical-system/ADR-PS-0002-adr-kit-authoring-compiler-and-validation-system.md)
+
+**References**
+- [ADR-L-0004](ADR-L-0004-adr-to-implementation-traceability-via-decorators-and-metadata-attribution.md)
+- [ADR-L-0013](ADR-L-0013-architecture-repository-boundary-and-normalized-semantic-model.md)
+- [ADR-L-0019](ADR-L-0019-canonical-entity-identity.md)
+- [ADR-PC-0002](../physical-component/ADR-PC-0002-schema-and-contract-validation.md)
+- [ADR-PS-0002](../physical-system/ADR-PS-0002-adr-kit-authoring-compiler-and-validation-system.md)
+- [ADR-PC-0007](../physical-component/ADR-PC-0007-semantic-attribution-embodiment.md)
+- [ADR-L-0024](ADR-L-0024-cross-language-consumer-bindings-and-typescript-distribution.md)
+
+
+## Architecture Relationships
+
+| Neighbor | Relationship | Exact Path |
+| --- | --- | --- |
+| [ADR-PC-0002 — Schema and Contract Validation](../physical-component/ADR-PC-0002-schema-and-contract-validation.md) | implements this logical authority | `ADR-PC-0002 -[:implements_logical]-> ADR-L-0020` |
+| [ADR-PC-0007 — Semantic Attribution Embodiment](../physical-component/ADR-PC-0007-semantic-attribution-embodiment.md) | implements this logical authority | `ADR-PC-0007 -[:implements_logical]-> ADR-L-0020` |
+
+
+
+
+## Notes
+
+Embodiment is ADR-PC-0007. Schema authority remains this repository.
+ste-spec draft hand-off prose is pre-normative. Do not add 1.5 to
+supported_adr_schema_versions. Evidence versions are advertised separately as
+supported_evidence_attribution_versions, with provisional 1.6 preferred for
+new producers. API contract 1.0 and package versions remain independent.
+v1.1 relationship-registry enum drift is quarantined and is not repaired by
+this ADR.
 
 
 ---
 
-*Generated from ADR-L-0020 by ADR Architecture Kit*
+*Generated from ADR-L-0020 by ADR Architecture Kit (projection v3)*

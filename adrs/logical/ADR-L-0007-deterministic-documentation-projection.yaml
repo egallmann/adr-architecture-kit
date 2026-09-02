@@ -1,4 +1,4 @@
-schema_version: '1.3'
+schema_version: '1.5'
 adr_type: logical
 id: 019fee89-e615-7b9c-8e3f-32ceeda01491
 title: Deterministic Documentation Projection
@@ -433,6 +433,28 @@ decisions:
   - 019ff22a-bb5f-7779-912f-040cdf1b54b8
   alias_id: DEC-0115
   alias_name: preserve-legacy-generic-system-overview-generation-as-compatibility-only
+- id: 01a048f5-b197-75ab-a812-6e3361333731
+  summary: Encode projection v3 renderer contract for normalized v2.2 topology semantics
+  rationale: 'Projection v3 renders deterministic human documentation from normalized
+    v2.2 inputs using compiler-derived relationship semantics only. Topology inventory,
+    compatibility rows, and peer-card verbs must follow ADR-L-0025 topology and
+    contract succession authority without inventing pseudo-edges or ADR-level fake
+    topology. Coverage registry posture and SYSTEM-OVERVIEW integration remain
+    sequenced post-substrate; this decision governs authority only, not implementation
+    modules or templates.
+
+    '
+  consequences:
+    positive:
+    - v3 projection authority is durable and cross-references topology contract succession
+    - Renderer work can proceed against promoted schema and ADR authority
+    negative:
+    - Production renderer implementation remains deferred to the implementation plan
+  related_invariants:
+  - 019fee89-e616-7abd-ad17-f29edbd30959
+  - 019fee89-e616-77e0-992d-25764a1ed5a2
+  alias_id: DEC-0176
+  alias_name: encode-projection-v3-renderer-contract-for-normalized-v2-2
 constraints:
 - id: CONST-0001
   type: technical
@@ -593,10 +615,11 @@ capabilities:
 related_adrs:
 - 019fee89-e615-70a5-861b-b2dde147e5af
 - 019fee89-e615-77f6-9b1f-695732d25443
-- 019fee89-e618-79ed-9d2d-cc35c63bc99a
-- 019fee89-e618-7a2f-aa3e-1f892cdf9410
+- 019fee89-e618-7d04-9337-4aa2d3258507
+- 019fee89-e617-7d2b-8325-cd85ff814477
 - 019fee89-e616-7c4e-953c-b7349412a784
 - 019fee89-e618-74b2-a83e-e41c7d8c9f37
+- 01a048d8-454a-7464-bcaa-718e58dfb9c2
 gaps: []
 migration_origin:
   remapped_entities:

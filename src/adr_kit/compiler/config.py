@@ -28,4 +28,5 @@ class CompilerConfig:
     use_parse_cache: bool = True
     profile: str | None = None
     pinned_timestamp: str | None = None
+    include_system_overview: bool = True
     metadata: dict[str, str] = field(default_factory=dict)

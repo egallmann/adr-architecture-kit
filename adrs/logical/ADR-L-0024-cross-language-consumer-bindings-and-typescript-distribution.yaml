@@ -1,4 +1,4 @@
-schema_version: '1.3'
+schema_version: '1.5'
 adr_type: logical
 id: 01a02d38-7cf3-7b3c-87ec-1c5f08490c6e
 alias_id: ADR-L-0024

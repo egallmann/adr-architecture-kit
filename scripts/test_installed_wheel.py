@@ -13,6 +13,10 @@ from collections.abc import Sequence
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
+EXTERNAL_CONSUMER_PROJECT_YAML = (
+    ROOT / "tests" / "fixtures" / "external-consumer-sdk" / "PROJECT.yaml"
+)
+LOGICAL_ADR_SOURCE = ROOT / "tests" / "fixtures" / "valid" / "logical-minimal.yaml"
 PROBES = (
     "imports",
     "cli",
@@ -30,6 +34,11 @@ PROBES = (
     "promoted-entity-queries",
     "external-bindings",
     "topology-migration-entrypoint",
+    "public-api",
+    "coverage-registry",
+    "projection-generation",
+    "governance-cli",
+    "system-overview",
 )
 PROBE = """
 from importlib import resources
@@ -64,7 +73,74 @@ from adr_kit.migrators.identity_v13 import IdentityV13Migrator
 assert IdentityV13Migrator.__name__ == 'IdentityV13Migrator'
 from adr_kit.promotion.ste_contract import load_promotion_contract_schema
 assert isinstance(load_promotion_contract_schema(), dict)
+from adr_kit.api import capabilities as public_capabilities
+assert callable(public_capabilities)
+from adr_kit.compiler.backend.coverage_registry import collect_schema_field_pointers, disposition_for
+assert collect_schema_field_pointers("logical")
+assert disposition_for(adr_type="logical", pointer="/capabilities/acceptance_criteria") == "RENDER_DETAIL"
 print(adr_kit.__version__)
+"""
+PUBLIC_API_PROBE = """
+from adr_kit.api import (
+    EmbodimentLinkageRequest,
+    EmbodimentLinkageResult,
+    build_embodiment_linkage,
+    capabilities,
+    open_repository,
+)
+assert callable(build_embodiment_linkage)
+assert callable(open_repository)
+manifest = capabilities()
+assert manifest.supported_adr_schema_versions
+"""
+COVERAGE_PROBE = """
+from adr_kit.compiler.backend.coverage_registry import (
+    collect_schema_field_pointers,
+    disposition_for,
+)
+assert collect_schema_field_pointers("logical")
+assert disposition_for(adr_type="logical", pointer="/capabilities/acceptance_criteria") == "RENDER_DETAIL"
+"""
+PROJECTION_PROBE = """
+import os
+from pathlib import Path
+from adr_kit.compiler.backend.coverage_registry import collect_schema_field_pointers
+from adr_kit.compiler.backend.markdown_rendering import emit_markdown_artifacts
+from adr_kit.compiler.frontend.builder import ArchModelBuilder
+from adr_kit.parser import ADRParser
+from adr_kit.scope import ProjectScopeResolver
+
+fixture = Path(os.environ["ADR_WHEEL_FIXTURE"])
+assert collect_schema_field_pointers("logical")
+parser = ADRParser()
+scope = ProjectScopeResolver(explicit_scope=fixture).resolve()
+build = ArchModelBuilder().build_from_scope(scope)
+artifacts = emit_markdown_artifacts(parser=parser, scope=scope, build_result=build)
+assert any("adr-projection" in artifact.path.as_posix() for artifact in artifacts)
+"""
+GOVERNANCE_PROBE = """
+import os
+from pathlib import Path
+import subprocess
+import sys
+
+fixture = Path(os.environ["ADR_WHEEL_FIXTURE"])
+subprocess.check_call([sys.executable, "-m", "adr_kit.cli.main", "validate", "--scope", str(fixture)])
+subprocess.check_call(
+    [sys.executable, "-m", "adr_kit.cli.main", "generate-adr-projection", "--scope", str(fixture)]
+)
+"""
+SYSTEM_OVERVIEW_PROBE = """
+import os
+from pathlib import Path
+from adr_kit.compatibility import load_cli_surface_snapshot
+from adr_kit.generators.system_overview_generator import SystemOverviewGenerator
+
+fixture = Path(os.environ["ADR_WHEEL_FIXTURE"])
+payload = load_cli_surface_snapshot()
+assert "generate-system-overview" in payload["commands"]
+generator = SystemOverviewGenerator(repo_root=fixture)
+assert "validate" in generator._cli_surface_command_names()
 """
 LINKAGE_PROBE = """
 import os
@@ -120,9 +196,9 @@ from adr_kit.api import (
 
 root = Path(os.environ['ADR_PHASE2_FIXTURE'])
 manifest = capabilities()
-assert manifest.supported_adr_schema_versions == ('1.0', '1.1', '1.2', '1.3', '1.4')
+assert manifest.supported_adr_schema_versions == ('1.0', '1.1', '1.2', '1.3', '1.4', '1.5')
 assert manifest.normalized_model_schema_version == '1.1'
-assert manifest.supported_normalized_model_schema_versions == ('1.1', '2.0', '2.1')
+assert manifest.supported_normalized_model_schema_versions == ('1.1', '2.0', '2.1', '2.2')
 assert NormalizedArchitectureModelV2 is not None
 assert ProviderRegistry is not None
 assert callable(open_provider_registry)
@@ -140,6 +216,15 @@ verbs = {item['relationship_type'] for item in relationships['relationships']}
 assert {'binds_substrate', 'binds_rule', 'expects_evidence'} <= verbs
 assert all(item['assertion_id'].startswith('asrt-') for item in relationships['relationships'])
 """
+
+
+def _materialize_external_consumer_fixture(destination: Path) -> Path:
+    project_root = destination / "fixture"
+    logical = project_root / "adrs" / "logical"
+    logical.mkdir(parents=True, exist_ok=True)
+    shutil.copy2(EXTERNAL_CONSUMER_PROJECT_YAML, project_root / "PROJECT.yaml")
+    shutil.copy2(LOGICAL_ADR_SOURCE, logical / "ADR-L-9999-minimal.yaml")
+    return project_root
 
 
 def _venv_paths(environment: Path) -> tuple[Path, Path, Path]:
@@ -170,13 +255,7 @@ def run_harness(wheel: Path, python: Path) -> None:
 
         _run([str(pip), "install", str(wheel)], root, isolated_environment)
         consumer = root / "consumer"
-        fixture = consumer / "fixture"
-        (fixture / "adrs" / "logical").mkdir(parents=True)
-        shutil.copy2(ROOT / "PROJECT.yaml", fixture / "PROJECT.yaml")
-        shutil.copy2(
-            ROOT / "tests" / "fixtures" / "valid" / "logical-minimal.yaml",
-            fixture / "adrs" / "logical" / "ADR-L-9999-minimal.yaml",
-        )
+        fixture = _materialize_external_consumer_fixture(consumer)
         fixture_sources = (
             ("logical-bindings.yaml", "logical", "ADR-L-9801-bindings.yaml"),
             (
@@ -197,6 +276,12 @@ def run_harness(wheel: Path, python: Path) -> None:
         consumer_script = consumer / "test_sdk_consumer.py"
         shutil.copy2(ROOT / "scripts" / "test_sdk_consumer.py", consumer_script)
         _run([str(venv_python), "-c", PROBE], consumer, isolated_environment)
+        isolated_environment["ADR_WHEEL_FIXTURE"] = str(fixture)
+        _run([str(venv_python), "-c", PUBLIC_API_PROBE], consumer, isolated_environment)
+        _run([str(venv_python), "-c", COVERAGE_PROBE], consumer, isolated_environment)
+        _run([str(venv_python), "-c", PROJECTION_PROBE], consumer, isolated_environment)
+        _run([str(venv_python), "-c", GOVERNANCE_PROBE], consumer, isolated_environment)
+        _run([str(venv_python), "-c", SYSTEM_OVERVIEW_PROBE], consumer, isolated_environment)
         _run(
             [
                 str(venv_python),

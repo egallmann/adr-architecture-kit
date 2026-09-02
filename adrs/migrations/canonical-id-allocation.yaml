@@ -480,8 +480,8 @@ allocations:
   state: active
 - id: COMP-0017
   entity_type: component
-  adr_id: ADR-P-0003
-  file_path: adrs/physical/ADR-P-0003-multi-scope-python-implementation.yaml
+  adr_id: ADR-PC-0008
+  file_path: adrs/physical-component/ADR-PC-0008-project-scope-resolution.yaml
   source_pointer: /component_specifications/0/id
   state: active
 - id: COMP-0018
@@ -1534,6 +1534,60 @@ allocations:
   source_pointer: /decisions/12/alias_id
   state: active
   adr_id: 01a02d38-7cf3-7b3c-87ec-1c5f08490c6e
+- id: DEC-0168
+  entity_type: decision
+  file_path: adrs/logical/ADR-L-0025-topology-and-contract-succession-authority.yaml
+  source_pointer: /decisions/0/alias_id
+  state: active
+  adr_id: 01a048d8-454a-7464-bcaa-718e58dfb9c2
+- id: DEC-0169
+  entity_type: decision
+  file_path: adrs/logical/ADR-L-0025-topology-and-contract-succession-authority.yaml
+  source_pointer: /decisions/1/alias_id
+  state: active
+  adr_id: 01a048d8-454a-7464-bcaa-718e58dfb9c2
+- id: DEC-0170
+  entity_type: decision
+  file_path: adrs/logical/ADR-L-0025-topology-and-contract-succession-authority.yaml
+  source_pointer: /decisions/2/alias_id
+  state: active
+  adr_id: 01a048d8-454a-7464-bcaa-718e58dfb9c2
+- id: DEC-0171
+  entity_type: decision
+  file_path: adrs/logical/ADR-L-0025-topology-and-contract-succession-authority.yaml
+  source_pointer: /decisions/3/alias_id
+  state: active
+  adr_id: 01a048d8-454a-7464-bcaa-718e58dfb9c2
+- id: DEC-0172
+  entity_type: decision
+  file_path: adrs/logical/ADR-L-0025-topology-and-contract-succession-authority.yaml
+  source_pointer: /decisions/4/alias_id
+  state: active
+  adr_id: 01a048d8-454a-7464-bcaa-718e58dfb9c2
+- id: DEC-0173
+  entity_type: decision
+  file_path: adrs/logical/ADR-L-0025-topology-and-contract-succession-authority.yaml
+  source_pointer: /decisions/5/alias_id
+  state: active
+  adr_id: 01a048d8-454a-7464-bcaa-718e58dfb9c2
+- id: DEC-0174
+  entity_type: decision
+  file_path: adrs/logical/ADR-L-0025-topology-and-contract-succession-authority.yaml
+  source_pointer: /decisions/6/alias_id
+  state: active
+  adr_id: 01a048d8-454a-7464-bcaa-718e58dfb9c2
+- id: DEC-0175
+  entity_type: decision
+  file_path: adrs/logical/ADR-L-0025-topology-and-contract-succession-authority.yaml
+  source_pointer: /decisions/7/alias_id
+  state: active
+  adr_id: 01a048d8-454a-7464-bcaa-718e58dfb9c2
+- id: DEC-0176
+  entity_type: decision
+  file_path: adrs/logical/ADR-L-0007-deterministic-documentation-projection.yaml
+  source_pointer: /decisions/11/alias_id
+  state: active
+  adr_id: 019fee89-e615-7b9c-8e3f-32ceeda01491
 - id: DEC-9000
   entity_type: decision
   adr_id: ADR-L-9000
@@ -1662,8 +1716,8 @@ allocations:
   state: active
 - id: IFACE-0021
   entity_type: interface
-  adr_id: ADR-P-0003
-  file_path: adrs/physical/ADR-P-0003-multi-scope-python-implementation.yaml
+  adr_id: ADR-PC-0008
+  file_path: adrs/physical-component/ADR-PC-0008-project-scope-resolution.yaml
   source_pointer: /component_specifications/0/interfaces/0/id
   state: active
 - id: IFACE-0022
@@ -1686,8 +1740,8 @@ allocations:
   state: active
 - id: IFACE-0025
   entity_type: interface
-  adr_id: ADR-P-0003
-  file_path: adrs/physical/ADR-P-0003-multi-scope-python-implementation.yaml
+  adr_id: ADR-PC-0008
+  file_path: adrs/physical-component/ADR-PC-0008-project-scope-resolution.yaml
   source_pointer: /component_specifications/0/interfaces/1/id
   state: active
 - id: IFACE-0026
@@ -1878,8 +1932,8 @@ allocations:
   state: active
 - id: IMPL-0022
   entity_type: implementation_decision
-  adr_id: ADR-P-0003
-  file_path: adrs/physical/ADR-P-0003-multi-scope-python-implementation.yaml
+  adr_id: ADR-PC-0008
+  file_path: adrs/physical-component/ADR-PC-0008-project-scope-resolution.yaml
   source_pointer: /implementation_decisions/0/id
   state: active
 - id: IMPL-0023
@@ -1890,8 +1944,8 @@ allocations:
   state: active
 - id: IMPL-0024
   entity_type: implementation_decision
-  adr_id: ADR-P-0003
-  file_path: adrs/physical/ADR-P-0003-multi-scope-python-implementation.yaml
+  adr_id: ADR-PC-0008
+  file_path: adrs/physical-component/ADR-PC-0008-project-scope-resolution.yaml
   source_pointer: /implementation_decisions/1/id
   state: active
 - id: IMPL-0025

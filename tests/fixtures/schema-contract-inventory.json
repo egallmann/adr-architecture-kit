@@ -1,15 +1,75 @@
 {
   "baseline_sha": "d4a9c3966c4300558f66c6c0b15985f80e601f8c",
   "expected_counts": {
-    "canonical": 64,
-    "package_mirrors": 60
+    "canonical": 76,
+    "package_mirrors": 72
   },
   "discovered_counts": {
-    "canonical": 64,
-    "package_mirrors": 60
+    "canonical": 76,
+    "package_mirrors": 72
   },
   "authority": "NON-AUTHORITATIVE VERIFICATION SNAPSHOT",
   "records": [
+    {
+      "canonical_path": "schema/authoring/v1.5/adr-common.schema.json",
+      "target_path": "schema/authoring/v1.5/adr-common.schema.json",
+      "family": "authoring",
+      "family_version": "v1.5",
+      "schema_id": "https://adr-kit.ste.systems/schema/authoring/v1.5/adr-common.schema.json",
+      "sha256": "4800f0c5145cf22c62fd8bcd7037cda8d14ad857c13ee879c7b03bdde70218fb",
+      "package_mirror_path": "src/adr_kit/schema/authoring/v1_5/adr-common.schema.json",
+      "mirror_disposition": "mirror"
+    },
+    {
+      "canonical_path": "schema/authoring/v1.5/adr-logical.schema.json",
+      "target_path": "schema/authoring/v1.5/adr-logical.schema.json",
+      "family": "authoring",
+      "family_version": "v1.5",
+      "schema_id": "https://adr-kit.ste.systems/schema/authoring/v1.5/adr-logical.schema.json",
+      "sha256": "7f1d8a833502db21ef2348cd0a843686c67b54f96d1532cf7c07a2d7fa73340f",
+      "package_mirror_path": "src/adr_kit/schema/authoring/v1_5/adr-logical.schema.json",
+      "mirror_disposition": "mirror"
+    },
+    {
+      "canonical_path": "schema/authoring/v1.5/adr-physical-base.schema.json",
+      "target_path": "schema/authoring/v1.5/adr-physical-base.schema.json",
+      "family": "authoring",
+      "family_version": "v1.5",
+      "schema_id": "https://adr-kit.ste.systems/schema/authoring/v1.5/adr-physical-base.schema.json",
+      "sha256": "50733ed51dd5c5ecd9fbe150b87ee88fb84c273ff16ee56878be66b7262a6f8c",
+      "package_mirror_path": "src/adr_kit/schema/authoring/v1_5/adr-physical-base.schema.json",
+      "mirror_disposition": "mirror"
+    },
+    {
+      "canonical_path": "schema/authoring/v1.5/adr-physical-component.schema.json",
+      "target_path": "schema/authoring/v1.5/adr-physical-component.schema.json",
+      "family": "authoring",
+      "family_version": "v1.5",
+      "schema_id": "https://adr-kit.ste.systems/schema/authoring/v1.5/adr-physical-component.schema.json",
+      "sha256": "fcadb0f6a2bfaf6801c540045cd69cb435be38d68552575ebe2b251f3667951c",
+      "package_mirror_path": "src/adr_kit/schema/authoring/v1_5/adr-physical-component.schema.json",
+      "mirror_disposition": "mirror"
+    },
+    {
+      "canonical_path": "schema/authoring/v1.5/adr-physical-system.schema.json",
+      "target_path": "schema/authoring/v1.5/adr-physical-system.schema.json",
+      "family": "authoring",
+      "family_version": "v1.5",
+      "schema_id": "https://adr-kit.ste.systems/schema/authoring/v1.5/adr-physical-system.schema.json",
+      "sha256": "347cb9dfad02a054f9a54d7da8cea1ffc40d5931cd2b4a555614a05a057f91b1",
+      "package_mirror_path": "src/adr_kit/schema/authoring/v1_5/adr-physical-system.schema.json",
+      "mirror_disposition": "mirror"
+    },
+    {
+      "canonical_path": "schema/authoring/v1.5/types.schema.json",
+      "target_path": "schema/authoring/v1.5/types.schema.json",
+      "family": "authoring",
+      "family_version": "v1.5",
+      "schema_id": "https://adr-kit.ste.systems/schema/authoring/v1.5/types.schema.json",
+      "sha256": "8a5fb427aad840157599727adab3a948eb88ec9c2a796f8dee41a5951e39c3b3",
+      "package_mirror_path": "src/adr_kit/schema/authoring/v1_5/types.schema.json",
+      "mirror_disposition": "mirror"
+    },
     {
       "canonical_path": "schema/evidence-attribution/v1.6/implementation-attribution-evidence.schema.json",
       "target_path": "schema/evidence-attribution/v1.6/implementation-attribution-evidence.schema.json",
@@ -46,7 +106,7 @@
       "family": "special",
       "family_version": null,
       "schema_id": null,
-      "sha256": "426ecfc67ba5450e1461fdf81abdf6dd07fb168f242d24fd6d5120d3e8e561fe",
+      "sha256": "9fa2014b8a80d40ce9fa0f2a9101a61f39b503784613b7c87141476b2aae5897",
       "package_mirror_path": null,
       "mirror_disposition": "no-mirror"
     },
@@ -56,7 +116,7 @@
       "family": "special",
       "family_version": null,
       "schema_id": null,
-      "sha256": "960ee0df5d6e5a1cd0e3b96b18c1b8e4fea4a7e49dacdd6604189c1862aa876c",
+      "sha256": "60394396a274e38cdfb34392530fbe382fe272427853c654e9e11bbf7730a668",
       "package_mirror_path": null,
       "mirror_disposition": "no-mirror"
     },
@@ -78,6 +138,66 @@
       "schema_id": null,
       "sha256": "61de7bf2f72c3c86a7a67825a6e24e0502d1052c8c34d8ada00c9481c34316a3",
       "package_mirror_path": "src/adr_kit/schema/migrations/canonical-identity-v13-map.schema.json",
+      "mirror_disposition": "mirror"
+    },
+    {
+      "canonical_path": "schema/normalized-model/v2.2/normalized-architecture-model.schema.json",
+      "target_path": "schema/normalized-model/v2.2/normalized-architecture-model.schema.json",
+      "family": "normalized-model",
+      "family_version": "v2.2",
+      "schema_id": "https://adr-kit.ste.systems/schema/normalized-model/v2.2/normalized-architecture-model.schema.json",
+      "sha256": "fb5f321872256ae6d87b6bb3eea42d9a0d8ca48528f6c0823eb99cae0904f073",
+      "package_mirror_path": "src/adr_kit/schema/v2_2/normalized-architecture-model.schema.json",
+      "mirror_disposition": "mirror"
+    },
+    {
+      "canonical_path": "schema/normalized-model/v2.2/normalized-entity-registry.schema.json",
+      "target_path": "schema/normalized-model/v2.2/normalized-entity-registry.schema.json",
+      "family": "normalized-model",
+      "family_version": "v2.2",
+      "schema_id": "https://adr-kit.ste.systems/schema/normalized-model/v2.2/normalized-entity-registry.schema.json",
+      "sha256": "7e0c1548abafc4c8828797f57033e2ebcf01090693dc4c1d09283c8381b4f442",
+      "package_mirror_path": "src/adr_kit/schema/v2_2/normalized-entity-registry.schema.json",
+      "mirror_disposition": "mirror"
+    },
+    {
+      "canonical_path": "schema/normalized-model/v2.2/normalized-entity.schema.json",
+      "target_path": "schema/normalized-model/v2.2/normalized-entity.schema.json",
+      "family": "normalized-model",
+      "family_version": "v2.2",
+      "schema_id": "https://adr-kit.ste.systems/schema/normalized-model/v2.2/normalized-entity.schema.json",
+      "sha256": "7c8fa00d0d16015559ca38388d34c40720b9c435a6313d9d32e99edad2eca2b2",
+      "package_mirror_path": "src/adr_kit/schema/v2_2/normalized-entity.schema.json",
+      "mirror_disposition": "mirror"
+    },
+    {
+      "canonical_path": "schema/normalized-model/v2.2/relationship-record.schema.json",
+      "target_path": "schema/normalized-model/v2.2/relationship-record.schema.json",
+      "family": "normalized-model",
+      "family_version": "v2.2",
+      "schema_id": "https://adr-kit.ste.systems/schema/normalized-model/v2.2/relationship-record.schema.json",
+      "sha256": "19e754bf9045c77bcb2c1a002d3828b92881f8d3e3059dc389a81db6ecc339c0",
+      "package_mirror_path": "src/adr_kit/schema/v2_2/relationship-record.schema.json",
+      "mirror_disposition": "mirror"
+    },
+    {
+      "canonical_path": "schema/normalized-model/v2.2/relationship-registry.schema.json",
+      "target_path": "schema/normalized-model/v2.2/relationship-registry.schema.json",
+      "family": "normalized-model",
+      "family_version": "v2.2",
+      "schema_id": "https://adr-kit.ste.systems/schema/normalized-model/v2.2/relationship-registry.schema.json",
+      "sha256": "aaaa058314f3bc67d35f0e6305be1b955e32c4b31b0e8a121a03774e698f1e4d",
+      "package_mirror_path": "src/adr_kit/schema/v2_2/relationship-registry.schema.json",
+      "mirror_disposition": "mirror"
+    },
+    {
+      "canonical_path": "schema/normalized-model/v2.2/unresolved-registry.schema.json",
+      "target_path": "schema/normalized-model/v2.2/unresolved-registry.schema.json",
+      "family": "normalized-model",
+      "family_version": "v2.2",
+      "schema_id": "https://adr-kit.ste.systems/schema/normalized-model/v2.2/unresolved-registry.schema.json",
+      "sha256": "035abd6de206ab588b20b431e18a289cbea4e31ea1161f7d6e43de377ee41315",
+      "package_mirror_path": "src/adr_kit/schema/v2_2/unresolved-registry.schema.json",
       "mirror_disposition": "mirror"
     },
     {

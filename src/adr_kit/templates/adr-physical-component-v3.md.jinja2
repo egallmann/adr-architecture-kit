@@ -1,0 +1,482 @@
+# {{ adr | presentation_id }}: {{ adr.title }}
+{% set pc = ctx.physical_component if ctx else none %}
+
+## Identity / Status
+
+{% if pc and pc.identity_rows %}
+{% for row in pc.identity_rows %}
+**{{ row.label }}:** {{ row.value }}  
+{% endfor %}
+{% else %}
+**Type:** {{ ctx.adr_type if ctx else adr.adr_type }}  
+**Status:** {{ adr.status.value }}  
+**Alias:** {{ adr | presentation_id }}  
+**Created:** {{ adr.created_date }}  
+{% endif %}
+
+{% if pc and pc.glance_rows %}
+## Architecture at a Glance
+
+{% for row in pc.glance_rows %}
+| | |
+| --- | --- |
+| Component | {{ row.component_display }} |
+{% if row.component_type %}| Type | {{ row.component_type }} |
+{% endif %}{% if row.system_display %}| System | {{ row.system_display }} |
+{% endif %}{% if row.purpose %}| Purpose | {{ row.purpose }} |
+{% endif %}{% if row.depends_on %}| Depends on | {{ row.depends_on | join('; ') }} |
+{% endif %}{% if row.depended_on_by %}| Depended on by | {{ row.depended_on_by | join('; ') }} |
+{% endif %}{% if row.interfaces %}| Interfaces | {{ row.interfaces | join('; ') }} |
+{% endif %}{% if row.primary_implementation %}| Primary implementation | `{{ row.primary_implementation }}` |
+{% endif %}
+
+{% endfor %}
+{% if pc.architecture_position.logical_authority %}
+**Logical authority**
+{% for item in pc.architecture_position.logical_authority %}
+- {{ item }}
+{% endfor %}
+
+{% endif %}
+{% endif %}
+
+{% if pc and pc.change_safety_blocks %}
+## Change Safety
+
+{% for block in pc.change_safety_blocks %}
+{% if block.must_preserve or block.public_interfaces or block.depends_on or block.depended_on_by or block.verification or block.known_gaps %}
+{% if block.component_alias %}### {{ block.component_alias }}{% endif %}
+
+{% if block.must_preserve %}
+**Must preserve**
+{% for item in block.must_preserve %}
+- {{ item }}
+{% endfor %}
+
+{% endif %}
+{% if block.depends_on or block.depended_on_by or block.public_interfaces or block.known_consumers %}
+**Known architectural surface**
+{% if block.depends_on %}- Depends on: {{ block.depends_on | join('; ') }}
+{% endif %}{% if block.depended_on_by %}- Depended on by: {{ block.depended_on_by | join('; ') }}
+{% endif %}{% if block.public_interfaces %}- Provided interfaces: {{ block.public_interfaces | join('; ') }}
+{% endif %}{% if block.known_consumers %}- Known consumers: {{ block.known_consumers | join('; ') }}
+{% endif %}
+
+{% endif %}
+{% if block.verification %}
+**Verification**
+{% if block.verification.primary_tests %}- Primary tests: `{{ block.verification.primary_tests }}`
+{% endif %}{% if block.verification.unit_coverage %}- Unit coverage: {{ block.verification.unit_coverage }}
+{% endif %}{% if block.verification.success_criteria %}- Success criteria: {{ block.verification.success_criteria | length }}
+{% endif %}{% if block.verification.integration_checks %}- Integration checks: {{ block.verification.integration_checks | length }}
+{% endif %}
+
+{% endif %}
+{% if block.known_gaps %}
+**Known gaps**
+{% for item in block.known_gaps %}
+- {{ item }}
+{% endfor %}
+
+{% endif %}
+{% endif %}
+{% endfor %}
+{% endif %}
+
+## Context
+
+{{ adr.context }}
+
+{% if ctx and (ctx.primary_architecture_graph or (pc and pc.architecture_position.relationship_groups)) %}
+## Architecture & Relationships
+
+{% if ctx.primary_architecture_graph %}
+```mermaid
+{{ ctx.primary_architecture_graph }}```
+
+{% endif %}
+{% if pc and pc.architecture_position.relationship_groups %}
+### Component Relationships
+
+{% for group in pc.architecture_position.relationship_groups %}
+**{{ group.heading }}**
+{% for item in group.items %}
+- {{ item.label }}
+
+  `{{ item.canonical_path }}`
+{% endfor %}
+
+{% endfor %}
+{% endif %}
+{% endif %}
+
+{% if pc and pc.component_contracts %}
+## Component Contract
+
+{% for comp in pc.component_contracts %}
+### {{ comp.alias_id }}: {{ comp.name }}
+
+{% if comp.component_type %}
+**Type:** {{ comp.component_type }}
+
+{% endif %}
+{% if comp.description %}
+**Description:**
+
+{{ comp.description }}
+
+{% endif %}
+{% if comp.purpose %}
+**Purpose:**
+
+{{ comp.purpose }}
+
+{% endif %}
+{% if comp.responsibilities %}
+**Responsibilities:**
+
+{{ comp.responsibilities }}
+
+{% endif %}
+{% if comp.key_responsibilities %}
+**Key Responsibilities:**
+{% for item in comp.key_responsibilities %}
+- {{ item }}
+{% endfor %}
+
+{% endif %}
+{% if comp.success_criteria %}
+**Success Criteria:**
+{% for item in comp.success_criteria %}
+- {{ item }}
+{% endfor %}
+
+{% endif %}
+{% if comp.implements_capabilities %}
+**Implements Capabilities:**
+{% for item in comp.implements_capabilities %}
+- {{ item }}
+{% endfor %}
+
+{% endif %}
+{% endfor %}
+{% endif %}
+
+{% if pc and pc.interfaces %}
+## Interfaces
+
+{% for iface in pc.interfaces %}
+### {{ iface.heading }}
+
+{% if iface.interface_type %}
+**Type:** {{ iface.interface_type }}
+
+{% endif %}
+**Specification:**
+
+{{ iface.specification }}
+
+{% if iface.contract_reference %}
+**Contract reference:** {{ iface.contract_reference }}
+
+{% endif %}
+{% if iface.contract_tests %}
+**Contract tests:**
+
+{{ iface.contract_tests }}
+
+{% endif %}
+{% endfor %}
+{% endif %}
+
+{% if pc and pc.implementation_decisions %}
+## Implementation Decisions
+
+{% for decision in pc.implementation_decisions %}
+### {{ decision.heading }}
+
+{% if decision.show_summary_body %}
+**Decision:**
+
+{{ decision.summary }}
+
+{% endif %}
+{% if decision.rationale %}
+**Rationale:**
+
+{{ decision.rationale }}
+
+{% endif %}
+{% if decision.alternatives %}
+**Alternatives Considered:**
+
+| Alternative | Rejected Because |
+| --- | --- |
+{% for alt in decision.alternatives %}
+| {{ alt.name }} | {{ alt.rejected_because }} |
+{% endfor %}
+
+{% endif %}
+{% if decision.consequences %}
+**Consequences:**
+{% for item in decision.consequences %}
+- {{ item }}
+{% endfor %}
+
+{% endif %}
+{% endfor %}
+{% endif %}
+
+{% if pc and pc.engineering_contracts %}
+## Engineering Contract
+
+{% for alias, contract in pc.engineering_contracts %}
+{% if pc.engineering_contracts | length > 1 %}
+### {{ alias }}
+
+{% endif %}
+{% if contract.failure_semantics %}
+### Failure Semantics
+
+{{ contract.failure_semantics }}
+
+{% endif %}
+{% if contract.logging or contract.metrics %}
+### Observability
+
+{% if contract.logging %}
+**Logging:**
+{% if contract.logging.level %}
+- Level: {{ contract.logging.level }}
+{% endif %}
+{% if contract.logging.structured %}
+- Structured: {{ contract.logging.structured }}
+{% endif %}
+
+{% endif %}
+{% if contract.metrics %}
+**Metrics:**
+{% for metric in contract.metrics %}
+- {{ metric.name }}{% if metric.metric_type %} ({{ metric.metric_type }}){% endif %}{% if metric.description %} — {{ metric.description }}{% endif %}
+
+{% endfor %}
+
+{% endif %}
+{% endif %}
+{% if contract.unit_test_coverage or contract.nested_integration_tests or contract.component_testing_requirements or contract.extra_requirement_rows %}
+### Verification
+
+{% if contract.unit_test_coverage %}
+**Unit test coverage:** {{ contract.unit_test_coverage }}
+
+{% endif %}
+{% if contract.nested_integration_tests %}
+**Integration tests:**
+
+{{ contract.nested_integration_tests }}
+
+{% endif %}
+{% if contract.component_testing_requirements %}
+**Testing requirements:**
+{% for item in contract.component_testing_requirements %}
+- {{ item }}
+{% endfor %}
+
+{% endif %}
+{% for item in contract.extra_requirement_rows %}
+**{{ item.label }}:** {{ item.value }}
+
+{% endfor %}
+{% endif %}
+{% if contract.dependencies or contract.upstream_services or contract.downstream_services %}
+### Dependencies
+{% for item in contract.dependencies %}
+- {{ item }}
+{% endfor %}
+{% for item in contract.upstream_services %}
+- Upstream: {{ item }}
+{% endfor %}
+{% for item in contract.downstream_services %}
+- Downstream: {{ item }}
+{% endfor %}
+
+{% endif %}
+{% if contract.algorithms %}
+### Algorithms
+{% for item in contract.algorithms %}
+**{{ item.label }}**
+
+{{ item.value }}
+
+{% endfor %}
+{% endif %}
+{% endfor %}
+{% endif %}
+
+{% if pc and pc.implementation_locations %}
+## Implementation Map
+
+{% for alias, rows in pc.implementation_locations %}
+{% if pc.implementation_locations | length > 1 %}
+### {{ alias }}
+
+{% endif %}
+| Role | Location |
+| --- | --- |
+{% for row in rows %}
+| {{ row.role }} | `{{ row.location }}` |
+{% endfor %}
+
+{% endfor %}
+{% endif %}
+
+{% if pc and pc.migration_rows %}
+## Lineage / Migration
+
+| Entity Type | Historical Alias | Current Alias | Source |
+| --- | --- | --- | --- |
+{% for row in pc.migration_rows %}
+| {{ row.entity_type }} | {{ row.historical_alias }} | {{ row.current_alias }} | {{ row.source }} |
+{% endfor %}
+
+{% endif %}
+
+{% if pc and pc.technology_stack %}
+## Technology & Dependencies
+
+{% for tech in pc.technology_stack %}
+### {{ tech.name }}{% if tech.category %} ({{ tech.category }}){% endif %}
+
+{% if tech.version %}
+**Version:** {{ tech.version }}
+
+{% endif %}
+{% if tech.rationale %}
+**Rationale:**
+{{ tech.rationale }}
+
+{% endif %}
+{% endfor %}
+{% endif %}
+
+{% if pc and pc.architecture_impact_rows %}
+## Architecture Impact
+
+{% for row in pc.architecture_impact_rows %}
+**{{ row.label }}:** {{ row.value }}
+{% endfor %}
+
+{% endif %}
+
+{% if pc and pc.gaps %}
+## Known Gaps
+
+{% for gap in pc.gaps %}
+### {{ gap.heading }}
+
+{% if gap.body %}
+{{ gap.body }}
+
+{% endif %}
+{% for item in gap.fields %}
+**{{ item.label }}:** {{ item.value }}
+{% endfor %}
+
+{% endfor %}
+{% endif %}
+
+{% if pc and pc.notes %}
+## Notes
+
+{{ pc.notes }}
+
+{% endif %}
+
+{% if ctx and ctx.internal_entities %}
+## Internal Structure
+
+{% if ctx.use_internal_structure_table %}
+| Kind | Entity |
+| --- | --- |
+{% for row in ctx.internal_entities %}
+| {{ row.entity_type | replace('_', ' ') | title }} | {{ row.alias }}{% if row.name %} — {{ row.name }}{% endif %} |
+{% endfor %}
+
+{% else %}
+{% if ctx.internal_graph %}
+```mermaid
+{{ ctx.internal_graph }}```
+
+{% endif %}
+{% for row in ctx.internal_entities %}
+- `{{ row.entity_type }}` {{ row.alias }}{% if row.name %} — {{ row.name }}{% endif %}
+
+{% endfor %}
+{% endif %}
+{% endif %}
+
+{% if ctx and ctx.graphs %}
+## Architecture Neighborhood
+
+{% for graph in ctx.graphs %}
+```mermaid
+{{ graph }}```
+
+{% endfor %}
+{% if ctx.show_semantic_inventory %}
+### Semantic architecture inventory
+
+{% if ctx.neighborhood_inventory %}
+{% for row in ctx.neighborhood_inventory %}
+- `{{ row.verb }}`: {{ row.from_label }} → {{ row.to_label }}
+{% endfor %}
+{% endif %}
+{% endif %}
+{% endif %}
+
+{% if ctx and ctx.peer_cards %}
+## Neighbor Relationships
+
+{% set table_cards = ctx.peer_cards | selectattr('use_table') | list %}
+{% set expanded_cards = ctx.peer_cards | rejectattr('use_table') | list %}
+{% if table_cards %}
+| Neighbor | Relationship | Exact Path |
+| --- | --- | --- |
+{% for card in table_cards %}
+{% set rel = card.relationships[0] %}
+| {% if card.link %}[{{ card.alias_id }} — {{ card.title }}]({{ card.link }}){% else %}{{ card.alias_id }} — {{ card.title }}{% endif %} | {{ rel.from_display }} → {{ rel.to_display }} | `{{ rel.canonical_path }}` |
+{% endfor %}
+
+{% endif %}
+{% for card in expanded_cards %}
+### {{ card.alias_id }} — {{ card.title }}
+
+{% for rel in card.relationships %}
+**Relationship**
+{{ rel.from_display }}
+{{ rel.verb | replace('_', ' ') }}
+{{ rel.to_display }}
+
+`{{ rel.canonical_path }}`
+
+{% endfor %}
+{% if card.link %}[Open projection]({{ card.link }}){% else %}*(projection link unavailable)*{% endif %}
+
+{% endfor %}
+{% elif ctx %}
+## Neighbor Relationships
+
+No grammatical peer neighborhood for this subject.
+{% endif %}
+
+{% if ctx and ctx.governance_rows %}
+## Governance / Bindings / Evidence
+
+{% for row in ctx.governance_rows %}
+- {{ row }}
+{% endfor %}
+{% endif %}
+
+---
+
+*Generated from {{ adr | presentation_id }} by ADR Architecture Kit (projection v3)*

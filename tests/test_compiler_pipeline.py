@@ -44,8 +44,9 @@ def test_default_frontend_pipeline_pass_order():
         "logical_entity_extraction",
             "invariant_extraction",
             "physical_entity_extraction",
-            "extension_entity_extraction",
-            "relationship_inference",
+        "extension_entity_extraction",
+        "topology_resolution",
+        "relationship_inference",
         "unresolved_detection",
         "validation",
     ]

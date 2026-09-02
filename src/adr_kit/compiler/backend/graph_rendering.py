@@ -21,7 +21,14 @@ from ...models import ArchitectureGraph, ArchitectureGraphEdge, ArchitectureGrap
 from ...scope import ProjectScope
 from ..frontend.builder import FrontendBuildResult
 from .manifest_rendering import discover_manifest_source_inputs
-from .projection import PROJECTABLE_ENTITY_TYPES, project_entity, project_relationship
+from .projection import (
+    PROJECTABLE_ENTITY_TYPES,
+    is_projectable_entity,
+    project_entity,
+    project_entity_v22,
+    project_relationship,
+    project_relationship_v22,
+)
 
 GRAPH_GENERATOR_IDENTITY = GeneratorIdentity("adr-architecture-graph", 1)
 
@@ -32,6 +39,75 @@ def build_architecture_graph(build_result: FrontendBuildResult) -> ArchitectureG
     generated_at = build_result.model.metadata.generated_at or datetime.now(timezone.utc).replace(
         microsecond=0
     )
+    if getattr(build_result, "model_version", "1.1") == "2.2":
+        projected_entities = [
+            projected
+            for entity in build_result.model.entities.values()
+            if is_projectable_entity(entity)
+            and (
+                projected := project_entity_v22(
+                    entity, build_result.model.relationships, build_result.namespace
+                )
+            )
+            is not None
+        ]
+        projected_relationships = [
+            projected
+            for relationship in build_result.model.relationships.values()
+            if (projected := project_relationship_v22(relationship)) is not None
+        ]
+        nodes = [
+            ArchitectureGraphNode(
+                id=entity.id,
+                entity_type=entity.entity_type,  # type: ignore[arg-type]
+                name=entity.name,
+                canonical_source=entity.canonical_source,
+            )
+            for entity in projected_entities
+        ]
+        node_ids = {node.id for node in nodes}
+        edges = []
+        for relationship in projected_relationships:
+            from_id = relationship.from_entity_id
+            to_id = relationship.to_entity_id
+            if from_id not in node_ids or to_id not in node_ids:
+                continue
+            rel_id = getattr(relationship, "relationship_id", None) or getattr(
+                relationship, "id", ""
+            )
+            assertion_id = getattr(relationship, "assertion_id", None)
+            if not assertion_id:
+                from ...identity import derive_assertion_id
+
+                assertion_id = derive_assertion_id(
+                    relationship.relationship_type,
+                    from_id,
+                    to_id,
+                    relationship.canonical_source_ref,
+                    relationship.source_pointer,
+                )
+            edges.append(
+                ArchitectureGraphEdge(
+                    relationship_id=str(rel_id),
+                    assertion_id=str(assertion_id),
+                    relationship_type=relationship.relationship_type,
+                    source_entity_id=from_id,
+                    target_entity_id=to_id,
+                    provenance_classification=relationship.provenance_classification,
+                    evidence=list(relationship.evidence),
+                    canonical_source_ref=relationship.canonical_source_ref,
+                    source_pointer=relationship.source_pointer,
+                    confidence=relationship.confidence,
+                    metadata=dict(getattr(relationship, "metadata", {}) or {}),
+                )
+            )
+        return ArchitectureGraph(
+            architecture_namespace=build_result.namespace,
+            generated_at=generated_at,
+            nodes=sorted(nodes, key=lambda item: item.id),
+            edges=sorted(edges, key=lambda item: item.relationship_id),
+        )
+
     projected_entities = [
         projected
         for entity in build_result.model.entities.values()

@@ -1,0 +1,185 @@
+schema_version: '1.5'
+adr_type: physical-component
+id: 01a048d8-454a-7464-bcaa-718fa77bed6a
+alias_id: ADR-PC-0008
+alias_name: project-scope-resolution
+title: Project Scope Resolution
+status: accepted
+created_date: '2026-08-28'
+authors:
+- adr-architecture-kit
+domains:
+- implementation
+- adr
+- python
+- scope-resolution
+tags:
+- python
+- scope-resolution
+- multi-scope
+implements_system:
+- 019fee89-e618-7b3e-813b-a449881b6adb
+- 019fee89-e618-7d04-9337-4aa2d3258507
+implements_logical:
+- 019fee89-e615-7f19-810b-c7b33a9d9e0d
+technologies:
+- python
+- click
+- pyyaml
+- pathlib
+- dataclasses
+technology_stack:
+- category: language
+  name: Python
+  version: '>=3.14'
+  rationale: 'Minimum supported Python minor is 3.14 (`requires-python >=3.14`); currently
+    qualified released minor line is 3.14; repository reference interpreter is currently
+    3.14.7; new GA Python minors require explicit qualification before support is
+    advertised.
+    '
+- category: library
+  name: Click
+  version: 8.x
+  rationale: CLI framework; consistent with STE ecosystem CLI patterns
+- category: library
+  name: PyYAML
+  version: 6.x
+  rationale: ADR YAML parsing; schema validation
+- category: library
+  name: pathlib
+  version: stdlib
+  rationale: Cross-platform path handling for scope resolution
+context: |
+  Permanent physical-component authority for multi-scope project-root detection,
+  scope boundary validation, and scope-resolution semantics per ADR-L-0002.
+  Rehomes preserved nested identity from retired ADR-P-0003 (COMP-0017) into
+  governed PS+PC authority without topology authoring in this document.
+component_specifications:
+- id: 019fee89-e618-719b-bb3a-f13ab0906811
+  name: Project Scope Resolver
+  type: library
+  description: 'Python module implementing project scope detection and resolution
+
+    per ADR-L-0002 INV-0015 marker hierarchy
+
+    '
+  responsibilities: '- Detect project boundaries using marker files
+
+    - Enforce workspace boundaries (INV-0018)
+
+    - Support explicit scope override
+
+    - Discover sub-module scopes recursively
+
+    - Maintain parent-child scope relationships
+
+    '
+  generation_context:
+    purpose: Resolve project scope boundaries for multi-scope ADR operations.
+    key_responsibilities:
+    - Detect project boundaries using marker hierarchy (ADR-L-0002 INV-0015)
+    - Enforce workspace boundaries (INV-0018)
+    - Support explicit scope override and recursive discovery
+    constraints:
+    - Scope metadata must remain deterministic for unchanged repository layout
+    - Parent-child scope relationships must be explicit and testable
+    success_criteria:
+    - Scope auto-detection works from any nested working directory
+    - Recursive discovery returns independent per-scope metadata
+  interfaces:
+  - id: 019fee89-e618-717e-933f-f02a053e8ac5
+    type: library_api
+    specification: 'ProjectScope dataclass exposes immutable scope metadata: root,
+      adr_dir, manifest_path, marker, name, is_sub_module, parent_scope.
+
+      '
+    alias_id: IFACE-0021
+    alias_name: projectscope
+  - id: 019fee89-e618-79e6-8b3f-27b30946373a
+    type: library_api
+    specification: 'ProjectScopeResolver.resolve(start_dir) -> ProjectScope and
+      resolve_recursive(start_dir) -> List[ProjectScope].
+
+      '
+    alias_id: IFACE-0025
+    alias_name: projectscoperesolver
+  implementation_identifiers:
+    module_path: src/adr_kit/scope/
+  dependencies:
+  - pathlib.Path
+  - dataclasses.dataclass
+  - typing (Optional, List)
+  - yaml (for PROJECT.yaml parsing)
+  testing_requirements:
+  - Unit tests for marker detection
+  - Unit tests for boundary enforcement
+  - Unit tests for recursive discovery
+  - Integration tests with real directory structures
+  alias_id: COMP-0017
+  alias_name: project-scope-resolver
+implementation_decisions:
+- id: 019fee89-e618-76f2-b72f-5316b89484aa
+  summary: Adopt Red-Green-Refactor TDD Methodology
+  rationale: 'Test-Driven Development is architecturally aligned with STE principles:
+
+    1. **SYS-2 (Deterministic Cognition)**: Tests enforce deterministic behavior
+
+    2. **SYS-4 (Drift Prevention)**: Tests detect implementation drift immediately
+
+    3. **PRIME-1 (No Implicit Assumptions)**: Tests make behavior explicit
+
+    4. **INV-0001 (Schema Validation)**: Tests prove validation correctness
+
+
+    This is a governance tool that validates other systems - it MUST be provably
+
+    correct. TDD provides executable specification, immediate feedback, refactoring
+
+    safety, and living documentation.
+
+    '
+  alias_id: IMPL-0022
+  alias_name: adopt-red-green-refactor-tdd-methodology
+- id: 019fee89-e618-722c-b527-14eb4ee67d88
+  summary: Use Dataclasses for ProjectScope
+  rationale: 'Dataclasses provide immutable, type-safe scope metadata with minimal
+
+    boilerplate. Aligns with modern Python best practices.
+
+    '
+  alternatives_considered:
+  - name: Named tuples
+    rejected_because: Less readable, no default values
+  - name: Regular classes
+    rejected_because: More boilerplate, mutable by default
+  consequences:
+  - Requires Python 3.7+ (already required)
+  - Clear, type-checked scope objects
+  - Easy serialization for debugging
+  alias_id: IMPL-0024
+  alias_name: use-dataclasses-for-projectscope
+related_adrs:
+- 019fee89-e615-7f19-810b-c7b33a9d9e0d
+gaps: []
+migration_origin:
+  remapped_entities:
+  - entity_type: component
+    from: COMP-0001
+    to: COMP-0017
+    source_pointer: /component_specifications/0/id
+  - entity_type: implementation_decision
+    from: IMPL-0001
+    to: IMPL-0022
+    source_pointer: /implementation_decisions/0/id
+  - entity_type: implementation_decision
+    from: IMPL-0002
+    to: IMPL-0024
+    source_pointer: /implementation_decisions/1/id
+  - entity_type: interface
+    from: IFACE-0001
+    to: IFACE-0021
+    source_pointer: /component_specifications/0/interfaces/0/id
+  - entity_type: interface
+    from: IFACE-0002
+    to: IFACE-0025
+    source_pointer: /component_specifications/0/interfaces/1/id

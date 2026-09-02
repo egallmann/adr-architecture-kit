@@ -3,21 +3,36 @@ integrity_schema_version: 1
 generated: deterministic_projection_v1
 artifact_kind: rendered_adr_markdown
 generator_id: adr-projection-markdown
-generator_version: 2
+generator_version: 3
 hash_algorithm: sha256
-source_hash: 5e706aa54b915aa531224a44866c0112b29a62de538ac630716b865de115fd4a
-rendered_hash: 0fd618d0106bef0d79f4bf7ada224037c62b5aace688debf9be3fb0650bd737b
+source_hash: bef155c7a9dcae8d802cc56d7cee5db10e5978f29ef3ee11105d799bc09fe34d
+rendered_hash: 5d7aa22b68ce33abd58bc4dfdea96cf3c7fbf6acc551f58a5567a10a456516c3
 -->
 
 # ADR-L-0006: Rule Library Sub-Module with Cooperative Signals
 
+## Identity / Status
+
+**Type:** logical  
 **Status:** accepted  
+**Alias:** ADR-L-0006  
+**Authoring contract:** authoring v1.5  
 **Created:** 2026-03-08  
 **Modified:** 2026-03-08  
 **Authors:** adr-architecture-kit  
 **Domains:** governance, rules, signals, integration  
 **Tags:** rule-library, cooperative-signals, submodule, mcp  
-**Alias name:** rule-library-sub-module-with-cooperative-signals  
+
+## Architecture at a Glance
+
+| | |
+| --- | --- |
+| Logical authority | ADR-L-0006 |
+| Status | accepted |
+| Decisions | 5 |
+| Capabilities | 4 |
+| Invariants | 4 |
+
 
 ## Context
 
@@ -30,7 +45,7 @@ A proof-of-concept rules-library exists at _poc_rules-library with a three-layer
 activation model, signal-driven rule selection, and submodule protocol. The POC
 solves the "activation problem": rules exist but aren't applied consistently.
 
-Separately, the prompt translator (ADR-L-0005, ADR-P-0004) generates cooperative
+Separately, the prompt translator (ADR-L-0005) generates cooperative
 signals for parallel AI agent coordination: claim, progress, complete,
 wave_complete, validation_ready. These file-based signals enable agents to
 coordinate without a server until the Rules & Signal Service is built.
@@ -55,177 +70,20 @@ Building from POC principles allows:
 2. **Coordination gap**: Agents need signals to coordinate (prompt translator)
 3. **Schema authority**: Who defines signal format? (rule-library)
 4. **Integration**: Prompt translator, decorators, ste-runtime need shared hub
+## Architectural Decisions
 
+| Decision | Choice | Traceability |
+| --- | --- | --- |
+| DEC-0011 | Build from POC Principles | — |
+| DEC-0018 | Cooperative Signals as First-Class | — |
+| DEC-0025 | Prompt Translator Integration | — |
+| DEC-0031 | Standalone Repo, Submodule Consumption | — |
+| DEC-0034 | File-Based First, MCP Later | — |
 
-## Relationship graph
+### DEC-0011 — Build from POC Principles
 
-```mermaid
-flowchart LR
-  n_019fee89_e615_70ab_bf3d_3a9879ef1fa3["DEC-0025"]
-  n_019fee89_e615_70fd_9622_a4e35697ad39["INV-0034"]
-  n_019fee89_e615_7199_be3b_64c7a82f3c4c["CAP-0011"]
-  n_019fee89_e615_71bc_a727_e0403c74783d["INV-0036"]
-  n_019fee89_e615_73a3_8d31_7a4721affae9["ADR-L-0005"]
-  n_019fee89_e615_7577_8d37_dd0df031bec9["ADR-L-0004"]
-  n_019fee89_e615_7602_8d3e_153b2a57947d["INV-0035"]
-  n_019fee89_e615_7688_953b_19e6aae687a4["INV-0033"]
-  n_019fee89_e615_775e_8b3b_87bd8305b453["DEC-0011"]
-  n_019fee89_e615_7762_a91e_f7d5d71acc18["DEC-0034"]
-  n_019fee89_e615_77b5_b73c_7db427c64a68["CAP-0012"]
-  n_019fee89_e615_7b66_b73a_3b99f7d92d4d["ADR-L-0006"]
-  n_019fee89_e615_7cbc_b53e_42784e9f3081["DEC-0031"]
-  n_019fee89_e615_7ce1_aa20_4b16a485eb1a["CAP-0013"]
-  n_019fee89_e615_7e63_a71d_04283e66cb51["DEC-0018"]
-  n_019fee89_e615_7fef_a81d_ffbcc5c11de8["CAP-0010"]
-  n_019fee89_e618_703b_a136_3cb5c991e3c4["ADR-P-0004"]
-  n_019fee89_e615_70ab_bf3d_3a9879ef1fa3 -->|"declared_in"| n_019fee89_e615_7b66_b73a_3b99f7d92d4d
-  n_019fee89_e615_70fd_9622_a4e35697ad39 -->|"declared_in"| n_019fee89_e615_7b66_b73a_3b99f7d92d4d
-  n_019fee89_e615_7199_be3b_64c7a82f3c4c -->|"declared_in"| n_019fee89_e615_7b66_b73a_3b99f7d92d4d
-  n_019fee89_e615_71bc_a727_e0403c74783d -->|"declared_in"| n_019fee89_e615_7b66_b73a_3b99f7d92d4d
-  n_019fee89_e615_7602_8d3e_153b2a57947d -->|"declared_in"| n_019fee89_e615_7b66_b73a_3b99f7d92d4d
-  n_019fee89_e615_7688_953b_19e6aae687a4 -->|"declared_in"| n_019fee89_e615_7b66_b73a_3b99f7d92d4d
-  n_019fee89_e615_775e_8b3b_87bd8305b453 -->|"declared_in"| n_019fee89_e615_7b66_b73a_3b99f7d92d4d
-  n_019fee89_e615_7762_a91e_f7d5d71acc18 -->|"declared_in"| n_019fee89_e615_7b66_b73a_3b99f7d92d4d
-  n_019fee89_e615_77b5_b73c_7db427c64a68 -->|"declared_in"| n_019fee89_e615_7b66_b73a_3b99f7d92d4d
-  n_019fee89_e615_7cbc_b53e_42784e9f3081 -->|"declared_in"| n_019fee89_e615_7b66_b73a_3b99f7d92d4d
-  n_019fee89_e615_7ce1_aa20_4b16a485eb1a -->|"declared_in"| n_019fee89_e615_7b66_b73a_3b99f7d92d4d
-  n_019fee89_e615_7e63_a71d_04283e66cb51 -->|"declared_in"| n_019fee89_e615_7b66_b73a_3b99f7d92d4d
-  n_019fee89_e615_7fef_a81d_ffbcc5c11de8 -->|"declared_in"| n_019fee89_e615_7b66_b73a_3b99f7d92d4d
-  n_019fee89_e615_7b66_b73a_3b99f7d92d4d -->|"references"| n_019fee89_e615_73a3_8d31_7a4721affae9
-  n_019fee89_e615_7b66_b73a_3b99f7d92d4d -->|"references"| n_019fee89_e615_7577_8d37_dd0df031bec9
-  n_019fee89_e615_7b66_b73a_3b99f7d92d4d -->|"references"| n_019fee89_e618_703b_a136_3cb5c991e3c4
-```
+**Rationale**
 
-## Related ADRs
-
-### ADR-L-0004 — ADR-to-Implementation Traceability via Decorators and Metadata Attribution
-
-**Relationships:**
-- this ADR -[:references]-> 019fee89-e615-7577-8d37-dd0df031bec9
-
-**Context:** Architecture Decision Records document why implementation artifacts exist, but
-the repo still lacks a universal, machine-verifiable way to trace code,
-infrastructure, configuration, schemas, pipelines, and scripts back to the
-ADRs that justify them.
-
-[Open projection](ADR-L-0004-adr-to-implementation-traceability-via-decorators-and-metadata-attribution.md)
-### ADR-L-0005 — ADR-to-Prompt Translation for AI Implementation
-
-**Relationships:**
-- this ADR -[:references]-> 019fee89-e615-73a3-8d31-7a4721affae9
-
-**Context:** The ADR Architecture Kit encodes architectural decisions in machine-readable YAML
-format with explicit invariants, capabilities, and component specifications. These
-structured ADRs contain all the information needed to guide AI implementation:
-
-[Open projection](ADR-L-0005-adr-to-prompt-translation-for-ai-implementation.md)
-### ADR-P-0004 — Prompt Translator Implementation for AI-Driven Development
-
-**Relationships:**
-- this ADR -[:references]-> 019fee89-e618-703b-a136-3cb5c991e3c4
-
-**Context:** ADR-L-0005 defines the logical architecture for translating ADRs into
-implementation prompts for AI agents. This Physical ADR specifies the
-concrete Python implementation.
-
-[Open projection](../physical/ADR-P-0004-prompt-translator-implementation-for-ai-driven-development.md)
-
-## Capabilities
-
-### CAP-0010: Signal Schema Authority
-
-rule-library defines canonical schema for context and cooperative signals.
-
-
-### CAP-0011: Signal Emission CLI
-
-CLI for agents to emit cooperative signals without writing JSON manually.
-
-
-### CAP-0012: Rule Activation and Projection
-
-Context signals drive rule selection; rules projected for consumption.
-
-
-### CAP-0013: Submodule Bootstrap
-
-Bootstrap script for projects adding rule-library as submodule.
-
-
-
-
-
-
-## Invariants
-
-### INV-0033
-
-**Statement:** rule-library MUST define canonical schema for cooperative signals
-  
-**Scope:** global  
-**Enforcement:** must (design)  
-**Verification:** automated
-
-**Rationale:**
-Signal format must be authoritative. Prompt translator and agents
-consume this schema. Single source of truth.
-
-
-
-
-### INV-0034
-
-**Statement:** rule-library MUST support file-based rule and signal handling
-  
-**Scope:** global  
-**Enforcement:** must (design)  
-**Verification:** automated
-
-**Rationale:**
-Works without Rules & Signal Service or MCP. Enables development
-and offline scenarios.
-
-
-
-
-### INV-0035
-
-**Statement:** rule-library MUST NOT self-govern; it is governed by ADRs
-  
-**Scope:** global  
-**Enforcement:** must (policy)  
-**Verification:** manual
-
-**Rationale:**
-Meta-governance: rules can be wrong. ADRs (in consuming project or
-rule-library itself) define correctness. Aligns with POC ADR-003.
-
-
-
-
-### INV-0036
-
-**Statement:** Cooperative signal schema MUST include claim, progress, complete,
-wave_complete, validation_ready types
-  
-**Scope:** global  
-**Enforcement:** must (design)  
-**Verification:** automated
-
-**Rationale:**
-These types enable parallel agent coordination per docs/COOPERATIVE-SIGNALS.md.
-Prompt translator generates instructions for these.
-
-
-
-
-
-
-## Decisions
-
-### DEC-0011: Build from POC Principles
-
-**Rationale:**
 Build ste-rules-library from POC design principles.
 
 Adopt from POC:
@@ -241,19 +99,16 @@ Adapt for STE:
 - Integration with adr-architecture-kit decorators
 - Integration with prompt translator
 
+**Consequences**
 
-
-**Consequences:**
-
-**Positive:**
+Positive:
 - New standalone rule-library repo
 - Design doc: docs/RULE-LIBRARY-DESIGN.md
 
+### DEC-0018 — Cooperative Signals as First-Class
 
+**Rationale**
 
-### DEC-0018: Cooperative Signals as First-Class
-
-**Rationale:**
 rule-library defines and supports cooperative signals alongside context
 signals. Two signal semantics:
 
@@ -270,20 +125,17 @@ rule-library provides:
 - Signal emission CLI for agents
 - Signal read/validate for monitoring
 
+**Consequences**
 
-
-**Consequences:**
-
-**Positive:**
+Positive:
 - schema/signal.schema.json in rule-library
 - scripts/emit-signal.py for agents
 - File-based until MCP/RSS
 
+### DEC-0025 — Prompt Translator Integration
 
+**Rationale**
 
-### DEC-0025: Prompt Translator Integration
-
-**Rationale:**
 Prompt translator (adr-architecture-kit) generates implementation prompts
 that include signal emission instructions. rule-library is the schema
 authority for those instructions.
@@ -298,20 +150,17 @@ Flow:
 This makes the prompt translator the "code generator" for cooperative
 flow control until proper Rules & Signal Service exists.
 
+**Consequences**
 
-
-**Consequences:**
-
-**Positive:**
+Positive:
 - rule-library schema consumed by prompt translator
-- ADR-P-0004 templates include signal instructions
+- prompt translator templates include signal instructions when implemented
 - docs/COOPERATIVE-SIGNALS.md aligns with rule-library schema
 
+### DEC-0031 — Standalone Repo, Submodule Consumption
 
+**Rationale**
 
-### DEC-0031: Standalone Repo, Submodule Consumption
-
-**Rationale:**
 rule-library as standalone repo enables:
 - Independent versioning
 - Clean dependency boundary
@@ -323,20 +172,17 @@ Consumption:
 - python rule-library/scripts/bootstrap.py
 - Project gets rule index, signal schema, integration snippet
 
+**Consequences**
 
-
-**Consequences:**
-
-**Positive:**
+Positive:
 - New GitHub/GitLab repo: rule-library
 - Submodule protocol (adapted from POC ADR-008)
 - Bootstrap generates project config
 
+### DEC-0034 — File-Based First, MCP Later
 
+**Rationale**
 
-### DEC-0034: File-Based First, MCP Later
-
-**Rationale:**
 Phase 1: File-based rules and signals. No server. Works with existing
 prompt translator, codex-implement.py, bootstrap prompts.
 
@@ -345,43 +191,184 @@ File-based remains fallback for offline/development.
 
 This allows incremental adoption without blocking on infrastructure.
 
+**Consequences**
 
-
-**Consequences:**
-
-**Positive:**
+Positive:
 - No MCP required for initial use
 - MCP is enhancement, not dependency
 - Offline/air-gapped scenarios supported
 
 
+## Capabilities
+
+### CAP-0010 — Signal Schema Authority
+
+rule-library defines canonical schema for context and cooperative signals.
+
+**Acceptance criteria**
+- schema/signal.schema.json exists
+- Schema includes cooperative signal types
+- Schema includes context signal types
+- Prompt translator can consume schema
+
+### CAP-0011 — Signal Emission CLI
+
+CLI for agents to emit cooperative signals without writing JSON manually.
+
+**Acceptance criteria**
+- scripts/emit-signal.py or equivalent
+- Supports claim, progress, complete, wave_complete, validation_ready
+- Writes to .codex/signals/ or .cursor/signals/
+- Validates against schema before write
+
+### CAP-0012 — Rule Activation and Projection
+
+Context signals drive rule selection; rules projected for consumption.
+
+**Acceptance criteria**
+- Rule index from file-based rules
+- Context signal detection
+- Rule projection (format for AI/tools)
+- Conflict detection (escalate)
+
+### CAP-0013 — Submodule Bootstrap
+
+Bootstrap script for projects adding rule-library as submodule.
+
+**Acceptance criteria**
+- scripts/bootstrap.py
+- Generates project rule index
+- Generates integration snippet
+- Compatible with .cursorrules, .codex/INSTRUCTIONS.md
 
 
-## Gaps
+
+
+## Invariants
+
+| Invariant | Requirement | Enforcement | Verification |
+| --- | --- | --- | --- |
+| INV-0033 | rule-library MUST define canonical schema for cooperative signals | MUST / design | automated |
+| INV-0034 | rule-library MUST support file-based rule and signal handling | MUST / design | automated |
+| INV-0035 | rule-library MUST NOT self-govern; it is governed by ADRs | MUST / policy | manual |
+| INV-0036 | Cooperative signal schema MUST include claim, progress, complete, wave_complete, validation_ready types | MUST / design | automated |
+
+### INV-0033
+
+**Statement**
+
+rule-library MUST define canonical schema for cooperative signals
+
+**Scope:** global
+
+**Enforcement:** MUST (design)
+**Verification:** automated
+
+**Rationale**
+
+Signal format must be authoritative. Prompt translator and agents
+consume this schema. Single source of truth.
+
+### INV-0034
+
+**Statement**
+
+rule-library MUST support file-based rule and signal handling
+
+**Scope:** global
+
+**Enforcement:** MUST (design)
+**Verification:** automated
+
+**Rationale**
+
+Works without Rules & Signal Service or MCP. Enables development
+and offline scenarios.
+
+### INV-0035
+
+**Statement**
+
+rule-library MUST NOT self-govern; it is governed by ADRs
+
+**Scope:** global
+
+**Enforcement:** MUST (policy)
+**Verification:** manual
+
+**Rationale**
+
+Meta-governance: rules can be wrong. ADRs (in consuming project or
+rule-library itself) define correctness. Aligns with POC ADR-003.
+
+### INV-0036
+
+**Statement**
+
+Cooperative signal schema MUST include claim, progress, complete,
+wave_complete, validation_ready types
+
+**Scope:** global
+
+**Enforcement:** MUST (design)
+**Verification:** automated
+
+**Rationale**
+
+These types enable parallel agent coordination per docs/COOPERATIVE-SIGNALS.md.
+Prompt translator generates instructions for these.
+
+
+
+
+
+
+
+## Lifecycle / Related Architecture
+
+**Related ADRs**
+- [ADR-L-0004](ADR-L-0004-adr-to-implementation-traceability-via-decorators-and-metadata-attribution.md)
+- [ADR-L-0005](ADR-L-0005-adr-to-prompt-translation-for-ai-implementation.md)
+
+**References**
+- [ADR-L-0005](ADR-L-0005-adr-to-prompt-translation-for-ai-implementation.md)
+- [ADR-L-0004](ADR-L-0004-adr-to-implementation-traceability-via-decorators-and-metadata-attribution.md)
+
+
+
+
+## Known Gaps
 
 ### GAP-0006: Prompt translator COMP-0009 (SignalGenerator) not implemented
 
-**Impact:** medium  
-**Blocking:** No
-
-**Context:**
-Classification: real gap. Prompt translator signal-emission integration is still not implemented in adr-architecture-kit.
-
-
-
+**Context:** Classification: real gap. Prompt translator signal-emission integration is still not implemented in adr-architecture-kit.
+**Impact:** medium
+**Blocking:** false
 
 ### GAP-0007: Rules & Signal Service not built
 
-**Impact:** medium  
-**Blocking:** No
-
-**Context:**
-Classification: deferred gap. This remains a later workspace-level service, outside the current repo-local discovery implementation.
+**Context:** Classification: deferred gap. This remains a later workspace-level service, outside the current repo-local discovery implementation.
+**Impact:** medium
+**Blocking:** false
 
 
+## Notes
 
+Implementation order:
+
+1. Create rule-library repo (standalone)
+2. Add PROJECT.yaml, schema/signal.schema.json
+3. Add scripts/emit-signal.py
+4. Add bootstrap script
+5. Add rule activation logic (file-based)
+6. adr-architecture-kit: add rule-library submodule
+7. Prompt translator: consume signal schema, generate instructions
+8. MCP server (Phase 2)
+
+POC reference: _poc_rules-library/ai-rules-library/ai-rules-library/
+Design doc: docs/RULE-LIBRARY-DESIGN.md
 
 
 ---
 
-*Generated from ADR-L-0006 by ADR Architecture Kit*
+*Generated from ADR-L-0006 by ADR Architecture Kit (projection v3)*

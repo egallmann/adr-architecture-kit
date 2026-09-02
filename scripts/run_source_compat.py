@@ -11,6 +11,21 @@ import tempfile
 from collections.abc import Mapping, Sequence
 from pathlib import Path
 
+_REPO_ROOT = Path(__file__).resolve().parents[1]
+_EXTERNAL_CONSUMER_PROJECT_YAML = (
+    _REPO_ROOT / "tests" / "fixtures" / "external-consumer-sdk" / "PROJECT.yaml"
+)
+_LOGICAL_ADR_SOURCE = _REPO_ROOT / "tests" / "fixtures" / "valid" / "logical-minimal.yaml"
+
+
+def _prepare_fixture(fixture_root: Path) -> Path:
+    project_root = fixture_root / "fixture"
+    logical = project_root / "adrs" / "logical"
+    logical.mkdir(parents=True, exist_ok=True)
+    shutil.copy2(_EXTERNAL_CONSUMER_PROJECT_YAML, project_root / "PROJECT.yaml")
+    shutil.copy2(_LOGICAL_ADR_SOURCE, logical / "ADR-L-9999-minimal.yaml")
+    return project_root
+
 
 def _run(
     command: Sequence[str],
@@ -33,18 +48,6 @@ def _run(
         )
 
 
-def _prepare_fixture(repo_root: Path, fixture_root: Path) -> Path:
-    project_root = fixture_root / "fixture"
-    logical = project_root / "adrs" / "logical"
-    logical.mkdir(parents=True, exist_ok=True)
-    shutil.copy2(repo_root / "PROJECT.yaml", project_root / "PROJECT.yaml")
-    shutil.copy2(
-        repo_root / "tests" / "fixtures" / "valid" / "logical-minimal.yaml",
-        logical / "ADR-L-9999-minimal.yaml",
-    )
-    return project_root
-
-
 def run_source_compat(repo_root: Path, python_executable: str | None = None) -> None:
     """Exercise installed, direct-source, and editable SDK consumers outside the checkout."""
 
@@ -56,7 +59,7 @@ def run_source_compat(repo_root: Path, python_executable: str | None = None) -> 
 
     with tempfile.TemporaryDirectory(prefix="adr-source-compat-") as temporary:
         fixture_root = Path(temporary)
-        project_root = _prepare_fixture(repo_root, fixture_root)
+        project_root = _prepare_fixture(fixture_root)
 
         _run(
             [

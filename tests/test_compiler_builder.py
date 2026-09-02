@@ -4,8 +4,10 @@ from adr_kit.compiler import ArchModelBuilder
 from adr_kit.compiler.backend.projection import (
     project_entity,
     project_entity_v2,
+    project_entity_v22,
     project_relationship,
     project_relationship_v2,
+    project_relationship_v22,
     project_unresolved,
 )
 from adr_kit.generators.architecture_index_generator import ArchitectureIndexGenerator
@@ -18,7 +20,18 @@ def _repo_root() -> Path:
 
 
 def _projected_bundle(model, *, model_version: str = "1.1", namespace: str = ""):
-    if model_version == "2.0":
+    if model_version == "2.2":
+        entities = [
+            projected.model_dump(mode="json")
+            for entity in model.entities.values()
+            if (projected := project_entity_v22(entity, model.relationships, namespace)) is not None
+        ]
+        relationships = [
+            projected.model_dump(mode="json")
+            for relationship in model.relationships.values()
+            if (projected := project_relationship_v22(relationship)) is not None
+        ]
+    elif model_version == "2.0":
         entities = [
             projected.model_dump(mode="json")
             for entity in model.entities.values()

@@ -1,4 +1,4 @@
-schema_version: '1.3'
+schema_version: '1.5'
 adr_type: logical
 id: 019fee89-e615-77f6-9b1f-695732d25443
 title: Quality Assurance and Testing Strategy
@@ -620,8 +620,9 @@ capabilities:
 related_adrs:
 - 019fee89-e615-70a5-861b-b2dde147e5af
 - 019fee89-e615-7f19-810b-c7b33a9d9e0d
-- 019fee89-e618-79ed-9d2d-cc35c63bc99a
-- 019fee89-e618-742f-951d-d29401d56c19
+- 019fee89-e618-7d04-9337-4aa2d3258507
+- 019fee89-e617-7270-ab2f-58a756d2530e
+- 01a048d8-454a-7464-bcaa-718fa77bed6a
 gaps: []
 notes: "Testing strategy implementation:\n\nTest organization:\n```\ntests/\n  test_scope_resolver.py\
   \      # Unit + integration tests for scope detection\n  test_adr_validator.py \

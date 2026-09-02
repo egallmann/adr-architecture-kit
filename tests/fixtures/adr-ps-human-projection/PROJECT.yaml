@@ -1,0 +1,8 @@
+schema_version: "1.0"
+type: project_metadata
+project:
+  name: adr-ps-human-projection-fixture
+architecture_documentation:
+  adr_directory: adrs/
+  manifest_path: adrs/manifest.yaml
+  architecture_namespace: adr-ps-human-projection-fixture

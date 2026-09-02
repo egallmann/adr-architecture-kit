@@ -1,4 +1,4 @@
-schema_version: '1.3'
+schema_version: '1.5'
 adr_type: logical
 id: 019fee89-e615-7b66-b73a-3b99f7d92d4d
 title: Rule Library Sub-Module with Cooperative Signals
@@ -23,7 +23,7 @@ context: 'ADR-L-0004 defines a multi-tier governance architecture where a rule-l
   solves the "activation problem": rules exist but aren''t applied consistently.
 
 
-  Separately, the prompt translator (ADR-L-0005, ADR-P-0004) generates cooperative
+  Separately, the prompt translator (ADR-L-0005) generates cooperative
 
   signals for parallel AI agent coordination: claim, progress, complete,
 
@@ -187,7 +187,7 @@ decisions:
   consequences:
     positive:
     - rule-library schema consumed by prompt translator
-    - ADR-P-0004 templates include signal instructions
+    - prompt translator templates include signal instructions when implemented
     - docs/COOPERATIVE-SIGNALS.md aligns with rule-library schema
   alias_id: DEC-0025
   alias_name: prompt-translator-integration
@@ -358,7 +358,6 @@ capabilities:
 related_adrs:
 - 019fee89-e615-7577-8d37-dd0df031bec9
 - 019fee89-e615-73a3-8d31-7a4721affae9
-- 019fee89-e618-703b-a136-3cb5c991e3c4
 gaps:
 - id: GAP-0006
   question: Prompt translator COMP-0009 (SignalGenerator) not implemented

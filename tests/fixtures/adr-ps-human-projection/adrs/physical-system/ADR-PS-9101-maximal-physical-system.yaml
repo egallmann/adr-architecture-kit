@@ -1,0 +1,153 @@
+schema_version: "1.5"
+adr_type: physical-system
+id: "019209b0-c2d3-7e00-8000-000000000010"
+alias_id: ADR-PS-9101
+alias_name: maximal-physical-system
+title: "Maximal Physical System"
+status: accepted
+created_date: "2026-08-30"
+modified_date: "2026-08-30"
+authors:
+  - fixture.author
+domains:
+  - DOMAIN_SENTINEL
+tags:
+  - TAG_SENTINEL
+implements_logical:
+  - "019209b0-c2d3-7e00-8000-000000000001"
+related_adrs:
+  - "019209b0-c2d3-7e00-8000-000000000012"
+technologies:
+  - python
+context: |
+  Maximal ADR-PS fixture for generic human projection coverage.
+
+  This system does not perform runtime extraction, MCP, or LLM responsibilities.
+technology_stack:
+  - category: language
+    name: Python
+    version: ">=3.14"
+    rationale: Fixture language choice.
+system:
+  id: "019209b0-c2d3-7e00-8000-000000000011"
+  alias_id: SYS-9101
+  alias_name: maximal-physical-system
+  name: Maximal Physical System
+system_boundaries:
+  - id: SYSBOUND-9101
+    name: Primary Fixture Boundary
+    description: |
+      BOUNDARY_DESC_PRIMARY encapsulates the first fixture surface.
+    external_dependencies:
+      - EXT_DEP_ALPHA
+      - EXT_DEP_BETA
+    exposed_interfaces:
+      - EXPOSED_IFACE_ALPHA
+      - EXPOSED_IFACE_BETA
+  - id: SYSBOUND-9102
+    name: Secondary Fixture Boundary
+    description: BOUNDARY_DESC_SECONDARY encapsulates the second fixture surface.
+    external_dependencies:
+      - EXT_DEP_BETA
+      - EXT_DEP_GAMMA
+    exposed_interfaces:
+      - EXPOSED_IFACE_GAMMA
+component_topology:
+  components:
+    - id: TOPO-9101
+      component_ref: "019209b0-c2d3-7e00-8000-000000000031"
+      purpose: PURPOSE_ALPHA participate as the calling service
+    - id: TOPO-9102
+      component_ref: "019209b0-c2d3-7e00-8000-000000000032"
+      purpose: PURPOSE_BETA participate as the queue
+    - id: TOPO-9103
+      component_ref: "019209b0-c2d3-7e00-8000-000000000033"
+      purpose: PURPOSE_GAMMA participate as the cache
+    - id: TOPO-9104
+      component_ref: "019209b0-c2d3-7e00-8000-000000000034"
+      purpose: PURPOSE_DELTA participate as the worker
+    - id: TOPO-9105
+      component_ref: "019209b0-c2d3-7e00-8000-000000000035"
+      purpose: PURPOSE_EPSILON participate as the database
+    - id: TOPO-9106
+      component_ref: "019209b0-c2d3-7e00-8000-000000000036"
+      purpose: PURPOSE_ZETA participate as the gateway
+  relationships:
+    - from: TOPO-9101
+      to: TOPO-9102
+      type: calls
+      protocol: PROTOCOL_HTTP
+      description: REL_DESC_CALLS
+    - from: TOPO-9102
+      to: TOPO-9103
+      type: publishes_to
+    - from: TOPO-9103
+      to: TOPO-9104
+      type: subscribes_to
+    - from: TOPO-9104
+      to: TOPO-9105
+      type: reads_from
+      protocol: PROTOCOL_SQL
+    - from: TOPO-9105
+      to: TOPO-9106
+      type: writes_to
+    - from: TOPO-9106
+      to: TOPO-9101
+      type: depends_on
+      description: REL_DESC_DEPENDS
+integration_patterns:
+  - pattern_name: PATTERN_GATEWAY
+    application: |
+      APPLICATION_TEXT the gateway fronts the worker path.
+    components_affected:
+      - TOPO-9106
+      - TOPO-9104
+    rationale: RATIONALE_TEXT keep the gateway explicit.
+data_flows:
+  - id: FLOW-9101
+    name: Flow Alpha
+    description: FLOW_DESC_ALPHA authored detail only.
+    path:
+      - TOPO-9101
+      - TOPO-9102
+      - TOPO-9104
+    data_type: DATA_TYPE_ALPHA
+    volume: VOLUME_ALPHA
+    latency_requirements: LATENCY_P95
+scalability_strategy:
+  horizontal_scaling: HORIZONTAL_SCALE replica workers.
+  vertical_scaling: VERTICAL_SCALE larger database.
+  bottlenecks:
+    - BOTTLENECK_DB
+    - BOTTLENECK_QUEUE
+  capacity_planning: CAPACITY_PLAN one replica per region.
+failure_modes:
+  - scenario: FAIL_SCENARIO_QUEUE
+    impact: high
+    mitigation: |
+      FAIL_MITIGATION_QUEUE first paragraph.
+
+      Second paragraph remains in the projection.
+    detection: FAIL_DETECTION_QUEUE
+    recovery: FAIL_RECOVERY_QUEUE
+  - scenario: FAIL_SCENARIO_DB
+    impact: medium
+    mitigation: FAIL_MITIGATION_DB compact
+    detection: FAIL_DETECTION_DB
+    recovery: FAIL_RECOVERY_DB
+operational_requirements:
+  monitoring: MONITORING_SENTINEL
+  logging: LOGGING_SENTINEL
+  backup_recovery: BACKUP_SENTINEL
+  extra_runbook: EXTRA_OPS_SENTINEL
+deployment_model:
+  hosting: cloud
+  orchestration: ORCHESTRATION_SENTINEL
+  scaling_strategy: DEPLOY_SCALE_SENTINEL
+gaps:
+  - id: GAP-9101
+    question: GAP_QUESTION unresolved fixture threshold
+    context: Gap remains unresolved pending measurement.
+    impact: low
+    blocking: false
+    status: unresolved

@@ -3,25 +3,59 @@ integrity_schema_version: 1
 generated: deterministic_projection_v1
 artifact_kind: rendered_adr_markdown
 generator_id: adr-projection-markdown
-generator_version: 2
+generator_version: 3
 hash_algorithm: sha256
-source_hash: f3aeaf7829757857eacb3ff0a2e0a481c091e555365e62872da6538aa5ab5fcf
-rendered_hash: 49fb9b5078c7415695e54a05192958fe9a55f4a11562508ace99f2f3140dca52
+source_hash: cb55c3cdb3980dcaf80399dd877c5c3647026c7f88a0b2392835025e13d115e8
+rendered_hash: f2bb78c9308f0132cadf4567d3f10ba682abda26c3c55b51f77e8c6b6e063fb4
 -->
 
 # ADR-PC-0006: Brownfield Onboarding and Canonical Normalization
 
+## Identity / Status
+
+**Type:** physical-component  
 **Status:** accepted  
+**Alias:** ADR-PC-0006  
+**Authoring contract:** authoring v1.5  
 **Created:** 2026-03-15  
 **Modified:** 2026-08-27  
 **Authors:** adr-architecture-kit  
 **Domains:** migration, onboarding, normalization  
-**Alias name:** adr-pc-0006-brownfield-onboarding-and-canonical-normalization  
-
 **Implements Logical:** [ADR-L-0011](../logical/ADR-L-0011-metadata-schemas-and-remediation-ledger-enforcement.md), [ADR-L-0014](../logical/ADR-L-0014-brownfield-onboarding-and-canonicalization-workflow.md)  
-**Technologies:** python, yaml, click  
-
 **Implements System:** [ADR-PS-0002](../physical-system/ADR-PS-0002-adr-kit-authoring-compiler-and-validation-system.md)  
+
+## Architecture at a Glance
+
+| | |
+| --- | --- |
+| Component | COMP-0015 — Brownfield Onboarding and Canonical Normalization |
+| Type | service |
+| System | [ADR-PS-0002](../physical-system/ADR-PS-0002-adr-kit-authoring-compiler-and-validation-system.md) |
+| Purpose | Normalize brownfield architecture artifacts into canonical STE form. |
+| Interfaces | IFACE-0016 — CLI |
+| Primary implementation | `src/adr_kit/migrators/canonical_id_normalizer.py` |
+
+**Logical authority**
+- [ADR-L-0011](../logical/ADR-L-0011-metadata-schemas-and-remediation-ledger-enforcement.md)
+- [ADR-L-0014](../logical/ADR-L-0014-brownfield-onboarding-and-canonicalization-workflow.md)
+
+
+## Change Safety
+
+
+**Must preserve**
+- normalization must be deterministic and auditable
+- canonical updates must precede derived artifact regeneration
+
+**Known architectural surface**
+- Provided interfaces: IFACE-0016 — CLI
+
+**Verification**
+- Primary tests: `tests/test_canonical_id_normalizer.py`
+- Unit coverage: >= 80%
+- Success criteria: 2
+- Integration checks: 3
+
 
 ## Context
 
@@ -30,110 +64,158 @@ its migrator and CLI surfaces. This component makes brownfield onboarding and
 canonical normalization an explicit part of the compiler/validation runtime.
 
 
-## Technology Stack
+## Architecture & Relationships
+
+```mermaid
+flowchart LR
+  subgraph subject["Owned by this ADR"]
+    n_019fee89_e618_7507_953e_19e6335e3b7a["COMP-0015<br/>Brownfield Onboarding and Canonical Normalization"]
+  end
+  n_019fee89_e618_7ad6_903b_955fab187e68["IFACE-0016<br/>CLI"]
+  n_019fee89_e618_7507_953e_19e6335e3b7a -->|"provides_interface"| n_019fee89_e618_7ad6_903b_955fab187e68
+```
+
+### Component Relationships
+
+**Provides interface**
+- CLI (IFACE-0016)
+
+  `COMP-0015 -[:provides_interface]-> IFACE-0016`
+
+**Implements logical authority**
+- Metadata Schemas and Remediation Ledger Enforcement (ADR-L-0011)
+
+  `ADR-PC-0006 -[:implements_logical]-> ADR-L-0011`
+- Brownfield Onboarding and Canonicalization Workflow (ADR-L-0014)
+
+  `ADR-PC-0006 -[:implements_logical]-> ADR-L-0014`
+
+
+## Component Contract
+
+### COMP-0015: Brownfield Onboarding and Canonical Normalization
+
+**Type:** service
+
+**Purpose:**
+
+Normalize brownfield architecture artifacts into canonical STE form.
+
+**Responsibilities:**
+
+- Detect canonical entity ID collisions
+- Apply deterministic canonical ID remaps
+- Write canonical migration ledgers
+- Support brownfield onboarding cleanup as governed normalization rather than ad hoc editing
+
+**Key Responsibilities:**
+- canonical ID normalization
+- migration ledger generation
+- brownfield onboarding support
+
+**Success Criteria:**
+- normalize-canonical-ids produces deterministic remaps
+- migration ledgers preserve old-to-new mapping evidence
+
+
+## Interfaces
+
+### IFACE-0016 — CLI
+
+**Type:** CLI
+
+**Specification:**
+
+Commands:
+- adr normalize-canonical-ids
+Public modules:
+- src/adr_kit/migrators/canonical_id_normalizer.py
+
+
+## Implementation Decisions
+
+### IMPL-0016 — Treat brownfield onboarding and canonical normalization as an explicit component capability
+
+**Rationale:**
+
+Migration logic is part of the usable onboarding path for STE adoption and
+should be documented as an intentional system capability rather than hidden
+utility behavior.
+
+
+## Engineering Contract
+
+### Failure Semantics
+
+Apply deterministic remaps only for detected collisions and preserve a machine-readable migration ledger.
+
+### Observability
+
+**Logging:**
+- Level: info
+- Structured: false
+
+**Metrics:**
+- canonical_id_normalizations_total (counter)
+
+### Verification
+
+**Unit test coverage:** >= 80%
+
+**Integration tests:**
+
+- Canonical collision detection
+- Deterministic remap application
+- Migration ledger generation
+
+
+## Implementation Map
+
+| Role | Location |
+| --- | --- |
+| Primary implementation | `src/adr_kit/migrators/canonical_id_normalizer.py` |
+| Entry point | `src/adr_kit/cli/main.py` |
+| Primary tests | `tests/test_canonical_id_normalizer.py` |
+
+
+
+## Technology & Dependencies
 
 ### Python (language)
-
 **Version:** >=3.14
 
 **Rationale:**
-Minimum supported Python minor is 3.14 (`requires-python >=3.14`); currently qualified released minor line is 3.14; repository reference interpreter is currently 3.14.7; new GA Python minors require explicit qualification before support is advertised. 
+Minimum supported Python minor is 3.14 (`requires-python >=3.14`); currently qualified released minor line is 3.14; repository reference interpreter is currently 3.14.7; new GA Python minors require explicit qualification before support is advertised.
 
 ### Click (tooling)
-
 **Version:** 8.x
 
 **Rationale:**
 Existing CLI surface for migration workflows.
 
 
-## Relationship graph
-
-```mermaid
-flowchart LR
-  n_019fee89_e616_7628_913b_a059c1057c36["ADR-L-0014"]
-  n_019fee89_e616_7b97_971d_ae165d13bf9c["ADR-L-0011"]
-  n_019fee89_e618_713e_a017_5b417ef9ac9f["SYS-0002"]
-  n_019fee89_e618_7507_953e_19e6335e3b7a["COMP-0015"]
-  n_019fee89_e618_7787_b43f_a3e5cb264dd5["ADR-PC-0006"]
-  n_019fee89_e618_7ad6_903b_955fab187e68["IFACE-0016"]
-  n_019fee89_e618_7b21_ab3d_aaccdca13bfb["IMPL-0016"]
-  n_019fee89_e618_7507_953e_19e6335e3b7a -->|"declared_in"| n_019fee89_e618_7787_b43f_a3e5cb264dd5
-  n_019fee89_e618_7ad6_903b_955fab187e68 -->|"declared_in"| n_019fee89_e618_7787_b43f_a3e5cb264dd5
-  n_019fee89_e618_7b21_ab3d_aaccdca13bfb -->|"declared_in"| n_019fee89_e618_7787_b43f_a3e5cb264dd5
-  n_019fee89_e618_7507_953e_19e6335e3b7a -->|"embodied_in"| n_019fee89_e618_713e_a017_5b417ef9ac9f
-  n_019fee89_e618_7787_b43f_a3e5cb264dd5 -->|"implements_logical"| n_019fee89_e616_7628_913b_a059c1057c36
-  n_019fee89_e618_7787_b43f_a3e5cb264dd5 -->|"implements_logical"| n_019fee89_e616_7b97_971d_ae165d13bf9c
-  n_019fee89_e618_7507_953e_19e6335e3b7a -->|"provides_interface"| n_019fee89_e618_7ad6_903b_955fab187e68
-```
-
-## Related ADRs
-
-### ADR-L-0011 — Metadata Schemas and Remediation Ledger Enforcement
-
-**Relationships:**
-- this ADR -[:implements_logical]-> 019fee89-e616-7b97-971d-ae165d13bf9c
-
-**Context:** The compiler contract now distinguishes fully compliant bundles from
-sentinel-backed brownfield and migration bundles. That boundary is only safe
-if sentinel use is narrow, explicitly tracked, and moved toward approved
-canonical content through a monotonic workflow.
-
-[Open projection](../logical/ADR-L-0011-metadata-schemas-and-remediation-ledger-enforcement.md)
-### ADR-L-0014 — Brownfield Onboarding and Canonicalization Workflow
-
-**Relationships:**
-- this ADR -[:implements_logical]-> 019fee89-e616-7628-913b-a059c1057c36
-
-**Context:** STE adoption often begins after meaningful architecture and implementation
-decisions already exist. In that stage, the problem is not blank-slate design;
-it is brownfield onboarding: discover current architecture state, normalize
-legacy identifiers and metadata, formalize already-made decisions into
-canonical ADRs, and regenerate deterministic derived artifacts without
-treating derived state as authority.
-
-[Open projection](../logical/ADR-L-0014-brownfield-onboarding-and-canonicalization-workflow.md)
-
-
-## Component Specifications
-
-### COMP-0015: Brownfield Onboarding and Canonical Normalization (service)
-
-**Responsibilities:**
-- Detect canonical entity ID collisions
-- Apply deterministic canonical ID remaps
-- Write canonical migration ledgers
-- Support brownfield onboarding cleanup as governed normalization rather than ad hoc editing
-
-
-**Interfaces:**
-- **IFACE-0016** (CLI): Commands:
-- adr normalize-canonical-ids
-Public modules:
-- src/adr_kit/migrators/canonical_id_normali...
-
-**Implementation Identifiers:**
-- Module Path: `src/adr_kit/migrators/canonical_id_normalizer.py`
 
 
 
+## Internal Structure
 
-## Implementation Decisions
-
-### IMPL-0016: Treat brownfield onboarding and canonical normalization as an explicit component capability
-
-**Rationale:**
-Migration logic is part of the usable onboarding path for STE adoption and
-should be documented as an intentional system capability rather than hidden
-utility behavior.
+| Kind | Entity |
+| --- | --- |
+| Component | COMP-0015 — Brownfield Onboarding and Canonical Normalization |
+| Implementation Decision | IMPL-0016 — Treat brownfield onboarding and canonical normalization as an explicit component capability |
+| Interface | IFACE-0016 — CLI |
 
 
 
+## Neighbor Relationships
 
-
+| Neighbor | Relationship | Exact Path |
+| --- | --- | --- |
+| [ADR-L-0011 — Metadata Schemas and Remediation Ledger Enforcement](../logical/ADR-L-0011-metadata-schemas-and-remediation-ledger-enforcement.md) | Brownfield Onboarding and Canonical Normalization (ADR-PC-0006) → Metadata Schemas and Remediation Ledger Enforcement (ADR-L-0011) | `ADR-PC-0006 -[:implements_logical]-> ADR-L-0011` |
+| [ADR-L-0014 — Brownfield Onboarding and Canonicalization Workflow](../logical/ADR-L-0014-brownfield-onboarding-and-canonicalization-workflow.md) | Brownfield Onboarding and Canonical Normalization (ADR-PC-0006) → Brownfield Onboarding and Canonicalization Workflow (ADR-L-0014) | `ADR-PC-0006 -[:implements_logical]-> ADR-L-0014` |
 
 
 
 ---
 
-*Generated from ADR-PC-0006 by ADR Architecture Kit*
+*Generated from ADR-PC-0006 by ADR Architecture Kit (projection v3)*

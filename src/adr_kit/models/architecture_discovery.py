@@ -37,11 +37,27 @@ RelationshipType = Literal[
     "superseded_by",
     "refines",
     "provides_interface",
+    "consumes_interface",
     "composed_of",
+    "depends_on",
+    "calls",
+    "publishes_to",
+    "subscribes_to",
+    "reads_from",
+    "writes_to",
     "binds_substrate",
     "binds_rule",
     "expects_evidence",
 ]
+
+TOPOLOGY_RELATIONSHIP_TYPES = (
+    "depends_on",
+    "calls",
+    "publishes_to",
+    "subscribes_to",
+    "reads_from",
+    "writes_to",
+)
 
 
 def lifecycle_stage_from_adr_status(status: Optional[str]) -> LifecycleStageNormalized:
@@ -110,7 +126,14 @@ class EntityRelationshipSummary(BaseModel):
     superseded_by: List[str] = Field(default_factory=list)
     refines: List[str] = Field(default_factory=list)
     provides_interface: List[str] = Field(default_factory=list)
+    consumes_interface: List[str] = Field(default_factory=list)
     composed_of: List[str] = Field(default_factory=list)
+    depends_on: List[str] = Field(default_factory=list)
+    calls: List[str] = Field(default_factory=list)
+    publishes_to: List[str] = Field(default_factory=list)
+    subscribes_to: List[str] = Field(default_factory=list)
+    reads_from: List[str] = Field(default_factory=list)
+    writes_to: List[str] = Field(default_factory=list)
     binds_substrate: List[str] = Field(default_factory=list)
     binds_rule: List[str] = Field(default_factory=list)
     expects_evidence: List[str] = Field(default_factory=list)
@@ -189,7 +212,7 @@ class ArchitectureGraphEdge(BaseModel):
 
     relationship_id: str
     assertion_id: str = Field(pattern=r"^asrt-[0-9a-f]{64}$")
-    relationship_type: RelationshipType
+    relationship_type: str
     source_entity_id: str
     target_entity_id: str
     provenance_classification: Literal["explicit", "derived", "heuristic"]

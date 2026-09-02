@@ -1,4 +1,4 @@
-schema_version: '1.3'
+schema_version: '1.5'
 adr_type: logical
 id: 019fee89-e615-7f19-810b-c7b33a9d9e0d
 title: Multi-Scope ADR Architecture for Sub-Module Development

@@ -268,6 +268,7 @@ class CapabilityManifest:
     supported_normalized_model_schema_versions: tuple[str, ...]
     supported_evidence_attribution_versions: tuple[str, ...]
     preferred_evidence_attribution_version: str
+
     def as_dict(self) -> dict[str, object]:
         """Return the ordered JSON-safe Phase 1 serialization contract."""
 

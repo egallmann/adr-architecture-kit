@@ -5,8 +5,8 @@ artifact_kind: rendered_adr_markdown
 generator_id: adr-projection-markdown
 generator_version: 3
 hash_algorithm: sha256
-source_hash: cb55c3cdb3980dcaf80399dd877c5c3647026c7f88a0b2392835025e13d115e8
-rendered_hash: f2bb78c9308f0132cadf4567d3f10ba682abda26c3c55b51f77e8c6b6e063fb4
+source_hash: c55f4893b9159334e86548f80fa9bba6e152d397320c548639c81559a1714ac7
+rendered_hash: 61ad4a33963f831a3463a54182692476b74ae2a95258e973e6cdb9790f320361
 -->
 
 # ADR-PC-0006: Brownfield Onboarding and Canonical Normalization
@@ -19,7 +19,7 @@ rendered_hash: f2bb78c9308f0132cadf4567d3f10ba682abda26c3c55b51f77e8c6b6e063fb4
 **Authoring contract:** authoring v1.5  
 **Created:** 2026-03-15  
 **Modified:** 2026-08-27  
-**Authors:** adr-architecture-kit  
+**Authors:** erik.gallmann  
 **Domains:** migration, onboarding, normalization  
 **Implements Logical:** [ADR-L-0011](../logical/ADR-L-0011-metadata-schemas-and-remediation-ledger-enforcement.md), [ADR-L-0014](../logical/ADR-L-0014-brownfield-onboarding-and-canonicalization-workflow.md)  
 **Implements System:** [ADR-PS-0002](../physical-system/ADR-PS-0002-adr-kit-authoring-compiler-and-validation-system.md)  

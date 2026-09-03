@@ -5,8 +5,8 @@ artifact_kind: rendered_adr_markdown
 generator_id: adr-projection-markdown
 generator_version: 3
 hash_algorithm: sha256
-source_hash: 693e74e2abd36fdeac4c5343ae6fedb3f1a665bb8942c03e466a0a70a8844b31
-rendered_hash: fc8d2b9047e187d2501db7c9527b2bb0bbb326a84b95463473c76534b6fbd91c
+source_hash: 0d0fa9e49deb91db8ed37ce607ef07b82be3b0b253aea240bdd1386dd4dc67bc
+rendered_hash: c2d5e20e82d4e1cf126964e91f9faf4311868c6fc17764a2dbf0f3a5fd7d57b4
 -->
 
 # ADR-PC-0002: Schema and Contract Validation
@@ -19,7 +19,7 @@ rendered_hash: fc8d2b9047e187d2501db7c9527b2bb0bbb326a84b95463473c76534b6fbd91c
 **Authoring contract:** authoring v1.5  
 **Created:** 2026-03-15  
 **Modified:** 2026-08-27  
-**Authors:** adr-architecture-kit  
+**Authors:** erik.gallmann  
 **Domains:** validation, schema, contracts  
 **Implements Logical:** [ADR-L-0008](../logical/ADR-L-0008-validation-modes-for-draft-and-complete-adrs.md), [ADR-L-0010](../logical/ADR-L-0010-kernel-interface-contract-and-validation-profiles.md), [ADR-L-0011](../logical/ADR-L-0011-metadata-schemas-and-remediation-ledger-enforcement.md), [ADR-L-0020](../logical/ADR-L-0020-semantic-implementation-attribution-and-cross-layer-architecture-relationships.md), [ADR-L-0002](../logical/ADR-L-0002-multi-scope-adr-architecture-for-sub-module-development.md)  
 **Implements System:** [ADR-PS-0002](../physical-system/ADR-PS-0002-adr-kit-authoring-compiler-and-validation-system.md)  

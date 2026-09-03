@@ -5,7 +5,7 @@ title: Forward Authoring Ergonomics for Split Physical ADR Types
 status: accepted
 created_date: '2026-04-14'
 authors:
-- adr-architecture-kit
+- erik.gallmann
 domains:
 - authoring
 - adr-taxonomy

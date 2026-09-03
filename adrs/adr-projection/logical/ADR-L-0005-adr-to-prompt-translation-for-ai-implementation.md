@@ -5,8 +5,8 @@ artifact_kind: rendered_adr_markdown
 generator_id: adr-projection-markdown
 generator_version: 3
 hash_algorithm: sha256
-source_hash: fc0af7c0351cdcbbe95bd516e5eaae4318c73ad22bbfd3a2de4fd3c7f61f30b2
-rendered_hash: 9a195159ae2fac358bbf27d9d8a39904d209a83dd99dd3f3cd1c1031374a64c8
+source_hash: e991f14cf594439d638335f8d06aa7f89e5b5cff712f023134ae787d4bb82e29
+rendered_hash: 1092ec099984e5d54d92eb811def014be316a42601e401f84bb9b3f2e7796252
 -->
 
 # ADR-L-0005: ADR-to-Prompt Translation for AI Implementation
@@ -19,7 +19,7 @@ rendered_hash: 9a195159ae2fac358bbf27d9d8a39904d209a83dd99dd3f3cd1c1031374a64c8
 **Authoring contract:** authoring v1.5  
 **Created:** 2026-03-08  
 **Modified:** 2026-03-08  
-**Authors:** adr-architecture-kit  
+**Authors:** erik.gallmann  
 **Domains:** adr, automation, ai-tooling, code-generation  
 **Tags:** prompt-engineering, adr, automation, ai-agents, code-generation, llm  
 

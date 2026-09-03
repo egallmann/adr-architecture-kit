@@ -1,0 +1,149 @@
+{
+  "fixture_id": "authoring-discovery-v1",
+  "corpus_role": "verification_evidence",
+  "authority_references": [
+    "ADR-L-0024",
+    "ADR-L-0025",
+    "ADR-L-0026",
+    "contracts/authoring-domain/v1.0/contract.json"
+  ],
+  "capability": "authoring.discovery",
+  "contract_version": "1.0",
+  "expected_observable_semantic_results": {
+    "describe_contract": {
+      "contract_id": "adr-kit.authoring-domain",
+      "contract_version": "1.0",
+      "defined_capabilities": ["authoring.discovery"],
+      "discovery_operations": ["describe_contract", "list_types", "describe_type"],
+      "type_kinds": ["adr", "entity", "relationship", "value"]
+    },
+    "list_types": {
+      "contract_version": "1.0",
+      "count": 27,
+      "ordered_type_keys": [
+        "adr/logical",
+        "adr/physical-component",
+        "adr/physical-system",
+        "entity/boundary",
+        "entity/capability",
+        "entity/component",
+        "entity/contract",
+        "entity/data_flow",
+        "entity/decision",
+        "entity/evidence_expectation",
+        "entity/extension",
+        "entity/gap",
+        "entity/implementation_decision",
+        "entity/interface",
+        "entity/invariant",
+        "entity/normative_proposition",
+        "entity/system",
+        "entity/system_boundary",
+        "relationship/calls",
+        "relationship/depends_on",
+        "relationship/extension",
+        "relationship/publishes_to",
+        "relationship/reads_from",
+        "relationship/subscribes_to",
+        "relationship/writes_to",
+        "value/normative_force",
+        "value/topology_component"
+      ]
+    },
+    "list_types_kind_entity": {
+      "contract_version": "1.0",
+      "kind": "entity",
+      "ordered_names": [
+        "boundary",
+        "capability",
+        "component",
+        "contract",
+        "data_flow",
+        "decision",
+        "evidence_expectation",
+        "extension",
+        "gap",
+        "implementation_decision",
+        "interface",
+        "invariant",
+        "normative_proposition",
+        "system",
+        "system_boundary"
+      ]
+    },
+    "representative_descriptors": {
+      "adr/logical": {
+        "authoring_mode": "direct",
+        "semantic_type_ownership": "adr_kit",
+        "discriminator": {"mode": "fixed", "field": "adr_type", "value": "logical"},
+        "identity_mode": "canonical_uuidv7",
+        "composition_status": "defined",
+        "input_status": "deferred"
+      },
+      "entity/decision": {
+        "authoring_mode": "direct",
+        "semantic_type_ownership": "adr_kit",
+        "discriminator": {"mode": "contextual", "value": "decision"},
+        "identity_mode": "canonical_uuidv7",
+        "allowed_parents": ["adr/logical"],
+        "input_status": "deferred"
+      },
+      "entity/normative_proposition": {
+        "authoring_mode": "direct",
+        "semantic_type_ownership": "adr_kit",
+        "identity_mode": "canonical_uuidv7",
+        "allowed_parents": ["adr/logical", "adr/physical-system", "adr/physical-component"],
+        "input_status": "deferred"
+      },
+      "entity/invariant": {
+        "authoring_mode": "direct",
+        "semantic_type_ownership": "adr_kit",
+        "identity_mode": "canonical_uuidv7",
+        "allowed_parents": ["adr/logical"],
+        "input_status": "deferred"
+      },
+      "entity/extension": {
+        "authoring_mode": "template",
+        "semantic_type_ownership": "consumer_qualified",
+        "discriminator": {"mode": "qualified_input", "field": "entity_type"},
+        "identity_mode": "canonical_uuidv7",
+        "input_status": "deferred"
+      },
+      "relationship/calls": {
+        "authoring_mode": "direct",
+        "semantic_type_ownership": "adr_kit",
+        "identity_status": "deferred",
+        "allowed_parents": ["adr/physical-system"],
+        "input_status": "deferred"
+      },
+      "relationship/extension": {
+        "authoring_mode": "template",
+        "semantic_type_ownership": "consumer_qualified",
+        "discriminator": {"mode": "qualified_input", "field": "relationship_type"},
+        "identity_status": "deferred",
+        "input_status": "deferred"
+      },
+      "value/normative_force": {
+        "authoring_mode": "embedded",
+        "semantic_type_ownership": "adr_kit",
+        "identity_mode": "none",
+        "input_values": ["MUST", "MUST NOT", "SHOULD", "SHOULD NOT", "MAY"]
+      },
+      "value/topology_component": {
+        "authoring_mode": "embedded",
+        "semantic_type_ownership": "adr_kit",
+        "identity_mode": "owner_local",
+        "allowed_parents": ["adr/physical-system"],
+        "input_status": "defined"
+      }
+    },
+    "errors": [
+      {"case": "unsupported ADC version", "code": "contract.unsupported_version"},
+      {"case": "unknown kind", "code": "authoring.unknown_type_kind"},
+      {"case": "unknown type", "code": "authoring.unknown_type"},
+      {"case": "case-sensitive selector", "code": "authoring.unknown_type"},
+      {"case": "fuzzy or aliased selector", "code": "authoring.unknown_type"}
+    ]
+  },
+  "serialization_equivalence": "not_declared"
+}

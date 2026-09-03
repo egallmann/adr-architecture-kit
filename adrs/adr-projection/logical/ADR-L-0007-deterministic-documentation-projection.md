@@ -5,8 +5,8 @@ artifact_kind: rendered_adr_markdown
 generator_id: adr-projection-markdown
 generator_version: 3
 hash_algorithm: sha256
-source_hash: 4ada5c4f365c526a638144ef9f9ecda73a0548f290e7bcb6209f688de7ccb478
-rendered_hash: fcd5187090b5bd7ac9d6eab2c8b4eaa6c1f2bec2313cde03f9e09120c140276d
+source_hash: 8ac1eaccdc3fba065f1049ec27e468f51be415473c46b262abfc6648a38d5d6a
+rendered_hash: d3505b745ae7a18330f6bed3a4e27dcdb2436124518c10915c7f401a8f770476
 -->
 
 # ADR-L-0007: Deterministic Documentation Projection
@@ -18,7 +18,7 @@ rendered_hash: fcd5187090b5bd7ac9d6eab2c8b4eaa6c1f2bec2313cde03f9e09120c140276d
 **Alias:** ADR-L-0007  
 **Authoring contract:** authoring v1.5  
 **Created:** 2026-03-12  
-**Authors:** adr-architecture-kit  
+**Authors:** erik.gallmann  
 **Domains:** documentation, governance, determinism, projection  
 **Tags:** generated-documentation, deterministic, ai-first, drift-prevention  
 

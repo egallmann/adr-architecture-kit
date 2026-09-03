@@ -5,7 +5,7 @@ title: ADR-to-Prompt Translation for AI Implementation
 status: accepted
 created_date: '2026-03-08'
 authors:
-- adr-architecture-kit
+- erik.gallmann
 modified_date: '2026-03-08'
 context: "The ADR Architecture Kit encodes architectural decisions in machine-readable\
   \ YAML\nformat with explicit invariants, capabilities, and component specifications.\

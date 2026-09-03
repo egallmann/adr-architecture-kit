@@ -5,7 +5,7 @@ title: Compiler Pipeline and Driver
 status: accepted
 created_date: '2026-03-15'
 authors:
-- adr-architecture-kit
+- erik.gallmann
 modified_date: '2026-08-27'
 domains:
 - compiler

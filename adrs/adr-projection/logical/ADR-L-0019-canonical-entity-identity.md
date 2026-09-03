@@ -5,8 +5,8 @@ artifact_kind: rendered_adr_markdown
 generator_id: adr-projection-markdown
 generator_version: 3
 hash_algorithm: sha256
-source_hash: 0507d6ff417d66b9a405b7c8b09860dd8deaf38e68d3f3eb9ace39d7340e669a
-rendered_hash: eac972e90e6d34928b888357a3cf2fd1f5c6d46b24d86ead1b8043ae13a2bcc7
+source_hash: d0d807a50b9da3ea8de6f3618b18db017625e465e02790736bd5666abcaf823b
+rendered_hash: 2101f34c7de06ead71acce3a1647754e910b0ffcb108966df0f3bf59cedf3c97
 -->
 
 # ADR-L-0019: Canonical Entity Identity
@@ -18,7 +18,7 @@ rendered_hash: eac972e90e6d34928b888357a3cf2fd1f5c6d46b24d86ead1b8043ae13a2bcc7
 **Alias:** ADR-L-0019  
 **Authoring contract:** authoring v1.5  
 **Created:** 2026-08-09  
-**Authors:** adr-architecture-kit  
+**Authors:** erik.gallmann  
 
 ## Architecture at a Glance
 
@@ -511,6 +511,7 @@ Promoted from Design Journal outcome.
 - [ADR-L-0022](ADR-L-0022-universal-uuidv7-entity-identity.md)
 - [ADR-L-0023](ADR-L-0023-consumer-semantic-extension-contract.md)
 - [ADR-L-0024](ADR-L-0024-cross-language-consumer-bindings-and-typescript-distribution.md)
+- [ADR-L-0026](ADR-L-0026-authoring-domain-contract-discovery-authority.md)
 
 
 

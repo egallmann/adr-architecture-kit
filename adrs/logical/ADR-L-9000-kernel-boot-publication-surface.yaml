@@ -5,7 +5,7 @@ title: Kernel Boot Publication Surface
 status: accepted
 created_date: '2026-03-21'
 authors:
-- adr-architecture-kit
+- erik.gallmann
 domains:
 - kernel
 - integration

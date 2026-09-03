@@ -5,8 +5,8 @@ artifact_kind: rendered_adr_markdown
 generator_id: adr-projection-markdown
 generator_version: 3
 hash_algorithm: sha256
-source_hash: 49f29fd50b94e05dc7321d0a97b75bda623335be718ab1f7d9ad50ee7e466936
-rendered_hash: 68e66219fd02389a0e53b0bfe35a4315b60f7070e2b9bc0dd3839b855f9413b1
+source_hash: 4ac62b3da229ec1decd795740e3ad815a5ad3b616192cf8bf558b369b69e9975
+rendered_hash: c5734b18a2492fee557d31d7ca199aaaf3891372eb42b714dc5ae100bfecf066
 -->
 
 # ADR-PC-0001: Entity Registry and Discovery Index
@@ -19,7 +19,7 @@ rendered_hash: 68e66219fd02389a0e53b0bfe35a4315b60f7070e2b9bc0dd3839b855f9413b1
 **Authoring contract:** authoring v1.5  
 **Created:** 2026-03-13  
 **Modified:** 2026-08-27  
-**Authors:** adr-architecture-kit  
+**Authors:** erik.gallmann  
 **Domains:** discovery, indexing, tooling  
 **Implements Logical:** [ADR-L-0009](../logical/ADR-L-0009-derived-architecture-discovery-surfaces.md), [ADR-L-0012](../logical/ADR-L-0012-federation-authority-and-qualified-identity-model.md), [ADR-L-0002](../logical/ADR-L-0002-multi-scope-adr-architecture-for-sub-module-development.md)  
 **Implements System:** [ADR-PS-0001](../physical-system/ADR-PS-0001-adr-architecture-kit-discovery-and-indexing-system.md)  

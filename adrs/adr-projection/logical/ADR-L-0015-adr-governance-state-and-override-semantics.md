@@ -5,8 +5,8 @@ artifact_kind: rendered_adr_markdown
 generator_id: adr-projection-markdown
 generator_version: 3
 hash_algorithm: sha256
-source_hash: 31304e6779e2c68380f1e7da6c7c24b410ad6e9ff23f731c0add039e3bef9427
-rendered_hash: 742196f879988e6b18414a5a2eb3604667e4c71c53cd918632237b7e15bae772
+source_hash: e0e1ccb85f9cd45556103d8890c22596f23525c8ab1628b2f726ffe0b735af1b
+rendered_hash: 72ba32691f39a74a6d1e2db38bd92326b7594b0b20221e2922a24848c9209675
 -->
 
 # ADR-L-0015: ADR Governance State and Override Semantics
@@ -18,7 +18,7 @@ rendered_hash: 742196f879988e6b18414a5a2eb3604667e4c71c53cd918632237b7e15bae772
 **Alias:** ADR-L-0015  
 **Authoring contract:** authoring v1.5  
 **Created:** 2026-03-18  
-**Authors:** adr-architecture-kit  
+**Authors:** erik.gallmann  
 **Domains:** governance, validation, approval, overrides  
 **Tags:** governance, override, steelman, approval  
 

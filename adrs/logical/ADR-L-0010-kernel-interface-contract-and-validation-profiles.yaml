@@ -5,7 +5,7 @@ title: Kernel Interface Contract and Validation Profiles
 status: accepted
 created_date: '2026-03-14'
 authors:
-- adr-architecture-kit
+- erik.gallmann
 domains:
 - kernel
 - contract

@@ -5,7 +5,7 @@ title: Metadata Schemas and Remediation Ledger Enforcement
 status: accepted
 created_date: '2026-03-14'
 authors:
-- adr-architecture-kit
+- erik.gallmann
 domains:
 - governance
 - metadata

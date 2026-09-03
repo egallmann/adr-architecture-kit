@@ -5,7 +5,7 @@ title: Canonical Entity Identity
 status: accepted
 created_date: '2026-08-09'
 authors:
-- adr-architecture-kit
+- erik.gallmann
 context: 'Earlier ADR Kit work established federation, repository boundaries, schema
 
   v1.2, and a normalized semantic foundation, but canonical identity still

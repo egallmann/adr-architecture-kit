@@ -1,0 +1,149 @@
+schema_version: '1.5'
+adr_type: logical
+id: 01a05a26-0000-7000-8000-000000000026
+alias_id: ADR-L-0026
+alias_name: authoring-domain-contract-discovery-authority
+title: Authoring Domain Contract Discovery Authority
+status: accepted
+created_date: '2026-09-02'
+authors:
+- erik.gallmann
+domains:
+- architecture
+- authoring
+- schema-governance
+- consumer-bindings
+tags:
+- authoring-domain
+- adc
+- discovery
+- consumer-binding
+related_adrs:
+- 019fee89-e617-7ff5-863b-1eef71637b0f
+- 019fee89-e617-78d9-ba3b-b7e3e6db1b12
+- 01a00643-1bfc-788c-911b-83a4725a8de1
+- 01a00644-1bfc-7abc-8aaa-111111111111
+- 01a02d38-7cf3-7b3c-87ec-1c5f08490c6e
+- 01a048d8-454a-7464-bcaa-718e58dfb9c2
+context: |
+  The forward authoring taxonomy and cross-language consumer binding now need a
+  language-neutral semantic authority for authoring discovery. Persistence schema
+  versions and binding package versions do not provide that authority: they describe
+  different compatibility dimensions. The locked Slice-1 design therefore promotes
+  Authoring Domain Contract (ADC) 1.0 as a separate contract family.
+
+  This ADR promotes discovery authority only. It does not define construction,
+  composition, mutation, repository writes, identity allocation, or persistence
+  materialization. The canonical contract artifact is maintained independently of
+  Python and TypeScript implementation models.
+decisions:
+- id: 01a05a26-0000-7700-8000-000000000177
+  alias_id: DEC-0177
+  alias_name: adc-is-independent-language-neutral-authority
+  summary: ADC is a separately versioned language-neutral contract family
+  rationale: ADC versions describe authoring semantics and are independent of canonical
+    ADR persistence-schema versions and package implementation versions.
+- id: 01a05a26-0000-7700-8000-000000000178
+  alias_id: DEC-0178
+  alias_name: adc-one-point-zero-is-discovery-only
+  summary: ADC 1.0 defines authoring discovery only
+  rationale: The first slice limits the public contract to authoring.discovery and
+    describe_contract, list_types, and describe_type. Later construction and mutation
+    semantics require separate authority.
+- id: 01a05a26-0000-7700-8000-000000000179
+  alias_id: DEC-0179
+  alias_name: adc-catalog-is-explicit-and-exactly-twenty-seven-types
+  summary: ADC 1.0 admits exactly 27 explicit types addressed by kind and name
+  rationale: The catalog is curated contract authority, not a projection of Python
+    enums, schemas, registries, compiler IR, or nesting. The selector is the exact,
+    case-sensitive pair (kind, name); no persisted global type_id is introduced.
+- id: 01a05a26-0000-7700-8000-000000000180
+  alias_id: DEC-0180
+  alias_name: adc-preserves-semantic-boundaries-and-policy-maturity
+  summary: ADC descriptors preserve admission, composition, identity, and policy maturity
+  rationale: Descriptors distinguish defined, deferred, and not_applicable policy state;
+    preserve logical-only Invariant declaration, three-parent NormativeProposition
+    declaration, owner-local topology values, consumer-owned extensions, and the
+    non-admission of NFR, Constraint, Requirement, and derived relationship forms.
+- id: 01a05a26-0000-7700-8000-000000000181
+  alias_id: DEC-0181
+  alias_name: adc-extends-consumer-binding-conformance
+  summary: ADC cross-language qualification extends Consumer Binding Contract 1.0
+  rationale: Python and TypeScript qualify against the same checked-in ADC evidence
+    for structural, semantic, behavioral, and diagnostic equivalence. ADC 1.0 makes
+    no byte-identical discovery serialization declaration.
+- id: 01a05a26-0000-7700-8000-000000000182
+  alias_id: DEC-0182
+  alias_name: defer-consumes-interface-reconciliation
+  summary: Keep consumes_interface outside ADC 1.0 pending authority and substrate reconciliation
+  rationale: ADR-L-0025 names the vocabulary item while the v1.5 authored topology
+    substrate does not admit it consistently and its endpoint meaning is unresolved.
+    This promotion records the conflict and does not silently add, remove, or rewrite
+    either authority.
+invariants:
+- id: 01a05a26-0000-7600-8000-000000000157
+  alias_id: INV-0157
+  alias_name: adc-discovery-does-not-authorize-mutation
+  statement: ADC 1.0 MUST NOT imply semantic construction, composition, mutation, identity allocation, persistence, or repository writes.
+  scope: global
+  enforcement_level: must
+  enforcement_mechanism: design
+  verification_method: automated
+  rationale: Discovery authority is intentionally separated from later authoring lifecycle capabilities.
+- id: 01a05a26-0000-7600-8000-000000000158
+  alias_id: INV-0158
+  alias_name: adc-selector-version-and-order-are-exact
+  statement: ADC discovery MUST resolve an exact contract version and exact case-sensitive (kind, name) selector, and type enumeration MUST be deterministically ordered by that pair.
+  scope: global
+  enforcement_level: must
+  enforcement_mechanism: design
+  verification_method: automated
+  rationale: Bindings must not normalize, alias, fuzzily match, or infer authoring types.
+- id: 01a05a26-0000-7600-8000-000000000159
+  alias_id: INV-0159
+  alias_name: adc-catalog-has-one-language-neutral-source
+  statement: Python and TypeScript ADC discovery MUST consume or faithfully project one promoted language-neutral contract artifact and MUST NOT maintain independent semantic catalogs.
+  scope: global
+  enforcement_level: must
+  enforcement_mechanism: test
+  verification_method: automated
+  rationale: Accepted ADRs, contract artifacts, and checked-in evidence remain semantic authority; implementations are consumers.
+- id: 01a05a26-0000-7600-8000-000000000160
+  alias_id: INV-0160
+  alias_name: adc-preserves-normative-and-identity-boundaries
+  statement: ADC 1.0 MUST preserve distinct NormativeProposition and Invariant semantics, the shared normative_force vocabulary, canonical UUIDv7 entity identity, and owner-local topology_component identity.
+  scope: global
+  enforcement_level: must
+  enforcement_mechanism: design
+  verification_method: automated
+  rationale: Semantic type and identity boundaries are inherited from accepted identity and topology authority.
+- id: 01a05a26-0000-7600-8000-000000000161
+  alias_id: INV-0161
+  alias_name: consumes-interface-remains-explicitly-unresolved
+  statement: The unresolved consumes_interface authority and substrate reconciliation MUST remain explicit, and relationship/consumes_interface MUST remain absent from ADC 1.0.
+  scope: global
+  enforcement_level: must
+  enforcement_mechanism: design
+  verification_method: automated
+  rationale: Slice 1 does not choose among topology, derived normalized, or dual endpoint semantics.
+- id: 01a05a26-0000-7600-8000-000000000162
+  alias_id: INV-0162
+  alias_name: adc-conformance-does-not-require-byte-identity
+  statement: ADC 1.0 cross-language discovery conformance MUST require structural, semantic, behavioral, and diagnostic equivalence and MUST NOT require byte-identical serialization.
+  scope: global
+  enforcement_level: must
+  enforcement_mechanism: test
+  verification_method: automated
+  rationale: JSON-compatible semantic projections are contract values; property order and binding-local serialization are not ADC semantics.
+gaps: []
+notes:
+  canonical_contract: contracts/authoring-domain/v1.0/contract.json
+  design_input: ADR-Kit-Authoring-Domain-Slice-1-Design-Journal.md
+  implementation_boundary: ADC discovery bindings and authoring mutation APIs are deferred to a later implementation-plan phase.
+  reconciliation: |
+    ADC-RECON-001 remains open. ADR-L-0025 includes consumes_interface in its
+    physical-system topology vocabulary, while authoring v1.5 model/schema support
+    does not expose it consistently as an authored relationship. Its endpoint
+    semantics (topology occurrence, derived normalized relationship, or explicitly
+    distinct dual forms) require an authority-preserving follow-up. ADC 1.0 excludes
+    relationship/consumes_interface and does not alter ADR-L-0025 or v1.5 substrate.

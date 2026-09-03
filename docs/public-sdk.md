@@ -26,6 +26,9 @@ print(manifest.normalized_model_schema_version)  # 1.1 (native default)
 print(manifest.supported_normalized_model_schema_versions)  # ('1.1', '2.0')
 print(manifest.supported_evidence_attribution_versions)  # ('1.5', '1.6')
 print(manifest.preferred_evidence_attribution_version)  # 1.6
+print(manifest.supported_authoring_domain_versions)  # ('1.0',)
+print(manifest.preferred_authoring_domain_version)  # 1.0
+print(manifest.authoring_capabilities)  # ('authoring.discovery',)
 print(manifest.as_dict())
 ```
 
@@ -176,6 +179,12 @@ ste.design_journal.promotion_contract/v0.1
 
 This Promotion Contract version is not an ADR schema version and does not
 advertise ADR schema 1.3 or normalized model 2.0.
+
+The same root capability manifest also advertises ADC 1.0 through
+`supported_authoring_domain_versions`, `preferred_authoring_domain_version`,
+and `authoring_capabilities`. The promoted ADC authority is
+`contracts/authoring-domain/v1.0/contract.json`; its discovery callables are
+deferred to the implementation-plan phase.
 
 ## Exact public inventory
 

@@ -5,8 +5,8 @@ artifact_kind: rendered_adr_markdown
 generator_id: adr-projection-markdown
 generator_version: 3
 hash_algorithm: sha256
-source_hash: db3bf83efccbfc2d45e8671735eeae9bb870e7a36c2e7cb4a45d180236547780
-rendered_hash: c5bdfbc7153bd4a2e1acc640cb66db2dcc2d2e18fd6c68339fc229c66d3b19e1
+source_hash: 4da3b61796e8f43052de3d6cd68ac95a5ee300f40067ecb578d78f150ad7f2d2
+rendered_hash: 9d17042fb1f1beb8d547a62840ef638112ac18136c86631e6e582b526ff8e140
 -->
 
 # ADR-L-0004: ADR-to-Implementation Traceability via Decorators and Metadata Attribution
@@ -19,7 +19,7 @@ rendered_hash: c5bdfbc7153bd4a2e1acc640cb66db2dcc2d2e18fd6c68339fc229c66d3b19e1
 **Authoring contract:** authoring v1.5  
 **Created:** 2026-03-08  
 **Modified:** 2026-08-20  
-**Authors:** adr-architecture-kit  
+**Authors:** erik.gallmann  
 **Domains:** architecture, traceability, governance, verification  
 **Tags:** traceability, decorators, verification, drift-detection, embodied-design  
 

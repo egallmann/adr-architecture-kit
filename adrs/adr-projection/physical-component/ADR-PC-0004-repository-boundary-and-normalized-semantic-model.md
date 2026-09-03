@@ -5,8 +5,8 @@ artifact_kind: rendered_adr_markdown
 generator_id: adr-projection-markdown
 generator_version: 3
 hash_algorithm: sha256
-source_hash: 3322cd69b0c08acfe53b2d7b55f133ead5e81221c7bbc50e0b2560f046e11c23
-rendered_hash: a8ece7eac67e745e0a64267a1ee2a68236e2af92d98df88991ddf00367f0ef8d
+source_hash: a809a91cc9d4b7d9e0b2fe3b8f4e0687fea43db5efd28f9e026ad0eeb5fe1ad0
+rendered_hash: 2c083658e8609a89c6a2aa38b14dd16916624ddda9c6c9ed9ec17b249acdce83
 -->
 
 # ADR-PC-0004: Repository Boundary and Normalized Semantic Model
@@ -19,7 +19,7 @@ rendered_hash: a8ece7eac67e745e0a64267a1ee2a68236e2af92d98df88991ddf00367f0ef8d
 **Authoring contract:** authoring v1.5  
 **Created:** 2026-03-15  
 **Modified:** 2026-08-27  
-**Authors:** adr-architecture-kit  
+**Authors:** erik.gallmann  
 **Domains:** repository, semantic-model, tooling  
 **Implements Logical:** [ADR-L-0013](../logical/ADR-L-0013-architecture-repository-boundary-and-normalized-semantic-model.md)  
 **Implements System:** [ADR-PS-0002](../physical-system/ADR-PS-0002-adr-kit-authoring-compiler-and-validation-system.md)  

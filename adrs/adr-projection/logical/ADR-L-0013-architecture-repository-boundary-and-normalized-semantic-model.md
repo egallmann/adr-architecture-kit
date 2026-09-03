@@ -5,8 +5,8 @@ artifact_kind: rendered_adr_markdown
 generator_id: adr-projection-markdown
 generator_version: 3
 hash_algorithm: sha256
-source_hash: c1e7ac883b3d13d6b4be36eef4e9d90513fac21a9a70a8bcccfdee1efece80ce
-rendered_hash: 4d9ff904931801b16d9d5ed7eac7f914f84550b5d25218208b49982c84c24921
+source_hash: e8138f2e49c6dca3505299eac37307e59b0829784e047a38965aeda1a54e41d2
+rendered_hash: 2351dfa48412f2f19f7d87d377c90b7563b49286444df2833d2ca85510cdcff0
 -->
 
 # ADR-L-0013: Architecture Repository Boundary and Normalized Semantic Model
@@ -19,7 +19,7 @@ rendered_hash: 4d9ff904931801b16d9d5ed7eac7f914f84550b5d25218208b49982c84c24921
 **Authoring contract:** authoring v1.5  
 **Created:** 2026-03-14  
 **Modified:** 2026-08-06  
-**Authors:** adr-architecture-kit  
+**Authors:** erik.gallmann  
 **Domains:** repository, discovery, compiler, kernel  
 **Tags:** repository-boundary, semantic-model, archmodel, registries  
 

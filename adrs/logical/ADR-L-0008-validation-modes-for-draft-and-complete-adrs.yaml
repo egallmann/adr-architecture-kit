@@ -5,7 +5,7 @@ title: Validation Modes for Draft and Complete ADRs
 status: accepted
 created_date: '2026-03-13'
 authors:
-- adr-architecture-kit
+- erik.gallmann
 domains:
 - validation
 - adr

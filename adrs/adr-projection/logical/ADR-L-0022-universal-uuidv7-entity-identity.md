@@ -5,8 +5,8 @@ artifact_kind: rendered_adr_markdown
 generator_id: adr-projection-markdown
 generator_version: 3
 hash_algorithm: sha256
-source_hash: c52de4f6a63f8403b4afe0cd0727da1813a6ddaa57e70d1af8984215264165e1
-rendered_hash: 72e0a64ba19c1bd7590a9acc63c059ee16cd99225361a347f6a08babec75149b
+source_hash: b7d013039c6d1cb6d82aff8240634edf81a81a34dc0e45ef0f1236c23ad90823
+rendered_hash: dc2076e894f6552ab32cde3cacd62f4c8b67d96dd82b007cb5225d6bb2f2315b
 -->
 
 # ADR-L-0022: Universal UUIDv7 Entity Identity
@@ -18,7 +18,7 @@ rendered_hash: 72e0a64ba19c1bd7590a9acc63c059ee16cd99225361a347f6a08babec75149b
 **Alias:** ADR-L-0022  
 **Authoring contract:** authoring v1.5  
 **Created:** 2026-08-15  
-**Authors:** adr-architecture-kit  
+**Authors:** erik.gallmann  
 **Domains:** architecture, identity, schema-governance  
 
 ## Architecture at a Glance
@@ -362,6 +362,7 @@ Architectural closure and implementation readiness are separate states.
 **References**
 - [ADR-L-0019](ADR-L-0019-canonical-entity-identity.md)
 - [ADR-L-0023](ADR-L-0023-consumer-semantic-extension-contract.md)
+- [ADR-L-0026](ADR-L-0026-authoring-domain-contract-discovery-authority.md)
 
 
 

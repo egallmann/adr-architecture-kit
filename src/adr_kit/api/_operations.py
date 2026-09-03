@@ -226,6 +226,9 @@ def capabilities() -> CapabilityManifest:
         supported_normalized_model_schema_versions=("1.1", "2.0", "2.1", "2.2"),
         supported_evidence_attribution_versions=("1.5", "1.6"),
         preferred_evidence_attribution_version="1.6",
+        supported_authoring_domain_versions=("1.0",),
+        preferred_authoring_domain_version="1.0",
+        authoring_capabilities=("authoring.discovery",),
     )
 
 

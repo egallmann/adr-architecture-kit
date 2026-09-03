@@ -5,8 +5,8 @@ artifact_kind: rendered_adr_markdown
 generator_id: adr-projection-markdown
 generator_version: 3
 hash_algorithm: sha256
-source_hash: 7695e1920cd3ed841507cd9e05912c0da821b748c8246fde99430169dfcdaf33
-rendered_hash: 778785d9b0ff29d490c47f8f090957e3b24f54367378bfac8dc1fc7676429f25
+source_hash: 8c9eea645864c2d32c5a33744439db0952881ad5d9380158ea19a629cf04ce15
+rendered_hash: 034cf13f35e37cbaa255fde7535013edc59a31144da9b91656c131c44c3ada33
 -->
 
 # ADR-L-0018: Schema v1.2 and Normalized Semantic Foundation
@@ -19,7 +19,7 @@ rendered_hash: 778785d9b0ff29d490c47f8f090957e3b24f54367378bfac8dc1fc7676429f25
 **Authoring contract:** authoring v1.5  
 **Created:** 2026-08-07  
 **Modified:** 2026-08-07  
-**Authors:** adr-architecture-kit  
+**Authors:** erik.gallmann  
 **Domains:** authoring, schema, semantic-model, identity, migration  
 **Tags:** schema-v1.2, normalized-model, assertion-identity, external-bindings, topology-identity  
 

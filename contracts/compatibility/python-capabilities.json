@@ -1,0 +1,29 @@
+{
+  "binding": "python",
+  "consumer_binding_contract_version": "1.0",
+  "capability_manifest_fields": [
+    "package_version",
+    "api_contract_version",
+    "operations",
+    "supported_promotion_contract_versions",
+    "validation_modes",
+    "artifact_groups",
+    "supported_adr_schema_versions",
+    "stable_adr_schema_versions",
+    "provisional_adr_schema_versions",
+    "normalized_model_schema_version",
+    "supported_normalized_model_schema_versions",
+    "supported_evidence_attribution_versions",
+    "preferred_evidence_attribution_version",
+    "supported_authoring_domain_versions",
+    "preferred_authoring_domain_version",
+    "authoring_capabilities"
+  ],
+  "authoring_domain": {
+    "authority": "contracts/authoring-domain/v1.0/contract.json",
+    "supported_versions": ["1.0"],
+    "preferred_version": "1.0",
+    "capabilities": ["authoring.discovery"],
+    "entrypoint_status": "deferred_to_implementation_plan"
+  }
+}

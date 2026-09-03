@@ -134,7 +134,7 @@
         "semantic_type_ownership": "adr_kit",
         "identity_mode": "owner_local",
         "allowed_parents": ["adr/physical-system"],
-        "input_status": "defined"
+        "input_status": "deferred"
       }
     },
     "errors": [

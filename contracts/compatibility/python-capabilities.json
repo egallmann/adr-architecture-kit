@@ -14,16 +14,18 @@
     "normalized_model_schema_version",
     "supported_normalized_model_schema_versions",
     "supported_evidence_attribution_versions",
-    "preferred_evidence_attribution_version",
+    "preferred_evidence_attribution_version"
+  ],
+  "planned_capability_manifest_fields": [
     "supported_authoring_domain_versions",
     "preferred_authoring_domain_version",
     "authoring_capabilities"
   ],
   "authoring_domain": {
     "authority": "contracts/authoring-domain/v1.0/contract.json",
-    "supported_versions": ["1.0"],
-    "preferred_version": "1.0",
-    "capabilities": ["authoring.discovery"],
-    "entrypoint_status": "deferred_to_implementation_plan"
+    "planned_supported_versions": ["1.0"],
+    "planned_preferred_version": "1.0",
+    "planned_capabilities": ["authoring.discovery"],
+    "entrypoint_status": "promoted_authority_not_implemented"
   }
 }

@@ -9,9 +9,6 @@ export interface CapabilityManifest {
   readonly supported_normalized_model_versions: readonly ["2.1"];
   readonly supported_evidence_attribution_versions: readonly ["1.5", "1.6"];
   readonly preferred_evidence_attribution_version: "1.6";
-  readonly supported_authoring_domain_versions: readonly ["1.0"];
-  readonly preferred_authoring_domain_version: "1.0";
-  readonly authoring_capabilities: readonly ["authoring.discovery"];
   readonly browser_safe_entrypoints: readonly [".", "./model", "./schemas", "./validation"];
   readonly node_entrypoints: readonly ["./node", "./node/linkage"];
 }
@@ -26,9 +23,6 @@ export function capabilities(): CapabilityManifest {
     supported_normalized_model_versions: ["2.1"] as const,
     supported_evidence_attribution_versions: ["1.5", "1.6"] as const,
     preferred_evidence_attribution_version: "1.6",
-    supported_authoring_domain_versions: ["1.0"] as const,
-    preferred_authoring_domain_version: "1.0",
-    authoring_capabilities: ["authoring.discovery"] as const,
     browser_safe_entrypoints: [".", "./model", "./schemas", "./validation"] as const,
     node_entrypoints: ["./node", "./node/linkage"] as const
   });

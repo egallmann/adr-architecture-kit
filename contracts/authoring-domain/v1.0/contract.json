@@ -10,9 +10,9 @@
   "discovery_operations": ["describe_contract", "list_types", "describe_type"],
   "type_kinds": ["adr", "entity", "relationship", "value"],
   "binding_projection": {
-    "capability_surface": "existing_root_capabilities",
-    "python": {"capability_fields": "promoted", "discovery_entrypoint": "deferred_to_implementation_plan"},
-    "typescript": {"browser_safe_subpath": "./authoring", "entrypoint_status": "deferred_to_implementation_plan"}
+    "capability_surface": "existing_root_capabilities_when_implemented",
+    "python": {"capability_fields": "planned", "discovery_entrypoint": "promoted_authority_not_implemented"},
+    "typescript": {"browser_safe_subpath": "./authoring", "entrypoint_status": "promoted_authority_not_implemented"}
   },
   "types": [
     {
@@ -387,7 +387,7 @@
       "authoring_mode": "embedded",
       "semantic_type_ownership": "adr_kit",
       "discriminator": {"mode": "contextual", "value": "topology_component"},
-      "input_contract": {"status": "defined", "shape": "owner-local occurrence"},
+      "input_contract": {"status": "deferred"},
       "identity_policy": {"status": "defined", "mode": "owner_local"},
       "composition_policy": {"status": "defined", "allowed_parents": [{"kind": "adr", "name": "physical-system", "min_occurs": 0, "max_occurs": null}]},
       "reference_policy": {"status": "deferred"},

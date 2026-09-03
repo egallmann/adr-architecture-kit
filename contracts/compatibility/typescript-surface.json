@@ -45,10 +45,12 @@
     "supported_normalized_model_versions",
     "supported_evidence_attribution_versions",
     "preferred_evidence_attribution_version",
-    "supported_authoring_domain_versions",
-    "preferred_authoring_domain_version",
-    "authoring_capabilities",
     "browser_safe_entrypoints",
     "node_entrypoints"
+  ],
+  "planned_capability_manifest_fields": [
+    "supported_authoring_domain_versions",
+    "preferred_authoring_domain_version",
+    "authoring_capabilities"
   ]
 }

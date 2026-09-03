@@ -18,19 +18,20 @@ repository discovery.
 ## Version and capability rules
 
 The binding advertises its supported capability versions through
-`capabilities()`. Unsupported normalized-model, discovery, evidence, and
-manifest versions fail explicitly. The Node repository loader is index-first:
+`capabilities()`. Unsupported normalized-model, evidence, and manifest
+versions fail explicitly. Authoring discovery remains a planned compatibility
+surface until its operations are implemented and qualified. The Node repository loader is index-first:
 it requires the architecture index and its primary registries, validates the
 primary v2.1 bundle, and treats missing additive subset registries as empty.
 It does not reinterpret an older generated bundle as v2.1.
 
-The root capability manifest advertises ADC 1.0 with
-`supported_authoring_domain_versions: ["1.0"]`,
-`preferred_authoring_domain_version: "1.0"`, and
-`authoring_capabilities: ["authoring.discovery"]`. The browser-safe
-`./authoring` subpath and its `describeContract`, `listTypes`, and
-`describeType` operations are promoted in the compatibility authority but are
-not implemented in this authority checkpoint.
+The root capability manifest does not yet advertise ADC 1.0 or
+`authoring.discovery` because the discovery operations are not implemented by
+this binding. The browser-safe `./authoring` subpath and its
+`describeContract`, `listTypes`, and `describeType` operations remain promoted
+as planned compatibility authority, with status `promoted_authority_not_implemented`.
+After implementation and qualification, those ADC version and capability
+fields belong on the root capability surface.
 
 Semantic attribution linkage accepts evidence v1.5 and v1.6 under their
 version-specific vocabulary and confidence rules. Results are validated

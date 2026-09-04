@@ -4,7 +4,7 @@
   "title": "ADR Kit Authoring Domain Contract 1.0 shape",
   "description": "Structural validation for the promoted ADC 1.0 authority artifact. It does not generate or define the catalog.",
   "type": "object",
-  "required": ["contract_id", "contract_version", "defined_capabilities", "discovery_operations", "type_kinds", "types", "diagnostics"],
+  "required": ["contract_id", "contract_version", "defined_capabilities", "discovery_operations", "type_kinds", "discovery_projections", "types", "diagnostics"],
   "properties": {
     "$schema": {"const": "./schema.json"},
     "contract_id": {"const": "adr-kit.authoring-domain"},
@@ -14,7 +14,108 @@
     "defined_capabilities": {"type": "array", "items": {"type": "string"}},
     "discovery_operations": {"type": "array", "items": {"type": "string"}},
     "type_kinds": {"type": "array", "items": {"enum": ["adr", "entity", "relationship", "value"]}},
-    "binding_projection": {"type": "object"},
+    "discovery_projections": {
+      "type": "object",
+      "required": ["describe_contract", "list_types", "describe_type"],
+      "properties": {
+        "describe_contract": {
+          "type": "object",
+          "required": ["response"],
+          "properties": {
+            "response": {
+              "type": "object",
+              "required": ["fields"],
+              "properties": {
+                "fields": {"const": ["contract_id", "contract_version", "defined_capabilities", "discovery_operations", "type_kinds"]}
+              },
+              "additionalProperties": false
+            }
+          },
+          "additionalProperties": false
+        },
+        "list_types": {
+          "type": "object",
+          "required": ["request", "response", "ordering", "filter"],
+          "properties": {
+            "request": {
+              "type": "object",
+              "required": ["kind"],
+              "properties": {
+                "kind": {
+                  "type": "object",
+                  "required": ["presence", "matching", "case_sensitive", "allowed_values"],
+                  "properties": {
+                    "presence": {"const": "optional"},
+                    "matching": {"const": "exact"},
+                    "case_sensitive": {"const": true},
+                    "allowed_values": {"const": ["adr", "entity", "relationship", "value"]}
+                  },
+                  "additionalProperties": false
+                }
+              },
+              "additionalProperties": false
+            },
+            "response": {
+              "type": "object",
+              "required": ["fields", "item_type", "item_fields"],
+              "properties": {
+                "fields": {"const": ["contract_version", "types"]},
+                "item_type": {"const": "AuthoringTypeSummary"},
+                "item_fields": {"const": ["key", "display_name", "description"]}
+              },
+              "additionalProperties": false
+            },
+            "ordering": {
+              "type": "object",
+              "required": ["deterministic", "by"],
+              "properties": {
+                "deterministic": {"const": true},
+                "by": {"const": ["key.kind", "key.name"]}
+              },
+              "additionalProperties": false
+            },
+            "filter": {
+              "type": "object",
+              "required": ["request_field", "response_echoed"],
+              "properties": {
+                "request_field": {"const": "kind"},
+                "response_echoed": {"const": false}
+              },
+              "additionalProperties": false
+            }
+          },
+          "additionalProperties": false
+        },
+        "describe_type": {
+          "type": "object",
+          "required": ["request", "response"],
+          "properties": {
+            "request": {
+              "type": "object",
+              "required": ["fields"],
+              "properties": {
+                "fields": {
+                  "const": [
+                    {"name": "kind", "required": true, "matching": "exact", "case_sensitive": true},
+                    {"name": "name", "required": true, "matching": "exact", "case_sensitive": true},
+                    {"name": "contract_version", "required": false, "matching": "exact", "case_sensitive": true}
+                  ]
+                }
+              },
+              "additionalProperties": false
+            },
+            "response": {
+              "type": "object",
+              "required": ["type"],
+              "properties": {"type": {"const": "AuthoringTypeDescriptor"}},
+              "additionalProperties": false
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
     "types": {
       "type": "array",
       "items": {
@@ -51,3 +152,4 @@
   },
   "additionalProperties": false
 }
+

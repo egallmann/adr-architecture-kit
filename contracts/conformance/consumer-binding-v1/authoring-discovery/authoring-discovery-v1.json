@@ -19,57 +19,58 @@
     },
     "list_types": {
       "contract_version": "1.0",
-      "count": 27,
-      "ordered_type_keys": [
-        "adr/logical",
-        "adr/physical-component",
-        "adr/physical-system",
-        "entity/boundary",
-        "entity/capability",
-        "entity/component",
-        "entity/contract",
-        "entity/data_flow",
-        "entity/decision",
-        "entity/evidence_expectation",
-        "entity/extension",
-        "entity/gap",
-        "entity/implementation_decision",
-        "entity/interface",
-        "entity/invariant",
-        "entity/normative_proposition",
-        "entity/system",
-        "entity/system_boundary",
-        "relationship/calls",
-        "relationship/depends_on",
-        "relationship/extension",
-        "relationship/publishes_to",
-        "relationship/reads_from",
-        "relationship/subscribes_to",
-        "relationship/writes_to",
-        "value/normative_force",
-        "value/topology_component"
+      "types": [
+        {"key": {"kind": "adr", "name": "logical"}, "display_name": "Logical ADR", "description": "Forward authoring root for logical architecture authority."},
+        {"key": {"kind": "adr", "name": "physical-component"}, "display_name": "Physical-Component ADR", "description": "Forward authoring root for a physical component realization."},
+        {"key": {"kind": "adr", "name": "physical-system"}, "display_name": "Physical-System ADR", "description": "Forward authoring root for a physical system realization and topology."},
+        {"key": {"kind": "entity", "name": "boundary"}, "display_name": "Boundary", "description": "Canonical architectural boundary entity."},
+        {"key": {"kind": "entity", "name": "capability"}, "display_name": "Capability", "description": "Canonical architectural capability entity."},
+        {"key": {"kind": "entity", "name": "component"}, "display_name": "Component", "description": "Canonical independently addressable component entity."},
+        {"key": {"kind": "entity", "name": "contract"}, "display_name": "Contract", "description": "Canonical architectural contract entity."},
+        {"key": {"kind": "entity", "name": "data_flow"}, "display_name": "Data Flow", "description": "Canonical physical-system data-flow entity."},
+        {"key": {"kind": "entity", "name": "decision"}, "display_name": "Decision", "description": "Canonical logical architecture decision entity."},
+        {"key": {"kind": "entity", "name": "evidence_expectation"}, "display_name": "Evidence Expectation", "description": "Canonical expectation for evidence associated with authored meaning."},
+        {"key": {"kind": "entity", "name": "extension"}, "display_name": "Extension Entity Template", "description": "ADR-Kit-owned extension envelope with consumer-qualified semantic meaning."},
+        {"key": {"kind": "entity", "name": "gap"}, "display_name": "Gap", "description": "Canonical unresolved architectural gap entity."},
+        {"key": {"kind": "entity", "name": "implementation_decision"}, "display_name": "Implementation Decision", "description": "Canonical implementation decision of a physical component."},
+        {"key": {"kind": "entity", "name": "interface"}, "display_name": "Interface", "description": "Canonical interface entity owned by a component."},
+        {"key": {"kind": "entity", "name": "invariant"}, "display_name": "Invariant", "description": "Distinct canonical system-wide condition declared by a logical ADR."},
+        {"key": {"kind": "entity", "name": "normative_proposition"}, "display_name": "Normative Proposition", "description": "Canonical normative meaning governed by its declaring ADR."},
+        {"key": {"kind": "entity", "name": "system"}, "display_name": "System", "description": "Canonical physical system identity entity."},
+        {"key": {"kind": "entity", "name": "system_boundary"}, "display_name": "System Boundary", "description": "Canonical boundary entity within a physical system."},
+        {"key": {"kind": "relationship", "name": "calls"}, "display_name": "Calls", "description": "Directly authorable physical-system topology relationship."},
+        {"key": {"kind": "relationship", "name": "depends_on"}, "display_name": "Depends On", "description": "Directly authorable physical-system topology relationship."},
+        {"key": {"kind": "relationship", "name": "extension"}, "display_name": "Extension Relationship Template", "description": "ADR-Kit-owned relationship envelope with consumer-qualified semantic meaning."},
+        {"key": {"kind": "relationship", "name": "publishes_to"}, "display_name": "Publishes To", "description": "Directly authorable physical-system topology relationship."},
+        {"key": {"kind": "relationship", "name": "reads_from"}, "display_name": "Reads From", "description": "Directly authorable physical-system topology relationship."},
+        {"key": {"kind": "relationship", "name": "subscribes_to"}, "display_name": "Subscribes To", "description": "Directly authorable physical-system topology relationship."},
+        {"key": {"kind": "relationship", "name": "writes_to"}, "display_name": "Writes To", "description": "Directly authorable physical-system topology relationship."},
+        {"key": {"kind": "value", "name": "normative_force"}, "display_name": "Normative Force", "description": "Shared carrier value with an exact fixed normative-force vocabulary."},
+        {"key": {"kind": "value", "name": "topology_component"}, "display_name": "Topology Component Occurrence", "description": "Owner-local physical-system topology occurrence referencing a canonical component."}
       ]
     },
     "list_types_kind_entity": {
-      "contract_version": "1.0",
-      "kind": "entity",
-      "ordered_names": [
-        "boundary",
-        "capability",
-        "component",
-        "contract",
-        "data_flow",
-        "decision",
-        "evidence_expectation",
-        "extension",
-        "gap",
-        "implementation_decision",
-        "interface",
-        "invariant",
-        "normative_proposition",
-        "system",
-        "system_boundary"
-      ]
+      "request": {"kind": "entity"},
+      "expected_response": {
+        "contract_version": "1.0",
+        "types": [
+          {"key": {"kind": "entity", "name": "boundary"}, "display_name": "Boundary", "description": "Canonical architectural boundary entity."},
+          {"key": {"kind": "entity", "name": "capability"}, "display_name": "Capability", "description": "Canonical architectural capability entity."},
+          {"key": {"kind": "entity", "name": "component"}, "display_name": "Component", "description": "Canonical independently addressable component entity."},
+          {"key": {"kind": "entity", "name": "contract"}, "display_name": "Contract", "description": "Canonical architectural contract entity."},
+          {"key": {"kind": "entity", "name": "data_flow"}, "display_name": "Data Flow", "description": "Canonical physical-system data-flow entity."},
+          {"key": {"kind": "entity", "name": "decision"}, "display_name": "Decision", "description": "Canonical logical architecture decision entity."},
+          {"key": {"kind": "entity", "name": "evidence_expectation"}, "display_name": "Evidence Expectation", "description": "Canonical expectation for evidence associated with authored meaning."},
+          {"key": {"kind": "entity", "name": "extension"}, "display_name": "Extension Entity Template", "description": "ADR-Kit-owned extension envelope with consumer-qualified semantic meaning."},
+          {"key": {"kind": "entity", "name": "gap"}, "display_name": "Gap", "description": "Canonical unresolved architectural gap entity."},
+          {"key": {"kind": "entity", "name": "implementation_decision"}, "display_name": "Implementation Decision", "description": "Canonical implementation decision of a physical component."},
+          {"key": {"kind": "entity", "name": "interface"}, "display_name": "Interface", "description": "Canonical interface entity owned by a component."},
+          {"key": {"kind": "entity", "name": "invariant"}, "display_name": "Invariant", "description": "Distinct canonical system-wide condition declared by a logical ADR."},
+          {"key": {"kind": "entity", "name": "normative_proposition"}, "display_name": "Normative Proposition", "description": "Canonical normative meaning governed by its declaring ADR."},
+          {"key": {"kind": "entity", "name": "system"}, "display_name": "System", "description": "Canonical physical system identity entity."},
+          {"key": {"kind": "entity", "name": "system_boundary"}, "display_name": "System Boundary", "description": "Canonical boundary entity within a physical system."}
+        ]
+      }
     },
     "representative_descriptors": {
       "adr/logical": {
@@ -147,3 +148,4 @@
   },
   "serialization_equivalence": "not_declared"
 }
+

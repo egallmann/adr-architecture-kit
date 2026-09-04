@@ -9,10 +9,45 @@
   "defined_capabilities": ["authoring.discovery"],
   "discovery_operations": ["describe_contract", "list_types", "describe_type"],
   "type_kinds": ["adr", "entity", "relationship", "value"],
-  "binding_projection": {
-    "capability_surface": "existing_root_capabilities_when_implemented",
-    "python": {"capability_fields": "planned", "discovery_entrypoint": "promoted_authority_not_implemented"},
-    "typescript": {"browser_safe_subpath": "./authoring", "entrypoint_status": "promoted_authority_not_implemented"}
+  "discovery_projections": {
+    "describe_contract": {
+      "response": {
+        "fields": ["contract_id", "contract_version", "defined_capabilities", "discovery_operations", "type_kinds"]
+      }
+    },
+    "list_types": {
+      "request": {
+        "kind": {
+          "presence": "optional",
+          "matching": "exact",
+          "case_sensitive": true,
+          "allowed_values": ["adr", "entity", "relationship", "value"]
+        }
+      },
+      "response": {
+        "fields": ["contract_version", "types"],
+        "item_type": "AuthoringTypeSummary",
+        "item_fields": ["key", "display_name", "description"]
+      },
+      "ordering": {
+        "deterministic": true,
+        "by": ["key.kind", "key.name"]
+      },
+      "filter": {
+        "request_field": "kind",
+        "response_echoed": false
+      }
+    },
+    "describe_type": {
+      "request": {
+        "fields": [
+          {"name": "kind", "required": true, "matching": "exact", "case_sensitive": true},
+          {"name": "name", "required": true, "matching": "exact", "case_sensitive": true},
+          {"name": "contract_version", "required": false, "matching": "exact", "case_sensitive": true}
+        ]
+      },
+      "response": {"type": "AuthoringTypeDescriptor"}
+    }
   },
   "types": [
     {
@@ -422,3 +457,4 @@
     "relationship/expects_evidence"
   ]
 }
+

@@ -55,7 +55,20 @@ jobs:
       - run: npm ci
         working-directory: packages/node
       - name: Audit Node dependencies
-        run: npm audit --audit-level=moderate
+        run: |
+          last_status=1
+          for attempt in 1 2 3; do
+            if npm audit --audit-level=moderate; then
+              exit 0
+            else
+              last_status=$?
+            fi
+            if [ "$attempt" -lt 3 ]; then
+              echo "npm audit failed on attempt ${attempt}; retrying after a transient registry failure window"
+              sleep $((attempt * 10))
+            fi
+          done
+          exit "$last_status"
         working-directory: packages/node
       - run: npm run build
         working-directory: packages/node
@@ -363,3 +376,4 @@ jobs:
       - run: python -m pip install --upgrade pip
       - run: python -m pip install .[dev]
       - run: python benchmarks/phase0.py --corpus synthetic --sizes 10 --warmups 0 --repeats 1 --json-out benchmark-smoke.json
+

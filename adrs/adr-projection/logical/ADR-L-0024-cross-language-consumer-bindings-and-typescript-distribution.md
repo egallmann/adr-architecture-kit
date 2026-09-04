@@ -5,8 +5,8 @@ artifact_kind: rendered_adr_markdown
 generator_id: adr-projection-markdown
 generator_version: 3
 hash_algorithm: sha256
-source_hash: ce9164797957e06a7fdf4aafa0450538d1862245c1ff1706415eaca2d69123f8
-rendered_hash: 75c001ef5ac8fda2eb725adcfc167ec5d7d82933ad3417079dfd1059b08ca294
+source_hash: 78517cf559fb1405afa6b77f725e461ea60bb289a0e3b9bffce76f1986226b94
+rendered_hash: 8259255d9358410803ec185c2589df33b068d47d6148cde82a4e5629ac452006
 -->
 
 # ADR-L-0024: Cross-Language Consumer Bindings and TypeScript Distribution
@@ -18,7 +18,7 @@ rendered_hash: 75c001ef5ac8fda2eb725adcfc167ec5d7d82933ad3417079dfd1059b08ca294
 **Alias:** ADR-L-0024  
 **Authoring contract:** authoring v1.5  
 **Created:** 2026-08-23  
-**Authors:** adr-architecture-kit  
+**Authors:** erik.gallmann  
 **Domains:** architecture, consumer-bindings, schema-governance, distribution  
 **Tags:** consumer-binding, typescript, node, browser, conformance, read-only  
 
@@ -323,6 +323,7 @@ Explicit failure prevents historical implementation behavior from becoming accid
 - [ADR-L-0020](ADR-L-0020-semantic-implementation-attribution-and-cross-layer-architecture-relationships.md)
 - [ADR-L-0023](ADR-L-0023-consumer-semantic-extension-contract.md)
 - [ADR-L-0025](ADR-L-0025-topology-and-contract-succession-authority.md)
+- [ADR-L-0026](ADR-L-0026-authoring-domain-contract-discovery-authority.md)
 
 
 

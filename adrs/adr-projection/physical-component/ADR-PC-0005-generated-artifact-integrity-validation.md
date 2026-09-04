@@ -5,8 +5,8 @@ artifact_kind: rendered_adr_markdown
 generator_id: adr-projection-markdown
 generator_version: 3
 hash_algorithm: sha256
-source_hash: eff76b100b87d09f9256e3887761898227cd73b3abfea48e4c5466e275934f42
-rendered_hash: 4a9a8ce4f5e849b91c74c0fd07c6099475c7a04b6ca11de3c7cd1414f2ff7304
+source_hash: 0258ac1ea1a1a2b7864eec23850784f5b54ebe770d4aa5112cc3691464cc962d
+rendered_hash: c6595a0645da98429f492649c437d801401011e0da04e78a87141ef28cc9c57d
 -->
 
 # ADR-PC-0005: Generated Artifact Integrity Validation
@@ -19,7 +19,7 @@ rendered_hash: 4a9a8ce4f5e849b91c74c0fd07c6099475c7a04b6ca11de3c7cd1414f2ff7304
 **Authoring contract:** authoring v1.5  
 **Created:** 2026-03-15  
 **Modified:** 2026-08-27  
-**Authors:** adr-architecture-kit  
+**Authors:** erik.gallmann  
 **Domains:** integrity, validation, projections  
 **Implements Logical:** [ADR-L-0007](../logical/ADR-L-0007-deterministic-documentation-projection.md), [ADR-L-0013](../logical/ADR-L-0013-architecture-repository-boundary-and-normalized-semantic-model.md)  
 **Implements System:** [ADR-PS-0002](../physical-system/ADR-PS-0002-adr-kit-authoring-compiler-and-validation-system.md)  

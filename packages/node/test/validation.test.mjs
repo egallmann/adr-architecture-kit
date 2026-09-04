@@ -12,6 +12,9 @@ const load = async (path) => JSON.parse(await readFile(resolve(root, path), "utf
 test("capability discovery is local and explicit", () => {
   const manifest = capabilities();
   assert.deepEqual(manifest.supported_normalized_model_versions, ["2.1"]);
+  assert.equal("supported_authoring_domain_versions" in manifest, false);
+  assert.equal("preferred_authoring_domain_version" in manifest, false);
+  assert.equal("authoring_capabilities" in manifest, false);
   assert.deepEqual(manifest.browser_safe_entrypoints, [".", "./model", "./schemas", "./validation"]);
 });
 

@@ -5,8 +5,8 @@ artifact_kind: rendered_adr_markdown
 generator_id: adr-projection-markdown
 generator_version: 3
 hash_algorithm: sha256
-source_hash: 1107add6de90fa8d9c94f1722ef8fcc275c057693b2528e4c1db7bcad3e1dc75
-rendered_hash: a03512e37da2d58b56e4b4d01c0756f5bc68d3bf5fb5b0e9159e3288afa14d72
+source_hash: 78e9035cd4e0c2d15eaa8b427a304e583f3a15615f05f71d8819085a18df9a46
+rendered_hash: ef261e09266c4415e010d8b6b1cf61b8dd990d9b8a8092b46b807b9c2abcbc2b
 -->
 
 # ADR-L-0003: Quality Assurance and Testing Strategy
@@ -19,7 +19,7 @@ rendered_hash: a03512e37da2d58b56e4b4d01c0756f5bc68d3bf5fb5b0e9159e3288afa14d72
 **Authoring contract:** authoring v1.5  
 **Created:** 2026-03-08  
 **Modified:** 2026-08-05  
-**Authors:** adr-architecture-kit  
+**Authors:** erik.gallmann  
 **Domains:** quality-assurance, testing, governance, reliability  
 **Tags:** testing, quality, ci-cd, validation, coverage  
 

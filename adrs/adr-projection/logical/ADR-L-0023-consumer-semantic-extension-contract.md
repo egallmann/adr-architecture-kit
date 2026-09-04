@@ -5,8 +5,8 @@ artifact_kind: rendered_adr_markdown
 generator_id: adr-projection-markdown
 generator_version: 3
 hash_algorithm: sha256
-source_hash: 8c3421d71bc355f6050425f821d7527c46bb50867ab521e5fbae0ecf6463e4e0
-rendered_hash: a3d8896b4a7eb0eeeea49af793f0ce0ef922f4f21049a5e7972dee11987fba73
+source_hash: 8e83bf9ae6547b9fdf0bcac9a5133f0c1a164e55f0c01b9a98dbe1da81f2b907
+rendered_hash: b0022adae9e9ffc8746e703e55902c57eeece76b49fd6f2cbf19beddfffbc34f
 -->
 
 # ADR-L-0023: Consumer Semantic Extension Contract
@@ -18,7 +18,7 @@ rendered_hash: a3d8896b4a7eb0eeeea49af793f0ce0ef922f4f21049a5e7972dee11987fba73
 **Alias:** ADR-L-0023  
 **Authoring contract:** authoring v1.5  
 **Created:** 2026-08-21  
-**Authors:** adr-architecture-kit  
+**Authors:** erik.gallmann  
 **Domains:** architecture, schema-governance, extensibility  
 
 ## Architecture at a Glance
@@ -254,6 +254,7 @@ The local-only v1 boundary must not create an alias or hidden-property reference
 - [ADR-L-0022](ADR-L-0022-universal-uuidv7-entity-identity.md)
 - [ADR-L-0025](ADR-L-0025-topology-and-contract-succession-authority.md)
 - [ADR-L-0024](ADR-L-0024-cross-language-consumer-bindings-and-typescript-distribution.md)
+- [ADR-L-0026](ADR-L-0026-authoring-domain-contract-discovery-authority.md)
 
 
 

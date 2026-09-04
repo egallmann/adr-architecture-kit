@@ -5,7 +5,7 @@ title: Brownfield Onboarding and Canonicalization Workflow
 status: accepted
 created_date: '2026-03-15'
 authors:
-- adr-architecture-kit
+- erik.gallmann
 domains:
 - migration
 - onboarding

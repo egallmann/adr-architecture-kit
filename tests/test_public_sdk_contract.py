@@ -250,6 +250,9 @@ def test_capability_manifest_is_exact_and_deterministic() -> None:
     assert first.supported_normalized_model_schema_versions == ("1.1", "2.0", "2.1", "2.2")
     assert first.supported_evidence_attribution_versions == ("1.5", "1.6")
     assert first.preferred_evidence_attribution_version == "1.6"
+    assert "supported_authoring_domain_versions" not in first.as_dict()
+    assert "preferred_authoring_domain_version" not in first.as_dict()
+    assert "authoring_capabilities" not in first.as_dict()
     assert list(first.as_dict()) == [field.name for field in fields(first)]
     assert all(not isinstance(value, tuple) for value in first.as_dict().values())
 

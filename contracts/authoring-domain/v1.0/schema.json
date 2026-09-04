@@ -1,0 +1,53 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://adr-kit.ste.systems/contracts/authoring-domain/v1.0/schema.json",
+  "title": "ADR Kit Authoring Domain Contract 1.0 shape",
+  "description": "Structural validation for the promoted ADC 1.0 authority artifact. It does not generate or define the catalog.",
+  "type": "object",
+  "required": ["contract_id", "contract_version", "defined_capabilities", "discovery_operations", "type_kinds", "types", "diagnostics"],
+  "properties": {
+    "$schema": {"const": "./schema.json"},
+    "contract_id": {"const": "adr-kit.authoring-domain"},
+    "contract_version": {"const": "1.0"},
+    "contract_family": {"const": "authoring_domain"},
+    "versioning": {"type": "object"},
+    "defined_capabilities": {"type": "array", "items": {"type": "string"}},
+    "discovery_operations": {"type": "array", "items": {"type": "string"}},
+    "type_kinds": {"type": "array", "items": {"enum": ["adr", "entity", "relationship", "value"]}},
+    "binding_projection": {"type": "object"},
+    "types": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["contract_version", "key", "display_name", "description", "authoring_mode", "semantic_type_ownership", "discriminator", "input_contract", "identity_policy", "composition_policy", "reference_policy", "field_ownership_policy"],
+        "properties": {
+          "contract_version": {"const": "1.0"},
+          "key": {"type": "object", "required": ["kind", "name"], "properties": {"kind": {"enum": ["adr", "entity", "relationship", "value"]}, "name": {"type": "string", "pattern": "^[a-z][a-z0-9]*(?:_[a-z0-9]+|-[a-z0-9]+)*$"}}, "additionalProperties": false},
+          "display_name": {"type": "string"},
+          "description": {"type": "string"},
+          "authoring_mode": {"enum": ["direct", "embedded", "template"]},
+          "semantic_type_ownership": {"enum": ["adr_kit", "consumer_qualified"]},
+          "discriminator": {"type": ["object", "null"]},
+          "input_contract": {"$ref": "#/$defs/policy"},
+          "identity_policy": {"$ref": "#/$defs/policy"},
+          "composition_policy": {"$ref": "#/$defs/policy"},
+          "reference_policy": {"$ref": "#/$defs/policy"},
+          "field_ownership_policy": {"$ref": "#/$defs/policy"}
+        },
+        "additionalProperties": false
+      }
+    },
+    "diagnostics": {"type": "object"},
+    "reconciliation_notes": {"type": "array"},
+    "excluded_from_version": {"type": "array", "items": {"type": "string"}}
+  },
+  "$defs": {
+    "policy": {
+      "type": "object",
+      "required": ["status"],
+      "properties": {"status": {"enum": ["defined", "deferred", "not_applicable"]}},
+      "additionalProperties": true
+    }
+  },
+  "additionalProperties": false
+}

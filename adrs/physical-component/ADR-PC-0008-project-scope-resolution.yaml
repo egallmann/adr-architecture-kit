@@ -7,7 +7,7 @@ title: Project Scope Resolution
 status: accepted
 created_date: '2026-08-28'
 authors:
-- adr-architecture-kit
+- erik.gallmann
 domains:
 - implementation
 - adr

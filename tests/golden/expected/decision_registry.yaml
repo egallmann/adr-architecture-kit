@@ -11661,3 +11661,398 @@ entities:
     classification: explicit
     generator: adr-architecture-index
   schema_version: '2.2'
+- id: 01a05a26-0000-7700-8000-000000000177
+  alias_id: DEC-0177
+  alias_name: adc-is-independent-language-neutral-authority
+  alias_ref: DEC-0177:adc-is-independent-language-neutral-authority
+  entity_type: decision
+  name: ADC is a separately versioned language-neutral contract family
+  summary: ADC versions describe authoring semantics and are independent of canonical
+    ADR persistence-schema versions and package implementation versions.
+  uri: adr://adr-architecture-kit/entities/01a05a26-0000-7700-8000-000000000177
+  created_at: '2026-08-31T23:27:14.944Z'
+  entity_fingerprint: sha256:66ccbe358cb014f43f820b65ca2910ee5252e1203ce96e5d62e1aa6ccf42f21d
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a05a26-0000-7000-8000-000000000026#01a05a26-0000-7700-8000-000000000177
+    artifact_path: adrs/logical/ADR-L-0026-authoring-domain-contract-discovery-authority.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a05a26-0000-7000-8000-000000000026
+    adr_alias_id: ADR-L-0026
+    related_invariants: []
+    enforces_invariants: []
+    enables_capabilities: []
+    governs_components: []
+    supersedes: []
+    refines: []
+    alias_name: adc-is-independent-language-neutral-authority
+    alias_id: DEC-0177
+  relationships:
+    declared_in:
+    - 01a05a26-0000-7000-8000-000000000026
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    consumes_interface: []
+    composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a05a26-0000-7000-8000-000000000026#01a05a26-0000-7700-8000-000000000177
+    extraction_phase: extract_decision
+    classification: explicit
+    generator: adr-architecture-index
+  schema_version: '2.2'
+- id: 01a05a26-0000-7700-8000-000000000178
+  alias_id: DEC-0178
+  alias_name: adc-one-point-zero-is-discovery-only
+  alias_ref: DEC-0178:adc-one-point-zero-is-discovery-only
+  entity_type: decision
+  name: ADC 1.0 defines authoring discovery only
+  summary: The first slice limits the public contract to authoring.discovery and describe_contract,
+    list_types, and describe_type. Later construction and mutation semantics require
+    separate authority.
+  uri: adr://adr-architecture-kit/entities/01a05a26-0000-7700-8000-000000000178
+  created_at: '2026-08-31T23:27:14.944Z'
+  entity_fingerprint: sha256:491f84efdda0940e7f50c44f98086697431aabdff6238840e17fdcfdcdaf2dc1
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a05a26-0000-7000-8000-000000000026#01a05a26-0000-7700-8000-000000000178
+    artifact_path: adrs/logical/ADR-L-0026-authoring-domain-contract-discovery-authority.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a05a26-0000-7000-8000-000000000026
+    adr_alias_id: ADR-L-0026
+    related_invariants: []
+    enforces_invariants: []
+    enables_capabilities: []
+    governs_components: []
+    supersedes: []
+    refines: []
+    alias_name: adc-one-point-zero-is-discovery-only
+    alias_id: DEC-0178
+  relationships:
+    declared_in:
+    - 01a05a26-0000-7000-8000-000000000026
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    consumes_interface: []
+    composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a05a26-0000-7000-8000-000000000026#01a05a26-0000-7700-8000-000000000178
+    extraction_phase: extract_decision
+    classification: explicit
+    generator: adr-architecture-index
+  schema_version: '2.2'
+- id: 01a05a26-0000-7700-8000-000000000179
+  alias_id: DEC-0179
+  alias_name: adc-catalog-is-explicit-and-exactly-twenty-seven-types
+  alias_ref: DEC-0179:adc-catalog-is-explicit-and-exactly-twenty-seven-types
+  entity_type: decision
+  name: ADC 1.0 admits exactly 27 explicit types addressed by kind and name
+  summary: The catalog is curated contract authority, not a projection of Python enums,
+    schemas, registries, compiler IR, or nesting. The selector is the exact, case-sensitive
+    pair (kind, name); no persisted global type_id is intro
+  uri: adr://adr-architecture-kit/entities/01a05a26-0000-7700-8000-000000000179
+  created_at: '2026-08-31T23:27:14.944Z'
+  entity_fingerprint: sha256:65f1ee97a4ecb582ad758c447d0051bb44f8806f7b6fb7b9e2d65ae9839be6ff
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a05a26-0000-7000-8000-000000000026#01a05a26-0000-7700-8000-000000000179
+    artifact_path: adrs/logical/ADR-L-0026-authoring-domain-contract-discovery-authority.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a05a26-0000-7000-8000-000000000026
+    adr_alias_id: ADR-L-0026
+    related_invariants: []
+    enforces_invariants: []
+    enables_capabilities: []
+    governs_components: []
+    supersedes: []
+    refines: []
+    alias_name: adc-catalog-is-explicit-and-exactly-twenty-seven-types
+    alias_id: DEC-0179
+  relationships:
+    declared_in:
+    - 01a05a26-0000-7000-8000-000000000026
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    consumes_interface: []
+    composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a05a26-0000-7000-8000-000000000026#01a05a26-0000-7700-8000-000000000179
+    extraction_phase: extract_decision
+    classification: explicit
+    generator: adr-architecture-index
+  schema_version: '2.2'
+- id: 01a05a26-0000-7700-8000-000000000180
+  alias_id: DEC-0180
+  alias_name: adc-preserves-semantic-boundaries-and-policy-maturity
+  alias_ref: DEC-0180:adc-preserves-semantic-boundaries-and-policy-maturity
+  entity_type: decision
+  name: ADC descriptors preserve admission, composition, identity, and policy maturity
+  summary: Descriptors distinguish defined, deferred, and not_applicable policy state;
+    preserve logical-only Invariant declaration, three-parent NormativeProposition
+    declaration, owner-local topology values, consumer-owned extensio
+  uri: adr://adr-architecture-kit/entities/01a05a26-0000-7700-8000-000000000180
+  created_at: '2026-08-31T23:27:14.944Z'
+  entity_fingerprint: sha256:2f5c1f4252edc3ff5f3ac32300f4d851a4dfd7ecd2a3f785778108029d3d0177
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a05a26-0000-7000-8000-000000000026#01a05a26-0000-7700-8000-000000000180
+    artifact_path: adrs/logical/ADR-L-0026-authoring-domain-contract-discovery-authority.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a05a26-0000-7000-8000-000000000026
+    adr_alias_id: ADR-L-0026
+    related_invariants: []
+    enforces_invariants: []
+    enables_capabilities: []
+    governs_components: []
+    supersedes: []
+    refines: []
+    alias_name: adc-preserves-semantic-boundaries-and-policy-maturity
+    alias_id: DEC-0180
+  relationships:
+    declared_in:
+    - 01a05a26-0000-7000-8000-000000000026
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    consumes_interface: []
+    composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a05a26-0000-7000-8000-000000000026#01a05a26-0000-7700-8000-000000000180
+    extraction_phase: extract_decision
+    classification: explicit
+    generator: adr-architecture-index
+  schema_version: '2.2'
+- id: 01a05a26-0000-7700-8000-000000000181
+  alias_id: DEC-0181
+  alias_name: adc-extends-consumer-binding-conformance
+  alias_ref: DEC-0181:adc-extends-consumer-binding-conformance
+  entity_type: decision
+  name: ADC cross-language qualification extends Consumer Binding Contract 1.0
+  summary: Python and TypeScript qualify against the same checked-in ADC evidence
+    for structural, semantic, behavioral, and diagnostic equivalence. ADC 1.0 makes
+    no byte-identical discovery serialization declaration.
+  uri: adr://adr-architecture-kit/entities/01a05a26-0000-7700-8000-000000000181
+  created_at: '2026-08-31T23:27:14.944Z'
+  entity_fingerprint: sha256:7937aaecce1a3cdebbd6ab3b357d8c5fa73d39a79762e5f2daa5639315cf1c14
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a05a26-0000-7000-8000-000000000026#01a05a26-0000-7700-8000-000000000181
+    artifact_path: adrs/logical/ADR-L-0026-authoring-domain-contract-discovery-authority.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a05a26-0000-7000-8000-000000000026
+    adr_alias_id: ADR-L-0026
+    related_invariants: []
+    enforces_invariants: []
+    enables_capabilities: []
+    governs_components: []
+    supersedes: []
+    refines: []
+    alias_name: adc-extends-consumer-binding-conformance
+    alias_id: DEC-0181
+  relationships:
+    declared_in:
+    - 01a05a26-0000-7000-8000-000000000026
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    consumes_interface: []
+    composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a05a26-0000-7000-8000-000000000026#01a05a26-0000-7700-8000-000000000181
+    extraction_phase: extract_decision
+    classification: explicit
+    generator: adr-architecture-index
+  schema_version: '2.2'
+- id: 01a05a26-0000-7700-8000-000000000182
+  alias_id: DEC-0182
+  alias_name: defer-consumes-interface-reconciliation
+  alias_ref: DEC-0182:defer-consumes-interface-reconciliation
+  entity_type: decision
+  name: Keep consumes_interface outside ADC 1.0 pending authority and substrate reconciliation
+  summary: ADR-L-0025 names the vocabulary item while the v1.5 authored topology substrate
+    does not admit it consistently and its endpoint meaning is unresolved. This promotion
+    records the conflict and does not silently add, remove
+  uri: adr://adr-architecture-kit/entities/01a05a26-0000-7700-8000-000000000182
+  created_at: '2026-08-31T23:27:14.944Z'
+  entity_fingerprint: sha256:2fd5a28c5db54e2e28fe4d6914b6c9dd3a01bcf61e188ed070e6f1a63a3c873f
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a05a26-0000-7000-8000-000000000026#01a05a26-0000-7700-8000-000000000182
+    artifact_path: adrs/logical/ADR-L-0026-authoring-domain-contract-discovery-authority.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a05a26-0000-7000-8000-000000000026
+    adr_alias_id: ADR-L-0026
+    related_invariants: []
+    enforces_invariants: []
+    enables_capabilities: []
+    governs_components: []
+    supersedes: []
+    refines: []
+    alias_name: defer-consumes-interface-reconciliation
+    alias_id: DEC-0182
+  relationships:
+    declared_in:
+    - 01a05a26-0000-7000-8000-000000000026
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    consumes_interface: []
+    composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a05a26-0000-7000-8000-000000000026#01a05a26-0000-7700-8000-000000000182
+    extraction_phase: extract_decision
+    classification: explicit
+    generator: adr-architecture-index
+  schema_version: '2.2'

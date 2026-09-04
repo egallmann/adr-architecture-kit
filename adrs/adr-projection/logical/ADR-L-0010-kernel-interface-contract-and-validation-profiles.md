@@ -5,8 +5,8 @@ artifact_kind: rendered_adr_markdown
 generator_id: adr-projection-markdown
 generator_version: 3
 hash_algorithm: sha256
-source_hash: 5c85d9022e215824da02932e77d2d0700944f862bd91894043a59ea915e27597
-rendered_hash: 0329cb847a8bd49053571591eee890e3252871fcc72eb03c3e8cfc9c77b37618
+source_hash: 1bbdad4ddd9b357222c44c4ead4d00f2ad44fda5ab845e756d159bcbe768cfcb
+rendered_hash: 16841150beeb7591cc50cf5050b8fa7d3add09d6a5fb66c5c401831392a9b9df
 -->
 
 # ADR-L-0010: Kernel Interface Contract and Validation Profiles
@@ -18,7 +18,7 @@ rendered_hash: 0329cb847a8bd49053571591eee890e3252871fcc72eb03c3e8cfc9c77b37618
 **Alias:** ADR-L-0010  
 **Authoring contract:** authoring v1.5  
 **Created:** 2026-03-14  
-**Authors:** adr-architecture-kit  
+**Authors:** erik.gallmann  
 **Domains:** kernel, contract, governance, validation  
 **Tags:** contract, registries, brownfield, migration, sentinel  
 

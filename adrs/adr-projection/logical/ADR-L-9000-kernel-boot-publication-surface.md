@@ -5,8 +5,8 @@ artifact_kind: rendered_adr_markdown
 generator_id: adr-projection-markdown
 generator_version: 3
 hash_algorithm: sha256
-source_hash: 19139073a655d178580382a5290ee0f49e560128b7abe7709113a2c3a462d445
-rendered_hash: 21b5cbd48a35bfa076775470e5c51624bbbdef0076bc05c8941adda2438d1339
+source_hash: ccf06efe8c1c85efa1a5c3204f28777952abde9d11de4385da467ecbf4d4e82c
+rendered_hash: 4eebae07203eefb05a58066e7d8054fa730c990bf8290ac83e196ac3b241db80
 -->
 
 # ADR-L-9000: Kernel Boot Publication Surface
@@ -18,7 +18,7 @@ rendered_hash: 21b5cbd48a35bfa076775470e5c51624bbbdef0076bc05c8941adda2438d1339
 **Alias:** ADR-L-9000  
 **Authoring contract:** authoring v1.5  
 **Created:** 2026-03-21  
-**Authors:** adr-architecture-kit  
+**Authors:** erik.gallmann  
 **Domains:** kernel, integration  
 **Tags:** boot, publication  
 

@@ -5,8 +5,8 @@ artifact_kind: rendered_adr_markdown
 generator_id: adr-projection-markdown
 generator_version: 3
 hash_algorithm: sha256
-source_hash: a831c21bb67b7f9d528ea14bfb373540d70b69442e58510677d4330c9c6294a3
-rendered_hash: d65918e77337ac9ac5f07a1816266f5fb5a5ec2469c10628bec4ab9ce724dc3e
+source_hash: 51d529a89c14f9504a8e4129ef198cac2cd19b77224b5027470f847616ff9a42
+rendered_hash: 53e0a78c6c5553016919feae7ae31be604d177f4ebefa9db03856ee2aa04ca57
 -->
 
 # ADR-PC-0007: Semantic Attribution Embodiment
@@ -19,7 +19,7 @@ rendered_hash: d65918e77337ac9ac5f07a1816266f5fb5a5ec2469c10628bec4ab9ce724dc3e
 **Authoring contract:** authoring v1.5  
 **Created:** 2026-08-13  
 **Modified:** 2026-08-27  
-**Authors:** adr-architecture-kit  
+**Authors:** erik.gallmann  
 **Domains:** attribution, validation, decorators  
 **Implements Logical:** [ADR-L-0004](../logical/ADR-L-0004-adr-to-implementation-traceability-via-decorators-and-metadata-attribution.md), [ADR-L-0020](../logical/ADR-L-0020-semantic-implementation-attribution-and-cross-layer-architecture-relationships.md)  
 **Implements System:** [ADR-PS-0002](../physical-system/ADR-PS-0002-adr-kit-authoring-compiler-and-validation-system.md)  

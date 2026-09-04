@@ -5,7 +5,7 @@ title: Universal UUIDv7 Entity Identity
 status: accepted
 created_date: '2026-08-15'
 authors:
-- adr-architecture-kit
+- erik.gallmann
 domains:
 - architecture
 - identity

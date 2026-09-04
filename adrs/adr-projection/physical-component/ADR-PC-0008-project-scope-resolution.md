@@ -5,8 +5,8 @@ artifact_kind: rendered_adr_markdown
 generator_id: adr-projection-markdown
 generator_version: 3
 hash_algorithm: sha256
-source_hash: 6eb6cca0f8d571f620ac3c50c1948dd85ff5f33af485f5ed25a72a785976ebdb
-rendered_hash: 9f9f6e2506ad959a8657bfd6e20030d7fb8fc194015214729d769dc189cf6613
+source_hash: 83d81cabee4959935e75a5daf184b9c889e9a2aa3051ad1690d6c23e4f8d4d2a
+rendered_hash: e0f8bc584457fb1414330e602961dd3c86699c28a92f0fcf301588195c030772
 -->
 
 # ADR-PC-0008: Project Scope Resolution
@@ -18,7 +18,7 @@ rendered_hash: 9f9f6e2506ad959a8657bfd6e20030d7fb8fc194015214729d769dc189cf6613
 **Alias:** ADR-PC-0008  
 **Authoring contract:** authoring v1.5  
 **Created:** 2026-08-28  
-**Authors:** adr-architecture-kit  
+**Authors:** erik.gallmann  
 **Domains:** implementation, adr, python, scope-resolution  
 **Tags:** python, scope-resolution, multi-scope  
 **Implements Logical:** [ADR-L-0002](../logical/ADR-L-0002-multi-scope-adr-architecture-for-sub-module-development.md)  

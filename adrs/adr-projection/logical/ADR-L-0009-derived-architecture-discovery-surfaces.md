@@ -5,8 +5,8 @@ artifact_kind: rendered_adr_markdown
 generator_id: adr-projection-markdown
 generator_version: 3
 hash_algorithm: sha256
-source_hash: d63e9fa8a1af3ece11e8a604a647bd6428b68f0b26c03cd2f95ccaf199888792
-rendered_hash: 75fbfd25454ae2500bb6cedfeb644a2a67d9a7e665db06adcd98fe86d9ca0c22
+source_hash: 2f4a07be4dab4eafe2c6a79cac1c0a71597bb0622b07aeb5ec7704d17f9a123f
+rendered_hash: e9b9e86e1343076c8e51bc5ae750a89645e094d3108b90e57d517a5c356d217b
 -->
 
 # ADR-L-0009: Derived Architecture Discovery Surfaces
@@ -18,7 +18,7 @@ rendered_hash: 75fbfd25454ae2500bb6cedfeb644a2a67d9a7e665db06adcd98fe86d9ca0c22
 **Alias:** ADR-L-0009  
 **Authoring contract:** authoring v1.5  
 **Created:** 2026-03-13  
-**Authors:** adr-architecture-kit  
+**Authors:** erik.gallmann  
 **Domains:** discovery, indexing, governance, ai-first  
 **Tags:** entity-registry, manifest, discovery, agent-tooling  
 

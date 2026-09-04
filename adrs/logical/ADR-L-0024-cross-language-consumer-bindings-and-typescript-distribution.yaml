@@ -7,7 +7,7 @@ title: Cross-Language Consumer Bindings and TypeScript Distribution
 status: accepted
 created_date: '2026-08-23'
 authors:
-- adr-architecture-kit
+- erik.gallmann
 domains:
 - architecture
 - consumer-bindings

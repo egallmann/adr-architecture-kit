@@ -5,8 +5,8 @@ artifact_kind: rendered_adr_markdown
 generator_id: adr-projection-markdown
 generator_version: 3
 hash_algorithm: sha256
-source_hash: 026c8bde9b294120b58f5a4f9061f2307c15f8de2d92f33492d91ca406404c6d
-rendered_hash: 1ee486757b597caa5395787efabbe71abe82c163f5e33aae15c117f4b89ac497
+source_hash: 219a87c0e8ced5e2c67be8e48131edfdbae5d8cfb738f8e755ea994218434718
+rendered_hash: c83ee2cfd53ad3f11af1445160dca4d210353e57b939407a8fecc0198bedb925
 -->
 
 # ADR-PS-0001: ADR Architecture Kit Discovery and Indexing System
@@ -20,7 +20,7 @@ rendered_hash: 1ee486757b597caa5395787efabbe71abe82c163f5e33aae15c117f4b89ac497
 **Authoring contract:** authoring v1.5  
 **Created:** 2026-03-13  
 **Modified:** 2026-08-27  
-**Authors:** adr-architecture-kit  
+**Authors:** erik.gallmann  
 **Domains:** discovery, indexing, tooling  
 **Implements Logical:** [ADR-L-0009](../logical/ADR-L-0009-derived-architecture-discovery-surfaces.md), [ADR-L-0012](../logical/ADR-L-0012-federation-authority-and-qualified-identity-model.md), [ADR-L-0002](../logical/ADR-L-0002-multi-scope-adr-architecture-for-sub-module-development.md)  
 

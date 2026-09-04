@@ -5,8 +5,8 @@ artifact_kind: rendered_adr_markdown
 generator_id: adr-projection-markdown
 generator_version: 3
 hash_algorithm: sha256
-source_hash: addd93060fbcbb54c097db7269b59253d65f1ac9f4d69a011e035bc8ccdd479e
-rendered_hash: a8f3fb06729ee30fde3999788e05e4889abd6b9723fd063a53fe4a4294465cbc
+source_hash: 30c3d7dc7acff4f6a6c33a3603a8aea2976488e46071e6033641711d4212524f
+rendered_hash: 51345f836b24b90f8ef494e7a53c14ea5892c6a58676b878717e519f9d18eafc
 -->
 
 # ADR-L-0011: Metadata Schemas and Remediation Ledger Enforcement
@@ -18,7 +18,7 @@ rendered_hash: a8f3fb06729ee30fde3999788e05e4889abd6b9723fd063a53fe4a4294465cbc
 **Alias:** ADR-L-0011  
 **Authoring contract:** authoring v1.5  
 **Created:** 2026-03-14  
-**Authors:** adr-architecture-kit  
+**Authors:** erik.gallmann  
 **Domains:** governance, metadata, migration, brownfield  
 **Tags:** metadata, remediation-ledger, sentinel, approval  
 

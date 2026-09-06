@@ -4,13 +4,13 @@
 # generator_id: adr-architecture-graph
 # generator_version: 1
 # hash_algorithm: sha256
-# source_hash: fd5b2fee18e5cc83c98fec0d93603b78842d15a726ea59d4730ac96ea2517fab
-# rendered_hash: f8657c63476dc2768f6878a2a42c0840cca6a8436a78606a1290b8857252f47f
+# source_hash: 5a0af0b3ef669f42363332744474f4251a5f9e6156e0f1fa8de9c196bf8b7101
+# rendered_hash: 6c59b87ec8f5adfc914bf49a51442ad3efc0d9a04da05ba43b98df0117210a65
 
 schema_version: '1.0'
 type: architecture_graph
 architecture_namespace: adr-architecture-kit
-generated_at: '2026-09-03T00:52:16Z'
+generated_at: '2026-01-01T00:00:00Z'
 nodes:
 - id: 019fee89-e614-707f-8d3f-7a814d286ce6
   entity_type: capability
@@ -1505,8 +1505,8 @@ nodes:
     artifact_path: adrs/physical-component/ADR-PC-0002-schema-and-contract-validation.yaml
 - id: 019fee89-e617-707d-bb3e-959ff33027b8
   entity_type: decision
-  name: Keep v1.0 frozen, v1.2 migratable, and v1.3 as a separate provisional authoring
-    line
+  name: Keep v1.0 as the stable backward-compatible compatibility line, v1.2 migratable,
+    and v1.3 as a separate provisional authoring line
   canonical_source:
     source_type: logical_adr
     source_ref: 019fee89-e617-78d9-ba3b-b7e3e6db1b12#019fee89-e617-707d-bb3e-959ff33027b8

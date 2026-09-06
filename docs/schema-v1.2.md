@@ -1,14 +1,14 @@
 # ADR authoring schema v1.2
 
 Schema v1.2 is the provisional additive ADR authoring line introduced by
-ADR-L-0018. It does not replace or modify the frozen v1.0 encoding, and it does
+ADR-L-0018. It does not replace or modify the stable v1.0 compatibility line, and it does
 not repurpose the provisional v1.1 discovery and ledger schemas.
 
 ## Version posture
 
 | Line | Purpose | Stability |
 |---|---|---|
-| `schema/v1.0/` | ADR authoring encoding | Stable and frozen |
+| `schema/v1.0/` | ADR authoring encoding | Stable backward-compatible compatibility line |
 | `schema/architecture-discovery/v1.1/`, `schema/governance/v1.1/`, `schema/evidence-attribution/v1.1/`, `schema/normalized-model/v1.1/` | Discovery, ledger, remediation, attribution, and normalized-model contracts | Provisional |
 | `schema/authoring/v1.2/` | Additive ADR authoring encoding | Provisional |
 

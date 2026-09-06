@@ -14301,14 +14301,14 @@ entities:
   alias_name: keep-v1-0-frozen-v1-2-migratable-and-v1-3-as-a-separate-provisional-authoring-line
   alias_ref: DEC-0106:keep-v1-0-frozen-v1-2-migratable-and-v1-3-as-a-separate-provisional-authoring-line
   entity_type: decision
-  name: Keep v1.0 frozen, v1.2 migratable, and v1.3 as a separate provisional authoring
-    line
-  summary: V1.0 remains byte-frozen and readable, v1.2 remains readable and migratable,
-    v1.3 is a separate provisional authoring line, readers continue loading normalized
-    1.1 bundles, and UUID identity advances v1.3 normalized sema
+  name: Keep v1.0 as the stable backward-compatible compatibility line, v1.2 migratable,
+    and v1.3 as a separate provisional authoring line
+  summary: 'V1.0 remains the stable backward-compatible and readable compatibility
+    line, v1.2 remains readable and migratable, v1.3 is a separate provisional authoring
+    line, readers continue loading normalized 1.1 bundles, and UUID '
   uri: adr://adr-architecture-kit/entities/019fee89-e617-707d-bb3e-959ff33027b8
   created_at: '2026-08-11T01:57:22.583Z'
-  entity_fingerprint: sha256:ea4dabb4a91d1da3b81953d005eec2d1dd3e0d504e09e70f31eb2ef272c18041
+  entity_fingerprint: sha256:ab38c0749c35511ab4a0d5dbe1fade3183a48244bd92857b1fda01d568e6b780
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -14500,7 +14500,8 @@ entities:
   entity_type: capability
   name: Additive ADR Schema v1.2 Authoring
   summary: Validate, parse, package, and compile provisional v1.2 ADR authoring while
-    preserving frozen v1.0 and the existing provisional v1.1 artifact family.
+    preserving the stable v1.0 compatibility line and the existing provisional v1.1
+    artifact family.
   uri: adr://adr-architecture-kit/entities/019fee89-e617-710a-b91f-e749ebab9a95
   created_at: '2026-08-11T01:57:22.583Z'
   entity_fingerprint: sha256:1a87d33b295f7ec3b072119e074e6c28133c2c9147594761ee204caed345153c
@@ -16738,9 +16739,9 @@ entities:
   alias_ref: DEC-0083:introduce-provisional-additive-adr-authoring-schema-v1-2
   entity_type: decision
   name: Introduce provisional additive ADR authoring schema v1.2
-  summary: Schema v1.2 extends the existing ADR authoring shapes with external-reference,
+  summary: 'Schema v1.2 extends the existing ADR authoring shapes with external-reference,
     binding, evidence-expectation, and topology-ID fields. Version dispatch must be
-    explicit. Schema v1.0 files remain byte-for-byte frozen and v
+    explicit. Schema v1.0 remains the stable backward-compatible '
   uri: adr://adr-architecture-kit/entities/019fee89-e617-7736-a637-e6e472c4d4e6
   created_at: '2026-08-11T01:57:22.583Z'
   entity_fingerprint: sha256:fbfe302e6516e37e382d6b7a3f1376b025b9a96211a776ac6ff19656408f7372
@@ -18273,9 +18274,9 @@ entities:
   alias_ref: INV-0077:inv-0077
   entity_type: invariant
   name: INV-0077
-  summary: ADR schema v1.0 MUST remain byte-for-byte frozen. Parser dispatch MUST
-    resolve v1.0 and v1.2 authoring explicitly, MUST preserve the existing provisional
-    v1.1 artifact behavior, and MUST reject unsupported future version
+  summary: ADR schema v1.0 MUST remain a stable backward-compatible compatibility
+    line. Previously valid v1.0 documents MUST remain valid. Existing v1.0 semantics
+    MUST NOT be silently removed, narrowed, or reinterpreted. Governed d
   uri: adr://adr-architecture-kit/entities/019fee89-e617-7aef-9f37-6e9c557332b3
   created_at: '2026-08-11T01:57:22.583Z'
   entity_fingerprint: sha256:7fe02f822f8b90406e547395bc768f8efa7138918897543a2f4b97aad0c3e809
@@ -18289,14 +18290,16 @@ entities:
     adr_id: 019fee89-e617-7f4d-811d-4862645a55c5
     adr_alias_id: ADR-L-0018
     scope: global
-    statement: 'ADR schema v1.0 MUST remain byte-for-byte frozen. Parser dispatch
-      MUST resolve
-
-      v1.0 and v1.2 authoring explicitly, MUST preserve the existing provisional
-
-      v1.1 artifact behavior, and MUST reject unsupported future versions without
-
-      falling back to another schema line.
+    statement: 'ADR schema v1.0 MUST remain a stable backward-compatible compatibility
+      line. Previously valid v1.0 documents MUST remain valid. Existing v1.0 semantics
+      MUST NOT be silently removed, narrowed, or reinterpreted. Governed defect corrections
+      MAY widen validation only when correcting a mismatch with already-authorized
+      semantics or ADR-Kit-owned generated artifacts and introducing no new semantic
+      meaning. Parser dispatch MUST resolve v1.0 and v1.2 authoring explicitly, MUST
+      preserve the existing provisional v1.1 artifact behavior, and MUST reject unsupported
+      future versions without falling back to another schema line. Exact schema bytes
+      and hashes identify a particular released artifact or package, not all future
+      releases carrying the v1.0 contract line.
 
       '
     enforcement_level: must

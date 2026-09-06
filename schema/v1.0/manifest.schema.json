@@ -148,7 +148,7 @@
       "additionalProperties": {
         "type": "array",
         "items": {
-          "$ref": "types.schema.json#/definitions/adr_id_physical"
+          "$ref": "types.schema.json#/definitions/adr_id_physical_any"
         }
       },
       "description": "Physical ADRs indexed by technology"
@@ -159,7 +159,7 @@
       "additionalProperties": {
         "type": "array",
         "items": {
-          "$ref": "types.schema.json#/definitions/adr_id_physical"
+          "$ref": "types.schema.json#/definitions/adr_id_physical_any"
         }
       },
       "description": "Mapping of logical ADRs to implementing physical ADRs"
@@ -183,7 +183,7 @@
           "enforced_by": {
             "type": "array",
             "items": {
-              "$ref": "types.schema.json#/definitions/adr_id_physical"
+              "$ref": "types.schema.json#/definitions/adr_id_physical_any"
             }
           },
           "enforcement_level": {

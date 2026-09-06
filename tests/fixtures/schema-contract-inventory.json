@@ -276,7 +276,7 @@
       "family": "stable-authoring-compatibility",
       "family_version": "v1.0",
       "schema_id": null,
-      "sha256": "15e02c4053e7d6d7f415e70feab703bc7a37cd02c69c1f6203beccb061da32a2",
+      "sha256": "9335ebfe54640368e251a368a302174a2ab27101b058fbd6de57c60e083d9c6d",
       "package_mirror_path": "src/adr_kit/schema/v1_0/manifest.schema.json",
       "mirror_disposition": "mirror"
     },
@@ -296,7 +296,7 @@
       "family": "stable-authoring-compatibility",
       "family_version": "v1.0",
       "schema_id": null,
-      "sha256": "fae298fafd55e0c1bd0eb2233380086f7f85710d83809a7876d1da1f2a736bca",
+      "sha256": "b9351f4b010551c53b6ec2cf9d3fb508df082ec8966b81ec0e2b8dc93c3bd1c8",
       "package_mirror_path": "src/adr_kit/schema/v1_0/types.schema.json",
       "mirror_disposition": "mirror"
     },

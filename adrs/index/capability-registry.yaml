@@ -3043,7 +3043,8 @@ entities:
   entity_type: capability
   name: Additive ADR Schema v1.2 Authoring
   summary: Validate, parse, package, and compile provisional v1.2 ADR authoring while
-    preserving frozen v1.0 and the existing provisional v1.1 artifact family.
+    preserving the stable v1.0 compatibility line and the existing provisional v1.1
+    artifact family.
   uri: adr://adr-architecture-kit/entities/019fee89-e617-710a-b91f-e749ebab9a95
   created_at: '2026-08-11T01:57:22.583Z'
   entity_fingerprint: sha256:1a87d33b295f7ec3b072119e074e6c28133c2c9147594761ee204caed345153c

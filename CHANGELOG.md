@@ -17,7 +17,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   Currently qualified released minor line: 3.14.x. Reference interpreter: 3.14.7.
 - Production UUIDv7 minting uses the Python 3.14 standard library `uuid.uuid7()`.
 - Canonical UUIDv7 identity semantics, validation, migration maps, and persisted UUIDs are unchanged.
+- ADR schema v1.0 stability is governed by semantic backward-compatibility (INV-0077 /
+  DEC-0083 / DEC-0106): previously valid documents remain valid; exact schema bytes
+  identify a released artifact, not an eternal freeze of the v1.0 line.
 
+### Fixed
+
+- Manifest `1.0` physical-only fields (`by_technology`, `logical_to_physical_map`,
+  `invariants[].enforced_by`) accept current `ADR-PS-*` / `ADR-PC-*` identifiers
+  via shared `adr_id_physical_any`, while retaining legacy `ADR-P-*` and rejecting
+  non-physical ADR families.
 ## [0.7.0] — 2026-08-23
 
 ### Added

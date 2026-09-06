@@ -30,7 +30,6 @@ class ExtensionPayloadV21(BaseModel):
 class NormalizedEntityV21(NormalizedEntityV2):
     """UUID normalized entity with qualified extension semantics."""
 
-    schema_version: str = "2.1"
     entity_type: str
     extension: ExtensionPayloadV21 | None = None
 

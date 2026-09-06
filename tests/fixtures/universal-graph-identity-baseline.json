@@ -5,10 +5,10 @@
   "baseline_sha": "b998bfc",
   "architecture_graph": {
     "path": "adrs/index/architecture-graph.yaml",
-    "source_sha256": "c4c0f5386492168dcb77171a15c8babaca704bc7911532288e54bb9038dfda09",
+    "source_sha256": "022edfbc38464e1a4ce9eaa2d17b73227b9633cfe1df693653d485def0655a0f",
     "node_count": 468,
     "edge_count": 636,
-    "node_semantic_sha256": "078677f8f6c2a47969677764c3343e2c68b2189efbe4684bb3a1d56e577058f9",
+    "node_semantic_sha256": "f9efac6bb0203fd38b2b8ec7eafb44638bfd83f69e1e5bf6932eadf8021c43ef",
     "edge_semantic_sha256": "3c5334409940171684716ebb3924bdd30e7c876220a3964e5848120c6197dc37",
     "node_types": {
       "adr": 37,
@@ -52,7 +52,7 @@
     "adrs/logical/ADR-L-0005-adr-to-prompt-translation.yaml": "b8873b9a0c69254f7936766045d0a96c62620fb229fbcbdf4cf0375638867a68",
     "adrs/logical/ADR-L-0006-rule-library-sub-module.yaml": "b46915cd8de8124f7b3fb2c8b649bad6621fff66a61bd68540ab708254985c37",
     "adrs/logical/ADR-L-0007-deterministic-documentation-projection.yaml": "7e9b65cb8cf078b8cafe2f9cb305762bc8966fbad38fbef3188a621ee4e20d3f",
-    "adrs/logical/ADR-L-0019-canonical-entity-identity.yaml": "159c9c7eee518d8963813168d3f28b27d70c5914a15cf9c01a0de6b4d48e5034",
+    "adrs/logical/ADR-L-0019-canonical-entity-identity.yaml": "4207d2ed4227d6141e3531fe4e1e87b31e3b7fcbee1cc847d556eec0b60418d3",
     "adrs/logical/ADR-L-0021-schema-contract-taxonomy.yaml": "e205d158ff08fb207d1b1c425b794ca98ea7971db512125e49ffadd1bf0831c1",
     "adrs/logical/ADR-L-0022-universal-uuidv7-entity-identity.yaml": "1e91a763f3c0b2f0179d70c15b1051efd752a65e94f6bb0fe4ee685d22b03f75",
     "adrs/physical-system/ADR-PS-0001-adr-architecture-kit-discovery-and-indexing-system.yaml": "584681e1d44b2820e3a9a73cd143301103855ec1be99bddc6df44b62ce9e42c5",

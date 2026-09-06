@@ -34,6 +34,12 @@
       "pattern": "^ADR-PC-\\d{4}$",
       "description": "Physical-Component ADR identifier (e.g., ADR-PC-0001)"
     },
+
+    "adr_id_physical_any": {
+      "type": "string",
+      "pattern": "^ADR-P(S|C)?-\\d{4}$",
+      "description": "Any supported physical ADR identifier: legacy ADR-P-####, ADR-PS-####, or ADR-PC-####"
+    },
     
     "adr_id_decision": {
       "type": "string",

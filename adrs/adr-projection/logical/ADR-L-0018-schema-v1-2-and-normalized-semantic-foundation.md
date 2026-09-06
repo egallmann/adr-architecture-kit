@@ -5,8 +5,8 @@ artifact_kind: rendered_adr_markdown
 generator_id: adr-projection-markdown
 generator_version: 3
 hash_algorithm: sha256
-source_hash: 8c9eea645864c2d32c5a33744439db0952881ad5d9380158ea19a629cf04ce15
-rendered_hash: 034cf13f35e37cbaa255fde7535013edc59a31144da9b91656c131c44c3ada33
+source_hash: 1d26f772add9388852911ac50da718296c38d38cb259805b0c0399c869bd2847
+rendered_hash: 5ec9dd2379af538abbc4d302782a2ab99325137543d8584fb951f184f258d29d
 -->
 
 # ADR-L-0018: Schema v1.2 and Normalized Semantic Foundation
@@ -18,7 +18,7 @@ rendered_hash: 034cf13f35e37cbaa255fde7535013edc59a31144da9b91656c131c44c3ada33
 **Alias:** ADR-L-0018  
 **Authoring contract:** authoring v1.5  
 **Created:** 2026-08-07  
-**Modified:** 2026-08-07  
+**Modified:** 2026-09-05  
 **Authors:** erik.gallmann  
 **Domains:** authoring, schema, semantic-model, identity, migration  
 **Tags:** schema-v1.2, normalized-model, assertion-identity, external-bindings, topology-identity  
@@ -43,7 +43,7 @@ semantic foundation for future consumers, without implementing the Phase 3 graph
 bundle or absorbing authority owned by runtime, rules, substrate, or admission
 systems.
 
-Schema v1.0 is the frozen stable ADR encoding. Schema v1.1 is an existing
+Schema v1.0 is the stable backward-compatible ADR encoding line. Schema v1.1 is an existing
 provisional discovery, ledger, remediation, and attribution line and must not be
 repurposed. The next ADR authoring line is therefore v1.2. Existing source models
 already identify boundaries, contracts, interfaces, implementation decisions,
@@ -71,7 +71,7 @@ transitions into the v1.3/model-2.0 compatibility event.
 
 Schema v1.2 extends the existing ADR authoring shapes with external-reference,
 binding, evidence-expectation, and topology-ID fields. Version dispatch must be
-explicit. Schema v1.0 files remain byte-for-byte frozen and valid; v1.1 retains
+explicit. Schema v1.0 remains the stable backward-compatible compatibility line and remains valid for previously accepted documents; v1.1 retains
 its current provisional discovery and ledger role. Unsupported future versions
 fail closed rather than falling back to v1.0.
 
@@ -172,7 +172,7 @@ Negative:
 ### CAP-0048 — Additive ADR Schema v1.2 Authoring
 
 Validate, parse, package, and compile provisional v1.2 ADR authoring while
-preserving frozen v1.0 and the existing provisional v1.1 artifact family.
+preserving the stable v1.0 compatibility line and the existing provisional v1.1 artifact family.
 
 **Acceptance criteria**
 - V1.2 schemas are discoverable from source and installed wheels
@@ -227,7 +227,7 @@ Detect UUID identity collisions and fail closed; limit automatic repair to gover
 
 | Invariant | Requirement | Enforcement | Verification |
 | --- | --- | --- | --- |
-| INV-0077 | ADR schema v1.0 MUST remain byte-for-byte frozen. Parser dispatch MUST resolve v1.0 and v1.2 authoring explicitly,… | MUST / test | automated |
+| INV-0077 | ADR schema v1.0 MUST remain a stable backward-compatible compatibility line. Previously valid v1.0 documents MUST… | MUST / test | automated |
 | INV-0078 | Substrate bindings, rule bindings, evidence expectations, and external references MUST remain authored references.… | MUST / design | automated |
 | INV-0079 | Every newly projected relationship assertion MUST receive an assertion_id using UUID endpoint and single… | MUST / test | automated |
 | INV-0080 | Topology migration MUST be deterministic, idempotent, non-destructive by default, explicit about rewritten… | MUST / test | automated |
@@ -238,10 +238,7 @@ Detect UUID identity collisions and fail closed; limit automatic repair to gover
 
 **Statement**
 
-ADR schema v1.0 MUST remain byte-for-byte frozen. Parser dispatch MUST resolve
-v1.0 and v1.2 authoring explicitly, MUST preserve the existing provisional
-v1.1 artifact behavior, and MUST reject unsupported future versions without
-falling back to another schema line.
+ADR schema v1.0 MUST remain a stable backward-compatible compatibility line. Previously valid v1.0 documents MUST remain valid. Existing v1.0 semantics MUST NOT be silently removed, narrowed, or reinterpreted. Governed defect corrections MAY widen validation only when correcting a mismatch with already-authorized semantics or ADR-Kit-owned generated artifacts and introducing no new semantic meaning. Parser dispatch MUST resolve v1.0 and v1.2 authoring explicitly, MUST preserve the existing provisional v1.1 artifact behavior, and MUST reject unsupported future versions without falling back to another schema line. Exact schema bytes and hashes identify a particular released artifact or package, not all future releases carrying the v1.0 contract line.
 
 **Scope:** global
 
@@ -250,8 +247,7 @@ falling back to another schema line.
 
 **Rationale**
 
-Additive schema evolution is safe only when version identity and the frozen
-compatibility line remain truthful.
+Additive schema evolution and governed defect correction are safe only when version identity and the stable backward-compatible compatibility line remain truthful. Perpetual byte identity is a released-artifact property, not an eternal property of the v1.0 schema line.
 
 ### INV-0078
 

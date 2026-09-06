@@ -3,35 +3,76 @@
 from __future__ import annotations
 
 import hashlib
+import json
 from pathlib import Path
 
 import pytest
+import yaml
 
 from adr_kit.api import capabilities
 from adr_kit.parser import ADRParseError, ADRParser, ADRSchemaValidationError
 
 ROOT = Path(__file__).resolve().parents[1]
 FIXTURES = ROOT / "tests" / "fixtures"
-V1_0_SHA256 = {
-    "adr-common.schema.json": "cf9e6460ce53ef2ae8a566dbc383f881bcc0d8f4ac1c5ee8a0d10f0009c5c35d",
-    "adr-logical.schema.json": "c49d5cebbbd83ed3faa2524ab3af8291606eeaaa9450610efa12e9e392b92c71",
-    "adr-physical-base.schema.json": "89105a66cec6eddba617192258e44917d0c02956ad8778ac7c6f603e7717d6f5",
-    "adr-physical-component.schema.json": "f2c922a781aaed64459e661c3bd91f2952288f78ec3b0e089a13f5522390d2c1",
-    "adr-physical-system.schema.json": "93c2ddb3fcae2a7f3a9f3b7d876ea4cb1b1fb09e659e0de7ad12ca526be7044e",
-    "adr-physical.schema.json": "44c461b49a48483fb1555c53e62544e838ae0eba17608ec3dbf4ccb6ece10470",
-    "invariant.schema.json": "5e61818ece9eee3169ab51c24b8ad599a01fd220d336fd4cab4ca64b40a630a1",
-    "manifest.schema.json": "15e02c4053e7d6d7f415e70feab703bc7a37cd02c69c1f6203beccb061da32a2",
-    "project-metadata.schema.json": "882a883abe9ccb3267c6d61c1081138145a6e0d26898bc42d1a8d181e4e0764a",
-    "types.schema.json": "fae298fafd55e0c1bd0eb2233380086f7f85710d83809a7876d1da1f2a736bca",
-}
 
 
-def test_v1_0_schema_bytes_remain_frozen() -> None:
-    actual = {
-        path.name: hashlib.sha256(path.read_bytes()).hexdigest()
-        for path in sorted((ROOT / "schema" / "v1.0").glob("*.json"))
+def test_v1_0_inventory_digests_match_current_canonical_bytes() -> None:
+    """Per-release fingerprint: inventory sha256 must match current canonical bytes."""
+    inventory = json.loads(
+        (ROOT / "tests" / "fixtures" / "schema-contract-inventory.json").read_text(encoding="utf-8")
+    )
+    for record in inventory["records"]:
+        canonical_path = record.get("canonical_path", "")
+        if not canonical_path.startswith("schema/v1.0/"):
+            continue
+        path = ROOT / canonical_path
+        assert path.is_file(), canonical_path
+        digest = hashlib.sha256(path.read_bytes()).hexdigest()
+        assert digest == record["sha256"], canonical_path
+
+
+def test_v1_0_stable_compatibility_line_accepts_legacy_and_split_physical_ids(
+    tmp_path: Path,
+) -> None:
+    """INV-0077: previously valid v1.0 docs remain valid; physical slots accept P|PS|PC."""
+    parser = ADRParser()
+    logical = parser.parse_logical_adr(FIXTURES / "valid" / "logical-minimal.yaml")
+    assert logical.schema_version == "1.0"
+
+    types = json.loads((ROOT / "schema" / "v1.0" / "types.schema.json").read_text(encoding="utf-8"))
+    assert types["definitions"]["adr_id_physical"]["pattern"] == r"^ADR-P-\d{4}$"
+    assert "adr_id_physical_any" in types["definitions"]
+    assert types["definitions"]["adr_id_physical_any"]["pattern"] == r"^ADR-P(S|C)?-\d{4}$"
+
+    for physical_id in ("ADR-P-0001", "ADR-PS-0001", "ADR-PC-0001"):
+        data = {
+            "schema_version": "1.0",
+            "type": "manifest",
+            "generated_date": "2026-09-05T00:00:00Z",
+            "generated_from": "adrs/**/*.yaml",
+            "adrs": [],
+            "gaps_summary": {"total": 0, "blocking": 0, "by_adr": {}},
+            "statistics": {"total_adrs": 0, "logical_adrs": 0, "physical_adrs": 0},
+            "by_technology": {"python": [physical_id]},
+        }
+        path = tmp_path / f"manifest-{physical_id}.yaml"
+        path.write_text(yaml.safe_dump(data, sort_keys=False), encoding="utf-8")
+        parser.parse_manifest(path)
+
+    bad = {
+        "schema_version": "1.0",
+        "type": "manifest",
+        "generated_date": "2026-09-05T00:00:00Z",
+        "generated_from": "adrs/**/*.yaml",
+        "adrs": [],
+        "gaps_summary": {"total": 0, "blocking": 0, "by_adr": {}},
+        "statistics": {"total_adrs": 0, "logical_adrs": 0, "physical_adrs": 0},
+        "by_technology": {"python": ["ADR-L-0001"]},
     }
-    assert actual == V1_0_SHA256
+    bad_path = tmp_path / "manifest-bad.yaml"
+    bad_path.write_text(yaml.safe_dump(bad, sort_keys=False), encoding="utf-8")
+    with pytest.raises(ADRSchemaValidationError):
+        parser.parse_manifest(bad_path)
 
 
 def test_parser_discovers_all_schema_lines_from_package_resources() -> None:

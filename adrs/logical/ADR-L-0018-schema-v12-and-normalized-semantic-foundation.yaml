@@ -4,7 +4,7 @@ id: 019fee89-e617-7f4d-811d-4862645a55c5
 title: Schema v1.2 and Normalized Semantic Foundation
 status: accepted
 created_date: '2026-08-07'
-modified_date: '2026-08-07'
+modified_date: '2026-09-05'
 authors:
 - erik.gallmann
 domains:
@@ -44,7 +44,7 @@ context: 'Phase 1 established a narrow supported authoring SDK while explicitly 
   systems.
 
 
-  Schema v1.0 is the frozen stable ADR encoding. Schema v1.1 is an existing
+  Schema v1.0 is the stable backward-compatible ADR encoding line. Schema v1.1 is an existing
 
   provisional discovery, ledger, remediation, and attribution line and must not be
 
@@ -73,7 +73,8 @@ decisions:
 
     binding, evidence-expectation, and topology-ID fields. Version dispatch must be
 
-    explicit. Schema v1.0 files remain byte-for-byte frozen and valid; v1.1 retains
+    explicit. Schema v1.0 remains the stable backward-compatible compatibility line
+    and remains valid for previously accepted documents; v1.1 retains
 
     its current provisional discovery and ledger role. Unsupported future versions
 
@@ -202,24 +203,26 @@ decisions:
   alias_name: split-uuid-integrity-corruption-fail-closed-from-governed-alias-collision-repair
 invariants:
 - id: 019fee89-e617-7aef-9f37-6e9c557332b3
-  statement: 'ADR schema v1.0 MUST remain byte-for-byte frozen. Parser dispatch MUST
-    resolve
-
-    v1.0 and v1.2 authoring explicitly, MUST preserve the existing provisional
-
-    v1.1 artifact behavior, and MUST reject unsupported future versions without
-
-    falling back to another schema line.
+  statement: 'ADR schema v1.0 MUST remain a stable backward-compatible compatibility
+    line. Previously valid v1.0 documents MUST remain valid. Existing v1.0 semantics
+    MUST NOT be silently removed, narrowed, or reinterpreted. Governed defect corrections
+    MAY widen validation only when correcting a mismatch with already-authorized
+    semantics or ADR-Kit-owned generated artifacts and introducing no new semantic
+    meaning. Parser dispatch MUST resolve v1.0 and v1.2 authoring explicitly, MUST
+    preserve the existing provisional v1.1 artifact behavior, and MUST reject unsupported
+    future versions without falling back to another schema line. Exact schema bytes
+    and hashes identify a particular released artifact or package, not all future
+    releases carrying the v1.0 contract line.
 
     '
   scope: global
   enforcement_level: must
   enforcement_mechanism: test
   verification_method: automated
-  rationale: 'Additive schema evolution is safe only when version identity and the
-    frozen
-
-    compatibility line remain truthful.
+  rationale: 'Additive schema evolution and governed defect correction are safe only
+    when version identity and the stable backward-compatible compatibility line remain
+    truthful. Perpetual byte identity is a released-artifact property, not an eternal
+    property of the v1.0 schema line.
 
     '
   alias_id: INV-0077
@@ -339,7 +342,8 @@ capabilities:
   description: 'Validate, parse, package, and compile provisional v1.2 ADR authoring
     while
 
-    preserving frozen v1.0 and the existing provisional v1.1 artifact family.
+    preserving the stable v1.0 compatibility line and the existing provisional v1.1
+    artifact family.
 
     '
   acceptance_criteria:

@@ -1,0 +1,14 @@
+schema_version: "1.5"
+adr_type: logical
+id: "019109a0-b1c2-7def-8a00-112233445566"
+alias_id: ADR-P-0001
+alias_name: invalid-logical-adr-p
+title: "Invalid Logical ADR with ADR-P alias"
+status: proposed
+created_date: "2026-08-28"
+authors:
+  - test.author
+context: |
+  Logical ADR must not use legacy ADR-P alias pattern.
+decisions:
+  - summary: "Test decision"

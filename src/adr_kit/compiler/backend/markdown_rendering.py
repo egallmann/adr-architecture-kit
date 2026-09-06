@@ -35,7 +35,7 @@ from .human_adr_projection import (
 from .projection_paths import projection_relative_path, stem_matches_adr
 
 
-MARKDOWN_GENERATOR_IDENTITY = GeneratorIdentity("adr-projection-markdown", 2)
+MARKDOWN_GENERATOR_IDENTITY = GeneratorIdentity("adr-projection-markdown", 3)
 DEFAULT_TEMPLATE_DIR = Path(__file__).resolve().parents[2] / "templates"
 
 
@@ -80,6 +80,14 @@ def template_path_for_adr(
     """Return the template path used for one ADR."""
     resolved_template_dir = Path(template_dir or DEFAULT_TEMPLATE_DIR)
     adr_type = adr_type_of(adr)
+    schema_version = str(field_get(adr, "schema_version") or "")
+    if schema_version == "1.5":
+        if adr_type == ADRType.LOGICAL:
+            return resolved_template_dir / "adr-logical-v3.md.jinja2"
+        if adr_type == ADRType.PHYSICAL_SYSTEM:
+            return resolved_template_dir / "adr-physical-system-v3.md.jinja2"
+        if adr_type == ADRType.PHYSICAL_COMPONENT:
+            return resolved_template_dir / "adr-physical-component-v3.md.jinja2"
     if adr_type == ADRType.LOGICAL:
         return resolved_template_dir / "adr-logical.md.jinja2"
     if adr_type in (ADRType.PHYSICAL, ADRType.PHYSICAL_SYSTEM, ADRType.PHYSICAL_COMPONENT):

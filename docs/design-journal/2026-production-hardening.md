@@ -51,7 +51,7 @@ versioning with package compatibility language.
    filenames, sizes, and SHA-256 hashes, and make strict re-verification the boundary
    before publishing.
 7. Test the selected wheel from a clean venv with source-path leakage removed.
-8. Claim Python 3.11–3.14 only when both source-installed and retained-wheel jobs pass.
+8. Claim the currently qualified Python 3.14 line (`requires-python >=3.14`) only when both source-installed and retained-wheel jobs pass.
 9. Make reproducibility a separate fixed-epoch check; do not rebuild during release
    promotion.
 10. Add deterministic benchmark scaffolding without performance gates.

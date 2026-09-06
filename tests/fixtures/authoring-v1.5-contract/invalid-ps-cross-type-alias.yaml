@@ -1,0 +1,23 @@
+schema_version: "1.5"
+adr_type: physical-system
+id: "019109a0-b1c2-7def-8a00-112233445566"
+alias_id: ADR-PC-0001
+alias_name: invalid-ps-cross-type
+title: "Invalid PS ADR with PC alias"
+status: proposed
+created_date: "2026-08-28"
+authors:
+  - test.author
+implements_logical:
+  - "019109a0-b1c2-7def-8a00-aabbccddeef0"
+context: |
+  Physical-system ADR must use ADR-PS alias, not ADR-PC.
+technology_stack:
+  - category: language
+    name: Python
+    version: "3.12"
+    rationale: Test fixture.
+system:
+  id: "019109a0-b1c2-7def-8a00-223344556677"
+  alias_id: SYS-0001
+  alias_name: test-system

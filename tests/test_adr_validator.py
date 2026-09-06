@@ -1,4 +1,4 @@
-"""Test ADR validator (ADR-P-0003: COMP-0003)."""
+"""Test ADR validator (ADR-PC-0002: scope-aware validation)."""
 
 import pytest
 import shutil
@@ -102,7 +102,7 @@ class TestADRValidation:
 
 
 class TestScopeAwareValidation:
-    """Test scope-aware validation (ADR-P-0003: COMP-0003)."""
+    """Test scope-aware validation (ADR-PC-0002 / ADR-L-0002 CAP-0003)."""
     
     @pytest.fixture
     def validator(self):

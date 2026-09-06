@@ -105,4 +105,4 @@ def test_fixture_remains_a_verification_snapshot_over_the_admitted_checkpoint() 
     }
     assert graph["node_semantic_sha256"]
     assert graph["edge_semantic_sha256"]
-    assert len(fixture["graph_eligible_corpus_records"]) == 40
+    assert len(fixture["graph_eligible_corpus_records"]) == 35

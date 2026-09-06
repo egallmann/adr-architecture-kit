@@ -100,4 +100,5 @@ docs/design-journal/*
 !docs/design-journal/2026-phase-1-public-sdk.md
 !docs/design-journal/2026-phase-2-schema-v12.md
 !docs/design-journal/2026-production-hardening.md
+!docs/design-journal/2026-projection-v3-authority-substrate-promoted.md
 

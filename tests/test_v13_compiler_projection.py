@@ -24,10 +24,10 @@ from adr_kit.compiler.frontend.parser import CachedADRParser
 from adr_kit.compiler.ir import IREntity, IRRelationship
 from adr_kit.identity import (
     derive_entity_uri,
-    mint_uuidv7,
     uuidv7_created_at,
     validate_uuidv7,
 )
+from tests.support.uuidv7_fixtures import UUIDV7_TIMESTAMP_FIXTURE
 from adr_kit.models.architecture_discovery import (
     CanonicalSource,
     DiscoveryProvenance,
@@ -116,7 +116,7 @@ class TestProjectEntityV2:
         assert result is None
 
     def test_authored_uuid_preserved_not_minted(self) -> None:
-        authored_uuid = mint_uuidv7(timestamp_ms=1700000000000, rand_bytes=b"\x01" * 10)
+        authored_uuid = UUIDV7_TIMESTAMP_FIXTURE
         entity = IREntity(
             id=authored_uuid,
             entity_type="decision",

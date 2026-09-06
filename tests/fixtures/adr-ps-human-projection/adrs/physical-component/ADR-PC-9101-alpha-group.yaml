@@ -1,0 +1,70 @@
+schema_version: "1.5"
+adr_type: physical-component
+id: "019209b0-c2d3-7e00-8000-000000000020"
+alias_id: ADR-PC-9101
+alias_name: ps-projection-alpha-group
+title: "PS Projection Alpha Group"
+status: accepted
+created_date: "2026-08-30"
+authors:
+  - fixture.author
+implements_system:
+  - "019209b0-c2d3-7e00-8000-000000000010"
+implements_logical:
+  - "019209b0-c2d3-7e00-8000-000000000001"
+context: |
+  Owns the first three components of the maximal physical-system fixture.
+technology_stack:
+  - category: language
+    name: Python
+    version: ">=3.14"
+    rationale: Fixture language choice.
+component_specifications:
+  - id: "019209b0-c2d3-7e00-8000-000000000031"
+    alias_id: COMP-9101
+    alias_name: alpha-service
+    name: Alpha Service
+    type: service
+    responsibilities: Own alpha participation in the fixture system.
+    generation_context:
+      purpose: Provide the first topology participant.
+      key_responsibilities:
+        - Participate in calls relationships
+    interfaces:
+      - id: "019209b0-c2d3-7e00-8000-000000000041"
+        alias_id: IFACE-9101
+        alias_name: alpha-cli
+        type: CLI
+        specification: adr alpha
+  - id: "019209b0-c2d3-7e00-8000-000000000032"
+    alias_id: COMP-9102
+    alias_name: beta-queue
+    name: Beta Queue
+    type: queue
+    responsibilities: Own beta participation in the fixture system.
+    generation_context:
+      purpose: Provide the second topology participant.
+      key_responsibilities:
+        - Participate in publishes_to relationships
+    interfaces:
+      - id: "019209b0-c2d3-7e00-8000-000000000042"
+        alias_id: IFACE-9102
+        alias_name: beta-message
+        type: message
+        specification: queue beta
+  - id: "019209b0-c2d3-7e00-8000-000000000033"
+    alias_id: COMP-9103
+    alias_name: gamma-cache
+    name: Gamma Cache
+    type: cache
+    responsibilities: Own gamma participation in the fixture system.
+    generation_context:
+      purpose: Provide the third topology participant.
+      key_responsibilities:
+        - Participate in subscribes_to relationships
+    interfaces:
+      - id: "019209b0-c2d3-7e00-8000-000000000043"
+        alias_id: IFACE-9103
+        alias_name: gamma-stream
+        type: stream
+        specification: cache gamma

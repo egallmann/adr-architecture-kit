@@ -4,13 +4,16 @@ from adr_kit.compiler.backend.projection import (
     build_relationship_summary,
     project_entity,
     project_entity_v2,
+    project_entity_v22,
     project_relationship,
     project_relationship_v2,
+    project_relationship_v22,
     project_unresolved,
 )
 from adr_kit.compiler.ir import IREntity, IRRelationship, IRUnresolved, RelGraph
 from adr_kit.models.architecture_discovery import CanonicalSource, DiscoveryProvenance
 from adr_kit.models.v2_0 import NormalizedEntityV2
+from adr_kit.models.v2_2 import NormalizedEntityV22
 from adr_kit.parser import ADRParser
 from adr_kit.repository.registry_loader import (
     load_architecture_index,
@@ -95,10 +98,55 @@ def test_projection_round_trips_current_registry_models(tmp_path):
             )
         )
 
+    is_v22 = isinstance(entity_registry.entities[0], NormalizedEntityV22) if entity_registry.entities else False
     is_v2 = isinstance(entity_registry.entities[0], NormalizedEntityV2) if entity_registry.entities else False
     namespace = architecture_index.architecture_namespace
 
-    if is_v2:
+    if is_v22:
+        projected_entities = [
+            project_entity_v22(
+                IREntity(
+                    id=entity.id,
+                    entity_type=entity.entity_type,
+                    name=entity.name,
+                    summary=entity.summary,
+                    canonical_source=entity.canonical_source,
+                    source_refs=list(entity.source_refs),
+                    metadata=dict(entity.metadata),
+                    completeness=entity.completeness,
+                    provenance=entity.provenance,
+                    extension=entity.extension,
+                ),
+                rel_graph,
+                namespace,
+            ).model_dump(mode="json")
+            for entity in entity_registry.entities
+        ]
+        projected_relationships = [
+            projected.model_dump(mode="json")
+            for relationship in relationship_registry.relationships
+            if (
+                projected := project_relationship_v22(
+                    IRRelationship(
+                        relationship_id=relationship.relationship_id,
+                        assertion_id=relationship.assertion_id,
+                        relationship_type=relationship.relationship_type,
+                        from_entity_id=relationship.from_entity_id,
+                        to_entity_id=relationship.to_entity_id,
+                        provenance_classification=relationship.provenance_classification,
+                        evidence=list(relationship.evidence),
+                        canonical_source_ref=relationship.canonical_source_ref,
+                        confidence=relationship.confidence,
+                        metadata=dict(relationship.metadata),
+                        source_owner_id=getattr(relationship, "source_owner_id", None),
+                        source_pointer=getattr(relationship, "source_pointer", None),
+                        record_kind=getattr(relationship, "record_kind", "canonical"),
+                    )
+                )
+            )
+            is not None
+        ]
+    elif is_v2:
         projected_entities = [
             project_entity_v2(
                 IREntity(

@@ -25,4 +25,11 @@ Python and TypeScript binding-local fingerprints are intentionally not compared.
 The initial corpus covers normalized model 2.1, evidence attribution 1.5/1.6,
 qualified extensions, canonical and compatibility relationships, unresolved records,
 unsupported versions, duplicate claims, target mismatch, and the v1.6 `enforces`
-confidence restriction.
+confidence restriction. It also covers the promoted ADC 1.0 discovery contract:
+contract description, complete and kind-filtered type listing, representative
+descriptors, exact case-sensitive lookup, deterministic errors, and explicit
+non-equivalence of discovery serialization bytes.
+
+The ADC fixture is expected evidence only. `contracts/authoring-domain/v1.0/contract.json`
+is the semantic authority, and ordinary qualification must not regenerate the
+checked-in expected results.

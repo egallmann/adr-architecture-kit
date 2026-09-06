@@ -1,11 +1,11 @@
-schema_version: '1.3'
+schema_version: '1.5'
 adr_type: logical
 id: 019fee89-e617-7ff5-863b-1eef71637b0f
 title: Forward Authoring Ergonomics for Split Physical ADR Types
 status: accepted
 created_date: '2026-04-14'
 authors:
-- adr-architecture-kit
+- erik.gallmann
 domains:
 - authoring
 - adr-taxonomy

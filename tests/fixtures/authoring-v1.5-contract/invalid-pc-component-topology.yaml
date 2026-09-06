@@ -1,0 +1,37 @@
+schema_version: "1.5"
+adr_type: physical-component
+id: "019109a0-b1c2-7def-8a00-112233445566"
+alias_id: ADR-PC-0099
+alias_name: invalid-pc-topology
+title: "Invalid PC ADR with component_topology"
+status: proposed
+created_date: "2026-08-28"
+authors:
+  - test.author
+implements_logical:
+  - "019109a0-b1c2-7def-8a00-aabbccddeef0"
+implements_system:
+  - "019109a0-b1c2-7def-8a00-223344556677"
+context: |
+  Physical-component ADR must not author topology.
+technology_stack:
+  - category: language
+    name: Python
+    version: "3.12"
+    rationale: Test fixture.
+component_specifications:
+  - id: "019109a0-b1c2-7def-8a00-334455667788"
+    alias_id: COMP-0001
+    alias_name: test-component
+    name: Test Component
+    type: service
+    responsibilities: Test only.
+    generation_context:
+      purpose: Fixture
+      key_responsibilities:
+        - Validate topology prohibition
+component_topology:
+  components:
+    - id: TOPO-0001
+      component_ref: "019109a0-b1c2-7def-8a00-334455667788"
+      purpose: Must be rejected

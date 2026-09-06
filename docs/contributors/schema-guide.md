@@ -23,7 +23,9 @@ All entity IDs follow strict patterns:
 | Entity | Pattern | Example | Description |
 |--------|---------|---------|-------------|
 | Logical ADR | `ADR-L-\d{4}` | `ADR-L-0001` | Conceptual design |
-| Physical ADR | `ADR-P-\d{4}` | `ADR-P-0001` | Implementation spec |
+| Physical system ADR | `ADR-PS-\d{4}` | `ADR-PS-0001` | System boundary and topology |
+| Physical component ADR | `ADR-PC-\d{4}` | `ADR-PC-0001` | Component implementation spec |
+| Physical ADR (legacy) | `ADR-P-\d{4}` | — | Retired; historical only via retirement map |
 | Decision ADR | `ADR-D-\d{4}` | `ADR-D-0001` | Autonomous agent decision |
 | Invariant | `INV-\d{4}` | `INV-0001` | Must-hold constraint |
 | Capability | `CAP-\d{4}` | `CAP-0001` | System capability |

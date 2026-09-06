@@ -182,6 +182,9 @@ def extract_physical_entities(
                 component_id = field_get(topology_component, "id")
                 if component_id is None:
                     continue
+                # v1.5 slim topology: TOPO is a local handle, not an admitted entity.
+                if field_get(topology_component, "component_ref"):
+                    continue
                 source_ref = f"{adr.id}#{component_id}"
                 result.entities.append(
                     ExtractedEntity(

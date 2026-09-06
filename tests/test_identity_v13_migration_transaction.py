@@ -7,19 +7,17 @@ from pathlib import Path
 import pytest
 import yaml
 
-from adr_kit.identity import mint_uuidv7
 from adr_kit.migrators.identity_v13 import IdentityV13Migrator
+from tests.support.uuidv7_fixtures import UUIDV7_SEQUENCE, sequential_mint
 from tests.test_identity_v13_migrator import _write_logical, _write_project
 
 
 def _mint_factory() -> tuple[IdentityV13Migrator, list[str]]:
     minted: list[str] = []
+    base_mint = sequential_mint(UUIDV7_SEQUENCE)
 
     def mint() -> str:
-        value = mint_uuidv7(
-            timestamp_ms=1_700_000_000_000 + len(minted) + 1,
-            rand_bytes=bytes([len(minted) + 1] * 10),
-        )
+        value = base_mint()
         minted.append(value)
         return value
 

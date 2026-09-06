@@ -177,6 +177,13 @@ ste.design_journal.promotion_contract/v0.1
 This Promotion Contract version is not an ADR schema version and does not
 advertise ADR schema 1.3 or normalized model 2.0.
 
+The installed root capability manifest does not yet advertise ADC 1.0 or
+`authoring.discovery`: those operations are not implemented by this binding.
+The promoted ADC authority is `contracts/authoring-domain/v1.0/contract.json`.
+Once Slice-1 discovery is implemented and qualified, the binding must advertise
+its supported ADC version and `authoring.discovery` capability through this
+root capability surface.
+
 ## Exact public inventory
 
 `adr_kit.api.__all__` contains exactly the following symbols. This inventory must

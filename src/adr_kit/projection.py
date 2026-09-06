@@ -105,7 +105,12 @@ class ProjectionInspector:
             return body, markdown_inputs, MARKDOWN_GENERATOR_IDENTITY
 
         if artifact.artifact_kind == ArtifactKind.SYSTEM_OVERVIEW:
-            generator = SystemOverviewGenerator(repo_root=artifact.scope.root)
+            from .compiler.pipeline import run_frontend_pipeline
+
+            frontend = run_frontend_pipeline(scope=artifact.scope)
+            generator = SystemOverviewGenerator(
+                scope=artifact.scope, build_result=frontend
+            )
             body, overview_inputs = generator.render_with_inputs(
                 artifact.scope.root / "SYSTEM-OVERVIEW.md"
             )

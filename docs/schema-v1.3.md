@@ -34,7 +34,7 @@ identity and a preserved `SYS-####` alias.
 
 ## Compatibility
 
-- v1.0 remains byte-frozen and readable
+- v1.0 remains the stable backward-compatible and readable compatibility line
 - v1.2 remains readable and migratable
 - Normalized model 2.0 is emitted for all-v1.3 scopes
 - Mixed legacy/v1.3 scopes fail closed

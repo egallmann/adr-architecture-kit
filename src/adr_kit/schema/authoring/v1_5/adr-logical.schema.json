@@ -1,0 +1,20 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://adr-kit.ste.systems/schema/authoring/v1.5/adr-logical.schema.json",
+  "title": "Logical ADR Schema (authoring v1.5)",
+  "type": "object",
+  "allOf": [
+    {"$ref": "adr-common.schema.json"},
+    {"properties": {"adr_type": {"const": "logical"}}}
+  ],
+  "required": ["context", "decisions"],
+  "properties": {
+    "alias_id": {"type": "string", "pattern": "^ADR-(L|V)-[0-9]{4}$"},
+    "context": {"type": "string"},
+    "decisions": {"type": "array", "minItems": 1},
+    "constraints": {"type": "array"},
+    "non_functional_requirements": {"type": "array"},
+    "gaps": {"type": "array"}
+  },
+  "additionalProperties": true
+}

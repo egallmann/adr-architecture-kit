@@ -20,7 +20,12 @@ from ...scope import ProjectScope
 
 
 class MarkdownGenerator:
-    """Render ADR markdown while delegating rendering authority to compiler helpers."""
+    """Render ADR markdown while delegating rendering authority to compiler helpers.
+
+    Context-free ``render_*`` methods preserve legacy/local rendering for pre-v1.5
+    templates. Authoring v1.5 Projection v3 full-fidelity output requires the
+    scope-aware compiler path (``render_existing_artifact`` or ``emit_markdown_artifacts``).
+    """
 
     generator_identity = GeneratorIdentity(
         MARKDOWN_GENERATOR_IDENTITY.generator_id,

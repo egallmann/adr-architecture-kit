@@ -1,4 +1,4 @@
-"""Test project scope resolver (ADR-P-0003: COMP-0001)."""
+"""Test project scope resolver (ADR-PC-0008: COMP-0017)."""
 
 import pytest
 from pathlib import Path

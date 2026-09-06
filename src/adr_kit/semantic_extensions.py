@@ -57,6 +57,15 @@ CORE_RELATIONSHIP_TYPES = frozenset(
         "expects_evidence",
     }
 )
+CORE_RELATIONSHIP_TYPES_V22 = CORE_RELATIONSHIP_TYPES | {
+    "depends_on",
+    "calls",
+    "publishes_to",
+    "subscribes_to",
+    "reads_from",
+    "writes_to",
+    "consumes_interface",
+}
 CORE_ALIAS_PREFIXES = frozenset(
     {
         "ADR",
@@ -86,11 +95,29 @@ def validate_architecture_namespace(namespace: str) -> str:
     return namespace
 
 
+def reserved_core_relationships(
+    *,
+    authoring_version: str | None = None,
+    model_version: str | None = None,
+) -> frozenset[str]:
+    """Return the reserved core relationship set for one authoring or model line.
+
+    Omitting version preserves the frozen v1.4 / v2.1 set so existing callers
+    keep historical collision behavior.
+    """
+
+    if authoring_version == "1.5" or model_version == "2.2":
+        return CORE_RELATIONSHIP_TYPES_V22
+    return CORE_RELATIONSHIP_TYPES
+
+
 def validate_extension_type(
     value: str,
     *,
     architecture_namespace: str | None = None,
     kind: str = "entity",
+    authoring_version: str | None = None,
+    model_version: str | None = None,
 ) -> str:
     match = EXTENSION_TYPE_RE.fullmatch(value) if isinstance(value, str) else None
     if match is None:
@@ -104,7 +131,13 @@ def validate_extension_type(
             f"{kind} type namespace {namespace!r} does not match "
             f"architecture namespace {architecture_namespace!r}"
         )
-    reserved = CORE_ENTITY_TYPES if kind == "entity" else CORE_RELATIONSHIP_TYPES
+    if kind == "entity":
+        reserved = CORE_ENTITY_TYPES
+    else:
+        reserved = reserved_core_relationships(
+            authoring_version=authoring_version,
+            model_version=model_version,
+        )
     if local in reserved:
         raise ExtensionValidationError(f"Extension {kind} type shadows reserved core type: {local}")
     return value

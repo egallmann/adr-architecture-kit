@@ -1,0 +1,435 @@
+# {{ adr | presentation_id }}: {{ adr.title }}
+{% set logical = ctx.logical if ctx else none %}
+
+## Identity / Status
+
+{% if logical and logical.identity_rows %}
+{% for row in logical.identity_rows %}
+**{{ row.label }}:** {{ row.value }}  
+{% endfor %}
+{% else %}
+**Type:** {{ ctx.adr_type if ctx else adr.adr_type }}  
+**Status:** {{ adr.status.value }}  
+**Alias:** {{ adr | presentation_id }}  
+**Created:** {{ adr.created_date }}  
+{% endif %}
+
+{% if logical and logical.glance_rows %}
+## Architecture at a Glance
+
+| | |
+| --- | --- |
+{% for row in logical.glance_rows %}
+| {{ row.label }} | {{ row.value | replace('\n', '<br>') | replace('|', '\\|') }} |
+{% endfor %}
+
+{% endif %}
+
+## Context
+
+{% if logical and logical.context %}{{ logical.context }}{% else %}{{ adr.context }}{% endif %}
+
+{% if logical and logical.decisions %}
+## Architectural Decisions
+
+{% if logical.decision_index %}
+| Decision | Choice | Traceability |
+| --- | --- | --- |
+{% for row in logical.decision_index %}
+| {{ row.alias_id | replace('|', '\\|') }} | {{ row.choice | replace('\n', '<br>') | replace('|', '\\|') }} | {{ row.traceability | replace('|', '\\|') if row.traceability else '—' }} |
+{% endfor %}
+
+{% endif %}
+{% for decision in logical.decisions %}
+### {{ decision.heading | replace('|', '\\|') }}
+
+{% if decision.show_summary_body %}
+**Summary**
+
+{{ decision.summary }}
+
+{% endif %}
+{% if decision.rationale %}
+**Rationale**
+
+{{ decision.rationale }}
+
+{% endif %}
+{% if decision.alternatives %}
+**Alternatives Considered**
+
+| Alternative | Rejected because |
+| --- | --- |
+{% for alt in decision.alternatives %}
+| {{ alt.name | replace('|', '\\|') }} | {{ alt.rejected_because | replace('\n', '<br>') | replace('|', '\\|') }} |
+{% endfor %}
+
+{% endif %}
+{% if decision.consequences.positive or decision.consequences.negative %}
+**Consequences**
+
+{% if decision.consequences.positive %}
+Positive:
+{% for item in decision.consequences.positive %}
+- {{ item }}
+{% endfor %}
+
+{% endif %}
+{% if decision.consequences.negative %}
+Negative:
+{% for item in decision.consequences.negative %}
+- {{ item }}
+{% endfor %}
+
+{% endif %}
+{% endif %}
+{% if decision.traceability %}
+**Traceability**
+{% for item in decision.traceability %}
+- {{ item.category }}: {{ item.target }}
+{% endfor %}
+
+{% endif %}
+{% endfor %}
+{% endif %}
+
+{% if logical and logical.capabilities %}
+## Capabilities
+
+{% for cap in logical.capabilities %}
+### {{ cap.heading | replace('|', '\\|') }}
+
+{{ cap.description }}
+
+{% if cap.acceptance_criteria %}
+**Acceptance criteria**
+{% for item in cap.acceptance_criteria %}
+- {{ item }}
+{% endfor %}
+
+{% endif %}
+{% if cap.implemented_by %}
+**Implemented by**
+{% for item in cap.implemented_by %}
+- {{ item }}
+{% endfor %}
+
+{% endif %}
+{% if cap.enabled_by %}
+**Enabled by**
+{% for item in cap.enabled_by %}
+- {{ item }}
+{% endfor %}
+
+{% endif %}
+{% endfor %}
+{% endif %}
+
+{% if logical and logical.boundaries %}
+## Architectural Boundaries
+
+{% for boundary in logical.boundaries %}
+### {{ boundary.heading | replace('|', '\\|') }}
+
+**Boundary**
+
+{{ boundary.description }}
+
+{% if boundary.rationale %}
+**Why this boundary exists**
+
+{{ boundary.rationale }}
+
+{% endif %}
+{% endfor %}
+{% endif %}
+
+{% if logical and logical.interaction_contracts %}
+## Interaction Contracts
+
+{% for contract in logical.interaction_contracts %}
+### {{ contract.heading | replace('|', '\\|') }}
+
+{% if contract.parties %}
+**Parties:** {{ contract.parties | join(', ') }}
+
+{% endif %}
+{% if contract.protocol %}
+**Protocol:** {{ contract.protocol }}
+
+{% endif %}
+{% if contract.guarantees %}
+**Guarantees**
+
+{{ contract.guarantees }}
+
+{% endif %}
+{% endfor %}
+{% endif %}
+
+{% if logical and logical.invariants %}
+## Invariants
+
+{% if logical.invariant_index %}
+| Invariant | Requirement | Enforcement | Verification |
+| --- | --- | --- | --- |
+{% for row in logical.invariant_index %}
+| {{ row.alias_id | replace('|', '\\|') }} | {{ row.requirement | replace('|', '\\|') }} | {{ row.enforcement | replace('|', '\\|') }} | {{ row.verification | replace('|', '\\|') }} |
+{% endfor %}
+
+{% endif %}
+{% for inv in logical.invariants %}
+### {{ inv.heading | replace('|', '\\|') }}
+
+{% if inv.statement %}
+**Statement**
+
+{{ inv.statement }}
+
+{% endif %}
+{% if inv.scope %}
+**Scope:** {{ inv.scope }}
+
+{% endif %}
+{% if inv.enforcement_level or inv.enforcement_mechanism %}
+**Enforcement:** {{ inv.enforcement_level.upper() if inv.enforcement_level else '' }}{% if inv.enforcement_mechanism %} ({{ inv.enforcement_mechanism }}){% endif %}
+
+{% endif %}
+{% if inv.verification_method %}
+**Verification:** {{ inv.verification_method }}
+
+{% endif %}
+{% if inv.rationale %}
+**Rationale**
+
+{{ inv.rationale }}
+
+{% endif %}
+{% if inv.declaration_mode %}
+**Declaration mode:** {{ inv.declaration_mode }}
+
+{% endif %}
+{% if inv.upheld_by %}
+**Upheld by decisions**
+{% for item in inv.upheld_by %}
+- {{ item }}
+{% endfor %}
+
+{% endif %}
+{% if inv.policy_reference %}
+**Policy reference:** {{ inv.policy_reference }}
+
+{% endif %}
+{% if inv.compliance_frameworks %}
+**Compliance frameworks:** {{ inv.compliance_frameworks | join(', ') }}
+
+{% endif %}
+{% if inv.exceptions %}
+**Exceptions**
+{% for item in inv.exceptions %}
+- {{ item }}
+{% endfor %}
+
+{% endif %}
+{% if inv.supersedes %}
+**Supersedes**
+{% for item in inv.supersedes %}
+- {{ item }}
+{% endfor %}
+
+{% endif %}
+{% endfor %}
+{% endif %}
+
+{% if logical and logical.non_functional_requirements %}
+## Non-Functional Requirements
+
+| NFR | Category | Requirement | Acceptance |
+| --- | --- | --- | --- |
+{% for nfr in logical.non_functional_requirements %}
+| {{ nfr.alias_id | replace('|', '\\|') }} | {{ nfr.category | replace('|', '\\|') if nfr.category else '—' }} | {{ nfr.requirement | replace('\n', '<br>') | replace('|', '\\|') }} | {{ nfr.acceptance_criteria | replace('\n', '<br>') | replace('|', '\\|') if nfr.acceptance_criteria else '—' }} |
+{% endfor %}
+
+{% for nfr in logical.non_functional_requirements %}
+{% if nfr.extra_rows %}
+### {{ nfr.alias_id }}
+
+{% for item in nfr.extra_rows %}
+**{{ item.label }}:** {{ item.value }}
+{% endfor %}
+
+{% endif %}
+{% endfor %}
+{% endif %}
+
+{% if logical and (logical.decision_traceability_graph or logical.capability_realization_graph) %}
+## Decision / Intent Traceability
+
+{% if logical.decision_traceability_graph %}
+### Decision Traceability
+
+```mermaid
+{{ logical.decision_traceability_graph }}```
+
+{% endif %}
+{% if logical.capability_realization_graph %}
+### Capability Realization
+
+```mermaid
+{{ logical.capability_realization_graph }}```
+
+{% endif %}
+{% endif %}
+
+{% if logical and logical.physical_realization %}
+## Physical Realization
+
+{% if logical.physical_realization.systems %}
+**Systems**
+{% for item in logical.physical_realization.systems %}
+- {{ item }}
+{% endfor %}
+
+{% endif %}
+{% if logical.physical_realization.components %}
+**Components**
+{% for item in logical.physical_realization.components %}
+- {{ item }}
+{% endfor %}
+
+{% endif %}
+{% if logical.physical_realization.capability_realizations %}
+**Capability realization**
+{% for row in logical.physical_realization.capability_realizations %}
+- {{ row.capability_display }} → {{ row.component_display }}
+
+  `{{ row.canonical_path }}`
+{% endfor %}
+
+{% endif %}
+{% if logical.physical_realization.graph %}
+```mermaid
+{{ logical.physical_realization.graph }}```
+
+{% endif %}
+{% endif %}
+
+{% if logical and logical.constraints %}
+## Constraints
+
+{% for constraint in logical.constraints %}
+### {{ constraint.heading | replace('|', '\\|') }}
+
+{{ constraint.description }}
+
+{% if constraint.rationale %}
+**Rationale**
+
+{{ constraint.rationale }}
+
+{% endif %}
+{% endfor %}
+{% endif %}
+
+{% if logical and logical.governance_sections %}
+## Governance / Bindings / Evidence
+
+{% for section in logical.governance_sections %}
+### {{ section.heading }}
+
+{% for row in section.rows %}
+**{{ row.label }}:** {{ row.value }}
+{% endfor %}
+
+{% endfor %}
+{% endif %}
+
+{% if logical and logical.lifecycle_categories %}
+## Lifecycle / Related Architecture
+
+{% for category in logical.lifecycle_categories %}
+**{{ category.heading }}**
+{% for item in category.items %}
+- {{ item }}
+{% endfor %}
+
+{% endfor %}
+{% endif %}
+
+{% if logical and logical.compressed_peers %}
+## Architecture Relationships
+
+{% set table_peers = logical.compressed_peers | selectattr('use_table') | list %}
+{% set expanded_peers = logical.compressed_peers | rejectattr('use_table') | list %}
+{% if table_peers %}
+| Neighbor | Relationship | Exact Path |
+| --- | --- | --- |
+{% for peer in table_peers %}
+| {% if peer.link %}[{{ peer.alias_id }} — {{ peer.title }}]({{ peer.link }}){% else %}{{ peer.alias_id }} — {{ peer.title }}{% endif %} | {{ peer.relationship_phrase }} | `{{ peer.canonical_path }}` |
+{% endfor %}
+
+{% endif %}
+{% for peer in expanded_peers %}
+### {{ peer.alias_id }} — {{ peer.title }}
+
+{{ peer.relationship_phrase }}
+
+{% for path in peer.paths %}
+`{{ path }}`
+{% endfor %}
+{% if peer.link %}[Open projection]({{ peer.link }}){% endif %}
+
+{% endfor %}
+{% endif %}
+
+{% if logical and logical.extension_entities %}
+## Consumer Semantic Extensions
+
+### Extension entities
+
+{% for entity in logical.extension_entities %}
+**{{ entity.namespace }}**{% if entity.entity_id %}: {{ entity.entity_id }}{% endif %}
+
+{% for row in entity.fields %}
+**{{ row.label }}:** {{ row.value }}
+{% endfor %}
+
+{% endfor %}
+{% endif %}
+{% if logical and logical.extension_relationships %}
+### Extension relationships
+
+{% for rel in logical.extension_relationships %}
+- **{{ rel.namespace }}** {{ rel.from_display }} -[:{{ rel.verb }}]-> {{ rel.to_display }}
+
+  `{{ rel.canonical_path }}`
+{% endfor %}
+{% endif %}
+
+{% if logical and logical.gaps %}
+## Known Gaps
+
+{% for gap in logical.gaps %}
+### {{ gap.heading }}
+
+{% if gap.body %}
+{{ gap.body }}
+
+{% endif %}
+{% for item in gap.fields %}
+**{{ item.label }}:** {{ item.value }}
+{% endfor %}
+
+{% endfor %}
+{% endif %}
+
+{% if logical and logical.notes %}
+## Notes
+
+{{ logical.notes }}
+
+{% endif %}
+
+---
+
+*Generated from {{ adr | presentation_id }} by ADR Architecture Kit (projection v3)*

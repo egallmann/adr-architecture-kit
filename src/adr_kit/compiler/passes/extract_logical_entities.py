@@ -15,6 +15,7 @@ from ...models import (
     UnresolvedRecord,
     lifecycle_stage_from_adr_status,
 )
+from ..frontend.adr_access import field_get
 
 
 @dataclass(frozen=True)
@@ -247,14 +248,19 @@ def extract_logical_entities(
             )
 
         for gap in adr.gaps:
+            gap_id = field_get(gap, "id")
+            question = field_get(gap, "question") or ""
+            blocking = bool(field_get(gap, "blocking"))
             unresolved = UnresolvedRecord(
-                id=f"UGAP-{adr.id}-{gap.id}",
+                id=f"UGAP-{adr.id}-{gap_id}",
                 gap_class="author_declared",
                 gap_type=classify_author_gap(gap),
                 source_entity_id=adr.id,
-                severity="important" if gap.blocking else "advisory",
-                provenance=provenance("derived_registry", f"{adr.id}#{gap.id}", "detect_unresolved", "explicit"),
-                evidence=[adr.id, gap.question],
+                severity="important" if blocking else "advisory",
+                provenance=provenance(
+                    "derived_registry", f"{adr.id}#{gap_id}", "detect_unresolved", "explicit"
+                ),
+                evidence=[adr.id, question],
             )
             result.unresolved.append(unresolved)
 

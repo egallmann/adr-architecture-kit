@@ -1,0 +1,173 @@
+schema_version: "1.5"
+adr_type: logical
+id: "019209a0-b1c2-7def-8a00-000000000001"
+alias_id: ADR-L-9001
+alias_name: maximal-logical-authority
+title: "Maximal Logical Authority"
+status: accepted
+created_date: "2026-08-29"
+modified_date: "2026-08-29"
+authors:
+  - fixture.author
+domains:
+  - DOMAIN_SENTINEL
+tags:
+  - TAG_SENTINEL
+related_adrs:
+  - "019209a0-b1c2-7def-8a00-000000000002"
+supersedes: []
+superseded_by: null
+ownership:
+  architecture_authority: architecture-systems
+  implementation_owners:
+    - fixture-team
+governance:
+  implementation_authority: advisory
+  related_reviews:
+    - review-fixture-001
+substrate_bindings: []
+rule_bindings: []
+evidence_expectations:
+  - expectation_id: EVID-FIXTURE-001
+    kind: test_report
+    description: Fixture evidence expectation for projection coverage.
+context: |
+  CONTEXT_SENTINEL maximal ADR-L fixture for generic human projection coverage.
+
+  Second paragraph of context stays in the projection losslessly.
+decisions:
+  - id: "019209a0-b1c2-7def-8a00-000000000010"
+    alias_id: DEC-9001
+    alias_name: alpha-decision
+    summary: Choose deterministic logical authority encoding
+    rationale: |
+      RATIONALE_ALPHA full rationale text for the first decision.
+    alternatives_considered:
+      - name: ALT_NAME_ALPHA
+        rejected_because: ALT_REJECTED_ALPHA because schema validation must stay deterministic.
+    consequences:
+      positive:
+        - CONSEQUENCE_POSITIVE_ALPHA
+      negative:
+        - CONSEQUENCE_NEGATIVE_ALPHA
+    enforces_invariants:
+      - "019209a0-b1c2-7def-8a00-000000000030"
+    enables_capabilities:
+      - "019209a0-b1c2-7def-8a00-000000000040"
+  - id: "019209a0-b1c2-7def-8a00-000000000011"
+    alias_id: DEC-9002
+    alias_name: beta-decision
+    summary: Require explicit gap tracking
+    rationale: RATIONALE_BETA for the second decision.
+    alternatives_considered:
+      - name: ALT_NAME_BETA
+        rejected_because: ALT_REJECTED_BETA because implicit gaps hide architectural debt.
+    consequences:
+      positive:
+        - CONSEQUENCE_POSITIVE_BETA
+      negative:
+        - CONSEQUENCE_NEGATIVE_BETA
+    related_invariants:
+      - "019209a0-b1c2-7def-8a00-000000000031"
+capabilities:
+  - id: "019209a0-b1c2-7def-8a00-000000000040"
+    alias_id: CAP-9001
+    alias_name: alpha-capability
+    name: Alpha Capability
+    description: CAP_DESC_ALPHA capability description sentinel.
+    implemented_by_components:
+      - "019209a0-b1c2-7def-8a00-000000000050"
+    enabled_by_decisions:
+      - "019209a0-b1c2-7def-8a00-000000000010"
+    acceptance_criteria:
+      - CAP_ACCEPTANCE_ALPHA fixture acceptance criteria render from authoring source.
+  - id: "019209a0-b1c2-7def-8a00-000000000041"
+    alias_id: CAP-9002
+    alias_name: beta-capability
+    name: Beta Capability
+    description: CAP_DESC_BETA second capability for index coverage.
+architectural_boundaries:
+  - id: "019209a0-b1c2-7def-8a00-000000000060"
+    alias_id: BOUND-9001
+    alias_name: alpha-boundary
+    name: Alpha Boundary
+    description: BOUND_DESC_ALPHA boundary description sentinel.
+    rationale: BOUND_RATIONALE_ALPHA explains why this boundary exists.
+interaction_contracts:
+  - id: "019209a0-b1c2-7def-8a00-000000000070"
+    alias_id: CONTRACT-9001
+    alias_name: alpha-contract
+    parties:
+      - logical-authority
+      - physical-system
+    protocol: YAML artifact structure
+    guarantees: |
+      GUARANTEE_ALPHA first guarantee line.
+
+      GUARANTEE_ALPHA second guarantee paragraph preserved.
+invariants:
+  - id: "019209a0-b1c2-7def-8a00-000000000030"
+    alias_id: INV-9001
+    alias_name: alpha-invariant
+    statement: INV_STATEMENT_ALPHA must remain true in all projections.
+    scope: projection-fixture
+    enforcement_level: must
+    enforcement_mechanism: test
+    verification_method: automated
+    rationale: INV_RATIONALE_ALPHA explains enforcement posture.
+    declaration_mode: canonical
+    upheld_by_decisions:
+      - "019209a0-b1c2-7def-8a00-000000000010"
+    policy_reference: policy/fixture-alpha
+    compliance_frameworks:
+      - STE-FIXTURE
+    exceptions:
+      - EXCEPTION_ALPHA only during fixture bootstrap
+  - id: "019209a0-b1c2-7def-8a00-000000000031"
+    alias_id: INV-9002
+    alias_name: beta-invariant
+    statement: INV_STATEMENT_BETA secondary invariant requirement.
+    scope: projection-fixture
+    enforcement_level: should
+    enforcement_mechanism: policy
+    verification_method: manual
+    rationale: INV_RATIONALE_BETA secondary rationale.
+non_functional_requirements:
+  - id: NFR-9001
+    category: performance
+    requirement: NFR_REQUIREMENT_ALPHA render within deterministic bounds.
+    acceptance_criteria: NFR_ACCEPTANCE_ALPHA projection tests pass twice identically.
+constraints:
+  - id: CONST-9001
+    type: technical
+    description: CONST_DESC_ALPHA constraint description sentinel.
+    rationale: CONST_RATIONALE_ALPHA explains the technical constraint.
+  - id: CONST-9002
+    type: business
+    description: CONST_DESC_BETA business constraint sentinel.
+    rationale: CONST_RATIONALE_BETA explains the business constraint.
+gaps:
+  - id: GAP-9001
+    question: GAP_QUESTION_ALPHA unresolved fixture question?
+    context: GAP_CONTEXT_ALPHA provides epistemic context.
+    impact: medium
+    blocking: false
+extension_entities:
+  - id: "019209a0-b1c2-7def-8a00-000000000080"
+    alias_id: XENT-9001
+    alias_name: ext-entity-alpha
+    entity_type: adr-l-human-projection-fixture:observation
+    properties:
+      label: EXT_ENTITY_ALPHA
+    rationale: Fixture consumer extension entity for projection coverage.
+extension_relationships:
+  - id: "019209a0-b1c2-7def-8a00-000000000081"
+    alias_id: XREL-9001
+    alias_name: ext-rel-alpha
+    relationship_type: adr-l-human-projection-fixture:observes
+    from_entity_id: "019209a0-b1c2-7def-8a00-000000000080"
+    to_entity_id: "019209a0-b1c2-7def-8a00-000000000040"
+    properties: {}
+    rationale: Fixture consumer extension relationship for projection coverage.
+notes: |
+  NOTES_SENTINEL optional logical notes section.

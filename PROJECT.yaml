@@ -41,7 +41,7 @@ development_methodology:
     TDD is architecturally aligned with STE principles (SYS-2, SYS-4, PRIME-1).
     As a governance tool that validates architecture decisions, provable
     correctness is required. Tests serve as executable specifications.
-  authority: "ADR-L-0003 DEC-0005, ADR-P-0003 IMPL-0001"
+  authority: "ADR-L-0003 DEC-0033"
 
 integrations:
   scm:

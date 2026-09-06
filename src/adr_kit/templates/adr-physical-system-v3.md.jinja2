@@ -1,0 +1,397 @@
+# {{ adr | presentation_id }}: {{ adr.title }}
+{% set ps = ctx.physical_system if ctx else none %}
+
+## Identity / Status
+
+{% if ps and ps.identity_rows %}
+{% for row in ps.identity_rows %}
+**{{ row.label }}:** {{ row.value }}  
+{% endfor %}
+{% else %}
+**Type:** {{ ctx.adr_type if ctx else adr.adr_type }}  
+**Status:** {{ adr.status.value }}  
+**Alias:** {{ adr | presentation_id }}  
+**Created:** {{ adr.created_date }}  
+{% endif %}
+
+{% if ps %}
+## Architecture at a Glance
+
+| | |
+| --- | --- |
+{% if ps.architecture_position.system_heading %}| System | {{ ps.architecture_position.system_heading }} |
+{% endif %}| Components | {{ ps.architecture_position.component_count }} |
+| Boundaries | {{ ps.architecture_position.boundary_count }} |
+| Internal relationships | {{ ps.architecture_position.relationship_count }} |
+| External dependencies | {{ ps.architecture_position.external_dependency_count }} |
+| Exposed surfaces | {{ ps.architecture_position.exposed_surfaces | length }} |
+
+{% if ps.architecture_position.logical_authority %}
+**Logical authority**
+{% for item in ps.architecture_position.logical_authority %}
+- {{ item }}
+{% endfor %}
+
+{% endif %}
+{% endif %}
+
+{% if ps %}
+## Change Safety
+
+{% if ps.change_safety.logical_contracts %}
+**Logical contracts**
+{% for item in ps.change_safety.logical_contracts %}
+- {{ item }}
+{% endfor %}
+
+{% endif %}
+{% if ps.change_safety.constituent_components %}
+**Constituent components**
+{% for item in ps.change_safety.constituent_components %}
+- {{ item }}
+{% endfor %}
+
+{% endif %}
+{% if ps.change_safety.internal_relationships %}
+**Internal relationships**
+{% for item in ps.change_safety.internal_relationships %}
+- {{ item }}
+{% endfor %}
+
+{% endif %}
+{% if ps.change_safety.external_dependencies %}
+**External dependencies**
+{% for item in ps.change_safety.external_dependencies %}
+- {{ item }}
+{% endfor %}
+
+{% endif %}
+{% if ps.change_safety.exposed_interfaces %}
+**Exposed interfaces**
+{% for item in ps.change_safety.exposed_interfaces %}
+- `{{ item }}`
+{% endfor %}
+
+{% endif %}
+{% if ps.change_safety.operational_requirements %}
+**Operational requirements**
+{% for item in ps.change_safety.operational_requirements %}
+- {{ item.label }}: {{ item.value }}
+{% endfor %}
+
+{% endif %}
+{% if ps.change_safety.failure_mode_index %}
+**Known failure modes**
+{% for item in ps.change_safety.failure_mode_index %}
+- {{ item }}
+{% endfor %}
+
+{% endif %}
+{% if ps.change_safety.known_gaps %}
+**Known gaps**
+{% for item in ps.change_safety.known_gaps %}
+- {{ item }}
+{% endfor %}
+
+{% endif %}
+{% endif %}
+
+## Context
+
+{{ adr.context }}
+
+{% if ps and ps.components %}
+## Internal System Architecture
+
+### System Components
+
+| Component | Type | Role in this System | Authority |
+| --- | --- | --- | --- |
+{% for member in ps.components %}
+| {{ member.heading | replace('|', '\\|') }} | {{ member.component_type | replace('|', '\\|') if member.component_type else '—' }} | {{ member.purpose | replace('\n', '<br>') | replace('|', '\\|') }} | {{ member.authority_display if member.authority_display else '—' }} |
+{% endfor %}
+
+{% if ps.topology_graphs %}
+### System Topology
+
+{% if ps.topology_handle_note %}
+*{{ ps.topology_handle_note }}*
+
+{% endif %}
+{% for graph in ps.topology_graphs %}
+```mermaid
+{{ graph }}```
+
+{% endfor %}
+{% elif ps.handle_index and ps.topology_handle_note %}
+*{{ ps.topology_handle_note }}*
+
+{% endif %}
+{% if ps.handle_index %}
+Local topology handles:
+{% for item in ps.handle_index %}
+- `{{ item.label }}` → {{ item.value }}
+{% endfor %}
+
+{% endif %}
+{% if ps.relationships %}
+### Component Interactions
+
+| From | Relationship | To | Protocol | Description |
+| --- | --- | --- | --- | --- |
+{% for rel in ps.relationships %}
+| {{ rel.from_heading | replace('|', '\\|') }} | {{ rel.human_phrase }} (`{{ rel.verb }}`) | {{ rel.to_heading | replace('|', '\\|') }} | {{ rel.protocol | replace('|', '\\|') if rel.protocol else '—' }} | {{ rel.description | replace('\n', '<br>') | replace('|', '\\|') if rel.description else '—' }} |
+{% endfor %}
+
+{% endif %}
+{% endif %}
+
+{% if ps and ps.boundaries %}
+## System Boundaries
+
+{% for boundary in ps.boundaries %}
+### {{ boundary.heading }}
+
+{{ boundary.description }}
+
+**External Dependencies**
+{% for item in boundary.external_dependencies %}
+- {{ item }}
+{% endfor %}
+
+**Exposed Interfaces**
+{% for item in boundary.exposed_interfaces %}
+- `{{ item }}`
+{% endfor %}
+
+{% endfor %}
+{% endif %}
+
+{% if ps and ps.integration_patterns %}
+## Integration Patterns
+
+{% for pattern in ps.integration_patterns %}
+### {{ pattern.pattern_name }}
+
+**Application**
+{{ pattern.application }}
+
+{% if pattern.components_affected %}
+**Components affected**
+{% for item in pattern.components_affected %}
+- {{ item }}
+{% endfor %}
+
+{% endif %}
+{% if pattern.rationale %}
+**Rationale**
+{{ pattern.rationale }}
+
+{% endif %}
+{% endfor %}
+{% endif %}
+{% if ps and ps.data_flows %}
+## Data Flows
+
+{% for flow in ps.data_flows %}
+### {{ flow.heading }}
+
+{{ flow.description }}
+
+{% if flow.path_labels %}
+**Path**
+{% for hop in flow.path_labels %}
+{{ hop }}
+{% if not loop.last %}
+    ->
+{% endif %}
+{% endfor %}
+
+{% endif %}
+{% if flow.data_type %}
+**Data type:** {{ flow.data_type }}
+{% endif %}
+{% if flow.volume %}
+**Volume:** {{ flow.volume }}
+{% endif %}
+{% if flow.latency_requirements %}
+**Latency requirement:** {{ flow.latency_requirements }}
+{% endif %}
+
+{% endfor %}
+{% endif %}
+{% if ps and ps.scalability %}
+## Scalability
+
+{% if ps.scalability.horizontal_scaling %}
+**Horizontal scaling**
+{{ ps.scalability.horizontal_scaling }}
+
+{% endif %}
+{% if ps.scalability.vertical_scaling %}
+**Vertical scaling**
+{{ ps.scalability.vertical_scaling }}
+
+{% endif %}
+{% if ps.scalability.bottlenecks %}
+**Known bottlenecks**
+{% for item in ps.scalability.bottlenecks %}
+- {{ item }}
+{% endfor %}
+
+{% endif %}
+{% if ps.scalability.capacity_planning %}
+**Capacity planning**
+{{ ps.scalability.capacity_planning }}
+
+{% endif %}
+{% endif %}
+{% if ps and ps.failure_modes %}
+## Failure Modes
+
+{% if ps.failure_modes_as_cards %}
+{% for mode in ps.failure_modes %}
+### {{ mode.scenario }}
+
+**Impact:** {{ mode.impact }}
+
+{% if mode.detection %}
+**Detection:** {{ mode.detection }}
+
+{% endif %}
+**Mitigation:**
+{{ mode.mitigation }}
+
+{% if mode.recovery %}
+**Recovery:** {{ mode.recovery }}
+
+{% endif %}
+{% endfor %}
+{% else %}
+| Scenario | Impact | Detection | Mitigation | Recovery |
+| --- | --- | --- | --- | --- |
+{% for mode in ps.failure_modes %}
+| {{ mode.scenario | replace('|', '\\|') }} | {{ mode.impact | replace('|', '\\|') }} | {{ mode.detection | replace('|', '\\|') if mode.detection else '—' }} | {{ mode.mitigation | replace('\n', '<br>') | replace('|', '\\|') }} | {{ mode.recovery | replace('|', '\\|') if mode.recovery else '—' }} |
+{% endfor %}
+
+{% endif %}
+{% endif %}
+{% if ps and ps.operational_requirements %}
+## Operational Requirements
+
+{% for item in ps.operational_requirements %}
+**{{ item.label }}**
+{{ item.value }}
+
+{% endfor %}
+{% endif %}
+{% if ps and ps.deployment_rows %}
+## Deployment
+
+{% for item in ps.deployment_rows %}
+**{{ item.label }}**
+{{ item.value }}
+
+{% endfor %}
+{% endif %}
+
+{% if ctx and ctx.graphs %}
+## Architecture Relationships
+
+{% for graph in ctx.graphs %}
+```mermaid
+{{ graph }}```
+
+{% endfor %}
+{% endif %}
+
+{% if ps and ps.technology_stack %}
+## Technology
+
+{% for tech in ps.technology_stack %}
+### {{ tech.name }}{% if tech.category %} ({{ tech.category }}){% endif %}
+
+{% if tech.version %}
+**Version:** {{ tech.version }}
+
+{% endif %}
+{% if tech.rationale %}
+**Rationale:**
+{{ tech.rationale }}
+
+{% endif %}
+{% endfor %}
+{% endif %}
+
+{% if ps and ps.architecture_impact_rows %}
+## Architecture Impact
+
+{% for row in ps.architecture_impact_rows %}
+**{{ row.label }}:** {{ row.value }}
+{% endfor %}
+
+{% endif %}
+
+{% if ps and ps.gaps %}
+## Known Gaps
+
+{% for gap in ps.gaps %}
+### {{ gap.heading }}
+
+{% if gap.body %}
+{{ gap.body }}
+
+{% endif %}
+{% for item in gap.fields %}
+**{{ item.label }}:** {{ item.value }}
+{% endfor %}
+
+{% endfor %}
+{% endif %}
+
+{% if ctx and ctx.peer_cards %}
+## Neighbor Relationships
+
+{% set table_cards = ctx.peer_cards | selectattr('use_table') | list %}
+{% set expanded_cards = ctx.peer_cards | rejectattr('use_table') | list %}
+{% if table_cards %}
+| Neighbor | Relationship | Exact Path |
+| --- | --- | --- |
+{% for card in table_cards %}
+{% set rel = card.relationships[0] %}
+| {% if card.link %}[{{ card.alias_id }} — {{ card.title }}]({{ card.link }}){% else %}{{ card.alias_id }} — {{ card.title }}{% endif %} | {{ rel.from_display }} → {{ rel.to_display }} | `{{ rel.canonical_path }}` |
+{% endfor %}
+
+{% endif %}
+{% for card in expanded_cards %}
+### {{ card.alias_id }} — {{ card.title }}
+
+{% for rel in card.relationships %}
+**Relationship**
+{{ rel.from_display }}
+{{ rel.verb | replace('_', ' ') }}
+{{ rel.to_display }}
+
+`{{ rel.canonical_path }}`
+
+{% endfor %}
+{% if card.link %}[Open projection]({{ card.link }}){% else %}*(projection link unavailable)*{% endif %}
+
+{% endfor %}
+{% elif ctx %}
+## Neighbor Relationships
+
+No grammatical peer neighborhood for this subject.
+{% endif %}
+
+{% if ctx and ctx.governance_rows %}
+## Governance / Bindings / Evidence
+
+{% for row in ctx.governance_rows %}
+- {{ row }}
+{% endfor %}
+{% endif %}
+
+---
+
+*Generated from {{ adr | presentation_id }} by ADR Architecture Kit (projection v3)*

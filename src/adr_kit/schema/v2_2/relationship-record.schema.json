@@ -1,0 +1,71 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://adr-kit.ste.systems/schema/normalized-model/v2.2/relationship-record.schema.json",
+  "title": "Relationship Record v2.2",
+  "description": "UUID-endpoint relationship record for normalized model 2.2. Topology verbs and core semantic types including consumes_interface and composed_of are version-aware core vocabulary.",
+  "definitions": {
+    "uuid_endpoint": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-7[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$",
+      "description": "Canonical entity UUID endpoint. TOPO handles (TOPO-*) are forbidden — topology-local addressing remains in authoring only."
+    },
+    "topology_relationship_verb": {
+      "type": "string",
+      "enum": ["calls", "publishes_to", "subscribes_to", "reads_from", "writes_to", "depends_on"],
+      "description": "Authored physical-system topology relationship verb normalized as compatibility records with explicit provenance."
+    },
+    "core_relationship_type": {
+      "type": "string",
+      "description": "Core normalized relationship type. Includes topology verbs (calls, publishes_to, subscribes_to, reads_from, writes_to, depends_on). consumes_interface denotes interface consumption between components when directly authored. composed_of denotes system-to-component membership (SYS UUID to COMP UUID) derived from explicit PS topology component_ref membership, not TOPO-shaped endpoints."
+    }
+  },
+  "oneOf": [
+    {
+      "type": "object",
+      "required": ["record_kind", "id", "alias_id", "alias_name", "relationship_type", "from_entity_id", "to_entity_id", "canonical_source_ref"],
+      "properties": {
+        "record_kind": {"const": "canonical"},
+        "id": {"$ref": "#/definitions/uuid_endpoint"},
+        "alias_id": {"type": "string", "pattern": "^[A-Z][A-Z0-9]{0,15}-[0-9]{4}$"},
+        "alias_name": {"type": "string", "minLength": 3, "maxLength": 96},
+        "relationship_type": {
+          "$ref": "#/definitions/core_relationship_type"
+        },
+        "from_entity_id": {"$ref": "#/definitions/uuid_endpoint"},
+        "to_entity_id": {"$ref": "#/definitions/uuid_endpoint"},
+        "source_owner_id": {"type": ["string", "null"]},
+        "source_pointer": {"type": ["string", "null"]},
+        "provenance_classification": {"enum": ["explicit", "derived", "heuristic"]},
+        "evidence": {"type": "array"},
+        "canonical_source_ref": {"type": "string"},
+        "confidence": {"type": "number", "minimum": 0, "maximum": 1},
+        "extension": {"$ref": "normalized-entity.schema.json#/properties/extension"}
+      },
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "required": ["record_kind", "relationship_id", "assertion_id", "relationship_type", "from_entity_id", "to_entity_id", "provenance_classification", "canonical_source_ref"],
+      "properties": {
+        "record_kind": {"const": "compatibility"},
+        "relationship_id": {"type": "string"},
+        "assertion_id": {"type": "string", "pattern": "^asrt-[0-9a-f]{64}$"},
+        "relationship_type": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_]*$",
+          "description": "Compatibility relationship type. Core v2.2 vocabulary includes topology verbs (calls, publishes_to, subscribes_to, reads_from, writes_to, depends_on), consumes_interface (interface consumption between components), and composed_of (system-to-component membership from explicit PS topology). TOPO handles must not appear as endpoints."
+        },
+        "from_entity_id": {"$ref": "#/definitions/uuid_endpoint"},
+        "to_entity_id": {"$ref": "#/definitions/uuid_endpoint"},
+        "source_owner_id": {"type": ["string", "null"]},
+        "source_pointer": {"type": ["string", "null"]},
+        "provenance_classification": {"enum": ["explicit", "derived", "heuristic"]},
+        "evidence": {"type": "array"},
+        "canonical_source_ref": {"type": "string"},
+        "confidence": {"type": "number", "minimum": 0, "maximum": 1},
+        "metadata": {"type": "object"}
+      },
+      "additionalProperties": false
+    }
+  ]
+}

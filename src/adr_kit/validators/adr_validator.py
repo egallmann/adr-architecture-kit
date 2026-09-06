@@ -8,6 +8,7 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import List, Optional, Union, Dict
 
+from ..compiler.frontend.adr_access import adr_type_of, field_get, field_list, topology_components
 from ..decorators import enforces_invariant, implements_adr
 from ..models import (
     ImplementationAuthority,
@@ -18,6 +19,7 @@ from ..models import (
     PhysicalSystemADR,
     SteelmanReview,
 )
+from ..models.common import ADRType
 from ..parser import ADRParser, ADRParseError, ADRSchemaValidationError
 from ..scope import ProjectScopeResolver, ProjectScope
 
@@ -203,14 +205,16 @@ class ADRValidator:
         
         self._validate_governance_metadata(adr, raw_data, errors, warnings)
 
-        # Run business rule validations
-        if isinstance(adr, LogicalADR):
+        # Run business rule validations. UUID-era models (v1.3+) are not
+        # subclasses of the v1.2 LogicalADR/Physical* types; classify by adr_type.
+        kind = adr_type_of(adr)
+        if kind == ADRType.LOGICAL or isinstance(adr, LogicalADR):
             self._validate_logical_adr(adr, errors, warnings)
-        elif isinstance(adr, PhysicalSystemADR):
+        elif kind == ADRType.PHYSICAL_SYSTEM or isinstance(adr, PhysicalSystemADR):
             self._validate_physical_system_adr(adr, errors, warnings)
-        elif isinstance(adr, PhysicalComponentADR):
+        elif kind == ADRType.PHYSICAL_COMPONENT or isinstance(adr, PhysicalComponentADR):
             self._validate_physical_component_adr(adr, errors, warnings)
-        elif isinstance(adr, PhysicalADR):
+        elif kind == ADRType.PHYSICAL or isinstance(adr, PhysicalADR):
             self._validate_physical_adr(adr, errors, warnings)
         
         return ValidationResult(
@@ -436,8 +440,12 @@ class ADRValidator:
             errors: List to append errors to
             warnings: List to append warnings to
         """
+        implements_system = field_list(adr, "implements_system")
+        implements_logical = field_list(adr, "implements_logical")
+        specifications = field_list(adr, "component_specifications")
+
         # Must reference at least one Physical-System ADR
-        if not adr.implements_system or len(adr.implements_system) == 0:
+        if not implements_system:
             errors.append(ValidationError(
                 severity="error",
                 rule="physical_component_system_ref",
@@ -446,7 +454,7 @@ class ADRValidator:
             ))
         
         # Must reference at least one logical ADR (inherited or direct)
-        if not adr.implements_logical or len(adr.implements_logical) == 0:
+        if not implements_logical:
             errors.append(ValidationError(
                 severity="error",
                 rule="physical_component_logical_ref",
@@ -455,7 +463,7 @@ class ADRValidator:
             ))
         
         # Must have at least one component specification
-        if not adr.component_specifications or len(adr.component_specifications) == 0:
+        if not specifications:
             errors.append(ValidationError(
                 severity="error",
                 rule="completeness",
@@ -463,46 +471,44 @@ class ADRValidator:
                 field="component_specifications"
             ))
         
-        # Validate component specifications for AI generation readiness
-        for comp in adr.component_specifications:
-            # Must have implementation_identifiers for AI generation
-            if not comp.implementation_identifiers:
-                errors.append(ValidationError(
-                    severity="error",
-                    rule="ai_generation_readiness",
-                    message=f"Component {comp.id} missing implementation_identifiers (required for AI generation)",
-                    field="component_specifications.implementation_identifiers"
-                ))
-            
-            # Must have at least one interface
-            if not comp.interfaces or len(comp.interfaces) == 0:
-                errors.append(ValidationError(
-                    severity="error",
-                    rule="ai_generation_readiness",
-                    message=f"Component {comp.id} missing interfaces (required for AI generation)",
-                    field="component_specifications.interfaces"
-                ))
-            
-            # Must have generation_context
-            if not comp.generation_context:
-                errors.append(ValidationError(
-                    severity="error",
-                    rule="ai_generation_readiness",
-                    message=f"Component {comp.id} missing generation_context (required for AI generation)",
-                    field="component_specifications.generation_context"
-                ))
-            
-            # Must have implementation_requirements
-            if not comp.implementation_requirements:
-                errors.append(ValidationError(
-                    severity="error",
-                    rule="ai_generation_readiness",
-                    message=f"Component {comp.id} missing implementation_requirements (required for AI generation)",
-                    field="component_specifications.implementation_requirements"
-                ))
+        # Validate component specifications for AI generation readiness on
+        # legacy v1.2 envelopes only. Authoring v1.3+ / v1.5 do not require
+        # the old AI-generation nested implementation_requirements block.
+        schema_version = str(field_get(adr, "schema_version") or "")
+        if schema_version in {"", "1.0", "1.2"}:
+            for comp in specifications:
+                comp_id = field_get(comp, "id") or field_get(comp, "alias_id") or "?"
+                if not field_get(comp, "implementation_identifiers"):
+                    errors.append(ValidationError(
+                        severity="error",
+                        rule="ai_generation_readiness",
+                        message=f"Component {comp_id} missing implementation_identifiers (required for AI generation)",
+                        field="component_specifications.implementation_identifiers"
+                    ))
+                if not field_get(comp, "interfaces"):
+                    errors.append(ValidationError(
+                        severity="error",
+                        rule="ai_generation_readiness",
+                        message=f"Component {comp_id} missing interfaces (required for AI generation)",
+                        field="component_specifications.interfaces"
+                    ))
+                if not field_get(comp, "generation_context"):
+                    errors.append(ValidationError(
+                        severity="error",
+                        rule="ai_generation_readiness",
+                        message=f"Component {comp_id} missing generation_context (required for AI generation)",
+                        field="component_specifications.generation_context"
+                    ))
+                if not field_get(comp, "implementation_requirements"):
+                    errors.append(ValidationError(
+                        severity="error",
+                        rule="ai_generation_readiness",
+                        message=f"Component {comp_id} missing implementation_requirements (required for AI generation)",
+                        field="component_specifications.implementation_requirements"
+                    ))
         
         # Validate granularity (2-8 components typical, >10 needs justification)
-        if len(adr.component_specifications) > 10:
+        if len(specifications) > 10:
             warnings.append(ValidationError(
                 severity="warning",
                 rule="granularity",
@@ -510,15 +516,15 @@ class ADRValidator:
                 field="component_specifications"
             ))
         
-        # If interface_compatibility is set, validate supersedes reference
-        if adr.interface_compatibility and adr.interface_compatibility.supersedes_adr:
-            if not adr.supersedes or adr.interface_compatibility.supersedes_adr not in adr.supersedes:
-                warnings.append(ValidationError(
-                    severity="warning",
-                    rule="interface_compatibility",
-                    message="interface_compatibility.supersedes_adr should be listed in supersedes field",
-                    field="interface_compatibility"
-                ))
+        compatibility = field_get(adr, "interface_compatibility")
+        supersedes_adr = field_get(compatibility, "supersedes_adr") if compatibility else None
+        if supersedes_adr and supersedes_adr not in field_list(adr, "supersedes"):
+            warnings.append(ValidationError(
+                severity="warning",
+                rule="interface_compatibility",
+                message="interface_compatibility.supersedes_adr should be listed in supersedes field",
+                field="interface_compatibility"
+            ))
     
     def validate_directory(self, adr_dir: Path, scope: Optional[ProjectScope] = None, mode: str = "complete") -> dict:
         """Validate all ADRs in directory.
@@ -586,8 +592,63 @@ class ADRValidator:
                     print(f"Warning: Failed to validate {s.name}: {e}")
         
         return all_results
+
+    @implements_adr("ADR-L-0025")
+    def _validate_topology_membership(
+        self,
+        physical_system_adrs: Dict[str, object],
+        physical_component_adrs: Dict[str, object],
+        errors: List[ValidationError],
+    ) -> None:
+        """DEC-0174: every PS topology member must be claimed by a PC for that system.
+
+        One-directional only. A PC may implement a system without being a topology member.
+        """
+        system_id_by_adr: Dict[str, str] = {}
+        for adr in physical_system_adrs.values():
+            authored = field_get(adr, "system")
+            system_id = field_get(authored, "id") if authored is not None else None
+            adr_id = field_get(adr, "id")
+            if isinstance(system_id, str) and isinstance(adr_id, str):
+                system_id_by_adr[adr_id] = system_id
+
+        pc_systems: Dict[str, set[str]] = {}
+        for adr in physical_component_adrs.values():
+            systems = {
+                system_id_by_adr.get(item, item)
+                for item in field_list(adr, "implements_system")
+                if isinstance(item, str)
+            }
+            for spec in field_list(adr, "component_specifications"):
+                component_id = field_get(spec, "id") or field_get(spec, "component_id")
+                if isinstance(component_id, str):
+                    pc_systems[component_id] = systems
+
+        for adr in physical_system_adrs.values():
+            if str(field_get(adr, "schema_version") or "") != "1.5":
+                continue
+            authored = field_get(adr, "system")
+            system_id = field_get(authored, "id") if authored is not None else None
+            if not isinstance(system_id, str):
+                continue
+            alias = field_get(adr, "alias_id") or field_get(adr, "id")
+            for component in topology_components(adr):
+                ref = field_get(component, "component_ref")
+                if not isinstance(ref, str) or not ref:
+                    continue
+                claimed = pc_systems.get(ref, set())
+                if system_id not in claimed:
+                    errors.append(ValidationError(
+                        severity="error",
+                        rule="topology_membership",
+                        message=(
+                            f"PS {alias} topology member {ref} is not claimed by a PC "
+                            f"implements_system for system {system_id}"
+                        ),
+                        field="component_topology",
+                    ))
     
-    @implements_adr("ADR-L-0001", "ADR-L-0015", "ADR-PC-0002")
+    @implements_adr("ADR-L-0001", "ADR-L-0015", "ADR-PC-0002", "ADR-L-0025")
     def validate_cross_references(self, adr_dir: Path) -> ValidationResult:
         """Validate cross-references between ADRs.
         
@@ -625,11 +686,12 @@ class ADRValidator:
         for file_path in physical_files:
             try:
                 adr = self.parser.parse_adr(file_path)
-                if isinstance(adr, PhysicalComponentADR):
+                kind = adr_type_of(adr)
+                if kind == ADRType.PHYSICAL_COMPONENT or isinstance(adr, PhysicalComponentADR):
                     physical_component_adrs[adr.id] = adr
-                elif isinstance(adr, PhysicalSystemADR):
+                elif kind == ADRType.PHYSICAL_SYSTEM or isinstance(adr, PhysicalSystemADR):
                     physical_system_adrs[adr.id] = adr
-                elif isinstance(adr, PhysicalADR):
+                elif kind == ADRType.PHYSICAL or isinstance(adr, PhysicalADR):
                     physical_adrs[adr.id] = adr
             except Exception as e:
                 errors.append(ValidationError(
@@ -695,7 +757,7 @@ class ADRValidator:
         
         # Validate physical-component ADRs reference existing system and logical ADRs
         for comp_id, comp_adr in physical_component_adrs.items():
-            for sys_ref in comp_adr.implements_system:
+            for sys_ref in field_list(comp_adr, "implements_system"):
                 if sys_ref not in physical_system_adrs:
                     errors.append(ValidationError(
                         severity="error",
@@ -704,7 +766,7 @@ class ADRValidator:
                         field="implements_system"
                     ))
             
-            for logical_ref in comp_adr.implements_logical:
+            for logical_ref in field_list(comp_adr, "implements_logical"):
                 if logical_ref not in logical_adrs:
                     errors.append(ValidationError(
                         severity="error",
@@ -712,6 +774,12 @@ class ADRValidator:
                         message=f"Physical-Component ADR {comp_id} references non-existent logical ADR {logical_ref}",
                         field="implements_logical"
                     ))
+
+        self._validate_topology_membership(
+            physical_system_adrs,
+            physical_component_adrs,
+            errors,
+        )
         
         # Validate related_adrs exist
         all_adr_ids = set(logical_adrs.keys()) | set(physical_adrs.keys()) | set(physical_system_adrs.keys()) | set(physical_component_adrs.keys())

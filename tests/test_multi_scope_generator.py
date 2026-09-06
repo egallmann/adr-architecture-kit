@@ -1,4 +1,4 @@
-"""Test multi-scope manifest generation (ADR-P-0003: COMP-0002)."""
+"""Test multi-scope manifest generation (ADR-PC-0001: COMP-0010)."""
 
 import pytest
 import shutil

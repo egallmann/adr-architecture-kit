@@ -5,16 +5,17 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 from pathlib import Path
 
+from pydantic import BaseModel, Field
+
+from ...identity import derive_assertion_id
 from ...models import (
     LogicalADR,
     NormalizedEntity,
     PhysicalADR,
     PhysicalComponentADR,
     PhysicalSystemADR,
-    RelationshipRecord,
     StandaloneInvariant,
 )
-from ...models.architecture_discovery import RelationshipType
 from ...models.common import EntityReference, ExternalReference
 from ..frontend.adr_access import (
     field_get,
@@ -22,6 +23,8 @@ from ..frontend.adr_access import (
     is_physical_component_adr,
     is_physical_system_adr,
     topology_components,
+    topology_edge_fields,
+    topology_relationships,
 )
 
 
@@ -39,11 +42,37 @@ class DerivedGapSignal:
     expected_relationship: str | None = None
 
 
+class DerivedRelationship(BaseModel):
+    """Version-neutral derivation candidate. Not a public normalized contract."""
+
+    relationship_id: str
+    assertion_id: str = ""
+    relationship_type: str
+    from_entity_id: str
+    to_entity_id: str
+    provenance_classification: str = "explicit"
+    evidence: list[str] = Field(default_factory=list)
+    canonical_source_ref: str
+    source_pointer: str | None = None
+    confidence: float = 1.0
+    metadata: dict = Field(default_factory=dict)
+
+    def model_post_init(self, __context: object) -> None:
+        if not self.assertion_id:
+            self.assertion_id = derive_assertion_id(
+                self.relationship_type,
+                self.from_entity_id,
+                self.to_entity_id,
+                self.canonical_source_ref,
+                self.source_pointer,
+            )
+
+
 @dataclass
 class RelationshipDerivationResult:
     """Derived relationships plus unresolved precursor signals."""
 
-    relationships: list[RelationshipRecord] = field(default_factory=list)
+    relationships: list[DerivedRelationship] = field(default_factory=list)
     generator_gaps: list[DerivedGapSignal] = field(default_factory=list)
 
 
@@ -87,11 +116,11 @@ def derive_relationships(
 ) -> RelationshipDerivationResult:
     """Derive relationships and unresolved precursor signals using current generator rules."""
 
-    relationships: dict[str, RelationshipRecord] = {}
+    relationships: dict[str, DerivedRelationship] = {}
     result = RelationshipDerivationResult()
 
     def add_relationship(
-        relationship_type: RelationshipType,
+        relationship_type: str,
         from_id: str,
         to_id: str,
         source_ref: str,
@@ -110,7 +139,7 @@ def derive_relationships(
         rel_id = relationship_id(relationship_type, from_id, to_id)
         if rel_id in relationships:
             return
-        relationships[rel_id] = RelationshipRecord(
+        relationships[rel_id] = DerivedRelationship(
             relationship_id=rel_id,
             relationship_type=relationship_type,
             from_entity_id=from_id,
@@ -550,9 +579,21 @@ def derive_relationships(
                         )
         if is_physical_system_adr(physical_adr):
             system_id = system_ids[physical_adr.id]
-            for topology_component in topology_components(physical_adr):
+            handle_to_comp: dict[str, str] = {}
+            for index, topology_component in enumerate(topology_components(physical_adr)):
                 topology_id = field_get(topology_component, "id")
-                if topology_id is not None:
+                component_ref = field_get(topology_component, "component_ref")
+                if topology_id and isinstance(component_ref, str) and component_ref:
+                    handle_to_comp[topology_id] = component_ref
+                    add_relationship(
+                        "composed_of",
+                        system_id,
+                        component_ref,
+                        f"{physical_adr.id}#{topology_id}",
+                        [physical_adr.id],
+                        source_pointer=f"/component_topology/components/{index}",
+                    )
+                elif topology_id is not None:
                     add_relationship(
                         "composed_of",
                         system_id,
@@ -560,6 +601,30 @@ def derive_relationships(
                         f"{physical_adr.id}#{topology_id}",
                         [physical_adr.id],
                     )
+            for index, topology_rel in enumerate(topology_relationships(physical_adr)):
+                from_handle, to_handle, verb, protocol, description = topology_edge_fields(
+                    topology_rel
+                )
+                if not from_handle or not to_handle or not verb:
+                    continue
+                from_comp = handle_to_comp.get(from_handle)
+                to_comp = handle_to_comp.get(to_handle)
+                if not from_comp or not to_comp:
+                    continue
+                metadata: dict = {}
+                if protocol:
+                    metadata["protocol"] = protocol
+                if description:
+                    metadata["description"] = description
+                add_relationship(
+                    str(verb),
+                    from_comp,
+                    to_comp,
+                    f"{physical_adr.id}#{from_handle}->{to_handle}",
+                    [physical_adr.id],
+                    source_pointer=f"/component_topology/relationships/{index}",
+                    metadata=metadata or None,
+                )
             for component_adr in field_list(physical_adr, "references_components"):
                 if component_adr in entities:
                     add_relationship(

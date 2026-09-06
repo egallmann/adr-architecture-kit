@@ -1,5 +1,7 @@
 # Physical ADR Guide
 
+> **Current authoring (v1.5):** Physical architecture is documented with **ADR-PS** (physical-system) and **ADR-PC** (physical-component) documents. Generic **ADR-P** authoring is retired from the current canonical corpus; historical identity is preserved in `adrs/migrations/adr-p-retirement-map.yaml`.
+
 ## Purpose
 
 Physical ADRs document **implementation specifications** that operationalize logical designs. They define how the system is built, what technologies are used, and how components interact.
@@ -31,9 +33,10 @@ Physical ADRs must be **implementation-ready**:
 ### Required Fields
 
 ```yaml
-schema_version: "1.0"
-adr_type: physical
-id: ADR-P-0001
+schema_version: "1.5"
+adr_type: physical-component   # or physical-system for ADR-PS-*
+alias_id: ADR-PC-0001
+id: <document UUIDv7>
 title: "Implementation title"
 status: proposed | accepted | deprecated | superseded
 created_date: "2026-03-07"

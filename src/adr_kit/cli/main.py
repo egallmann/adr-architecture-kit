@@ -30,6 +30,7 @@ from ..compiler import (
     CompilerConfig,
     compile_logical_adr_ir_fragments,
 )
+from ..compiler.pipeline import run_frontend_pipeline
 from ..decorators import implements_adr
 from ..models.implementation_attribution import (
     ImplementationAttributionEvidenceV15,
@@ -2245,16 +2246,24 @@ def audit_runtime(requirements: Path, pyproject: Path, fail_on_outdated: bool):
 @click.option(
     "--output",
     type=click.Path(dir_okay=False, path_type=Path),
-    default=Path("SYSTEM-OVERVIEW.md"),
-    show_default=True,
-    help="Path to write the generated system overview.",
+    default=None,
+    help="Path to write the generated system overview (default: <scope>/SYSTEM-OVERVIEW.md).",
 )
-def generate_system_overview(output: Path):
-    """Generate the AI-first SYSTEM-OVERVIEW.md artifact."""
+@click.option(
+    "--scope",
+    type=click.Path(exists=True, file_okay=False, path_type=Path),
+    help="Explicit project scope (overrides auto-detection)",
+)
+def generate_system_overview(output: Optional[Path], scope: Optional[Path]):
+    """Generate the AI-first SYSTEM-OVERVIEW.md artifact for one scope."""
     try:
-        generator = SystemOverviewGenerator(repo_root=Path.cwd())
-        generator.save(output)
-        click.echo(f"Generated system overview: {output}")
+        resolver = ProjectScopeResolver(explicit_scope=scope)
+        detected = resolver.resolve()
+        frontend = run_frontend_pipeline(scope=detected)
+        generator = SystemOverviewGenerator(scope=detected, build_result=frontend)
+        destination = output or (detected.root / "SYSTEM-OVERVIEW.md")
+        generator.save(destination)
+        click.echo(f"Generated system overview: {destination}")
     except Exception as e:
         click.echo(f"Error: {e}", err=True)
         sys.exit(1)
@@ -2296,7 +2305,7 @@ def _generate_adr_projection_docs(*, scope: Optional[Path], recursive: bool, lab
         compiler = ArchitectureCompiler(scope_resolver=resolver)
         if recursive:
             workspace_result = compiler.compile_recursive(
-                config=CompilerConfig(emit={"markdown"}),
+                config=CompilerConfig(emit={"markdown"}, include_system_overview=False),
             )
             if not workspace_result.success:
                 raise ValueError("Architecture compilation failed")
@@ -2320,7 +2329,7 @@ def _generate_adr_projection_docs(*, scope: Optional[Path], recursive: bool, lab
             click.echo(f"Generating {label} for {detected_scope.name}...")
             result = compiler.compile(
                 detected_scope,
-                CompilerConfig(emit={"markdown"}),
+                CompilerConfig(emit={"markdown"}, include_system_overview=False),
             )
             if not result.success:
                 raise ValueError("Architecture compilation failed")
@@ -2599,8 +2608,13 @@ def attribution_coverage_cmd(scope: Optional[Path], evidence: Optional[Path]):
 
         repo = ArchitectureRepository(project_root=scope_root)
         repo.load()
-        if repo.model_version in {"2.0", "2.1"}:
-            model_v2 = repo.get_model_v21() if repo.model_version == "2.1" else repo.get_model_v2()
+        if repo.model_version in {"2.0", "2.1", "2.2"}:
+            if repo.model_version == "2.2":
+                model_v2 = repo.get_model_v22()
+            elif repo.model_version == "2.1":
+                model_v2 = repo.get_model_v21()
+            else:
+                model_v2 = repo.get_model_v2()
             catalog = sorted(
                 {
                     entity.alias_id

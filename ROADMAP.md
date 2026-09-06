@@ -14,7 +14,7 @@ runtime, rules, substrate, or admission capability.
 - canonical imports and truthful coverage at 80% or greater;
 - frozen Python/CLI compatibility inventory and version drift guard;
 - Ruff, strict-mypy, and Black no-regression ratchets;
-- supported source and retained-wheel execution on Python 3.11–3.14;
+- supported source and retained-wheel execution on the currently qualified Python 3.14 line (`requires-python >=3.14`);
 - one wheel and one sdist built once, manifested, tested, and promoted without rebuild;
 - reproducibility, metadata, dependency-audit, installed-consumer, and benchmark gates;
 - ADR-first authority, deterministic generated artifacts, and complete documentation.

@@ -1,0 +1,47 @@
+schema_version: "1.5"
+adr_type: physical-component
+id: "019109a0-b1c2-7def-8a00-000000000005"
+alias_id: ADR-PC-9002
+alias_name: optional-peer-component
+title: "Optional Peer Component"
+status: accepted
+created_date: "2026-08-29"
+authors:
+  - fixture.author
+implements_system:
+  - "019109a0-b1c2-7def-8a00-000000000002"
+implements_logical:
+  - "019109a0-b1c2-7def-8a00-000000000001"
+context: |
+  Peer component used for incoming depends_on and optional-section absence.
+technology_stack:
+  - category: language
+    name: Python
+    version: ">=3.14"
+    rationale: Fixture language choice.
+component_specifications:
+  - id: "019109a0-b1c2-7def-8a00-000000000012"
+    alias_id: COMP-9003
+    alias_name: peer-component
+    name: Peer Component
+    type: worker
+    responsibilities: Depend on alpha.
+    generation_context:
+      purpose: Provide an incoming dependent for alpha.
+      key_responsibilities:
+        - Depend on alpha without optional engineering fields
+    interfaces:
+      - id: "019109a0-b1c2-7def-8a00-000000000023"
+        alias_id: IFACE-9004
+        alias_name: peer-cli
+        type: CLI
+        specification: "adr peer"
+    implementation_identifiers:
+      module_path: MODULE_PATH_PEER
+implementation_decisions:
+  - id: "019109a0-b1c2-7def-8a00-000000000032"
+    alias_id: IMPL-9003
+    alias_name: peer-decision
+    summary: Remain optional
+    rationale: Optional peer omits alternatives, consequences, migration, and gaps.
+gaps: []

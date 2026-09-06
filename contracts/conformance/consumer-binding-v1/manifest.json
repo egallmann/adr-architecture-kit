@@ -8,6 +8,9 @@
     "ADR-L-0021",
     "ADR-L-0023",
     "ADR-L-0024",
+    "ADR-L-0025",
+    "ADR-L-0026",
+    "contracts/authoring-domain/v1.0/contract.json",
     "schema/normalized-model/v2.1",
     "schema/evidence-attribution/v1.5",
     "schema/evidence-attribution/v1.6"
@@ -23,6 +26,7 @@
     {"id": "unresolved-is-first-class", "path": "unresolved/unresolved-first-class.json", "capability": "unresolved:2.1", "levels": ["semantic", "behavioral"]},
     {"id": "evidence-v15-valid", "path": "embodiment-linkage/evidence-v15.json", "capability": "evidence_attribution:1.5", "levels": ["structural", "behavioral"]},
     {"id": "evidence-v16-valid", "path": "embodiment-linkage/evidence-v16.json", "capability": "evidence_attribution:1.6", "levels": ["structural", "behavioral"]},
-    {"id": "evidence-v16-enforces-confidence", "path": "embodiment-linkage/evidence-v16-enforces-inferred.json", "capability": "evidence_attribution:1.6", "levels": ["structural", "diagnostic"]}
+    {"id": "evidence-v16-enforces-confidence", "path": "embodiment-linkage/evidence-v16-enforces-inferred.json", "capability": "evidence_attribution:1.6", "levels": ["structural", "diagnostic"]},
+    {"id": "authoring-discovery-v1", "path": "authoring-discovery/authoring-discovery-v1.json", "capability": "authoring.discovery:1.0", "levels": ["structural", "semantic", "behavioral", "diagnostic"]}
   ]
 }

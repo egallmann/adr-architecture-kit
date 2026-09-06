@@ -35,7 +35,7 @@ def test_manifest_is_static_and_declares_contract() -> None:
     manifest = _load("manifest.json")
     assert manifest["contract_version"] == "ADR-Kit Consumer Binding Contract 1.0"
     assert manifest["fingerprint_rule"] == "binding_local_determinism_only"
-    assert len(manifest["fixtures"]) == 9
+    assert len(manifest["fixtures"]) == 10
 
 
 def test_normalized_model_fixture_is_schema_valid_and_semantically_preserved() -> None:

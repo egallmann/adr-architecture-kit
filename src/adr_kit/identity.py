@@ -2,14 +2,13 @@
 
 from __future__ import annotations
 
-import os
+import json
 import re
-import struct
-import time
+import uuid
 from collections.abc import Mapping
+from datetime import datetime, timezone
 from hashlib import sha256
 from typing import Any
-import json
 
 import rfc8785
 
@@ -51,6 +50,9 @@ def validate_uuidv7(value: str) -> str:
     """Validate *value* as a lowercase RFC 9562 UUIDv7 and return it."""
     if not isinstance(value, str) or not UUIDV7_PATTERN.match(value):
         raise ValueError(f"Not a valid lowercase UUIDv7: {value!r}")
+    parsed = uuid.UUID(value)
+    if parsed.version != 7 or str(parsed) != value:
+        raise ValueError(f"Not a valid lowercase UUIDv7: {value!r}")
     return value
 
 
@@ -63,52 +65,16 @@ def parse_uuidv7(value: str) -> str:
 
 @implements_adr("ADR-L-0019")
 @implements("019fee89-e617-7b55-931f-d0126c67c176")
-def mint_uuidv7(
-    *,
-    timestamp_ms: int | None = None,
-    rand_bytes: bytes | None = None,
-) -> str:
-    """Mint an RFC 9562 UUIDv7 with injectable clock/random.
-
-    Parameters
-    ----------
-    timestamp_ms:
-        Unix epoch milliseconds.  Defaults to ``time.time_ns() // 1_000_000``.
-    rand_bytes:
-        Exactly 10 random bytes for rand_a (12 bits) + rand_b (62 bits).
-        Defaults to ``os.urandom(10)``.
-    """
-    if timestamp_ms is None:
-        timestamp_ms = time.time_ns() // 1_000_000
-    if rand_bytes is None:
-        rand_bytes = os.urandom(10)
-    if len(rand_bytes) != 10:
-        raise ValueError("rand_bytes must be exactly 10 bytes")
-
-    ts_bytes = struct.pack(">Q", timestamp_ms)[-6:]
-
-    rand_a = (rand_bytes[0] << 4) | (rand_bytes[1] >> 4)
-    rand_a_hi = (rand_a >> 8) & 0x0F
-    rand_a_lo = rand_a & 0xFF
-
-    ver_rand_a = bytes([0x70 | rand_a_hi, rand_a_lo])
-
-    var_byte = 0x80 | (((rand_bytes[1] & 0x0F) << 2) | (rand_bytes[2] >> 6))
-    rest = bytes([var_byte, (rand_bytes[2] & 0x3F) | (rand_bytes[3] & 0x3F)]) + rand_bytes[4:]
-
-    raw = ts_bytes + ver_rand_a + rest
-    hexstr = raw.hex()
-    return f"{hexstr[0:8]}-{hexstr[8:12]}-{hexstr[12:16]}" f"-{hexstr[16:20]}-{hexstr[20:32]}"
+def mint_uuidv7() -> str:
+    """Mint an RFC 9562 UUIDv7 via the Python standard library."""
+    return validate_uuidv7(str(uuid.uuid7()))
 
 
 @implements_adr("ADR-L-0019")
 def uuidv7_created_at(uuid_str: str) -> str:
     """Decode the UUIDv7 48-bit timestamp to RFC 3339 UTC with ms precision."""
     validate_uuidv7(uuid_str)
-    hex_no_dash = uuid_str.replace("-", "")
-    ts_ms = int(hex_no_dash[:12], 16)
-    from datetime import datetime, timezone
-
+    ts_ms = uuid.UUID(uuid_str).time
     dt = datetime.fromtimestamp(ts_ms / 1000.0, tz=timezone.utc)
     return dt.strftime("%Y-%m-%dT%H:%M:%S.") + f"{ts_ms % 1000:03d}Z"
 

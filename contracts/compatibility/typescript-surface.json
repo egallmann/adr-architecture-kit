@@ -13,6 +13,14 @@
     "./node": ["openRepository", "ArchitectureRepository", "RepositoryError", "RepositoryPathError", "AmbiguousAliasError"],
     "./node/linkage": ["buildEmbodimentLinkage", "BuildEmbodimentLinkageRequest", "EmbodimentLinkageResult", "LinkageError"]
   },
+  "planned_subpaths": {
+    "./authoring": {
+      "status": "promoted_authority_not_implemented",
+      "browser_safe": true,
+      "contract": "contracts/authoring-domain/v1.0/contract.json",
+      "operations": ["describeContract", "listTypes", "describeType"]
+    }
+  },
   "errors": [
     "contract.validation",
     "contract.unsupported_version",
@@ -39,5 +47,10 @@
     "preferred_evidence_attribution_version",
     "browser_safe_entrypoints",
     "node_entrypoints"
+  ],
+  "planned_capability_manifest_fields": [
+    "supported_authoring_domain_versions",
+    "preferred_authoring_domain_version",
+    "authoring_capabilities"
   ]
 }

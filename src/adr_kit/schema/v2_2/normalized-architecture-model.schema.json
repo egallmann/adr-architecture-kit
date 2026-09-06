@@ -1,0 +1,21 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://adr-kit.ste.systems/schema/normalized-model/v2.2/normalized-architecture-model.schema.json",
+  "title": "Normalized Architecture Model v2.2",
+  "type": "object",
+  "required": ["schema_version", "type", "mode", "scope_root", "fingerprint", "entities", "relationships", "unresolved"],
+  "properties": {
+    "schema_version": {"const": "2.2"},
+    "type": {"const": "normalized_architecture_model"},
+    "mode": {"enum": ["normalized", "legacy"]},
+    "scope_root": {"type": "string"},
+    "architecture_namespace": {"type": ["string", "null"]},
+    "fingerprint": {"type": "string"},
+    "entities": {"type": "array", "items": {"$ref": "normalized-entity.schema.json"}},
+    "relationships": {"type": "array", "items": {"$ref": "relationship-record.schema.json"}},
+    "unresolved": {"type": "array"},
+    "validation_summary": {"type": ["object", "null"]},
+    "source_coverage": {"type": ["object", "null"]}
+  },
+  "additionalProperties": false
+}

@@ -53,8 +53,8 @@ SHA-256 hashes, source commit, package version, and tag.
 Release publishing downloads the retained `release-bundle` from the successful **main
 `push`** ADR Governance qualification for the tagged SHA (not a tag-side rebuild; not a
 PR or develop run). Python-version compatibility and OS portability are separate
-evidence axes: Ubuntu owns the Python 3.11–3.14 focused compatibility and retained-wheel
-Python matrix; Windows/macOS at Python 3.12 own complete-suite behavior portability and
+evidence axes: Ubuntu owns the Python 3.14 focused compatibility and retained-wheel
+Python qualification lane; Windows/macOS at Python 3.14 own complete-suite behavior portability and
 exact retained-wheel OS portability via `scripts/test_installed_wheel.py`. The retained
 wheel is not rebuilt per OS. Tag publication does not rerun platform qualification.
 README/package-description portability remains part of qualification (coverage suite /

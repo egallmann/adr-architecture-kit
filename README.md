@@ -1,6 +1,15 @@
 # ADR Architecture Kit
 
-**ADR Architecture Kit** (`adr-architecture-kit`) is a Python toolkit for teams and integrators who maintain **Architecture Decision Records** as structured YAML. It parses and validates those sources, normalizes them into deterministic machine-queryable **repository discovery** outputs (indexes, registries, manifest), and can emit **ADR-derived Architecture IR** fragments that match the public contract defined in **`ste-spec`**.
+**ADR Architecture Kit** (`adr-architecture-kit`) is the authoring-time STE toolkit for teams and integrators who maintain **Architecture Decision Records** as structured YAML. The Python implementation provides parsing, validation, CLI authoring workflows, deterministic **repository discovery** outputs (indexes, registries, manifest), and **ADR-derived Architecture IR** fragments that match the public contract defined in **`ste-spec`**. The same release lineage also publishes the official read-only TypeScript consumer binding [`@system-of-thought/adr-kit`](https://www.npmjs.com/package/@system-of-thought/adr-kit) (ADR-L-0024).
+
+Semantic authority is language-neutral: accepted ADRs, canonical schemas, and promoted contracts define ADR-Kit meaning; Python and TypeScript implementations project that authority and do not own it independently.
+
+```text
+accepted ADRs + canonical schemas + promoted contracts
+    -> language-neutral ADR-Kit semantic authority
+    -> Python implementation
+    -> TypeScript consumer binding
+```
 
 Prose ADRs often go stale once written. Structured YAML keeps architecture as a **first-class maintained artifact**: explicit shapes and links preserve higher-fidelity intent for human review and for AI-assisted engineering, slowing drift and informal lossiness when decisions live only in narrative. Machine-readable discovery outputs and **Architecture IR** supply shared, queryable context for review and automation—grounding work in repository facts rather than inferring structure from incomplete prose; that reduces (it does not remove) the risk of speculative reasoning when assistants and engineers reason about the system at scale. Derived indexes, registries, and rendered documentation keep those views reproducible as the codebase matures. For how contracts split across related repositories, see [Who Owns What](#who-owns-what) below.
 
@@ -14,7 +23,7 @@ There is a deliberate **generation gap** between informal reasoning (including m
 
 ## Quick Start
 
-Supports **Python 3.11–3.14**. Installs the `adr` CLI and the `adr_kit` package.
+Minimum supported Python is **3.14** (`requires-python >=3.14`). Currently qualified released minor line: **3.14.x**. Reference development interpreter: **3.14.7**. Installs the `adr` CLI and the `adr_kit` package.
 
 ```bash
 pip install adr-architecture-kit
@@ -37,6 +46,11 @@ print(result.success, result.diagnostics)
 
 See the [public SDK guide](https://github.com/egallmann/adr-architecture-kit/blob/main/docs/public-sdk.md) for preview/write compilation,
 repository queries, diagnostics, and the exact supported inventory.
+
+TypeScript / Node consumers should start with the official binding docs:
+
+- [`packages/node/README.md`](https://github.com/egallmann/adr-architecture-kit/blob/main/packages/node/README.md)
+- [`docs/typescript-consumer-binding.md`](https://github.com/egallmann/adr-architecture-kit/blob/main/docs/typescript-consumer-binding.md)
 
 For a first end-to-end run, use a repository checkout with `adrs/` populated and follow [walkthrough-adr-to-ir.md](https://github.com/egallmann/adr-architecture-kit/blob/main/docs/walkthrough-adr-to-ir.md). The public example under [`examples/public-v1/`](https://github.com/egallmann/adr-architecture-kit/tree/main/examples/public-v1/) is included in that walkthrough.
 
@@ -118,7 +132,7 @@ Full model: [adr-type-model.md](https://github.com/egallmann/adr-architecture-ki
 
 - **`ste-handbook`** — Explanatory model, theory, teaching.
 - **`ste-spec`** — Contracts, schemas, and the public cross-repo Architecture IR contract.
-- **`adr-architecture-kit`** (this repo) — ADR encoding, authoring validation, repository discovery outputs, and IR adapter logic into **`ste-spec`**.
+- **`adr-architecture-kit`** (this repo) — ADR encoding, authoring validation, repository discovery outputs, IR adapter logic into **`ste-spec`**, and the official TypeScript consumer binding `@system-of-thought/adr-kit` (ADR-L-0024).
 - **`ste-runtime`** — Runtime observation, evidence extraction, composition.
 - **`ste-kernel`** — Admission and governance over compiled inputs.
 
@@ -126,10 +140,10 @@ Full split: [authority-boundary.md](https://github.com/egallmann/adr-architectur
 
 ## Stability
 
-This project is **pre-1.0 (Alpha)** on PyPI; surfaces may evolve until a **1.0** commitment. Trove classifiers match that posture.
+This project is **pre-1.0 (Alpha)** on PyPI (`adr-architecture-kit`) and npm (`@system-of-thought/adr-kit`); surfaces may evolve until a **1.0** commitment. Trove classifiers match that posture. Shared release lineage keeps Python and TypeScript distributions version-aligned.
 
 - **Stable** — ADR v1.0 encoding, the repository/model consumer seam (`ArchitectureRepository` and `NormalizedArchitectureModel`), traceability decorators, and the documented discovery-bundle role. See [public surface and stability](https://github.com/egallmann/adr-architecture-kit/blob/main/docs/public-surface-and-stability.md).
-- **Provisional** — ADR authoring v1.1–v1.3, normalized models 1.1 and 2.0, discovery/ledger/lifecycle extensions, and implementation-attribution evidence v1.5/v1.6. v1.6 is preferred for new evidence producers but remains provisional.
+- **Provisional** — ADR authoring v1.1–v1.3, normalized models 1.1 and 2.0, discovery/ledger/lifecycle extensions, implementation-attribution evidence v1.5/v1.6, and the TypeScript consumer binding. v1.6 is preferred for new evidence producers but remains provisional.
 - **Experimental** — Vision ADRs, migrators, workspace boot examples; not a basis for long-term external dependencies.
 
 Full breakdown: [public-surface-and-stability.md](https://github.com/egallmann/adr-architecture-kit/blob/main/docs/public-surface-and-stability.md).
@@ -142,6 +156,8 @@ Full breakdown: [public-surface-and-stability.md](https://github.com/egallmann/a
 |----------|-------------|
 | [authority-boundary.md](https://github.com/egallmann/adr-architecture-kit/blob/main/docs/authority-boundary.md) | Who owns what across `ste-handbook`, `ste-spec`, this kit, `ste-runtime`, and `ste-kernel` |
 | [public-sdk.md](https://github.com/egallmann/adr-architecture-kit/blob/main/docs/public-sdk.md) | Supported `adr_kit.api` installation and consumer contract |
+| [packages/node/README.md](https://github.com/egallmann/adr-architecture-kit/blob/main/packages/node/README.md) | Official TypeScript/Node consumer binding (`@system-of-thought/adr-kit`) |
+| [typescript-consumer-binding.md](https://github.com/egallmann/adr-architecture-kit/blob/main/docs/typescript-consumer-binding.md) | TypeScript consumer binding contract and distribution notes |
 | [schema-v1.2.md](https://github.com/egallmann/adr-architecture-kit/blob/main/docs/schema-v1.2.md) | Additive v1.2 authoring and normalized semantics |
 | [schema-v1.3.md](https://github.com/egallmann/adr-architecture-kit/blob/main/docs/schema-v1.3.md) | UUID identity authoring schema and model 2.0 linkage |
 | [schema-v1.5.md](https://github.com/egallmann/adr-architecture-kit/blob/main/docs/schema-v1.5.md) | Semantic implementation attribution evidence (UUID claims) |
@@ -178,7 +194,9 @@ Python APIs and CLI entry points declare **architecture implementation intent** 
 
 Normative rationale: [ADR-L-0004](https://github.com/egallmann/adr-architecture-kit/blob/main/adrs/logical/ADR-L-0004-adr-to-code-traceability-via-decorators.yaml) and [ADR-L-0020](https://github.com/egallmann/adr-architecture-kit/blob/main/adrs/logical/ADR-L-0020-semantic-implementation-attribution.yaml). These decorators only attach metadata; they do not change control flow. A declaration is evidence of intent, not proof.
 
-**ste-runtime** RECON can parse the decorator calls from the AST and emit derived evidence under the workspace-root `.ste-workspace/` state directory, outside every repository. That output is **declared linkage**, not proof of correctness: canonical architecture remains the ADR corpus and contracts in **`ste-spec`**. Pass a RECON/workspace file to the CLI with **`--evidence`**; `check` / `coverage` do not search `.ste-workspace` automatically.
+**ste-runtime** RECON can parse the decorator calls from the AST and emit derived evidence under the workspace-root `.ste-workspace/` state directory, outside every repository. That output is **declared linkage**, not proof of correctness: canonical architecture remains the ADR corpus and contracts in **`ste-spec`**. Pass a RECON/workspace file to the CLI with **`--evidence`**; `check` / `coverage` do not search `.ste-workspace` automatically. ste-runtime’s independently governed Python extraction substrate is out of scope for this package’s Python floor.
+
+TypeScript linkage shims are generated with `adr attribution generate-shim --language typescript` and consumed through `@system-of-thought/adr-kit` Node linkage entry points; see [`packages/node/README.md`](https://github.com/egallmann/adr-architecture-kit/blob/main/packages/node/README.md).
 
 **CLI (`adr attribution`)** validates and inspects attribution evidence YAML (RECON-derived, synthetic, or project-local) against your repository’s canonical ADRs:
 

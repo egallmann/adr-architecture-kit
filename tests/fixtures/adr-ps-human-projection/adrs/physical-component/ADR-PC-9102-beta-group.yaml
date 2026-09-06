@@ -1,0 +1,70 @@
+schema_version: "1.5"
+adr_type: physical-component
+id: "019209b0-c2d3-7e00-8000-000000000021"
+alias_id: ADR-PC-9102
+alias_name: ps-projection-beta-group
+title: "PS Projection Beta Group"
+status: accepted
+created_date: "2026-08-30"
+authors:
+  - fixture.author
+implements_system:
+  - "019209b0-c2d3-7e00-8000-000000000010"
+implements_logical:
+  - "019209b0-c2d3-7e00-8000-000000000001"
+context: |
+  Owns the last three components of the maximal physical-system fixture.
+technology_stack:
+  - category: language
+    name: Python
+    version: ">=3.14"
+    rationale: Fixture language choice.
+component_specifications:
+  - id: "019209b0-c2d3-7e00-8000-000000000034"
+    alias_id: COMP-9104
+    alias_name: delta-worker
+    name: Delta Worker
+    type: worker
+    responsibilities: Own delta participation in the fixture system.
+    generation_context:
+      purpose: Provide the fourth topology participant.
+      key_responsibilities:
+        - Participate in reads_from relationships
+    interfaces:
+      - id: "019209b0-c2d3-7e00-8000-000000000044"
+        alias_id: IFACE-9104
+        alias_name: delta-cli
+        type: CLI
+        specification: adr delta
+  - id: "019209b0-c2d3-7e00-8000-000000000035"
+    alias_id: COMP-9105
+    alias_name: epsilon-database
+    name: Epsilon Database
+    type: database
+    responsibilities: Own epsilon participation in the fixture system.
+    generation_context:
+      purpose: Provide the fifth topology participant.
+      key_responsibilities:
+        - Participate in writes_to relationships
+    interfaces:
+      - id: "019209b0-c2d3-7e00-8000-000000000045"
+        alias_id: IFACE-9105
+        alias_name: epsilon-library
+        type: library_api
+        specification: db epsilon
+  - id: "019209b0-c2d3-7e00-8000-000000000036"
+    alias_id: COMP-9106
+    alias_name: zeta-gateway
+    name: Zeta Gateway
+    type: gateway
+    responsibilities: Own zeta participation in the fixture system.
+    generation_context:
+      purpose: Provide the sixth topology participant.
+      key_responsibilities:
+        - Participate in depends_on relationships
+    interfaces:
+      - id: "019209b0-c2d3-7e00-8000-000000000046"
+        alias_id: IFACE-9106
+        alias_name: zeta-rest
+        type: REST
+        specification: GET /zeta

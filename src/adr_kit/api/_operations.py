@@ -96,6 +96,8 @@ def _compiler_diagnostic(project_root: Path, item: object) -> Diagnostic:
 def _artifact_group(relative_path: str) -> str:
     if relative_path == "adrs/manifest.yaml":
         return "manifest"
+    if relative_path == "SYSTEM-OVERVIEW.md":
+        return "markdown"
     if relative_path.startswith("adrs/rendered/") or relative_path.startswith(
         "adrs/adr-projection/"
     ):
@@ -116,6 +118,7 @@ def _artifact_id(relative_path: str, *, logical_id: str | None = None) -> str:
         "adrs/index/component-registry.yaml": "component-registry",
         "adrs/index/system-registry.yaml": "system-registry",
         "adrs/entities/registry.yaml": "legacy-entity-registry",
+        "SYSTEM-OVERVIEW.md": "system-overview",
     }
     if relative_path in identities:
         return identities[relative_path]
@@ -216,11 +219,11 @@ def capabilities() -> CapabilityManifest:
         supported_promotion_contract_versions=PROMOTION_CONTRACT_VERSIONS,
         validation_modes=VALIDATION_MODES,
         artifact_groups=ARTIFACT_GROUPS,
-        supported_adr_schema_versions=("1.0", "1.1", "1.2", "1.3", "1.4"),
+        supported_adr_schema_versions=("1.0", "1.1", "1.2", "1.3", "1.4", "1.5"),
         stable_adr_schema_versions=("1.0",),
-        provisional_adr_schema_versions=("1.1", "1.2", "1.3", "1.4"),
+        provisional_adr_schema_versions=("1.1", "1.2", "1.3", "1.4", "1.5"),
         normalized_model_schema_version="1.1",
-        supported_normalized_model_schema_versions=("1.1", "2.0", "2.1"),
+        supported_normalized_model_schema_versions=("1.1", "2.0", "2.1", "2.2"),
         supported_evidence_attribution_versions=("1.5", "1.6"),
         preferred_evidence_attribution_version="1.6",
     )

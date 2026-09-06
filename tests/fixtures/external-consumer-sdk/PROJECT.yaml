@@ -1,0 +1,19 @@
+schema_version: "1.0"
+type: project_metadata
+
+project:
+  name: adr-kit-external-consumer-fixture
+  description: Minimal external SDK consumer fixture for source-compat and wheel-smoke harnesses
+  type: library
+
+ownership:
+  team: compatibility-fixtures
+
+repository:
+  url: example.com/org/adr-kit-external-consumer-fixture
+  primary_branch: main
+
+architecture_documentation:
+  adr_directory: adrs/
+  manifest_path: adrs/manifest.yaml
+  architecture_namespace: adr-kit-external-consumer-fixture

@@ -17,6 +17,16 @@ from adr_kit.integrity.core import compute_source_hash, parse_integrity_header
 from adr_kit.validators.system_overview_validator import SystemOverviewValidator
 
 
+from adr_kit.scope import ProjectScopeResolver
+from adr_kit.compiler.pipeline import run_frontend_pipeline
+
+
+def _overview_generator(root: Path) -> SystemOverviewGenerator:
+    scope = ProjectScopeResolver(explicit_scope=root).resolve()
+    frontend = run_frontend_pipeline(scope=scope)
+    return SystemOverviewGenerator(scope=scope, build_result=frontend)
+
+
 def _write_minimal_project(root: Path, project_name: str, *, with_highlights: bool = False) -> None:
     (root / "PROJECT.yaml").write_text(
         "\n".join(
@@ -27,6 +37,10 @@ def _write_minimal_project(root: Path, project_name: str, *, with_highlights: bo
                 f'  name: "{project_name}"',
                 '  description: "fixture project"',
                 '  type: "tool"',
+                "architecture_documentation:",
+                '  adr_directory: "adrs/"',
+                '  manifest_path: "adrs/manifest.yaml"',
+                '  architecture_namespace: "fixture-project"',
                 "",
             ]
         ),
@@ -228,7 +242,7 @@ def test_generator_identity_is_v2():
 
 def test_ste_runtime_profile_has_no_provider_leak(chdir_tmp: Path):
     _write_minimal_project(chdir_tmp, "ste-runtime", with_highlights=True)
-    generator = SystemOverviewGenerator(repo_root=chdir_tmp)
+    generator = _overview_generator(chdir_tmp)
     output = chdir_tmp / "SYSTEM-OVERVIEW.md"
     generator.save(output)
     body = output.read_text(encoding="utf-8")

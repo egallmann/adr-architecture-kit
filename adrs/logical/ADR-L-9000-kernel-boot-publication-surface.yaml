@@ -1,11 +1,11 @@
-schema_version: '1.3'
+schema_version: '1.5'
 adr_type: logical
 id: 019fee89-e617-7ceb-a437-474762adbfc2
 title: Kernel Boot Publication Surface
 status: accepted
 created_date: '2026-03-21'
 authors:
-- adr-architecture-kit
+- erik.gallmann
 domains:
 - kernel
 - integration

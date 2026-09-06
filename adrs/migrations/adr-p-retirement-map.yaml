@@ -1,0 +1,542 @@
+schema_version: "1.0"
+migration_id: adr-p-retirement-v1
+lock_version: projection-v3-phase2-2026-08-27
+description: >
+  Governed retirement provenance for generic physical ADRs ADR-P-0001..0004.
+  Post-cutover current canonical graph contains zero endpoints to these document UUIDs.
+
+documents:
+  - legacy_uuid: 019fee89-e618-79ed-9d2d-cc35c63bc99a
+    alias_id: ADR-P-0001
+    title: Python Toolkit Implementation for ADR Kit
+    disposition: ALREADY_SUPERSEDED
+    historical_status: HISTORICAL_ONLY
+    replacement_authority:
+      - alias_id: ADR-PS-0002
+        uuid: 019fee89-e618-7d04-9337-4aa2d3258507
+      - alias_id: ADR-PC-0001
+        uuid: 019fee89-e617-7270-ab2f-58a756d2530e
+      - alias_id: ADR-PC-0002
+        uuid: 019fee89-e617-7d2b-8325-cd85ff814477
+      - alias_id: ADR-PC-0003
+        uuid: 019fee89-e618-7b76-843f-cfe21ceb2ea6
+    migration_rationale: >
+      Superseded by ADR Kit Authoring Compiler and Validation System and permanent ADR-PC decomposition.
+    nested_entities:
+      - alias_id: COMP-0001
+        uuid: 019fee89-e618-7eba-b73b-18b6428f74ac
+        type: component
+        disposition: SUPERSEDE_ENTITY
+        successor:
+          alias_id: COMP-0011
+          uuid: 019fee89-e617-7060-8f3f-4ecd46a719da
+          owning_adr:
+            alias_id: ADR-PC-0002
+            uuid: 019fee89-e617-7d2b-8325-cd85ff814477
+      - alias_id: IFACE-0001
+        uuid: 019fee89-e618-7e13-af35-5a0999849840
+        type: interface
+        disposition: SUPERSEDE_ENTITY
+        successor:
+          alias_id: ADR-PC-0002
+          uuid: 019fee89-e617-7d2b-8325-cd85ff814477
+          scope: interfaces
+      - alias_id: COMP-0002
+        uuid: 019fee89-e618-7400-b50f-4b5bf679c598
+        type: component
+        disposition: SUPERSEDE_ENTITY
+        successor:
+          alias_id: ADR-PC-0003
+          uuid: 019fee89-e618-7b76-843f-cfe21ceb2ea6
+          scope: model_surfaces
+      - alias_id: IFACE-0002
+        uuid: 019fee89-e618-77d6-9f27-941dd19051c3
+        type: interface
+        disposition: SUPERSEDE_ENTITY
+        successor:
+          alias_id: ADR-PC-0003
+          uuid: 019fee89-e618-7b76-843f-cfe21ceb2ea6
+      - alias_id: COMP-0003
+        uuid: 019fee89-e618-7201-883f-587487d634c7
+        type: component
+        disposition: SUPERSEDE_ENTITY
+        successor:
+          alias_id: COMP-0010
+          uuid: 019fee89-e617-76d8-a333-e21361cd6602
+          owning_adr:
+            alias_id: ADR-PC-0001
+            uuid: 019fee89-e617-7270-ab2f-58a756d2530e
+      - alias_id: IFACE-0003
+        uuid: 019fee89-e618-70f4-903e-1a7204fe385f
+        type: interface
+        disposition: SUPERSEDE_ENTITY
+        successor:
+          alias_id: ADR-PC-0001
+          uuid: 019fee89-e617-7270-ab2f-58a756d2530e
+      - alias_id: COMP-0004
+        uuid: 019fee89-e618-793d-9e0d-d32264b6c4cf
+        type: component
+        disposition: SUPERSEDE_ENTITY
+        successor:
+          alias_id: ADR-PC-0003
+          uuid: 019fee89-e618-7b76-843f-cfe21ceb2ea6
+          scope: projection_path
+      - alias_id: IFACE-0004
+        uuid: 019fee89-e618-7702-8e06-52b0ddcdeaf8
+        type: interface
+        disposition: SUPERSEDE_ENTITY
+        successor:
+          alias_id: ADR-PC-0003
+          uuid: 019fee89-e618-7b76-843f-cfe21ceb2ea6
+      - alias_id: IMPL-0001
+        uuid: 019fee89-e618-7924-9207-2422bc8163a4
+        type: impl_decision
+        disposition: SUPERSEDE_ENTITY
+        successor:
+          distributed_across:
+            - alias_id: ADR-PC-0001
+              uuid: 019fee89-e617-7270-ab2f-58a756d2530e
+            - alias_id: ADR-PC-0002
+              uuid: 019fee89-e617-7d2b-8325-cd85ff814477
+            - alias_id: ADR-PC-0003
+              uuid: 019fee89-e618-7b76-843f-cfe21ceb2ea6
+          scope: permanent_pc_decisions
+      - alias_id: IMPL-0002
+        uuid: 019fee89-e618-78c9-a13b-cc99302f7da2
+        type: impl_decision
+        disposition: SUPERSEDE_ENTITY
+        successor:
+          distributed_across:
+            - alias_id: ADR-PC-0001
+              uuid: 019fee89-e617-7270-ab2f-58a756d2530e
+            - alias_id: ADR-PC-0002
+              uuid: 019fee89-e617-7d2b-8325-cd85ff814477
+            - alias_id: ADR-PC-0003
+              uuid: 019fee89-e618-7b76-843f-cfe21ceb2ea6
+          scope: permanent_pc_decisions
+      - alias_id: IMPL-0003
+        uuid: 019fee89-e618-73ac-812b-88a215e9f3b7
+        type: impl_decision
+        disposition: SUPERSEDE_ENTITY
+        successor:
+          distributed_across:
+            - alias_id: ADR-PC-0001
+              uuid: 019fee89-e617-7270-ab2f-58a756d2530e
+            - alias_id: ADR-PC-0002
+              uuid: 019fee89-e617-7d2b-8325-cd85ff814477
+            - alias_id: ADR-PC-0003
+              uuid: 019fee89-e618-7b76-843f-cfe21ceb2ea6
+          scope: permanent_pc_decisions
+
+  - legacy_uuid: 019fee89-e618-7a2f-aa3e-1f892cdf9410
+    alias_id: ADR-P-0002
+    title: JSON Schema Validation with YAML Document Format
+    disposition: ALREADY_SUPERSEDED
+    historical_status: HISTORICAL_ONLY
+    replacement_authority:
+      - alias_id: ADR-PC-0002
+        uuid: 019fee89-e617-7d2b-8325-cd85ff814477
+    nested_entities:
+      - alias_id: COMP-0016
+        uuid: 019fee89-e618-7d70-831f-0d5a9959a816
+        type: component
+        disposition: SUPERSEDE_ENTITY
+        successor:
+          alias_id: ADR-PC-0002
+          uuid: 019fee89-e617-7d2b-8325-cd85ff814477
+      - alias_id: IFACE-0020
+        uuid: 019fee89-e618-70d1-9037-460e1f0f454f
+        type: interface
+        disposition: SUPERSEDE_ENTITY
+        successor:
+          alias_id: ADR-PC-0002
+          uuid: 019fee89-e617-7d2b-8325-cd85ff814477
+      - alias_id: COMP-0018
+        uuid: 019fee89-e618-7c2f-a93c-42f545477ebb
+        type: component
+        disposition: SUPERSEDE_ENTITY
+        successor:
+          alias_id: ADR-PC-0002
+          uuid: 019fee89-e617-7d2b-8325-cd85ff814477
+      - alias_id: IFACE-0024
+        uuid: 019fee89-e618-7eaa-b41e-6bc5c5b04bf7
+        type: interface
+        disposition: SUPERSEDE_ENTITY
+        successor:
+          alias_id: ADR-PC-0002
+          uuid: 019fee89-e617-7d2b-8325-cd85ff814477
+      - alias_id: IMPL-0021
+        uuid: 019fee89-e618-794c-9f3a-34dae3cc7ab1
+        type: impl_decision
+        disposition: SUPERSEDE_ENTITY
+        successor:
+          alias_id: ADR-PC-0002
+          uuid: 019fee89-e617-7d2b-8325-cd85ff814477
+      - alias_id: IMPL-0023
+        uuid: 019fee89-e618-74ee-ad0e-b86604eb69a6
+        type: impl_decision
+        disposition: SUPERSEDE_ENTITY
+        successor:
+          alias_id: ADR-PC-0002
+          uuid: 019fee89-e617-7d2b-8325-cd85ff814477
+      - alias_id: IMPL-0025
+        uuid: 019fee89-e618-7f09-832b-511026fa3850
+        type: impl_decision
+        disposition: SUPERSEDE_ENTITY
+        successor:
+          alias_id: ADR-PC-0002
+          uuid: 019fee89-e617-7d2b-8325-cd85ff814477
+      - alias_id: IMPL-0004
+        uuid: 019fee89-e618-7a41-9327-f45c2d1752b0
+        type: impl_decision
+        disposition: SUPERSEDE_ENTITY
+        successor:
+          alias_id: ADR-PC-0002
+          uuid: 019fee89-e617-7d2b-8325-cd85ff814477
+
+  - legacy_uuid: 019fee89-e618-742f-951d-d29401d56c19
+    alias_id: ADR-P-0003
+    title: Multi-Scope Python Implementation for ADR Toolkit
+    disposition: SPLIT_ACROSS_PERMANENT_AUTHORITY
+    historical_status: HISTORICAL_ONLY
+    replacement_authority:
+      - alias_id: ADR-PC-0008
+        uuid: 01a048d8-454a-7464-bcaa-718fa77bed6a
+        role: Project Scope Resolution
+      - alias_id: ADR-PC-0001
+        uuid: 019fee89-e617-7270-ab2f-58a756d2530e
+      - alias_id: ADR-PC-0002
+        uuid: 019fee89-e617-7d2b-8325-cd85ff814477
+      - alias_id: ADR-PC-0003
+        uuid: 019fee89-e618-7b76-843f-cfe21ceb2ea6
+    nested_entities:
+      - alias_id: COMP-0017
+        uuid: 019fee89-e618-719b-bb3a-f13ab0906811
+        type: component
+        disposition: PRESERVE_IDENTITY
+        successor:
+          alias_id: ADR-PC-0008
+          uuid: 01a048d8-454a-7464-bcaa-718fa77bed6a
+      - alias_id: IFACE-0021
+        uuid: 019fee89-e618-717e-933f-f02a053e8ac5
+        type: interface
+        disposition: PRESERVE_IDENTITY
+        successor:
+          alias_id: ADR-PC-0008
+          uuid: 01a048d8-454a-7464-bcaa-718fa77bed6a
+      - alias_id: IFACE-0025
+        uuid: 019fee89-e618-79e6-8b3f-27b30946373a
+        type: interface
+        disposition: PRESERVE_IDENTITY
+        successor:
+          alias_id: ADR-PC-0008
+          uuid: 01a048d8-454a-7464-bcaa-718fa77bed6a
+      - alias_id: COMP-0019
+        uuid: 019fee89-e618-72ba-961f-a5751e1260ad
+        type: component
+        disposition: SUPERSEDE_ENTITY
+        successor:
+          alias_id: COMP-0010
+          uuid: 019fee89-e617-76d8-a333-e21361cd6602
+          owning_adr:
+            alias_id: ADR-PC-0001
+            uuid: 019fee89-e617-7270-ab2f-58a756d2530e
+      - alias_id: IFACE-0027
+        uuid: 019fee89-e618-7738-941f-0106d690d258
+        type: interface
+        disposition: SUPERSEDE_ENTITY
+        successor:
+          alias_id: ADR-PC-0001
+          uuid: 019fee89-e617-7270-ab2f-58a756d2530e
+      - alias_id: IFACE-0029
+        uuid: 019fee89-e618-7edb-901f-e441afba954f
+        type: interface
+        disposition: SUPERSEDE_ENTITY
+        successor:
+          alias_id: ADR-PC-0001
+          uuid: 019fee89-e617-7270-ab2f-58a756d2530e
+      - alias_id: IFACE-0005
+        uuid: 019fee89-e618-771d-be37-8771d7bd5216
+        type: interface
+        disposition: SUPERSEDE_ENTITY
+        successor:
+          alias_id: ADR-PC-0001
+          uuid: 019fee89-e617-7270-ab2f-58a756d2530e
+      - alias_id: IFACE-0006
+        uuid: 019fee89-e618-7edc-892f-8efe8d7933a3
+        type: interface
+        disposition: SUPERSEDE_ENTITY
+        successor:
+          alias_id: ADR-PC-0001
+          uuid: 019fee89-e617-7270-ab2f-58a756d2530e
+      - alias_id: COMP-0020
+        uuid: 019fee89-e618-78d9-9636-42467a3adf70
+        type: component
+        disposition: SUPERSEDE_ENTITY
+        successor:
+          alias_id: COMP-0011
+          uuid: 019fee89-e617-7060-8f3f-4ecd46a719da
+          owning_adr:
+            alias_id: ADR-PC-0002
+            uuid: 019fee89-e617-7d2b-8325-cd85ff814477
+      - alias_id: IFACE-0007
+        uuid: 019fee89-e618-7164-b007-18ce1ece2c55
+        type: interface
+        disposition: SUPERSEDE_ENTITY
+        successor:
+          alias_id: ADR-PC-0002
+          uuid: 019fee89-e617-7d2b-8325-cd85ff814477
+      - alias_id: COMP-0021
+        uuid: 019fee89-e618-7517-9837-04e01a12fbfe
+        type: component
+        disposition: RETIRE_ENTITY
+        successor:
+          distributed_across:
+            - alias_id: ADR-PC-0001
+              uuid: 019fee89-e617-7270-ab2f-58a756d2530e
+              scope: cli_surfaces
+            - alias_id: ADR-PC-0002
+              uuid: 019fee89-e617-7d2b-8325-cd85ff814477
+              scope: cli_surfaces
+            - alias_id: ADR-PC-0003
+              uuid: 019fee89-e618-7b76-843f-cfe21ceb2ea6
+              scope: cli_surfaces
+      - alias_id: IFACE-0008
+        uuid: 019fee89-e618-7f6e-b13d-9164a7223a57
+        type: interface
+        disposition: RETIRE_ENTITY
+        successor:
+          distributed_across:
+            - alias_id: ADR-PC-0001
+              uuid: 019fee89-e617-7270-ab2f-58a756d2530e
+              scope: cli_interfaces
+            - alias_id: ADR-PC-0002
+              uuid: 019fee89-e617-7d2b-8325-cd85ff814477
+              scope: cli_interfaces
+            - alias_id: ADR-PC-0003
+              uuid: 019fee89-e618-7b76-843f-cfe21ceb2ea6
+              scope: cli_interfaces
+      - alias_id: IFACE-0009
+        uuid: 019fee89-e618-7670-993d-4d74a13032c5
+        type: interface
+        disposition: RETIRE_ENTITY
+        successor:
+          distributed_across:
+            - alias_id: ADR-PC-0001
+              uuid: 019fee89-e617-7270-ab2f-58a756d2530e
+              scope: cli_interfaces
+            - alias_id: ADR-PC-0002
+              uuid: 019fee89-e617-7d2b-8325-cd85ff814477
+              scope: cli_interfaces
+            - alias_id: ADR-PC-0003
+              uuid: 019fee89-e618-7b76-843f-cfe21ceb2ea6
+              scope: cli_interfaces
+      - alias_id: IFACE-0010
+        uuid: 019fee89-e618-75e5-a91f-67c21bc93f1e
+        type: interface
+        disposition: RETIRE_ENTITY
+        successor:
+          distributed_across:
+            - alias_id: ADR-PC-0001
+              uuid: 019fee89-e617-7270-ab2f-58a756d2530e
+              scope: cli_interfaces
+            - alias_id: ADR-PC-0002
+              uuid: 019fee89-e617-7d2b-8325-cd85ff814477
+              scope: cli_interfaces
+            - alias_id: ADR-PC-0003
+              uuid: 019fee89-e618-7b76-843f-cfe21ceb2ea6
+              scope: cli_interfaces
+      - alias_id: IMPL-0022
+        uuid: 019fee89-e618-76f2-b72f-5316b89484aa
+        type: impl_decision
+        disposition: FOLLOW_COMPONENT
+        follows:
+          alias_id: COMP-0017
+          uuid: 019fee89-e618-719b-bb3a-f13ab0906811
+        successor:
+          alias_id: ADR-PC-0008
+          uuid: 01a048d8-454a-7464-bcaa-718fa77bed6a
+      - alias_id: IMPL-0024
+        uuid: 019fee89-e618-722c-b527-14eb4ee67d88
+        type: impl_decision
+        disposition: FOLLOW_COMPONENT
+        follows:
+          alias_id: COMP-0017
+          uuid: 019fee89-e618-719b-bb3a-f13ab0906811
+        successor:
+          alias_id: ADR-PC-0008
+          uuid: 01a048d8-454a-7464-bcaa-718fa77bed6a
+      - alias_id: IMPL-0026
+        uuid: 019fee89-e618-7160-941f-f8efcbb72478
+        type: impl_decision
+        disposition: FOLLOW_COMPONENT
+        follows:
+          alias_id: COMP-0019
+          uuid: 019fee89-e618-72ba-961f-a5751e1260ad
+        successor:
+          alias_id: ADR-PC-0001
+          uuid: 019fee89-e617-7270-ab2f-58a756d2530e
+      - alias_id: IMPL-0027
+        uuid: 019fee89-e618-7fd5-8d3c-812e4f82e314
+        type: impl_decision
+        disposition: FOLLOW_COMPONENT
+        follows:
+          - alias_id: COMP-0019
+            uuid: 019fee89-e618-72ba-961f-a5751e1260ad
+          - alias_id: COMP-0020
+            uuid: 019fee89-e618-78d9-9636-42467a3adf70
+        successor:
+          distributed_across:
+            - alias_id: ADR-PC-0001
+              uuid: 019fee89-e617-7270-ab2f-58a756d2530e
+            - alias_id: ADR-PC-0002
+              uuid: 019fee89-e617-7d2b-8325-cd85ff814477
+            - alias_id: ADR-PC-0003
+              uuid: 019fee89-e618-7b76-843f-cfe21ceb2ea6
+          scope: permanent_pcs
+      - alias_id: IMPL-0005
+        uuid: 019fee89-e618-7625-8d3f-2ef2750eca34
+        type: impl_decision
+        disposition: FOLLOW_COMPONENT
+        follows:
+          alias_id: COMP-0021
+          uuid: 019fee89-e618-7517-9837-04e01a12fbfe
+        successor: null
+      - alias_id: IMPL-0006
+        uuid: 019fee89-e618-797d-9c3f-202bd0606ba4
+        type: impl_decision
+        disposition: FOLLOW_COMPONENT
+        follows:
+          alias_id: COMP-0021
+          uuid: 019fee89-e618-7517-9837-04e01a12fbfe
+        successor: null
+
+  - legacy_uuid: 019fee89-e618-703b-a136-3cb5c991e3c4
+    alias_id: ADR-P-0004
+    title: Prompt Translator Implementation for AI-Driven Development
+    disposition: OBSOLETE_NO_REPLACEMENT
+    historical_status: HISTORICAL_ONLY
+    replacement_authority: []
+    migration_rationale: >
+      Obsolete non-implemented prompt-translator structure. No replacement authority created.
+    nested_entities:
+      - alias_id: COMP-0005
+        uuid: 019fee89-e618-77dd-9b11-0d5489799ce0
+        type: component
+        disposition: RETIRE_ENTITY
+        successor: null
+      - alias_id: IFACE-0022
+        uuid: 019fee89-e618-7813-800d-2e84e352d08c
+        type: interface
+        disposition: RETIRE_ENTITY
+        successor: null
+      - alias_id: IFACE-0026
+        uuid: 019fee89-e618-7379-b62e-8ea2706088cb
+        type: interface
+        disposition: RETIRE_ENTITY
+        successor: null
+      - alias_id: COMP-0006
+        uuid: 019fee89-e618-7d64-b737-3fd75712bdd3
+        type: component
+        disposition: RETIRE_ENTITY
+        successor: null
+      - alias_id: IFACE-0028
+        uuid: 019fee89-e618-740d-a838-aa954613edec
+        type: interface
+        disposition: RETIRE_ENTITY
+        successor: null
+      - alias_id: IFACE-0030
+        uuid: 019fee89-e618-7d54-913f-c438e3336417
+        type: interface
+        disposition: RETIRE_ENTITY
+        successor: null
+      - alias_id: IFACE-0031
+        uuid: 019fee89-e618-7571-8c1f-9d5de448edec
+        type: interface
+        disposition: RETIRE_ENTITY
+        successor: null
+      - alias_id: COMP-0007
+        uuid: 019fee89-e618-7ad9-8517-be1cde30c540
+        type: component
+        disposition: RETIRE_ENTITY
+        successor: null
+      - alias_id: IFACE-0032
+        uuid: 019fee89-e618-7254-881f-ad0f50f08c97
+        type: interface
+        disposition: RETIRE_ENTITY
+        successor: null
+      - alias_id: COMP-0008
+        uuid: 019fee89-e618-7ba3-a13e-fcec1ed6773b
+        type: component
+        disposition: RETIRE_ENTITY
+        successor: null
+      - alias_id: IFACE-0033
+        uuid: 019fee89-e618-72a2-951f-7e5f64ca1e06
+        type: interface
+        disposition: RETIRE_ENTITY
+        successor: null
+      - alias_id: COMP-0009
+        uuid: 019fee89-e618-7001-bd3d-026aca706a76
+        type: component
+        disposition: RETIRE_ENTITY
+        successor: null
+      - alias_id: IFACE-0023
+        uuid: 019fee89-e618-739e-b13e-9cc1beb76053
+        type: interface
+        disposition: RETIRE_ENTITY
+        successor: null
+      - alias_id: IMPL-0007
+        uuid: 019fee89-e618-7e43-b61d-b41a8b51a3b1
+        type: impl_decision
+        disposition: RETIRE_ENTITY
+        successor: null
+      - alias_id: IMPL-0008
+        uuid: 019fee89-e618-775d-981f-20313c9d5edf
+        type: impl_decision
+        disposition: RETIRE_ENTITY
+        successor: null
+      - alias_id: IMPL-0009
+        uuid: 019fee89-e618-77ba-933d-12957f1f5416
+        type: impl_decision
+        disposition: RETIRE_ENTITY
+        successor: null
+      - alias_id: IMPL-0010
+        uuid: 019fee89-e618-7938-a73f-b475c2e6cf82
+        type: impl_decision
+        disposition: RETIRE_ENTITY
+        successor: null
+
+current_reference_rewrites:
+  - source: ADR-PS-0002
+    remove_fields: [supersedes, related_adrs]
+    remove_uuids: [019fee89-e618-79ed-9d2d-cc35c63bc99a, 019fee89-e618-7a2f-aa3e-1f892cdf9410]
+    historical_note: "ADR-PS-0002 replaced ADR-P-0001 per this map"
+  - source: ADR-PC-0002
+    remove_fields: [supersedes, related_adrs]
+    remove_uuids: [019fee89-e618-7a2f-aa3e-1f892cdf9410]
+  - source: ADR-L-0003
+    rewrite_references:
+      019fee89-e618-79ed-9d2d-cc35c63bc99a: [019fee89-e618-7d04-9337-4aa2d3258507]
+      019fee89-e618-742f-951d-d29401d56c19: [019fee89-e617-7270-ab2f-58a756d2530e, 01a048d8-454a-7464-bcaa-718fa77bed6a]
+  - source: ADR-L-0005
+    remove_uuids: [019fee89-e618-703b-a136-3cb5c991e3c4]
+    rewrite_references:
+      019fee89-e618-742f-951d-d29401d56c19: [019fee89-e617-7270-ab2f-58a756d2530e, 019fee89-e617-7d2b-8325-cd85ff814477, 019fee89-e618-7b76-843f-cfe21ceb2ea6]
+  - source: ADR-L-0006
+    remove_uuids: [019fee89-e618-703b-a136-3cb5c991e3c4]
+  - source: ADR-L-0007
+    rewrite_references:
+      019fee89-e618-79ed-9d2d-cc35c63bc99a: [019fee89-e618-7d04-9337-4aa2d3258507]
+      019fee89-e618-7a2f-aa3e-1f892cdf9410: [019fee89-e617-7d2b-8325-cd85ff814477]
+  - source: ADR-L-0008
+    rewrite_references:
+      019fee89-e618-79ed-9d2d-cc35c63bc99a: [019fee89-e618-7d04-9337-4aa2d3258507]
+      019fee89-e618-7a2f-aa3e-1f892cdf9410: [019fee89-e617-7d2b-8325-cd85ff814477]
+      019fee89-e618-742f-951d-d29401d56c19: [019fee89-e617-7270-ab2f-58a756d2530e, 019fee89-e617-7d2b-8325-cd85ff814477, 019fee89-e618-7b76-843f-cfe21ceb2ea6, 01a048d8-454a-7464-bcaa-718fa77bed6a]
+  - source: ADR-L-0010
+    rewrite_references:
+      019fee89-e618-79ed-9d2d-cc35c63bc99a: [019fee89-e618-7d04-9337-4aa2d3258507]
+  - source: architecture-graph
+    rewrite_relationships:
+      - remove: implements_logical:019fee89-e618-742f-951d-d29401d56c19:019fee89-e615-7f19-810b-c7b33a9d9e0d
+        add_via: ADR-PC-0008 and amended permanent PCs

@@ -27,6 +27,11 @@ from ..models.v2_1 import (
     RelationshipRegistryV21,
     UnresolvedRegistryV21,
 )
+from ..models.v2_2 import (
+    NormalizedEntityRegistryV22,
+    RelationshipRegistryV22,
+    UnresolvedRegistryV22,
+)
 from ..parser import ADRParser
 from ..schema.contract_validation import validate_adr_contract_bundle
 from ..scope import ProjectScope, ProjectScopeResolver
@@ -372,7 +377,10 @@ class ArchitectureCompiler:
     @classmethod
     def _parse_entity_registry_artifact(
         cls, parser: ADRParser, yaml_text: str
-    ) -> NormalizedEntityRegistry | NormalizedEntityRegistryV2 | NormalizedEntityRegistryV21:
+    ) -> NormalizedEntityRegistry | NormalizedEntityRegistryV2 | NormalizedEntityRegistryV21 | NormalizedEntityRegistryV22:
+        if cls._peek_schema_version(yaml_text) == "2.2":
+            data = yaml.safe_load(yaml_text)
+            return NormalizedEntityRegistryV22.model_validate(data)
         if cls._peek_schema_version(yaml_text) == "2.1":
             data = yaml.safe_load(yaml_text)
             return NormalizedEntityRegistryV21.model_validate(data)
@@ -384,7 +392,10 @@ class ArchitectureCompiler:
     @classmethod
     def _parse_relationship_registry_artifact(
         cls, parser: ADRParser, yaml_text: str
-    ) -> RelationshipRegistry | RelationshipRegistryV2 | RelationshipRegistryV21:
+    ) -> RelationshipRegistry | RelationshipRegistryV2 | RelationshipRegistryV21 | RelationshipRegistryV22:
+        if cls._peek_schema_version(yaml_text) == "2.2":
+            data = yaml.safe_load(yaml_text)
+            return RelationshipRegistryV22.model_validate(data)
         if cls._peek_schema_version(yaml_text) == "2.1":
             data = yaml.safe_load(yaml_text)
             return RelationshipRegistryV21.model_validate(data)
@@ -396,7 +407,10 @@ class ArchitectureCompiler:
     @classmethod
     def _parse_unresolved_registry_artifact(
         cls, parser: ADRParser, yaml_text: str
-    ) -> UnresolvedRegistry | UnresolvedRegistryV2 | UnresolvedRegistryV21:
+    ) -> UnresolvedRegistry | UnresolvedRegistryV2 | UnresolvedRegistryV21 | UnresolvedRegistryV22:
+        if cls._peek_schema_version(yaml_text) == "2.2":
+            data = yaml.safe_load(yaml_text)
+            return UnresolvedRegistryV22.model_validate(data)
         if cls._peek_schema_version(yaml_text) == "2.1":
             data = yaml.safe_load(yaml_text)
             return UnresolvedRegistryV21.model_validate(data)
@@ -423,7 +437,12 @@ class ArchitectureCompiler:
     ) -> list[OutputArtifact]:
         emitted: list[EmittedArtifact] = []
         selected = set(config.emit)
-        emitters = build_backend_emitters(parser=self.parser, scope=scope, build_result=build_result)
+        emitters = build_backend_emitters(
+            parser=self.parser,
+            scope=scope,
+            build_result=build_result,
+            include_system_overview=config.include_system_overview,
+        )
         for emitter_name in ("registries", "manifest", "markdown", "graph"):
             if emitter_name not in selected:
                 continue

@@ -1,11 +1,12 @@
-schema_version: '1.3'
+schema_version: '1.5'
 adr_type: logical
 id: 019fee89-e617-78d9-ba3b-b7e3e6db1b12
 title: Canonical Entity Identity
 status: accepted
 created_date: '2026-08-09'
+modified_date: '2026-09-05'
 authors:
-- adr-architecture-kit
+- erik.gallmann
 context: 'Earlier ADR Kit work established federation, repository boundaries, schema
 
   v1.2, and a normalized semantic foundation, but canonical identity still
@@ -242,9 +243,10 @@ decisions:
   alias_id: DEC-0105
   alias_name: migration-semantic-parity-requires-one-to-one-admitted-entity-mapping
 - id: 019fee89-e617-707d-bb3e-959ff33027b8
-  summary: Keep v1.0 frozen, v1.2 migratable, and v1.3 as a separate provisional authoring
-    line
-  rationale: V1.0 remains byte-frozen and readable, v1.2 remains readable and migratable,
+  summary: Keep v1.0 as the stable backward-compatible compatibility line, v1.2
+    migratable, and v1.3 as a separate provisional authoring line
+  rationale: V1.0 remains the stable backward-compatible and readable compatibility
+    line, v1.2 remains readable and migratable,
     v1.3 is a separate provisional authoring line, readers continue loading normalized
     1.1 bundles, and UUID identity advances v1.3 normalized semantics to model 2.0
     with UUID IDs/endpoints, explicit UUID/alias lookups, a bounded deprecated unique-alias

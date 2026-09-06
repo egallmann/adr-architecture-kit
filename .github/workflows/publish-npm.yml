@@ -5,6 +5,12 @@ on:
   push:
     tags:
       - "v*"
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "Existing release tag to (re)promote to npm (e.g. v0.8.0)"
+        required: true
+        type: string
 
 env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
@@ -18,16 +24,31 @@ jobs:
       actions: read
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: ${{ github.event_name == 'workflow_dispatch' && inputs.tag || github.ref }}
       - uses: actions/setup-python@v5
         with:
           python-version: "3.14"
       - name: Record interpreter
         run: python --version
+      - name: Resolve release SHA
+        id: release_sha
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            sha="$(git rev-list -n 1 "${{ inputs.tag }}")"
+          else
+            sha="${{ github.sha }}"
+          fi
+          test -n "$sha"
+          echo "sha=$sha" >> "$GITHUB_OUTPUT"
+          echo "Resolved release SHA: $sha"
       - name: Resolve release-eligible main qualification
         id: resolve
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GITHUB_REPOSITORY: ${{ github.repository }}
+          RELEASE_SHA: ${{ steps.release_sha.outputs.sha }}
         run: |
           python - <<'PY'
           import os
@@ -40,7 +61,7 @@ jobs:
                   "scripts/resolve_qualified_release_bundle.py",
                   "resolve",
                   "--sha",
-                  os.environ["GITHUB_SHA"],
+                  os.environ["RELEASE_SHA"],
                   "--workflow",
                   "adr-governance.yml",
                   "--branch",
@@ -94,6 +115,9 @@ jobs:
       url: https://www.npmjs.com/package/@system-of-thought/adr-kit
     steps:
       - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.14"
       - uses: actions/setup-node@v4
         with:
           node-version: "22.14.0"
@@ -110,6 +134,13 @@ jobs:
         run: |
           tarball="$(find npm-release-bundle -maxdepth 2 -type f -name '*.tgz' -print -quit)"
           test -n "$tarball"
+          # Require an explicit relative/absolute path. A bare "dir/file.tgz" is
+          # misread by npm as a GitHub package locator (git ls-remote ...tgz.git).
+          case "$tarball" in
+            /*|./*|../*) ;;
+            *) tarball="./$tarball" ;;
+          esac
+          test -f "$tarball"
           publication_status="$(python scripts/check_npm_publication.py --tarball "$tarball")"
           case "$publication_status" in
             publish)

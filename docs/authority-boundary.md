@@ -18,9 +18,18 @@ Owns the canonical ADR encoding model, authoring validation, authoring-time norm
 repository projections, the narrow `adr_kit.api` authoring SDK, the Python repository
 boundary, and adapter/compiler logic that turns ADR authority into IR-compatible outputs.
 
-ADR-Kit also owns the language-neutral Consumer Binding Contract 1.0. The official
-TypeScript package is a read-only binding over this authority; it does not own ADR
-semantics, canonical identity, graph admission, or repository writes.
+ADR-Kit also owns the language-neutral Consumer Binding Contract 1.0 and the
+versioned semantic execution boundary. Python and TypeScript/Node are peer host
+bindings over supported capabilities; neither binding owns ADR semantics,
+canonical identity, graph admission, or repository writes. Browser-safe entry
+points are a separate constrained execution profile.
+
+The shared boundary currently includes normalized contract, metadata, repository
+identity, provider routing, linkage, generated-artifact classification, and ADR
+source-validation plus cross-reference/topology semantics. Source discovery is a
+host-adapter responsibility around that boundary. Projection rendering and
+compilation remain staged extraction targets rather than being reimplemented in
+the Node binding.
 
 ### `ste-runtime`
 

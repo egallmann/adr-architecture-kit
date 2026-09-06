@@ -72,7 +72,6 @@ entities:
     extraction_phase: extract_component
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e617-76ad-9336-b3615a6e4bde
   alias_id: COMP-0012
   alias_name: compiler-pipeline-and-driver
@@ -145,7 +144,6 @@ entities:
     extraction_phase: extract_component
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e617-76d8-a333-e21361cd6602
   alias_id: COMP-0010
   alias_name: entity-registry-generator-and-query-surface
@@ -218,7 +216,6 @@ entities:
     extraction_phase: extract_component
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e618-719b-bb3a-f13ab0906811
   alias_id: COMP-0017
   alias_name: project-scope-resolver
@@ -294,7 +291,6 @@ entities:
     extraction_phase: extract_component
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e618-74d1-9a1f-37e2c2982a51
   alias_id: COMP-0013
   alias_name: repository-boundary-component
@@ -367,7 +363,6 @@ entities:
     extraction_phase: extract_component
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e618-7507-953e-19e6335e3b7a
   alias_id: COMP-0015
   alias_name: brownfield-onboarding-and-canonical-normalization
@@ -438,7 +433,6 @@ entities:
     extraction_phase: extract_component
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e618-781c-831f-0d5fe24f7d85
   alias_id: COMP-0014
   alias_name: generated-artifact-integrity-validation
@@ -510,7 +504,6 @@ entities:
     extraction_phase: extract_component
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019ffdba-3c42-75d5-b93b-f32f35152e32
   alias_id: COMP-0022
   alias_name: semantic-attribution-embodiment
@@ -583,4 +576,3 @@ entities:
     extraction_phase: extract_component
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'

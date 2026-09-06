@@ -23,6 +23,11 @@ jobs:
         python-version: ["3.14"]
     steps:
       - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: wasm32-unknown-unknown
+      - name: Build shared semantic core
+        run: node scripts/build_semantic_core.mjs
       - uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.python-version }}
@@ -39,6 +44,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: wasm32-unknown-unknown
+      - name: Build shared semantic core
+        run: node scripts/build_semantic_core.mjs
       - uses: actions/setup-node@v4
         with:
           node-version: "20"
@@ -88,6 +98,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: wasm32-unknown-unknown
+      - name: Build and test shared semantic core
+        run: |
+          cargo test --manifest-path core/Cargo.toml
+          node scripts/build_semantic_core.mjs
         with:
           submodules: recursive
       - uses: actions/setup-python@v5
@@ -113,6 +130,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: wasm32-unknown-unknown
+      - name: Build shared semantic core
+        run: node scripts/build_semantic_core.mjs
       - uses: actions/setup-python@v5
         with:
           python-version: "3.14"
@@ -177,6 +199,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: wasm32-unknown-unknown
+      - name: Build shared semantic core for both packages
+        run: node scripts/build_semantic_core.mjs
       - uses: actions/setup-python@v5
         with:
           python-version: "3.14"

@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://adr-kit.dev/contracts/semantic-core/v1.0/contract.json",
+  "title": "ADR-Kit semantic core contract v1.0",
+  "type": "object",
+  "required": ["core_contract_version", "operation"],
+  "properties": {
+    "core_contract_version": {"const": "1.0"},
+    "operation": {"enum": ["validate_contract", "validate_project_metadata", "open_provider_registry", "open_repository", "build_embodiment_linkage", "classify_generated_artifact", "validate_architecture_references", "validate_architecture"]},
+    "profile": {"enum": ["greenfield", "brownfield", "migration"]},
+    "max_sentinel_fields": {"type": ["integer", "null"], "minimum": 0},
+    "max_non_complete_entities": {"type": ["integer", "null"], "minimum": 0},
+    "entity_registry": {
+      "type": "object",
+      "required": ["entities"],
+      "properties": {"entities": {"type": "array", "items": {"type": "object"}}},
+      "additionalProperties": true
+    },
+    "remediation_ledger": {"type": ["object", "null"]},
+    "project_metadata": {"type": ["object", "null"]},
+    "bindings": {"type": "array", "items": {"type": "object"}},
+    "records": {"type": "array", "items": {"type": "object"}},
+    "entities": {"type": "array", "items": {"type": "object"}},
+    "model_version": {"type": "string"},
+    "architecture_namespace": {"type": "string"},
+    "relationships": {"type": "array", "items": {"type": "object"}},
+    "unresolved": {"type": "array", "items": {"type": "object"}},
+    "artifact_kind": {"type": "string"},
+    "declared_artifact_kind": {"type": ["string", "null"]},
+    "header_valid": {"type": "boolean"},
+    "header_error": {"type": ["string", "null"]},
+    "declared_source_hash": {"type": ["string", "null"]},
+    "declared_rendered_hash": {"type": ["string", "null"]},
+    "actual_rendered_hash": {"type": ["string", "null"]},
+    "expected_source_hash": {"type": ["string", "null"]},
+    "expected_rendered_hash": {"type": ["string", "null"]},
+    "reviews": {"type": "array", "items": {"type": "object"}},
+    "overrides": {"type": "array", "items": {"type": "object"}}
+  },
+  "additionalProperties": true
+}

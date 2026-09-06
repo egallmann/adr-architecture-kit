@@ -23,6 +23,14 @@ EXPECTED_PUBLIC_SYMBOLS = [
     "CapabilityManifest",
     "ValidationRequest",
     "ValidationResult",
+    "ProjectMetadataValidationRequest",
+    "ProjectMetadataValidationResult",
+    "ContractValidationRequest",
+    "ContractValidationIssue",
+    "ContractValidationResult",
+    "GeneratedDocsValidationRequest",
+    "GeneratedArtifactValidation",
+    "GeneratedDocsValidationResult",
     "CompilationRequest",
     "CompilationResult",
     "PromotionPrepareRequest",
@@ -51,6 +59,9 @@ EXPECTED_PUBLIC_SYMBOLS = [
     "capabilities",
     "build_embodiment_linkage",
     "validate_architecture",
+    "validate_project_metadata",
+    "validate_contract",
+    "validate_generated_docs",
     "compile_architecture",
     "open_repository",
     "open_provider_registry",
@@ -168,6 +179,14 @@ def test_public_contracts_are_frozen(tmp_path: Path) -> None:
         "CapabilityManifest",
         "ValidationRequest",
         "ValidationResult",
+        "ProjectMetadataValidationRequest",
+        "ProjectMetadataValidationResult",
+        "ContractValidationRequest",
+        "ContractValidationIssue",
+        "ContractValidationResult",
+        "GeneratedDocsValidationRequest",
+        "GeneratedArtifactValidation",
+        "GeneratedDocsValidationResult",
         "CompilationRequest",
         "CompilationResult",
         "PromotionPrepareRequest",
@@ -224,10 +243,24 @@ def test_capability_manifest_is_exact_and_deterministic() -> None:
     second = api.capabilities()
 
     assert first == second
+    assert first.host_operations == (
+        "capabilities",
+        "validate_architecture",
+        "validate_project_metadata",
+        "validate_contract",
+        "open_repository",
+        "open_provider_registry",
+        "build_embodiment_linkage",
+    )
+    assert "compile_architecture" in first.pending_host_operations
+    assert first.browser_operations == ("capabilities",)
     assert first.api_contract_version == "1.0"
     assert first.operations == (
         "capabilities",
         "validate_architecture",
+        "validate_project_metadata",
+        "validate_contract",
+        "validate_generated_docs",
         "compile_architecture",
         "open_repository",
         "open_provider_registry",

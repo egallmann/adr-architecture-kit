@@ -65,7 +65,6 @@ entities:
     extraction_phase: extract_capability
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e614-733f-9e37-fbd70087182d
   alias_id: CAP-0004
   alias_name: explicit-gap-tracking
@@ -130,7 +129,6 @@ entities:
     extraction_phase: extract_capability
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e614-7485-bb12-e90f01c3968e
   alias_id: CAP-0003
   alias_name: semantic-graph-integration
@@ -195,7 +193,6 @@ entities:
     extraction_phase: extract_capability
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e614-7c68-be36-2c84d4579279
   alias_id: CAP-0001
   alias_name: machine-verifiable-architecture-documentation
@@ -260,7 +257,6 @@ entities:
     extraction_phase: extract_capability
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e615-7199-be3b-64c7a82f3c4c
   alias_id: CAP-0011
   alias_name: signal-emission-cli
@@ -325,7 +321,6 @@ entities:
     extraction_phase: extract_capability
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e615-71de-ad3f-2d5d886efee2
   alias_id: CAP-0031
   alias_name: parse-physical-adr-components
@@ -392,7 +387,6 @@ entities:
     extraction_phase: extract_capability
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e615-722d-bf3a-9ed33338beaf
   alias_id: CAP-0029
   alias_name: documentation-via-tests
@@ -458,7 +452,6 @@ entities:
     extraction_phase: extract_capability
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e615-7402-b43f-a03be950d0b3
   alias_id: CAP-0046
   alias_name: verified-build-once-release-promotion
@@ -525,7 +518,6 @@ entities:
     extraction_phase: extract_capability
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e615-7476-a31e-769637c9b7d1
   alias_id: CAP-0030
   alias_name: implementation-attribution-evidence-handoff
@@ -591,7 +583,6 @@ entities:
     extraction_phase: extract_capability
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e615-7498-9825-b465a8830d8a
   alias_id: CAP-0020
   alias_name: automated-quality-gates
@@ -657,7 +648,6 @@ entities:
     extraction_phase: extract_capability
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e615-7564-933f-0bb0cbbcf41b
   alias_id: CAP-0014
   alias_name: deterministic-documentation-projection
@@ -723,7 +713,6 @@ entities:
     extraction_phase: extract_capability
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e615-7695-923e-7ae538b2d1d5
   alias_id: CAP-0008
   alias_name: multi-agent-prompt-generation
@@ -789,7 +778,6 @@ entities:
     extraction_phase: extract_capability
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e615-76f9-9627-02674f7f34cc
   alias_id: CAP-0009
   alias_name: prompt-format-adaptation
@@ -855,7 +843,6 @@ entities:
     extraction_phase: extract_capability
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e615-77b5-b73c-7db427c64a68
   alias_id: CAP-0012
   alias_name: rule-activation-and-projection
@@ -920,7 +907,6 @@ entities:
     extraction_phase: extract_capability
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e615-7804-ad2e-184eeaf6ea0f
   alias_id: CAP-0024
   alias_name: bidirectional-traceability-verification
@@ -986,7 +972,6 @@ entities:
     extraction_phase: extract_capability
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e615-78f5-903a-4c5d1bab8f38
   alias_id: CAP-0019
   alias_name: automatic-project-scope-detection
@@ -1053,7 +1038,6 @@ entities:
     extraction_phase: extract_capability
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e615-7946-a53f-af6bf655dc11
   alias_id: CAP-0006
   alias_name: policy-integration-readiness
@@ -1118,7 +1102,6 @@ entities:
     extraction_phase: extract_capability
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e615-7958-822b-bbd40f3a5ebc
   alias_id: CAP-0023
   alias_name: test-driven-development-support
@@ -1184,7 +1167,6 @@ entities:
     extraction_phase: extract_capability
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e615-7aa2-8817-c4f468c90b66
   alias_id: CAP-0028
   alias_name: multi-scope-cli-interface
@@ -1249,7 +1231,6 @@ entities:
     extraction_phase: extract_capability
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e615-7b72-b72b-d07441bebf10
   alias_id: CAP-0007
   alias_name: correction-agent-context
@@ -1314,7 +1295,6 @@ entities:
     extraction_phase: extract_capability
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e615-7ba4-bd19-1d7abf1a3ed2
   alias_id: CAP-0025
   alias_name: scoped-validation
@@ -1380,7 +1360,6 @@ entities:
     extraction_phase: extract_capability
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e615-7c41-b23f-a324d60b48e1
   alias_id: CAP-0005
   alias_name: derived-manifest-generation
@@ -1444,7 +1423,6 @@ entities:
     extraction_phase: extract_capability
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e615-7c78-8337-ff658fd422f8
   alias_id: CAP-0032
   alias_name: generate-implementation-prompt
@@ -1511,7 +1489,6 @@ entities:
     extraction_phase: extract_capability
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e615-7ce1-aa20-4b16a485eb1a
   alias_id: CAP-0013
   alias_name: submodule-bootstrap
@@ -1576,7 +1553,6 @@ entities:
     extraction_phase: extract_capability
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e615-7d32-8d01-f61b4d7aae40
   alias_id: CAP-0026
   alias_name: regression-prevention
@@ -1642,7 +1618,6 @@ entities:
     extraction_phase: extract_capability
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e615-7dc5-983a-beb68ed34cde
   alias_id: CAP-0022
   alias_name: scoped-manifest-generation
@@ -1708,7 +1683,6 @@ entities:
     extraction_phase: extract_capability
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e615-7dd6-b137-8546c4e74c22
   alias_id: CAP-0021
   alias_name: architecture-intent-attribution
@@ -1774,7 +1748,6 @@ entities:
     extraction_phase: extract_capability
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e615-7e34-900f-7e37891efa10
   alias_id: CAP-0033
   alias_name: generate-validation-checklist
@@ -1841,7 +1814,6 @@ entities:
     extraction_phase: extract_capability
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e615-7e73-a30e-6f029c9cb1b3
   alias_id: CAP-0027
   alias_name: profile-aware-legacy-onboarding-for-intent-attribution
@@ -1907,7 +1879,6 @@ entities:
     extraction_phase: extract_capability
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e615-7fef-a81d-ffbcc5c11de8
   alias_id: CAP-0010
   alias_name: signal-schema-authority
@@ -1972,7 +1943,6 @@ entities:
     extraction_phase: extract_capability
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e616-705d-9a3d-4341d19e1541
   alias_id: CAP-0016
   alias_name: draft-preserving-source-generation
@@ -2038,7 +2008,6 @@ entities:
     extraction_phase: extract_capability
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e616-7121-a63e-0baad0a61fb3
   alias_id: CAP-0018
   alias_name: normalized-entity-lookup-surface
@@ -2105,7 +2074,6 @@ entities:
     extraction_phase: extract_capability
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e616-7140-bb3f-8b78ab40d018
   alias_id: CAP-0039
   alias_name: stable-repository-semantic-boundary
@@ -2172,7 +2140,6 @@ entities:
     extraction_phase: extract_capability
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e616-718c-8f1f-c75e9bc215bc
   alias_id: CAP-0034
   alias_name: profile-aware-contract-validation
@@ -2238,7 +2205,6 @@ entities:
     extraction_phase: extract_capability
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e616-7396-893e-af8987fa6e03
   alias_id: CAP-0038
   alias_name: federated-qualified-identity-resolution
@@ -2305,7 +2271,6 @@ entities:
     extraction_phase: extract_capability
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e616-73a1-9d27-96afd11520ad
   alias_id: CAP-0047
   alias_name: narrow-supported-authoring-sdk
@@ -2372,7 +2337,6 @@ entities:
     extraction_phase: extract_capability
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e616-74f9-813b-7610fca4342c
   alias_id: CAP-0040
   alias_name: brownfield-onboarding-workflow
@@ -2439,7 +2403,6 @@ entities:
     extraction_phase: extract_capability
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e616-7607-9312-8aa8d1816be9
   alias_id: CAP-0017
   alias_name: summary-discovery-surface
@@ -2505,7 +2468,6 @@ entities:
     extraction_phase: extract_capability
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e616-76ce-9a36-55eac88b762e
   alias_id: CAP-0041
   alias_name: canonical-migration-evidence
@@ -2571,7 +2533,6 @@ entities:
     extraction_phase: extract_capability
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e616-7755-bd39-ab6dde87eb86
   alias_id: CAP-0036
   alias_name: typed-metadata-contract-enforcement
@@ -2637,7 +2598,6 @@ entities:
     extraction_phase: extract_capability
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e616-79ea-b43e-32a8705441ec
   alias_id: CAP-0037
   alias_name: remediation-ledger-governance
@@ -2703,7 +2663,6 @@ entities:
     extraction_phase: extract_capability
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e616-7abc-a63c-13e917ef49d8
   alias_id: CAP-0015
   alias_name: mode-aware-adr-validation
@@ -2769,7 +2728,6 @@ entities:
     extraction_phase: extract_capability
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e616-7ca5-af3e-0dcd80fe2f9f
   alias_id: CAP-0035
   alias_name: production-safe-kernel-admission
@@ -2835,7 +2793,6 @@ entities:
     extraction_phase: extract_capability
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e616-7d30-ae2e-6fee1dbb2712
   alias_id: CAP-0044
   alias_name: cross-language-runtime-ingestion-contract
@@ -2903,7 +2860,6 @@ entities:
     extraction_phase: extract_capability
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e616-7ee9-9b0f-2da3ee16636b
   alias_id: CAP-0042
   alias_name: deterministic-adr-governance-validation
@@ -2969,7 +2925,6 @@ entities:
     extraction_phase: extract_capability
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e616-7f80-903e-36b6d56f86fe
   alias_id: CAP-0043
   alias_name: governance-summary-projection
@@ -3035,7 +2990,6 @@ entities:
     extraction_phase: extract_capability
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e617-710a-b91f-e749ebab9a95
   alias_id: CAP-0048
   alias_name: additive-adr-schema-v1-2-authoring
@@ -3103,7 +3057,6 @@ entities:
     extraction_phase: extract_capability
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e617-7410-8c37-e302d20b9f8b
   alias_id: CAP-9000
   alias_name: kernel-boot-readiness
@@ -3168,7 +3121,6 @@ entities:
     extraction_phase: extract_capability
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e617-74cd-9331-2954d78dccf3
   alias_id: CAP-0050
   alias_name: bind-only-external-authority-contracts
@@ -3235,7 +3187,6 @@ entities:
     extraction_phase: extract_capability
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e617-778b-8137-22bcc675b053
   alias_id: CAP-0045
   alias_name: deterministic-corpus-orientation-surface
@@ -3301,7 +3252,6 @@ entities:
     extraction_phase: extract_capability
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e617-7ac8-803e-e3514c4e329a
   alias_id: CAP-0051
   alias_name: stable-physical-topology-identity-migration
@@ -3368,7 +3318,6 @@ entities:
     extraction_phase: extract_capability
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e617-7bff-b43f-2fae0178d1be
   alias_id: CAP-0052
   alias_name: governed-alias-allocation-and-uuid-integrity
@@ -3435,7 +3384,6 @@ entities:
     extraction_phase: extract_capability
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e617-7fcb-b717-247f38d13206
   alias_id: CAP-0049
   alias_name: expanded-normalized-semantic-model
@@ -3502,7 +3450,6 @@ entities:
     extraction_phase: extract_capability
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019ffdba-3c42-71ba-b81f-a2a24830abd6
   alias_id: CAP-0054
   alias_name: repository-aware-attribution-normalization
@@ -3568,7 +3515,6 @@ entities:
     extraction_phase: extract_capability
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019ffdba-3c42-745c-9e37-85f7696cd43c
   alias_id: CAP-0055
   alias_name: unique-link-attribution-coverage
@@ -3634,7 +3580,6 @@ entities:
     extraction_phase: extract_capability
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019ffdba-3c42-7578-b43f-ad19109d59d9
   alias_id: CAP-0053
   alias_name: semantic-implementation-attribution
@@ -3701,15 +3646,14 @@ entities:
     extraction_phase: extract_capability
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 01a02d38-7cf3-7625-8e95-7fc0f62d7b09
   alias_id: CAP-9002
   alias_name: typescript-node-browser-consumer-distribution
   alias_ref: CAP-9002:typescript-node-browser-consumer-distribution
   entity_type: capability
   name: TypeScript Node and Browser Consumer Distribution
-  summary: Provide a read-only framework-neutral TypeScript package with explicit
-    browser-safe and Node-only subpaths.
+  summary: Provide a framework-neutral TypeScript package with peer Node host capabilities
+    and an explicitly constrained browser profile.
   uri: adr://adr-architecture-kit/entities/01a02d38-7cf3-7625-8e95-7fc0f62d7b09
   created_at: '2026-08-23T06:04:31.859Z'
   entity_fingerprint: sha256:43b903ad17757a72a474fe46c58873387c4ebf94707a1c9794dec0a3a5f7e905
@@ -3767,7 +3711,6 @@ entities:
     extraction_phase: extract_capability
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 01a02d38-7cf3-7dfe-80d8-28c51db97e18
   alias_id: CAP-9001
   alias_name: capability-scoped-consumer-binding
@@ -3833,4 +3776,3 @@ entities:
     extraction_phase: extract_capability
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'

@@ -8,6 +8,7 @@ from pathlib import Path
 from typing import Callable, Sequence
 
 from ..decorators import enforces_invariant, implements_adr
+from ..core import execute_generated_artifact_classification
 from ..scope import ProjectScope, ProjectScopeResolver
 from .artifacts import ArtifactKind, GeneratedArtifact, ScopeProjectionArtifacts
 from .core import (
@@ -105,10 +106,21 @@ class GeneratedArtifactValidator:
     def validate_artifact(self, artifact: GeneratedArtifact) -> GeneratedArtifactValidationResult:
         artifact_path = artifact.artifact_path
         if not artifact_path.exists():
+            classification = execute_generated_artifact_classification(
+                artifact_kind=artifact.artifact_kind.value,
+                declared_artifact_kind=None,
+                header_valid=False,
+                header_error="artifact_missing",
+                declared_source_hash=None,
+                declared_rendered_hash=None,
+                actual_rendered_hash=None,
+                expected_source_hash=None,
+                expected_rendered_hash=None,
+            )
             return GeneratedArtifactValidationResult(
                 artifact_path=str(artifact_path),
                 artifact_kind=artifact.artifact_kind.value,
-                status=GeneratedArtifactStatus.MISSING_OR_MALFORMED_INTEGRITY_HEADER.value,
+                status=str(classification["status"]),
                 reason_code="artifact_missing",
                 notes=["Generated artifact file does not exist."],
             )
@@ -117,10 +129,21 @@ class GeneratedArtifactValidator:
         try:
             header = parse_integrity_header(actual, artifact.artifact_kind)
         except IntegrityHeaderError as exc:
+            classification = execute_generated_artifact_classification(
+                artifact_kind=artifact.artifact_kind.value,
+                declared_artifact_kind=None,
+                header_valid=False,
+                header_error=str(exc),
+                declared_source_hash=None,
+                declared_rendered_hash=None,
+                actual_rendered_hash=None,
+                expected_source_hash=None,
+                expected_rendered_hash=None,
+            )
             return GeneratedArtifactValidationResult(
                 artifact_path=str(artifact_path),
                 artifact_kind=artifact.artifact_kind.value,
-                status=GeneratedArtifactStatus.MISSING_OR_MALFORMED_INTEGRITY_HEADER.value,
+                status=str(classification["status"]),
                 reason_code="malformed_header",
                 notes=[str(exc)],
             )
@@ -128,11 +151,22 @@ class GeneratedArtifactValidator:
         body = extract_body_without_header(actual)
         actual_rendered_hash = compute_rendered_hash(body)
         if header["artifact_kind"] not in {kind.value for kind in ArtifactKind}:
+            classification = execute_generated_artifact_classification(
+                artifact_kind=artifact.artifact_kind.value,
+                declared_artifact_kind=header["artifact_kind"],
+                header_valid=True,
+                header_error=None,
+                declared_source_hash=header["source_hash"],
+                declared_rendered_hash=header["rendered_hash"],
+                actual_rendered_hash=actual_rendered_hash,
+                expected_source_hash=None,
+                expected_rendered_hash=None,
+            )
             return GeneratedArtifactValidationResult(
                 artifact_path=str(artifact_path),
                 artifact_kind=header["artifact_kind"],
-                status=GeneratedArtifactStatus.UNSUPPORTED_ARTIFACT_KIND.value,
-                reason_code="unsupported_artifact_kind",
+                status=str(classification["status"]),
+                reason_code=str(classification["reason_code"]),
             )
 
         expected_body, source_inputs, generator_identity = self.inspector(artifact)
@@ -143,24 +177,38 @@ class GeneratedArtifactValidator:
         )
         expected_rendered_hash = compute_rendered_hash(expected_body)
 
-        if actual_rendered_hash != header["rendered_hash"]:
+        classification = execute_generated_artifact_classification(
+            artifact_kind=artifact.artifact_kind.value,
+            declared_artifact_kind=header["artifact_kind"],
+            header_valid=True,
+            header_error=None,
+            declared_source_hash=header["source_hash"],
+            declared_rendered_hash=header["rendered_hash"],
+            actual_rendered_hash=actual_rendered_hash,
+            expected_source_hash=expected_source_hash,
+            expected_rendered_hash=expected_rendered_hash,
+        )
+        status = str(classification["status"])
+        reason_code = str(classification["reason_code"])
+
+        if status == GeneratedArtifactStatus.TAMPERED_GENERATED_OUTPUT.value:
             return GeneratedArtifactValidationResult(
                 artifact_path=str(artifact_path),
                 artifact_kind=artifact.artifact_kind.value,
-                status=GeneratedArtifactStatus.TAMPERED_GENERATED_OUTPUT.value,
-                reason_code="rendered_hash_mismatch",
+                status=status,
+                reason_code=reason_code,
                 expected_source_hash=expected_source_hash,
                 actual_source_hash=header["source_hash"],
                 expected_rendered_hash=expected_rendered_hash,
                 actual_rendered_hash=actual_rendered_hash,
             )
 
-        if expected_source_hash != header["source_hash"]:
+        if status == GeneratedArtifactStatus.STALE_GENERATED_OUTPUT.value:
             return GeneratedArtifactValidationResult(
                 artifact_path=str(artifact_path),
                 artifact_kind=artifact.artifact_kind.value,
-                status=GeneratedArtifactStatus.STALE_GENERATED_OUTPUT.value,
-                reason_code="source_hash_mismatch",
+                status=status,
+                reason_code=reason_code,
                 expected_source_hash=expected_source_hash,
                 actual_source_hash=header["source_hash"],
                 expected_rendered_hash=expected_rendered_hash,
@@ -170,8 +218,8 @@ class GeneratedArtifactValidator:
         return GeneratedArtifactValidationResult(
             artifact_path=str(artifact_path),
             artifact_kind=artifact.artifact_kind.value,
-            status=GeneratedArtifactStatus.VALID.value,
-            reason_code="hashes_match",
+            status=status,
+            reason_code=reason_code,
             expected_source_hash=expected_source_hash,
             actual_source_hash=header["source_hash"],
             expected_rendered_hash=expected_rendered_hash,

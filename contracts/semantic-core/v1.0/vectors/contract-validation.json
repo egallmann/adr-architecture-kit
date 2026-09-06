@@ -1,0 +1,53 @@
+{
+  "contract_version": "1.0",
+  "operation": "validate_contract",
+  "cases": [
+    {
+      "name": "compliant",
+      "request": {
+        "core_contract_version": "1.0",
+        "operation": "validate_contract",
+        "profile": "greenfield",
+        "entity_registry": {"entities": [{"id": "ADR-L-1", "entity_type": "adr", "name": "One", "summary": "A", "canonical_source": {"source_ref": "a", "artifact_path": "a.yaml"}, "completeness": {"status": "complete"}, "metadata": {"status": "accepted", "domains": [], "tags": []}}]}
+      },
+      "expected": {"success": true, "outcome": "compliant", "sentinel_field_count": 0, "non_complete_entity_count": 0, "issues": []}
+    },
+    {
+      "name": "brownfield sentinel",
+      "request": {
+        "core_contract_version": "1.0",
+        "operation": "validate_contract",
+        "profile": "brownfield",
+        "entity_registry": {"entities": [{"id": "C-1", "entity_type": "component", "name": "One", "summary": "__NOT_YET_MODELED__", "canonical_source": {"source_ref": "c", "artifact_path": "c.yaml"}, "completeness": {"status": "partial"}, "metadata": {"adr_id": "ADR-L-1", "technologies": [], "module_path": "__NOT_YET_MODELED__", "implements_capabilities": [], "implements_system": "sys"}}]}
+      },
+      "expected": {"success": true, "outcome": "sentinel_compliant", "sentinel_field_count": 2, "non_complete_entity_count": 1, "issues": []}
+    },
+    {
+      "name": "greenfield rejects sentinel and incomplete entity",
+      "request": {
+        "core_contract_version": "1.0",
+        "operation": "validate_contract",
+        "profile": "greenfield",
+        "entity_registry": {"entities": [{"id": "C-1", "entity_type": "component", "name": "One", "summary": "__NOT_YET_MODELED__", "canonical_source": {"source_ref": "c", "artifact_path": "c.yaml"}, "completeness": {"status": "partial"}, "metadata": {"adr_id": "ADR-L-1", "technologies": [], "module_path": "__NOT_YET_MODELED__", "implements_capabilities": [], "implements_system": "sys"}}]}
+      },
+      "expected": {"success": false, "outcome": "non_compliant", "sentinel_field_count": 0, "non_complete_entity_count": 1, "issue_count": 3}
+    },
+    {
+      "name": "threshold failure preserves outcome",
+      "request": {
+        "core_contract_version": "1.0",
+        "operation": "validate_contract",
+        "profile": "brownfield",
+        "max_sentinel_fields": 0,
+        "max_non_complete_entities": 0,
+        "entity_registry": {"entities": [{"id": "C-1", "entity_type": "component", "name": "One", "summary": "__NOT_YET_MODELED__", "canonical_source": {"source_ref": "c", "artifact_path": "c.yaml"}, "completeness": {"status": "partial"}, "metadata": {"adr_id": "ADR-L-1", "technologies": [], "module_path": "__NOT_YET_MODELED__", "implements_capabilities": [], "implements_system": "sys"}}]}
+      },
+      "expected": {"success": false, "outcome": "sentinel_compliant", "sentinel_field_count": 2, "non_complete_entity_count": 1, "issue_codes": ["contract.max_sentinel_fields", "contract.max_non_complete_entities"]}
+    },
+    {
+      "name": "malformed request",
+      "request": {"core_contract_version": "9.0", "operation": "validate_contract", "profile": "greenfield", "entity_registry": {"entities": []}},
+      "expected": {"success": false, "outcome": "invalid_request", "issue_codes": ["core.invalid_request"]}
+    }
+  ]
+}

@@ -5,8 +5,8 @@ artifact_kind: rendered_adr_markdown
 generator_id: adr-projection-markdown
 generator_version: 3
 hash_algorithm: sha256
-source_hash: 78517cf559fb1405afa6b77f725e461ea60bb289a0e3b9bffce76f1986226b94
-rendered_hash: 8259255d9358410803ec185c2589df33b068d47d6148cde82a4e5629ac452006
+source_hash: dea69d93db99cff8ddf585dd095cb1cb400a517c6cb051025f3d9f286a2dba6c
+rendered_hash: 692c4f9116a36989de016bda267dff65dd8e36c1907f8ee059befdfa9594965f
 -->
 
 # ADR-L-0024: Cross-Language Consumer Bindings and TypeScript Distribution
@@ -20,7 +20,7 @@ rendered_hash: 8259255d9358410803ec185c2589df33b068d47d6148cde82a4e5629ac452006
 **Created:** 2026-08-23  
 **Authors:** erik.gallmann  
 **Domains:** architecture, consumer-bindings, schema-governance, distribution  
-**Tags:** consumer-binding, typescript, node, browser, conformance, read-only  
+**Tags:** consumer-binding, typescript, node, browser, conformance, host-parity  
 
 ## Architecture at a Glance
 
@@ -28,9 +28,9 @@ rendered_hash: 8259255d9358410803ec185c2589df33b068d47d6148cde82a4e5629ac452006
 | --- | --- |
 | Logical authority | ADR-L-0024 |
 | Status | accepted |
-| Decisions | 13 |
+| Decisions | 14 |
 | Capabilities | 2 |
-| Invariants | 8 |
+| Invariants | 10 |
 
 
 ## Context
@@ -38,16 +38,17 @@ rendered_hash: 8259255d9358410803ec185c2589df33b068d47d6148cde82a4e5629ac452006
 ADR-Kit already owns accepted ADR authority, canonical schema bytes, semantic
 vocabularies, the repository discovery contract, the normalized model, and
 validated derived embodiment evidence. Python is the existing implementation
-of those contracts, but it is not their semantic owner. Node services,
-engineering-agent integrations, and browser applications need a supported
-read-only consumer binding without reparsing ADR source YAML, depending on
-compiler internals, or importing Node authority into browser applications.
+of those contracts, but it is not their semantic owner. Node services and
+engineering-agent integrations need a peer host binding for filesystem-backed
+ADR-Kit capabilities, while browser applications need a constrained profile.
+Browser limitations must not be generalized into a TypeScript/Node capability
+gap.
 
 A language binding must therefore be governed by one explicit consumer contract,
 advertise only the capabilities it actually implements, and be qualified by
 semantic and behavioral equivalence over overlapping capabilities. Binding-local
 implementation details and deterministic fingerprints are not cross-language
-identity. A first TypeScript distribution must preserve the repository boundary,
+identity. The TypeScript distribution must preserve the repository boundary,
 keep Node filesystem and linkage behavior behind explicit Node subpaths, and
 remain framework-neutral for browser and Angular consumers.
 ## Architectural Decisions
@@ -60,13 +61,14 @@ remain framework-neutral for browser and Angular consumers.
 | DEC-0158 | Conformance is required only for the intersection of capabilities and contract versions advertised by bindings | — |
 | DEC-0159 | Consumer Binding Contract 1.0 distinguishes structural semantic behavioral diagnostic and serialization equivalence | — |
 | DEC-0160 | TypeScript consumes copy-exact generated mirrors of canonical schema bytes from schema/ | — |
-| DEC-0161 | The first TypeScript release is read-only and excludes authoring identity allocation graph admission CLI MCP and repository writes | — |
+| DEC-0161 | Browser-safe TypeScript entry points are constrained while the TypeScript/Node host binding is a peer host capability surface | — |
 | DEC-0162 | Browser-safe entry points exclude Node built-ins and filesystem behavior is available only through explicit Node subpaths | — |
 | DEC-0163 | TypeScript v1 supports normalized model 2.1 evidence attribution 1.5 and 1.6 discovery loading and normalized semantic extensions | — |
 | DEC-0164 | Binding-local deterministic fingerprints may be exposed but Python and TypeScript fingerprint equality is not a contract | — |
 | DEC-0165 | Node repository loading is index-first manifest-aware additive-safe and never reparses source ADR YAML as a fallback | — |
 | DEC-0166 | Node embodiment linkage preserves validated-derived-evidence authority ceiling and not-admitted graph status | — |
 | DEC-0167 | PyPI and npm artifacts represent one ADR-Kit source release and do not create independent semantic version lineages | — |
+| DEC-0183 | TypeScript/Node is a peer host-runtime binding for supported ADR-Kit capabilities | — |
 
 ### DEC-0155 — Accepted ADRs canonical schemas vocabularies and promoted binding contracts are language-neutral semantic authority
 
@@ -104,11 +106,11 @@ Structural and semantic agreement must not silently impose exact exception class
 
 Generated mirrors can serve packaging but cannot become a second schema authority.
 
-### DEC-0161 — The first TypeScript release is read-only and excludes authoring identity allocation graph admission CLI MCP and repository writes
+### DEC-0161 — Browser-safe TypeScript entry points are constrained while the TypeScript/Node host binding is a peer host capability surface
 
 **Rationale**
 
-Consumer safety and authority ownership require a deliberately bounded first release.
+Browser execution lacks filesystem and repository authority; that limitation must not be generalized to Node.
 
 ### DEC-0162 — Browser-safe entry points exclude Node built-ins and filesystem behavior is available only through explicit Node subpaths
 
@@ -146,6 +148,12 @@ Evidence declarations and validated links do not become canonical architecture g
 
 Consumers need one release identity while package publication remains an operational release step.
 
+### DEC-0183 — TypeScript/Node is a peer host-runtime binding for supported ADR-Kit capabilities
+
+**Rationale**
+
+Node services such as STE Runtime must consume repository-backed ADR-Kit operations without CLI or Python subprocess integration.
+
 
 ## Capabilities
 
@@ -160,11 +168,12 @@ Provide an explicit contract and capability manifest for conforming language bin
 
 ### CAP-9002 — TypeScript Node and Browser Consumer Distribution
 
-Provide a read-only framework-neutral TypeScript package with explicit browser-safe and Node-only subpaths.
+Provide a framework-neutral TypeScript package with peer Node host capabilities and an explicitly constrained browser profile.
 
 **Acceptance criteria**
 - browser-safe entry points bundle without Node built-ins or Angular framework dependencies
-- Node repository and linkage behavior preserve accepted ADR authority
+- Node host capabilities are equivalent to Python host capabilities over the supported contract
+- browser-safe entry points advertise only capabilities executable without host filesystem authority
 - npm and PyPI release metadata share one source release lineage
 
 
@@ -178,10 +187,12 @@ Provide a read-only framework-neutral TypeScript package with explicit browser-s
 | INV-0150 | Cross-language qualification MUST compare only capabilities and contract versions advertised by both bindings. | MUST / test | automated |
 | INV-0151 | Packaged TypeScript schema assets MUST preserve the bytes of their canonical counterparts under root schema/. | MUST / test | automated |
 | INV-0152 | Browser-safe package entry points MUST have no reachable Node built-in dependency and MUST have no Angular framework… | MUST / test | automated |
-| INV-0153 | TypeScript v1 MUST perform no repository writes identity allocation graph admission authoring mutation network… | MUST / test | automated |
+| INV-0153 | Browser-safe TypeScript entry points MUST perform no filesystem writes, identity allocation, graph admission,… | MUST / test | automated |
 | INV-0154 | Node repository loading MUST require architecture-index.yaml manifest.yaml and the primary entity relationship and… | MUST / test | automated |
 | INV-0155 | Embodiment linkage MUST preserve authority_ceiling validated_derived_evidence and graph_admission_status… | MUST / test | automated |
 | INV-0156 | A binding MUST reject unsupported schema or contract versions explicitly and MUST NOT silently coerce them into a… | MUST / test | automated |
+| INV-0163 | Python and TypeScript/Node host bindings MUST expose equivalent supported ADR-Kit capabilities and MUST NOT diverge… | MUST / test | automated |
+| INV-0164 | TypeScript/Node host parity MUST use one canonical semantic implementation or authority-preserving portable… | MUST / design | automated |
 
 ### INV-0149
 
@@ -247,9 +258,9 @@ Browser and Angular compatibility requires a framework-neutral ESM boundary.
 
 **Statement**
 
-TypeScript v1 MUST perform no repository writes identity allocation graph admission authoring mutation network access or import-time side effects.
+Browser-safe TypeScript entry points MUST perform no filesystem writes, identity allocation, graph admission, authoring mutation, network access, or import-time side effects.
 
-**Scope:** global
+**Scope:** browser
 
 **Enforcement:** MUST (test)
 **Verification:** automated
@@ -303,6 +314,36 @@ A binding MUST reject unsupported schema or contract versions explicitly and MUS
 
 Explicit failure prevents historical implementation behavior from becoming accidental authority.
 
+### INV-0163
+
+**Statement**
+
+Python and TypeScript/Node host bindings MUST expose equivalent supported ADR-Kit capabilities and MUST NOT diverge without an accepted architectural exception.
+
+**Scope:** global
+
+**Enforcement:** MUST (test)
+**Verification:** automated
+
+**Rationale**
+
+Host capability parity is the default release contract; browser constraints are profile-scoped.
+
+### INV-0164
+
+**Statement**
+
+TypeScript/Node host parity MUST use one canonical semantic implementation or authority-preserving portable execution boundary and MUST NOT create a second compiler or validator authority.
+
+**Scope:** global
+
+**Enforcement:** MUST (design)
+**Verification:** automated
+
+**Rationale**
+
+Equivalent behavior is required without semantic duplication.
+
 
 
 
@@ -324,6 +365,7 @@ Explicit failure prevents historical implementation behavior from becoming accid
 - [ADR-L-0023](ADR-L-0023-consumer-semantic-extension-contract.md)
 - [ADR-L-0025](ADR-L-0025-topology-and-contract-succession-authority.md)
 - [ADR-L-0026](ADR-L-0026-authoring-domain-contract-discovery-authority.md)
+- [ADR-L-0027](ADR-L-0027-public-binding-construction-and-release-parity.md)
 
 
 

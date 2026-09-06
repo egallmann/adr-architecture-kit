@@ -1,0 +1,47 @@
+{
+  "contract_version": "1.0",
+  "cases": [
+    {
+      "name": "valid implementation linkage",
+      "request": {
+        "core_contract_version": "1.0",
+        "operation": "build_embodiment_linkage",
+        "profile": "greenfield",
+        "evidence_schema_version": "1.6",
+        "architecture_fingerprint": "sha256:fixture",
+        "entities": [
+          {"id": "entity-1", "entity_type": "component", "alias_id": "COMP-1", "alias_name": "Fixture Component", "lifecycle_stage": "active"}
+        ],
+        "records": [
+          {
+            "implementation_entity_id": "src.fixture",
+            "implementation_entity_type": "module",
+            "attribution_source_language": "typescript",
+            "provenance": {"source_file": "src/fixture.ts", "extractor": "vector", "source_pointer": "module"},
+            "claims": [{"relationship": "embodies", "target_entity_id": "entity-1", "confidence": "declared"}]
+          }
+        ]
+      },
+      "expected": {"success": true, "link_count": 1, "rejected_count": 0, "error_count": 0, "warning_count": 0}
+    },
+    {
+      "name": "unresolved implementation target",
+      "request": {
+        "core_contract_version": "1.0",
+        "operation": "build_embodiment_linkage",
+        "profile": "greenfield",
+        "evidence_schema_version": "1.5",
+        "entities": [],
+        "records": [
+          {
+            "implementation_entity_id": "src.fixture",
+            "implementation_entity_type": "module",
+            "provenance": {"source_file": "src/fixture.ts", "extractor": "vector"},
+            "claims": [{"relationship": "implements", "target_entity_id": "missing", "confidence": "declared"}]
+          }
+        ]
+      },
+      "expected": {"success": false, "link_count": 0, "rejected_count": 1, "error_count": 1, "warning_count": 0}
+    }
+  ]
+}

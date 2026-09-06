@@ -7,8 +7,15 @@ const packageRoot = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const repoRoot = resolve(packageRoot, "../..");
 const canonicalRoot = resolve(repoRoot, "schema");
 const generatedRoot = resolve(packageRoot, "src/generated");
+const capabilityContract = JSON.parse(
+  await readFile(resolve(repoRoot, "contracts/compatibility/host-capabilities.json"), "utf8"),
+);
 
 const families = [
+  ["authoring", "v1.2"],
+  ["authoring", "v1.3"],
+  ["authoring", "v1.4"],
+  ["authoring", "v1.5"],
   ["normalized-model", "v2.1"],
   ["evidence-attribution", "v1.5"],
   ["evidence-attribution", "v1.6"],
@@ -50,3 +57,4 @@ await mkdir(generatedRoot, { recursive: true });
 await writeFile(resolve(generatedRoot, "schema-manifest.ts"), `export const schemaManifest = ${JSON.stringify({ package_version: packageVersion, schemas: manifest }, null, 2)} as const;\n`);
 await writeFile(resolve(generatedRoot, "package-metadata.ts"), `export const packageVersion = ${JSON.stringify(packageVersion)} as const;\n`);
 await writeFile(resolve(generatedRoot, "schema-assets.ts"), `export const schemaAssets = ${JSON.stringify(assets, null, 2)} as const;\n`);
+await writeFile(resolve(generatedRoot, "host-capabilities.ts"), `export const hostCapabilities = ${JSON.stringify(capabilityContract, null, 2)} as const;\n`);

@@ -3652,8 +3652,8 @@ entities:
   alias_ref: CAP-9002:typescript-node-browser-consumer-distribution
   entity_type: capability
   name: TypeScript Node and Browser Consumer Distribution
-  summary: Provide a read-only framework-neutral TypeScript package with explicit
-    browser-safe and Node-only subpaths.
+  summary: Provide a framework-neutral TypeScript package with peer Node host capabilities
+    and an explicitly constrained browser profile.
   uri: adr://adr-architecture-kit/entities/01a02d38-7cf3-7625-8e95-7fc0f62d7b09
   created_at: '2026-08-23T06:04:31.859Z'
   entity_fingerprint: sha256:43b903ad17757a72a474fe46c58873387c4ebf94707a1c9794dec0a3a5f7e905

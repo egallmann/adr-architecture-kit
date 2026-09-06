@@ -48,7 +48,7 @@ from ..migrators.identity_v13 import IdentityV13Migrator, IdentityMapDocument
 from ..migrators.topology_identity import TopologyIdentityMigrator
 from ..parser import ADRParser
 from ..repository import ArchitectureRepository
-from ..schema.contract_validation import ContractProfile, validate_adr_contract_bundle
+from ..schema.contract_validation import ContractProfile
 from ..schema.implementation_attribution_validation import (
     validate_implementation_attribution_evidence,
 )
@@ -1645,13 +1645,13 @@ def validate_contract(
             contract_bundle = repository.get_contract_bundle_view()
             click.echo(f"Project scope: {current_scope.name} ({current_scope.root})")
 
-            result = validate_adr_contract_bundle(
-                contract_bundle.architecture_index,
-                contract_bundle.entity_registry,
-                contract_bundle.relationship_registry,
-                contract_bundle.unresolved_registry,
-                profile=contract_profile,
-                remediation_ledger=contract_bundle.remediation_ledger,
+            result, sentinel_threshold_exceeded, completeness_threshold_exceeded = (
+                application_service._contract_validation_for_repository(
+                    repository,
+                    profile=cast(ContractProfile, contract_profile),
+                    max_sentinel_fields=max_sentinel_fields,
+                    max_non_complete_entities=max_non_complete_entities,
+                )
             )
             remediation_state_counts = None
             if contract_bundle.remediation_ledger is not None:
@@ -1663,15 +1663,6 @@ def validate_contract(
                     )
                     for state in ("sentinel", "pending_approval", "approved")
                 }
-            sentinel_threshold_exceeded = (
-                max_sentinel_fields is not None
-                and result.sentinel_field_count > max_sentinel_fields
-            )
-            completeness_threshold_exceeded = (
-                max_non_complete_entities is not None
-                and result.non_complete_entity_count > max_non_complete_entities
-            )
-
             click.echo(
                 _dump_yaml(
                     {

@@ -63,6 +63,43 @@ def test_validate_architecture_success_warning_and_failure(tmp_path: Path) -> No
     assert any(item.severity == "error" for item in failure.diagnostics)
 
 
+def test_validate_architecture_cross_references_delegate_to_shared_core(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    api = _api()
+    root = _fixture(tmp_path / "project")
+    from adr_kit.api import _operations as operations
+
+    calls: list[tuple[int, int, int]] = []
+
+    def fake_reference_validation(
+        *,
+        records: list[dict[str, Any]],
+        reviews: list[dict[str, Any]],
+        overrides: list[dict[str, Any]],
+    ) -> dict[str, Any]:
+        calls.append((len(records), len(reviews), len(overrides)))
+        return {
+            "success": False,
+            "diagnostics": [
+                {
+                    "severity": "error",
+                    "code": "shared.test_reference",
+                    "message": "shared semantic core was invoked",
+                    "path": "test",
+                }
+            ],
+        }
+
+    monkeypatch.setattr(
+        operations, "execute_architecture_reference_validation", fake_reference_validation
+    )
+    result = api.validate_architecture(api.ValidationRequest(root, cross_references=True))
+
+    assert calls and calls[0][0] > 0
+    assert any(item.code == "shared.test_reference" for item in result.diagnostics)
+
+
 def test_compile_preview_truth_table(tmp_path: Path) -> None:
     api = _api()
     root = _fixture(tmp_path / "project")

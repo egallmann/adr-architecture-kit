@@ -1,0 +1,95 @@
+{
+  "operation": "validate_architecture",
+  "cases": [
+    {
+      "name": "complete normalized ADR business rules are valid",
+      "request": {
+        "core_contract_version": "1.0",
+        "operation": "validate_architecture",
+        "mode": "complete",
+        "records": [
+          {
+            "path": "adrs/logical/ADR-L-1.yaml",
+            "document": {
+              "id": "ADR-L-1",
+              "adr_type": "logical",
+              "context": "A conceptual boundary.",
+              "decisions": [{"id": "DEC-1"}],
+              "invariants": [{"id": "INV-1"}]
+            }
+          }
+        ]
+      },
+      "expected": {
+        "success": true,
+        "error_count": 0,
+        "warning_count": 0,
+        "diagnostic_count": 0
+      }
+    },
+    {
+      "name": "complete normalized ADR business rules report deterministic diagnostics",
+      "request": {
+        "core_contract_version": "1.0",
+        "operation": "validate_architecture",
+        "mode": "complete",
+        "records": [
+          {
+            "path": "adrs/logical/ADR-L-2.yaml",
+            "document": {
+              "id": "ADR-L-2",
+              "adr_type": "logical",
+              "context": "The package boundary.",
+              "decisions": [],
+              "invariants": [{"id": "INV-1"}, {"id": "INV-1"}]
+            }
+          },
+          {
+            "path": "adrs/physical-component/ADR-PC-1.yaml",
+            "document": {
+              "id": "ADR-PC-1",
+              "adr_type": "physical-component",
+              "implements_system": [],
+              "implements_logical": [],
+              "component_specifications": []
+            }
+          }
+        ]
+      },
+      "expected": {
+        "success": false,
+        "error_count": 4,
+        "warning_count": 2,
+        "diagnostic_count": 6,
+        "codes": [
+          "INV-0002",
+          "completeness",
+          "INV-0005",
+          "physical_component_system_ref",
+          "physical_component_logical_ref",
+          "completeness"
+        ]
+      }
+    },
+    {
+      "name": "structural mode skips business rules after host schema validation",
+      "request": {
+        "core_contract_version": "1.0",
+        "operation": "validate_architecture",
+        "mode": "structural",
+        "records": [
+          {
+            "path": "adrs/logical/ADR-L-3.yaml",
+            "document": {"id": "ADR-L-3", "adr_type": "logical", "context": "package"}
+          }
+        ]
+      },
+      "expected": {
+        "success": true,
+        "error_count": 0,
+        "warning_count": 0,
+        "diagnostic_count": 0
+      }
+    }
+  ]
+}

@@ -5,8 +5,8 @@ artifact_kind: system_overview
 generator_id: adr-system-overview
 generator_version: 2
 hash_algorithm: sha256
-source_hash: c27e95a56543479a1dafd8fcf0d430f809550f55f5db335eab4d1c4993a31777
-rendered_hash: 76f41d515116ab29cfb55c8530dadb6e8ad6717029b7d869bab9dd8714d4435c
+source_hash: 8226b7e945e961f848e0e8ad854039e55b6e0b7c9641490176e1ed596909693b
+rendered_hash: b221ab8ef0349ddb8daf9d127568f9bb31fb18566ddb4dc47ac2f46def0460c1
 -->
 
 <!--
@@ -73,7 +73,7 @@ Derived provider facts:
 
 - API contract version: `1.0`
 - Package version: `0.8.0`
-- Operations: `capabilities`, `validate_architecture`, `compile_architecture`, `open_repository`, `open_provider_registry`, `build_embodiment_linkage`, `prepare_promotion`, `check_promotion`, `apply_promotion`- Validation modes: `complete`, `structural`- Artifact groups: `registries`, `manifest`, `markdown`- Supported ADR schema versions: `1.0`, `1.1`, `1.2`, `1.3`, `1.4`, `1.5`- Stable ADR schema versions: `1.0`- Provisional ADR schema versions: `1.1`, `1.2`, `1.3`, `1.4`, `1.5`- Normalized model schema version: `1.1`
+- Operations: `capabilities`, `validate_architecture`, `validate_project_metadata`, `validate_contract`, `validate_generated_docs`, `compile_architecture`, `open_repository`, `open_provider_registry`, `build_embodiment_linkage`, `prepare_promotion`, `check_promotion`, `apply_promotion`- Validation modes: `complete`, `structural`- Artifact groups: `registries`, `manifest`, `markdown`- Supported ADR schema versions: `1.0`, `1.1`, `1.2`, `1.3`, `1.4`, `1.5`- Stable ADR schema versions: `1.0`- Provisional ADR schema versions: `1.1`, `1.2`, `1.3`, `1.4`, `1.5`- Normalized model schema version: `1.1`
 - Supported normalized model schema versions: `1.1`, `2.0`, `2.1`, `2.2`
 Supported semantic/repository contracts include `ArchitectureRepository` and `NormalizedArchitectureModel`.
 
@@ -103,6 +103,9 @@ Currently exposed lifecycle capabilities on the public provider surface:
 
 - `adr_kit.api.capabilities`
 - `adr_kit.api.validate_architecture`
+- `adr_kit.api.validate_project_metadata`
+- `adr_kit.api.validate_contract`
+- `adr_kit.api.validate_generated_docs`
 - `adr_kit.api.compile_architecture`
 - `adr_kit.api.open_repository`
 - `adr_kit.api.open_provider_registry`

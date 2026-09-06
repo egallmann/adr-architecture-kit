@@ -45,7 +45,10 @@ This repository compiles ADR authority into a deterministic repository-facing bu
 - `adrs/index/unresolved-registry.yaml`
 - `adrs/manifest.yaml`
 
-This bundle is the stable repository discovery surface and the primary input to the Python consumer boundary.
+This bundle is the stable repository discovery surface and the normalized input
+to the peer Python and TypeScript/Node host boundaries. Host adapters own
+filesystem loading and native result mapping; migrated semantic operations run
+through the versioned shared execution boundary.
 
 It is **not** the same thing as the public cross-repo Architecture IR contract. It is narrower in some ways, richer in some repository-local ways, and optimized for repository discovery and semantic loading.
 
@@ -65,13 +68,14 @@ It exists to support authoring-time compilation, pass orchestration, and determi
 - the public Architecture IR contract
 - a stable cross-repo data model
 
-The stable Python consumer seam is exposed through `adr_kit.api` and reuses:
+The stable host consumer seams are exposed through `adr_kit.api` and the
+TypeScript/Node package and reuse:
 
 - [`ArchitectureRepository`](../src/adr_kit/repository/architecture_repository.py)
 - [`NormalizedArchitectureModel`](../src/adr_kit/models/normalized_architecture_model.py)
 
-The facade deliberately excludes graph and Architecture IR emission. Those remain
-compatibility-preserved CLI/internal capabilities and do not become an SDK contract.
+The facades deliberately exclude graph and Architecture IR emission until those
+semantic responsibilities are migrated behind the shared execution boundary.
 
 ## How this repository emits IR
 

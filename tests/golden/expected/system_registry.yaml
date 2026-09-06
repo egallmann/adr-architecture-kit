@@ -78,7 +78,6 @@ entities:
     extraction_phase: extract_system
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e618-79df-a73f-edc9dead8526
   alias_id: SYS-0001
   alias_name: sys-0001-adr-architecture-kit-discovery-and-indexing-system
@@ -147,4 +146,3 @@ entities:
     extraction_phase: extract_system
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'

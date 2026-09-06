@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.8.1] — 2026-09-06
+
+### Fixed
+
+- Python normalized-model v2.1 and v2.2 entity serialization now conforms to
+  the canonical schemas and cross-language consumer validation by keeping
+  `schema_version` on registries rather than individual entities.
+
 ## [0.8.0] — 2026-09-05
 
 ### Added

@@ -369,7 +369,6 @@ def project_entity_v22(
     if projected is None:
         return None
     payload = projected.model_dump(mode="python")
-    payload["schema_version"] = "2.2"
     return NormalizedEntityV22.model_validate(payload)
 
 

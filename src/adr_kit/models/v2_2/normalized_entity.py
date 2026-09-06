@@ -8,4 +8,4 @@ ExtensionPayloadV22 = ExtensionPayloadV21
 
 
 class NormalizedEntityV22(NormalizedEntityV21):
-    schema_version: str = "2.2"
+    """UUID normalized entity with v2.2 topology-compatible semantics."""

@@ -8,7 +8,7 @@
     "source_sha256": "45016d5ebb84a46fe975099a9472126baa618deecf8726379798a56d59b0f05f",
     "node_count": 485,
     "edge_count": 656,
-    "node_semantic_sha256": "87cb34d19c295168617badc8420e5d61182390180b7310eda33d66caf55c6456",
+    "node_semantic_sha256": "304e7fcd25b860564475f4d00ebedbaa33ab45adc426b4bf6705658f09d6aa7c",
     "edge_semantic_sha256": "977fc6284a155fdeeadb45c1c702847a6c8f856519e18f4c132e1c0b52c637c3",
     "node_types": {
       "adr": 38,

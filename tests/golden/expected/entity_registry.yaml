@@ -2442,8 +2442,9 @@ entities:
   alias_ref: CAP-0020:automated-quality-gates
   entity_type: capability
   name: Automated Quality Gates
-  summary: CI/CD pipeline automatically runs test suite on every commit and PR. Prevents
-    merging code that fails tests or reduces coverage.
+  summary: CI/CD pipeline automatically runs meaningful correctness gates for every
+    PR and applies complete-suite, coverage, and release qualification at the appropriate
+    lifecycle boundary. Prevents merging code that fails the PR g
   uri: adr://adr-architecture-kit/entities/019fee89-e615-7498-9825-b465a8830d8a
   created_at: '2026-08-11T01:57:22.581Z'
   entity_fingerprint: sha256:42ddefedf956da221ab462953d0cb6b11c8bb96a2562a48e45ccc1d672cae1e2
@@ -2507,9 +2508,9 @@ entities:
   alias_ref: INV-0072:inv-0072
   entity_type: invariant
   name: INV-0072
-  summary: Pull-request and release validation MUST install the project before tests,
-    MUST measure canonical `adr_kit` namespace coverage at no less than 80%, and MUST
-    exercise both a source installation and the exact retained whee
+  summary: CI validation MUST install and exercise the project before its tests. Pull-request
+    feedback MUST run the designated fast semantic/source correctness collection and
+    source/SDK compatibility harness. Develop integration as
   uri: adr://adr-architecture-kit/entities/019fee89-e615-74af-a113-f1a7a9e5d49e
   created_at: '2026-08-11T01:57:22.581Z'
   entity_fingerprint: sha256:dd9ef0e0f99387b90bb2ac2bae5ecc5ec09ca928b228ac82477887060b52f070
@@ -2523,14 +2524,21 @@ entities:
     adr_id: 019fee89-e615-77f6-9b1f-695732d25443
     adr_alias_id: ADR-L-0003
     scope: global
-    statement: 'Pull-request and release validation MUST install the project before
-      tests,
+    statement: 'CI validation MUST install and exercise the project before its tests.
 
-      MUST measure canonical `adr_kit` namespace coverage at no less than 80%,
+      Pull-request feedback MUST run the designated fast semantic/source correctness
 
-      and MUST exercise both a source installation and the exact retained wheel
+      collection and source/SDK compatibility harness. Develop integration assurance
 
-      on every claimed Python version.
+      MUST run the complete Python suite and measure canonical `adr_kit` namespace
+
+      coverage at no less than 80%. Release certification MUST exercise the exact
+
+      retained wheel on every claimed Python version and qualify the retained
+
+      publication artifacts. Source-install and retained-artifact evidence MUST be
+
+      present at the lifecycle boundary that makes the corresponding claim.
 
       '
     enforcement_level: must

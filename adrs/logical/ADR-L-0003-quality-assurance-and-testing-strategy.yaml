@@ -173,11 +173,17 @@ decisions:
     strict-mypy, and Black debt must remain visible without permitting new debt.
 
 
-    CI therefore tests source installs and the exact retained wheel on every
+    CI therefore assigns those proofs to the lifecycle boundary where they have
 
-    supported Python version, measures coverage through the canonical `adr_kit`
+    decision value: PR feedback installs and exercises the project through the
 
-    namespace, ratchets legacy quality findings, and promotes a verified wheel
+    designated semantic/source collection; develop integration measures coverage
+
+    through the canonical `adr_kit` namespace and runs the complete source suite;
+
+    release certification tests the exact retained wheel on every claimed Python
+
+    version, ratchets legacy quality findings, and promotes a verified wheel
 
     and sdist without rebuilding them in the publishing job.
 
@@ -209,7 +215,8 @@ decisions:
     - Installed-package behavior becomes release evidence rather than an assumption
     - Published artifacts are byte-identical to the tested release bundle
     - Existing quality debt can only stay level or decrease
-    - Supported Python claims are backed by source and wheel execution
+    - Supported Python claims are backed by source and wheel execution at the
+      appropriate integration or release boundary
     - PyPI package-description links remain valid independently of GitHub rendering
     - Tag publication promotes previously qualified artifacts without requalifying
   alias_id: DEC-0078
@@ -377,14 +384,21 @@ invariants:
   alias_id: INV-0026
   alias_name: inv-0026
 - id: 019fee89-e615-74af-a113-f1a7a9e5d49e
-  statement: 'Pull-request and release validation MUST install the project before
-    tests,
+  statement: 'CI validation MUST install and exercise the project before its tests.
 
-    MUST measure canonical `adr_kit` namespace coverage at no less than 80%,
+    Pull-request feedback MUST run the designated fast semantic/source correctness
 
-    and MUST exercise both a source installation and the exact retained wheel
+    collection and source/SDK compatibility harness. Develop integration assurance
 
-    on every claimed Python version.
+    MUST run the complete Python suite and measure canonical `adr_kit` namespace
+
+    coverage at no less than 80%. Release certification MUST exercise the exact
+
+    retained wheel on every claimed Python version and qualify the retained
+
+    publication artifacts. Source-install and retained-artifact evidence MUST be
+
+    present at the lifecycle boundary that makes the corresponding claim.
 
     '
   scope: global
@@ -393,7 +407,13 @@ invariants:
   verification_method: automated
   rationale: 'Source-package leakage and namespace aliases can produce misleading
 
-    coverage and allow incomplete wheels to pass repository-local tests.
+    coverage and allow incomplete wheels to pass repository-local tests. The PR
+
+    path is intentionally a fast source/API signal and does not claim complete
+
+    coverage or release-artifact qualification; develop and release boundaries
+
+    provide those stronger proofs before publication.
 
     '
   alias_id: INV-0072
@@ -528,14 +548,18 @@ invariants:
 capabilities:
 - id: 019fee89-e615-7498-9825-b465a8830d8a
   name: Automated Quality Gates
-  description: 'CI/CD pipeline automatically runs test suite on every commit and PR.
-
-    Prevents merging code that fails tests or reduces coverage.
+  description: 'CI/CD pipeline automatically runs meaningful correctness gates for
+    every PR and applies complete-suite, coverage, and release qualification at
+    the appropriate lifecycle boundary. Prevents merging code that fails the PR
+    gates and prevents integration or release certification from weakening.
 
     '
   acceptance_criteria:
-  - All tests pass before merge
-  - Coverage does not decrease
+  - PRs cannot merge without passing the designated semantic/source correctness,
+    governance, quality, Rust, and Node/TypeScript gates
+  - Develop integration measures canonical `adr_kit` coverage at no less than 80%
+    and runs the complete Python suite
+  - Release certification qualifies the exact retained publication artifacts
   - Linting passes (code quality)
   - Type checking passes (mypy)
   alias_id: CAP-0020
@@ -656,10 +680,13 @@ notes: "Testing strategy implementation:\n\nTest organization:\n```\ntests/\n  t
   \ implementation-owned and is not part of ADR-L-0003 identity semantics\n- These\
   \ axes are orthogonal and MUST NOT imply that all supported Python versions\
   \ execute on every OS\n- Linux-only execution\
-  \ is insufficient evidence for an OS-agnostic package claim\n- PR qualification\
-  \ = proposed-change evidence; develop qualification = integration evidence; only\
-  \ a successful completed `push` of ADR Governance on `main` for the exact tagged\
-  \ SHA is release-eligible; tag publication is promotion/identity verification only\n\
+  \ is insufficient evidence for an OS-agnostic package claim\n- PR feedback = proposed-change evidence: it MUST install and exercise the\
+  \ project through the designated fast semantic/source collection and MUST NOT be\
+  \ treated as complete release qualification. Develop qualification = integration\
+  \ evidence: it MUST own the complete Python suite, canonical coverage, and source\
+  \ runtime portability. Only a successful completed `push` of Release Certification\
+  \ on `main` for the exact source commit and retained artifacts is release-eligible;\
+  \ tag publication is promotion/identity verification only\n\
   - `adr governance-checks --skip-tests` must pass in CI when the complete suite is\
   \ already owned by the coverage job\n- `adr validate-generated-docs` must pass for\
   \ manifest and rendered ADR output\n- `adr validate-system-overview` must pass for\

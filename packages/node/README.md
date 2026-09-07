@@ -21,7 +21,7 @@ Node-only entry points:
 
 ```ts
 import { openRepository } from "@system-of-thought/adr-kit/node";
-import { buildEmbodimentLinkage } from "@system-of-thought/adr-kit/node/linkage";
+import { buildEmbodimentLinkage, generateAttributionShim } from "@system-of-thought/adr-kit/node/linkage";
 import { validateArchitecture, validateContract, validateProjectMetadata } from "@system-of-thought/adr-kit/node/governance";
 ```
 
@@ -41,3 +41,8 @@ semantic core shared with the Python binding. Node performs only
 filesystem/YAML loading and TypeScript result construction around that boundary.
 Fingerprints are binding-local deterministic values; equality with Python
 fingerprints is not a release gate.
+
+`generateAttributionShim({ language: "python" | "typescript" })` is a
+read-only, deterministic projection through the shared semantic core. Its
+`content` and UTF-8 `sha256` are byte-compatible with the Python API and the
+legacy CLI command; it does not load a repository or write a file.

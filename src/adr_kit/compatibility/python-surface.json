@@ -5,6 +5,8 @@
   "adr_kit.api": [
     "ArchitectureRepository",
     "ArtifactDescriptor",
+    "AttributionShimRequest",
+    "AttributionShimResult",
     "CapabilityManifest",
     "CompilationRequest",
     "CompilationResult",
@@ -49,6 +51,7 @@
     "capabilities",
     "check_promotion",
     "compile_architecture",
+    "generate_attribution_shim",
     "open_provider_registry",
     "open_repository",
     "prepare_promotion",

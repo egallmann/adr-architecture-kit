@@ -42,7 +42,7 @@ jobs:
                   "--sha",
                   os.environ["GITHUB_SHA"],
                   "--workflow",
-                  "adr-governance.yml",
+                  "release-certification.yml",
                   "--branch",
                   "main",
                   "--event",

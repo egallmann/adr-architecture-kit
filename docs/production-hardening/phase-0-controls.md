@@ -51,7 +51,7 @@ The manifest requires exactly one wheel and one sdist and verifies filenames, si
 SHA-256 hashes, source commit, package version, and tag.
 
 Release publishing downloads the retained `release-bundle` from the successful **main
-`push`** ADR Governance qualification for the tagged SHA (not a tag-side rebuild; not a
+`push`** Release Certification qualification for the tagged SHA (not a tag-side rebuild; not a
 PR or develop run). Python-version compatibility and OS portability are separate
 evidence axes: Ubuntu owns the Python 3.14 focused compatibility and retained-wheel
 Python qualification lane; Windows/macOS at Python 3.14 own complete-suite behavior portability and

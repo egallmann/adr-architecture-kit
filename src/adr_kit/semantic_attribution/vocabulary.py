@@ -81,3 +81,41 @@ def uuid_sequence_decorator_name(relationship: str, *, version: str = "1.5") -> 
             f"missing uuid_sequence_decorator for {relationship}"
         )
     return name
+
+
+def shim_vocabulary(version: str = "1.5") -> dict[str, Any]:
+    """Return the ordered, transport-neutral projection used by the shim core.
+
+    The source vocabulary is a JSON object whose object order is meaningful to
+    the byte-compatible generated source. The semantic-core wire model uses
+    arrays for those ordered entries so a host's JSON object representation
+    cannot reorder the projection before it reaches the canonical renderer.
+    """
+
+    vocabulary = load_semantic_attribution_vocabulary(version)
+    legacy = vocabulary.get("legacy_decorators")
+    relationships = vocabulary.get("relationships")
+    if not isinstance(legacy, dict) or not isinstance(relationships, dict):
+        raise SemanticAttributionVocabularyError("vocabulary is missing shim projection entries")
+    return {
+        "canonical_claims_attribute": vocabulary.get("canonical_claims_attribute"),
+        "legacy_decorators": [
+            {
+                "name": name,
+                "attribute": spec.get("attribute"),
+                "label": spec.get("label"),
+                "variadic": bool(spec.get("variadic")),
+            }
+            for name, spec in legacy.items()
+            if isinstance(spec, Mapping)
+        ],
+        "relationships": [
+            {
+                "name": name,
+                "uuid_decorator": spec.get("uuid_decorator"),
+                "uuid_sequence_decorator": spec.get("uuid_sequence_decorator"),
+            }
+            for name, spec in relationships.items()
+            if isinstance(spec, Mapping)
+        ],
+    }

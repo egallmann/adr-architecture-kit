@@ -2442,8 +2442,9 @@ entities:
   alias_ref: CAP-0020:automated-quality-gates
   entity_type: capability
   name: Automated Quality Gates
-  summary: CI/CD pipeline automatically runs test suite on every commit and PR. Prevents
-    merging code that fails tests or reduces coverage.
+  summary: CI/CD pipeline automatically runs meaningful correctness gates for every
+    PR and applies complete-suite, coverage, and release qualification at the appropriate
+    lifecycle boundary. Prevents merging code that fails the PR g
   uri: adr://adr-architecture-kit/entities/019fee89-e615-7498-9825-b465a8830d8a
   created_at: '2026-08-11T01:57:22.581Z'
   entity_fingerprint: sha256:42ddefedf956da221ab462953d0cb6b11c8bb96a2562a48e45ccc1d672cae1e2
@@ -2507,9 +2508,9 @@ entities:
   alias_ref: INV-0072:inv-0072
   entity_type: invariant
   name: INV-0072
-  summary: Pull-request and release validation MUST install the project before tests,
-    MUST measure canonical `adr_kit` namespace coverage at no less than 80%, and MUST
-    exercise both a source installation and the exact retained whee
+  summary: CI validation MUST install and exercise the project before its tests. Pull-request
+    feedback MUST run the designated fast semantic/source correctness collection and
+    source/SDK compatibility harness. Develop integration as
   uri: adr://adr-architecture-kit/entities/019fee89-e615-74af-a113-f1a7a9e5d49e
   created_at: '2026-08-11T01:57:22.581Z'
   entity_fingerprint: sha256:dd9ef0e0f99387b90bb2ac2bae5ecc5ec09ca928b228ac82477887060b52f070
@@ -2523,14 +2524,21 @@ entities:
     adr_id: 019fee89-e615-77f6-9b1f-695732d25443
     adr_alias_id: ADR-L-0003
     scope: global
-    statement: 'Pull-request and release validation MUST install the project before
-      tests,
+    statement: 'CI validation MUST install and exercise the project before its tests.
 
-      MUST measure canonical `adr_kit` namespace coverage at no less than 80%,
+      Pull-request feedback MUST run the designated fast semantic/source correctness
 
-      and MUST exercise both a source installation and the exact retained wheel
+      collection and source/SDK compatibility harness. Develop integration assurance
 
-      on every claimed Python version.
+      MUST run the complete Python suite and measure canonical `adr_kit` namespace
+
+      coverage at no less than 80%. Release certification MUST exercise the exact
+
+      retained wheel on every claimed Python version and qualify the retained
+
+      publication artifacts. Source-install and retained-artifact evidence MUST be
+
+      present at the lifecycle boundary that makes the corresponding claim.
 
       '
     enforcement_level: must
@@ -22936,7 +22944,7 @@ entities:
   name: Semantic Attribution Embodiment
   summary: Semantic attribution needs a kit-owned embodiment for vocabulary, evidence
     models, UUID decorators, standalone shims, architecture-aware validation, repository-aware
-    versioned normalization, and a supported bidirectional
+    versioned normalization, a supported bidirectional lin
   uri: adr://adr-architecture-kit/entities/019ffdba-3c42-70da-b33d-efc003269c42
   created_at: '2026-08-14T00:44:28.610Z'
   entity_fingerprint: sha256:821d1ad60269554515d7d1e704acca83fe02db8e6fe1205cc8d4b91bedf1e50c
@@ -24291,8 +24299,8 @@ entities:
   entity_type: interface
   name: 019ffdba-3c42-7d5b-b52f-b36c3000f299
   summary: 'Commands: - adr attribution check - adr attribution coverage - adr attribution
-    generate-shim - adr attribution workspace-report - adr attribution normalize-evidence
-    --scope --input [--output] [--target-version] - adr att'
+    generate-shim - The CLI command delegates to the public semantic shim-generation
+    operation - adr attribution workspace-report - adr attributi'
   uri: adr://adr-architecture-kit/entities/019ffdba-3c42-7d5b-b52f-b36c3000f299
   created_at: '2026-08-14T00:44:28.610Z'
   entity_fingerprint: sha256:33a684ba250456d472dcd93694df5f579700c3f2908a88978ac5e8d232bf6391
@@ -24492,13 +24500,13 @@ entities:
   alias_name: generate-python-and-typescript-shims-from-the-v15-vocabulary
   alias_ref: IMPL-0028:generate-python-and-typescript-shims-from-the-v15-vocabulary
   entity_type: implementation_decision
-  name: Generate Python and TypeScript shims from the v1.5 vocabulary
-  summary: Hand-copied shim strings drift from native decorators. One mechanical versioned
-    vocabulary is the source for relationship names, allowed types, confidence policy,
-    and generated standalone shims. Explicit native functions
+  name: Generate Python and TypeScript shims through the shared v1.5 vocabulary projection
+  summary: 'Hand-copied shim strings drift from native decorators and host bindings.
+    The v1.5 vocabulary remains the source for relationship names and generated standalone
+    shims, while the canonical semantic-core operation owns the '
   uri: adr://adr-architecture-kit/entities/019ffdba-3c42-7e86-a03e-f7df07da6757
   created_at: '2026-08-14T00:44:28.610Z'
-  entity_fingerprint: sha256:480264dbb8060c726a2b4db27740615866ed09971a5e6f1312a576d38bcfc855
+  entity_fingerprint: sha256:dc249b97d9374cb6c81f1b758e9fbfc932f012db5d7eace5b0addab1c671b738
   lifecycle_stage: active
   canonical_source:
     source_type: physical_component_adr

@@ -1,0 +1,51 @@
+{
+  "operation": "generate_attribution_shim",
+  "cases": [
+    {
+      "name": "python shim projection",
+      "request": {
+        "core_contract_version": "1.0",
+        "operation": "generate_attribution_shim",
+        "language": "python",
+        "vocabulary": {
+          "canonical_claims_attribute": "__architecture_attribution_claims__",
+          "legacy_decorators": [
+            {"name": "implements_adr", "attribute": "__implements_adrs__", "label": "ADR", "variadic": true},
+            {"name": "implements_adrs", "attribute": "__implements_adrs__", "label": "ADR", "variadic": false},
+            {"name": "enforces_invariant", "attribute": "__enforces_invariants__", "label": "invariant", "variadic": true},
+            {"name": "enforces_invariants", "attribute": "__enforces_invariants__", "label": "invariant", "variadic": false}
+          ],
+          "relationships": [
+            {"name": "implements", "uuid_decorator": "implements", "uuid_sequence_decorator": "implements_uuids"},
+            {"name": "enforces", "uuid_decorator": "enforces", "uuid_sequence_decorator": "enforces_uuids"},
+            {"name": "embodies", "uuid_decorator": "embodies", "uuid_sequence_decorator": "embodies_uuids"}
+          ]
+        }
+      },
+      "expected": {"success": true, "language": "python", "content_length": 7043}
+    },
+    {
+      "name": "typescript shim projection",
+      "request": {
+        "core_contract_version": "1.0",
+        "operation": "generate_attribution_shim",
+        "language": "typescript",
+        "vocabulary": {
+          "canonical_claims_attribute": "__architecture_attribution_claims__",
+          "legacy_decorators": [
+            {"name": "implements_adr", "attribute": "__implements_adrs__", "label": "ADR", "variadic": true},
+            {"name": "implements_adrs", "attribute": "__implements_adrs__", "label": "ADR", "variadic": false},
+            {"name": "enforces_invariant", "attribute": "__enforces_invariants__", "label": "invariant", "variadic": true},
+            {"name": "enforces_invariants", "attribute": "__enforces_invariants__", "label": "invariant", "variadic": false}
+          ],
+          "relationships": [
+            {"name": "implements", "uuid_decorator": "implements", "uuid_sequence_decorator": "implements_uuids"},
+            {"name": "enforces", "uuid_decorator": "enforces", "uuid_sequence_decorator": "enforces_uuids"},
+            {"name": "embodies", "uuid_decorator": "embodies", "uuid_sequence_decorator": "embodies_uuids"}
+          ]
+        }
+      },
+      "expected": {"success": true, "language": "typescript", "content_length": 1474}
+    }
+  ]
+}

@@ -5,6 +5,8 @@ from ..models.v2_0 import NormalizedArchitectureModelV2
 from ..repository import ArchitectureRepository, ProviderRegistry
 from ._contracts import (
     ArtifactDescriptor,
+    AttributionShimRequest,
+    AttributionShimResult,
     CapabilityManifest,
     CompilationRequest,
     CompilationResult,
@@ -27,6 +29,7 @@ from ._contracts import (
     ValidationResult,
 )
 from ._linkage import build_embodiment_linkage
+from ._attribution import generate_attribution_shim
 from ._errors import InvalidRequestError, OperationError, RepositoryError, SDKError
 from ._operations import (
     apply_promotion,
@@ -62,6 +65,8 @@ __all__ = [
     "NormalizedArchitectureModelV2",
     "ProviderRegistry",
     "ArtifactDescriptor",
+    "AttributionShimRequest",
+    "AttributionShimResult",
     "CapabilityManifest",
     "ValidationRequest",
     "ValidationResult",
@@ -100,6 +105,7 @@ __all__ = [
     "RepositoryError",
     "capabilities",
     "build_embodiment_linkage",
+    "generate_attribution_shim",
     "validate_architecture",
     "validate_project_metadata",
     "validate_contract",

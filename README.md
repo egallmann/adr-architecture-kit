@@ -196,14 +196,14 @@ Normative rationale: [ADR-L-0004](https://github.com/egallmann/adr-architecture-
 
 **ste-runtime** RECON can parse the decorator calls from the AST and emit derived evidence under the workspace-root `.ste-workspace/` state directory, outside every repository. That output is **declared linkage**, not proof of correctness: canonical architecture remains the ADR corpus and contracts in **`ste-spec`**. Pass a RECON/workspace file to the CLI with **`--evidence`**; `check` / `coverage` do not search `.ste-workspace` automatically. ste-runtime’s independently governed Python extraction substrate is out of scope for this package’s Python floor.
 
-TypeScript linkage shims are generated with `adr attribution generate-shim --language typescript` and consumed through `@system-of-thought/adr-kit` Node linkage entry points; see [`packages/node/README.md`](https://github.com/egallmann/adr-architecture-kit/blob/main/packages/node/README.md).
+ TypeScript linkage shims are generated with `adr attribution generate-shim --language typescript` and consumed through `@system-of-thought/adr-kit` Node linkage entry points; see [`packages/node/README.md`](https://github.com/egallmann/adr-architecture-kit/blob/main/packages/node/README.md).
 
 **CLI (`adr attribution`)** validates and inspects attribution evidence YAML (RECON-derived, synthetic, or project-local) against your repository’s canonical ADRs:
 
 - **`adr attribution check`** — Schema + corpus validation (`--profile greenfield|brownfield|migration`, default **greenfield**). Use `--scope PATH` as the project root (default: current directory) and optional `--evidence PATH` for the YAML file.
 - **`adr attribution coverage`** — Prints an informational YAML report of ADRs cited by evidence versus the corpus (same `--scope` / `--evidence`), plus unique-link counts distinct from evidence occurrence.
 - **`adr attribution workspace-report`** — Builds a workspace federation index of qualified ADR ids across registered repos.
-- **`adr attribution generate-shim --language python|typescript`** — Writes linkage decorator shims (`-o`/ stdout).
+- **`adr attribution generate-shim --language python|typescript`** — Writes linkage decorator shims (`-o`/ stdout); the CLI delegates to the same semantic operation exposed by the SDKs.
 - **`adr attribution normalize-evidence --scope PATH --input FILE --target-version 1.5|1.6`** — Selects a lossless canonical target; v1.5 remains the default.
 - **`adr attribution linkage-report --scope PATH --evidence FILE`** — Builds the deterministic non-authoritative projection, with optional implementation, intent, and relationship filters.
 
@@ -215,6 +215,22 @@ If `--evidence` is omitted, `check` and `coverage` resolve the first existing **
 Local pre-push (`scripts/run_local_pre_push_checks.py`) looks up workspace-derived RECON evidence at `{workspace}/.ste-workspace/state/adr-architecture-kit/attribution/implementation-attribution-evidence.yaml` and passes that path via `--evidence`.
 
 v1.5 and v1.6 are **semantic implementation-attribution evidence**, not ADR authoring schemas; in particular, v1.5 is not ADR authoring schema 1.5. 1.0/1.2 remain under `schema/evidence-attribution/v1.1/implementation-attribution-evidence.schema.json`. Canonical 1.5 lives under `schema/evidence-attribution/v1.5/`, while preferred-producer 1.6 lives under `schema/evidence-attribution/v1.6/`. v1.5 retains historical semantics; v1.6 adds optional source pointers/spans and declared-only enforcement confidence. `adr_kit.api.build_embodiment_linkage` consumes an explicitly supplied evidence path—even outside the repository—and returns immutable valid links plus rejected claims without writing evidence, Architecture IR, or graph state. Its authority ceiling is validated derived evidence and its graph admission status is not admitted.
+
+Programmatic shim generation is also available without a repository or output
+path:
+
+```python
+from adr_kit.api import AttributionShimRequest, generate_attribution_shim
+
+result = generate_attribution_shim(AttributionShimRequest("python"))
+assert result.sha256 == "f73973e57552e4a1fe11d3a849c7e69d1f69efd6234dba1722143277250e8779"
+```
+
+The equivalent Node operation is
+`generateAttributionShim({ language: "typescript" })` from
+`@system-of-thought/adr-kit/node/linkage`. Both bindings invoke the canonical
+semantic-core projection, return immutable results, and perform no filesystem
+or repository writes.
 
 ## Contributing
 

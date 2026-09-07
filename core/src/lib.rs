@@ -3,6 +3,7 @@ use std::collections::{BTreeMap, BTreeSet};
 use serde::{Deserialize, Serialize};
 
 mod architecture;
+mod attribution;
 mod linkage;
 
 // This module is the canonical semantic execution boundary. Host SDKs are
@@ -1364,6 +1365,7 @@ pub fn execute_json(input: &[u8]) -> Vec<u8> {
                 Some("open_provider_registry") => validate_provider_registry(&value),
                 Some("open_repository") => validate_repository(&value),
                 Some("build_embodiment_linkage") => linkage::execute(&value),
+                Some("generate_attribution_shim") => attribution::execute(&value),
                 Some("classify_generated_artifact") => classify_generated_artifact(&value),
                 Some("validate_architecture_references") => {
                     validate_architecture_references(&value)

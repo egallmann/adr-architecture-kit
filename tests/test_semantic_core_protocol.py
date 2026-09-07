@@ -33,7 +33,7 @@ def test_protocol_schema_is_valid_and_discriminates_operations() -> None:
             validate_semantic_core_protocol(result)
             checked += 1
 
-    assert checked == 20
+    assert checked == 22
 
 
 def test_protocol_rejects_unknown_operation_fields() -> None:

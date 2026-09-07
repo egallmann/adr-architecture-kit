@@ -6,7 +6,7 @@ import { capabilities } from "../dist/capabilities.js";
 import { UnsupportedContractVersionError } from "../dist/errors.js";
 import { validateAuthoringDocument, validateContract } from "../dist/validation/index.js";
 import * as node from "../dist/node/index.js";
-import { buildEmbodimentLinkage } from "../dist/node/linkage.js";
+import { buildEmbodimentLinkage, generateAttributionShim } from "../dist/node/linkage.js";
 import * as nodeGovernance from "../dist/node/governance.js";
 
 const root = resolve("../../contracts/conformance/consumer-binding-v1");
@@ -18,7 +18,7 @@ const load = async (path) => JSON.parse(await readFile(resolve(root, path), "utf
 test("capability discovery is local and explicit", () => {
   const manifest = capabilities();
   assert.deepEqual(manifest.supported_normalized_model_versions, ["2.1"]);
-  assert.deepEqual(manifest.host_operations, ["capabilities", "validate_architecture", "validate_project_metadata", "validate_contract", "open_repository", "open_provider_registry", "build_embodiment_linkage"]);
+  assert.deepEqual(manifest.host_operations, ["capabilities", "validate_architecture", "validate_project_metadata", "validate_contract", "open_repository", "open_provider_registry", "build_embodiment_linkage", "generate_attribution_shim"]);
   assert.ok(manifest.pending_host_operations.includes("compile_architecture"));
   assert.deepEqual(manifest.browser_operations, ["capabilities"]);
   assert.equal("supported_authoring_domain_versions" in manifest, false);
@@ -44,6 +44,7 @@ test("host capability contract maps to real Node exports and keeps pending work 
     open_repository: node.openRepository,
     open_provider_registry: nodeGovernance.openProviderRegistry,
     build_embodiment_linkage: buildEmbodimentLinkage,
+    generate_attribution_shim: generateAttributionShim,
   };
   for (const operation of hostCapabilityContract.peer_host_operations) {
     assert.equal(typeof exportsByCapability[operation], "function", operation);

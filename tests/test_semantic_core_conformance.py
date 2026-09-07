@@ -16,6 +16,9 @@ REFERENCE_VECTORS = Path(
     "contracts/semantic-core/v1.0/vectors/architecture-reference-validation.json"
 )
 ARCHITECTURE_VECTORS = Path("contracts/semantic-core/v1.0/vectors/architecture-validation.json")
+ATTRIBUTION_SHIM_VECTORS = Path(
+    "contracts/semantic-core/v1.0/vectors/attribution-shim-generation.json"
+)
 
 
 def test_python_binding_matches_shared_semantic_core_vectors() -> None:
@@ -112,3 +115,16 @@ def test_python_binding_matches_shared_architecture_validation_vectors() -> None
             assert [item["code"] for item in result["diagnostics"]] == expected["codes"], case[
                 "name"
             ]
+
+
+def test_python_binding_matches_shared_attribution_shim_vectors() -> None:
+    from adr_kit.attribution_shim_generator import generate_shim
+
+    document = json.loads(ATTRIBUTION_SHIM_VECTORS.read_text(encoding="utf-8"))
+    for case in document["cases"]:
+        result = execute_semantic_core_request(case["request"])
+        expected = case["expected"]
+        assert result["success"] is expected["success"], case["name"]
+        assert result["language"] == expected["language"], case["name"]
+        assert len(result["content"]) == expected["content_length"], case["name"]
+        assert result["content"] == generate_shim(expected["language"]), case["name"]

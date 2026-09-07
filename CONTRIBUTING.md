@@ -77,10 +77,17 @@ See [`docs/contributors/tdd-workflow.md`](docs/contributors/tdd-workflow.md) for
 | Governance | `adr governance-checks` |
 | Schema parity | see below |
 
-CI enforces every row above, source-installed tests on the currently qualified
-Python 3.14 line, dependency audit, build-once release artifacts, retained-wheel
-smoke tests on that qualified line, fixed-epoch reproducibility, and benchmark
-determinism.
+CI stratifies these checks by lifecycle. Pull requests run the explicit semantic
+and SDK contract collection, Rust and Node/TypeScript checks, governance, and
+quality ratchets in **`.github/workflows/pr-feedback.yml`**. Pushes to
+`develop` run **`.github/workflows/develop-assurance.yml`**, which calls the
+full integration assurance workflow for the complete Python suite and coverage,
+Windows/macOS portability, dependency audit, Rust, Python/Node parity, and
+governance. Pushes to `main` run **`.github/workflows/release-certification.yml`**;
+that path adds the retained Python/npm bundle, packaged WASM identity, retained
+wheel smoke tests, fixed-epoch reproducibility, and benchmark determinism.
+Tag publishers only promote the retained bundle from that successful `main`
+certification run.
 
 ---
 
@@ -110,7 +117,9 @@ Mirrors are **manual**: copy canonical JSON into the package tree and run `tests
 
 **Implementation attribution evidence:** 1.0/1.2 live in `schema/evidence-attribution/v1.1/implementation-attribution-evidence.schema.json`; canonical 1.5 and provisional preferred-producer 1.6 live in their corresponding `schema/evidence-attribution/` directories with packaged `v1_5` and `v1_6` mirrors. **`ste-spec`** only carries draft hand-off prose under `contracts/implementation-attribution-evidence/` until promotion—there is no JSON mirror to sync there yet (unlike Architecture IR).
 
-CI verifies byte-level parity (`tests/test_package_schema_parity.py` and **`Check package schema parity`** in **`.github/workflows/adr-governance.yml`**).
+CI verifies byte-level parity (`tests/test_package_schema_parity.py` and the
+governance jobs in **`.github/workflows/pr-feedback.yml`** and
+**`.github/workflows/integration-assurance.yml`**).
 
 ---
 
@@ -171,7 +180,7 @@ Or run the checks manually before pushing:
 python scripts/run_local_pre_push_checks.py
 ```
 
-That bundle validates generated-docs integrity and runs a **subset** of `pytest`, including **`tests/test_package_schema_parity.py`** — explicit fixture mappings must byte-match canonical `schema/...` artifacts to their `src/adr_kit/schema/v*_*` mirrors (same check as **`Check package schema parity`** in **`.github/workflows/adr-governance.yml`**). It also runs **`tests/test_retrofit_contract_guards.py`**, **`tests/test_attribution_evidence_sync.py`**, README attribution-doc consistency, and the v1.5 semantic-attribution invariant tests (vocabulary/matrix parity, shim parity, 1.0/1.2 normalization, UUID resolution, decorator separation, dual-encode guard, and `next_id()` alias allocation). When workspace RECON evidence is present under **`.ste-workspace/state/adr-architecture-kit/`**, the script passes that file to **`adr attribution check --evidence`**; the CLI does not search `.ste-workspace` on its own.
+That bundle validates generated-docs integrity and runs a **subset** of `pytest`, including **`tests/test_package_schema_parity.py`** — explicit fixture mappings must byte-match canonical `schema/...` artifacts to their `src/adr_kit/schema/v*_*` mirrors (the same contract enforced by the PR and integration governance workflows). It also runs **`tests/test_retrofit_contract_guards.py`**, **`tests/test_attribution_evidence_sync.py`**, README attribution-doc consistency, and the v1.5 semantic-attribution invariant tests (vocabulary/matrix parity, shim parity, 1.0/1.2 normalization, UUID resolution, decorator separation, dual-encode guard, and `next_id()` alias allocation). When workspace RECON evidence is present under **`.ste-workspace/state/adr-architecture-kit/`**, the script passes that file to **`adr attribution check --evidence`**; the CLI does not search `.ste-workspace` on its own.
 
 
 ---
@@ -185,8 +194,9 @@ This repository uses a controlled feature → develop → release → main flow:
 2. Follow the TDD methodology — write tests before implementation.
 3. Ensure all quality gates pass locally.
 4. Update `CHANGELOG.md` under `[Unreleased]`.
-5. Open a feature pull request against `develop`. The PR template will prompt
-   you for the required checklist.
+5. Open a feature pull request against `develop`. The fast PR gate is an early
+   semantic/source signal; it does not replace develop integration assurance.
+   The PR template will prompt you for the required checklist.
 6. Release branches are cut from admitted `develop`, prepare package version /
    changelog only, and open a release PR against `main`.
 7. `main` is publication/release admission. Create the release tag only after
@@ -237,11 +247,11 @@ The **link** is that PyPI trusts *that GitHub repo + that workflow file* to uplo
 4. Convert [`CHANGELOG.md`](CHANGELOG.md) `[Unreleased]` into a dated section for that
    version and restore an empty `[Unreleased]` heading.
 5. Open a release pull request against `main`. After admission, **wait for the successful
-   ADR Governance `push` run on that `main` commit** (release-eligible qualification).
+   Release Certification `push` run on that `main` commit** (release-eligible qualification).
 6. Only then create the exact tag `v<project-version>` (for example, `v0.4.0`) on that
    admitted `main` commit while the qualifying `release-bundle` artifact is still retained.
-7. The tag workflow is promotion-only: it resolves the successful **main `push`** ADR
-   Governance run for the tagged SHA, downloads that exact retained bundle, verifies
+7. The tag workflow is promotion-only: it resolves the successful **main `push`** Release
+   Certification run for the tagged SHA, downloads that exact retained bundle, verifies
    source commit / package version / tag / hashes, and publishes without rebuilding or
    re-running pytest, coverage, governance, OS matrices, or the retained-wheel matrix.
    PR and develop qualification runs are **not** release-eligible, even for the same SHA.
@@ -273,7 +283,7 @@ To practice uploads, configure a second workflow or `repository-url` for TestPyP
 
 The scoped package `@system-of-thought/adr-kit` is published by
 `.github/workflows/publish-npm.yml` only for an exact `v*` tag. The workflow
-resolves the successful `main` push run of `adr-governance.yml`, downloads its
+resolves the successful `main` push run of `release-certification.yml`, downloads its
 retained `node-dist` tarball, verifies its package name/version and contents,
 and publishes that tarball without rebuilding. The npm version is checked
 against `pyproject.toml`; `packages/node/package.json` and

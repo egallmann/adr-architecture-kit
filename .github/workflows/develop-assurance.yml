@@ -1,0 +1,14 @@
+name: Develop Assurance
+
+on:
+  push:
+    branches: [develop]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  integration:
+    name: Integration assurance
+    uses: ./.github/workflows/integration-assurance.yml

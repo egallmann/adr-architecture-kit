@@ -7,6 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.8.1] — 2026-09-06
+
+### Fixed
+
+- Python normalized-model v2.1 and v2.2 entity serialization now conforms to
+  the canonical schemas and cross-language consumer validation by keeping
+  `schema_version` on registries rather than individual entities.
+
+## [0.8.0] — 2026-09-05
+
 ### Added
 
 - Authority substrate promotion for Projection v3: ADR-L-0025 topology/contract succession, authoring v1.5 and normalized v2.2 canonical schemas, ADR-PC-0008 scope resolution, PS/PC topology corrections, and ADR-P retirement map with generic physical ADR source removal.
@@ -27,10 +37,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   `invariants[].enforced_by`) accept current `ADR-PS-*` / `ADR-PC-*` identifiers
   via shared `adr_id_physical_any`, while retaining legacy `ADR-P-*` and rejecting
   non-physical ADR families.
-
-- Python normalized-model v2.1 and v2.2 entity serialization now conforms to
-  the canonical schemas and cross-language consumer validation by keeping
-  `schema_version` on registries rather than individual entities.
 
 ## [0.7.0] — 2026-08-23
 

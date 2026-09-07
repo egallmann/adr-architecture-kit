@@ -105,3 +105,5 @@ docs/design-journal/*
 !docs/design-journal/2026-production-hardening.md
 !docs/design-journal/2026-projection-v3-authority-substrate-promoted.md
 
+
+.tmp-release-bundle/

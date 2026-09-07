@@ -36,7 +36,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-- The official read-only TypeScript consumer binding and npm distribution
+- The official TypeScript consumer binding and npm distribution
   `@system-of-thought/adr-kit`, including browser-safe surfaces and the
   Node-only `/node` and `/node/linkage` subpaths.
 - Consumer Binding Contract 1.0 conformance across overlapping Python and

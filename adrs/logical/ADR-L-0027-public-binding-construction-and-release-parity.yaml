@@ -1,0 +1,172 @@
+schema_version: '1.5'
+adr_type: logical
+id: 01a05a27-0000-7000-8000-000000000027
+alias_id: ADR-L-0027
+alias_name: public-binding-construction-and-release-parity
+title: Public Binding Construction and Release Parity
+status: accepted
+created_date: '2026-09-06'
+authors:
+- erik.gallmann
+domains:
+- architecture
+- consumer-bindings
+- schema-governance
+- distribution
+tags:
+- public-api
+- python
+- typescript
+- release-parity
+- stable-authority
+related_adrs:
+- 01a02d38-7cf3-7b3c-87ec-1c5f08490c6e
+- 01a05a26-0000-7000-8000-000000000026
+- 019fee89-e617-78d9-ba3b-b7e3e6db1b12
+- 019fee89-e617-7ff5-863b-1eef71637b0f
+context: |
+  ADR-Kit publishes Python and TypeScript APIs from one repository and one
+  release lineage. Public bindings must be built from the language-neutral
+  authority substrate rather than from private compiler, parser, schema-model,
+  or integrity implementation objects. The authority substrate consists of
+  accepted ADR decisions and invariants, canonical schema bytes and semantic
+  vocabularies, the normalized repository discovery bundle, promoted binding
+  contracts, and validated derived evidence.
+
+  ADR-L-0024 establishes capability-scoped Consumer Binding Contract
+  conformance. This ADR makes the release construction rule explicit: a public
+  API change is not release-complete until both bindings have been considered,
+  implemented where their declared boundary permits, documented, tested, and
+  represented in compatibility evidence. A binding may remain narrower only
+  when an accepted ADR explicitly defines the execution-profile boundary;
+  browser constraints are not a valid reason to narrow the TypeScript/Node host
+  binding.
+decisions:
+- id: 01a05a27-0000-7700-8000-000000000201
+  alias_id: DEC-0201
+  alias_name: stable-authority-substrate-precedes-bindings
+  summary: Public Python and TypeScript bindings are projections of one stable authority substrate
+  rationale: Implementations must not become independent semantic authorities through API shape or package ownership.
+- id: 01a05a27-0000-7700-8000-000000000202
+  alias_id: DEC-0202
+  alias_name: every-release-qualifies-both-bindings
+  summary: Every PyPI/npm release qualification reviews and updates both public binding surfaces
+  rationale: Shared release lineage is meaningful only when both supported language packages are synchronized with the same authority and compatibility evidence.
+- id: 01a05a27-0000-7700-8000-000000000203
+  alias_id: DEC-0203
+  alias_name: binding-parity-is-capability-and-contract-scoped
+  summary: Binding parity is required for shared promoted host capabilities and is explicit only for execution-profile differences
+  rationale: Python and TypeScript/Node are peer hosts for supported capabilities; browser constraints and staged migration status must not be mistaken for a permanent host-binding difference.
+- id: 01a05a27-0000-7700-8000-000000000204
+  alias_id: DEC-0204
+  alias_name: host-bindings-share-capability-authority
+  summary: Python and TypeScript/Node are peer host bindings for supported filesystem-backed ADR-Kit capabilities
+  rationale: Node is a host execution environment; browser restrictions must not be generalized into a TypeScript/Node capability gap.
+- id: 01a05a27-0000-7700-8000-000000000205
+  alias_id: DEC-0205
+  alias_name: public-surface-evidence-is-cross-language
+  summary: Public API compatibility snapshots, capability manifests, schema mirrors, documentation, and conformance tests are release evidence
+  rationale: Source-level similarity is insufficient to prove that published Python and npm surfaces remain synchronized.
+- id: 01a05a27-0000-7700-8000-000000000206
+  alias_id: DEC-0206
+  alias_name: shared-semantic-core-precedes-host-parity
+  summary: Host parity MUST be implemented through one canonical semantic core or authority-preserving shared execution boundary
+  rationale: A second TypeScript compiler or validator would create semantic drift; a Python subprocess would not satisfy the Node host contract.
+invariants:
+- id: 01a05a27-0000-7600-8000-000000000201
+  alias_id: INV-0201
+  alias_name: public-bindings-consume-stable-authority
+  statement: Public language bindings MUST consume accepted authority, canonical schemas, promoted contracts, normalized discovery, or validated derived evidence and MUST NOT expose private implementation objects as public authority.
+  scope: global
+  enforcement_level: must
+  enforcement_mechanism: design
+  verification_method: automated
+  rationale: Binding APIs are supported projections, not semantic owners.
+- id: 01a05a27-0000-7600-8000-000000000202
+  alias_id: INV-0202
+  alias_name: release-must-qualify-both-bindings
+  statement: A release that changes a public binding MUST qualify both the Python and TypeScript public surfaces against the same release authority and MUST record any capability-specific boundary explicitly.
+  scope: global
+  enforcement_level: must
+  enforcement_mechanism: test
+  verification_method: automated
+  rationale: PyPI and npm are one ADR-Kit release lineage.
+- id: 01a05a27-0000-7600-8000-000000000203
+  alias_id: INV-0203
+  alias_name: shared-capability-contracts-have-cross-language-evidence
+  statement: Every capability advertised by both bindings MUST have shared contract, schema, documentation, and cross-language conformance evidence.
+  scope: global
+  enforcement_level: must
+  enforcement_mechanism: test
+  verification_method: automated
+  rationale: Capability intersection is the qualification unit defined by ADR-L-0024.
+- id: 01a05a27-0000-7600-8000-000000000204
+  alias_id: INV-0204
+  alias_name: binding-boundary-differences-are-explicit
+  statement: A capability implemented in one host binding but excluded from the other MUST have an accepted ADR exception and MUST NOT be represented as silently equivalent.
+  scope: global
+  enforcement_level: must
+  enforcement_mechanism: design
+  verification_method: automated
+  rationale: Explicit narrower support preserves honest capability discovery.
+- id: 01a05a27-0000-7600-8000-000000000205
+  alias_id: INV-0205
+  alias_name: public-results-exclude-private-runtime-types
+  statement: Public result object graphs and type declarations MUST exclude private compiler, parser, schema-model, and integrity implementation types.
+  scope: global
+  enforcement_level: must
+  enforcement_mechanism: test
+  verification_method: automated
+  rationale: Public compatibility must remain stable while private implementations evolve.
+- id: 01a05a27-0000-7600-8000-000000000206
+  alias_id: INV-0206
+  alias_name: no-second-host-semantic-authority
+  statement: TypeScript/Node parity MUST NOT be achieved by independently recreating compiler, validator, schema, or governance semantics in a second implementation authority.
+  scope: global
+  enforcement_level: must
+  enforcement_mechanism: design
+  verification_method: automated
+  rationale: Shared host capability requires shared semantic authority.
+- id: 01a05a27-0000-7600-8000-000000000207
+  alias_id: INV-0207
+  alias_name: browser-profile-does-not-constrain-node-host
+  statement: Browser-safe capability restrictions MUST be declared as an execution profile and MUST NOT remove filesystem-backed or repository-host capabilities from the TypeScript/Node binding.
+  scope: global
+  enforcement_level: must
+  enforcement_mechanism: design
+  verification_method: automated
+  rationale: Browser and Node are distinct execution environments.
+gaps: []
+notes:
+  stable_authority_substrate:
+  - accepted ADR decisions and invariants
+  - canonical schema bytes and semantic vocabularies
+  - normalized repository discovery bundle
+  - promoted consumer and authoring contracts
+  - validated derived evidence
+  qualification_artifacts:
+  - contracts/compatibility/python-surface.json
+  - contracts/compatibility/typescript-surface.json
+  - contracts/compatibility/host-capabilities.json
+  - contracts/semantic-core/v1.0/contract.json
+  - contracts/semantic-core/v1.0/vectors/contract-validation.json
+  - contracts/semantic-core/v1.0/vectors/project-metadata-validation.json
+  - contracts/semantic-core/v1.0/vectors/repository-validation.json
+  - contracts/semantic-core/v1.0/vectors/generated-artifact-classification.json
+  - contracts/semantic-core/v1.0/vectors/embodiment-linkage.json
+  - contracts/semantic-core/v1.0/vectors/architecture-reference-validation.json
+  - contracts/semantic-core/v1.0/vectors/architecture-validation.json
+  - contracts/compatibility/python-capabilities.json
+  - packages/node tests
+  - Python public SDK tests
+  staged_shared_core_migration: |
+    The first authority-preserving extraction covers normalized contract,
+    project-metadata, repository identity, provider-routing, and embodiment-
+    linkage semantics, generated-artifact integrity classification, and
+    architecture source-validation plus cross-reference/topology validation, through
+    contracts/semantic-core/v1.0. Python and Node consume the same
+    packaged execution artifact directly, with filesystem discovery kept in each
+    host adapter. Remaining Python-only operations
+    are listed in contracts/compatibility/host-capabilities.json and require
+    the same bounded extraction treatment before they become peer-host
+    capabilities.

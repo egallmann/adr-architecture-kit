@@ -1,6 +1,6 @@
 # ADR Architecture Kit
 
-**ADR Architecture Kit** (`adr-architecture-kit`) is the authoring-time STE toolkit for teams and integrators who maintain **Architecture Decision Records** as structured YAML. The Python implementation provides parsing, validation, CLI authoring workflows, deterministic **repository discovery** outputs (indexes, registries, manifest), and **ADR-derived Architecture IR** fragments that match the public contract defined in **`ste-spec`**. The same release lineage also publishes the official read-only TypeScript consumer binding [`@system-of-thought/adr-kit`](https://www.npmjs.com/package/@system-of-thought/adr-kit) (ADR-L-0024).
+**ADR Architecture Kit** (`adr-architecture-kit`) is the authoring-time STE toolkit for teams and integrators who maintain **Architecture Decision Records** as structured YAML. The Python implementation provides parsing, validation, CLI authoring workflows, deterministic **repository discovery** outputs (indexes, registries, manifest), and **ADR-derived Architecture IR** fragments that match the public contract defined in **`ste-spec`**. The same release lineage also publishes the peer TypeScript/Node host and constrained browser-profile binding [`@system-of-thought/adr-kit`](https://www.npmjs.com/package/@system-of-thought/adr-kit) (ADR-L-0024, ADR-L-0027).
 
 Semantic authority is language-neutral: accepted ADRs, canonical schemas, and promoted contracts define ADR-Kit meaning; Python and TypeScript implementations project that authority and do not own it independently.
 

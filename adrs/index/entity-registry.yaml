@@ -65,7 +65,6 @@ entities:
     extraction_phase: extract_capability
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e614-7304-881c-fdc95e14e704
   alias_id: BOUND-0001
   alias_name: logical-vs-physical-separation
@@ -134,7 +133,6 @@ entities:
     extraction_phase: extract_boundary
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e614-733f-9e37-fbd70087182d
   alias_id: CAP-0004
   alias_name: explicit-gap-tracking
@@ -199,7 +197,6 @@ entities:
     extraction_phase: extract_capability
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e614-7485-bb12-e90f01c3968e
   alias_id: CAP-0003
   alias_name: semantic-graph-integration
@@ -264,7 +261,6 @@ entities:
     extraction_phase: extract_capability
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e614-795f-a62b-d6d1ebcdd6ac
   alias_id: BOUND-0002
   alias_name: adr-kit-vs-ste-runtime-separation
@@ -334,7 +330,6 @@ entities:
     extraction_phase: extract_boundary
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e614-7a79-aa1e-8ad7395cf4f2
   alias_id: BOUND-0003
   alias_name: frontmatter-as-authority
@@ -402,7 +397,6 @@ entities:
     extraction_phase: extract_boundary
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e614-7c68-be36-2c84d4579279
   alias_id: CAP-0001
   alias_name: machine-verifiable-architecture-documentation
@@ -467,7 +461,6 @@ entities:
     extraction_phase: extract_capability
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e615-701c-8e3e-d463d56f89ce
   alias_id: INV-0075
   alias_name: inv-0075
@@ -544,7 +537,6 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e615-70a5-861b-b2dde147e5af
   alias_id: ADR-L-0001
   alias_name: ste-compliant-machine-verifiable-architecture-decision-record-system
@@ -614,7 +606,6 @@ entities:
     extraction_phase: extract_adr
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e615-70ab-bf3d-3a9879ef1fa3
   alias_id: DEC-0025
   alias_name: prompt-translator-integration
@@ -680,7 +671,6 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e615-70ae-af3e-bd510f15d321
   alias_id: INV-0098
   alias_name: inv-0098
@@ -746,7 +736,6 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e615-70d2-ad37-4be4c7277ebc
   alias_id: CONTRACT-0002
   alias_name: contract-0002
@@ -813,7 +802,6 @@ entities:
     extraction_phase: extract_contract
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e615-70d5-ac2e-d1456d710acd
   alias_id: CONTRACT-0004
   alias_name: contract-0004
@@ -881,7 +869,6 @@ entities:
     extraction_phase: extract_contract
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e615-70fd-9622-a4e35697ad39
   alias_id: INV-0034
   alias_name: inv-0034
@@ -947,7 +934,6 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e615-7102-8f0f-d4652f6da679
   alias_id: DEC-0017
   alias_name: generate-prompts-per-component
@@ -1013,7 +999,6 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e615-7129-ac3e-8120e0d7c106
   alias_id: INV-0027
   alias_name: inv-0027
@@ -1089,7 +1074,6 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e615-713e-b627-2ee4bf985295
   alias_id: INV-0001
   alias_name: inv-0001
@@ -1153,7 +1137,6 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e615-713f-a73d-10442c1dc6b9
   alias_id: DEC-0081
   alias_name: make-installed-distribution-metadata-the-runtime-package-version-authority
@@ -1219,7 +1202,6 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e615-7169-8a2e-9192ab77b526
   alias_id: INV-0019
   alias_name: inv-0019
@@ -1288,7 +1270,6 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e615-7199-be3b-64c7a82f3c4c
   alias_id: CAP-0011
   alias_name: signal-emission-cli
@@ -1353,7 +1334,6 @@ entities:
     extraction_phase: extract_capability
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e615-71bc-a727-e0403c74783d
   alias_id: INV-0036
   alias_name: inv-0036
@@ -1422,7 +1402,6 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e615-71c4-b71d-61aed9baa000
   alias_id: DEC-0010
   alias_name: create-adr-to-prompt-translator
@@ -1488,7 +1467,6 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e615-71de-ad3f-2d5d886efee2
   alias_id: CAP-0031
   alias_name: parse-physical-adr-components
@@ -1555,7 +1533,6 @@ entities:
     extraction_phase: extract_capability
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e615-722d-bf3a-9ed33338beaf
   alias_id: CAP-0029
   alias_name: documentation-via-tests
@@ -1621,7 +1598,6 @@ entities:
     extraction_phase: extract_capability
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e615-7235-8135-9a274f82afc8
   alias_id: INV-0083
   alias_name: inv-0083
@@ -1699,7 +1675,6 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e615-727f-a31e-9b8f4c153dc3
   alias_id: DEC-0016
   alias_name: stage-downstream-extraction-and-rule-activation-after-adr-kit-authority-is-defined
@@ -1766,7 +1741,6 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e615-7287-b737-ec91d4115b04
   alias_id: INV-0006
   alias_name: inv-0006
@@ -1830,7 +1804,6 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e615-7288-b21b-9452d0e7faef
   alias_id: INV-0032
   alias_name: inv-0032
@@ -1899,7 +1872,6 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e615-729d-873d-f2bf925d1846
   alias_id: INV-0022
   alias_name: inv-0022
@@ -1975,7 +1947,6 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e615-72db-8f32-3888e597d5c3
   alias_id: INV-0028
   alias_name: inv-0028
@@ -2045,7 +2016,6 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e615-7332-892e-e723d9f13237
   alias_id: DEC-0076
   alias_name: treat-runtime-emitted-implementation-attribution-as-downstream-evidence
@@ -2111,7 +2081,6 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e615-7361-b717-6a0aae8df756
   alias_id: INV-0031
   alias_name: inv-0031
@@ -2183,7 +2152,6 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e615-73a3-8d31-7a4721affae9
   alias_id: ADR-L-0005
   alias_name: adr-to-prompt-translation-for-ai-implementation
@@ -2262,7 +2230,6 @@ entities:
     extraction_phase: extract_adr
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e615-7402-b43f-a03be950d0b3
   alias_id: CAP-0046
   alias_name: verified-build-once-release-promotion
@@ -2329,7 +2296,6 @@ entities:
     extraction_phase: extract_capability
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e615-7476-a31e-769637c9b7d1
   alias_id: CAP-0030
   alias_name: implementation-attribution-evidence-handoff
@@ -2395,7 +2361,6 @@ entities:
     extraction_phase: extract_capability
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e615-7478-ab17-36426863f751
   alias_id: INV-0015
   alias_name: inv-0015
@@ -2471,7 +2436,6 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e615-7498-9825-b465a8830d8a
   alias_id: CAP-0020
   alias_name: automated-quality-gates
@@ -2537,7 +2501,6 @@ entities:
     extraction_phase: extract_capability
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e615-74af-a113-f1a7a9e5d49e
   alias_id: INV-0072
   alias_name: inv-0072
@@ -2612,7 +2575,6 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e615-74c8-a813-5f18ee19f9a8
   alias_id: INV-0021
   alias_name: inv-0021
@@ -2686,7 +2648,6 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e615-74df-8433-acb8769aa8a6
   alias_id: CONTRACT-0001
   alias_name: contract-0001
@@ -2753,7 +2714,6 @@ entities:
     extraction_phase: extract_contract
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e615-74f0-9826-fcaa4052cfdc
   alias_id: INV-0095
   alias_name: inv-0095
@@ -2819,7 +2779,6 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e615-7502-a52f-af65757c9fd2
   alias_id: INV-0007
   alias_name: inv-0007
@@ -2884,7 +2843,6 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e615-7519-972f-504bac832107
   alias_id: INV-0073
   alias_name: inv-0073
@@ -2976,7 +2934,6 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e615-753d-8537-efcdb8369a99
   alias_id: DEC-0030
   alias_name: support-multiple-target-agents
@@ -3042,7 +2999,6 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e615-755a-af33-7d2524161a7a
   alias_id: INV-0047
   alias_name: inv-0047
@@ -3111,7 +3067,6 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e615-7564-933f-0bb0cbbcf41b
   alias_id: CAP-0014
   alias_name: deterministic-documentation-projection
@@ -3177,7 +3132,6 @@ entities:
     extraction_phase: extract_capability
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e615-7572-b71e-6720464e70af
   alias_id: INV-0049
   alias_name: inv-0049
@@ -3243,7 +3197,6 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e615-7577-8d37-dd0df031bec9
   alias_id: ADR-L-0004
   alias_name: adr-to-implementation-traceability-via-decorators-and-metadata-attribution
@@ -3322,7 +3275,6 @@ entities:
     extraction_phase: extract_adr
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e615-758b-a31f-a0dcb8d9d09a
   alias_id: INV-0023
   alias_name: inv-0023
@@ -3388,7 +3340,6 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e615-758b-b03f-e4a3dc338589
   alias_id: DEC-0012
   alias_name: treat-human-readable-architecture-documentation-as-deterministic-derived-state
@@ -3460,7 +3411,6 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e615-75c7-aa3f-b6489db09c24
   alias_id: INV-0029
   alias_name: inv-0029
@@ -3529,7 +3479,6 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e615-75e2-a33f-645d3f0970a1
   alias_id: INV-0025
   alias_name: inv-0025
@@ -3595,7 +3544,6 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e615-7602-8d3e-153b2a57947d
   alias_id: INV-0035
   alias_name: inv-0035
@@ -3661,7 +3609,6 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e615-7603-ab3f-2ec4a655831c
   alias_id: INV-0051
   alias_name: inv-0051
@@ -3730,7 +3677,6 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e615-760b-a43f-b3fe08e0d6ef
   alias_id: DEC-0033
   alias_name: adopt-test-driven-development-tdd-methodology
@@ -3796,7 +3742,6 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e615-7688-953b-19e6aae687a4
   alias_id: INV-0033
   alias_name: inv-0033
@@ -3862,7 +3807,6 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e615-7695-923e-7ae538b2d1d5
   alias_id: CAP-0008
   alias_name: multi-agent-prompt-generation
@@ -3928,7 +3872,6 @@ entities:
     extraction_phase: extract_capability
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e615-76c9-932b-d2c94632b373
   alias_id: INV-0004
   alias_name: inv-0004
@@ -3992,7 +3935,6 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e615-76e9-973a-af0e2b391d35
   alias_id: DEC-0024
   alias_name: include-validation-criteria-in-prompts
@@ -4058,7 +4000,6 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e615-76f6-a33f-33eef61e39a9
   alias_id: DEC-0002
   alias_name: separate-logical-and-physical-adrs-with-distinct-schemas
@@ -4128,7 +4069,6 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e615-76f9-9627-02674f7f34cc
   alias_id: CAP-0009
   alias_name: prompt-format-adaptation
@@ -4194,7 +4134,6 @@ entities:
     extraction_phase: extract_capability
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e615-775e-8b3b-87bd8305b453
   alias_id: DEC-0011
   alias_name: build-from-poc-principles
@@ -4260,7 +4199,6 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e615-7762-a91e-f7d5d71acc18
   alias_id: DEC-0034
   alias_name: file-based-first-mcp-later
@@ -4326,7 +4264,6 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e615-77b5-b73c-7db427c64a68
   alias_id: CAP-0012
   alias_name: rule-activation-and-projection
@@ -4391,7 +4328,6 @@ entities:
     extraction_phase: extract_capability
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e615-77f6-9b1f-695732d25443
   alias_id: ADR-L-0003
   alias_name: quality-assurance-and-testing-strategy
@@ -4468,7 +4404,6 @@ entities:
     extraction_phase: extract_adr
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e615-7804-ad2e-184eeaf6ea0f
   alias_id: CAP-0024
   alias_name: bidirectional-traceability-verification
@@ -4534,7 +4469,6 @@ entities:
     extraction_phase: extract_capability
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e615-7827-a11b-5864ad24f136
   alias_id: CONTRACT-0005
   alias_name: contract-0005
@@ -4603,7 +4537,6 @@ entities:
     extraction_phase: extract_contract
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e615-7871-b719-23a5128874ae
   alias_id: INV-0024
   alias_name: inv-0024
@@ -4669,7 +4602,6 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e615-7899-8d3b-0ecfe4490994
   alias_id: DEC-0004
   alias_name: decision-migrated
@@ -4740,7 +4672,6 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e615-78ee-a53f-99d85ea925a3
   alias_id: DEC-0022
   alias_name: test-against-real-workspace-adrs
@@ -4806,7 +4737,6 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e615-78f5-903a-4c5d1bab8f38
   alias_id: CAP-0019
   alias_name: automatic-project-scope-detection
@@ -4873,7 +4803,6 @@ entities:
     extraction_phase: extract_capability
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e615-7911-ac25-c8772b55ffbb
   alias_id: INV-0016
   alias_name: inv-0016
@@ -4939,7 +4868,6 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e615-792a-aa3e-a9f0f34c1b93
   alias_id: INV-0096
   alias_name: inv-0096
@@ -5005,7 +4933,6 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e615-7946-a53f-af6bf655dc11
   alias_id: CAP-0006
   alias_name: policy-integration-readiness
@@ -5070,7 +4997,6 @@ entities:
     extraction_phase: extract_capability
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e615-7958-822b-bbd40f3a5ebc
   alias_id: CAP-0023
   alias_name: test-driven-development-support
@@ -5136,7 +5062,6 @@ entities:
     extraction_phase: extract_capability
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e615-796c-ae1d-a27f1fff021b
   alias_id: DEC-0026
   alias_name: require-generator-validator-test-and-ci-enforcement-for-documentation-projection
@@ -5206,7 +5131,6 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e615-796d-a21f-4b1a70916550
   alias_id: BOUND-0004
   alias_name: prompt-translator
@@ -5272,7 +5196,6 @@ entities:
     extraction_phase: extract_boundary
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e615-798a-9837-f96eab766747
   alias_id: INV-0003
   alias_name: inv-0003
@@ -5336,7 +5259,6 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e615-79a1-be3d-03af8c291326
   alias_id: DEC-0008
   alias_name: adopt-multi-layer-testing-strategy
@@ -5402,7 +5324,6 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e615-7a08-8b0f-d2b2ed57eacb
   alias_id: INV-0026
   alias_name: inv-0026
@@ -5471,7 +5392,6 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e615-7a25-9d3f-1758c79a12e7
   alias_id: INV-0017
   alias_name: inv-0017
@@ -5540,7 +5460,6 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e615-7a31-b11f-daf8feef12d9
   alias_id: DEC-0003
   alias_name: rich-frontmatter-as-authoritative-metadata-manifest-as-derived-view
@@ -5608,7 +5527,6 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e615-7a6b-843f-3cec701087f8
   alias_id: DEC-0023
   alias_name: support-bidirectional-verification
@@ -5674,7 +5592,6 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e615-7aa2-8817-c4f468c90b66
   alias_id: CAP-0028
   alias_name: multi-scope-cli-interface
@@ -5739,7 +5656,6 @@ entities:
     extraction_phase: extract_capability
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e615-7b66-b73a-3b99f7d92d4d
   alias_id: ADR-L-0006
   alias_name: rule-library-sub-module-with-cooperative-signals
@@ -5812,7 +5728,6 @@ entities:
     extraction_phase: extract_adr
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e615-7b72-b72b-d07441bebf10
   alias_id: CAP-0007
   alias_name: correction-agent-context
@@ -5877,7 +5792,6 @@ entities:
     extraction_phase: extract_capability
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e615-7b9c-8e3f-32ceeda01491
   alias_id: ADR-L-0007
   alias_name: adr-l-0007-deterministic-documentation-projection
@@ -5955,7 +5869,6 @@ entities:
     extraction_phase: extract_adr
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e615-7ba4-bd19-1d7abf1a3ed2
   alias_id: CAP-0025
   alias_name: scoped-validation
@@ -6021,7 +5934,6 @@ entities:
     extraction_phase: extract_capability
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e615-7bb9-ad3b-93d12b0f65b6
   alias_id: DEC-0001
   alias_name: use-yaml-with-embedded-markdown-not-markdown-with-yaml-frontmatter
@@ -6089,7 +6001,6 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e615-7c19-b73f-0741bf060af1
   alias_id: DEC-0048
   alias_name: define-a-compiler-owned-implementation-attribution-evidence-contract
@@ -6155,7 +6066,6 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e615-7c3b-b907-7fbb48d31a2b
   alias_id: CONTRACT-0003
   alias_name: contract-0003
@@ -6223,7 +6133,6 @@ entities:
     extraction_phase: extract_contract
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e615-7c41-b23f-a324d60b48e1
   alias_id: CAP-0005
   alias_name: derived-manifest-generation
@@ -6287,7 +6196,6 @@ entities:
     extraction_phase: extract_capability
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e615-7c78-8337-ff658fd422f8
   alias_id: CAP-0032
   alias_name: generate-implementation-prompt
@@ -6354,7 +6262,6 @@ entities:
     extraction_phase: extract_capability
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e615-7c97-a633-fbfd69ffa030
   alias_id: INV-0020
   alias_name: inv-0020
@@ -6430,7 +6337,6 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e615-7cbc-b53e-42784e9f3081
   alias_id: DEC-0031
   alias_name: standalone-repo-submodule-consumption
@@ -6496,7 +6402,6 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e615-7cdd-ad21-34d0a44bec33
   alias_id: DEC-0049
   alias_name: use-existing-contract-profiles-for-legacy-intent-attribution-onboarding
@@ -6562,7 +6467,6 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e615-7ce1-aa20-4b16a485eb1a
   alias_id: CAP-0013
   alias_name: submodule-bootstrap
@@ -6627,7 +6531,6 @@ entities:
     extraction_phase: extract_capability
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e615-7d1d-a33d-ca62fdaad0be
   alias_id: DEC-0015
   alias_name: require-tests-for-all-new-components
@@ -6693,7 +6596,6 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e615-7d32-8d01-f61b4d7aae40
   alias_id: CAP-0026
   alias_name: regression-prevention
@@ -6759,7 +6661,6 @@ entities:
     extraction_phase: extract_capability
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e615-7d44-8f3a-c6db615e9e28
   alias_id: INV-0050
   alias_name: inv-0050
@@ -6828,7 +6729,6 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e615-7d71-9517-aeb9fe601fd6
   alias_id: DEC-0007
   alias_name: adopt-scope-aware-adr-architecture
@@ -6894,7 +6794,6 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e615-7d96-880f-40f6e38f3e88
   alias_id: DEC-0006
   alias_name: dogfooding-strategy-document-this-project-using-adr-kit
@@ -6960,7 +6859,6 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e615-7db0-a219-22110deb7ed0
   alias_id: INV-0014
   alias_name: inv-0014
@@ -7030,7 +6928,6 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e615-7dc5-983a-beb68ed34cde
   alias_id: CAP-0022
   alias_name: scoped-manifest-generation
@@ -7096,7 +6993,6 @@ entities:
     extraction_phase: extract_capability
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e615-7dd6-b137-8546c4e74c22
   alias_id: CAP-0021
   alias_name: architecture-intent-attribution
@@ -7162,7 +7058,6 @@ entities:
     extraction_phase: extract_capability
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e615-7e07-9f3f-9204fcab0da7
   alias_id: INV-0046
   alias_name: inv-0046
@@ -7232,7 +7127,6 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e615-7e2e-bf3f-577dc4ade891
   alias_id: INV-0030
   alias_name: inv-0030
@@ -7301,7 +7195,6 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e615-7e34-900f-7e37891efa10
   alias_id: CAP-0033
   alias_name: generate-validation-checklist
@@ -7368,7 +7261,6 @@ entities:
     extraction_phase: extract_capability
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e615-7e36-8e3f-c0e37def8629
   alias_id: DEC-0078
   alias_name: require-retained-release-artifact-testing-and-no-regression-quality-controls
@@ -7434,7 +7326,6 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e615-7e55-972f-14dd7da851c0
   alias_id: DEC-0019
   alias_name: prohibit-manual-edits-to-generated-documentation
@@ -7504,7 +7395,6 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e615-7e63-a71d-04283e66cb51
   alias_id: DEC-0018
   alias_name: cooperative-signals-as-first-class
@@ -7570,7 +7460,6 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e615-7e6c-8a2f-8bcd9c148dce
   alias_id: DEC-0009
   alias_name: adopt-explicit-architecture-intent-attribution-for-implementation-artifacts
@@ -7636,7 +7525,6 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e615-7e73-a30e-6f029c9cb1b3
   alias_id: CAP-0027
   alias_name: profile-aware-legacy-onboarding-for-intent-attribution
@@ -7702,7 +7590,6 @@ entities:
     extraction_phase: extract_capability
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e615-7e99-8137-8ac8d0972e1b
   alias_id: DEC-0029
   alias_name: enforce-testing-in-ci-cd-pipeline
@@ -7767,7 +7654,6 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e615-7ea2-bc3e-a0ef2ccfc13a
   alias_id: INV-0002
   alias_name: inv-0002
@@ -7831,7 +7717,6 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e615-7f04-931e-170f4cbef292
   alias_id: DEC-0005
   alias_name: project-yaml-for-project-level-metadata-separate-from-adr-metadata
@@ -7897,7 +7782,6 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e615-7f19-810b-c7b33a9d9e0d
   alias_id: ADR-L-0002
   alias_name: multi-scope-adr-architecture-for-sub-module-development
@@ -7971,7 +7855,6 @@ entities:
     extraction_phase: extract_adr
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e615-7f59-842e-2dc1fcfbc380
   alias_id: INV-0018
   alias_name: inv-0018
@@ -8040,7 +7923,6 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e615-7f6f-9b2e-d7c959fa8909
   alias_id: INV-0005
   alias_name: inv-0005
@@ -8106,7 +7988,6 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e615-7f70-901f-75cfe9860b82
   alias_id: INV-0048
   alias_name: inv-0048
@@ -8175,7 +8056,6 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e615-7fef-a81d-ffbcc5c11de8
   alias_id: CAP-0010
   alias_name: signal-schema-authority
@@ -8240,7 +8120,6 @@ entities:
     extraction_phase: extract_capability
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e616-7018-982f-d3d703f29db7
   alias_id: DEC-0079
   alias_name: preserve-the-present-repository-seam-and-defer-any-narrow-consumer-facade
@@ -8306,7 +8185,6 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e616-7037-8f0f-52c403f9f539
   alias_id: INV-0044
   alias_name: inv-0044
@@ -8375,7 +8253,6 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e616-705d-9a3d-4341d19e1541
   alias_id: CAP-0016
   alias_name: draft-preserving-source-generation
@@ -8441,7 +8318,6 @@ entities:
     extraction_phase: extract_capability
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e616-7066-8d2f-3acc7f469f72
   alias_id: ADR-L-0008
   alias_name: validation-modes-for-draft-and-complete-adrs
@@ -8519,7 +8395,6 @@ entities:
     extraction_phase: extract_adr
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e616-7121-a63e-0baad0a61fb3
   alias_id: CAP-0018
   alias_name: normalized-entity-lookup-surface
@@ -8586,7 +8461,6 @@ entities:
     extraction_phase: extract_capability
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e616-713a-b73d-fec9a62b6bfb
   alias_id: INV-0055
   alias_name: inv-0055
@@ -8656,7 +8530,6 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e616-7140-bb3f-8b78ab40d018
   alias_id: CAP-0039
   alias_name: stable-repository-semantic-boundary
@@ -8723,7 +8596,6 @@ entities:
     extraction_phase: extract_capability
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e616-7153-930f-595ce3d9f96d
   alias_id: DEC-0061
   alias_name: permit-direct-adrs-index-consumption-for-cross-language-or-out-of-process-consumers
@@ -8790,7 +8662,6 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e616-7172-a93e-95eb4cac9011
   alias_id: DEC-0035
   alias_name: allow-generators-to-preserve-explicit-empty-sections-when-requested
@@ -8856,7 +8727,6 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e616-7174-bc0f-0812c51d1d0c
   alias_id: INV-0076
   alias_name: inv-0076
@@ -8934,7 +8804,6 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e616-718c-8f1f-c75e9bc215bc
   alias_id: CAP-0034
   alias_name: profile-aware-contract-validation
@@ -9000,7 +8869,6 @@ entities:
     extraction_phase: extract_capability
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e616-7196-a92f-bec6b05d3d47
   alias_id: INV-0043
   alias_name: inv-0043
@@ -9074,7 +8942,6 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e616-71a7-b73f-33795a11494e
   alias_id: DEC-0014
   alias_name: use-derived-discovery-artifacts-for-agent-facing-architecture-lookup
@@ -9140,7 +9007,6 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e616-71a8-bd3f-d739b5ccf91e
   alias_id: INV-0056
   alias_name: inv-0056
@@ -9209,7 +9075,6 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e616-71e0-b02f-3997db358e10
   alias_id: DEC-0077
   alias_name: dec-0077-decision-migrated
@@ -9278,7 +9143,6 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e616-71e8-8619-6d6dde59a698
   alias_id: INV-0067
   alias_name: inv-0067
@@ -9363,7 +9227,6 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e616-72be-b22f-784bf7f19434
   alias_id: INV-0059
   alias_name: inv-0059
@@ -9439,7 +9302,6 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e616-72f3-943b-62146272e78f
   alias_id: DEC-0032
   alias_name: keep-steelman-review-separate-from-deterministic-validation
@@ -9505,7 +9367,6 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e616-7340-a61b-57b9c79eca96
   alias_id: DEC-0062
   alias_name: treat-repository-backed-graph-access-as-the-intended-python-graph-seam
@@ -9571,7 +9432,6 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e616-735c-bd3d-c9e51b259031
   alias_id: DEC-0059
   alias_name: treat-all-adrs-index-artifacts-and-manifest-yaml-as-the-guaranteed-contract-family
@@ -9638,7 +9498,6 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e616-7385-a83e-931f9da2d4db
   alias_id: INV-0042
   alias_name: inv-0042
@@ -9708,7 +9567,6 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e616-7396-893e-af8987fa6e03
   alias_id: CAP-0038
   alias_name: federated-qualified-identity-resolution
@@ -9775,7 +9633,6 @@ entities:
     extraction_phase: extract_capability
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e616-73a1-9d27-96afd11520ad
   alias_id: CAP-0047
   alias_name: narrow-supported-authoring-sdk
@@ -9842,7 +9699,6 @@ entities:
     extraction_phase: extract_capability
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e616-73b2-9139-746451998656
   alias_id: DEC-0037
   alias_name: treat-the-compiler-kernel-contract-as-pre-stable-0-x-until-intentionally-frozen
@@ -9908,7 +9764,6 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e616-73b2-bd3f-a096727abcad
   alias_id: DEC-0054
   alias_name: separate-onboarding-into-discovery-normalization-canonization-regeneration-and-validation-phases
@@ -9975,7 +9830,6 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e616-744f-b63e-5ecddf344faa
   alias_id: ADR-L-0012
   alias_name: federation-authority-and-qualified-identity-model
@@ -10052,7 +9906,6 @@ entities:
     extraction_phase: extract_adr
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e616-7469-aa0f-66411a33dc10
   alias_id: DEC-0039
   alias_name: classify-sentinel-backed-bundles-as-sentinel-compliant-rather-than-compliant
@@ -10118,7 +9971,6 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e616-748c-a114-227a14f5fef8
   alias_id: DEC-0043
   alias_name: require-staged-approval-before-replacement-content-becomes-protected-canonical-content
@@ -10185,7 +10037,6 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e616-74a6-ae3d-39c2dacd91ae
   alias_id: DEC-0057
   alias_name: classify-compiler-discovery-outputs-by-guaranteed-optional-and-deprecated-stability-tiers
@@ -10252,7 +10103,6 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e616-74f9-813b-7610fca4342c
   alias_id: CAP-0040
   alias_name: brownfield-onboarding-workflow
@@ -10319,7 +10169,6 @@ entities:
     extraction_phase: extract_capability
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e616-7522-9b1f-8befdee2cbf5
   alias_id: INV-0052
   alias_name: inv-0052
@@ -10394,7 +10243,6 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e616-755b-843e-689f9ffa2091
   alias_id: DEC-0067
   alias_name: define-an-index-first-minimal-runtime-ingestion-subset-for-cross-language-architecture-consumers
@@ -10461,7 +10309,6 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e616-7571-b83f-b20a3bd0b42e
   alias_id: DEC-0055
   alias_name: record-deterministic-brownfield-remaps-and-cleanup-transitions-in-canonical-migration-artifacts
@@ -10528,7 +10375,6 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e616-75b8-ba2f-700f93515f95
   alias_id: DEC-0038
   alias_name: validate-compiled-output-through-explicit-greenfield-brownfield-and-migration-profiles
@@ -10595,7 +10441,6 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e616-7607-9312-8aa8d1816be9
   alias_id: CAP-0017
   alias_name: summary-discovery-surface
@@ -10661,7 +10506,6 @@ entities:
     extraction_phase: extract_capability
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e616-760d-8437-78860d2de944
   alias_id: DEC-0056
   alias_name: dec-0056-decision-migrated
@@ -10728,7 +10572,6 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e616-7628-913b-a059c1057c36
   alias_id: ADR-L-0014
   alias_name: brownfield-onboarding-and-canonicalization-workflow
@@ -10802,7 +10645,6 @@ entities:
     extraction_phase: extract_adr
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e616-7649-ba3d-86e7fab992d0
   alias_id: DEC-0047
   alias_name: qualify-machine-identity-as-architecture-namespace-uuid-keep-human-alias-qualification-derived
@@ -10869,7 +10711,6 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e616-765f-a51d-a19f2cfa383b
   alias_id: INV-0074
   alias_name: inv-0074
@@ -10945,7 +10786,6 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e616-76a4-891b-d8316114e7a9
   alias_id: INV-0060
   alias_name: inv-0060
@@ -11017,7 +10857,6 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e616-76ce-9a36-55eac88b762e
   alias_id: CAP-0041
   alias_name: canonical-migration-evidence
@@ -11083,7 +10922,6 @@ entities:
     extraction_phase: extract_capability
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e616-770c-a025-2c241a720730
   alias_id: ADR-L-0009
   alias_name: derived-architecture-discovery-surfaces
@@ -11158,7 +10996,6 @@ entities:
     extraction_phase: extract_adr
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e616-7755-bd39-ab6dde87eb86
   alias_id: CAP-0036
   alias_name: typed-metadata-contract-enforcement
@@ -11224,7 +11061,6 @@ entities:
     extraction_phase: extract_capability
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e616-7763-be39-197b4590ca50
   alias_id: DEC-0021
   alias_name: treat-manifest-as-a-guaranteed-discovery-surface-within-the-compiler-contract-family
@@ -11291,7 +11127,6 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e616-77a2-8a1b-ad4d3a7e4265
   alias_id: DEC-0028
   alias_name: dec-0028-decision-migrated
@@ -11358,7 +11193,6 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e616-77c3-9137-1750a4d9bca5
   alias_id: DEC-0068
   alias_name: require-cross-language-runtime-ingestion-to-remain-index-first-manifest-aware-and-additive-safe
@@ -11425,7 +11259,6 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e616-77e0-992d-25764a1ed5a2
   alias_id: INV-0039
   alias_name: inv-0039
@@ -11495,7 +11328,6 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e616-7868-b425-c7f5680872b7
   alias_id: INV-0040
   alias_name: inv-0040
@@ -11564,7 +11396,6 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e616-78b2-8f3d-005067fed51f
   alias_id: INV-0041
   alias_name: inv-0041
@@ -11634,7 +11465,6 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e616-78cd-b936-3357c12efad1
   alias_id: DEC-0020
   alias_name: define-structural-mode-for-schema-aligned-drafts
@@ -11700,7 +11530,6 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e616-793e-9b16-ae66725cf5ec
   alias_id: DEC-0060
   alias_name: dec-0060-decision-migrated
@@ -11767,7 +11596,6 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e616-7944-ae13-b64c510fc3f4
   alias_id: INV-0053
   alias_name: inv-0053
@@ -11836,7 +11664,6 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e616-79ea-b43e-32a8705441ec
   alias_id: CAP-0037
   alias_name: remediation-ledger-governance
@@ -11902,7 +11729,6 @@ entities:
     extraction_phase: extract_capability
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e616-79ec-9432-43a1c8ecc104
   alias_id: DEC-0036
   alias_name: dec-0036-decision-migrated
@@ -11969,7 +11795,6 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e616-79f5-a127-b16d5485af23
   alias_id: DEC-0058
   alias_name: deprecate-adrs-entities-registry-yaml-as-a-legacy-compatibility-projection
@@ -12035,7 +11860,6 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e616-7a04-a927-19a373014476
   alias_id: DEC-0041
   alias_name: restrict-sentinel-values-to-narrative-fields-and-sections-only
@@ -12101,7 +11925,6 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e616-7a17-850f-ce32ede3c9c5
   alias_id: INV-0057
   alias_name: inv-0057
@@ -12173,7 +11996,6 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e616-7a1d-a13f-8595d35af213
   alias_id: DEC-0053
   alias_name: treat-brownfield-onboarding-as-a-first-class-canonicalization-workflow
@@ -12239,7 +12061,6 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e616-7a7c-883f-b36edf94a1d8
   alias_id: DEC-0082
   alias_name: keep-repository-local-authoring-projections-separate-from-workspace-runtime-state
@@ -12306,7 +12127,6 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e616-7abc-a63c-13e917ef49d8
   alias_id: CAP-0015
   alias_name: mode-aware-adr-validation
@@ -12372,7 +12192,6 @@ entities:
     extraction_phase: extract_capability
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e616-7abd-ad17-f29edbd30959
   alias_id: INV-0038
   alias_name: inv-0038
@@ -12441,7 +12260,6 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e616-7aca-b328-94a4de1887d6
   alias_id: INV-0061
   alias_name: inv-0061
@@ -12513,7 +12331,6 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e616-7b02-9c1e-5028e84c85e1
   alias_id: DEC-0052
   alias_name: keep-archmodel-compiler-internal-and-do-not-promote-it-to-the-public-consumer-api
@@ -12580,7 +12397,6 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e616-7b5d-b53c-fa2fc2046cd5
   alias_id: DEC-0046
   alias_name: use-provider-authoritative-conflict-resolution-for-federated-entity-definitions
@@ -12646,7 +12462,6 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e616-7b97-971d-ae165d13bf9c
   alias_id: ADR-L-0011
   alias_name: metadata-schemas-and-remediation-ledger-enforcement
@@ -12720,7 +12535,6 @@ entities:
     extraction_phase: extract_adr
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e616-7bf6-a63f-2fdbec175790
   alias_id: INV-0037
   alias_name: inv-0037
@@ -12793,7 +12607,6 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e616-7c36-b43f-6e4c45a4faf4
   alias_id: DEC-0080
   alias_name: establish-adr-kit-api-as-the-narrow-supported-authoring-sdk-facade
@@ -12859,7 +12672,6 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e616-7c4e-953c-b7349412a784
   alias_id: ADR-L-0013
   alias_name: architecture-repository-boundary-and-normalized-semantic-model
@@ -12936,7 +12748,6 @@ entities:
     extraction_phase: extract_adr
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e616-7c74-922b-f871dc663b59
   alias_id: DEC-0050
   alias_name: dec-0050-decision-migrated
@@ -13003,7 +12814,6 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e616-7ca5-af3e-0dcd80fe2f9f
   alias_id: CAP-0035
   alias_name: production-safe-kernel-admission
@@ -13069,7 +12879,6 @@ entities:
     extraction_phase: extract_capability
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e616-7cb0-813b-b2651827c986
   alias_id: INV-0097
   alias_name: inv-0097
@@ -13135,7 +12944,6 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e616-7cc5-933d-9f7823a0b2b5
   alias_id: INV-0058
   alias_name: inv-0058
@@ -13207,7 +13015,6 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e616-7d30-ae2e-6fee1dbb2712
   alias_id: CAP-0044
   alias_name: cross-language-runtime-ingestion-contract
@@ -13275,7 +13082,6 @@ entities:
     extraction_phase: extract_capability
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e616-7d61-8e35-f11ba2ddd75d
   alias_id: ADR-L-0010
   alias_name: kernel-interface-contract-and-validation-profiles
@@ -13354,7 +13160,6 @@ entities:
     extraction_phase: extract_adr
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e616-7d89-8e31-8090d0f91310
   alias_id: DEC-0042
   alias_name: enforce-remediation-through-a-separate-canonical-remediation-ledger
@@ -13420,7 +13225,6 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e616-7da4-9e1f-eb49b97c42ca
   alias_id: DEC-0051
   alias_name: adopt-normalizedarchitecturemodel-2-0-as-the-v1-3-repository-semantic-payload
@@ -13486,7 +13290,6 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e616-7dc8-bd2e-10db13af0951
   alias_id: INV-0045
   alias_name: inv-0045
@@ -13555,7 +13358,6 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e616-7de2-b63b-577b2c2d53f4
   alias_id: DEC-0040
   alias_name: define-per-entity-metadata-through-typed-schemas-rather-than-an-unconstrained-metadata-bag
@@ -13622,7 +13424,6 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e616-7e1b-8e1e-f150845bbf0e
   alias_id: INV-0054
   alias_name: inv-0054
@@ -13693,7 +13494,6 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e616-7e82-8a0f-2c4c6bd0c326
   alias_id: DEC-0044
   alias_name: promote-the-contract-to-1-0-only-through-an-explicit-readiness-gate
@@ -13759,7 +13559,6 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e616-7ede-823e-bf6a70fc3814
   alias_id: DEC-0013
   alias_name: use-one-validator-with-explicit-validation-modes
@@ -13825,7 +13624,6 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e616-7ee9-9b0f-2da3ee16636b
   alias_id: CAP-0042
   alias_name: deterministic-adr-governance-validation
@@ -13891,7 +13689,6 @@ entities:
     extraction_phase: extract_capability
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e616-7ef2-8f0f-5593e9025be3
   alias_id: DEC-0027
   alias_name: define-complete-mode-for-population-readiness
@@ -13957,7 +13754,6 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e616-7f80-903e-36b6d56f86fe
   alias_id: CAP-0043
   alias_name: governance-summary-projection
@@ -14023,7 +13819,6 @@ entities:
     extraction_phase: extract_capability
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e616-7f9b-a12f-e0ab32e9dc16
   alias_id: DEC-0045
   alias_name: treat-federation-as-a-read-only-aggregation-layer-over-per-repo-canonical-registries
@@ -14090,7 +13885,6 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e616-7fa2-a13f-a0bab2411ff7
   alias_id: DEC-0063
   alias_name: dec-0063-decision-migrated
@@ -14157,7 +13951,6 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e617-702b-b51b-719234187415
   alias_id: DEC-0095
   alias_name: canonical-authored-entity-references-contain-uuids-only
@@ -14223,7 +14016,6 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e617-7060-8f3f-4ecd46a719da
   alias_id: COMP-0011
   alias_name: schema-and-contract-validation-surface
@@ -14295,7 +14087,6 @@ entities:
     extraction_phase: extract_component
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e617-707d-bb3e-959ff33027b8
   alias_id: DEC-0106
   alias_name: keep-v1-0-frozen-v1-2-migratable-and-v1-3-as-a-separate-provisional-authoring-line
@@ -14362,7 +14153,6 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e617-70d5-9035-ffeda9070001
   alias_id: INV-0090
   alias_name: inv-0090
@@ -14428,7 +14218,6 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e617-70e7-bb17-27b693ad01a8
   alias_id: IFACE-0011
   alias_name: iface-0011
@@ -14492,7 +14281,6 @@ entities:
     extraction_phase: extract_interface
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e617-710a-b91f-e749ebab9a95
   alias_id: CAP-0048
   alias_name: additive-adr-schema-v1-2-authoring
@@ -14560,7 +14348,6 @@ entities:
     extraction_phase: extract_capability
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e617-7127-b03e-cb2f18ab6f9f
   alias_id: INV-0078
   alias_name: inv-0078
@@ -14634,7 +14421,6 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e617-714f-bd26-d37fed143bc8
   alias_id: INV-0010
   alias_name: inv-0010
@@ -14700,7 +14486,6 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e617-7155-843f-9d4e2fd9fd00
   alias_id: DEC-0094
   alias_name: v1-3-adds-no-universal-authored-title
@@ -14766,7 +14551,6 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e617-7158-882f-29384411df69
   alias_id: INV-0089
   alias_name: inv-0089
@@ -14832,7 +14616,6 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e617-719d-b917-c98100049ad2
   alias_id: DEC-0100
   alias_name: defer-canonical-entity-level-updated-at-to-transactional-authoring
@@ -14898,7 +14681,6 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e617-723b-963b-54252f233ddc
   alias_id: INV-0062
   alias_name: inv-0062
@@ -14962,7 +14744,6 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e617-723f-aa1f-e1c5b7f3a3e5
   alias_id: INV-0070
   alias_name: inv-0070
@@ -15036,7 +14817,6 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e617-7270-ab2f-58a756d2530e
   alias_id: ADR-PC-0001
   alias_name: entity-registry-and-discovery-index
@@ -15105,7 +14885,6 @@ entities:
     extraction_phase: extract_adr
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e617-7285-b13f-2450ad706244
   alias_id: INV-0079
   alias_name: inv-0079
@@ -15175,7 +14954,6 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e617-72db-a33f-8a6826928686
   alias_id: INV-0009
   alias_name: inv-0009
@@ -15239,7 +15017,6 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e617-7315-9e36-7af95f814c83
   alias_id: DEC-0069
   alias_name: dec-0069-decision-migrated
@@ -15306,7 +15083,6 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e617-73df-8f39-2651671bb6f8
   alias_id: INV-0085
   alias_name: inv-0085
@@ -15372,7 +15148,6 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e617-73ec-853c-81e5cd2e879a
   alias_id: INV-0013
   alias_name: inv-0013
@@ -15438,7 +15213,6 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e617-7410-8c37-e302d20b9f8b
   alias_id: CAP-9000
   alias_name: kernel-boot-readiness
@@ -15503,7 +15277,6 @@ entities:
     extraction_phase: extract_capability
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e617-7484-923b-bb5d16ad3be1
   alias_id: INV-0092
   alias_name: inv-0092
@@ -15569,7 +15342,6 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e617-748e-863d-42268f44175f
   alias_id: DEC-0072
   alias_name: retain-legacy-adr-p-parsing-and-validation-but-exclude-it-from-new-creation-ergonomics
@@ -15636,7 +15408,6 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e617-74cd-9331-2954d78dccf3
   alias_id: CAP-0050
   alias_name: bind-only-external-authority-contracts
@@ -15703,7 +15474,6 @@ entities:
     extraction_phase: extract_capability
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e617-74dd-a62f-5ce1a1994d18
   alias_id: IFACE-0017
   alias_name: iface-0017
@@ -15767,7 +15537,6 @@ entities:
     extraction_phase: extract_interface
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e617-74e8-862b-b5a6013a306e
   alias_id: DEC-0102
   alias_name: distinct-entities-claiming-one-uuid-fail-closed-as-integrity-corruption
@@ -15833,7 +15602,6 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e617-75dd-852f-1d06d442695b
   alias_id: DEC-0071
   alias_name: dec-0071-decision-migrated
@@ -15900,7 +15668,6 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e617-75e2-a23c-f14b6602dbda
   alias_id: DEC-0099
   alias_name: dec-0099-decision-migrated
@@ -15967,7 +15734,6 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e617-75ee-b00e-64074f87263b
   alias_id: DEC-0105
   alias_name: migration-semantic-parity-requires-one-to-one-admitted-entity-mapping
@@ -16033,7 +15799,6 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e617-761d-950b-c04d97e04c56
   alias_id: INV-0068
   alias_name: inv-0068
@@ -16105,7 +15870,6 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e617-7643-be38-0815d7dc6e58
   alias_id: INV-0094
   alias_name: inv-0094
@@ -16171,7 +15935,6 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e617-7686-bc3f-536f1b00edfa
   alias_id: DEC-0075
   alias_name: exclude-reserved-adr-alias-ids-9000-9999-from-standard-forward-alias-allocation
@@ -16237,7 +16000,6 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e617-768d-9e3e-f61039a3d61c
   alias_id: DEC-0070
   alias_name: expose-corpus-summary-and-relationships-through-supported-cli-commands
@@ -16302,7 +16064,6 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e617-7692-822b-3df6136ce156
   alias_id: INV-0081
   alias_name: inv-0081
@@ -16383,7 +16144,6 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e617-769f-8f3f-5a1fa0356ea4
   alias_id: DEC-0101
   alias_name: dec-0101-decision-migrated
@@ -16450,7 +16210,6 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e617-76ad-9336-b3615a6e4bde
   alias_id: COMP-0012
   alias_name: compiler-pipeline-and-driver
@@ -16523,7 +16282,6 @@ entities:
     extraction_phase: extract_component
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e617-76d8-a333-e21361cd6602
   alias_id: COMP-0010
   alias_name: entity-registry-generator-and-query-surface
@@ -16596,7 +16354,6 @@ entities:
     extraction_phase: extract_component
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e617-76fa-bb3e-5c088c73ebdf
   alias_id: DEC-0098
   alias_name: dec-0098-decision-migrated
@@ -16663,7 +16420,6 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e617-7727-a81f-08c3a998a85c
   alias_id: DEC-0085
   alias_name: dec-0085-decision-migrated
@@ -16732,7 +16488,6 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e617-7736-a637-e6e472c4d4e6
   alias_id: DEC-0083
   alias_name: introduce-provisional-additive-adr-authoring-schema-v1-2
@@ -16798,7 +16553,6 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e617-7761-9a2a-5f1cd94d2de5
   alias_id: INV-0066
   alias_name: inv-0066
@@ -16868,7 +16622,6 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e617-778b-8137-22bcc675b053
   alias_id: CAP-0045
   alias_name: deterministic-corpus-orientation-surface
@@ -16934,7 +16687,6 @@ entities:
     extraction_phase: extract_capability
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e617-779d-a12e-7713d58fbc21
   alias_id: IFACE-0013
   alias_name: iface-0013
@@ -16997,7 +16749,6 @@ entities:
     extraction_phase: extract_interface
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e617-77b8-b337-17c9851e36fd
   alias_id: INV-0088
   alias_name: inv-0088
@@ -17065,7 +16816,6 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e617-77bc-8d3f-07c5c91bb5bb
   alias_id: INV-0069
   alias_name: inv-0069
@@ -17135,7 +16885,6 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e617-77cf-a43e-5f0912b04a8a
   alias_id: DEC-0064
   alias_name: record-implementation-exceptions-in-separate-objection-override-artifacts
@@ -17201,7 +16950,6 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e617-7847-b03e-35cd4d2b64e1
   alias_id: INV-0063
   alias_name: inv-0063
@@ -17270,7 +17018,6 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e617-7861-a53f-f050b9452bcf
   alias_id: DEC-0092
   alias_name: dec-0092-decision-migrated
@@ -17337,7 +17084,6 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e617-78b8-852f-9b2c984f9300
   alias_id: IFACE-0012
   alias_name: iface-0012
@@ -17400,7 +17146,6 @@ entities:
     extraction_phase: extract_interface
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e617-78d9-ba3b-b7e3e6db1b12
   alias_id: ADR-L-0019
   alias_name: canonical-entity-identity
@@ -17463,7 +17208,6 @@ entities:
     extraction_phase: extract_adr
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e617-793a-b537-a492afa6f167
   alias_id: DEC-9000
   alias_name: publish-a-deterministic-logical-adr-fragment-for-boot-readiness
@@ -17530,7 +17274,6 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e617-797f-9e3e-50212acb0456
   alias_id: DEC-0073
   alias_name: make-forward-authoring-type-prefixed-adr-alias-id-allocation-monotonic-and-non-reusable
@@ -17597,7 +17340,6 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e617-79af-950e-70ffbb8c5c43
   alias_id: INV-0091
   alias_name: inv-0091
@@ -17665,7 +17407,6 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e617-79c9-ad2a-7a26923d678d
   alias_id: INV-0071
   alias_name: inv-0071
@@ -17733,7 +17474,6 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e617-79e8-a312-992a10d3e43b
   alias_id: INV-0087
   alias_name: inv-0087
@@ -17799,7 +17539,6 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e617-7a09-bc37-afd7ae0f2927
   alias_id: DEC-0074
   alias_name: dec-0074-decision-migrated
@@ -17866,7 +17605,6 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e617-7a42-973f-626f9aa8c2c4
   alias_id: DEC-0091
   alias_name: migration-preserves-the-existing-type-prefixed-identifier-as-repository-local-governed-alias-id
@@ -17933,7 +17671,6 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e617-7a8f-823b-debcf147e747
   alias_id: DEC-0088
   alias_name: split-uuid-integrity-corruption-fail-closed-from-governed-alias-collision-repair
@@ -18000,7 +17737,6 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e617-7aae-ac34-86b62c25289b
   alias_id: DEC-0066
   alias_name: allow-projections-to-expose-governance-references-and-summary-metadata-only
@@ -18066,7 +17802,6 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e617-7abf-8f16-a6ad1f38722c
   alias_id: INV-0082
   alias_name: inv-0082
@@ -18136,7 +17871,6 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e617-7ac8-803e-e3514c4e329a
   alias_id: CAP-0051
   alias_name: stable-physical-topology-identity-migration
@@ -18203,7 +17937,6 @@ entities:
     extraction_phase: extract_capability
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e617-7aed-9a0f-a55d76a3a87a
   alias_id: INV-0012
   alias_name: inv-0012
@@ -18267,7 +18000,6 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e617-7aef-9f37-6e9c557332b3
   alias_id: INV-0077
   alias_name: inv-0077
@@ -18344,7 +18076,6 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e617-7b44-973e-c177e15805b2
   alias_id: INV-0093
   alias_name: inv-0093
@@ -18410,7 +18141,6 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e617-7b53-bf3f-cf8e0c7fdaef
   alias_id: INV-0011
   alias_name: inv-0011
@@ -18476,7 +18206,6 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e617-7b55-931f-d0126c67c176
   alias_id: DEC-0089
   alias_name: dec-0089-decision-migrated
@@ -18543,7 +18272,6 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e617-7bd0-9d3c-066089251acd
   alias_id: DEC-0086
   alias_name: add-deterministic-source-sensitive-assertion-identity-without-replacing-relationship-identity
@@ -18610,7 +18338,6 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e617-7bdc-b136-032978d92661
   alias_id: DEC-0097
   alias_name: admit-uuid-identity-only-for-independently-addressable-durable-entity-kinds
@@ -18677,7 +18404,6 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e617-7bff-b43f-2fae0178d1be
   alias_id: CAP-0052
   alias_name: governed-alias-allocation-and-uuid-integrity
@@ -18744,7 +18470,6 @@ entities:
     extraction_phase: extract_capability
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e617-7c51-b52d-b348897b7c3d
   alias_id: DEC-0084
   alias_name: dec-0084-decision-migrated
@@ -18811,7 +18536,6 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e617-7cb0-ba1c-d370072adc7c
   alias_id: DEC-0103
   alias_name: migration-preflights-before-minting-and-records-a-complete-authoritative-identity-map
@@ -18878,7 +18602,6 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e617-7ceb-a437-474762adbfc2
   alias_id: ADR-L-9000
   alias_name: kernel-boot-publication-surface
@@ -18945,7 +18668,6 @@ entities:
     extraction_phase: extract_adr
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e617-7d26-8b2d-38c2321712ef
   alias_id: DEC-0104
   alias_name: migration-preserves-alias-id-and-proposes-alias-name-deterministically-from-canonical-fields
@@ -19012,7 +18734,6 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e617-7d2b-8325-cd85ff814477
   alias_id: ADR-PC-0002
   alias_name: schema-and-contract-validation
@@ -19083,7 +18804,6 @@ entities:
     extraction_phase: extract_adr
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e617-7dbb-b23f-872b9ffc75d8
   alias_id: DEC-0065
   alias_name: bind-override-review-validity-to-adr-modified-date-and-warn-on-stale-coupling
@@ -19149,7 +18869,6 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e617-7dd5-811d-5f16482f2c3a
   alias_id: DEC-0107
   alias_name: architecture-namespace-is-stable-provider-authority-workspace-keys-are-local-routing-only
@@ -19216,7 +18935,6 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e617-7dfd-8e36-f98344f19758
   alias_id: IMPL-0018
   alias_name: translate-shared-validation-service-results-at-the-public-sdk-boundary
@@ -19277,7 +18995,6 @@ entities:
     extraction_phase: extract_implementation_decision
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e617-7e19-b51f-c06c900905ec
   alias_id: INV-0080
   alias_name: inv-0080
@@ -19352,7 +19069,6 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e617-7e4e-b23f-6494cd1f2359
   alias_id: INV-0084
   alias_name: inv-0084
@@ -19418,7 +19134,6 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e617-7e69-861a-f3040f70c2d9
   alias_id: ADR-L-0015
   alias_name: adr-governance-state-and-override-semantics
@@ -19495,7 +19210,6 @@ entities:
     extraction_phase: extract_adr
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e617-7e88-a71f-db36a33c65e7
   alias_id: DEC-0096
   alias_name: v1-3-relationship-endpoints-are-uuids
@@ -19561,7 +19275,6 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e617-7ec8-b235-dda998054d7c
   alias_id: INV-0064
   alias_name: inv-0064
@@ -19631,7 +19344,6 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e617-7ed0-9c17-6def51de03a3
   alias_id: INV-0086
   alias_name: inv-0086
@@ -19697,7 +19409,6 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e617-7ee7-9f1f-0a720dc4f1b0
   alias_id: IMPL-0011
   alias_name: route-single-scope-discovery-generation-through-the-unified-compiler-driver
@@ -19758,7 +19469,6 @@ entities:
     extraction_phase: extract_implementation_decision
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e617-7f4d-811d-4862645a55c5
   alias_id: ADR-L-0018
   alias_name: schema-v1-2-and-normalized-semantic-foundation
@@ -19841,7 +19551,6 @@ entities:
     extraction_phase: extract_adr
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e617-7f80-823f-9e52a6176f77
   alias_id: DEC-0090
   alias_name: every-normalized-identity-bearing-entity-materializes-entity-type
@@ -19907,7 +19616,6 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e617-7f8c-813f-95975602bd7d
   alias_id: DEC-0087
   alias_name: add-optional-stable-topology-ids-and-deterministic-dry-run-first-migration
@@ -19973,7 +19681,6 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e617-7f99-930b-dee9dcfa8a1f
   alias_id: INV-0065
   alias_name: inv-0065
@@ -20043,7 +19750,6 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e617-7faa-813b-d8e882418d4e
   alias_id: DEC-0093
   alias_name: keep-alias-ref-derived-and-non-authoritative
@@ -20109,7 +19815,6 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e617-7fcb-b717-247f38d13206
   alias_id: CAP-0049
   alias_name: expanded-normalized-semantic-model
@@ -20176,7 +19881,6 @@ entities:
     extraction_phase: extract_capability
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e617-7fce-8823-fdf2ce5b321f
   alias_id: IMPL-0012
   alias_name: treat-schema-and-contract-validation-as-a-component-boundary
@@ -20236,7 +19940,6 @@ entities:
     extraction_phase: extract_implementation_decision
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e617-7fe1-8d2c-cc2745c31674
   alias_id: ADR-L-0016
   alias_name: deterministic-corpus-query-and-authoring-orientation-apis
@@ -20307,7 +20010,6 @@ entities:
     extraction_phase: extract_adr
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e617-7ff5-863b-1eef71637b0f
   alias_id: ADR-L-0017
   alias_name: forward-authoring-ergonomics-for-split-physical-adr-types
@@ -20377,7 +20079,6 @@ entities:
     extraction_phase: extract_adr
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e618-7113-9b36-4437b97cd744
   alias_id: IMPL-0019
   alias_name: contain-compiler-internals-behind-public-and-cli-application-service-adapters
@@ -20438,7 +20139,6 @@ entities:
     extraction_phase: extract_implementation_decision
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e618-713e-a017-5b417ef9ac9f
   alias_id: SYS-0002
   alias_name: sys-0002-adr-kit-authoring-compiler-and-validation-system
@@ -20516,7 +20216,6 @@ entities:
     extraction_phase: extract_system
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e618-717e-933f-f02a053e8ac5
   alias_id: IFACE-0021
   alias_name: projectscope
@@ -20579,7 +20278,6 @@ entities:
     extraction_phase: extract_interface
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e618-719b-bb3a-f13ab0906811
   alias_id: COMP-0017
   alias_name: project-scope-resolver
@@ -20655,7 +20353,6 @@ entities:
     extraction_phase: extract_component
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e618-722c-b527-14eb4ee67d88
   alias_id: IMPL-0024
   alias_name: use-dataclasses-for-projectscope
@@ -20715,7 +20412,6 @@ entities:
     extraction_phase: extract_implementation_decision
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e618-73ce-aa2d-101276d64e33
   alias_id: ADR-PC-0004
   alias_name: repository-boundary-and-normalized-semantic-model
@@ -20782,7 +20478,6 @@ entities:
     extraction_phase: extract_adr
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e618-74b2-a83e-e41c7d8c9f37
   alias_id: ADR-PC-0005
   alias_name: adr-pc-0005-generated-artifact-integrity-validation
@@ -20850,7 +20545,6 @@ entities:
     extraction_phase: extract_adr
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e618-74d1-9a1f-37e2c2982a51
   alias_id: COMP-0013
   alias_name: repository-boundary-component
@@ -20923,7 +20617,6 @@ entities:
     extraction_phase: extract_component
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e618-74e7-882f-04f858aecaf0
   alias_id: IFACE-0014
   alias_name: iface-0014
@@ -20985,7 +20678,6 @@ entities:
     extraction_phase: extract_interface
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e618-7507-953e-19e6335e3b7a
   alias_id: COMP-0015
   alias_name: brownfield-onboarding-and-canonical-normalization
@@ -21056,7 +20748,6 @@ entities:
     extraction_phase: extract_component
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e618-76f2-b72f-5316b89484aa
   alias_id: IMPL-0022
   alias_name: adopt-red-green-refactor-tdd-methodology
@@ -21117,7 +20808,6 @@ entities:
     extraction_phase: extract_implementation_decision
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e618-7787-b43f-a3e5cb264dd5
   alias_id: ADR-PC-0006
   alias_name: adr-pc-0006-brownfield-onboarding-and-canonical-normalization
@@ -21185,7 +20875,6 @@ entities:
     extraction_phase: extract_adr
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e618-781c-831f-0d5fe24f7d85
   alias_id: COMP-0014
   alias_name: generated-artifact-integrity-validation
@@ -21257,7 +20946,6 @@ entities:
     extraction_phase: extract_component
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e618-783a-8511-196b6a627b3e
   alias_id: IFACE-0015
   alias_name: iface-0015
@@ -21320,7 +21008,6 @@ entities:
     extraction_phase: extract_interface
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e618-79df-a73f-edc9dead8526
   alias_id: SYS-0001
   alias_name: sys-0001-adr-architecture-kit-discovery-and-indexing-system
@@ -21389,7 +21076,6 @@ entities:
     extraction_phase: extract_system
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e618-79e6-8b3f-27b30946373a
   alias_id: IFACE-0025
   alias_name: projectscoperesolver
@@ -21452,7 +21138,6 @@ entities:
     extraction_phase: extract_interface
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e618-7ad6-903b-955fab187e68
   alias_id: IFACE-0016
   alias_name: iface-0016
@@ -21514,7 +21199,6 @@ entities:
     extraction_phase: extract_interface
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e618-7b04-b51a-7fbc8721b160
   alias_id: IMPL-0020
   alias_name: reuse-private-normalized-bundle-assembly-across-repository-and-sdk-compilation
@@ -21575,7 +21259,6 @@ entities:
     extraction_phase: extract_implementation_decision
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e618-7b21-ab3d-aaccdca13bfb
   alias_id: IMPL-0016
   alias_name: treat-brownfield-onboarding-and-canonical-normalization-as-an-explicit-component-capability
@@ -21637,7 +21320,6 @@ entities:
     extraction_phase: extract_implementation_decision
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e618-7b3e-813b-a449881b6adb
   alias_id: ADR-PS-0001
   alias_name: adr-architecture-kit-discovery-and-indexing-system
@@ -21706,7 +21388,6 @@ entities:
     extraction_phase: extract_adr
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e618-7b76-843f-cfe21ceb2ea6
   alias_id: ADR-PC-0003
   alias_name: adr-pc-0003-compiler-pipeline-and-driver
@@ -21776,7 +21457,6 @@ entities:
     extraction_phase: extract_adr
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e618-7c0b-852f-c6d7f5b57322
   alias_id: IMPL-0013
   alias_name: keep-compiler-orchestration-as-a-dedicated-component
@@ -21837,7 +21517,6 @@ entities:
     extraction_phase: extract_implementation_decision
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e618-7d01-943b-f749d6ba44ac
   alias_id: IMPL-0017
   alias_name: record-the-phase-0-facade-deferral-and-constrain-future-assembler-dependencies
@@ -21898,7 +21577,6 @@ entities:
     extraction_phase: extract_implementation_decision
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e618-7d04-9337-4aa2d3258507
   alias_id: ADR-PS-0002
   alias_name: adr-kit-authoring-compiler-and-validation-system
@@ -21975,7 +21653,6 @@ entities:
     extraction_phase: extract_adr
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e618-7d0d-ae2e-d65c2d83b72d
   alias_id: IMPL-0015
   alias_name: separate-artifact-integrity-validation-from-discovery-indexing-authority
@@ -22035,7 +21712,6 @@ entities:
     extraction_phase: extract_implementation_decision
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e618-7dab-893c-05d961de3a7d
   alias_id: IFACE-0019
   alias_name: iface-0019
@@ -22099,7 +21775,6 @@ entities:
     extraction_phase: extract_interface
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e618-7e7b-813b-2a48de1d809a
   alias_id: IFACE-0018
   alias_name: iface-0018
@@ -22163,7 +21838,6 @@ entities:
     extraction_phase: extract_interface
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019fee89-e618-7f57-861b-526925c708f6
   alias_id: IMPL-0014
   alias_name: treat-the-repository-model-boundary-as-a-first-class-component
@@ -22223,7 +21897,6 @@ entities:
     extraction_phase: extract_implementation_decision
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019ff142-dd48-72ff-9e3f-81ca4a779db7
   alias_id: DEC-0108
   alias_name: emit-adr-human-projections-under-typed-adr-projection-paths
@@ -22296,7 +21969,6 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019ff142-dd48-7ef8-8d3e-576f4bb02dc3
   alias_id: DEC-0109
   alias_name: human-adr-projections-render-compiler-derived-relationship-semantics-only
@@ -22366,7 +22038,6 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019ff22a-bb5f-7214-8818-40820f8c553e
   alias_id: DEC-0111
   alias_name: allow-deterministic-semantic-intermediate-model-for-documentation-projection
@@ -22436,7 +22107,6 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019ff22a-bb5f-76eb-8a31-546eeba55dcb
   alias_id: DEC-0113
   alias_name: documentation-projections-reflect-supported-boundaries-without-redefining-them
@@ -22507,7 +22177,6 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019ff22a-bb5f-7779-912f-040cdf1b54b8
   alias_id: INV-0100
   alias_name: inv-0100
@@ -22580,7 +22249,6 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019ff22a-bb5f-77ed-a63f-98f0455fdd1e
   alias_id: DEC-0114
   alias_name: isolate-repository-specific-documentation-projection-orientation-by-scope
@@ -22648,7 +22316,6 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019ff22a-bb5f-7926-a33c-b66f72343219
   alias_id: DEC-0115
   alias_name: preserve-legacy-generic-system-overview-generation-as-compatibility-only
@@ -22718,7 +22385,6 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019ff22a-bb5f-7b93-a600-f587022aeffd
   alias_id: INV-0101
   alias_name: inv-0101
@@ -22791,7 +22457,6 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019ff22a-bb5f-7bfc-851d-938bffc81281
   alias_id: DEC-0110
   alias_name: classify-documentation-projection-inputs-as-derived-or-authored
@@ -22861,7 +22526,6 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019ff22a-bb5f-7c77-a223-1dab5e8c814d
   alias_id: INV-0099
   alias_name: inv-0099
@@ -22933,7 +22597,6 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019ff22a-bb5f-7d9e-973f-b9008898a8c9
   alias_id: DEC-0112
   alias_name: require-projection-source-closure-for-generated-documentation-freshness
@@ -23003,7 +22666,6 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019ff22a-bb5f-7fca-b021-b3cbc68ddde2
   alias_id: INV-0102
   alias_name: inv-0102
@@ -23076,7 +22738,6 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019ffdba-3c42-700c-ac3f-8135e0139dfb
   alias_id: DEC-0116
   alias_name: canonical-v15-claims-require-relationship-target-uuid-and-confidence
@@ -23142,7 +22803,6 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019ffdba-3c42-7021-923f-bf8e6bd06d07
   alias_id: IMPL-0029
   alias_name: keep-legacy-alias-decorators-separate-from-uuid-claim-composition
@@ -23203,7 +22863,6 @@ entities:
     extraction_phase: extract_implementation_decision
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019ffdba-3c42-705f-9935-76ed45c32cd7
   alias_id: DEC-0121
   alias_name: canonical-output-order-is-deterministic-and-idempotent
@@ -23269,7 +22928,6 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019ffdba-3c42-70da-b33d-efc003269c42
   alias_id: ADR-PC-0007
   alias_name: semantic-attribution-embodiment
@@ -23337,7 +22995,6 @@ entities:
     extraction_phase: extract_adr
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019ffdba-3c42-71ba-b81f-a2a24830abd6
   alias_id: CAP-0054
   alias_name: repository-aware-attribution-normalization
@@ -23403,7 +23060,6 @@ entities:
     extraction_phase: extract_capability
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019ffdba-3c42-7230-8d39-ef047f583291
   alias_id: INV-0111
   alias_name: inv-0111
@@ -23473,7 +23129,6 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019ffdba-3c42-7282-931f-92503f4079cb
   alias_id: DEC-0120
   alias_name: legacy-evidence-normalizes-only-with-architecture-state
@@ -23539,7 +23194,6 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019ffdba-3c42-729a-a83f-a40c53d278fd
   alias_id: DEC-0124
   alias_name: extractors-and-legacy-decorators-must-not-load-architecture-state
@@ -23605,7 +23259,6 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019ffdba-3c42-72d4-982d-88224ca69e68
   alias_id: INV-0112
   alias_name: inv-0112
@@ -23674,7 +23327,6 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019ffdba-3c42-7304-ab2f-bcd01cc6f9d3
   alias_id: DEC-0123
   alias_name: coverage-distinguishes-unique-semantic-links-from-evidence-occurrence
@@ -23740,7 +23392,6 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019ffdba-3c42-73c1-b11c-d0a177cd522b
   alias_id: DEC-0117
   alias_name: raw-evidence-must-not-require-target-entity-type
@@ -23806,7 +23457,6 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019ffdba-3c42-745c-9e37-85f7696cd43c
   alias_id: CAP-0055
   alias_name: unique-link-attribution-coverage
@@ -23872,7 +23522,6 @@ entities:
     extraction_phase: extract_capability
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019ffdba-3c42-74ea-993d-990027e528c0
   alias_id: INV-0106
   alias_name: inv-0106
@@ -23945,7 +23594,6 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019ffdba-3c42-7578-b43f-ad19109d59d9
   alias_id: CAP-0053
   alias_name: semantic-implementation-attribution
@@ -24012,7 +23660,6 @@ entities:
     extraction_phase: extract_capability
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019ffdba-3c42-75d5-b93b-f32f35152e32
   alias_id: COMP-0022
   alias_name: semantic-attribution-embodiment
@@ -24085,7 +23732,6 @@ entities:
     extraction_phase: extract_component
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019ffdba-3c42-7690-8f1b-ad8deaeed484
   alias_id: DEC-0122
   alias_name: duplicate-semantic-claims-follow-provenance-aware-fail-closed-rules
@@ -24151,7 +23797,6 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019ffdba-3c42-7751-a81c-d738f411b299
   alias_id: DEC-0119
   alias_name: evidence-claim-verbs-are-not-architecture-relationship-types
@@ -24217,7 +23862,6 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019ffdba-3c42-77f6-903f-7753342c5b5f
   alias_id: IFACE-0034
   alias_name: iface-0034
@@ -24281,7 +23925,6 @@ entities:
     extraction_phase: extract_interface
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019ffdba-3c42-7a6d-9717-d8d96b6fa75d
   alias_id: INV-0110
   alias_name: inv-0110
@@ -24352,7 +23995,6 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019ffdba-3c42-7c4a-a737-f6751a265d60
   alias_id: ADR-L-0020
   alias_name: semantic-implementation-attribution-and-cross-layer-architecture-relationships
@@ -24429,7 +24071,6 @@ entities:
     extraction_phase: extract_adr
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019ffdba-3c42-7c85-a63f-689e71c5236a
   alias_id: INV-0104
   alias_name: inv-0104
@@ -24502,7 +24143,6 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019ffdba-3c42-7cbe-a121-06d3437129ed
   alias_id: INV-0103
   alias_name: inv-0103
@@ -24572,7 +24212,6 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019ffdba-3c42-7d33-9e1b-e22bc168fa7c
   alias_id: INV-0105
   alias_name: inv-0105
@@ -24645,7 +24284,6 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019ffdba-3c42-7d5b-b52f-b36c3000f299
   alias_id: IFACE-0035
   alias_name: iface-0035
@@ -24709,7 +24347,6 @@ entities:
     extraction_phase: extract_interface
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019ffdba-3c42-7da9-ac3e-879c2e5a88a4
   alias_id: INV-0108
   alias_name: inv-0108
@@ -24781,7 +24418,6 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019ffdba-3c42-7e3a-a037-3b6c3087ef0a
   alias_id: INV-0107
   alias_name: inv-0107
@@ -24851,7 +24487,6 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019ffdba-3c42-7e86-a03e-f7df07da6757
   alias_id: IMPL-0028
   alias_name: generate-python-and-typescript-shims-from-the-v15-vocabulary
@@ -24912,7 +24547,6 @@ entities:
     extraction_phase: extract_implementation_decision
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019ffdba-3c42-7ec4-852c-06396e99d050
   alias_id: INV-0109
   alias_name: inv-0109
@@ -24982,7 +24616,6 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 019ffdba-3c42-7f40-b339-204a447bec81
   alias_id: DEC-0118
   alias_name: apply-the-attribution-matrix-to-repository-resolved-entity-type
@@ -25048,7 +24681,6 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 01a002b7-e001-7010-8401-010101010101
   alias_id: DEC-0140
   alias_name: distinguish-effective-relationships-from-assertions
@@ -25114,7 +24746,6 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 01a002b7-e002-7020-8802-020202020202
   alias_id: DEC-0141
   alias_name: inverse-traversal-reuses-effective-relationship-identity
@@ -25181,7 +24812,6 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 01a002b7-e003-7030-8c03-030303030303
   alias_id: DEC-0142
   alias_name: govern-new-entity-alias-namespaces-explicitly
@@ -25248,7 +24878,6 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 01a002b7-e004-7040-9004-040404040404
   alias_id: DEC-0143
   alias_name: bind-identity-changes-to-family-scoped-versions
@@ -25315,7 +24944,6 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 01a002b7-e005-7050-9405-050505050505
   alias_id: DEC-0144
   alias_name: preserve-graph-vnext-compatibility-posture
@@ -25381,7 +25009,6 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 01a002b7-e006-7060-9806-060606060606
   alias_id: DEC-0145
   alias_name: define-sealed-universal-allocation-map-lifecycle
@@ -25447,7 +25074,6 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 01a002b7-e007-7070-9c07-070707070707
   alias_id: DEC-0146
   alias_name: block-universal-migration-until-human-gates-close
@@ -25513,7 +25139,6 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 01a002b7-e008-7080-a008-080808080808
   alias_id: INV-0138
   alias_name: relationship-and-assertion-identities-are-distinct
@@ -25581,7 +25206,6 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 01a002b7-e009-7090-a409-090909090909
   alias_id: INV-0139
   alias_name: derived-inverses-reuse-effective-relationship-identity
@@ -25649,7 +25273,6 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 01a002b7-e00a-70a0-a80a-0a0a0a0a0a0a
   alias_id: INV-0140
   alias_name: migration-requires-explicit-human-gates-and-sealed-evidence
@@ -25717,7 +25340,6 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 01a00626-c5cd-7064-8a74-e54d0179e4b9
   alias_id: ADR-L-0021
   alias_name: family-first-schema-contract-taxonomy
@@ -25785,7 +25407,6 @@ entities:
     extraction_phase: extract_adr
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 01a00627-97d8-7280-81f3-e22a264bc7c3
   alias_id: DEC-0126
   alias_name: canonical-repository-schema-authority
@@ -25851,7 +25472,6 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 01a00627-97d8-73c0-8ef4-f0e87ad8c19b
   alias_id: DEC-0125
   alias_name: family-first-canonical-schema-placement
@@ -25917,7 +25537,6 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 01a00627-97d8-7528-9748-aaa7df6c2fe2
   alias_id: DEC-0127
   alias_name: taxonomy-relocation-is-semantic-neutral
@@ -25983,7 +25602,6 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 01a00627-97d8-76cd-853b-3e17275c4b76
   alias_id: INV-0129
   alias_name: one-canonical-schema-authority
@@ -26049,7 +25667,6 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 01a00627-97d8-7e92-a0ca-e572a89fef75
   alias_id: INV-0128
   alias_name: taxonomy-preserves-schema-membership-and-bytes
@@ -26115,7 +25732,6 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 01a00643-1bfc-7017-a03d-b61439e4cb2b
   alias_id: INV-0136
   alias_name: identity-migration-is-sealed-atomic-and-parity-proven
@@ -26181,7 +25797,6 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 01a00643-1bfc-715b-a837-a062f86a6192
   alias_id: INV-0133
   alias_name: local-value-objects-use-keys-not-ids
@@ -26249,7 +25864,6 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 01a00643-1bfc-71ef-8e1f-694949767d59
   alias_id: DEC-0135
   alias_name: promote-durable-authoring-and-governance-records
@@ -26316,7 +25930,6 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 01a00643-1bfc-729a-833f-5a3bca5af998
   alias_id: DEC-0136
   alias_name: bind-all-future-entity-schemas-to-universal-identity
@@ -26382,7 +25995,6 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 01a00643-1bfc-72a1-af3d-7cca88f676f7
   alias_id: DEC-0134
   alias_name: distinguish-projection-keys-from-entity-identity
@@ -26448,7 +26060,6 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 01a00643-1bfc-7528-951b-a457433ae5f4
   alias_id: DEC-0138
   alias_name: migrate-with-sealed-map-and-semantic-parity
@@ -26514,7 +26125,6 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 01a00643-1bfc-7545-b11f-aebc124672f4
   alias_id: INV-0134
   alias_name: projections-reuse-uuid-or-use-deterministic-keys
@@ -26582,7 +26192,6 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 01a00643-1bfc-757c-ba3a-63a007e981d0
   alias_id: INV-0130
   alias_name: every-canonical-entity-has-universal-identity-envelope
@@ -26650,7 +26259,6 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 01a00643-1bfc-766c-ba3c-2f5aa66d59f6
   alias_id: INV-0131
   alias_name: canonical-entity-references-use-uuids
@@ -26716,7 +26324,6 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 01a00643-1bfc-7676-812e-219c659674b2
   alias_id: DEC-0131
   alias_name: define-entityhood-by-independent-addressability
@@ -26782,7 +26389,6 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 01a00643-1bfc-7840-811f-831007e661b2
   alias_id: INV-0137
   alias_name: compatibility-removal-requires-explicit-reviewed-disposition
@@ -26848,7 +26454,6 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 01a00643-1bfc-788c-911b-83a4725a8de1
   alias_id: ADR-L-0022
   alias_name: universal-uuidv7-entity-identity
@@ -26915,7 +26520,6 @@ entities:
     extraction_phase: extract_adr
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 01a00643-1bfc-7922-9c18-f6938ee01c41
   alias_id: DEC-0132
   alias_name: require-uuid-canonical-entity-references
@@ -26981,7 +26585,6 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 01a00643-1bfc-7936-bb29-afde4c57721d
   alias_id: DEC-0139
   alias_name: gate-obsolete-compatibility-removal-explicitly
@@ -27047,7 +26650,6 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 01a00643-1bfc-7b7e-883d-6c7dfff3325f
   alias_id: DEC-0133
   alias_name: keep-owner-local-value-objects-identity-free
@@ -27113,7 +26715,6 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 01a00643-1bfc-7c3d-b935-01f39da8a0a5
   alias_id: DEC-0130
   alias_name: require-universal-uuidv7-entity-identity-envelope
@@ -27182,7 +26783,6 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 01a00643-1bfc-7dd1-a439-31a110f8ed50
   alias_id: INV-0132
   alias_name: aliases-never-define-or-retarget-identity
@@ -27248,7 +26848,6 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 01a00643-1bfc-7e7a-af3f-0484ebc351c9
   alias_id: DEC-0137
   alias_name: version-universal-identity-as-semantic-contract-change
@@ -27315,7 +26914,6 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 01a00643-1bfc-7f05-b617-6960fa562bea
   alias_id: INV-0135
   alias_name: schema-admission-declares-and-enforces-identity-boundaries
@@ -27381,7 +26979,6 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 01a00644-1bfc-7abc-8aaa-111111111111
   alias_id: ADR-L-0023
   alias_name: consumer-semantic-extension-contract
@@ -27450,7 +27047,6 @@ entities:
     extraction_phase: extract_adr
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 01a00644-1bfd-7abc-8aaa-222222222222
   alias_id: DEC-0147
   alias_name: canonize-envelope-open-qualified-semantic-namespace
@@ -27515,7 +27111,6 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 01a00644-1bfe-7abc-8aaa-333333333333
   alias_id: DEC-0148
   alias_name: author-explicit-extension-entity-and-relationship-sections
@@ -27581,7 +27176,6 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 01a00644-1bff-7abc-8aaa-444444444444
   alias_id: DEC-0149
   alias_name: require-consumer-owned-qualified-extension-types
@@ -27646,7 +27240,6 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 01a00644-1c00-7abc-8aaa-555555555555
   alias_id: DEC-0150
   alias_name: bound-extension-properties-and-require-rationale
@@ -27710,7 +27303,6 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 01a00644-1c01-7abc-8aaa-666666666666
   alias_id: DEC-0151
   alias_name: make-extension-graph-semantics-explicit
@@ -27774,7 +27366,6 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 01a00644-1c02-7abc-8aaa-777777777777
   alias_id: DEC-0152
   alias_name: preserve-consumer-alias-allocation-authority
@@ -27839,7 +27430,6 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 01a00644-1c03-7abc-8aaa-888888888888
   alias_id: DEC-0153
   alias_name: distinguish-canonical-and-compatibility-relationships
@@ -27904,7 +27494,6 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 01a00644-1c04-7abc-8aaa-999999999999
   alias_id: DEC-0154
   alias_name: preserve-unknown-valid-extensions-through-normalization
@@ -27970,7 +27559,6 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 01a00644-1c05-7abc-8aaa-aaaaaaaaaaaa
   alias_id: INV-0141
   alias_name: every-extension-record-has-universal-envelope
@@ -28036,7 +27624,6 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 01a00644-1c06-7abc-8aaa-bbbbbbbbbbbb
   alias_id: INV-0142
   alias_name: extension-types-are-qualified-and-consumer-owned
@@ -28103,7 +27690,6 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 01a00644-1c07-7abc-8aaa-cccccccccccc
   alias_id: INV-0143
   alias_name: extension-properties-never-imply-relationships
@@ -28167,7 +27753,6 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 01a00644-1c08-7abc-8aaa-dddddddddddd
   alias_id: INV-0144
   alias_name: extension-payload-is-explicit-and-opaque
@@ -28233,7 +27818,6 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 01a00644-1c09-7abc-8aaa-eeeeeeeeeeee
   alias_id: INV-0145
   alias_name: canonical-relationship-identity-is-persisted
@@ -28299,7 +27883,6 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 01a00644-1c0a-7abc-8aaa-ffffffffffff
   alias_id: INV-0146
   alias_name: valid-extensions-round-trip-without-loss
@@ -28365,7 +27948,6 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 01a00644-1c0b-7abc-8aaa-121212121212
   alias_id: INV-0147
   alias_name: generators-never-mint-extension-identity
@@ -28431,7 +28013,6 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 01a00644-1c0c-7abc-8aaa-131313131313
   alias_id: INV-0148
   alias_name: local-extension-endpoints-are-uuid-canonical
@@ -28497,7 +28078,6 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 01a02d38-7cf3-700a-880b-182eb0956a24
   alias_id: DEC-0159
   alias_name: conformance-levels-are-distinct
@@ -28563,7 +28143,6 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 01a02d38-7cf3-7017-8767-4978a49c35f0
   alias_id: INV-0154
   alias_name: node-loading-requires-baseline-contracts
@@ -28631,7 +28210,6 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 01a02d38-7cf3-7155-8973-148ceb722f1b
   alias_id: INV-0151
   alias_name: canonical-schema-mirror-is-byte-exact
@@ -28697,7 +28275,6 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 01a02d38-7cf3-7177-8edc-dfc953ae9947
   alias_id: DEC-0166
   alias_name: node-linkage-remains-derived-evidence
@@ -28763,7 +28340,6 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 01a02d38-7cf3-7194-8e04-4339c496d93a
   alias_id: DEC-0155
   alias_name: language-neutral-adr-kit-semantic-authority
@@ -28829,7 +28405,6 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 01a02d38-7cf3-724d-83e0-8739d6eeeeb5
   alias_id: DEC-0162
   alias_name: explicit-browser-node-boundaries
@@ -28895,7 +28470,6 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 01a02d38-7cf3-7271-8b60-20c2a3f50ae6
   alias_id: DEC-0165
   alias_name: node-index-first-repository-loading
@@ -28961,7 +28535,6 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 01a02d38-7cf3-7418-8bba-4fa7ecdd2151
   alias_id: DEC-0158
   alias_name: capability-scoped-conformance
@@ -29027,7 +28600,6 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 01a02d38-7cf3-74b3-8297-f3df87d11f35
   alias_id: DEC-0163
   alias_name: typescript-contract-support-is-narrow
@@ -29093,7 +28665,6 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 01a02d38-7cf3-74eb-896e-01f6f7dd53c1
   alias_id: INV-0152
   alias_name: browser-entrypoints-are-node-free
@@ -29159,7 +28730,6 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 01a02d38-7cf3-7532-8d1e-2c81adf25864
   alias_id: DEC-0167
   alias_name: shared-release-lineage
@@ -29225,15 +28795,14 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 01a02d38-7cf3-7625-8e95-7fc0f62d7b09
   alias_id: CAP-9002
   alias_name: typescript-node-browser-consumer-distribution
   alias_ref: CAP-9002:typescript-node-browser-consumer-distribution
   entity_type: capability
   name: TypeScript Node and Browser Consumer Distribution
-  summary: Provide a read-only framework-neutral TypeScript package with explicit
-    browser-safe and Node-only subpaths.
+  summary: Provide a framework-neutral TypeScript package with peer Node host capabilities
+    and an explicitly constrained browser profile.
   uri: adr://adr-architecture-kit/entities/01a02d38-7cf3-7625-8e95-7fc0f62d7b09
   created_at: '2026-08-23T06:04:31.859Z'
   entity_fingerprint: sha256:43b903ad17757a72a474fe46c58873387c4ebf94707a1c9794dec0a3a5f7e905
@@ -29291,18 +28860,18 @@ entities:
     extraction_phase: extract_capability
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 01a02d38-7cf3-7696-8323-e760deca8334
   alias_id: INV-0153
-  alias_name: typescript-v1-is-read-only
-  alias_ref: INV-0153:typescript-v1-is-read-only
+  alias_name: browser-typescript-profile-is-read-only
+  alias_ref: INV-0153:browser-typescript-profile-is-read-only
   entity_type: invariant
   name: INV-0153
-  summary: TypeScript v1 MUST perform no repository writes identity allocation graph
-    admission authoring mutation network access or import-time side effects.
+  summary: Browser-safe TypeScript entry points MUST perform no filesystem writes,
+    identity allocation, graph admission, authoring mutation, network access, or import-time
+    side effects.
   uri: adr://adr-architecture-kit/entities/01a02d38-7cf3-7696-8323-e760deca8334
   created_at: '2026-08-23T06:04:31.859Z'
-  entity_fingerprint: sha256:8bbcd7a7729cf32a10cd6e551dc54b092b3b855b3df6a5397e3f7b24899a33f2
+  entity_fingerprint: sha256:225da584bbb54f19ef0a5d1bcea1e7a5a5c9c0a2496828a7a26dba6cd79cc4e6
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -29312,15 +28881,16 @@ entities:
   metadata:
     adr_id: 01a02d38-7cf3-7b3c-87ec-1c5f08490c6e
     adr_alias_id: ADR-L-0024
-    scope: global
-    statement: TypeScript v1 MUST perform no repository writes identity allocation
-      graph admission authoring mutation network access or import-time side effects.
+    scope: browser
+    statement: Browser-safe TypeScript entry points MUST perform no filesystem writes,
+      identity allocation, graph admission, authoring mutation, network access, or
+      import-time side effects.
     enforcement_level: must
     declaration_mode: local
     upheld_by_decisions: []
     supersedes: []
     alias_id: INV-0153
-    alias_name: typescript-v1-is-read-only
+    alias_name: browser-typescript-profile-is-read-only
   relationships:
     declared_in:
     - 01a02d38-7cf3-7b3c-87ec-1c5f08490c6e
@@ -29357,7 +28927,6 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 01a02d38-7cf3-769e-8b24-6c0df4edf9af
   alias_id: INV-0156
   alias_name: unsupported-contract-versions-fail-explicitly
@@ -29423,19 +28992,18 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 01a02d38-7cf3-7765-8a96-0cdd35f55df5
   alias_id: DEC-0161
-  alias_name: read-only-typescript-release-boundary
-  alias_ref: DEC-0161:read-only-typescript-release-boundary
+  alias_name: browser-typescript-profile-is-constrained
+  alias_ref: DEC-0161:browser-typescript-profile-is-constrained
   entity_type: decision
-  name: The first TypeScript release is read-only and excludes authoring identity
-    allocation graph admission CLI MCP and repository writes
-  summary: Consumer safety and authority ownership require a deliberately bounded
-    first release.
+  name: Browser-safe TypeScript entry points are constrained while the TypeScript/Node
+    host binding is a peer host capability surface
+  summary: Browser execution lacks filesystem and repository authority; that limitation
+    must not be generalized to Node.
   uri: adr://adr-architecture-kit/entities/01a02d38-7cf3-7765-8a96-0cdd35f55df5
   created_at: '2026-08-23T06:04:31.859Z'
-  entity_fingerprint: sha256:474bc93ed2ab37731a940fd3ea34f517dccb965aed8d180b8a9fa58f5a2b77cd
+  entity_fingerprint: sha256:acaa6eb37f955f90e10a990aab159e231c32955e368fcf17e1b867db02ca2f28
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -29451,7 +29019,7 @@ entities:
     governs_components: []
     supersedes: []
     refines: []
-    alias_name: read-only-typescript-release-boundary
+    alias_name: browser-typescript-profile-is-constrained
     alias_id: DEC-0161
   relationships:
     declared_in:
@@ -29489,7 +29057,6 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 01a02d38-7cf3-78dc-8d0f-4d4a41000fe3
   alias_id: DEC-0160
   alias_name: canonical-schema-bytes-remain-shared
@@ -29555,7 +29122,6 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 01a02d38-7cf3-790b-8493-b1499943f075
   alias_id: INV-0149
   alias_name: bindings-never-redefine-semantic-authority
@@ -29623,7 +29189,6 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 01a02d38-7cf3-79cf-8174-b9f50adaf0bf
   alias_id: INV-0155
   alias_name: linkage-never-enters-graph-authority
@@ -29689,7 +29254,6 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 01a02d38-7cf3-7a6f-8b71-a3624877c1b3
   alias_id: DEC-0156
   alias_name: official-typescript-consumer-package
@@ -29755,7 +29319,6 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 01a02d38-7cf3-7b3c-87ec-1c5f08490c6e
   alias_id: ADR-L-0024
   alias_name: cross-language-consumer-bindings-and-typescript-distribution
@@ -29787,7 +29350,7 @@ entities:
     - node
     - browser
     - conformance
-    - read-only
+    - host-parity
     implementation_authority: null
     related_reviews: []
     related_overrides: []
@@ -29832,7 +29395,6 @@ entities:
     extraction_phase: extract_adr
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 01a02d38-7cf3-7b62-80b7-c907b9f972d6
   alias_id: DEC-0157
   alias_name: consumer-binding-contract-one-point-zero
@@ -29898,7 +29460,6 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 01a02d38-7cf3-7c3b-85b4-f2e1328d8363
   alias_id: DEC-0164
   alias_name: binding-local-fingerprints
@@ -29964,7 +29525,70 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
+- id: 01a02d38-7cf3-7c3b-85b4-f2e1328d8370
+  alias_id: DEC-0183
+  alias_name: typescript-node-is-peer-host-binding
+  alias_ref: DEC-0183:typescript-node-is-peer-host-binding
+  entity_type: decision
+  name: TypeScript/Node is a peer host-runtime binding for supported ADR-Kit capabilities
+  summary: Node services such as STE Runtime must consume repository-backed ADR-Kit
+    operations without CLI or Python subprocess integration.
+  uri: adr://adr-architecture-kit/entities/01a02d38-7cf3-7c3b-85b4-f2e1328d8370
+  created_at: '2026-08-23T06:04:31.859Z'
+  entity_fingerprint: sha256:fee5dc8f3a1f36bdf67a54c226f0cee95cac9496281575ecd95f17d61531852f
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a02d38-7cf3-7b3c-87ec-1c5f08490c6e#01a02d38-7cf3-7c3b-85b4-f2e1328d8370
+    artifact_path: adrs/logical/ADR-L-0024-cross-language-consumer-bindings-and-typescript-distribution.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a02d38-7cf3-7b3c-87ec-1c5f08490c6e
+    adr_alias_id: ADR-L-0024
+    related_invariants: []
+    enforces_invariants: []
+    enables_capabilities: []
+    governs_components: []
+    supersedes: []
+    refines: []
+    alias_name: typescript-node-is-peer-host-binding
+    alias_id: DEC-0183
+  relationships:
+    declared_in:
+    - 01a02d38-7cf3-7b3c-87ec-1c5f08490c6e
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    consumes_interface: []
+    composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a02d38-7cf3-7b3c-87ec-1c5f08490c6e#01a02d38-7cf3-7c3b-85b4-f2e1328d8370
+    extraction_phase: extract_decision
+    classification: explicit
+    generator: adr-architecture-index
 - id: 01a02d38-7cf3-7dfe-80d8-28c51db97e18
   alias_id: CAP-9001
   alias_name: capability-scoped-consumer-binding
@@ -30030,7 +29654,6 @@ entities:
     extraction_phase: extract_capability
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 01a02d38-7cf3-7e8e-8a34-0865a8dd73af
   alias_id: INV-0150
   alias_name: conformance-is-capability-intersection-scoped
@@ -30096,7 +29719,139 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
+- id: 01a02d38-7cf3-7e8e-8a34-0865a8dd73b0
+  alias_id: INV-0163
+  alias_name: host-capability-parity-is-default
+  alias_ref: INV-0163:host-capability-parity-is-default
+  entity_type: invariant
+  name: INV-0163
+  summary: Python and TypeScript/Node host bindings MUST expose equivalent supported
+    ADR-Kit capabilities and MUST NOT diverge without an accepted architectural exception.
+  uri: adr://adr-architecture-kit/entities/01a02d38-7cf3-7e8e-8a34-0865a8dd73b0
+  created_at: '2026-08-23T06:04:31.859Z'
+  entity_fingerprint: sha256:647c1e830577573c730a8490b2ceb20a6f274c09b27903ffc4a361349e73e31d
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a02d38-7cf3-7b3c-87ec-1c5f08490c6e#01a02d38-7cf3-7e8e-8a34-0865a8dd73b0
+    artifact_path: adrs/logical/ADR-L-0024-cross-language-consumer-bindings-and-typescript-distribution.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a02d38-7cf3-7b3c-87ec-1c5f08490c6e
+    adr_alias_id: ADR-L-0024
+    scope: global
+    statement: Python and TypeScript/Node host bindings MUST expose equivalent supported
+      ADR-Kit capabilities and MUST NOT diverge without an accepted architectural
+      exception.
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions: []
+    supersedes: []
+    alias_id: INV-0163
+    alias_name: host-capability-parity-is-default
+  relationships:
+    declared_in:
+    - 01a02d38-7cf3-7b3c-87ec-1c5f08490c6e
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    consumes_interface: []
+    composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a02d38-7cf3-7b3c-87ec-1c5f08490c6e#01a02d38-7cf3-7e8e-8a34-0865a8dd73b0
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
+- id: 01a02d38-7cf3-7e8e-8a34-0865a8dd73b1
+  alias_id: INV-0164
+  alias_name: host-parity-uses-shared-semantic-authority
+  alias_ref: INV-0164:host-parity-uses-shared-semantic-authority
+  entity_type: invariant
+  name: INV-0164
+  summary: TypeScript/Node host parity MUST use one canonical semantic implementation
+    or authority-preserving portable execution boundary and MUST NOT create a second
+    compiler or validator authority.
+  uri: adr://adr-architecture-kit/entities/01a02d38-7cf3-7e8e-8a34-0865a8dd73b1
+  created_at: '2026-08-23T06:04:31.859Z'
+  entity_fingerprint: sha256:158d490682e608a4bb18138ddd0501aade8ae3bd3c975776865c9e60735ec87c
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a02d38-7cf3-7b3c-87ec-1c5f08490c6e#01a02d38-7cf3-7e8e-8a34-0865a8dd73b1
+    artifact_path: adrs/logical/ADR-L-0024-cross-language-consumer-bindings-and-typescript-distribution.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a02d38-7cf3-7b3c-87ec-1c5f08490c6e
+    adr_alias_id: ADR-L-0024
+    scope: global
+    statement: TypeScript/Node host parity MUST use one canonical semantic implementation
+      or authority-preserving portable execution boundary and MUST NOT create a second
+      compiler or validator authority.
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions: []
+    supersedes: []
+    alias_id: INV-0164
+    alias_name: host-parity-uses-shared-semantic-authority
+  relationships:
+    declared_in:
+    - 01a02d38-7cf3-7b3c-87ec-1c5f08490c6e
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    consumes_interface: []
+    composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a02d38-7cf3-7b3c-87ec-1c5f08490c6e#01a02d38-7cf3-7e8e-8a34-0865a8dd73b1
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
 - id: 01a048d8-454a-7464-bcaa-718e58dfb9c2
   alias_id: ADR-L-0025
   alias_name: topology-and-contract-succession-authority
@@ -30171,7 +29926,6 @@ entities:
     extraction_phase: extract_adr
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 01a048d8-454a-7464-bcaa-718fa77bed6a
   alias_id: ADR-PC-0008
   alias_name: project-scope-resolution
@@ -30242,7 +29996,6 @@ entities:
     extraction_phase: extract_adr
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 01a048e9-bf60-7620-ad03-5af81c48c443
   alias_id: DEC-0168
   alias_name: promote-authoring-v1-5-from-v1-4
@@ -30308,7 +30061,6 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 01a048e9-bf60-7620-ad03-5af9dca56890
   alias_id: DEC-0169
   alias_name: promote-normalized-v2-2-from-v2-1
@@ -30374,7 +30126,6 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 01a048e9-bf60-7620-ad03-5afa0d062cf8
   alias_id: DEC-0170
   alias_name: topo-local-handles-component-ref-identity
@@ -30440,7 +30191,6 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 01a048e9-bf60-7620-ad03-5afb9ba51d1c
   alias_id: DEC-0171
   alias_name: sys-composed-of-comp-only
@@ -30505,7 +30255,6 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 01a048e9-bf60-7620-ad03-5afc854d365b
   alias_id: DEC-0172
   alias_name: six-topology-verbs-grammatical-direction
@@ -30571,7 +30320,6 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 01a048e9-bf60-7620-ad03-5afd8acec9ee
   alias_id: DEC-0173
   alias_name: explicit-provenance-compatibility-identity
@@ -30637,7 +30385,6 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 01a048e9-bf60-7620-ad03-5afe983c297e
   alias_id: DEC-0174
   alias_name: cross-document-ps-pc-topology-invariant
@@ -30703,7 +30450,6 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 01a048e9-bf60-7620-ad03-5affd0982697
   alias_id: DEC-0175
   alias_name: endpoint-type-semantic-rules-v2-2
@@ -30769,7 +30515,6 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 01a048f5-b197-75ab-a812-6e3361333731
   alias_id: DEC-0176
   alias_name: encode-projection-v3-renderer-contract-for-normalized-v2-2
@@ -30839,7 +30584,6 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 01a05a26-0000-7000-8000-000000000026
   alias_id: ADR-L-0026
   alias_name: authoring-domain-contract-discovery-authority
@@ -30916,7 +30660,6 @@ entities:
     extraction_phase: extract_adr
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 01a05a26-0000-7600-8000-000000000157
   alias_id: INV-0157
   alias_name: adc-discovery-does-not-authorize-mutation
@@ -30982,7 +30725,6 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 01a05a26-0000-7600-8000-000000000158
   alias_id: INV-0158
   alias_name: adc-selector-version-and-order-are-exact
@@ -31050,7 +30792,6 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 01a05a26-0000-7600-8000-000000000159
   alias_id: INV-0159
   alias_name: adc-catalog-has-one-language-neutral-source
@@ -31118,7 +30859,6 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 01a05a26-0000-7600-8000-000000000160
   alias_id: INV-0160
   alias_name: adc-preserves-normative-and-identity-boundaries
@@ -31186,7 +30926,6 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 01a05a26-0000-7600-8000-000000000161
   alias_id: INV-0161
   alias_name: consumes-interface-remains-explicitly-unresolved
@@ -31254,7 +30993,6 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 01a05a26-0000-7600-8000-000000000162
   alias_id: INV-0162
   alias_name: adc-conformance-does-not-require-byte-identity
@@ -31321,7 +31059,6 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 01a05a26-0000-7700-8000-000000000177
   alias_id: DEC-0177
   alias_name: adc-is-independent-language-neutral-authority
@@ -31386,7 +31123,6 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 01a05a26-0000-7700-8000-000000000178
   alias_id: DEC-0178
   alias_name: adc-one-point-zero-is-discovery-only
@@ -31452,7 +31188,6 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 01a05a26-0000-7700-8000-000000000179
   alias_id: DEC-0179
   alias_name: adc-catalog-is-explicit-and-exactly-twenty-seven-types
@@ -31518,7 +31253,6 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 01a05a26-0000-7700-8000-000000000180
   alias_id: DEC-0180
   alias_name: adc-preserves-semantic-boundaries-and-policy-maturity
@@ -31584,7 +31318,6 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 01a05a26-0000-7700-8000-000000000181
   alias_id: DEC-0181
   alias_name: adc-extends-consumer-binding-conformance
@@ -31650,7 +31383,6 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
 - id: 01a05a26-0000-7700-8000-000000000182
   alias_id: DEC-0182
   alias_name: defer-consumes-interface-reconciliation
@@ -31716,4 +31448,933 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
-  schema_version: '2.2'
+- id: 01a05a27-0000-7000-8000-000000000027
+  alias_id: ADR-L-0027
+  alias_name: public-binding-construction-and-release-parity
+  alias_ref: ADR-L-0027:public-binding-construction-and-release-parity
+  entity_type: adr
+  name: Public Binding Construction and Release Parity
+  summary: ADR-Kit publishes Python and TypeScript APIs from one repository and one
+    release lineage. Public bindings must be built from the language-neutral authority
+    substrate rather than from private compiler, parser, schema-mode
+  uri: adr://adr-architecture-kit/entities/01a05a27-0000-7000-8000-000000000027
+  created_at: '2026-08-31T23:28:20.480Z'
+  entity_fingerprint: sha256:64b8c7743b963417388e6f0de232e62d0585e800a0c7628aebe3605cffe70d9b
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a05a27-0000-7000-8000-000000000027
+    artifact_path: adrs/logical/ADR-L-0027-public-binding-construction-and-release-parity.yaml
+  source_refs: []
+  metadata:
+    status: accepted
+    domains:
+    - architecture
+    - consumer-bindings
+    - schema-governance
+    - distribution
+    tags:
+    - public-api
+    - python
+    - typescript
+    - release-parity
+    - stable-authority
+    implementation_authority: null
+    related_reviews: []
+    related_overrides: []
+    alias_name: public-binding-construction-and-release-parity
+    alias_id: ADR-L-0027
+  relationships:
+    declared_in: []
+    references:
+    - 019fee89-e617-78d9-ba3b-b7e3e6db1b12
+    - 019fee89-e617-7ff5-863b-1eef71637b0f
+    - 01a02d38-7cf3-7b3c-87ec-1c5f08490c6e
+    - 01a05a26-0000-7000-8000-000000000026
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    consumes_interface: []
+    composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a05a27-0000-7000-8000-000000000027
+    extraction_phase: extract_adr
+    classification: explicit
+    generator: adr-architecture-index
+- id: 01a05a27-0000-7600-8000-000000000201
+  alias_id: INV-0201
+  alias_name: public-bindings-consume-stable-authority
+  alias_ref: INV-0201:public-bindings-consume-stable-authority
+  entity_type: invariant
+  name: INV-0201
+  summary: Public language bindings MUST consume accepted authority, canonical schemas,
+    promoted contracts, normalized discovery, or validated derived evidence and MUST
+    NOT expose private implementation objects as public authority.
+  uri: adr://adr-architecture-kit/entities/01a05a27-0000-7600-8000-000000000201
+  created_at: '2026-08-31T23:28:20.480Z'
+  entity_fingerprint: sha256:93a2cd5917d9f48a4b062f43a9bad3722225bfad5246c5402e4eb986b219463a
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a05a27-0000-7000-8000-000000000027#01a05a27-0000-7600-8000-000000000201
+    artifact_path: adrs/logical/ADR-L-0027-public-binding-construction-and-release-parity.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a05a27-0000-7000-8000-000000000027
+    adr_alias_id: ADR-L-0027
+    scope: global
+    statement: Public language bindings MUST consume accepted authority, canonical
+      schemas, promoted contracts, normalized discovery, or validated derived evidence
+      and MUST NOT expose private implementation objects as public authority.
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions: []
+    supersedes: []
+    alias_id: INV-0201
+    alias_name: public-bindings-consume-stable-authority
+  relationships:
+    declared_in:
+    - 01a05a27-0000-7000-8000-000000000027
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    consumes_interface: []
+    composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a05a27-0000-7000-8000-000000000027#01a05a27-0000-7600-8000-000000000201
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
+- id: 01a05a27-0000-7600-8000-000000000202
+  alias_id: INV-0202
+  alias_name: release-must-qualify-both-bindings
+  alias_ref: INV-0202:release-must-qualify-both-bindings
+  entity_type: invariant
+  name: INV-0202
+  summary: A release that changes a public binding MUST qualify both the Python and
+    TypeScript public surfaces against the same release authority and MUST record
+    any capability-specific boundary explicitly.
+  uri: adr://adr-architecture-kit/entities/01a05a27-0000-7600-8000-000000000202
+  created_at: '2026-08-31T23:28:20.480Z'
+  entity_fingerprint: sha256:49b524188075546a1872ebbc990bdac61a096f40ad929b83ddd7d41dabb11467
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a05a27-0000-7000-8000-000000000027#01a05a27-0000-7600-8000-000000000202
+    artifact_path: adrs/logical/ADR-L-0027-public-binding-construction-and-release-parity.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a05a27-0000-7000-8000-000000000027
+    adr_alias_id: ADR-L-0027
+    scope: global
+    statement: A release that changes a public binding MUST qualify both the Python
+      and TypeScript public surfaces against the same release authority and MUST record
+      any capability-specific boundary explicitly.
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions: []
+    supersedes: []
+    alias_id: INV-0202
+    alias_name: release-must-qualify-both-bindings
+  relationships:
+    declared_in:
+    - 01a05a27-0000-7000-8000-000000000027
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    consumes_interface: []
+    composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a05a27-0000-7000-8000-000000000027#01a05a27-0000-7600-8000-000000000202
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
+- id: 01a05a27-0000-7600-8000-000000000203
+  alias_id: INV-0203
+  alias_name: shared-capability-contracts-have-cross-language-evidence
+  alias_ref: INV-0203:shared-capability-contracts-have-cross-language-evidence
+  entity_type: invariant
+  name: INV-0203
+  summary: Every capability advertised by both bindings MUST have shared contract,
+    schema, documentation, and cross-language conformance evidence.
+  uri: adr://adr-architecture-kit/entities/01a05a27-0000-7600-8000-000000000203
+  created_at: '2026-08-31T23:28:20.480Z'
+  entity_fingerprint: sha256:2ac3d4099fa0490d4583baf9a0625d7f01d762f293605c083d80fb160f533107
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a05a27-0000-7000-8000-000000000027#01a05a27-0000-7600-8000-000000000203
+    artifact_path: adrs/logical/ADR-L-0027-public-binding-construction-and-release-parity.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a05a27-0000-7000-8000-000000000027
+    adr_alias_id: ADR-L-0027
+    scope: global
+    statement: Every capability advertised by both bindings MUST have shared contract,
+      schema, documentation, and cross-language conformance evidence.
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions: []
+    supersedes: []
+    alias_id: INV-0203
+    alias_name: shared-capability-contracts-have-cross-language-evidence
+  relationships:
+    declared_in:
+    - 01a05a27-0000-7000-8000-000000000027
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    consumes_interface: []
+    composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a05a27-0000-7000-8000-000000000027#01a05a27-0000-7600-8000-000000000203
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
+- id: 01a05a27-0000-7600-8000-000000000204
+  alias_id: INV-0204
+  alias_name: binding-boundary-differences-are-explicit
+  alias_ref: INV-0204:binding-boundary-differences-are-explicit
+  entity_type: invariant
+  name: INV-0204
+  summary: A capability implemented in one host binding but excluded from the other
+    MUST have an accepted ADR exception and MUST NOT be represented as silently equivalent.
+  uri: adr://adr-architecture-kit/entities/01a05a27-0000-7600-8000-000000000204
+  created_at: '2026-08-31T23:28:20.480Z'
+  entity_fingerprint: sha256:7194fa94acf7b4c27f72cec8a46e41796120c41fecfb9350ed0d5b371d352d28
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a05a27-0000-7000-8000-000000000027#01a05a27-0000-7600-8000-000000000204
+    artifact_path: adrs/logical/ADR-L-0027-public-binding-construction-and-release-parity.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a05a27-0000-7000-8000-000000000027
+    adr_alias_id: ADR-L-0027
+    scope: global
+    statement: A capability implemented in one host binding but excluded from the
+      other MUST have an accepted ADR exception and MUST NOT be represented as silently
+      equivalent.
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions: []
+    supersedes: []
+    alias_id: INV-0204
+    alias_name: binding-boundary-differences-are-explicit
+  relationships:
+    declared_in:
+    - 01a05a27-0000-7000-8000-000000000027
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    consumes_interface: []
+    composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a05a27-0000-7000-8000-000000000027#01a05a27-0000-7600-8000-000000000204
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
+- id: 01a05a27-0000-7600-8000-000000000205
+  alias_id: INV-0205
+  alias_name: public-results-exclude-private-runtime-types
+  alias_ref: INV-0205:public-results-exclude-private-runtime-types
+  entity_type: invariant
+  name: INV-0205
+  summary: Public result object graphs and type declarations MUST exclude private
+    compiler, parser, schema-model, and integrity implementation types.
+  uri: adr://adr-architecture-kit/entities/01a05a27-0000-7600-8000-000000000205
+  created_at: '2026-08-31T23:28:20.480Z'
+  entity_fingerprint: sha256:b78456fcec31f83eb47fb1c5ca3b0dcc23fa846d4dfc829f5920da2c1852e12a
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a05a27-0000-7000-8000-000000000027#01a05a27-0000-7600-8000-000000000205
+    artifact_path: adrs/logical/ADR-L-0027-public-binding-construction-and-release-parity.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a05a27-0000-7000-8000-000000000027
+    adr_alias_id: ADR-L-0027
+    scope: global
+    statement: Public result object graphs and type declarations MUST exclude private
+      compiler, parser, schema-model, and integrity implementation types.
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions: []
+    supersedes: []
+    alias_id: INV-0205
+    alias_name: public-results-exclude-private-runtime-types
+  relationships:
+    declared_in:
+    - 01a05a27-0000-7000-8000-000000000027
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    consumes_interface: []
+    composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a05a27-0000-7000-8000-000000000027#01a05a27-0000-7600-8000-000000000205
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
+- id: 01a05a27-0000-7600-8000-000000000206
+  alias_id: INV-0206
+  alias_name: no-second-host-semantic-authority
+  alias_ref: INV-0206:no-second-host-semantic-authority
+  entity_type: invariant
+  name: INV-0206
+  summary: TypeScript/Node parity MUST NOT be achieved by independently recreating
+    compiler, validator, schema, or governance semantics in a second implementation
+    authority.
+  uri: adr://adr-architecture-kit/entities/01a05a27-0000-7600-8000-000000000206
+  created_at: '2026-08-31T23:28:20.480Z'
+  entity_fingerprint: sha256:193f901be7aadf33e8e1d0f48848d578f42ca09c96bfe8128bdf8ac22f7a51cf
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a05a27-0000-7000-8000-000000000027#01a05a27-0000-7600-8000-000000000206
+    artifact_path: adrs/logical/ADR-L-0027-public-binding-construction-and-release-parity.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a05a27-0000-7000-8000-000000000027
+    adr_alias_id: ADR-L-0027
+    scope: global
+    statement: TypeScript/Node parity MUST NOT be achieved by independently recreating
+      compiler, validator, schema, or governance semantics in a second implementation
+      authority.
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions: []
+    supersedes: []
+    alias_id: INV-0206
+    alias_name: no-second-host-semantic-authority
+  relationships:
+    declared_in:
+    - 01a05a27-0000-7000-8000-000000000027
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    consumes_interface: []
+    composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a05a27-0000-7000-8000-000000000027#01a05a27-0000-7600-8000-000000000206
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
+- id: 01a05a27-0000-7600-8000-000000000207
+  alias_id: INV-0207
+  alias_name: browser-profile-does-not-constrain-node-host
+  alias_ref: INV-0207:browser-profile-does-not-constrain-node-host
+  entity_type: invariant
+  name: INV-0207
+  summary: Browser-safe capability restrictions MUST be declared as an execution profile
+    and MUST NOT remove filesystem-backed or repository-host capabilities from the
+    TypeScript/Node binding.
+  uri: adr://adr-architecture-kit/entities/01a05a27-0000-7600-8000-000000000207
+  created_at: '2026-08-31T23:28:20.480Z'
+  entity_fingerprint: sha256:a114461ec43b878d51750c3bac106162758bc9bd772c018711d90a00f0d72b05
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a05a27-0000-7000-8000-000000000027#01a05a27-0000-7600-8000-000000000207
+    artifact_path: adrs/logical/ADR-L-0027-public-binding-construction-and-release-parity.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a05a27-0000-7000-8000-000000000027
+    adr_alias_id: ADR-L-0027
+    scope: global
+    statement: Browser-safe capability restrictions MUST be declared as an execution
+      profile and MUST NOT remove filesystem-backed or repository-host capabilities
+      from the TypeScript/Node binding.
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions: []
+    supersedes: []
+    alias_id: INV-0207
+    alias_name: browser-profile-does-not-constrain-node-host
+  relationships:
+    declared_in:
+    - 01a05a27-0000-7000-8000-000000000027
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    consumes_interface: []
+    composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a05a27-0000-7000-8000-000000000027#01a05a27-0000-7600-8000-000000000207
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
+- id: 01a05a27-0000-7700-8000-000000000201
+  alias_id: DEC-0201
+  alias_name: stable-authority-substrate-precedes-bindings
+  alias_ref: DEC-0201:stable-authority-substrate-precedes-bindings
+  entity_type: decision
+  name: Public Python and TypeScript bindings are projections of one stable authority
+    substrate
+  summary: Implementations must not become independent semantic authorities through
+    API shape or package ownership.
+  uri: adr://adr-architecture-kit/entities/01a05a27-0000-7700-8000-000000000201
+  created_at: '2026-08-31T23:28:20.480Z'
+  entity_fingerprint: sha256:9ad2d64665d206b41ad39f0e39fdcdc100328a3d647896ad3b32c9fdc44b4a0e
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a05a27-0000-7000-8000-000000000027#01a05a27-0000-7700-8000-000000000201
+    artifact_path: adrs/logical/ADR-L-0027-public-binding-construction-and-release-parity.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a05a27-0000-7000-8000-000000000027
+    adr_alias_id: ADR-L-0027
+    related_invariants: []
+    enforces_invariants: []
+    enables_capabilities: []
+    governs_components: []
+    supersedes: []
+    refines: []
+    alias_name: stable-authority-substrate-precedes-bindings
+    alias_id: DEC-0201
+  relationships:
+    declared_in:
+    - 01a05a27-0000-7000-8000-000000000027
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    consumes_interface: []
+    composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a05a27-0000-7000-8000-000000000027#01a05a27-0000-7700-8000-000000000201
+    extraction_phase: extract_decision
+    classification: explicit
+    generator: adr-architecture-index
+- id: 01a05a27-0000-7700-8000-000000000202
+  alias_id: DEC-0202
+  alias_name: every-release-qualifies-both-bindings
+  alias_ref: DEC-0202:every-release-qualifies-both-bindings
+  entity_type: decision
+  name: Every PyPI/npm release qualification reviews and updates both public binding
+    surfaces
+  summary: Shared release lineage is meaningful only when both supported language
+    packages are synchronized with the same authority and compatibility evidence.
+  uri: adr://adr-architecture-kit/entities/01a05a27-0000-7700-8000-000000000202
+  created_at: '2026-08-31T23:28:20.480Z'
+  entity_fingerprint: sha256:b6e6806b55da9c53fb6dc1e6ab22bbadcfe26544a1c28060fe77ebcd06d5648f
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a05a27-0000-7000-8000-000000000027#01a05a27-0000-7700-8000-000000000202
+    artifact_path: adrs/logical/ADR-L-0027-public-binding-construction-and-release-parity.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a05a27-0000-7000-8000-000000000027
+    adr_alias_id: ADR-L-0027
+    related_invariants: []
+    enforces_invariants: []
+    enables_capabilities: []
+    governs_components: []
+    supersedes: []
+    refines: []
+    alias_name: every-release-qualifies-both-bindings
+    alias_id: DEC-0202
+  relationships:
+    declared_in:
+    - 01a05a27-0000-7000-8000-000000000027
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    consumes_interface: []
+    composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a05a27-0000-7000-8000-000000000027#01a05a27-0000-7700-8000-000000000202
+    extraction_phase: extract_decision
+    classification: explicit
+    generator: adr-architecture-index
+- id: 01a05a27-0000-7700-8000-000000000203
+  alias_id: DEC-0203
+  alias_name: binding-parity-is-capability-and-contract-scoped
+  alias_ref: DEC-0203:binding-parity-is-capability-and-contract-scoped
+  entity_type: decision
+  name: Binding parity is required for shared promoted host capabilities and is explicit
+    only for execution-profile differences
+  summary: Python and TypeScript/Node are peer hosts for supported capabilities; browser
+    constraints and staged migration status must not be mistaken for a permanent host-binding
+    difference.
+  uri: adr://adr-architecture-kit/entities/01a05a27-0000-7700-8000-000000000203
+  created_at: '2026-08-31T23:28:20.480Z'
+  entity_fingerprint: sha256:15359e95b8f99c866d97235b3fb64c4be61b8c6cd75e8bdc754e380c2a3dab23
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a05a27-0000-7000-8000-000000000027#01a05a27-0000-7700-8000-000000000203
+    artifact_path: adrs/logical/ADR-L-0027-public-binding-construction-and-release-parity.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a05a27-0000-7000-8000-000000000027
+    adr_alias_id: ADR-L-0027
+    related_invariants: []
+    enforces_invariants: []
+    enables_capabilities: []
+    governs_components: []
+    supersedes: []
+    refines: []
+    alias_name: binding-parity-is-capability-and-contract-scoped
+    alias_id: DEC-0203
+  relationships:
+    declared_in:
+    - 01a05a27-0000-7000-8000-000000000027
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    consumes_interface: []
+    composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a05a27-0000-7000-8000-000000000027#01a05a27-0000-7700-8000-000000000203
+    extraction_phase: extract_decision
+    classification: explicit
+    generator: adr-architecture-index
+- id: 01a05a27-0000-7700-8000-000000000204
+  alias_id: DEC-0204
+  alias_name: host-bindings-share-capability-authority
+  alias_ref: DEC-0204:host-bindings-share-capability-authority
+  entity_type: decision
+  name: Python and TypeScript/Node are peer host bindings for supported filesystem-backed
+    ADR-Kit capabilities
+  summary: Node is a host execution environment; browser restrictions must not be
+    generalized into a TypeScript/Node capability gap.
+  uri: adr://adr-architecture-kit/entities/01a05a27-0000-7700-8000-000000000204
+  created_at: '2026-08-31T23:28:20.480Z'
+  entity_fingerprint: sha256:06a1cc0aabd15983765f1cca9df270f67b752e8dd6f8bb6be6d8ee42739f7798
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a05a27-0000-7000-8000-000000000027#01a05a27-0000-7700-8000-000000000204
+    artifact_path: adrs/logical/ADR-L-0027-public-binding-construction-and-release-parity.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a05a27-0000-7000-8000-000000000027
+    adr_alias_id: ADR-L-0027
+    related_invariants: []
+    enforces_invariants: []
+    enables_capabilities: []
+    governs_components: []
+    supersedes: []
+    refines: []
+    alias_name: host-bindings-share-capability-authority
+    alias_id: DEC-0204
+  relationships:
+    declared_in:
+    - 01a05a27-0000-7000-8000-000000000027
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    consumes_interface: []
+    composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a05a27-0000-7000-8000-000000000027#01a05a27-0000-7700-8000-000000000204
+    extraction_phase: extract_decision
+    classification: explicit
+    generator: adr-architecture-index
+- id: 01a05a27-0000-7700-8000-000000000205
+  alias_id: DEC-0205
+  alias_name: public-surface-evidence-is-cross-language
+  alias_ref: DEC-0205:public-surface-evidence-is-cross-language
+  entity_type: decision
+  name: Public API compatibility snapshots, capability manifests, schema mirrors,
+    documentation, and conformance tests are release evidence
+  summary: Source-level similarity is insufficient to prove that published Python
+    and npm surfaces remain synchronized.
+  uri: adr://adr-architecture-kit/entities/01a05a27-0000-7700-8000-000000000205
+  created_at: '2026-08-31T23:28:20.480Z'
+  entity_fingerprint: sha256:65253d8c0179a054fa6d685e7e76253e4aec7a9b87afb3fb56072be5ebec25d0
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a05a27-0000-7000-8000-000000000027#01a05a27-0000-7700-8000-000000000205
+    artifact_path: adrs/logical/ADR-L-0027-public-binding-construction-and-release-parity.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a05a27-0000-7000-8000-000000000027
+    adr_alias_id: ADR-L-0027
+    related_invariants: []
+    enforces_invariants: []
+    enables_capabilities: []
+    governs_components: []
+    supersedes: []
+    refines: []
+    alias_name: public-surface-evidence-is-cross-language
+    alias_id: DEC-0205
+  relationships:
+    declared_in:
+    - 01a05a27-0000-7000-8000-000000000027
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    consumes_interface: []
+    composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a05a27-0000-7000-8000-000000000027#01a05a27-0000-7700-8000-000000000205
+    extraction_phase: extract_decision
+    classification: explicit
+    generator: adr-architecture-index
+- id: 01a05a27-0000-7700-8000-000000000206
+  alias_id: DEC-0206
+  alias_name: shared-semantic-core-precedes-host-parity
+  alias_ref: DEC-0206:shared-semantic-core-precedes-host-parity
+  entity_type: decision
+  name: Host parity MUST be implemented through one canonical semantic core or authority-preserving
+    shared execution boundary
+  summary: A second TypeScript compiler or validator would create semantic drift;
+    a Python subprocess would not satisfy the Node host contract.
+  uri: adr://adr-architecture-kit/entities/01a05a27-0000-7700-8000-000000000206
+  created_at: '2026-08-31T23:28:20.480Z'
+  entity_fingerprint: sha256:a9de22dec6d6d9946ab9e4a211983a7a72a27e1be5b4df1f5ba73a8bc8a34c4a
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a05a27-0000-7000-8000-000000000027#01a05a27-0000-7700-8000-000000000206
+    artifact_path: adrs/logical/ADR-L-0027-public-binding-construction-and-release-parity.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a05a27-0000-7000-8000-000000000027
+    adr_alias_id: ADR-L-0027
+    related_invariants: []
+    enforces_invariants: []
+    enables_capabilities: []
+    governs_components: []
+    supersedes: []
+    refines: []
+    alias_name: shared-semantic-core-precedes-host-parity
+    alias_id: DEC-0206
+  relationships:
+    declared_in:
+    - 01a05a27-0000-7000-8000-000000000027
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    consumes_interface: []
+    composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a05a27-0000-7000-8000-000000000027#01a05a27-0000-7700-8000-000000000206
+    extraction_phase: extract_decision
+    classification: explicit
+    generator: adr-architecture-index

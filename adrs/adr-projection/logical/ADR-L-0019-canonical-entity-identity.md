@@ -6,7 +6,7 @@ generator_id: adr-projection-markdown
 generator_version: 3
 hash_algorithm: sha256
 source_hash: 47bb2b62bbf22c8d162f9666dde9a3c93f4defb1ae8be3077dcd02946e3695c7
-rendered_hash: 80e050ec02124f4cd045418bb59171253ec798db4b9f0287a0229f2d1c56abb0
+rendered_hash: bcfb3320596def6ad458b0ea9904be5b8f6c820c7c2ba2485206c1cf9aead063
 -->
 
 # ADR-L-0019: Canonical Entity Identity
@@ -513,6 +513,7 @@ Promoted from Design Journal outcome.
 - [ADR-L-0023](ADR-L-0023-consumer-semantic-extension-contract.md)
 - [ADR-L-0024](ADR-L-0024-cross-language-consumer-bindings-and-typescript-distribution.md)
 - [ADR-L-0026](ADR-L-0026-authoring-domain-contract-discovery-authority.md)
+- [ADR-L-0027](ADR-L-0027-public-binding-construction-and-release-parity.md)
 
 
 

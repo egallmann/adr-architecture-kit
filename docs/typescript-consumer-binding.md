@@ -1,14 +1,14 @@
 # TypeScript Consumer Binding
 
-`@system-of-thought/adr-kit` is the read-only TypeScript binding governed by
-Consumer Binding Contract 1.0 and ADR-L-0024. It consumes the repository's
-canonical schemas and normalized Architecture Model 2.1; it does not create
-ADRs, allocate identity, write repository artifacts, or admit graph records.
+`@system-of-thought/adr-kit` is the TypeScript host/browser binding governed by
+Consumer Binding Contract 1.0, ADR-L-0024, and ADR-L-0027. The Node host profile
+is a peer to the Python SDK for supported filesystem-backed capabilities. The
+browser profile is deliberately constrained by its execution environment.
 
 ## Entry points
 
 The root, `model`, `schemas`, and `validation` entry points are browser-safe and
-framework-neutral. The `node` and `node/linkage` entry points are explicitly
+framework-neutral. The `node`, `node/linkage`, and `node/governance` entry points are explicitly
 Node-only because they use filesystem, path, YAML, and cryptographic APIs.
 Angular applications may use the browser-safe entry points from Angular
 services or other application code, but the package does not provide Angular
@@ -18,8 +18,18 @@ repository discovery.
 ## Version and capability rules
 
 The binding advertises its supported capability versions through
-`capabilities()`. Unsupported normalized-model, evidence, and manifest
-versions fail explicitly. Authoring discovery remains a planned compatibility
+`capabilities()`. `host_operations` identifies the parity-qualified peer-host
+surface, including architecture and project-metadata validation, and `pending_host_operations`
+makes staged migration visible.
+The parity-qualified contract, project-metadata, normalized-repository identity,
+provider-routing, linkage, generated-artifact classification, and normalized
+architecture source-validation/reference/topology rules execute through the same
+packaged semantic core consumed by Python. Filesystem discovery, path safety, YAML
+loading, and language-native result views remain host adapter responsibilities.
+Projection rendering and compilation remain staged until their semantic
+dependencies are extracted through that boundary.
+Unsupported normalized-model, evidence, and manifest versions fail explicitly.
+Authoring discovery remains a planned compatibility
 surface until its operations are implemented and qualified. The Node repository loader is index-first:
 it requires the architecture index and its primary registries, validates the
 primary v2.1 bundle, and treats missing additive subset registries as empty.

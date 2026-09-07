@@ -26,6 +26,7 @@ dependencies = [
     "jinja2>=3.1",
     "click>=8.0",
     "rfc8785>=0.1.2",
+    "wasmtime>=48.0",
 ]
 
 [project.optional-dependencies]
@@ -74,6 +75,7 @@ where = ["src"]
 "adr_kit.promotion.rules" = ["*.json"]
 "adr_kit.promotion.schemas" = ["*.json"]
 "adr_kit.compatibility" = ["*.json"]
+"adr_kit.core" = ["*.wasm", "*.json"]
 
 [tool.black]
 line-length = 100

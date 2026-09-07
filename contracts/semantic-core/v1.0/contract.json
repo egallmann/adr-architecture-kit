@@ -1,0 +1,164 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://adr-kit.dev/contracts/semantic-core/v1.0/contract.json",
+  "title": "ADR-Kit semantic core protocol contract v1.0",
+  "description": "Transport shape only. ADRs and canonical schemas own domain meaning.",
+  "oneOf": [
+    {"$ref": "#/$defs/validate_contract_request"},
+    {"$ref": "#/$defs/validate_contract_result"},
+    {"$ref": "#/$defs/invalid_result"},
+    {"$ref": "#/$defs/project_metadata_request"},
+    {"$ref": "#/$defs/project_metadata_result"},
+    {"$ref": "#/$defs/provider_registry_request"},
+    {"$ref": "#/$defs/provider_registry_result"},
+    {"$ref": "#/$defs/repository_request"},
+    {"$ref": "#/$defs/repository_result"},
+    {"$ref": "#/$defs/linkage_request"},
+    {"$ref": "#/$defs/linkage_result"},
+    {"$ref": "#/$defs/artifact_request"},
+    {"$ref": "#/$defs/artifact_result"},
+    {"$ref": "#/$defs/reference_request"},
+    {"$ref": "#/$defs/reference_result"},
+    {"$ref": "#/$defs/architecture_request"},
+    {"$ref": "#/$defs/architecture_result"}
+  ],
+  "$defs": {
+    "any_object": {"type": "object"},
+    "diagnostic": {
+      "type": "object",
+      "required": ["severity", "code", "message"],
+      "properties": {
+        "severity": {"enum": ["info", "warning", "error"]},
+        "code": {"type": "string"},
+        "message": {"type": "string"},
+        "path": {"type": "string"},
+        "source_ref": {"type": "string"}
+      },
+      "additionalProperties": false
+    },
+    "issue": {
+      "type": "object",
+      "required": ["path", "message"],
+      "properties": {"path": {"type": "string"}, "message": {"type": "string"}},
+      "additionalProperties": false
+    },
+    "request_base": {
+      "type": "object",
+      "required": ["core_contract_version", "operation"],
+      "properties": {
+        "core_contract_version": {"const": "1.0"},
+        "operation": {"type": "string"}
+      }
+    },
+    "result_base": {
+      "type": "object",
+      "required": ["core_contract_version", "operation", "success", "diagnostics"],
+      "properties": {
+        "core_contract_version": {"const": "1.0"},
+        "operation": {"type": "string"},
+        "success": {"type": "boolean"},
+        "diagnostics": {"type": "array", "items": {"$ref": "#/$defs/diagnostic"}}
+      }
+    },
+    "validate_contract_request": {
+      "allOf": [
+        {"$ref": "#/$defs/request_base"},
+        {"type": "object", "required": ["operation", "profile", "entity_registry"], "properties": {
+          "operation": {"const": "validate_contract"},
+          "profile": {"enum": ["greenfield", "brownfield", "migration"]},
+          "max_sentinel_fields": {"type": ["integer", "null"], "minimum": 0},
+          "max_non_complete_entities": {"type": ["integer", "null"], "minimum": 0},
+          "entity_registry": {"type": "object", "required": ["entities"], "properties": {"entities": {"type": "array", "items": {"$ref": "#/$defs/any_object"}}}},
+          "remediation_ledger": {"type": ["object", "null"]}
+        }}
+      ],
+      "unevaluatedProperties": false
+    },
+    "validate_contract_result": {
+      "allOf": [
+        {"$ref": "#/$defs/result_base"},
+        {"type": "object", "required": ["operation", "profile", "outcome", "sentinel_field_count", "non_complete_entity_count", "completeness_counts", "issues"], "properties": {
+          "operation": {"const": "validate_contract"},
+          "profile": {"enum": ["greenfield", "brownfield", "migration"]},
+          "outcome": {"enum": ["compliant", "sentinel_compliant", "non_compliant"]},
+          "sentinel_field_count": {"type": "integer", "minimum": 0},
+          "non_complete_entity_count": {"type": "integer", "minimum": 0},
+          "completeness_counts": {"type": "object", "additionalProperties": {"type": "integer", "minimum": 0}},
+          "issues": {"type": "array", "items": {"$ref": "#/$defs/issue"}}
+        }}
+      ],
+      "unevaluatedProperties": false
+    },
+    "invalid_result": {
+      "allOf": [
+        {"$ref": "#/$defs/result_base"},
+        {"type": "object", "required": ["operation", "profile", "outcome", "sentinel_field_count", "non_complete_entity_count", "completeness_counts", "issues"], "properties": {
+          "operation": {"const": "validate_contract"},
+          "profile": {"const": ""},
+          "outcome": {"const": "invalid_request"},
+          "sentinel_field_count": {"const": 0},
+          "non_complete_entity_count": {"const": 0},
+          "completeness_counts": {"type": "object", "additionalProperties": {"type": "integer", "minimum": 0}},
+          "issues": {"type": "array", "items": {"$ref": "#/$defs/issue"}}
+        }}
+      ],
+      "unevaluatedProperties": false
+    },
+    "project_metadata_request": {
+      "allOf": [{"$ref": "#/$defs/request_base"}, {"type": "object", "required": ["operation", "project_metadata"], "properties": {"operation": {"const": "validate_project_metadata"}, "project_metadata": {"type": ["object", "null"]}}}],
+      "unevaluatedProperties": false
+    },
+    "project_metadata_result": {
+      "allOf": [{"$ref": "#/$defs/result_base"}, {"type": "object", "required": ["operation"], "properties": {"operation": {"const": "validate_project_metadata"}}}],
+      "unevaluatedProperties": false
+    },
+    "provider_registry_request": {
+      "allOf": [{"$ref": "#/$defs/request_base"}, {"type": "object", "required": ["operation", "bindings"], "properties": {"operation": {"const": "open_provider_registry"}, "bindings": {"type": "array", "items": {"$ref": "#/$defs/any_object"}}}}],
+      "unevaluatedProperties": false
+    },
+    "provider_registry_result": {
+      "allOf": [{"$ref": "#/$defs/result_base"}, {"type": "object", "required": ["operation", "bindings"], "properties": {"operation": {"const": "open_provider_registry"}, "bindings": {"type": "array", "items": {"$ref": "#/$defs/any_object"}}}}],
+      "unevaluatedProperties": false
+    },
+    "repository_request": {
+      "allOf": [{"$ref": "#/$defs/request_base"}, {"type": "object", "required": ["operation", "model_version", "entities"], "properties": {"operation": {"const": "open_repository"}, "model_version": {"type": "string"}, "architecture_namespace": {"type": ["string", "null"]}, "entities": {"type": "array", "items": {"$ref": "#/$defs/any_object"}}}}],
+      "unevaluatedProperties": false
+    },
+    "repository_result": {
+      "allOf": [{"$ref": "#/$defs/result_base"}, {"type": "object", "required": ["operation", "model_version", "architecture_namespace", "entity_count"], "properties": {"operation": {"const": "open_repository"}, "model_version": {"type": "string"}, "architecture_namespace": {"type": "string"}, "entity_count": {"type": "integer", "minimum": 0}}}],
+      "unevaluatedProperties": false
+    },
+    "linkage_request": {
+      "allOf": [{"$ref": "#/$defs/request_base"}, {"type": "object", "required": ["operation", "evidence_schema_version", "entities", "records"], "properties": {"operation": {"const": "build_embodiment_linkage"}, "profile": {"type": "string"}, "evidence_schema_version": {"type": "string"}, "architecture_fingerprint": {"type": ["string", "null"]}, "entities": {"type": "array", "items": {"$ref": "#/$defs/any_object"}}, "records": {"type": "array", "items": {"$ref": "#/$defs/any_object"}}}}],
+      "unevaluatedProperties": false
+    },
+    "linkage_result": {
+      "allOf": [{"$ref": "#/$defs/result_base"}, {"type": "object", "required": ["operation", "evidence_schema_version", "links", "rejected_claims", "error_count", "warning_count", "authority_ceiling", "graph_admission_status"], "properties": {"operation": {"const": "build_embodiment_linkage"}, "evidence_schema_version": {"type": "string"}, "architecture_fingerprint": {"type": ["string", "null"]}, "links": {"type": "array", "items": {"$ref": "#/$defs/any_object"}}, "rejected_claims": {"type": "array", "items": {"$ref": "#/$defs/any_object"}}, "error_count": {"type": "integer", "minimum": 0}, "warning_count": {"type": "integer", "minimum": 0}, "authority_ceiling": {"type": "string"}, "graph_admission_status": {"type": "string"}}}],
+      "unevaluatedProperties": false
+    },
+    "artifact_request": {
+      "allOf": [{"$ref": "#/$defs/request_base"}, {"type": "object", "required": ["operation", "artifact_kind", "header_valid"], "properties": {"operation": {"const": "classify_generated_artifact"}, "artifact_kind": {"type": "string"}, "declared_artifact_kind": {"type": ["string", "null"]}, "header_valid": {"type": "boolean"}, "header_error": {"type": ["string", "null"]}, "declared_source_hash": {"type": ["string", "null"]}, "declared_rendered_hash": {"type": ["string", "null"]}, "actual_rendered_hash": {"type": ["string", "null"]}, "expected_source_hash": {"type": ["string", "null"]}, "expected_rendered_hash": {"type": ["string", "null"]}}}],
+      "unevaluatedProperties": false
+    },
+    "artifact_result": {
+      "allOf": [{"$ref": "#/$defs/result_base"}, {"type": "object", "required": ["operation", "artifact_kind", "status", "reason_code"], "properties": {"operation": {"const": "classify_generated_artifact"}, "artifact_kind": {"type": "string"}, "status": {"type": "string"}, "reason_code": {"type": "string"}, "declared_source_hash": {"type": ["string", "null"]}, "actual_source_hash": {"type": ["string", "null"]}, "expected_source_hash": {"type": ["string", "null"]}, "declared_rendered_hash": {"type": ["string", "null"]}, "expected_rendered_hash": {"type": ["string", "null"]}, "actual_rendered_hash": {"type": ["string", "null"]}}}],
+      "unevaluatedProperties": false
+    },
+    "reference_request": {
+      "allOf": [{"$ref": "#/$defs/request_base"}, {"type": "object", "required": ["operation", "records", "reviews", "overrides"], "properties": {"operation": {"const": "validate_architecture_references"}, "records": {"type": "array", "items": {"$ref": "#/$defs/any_object"}}, "reviews": {"type": "array", "items": {"$ref": "#/$defs/any_object"}}, "overrides": {"type": "array", "items": {"$ref": "#/$defs/any_object"}}}}],
+      "unevaluatedProperties": false
+    },
+    "reference_result": {
+      "allOf": [{"$ref": "#/$defs/result_base"}, {"type": "object", "required": ["operation", "error_count", "warning_count"], "properties": {"operation": {"const": "validate_architecture_references"}, "error_count": {"type": "integer", "minimum": 0}, "warning_count": {"type": "integer", "minimum": 0}}}],
+      "unevaluatedProperties": false
+    },
+    "architecture_request": {
+      "allOf": [{"$ref": "#/$defs/request_base"}, {"type": "object", "required": ["operation", "mode", "records"], "properties": {"operation": {"const": "validate_architecture"}, "mode": {"enum": ["complete", "structural"]}, "records": {"type": "array", "items": {"$ref": "#/$defs/any_object"}}}}],
+      "unevaluatedProperties": false
+    },
+    "architecture_result": {
+      "allOf": [{"$ref": "#/$defs/result_base"}, {"type": "object", "required": ["operation", "error_count", "warning_count"], "properties": {"operation": {"const": "validate_architecture"}, "error_count": {"type": "integer", "minimum": 0}, "warning_count": {"type": "integer", "minimum": 0}}}],
+      "unevaluatedProperties": false
+    }
+  }
+}

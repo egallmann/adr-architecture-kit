@@ -340,7 +340,7 @@ tier as `0.3.0`.
   and persisted in emitted `entity-registry.yaml`; refreshed **kernel** JSON Schema in `schema/kernel/`.
 - Canonical **`schema/v1.1/implementation-attribution-evidence.schema.json`** synced with the bundled
   package copy so CI schema parity (`schema/` vs `src/adr_kit/schema/`) passes.
-- **`tests/test_package_schema_parity.py`**: asserts canonical vs bundled authoring schemas stay byte-identical (mirrors `.github/workflows/adr-governance.yml`); included in **`scripts/run_local_pre_push_checks.py`**.
+- **`tests/test_package_schema_parity.py`**: asserts canonical vs bundled authoring schemas stay byte-identical (mirrors the PR and integration governance workflows); included in **`scripts/run_local_pre_push_checks.py`**.
 - Explicitly recorded bundled **`normalized-entity-registry.schema.json`** at **`src/adr_kit/schema/v1_1/`** matching **`schema/v1.1/`** for clean-checkout CI parity (`assume-unchanged` in local workspaces can suppress staging otherwise — see **`CONTRIBUTING.md`**).
 
 ## [0.1.0]

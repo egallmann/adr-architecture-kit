@@ -5,7 +5,6 @@ from __future__ import annotations
 import gzip
 import io
 import json
-import re
 import subprocess
 import sys
 import tarfile
@@ -352,118 +351,103 @@ def test_codeql_analyzes_python_and_typescript_consumer_binding_separately() -> 
     assert trigger["schedule"] == [{"cron": "17 7 * * 1"}]
 
 
-def test_pr_workflow_has_orthogonal_qualification_owners() -> None:
-    workflow = _load_workflow("adr-governance.yml")
-    jobs = workflow["jobs"]
-    for name in (
-        "source-tests",
-        "governance",
-        "coverage",
-        "os-portability",
-        "os-wheel-smoke",
-        "quality-ratchets",
-        "dependency-audit",
-        "release-artifacts",
-        "wheel-smoke",
-        "reproducibility",
-        "benchmark-smoke",
-    ):
-        assert name in jobs
+def _workflow_trigger(workflow: dict[str, Any]) -> dict[str, Any]:
+    trigger = workflow.get("on")
+    if trigger is None:
+        trigger = workflow.get(cast(Any, True))
+    assert isinstance(trigger, dict)
+    return trigger
 
-    concurrency = workflow["concurrency"]
-    assert concurrency["group"] == "${{ github.workflow }}-${{ github.ref }}"
-    cancel = concurrency["cancel-in-progress"]
-    assert "pull_request" in cancel
-    assert "refs/heads/develop" in cancel
-    assert "refs/heads/main" not in cancel or "||" in cancel
-    # Main must not cancel: expression is true only for PR or develop.
-    assert cancel == (
-        "${{ github.event_name == 'pull_request' || github.ref == 'refs/heads/develop' }}"
+
+def test_pr_feedback_is_fast_and_semantically_explicit() -> None:
+    workflow = _load_workflow("pr-feedback.yml")
+    assert _workflow_trigger(workflow)["pull_request"]["branches"] == ["main", "develop"]
+    assert workflow["concurrency"]["cancel-in-progress"] is True
+    jobs = workflow["jobs"]
+    assert set(jobs) == {
+        "python-semantic",
+        "rust-semantic-core",
+        "typescript-consumer",
+        "governance",
+        "quality-ratchets",
+    }
+
+    python_text = _job_steps_text(jobs["python-semantic"])
+    assert "run_pr_feedback.py" in python_text
+    assert "run_source_compat.py" in python_text
+    assert "--durations=30" not in python_text
+    assert "python -m pytest" not in python_text
+
+    node_text = _job_steps_text(jobs["typescript-consumer"])
+    for command in ("npm run build", "npm run typecheck", "npm test", "browser:check"):
+        assert command in node_text
+    assert "npm audit" not in node_text
+    assert "npm run pack:check" not in node_text
+
+    for job in jobs.values():
+        text = _job_steps_text(job)
+        assert "release_manifest.py" not in text
+        assert "python -m build" not in text
+        assert "upload-artifact" not in text
+
+
+def test_integration_assurance_owns_full_suite_and_develop_runs_it() -> None:
+    workflow = _load_workflow("develop-assurance.yml")
+    trigger = _workflow_trigger(workflow)
+    assert trigger["push"]["branches"] == ["develop"]
+    assert (
+        workflow["jobs"]["integration"]["uses"] == "./.github/workflows/integration-assurance.yml"
     )
 
-    coverage = jobs["coverage"]
-    coverage_text = _job_steps_text(coverage)
-    assert coverage.get("runs-on") == "ubuntu-latest"
-    assert "3.14" in coverage_text
+    assurance = _load_workflow("integration-assurance.yml")
+    jobs = assurance["jobs"]
+    assert {
+        "full-python-coverage",
+        "os-portability",
+        "dependency-audit",
+        "typescript-consumer",
+    } <= set(jobs)
+    coverage_text = _job_steps_text(jobs["full-python-coverage"])
     assert "--cov=adr_kit" in coverage_text
     assert "--cov-fail-under=80" in coverage_text
-    assert "Record interpreter" in coverage_text
-    assert "python --version" in coverage_text
-
-    source = jobs["source-tests"]
-    source_matrix = source["strategy"]["matrix"]["python-version"]
-    assert source_matrix == ["3.14"]
-    source_text = _job_steps_text(source)
-    assert "run_source_compat.py" in source_text
-    assert "Record interpreter" in source_text
-    assert "python --version" in source_text
-    assert re.search(r"(?m)^\s*python -m pytest\s*$", source_text) is None
-    assert "mkdir -p" not in source_text
-    assert "env -u PYTHONPATH" not in source_text
-
-    governance_text = _job_steps_text(jobs["governance"])
-    assert "governance-checks --skip-tests" in governance_text
-    assert "Record interpreter" in governance_text
-    assert "python --version" in governance_text
-    assert "run_local_pre_push_checks.py" not in governance_text
-    assert "adr validate --cross-references" not in governance_text
-
+    assert "--durations=30" in coverage_text
     os_port = jobs["os-portability"]
-    assert "needs" not in os_port
     assert set(os_port["strategy"]["matrix"]["os"]) == {"windows-latest", "macos-latest"}
-    os_port_text = _job_steps_text(os_port)
-    assert "3.14" in os_port_text
-    assert "Record interpreter" in os_port_text
-    assert "python --version" in os_port_text
-    assert "python -m pytest" in os_port_text
-    assert "--cov=" not in os_port_text
-    assert "python -m build" not in os_port_text
+    assert "--durations=30" in _job_steps_text(os_port)
+    assert "release-artifacts" not in jobs
 
-    release = jobs["release-artifacts"]
-    release_text = _job_steps_text(release)
-    assert "build" in release_text and "normalize-sdist" in release_text
-    assert "--output" in release_text and "release-manifest.json" in release_text
-    assert "python-dist/release-manifest.json" not in release_text
-    assert "Record interpreter" in release_text
-    assert "python --version" in release_text
 
-    wheel = jobs["wheel-smoke"]
-    assert wheel["needs"] in ("release-artifacts", ["release-artifacts"])
-    assert wheel["strategy"]["matrix"]["python-version"] == ["3.14"]
-    wheel_text = _job_steps_text(wheel)
+def test_release_certification_owns_retained_artifacts_and_release_only_checks() -> None:
+    workflow = _load_workflow("release-certification.yml")
+    trigger = _workflow_trigger(workflow)
+    assert trigger["push"]["branches"] == ["main"]
+    assert "workflow_dispatch" not in trigger
+    jobs = workflow["jobs"]
+    assert jobs["integration"]["uses"] == "./.github/workflows/integration-assurance.yml"
+    assert jobs["release-artifacts"]["needs"] == "integration"
+    assert jobs["wheel-smoke"]["needs"] == "release-artifacts"
+    assert jobs["os-wheel-smoke"]["needs"] == "release-artifacts"
+    for name in ("release-artifacts", "reproducibility", "benchmark-smoke"):
+        text = _job_steps_text(jobs[name])
+        assert "Record interpreter" in text or name == "benchmark-smoke"
+    release_text = _job_steps_text(jobs["release-artifacts"])
+    assert "normalize-sdist" in release_text
+    assert "release-manifest.json" in release_text
+    assert "upload-artifact" in release_text
+    assert "semantic-core.wasm" in release_text
+
+    wheel_text = _job_steps_text(jobs["wheel-smoke"])
     assert "scripts/test_installed_wheel.py" in wheel_text
-    assert "Record interpreter" in wheel_text
-    assert "python --version" in wheel_text
-
-    for job_name in (
-        "quality-ratchets",
-        "dependency-audit",
-        "reproducibility",
-        "benchmark-smoke",
-        "typescript-consumer-binding",
-    ):
-        job_text = _job_steps_text(jobs[job_name])
-        assert "Record interpreter" in job_text
-        assert "python --version" in job_text
-        assert "3.14" in job_text
-
     os_wheel = jobs["os-wheel-smoke"]
-    assert os_wheel["needs"] in ("release-artifacts", ["release-artifacts"])
     assert set(os_wheel["strategy"]["matrix"]["os"]) == {"windows-latest", "macos-latest"}
-    os_wheel_text = _job_steps_text(os_wheel)
-    assert "3.14" in os_wheel_text
-    assert "Record interpreter" in os_wheel_text
-    assert "python --version" in os_wheel_text
-    assert "download-artifact" in os_wheel_text
-    assert "release-bundle" in os_wheel_text
-    assert "scripts/test_installed_wheel.py" in os_wheel_text
-    assert "python -m build" not in os_wheel_text
-    assert "python -m pytest" not in os_wheel_text
-    assert "pip install .[dev]" not in os_wheel_text
+    assert "download-artifact" in _job_steps_text(os_wheel)
 
-    # No Python×OS Cartesian retained-wheel matrix.
-    assert "os" not in wheel["strategy"]["matrix"]
-    assert "python-version" not in os_wheel["strategy"]["matrix"]
+
+def test_publishing_workflows_resolve_main_release_certification() -> None:
+    for filename in ("publish-pypi.yml", "publish-npm.yml"):
+        workflow_text = (ROOT / ".github" / "workflows" / filename).read_text(encoding="utf-8")
+        assert "release-certification.yml" in workflow_text
+        assert "adr-governance.yml" not in workflow_text
 
 
 def test_local_pre_push_checks_include_readme_pypi_portability() -> None:

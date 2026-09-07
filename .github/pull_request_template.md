@@ -25,7 +25,7 @@ Closes #<!-- issue number, if applicable -->
 - [ ] Schema parity maintained (`schema/` and `src/adr_kit/schema/` are in sync)
 - [ ] `CHANGELOG.md` updated under `[Unreleased]`
 
-**CI note:** GitHub Actions enforces ADR validation, `adr governance-checks` (including `pytest`), generated-docs checks, system overview validation, runtime hygiene, and schema parity. Coverage, `ruff`, `mypy`, and `black` are **strongly recommended locally** but are not separate CI jobs—see [CONTRIBUTING.md](CONTRIBUTING.md#development-methodology).
+**CI note:** GitHub Actions uses a lifecycle-stratified path. PR feedback runs the explicit semantic/source collection, Rust and Node/TypeScript consumer checks, governance, generated-docs validation, system overview validation, and quality ratchets. Pushes to `develop` add the full Python suite with ≥80% coverage, Windows/macOS portability, dependency audit, and full Python/Node parity. Main release certification additionally builds and retains the exact Python/npm/WASM bundle, tests that wheel across OSes, checks reproducibility, and runs the benchmark smoke. See [CONTRIBUTING.md](CONTRIBUTING.md#development-methodology).
 
 ## ADR Traceability
 

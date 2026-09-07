@@ -1,4 +1,4 @@
-"""Resolve a release-eligible ADR Governance main-push run for a tagged SHA."""
+"""Resolve a release-eligible Release Certification main-push run for a tagged SHA."""
 
 from __future__ import annotations
 

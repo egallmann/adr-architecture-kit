@@ -1,0 +1,132 @@
+name: PR Feedback
+
+on:
+  pull_request:
+    branches: [main, develop]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
+jobs:
+  python-semantic:
+    name: Python semantic/source contracts
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: wasm32-unknown-unknown
+      - name: Build shared semantic core
+        run: node scripts/build_semantic_core.mjs
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.14"
+          cache: pip
+      - name: Record interpreter
+        run: python --version
+      - run: python -m pip install --upgrade pip
+      - run: python -m pip install .[dev]
+      - name: Run explicit semantic/source test collection
+        run: python scripts/run_pr_feedback.py
+      - name: Exercise portable source/SDK compatibility harness
+        run: python scripts/run_source_compat.py
+
+  rust-semantic-core:
+    name: Rust semantic core
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: wasm32-unknown-unknown
+      - name: Test semantic core
+        run: cargo test --manifest-path core/Cargo.toml
+      - name: Build packaged semantic core
+        run: node scripts/build_semantic_core.mjs
+
+  typescript-consumer:
+    name: TypeScript consumer binding
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: wasm32-unknown-unknown
+      - name: Build shared semantic core
+        run: node scripts/build_semantic_core.mjs
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: npm
+          cache-dependency-path: packages/node/package-lock.json
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.14"
+          cache: pip
+      - name: Record interpreter
+        run: python --version
+      - run: python -m pip install --upgrade pip
+      - run: python -m pip install .[dev]
+      - run: npm ci
+        working-directory: packages/node
+      - run: npm run build
+        working-directory: packages/node
+      - run: npm run typecheck
+        working-directory: packages/node
+      - run: npm test
+        working-directory: packages/node
+      - name: Consumer binding contract conformance
+        run: python -m pytest -q tests/test_consumer_binding_conformance.py tests/test_consumer_binding_vocabulary_versions.py
+      - run: npm run browser:check
+        working-directory: packages/node
+
+  governance:
+    name: Governance and generated artifacts
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: wasm32-unknown-unknown
+      - name: Build and test shared semantic core
+        run: |
+          cargo test --manifest-path core/Cargo.toml
+          node scripts/build_semantic_core.mjs
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.14"
+          cache: pip
+      - name: Record interpreter
+        run: python --version
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: npm
+          cache-dependency-path: packages/node/package-lock.json
+      - run: python -m pip install --upgrade pip
+      - run: python -m pip install .[dev]
+      - run: adr repair-canonical-ids --check
+      - run: adr governance-checks --skip-tests
+      - run: adr validate-generated-docs
+      - run: adr validate-system-overview
+
+  quality-ratchets:
+    name: Ruff / mypy / Black no-regression ratchets
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.14"
+          cache: pip
+      - name: Record interpreter
+        run: python --version
+      - run: python -m pip install --upgrade pip
+      - run: python -m pip install .[dev]
+      - run: python scripts/check_quality_ratchets.py

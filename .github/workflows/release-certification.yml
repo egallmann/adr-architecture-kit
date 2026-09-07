@@ -1,0 +1,239 @@
+name: Release Certification
+
+on:
+  push:
+    branches: [main]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  integration:
+    name: Main integration assurance
+    uses: ./.github/workflows/integration-assurance.yml
+
+  release-artifacts:
+    name: Build and validate the retained release bundle once
+    needs: integration
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: wasm32-unknown-unknown
+      - name: Build shared semantic core for both packages
+        run: node scripts/build_semantic_core.mjs
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.14"
+          cache: pip
+      - name: Record interpreter
+        run: python --version
+      - run: python -m pip install --upgrade pip
+      - run: python -m pip install .[dev]
+      - run: python scripts/check_version_consistency.py
+      - run: python scripts/sync_node_package_version.py --check
+      - name: Build retained bundle once
+        run: |
+          python - <<'PY'
+          import os
+          import subprocess
+          import tomllib
+          from pathlib import Path
+
+          epoch = subprocess.check_output(["git", "log", "-1", "--format=%ct"], text=True).strip()
+          ver = tomllib.loads(Path("pyproject.toml").read_text(encoding="utf-8"))["project"]["version"]
+          os.environ["SOURCE_DATE_EPOCH"] = epoch
+          out = Path("python-dist")
+          out.mkdir(exist_ok=True)
+          subprocess.check_call([os.environ.get("PYTHON", "python"), "-m", "build", "--outdir", str(out)])
+          sdist = next(out.glob("*.tar.gz"))
+          subprocess.check_call(
+              [
+                  os.environ.get("PYTHON", "python"),
+                  "scripts/release_manifest.py",
+                  "normalize-sdist",
+                  "--sdist",
+                  str(sdist),
+                  "--source-date-epoch",
+                  epoch,
+              ]
+          )
+          wheel = next(out.glob("*.whl"))
+          subprocess.check_call(
+              [os.environ.get("PYTHON", "python"), "-m", "twine", "check", str(wheel), str(sdist)]
+          )
+          subprocess.check_call(
+              [
+                  os.environ.get("PYTHON", "python"),
+                  "scripts/release_manifest.py",
+                  "create",
+                  "--dist-dir",
+                  "python-dist",
+                  "--output",
+                  "release-manifest.json",
+                  "--source-commit",
+                  os.environ["GITHUB_SHA"],
+                  "--version",
+                  ver,
+              ]
+          )
+          PY
+      - name: Build retained npm bundle once
+        working-directory: packages/node
+        run: |
+          npm ci
+          npm run build
+          mkdir -p ../../node-dist
+          npm pack --pack-destination ../../node-dist
+      - name: Verify retained npm bundle
+        run: |
+          tarball="$(find node-dist -maxdepth 1 -type f -name '*.tgz' -print -quit)"
+          test -n "$tarball"
+          python scripts/verify_npm_tarball.py --tarball "$tarball"
+      - name: Verify packaged WASM identity across Python and Node
+        run: |
+          python - <<'PY'
+          import tarfile
+          import zipfile
+          from pathlib import Path
+
+          wheel = next(Path("python-dist").glob("*.whl"))
+          npm = next(Path("node-dist").glob("*.tgz"))
+          with zipfile.ZipFile(wheel) as archive:
+              python_wasm = archive.read("adr_kit/core/semantic-core.wasm")
+          with tarfile.open(npm, "r:gz") as archive:
+              node_wasm = archive.extractfile("package/dist/generated/semantic-core.wasm").read()
+          if python_wasm != node_wasm:
+              raise SystemExit("packaged Python and Node semantic-core WASM differ")
+          print(f"byte-identical packaged WASM: {len(python_wasm)} bytes")
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: release-bundle
+          path: |
+            python-dist/
+            node-dist/
+            release-manifest.json
+          if-no-files-found: error
+
+  wheel-smoke:
+    name: Retained wheel / Python 3.14
+    needs: release-artifacts
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.14"
+      - name: Record interpreter
+        run: python --version
+      - uses: actions/download-artifact@v4
+        with:
+          name: release-bundle
+          path: release-bundle
+      - name: Exercise exact retained wheel
+        run: |
+          python - <<'PY'
+          import subprocess
+          import sys
+          from pathlib import Path
+
+          wheels = sorted((Path("release-bundle") / "python-dist").glob("*.whl"))
+          if len(wheels) != 1:
+              raise SystemExit(f"expected one wheel, found {len(wheels)}")
+          subprocess.check_call([sys.executable, "scripts/test_installed_wheel.py", "--wheel", str(wheels[0])])
+          described = subprocess.check_output(
+              [sys.executable, "scripts/test_installed_wheel.py", "--describe"], text=True
+          )
+          if "sdk-consumer" not in described:
+              raise SystemExit("sdk-consumer probe missing")
+          PY
+
+  os-wheel-smoke:
+    name: Retained wheel OS / ${{ matrix.os }} / Python 3.14
+    needs: release-artifacts
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [windows-latest, macos-latest]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.14"
+      - name: Record interpreter
+        run: python --version
+      - uses: actions/download-artifact@v4
+        with:
+          name: release-bundle
+          path: release-bundle
+      - name: Exercise exact retained wheel
+        run: python -c "import subprocess,sys; from pathlib import Path; wheels=sorted((Path('release-bundle')/'python-dist').glob('*.whl')); assert len(wheels)==1, wheels; subprocess.check_call([sys.executable,'scripts/test_installed_wheel.py','--wheel',str(wheels[0])])"
+
+  reproducibility:
+    name: Fixed-epoch distribution reproducibility
+    needs: integration
+    runs-on: ubuntu-latest
+    env:
+      SOURCE_DATE_EPOCH: "1767225600"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.14"
+          cache: pip
+      - name: Record interpreter
+        run: python --version
+      - run: python -m pip install --upgrade pip build
+      - run: python -m build --outdir "${{ runner.temp }}/build-one"
+      - run: python -m build --outdir "${{ runner.temp }}/build-two"
+      - name: Normalize and compare
+        run: |
+          python - <<'PY'
+          import hashlib
+          import os
+          import subprocess
+          import sys
+          from pathlib import Path
+
+          epoch = os.environ["SOURCE_DATE_EPOCH"]
+          temp = Path(os.environ["RUNNER_TEMP"])
+          for name in ("build-one", "build-two"):
+              sdist = next((temp / name).glob("*.tar.gz"))
+              subprocess.check_call(
+                  [
+                      sys.executable,
+                      "scripts/release_manifest.py",
+                      "normalize-sdist",
+                      "--sdist",
+                      str(sdist),
+                      "--source-date-epoch",
+                      epoch,
+                  ]
+              )
+          a = sorted((temp / "build-one").iterdir())
+          b = sorted((temp / "build-two").iterdir())
+          ha = [hashlib.sha256(path.read_bytes()).hexdigest() for path in a]
+          hb = [hashlib.sha256(path.read_bytes()).hexdigest() for path in b]
+          print(dict(zip([path.name for path in a], ha)))
+          sys.exit(ha != hb)
+          PY
+
+  benchmark-smoke:
+    name: Deterministic benchmark functional smoke
+    needs: integration
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.14"
+          cache: pip
+      - name: Record interpreter
+        run: python --version
+      - run: python -m pip install --upgrade pip
+      - run: python -m pip install .[dev]
+      - run: python benchmarks/phase0.py --corpus synthetic --sizes 10 --warmups 0 --repeats 1 --json-out benchmark-smoke.json

@@ -3,6 +3,7 @@
 from .semantic_core import (
     execute_architecture_validation,
     execute_architecture_reference_validation,
+    execute_attribution_shim_generation,
     execute_contract_validation,
     execute_generated_artifact_classification,
     execute_project_metadata_validation,
@@ -16,6 +17,7 @@ from .semantic_core import (
 __all__ = [
     "execute_architecture_validation",
     "execute_architecture_reference_validation",
+    "execute_attribution_shim_generation",
     "execute_contract_validation",
     "execute_generated_artifact_classification",
     "execute_project_metadata_validation",

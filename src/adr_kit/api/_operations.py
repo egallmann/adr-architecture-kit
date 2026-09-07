@@ -583,6 +583,7 @@ def capabilities() -> CapabilityManifest:
         "open_repository",
         "open_provider_registry",
         "build_embodiment_linkage",
+        "generate_attribution_shim",
     ]
     if PROMOTION_OPERATIONS_ADVERTISED:
         operations.extend(["prepare_promotion", "check_promotion", "apply_promotion"])

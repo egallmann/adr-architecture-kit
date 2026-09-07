@@ -85,6 +85,37 @@ class EmbodimentLinkageRequest:
 
 
 @dataclass(frozen=True, slots=True)
+class AttributionShimRequest:
+    """Inputs for a read-only, vocabulary-driven attribution shim projection."""
+
+    language: Literal["python", "typescript"]
+
+    def __post_init__(self) -> None:
+        if not isinstance(self.language, str):
+            raise InvalidRequestError("Shim language must be a string")
+        language = self.language.strip().lower()
+        if language not in {"python", "typescript"}:
+            raise InvalidRequestError(
+                f"Unsupported shim language: {self.language!r} (supported: python, typescript)"
+            )
+        object.__setattr__(self, "language", language)
+
+
+@dataclass(frozen=True, slots=True)
+class AttributionShimResult:
+    """Immutable generated source and its digest returned by the public API."""
+
+    request: AttributionShimRequest
+    success: bool
+    language: Literal["python", "typescript"]
+    content: str
+    sha256: str
+    diagnostics: tuple[Diagnostic, ...]
+    package_version: str
+    api_contract_version: str
+
+
+@dataclass(frozen=True, slots=True)
 class LinkageProvenance:
     source_file: str
     extractor: str

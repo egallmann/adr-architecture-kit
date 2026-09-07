@@ -20,6 +20,8 @@ EXPECTED_PUBLIC_SYMBOLS = [
     "NormalizedArchitectureModelV2",
     "ProviderRegistry",
     "ArtifactDescriptor",
+    "AttributionShimRequest",
+    "AttributionShimResult",
     "CapabilityManifest",
     "ValidationRequest",
     "ValidationResult",
@@ -58,6 +60,7 @@ EXPECTED_PUBLIC_SYMBOLS = [
     "RepositoryError",
     "capabilities",
     "build_embodiment_linkage",
+    "generate_attribution_shim",
     "validate_architecture",
     "validate_project_metadata",
     "validate_contract",
@@ -251,6 +254,7 @@ def test_capability_manifest_is_exact_and_deterministic() -> None:
         "open_repository",
         "open_provider_registry",
         "build_embodiment_linkage",
+        "generate_attribution_shim",
     )
     assert "compile_architecture" in first.pending_host_operations
     assert first.browser_operations == ("capabilities",)
@@ -265,6 +269,7 @@ def test_capability_manifest_is_exact_and_deterministic() -> None:
         "open_repository",
         "open_provider_registry",
         "build_embodiment_linkage",
+        "generate_attribution_shim",
         "prepare_promotion",
         "check_promotion",
         "apply_promotion",

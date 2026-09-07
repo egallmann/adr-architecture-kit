@@ -5,8 +5,8 @@ artifact_kind: system_overview
 generator_id: adr-system-overview
 generator_version: 2
 hash_algorithm: sha256
-source_hash: 50dae7081366aafb8188ac37079e289c67f68f4c35998a399862b665402ac3e4
-rendered_hash: e30001113397d5ca864e814a20094bfc3502c8143077de95474a321c5ce410a4
+source_hash: e30f85a84ce1c4a2519bb38dbe11fdb595e2554ca929d1fe12d8364a86bad32f
+rendered_hash: 9fdd1efe413370974715f49898b605788ef34e5f799870d399ef19dd663ee2aa
 -->
 
 <!--
@@ -72,8 +72,8 @@ Consume supported programmatic behavior through `adr_kit.api`.
 Derived provider facts:
 
 - API contract version: `1.0`
-- Package version: `0.9.0`
-- Operations: `capabilities`, `validate_architecture`, `validate_project_metadata`, `validate_contract`, `validate_generated_docs`, `compile_architecture`, `open_repository`, `open_provider_registry`, `build_embodiment_linkage`, `prepare_promotion`, `check_promotion`, `apply_promotion`- Validation modes: `complete`, `structural`- Artifact groups: `registries`, `manifest`, `markdown`- Supported ADR schema versions: `1.0`, `1.1`, `1.2`, `1.3`, `1.4`, `1.5`- Stable ADR schema versions: `1.0`- Provisional ADR schema versions: `1.1`, `1.2`, `1.3`, `1.4`, `1.5`- Normalized model schema version: `1.1`
+- Package version: `0.10.0`
+- Operations: `capabilities`, `validate_architecture`, `validate_project_metadata`, `validate_contract`, `validate_generated_docs`, `compile_architecture`, `open_repository`, `open_provider_registry`, `build_embodiment_linkage`, `generate_attribution_shim`, `prepare_promotion`, `check_promotion`, `apply_promotion`- Validation modes: `complete`, `structural`- Artifact groups: `registries`, `manifest`, `markdown`- Supported ADR schema versions: `1.0`, `1.1`, `1.2`, `1.3`, `1.4`, `1.5`- Stable ADR schema versions: `1.0`- Provisional ADR schema versions: `1.1`, `1.2`, `1.3`, `1.4`, `1.5`- Normalized model schema version: `1.1`
 - Supported normalized model schema versions: `1.1`, `2.0`, `2.1`, `2.2`
 Supported semantic/repository contracts include `ArchitectureRepository` and `NormalizedArchitectureModel`.
 
@@ -110,6 +110,7 @@ Currently exposed lifecycle capabilities on the public provider surface:
 - `adr_kit.api.open_repository`
 - `adr_kit.api.open_provider_registry`
 - `adr_kit.api.build_embodiment_linkage`
+- `adr_kit.api.generate_attribution_shim`
 - `adr_kit.api.prepare_promotion`
 - `adr_kit.api.check_promotion`
 - `adr_kit.api.apply_promotion`

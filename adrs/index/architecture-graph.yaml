@@ -4,8 +4,8 @@
 # generator_id: adr-architecture-graph
 # generator_version: 1
 # hash_algorithm: sha256
-# source_hash: 27d953f5990690ffaf6e7a6791ef790b49757ce9d65ea725776268ef313edf4e
-# rendered_hash: b72caa01f7b21acc92bbdd68a8fbcdfad0351bfa7c507748bcc7aeade1b827d6
+# source_hash: c9263ad702eab7c298e4431dd9e3b1f7edd527ce0e9a7b91b1a973db48608a45
+# rendered_hash: 333008959b89ae829af0ec58094c47f2cbc484ab2c620a9e873b4b474858e84f
 
 schema_version: '1.0'
 type: architecture_graph
@@ -2621,7 +2621,7 @@ nodes:
     artifact_path: adrs/logical/ADR-L-0020-semantic-implementation-attribution.yaml
 - id: 019ffdba-3c42-7e86-a03e-f7df07da6757
   entity_type: implementation_decision
-  name: Generate Python and TypeScript shims from the v1.5 vocabulary
+  name: Generate Python and TypeScript shims through the shared v1.5 vocabulary projection
   canonical_source:
     source_type: physical_component_adr
     source_ref: 019ffdba-3c42-70da-b33d-efc003269c42#019ffdba-3c42-7e86-a03e-f7df07da6757

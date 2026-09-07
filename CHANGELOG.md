@@ -7,6 +7,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.10.0] — 2026-09-07
+
+### Added
+
+- Added immutable Python and Node public attribution-shim generation APIs backed
+  by one vocabulary-driven semantic-core operation.
+- Added byte-level Python/Node parity evidence, stable output digests, and CLI
+  delegation coverage for the programmatic operation.
+
+### Changed
+
+- Amended ADR-PC-0007 to make the shared semantic projection boundary normative;
+  Rust remains an implementation mechanism behind that boundary.
+
 ## [0.9.0] — 2026-09-07
 
 ### Added

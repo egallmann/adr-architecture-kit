@@ -11,7 +11,7 @@
     "./schemas": ["canonicalSchemas", "schemaManifest", "getCanonicalSchema", "getSemanticAttributionVocabulary"],
     "./validation": ["assertValidContract", "validateAuthoringDocument", "validateContract", "ValidationResult", "AuthoringAdrType", "AuthoringValidationMode"],
     "./node": ["openRepository", "validateContract", "ArchitectureRepository", "ContractValidationRequest", "ContractValidationResult", "RepositoryError", "RepositoryPathError", "AmbiguousAliasError"],
-    "./node/linkage": ["buildEmbodimentLinkage", "BuildEmbodimentLinkageRequest", "EmbodimentLinkageResult", "LinkageError"]
+    "./node/linkage": ["buildEmbodimentLinkage", "BuildEmbodimentLinkageRequest", "EmbodimentLinkageResult", "LinkageError", "AttributionShimLanguage", "AttributionShimRequest", "AttributionShimResult", "AttributionShimError", "generateAttributionShim"]
     ,"./node/governance": ["validateArchitecture", "validateContract", "validateProjectMetadata", "openProviderRegistry", "ArchitectureDiagnostic", "ArchitectureValidationRequest", "ArchitectureValidationResult", "ContractValidationRequest", "ContractValidationResult", "ProjectMetadataValidationRequest", "ProjectMetadataValidationResult", "ProviderBinding", "ProviderRegistry"]
   },
   "planned_subpaths": {
@@ -29,6 +29,8 @@
     "repository.ambiguous_alias",
     "repository.missing_artifact",
     "linkage.profile",
+    "attribution_shim.invalid_request",
+    "attribution_shim.generation",
     "attribution.duplicate_claim",
     "attribution.duplicate_occurrence",
     "attribution.v16_enforces_confidence",

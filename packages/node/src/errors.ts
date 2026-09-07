@@ -47,3 +47,7 @@ export class AmbiguousAliasError extends RepositoryError {
 export class LinkageError extends AdrKitError {
   constructor(code: string, message: string) { super(code, message); }
 }
+
+export class AttributionShimError extends AdrKitError {
+  constructor(code: string, message: string) { super(code, message); }
+}

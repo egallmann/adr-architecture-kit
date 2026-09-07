@@ -248,3 +248,18 @@ def execute_architecture_validation(
             "records": records,
         }
     )
+
+
+def execute_attribution_shim_generation(
+    *, language: str, vocabulary: dict[str, Any]
+) -> dict[str, Any]:
+    """Render one canonical attribution shim through the shared core."""
+
+    return _execute_validated(
+        {
+            "core_contract_version": "1.0",
+            "operation": "generate_attribution_shim",
+            "language": language,
+            "vocabulary": vocabulary,
+        }
+    )

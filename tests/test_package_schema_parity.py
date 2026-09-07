@@ -1,6 +1,6 @@
 """Canonical schema JSON must match explicit package mirror mappings.
 
-Mirrors ``Check package schema parity`` in ``.github/workflows/adr-governance.yml``.
+Mirrors the package-schema check in the repository's governance workflows.
 Keeps installs that load schemas via ``importlib.resources`` aligned with repo-root authority.
 """
 
@@ -33,7 +33,7 @@ def _schema_parity_mismatches(root: Path) -> list[str]:
 def test_package_json_schema_canonical_matches_bundled_copies():
     mismatches = _schema_parity_mismatches(REPO_ROOT)
     assert not mismatches, (
-        "schema/ must byte-match src/adr_kit/schema/ (see adr-governance.yml):\n  "
+        "schema/ must byte-match src/adr_kit/schema/ (see governance workflows):\n  "
         + "\n  ".join(mismatches)
     )
 

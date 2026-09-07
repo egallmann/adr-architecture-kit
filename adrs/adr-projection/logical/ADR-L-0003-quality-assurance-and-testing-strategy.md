@@ -5,8 +5,8 @@ artifact_kind: rendered_adr_markdown
 generator_id: adr-projection-markdown
 generator_version: 3
 hash_algorithm: sha256
-source_hash: 78e9035cd4e0c2d15eaa8b427a304e583f3a15615f05f71d8819085a18df9a46
-rendered_hash: ef261e09266c4415e010d8b6b1cf61b8dd990d9b8a8092b46b807b9c2abcbc2b
+source_hash: 39b729fd305c82653d8970e8e1fd6fbc421a32d9f5a549c4266af30bf77c89f6
+rendered_hash: b5ee7223450d6f35d8db8d28989fcc18a3280601e5ed71c4987846f078190f17
 -->
 
 # ADR-L-0003: Quality Assurance and Testing Strategy
@@ -208,9 +208,12 @@ the documented modules and package data, and rebuilding during publication
 breaks the identity between tested and published artifacts. Existing Ruff,
 strict-mypy, and Black debt must remain visible without permitting new debt.
 
-CI therefore tests source installs and the exact retained wheel on every
-supported Python version, measures coverage through the canonical `adr_kit`
-namespace, ratchets legacy quality findings, and promotes a verified wheel
+CI therefore assigns those proofs to the lifecycle boundary where they have
+decision value: PR feedback installs and exercises the project through the
+designated semantic/source collection; develop integration measures coverage
+through the canonical `adr_kit` namespace and runs the complete source suite;
+release certification tests the exact retained wheel on every claimed Python
+version, ratchets legacy quality findings, and promotes a verified wheel
 and sdist without rebuilding them in the publishing job.
 
 Metadata renderability alone is insufficient for the PyPI-facing package
@@ -231,7 +234,7 @@ Positive:
 - Installed-package behavior becomes release evidence rather than an assumption
 - Published artifacts are byte-identical to the tested release bundle
 - Existing quality debt can only stay level or decrease
-- Supported Python claims are backed by source and wheel execution
+- Supported Python claims are backed by source and wheel execution at the appropriate integration or release boundary
 - PyPI package-description links remain valid independently of GitHub rendering
 - Tag publication promotes previously qualified artifacts without requalifying
 
@@ -263,12 +266,12 @@ Positive:
 
 ### CAP-0020 — Automated Quality Gates
 
-CI/CD pipeline automatically runs test suite on every commit and PR.
-Prevents merging code that fails tests or reduces coverage.
+CI/CD pipeline automatically runs meaningful correctness gates for every PR and applies complete-suite, coverage, and release qualification at the appropriate lifecycle boundary. Prevents merging code that fails the PR gates and prevents integration or release certification from weakening.
 
 **Acceptance criteria**
-- All tests pass before merge
-- Coverage does not decrease
+- PRs cannot merge without passing the designated semantic/source correctness, governance, quality, Rust, and Node/TypeScript gates
+- Develop integration measures canonical `adr_kit` coverage at no less than 80% and runs the complete Python suite
+- Release certification qualifies the exact retained publication artifacts
 - Linting passes (code quality)
 - Type checking passes (mypy)
 
@@ -338,7 +341,7 @@ bundle without a second build.
 | INV-0024 | Tests MUST be deterministic - same input always produces same output | MUST / test | automated |
 | INV-0025 | Breaking changes to public APIs MUST be detected by tests | MUST / test | automated |
 | INV-0026 | Test coverage SHOULD be measured and tracked, with minimum 80% coverage for critical components (parsers,… | SHOULD / test | automated |
-| INV-0072 | Pull-request and release validation MUST install the project before tests, MUST measure canonical `adr_kit`… | MUST / test | automated |
+| INV-0072 | CI validation MUST install and exercise the project before its tests. Pull-request feedback MUST run the designated… | MUST / test | automated |
 | INV-0073 | Release publication MUST promote exactly one previously tested wheel and one previously tested sdist without… | MUST / test | automated |
 | INV-0075 | Source, editable-install, and clean retained-wheel consumers MUST exercise the supported SDK and MUST agree on… | MUST / test | automated |
 | INV-0083 | The PyPI-facing package description (the file declared as `project.readme`) MUST contain only Markdown link and… | MUST / test | automated |
@@ -473,10 +476,14 @@ between thoroughness and diminishing returns.
 
 **Statement**
 
-Pull-request and release validation MUST install the project before tests,
-MUST measure canonical `adr_kit` namespace coverage at no less than 80%,
-and MUST exercise both a source installation and the exact retained wheel
-on every claimed Python version.
+CI validation MUST install and exercise the project before its tests.
+Pull-request feedback MUST run the designated fast semantic/source correctness
+collection and source/SDK compatibility harness. Develop integration assurance
+MUST run the complete Python suite and measure canonical `adr_kit` namespace
+coverage at no less than 80%. Release certification MUST exercise the exact
+retained wheel on every claimed Python version and qualify the retained
+publication artifacts. Source-install and retained-artifact evidence MUST be
+present at the lifecycle boundary that makes the corresponding claim.
 
 **Scope:** global
 
@@ -486,7 +493,10 @@ on every claimed Python version.
 **Rationale**
 
 Source-package leakage and namespace aliases can produce misleading
-coverage and allow incomplete wheels to pass repository-local tests.
+coverage and allow incomplete wheels to pass repository-local tests. The PR
+path is intentionally a fast source/API signal and does not claim complete
+coverage or release-artifact qualification; develop and release boundaries
+provide those stronger proofs before publication.
 
 ### INV-0073
 
@@ -676,7 +686,7 @@ CI/CD integration (orthogonal evidence axes):
 - UUIDv7 mint mechanism remains implementation-owned and is not part of ADR-L-0003 identity semantics
 - These axes are orthogonal and MUST NOT imply that all supported Python versions execute on every OS
 - Linux-only execution is insufficient evidence for an OS-agnostic package claim
-- PR qualification = proposed-change evidence; develop qualification = integration evidence; only a successful completed `push` of ADR Governance on `main` for the exact tagged SHA is release-eligible; tag publication is promotion/identity verification only
+- PR feedback = proposed-change evidence: it MUST install and exercise the project through the designated fast semantic/source collection and MUST NOT be treated as complete release qualification. Develop qualification = integration evidence: it MUST own the complete Python suite, canonical coverage, and source runtime portability. Only a successful completed `push` of Release Certification on `main` for the exact source commit and retained artifacts is release-eligible; tag publication is promotion/identity verification only
 - `adr governance-checks --skip-tests` must pass in CI when the complete suite is already owned by the coverage job
 - `adr validate-generated-docs` must pass for manifest and rendered ADR output
 - `adr validate-system-overview` must pass for `SYSTEM-OVERVIEW.md`

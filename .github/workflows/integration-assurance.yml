@@ -1,0 +1,186 @@
+name: Integration Assurance
+
+on:
+  workflow_call:
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
+jobs:
+  source-compatibility:
+    name: Source install / Python 3.14
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: wasm32-unknown-unknown
+      - name: Build shared semantic core
+        run: node scripts/build_semantic_core.mjs
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.14"
+          cache: pip
+      - name: Record interpreter
+        run: python --version
+      - run: python -m pip install --upgrade pip
+      - run: python -m pip install .[dev]
+      - name: Exercise portable source/SDK compatibility harness
+        run: python scripts/run_source_compat.py
+
+  typescript-consumer:
+    name: TypeScript consumer binding / Node 20
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: wasm32-unknown-unknown
+      - name: Build shared semantic core
+        run: node scripts/build_semantic_core.mjs
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: npm
+          cache-dependency-path: packages/node/package-lock.json
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.14"
+          cache: pip
+      - name: Record interpreter
+        run: python --version
+      - run: python -m pip install --upgrade pip
+      - run: python -m pip install .[dev]
+      - run: npm ci
+        working-directory: packages/node
+      - name: Audit Node dependencies
+        run: |
+          last_status=1
+          for attempt in 1 2 3; do
+            if npm audit --audit-level=moderate; then
+              exit 0
+            else
+              last_status=$?
+            fi
+            if [ "$attempt" -lt 3 ]; then
+              echo "npm audit failed on attempt ${attempt}; retrying after a transient registry failure window"
+              sleep $((attempt * 10))
+            fi
+          done
+          exit "$last_status"
+        working-directory: packages/node
+      - run: npm run build
+        working-directory: packages/node
+      - run: npm run typecheck
+        working-directory: packages/node
+      - run: npm test
+        working-directory: packages/node
+      - name: Consumer binding contract conformance
+        run: python -m pytest -q tests/test_consumer_binding_conformance.py tests/test_consumer_binding_vocabulary_versions.py
+      - run: npm run browser:check
+        working-directory: packages/node
+      - run: npm run pack:check
+        working-directory: packages/node
+
+  governance:
+    name: ADR, generated artifact, and contract governance
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: wasm32-unknown-unknown
+      - name: Build and test shared semantic core
+        run: |
+          cargo test --manifest-path core/Cargo.toml
+          node scripts/build_semantic_core.mjs
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.14"
+          cache: pip
+      - name: Record interpreter
+        run: python --version
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: npm
+          cache-dependency-path: packages/node/package-lock.json
+      - run: python -m pip install --upgrade pip
+      - run: python -m pip install .[dev]
+      - run: adr repair-canonical-ids --check
+      - run: adr governance-checks --skip-tests
+      - run: adr validate-generated-docs
+      - run: adr validate-system-overview
+
+  full-python-coverage:
+    name: Full Python suite and coverage
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: wasm32-unknown-unknown
+      - name: Build shared semantic core
+        run: node scripts/build_semantic_core.mjs
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.14"
+          cache: pip
+      - name: Record interpreter
+        run: python --version
+      - run: python -m pip install --upgrade pip
+      - run: python -m pip install .[dev]
+      - name: Run full suite with slow-test reporting and coverage
+        run: python -m pytest --durations=30 --cov=adr_kit --cov-report=term-missing --cov-fail-under=80
+
+  os-portability:
+    name: Full Python suite / ${{ matrix.os }} / Python 3.14
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [windows-latest, macos-latest]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.14"
+          cache: pip
+      - name: Record interpreter
+        run: python --version
+      - run: python -m pip install --upgrade pip
+      - run: python -m pip install .[dev]
+      - name: Run full suite with slow-test reporting
+        run: python -m pytest --durations=30
+
+  quality-ratchets:
+    name: Ruff / mypy / Black no-regression ratchets
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.14"
+          cache: pip
+      - name: Record interpreter
+        run: python --version
+      - run: python -m pip install --upgrade pip
+      - run: python -m pip install .[dev]
+      - run: python scripts/check_quality_ratchets.py
+
+  dependency-audit:
+    name: Project dependency audit
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.14"
+          cache: pip
+      - name: Record interpreter
+        run: python --version
+      - run: python -m pip install --upgrade pip
+      - run: python -m pip install .[dev]
+      - run: python -m pip_audit .

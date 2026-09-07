@@ -63,7 +63,7 @@ jobs:
                   "--sha",
                   os.environ["RELEASE_SHA"],
                   "--workflow",
-                  "adr-governance.yml",
+                  "release-certification.yml",
                   "--branch",
                   "main",
                   "--event",

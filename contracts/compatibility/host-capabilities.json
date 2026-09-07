@@ -8,7 +8,8 @@
     "validate_contract",
     "open_repository",
     "open_provider_registry",
-    "build_embodiment_linkage"
+    "build_embodiment_linkage",
+    "generate_attribution_shim"
   ],
   "pending_host_operations": [
     "validate_generated_docs",

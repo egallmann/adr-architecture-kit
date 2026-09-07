@@ -6,7 +6,7 @@ Implements ADR-L-0002: Multi-scope ADR architecture with scope-aware commands.
 import sys
 import subprocess
 from pathlib import Path
-from typing import Optional, cast
+from typing import Literal, Optional, cast
 
 try:
     import click
@@ -16,7 +16,12 @@ except ImportError:
 
 import yaml
 
-from ..api import LinkageProvenance, _operations as application_service
+from ..api import (
+    AttributionShimRequest,
+    LinkageProvenance,
+    _operations as application_service,
+    generate_attribution_shim,
+)
 from ..generators import (
     LogicalADRGenerator,
     PhysicalComponentADRGenerator,
@@ -52,7 +57,6 @@ from ..schema.contract_validation import ContractProfile
 from ..schema.implementation_attribution_validation import (
     validate_implementation_attribution_evidence,
 )
-from ..attribution_shim_generator import generate_shim
 from ..federation.workspace_attribution import (
     resolve_workspace_repos,
     write_workspace_attribution_federation,
@@ -2895,7 +2899,9 @@ def attribution_linkage_report_cmd(
 def attribution_generate_shim(language: str, output: Optional[Path]):
     """Emit a standalone no-op implementation-linkage shim (Python or TypeScript)."""
     try:
-        body = generate_shim(language)
+        body = generate_attribution_shim(
+            AttributionShimRequest(cast(Literal["python", "typescript"], language))
+        ).content
         if output is None:
             click.echo(body)
         else:

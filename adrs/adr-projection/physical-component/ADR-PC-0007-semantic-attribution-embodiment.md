@@ -5,8 +5,8 @@ artifact_kind: rendered_adr_markdown
 generator_id: adr-projection-markdown
 generator_version: 3
 hash_algorithm: sha256
-source_hash: 51d529a89c14f9504a8e4129ef198cac2cd19b77224b5027470f847616ff9a42
-rendered_hash: 53e0a78c6c5553016919feae7ae31be604d177f4ebefa9db03856ee2aa04ca57
+source_hash: 24fd759e06e90b81358b35c60ffe04a2b89e4bc0c1d67092cb42c8b72cf911ee
+rendered_hash: 0534614f3a93e794f281aee6777cfcdf3842f80b572ebb1d82514c3ca92ac7ed
 -->
 
 # ADR-PC-0007: Semantic Attribution Embodiment
@@ -18,7 +18,7 @@ rendered_hash: 53e0a78c6c5553016919feae7ae31be604d177f4ebefa9db03856ee2aa04ca57
 **Alias:** ADR-PC-0007  
 **Authoring contract:** authoring v1.5  
 **Created:** 2026-08-13  
-**Modified:** 2026-08-27  
+**Modified:** 2026-09-07  
 **Authors:** erik.gallmann  
 **Domains:** attribution, validation, decorators  
 **Implements Logical:** [ADR-L-0004](../logical/ADR-L-0004-adr-to-implementation-traceability-via-decorators-and-metadata-attribution.md), [ADR-L-0020](../logical/ADR-L-0020-semantic-implementation-attribution-and-cross-layer-architecture-relationships.md)  
@@ -48,6 +48,8 @@ rendered_hash: 53e0a78c6c5553016919feae7ae31be604d177f4ebefa9db03856ee2aa04ca57
 - Must not write relationship registries or Architecture IR from evidence verbs
 - Must expose only immutable supported contracts through `adr_kit.api`
 - Must not write evidence input, Architecture IR relationships, or graph state
+- Python, Node, and CLI hosts must not independently recreate shim rendering
+- Shim generation must not load repositories, architecture state, or browser state
 
 **Known architectural surface**
 - Provided interfaces: IFACE-0034 — library_api; IFACE-0035 — CLI
@@ -55,7 +57,7 @@ rendered_hash: 53e0a78c6c5553016919feae7ae31be604d177f4ebefa9db03856ee2aa04ca57
 **Verification**
 - Primary tests: `tests/test_semantic_attribution_vocabulary_parity.py`
 - Unit coverage: >= 80%
-- Success criteria: 4
+- Success criteria: 6
 - Integration checks: 6
 
 
@@ -63,9 +65,11 @@ rendered_hash: 53e0a78c6c5553016919feae7ae31be604d177f4ebefa9db03856ee2aa04ca57
 
 Semantic attribution needs a kit-owned embodiment for vocabulary, evidence
 models, UUID decorators, standalone shims, architecture-aware validation,
-repository-aware versioned normalization, and a supported bidirectional
-linkage facade. This component does not parse consumer source code, does not
-own RECON extraction, and does not admit evidence to the architecture graph.
+repository-aware versioned normalization, a supported bidirectional linkage
+facade, and a canonical programmatic shim projection through the semantic
+execution boundary. This component does not parse consumer source code, does
+not own RECON extraction, and does not admit evidence to the architecture
+graph.
 
 
 ## Architecture & Relationships
@@ -115,6 +119,8 @@ Embody ADR-L-0020 without moving source parsing into this repository.
 - Load versioned mechanical v1.5/v1.6 semantic attribution vocabularies
 - Parse and validate 1.0/1.2/1.5/1.6 implementation attribution evidence
 - Provide UUID claim decorators and vocabulary-driven Python/TypeScript shims
+- Expose immutable Python and Node shim-generation operations backed by one
+  canonical semantic-core projection
 - Resolve claim targets against ArchitectureRepository / model 2.0
 - Normalize supported evidence into explicitly selected lossless targets
 - Build a deterministic non-authoritative bidirectional linkage projection
@@ -129,6 +135,8 @@ Embody ADR-L-0020 without moving source parsing into this repository.
 - 1.0/1.2 callers of validate_implementation_attribution_evidence remain compatible
 - v1.5 validation keeps historical behavior; v1.6 adds declared-only enforcement
 - Python and TypeScript shims are generated from one vocabulary
+- Python and Node programmatic shim operations are byte-compatible with the historical CLI output and have no filesystem side effects
+- The CLI remains a compatibility adapter over the public operation; no browser shim-generation capability is advertised
 - installed-wheel consumers use the linkage feature without private imports
 
 
@@ -147,6 +155,8 @@ Public and de facto public surfaces:
 - validate_implementation_attribution_evidence
 - normalize_attribution_evidence
 - adr_kit.api build_embodiment_linkage and immutable request/result contracts
+- adr_kit.api.generate_attribution_shim and immutable request/result contracts
+- @system-of-thought/adr-kit/node/linkage generateAttributionShim
 - schema/evidence-attribution/v1.5 and v1.6 vocabulary/evidence JSON
 
 ### IFACE-0035 — CLI
@@ -160,6 +170,7 @@ Commands:
 - adr attribution check
 - adr attribution coverage
 - adr attribution generate-shim
+- The CLI command delegates to the public semantic shim-generation operation
 - adr attribution workspace-report
 - adr attribution normalize-evidence --scope --input [--output] [--target-version]
 - adr attribution linkage-report --scope --evidence [direction filters]
@@ -167,14 +178,15 @@ Commands:
 
 ## Implementation Decisions
 
-### IMPL-0028 — Generate Python and TypeScript shims from the v1.5 vocabulary
+### IMPL-0028 — Generate Python and TypeScript shims through the shared v1.5 vocabulary projection
 
 **Rationale:**
 
-Hand-copied shim strings drift from native decorators. One mechanical
-versioned vocabulary is the source for relationship names, allowed types,
-confidence policy, and generated standalone shims. Explicit native
-functions remain stable and parity tests prevent runtime vocabulary drift.
+Hand-copied shim strings drift from native decorators and host bindings.
+The v1.5 vocabulary remains the source for relationship names and generated
+standalone shims, while the canonical semantic-core operation owns the
+byte-sensitive projection. Python, Node, and CLI adapters only load the
+vocabulary, invoke that operation, and expose stable immutable results.
 
 ### IMPL-0029 — Keep legacy alias decorators separate from UUID claim composition
 
@@ -254,7 +266,7 @@ Structural schema validation for 1.0/1.2/1.5/1.6 evidence.
 | Kind | Entity |
 | --- | --- |
 | Component | COMP-0022 — Semantic Attribution Embodiment |
-| Implementation Decision | IMPL-0028 — Generate Python and TypeScript shims from the v1.5 vocabulary |
+| Implementation Decision | IMPL-0028 — Generate Python and TypeScript shims through the shared v1.5 vocabulary projection |
 | Implementation Decision | IMPL-0029 — Keep legacy alias decorators separate from UUID claim composition |
 | Interface | IFACE-0034 — library_api |
 | Interface | IFACE-0035 — CLI |

@@ -20,7 +20,9 @@
     {"$ref": "#/$defs/reference_request"},
     {"$ref": "#/$defs/reference_result"},
     {"$ref": "#/$defs/architecture_request"},
-    {"$ref": "#/$defs/architecture_result"}
+    {"$ref": "#/$defs/architecture_result"},
+    {"$ref": "#/$defs/attribution_shim_request"},
+    {"$ref": "#/$defs/attribution_shim_result"}
   ],
   "$defs": {
     "any_object": {"type": "object"},
@@ -158,6 +160,37 @@
     },
     "architecture_result": {
       "allOf": [{"$ref": "#/$defs/result_base"}, {"type": "object", "required": ["operation", "error_count", "warning_count"], "properties": {"operation": {"const": "validate_architecture"}, "error_count": {"type": "integer", "minimum": 0}, "warning_count": {"type": "integer", "minimum": 0}}}],
+      "unevaluatedProperties": false
+    },
+    "attribution_shim_request": {
+      "allOf": [
+        {"$ref": "#/$defs/request_base"},
+        {"type": "object", "required": ["operation", "language", "vocabulary"], "properties": {
+          "operation": {"const": "generate_attribution_shim"},
+          "language": {"type": "string", "minLength": 1},
+          "vocabulary": {
+            "type": "object",
+            "required": ["canonical_claims_attribute", "legacy_decorators", "relationships"],
+            "properties": {
+              "canonical_claims_attribute": {"type": "string", "minLength": 1},
+              "legacy_decorators": {"type": "array", "items": {"type": "object", "required": ["name", "attribute", "label", "variadic"], "properties": {"name": {"type": "string"}, "attribute": {"type": "string"}, "label": {"type": "string"}, "variadic": {"type": "boolean"}}, "additionalProperties": false}},
+              "relationships": {"type": "array", "items": {"type": "object", "required": ["name", "uuid_decorator", "uuid_sequence_decorator"], "properties": {"name": {"type": "string"}, "uuid_decorator": {"type": "string"}, "uuid_sequence_decorator": {"type": "string"}}, "additionalProperties": false}}
+            },
+            "additionalProperties": false
+          }
+        }}
+      ],
+      "unevaluatedProperties": false
+    },
+    "attribution_shim_result": {
+      "allOf": [
+        {"$ref": "#/$defs/result_base"},
+        {"type": "object", "required": ["operation", "language", "content"], "properties": {
+          "operation": {"const": "generate_attribution_shim"},
+          "language": {"type": "string"},
+          "content": {"type": "string"}
+        }}
+      ],
       "unevaluatedProperties": false
     }
   }

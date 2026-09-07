@@ -28801,8 +28801,8 @@ entities:
   alias_ref: CAP-9002:typescript-node-browser-consumer-distribution
   entity_type: capability
   name: TypeScript Node and Browser Consumer Distribution
-  summary: Provide a read-only framework-neutral TypeScript package with explicit
-    browser-safe and Node-only subpaths.
+  summary: Provide a framework-neutral TypeScript package with peer Node host capabilities
+    and an explicitly constrained browser profile.
   uri: adr://adr-architecture-kit/entities/01a02d38-7cf3-7625-8e95-7fc0f62d7b09
   created_at: '2026-08-23T06:04:31.859Z'
   entity_fingerprint: sha256:43b903ad17757a72a474fe46c58873387c4ebf94707a1c9794dec0a3a5f7e905
@@ -28862,15 +28862,16 @@ entities:
     generator: adr-architecture-index
 - id: 01a02d38-7cf3-7696-8323-e760deca8334
   alias_id: INV-0153
-  alias_name: typescript-v1-is-read-only
-  alias_ref: INV-0153:typescript-v1-is-read-only
+  alias_name: browser-typescript-profile-is-read-only
+  alias_ref: INV-0153:browser-typescript-profile-is-read-only
   entity_type: invariant
   name: INV-0153
-  summary: TypeScript v1 MUST perform no repository writes identity allocation graph
-    admission authoring mutation network access or import-time side effects.
+  summary: Browser-safe TypeScript entry points MUST perform no filesystem writes,
+    identity allocation, graph admission, authoring mutation, network access, or import-time
+    side effects.
   uri: adr://adr-architecture-kit/entities/01a02d38-7cf3-7696-8323-e760deca8334
   created_at: '2026-08-23T06:04:31.859Z'
-  entity_fingerprint: sha256:8bbcd7a7729cf32a10cd6e551dc54b092b3b855b3df6a5397e3f7b24899a33f2
+  entity_fingerprint: sha256:225da584bbb54f19ef0a5d1bcea1e7a5a5c9c0a2496828a7a26dba6cd79cc4e6
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -28880,15 +28881,16 @@ entities:
   metadata:
     adr_id: 01a02d38-7cf3-7b3c-87ec-1c5f08490c6e
     adr_alias_id: ADR-L-0024
-    scope: global
-    statement: TypeScript v1 MUST perform no repository writes identity allocation
-      graph admission authoring mutation network access or import-time side effects.
+    scope: browser
+    statement: Browser-safe TypeScript entry points MUST perform no filesystem writes,
+      identity allocation, graph admission, authoring mutation, network access, or
+      import-time side effects.
     enforcement_level: must
     declaration_mode: local
     upheld_by_decisions: []
     supersedes: []
     alias_id: INV-0153
-    alias_name: typescript-v1-is-read-only
+    alias_name: browser-typescript-profile-is-read-only
   relationships:
     declared_in:
     - 01a02d38-7cf3-7b3c-87ec-1c5f08490c6e
@@ -28992,16 +28994,16 @@ entities:
     generator: adr-architecture-index
 - id: 01a02d38-7cf3-7765-8a96-0cdd35f55df5
   alias_id: DEC-0161
-  alias_name: read-only-typescript-release-boundary
-  alias_ref: DEC-0161:read-only-typescript-release-boundary
+  alias_name: browser-typescript-profile-is-constrained
+  alias_ref: DEC-0161:browser-typescript-profile-is-constrained
   entity_type: decision
-  name: The first TypeScript release is read-only and excludes authoring identity
-    allocation graph admission CLI MCP and repository writes
-  summary: Consumer safety and authority ownership require a deliberately bounded
-    first release.
+  name: Browser-safe TypeScript entry points are constrained while the TypeScript/Node
+    host binding is a peer host capability surface
+  summary: Browser execution lacks filesystem and repository authority; that limitation
+    must not be generalized to Node.
   uri: adr://adr-architecture-kit/entities/01a02d38-7cf3-7765-8a96-0cdd35f55df5
   created_at: '2026-08-23T06:04:31.859Z'
-  entity_fingerprint: sha256:474bc93ed2ab37731a940fd3ea34f517dccb965aed8d180b8a9fa58f5a2b77cd
+  entity_fingerprint: sha256:acaa6eb37f955f90e10a990aab159e231c32955e368fcf17e1b867db02ca2f28
   lifecycle_stage: active
   canonical_source:
     source_type: logical_adr
@@ -29017,7 +29019,7 @@ entities:
     governs_components: []
     supersedes: []
     refines: []
-    alias_name: read-only-typescript-release-boundary
+    alias_name: browser-typescript-profile-is-constrained
     alias_id: DEC-0161
   relationships:
     declared_in:
@@ -29348,7 +29350,7 @@ entities:
     - node
     - browser
     - conformance
-    - read-only
+    - host-parity
     implementation_authority: null
     related_reviews: []
     related_overrides: []
@@ -29523,6 +29525,70 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
+- id: 01a02d38-7cf3-7c3b-85b4-f2e1328d8370
+  alias_id: DEC-0183
+  alias_name: typescript-node-is-peer-host-binding
+  alias_ref: DEC-0183:typescript-node-is-peer-host-binding
+  entity_type: decision
+  name: TypeScript/Node is a peer host-runtime binding for supported ADR-Kit capabilities
+  summary: Node services such as STE Runtime must consume repository-backed ADR-Kit
+    operations without CLI or Python subprocess integration.
+  uri: adr://adr-architecture-kit/entities/01a02d38-7cf3-7c3b-85b4-f2e1328d8370
+  created_at: '2026-08-23T06:04:31.859Z'
+  entity_fingerprint: sha256:fee5dc8f3a1f36bdf67a54c226f0cee95cac9496281575ecd95f17d61531852f
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a02d38-7cf3-7b3c-87ec-1c5f08490c6e#01a02d38-7cf3-7c3b-85b4-f2e1328d8370
+    artifact_path: adrs/logical/ADR-L-0024-cross-language-consumer-bindings-and-typescript-distribution.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a02d38-7cf3-7b3c-87ec-1c5f08490c6e
+    adr_alias_id: ADR-L-0024
+    related_invariants: []
+    enforces_invariants: []
+    enables_capabilities: []
+    governs_components: []
+    supersedes: []
+    refines: []
+    alias_name: typescript-node-is-peer-host-binding
+    alias_id: DEC-0183
+  relationships:
+    declared_in:
+    - 01a02d38-7cf3-7b3c-87ec-1c5f08490c6e
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    consumes_interface: []
+    composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a02d38-7cf3-7b3c-87ec-1c5f08490c6e#01a02d38-7cf3-7c3b-85b4-f2e1328d8370
+    extraction_phase: extract_decision
+    classification: explicit
+    generator: adr-architecture-index
 - id: 01a02d38-7cf3-7dfe-80d8-28c51db97e18
   alias_id: CAP-9001
   alias_name: capability-scoped-consumer-binding
@@ -29650,6 +29716,139 @@ entities:
   provenance:
     source_type: logical_adr
     source_ref: 01a02d38-7cf3-7b3c-87ec-1c5f08490c6e#01a02d38-7cf3-7e8e-8a34-0865a8dd73af
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
+- id: 01a02d38-7cf3-7e8e-8a34-0865a8dd73b0
+  alias_id: INV-0163
+  alias_name: host-capability-parity-is-default
+  alias_ref: INV-0163:host-capability-parity-is-default
+  entity_type: invariant
+  name: INV-0163
+  summary: Python and TypeScript/Node host bindings MUST expose equivalent supported
+    ADR-Kit capabilities and MUST NOT diverge without an accepted architectural exception.
+  uri: adr://adr-architecture-kit/entities/01a02d38-7cf3-7e8e-8a34-0865a8dd73b0
+  created_at: '2026-08-23T06:04:31.859Z'
+  entity_fingerprint: sha256:647c1e830577573c730a8490b2ceb20a6f274c09b27903ffc4a361349e73e31d
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a02d38-7cf3-7b3c-87ec-1c5f08490c6e#01a02d38-7cf3-7e8e-8a34-0865a8dd73b0
+    artifact_path: adrs/logical/ADR-L-0024-cross-language-consumer-bindings-and-typescript-distribution.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a02d38-7cf3-7b3c-87ec-1c5f08490c6e
+    adr_alias_id: ADR-L-0024
+    scope: global
+    statement: Python and TypeScript/Node host bindings MUST expose equivalent supported
+      ADR-Kit capabilities and MUST NOT diverge without an accepted architectural
+      exception.
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions: []
+    supersedes: []
+    alias_id: INV-0163
+    alias_name: host-capability-parity-is-default
+  relationships:
+    declared_in:
+    - 01a02d38-7cf3-7b3c-87ec-1c5f08490c6e
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    consumes_interface: []
+    composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a02d38-7cf3-7b3c-87ec-1c5f08490c6e#01a02d38-7cf3-7e8e-8a34-0865a8dd73b0
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
+- id: 01a02d38-7cf3-7e8e-8a34-0865a8dd73b1
+  alias_id: INV-0164
+  alias_name: host-parity-uses-shared-semantic-authority
+  alias_ref: INV-0164:host-parity-uses-shared-semantic-authority
+  entity_type: invariant
+  name: INV-0164
+  summary: TypeScript/Node host parity MUST use one canonical semantic implementation
+    or authority-preserving portable execution boundary and MUST NOT create a second
+    compiler or validator authority.
+  uri: adr://adr-architecture-kit/entities/01a02d38-7cf3-7e8e-8a34-0865a8dd73b1
+  created_at: '2026-08-23T06:04:31.859Z'
+  entity_fingerprint: sha256:158d490682e608a4bb18138ddd0501aade8ae3bd3c975776865c9e60735ec87c
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a02d38-7cf3-7b3c-87ec-1c5f08490c6e#01a02d38-7cf3-7e8e-8a34-0865a8dd73b1
+    artifact_path: adrs/logical/ADR-L-0024-cross-language-consumer-bindings-and-typescript-distribution.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a02d38-7cf3-7b3c-87ec-1c5f08490c6e
+    adr_alias_id: ADR-L-0024
+    scope: global
+    statement: TypeScript/Node host parity MUST use one canonical semantic implementation
+      or authority-preserving portable execution boundary and MUST NOT create a second
+      compiler or validator authority.
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions: []
+    supersedes: []
+    alias_id: INV-0164
+    alias_name: host-parity-uses-shared-semantic-authority
+  relationships:
+    declared_in:
+    - 01a02d38-7cf3-7b3c-87ec-1c5f08490c6e
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    consumes_interface: []
+    composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a02d38-7cf3-7b3c-87ec-1c5f08490c6e#01a02d38-7cf3-7e8e-8a34-0865a8dd73b1
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
@@ -31246,6 +31445,936 @@ entities:
   provenance:
     source_type: logical_adr
     source_ref: 01a05a26-0000-7000-8000-000000000026#01a05a26-0000-7700-8000-000000000182
+    extraction_phase: extract_decision
+    classification: explicit
+    generator: adr-architecture-index
+- id: 01a05a27-0000-7000-8000-000000000027
+  alias_id: ADR-L-0027
+  alias_name: public-binding-construction-and-release-parity
+  alias_ref: ADR-L-0027:public-binding-construction-and-release-parity
+  entity_type: adr
+  name: Public Binding Construction and Release Parity
+  summary: ADR-Kit publishes Python and TypeScript APIs from one repository and one
+    release lineage. Public bindings must be built from the language-neutral authority
+    substrate rather than from private compiler, parser, schema-mode
+  uri: adr://adr-architecture-kit/entities/01a05a27-0000-7000-8000-000000000027
+  created_at: '2026-08-31T23:28:20.480Z'
+  entity_fingerprint: sha256:64b8c7743b963417388e6f0de232e62d0585e800a0c7628aebe3605cffe70d9b
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a05a27-0000-7000-8000-000000000027
+    artifact_path: adrs/logical/ADR-L-0027-public-binding-construction-and-release-parity.yaml
+  source_refs: []
+  metadata:
+    status: accepted
+    domains:
+    - architecture
+    - consumer-bindings
+    - schema-governance
+    - distribution
+    tags:
+    - public-api
+    - python
+    - typescript
+    - release-parity
+    - stable-authority
+    implementation_authority: null
+    related_reviews: []
+    related_overrides: []
+    alias_name: public-binding-construction-and-release-parity
+    alias_id: ADR-L-0027
+  relationships:
+    declared_in: []
+    references:
+    - 019fee89-e617-78d9-ba3b-b7e3e6db1b12
+    - 019fee89-e617-7ff5-863b-1eef71637b0f
+    - 01a02d38-7cf3-7b3c-87ec-1c5f08490c6e
+    - 01a05a26-0000-7000-8000-000000000026
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    consumes_interface: []
+    composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a05a27-0000-7000-8000-000000000027
+    extraction_phase: extract_adr
+    classification: explicit
+    generator: adr-architecture-index
+- id: 01a05a27-0000-7600-8000-000000000201
+  alias_id: INV-0201
+  alias_name: public-bindings-consume-stable-authority
+  alias_ref: INV-0201:public-bindings-consume-stable-authority
+  entity_type: invariant
+  name: INV-0201
+  summary: Public language bindings MUST consume accepted authority, canonical schemas,
+    promoted contracts, normalized discovery, or validated derived evidence and MUST
+    NOT expose private implementation objects as public authority.
+  uri: adr://adr-architecture-kit/entities/01a05a27-0000-7600-8000-000000000201
+  created_at: '2026-08-31T23:28:20.480Z'
+  entity_fingerprint: sha256:93a2cd5917d9f48a4b062f43a9bad3722225bfad5246c5402e4eb986b219463a
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a05a27-0000-7000-8000-000000000027#01a05a27-0000-7600-8000-000000000201
+    artifact_path: adrs/logical/ADR-L-0027-public-binding-construction-and-release-parity.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a05a27-0000-7000-8000-000000000027
+    adr_alias_id: ADR-L-0027
+    scope: global
+    statement: Public language bindings MUST consume accepted authority, canonical
+      schemas, promoted contracts, normalized discovery, or validated derived evidence
+      and MUST NOT expose private implementation objects as public authority.
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions: []
+    supersedes: []
+    alias_id: INV-0201
+    alias_name: public-bindings-consume-stable-authority
+  relationships:
+    declared_in:
+    - 01a05a27-0000-7000-8000-000000000027
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    consumes_interface: []
+    composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a05a27-0000-7000-8000-000000000027#01a05a27-0000-7600-8000-000000000201
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
+- id: 01a05a27-0000-7600-8000-000000000202
+  alias_id: INV-0202
+  alias_name: release-must-qualify-both-bindings
+  alias_ref: INV-0202:release-must-qualify-both-bindings
+  entity_type: invariant
+  name: INV-0202
+  summary: A release that changes a public binding MUST qualify both the Python and
+    TypeScript public surfaces against the same release authority and MUST record
+    any capability-specific boundary explicitly.
+  uri: adr://adr-architecture-kit/entities/01a05a27-0000-7600-8000-000000000202
+  created_at: '2026-08-31T23:28:20.480Z'
+  entity_fingerprint: sha256:49b524188075546a1872ebbc990bdac61a096f40ad929b83ddd7d41dabb11467
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a05a27-0000-7000-8000-000000000027#01a05a27-0000-7600-8000-000000000202
+    artifact_path: adrs/logical/ADR-L-0027-public-binding-construction-and-release-parity.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a05a27-0000-7000-8000-000000000027
+    adr_alias_id: ADR-L-0027
+    scope: global
+    statement: A release that changes a public binding MUST qualify both the Python
+      and TypeScript public surfaces against the same release authority and MUST record
+      any capability-specific boundary explicitly.
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions: []
+    supersedes: []
+    alias_id: INV-0202
+    alias_name: release-must-qualify-both-bindings
+  relationships:
+    declared_in:
+    - 01a05a27-0000-7000-8000-000000000027
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    consumes_interface: []
+    composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a05a27-0000-7000-8000-000000000027#01a05a27-0000-7600-8000-000000000202
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
+- id: 01a05a27-0000-7600-8000-000000000203
+  alias_id: INV-0203
+  alias_name: shared-capability-contracts-have-cross-language-evidence
+  alias_ref: INV-0203:shared-capability-contracts-have-cross-language-evidence
+  entity_type: invariant
+  name: INV-0203
+  summary: Every capability advertised by both bindings MUST have shared contract,
+    schema, documentation, and cross-language conformance evidence.
+  uri: adr://adr-architecture-kit/entities/01a05a27-0000-7600-8000-000000000203
+  created_at: '2026-08-31T23:28:20.480Z'
+  entity_fingerprint: sha256:2ac3d4099fa0490d4583baf9a0625d7f01d762f293605c083d80fb160f533107
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a05a27-0000-7000-8000-000000000027#01a05a27-0000-7600-8000-000000000203
+    artifact_path: adrs/logical/ADR-L-0027-public-binding-construction-and-release-parity.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a05a27-0000-7000-8000-000000000027
+    adr_alias_id: ADR-L-0027
+    scope: global
+    statement: Every capability advertised by both bindings MUST have shared contract,
+      schema, documentation, and cross-language conformance evidence.
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions: []
+    supersedes: []
+    alias_id: INV-0203
+    alias_name: shared-capability-contracts-have-cross-language-evidence
+  relationships:
+    declared_in:
+    - 01a05a27-0000-7000-8000-000000000027
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    consumes_interface: []
+    composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a05a27-0000-7000-8000-000000000027#01a05a27-0000-7600-8000-000000000203
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
+- id: 01a05a27-0000-7600-8000-000000000204
+  alias_id: INV-0204
+  alias_name: binding-boundary-differences-are-explicit
+  alias_ref: INV-0204:binding-boundary-differences-are-explicit
+  entity_type: invariant
+  name: INV-0204
+  summary: A capability implemented in one host binding but excluded from the other
+    MUST have an accepted ADR exception and MUST NOT be represented as silently equivalent.
+  uri: adr://adr-architecture-kit/entities/01a05a27-0000-7600-8000-000000000204
+  created_at: '2026-08-31T23:28:20.480Z'
+  entity_fingerprint: sha256:7194fa94acf7b4c27f72cec8a46e41796120c41fecfb9350ed0d5b371d352d28
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a05a27-0000-7000-8000-000000000027#01a05a27-0000-7600-8000-000000000204
+    artifact_path: adrs/logical/ADR-L-0027-public-binding-construction-and-release-parity.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a05a27-0000-7000-8000-000000000027
+    adr_alias_id: ADR-L-0027
+    scope: global
+    statement: A capability implemented in one host binding but excluded from the
+      other MUST have an accepted ADR exception and MUST NOT be represented as silently
+      equivalent.
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions: []
+    supersedes: []
+    alias_id: INV-0204
+    alias_name: binding-boundary-differences-are-explicit
+  relationships:
+    declared_in:
+    - 01a05a27-0000-7000-8000-000000000027
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    consumes_interface: []
+    composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a05a27-0000-7000-8000-000000000027#01a05a27-0000-7600-8000-000000000204
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
+- id: 01a05a27-0000-7600-8000-000000000205
+  alias_id: INV-0205
+  alias_name: public-results-exclude-private-runtime-types
+  alias_ref: INV-0205:public-results-exclude-private-runtime-types
+  entity_type: invariant
+  name: INV-0205
+  summary: Public result object graphs and type declarations MUST exclude private
+    compiler, parser, schema-model, and integrity implementation types.
+  uri: adr://adr-architecture-kit/entities/01a05a27-0000-7600-8000-000000000205
+  created_at: '2026-08-31T23:28:20.480Z'
+  entity_fingerprint: sha256:b78456fcec31f83eb47fb1c5ca3b0dcc23fa846d4dfc829f5920da2c1852e12a
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a05a27-0000-7000-8000-000000000027#01a05a27-0000-7600-8000-000000000205
+    artifact_path: adrs/logical/ADR-L-0027-public-binding-construction-and-release-parity.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a05a27-0000-7000-8000-000000000027
+    adr_alias_id: ADR-L-0027
+    scope: global
+    statement: Public result object graphs and type declarations MUST exclude private
+      compiler, parser, schema-model, and integrity implementation types.
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions: []
+    supersedes: []
+    alias_id: INV-0205
+    alias_name: public-results-exclude-private-runtime-types
+  relationships:
+    declared_in:
+    - 01a05a27-0000-7000-8000-000000000027
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    consumes_interface: []
+    composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a05a27-0000-7000-8000-000000000027#01a05a27-0000-7600-8000-000000000205
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
+- id: 01a05a27-0000-7600-8000-000000000206
+  alias_id: INV-0206
+  alias_name: no-second-host-semantic-authority
+  alias_ref: INV-0206:no-second-host-semantic-authority
+  entity_type: invariant
+  name: INV-0206
+  summary: TypeScript/Node parity MUST NOT be achieved by independently recreating
+    compiler, validator, schema, or governance semantics in a second implementation
+    authority.
+  uri: adr://adr-architecture-kit/entities/01a05a27-0000-7600-8000-000000000206
+  created_at: '2026-08-31T23:28:20.480Z'
+  entity_fingerprint: sha256:193f901be7aadf33e8e1d0f48848d578f42ca09c96bfe8128bdf8ac22f7a51cf
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a05a27-0000-7000-8000-000000000027#01a05a27-0000-7600-8000-000000000206
+    artifact_path: adrs/logical/ADR-L-0027-public-binding-construction-and-release-parity.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a05a27-0000-7000-8000-000000000027
+    adr_alias_id: ADR-L-0027
+    scope: global
+    statement: TypeScript/Node parity MUST NOT be achieved by independently recreating
+      compiler, validator, schema, or governance semantics in a second implementation
+      authority.
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions: []
+    supersedes: []
+    alias_id: INV-0206
+    alias_name: no-second-host-semantic-authority
+  relationships:
+    declared_in:
+    - 01a05a27-0000-7000-8000-000000000027
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    consumes_interface: []
+    composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a05a27-0000-7000-8000-000000000027#01a05a27-0000-7600-8000-000000000206
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
+- id: 01a05a27-0000-7600-8000-000000000207
+  alias_id: INV-0207
+  alias_name: browser-profile-does-not-constrain-node-host
+  alias_ref: INV-0207:browser-profile-does-not-constrain-node-host
+  entity_type: invariant
+  name: INV-0207
+  summary: Browser-safe capability restrictions MUST be declared as an execution profile
+    and MUST NOT remove filesystem-backed or repository-host capabilities from the
+    TypeScript/Node binding.
+  uri: adr://adr-architecture-kit/entities/01a05a27-0000-7600-8000-000000000207
+  created_at: '2026-08-31T23:28:20.480Z'
+  entity_fingerprint: sha256:a114461ec43b878d51750c3bac106162758bc9bd772c018711d90a00f0d72b05
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a05a27-0000-7000-8000-000000000027#01a05a27-0000-7600-8000-000000000207
+    artifact_path: adrs/logical/ADR-L-0027-public-binding-construction-and-release-parity.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a05a27-0000-7000-8000-000000000027
+    adr_alias_id: ADR-L-0027
+    scope: global
+    statement: Browser-safe capability restrictions MUST be declared as an execution
+      profile and MUST NOT remove filesystem-backed or repository-host capabilities
+      from the TypeScript/Node binding.
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions: []
+    supersedes: []
+    alias_id: INV-0207
+    alias_name: browser-profile-does-not-constrain-node-host
+  relationships:
+    declared_in:
+    - 01a05a27-0000-7000-8000-000000000027
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    consumes_interface: []
+    composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a05a27-0000-7000-8000-000000000027#01a05a27-0000-7600-8000-000000000207
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
+- id: 01a05a27-0000-7700-8000-000000000201
+  alias_id: DEC-0201
+  alias_name: stable-authority-substrate-precedes-bindings
+  alias_ref: DEC-0201:stable-authority-substrate-precedes-bindings
+  entity_type: decision
+  name: Public Python and TypeScript bindings are projections of one stable authority
+    substrate
+  summary: Implementations must not become independent semantic authorities through
+    API shape or package ownership.
+  uri: adr://adr-architecture-kit/entities/01a05a27-0000-7700-8000-000000000201
+  created_at: '2026-08-31T23:28:20.480Z'
+  entity_fingerprint: sha256:9ad2d64665d206b41ad39f0e39fdcdc100328a3d647896ad3b32c9fdc44b4a0e
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a05a27-0000-7000-8000-000000000027#01a05a27-0000-7700-8000-000000000201
+    artifact_path: adrs/logical/ADR-L-0027-public-binding-construction-and-release-parity.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a05a27-0000-7000-8000-000000000027
+    adr_alias_id: ADR-L-0027
+    related_invariants: []
+    enforces_invariants: []
+    enables_capabilities: []
+    governs_components: []
+    supersedes: []
+    refines: []
+    alias_name: stable-authority-substrate-precedes-bindings
+    alias_id: DEC-0201
+  relationships:
+    declared_in:
+    - 01a05a27-0000-7000-8000-000000000027
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    consumes_interface: []
+    composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a05a27-0000-7000-8000-000000000027#01a05a27-0000-7700-8000-000000000201
+    extraction_phase: extract_decision
+    classification: explicit
+    generator: adr-architecture-index
+- id: 01a05a27-0000-7700-8000-000000000202
+  alias_id: DEC-0202
+  alias_name: every-release-qualifies-both-bindings
+  alias_ref: DEC-0202:every-release-qualifies-both-bindings
+  entity_type: decision
+  name: Every PyPI/npm release qualification reviews and updates both public binding
+    surfaces
+  summary: Shared release lineage is meaningful only when both supported language
+    packages are synchronized with the same authority and compatibility evidence.
+  uri: adr://adr-architecture-kit/entities/01a05a27-0000-7700-8000-000000000202
+  created_at: '2026-08-31T23:28:20.480Z'
+  entity_fingerprint: sha256:b6e6806b55da9c53fb6dc1e6ab22bbadcfe26544a1c28060fe77ebcd06d5648f
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a05a27-0000-7000-8000-000000000027#01a05a27-0000-7700-8000-000000000202
+    artifact_path: adrs/logical/ADR-L-0027-public-binding-construction-and-release-parity.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a05a27-0000-7000-8000-000000000027
+    adr_alias_id: ADR-L-0027
+    related_invariants: []
+    enforces_invariants: []
+    enables_capabilities: []
+    governs_components: []
+    supersedes: []
+    refines: []
+    alias_name: every-release-qualifies-both-bindings
+    alias_id: DEC-0202
+  relationships:
+    declared_in:
+    - 01a05a27-0000-7000-8000-000000000027
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    consumes_interface: []
+    composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a05a27-0000-7000-8000-000000000027#01a05a27-0000-7700-8000-000000000202
+    extraction_phase: extract_decision
+    classification: explicit
+    generator: adr-architecture-index
+- id: 01a05a27-0000-7700-8000-000000000203
+  alias_id: DEC-0203
+  alias_name: binding-parity-is-capability-and-contract-scoped
+  alias_ref: DEC-0203:binding-parity-is-capability-and-contract-scoped
+  entity_type: decision
+  name: Binding parity is required for shared promoted host capabilities and is explicit
+    only for execution-profile differences
+  summary: Python and TypeScript/Node are peer hosts for supported capabilities; browser
+    constraints and staged migration status must not be mistaken for a permanent host-binding
+    difference.
+  uri: adr://adr-architecture-kit/entities/01a05a27-0000-7700-8000-000000000203
+  created_at: '2026-08-31T23:28:20.480Z'
+  entity_fingerprint: sha256:15359e95b8f99c866d97235b3fb64c4be61b8c6cd75e8bdc754e380c2a3dab23
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a05a27-0000-7000-8000-000000000027#01a05a27-0000-7700-8000-000000000203
+    artifact_path: adrs/logical/ADR-L-0027-public-binding-construction-and-release-parity.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a05a27-0000-7000-8000-000000000027
+    adr_alias_id: ADR-L-0027
+    related_invariants: []
+    enforces_invariants: []
+    enables_capabilities: []
+    governs_components: []
+    supersedes: []
+    refines: []
+    alias_name: binding-parity-is-capability-and-contract-scoped
+    alias_id: DEC-0203
+  relationships:
+    declared_in:
+    - 01a05a27-0000-7000-8000-000000000027
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    consumes_interface: []
+    composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a05a27-0000-7000-8000-000000000027#01a05a27-0000-7700-8000-000000000203
+    extraction_phase: extract_decision
+    classification: explicit
+    generator: adr-architecture-index
+- id: 01a05a27-0000-7700-8000-000000000204
+  alias_id: DEC-0204
+  alias_name: host-bindings-share-capability-authority
+  alias_ref: DEC-0204:host-bindings-share-capability-authority
+  entity_type: decision
+  name: Python and TypeScript/Node are peer host bindings for supported filesystem-backed
+    ADR-Kit capabilities
+  summary: Node is a host execution environment; browser restrictions must not be
+    generalized into a TypeScript/Node capability gap.
+  uri: adr://adr-architecture-kit/entities/01a05a27-0000-7700-8000-000000000204
+  created_at: '2026-08-31T23:28:20.480Z'
+  entity_fingerprint: sha256:06a1cc0aabd15983765f1cca9df270f67b752e8dd6f8bb6be6d8ee42739f7798
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a05a27-0000-7000-8000-000000000027#01a05a27-0000-7700-8000-000000000204
+    artifact_path: adrs/logical/ADR-L-0027-public-binding-construction-and-release-parity.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a05a27-0000-7000-8000-000000000027
+    adr_alias_id: ADR-L-0027
+    related_invariants: []
+    enforces_invariants: []
+    enables_capabilities: []
+    governs_components: []
+    supersedes: []
+    refines: []
+    alias_name: host-bindings-share-capability-authority
+    alias_id: DEC-0204
+  relationships:
+    declared_in:
+    - 01a05a27-0000-7000-8000-000000000027
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    consumes_interface: []
+    composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a05a27-0000-7000-8000-000000000027#01a05a27-0000-7700-8000-000000000204
+    extraction_phase: extract_decision
+    classification: explicit
+    generator: adr-architecture-index
+- id: 01a05a27-0000-7700-8000-000000000205
+  alias_id: DEC-0205
+  alias_name: public-surface-evidence-is-cross-language
+  alias_ref: DEC-0205:public-surface-evidence-is-cross-language
+  entity_type: decision
+  name: Public API compatibility snapshots, capability manifests, schema mirrors,
+    documentation, and conformance tests are release evidence
+  summary: Source-level similarity is insufficient to prove that published Python
+    and npm surfaces remain synchronized.
+  uri: adr://adr-architecture-kit/entities/01a05a27-0000-7700-8000-000000000205
+  created_at: '2026-08-31T23:28:20.480Z'
+  entity_fingerprint: sha256:65253d8c0179a054fa6d685e7e76253e4aec7a9b87afb3fb56072be5ebec25d0
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a05a27-0000-7000-8000-000000000027#01a05a27-0000-7700-8000-000000000205
+    artifact_path: adrs/logical/ADR-L-0027-public-binding-construction-and-release-parity.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a05a27-0000-7000-8000-000000000027
+    adr_alias_id: ADR-L-0027
+    related_invariants: []
+    enforces_invariants: []
+    enables_capabilities: []
+    governs_components: []
+    supersedes: []
+    refines: []
+    alias_name: public-surface-evidence-is-cross-language
+    alias_id: DEC-0205
+  relationships:
+    declared_in:
+    - 01a05a27-0000-7000-8000-000000000027
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    consumes_interface: []
+    composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a05a27-0000-7000-8000-000000000027#01a05a27-0000-7700-8000-000000000205
+    extraction_phase: extract_decision
+    classification: explicit
+    generator: adr-architecture-index
+- id: 01a05a27-0000-7700-8000-000000000206
+  alias_id: DEC-0206
+  alias_name: shared-semantic-core-precedes-host-parity
+  alias_ref: DEC-0206:shared-semantic-core-precedes-host-parity
+  entity_type: decision
+  name: Host parity MUST be implemented through one canonical semantic core or authority-preserving
+    shared execution boundary
+  summary: A second TypeScript compiler or validator would create semantic drift;
+    a Python subprocess would not satisfy the Node host contract.
+  uri: adr://adr-architecture-kit/entities/01a05a27-0000-7700-8000-000000000206
+  created_at: '2026-08-31T23:28:20.480Z'
+  entity_fingerprint: sha256:a9de22dec6d6d9946ab9e4a211983a7a72a27e1be5b4df1f5ba73a8bc8a34c4a
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a05a27-0000-7000-8000-000000000027#01a05a27-0000-7700-8000-000000000206
+    artifact_path: adrs/logical/ADR-L-0027-public-binding-construction-and-release-parity.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a05a27-0000-7000-8000-000000000027
+    adr_alias_id: ADR-L-0027
+    related_invariants: []
+    enforces_invariants: []
+    enables_capabilities: []
+    governs_components: []
+    supersedes: []
+    refines: []
+    alias_name: shared-semantic-core-precedes-host-parity
+    alias_id: DEC-0206
+  relationships:
+    declared_in:
+    - 01a05a27-0000-7000-8000-000000000027
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    consumes_interface: []
+    composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a05a27-0000-7000-8000-000000000027#01a05a27-0000-7700-8000-000000000206
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index

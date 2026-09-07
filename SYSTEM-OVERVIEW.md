@@ -5,8 +5,8 @@ artifact_kind: system_overview
 generator_id: adr-system-overview
 generator_version: 2
 hash_algorithm: sha256
-source_hash: 440913f0b1d115b175ef9b01787c3c12e38e10c41bfb73cc63b6c0aa0fbc4fb5
-rendered_hash: f80cedef7a1e6192c3532ac6b0dca16590ba8392a8fb6386a42d4bd9b2776556
+source_hash: 50dae7081366aafb8188ac37079e289c67f68f4c35998a399862b665402ac3e4
+rendered_hash: e30001113397d5ca864e814a20094bfc3502c8143077de95474a321c5ce410a4
 -->
 
 <!--
@@ -72,8 +72,8 @@ Consume supported programmatic behavior through `adr_kit.api`.
 Derived provider facts:
 
 - API contract version: `1.0`
-- Package version: `0.8.1`
-- Operations: `capabilities`, `validate_architecture`, `compile_architecture`, `open_repository`, `open_provider_registry`, `build_embodiment_linkage`, `prepare_promotion`, `check_promotion`, `apply_promotion`- Validation modes: `complete`, `structural`- Artifact groups: `registries`, `manifest`, `markdown`- Supported ADR schema versions: `1.0`, `1.1`, `1.2`, `1.3`, `1.4`, `1.5`- Stable ADR schema versions: `1.0`- Provisional ADR schema versions: `1.1`, `1.2`, `1.3`, `1.4`, `1.5`- Normalized model schema version: `1.1`
+- Package version: `0.9.0`
+- Operations: `capabilities`, `validate_architecture`, `validate_project_metadata`, `validate_contract`, `validate_generated_docs`, `compile_architecture`, `open_repository`, `open_provider_registry`, `build_embodiment_linkage`, `prepare_promotion`, `check_promotion`, `apply_promotion`- Validation modes: `complete`, `structural`- Artifact groups: `registries`, `manifest`, `markdown`- Supported ADR schema versions: `1.0`, `1.1`, `1.2`, `1.3`, `1.4`, `1.5`- Stable ADR schema versions: `1.0`- Provisional ADR schema versions: `1.1`, `1.2`, `1.3`, `1.4`, `1.5`- Normalized model schema version: `1.1`
 - Supported normalized model schema versions: `1.1`, `2.0`, `2.1`, `2.2`
 Supported semantic/repository contracts include `ArchitectureRepository` and `NormalizedArchitectureModel`.
 
@@ -103,6 +103,9 @@ Currently exposed lifecycle capabilities on the public provider surface:
 
 - `adr_kit.api.capabilities`
 - `adr_kit.api.validate_architecture`
+- `adr_kit.api.validate_project_metadata`
+- `adr_kit.api.validate_contract`
+- `adr_kit.api.validate_generated_docs`
 - `adr_kit.api.compile_architecture`
 - `adr_kit.api.open_repository`
 - `adr_kit.api.open_provider_registry`

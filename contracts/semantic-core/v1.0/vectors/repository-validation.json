@@ -1,0 +1,69 @@
+{
+  "contract_version": "1.0",
+  "operation": "open_repository",
+  "cases": [
+    {
+      "name": "valid normalized repository identity",
+      "request": {
+        "core_contract_version": "1.0",
+        "operation": "open_repository",
+        "model_version": "2.1",
+        "architecture_namespace": "fixture",
+        "entities": [
+          {
+            "id": "018f2c9a-5f2a-7e11-8b3c-1234567890ab",
+            "alias_id": "EXT-0001",
+            "alias_ref": "EXT-0001:fixture-worker",
+            "alias_name": "fixture-worker",
+            "entity_type": "fixture:worker",
+            "name": "Fixture Worker",
+            "uri": "adr://fixture/entities/018f2c9a-5f2a-7e11-8b3c-1234567890ab",
+            "lifecycle_stage": "active"
+          }
+        ]
+      },
+      "expected": {
+        "success": true,
+        "diagnostic_count": 0,
+        "entity_count": 1
+      }
+    },
+    {
+      "name": "duplicate normalized alias is rejected",
+      "request": {
+        "core_contract_version": "1.0",
+        "operation": "open_repository",
+        "model_version": "2.1",
+        "architecture_namespace": "fixture",
+        "entities": [
+          {
+            "id": "018f2c9a-5f2a-7e11-8b3c-1234567890ab",
+            "alias_id": "EXT-0001",
+            "alias_ref": "EXT-0001:fixture-worker",
+            "alias_name": "fixture-worker",
+            "entity_type": "fixture:worker",
+            "name": "Fixture Worker",
+            "uri": "adr://fixture/entities/018f2c9a-5f2a-7e11-8b3c-1234567890ab",
+            "lifecycle_stage": "active"
+          },
+          {
+            "id": "018f2c9a-5f2a-7e11-8b3c-1234567890ac",
+            "alias_id": "EXT-0001",
+            "alias_ref": "EXT-0001:other-worker",
+            "alias_name": "other-worker",
+            "entity_type": "fixture:worker",
+            "name": "Other Worker",
+            "uri": "adr://fixture/entities/018f2c9a-5f2a-7e11-8b3c-1234567890ac",
+            "lifecycle_stage": "active"
+          }
+        ]
+      },
+      "expected": {
+        "success": false,
+        "diagnostic_count": 1,
+        "diagnostic_codes": ["repository.duplicate_alias_id"],
+        "entity_count": 2
+      }
+    }
+  ]
+}

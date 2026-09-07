@@ -1,0 +1,22 @@
+{
+  "contract_version": "1.0",
+  "semantic_core_contract": "contracts/semantic-core/v1.0/contract.json",
+  "peer_host_operations": [
+    "capabilities",
+    "validate_architecture",
+    "validate_project_metadata",
+    "validate_contract",
+    "open_repository",
+    "open_provider_registry",
+    "build_embodiment_linkage"
+  ],
+  "pending_host_operations": [
+    "validate_generated_docs",
+    "compile_architecture",
+    "prepare_promotion",
+    "check_promotion",
+    "apply_promotion"
+  ],
+  "browser_operations": ["capabilities"],
+  "rule": "Python and Node host_operations must match; pending operations are not parity-qualified until migrated through the semantic boundary."
+}

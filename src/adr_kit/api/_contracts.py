@@ -5,7 +5,7 @@ from __future__ import annotations
 from dataclasses import asdict, dataclass
 from datetime import datetime, timezone
 from pathlib import Path
-from typing import Literal
+from typing import Literal, Mapping
 
 from ..models import NormalizedArchitectureModel
 from ..models.v2_1 import NormalizedArchitectureModelV21
@@ -17,6 +17,7 @@ API_CONTRACT_VERSION = "1.0"
 VALIDATION_MODES = ("complete", "structural")
 ARTIFACT_GROUPS = ("registries", "manifest", "markdown")
 PROMOTION_CONTRACT_VERSIONS = ("ste.design_journal.promotion_contract/v0.1",)
+CONTRACT_PROFILES = ("greenfield", "brownfield", "migration")
 
 
 def _normalize_project_root(value: str | Path) -> Path:
@@ -27,6 +28,15 @@ def _normalize_project_root(value: str | Path) -> Path:
         raise InvalidRequestError(f"Project root does not contain PROJECT.yaml: {root}")
     if not (root / "adrs").is_dir():
         raise InvalidRequestError(f"Project root does not contain adrs/: {root}")
+    return root
+
+
+def _normalize_metadata_project_root(value: str | Path) -> Path:
+    root = Path(value).expanduser().resolve()
+    if not root.is_dir():
+        raise InvalidRequestError(f"Project root is not a directory: {root}")
+    if not (root / "PROJECT.yaml").is_file():
+        raise InvalidRequestError(f"Project root does not contain PROJECT.yaml: {root}")
     return root
 
 
@@ -165,6 +175,49 @@ class ValidationRequest:
 
 
 @dataclass(frozen=True, slots=True)
+class ProjectMetadataValidationRequest:
+    """Inputs for validating one scope's PROJECT.yaml metadata."""
+
+    project_root: Path
+
+    def __post_init__(self) -> None:
+        object.__setattr__(
+            self, "project_root", _normalize_metadata_project_root(self.project_root)
+        )
+
+
+@dataclass(frozen=True, slots=True)
+class ContractValidationRequest:
+    """Inputs for validating one compiled contract bundle."""
+
+    project_root: Path
+    profile: Literal["greenfield", "brownfield", "migration"] = "greenfield"
+    max_sentinel_fields: int | None = None
+    max_non_complete_entities: int | None = None
+
+    def __post_init__(self) -> None:
+        object.__setattr__(self, "project_root", _normalize_project_root(self.project_root))
+        if self.profile not in CONTRACT_PROFILES:
+            raise InvalidRequestError(f"Unsupported contract validation profile: {self.profile}")
+        for field_name in ("max_sentinel_fields", "max_non_complete_entities"):
+            value = getattr(self, field_name)
+            if value is not None and (isinstance(value, bool) or not isinstance(value, int)):
+                raise InvalidRequestError(f"{field_name} must be a non-negative integer or None")
+            if value is not None and value < 0:
+                raise InvalidRequestError(f"{field_name} must be a non-negative integer or None")
+
+
+@dataclass(frozen=True, slots=True)
+class GeneratedDocsValidationRequest:
+    """Inputs for validating one scope's generated documentation artifacts."""
+
+    project_root: Path
+
+    def __post_init__(self) -> None:
+        object.__setattr__(self, "project_root", _normalize_project_root(self.project_root))
+
+
+@dataclass(frozen=True, slots=True)
 class CompilationRequest:
     """Inputs for one restricted authoring compilation."""
 
@@ -173,6 +226,8 @@ class CompilationRequest:
     write: bool = False
     output_root: Path | None = None
     timestamp: str | None = None
+    check: bool = False
+    include_system_overview: bool = True
 
     def __post_init__(self) -> None:
         object.__setattr__(self, "project_root", _normalize_project_root(self.project_root))
@@ -188,6 +243,12 @@ class CompilationRequest:
         object.__setattr__(self, "artifact_groups", canonical_groups)
         if not isinstance(self.write, bool):
             raise InvalidRequestError("write must be a bool")
+        if not isinstance(self.check, bool):
+            raise InvalidRequestError("check must be a bool")
+        if not isinstance(self.include_system_overview, bool):
+            raise InvalidRequestError("include_system_overview must be a bool")
+        if self.check and self.write:
+            raise InvalidRequestError("check=True and write=True are mutually exclusive")
         if self.output_root is not None and not self.write:
             raise InvalidRequestError("output_root requires write=True")
         if self.output_root is not None:
@@ -205,6 +266,75 @@ class ValidationResult:
     diagnostics: tuple[Diagnostic, ...]
     error_count: int
     warning_count: int
+    package_version: str
+    api_contract_version: str
+
+
+@dataclass(frozen=True, slots=True)
+class ProjectMetadataValidationResult:
+    """Completed PROJECT.yaml metadata validation outcome."""
+
+    request: ProjectMetadataValidationRequest
+    success: bool
+    diagnostics: tuple[Diagnostic, ...]
+    package_version: str
+    api_contract_version: str
+
+
+@dataclass(frozen=True, slots=True)
+class ContractValidationIssue:
+    """Immutable public view of one compiled-contract validation issue."""
+
+    path: str
+    message: str
+
+
+@dataclass(frozen=True, slots=True)
+class ContractValidationResult:
+    """Completed compiled-contract validation outcome."""
+
+    request: ContractValidationRequest
+    success: bool
+    profile: Literal["greenfield", "brownfield", "migration"]
+    outcome: Literal["compliant", "sentinel_compliant", "non_compliant"]
+    sentinel_field_count: int
+    non_complete_entity_count: int
+    completeness_counts: Mapping[str, int]
+    issues: tuple[ContractValidationIssue, ...]
+    diagnostics: tuple[Diagnostic, ...]
+    package_version: str
+    api_contract_version: str
+
+
+@dataclass(frozen=True, slots=True)
+class GeneratedArtifactValidation:
+    """Immutable public view of one generated-artifact validation result."""
+
+    artifact_path: str
+    artifact_kind: str
+    status: Literal[
+        "valid",
+        "stale_generated_output",
+        "tampered_generated_output",
+        "missing_or_malformed_integrity_header",
+        "unsupported_artifact_kind",
+    ]
+    reason_code: str
+    expected_source_hash: str | None = None
+    actual_source_hash: str | None = None
+    expected_rendered_hash: str | None = None
+    actual_rendered_hash: str | None = None
+    notes: tuple[str, ...] = ()
+
+
+@dataclass(frozen=True, slots=True)
+class GeneratedDocsValidationResult:
+    """Completed generated-document integrity validation outcome."""
+
+    request: GeneratedDocsValidationRequest
+    success: bool
+    artifacts: tuple[GeneratedArtifactValidation, ...]
+    diagnostics: tuple[Diagnostic, ...]
     package_version: str
     api_contract_version: str
 
@@ -268,6 +398,16 @@ class CapabilityManifest:
     supported_normalized_model_schema_versions: tuple[str, ...]
     supported_evidence_attribution_versions: tuple[str, ...]
     preferred_evidence_attribution_version: str
+    host_operations: tuple[str, ...] = (
+        "capabilities",
+        "validate_project_metadata",
+        "validate_contract",
+        "open_repository",
+        "open_provider_registry",
+        "build_embodiment_linkage",
+    )
+    pending_host_operations: tuple[str, ...] = ()
+    browser_operations: tuple[str, ...] = ("capabilities",)
 
     def as_dict(self) -> dict[str, object]:
         """Return the ordered JSON-safe Phase 1 serialization contract."""

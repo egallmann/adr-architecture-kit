@@ -77,13 +77,12 @@ the evidence schemas they consume remain provisional.
 
 ### TypeScript consumer binding
 
-`@system-of-thought/adr-kit` is the official read-only TypeScript consumer binding.
-It is governed by Consumer Binding Contract 1.0 and advertises capability-scoped
-support for normalized model 2.1, evidence attribution 1.5/1.6, repository
-discovery, semantic extensions, and canonical/compatibility relationships. The
-browser-safe entry points are framework-neutral ESM; filesystem repository loading
-and embodiment linkage are explicit Node-only subpaths. TypeScript and Python
-fingerprints are binding-local and are not required to match.
+`@system-of-thought/adr-kit` is the official TypeScript host/browser binding.
+It is governed by Consumer Binding Contract 1.0 and ADR-L-0027. The Node host
+profile is a peer to Python for supported filesystem-backed capabilities; the
+browser-safe entry points are a deliberately constrained framework-neutral ESM
+profile. TypeScript and Python fingerprints are binding-local and are not
+required to match.
 
 ### Generated compatibility
 

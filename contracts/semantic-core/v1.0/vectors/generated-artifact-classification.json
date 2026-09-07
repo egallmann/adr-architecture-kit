@@ -1,0 +1,82 @@
+{
+  "contract_version": "1.0",
+  "operation": "classify_generated_artifact",
+  "cases": [
+    {
+      "name": "valid",
+      "request": {
+        "core_contract_version": "1.0",
+        "operation": "classify_generated_artifact",
+        "artifact_kind": "manifest",
+        "declared_artifact_kind": "manifest",
+        "header_valid": true,
+        "declared_source_hash": "source",
+        "declared_rendered_hash": "rendered",
+        "actual_rendered_hash": "rendered",
+        "expected_source_hash": "source",
+        "expected_rendered_hash": "rendered"
+      },
+      "expected": {"success": true, "status": "valid", "reason_code": "hashes_match"}
+    },
+    {
+      "name": "tampered rendered output",
+      "request": {
+        "core_contract_version": "1.0",
+        "operation": "classify_generated_artifact",
+        "artifact_kind": "manifest",
+        "declared_artifact_kind": "manifest",
+        "header_valid": true,
+        "declared_source_hash": "source",
+        "declared_rendered_hash": "rendered",
+        "actual_rendered_hash": "tampered",
+        "expected_source_hash": "source",
+        "expected_rendered_hash": "rendered"
+      },
+      "expected": {"success": false, "status": "tampered_generated_output", "reason_code": "rendered_hash_mismatch"}
+    },
+    {
+      "name": "stale source",
+      "request": {
+        "core_contract_version": "1.0",
+        "operation": "classify_generated_artifact",
+        "artifact_kind": "rendered_adr_markdown",
+        "declared_artifact_kind": "rendered_adr_markdown",
+        "header_valid": true,
+        "declared_source_hash": "old",
+        "declared_rendered_hash": "rendered",
+        "actual_rendered_hash": "rendered",
+        "expected_source_hash": "new",
+        "expected_rendered_hash": "rendered"
+      },
+      "expected": {"success": false, "status": "stale_generated_output", "reason_code": "source_hash_mismatch"}
+    },
+    {
+      "name": "malformed header",
+      "request": {
+        "core_contract_version": "1.0",
+        "operation": "classify_generated_artifact",
+        "artifact_kind": "system_overview",
+        "declared_artifact_kind": null,
+        "header_valid": false,
+        "header_error": "Markdown header is not properly closed"
+      },
+      "expected": {"success": false, "status": "missing_or_malformed_integrity_header", "reason_code": "malformed_header"}
+    },
+    {
+      "name": "unsupported artifact kind",
+      "request": {
+        "core_contract_version": "1.0",
+        "operation": "classify_generated_artifact",
+        "artifact_kind": "manifest",
+        "declared_artifact_kind": "future_kind",
+        "header_valid": true,
+        "declared_source_hash": "source",
+        "declared_rendered_hash": "rendered",
+        "actual_rendered_hash": "rendered",
+        "expected_source_hash": "source",
+        "expected_rendered_hash": "rendered"
+      },
+      "expected": {"success": false, "status": "unsupported_artifact_kind", "reason_code": "unsupported_artifact_kind"}
+    }
+  ]
+}

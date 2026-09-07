@@ -1,0 +1,36 @@
+{
+  "contract_version": "1.0",
+  "operation": "validate_architecture_references",
+  "cases": [
+    {
+      "name": "valid cross-reference topology",
+      "request": {
+        "core_contract_version": "1.0",
+        "operation": "validate_architecture_references",
+        "records": [
+          {"id": "L1", "kind": "logical"},
+          {"id": "PS1", "kind": "physical-system", "schema_version": "1.5", "system_id": "SYS1", "implements_logical": ["L1"], "topology_components": ["C1"]},
+          {"id": "PC1", "kind": "physical-component", "implements_system": ["PS1"], "implements_logical": ["L1"], "component_specifications": [{"id": "C1"}]}
+        ],
+        "reviews": [],
+        "overrides": []
+      },
+      "expected": {"success": true, "error_count": 0, "warning_count": 0, "diagnostic_count": 0}
+    },
+    {
+      "name": "missing references and topology membership are reported",
+      "request": {
+        "core_contract_version": "1.0",
+        "operation": "validate_architecture_references",
+        "records": [
+          {"id": "L1", "kind": "logical"},
+          {"id": "PS1", "kind": "physical-system", "schema_version": "1.5", "system_id": "SYS1", "implements_logical": ["MISSING-L"], "topology_components": ["C1"]},
+          {"id": "PC1", "kind": "physical-component", "implements_system": ["MISSING-PS"], "implements_logical": ["MISSING-L"], "related_adrs": ["MISSING-ADR"], "related_reviews": ["R1"], "related_overrides": ["O1"], "component_specifications": [{"id": "C1"}]}
+        ],
+        "reviews": [{"id": "R1", "target_adr": "L1"}, {"id": "R2", "target_adr": "MISSING-ADR"}],
+        "overrides": [{"id": "O1", "related_adr": "L1"}, {"id": "O2", "related_adr": "MISSING-ADR"}]
+      },
+      "expected": {"success": false, "error_count": 8, "warning_count": 1, "diagnostic_count": 9}
+    }
+  ]
+}

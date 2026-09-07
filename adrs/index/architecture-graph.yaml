@@ -4,8 +4,8 @@
 # generator_id: adr-architecture-graph
 # generator_version: 1
 # hash_algorithm: sha256
-# source_hash: 5a0af0b3ef669f42363332744474f4251a5f9e6156e0f1fa8de9c196bf8b7101
-# rendered_hash: 6c59b87ec8f5adfc914bf49a51442ad3efc0d9a04da05ba43b98df0117210a65
+# source_hash: aae1a66d246545dbca1d9d10da424b024de1ed8a2c210fbaa637021d71676cb9
+# rendered_hash: b72caa01f7b21acc92bbdd68a8fbcdfad0351bfa7c507748bcc7aeade1b827d6
 
 schema_version: '1.0'
 type: architecture_graph
@@ -3123,8 +3123,8 @@ nodes:
     artifact_path: adrs/logical/ADR-L-0024-cross-language-consumer-bindings-and-typescript-distribution.yaml
 - id: 01a02d38-7cf3-7765-8a96-0cdd35f55df5
   entity_type: decision
-  name: The first TypeScript release is read-only and excludes authoring identity
-    allocation graph admission CLI MCP and repository writes
+  name: Browser-safe TypeScript entry points are constrained while the TypeScript/Node
+    host binding is a peer host capability surface
   canonical_source:
     source_type: logical_adr
     source_ref: 01a02d38-7cf3-7b3c-87ec-1c5f08490c6e#01a02d38-7cf3-7765-8a96-0cdd35f55df5
@@ -3182,6 +3182,13 @@ nodes:
     source_type: logical_adr
     source_ref: 01a02d38-7cf3-7b3c-87ec-1c5f08490c6e#01a02d38-7cf3-7c3b-85b4-f2e1328d8363
     artifact_path: adrs/logical/ADR-L-0024-cross-language-consumer-bindings-and-typescript-distribution.yaml
+- id: 01a02d38-7cf3-7c3b-85b4-f2e1328d8370
+  entity_type: decision
+  name: TypeScript/Node is a peer host-runtime binding for supported ADR-Kit capabilities
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a02d38-7cf3-7b3c-87ec-1c5f08490c6e#01a02d38-7cf3-7c3b-85b4-f2e1328d8370
+    artifact_path: adrs/logical/ADR-L-0024-cross-language-consumer-bindings-and-typescript-distribution.yaml
 - id: 01a02d38-7cf3-7dfe-80d8-28c51db97e18
   entity_type: capability
   name: Capability-Scoped Consumer Binding
@@ -3195,6 +3202,20 @@ nodes:
   canonical_source:
     source_type: logical_adr
     source_ref: 01a02d38-7cf3-7b3c-87ec-1c5f08490c6e#01a02d38-7cf3-7e8e-8a34-0865a8dd73af
+    artifact_path: adrs/logical/ADR-L-0024-cross-language-consumer-bindings-and-typescript-distribution.yaml
+- id: 01a02d38-7cf3-7e8e-8a34-0865a8dd73b0
+  entity_type: invariant
+  name: INV-0163
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a02d38-7cf3-7b3c-87ec-1c5f08490c6e#01a02d38-7cf3-7e8e-8a34-0865a8dd73b0
+    artifact_path: adrs/logical/ADR-L-0024-cross-language-consumer-bindings-and-typescript-distribution.yaml
+- id: 01a02d38-7cf3-7e8e-8a34-0865a8dd73b1
+  entity_type: invariant
+  name: INV-0164
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a02d38-7cf3-7b3c-87ec-1c5f08490c6e#01a02d38-7cf3-7e8e-8a34-0865a8dd73b1
     artifact_path: adrs/logical/ADR-L-0024-cross-language-consumer-bindings-and-typescript-distribution.yaml
 - id: 01a048d8-454a-7464-bcaa-718e58dfb9c2
   entity_type: adr
@@ -3365,6 +3386,110 @@ nodes:
     source_type: logical_adr
     source_ref: 01a05a26-0000-7000-8000-000000000026#01a05a26-0000-7700-8000-000000000182
     artifact_path: adrs/logical/ADR-L-0026-authoring-domain-contract-discovery-authority.yaml
+- id: 01a05a27-0000-7000-8000-000000000027
+  entity_type: adr
+  name: Public Binding Construction and Release Parity
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a05a27-0000-7000-8000-000000000027
+    artifact_path: adrs/logical/ADR-L-0027-public-binding-construction-and-release-parity.yaml
+- id: 01a05a27-0000-7600-8000-000000000201
+  entity_type: invariant
+  name: INV-0201
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a05a27-0000-7000-8000-000000000027#01a05a27-0000-7600-8000-000000000201
+    artifact_path: adrs/logical/ADR-L-0027-public-binding-construction-and-release-parity.yaml
+- id: 01a05a27-0000-7600-8000-000000000202
+  entity_type: invariant
+  name: INV-0202
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a05a27-0000-7000-8000-000000000027#01a05a27-0000-7600-8000-000000000202
+    artifact_path: adrs/logical/ADR-L-0027-public-binding-construction-and-release-parity.yaml
+- id: 01a05a27-0000-7600-8000-000000000203
+  entity_type: invariant
+  name: INV-0203
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a05a27-0000-7000-8000-000000000027#01a05a27-0000-7600-8000-000000000203
+    artifact_path: adrs/logical/ADR-L-0027-public-binding-construction-and-release-parity.yaml
+- id: 01a05a27-0000-7600-8000-000000000204
+  entity_type: invariant
+  name: INV-0204
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a05a27-0000-7000-8000-000000000027#01a05a27-0000-7600-8000-000000000204
+    artifact_path: adrs/logical/ADR-L-0027-public-binding-construction-and-release-parity.yaml
+- id: 01a05a27-0000-7600-8000-000000000205
+  entity_type: invariant
+  name: INV-0205
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a05a27-0000-7000-8000-000000000027#01a05a27-0000-7600-8000-000000000205
+    artifact_path: adrs/logical/ADR-L-0027-public-binding-construction-and-release-parity.yaml
+- id: 01a05a27-0000-7600-8000-000000000206
+  entity_type: invariant
+  name: INV-0206
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a05a27-0000-7000-8000-000000000027#01a05a27-0000-7600-8000-000000000206
+    artifact_path: adrs/logical/ADR-L-0027-public-binding-construction-and-release-parity.yaml
+- id: 01a05a27-0000-7600-8000-000000000207
+  entity_type: invariant
+  name: INV-0207
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a05a27-0000-7000-8000-000000000027#01a05a27-0000-7600-8000-000000000207
+    artifact_path: adrs/logical/ADR-L-0027-public-binding-construction-and-release-parity.yaml
+- id: 01a05a27-0000-7700-8000-000000000201
+  entity_type: decision
+  name: Public Python and TypeScript bindings are projections of one stable authority
+    substrate
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a05a27-0000-7000-8000-000000000027#01a05a27-0000-7700-8000-000000000201
+    artifact_path: adrs/logical/ADR-L-0027-public-binding-construction-and-release-parity.yaml
+- id: 01a05a27-0000-7700-8000-000000000202
+  entity_type: decision
+  name: Every PyPI/npm release qualification reviews and updates both public binding
+    surfaces
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a05a27-0000-7000-8000-000000000027#01a05a27-0000-7700-8000-000000000202
+    artifact_path: adrs/logical/ADR-L-0027-public-binding-construction-and-release-parity.yaml
+- id: 01a05a27-0000-7700-8000-000000000203
+  entity_type: decision
+  name: Binding parity is required for shared promoted host capabilities and is explicit
+    only for execution-profile differences
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a05a27-0000-7000-8000-000000000027#01a05a27-0000-7700-8000-000000000203
+    artifact_path: adrs/logical/ADR-L-0027-public-binding-construction-and-release-parity.yaml
+- id: 01a05a27-0000-7700-8000-000000000204
+  entity_type: decision
+  name: Python and TypeScript/Node are peer host bindings for supported filesystem-backed
+    ADR-Kit capabilities
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a05a27-0000-7000-8000-000000000027#01a05a27-0000-7700-8000-000000000204
+    artifact_path: adrs/logical/ADR-L-0027-public-binding-construction-and-release-parity.yaml
+- id: 01a05a27-0000-7700-8000-000000000205
+  entity_type: decision
+  name: Public API compatibility snapshots, capability manifests, schema mirrors,
+    documentation, and conformance tests are release evidence
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a05a27-0000-7000-8000-000000000027#01a05a27-0000-7700-8000-000000000205
+    artifact_path: adrs/logical/ADR-L-0027-public-binding-construction-and-release-parity.yaml
+- id: 01a05a27-0000-7700-8000-000000000206
+  entity_type: decision
+  name: Host parity MUST be implemented through one canonical semantic core or authority-preserving
+    shared execution boundary
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a05a27-0000-7000-8000-000000000027#01a05a27-0000-7700-8000-000000000206
+    artifact_path: adrs/logical/ADR-L-0027-public-binding-construction-and-release-parity.yaml
 edges:
 - relationship_id: composed_of:019fee89-e618-713e-a017-5b417ef9ac9f:019fee89-e617-7060-8f3f-4ecd46a719da
   assertion_id: asrt-d74242277345f165c818296ac134a2feaff28ca36257f6aa02377dea3ba84258
@@ -7914,6 +8039,17 @@ edges:
   canonical_source_ref: 01a02d38-7cf3-7b3c-87ec-1c5f08490c6e#01a02d38-7cf3-7c3b-85b4-f2e1328d8363
   confidence: 1.0
   metadata: {}
+- relationship_id: declared_in:01a02d38-7cf3-7c3b-85b4-f2e1328d8370:01a02d38-7cf3-7b3c-87ec-1c5f08490c6e
+  assertion_id: asrt-a3077e5d61a70d34754b1a23e2b826ae5ab733c229fa47c1bfd723de38a1fef6
+  relationship_type: declared_in
+  source_entity_id: 01a02d38-7cf3-7c3b-85b4-f2e1328d8370
+  target_entity_id: 01a02d38-7cf3-7b3c-87ec-1c5f08490c6e
+  provenance_classification: explicit
+  evidence:
+  - 01a02d38-7cf3-7b3c-87ec-1c5f08490c6e#01a02d38-7cf3-7c3b-85b4-f2e1328d8370
+  canonical_source_ref: 01a02d38-7cf3-7b3c-87ec-1c5f08490c6e#01a02d38-7cf3-7c3b-85b4-f2e1328d8370
+  confidence: 1.0
+  metadata: {}
 - relationship_id: declared_in:01a02d38-7cf3-7dfe-80d8-28c51db97e18:01a02d38-7cf3-7b3c-87ec-1c5f08490c6e
   assertion_id: asrt-b24b9000c6e6a3c7d113c089838872fad42a0664e789b93f633f1068433f5abc
   relationship_type: declared_in
@@ -7934,6 +8070,28 @@ edges:
   evidence:
   - 01a02d38-7cf3-7b3c-87ec-1c5f08490c6e#01a02d38-7cf3-7e8e-8a34-0865a8dd73af
   canonical_source_ref: 01a02d38-7cf3-7b3c-87ec-1c5f08490c6e#01a02d38-7cf3-7e8e-8a34-0865a8dd73af
+  confidence: 1.0
+  metadata: {}
+- relationship_id: declared_in:01a02d38-7cf3-7e8e-8a34-0865a8dd73b0:01a02d38-7cf3-7b3c-87ec-1c5f08490c6e
+  assertion_id: asrt-6d476281066922cd1f0b57a9f93335ea07d73e491aaf80e2beb6c39675acf8a0
+  relationship_type: declared_in
+  source_entity_id: 01a02d38-7cf3-7e8e-8a34-0865a8dd73b0
+  target_entity_id: 01a02d38-7cf3-7b3c-87ec-1c5f08490c6e
+  provenance_classification: explicit
+  evidence:
+  - 01a02d38-7cf3-7b3c-87ec-1c5f08490c6e#01a02d38-7cf3-7e8e-8a34-0865a8dd73b0
+  canonical_source_ref: 01a02d38-7cf3-7b3c-87ec-1c5f08490c6e#01a02d38-7cf3-7e8e-8a34-0865a8dd73b0
+  confidence: 1.0
+  metadata: {}
+- relationship_id: declared_in:01a02d38-7cf3-7e8e-8a34-0865a8dd73b1:01a02d38-7cf3-7b3c-87ec-1c5f08490c6e
+  assertion_id: asrt-346ec8b78d166c707629d029f8987c4ef74fe7dec36136fb0349f705cd82de43
+  relationship_type: declared_in
+  source_entity_id: 01a02d38-7cf3-7e8e-8a34-0865a8dd73b1
+  target_entity_id: 01a02d38-7cf3-7b3c-87ec-1c5f08490c6e
+  provenance_classification: explicit
+  evidence:
+  - 01a02d38-7cf3-7b3c-87ec-1c5f08490c6e#01a02d38-7cf3-7e8e-8a34-0865a8dd73b1
+  canonical_source_ref: 01a02d38-7cf3-7b3c-87ec-1c5f08490c6e#01a02d38-7cf3-7e8e-8a34-0865a8dd73b1
   confidence: 1.0
   metadata: {}
 - relationship_id: declared_in:01a048e9-bf60-7620-ad03-5af81c48c443:01a048d8-454a-7464-bcaa-718e58dfb9c2
@@ -8165,6 +8323,149 @@ edges:
   evidence:
   - 01a05a26-0000-7000-8000-000000000026#01a05a26-0000-7700-8000-000000000182
   canonical_source_ref: 01a05a26-0000-7000-8000-000000000026#01a05a26-0000-7700-8000-000000000182
+  confidence: 1.0
+  metadata: {}
+- relationship_id: declared_in:01a05a27-0000-7600-8000-000000000201:01a05a27-0000-7000-8000-000000000027
+  assertion_id: asrt-c9bdae9e099cf78ecbd0badae95c7abcc0cdd7cb1dc83714609e66170e4e6390
+  relationship_type: declared_in
+  source_entity_id: 01a05a27-0000-7600-8000-000000000201
+  target_entity_id: 01a05a27-0000-7000-8000-000000000027
+  provenance_classification: explicit
+  evidence:
+  - 01a05a27-0000-7000-8000-000000000027#01a05a27-0000-7600-8000-000000000201
+  canonical_source_ref: 01a05a27-0000-7000-8000-000000000027#01a05a27-0000-7600-8000-000000000201
+  confidence: 1.0
+  metadata: {}
+- relationship_id: declared_in:01a05a27-0000-7600-8000-000000000202:01a05a27-0000-7000-8000-000000000027
+  assertion_id: asrt-dd15f3b041dd0e1a075c06a06bcdc12a96a52c89b2ed763f4325a4df47a33756
+  relationship_type: declared_in
+  source_entity_id: 01a05a27-0000-7600-8000-000000000202
+  target_entity_id: 01a05a27-0000-7000-8000-000000000027
+  provenance_classification: explicit
+  evidence:
+  - 01a05a27-0000-7000-8000-000000000027#01a05a27-0000-7600-8000-000000000202
+  canonical_source_ref: 01a05a27-0000-7000-8000-000000000027#01a05a27-0000-7600-8000-000000000202
+  confidence: 1.0
+  metadata: {}
+- relationship_id: declared_in:01a05a27-0000-7600-8000-000000000203:01a05a27-0000-7000-8000-000000000027
+  assertion_id: asrt-78470e0d5ff9a86d2c01be385c2a4e19602d1e0b23d338f7079b5fcae8f83cbd
+  relationship_type: declared_in
+  source_entity_id: 01a05a27-0000-7600-8000-000000000203
+  target_entity_id: 01a05a27-0000-7000-8000-000000000027
+  provenance_classification: explicit
+  evidence:
+  - 01a05a27-0000-7000-8000-000000000027#01a05a27-0000-7600-8000-000000000203
+  canonical_source_ref: 01a05a27-0000-7000-8000-000000000027#01a05a27-0000-7600-8000-000000000203
+  confidence: 1.0
+  metadata: {}
+- relationship_id: declared_in:01a05a27-0000-7600-8000-000000000204:01a05a27-0000-7000-8000-000000000027
+  assertion_id: asrt-d58697c02473440702469885f5dab8c8e45dd686ed13030204e4d4545f11449d
+  relationship_type: declared_in
+  source_entity_id: 01a05a27-0000-7600-8000-000000000204
+  target_entity_id: 01a05a27-0000-7000-8000-000000000027
+  provenance_classification: explicit
+  evidence:
+  - 01a05a27-0000-7000-8000-000000000027#01a05a27-0000-7600-8000-000000000204
+  canonical_source_ref: 01a05a27-0000-7000-8000-000000000027#01a05a27-0000-7600-8000-000000000204
+  confidence: 1.0
+  metadata: {}
+- relationship_id: declared_in:01a05a27-0000-7600-8000-000000000205:01a05a27-0000-7000-8000-000000000027
+  assertion_id: asrt-d35594188eae1fb5e77ace816423819862b94e48572c28e179efeebe1eea2236
+  relationship_type: declared_in
+  source_entity_id: 01a05a27-0000-7600-8000-000000000205
+  target_entity_id: 01a05a27-0000-7000-8000-000000000027
+  provenance_classification: explicit
+  evidence:
+  - 01a05a27-0000-7000-8000-000000000027#01a05a27-0000-7600-8000-000000000205
+  canonical_source_ref: 01a05a27-0000-7000-8000-000000000027#01a05a27-0000-7600-8000-000000000205
+  confidence: 1.0
+  metadata: {}
+- relationship_id: declared_in:01a05a27-0000-7600-8000-000000000206:01a05a27-0000-7000-8000-000000000027
+  assertion_id: asrt-483fefb3b0d1df344ee35702772d81c573909a0e5d509155e0454b590093907f
+  relationship_type: declared_in
+  source_entity_id: 01a05a27-0000-7600-8000-000000000206
+  target_entity_id: 01a05a27-0000-7000-8000-000000000027
+  provenance_classification: explicit
+  evidence:
+  - 01a05a27-0000-7000-8000-000000000027#01a05a27-0000-7600-8000-000000000206
+  canonical_source_ref: 01a05a27-0000-7000-8000-000000000027#01a05a27-0000-7600-8000-000000000206
+  confidence: 1.0
+  metadata: {}
+- relationship_id: declared_in:01a05a27-0000-7600-8000-000000000207:01a05a27-0000-7000-8000-000000000027
+  assertion_id: asrt-2ac66d63172c31d21eb9ebebe9aa81a1e2f76b838ca82961b9db67e907807710
+  relationship_type: declared_in
+  source_entity_id: 01a05a27-0000-7600-8000-000000000207
+  target_entity_id: 01a05a27-0000-7000-8000-000000000027
+  provenance_classification: explicit
+  evidence:
+  - 01a05a27-0000-7000-8000-000000000027#01a05a27-0000-7600-8000-000000000207
+  canonical_source_ref: 01a05a27-0000-7000-8000-000000000027#01a05a27-0000-7600-8000-000000000207
+  confidence: 1.0
+  metadata: {}
+- relationship_id: declared_in:01a05a27-0000-7700-8000-000000000201:01a05a27-0000-7000-8000-000000000027
+  assertion_id: asrt-0821f8e78523994479e2c89ad1cf8996293b2fcb5f511d1e89deb420efd846aa
+  relationship_type: declared_in
+  source_entity_id: 01a05a27-0000-7700-8000-000000000201
+  target_entity_id: 01a05a27-0000-7000-8000-000000000027
+  provenance_classification: explicit
+  evidence:
+  - 01a05a27-0000-7000-8000-000000000027#01a05a27-0000-7700-8000-000000000201
+  canonical_source_ref: 01a05a27-0000-7000-8000-000000000027#01a05a27-0000-7700-8000-000000000201
+  confidence: 1.0
+  metadata: {}
+- relationship_id: declared_in:01a05a27-0000-7700-8000-000000000202:01a05a27-0000-7000-8000-000000000027
+  assertion_id: asrt-fef60c92bab226a68d04a57535d22e9204bdf92866dffe4bb7ba8e5b0aeddcd4
+  relationship_type: declared_in
+  source_entity_id: 01a05a27-0000-7700-8000-000000000202
+  target_entity_id: 01a05a27-0000-7000-8000-000000000027
+  provenance_classification: explicit
+  evidence:
+  - 01a05a27-0000-7000-8000-000000000027#01a05a27-0000-7700-8000-000000000202
+  canonical_source_ref: 01a05a27-0000-7000-8000-000000000027#01a05a27-0000-7700-8000-000000000202
+  confidence: 1.0
+  metadata: {}
+- relationship_id: declared_in:01a05a27-0000-7700-8000-000000000203:01a05a27-0000-7000-8000-000000000027
+  assertion_id: asrt-dd70151697867b3ace8313b8a9afb2cdbb8f70ac7abdb5a945114111884bc40a
+  relationship_type: declared_in
+  source_entity_id: 01a05a27-0000-7700-8000-000000000203
+  target_entity_id: 01a05a27-0000-7000-8000-000000000027
+  provenance_classification: explicit
+  evidence:
+  - 01a05a27-0000-7000-8000-000000000027#01a05a27-0000-7700-8000-000000000203
+  canonical_source_ref: 01a05a27-0000-7000-8000-000000000027#01a05a27-0000-7700-8000-000000000203
+  confidence: 1.0
+  metadata: {}
+- relationship_id: declared_in:01a05a27-0000-7700-8000-000000000204:01a05a27-0000-7000-8000-000000000027
+  assertion_id: asrt-219fb249404097b28211f053ee46878ba3a2ab8930d030f583ddccf8fd7e1d99
+  relationship_type: declared_in
+  source_entity_id: 01a05a27-0000-7700-8000-000000000204
+  target_entity_id: 01a05a27-0000-7000-8000-000000000027
+  provenance_classification: explicit
+  evidence:
+  - 01a05a27-0000-7000-8000-000000000027#01a05a27-0000-7700-8000-000000000204
+  canonical_source_ref: 01a05a27-0000-7000-8000-000000000027#01a05a27-0000-7700-8000-000000000204
+  confidence: 1.0
+  metadata: {}
+- relationship_id: declared_in:01a05a27-0000-7700-8000-000000000205:01a05a27-0000-7000-8000-000000000027
+  assertion_id: asrt-40a90d91b0d0fe06e9e6d02219667e1a14395c1fc95474d6a612b19f105aa808
+  relationship_type: declared_in
+  source_entity_id: 01a05a27-0000-7700-8000-000000000205
+  target_entity_id: 01a05a27-0000-7000-8000-000000000027
+  provenance_classification: explicit
+  evidence:
+  - 01a05a27-0000-7000-8000-000000000027#01a05a27-0000-7700-8000-000000000205
+  canonical_source_ref: 01a05a27-0000-7000-8000-000000000027#01a05a27-0000-7700-8000-000000000205
+  confidence: 1.0
+  metadata: {}
+- relationship_id: declared_in:01a05a27-0000-7700-8000-000000000206:01a05a27-0000-7000-8000-000000000027
+  assertion_id: asrt-133a9e488f5a035f42bf2e21981c49ffaedbc4c5f4e86c64fe00a13bc032594b
+  relationship_type: declared_in
+  source_entity_id: 01a05a27-0000-7700-8000-000000000206
+  target_entity_id: 01a05a27-0000-7000-8000-000000000027
+  provenance_classification: explicit
+  evidence:
+  - 01a05a27-0000-7000-8000-000000000027#01a05a27-0000-7700-8000-000000000206
+  canonical_source_ref: 01a05a27-0000-7000-8000-000000000027#01a05a27-0000-7700-8000-000000000206
   confidence: 1.0
   metadata: {}
 - relationship_id: depends_on:019fee89-e617-76ad-9336-b3615a6e4bde:019fee89-e617-7060-8f3f-4ecd46a719da
@@ -10346,6 +10647,50 @@ edges:
   evidence:
   - 01a05a26-0000-7000-8000-000000000026
   canonical_source_ref: 01a05a26-0000-7000-8000-000000000026
+  confidence: 1.0
+  metadata: {}
+- relationship_id: references:01a05a27-0000-7000-8000-000000000027:019fee89-e617-78d9-ba3b-b7e3e6db1b12
+  assertion_id: asrt-02c8c68b5d29382395eec45edc37d84e8da92d3e474bb4bdef2b16164af26bde
+  relationship_type: references
+  source_entity_id: 01a05a27-0000-7000-8000-000000000027
+  target_entity_id: 019fee89-e617-78d9-ba3b-b7e3e6db1b12
+  provenance_classification: explicit
+  evidence:
+  - 01a05a27-0000-7000-8000-000000000027
+  canonical_source_ref: 01a05a27-0000-7000-8000-000000000027
+  confidence: 1.0
+  metadata: {}
+- relationship_id: references:01a05a27-0000-7000-8000-000000000027:019fee89-e617-7ff5-863b-1eef71637b0f
+  assertion_id: asrt-87b2e4407ed8505ab1d696e35d2c3141178a965cbee423d936dfc7c493caf2ba
+  relationship_type: references
+  source_entity_id: 01a05a27-0000-7000-8000-000000000027
+  target_entity_id: 019fee89-e617-7ff5-863b-1eef71637b0f
+  provenance_classification: explicit
+  evidence:
+  - 01a05a27-0000-7000-8000-000000000027
+  canonical_source_ref: 01a05a27-0000-7000-8000-000000000027
+  confidence: 1.0
+  metadata: {}
+- relationship_id: references:01a05a27-0000-7000-8000-000000000027:01a02d38-7cf3-7b3c-87ec-1c5f08490c6e
+  assertion_id: asrt-09c088863a33e370f69d5c1857b5c7c3ec67303f805c4851a6fe618859a5f827
+  relationship_type: references
+  source_entity_id: 01a05a27-0000-7000-8000-000000000027
+  target_entity_id: 01a02d38-7cf3-7b3c-87ec-1c5f08490c6e
+  provenance_classification: explicit
+  evidence:
+  - 01a05a27-0000-7000-8000-000000000027
+  canonical_source_ref: 01a05a27-0000-7000-8000-000000000027
+  confidence: 1.0
+  metadata: {}
+- relationship_id: references:01a05a27-0000-7000-8000-000000000027:01a05a26-0000-7000-8000-000000000026
+  assertion_id: asrt-341d295f602b7be097e252aa6c432e8cbb502b734573bb985ed09a16fa875375
+  relationship_type: references
+  source_entity_id: 01a05a27-0000-7000-8000-000000000027
+  target_entity_id: 01a05a26-0000-7000-8000-000000000026
+  provenance_classification: explicit
+  evidence:
+  - 01a05a27-0000-7000-8000-000000000027
+  canonical_source_ref: 01a05a27-0000-7000-8000-000000000027
   confidence: 1.0
   metadata: {}
 - relationship_id: superseded_by:019fee89-e617-7bdc-b136-032978d92661:01a00643-1bfc-7c3d-b935-01f39da8a0a5

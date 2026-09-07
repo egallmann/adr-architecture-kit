@@ -28,7 +28,7 @@ You can expect an acknowledgement within **5 business days** and a status update
 
 ## Scope
 
-This package is a developer tool for authoring and validating Architecture Decision Records. The Python toolkit reads YAML and JSON from the local filesystem, writes generated discovery/projection artifacts when those commands are invoked, and ships GitHub Actions for CI, CodeQL, and release publishing. The official TypeScript consumer binding (`@system-of-thought/adr-kit`) is a read-only projection of accepted ADR-Kit authority (ADR-L-0024): no network access, no identity allocation, no graph admission, and no repository writes.
+This package is a developer tool for authoring and validating Architecture Decision Records. The Python toolkit reads YAML and JSON from the local filesystem, writes generated discovery/projection artifacts when those commands are invoked, and ships GitHub Actions for CI, CodeQL, and release publishing. The official TypeScript consumer binding (`@system-of-thought/adr-kit`) is a projection of accepted ADR-Kit authority (ADR-L-0024): browser-safe entry points are constrained and read-only, while explicit Node host entry points provide the parity-qualified filesystem-backed host operations. Neither profile provides network access, identity allocation, graph admission, or repository writes.
 
 Primary attack surfaces include:
 

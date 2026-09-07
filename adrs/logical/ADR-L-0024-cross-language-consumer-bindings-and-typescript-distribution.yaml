@@ -19,7 +19,7 @@ tags:
 - node
 - browser
 - conformance
-- read-only
+- host-parity
 related_adrs:
 - 019fee89-e616-7c4e-953c-b7349412a784
 - 019fee89-e617-78d9-ba3b-b7e3e6db1b12
@@ -29,16 +29,17 @@ context: |
   ADR-Kit already owns accepted ADR authority, canonical schema bytes, semantic
   vocabularies, the repository discovery contract, the normalized model, and
   validated derived embodiment evidence. Python is the existing implementation
-  of those contracts, but it is not their semantic owner. Node services,
-  engineering-agent integrations, and browser applications need a supported
-  read-only consumer binding without reparsing ADR source YAML, depending on
-  compiler internals, or importing Node authority into browser applications.
+  of those contracts, but it is not their semantic owner. Node services and
+  engineering-agent integrations need a peer host binding for filesystem-backed
+  ADR-Kit capabilities, while browser applications need a constrained profile.
+  Browser limitations must not be generalized into a TypeScript/Node capability
+  gap.
 
   A language binding must therefore be governed by one explicit consumer contract,
   advertise only the capabilities it actually implements, and be qualified by
   semantic and behavioral equivalence over overlapping capabilities. Binding-local
   implementation details and deterministic fingerprints are not cross-language
-  identity. A first TypeScript distribution must preserve the repository boundary,
+  identity. The TypeScript distribution must preserve the repository boundary,
   keep Node filesystem and linkage behavior behind explicit Node subpaths, and
   remain framework-neutral for browser and Angular consumers.
 decisions:
@@ -86,11 +87,9 @@ decisions:
     authority.
 - id: 01a02d38-7cf3-7765-8a96-0cdd35f55df5
   alias_id: DEC-0161
-  alias_name: read-only-typescript-release-boundary
-  summary: The first TypeScript release is read-only and excludes authoring identity
-    allocation graph admission CLI MCP and repository writes
-  rationale: Consumer safety and authority ownership require a deliberately bounded
-    first release.
+  alias_name: browser-typescript-profile-is-constrained
+  summary: Browser-safe TypeScript entry points are constrained while the TypeScript/Node host binding is a peer host capability surface
+  rationale: Browser execution lacks filesystem and repository authority; that limitation must not be generalized to Node.
 - id: 01a02d38-7cf3-724d-83e0-8739d6eeeeb5
   alias_id: DEC-0162
   alias_name: explicit-browser-node-boundaries
@@ -133,6 +132,11 @@ decisions:
     create independent semantic version lineages
   rationale: Consumers need one release identity while package publication remains
     an operational release step.
+- id: 01a02d38-7cf3-7c3b-85b4-f2e1328d8370
+  alias_id: DEC-0183
+  alias_name: typescript-node-is-peer-host-binding
+  summary: TypeScript/Node is a peer host-runtime binding for supported ADR-Kit capabilities
+  rationale: Node services such as STE Runtime must consume repository-backed ADR-Kit operations without CLI or Python subprocess integration.
 invariants:
 - id: 01a02d38-7cf3-790b-8493-b1499943f075
   alias_id: INV-0149
@@ -177,10 +181,11 @@ invariants:
   rationale: Browser and Angular compatibility requires a framework-neutral ESM boundary.
 - id: 01a02d38-7cf3-7696-8323-e760deca8334
   alias_id: INV-0153
-  alias_name: typescript-v1-is-read-only
-  statement: TypeScript v1 MUST perform no repository writes identity allocation graph
-    admission authoring mutation network access or import-time side effects.
-  scope: global
+  alias_name: browser-typescript-profile-is-read-only
+  statement: Browser-safe TypeScript entry points MUST perform no filesystem writes,
+    identity allocation, graph admission, authoring mutation, network access, or
+    import-time side effects.
+  scope: browser
   enforcement_level: must
   enforcement_mechanism: test
   verification_method: automated
@@ -217,6 +222,24 @@ invariants:
   verification_method: automated
   rationale: Explicit failure prevents historical implementation behavior from becoming
     accidental authority.
+- id: 01a02d38-7cf3-7e8e-8a34-0865a8dd73b0
+  alias_id: INV-0163
+  alias_name: host-capability-parity-is-default
+  statement: Python and TypeScript/Node host bindings MUST expose equivalent supported ADR-Kit capabilities and MUST NOT diverge without an accepted architectural exception.
+  scope: global
+  enforcement_level: must
+  enforcement_mechanism: test
+  verification_method: automated
+  rationale: Host capability parity is the default release contract; browser constraints are profile-scoped.
+- id: 01a02d38-7cf3-7e8e-8a34-0865a8dd73b1
+  alias_id: INV-0164
+  alias_name: host-parity-uses-shared-semantic-authority
+  statement: TypeScript/Node host parity MUST use one canonical semantic implementation or authority-preserving portable execution boundary and MUST NOT create a second compiler or validator authority.
+  scope: global
+  enforcement_level: must
+  enforcement_mechanism: design
+  verification_method: automated
+  rationale: Equivalent behavior is required without semantic duplication.
 capabilities:
 - id: 01a02d38-7cf3-7dfe-80d8-28c51db97e18
   alias_id: CAP-9001
@@ -233,11 +256,12 @@ capabilities:
   alias_id: CAP-9002
   alias_name: typescript-node-browser-consumer-distribution
   name: TypeScript Node and Browser Consumer Distribution
-  description: Provide a read-only framework-neutral TypeScript package with explicit
-    browser-safe and Node-only subpaths.
+  description: Provide a framework-neutral TypeScript package with peer Node host
+    capabilities and an explicitly constrained browser profile.
   acceptance_criteria:
   - browser-safe entry points bundle without Node built-ins or Angular framework dependencies
-  - Node repository and linkage behavior preserve accepted ADR authority
+  - Node host capabilities are equivalent to Python host capabilities over the supported contract
+  - browser-safe entry points advertise only capabilities executable without host filesystem authority
   - npm and PyPI release metadata share one source release lineage
 notes: Promoted from the locked Consumer Binding design brief by the ADR Kit promotion
   boundary.

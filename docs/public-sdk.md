@@ -4,10 +4,12 @@
 integrations. Its API contract version is `1.0`; the package remains pre-1.0.
 The installed package version is reported by `capabilities().package_version`.
 
-The corresponding cross-language consumer boundary is the read-only
-`@system-of-thought/adr-kit` package, governed by Consumer Binding Contract 1.0.
-It is implemented in this repository and shares ADR-Kit release lineage with the
-Python package; it does not create a second semantic authority.
+The corresponding cross-language consumer boundary is the TypeScript/Node and
+browser-profile `@system-of-thought/adr-kit` package, governed by Consumer
+Binding Contract 1.0 and ADR-L-0027. Python and Node are peer hosts over
+qualified capabilities; browser-safe entry points remain constrained. Both host
+bindings consume the same semantic execution boundary and do not create a
+second semantic authority.
 
 ## Install and discover capabilities
 
@@ -79,6 +81,49 @@ and cross-reference findings are returned as immutable diagnostics; a completed
 validation with errors has `success=False`. Failures that prevent the operation
 from completing raise `OperationError`.
 
+Project metadata can be validated without invoking the CLI:
+
+```python
+from adr_kit.api import ProjectMetadataValidationRequest, validate_project_metadata
+
+result = validate_project_metadata(ProjectMetadataValidationRequest(project_root))
+```
+
+Malformed, schema-invalid, and model-invalid `PROJECT.yaml` content is returned
+as an unsuccessful result with diagnostics; unexpected failures raise
+`OperationError`.
+
+The current compiled contract bundle can be validated with an explicit profile and
+optional consumer thresholds:
+
+```python
+from adr_kit.api import ContractValidationRequest, validate_contract
+
+result = validate_contract(
+    ContractValidationRequest(
+        project_root,
+        profile="brownfield",
+        max_sentinel_fields=0,
+        max_non_complete_entities=0,
+    )
+)
+```
+
+The result preserves the underlying validator's `outcome` and counts. Threshold
+failures set `success=False` and appear as structured diagnostics without changing
+the underlying outcome.
+
+Covered generated artifacts use the same integrity validator as the CLI:
+
+```python
+from adr_kit.api import GeneratedDocsValidationRequest, validate_generated_docs
+
+result = validate_generated_docs(GeneratedDocsValidationRequest(project_root))
+```
+
+Public artifact descriptors distinguish valid, stale, tampered, malformed-header,
+and unsupported-kind results without exposing integrity implementation objects.
+
 ## Preview and write authoring projections
 
 Preview is the default and performs no writes:
@@ -116,10 +161,16 @@ Descriptors are sorted by POSIX relative path and include stable IDs, content,
 size, lowercase SHA-256, an absolute `written_path` only after a write, and any
 integrity header supplied by the existing emitter. Writes are non-transactional.
 
+Compiler check mode uses the existing comparison behavior and returns `E701` for a
+selected artifact missing on disk or `E702` when its bytes differ. `check=True`
+cannot be combined with `write=True`. The additive `include_system_overview` flag
+defaults to `True`; setting it to `False` excludes `SYSTEM-OVERVIEW.md` while
+retaining the selected manifest, registry, and ADR projection outputs.
+
 The supported artifact groups are exactly `registries`, `manifest`, and
 `markdown`. Graph output, Architecture IR, recursive workspace compilation,
-compiler modes, check mode, and contract profiles remain compatibility-preserved
-CLI/deep-import features; they are not part of this SDK contract.
+compiler modes, and contract profiles remain compatibility-preserved CLI/deep-import
+features; they are not part of this SDK contract.
 
 ## Open the stable repository model
 
@@ -198,6 +249,14 @@ ArtifactDescriptor
 CapabilityManifest
 ValidationRequest
 ValidationResult
+ProjectMetadataValidationRequest
+ProjectMetadataValidationResult
+ContractValidationRequest
+ContractValidationIssue
+ContractValidationResult
+GeneratedDocsValidationRequest
+GeneratedArtifactValidation
+GeneratedDocsValidationResult
 CompilationRequest
 CompilationResult
 PromotionPrepareRequest
@@ -226,6 +285,9 @@ RepositoryError
 capabilities
 build_embodiment_linkage
 validate_architecture
+validate_project_metadata
+validate_contract
+validate_generated_docs
 compile_architecture
 open_repository
 open_provider_registry

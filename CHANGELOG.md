@@ -7,6 +7,29 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.9.0] — 2026-09-07
+
+### Added
+
+- Public Python and TypeScript/Node SDK operations now share the versioned
+  semantic-core execution boundary (protocol `1.0`) and qualified cross-host
+  conformance vectors.
+- Node host capability parity for architecture, project-metadata, contract,
+  repository, provider-registry, and embodiment-linkage operations, with
+  browser-safe capabilities kept in the separate browser profile.
+
+### Changed
+
+- The 0.8.1 release lineage is reconciled into the develop line while retaining
+  the ADR-Kit semantic contract and canonical execution boundary as authority.
+- Rust/WASM remains an implementation mechanism behind the public semantic
+  boundary; public SDK and browser capability models remain technology-neutral.
+
+### Fixed
+
+- Cross-host capability discovery, protocol validation, normalized results, and
+  packaged WASM identity are now tested for Python/Node parity.
+
 ## [0.8.1] — 2026-09-06
 
 ### Fixed
@@ -42,7 +65,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-- The official read-only TypeScript consumer binding and npm distribution
+- The official TypeScript consumer binding and npm distribution
   `@system-of-thought/adr-kit`, including browser-safe surfaces and the
   Node-only `/node` and `/node/linkage` subpaths.
 - Consumer Binding Contract 1.0 conformance across overlapping Python and

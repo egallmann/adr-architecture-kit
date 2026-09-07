@@ -2,6 +2,7 @@ import { createHash } from "node:crypto";
 import { access, readFile } from "node:fs/promises";
 import { isAbsolute, relative, resolve, sep } from "node:path";
 import { parse } from "yaml";
+import { fileURLToPath } from "node:url";
 import { createArchitectureModel, type ArchitectureModelView } from "../model/index.js";
 import type { NormalizedArchitectureModelV21, NormalizedEntityV21, RelationshipQuery, RelationshipV21 } from "../model/types.js";
 import { RepositoryError, RepositoryPathError } from "../internal.js";
@@ -30,7 +31,7 @@ export interface ArchitectureRepository extends ArchitectureModelView {
 }
 
 export async function openRepository(projectRoot: string | URL): Promise<ArchitectureRepository> {
-  const root = resolve(String(projectRoot));
+  const root = resolve(projectRoot instanceof URL ? fileURLToPath(projectRoot) : projectRoot);
   await requireFile(root, "PROJECT.yaml", "repository.orientation");
   await requireDirectory(root, "adrs", "repository.orientation");
   const indexPath = resolve(root, "adrs", "index", "architecture-index.yaml");
@@ -81,6 +82,22 @@ export async function openRepository(projectRoot: string | URL): Promise<Archite
     unresolved: unresolvedRegistry.unresolved
   } satisfies NormalizedArchitectureModelV21;
   try { assertValidContract(model, "normalized-model:2.1"); } catch (error) { throw repositoryFailure(error); }
+  const { executeValidatedSemanticCoreRequest } = await import("./core.js");
+  const semantic = await executeValidatedSemanticCoreRequest({
+    core_contract_version: "1.0",
+    operation: "open_repository",
+    model_version: "2.1",
+    architecture_namespace: model.architecture_namespace,
+    entities: model.entities,
+  });
+  if (!semantic.success) {
+    const message = Array.isArray(semantic.diagnostics)
+      ? semantic.diagnostics
+          .map((item) => String((item as Record<string, unknown>).message ?? "repository identity validation failed"))
+          .join("; ")
+      : "repository identity validation failed";
+    throw new RepositoryError("repository.contract", message);
+  }
   const view = createArchitectureModel(model);
   return Object.freeze({
     ...view,

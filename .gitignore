@@ -57,6 +57,9 @@ tests/.tmp/
 .cursor/
 _poc_*/
 
+# Rust build output
+core/target/
+
 
 # Cooperative signals (ephemeral coordination artifacts)
 .codex/signals/

@@ -48,7 +48,7 @@ from ..migrators.identity_v13 import IdentityV13Migrator, IdentityMapDocument
 from ..migrators.topology_identity import TopologyIdentityMigrator
 from ..parser import ADRParser
 from ..repository import ArchitectureRepository
-from ..schema.contract_validation import ContractProfile, validate_adr_contract_bundle
+from ..schema.contract_validation import ContractProfile
 from ..schema.implementation_attribution_validation import (
     validate_implementation_attribution_evidence,
 )
@@ -296,10 +296,9 @@ def _run_recursive_governance_checks(scope: Path, *, skip_tests: bool) -> int:
         click.echo("adr " + " ".join(args))
         failures += _run_cli_subcommand(args)
 
-    validator = ADRValidator(scope_resolver=ProjectScopeResolver(explicit_scope=scope_root))
     for current_scope in _ordered_scopes(scope_root):
         click.echo(f"\n== Cross-reference validation ({current_scope.name}) ==")
-        result = validator.validate_cross_references(current_scope.adr_dir)
+        result = application_service._shared_architecture_reference_result(current_scope.adr_dir)
         if result.has_errors:
             for error in result.errors:
                 click.echo(f"ERROR: {error.message}")
@@ -1645,13 +1644,13 @@ def validate_contract(
             contract_bundle = repository.get_contract_bundle_view()
             click.echo(f"Project scope: {current_scope.name} ({current_scope.root})")
 
-            result = validate_adr_contract_bundle(
-                contract_bundle.architecture_index,
-                contract_bundle.entity_registry,
-                contract_bundle.relationship_registry,
-                contract_bundle.unresolved_registry,
-                profile=contract_profile,
-                remediation_ledger=contract_bundle.remediation_ledger,
+            result, sentinel_threshold_exceeded, completeness_threshold_exceeded = (
+                application_service._contract_validation_for_repository(
+                    repository,
+                    profile=cast(ContractProfile, contract_profile),
+                    max_sentinel_fields=max_sentinel_fields,
+                    max_non_complete_entities=max_non_complete_entities,
+                )
             )
             remediation_state_counts = None
             if contract_bundle.remediation_ledger is not None:
@@ -1663,15 +1662,6 @@ def validate_contract(
                     )
                     for state in ("sentinel", "pending_approval", "approved")
                 }
-            sentinel_threshold_exceeded = (
-                max_sentinel_fields is not None
-                and result.sentinel_field_count > max_sentinel_fields
-            )
-            completeness_threshold_exceeded = (
-                max_non_complete_entities is not None
-                and result.non_complete_entity_count > max_non_complete_entities
-            )
-
             click.echo(
                 _dump_yaml(
                     {

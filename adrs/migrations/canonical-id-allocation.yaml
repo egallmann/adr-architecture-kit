@@ -8,7 +8,7 @@ high_water_marks:
   DEC: 9000
   IFACE: 35
   IMPL: 29
-  INV: 162
+  INV: 207
 allocations:
 - id: BOUND-0001
   entity_type: boundary
@@ -387,55 +387,55 @@ allocations:
   adr_id: ADR-P-0001
   file_path: adrs/physical/ADR-P-0001-python-toolkit-implementation.yaml
   source_pointer: /component_specifications/0/id
-  state: active
+  state: retired
 - id: COMP-0002
   entity_type: component
   adr_id: ADR-P-0001
   file_path: adrs/physical/ADR-P-0001-python-toolkit-implementation.yaml
   source_pointer: /component_specifications/1/id
-  state: active
+  state: retired
 - id: COMP-0003
   entity_type: component
   adr_id: ADR-P-0001
   file_path: adrs/physical/ADR-P-0001-python-toolkit-implementation.yaml
   source_pointer: /component_specifications/2/id
-  state: active
+  state: retired
 - id: COMP-0004
   entity_type: component
   adr_id: ADR-P-0001
   file_path: adrs/physical/ADR-P-0001-python-toolkit-implementation.yaml
   source_pointer: /component_specifications/3/id
-  state: active
+  state: retired
 - id: COMP-0005
   entity_type: component
   adr_id: ADR-P-0004
   file_path: adrs/physical/ADR-P-0004-prompt-translator-implementation.yaml
   source_pointer: /component_specifications/0/id
-  state: active
+  state: retired
 - id: COMP-0006
   entity_type: component
   adr_id: ADR-P-0004
   file_path: adrs/physical/ADR-P-0004-prompt-translator-implementation.yaml
   source_pointer: /component_specifications/1/id
-  state: active
+  state: retired
 - id: COMP-0007
   entity_type: component
   adr_id: ADR-P-0004
   file_path: adrs/physical/ADR-P-0004-prompt-translator-implementation.yaml
   source_pointer: /component_specifications/2/id
-  state: active
+  state: retired
 - id: COMP-0008
   entity_type: component
   adr_id: ADR-P-0004
   file_path: adrs/physical/ADR-P-0004-prompt-translator-implementation.yaml
   source_pointer: /component_specifications/3/id
-  state: active
+  state: retired
 - id: COMP-0009
   entity_type: component
   adr_id: ADR-P-0004
   file_path: adrs/physical/ADR-P-0004-prompt-translator-implementation.yaml
   source_pointer: /component_specifications/4/id
-  state: active
+  state: retired
 - id: COMP-0010
   entity_type: component
   adr_id: ADR-PC-0001
@@ -477,7 +477,7 @@ allocations:
   adr_id: ADR-P-0002
   file_path: adrs/physical/ADR-P-0002-json-schema-yaml-format.yaml
   source_pointer: /component_specifications/0/id
-  state: active
+  state: retired
 - id: COMP-0017
   entity_type: component
   adr_id: ADR-PC-0008
@@ -489,25 +489,25 @@ allocations:
   adr_id: ADR-P-0002
   file_path: adrs/physical/ADR-P-0002-json-schema-yaml-format.yaml
   source_pointer: /component_specifications/1/id
-  state: active
+  state: retired
 - id: COMP-0019
   entity_type: component
   adr_id: ADR-P-0003
   file_path: adrs/physical/ADR-P-0003-multi-scope-python-implementation.yaml
   source_pointer: /component_specifications/1/id
-  state: active
+  state: retired
 - id: COMP-0020
   entity_type: component
   adr_id: ADR-P-0003
   file_path: adrs/physical/ADR-P-0003-multi-scope-python-implementation.yaml
   source_pointer: /component_specifications/2/id
-  state: active
+  state: retired
 - id: COMP-0021
   entity_type: component
   adr_id: ADR-P-0003
   file_path: adrs/physical/ADR-P-0003-multi-scope-python-implementation.yaml
   source_pointer: /component_specifications/3/id
-  state: active
+  state: retired
 - id: COMP-0022
   entity_type: component
   adr_id: 019ffdba-3c42-70da-b33d-efc003269c42
@@ -1624,6 +1624,48 @@ allocations:
   source_pointer: /decisions/5/alias_id
   state: active
   adr_id: 01a05a26-0000-7000-8000-000000000026
+- id: DEC-0183
+  entity_type: decision
+  file_path: adrs/logical/ADR-L-0024-cross-language-consumer-bindings-and-typescript-distribution.yaml
+  source_pointer: /decisions/13/alias_id
+  state: active
+  adr_id: 01a02d38-7cf3-7b3c-87ec-1c5f08490c6e
+- id: DEC-0201
+  entity_type: decision
+  file_path: adrs/logical/ADR-L-0027-public-binding-construction-and-release-parity.yaml
+  source_pointer: /decisions/0/alias_id
+  state: active
+  adr_id: 01a05a27-0000-7000-8000-000000000027
+- id: DEC-0202
+  entity_type: decision
+  file_path: adrs/logical/ADR-L-0027-public-binding-construction-and-release-parity.yaml
+  source_pointer: /decisions/1/alias_id
+  state: active
+  adr_id: 01a05a27-0000-7000-8000-000000000027
+- id: DEC-0203
+  entity_type: decision
+  file_path: adrs/logical/ADR-L-0027-public-binding-construction-and-release-parity.yaml
+  source_pointer: /decisions/2/alias_id
+  state: active
+  adr_id: 01a05a27-0000-7000-8000-000000000027
+- id: DEC-0204
+  entity_type: decision
+  file_path: adrs/logical/ADR-L-0027-public-binding-construction-and-release-parity.yaml
+  source_pointer: /decisions/3/alias_id
+  state: active
+  adr_id: 01a05a27-0000-7000-8000-000000000027
+- id: DEC-0205
+  entity_type: decision
+  file_path: adrs/logical/ADR-L-0027-public-binding-construction-and-release-parity.yaml
+  source_pointer: /decisions/4/alias_id
+  state: active
+  adr_id: 01a05a27-0000-7000-8000-000000000027
+- id: DEC-0206
+  entity_type: decision
+  file_path: adrs/logical/ADR-L-0027-public-binding-construction-and-release-parity.yaml
+  source_pointer: /decisions/5/alias_id
+  state: active
+  adr_id: 01a05a27-0000-7000-8000-000000000027
 - id: DEC-9000
   entity_type: decision
   adr_id: ADR-L-9000
@@ -1635,61 +1677,61 @@ allocations:
   adr_id: ADR-P-0001
   file_path: adrs/physical/ADR-P-0001-python-toolkit-implementation.yaml
   source_pointer: /component_specifications/0/interfaces/0/id
-  state: active
+  state: retired
 - id: IFACE-0002
   entity_type: interface
   adr_id: ADR-P-0001
   file_path: adrs/physical/ADR-P-0001-python-toolkit-implementation.yaml
   source_pointer: /component_specifications/1/interfaces/0/id
-  state: active
+  state: retired
 - id: IFACE-0003
   entity_type: interface
   adr_id: ADR-P-0001
   file_path: adrs/physical/ADR-P-0001-python-toolkit-implementation.yaml
   source_pointer: /component_specifications/2/interfaces/0/id
-  state: active
+  state: retired
 - id: IFACE-0004
   entity_type: interface
   adr_id: ADR-P-0001
   file_path: adrs/physical/ADR-P-0001-python-toolkit-implementation.yaml
   source_pointer: /component_specifications/3/interfaces/0/id
-  state: active
+  state: retired
 - id: IFACE-0005
   entity_type: interface
   adr_id: ADR-P-0003
   file_path: adrs/physical/ADR-P-0003-multi-scope-python-implementation.yaml
   source_pointer: /component_specifications/1/interfaces/2/id
-  state: active
+  state: retired
 - id: IFACE-0006
   entity_type: interface
   adr_id: ADR-P-0003
   file_path: adrs/physical/ADR-P-0003-multi-scope-python-implementation.yaml
   source_pointer: /component_specifications/1/interfaces/3/id
-  state: active
+  state: retired
 - id: IFACE-0007
   entity_type: interface
   adr_id: ADR-P-0003
   file_path: adrs/physical/ADR-P-0003-multi-scope-python-implementation.yaml
   source_pointer: /component_specifications/2/interfaces/0/id
-  state: active
+  state: retired
 - id: IFACE-0008
   entity_type: interface
   adr_id: ADR-P-0003
   file_path: adrs/physical/ADR-P-0003-multi-scope-python-implementation.yaml
   source_pointer: /component_specifications/3/interfaces/0/id
-  state: active
+  state: retired
 - id: IFACE-0009
   entity_type: interface
   adr_id: ADR-P-0003
   file_path: adrs/physical/ADR-P-0003-multi-scope-python-implementation.yaml
   source_pointer: /component_specifications/3/interfaces/1/id
-  state: active
+  state: retired
 - id: IFACE-0010
   entity_type: interface
   adr_id: ADR-P-0003
   file_path: adrs/physical/ADR-P-0003-multi-scope-python-implementation.yaml
   source_pointer: /component_specifications/3/interfaces/2/id
-  state: active
+  state: retired
 - id: IFACE-0011
   entity_type: interface
   adr_id: ADR-PC-0001
@@ -1749,7 +1791,7 @@ allocations:
   adr_id: ADR-P-0002
   file_path: adrs/physical/ADR-P-0002-json-schema-yaml-format.yaml
   source_pointer: /component_specifications/0/interfaces/0/id
-  state: active
+  state: retired
 - id: IFACE-0021
   entity_type: interface
   adr_id: ADR-PC-0008
@@ -1761,19 +1803,19 @@ allocations:
   adr_id: ADR-P-0004
   file_path: adrs/physical/ADR-P-0004-prompt-translator-implementation.yaml
   source_pointer: /component_specifications/0/interfaces/0/id
-  state: active
+  state: retired
 - id: IFACE-0023
   entity_type: interface
   adr_id: ADR-P-0004
   file_path: adrs/physical/ADR-P-0004-prompt-translator-implementation.yaml
   source_pointer: /component_specifications/4/interfaces/0/id
-  state: active
+  state: retired
 - id: IFACE-0024
   entity_type: interface
   adr_id: ADR-P-0002
   file_path: adrs/physical/ADR-P-0002-json-schema-yaml-format.yaml
   source_pointer: /component_specifications/1/interfaces/0/id
-  state: active
+  state: retired
 - id: IFACE-0025
   entity_type: interface
   adr_id: ADR-PC-0008
@@ -1785,49 +1827,49 @@ allocations:
   adr_id: ADR-P-0004
   file_path: adrs/physical/ADR-P-0004-prompt-translator-implementation.yaml
   source_pointer: /component_specifications/0/interfaces/1/id
-  state: active
+  state: retired
 - id: IFACE-0027
   entity_type: interface
   adr_id: ADR-P-0003
   file_path: adrs/physical/ADR-P-0003-multi-scope-python-implementation.yaml
   source_pointer: /component_specifications/1/interfaces/0/id
-  state: active
+  state: retired
 - id: IFACE-0028
   entity_type: interface
   adr_id: ADR-P-0004
   file_path: adrs/physical/ADR-P-0004-prompt-translator-implementation.yaml
   source_pointer: /component_specifications/1/interfaces/0/id
-  state: active
+  state: retired
 - id: IFACE-0029
   entity_type: interface
   adr_id: ADR-P-0003
   file_path: adrs/physical/ADR-P-0003-multi-scope-python-implementation.yaml
   source_pointer: /component_specifications/1/interfaces/1/id
-  state: active
+  state: retired
 - id: IFACE-0030
   entity_type: interface
   adr_id: ADR-P-0004
   file_path: adrs/physical/ADR-P-0004-prompt-translator-implementation.yaml
   source_pointer: /component_specifications/1/interfaces/1/id
-  state: active
+  state: retired
 - id: IFACE-0031
   entity_type: interface
   adr_id: ADR-P-0004
   file_path: adrs/physical/ADR-P-0004-prompt-translator-implementation.yaml
   source_pointer: /component_specifications/1/interfaces/2/id
-  state: active
+  state: retired
 - id: IFACE-0032
   entity_type: interface
   adr_id: ADR-P-0004
   file_path: adrs/physical/ADR-P-0004-prompt-translator-implementation.yaml
   source_pointer: /component_specifications/2/interfaces/0/id
-  state: active
+  state: retired
 - id: IFACE-0033
   entity_type: interface
   adr_id: ADR-P-0004
   file_path: adrs/physical/ADR-P-0004-prompt-translator-implementation.yaml
   source_pointer: /component_specifications/3/interfaces/0/id
-  state: active
+  state: retired
 - id: IFACE-0034
   entity_type: interface
   adr_id: 019ffdba-3c42-70da-b33d-efc003269c42
@@ -1845,61 +1887,61 @@ allocations:
   adr_id: ADR-P-0001
   file_path: adrs/physical/ADR-P-0001-python-toolkit-implementation.yaml
   source_pointer: /implementation_decisions/0/id
-  state: active
+  state: retired
 - id: IMPL-0002
   entity_type: implementation_decision
   adr_id: ADR-P-0001
   file_path: adrs/physical/ADR-P-0001-python-toolkit-implementation.yaml
   source_pointer: /implementation_decisions/1/id
-  state: active
+  state: retired
 - id: IMPL-0003
   entity_type: implementation_decision
   adr_id: ADR-P-0001
   file_path: adrs/physical/ADR-P-0001-python-toolkit-implementation.yaml
   source_pointer: /implementation_decisions/2/id
-  state: active
+  state: retired
 - id: IMPL-0004
   entity_type: implementation_decision
   adr_id: ADR-P-0002
   file_path: adrs/physical/ADR-P-0002-json-schema-yaml-format.yaml
   source_pointer: /implementation_decisions/3/id
-  state: active
+  state: retired
 - id: IMPL-0005
   entity_type: implementation_decision
   adr_id: ADR-P-0003
   file_path: adrs/physical/ADR-P-0003-multi-scope-python-implementation.yaml
   source_pointer: /implementation_decisions/4/id
-  state: active
+  state: retired
 - id: IMPL-0006
   entity_type: implementation_decision
   adr_id: ADR-P-0003
   file_path: adrs/physical/ADR-P-0003-multi-scope-python-implementation.yaml
   source_pointer: /implementation_decisions/5/id
-  state: active
+  state: retired
 - id: IMPL-0007
   entity_type: implementation_decision
   adr_id: ADR-P-0004
   file_path: adrs/physical/ADR-P-0004-prompt-translator-implementation.yaml
   source_pointer: /implementation_decisions/0/id
-  state: active
+  state: retired
 - id: IMPL-0008
   entity_type: implementation_decision
   adr_id: ADR-P-0004
   file_path: adrs/physical/ADR-P-0004-prompt-translator-implementation.yaml
   source_pointer: /implementation_decisions/1/id
-  state: active
+  state: retired
 - id: IMPL-0009
   entity_type: implementation_decision
   adr_id: ADR-P-0004
   file_path: adrs/physical/ADR-P-0004-prompt-translator-implementation.yaml
   source_pointer: /implementation_decisions/2/id
-  state: active
+  state: retired
 - id: IMPL-0010
   entity_type: implementation_decision
   adr_id: ADR-P-0004
   file_path: adrs/physical/ADR-P-0004-prompt-translator-implementation.yaml
   source_pointer: /implementation_decisions/3/id
-  state: active
+  state: retired
 - id: IMPL-0011
   entity_type: implementation_decision
   adr_id: ADR-PC-0001
@@ -1965,7 +2007,7 @@ allocations:
   adr_id: ADR-P-0002
   file_path: adrs/physical/ADR-P-0002-json-schema-yaml-format.yaml
   source_pointer: /implementation_decisions/0/id
-  state: active
+  state: retired
 - id: IMPL-0022
   entity_type: implementation_decision
   adr_id: ADR-PC-0008
@@ -1977,7 +2019,7 @@ allocations:
   adr_id: ADR-P-0002
   file_path: adrs/physical/ADR-P-0002-json-schema-yaml-format.yaml
   source_pointer: /implementation_decisions/1/id
-  state: active
+  state: retired
 - id: IMPL-0024
   entity_type: implementation_decision
   adr_id: ADR-PC-0008
@@ -1989,19 +2031,19 @@ allocations:
   adr_id: ADR-P-0002
   file_path: adrs/physical/ADR-P-0002-json-schema-yaml-format.yaml
   source_pointer: /implementation_decisions/2/id
-  state: active
+  state: retired
 - id: IMPL-0026
   entity_type: implementation_decision
   adr_id: ADR-P-0003
   file_path: adrs/physical/ADR-P-0003-multi-scope-python-implementation.yaml
   source_pointer: /implementation_decisions/2/id
-  state: active
+  state: retired
 - id: IMPL-0027
   entity_type: implementation_decision
   adr_id: ADR-P-0003
   file_path: adrs/physical/ADR-P-0003-multi-scope-python-implementation.yaml
   source_pointer: /implementation_decisions/3/id
-  state: active
+  state: retired
 - id: IMPL-0028
   entity_type: implementation_decision
   adr_id: 019ffdba-3c42-70da-b33d-efc003269c42
@@ -2890,3 +2932,57 @@ allocations:
   source_pointer: /invariants/5/alias_id
   state: active
   adr_id: 01a05a26-0000-7000-8000-000000000026
+- id: INV-0163
+  entity_type: invariant
+  file_path: adrs/logical/ADR-L-0024-cross-language-consumer-bindings-and-typescript-distribution.yaml
+  source_pointer: /invariants/8/alias_id
+  state: active
+  adr_id: 01a02d38-7cf3-7b3c-87ec-1c5f08490c6e
+- id: INV-0164
+  entity_type: invariant
+  file_path: adrs/logical/ADR-L-0024-cross-language-consumer-bindings-and-typescript-distribution.yaml
+  source_pointer: /invariants/9/alias_id
+  state: active
+  adr_id: 01a02d38-7cf3-7b3c-87ec-1c5f08490c6e
+- id: INV-0201
+  entity_type: invariant
+  file_path: adrs/logical/ADR-L-0027-public-binding-construction-and-release-parity.yaml
+  source_pointer: /invariants/0/alias_id
+  state: active
+  adr_id: 01a05a27-0000-7000-8000-000000000027
+- id: INV-0202
+  entity_type: invariant
+  file_path: adrs/logical/ADR-L-0027-public-binding-construction-and-release-parity.yaml
+  source_pointer: /invariants/1/alias_id
+  state: active
+  adr_id: 01a05a27-0000-7000-8000-000000000027
+- id: INV-0203
+  entity_type: invariant
+  file_path: adrs/logical/ADR-L-0027-public-binding-construction-and-release-parity.yaml
+  source_pointer: /invariants/2/alias_id
+  state: active
+  adr_id: 01a05a27-0000-7000-8000-000000000027
+- id: INV-0204
+  entity_type: invariant
+  file_path: adrs/logical/ADR-L-0027-public-binding-construction-and-release-parity.yaml
+  source_pointer: /invariants/3/alias_id
+  state: active
+  adr_id: 01a05a27-0000-7000-8000-000000000027
+- id: INV-0205
+  entity_type: invariant
+  file_path: adrs/logical/ADR-L-0027-public-binding-construction-and-release-parity.yaml
+  source_pointer: /invariants/4/alias_id
+  state: active
+  adr_id: 01a05a27-0000-7000-8000-000000000027
+- id: INV-0206
+  entity_type: invariant
+  file_path: adrs/logical/ADR-L-0027-public-binding-construction-and-release-parity.yaml
+  source_pointer: /invariants/5/alias_id
+  state: active
+  adr_id: 01a05a27-0000-7000-8000-000000000027
+- id: INV-0207
+  entity_type: invariant
+  file_path: adrs/logical/ADR-L-0027-public-binding-construction-and-release-parity.yaml
+  source_pointer: /invariants/6/alias_id
+  state: active
+  adr_id: 01a05a27-0000-7000-8000-000000000027

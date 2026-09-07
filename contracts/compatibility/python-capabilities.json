@@ -14,7 +14,10 @@
     "normalized_model_schema_version",
     "supported_normalized_model_schema_versions",
     "supported_evidence_attribution_versions",
-    "preferred_evidence_attribution_version"
+    "preferred_evidence_attribution_version",
+    "host_operations",
+    "pending_host_operations",
+    "browser_operations"
   ],
   "planned_capability_manifest_fields": [
     "supported_authoring_domain_versions",

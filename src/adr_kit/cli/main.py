@@ -296,10 +296,9 @@ def _run_recursive_governance_checks(scope: Path, *, skip_tests: bool) -> int:
         click.echo("adr " + " ".join(args))
         failures += _run_cli_subcommand(args)
 
-    validator = ADRValidator(scope_resolver=ProjectScopeResolver(explicit_scope=scope_root))
     for current_scope in _ordered_scopes(scope_root):
         click.echo(f"\n== Cross-reference validation ({current_scope.name}) ==")
-        result = validator.validate_cross_references(current_scope.adr_dir)
+        result = application_service._shared_architecture_reference_result(current_scope.adr_dir)
         if result.has_errors:
             for error in result.errors:
                 click.echo(f"ERROR: {error.message}")

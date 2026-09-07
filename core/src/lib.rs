@@ -1,5 +1,7 @@
 use std::collections::{BTreeMap, BTreeSet};
 
+use serde::{Deserialize, Serialize};
+
 mod architecture;
 mod linkage;
 
@@ -21,15 +23,18 @@ const GENERATED_ARTIFACT_KINDS: [&str; 5] = [
     "system_overview",
 ];
 
-// The transport representation is intentionally small and dependency-free so
-// the same semantic artifact can run from Python, Node, and browser/WASM
-// hosts. This is an internal wire model, not a Rust type exposed as part of a
-// public SDK surface.
-#[derive(Clone, Debug)]
+// The transport representation is an internal wire model, not a Rust type
+// exposed as part of a public SDK surface. serde_json supplies the mature JSON
+// parser/serializer; the resulting self-contained WASM artifact can still run
+// from Python, Node, and browser/WASM hosts. Rust build dependencies are
+// compiled into that artifact, while Python additionally depends on wasmtime
+// to load it.
+#[derive(Clone, Debug, Deserialize, Serialize)]
+#[serde(untagged)]
 enum Json {
     Null,
     Bool(bool),
-    Number(String),
+    Number(serde_json::Number),
     String(String),
     Array(Vec<Json>),
     Object(BTreeMap<String, Json>),
@@ -62,213 +67,17 @@ impl Json {
     }
     fn as_u64(&self) -> Option<u64> {
         if let Self::Number(value) = self {
-            value.parse().ok()
+            value.as_u64()
         } else {
             None
         }
     }
 }
-
-struct Parser<'a> {
-    input: &'a [u8],
-    cursor: usize,
-}
-impl<'a> Parser<'a> {
-    fn new(input: &'a [u8]) -> Self {
-        Self { input, cursor: 0 }
-    }
-    fn parse(mut self) -> Result<Json, String> {
-        let value = self.value()?;
-        self.ws();
-        if self.cursor != self.input.len() {
-            return Err("trailing JSON content".into());
-        }
-        Ok(value)
-    }
-    fn value(&mut self) -> Result<Json, String> {
-        self.ws();
-        match self.peek() {
-            Some(b'{') => self.object(),
-            Some(b'[') => self.array(),
-            Some(b'"') => Ok(Json::String(self.string()?)),
-            Some(b't') => self.literal(b"true", Json::Bool(true)),
-            Some(b'f') => self.literal(b"false", Json::Bool(false)),
-            Some(b'n') => self.literal(b"null", Json::Null),
-            Some(b'-' | b'0'..=b'9') => self.number(),
-            _ => Err(format!("invalid JSON at byte {}", self.cursor)),
-        }
-    }
-    fn object(&mut self) -> Result<Json, String> {
-        self.cursor += 1;
-        let mut values = Json::object();
-        self.ws();
-        if self.take(b'}') {
-            return Ok(Json::Object(values));
-        }
-        loop {
-            self.ws();
-            if self.peek() != Some(b'"') {
-                return Err("object key must be a string".into());
-            }
-            let key = self.string()?;
-            self.ws();
-            if !self.take(b':') {
-                return Err("object key must be followed by ':'".into());
-            }
-            values.insert(key, self.value()?);
-            self.ws();
-            if self.take(b'}') {
-                return Ok(Json::Object(values));
-            }
-            if !self.take(b',') {
-                return Err("object members must be comma separated".into());
-            }
-        }
-    }
-    fn array(&mut self) -> Result<Json, String> {
-        self.cursor += 1;
-        let mut values = Vec::new();
-        self.ws();
-        if self.take(b']') {
-            return Ok(Json::Array(values));
-        }
-        loop {
-            values.push(self.value()?);
-            self.ws();
-            if self.take(b']') {
-                return Ok(Json::Array(values));
-            }
-            if !self.take(b',') {
-                return Err("array values must be comma separated".into());
-            }
-        }
-    }
-    fn string(&mut self) -> Result<String, String> {
-        if !self.take(b'"') {
-            return Err("expected string".into());
-        }
-        let mut out = Vec::new();
-        while let Some(byte) = self.peek() {
-            self.cursor += 1;
-            match byte {
-                b'"' => {
-                    return String::from_utf8(out)
-                        .map_err(|_| "invalid UTF-8 in JSON string".into())
-                }
-                b'\\' => {
-                    let escaped = self.peek().ok_or("unterminated escape")?;
-                    self.cursor += 1;
-                    match escaped {
-                        b'"' => out.push(b'"'),
-                        b'\\' => out.push(b'\\'),
-                        b'/' => out.push(b'/'),
-                        b'b' => out.push(8),
-                        b'f' => out.push(12),
-                        b'n' => out.push(b'\n'),
-                        b'r' => out.push(b'\r'),
-                        b't' => out.push(b'\t'),
-                        b'u' => {
-                            let start = self.cursor;
-                            if self.cursor + 4 > self.input.len() {
-                                return Err("incomplete unicode escape".into());
-                            }
-                            let mut code = 0u32;
-                            for digit in &self.input[start..start + 4] {
-                                code = code * 16
-                                    + match digit {
-                                        b'0'..=b'9' => (digit - b'0') as u32,
-                                        b'a'..=b'f' => (digit - b'a' + 10) as u32,
-                                        b'A'..=b'F' => (digit - b'A' + 10) as u32,
-                                        _ => return Err("invalid unicode escape".into()),
-                                    };
-                            }
-                            self.cursor += 4;
-                            let character = char::from_u32(code).ok_or("invalid unicode scalar")?;
-                            let mut buffer = [0u8; 4];
-                            out.extend_from_slice(character.encode_utf8(&mut buffer).as_bytes());
-                        }
-                        _ => return Err("unsupported JSON escape".into()),
-                    }
-                }
-                0..=0x1f => return Err("control character in JSON string".into()),
-                _ => out.push(byte),
-            }
-        }
-        Err("unterminated string".into())
-    }
-    fn number(&mut self) -> Result<Json, String> {
-        let start = self.cursor;
-        while matches!(
-            self.peek(),
-            Some(b'-' | b'+' | b'.' | b'e' | b'E' | b'0'..=b'9')
-        ) {
-            self.cursor += 1;
-        }
-        Ok(Json::Number(
-            String::from_utf8(self.input[start..self.cursor].to_vec())
-                .map_err(|_| "invalid number")?,
-        ))
-    }
-    fn literal(&mut self, expected: &[u8], value: Json) -> Result<Json, String> {
-        if self.input.get(self.cursor..self.cursor + expected.len()) == Some(expected) {
-            self.cursor += expected.len();
-            Ok(value)
-        } else {
-            Err("invalid JSON literal".into())
-        }
-    }
-    fn ws(&mut self) {
-        while matches!(self.peek(), Some(b' ' | b'\n' | b'\r' | b'\t')) {
-            self.cursor += 1;
-        }
-    }
-    fn peek(&self) -> Option<u8> {
-        self.input.get(self.cursor).copied()
-    }
-    fn take(&mut self, expected: u8) -> bool {
-        if self.peek() == Some(expected) {
-            self.cursor += 1;
-            true
-        } else {
-            false
-        }
-    }
-}
-
-fn quote(value: &str) -> String {
-    let mut output = String::from("\"");
-    for character in value.chars() {
-        match character {
-            '"' => output.push_str("\\\""),
-            '\\' => output.push_str("\\\\"),
-            '\n' => output.push_str("\\n"),
-            '\r' => output.push_str("\\r"),
-            '\t' => output.push_str("\\t"),
-            _ => output.push(character),
-        }
-    }
-    output.push('"');
-    output
-}
 fn json(value: &Json) -> String {
-    match value {
-        Json::Null => "null".into(),
-        Json::Bool(value) => value.to_string(),
-        Json::Number(value) => value.clone(),
-        Json::String(value) => quote(value),
-        Json::Array(values) => format!(
-            "[{}]",
-            values.iter().map(json).collect::<Vec<_>>().join(",")
-        ),
-        Json::Object(values) => format!(
-            "{{{}}}",
-            values
-                .iter()
-                .map(|(key, value)| format!("{}:{}", quote(key), json(value)))
-                .collect::<Vec<_>>()
-                .join(",")
-        ),
-    }
+    serde_json::to_string(value).expect("semantic core result must serialize as JSON")
+}
+fn number(value: impl Into<u64>) -> Json {
+    Json::Number(serde_json::Number::from(value.into()))
 }
 fn string(value: impl Into<String>) -> Json {
     Json::String(value.into())
@@ -851,10 +660,7 @@ fn validate_repository(request: &Json) -> Json {
     if let Json::Object(ref mut values) = result {
         values.insert("model_version".into(), string(model_version));
         values.insert("architecture_namespace".into(), string(namespace));
-        values.insert(
-            "entity_count".into(),
-            Json::Number(entities.len().to_string()),
-        );
+        values.insert("entity_count".into(), number(entities.len() as u64));
     }
     result
 }
@@ -917,20 +723,17 @@ fn result(
     values.insert("success".into(), Json::Bool(success));
     values.insert("profile".into(), string(profile));
     values.insert("outcome".into(), string(outcome));
-    values.insert(
-        "sentinel_field_count".into(),
-        Json::Number(sentinel.to_string()),
-    );
+    values.insert("sentinel_field_count".into(), number(sentinel as u64));
     values.insert(
         "non_complete_entity_count".into(),
-        Json::Number(incomplete.to_string()),
+        number(incomplete as u64),
     );
     values.insert(
         "completeness_counts".into(),
         object(
             counts
                 .into_iter()
-                .map(|(key, value)| (key, Json::Number(value.to_string()))),
+                .map(|(key, value)| (key, number(value as u64))),
         ),
     );
     values.insert("issues".into(), Json::Array(issues));
@@ -1538,11 +1341,8 @@ fn validate_architecture_references(request: &Json) -> Json {
         .count();
     let mut result = simple_result("validate_architecture_references", success, diagnostics);
     if let Json::Object(ref mut values) = result {
-        values.insert("error_count".into(), Json::Number(error_count.to_string()));
-        values.insert(
-            "warning_count".into(),
-            Json::Number(warning_count.to_string()),
-        );
+        values.insert("error_count".into(), number(error_count as u64));
+        values.insert("warning_count".into(), number(warning_count as u64));
     }
     result
 }
@@ -1552,7 +1352,7 @@ pub fn execute_json(input: &[u8]) -> Vec<u8> {
     // host. Adding an operation here means adding it to the semantic contract
     // and conformance vectors; it is not a license for a host to invent a
     // parallel implementation for the same operation.
-    match Parser::new(input).parse() {
+    match serde_json::from_slice::<Json>(input) {
         Ok(value) => {
             let operation = value
                 .as_object()

@@ -9,6 +9,8 @@ from .semantic_core import (
     execute_provider_registry,
     execute_repository_validation,
     execute_semantic_core_request,
+    execute_validated_semantic_core_request,
+    validate_semantic_core_protocol,
 )
 
 __all__ = [
@@ -20,4 +22,6 @@ __all__ = [
     "execute_provider_registry",
     "execute_repository_validation",
     "execute_semantic_core_request",
+    "execute_validated_semantic_core_request",
+    "validate_semantic_core_protocol",
 ]

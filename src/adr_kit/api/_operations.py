@@ -4,6 +4,7 @@ from __future__ import annotations
 
 from hashlib import sha256
 from pathlib import Path
+from types import MappingProxyType
 from typing import Literal, Mapping, cast
 
 import yaml
@@ -337,7 +338,24 @@ def _architecture_reference_facts(
 
 
 def _shared_architecture_reference_result(adr_dir: Path) -> InternalValidationResult:
-    records, reviews, overrides = _architecture_reference_facts(adr_dir)
+    try:
+        records, reviews, overrides = _architecture_reference_facts(adr_dir)
+    except (OSError, UnicodeError, TypeError, ValueError, yaml.YAMLError) as exc:
+        # Source discovery/normalization is a host responsibility. Once it
+        # fails, report a deterministic host diagnostic; never reactivate the
+        # legacy Python cross-reference evaluator as a semantic fallback.
+        return InternalValidationResult(
+            valid=False,
+            mode="complete",
+            errors=[
+                InternalValidationError(
+                    severity="error",
+                    rule="parse_error",
+                    message=f"Cross-reference source normalization failed: {exc}",
+                )
+            ],
+            warnings=[],
+        )
     result = execute_architecture_reference_validation(
         records=records,
         reviews=reviews,
@@ -506,10 +524,7 @@ def validate_for_cli(
         validator,
     )
     if cross_references:
-        try:
-            cross_reference_result = _shared_architecture_reference_result(detected_scope.adr_dir)
-        except OSError, UnicodeError, ValueError, yaml.YAMLError:
-            cross_reference_result = validator.validate_cross_references(detected_scope.adr_dir)
+        cross_reference_result = _shared_architecture_reference_result(detected_scope.adr_dir)
     else:
         cross_reference_result = None
     return detected_scope, results, cross_reference_result
@@ -649,36 +664,15 @@ def validate_architecture(request: ValidationRequest) -> ValidationResult:
                 _validation_diagnostic(request, item, path) for item in result.warnings
             )
         if request.cross_references:
-            try:
-                records, reviews, overrides = _architecture_reference_facts(scope.adr_dir)
-                reference_result = execute_architecture_reference_validation(
-                    records=records,
-                    reviews=reviews,
-                    overrides=overrides,
-                )
-                diagnostics.extend(
-                    Diagnostic(
-                        severity=_severity(item.get("severity")),
-                        code=str(item.get("code", "cross_reference")),
-                        message=str(
-                            item.get("message", "architecture reference validation failed")
-                        ),
-                        path=str(item["path"]) if item.get("path") is not None else None,
-                    )
-                    for item in reference_result.get("diagnostics", [])
-                    if isinstance(item, Mapping)
-                )
-            except OSError, UnicodeError, ValueError, yaml.YAMLError:
-                # Preserve malformed-source diagnostics from the established validator
-                # while valid normalized references execute through the shared core.
-                cross_references = validator.validate_cross_references(scope.adr_dir)
-                diagnostics.extend(
-                    _validation_diagnostic(request, item, None) for item in cross_references.errors
-                )
-                diagnostics.extend(
-                    _validation_diagnostic(request, item, None)
-                    for item in cross_references.warnings
-                )
+            cross_reference_result = _shared_architecture_reference_result(scope.adr_dir)
+            diagnostics.extend(
+                _validation_diagnostic(request, item, None)
+                for item in cross_reference_result.errors
+            )
+            diagnostics.extend(
+                _validation_diagnostic(request, item, None)
+                for item in cross_reference_result.warnings
+            )
     except Exception as exc:
         raise OperationError("Validation could not complete") from exc
 
@@ -767,6 +761,7 @@ def validate_contract(request: ContractValidationRequest) -> ContractValidationR
         outcome=internal.outcome,
         sentinel_field_count=internal.sentinel_field_count,
         non_complete_entity_count=internal.non_complete_entity_count,
+        completeness_counts=MappingProxyType(dict(internal.completeness_counts or {})),
         issues=issues,
         diagnostics=diagnostics,
         package_version=__version__,

@@ -36,7 +36,7 @@ fn non_empty(value: Option<&Json>) -> bool {
         Some(Json::Array(value)) => !value.is_empty(),
         Some(Json::Object(value)) => !value.is_empty(),
         Some(Json::Bool(value)) => *value,
-        Some(Json::Number(value)) => !value.is_empty() && value != "0",
+        Some(Json::Number(value)) => value.to_string() != "0",
         Some(Json::Null) | None => false,
     }
 }
@@ -536,11 +536,8 @@ pub(crate) fn execute(request: &Json) -> Json {
         .count();
     let mut result = simple_result("validate_architecture", error_count == 0, diagnostics);
     if let Json::Object(ref mut values) = result {
-        values.insert("error_count".into(), Json::Number(error_count.to_string()));
-        values.insert(
-            "warning_count".into(),
-            Json::Number(warning_count.to_string()),
-        );
+        values.insert("error_count".into(), super::number(error_count as u64));
+        values.insert("warning_count".into(), super::number(warning_count as u64));
     }
     result
 }

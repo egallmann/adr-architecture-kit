@@ -452,11 +452,8 @@ pub(crate) fn execute(request: &Json) -> Json {
             Json::Array(rejected.into_iter().map(|(_, value)| value).collect()),
         ),
         ("diagnostics".into(), Json::Array(diagnostics)),
-        ("error_count".into(), Json::Number(error_count.to_string())),
-        (
-            "warning_count".into(),
-            Json::Number(warning_count.to_string()),
-        ),
+        ("error_count".into(), super::number(error_count as u64)),
+        ("warning_count".into(), super::number(warning_count as u64)),
         (
             "authority_ceiling".into(),
             string("validated_derived_evidence"),

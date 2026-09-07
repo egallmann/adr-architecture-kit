@@ -98,6 +98,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          submodules: recursive
       - uses: dtolnay/rust-toolchain@stable
         with:
           targets: wasm32-unknown-unknown
@@ -105,8 +107,6 @@ jobs:
         run: |
           cargo test --manifest-path core/Cargo.toml
           node scripts/build_semantic_core.mjs
-        with:
-          submodules: recursive
       - uses: actions/setup-python@v5
         with:
           python-version: "3.14"
@@ -272,6 +272,23 @@ jobs:
           tarball="$(find node-dist -maxdepth 1 -type f -name '*.tgz' -print -quit)"
           test -n "$tarball"
           python scripts/verify_npm_tarball.py --tarball "$tarball"
+      - name: Verify packaged WASM identity across Python and Node
+        run: |
+          python - <<'PY'
+          import tarfile
+          import zipfile
+          from pathlib import Path
+
+          wheel = next(Path("python-dist").glob("*.whl"))
+          npm = next(Path("node-dist").glob("*.tgz"))
+          with zipfile.ZipFile(wheel) as archive:
+              python_wasm = archive.read("adr_kit/core/semantic-core.wasm")
+          with tarfile.open(npm, "r:gz") as archive:
+              node_wasm = archive.extractfile("package/dist/generated/semantic-core.wasm").read()
+          if python_wasm != node_wasm:
+              raise SystemExit("packaged Python and Node semantic-core WASM differ")
+          print(f"byte-identical packaged WASM: {len(python_wasm)} bytes")
+          PY
       - uses: actions/upload-artifact@v4
         with:
           name: release-bundle

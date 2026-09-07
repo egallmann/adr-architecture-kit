@@ -75,7 +75,7 @@ where = ["src"]
 "adr_kit.promotion.rules" = ["*.json"]
 "adr_kit.promotion.schemas" = ["*.json"]
 "adr_kit.compatibility" = ["*.json"]
-"adr_kit.core" = ["*.wasm"]
+"adr_kit.core" = ["*.wasm", "*.json"]
 
 [tool.black]
 line-length = 100

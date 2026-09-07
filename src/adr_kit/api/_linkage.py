@@ -8,7 +8,7 @@ from typing import Any, cast
 import yaml
 
 from .. import __version__
-from ..core import execute_semantic_core_request
+from ..core import execute_validated_semantic_core_request
 from ..decorators import embodies, enforces, implements
 from ..models import ImplementationAttributionEvidenceV15, ImplementationAttributionEvidenceV16
 from ..repository import ArchitectureRepository
@@ -94,7 +94,7 @@ def build_embodiment_linkage(request: EmbodimentLinkageRequest) -> EmbodimentLin
     try:
         repository = ArchitectureRepository(request.project_root)
         repository.load()
-        core_result = execute_semantic_core_request(
+        core_result = execute_validated_semantic_core_request(
             {
                 "core_contract_version": "1.0",
                 "operation": "build_embodiment_linkage",

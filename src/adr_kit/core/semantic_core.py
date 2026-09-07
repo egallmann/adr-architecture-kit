@@ -1,16 +1,20 @@
 """Direct Python binding for the versioned semantic-core contract.
 
 The public SDK owns repository discovery and Python-native result mapping. The
-semantic rules for the migrated operation execute in the packaged core
-artifact, so this module intentionally contains no contract-validation rules.
+semantic rules for the migrated operation execute in the packaged,
+self-contained WASM artifact, so this module intentionally contains no
+contract-validation rules. The Python host depends on ``wasmtime`` to load the
+artifact; Rust build dependencies are compiled into the artifact itself.
 """
 
 from __future__ import annotations
 
 import json
+from functools import lru_cache
 from importlib import resources
 from typing import Any
 
+from jsonschema import Draft202012Validator
 import wasmtime
 import yaml
 
@@ -44,6 +48,41 @@ def execute_semantic_core_request(request: dict[str, Any]) -> dict[str, Any]:
     return decoded
 
 
+@lru_cache(maxsize=1)
+def _protocol_validator() -> Draft202012Validator:
+    contract = json.loads(
+        resources.files("adr_kit.core")
+        .joinpath("semantic-core-contract.json")
+        .read_text(encoding="utf-8")
+    )
+    return Draft202012Validator(contract)
+
+
+def validate_semantic_core_protocol(value: dict[str, Any]) -> None:
+    """Assert that a host request/result obeys the versioned transport schema."""
+
+    errors = sorted(_protocol_validator().iter_errors(value), key=lambda error: list(error.path))
+    if errors:
+        details = "; ".join(
+            f"{'.'.join(str(part) for part in error.path) or '<root>'}: {error.message}"
+            for error in errors[:3]
+        )
+        raise ValueError(f"semantic-core protocol violation: {details}")
+
+
+def _execute_validated(request: dict[str, Any]) -> dict[str, Any]:
+    validate_semantic_core_protocol(request)
+    result = execute_semantic_core_request(request)
+    validate_semantic_core_protocol(result)
+    return result
+
+
+def execute_validated_semantic_core_request(request: dict[str, Any]) -> dict[str, Any]:
+    """Execute one protocol-valid request and validate its core result envelope."""
+
+    return _execute_validated(request)
+
+
 def execute_contract_validation(
     *,
     profile: str,
@@ -71,7 +110,7 @@ def execute_contract_validation(
         request["max_sentinel_fields"] = max_sentinel_fields
     if max_non_complete_entities is not None:
         request["max_non_complete_entities"] = max_non_complete_entities
-    return execute_semantic_core_request(request)
+    return _execute_validated(request)
 
 
 def execute_project_metadata_validation(project_root: Any) -> dict[str, Any]:
@@ -81,7 +120,7 @@ def execute_project_metadata_validation(project_root: Any) -> dict[str, Any]:
     try:
         payload = yaml.safe_load(path.read_text(encoding="utf-8"))
     except (OSError, UnicodeError, yaml.YAMLError) as exc:
-        return {
+        result = {
             "core_contract_version": "1.0",
             "operation": "validate_project_metadata",
             "success": False,
@@ -94,9 +133,11 @@ def execute_project_metadata_validation(project_root: Any) -> dict[str, Any]:
                 }
             ],
         }
+        validate_semantic_core_protocol(result)
+        return result
     if not isinstance(payload, dict):
         payload = None
-    return execute_semantic_core_request(
+    return _execute_validated(
         {
             "core_contract_version": "1.0",
             "operation": "validate_project_metadata",
@@ -108,7 +149,7 @@ def execute_project_metadata_validation(project_root: Any) -> dict[str, Any]:
 def execute_provider_registry(bindings: list[dict[str, str]]) -> dict[str, Any]:
     """Validate deterministic provider routing through the shared core."""
 
-    return execute_semantic_core_request(
+    return _execute_validated(
         {
             "core_contract_version": "1.0",
             "operation": "open_provider_registry",
@@ -131,7 +172,7 @@ def execute_repository_validation(
             return model_dump(mode="json")
         return value
 
-    return execute_semantic_core_request(
+    return _execute_validated(
         {
             "core_contract_version": "1.0",
             "operation": "open_repository",
@@ -156,7 +197,7 @@ def execute_generated_artifact_classification(
 ) -> dict[str, Any]:
     """Classify normalized generated-artifact integrity facts through the core."""
 
-    return execute_semantic_core_request(
+    return _execute_validated(
         {
             "core_contract_version": "1.0",
             "operation": "classify_generated_artifact",
@@ -181,7 +222,7 @@ def execute_architecture_reference_validation(
 ) -> dict[str, Any]:
     """Validate normalized ADR cross-reference facts through the shared core."""
 
-    return execute_semantic_core_request(
+    return _execute_validated(
         {
             "core_contract_version": "1.0",
             "operation": "validate_architecture_references",
@@ -199,7 +240,7 @@ def execute_architecture_validation(
 ) -> dict[str, Any]:
     """Evaluate normalized ADR business rules through the shared core."""
 
-    return execute_semantic_core_request(
+    return _execute_validated(
         {
             "core_contract_version": "1.0",
             "operation": "validate_architecture",

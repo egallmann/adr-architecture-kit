@@ -5,9 +5,16 @@ ADR-Kit. It is intentionally a normalized JSON contract: host SDKs load
 host-owned resources, normalize them, and submit equivalent operation requests
 to one semantic authority.
 
-The request and result shape is the public boundary. The implementation may
-be native, portable, or interpreted, but Python and Node must consume the same
-implementation artifact and must not recreate these rules independently.
+The request and result shape is the public boundary. The operation-discriminated
+JSON Schema in `contract.json` governs transport structure, required fields,
+diagnostics, and result envelopes; ADRs and canonical schemas continue to own
+domain meaning. Python and Node must consume the same implementation artifact
+and must not recreate these rules independently.
+
+The packaged semantic core is a self-contained WASM artifact. Its Rust build
+dependencies, including `serde` and `serde_json`, are compiled into that
+artifact; the Python host additionally depends on `wasmtime` to load it. The
+Python package is therefore not dependency-free.
 
 The vectors are conformance evidence, not a second authority. The normative
 meaning remains the ADR corpus and the canonical normalized-model schemas.

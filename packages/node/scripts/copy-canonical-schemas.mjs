@@ -10,6 +10,9 @@ const generatedRoot = resolve(packageRoot, "src/generated");
 const capabilityContract = JSON.parse(
   await readFile(resolve(repoRoot, "contracts/compatibility/host-capabilities.json"), "utf8"),
 );
+const semanticCoreContract = JSON.parse(
+  await readFile(resolve(repoRoot, "contracts/semantic-core/v1.0/contract.json"), "utf8"),
+);
 
 const families = [
   ["authoring", "v1.2"],
@@ -58,3 +61,4 @@ await writeFile(resolve(generatedRoot, "schema-manifest.ts"), `export const sche
 await writeFile(resolve(generatedRoot, "package-metadata.ts"), `export const packageVersion = ${JSON.stringify(packageVersion)} as const;\n`);
 await writeFile(resolve(generatedRoot, "schema-assets.ts"), `export const schemaAssets = ${JSON.stringify(assets, null, 2)} as const;\n`);
 await writeFile(resolve(generatedRoot, "host-capabilities.ts"), `export const hostCapabilities = ${JSON.stringify(capabilityContract, null, 2)} as const;\n`);
+await writeFile(resolve(generatedRoot, "semantic-core-contract.ts"), `export const semanticCoreContract = ${JSON.stringify(semanticCoreContract, null, 2)} as const;\n`);

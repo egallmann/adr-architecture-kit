@@ -2,7 +2,7 @@ import { readFile } from "node:fs/promises";
 import { parse } from "yaml";
 import { openRepository } from "./repository.js";
 import { LinkageError, type AdrKitDiagnostic } from "../errors.js";
-import { executeSemanticCoreRequest } from "./core.js";
+import { executeValidatedSemanticCoreRequest } from "./core.js";
 
 export type LinkageProfile = "greenfield" | "brownfield" | "migration";
 
@@ -84,7 +84,7 @@ export async function buildEmbodimentLinkage(
     );
   }
 
-  const result = await executeSemanticCoreRequest({
+  const result = await executeValidatedSemanticCoreRequest({
     core_contract_version: "1.0",
     operation: "build_embodiment_linkage",
     profile,

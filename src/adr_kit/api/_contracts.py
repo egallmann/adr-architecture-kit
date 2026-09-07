@@ -5,7 +5,7 @@ from __future__ import annotations
 from dataclasses import asdict, dataclass
 from datetime import datetime, timezone
 from pathlib import Path
-from typing import Literal
+from typing import Literal, Mapping
 
 from ..models import NormalizedArchitectureModel
 from ..models.v2_1 import NormalizedArchitectureModelV21
@@ -299,6 +299,7 @@ class ContractValidationResult:
     outcome: Literal["compliant", "sentinel_compliant", "non_compliant"]
     sentinel_field_count: int
     non_complete_entity_count: int
+    completeness_counts: Mapping[str, int]
     issues: tuple[ContractValidationIssue, ...]
     diagnostics: tuple[Diagnostic, ...]
     package_version: str

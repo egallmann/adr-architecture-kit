@@ -82,8 +82,8 @@ export async function openRepository(projectRoot: string | URL): Promise<Archite
     unresolved: unresolvedRegistry.unresolved
   } satisfies NormalizedArchitectureModelV21;
   try { assertValidContract(model, "normalized-model:2.1"); } catch (error) { throw repositoryFailure(error); }
-  const { executeSemanticCoreRequest } = await import("./core.js");
-  const semantic = await executeSemanticCoreRequest({
+  const { executeValidatedSemanticCoreRequest } = await import("./core.js");
+  const semantic = await executeValidatedSemanticCoreRequest({
     core_contract_version: "1.0",
     operation: "open_repository",
     model_version: "2.1",

@@ -171,6 +171,7 @@ export async function validateArchitecture(
   const diagnostics: ArchitectureDiagnostic[] = [];
   const records: Document[] = [];
   const referenceRecords: Document[] = [];
+  let referenceNormalizationFailed = false;
 
   for (const path of files) {
     const display = displayPath(root, path);
@@ -181,7 +182,16 @@ export async function validateArchitecture(
       document = parsed as Document;
     } catch (error) {
       diagnostics.push(diagnostic("error", "parse_error", String(error), display));
+      referenceNormalizationFailed = true;
       continue;
+    }
+    if (typeof document.id !== "string" || typeof document.adr_type !== "string") {
+      // The reference protocol requires identity even when the authoring
+      // validator will report a separate schema diagnostic for this source.
+      referenceNormalizationFailed = true;
+    } else {
+      const reference = referenceRecord(document);
+      if (reference) referenceRecords.push(reference);
     }
     const kind = adrType(document.adr_type);
     if (!kind) {
@@ -210,8 +220,6 @@ export async function validateArchitecture(
     }
     normalized.missing_implementation_identifiers = [...new Set(missing)].sort();
     records.push({ path: display, document: normalized });
-    const reference = referenceRecord(document);
-    if (reference) referenceRecords.push(reference);
   }
 
   if (records.length > 0) {
@@ -221,10 +229,25 @@ export async function validateArchitecture(
     }
   }
   if (request.cross_references) {
-    const reviews = await governanceArtifacts(root, "reviews", "target_adr");
-    const overrides = await governanceArtifacts(root, "overrides", "related_adr");
-    const core = await validateArchitectureReferences({ records: referenceRecords, reviews, overrides });
-    for (const item of core.diagnostics) diagnostics.push(diagnostic(item.severity, item.code, item.message, item.path));
+    if (referenceNormalizationFailed) {
+      // Host normalization is a prerequisite for the shared reference
+      // evaluator. Do not infer partial references or fall back to a host
+      // implementation when any source cannot be normalized.
+      diagnostics.push(diagnostic("error", "parse_error", "Cross-reference source normalization failed"));
+    } else {
+      try {
+        const reviews = await governanceArtifacts(root, "reviews", "target_adr");
+        const overrides = await governanceArtifacts(root, "overrides", "related_adr");
+        const core = await validateArchitectureReferences({ records: referenceRecords, reviews, overrides });
+        for (const item of core.diagnostics) {
+          diagnostics.push(diagnostic(item.severity, item.code, item.message, item.path));
+        }
+      } catch (error) {
+        // Discovery/YAML failures stay host-owned diagnostics; the old host
+        // evaluator is never used as a semantic fallback.
+        diagnostics.push(diagnostic("error", "parse_error", `Cross-reference source normalization failed: ${String(error)}`));
+      }
+    }
   }
   diagnostics.sort((left, right) => `${left.path ?? ""}\u0000${left.field ?? ""}\u0000${left.code}`.localeCompare(`${right.path ?? ""}\u0000${right.field ?? ""}\u0000${right.code}`));
   const errorCount = diagnostics.filter((item) => item.severity === "error").length;

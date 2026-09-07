@@ -5,6 +5,7 @@ import type { NormalizedEntityV21 } from "../model/types.js";
 import { openRepository } from "./repository.js";
 import { parse } from "yaml";
 import { packageVersion } from "../generated/package-metadata.js";
+import { validateSemanticCoreProtocol } from "./protocol.js";
 
 const API_CONTRACT_VERSION = "1.0" as const;
 
@@ -99,6 +100,13 @@ export async function executeSemanticCoreRequest(request: Record<string, unknown
   }
 }
 
+export async function executeValidatedSemanticCoreRequest(request: Record<string, unknown>): Promise<Record<string, unknown>> {
+  validateSemanticCoreProtocol(request);
+  const result = await executeSemanticCoreRequest(request);
+  validateSemanticCoreProtocol(result);
+  return result;
+}
+
 export async function validateContract(request: ContractValidationRequest): Promise<ContractValidationResult> {
   const profile = request.profile ?? "greenfield";
   if (!(["greenfield", "brownfield", "migration"] as const).includes(profile)) {
@@ -120,9 +128,10 @@ export async function validateContract(request: ContractValidationRequest): Prom
   };
   if (request.max_sentinel_fields !== undefined) coreRequest.max_sentinel_fields = request.max_sentinel_fields;
   if (request.max_non_complete_entities !== undefined) coreRequest.max_non_complete_entities = request.max_non_complete_entities;
-  const result = await executeSemanticCoreRequest(coreRequest);
+  const result = await executeValidatedSemanticCoreRequest(coreRequest);
   return Object.freeze({
     ...result,
+    completeness_counts: Object.freeze({ ...(result.completeness_counts as Record<string, number>) }),
     package_version: packageVersion,
     api_contract_version: API_CONTRACT_VERSION,
   }) as ContractValidationResult;
@@ -153,7 +162,7 @@ export async function validateProjectMetadata(request: ProjectMetadataValidation
       api_contract_version: API_CONTRACT_VERSION,
     };
   }
-  const result = await executeSemanticCoreRequest({
+  const result = await executeValidatedSemanticCoreRequest({
     core_contract_version: "1.0",
     operation: "validate_project_metadata",
     project_metadata: metadata
@@ -168,7 +177,7 @@ export async function validateProjectMetadata(request: ProjectMetadataValidation
 export async function validateArchitectureReferences(
   request: ArchitectureReferenceValidationRequest,
 ): Promise<ArchitectureReferenceValidationResult> {
-  return executeSemanticCoreRequest({
+  return executeValidatedSemanticCoreRequest({
     core_contract_version: "1.0",
     operation: "validate_architecture_references",
     records: request.records,
@@ -182,7 +191,7 @@ export async function validateArchitectureReferences(
 export async function validateArchitectureFacts(
   request: ArchitectureValidationRequest,
 ): Promise<ArchitectureValidationResult> {
-  return executeSemanticCoreRequest({
+  return executeValidatedSemanticCoreRequest({
     core_contract_version: "1.0",
     operation: "validate_architecture",
     mode: request.mode ?? "complete",
@@ -201,7 +210,7 @@ export async function openProviderRegistry(workspaceRoots: Readonly<Record<strin
     const repository = await openRepository(root);
     bindings.push({ workspace_key, architecture_namespace: repository.architectureNamespace, project_root: repository.projectRoot, repository });
   }
-  const core = await executeSemanticCoreRequest({
+  const core = await executeValidatedSemanticCoreRequest({
     core_contract_version: "1.0",
     operation: "open_provider_registry",
     bindings: bindings.map(({ workspace_key, architecture_namespace, project_root }) => ({ workspace_key, architecture_namespace, project_root }))

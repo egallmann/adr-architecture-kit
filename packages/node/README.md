@@ -4,6 +4,11 @@ TypeScript host and browser binding over ADR-Kit authority. The package is
 framework-neutral and ESM-only; host capabilities are exposed through explicit
 Node entry points and browser capabilities remain constrained.
 
+The Node host consumes the same self-contained semantic-core WASM artifact as
+the Python SDK. Rust build dependencies, including `serde` and `serde_json`,
+are compiled into that artifact; the Python host additionally depends on
+`wasmtime` to load it. The Python package itself is not dependency-free.
+
 Browser-safe entry points:
 
 ```ts

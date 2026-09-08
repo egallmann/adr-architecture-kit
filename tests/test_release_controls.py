@@ -432,6 +432,9 @@ def test_release_certification_owns_retained_artifacts_and_release_only_checks()
     assert "scripts/verify_semantic_core_artifact.py" in semantic_core_text
     assert "tests/test_semantic_core_conformance.py" in semantic_core_text
     assert "npm test" in semantic_core_text
+    assert semantic_core_text.index("scripts/build_semantic_core.mjs") < semantic_core_text.index(
+        "pip install .[dev]"
+    )
     assert jobs["wheel-smoke"]["needs"] == "release-artifacts"
     assert jobs["os-wheel-smoke"]["needs"] == "release-artifacts"
     for name in ("release-artifacts", "reproducibility", "benchmark-smoke"):

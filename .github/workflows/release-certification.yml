@@ -36,7 +36,6 @@ jobs:
           node --version
           python --version
       - run: python -m pip install --upgrade pip
-      - run: python -m pip install .[dev]
       - run: npm ci
         working-directory: packages/node
       - name: Test the semantic-core implementation
@@ -45,6 +44,7 @@ jobs:
         run: node scripts/build_semantic_core.mjs
       - name: Verify source artifact and host copies
         run: python scripts/verify_semantic_core_artifact.py
+      - run: python -m pip install .[dev]
       - name: Exercise Python semantic-core conformance
         run: python -m pytest -q tests/test_semantic_core_protocol.py tests/test_semantic_core_conformance.py tests/test_attribution_shim_parity.py
       - name: Exercise Node semantic-core conformance

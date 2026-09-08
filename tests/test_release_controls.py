@@ -424,7 +424,14 @@ def test_release_certification_owns_retained_artifacts_and_release_only_checks()
     assert "workflow_dispatch" not in trigger
     jobs = workflow["jobs"]
     assert jobs["integration"]["uses"] == "./.github/workflows/integration-assurance.yml"
-    assert jobs["release-artifacts"]["needs"] == "integration"
+    assert jobs["release-artifacts"]["needs"] == ["integration", "semantic-core-qualification"]
+    semantic_core = jobs["semantic-core-qualification"]
+    semantic_core_text = _job_steps_text(semantic_core)
+    assert "cargo test --manifest-path core/Cargo.toml" in semantic_core_text
+    assert "scripts/build_semantic_core.mjs" in semantic_core_text
+    assert "scripts/verify_semantic_core_artifact.py" in semantic_core_text
+    assert "tests/test_semantic_core_conformance.py" in semantic_core_text
+    assert "npm test" in semantic_core_text
     assert jobs["wheel-smoke"]["needs"] == "release-artifacts"
     assert jobs["os-wheel-smoke"]["needs"] == "release-artifacts"
     for name in ("release-artifacts", "reproducibility", "benchmark-smoke"):
@@ -435,6 +442,7 @@ def test_release_certification_owns_retained_artifacts_and_release_only_checks()
     assert "release-manifest.json" in release_text
     assert "upload-artifact" in release_text
     assert "semantic-core.wasm" in release_text
+    assert "scripts/verify_semantic_core_artifact.py" in release_text
 
     wheel_text = _job_steps_text(jobs["wheel-smoke"])
     assert "scripts/test_installed_wheel.py" in wheel_text

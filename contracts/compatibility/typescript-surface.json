@@ -7,7 +7,7 @@
   "side_effects": false,
   "subpaths": {
     ".": ["AdrKitError", "ContractValidationError", "UnsupportedContractVersionError", "capabilities", "createArchitectureModel"],
-    "./model": ["ArchitectureModelView", "NormalizedArchitectureModelV21", "NormalizedEntityV21", "RelationshipV21", "createArchitectureModel"],
+    "./model": ["ArchitectureModelView", "CanonicalRelationshipV22", "CompatibilityRelationshipV22", "NormalizedArchitectureModel", "NormalizedArchitectureModelV21", "NormalizedArchitectureModelV22", "NormalizedEntity", "NormalizedEntityV21", "NormalizedEntityV22", "Relationship", "RelationshipV21", "RelationshipV22", "createArchitectureModel"],
     "./schemas": ["canonicalSchemas", "schemaManifest", "getCanonicalSchema", "getSemanticAttributionVocabulary"],
     "./validation": ["assertValidContract", "validateAuthoringDocument", "validateContract", "ValidationResult", "AuthoringAdrType", "AuthoringValidationMode"],
     "./node": ["openRepository", "validateContract", "ArchitectureRepository", "ContractValidationRequest", "ContractValidationResult", "RepositoryError", "RepositoryPathError", "AmbiguousAliasError"],

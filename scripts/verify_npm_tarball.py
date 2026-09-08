@@ -15,6 +15,7 @@ REQUIRED_FILES = (
     "dist/index.js",
     "dist/index.d.ts",
     "dist/schemas/canonical/normalized-model/v2.1/normalized-architecture-model.schema.json",
+    "dist/schemas/canonical/normalized-model/v2.2/normalized-architecture-model.schema.json",
     "README.md",
     "LICENSE",
 )

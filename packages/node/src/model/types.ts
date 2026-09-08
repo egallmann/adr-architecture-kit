@@ -21,6 +21,13 @@ export interface NormalizedEntityV21 {
   readonly extension?: { readonly properties: Record<string, JsonValue>; readonly rationale: string };
 }
 
+/**
+ * Normalized model 2.2 keeps the v2.1 entity identity and payload shape.  The
+ * versioned name is intentional: it lets the binding preserve the accepted
+ * contract version without creating a second semantic entity model.
+ */
+export interface NormalizedEntityV22 extends NormalizedEntityV21 {}
+
 export interface CanonicalRelationshipV21 {
   readonly record_kind: "canonical";
   readonly id: string;
@@ -42,7 +49,33 @@ export interface CompatibilityRelationshipV21 {
   readonly [key: string]: unknown;
 }
 
+/**
+ * v2.2 keeps relationship identity but makes normalized provenance explicit.
+ * Topology vocabulary and endpoint rules remain owned by the canonical schema
+ * and semantic core; these fields only preserve that contract at the boundary.
+ */
+export interface CanonicalRelationshipV22 extends CanonicalRelationshipV21 {
+  readonly source_owner_id?: string | null;
+  readonly source_pointer?: string | null;
+  readonly provenance_classification?: "explicit" | "derived" | "heuristic";
+  readonly evidence?: readonly string[];
+  readonly canonical_source_ref: string;
+  readonly confidence?: number;
+  readonly extension?: { readonly properties: Record<string, JsonValue>; readonly rationale: string };
+}
+
+export interface CompatibilityRelationshipV22 extends CompatibilityRelationshipV21 {
+  readonly source_owner_id?: string | null;
+  readonly source_pointer?: string | null;
+  readonly provenance_classification: "explicit" | "derived" | "heuristic";
+  readonly evidence?: readonly string[];
+  readonly canonical_source_ref: string;
+  readonly confidence?: number;
+  readonly metadata?: Record<string, unknown>;
+}
+
 export type RelationshipV21 = CanonicalRelationshipV21 | CompatibilityRelationshipV21;
+export type RelationshipV22 = CanonicalRelationshipV22 | CompatibilityRelationshipV22;
 
 export interface NormalizedArchitectureModelV21 {
   readonly schema_version: "2.1";
@@ -56,6 +89,19 @@ export interface NormalizedArchitectureModelV21 {
   readonly unresolved: readonly Record<string, unknown>[];
   readonly [key: string]: unknown;
 }
+
+export interface NormalizedArchitectureModelV22
+  extends Pick<NormalizedArchitectureModelV21, "type" | "mode" | "scope_root" | "architecture_namespace" | "fingerprint" | "unresolved"> {
+  readonly schema_version: "2.2";
+  readonly entities: readonly NormalizedEntityV22[];
+  readonly relationships: readonly RelationshipV22[];
+  readonly validation_summary?: Record<string, unknown> | null;
+  readonly source_coverage?: Record<string, unknown> | null;
+}
+
+export type NormalizedEntity = NormalizedEntityV21 | NormalizedEntityV22;
+export type Relationship = RelationshipV21 | RelationshipV22;
+export type NormalizedArchitectureModel = NormalizedArchitectureModelV21 | NormalizedArchitectureModelV22;
 
 export type RelationshipDirection = "any" | "incoming" | "outgoing";
 export interface RelationshipQuery { readonly relationshipType?: string; readonly direction?: RelationshipDirection; }

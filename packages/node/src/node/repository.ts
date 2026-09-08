@@ -4,7 +4,7 @@ import { isAbsolute, relative, resolve, sep } from "node:path";
 import { parse } from "yaml";
 import { fileURLToPath } from "node:url";
 import { createArchitectureModel, type ArchitectureModelView } from "../model/index.js";
-import type { NormalizedArchitectureModelV21, NormalizedEntityV21, RelationshipQuery, RelationshipV21 } from "../model/types.js";
+import type { NormalizedArchitectureModel, NormalizedEntity, Relationship, RelationshipQuery } from "../model/types.js";
 import { RepositoryError, RepositoryPathError } from "../internal.js";
 import { assertValidContract } from "../validation/index.js";
 
@@ -22,13 +22,15 @@ export interface RepositoryOptions { readonly project_root: string; }
 export interface ArchitectureRepository extends ArchitectureModelView {
   readonly projectRoot: string;
   readonly project_root: string;
-  readonly modelVersion: "2.1";
+  readonly modelVersion: SupportedNormalizedModelVersion;
   readonly architectureNamespace: string;
   readonly architectureIndex: Readonly<Record<string, unknown>>;
   readonly manifest: Readonly<Record<string, unknown>>;
   readonly fingerprint: string;
-  readonly subsets: Readonly<Record<string, readonly NormalizedEntityV21[]>>;
+  readonly subsets: Readonly<Record<string, readonly NormalizedEntity[]>>;
 }
+
+export type SupportedNormalizedModelVersion = "2.1" | "2.2";
 
 export async function openRepository(projectRoot: string | URL): Promise<ArchitectureRepository> {
   const root = resolve(projectRoot instanceof URL ? fileURLToPath(projectRoot) : projectRoot);
@@ -49,29 +51,34 @@ export async function openRepository(projectRoot: string | URL): Promise<Archite
     return [field, await loadYaml(path, `repository.${field}`)] as const;
   }));
   const documents = Object.fromEntries(required);
+  const entityRegistry = documents.entity_registry_path as { schema_version?: unknown; entities: NormalizedEntity[] };
+  const modelVersion = normalizedModelVersion(entityRegistry.schema_version);
   try {
-    assertValidContract(documents.entity_registry_path, "normalized-entity-registry:2.1");
-    assertValidContract(documents.relationship_registry_path, "relationship-registry:2.1");
-    assertValidContract(documents.unresolved_registry_path, "unresolved-registry:2.1");
+    assertRegistryVersion(documents.relationship_registry_path, modelVersion, "relationship registry");
+    assertRegistryVersion(documents.unresolved_registry_path, modelVersion, "unresolved registry");
+    assertValidContract(documents.entity_registry_path, capability("normalized-entity-registry", modelVersion));
+    assertValidContract(documents.relationship_registry_path, capability("relationship-registry", modelVersion));
+    assertValidContract(documents.unresolved_registry_path, capability("unresolved-registry", modelVersion));
   } catch (error) { throw repositoryFailure(error); }
 
-  const subsets: Record<string, readonly NormalizedEntityV21[]> = {};
+  const subsets: Record<string, readonly NormalizedEntity[]> = {};
   for (const [field, name] of Object.entries(OPTIONAL_INDEX_FIELDS)) {
     const reference = architectureIndex[field];
     if (typeof reference !== "string") continue;
     const path = safeIndexPath(root, reference);
     if (!(await exists(path))) continue;
     const subset = await loadYaml(path, `repository.${name}`);
-    try { assertValidContract(subset, "normalized-entity-registry:2.1"); } catch (error) { throw repositoryFailure(error); }
-    subsets[name] = Object.freeze([...(subset.entities as NormalizedEntityV21[])]);
+    try {
+      assertRegistryVersion(subset, modelVersion, `${name} registry`);
+      assertValidContract(subset, capability("normalized-entity-registry", modelVersion));
+    } catch (error) { throw repositoryFailure(error); }
+    subsets[name] = Object.freeze([...(subset.entities as NormalizedEntity[])]);
   }
 
-  const entityRegistry = documents.entity_registry_path as { schema_version?: string; entities: NormalizedEntityV21[] };
-  if (entityRegistry.schema_version !== "2.1") throw new RepositoryError("contract.unsupported_version", `Normalized model ${String(entityRegistry.schema_version)} is not supported`);
-  const relationshipRegistry = documents.relationship_registry_path as { relationships: RelationshipV21[] };
+  const relationshipRegistry = documents.relationship_registry_path as { relationships: Relationship[] };
   const unresolvedRegistry = documents.unresolved_registry_path as { unresolved: Record<string, unknown>[] };
   const model = {
-    schema_version: "2.1" as const,
+    schema_version: modelVersion,
     type: "normalized_architecture_model" as const,
     mode: "normalized" as const,
     scope_root: root,
@@ -79,14 +86,16 @@ export async function openRepository(projectRoot: string | URL): Promise<Archite
     fingerprint: bindingFingerprint({ architectureIndex, entityRegistry, relationshipRegistry, unresolvedRegistry, subsets }),
     entities: entityRegistry.entities,
     relationships: relationshipRegistry.relationships,
-    unresolved: unresolvedRegistry.unresolved
-  } satisfies NormalizedArchitectureModelV21;
-  try { assertValidContract(model, "normalized-model:2.1"); } catch (error) { throw repositoryFailure(error); }
+    unresolved: unresolvedRegistry.unresolved,
+    ...(architectureIndex.validation_summary !== undefined ? { validation_summary: architectureIndex.validation_summary } : {}),
+    ...(architectureIndex.source_coverage !== undefined ? { source_coverage: architectureIndex.source_coverage } : {})
+  } as NormalizedArchitectureModel;
+  try { assertValidContract(model, capability("normalized-model", modelVersion)); } catch (error) { throw repositoryFailure(error); }
   const { executeValidatedSemanticCoreRequest } = await import("./core.js");
   const semantic = await executeValidatedSemanticCoreRequest({
     core_contract_version: "1.0",
     operation: "open_repository",
-    model_version: "2.1",
+    model_version: modelVersion,
     architecture_namespace: model.architecture_namespace,
     entities: model.entities,
   });
@@ -103,7 +112,7 @@ export async function openRepository(projectRoot: string | URL): Promise<Archite
     ...view,
     projectRoot: root,
     project_root: root,
-    modelVersion: "2.1" as const,
+    modelVersion,
     architectureNamespace: String(architectureIndex.architecture_namespace),
     architectureIndex: deepFreeze(architectureIndex),
     manifest: deepFreeze(manifest),
@@ -145,3 +154,17 @@ function stableJson(value: unknown): string {
 }
 function deepFreeze<T>(value: T): T { if (value && typeof value === "object" && !Object.isFrozen(value)) { Object.freeze(value); for (const item of Object.values(value as Record<string, unknown>)) deepFreeze(item); } return value; }
 function repositoryFailure(error: unknown): RepositoryError { return error instanceof RepositoryError ? error : new RepositoryError("repository.contract", error instanceof Error ? error.message : String(error)); }
+
+function normalizedModelVersion(value: unknown): SupportedNormalizedModelVersion {
+  if (value === "2.1" || value === "2.2") return value;
+  throw new RepositoryError("contract.unsupported_version", `Normalized model ${String(value)} is not supported`);
+}
+
+function capability(family: "normalized-model" | "normalized-entity-registry" | "relationship-registry" | "unresolved-registry", version: SupportedNormalizedModelVersion): `${typeof family}:${SupportedNormalizedModelVersion}` {
+  return `${family}:${version}`;
+}
+
+function assertRegistryVersion(value: unknown, expected: SupportedNormalizedModelVersion, label: string): void {
+  const actual = (value as { schema_version?: unknown } | null)?.schema_version;
+  if (actual !== expected) throw new RepositoryError("contract.version_mismatch", `${label} schema version ${String(actual)} does not match normalized model ${expected}`);
+}

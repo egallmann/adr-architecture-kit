@@ -46,3 +46,18 @@ test("Python-generated v2.1 registry passes TypeScript validation and Node loadi
   assert.equal(repository.modelVersion, "2.1");
   assert.equal(repository.entities().length, registry.entities.length);
 });
+
+test("Python-generated v2.2 registry passes TypeScript validation and Node loading", async () => {
+  const root = await mkdtemp(resolve(tmpdir(), "adr-kit-python-v22-"));
+  await run(await pythonCommand(), [generator, "1.5", root], { cwd: repositoryRoot });
+
+  const registry = parse(await readFile(resolve(root, "adrs/index/entity-registry.yaml"), "utf8"));
+  assert.equal(registry.schema_version, "2.2");
+  assert.ok(registry.entities.length > 0);
+  assert.ok(registry.entities.every((entity) => !("schema_version" in entity)));
+  assert.equal(validateContract(registry, "normalized-entity-registry:2.2").valid, true);
+
+  const repository = await openRepository(root);
+  assert.equal(repository.modelVersion, "2.2");
+  assert.equal(repository.entities().length, registry.entities.length);
+});

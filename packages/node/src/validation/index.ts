@@ -3,7 +3,7 @@ import addFormats from "ajv-formats";
 import { ContractValidationError, UnsupportedContractVersionError, type AdrKitDiagnostic } from "../errors.js";
 import { canonicalSchemas } from "../schemas/index.js";
 
-export type SupportedCapability = "normalized-model:2.1" | "evidence-attribution:1.5" | "evidence-attribution:1.6" | "architecture-discovery:1.1" | "manifest:1.0" | "normalized-entity-registry:2.1" | "relationship-registry:2.1" | "unresolved-registry:2.1";
+export type SupportedCapability = "normalized-model:2.1" | "normalized-model:2.2" | "evidence-attribution:1.5" | "evidence-attribution:1.6" | "architecture-discovery:1.1" | "manifest:1.0" | "normalized-entity-registry:2.1" | "normalized-entity-registry:2.2" | "relationship-registry:2.1" | "relationship-registry:2.2" | "unresolved-registry:2.1" | "unresolved-registry:2.2";
 export type AuthoringAdrType = "logical" | "physical" | "physical-system" | "physical-component";
 export type AuthoringValidationMode = "complete" | "structural";
 export interface ValidationResult { readonly valid: boolean; readonly diagnostics: readonly AdrKitDiagnostic[]; }
@@ -45,13 +45,17 @@ for (const schema of Object.values(canonicalSchemas)) {
 
 const schemaFor: Record<SupportedCapability, string> = {
   "normalized-model:2.1": "https://adr-kit.ste.systems/schema/normalized-model/v2.1/normalized-architecture-model.schema.json",
+  "normalized-model:2.2": "https://adr-kit.ste.systems/schema/normalized-model/v2.2/normalized-architecture-model.schema.json",
   "evidence-attribution:1.5": "https://adr-kit.ste.systems/schema/v1.5/implementation-attribution-evidence.schema.json",
   "evidence-attribution:1.6": "https://adr-kit.ste.systems/schema/evidence-attribution/v1.6/implementation-attribution-evidence.schema.json",
   "architecture-discovery:1.1": "https://adr-kit.ste.systems/schema/v1.1/architecture-index.schema.json",
   "manifest:1.0": "https://adr-kit.ste.systems/schema/v1.0/manifest.schema.json",
   "normalized-entity-registry:2.1": "https://adr-kit.ste.systems/schema/normalized-model/v2.1/normalized-entity-registry.schema.json",
+  "normalized-entity-registry:2.2": "https://adr-kit.ste.systems/schema/normalized-model/v2.2/normalized-entity-registry.schema.json",
   "relationship-registry:2.1": "https://adr-kit.ste.systems/schema/normalized-model/v2.1/relationship-registry.schema.json",
-  "unresolved-registry:2.1": "https://adr-kit.ste.systems/schema/normalized-model/v2.1/unresolved-registry.schema.json"
+  "relationship-registry:2.2": "https://adr-kit.ste.systems/schema/normalized-model/v2.2/relationship-registry.schema.json",
+  "unresolved-registry:2.1": "https://adr-kit.ste.systems/schema/normalized-model/v2.1/unresolved-registry.schema.json",
+  "unresolved-registry:2.2": "https://adr-kit.ste.systems/schema/normalized-model/v2.2/unresolved-registry.schema.json"
 };
 
 function validator(capability: SupportedCapability): ValidateFunction {

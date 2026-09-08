@@ -1,7 +1,6 @@
 import { readFile } from "node:fs/promises";
 import { resolve } from "node:path";
 import { ContractValidationError, RepositoryError } from "../errors.js";
-import type { NormalizedEntityV21 } from "../model/types.js";
 import { openRepository } from "./repository.js";
 import { parse } from "yaml";
 import { packageVersion } from "../generated/package-metadata.js";
@@ -123,7 +122,7 @@ export async function validateContract(request: ContractValidationRequest): Prom
     core_contract_version: "1.0",
     operation: "validate_contract",
     profile,
-    entity_registry: { schema_version: "2.1", type: "normalized_entity_registry", entities: repository.entities() as readonly NormalizedEntityV21[] },
+    entity_registry: { schema_version: repository.modelVersion, type: "normalized_entity_registry", entities: repository.entities() },
     remediation_ledger: remediationLedger,
   };
   if (request.max_sentinel_fields !== undefined) coreRequest.max_sentinel_fields = request.max_sentinel_fields;

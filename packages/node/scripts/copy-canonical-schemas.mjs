@@ -20,6 +20,7 @@ const families = [
   ["authoring", "v1.4"],
   ["authoring", "v1.5"],
   ["normalized-model", "v2.1"],
+  ["normalized-model", "v2.2"],
   ["evidence-attribution", "v1.5"],
   ["evidence-attribution", "v1.6"],
   ["architecture-discovery", "v1.1"],

@@ -13,9 +13,47 @@ jobs:
     name: Main integration assurance
     uses: ./.github/workflows/integration-assurance.yml
 
+  semantic-core-qualification:
+    name: Source-built semantic core / WASM qualification
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: wasm32-unknown-unknown
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: npm
+          cache-dependency-path: packages/node/package-lock.json
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.14"
+          cache: pip
+      - name: Record toolchain
+        run: |
+          rustc --version
+          node --version
+          python --version
+      - run: python -m pip install --upgrade pip
+      - run: python -m pip install .[dev]
+      - run: npm ci
+        working-directory: packages/node
+      - name: Test the semantic-core implementation
+        run: cargo test --manifest-path core/Cargo.toml
+      - name: Build shared semantic core from Rust source
+        run: node scripts/build_semantic_core.mjs
+      - name: Verify source artifact and host copies
+        run: python scripts/verify_semantic_core_artifact.py
+      - name: Exercise Python semantic-core conformance
+        run: python -m pytest -q tests/test_semantic_core_protocol.py tests/test_semantic_core_conformance.py tests/test_attribution_shim_parity.py
+      - name: Exercise Node semantic-core conformance
+        run: npm test
+        working-directory: packages/node
+
   release-artifacts:
     name: Build and validate the retained release bundle once
-    needs: integration
+    needs: [integration, semantic-core-qualification]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -24,6 +62,8 @@ jobs:
           targets: wasm32-unknown-unknown
       - name: Build shared semantic core for both packages
         run: node scripts/build_semantic_core.mjs
+      - name: Verify source-built semantic core before packaging
+        run: python scripts/verify_semantic_core_artifact.py
       - uses: actions/setup-python@v5
         with:
           python-version: "3.14"

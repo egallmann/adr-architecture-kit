@@ -25,7 +25,7 @@ import { buildEmbodimentLinkage, generateAttributionShim } from "@system-of-thou
 import { validateArchitecture, validateContract, validateProjectMetadata } from "@system-of-thought/adr-kit/node/governance";
 ```
 
-TypeScript v1 supports normalized model 2.1, evidence attribution 1.5/1.6,
+TypeScript v1 supports normalized models 2.1 and 2.2, evidence attribution 1.5/1.6,
 architecture discovery 1.1, canonical and compatibility relationships, and
 qualified semantic extensions. Unsupported versions fail explicitly.
 

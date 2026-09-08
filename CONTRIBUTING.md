@@ -84,8 +84,11 @@ quality ratchets in **`.github/workflows/pr-feedback.yml`**. Pushes to
 full integration assurance workflow for the complete Python suite and coverage,
 Windows/macOS portability, dependency audit, Rust, Python/Node parity, and
 governance. Pushes to `main` run **`.github/workflows/release-certification.yml`**;
-that path adds the retained Python/npm bundle, packaged WASM identity, retained
-wheel smoke tests, fixed-epoch reproducibility, and benchmark determinism.
+that path adds an explicit source-built semantic-core/WASM qualification gate,
+the retained Python/npm bundle, packaged WASM identity, retained wheel smoke
+tests, fixed-epoch reproducibility, and benchmark determinism. A release
+candidate cannot be retained unless the Rust core tests, source-built WASM
+artifact, Python binding, and Node binding all pass that gate.
 Tag publishers only promote the retained bundle from that successful `main`
 certification run.
 

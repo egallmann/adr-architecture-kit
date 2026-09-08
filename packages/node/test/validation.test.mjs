@@ -17,7 +17,7 @@ const load = async (path) => JSON.parse(await readFile(resolve(root, path), "utf
 
 test("capability discovery is local and explicit", () => {
   const manifest = capabilities();
-  assert.deepEqual(manifest.supported_normalized_model_versions, ["2.1"]);
+  assert.deepEqual(manifest.supported_normalized_model_versions, ["2.1", "2.2"]);
   assert.deepEqual(manifest.host_operations, ["capabilities", "validate_architecture", "validate_project_metadata", "validate_contract", "open_repository", "open_provider_registry", "build_embodiment_linkage", "generate_attribution_shim"]);
   assert.ok(manifest.pending_host_operations.includes("compile_architecture"));
   assert.deepEqual(manifest.browser_operations, ["capabilities"]);

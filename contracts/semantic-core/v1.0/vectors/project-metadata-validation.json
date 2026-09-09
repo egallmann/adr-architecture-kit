@@ -18,6 +18,22 @@
       "expected": {"success": true, "diagnostic_count": 0}
     },
     {
+      "name": "specification project metadata",
+      "request": {
+        "core_contract_version": "1.0",
+        "operation": "validate_project_metadata",
+        "project_metadata": {
+          "schema_version": "1.0",
+          "type": "project_metadata",
+          "project": {"name": "ste-spec", "description": "specification project", "type": "specification"},
+          "ownership": {"team": "architecture"},
+          "repository": {"url": "local", "primary_branch": "main"},
+          "architecture_documentation": {"adr_directory": "adrs/", "manifest_path": "adrs/manifest.yaml"}
+        }
+      },
+      "expected": {"success": true, "diagnostic_count": 0}
+    },
+    {
       "name": "missing required project metadata",
       "request": {
         "core_contract_version": "1.0",

@@ -1,0 +1,108 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://adr-kit.ste.systems/schema/normalized-model/v2.3/normalized-entity.schema.json",
+  "title": "Normalized Entity v2.3",
+  "description": "Normalized entities retain the v2.2 envelope; normative propositions use a distinct lifecycle-free variant.",
+  "oneOf": [
+    {
+      "title": "Regular normalized entity",
+      "type": "object",
+      "required": ["id", "alias_id", "alias_name", "alias_ref", "entity_type", "name", "summary", "uri", "created_at", "entity_fingerprint", "lifecycle_stage", "canonical_source", "completeness", "provenance"],
+      "properties": {
+        "id": {"type": "string", "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-7[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"},
+        "alias_id": {"type": "string"},
+        "alias_name": {"type": "string", "minLength": 3, "maxLength": 96, "pattern": "^[a-z][a-z0-9]*(?:-[a-z0-9]+)*$"},
+        "alias_ref": {"type": "string"},
+        "entity_type": {"type": "string", "pattern": "^(?:adr|system|component|decision|capability|invariant|boundary|contract|constraint|nfr|gap|interface|integration|implementation_decision|[A-Za-z0-9][A-Za-z0-9._-]*:[a-z][a-z0-9_]{1,63})$"},
+        "name": {"type": "string"},
+        "summary": {"type": "string"},
+        "uri": {"type": "string"},
+        "created_at": {"type": "string"},
+        "entity_fingerprint": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"},
+        "lifecycle_stage": {"enum": ["proposed", "active", "deprecated", "superseded"]},
+        "canonical_source": {"type": "object"},
+        "source_refs": {"type": "array"},
+        "metadata": {"type": "object"},
+        "relationships": {"type": "object"},
+        "completeness": {"type": "object"},
+        "provenance": {"type": "object"},
+        "extension": {
+          "type": "object",
+          "required": ["properties", "rationale"],
+          "properties": {
+            "properties": {"type": "object"},
+            "rationale": {"type": "string", "minLength": 1}
+          },
+          "additionalProperties": false
+        }
+      },
+      "allOf": [
+        {"if": {"properties": {"entity_type": {"pattern": ":"}}, "required": ["entity_type"]}, "then": {"required": ["extension"]}},
+        {"if": {"properties": {"entity_type": {"pattern": "^[^:]+$"}}, "required": ["entity_type"]}, "then": {"not": {"required": ["extension"]}}}
+      ],
+      "additionalProperties": false
+    },
+    {
+      "title": "Normative proposition",
+      "description": "An ADR-scoped normative proposition. Qualification and provenance do not create an independent lifecycle or applicability model.",
+      "type": "object",
+      "required": ["id", "alias_id", "alias_name", "alias_ref", "entity_type", "name", "summary", "uri", "created_at", "entity_fingerprint", "statement", "normative_force", "scope", "declaring_adr", "source_artifact", "source_contract", "canonical_source", "completeness", "provenance"],
+      "properties": {
+        "id": {"type": "string", "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-7[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"},
+        "alias_id": {"type": "string", "pattern": "^NP-[0-9]{4}$"},
+        "alias_name": {"type": "string", "minLength": 3, "maxLength": 96, "pattern": "^[a-z][a-z0-9]*(?:-[a-z0-9]+)*$"},
+        "alias_ref": {"type": "string"},
+        "entity_type": {"const": "normative_proposition"},
+        "name": {"type": "string"},
+        "summary": {"type": "string"},
+        "uri": {"type": "string"},
+        "created_at": {"type": "string"},
+        "entity_fingerprint": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"},
+        "statement": {"type": "string", "minLength": 1},
+        "normative_force": {"enum": ["MUST", "MUST NOT", "SHOULD", "SHOULD NOT", "MAY"]},
+        "scope": {"type": "string", "minLength": 1},
+        "rationale": {"type": "string"},
+        "declaring_adr": {
+          "type": "object",
+          "required": ["provider", "id", "alias_id", "alias_name"],
+          "properties": {
+            "provider": {"type": "string", "minLength": 1},
+            "id": {"type": "string", "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-7[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"},
+            "alias_id": {"type": "string", "pattern": "^ADR-(L|PS|PC)-[0-9]{4}$"},
+            "alias_name": {"type": "string", "minLength": 3, "pattern": "^[a-z][a-z0-9]*(?:-[a-z0-9]+)*$"}
+          },
+          "additionalProperties": false
+        },
+        "source_artifact": {
+          "type": "object",
+          "required": ["source_type", "source_ref", "artifact_path", "content_digest"],
+          "properties": {
+            "source_type": {"type": "string", "minLength": 1},
+            "source_ref": {"type": "string", "minLength": 1},
+            "artifact_path": {"type": "string", "minLength": 1},
+            "content_digest": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"}
+          },
+          "additionalProperties": false
+        },
+        "source_contract": {
+          "type": "object",
+          "required": ["family", "version", "fingerprint"],
+          "properties": {
+            "family": {"type": "string", "pattern": "^[a-z][a-z0-9]*(?:-[a-z0-9]+)*$"},
+            "version": {"type": "string", "minLength": 1},
+            "fingerprint": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"}
+          },
+          "additionalProperties": false
+        },
+        "canonical_source": {"type": "object"},
+        "source_refs": {"type": "array"},
+        "metadata": {"type": "object"},
+        "relationships": {"type": "object"},
+        "completeness": {"type": "object"},
+        "provenance": {"type": "object"}
+      },
+      "not": {"required": ["lifecycle_stage"]},
+      "additionalProperties": false
+    }
+  ]
+}

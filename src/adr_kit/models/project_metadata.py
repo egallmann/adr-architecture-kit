@@ -10,7 +10,7 @@ class ProjectInfo(BaseModel):
 
     name: str = Field(..., pattern=r"^[a-z0-9-]+$")
     description: str
-    type: str = Field(..., pattern=r"^(service|library|platform|system|tool)$")
+    type: str = Field(..., pattern=r"^(service|library|platform|system|tool|specification)$")
 
 
 class OnCallRotation(BaseModel):

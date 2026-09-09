@@ -286,7 +286,7 @@
       "family": "stable-authoring-compatibility",
       "family_version": "v1.0",
       "schema_id": null,
-      "sha256": "882a883abe9ccb3267c6d61c1081138145a6e0d26898bc42d1a8d181e4e0764a",
+      "sha256": "20ce2b23486864940fa53bb473ca28f674c33668f1cc7689e8b8998081ea2bbb",
       "package_mirror_path": "src/adr_kit/schema/v1_0/project-metadata.schema.json",
       "mirror_disposition": "mirror"
     },

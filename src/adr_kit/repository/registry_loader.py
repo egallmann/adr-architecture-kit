@@ -33,6 +33,11 @@ from ..models.v2_2 import (
     RelationshipRegistryV22,
     UnresolvedRegistryV22,
 )
+from ..models.v2_3 import (
+    NormalizedEntityRegistryV23,
+    RelationshipRegistryV23,
+    UnresolvedRegistryV23,
+)
 from ..parser import ADRParseError, ADRParser, ADRSchemaValidationError
 
 
@@ -47,7 +52,7 @@ def peek_registry_schema_version(path: Path) -> str:
     if not isinstance(payload, dict):
         raise ValueError(f"Failed to load registry: {path}: expected mapping")
     version = payload.get("schema_version")
-    if version in ("1.1", "2.0", "2.1", "2.2"):
+    if version in ("1.1", "2.0", "2.1", "2.2", "2.3"):
         return str(version)
     raise ValueError(f"Failed to load registry: {path}: unsupported schema_version {version!r}")
 
@@ -61,11 +66,19 @@ def load_architecture_index(parser: ADRParser, path: Path) -> ArchitectureIndex:
 @implements_adr("ADR-L-0013")
 def load_normalized_entity_registry(
     parser: ADRParser, path: Path
-) -> NormalizedEntityRegistry | NormalizedEntityRegistryV2:
+) -> (
+    NormalizedEntityRegistry
+    | NormalizedEntityRegistryV2
+    | NormalizedEntityRegistryV21
+    | NormalizedEntityRegistryV22
+    | NormalizedEntityRegistryV23
+):
     """Load and validate a normalized entity registry (1.1, 2.0, or 2.1)."""
     version = peek_registry_schema_version(path)
     if version == "2.2":
         return load_normalized_entity_registry_v22(parser, path)
+    if version == "2.3":
+        return load_normalized_entity_registry_v23(parser, path)
     if version == "2.0":
         return load_normalized_entity_registry_v2(parser, path)
     if version == "2.1":
@@ -89,7 +102,9 @@ def load_normalized_entity_registry_v2(parser: ADRParser, path: Path) -> Normali
 
 
 @implements_adr("ADR-L-0013", "ADR-L-0023")
-def load_normalized_entity_registry_v21(parser: ADRParser, path: Path) -> NormalizedEntityRegistryV21:
+def load_normalized_entity_registry_v21(
+    parser: ADRParser, path: Path
+) -> NormalizedEntityRegistryV21:
     """Load and validate a model 2.1 normalized entity registry."""
     return cast(
         NormalizedEntityRegistryV21,
@@ -103,11 +118,19 @@ def load_normalized_entity_registry_v21(parser: ADRParser, path: Path) -> Normal
 @implements_adr("ADR-L-0013")
 def load_relationship_registry(
     parser: ADRParser, path: Path
-) -> RelationshipRegistry | RelationshipRegistryV2:
+) -> (
+    RelationshipRegistry
+    | RelationshipRegistryV2
+    | RelationshipRegistryV21
+    | RelationshipRegistryV22
+    | RelationshipRegistryV23
+):
     """Load and validate a relationship registry (1.1, 2.0, or 2.1)."""
     version = peek_registry_schema_version(path)
     if version == "2.2":
         return load_relationship_registry_v22(parser, path)
+    if version == "2.3":
+        return load_relationship_registry_v23(parser, path)
     if version == "2.0":
         return load_relationship_registry_v2(parser, path)
     if version == "2.1":
@@ -145,11 +168,19 @@ def load_relationship_registry_v21(parser: ADRParser, path: Path) -> Relationshi
 @implements_adr("ADR-L-0013")
 def load_unresolved_registry(
     parser: ADRParser, path: Path
-) -> UnresolvedRegistry | UnresolvedRegistryV2:
+) -> (
+    UnresolvedRegistry
+    | UnresolvedRegistryV2
+    | UnresolvedRegistryV21
+    | UnresolvedRegistryV22
+    | UnresolvedRegistryV23
+):
     """Load and validate an unresolved registry (1.1, 2.0, or 2.1)."""
     version = peek_registry_schema_version(path)
     if version == "2.2":
         return load_unresolved_registry_v22(parser, path)
+    if version == "2.3":
+        return load_unresolved_registry_v23(parser, path)
     if version == "2.0":
         return load_unresolved_registry_v2(parser, path)
     if version == "2.1":
@@ -185,7 +216,9 @@ def load_unresolved_registry_v21(parser: ADRParser, path: Path) -> UnresolvedReg
 
 
 @implements_adr("ADR-L-0013", "ADR-L-0025")
-def load_normalized_entity_registry_v22(parser: ADRParser, path: Path) -> NormalizedEntityRegistryV22:
+def load_normalized_entity_registry_v22(
+    parser: ADRParser, path: Path
+) -> NormalizedEntityRegistryV22:
     """Load and validate a model 2.2 normalized entity registry."""
     return cast(
         NormalizedEntityRegistryV22,
@@ -217,6 +250,37 @@ def load_unresolved_registry_v22(parser: ADRParser, path: Path) -> UnresolvedReg
             lambda: UnresolvedRegistryV22.model_validate(parser.parse_yaml(path)),
             path,
         ),
+    )
+
+
+@implements_adr("ADR-L-0013", "ADR-L-0028")
+def load_normalized_entity_registry_v23(
+    parser: ADRParser, path: Path
+) -> NormalizedEntityRegistryV23:
+    """Load and validate a model 2.3 normalized entity registry."""
+    return cast(
+        NormalizedEntityRegistryV23,
+        _wrap_parse(
+            lambda: NormalizedEntityRegistryV23.model_validate(parser.parse_yaml(path)), path
+        ),
+    )
+
+
+@implements_adr("ADR-L-0013", "ADR-L-0028")
+def load_relationship_registry_v23(parser: ADRParser, path: Path) -> RelationshipRegistryV23:
+    """Load and validate a model 2.3 relationship registry."""
+    return cast(
+        RelationshipRegistryV23,
+        _wrap_parse(lambda: RelationshipRegistryV23.model_validate(parser.parse_yaml(path)), path),
+    )
+
+
+@implements_adr("ADR-L-0013", "ADR-L-0028")
+def load_unresolved_registry_v23(parser: ADRParser, path: Path) -> UnresolvedRegistryV23:
+    """Load and validate a model 2.3 unresolved registry."""
+    return cast(
+        UnresolvedRegistryV23,
+        _wrap_parse(lambda: UnresolvedRegistryV23.model_validate(parser.parse_yaml(path)), path),
     )
 
 

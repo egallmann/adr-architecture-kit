@@ -342,9 +342,11 @@ fn validate_project_metadata(request: &Json) -> Json {
             &mut diagnostics,
         );
         if let Some(value) = required_string(project, "type", "project.type", &mut diagnostics) {
+            // Project type is a shared semantic value; hosts must not invent
+            // a local enum that diverges from the canonical contract.
             if !one_of(
                 &value,
-                &["service", "library", "platform", "system", "tool"],
+                &["service", "library", "platform", "system", "tool", "specification"],
             ) {
                 diagnostics.push(metadata_issue("project.type", "unsupported project type"));
             }
@@ -566,7 +568,7 @@ fn validate_repository(request: &Json) -> Json {
         .get("model_version")
         .and_then(Json::as_str)
         .unwrap_or("");
-    if !["2.0", "2.1", "2.2"].contains(&model_version) {
+    if !["2.0", "2.1", "2.2", "2.3"].contains(&model_version) {
         return simple_result(
             "open_repository",
             false,

@@ -17,7 +17,7 @@ const load = async (path) => JSON.parse(await readFile(resolve(root, path), "utf
 
 test("capability discovery is local and explicit", () => {
   const manifest = capabilities();
-  assert.deepEqual(manifest.supported_normalized_model_versions, ["2.1", "2.2"]);
+  assert.deepEqual(manifest.supported_normalized_model_versions, ["2.1", "2.2", "2.3"]);
   assert.deepEqual(manifest.host_operations, ["capabilities", "validate_architecture", "validate_project_metadata", "validate_contract", "open_repository", "open_provider_registry", "build_embodiment_linkage", "generate_attribution_shim"]);
   assert.ok(manifest.pending_host_operations.includes("compile_architecture"));
   assert.deepEqual(manifest.browser_operations, ["capabilities"]);
@@ -58,6 +58,34 @@ test("canonical normalized model validates and unsupported capability fails expl
   const fixture = await load("repository/model-v21.json");
   assert.equal(validateContract(fixture.input, "normalized-model:2.1").valid, true);
   assert.throws(() => validateContract(fixture.input, "normalized-model:1.1"), UnsupportedContractVersionError);
+});
+
+test("normalized model 2.3 accepts the lifecycle-free NP variant", () => {
+  const id = "019109a0-b1c2-7def-8a00-112233445566";
+  const np = {
+    id,
+    alias_id: "NP-0001",
+    alias_name: "explicit-contract",
+    alias_ref: "NP-0001:explicit-contract",
+    entity_type: "normative_proposition",
+    name: "The contract MUST remain explicit.",
+    summary: "The contract MUST remain explicit.",
+    uri: `adr://kit/entities/${id}`,
+    created_at: "2026-08-28T00:00:00Z",
+    entity_fingerprint: `sha256:${"0".repeat(64)}`,
+    statement: "The contract MUST remain explicit.",
+    normative_force: "MUST",
+    scope: "global",
+    declaring_adr: { provider: "adr-kit", id, alias_id: "ADR-L-0001", alias_name: "normative-authority" },
+    source_artifact: { source_type: "logical_adr", source_ref: "adr#np", artifact_path: "adrs/logical/ADR-L-0001.yaml", content_digest: `sha256:${"1".repeat(64)}` },
+    source_contract: { family: "authoring", version: "1.6", fingerprint: `sha256:${"2".repeat(64)}` },
+    canonical_source: { source_type: "logical_adr", source_ref: "adr#np", artifact_path: "adrs/logical/ADR-L-0001.yaml" },
+    completeness: { status: "complete", missing_fields: [] },
+    provenance: { source_type: "authoring", source_ref: "1.6", extraction_phase: "projection", classification: "explicit", generator: "test" },
+  };
+  const registry = { schema_version: "2.3", type: "normalized_entity_registry", entities: [np] };
+  assert.equal(validateContract(registry, "normalized-entity-registry:2.3").valid, true);
+  assert.equal(validateContract({ ...np, lifecycle_stage: "active" }, "normalized-entity-registry:2.3").valid, false);
 });
 
 test("v1.6 evidence structural restriction is observable", async () => {

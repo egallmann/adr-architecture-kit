@@ -11,7 +11,7 @@ use std::collections::{BTreeMap, BTreeSet};
 
 use sha2::{Digest, Sha256};
 
-use super::{diagnostic, object, simple_result, string, Json, VERSION};
+use super::{diagnostic, object, simple_result, string, Json};
 
 const SCF_SCHEME: &str = "scf:v1:sha256";
 const SCS_SCHEME: &str = "scs:v1:sha256";
@@ -564,7 +564,8 @@ pub fn compose_set(request: &Json) -> Json {
     let fingerprint = format!("scs:v1:sha256:{}", digest(canonical.as_bytes()).trim_start_matches("sha256:"));
     let mut result = canonical_result("compose_semantic_contract_set", canonical, fingerprint);
     if let Json::Object(ref mut values) = result {
-        values.insert("semantic_contract_set_fingerprint".into(), values.remove("fingerprint").unwrap_or(Json::Null));
+        let set_fingerprint = values.remove("fingerprint").unwrap_or(Json::Null);
+        values.insert("semantic_contract_set_fingerprint".into(), set_fingerprint);
     }
     result
 }

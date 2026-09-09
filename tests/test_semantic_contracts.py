@@ -61,7 +61,9 @@ def test_python_contract_boundary_rejects_mutable_policy_and_resource_drift() ->
     resources[0]["content"] = {"drifted": True}
     drift = validate_semantic_resource_closure(contract, resources)
     assert drift.success is False
-    assert any(item.code == "semantic_contract.resource_digest_mismatch" for item in drift.diagnostics)
+    assert any(
+        item.code == "semantic_contract.resource_digest_mismatch" for item in drift.diagnostics
+    )
 
 
 def test_python_and_core_use_raw_json_for_duplicate_members_and_safe_integers() -> None:

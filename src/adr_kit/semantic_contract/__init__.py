@@ -57,8 +57,7 @@ class SemanticResourceManifestEntry:
             content_digest=str(value["contentDigest"]),
             role=str(value["role"]),
             dependencies=tuple(
-                SemanticResourceDependency.from_wire(item)
-                for item in value["dependencies"]
+                SemanticResourceDependency.from_wire(item) for item in value["dependencies"]
             ),
         )
 
@@ -89,8 +88,7 @@ class SemanticContractVersion:
             semantic_contract_version=str(value["semanticContractVersion"]),
             fingerprint_scheme=str(value["fingerprintScheme"]),
             resource_manifest=tuple(
-                SemanticResourceManifestEntry.from_wire(item)
-                for item in value["resourceManifest"]
+                SemanticResourceManifestEntry.from_wire(item) for item in value["resourceManifest"]
             ),
             frozen_normative_conformance_resources=tuple(
                 str(item) for item in value["frozenNormativeConformanceResources"]
@@ -174,7 +172,11 @@ def calculate_semantic_contract_fingerprint(
 ) -> SemanticOperationResult:
     """Calculate or validate an immutable semantic-contract fingerprint."""
 
-    wire = definition.to_wire() if isinstance(definition, SemanticContractVersion) else dict(definition)
+    wire = (
+        definition.to_wire()
+        if isinstance(definition, SemanticContractVersion)
+        else dict(definition)
+    )
     return _execute("fingerprint_semantic_contract", definition=wire)
 
 
@@ -184,7 +186,11 @@ def validate_semantic_resource_closure(
 ) -> SemanticOperationResult:
     """Validate that every manifest resource is supplied and digest-correct."""
 
-    wire = definition.to_wire() if isinstance(definition, SemanticContractVersion) else dict(definition)
+    wire = (
+        definition.to_wire()
+        if isinstance(definition, SemanticContractVersion)
+        else dict(definition)
+    )
     return _execute(
         "validate_semantic_resource_closure",
         definition=wire,
@@ -197,7 +203,10 @@ def compose_semantic_contract_set(
 ) -> SemanticOperationResult:
     """Compose SCF references into the Slice B set fingerprint primitive."""
 
-    wire = [item.to_wire() if isinstance(item, SemanticContractVersion) else dict(item) for item in contracts]
+    wire = [
+        item.to_wire() if isinstance(item, SemanticContractVersion) else dict(item)
+        for item in contracts
+    ]
     return _execute("compose_semantic_contract_set", contracts=wire)
 
 
@@ -214,7 +223,10 @@ def list_semantic_contracts() -> tuple[SemanticContractVersion, ...]:
 
     return tuple(
         sorted(
-            (_load_definition(name) for name in ("normative-semantics.json", "architecture-interpretation.json")),
+            (
+                _load_definition(name)
+                for name in ("normative-semantics.json", "architecture-interpretation.json")
+            ),
             key=lambda item: item.semantic_contract_family,
         )
     )
@@ -224,7 +236,10 @@ def get_semantic_contract(family: str, version: str = "1.0") -> SemanticContract
     """Load one bundled immutable definition; unknown versions fail explicitly."""
 
     for contract in list_semantic_contracts():
-        if contract.semantic_contract_family == family and contract.semantic_contract_version == version:
+        if (
+            contract.semantic_contract_family == family
+            and contract.semantic_contract_version == version
+        ):
             return contract
     raise LookupError(f"Unsupported semantic contract: {family}:{version}")
 

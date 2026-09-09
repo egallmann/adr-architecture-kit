@@ -7,6 +7,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.10.1] — 2026-09-08
+
+### Added
+
+- Added public Node normalized-model 2.2 support with Python/Node semantic
+  parity over the canonical repository/model boundary.
+- Added release certification that builds and validates the source Rust/WASM
+  semantic core before retaining Python and npm release artifacts.
+
+### Fixed
+
+- Prevented Node repository loading from silently constraining supported
+  normalized-model registries to 2.1.
+
 ## [0.10.0] — 2026-09-07
 
 ### Added

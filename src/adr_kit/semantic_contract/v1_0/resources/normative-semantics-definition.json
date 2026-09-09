@@ -1,0 +1,18 @@
+{
+  "forceVocabulary": ["MUST", "MUST NOT", "SHOULD", "SHOULD NOT", "MAY"],
+  "forceIsLogicalOperator": false,
+  "statementAndForceAreDistinct": true,
+  "peerSemanticTypes": ["NormativeProposition", "Invariant"],
+  "normativePropositionLifecycle": "none",
+  "inferenceProhibitions": [
+    "applicability",
+    "conflict-solving",
+    "truth",
+    "consistency",
+    "equivalence",
+    "waiver",
+    "conformance"
+  ],
+  "normativePropositionAttributionTarget": "unsupported",
+  "materialityAndMeaningPreservation": "competent-review-judgment"
+}

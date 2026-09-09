@@ -1,0 +1,26 @@
+{
+  "semanticContractFamily": "architecture-interpretation",
+  "semanticContractVersion": "1.0",
+  "fingerprintScheme": "scf:v1:sha256",
+  "resourceManifest": [
+    {
+      "canonicalResourceKey": "architecture-interpretation/1.0/rules",
+      "contentDigest": "sha256:efbb7b574317bd121696885bedb2a8afe614f8f306848ca5592c958d17d0030c",
+      "role": "interpretation-rule",
+      "dependencies": []
+    },
+    {
+      "canonicalResourceKey": "architecture-interpretation/1.0/conformance",
+      "contentDigest": "sha256:f952f022a9e5a3bc0a47794e7daf73d0db566ac10a3eac5d5727f831b86c28dc",
+      "role": "interpretation-conformance",
+      "dependencies": [
+        {
+          "canonicalResourceKey": "architecture-interpretation/1.0/rules",
+          "contentDigest": "sha256:efbb7b574317bd121696885bedb2a8afe614f8f306848ca5592c958d17d0030c"
+        }
+      ]
+    }
+  ],
+  "frozenNormativeConformanceResources": ["architecture-interpretation/1.0/conformance"],
+  "semanticContractFingerprint": "scf:v1:sha256:24f14d4ebe64c2202c8cefb0f80cea974c217a4d4dde80f2215135b86ae28be2"
+}

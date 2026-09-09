@@ -5,6 +5,7 @@ use serde::{Deserialize, Serialize};
 mod architecture;
 mod attribution;
 mod linkage;
+mod semantic_contract;
 
 // This module is the canonical semantic execution boundary. Host SDKs are
 // responsible for discovery, filesystem access, YAML parsing, and adapting
@@ -30,7 +31,7 @@ const GENERATED_ARTIFACT_KINDS: [&str; 5] = [
 // from Python, Node, and browser/WASM hosts. Rust build dependencies are
 // compiled into that artifact, while Python additionally depends on wasmtime
 // to load it.
-#[derive(Clone, Debug, Deserialize, Serialize)]
+#[derive(Clone, Debug, Serialize)]
 #[serde(untagged)]
 enum Json {
     Null,
@@ -39,6 +40,109 @@ enum Json {
     String(String),
     Array(Vec<Json>),
     Object(BTreeMap<String, Json>),
+}
+
+// serde_json normally materializes objects into a map and lets a later member
+// replace an earlier member. That is convenient for application data but is
+// unsafe at a canonicalization boundary: two byte-distinct inputs would then
+// acquire one indistinguishable meaning. The semantic boundary therefore
+// parses objects with an explicit duplicate-member check before any map is
+// constructed.
+impl<'de> Deserialize<'de> for Json {
+    fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
+    where
+        D: serde::Deserializer<'de>,
+    {
+        use serde::de::{Error, MapAccess, SeqAccess, Visitor};
+        use std::fmt;
+
+        struct JsonVisitor;
+        impl<'de> Visitor<'de> for JsonVisitor {
+            type Value = Json;
+
+            fn expecting(&self, formatter: &mut fmt::Formatter<'_>) -> fmt::Result {
+                formatter.write_str("a JSON value")
+            }
+            fn visit_unit<E>(self) -> Result<Self::Value, E>
+            where
+                E: Error,
+            {
+                Ok(Json::Null)
+            }
+            fn visit_bool<E>(self, value: bool) -> Result<Self::Value, E>
+            where
+                E: Error,
+            {
+                Ok(Json::Bool(value))
+            }
+            fn visit_i64<E>(self, value: i64) -> Result<Self::Value, E>
+            where
+                E: Error,
+            {
+                Ok(Json::Number(serde_json::Number::from(value)))
+            }
+            fn visit_u64<E>(self, value: u64) -> Result<Self::Value, E>
+            where
+                E: Error,
+            {
+                Ok(Json::Number(serde_json::Number::from(value)))
+            }
+            fn visit_f64<E>(self, value: f64) -> Result<Self::Value, E>
+            where
+                E: Error,
+            {
+                serde_json::Number::from_f64(value)
+                    .map(Json::Number)
+                    .ok_or_else(|| E::custom("JSON number must be finite"))
+            }
+            fn visit_str<E>(self, value: &str) -> Result<Self::Value, E>
+            where
+                E: Error,
+            {
+                Ok(Json::String(value.to_owned()))
+            }
+            fn visit_string<E>(self, value: String) -> Result<Self::Value, E>
+            where
+                E: Error,
+            {
+                Ok(Json::String(value))
+            }
+            fn visit_none<E>(self) -> Result<Self::Value, E>
+            where
+                E: Error,
+            {
+                Ok(Json::Null)
+            }
+            fn visit_seq<A>(self, mut access: A) -> Result<Self::Value, A::Error>
+            where
+                A: SeqAccess<'de>,
+            {
+                let mut values = Vec::new();
+                while let Some(value) = access.next_element::<Json>()? {
+                    values.push(value);
+                }
+                Ok(Json::Array(values))
+            }
+            fn visit_map<A>(self, mut access: A) -> Result<Self::Value, A::Error>
+            where
+                A: MapAccess<'de>,
+            {
+                let mut values = BTreeMap::new();
+                while let Some(key) = access.next_key::<String>()? {
+                    if values.contains_key(&key) {
+                        return Err(A::Error::custom(format!(
+                            "duplicate JSON member: {key}"
+                        )));
+                    }
+                    let value = access.next_value::<Json>()?;
+                    values.insert(key, value);
+                }
+                Ok(Json::Object(values))
+            }
+        }
+
+        deserializer.deserialize_any(JsonVisitor)
+    }
 }
 
 impl Json {
@@ -1373,6 +1477,12 @@ pub fn execute_json(input: &[u8]) -> Vec<u8> {
                     validate_architecture_references(&value)
                 }
                 Some("validate_architecture") => architecture::execute(&value),
+                Some("canonicalize_semantic_json") => semantic_contract::canonicalize(&value),
+                Some("fingerprint_semantic_contract") => semantic_contract::fingerprint(&value),
+                Some("validate_semantic_resource_closure") => {
+                    semantic_contract::validate_closure(&value)
+                }
+                Some("compose_semantic_contract_set") => semantic_contract::compose_set(&value),
                 Some(_) | None => invalid("unsupported semantic core operation"),
             };
             json(&result).into_bytes()

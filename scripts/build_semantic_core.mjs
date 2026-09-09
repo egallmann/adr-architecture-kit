@@ -23,6 +23,12 @@ await mkdir(resolve(repoRoot, "packages/node/src/generated"), { recursive: true 
 await cp(artifact, pythonTarget, { force: true });
 await cp(artifact, nodeTarget, { force: true });
 await cp(contractSource, pythonContractTarget, { force: true });
+const semanticContractSource = resolve(repoRoot, "contracts/semantic-contract/v1.0");
+const semanticContractTarget = resolve(repoRoot, "src/adr_kit/semantic_contract/v1_0");
+await cp(resolve(semanticContractSource, "semantic-contract-version.schema.json"), resolve(semanticContractTarget, "semantic-contract-version.schema.json"), { force: true });
+await cp(resolve(semanticContractSource, "resource-manifest-entry.schema.json"), resolve(semanticContractTarget, "resource-manifest-entry.schema.json"), { force: true });
+await cp(resolve(semanticContractSource, "definitions"), semanticContractTarget, { recursive: true, force: true });
+await cp(resolve(semanticContractSource, "resources"), resolve(semanticContractTarget, "resources"), { recursive: true, force: true });
 const [pythonBytes, nodeBytes] = await Promise.all([readFile(pythonTarget), readFile(nodeTarget)]);
 if (!pythonBytes.equals(nodeBytes)) {
   throw new Error("Python and Node semantic-core WASM artifacts are not byte-identical");

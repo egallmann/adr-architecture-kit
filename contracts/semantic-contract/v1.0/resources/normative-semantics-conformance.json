@@ -1,0 +1,14 @@
+{
+  "positive": [
+    {"normative_force": "MUST", "statement": "The boundary MUST remain explicit."},
+    {"normative_force": "MUST NOT", "statement": "The boundary MUST NOT infer authority."},
+    {"normative_force": "SHOULD", "statement": "The boundary SHOULD preserve source order."},
+    {"normative_force": "SHOULD NOT", "statement": "The boundary SHOULD NOT mint identity."},
+    {"normative_force": "MAY", "statement": "The boundary MAY expose a qualified view."}
+  ],
+  "negative": [
+    {"normative_force": "UNKNOWN", "statement": "Unknown force."},
+    {"normative_force": "MUST", "polarity": "positive", "statement": "No independent polarity."},
+    {"normative_force": "MUST", "lifecycle_stage": "active", "statement": "No NP lifecycle."}
+  ]
+}

@@ -23,6 +23,10 @@ Node-only entry points:
 import { openRepository } from "@system-of-thought/adr-kit/node";
 import { buildEmbodimentLinkage, generateAttributionShim } from "@system-of-thought/adr-kit/node/linkage";
 import { validateArchitecture, validateContract, validateProjectMetadata } from "@system-of-thought/adr-kit/node/governance";
+import {
+  getSemanticContract,
+  validateSemanticResourceClosure,
+} from "@system-of-thought/adr-kit/node/semantic-contract";
 ```
 
 TypeScript v1 supports normalized models 2.1 and 2.2, evidence attribution 1.5/1.6,
@@ -39,8 +43,10 @@ Architecture, contract, project-metadata, normalized-repository identity,
 provider-routing, and linkage rules execute through the packaged canonical
 semantic core shared with the Python binding. Node performs only
 filesystem/YAML loading and TypeScript result construction around that boundary.
-Fingerprints are binding-local deterministic values; equality with Python
-fingerprints is not a release gate.
+Semantic-contract canonicalization, SCF (`scf:v1:sha256`), resource closure,
+and SCS (`scs:v1:sha256`) execute in the shared semantic core. Python and Node
+therefore compare canonical bytes, rejection diagnostics, and fingerprints in
+the release parity gate.
 
 `generateAttributionShim({ language: "python" | "typescript" })` is a
 read-only, deterministic projection through the shared semantic core. Its

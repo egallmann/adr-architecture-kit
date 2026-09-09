@@ -5,8 +5,8 @@ artifact_kind: system_overview
 generator_id: adr-system-overview
 generator_version: 2
 hash_algorithm: sha256
-source_hash: bad42bc19d316b73802b33e22325b72a65e7cdee5a79849d1832173560c48509
-rendered_hash: e0972d886c442eafa3418b35fe198ce7221370f884bca76eb2b47e07033b1860
+source_hash: d9708383aa0ec129aa739ecf710b2b0538b9fbb247bf6e4f38ece12af0c4f51a
+rendered_hash: f11a14c269cfd9782021b09912701f01cbd0b4fbcd6b5420be5f271c826763d7
 -->
 
 <!--
@@ -73,7 +73,7 @@ Derived provider facts:
 
 - API contract version: `1.0`
 - Package version: `0.10.1`
-- Operations: `capabilities`, `validate_architecture`, `validate_project_metadata`, `validate_contract`, `validate_generated_docs`, `compile_architecture`, `open_repository`, `open_provider_registry`, `build_embodiment_linkage`, `generate_attribution_shim`, `prepare_promotion`, `check_promotion`, `apply_promotion`- Validation modes: `complete`, `structural`- Artifact groups: `registries`, `manifest`, `markdown`- Supported ADR schema versions: `1.0`, `1.1`, `1.2`, `1.3`, `1.4`, `1.5`, `1.6`- Stable ADR schema versions: `1.0`- Provisional ADR schema versions: `1.1`, `1.2`, `1.3`, `1.4`, `1.5`, `1.6`- Normalized model schema version: `1.1`
+- Operations: `capabilities`, `validate_architecture`, `validate_project_metadata`, `validate_contract`, `validate_generated_docs`, `compile_architecture`, `open_repository`, `open_provider_registry`, `build_embodiment_linkage`, `generate_attribution_shim`, `list_semantic_contracts`, `get_semantic_contract`, `canonicalize_semantic_json`, `calculate_semantic_contract_fingerprint`, `validate_semantic_resource_closure`, `compose_semantic_contract_set`, `prepare_promotion`, `check_promotion`, `apply_promotion`- Validation modes: `complete`, `structural`- Artifact groups: `registries`, `manifest`, `markdown`- Supported ADR schema versions: `1.0`, `1.1`, `1.2`, `1.3`, `1.4`, `1.5`, `1.6`- Stable ADR schema versions: `1.0`- Provisional ADR schema versions: `1.1`, `1.2`, `1.3`, `1.4`, `1.5`, `1.6`- Normalized model schema version: `1.1`
 - Supported normalized model schema versions: `1.1`, `2.0`, `2.1`, `2.2`, `2.3`
 Supported semantic/repository contracts include `ArchitectureRepository` and `NormalizedArchitectureModel`.
 
@@ -111,6 +111,12 @@ Currently exposed lifecycle capabilities on the public provider surface:
 - `adr_kit.api.open_provider_registry`
 - `adr_kit.api.build_embodiment_linkage`
 - `adr_kit.api.generate_attribution_shim`
+- `adr_kit.api.list_semantic_contracts`
+- `adr_kit.api.get_semantic_contract`
+- `adr_kit.api.canonicalize_semantic_json`
+- `adr_kit.api.calculate_semantic_contract_fingerprint`
+- `adr_kit.api.validate_semantic_resource_closure`
+- `adr_kit.api.compose_semantic_contract_set`
 - `adr_kit.api.prepare_promotion`
 - `adr_kit.api.check_promotion`
 - `adr_kit.api.apply_promotion`

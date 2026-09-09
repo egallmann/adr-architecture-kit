@@ -1,0 +1,102 @@
+{
+  "contract_version": "1.0",
+  "cases": [
+    {
+      "name": "jcs_orders_keys_without_normalizing_values",
+      "request": {
+        "core_contract_version": "1.0",
+        "operation": "canonicalize_semantic_json",
+        "value": {"z": 1, "a": [true, null, "é"]}
+      },
+      "expected": {
+        "success": true,
+        "canonical_preimage_json": "{\"a\":[true,null,\"é\"],\"z\":1}",
+        "fingerprint": "sha256:9622d8e9f6fcc94dd1013e9af622df506351bf2009314dda0ab155ff2bb338ab"
+      }
+    },
+    {
+      "name": "duplicate_json_members_are_rejected_at_the_boundary",
+      "request": {
+        "core_contract_version": "1.0",
+        "operation": "canonicalize_semantic_json",
+        "value_json": "{\"x\":1,\"x\":2}"
+      },
+      "expected": {
+        "success": false,
+        "diagnostic_codes": ["semantic_contract.invalid_json"]
+      }
+    },
+    {
+      "name": "unsafe_integer_is_rejected",
+      "request": {
+        "core_contract_version": "1.0",
+        "operation": "canonicalize_semantic_json",
+        "value": 9007199254740992
+      },
+      "expected": {
+        "success": false,
+        "diagnostic_codes": ["semantic_contract.unsafe_number"]
+      }
+    },
+    {
+      "name": "normative_semantics_definition_has_content_addressed_identity",
+      "request": {
+        "core_contract_version": "1.0",
+        "operation": "fingerprint_semantic_contract",
+        "definition": {
+          "semanticContractFamily": "normative-semantics",
+          "semanticContractVersion": "1.0",
+          "fingerprintScheme": "scf:v1:sha256",
+          "resourceManifest": [
+            {
+              "canonicalResourceKey": "normative-semantics/1.0/definition",
+              "contentDigest": "sha256:d2f8ea16d271367b6f60e9c6e8eeb9aa2b85ef69785cf387c0f3dc8383434518",
+              "role": "normative-definition",
+              "dependencies": []
+            },
+            {
+              "canonicalResourceKey": "normative-semantics/1.0/conformance",
+              "contentDigest": "sha256:c19176c5e9de3b10544d510381d43175d27636ae043c7980786c5d3fefcd6069",
+              "role": "normative-conformance",
+              "dependencies": [
+                {
+                  "canonicalResourceKey": "normative-semantics/1.0/definition",
+                  "contentDigest": "sha256:d2f8ea16d271367b6f60e9c6e8eeb9aa2b85ef69785cf387c0f3dc8383434518"
+                }
+              ]
+            }
+          ],
+          "frozenNormativeConformanceResources": ["normative-semantics/1.0/conformance"],
+          "semanticContractFingerprint": "scf:v1:sha256:0ddabf16233ba09e9ba232872ce91968fc8d5937b5820079ddb4714f2fd58108"
+        }
+      },
+      "expected": {
+          "success": true,
+          "semantic_contract_fingerprint": "scf:v1:sha256:0ddabf16233ba09e9ba232872ce91968fc8d5937b5820079ddb4714f2fd58108"
+      }
+    },
+    {
+      "name": "contract_set_sorts_members_by_family",
+      "request": {
+        "core_contract_version": "1.0",
+        "operation": "compose_semantic_contract_set",
+        "contracts": [
+          {
+            "semanticContractFamily": "normative-semantics",
+            "semanticContractVersion": "1.0",
+            "semanticContractFingerprint": "scf:v1:sha256:0ddabf16233ba09e9ba232872ce91968fc8d5937b5820079ddb4714f2fd58108"
+          },
+          {
+            "semanticContractFamily": "architecture-interpretation",
+            "semanticContractVersion": "1.0",
+            "semanticContractFingerprint": "scf:v1:sha256:24f14d4ebe64c2202c8cefb0f80cea974c217a4d4dde80f2215135b86ae28be2"
+          }
+        ]
+      },
+      "expected": {
+        "success": true,
+        "semantic_contract_set_fingerprint": "scs:v1:sha256:8f6b2da26bd3c6bfac7e0d8e1bc56b74c3e2a228c2c9f922c72bd0ca391ad808"
+      }
+    }
+  ]
+}

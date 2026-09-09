@@ -438,6 +438,12 @@ class CapabilityManifest:
         "open_repository",
         "open_provider_registry",
         "build_embodiment_linkage",
+        "list_semantic_contracts",
+        "get_semantic_contract",
+        "canonicalize_semantic_json",
+        "calculate_semantic_contract_fingerprint",
+        "validate_semantic_resource_closure",
+        "compose_semantic_contract_set",
     )
     pending_host_operations: tuple[str, ...] = ()
     browser_operations: tuple[str, ...] = ("capabilities",)

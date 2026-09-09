@@ -584,6 +584,12 @@ def capabilities() -> CapabilityManifest:
         "open_provider_registry",
         "build_embodiment_linkage",
         "generate_attribution_shim",
+        "list_semantic_contracts",
+        "get_semantic_contract",
+        "canonicalize_semantic_json",
+        "calculate_semantic_contract_fingerprint",
+        "validate_semantic_resource_closure",
+        "compose_semantic_contract_set",
     ]
     if PROMOTION_OPERATIONS_ADVERTISED:
         operations.extend(["prepare_promotion", "check_promotion", "apply_promotion"])

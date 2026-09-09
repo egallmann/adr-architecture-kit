@@ -6,7 +6,7 @@ generator_id: adr-projection-markdown
 generator_version: 3
 hash_algorithm: sha256
 source_hash: e291436843ddd20d8e2685796ecfae802f2bbe645405b193a5ba73ed09dda3df
-rendered_hash: 1f8697670dd3248ea6435ac7603c3737e10befe7d41b3ac41d2646778bfde1e1
+rendered_hash: 10005cf1569b3fddc0c893fa20ec4dd7ef65f73b77523f03849533c9040d7f09
 -->
 
 # ADR-L-0020: Semantic Implementation Attribution and Cross-Layer Architecture Relationships
@@ -439,6 +439,7 @@ edge or migrate it to UUID, not both.
 - [ADR-PS-0002](../physical-system/ADR-PS-0002-adr-kit-authoring-compiler-and-validation-system.md)
 - [ADR-PC-0007](../physical-component/ADR-PC-0007-semantic-attribution-embodiment.md)
 - [ADR-L-0024](ADR-L-0024-cross-language-consumer-bindings-and-typescript-distribution.md)
+- [ADR-L-0028](ADR-L-0028-normative-semantic-authority-and-materialization-foundation.md)
 
 
 ## Architecture Relationships

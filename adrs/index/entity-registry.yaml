@@ -32386,3 +32386,1946 @@ entities:
     extraction_phase: extract_decision
     classification: explicit
     generator: adr-architecture-index
+- id: 01a083dd-22b5-726d-8e49-01851bde3ba5
+  alias_id: ADR-L-0028
+  alias_name: normative-semantic-authority-and-materialization-foundation
+  alias_ref: ADR-L-0028:normative-semantic-authority-and-materialization-foundation
+  entity_type: adr
+  name: Normative Semantic Authority and Exact Materialization Foundation
+  summary: The approved ADR-Kit 0.11.0 semantic design lock (R1) requires repository-local
+    architectural authority before successor contracts or implementation are built.
+    The current authoring contract is schema v1.5 and does not y
+  uri: adr://adr-architecture-kit/entities/01a083dd-22b5-726d-8e49-01851bde3ba5
+  created_at: '2026-09-09T01:51:42.773Z'
+  entity_fingerprint: sha256:636db4fc58acac1c5caf2494794009129d78ed5be02e0e7c064363269fad0ccf
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a083dd-22b5-726d-8e49-01851bde3ba5
+    artifact_path: adrs/logical/ADR-L-0028-normative-semantic-authority-and-materialization-foundation.yaml
+  source_refs: []
+  metadata:
+    status: accepted
+    domains:
+    - architecture
+    - semantic-authority
+    - materialization
+    - schema-governance
+    - cross-language
+    tags:
+    - adr-kit-0.11.0
+    - semantic-design-lock-r1
+    - normative-proposition
+    - interpretation-closure
+    - historical-materialization
+    implementation_authority: null
+    related_reviews: []
+    related_overrides: []
+    alias_name: normative-semantic-authority-and-materialization-foundation
+    alias_id: ADR-L-0028
+  relationships:
+    declared_in: []
+    references:
+    - 019fee89-e616-7c4e-953c-b7349412a784
+    - 019fee89-e617-78d9-ba3b-b7e3e6db1b12
+    - 019fee89-e617-7d2b-8325-cd85ff814477
+    - 019fee89-e618-73ce-aa2d-101276d64e33
+    - 019ffdba-3c42-70da-b33d-efc003269c42
+    - 019ffdba-3c42-7c4a-a737-f6751a265d60
+    - 01a00643-1bfc-788c-911b-83a4725a8de1
+    - 01a048d8-454a-7464-bcaa-718e58dfb9c2
+    - 01a048d8-454a-7464-bcaa-718fa77bed6a
+    - 01a05a26-0000-7000-8000-000000000026
+    - 01a05a27-0000-7000-8000-000000000027
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    consumes_interface: []
+    composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a083dd-22b5-726d-8e49-01851bde3ba5
+    extraction_phase: extract_adr
+    classification: explicit
+    generator: adr-architecture-index
+- id: 01a083dd-22b5-726d-8e49-01861b6ee644
+  alias_id: DEC-0207
+  alias_name: authority-boundary-precedes-r1-materialization
+  alias_ref: DEC-0207:authority-boundary-precedes-r1-materialization
+  entity_type: decision
+  name: Promote R1 meaning into ADR-Kit authority while preserving responsibility-scoped
+    ownership
+  summary: 'ADR-Kit owns its authoring representation and canonical interpretation
+    boundary. STE-wide normative doctrine remains owned by accepted STE-SPEC authority
+    where assigned, Runtime owns retention and binding admission, and '
+  uri: adr://adr-architecture-kit/entities/01a083dd-22b5-726d-8e49-01861b6ee644
+  created_at: '2026-09-09T01:51:42.773Z'
+  entity_fingerprint: sha256:a812c4c267073bad1e579098eacabc9acd92e6c726134b8351aec1e858ea17d4
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a083dd-22b5-726d-8e49-01851bde3ba5#01a083dd-22b5-726d-8e49-01861b6ee644
+    artifact_path: adrs/logical/ADR-L-0028-normative-semantic-authority-and-materialization-foundation.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a083dd-22b5-726d-8e49-01851bde3ba5
+    adr_alias_id: ADR-L-0028
+    related_invariants: []
+    enforces_invariants: []
+    enables_capabilities: []
+    governs_components: []
+    supersedes: []
+    refines: []
+    alias_name: authority-boundary-precedes-r1-materialization
+    alias_id: DEC-0207
+  relationships:
+    declared_in:
+    - 01a083dd-22b5-726d-8e49-01851bde3ba5
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    consumes_interface: []
+    composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a083dd-22b5-726d-8e49-01851bde3ba5#01a083dd-22b5-726d-8e49-01861b6ee644
+    extraction_phase: extract_decision
+    classification: explicit
+    generator: adr-architecture-index
+- id: 01a083dd-22b5-726d-8e49-018775331439
+  alias_id: DEC-0208
+  alias_name: promote-r1-through-supported-authoring-representation
+  alias_ref: DEC-0208:promote-r1-through-supported-authoring-representation
+  entity_type: decision
+  name: Express R1 architectural meaning with supported decisions and invariants until
+    successor authoring contracts exist
+  summary: 'The current repository contract does not support a normative_propositions
+    field. Adding an unsupported field or weakening validation would make the promotion
+    unverifiable. The contract-definition slice must later define '
+  uri: adr://adr-architecture-kit/entities/01a083dd-22b5-726d-8e49-018775331439
+  created_at: '2026-09-09T01:51:42.773Z'
+  entity_fingerprint: sha256:6e1a1402749aac98dabfbac7521d546b6a17c56cd765b44e4501ec212009d1e6
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a083dd-22b5-726d-8e49-01851bde3ba5#01a083dd-22b5-726d-8e49-018775331439
+    artifact_path: adrs/logical/ADR-L-0028-normative-semantic-authority-and-materialization-foundation.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a083dd-22b5-726d-8e49-01851bde3ba5
+    adr_alias_id: ADR-L-0028
+    related_invariants: []
+    enforces_invariants: []
+    enables_capabilities: []
+    governs_components: []
+    supersedes: []
+    refines: []
+    alias_name: promote-r1-through-supported-authoring-representation
+    alias_id: DEC-0208
+  relationships:
+    declared_in:
+    - 01a083dd-22b5-726d-8e49-01851bde3ba5
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    consumes_interface: []
+    composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a083dd-22b5-726d-8e49-01851bde3ba5#01a083dd-22b5-726d-8e49-018775331439
+    extraction_phase: extract_decision
+    classification: explicit
+    generator: adr-architecture-index
+- id: 01a083dd-22b5-726d-8e49-01882e3af252
+  alias_id: DEC-0209
+  alias_name: normative-proposition-and-invariant-are-peer-types
+  alias_ref: DEC-0209:normative-proposition-and-invariant-are-peer-types
+  entity_type: decision
+  name: Treat NormativeProposition and Invariant as peer semantic types with no independent
+    NP lifecycle
+  summary: An NP is ADR-scoped intent with declaring authority, scope, and force.
+    It is not an independently governed record merely because a normalized common
+    envelope may contain lifecycle fields. Requirements remain a future dis
+  uri: adr://adr-architecture-kit/entities/01a083dd-22b5-726d-8e49-01882e3af252
+  created_at: '2026-09-09T01:51:42.773Z'
+  entity_fingerprint: sha256:6e66c49831457a00e3fb9175716a6e37ae865c96c97428758537ff3a225561a9
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a083dd-22b5-726d-8e49-01851bde3ba5#01a083dd-22b5-726d-8e49-01882e3af252
+    artifact_path: adrs/logical/ADR-L-0028-normative-semantic-authority-and-materialization-foundation.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a083dd-22b5-726d-8e49-01851bde3ba5
+    adr_alias_id: ADR-L-0028
+    related_invariants: []
+    enforces_invariants: []
+    enables_capabilities: []
+    governs_components: []
+    supersedes: []
+    refines: []
+    alias_name: normative-proposition-and-invariant-are-peer-types
+    alias_id: DEC-0209
+  relationships:
+    declared_in:
+    - 01a083dd-22b5-726d-8e49-01851bde3ba5
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    consumes_interface: []
+    composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a083dd-22b5-726d-8e49-01851bde3ba5#01a083dd-22b5-726d-8e49-01882e3af252
+    extraction_phase: extract_decision
+    classification: explicit
+    generator: adr-architecture-index
+- id: 01a083dd-22b5-726d-8e49-01894d301c6c
+  alias_id: DEC-0210
+  alias_name: normative-force-and-meaning-require-explicit-review
+  alias_ref: DEC-0210:normative-force-and-meaning-require-explicit-review
+  entity_type: decision
+  name: Use the closed force vocabulary and separate force, authority, effectivity,
+    scope, applicability, and conformance
+  summary: The permitted force values are MUST, MUST NOT, SHOULD, SHOULD NOT, and
+    MAY. Force is one semantic value, not a positive operator combined with an independently
+    inferred polarity. Statement meaning, materiality, and ident
+  uri: adr://adr-architecture-kit/entities/01a083dd-22b5-726d-8e49-01894d301c6c
+  created_at: '2026-09-09T01:51:42.773Z'
+  entity_fingerprint: sha256:d1a5312276670581592aef0c32c15fb36edaccdf688755b8ff4757073481ad5d
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a083dd-22b5-726d-8e49-01851bde3ba5#01a083dd-22b5-726d-8e49-01894d301c6c
+    artifact_path: adrs/logical/ADR-L-0028-normative-semantic-authority-and-materialization-foundation.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a083dd-22b5-726d-8e49-01851bde3ba5
+    adr_alias_id: ADR-L-0028
+    related_invariants: []
+    enforces_invariants: []
+    enables_capabilities: []
+    governs_components: []
+    supersedes: []
+    refines: []
+    alias_name: normative-force-and-meaning-require-explicit-review
+    alias_id: DEC-0210
+  relationships:
+    declared_in:
+    - 01a083dd-22b5-726d-8e49-01851bde3ba5
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    consumes_interface: []
+    composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a083dd-22b5-726d-8e49-01851bde3ba5#01a083dd-22b5-726d-8e49-01894d301c6c
+    extraction_phase: extract_decision
+    classification: explicit
+    generator: adr-architecture-index
+- id: 01a083dd-22b5-726d-8e49-018a51527664
+  alias_id: DEC-0211
+  alias_name: interpretation-closure-is-a-semantic-authority
+  alias_ref: DEC-0211:interpretation-closure-is-a-semantic-authority
+  entity_type: decision
+  name: Make every meaning-affecting interpretation rule part of an exact semantic
+    definition or retained input
+  summary: Source adapters, decoding, normalization, identity-map use, coverage rules,
+    and absence handling can change a materialized result even when an output schema
+    is unchanged. The initial semantic contract set therefore inclu
+  uri: adr://adr-architecture-kit/entities/01a083dd-22b5-726d-8e49-018a51527664
+  created_at: '2026-09-09T01:51:42.773Z'
+  entity_fingerprint: sha256:4f80ebffc3c5f9fb875c5b48043722f4337ebf3cc8b23403603c8391bc2aaa32
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a083dd-22b5-726d-8e49-01851bde3ba5#01a083dd-22b5-726d-8e49-018a51527664
+    artifact_path: adrs/logical/ADR-L-0028-normative-semantic-authority-and-materialization-foundation.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a083dd-22b5-726d-8e49-01851bde3ba5
+    adr_alias_id: ADR-L-0028
+    related_invariants: []
+    enforces_invariants: []
+    enables_capabilities: []
+    governs_components: []
+    supersedes: []
+    refines: []
+    alias_name: interpretation-closure-is-a-semantic-authority
+    alias_id: DEC-0211
+  relationships:
+    declared_in:
+    - 01a083dd-22b5-726d-8e49-01851bde3ba5
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    consumes_interface: []
+    composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a083dd-22b5-726d-8e49-01851bde3ba5#01a083dd-22b5-726d-8e49-018a51527664
+    extraction_phase: extract_decision
+    classification: explicit
+    generator: adr-architecture-index
+- id: 01a083dd-22b5-726d-8e49-018bc3d37191
+  alias_id: DEC-0212
+  alias_name: materialization-uses-sealed-qualified-source
+  alias_ref: DEC-0212:materialization-uses-sealed-qualified-source
+  entity_type: decision
+  name: Materialization is based on a complete sealed source basis with artifact-level
+    contract qualification and persisted identity evidence
+  summary: A claimed revision alone does not prove which auxiliary inputs, source
+    contracts, or identity maps were interpreted. Successful detached materialization
+    must preserve the complete acquired basis, encountered artifact-to-
+  uri: adr://adr-architecture-kit/entities/01a083dd-22b5-726d-8e49-018bc3d37191
+  created_at: '2026-09-09T01:51:42.773Z'
+  entity_fingerprint: sha256:88e3c830119b3d327b7ecd568b76675ec54a2eff3d72fac3ee2d6e070db4f702
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a083dd-22b5-726d-8e49-01851bde3ba5#01a083dd-22b5-726d-8e49-018bc3d37191
+    artifact_path: adrs/logical/ADR-L-0028-normative-semantic-authority-and-materialization-foundation.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a083dd-22b5-726d-8e49-01851bde3ba5
+    adr_alias_id: ADR-L-0028
+    related_invariants: []
+    enforces_invariants: []
+    enables_capabilities: []
+    governs_components: []
+    supersedes: []
+    refines: []
+    alias_name: materialization-uses-sealed-qualified-source
+    alias_id: DEC-0212
+  relationships:
+    declared_in:
+    - 01a083dd-22b5-726d-8e49-01851bde3ba5
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    consumes_interface: []
+    composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a083dd-22b5-726d-8e49-01851bde3ba5#01a083dd-22b5-726d-8e49-018bc3d37191
+    extraction_phase: extract_decision
+    classification: explicit
+    generator: adr-architecture-index
+- id: 01a083dd-22b5-726d-8e49-018d30ecb096
+  alias_id: DEC-0213
+  alias_name: contract-sets-and-history-have-explicit-qualification
+  alias_ref: DEC-0213:contract-sets-and-history-have-explicit-qualification
+  entity_type: decision
+  name: Keep immutable semantic definitions, exact whole-set qualification, lifecycle
+    policy, fingerprints, and historical realization distinct
+  summary: A semantic definition and a current-use decision do not have the same lifecycle.
+    A set is qualified as a whole for each operation rather than by inferred pairwise
+    compatibility. Portable state fingerprints and complete p
+  uri: adr://adr-architecture-kit/entities/01a083dd-22b5-726d-8e49-018d30ecb096
+  created_at: '2026-09-09T01:51:42.773Z'
+  entity_fingerprint: sha256:415af3a44d23097c048de805e3cedbcc962c5c64b64b9bcf17554bbe65aa66e0
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a083dd-22b5-726d-8e49-01851bde3ba5#01a083dd-22b5-726d-8e49-018d30ecb096
+    artifact_path: adrs/logical/ADR-L-0028-normative-semantic-authority-and-materialization-foundation.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a083dd-22b5-726d-8e49-01851bde3ba5
+    adr_alias_id: ADR-L-0028
+    related_invariants: []
+    enforces_invariants: []
+    enables_capabilities: []
+    governs_components: []
+    supersedes: []
+    refines: []
+    alias_name: contract-sets-and-history-have-explicit-qualification
+    alias_id: DEC-0213
+  relationships:
+    declared_in:
+    - 01a083dd-22b5-726d-8e49-01851bde3ba5
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    consumes_interface: []
+    composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a083dd-22b5-726d-8e49-01851bde3ba5#01a083dd-22b5-726d-8e49-018d30ecb096
+    extraction_phase: extract_decision
+    classification: explicit
+    generator: adr-architecture-index
+- id: 01a083dd-22b5-726d-8e49-018e0598aca1
+  alias_id: DEC-0214
+  alias_name: pinned-materialization-binds-existing-attribution
+  alias_ref: DEC-0214:pinned-materialization-binds-existing-attribution
+  entity_type: decision
+  name: Evaluate existing attribution semantics against an explicitly pinned materialization
+    and defer direct NP-target attribution
+  summary: 'Exact-history evaluation must not reopen mutable present-day ADR source.
+    The released evidence-attribution 1.5 and 1.6 target matrix remains unchanged:
+    a first-class NP representation does not silently become a new attri'
+  uri: adr://adr-architecture-kit/entities/01a083dd-22b5-726d-8e49-018e0598aca1
+  created_at: '2026-09-09T01:51:42.773Z'
+  entity_fingerprint: sha256:fa333fcf829e6bddabbc7875715c31bae8cea2194a7ab15c8d071e6e7daccaa4
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a083dd-22b5-726d-8e49-01851bde3ba5#01a083dd-22b5-726d-8e49-018e0598aca1
+    artifact_path: adrs/logical/ADR-L-0028-normative-semantic-authority-and-materialization-foundation.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a083dd-22b5-726d-8e49-01851bde3ba5
+    adr_alias_id: ADR-L-0028
+    related_invariants: []
+    enforces_invariants: []
+    enables_capabilities: []
+    governs_components: []
+    supersedes: []
+    refines: []
+    alias_name: pinned-materialization-binds-existing-attribution
+    alias_id: DEC-0214
+  relationships:
+    declared_in:
+    - 01a083dd-22b5-726d-8e49-01851bde3ba5
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    consumes_interface: []
+    composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a083dd-22b5-726d-8e49-01851bde3ba5#01a083dd-22b5-726d-8e49-018e0598aca1
+    extraction_phase: extract_decision
+    classification: explicit
+    generator: adr-architecture-index
+- id: 01a083dd-22b5-726d-8e49-018f7e364f4a
+  alias_id: DEC-0215
+  alias_name: peer-hosts-share-semantic-authority
+  alias_ref: DEC-0215:peer-hosts-share-semantic-authority
+  entity_type: decision
+  name: Require equivalent public host observations from one canonical execution boundary
+  summary: Python and TypeScript/Node are peer hosts for promoted capabilities. Parity
+    begins with equivalent raw source and exact semantic bases, including parsing,
+    diagnostics, coverage, and fingerprints. Public results remain in
+  uri: adr://adr-architecture-kit/entities/01a083dd-22b5-726d-8e49-018f7e364f4a
+  created_at: '2026-09-09T01:51:42.773Z'
+  entity_fingerprint: sha256:be3de03dac8a9b9df2dccc6c27adec24330ef4964ad8721032fc4daf5e749b4e
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a083dd-22b5-726d-8e49-01851bde3ba5#01a083dd-22b5-726d-8e49-018f7e364f4a
+    artifact_path: adrs/logical/ADR-L-0028-normative-semantic-authority-and-materialization-foundation.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a083dd-22b5-726d-8e49-01851bde3ba5
+    adr_alias_id: ADR-L-0028
+    related_invariants: []
+    enforces_invariants: []
+    enables_capabilities: []
+    governs_components: []
+    supersedes: []
+    refines: []
+    alias_name: peer-hosts-share-semantic-authority
+    alias_id: DEC-0215
+  relationships:
+    declared_in:
+    - 01a083dd-22b5-726d-8e49-01851bde3ba5
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    consumes_interface: []
+    composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a083dd-22b5-726d-8e49-01851bde3ba5#01a083dd-22b5-726d-8e49-018f7e364f4a
+    extraction_phase: extract_decision
+    classification: explicit
+    generator: adr-architecture-index
+- id: 01a083dd-22b5-726d-8e49-019009c28c68
+  alias_id: DEC-0216
+  alias_name: specification-project-type-is-a-general-future-capability
+  alias_ref: DEC-0216:specification-project-type-is-a-general-future-capability
+  entity_type: decision
+  name: Promote the specification project type as a backward-compatible general project-metadata
+    capability for 0.11.0
+  summary: The future contract-definition and implementation slices must extend the
+    project-metadata capability for any project using the type. They must not special-case
+    STE-SPEC, reinterpret its branch state, or weaken validation
+  uri: adr://adr-architecture-kit/entities/01a083dd-22b5-726d-8e49-019009c28c68
+  created_at: '2026-09-09T01:51:42.773Z'
+  entity_fingerprint: sha256:414f0f0ad66f9f34376bc9f5cd2ad041f575239405537468e6327b395da0a0dc
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a083dd-22b5-726d-8e49-01851bde3ba5#01a083dd-22b5-726d-8e49-019009c28c68
+    artifact_path: adrs/logical/ADR-L-0028-normative-semantic-authority-and-materialization-foundation.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a083dd-22b5-726d-8e49-01851bde3ba5
+    adr_alias_id: ADR-L-0028
+    related_invariants: []
+    enforces_invariants: []
+    enables_capabilities: []
+    governs_components: []
+    supersedes: []
+    refines: []
+    alias_name: specification-project-type-is-a-general-future-capability
+    alias_id: DEC-0216
+  relationships:
+    declared_in:
+    - 01a083dd-22b5-726d-8e49-01851bde3ba5
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    consumes_interface: []
+    composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a083dd-22b5-726d-8e49-01851bde3ba5#01a083dd-22b5-726d-8e49-019009c28c68
+    extraction_phase: extract_decision
+    classification: explicit
+    generator: adr-architecture-index
+- id: 01a083dd-22b5-726d-8e49-019195581bbe
+  alias_id: DEC-0217
+  alias_name: ste-spec-rebaseline-is-bounded-directional-evidence
+  alias_ref: DEC-0217:ste-spec-rebaseline-is-bounded-directional-evidence
+  entity_type: decision
+  name: Record the STE-SPEC sequencing exception without claiming branch admission
+  summary: The accumulated STE-SPEC semantic-rebaseline branch and its ADR-L-0044
+    artifact are qualified directional design evidence only. ADR-Kit may refine concrete
+    authoring and materialization mechanics, but it must not redefin
+  uri: adr://adr-architecture-kit/entities/01a083dd-22b5-726d-8e49-019195581bbe
+  created_at: '2026-09-09T01:51:42.773Z'
+  entity_fingerprint: sha256:96a2d6c068c548fcdfe1e1500bff3551f4349f765ff9c4d47629204c7385d96b
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a083dd-22b5-726d-8e49-01851bde3ba5#01a083dd-22b5-726d-8e49-019195581bbe
+    artifact_path: adrs/logical/ADR-L-0028-normative-semantic-authority-and-materialization-foundation.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a083dd-22b5-726d-8e49-01851bde3ba5
+    adr_alias_id: ADR-L-0028
+    related_invariants: []
+    enforces_invariants: []
+    enables_capabilities: []
+    governs_components: []
+    supersedes: []
+    refines: []
+    alias_name: ste-spec-rebaseline-is-bounded-directional-evidence
+    alias_id: DEC-0217
+  relationships:
+    declared_in:
+    - 01a083dd-22b5-726d-8e49-01851bde3ba5
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    consumes_interface: []
+    composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a083dd-22b5-726d-8e49-01851bde3ba5#01a083dd-22b5-726d-8e49-019195581bbe
+    extraction_phase: extract_decision
+    classification: explicit
+    generator: adr-architecture-index
+- id: 01a083dd-22b5-726d-8e49-01925705c12c
+  alias_id: DEC-0218
+  alias_name: sequence-contract-definition-after-authority-promotion
+  alias_ref: DEC-0218:sequence-contract-definition-after-authority-promotion
+  entity_type: decision
+  name: Sequence successor contracts, implementation, Runtime integration, and release
+    qualification after this authority promotion
+  summary: The contract-definition slice must define authoring 1.6, normalized 2.3,
+    normative-semantics 1.0, architecture-interpretation 1.0, materialization envelopes,
+    qualification records, canonicalization, and host evidence. Im
+  uri: adr://adr-architecture-kit/entities/01a083dd-22b5-726d-8e49-01925705c12c
+  created_at: '2026-09-09T01:51:42.773Z'
+  entity_fingerprint: sha256:5414795356a56f0aa33e51df264b9db99967e4708ed91d4d7a092838bd77136f
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a083dd-22b5-726d-8e49-01851bde3ba5#01a083dd-22b5-726d-8e49-01925705c12c
+    artifact_path: adrs/logical/ADR-L-0028-normative-semantic-authority-and-materialization-foundation.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a083dd-22b5-726d-8e49-01851bde3ba5
+    adr_alias_id: ADR-L-0028
+    related_invariants: []
+    enforces_invariants: []
+    enables_capabilities: []
+    governs_components: []
+    supersedes: []
+    refines: []
+    alias_name: sequence-contract-definition-after-authority-promotion
+    alias_id: DEC-0218
+  relationships:
+    declared_in:
+    - 01a083dd-22b5-726d-8e49-01851bde3ba5
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    consumes_interface: []
+    composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a083dd-22b5-726d-8e49-01851bde3ba5#01a083dd-22b5-726d-8e49-01925705c12c
+    extraction_phase: extract_decision
+    classification: explicit
+    generator: adr-architecture-index
+- id: 01a083dd-22b5-726d-8e49-01937cd08264
+  alias_id: INV-0208
+  alias_name: r1-does-not-manufacture-authority
+  alias_ref: INV-0208:r1-does-not-manufacture-authority
+  entity_type: invariant
+  name: INV-0208
+  summary: Representation, interpretation, materialization, and binding operations
+    MUST NOT manufacture competence, effectivity, applicability, or implementation-conformance
+    authority.
+  uri: adr://adr-architecture-kit/entities/01a083dd-22b5-726d-8e49-01937cd08264
+  created_at: '2026-09-09T01:51:42.773Z'
+  entity_fingerprint: sha256:0d481be566d548f9772dee598ca77b63611384f32add99493df744c64e81bd43
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a083dd-22b5-726d-8e49-01851bde3ba5#01a083dd-22b5-726d-8e49-01937cd08264
+    artifact_path: adrs/logical/ADR-L-0028-normative-semantic-authority-and-materialization-foundation.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a083dd-22b5-726d-8e49-01851bde3ba5
+    adr_alias_id: ADR-L-0028
+    scope: global
+    statement: Representation, interpretation, materialization, and binding operations
+      MUST NOT manufacture competence, effectivity, applicability, or implementation-conformance
+      authority.
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions: []
+    supersedes: []
+    alias_id: INV-0208
+    alias_name: r1-does-not-manufacture-authority
+  relationships:
+    declared_in:
+    - 01a083dd-22b5-726d-8e49-01851bde3ba5
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    consumes_interface: []
+    composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a083dd-22b5-726d-8e49-01851bde3ba5#01a083dd-22b5-726d-8e49-01937cd08264
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
+- id: 01a083dd-22b5-726d-8e49-01947fd963f4
+  alias_id: INV-0209
+  alias_name: normative-propositions-have-no-independent-lifecycle
+  alias_ref: INV-0209:normative-propositions-have-no-independent-lifecycle
+  entity_type: invariant
+  name: INV-0209
+  summary: A NormativeProposition MUST derive its authority from its competent, effective
+    declaring ADR and MUST NOT acquire an independent governance lifecycle through
+    a shared entity envelope.
+  uri: adr://adr-architecture-kit/entities/01a083dd-22b5-726d-8e49-01947fd963f4
+  created_at: '2026-09-09T01:51:42.773Z'
+  entity_fingerprint: sha256:1aca67dc4c361289ff1361810739dc7488559a9214961e2fc6f52582dc209bed
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a083dd-22b5-726d-8e49-01851bde3ba5#01a083dd-22b5-726d-8e49-01947fd963f4
+    artifact_path: adrs/logical/ADR-L-0028-normative-semantic-authority-and-materialization-foundation.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a083dd-22b5-726d-8e49-01851bde3ba5
+    adr_alias_id: ADR-L-0028
+    scope: global
+    statement: A NormativeProposition MUST derive its authority from its competent,
+      effective declaring ADR and MUST NOT acquire an independent governance lifecycle
+      through a shared entity envelope.
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions: []
+    supersedes: []
+    alias_id: INV-0209
+    alias_name: normative-propositions-have-no-independent-lifecycle
+  relationships:
+    declared_in:
+    - 01a083dd-22b5-726d-8e49-01851bde3ba5
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    consumes_interface: []
+    composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a083dd-22b5-726d-8e49-01851bde3ba5#01a083dd-22b5-726d-8e49-01947fd963f4
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
+- id: 01a083dd-22b5-726d-8e49-0195733b798e
+  alias_id: INV-0210
+  alias_name: normative-force-vocabulary-is-closed
+  alias_ref: INV-0210:normative-force-vocabulary-is-closed
+  entity_type: invariant
+  name: INV-0210
+  summary: Normative force MUST be exactly one of MUST, MUST NOT, SHOULD, SHOULD NOT,
+    or MAY; implementations MUST NOT reconstruct force from positive force plus an
+    independent polarity.
+  uri: adr://adr-architecture-kit/entities/01a083dd-22b5-726d-8e49-0195733b798e
+  created_at: '2026-09-09T01:51:42.773Z'
+  entity_fingerprint: sha256:81bc2bbe742176649c02035144dea4b5bb2968565a0c9e6d09fd6139c330b3dc
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a083dd-22b5-726d-8e49-01851bde3ba5#01a083dd-22b5-726d-8e49-0195733b798e
+    artifact_path: adrs/logical/ADR-L-0028-normative-semantic-authority-and-materialization-foundation.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a083dd-22b5-726d-8e49-01851bde3ba5
+    adr_alias_id: ADR-L-0028
+    scope: global
+    statement: Normative force MUST be exactly one of MUST, MUST NOT, SHOULD, SHOULD
+      NOT, or MAY; implementations MUST NOT reconstruct force from positive force
+      plus an independent polarity.
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions: []
+    supersedes: []
+    alias_id: INV-0210
+    alias_name: normative-force-vocabulary-is-closed
+  relationships:
+    declared_in:
+    - 01a083dd-22b5-726d-8e49-01851bde3ba5
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    consumes_interface: []
+    composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a083dd-22b5-726d-8e49-01851bde3ba5#01a083dd-22b5-726d-8e49-0195733b798e
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
+- id: 01a083dd-22b5-726d-8e49-019659bcdc94
+  alias_id: INV-0211
+  alias_name: normative-meaning-is-not-inferred-from-prose
+  alias_ref: INV-0211:normative-meaning-is-not-inferred-from-prose
+  entity_type: invariant
+  name: INV-0211
+  summary: Mechanical validation MUST NOT infer an NP, certify semantic materiality,
+    or assert meaning-preserving identity continuity from arbitrary modal or imperative
+    prose.
+  uri: adr://adr-architecture-kit/entities/01a083dd-22b5-726d-8e49-019659bcdc94
+  created_at: '2026-09-09T01:51:42.773Z'
+  entity_fingerprint: sha256:db22ae5813dddebe1ec0d4b71f2ec85dc7bf329c3a88cde68901ae089c1fd926
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a083dd-22b5-726d-8e49-01851bde3ba5#01a083dd-22b5-726d-8e49-019659bcdc94
+    artifact_path: adrs/logical/ADR-L-0028-normative-semantic-authority-and-materialization-foundation.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a083dd-22b5-726d-8e49-01851bde3ba5
+    adr_alias_id: ADR-L-0028
+    scope: global
+    statement: Mechanical validation MUST NOT infer an NP, certify semantic materiality,
+      or assert meaning-preserving identity continuity from arbitrary modal or imperative
+      prose.
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions: []
+    supersedes: []
+    alias_id: INV-0211
+    alias_name: normative-meaning-is-not-inferred-from-prose
+  relationships:
+    declared_in:
+    - 01a083dd-22b5-726d-8e49-01851bde3ba5
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    consumes_interface: []
+    composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a083dd-22b5-726d-8e49-01851bde3ba5#01a083dd-22b5-726d-8e49-019659bcdc94
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
+- id: 01a083dd-22b5-726d-8e49-0197d40507b3
+  alias_id: INV-0212
+  alias_name: normative-dimensions-remain-separate
+  alias_ref: INV-0212:normative-dimensions-remain-separate
+  entity_type: invariant
+  name: INV-0212
+  summary: Normative force, authority, effectivity, scope, applicability, and conformance
+    MUST remain distinct dimensions and MUST NOT be substituted for one another.
+  uri: adr://adr-architecture-kit/entities/01a083dd-22b5-726d-8e49-0197d40507b3
+  created_at: '2026-09-09T01:51:42.773Z'
+  entity_fingerprint: sha256:3808d5ce59087c5f201e31b262a17dae97a921af928b2581ec92523a61e5881b
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a083dd-22b5-726d-8e49-01851bde3ba5#01a083dd-22b5-726d-8e49-0197d40507b3
+    artifact_path: adrs/logical/ADR-L-0028-normative-semantic-authority-and-materialization-foundation.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a083dd-22b5-726d-8e49-01851bde3ba5
+    adr_alias_id: ADR-L-0028
+    scope: global
+    statement: Normative force, authority, effectivity, scope, applicability, and
+      conformance MUST remain distinct dimensions and MUST NOT be substituted for
+      one another.
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions: []
+    supersedes: []
+    alias_id: INV-0212
+    alias_name: normative-dimensions-remain-separate
+  relationships:
+    declared_in:
+    - 01a083dd-22b5-726d-8e49-01851bde3ba5
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    consumes_interface: []
+    composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a083dd-22b5-726d-8e49-01851bde3ba5#01a083dd-22b5-726d-8e49-0197d40507b3
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
+- id: 01a083dd-22b5-726d-8e49-0198f537d80a
+  alias_id: INV-0213
+  alias_name: normalized-inclusion-does-not-imply-applicability
+  alias_ref: INV-0213:normalized-inclusion-does-not-imply-applicability
+  entity_type: invariant
+  name: INV-0213
+  summary: Inclusion of an NP in a normalized or materialized model MUST NOT imply
+    that the proposition governs a concrete context.
+  uri: adr://adr-architecture-kit/entities/01a083dd-22b5-726d-8e49-0198f537d80a
+  created_at: '2026-09-09T01:51:42.773Z'
+  entity_fingerprint: sha256:65598ab039a1c77a24505e2b50aa8d20733a6181cd348144569407499bf1e1ff
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a083dd-22b5-726d-8e49-01851bde3ba5#01a083dd-22b5-726d-8e49-0198f537d80a
+    artifact_path: adrs/logical/ADR-L-0028-normative-semantic-authority-and-materialization-foundation.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a083dd-22b5-726d-8e49-01851bde3ba5
+    adr_alias_id: ADR-L-0028
+    scope: global
+    statement: Inclusion of an NP in a normalized or materialized model MUST NOT imply
+      that the proposition governs a concrete context.
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions: []
+    supersedes: []
+    alias_id: INV-0213
+    alias_name: normalized-inclusion-does-not-imply-applicability
+  relationships:
+    declared_in:
+    - 01a083dd-22b5-726d-8e49-01851bde3ba5
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    consumes_interface: []
+    composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a083dd-22b5-726d-8e49-01851bde3ba5#01a083dd-22b5-726d-8e49-0198f537d80a
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
+- id: 01a083dd-22b5-726d-8e49-0199d6562797
+  alias_id: INV-0214
+  alias_name: interpretation-closure-covers-meaning-affecting-inputs
+  alias_ref: INV-0214:interpretation-closure-covers-meaning-affecting-inputs
+  entity_type: invariant
+  name: INV-0214
+  summary: Every meaning-affecting interpretation rule and input MUST be covered by
+    an exact semantic definition or retained explicit source/request input; a profile
+    MUST NOT redefine an identified semantic contract set.
+  uri: adr://adr-architecture-kit/entities/01a083dd-22b5-726d-8e49-0199d6562797
+  created_at: '2026-09-09T01:51:42.773Z'
+  entity_fingerprint: sha256:ca10b43303f82c3e03dd371543fdf433263346ce1e6dda4037ebfe61c0572388
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a083dd-22b5-726d-8e49-01851bde3ba5#01a083dd-22b5-726d-8e49-0199d6562797
+    artifact_path: adrs/logical/ADR-L-0028-normative-semantic-authority-and-materialization-foundation.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a083dd-22b5-726d-8e49-01851bde3ba5
+    adr_alias_id: ADR-L-0028
+    scope: global
+    statement: Every meaning-affecting interpretation rule and input MUST be covered
+      by an exact semantic definition or retained explicit source/request input; a
+      profile MUST NOT redefine an identified semantic contract set.
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions: []
+    supersedes: []
+    alias_id: INV-0214
+    alias_name: interpretation-closure-covers-meaning-affecting-inputs
+  relationships:
+    declared_in:
+    - 01a083dd-22b5-726d-8e49-01851bde3ba5
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    consumes_interface: []
+    composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a083dd-22b5-726d-8e49-01851bde3ba5#01a083dd-22b5-726d-8e49-0199d6562797
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
+- id: 01a083dd-22b5-726d-8e49-019aeecf2483
+  alias_id: INV-0215
+  alias_name: immutable-semantics-are-separate-from-use-policy
+  alias_ref: INV-0215:immutable-semantics-are-separate-from-use-policy
+  entity_type: invariant
+  name: INV-0215
+  summary: Immutable semantic definitions and exact historical set identities MUST
+    remain stable independently of lifecycle, deprecation, compatibility, and current
+    new-use policy.
+  uri: adr://adr-architecture-kit/entities/01a083dd-22b5-726d-8e49-019aeecf2483
+  created_at: '2026-09-09T01:51:42.773Z'
+  entity_fingerprint: sha256:ab2b165f5a5004625cfbd4d7ca8a39b21fab1baeadd36363cc043c57e735b326
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a083dd-22b5-726d-8e49-01851bde3ba5#01a083dd-22b5-726d-8e49-019aeecf2483
+    artifact_path: adrs/logical/ADR-L-0028-normative-semantic-authority-and-materialization-foundation.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a083dd-22b5-726d-8e49-01851bde3ba5
+    adr_alias_id: ADR-L-0028
+    scope: global
+    statement: Immutable semantic definitions and exact historical set identities
+      MUST remain stable independently of lifecycle, deprecation, compatibility, and
+      current new-use policy.
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions: []
+    supersedes: []
+    alias_id: INV-0215
+    alias_name: immutable-semantics-are-separate-from-use-policy
+  relationships:
+    declared_in:
+    - 01a083dd-22b5-726d-8e49-01851bde3ba5
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    consumes_interface: []
+    composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a083dd-22b5-726d-8e49-01851bde3ba5#01a083dd-22b5-726d-8e49-019aeecf2483
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
+- id: 01a083dd-22b5-726d-8e49-019bd8599ead
+  alias_id: INV-0216
+  alias_name: semantic-set-qualification-is-whole-and-exact
+  alias_ref: INV-0216:semantic-set-qualification-is-whole-and-exact
+  entity_type: invariant
+  name: INV-0216
+  summary: A semantic contract set MUST contain one exact qualified member per participating
+    family and MUST be qualified as a whole for each supported operation; duplicate,
+    missing, or conflicting members MUST fail closed.
+  uri: adr://adr-architecture-kit/entities/01a083dd-22b5-726d-8e49-019bd8599ead
+  created_at: '2026-09-09T01:51:42.773Z'
+  entity_fingerprint: sha256:5d2cfb7621539226fc297a8296c60ef1485bc1cd6b6b837d9732e414d4eb9368
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a083dd-22b5-726d-8e49-01851bde3ba5#01a083dd-22b5-726d-8e49-019bd8599ead
+    artifact_path: adrs/logical/ADR-L-0028-normative-semantic-authority-and-materialization-foundation.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a083dd-22b5-726d-8e49-01851bde3ba5
+    adr_alias_id: ADR-L-0028
+    scope: global
+    statement: A semantic contract set MUST contain one exact qualified member per
+      participating family and MUST be qualified as a whole for each supported operation;
+      duplicate, missing, or conflicting members MUST fail closed.
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions: []
+    supersedes: []
+    alias_id: INV-0216
+    alias_name: semantic-set-qualification-is-whole-and-exact
+  relationships:
+    declared_in:
+    - 01a083dd-22b5-726d-8e49-01851bde3ba5
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    consumes_interface: []
+    composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a083dd-22b5-726d-8e49-01851bde3ba5#01a083dd-22b5-726d-8e49-019bd8599ead
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
+- id: 01a083dd-22b5-726d-8e49-019c36d0b1c6
+  alias_id: INV-0217
+  alias_name: materialization-source-basis-is-sealed-and-qualified
+  alias_ref: INV-0217:materialization-source-basis-is-sealed-and-qualified
+  entity_type: invariant
+  name: INV-0217
+  summary: A successful detached materialization MUST retain the complete sealed source
+    and auxiliary input basis actually interpreted, including artifact-level source-contract
+    qualification and required provider identity evidence.
+  uri: adr://adr-architecture-kit/entities/01a083dd-22b5-726d-8e49-019c36d0b1c6
+  created_at: '2026-09-09T01:51:42.773Z'
+  entity_fingerprint: sha256:a0467bf7d7d47af8294643a593d9b521068b1c67ce8f024e27e5b696bb45ae09
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a083dd-22b5-726d-8e49-01851bde3ba5#01a083dd-22b5-726d-8e49-019c36d0b1c6
+    artifact_path: adrs/logical/ADR-L-0028-normative-semantic-authority-and-materialization-foundation.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a083dd-22b5-726d-8e49-01851bde3ba5
+    adr_alias_id: ADR-L-0028
+    scope: global
+    statement: A successful detached materialization MUST retain the complete sealed
+      source and auxiliary input basis actually interpreted, including artifact-level
+      source-contract qualification and required provider identity evidence.
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions: []
+    supersedes: []
+    alias_id: INV-0217
+    alias_name: materialization-source-basis-is-sealed-and-qualified
+  relationships:
+    declared_in:
+    - 01a083dd-22b5-726d-8e49-01851bde3ba5
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    consumes_interface: []
+    composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a083dd-22b5-726d-8e49-01851bde3ba5#01a083dd-22b5-726d-8e49-019c36d0b1c6
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
+- id: 01a083dd-22b5-726d-8e49-019d5323f10d
+  alias_id: INV-0218
+  alias_name: detached-materialization-does-not-allocate-identity
+  alias_ref: INV-0218:detached-materialization-does-not-allocate-identity
+  entity_type: invariant
+  name: INV-0218
+  summary: Detached materialization MUST NOT allocate canonical identity during read-time
+    interpretation; legacy identity requires an exact sealed provider-authoritative
+    map or a typed qualification failure.
+  uri: adr://adr-architecture-kit/entities/01a083dd-22b5-726d-8e49-019d5323f10d
+  created_at: '2026-09-09T01:51:42.773Z'
+  entity_fingerprint: sha256:58c21e0a305e80edc5ad26dea385f5913a996d5b77c780b83cf4bc68205de509
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a083dd-22b5-726d-8e49-01851bde3ba5#01a083dd-22b5-726d-8e49-019d5323f10d
+    artifact_path: adrs/logical/ADR-L-0028-normative-semantic-authority-and-materialization-foundation.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a083dd-22b5-726d-8e49-01851bde3ba5
+    adr_alias_id: ADR-L-0028
+    scope: global
+    statement: Detached materialization MUST NOT allocate canonical identity during
+      read-time interpretation; legacy identity requires an exact sealed provider-authoritative
+      map or a typed qualification failure.
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions: []
+    supersedes: []
+    alias_id: INV-0218
+    alias_name: detached-materialization-does-not-allocate-identity
+  relationships:
+    declared_in:
+    - 01a083dd-22b5-726d-8e49-01851bde3ba5
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    consumes_interface: []
+    composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a083dd-22b5-726d-8e49-01851bde3ba5#01a083dd-22b5-726d-8e49-019d5323f10d
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
+- id: 01a083dd-eef0-7358-9bdf-3de719877d0f
+  alias_id: INV-0219
+  alias_name: materialization-outcomes-preserve-epistemic-states
+  alias_ref: INV-0219:materialization-outcomes-preserve-epistemic-states
+  entity_type: invariant
+  name: INV-0219
+  summary: Materialization MUST distinguish Materialized, Rejected, and Unavailable
+    outcomes and MUST preserve unresolved, undeclared, inexpressible, unavailable,
+    and unassessed states without success-shaped fallback.
+  uri: adr://adr-architecture-kit/entities/01a083dd-eef0-7358-9bdf-3de719877d0f
+  created_at: '2026-09-09T01:52:35.056Z'
+  entity_fingerprint: sha256:ebc6fda9f69481dab970aeb5aaf4f39ba7eb9a7710d5fbf4b84597b7b48b60dc
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a083dd-22b5-726d-8e49-01851bde3ba5#01a083dd-eef0-7358-9bdf-3de719877d0f
+    artifact_path: adrs/logical/ADR-L-0028-normative-semantic-authority-and-materialization-foundation.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a083dd-22b5-726d-8e49-01851bde3ba5
+    adr_alias_id: ADR-L-0028
+    scope: global
+    statement: Materialization MUST distinguish Materialized, Rejected, and Unavailable
+      outcomes and MUST preserve unresolved, undeclared, inexpressible, unavailable,
+      and unassessed states without success-shaped fallback.
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions: []
+    supersedes: []
+    alias_id: INV-0219
+    alias_name: materialization-outcomes-preserve-epistemic-states
+  relationships:
+    declared_in:
+    - 01a083dd-22b5-726d-8e49-01851bde3ba5
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    consumes_interface: []
+    composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a083dd-22b5-726d-8e49-01851bde3ba5#01a083dd-eef0-7358-9bdf-3de719877d0f
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
+- id: 01a083dd-eef0-7358-9bdf-3de8199835a8
+  alias_id: INV-0220
+  alias_name: fingerprints-and-history-have-explicit-equivalence-boundaries
+  alias_ref: INV-0220:fingerprints-and-history-have-explicit-equivalence-boundaries
+  entity_type: invariant
+  name: INV-0220
+  summary: Portable state fingerprints, complete semantic payload digests, source
+    provenance, and retained realized results MUST use explicit projections and MUST
+    NOT replace one another or rewrite historical records.
+  uri: adr://adr-architecture-kit/entities/01a083dd-eef0-7358-9bdf-3de8199835a8
+  created_at: '2026-09-09T01:52:35.056Z'
+  entity_fingerprint: sha256:6d50d8ffc85929cbbd5ad1592521b93392828a48739e78acdfab1b9c286258ec
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a083dd-22b5-726d-8e49-01851bde3ba5#01a083dd-eef0-7358-9bdf-3de8199835a8
+    artifact_path: adrs/logical/ADR-L-0028-normative-semantic-authority-and-materialization-foundation.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a083dd-22b5-726d-8e49-01851bde3ba5
+    adr_alias_id: ADR-L-0028
+    scope: global
+    statement: Portable state fingerprints, complete semantic payload digests, source
+      provenance, and retained realized results MUST use explicit projections and
+      MUST NOT replace one another or rewrite historical records.
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions: []
+    supersedes: []
+    alias_id: INV-0220
+    alias_name: fingerprints-and-history-have-explicit-equivalence-boundaries
+  relationships:
+    declared_in:
+    - 01a083dd-22b5-726d-8e49-01851bde3ba5
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    consumes_interface: []
+    composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a083dd-22b5-726d-8e49-01851bde3ba5#01a083dd-eef0-7358-9bdf-3de8199835a8
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
+- id: 01a083dd-eef0-7358-9bdf-3de9359df6a0
+  alias_id: INV-0221
+  alias_name: attribution-evaluates-pinned-materialization
+  alias_ref: INV-0221:attribution-evaluates-pinned-materialization
+  entity_type: invariant
+  name: INV-0221
+  summary: Exact-history evaluation of existing attribution semantics MUST consume
+    the explicitly pinned materialization and MUST NOT silently reopen current ADR
+    source; direct NP-target attribution remains unsupported under releas
+  uri: adr://adr-architecture-kit/entities/01a083dd-eef0-7358-9bdf-3de9359df6a0
+  created_at: '2026-09-09T01:52:35.056Z'
+  entity_fingerprint: sha256:7b1324612653cb7f31c801fcd4f3f96b4b2984838ed1074b18b74722bf2fc128
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a083dd-22b5-726d-8e49-01851bde3ba5#01a083dd-eef0-7358-9bdf-3de9359df6a0
+    artifact_path: adrs/logical/ADR-L-0028-normative-semantic-authority-and-materialization-foundation.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a083dd-22b5-726d-8e49-01851bde3ba5
+    adr_alias_id: ADR-L-0028
+    scope: global
+    statement: Exact-history evaluation of existing attribution semantics MUST consume
+      the explicitly pinned materialization and MUST NOT silently reopen current ADR
+      source; direct NP-target attribution remains unsupported under released evidence
+      contracts.
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions: []
+    supersedes: []
+    alias_id: INV-0221
+    alias_name: attribution-evaluates-pinned-materialization
+  relationships:
+    declared_in:
+    - 01a083dd-22b5-726d-8e49-01851bde3ba5
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    consumes_interface: []
+    composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a083dd-22b5-726d-8e49-01851bde3ba5#01a083dd-eef0-7358-9bdf-3de9359df6a0
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
+- id: 01a083dd-eef0-7358-9bdf-3dea151834be
+  alias_id: INV-0222
+  alias_name: peer-host-capabilities-require-installed-parity
+  alias_ref: INV-0222:peer-host-capabilities-require-installed-parity
+  entity_type: invariant
+  name: INV-0222
+  summary: Publicly advertised shared capabilities MUST have equivalent raw-source
+    semantic, diagnostic, coverage, fingerprint, and installed-package qualification
+    evidence in both peer host distributions.
+  uri: adr://adr-architecture-kit/entities/01a083dd-eef0-7358-9bdf-3dea151834be
+  created_at: '2026-09-09T01:52:35.056Z'
+  entity_fingerprint: sha256:5beebfe52f7a4d6497a527472c8dc6d3cc880ca9e2a793da56ca887cf435c6f4
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a083dd-22b5-726d-8e49-01851bde3ba5#01a083dd-eef0-7358-9bdf-3dea151834be
+    artifact_path: adrs/logical/ADR-L-0028-normative-semantic-authority-and-materialization-foundation.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a083dd-22b5-726d-8e49-01851bde3ba5
+    adr_alias_id: ADR-L-0028
+    scope: global
+    statement: Publicly advertised shared capabilities MUST have equivalent raw-source
+      semantic, diagnostic, coverage, fingerprint, and installed-package qualification
+      evidence in both peer host distributions.
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions: []
+    supersedes: []
+    alias_id: INV-0222
+    alias_name: peer-host-capabilities-require-installed-parity
+  relationships:
+    declared_in:
+    - 01a083dd-22b5-726d-8e49-01851bde3ba5
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    consumes_interface: []
+    composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a083dd-22b5-726d-8e49-01851bde3ba5#01a083dd-eef0-7358-9bdf-3dea151834be
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
+- id: 01a083dd-eef0-7358-9bdf-3debf6fbe5b8
+  alias_id: INV-0223
+  alias_name: ste-spec-exception-remains-bounded
+  alias_ref: INV-0223:ste-spec-exception-remains-bounded
+  entity_type: invariant
+  name: INV-0223
+  summary: ADR-Kit promotion MUST NOT represent the STE-SPEC semantic-rebaseline feature
+    branch as admitted upstream authority, redefine STE-wide normative doctrine, or
+    modify STE-SPEC in this slice.
+  uri: adr://adr-architecture-kit/entities/01a083dd-eef0-7358-9bdf-3debf6fbe5b8
+  created_at: '2026-09-09T01:52:35.056Z'
+  entity_fingerprint: sha256:bb75f634418f0b561c45699608816179e3449762c598a009d200c78961a4ca81
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a083dd-22b5-726d-8e49-01851bde3ba5#01a083dd-eef0-7358-9bdf-3debf6fbe5b8
+    artifact_path: adrs/logical/ADR-L-0028-normative-semantic-authority-and-materialization-foundation.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a083dd-22b5-726d-8e49-01851bde3ba5
+    adr_alias_id: ADR-L-0028
+    scope: global
+    statement: ADR-Kit promotion MUST NOT represent the STE-SPEC semantic-rebaseline
+      feature branch as admitted upstream authority, redefine STE-wide normative doctrine,
+      or modify STE-SPEC in this slice.
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions: []
+    supersedes: []
+    alias_id: INV-0223
+    alias_name: ste-spec-exception-remains-bounded
+  relationships:
+    declared_in:
+    - 01a083dd-22b5-726d-8e49-01851bde3ba5
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    consumes_interface: []
+    composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a083dd-22b5-726d-8e49-01851bde3ba5#01a083dd-eef0-7358-9bdf-3debf6fbe5b8
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index

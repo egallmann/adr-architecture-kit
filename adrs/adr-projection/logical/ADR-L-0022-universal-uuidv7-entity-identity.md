@@ -6,7 +6,7 @@ generator_id: adr-projection-markdown
 generator_version: 3
 hash_algorithm: sha256
 source_hash: b7d013039c6d1cb6d82aff8240634edf81a81a34dc0e45ef0f1236c23ad90823
-rendered_hash: dc2076e894f6552ab32cde3cacd62f4c8b67d96dd82b007cb5225d6bb2f2315b
+rendered_hash: 25f8e29d580f73364a5501ea2307aa3cc3b79e71b6d8a73bc2ec95cdf967c18c
 -->
 
 # ADR-L-0022: Universal UUIDv7 Entity Identity
@@ -363,6 +363,7 @@ Architectural closure and implementation readiness are separate states.
 - [ADR-L-0019](ADR-L-0019-canonical-entity-identity.md)
 - [ADR-L-0023](ADR-L-0023-consumer-semantic-extension-contract.md)
 - [ADR-L-0026](ADR-L-0026-authoring-domain-contract-discovery-authority.md)
+- [ADR-L-0028](ADR-L-0028-normative-semantic-authority-and-materialization-foundation.md)
 
 
 

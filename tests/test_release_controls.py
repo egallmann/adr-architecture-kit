@@ -422,7 +422,7 @@ def test_develop_assurance_enforces_post_release_branch_synchronization() -> Non
     sync_job = workflow["jobs"]["release-branch-sync"]
     sync_text = _job_steps_text(sync_job)
     assert sync_job["runs-on"] == "ubuntu-latest"
-    assert "fetch-depth" in sync_text
+    assert sync_job["steps"][0]["with"]["fetch-depth"] == 0
     assert "scripts/verify_release_branch_sync.py" in sync_text
     assert "origin/main" in sync_text
     assert "github.sha" in sync_text

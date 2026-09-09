@@ -27,8 +27,8 @@ or a second source of semantic meaning. After promotion, accepted ADRs govern.
 ## R1 obligation ownership
 
 The owner column points to accepted ADR authority or to an explicit deferred
-realization recorded by ADR-L-0028. A slice is not evidence that the behavior is
-already implemented.
+realization recorded by ADR-L-0028. A slice is not evidence that the behavior
+is already implemented.
 
 | Obligation | Owning authority | Realization / evidence slice |
 | --- | --- | --- |

@@ -536,7 +536,7 @@ pub fn compose_set(request: &Json) -> Json {
         if !is_version(&version) {
             add_diagnostic(&mut diagnostics, "semantic_contract.invalid_version", "set member version must be an exact major.minor value", Some(format!("{path}.semanticContractVersion")));
         }
-        if !fingerprint.starts_with("scf:v1:sha256:") || fingerprint.len() != 77 {
+        if !fingerprint.starts_with("scf:v1:sha256:") || fingerprint.len() != 78 {
             add_diagnostic(&mut diagnostics, "semantic_contract.invalid_member_fingerprint", "set member fingerprint must be an exact scf:v1:sha256 value", Some(format!("{path}.semanticContractFingerprint")));
         }
         if !families.insert(family.clone()) {

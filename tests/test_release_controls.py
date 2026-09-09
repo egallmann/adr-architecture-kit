@@ -417,6 +417,24 @@ def test_integration_assurance_owns_full_suite_and_develop_runs_it() -> None:
     assert "release-artifacts" not in jobs
 
 
+def test_develop_assurance_enforces_post_release_branch_synchronization() -> None:
+    workflow = _load_workflow("develop-assurance.yml")
+    sync_job = workflow["jobs"]["release-branch-sync"]
+    sync_text = _job_steps_text(sync_job)
+    assert sync_job["runs-on"] == "ubuntu-latest"
+    assert "fetch-depth" in sync_text
+    assert "scripts/verify_release_branch_sync.py" in sync_text
+    assert "origin/main" in sync_text
+    assert "github.sha" in sync_text
+
+    contributing = (ROOT / "CONTRIBUTING.md").read_text(encoding="utf-8")
+    skill = (ROOT / ".agents" / "skills" / "ship-release" / "SKILL.md").read_text(encoding="utf-8")
+    for text in (contributing, skill):
+        assert "post-release" in text
+        assert "verify_release_branch_sync.py" in text
+        assert "Develop Assurance" in text
+
+
 def test_release_certification_owns_retained_artifacts_and_release_only_checks() -> None:
     workflow = _load_workflow("release-certification.yml")
     trigger = _workflow_trigger(workflow)
@@ -432,6 +450,9 @@ def test_release_certification_owns_retained_artifacts_and_release_only_checks()
     assert "scripts/verify_semantic_core_artifact.py" in semantic_core_text
     assert "tests/test_semantic_core_conformance.py" in semantic_core_text
     assert "npm test" in semantic_core_text
+    assert semantic_core_text.index("scripts/build_semantic_core.mjs") < semantic_core_text.index(
+        "pip install .[dev]"
+    )
     assert jobs["wheel-smoke"]["needs"] == "release-artifacts"
     assert jobs["os-wheel-smoke"]["needs"] == "release-artifacts"
     for name in ("release-artifacts", "reproducibility", "benchmark-smoke"):

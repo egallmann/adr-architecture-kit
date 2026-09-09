@@ -12,3 +12,18 @@ jobs:
   integration:
     name: Integration assurance
     uses: ./.github/workflows/integration-assurance.yml
+
+  release-branch-sync:
+    name: Post-release main-to-develop synchronization
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Verify released main state is in develop
+        run: >-
+          python scripts/verify_release_branch_sync.py
+          --main-ref origin/main
+          --release-ref origin/main
+          --develop-ref ${{ github.sha }}
+          --expected-version "$(python -c 'import tomllib; print(tomllib.load(open("pyproject.toml", "rb"))["project"]["version"])')"

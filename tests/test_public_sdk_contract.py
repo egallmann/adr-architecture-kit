@@ -71,6 +71,19 @@ EXPECTED_PUBLIC_SYMBOLS = [
     "prepare_promotion",
     "check_promotion",
     "apply_promotion",
+    "SCF_SCHEME",
+    "SCS_SCHEME",
+    "SemanticContractVersion",
+    "SemanticOperationResult",
+    "SemanticResourceDependency",
+    "SemanticResourceManifestEntry",
+    "calculate_semantic_contract_fingerprint",
+    "canonicalize_semantic_json",
+    "compose_semantic_contract_set",
+    "get_semantic_contract",
+    "list_semantic_contracts",
+    "load_semantic_resource",
+    "validate_semantic_resource_closure",
 ]
 
 
@@ -255,6 +268,12 @@ def test_capability_manifest_is_exact_and_deterministic() -> None:
         "open_provider_registry",
         "build_embodiment_linkage",
         "generate_attribution_shim",
+        "list_semantic_contracts",
+        "get_semantic_contract",
+        "canonicalize_semantic_json",
+        "calculate_semantic_contract_fingerprint",
+        "validate_semantic_resource_closure",
+        "compose_semantic_contract_set",
     )
     assert "compile_architecture" in first.pending_host_operations
     assert first.browser_operations == ("capabilities",)

@@ -40,6 +40,10 @@
     "./node/governance": {
       "types": "./dist/node/governance.d.ts",
       "import": "./dist/node/governance.js"
+    },
+    "./node/semantic-contract": {
+      "types": "./dist/node/semantic-contract.d.ts",
+      "import": "./dist/node/semantic-contract.js"
     }
   },
   "files": [

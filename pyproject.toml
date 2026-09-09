@@ -78,6 +78,9 @@ where = ["src"]
 "adr_kit.promotion.schemas" = ["*.json"]
 "adr_kit.compatibility" = ["*.json"]
 "adr_kit.core" = ["*.wasm", "*.json"]
+"adr_kit.semantic_contract" = ["*.json"]
+"adr_kit.semantic_contract.v1_0" = ["*.json"]
+"adr_kit.semantic_contract.v1_0.resources" = ["*.json"]
 
 [tool.black]
 line-length = 100

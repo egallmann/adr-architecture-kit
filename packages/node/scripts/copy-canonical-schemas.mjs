@@ -13,6 +13,7 @@ const capabilityContract = JSON.parse(
 const semanticCoreContract = JSON.parse(
   await readFile(resolve(repoRoot, "contracts/semantic-core/v1.0/contract.json"), "utf8"),
 );
+const semanticContractRoot = resolve(repoRoot, "contracts/semantic-contract/v1.0");
 
 const families = [
   ["authoring", "v1.2"],
@@ -65,3 +66,22 @@ await writeFile(resolve(generatedRoot, "package-metadata.ts"), `export const pac
 await writeFile(resolve(generatedRoot, "schema-assets.ts"), `export const schemaAssets = ${JSON.stringify(assets, null, 2)} as const;\n`);
 await writeFile(resolve(generatedRoot, "host-capabilities.ts"), `export const hostCapabilities = ${JSON.stringify(capabilityContract, null, 2)} as const;\n`);
 await writeFile(resolve(generatedRoot, "semantic-core-contract.ts"), `export const semanticCoreContract = ${JSON.stringify(semanticCoreContract, null, 2)} as const;\n`);
+
+const semanticContractAssets = {};
+for (const directory of ["definitions", "resources"]) {
+  const source = resolve(semanticContractRoot, directory);
+  const target = resolve(generatedRoot, "semantic-contract", directory);
+  await mkdir(target, { recursive: true });
+  for (const name of await readdir(source)) {
+    if (!name.endsWith(".json")) continue;
+    const bytes = await readFile(resolve(source, name));
+    await writeFile(resolve(target, name), bytes);
+    semanticContractAssets[`${directory}/${name}`] = JSON.parse(bytes.toString("utf8"));
+  }
+}
+for (const name of ["semantic-contract-version.schema.json", "resource-manifest-entry.schema.json"]) {
+  const bytes = await readFile(resolve(semanticContractRoot, name));
+  await writeFile(resolve(generatedRoot, "semantic-contract", name), bytes);
+  semanticContractAssets[`schemas/${name}`] = JSON.parse(bytes.toString("utf8"));
+}
+await writeFile(resolve(generatedRoot, "semantic-contract-assets.ts"), `export const semanticContractAssets = ${JSON.stringify(semanticContractAssets, null, 2)} as const;\n`);

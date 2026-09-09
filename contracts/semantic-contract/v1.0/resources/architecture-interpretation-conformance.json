@@ -1,0 +1,8 @@
+{
+  "cases": [
+    {"name": "supported-authoring-binding", "binding": "authoring@1.6", "outcome": "accepted"},
+    {"name": "missing-normative-proposition-declaration", "binding": "authoring@1.6", "outcome": "covered-without-declaration"},
+    {"name": "legacy-identity-without-map", "binding": "authoring@1.5", "outcome": "identity-qualification-failure"},
+    {"name": "implicit-import", "binding": "authoring@1.6", "outcome": "rejected"}
+  ]
+}

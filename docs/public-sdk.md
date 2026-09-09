@@ -34,6 +34,36 @@ print(manifest.as_dict())
 Capability discovery is local and deterministic. It performs no network access,
 repository discovery, validation, compilation, or writes.
 
+## Semantic contract identity and closure
+
+Slice B exposes the immutable semantic definitions used by both peer hosts. The
+definitions contain only semantic meaning, resource manifests, frozen
+conformance resources, and their `scf:v1:sha256` identity; lifecycle policy,
+catalog state, executable support, and current selection are not part of that
+identity.
+
+```python
+from adr_kit.api import (
+    get_semantic_contract,
+    load_semantic_resource,
+    validate_semantic_resource_closure,
+)
+
+contract = get_semantic_contract("normative-semantics", "1.0")
+resources = [
+    {
+        "canonicalResourceKey": entry.canonical_resource_key,
+        "content": load_semantic_resource(entry.canonical_resource_key),
+    }
+    for entry in contract.resource_manifest
+]
+assert validate_semantic_resource_closure(contract, resources).closure_valid
+```
+
+Canonicalization, fingerprinting, closure validation, and contract-set
+composition execute in the shared semantic core. The Python and Node bindings
+adapt inputs and freeze results; they do not duplicate those algorithms.
+
 ## Build validated embodiment linkage
 
 ```python
@@ -294,6 +324,19 @@ open_provider_registry
 prepare_promotion
 check_promotion
 apply_promotion
+SCF_SCHEME
+SCS_SCHEME
+SemanticContractVersion
+SemanticOperationResult
+SemanticResourceDependency
+SemanticResourceManifestEntry
+calculate_semantic_contract_fingerprint
+canonicalize_semantic_json
+compose_semantic_contract_set
+get_semantic_contract
+list_semantic_contracts
+load_semantic_resource
+validate_semantic_resource_closure
 ```
 
 `NormalizedArchitectureModelV2`, `ProviderRegistry`, and `open_provider_registry`

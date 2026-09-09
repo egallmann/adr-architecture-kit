@@ -22,7 +22,15 @@
     {"$ref": "#/$defs/architecture_request"},
     {"$ref": "#/$defs/architecture_result"},
     {"$ref": "#/$defs/attribution_shim_request"},
-    {"$ref": "#/$defs/attribution_shim_result"}
+    {"$ref": "#/$defs/attribution_shim_result"},
+    {"$ref": "#/$defs/canonical_json_request"},
+    {"$ref": "#/$defs/canonical_json_result"},
+    {"$ref": "#/$defs/semantic_contract_request"},
+    {"$ref": "#/$defs/semantic_contract_result"},
+    {"$ref": "#/$defs/resource_closure_request"},
+    {"$ref": "#/$defs/resource_closure_result"},
+    {"$ref": "#/$defs/semantic_contract_set_request"},
+    {"$ref": "#/$defs/semantic_contract_set_result"}
   ],
   "$defs": {
     "any_object": {"type": "object"},
@@ -189,6 +197,97 @@
           "operation": {"const": "generate_attribution_shim"},
           "language": {"type": "string"},
           "content": {"type": "string"}
+        }}
+      ],
+      "unevaluatedProperties": false
+    },
+    "canonical_json_request": {
+      "allOf": [
+        {"$ref": "#/$defs/request_base"},
+        {"type": "object", "required": ["operation"], "properties": {
+          "operation": {"const": "canonicalize_semantic_json"},
+          "value": {},
+          "value_json": {"type": "string"}
+        }, "anyOf": [{"required": ["value"]}, {"required": ["value_json"]}]}
+      ],
+      "unevaluatedProperties": false
+    },
+    "canonical_json_result": {
+      "allOf": [
+        {"$ref": "#/$defs/result_base"},
+        {"type": "object", "required": ["operation"], "properties": {
+          "operation": {"const": "canonicalize_semantic_json"},
+          "canonical_preimage_json": {"type": ["string", "null"]},
+          "canonical_preimage_hex": {"type": ["string", "null"]},
+          "fingerprint": {"type": ["string", "null"]},
+          "sha256": {"type": ["string", "null"]}
+        }}
+      ],
+      "unevaluatedProperties": false
+    },
+    "semantic_contract_request": {
+      "allOf": [
+        {"$ref": "#/$defs/request_base"},
+        {"type": "object", "required": ["operation", "definition"], "properties": {
+          "operation": {"const": "fingerprint_semantic_contract"},
+          "definition": {"$ref": "#/$defs/any_object"}
+        }}
+      ],
+      "unevaluatedProperties": false
+    },
+    "semantic_contract_result": {
+      "allOf": [
+        {"$ref": "#/$defs/result_base"},
+        {"type": "object", "required": ["operation"], "properties": {
+          "operation": {"const": "fingerprint_semantic_contract"},
+          "canonical_preimage_json": {"type": ["string", "null"]},
+          "canonical_preimage_hex": {"type": ["string", "null"]},
+          "fingerprint": {"type": ["string", "null"]},
+          "semantic_contract_fingerprint": {"type": ["string", "null"]}
+        }}
+      ],
+      "unevaluatedProperties": false
+    },
+    "resource_closure_request": {
+      "allOf": [
+        {"$ref": "#/$defs/request_base"},
+        {"type": "object", "required": ["operation", "definition", "resources"], "properties": {
+          "operation": {"const": "validate_semantic_resource_closure"},
+          "definition": {"$ref": "#/$defs/any_object"},
+          "resources": {"type": "array", "items": {"type": "object", "required": ["canonicalResourceKey", "content"], "properties": {"canonicalResourceKey": {"type": "string"}, "content": {}} , "additionalProperties": false}}
+        }}
+      ],
+      "unevaluatedProperties": false
+    },
+    "resource_closure_result": {
+      "allOf": [
+        {"$ref": "#/$defs/result_base"},
+        {"type": "object", "required": ["operation", "closure_valid"], "properties": {
+          "operation": {"const": "validate_semantic_resource_closure"},
+          "closure_valid": {"type": "boolean"}
+        }}
+      ],
+      "unevaluatedProperties": false
+    },
+    "semantic_contract_set_request": {
+      "allOf": [
+        {"$ref": "#/$defs/request_base"},
+        {"type": "object", "required": ["operation", "contracts"], "properties": {
+          "operation": {"const": "compose_semantic_contract_set"},
+          "contracts": {"type": "array", "items": {"$ref": "#/$defs/any_object"}}
+        }}
+      ],
+      "unevaluatedProperties": false
+    },
+    "semantic_contract_set_result": {
+      "allOf": [
+        {"$ref": "#/$defs/result_base"},
+        {"type": "object", "required": ["operation"], "properties": {
+          "operation": {"const": "compose_semantic_contract_set"},
+          "canonical_preimage_json": {"type": ["string", "null"]},
+          "canonical_preimage_hex": {"type": ["string", "null"]},
+          "fingerprint": {"type": ["string", "null"]},
+          "semantic_contract_set_fingerprint": {"type": ["string", "null"]}
         }}
       ],
       "unevaluatedProperties": false

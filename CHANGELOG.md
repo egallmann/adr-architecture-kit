@@ -7,6 +7,25 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- Added Slice A's lifecycle-free `normative-proposition` authoring 1.6 and
+  normalized-model 2.3 contract surfaces as the input authority for public SDK
+  semantics.
+- Added Slice B immutable `normative-semantics@1.0` and
+  `architecture-interpretation@1.0` definitions, explicit content-addressed
+  resource closure, `scf:v1:sha256` identities, and the `scs:v1:sha256`
+  composition primitive.
+- Added matching Python and TypeScript/Node public bindings and raw parity
+  vectors for canonical bytes, rejection diagnostics, SCF, and SCS.
+
+### Limitations
+
+- Slice B does not implement Slice C profile qualification, tuple assembly,
+  policy/catalog state, current selection, or release lifecycle decisions.
+- Slice B does not implement Slice D materialization or source acquisition, and
+  does not change Runtime behavior.
+
 ## [0.10.1] — 2026-09-08
 
 ### Added

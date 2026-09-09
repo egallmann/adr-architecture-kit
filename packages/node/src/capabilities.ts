@@ -11,7 +11,7 @@ export interface CapabilityManifest {
   readonly supported_evidence_attribution_versions: readonly ["1.5", "1.6"];
   readonly preferred_evidence_attribution_version: "1.6";
   readonly browser_safe_entrypoints: readonly [".", "./model", "./schemas", "./validation"];
-  readonly node_entrypoints: readonly ["./node", "./node/linkage", "./node/governance"];
+  readonly node_entrypoints: readonly ["./node", "./node/linkage", "./node/governance", "./node/semantic-contract"];
   readonly host_operations: readonly string[];
   readonly pending_host_operations: readonly string[];
   readonly browser_operations: readonly string[];
@@ -28,7 +28,7 @@ export function capabilities(): CapabilityManifest {
     supported_evidence_attribution_versions: ["1.5", "1.6"] as const,
     preferred_evidence_attribution_version: "1.6",
     browser_safe_entrypoints: [".", "./model", "./schemas", "./validation"] as const,
-    node_entrypoints: ["./node", "./node/linkage", "./node/governance"] as const,
+    node_entrypoints: ["./node", "./node/linkage", "./node/governance", "./node/semantic-contract"] as const,
     host_operations: hostCapabilities.peer_host_operations,
     pending_host_operations: hostCapabilities.pending_host_operations,
     browser_operations: hostCapabilities.browser_operations

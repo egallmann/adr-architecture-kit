@@ -1,0 +1,31 @@
+{
+  "supportedSourceContractBindings": ["authoring@1.6", "authoring@1.5", "normalized-model@2.3"],
+  "sourceDecoding": {
+    "duplicateJsonMembers": "reject",
+    "unsafeNumbers": "reject-before-coercion",
+    "unicodeNormalization": "none",
+    "implicitImports": "reject",
+    "liveExternalReferences": "reject"
+  },
+  "normativePropositionQualification": {
+    "owner": "declaring-adr",
+    "parentQualification": "required",
+    "identityMap": "required-for-legacy-identity",
+    "lifecycle": "declaring-adr-only"
+  },
+  "absenceAndCoverage": {
+    "missingDeclaration": "not-covered-or-inexpressible",
+    "emptyDeclaration": "covered-with-no-declarations",
+    "sourceLifecycle": "available-through-declaring-adr"
+  },
+  "projection": {
+    "force": "canonical-force-value",
+    "scope": "preserve-or-report-unknown",
+    "ordering": "deterministic",
+    "duplicateDefinitions": "reject"
+  },
+  "identity": {
+    "implicitCreation": "prohibited",
+    "legacyMap": "complete-sealed-provider-authoritative-map"
+  }
+}

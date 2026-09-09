@@ -30,7 +30,7 @@ export interface ArchitectureRepository extends ArchitectureModelView {
   readonly subsets: Readonly<Record<string, readonly NormalizedEntity[]>>;
 }
 
-export type SupportedNormalizedModelVersion = "2.1" | "2.2";
+export type SupportedNormalizedModelVersion = "2.1" | "2.2" | "2.3";
 
 export async function openRepository(projectRoot: string | URL): Promise<ArchitectureRepository> {
   const root = resolve(projectRoot instanceof URL ? fileURLToPath(projectRoot) : projectRoot);
@@ -156,7 +156,7 @@ function deepFreeze<T>(value: T): T { if (value && typeof value === "object" && 
 function repositoryFailure(error: unknown): RepositoryError { return error instanceof RepositoryError ? error : new RepositoryError("repository.contract", error instanceof Error ? error.message : String(error)); }
 
 function normalizedModelVersion(value: unknown): SupportedNormalizedModelVersion {
-  if (value === "2.1" || value === "2.2") return value;
+  if (value === "2.1" || value === "2.2" || value === "2.3") return value;
   throw new RepositoryError("contract.unsupported_version", `Normalized model ${String(value)} is not supported`);
 }
 

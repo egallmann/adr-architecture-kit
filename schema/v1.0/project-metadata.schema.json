@@ -38,7 +38,7 @@
         },
         "type": {
           "type": "string",
-          "enum": ["service", "library", "platform", "system", "tool"]
+          "enum": ["service", "library", "platform", "system", "tool", "specification"]
         }
       }
     },

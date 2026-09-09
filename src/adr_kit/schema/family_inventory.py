@@ -14,6 +14,7 @@ AUTHORING_SCHEMA_PACKAGES: dict[str, str] = {
     "1.3": "adr_kit.schema.v1_3",
     "1.4": "adr_kit.schema.v1_4",
     "1.5": "adr_kit.schema.authoring.v1_5",
+    "1.6": "adr_kit.schema.authoring.v1_6",
 }
 
 EVIDENCE_ATTRIBUTION_SCHEMA_PACKAGES: dict[str, str] = {

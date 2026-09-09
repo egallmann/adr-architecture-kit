@@ -28,6 +28,34 @@ export interface NormalizedEntityV21 {
  */
 export interface NormalizedEntityV22 extends NormalizedEntityV21 {}
 
+export interface NormativePropositionEntityV23 {
+  readonly id: string;
+  readonly alias_id: `NP-${number}` | string;
+  readonly alias_name: string;
+  readonly alias_ref: string;
+  readonly entity_type: "normative_proposition";
+  readonly name: string;
+  readonly summary: string;
+  readonly uri: string;
+  readonly created_at: string;
+  readonly entity_fingerprint: string;
+  readonly statement: string;
+  readonly normative_force: "MUST" | "MUST NOT" | "SHOULD" | "SHOULD NOT" | "MAY";
+  readonly scope: string;
+  readonly rationale?: string | null;
+  readonly declaring_adr: Record<string, unknown>;
+  readonly source_artifact: Record<string, unknown>;
+  readonly source_contract: Record<string, unknown>;
+  readonly canonical_source: Record<string, unknown>;
+  readonly source_refs?: readonly unknown[];
+  readonly metadata?: Record<string, unknown>;
+  readonly relationships?: Record<string, unknown>;
+  readonly completeness: Record<string, unknown>;
+  readonly provenance: Record<string, unknown>;
+}
+
+export interface NormalizedEntityV23 extends NormalizedEntityV22 {}
+
 export interface CanonicalRelationshipV21 {
   readonly record_kind: "canonical";
   readonly id: string;
@@ -99,9 +127,16 @@ export interface NormalizedArchitectureModelV22
   readonly source_coverage?: Record<string, unknown> | null;
 }
 
-export type NormalizedEntity = NormalizedEntityV21 | NormalizedEntityV22;
+export interface NormalizedArchitectureModelV23
+  extends Pick<NormalizedArchitectureModelV22, "type" | "mode" | "scope_root" | "architecture_namespace" | "fingerprint" | "unresolved" | "validation_summary" | "source_coverage"> {
+  readonly schema_version: "2.3";
+  readonly entities: readonly (NormalizedEntityV23 | NormativePropositionEntityV23)[];
+  readonly relationships: readonly RelationshipV22[];
+}
+
+export type NormalizedEntity = NormalizedEntityV21 | NormalizedEntityV22 | NormalizedEntityV23 | NormativePropositionEntityV23;
 export type Relationship = RelationshipV21 | RelationshipV22;
-export type NormalizedArchitectureModel = NormalizedArchitectureModelV21 | NormalizedArchitectureModelV22;
+export type NormalizedArchitectureModel = NormalizedArchitectureModelV21 | NormalizedArchitectureModelV22 | NormalizedArchitectureModelV23;
 
 export type RelationshipDirection = "any" | "incoming" | "outgoing";
 export interface RelationshipQuery { readonly relationshipType?: string; readonly direction?: RelationshipDirection; }

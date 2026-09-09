@@ -11,6 +11,7 @@ from ..models import NormalizedArchitectureModel
 from ..models.v2_1 import NormalizedArchitectureModelV21
 from ..models.v2_2 import NormalizedArchitectureModelV22
 from ..models.v2_0 import NormalizedArchitectureModelV2
+from ..models.v2_3 import NormalizedArchitectureModelV23
 from ._errors import InvalidRequestError
 
 API_CONTRACT_VERSION = "1.0"
@@ -399,6 +400,7 @@ class CompilationResult:
         | NormalizedArchitectureModelV2
         | NormalizedArchitectureModelV21
         | NormalizedArchitectureModelV22
+        | NormalizedArchitectureModelV23
         | None
     )
     fingerprint: str | None

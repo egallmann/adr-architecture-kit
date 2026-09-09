@@ -5,8 +5,8 @@ artifact_kind: system_overview
 generator_id: adr-system-overview
 generator_version: 2
 hash_algorithm: sha256
-source_hash: 3edafe81737951be587e28022467e3a13b0c99201bdb77cf8cf6ff7c53be1286
-rendered_hash: d58d67477c933218f5f14de498bd927951765e1318ed6916819aef0b75370fff
+source_hash: bad42bc19d316b73802b33e22325b72a65e7cdee5a79849d1832173560c48509
+rendered_hash: e0972d886c442eafa3418b35fe198ce7221370f884bca76eb2b47e07033b1860
 -->
 
 <!--
@@ -73,8 +73,8 @@ Derived provider facts:
 
 - API contract version: `1.0`
 - Package version: `0.10.1`
-- Operations: `capabilities`, `validate_architecture`, `validate_project_metadata`, `validate_contract`, `validate_generated_docs`, `compile_architecture`, `open_repository`, `open_provider_registry`, `build_embodiment_linkage`, `generate_attribution_shim`, `prepare_promotion`, `check_promotion`, `apply_promotion`- Validation modes: `complete`, `structural`- Artifact groups: `registries`, `manifest`, `markdown`- Supported ADR schema versions: `1.0`, `1.1`, `1.2`, `1.3`, `1.4`, `1.5`- Stable ADR schema versions: `1.0`- Provisional ADR schema versions: `1.1`, `1.2`, `1.3`, `1.4`, `1.5`- Normalized model schema version: `1.1`
-- Supported normalized model schema versions: `1.1`, `2.0`, `2.1`, `2.2`
+- Operations: `capabilities`, `validate_architecture`, `validate_project_metadata`, `validate_contract`, `validate_generated_docs`, `compile_architecture`, `open_repository`, `open_provider_registry`, `build_embodiment_linkage`, `generate_attribution_shim`, `prepare_promotion`, `check_promotion`, `apply_promotion`- Validation modes: `complete`, `structural`- Artifact groups: `registries`, `manifest`, `markdown`- Supported ADR schema versions: `1.0`, `1.1`, `1.2`, `1.3`, `1.4`, `1.5`, `1.6`- Stable ADR schema versions: `1.0`- Provisional ADR schema versions: `1.1`, `1.2`, `1.3`, `1.4`, `1.5`, `1.6`- Normalized model schema version: `1.1`
+- Supported normalized model schema versions: `1.1`, `2.0`, `2.1`, `2.2`, `2.3`
 Supported semantic/repository contracts include `ArchitectureRepository` and `NormalizedArchitectureModel`.
 
 See [`docs/public-sdk.md`](docs/public-sdk.md).

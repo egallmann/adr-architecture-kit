@@ -428,9 +428,7 @@ def test_develop_assurance_enforces_post_release_branch_synchronization() -> Non
     assert "github.sha" in sync_text
 
     contributing = (ROOT / "CONTRIBUTING.md").read_text(encoding="utf-8")
-    skill = (ROOT / ".agents" / "skills" / "ship-release" / "SKILL.md").read_text(
-        encoding="utf-8"
-    )
+    skill = (ROOT / ".agents" / "skills" / "ship-release" / "SKILL.md").read_text(encoding="utf-8")
     for text in (contributing, skill):
         assert "post-release" in text
         assert "verify_release_branch_sync.py" in text

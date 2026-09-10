@@ -93,15 +93,13 @@ fn canonical_number(value: &serde_json::Number) -> Result<String, String> {
     let number = value.as_f64().ok_or_else(|| "JSON number must be finite".to_owned())?;
     if !number.is_finite() { return Err("JSON number must be finite".into()); }
 
-    // RFC 8785 delegates number spelling to ECMAScript Number::toString.
-    // The ordinary `ryu` crate only supplies shortest round-tripping digits;
-    // its notation thresholds differ from ECMAScript and produce a different
-    // semantic identity for values such as 333333333.33333329. `zmij_ecma` is
-    // a qualified pure-Rust implementation whose `Buffer::format` follows
-    // the ECMAScript NumberToString algorithm behind this boundary.
-    // The selected implementation also resolves shortest-round-trip tie
-    // selection the way ECMAScript does; notation-only forks of Ryū are not
-    // sufficient for the semantic identity contract.
+    // RFC 8785 delegates number spelling to ECMAScript Number::toString. The
+    // parser is part of that boundary too: serde_json's default long-decimal
+    // path uses repeated multiply/divide operations and can round a witness
+    // such as 333333333.33333329 down by one ULP before formatting begins.
+    // `float_roundtrip` uses its correctly-rounded decimal parser, while
+    // `zmij_ecma` supplies the ECMAScript shortest-round-trip spelling and
+    // notation thresholds. Both choices are semantic, not host conveniences.
     let mut buffer = zmij_ecma::Buffer::new();
     let rendered = buffer.format(number);
     let rendered = rendered.strip_suffix(".0").unwrap_or(rendered);
@@ -531,6 +529,11 @@ mod tests {
     #[test]
     fn ecmascript_number_spelling_matches_the_shared_known_answer() {
         let value = serde_json::from_str::<Json>(r#"{"a":333333333.33333329,"b":1e30,"c":4.50,"d":2e-3,"e":1e-27,"f":0.000001,"g":0.0000001,"h":1e20,"i":1e21,"j":-0,"k":5e-324,"l":1.7976931348623157e308,"m":1000000000000000100.0}"#).expect("known-answer JSON is valid");
+        // These assertions pin the parse step as well as the spelling step.
+        // Without serde_json's `float_roundtrip` feature, both decimals are
+        // rounded down before `canonicalize_value` can apply ECMAScript rules.
+        assert_eq!(value["a"].as_f64().expect("finite number").to_bits(), 4734372014072354133);
+        assert_eq!(value["m"].as_f64().expect("finite number").to_bits(), 4876203697187506177);
         let mut canonical = String::new();
         canonicalize_value(&value, &mut canonical).expect("known-answer numbers are in the supported domain");
         assert_eq!(canonical, r#"{"a":333333333.3333333,"b":1e+30,"c":4.5,"d":0.002,"e":1e-27,"f":0.000001,"g":1e-7,"h":100000000000000000000,"i":1e+21,"j":0,"k":5e-324,"l":1.7976931348623157e+308,"m":1000000000000000100}"#);

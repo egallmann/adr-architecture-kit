@@ -97,6 +97,7 @@ fn canonical_number(value: &serde_json::Number) -> Result<String, String> {
     // follows ECMAScript: [1e-6, 1e21) is decimal; 1e-7 is exponent form.
     let mut buffer = ryu::Buffer::new();
     let rendered = buffer.format_finite(number);
+    let rendered = rendered.strip_suffix(".0").unwrap_or(rendered);
     let (mantissa, exponent) = match rendered.split_once('e') {
         Some((mantissa, exponent)) => (mantissa, exponent.parse::<i32>().unwrap_or(0)),
         None => (rendered, 0),

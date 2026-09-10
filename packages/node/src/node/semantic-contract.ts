@@ -97,7 +97,15 @@ export function validateSemanticResourceClosure(
 export function composeSemanticContractSet(
   contracts: readonly (SemanticContractVersion | Record<string, unknown>)[],
 ): Promise<SemanticOperationResult> {
-  return execute("compose_semantic_contract_set", { contracts });
+  const members = contracts.map((item) => {
+    const value = item as Record<string, unknown>;
+    return {
+      semanticContractFamily: value.semanticContractFamily,
+      semanticContractVersion: value.semanticContractVersion,
+      semanticContractFingerprint: value.semanticContractFingerprint,
+    };
+  });
+  return execute("compose_semantic_contract_set", { contracts: members });
 }
 
 function definition(name: "normative-semantics.json" | "architecture-interpretation.json" | "normalized-model.json"): SemanticContractVersion {
@@ -107,8 +115,8 @@ function definition(name: "normative-semantics.json" | "architecture-interpretat
 export function listSemanticContracts(): readonly SemanticContractVersion[] {
   return Object.freeze([
     definition("architecture-interpretation.json"),
-    definition("normative-semantics.json"),
     definition("normalized-model.json"),
+    definition("normative-semantics.json"),
   ]);
 }
 

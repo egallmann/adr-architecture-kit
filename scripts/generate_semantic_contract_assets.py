@@ -50,8 +50,11 @@ RESOURCE_DIGESTS: dict[str, str] = {}
 def manifest_digest(key: str) -> str:
     if key not in RESOURCE_DIGESTS:
         filename = key.replace("/", "-") + ".json"
+        parts = key.split("/")
+        if not (RESOURCES / filename).is_file() and len(parts) == 3:
+            filename = f"{parts[0]}-{parts[2]}.json"
         if not (RESOURCES / filename).is_file():
-            filename = filename.replace("-1.0-", "-")
+            raise FileNotFoundError(f"No canonical resource file for {key}")
         RESOURCE_DIGESTS[key] = digest(read_json(RESOURCES / filename))
     return RESOURCE_DIGESTS[key]
 
@@ -77,12 +80,6 @@ def write_json(path: Path, value: Any) -> None:
 
 
 def main() -> None:
-    # Prime the digest table before constructing dependency edges.
-    for path in RESOURCES.glob("*.json"):
-        key = path.stem.replace("-", "/", 2)
-        if key not in RESOURCE_DIGESTS:
-            RESOURCE_DIGESTS[key] = digest(read_json(path))
-
     normalized_schema_files = [
         "normalized-architecture-model.schema",
         "normalized-entity-registry.schema",

@@ -54,7 +54,7 @@ test("Node semantic-contract binding matches the shared vectors", async () => {
 
 test("Node public semantic-contract bindings expose the same immutable closure", async () => {
   const contracts = listSemanticContracts();
-  assert.deepEqual(contracts.map((item) => item.semanticContractFamily), ["architecture-interpretation", "normative-semantics", "normalized-model"]);
+  assert.deepEqual(contracts.map((item) => item.semanticContractFamily), ["architecture-interpretation", "normalized-model", "normative-semantics"]);
   const contract = getSemanticContract("normative-semantics");
   const fingerprint = await calculateSemanticContractFingerprint(contract);
   assert.equal(fingerprint.semantic_contract_fingerprint, contract.semanticContractFingerprint);

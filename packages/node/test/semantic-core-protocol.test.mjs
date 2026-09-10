@@ -22,7 +22,7 @@ test("Node protocol validator accepts every valid shared vector request and resu
       checked += 1;
     }
   }
-  assert.equal(checked, 28);
+  assert.equal(checked, 31);
 });
 
 test("Node protocol validator rejects an undeclared operation field", () => {

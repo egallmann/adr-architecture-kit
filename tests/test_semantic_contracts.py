@@ -30,8 +30,8 @@ def test_bundled_contracts_are_immutable_and_content_addressed() -> None:
     contracts = list_semantic_contracts()
     assert [item.semantic_contract_family for item in contracts] == [
         "architecture-interpretation",
-        "normative-semantics",
         "normalized-model",
+        "normative-semantics",
     ]
     for contract in contracts:
         assert contract.fingerprint_scheme == "scf:v1:sha256"

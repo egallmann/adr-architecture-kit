@@ -442,6 +442,7 @@ class CapabilityManifest:
         "get_semantic_contract",
         "canonicalize_semantic_json",
         "calculate_semantic_contract_fingerprint",
+        "verify_semantic_contract",
         "validate_semantic_resource_closure",
         "compose_semantic_contract_set",
     )

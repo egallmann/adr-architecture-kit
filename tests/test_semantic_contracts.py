@@ -58,29 +58,38 @@ def test_python_contract_fingerprint_and_closure_delegate_to_core() -> None:
         ("normative-semantics", "1.0"),
     ):
         selected = get_semantic_contract(family, version)
-        assert validate_semantic_resource_closure(selected, _resources(selected)).closure_valid is True
+        assert (
+            validate_semantic_resource_closure(selected, _resources(selected)).closure_valid is True
+        )
 
 
 def test_closure_rejects_a_relative_reference_that_is_not_declared() -> None:
     contract = get_semantic_contract("normalized-model", "2.3")
     definition = contract.to_wire()
     schema = next(
-        item for item in definition["resourceManifest"]
-        if item["canonicalResourceKey"] == "normalized-model/2.3/schema/normalized-architecture-model.schema"
+        item
+        for item in definition["resourceManifest"]
+        if item["canonicalResourceKey"]
+        == "normalized-model/2.3/schema/normalized-architecture-model.schema"
     )
     schema["dependencies"] = [
         dependency
         for dependency in schema["dependencies"]
-        if dependency["canonicalResourceKey"] != "normalized-model/2.3/schema/normalized-entity.schema"
+        if dependency["canonicalResourceKey"]
+        != "normalized-model/2.3/schema/normalized-entity.schema"
     ]
     definition.pop("semanticContractFingerprint")
     calculated = calculate_semantic_contract_fingerprint(definition)
     assert calculated.success is True
     definition["semanticContractFingerprint"] = calculated.semantic_contract_fingerprint
 
-    closure = validate_semantic_resource_closure(contract.__class__.from_wire(definition), _resources(contract))
+    closure = validate_semantic_resource_closure(
+        contract.__class__.from_wire(definition), _resources(contract)
+    )
     assert closure.success is False
-    assert any(item.code == "semantic_contract.undeclared_dependency" for item in closure.diagnostics)
+    assert any(
+        item.code == "semantic_contract.undeclared_dependency" for item in closure.diagnostics
+    )
 
 
 def test_python_contract_selection_requires_exact_version() -> None:

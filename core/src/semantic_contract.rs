@@ -353,11 +353,11 @@ pub fn validate_closure(request: &Json) -> Json {
                 let expected = scf(&canonical);
                 if let Some(declared) = definition.get("semanticContractFingerprint").and_then(Json::as_str) {
                     if declared != expected {
-                        add_diagnostic(diagnostics, "semantic_contract.fingerprint_mismatch", "declared semantic contract fingerprint does not match the immutable definition", Some("semanticContractFingerprint".into()));
+                        add_diagnostic(&mut diagnostics, "semantic_contract.fingerprint_mismatch", "declared semantic contract fingerprint does not match the immutable definition", Some("semanticContractFingerprint".into()));
                     }
                 }
             }
-            Err(error) => add_diagnostic(diagnostics, "semantic_contract.canonicalization_failed", error, None),
+            Err(error) => add_diagnostic(&mut diagnostics, "semantic_contract.canonicalization_failed", error, None),
         }
     }
     if let Some(entries) = entries { validate_resource_contents(entries.as_slice(), root.get("resources").and_then(Json::as_array), &mut diagnostics); }

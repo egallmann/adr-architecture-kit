@@ -1,9 +1,15 @@
 {
+  "semanticDependencies": [
+    "architecture-interpretation/1.0/source-decoding-1.5",
+    "architecture-interpretation/1.0/source-decoding-1.6",
+    "architecture-interpretation/1.0/source-mapping-1.5-to-2.3",
+    "architecture-interpretation/1.0/source-mapping-1.6-to-2.3"
+  ],
   "supportedSourceContractBindings": ["authoring@1.6", "authoring@1.5"],
   "outputContractBinding": "normalized-model@2.3",
   "sourceContractClosure": [
     {"family": "authoring", "version": "1.6", "qualification": "exact-imported-schema-artifacts"},
-    {"family": "authoring", "version": "1.5", "qualification": "exact-imported-schema-artifacts-when-available"}
+    {"family": "authoring", "version": "1.5", "qualification": "exact-imported-schema-artifacts"}
   ],
   "sourceContractMappings": [
     {"source": "authoring@1.6", "artifactPrefix": "authoring/1.6/schema/", "coverage": "supported"},

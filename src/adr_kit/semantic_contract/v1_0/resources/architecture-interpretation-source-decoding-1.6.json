@@ -1,0 +1,25 @@
+{
+  "semanticContractFamily": "architecture-interpretation",
+  "semanticContractVersion": "1.0",
+  "resourceKind": "authoring-source-decoding",
+  "sourceContract": {"family": "authoring", "version": "1.6"},
+  "sourceFormat": {"name": "YAML", "contractVersion": "1.6"},
+  "encoding": {"accepted": ["UTF-8"], "bom": "accepted-and-stripped", "invalid": "typed-source-decode-failure"},
+  "documents": {"selection": "exactly-one-document", "empty": "typed-source-decode-failure", "extra-documents": "typed-source-decode-failure"},
+  "mapping": {"duplicate-mapping-key": "reject", "null": "preserve-as-null", "missing": "distinct-from-null", "ordering": "preserve-source-order-until-contract-defined"},
+  "scalars": {"strings": "UTF-8-code-points-no-normalization", "booleans": "YAML-boolean-resolution", "nulls": ["null", "Null", "NULL", "~"], "numbers": "finite-IEEE-754-safe-domain-only"},
+  "anchorsAliases": {"anchors": "non-executable-graph-local", "aliases": "resolve-to-value-with-cycle-detection", "cycles": "typed-source-decode-failure"},
+  "tags": {"standard": "only-contract-listed-tags", "custom": "typed-unsupported-source-construct", "executable": "always-reject"},
+  "mergeKeys": "typed-unsupported-source-construct",
+  "unsupportedConstructs": ["multi-document-stream", "custom-tag", "executable-tag", "mapping-key-alias", "non-finite-number"],
+  "parseFailures": "typed-source-decode-failure",
+  "normativePropositions": {"collection": "native-supported-field", "omitted": "no-declaration-within-covered-source", "empty": "no-declaration-within-covered-source"},
+  "semanticDependencies": [
+    "authoring/1.6/schema/adr-common.schema",
+    "authoring/1.6/schema/adr-logical.schema",
+    "authoring/1.6/schema/adr-physical-base.schema",
+    "authoring/1.6/schema/adr-physical-component.schema",
+    "authoring/1.6/schema/adr-physical-system.schema",
+    "authoring/1.6/schema/types.schema"
+  ]
+}

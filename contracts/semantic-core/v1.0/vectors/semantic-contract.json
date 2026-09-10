@@ -2,6 +2,19 @@
   "contract_version": "1.0",
   "cases": [
     {
+      "name": "jcs_ecmascript_appendix_b_number_corpus",
+      "request": {
+        "core_contract_version": "1.0",
+        "operation": "canonicalize_semantic_json",
+        "value_json": "{\"a\":333333333.33333329,\"b\":1e30,\"c\":4.50,\"d\":2e-3,\"e\":1e-27,\"f\":0.000001,\"g\":0.0000001,\"h\":1e20,\"i\":1e21,\"j\":-0,\"k\":5e-324,\"l\":1.7976931348623157e308,\"m\":1000000000000000100.0}"
+      },
+      "expected": {
+        "success": true,
+        "canonical_preimage_json": "{\"a\":333333333.3333333,\"b\":1e+30,\"c\":4.5,\"d\":0.002,\"e\":1e-27,\"f\":0.000001,\"g\":1e-7,\"h\":100000000000000000000,\"i\":1e+21,\"j\":0,\"k\":5e-324,\"l\":1.7976931348623157e+308,\"m\":1000000000000000100}",
+        "fingerprint": "sha256:220209c365ed6dd98eb857903c51a4ac3bff2f984f0e44474af141679b647717"
+      }
+    },
+    {
       "name": "jcs_ecmascript_number_boundaries",
       "request": {
         "core_contract_version": "1.0",

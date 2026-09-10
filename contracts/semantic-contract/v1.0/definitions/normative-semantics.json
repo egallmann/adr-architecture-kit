@@ -5,7 +5,7 @@
   "resourceManifest": [
     {
       "canonicalResourceKey": "normative-semantics/1.0/conformance",
-      "contentDigest": "sha256:59000092946608f7b133747815022bfc5d3b3cc6ab1a2861338a5fdb77a38af2",
+      "contentDigest": "sha256:8e14d1373ebd5dc8d6058ecf729e8c308ef87657f319e667020a92d6f788f718",
       "role": "normative-conformance",
       "dependencies": [
         {
@@ -24,5 +24,5 @@
   "frozenNormativeConformanceResources": [
     "normative-semantics/1.0/conformance"
   ],
-  "semanticContractFingerprint": "scf:v1:sha256:d251c20231d2eb8956e6e11ef4b68f1b88e2b3ce38bfce1a4245ace67c6dfc48"
+  "semanticContractFingerprint": "scf:v1:sha256:3ad9db564b2fdb85df4b2d86e464beb533156635d8cb9790a4865d518d600f51"
 }

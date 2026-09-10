@@ -261,8 +261,8 @@ def list_semantic_contracts() -> tuple[SemanticContractVersion, ...]:
     )
 
 
-def get_semantic_contract(family: str, version: str = "1.0") -> SemanticContractVersion:
-    """Load one bundled immutable definition; unknown versions fail explicitly."""
+def get_semantic_contract(family: str, version: str) -> SemanticContractVersion:
+    """Load one bundled immutable definition using an exact caller version."""
 
     for contract in list_semantic_contracts():
         if (

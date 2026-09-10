@@ -120,7 +120,7 @@ export function listSemanticContracts(): readonly SemanticContractVersion[] {
   ]);
 }
 
-export function getSemanticContract(family: string, version = "1.0"): SemanticContractVersion {
+export function getSemanticContract(family: string, version: string): SemanticContractVersion {
   const contract = listSemanticContracts().find(
     (item) => item.semanticContractFamily === family && item.semanticContractVersion === version,
   );

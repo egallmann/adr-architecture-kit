@@ -93,10 +93,14 @@ fn canonical_number(value: &serde_json::Number) -> Result<String, String> {
     let number = value.as_f64().ok_or_else(|| "JSON number must be finite".to_owned())?;
     if !number.is_finite() { return Err("JSON number must be finite".into()); }
 
-    // ryu supplies the shortest round-tripping IEEE-754 representation. JCS
-    // follows ECMAScript: [1e-6, 1e21) is decimal; 1e-7 is exponent form.
-    let mut buffer = ryu::Buffer::new();
-    let rendered = buffer.format_finite(number);
+    // RFC 8785 delegates number spelling to ECMAScript Number::toString.
+    // The ordinary `ryu` crate only supplies shortest round-tripping digits;
+    // its notation thresholds differ from ECMAScript and produce a different
+    // semantic identity for values such as 333333333.33333329. `ryu-js` is a
+    // deliberately qualified fork whose `Buffer::format` implements the
+    // ECMAScript notation rules behind this Rust/WASM authority boundary.
+    let mut buffer = ryu_js::Buffer::new();
+    let rendered = buffer.format(number);
     let rendered = rendered.strip_suffix(".0").unwrap_or(rendered);
     let (mantissa, exponent) = match rendered.split_once('e') {
         Some((mantissa, exponent)) => (mantissa, exponent.parse::<i32>().unwrap_or(0)),
@@ -298,6 +302,95 @@ fn validate_declared_fingerprint(definition: &BTreeMap<String, Json>, require_de
     Some(canonical)
 }
 
+// A fragment-only reference points inside the resource that contains it and
+// is therefore not a manifest edge.  A relative resource reference, in
+// contrast, changes the meaning of the containing resource and must resolve
+// to one exact canonical key.  `$schema` and `$id` are intentionally not
+// interpreted here: they are metadata, not dependency edges.  Remote `$ref`
+// values are rejected because a live network lookup cannot be part of an
+// immutable semantic definition.
+fn relative_resource_key(resource_key: &str, reference: &str) -> Result<Option<String>, (String, String)> {
+    let (location, _) = reference.split_once('#').unwrap_or((reference, ""));
+    if location.is_empty() { return Ok(None); }
+    if reference.starts_with("//") || reference.contains("://") || reference.starts_with("urn:") {
+        return Err(("semantic_contract.live_external_reference".into(), "remote resource references are not permitted in a semantic closure".into()));
+    }
+    if location.starts_with('/') {
+        return Err(("semantic_contract.absolute_resource_reference".into(), "absolute resource references cannot be resolved from a semantic resource".into()));
+    }
+    let mut parts: Vec<String> = resource_key.split('/').map(str::to_owned).collect();
+    parts.pop();
+    for part in location.split('/') {
+        if part.is_empty() || part == "." { continue; }
+        if part == ".." {
+            if parts.pop().is_none() {
+                return Err(("semantic_contract.resource_reference_escape".into(), "relative resource reference escapes the canonical resource namespace".into()));
+            }
+        } else {
+            parts.push(part.to_owned());
+        }
+    }
+    let Some(last) = parts.last_mut() else {
+        return Err(("semantic_contract.invalid_resource_reference".into(), "relative resource reference resolved to an empty key".into()));
+    };
+    if let Some(stripped) = last.strip_suffix(".json") { *last = stripped.to_owned(); }
+    let key = parts.join("/");
+    if !canonical_key(&key) {
+        return Err(("semantic_contract.invalid_resource_reference".into(), "relative resource reference did not resolve to a canonical key".into()));
+    }
+    Ok(Some(key))
+}
+
+fn collect_resource_references(
+    resource_key: &str,
+    value: &Json,
+    path: &str,
+    references: &mut BTreeSet<String>,
+    diagnostics: &mut Vec<Json>,
+) {
+    match value {
+        Json::Object(values) => {
+            if let Some(reference) = values.get("$ref") {
+                let Some(reference) = reference.as_str() else {
+                    add_diagnostic(diagnostics, "semantic_contract.invalid_resource_reference", "$ref must be a string", Some(path.to_owned()));
+                    return;
+                };
+                match relative_resource_key(resource_key, reference) {
+                    Ok(Some(key)) => { references.insert(key); }
+                    Ok(None) => {}
+                    Err((code, message)) => add_diagnostic(diagnostics, &code, message, Some(path.to_owned())),
+                }
+            }
+            for (key, child) in values {
+                if key != "$ref" { collect_resource_references(resource_key, child, &format!("{path}/{key}"), references, diagnostics); }
+            }
+        }
+        Json::Array(values) => {
+            for (index, child) in values.iter().enumerate() { collect_resource_references(resource_key, child, &format!("{path}[{index}]"), references, diagnostics); }
+        }
+        Json::Null | Json::Bool(_) | Json::Number(_) | Json::String(_) => {}
+    }
+}
+
+fn collect_explicit_semantic_dependencies(resource_key: &str, value: &Json, diagnostics: &mut Vec<Json>) -> BTreeSet<String> {
+    let Some(raw) = value.as_object().and_then(|object| object.get("semanticDependencies")) else { return BTreeSet::new(); };
+    let Some(values) = raw.as_array() else {
+        add_diagnostic(diagnostics, "semantic_contract.invalid_semantic_dependencies", "semanticDependencies must be an array of canonical resource keys", Some(resource_key.to_owned()));
+        return BTreeSet::new();
+    };
+    let mut dependencies = BTreeSet::new();
+    for (index, dependency) in values.iter().enumerate() {
+        let path = format!("{resource_key}/semanticDependencies[{index}]");
+        let Some(key) = dependency.as_str() else {
+            add_diagnostic(diagnostics, "semantic_contract.invalid_semantic_dependency", "semantic dependency must be a string", Some(path));
+            continue;
+        };
+        if !canonical_key(key) { add_diagnostic(diagnostics, "semantic_contract.invalid_semantic_dependency", "semantic dependency key is not canonical", Some(path)); }
+        dependencies.insert(key.to_owned());
+    }
+    dependencies
+}
+
 fn validate_resource_contents(entries: &[ResourceEntry], resources: Option<&Vec<Json>>, diagnostics: &mut Vec<Json>) {
     let Some(resources) = resources else { add_diagnostic(diagnostics, "semantic_contract.missing_resource_contents", "resource closure requires explicit resource contents", Some("resources".into())); return; };
     if resources.is_empty() { add_diagnostic(diagnostics, "semantic_contract.empty_resource_contents", "resource closure contents must not be empty", Some("resources".into())); }
@@ -315,7 +408,35 @@ fn validate_resource_contents(entries: &[ResourceEntry], resources: Option<&Vec<
             add_diagnostic(diagnostics, if same { "semantic_contract.duplicate_supplied_resource" } else { "semantic_contract.conflicting_resource_definition" }, "resource content key occurs more than once", Some(key));
         }
     }
-    for entry in entries { match supplied.get(&entry.key) { None => add_diagnostic(diagnostics, "semantic_contract.missing_resource_content", format!("missing content for resource: {}", entry.key), Some(entry.key.clone())), Some(content) => { let mut canonical = String::new(); if let Err(error) = canonicalize_value(content, &mut canonical) { add_diagnostic(diagnostics, "semantic_contract.invalid_resource_content", error, Some(entry.key.clone())); } else if digest(canonical.as_bytes()) != entry.digest { add_diagnostic(diagnostics, "semantic_contract.resource_digest_mismatch", format!("content digest does not match manifest for {}", entry.key), Some(entry.key.clone())); } } } }
+    for entry in entries {
+        match supplied.get(&entry.key) {
+            None => add_diagnostic(diagnostics, "semantic_contract.missing_resource_content", format!("missing content for resource: {}", entry.key), Some(entry.key.clone())),
+            Some(content) => {
+                let mut canonical = String::new();
+                if let Err(error) = canonicalize_value(content, &mut canonical) {
+                    add_diagnostic(diagnostics, "semantic_contract.invalid_resource_content", error, Some(entry.key.clone()));
+                } else if digest(canonical.as_bytes()) != entry.digest {
+                    add_diagnostic(diagnostics, "semantic_contract.resource_digest_mismatch", format!("content digest does not match manifest for {}", entry.key), Some(entry.key.clone()));
+                }
+
+                let mut discovered = BTreeSet::new();
+                collect_resource_references(&entry.key, content, &entry.key, &mut discovered, diagnostics);
+                discovered.extend(collect_explicit_semantic_dependencies(&entry.key, content, diagnostics));
+                let declared = entry.dependencies.iter().map(|(key, _)| key.clone()).collect::<BTreeSet<_>>();
+                for key in discovered.difference(&declared) {
+                    add_diagnostic(diagnostics, "semantic_contract.undeclared_dependency", format!("resource reference is not declared in the manifest: {key}"), Some(entry.key.clone()));
+                }
+                for key in declared.difference(&discovered) {
+                    add_diagnostic(diagnostics, "semantic_contract.unjustified_dependency", format!("manifest dependency is not justified by the resource: {key}"), Some(entry.key.clone()));
+                }
+                for key in discovered {
+                    if !entries.iter().any(|candidate| candidate.key == key) {
+                        add_diagnostic(diagnostics, "semantic_contract.unresolved_resource_dependency", format!("resource dependency is not present in the manifest: {key}"), Some(entry.key.clone()));
+                    }
+                }
+            }
+        }
+    }
     for key in supplied.keys() { if !entries.iter().any(|entry| entry.key == *key) { add_diagnostic(diagnostics, "semantic_contract.unlisted_resource", format!("resource content is not listed in the manifest: {key}"), Some(key.clone())); } }
 }
 
@@ -398,4 +519,17 @@ pub fn compose_set(request: &Json) -> Json {
     let mut result = canonical_result("compose_semantic_contract_set", canonical, set_id.clone());
     if let Json::Object(ref mut values) = result { values.insert("semantic_contract_set_id".into(), string(set_id)); }
     result
+}
+
+#[cfg(test)]
+mod tests {
+    use super::{canonicalize_value, Json};
+
+    #[test]
+    fn ecmascript_number_spelling_matches_the_shared_known_answer() {
+        let value = serde_json::from_str::<Json>(r#"{"a":333333333.33333329,"b":1e30,"c":4.50,"d":2e-3,"e":1e-27,"f":0.000001,"g":0.0000001,"h":1e20,"i":1e21,"j":-0,"k":5e-324,"l":1.7976931348623157e308,"m":1000000000000000100.0}"#).expect("known-answer JSON is valid");
+        let mut canonical = String::new();
+        canonicalize_value(&value, &mut canonical).expect("known-answer numbers are in the supported domain");
+        assert_eq!(canonical, r#"{"a":333333333.3333333,"b":1e+30,"c":4.5,"d":0.002,"e":1e-27,"f":0.000001,"g":1e-7,"h":100000000000000000000,"i":1e+21,"j":0,"k":5e-324,"l":1.7976931348623157e+308,"m":1000000000000000100}"#);
+    }
 }

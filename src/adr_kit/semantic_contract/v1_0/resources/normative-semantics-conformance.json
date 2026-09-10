@@ -1,4 +1,5 @@
 {
+  "semanticDependencies": ["normative-semantics/1.0/definition"],
   "positive": [
     {"id": "NS-01", "normative_force": "MUST", "statement": "The boundary MUST remain explicit."},
     {"id": "NS-02", "normative_force": "MUST NOT", "statement": "The boundary MUST NOT infer authority."},

@@ -1,4 +1,12 @@
 {
+  "semanticDependencies": [
+    "normalized-model/2.3/schema/normalized-architecture-model.schema",
+    "normalized-model/2.3/schema/normalized-entity-registry.schema",
+    "normalized-model/2.3/schema/normalized-entity.schema",
+    "normalized-model/2.3/schema/relationship-record.schema",
+    "normalized-model/2.3/schema/relationship-registry.schema",
+    "normalized-model/2.3/schema/unresolved-registry.schema"
+  ],
   "schemaVersion": "2.3",
   "representation": "normalized_architecture_model",
   "cases": [

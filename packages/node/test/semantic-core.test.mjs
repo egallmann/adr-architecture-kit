@@ -55,7 +55,7 @@ test("Node semantic-contract binding matches the shared vectors", async () => {
 test("Node public semantic-contract bindings expose the same immutable closure", async () => {
   const contracts = listSemanticContracts();
   assert.deepEqual(contracts.map((item) => item.semanticContractFamily), ["architecture-interpretation", "normalized-model", "normative-semantics"]);
-  const contract = getSemanticContract("normative-semantics");
+  const contract = getSemanticContract("normative-semantics", "1.0");
   const fingerprint = await calculateSemanticContractFingerprint(contract);
   assert.equal(fingerprint.semantic_contract_fingerprint, contract.semanticContractFingerprint);
   assert.equal((await verifySemanticContract(contract)).success, true);
@@ -70,6 +70,10 @@ test("Node public semantic-contract bindings expose the same immutable closure",
   const canonical = await canonicalizeSemanticJson('{"x":1,"x":2}');
   assert.equal(canonical.success, false);
   assert.equal(canonical.diagnostics[0]?.code, "semantic_contract.invalid_json");
+});
+
+test("Node semantic-contract selection requires an exact version", () => {
+  assert.throws(() => getSemanticContract("normative-semantics"), /Unsupported semantic contract/);
 });
 
 test("Node binding matches shared project-metadata vectors", async () => {

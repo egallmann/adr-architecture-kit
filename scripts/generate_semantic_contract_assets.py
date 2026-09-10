@@ -141,10 +141,11 @@ def main() -> None:
         "unresolved-registry.schema",
     ]
     normalized_keys = [f"normalized-model/2.3/schema/{name}" for name in normalized_schema_files]
-    normalized_manifest = [
+    normalized_schema_manifest = [
         resource(key, key.replace("/", "-") + ".json", "normalized-model-schema")
         for key in normalized_keys
     ]
+    normalized_manifest = list(normalized_schema_manifest)
     normalized_conformance_key = "normalized-model/2.3/conformance"
     normalized_manifest.append(
         resource(
@@ -198,6 +199,7 @@ def main() -> None:
             "interpretation-conformance",
         ),
         *source_manifest,
+        *normalized_schema_manifest,
         resource(
             "architecture-interpretation/1.0/source-decoding-1.5",
             "architecture-interpretation-source-decoding-1.5.json",

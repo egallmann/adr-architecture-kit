@@ -228,9 +228,10 @@
     "semantic_contract_request": {
       "allOf": [
         {"$ref": "#/$defs/request_base"},
-        {"type": "object", "required": ["operation", "definition"], "properties": {
+        {"type": "object", "required": ["operation", "definition", "mode"], "properties": {
           "operation": {"const": "fingerprint_semantic_contract"},
-          "definition": {"$ref": "#/$defs/any_object"}
+          "definition": {"$ref": "#/$defs/any_object"},
+          "mode": {"enum": ["calculate", "verify"]}
         }}
       ],
       "unevaluatedProperties": false
@@ -240,6 +241,7 @@
         {"$ref": "#/$defs/result_base"},
         {"type": "object", "required": ["operation"], "properties": {
           "operation": {"const": "fingerprint_semantic_contract"},
+          "mode": {"enum": ["calculate", "verify"]},
           "canonical_preimage_json": {"type": ["string", "null"]},
           "canonical_preimage_hex": {"type": ["string", "null"]},
           "fingerprint": {"type": ["string", "null"]},
@@ -287,7 +289,7 @@
           "canonical_preimage_json": {"type": ["string", "null"]},
           "canonical_preimage_hex": {"type": ["string", "null"]},
           "fingerprint": {"type": ["string", "null"]},
-          "semantic_contract_set_fingerprint": {"type": ["string", "null"]}
+          "semantic_contract_set_id": {"type": ["string", "null"]}
         }}
       ],
       "unevaluatedProperties": false

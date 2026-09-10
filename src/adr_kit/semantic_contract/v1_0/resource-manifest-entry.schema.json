@@ -19,7 +19,11 @@
         "normative-definition",
         "normative-conformance",
         "interpretation-rule",
-        "interpretation-conformance"
+        "interpretation-conformance",
+        "normalized-model-schema",
+        "normalized-model-conformance",
+        "source-contract-schema",
+        "source-contract-mapping"
       ]
     },
     "dependencies": {

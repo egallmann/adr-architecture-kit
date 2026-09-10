@@ -58,6 +58,7 @@ from ..semantic_contract import (
     list_semantic_contracts,
     load_semantic_resource,
     validate_semantic_resource_closure,
+    verify_semantic_contract,
 )
 from ._promotion_contracts import (
     PromotionApplyRequest,
@@ -144,4 +145,5 @@ __all__ = [
     "list_semantic_contracts",
     "load_semantic_resource",
     "validate_semantic_resource_closure",
+    "verify_semantic_contract",
 ]

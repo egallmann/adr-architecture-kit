@@ -16,10 +16,18 @@ def test_semantic_contract_definitions_and_resources_match_python_bundle() -> No
         "resource-manifest-entry.schema.json",
         "definitions/normative-semantics.json",
         "definitions/architecture-interpretation.json",
+        "definitions/normalized-model.json",
         "resources/normative-semantics-definition.json",
         "resources/normative-semantics-conformance.json",
         "resources/architecture-interpretation-rules.json",
         "resources/architecture-interpretation-conformance.json",
+        "resources/normalized-model-2.3-conformance.json",
+        "resources/normalized-model-2.3-schema-normalized-architecture-model.schema.json",
+        "resources/normalized-model-2.3-schema-normalized-entity-registry.schema.json",
+        "resources/normalized-model-2.3-schema-normalized-entity.schema.json",
+        "resources/normalized-model-2.3-schema-relationship-record.schema.json",
+        "resources/normalized-model-2.3-schema-relationship-registry.schema.json",
+        "resources/normalized-model-2.3-schema-unresolved-registry.schema.json",
     ):
         source = canonical / relative
         if relative.startswith("definitions/"):

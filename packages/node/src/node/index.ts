@@ -9,6 +9,7 @@ export {
   listSemanticContracts,
   loadSemanticResource,
   validateSemanticResourceClosure,
+  verifySemanticContract,
   SCF_SCHEME,
   SCS_SCHEME,
   type SemanticContractVersion,

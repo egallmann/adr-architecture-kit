@@ -4,23 +4,146 @@
   "fingerprintScheme": "scf:v1:sha256",
   "resourceManifest": [
     {
-      "canonicalResourceKey": "architecture-interpretation/1.0/rules",
-      "contentDigest": "sha256:efbb7b574317bd121696885bedb2a8afe614f8f306848ca5592c958d17d0030c",
-      "role": "interpretation-rule",
-      "dependencies": []
-    },
-    {
       "canonicalResourceKey": "architecture-interpretation/1.0/conformance",
-      "contentDigest": "sha256:f952f022a9e5a3bc0a47794e7daf73d0db566ac10a3eac5d5727f831b86c28dc",
+      "contentDigest": "sha256:a5159541a785327f50ba8b9f6f665967ed8e7be16a8dca4c552ea2532f8e204b",
       "role": "interpretation-conformance",
       "dependencies": [
         {
           "canonicalResourceKey": "architecture-interpretation/1.0/rules",
-          "contentDigest": "sha256:efbb7b574317bd121696885bedb2a8afe614f8f306848ca5592c958d17d0030c"
+          "contentDigest": "sha256:a77fe1c0bc0da79fd7ff0af47dab6b804f4f726e145acfe5a8aef67a95f7f2d8"
         }
       ]
+    },
+    {
+      "canonicalResourceKey": "architecture-interpretation/1.0/rules",
+      "contentDigest": "sha256:a77fe1c0bc0da79fd7ff0af47dab6b804f4f726e145acfe5a8aef67a95f7f2d8",
+      "role": "interpretation-rule",
+      "dependencies": [
+        {
+          "canonicalResourceKey": "authoring/1.5/schema/adr-common.schema",
+          "contentDigest": "sha256:29489ee4a77bbb8f2963077315df86bbe6a476cdfe595b548321577cbc26dc4e"
+        },
+        {
+          "canonicalResourceKey": "authoring/1.5/schema/adr-logical.schema",
+          "contentDigest": "sha256:2c7045e8d6aa0bb21c76689b6065dee5b76d0f83378c9a7be53f1a0d689c6ccb"
+        },
+        {
+          "canonicalResourceKey": "authoring/1.5/schema/adr-physical-base.schema",
+          "contentDigest": "sha256:91aa94708f9cf0ee3b10da612a1e09e5d388b1ca6d0ece9f6d58d1364eaba6f8"
+        },
+        {
+          "canonicalResourceKey": "authoring/1.5/schema/adr-physical-component.schema",
+          "contentDigest": "sha256:c827f2faec2706f5387e1cb2aaf1d13bebe5432a0c635331fbee85f924de03d4"
+        },
+        {
+          "canonicalResourceKey": "authoring/1.5/schema/adr-physical-system.schema",
+          "contentDigest": "sha256:69387a1227df5b13251faf75c5c3bc3ef59dcd8190e5818afcb91d5e443ceb14"
+        },
+        {
+          "canonicalResourceKey": "authoring/1.5/schema/types.schema",
+          "contentDigest": "sha256:59db7228822b0346f171b59f35e6deedba44c7c23e843e352d4dde8c565d27cf"
+        },
+        {
+          "canonicalResourceKey": "authoring/1.6/schema/adr-common.schema",
+          "contentDigest": "sha256:aec704e1cfb5790d867a8864ebf4215506baa3c6b4fad77a74a4fceb59bb4451"
+        },
+        {
+          "canonicalResourceKey": "authoring/1.6/schema/adr-logical.schema",
+          "contentDigest": "sha256:ffebf6ac6dd70acdfba1aa12ad53a1726aaf7ce7b11c5e3d5245cc1e45ed0a32"
+        },
+        {
+          "canonicalResourceKey": "authoring/1.6/schema/adr-physical-base.schema",
+          "contentDigest": "sha256:18c723c6afca8904bdc573b94c0451d6964b2a92c38b0590eec55005bfe0f1d1"
+        },
+        {
+          "canonicalResourceKey": "authoring/1.6/schema/adr-physical-component.schema",
+          "contentDigest": "sha256:7d4b5b18ac28bffc9355285ff3d7095e57f322d11f2628e6335cdbb27727cdbe"
+        },
+        {
+          "canonicalResourceKey": "authoring/1.6/schema/adr-physical-system.schema",
+          "contentDigest": "sha256:74915507eec0e91a4661dd256639d2126f3fd58b7af26824c040ccc01b0a6194"
+        },
+        {
+          "canonicalResourceKey": "authoring/1.6/schema/types.schema",
+          "contentDigest": "sha256:94a19d6e654d00019c34c5569d1ced1751c69d39ab7d8a94f02fe1cf0781491e"
+        }
+      ]
+    },
+    {
+      "canonicalResourceKey": "authoring/1.5/schema/adr-common.schema",
+      "contentDigest": "sha256:29489ee4a77bbb8f2963077315df86bbe6a476cdfe595b548321577cbc26dc4e",
+      "role": "source-contract-schema",
+      "dependencies": []
+    },
+    {
+      "canonicalResourceKey": "authoring/1.5/schema/adr-logical.schema",
+      "contentDigest": "sha256:2c7045e8d6aa0bb21c76689b6065dee5b76d0f83378c9a7be53f1a0d689c6ccb",
+      "role": "source-contract-schema",
+      "dependencies": []
+    },
+    {
+      "canonicalResourceKey": "authoring/1.5/schema/adr-physical-base.schema",
+      "contentDigest": "sha256:91aa94708f9cf0ee3b10da612a1e09e5d388b1ca6d0ece9f6d58d1364eaba6f8",
+      "role": "source-contract-schema",
+      "dependencies": []
+    },
+    {
+      "canonicalResourceKey": "authoring/1.5/schema/adr-physical-component.schema",
+      "contentDigest": "sha256:c827f2faec2706f5387e1cb2aaf1d13bebe5432a0c635331fbee85f924de03d4",
+      "role": "source-contract-schema",
+      "dependencies": []
+    },
+    {
+      "canonicalResourceKey": "authoring/1.5/schema/adr-physical-system.schema",
+      "contentDigest": "sha256:69387a1227df5b13251faf75c5c3bc3ef59dcd8190e5818afcb91d5e443ceb14",
+      "role": "source-contract-schema",
+      "dependencies": []
+    },
+    {
+      "canonicalResourceKey": "authoring/1.5/schema/types.schema",
+      "contentDigest": "sha256:59db7228822b0346f171b59f35e6deedba44c7c23e843e352d4dde8c565d27cf",
+      "role": "source-contract-schema",
+      "dependencies": []
+    },
+    {
+      "canonicalResourceKey": "authoring/1.6/schema/adr-common.schema",
+      "contentDigest": "sha256:aec704e1cfb5790d867a8864ebf4215506baa3c6b4fad77a74a4fceb59bb4451",
+      "role": "source-contract-schema",
+      "dependencies": []
+    },
+    {
+      "canonicalResourceKey": "authoring/1.6/schema/adr-logical.schema",
+      "contentDigest": "sha256:ffebf6ac6dd70acdfba1aa12ad53a1726aaf7ce7b11c5e3d5245cc1e45ed0a32",
+      "role": "source-contract-schema",
+      "dependencies": []
+    },
+    {
+      "canonicalResourceKey": "authoring/1.6/schema/adr-physical-base.schema",
+      "contentDigest": "sha256:18c723c6afca8904bdc573b94c0451d6964b2a92c38b0590eec55005bfe0f1d1",
+      "role": "source-contract-schema",
+      "dependencies": []
+    },
+    {
+      "canonicalResourceKey": "authoring/1.6/schema/adr-physical-component.schema",
+      "contentDigest": "sha256:7d4b5b18ac28bffc9355285ff3d7095e57f322d11f2628e6335cdbb27727cdbe",
+      "role": "source-contract-schema",
+      "dependencies": []
+    },
+    {
+      "canonicalResourceKey": "authoring/1.6/schema/adr-physical-system.schema",
+      "contentDigest": "sha256:74915507eec0e91a4661dd256639d2126f3fd58b7af26824c040ccc01b0a6194",
+      "role": "source-contract-schema",
+      "dependencies": []
+    },
+    {
+      "canonicalResourceKey": "authoring/1.6/schema/types.schema",
+      "contentDigest": "sha256:94a19d6e654d00019c34c5569d1ced1751c69d39ab7d8a94f02fe1cf0781491e",
+      "role": "source-contract-schema",
+      "dependencies": []
     }
   ],
-  "frozenNormativeConformanceResources": ["architecture-interpretation/1.0/conformance"],
-  "semanticContractFingerprint": "scf:v1:sha256:24f14d4ebe64c2202c8cefb0f80cea974c217a4d4dde80f2215135b86ae28be2"
+  "frozenNormativeConformanceResources": [
+    "architecture-interpretation/1.0/conformance"
+  ],
+  "semanticContractFingerprint": "scf:v1:sha256:c96a8d10b910981dbf0178cd6a97767d627550d03db4e5f0ccce14725b4e029e"
 }

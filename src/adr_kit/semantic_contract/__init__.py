@@ -119,7 +119,8 @@ class SemanticOperationResult:
     canonical_preimage_hex: str | None = None
     fingerprint: str | None = None
     semantic_contract_fingerprint: str | None = None
-    semantic_contract_set_fingerprint: str | None = None
+    semantic_contract_set_id: str | None = None
+    mode: str | None = None
     closure_valid: bool | None = None
 
 
@@ -141,7 +142,8 @@ def _result(value: Mapping[str, Any]) -> SemanticOperationResult:
         canonical_preimage_hex=value.get("canonical_preimage_hex"),
         fingerprint=value.get("fingerprint"),
         semantic_contract_fingerprint=value.get("semantic_contract_fingerprint"),
-        semantic_contract_set_fingerprint=value.get("semantic_contract_set_fingerprint"),
+        semantic_contract_set_id=value.get("semantic_contract_set_id"),
+        mode=value.get("mode"),
         closure_valid=value.get("closure_valid"),
     )
 
@@ -170,14 +172,27 @@ def canonicalize_semantic_json(value: Any) -> SemanticOperationResult:
 def calculate_semantic_contract_fingerprint(
     definition: SemanticContractVersion | Mapping[str, Any],
 ) -> SemanticOperationResult:
-    """Calculate or validate an immutable semantic-contract fingerprint."""
+    """Calculate an immutable semantic-contract fingerprint in explicit calculate mode."""
 
     wire = (
         definition.to_wire()
         if isinstance(definition, SemanticContractVersion)
         else dict(definition)
     )
-    return _execute("fingerprint_semantic_contract", definition=wire)
+    return _execute("fingerprint_semantic_contract", definition=wire, mode="calculate")
+
+
+def verify_semantic_contract(
+    definition: SemanticContractVersion | Mapping[str, Any],
+) -> SemanticOperationResult:
+    """Verify the declared fingerprint of an immutable semantic contract."""
+
+    wire = (
+        definition.to_wire()
+        if isinstance(definition, SemanticContractVersion)
+        else dict(definition)
+    )
+    return _execute("fingerprint_semantic_contract", definition=wire, mode="verify")
 
 
 def validate_semantic_resource_closure(
@@ -225,7 +240,11 @@ def list_semantic_contracts() -> tuple[SemanticContractVersion, ...]:
         sorted(
             (
                 _load_definition(name)
-                for name in ("normative-semantics.json", "architecture-interpretation.json")
+                for name in (
+                    "architecture-interpretation.json",
+                    "normative-semantics.json",
+                    "normalized-model.json",
+                )
             ),
             key=lambda item: item.semantic_contract_family,
         )
@@ -248,11 +267,17 @@ def load_semantic_resource(key: str) -> Any:
     """Load one bundled resource by canonical key for closure verification."""
 
     parts = key.split("/")
-    if len(parts) != 3 or parts[1] != "1.0":
+    if len(parts) < 3 or parts[1] not in {"1.0", "1.5", "1.6", "2.3"}:
         raise LookupError(f"Unsupported semantic resource: {key}")
-    name = f"{parts[0]}-{parts[2]}.json"
-    resource = resources.files("adr_kit.semantic_contract.v1_0.resources").joinpath(name)
-    return json.loads(resource.read_text(encoding="utf-8"))
+    package = resources.files("adr_kit.semantic_contract.v1_0.resources")
+    candidates = [f"{key.replace('/', '-')}.json"]
+    if len(parts) == 3:
+        candidates.append(f"{parts[0]}-{parts[2]}.json")
+    for name in candidates:
+        resource = package.joinpath(name)
+        if resource.is_file():
+            return json.loads(resource.read_text(encoding="utf-8"))
+    raise LookupError(f"Bundled semantic resource is missing: {key}")
 
 
 __all__ = [
@@ -269,4 +294,5 @@ __all__ = [
     "list_semantic_contracts",
     "load_semantic_resource",
     "validate_semantic_resource_closure",
+    "verify_semantic_contract",
 ]

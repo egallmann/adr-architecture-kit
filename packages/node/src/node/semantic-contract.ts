@@ -42,15 +42,20 @@ export interface SemanticOperationResult {
   readonly canonical_preimage_hex?: string | null;
   readonly fingerprint?: string | null;
   readonly semantic_contract_fingerprint?: string | null;
-  readonly semantic_contract_set_fingerprint?: string | null;
+  readonly semantic_contract_set_id?: string | null;
+  readonly mode?: "calculate" | "verify" | null;
   readonly closure_valid?: boolean;
 }
 
+function deepFreeze<T>(value: T): T {
+  if (value === null || typeof value !== "object" || Object.isFrozen(value)) return value;
+  for (const child of Object.values(value as Record<string, unknown>)) deepFreeze(child);
+  return Object.freeze(value);
+}
+
 function freezeResult(result: Record<string, unknown>): SemanticOperationResult {
-  const diagnostics = Array.isArray(result.diagnostics)
-    ? Object.freeze(result.diagnostics as AdrKitDiagnostic[])
-    : Object.freeze([] as AdrKitDiagnostic[]);
-  return Object.freeze({ ...result, diagnostics }) as SemanticOperationResult;
+  const normalized = { ...result, diagnostics: Array.isArray(result.diagnostics) ? result.diagnostics : [] };
+  return deepFreeze(normalized) as unknown as SemanticOperationResult;
 }
 
 async function execute(operation: string, fields: Record<string, unknown>): Promise<SemanticOperationResult> {
@@ -70,7 +75,13 @@ export function canonicalizeSemanticJson(value: unknown): Promise<SemanticOperat
 export function calculateSemanticContractFingerprint(
   definition: SemanticContractVersion | Record<string, unknown>,
 ): Promise<SemanticOperationResult> {
-  return execute("fingerprint_semantic_contract", { definition });
+  return execute("fingerprint_semantic_contract", { definition, mode: "calculate" });
+}
+
+export function verifySemanticContract(
+  definition: SemanticContractVersion | Record<string, unknown>,
+): Promise<SemanticOperationResult> {
+  return execute("fingerprint_semantic_contract", { definition, mode: "verify" });
 }
 
 export function validateSemanticResourceClosure(
@@ -89,14 +100,15 @@ export function composeSemanticContractSet(
   return execute("compose_semantic_contract_set", { contracts });
 }
 
-function definition(name: "normative-semantics.json" | "architecture-interpretation.json"): SemanticContractVersion {
-  return structuredClone(assets[`definitions/${name}`]) as SemanticContractVersion;
+function definition(name: "normative-semantics.json" | "architecture-interpretation.json" | "normalized-model.json"): SemanticContractVersion {
+  return deepFreeze(structuredClone(assets[`definitions/${name}`])) as SemanticContractVersion;
 }
 
 export function listSemanticContracts(): readonly SemanticContractVersion[] {
   return Object.freeze([
     definition("architecture-interpretation.json"),
     definition("normative-semantics.json"),
+    definition("normalized-model.json"),
   ]);
 }
 
@@ -110,9 +122,12 @@ export function getSemanticContract(family: string, version = "1.0"): SemanticCo
 
 export function loadSemanticResource(key: string): unknown {
   const parts = key.split("/");
-  if (parts.length !== 3 || parts[1] !== "1.0") throw new Error(`Unsupported semantic resource: ${key}`);
-  const name = `${parts[0]}-${parts[2]}.json`;
-  const resource = assets[`resources/${name}`];
-  if (!resource) throw new Error(`Missing bundled semantic resource: ${key}`);
-  return structuredClone(resource);
+  if (parts.length < 3 || !["1.0", "1.5", "1.6", "2.3"].includes(parts[1] ?? "")) throw new Error(`Unsupported semantic resource: ${key}`);
+  const names = [`${key.replaceAll("/", "-")}.json`];
+  if (parts.length === 3) names.push(`${parts[0]}-${parts[2]}.json`);
+  for (const name of names) {
+    const resource = assets[`resources/${name}`];
+    if (resource) return deepFreeze(structuredClone(resource));
+  }
+  throw new Error(`Missing bundled semantic resource: ${key}`);
 }

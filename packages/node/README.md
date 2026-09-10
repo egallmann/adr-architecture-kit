@@ -26,6 +26,7 @@ import { validateArchitecture, validateContract, validateProjectMetadata } from 
 import {
   getSemanticContract,
   validateSemanticResourceClosure,
+  verifySemanticContract,
 } from "@system-of-thought/adr-kit/node/semantic-contract";
 ```
 
@@ -44,7 +45,9 @@ provider-routing, and linkage rules execute through the packaged canonical
 semantic core shared with the Python binding. Node performs only
 filesystem/YAML loading and TypeScript result construction around that boundary.
 Semantic-contract canonicalization, SCF (`scf:v1:sha256`), resource closure,
-and SCS (`scs:v1:sha256`) execute in the shared semantic core. Python and Node
+and SCS (`scs:v1:sha256`) execute in the shared semantic core. The bundled
+families are architecture-interpretation 1.0, normative-semantics 1.0, and
+normalized-model 2.3. Python and Node
 therefore compare canonical bytes, rejection diagnostics, and fingerprints in
 the release parity gate.
 

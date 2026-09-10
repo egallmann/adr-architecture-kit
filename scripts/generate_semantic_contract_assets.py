@@ -11,7 +11,7 @@ from __future__ import annotations
 
 import hashlib
 import json
-from pathlib import Path
+from pathlib import Path, PurePosixPath
 from typing import Any
 
 import rfc8785
@@ -30,17 +30,65 @@ def digest(value: Any) -> str:
     return "sha256:" + hashlib.sha256(rfc8785.dumps(value)).hexdigest()
 
 
-def resource(
-    key: str, filename: str, role: str, dependencies: list[str] | None = None
-) -> dict[str, Any]:
+def relative_resource_key(key: str, reference: str) -> str | None:
+    location = reference.split("#", 1)[0]
+    if not location:
+        return None
+    if location.startswith(("//", "/")) or "://" in reference or reference.startswith("urn:"):
+        raise ValueError(f"remote or absolute $ref is not allowed: {key}: {reference}")
+    parts = list(PurePosixPath(key).parts[:-1])
+    for part in PurePosixPath(location).parts:
+        if part in ("", "."):
+            continue
+        if part == "..":
+            if not parts:
+                raise ValueError(f"$ref escapes canonical resource namespace: {key}: {reference}")
+            parts.pop()
+        else:
+            parts.append(part)
+    if not parts:
+        raise ValueError(f"$ref resolves to an empty resource key: {key}: {reference}")
+    if parts[-1].endswith(".json"):
+        parts[-1] = parts[-1][:-5]
+    return "/".join(parts)
+
+
+def discovered_dependencies(key: str, value: Any) -> set[str]:
+    found: set[str] = set()
+
+    def visit(node: Any) -> None:
+        if isinstance(node, dict):
+            if "$ref" in node:
+                reference = node["$ref"]
+                if not isinstance(reference, str):
+                    raise ValueError(f"$ref must be a string: {key}")
+                target = relative_resource_key(key, reference)
+                if target is not None:
+                    found.add(target)
+            for child in node.values():
+                visit(child)
+        elif isinstance(node, list):
+            for child in node:
+                visit(child)
+
+    visit(value)
+    explicit = value.get("semanticDependencies", []) if isinstance(value, dict) else []
+    if not isinstance(explicit, list) or not all(isinstance(item, str) for item in explicit):
+        raise ValueError(f"semanticDependencies must be a string list: {key}")
+    found.update(explicit)
+    return found
+
+
+def resource(key: str, filename: str, role: str) -> dict[str, Any]:
     value = read_json(RESOURCES / filename)
+    dependencies = sorted(discovered_dependencies(key, value))
     return {
         "canonicalResourceKey": key,
         "contentDigest": digest(value),
         "role": role,
         "dependencies": [
             {"canonicalResourceKey": dep, "contentDigest": manifest_digest(dep)}
-            for dep in dependencies or []
+            for dep in dependencies
         ],
     }
 
@@ -77,7 +125,10 @@ def definition(family: str, manifest: list[dict[str, Any]], frozen: list[str]) -
 
 def write_json(path: Path, value: Any) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(json.dumps(value, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+    # Keep generated fingerprints and mirrors byte-stable across Windows and
+    # Unix; newline translation must not become an accidental artifact change.
+    with path.open("w", encoding="utf-8", newline="\n") as handle:
+        handle.write(json.dumps(value, indent=2, ensure_ascii=False) + "\n")
 
 
 def main() -> None:
@@ -90,17 +141,17 @@ def main() -> None:
         "unresolved-registry.schema",
     ]
     normalized_keys = [f"normalized-model/2.3/schema/{name}" for name in normalized_schema_files]
-    normalized_manifest = [
+    normalized_schema_manifest = [
         resource(key, key.replace("/", "-") + ".json", "normalized-model-schema")
         for key in normalized_keys
     ]
+    normalized_manifest = list(normalized_schema_manifest)
     normalized_conformance_key = "normalized-model/2.3/conformance"
     normalized_manifest.append(
         resource(
             normalized_conformance_key,
             normalized_conformance_key.replace("/", "-") + ".json",
             "normalized-model-conformance",
-            normalized_keys,
         )
     )
 
@@ -114,11 +165,9 @@ def main() -> None:
             normative_keys[1],
             "normative-semantics-conformance.json",
             "normative-conformance",
-            [normative_keys[0]],
         ),
     ]
 
-    source_keys: list[str] = []
     source_manifest: list[dict[str, Any]] = []
     for version in ("1.5", "1.6"):
         for name in (
@@ -130,7 +179,6 @@ def main() -> None:
             "types.schema",
         ):
             key = f"authoring/{version}/schema/{name}"
-            source_keys.append(key)
             source_manifest.append(
                 resource(key, key.replace("/", "-") + ".json", "source-contract-schema")
             )
@@ -144,15 +192,34 @@ def main() -> None:
             architecture_keys[0],
             "architecture-interpretation-rules.json",
             "interpretation-rule",
-            source_keys,
         ),
         resource(
             architecture_keys[1],
             "architecture-interpretation-conformance.json",
             "interpretation-conformance",
-            [architecture_keys[0]],
         ),
         *source_manifest,
+        *normalized_schema_manifest,
+        resource(
+            "architecture-interpretation/1.0/source-decoding-1.5",
+            "architecture-interpretation-source-decoding-1.5.json",
+            "source-contract-mapping",
+        ),
+        resource(
+            "architecture-interpretation/1.0/source-decoding-1.6",
+            "architecture-interpretation-source-decoding-1.6.json",
+            "source-contract-mapping",
+        ),
+        resource(
+            "architecture-interpretation/1.0/source-mapping-1.5-to-2.3",
+            "architecture-interpretation-source-mapping-1.5-to-2.3.json",
+            "source-contract-mapping",
+        ),
+        resource(
+            "architecture-interpretation/1.0/source-mapping-1.6-to-2.3",
+            "architecture-interpretation-source-mapping-1.6-to-2.3.json",
+            "source-contract-mapping",
+        ),
     ]
 
     definitions = {

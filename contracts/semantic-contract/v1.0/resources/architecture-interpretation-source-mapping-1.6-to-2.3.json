@@ -1,0 +1,38 @@
+{
+  "semanticContractFamily": "architecture-interpretation",
+  "semanticContractVersion": "1.0",
+  "resourceKind": "source-to-normalized-mapping",
+  "sourceContract": {"family": "authoring", "version": "1.6"},
+  "targetContract": {"family": "normalized-model", "version": "2.3"},
+  "identity": {"canonical": "source-id", "alias": "alias_id-or-alias_name", "missing": "typed-invalid-declaration", "legacy": "complete-sealed-provider-authoritative-map-required"},
+  "entityKinds": {
+    "logical-adr": "normalized-entity-with-declaring-kind-ADR-L",
+    "physical-component-adr": "normalized-entity-with-declaring-kind-ADR-PC",
+    "physical-system-adr": "normalized-entity-with-declaring-kind-ADR-PS",
+    "normative-proposition": "normalized-normative-proposition-with-declaring-parent",
+    "common-identity-envelope": "preserve-identity-and-provenance",
+    "extension-entity": "normalized-extension-entity",
+    "extension-relationship": "normalized-relationship-record"
+  },
+  "fields": {"type": "source-adr-type-or-np-discriminator", "lifecycle": "declaring-adr-only; np-has-no-independent-lifecycle", "provenance": "source-locator-and-contract-binding", "declaringParent": "required-for-normative-proposition", "normativeForce": "preserve-explicit-canonical-force", "scope": "preserve-or-report-unknown", "rationale": "preserve-explicit-source-rationale", "relationships": "explicit-source-relationship-or-unresolved-reference", "ownership": "explicit-declaring-parent-only"},
+  "normativePropositions": {"native": "supported", "absence": "covered-without-declaration", "identity": "never-create-implicitly", "force": "reject-invalid-force"},
+  "unresolvedReferences": "preserve-as-first-class-unresolved-registry-entry",
+  "ordering": "sort-identity-keyed-collections-by-canonical-identity; preserve-authored-semantic-sequences",
+  "rejection": ["duplicate-canonical-definition", "invalid-identity", "ambiguous-parent", "unmapped-kind", "invalid-normative-force", "unsafe-number", "unsupported-source-construct"],
+  "semanticAbsence": "only-source-contract-inexpressibility-or-covered-no-declaration; never-infer-global-absence",
+  "semanticDependencies": [
+    "architecture-interpretation/1.0/source-decoding-1.6",
+    "normalized-model/2.3/schema/normalized-architecture-model.schema",
+    "normalized-model/2.3/schema/normalized-entity-registry.schema",
+    "normalized-model/2.3/schema/normalized-entity.schema",
+    "normalized-model/2.3/schema/relationship-record.schema",
+    "normalized-model/2.3/schema/relationship-registry.schema",
+    "normalized-model/2.3/schema/unresolved-registry.schema",
+    "authoring/1.6/schema/adr-common.schema",
+    "authoring/1.6/schema/adr-logical.schema",
+    "authoring/1.6/schema/adr-physical-base.schema",
+    "authoring/1.6/schema/adr-physical-component.schema",
+    "authoring/1.6/schema/adr-physical-system.schema",
+    "authoring/1.6/schema/types.schema"
+  ]
+}

@@ -221,15 +221,17 @@ def compose_semantic_contract_set(
     wire = []
     for item in contracts:
         value = item.to_wire() if isinstance(item, SemanticContractVersion) else dict(item)
-        wire.append({
-            key: value[key]
-            for key in (
-                "semanticContractFamily",
-                "semanticContractVersion",
-                "semanticContractFingerprint",
-            )
-            if key in value
-        })
+        wire.append(
+            {
+                key: value[key]
+                for key in (
+                    "semanticContractFamily",
+                    "semanticContractVersion",
+                    "semanticContractFingerprint",
+                )
+                if key in value
+            }
+        )
     return _execute("compose_semantic_contract_set", contracts=wire)
 
 

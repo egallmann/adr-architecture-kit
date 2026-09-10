@@ -16,7 +16,6 @@ from typing import Any
 
 import rfc8785
 
-
 ROOT = Path(__file__).resolve().parents[1]
 CANONICAL = ROOT / "contracts" / "semantic-contract" / "v1.0"
 RESOURCES = CANONICAL / "resources"
@@ -31,7 +30,9 @@ def digest(value: Any) -> str:
     return "sha256:" + hashlib.sha256(rfc8785.dumps(value)).hexdigest()
 
 
-def resource(key: str, filename: str, role: str, dependencies: list[str] | None = None) -> dict[str, Any]:
+def resource(
+    key: str, filename: str, role: str, dependencies: list[str] | None = None
+) -> dict[str, Any]:
     value = read_json(RESOURCES / filename)
     return {
         "canonicalResourceKey": key,
@@ -67,10 +68,10 @@ def definition(family: str, manifest: list[dict[str, Any]], frozen: list[str]) -
         "resourceManifest": sorted(manifest, key=lambda item: item["canonicalResourceKey"]),
         "frozenNormativeConformanceResources": sorted(frozen),
     }
-    preimage = {"scheme": "adr-kit.semantic-contract/v1", "definition": value}
-    value["semanticContractFingerprint"] = "scf:v1:sha256:" + hashlib.sha256(
-        rfc8785.dumps(preimage)
-    ).hexdigest()
+    preimage: dict[str, Any] = {"scheme": "adr-kit.semantic-contract/v1", "definition": value}
+    value["semanticContractFingerprint"] = (
+        "scf:v1:sha256:" + hashlib.sha256(rfc8785.dumps(preimage)).hexdigest()
+    )
     return value
 
 
@@ -109,7 +110,12 @@ def main() -> None:
     ]
     normative_manifest = [
         resource(normative_keys[0], "normative-semantics-definition.json", "normative-definition"),
-        resource(normative_keys[1], "normative-semantics-conformance.json", "normative-conformance", [normative_keys[0]]),
+        resource(
+            normative_keys[1],
+            "normative-semantics-conformance.json",
+            "normative-conformance",
+            [normative_keys[0]],
+        ),
     ]
 
     source_keys: list[str] = []
@@ -125,28 +131,49 @@ def main() -> None:
         ):
             key = f"authoring/{version}/schema/{name}"
             source_keys.append(key)
-            source_manifest.append(resource(key, key.replace("/", "-") + ".json", "source-contract-schema"))
+            source_manifest.append(
+                resource(key, key.replace("/", "-") + ".json", "source-contract-schema")
+            )
 
     architecture_keys = [
         "architecture-interpretation/1.0/rules",
         "architecture-interpretation/1.0/conformance",
     ]
     architecture_manifest = [
-        resource(architecture_keys[0], "architecture-interpretation-rules.json", "interpretation-rule", source_keys),
-        resource(architecture_keys[1], "architecture-interpretation-conformance.json", "interpretation-conformance", [architecture_keys[0]]),
+        resource(
+            architecture_keys[0],
+            "architecture-interpretation-rules.json",
+            "interpretation-rule",
+            source_keys,
+        ),
+        resource(
+            architecture_keys[1],
+            "architecture-interpretation-conformance.json",
+            "interpretation-conformance",
+            [architecture_keys[0]],
+        ),
         *source_manifest,
     ]
 
     definitions = {
-        "normalized-model.json": definition("normalized-model", normalized_manifest, [normalized_conformance_key]),
-        "normative-semantics.json": definition("normative-semantics", normative_manifest, [normative_keys[1]]),
-        "architecture-interpretation.json": definition("architecture-interpretation", architecture_manifest, [architecture_keys[1]]),
+        "normalized-model.json": definition(
+            "normalized-model", normalized_manifest, [normalized_conformance_key]
+        ),
+        "normative-semantics.json": definition(
+            "normative-semantics", normative_manifest, [normative_keys[1]]
+        ),
+        "architecture-interpretation.json": definition(
+            "architecture-interpretation", architecture_manifest, [architecture_keys[1]]
+        ),
     }
     for name, value in definitions.items():
         write_json(CANONICAL / "definitions" / name, value)
         write_json(BUNDLED / name, value)
 
-    for path in (CANONICAL / "semantic-contract-version.schema.json", CANONICAL / "resource-manifest-entry.schema.json"):
+    for path in (
+        CANONICAL / "semantic-contract-version.schema.json",
+        CANONICAL / "resource-manifest-entry.schema.json",
+    ):
         target = BUNDLED / path.name
         target.write_bytes(path.read_bytes())
     for path in RESOURCES.glob("*.json"):

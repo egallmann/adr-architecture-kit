@@ -12,6 +12,28 @@ env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
 jobs:
+  semantic-core-artifact:
+    name: Source-built semantic-core artifact
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: wasm32-unknown-unknown
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - name: Build semantic core from Rust source
+        run: node scripts/build_semantic_core.mjs
+      - name: Verify source-built artifact
+        run: python scripts/verify_semantic_core_artifact.py
+      - name: Retain source-built artifact for release evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: semantic-core-wasm-${{ github.sha }}
+          path: core/target/wasm32-unknown-unknown/release/adr_kit_semantic_core.wasm
+          retention-days: 1
+
   python-semantic:
     name: Python semantic/source contracts
     runs-on: ubuntu-latest

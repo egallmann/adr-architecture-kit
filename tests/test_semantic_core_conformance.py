@@ -32,7 +32,7 @@ def test_python_binding_matches_shared_semantic_contract_vectors() -> None:
             "canonical_preimage_json",
             "fingerprint",
             "semantic_contract_fingerprint",
-            "semantic_contract_set_fingerprint",
+            "semantic_contract_set_id",
         ):
             if field in expected:
                 assert result[field] == expected[field], case["name"]

@@ -42,11 +42,16 @@ conformance resources, and their `scf:v1:sha256` identity; lifecycle policy,
 catalog state, executable support, and current selection are not part of that
 identity.
 
+The bundled families are `architecture-interpretation@1.0`,
+`normative-semantics@1.0`, and `normalized-model@2.3`. The normalized model is
+the canonical execution output contract, not a host-specific binding model.
+
 ```python
 from adr_kit.api import (
     get_semantic_contract,
     load_semantic_resource,
     validate_semantic_resource_closure,
+    verify_semantic_contract,
 )
 
 contract = get_semantic_contract("normative-semantics", "1.0")
@@ -337,6 +342,7 @@ get_semantic_contract
 list_semantic_contracts
 load_semantic_resource
 validate_semantic_resource_closure
+verify_semantic_contract
 ```
 
 `NormalizedArchitectureModelV2`, `ProviderRegistry`, and `open_provider_registry`

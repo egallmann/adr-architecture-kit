@@ -71,7 +71,8 @@
     "validate_contract",
     "validate_generated_docs",
     "validate_project_metadata",
-    "validate_semantic_resource_closure"
+    "validate_semantic_resource_closure",
+    "verify_semantic_contract"
   ],
   "adr_kit.compiler": [
     "AdrIrFragmentCompileError",

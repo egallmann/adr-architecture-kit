@@ -1,8 +1,10 @@
 {
   "forceVocabulary": ["MUST", "MUST NOT", "SHOULD", "SHOULD NOT", "MAY"],
+  "forceIsExecutableOperator": false,
   "forceIsLogicalOperator": false,
   "statementAndForceAreDistinct": true,
   "peerSemanticTypes": ["NormativeProposition", "Invariant"],
+  "modalStrengthDoesNotChangeSemanticType": true,
   "normativePropositionLifecycle": "none",
   "inferenceProhibitions": [
     "applicability",
@@ -11,8 +13,14 @@
     "consistency",
     "equivalence",
     "waiver",
-    "conformance"
+    "conformance",
+    "double-negation",
+    "automatic-applicability",
+    "automatic-waiver"
   ],
   "normativePropositionAttributionTarget": "unsupported",
-  "materialityAndMeaningPreservation": "competent-review-judgment"
+  "materialityAndMeaningPreservation": "competent-review-judgment",
+  "meaningPreservingEditRequiresReview": true,
+  "materiallyChangedMeaningRequiresNewIdentity": true,
+  "npAttributionVocabulary": "unsupported-in-evidence-attribution-1.6"
 }

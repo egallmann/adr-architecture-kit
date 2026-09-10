@@ -12,16 +12,46 @@ env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
 jobs:
-  python-semantic:
-    name: Python semantic/source contracts
+  semantic-core-artifact:
+    name: Source-built semantic-core artifact
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: dtolnay/rust-toolchain@stable
         with:
           targets: wasm32-unknown-unknown
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - name: Build semantic core from Rust source
+        run: node scripts/build_semantic_core.mjs
+      - name: Verify source-built artifact
+        run: python scripts/verify_semantic_core_artifact.py
+      - name: Retain source-built artifact for release evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: semantic-core-wasm-${{ github.sha }}
+          path: core/target/wasm32-unknown-unknown/release/adr_kit_semantic_core.wasm
+          retention-days: 1
+
+  python-semantic:
+    name: Python semantic/source contracts
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: wasm32-unknown-unknown
+      - name: Guard semantic-core source and tracked artifacts
+        run: python scripts/check_semantic_core_artifact_change.py
+      - name: Smoke-test tracked semantic core before rebuild
+        run: node scripts/check_tracked_semantic_core.mjs
       - name: Build shared semantic core
         run: node scripts/build_semantic_core.mjs
+      - name: Verify source-built semantic core artifacts
+        run: python scripts/verify_semantic_core_artifact.py
       - uses: actions/setup-python@v5
         with:
           python-version: "3.14"
@@ -40,24 +70,40 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - uses: dtolnay/rust-toolchain@stable
         with:
           targets: wasm32-unknown-unknown
       - name: Test semantic core
         run: cargo test --manifest-path core/Cargo.toml
+      - name: Guard semantic-core source and tracked artifacts
+        run: python scripts/check_semantic_core_artifact_change.py
+      - name: Smoke-test tracked semantic core before rebuild
+        run: node scripts/check_tracked_semantic_core.mjs
       - name: Build packaged semantic core
         run: node scripts/build_semantic_core.mjs
+      - name: Verify source-built semantic core artifacts
+        run: python scripts/verify_semantic_core_artifact.py
 
   typescript-consumer:
     name: TypeScript consumer binding
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - uses: dtolnay/rust-toolchain@stable
         with:
           targets: wasm32-unknown-unknown
+      - name: Guard semantic-core source and tracked artifacts
+        run: python scripts/check_semantic_core_artifact_change.py
+      - name: Smoke-test tracked semantic core before rebuild
+        run: node scripts/check_tracked_semantic_core.mjs
       - name: Build shared semantic core
         run: node scripts/build_semantic_core.mjs
+      - name: Verify source-built semantic core artifacts
+        run: python scripts/verify_semantic_core_artifact.py
       - uses: actions/setup-node@v4
         with:
           node-version: "20"
@@ -91,13 +137,17 @@ jobs:
       - uses: actions/checkout@v4
         with:
           submodules: recursive
+          fetch-depth: 0
       - uses: dtolnay/rust-toolchain@stable
         with:
           targets: wasm32-unknown-unknown
       - name: Build and test shared semantic core
         run: |
+          python scripts/check_semantic_core_artifact_change.py
+          node scripts/check_tracked_semantic_core.mjs
           cargo test --manifest-path core/Cargo.toml
           node scripts/build_semantic_core.mjs
+          python scripts/verify_semantic_core_artifact.py
       - uses: actions/setup-python@v5
         with:
           python-version: "3.14"

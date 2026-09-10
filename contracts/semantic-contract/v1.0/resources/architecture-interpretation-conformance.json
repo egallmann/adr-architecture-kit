@@ -1,8 +1,12 @@
 {
   "cases": [
-    {"name": "supported-authoring-binding", "binding": "authoring@1.6", "outcome": "accepted"},
-    {"name": "missing-normative-proposition-declaration", "binding": "authoring@1.6", "outcome": "covered-without-declaration"},
-    {"name": "legacy-identity-without-map", "binding": "authoring@1.5", "outcome": "identity-qualification-failure"},
-    {"name": "implicit-import", "binding": "authoring@1.6", "outcome": "rejected"}
+    {"id": "B01", "name": "supported-authoring-binding", "binding": "authoring@1.6", "outcome": "accepted", "owner": "source-contract-closure"},
+    {"id": "B02", "name": "covered-source-without-normative-proposition-declaration", "binding": "authoring@1.6", "outcome": "covered-without-declaration", "owner": "absence-and-coverage"},
+    {"id": "B03", "name": "legacy-identity-without-map", "binding": "authoring@1.5", "outcome": "identity-qualification-failure", "diagnostic": "semantic_contract.identity_qualification_required", "owner": "legacy-identity"},
+    {"id": "B04", "name": "implicit-import", "binding": "authoring@1.6", "outcome": "rejected", "diagnostic": "semantic_contract.implicit_import", "owner": "source-decoding"},
+    {"id": "B05", "name": "empty-optional-np-collection", "binding": "authoring@1.6", "outcome": "covered-without-declaration", "owner": "absence-and-coverage"},
+    {"id": "B06", "name": "unknown-scope", "binding": "authoring@1.6", "outcome": "unknown-scope-preserved", "owner": "scope-projection"},
+    {"id": "B07", "name": "duplicate-canonical-definition", "binding": "authoring@1.6", "outcome": "rejected", "diagnostic": "semantic_contract.duplicate_definition", "owner": "identity"},
+    {"id": "B08", "name": "declaring-adr-kinds", "binding": "authoring@1.6", "outcome": "ADR-L-ADR-PS-ADR-PC", "owner": "normative-proposition-qualification"}
   ]
 }

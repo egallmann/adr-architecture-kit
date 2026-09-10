@@ -1,0 +1,34 @@
+{
+  "schemaVersion": "2.3",
+  "representation": "normalized_architecture_model",
+  "cases": [
+    {
+      "id": "A01",
+      "name": "normative-proposition-is-lifecycle-free",
+      "expected": ["entity_type=normative_proposition", "lifecycle_stage=absent", "declaring_adr=required"]
+    },
+    {
+      "id": "A04",
+      "name": "normative-proposition-and-invariant-are-peer-types",
+      "expected": ["normative_proposition", "invariant"]
+    },
+    {
+      "id": "A08",
+      "name": "scope-is-preserved-without-inferred-applicability",
+      "expected": ["declared-scope-preserved", "unknown-scope-remains-unknown"]
+    },
+    {
+      "id": "A10",
+      "name": "canonical-definition-ownership-is-unique",
+      "expected": ["duplicate-canonical-definition-rejected", "references-do-not-create-definitions"]
+    }
+  ],
+  "schemas": [
+    "normalized-architecture-model.schema.json",
+    "normalized-entity.schema.json",
+    "normalized-entity-registry.schema.json",
+    "relationship-record.schema.json",
+    "relationship-registry.schema.json",
+    "unresolved-registry.schema.json"
+  ]
+}

@@ -84,6 +84,7 @@ EXPECTED_PUBLIC_SYMBOLS = [
     "list_semantic_contracts",
     "load_semantic_resource",
     "validate_semantic_resource_closure",
+    "verify_semantic_contract",
 ]
 
 
@@ -272,6 +273,7 @@ def test_capability_manifest_is_exact_and_deterministic() -> None:
         "get_semantic_contract",
         "canonicalize_semantic_json",
         "calculate_semantic_contract_fingerprint",
+        "verify_semantic_contract",
         "validate_semantic_resource_closure",
         "compose_semantic_contract_set",
     )
@@ -293,6 +295,7 @@ def test_capability_manifest_is_exact_and_deterministic() -> None:
         "get_semantic_contract",
         "canonicalize_semantic_json",
         "calculate_semantic_contract_fingerprint",
+        "verify_semantic_contract",
         "validate_semantic_resource_closure",
         "compose_semantic_contract_set",
         "prepare_promotion",

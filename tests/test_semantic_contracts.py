@@ -12,6 +12,7 @@ from adr_kit.api import (
     list_semantic_contracts,
     load_semantic_resource,
     validate_semantic_resource_closure,
+    verify_semantic_contract,
 )
 
 
@@ -29,6 +30,7 @@ def test_bundled_contracts_are_immutable_and_content_addressed() -> None:
     contracts = list_semantic_contracts()
     assert [item.semantic_contract_family for item in contracts] == [
         "architecture-interpretation",
+        "normalized-model",
         "normative-semantics",
     ]
     for contract in contracts:
@@ -43,6 +45,8 @@ def test_python_contract_fingerprint_and_closure_delegate_to_core() -> None:
     fingerprint = calculate_semantic_contract_fingerprint(contract)
     assert fingerprint.success is True
     assert fingerprint.semantic_contract_fingerprint == contract.semantic_contract_fingerprint
+    verified = verify_semantic_contract(contract)
+    assert verified.success is True
 
     closure = validate_semantic_resource_closure(contract, _resources(contract))
     assert closure.success is True
@@ -79,5 +83,5 @@ def test_python_and_core_use_raw_json_for_duplicate_members_and_safe_integers() 
 def test_python_contract_set_composition_is_family_sorted() -> None:
     result = compose_semantic_contract_set(list_semantic_contracts())
     assert result.success is True
-    assert result.semantic_contract_set_fingerprint is not None
-    assert result.semantic_contract_set_fingerprint.startswith("scs:v1:sha256:")
+    assert result.semantic_contract_set_id is not None
+    assert result.semantic_contract_set_id.startswith("scs:v1:sha256:")

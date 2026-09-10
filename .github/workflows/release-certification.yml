@@ -18,6 +18,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - uses: dtolnay/rust-toolchain@stable
         with:
           targets: wasm32-unknown-unknown
@@ -38,6 +40,10 @@ jobs:
       - run: python -m pip install --upgrade pip
       - run: npm ci
         working-directory: packages/node
+      - name: Guard semantic-core source and tracked artifacts
+        run: python scripts/check_semantic_core_artifact_change.py
+      - name: Smoke-test tracked semantic core before rebuild
+        run: node scripts/check_tracked_semantic_core.mjs
       - name: Test the semantic-core implementation
         run: cargo test --manifest-path core/Cargo.toml
       - name: Build shared semantic core from Rust source
@@ -57,9 +63,20 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - uses: dtolnay/rust-toolchain@stable
         with:
           targets: wasm32-unknown-unknown
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: npm
+          cache-dependency-path: packages/node/package-lock.json
+      - name: Guard semantic-core source and tracked artifacts
+        run: python scripts/check_semantic_core_artifact_change.py
+      - name: Smoke-test tracked semantic core before rebuild
+        run: node scripts/check_tracked_semantic_core.mjs
       - name: Build shared semantic core for both packages
         run: node scripts/build_semantic_core.mjs
       - name: Verify source-built semantic core before packaging

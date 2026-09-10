@@ -2,9 +2,8 @@
 //!
 //! This module is the only meaning-affecting implementation of Slice B. The
 //! Python and Node hosts pass ordinary JSON values to this boundary and only
-//! construct idiomatic immutable views around the result. In particular, no
-//! host is allowed to sort keys, normalize Unicode, or calculate a digest on
-//! its own and still claim semantic parity.
+//! construct idiomatic immutable views around the result. No host may sort
+//! keys, normalize Unicode, or calculate a digest independently.
 
 use std::cmp::Ordering;
 use std::collections::{BTreeMap, BTreeSet};
@@ -23,23 +22,18 @@ const MAX_SAFE_INTEGER: i128 = 9_007_199_254_740_991;
 struct ResourceEntry {
     key: String,
     digest: String,
+    role: String,
     dependencies: Vec<(String, String)>,
 }
 
 fn is_family(value: &str) -> bool {
     let bytes = value.as_bytes();
-    if bytes.is_empty() || !bytes[0].is_ascii_lowercase() {
-        return false;
-    }
+    if bytes.is_empty() || !bytes[0].is_ascii_lowercase() { return false; }
     let mut previous_hyphen = false;
     for byte in bytes {
-        if byte.is_ascii_lowercase() || byte.is_ascii_digit() {
-            previous_hyphen = false;
-        } else if *byte == b'-' && !previous_hyphen {
-            previous_hyphen = true;
-        } else {
-            return false;
-        }
+        if byte.is_ascii_lowercase() || byte.is_ascii_digit() { previous_hyphen = false; }
+        else if *byte == b'-' && !previous_hyphen { previous_hyphen = true; }
+        else { return false; }
     }
     !previous_hyphen
 }
@@ -48,83 +42,73 @@ fn is_version(value: &str) -> bool {
     let mut parts = value.split('.');
     let Some(major) = parts.next() else { return false; };
     let Some(minor) = parts.next() else { return false; };
-    parts.next().is_none()
-        && !major.is_empty()
-        && !minor.is_empty()
+    parts.next().is_none() && !major.is_empty() && !minor.is_empty()
         && major.bytes().all(|byte| byte.is_ascii_digit())
         && minor.bytes().all(|byte| byte.is_ascii_digit())
 }
 
 fn is_sha256(value: &str) -> bool {
-    let Some(hex) = value.strip_prefix("sha256:") else {
-        return false;
-    };
+    let Some(hex) = value.strip_prefix("sha256:") else { return false; };
+    hex.len() == 64 && hex.bytes().all(|byte| byte.is_ascii_hexdigit() && !byte.is_ascii_uppercase())
+}
+
+fn is_scf(value: &str) -> bool {
+    let Some(hex) = value.strip_prefix("scf:v1:sha256:") else { return false; };
     hex.len() == 64 && hex.bytes().all(|byte| byte.is_ascii_hexdigit() && !byte.is_ascii_uppercase())
 }
 
 fn canonical_key(value: &str) -> bool {
-    !value.is_empty()
-        && !value.starts_with('/')
-        && !value.contains('\\')
+    !value.is_empty() && !value.starts_with('/') && !value.contains('\\')
         && !value.split('/').any(|part| part.is_empty() || part == "." || part == "..")
-        && value
-            .bytes()
-            .all(|byte| byte.is_ascii_lowercase() || byte.is_ascii_digit() || b"._/-".contains(&byte))
+        && value.bytes().all(|byte| byte.is_ascii_lowercase() || byte.is_ascii_digit() || b"._/-".contains(&byte))
 }
 
-// RFC 8785 orders object keys by their UTF-16 code units, not Rust's Unicode
-// scalar-value ordering. The distinction matters for supplementary-plane
-// characters and is deliberately covered by the canonicalization vectors.
-fn utf16_cmp(left: &str, right: &str) -> Ordering {
-    left.encode_utf16().cmp(right.encode_utf16())
+fn role_is_conformance(role: &str) -> bool {
+    matches!(role, "normative-conformance" | "interpretation-conformance" | "normalized-model-conformance")
 }
+
+fn role_is_valid(role: &str) -> bool {
+    matches!(role,
+        "normative-definition" | "normative-conformance" | "interpretation-rule" |
+        "interpretation-conformance" | "normalized-model-schema" | "normalized-model-conformance" |
+        "source-contract-schema" | "source-contract-mapping")
+}
+
+// RFC 8785 sorts object names by UTF-16 code units, not Unicode scalar value.
+// This is observable for supplementary-plane characters and must be shared by
+// every host through this Rust boundary.
+fn utf16_cmp(left: &str, right: &str) -> Ordering { left.encode_utf16().cmp(right.encode_utf16()) }
 
 fn canonical_string(value: &str) -> String {
-    // serde_json's string serializer emits JSON escapes without applying any
-    // Unicode normalization, which is exactly the JCS string rule.
+    // serde_json escapes strings without Unicode normalization, as required by JCS.
     serde_json::to_string(value).expect("JSON strings must serialize")
 }
 
 fn canonical_number(value: &serde_json::Number) -> Result<String, String> {
     let raw = value.to_string();
     if !raw.contains('.') && !raw.contains('e') && !raw.contains('E') {
-        let integer = raw
-            .parse::<i128>()
-            .map_err(|_| "integer is outside the supported safe range".to_owned())?;
-        if integer.abs() > MAX_SAFE_INTEGER {
-            return Err("unsafe integer input; values beyond IEEE-754 safe range are rejected".into());
-        }
+        let integer = raw.parse::<i128>().map_err(|_| "integer is outside the supported safe range".to_owned())?;
+        if integer.abs() > MAX_SAFE_INTEGER { return Err("unsafe integer input; values beyond IEEE-754 safe range are rejected".into()); }
     }
-    let number = value
-        .as_f64()
-        .ok_or_else(|| "JSON number must be finite".to_owned())?;
-    if !number.is_finite() {
-        return Err("JSON number must be finite".into());
-    }
+    let number = value.as_f64().ok_or_else(|| "JSON number must be finite".to_owned())?;
+    if !number.is_finite() { return Err("JSON number must be finite".into()); }
 
-    // ryu produces the shortest round-tripping IEEE-754 representation. JCS
-    // uses ECMAScript's decimal/exponent thresholds, so normalize only the
-    // presentation around that exact binary value.
+    // ryu supplies the shortest round-tripping IEEE-754 representation. JCS
+    // follows ECMAScript: [1e-6, 1e21) is decimal; 1e-7 is exponent form.
     let mut buffer = ryu::Buffer::new();
     let rendered = buffer.format_finite(number);
+    let rendered = rendered.strip_suffix(".0").unwrap_or(rendered);
     let (mantissa, exponent) = match rendered.split_once('e') {
         Some((mantissa, exponent)) => (mantissa, exponent.parse::<i32>().unwrap_or(0)),
         None => (rendered, 0),
     };
     let negative = mantissa.starts_with('-');
     let unsigned = mantissa.strip_prefix('-').unwrap_or(mantissa);
-    let mut digits = unsigned.replace('.', "");
-    if digits.ends_with('0') && unsigned.contains('.') {
-        while digits.ends_with('0') {
-            digits.pop();
-        }
-    }
+    let digits = unsigned.replace('.', "");
     let decimal_index = unsigned.find('.').unwrap_or(unsigned.len()) as i32 + exponent;
-    if number == 0.0 {
-        return Ok("0".into());
-    }
+    if number == 0.0 { return Ok("0".into()); }
     let sign = if negative { "-" } else { "" };
-    if (-6..=21).contains(&decimal_index) {
+    if (-5..=21).contains(&decimal_index) {
         let body = if decimal_index <= 0 {
             format!("0.{}{}", "0".repeat((-decimal_index) as usize), digits)
         } else if decimal_index as usize >= digits.len() {
@@ -136,18 +120,10 @@ fn canonical_number(value: &serde_json::Number) -> Result<String, String> {
         Ok(format!("{sign}{body}"))
     } else {
         let first = &digits[..1];
-        let tail = &digits[1..];
+        let tail = digits[1..].trim_end_matches('0');
         let exponent = decimal_index - 1;
-        let exponent_text = if exponent >= 0 {
-            format!("+{exponent}")
-        } else {
-            exponent.to_string()
-        };
-        let body = if tail.is_empty() {
-            first.to_owned()
-        } else {
-            format!("{first}.{tail}")
-        };
+        let exponent_text = if exponent >= 0 { format!("+{exponent}") } else { exponent.to_string() };
+        let body = if tail.is_empty() { first.to_owned() } else { format!("{first}.{tail}") };
         Ok(format!("{sign}{body}e{exponent_text}"))
     }
 }
@@ -161,9 +137,7 @@ fn canonicalize_value(value: &Json, output: &mut String) -> Result<(), String> {
         Json::Array(values) => {
             output.push('[');
             for (index, value) in values.iter().enumerate() {
-                if index != 0 {
-                    output.push(',');
-                }
+                if index != 0 { output.push(','); }
                 canonicalize_value(value, output)?;
             }
             output.push(']');
@@ -173,9 +147,7 @@ fn canonicalize_value(value: &Json, output: &mut String) -> Result<(), String> {
             let mut entries: Vec<_> = values.iter().collect();
             entries.sort_by(|left, right| utf16_cmp(left.0, right.0));
             for (index, (key, value)) in entries.iter().enumerate() {
-                if index != 0 {
-                    output.push(',');
-                }
+                if index != 0 { output.push(','); }
                 output.push_str(&canonical_string(key));
                 output.push(':');
                 canonicalize_value(value, output)?;
@@ -190,17 +162,12 @@ fn digest(bytes: &[u8]) -> String {
     let mut hasher = Sha256::new();
     hasher.update(bytes);
     let result = hasher.finalize();
-    let hex = result.iter().map(|byte| format!("{byte:02x}")).collect::<String>();
-    format!("sha256:{hex}")
+    format!("sha256:{}", result.iter().map(|byte| format!("{byte:02x}")).collect::<String>())
 }
 
 fn canonical_result(operation: &str, canonical: String, fingerprint: String) -> Json {
-    let bytes = canonical.as_bytes();
-    let hex = bytes.iter().map(|byte| format!("{byte:02x}")).collect::<String>();
-    let mut result = match simple_result(operation, true, Vec::new()) {
-        Json::Object(value) => value,
-        _ => unreachable!(),
-    };
+    let hex = canonical.as_bytes().iter().map(|byte| format!("{byte:02x}")).collect::<String>();
+    let mut result = match simple_result(operation, true, Vec::new()) { Json::Object(value) => value, _ => unreachable!() };
     result.insert("canonical_preimage_json".into(), string(canonical));
     result.insert("canonical_preimage_hex".into(), string(hex));
     result.insert("fingerprint".into(), string(fingerprint));
@@ -208,10 +175,7 @@ fn canonical_result(operation: &str, canonical: String, fingerprint: String) -> 
 }
 
 fn canonical_failure(operation: &str, diagnostics: Vec<Json>) -> Json {
-    let mut result = match simple_result(operation, false, diagnostics) {
-        Json::Object(value) => value,
-        _ => unreachable!(),
-    };
+    let mut result = match simple_result(operation, false, diagnostics) { Json::Object(value) => value, _ => unreachable!() };
     result.insert("fingerprint".into(), Json::Null);
     Json::Object(result)
 }
@@ -231,341 +195,207 @@ fn sort_diagnostics(diagnostics: &mut Vec<Json>) {
     });
 }
 
-fn parse_definition<'a>(
-    definition: &'a BTreeMap<String, Json>,
-    diagnostics: &mut Vec<Json>,
-) -> Option<Vec<ResourceEntry>> {
-    let allowed = [
-        "semanticContractFamily",
-        "semanticContractVersion",
-        "fingerprintScheme",
-        "resourceManifest",
-        "frozenNormativeConformanceResources",
-        "semanticContractFingerprint",
-    ];
+fn parse_definition(definition: &BTreeMap<String, Json>, require_fingerprint: bool, diagnostics: &mut Vec<Json>) -> Option<Vec<ResourceEntry>> {
+    let allowed = ["semanticContractFamily", "semanticContractVersion", "fingerprintScheme", "resourceManifest", "frozenNormativeConformanceResources", "semanticContractFingerprint"];
     for key in definition.keys() {
         if !allowed.contains(&key.as_str()) {
-            let code = if ["deprecated", "newUsePolicy", "executable", "historicalSupport", "catalogRevision", "currentSelection", "policy"].contains(&key.as_str()) {
-                "semantic_contract.mutable_policy_field"
-            } else {
-                "semantic_contract.unknown_field"
-            };
+            let code = if ["deprecated", "newUsePolicy", "executable", "historicalSupport", "catalogRevision", "currentSelection", "policy"].contains(&key.as_str()) { "semantic_contract.mutable_policy_field" } else { "semantic_contract.unknown_field" };
             add_diagnostic(diagnostics, code, format!("field is outside the immutable definition: {key}"), Some(key.clone()));
         }
     }
-    let family = definition.get("semanticContractFamily").and_then(Json::as_str);
-    if family.is_none() || !is_family(family.unwrap_or("")) {
-        add_diagnostic(diagnostics, "semantic_contract.invalid_family", "family must match the approved lower-case grammar", Some("semanticContractFamily".into()));
+    if definition.get("semanticContractFamily").and_then(Json::as_str).filter(|value| is_family(value)).is_none() { add_diagnostic(diagnostics, "semantic_contract.invalid_family", "family must match the approved lower-case grammar", Some("semanticContractFamily".into())); }
+    if definition.get("semanticContractVersion").and_then(Json::as_str).filter(|value| is_version(value)).is_none() { add_diagnostic(diagnostics, "semantic_contract.invalid_version", "version must be an exact major.minor value", Some("semanticContractVersion".into())); }
+    if definition.get("fingerprintScheme").and_then(Json::as_str) != Some(SCF_SCHEME) { add_diagnostic(diagnostics, "semantic_contract.invalid_fingerprint_scheme", format!("fingerprintScheme must be {SCF_SCHEME}"), Some("fingerprintScheme".into())); }
+    if require_fingerprint && !definition.contains_key("semanticContractFingerprint") { add_diagnostic(diagnostics, "semantic_contract.missing_fingerprint", "an immutable definition must declare semanticContractFingerprint", Some("semanticContractFingerprint".into())); }
+    if let Some(value) = definition.get("semanticContractFingerprint") {
+        if value.as_str().filter(|value| is_scf(value)).is_none() { add_diagnostic(diagnostics, "semantic_contract.invalid_fingerprint", "semanticContractFingerprint must match ^scf:v1:sha256:[0-9a-f]{64}$", Some("semanticContractFingerprint".into())); }
     }
-    if definition.get("semanticContractVersion").and_then(Json::as_str).filter(|value| is_version(value)).is_none() {
-        add_diagnostic(diagnostics, "semantic_contract.invalid_version", "version must be an exact major.minor value", Some("semanticContractVersion".into()));
-    }
-    if definition.get("fingerprintScheme").and_then(Json::as_str) != Some(SCF_SCHEME) {
-        add_diagnostic(diagnostics, "semantic_contract.invalid_fingerprint_scheme", format!("fingerprintScheme must be {SCF_SCHEME}"), Some("fingerprintScheme".into()));
-    }
-    let Some(raw_manifest) = definition.get("resourceManifest").and_then(Json::as_array) else {
-        add_diagnostic(diagnostics, "semantic_contract.missing_resource_manifest", "resourceManifest must be an array", Some("resourceManifest".into()));
-        return None;
-    };
+    let Some(raw_manifest) = definition.get("resourceManifest").and_then(Json::as_array) else { add_diagnostic(diagnostics, "semantic_contract.missing_resource_manifest", "resourceManifest must be an array", Some("resourceManifest".into())); return None; };
+    if raw_manifest.is_empty() { add_diagnostic(diagnostics, "semantic_contract.empty_resource_manifest", "resourceManifest must not be empty", Some("resourceManifest".into())); }
     let mut entries = Vec::new();
     let mut keys = BTreeSet::new();
     for (index, raw) in raw_manifest.iter().enumerate() {
         let path = format!("resourceManifest[{index}]");
-        let Some(item) = raw.as_object() else {
-            add_diagnostic(diagnostics, "semantic_contract.invalid_resource", "resource manifest entry must be an object", Some(path));
-            continue;
-        };
-        for key in item.keys() {
-            if !["canonicalResourceKey", "contentDigest", "role", "dependencies"].contains(&key.as_str()) {
-                add_diagnostic(diagnostics, "semantic_contract.unknown_resource_field", format!("field is not allowed in a resource manifest entry: {key}"), Some(format!("{path}.{key}")));
-            }
-        }
+        let Some(item) = raw.as_object() else { add_diagnostic(diagnostics, "semantic_contract.invalid_resource", "resource manifest entry must be an object", Some(path)); continue; };
+        for key in item.keys() { if !["canonicalResourceKey", "contentDigest", "role", "dependencies"].contains(&key.as_str()) { add_diagnostic(diagnostics, "semantic_contract.unknown_resource_field", format!("field is not allowed in a resource manifest entry: {key}"), Some(format!("{path}.{key}"))); } }
         let key = item.get("canonicalResourceKey").and_then(Json::as_str).unwrap_or("").to_owned();
-        if !canonical_key(&key) {
-            add_diagnostic(diagnostics, "semantic_contract.invalid_resource_key", "resource key is not canonical", Some(format!("{path}.canonicalResourceKey")));
-        }
-        if !keys.insert(key.clone()) {
-            add_diagnostic(diagnostics, "semantic_contract.duplicate_resource_key", "resource key occurs more than once", Some(format!("{path}.canonicalResourceKey")));
-        }
+        if !canonical_key(&key) { add_diagnostic(diagnostics, "semantic_contract.invalid_resource_key", "resource key is not canonical", Some(format!("{path}.canonicalResourceKey"))); }
+        if !keys.insert(key.clone()) { add_diagnostic(diagnostics, "semantic_contract.duplicate_resource_key", "resource key occurs more than once", Some(format!("{path}.canonicalResourceKey"))); }
         let digest = item.get("contentDigest").and_then(Json::as_str).unwrap_or("").to_owned();
-        if !is_sha256(&digest) {
-            add_diagnostic(diagnostics, "semantic_contract.invalid_resource_digest", "resource digest must be sha256:<64 lowercase hex characters>", Some(format!("{path}.contentDigest")));
-        }
-        if !matches!(item.get("role").and_then(Json::as_str), Some("normative-definition" | "normative-conformance" | "interpretation-rule" | "interpretation-conformance")) {
-            add_diagnostic(diagnostics, "semantic_contract.missing_resource_role", "resource role is required", Some(format!("{path}.role")));
-        }
+        if !is_sha256(&digest) { add_diagnostic(diagnostics, "semantic_contract.invalid_resource_digest", "resource digest must be sha256:<64 lowercase hex characters>", Some(format!("{path}.contentDigest"))); }
+        let role = item.get("role").and_then(Json::as_str).unwrap_or("").to_owned();
+        if !role_is_valid(&role) { add_diagnostic(diagnostics, "semantic_contract.invalid_resource_role", "resource role is not in the governed vocabulary", Some(format!("{path}.role"))); }
+        let Some(raw_dependencies) = item.get("dependencies").and_then(Json::as_array) else { add_diagnostic(diagnostics, "semantic_contract.missing_dependencies", "dependencies must be explicit, including when empty", Some(format!("{path}.dependencies"))); entries.push(ResourceEntry { key, digest, role, dependencies: Vec::new() }); continue; };
         let mut dependencies = Vec::new();
-        if let Some(raw_dependencies) = item.get("dependencies").and_then(Json::as_array) {
-            for (dependency_index, raw_dependency) in raw_dependencies.iter().enumerate() {
-                let dependency_path = format!("{path}.dependencies[{dependency_index}]");
-                let Some(dependency) = raw_dependency.as_object() else {
-                    add_diagnostic(diagnostics, "semantic_contract.invalid_dependency", "dependency must be an object", Some(dependency_path));
-                    continue;
-                };
-                for key in dependency.keys() {
-                    if !["canonicalResourceKey", "contentDigest"].contains(&key.as_str()) {
-                        add_diagnostic(diagnostics, "semantic_contract.unknown_dependency_field", format!("field is not allowed in a dependency: {key}"), Some(format!("{dependency_path}.{key}")));
-                    }
-                }
-                let dependency_key = dependency.get("canonicalResourceKey").and_then(Json::as_str).unwrap_or("").to_owned();
-                let dependency_digest = dependency.get("contentDigest").and_then(Json::as_str).unwrap_or("").to_owned();
-                if !canonical_key(&dependency_key) {
-                    add_diagnostic(diagnostics, "semantic_contract.invalid_dependency_key", "dependency resource key is not canonical", Some(format!("{dependency_path}.canonicalResourceKey")));
-                }
-                if !is_sha256(&dependency_digest) {
-                    add_diagnostic(diagnostics, "semantic_contract.invalid_dependency_digest", "dependency digest is invalid", Some(format!("{dependency_path}.contentDigest")));
-                }
-                dependencies.push((dependency_key, dependency_digest));
-            }
-        } else {
-            add_diagnostic(diagnostics, "semantic_contract.missing_dependencies", "dependencies must be explicit, including when empty", Some(format!("{path}.dependencies")));
+        let mut dependency_keys = BTreeSet::new();
+        for (dependency_index, raw_dependency) in raw_dependencies.iter().enumerate() {
+            let dependency_path = format!("{path}.dependencies[{dependency_index}]");
+            let Some(dependency) = raw_dependency.as_object() else { add_diagnostic(diagnostics, "semantic_contract.invalid_dependency", "dependency must be an object", Some(dependency_path)); continue; };
+            for field in dependency.keys() { if !["canonicalResourceKey", "contentDigest"].contains(&field.as_str()) { add_diagnostic(diagnostics, "semantic_contract.unknown_dependency_field", format!("field is not allowed in a dependency: {field}"), Some(format!("{dependency_path}.{field}"))); } }
+            let dependency_key = dependency.get("canonicalResourceKey").and_then(Json::as_str).unwrap_or("").to_owned();
+            let dependency_digest = dependency.get("contentDigest").and_then(Json::as_str).unwrap_or("").to_owned();
+            if !canonical_key(&dependency_key) { add_diagnostic(diagnostics, "semantic_contract.invalid_dependency_key", "dependency resource key is not canonical", Some(format!("{dependency_path}.canonicalResourceKey"))); }
+            if !is_sha256(&dependency_digest) { add_diagnostic(diagnostics, "semantic_contract.invalid_dependency_digest", "dependency digest is invalid", Some(format!("{dependency_path}.contentDigest"))); }
+            if !dependency_keys.insert(dependency_key.clone()) { add_diagnostic(diagnostics, "semantic_contract.duplicate_dependency", "a resource dependency may appear only once", Some(format!("{dependency_path}.canonicalResourceKey"))); }
+            dependencies.push((dependency_key, dependency_digest));
         }
-        entries.push(ResourceEntry { key, digest, dependencies });
+        entries.push(ResourceEntry { key, digest, role, dependencies });
     }
-
     let by_key = entries.iter().map(|entry| (entry.key.clone(), entry)).collect::<BTreeMap<_, _>>();
-    for entry in &entries {
-        for (dependency_key, dependency_digest) in &entry.dependencies {
-            match by_key.get(dependency_key) {
-                None => add_diagnostic(diagnostics, "semantic_contract.dangling_dependency", format!("dependency does not exist: {dependency_key}"), Some(entry.key.clone())),
-                Some(target) if target.digest != *dependency_digest => add_diagnostic(diagnostics, "semantic_contract.conflicting_dependency_digest", format!("dependency digest does not match resource manifest: {dependency_key}"), Some(entry.key.clone())),
-                Some(_) => {}
-            }
-        }
-    }
+    for entry in &entries { for (dependency_key, dependency_digest) in &entry.dependencies { match by_key.get(dependency_key) { None => add_diagnostic(diagnostics, "semantic_contract.dangling_dependency", format!("dependency does not exist: {dependency_key}"), Some(entry.key.clone())), Some(target) if target.digest != *dependency_digest => add_diagnostic(diagnostics, "semantic_contract.conflicting_dependency_digest", format!("dependency digest does not match resource manifest: {dependency_key}"), Some(entry.key.clone())), Some(_) => {} } } }
+    let Some(raw_frozen) = definition.get("frozenNormativeConformanceResources").and_then(Json::as_array) else { add_diagnostic(diagnostics, "semantic_contract.missing_frozen_resources", "frozenNormativeConformanceResources must be an array", Some("frozenNormativeConformanceResources".into())); return Some(entries); };
+    if raw_frozen.is_empty() { add_diagnostic(diagnostics, "semantic_contract.empty_frozen_resources", "frozenNormativeConformanceResources must not be empty", Some("frozenNormativeConformanceResources".into())); }
     let mut frozen = BTreeSet::new();
-    match definition.get("frozenNormativeConformanceResources").and_then(Json::as_array) {
-        Some(values) => for (index, value) in values.iter().enumerate() {
-            let Some(key) = value.as_str() else {
-                add_diagnostic(diagnostics, "semantic_contract.invalid_frozen_resource", "frozen resource key must be a string", Some(format!("frozenNormativeConformanceResources[{index}]")));
-                continue;
-            };
-            if !frozen.insert(key.to_owned()) {
-                add_diagnostic(diagnostics, "semantic_contract.duplicate_frozen_resource", "frozen resource key occurs more than once", Some(key.to_owned()));
-            }
-            match by_key.get(key) {
-                None => add_diagnostic(diagnostics, "semantic_contract.dangling_frozen_resource", "frozen resource is absent from resourceManifest", Some(key.to_owned())),
-                Some(entry) if !entry.key.ends_with("conformance") => add_diagnostic(diagnostics, "semantic_contract.invalid_frozen_resource_role", "frozen resource must be a conformance resource", Some(key.to_owned())),
-                Some(_) => {}
-            }
-        },
-        None => add_diagnostic(diagnostics, "semantic_contract.missing_frozen_resources", "frozenNormativeConformanceResources must be an array", Some("frozenNormativeConformanceResources".into())),
+    for (index, value) in raw_frozen.iter().enumerate() {
+        let Some(key) = value.as_str() else { add_diagnostic(diagnostics, "semantic_contract.invalid_frozen_resource", "frozen resource key must be a string", Some(format!("frozenNormativeConformanceResources[{index}]"))); continue; };
+        if !frozen.insert(key.to_owned()) { add_diagnostic(diagnostics, "semantic_contract.duplicate_frozen_resource", "frozen resource key occurs more than once", Some(key.to_owned())); }
+        match by_key.get(key) { None => add_diagnostic(diagnostics, "semantic_contract.dangling_frozen_resource", "frozen resource is absent from resourceManifest", Some(key.to_owned())), Some(entry) if !role_is_conformance(&entry.role) => add_diagnostic(diagnostics, "semantic_contract.invalid_frozen_resource_role", "frozen resource role must be a declared conformance role", Some(key.to_owned())), Some(_) => {} }
     }
     let mut visiting = BTreeSet::new();
     let mut visited = BTreeSet::new();
-    for entry in &entries {
-        detect_cycle(&entry.key, &by_key, &mut visiting, &mut visited, diagnostics);
-    }
+    for entry in &entries { detect_cycle(&entry.key, &by_key, &mut visiting, &mut visited, diagnostics); }
     Some(entries)
 }
 
-fn detect_cycle(
-    key: &str,
-    by_key: &BTreeMap<String, &ResourceEntry>,
-    visiting: &mut BTreeSet<String>,
-    visited: &mut BTreeSet<String>,
-    diagnostics: &mut Vec<Json>,
-) {
-    if visited.contains(key) {
-        return;
-    }
-    if !visiting.insert(key.to_owned()) {
-        add_diagnostic(diagnostics, "semantic_contract.dependency_cycle", "resource dependency cycle detected", Some(key.to_owned()));
-        return;
-    }
-    if let Some(entry) = by_key.get(key) {
-        for (dependency, _) in &entry.dependencies {
-            if by_key.contains_key(dependency) {
-                detect_cycle(dependency, by_key, visiting, visited, diagnostics);
-            }
-        }
-    }
+fn detect_cycle(key: &str, by_key: &BTreeMap<String, &ResourceEntry>, visiting: &mut BTreeSet<String>, visited: &mut BTreeSet<String>, diagnostics: &mut Vec<Json>) {
+    if visited.contains(key) { return; }
+    if !visiting.insert(key.to_owned()) { add_diagnostic(diagnostics, "semantic_contract.dependency_cycle", "resource dependency cycle detected", Some(key.to_owned())); return; }
+    if let Some(entry) = by_key.get(key) { for (dependency, _) in &entry.dependencies { if by_key.contains_key(dependency) { detect_cycle(dependency, by_key, visiting, visited, diagnostics); } } }
     visiting.remove(key);
     visited.insert(key.to_owned());
 }
 
-fn validate_resource_contents(
-    entries: &[ResourceEntry],
-    resources: Option<&Vec<Json>>,
-    diagnostics: &mut Vec<Json>,
-) {
-    let Some(resources) = resources else {
-        add_diagnostic(diagnostics, "semantic_contract.missing_resource_contents", "resource closure requires explicit resource contents", Some("resources".into()));
-        return;
-    };
+fn normalized_definition(definition: &BTreeMap<String, Json>) -> BTreeMap<String, Json> {
+    // Resource manifests and dependency lists are identity-keyed. Their authored
+    // order cannot create a fictitious semantic successor.
+    let mut normalized = definition.clone();
+    normalized.remove("semanticContractFingerprint");
+    if let Some(Json::Array(manifest)) = normalized.get_mut("resourceManifest") {
+        for entry in manifest.iter_mut() { if let Json::Object(values) = entry { if let Some(Json::Array(dependencies)) = values.get_mut("dependencies") { dependencies.sort_by(|left, right| { let left_key = left.as_object().and_then(|value| value.get("canonicalResourceKey")).and_then(Json::as_str).unwrap_or(""); let right_key = right.as_object().and_then(|value| value.get("canonicalResourceKey")).and_then(Json::as_str).unwrap_or(""); left_key.cmp(right_key) }); } } }
+        manifest.sort_by(|left, right| { let left_key = left.as_object().and_then(|value| value.get("canonicalResourceKey")).and_then(Json::as_str).unwrap_or(""); let right_key = right.as_object().and_then(|value| value.get("canonicalResourceKey")).and_then(Json::as_str).unwrap_or(""); left_key.cmp(right_key) });
+    }
+    if let Some(Json::Array(frozen)) = normalized.get_mut("frozenNormativeConformanceResources") { frozen.sort_by(|left, right| left.as_str().unwrap_or("").cmp(right.as_str().unwrap_or(""))); }
+    normalized
+}
+
+fn definition_preimage(definition: &BTreeMap<String, Json>) -> Result<String, String> {
+    let preimage = object([("scheme".into(), string(SCF_DOMAIN)), ("definition".into(), Json::Object(normalized_definition(definition))) ]);
+    let mut canonical = String::new();
+    canonicalize_value(&preimage, &mut canonical)?;
+    Ok(canonical)
+}
+
+fn scf(canonical: &str) -> String { format!("{SCF_SCHEME}:{}", digest(canonical.as_bytes()).trim_start_matches("sha256:")) }
+
+fn validate_declared_fingerprint(definition: &BTreeMap<String, Json>, require_declared: bool, diagnostics: &mut Vec<Json>) -> Option<String> {
+    let _ = parse_definition(definition, require_declared, diagnostics)?;
+    let canonical = match definition_preimage(definition) { Ok(value) => value, Err(error) => { add_diagnostic(diagnostics, "semantic_contract.canonicalization_failed", error, None); return None; } };
+    let expected = scf(&canonical);
+    if require_declared {
+        if let Some(declared) = definition.get("semanticContractFingerprint").and_then(Json::as_str) { if declared != expected { add_diagnostic(diagnostics, "semantic_contract.fingerprint_mismatch", "declared semantic contract fingerprint does not match the immutable definition", Some("semanticContractFingerprint".into())); } }
+        else { add_diagnostic(diagnostics, "semantic_contract.missing_fingerprint", "verification requires a declared semanticContractFingerprint", Some("semanticContractFingerprint".into())); }
+    }
+    Some(canonical)
+}
+
+fn validate_resource_contents(entries: &[ResourceEntry], resources: Option<&Vec<Json>>, diagnostics: &mut Vec<Json>) {
+    let Some(resources) = resources else { add_diagnostic(diagnostics, "semantic_contract.missing_resource_contents", "resource closure requires explicit resource contents", Some("resources".into())); return; };
+    if resources.is_empty() { add_diagnostic(diagnostics, "semantic_contract.empty_resource_contents", "resource closure contents must not be empty", Some("resources".into())); }
     let mut supplied: BTreeMap<String, Json> = BTreeMap::new();
     for (index, raw) in resources.iter().enumerate() {
-        let Some(resource) = raw.as_object() else {
-            add_diagnostic(diagnostics, "semantic_contract.invalid_resource_content", "resource content entry must be an object", Some(format!("resources[{index}]")));
-            continue;
-        };
+        let path = format!("resources[{index}]");
+        let Some(resource) = raw.as_object() else { add_diagnostic(diagnostics, "semantic_contract.invalid_resource_content", "resource content entry must be an object", Some(path)); continue; };
+        for key in resource.keys() { if !["canonicalResourceKey", "content"].contains(&key.as_str()) { add_diagnostic(diagnostics, "semantic_contract.unknown_resource_content_field", format!("field is not allowed in supplied resource content: {key}"), Some(format!("{path}.{key}"))); } }
         let key = resource.get("canonicalResourceKey").and_then(Json::as_str).unwrap_or("").to_owned();
-        if supplied.insert(key.clone(), resource.get("content").cloned().unwrap_or(Json::Null)).is_some() {
-            add_diagnostic(diagnostics, "semantic_contract.duplicate_supplied_resource", "resource content key occurs more than once", Some(key));
+        if !canonical_key(&key) { add_diagnostic(diagnostics, "semantic_contract.invalid_supplied_resource_key", "supplied resource key is not canonical", Some(format!("{path}.canonicalResourceKey"))); }
+        let content = resource.get("content").cloned().unwrap_or(Json::Null);
+        if let Some(previous) = supplied.insert(key.clone(), content.clone()) {
+            let mut previous_json = String::new(); let mut current_json = String::new();
+            let same = canonicalize_value(&previous, &mut previous_json).is_ok() && canonicalize_value(&content, &mut current_json).is_ok() && previous_json == current_json;
+            add_diagnostic(diagnostics, if same { "semantic_contract.duplicate_supplied_resource" } else { "semantic_contract.conflicting_resource_definition" }, "resource content key occurs more than once", Some(key));
         }
     }
-    for entry in entries {
-        match supplied.get(&entry.key) {
-            None => add_diagnostic(diagnostics, "semantic_contract.missing_resource_content", format!("missing content for resource: {}", entry.key), Some(entry.key.clone())),
-            Some(content) => {
-                let mut canonical = String::new();
-                if let Err(error) = canonicalize_value(content, &mut canonical) {
-                    add_diagnostic(diagnostics, "semantic_contract.invalid_resource_content", error, Some(entry.key.clone()));
-                } else if digest(canonical.as_bytes()) != entry.digest {
-                    add_diagnostic(diagnostics, "semantic_contract.resource_digest_mismatch", format!("content digest does not match manifest for {}", entry.key), Some(entry.key.clone()));
-                }
-            }
-        }
-    }
-    for key in supplied.keys() {
-        if !entries.iter().any(|entry| entry.key == *key) {
-            add_diagnostic(diagnostics, "semantic_contract.unlisted_resource", format!("resource content is not listed in the manifest: {key}"), Some(key.clone()));
-        }
-    }
+    for entry in entries { match supplied.get(&entry.key) { None => add_diagnostic(diagnostics, "semantic_contract.missing_resource_content", format!("missing content for resource: {}", entry.key), Some(entry.key.clone())), Some(content) => { let mut canonical = String::new(); if let Err(error) = canonicalize_value(content, &mut canonical) { add_diagnostic(diagnostics, "semantic_contract.invalid_resource_content", error, Some(entry.key.clone())); } else if digest(canonical.as_bytes()) != entry.digest { add_diagnostic(diagnostics, "semantic_contract.resource_digest_mismatch", format!("content digest does not match manifest for {}", entry.key), Some(entry.key.clone())); } } } }
+    for key in supplied.keys() { if !entries.iter().any(|entry| entry.key == *key) { add_diagnostic(diagnostics, "semantic_contract.unlisted_resource", format!("resource content is not listed in the manifest: {key}"), Some(key.clone())); } }
 }
 
 pub fn canonicalize(request: &Json) -> Json {
-    let Some(root) = request.as_object() else {
-        return super::invalid("request must be an object");
-    };
+    let Some(root) = request.as_object() else { return super::invalid("request must be an object"); };
+    if root.contains_key("value") && root.contains_key("value_json") { return canonical_failure("canonicalize_semantic_json", vec![diagnostic("semantic_contract.ambiguous_value", "value and value_json are mutually exclusive", None)]); }
     let parsed_value;
-    let value = if let Some(value) = root.get("value") {
-        value
-    } else if let Some(raw) = root.get("value_json").and_then(Json::as_str) {
-        parsed_value = match serde_json::from_str::<Json>(raw) {
-            Ok(value) => value,
-            Err(error) => return canonical_failure("canonicalize_semantic_json", vec![diagnostic("semantic_contract.invalid_json", error.to_string(), Some("value_json".into()))]),
-        };
-        &parsed_value
-    } else {
-        return super::invalid("value or value_json is required");
-    };
+    let value = if let Some(value) = root.get("value") { value } else if let Some(raw) = root.get("value_json").and_then(Json::as_str) { parsed_value = match serde_json::from_str::<Json>(raw) { Ok(value) => value, Err(error) => return canonical_failure("canonicalize_semantic_json", vec![diagnostic("semantic_contract.invalid_json", error.to_string(), Some("value_json".into()))]) }; &parsed_value } else { return super::invalid("value or value_json is required"); };
     let mut canonical = String::new();
-    match canonicalize_value(value, &mut canonical) {
-        Ok(()) => {
-            let mut result = canonical_result("canonicalize_semantic_json", canonical.clone(), digest(canonical.as_bytes()));
-            if let Json::Object(ref mut values) = result {
-                values.insert("sha256".into(), values.get("fingerprint").cloned().unwrap_or(Json::Null));
-            }
-            result
-        }
-        Err(error) => canonical_failure("canonicalize_semantic_json", vec![diagnostic("semantic_contract.unsafe_number", error, Some("value".into()))]),
-    }
+    match canonicalize_value(value, &mut canonical) { Ok(()) => canonical_result("canonicalize_semantic_json", canonical.clone(), digest(canonical.as_bytes())), Err(error) => canonical_failure("canonicalize_semantic_json", vec![diagnostic("semantic_contract.unsafe_number", error, Some("value".into()))]) }
 }
 
 pub fn fingerprint(request: &Json) -> Json {
-    let Some(root) = request.as_object() else {
-        return super::invalid("request must be an object");
-    };
-    let Some(definition) = root.get("definition").and_then(Json::as_object) else {
-        return super::invalid("definition must be an object");
-    };
+    let Some(root) = request.as_object() else { return super::invalid("request must be an object"); };
+    let Some(definition) = root.get("definition").and_then(Json::as_object) else { return super::invalid("definition must be an object"); };
+    let mode = root.get("mode").and_then(Json::as_str).unwrap_or("");
+    if !matches!(mode, "calculate" | "verify") { return super::invalid("mode must be calculate or verify"); }
     let mut diagnostics = Vec::new();
-    let _entries = parse_definition(definition, &mut diagnostics);
-    let mut preimage_definition = definition.clone();
-    let declared = preimage_definition.remove("semanticContractFingerprint");
-    let preimage = object([
-        ("scheme".into(), string(SCF_DOMAIN)),
-        ("definition".into(), Json::Object(preimage_definition)),
-    ]);
-    let mut canonical = String::new();
-    if let Err(error) = canonicalize_value(&preimage, &mut canonical) {
-        add_diagnostic(&mut diagnostics, "semantic_contract.canonicalization_failed", error, None);
-    }
-    if let Some(Json::String(value)) = declared {
-        let expected = format!("scf:v1:sha256:{}", digest(canonical.as_bytes()).trim_start_matches("sha256:"));
-        if value != expected {
-            add_diagnostic(&mut diagnostics, "semantic_contract.fingerprint_mismatch", "declared semantic contract fingerprint does not match the immutable definition", Some("semanticContractFingerprint".into()));
-        }
-    }
+    let Some(canonical) = validate_declared_fingerprint(definition, mode == "verify", &mut diagnostics) else { sort_diagnostics(&mut diagnostics); return canonical_failure("fingerprint_semantic_contract", diagnostics); };
     sort_diagnostics(&mut diagnostics);
-    if !diagnostics.is_empty() {
-        return canonical_failure("fingerprint_semantic_contract", diagnostics);
-    }
-    let fingerprint = format!("scf:v1:sha256:{}", digest(canonical.as_bytes()).trim_start_matches("sha256:"));
+    if !diagnostics.is_empty() { return canonical_failure("fingerprint_semantic_contract", diagnostics); }
+    let fingerprint = scf(&canonical);
     let mut result = canonical_result("fingerprint_semantic_contract", canonical, fingerprint.clone());
-    if let Json::Object(ref mut values) = result {
-        values.insert("semantic_contract_fingerprint".into(), string(fingerprint));
-    }
+    if let Json::Object(ref mut values) = result { values.insert("mode".into(), string(mode)); values.insert("semantic_contract_fingerprint".into(), string(fingerprint)); }
     result
 }
 
 pub fn validate_closure(request: &Json) -> Json {
-    let Some(root) = request.as_object() else {
-        return super::invalid("request must be an object");
-    };
-    let Some(definition) = root.get("definition").and_then(Json::as_object) else {
-        return super::invalid("definition must be an object");
-    };
+    let Some(root) = request.as_object() else { return super::invalid("request must be an object"); };
+    let Some(definition) = root.get("definition").and_then(Json::as_object) else { return super::invalid("definition must be an object"); };
     let mut diagnostics = Vec::new();
-    if let Some(entries) = parse_definition(definition, &mut diagnostics) {
-        validate_resource_contents(entries.as_slice(), root.get("resources").and_then(Json::as_array), &mut diagnostics);
+    let entries = parse_definition(definition, true, &mut diagnostics);
+    if entries.is_some() {
+        match definition_preimage(definition) {
+            Ok(canonical) => {
+                let expected = scf(&canonical);
+                if let Some(declared) = definition.get("semanticContractFingerprint").and_then(Json::as_str) {
+                    if declared != expected {
+                        add_diagnostic(&mut diagnostics, "semantic_contract.fingerprint_mismatch", "declared semantic contract fingerprint does not match the immutable definition", Some("semanticContractFingerprint".into()));
+                    }
+                }
+            }
+            Err(error) => add_diagnostic(&mut diagnostics, "semantic_contract.canonicalization_failed", error, None),
+        }
     }
+    if let Some(entries) = entries { validate_resource_contents(entries.as_slice(), root.get("resources").and_then(Json::as_array), &mut diagnostics); }
     sort_diagnostics(&mut diagnostics);
     let closure_valid = diagnostics.is_empty();
-    let mut result = match simple_result("validate_semantic_resource_closure", closure_valid, diagnostics) {
-        Json::Object(value) => value,
-        _ => unreachable!(),
-    };
+    let mut result = match simple_result("validate_semantic_resource_closure", closure_valid, diagnostics) { Json::Object(value) => value, _ => unreachable!() };
     result.insert("closure_valid".into(), Json::Bool(closure_valid));
     Json::Object(result)
 }
 
 pub fn compose_set(request: &Json) -> Json {
-    let Some(root) = request.as_object() else {
-        return super::invalid("request must be an object");
-    };
-    let Some(raw_contracts) = root.get("contracts").and_then(Json::as_array) else {
-        return super::invalid("contracts must be an array");
-    };
+    let Some(root) = request.as_object() else { return super::invalid("request must be an object"); };
+    let Some(raw_contracts) = root.get("contracts").and_then(Json::as_array) else { return super::invalid("contracts must be an array"); };
     let mut diagnostics = Vec::new();
-    let mut references = Vec::new();
-    let mut families = BTreeSet::new();
+    if raw_contracts.is_empty() { add_diagnostic(&mut diagnostics, "semantic_contract.empty_set", "a semantic contract set must contain at least one member", Some("contracts".into())); }
+    let mut references = Vec::new(); let mut families = BTreeSet::new();
     for (index, raw) in raw_contracts.iter().enumerate() {
         let path = format!("contracts[{index}]");
-        let Some(contract) = raw.as_object() else {
-            add_diagnostic(&mut diagnostics, "semantic_contract.invalid_set_member", "set member must be an object", Some(path));
-            continue;
-        };
+        let Some(contract) = raw.as_object() else { add_diagnostic(&mut diagnostics, "semantic_contract.invalid_set_member", "set member must be an object", Some(path)); continue; };
+        for key in contract.keys() { if !["semanticContractFamily", "semanticContractVersion", "semanticContractFingerprint"].contains(&key.as_str()) { add_diagnostic(&mut diagnostics, "semantic_contract.unknown_member_field", format!("field is not allowed in a set member: {key}"), Some(format!("{path}.{key}"))); } }
         let family = contract.get("semanticContractFamily").and_then(Json::as_str).unwrap_or("").to_owned();
         let version = contract.get("semanticContractVersion").and_then(Json::as_str).unwrap_or("").to_owned();
         let fingerprint = contract.get("semanticContractFingerprint").and_then(Json::as_str).unwrap_or("").to_owned();
-        if !is_family(&family) {
-            add_diagnostic(&mut diagnostics, "semantic_contract.invalid_family", "set member family is invalid", Some(format!("{path}.semanticContractFamily")));
-        }
-        if !is_version(&version) {
-            add_diagnostic(&mut diagnostics, "semantic_contract.invalid_version", "set member version must be an exact major.minor value", Some(format!("{path}.semanticContractVersion")));
-        }
-        if !fingerprint.starts_with("scf:v1:sha256:") || fingerprint.len() != 78 {
-            add_diagnostic(&mut diagnostics, "semantic_contract.invalid_member_fingerprint", "set member fingerprint must be an exact scf:v1:sha256 value", Some(format!("{path}.semanticContractFingerprint")));
-        }
-        if !families.insert(family.clone()) {
-            add_diagnostic(&mut diagnostics, "semantic_contract.duplicate_set_family", "a semantic contract set cannot contain duplicate families", Some(format!("{path}.semanticContractFamily")));
-        }
+        if !is_family(&family) { add_diagnostic(&mut diagnostics, "semantic_contract.invalid_family", "set member family is invalid", Some(format!("{path}.semanticContractFamily"))); }
+        if !is_version(&version) { add_diagnostic(&mut diagnostics, "semantic_contract.invalid_version", "set member version must be an exact major.minor value", Some(format!("{path}.semanticContractVersion"))); }
+        if !is_scf(&fingerprint) { add_diagnostic(&mut diagnostics, "semantic_contract.invalid_member_fingerprint", "set member fingerprint must be an exact lowercase scf:v1:sha256 value", Some(format!("{path}.semanticContractFingerprint"))); }
+        if !families.insert(family.clone()) { add_diagnostic(&mut diagnostics, "semantic_contract.duplicate_set_family", "a semantic contract set cannot contain duplicate families", Some(format!("{path}.semanticContractFamily"))); }
         references.push((family, version, fingerprint));
     }
     references.sort_by(|left, right| left.0.cmp(&right.0));
-    let preimage = object([
-        ("scheme".into(), string(SCS_DOMAIN)),
-        ("contracts".into(), Json::Array(references.iter().map(|(family, version, fingerprint)| object([
-            ("semanticContractFamily".into(), string(family.clone())),
-            ("semanticContractVersion".into(), string(version.clone())),
-            ("semanticContractFingerprint".into(), string(fingerprint.clone())),
-        ])).collect())),
-    ]);
+    let preimage = object([("scheme".into(), string(SCS_DOMAIN)), ("contracts".into(), Json::Array(references.iter().map(|(family, version, fingerprint)| object([(String::from("semanticContractFamily"), string(family.clone())), (String::from("semanticContractVersion"), string(version.clone())), (String::from("semanticContractFingerprint"), string(fingerprint.clone()))])).collect()))]);
     let mut canonical = String::new();
-    if let Err(error) = canonicalize_value(&preimage, &mut canonical) {
-        add_diagnostic(&mut diagnostics, "semantic_contract.canonicalization_failed", error, None);
-    }
+    if let Err(error) = canonicalize_value(&preimage, &mut canonical) { add_diagnostic(&mut diagnostics, "semantic_contract.canonicalization_failed", error, None); }
     sort_diagnostics(&mut diagnostics);
-    if !diagnostics.is_empty() {
-        return canonical_failure("compose_semantic_contract_set", diagnostics);
-    }
-    let fingerprint = format!("scs:v1:sha256:{}", digest(canonical.as_bytes()).trim_start_matches("sha256:"));
-    let mut result = canonical_result("compose_semantic_contract_set", canonical, fingerprint);
-    if let Json::Object(ref mut values) = result {
-        let set_fingerprint = values.remove("fingerprint").unwrap_or(Json::Null);
-        values.insert("semantic_contract_set_fingerprint".into(), set_fingerprint);
-    }
+    if !diagnostics.is_empty() { return canonical_failure("compose_semantic_contract_set", diagnostics); }
+    let set_id = format!("{SCS_SCHEME}:{}", digest(canonical.as_bytes()).trim_start_matches("sha256:"));
+    let mut result = canonical_result("compose_semantic_contract_set", canonical, set_id.clone());
+    if let Json::Object(ref mut values) = result { values.insert("semantic_contract_set_id".into(), string(set_id)); }
     result
 }

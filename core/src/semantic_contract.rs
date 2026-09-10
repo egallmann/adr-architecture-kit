@@ -96,9 +96,9 @@ fn canonical_number(value: &serde_json::Number) -> Result<String, String> {
     // RFC 8785 delegates number spelling to ECMAScript Number::toString.
     // The ordinary `ryu` crate only supplies shortest round-tripping digits;
     // its notation thresholds differ from ECMAScript and produce a different
-    // semantic identity for values such as 333333333.33333329. `ryu-js` is a
-    // deliberately qualified fork whose `Buffer::format` implements the
-    // ECMAScript notation rules behind this Rust/WASM authority boundary.
+    // semantic identity for values such as 333333333.33333329. `zmij_ecma` is
+    // a qualified pure-Rust implementation whose `Buffer::format` follows
+    // the ECMAScript NumberToString algorithm behind this boundary.
     // The selected implementation also resolves shortest-round-trip tie
     // selection the way ECMAScript does; notation-only forks of Ryū are not
     // sufficient for the semantic identity contract.

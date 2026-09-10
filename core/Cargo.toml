@@ -11,4 +11,4 @@ crate-type = ["cdylib", "rlib"]
 serde = { version = "1.0", features = ["derive"] }
 serde_json = "1.0"
 sha2 = "0.10"
-ryu-js = "1.0.3"
+zmij_ecma = "1.0.23"

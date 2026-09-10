@@ -99,7 +99,10 @@ fn canonical_number(value: &serde_json::Number) -> Result<String, String> {
     // semantic identity for values such as 333333333.33333329. `ryu-js` is a
     // deliberately qualified fork whose `Buffer::format` implements the
     // ECMAScript notation rules behind this Rust/WASM authority boundary.
-    let mut buffer = ryu_js::Buffer::new();
+    // The selected implementation also resolves shortest-round-trip tie
+    // selection the way ECMAScript does; notation-only forks of Ryū are not
+    // sufficient for the semantic identity contract.
+    let mut buffer = zmij_ecma::Buffer::new();
     let rendered = buffer.format(number);
     let rendered = rendered.strip_suffix(".0").unwrap_or(rendered);
     let (mantissa, exponent) = match rendered.split_once('e') {

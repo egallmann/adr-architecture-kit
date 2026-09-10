@@ -365,6 +365,7 @@ def test_pr_feedback_is_fast_and_semantically_explicit() -> None:
     assert workflow["concurrency"]["cancel-in-progress"] is True
     jobs = workflow["jobs"]
     assert set(jobs) == {
+        "semantic-core-artifact",
         "python-semantic",
         "rust-semantic-core",
         "typescript-consumer",
@@ -383,12 +384,14 @@ def test_pr_feedback_is_fast_and_semantically_explicit() -> None:
         assert command in node_text
     assert "npm audit" not in node_text
     assert "npm run pack:check" not in node_text
+    assert "upload-artifact" in _job_steps_text(jobs["semantic-core-artifact"])
 
-    for job in jobs.values():
+    for name, job in jobs.items():
         text = _job_steps_text(job)
         assert "release_manifest.py" not in text
         assert "python -m build" not in text
-        assert "upload-artifact" not in text
+        if name != "semantic-core-artifact":
+            assert "upload-artifact" not in text
 
 
 def test_integration_assurance_owns_full_suite_and_develop_runs_it() -> None:

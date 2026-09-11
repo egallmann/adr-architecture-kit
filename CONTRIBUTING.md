@@ -74,6 +74,7 @@ See [`docs/contributors/tdd-workflow.md`](docs/contributors/tdd-workflow.md) for
 | Version consistency | `python scripts/check_version_consistency.py` |
 | Public SDK | `python -m pytest tests/test_public_sdk_contract.py tests/test_public_sdk_operations.py -q` |
 | Quality debt | `python scripts/check_quality_ratchets.py` |
+| Repository naming | `python scripts/check_repository_naming.py` |
 | Governance | `adr governance-checks` |
 | Schema parity | see below |
 
@@ -156,6 +157,14 @@ When touching implementation linkage or attribution evidence pipelines, smoke-ch
 5. Negative-space sign-off: [`docs/attribution-negative-space.md`](docs/attribution-negative-space.md)
 
 Pre-push runs contract guards always; **`adr attribution check`** runs when workspace evidence exists (otherwise skipped with a message).
+
+Durable filenames, module names, contract identifiers, fixtures, and tests must
+describe their domain capability, responsibility, or behavior. Delivery
+sequencing belongs in issues, branches, PRs, and planning prose—not durable
+implementation names. The naming policy rejects delivery labels such as
+`slice_a`, `slice-c`, `hsg14`, `tranche-15`, `phase0`, `phase_2`, `phase-a`,
+and `wave_3` in active paths and identifiers; the exact historical design
+journals are allowlisted for provenance.
 
 ### System overview and unified compile
 

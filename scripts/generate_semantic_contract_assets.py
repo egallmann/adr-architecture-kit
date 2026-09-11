@@ -1,4 +1,4 @@
-"""Generate the committed Slice B semantic-contract definitions and mirrors.
+"""Generate the committed semantic-contract definitions and mirrors.
 
 The canonical resources live under ``contracts``.  This script only assembles
 content-addressed manifests and package mirrors; it does not define semantic
@@ -264,7 +264,7 @@ def main() -> None:
         target.parent.mkdir(parents=True, exist_ok=True)
         target.write_bytes(path.read_bytes())
 
-    # Slice C artifacts are generated from the exact definitions written above.
+    # Governance artifacts are generated from the exact definitions written above.
     # The profile and policy files are projections around immutable identities;
     # they never participate in an SCF or SCS preimage.
     members = [
@@ -312,7 +312,7 @@ def main() -> None:
                 "newUsePolicy": "permitted",
                 "historicalInterpretationSupport": True,
                 "qualificationRevision": "qualification:v1:1",
-                "reasonCode": "slice-c-qualified",
+                "reasonCode": "architecture-materialization-qualified",
             }
         )
         policy_entries.append(
@@ -431,7 +431,7 @@ def main() -> None:
             "expected": {"success": False, "diagnostic_codes": ["semantic_contract.invalid_current_selection"]},
         },
     ]
-    write_json(ROOT / "contracts" / "semantic-core" / "v1.0" / "vectors" / "semantic-contract-slice-c.json", {"contract_version": "1.0", "cases": vector_cases})
+    write_json(ROOT / "contracts" / "semantic-core" / "v1.0" / "vectors" / "semantic-contract-set-governance.json", {"contract_version": "1.0", "cases": vector_cases})
 
 
 if __name__ == "__main__":

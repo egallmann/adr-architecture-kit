@@ -5,7 +5,7 @@ Durable release-quality controls live in this repository's Git history. The publ
 
 ## Durable controls
 
-- Quality, wheel, coverage, and release-manifest gates: [`../production-hardening/phase-0-controls.md`](../production-hardening/phase-0-controls.md)
+- Quality, wheel, coverage, and release-manifest gates: [`../production-hardening/developer-and-release-controls.md`](../production-hardening/developer-and-release-controls.md)
 - Frozen Python/CLI compatibility inventory: [`../production-hardening/public-surface-inventory.md`](../production-hardening/public-surface-inventory.md)
 - Compatibility snapshots: `contracts/compatibility/`
 - Local pre-push bundle: `python scripts/run_local_pre_push_checks.py`

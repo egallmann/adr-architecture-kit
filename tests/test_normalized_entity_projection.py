@@ -38,7 +38,7 @@ def _generate(root: Path):
     return bundle, paths
 
 
-def test_phase2_promotes_exact_authorized_entity_types(tmp_path: Path) -> None:
+def test_normalized_model_promotes_exact_authorized_entity_types(tmp_path: Path) -> None:
     _create_v12_scope(tmp_path)
     bundle, _ = _generate(tmp_path)
     by_id = {entity.id: entity for entity in bundle.entity_registry.entities}

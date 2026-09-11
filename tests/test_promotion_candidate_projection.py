@@ -461,7 +461,7 @@ def test_m03_context_scopes_bare_local_to_prev13() -> None:
     )
 
 
-def test_m04_cap0047_reconciles_phase1_symbol_inventory() -> None:
+def test_m04_cap0047_reconciles_authorized_symbol_inventory() -> None:
     """A-N2: CAP-0047 must not timelessly freeze Phase 1 symbols after promotion SDK."""
     before = _minimal_adr_l0013()
     after = apply_identity_v13_amend("M-04", copy.deepcopy(before))

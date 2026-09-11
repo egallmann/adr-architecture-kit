@@ -85,4 +85,4 @@ const set = execute({
 if (!set.success || !/^scs:v1:sha256:[0-9a-f]{64}$/.test(set.semantic_contract_set_id ?? "")) {
   throw new Error("tracked WASM failed semantic-contract-set smoke test");
 }
-console.log(`tracked semantic-core WASM passed Slice B smoke (${set.semantic_contract_set_id})`);
+console.log(`tracked semantic-core WASM passed semantic-contract smoke (${set.semantic_contract_set_id})`);

@@ -54,12 +54,12 @@ normalized-model 2.3. Python and Node
 therefore compare canonical bytes, rejection diagnostics, and fingerprints in
 the release parity gate.
 
-Slice C exposes the governed `architecture-materialization@1.0` profile,
+The Node binding exposes the governed `architecture-materialization@1.0` profile,
 explicit whole-tuple qualification, deterministic preview/apply assembly,
 retained-corpus validation, catalog/policy inspection, and current-pointer
 resolution. A resolved pointer returns one exact SCS ID. The profile does not
-advertise architecture materialization execution; that operation remains a
-future Slice D capability.
+advertise architecture materialization execution; that operation remains
+outside this contract boundary.
 
 `generateAttributionShim({ language: "python" | "typescript" })` is a
 read-only, deterministic projection through the shared semantic core. Its

@@ -1,4 +1,4 @@
-"""Deterministic Phase 0 functional and performance benchmark harness."""
+"""Deterministic architecture workflow functional and performance benchmark harness."""
 
 from __future__ import annotations
 
@@ -65,7 +65,7 @@ STAGE_NAMES = (
     "representative_queries",
 )
 SDK_STAGE_NAMES = ("sdk_validate", "sdk_compile_preview", "sdk_open_repository")
-PHASE2_STAGE_NAMES = (
+NORMALIZED_MODEL_STAGE_NAMES = (
     "v12_parsing",
     "semantic_compilation",
     "assertion_derivation_1000",
@@ -113,7 +113,7 @@ def _synthetic_case(base: Path, size: int) -> CorpusCase:
     root = base / f"synthetic-{size}"
     logical = root / "adrs" / "logical"
     logical.mkdir(parents=True)
-    _write_project(root, f"phase0-synthetic-{size}")
+    _write_project(root, f"architecture-workflow-synthetic-{size}")
     for offset in range(size):
         sequence = 1000 + offset
         payload = {
@@ -123,7 +123,7 @@ def _synthetic_case(base: Path, size: int) -> CorpusCase:
             "title": f"Deterministic synthetic decision {sequence:04d}",
             "status": "proposed",
             "created_date": "2026-01-01",
-            "authors": ["phase0-benchmark"],
+            "authors": ["architecture-workflow-benchmark"],
             "domains": ["benchmark"],
             "context": "Fixed-seed synthetic benchmark input.",
             "decisions": [
@@ -142,7 +142,7 @@ def _synthetic_case(base: Path, size: int) -> CorpusCase:
 def _copy_case(base: Path, name: str, source: Path) -> CorpusCase:
     root = base / name
     root.mkdir(parents=True)
-    _write_project(root, f"phase0-{name}")
+    _write_project(root, f"architecture-workflow-{name}")
     for directory in SOURCE_DIRS:
         source_dir = source / directory
         if source_dir.exists():
@@ -150,10 +150,10 @@ def _copy_case(base: Path, name: str, source: Path) -> CorpusCase:
     return _case(name, root)
 
 
-def _phase2_case(base: Path) -> CorpusCase:
-    root = base / "phase2-semantic"
+def _normalized_model_case(base: Path) -> CorpusCase:
+    root = base / "normalized-model-semantic"
     root.mkdir(parents=True)
-    _write_project(root, "phase2-semantic")
+    _write_project(root, "normalized-model-semantic")
     fixture_root = ROOT / "tests" / "fixtures" / "v1_2"
     fixtures = (
         ("logical-bindings.yaml", "logical", "ADR-L-9801-bindings.yaml"),
@@ -168,15 +168,15 @@ def _phase2_case(base: Path) -> CorpusCase:
         destination = root / "adrs" / directory / destination_name
         destination.parent.mkdir(parents=True, exist_ok=True)
         shutil.copy2(fixture_root / source_name, destination)
-    return _case("phase2-semantic", root)
+    return _case("normalized-model-semantic", root)
 
 
 def _v13_model2_case(base: Path) -> CorpusCase:
     """Tiny authored v1.3 corpus for model 2.0 compile/load timing."""
-    root = base / "phase2-v13-model2"
+    root = base / "normalized-model-v13-model2"
     logical = root / "adrs" / "logical"
     logical.mkdir(parents=True)
-    _write_project(root, "phase2-v13-model2")
+    _write_project(root, "normalized-model-v13-model2")
     payload = {
         "schema_version": "1.3",
         "adr_type": "logical",
@@ -186,7 +186,7 @@ def _v13_model2_case(base: Path) -> CorpusCase:
         "title": "Benchmark v1.3 logical ADR",
         "status": "accepted",
         "created_date": "2026-01-01",
-        "authors": ["phase0-benchmark"],
+        "authors": ["architecture-workflow-benchmark"],
         "domains": ["benchmark"],
         "context": "Deterministic v1.3 model 2.0 benchmark input.",
         "capabilities": [
@@ -217,7 +217,7 @@ def _v13_model2_case(base: Path) -> CorpusCase:
     }
     path = logical / "ADR-L-7001-benchmark-v13.yaml"
     path.write_text(yaml.safe_dump(payload, sort_keys=False), encoding="utf-8")
-    return _case("phase2-v13-model2", root)
+    return _case("normalized-model-v13-model2", root)
 
 
 def _case(name: str, root: Path) -> CorpusCase:
@@ -330,7 +330,7 @@ def _run_iteration(
     return timings, model.fingerprint, sdk_timings, evidence
 
 
-def _run_phase2_iteration(
+def _run_normalized_model_iteration(
     case: CorpusCase, v13_case: CorpusCase
 ) -> tuple[dict[str, float], dict[str, object]]:
     timings: dict[str, float] = {}
@@ -445,9 +445,11 @@ def _parse_sizes(value: str) -> list[int]:
 
 
 def run(corpus: str, sizes: list[int], warmups: int, repeats: int) -> dict[str, object]:
-    with tempfile.TemporaryDirectory(prefix="adr-kit-phase0-benchmark-") as temporary:
+    with tempfile.TemporaryDirectory(
+        prefix="adr-kit-architecture-workflow-benchmark-"
+    ) as temporary:
         base = Path(temporary)
-        phase2_case = _phase2_case(base)
+        normalized_model_case = _normalized_model_case(base)
         v13_case = _v13_model2_case(base)
         cases: list[CorpusCase] = []
         if corpus in ("all", "repository"):
@@ -493,15 +495,16 @@ def run(corpus: str, sizes: list[int], warmups: int, repeats: int) -> dict[str, 
                 }
             )
         for _ in range(warmups):
-            _run_phase2_iteration(phase2_case, v13_case)
-        phase2_samples: list[dict[str, float]] = []
-        phase2_evidence_samples: list[dict[str, object]] = []
+            _run_normalized_model_iteration(normalized_model_case, v13_case)
+        normalized_model_samples: list[dict[str, float]] = []
+        normalized_model_evidence_samples: list[dict[str, object]] = []
         for _ in range(repeats + 1):
-            timings, evidence = _run_phase2_iteration(phase2_case, v13_case)
-            phase2_samples.append(timings)
-            phase2_evidence_samples.append(evidence)
-        phase2_deterministic = all(
-            item == phase2_evidence_samples[0] for item in phase2_evidence_samples
+            timings, evidence = _run_normalized_model_iteration(normalized_model_case, v13_case)
+            normalized_model_samples.append(timings)
+            normalized_model_evidence_samples.append(evidence)
+        normalized_model_deterministic = all(
+            item == normalized_model_evidence_samples[0]
+            for item in normalized_model_evidence_samples
         )
         return {
             "schema_version": 1,
@@ -521,9 +524,11 @@ def run(corpus: str, sizes: list[int], warmups: int, repeats: int) -> dict[str, 
             "deterministic": deterministic,
             "sdk_deterministic": sdk_deterministic,
             "sdk_evidence": sdk_evidence,
-            "phase2_stages": _summarize(phase2_samples, PHASE2_STAGE_NAMES),
-            "phase2_deterministic": phase2_deterministic,
-            "phase2_evidence": phase2_evidence_samples[0],
+            "normalized_model_stages": _summarize(
+                normalized_model_samples, NORMALIZED_MODEL_STAGE_NAMES
+            ),
+            "normalized_model_deterministic": normalized_model_deterministic,
+            "normalized_model_evidence": normalized_model_evidence_samples[0],
         }
 
 
@@ -546,7 +551,7 @@ def main(argv: Sequence[str] | None = None) -> int:
             json.dumps(payload, indent=2, sort_keys=True) + "\n", encoding="utf-8"
         )
         print(arguments.json_out)
-        return 0 if payload["deterministic"] and payload["phase2_deterministic"] else 1
+        return 0 if payload["deterministic"] and payload["normalized_model_deterministic"] else 1
     except (OSError, RuntimeError, ValueError) as exc:
         print(f"benchmark failed: {exc}", file=sys.stderr)
         return 1

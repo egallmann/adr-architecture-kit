@@ -1,4 +1,4 @@
-//! Slice C semantic-contract profiles, qualification, and retained-set rules.
+//! Semantic-contract profiles, qualification, and retained-set rules.
 //!
 //! This module deliberately operates on the byte-oriented JSON boundary.  The
 //! profile, catalog, policy, and current pointer are inputs to the canonical
@@ -8,66 +8,16 @@
 
 use std::collections::{BTreeMap, BTreeSet};
 
-use sha2::{Digest, Sha256};
-
+use super::semantic_contract::{
+    canonical_contract_set, contract_set_member_wire, is_scf, parse_contract_set_members,
+    ContractSetMember, SCS_SCHEME,
+};
 use super::{diagnostic, object, simple_result, string, Json};
 
 const PROFILE_ID: &str = "architecture-materialization@1.0";
 const PROFILE_FAMILY: &str = "architecture-materialization";
 const PROFILE_VERSION: &str = "1.0";
-const SCS_SCHEME: &str = "scs:v1:sha256";
-const SCS_DOMAIN: &str = "adr-kit.semantic-contract-set/v1";
 const QUALIFICATION_VERSION: &str = "1.0";
-
-#[derive(Clone, Debug, Eq, Ord, PartialEq, PartialOrd)]
-struct Member {
-    family: String,
-    version: String,
-    fingerprint: String,
-}
-
-fn is_family(value: &str) -> bool {
-    let bytes = value.as_bytes();
-    if bytes.is_empty() || !bytes[0].is_ascii_lowercase() {
-        return false;
-    }
-    let mut previous_hyphen = false;
-    for byte in bytes {
-        if byte.is_ascii_lowercase() || byte.is_ascii_digit() {
-            previous_hyphen = false;
-        } else if *byte == b'-' && !previous_hyphen {
-            previous_hyphen = true;
-        } else {
-            return false;
-        }
-    }
-    !previous_hyphen
-}
-
-fn is_version(value: &str) -> bool {
-    let mut parts = value.split('.');
-    let Some(major) = parts.next() else {
-        return false;
-    };
-    let Some(minor) = parts.next() else {
-        return false;
-    };
-    parts.next().is_none()
-        && !major.is_empty()
-        && !minor.is_empty()
-        && major.bytes().all(|byte| byte.is_ascii_digit())
-        && minor.bytes().all(|byte| byte.is_ascii_digit())
-}
-
-fn is_scf(value: &str) -> bool {
-    let Some(hex) = value.strip_prefix("scf:v1:sha256:") else {
-        return false;
-    };
-    hex.len() == 64
-        && hex
-            .bytes()
-            .all(|byte| byte.is_ascii_hexdigit() && !byte.is_ascii_uppercase())
-}
 
 fn is_scs(value: &str) -> bool {
     let Some(hex) = value.strip_prefix("scs:v1:sha256:") else {
@@ -121,120 +71,6 @@ fn success(operation: &str, mut values: BTreeMap<String, Json>) -> Json {
         .entry("diagnostics".into())
         .or_insert_with(|| Json::Array(Vec::new()));
     Json::Object(values)
-}
-
-fn member_wire(member: &Member) -> Json {
-    object([
-        (
-            "semanticContractFamily".into(),
-            string(member.family.clone()),
-        ),
-        (
-            "semanticContractVersion".into(),
-            string(member.version.clone()),
-        ),
-        (
-            "semanticContractFingerprint".into(),
-            string(member.fingerprint.clone()),
-        ),
-    ])
-}
-
-fn parse_members(raw: Option<&Json>, path: &str, diagnostics: &mut Vec<Json>) -> Vec<Member> {
-    let Some(values) = array(raw) else {
-        diagnostics.push(diagnostic(
-            "semantic_contract.invalid_members",
-            "members must be an array",
-            Some(path.into()),
-        ));
-        return Vec::new();
-    };
-    let mut members = Vec::new();
-    let mut families = BTreeSet::new();
-    for (index, raw_member) in values.iter().enumerate() {
-        let item_path = format!("{path}[{index}]");
-        let Some(item) = raw_member.as_object() else {
-            diagnostics.push(diagnostic(
-                "semantic_contract.invalid_member",
-                "member must be an object",
-                Some(item_path),
-            ));
-            continue;
-        };
-        for key in item.keys() {
-            if ![
-                "semanticContractFamily",
-                "semanticContractVersion",
-                "semanticContractFingerprint",
-            ]
-            .contains(&key.as_str())
-            {
-                diagnostics.push(diagnostic(
-                    "semantic_contract.unknown_member_field",
-                    format!("field is not allowed in a set member: {key}"),
-                    Some(format!("{item_path}.{key}")),
-                ));
-            }
-        }
-        let family = text(item.get("semanticContractFamily")).unwrap_or_default();
-        let version = text(item.get("semanticContractVersion")).unwrap_or_default();
-        let fingerprint = text(item.get("semanticContractFingerprint")).unwrap_or_default();
-        if !is_family(&family) {
-            diagnostics.push(diagnostic(
-                "semantic_contract.invalid_family",
-                "member family is invalid",
-                Some(format!("{item_path}.semanticContractFamily")),
-            ));
-        }
-        if !is_version(&version) {
-            diagnostics.push(diagnostic(
-                "semantic_contract.invalid_version",
-                "member version must be an exact major.minor value",
-                Some(format!("{item_path}.semanticContractVersion")),
-            ));
-        }
-        if !is_scf(&fingerprint) {
-            diagnostics.push(diagnostic(
-                "semantic_contract.invalid_member_fingerprint",
-                "member fingerprint must be an exact scf:v1:sha256 value",
-                Some(format!("{item_path}.semanticContractFingerprint")),
-            ));
-        }
-        if !families.insert(family.clone()) {
-            diagnostics.push(diagnostic(
-                "semantic_contract.duplicate_set_family",
-                "a semantic contract set cannot contain duplicate families",
-                Some(format!("{item_path}.semanticContractFamily")),
-            ));
-        }
-        members.push(Member {
-            family,
-            version,
-            fingerprint,
-        });
-    }
-    members.sort();
-    members
-}
-
-fn canonical_set(members: &[Member]) -> Result<(String, String), String> {
-    let preimage = object([
-        ("scheme".into(), string(SCS_DOMAIN)),
-        (
-            "contracts".into(),
-            Json::Array(members.iter().map(member_wire).collect()),
-        ),
-    ]);
-    let mut canonical = String::new();
-    super::semantic_contract::canonicalize_value(&preimage, &mut canonical)?;
-    let mut hasher = Sha256::new();
-    hasher.update(canonical.as_bytes());
-    let digest = hasher.finalize();
-    let hex = digest
-        .iter()
-        .map(|byte| format!("{byte:02x}"))
-        .collect::<String>();
-    Ok((canonical, format!("{SCS_SCHEME}:{hex}")))
 }
 
 fn expected_families() -> BTreeMap<String, String> {
@@ -354,7 +190,7 @@ fn validate_profile_value(profile: Option<&Json>, diagnostics: &mut Vec<Json>) {
     {
         diagnostics.push(diagnostic(
             "semantic_contract.profile_operation_mismatch",
-            "profile operations must advertise only the implemented Slice C operations",
+            "profile operations must advertise only the implemented semantic-contract-set operations",
             Some("profile.operations".into()),
         ));
     }
@@ -484,7 +320,11 @@ fn verify_definition_bundles(
     definitions
 }
 
-fn profile_members_match(profile: &Json, members: &[Member], diagnostics: &mut Vec<Json>) {
+fn profile_members_match(
+    profile: &Json,
+    members: &[ContractSetMember],
+    diagnostics: &mut Vec<Json>,
+) {
     validate_profile_value(Some(profile), diagnostics);
     let expected = expected_families();
     let actual = members
@@ -505,7 +345,7 @@ fn profile_members_match(profile: &Json, members: &[Member], diagnostics: &mut V
 }
 
 fn validate_set_definition_refs(
-    members: &[Member],
+    members: &[ContractSetMember],
     definitions: &BTreeMap<(String, String), Json>,
     path: &str,
     diagnostics: &mut Vec<Json>,
@@ -549,7 +389,7 @@ fn validate_qualification_value(
     _profile: &Json,
     qualification: &Json,
     expected_set_id: Option<&str>,
-    expected_members: Option<&[Member]>,
+    expected_members: Option<&[ContractSetMember]>,
     operation: Option<&str>,
     direction: Option<&str>,
     diagnostics: &mut Vec<Json>,
@@ -679,7 +519,8 @@ fn validate_qualification_value(
             Some("qualification.direction".into()),
         ));
     }
-    let members = parse_members(value.get("members"), "qualification.members", diagnostics);
+    let members =
+        parse_contract_set_members(value.get("members"), "qualification.members", diagnostics);
     if let Some(expected) = expected_members {
         if members != expected {
             diagnostics.push(diagnostic(
@@ -738,7 +579,7 @@ fn validate_qualification_value(
 fn validate_set_artifact(
     value: &Json,
     diagnostics: &mut Vec<Json>,
-) -> Option<(String, Vec<Member>, String)> {
+) -> Option<(String, Vec<ContractSetMember>, String)> {
     let Some(artifact) = value.as_object() else {
         diagnostics.push(diagnostic(
             "semantic_contract.integrity_failure",
@@ -763,11 +604,11 @@ fn validate_set_artifact(
             Some("sets.scsScheme".into()),
         ));
     }
-    let members = parse_members(artifact.get("members"), "sets.members", diagnostics);
+    let members = parse_contract_set_members(artifact.get("members"), "sets.members", diagnostics);
     if members.is_empty() {
         return None;
     }
-    let (canonical, expected_id) = match canonical_set(&members) {
+    let (canonical, expected_id) = match canonical_contract_set(&members) {
         Ok(value) => value,
         Err(error) => {
             diagnostics.push(diagnostic(
@@ -794,7 +635,7 @@ fn find_qualified<'a>(
     set_id: &str,
     operation: &str,
     direction: &str,
-    members: &[Member],
+    members: &[ContractSetMember],
 ) -> Option<&'a BTreeMap<String, Json>> {
     qualifications
         .iter()
@@ -807,7 +648,7 @@ fn find_qualified<'a>(
                 && text(value.get("outcome")).as_deref() == Some("qualified")
                 && bool_value(value.get("installedExecutionSupport")) == Some(true)
                 && text(value.get("newUsePolicy")).as_deref() == Some("permitted")
-                && parse_members(
+                && parse_contract_set_members(
                     value.get("members"),
                     "qualification.members",
                     &mut Vec::new(),
@@ -828,9 +669,9 @@ pub fn validate_qualification(request: &Json) -> Json {
         ));
         return failure("validate_semantic_contract_qualification", &mut diagnostics);
     };
-    let members = parse_members(root.get("members"), "members", &mut diagnostics);
+    let members = parse_contract_set_members(root.get("members"), "members", &mut diagnostics);
     profile_members_match(profile, &members, &mut diagnostics);
-    let expected_set_id = canonical_set(&members).ok().map(|(_, id)| id);
+    let expected_set_id = canonical_contract_set(&members).ok().map(|(_, id)| id);
     let operation = text(root.get("targetOperation"));
     let direction = text(root.get("direction")).unwrap_or_else(|| "none".into());
     if operation.as_deref().is_none_or(str::is_empty) {
@@ -881,8 +722,13 @@ fn validate_catalog_policy(
         return;
     };
     for (key, _) in catalog {
-        if !["$schema", "catalogSchemaVersion", "catalogRevision", "entries"]
-            .contains(&key.as_str())
+        if ![
+            "$schema",
+            "catalogSchemaVersion",
+            "catalogRevision",
+            "entries",
+        ]
+        .contains(&key.as_str())
         {
             diagnostics.push(diagnostic(
                 "semantic_contract.policy_failure",
@@ -892,8 +738,13 @@ fn validate_catalog_policy(
         }
     }
     for (key, _) in policy {
-        if !["$schema", "policySchemaVersion", "policyRevision", "entries"]
-            .contains(&key.as_str())
+        if ![
+            "$schema",
+            "policySchemaVersion",
+            "policyRevision",
+            "entries",
+        ]
+        .contains(&key.as_str())
         {
             diagnostics.push(diagnostic(
                 "semantic_contract.policy_failure",
@@ -909,7 +760,10 @@ fn validate_catalog_policy(
             Some("catalog.catalogSchemaVersion".into()),
         ));
     }
-    if text(catalog.get("catalogRevision")).unwrap_or_default().is_empty() {
+    if text(catalog.get("catalogRevision"))
+        .unwrap_or_default()
+        .is_empty()
+    {
         diagnostics.push(diagnostic(
             "semantic_contract.policy_failure",
             "catalogRevision must be non-empty",
@@ -923,7 +777,10 @@ fn validate_catalog_policy(
             Some("policy.policySchemaVersion".into()),
         ));
     }
-    if text(policy.get("policyRevision")).unwrap_or_default().is_empty() {
+    if text(policy.get("policyRevision"))
+        .unwrap_or_default()
+        .is_empty()
+    {
         diagnostics.push(diagnostic(
             "semantic_contract.policy_failure",
             "policyRevision must be non-empty",
@@ -1115,33 +972,36 @@ fn validate_catalog_policy(
     }
 }
 
-fn policy_supports(
-    policy: Option<&Json>,
-    set_id: &str,
-    operation: &str,
-    direction: &str,
-) -> bool {
-    array(policy.and_then(Json::as_object).and_then(|value| value.get("entries")))
-        .is_some_and(|entries| {
-            entries.iter().filter_map(Json::as_object).any(|entry| {
-                text(entry.get("semanticContractSetId")).as_deref() == Some(set_id)
-                    && text(entry.get("operation")).as_deref() == Some(operation)
-                    && text(entry.get("direction")).unwrap_or_else(|| "none".into()) == direction
-                    && text(entry.get("newUsePolicy")).as_deref() == Some("permitted")
-                    && bool_value(entry.get("installedExecutionSupport")) == Some(true)
-            })
+fn policy_supports(policy: Option<&Json>, set_id: &str, operation: &str, direction: &str) -> bool {
+    array(
+        policy
+            .and_then(Json::as_object)
+            .and_then(|value| value.get("entries")),
+    )
+    .is_some_and(|entries| {
+        entries.iter().filter_map(Json::as_object).any(|entry| {
+            text(entry.get("semanticContractSetId")).as_deref() == Some(set_id)
+                && text(entry.get("operation")).as_deref() == Some(operation)
+                && text(entry.get("direction")).unwrap_or_else(|| "none".into()) == direction
+                && text(entry.get("newUsePolicy")).as_deref() == Some("permitted")
+                && bool_value(entry.get("installedExecutionSupport")) == Some(true)
         })
+    })
 }
 
 fn catalog_supports(catalog: Option<&Json>, set_id: &str) -> bool {
-    array(catalog.and_then(Json::as_object).and_then(|value| value.get("entries")))
-        .is_some_and(|entries| {
-            entries.iter().filter_map(Json::as_object).any(|entry| {
-                text(entry.get("semanticContractSetId")).as_deref() == Some(set_id)
-                    && bool_value(entry.get("catalogued")) == Some(true)
-                    && text(entry.get("lifecycle")).as_deref() == Some("active")
-            })
+    array(
+        catalog
+            .and_then(Json::as_object)
+            .and_then(|value| value.get("entries")),
+    )
+    .is_some_and(|entries| {
+        entries.iter().filter_map(Json::as_object).any(|entry| {
+            text(entry.get("semanticContractSetId")).as_deref() == Some(set_id)
+                && bool_value(entry.get("catalogued")) == Some(true)
+                && text(entry.get("lifecycle")).as_deref() == Some("active")
         })
+    })
 }
 
 pub fn validate_corpus(request: &Json) -> Json {
@@ -1247,13 +1107,13 @@ pub fn validate_corpus(request: &Json) -> Json {
     }
 }
 
-fn artifact_for(members: &[Member], id: &str) -> Json {
+fn artifact_for(members: &[ContractSetMember], id: &str) -> Json {
     object([
         ("scsScheme".into(), string(SCS_SCHEME)),
         ("semanticContractSetId".into(), string(id)),
         (
             "members".into(),
-            Json::Array(members.iter().map(member_wire).collect()),
+            Json::Array(members.iter().map(contract_set_member_wire).collect()),
         ),
     ])
 }
@@ -1264,7 +1124,7 @@ pub fn assemble(request: &Json) -> Json {
     };
     let mut diagnostics = Vec::new();
     let profile = root.get("profile").unwrap_or(&Json::Null);
-    let members = parse_members(
+    let members = parse_contract_set_members(
         root.get("requestedMembers"),
         "requestedMembers",
         &mut diagnostics,
@@ -1272,7 +1132,7 @@ pub fn assemble(request: &Json) -> Json {
     profile_members_match(profile, &members, &mut diagnostics);
     let operation = text(root.get("targetOperation")).unwrap_or_default();
     let direction = text(root.get("direction")).unwrap_or_else(|| "none".into());
-    let (_canonical, set_id) = match canonical_set(&members) {
+    let (_canonical, set_id) = match canonical_contract_set(&members) {
         Ok(value) => value,
         Err(error) => {
             diagnostics.push(diagnostic(
@@ -1370,7 +1230,7 @@ pub fn assemble(request: &Json) -> Json {
     // successful result, but its governed catalog entry may already exist in
     // an authoritative input revision.
     if !set_id.is_empty() {
-        if let Ok((canonical, _)) = canonical_set(&members) {
+        if let Ok((canonical, _)) = canonical_contract_set(&members) {
             known_sets.entry(set_id.clone()).or_insert(canonical);
         }
     }
@@ -1643,4 +1503,61 @@ pub fn resolve_current(request: &Json) -> Json {
         ]),
     );
     success("resolve_current_semantic_contract_set", values)
+}
+
+#[cfg(test)]
+mod tests {
+    use super::{assemble, Json};
+
+    #[test]
+    fn governed_assembly_and_direct_composition_share_the_scs_identity() {
+        let vectors: Json = serde_json::from_str(include_str!(
+            "../../contracts/semantic-core/v1.0/vectors/semantic-contract-set-governance.json"
+        ))
+        .expect("governance vectors are valid JSON");
+        let cases = vectors
+            .as_object()
+            .and_then(|value| value.get("cases"))
+            .and_then(Json::as_array)
+            .expect("governance vectors contain cases");
+        let assembly_request = cases
+            .iter()
+            .find(|case_value| {
+                case_value
+                    .as_object()
+                    .and_then(|value| value.get("name"))
+                    .and_then(Json::as_str)
+                    == Some("assembly_is_deterministic_no_op_for_retained_set")
+            })
+            .and_then(|case_value| case_value.as_object())
+            .and_then(|value| value.get("request"))
+            .expect("assembly vector is present");
+        let requested_members = assembly_request
+            .as_object()
+            .and_then(|value| value.get("requestedMembers"))
+            .cloned()
+            .expect("assembly request contains requested members");
+        let direct_request = Json::Object(std::collections::BTreeMap::from([(
+            "contracts".into(),
+            requested_members,
+        )]));
+
+        let direct = super::super::semantic_contract::compose_set(&direct_request);
+        let governed = assemble(assembly_request);
+        let direct_id = direct
+            .as_object()
+            .and_then(|value| value.get("semantic_contract_set_id"))
+            .and_then(Json::as_str)
+            .expect("direct composition returns an SCS identity");
+        let governed_id = governed
+            .as_object()
+            .and_then(|value| value.get("semanticContractSetId"))
+            .and_then(Json::as_str)
+            .expect("governed assembly returns an SCS identity");
+        assert_eq!(direct_id, governed_id);
+        assert_eq!(
+            direct_id,
+            "scs:v1:sha256:d12ce535f0a90c23741dfa516d207091197c2772dbcd538fabb133bdf5b79af6"
+        );
+    }
 }

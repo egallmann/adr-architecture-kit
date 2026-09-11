@@ -20,8 +20,8 @@ ATTRIBUTION_SHIM_VECTORS = Path(
     "contracts/semantic-core/v1.0/vectors/attribution-shim-generation.json"
 )
 SEMANTIC_CONTRACT_VECTORS = Path("contracts/semantic-core/v1.0/vectors/semantic-contract.json")
-SEMANTIC_CONTRACT_SLICE_C_VECTORS = Path(
-    "contracts/semantic-core/v1.0/vectors/semantic-contract-slice-c.json"
+SEMANTIC_CONTRACT_SET_VECTORS = Path(
+    "contracts/semantic-core/v1.0/vectors/semantic-contract-set-governance.json"
 )
 
 
@@ -45,8 +45,8 @@ def test_python_binding_matches_shared_semantic_contract_vectors() -> None:
             ], case["name"]
 
 
-def test_python_binding_matches_shared_slice_c_vectors() -> None:
-    document = json.loads(SEMANTIC_CONTRACT_SLICE_C_VECTORS.read_text(encoding="utf-8"))
+def test_python_binding_matches_shared_semantic_contract_set_vectors() -> None:
+    document = json.loads(SEMANTIC_CONTRACT_SET_VECTORS.read_text(encoding="utf-8"))
     for case in document["cases"]:
         result = execute_semantic_core_request(case["request"])
         expected = case["expected"]

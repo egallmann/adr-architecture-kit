@@ -1,4 +1,4 @@
-"""Functional contract for deterministic Phase 0 benchmark scaffolding."""
+"""Functional contract for the deterministic architecture workflow benchmark."""
 
 from __future__ import annotations
 
@@ -10,9 +10,9 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 
 
-def test_phase0_benchmark_smoke_is_deterministic(tmp_path: Path) -> None:
-    script = ROOT / "benchmarks" / "phase0.py"
-    assert script.is_file(), "missing Phase 0 benchmark harness"
+def test_architecture_workflow_benchmark_smoke_is_deterministic(tmp_path: Path) -> None:
+    script = ROOT / "benchmarks" / "architecture-workflow.py"
+    assert script.is_file(), "missing architecture workflow benchmark harness"
     first = tmp_path / "first.json"
     second = tmp_path / "second.json"
     command = [
@@ -61,12 +61,12 @@ def test_phase0_benchmark_smoke_is_deterministic(tmp_path: Path) -> None:
         assert first_payload["results"][0]["sdk_stages"][sdk_stage]["warm_ms"]
     assert first_payload["sdk_deterministic"] is True
     assert first_payload["sdk_evidence"] == second_payload["sdk_evidence"]
-    for phase2_stage in (
+    for normalized_model_stage in (
         "v12_parsing",
         "semantic_compilation",
         "assertion_derivation_1000",
         "topology_migration_plan",
     ):
-        assert phase2_stage in first_payload["phase2_stages"]
-    assert first_payload["phase2_deterministic"] is True
-    assert first_payload["phase2_evidence"] == second_payload["phase2_evidence"]
+        assert normalized_model_stage in first_payload["normalized_model_stages"]
+    assert first_payload["normalized_model_deterministic"] is True
+    assert first_payload["normalized_model_evidence"] == second_payload["normalized_model_evidence"]

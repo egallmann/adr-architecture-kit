@@ -1,4 +1,4 @@
-"""Phase 0 compatibility and version-drift controls."""
+"""Compatibility and version-drift controls."""
 
 from __future__ import annotations
 
@@ -34,7 +34,7 @@ write_snapshot = cast(Callable[[Path, object], None], COMPATIBILITY_CHECKER["_wr
 
 def _run_script(relative_path: str, *arguments: str) -> subprocess.CompletedProcess[str]:
     script = ROOT / relative_path
-    assert script.is_file(), f"missing Phase 0 control: {relative_path}"
+    assert script.is_file(), f"missing compatibility control: {relative_path}"
     return subprocess.run(
         [sys.executable, str(script), *arguments],
         cwd=ROOT,

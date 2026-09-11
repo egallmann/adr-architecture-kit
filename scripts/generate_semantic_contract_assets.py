@@ -23,7 +23,7 @@ BUNDLED = ROOT / "src" / "adr_kit" / "semantic_contract" / "v1_0"
 
 
 def scs_id(members: list[dict[str, str]]) -> str:
-    composition = {
+    composition: dict[str, Any] = {
         "scheme": "adr-kit.semantic-contract-set/v1",
         "contracts": sorted(members, key=lambda item: item["semanticContractFamily"]),
     }
@@ -349,7 +349,7 @@ def main() -> None:
         "catalogRevision": catalog["catalogRevision"],
         "policyRevision": policy["policyRevision"],
     }
-    generated = {
+    generated: dict[str, Any] = {
         "profiles/architecture-materialization-1.0.json": profile,
         f"sets/{set_id.replace(':', '-')}.json": set_artifact,
         "qualifications/architecture-materialization-1.0.json": qualifications,
@@ -373,13 +373,13 @@ def main() -> None:
             }
         )
     by_operation = {item["operation"]: item for item in qualifications}
-    common = {
+    common: dict[str, Any] = {
         "profile": profile,
         "definitions": bundles,
         "catalog": catalog,
         "policy": policy,
     }
-    vector_cases = [
+    vector_cases: list[dict[str, Any]] = [
         {
             "name": "valid_architecture_materialization_profile",
             "request": {"core_contract_version": "1.0", "operation": "validate_semantic_contract_profile", "profile": profile},

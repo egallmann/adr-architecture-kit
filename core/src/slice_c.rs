@@ -938,7 +938,7 @@ fn validate_catalog_policy(
                 diagnostics.push(diagnostic(
                     "semantic_contract.policy_failure",
                     "catalog entry must be an object",
-                    Some(path),
+                    Some(path.clone()),
                 ));
                 continue;
             };
@@ -963,7 +963,7 @@ fn validate_catalog_policy(
                 diagnostics.push(diagnostic(
                     "semantic_contract.duplicate_catalog_entry",
                     "catalog identity occurs more than once",
-                    Some(path),
+                    Some(path.clone()),
                 ));
             }
             if !known_sets.contains_key(&id) {
@@ -1052,7 +1052,7 @@ fn validate_catalog_policy(
                 diagnostics.push(diagnostic(
                     "semantic_contract.conflicting_policy",
                     "policy contains duplicate operation status",
-                    Some(path),
+                    Some(path.clone()),
                 ));
             }
             if !known_sets.contains_key(&id) {
@@ -1165,13 +1165,13 @@ pub fn validate_corpus(request: &Json) -> Json {
                         diagnostics.push(diagnostic(
                             "semantic_contract.conflicting_scs_preimage",
                             "different compositions were stored under one SCS ID",
-                            Some(path),
+                            Some(path.clone()),
                         ));
                     } else {
                         diagnostics.push(diagnostic(
                             "semantic_contract.duplicate_stored_composition",
                             "an immutable SCS composition is stored more than once",
-                            Some(path),
+                            Some(path.clone()),
                         ));
                     }
                 }

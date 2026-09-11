@@ -54,11 +54,18 @@ def test_python_binding_matches_shared_slice_c_vectors() -> None:
         if "noOp" in expected:
             assert result["noOp"] is expected["noOp"], case["name"]
         if "semanticContractSetId" in expected:
-            assert result["semanticContractSetId"] == expected["semanticContractSetId"], case["name"]
+            assert result["semanticContractSetId"] == expected["semanticContractSetId"], case[
+                "name"
+            ]
         if "resolved" in expected:
-            assert result["resolved"]["semanticContractSetId"] == expected["resolved"]["semanticContractSetId"], case["name"]
+            assert (
+                result["resolved"]["semanticContractSetId"]
+                == expected["resolved"]["semanticContractSetId"]
+            ), case["name"]
         if "diagnostic_codes" in expected:
-            assert [item["code"] for item in result["diagnostics"]] == expected["diagnostic_codes"], case["name"]
+            assert [item["code"] for item in result["diagnostics"]] == expected[
+                "diagnostic_codes"
+            ], case["name"]
 
 
 def test_python_binding_matches_shared_semantic_core_vectors() -> None:

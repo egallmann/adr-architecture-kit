@@ -309,7 +309,9 @@ def validate_semantic_contract_qualification(
     qualification: Mapping[str, Any],
     direction: str = "none",
 ) -> SemanticOperationResult:
-    profile_wire = profile.to_wire() if isinstance(profile, SemanticContractProfile) else dict(profile)
+    profile_wire = (
+        profile.to_wire() if isinstance(profile, SemanticContractProfile) else dict(profile)
+    )
     return _slice_c_execute(
         "validate_semantic_contract_qualification",
         {
@@ -392,7 +394,14 @@ def apply_semantic_contract_set_assembly(
             target.parent.mkdir(parents=True, exist_ok=True)
             target.write_text(content, encoding="utf-8", newline="\n")
             created.append(str(target))
-    return {"success": True, "no_op": not created, "created_artifacts": tuple(created), "result": result}
+    return {
+        "success": True,
+        "no_op": not created,
+        "created_artifacts": tuple(created),
+        "result": result,
+    }
+
+
 def compose_semantic_contract_set(
     contracts: Sequence[SemanticContractVersion | Mapping[str, Any]],
 ) -> SemanticOperationResult:

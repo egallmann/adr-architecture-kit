@@ -47,6 +47,14 @@ def test_python_binding_matches_shared_semantic_contract_vectors() -> None:
             assert [item["path"] for item in result["diagnostics"]] == expected[
                 "diagnostic_paths"
             ], case["name"]
+        if "diagnostic_messages" in expected:
+            assert [item["message"] for item in result["diagnostics"]] == expected[
+                "diagnostic_messages"
+            ], case["name"]
+        if "diagnostic_severities" in expected:
+            assert [item["severity"] for item in result["diagnostics"]] == expected[
+                "diagnostic_severities"
+            ], case["name"]
 
 
 def test_python_binding_matches_shared_semantic_contract_set_vectors() -> None:
@@ -66,10 +74,16 @@ def test_python_binding_matches_shared_semantic_contract_set_vectors() -> None:
                 result["resolved"]["semanticContractSetId"]
                 == expected["resolved"]["semanticContractSetId"]
             ), case["name"]
-        if "diagnostic_codes" in expected:
-            assert [item["code"] for item in result["diagnostics"]] == expected[
-                "diagnostic_codes"
-            ], case["name"]
+        for field, diagnostic_key in (
+            ("diagnostic_codes", "code"),
+            ("diagnostic_messages", "message"),
+            ("diagnostic_paths", "path"),
+            ("diagnostic_severities", "severity"),
+        ):
+            if field in expected:
+                assert [item.get(diagnostic_key) for item in result["diagnostics"]] == expected[
+                    field
+                ], case["name"]
 
 
 def test_python_binding_matches_shared_semantic_core_vectors() -> None:

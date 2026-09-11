@@ -302,6 +302,22 @@ pub(crate) enum ContractSetMemberDiagnosticContext {
     Governance,
 }
 
+impl ContractSetMemberDiagnosticContext {
+    fn invalid_member_code(self) -> &'static str {
+        match self {
+            Self::Composition => "semantic_contract.invalid_set_member",
+            Self::Governance => "semantic_contract.invalid_member",
+        }
+    }
+
+    fn invalid_member_message(self) -> &'static str {
+        match self {
+            Self::Composition => "set member must be an object",
+            Self::Governance => "member must be an object",
+        }
+    }
+}
+
 pub(crate) fn contract_set_member_wire(member: &ContractSetMember) -> Json {
     object([
         (
@@ -345,15 +361,8 @@ pub(crate) fn parse_contract_set_members(
         let item_path = format!("{path}[{index}]");
         let Some(item) = raw_member.as_object() else {
             diagnostics.push(diagnostic(
-                match context {
-                    ContractSetMemberDiagnosticContext::Composition => {
-                        "semantic_contract.invalid_set_member"
-                    }
-                    ContractSetMemberDiagnosticContext::Governance => {
-                        "semantic_contract.invalid_member"
-                    }
-                },
-                "member must be an object",
+                context.invalid_member_code(),
+                context.invalid_member_message(),
                 Some(item_path),
             ));
             continue;
@@ -1538,6 +1547,22 @@ mod tests {
                     .and_then(Json::as_str)
             })
             .collect();
+        let messages: Vec<_> = diagnostics
+            .iter()
+            .filter_map(|item| {
+                item.as_object()
+                    .and_then(|value| value.get("message"))
+                    .and_then(Json::as_str)
+            })
+            .collect();
+        let severities: Vec<_> = diagnostics
+            .iter()
+            .filter_map(|item| {
+                item.as_object()
+                    .and_then(|value| value.get("severity"))
+                    .and_then(Json::as_str)
+            })
+            .collect();
         let expected_codes: Vec<_> = expected
             .get("diagnostic_codes")
             .and_then(Json::as_array)
@@ -1552,8 +1577,24 @@ mod tests {
             .iter()
             .filter_map(Json::as_str)
             .collect();
+        let expected_messages: Vec<_> = expected
+            .get("diagnostic_messages")
+            .and_then(Json::as_array)
+            .expect("vector contains diagnostic messages")
+            .iter()
+            .filter_map(Json::as_str)
+            .collect();
+        let expected_severities: Vec<_> = expected
+            .get("diagnostic_severities")
+            .and_then(Json::as_array)
+            .expect("vector contains diagnostic severities")
+            .iter()
+            .filter_map(Json::as_str)
+            .collect();
         assert_eq!(codes, expected_codes);
+        assert_eq!(messages, expected_messages);
         assert_eq!(paths, expected_paths);
+        assert_eq!(severities, expected_severities);
     }
 
     #[test]

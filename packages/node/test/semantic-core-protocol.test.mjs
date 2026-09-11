@@ -16,6 +16,11 @@ test("Node protocol validator accepts every valid shared vector request and resu
     const document = JSON.parse(await readFile(resolve(vectorDirectory, name), "utf8"));
     for (const vector of document.cases) {
       if (vector.request.core_contract_version !== "1.0") continue;
+      // This vector intentionally probes the raw semantic-core diagnostic for
+      // a malformed composition member. Validated SDK paths must reject that
+      // transport shape at the protocol schema before execution, so only the
+      // raw conformance tests exercise it.
+      if (vector.expected.diagnostic_codes?.includes("semantic_contract.invalid_set_member")) continue;
       assert.equal(validator(vector.request), true, `${name}:${vector.name} request: ${JSON.stringify(validator.errors)}`);
       const result = await executeSemanticCoreRequest(vector.request);
       assert.equal(validator(result), true, `${name}:${vector.name} result: ${JSON.stringify(validator.errors)}`);

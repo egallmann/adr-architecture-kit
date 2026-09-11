@@ -1430,7 +1430,11 @@ pub fn compose_set(request: &Json) -> Json {
             Some("contracts".into()),
         );
     }
-    let members = parse_contract_set_members(Some(&Json::Array(raw_contracts.clone())), "contracts", &mut diagnostics);
+    let members = parse_contract_set_members(
+        Some(&Json::Array(raw_contracts.clone())),
+        "contracts",
+        &mut diagnostics,
+    );
     let (canonical, set_id) = match canonical_contract_set(&members) {
         Ok(value) => value,
         Err(error) => {

@@ -1489,13 +1489,19 @@ pub fn execute_json(input: &[u8]) -> Vec<u8> {
                     semantic_contract::validate_closure(&value)
                 }
                 Some("compose_semantic_contract_set") => semantic_contract::compose_set(&value),
-                Some("validate_semantic_contract_profile") => semantic_contract_set::validate_profile(&value),
+                Some("validate_semantic_contract_profile") => {
+                    semantic_contract_set::validate_profile(&value)
+                }
                 Some("validate_semantic_contract_qualification") => {
                     semantic_contract_set::validate_qualification(&value)
                 }
                 Some("assemble_semantic_contract_set") => semantic_contract_set::assemble(&value),
-                Some("validate_semantic_contract_corpus") => semantic_contract_set::validate_corpus(&value),
-                Some("resolve_current_semantic_contract_set") => semantic_contract_set::resolve_current(&value),
+                Some("validate_semantic_contract_corpus") => {
+                    semantic_contract_set::validate_corpus(&value)
+                }
+                Some("resolve_current_semantic_contract_set") => {
+                    semantic_contract_set::resolve_current(&value)
+                }
                 Some(_) | None => invalid("unsupported semantic core operation"),
             };
             json(&result).into_bytes()

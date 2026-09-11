@@ -1509,20 +1509,34 @@ mod tests {
             .expect("vector expectation is present");
         let result = compose_set(request);
         assert_eq!(
-            result.get("success").and_then(Json::as_bool),
-            expected.get("success").and_then(Json::as_bool)
+            result
+                .as_object()
+                .and_then(|value| value.get("success"))
+                .map(|value| matches!(value, Json::Bool(true))),
+            expected
+                .get("success")
+                .map(|value| matches!(value, Json::Bool(true)))
         );
         let diagnostics = result
-            .get("diagnostics")
+            .as_object()
+            .and_then(|value| value.get("diagnostics"))
             .and_then(Json::as_array)
             .expect("composition result contains diagnostics");
         let codes: Vec<_> = diagnostics
             .iter()
-            .filter_map(|item| item.get("code").and_then(Json::as_str))
+            .filter_map(|item| {
+                item.as_object()
+                    .and_then(|value| value.get("code"))
+                    .and_then(Json::as_str)
+            })
             .collect();
         let paths: Vec<_> = diagnostics
             .iter()
-            .filter_map(|item| item.get("path").and_then(Json::as_str))
+            .filter_map(|item| {
+                item.as_object()
+                    .and_then(|value| value.get("path"))
+                    .and_then(Json::as_str)
+            })
             .collect();
         let expected_codes: Vec<_> = expected
             .get("diagnostic_codes")

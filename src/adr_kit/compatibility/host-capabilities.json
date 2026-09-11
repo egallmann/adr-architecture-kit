@@ -16,7 +16,16 @@
     "calculate_semantic_contract_fingerprint",
     "verify_semantic_contract",
     "validate_semantic_resource_closure",
-    "compose_semantic_contract_set"
+    "compose_semantic_contract_set",
+    "list_semantic_contract_profiles",
+    "get_semantic_contract_profile",
+    "validate_semantic_contract_profile",
+    "validate_semantic_contract_qualification",
+    "preview_semantic_contract_set_assembly",
+    "apply_semantic_contract_set_assembly",
+    "validate_semantic_contract_corpus",
+    "list_semantic_contract_sets",
+    "resolve_current_semantic_contract_set"
   ],
   "pending_host_operations": [
     "validate_generated_docs",

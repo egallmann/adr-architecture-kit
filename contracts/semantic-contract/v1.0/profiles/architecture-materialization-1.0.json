@@ -1,0 +1,32 @@
+{
+  "profileFamily": "architecture-materialization",
+  "profileVersion": "1.0",
+  "profileId": "architecture-materialization@1.0",
+  "participatingFamilies": [
+    {
+      "semanticContractFamily": "architecture-interpretation",
+      "semanticContractVersion": "1.0",
+      "cardinality": 1
+    },
+    {
+      "semanticContractFamily": "normalized-model",
+      "semanticContractVersion": "2.3",
+      "cardinality": 1
+    },
+    {
+      "semanticContractFamily": "normative-semantics",
+      "semanticContractVersion": "1.0",
+      "cardinality": 1
+    }
+  ],
+  "operations": [
+    "validate_profile",
+    "qualify_tuple",
+    "assemble_set",
+    "validate_corpus",
+    "resolve_current"
+  ],
+  "selectionPurposes": [
+    "architecture-materialization"
+  ]
+}

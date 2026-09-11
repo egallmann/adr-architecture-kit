@@ -6,6 +6,7 @@ mod architecture;
 mod attribution;
 mod linkage;
 mod semantic_contract;
+mod slice_c;
 
 // This module is the canonical semantic execution boundary. Host SDKs are
 // responsible for discovery, filesystem access, YAML parsing, and adapting
@@ -130,9 +131,7 @@ impl<'de> Deserialize<'de> for Json {
                 let mut values = BTreeMap::new();
                 while let Some(key) = access.next_key::<String>()? {
                     if values.contains_key(&key) {
-                        return Err(A::Error::custom(format!(
-                            "duplicate JSON member: {key}"
-                        )));
+                        return Err(A::Error::custom(format!("duplicate JSON member: {key}")));
                     }
                     let value = access.next_value::<Json>()?;
                     values.insert(key, value);
@@ -450,7 +449,14 @@ fn validate_project_metadata(request: &Json) -> Json {
             // a local enum that diverges from the canonical contract.
             if !one_of(
                 &value,
-                &["service", "library", "platform", "system", "tool", "specification"],
+                &[
+                    "service",
+                    "library",
+                    "platform",
+                    "system",
+                    "tool",
+                    "specification",
+                ],
             ) {
                 diagnostics.push(metadata_issue("project.type", "unsupported project type"));
             }
@@ -1483,6 +1489,13 @@ pub fn execute_json(input: &[u8]) -> Vec<u8> {
                     semantic_contract::validate_closure(&value)
                 }
                 Some("compose_semantic_contract_set") => semantic_contract::compose_set(&value),
+                Some("validate_semantic_contract_profile") => slice_c::validate_profile(&value),
+                Some("validate_semantic_contract_qualification") => {
+                    slice_c::validate_qualification(&value)
+                }
+                Some("assemble_semantic_contract_set") => slice_c::assemble(&value),
+                Some("validate_semantic_contract_corpus") => slice_c::validate_corpus(&value),
+                Some("resolve_current_semantic_contract_set") => slice_c::resolve_current(&value),
                 Some(_) | None => invalid("unsupported semantic core operation"),
             };
             json(&result).into_bytes()

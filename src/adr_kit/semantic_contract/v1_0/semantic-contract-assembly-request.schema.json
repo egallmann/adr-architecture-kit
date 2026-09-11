@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://adr-kit.dev/contracts/semantic-contract/v1.0/semantic-contract-assembly-request.schema.json",
+  "title": "ADR-Kit deterministic SemanticContractSet assembly request v1.0",
+  "type": "object", "additionalProperties": false,
+  "required": ["profile", "operation", "direction", "requestedMembers", "qualification", "definitions", "retainedSets", "retainedQualifications", "catalog", "policy"],
+  "properties": {
+    "profile": {"$ref": "semantic-contract-profile.schema.json"}, "operation": {"type": "string", "minLength": 1}, "direction": {"enum": ["none", "forward", "reverse"]},
+    "requestedMembers": {"$ref": "semantic-contract-set.schema.json#/properties/members"}, "qualification": {"$ref": "semantic-contract-qualification.schema.json"},
+    "definitions": {"type": "array", "items": {"type": "object", "additionalProperties": false, "required": ["definition", "resources"], "properties": {"definition": {"type": "object"}, "resources": {"type": "array"}}}},
+    "retainedSets": {"type": "array", "items": {"$ref": "semantic-contract-set.schema.json"}}, "retainedQualifications": {"type": "array", "items": {"$ref": "semantic-contract-qualification.schema.json"}},
+    "catalog": {"$ref": "semantic-contract-catalog.schema.json"}, "policy": {"$ref": "semantic-contract-policy.schema.json"}
+  }
+}

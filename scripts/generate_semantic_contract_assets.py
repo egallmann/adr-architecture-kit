@@ -22,6 +22,14 @@ RESOURCES = CANONICAL / "resources"
 BUNDLED = ROOT / "src" / "adr_kit" / "semantic_contract" / "v1_0"
 
 
+def scs_id(members: list[dict[str, str]]) -> str:
+    composition = {
+        "scheme": "adr-kit.semantic-contract-set/v1",
+        "contracts": sorted(members, key=lambda item: item["semanticContractFamily"]),
+    }
+    return "scs:v1:sha256:" + hashlib.sha256(rfc8785.dumps(composition)).hexdigest()
+
+
 def read_json(path: Path) -> Any:
     return json.loads(path.read_text(encoding="utf-8"))
 
@@ -106,6 +114,17 @@ def manifest_digest(key: str) -> str:
             raise FileNotFoundError(f"No canonical resource file for {key}")
         RESOURCE_DIGESTS[key] = digest(read_json(RESOURCES / filename))
     return RESOURCE_DIGESTS[key]
+
+
+def resource_value(key: str) -> Any:
+    filename = key.replace("/", "-") + ".json"
+    parts = key.split("/")
+    path = RESOURCES / filename
+    if not path.is_file() and len(parts) == 3:
+        path = RESOURCES / f"{parts[0]}-{parts[2]}.json"
+    if not path.is_file():
+        raise FileNotFoundError(f"No canonical resource file for {key}")
+    return read_json(path)
 
 
 def definition(family: str, manifest: list[dict[str, Any]], frozen: list[str]) -> dict[str, Any]:
@@ -237,16 +256,182 @@ def main() -> None:
         write_json(CANONICAL / "definitions" / name, value)
         write_json(BUNDLED / name, value)
 
-    for path in (
-        CANONICAL / "semantic-contract-version.schema.json",
-        CANONICAL / "resource-manifest-entry.schema.json",
-    ):
+    for path in CANONICAL.glob("*.schema.json"):
         target = BUNDLED / path.name
         target.write_bytes(path.read_bytes())
     for path in RESOURCES.glob("*.json"):
         target = BUNDLED / "resources" / path.name
         target.parent.mkdir(parents=True, exist_ok=True)
         target.write_bytes(path.read_bytes())
+
+    # Slice C artifacts are generated from the exact definitions written above.
+    # The profile and policy files are projections around immutable identities;
+    # they never participate in an SCF or SCS preimage.
+    members = [
+        {
+            "semanticContractFamily": value["semanticContractFamily"],
+            "semanticContractVersion": value["semanticContractVersion"],
+            "semanticContractFingerprint": value["semanticContractFingerprint"],
+        }
+        for value in definitions.values()
+    ]
+    members.sort(key=lambda item: item["semanticContractFamily"])
+    set_id = scs_id(members)
+    profile = {
+        "profileFamily": "architecture-materialization",
+        "profileVersion": "1.0",
+        "profileId": "architecture-materialization@1.0",
+        "participatingFamilies": [
+            {"semanticContractFamily": "architecture-interpretation", "semanticContractVersion": "1.0", "cardinality": 1},
+            {"semanticContractFamily": "normalized-model", "semanticContractVersion": "2.3", "cardinality": 1},
+            {"semanticContractFamily": "normative-semantics", "semanticContractVersion": "1.0", "cardinality": 1},
+        ],
+        "operations": ["validate_profile", "qualify_tuple", "assemble_set", "validate_corpus", "resolve_current"],
+        "selectionPurposes": ["architecture-materialization"],
+    }
+    set_artifact = {
+        "scsScheme": "scs:v1:sha256",
+        "semanticContractSetId": set_id,
+        "members": members,
+    }
+    qualifications = []
+    policy_entries = []
+    for operation in profile["operations"]:
+        qualification_id = f"qualification:architecture-materialization@1.0:{operation}"
+        qualifications.append(
+            {
+                "qualificationRecordId": qualification_id,
+                "qualificationSchemaVersion": "1.0",
+                "operation": operation,
+                "direction": "none",
+                "profileId": profile["profileId"],
+                "semanticContractSetId": set_id,
+                "members": members,
+                "outcome": "qualified",
+                "installedExecutionSupport": True,
+                "newUsePolicy": "permitted",
+                "historicalInterpretationSupport": True,
+                "qualificationRevision": "qualification:v1:1",
+                "reasonCode": "slice-c-qualified",
+            }
+        )
+        policy_entries.append(
+            {
+                "semanticContractSetId": set_id,
+                "operation": operation,
+                "direction": "none",
+                "newUsePolicy": "permitted",
+                "installedExecutionSupport": True,
+                "historicalInterpretationSupport": True,
+            }
+        )
+    catalog = {
+        "catalogSchemaVersion": "1.0",
+        "catalogRevision": "catalog:v1:1",
+        "entries": [
+            {
+                "semanticContractSetId": set_id,
+                "catalogued": True,
+                "lifecycle": "active",
+                "historicalAddressable": True,
+            }
+        ],
+    }
+    policy = {"policySchemaVersion": "1.0", "policyRevision": "policy:v1:1", "entries": policy_entries}
+    current = {
+        "currentSelectionSchemaVersion": "1.0",
+        "currentSelectionRevision": "current:v1:1",
+        "profileId": profile["profileId"],
+        "operation": "resolve_current",
+        "direction": "none",
+        "semanticContractSetId": set_id,
+        "qualificationRecordId": "qualification:architecture-materialization@1.0:resolve_current",
+        "catalogRevision": catalog["catalogRevision"],
+        "policyRevision": policy["policyRevision"],
+    }
+    generated = {
+        "profiles/architecture-materialization-1.0.json": profile,
+        f"sets/{set_id.replace(':', '-')}.json": set_artifact,
+        "qualifications/architecture-materialization-1.0.json": qualifications,
+        "catalog/semantic-contract-catalog-1.0.json": catalog,
+        "policy/semantic-contract-policy-1.0.json": policy,
+        "current/semantic-contract-current-1.0.json": current,
+    }
+    for relative, value in generated.items():
+        write_json(CANONICAL / relative, value)
+        write_json(BUNDLED / relative, value)
+
+    bundles = []
+    for value in definitions.values():
+        bundles.append(
+            {
+                "definition": value,
+                "resources": [
+                    {"canonicalResourceKey": entry["canonicalResourceKey"], "content": resource_value(entry["canonicalResourceKey"])}
+                    for entry in value["resourceManifest"]
+                ],
+            }
+        )
+    by_operation = {item["operation"]: item for item in qualifications}
+    common = {
+        "profile": profile,
+        "definitions": bundles,
+        "catalog": catalog,
+        "policy": policy,
+    }
+    vector_cases = [
+        {
+            "name": "valid_architecture_materialization_profile",
+            "request": {"core_contract_version": "1.0", "operation": "validate_semantic_contract_profile", "profile": profile},
+            "expected": {"success": True},
+        },
+        {
+            "name": "profile_rejects_missing_participating_family",
+            "request": {"core_contract_version": "1.0", "operation": "validate_semantic_contract_profile", "profile": {**profile, "participatingFamilies": profile["participatingFamilies"][:2]}},
+            "expected": {"success": False, "diagnostic_codes": ["semantic_contract.profile_family_mismatch"]},
+        },
+        {
+            "name": "exact_whole_tuple_qualification_succeeds",
+            "request": {"core_contract_version": "1.0", "operation": "validate_semantic_contract_qualification", "profile": profile, "members": members, "targetOperation": "qualify_tuple", "direction": "none", "qualification": by_operation["qualify_tuple"]},
+            "expected": {"success": True},
+        },
+        {
+            "name": "qualification_rejects_wrong_scs_id",
+            "request": {"core_contract_version": "1.0", "operation": "validate_semantic_contract_qualification", "profile": profile, "members": members, "targetOperation": "qualify_tuple", "direction": "none", "qualification": {**by_operation["qualify_tuple"], "semanticContractSetId": "scs:v1:sha256:" + "0" * 64}},
+            "expected": {"success": False, "diagnostic_codes": ["semantic_contract.qualification_set_mismatch"]},
+        },
+        {
+            "name": "assembly_is_deterministic_no_op_for_retained_set",
+            "request": {"core_contract_version": "1.0", "operation": "assemble_semantic_contract_set", "targetOperation": "assemble_set", "direction": "none", "requestedMembers": members, "qualification": by_operation["assemble_set"], "retainedSets": [set_artifact], "retainedQualifications": qualifications, **common},
+            "expected": {"success": True, "noOp": True, "semanticContractSetId": set_id},
+        },
+        {
+            "name": "assembly_rejects_missing_whole_tuple_qualification",
+            "request": {"core_contract_version": "1.0", "operation": "assemble_semantic_contract_set", "targetOperation": "assemble_set", "direction": "none", "requestedMembers": members, "qualification": by_operation["assemble_set"], "retainedSets": [], "retainedQualifications": [], **common},
+            "expected": {"success": False, "diagnostic_codes": ["semantic_contract.missing_whole_tuple_qualification"]},
+        },
+        {
+            "name": "complete_retained_corpus_validates",
+            "request": {"core_contract_version": "1.0", "operation": "validate_semantic_contract_corpus", "sets": [set_artifact], "qualifications": qualifications, **common},
+            "expected": {"success": True},
+        },
+        {
+            "name": "corpus_rejects_duplicate_stored_composition",
+            "request": {"core_contract_version": "1.0", "operation": "validate_semantic_contract_corpus", "sets": [set_artifact, set_artifact], "qualifications": qualifications, **common},
+            "expected": {"success": False, "diagnostic_codes": ["semantic_contract.duplicate_stored_composition"]},
+        },
+        {
+            "name": "current_pointer_resolves_to_exact_set",
+            "request": {"core_contract_version": "1.0", "operation": "resolve_current_semantic_contract_set", "targetOperation": "resolve_current", "direction": "none", "current": current, "sets": [set_artifact], "qualifications": qualifications, **common},
+            "expected": {"success": True, "resolved": {"semanticContractSetId": set_id}},
+        },
+        {
+            "name": "current_pointer_missing_set_fails_closed",
+            "request": {"core_contract_version": "1.0", "operation": "resolve_current_semantic_contract_set", "targetOperation": "resolve_current", "direction": "none", "current": {**current, "semanticContractSetId": "scs:v1:sha256:" + "0" * 64}, "sets": [], "qualifications": [], **common},
+            "expected": {"success": False, "diagnostic_codes": ["semantic_contract.invalid_current_selection"]},
+        },
+    ]
+    write_json(ROOT / "contracts" / "semantic-core" / "v1.0" / "vectors" / "semantic-contract-slice-c.json", {"contract_version": "1.0", "cases": vector_cases})
 
 
 if __name__ == "__main__":

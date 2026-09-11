@@ -79,7 +79,7 @@ where = ["src"]
 "adr_kit.compatibility" = ["*.json"]
 "adr_kit.core" = ["*.wasm", "*.json"]
 "adr_kit.semantic_contract" = ["*.json"]
-"adr_kit.semantic_contract.v1_0" = ["*.json"]
+"adr_kit.semantic_contract.v1_0" = ["*.json", "profiles/*.json", "sets/*.json", "qualifications/*.json", "catalog/*.json", "policy/*.json", "current/*.json"]
 "adr_kit.semantic_contract.v1_0.resources" = ["*.json"]
 
 [tool.black]

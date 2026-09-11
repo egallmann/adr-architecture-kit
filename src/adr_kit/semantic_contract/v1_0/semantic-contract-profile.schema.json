@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://adr-kit.dev/contracts/semantic-contract/v1.0/semantic-contract-profile.schema.json",
+  "title": "ADR-Kit semantic-contract profile v1.0",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["profileFamily", "profileVersion", "profileId", "participatingFamilies", "operations", "selectionPurposes"],
+  "properties": {
+    "$schema": {"type": "string"},
+    "profileFamily": {"const": "architecture-materialization"},
+    "profileVersion": {"const": "1.0"},
+    "profileId": {"const": "architecture-materialization@1.0"},
+    "participatingFamilies": {
+      "type": "array", "minItems": 3, "maxItems": 3, "uniqueItems": true,
+      "items": {"type": "object", "additionalProperties": false, "required": ["semanticContractFamily", "semanticContractVersion", "cardinality"], "properties": {
+        "semanticContractFamily": {"enum": ["architecture-interpretation", "normalized-model", "normative-semantics"]},
+        "semanticContractVersion": {"enum": ["1.0", "2.3"]},
+        "cardinality": {"const": 1}
+      }}
+    },
+    "operations": {"type": "array", "const": ["validate_profile", "qualify_tuple", "assemble_set", "validate_corpus", "resolve_current"]},
+    "selectionPurposes": {"type": "array", "const": ["architecture-materialization"]}
+  }
+}

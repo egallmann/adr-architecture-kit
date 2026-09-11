@@ -18,12 +18,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   composition primitive.
 - Added matching Python and TypeScript/Node public bindings and raw parity
   vectors for canonical bytes, rejection diagnostics, SCF, and SCS.
+- Added the governed `architecture-materialization@1.0` profile, explicit
+  operation-qualified whole-tuple qualification, immutable SCS artifacts,
+  deterministic no-op assembly, append-only corpus validation, and explicit
+  current-set resolution with equivalent Python and Node operations.
 
 ### Limitations
 
-- Slice B does not implement Slice C profile qualification, tuple assembly,
-  policy/catalog state, current selection, or release lifecycle decisions.
-- Slice B does not implement Slice D materialization or source acquisition, and
+- Slice C does not implement architecture materialization execution, source
+  acquisition, Runtime integration, or attribution changes.
+- Slice C does not implement Slice D materialization or source acquisition, and
   does not change Runtime behavior.
 
 ## [0.10.1] — 2026-09-08

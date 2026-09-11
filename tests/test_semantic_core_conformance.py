@@ -20,6 +20,9 @@ ATTRIBUTION_SHIM_VECTORS = Path(
     "contracts/semantic-core/v1.0/vectors/attribution-shim-generation.json"
 )
 SEMANTIC_CONTRACT_VECTORS = Path("contracts/semantic-core/v1.0/vectors/semantic-contract.json")
+SEMANTIC_CONTRACT_SLICE_C_VECTORS = Path(
+    "contracts/semantic-core/v1.0/vectors/semantic-contract-slice-c.json"
+)
 
 
 def test_python_binding_matches_shared_semantic_contract_vectors() -> None:
@@ -36,6 +39,29 @@ def test_python_binding_matches_shared_semantic_contract_vectors() -> None:
         ):
             if field in expected:
                 assert result[field] == expected[field], case["name"]
+        if "diagnostic_codes" in expected:
+            assert [item["code"] for item in result["diagnostics"]] == expected[
+                "diagnostic_codes"
+            ], case["name"]
+
+
+def test_python_binding_matches_shared_slice_c_vectors() -> None:
+    document = json.loads(SEMANTIC_CONTRACT_SLICE_C_VECTORS.read_text(encoding="utf-8"))
+    for case in document["cases"]:
+        result = execute_semantic_core_request(case["request"])
+        expected = case["expected"]
+        assert result["success"] is expected["success"], case["name"]
+        if "noOp" in expected:
+            assert result["noOp"] is expected["noOp"], case["name"]
+        if "semanticContractSetId" in expected:
+            assert result["semanticContractSetId"] == expected["semanticContractSetId"], case[
+                "name"
+            ]
+        if "resolved" in expected:
+            assert (
+                result["resolved"]["semanticContractSetId"]
+                == expected["resolved"]["semanticContractSetId"]
+            ), case["name"]
         if "diagnostic_codes" in expected:
             assert [item["code"] for item in result["diagnostics"]] == expected[
                 "diagnostic_codes"

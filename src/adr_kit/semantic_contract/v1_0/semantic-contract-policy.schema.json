@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://adr-kit.dev/contracts/semantic-contract/v1.0/semantic-contract-policy.schema.json",
+  "title": "ADR-Kit mutable semantic-contract policy v1.0",
+  "type": "object", "additionalProperties": false,
+  "required": ["policySchemaVersion", "policyRevision", "entries"],
+  "properties": {
+    "policySchemaVersion": {"const": "1.0"}, "policyRevision": {"type": "string", "minLength": 1},
+    "entries": {"type": "array", "items": {"type": "object", "additionalProperties": false, "required": ["semanticContractSetId", "operation", "direction", "newUsePolicy", "installedExecutionSupport", "historicalInterpretationSupport"], "properties": {
+      "semanticContractSetId": {"type": "string", "pattern": "^scs:v1:sha256:[0-9a-f]{64}$"}, "operation": {"type": "string", "minLength": 1}, "direction": {"enum": ["none", "forward", "reverse"]},
+      "newUsePolicy": {"enum": ["permitted", "prohibited"]}, "installedExecutionSupport": {"type": "boolean"}, "historicalInterpretationSupport": {"type": "boolean"}
+    }}}
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://adr-kit.dev/contracts/semantic-contract/v1.0/semantic-contract-current-selection.schema.json",
+  "title": "ADR-Kit current semantic-contract selection v1.0",
+  "type": "object", "additionalProperties": false,
+  "required": ["currentSelectionSchemaVersion", "currentSelectionRevision", "profileId", "operation", "direction", "semanticContractSetId", "qualificationRecordId", "catalogRevision", "policyRevision"],
+  "properties": {
+    "currentSelectionSchemaVersion": {"const": "1.0"}, "currentSelectionRevision": {"type": "string", "minLength": 1}, "profileId": {"const": "architecture-materialization@1.0"},
+    "operation": {"type": "string", "minLength": 1}, "direction": {"enum": ["none", "forward", "reverse"]}, "semanticContractSetId": {"type": "string", "pattern": "^scs:v1:sha256:[0-9a-f]{64}$"},
+    "qualificationRecordId": {"type": "string", "minLength": 1}, "catalogRevision": {"type": "string", "minLength": 1}, "policyRevision": {"type": "string", "minLength": 1}
+  }
+}

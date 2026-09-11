@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://adr-kit.dev/contracts/semantic-contract/v1.0/semantic-contract-catalog.schema.json",
+  "title": "ADR-Kit mutable semantic-contract catalog v1.0",
+  "type": "object", "additionalProperties": false,
+  "required": ["catalogSchemaVersion", "catalogRevision", "entries"],
+  "properties": {
+    "catalogSchemaVersion": {"const": "1.0"}, "catalogRevision": {"type": "string", "minLength": 1},
+    "entries": {"type": "array", "items": {"type": "object", "additionalProperties": false, "required": ["semanticContractSetId", "catalogued", "lifecycle", "historicalAddressable"], "properties": {
+      "semanticContractSetId": {"type": "string", "pattern": "^scs:v1:sha256:[0-9a-f]{64}$"}, "catalogued": {"type": "boolean"},
+      "lifecycle": {"enum": ["active", "deprecated", "historical"]}, "historicalAddressable": {"type": "boolean"}
+    }}}
+  }
+}

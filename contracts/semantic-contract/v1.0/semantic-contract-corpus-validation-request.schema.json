@@ -1,0 +1,8 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://adr-kit.dev/contracts/semantic-contract/v1.0/semantic-contract-corpus-validation-request.schema.json",
+  "title": "ADR-Kit retained semantic-contract corpus validation request v1.0",
+  "type": "object", "additionalProperties": false,
+  "required": ["profile", "definitions", "sets", "qualifications", "catalog", "policy"],
+  "properties": {"profile": {"$ref": "semantic-contract-profile.schema.json"}, "definitions": {"type": "array"}, "sets": {"type": "array", "items": {"$ref": "semantic-contract-set.schema.json"}}, "qualifications": {"type": "array", "items": {"$ref": "semantic-contract-qualification.schema.json"}}, "catalog": {"$ref": "semantic-contract-catalog.schema.json"}, "policy": {"$ref": "semantic-contract-policy.schema.json"}}
+}

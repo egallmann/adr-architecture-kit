@@ -18,7 +18,7 @@ const load = async (path) => JSON.parse(await readFile(resolve(root, path), "utf
 test("capability discovery is local and explicit", () => {
   const manifest = capabilities();
   assert.deepEqual(manifest.supported_normalized_model_versions, ["2.1", "2.2", "2.3"]);
-  assert.deepEqual(manifest.host_operations, ["capabilities", "validate_architecture", "validate_project_metadata", "validate_contract", "open_repository", "open_provider_registry", "build_embodiment_linkage", "generate_attribution_shim", "list_semantic_contracts", "get_semantic_contract", "canonicalize_semantic_json", "calculate_semantic_contract_fingerprint", "verify_semantic_contract", "validate_semantic_resource_closure", "compose_semantic_contract_set"]);
+  assert.deepEqual(manifest.host_operations, ["capabilities", "validate_architecture", "validate_project_metadata", "validate_contract", "open_repository", "open_provider_registry", "build_embodiment_linkage", "generate_attribution_shim", "list_semantic_contracts", "get_semantic_contract", "canonicalize_semantic_json", "calculate_semantic_contract_fingerprint", "verify_semantic_contract", "validate_semantic_resource_closure", "compose_semantic_contract_set", "list_semantic_contract_profiles", "get_semantic_contract_profile", "validate_semantic_contract_profile", "validate_semantic_contract_qualification", "preview_semantic_contract_set_assembly", "apply_semantic_contract_set_assembly", "validate_semantic_contract_corpus", "list_semantic_contract_sets", "resolve_current_semantic_contract_set"]);
   assert.ok(manifest.pending_host_operations.includes("compile_architecture"));
   assert.deepEqual(manifest.browser_operations, ["capabilities"]);
   assert.equal("supported_authoring_domain_versions" in manifest, false);
@@ -52,6 +52,15 @@ test("host capability contract maps to real Node exports and keeps pending work 
     verify_semantic_contract: node.verifySemanticContract,
     validate_semantic_resource_closure: node.validateSemanticResourceClosure,
     compose_semantic_contract_set: node.composeSemanticContractSet,
+    list_semantic_contract_profiles: node.listSemanticContractProfiles,
+    get_semantic_contract_profile: node.getSemanticContractProfile,
+    validate_semantic_contract_profile: node.validateSemanticContractProfile,
+    validate_semantic_contract_qualification: node.validateSemanticContractQualification,
+    preview_semantic_contract_set_assembly: node.previewSemanticContractSetAssembly,
+    apply_semantic_contract_set_assembly: node.applySemanticContractSetAssembly,
+    validate_semantic_contract_corpus: node.validateSemanticContractCorpus,
+    list_semantic_contract_sets: node.listSemanticContractSets,
+    resolve_current_semantic_contract_set: node.resolveCurrentSemanticContractSet,
   };
   for (const operation of hostCapabilityContract.peer_host_operations) {
     assert.equal(typeof exportsByCapability[operation], "function", operation);

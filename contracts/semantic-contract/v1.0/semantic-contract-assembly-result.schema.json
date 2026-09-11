@@ -1,0 +1,12 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://adr-kit.dev/contracts/semantic-contract/v1.0/semantic-contract-assembly-result.schema.json",
+  "title": "ADR-Kit deterministic SemanticContractSet assembly result v1.0",
+  "type": "object", "additionalProperties": false,
+  "required": ["success", "noOp", "semanticContractSetId", "emittedImmutableArtifacts", "mutableChanges"],
+  "properties": {
+    "success": {"type": "boolean"}, "noOp": {"type": "boolean"}, "semanticContractSetId": {"type": ["string", "null"]},
+    "emittedImmutableArtifacts": {"type": "array", "items": {"$ref": "semantic-contract-set.schema.json"}}, "mutableChanges": {"type": "array"},
+    "diagnostics": {"type": "array"}
+  }
+}

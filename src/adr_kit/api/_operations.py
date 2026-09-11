@@ -591,6 +591,15 @@ def capabilities() -> CapabilityManifest:
         "verify_semantic_contract",
         "validate_semantic_resource_closure",
         "compose_semantic_contract_set",
+        "list_semantic_contract_profiles",
+        "get_semantic_contract_profile",
+        "validate_semantic_contract_profile",
+        "validate_semantic_contract_qualification",
+        "preview_semantic_contract_set_assembly",
+        "apply_semantic_contract_set_assembly",
+        "validate_semantic_contract_corpus",
+        "list_semantic_contract_sets",
+        "resolve_current_semantic_contract_set",
     ]
     if PROMOTION_OPERATIONS_ADVERTISED:
         operations.extend(["prepare_promotion", "check_promotion", "apply_promotion"])

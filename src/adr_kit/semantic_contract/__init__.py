@@ -11,9 +11,8 @@ from __future__ import annotations
 import json
 from dataclasses import dataclass
 from importlib import resources
+from pathlib import Path
 from typing import Any, Mapping, Sequence
-
-from ..api._contracts import Diagnostic
 from ..core.semantic_core import execute_validated_semantic_core_request
 
 SCF_SCHEME = "scf:v1:sha256"
@@ -114,7 +113,7 @@ class SemanticOperationResult:
     """Immutable, host-neutral result view returned by a semantic operation."""
 
     success: bool
-    diagnostics: tuple[Diagnostic, ...]
+    diagnostics: tuple[Any, ...]
     canonical_preimage_json: str | None = None
     canonical_preimage_hex: str | None = None
     fingerprint: str | None = None
@@ -122,9 +121,50 @@ class SemanticOperationResult:
     semantic_contract_set_id: str | None = None
     mode: str | None = None
     closure_valid: bool | None = None
+    no_op: bool | None = None
+    emitted_immutable_artifacts: tuple[Mapping[str, Any], ...] = ()
+    mutable_changes: tuple[Mapping[str, Any], ...] = ()
+    resolved: Mapping[str, Any] | None = None
+
+
+@dataclass(frozen=True, slots=True)
+class SemanticContractProfile:
+    """An immutable profile that selects members without redefining meaning."""
+
+    profile_family: str
+    profile_version: str
+    profile_id: str
+    participating_families: tuple[Mapping[str, Any], ...]
+    operations: tuple[str, ...]
+    selection_purposes: tuple[str, ...]
+
+    @classmethod
+    def from_wire(cls, value: Mapping[str, Any]) -> "SemanticContractProfile":
+        return cls(
+            profile_family=str(value["profileFamily"]),
+            profile_version=str(value["profileVersion"]),
+            profile_id=str(value["profileId"]),
+            participating_families=tuple(value["participatingFamilies"]),
+            operations=tuple(str(item) for item in value["operations"]),
+            selection_purposes=tuple(str(item) for item in value["selectionPurposes"]),
+        )
+
+    def to_wire(self) -> dict[str, Any]:
+        return {
+            "profileFamily": self.profile_family,
+            "profileVersion": self.profile_version,
+            "profileId": self.profile_id,
+            "participatingFamilies": [dict(item) for item in self.participating_families],
+            "operations": list(self.operations),
+            "selectionPurposes": list(self.selection_purposes),
+        }
 
 
 def _result(value: Mapping[str, Any]) -> SemanticOperationResult:
+    # Import lazily so ``import adr_kit.semantic_contract`` does not first
+    # initialize the broader ``adr_kit.api`` facade and create a cycle.
+    from ..api._contracts import Diagnostic
+
     diagnostics = tuple(
         Diagnostic(
             severity=str(item.get("severity", "error")),  # type: ignore[arg-type]
@@ -142,9 +182,19 @@ def _result(value: Mapping[str, Any]) -> SemanticOperationResult:
         canonical_preimage_hex=value.get("canonical_preimage_hex"),
         fingerprint=value.get("fingerprint"),
         semantic_contract_fingerprint=value.get("semantic_contract_fingerprint"),
-        semantic_contract_set_id=value.get("semantic_contract_set_id"),
+        semantic_contract_set_id=value.get(
+            "semanticContractSetId", value.get("semantic_contract_set_id")
+        ),
         mode=value.get("mode"),
         closure_valid=value.get("closure_valid"),
+        no_op=value.get("noOp"),
+        emitted_immutable_artifacts=tuple(
+            item for item in value.get("emittedImmutableArtifacts", []) if isinstance(item, Mapping)
+        ),
+        mutable_changes=tuple(
+            item for item in value.get("mutableChanges", []) if isinstance(item, Mapping)
+        ),
+        resolved=value.get("resolved") if isinstance(value.get("resolved"), Mapping) else None,
     )
 
 
@@ -155,6 +205,16 @@ def _execute(operation: str, **fields: Any) -> SemanticOperationResult:
         **fields,
     }
     return _result(execute_validated_semantic_core_request(request))
+
+
+def _slice_c_execute(operation: str, fields: Mapping[str, Any]) -> SemanticOperationResult:
+    """Send a Slice C request to Rust; this adapter owns no policy meaning."""
+
+    return _result(
+        execute_validated_semantic_core_request(
+            {"core_contract_version": "1.0", "operation": operation, **dict(fields)}
+        )
+    )
 
 
 def canonicalize_semantic_json(value: Any) -> SemanticOperationResult:
@@ -211,6 +271,135 @@ def validate_semantic_resource_closure(
         definition=wire,
         resources=[dict(item) for item in resources],
     )
+
+
+def _load_json_asset(relative: str) -> Any:
+    package = resources.files("adr_kit.semantic_contract.v1_0")
+    resource = package.joinpath(relative.replace("/", "/"))
+    return json.loads(resource.read_text(encoding="utf-8"))
+
+
+def list_semantic_contract_profiles() -> tuple[SemanticContractProfile, ...]:
+    """Return governed profiles bundled with this host distribution."""
+
+    profile = _load_json_asset("profiles/architecture-materialization-1.0.json")
+    return (SemanticContractProfile.from_wire(profile),)
+
+
+def get_semantic_contract_profile(profile_id: str) -> SemanticContractProfile:
+    """Select one exact profile; no current/default alias is accepted."""
+
+    for profile in list_semantic_contract_profiles():
+        if profile.profile_id == profile_id:
+            return profile
+    raise LookupError(f"Unsupported semantic-contract profile: {profile_id}")
+
+
+def validate_semantic_contract_profile(
+    profile: SemanticContractProfile | Mapping[str, Any],
+) -> SemanticOperationResult:
+    wire = profile.to_wire() if isinstance(profile, SemanticContractProfile) else dict(profile)
+    return _slice_c_execute("validate_semantic_contract_profile", {"profile": wire})
+
+
+def validate_semantic_contract_qualification(
+    profile: SemanticContractProfile | Mapping[str, Any],
+    members: Sequence[Mapping[str, Any]],
+    operation: str,
+    qualification: Mapping[str, Any],
+    direction: str = "none",
+) -> SemanticOperationResult:
+    profile_wire = (
+        profile.to_wire() if isinstance(profile, SemanticContractProfile) else dict(profile)
+    )
+    return _slice_c_execute(
+        "validate_semantic_contract_qualification",
+        {
+            "profile": profile_wire,
+            "members": [dict(item) for item in members],
+            "targetOperation": operation,
+            "direction": direction,
+            "qualification": dict(qualification),
+        },
+    )
+
+
+def preview_semantic_contract_set_assembly(
+    request: Mapping[str, Any],
+) -> SemanticOperationResult:
+    """Preview deterministic assembly without performing filesystem writes."""
+
+    return _slice_c_execute("assemble_semantic_contract_set", request)
+
+
+def validate_semantic_contract_corpus(request: Mapping[str, Any]) -> SemanticOperationResult:
+    """Validate every retained immutable definition, set, and policy record."""
+
+    return _slice_c_execute("validate_semantic_contract_corpus", request)
+
+
+def resolve_current_semantic_contract_set(request: Mapping[str, Any]) -> SemanticOperationResult:
+    """Resolve a floating current pointer to one immutable exact SCS identity."""
+
+    return _slice_c_execute("resolve_current_semantic_contract_set", request)
+
+
+def list_semantic_contract_sets() -> tuple[Mapping[str, Any], ...]:
+    """List immutable bundled SCS artifacts without treating catalog state as identity."""
+
+    package = resources.files("adr_kit.semantic_contract.v1_0").joinpath("sets")
+    return tuple(
+        json.loads(item.read_text(encoding="utf-8"))
+        for item in sorted(package.iterdir(), key=lambda item: item.name)
+        if item.name.endswith(".json")
+    )
+
+
+def apply_semantic_contract_set_assembly(
+    repository_root: str | Path,
+    request: Mapping[str, Any],
+) -> dict[str, Any]:
+    """Apply only the core-approved missing immutable artifacts.
+
+    The host performs the requested filesystem mutation only after the shared
+    core reports success. Existing immutable bytes are never overwritten.
+    """
+
+    result = preview_semantic_contract_set_assembly(request)
+    wire = dict(request)
+    if not result.success:
+        return {"success": False, "no_op": False, "result": result}
+    set_id = result.semantic_contract_set_id or ""
+    root = Path(repository_root)
+    target = root / "semantic-contract" / "sets" / f"{set_id.replace(':', '-')}.json"
+    emitted = tuple(
+        value
+        for value in (getattr(result, "emitted_immutable_artifacts", None) or ())
+        if isinstance(value, Mapping)
+    )
+    # Results are intentionally returned as the typed core view; this fallback
+    # supports older result DTOs while keeping the apply boundary explicit.
+    if not emitted and not bool(wire.get("retainedSets")) and set_id:
+        members = wire.get("requestedMembers", ())
+        emitted = ({"scsScheme": SCS_SCHEME, "semanticContractSetId": set_id, "members": members},)
+    created: list[str] = []
+    if not result.semantic_contract_set_id:
+        return {"success": False, "no_op": False, "result": result}
+    if emitted:
+        content = json.dumps(emitted[0], ensure_ascii=False, indent=2) + "\n"
+        if target.exists():
+            if target.read_text(encoding="utf-8") != content:
+                raise ValueError("refusing to overwrite an immutable SCS artifact")
+        else:
+            target.parent.mkdir(parents=True, exist_ok=True)
+            target.write_text(content, encoding="utf-8", newline="\n")
+            created.append(str(target))
+    return {
+        "success": True,
+        "no_op": not created,
+        "created_artifacts": tuple(created),
+        "result": result,
+    }
 
 
 def compose_semantic_contract_set(
@@ -294,12 +483,22 @@ __all__ = [
     "SCF_SCHEME",
     "SCS_SCHEME",
     "SemanticContractVersion",
+    "SemanticContractProfile",
     "SemanticOperationResult",
     "SemanticResourceDependency",
     "SemanticResourceManifestEntry",
     "calculate_semantic_contract_fingerprint",
     "canonicalize_semantic_json",
     "compose_semantic_contract_set",
+    "list_semantic_contract_profiles",
+    "get_semantic_contract_profile",
+    "validate_semantic_contract_profile",
+    "validate_semantic_contract_qualification",
+    "preview_semantic_contract_set_assembly",
+    "apply_semantic_contract_set_assembly",
+    "validate_semantic_contract_corpus",
+    "list_semantic_contract_sets",
+    "resolve_current_semantic_contract_set",
     "get_semantic_contract",
     "list_semantic_contracts",
     "load_semantic_resource",

@@ -26,6 +26,14 @@ def test_protocol_schema_is_valid_and_discriminates_operations() -> None:
             request = case["request"]
             if request.get("core_contract_version") != "1.0":
                 continue
+            # This vector intentionally probes the raw semantic-core
+            # diagnostic for a malformed composition member. Validated SDK
+            # paths must reject that transport shape before execution, so the
+            # raw conformance test is the appropriate coverage here.
+            if "semantic_contract.invalid_set_member" in case["expected"].get(
+                "diagnostic_codes", []
+            ):
+                continue
             assert not list(validator.iter_errors(request)), (vector_path, case["name"])
             result = execute_semantic_core_request(request)
             assert not list(validator.iter_errors(result)), (vector_path, case["name"], result)

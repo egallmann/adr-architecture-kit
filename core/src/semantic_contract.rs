@@ -292,6 +292,16 @@ pub(crate) struct ContractSetMember {
     pub(crate) fingerprint: String,
 }
 
+/// Selects the stable diagnostic vocabulary for the caller of the shared
+/// member parser. Composition predates the governance operations and exposes
+/// `invalid_set_member`; governance keeps the newer `invalid_member` code.
+/// The validation and canonicalization rules remain shared in both cases.
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub(crate) enum ContractSetMemberDiagnosticContext {
+    Composition,
+    Governance,
+}
+
 pub(crate) fn contract_set_member_wire(member: &ContractSetMember) -> Json {
     object([
         (
@@ -319,6 +329,7 @@ pub(crate) fn parse_contract_set_members(
     raw: Option<&Json>,
     path: &str,
     diagnostics: &mut Vec<Json>,
+    context: ContractSetMemberDiagnosticContext,
 ) -> Vec<ContractSetMember> {
     let Some(Json::Array(values)) = raw else {
         diagnostics.push(diagnostic(
@@ -334,7 +345,14 @@ pub(crate) fn parse_contract_set_members(
         let item_path = format!("{path}[{index}]");
         let Some(item) = raw_member.as_object() else {
             diagnostics.push(diagnostic(
-                "semantic_contract.invalid_member",
+                match context {
+                    ContractSetMemberDiagnosticContext::Composition => {
+                        "semantic_contract.invalid_set_member"
+                    }
+                    ContractSetMemberDiagnosticContext::Governance => {
+                        "semantic_contract.invalid_member"
+                    }
+                },
                 "member must be an object",
                 Some(item_path),
             ));
@@ -1430,7 +1448,12 @@ pub fn compose_set(request: &Json) -> Json {
             Some("contracts".into()),
         );
     }
-    let members = parse_contract_set_members(Some(&Json::Array(raw_contracts.clone())), "contracts", &mut diagnostics);
+    let members = parse_contract_set_members(
+        Some(&Json::Array(raw_contracts.clone())),
+        "contracts",
+        &mut diagnostics,
+        ContractSetMemberDiagnosticContext::Composition,
+    );
     let (canonical, set_id) = match canonical_contract_set(&members) {
         Ok(value) => value,
         Err(error) => {
@@ -1456,7 +1479,82 @@ pub fn compose_set(request: &Json) -> Json {
 
 #[cfg(test)]
 mod tests {
-    use super::{canonicalize_value, Json};
+    use super::{canonicalize_value, compose_set, Json};
+
+    #[test]
+    fn composition_vector_preserves_raw_non_object_member_diagnostic() {
+        let vectors: Json = serde_json::from_str(include_str!(
+            "../../contracts/semantic-core/v1.0/vectors/semantic-contract.json"
+        ))
+        .expect("semantic-contract vectors are valid JSON");
+        let case = vectors
+            .as_object()
+            .and_then(|value| value.get("cases"))
+            .and_then(Json::as_array)
+            .and_then(|cases| {
+                cases.iter().find(|case_value| {
+                    case_value
+                        .as_object()
+                        .and_then(|value| value.get("name"))
+                        .and_then(Json::as_str)
+                        == Some("semantic_contract_set_preserves_raw_non_object_member_diagnostic")
+                })
+            })
+            .and_then(Json::as_object)
+            .expect("malformed-member composition vector is present");
+        let request = case.get("request").expect("vector request is present");
+        let expected = case
+            .get("expected")
+            .and_then(Json::as_object)
+            .expect("vector expectation is present");
+        let result = compose_set(request);
+        assert_eq!(
+            result
+                .as_object()
+                .and_then(|value| value.get("success"))
+                .map(|value| matches!(value, Json::Bool(true))),
+            expected
+                .get("success")
+                .map(|value| matches!(value, Json::Bool(true)))
+        );
+        let diagnostics = result
+            .as_object()
+            .and_then(|value| value.get("diagnostics"))
+            .and_then(Json::as_array)
+            .expect("composition result contains diagnostics");
+        let codes: Vec<_> = diagnostics
+            .iter()
+            .filter_map(|item| {
+                item.as_object()
+                    .and_then(|value| value.get("code"))
+                    .and_then(Json::as_str)
+            })
+            .collect();
+        let paths: Vec<_> = diagnostics
+            .iter()
+            .filter_map(|item| {
+                item.as_object()
+                    .and_then(|value| value.get("path"))
+                    .and_then(Json::as_str)
+            })
+            .collect();
+        let expected_codes: Vec<_> = expected
+            .get("diagnostic_codes")
+            .and_then(Json::as_array)
+            .expect("vector contains diagnostic codes")
+            .iter()
+            .filter_map(Json::as_str)
+            .collect();
+        let expected_paths: Vec<_> = expected
+            .get("diagnostic_paths")
+            .and_then(Json::as_array)
+            .expect("vector contains diagnostic paths")
+            .iter()
+            .filter_map(Json::as_str)
+            .collect();
+        assert_eq!(codes, expected_codes);
+        assert_eq!(paths, expected_paths);
+    }
 
     #[test]
     fn ecmascript_number_spelling_matches_the_shared_known_answer() {

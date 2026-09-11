@@ -10,7 +10,7 @@ use std::collections::{BTreeMap, BTreeSet};
 
 use super::semantic_contract::{
     canonical_contract_set, contract_set_member_wire, is_scf, parse_contract_set_members,
-    ContractSetMember, SCS_SCHEME,
+    ContractSetMember, ContractSetMemberDiagnosticContext, SCS_SCHEME,
 };
 use super::{diagnostic, object, simple_result, string, Json};
 
@@ -519,8 +519,12 @@ fn validate_qualification_value(
             Some("qualification.direction".into()),
         ));
     }
-    let members =
-        parse_contract_set_members(value.get("members"), "qualification.members", diagnostics);
+    let members = parse_contract_set_members(
+        value.get("members"),
+        "qualification.members",
+        diagnostics,
+        ContractSetMemberDiagnosticContext::Governance,
+    );
     if let Some(expected) = expected_members {
         if members != expected {
             diagnostics.push(diagnostic(
@@ -604,7 +608,12 @@ fn validate_set_artifact(
             Some("sets.scsScheme".into()),
         ));
     }
-    let members = parse_contract_set_members(artifact.get("members"), "sets.members", diagnostics);
+    let members = parse_contract_set_members(
+        artifact.get("members"),
+        "sets.members",
+        diagnostics,
+        ContractSetMemberDiagnosticContext::Governance,
+    );
     if members.is_empty() {
         return None;
     }
@@ -652,6 +661,7 @@ fn find_qualified<'a>(
                     value.get("members"),
                     "qualification.members",
                     &mut Vec::new(),
+                    ContractSetMemberDiagnosticContext::Governance,
                 ) == members
         })
 }
@@ -669,7 +679,12 @@ pub fn validate_qualification(request: &Json) -> Json {
         ));
         return failure("validate_semantic_contract_qualification", &mut diagnostics);
     };
-    let members = parse_contract_set_members(root.get("members"), "members", &mut diagnostics);
+    let members = parse_contract_set_members(
+        root.get("members"),
+        "members",
+        &mut diagnostics,
+        ContractSetMemberDiagnosticContext::Governance,
+    );
     profile_members_match(profile, &members, &mut diagnostics);
     let expected_set_id = canonical_contract_set(&members).ok().map(|(_, id)| id);
     let operation = text(root.get("targetOperation"));
@@ -1128,6 +1143,7 @@ pub fn assemble(request: &Json) -> Json {
         root.get("requestedMembers"),
         "requestedMembers",
         &mut diagnostics,
+        ContractSetMemberDiagnosticContext::Governance,
     );
     profile_members_match(profile, &members, &mut diagnostics);
     let operation = text(root.get("targetOperation")).unwrap_or_default();

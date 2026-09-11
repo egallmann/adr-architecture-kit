@@ -43,6 +43,10 @@ def test_python_binding_matches_shared_semantic_contract_vectors() -> None:
             assert [item["code"] for item in result["diagnostics"]] == expected[
                 "diagnostic_codes"
             ], case["name"]
+        if "diagnostic_paths" in expected:
+            assert [item["path"] for item in result["diagnostics"]] == expected[
+                "diagnostic_paths"
+            ], case["name"]
 
 
 def test_python_binding_matches_shared_semantic_contract_set_vectors() -> None:

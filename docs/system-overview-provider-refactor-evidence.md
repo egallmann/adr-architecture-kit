@@ -1,4 +1,4 @@
-# Phase A Evidence Note — SYSTEM-OVERVIEW Provider Refactor
+# SYSTEM-OVERVIEW Provider Refactor Evidence Note
 
 **Branch:** `feature/adr-v1.3-identity`  
 **Date:** 2026-08-11  

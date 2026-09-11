@@ -31,6 +31,8 @@ jobs:
           cache: pip
       - name: Record interpreter
         run: python --version
+      - name: Enforce capability-based repository naming
+        run: python scripts/check_repository_naming.py
       - run: python -m pip install --upgrade pip
       - run: python -m pip install .[dev]
       - name: Exercise portable source/SDK compatibility harness
@@ -122,6 +124,8 @@ jobs:
           cache: pip
       - name: Record interpreter
         run: python --version
+      - name: Enforce capability-based repository naming
+        run: python scripts/check_repository_naming.py
       - uses: actions/setup-node@v4
         with:
           node-version: "20"

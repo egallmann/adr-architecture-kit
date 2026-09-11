@@ -207,8 +207,10 @@ def _execute(operation: str, **fields: Any) -> SemanticOperationResult:
     return _result(execute_validated_semantic_core_request(request))
 
 
-def _slice_c_execute(operation: str, fields: Mapping[str, Any]) -> SemanticOperationResult:
-    """Send a Slice C request to Rust; this adapter owns no policy meaning."""
+def _semantic_contract_set_execute(
+    operation: str, fields: Mapping[str, Any]
+) -> SemanticOperationResult:
+    """Send a semantic-contract-set request to Rust; this adapter owns no policy meaning."""
 
     return _result(
         execute_validated_semantic_core_request(
@@ -299,7 +301,7 @@ def validate_semantic_contract_profile(
     profile: SemanticContractProfile | Mapping[str, Any],
 ) -> SemanticOperationResult:
     wire = profile.to_wire() if isinstance(profile, SemanticContractProfile) else dict(profile)
-    return _slice_c_execute("validate_semantic_contract_profile", {"profile": wire})
+    return _semantic_contract_set_execute("validate_semantic_contract_profile", {"profile": wire})
 
 
 def validate_semantic_contract_qualification(
@@ -312,7 +314,7 @@ def validate_semantic_contract_qualification(
     profile_wire = (
         profile.to_wire() if isinstance(profile, SemanticContractProfile) else dict(profile)
     )
-    return _slice_c_execute(
+    return _semantic_contract_set_execute(
         "validate_semantic_contract_qualification",
         {
             "profile": profile_wire,
@@ -329,19 +331,19 @@ def preview_semantic_contract_set_assembly(
 ) -> SemanticOperationResult:
     """Preview deterministic assembly without performing filesystem writes."""
 
-    return _slice_c_execute("assemble_semantic_contract_set", request)
+    return _semantic_contract_set_execute("assemble_semantic_contract_set", request)
 
 
 def validate_semantic_contract_corpus(request: Mapping[str, Any]) -> SemanticOperationResult:
     """Validate every retained immutable definition, set, and policy record."""
 
-    return _slice_c_execute("validate_semantic_contract_corpus", request)
+    return _semantic_contract_set_execute("validate_semantic_contract_corpus", request)
 
 
 def resolve_current_semantic_contract_set(request: Mapping[str, Any]) -> SemanticOperationResult:
     """Resolve a floating current pointer to one immutable exact SCS identity."""
 
-    return _slice_c_execute("resolve_current_semantic_contract_set", request)
+    return _semantic_contract_set_execute("resolve_current_semantic_contract_set", request)
 
 
 def list_semantic_contract_sets() -> tuple[Mapping[str, Any], ...]:
@@ -405,7 +407,7 @@ def apply_semantic_contract_set_assembly(
 def compose_semantic_contract_set(
     contracts: Sequence[SemanticContractVersion | Mapping[str, Any]],
 ) -> SemanticOperationResult:
-    """Compose SCF references into the Slice B set fingerprint primitive."""
+    """Compose SCF references through the shared SCS identity primitive."""
 
     wire = []
     for item in contracts:

@@ -304,11 +304,11 @@
       ],
       "unevaluatedProperties": false
     },
-    "slice_c_request_base": {
+    "semantic_contract_set_request_base": {
       "allOf": [{"$ref": "#/$defs/request_base"}, {"type": "object", "properties": {"profile": {"type": "object"}, "definitions": {"type": "array", "items": {"$ref": "#/$defs/any_object"}}, "sets": {"type": "array", "items": {"$ref": "#/$defs/any_object"}}, "qualifications": {"type": "array", "items": {"$ref": "#/$defs/any_object"}}, "retainedSets": {"type": "array", "items": {"$ref": "#/$defs/any_object"}}, "retainedQualifications": {"type": "array", "items": {"$ref": "#/$defs/any_object"}}, "catalog": {"type": "object"}, "policy": {"type": "object"}, "members": {"type": "array", "items": {"$ref": "#/$defs/any_object"}}, "direction": {"enum": ["none", "forward", "reverse"]}, "qualification": {"type": "object"}, "requestedMembers": {"type": "array", "items": {"$ref": "#/$defs/any_object"}}, "current": {"type": "object"}, "targetOperation": {"type": "string", "minLength": 1}}}]
     },
     "semantic_profile_request": {
-      "allOf": [{"$ref": "#/$defs/slice_c_request_base"}, {"type": "object", "required": ["operation", "profile"], "properties": {"operation": {"const": "validate_semantic_contract_profile"}, "profile": {"type": "object"}}}],
+      "allOf": [{"$ref": "#/$defs/semantic_contract_set_request_base"}, {"type": "object", "required": ["operation", "profile"], "properties": {"operation": {"const": "validate_semantic_contract_profile"}, "profile": {"type": "object"}}}],
       "unevaluatedProperties": false
     },
     "semantic_profile_result": {
@@ -316,7 +316,7 @@
       "unevaluatedProperties": false
     },
     "semantic_qualification_request": {
-      "allOf": [{"$ref": "#/$defs/slice_c_request_base"}, {"type": "object", "required": ["operation", "profile", "members", "direction", "targetOperation", "qualification"], "properties": {"operation": {"const": "validate_semantic_contract_qualification"}, "members": {"type": "array", "items": {"$ref": "#/$defs/any_object"}}, "direction": {"enum": ["none", "forward", "reverse"]}, "targetOperation": {"type": "string", "minLength": 1}, "qualification": {"type": "object"}}}],
+      "allOf": [{"$ref": "#/$defs/semantic_contract_set_request_base"}, {"type": "object", "required": ["operation", "profile", "members", "direction", "targetOperation", "qualification"], "properties": {"operation": {"const": "validate_semantic_contract_qualification"}, "members": {"type": "array", "items": {"$ref": "#/$defs/any_object"}}, "direction": {"enum": ["none", "forward", "reverse"]}, "targetOperation": {"type": "string", "minLength": 1}, "qualification": {"type": "object"}}}],
       "unevaluatedProperties": false
     },
     "semantic_qualification_result": {
@@ -324,7 +324,7 @@
       "unevaluatedProperties": false
     },
     "semantic_assembly_request": {
-      "allOf": [{"$ref": "#/$defs/slice_c_request_base"}, {"type": "object", "required": ["operation", "profile", "direction", "targetOperation", "requestedMembers", "qualification", "definitions", "retainedSets", "retainedQualifications", "catalog", "policy"], "properties": {"operation": {"const": "assemble_semantic_contract_set"}, "direction": {"enum": ["none", "forward", "reverse"]}, "targetOperation": {"type": "string", "minLength": 1}, "requestedMembers": {"type": "array", "items": {"$ref": "#/$defs/any_object"}}, "qualification": {"type": "object"}}}],
+      "allOf": [{"$ref": "#/$defs/semantic_contract_set_request_base"}, {"type": "object", "required": ["operation", "profile", "direction", "targetOperation", "requestedMembers", "qualification", "definitions", "retainedSets", "retainedQualifications", "catalog", "policy"], "properties": {"operation": {"const": "assemble_semantic_contract_set"}, "direction": {"enum": ["none", "forward", "reverse"]}, "targetOperation": {"type": "string", "minLength": 1}, "requestedMembers": {"type": "array", "items": {"$ref": "#/$defs/any_object"}}, "qualification": {"type": "object"}}}],
       "unevaluatedProperties": false
     },
     "semantic_assembly_result": {
@@ -341,7 +341,7 @@
       "unevaluatedProperties": false
     },
     "semantic_corpus_request": {
-      "allOf": [{"$ref": "#/$defs/slice_c_request_base"}, {"type": "object", "required": ["operation", "profile", "definitions", "sets", "qualifications", "catalog", "policy"], "properties": {"operation": {"const": "validate_semantic_contract_corpus"}}}],
+      "allOf": [{"$ref": "#/$defs/semantic_contract_set_request_base"}, {"type": "object", "required": ["operation", "profile", "definitions", "sets", "qualifications", "catalog", "policy"], "properties": {"operation": {"const": "validate_semantic_contract_corpus"}}}],
       "unevaluatedProperties": false
     },
     "semantic_corpus_result": {
@@ -349,7 +349,7 @@
       "unevaluatedProperties": false
     },
     "semantic_current_request": {
-      "allOf": [{"$ref": "#/$defs/slice_c_request_base"}, {"type": "object", "required": ["operation", "profile", "direction", "targetOperation", "current", "definitions", "sets", "qualifications", "catalog", "policy"], "properties": {"operation": {"const": "resolve_current_semantic_contract_set"}, "direction": {"enum": ["none", "forward", "reverse"]}, "targetOperation": {"type": "string", "minLength": 1}, "current": {"type": "object"}}}],
+      "allOf": [{"$ref": "#/$defs/semantic_contract_set_request_base"}, {"type": "object", "required": ["operation", "profile", "direction", "targetOperation", "current", "definitions", "sets", "qualifications", "catalog", "policy"], "properties": {"operation": {"const": "resolve_current_semantic_contract_set"}, "direction": {"enum": ["none", "forward", "reverse"]}, "targetOperation": {"type": "string", "minLength": 1}, "current": {"type": "object"}}}],
       "unevaluatedProperties": false
     },
     "semantic_current_result": {

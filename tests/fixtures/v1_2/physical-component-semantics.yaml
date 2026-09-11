@@ -5,9 +5,9 @@ title: V1.2 Projectable Component Fixture
 status: accepted
 created_date: '2026-08-07'
 authors:
-- phase2-test
+- normalized-model-test
 domains:
-- phase2
+- normalized-model
 implements_system:
 - ADR-PS-9801
 implements_logical:
@@ -25,7 +25,7 @@ component_specifications:
 - id: COMP-9801
   name: Fixture Component
   type: service
-  responsibilities: Provide the Phase 2 fixture interface.
+  responsibilities: Provide the normalized-model fixture interface.
   generation_context:
     purpose: Provide a projectable fixture component.
     key_responsibilities:

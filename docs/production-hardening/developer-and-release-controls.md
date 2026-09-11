@@ -89,7 +89,7 @@ future work; see `ROADMAP.md`).
 The full baseline command is:
 
 ```bash
-python benchmarks/phase0.py \
+python benchmarks/architecture-workflow.py \
   --corpus all \
   --sizes 10,100,500 \
   --warmups 1 \

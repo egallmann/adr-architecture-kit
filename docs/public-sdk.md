@@ -36,7 +36,7 @@ repository discovery, validation, compilation, or writes.
 
 ## Semantic contract identity and closure
 
-Slice B exposes the immutable semantic definitions used by both peer hosts. The
+The public SDK exposes the immutable semantic definitions used by both peer hosts. The
 definitions contain only semantic meaning, resource manifests, frozen
 conformance resources, and their `scf:v1:sha256` identity; lifecycle policy,
 catalog state, executable support, and current selection are not part of that

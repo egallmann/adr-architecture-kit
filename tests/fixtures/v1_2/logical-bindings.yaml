@@ -5,9 +5,9 @@ title: V1.2 Binding Contract Fixture
 status: accepted
 created_date: '2026-08-07'
 authors:
-- phase2-test
+- normalized-model-test
 domains:
-- phase2
+- normalized-model
 context: |
   Exercise additive external binding contracts without loading external authority.
 decisions:

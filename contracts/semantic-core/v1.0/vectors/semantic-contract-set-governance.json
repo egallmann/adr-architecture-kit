@@ -168,7 +168,7 @@
           "newUsePolicy": "permitted",
           "historicalInterpretationSupport": true,
           "qualificationRevision": "qualification:v1:1",
-          "reasonCode": "slice-c-qualified"
+          "reasonCode": "architecture-materialization-qualified"
         }
       },
       "expected": {
@@ -260,7 +260,7 @@
           "newUsePolicy": "permitted",
           "historicalInterpretationSupport": true,
           "qualificationRevision": "qualification:v1:1",
-          "reasonCode": "slice-c-qualified"
+          "reasonCode": "architecture-materialization-qualified"
         }
       },
       "expected": {
@@ -323,7 +323,7 @@
           "newUsePolicy": "permitted",
           "historicalInterpretationSupport": true,
           "qualificationRevision": "qualification:v1:1",
-          "reasonCode": "slice-c-qualified"
+          "reasonCode": "architecture-materialization-qualified"
         },
         "retainedSets": [
           {
@@ -378,7 +378,7 @@
             "newUsePolicy": "permitted",
             "historicalInterpretationSupport": true,
             "qualificationRevision": "qualification:v1:1",
-            "reasonCode": "slice-c-qualified"
+            "reasonCode": "architecture-materialization-qualified"
           },
           {
             "qualificationRecordId": "qualification:architecture-materialization@1.0:qualify_tuple",
@@ -409,7 +409,7 @@
             "newUsePolicy": "permitted",
             "historicalInterpretationSupport": true,
             "qualificationRevision": "qualification:v1:1",
-            "reasonCode": "slice-c-qualified"
+            "reasonCode": "architecture-materialization-qualified"
           },
           {
             "qualificationRecordId": "qualification:architecture-materialization@1.0:assemble_set",
@@ -440,7 +440,7 @@
             "newUsePolicy": "permitted",
             "historicalInterpretationSupport": true,
             "qualificationRevision": "qualification:v1:1",
-            "reasonCode": "slice-c-qualified"
+            "reasonCode": "architecture-materialization-qualified"
           },
           {
             "qualificationRecordId": "qualification:architecture-materialization@1.0:validate_corpus",
@@ -471,7 +471,7 @@
             "newUsePolicy": "permitted",
             "historicalInterpretationSupport": true,
             "qualificationRevision": "qualification:v1:1",
-            "reasonCode": "slice-c-qualified"
+            "reasonCode": "architecture-materialization-qualified"
           },
           {
             "qualificationRecordId": "qualification:architecture-materialization@1.0:resolve_current",
@@ -502,7 +502,7 @@
             "newUsePolicy": "permitted",
             "historicalInterpretationSupport": true,
             "qualificationRevision": "qualification:v1:1",
-            "reasonCode": "slice-c-qualified"
+            "reasonCode": "architecture-materialization-qualified"
           }
         ],
         "profile": {
@@ -4869,7 +4869,7 @@
           "newUsePolicy": "permitted",
           "historicalInterpretationSupport": true,
           "qualificationRevision": "qualification:v1:1",
-          "reasonCode": "slice-c-qualified"
+          "reasonCode": "architecture-materialization-qualified"
         },
         "retainedSets": [],
         "retainedQualifications": [],
@@ -9243,7 +9243,7 @@
             "newUsePolicy": "permitted",
             "historicalInterpretationSupport": true,
             "qualificationRevision": "qualification:v1:1",
-            "reasonCode": "slice-c-qualified"
+            "reasonCode": "architecture-materialization-qualified"
           },
           {
             "qualificationRecordId": "qualification:architecture-materialization@1.0:qualify_tuple",
@@ -9274,7 +9274,7 @@
             "newUsePolicy": "permitted",
             "historicalInterpretationSupport": true,
             "qualificationRevision": "qualification:v1:1",
-            "reasonCode": "slice-c-qualified"
+            "reasonCode": "architecture-materialization-qualified"
           },
           {
             "qualificationRecordId": "qualification:architecture-materialization@1.0:assemble_set",
@@ -9305,7 +9305,7 @@
             "newUsePolicy": "permitted",
             "historicalInterpretationSupport": true,
             "qualificationRevision": "qualification:v1:1",
-            "reasonCode": "slice-c-qualified"
+            "reasonCode": "architecture-materialization-qualified"
           },
           {
             "qualificationRecordId": "qualification:architecture-materialization@1.0:validate_corpus",
@@ -9336,7 +9336,7 @@
             "newUsePolicy": "permitted",
             "historicalInterpretationSupport": true,
             "qualificationRevision": "qualification:v1:1",
-            "reasonCode": "slice-c-qualified"
+            "reasonCode": "architecture-materialization-qualified"
           },
           {
             "qualificationRecordId": "qualification:architecture-materialization@1.0:resolve_current",
@@ -9367,7 +9367,7 @@
             "newUsePolicy": "permitted",
             "historicalInterpretationSupport": true,
             "qualificationRevision": "qualification:v1:1",
-            "reasonCode": "slice-c-qualified"
+            "reasonCode": "architecture-materialization-qualified"
           }
         ],
         "profile": {
@@ -13758,7 +13758,7 @@
             "newUsePolicy": "permitted",
             "historicalInterpretationSupport": true,
             "qualificationRevision": "qualification:v1:1",
-            "reasonCode": "slice-c-qualified"
+            "reasonCode": "architecture-materialization-qualified"
           },
           {
             "qualificationRecordId": "qualification:architecture-materialization@1.0:qualify_tuple",
@@ -13789,7 +13789,7 @@
             "newUsePolicy": "permitted",
             "historicalInterpretationSupport": true,
             "qualificationRevision": "qualification:v1:1",
-            "reasonCode": "slice-c-qualified"
+            "reasonCode": "architecture-materialization-qualified"
           },
           {
             "qualificationRecordId": "qualification:architecture-materialization@1.0:assemble_set",
@@ -13820,7 +13820,7 @@
             "newUsePolicy": "permitted",
             "historicalInterpretationSupport": true,
             "qualificationRevision": "qualification:v1:1",
-            "reasonCode": "slice-c-qualified"
+            "reasonCode": "architecture-materialization-qualified"
           },
           {
             "qualificationRecordId": "qualification:architecture-materialization@1.0:validate_corpus",
@@ -13851,7 +13851,7 @@
             "newUsePolicy": "permitted",
             "historicalInterpretationSupport": true,
             "qualificationRevision": "qualification:v1:1",
-            "reasonCode": "slice-c-qualified"
+            "reasonCode": "architecture-materialization-qualified"
           },
           {
             "qualificationRecordId": "qualification:architecture-materialization@1.0:resolve_current",
@@ -13882,7 +13882,7 @@
             "newUsePolicy": "permitted",
             "historicalInterpretationSupport": true,
             "qualificationRevision": "qualification:v1:1",
-            "reasonCode": "slice-c-qualified"
+            "reasonCode": "architecture-materialization-qualified"
           }
         ],
         "profile": {
@@ -18268,7 +18268,7 @@
             "newUsePolicy": "permitted",
             "historicalInterpretationSupport": true,
             "qualificationRevision": "qualification:v1:1",
-            "reasonCode": "slice-c-qualified"
+            "reasonCode": "architecture-materialization-qualified"
           },
           {
             "qualificationRecordId": "qualification:architecture-materialization@1.0:qualify_tuple",
@@ -18299,7 +18299,7 @@
             "newUsePolicy": "permitted",
             "historicalInterpretationSupport": true,
             "qualificationRevision": "qualification:v1:1",
-            "reasonCode": "slice-c-qualified"
+            "reasonCode": "architecture-materialization-qualified"
           },
           {
             "qualificationRecordId": "qualification:architecture-materialization@1.0:assemble_set",
@@ -18330,7 +18330,7 @@
             "newUsePolicy": "permitted",
             "historicalInterpretationSupport": true,
             "qualificationRevision": "qualification:v1:1",
-            "reasonCode": "slice-c-qualified"
+            "reasonCode": "architecture-materialization-qualified"
           },
           {
             "qualificationRecordId": "qualification:architecture-materialization@1.0:validate_corpus",
@@ -18361,7 +18361,7 @@
             "newUsePolicy": "permitted",
             "historicalInterpretationSupport": true,
             "qualificationRevision": "qualification:v1:1",
-            "reasonCode": "slice-c-qualified"
+            "reasonCode": "architecture-materialization-qualified"
           },
           {
             "qualificationRecordId": "qualification:architecture-materialization@1.0:resolve_current",
@@ -18392,7 +18392,7 @@
             "newUsePolicy": "permitted",
             "historicalInterpretationSupport": true,
             "qualificationRevision": "qualification:v1:1",
-            "reasonCode": "slice-c-qualified"
+            "reasonCode": "architecture-materialization-qualified"
           }
         ],
         "profile": {

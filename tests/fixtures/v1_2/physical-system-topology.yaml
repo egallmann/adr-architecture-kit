@@ -5,9 +5,9 @@ title: V1.2 Stable Topology Fixture
 status: accepted
 created_date: '2026-08-07'
 authors:
-- phase2-test
+- normalized-model-test
 domains:
-- phase2
+- normalized-model
 implements_logical:
 - ADR-L-9801
 technologies:

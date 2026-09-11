@@ -293,4 +293,4 @@ jobs:
         run: python --version
       - run: python -m pip install --upgrade pip
       - run: python -m pip install .[dev]
-      - run: python benchmarks/phase0.py --corpus synthetic --sizes 10 --warmups 0 --repeats 1 --json-out benchmark-smoke.json
+      - run: python benchmarks/architecture-workflow.py --corpus synthetic --sizes 10 --warmups 0 --repeats 1 --json-out benchmark-smoke.json

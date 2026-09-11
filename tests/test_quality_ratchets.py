@@ -1,4 +1,4 @@
-"""Phase 0 no-regression quality ratchet contract."""
+"""No-regression quality ratchet contract."""
 
 from __future__ import annotations
 
@@ -8,7 +8,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 
-PHASE1_FILES = (
+PUBLIC_SURFACE_FILES = (
     "src/adr_kit/_version.py",
     "src/adr_kit/api/__init__.py",
     "src/adr_kit/api/_contracts.py",
@@ -25,7 +25,7 @@ PHASE1_FILES = (
 
 def test_committed_quality_baselines_reject_new_findings() -> None:
     script = ROOT / "scripts" / "check_quality_ratchets.py"
-    assert script.is_file(), "missing Phase 0 quality-ratchet runner"
+    assert script.is_file(), "missing quality-ratchet runner"
     result = subprocess.run(
         [sys.executable, str(script)],
         cwd=ROOT,
@@ -36,9 +36,9 @@ def test_committed_quality_baselines_reject_new_findings() -> None:
     assert result.returncode == 0, result.stdout + result.stderr
 
 
-def test_phase1_files_are_explicit_zero_debt_targets() -> None:
+def test_public_surface_files_are_explicit_zero_debt_targets() -> None:
     source = (ROOT / "scripts" / "check_quality_ratchets.py").read_text(encoding="utf-8")
 
-    assert "PHASE1_FILES" in source
-    for relative_path in PHASE1_FILES:
+    assert "PUBLIC_SURFACE_FILES" in source
+    for relative_path in PUBLIC_SURFACE_FILES:
         assert f'"{relative_path}"' in source

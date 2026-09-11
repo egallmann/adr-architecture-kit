@@ -17,6 +17,7 @@ WORKSPACE_EVIDENCE = (
 )
 
 COMMANDS: tuple[tuple[str, ...], ...] = (
+    (sys.executable, "scripts/check_repository_naming.py"),
     (
         sys.executable,
         "-m",

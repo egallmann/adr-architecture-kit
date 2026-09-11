@@ -184,7 +184,7 @@ assert isinstance(v15_result, EmbodimentLinkageResult)
 assert v15_result.success and v15_result.evidence_schema_version == '1.5'
 assert RejectedEmbodimentClaim is not None
 """
-PHASE2_PROBE = """
+NORMALIZED_MODEL_PROBE = """
 import os
 import yaml
 from pathlib import Path
@@ -196,7 +196,7 @@ from adr_kit.api import (
     open_repository,
 )
 
-root = Path(os.environ['ADR_PHASE2_FIXTURE'])
+root = Path(os.environ['ADR_NORMALIZED_MODEL_FIXTURE'])
 manifest = capabilities()
 assert manifest.supported_adr_schema_versions == ('1.0', '1.1', '1.2', '1.3', '1.4', '1.5', '1.6')
 assert manifest.normalized_model_schema_version == '1.1'
@@ -312,8 +312,8 @@ def run_harness(wheel: Path, python: Path) -> None:
             consumer,
             isolated_environment,
         )
-        isolated_environment["ADR_PHASE2_FIXTURE"] = str(fixture)
-        _run([str(venv_python), "-c", PHASE2_PROBE], consumer, isolated_environment)
+        isolated_environment["ADR_NORMALIZED_MODEL_FIXTURE"] = str(fixture)
+        _run([str(venv_python), "-c", NORMALIZED_MODEL_PROBE], consumer, isolated_environment)
         linkage_evidence = consumer / "external-linkage-evidence.yaml"
         linkage_evidence.write_text(
             json.dumps(

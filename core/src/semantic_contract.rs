@@ -1,9 +1,10 @@
 //! Canonical semantic-contract identity and resource-closure rules.
 //!
-//! This module is the only meaning-affecting implementation of Slice B. The
-//! Python and Node hosts pass ordinary JSON values to this boundary and only
-//! construct idiomatic immutable views around the result. No host may sort
-//! keys, normalize Unicode, or calculate a digest independently.
+//! This module owns the canonical semantic-contract identity and resource
+//! closure rules. The Python and Node hosts pass ordinary JSON values to this
+//! boundary and only construct idiomatic immutable views around the result.
+//! No host may sort keys, normalize Unicode, or calculate a digest
+//! independently.
 
 use std::cmp::Ordering;
 use std::collections::{BTreeMap, BTreeSet};
@@ -13,9 +14,9 @@ use sha2::{Digest, Sha256};
 use super::{diagnostic, object, simple_result, string, Json};
 
 const SCF_SCHEME: &str = "scf:v1:sha256";
-const SCS_SCHEME: &str = "scs:v1:sha256";
+pub(crate) const SCS_SCHEME: &str = "scs:v1:sha256";
 const SCF_DOMAIN: &str = "adr-kit.semantic-contract/v1";
-const SCS_DOMAIN: &str = "adr-kit.semantic-contract-set/v1";
+pub(crate) const SCS_DOMAIN: &str = "adr-kit.semantic-contract-set/v1";
 const MAX_SAFE_INTEGER: i128 = 9_007_199_254_740_991;
 
 #[derive(Clone, Debug)]
@@ -26,7 +27,7 @@ struct ResourceEntry {
     dependencies: Vec<(String, String)>,
 }
 
-fn is_family(value: &str) -> bool {
+pub(crate) fn is_family(value: &str) -> bool {
     let bytes = value.as_bytes();
     if bytes.is_empty() || !bytes[0].is_ascii_lowercase() {
         return false;
@@ -44,7 +45,7 @@ fn is_family(value: &str) -> bool {
     !previous_hyphen
 }
 
-fn is_version(value: &str) -> bool {
+pub(crate) fn is_version(value: &str) -> bool {
     let mut parts = value.split('.');
     let Some(major) = parts.next() else {
         return false;
@@ -69,7 +70,7 @@ fn is_sha256(value: &str) -> bool {
             .all(|byte| byte.is_ascii_hexdigit() && !byte.is_ascii_uppercase())
 }
 
-fn is_scf(value: &str) -> bool {
+pub(crate) fn is_scf(value: &str) -> bool {
     let Some(hex) = value.strip_prefix("scf:v1:sha256:") else {
         return false;
     };
@@ -276,6 +277,159 @@ fn add_diagnostic(
     path: Option<String>,
 ) {
     diagnostics.push(diagnostic(code, message, path));
+}
+
+/// The only in-process representation used to assemble an SCS preimage.
+///
+/// Keeping this type beside the canonical SCF/SCS rules is intentional: a
+/// governance operation may validate a set, while the public composition
+/// operation may create one, but neither operation is allowed to maintain a
+/// second interpretation of member identity or ordering.
+#[derive(Clone, Debug, Eq, Ord, PartialEq, PartialOrd)]
+pub(crate) struct ContractSetMember {
+    pub(crate) family: String,
+    pub(crate) version: String,
+    pub(crate) fingerprint: String,
+}
+
+pub(crate) fn contract_set_member_wire(member: &ContractSetMember) -> Json {
+    object([
+        (
+            "semanticContractFamily".into(),
+            string(member.family.clone()),
+        ),
+        (
+            "semanticContractVersion".into(),
+            string(member.version.clone()),
+        ),
+        (
+            "semanticContractFingerprint".into(),
+            string(member.fingerprint.clone()),
+        ),
+    ])
+}
+
+/// Parse and deterministically order members for every SCS-producing path.
+///
+/// This is deliberately a crate-private semantic authority rather than a
+/// public operation. Bindings and governance code call it directly so a
+/// public operation cannot accidentally become the implementation of another
+/// public operation through JSON round-tripping.
+pub(crate) fn parse_contract_set_members(
+    raw: Option<&Json>,
+    path: &str,
+    diagnostics: &mut Vec<Json>,
+) -> Vec<ContractSetMember> {
+    let Some(Json::Array(values)) = raw else {
+        diagnostics.push(diagnostic(
+            "semantic_contract.invalid_members",
+            "members must be an array",
+            Some(path.into()),
+        ));
+        return Vec::new();
+    };
+    let mut members = Vec::new();
+    let mut families = BTreeSet::new();
+    for (index, raw_member) in values.iter().enumerate() {
+        let item_path = format!("{path}[{index}]");
+        let Some(item) = raw_member.as_object() else {
+            diagnostics.push(diagnostic(
+                "semantic_contract.invalid_member",
+                "member must be an object",
+                Some(item_path),
+            ));
+            continue;
+        };
+        for key in item.keys() {
+            if ![
+                "semanticContractFamily",
+                "semanticContractVersion",
+                "semanticContractFingerprint",
+            ]
+            .contains(&key.as_str())
+            {
+                diagnostics.push(diagnostic(
+                    "semantic_contract.unknown_member_field",
+                    format!("field is not allowed in a set member: {key}"),
+                    Some(format!("{item_path}.{key}")),
+                ));
+            }
+        }
+        let family = item
+            .get("semanticContractFamily")
+            .and_then(Json::as_str)
+            .unwrap_or("")
+            .to_owned();
+        let version = item
+            .get("semanticContractVersion")
+            .and_then(Json::as_str)
+            .unwrap_or("")
+            .to_owned();
+        let fingerprint = item
+            .get("semanticContractFingerprint")
+            .and_then(Json::as_str)
+            .unwrap_or("")
+            .to_owned();
+        if !is_family(&family) {
+            add_diagnostic(
+                diagnostics,
+                "semantic_contract.invalid_family",
+                "set member family is invalid",
+                Some(format!("{item_path}.semanticContractFamily")),
+            );
+        }
+        if !is_version(&version) {
+            add_diagnostic(
+                diagnostics,
+                "semantic_contract.invalid_version",
+                "set member version must be an exact major.minor value",
+                Some(format!("{item_path}.semanticContractVersion")),
+            );
+        }
+        if !is_scf(&fingerprint) {
+            add_diagnostic(
+                diagnostics,
+                "semantic_contract.invalid_member_fingerprint",
+                "set member fingerprint must be an exact lowercase scf:v1:sha256 value",
+                Some(format!("{item_path}.semanticContractFingerprint")),
+            );
+        }
+        if !families.insert(family.clone()) {
+            add_diagnostic(
+                diagnostics,
+                "semantic_contract.duplicate_set_family",
+                "a semantic contract set cannot contain duplicate families",
+                Some(format!("{item_path}.semanticContractFamily")),
+            );
+        }
+        members.push(ContractSetMember {
+            family,
+            version,
+            fingerprint,
+        });
+    }
+    members.sort();
+    members
+}
+
+/// Canonicalize the exact SCS preimage and derive its stable identity.
+pub(crate) fn canonical_contract_set(
+    members: &[ContractSetMember],
+) -> Result<(String, String), String> {
+    let preimage = object([
+        ("scheme".into(), string(SCS_DOMAIN)),
+        (
+            "contracts".into(),
+            Json::Array(members.iter().map(contract_set_member_wire).collect()),
+        ),
+    ]);
+    let mut canonical = String::new();
+    canonicalize_value(&preimage, &mut canonical)?;
+    let set_id = format!(
+        "{SCS_SCHEME}:{}",
+        digest(canonical.as_bytes()).trim_start_matches("sha256:")
+    );
+    Ok((canonical, set_id))
 }
 
 pub(crate) fn sort_diagnostics(diagnostics: &mut Vec<Json>) {
@@ -1276,129 +1430,23 @@ pub fn compose_set(request: &Json) -> Json {
             Some("contracts".into()),
         );
     }
-    let mut references = Vec::new();
-    let mut families = BTreeSet::new();
-    for (index, raw) in raw_contracts.iter().enumerate() {
-        let path = format!("contracts[{index}]");
-        let Some(contract) = raw.as_object() else {
+    let members = parse_contract_set_members(Some(&Json::Array(raw_contracts.clone())), "contracts", &mut diagnostics);
+    let (canonical, set_id) = match canonical_contract_set(&members) {
+        Ok(value) => value,
+        Err(error) => {
             add_diagnostic(
                 &mut diagnostics,
-                "semantic_contract.invalid_set_member",
-                "set member must be an object",
-                Some(path),
+                "semantic_contract.canonicalization_failed",
+                error,
+                None,
             );
-            continue;
-        };
-        for key in contract.keys() {
-            if ![
-                "semanticContractFamily",
-                "semanticContractVersion",
-                "semanticContractFingerprint",
-            ]
-            .contains(&key.as_str())
-            {
-                add_diagnostic(
-                    &mut diagnostics,
-                    "semantic_contract.unknown_member_field",
-                    format!("field is not allowed in a set member: {key}"),
-                    Some(format!("{path}.{key}")),
-                );
-            }
+            (String::new(), String::new())
         }
-        let family = contract
-            .get("semanticContractFamily")
-            .and_then(Json::as_str)
-            .unwrap_or("")
-            .to_owned();
-        let version = contract
-            .get("semanticContractVersion")
-            .and_then(Json::as_str)
-            .unwrap_or("")
-            .to_owned();
-        let fingerprint = contract
-            .get("semanticContractFingerprint")
-            .and_then(Json::as_str)
-            .unwrap_or("")
-            .to_owned();
-        if !is_family(&family) {
-            add_diagnostic(
-                &mut diagnostics,
-                "semantic_contract.invalid_family",
-                "set member family is invalid",
-                Some(format!("{path}.semanticContractFamily")),
-            );
-        }
-        if !is_version(&version) {
-            add_diagnostic(
-                &mut diagnostics,
-                "semantic_contract.invalid_version",
-                "set member version must be an exact major.minor value",
-                Some(format!("{path}.semanticContractVersion")),
-            );
-        }
-        if !is_scf(&fingerprint) {
-            add_diagnostic(
-                &mut diagnostics,
-                "semantic_contract.invalid_member_fingerprint",
-                "set member fingerprint must be an exact lowercase scf:v1:sha256 value",
-                Some(format!("{path}.semanticContractFingerprint")),
-            );
-        }
-        if !families.insert(family.clone()) {
-            add_diagnostic(
-                &mut diagnostics,
-                "semantic_contract.duplicate_set_family",
-                "a semantic contract set cannot contain duplicate families",
-                Some(format!("{path}.semanticContractFamily")),
-            );
-        }
-        references.push((family, version, fingerprint));
-    }
-    references.sort_by(|left, right| left.0.cmp(&right.0));
-    let preimage = object([
-        ("scheme".into(), string(SCS_DOMAIN)),
-        (
-            "contracts".into(),
-            Json::Array(
-                references
-                    .iter()
-                    .map(|(family, version, fingerprint)| {
-                        object([
-                            (
-                                String::from("semanticContractFamily"),
-                                string(family.clone()),
-                            ),
-                            (
-                                String::from("semanticContractVersion"),
-                                string(version.clone()),
-                            ),
-                            (
-                                String::from("semanticContractFingerprint"),
-                                string(fingerprint.clone()),
-                            ),
-                        ])
-                    })
-                    .collect(),
-            ),
-        ),
-    ]);
-    let mut canonical = String::new();
-    if let Err(error) = canonicalize_value(&preimage, &mut canonical) {
-        add_diagnostic(
-            &mut diagnostics,
-            "semantic_contract.canonicalization_failed",
-            error,
-            None,
-        );
-    }
-    sort_diagnostics(&mut diagnostics);
+    };
     if !diagnostics.is_empty() {
+        sort_diagnostics(&mut diagnostics);
         return canonical_failure("compose_semantic_contract_set", diagnostics);
     }
-    let set_id = format!(
-        "{SCS_SCHEME}:{}",
-        digest(canonical.as_bytes()).trim_start_matches("sha256:")
-    );
     let mut result = canonical_result("compose_semantic_contract_set", canonical, set_id.clone());
     if let Json::Object(ref mut values) = result {
         values.insert("semantic_contract_set_id".into(), string(set_id));

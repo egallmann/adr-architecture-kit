@@ -78,4 +78,4 @@ is not authorization to implement those concerns in the kit.
   remains separate future work. Required evidence to consume includes the `0.3.0`
   PyPI README link-portability finding and resulting control (`INV-0083` /
   package-description portability as release qualification)—see
-  [phase-0-controls.md](docs/production-hardening/phase-0-controls.md).
+  [developer-and-release-controls.md](docs/production-hardening/developer-and-release-controls.md).

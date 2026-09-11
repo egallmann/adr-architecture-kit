@@ -1,7 +1,7 @@
 # ADR-Kit semantic contract definitions v1.0
 
 This directory contains the immutable semantic-definition and composition
-contracts used by the 0.11.0 Slice B/C boundary. The definition files are content-addressed manifests;
+contracts used by the 0.11.0 semantic-contract boundary. The definition files are content-addressed manifests;
 the `semanticContractFingerprint` is calculated over the definition with that
 field removed. Resource contents are supplied separately to closure validation.
 
@@ -17,8 +17,8 @@ The two promoted definitions are deliberately narrow:
 separate composition identity and is not implemented by embedding policy,
 catalog state, or current selection in an SCF definition.
 
-Slice C adds the exact `architecture-materialization@1.0` profile, whole-tuple
+The semantic-contract-set governance surface adds the exact `architecture-materialization@1.0` profile, whole-tuple
 qualification, immutable set artifacts, separately revisioned catalog/policy,
 append-only retained-set validation, and current-pointer resolution. The
 profile is a composition and resolution capability; architecture materialization
-itself remains deferred to Slice D.
+itself remains outside this contract boundary.

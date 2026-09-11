@@ -4,9 +4,9 @@ import { resolve } from "node:path";
 import test from "node:test";
 import { executeSemanticCoreRequest } from "../dist/node/core.js";
 
-const vectorPath = resolve("../../contracts/semantic-core/v1.0/vectors/semantic-contract-slice-c.json");
+const vectorPath = resolve("../../contracts/semantic-core/v1.0/vectors/semantic-contract-set-governance.json");
 
-test("Node binding matches the shared Slice C profile, qualification, corpus, assembly, and current vectors", async () => {
+test("Node binding matches the shared semantic-contract-set governance vectors", async () => {
   const document = JSON.parse(await readFile(vectorPath, "utf8"));
   for (const testCase of document.cases) {
     const result = await executeSemanticCoreRequest(testCase.request);

@@ -8,11 +8,11 @@
 
 use std::collections::{BTreeMap, BTreeSet};
 
-use super::{diagnostic, object, simple_result, string, Json};
 use super::semantic_contract::{
-    canonical_contract_set, contract_set_member_wire, is_family, is_scf, is_version,
-    parse_contract_set_members, ContractSetMember, SCS_SCHEME,
+    canonical_contract_set, contract_set_member_wire, is_scf, parse_contract_set_members,
+    ContractSetMember, SCS_SCHEME,
 };
+use super::{diagnostic, object, simple_result, string, Json};
 
 const PROFILE_ID: &str = "architecture-materialization@1.0";
 const PROFILE_FAMILY: &str = "architecture-materialization";
@@ -320,7 +320,11 @@ fn verify_definition_bundles(
     definitions
 }
 
-fn profile_members_match(profile: &Json, members: &[ContractSetMember], diagnostics: &mut Vec<Json>) {
+fn profile_members_match(
+    profile: &Json,
+    members: &[ContractSetMember],
+    diagnostics: &mut Vec<Json>,
+) {
     validate_profile_value(Some(profile), diagnostics);
     let expected = expected_families();
     let actual = members
@@ -515,7 +519,8 @@ fn validate_qualification_value(
             Some("qualification.direction".into()),
         ));
     }
-    let members = parse_contract_set_members(value.get("members"), "qualification.members", diagnostics);
+    let members =
+        parse_contract_set_members(value.get("members"), "qualification.members", diagnostics);
     if let Some(expected) = expected_members {
         if members != expected {
             diagnostics.push(diagnostic(
@@ -717,8 +722,13 @@ fn validate_catalog_policy(
         return;
     };
     for (key, _) in catalog {
-        if !["$schema", "catalogSchemaVersion", "catalogRevision", "entries"]
-            .contains(&key.as_str())
+        if ![
+            "$schema",
+            "catalogSchemaVersion",
+            "catalogRevision",
+            "entries",
+        ]
+        .contains(&key.as_str())
         {
             diagnostics.push(diagnostic(
                 "semantic_contract.policy_failure",
@@ -728,8 +738,13 @@ fn validate_catalog_policy(
         }
     }
     for (key, _) in policy {
-        if !["$schema", "policySchemaVersion", "policyRevision", "entries"]
-            .contains(&key.as_str())
+        if ![
+            "$schema",
+            "policySchemaVersion",
+            "policyRevision",
+            "entries",
+        ]
+        .contains(&key.as_str())
         {
             diagnostics.push(diagnostic(
                 "semantic_contract.policy_failure",
@@ -745,7 +760,10 @@ fn validate_catalog_policy(
             Some("catalog.catalogSchemaVersion".into()),
         ));
     }
-    if text(catalog.get("catalogRevision")).unwrap_or_default().is_empty() {
+    if text(catalog.get("catalogRevision"))
+        .unwrap_or_default()
+        .is_empty()
+    {
         diagnostics.push(diagnostic(
             "semantic_contract.policy_failure",
             "catalogRevision must be non-empty",
@@ -759,7 +777,10 @@ fn validate_catalog_policy(
             Some("policy.policySchemaVersion".into()),
         ));
     }
-    if text(policy.get("policyRevision")).unwrap_or_default().is_empty() {
+    if text(policy.get("policyRevision"))
+        .unwrap_or_default()
+        .is_empty()
+    {
         diagnostics.push(diagnostic(
             "semantic_contract.policy_failure",
             "policyRevision must be non-empty",
@@ -951,33 +972,36 @@ fn validate_catalog_policy(
     }
 }
 
-fn policy_supports(
-    policy: Option<&Json>,
-    set_id: &str,
-    operation: &str,
-    direction: &str,
-) -> bool {
-    array(policy.and_then(Json::as_object).and_then(|value| value.get("entries")))
-        .is_some_and(|entries| {
-            entries.iter().filter_map(Json::as_object).any(|entry| {
-                text(entry.get("semanticContractSetId")).as_deref() == Some(set_id)
-                    && text(entry.get("operation")).as_deref() == Some(operation)
-                    && text(entry.get("direction")).unwrap_or_else(|| "none".into()) == direction
-                    && text(entry.get("newUsePolicy")).as_deref() == Some("permitted")
-                    && bool_value(entry.get("installedExecutionSupport")) == Some(true)
-            })
+fn policy_supports(policy: Option<&Json>, set_id: &str, operation: &str, direction: &str) -> bool {
+    array(
+        policy
+            .and_then(Json::as_object)
+            .and_then(|value| value.get("entries")),
+    )
+    .is_some_and(|entries| {
+        entries.iter().filter_map(Json::as_object).any(|entry| {
+            text(entry.get("semanticContractSetId")).as_deref() == Some(set_id)
+                && text(entry.get("operation")).as_deref() == Some(operation)
+                && text(entry.get("direction")).unwrap_or_else(|| "none".into()) == direction
+                && text(entry.get("newUsePolicy")).as_deref() == Some("permitted")
+                && bool_value(entry.get("installedExecutionSupport")) == Some(true)
         })
+    })
 }
 
 fn catalog_supports(catalog: Option<&Json>, set_id: &str) -> bool {
-    array(catalog.and_then(Json::as_object).and_then(|value| value.get("entries")))
-        .is_some_and(|entries| {
-            entries.iter().filter_map(Json::as_object).any(|entry| {
-                text(entry.get("semanticContractSetId")).as_deref() == Some(set_id)
-                    && bool_value(entry.get("catalogued")) == Some(true)
-                    && text(entry.get("lifecycle")).as_deref() == Some("active")
-            })
+    array(
+        catalog
+            .and_then(Json::as_object)
+            .and_then(|value| value.get("entries")),
+    )
+    .is_some_and(|entries| {
+        entries.iter().filter_map(Json::as_object).any(|entry| {
+            text(entry.get("semanticContractSetId")).as_deref() == Some(set_id)
+                && bool_value(entry.get("catalogued")) == Some(true)
+                && text(entry.get("lifecycle")).as_deref() == Some("active")
         })
+    })
 }
 
 pub fn validate_corpus(request: &Json) -> Json {
@@ -1513,9 +1537,10 @@ mod tests {
             .and_then(|value| value.get("requestedMembers"))
             .cloned()
             .expect("assembly request contains requested members");
-        let direct_request = Json::Object(std::collections::BTreeMap::from([
-            ("contracts".into(), requested_members),
-        ]));
+        let direct_request = Json::Object(std::collections::BTreeMap::from([(
+            "contracts".into(),
+            requested_members,
+        )]));
 
         let direct = super::super::semantic_contract::compose_set(&direct_request);
         let governed = assemble(assembly_request);
@@ -1530,6 +1555,9 @@ mod tests {
             .and_then(Json::as_str)
             .expect("governed assembly returns an SCS identity");
         assert_eq!(direct_id, governed_id);
-        assert_eq!(direct_id, "scs:v1:sha256:d12ce535f0a90c23741dfa516d207091197c2772dbcd538fabb133bdf5b79af");
+        assert_eq!(
+            direct_id,
+            "scs:v1:sha256:d12ce535f0a90c23741dfa516d207091197c2772dbcd538fabb133bdf5b79af6"
+        );
     }
 }

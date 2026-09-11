@@ -1451,10 +1451,20 @@ pub fn resolve_current(request: &Json) -> Json {
     let mut diagnostics = Vec::new();
     let operation = text(root.get("targetOperation")).unwrap_or_default();
     let direction = text(root.get("direction")).unwrap_or_else(|| "none".into());
+    let current_id = root
+        .get("current")
+        .and_then(Json::as_object)
+        .and_then(|value| text(value.get("semanticContractSetId")))
+        .unwrap_or_default();
     let _profile = root.get("profile").unwrap_or(&Json::Null);
     let _definitions = verify_definition_bundles(root.get("definitions"), &mut diagnostics);
     let _corpus = validate_corpus(request);
-    if !result_success(&_corpus) {
+    let current_set_present = array(root.get("sets")).is_some_and(|sets| {
+        sets.iter().filter_map(Json::as_object).any(|set| {
+            text(set.get("semanticContractSetId")).as_deref() == Some(current_id.as_str())
+        })
+    });
+    if !result_success(&_corpus) && current_set_present {
         diagnostics.push(diagnostic(
             "semantic_contract.invalid_current_selection",
             "retained corpus is not valid for current resolution",
@@ -1491,7 +1501,6 @@ pub fn resolve_current(request: &Json) -> Json {
             ));
         }
     }
-    let current_id = text(current.get("semanticContractSetId")).unwrap_or_default();
     for key in [
         "currentSelectionSchemaVersion",
         "currentSelectionRevision",

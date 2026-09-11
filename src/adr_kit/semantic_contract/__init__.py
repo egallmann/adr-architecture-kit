@@ -207,18 +207,6 @@ def _execute(operation: str, **fields: Any) -> SemanticOperationResult:
     return _result(execute_validated_semantic_core_request(request))
 
 
-def _semantic_contract_set_execute(
-    operation: str, fields: Mapping[str, Any]
-) -> SemanticOperationResult:
-    """Send a semantic-contract-set request to Rust; this adapter owns no policy meaning."""
-
-    return _result(
-        execute_validated_semantic_core_request(
-            {"core_contract_version": "1.0", "operation": operation, **dict(fields)}
-        )
-    )
-
-
 def canonicalize_semantic_json(value: Any) -> SemanticOperationResult:
     """Canonicalize a JSON value through the shared semantic boundary.
 
@@ -301,7 +289,7 @@ def validate_semantic_contract_profile(
     profile: SemanticContractProfile | Mapping[str, Any],
 ) -> SemanticOperationResult:
     wire = profile.to_wire() if isinstance(profile, SemanticContractProfile) else dict(profile)
-    return _semantic_contract_set_execute("validate_semantic_contract_profile", {"profile": wire})
+    return _execute("validate_semantic_contract_profile", profile=wire)
 
 
 def validate_semantic_contract_qualification(
@@ -314,15 +302,13 @@ def validate_semantic_contract_qualification(
     profile_wire = (
         profile.to_wire() if isinstance(profile, SemanticContractProfile) else dict(profile)
     )
-    return _semantic_contract_set_execute(
+    return _execute(
         "validate_semantic_contract_qualification",
-        {
-            "profile": profile_wire,
-            "members": [dict(item) for item in members],
-            "targetOperation": operation,
-            "direction": direction,
-            "qualification": dict(qualification),
-        },
+        profile=profile_wire,
+        members=[dict(item) for item in members],
+        targetOperation=operation,
+        direction=direction,
+        qualification=dict(qualification),
     )
 
 
@@ -331,19 +317,19 @@ def preview_semantic_contract_set_assembly(
 ) -> SemanticOperationResult:
     """Preview deterministic assembly without performing filesystem writes."""
 
-    return _semantic_contract_set_execute("assemble_semantic_contract_set", request)
+    return _execute("assemble_semantic_contract_set", **dict(request))
 
 
 def validate_semantic_contract_corpus(request: Mapping[str, Any]) -> SemanticOperationResult:
     """Validate every retained immutable definition, set, and policy record."""
 
-    return _semantic_contract_set_execute("validate_semantic_contract_corpus", request)
+    return _execute("validate_semantic_contract_corpus", **dict(request))
 
 
 def resolve_current_semantic_contract_set(request: Mapping[str, Any]) -> SemanticOperationResult:
     """Resolve a floating current pointer to one immutable exact SCS identity."""
 
-    return _semantic_contract_set_execute("resolve_current_semantic_contract_set", request)
+    return _execute("resolve_current_semantic_contract_set", **dict(request))
 
 
 def list_semantic_contract_sets() -> tuple[Mapping[str, Any], ...]:

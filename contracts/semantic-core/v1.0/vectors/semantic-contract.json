@@ -115,6 +115,19 @@
         "success": true,
         "semantic_contract_set_id": "scs:v1:sha256:18a1452f70968283c2b8bb4d82f38f8bbe76426a9db9ac7d75ea6c7d00eb6f2b"
       }
+    },
+    {
+      "name": "semantic_contract_set_preserves_raw_non_object_member_diagnostic",
+      "request": {
+        "core_contract_version": "1.0",
+        "operation": "compose_semantic_contract_set",
+        "contracts": [null]
+      },
+      "expected": {
+        "success": false,
+        "diagnostic_codes": ["semantic_contract.invalid_set_member"],
+        "diagnostic_paths": ["contracts[0]"]
+      }
     }
   ]
 }

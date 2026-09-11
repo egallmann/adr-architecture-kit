@@ -17,13 +17,6 @@ HISTORICAL_PATH_EXCEPTIONS: dict[str, str] = {
     "docs/design-journal/2026-phase-2-schema-v12.md": "historical schema decision journal",
 }
 
-# Generated golden registries preserve the historical ADR corpus verbatim.  The
-# generator is the authority for those records; they are not implementation
-# identifiers and are therefore excluded from the source-identifier scan.
-GENERATED_CONTENT_PREFIXES: dict[str, str] = {
-    "tests/golden/expected/": "generated historical ADR registries",
-}
-
 CONTENT_SCAN_EXCEPTIONS: dict[str, str] = {
     "scripts/check_repository_naming.py": "the policy test contains forbidden examples",
     "tests/test_repository_naming.py": "the policy test contains forbidden examples",
@@ -85,7 +78,6 @@ def _is_generated_or_historical(path: str) -> bool:
     return (
         normalized in HISTORICAL_PATH_EXCEPTIONS
         or normalized in CONTENT_SCAN_EXCEPTIONS
-        or any(normalized.startswith(prefix) for prefix in GENERATED_CONTENT_PREFIXES)
     )
 
 

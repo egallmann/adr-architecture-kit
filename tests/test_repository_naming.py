@@ -50,5 +50,12 @@ def test_active_identifiers_are_rejected_but_historical_prose_is_ignored(tmp_pat
     )
 
 
+def test_broad_generated_directory_prefixes_do_not_hide_active_violations(tmp_path: Path) -> None:
+    active = tmp_path / "tests" / "golden" / "expected" / "active.py"
+    active.parent.mkdir(parents=True)
+    active.write_text("name = 'wave_3'\n", encoding="utf-8")
+    assert MODULE.content_violations(tmp_path, ("tests/golden/expected/active.py",))
+
+
 def test_tracked_repository_naming_passes() -> None:
     assert MODULE.find_violations(ROOT) == []

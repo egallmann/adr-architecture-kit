@@ -13,7 +13,7 @@ import copy
 import hashlib
 import json
 from pathlib import Path, PurePosixPath
-from typing import Any
+from typing import Any, cast
 
 import rfc8785
 
@@ -607,15 +607,166 @@ def main() -> None:
         request["qualifications"] = qualifications
         return request
 
+    def exact_resolution_request(
+        *,
+        set_id_override: str | None = None,
+        sets_override: list[dict[str, Any]] | None = None,
+        qualifications_override: list[dict[str, Any]] | None = None,
+        include_current: bool = False,
+    ) -> dict[str, Any]:
+        request = {
+            "core_contract_version": "1.1",
+            "operation": "resolve_semantic_contract_set",
+            "semanticContractSetId": set_id_override or set_id,
+            "profile": profile,
+            "targetOperation": "materialize_architecture",
+            "direction": "none",
+            "useMode": "new",
+            "sets": sets_override if sets_override is not None else [set_artifact],
+            "qualifications": qualifications_override
+            if qualifications_override is not None
+            else qualifications,
+            "catalog": catalog,
+            "policy": policy,
+            # Exact resolution consumes the retained immutable definition
+            # bundles, including each bundle's resource closure.  Supplying
+            # only the definition payload would test a malformed transport
+            # shape instead of the resolver's exact-set behavior.
+            "definitions": bundles,
+        }
+        if include_current:
+            # This is intentionally a raw-core metamorphic request.  The
+            # validated v1.1 protocol rejects undeclared transport fields, but
+            # the canonical resolver itself must remain independent of any
+            # current-pointer input if a host accidentally supplies one.
+            request["current"] = {"semanticContractSetId": "scs:v1:sha256:" + "0" * 64}
+        return request
+
     logical = document("logical", "1.6", "01940000-0000-7000-8000-000000000001", "ADR-L-0001")
     physical_system = document("physical-system", "1.6", "01940000-0000-7000-8000-000000000011", "ADR-PS-0001")
     physical_component = document("physical-component", "1.6", "01940000-0000-7000-8000-000000000021", "ADR-PC-0001")
     logical_15 = document("logical", "1.5", "01940000-0000-7000-8000-000000000031", "ADR-L-0002")
     logical_15.pop("normative_propositions")
+
+    # Keep the compact fixtures useful for negative tests, and maintain a
+    # separate fully populated physical pair for projection and coverage
+    # assertions.  The topology handle is deliberately not a canonical
+    # identity; its component_ref points at the independently emitted
+    # component specification identity.
+    physical_system_rich = copy.deepcopy(physical_system)
+    physical_system_rich.update(
+        {
+            "system_boundaries": [
+                {
+                    "id": "SYSBOUND-0001",
+                    "name": "semantic boundary",
+                    "description": "The system boundary is retained as source evidence.",
+                    "external_dependencies": ["external-provider"],
+                    "exposed_interfaces": ["IFACE-0001"],
+                }
+            ],
+            "component_topology": {
+                "components": [
+                    {
+                        "id": "TOPO-BOUNDARY",
+                        "component_ref": "01940000-0000-7000-8000-000000000028",
+                        "purpose": "Executes the boundary operation.",
+                    }
+                ],
+                "relationships": [],
+            },
+            "integration_patterns": [
+                {
+                    "pattern_name": "request-response",
+                    "application": "The boundary uses a request-response interaction.",
+                    "components_affected": ["TOPO-BOUNDARY"],
+                    "rationale": "The interaction is explicit source meaning.",
+                }
+            ],
+            "data_flows": [
+                {
+                    "id": "FLOW-0001",
+                    "name": "boundary request",
+                    "description": "A request crosses the boundary.",
+                    "path": ["TOPO-BOUNDARY"],
+                    "data_type": "JSON",
+                    "volume": "low",
+                    "latency_requirements": "bounded",
+                }
+            ],
+            "references_components": [],
+            "scalability_strategy": {
+                "horizontal_scaling": "Add equivalent boundary workers.",
+                "vertical_scaling": "Increase worker capacity.",
+                "bottlenecks": ["worker capacity"],
+                "capacity_planning": "Measure boundary demand.",
+            },
+            "failure_modes": [
+                {
+                    "scenario": "provider unavailable",
+                    "impact": "medium",
+                    "mitigation": "Retry with bounded backoff.",
+                    "detection": "Health checks",
+                    "recovery": "Restore provider connectivity",
+                }
+            ],
+        }
+    )
+    physical_component_rich = copy.deepcopy(physical_component)
+    # This standalone fixture uses its own canonical root as the logical
+    # endpoint so the combined projection can prove endpoint admission without
+    # adding an unrelated logical fixture to the expected entity set.
+    physical_component_rich["implements_logical"] = [physical_component["id"]]
+    physical_component_rich["component_specifications"][0].update(
+        {
+            "id": "01940000-0000-7000-8000-000000000028",
+            "interfaces": [
+                {
+                    "id": "01940000-0000-7000-8000-000000000029",
+                    "alias_id": "IFACE-0001",
+                    "alias_name": "boundary-interface",
+                    "type": "REST",
+                    "specification": "The boundary interface accepts a governed request.",
+                }
+            ],
+        }
+    )
+    physical_component_rich["implements_system"] = [physical_system["system"]["id"]]
+    physical_component_rich["extension_entities"][0].update(
+        {"id": "01940000-0000-7000-8000-000000000025", "alias_id": "EXT-0002"}
+    )
+    physical_component_rich["extension_relationships"][0].update(
+        {
+            "id": "01940000-0000-7000-8000-000000000026",
+            "alias_id": "REL-0002",
+            "from_entity_id": physical_component_rich["id"],
+            "to_entity_id": physical_component_rich["extension_entities"][0]["id"],
+        }
+    )
+    physical_component_unresolved = copy.deepcopy(physical_component_rich)
+    physical_component_unresolved["implements_logical"] = [
+        "01940000-0000-7000-8000-000000000099"
+    ]
+
+    # v1.5 has the same physical top-level families but does not express
+    # normative propositions.  Distinct identities keep the parity cases from
+    # becoming duplicate-definition cases when combined with v1.6 fixtures.
+    physical_system_15 = document(
+        "physical-system", "1.5", "01940000-0000-7000-8000-000000000041", "ADR-PS-0002"
+    )
+    physical_system_15.pop("normative_propositions")
+    physical_component_15 = document(
+        "physical-component", "1.5", "01940000-0000-7000-8000-000000000051", "ADR-PC-0002"
+    )
     logical_artifact = artifact("logical-16", logical, "1.6", "logical", "1")
     cases: list[dict[str, Any]] = []
 
-    def add(name: str, request: dict[str, Any], expected: dict[str, Any]) -> None:
+    def add(
+        name: str,
+        request: dict[str, Any],
+        expected: dict[str, Any],
+        execution_boundary: str | None = None,
+    ) -> None:
         counts = expected.get("diagnostic_code_counts", {})
         if counts:
             expected["diagnostic_codes"] = [
@@ -623,7 +774,10 @@ def main() -> None:
             ]
         else:
             expected["diagnostic_codes"] = []
-        cases.append({"name": name, "request": request, "expected": expected})
+        case: dict[str, Any] = {"name": name, "request": request, "expected": expected}
+        if execution_boundary is not None:
+            case["executionBoundary"] = execution_boundary
+        cases.append(case)
 
     success: dict[str, Any] = {"success": True, "outcome": "Materialized", "diagnostic_code_counts": {}, "assertions": {"normalized_schema_version": "2.3", "no_runtime_identity": True}}
     add("logical_16_materializes_with_np_and_extensions", materialization_request([logical_artifact]), success | {"assertions": {**success["assertions"], "source_contract_versions": ["1.6"], "normalized_entity_type": "normative_proposition"}})
@@ -657,6 +811,44 @@ def main() -> None:
         invalid_physical_document: dict[str, Any] = copy.deepcopy(physical_system if adr_type == "physical-system" else physical_component)
         invalid_physical_document.update(source)
         add(f"rejects_{suffix}", materialization_request([artifact(f"invalid-{suffix}", invalid_physical_document, "1.6", adr_type, "6")]), {"success": False, "outcome": "Rejected", "diagnostic_code_counts": {"semantic_contract.invalid_source_document": 1}})
+
+    invalid_component_name = copy.deepcopy(physical_component)
+    invalid_component_name["component_specifications"][0]["name"] = 42
+    add("rejects_component_name_wrong_type", materialization_request([artifact("invalid-component-name", invalid_component_name, "1.6", "physical-component", "a")]), {"success": False, "outcome": "Rejected", "diagnostic_code_counts": {"semantic_contract.invalid_source_document": 1}})
+    invalid_component_alias = copy.deepcopy(physical_component)
+    invalid_component_alias["component_specifications"][0]["alias_id"] = "BAD-9999"
+    add("rejects_component_alias_outside_comp_pattern", materialization_request([artifact("invalid-component-alias", invalid_component_alias, "1.6", "physical-component", "b")]), {"success": False, "outcome": "Rejected", "diagnostic_code_counts": {"semantic_contract.invalid_source_document": 1}})
+    invalid_interface_alias = copy.deepcopy(physical_component_rich)
+    invalid_interface_alias["component_specifications"][0]["interfaces"][0]["alias_id"] = "BAD-9999"
+    add("rejects_interface_alias_outside_iface_pattern", materialization_request([artifact("invalid-interface-alias", invalid_interface_alias, "1.6", "physical-component", "c")]), {"success": False, "outcome": "Rejected", "diagnostic_code_counts": {"semantic_contract.invalid_source_document": 1}})
+    invalid_component_topology = copy.deepcopy(physical_component)
+    invalid_component_topology["component_topology"] = {}
+    add("rejects_component_topology_on_physical_component", materialization_request([artifact("invalid-component-topology", invalid_component_topology, "1.6", "physical-component", "d")]), {"success": False, "outcome": "Rejected", "diagnostic_code_counts": {"semantic_contract.invalid_source_document": 1}})
+    invalid_generation_context = copy.deepcopy(physical_component)
+    invalid_generation_context["component_specifications"][0]["generation_context"]["key_responsibilities"] = []
+    add("rejects_invalid_nested_generation_context", materialization_request([artifact("invalid-generation-context", invalid_generation_context, "1.6", "physical-component", "e")]), {"success": False, "outcome": "Rejected", "diagnostic_code_counts": {"semantic_contract.invalid_source_document": 1}})
+    invalid_topology = copy.deepcopy(physical_system_rich)
+    invalid_topology["component_topology"]["components"][0]["component_ref"] = "not-a-uuid"
+    add("rejects_invalid_physical_system_topology", materialization_request([artifact("invalid-physical-topology", invalid_topology, "1.6", "physical-system", "f")]), {"success": False, "outcome": "Rejected", "diagnostic_code_counts": {"semantic_contract.invalid_source_document": 1}})
+    invalid_boundary = copy.deepcopy(physical_system_rich)
+    invalid_boundary["system_boundaries"][0]["description"] = 42
+    add("rejects_invalid_system_boundary_structure", materialization_request([artifact("invalid-system-boundary", invalid_boundary, "1.6", "physical-system", "a")]), {"success": False, "outcome": "Rejected", "diagnostic_code_counts": {"semantic_contract.invalid_source_document": 1}})
+    invalid_flow = copy.deepcopy(physical_system_rich)
+    invalid_flow["data_flows"][0]["path"] = [42]
+    add("rejects_invalid_data_flow_structure", materialization_request([artifact("invalid-data-flow", invalid_flow, "1.6", "physical-system", "b")]), {"success": False, "outcome": "Rejected", "diagnostic_code_counts": {"semantic_contract.invalid_source_document": 1}})
+    invalid_integration = copy.deepcopy(physical_system_rich)
+    invalid_integration["integration_patterns"][0]["components_affected"] = ["bad-handle"]
+    add("rejects_invalid_integration_pattern_structure", materialization_request([artifact("invalid-integration", invalid_integration, "1.6", "physical-system", "c")]), {"success": False, "outcome": "Rejected", "diagnostic_code_counts": {"semantic_contract.invalid_source_document": 1}})
+    invalid_failure_mode = copy.deepcopy(physical_system_rich)
+    invalid_failure_mode["failure_modes"][0]["impact"] = "critical"
+    add("rejects_invalid_failure_mode_structure", materialization_request([artifact("invalid-failure-mode", invalid_failure_mode, "1.6", "physical-system", "d")]), {"success": False, "outcome": "Rejected", "diagnostic_code_counts": {"semantic_contract.invalid_source_document": 1}})
+    invalid_np_alias = copy.deepcopy(logical)
+    invalid_np_alias["normative_propositions"][0]["alias_id"] = "BAD-0001"
+    add("rejects_invalid_np_alias_once", materialization_request([artifact("invalid-np-alias", invalid_np_alias, "1.6", "logical", "e")]), {"success": False, "outcome": "Rejected", "diagnostic_code_counts": {"semantic_contract.invalid_source_document": 1}})
+
+    invalid_relationship_endpoint = copy.deepcopy(logical)
+    invalid_relationship_endpoint["extension_relationships"][0]["to_entity_id"] = "01940000-0000-7000-8000-000000000099"
+    add("relationship_with_non_admitted_endpoint_is_not_canonical", materialization_request([artifact("invalid-relationship-endpoint", invalid_relationship_endpoint, "1.6", "logical", "f")]), success | {"assertions": {**success["assertions"], "unresolved_count": 1, "relationship_count": 0}})
     invalid_np = copy.deepcopy(logical)
     invalid_np["normative_propositions"][0]["normative_force"] = "MAYBE"
     add("rejects_invalid_normative_force", materialization_request([artifact("invalid-normative-force", invalid_np, "1.6", "logical", "7")]), {"success": False, "outcome": "Rejected", "diagnostic_code_counts": {"semantic_contract.invalid_source_document": 1}})
@@ -701,7 +893,235 @@ def main() -> None:
     add("source_contract_closure_is_exact_and_sorted", materialization_request([logical_artifact, artifact("logical-15-closure", logical_15_closure, "1.5", "logical", "f")]), {"success": True, "outcome": "Materialized", "diagnostic_code_counts": {}, "assertions": {"source_contract_versions": ["1.5", "1.6"], "closure_resource_keys_are_sorted": True}})
     add("diagnostics_are_not_duplicated", materialization_request([invalid_binding]), {"success": False, "outcome": "Rejected", "diagnostic_code_counts": {"semantic_contract.source_contract_closure_mismatch": 1, "semantic_contract.source_contract_resource_unqualified": 1, "semantic_contract.source_contract_schema_unqualified": 1}})
     add("source_contract_binding_rejects_wrong_top_level_schema", materialization_request([copy.deepcopy(logical_artifact) | {"sourceContract": binding("1.6", "physical-system")}]), {"success": False, "outcome": "Rejected", "diagnostic_code_counts": {"semantic_contract.source_contract_closure_mismatch": 1, "semantic_contract.source_contract_schema_mismatch": 1}})
-    assert len(cases) >= 28
+
+    add("physical_system_15_materializes", materialization_request([artifact("physical-system-15", physical_system_15, "1.5", "physical-system", "5")]), success | {"assertions": {**success["assertions"], "source_contract_versions": ["1.5"]}})
+    add("physical_component_15_materializes", materialization_request([artifact("physical-component-15", physical_component_15, "1.5", "physical-component", "6")]), success | {"assertions": {**success["assertions"], "source_contract_versions": ["1.5"]}})
+    add(
+        "physical_identity_projection_and_source_coverage",
+        materialization_request(
+            [
+                artifact("physical-system-rich", physical_system_rich, "1.6", "physical-system", "7"),
+                artifact("physical-component-rich", physical_component_rich, "1.6", "physical-component", "8"),
+            ]
+        ),
+        success
+        | {
+            "assertions": {
+                **success["assertions"],
+                "entity_ids": [
+                    "01940000-0000-7000-8000-000000000007",
+                    "01940000-0000-7000-8000-000000000011",
+                    "01940000-0000-7000-8000-000000000021",
+                    "01940000-0000-7000-8000-000000000028",
+                    "01940000-0000-7000-8000-000000000029",
+                ],
+                "relationship_type_counts": {
+                    "acme:relates_to": 2,
+                    "composed_of": 1,
+                    "implements": 3,
+                },
+                "source_coverage_fields": [
+                    "component_specifications",
+                    "component_topology",
+                    "data_flows",
+                    "failure_modes",
+                    "integration_patterns",
+                    "implements_logical",
+                    "implements_system",
+                    "scalability_strategy",
+                    "system",
+                    "system_boundaries",
+                    "technology_stack",
+                ],
+            }
+        },
+    )
+    add(
+        "physical_component_implementation_becomes_unresolved",
+        materialization_request([artifact("physical-component-unresolved", physical_component_unresolved, "1.6", "physical-component", "9")]),
+        success
+        | {
+            "assertions": {
+                **success["assertions"],
+                # Both implementation references are intentionally outside
+                # the admitted entity set in this standalone fixture.  The
+                # projection must preserve each as unresolved evidence rather
+                # than manufacturing an endpoint or dropping the relation.
+                "unresolved_count": 2,
+                "relationship_type_counts": {"acme:relates_to": 1},
+            }
+        },
+    )
+
+    add(
+        "exact_retained_set_resolution_succeeds",
+        exact_resolution_request(),
+        {"success": True, "diagnostic_code_counts": {}, "resolved": {"semanticContractSetId": set_id}},
+    )
+    add(
+        "exact_resolution_ignores_current_pointer",
+        exact_resolution_request(include_current=True),
+        {"success": True, "diagnostic_code_counts": {}, "resolved": {"semanticContractSetId": set_id}},
+        execution_boundary="raw-core",
+    )
+    add(
+        "unknown_exact_set_is_rejected",
+        exact_resolution_request(set_id_override="scs:v1:sha256:" + "0" * 64),
+        {"success": False, "diagnostic_code_counts": {"semantic_contract.exact_set_not_retained": 1}},
+    )
+    tampered_set = copy.deepcopy(set_artifact)
+    tampered_members = cast(list[dict[str, Any]], tampered_set["members"])
+    tampered_members[0]["semanticContractVersion"] = "9.9"
+    add(
+        "tampered_exact_set_is_rejected",
+        exact_resolution_request(sets_override=[tampered_set]),
+        {
+            "success": False,
+            "diagnostic_code_counts": {
+                "semantic_contract.profile_family_mismatch": 1,
+                "semantic_contract.qualification_members_mismatch": 7,
+                "semantic_contract.missing_whole_tuple_qualification": 1,
+                "semantic_contract.missing_definition": 2,
+                "semantic_contract.scs_id_mismatch": 2,
+            },
+        },
+    )
+    missing_materialization_qualification = [
+        item for item in qualifications if item["operation"] != "materialize_architecture"
+    ]
+    add(
+        "missing_whole_set_materialization_qualification_is_rejected",
+        exact_resolution_request(qualifications_override=missing_materialization_qualification),
+        {
+            "success": False,
+            "diagnostic_code_counts": {"semantic_contract.missing_whole_tuple_qualification": 1},
+        },
+    )
+
+    base_materialization = materialization_request([copy.deepcopy(logical_artifact)])
+    source_revision_pair = copy.deepcopy(base_materialization)
+    source_revision_pair["sourceBasis"]["sourceRevision"] = "revision-2"
+    add(
+        "source_revision_only_preserves_authority_state_fingerprint",
+        base_materialization,
+        {
+            "success": True,
+            "outcome": "Materialized",
+            "diagnostic_code_counts": {},
+            "pairedRequest": source_revision_pair,
+            "pairedAssertions": {
+                "same_authority_state_fingerprint": True,
+                "same_normalized_model": True,
+                "same_source_contract_closure": True,
+            },
+        },
+    )
+    semantic_pair = copy.deepcopy(base_materialization)
+    semantic_pair["sourceBasis"]["artifacts"][0]["document"]["decisions"][0]["summary"] = "A different governed decision."
+    add(
+        "semantic_change_changes_authority_state_fingerprint",
+        base_materialization,
+        {
+            "success": True,
+            "outcome": "Materialized",
+            "diagnostic_code_counts": {},
+            "pairedRequest": semantic_pair,
+            "pairedAssertions": {
+                "different_authority_state_fingerprint": True,
+                "same_source_contract_closure": True,
+            },
+        },
+    )
+    provider_pair = copy.deepcopy(base_materialization)
+    provider_pair["authorityProvider"]["architectureNamespace"] = "other"
+    add(
+        "provider_qualification_change_changes_authority_state_fingerprint",
+        base_materialization,
+        {
+            "success": True,
+            "outcome": "Materialized",
+            "diagnostic_code_counts": {},
+            "pairedRequest": provider_pair,
+            "pairedAssertions": {
+                "different_authority_state_fingerprint": True,
+                "same_source_contract_closure": True,
+            },
+        },
+    )
+
+    # These tuples are the executable diagnostic contract.  Codes alone do
+    # not prove deterministic diagnostics: the semantic core must preserve
+    # message, path, severity, order, and multiplicity across all hosts.
+    diagnostic_details: dict[str, list[tuple[str, str, str, str]]] = {
+        "rejects_missing_id": [("semantic_contract.invalid_source_document", "schema validation failed: required property 'id' is missing", "sourceBasis.artifacts[0].document.id", "error")],
+        "rejects_invalid_alias_id": [("semantic_contract.invalid_source_document", "schema validation failed: string does not match pattern ^ADR-(L|V|PS|PC)-[0-9]{4}$", "sourceBasis.artifacts[0].document.alias_id", "error")],
+        "rejects_missing_title": [("semantic_contract.invalid_source_document", "schema validation failed: required property 'title' is missing", "sourceBasis.artifacts[0].document.title", "error")],
+        "rejects_invalid_status": [("semantic_contract.invalid_source_document", "schema validation failed: value is outside the governed enum", "sourceBasis.artifacts[0].document.status", "error")],
+        "rejects_invalid_created_date": [("semantic_contract.invalid_source_document", "schema validation failed: string does not match pattern ^[0-9]{4}-[0-9]{2}-[0-9]{2}$", "sourceBasis.artifacts[0].document.created_date", "error")],
+        "rejects_missing_authors": [("semantic_contract.invalid_source_document", "schema validation failed: required property 'authors' is missing", "sourceBasis.artifacts[0].document.authors", "error")],
+        "rejects_missing_logical_context": [("semantic_contract.invalid_source_document", "schema validation failed: required property 'context' is missing", "sourceBasis.artifacts[0].document.context", "error")],
+        "rejects_missing_logical_decisions": [("semantic_contract.invalid_source_document", "schema validation failed: required property 'decisions' is missing", "sourceBasis.artifacts[0].document.decisions", "error")],
+        "rejects_missing_physical_implementation": [("semantic_contract.invalid_source_document", "schema validation failed: array must contain at least 1 item(s)", "sourceBasis.artifacts[0].document.implements_logical", "error")],
+        "rejects_missing_system_identity": [("semantic_contract.invalid_source_document", "schema validation failed: expected type object", "sourceBasis.artifacts[0].document.system", "error")],
+        "rejects_missing_component_specification": [("semantic_contract.invalid_source_document", "schema validation failed: array must contain at least 1 item(s)", "sourceBasis.artifacts[0].document.component_specifications", "error")],
+        "rejects_missing_component_implementation": [("semantic_contract.invalid_source_document", "schema validation failed: array must contain at least 1 item(s)", "sourceBasis.artifacts[0].document.implements_system", "error")],
+        "rejects_component_name_wrong_type": [("semantic_contract.invalid_source_document", "schema validation failed: expected type string", "sourceBasis.artifacts[0].document.component_specifications[0].name", "error")],
+        "rejects_component_alias_outside_comp_pattern": [("semantic_contract.invalid_source_document", "schema validation failed: string does not match pattern ^COMP-[0-9]{4}$", "sourceBasis.artifacts[0].document.component_specifications[0].alias_id", "error")],
+        "rejects_interface_alias_outside_iface_pattern": [("semantic_contract.invalid_source_document", "schema validation failed: string does not match pattern ^IFACE-[0-9]{4}$", "sourceBasis.artifacts[0].document.component_specifications[0].interfaces[0].alias_id", "error")],
+        "rejects_component_topology_on_physical_component": [("semantic_contract.invalid_source_document", "schema validation failed: value matches a prohibited schema", "sourceBasis.artifacts[0].document", "error")],
+        "rejects_invalid_nested_generation_context": [("semantic_contract.invalid_source_document", "schema validation failed: array must contain at least 1 item(s)", "sourceBasis.artifacts[0].document.component_specifications[0].generation_context.key_responsibilities", "error")],
+        "rejects_invalid_physical_system_topology": [("semantic_contract.invalid_source_document", "schema validation failed: string does not match pattern ^[0-9a-f]{8}-[0-9a-f]{4}-7[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$", "sourceBasis.artifacts[0].document.component_topology.components[0].component_ref", "error")],
+        "rejects_invalid_system_boundary_structure": [("semantic_contract.invalid_source_document", "schema validation failed: expected type string", "sourceBasis.artifacts[0].document.system_boundaries[0].description", "error")],
+        "rejects_invalid_data_flow_structure": [("semantic_contract.invalid_source_document", "schema validation failed: expected type string", "sourceBasis.artifacts[0].document.data_flows[0].path[0]", "error")],
+        "rejects_invalid_integration_pattern_structure": [("semantic_contract.invalid_source_document", "schema validation failed: string does not match pattern ^TOPO-[A-Z0-9][A-Z0-9-]*$", "sourceBasis.artifacts[0].document.integration_patterns[0].components_affected[0]", "error")],
+        "rejects_invalid_failure_mode_structure": [("semantic_contract.invalid_source_document", "schema validation failed: value is outside the governed enum", "sourceBasis.artifacts[0].document.failure_modes[0].impact", "error")],
+        "rejects_invalid_np_alias_once": [("semantic_contract.invalid_source_document", "schema validation failed: string does not match pattern ^NP-[0-9]{4}$", "sourceBasis.artifacts[0].document.normative_propositions[0].alias_id", "error")],
+        "rejects_invalid_normative_force": [("semantic_contract.invalid_source_document", "schema validation failed: value is outside the governed enum", "sourceBasis.artifacts[0].document.normative_propositions[0].normative_force", "error")],
+        "rejects_normative_proposition_in_15": [("semantic_contract.invalid_source_document", "authoring 1.5 cannot declare normative_propositions", "sourceBasis.artifacts[0].document.normative_propositions", "error")],
+        "rejects_unqualified_source_schema_digest": [
+            ("semantic_contract.source_contract_closure_mismatch", "source contract closure does not exactly match the applicable authoring schema imports", "sourceBasis.artifacts[0].sourceContract.resourceClosure", "error"),
+            ("semantic_contract.source_contract_resource_unqualified", "source contract resource is not the governed imported resource and digest", "sourceBasis.artifacts[0].sourceContract.resourceClosure[1]", "error"),
+            ("semantic_contract.source_contract_schema_unqualified", "top-level schema resource does not match the governed resource digest", "sourceBasis.artifacts[0].sourceContract.schemaResource", "error"),
+        ],
+        "rejects_artifact_contract_version_mismatch": [("semantic_contract.artifact_contract_mismatch", "document schema_version does not match its artifact-level source-contract binding", "sourceBasis.artifacts[0].document.schema_version", "error")],
+        "unavailable_source_basis_is_protocol_valid": [("semantic_contract.source_basis_unavailable", "the sealed source basis is unavailable", "sourceBasis", "error")],
+        "invalid_extension_entity_is_rejected": [("semantic_contract.invalid_source_document", "schema validation failed: required property 'rationale' is missing", "sourceBasis.artifacts[0].document.extension_entities[0].rationale", "error")],
+        "invalid_extension_relationship_is_rejected": [("semantic_contract.invalid_source_document", "schema validation failed: required property 'rationale' is missing", "sourceBasis.artifacts[0].document.extension_relationships[0].rationale", "error")],
+        "legacy_identity_requires_qualification": [("semantic_contract.invalid_source_document", "schema validation failed: string does not match pattern ^[0-9a-f]{8}-[0-9a-f]{4}-7[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$", "sourceBasis.artifacts[0].document.id", "error")],
+        "source_contract_binding_rejects_wrong_top_level_schema": [
+            ("semantic_contract.source_contract_closure_mismatch", "source contract closure does not exactly match the applicable authoring schema imports", "sourceBasis.artifacts[0].sourceContract.resourceClosure", "error"),
+            ("semantic_contract.source_contract_schema_mismatch", "schemaResource is not the exact top-level authoring schema for adr_type", "sourceBasis.artifacts[0].sourceContract.schemaResource.canonicalResourceKey", "error"),
+        ],
+        "unknown_exact_set_is_rejected": [("semantic_contract.exact_set_not_retained", "the explicitly requested SCS is not present in the retained corpus", "semanticContractSetId", "error")],
+        "tampered_exact_set_is_rejected": [
+            ("semantic_contract.profile_family_mismatch", "requested tuple must contain exactly one member from every participating family", "members", "error"),
+            *[("semantic_contract.qualification_members_mismatch", "qualification members do not exactly match the SCS composition", "qualification.members", "error")] * 7,
+            ("semantic_contract.missing_whole_tuple_qualification", "the exact retained SCS is not qualified as a whole for the requested operation and use mode", "qualifications", "error"),
+            ("semantic_contract.missing_definition", "SCS member has no retained immutable definition", "sets.members", "error"),
+            ("semantic_contract.scs_id_mismatch", "SCS ID does not match the canonical composition", "sets.semanticContractSetId", "error"),
+            ("semantic_contract.scs_id_mismatch", "SCS ID does not match the canonical composition", "sets.semanticContractSetId", "error"),
+            ("semantic_contract.missing_definition", "SCS member has no retained immutable definition", "sets[0].members", "error"),
+        ],
+        "missing_whole_set_materialization_qualification_is_rejected": [
+            ("semantic_contract.missing_whole_tuple_qualification", "the exact retained SCS is not qualified as a whole for the requested operation and use mode", "qualifications", "error"),
+        ],
+        "diagnostics_are_not_duplicated": [
+            ("semantic_contract.source_contract_closure_mismatch", "source contract closure does not exactly match the applicable authoring schema imports", "sourceBasis.artifacts[0].sourceContract.resourceClosure", "error"),
+            ("semantic_contract.source_contract_resource_unqualified", "source contract resource is not the governed imported resource and digest", "sourceBasis.artifacts[0].sourceContract.resourceClosure[1]", "error"),
+            ("semantic_contract.source_contract_schema_unqualified", "top-level schema resource does not match the governed resource digest", "sourceBasis.artifacts[0].sourceContract.schemaResource", "error"),
+        ],
+    }
+    for case in cases:
+        expected = case["expected"]
+        details = diagnostic_details.get(case["name"], [])
+        if not expected["success"]:
+            assert details, f"missing exact diagnostic tuple fixture for {case['name']}"
+        expected["diagnostic_codes"] = [item[0] for item in details]
+        expected["diagnostic_messages"] = [item[1] for item in details]
+        expected["diagnostic_paths"] = [item[2] for item in details]
+        expected["diagnostic_severities"] = [item[3] for item in details]
+
+    assert len(cases) >= 50
     forbidden_vector_terms = ("slice", "phase", "wave", "tranche")
     assert not any(any(term in case["name"].lower() for term in forbidden_vector_terms) for case in cases)
     write_json(ROOT / "contracts" / "semantic-core" / "v1.1" / "vectors" / "architecture-materialization.json", {"vectorContractVersion": "1.1", "cases": cases})

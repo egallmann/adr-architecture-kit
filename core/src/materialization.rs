@@ -2104,6 +2104,55 @@ fn materialize_sources(
                         ))
                     })
                     .collect::<BTreeMap<_, _>>();
+                // The accepted normalized-model vocabulary defines explicit
+                // PS topology membership as a system-to-component
+                // `composed_of` relationship.  The local TOPO handle is only
+                // an addressing aid; the authored component_ref is the
+                // canonical endpoint.  Unknown component references remain
+                // first-class unresolved evidence and never become a
+                // relationship with a fabricated endpoint.
+                if let Some(system) = document.get("system").and_then(Json::as_object) {
+                    let system_id = text(system.get("id"))
+                        .and_then(|id| map_source_id(&id, &identity_map, diagnostics, &format!("{path}.document.system.id")));
+                    if let Some(system_id) = system_id {
+                        if let Some(topology_components) =
+                            topology.get("components").and_then(Json::as_array)
+                        {
+                            for (component_index, component) in
+                                topology_components.iter().enumerate()
+                            {
+                                let component_path = format!(
+                                    "{path}.document.component_topology.components[{component_index}]"
+                                );
+                                let Some(component) = component.as_object() else {
+                                    continue;
+                                };
+                                let component_ref = text(component.get("component_ref"))
+                                    .unwrap_or_default();
+                                if known_entity_ids.contains(&component_ref) {
+                                    relationships.push(compatibility_relationship(
+                                        "composed_of",
+                                        &system_id,
+                                        &component_ref,
+                                        &source_ref,
+                                        &root_identity.id,
+                                        &component_path,
+                                        Some(Json::Array(vec![Json::Object(component.clone())])),
+                                    ));
+                                } else {
+                                    unresolved.push(unresolved_relationship(
+                                        &source_ref,
+                                        &component_path,
+                                        &component_ref,
+                                        "composed_of",
+                                        &system_id,
+                                        &component_ref,
+                                    ));
+                                }
+                            }
+                        }
+                    }
+                }
                 if let Some(topology_relationships) =
                     topology.get("relationships").and_then(Json::as_array)
                 {

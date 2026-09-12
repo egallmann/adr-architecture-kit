@@ -193,6 +193,18 @@ impl Json {
             None
         }
     }
+    // Test and audit helpers use path lookup so assertions stay expressed in
+    // the same semantic field names as the shared vector contract.
+    #[cfg(test)]
+    fn get(&self, key: &str) -> Option<&Json> {
+        self.as_object()?.get(key)
+    }
+    #[cfg(test)]
+    fn get_path<'a>(&'a self, path: &[&str]) -> Option<&'a Json> {
+        path.iter().try_fold(self, |value, key| {
+            value.as_object()?.get(*key)
+        })
+    }
 }
 fn json(value: &Json) -> String {
     serde_json::to_string(value).expect("semantic core result must serialize as JSON")
@@ -1627,8 +1639,13 @@ mod semantic_core_v11_tests {
             .and_then(|value| value.get("cases"))
             .and_then(Json::as_array)
             .expect("v1.1 vectors contain cases");
-        assert!(cases.len() >= 28);
+        assert!(cases.len() >= 50);
         for case in cases {
+            let name = case
+                .as_object()
+                .and_then(|value| value.get("name"))
+                .and_then(Json::as_str)
+                .unwrap_or("unnamed");
             let request = case
                 .as_object()
                 .and_then(|value| value.get("request"))
@@ -1644,28 +1661,44 @@ mod semantic_core_v11_tests {
                 result.as_object().and_then(|value| value.get("success")),
                 expected.get("success"),
                 "{}",
-                case.as_object()
-                    .and_then(|value| value.get("name"))
-                    .and_then(Json::as_str)
-                    .unwrap_or("unnamed")
+                name
             );
-            assert_eq!(
-                result.as_object().and_then(|value| value.get("outcome")),
-                expected.get("outcome"),
-                "{}",
-                case.as_object()
-                    .and_then(|value| value.get("name"))
-                    .and_then(Json::as_str)
-                    .unwrap_or("unnamed")
-            );
+            if let Some(outcome) = expected.get("outcome") {
+                assert_eq!(result.as_object().and_then(|value| value.get("outcome")), Some(outcome), "{name}");
+            }
+            if let Some(resolved) = expected.get("resolved") {
+                assert_eq!(
+                    result
+                        .as_object()
+                        .and_then(|value| value.get("resolved"))
+                        .and_then(Json::as_object)
+                        .and_then(|value| value.get("semanticContractSetId")),
+                    resolved.as_object().and_then(|value| value.get("semanticContractSetId")),
+                    "{name} resolved exact set"
+                );
+            }
             let mut actual_counts = std::collections::BTreeMap::new();
             let mut actual_codes = Vec::new();
+            let mut actual_messages = Vec::new();
+            let mut actual_paths = Vec::new();
+            let mut actual_severities = Vec::new();
             if let Some(diagnostics) = result
                 .as_object()
                 .and_then(|value| value.get("diagnostics"))
                 .and_then(Json::as_array)
             {
                 for diagnostic in diagnostics {
+                    if let Some(object) = diagnostic.as_object() {
+                        if let Some(message) = object.get("message") {
+                            actual_messages.push(message.clone());
+                        }
+                        if let Some(path) = object.get("path") {
+                            actual_paths.push(path.clone());
+                        }
+                        if let Some(severity) = object.get("severity") {
+                            actual_severities.push(severity.clone());
+                        }
+                    }
                     if let Some(code) = diagnostic
                         .as_object()
                         .and_then(|value| value.get("code"))
@@ -1702,11 +1735,76 @@ mod semantic_core_v11_tests {
                     .cloned()
                     .unwrap_or_else(|| Json::Object(std::collections::BTreeMap::new())),
                 "diagnostic count shape for {}",
-                case.as_object()
-                    .and_then(|value| value.get("name"))
-                    .and_then(Json::as_str)
-                    .unwrap_or("unnamed")
+                name
             );
+            assert_eq!(actual_messages, expected.get("diagnostic_messages").and_then(Json::as_array).cloned().unwrap_or_default(), "diagnostic messages for {name}");
+            assert_eq!(actual_paths, expected.get("diagnostic_paths").and_then(Json::as_array).cloned().unwrap_or_default(), "diagnostic paths for {name}");
+            assert_eq!(actual_severities, expected.get("diagnostic_severities").and_then(Json::as_array).cloned().unwrap_or_default(), "diagnostic severities for {name}");
+
+            if let Some(assertions) = expected.get("assertions").and_then(Json::as_object) {
+                if let Some(count) = assertions.get("unresolved_count").and_then(Json::as_u64) {
+                    assert_eq!(result.get_path(&["normalizedModel", "unresolved"]).and_then(Json::as_array).map(Vec::len), Some(count as usize), "{name} unresolved count");
+                }
+                if let Some(count) = assertions.get("relationship_count").and_then(Json::as_u64) {
+                    assert_eq!(result.get_path(&["normalizedModel", "relationships"]).and_then(Json::as_array).map(Vec::len), Some(count as usize), "{name} relationship count");
+                }
+                if let Some(required) = assertions.get("entity_ids").and_then(Json::as_array) {
+                    let actual: std::collections::BTreeSet<String> = result
+                        .get_path(&["normalizedModel", "entities"])
+                        .and_then(Json::as_array)
+                        .into_iter()
+                        .flatten()
+                        .filter_map(|entity| entity.get("id").and_then(Json::as_str).map(str::to_owned))
+                        .collect();
+                    for id in required {
+                        assert!(
+                            id.as_str().map(|value| actual.contains(value)).unwrap_or(false),
+                            "{name} missing projected entity {:?}",
+                            id
+                        );
+                    }
+                }
+                if let Some(expected_types) = assertions.get("relationship_type_counts") {
+                    let mut actual_types = std::collections::BTreeMap::<String, Json>::new();
+                    if let Some(relationships) = result.get_path(&["normalizedModel", "relationships"]).and_then(Json::as_array) {
+                        for relationship in relationships {
+                            if let Some(kind) = relationship.get("relationship_type").and_then(Json::as_str) {
+                                let count = actual_types.entry(kind.to_owned()).or_insert(Json::Number(serde_json::Number::from(0u64)));
+                                if let Json::Number(value) = count {
+                                    let next = value.as_u64().unwrap_or(0) + 1;
+                                    *value = serde_json::Number::from(next);
+                                }
+                            }
+                        }
+                    }
+                    let actual_json = Json::Object(actual_types);
+                    assert_eq!(&actual_json, expected_types, "{name} relationship type counts");
+                }
+            }
+
+            if let Some(paired_request) = expected.get("pairedRequest") {
+                // Paired vectors are the shared metamorphic contract.  They
+                // execute through the same core entry point, including the
+                // raw-core current-pointer case, and compare only the
+                // invariants declared by the vector.
+                let paired = execute(paired_request.clone());
+                assert_eq!(paired.get("success"), Some(&Json::Bool(true)), "{name}:pair success");
+                assert_eq!(paired.get("outcome").and_then(Json::as_str), Some("Materialized"), "{name}:pair outcome");
+                if let Some(paired_assertions) = expected.get("pairedAssertions").and_then(Json::as_object) {
+                    if paired_assertions.get("same_normalized_model") == Some(&Json::Bool(true)) {
+                        assert_eq!(result.get("normalizedModel"), paired.get("normalizedModel"), "{name}:pair normalized model");
+                    }
+                    if paired_assertions.get("same_source_contract_closure") == Some(&Json::Bool(true)) {
+                        assert_eq!(result.get("sourceContractClosure"), paired.get("sourceContractClosure"), "{name}:pair source closure");
+                    }
+                    if paired_assertions.get("same_authority_state_fingerprint") == Some(&Json::Bool(true)) {
+                        assert_eq!(result.get_path(&["semanticBasis", "authorityStateFingerprint"]), paired.get_path(&["semanticBasis", "authorityStateFingerprint"]), "{name}:pair fingerprint");
+                    }
+                    if paired_assertions.get("different_authority_state_fingerprint") == Some(&Json::Bool(true)) {
+                        assert_ne!(result.get_path(&["semanticBasis", "authorityStateFingerprint"]), paired.get_path(&["semanticBasis", "authorityStateFingerprint"]), "{name}:pair fingerprint");
+                    }
+                }
+            }
         }
     }
 

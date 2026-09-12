@@ -6,6 +6,7 @@ mod architecture;
 mod attribution;
 mod linkage;
 mod materialization;
+mod schema_validation;
 mod semantic_contract;
 mod semantic_contract_set;
 
@@ -174,6 +175,20 @@ impl Json {
     fn as_u64(&self) -> Option<u64> {
         if let Self::Number(value) = self {
             value.as_u64()
+        } else {
+            None
+        }
+    }
+    fn as_f64(&self) -> Option<f64> {
+        if let Self::Number(value) = self {
+            value.as_f64()
+        } else {
+            None
+        }
+    }
+    fn as_number(&self) -> Option<&serde_json::Number> {
+        if let Self::Number(value) = self {
+            Some(value)
         } else {
             None
         }
@@ -1629,19 +1644,33 @@ mod semantic_core_v11_tests {
                 result.as_object().and_then(|value| value.get("success")),
                 expected.get("success"),
                 "{}",
-                case.as_object().and_then(|value| value.get("name")).and_then(Json::as_str).unwrap_or("unnamed")
+                case.as_object()
+                    .and_then(|value| value.get("name"))
+                    .and_then(Json::as_str)
+                    .unwrap_or("unnamed")
             );
             assert_eq!(
                 result.as_object().and_then(|value| value.get("outcome")),
                 expected.get("outcome"),
                 "{}",
-                case.as_object().and_then(|value| value.get("name")).and_then(Json::as_str).unwrap_or("unnamed")
+                case.as_object()
+                    .and_then(|value| value.get("name"))
+                    .and_then(Json::as_str)
+                    .unwrap_or("unnamed")
             );
             let mut actual_counts = std::collections::BTreeMap::new();
             let mut actual_codes = Vec::new();
-            if let Some(diagnostics) = result.as_object().and_then(|value| value.get("diagnostics")).and_then(Json::as_array) {
+            if let Some(diagnostics) = result
+                .as_object()
+                .and_then(|value| value.get("diagnostics"))
+                .and_then(Json::as_array)
+            {
                 for diagnostic in diagnostics {
-                    if let Some(code) = diagnostic.as_object().and_then(|value| value.get("code")).and_then(Json::as_str) {
+                    if let Some(code) = diagnostic
+                        .as_object()
+                        .and_then(|value| value.get("code"))
+                        .and_then(Json::as_str)
+                    {
                         actual_codes.push(Json::String(code.to_owned()));
                         let count = actual_counts.entry(code.to_owned()).or_insert(0u64);
                         *count += 1;
@@ -1656,15 +1685,27 @@ mod semantic_core_v11_tests {
             );
             assert_eq!(
                 Json::Array(actual_codes),
-                expected.get("diagnostic_codes").cloned().unwrap_or_else(|| Json::Array(Vec::new())),
+                expected
+                    .get("diagnostic_codes")
+                    .cloned()
+                    .unwrap_or_else(|| Json::Array(Vec::new())),
                 "diagnostic order for {}",
-                case.as_object().and_then(|value| value.get("name")).and_then(Json::as_str).unwrap_or("unnamed")
+                case.as_object()
+                    .and_then(|value| value.get("name"))
+                    .and_then(Json::as_str)
+                    .unwrap_or("unnamed")
             );
             assert_eq!(
                 actual,
-                expected.get("diagnostic_code_counts").cloned().unwrap_or_else(|| Json::Object(std::collections::BTreeMap::new())),
+                expected
+                    .get("diagnostic_code_counts")
+                    .cloned()
+                    .unwrap_or_else(|| Json::Object(std::collections::BTreeMap::new())),
                 "diagnostic count shape for {}",
-                case.as_object().and_then(|value| value.get("name")).and_then(Json::as_str).unwrap_or("unnamed")
+                case.as_object()
+                    .and_then(|value| value.get("name"))
+                    .and_then(Json::as_str)
+                    .unwrap_or("unnamed")
             );
         }
     }

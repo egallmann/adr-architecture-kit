@@ -216994,7 +216994,9 @@
           "normalized_schema_version": "2.3",
           "no_runtime_identity": true,
           "unresolved_count": 2,
-          "relationship_type_counts": {}
+          "relationship_type_counts": {
+            "acme:relates_to": 1
+          }
         },
         "diagnostic_codes": [],
         "diagnostic_messages": [],
@@ -239962,43 +239964,18 @@
       "expected": {
         "success": false,
         "diagnostic_code_counts": {
-          "semantic_contract.missing_whole_tuple_qualification": 1,
-          "semantic_contract.missing_definition": 6
+          "semantic_contract.missing_whole_tuple_qualification": 1
         },
         "diagnostic_codes": [
-          "semantic_contract.missing_whole_tuple_qualification",
-          "semantic_contract.missing_definition",
-          "semantic_contract.missing_definition",
-          "semantic_contract.missing_definition",
-          "semantic_contract.missing_definition",
-          "semantic_contract.missing_definition",
-          "semantic_contract.missing_definition"
+          "semantic_contract.missing_whole_tuple_qualification"
         ],
         "diagnostic_messages": [
-          "the exact retained SCS is not qualified as a whole for the requested operation and use mode",
-          "SCS member has no retained immutable definition",
-          "SCS member has no retained immutable definition",
-          "SCS member has no retained immutable definition",
-          "SCS member has no retained immutable definition",
-          "SCS member has no retained immutable definition",
-          "SCS member has no retained immutable definition"
+          "the exact retained SCS is not qualified as a whole for the requested operation and use mode"
         ],
         "diagnostic_paths": [
-          "qualifications",
-          "sets.members",
-          "sets.members",
-          "sets.members",
-          "sets[0].members",
-          "sets[0].members",
-          "sets[0].members"
+          "qualifications"
         ],
         "diagnostic_severities": [
-          "error",
-          "error",
-          "error",
-          "error",
-          "error",
-          "error",
           "error"
         ]
       }

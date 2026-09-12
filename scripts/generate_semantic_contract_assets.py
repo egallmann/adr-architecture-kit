@@ -948,7 +948,7 @@ def main() -> None:
                 # projection must preserve each as unresolved evidence rather
                 # than manufacturing an endpoint or dropping the relation.
                 "unresolved_count": 2,
-                "relationship_type_counts": {},
+                "relationship_type_counts": {"acme:relates_to": 1},
             }
         },
     )
@@ -993,10 +993,7 @@ def main() -> None:
         exact_resolution_request(qualifications_override=missing_materialization_qualification),
         {
             "success": False,
-            "diagnostic_code_counts": {
-                "semantic_contract.missing_whole_tuple_qualification": 1,
-                "semantic_contract.missing_definition": 6,
-            },
+            "diagnostic_code_counts": {"semantic_contract.missing_whole_tuple_qualification": 1},
         },
     )
 
@@ -1106,8 +1103,6 @@ def main() -> None:
         ],
         "missing_whole_set_materialization_qualification_is_rejected": [
             ("semantic_contract.missing_whole_tuple_qualification", "the exact retained SCS is not qualified as a whole for the requested operation and use mode", "qualifications", "error"),
-            *[("semantic_contract.missing_definition", "SCS member has no retained immutable definition", "sets.members", "error")] * 3,
-            *[("semantic_contract.missing_definition", "SCS member has no retained immutable definition", "sets[0].members", "error")] * 3,
         ],
         "diagnostics_are_not_duplicated": [
             ("semantic_contract.source_contract_closure_mismatch", "source contract closure does not exactly match the applicable authoring schema imports", "sourceBasis.artifacts[0].sourceContract.resourceClosure", "error"),

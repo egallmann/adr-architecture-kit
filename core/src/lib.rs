@@ -1759,7 +1759,8 @@ mod semantic_core_v11_tests {
                     for id in required {
                         assert!(
                             id.as_str().map(|value| actual.contains(value)).unwrap_or(false),
-                            "{name} missing projected entity {id}"
+                            "{name} missing projected entity {:?}",
+                            id
                         );
                     }
                 }

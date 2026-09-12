@@ -147,13 +147,23 @@ def _assert_v11_vector(
     assert actual_codes == Counter(expected.get("diagnostic_code_counts", {})), case["name"]
     assertions = expected.get("assertions", {})
     if "normalized_schema_version" in assertions:
-        assert result["normalizedModel"]["schema_version"] == assertions["normalized_schema_version"]
+        assert (
+            result["normalizedModel"]["schema_version"] == assertions["normalized_schema_version"]
+        )
     if "source_contract_versions" in assertions:
-        assert [item["version"] for item in result["sourceContractClosure"]] == assertions["source_contract_versions"]
+        assert [item["version"] for item in result["sourceContractClosure"]] == assertions[
+            "source_contract_versions"
+        ]
     if "normalized_entity_type" in assertions:
-        assert any(item["entity_type"] == assertions["normalized_entity_type"] for item in result["normalizedModel"]["entities"])
+        assert any(
+            item["entity_type"] == assertions["normalized_entity_type"]
+            for item in result["normalizedModel"]["entities"]
+        )
     if "limitation_capability" in assertions:
-        assert any(item["semanticCapability"] == assertions["limitation_capability"] for item in result["sourceCapabilityLimitations"])
+        assert any(
+            item["semanticCapability"] == assertions["limitation_capability"]
+            for item in result["sourceCapabilityLimitations"]
+        )
     if "unresolved_count" in assertions:
         assert len(result["normalizedModel"]["unresolved"]) == assertions["unresolved_count"]
     if assertions.get("closure_resource_keys_are_sorted"):
@@ -169,20 +179,31 @@ def _assert_v11_vector(
 def test_v11_materialization_vectors_are_executable_and_shared() -> None:
     schema = json.loads(CONTRACT_V11.read_text(encoding="utf-8"))
     validator = Draft202012Validator(schema)
-    normalized_schema = json.loads((NORMALIZED_V23 / "normalized-architecture-model.schema.json").read_text(encoding="utf-8"))
-    normalized_entity_schema = json.loads((NORMALIZED_V23 / "normalized-entity.schema.json").read_text(encoding="utf-8"))
+    normalized_schema = json.loads(
+        (NORMALIZED_V23 / "normalized-architecture-model.schema.json").read_text(encoding="utf-8")
+    )
+    normalized_entity_schema = json.loads(
+        (NORMALIZED_V23 / "normalized-entity.schema.json").read_text(encoding="utf-8")
+    )
     normalized_extension_schema = normalized_entity_schema["oneOf"][0]["properties"]["extension"]
     normalized_resources = {
-        json.loads((NORMALIZED_V23 / name).read_text(encoding="utf-8"))["$id"]: json.loads((NORMALIZED_V23 / name).read_text(encoding="utf-8"))
+        json.loads((NORMALIZED_V23 / name).read_text(encoding="utf-8"))["$id"]: json.loads(
+            (NORMALIZED_V23 / name).read_text(encoding="utf-8")
+        )
         for name in ("normalized-entity.schema.json", "relationship-record.schema.json")
     }
     # The canonical relationship schema references the entity extension
     # fragment, which is nested inside its regular oneOf branch.  Resolve the
     # governed fragment explicitly here while preserving the committed schema
     # and its established semantic-contract identity.
-    relationship_schema = normalized_resources[next(key for key in normalized_resources if key.endswith("relationship-record.schema.json"))]
+    relationship_schema = normalized_resources[
+        next(key for key in normalized_resources if key.endswith("relationship-record.schema.json"))
+    ]
     for branch in relationship_schema["oneOf"]:
-        if branch.get("properties", {}).get("extension", {}).get("$ref") == "normalized-entity.schema.json#/properties/extension":
+        if (
+            branch.get("properties", {}).get("extension", {}).get("$ref")
+            == "normalized-entity.schema.json#/properties/extension"
+        ):
             branch["properties"]["extension"] = normalized_extension_schema
     normalized_validator = Draft7Validator(
         normalized_schema,
@@ -195,7 +216,15 @@ def test_v11_materialization_vectors_are_executable_and_shared() -> None:
             result = _assert_v11_vector(case, validator, normalized_validator)
             expected = case["expected"]
             if "pairedRequest" in expected:
-                paired_case = {"name": f"{case['name']}:pair", "request": expected["pairedRequest"], "expected": {"success": True, "outcome": "Materialized", "diagnostic_code_counts": {}}}
+                paired_case = {
+                    "name": f"{case['name']}:pair",
+                    "request": expected["pairedRequest"],
+                    "expected": {
+                        "success": True,
+                        "outcome": "Materialized",
+                        "diagnostic_code_counts": {},
+                    },
+                }
                 paired = _assert_v11_vector(paired_case, validator, normalized_validator)
                 assert result["normalizedModel"] == paired["normalizedModel"]
                 assert result["sourceContractClosure"] == paired["sourceContractClosure"]

@@ -625,12 +625,12 @@ def main() -> None:
             expected["diagnostic_codes"] = []
         cases.append({"name": name, "request": request, "expected": expected})
 
-    success = {"success": True, "outcome": "Materialized", "diagnostic_code_counts": {}, "assertions": {"normalized_schema_version": "2.3", "no_runtime_identity": True}}
+    success: dict[str, Any] = {"success": True, "outcome": "Materialized", "diagnostic_code_counts": {}, "assertions": {"normalized_schema_version": "2.3", "no_runtime_identity": True}}
     add("logical_16_materializes_with_np_and_extensions", materialization_request([logical_artifact]), success | {"assertions": {**success["assertions"], "source_contract_versions": ["1.6"], "normalized_entity_type": "normative_proposition"}})
     add("physical_system_16_materializes", materialization_request([artifact("physical-system-16", physical_system, "1.6", "physical-system", "2")]), success | {"assertions": {**success["assertions"], "source_contract_versions": ["1.6"]}})
     add("physical_component_16_materializes", materialization_request([artifact("physical-component-16", physical_component, "1.6", "physical-component", "3")]), success | {"assertions": {**success["assertions"], "source_contract_versions": ["1.6"]}})
     add("logical_15_materializes_without_inferred_np", materialization_request([artifact("logical-15", logical_15, "1.5", "logical", "4")]), success | {"assertions": {**success["assertions"], "source_contract_versions": ["1.5"], "limitation_capability": "normative_proposition"}})
-    invalids = [
+    invalids: list[tuple[str, str, str | None]] = [
         ("missing_id", "id", None),
         ("invalid_alias_id", "alias_id", "INVALID"),
         ("missing_title", "title", None),
@@ -640,22 +640,23 @@ def main() -> None:
         ("missing_logical_context", "context", None),
         ("missing_logical_decisions", "decisions", None),
     ]
-    for suffix, field, value in invalids:
+    for suffix, field, invalid_value in invalids:
         invalid_document = copy.deepcopy(logical)
-        if value is None:
+        if invalid_value is None:
             invalid_document.pop(field, None)
         else:
-            invalid_document[field] = value
+            invalid_document[field] = invalid_value
         add(f"rejects_{suffix}", materialization_request([artifact(f"invalid-{suffix}", invalid_document, "1.6", "logical", "5")]), {"success": False, "outcome": "Rejected", "diagnostic_code_counts": {"semantic_contract.invalid_source_document": 1}})
-    for suffix, adr_type, source in [
+    physical_invalids: list[tuple[str, str, dict[str, Any]]] = [
         ("missing_physical_implementation", "physical-system", {"implements_logical": []}),
         ("missing_system_identity", "physical-system", {"system": None}),
         ("missing_component_specification", "physical-component", {"component_specifications": []}),
         ("missing_component_implementation", "physical-component", {"implements_system": []}),
-    ]:
-        invalid_document = copy.deepcopy(physical_system if adr_type == "physical-system" else physical_component)
-        invalid_document.update(source)
-        add(f"rejects_{suffix}", materialization_request([artifact(f"invalid-{suffix}", invalid_document, "1.6", adr_type, "6")]), {"success": False, "outcome": "Rejected", "diagnostic_code_counts": {"semantic_contract.invalid_source_document": 1}})
+    ]
+    for suffix, adr_type, source in physical_invalids:
+        invalid_physical_document: dict[str, Any] = copy.deepcopy(physical_system if adr_type == "physical-system" else physical_component)
+        invalid_physical_document.update(source)
+        add(f"rejects_{suffix}", materialization_request([artifact(f"invalid-{suffix}", invalid_physical_document, "1.6", adr_type, "6")]), {"success": False, "outcome": "Rejected", "diagnostic_code_counts": {"semantic_contract.invalid_source_document": 1}})
     invalid_np = copy.deepcopy(logical)
     invalid_np["normative_propositions"][0]["normative_force"] = "MAYBE"
     add("rejects_invalid_normative_force", materialization_request([artifact("invalid-normative-force", invalid_np, "1.6", "logical", "7")]), {"success": False, "outcome": "Rejected", "diagnostic_code_counts": {"semantic_contract.invalid_source_document": 1}})

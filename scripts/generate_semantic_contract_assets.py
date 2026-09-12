@@ -9,6 +9,7 @@ the public Python tooling.
 
 from __future__ import annotations
 
+import copy
 import hashlib
 import json
 from pathlib import Path, PurePosixPath
@@ -439,6 +440,258 @@ def main() -> None:
             "expected": {"success": False, "diagnostic_codes": ["semantic_contract.invalid_current_selection"]},
         },
     ]
+    # v1.1 materialization vectors are executable requests, not an inventory
+    # of planned cases.  They are generated from the retained SCS and its
+    # governed authoring resource manifest so every host harness consumes the
+    # same authority evidence.
+    source_resources = {
+        entry["canonicalResourceKey"]: entry["contentDigest"]
+        for entry in definitions["architecture-interpretation.json"]["resourceManifest"]
+    }
+
+    def binding(version: str, adr_type: str) -> dict[str, Any]:
+        top_level = {
+            "logical": "adr-logical.schema",
+            "physical-system": "adr-physical-system.schema",
+            "physical-component": "adr-physical-component.schema",
+        }[adr_type]
+        names = ["adr-common.schema", "types.schema", top_level]
+        if adr_type.startswith("physical-"):
+            names.append("adr-physical-base.schema")
+        keys = sorted(f"authoring/{version}/schema/{name}" for name in names)
+        closure = [
+            {"canonicalResourceKey": key, "contentDigest": source_resources[key]}
+            for key in keys
+        ]
+        schema_resource = next(item for item in closure if item["canonicalResourceKey"].endswith(top_level))
+        return {
+            "family": "authoring",
+            "version": version,
+            "schemaResource": schema_resource,
+            "resourceClosure": closure,
+        }
+
+    def document(adr_type: str, version: str, identity: str, alias: str) -> dict[str, Any]:
+        value: dict[str, Any] = {
+            "schema_version": version,
+            "adr_type": adr_type,
+            "id": identity,
+            "alias_id": alias,
+            "alias_name": "boundary-record",
+            "title": "A governed architecture boundary",
+            "status": "accepted",
+            "created_date": "2026-01-01",
+            "authors": ["architecture-team"],
+            "context": "The boundary needs an explicit semantic authority.",
+            "decisions": [
+                {
+                    "id": "01940000-0000-7000-8000-000000000002",
+                    "alias_id": "DEC-0001",
+                    "alias_name": "choose-authority",
+                    "summary": "Use the governed boundary.",
+                }
+            ],
+            "invariants": [
+                {
+                    "id": "01940000-0000-7000-8000-000000000003",
+                    "alias_id": "INV-0001",
+                    "alias_name": "retain-evidence",
+                }
+            ],
+            "normative_propositions": [
+                {
+                    "id": "01940000-0000-7000-8000-000000000004",
+                    "alias_id": "NP-0001",
+                    "alias_name": "retain-evidence",
+                    "statement": "The canonical boundary MUST retain source evidence.",
+                    "normative_force": "MUST",
+                    "scope": "semantic-core",
+                }
+            ],
+            "extension_entities": [
+                {
+                    "id": "01940000-0000-7000-8000-000000000005",
+                    "alias_id": "EXT-0001",
+                    "alias_name": "boundary-extension",
+                    "entity_type": "acme:boundary",
+                    "properties": {"risk_level": "low"},
+                    "rationale": "The extension carries bounded evidence.",
+                }
+            ],
+            "extension_relationships": [
+                {
+                    "id": "01940000-0000-7000-8000-000000000006",
+                    "alias_id": "REL-0001",
+                    "alias_name": "boundary-relates",
+                    "relationship_type": "acme:relates_to",
+                    "from_entity_id": identity,
+                    "to_entity_id": "01940000-0000-7000-8000-000000000005",
+                    "properties": {"kind": "evidence"},
+                    "rationale": "The relationship is explicitly authored.",
+                }
+            ],
+        }
+        if adr_type == "physical-system":
+            value.update(
+                {
+                    "implements_logical": [identity],
+                    "technology_stack": ["WASM"],
+                    "system": {
+                        "id": "01940000-0000-7000-8000-000000000007",
+                        "alias_id": "SYS-0001",
+                        "alias_name": "boundary-system",
+                    },
+                }
+            )
+        elif adr_type == "physical-component":
+            value.update(
+                {
+                    "implements_logical": [identity],
+                    "technology_stack": ["WASM"],
+                    "implements_system": ["01940000-0000-7000-8000-000000000007"],
+                    "component_specifications": [
+                        {
+                            "id": "01940000-0000-7000-8000-000000000008",
+                            "alias_id": "COMP-0001",
+                            "alias_name": "boundary-component",
+                            "name": "Boundary component",
+                            "type": "service",
+                            "responsibilities": "Executes the bounded semantic operation.",
+                            "generation_context": {
+                                "purpose": "Preserve the semantic boundary.",
+                                "key_responsibilities": ["retain evidence"],
+                            },
+                        }
+                    ],
+                }
+            )
+            value.pop("decisions")
+            value.pop("invariants")
+            value.pop("normative_propositions")
+        return value
+
+    def artifact(source_ref: str, value: dict[str, Any], version: str, adr_type: str, digest_suffix: str) -> dict[str, Any]:
+        content_digest = "sha256:" + digest_suffix * 64
+        return {
+            "sourceRef": source_ref,
+            "artifactPath": f"architecture/{source_ref}.yaml",
+            "contentDigest": content_digest,
+            "sourceContract": binding(version, adr_type),
+            "document": value,
+        }
+
+    def materialization_request(artifacts: list[dict[str, Any]] | None, source_basis: Any = None) -> dict[str, Any]:
+        request = {
+            "core_contract_version": "1.1",
+            "operation": "materialize_architecture",
+            "materializationContractVersion": "1.0",
+            "semanticContractSetId": set_id,
+            "authorityProvider": {"kind": "fixture-provider", "architectureNamespace": "example"},
+            "providerProvenance": {
+                "semanticCoreContractVersion": "1.1",
+                "packageVersion": "0.10.1",
+                "hostBinding": "fixture-harness",
+            },
+            **copy.deepcopy(common),
+        }
+        if source_basis is None and artifacts is not None:
+            request["sourceBasis"] = {
+                "sealed": True,
+                "providerSourceIdentity": "fixture-provider:example",
+                "sourceRevision": "revision-1",
+                "artifacts": artifacts,
+            }
+        else:
+            request["sourceBasis"] = source_basis
+        request["sets"] = [set_artifact]
+        request["qualifications"] = qualifications
+        return request
+
+    logical = document("logical", "1.6", "01940000-0000-7000-8000-000000000001", "ADR-L-0001")
+    physical_system = document("physical-system", "1.6", "01940000-0000-7000-8000-000000000011", "ADR-PS-0001")
+    physical_component = document("physical-component", "1.6", "01940000-0000-7000-8000-000000000021", "ADR-PC-0001")
+    logical_15 = document("logical", "1.5", "01940000-0000-7000-8000-000000000031", "ADR-L-0002")
+    logical_15.pop("normative_propositions")
+    logical_artifact = artifact("logical-16", logical, "1.6", "logical", "1")
+    cases: list[dict[str, Any]] = []
+
+    def add(name: str, request: dict[str, Any], expected: dict[str, Any]) -> None:
+        counts = expected.get("diagnostic_code_counts", {})
+        if counts:
+            expected["diagnostic_codes"] = [
+                code for code, count in counts.items() for _ in range(count)
+            ]
+        else:
+            expected["diagnostic_codes"] = []
+        cases.append({"name": name, "request": request, "expected": expected})
+
+    success = {"success": True, "outcome": "Materialized", "diagnostic_code_counts": {}, "assertions": {"normalized_schema_version": "2.3", "no_runtime_identity": True}}
+    add("logical_16_materializes_with_np_and_extensions", materialization_request([logical_artifact]), success | {"assertions": {**success["assertions"], "source_contract_versions": ["1.6"], "normalized_entity_type": "normative_proposition"}})
+    add("physical_system_16_materializes", materialization_request([artifact("physical-system-16", physical_system, "1.6", "physical-system", "2")]), success | {"assertions": {**success["assertions"], "source_contract_versions": ["1.6"]}})
+    add("physical_component_16_materializes", materialization_request([artifact("physical-component-16", physical_component, "1.6", "physical-component", "3")]), success | {"assertions": {**success["assertions"], "source_contract_versions": ["1.6"]}})
+    add("logical_15_materializes_without_inferred_np", materialization_request([artifact("logical-15", logical_15, "1.5", "logical", "4")]), success | {"assertions": {**success["assertions"], "source_contract_versions": ["1.5"], "limitation_capability": "normative_proposition"}})
+    invalids = [
+        ("missing_id", "id", None),
+        ("invalid_alias_id", "alias_id", "INVALID"),
+        ("missing_title", "title", None),
+        ("invalid_status", "status", "unknown"),
+        ("invalid_created_date", "created_date", "2026/01/01"),
+        ("missing_authors", "authors", None),
+        ("missing_logical_context", "context", None),
+        ("missing_logical_decisions", "decisions", None),
+    ]
+    for suffix, field, value in invalids:
+        invalid_document = copy.deepcopy(logical)
+        if value is None:
+            invalid_document.pop(field, None)
+        else:
+            invalid_document[field] = value
+        add(f"rejects_{suffix}", materialization_request([artifact(f"invalid-{suffix}", invalid_document, "1.6", "logical", "5")]), {"success": False, "outcome": "Rejected", "diagnostic_code_counts": {"semantic_contract.invalid_source_document": 1}})
+    for suffix, adr_type, source in [
+        ("missing_physical_implementation", "physical-system", {"implements_logical": []}),
+        ("missing_system_identity", "physical-system", {"system": None}),
+        ("missing_component_specification", "physical-component", {"component_specifications": []}),
+        ("missing_component_implementation", "physical-component", {"implements_system": []}),
+    ]:
+        invalid_document = copy.deepcopy(physical_system if adr_type == "physical-system" else physical_component)
+        invalid_document.update(source)
+        add(f"rejects_{suffix}", materialization_request([artifact(f"invalid-{suffix}", invalid_document, "1.6", adr_type, "6")]), {"success": False, "outcome": "Rejected", "diagnostic_code_counts": {"semantic_contract.invalid_source_document": 1}})
+    invalid_np = copy.deepcopy(logical)
+    invalid_np["normative_propositions"][0]["normative_force"] = "MAYBE"
+    add("rejects_invalid_normative_force", materialization_request([artifact("invalid-normative-force", invalid_np, "1.6", "logical", "7")]), {"success": False, "outcome": "Rejected", "diagnostic_code_counts": {"semantic_contract.invalid_source_document": 1}})
+    invalid_15 = copy.deepcopy(logical_15)
+    invalid_15["normative_propositions"] = copy.deepcopy(logical["normative_propositions"])
+    add("rejects_normative_proposition_in_15", materialization_request([artifact("invalid-15-np", invalid_15, "1.5", "logical", "8")]), {"success": False, "outcome": "Rejected", "diagnostic_code_counts": {"semantic_contract.invalid_source_document": 1}})
+    invalid_binding = copy.deepcopy(logical_artifact)
+    invalid_binding["sourceContract"]["schemaResource"]["contentDigest"] = "sha256:" + "0" * 64
+    add("rejects_unqualified_source_schema_digest", materialization_request([invalid_binding]), {"success": False, "outcome": "Rejected", "diagnostic_code_counts": {"semantic_contract.source_contract_resource_unqualified": 1, "semantic_contract.source_contract_schema_unqualified": 1}})
+    mismatched_document = copy.deepcopy(logical_artifact)
+    mismatched_document["document"]["schema_version"] = "1.5"
+    add("rejects_artifact_contract_version_mismatch", materialization_request([mismatched_document]), {"success": False, "outcome": "Rejected", "diagnostic_code_counts": {"semantic_contract.artifact_contract_mismatch": 1}})
+    related_a = copy.deepcopy(logical)
+    related_b = copy.deepcopy(logical)
+    related_b["id"] = "01940000-0000-7000-8000-000000000041"
+    related_b["alias_id"] = "ADR-L-0003"
+    related_b["related_adrs"] = [logical["id"]]
+    ordered = [artifact("related-a", related_a, "1.6", "logical", "9"), artifact("related-b", related_b, "1.6", "logical", "a")]
+    reversed_request = materialization_request(list(reversed(ordered)))
+    add("artifact_order_is_semantically_invariant", materialization_request(ordered), {"success": True, "outcome": "Materialized", "diagnostic_code_counts": {}, "pairedRequest": reversed_request, "assertions": {"same_normalized_model_as_pair": True, "same_source_contract_closure_as_pair": True}})
+    add("unavailable_source_basis_is_protocol_valid", materialization_request(None, None), {"success": False, "outcome": "Unavailable", "diagnostic_code_counts": {"semantic_contract.source_basis_unavailable": 1}})
+    invalid_extension = copy.deepcopy(logical)
+    invalid_extension["extension_entities"][0].pop("rationale")
+    add("invalid_extension_entity_is_rejected", materialization_request([artifact("invalid-extension", invalid_extension, "1.6", "logical", "b")]), {"success": False, "outcome": "Rejected", "diagnostic_code_counts": {"semantic_contract.invalid_source_document": 1}})
+    invalid_relationship = copy.deepcopy(logical)
+    invalid_relationship["extension_relationships"][0].pop("rationale")
+    add("invalid_extension_relationship_is_rejected", materialization_request([artifact("invalid-relationship", invalid_relationship, "1.6", "logical", "c")]), {"success": False, "outcome": "Rejected", "diagnostic_code_counts": {"semantic_contract.invalid_source_document": 1}})
+    add("legacy_identity_requires_qualification", materialization_request([artifact("legacy-identity", {**copy.deepcopy(logical), "id": "legacy-root"}, "1.6", "logical", "d")]), {"success": False, "outcome": "Rejected", "diagnostic_code_counts": {"semantic_contract.invalid_source_document": 1}})
+    add("normalized_output_retains_unresolved_reference", materialization_request([artifact("unresolved-reference", {**copy.deepcopy(logical), "related_adrs": ["01940000-0000-7000-8000-000000000099"]}, "1.6", "logical", "e")]), {"success": True, "outcome": "Materialized", "diagnostic_code_counts": {}, "assertions": {"unresolved_count": 1, "normalized_schema_version": "2.3"}})
+    add("source_contract_closure_is_exact_and_sorted", materialization_request([logical_artifact, artifact("physical-system-closure", physical_system, "1.6", "physical-system", "f")]), {"success": True, "outcome": "Materialized", "diagnostic_code_counts": {}, "assertions": {"source_contract_versions": ["1.6", "1.6"], "closure_resource_keys_are_sorted": True}})
+    add("diagnostics_are_not_duplicated", materialization_request([invalid_binding]), {"success": False, "outcome": "Rejected", "diagnostic_code_counts": {"semantic_contract.source_contract_resource_unqualified": 1, "semantic_contract.source_contract_schema_unqualified": 1}})
+    add("source_contract_binding_rejects_wrong_top_level_schema", materialization_request([copy.deepcopy(logical_artifact) | {"sourceContract": binding("1.6", "physical-system")}]), {"success": False, "outcome": "Rejected", "diagnostic_code_counts": {"semantic_contract.source_contract_schema_mismatch": 1, "semantic_contract.source_contract_closure_mismatch": 1}})
+    assert len(cases) >= 28
+    forbidden_vector_terms = ("slice", "phase", "wave", "tranche")
+    assert not any(any(term in case["name"].lower() for term in forbidden_vector_terms) for case in cases)
+    write_json(ROOT / "contracts" / "semantic-core" / "v1.1" / "vectors" / "architecture-materialization.json", {"vectorContractVersion": "1.1", "cases": cases})
     # The v1.0 governance vector is a compatibility fixture.  It is retained
     # byte-for-byte while the v1.1 profile/qualification additions are covered
     # by the dedicated semantic-core v1.1 vectors.

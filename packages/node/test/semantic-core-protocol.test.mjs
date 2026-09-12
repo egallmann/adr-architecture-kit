@@ -93,23 +93,45 @@ test("Node executes v1.1 operations through the packaged WASM boundary", async (
 });
 
 function assertV11Vector(vector, v11Validator, normalizedValidator) {
-  assert.equal(v11Validator(vector.request), true, `${vector.name} request: ${JSON.stringify(v11Validator.errors)}`);
+  if (vector.executionBoundary !== "raw-core") {
+    assert.equal(v11Validator(vector.request), true, `${vector.name} request: ${JSON.stringify(v11Validator.errors)}`);
+  }
   return executeSemanticCoreRequest(vector.request).then((result) => {
     assert.equal(v11Validator(result), true, `${vector.name} result: ${JSON.stringify(v11Validator.errors)}`);
     assert.equal(result.success, vector.expected.success, vector.name);
-    assert.equal(result.outcome, vector.expected.outcome, vector.name);
+    if (Object.hasOwn(vector.expected, "outcome")) assert.equal(result.outcome, vector.expected.outcome, vector.name);
+    if (vector.expected.resolved) assert.equal(result.resolved?.semanticContractSetId, vector.expected.resolved.semanticContractSetId, vector.name);
     if (result.outcome === "Materialized") assert.equal(normalizedValidator(result.normalizedModel), true, `${vector.name} normalized model: ${JSON.stringify(normalizedValidator.errors)}`);
     const actualDiagnosticCodes = (result.diagnostics ?? []).map((diagnostic) => diagnostic.code);
     assert.deepEqual(actualDiagnosticCodes, vector.expected.diagnostic_codes ?? [], vector.name);
     const actualCodes = {};
     for (const code of actualDiagnosticCodes) actualCodes[code] = (actualCodes[code] ?? 0) + 1;
     assert.deepEqual(actualCodes, vector.expected.diagnostic_code_counts ?? {}, vector.name);
+    assert.deepEqual((result.diagnostics ?? []).map((diagnostic) => diagnostic.message), vector.expected.diagnostic_messages ?? [], vector.name);
+    assert.deepEqual((result.diagnostics ?? []).map((diagnostic) => diagnostic.path), vector.expected.diagnostic_paths ?? [], vector.name);
+    assert.deepEqual((result.diagnostics ?? []).map((diagnostic) => diagnostic.severity), vector.expected.diagnostic_severities ?? [], vector.name);
     const assertions = vector.expected.assertions ?? {};
     if (assertions.normalized_schema_version) assert.equal(result.normalizedModel.schema_version, assertions.normalized_schema_version);
     if (assertions.source_contract_versions) assert.deepEqual(result.sourceContractClosure.map((item) => item.version), assertions.source_contract_versions);
     if (assertions.normalized_entity_type) assert.equal(result.normalizedModel.entities.some((item) => item.entity_type === assertions.normalized_entity_type), true);
     if (assertions.limitation_capability) assert.equal(result.sourceCapabilityLimitations.some((item) => item.semanticCapability === assertions.limitation_capability), true);
     if (assertions.unresolved_count !== undefined) assert.equal(result.normalizedModel.unresolved.length, assertions.unresolved_count);
+    if (assertions.entity_ids) {
+      const actualEntityIds = new Set(result.normalizedModel.entities.map((item) => item.id));
+      for (const id of assertions.entity_ids) assert.equal(actualEntityIds.has(id), true, vector.name);
+    }
+    if (assertions.relationship_count !== undefined) assert.equal(result.normalizedModel.relationships.length, assertions.relationship_count, vector.name);
+    if (assertions.relationship_type_counts) {
+      const actualRelationshipTypes = {};
+      for (const relationship of result.normalizedModel.relationships) {
+        actualRelationshipTypes[relationship.relationship_type] = (actualRelationshipTypes[relationship.relationship_type] ?? 0) + 1;
+      }
+      assert.deepEqual(actualRelationshipTypes, assertions.relationship_type_counts, vector.name);
+    }
+    if (assertions.source_coverage_fields) {
+      const actualFields = new Set(result.normalizedModel.source_coverage.physical_fields.flatMap((coverage) => coverage.fields.map((field) => field.source_field)));
+      for (const field of assertions.source_coverage_fields) assert.equal(actualFields.has(field), true, vector.name);
+    }
     if (assertions.closure_resource_keys_are_sorted) {
       for (const binding of result.sourceContractClosure) {
         const keys = binding.resourceClosure.map((item) => item.canonicalResourceKey);
@@ -146,11 +168,46 @@ test("Node executes the shared v1.1 materialization vector corpus", async () => 
           request: vector.expected.pairedRequest,
           expected: { success: true, outcome: "Materialized", diagnostic_code_counts: {} },
         }, v11Validator, normalizedValidator);
-        assert.deepEqual(result.normalizedModel, paired.normalizedModel, vector.name);
-        assert.deepEqual(result.sourceContractClosure, paired.sourceContractClosure, vector.name);
+        const pairedAssertions = vector.expected.pairedAssertions ?? {};
+        if (pairedAssertions.same_normalized_model) assert.deepEqual(result.normalizedModel, paired.normalizedModel, vector.name);
+        if (pairedAssertions.same_source_contract_closure) assert.deepEqual(result.sourceContractClosure, paired.sourceContractClosure, vector.name);
+        if (pairedAssertions.same_authority_state_fingerprint) assert.equal(result.semanticBasis.authorityStateFingerprint, paired.semanticBasis.authorityStateFingerprint, vector.name);
+        if (pairedAssertions.different_authority_state_fingerprint) assert.notEqual(result.semanticBasis.authorityStateFingerprint, paired.semanticBasis.authorityStateFingerprint, vector.name);
       }
       checked += 1;
     }
   }
-  assert.equal(checked >= 28, true);
+  assert.equal(checked >= 50, true);
+});
+
+async function canonicalAuthoringValidation(source) {
+  const schemaDirectory = resolve("../../schema/authoring", `v${source.schema_version}`);
+  const names = (await (await import("node:fs/promises")).readdir(schemaDirectory)).filter((name) => name.endsWith(".schema.json")).sort();
+  const ajv = new Ajv7({ allErrors: true, strict: false });
+  const resources = [];
+  for (const name of names) resources.push(JSON.parse(await readFile(resolve(schemaDirectory, name), "utf8")));
+  for (const resource of resources) if (resource.$id) ajv.addSchema(resource);
+  const topLevel = resources.find((resource) => resource.$id?.endsWith(`adr-${source.adr_type}.schema.json`));
+  assert.ok(topLevel, `missing canonical schema for ${source.adr_type}`);
+  const validate = ajv.getSchema(topLevel.$id) ?? ajv.compile(topLevel);
+  return validate(source);
+}
+
+test("Node source validation differentially agrees with the canonical authoring schemas", async () => {
+  for (const name of (await (await import("node:fs/promises")).readdir(vectorDirectoryV11)).filter((item) => item.endsWith(".json")).sort()) {
+    const document = JSON.parse(await readFile(resolve(vectorDirectoryV11, name), "utf8"));
+    for (const vector of document.cases) {
+      const artifacts = vector.request.sourceBasis?.artifacts;
+      if (!Array.isArray(artifacts)) continue;
+      const canonicalValid = [];
+      for (const artifact of artifacts) canonicalValid.push(await canonicalAuthoringValidation(artifact.document));
+      const result = await executeSemanticCoreRequest(vector.request);
+      if (canonicalValid.some((valid) => !valid)) {
+        assert.equal(vector.expected.success, false, vector.name);
+        assert.equal(result.outcome, "Rejected", vector.name);
+      } else if (vector.expected.outcome === "Materialized") {
+        assert.equal(result.success, true, vector.name);
+      }
+    }
+  }
 });

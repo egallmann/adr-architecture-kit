@@ -132,19 +132,36 @@ def _assert_v11_vector(
 ) -> dict[str, object]:
     request = case["request"]
     assert isinstance(request, dict)
-    assert not list(validator.iter_errors(request)), case["name"]
+    # Raw-core vectors exercise the same WASM authority with an intentionally
+    # undeclared transport field; the public protocol still rejects that shape.
+    if case.get("executionBoundary") != "raw-core":
+        assert not list(validator.iter_errors(request)), case["name"]
     result = execute_semantic_core_request(request)
     assert not list(validator.iter_errors(result)), (case["name"], result)
     expected = case["expected"]
     assert isinstance(expected, dict)
     assert result.get("success") is expected["success"], case["name"]
-    assert result.get("outcome") == expected["outcome"], case["name"]
+    if "outcome" in expected:
+        assert result.get("outcome") == expected["outcome"], case["name"]
+    if "resolved" in expected:
+        assert result.get("resolved", {}).get("semanticContractSetId") == expected[
+            "resolved"
+        ]["semanticContractSetId"], case["name"]
     if result.get("outcome") == "Materialized":
         assert not list(normalized_validator.iter_errors(result["normalizedModel"])), case["name"]
     actual_diagnostic_codes = [item["code"] for item in result.get("diagnostics", [])]
     assert actual_diagnostic_codes == expected.get("diagnostic_codes", []), case["name"]
     actual_codes = Counter(actual_diagnostic_codes)
     assert actual_codes == Counter(expected.get("diagnostic_code_counts", {})), case["name"]
+    assert [item["message"] for item in result.get("diagnostics", [])] == expected.get(
+        "diagnostic_messages", []
+    ), case["name"]
+    assert [item["path"] for item in result.get("diagnostics", [])] == expected.get(
+        "diagnostic_paths", []
+    ), case["name"]
+    assert [item["severity"] for item in result.get("diagnostics", [])] == expected.get(
+        "diagnostic_severities", []
+    ), case["name"]
     assertions = expected.get("assertions", {})
     if "normalized_schema_version" in assertions:
         assert (
@@ -166,6 +183,29 @@ def _assert_v11_vector(
         )
     if "unresolved_count" in assertions:
         assert len(result["normalizedModel"]["unresolved"]) == assertions["unresolved_count"]
+    if "entity_ids" in assertions:
+        actual_entity_ids = {item["id"] for item in result["normalizedModel"]["entities"]}
+        assert set(assertions["entity_ids"]).issubset(actual_entity_ids), case["name"]
+    if "relationship_count" in assertions:
+        assert len(result["normalizedModel"]["relationships"]) == assertions[
+            "relationship_count"
+        ], case["name"]
+    if "relationship_type_counts" in assertions:
+        actual_relationship_types = Counter(
+            item["relationship_type"] for item in result["normalizedModel"]["relationships"]
+        )
+        assert actual_relationship_types == Counter(assertions["relationship_type_counts"]), case[
+            "name"
+        ]
+    if "source_coverage_fields" in assertions:
+        actual_fields = sorted(
+            field["source_field"]
+            for coverage in result["normalizedModel"]["source_coverage"]["physical_fields"]
+            for field in coverage["fields"]
+        )
+        assert set(assertions["source_coverage_fields"]).issubset(set(actual_fields)), case[
+            "name"
+        ]
     if assertions.get("closure_resource_keys_are_sorted"):
         for binding in result["sourceContractClosure"]:
             keys = [item["canonicalResourceKey"] for item in binding["resourceClosure"]]
@@ -226,17 +266,30 @@ def test_v11_materialization_vectors_are_executable_and_shared() -> None:
                     },
                 }
                 paired = _assert_v11_vector(paired_case, validator, normalized_validator)
-                assert result["normalizedModel"] == paired["normalizedModel"]
-                assert result["sourceContractClosure"] == paired["sourceContractClosure"]
+                paired_assertions = expected.get("pairedAssertions", {})
+                if paired_assertions.get("same_normalized_model", False):
+                    assert result["normalizedModel"] == paired["normalizedModel"]
+                if paired_assertions.get("same_source_contract_closure", False):
+                    assert result["sourceContractClosure"] == paired["sourceContractClosure"]
+                if paired_assertions.get("same_authority_state_fingerprint", False):
+                    assert (
+                        result["semanticBasis"]["authorityStateFingerprint"]
+                        == paired["semanticBasis"]["authorityStateFingerprint"]
+                    )
+                if paired_assertions.get("different_authority_state_fingerprint", False):
+                    assert (
+                        result["semanticBasis"]["authorityStateFingerprint"]
+                        != paired["semanticBasis"]["authorityStateFingerprint"]
+                    )
             checked += 1
-    assert checked >= 28
+    assert checked >= 50
 
 
 def test_v11_positive_vectors_validate_the_applicable_authoring_schema() -> None:
     for vector_path in sorted(VECTORS_V11.glob("*.json")):
         document = json.loads(vector_path.read_text(encoding="utf-8"))
         for case in document["cases"]:
-            if case["expected"]["outcome"] != "Materialized":
+            if case["expected"].get("outcome") != "Materialized":
                 continue
             for artifact in case["request"]["sourceBasis"]["artifacts"]:
                 source = artifact["document"]
@@ -255,3 +308,44 @@ def test_v11_positive_vectors_validate_the_applicable_authoring_schema() -> None
                     ).iter_errors(source)
                 )
                 assert not errors, (case["name"], errors)
+
+
+def test_v11_source_schema_differential_matches_the_canonical_python_validator() -> None:
+    """The Rust boundary and Python's governed validator must agree on source validity."""
+    for vector_path in sorted(VECTORS_V11.glob("*.json")):
+        document = json.loads(vector_path.read_text(encoding="utf-8"))
+        for case in document["cases"]:
+            request = case["request"]
+            source_basis = request.get("sourceBasis")
+            if not isinstance(source_basis, dict) or not isinstance(
+                source_basis.get("artifacts"), list
+            ):
+                continue
+            source_errors = []
+            for artifact in source_basis["artifacts"]:
+                source = artifact["document"]
+                schema_dir = ROOT / "schema" / "authoring" / f"v{source['schema_version']}"
+                schema = json.loads(
+                    (schema_dir / f"adr-{source['adr_type']}.schema.json").read_text(
+                        encoding="utf-8"
+                    )
+                )
+                store = {
+                    json.loads(path.read_text(encoding="utf-8"))["$id"]: json.loads(
+                        path.read_text(encoding="utf-8")
+                    )
+                    for path in schema_dir.glob("*.schema.json")
+                    if "$id" in json.loads(path.read_text(encoding="utf-8"))
+                }
+                source_errors.extend(
+                    Draft7Validator(
+                        schema,
+                        resolver=RefResolver.from_schema(schema, store=store),
+                    ).iter_errors(source)
+                )
+            result = execute_semantic_core_request(request)
+            if source_errors:
+                assert case["expected"]["success"] is False, case["name"]
+                assert result["outcome"] == "Rejected", case["name"]
+            elif case["expected"].get("outcome") == "Materialized":
+                assert result["success"] is True, case["name"]

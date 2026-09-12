@@ -144,9 +144,10 @@ def _assert_v11_vector(
     if "outcome" in expected:
         assert result.get("outcome") == expected["outcome"], case["name"]
     if "resolved" in expected:
-        assert result.get("resolved", {}).get("semanticContractSetId") == expected[
-            "resolved"
-        ]["semanticContractSetId"], case["name"]
+        assert (
+            result.get("resolved", {}).get("semanticContractSetId")
+            == expected["resolved"]["semanticContractSetId"]
+        ), case["name"]
     if result.get("outcome") == "Materialized":
         assert not list(normalized_validator.iter_errors(result["normalizedModel"])), case["name"]
     actual_diagnostic_codes = [item["code"] for item in result.get("diagnostics", [])]
@@ -187,9 +188,9 @@ def _assert_v11_vector(
         actual_entity_ids = {item["id"] for item in result["normalizedModel"]["entities"]}
         assert set(assertions["entity_ids"]).issubset(actual_entity_ids), case["name"]
     if "relationship_count" in assertions:
-        assert len(result["normalizedModel"]["relationships"]) == assertions[
-            "relationship_count"
-        ], case["name"]
+        assert (
+            len(result["normalizedModel"]["relationships"]) == assertions["relationship_count"]
+        ), case["name"]
     if "relationship_type_counts" in assertions:
         actual_relationship_types = Counter(
             item["relationship_type"] for item in result["normalizedModel"]["relationships"]
@@ -203,9 +204,7 @@ def _assert_v11_vector(
             for coverage in result["normalizedModel"]["source_coverage"]["physical_fields"]
             for field in coverage["fields"]
         )
-        assert set(assertions["source_coverage_fields"]).issubset(set(actual_fields)), case[
-            "name"
-        ]
+        assert set(assertions["source_coverage_fields"]).issubset(set(actual_fields)), case["name"]
     if assertions.get("closure_resource_keys_are_sorted"):
         for binding in result["sourceContractClosure"]:
             keys = [item["canonicalResourceKey"] for item in binding["resourceClosure"]]

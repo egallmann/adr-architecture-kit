@@ -13,7 +13,7 @@ import copy
 import hashlib
 import json
 from pathlib import Path, PurePosixPath
-from typing import Any
+from typing import Any, cast
 
 import rfc8785
 
@@ -970,7 +970,8 @@ def main() -> None:
         {"success": False, "diagnostic_code_counts": {"semantic_contract.exact_set_not_retained": 1}},
     )
     tampered_set = copy.deepcopy(set_artifact)
-    tampered_set["members"][0]["semanticContractVersion"] = "9.9"
+    tampered_members = cast(list[dict[str, Any]], tampered_set["members"])
+    tampered_members[0]["semanticContractVersion"] = "9.9"
     add(
         "tampered_exact_set_is_rejected",
         exact_resolution_request(sets_override=[tampered_set]),

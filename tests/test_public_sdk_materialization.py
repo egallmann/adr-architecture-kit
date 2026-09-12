@@ -85,11 +85,11 @@ def test_public_materialization_uses_exact_authority_and_immutable_result() -> N
     assert result.source_capability_limitations == ()
     assert result.provider_provenance == api.MaterializationProviderProvenance(
         semantic_core_contract_version="1.1",
-        package_version="0.10.1",
+        package_version="0.11.0",
         host_binding="public-host",
     )
     assert result.diagnostics == ()
-    assert result.package_version == "0.10.1"
+    assert result.package_version == "0.11.0"
     assert result.api_contract_version == "1.0"
     with pytest.raises(TypeError):
         result.normalized_model["schema_version"] = "2.2"  # type: ignore[index]

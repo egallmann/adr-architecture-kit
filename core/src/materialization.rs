@@ -739,7 +739,7 @@ fn relationship_record(
         ("id".into(), string(id.id)),
         ("alias_id".into(), string(id.alias_id)),
         ("alias_name".into(), string(id.alias_name)),
-        ("relationship_type".into(), string(relationship_type)),
+        ("relationship_type".into(), string(&relationship_type)),
         ("from_entity_id".into(), string(from)),
         ("to_entity_id".into(), string(to)),
         ("source_owner_id".into(), Json::Null),

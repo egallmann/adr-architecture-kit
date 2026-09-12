@@ -57,11 +57,11 @@ def _protocol_validator(version: str = "1.0") -> Draft202012Validator:
     those requests. v1.1 is intentionally a separate canonical schema rather
     than a mutation of the packaged v1.0 contract.
     """
-    filename = "semantic-core-contract-v1.1.json" if version == "1.1" else "semantic-core-contract.json"
+    filename = (
+        "semantic-core-contract-v1.1.json" if version == "1.1" else "semantic-core-contract.json"
+    )
     contract = json.loads(
-        resources.files("adr_kit.core")
-        .joinpath(filename)
-        .read_text(encoding="utf-8")
+        resources.files("adr_kit.core").joinpath(filename).read_text(encoding="utf-8")
     )
     return Draft202012Validator(contract)
 
@@ -71,7 +71,9 @@ def validate_semantic_core_protocol(value: dict[str, Any]) -> None:
 
     declared_version = value.get("core_contract_version")
     version = declared_version if declared_version in {"1.0", "1.1"} else "1.0"
-    errors = sorted(_protocol_validator(version).iter_errors(value), key=lambda error: list(error.path))
+    errors = sorted(
+        _protocol_validator(version).iter_errors(value), key=lambda error: list(error.path)
+    )
     if errors:
         details = "; ".join(
             f"{'.'.join(str(part) for part in error.path) or '<root>'}: {error.message}"

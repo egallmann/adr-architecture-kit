@@ -90,6 +90,16 @@ def _provider(value: object) -> MaterializationAuthorityProvider | None:
     return MaterializationAuthorityProvider(kind=kind, architecture_namespace=namespace)
 
 
+def _provenance(value: object) -> MaterializationProviderProvenance | None:
+    if not isinstance(value, Mapping):
+        return None
+    return MaterializationProviderProvenance(
+        semantic_core_contract_version=str(value.get("semanticCoreContractVersion", "")),
+        package_version=str(value.get("packageVersion", "")),
+        host_binding=str(value.get("hostBinding", "")),
+    )
+
+
 def _result(
     request: ArchitectureMaterializationRequest, value: Mapping[str, Any]
 ) -> ArchitectureMaterializationResult:
@@ -109,7 +119,7 @@ def _result(
         success=bool(value.get("success", False)),
         outcome=outcome,
         authority_provider=_provider(value.get("authorityProvider")),
-        source_basis=source_basis if isinstance(source_basis, Mapping) else None,
+        source_basis=source_basis,
         source_contract_closure=tuple(
             MaterializationSourceContract.from_wire(item)
             for item in value.get("sourceContractClosure", ())
@@ -141,23 +151,7 @@ def _result(
             for item in value.get("sourceCapabilityLimitations", ())
             if isinstance(item, Mapping) and isinstance(item.get("sourceContractRef"), Mapping)
         ),
-        provider_provenance=MaterializationProviderProvenance(
-            semantic_core_contract_version=str(
-                value.get("providerProvenance", {}).get("semanticCoreContractVersion", "1.1")
-                if isinstance(value.get("providerProvenance"), Mapping)
-                else "1.1"
-            ),
-            package_version=str(
-                value.get("providerProvenance", {}).get("packageVersion", __version__)
-                if isinstance(value.get("providerProvenance"), Mapping)
-                else __version__
-            ),
-            host_binding=str(
-                value.get("providerProvenance", {}).get("hostBinding", "public-host")
-                if isinstance(value.get("providerProvenance"), Mapping)
-                else "public-host"
-            ),
-        ),
+        provider_provenance=_provenance(value.get("providerProvenance")),
         diagnostics=_diagnostics(value.get("diagnostics")),
         package_version=__version__,
         api_contract_version=API_CONTRACT_VERSION,

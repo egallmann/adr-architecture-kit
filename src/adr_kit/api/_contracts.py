@@ -308,7 +308,7 @@ class ArchitectureMaterializationResult:
     semantic_basis: MaterializationSemanticBasis
     normalized_model: Mapping[str, object] | None
     source_capability_limitations: tuple[MaterializationCapabilityLimitation, ...]
-    provider_provenance: MaterializationProviderProvenance
+    provider_provenance: MaterializationProviderProvenance | None
     diagnostics: tuple[Diagnostic, ...]
     package_version: str
     api_contract_version: str

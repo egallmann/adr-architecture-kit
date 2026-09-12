@@ -78,7 +78,7 @@ export interface ArchitectureMaterializationResult {
   readonly semanticBasis: MaterializationSemanticBasis;
   readonly normalizedModel: Readonly<Record<string, unknown>> | null;
   readonly sourceCapabilityLimitations: readonly MaterializationCapabilityLimitation[];
-  readonly providerProvenance: MaterializationProviderProvenance;
+  readonly providerProvenance: MaterializationProviderProvenance | null;
   readonly diagnostics: readonly AdrKitDiagnostic[];
   readonly package_version: string;
   readonly api_contract_version: typeof API_CONTRACT_VERSION;
@@ -88,6 +88,19 @@ function deepFreeze<T>(value: T): T {
   if (value === null || typeof value !== "object" || Object.isFrozen(value)) return value;
   for (const child of Object.values(value as Record<string, unknown>)) deepFreeze(child);
   return Object.freeze(value);
+}
+
+type WireRecord = Record<string, unknown>;
+
+function isRecord(value: unknown): value is WireRecord {
+  return typeof value === "object" && value !== null && !Array.isArray(value);
+}
+
+function requiredText(value: unknown, field: string): string {
+  if (typeof value !== "string" || value.length === 0) {
+    throw new Error(`semantic core returned malformed ${field}`);
+  }
+  return value;
 }
 
 function sourceContract(value: MaterializationSourceContract): Record<string, unknown> {
@@ -124,42 +137,106 @@ function sourceBasis(value: MaterializationSourceBasis | null): Record<string, u
   };
 }
 
-function sourceContractFromWire(value: Record<string, unknown>): MaterializationSourceContract {
-  const schema = value.schemaResource as Record<string, string>;
+function sourceContractFromWire(value: unknown): MaterializationSourceContract {
+  if (!isRecord(value) || !isRecord(value.schemaResource)) {
+    throw new Error("semantic core returned malformed source contract");
+  }
+  const version = requiredText(value.version, "source contract version");
+  if (version !== "1.5" && version !== "1.6") {
+    throw new Error(`semantic core returned unsupported source contract version: ${version}`);
+  }
   const closure = Array.isArray(value.resourceClosure) ? value.resourceClosure : [];
   return {
-    version: value.version as "1.5" | "1.6",
+    version,
     family: "authoring",
     schema_resource: {
-      canonical_resource_key: String(schema.canonicalResourceKey ?? ""),
-      content_digest: String(schema.contentDigest ?? ""),
+      canonical_resource_key: requiredText(value.schemaResource.canonicalResourceKey, "schema resource key"),
+      content_digest: requiredText(value.schemaResource.contentDigest, "schema resource digest"),
     },
     resource_closure: closure.map((item) => {
-      const resource = item as Record<string, string>;
-      return { canonical_resource_key: String(resource.canonicalResourceKey ?? ""), content_digest: String(resource.contentDigest ?? "") };
+      if (!isRecord(item)) throw new Error("semantic core returned malformed resource closure");
+      return {
+        canonical_resource_key: requiredText(item.canonicalResourceKey, "resource closure key"),
+        content_digest: requiredText(item.contentDigest, "resource closure digest"),
+      };
     }),
   };
 }
 
 function sourceBasisFromWire(value: unknown): MaterializationSourceBasis | null {
-  if (!value || typeof value !== "object") return null;
-  const basis = value as Record<string, unknown>;
+  if (value === null) return null;
+  if (!isRecord(value)) throw new Error("semantic core returned malformed source basis");
+  const basis = value;
   const artifacts = Array.isArray(basis.artifacts) ? basis.artifacts : [];
   return {
     sealed: true,
-    provider_source_identity: String(basis.providerSourceIdentity ?? ""),
-    source_revision: String(basis.sourceRevision ?? ""),
-    artifacts: artifacts.map((item) => {
-      const artifact = item as Record<string, unknown>;
-      return {
-        source_ref: String(artifact.sourceRef ?? ""),
-        artifact_path: String(artifact.artifactPath ?? ""),
-        content_digest: String(artifact.contentDigest ?? ""),
-        source_contract: sourceContractFromWire(artifact.sourceContract as Record<string, unknown>),
-        document: artifact.document as Readonly<Record<string, unknown>>,
-      };
-    }),
-    legacy_identity_map: (basis.legacyIdentityMap as Readonly<Record<string, unknown>> | undefined) ?? null,
+    provider_source_identity: requiredText(basis.providerSourceIdentity, "source provider identity"),
+    source_revision: requiredText(basis.sourceRevision, "source revision"),
+    artifacts: artifacts.map((item) => sourceArtifactFromWire(item)),
+    legacy_identity_map: isRecord(basis.legacyIdentityMap) ? deepFreeze(basis.legacyIdentityMap) : null,
+  };
+}
+
+function sourceArtifactFromWire(value: unknown): MaterializationSourceArtifact {
+  if (!isRecord(value) || !isRecord(value.document)) {
+    throw new Error("semantic core returned malformed source artifact");
+  }
+  return {
+    source_ref: requiredText(value.sourceRef, "source reference"),
+    artifact_path: requiredText(value.artifactPath, "artifact path"),
+    content_digest: requiredText(value.contentDigest, "artifact content digest"),
+    source_contract: sourceContractFromWire(value.sourceContract),
+    document: deepFreeze(value.document),
+  };
+}
+
+function authorityProviderFromWire(value: unknown): MaterializationAuthorityProvider | null {
+  if (value === null) return null;
+  if (!isRecord(value)) throw new Error("semantic core returned malformed authority provider");
+  return {
+    kind: requiredText(value.kind, "authority provider kind"),
+    architecture_namespace: requiredText(value.architectureNamespace, "authority provider namespace"),
+  };
+}
+
+function semanticBasisFromWire(value: unknown): MaterializationSemanticBasis {
+  if (!isRecord(value)) throw new Error("semantic core returned malformed semantic basis");
+  return {
+    semanticContractSetId: typeof value.semanticContractSetId === "string" ? value.semanticContractSetId : null,
+    authorityStateFingerprint: typeof value.authorityStateFingerprint === "string" ? value.authorityStateFingerprint : null,
+  };
+}
+
+function providerProvenanceFromWire(value: unknown): MaterializationProviderProvenance | null {
+  if (value === null) return null;
+  if (!isRecord(value)) throw new Error("semantic core returned malformed provider provenance");
+  return {
+    semanticCoreContractVersion: requiredText(value.semanticCoreContractVersion, "semantic-core contract version"),
+    packageVersion: requiredText(value.packageVersion, "package version"),
+    hostBinding: requiredText(value.hostBinding, "host binding"),
+  };
+}
+
+function diagnosticFromWire(value: unknown): AdrKitDiagnostic {
+  if (!isRecord(value)) throw new Error("semantic core returned malformed diagnostic");
+  const severity = value.severity === "info" || value.severity === "warning" || value.severity === "error"
+    ? value.severity
+    : "error";
+  const diagnostic: AdrKitDiagnostic = {
+    severity,
+    code: requiredText(value.code, "diagnostic code"),
+    message: requiredText(value.message, "diagnostic message"),
+  };
+  if (typeof value.path === "string") return { ...diagnostic, path: value.path };
+  return diagnostic;
+}
+
+function limitationFromWire(value: unknown): MaterializationCapabilityLimitation {
+  if (!isRecord(value)) throw new Error("semantic core returned malformed source limitation");
+  return {
+    sourceContractRef: sourceContractFromWire(value.sourceContractRef),
+    semanticCapability: requiredText(value.semanticCapability, "semantic capability"),
+    classification: "not_expressible_by_source_contract",
   };
 }
 
@@ -191,37 +268,25 @@ function result(
   const outcome = value.outcome === "Materialized" || value.outcome === "Unavailable"
     ? value.outcome
     : "Rejected";
-  const semanticBasis = value.semanticBasis as Record<string, unknown> | undefined;
+  const normalizedModel = value.normalizedModel === null
+    ? null
+    : isRecord(value.normalizedModel) ? deepFreeze(value.normalizedModel) : null;
   return deepFreeze({
     request,
     success: value.success === true,
     outcome,
-    authorityProvider: (value.authorityProvider as MaterializationAuthorityProvider | null | undefined) ?? null,
+    authorityProvider: authorityProviderFromWire(value.authorityProvider),
     sourceBasis: sourceBasisFromWire(value.sourceBasis),
     sourceContractClosure: Array.isArray(value.sourceContractClosure)
-      ? value.sourceContractClosure.map((item) => sourceContractFromWire(item as Record<string, unknown>))
+      ? value.sourceContractClosure.map((item) => sourceContractFromWire(item))
       : [],
-    semanticBasis: {
-      semanticContractSetId: typeof semanticBasis?.semanticContractSetId === "string" ? semanticBasis.semanticContractSetId : null,
-      authorityStateFingerprint: typeof semanticBasis?.authorityStateFingerprint === "string" ? semanticBasis.authorityStateFingerprint : null,
-    },
-    normalizedModel: (value.normalizedModel as Readonly<Record<string, unknown>> | null | undefined) ?? null,
+    semanticBasis: semanticBasisFromWire(value.semanticBasis),
+    normalizedModel,
     sourceCapabilityLimitations: Array.isArray(value.sourceCapabilityLimitations)
-      ? value.sourceCapabilityLimitations.map((item) => {
-        const limitation = item as Record<string, unknown>;
-        return {
-          sourceContractRef: sourceContractFromWire(limitation.sourceContractRef as Record<string, unknown>),
-          semanticCapability: String(limitation.semanticCapability ?? ""),
-          classification: "not_expressible_by_source_contract" as const,
-        };
-      })
+      ? value.sourceCapabilityLimitations.map((item) => limitationFromWire(item))
       : [],
-    providerProvenance: (value.providerProvenance as MaterializationProviderProvenance | undefined) ?? {
-      semanticCoreContractVersion: "1.1",
-      packageVersion,
-      hostBinding: "public-host",
-    },
-    diagnostics: Array.isArray(value.diagnostics) ? value.diagnostics : [],
+    providerProvenance: providerProvenanceFromWire(value.providerProvenance),
+    diagnostics: Array.isArray(value.diagnostics) ? value.diagnostics.map((item) => diagnosticFromWire(item)) : [],
     package_version: packageVersion,
     api_contract_version: API_CONTRACT_VERSION,
   }) as ArchitectureMaterializationResult;

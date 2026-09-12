@@ -55,15 +55,80 @@ def _request() -> api.ArchitectureMaterializationRequest:
 
 
 def test_public_materialization_uses_exact_authority_and_immutable_result() -> None:
-    result = api.materialize_architecture(_request())
+    request = _request()
+    result = api.materialize_architecture(request)
 
     assert result.success is True
     assert result.outcome == "Materialized"
-    assert result.semantic_basis.semantic_contract_set_id == _request().semantic_contract_set_id
+    assert result.authority_provider == request.authority_provider
+    assert result.source_basis is not None
+    assert isinstance(result.source_basis, api.MaterializationSourceBasis)
+    assert result.source_basis.sealed is True
+    assert result.source_basis.provider_source_identity == "fixture-provider:example"
+    assert result.source_basis.source_revision == "revision-1"
+    assert len(result.source_basis.artifacts) == 1
+    artifact = result.source_basis.artifacts[0]
+    assert artifact.source_ref == "logical-16"
+    assert artifact.artifact_path == "architecture/logical-16.yaml"
+    assert artifact.content_digest.startswith("sha256:")
+    assert artifact.source_contract.family == "authoring"
+    assert artifact.source_contract.version == "1.6"
+    assert artifact.source_contract.schema_resource.canonical_resource_key == (
+        "authoring/1.6/schema/adr-logical.schema"
+    )
+    assert len(artifact.source_contract.resource_closure) == 3
+    assert result.source_contract_closure == (artifact.source_contract,)
+    assert result.semantic_basis.semantic_contract_set_id == request.semantic_contract_set_id
+    assert result.semantic_basis.authority_state_fingerprint is not None
     assert result.normalized_model is not None
     assert result.normalized_model["schema_version"] == "2.3"
+    assert result.source_capability_limitations == ()
+    assert result.provider_provenance == api.MaterializationProviderProvenance(
+        semantic_core_contract_version="1.1",
+        package_version="0.10.1",
+        host_binding="public-host",
+    )
+    assert result.diagnostics == ()
+    assert result.package_version == "0.10.1"
+    assert result.api_contract_version == "1.0"
     with pytest.raises(TypeError):
         result.normalized_model["schema_version"] = "2.2"  # type: ignore[index]
+    with pytest.raises(TypeError):
+        artifact.document["title"] = "mutated"  # type: ignore[index]
+
+
+def test_public_materialization_round_trips_legacy_identity_map() -> None:
+    request = _request()
+    assert request.source_basis is not None
+    source_basis = api.MaterializationSourceBasis(
+        provider_source_identity=request.source_basis.provider_source_identity,
+        source_revision=request.source_basis.source_revision,
+        artifacts=request.source_basis.artifacts,
+        legacy_identity_map={
+            "sealed": True,
+            "provider": "fixture-provider:example",
+            "entries": [{"sourceId": "legacy:boundary", "canonicalId": "canonical:boundary"}],
+        },
+    )
+    result = api.materialize_architecture(
+        api.ArchitectureMaterializationRequest(
+            semantic_contract_set_id=request.semantic_contract_set_id,
+            authority_provider=request.authority_provider,
+            source_basis=source_basis,
+            direction=request.direction,
+            use_mode=request.use_mode,
+            profile_id=request.profile_id,
+        )
+    )
+
+    assert result.source_basis is not None
+    legacy_identity_map = result.source_basis.legacy_identity_map
+    assert legacy_identity_map is not None
+    assert legacy_identity_map["sealed"] is True
+    assert legacy_identity_map["provider"] == "fixture-provider:example"
+    assert legacy_identity_map["entries"] == (
+        {"sourceId": "legacy:boundary", "canonicalId": "canonical:boundary"},
+    )
 
 
 def test_public_materialization_has_bounded_unavailable_outcome() -> None:

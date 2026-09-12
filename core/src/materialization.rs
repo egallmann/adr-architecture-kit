@@ -2655,7 +2655,11 @@ pub fn execute(request: &Json) -> Json {
     }
     if let Err(error) = schema_validation::validate(
         &governed_resources.contents,
-        "normalized-model/2.3/schema/normalized-architecture-model",
+        // Resource identities are the qualified manifest keys, including the
+        // governed `.schema` suffix.  Using the exact key keeps normalized
+        // validation bound to the sealed definition closure rather than to a
+        // filename or an ambient schema lookup.
+        "normalized-model/2.3/schema/normalized-architecture-model.schema",
         &normalized_model,
     ) {
         diagnostic_code(

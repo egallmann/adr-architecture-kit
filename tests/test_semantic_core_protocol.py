@@ -168,6 +168,11 @@ def _assert_v11_vector(
         assert (
             result["normalizedModel"]["schema_version"] == assertions["normalized_schema_version"]
         )
+    if "semantic_contract_set_id" in assertions:
+        assert (
+            result["semanticBasis"]["semanticContractSetId"]
+            == assertions["semantic_contract_set_id"]
+        ), case["name"]
     if "source_contract_versions" in assertions:
         assert [item["version"] for item in result["sourceContractClosure"]] == assertions[
             "source_contract_versions"

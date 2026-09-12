@@ -112,6 +112,7 @@ function assertV11Vector(vector, v11Validator, normalizedValidator) {
     assert.deepEqual((result.diagnostics ?? []).map((diagnostic) => diagnostic.severity), vector.expected.diagnostic_severities ?? [], vector.name);
     const assertions = vector.expected.assertions ?? {};
     if (assertions.normalized_schema_version) assert.equal(result.normalizedModel.schema_version, assertions.normalized_schema_version);
+    if (assertions.semantic_contract_set_id) assert.equal(result.semanticBasis.semanticContractSetId, assertions.semantic_contract_set_id, vector.name);
     if (assertions.source_contract_versions) assert.deepEqual(result.sourceContractClosure.map((item) => item.version), assertions.source_contract_versions);
     if (assertions.normalized_entity_type) assert.equal(result.normalizedModel.entities.some((item) => item.entity_type === assertions.normalized_entity_type), true);
     if (assertions.limitation_capability) assert.equal(result.sourceCapabilityLimitations.some((item) => item.semanticCapability === assertions.limitation_capability), true);

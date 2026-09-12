@@ -235,16 +235,16 @@ pub fn validate_profile(request: &Json) -> Json {
 fn verify_definition_bundles(
     raw: Option<&Json>,
     diagnostics: &mut Vec<Json>,
-) -> BTreeMap<(String, String), Json> {
+) -> VerifiedDefinitionBundles {
     let Some(bundles) = array(raw) else {
         diagnostics.push(diagnostic(
             "semantic_contract.integrity_failure",
             "definitions must be an array of exact definition/resource bundles",
             Some("definitions".into()),
         ));
-        return BTreeMap::new();
+        return VerifiedDefinitionBundles::default();
     };
-    let mut definitions = BTreeMap::new();
+    let mut definitions = VerifiedDefinitionBundles::default();
     for (index, raw_bundle) in bundles.iter().enumerate() {
         let path = format!("definitions[{index}]");
         let Some(bundle) = raw_bundle.as_object() else {
@@ -267,6 +267,11 @@ fn verify_definition_bundles(
         let version = text(definition.get("semanticContractVersion")).unwrap_or_default();
         let key = (family, version);
         let fingerprint = text(definition.get("semanticContractFingerprint")).unwrap_or_default();
+        let member = ContractSetMember {
+            family: key.0.clone(),
+            version: key.1.clone(),
+            fingerprint: fingerprint.clone(),
+        };
         if !is_scf(&fingerprint) {
             diagnostics.push(diagnostic(
                 "semantic_contract.invalid_scf",
@@ -298,7 +303,7 @@ fn verify_definition_bundles(
                 string("validate_semantic_resource_closure"),
             ),
             ("definition".into(), Json::Object(definition.clone())),
-            ("resources".into(), resources),
+            ("resources".into(), resources.clone()),
         ]);
         if !result_success(&super::semantic_contract::validate_closure(
             &closure_request,
@@ -309,13 +314,24 @@ fn verify_definition_bundles(
                 Some(format!("{path}.resources")),
             ));
         }
-        if let Some(previous) = definitions.insert(key.clone(), Json::Object(definition.clone())) {
+        let verified_bundle = DefinitionBundle {
+            member: member.clone(),
+            definition: Json::Object(definition.clone()),
+            resources: resources.clone().as_array().cloned().unwrap_or_default(),
+        };
+        if let Some(previous) = definitions
+            .by_family_version
+            .insert(key.clone(), verified_bundle.clone())
+        {
             let mut previous_json = String::new();
             let mut current_json = String::new();
-            let same = super::semantic_contract::canonicalize_value(&previous, &mut previous_json)
+            let same = super::semantic_contract::canonicalize_value(
+                &previous.definition,
+                &mut previous_json,
+            )
                 .is_ok()
                 && super::semantic_contract::canonicalize_value(
-                    &Json::Object(definition.clone()),
+                    &verified_bundle.definition,
                     &mut current_json,
                 )
                 .is_ok()
@@ -330,6 +346,10 @@ fn verify_definition_bundles(
                 Some(format!("{path}.definition")),
             ));
         }
+        // Duplicate identities are already diagnosed through the stable
+        // family/version index above; emitting a second diagnostic here would
+        // make error multiplicity depend on the indexing strategy.
+        definitions.by_identity.insert(member, verified_bundle);
     }
     definitions
 }
@@ -360,13 +380,13 @@ fn profile_members_match(
 
 fn validate_set_definition_refs(
     members: &[ContractSetMember],
-    definitions: &BTreeMap<(String, String), Json>,
+    definitions: &VerifiedDefinitionBundles,
     path: &str,
     diagnostics: &mut Vec<Json>,
 ) {
     for member in members {
         let key = (member.family.clone(), member.version.clone());
-        let Some(definition) = definitions.get(&key) else {
+        let Some(bundle) = definitions.family_version(member) else {
             diagnostics.push(diagnostic(
                 "semantic_contract.missing_definition",
                 "SCS member has no retained immutable definition",
@@ -375,7 +395,8 @@ fn validate_set_definition_refs(
             continue;
         };
         let actual = text(
-            definition
+            bundle
+                .definition
                 .as_object()
                 .and_then(|value| value.get("semanticContractFingerprint")),
         )
@@ -1033,14 +1054,45 @@ fn catalog_supports(catalog: Option<&Json>, set_id: &str) -> bool {
     })
 }
 
-/// The internal result of exact resolution.  It deliberately contains the
+/// A retained definition together with the sealed resource content that was
+/// verified against its manifest.  The member identity is carried alongside
+/// the payload so callers cannot accidentally turn a family/version lookup
+/// back into an authority decision after exact resolution has completed.
+#[derive(Clone, Debug)]
+pub(crate) struct DefinitionBundle {
+    pub(crate) member: ContractSetMember,
+    pub(crate) definition: Json,
+    pub(crate) resources: Vec<Json>,
+}
+
+#[derive(Clone, Debug, Default)]
+pub(crate) struct VerifiedDefinitionBundles {
+    by_family_version: BTreeMap<(String, String), DefinitionBundle>,
+    by_identity: BTreeMap<ContractSetMember, DefinitionBundle>,
+}
+
+impl VerifiedDefinitionBundles {
+    fn family_version(&self, member: &ContractSetMember) -> Option<&DefinitionBundle> {
+        self.by_family_version
+            .get(&(member.family.clone(), member.version.clone()))
+    }
+
+    pub(crate) fn exact(&self, member: &ContractSetMember) -> Option<&DefinitionBundle> {
+        self.by_identity.get(member)
+    }
+}
+
+/// The internal result of exact resolution. It deliberately contains the
 /// retained members and qualification evidence needed by materialization, not
-/// a current pointer or a host-selected default.  The structure never crosses
+/// a current pointer or a host-selected default. The structure never crosses
 /// the byte-oriented boundary as a Rust type.
 #[derive(Clone, Debug)]
 pub(crate) struct ExactResolution {
     pub(crate) set_id: String,
     pub(crate) members: Vec<ContractSetMember>,
+    /// Only bundles whose complete family/version/SCF identity is a member of
+    /// the requested SCS are exposed to materialization.
+    pub(crate) definitions: BTreeMap<String, DefinitionBundle>,
     pub(crate) qualification: Json,
     pub(crate) operation: String,
     pub(crate) direction: String,
@@ -1372,9 +1424,19 @@ pub(crate) fn resolve_exact_set(
         return Err(diagnostics);
     }
     let qualification = qualification.expect("qualification checked above");
+    let definitions = members
+        .iter()
+        .filter_map(|member| {
+            definitions
+                .exact(member)
+                .cloned()
+                .map(|bundle| (member.family.clone(), bundle))
+        })
+        .collect();
     Ok(ExactResolution {
         set_id: requested_id,
         members,
+        definitions,
         qualification: Json::Object(qualification.clone()),
         operation,
         direction,
@@ -1608,15 +1670,8 @@ pub fn assemble(request: &Json) -> Json {
     };
     let definitions = verify_definition_bundles(root.get("definitions"), &mut diagnostics);
     for member in &members {
-        match definitions.get(&(member.family.clone(), member.version.clone())) {
-            Some(definition)
-                if text(
-                    definition
-                        .as_object()
-                        .and_then(|value| value.get("semanticContractFingerprint")),
-                )
-                .as_deref()
-                    == Some(member.fingerprint.as_str()) => {}
+        match definitions.family_version(member) {
+            Some(definition) if definition.member == *member => {}
             Some(_) => diagnostics.push(diagnostic(
                 "semantic_contract.member_fingerprint_mismatch",
                 "requested member SCF does not match the landed definition",

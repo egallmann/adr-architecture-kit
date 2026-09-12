@@ -1227,11 +1227,11 @@ fn normalized_source_contract(binding: &Json) -> Json {
     // the exact qualified top-level schema resource digest; it is never an
     // aggregate or caller-supplied digest.  The complete binding remains on
     // the artifact and in sourceContractClosure.
-    let object = binding.as_object();
-    let family = text(object.and_then(|value| value.get("family"))).unwrap_or_default();
-    let version = text(object.and_then(|value| value.get("version"))).unwrap_or_default();
+    let binding_object = binding.as_object();
+    let family = text(binding_object.and_then(|value| value.get("family"))).unwrap_or_default();
+    let version = text(binding_object.and_then(|value| value.get("version"))).unwrap_or_default();
     let fingerprint = text(
-        object
+        binding_object
             .and_then(|value| value.get("schemaResource"))
             .and_then(Json::as_object)
             .and_then(|value| value.get("contentDigest")),

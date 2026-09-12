@@ -4,6 +4,7 @@ import { resolve } from "node:path";
 import test from "node:test";
 import AjvModule from "ajv/dist/2020.js";
 import { semanticCoreContract } from "../dist/generated/semantic-core-contract.js";
+import { validateSemanticCoreProtocol } from "../dist/node/protocol.js";
 import { executeSemanticCoreRequest } from "../dist/node/core.js";
 
 const Ajv = AjvModule.default ?? AjvModule;
@@ -12,15 +13,20 @@ const vectorDirectory = resolve("../../contracts/semantic-core/v1.0/vectors");
 
 test("Node protocol validator accepts every valid shared vector request and result", async () => {
   let checked = 0;
+  let rawOnly = 0;
   for (const name of (await (await import("node:fs/promises")).readdir(vectorDirectory)).filter((item) => item.endsWith(".json")).sort()) {
     const document = JSON.parse(await readFile(resolve(vectorDirectory, name), "utf8"));
     for (const vector of document.cases) {
       if (vector.request.core_contract_version !== "1.0") continue;
-      // This vector intentionally probes the raw semantic-core diagnostic for
-      // a malformed composition member. Validated SDK paths must reject that
-      // transport shape at the protocol schema before execution, so only the
-      // raw conformance tests exercise it.
-      if (vector.expected.diagnostic_codes?.includes("semantic_contract.invalid_set_member")) continue;
+      if (vector.executionBoundary === "raw-core") {
+        rawOnly += 1;
+        assert.equal(validator(vector.request), false, `${name}:${vector.name} raw-core request must fail the validated schema`);
+        assert.throws(
+          () => validateSemanticCoreProtocol(vector.request),
+          /semantic-core protocol violation/,
+        );
+        continue;
+      }
       assert.equal(validator(vector.request), true, `${name}:${vector.name} request: ${JSON.stringify(validator.errors)}`);
       const result = await executeSemanticCoreRequest(vector.request);
       assert.equal(validator(result), true, `${name}:${vector.name} result: ${JSON.stringify(validator.errors)}`);
@@ -28,6 +34,7 @@ test("Node protocol validator accepts every valid shared vector request and resu
     }
   }
   assert.equal(checked, 42);
+  assert.equal(rawOnly, 1);
 });
 
 test("Node protocol validator rejects an undeclared operation field", () => {

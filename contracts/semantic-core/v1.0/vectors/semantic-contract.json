@@ -118,6 +118,7 @@
     },
     {
       "name": "semantic_contract_set_preserves_raw_non_object_member_diagnostic",
+      "executionBoundary": "raw-core",
       "request": {
         "core_contract_version": "1.0",
         "operation": "compose_semantic_contract_set",
@@ -126,6 +127,8 @@
       "expected": {
         "success": false,
         "diagnostic_codes": ["semantic_contract.invalid_set_member"],
+        "diagnostic_messages": ["set member must be an object"],
+        "diagnostic_severities": ["error"],
         "diagnostic_paths": ["contracts[0]"]
       }
     }

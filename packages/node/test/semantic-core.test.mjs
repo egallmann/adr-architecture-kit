@@ -50,6 +50,8 @@ test("Node semantic-contract binding matches the shared vectors", async () => {
     }
     if (vector.expected.diagnostic_codes) assert.deepEqual(result.diagnostics.map((item) => item.code), vector.expected.diagnostic_codes, vector.name);
     if (vector.expected.diagnostic_paths) assert.deepEqual(result.diagnostics.map((item) => item.path), vector.expected.diagnostic_paths, vector.name);
+    if (vector.expected.diagnostic_messages) assert.deepEqual(result.diagnostics.map((item) => item.message), vector.expected.diagnostic_messages, vector.name);
+    if (vector.expected.diagnostic_severities) assert.deepEqual(result.diagnostics.map((item) => item.severity), vector.expected.diagnostic_severities, vector.name);
   }
 });
 

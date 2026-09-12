@@ -19,6 +19,7 @@ def test_protocol_schema_is_valid_and_discriminates_operations() -> None:
     Draft202012Validator.check_schema(schema)
     validator = Draft202012Validator(schema)
     checked = 0
+    raw_only = 0
 
     for vector_path in sorted(VECTORS.glob("*.json")):
         document = json.loads(vector_path.read_text(encoding="utf-8"))
@@ -26,13 +27,18 @@ def test_protocol_schema_is_valid_and_discriminates_operations() -> None:
             request = case["request"]
             if request.get("core_contract_version") != "1.0":
                 continue
-            # This vector intentionally probes the raw semantic-core
-            # diagnostic for a malformed composition member. Validated SDK
-            # paths must reject that transport shape before execution, so the
-            # raw conformance test is the appropriate coverage here.
-            if "semantic_contract.invalid_set_member" in case["expected"].get(
-                "diagnostic_codes", []
-            ):
+            if case.get("executionBoundary") == "raw-core":
+                raw_only += 1
+                request_errors = list(validator.iter_errors(request))
+                assert request_errors, (vector_path, case["name"])
+                try:
+                    validate_semantic_core_protocol(request)
+                except ValueError:
+                    pass
+                else:
+                    raise AssertionError(
+                        f"raw-core vector must be rejected by the validated protocol: {case['name']}"
+                    )
                 continue
             assert not list(validator.iter_errors(request)), (vector_path, case["name"])
             result = execute_semantic_core_request(request)
@@ -42,6 +48,7 @@ def test_protocol_schema_is_valid_and_discriminates_operations() -> None:
             checked += 1
 
     assert checked == 42
+    assert raw_only == 1
 
 
 def test_protocol_rejects_unknown_operation_fields() -> None:

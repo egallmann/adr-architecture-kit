@@ -995,6 +995,7 @@ fn physical_source_coverage(
         "authors",
         "context",
         "decisions",
+        "invariants",
         "constraints",
         "non_functional_requirements",
         "gaps",
@@ -1026,6 +1027,7 @@ fn physical_source_coverage(
             ),
             ("integration_patterns", "retained_in_entity_provenance"),
             ("data_flows", "retained_in_entity_provenance"),
+            ("references_components", "retained_in_entity_provenance"),
             ("scalability_strategy", "retained_in_entity_provenance"),
             ("failure_modes", "retained_in_entity_provenance"),
         ] {
@@ -1081,6 +1083,7 @@ fn reject_unmapped_source_fields(
         "authors",
         "context",
         "decisions",
+        "invariants",
         "constraints",
         "non_functional_requirements",
         "gaps",

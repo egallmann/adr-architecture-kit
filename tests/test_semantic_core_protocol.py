@@ -11,6 +11,7 @@ from adr_kit.core import execute_semantic_core_request, validate_semantic_core_p
 
 ROOT = Path(__file__).resolve().parents[1]
 CONTRACT = ROOT / "contracts" / "semantic-core" / "v1.0" / "contract.json"
+CONTRACT_V11 = ROOT / "contracts" / "semantic-core" / "v1.1" / "contract.json"
 VECTORS = ROOT / "contracts" / "semantic-core" / "v1.0" / "vectors"
 
 
@@ -76,4 +77,36 @@ def test_protocol_accepts_the_shared_invalid_request_error_envelope() -> None:
     }
     result = execute_semantic_core_request(request)
     assert result["outcome"] == "invalid_request"
+    validate_semantic_core_protocol(result)
+
+
+def test_v11_protocol_is_additive_and_routes_its_result_contract() -> None:
+    schema = json.loads(CONTRACT_V11.read_text(encoding="utf-8"))
+    Draft202012Validator.check_schema(schema)
+    validator = Draft202012Validator(schema)
+    result = {
+        "core_contract_version": "1.1",
+        "operation": "resolve_semantic_contract_set",
+        "success": False,
+        "diagnostics": [
+            {
+                "severity": "error",
+                "code": "semantic_contract.exact_set_not_retained",
+                "message": "the explicitly requested SCS is not present in the retained corpus",
+                "path": "semanticContractSetId",
+            }
+        ],
+    }
+    assert not list(validator.iter_errors(result))
+    validate_semantic_core_protocol(result)
+
+
+def test_v11_only_operation_submitted_as_v10_is_rejected() -> None:
+    request = {
+        "core_contract_version": "1.0",
+        "operation": "materialize_architecture",
+    }
+    result = execute_semantic_core_request(request)
+    assert result["success"] is False
+    assert result["core_contract_version"] == "1.0"
     validate_semantic_core_protocol(result)

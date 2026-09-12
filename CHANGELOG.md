@@ -22,11 +22,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   operation-qualified whole-tuple qualification, immutable SCS artifacts,
   deterministic no-op assembly, append-only corpus validation, and explicit
   current-set resolution with equivalent Python and Node operations.
+- Added semantic-core protocol `1.1` as an additive, version-routed successor
+  with exact retained semantic-contract-set resolution and canonical sealed
+  architecture materialization into normalized-model `2.3`.
+- Added provider-qualified source-contract closure, typed source capability
+  limitations, bounded materialization outcomes, lifecycle-free
+  `NormativeProposition` normalization, and deterministic
+  `authorityStateFingerprint` projection semantics behind the shared core.
 
 ### Limitations
 
-- Architecture materialization execution, source acquisition, Runtime
-  integration, and attribution changes remain outside this release.
+- Public Python/Node materialization bindings and capability advertising remain
+  outside this implementation unit; hosts still own acquisition and parsing.
+- Runtime integration, persistence, binding, and attribution changes remain
+  outside this release.
 
 ## [0.10.1] — 2026-09-08
 

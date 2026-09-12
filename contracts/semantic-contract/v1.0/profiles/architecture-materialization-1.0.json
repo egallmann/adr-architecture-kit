@@ -24,7 +24,9 @@
     "qualify_tuple",
     "assemble_set",
     "validate_corpus",
-    "resolve_current"
+    "resolve_current",
+    "resolve_semantic_contract_set",
+    "materialize_architecture"
   ],
   "selectionPurposes": [
     "architecture-materialization"

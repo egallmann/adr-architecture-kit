@@ -13,6 +13,9 @@ const capabilityContract = JSON.parse(
 const semanticCoreContract = JSON.parse(
   await readFile(resolve(repoRoot, "contracts/semantic-core/v1.0/contract.json"), "utf8"),
 );
+const semanticCoreContractV11 = JSON.parse(
+  await readFile(resolve(repoRoot, "contracts/semantic-core/v1.1/contract.json"), "utf8"),
+);
 const semanticContractRoot = resolve(repoRoot, "contracts/semantic-contract/v1.0");
 
 const families = [
@@ -66,6 +69,7 @@ await writeFile(resolve(generatedRoot, "package-metadata.ts"), `export const pac
 await writeFile(resolve(generatedRoot, "schema-assets.ts"), `export const schemaAssets = ${JSON.stringify(assets, null, 2)} as const;\n`);
 await writeFile(resolve(generatedRoot, "host-capabilities.ts"), `export const hostCapabilities = ${JSON.stringify(capabilityContract, null, 2)} as const;\n`);
 await writeFile(resolve(generatedRoot, "semantic-core-contract.ts"), `export const semanticCoreContract = ${JSON.stringify(semanticCoreContract, null, 2)} as const;\n`);
+await writeFile(resolve(generatedRoot, "semantic-core-contract-v1.1.ts"), `export const semanticCoreContractV11 = ${JSON.stringify(semanticCoreContractV11, null, 2)} as const;\n`);
 
 const semanticContractAssets = {};
 for (const directory of ["definitions", "resources", "profiles", "sets", "qualifications", "catalog", "policy", "current"]) {

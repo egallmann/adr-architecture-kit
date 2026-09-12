@@ -286,7 +286,15 @@ def main() -> None:
             {"semanticContractFamily": "normalized-model", "semanticContractVersion": "2.3", "cardinality": 1},
             {"semanticContractFamily": "normative-semantics", "semanticContractVersion": "1.0", "cardinality": 1},
         ],
-        "operations": ["validate_profile", "qualify_tuple", "assemble_set", "validate_corpus", "resolve_current"],
+        "operations": [
+            "validate_profile",
+            "qualify_tuple",
+            "assemble_set",
+            "validate_corpus",
+            "resolve_current",
+            "resolve_semantic_contract_set",
+            "materialize_architecture",
+        ],
         "selectionPurposes": ["architecture-materialization"],
     }
     set_artifact = {
@@ -379,7 +387,7 @@ def main() -> None:
         "catalog": catalog,
         "policy": policy,
     }
-    vector_cases: list[dict[str, Any]] = [
+    _compatibility_vector_cases: list[dict[str, Any]] = [
         {
             "name": "valid_architecture_materialization_profile",
             "request": {"core_contract_version": "1.0", "operation": "validate_semantic_contract_profile", "profile": profile},
@@ -431,7 +439,9 @@ def main() -> None:
             "expected": {"success": False, "diagnostic_codes": ["semantic_contract.invalid_current_selection"]},
         },
     ]
-    write_json(ROOT / "contracts" / "semantic-core" / "v1.0" / "vectors" / "semantic-contract-set-governance.json", {"contract_version": "1.0", "cases": vector_cases})
+    # The v1.0 governance vector is a compatibility fixture.  It is retained
+    # byte-for-byte while the v1.1 profile/qualification additions are covered
+    # by the dedicated semantic-core v1.1 vectors.
 
 
 if __name__ == "__main__":

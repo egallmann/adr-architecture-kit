@@ -1,0 +1,263 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://adr-kit.dev/contracts/semantic-core/v1.1/contract.json",
+  "title": "ADR-Kit semantic core protocol contract v1.1",
+  "description": "Additive semantic-core transport contract for exact semantic-contract-set resolution and sealed architecture materialization. Host parsing and filesystem ownership remain outside this boundary.",
+  "oneOf": [
+    {"$ref": "#/$defs/resolve_request"},
+    {"$ref": "#/$defs/resolve_result"},
+    {"$ref": "#/$defs/materialization_request"},
+    {"$ref": "#/$defs/materialization_result"},
+    {"$ref": "#/$defs/invalid_result"}
+  ],
+  "$defs": {
+    "diagnostic": {
+      "type": "object",
+      "required": ["severity", "code", "message"],
+      "properties": {
+        "severity": {"enum": ["info", "warning", "error"]},
+        "code": {"type": "string", "minLength": 1},
+        "message": {"type": "string"},
+        "path": {"type": "string"},
+        "source_ref": {"type": "string"}
+      },
+      "additionalProperties": false
+    },
+    "protocol_base": {
+      "type": "object",
+      "required": ["core_contract_version", "operation"],
+      "properties": {
+        "core_contract_version": {"const": "1.1"},
+        "operation": {"type": "string", "minLength": 1}
+      }
+    },
+    "semantic_contract_ref": {
+      "type": "object",
+      "required": ["semanticContractFamily", "semanticContractVersion", "semanticContractFingerprint"],
+      "properties": {
+        "semanticContractFamily": {"type": "string", "minLength": 1},
+        "semanticContractVersion": {"type": "string", "minLength": 1},
+        "semanticContractFingerprint": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"}
+      },
+      "additionalProperties": false
+    },
+    "contract_set_member": {
+      "type": "object",
+      "required": ["semanticContractFamily", "semanticContractVersion", "semanticContractFingerprint"],
+      "properties": {
+        "semanticContractFamily": {"type": "string", "minLength": 1},
+        "semanticContractVersion": {"type": "string", "minLength": 1},
+        "semanticContractFingerprint": {"type": "string", "pattern": "^scf:v1:sha256:[0-9a-f]{64}$"}
+      },
+      "additionalProperties": false
+    },
+    "corpus_inputs": {
+      "type": "object",
+      "required": ["profile", "definitions", "sets", "qualifications", "catalog", "policy"],
+      "properties": {
+        "profile": {"type": "object"},
+        "definitions": {"type": "array", "items": {"type": "object"}},
+        "sets": {"type": "array", "items": {"type": "object"}},
+        "qualifications": {"type": "array", "items": {"type": "object"}},
+        "catalog": {"type": "object"},
+        "policy": {"type": "object"}
+      },
+      "additionalProperties": false
+    },
+    "authority_provider": {
+      "type": "object",
+      "required": ["kind", "architectureNamespace"],
+      "properties": {
+        "kind": {"type": "string", "minLength": 1},
+        "architectureNamespace": {"type": "string", "minLength": 1}
+      },
+      "additionalProperties": false
+    },
+    "source_contract_binding": {
+      "type": "object",
+      "required": ["family", "version", "fingerprint"],
+      "properties": {
+        "family": {"const": "authoring"},
+        "version": {"enum": ["1.5", "1.6"]},
+        "fingerprint": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"}
+      },
+      "additionalProperties": false
+    },
+    "source_artifact": {
+      "type": "object",
+      "required": ["sourceRef", "artifactPath", "contentDigest", "sourceContract", "document"],
+      "properties": {
+        "sourceRef": {"type": "string", "minLength": 1},
+        "artifactPath": {"type": "string", "minLength": 1},
+        "contentDigest": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"},
+        "sourceContract": {"$ref": "#/$defs/source_contract_binding"},
+        "document": {"type": "object"}
+      },
+      "additionalProperties": false
+    },
+    "source_basis": {
+      "type": "object",
+      "required": ["sealed", "providerSourceIdentity", "sourceRevision", "artifacts"],
+      "properties": {
+        "sealed": {"const": true},
+        "providerSourceIdentity": {"type": "string", "minLength": 1},
+        "sourceRevision": {"type": "string", "minLength": 1},
+        "artifacts": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/source_artifact"}},
+        "legacyIdentityMap": {"type": ["object", "null"]}
+      },
+      "additionalProperties": false
+    },
+    "provider_provenance": {
+      "type": "object",
+      "required": ["packageVersion", "semanticCoreContractVersion", "hostBinding"],
+      "properties": {
+        "packageVersion": {"type": "string", "minLength": 1},
+        "semanticCoreContractVersion": {"const": "1.1"},
+        "hostBinding": {"type": "string", "minLength": 1}
+      },
+      "additionalProperties": false
+    },
+    "resolve_request": {
+      "allOf": [
+        {"$ref": "#/$defs/protocol_base"},
+        {
+          "type": "object",
+          "required": ["operation", "semanticContractSetId", "profile", "targetOperation", "useMode", "definitions", "sets", "qualifications", "catalog", "policy"],
+          "properties": {
+            "operation": {"const": "resolve_semantic_contract_set"},
+            "semanticContractSetId": {"type": "string", "pattern": "^scs:v1:sha256:[0-9a-f]{64}$"},
+            "profile": {"type": "object"},
+            "targetOperation": {"type": "string", "minLength": 1},
+            "direction": {"enum": ["none", "forward", "reverse"]},
+            "useMode": {"enum": ["new", "historical"]},
+            "definitions": {"type": "array", "items": {"type": "object"}},
+            "sets": {"type": "array", "items": {"type": "object"}},
+            "qualifications": {"type": "array", "items": {"type": "object"}},
+            "catalog": {"type": "object"},
+            "policy": {"type": "object"}
+          }
+        }
+      ],
+      "unevaluatedProperties": false
+    },
+    "resolve_result": {
+      "type": "object",
+      "required": ["core_contract_version", "operation", "success", "diagnostics"],
+      "properties": {
+        "core_contract_version": {"const": "1.1"},
+        "operation": {"const": "resolve_semantic_contract_set"},
+        "success": {"type": "boolean"},
+        "resolved": {
+          "type": "object",
+          "required": ["profileId", "operation", "direction", "useMode", "semanticContractSetId", "qualificationRecordId", "qualificationRevision", "catalogRevision", "policyRevision", "members"],
+          "properties": {
+            "profileId": {"type": "string"},
+            "operation": {"type": "string"},
+            "direction": {"enum": ["none", "forward", "reverse"]},
+            "useMode": {"enum": ["new", "historical"]},
+            "semanticContractSetId": {"type": "string", "pattern": "^scs:v1:sha256:[0-9a-f]{64}$"},
+            "qualificationRecordId": {"type": "string"},
+            "qualificationRevision": {"type": "string"},
+            "catalogRevision": {"type": "string"},
+            "policyRevision": {"type": "string"},
+            "members": {"type": "array", "items": {"$ref": "#/$defs/contract_set_member"}}
+          },
+          "additionalProperties": false
+        },
+        "diagnostics": {"type": "array", "items": {"$ref": "#/$defs/diagnostic"}}
+      },
+      "additionalProperties": false
+    },
+    "legacy_identity_map": {
+      "type": "object",
+      "properties": {
+        "sealed": {"const": true},
+        "provider": {"type": "string", "minLength": 1},
+        "entries": {"type": "array", "items": {"type": "object"}}
+      },
+      "additionalProperties": true
+    },
+    "materialization_request": {
+      "allOf": [
+        {"$ref": "#/$defs/protocol_base"},
+        {
+          "type": "object",
+          "required": ["operation", "materializationContractVersion", "semanticContractSetId", "authorityProvider", "sourceBasis", "providerProvenance", "profile", "definitions", "sets", "qualifications", "catalog", "policy"],
+          "properties": {
+            "operation": {"const": "materialize_architecture"},
+            "materializationContractVersion": {"const": "1.0"},
+            "semanticContractSetId": {"type": "string", "pattern": "^scs:v1:sha256:[0-9a-f]{64}$"},
+            "authorityProvider": {"$ref": "#/$defs/authority_provider"},
+            "sourceBasis": {"$ref": "#/$defs/source_basis"},
+            "providerProvenance": {"$ref": "#/$defs/provider_provenance"},
+            "profile": {"type": "object"},
+            "targetOperation": {"const": "materialize_architecture"},
+            "direction": {"enum": ["none", "forward", "reverse"]},
+            "useMode": {"enum": ["new", "historical"]},
+            "definitions": {"type": "array", "items": {"type": "object"}},
+            "sets": {"type": "array", "items": {"type": "object"}},
+            "qualifications": {"type": "array", "items": {"type": "object"}},
+            "catalog": {"type": "object"},
+            "policy": {"type": "object"}
+          }
+        }
+      ],
+      "unevaluatedProperties": false
+    },
+    "semantic_basis": {
+      "type": "object",
+      "required": ["semanticContractSetId", "authorityStateFingerprint"],
+      "properties": {
+        "semanticContractSetId": {"type": ["string", "null"]},
+        "authorityStateFingerprint": {"type": ["string", "null"], "pattern": "^(asf:v1:sha256:[0-9a-f]{64})?$"}
+      },
+      "additionalProperties": false
+    },
+    "limitation": {
+      "type": "object",
+      "required": ["sourceContractRef", "semanticCapability", "classification"],
+      "properties": {
+        "sourceContractRef": {"$ref": "#/$defs/source_contract_binding"},
+        "semanticCapability": {"type": "string", "minLength": 1},
+        "classification": {"const": "not_expressible_by_source_contract"}
+      },
+      "additionalProperties": false
+    },
+    "materialization_result": {
+      "type": "object",
+      "required": ["core_contract_version", "operation", "success", "outcome", "materializationContractVersion", "authorityProvider", "sourceBasis", "sourceContractClosure", "semanticBasis", "normalizedModel", "sourceCapabilityLimitations", "providerProvenance", "diagnostics"],
+      "properties": {
+        "core_contract_version": {"const": "1.1"},
+        "operation": {"const": "materialize_architecture"},
+        "success": {"type": "boolean"},
+        "outcome": {"enum": ["Materialized", "Rejected", "Unavailable"]},
+        "materializationContractVersion": {"const": "1.0"},
+        "authorityProvider": {"anyOf": [{"$ref": "#/$defs/authority_provider"}, {"type": "null"}]},
+        "sourceBasis": {"anyOf": [{"$ref": "#/$defs/source_basis"}, {"type": "null"}]},
+        "sourceContractClosure": {"type": "array", "items": {"$ref": "#/$defs/semantic_contract_ref"}},
+        "semanticBasis": {"$ref": "#/$defs/semantic_basis"},
+        "normalizedModel": {"type": ["object", "null"]},
+        "sourceCapabilityLimitations": {"type": "array", "items": {"$ref": "#/$defs/limitation"}},
+        "providerProvenance": {"anyOf": [{"$ref": "#/$defs/provider_provenance"}, {"type": "null"}]},
+        "diagnostics": {"type": "array", "items": {"$ref": "#/$defs/diagnostic"}}
+      },
+      "additionalProperties": false
+    },
+    "invalid_result": {
+      "type": "object",
+      "required": ["core_contract_version", "operation", "success", "diagnostics"],
+      "not": {
+        "properties": {
+          "operation": {"enum": ["resolve_semantic_contract_set", "materialize_architecture"]}
+        }
+      },
+      "properties": {
+        "core_contract_version": {"const": "1.1"},
+        "operation": {"type": "string"},
+        "success": {"const": false},
+        "diagnostics": {"type": "array", "items": {"$ref": "#/$defs/diagnostic"}}
+      },
+      "additionalProperties": false
+    }
+  }
+}

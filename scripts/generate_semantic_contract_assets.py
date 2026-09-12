@@ -242,7 +242,7 @@ def main() -> None:
         ),
     ]
 
-    definitions = {
+    definitions: dict[str, dict[str, Any]] = {
         "normalized-model.json": definition(
             "normalized-model", normalized_manifest, [normalized_conformance_key]
         ),
@@ -268,7 +268,7 @@ def main() -> None:
     # Governance artifacts are generated from the exact definitions written above.
     # The profile and policy files are projections around immutable identities;
     # they never participate in an SCF or SCS preimage.
-    members = [
+    members: list[dict[str, str]] = [
         {
             "semanticContractFamily": value["semanticContractFamily"],
             "semanticContractVersion": value["semanticContractVersion"],
@@ -278,7 +278,7 @@ def main() -> None:
     ]
     members.sort(key=lambda item: item["semanticContractFamily"])
     set_id = scs_id(members)
-    profile = {
+    profile: dict[str, Any] = {
         "profileFamily": "architecture-materialization",
         "profileVersion": "1.0",
         "profileId": "architecture-materialization@1.0",
@@ -310,13 +310,13 @@ def main() -> None:
         ],
         "selectionPurposes": ["architecture-materialization"],
     }
-    set_artifact = {
+    set_artifact: dict[str, Any] = {
         "scsScheme": "scs:v1:sha256",
         "semanticContractSetId": set_id,
         "members": members,
     }
-    qualifications = []
-    policy_entries = []
+    qualifications: list[dict[str, Any]] = []
+    policy_entries: list[dict[str, Any]] = []
     for operation in profile["operations"]:
         qualification_id = f"qualification:architecture-materialization@1.0:{operation}"
         qualifications.append(
@@ -346,7 +346,7 @@ def main() -> None:
                 "historicalInterpretationSupport": True,
             }
         )
-    catalog = {
+    catalog: dict[str, Any] = {
         "catalogSchemaVersion": "1.0",
         "catalogRevision": "catalog:v1:1",
         "entries": [
@@ -358,12 +358,12 @@ def main() -> None:
             }
         ],
     }
-    policy = {
+    policy: dict[str, Any] = {
         "policySchemaVersion": "1.0",
         "policyRevision": "policy:v1:1",
         "entries": policy_entries,
     }
-    current = {
+    current: dict[str, Any] = {
         "currentSelectionSchemaVersion": "1.0",
         "currentSelectionRevision": "current:v1:1",
         "profileId": profile["profileId"],
@@ -386,7 +386,7 @@ def main() -> None:
         write_json(CANONICAL / relative, value)
         write_json(BUNDLED / relative, value)
 
-    bundles = []
+    bundles: list[dict[str, Any]] = []
     for value in definitions.values():
         bundles.append(
             {
@@ -517,9 +517,9 @@ def main() -> None:
     for qualification in conflicting_qualifications:
         qualification["semanticContractSetId"] = conflicting_set_id
         qualification["members"] = copy.deepcopy(conflicting_members)
-    conflicting_catalog = copy.deepcopy(catalog)
+    conflicting_catalog: dict[str, Any] = copy.deepcopy(catalog)
     conflicting_catalog["entries"][0]["semanticContractSetId"] = conflicting_set_id
-    conflicting_policy = copy.deepcopy(policy)
+    conflicting_policy: dict[str, Any] = copy.deepcopy(policy)
     for policy_entry in conflicting_policy["entries"]:
         policy_entry["semanticContractSetId"] = conflicting_set_id
     by_operation = {item["operation"]: item for item in qualifications}
@@ -1693,7 +1693,7 @@ def main() -> None:
             },
         },
     )
-    wrong_scf_set = copy.deepcopy(set_artifact)
+    wrong_scf_set: dict[str, Any] = copy.deepcopy(set_artifact)
     wrong_scf_set["members"][0]["semanticContractFingerprint"] = "scf:v1:sha256:" + "0" * 64
     add(
         "selected_member_with_wrong_scf_is_rejected",
@@ -1708,7 +1708,7 @@ def main() -> None:
             },
         },
     )
-    missing_architecture_resource = copy.deepcopy(bundles)
+    missing_architecture_resource: list[dict[str, Any]] = copy.deepcopy(bundles)
     missing_architecture_bundle = next(
         item
         for item in missing_architecture_resource

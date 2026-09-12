@@ -17,12 +17,15 @@ const artifact = resolve(repoRoot, "core/target/wasm32-unknown-unknown/release/a
 const pythonTarget = resolve(repoRoot, "src/adr_kit/core/semantic-core.wasm");
 const nodeTarget = resolve(repoRoot, "packages/node/src/generated/semantic-core.wasm");
 const contractSource = resolve(repoRoot, "contracts/semantic-core/v1.0/contract.json");
+const contractV11Source = resolve(repoRoot, "contracts/semantic-core/v1.1/contract.json");
 const pythonContractTarget = resolve(repoRoot, "src/adr_kit/core/semantic-core-contract.json");
+const pythonContractV11Target = resolve(repoRoot, "src/adr_kit/core/semantic-core-contract-v1.1.json");
 await mkdir(resolve(repoRoot, "src/adr_kit/core"), { recursive: true });
 await mkdir(resolve(repoRoot, "packages/node/src/generated"), { recursive: true });
 await cp(artifact, pythonTarget, { force: true });
 await cp(artifact, nodeTarget, { force: true });
 await cp(contractSource, pythonContractTarget, { force: true });
+await cp(contractV11Source, pythonContractV11Target, { force: true });
 const semanticContractSource = resolve(repoRoot, "contracts/semantic-contract/v1.0");
 const semanticContractTarget = resolve(repoRoot, "src/adr_kit/semantic_contract/v1_0");
 await cp(resolve(semanticContractSource, "semantic-contract-version.schema.json"), resolve(semanticContractTarget, "semantic-contract-version.schema.json"), { force: true });

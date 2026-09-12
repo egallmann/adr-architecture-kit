@@ -4,6 +4,7 @@ import { resolve } from "node:path";
 import test from "node:test";
 import AjvModule from "ajv/dist/2020.js";
 import { semanticCoreContract } from "../dist/generated/semantic-core-contract.js";
+import { semanticCoreContractV11 } from "../dist/generated/semantic-core-contract-v1.1.js";
 import { validateSemanticCoreProtocol } from "../dist/node/protocol.js";
 import { executeSemanticCoreRequest } from "../dist/node/core.js";
 
@@ -46,4 +47,43 @@ test("Node protocol validator rejects an undeclared operation field", () => {
     undeclared: true,
   });
   assert.equal(valid, false);
+});
+
+test("Node protocol routes v1.1 results to the additive contract", () => {
+  const v11 = new Ajv({ allErrors: true, strict: false }).compile(semanticCoreContractV11);
+  const result = {
+    core_contract_version: "1.1",
+    operation: "resolve_semantic_contract_set",
+    success: false,
+    diagnostics: [{
+      severity: "error",
+      code: "semantic_contract.exact_set_not_retained",
+      message: "the explicitly requested SCS is not present in the retained corpus",
+      path: "semanticContractSetId",
+    }],
+  };
+  assert.equal(v11(result), true, JSON.stringify(v11.errors));
+  assert.doesNotThrow(() => validateSemanticCoreProtocol(result));
+});
+
+test("Node keeps a v1.1-only operation rejected on the v1.0 boundary", async () => {
+  const result = await executeSemanticCoreRequest({
+    core_contract_version: "1.0",
+    operation: "materialize_architecture",
+  });
+  assert.equal(result.core_contract_version, "1.0");
+  assert.equal(result.success, false);
+  assert.doesNotThrow(() => validateSemanticCoreProtocol(result));
+});
+
+test("Node executes v1.1 operations through the packaged WASM boundary", async () => {
+  for (const operation of ["resolve_semantic_contract_set", "materialize_architecture"]) {
+    const result = await executeSemanticCoreRequest({
+      core_contract_version: "1.1",
+      operation,
+    });
+    assert.equal(result.core_contract_version, "1.1");
+    assert.equal(result.success, false);
+    assert.doesNotThrow(() => validateSemanticCoreProtocol(result));
+  }
 });

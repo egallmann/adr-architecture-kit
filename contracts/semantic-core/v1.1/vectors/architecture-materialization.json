@@ -1,0 +1,25 @@
+{
+  "vectorContractVersion": "1.1",
+  "cases": [
+    {"name": "v1_0_vectors_remain_unchanged", "kind": "compatibility"},
+    {"name": "v1_1_request_and_result_schema", "kind": "protocol"},
+    {"name": "v1_1_operation_rejected_as_v1_0", "kind": "version-routing"},
+    {"name": "exact_retained_set_is_returned", "kind": "resolution"},
+    {"name": "resolution_does_not_read_current_pointer", "kind": "resolution"},
+    {"name": "unknown_set_is_rejected", "kind": "resolution"},
+    {"name": "malformed_set_is_rejected", "kind": "resolution"},
+    {"name": "dangling_set_is_rejected", "kind": "resolution"},
+    {"name": "tampered_set_is_rejected", "kind": "resolution"},
+    {"name": "identity_mismatch_is_rejected", "kind": "resolution"},
+    {"name": "missing_materialization_qualification_is_rejected", "kind": "qualification"},
+    {"name": "missing_set_id_is_rejected", "kind": "materialization"},
+    {"name": "authoring_1_6_materializes_normalized_2_3", "kind": "materialization"},
+    {"name": "authoring_1_5_reports_inexpressible_np", "kind": "materialization"},
+    {"name": "legacy_identity_requires_sealed_map", "kind": "identity"},
+    {"name": "equivalent_state_is_byte_deterministic", "kind": "fingerprint"},
+    {"name": "source_revision_does_not_change_fingerprint", "kind": "fingerprint"},
+    {"name": "semantic_change_changes_fingerprint", "kind": "fingerprint"},
+    {"name": "provider_change_changes_fingerprint", "kind": "fingerprint"},
+    {"name": "closure_is_encountered_sorted_unique_and_no_runtime_claims", "kind": "boundary"}
+  ]
+}

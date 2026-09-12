@@ -1,5 +1,10 @@
 # ADR-Kit semantic core contract v1.0
 
+Protocol `1.0` is immutable compatibility surface. The additive protocol
+successor for exact retained-set resolution and sealed architecture
+materialization is documented in `../v1.1/README.md`; no v1.0 operation or
+observable v1.0 envelope is redefined by that successor.
+
 This directory defines the first portable semantic execution boundary for
 ADR-Kit. It is intentionally a normalized JSON contract: host SDKs load
 host-owned resources, normalize them, and submit equivalent operation requests

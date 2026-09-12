@@ -179,14 +179,28 @@ fn validate_profile_value(profile: Option<&Json>, diagnostics: &mut Vec<Json>) {
     }
     let operations = array(value.get("operations"))
         .map(|values| values.iter().filter_map(Json::as_str).collect::<Vec<_>>());
-    if operations.as_deref()
-        != Some(&[
+    let legacy_operations = Some(
+        &[
             "validate_profile",
             "qualify_tuple",
             "assemble_set",
             "validate_corpus",
             "resolve_current",
-        ])
+        ][..],
+    );
+    let materialization_operations = Some(
+        &[
+            "validate_profile",
+            "qualify_tuple",
+            "assemble_set",
+            "validate_corpus",
+            "resolve_current",
+            "resolve_semantic_contract_set",
+            "materialize_architecture",
+        ][..],
+    );
+    if operations.as_deref() != legacy_operations
+        && operations.as_deref() != materialization_operations
     {
         diagnostics.push(diagnostic(
             "semantic_contract.profile_operation_mismatch",
@@ -1017,6 +1031,439 @@ fn catalog_supports(catalog: Option<&Json>, set_id: &str) -> bool {
                 && text(entry.get("lifecycle")).as_deref() == Some("active")
         })
     })
+}
+
+/// The internal result of exact resolution.  It deliberately contains the
+/// retained members and qualification evidence needed by materialization, not
+/// a current pointer or a host-selected default.  The structure never crosses
+/// the byte-oriented boundary as a Rust type.
+#[derive(Clone, Debug)]
+pub(crate) struct ExactResolution {
+    pub(crate) set_id: String,
+    pub(crate) members: Vec<ContractSetMember>,
+    pub(crate) qualification: Json,
+    pub(crate) operation: String,
+    pub(crate) direction: String,
+    pub(crate) use_mode: String,
+    pub(crate) catalog_revision: String,
+    pub(crate) policy_revision: String,
+}
+
+fn failure_v11(operation: &str, diagnostics: &mut Vec<Json>) -> Json {
+    super::semantic_contract::sort_diagnostics(diagnostics);
+    super::simple_result_v11(operation, false, diagnostics.clone())
+}
+
+fn success_v11(operation: &str, mut values: BTreeMap<String, Json>) -> Json {
+    values.insert("core_contract_version".into(), string("1.1"));
+    values.insert("operation".into(), string(operation));
+    values.insert("success".into(), Json::Bool(true));
+    values
+        .entry("diagnostics".into())
+        .or_insert_with(|| Json::Array(Vec::new()));
+    Json::Object(values)
+}
+
+fn append_result_diagnostics(result: &Json, diagnostics: &mut Vec<Json>) {
+    if let Some(values) = result
+        .as_object()
+        .and_then(|value| value.get("diagnostics"))
+        .and_then(Json::as_array)
+    {
+        diagnostics.extend(values.iter().cloned());
+    }
+}
+
+fn profile_declares_operation(profile: Option<&Json>, operation: &str) -> bool {
+    array(
+        profile
+            .and_then(Json::as_object)
+            .and_then(|value| value.get("operations")),
+    )
+    .is_some_and(|operations| {
+        operations
+            .iter()
+            .any(|value| value.as_str() == Some(operation))
+    })
+}
+
+fn exact_catalog_supports(
+    catalog: Option<&Json>,
+    set_id: &str,
+    use_mode: &str,
+    diagnostics: &mut Vec<Json>,
+) -> bool {
+    let Some(entries) = array(
+        catalog
+            .and_then(Json::as_object)
+            .and_then(|value| value.get("entries")),
+    ) else {
+        diagnostics.push(diagnostic(
+            "semantic_contract.exact_resolution_catalog_failure",
+            "catalog entries are required for exact semantic-contract-set resolution",
+            Some("catalog.entries".into()),
+        ));
+        return false;
+    };
+    let Some(entry) = entries
+        .iter()
+        .filter_map(Json::as_object)
+        .find(|entry| text(entry.get("semanticContractSetId")).as_deref() == Some(set_id))
+    else {
+        diagnostics.push(diagnostic(
+            "semantic_contract.exact_resolution_catalog_failure",
+            "the requested SCS is not retained in the supplied catalog",
+            Some("semanticContractSetId".into()),
+        ));
+        return false;
+    };
+    if bool_value(entry.get("catalogued")) != Some(true) {
+        diagnostics.push(diagnostic(
+            "semantic_contract.exact_resolution_catalog_failure",
+            "the requested SCS is not catalogued",
+            Some("catalog.entries.semanticContractSetId".into()),
+        ));
+        return false;
+    }
+    let historical = bool_value(entry.get("historicalAddressable")) == Some(true);
+    let lifecycle = text(entry.get("lifecycle")).unwrap_or_default();
+    let supported = if use_mode == "historical" {
+        historical
+    } else {
+        lifecycle == "active"
+    };
+    if !supported {
+        diagnostics.push(diagnostic(
+            if use_mode == "historical" {
+                "semantic_contract.historical_use_not_addressable"
+            } else {
+                "semantic_contract.new_use_not_permitted"
+            },
+            "the requested SCS is not permitted for the selected use mode",
+            Some("catalog.entries.semanticContractSetId".into()),
+        ));
+    }
+    supported
+}
+
+fn exact_policy_supports(
+    policy: Option<&Json>,
+    set_id: &str,
+    operation: &str,
+    direction: &str,
+    use_mode: &str,
+    diagnostics: &mut Vec<Json>,
+) -> bool {
+    let Some(entries) = array(
+        policy
+            .and_then(Json::as_object)
+            .and_then(|value| value.get("entries")),
+    ) else {
+        diagnostics.push(diagnostic(
+            "semantic_contract.exact_resolution_policy_failure",
+            "policy entries are required for exact semantic-contract-set resolution",
+            Some("policy.entries".into()),
+        ));
+        return false;
+    };
+    let matching = entries.iter().filter_map(Json::as_object).find(|entry| {
+        text(entry.get("semanticContractSetId")).as_deref() == Some(set_id)
+            && text(entry.get("operation")).as_deref() == Some(operation)
+            && text(entry.get("direction")).unwrap_or_else(|| "none".into()) == direction
+    });
+    let Some(entry) = matching else {
+        diagnostics.push(diagnostic(
+            "semantic_contract.exact_resolution_policy_failure",
+            "no exact policy entry exists for the requested SCS, operation, and direction",
+            Some("policy.entries".into()),
+        ));
+        return false;
+    };
+    let installed = bool_value(entry.get("installedExecutionSupport")) == Some(true);
+    let supported = if use_mode == "historical" {
+        installed && bool_value(entry.get("historicalInterpretationSupport")) == Some(true)
+    } else {
+        installed && text(entry.get("newUsePolicy")).as_deref() == Some("permitted")
+    };
+    if !installed {
+        diagnostics.push(diagnostic(
+            "semantic_contract.installed_execution_support_unavailable",
+            "the exact SCS operation has no installed execution support",
+            Some("policy.entries.installedExecutionSupport".into()),
+        ));
+    } else if !supported {
+        diagnostics.push(diagnostic(
+            if use_mode == "historical" {
+                "semantic_contract.historical_interpretation_unsupported"
+            } else {
+                "semantic_contract.new_use_prohibited"
+            },
+            "the exact SCS operation is not permitted for the selected use mode",
+            Some("policy.entries".into()),
+        ));
+    }
+    supported
+}
+
+fn exact_qualification<'a>(
+    qualifications: &'a [Json],
+    set_id: &str,
+    operation: &str,
+    direction: &str,
+    use_mode: &str,
+    members: &[ContractSetMember],
+) -> Option<&'a BTreeMap<String, Json>> {
+    qualifications
+        .iter()
+        .filter_map(Json::as_object)
+        .find(|value| {
+            qualification_key(value).0 == set_id
+                && qualification_key(value).1 == operation
+                && qualification_key(value).2 == direction
+                && text(value.get("profileId")).as_deref() == Some(PROFILE_ID)
+                && text(value.get("outcome")).as_deref() == Some("qualified")
+                && bool_value(value.get("installedExecutionSupport")) == Some(true)
+                && (use_mode == "historical"
+                    && bool_value(value.get("historicalInterpretationSupport")) == Some(true)
+                    || use_mode == "new"
+                        && text(value.get("newUsePolicy")).as_deref() == Some("permitted"))
+                && parse_contract_set_members(
+                    value.get("members"),
+                    "qualification.members",
+                    &mut Vec::new(),
+                    ContractSetMemberDiagnosticContext::Governance,
+                ) == members
+        })
+}
+
+/// Resolve exactly one retained SCS for a requested operation.  Notice that
+/// `current` is not read anywhere in this function: exact resolution is an
+/// identity operation over the supplied retained corpus, not a current-state
+/// convenience selector.
+pub(crate) fn resolve_exact_set(
+    request: &Json,
+    target_operation: &str,
+) -> Result<ExactResolution, Vec<Json>> {
+    let Some(root) = request.as_object() else {
+        return Err(vec![diagnostic(
+            "semantic_contract.exact_resolution_failure",
+            "request must be an object",
+            None,
+        )]);
+    };
+    let mut diagnostics = Vec::new();
+    let requested_id = text(root.get("semanticContractSetId")).unwrap_or_default();
+    if !is_scs(&requested_id) {
+        diagnostics.push(diagnostic(
+            "semantic_contract.invalid_scs_identity",
+            "semanticContractSetId must be a valid exact SCS identity",
+            Some("semanticContractSetId".into()),
+        ));
+    }
+    let operation = text(root.get("targetOperation")).unwrap_or_else(|| target_operation.into());
+    if operation != target_operation {
+        diagnostics.push(diagnostic(
+            "semantic_contract.exact_resolution_operation_mismatch",
+            "targetOperation does not match the canonical operation",
+            Some("targetOperation".into()),
+        ));
+    }
+    let direction = text(root.get("direction")).unwrap_or_else(|| "none".into());
+    if !matches!(direction.as_str(), "none" | "forward" | "reverse") {
+        diagnostics.push(diagnostic(
+            "semantic_contract.exact_resolution_failure",
+            "direction must be none, forward, or reverse",
+            Some("direction".into()),
+        ));
+    }
+    let use_mode = text(root.get("useMode")).unwrap_or_else(|| "new".into());
+    if !matches!(use_mode.as_str(), "new" | "historical") {
+        diagnostics.push(diagnostic(
+            "semantic_contract.exact_resolution_failure",
+            "useMode must be new or historical",
+            Some("useMode".into()),
+        ));
+    }
+    let profile = root.get("profile").unwrap_or(&Json::Null);
+    validate_profile_value(Some(profile), &mut diagnostics);
+    if !profile_declares_operation(Some(profile), target_operation) {
+        diagnostics.push(diagnostic(
+            "semantic_contract.profile_operation_mismatch",
+            "the supplied profile does not explicitly declare the requested operation",
+            Some("profile.operations".into()),
+        ));
+    }
+
+    // The retained corpus validation is repeated at this boundary so a
+    // caller cannot make a tampered set appear valid by selecting only one
+    // apparently well-formed member or qualification record.
+    append_result_diagnostics(&validate_corpus(request), &mut diagnostics);
+    let definitions = verify_definition_bundles(root.get("definitions"), &mut diagnostics);
+    let mut selected_members: Option<Vec<ContractSetMember>> = None;
+    let mut selected_canonical: Option<String> = None;
+    let Some(sets) = array(root.get("sets")) else {
+        diagnostics.push(diagnostic(
+            "semantic_contract.exact_resolution_failure",
+            "sets must be an array of retained immutable SCS artifacts",
+            Some("sets".into()),
+        ));
+        return Err(diagnostics);
+    };
+    for (_index, set) in sets.iter().enumerate() {
+        if let Some((id, members, canonical)) = validate_set_artifact(set, &mut diagnostics) {
+            if id == requested_id {
+                selected_members = Some(members);
+                selected_canonical = Some(canonical);
+            }
+        }
+    }
+    let Some(members) = selected_members else {
+        diagnostics.push(diagnostic(
+            "semantic_contract.exact_set_not_retained",
+            "the explicitly requested SCS is not present in the retained corpus",
+            Some("semanticContractSetId".into()),
+        ));
+        return Err(diagnostics);
+    };
+    if let Some(canonical) = selected_canonical {
+        if canonical.is_empty() {
+            diagnostics.push(diagnostic(
+                "semantic_contract.scs_id_mismatch",
+                "the requested SCS has no valid canonical preimage",
+                Some("sets".into()),
+            ));
+        }
+    }
+    profile_members_match(profile, &members, &mut diagnostics);
+    validate_set_definition_refs(&members, &definitions, "sets", &mut diagnostics);
+
+    let empty_qualifications = Vec::new();
+    let qualifications = array(root.get("qualifications")).unwrap_or(&empty_qualifications);
+    let qualification = exact_qualification(
+        qualifications,
+        &requested_id,
+        target_operation,
+        &direction,
+        &use_mode,
+        &members,
+    );
+    if qualification.is_none() {
+        diagnostics.push(diagnostic(
+            "semantic_contract.missing_whole_tuple_qualification",
+            "the exact retained SCS is not qualified as a whole for the requested operation and use mode",
+            Some("qualifications".into()),
+        ));
+    }
+    exact_catalog_supports(
+        root.get("catalog"),
+        &requested_id,
+        &use_mode,
+        &mut diagnostics,
+    );
+    exact_policy_supports(
+        root.get("policy"),
+        &requested_id,
+        target_operation,
+        &direction,
+        &use_mode,
+        &mut diagnostics,
+    );
+    if !diagnostics.is_empty() {
+        return Err(diagnostics);
+    }
+    let qualification = qualification.expect("qualification checked above");
+    Ok(ExactResolution {
+        set_id: requested_id,
+        members,
+        qualification: Json::Object(qualification.clone()),
+        operation,
+        direction,
+        use_mode,
+        catalog_revision: text(
+            root.get("catalog")
+                .and_then(Json::as_object)
+                .and_then(|value| value.get("catalogRevision")),
+        )
+        .unwrap_or_default(),
+        policy_revision: text(
+            root.get("policy")
+                .and_then(Json::as_object)
+                .and_then(|value| value.get("policyRevision")),
+        )
+        .unwrap_or_default(),
+    })
+}
+
+/// Version 1.1 wire operation for exact retained-set resolution.
+pub fn resolve_exact(request: &Json) -> Json {
+    let target_operation = request
+        .as_object()
+        .and_then(|value| text(value.get("targetOperation")))
+        .unwrap_or_default();
+    if target_operation.is_empty() {
+        let mut diagnostics = vec![diagnostic(
+            "semantic_contract.exact_resolution_failure",
+            "targetOperation is required for exact semantic-contract-set resolution",
+            Some("targetOperation".into()),
+        )];
+        return failure_v11("resolve_semantic_contract_set", &mut diagnostics);
+    }
+    match resolve_exact_set(request, &target_operation) {
+        Ok(resolution) => {
+            let mut values = BTreeMap::new();
+            values.insert(
+                "resolved".into(),
+                object([
+                    ("profileId".into(), string(PROFILE_ID)),
+                    ("operation".into(), string(resolution.operation)),
+                    ("direction".into(), string(resolution.direction)),
+                    ("useMode".into(), string(resolution.use_mode)),
+                    ("semanticContractSetId".into(), string(resolution.set_id)),
+                    (
+                        "qualificationRecordId".into(),
+                        string(
+                            text(
+                                resolution
+                                    .qualification
+                                    .as_object()
+                                    .and_then(|value| value.get("qualificationRecordId")),
+                            )
+                            .unwrap_or_default(),
+                        ),
+                    ),
+                    (
+                        "qualificationRevision".into(),
+                        string(
+                            text(
+                                resolution
+                                    .qualification
+                                    .as_object()
+                                    .and_then(|value| value.get("qualificationRevision")),
+                            )
+                            .unwrap_or_default(),
+                        ),
+                    ),
+                    (
+                        "catalogRevision".into(),
+                        string(resolution.catalog_revision),
+                    ),
+                    ("policyRevision".into(), string(resolution.policy_revision)),
+                    (
+                        "members".into(),
+                        Json::Array(
+                            resolution
+                                .members
+                                .iter()
+                                .map(contract_set_member_wire)
+                                .collect(),
+                        ),
+                    ),
+                ]),
+            );
+            success_v11("resolve_semantic_contract_set", values)
+        }
+        Err(mut diagnostics) => failure_v11("resolve_semantic_contract_set", &mut diagnostics),
+    }
 }
 
 pub fn validate_corpus(request: &Json) -> Json {

@@ -5,6 +5,7 @@ use serde::{Deserialize, Serialize};
 mod architecture;
 mod attribution;
 mod linkage;
+mod materialization;
 mod semantic_contract;
 mod semantic_contract_set;
 
@@ -13,6 +14,7 @@ mod semantic_contract_set;
 // their native inputs into this normalized JSON contract; they must not
 // reimplement the rules evaluated below.
 const VERSION: &str = "1.0";
+const VERSION_1_1: &str = "1.1";
 const SENTINELS: [&str; 3] = [
     "__LEGACY_UNSPECIFIED__",
     "__NOT_YET_MODELED__",
@@ -32,7 +34,7 @@ const GENERATED_ARTIFACT_KINDS: [&str; 5] = [
 // from Python, Node, and browser/WASM hosts. Rust build dependencies are
 // compiled into that artifact, while Python additionally depends on wasmtime
 // to load it.
-#[derive(Clone, Debug, Serialize)]
+#[derive(Clone, Debug, PartialEq, Serialize)]
 #[serde(untagged)]
 enum Json {
     Null,
@@ -235,6 +237,30 @@ fn simple_result(operation: &str, success: bool, diagnostics: Vec<Json>) -> Json
         (String::from("success"), Json::Bool(success)),
         (String::from("diagnostics"), Json::Array(diagnostics)),
     ])
+}
+
+/// Build a result for the additive 1.1 protocol without changing the v1.0
+/// envelope. Keeping this helper separate is intentional: compatibility
+/// callers must continue to observe the exact v1.0 wire version and fields.
+pub(crate) fn simple_result_v11(operation: &str, success: bool, diagnostics: Vec<Json>) -> Json {
+    object([
+        (String::from("core_contract_version"), string(VERSION_1_1)),
+        (String::from("operation"), string(operation)),
+        (String::from("success"), Json::Bool(success)),
+        (String::from("diagnostics"), Json::Array(diagnostics)),
+    ])
+}
+
+/// Return a deterministic v1.1 protocol rejection. New operations use their
+/// operation-specific result envelope when possible; malformed or unsupported
+/// requests still retain the declared v1.1 version so host validators can
+/// route the failure through the correct contract.
+pub(crate) fn invalid_v11(operation: &str, message: impl Into<String>) -> Json {
+    simple_result_v11(
+        operation,
+        false,
+        vec![diagnostic("core.invalid_request", message, None)],
+    )
 }
 
 fn optional_string_value(object: &BTreeMap<String, Json>, key: &str) -> Option<String> {
@@ -1467,42 +1493,62 @@ pub fn execute_json(input: &[u8]) -> Vec<u8> {
     // parallel implementation for the same operation.
     match serde_json::from_slice::<Json>(input) {
         Ok(value) => {
+            let declared_version = value
+                .as_object()
+                .and_then(|object| object.get("core_contract_version"))
+                .and_then(Json::as_str);
             let operation = value
                 .as_object()
                 .and_then(|object| object.get("operation"))
                 .and_then(Json::as_str);
-            let result = match operation {
-                Some("validate_contract") => validate(&value),
-                Some("validate_project_metadata") => validate_project_metadata(&value),
-                Some("open_provider_registry") => validate_provider_registry(&value),
-                Some("open_repository") => validate_repository(&value),
-                Some("build_embodiment_linkage") => linkage::execute(&value),
-                Some("generate_attribution_shim") => attribution::execute(&value),
-                Some("classify_generated_artifact") => classify_generated_artifact(&value),
-                Some("validate_architecture_references") => {
-                    validate_architecture_references(&value)
+            let result = if declared_version == Some(VERSION_1_1) {
+                match operation {
+                    Some("resolve_semantic_contract_set") => {
+                        semantic_contract_set::resolve_exact(&value)
+                    }
+                    Some("materialize_architecture") => materialization::execute(&value),
+                    Some(operation) => invalid_v11(
+                        operation,
+                        "operation is not available in semantic-core protocol 1.1",
+                    ),
+                    None => invalid_v11("invalid_request", "operation is required"),
                 }
-                Some("validate_architecture") => architecture::execute(&value),
-                Some("canonicalize_semantic_json") => semantic_contract::canonicalize(&value),
-                Some("fingerprint_semantic_contract") => semantic_contract::fingerprint(&value),
-                Some("validate_semantic_resource_closure") => {
-                    semantic_contract::validate_closure(&value)
+            } else {
+                match operation {
+                    Some("validate_contract") => validate(&value),
+                    Some("validate_project_metadata") => validate_project_metadata(&value),
+                    Some("open_provider_registry") => validate_provider_registry(&value),
+                    Some("open_repository") => validate_repository(&value),
+                    Some("build_embodiment_linkage") => linkage::execute(&value),
+                    Some("generate_attribution_shim") => attribution::execute(&value),
+                    Some("classify_generated_artifact") => classify_generated_artifact(&value),
+                    Some("validate_architecture_references") => {
+                        validate_architecture_references(&value)
+                    }
+                    Some("validate_architecture") => architecture::execute(&value),
+                    Some("canonicalize_semantic_json") => semantic_contract::canonicalize(&value),
+                    Some("fingerprint_semantic_contract") => semantic_contract::fingerprint(&value),
+                    Some("validate_semantic_resource_closure") => {
+                        semantic_contract::validate_closure(&value)
+                    }
+                    Some("compose_semantic_contract_set") => semantic_contract::compose_set(&value),
+                    Some("validate_semantic_contract_profile") => {
+                        semantic_contract_set::validate_profile(&value)
+                    }
+                    Some("validate_semantic_contract_qualification") => {
+                        semantic_contract_set::validate_qualification(&value)
+                    }
+                    Some("assemble_semantic_contract_set") => {
+                        semantic_contract_set::assemble(&value)
+                    }
+                    Some("validate_semantic_contract_corpus") => {
+                        semantic_contract_set::validate_corpus(&value)
+                    }
+                    Some("resolve_current_semantic_contract_set") => {
+                        semantic_contract_set::resolve_current(&value)
+                    }
+                    Some(_) | None => invalid("unsupported semantic core operation"),
                 }
-                Some("compose_semantic_contract_set") => semantic_contract::compose_set(&value),
-                Some("validate_semantic_contract_profile") => {
-                    semantic_contract_set::validate_profile(&value)
-                }
-                Some("validate_semantic_contract_qualification") => {
-                    semantic_contract_set::validate_qualification(&value)
-                }
-                Some("assemble_semantic_contract_set") => semantic_contract_set::assemble(&value),
-                Some("validate_semantic_contract_corpus") => {
-                    semantic_contract_set::validate_corpus(&value)
-                }
-                Some("resolve_current_semantic_contract_set") => {
-                    semantic_contract_set::resolve_current(&value)
-                }
-                Some(_) | None => invalid("unsupported semantic core operation"),
             };
             json(&result).into_bytes()
         }
@@ -1544,4 +1590,68 @@ pub unsafe extern "C" fn execute(pointer: *const u8, size: usize) -> *mut u8 {
 #[no_mangle]
 pub unsafe extern "C" fn result_len() -> usize {
     LAST_RESULT_LEN
+}
+
+#[cfg(test)]
+mod semantic_core_v11_tests {
+    use super::Json;
+
+    fn execute(request: Json) -> Json {
+        let bytes = serde_json::to_vec(&request).expect("test request serializes");
+        serde_json::from_slice(&super::execute_json(&bytes)).expect("core result is JSON")
+    }
+
+    #[test]
+    fn v11_vector_inventory_covers_the_required_evidence_cases() {
+        let vectors: Json = serde_json::from_str(include_str!(
+            "../../contracts/semantic-core/v1.1/vectors/architecture-materialization.json"
+        ))
+        .expect("v1.1 vectors are valid JSON");
+        let cases = vectors
+            .as_object()
+            .and_then(|value| value.get("cases"))
+            .and_then(Json::as_array)
+            .expect("v1.1 vectors contain cases");
+        assert!(cases.len() >= 20);
+    }
+
+    #[test]
+    fn v11_exact_resolution_is_routed_to_the_v11_boundary() {
+        let result = execute(Json::Object(std::collections::BTreeMap::from([
+            ("core_contract_version".into(), Json::String("1.1".into())),
+            (
+                "operation".into(),
+                Json::String("resolve_semantic_contract_set".into()),
+            ),
+        ])));
+        assert_eq!(
+            result
+                .as_object()
+                .and_then(|value| value.get("core_contract_version"))
+                .and_then(Json::as_str),
+            Some("1.1")
+        );
+        assert_eq!(
+            result.as_object().and_then(|value| value.get("success")),
+            Some(&Json::Bool(false))
+        );
+    }
+
+    #[test]
+    fn v11_materialization_without_an_exact_set_id_is_rejected() {
+        let result = execute(Json::Object(std::collections::BTreeMap::from([
+            ("core_contract_version".into(), Json::String("1.1".into())),
+            (
+                "operation".into(),
+                Json::String("materialize_architecture".into()),
+            ),
+        ])));
+        assert_eq!(
+            result
+                .as_object()
+                .and_then(|value| value.get("outcome"))
+                .and_then(Json::as_str),
+            Some("Rejected")
+        );
+    }
 }

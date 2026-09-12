@@ -41,6 +41,22 @@
       "newUsePolicy": "permitted",
       "installedExecutionSupport": true,
       "historicalInterpretationSupport": true
+    },
+    {
+      "semanticContractSetId": "scs:v1:sha256:d12ce535f0a90c23741dfa516d207091197c2772dbcd538fabb133bdf5b79af6",
+      "operation": "resolve_semantic_contract_set",
+      "direction": "none",
+      "newUsePolicy": "permitted",
+      "installedExecutionSupport": true,
+      "historicalInterpretationSupport": true
+    },
+    {
+      "semanticContractSetId": "scs:v1:sha256:d12ce535f0a90c23741dfa516d207091197c2772dbcd538fabb133bdf5b79af6",
+      "operation": "materialize_architecture",
+      "direction": "none",
+      "newUsePolicy": "permitted",
+      "installedExecutionSupport": true,
+      "historicalInterpretationSupport": true
     }
   ]
 }

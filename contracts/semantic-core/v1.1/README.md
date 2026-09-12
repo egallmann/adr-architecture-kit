@@ -30,7 +30,15 @@ identity, package version, host binding, diagnostics, Runtime identity, and
 all fingerprint fields. Source-only revision changes therefore do not change
 the fingerprint, while semantic payload or provider qualification changes do.
 
-The source contract closure is the sorted unique set of authoring contracts
+Each source artifact carries an exact authoring binding with `family`,
+`version`, a top-level `schemaResource` (`canonicalResourceKey` plus its
+governed `contentDigest`), and the complete applicable `resourceClosure`.
+For a logical ADR the closure is the common, types, and logical schema
+resources; physical ADRs additionally include the physical-base resource.
+These digests must match the architecture-interpretation resource manifest.
+There is no aggregate or caller-invented source-contract fingerprint.
+
+The source contract closure is the sorted unique set of these exact bindings
 actually encountered in the supplied artifacts. It is not the SCS and is not
 expanded to every version supported by the package. A source contract that
 cannot express a selected semantic capability produces the typed limitation

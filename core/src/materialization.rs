@@ -177,6 +177,43 @@ fn map_source_id(
     }
 }
 
+fn candidate_identity(value: Option<&Json>, identity_map: &BTreeMap<String, String>) -> Option<String> {
+    let source_id = text(value?.as_object()?.get("id"))?;
+    if is_uuid_v7(&source_id) {
+        Some(source_id)
+    } else {
+        identity_map.get(&source_id).cloned()
+    }
+}
+
+fn collect_candidate_identities(
+    document: &BTreeMap<String, Json>,
+    identity_map: &BTreeMap<String, String>,
+    identities: &mut BTreeSet<String>,
+) {
+    let mut collect = |value: Option<&Json>| {
+        if let Some(id) = candidate_identity(value, identity_map) {
+            identities.insert(id);
+        }
+    };
+    collect(Some(&Json::Object(document.clone())));
+    for field in [
+        "decisions",
+        "invariants",
+        "constraints",
+        "non_functional_requirements",
+        "gaps",
+        "extension_entities",
+        "normative_propositions",
+    ] {
+        if let Some(values) = array(document.get(field)) {
+            for value in values {
+                collect(Some(value));
+            }
+        }
+    }
+}
+
 fn identity_map(
     value: Option<&Json>,
     provider: &BTreeMap<String, Json>,
@@ -276,6 +313,698 @@ fn identity_map(
     entries
 }
 
+fn is_lower_kebab(value: &str) -> bool {
+    let bytes = value.as_bytes();
+    (3..=96).contains(&bytes.len())
+        && bytes[0].is_ascii_lowercase()
+        && (bytes[bytes.len() - 1].is_ascii_lowercase()
+            || bytes[bytes.len() - 1].is_ascii_digit())
+        && bytes.iter().enumerate().all(|(index, byte)| {
+            byte.is_ascii_lowercase()
+                || byte.is_ascii_digit()
+                || (*byte == b'-'
+                    && index > 0
+                    && index + 1 < bytes.len()
+                    && bytes[index - 1] != b'-'
+                    && bytes[index + 1] != b'-')
+        })
+}
+
+fn is_four_digits(value: &str) -> bool {
+    value.len() == 4 && value.bytes().all(|byte| byte.is_ascii_digit())
+}
+
+fn is_adr_alias(value: &str, adr_type: &str) -> bool {
+    let prefix = match adr_type {
+        "logical" => ["ADR-L-", "ADR-V-"].as_slice(),
+        "physical-system" => ["ADR-PS-"].as_slice(),
+        "physical-component" => ["ADR-PC-"].as_slice(),
+        _ => &[] as &[&str],
+    };
+    prefix.iter().any(|prefix| {
+        value
+            .strip_prefix(prefix)
+            .is_some_and(is_four_digits)
+    })
+}
+
+fn is_extension_type(value: &str) -> bool {
+    let Some((namespace, local)) = value.split_once(':') else {
+        return false;
+    };
+    !namespace.is_empty()
+        && namespace.len() <= 64
+        && namespace.as_bytes()[0].is_ascii_alphanumeric()
+        && namespace
+            .bytes()
+            .all(|byte| byte.is_ascii_alphanumeric() || b"._-".contains(&byte))
+        && (2..=64).contains(&local.len())
+        && local.as_bytes()[0].is_ascii_lowercase()
+        && local
+            .bytes()
+            .all(|byte| byte.is_ascii_lowercase() || byte.is_ascii_digit() || byte == b'_')
+}
+
+fn is_extension_alias(value: &str) -> bool {
+    let Some((prefix, suffix)) = value.split_once('-') else {
+        return false;
+    };
+    (1..=16).contains(&prefix.len())
+        && prefix.bytes().all(|byte| byte.is_ascii_uppercase() || byte.is_ascii_digit())
+        && is_four_digits(suffix)
+}
+
+fn is_np_alias(value: &str) -> bool {
+    value.strip_prefix("NP-").is_some_and(is_four_digits)
+}
+
+fn is_iso_date(value: &str) -> bool {
+    value.len() == 10
+        && value.as_bytes()[4] == b'-'
+        && value.as_bytes()[7] == b'-'
+        && value
+            .bytes()
+            .enumerate()
+            .all(|(index, byte)| [4, 7].contains(&index) || byte.is_ascii_digit())
+}
+
+fn source_error(
+    diagnostics: &mut Vec<Json>,
+    path: &str,
+    message: impl Into<String>,
+) {
+    diagnostic_code(
+        diagnostics,
+        "semantic_contract.invalid_source_document",
+        message,
+        path,
+    );
+}
+
+fn required_string(
+    value: &BTreeMap<String, Json>,
+    key: &str,
+    path: &str,
+    diagnostics: &mut Vec<Json>,
+) -> Option<String> {
+    match text(value.get(key)).filter(|value| !value.is_empty()) {
+        Some(value) => Some(value),
+        None => {
+            source_error(
+                diagnostics,
+                &format!("{path}.{key}"),
+                format!("required source field {key} must be a non-empty string"),
+            );
+            None
+        }
+    }
+}
+
+fn validate_identity_envelope(
+    value: &BTreeMap<String, Json>,
+    path: &str,
+    diagnostics: &mut Vec<Json>,
+) -> bool {
+    let Some(id) = required_string(value, "id", path, diagnostics) else {
+        return false;
+    };
+    let Some(alias_id) = required_string(value, "alias_id", path, diagnostics) else {
+        return false;
+    };
+    let Some(alias_name) = required_string(value, "alias_name", path, diagnostics) else {
+        return false;
+    };
+    let mut valid = true;
+    if !is_uuid_v7(&id) {
+        source_error(
+            diagnostics,
+            &format!("{path}.id"),
+            "source identity must be UUIDv7",
+        );
+        valid = false;
+    }
+    if alias_id.is_empty() {
+        source_error(diagnostics, &format!("{path}.alias_id"), "alias_id must be non-empty");
+        valid = false;
+    }
+    if !is_lower_kebab(&alias_name) {
+        source_error(
+            diagnostics,
+            &format!("{path}.alias_name"),
+            "alias_name must use the governed lower-kebab grammar",
+        );
+        valid = false;
+    }
+    valid
+}
+
+fn validate_extension_properties(
+    value: Option<&Json>,
+    path: &str,
+    diagnostics: &mut Vec<Json>,
+) -> bool {
+    let Some(properties) = value.and_then(Json::as_object) else {
+        source_error(
+            diagnostics,
+            path,
+            "extension properties must be an object",
+        );
+        return false;
+    };
+    let mut valid = true;
+    for (key, value) in properties {
+        if key.is_empty()
+            || !key
+                .bytes()
+                .enumerate()
+                .all(|(index, byte)| byte.is_ascii_lowercase() || byte.is_ascii_digit() || (byte == b'_' && index > 0))
+        {
+            source_error(
+                diagnostics,
+                &format!("{path}.{key}"),
+                "extension property names must use lower snake case",
+            );
+            valid = false;
+        }
+        let scalar = matches!(value, Json::String(_) | Json::Number(_) | Json::Bool(_));
+        let scalar_array = array(Some(value)).is_some_and(|values| {
+            values
+                .iter()
+                .all(|value| matches!(value, Json::String(_) | Json::Number(_) | Json::Bool(_)))
+        });
+        if !scalar && !scalar_array {
+            source_error(
+                diagnostics,
+                &format!("{path}.{key}"),
+                "extension property values must be scalar or scalar arrays",
+            );
+            valid = false;
+        }
+    }
+    valid
+}
+
+fn validate_extension_entity(
+    value: Option<&Json>,
+    path: &str,
+    diagnostics: &mut Vec<Json>,
+) -> bool {
+    let Some(value) = value.and_then(Json::as_object) else {
+        source_error(diagnostics, path, "extension entity must be an object");
+        return false;
+    };
+    let mut valid = validate_identity_envelope(value, path, diagnostics);
+    let entity_type = required_string(value, "entity_type", path, diagnostics);
+    if !entity_type.as_deref().is_some_and(is_extension_type) {
+        source_error(
+            diagnostics,
+            &format!("{path}.entity_type"),
+            "extension entity_type is not governed",
+        );
+        valid = false;
+    }
+    if !text(value.get("alias_id")).is_some_and(|value| is_extension_alias(&value)) {
+        source_error(diagnostics, &format!("{path}.alias_id"), "extension alias_id must match the governed PREFIX-#### grammar");
+        valid = false;
+    }
+    valid &= validate_extension_properties(value.get("properties"), &format!("{path}.properties"), diagnostics);
+    if required_string(value, "rationale", path, diagnostics).is_none() {
+        valid = false;
+    }
+    let allowed = ["id", "alias_id", "alias_name", "entity_type", "properties", "rationale"];
+    for key in value.keys() {
+        if !allowed.contains(&key.as_str()) {
+            source_error(
+                diagnostics,
+                &format!("{path}.{key}"),
+                "extension entity contains an undeclared field",
+            );
+            valid = false;
+        }
+    }
+    valid
+}
+
+fn validate_extension_relationship(
+    value: Option<&Json>,
+    path: &str,
+    diagnostics: &mut Vec<Json>,
+) -> bool {
+    let Some(value) = value.and_then(Json::as_object) else {
+        source_error(diagnostics, path, "extension relationship must be an object");
+        return false;
+    };
+    let mut valid = validate_identity_envelope(value, path, diagnostics);
+    let relationship_type = required_string(value, "relationship_type", path, diagnostics);
+    if !relationship_type.as_deref().is_some_and(is_extension_type) {
+        source_error(
+            diagnostics,
+            &format!("{path}.relationship_type"),
+            "extension relationship_type is not governed",
+        );
+        valid = false;
+    }
+    if !text(value.get("alias_id")).is_some_and(|value| is_extension_alias(&value)) {
+        source_error(diagnostics, &format!("{path}.alias_id"), "extension alias_id must match the governed PREFIX-#### grammar");
+        valid = false;
+    }
+    for key in ["from_entity_id", "to_entity_id"] {
+        match required_string(value, key, path, diagnostics) {
+            Some(id) if is_uuid_v7(&id) => {}
+            Some(_) => {
+                source_error(
+                    diagnostics,
+                    &format!("{path}.{key}"),
+                    "relationship endpoint must be UUIDv7",
+                );
+                valid = false;
+            }
+            None => valid = false,
+        }
+    }
+    valid &= validate_extension_properties(value.get("properties"), &format!("{path}.properties"), diagnostics);
+    if required_string(value, "rationale", path, diagnostics).is_none() {
+        valid = false;
+    }
+    let allowed = [
+        "id",
+        "alias_id",
+        "alias_name",
+        "relationship_type",
+        "from_entity_id",
+        "to_entity_id",
+        "properties",
+        "rationale",
+    ];
+    for key in value.keys() {
+        if !allowed.contains(&key.as_str()) {
+            source_error(
+                diagnostics,
+                &format!("{path}.{key}"),
+                "extension relationship contains an undeclared field",
+            );
+            valid = false;
+        }
+    }
+    valid
+}
+
+fn validate_normative_proposition(
+    value: Option<&Json>,
+    path: &str,
+    diagnostics: &mut Vec<Json>,
+) -> bool {
+    let Some(value) = value.and_then(Json::as_object) else {
+        source_error(diagnostics, path, "normative proposition must be an object");
+        return false;
+    };
+    let mut valid = validate_identity_envelope(value, path, diagnostics);
+    if !text(value.get("alias_id")).is_some_and(|value| is_np_alias(&value)) {
+        source_error(diagnostics, &format!("{path}.alias_id"), "normative proposition alias_id must match NP-####");
+        valid = false;
+    }
+    let alias_id = text(value.get("alias_id"));
+    if !alias_id.as_deref().is_some_and(is_np_alias) {
+        source_error(
+            diagnostics,
+            &format!("{path}.alias_id"),
+            "normative proposition alias_id must match NP-####",
+        );
+        valid = false;
+    }
+    if required_string(value, "statement", path, diagnostics).is_none()
+        || required_string(value, "scope", path, diagnostics).is_none()
+    {
+        valid = false;
+    }
+    let force = text(value.get("normative_force"));
+    if !matches!(
+        force.as_deref(),
+        Some("MUST" | "MUST NOT" | "SHOULD" | "SHOULD NOT" | "MAY")
+    ) {
+        source_error(
+            diagnostics,
+            &format!("{path}.normative_force"),
+            "normative_force is outside the governed vocabulary",
+        );
+        valid = false;
+    }
+    let allowed = [
+        "id",
+        "alias_id",
+        "alias_name",
+        "statement",
+        "normative_force",
+        "scope",
+        "rationale",
+    ];
+    for key in value.keys() {
+        if !allowed.contains(&key.as_str()) {
+            source_error(
+                diagnostics,
+                &format!("{path}.{key}"),
+                "normative proposition contains an undeclared field",
+            );
+            valid = false;
+        }
+    }
+    valid
+}
+
+fn validate_component_specification(
+    value: Option<&Json>,
+    path: &str,
+    diagnostics: &mut Vec<Json>,
+) -> bool {
+    let Some(value) = value.and_then(Json::as_object) else {
+        source_error(diagnostics, path, "component specification must be an object");
+        return false;
+    };
+    let mut valid = validate_identity_envelope(value, path, diagnostics);
+    for key in ["name", "type", "responsibilities", "generation_context"] {
+        if !value.contains_key(key) {
+            source_error(diagnostics, &format!("{path}.{key}"), format!("component specification requires {key}"));
+            valid = false;
+        }
+    }
+    if !matches!(text(value.get("type")).as_deref(), Some("service" | "library" | "database" | "queue" | "cache" | "gateway" | "proxy" | "worker" | "scheduler")) {
+        source_error(diagnostics, &format!("{path}.type"), "component specification type is outside the governed vocabulary");
+        valid = false;
+    }
+    let Some(generation_context) = value.get("generation_context").and_then(Json::as_object) else {
+        source_error(diagnostics, &format!("{path}.generation_context"), "generation_context must be an object");
+        return false;
+    };
+    for key in ["purpose", "key_responsibilities"] {
+        if !generation_context.contains_key(key) {
+            source_error(diagnostics, &format!("{path}.generation_context.{key}"), format!("generation_context requires {key}"));
+            valid = false;
+        }
+    }
+    if !array(generation_context.get("key_responsibilities")).is_some_and(|values| !values.is_empty() && values.iter().all(|value| matches!(value, Json::String(_)))) {
+        source_error(diagnostics, &format!("{path}.generation_context.key_responsibilities"), "key_responsibilities must contain at least one string");
+        valid = false;
+    }
+    if let Some(interfaces) = value.get("interfaces") {
+        let Some(interfaces) = array(Some(interfaces)) else {
+            source_error(diagnostics, &format!("{path}.interfaces"), "interfaces must be an array");
+            return false;
+        };
+        if interfaces.is_empty() {
+            source_error(diagnostics, &format!("{path}.interfaces"), "interfaces must not be empty when present");
+            valid = false;
+        }
+        for (index, interface) in interfaces.iter().enumerate() {
+            let interface_path = format!("{path}.interfaces[{index}]");
+            let Some(interface) = interface.as_object() else {
+                source_error(diagnostics, &interface_path, "interface must be an object");
+                valid = false;
+                continue;
+            };
+            if !validate_identity_envelope(interface, &interface_path, diagnostics)
+                || !matches!(text(interface.get("type")).as_deref(), Some("REST" | "gRPC" | "GraphQL" | "message" | "event" | "stream" | "batch" | "CLI" | "library_api"))
+                || text(interface.get("specification")).is_none()
+            {
+                source_error(diagnostics, &interface_path, "interface requires governed identity, type, and specification");
+                valid = false;
+            }
+        }
+    }
+    valid
+}
+
+fn validate_source_document(
+    document: &BTreeMap<String, Json>,
+    version: &str,
+    path: &str,
+    diagnostics: &mut Vec<Json>,
+) -> bool {
+    let mut valid = true;
+    let schema_version = required_string(document, "schema_version", path, diagnostics);
+    if schema_version.as_deref() != Some(version) {
+        source_error(
+            diagnostics,
+            &format!("{path}.schema_version"),
+            "schema_version does not match the qualified source contract",
+        );
+        valid = false;
+    }
+    let Some(adr_type) = required_string(document, "adr_type", path, diagnostics) else {
+        return false;
+    };
+    if !matches!(adr_type.as_str(), "logical" | "physical-system" | "physical-component") {
+        source_error(diagnostics, &format!("{path}.adr_type"), "adr_type is not governed");
+        valid = false;
+    }
+    if let Some(id) = text(document.get("id")) {
+        if !is_uuid_v7(&id) {
+            source_error(diagnostics, &format!("{path}.id"), "id must be UUIDv7");
+            valid = false;
+        }
+    } else {
+        valid = false;
+        source_error(diagnostics, &format!("{path}.id"), "required source field id is missing");
+    }
+    if let Some(alias_id) = text(document.get("alias_id")) {
+        if !is_adr_alias(&alias_id, &adr_type) {
+            source_error(diagnostics, &format!("{path}.alias_id"), "alias_id does not match adr_type");
+            valid = false;
+        }
+    } else {
+        valid = false;
+        source_error(diagnostics, &format!("{path}.alias_id"), "required source field alias_id is missing");
+    }
+    if let Some(alias_name) = text(document.get("alias_name")) {
+        if !is_lower_kebab(&alias_name) {
+            source_error(diagnostics, &format!("{path}.alias_name"), "alias_name is not governed");
+            valid = false;
+        }
+    } else {
+        valid = false;
+        source_error(diagnostics, &format!("{path}.alias_name"), "required source field alias_name is missing");
+    }
+    for key in ["title", "status"] {
+        if required_string(document, key, path, diagnostics).is_none() {
+            valid = false;
+        }
+    }
+    if let Some(title) = text(document.get("title")) {
+        if !(5..=200).contains(&title.len()) {
+            source_error(diagnostics, &format!("{path}.title"), "title length is outside the governed range");
+            valid = false;
+        }
+    }
+    if !matches!(text(document.get("status")).as_deref(), Some("proposed" | "accepted" | "deprecated" | "superseded")) {
+        source_error(diagnostics, &format!("{path}.status"), "status is outside the governed vocabulary");
+        valid = false;
+    }
+    for key in ["created_date", "modified_date"] {
+        if let Some(value) = text(document.get(key)) {
+            if !is_iso_date(&value) {
+                source_error(diagnostics, &format!("{path}.{key}"), "date must use YYYY-MM-DD");
+                valid = false;
+            }
+        } else if key == "created_date" {
+            valid = false;
+            source_error(diagnostics, &format!("{path}.{key}"), "required source date is missing");
+        }
+    }
+    if let Some(authors) = array(document.get("authors")) {
+        if authors.is_empty() || authors.iter().any(|author| !matches!(author, Json::String(_))) {
+            source_error(diagnostics, &format!("{path}.authors"), "authors must contain strings and at least one author");
+            valid = false;
+        }
+    } else {
+        valid = false;
+        source_error(diagnostics, &format!("{path}.authors"), "authors must be a non-empty array");
+    }
+    match adr_type.as_str() {
+        "logical" => {
+            if !matches!(document.get("context"), Some(Json::String(_))) {
+                source_error(diagnostics, &format!("{path}.context"), "logical ADR requires context");
+                valid = false;
+            }
+            if !array(document.get("decisions")).is_some_and(|values| !values.is_empty()) {
+                source_error(diagnostics, &format!("{path}.decisions"), "logical ADR requires decisions");
+                valid = false;
+            }
+        }
+        "physical-system" => {
+            for key in ["implements_logical", "technology_stack"] {
+                if !array(document.get(key)).is_some_and(|values| !values.is_empty()) {
+                    source_error(diagnostics, &format!("{path}.{key}"), format!("physical-system ADR requires {key}"));
+                    valid = false;
+                }
+            }
+            if let Some(values) = array(document.get("implements_logical")) {
+                if values.iter().any(|value| !value.as_str().is_some_and(is_uuid_v7)) {
+                    source_error(diagnostics, &format!("{path}.implements_logical"), "implements_logical must contain UUIDv7 identities");
+                    valid = false;
+                }
+            }
+            if !matches!(document.get("context"), Some(Json::String(_))) {
+                source_error(diagnostics, &format!("{path}.context"), "physical ADR requires context");
+                valid = false;
+            }
+            if let Some(system) = document.get("system").and_then(Json::as_object) {
+                if !validate_identity_envelope(system, &format!("{path}.system"), diagnostics) {
+                    valid = false;
+                }
+                if !text(system.get("alias_id")).is_some_and(|value| value.starts_with("SYS-") && is_four_digits(&value[4..])) {
+                    source_error(diagnostics, &format!("{path}.system.alias_id"), "system alias_id must match SYS-####");
+                    valid = false;
+                }
+            } else {
+                source_error(diagnostics, &format!("{path}.system"), "physical-system ADR requires system identity");
+                valid = false;
+            }
+        }
+        "physical-component" => {
+            for key in ["implements_system", "component_specifications"] {
+                if !array(document.get(key)).is_some_and(|values| !values.is_empty()) {
+                    source_error(diagnostics, &format!("{path}.{key}"), format!("physical-component ADR requires {key}"));
+                    valid = false;
+                }
+            }
+            if let Some(values) = array(document.get("implements_system")) {
+                if values.iter().any(|value| !value.as_str().is_some_and(is_uuid_v7)) {
+                    source_error(diagnostics, &format!("{path}.implements_system"), "implements_system must contain UUIDv7 identities");
+                    valid = false;
+                }
+            }
+            if !matches!(document.get("context"), Some(Json::String(_))) {
+                source_error(diagnostics, &format!("{path}.context"), "physical ADR requires context");
+                valid = false;
+            }
+            if let Some(specifications) = document.get("component_specifications") {
+                if let Some(specifications) = array(Some(specifications)) {
+                    for (index, specification) in specifications.iter().enumerate() {
+                        valid &= validate_component_specification(Some(specification), &format!("{path}.component_specifications[{index}]"), diagnostics);
+                    }
+                }
+            }
+        }
+        _ => {}
+    }
+    for (field, values) in [
+        ("decisions", document.get("decisions")),
+        ("invariants", document.get("invariants")),
+        ("constraints", document.get("constraints")),
+        ("non_functional_requirements", document.get("non_functional_requirements")),
+        ("gaps", document.get("gaps")),
+    ] {
+        if let Some(value) = values {
+            if array(Some(value)).is_none() {
+                source_error(diagnostics, &format!("{path}.{field}"), "source declaration collection must be an array");
+                valid = false;
+            } else if let Some(items) = array(Some(value)) {
+                for (index, item) in items.iter().enumerate() {
+                    if !item.as_object().is_some_and(|item| validate_identity_envelope(item, &format!("{path}.{field}[{index}]"), diagnostics)) {
+                        valid = false;
+                    }
+                }
+            }
+        }
+    }
+    if let Some(values) = document.get("extension_entities") {
+        if let Some(values) = array(Some(values)) {
+            for (index, value) in values.iter().enumerate() {
+                valid &= validate_extension_entity(Some(value), &format!("{path}.extension_entities[{index}]"), diagnostics);
+            }
+        } else {
+            source_error(diagnostics, &format!("{path}.extension_entities"), "extension_entities must be an array");
+            valid = false;
+        }
+    }
+    if let Some(values) = document.get("extension_relationships") {
+        if let Some(values) = array(Some(values)) {
+            for (index, value) in values.iter().enumerate() {
+                valid &= validate_extension_relationship(Some(value), &format!("{path}.extension_relationships[{index}]"), diagnostics);
+            }
+        } else {
+            source_error(diagnostics, &format!("{path}.extension_relationships"), "extension_relationships must be an array");
+            valid = false;
+        }
+    }
+    if version == "1.5" {
+        if document.contains_key("normative_propositions") {
+            source_error(diagnostics, &format!("{path}.normative_propositions"), "authoring 1.5 cannot declare normative_propositions");
+            valid = false;
+        }
+    } else if let Some(values) = document.get("normative_propositions") {
+        if let Some(values) = array(Some(values)) {
+            for (index, value) in values.iter().enumerate() {
+                valid &= validate_normative_proposition(Some(value), &format!("{path}.normative_propositions[{index}]"), diagnostics);
+            }
+        } else {
+            source_error(diagnostics, &format!("{path}.normative_propositions"), "normative_propositions must be an array");
+            valid = false;
+        }
+    }
+    valid
+}
+
+fn governed_source_resources(
+    request: &Json,
+    diagnostics: &mut Vec<Json>,
+) -> BTreeMap<String, String> {
+    let mut resources = BTreeMap::new();
+    let Some(definitions) = request
+        .as_object()
+        .and_then(|root| root.get("definitions"))
+        .and_then(Json::as_array)
+    else {
+        source_error(diagnostics, "definitions", "architecture-interpretation definition closure is required");
+        return resources;
+    };
+    for bundle in definitions {
+        let Some(definition) = bundle
+            .as_object()
+            .and_then(|bundle| bundle.get("definition"))
+            .and_then(Json::as_object)
+        else {
+            continue;
+        };
+        if text(definition.get("semanticContractFamily")).as_deref() != Some("architecture-interpretation") {
+            continue;
+        }
+        if let Some(manifest) = array(definition.get("resourceManifest")) {
+            for entry in manifest {
+                let Some(entry) = entry.as_object() else { continue; };
+                let Some(key) = text(entry.get("canonicalResourceKey")) else { continue; };
+                if let Some(digest) = text(entry.get("contentDigest")) {
+                    resources.insert(key, digest);
+                }
+            }
+        }
+    }
+    if resources.is_empty() {
+        source_error(diagnostics, "definitions", "architecture-interpretation source resource closure is unavailable");
+    }
+    resources
+}
+
+fn expected_source_resource_keys(version: &str, adr_type: &str) -> Vec<String> {
+    let mut keys = vec![
+        format!("authoring/{version}/schema/adr-common.schema"),
+        format!("authoring/{version}/schema/types.schema"),
+    ];
+    keys.push(format!(
+        "authoring/{version}/schema/{}",
+        match adr_type {
+            "logical" => "adr-logical.schema",
+            "physical-system" => "adr-physical-system.schema",
+            "physical-component" => "adr-physical-component.schema",
+            _ => "adr-common.schema",
+        }
+    ));
+    if matches!(adr_type, "physical-system" | "physical-component") {
+        keys.push(format!("authoring/{version}/schema/adr-physical-base.schema"));
+    }
+    keys.sort();
+    keys
+}
+
 fn identity(
     value: &BTreeMap<String, Json>,
     identity_map: &BTreeMap<String, String>,
@@ -325,6 +1054,8 @@ fn identity(
 
 fn source_contract(
     value: &BTreeMap<String, Json>,
+    document: &BTreeMap<String, Json>,
+    governed_resources: &BTreeMap<String, String>,
     diagnostics: &mut Vec<Json>,
     path: &str,
 ) -> Option<(String, Json)> {
@@ -339,7 +1070,24 @@ fn source_contract(
     };
     let family = text(binding.get("family")).unwrap_or_default();
     let version = text(binding.get("version")).unwrap_or_default();
-    let fingerprint = text(binding.get("fingerprint"));
+    let Some(schema_resource) = binding.get("schemaResource").and_then(Json::as_object) else {
+        diagnostic_code(
+            diagnostics,
+            "semantic_contract.source_contract_qualification_required",
+            "source contract requires the exact applicable schema resource",
+            &format!("{path}.sourceContract.schemaResource"),
+        );
+        return None;
+    };
+    let Some(resource_closure) = array(binding.get("resourceClosure")) else {
+        diagnostic_code(
+            diagnostics,
+            "semantic_contract.source_contract_qualification_required",
+            "source contract requires its exact imported schema resource closure",
+            &format!("{path}.sourceContract.resourceClosure"),
+        );
+        return None;
+    };
     if family != "authoring" || !matches!(version.as_str(), "1.5" | "1.6") {
         diagnostic_code(
             diagnostics,
@@ -349,35 +1097,151 @@ fn source_contract(
         );
         return None;
     }
-    let Some(fingerprint) = fingerprint else {
+    let adr_type = text(document.get("adr_type")).unwrap_or_default();
+    let expected_keys = expected_source_resource_keys(&version, &adr_type);
+    let Some(schema_key) = text(schema_resource.get("canonicalResourceKey")) else {
         diagnostic_code(
             diagnostics,
-            "semantic_contract.missing_source_contract_fingerprint",
-            "source-contract binding requires its retained schema digest",
-            &format!("{path}.sourceContract.fingerprint"),
+            "semantic_contract.source_contract_qualification_required",
+            "schemaResource requires canonicalResourceKey",
+            &format!("{path}.sourceContract.schemaResource.canonicalResourceKey"),
         );
         return None;
     };
-    if !is_sha256(&fingerprint) {
+    let Some(schema_digest) = text(schema_resource.get("contentDigest")) else {
         diagnostic_code(
             diagnostics,
-            "semantic_contract.invalid_source_contract_fingerprint",
-            "source-contract binding fingerprint must be sha256:<64 lowercase hex characters>",
-            &format!("{path}.sourceContract.fingerprint"),
+            "semantic_contract.source_contract_qualification_required",
+            "schemaResource requires contentDigest",
+            &format!("{path}.sourceContract.schemaResource.contentDigest"),
         );
         return None;
+    };
+    let expected_schema = expected_keys
+        .iter()
+        .find(|key| key.ends_with(match adr_type.as_str() {
+            "logical" => "adr-logical.schema",
+            "physical-system" => "adr-physical-system.schema",
+            "physical-component" => "adr-physical-component.schema",
+            _ => "adr-common.schema",
+        }))
+        .cloned()
+        .unwrap_or_default();
+    if schema_key != expected_schema {
+        diagnostic_code(
+            diagnostics,
+            "semantic_contract.source_contract_schema_mismatch",
+            "schemaResource is not the exact top-level authoring schema for adr_type",
+            &format!("{path}.sourceContract.schemaResource.canonicalResourceKey"),
+        );
     }
+    let mut supplied = BTreeMap::new();
+    for (index, raw_resource) in resource_closure.iter().enumerate() {
+        let resource_path = format!("{path}.sourceContract.resourceClosure[{index}]");
+        let Some(resource) = raw_resource.as_object() else {
+            diagnostic_code(
+                diagnostics,
+                "semantic_contract.source_contract_resource_invalid",
+                "source contract closure entry must be an object",
+                &resource_path,
+            );
+            continue;
+        };
+        let Some(key) = text(resource.get("canonicalResourceKey")) else {
+            diagnostic_code(
+                diagnostics,
+                "semantic_contract.source_contract_resource_invalid",
+                "source contract closure entry requires canonicalResourceKey",
+                &format!("{resource_path}.canonicalResourceKey"),
+            );
+            continue;
+        };
+        let Some(digest) = text(resource.get("contentDigest")) else {
+            diagnostic_code(
+                diagnostics,
+                "semantic_contract.source_contract_resource_invalid",
+                "source contract closure entry requires contentDigest",
+                &format!("{resource_path}.contentDigest"),
+            );
+            continue;
+        };
+        if supplied.insert(key.clone(), digest.clone()).is_some() {
+            diagnostic_code(
+                diagnostics,
+                "semantic_contract.source_contract_resource_duplicate",
+                "source contract closure cannot repeat a resource identity",
+                &resource_path,
+            );
+        }
+        if governed_resources.get(&key) != Some(&digest) {
+            diagnostic_code(
+                diagnostics,
+                "semantic_contract.source_contract_resource_unqualified",
+                "source contract resource is not the governed imported resource and digest",
+                &resource_path,
+            );
+        }
+    }
+    if supplied != expected_keys
+        .iter()
+        .filter_map(|key| governed_resources.get(key).map(|digest| (key.clone(), digest.clone())))
+        .collect::<BTreeMap<_, _>>()
+    {
+        diagnostic_code(
+            diagnostics,
+            "semantic_contract.source_contract_closure_mismatch",
+            "source contract closure does not exactly match the applicable authoring schema imports",
+            &format!("{path}.sourceContract.resourceClosure"),
+        );
+    }
+    if governed_resources.get(&schema_key) != Some(&schema_digest) {
+        diagnostic_code(
+            diagnostics,
+            "semantic_contract.source_contract_schema_unqualified",
+            "top-level schema resource does not match the governed resource digest",
+            &format!("{path}.sourceContract.schemaResource"),
+        );
+    }
+    let mut canonical_resources = resource_closure.to_vec();
+    canonical_resources.sort_by_key(|resource| {
+        text(resource.as_object().and_then(|value| value.get("canonicalResourceKey")))
+            .unwrap_or_default()
+    });
     let result = object([
         ("family".into(), string(family.clone())),
         ("version".into(), string(version.clone())),
-        ("fingerprint".into(), string(fingerprint.clone())),
+        ("schemaResource".into(), Json::Object(schema_resource.clone())),
+        ("resourceClosure".into(), Json::Array(canonical_resources)),
     ]);
-    let key = format!("{family}@{version}@{fingerprint}");
+    let key = format!("{family}@{version}@{schema_key}");
     Some((key, result))
 }
 
 fn source_identity_ref(binding: &Json) -> Json {
     binding.clone()
+}
+
+fn normalized_source_contract(binding: &Json) -> Json {
+    // normalized-model v2.3 predates the richer transport binding and keeps
+    // its compatibility-shaped source_contract member.  Its fingerprint is
+    // the exact qualified top-level schema resource digest; it is never an
+    // aggregate or caller-supplied digest.  The complete binding remains on
+    // the artifact and in sourceContractClosure.
+    let binding_object = binding.as_object();
+    let family = text(binding_object.and_then(|value| value.get("family"))).unwrap_or_default();
+    let version = text(binding_object.and_then(|value| value.get("version"))).unwrap_or_default();
+    let fingerprint = text(
+        binding_object
+            .and_then(|value| value.get("schemaResource"))
+            .and_then(Json::as_object)
+            .and_then(|value| value.get("contentDigest")),
+    )
+    .unwrap_or_default();
+    object([
+        ("family".into(), string(family)),
+        ("version".into(), string(version)),
+        ("fingerprint".into(), string(fingerprint)),
+    ])
 }
 
 fn regular_entity(
@@ -661,7 +1525,7 @@ fn normative_proposition(
                 &content_digest,
             ),
         ),
-        ("source_contract".into(), source_contract.clone()),
+        ("source_contract".into(), normalized_source_contract(source_contract)),
         (
             "canonical_source".into(),
             object([
@@ -978,6 +1842,7 @@ fn failure(
 fn materialize_sources(
     source_basis: &Json,
     authority_provider: &Json,
+    governed_resources: &BTreeMap<String, String>,
     diagnostics: &mut Vec<Json>,
 ) -> (Json, Vec<Json>, Vec<Json>) {
     let Some(provider) = authority_provider.as_object() else {
@@ -1046,15 +1911,34 @@ fn materialize_sources(
     let identity_map = identity_map(source.get("legacyIdentityMap"), provider, diagnostics);
     let mut seen_refs = BTreeSet::new();
     let mut seen_source_ids = BTreeSet::new();
+    let mut identity_index = BTreeSet::new();
+    for raw_artifact in raw_artifacts {
+        if let Some(document) = raw_artifact
+            .as_object()
+            .and_then(|artifact| artifact.get("document"))
+            .and_then(Json::as_object)
+        {
+            collect_candidate_identities(document, &identity_map, &mut identity_index);
+        }
+    }
     let mut artifacts = Vec::new();
     let mut closure_by_key = BTreeMap::new();
-    let mut limitations = Vec::new();
+    let mut limitations = BTreeMap::new();
     let mut entities = Vec::new();
     let mut relationships = Vec::new();
     let mut unresolved = Vec::new();
     let mut known_entity_ids = BTreeSet::new();
 
-    for (index, raw_artifact) in raw_artifacts.iter().enumerate() {
+    let mut artifact_order = raw_artifacts.iter().enumerate().collect::<Vec<_>>();
+    artifact_order.sort_by_key(|(_, artifact)| {
+        let artifact = artifact.as_object();
+        (
+            text(artifact.and_then(|value| value.get("sourceRef"))).unwrap_or_default(),
+            text(artifact.and_then(|value| value.get("artifactPath"))).unwrap_or_default(),
+            text(artifact.and_then(|value| value.get("contentDigest"))).unwrap_or_default(),
+        )
+    });
+    for (index, (_original_index, raw_artifact)) in artifact_order.iter().enumerate() {
         let path = format!("sourceBasis.artifacts[{index}]");
         let Some(artifact) = raw_artifact.as_object() else {
             diagnostic_code(
@@ -1077,9 +1961,6 @@ fn materialize_sources(
             );
             continue;
         }
-        let Some((_closure_key, binding)) = source_contract(artifact, diagnostics, &path) else {
-            continue;
-        };
         let Some(document) = artifact.get("document").and_then(Json::as_object) else {
             diagnostic_code(
                 diagnostics,
@@ -1090,7 +1971,11 @@ fn materialize_sources(
             continue;
         };
         let source_version =
-            text(binding.as_object().and_then(|value| value.get("version"))).unwrap_or_default();
+            text(artifact
+                .get("sourceContract")
+                .and_then(Json::as_object)
+                .and_then(|value| value.get("version")))
+            .unwrap_or_default();
         let declared_version = text(document.get("schema_version")).unwrap_or_default();
         if declared_version != source_version {
             diagnostic_code(
@@ -1101,6 +1986,18 @@ fn materialize_sources(
             );
             continue;
         }
+        if !validate_source_document(document, &source_version, &format!("{path}.document"), diagnostics) {
+            continue;
+        }
+        let Some((closure_key, binding)) = source_contract(
+            artifact,
+            document,
+            governed_resources,
+            diagnostics,
+            &path,
+        ) else {
+            continue;
+        };
         if !seen_refs.insert(source_ref.clone()) {
             diagnostic_code(
                 diagnostics,
@@ -1125,50 +2022,14 @@ fn materialize_sources(
                 );
             }
         }
-        let closure_ref = object([
-                (
-                    "semanticContractFamily".into(),
-                    string(
-                        text(binding.as_object().and_then(|value| value.get("family")))
-                            .unwrap_or_default(),
-                    ),
-                ),
-                (
-                    "semanticContractVersion".into(),
-                    string(
-                        text(binding.as_object().and_then(|value| value.get("version")))
-                            .unwrap_or_default(),
-                    ),
-                ),
-                (
-                    "semanticContractFingerprint".into(),
-                    string(
-                        text(
-                            binding
-                                .as_object()
-                                .and_then(|value| value.get("fingerprint")),
-                        )
-                        .unwrap_or_default(),
-                    ),
-                ),
-            ]);
-        let closure_version_key = format!(
-            "{}@{}",
-            text(binding.as_object().and_then(|value| value.get("family"))).unwrap_or_default(),
-            text(binding.as_object().and_then(|value| value.get("version"))).unwrap_or_default(),
-        );
-        if let Some(previous) = closure_by_key.get(&closure_version_key) {
-            if previous != &closure_ref {
-                diagnostic_code(
-                    diagnostics,
-                    "semantic_contract.conflicting_source_contract_binding",
-                    "one authoring contract version cannot be bound to conflicting retained digests",
-                    &format!("{path}.sourceContract"),
-                );
-            }
-        } else {
-            closure_by_key.insert(closure_version_key, closure_ref);
-        }
+        // The result retains the exact qualified binding.  It deliberately
+        // does not collapse the imported schema closure into an aggregate
+        // fingerprint: the closure is the authority evidence.
+        let closure_ref = source_identity_ref(&binding);
+        // Different authoring top-level schemas at the same version are
+        // distinct qualified bindings.  Deduplicate only the exact binding,
+        // not merely family@version.
+        closure_by_key.entry(closure_key).or_insert(closure_ref);
         let mut output_artifact = artifact.clone();
         output_artifact.insert("sourceContract".into(), binding.clone());
         artifacts.push(Json::Object(output_artifact));
@@ -1321,7 +2182,21 @@ fn materialize_sources(
                     &format!("{path}.document.normative_propositions"),
                 );
             }
-            limitations.push(limitation(&binding, "normative_proposition"));
+            let limitation_key = format!(
+                "{}:{}",
+                text(
+                    binding
+                        .as_object()
+                        .and_then(|value| value.get("schemaResource"))
+                        .and_then(Json::as_object)
+                        .and_then(|value| value.get("canonicalResourceKey")),
+                )
+                .unwrap_or_default(),
+                "normative_proposition"
+            );
+            limitations
+                .entry(limitation_key)
+                .or_insert_with(|| limitation(&binding, "normative_proposition"));
         } else if let Some(values) = array(document.get("normative_propositions")) {
             for (np_index, np) in values.iter().enumerate() {
                 let np_path = format!("{path}.document.normative_propositions[{np_index}]");
@@ -1390,7 +2265,7 @@ fn materialize_sources(
                     } else {
                         identity_map.get(related).cloned().unwrap_or_default()
                     };
-                    if canonical.is_empty() || !known_entity_ids.contains(&canonical) {
+                    if canonical.is_empty() || !identity_index.contains(&canonical) {
                         unresolved.push(object([
                             ("kind".into(), string("unresolved_source_reference")),
                             ("reference".into(), string(related)),
@@ -1430,6 +2305,7 @@ fn materialize_sources(
             .unwrap_or_default()
         )
     });
+    let mut limitations = limitations.into_values().collect::<Vec<_>>();
     limitations.sort_by_key(|value| {
         text(
             value
@@ -1446,7 +2322,9 @@ fn materialize_sources(
             text(
                 value
                     .as_object()
-                    .and_then(|object| object.get("fingerprint")),
+                    .and_then(|object| object.get("schemaResource"))
+                    .and_then(Json::as_object)
+                    .and_then(|resource| resource.get("canonicalResourceKey")),
             )
             .unwrap_or_default(),
         )
@@ -1496,11 +2374,13 @@ fn materialize_sources(
     let model_fingerprint = digest_json(&normalized).unwrap_or_else(|_| digest_bytes(&[]));
     if let Json::Object(mut values) = normalized {
         values.insert("fingerprint".into(), string(model_fingerprint));
+        let model = Json::Object(values);
+        let _valid = validate_normalized_model(&model, diagnostics);
         return (
             source_basis,
             closure,
             vec![object([
-                ("normalizedModel".into(), Json::Object(values)),
+                ("normalizedModel".into(), model),
                 ("limitations".into(), Json::Array(limitations.clone())),
             ])],
         );
@@ -1510,6 +2390,172 @@ fn materialize_sources(
 
 fn number(value: u64) -> Json {
     Json::Number(serde_json::Number::from(value))
+}
+
+fn required_object<'a>(value: &'a BTreeMap<String, Json>, key: &str) -> Option<&'a BTreeMap<String, Json>> {
+    value.get(key).and_then(Json::as_object)
+}
+
+fn normalized_field(value: &BTreeMap<String, Json>, key: &str) -> bool {
+    value.contains_key(key)
+}
+
+fn validate_normalized_model(model: &Json, diagnostics: &mut Vec<Json>) -> bool {
+    // This is the executable guard for the v2.3 normalized boundary.  The
+    // schema remains the normative artifact, while this small structural
+    // mirror prevents a malformed model from being returned when a host only
+    // has the WASM core and cannot run a JSON-Schema implementation.
+    let Some(model) = model.as_object() else {
+        diagnostic_code(
+            diagnostics,
+            "semantic_contract.normalized_model_invalid",
+            "normalized model must be an object",
+            "normalizedModel",
+        );
+        return false;
+    };
+    let mut valid = true;
+    for (key, expected) in [
+        ("schema_version", "2.3"),
+        ("type", "normalized_architecture_model"),
+        ("mode", "normalized"),
+    ] {
+        if text(model.get(key)).as_deref() != Some(expected) {
+            diagnostic_code(
+                diagnostics,
+                "semantic_contract.normalized_model_invalid",
+                format!("normalizedModel.{key} must be {expected}"),
+                &format!("normalizedModel.{key}"),
+            );
+            valid = false;
+        }
+    }
+    for key in ["scope_root", "fingerprint"] {
+        if !normalized_field(model, key) || text(model.get(key)).unwrap_or_default().is_empty() {
+            diagnostic_code(
+                diagnostics,
+                "semantic_contract.normalized_model_invalid",
+                format!("normalizedModel.{key} is required"),
+                &format!("normalizedModel.{key}"),
+            );
+            valid = false;
+        }
+    }
+    if !text(model.get("fingerprint")).is_some_and(|value| is_sha256(&value)) {
+        diagnostic_code(
+            diagnostics,
+            "semantic_contract.normalized_model_invalid",
+            "normalizedModel.fingerprint must be a sha256 digest",
+            "normalizedModel.fingerprint",
+        );
+        valid = false;
+    }
+    let Some(entities) = array(model.get("entities")) else {
+        diagnostic_code(
+            diagnostics,
+            "semantic_contract.normalized_model_invalid",
+            "normalizedModel.entities must be an array",
+            "normalizedModel.entities",
+        );
+        return false;
+    };
+    let mut entity_ids = BTreeSet::new();
+    for (index, raw_entity) in entities.iter().enumerate() {
+        let path = format!("normalizedModel.entities[{index}]");
+        let Some(entity) = raw_entity.as_object() else {
+            diagnostic_code(diagnostics, "semantic_contract.normalized_model_invalid", "normalized entity must be an object", &path);
+            valid = false;
+            continue;
+        };
+        for key in [
+            "id", "alias_id", "alias_name", "alias_ref", "entity_type", "name", "summary",
+            "uri", "created_at", "entity_fingerprint", "canonical_source", "completeness", "provenance",
+        ] {
+            if !normalized_field(entity, key) {
+                diagnostic_code(diagnostics, "semantic_contract.normalized_model_invalid", format!("normalized entity requires {key}"), &format!("{path}.{key}"));
+                valid = false;
+            }
+        }
+        let id = text(entity.get("id")).unwrap_or_default();
+        if !is_uuid_v7(&id) || !entity_ids.insert(id) {
+            diagnostic_code(diagnostics, "semantic_contract.normalized_model_invalid", "normalized entity id must be a unique UUIDv7", &format!("{path}.id"));
+            valid = false;
+        }
+        if !text(entity.get("alias_name")).is_some_and(|value| is_lower_kebab(&value))
+            || !text(entity.get("entity_fingerprint")).is_some_and(|value| is_sha256(&value))
+        {
+            diagnostic_code(diagnostics, "semantic_contract.normalized_model_invalid", "normalized entity identity or fingerprint is invalid", &path);
+            valid = false;
+        }
+        let entity_type = text(entity.get("entity_type")).unwrap_or_default();
+        if entity_type == "normative_proposition" {
+            for key in ["statement", "normative_force", "scope", "declaring_adr", "source_artifact", "source_contract"] {
+                if !normalized_field(entity, key) {
+                    diagnostic_code(diagnostics, "semantic_contract.normalized_model_invalid", format!("normative proposition requires {key}"), &format!("{path}.{key}"));
+                    valid = false;
+                }
+            }
+            if normalized_field(entity, "lifecycle_stage") {
+                diagnostic_code(diagnostics, "semantic_contract.normalized_model_invalid", "normative proposition must not have lifecycle_stage", &format!("{path}.lifecycle_stage"));
+                valid = false;
+            }
+            if !text(entity.get("alias_id")).is_some_and(|value| is_np_alias(&value)) {
+                diagnostic_code(diagnostics, "semantic_contract.normalized_model_invalid", "normative proposition alias_id is invalid", &format!("{path}.alias_id"));
+                valid = false;
+            }
+            let Some(source_contract) = required_object(entity, "source_contract") else {
+                valid = false;
+                continue;
+            };
+            if !matches!(text(source_contract.get("family")).as_deref(), Some(value) if !value.is_empty())
+                || !matches!(text(source_contract.get("version")).as_deref(), Some(value) if !value.is_empty())
+                || !text(source_contract.get("fingerprint")).is_some_and(|value| is_sha256(&value))
+            {
+                diagnostic_code(diagnostics, "semantic_contract.normalized_model_invalid", "normative proposition source_contract compatibility projection is invalid", &format!("{path}.source_contract"));
+                valid = false;
+            }
+        } else {
+            if !normalized_field(entity, "lifecycle_stage") {
+                diagnostic_code(diagnostics, "semantic_contract.normalized_model_invalid", "regular normalized entity requires lifecycle_stage", &format!("{path}.lifecycle_stage"));
+                valid = false;
+            }
+            if entity_type.contains(':') && !normalized_field(entity, "extension") {
+                diagnostic_code(diagnostics, "semantic_contract.normalized_model_invalid", "extension entity requires extension evidence", &format!("{path}.extension"));
+                valid = false;
+            }
+        }
+    }
+    let Some(relationships) = array(model.get("relationships")) else {
+        diagnostic_code(diagnostics, "semantic_contract.normalized_model_invalid", "normalizedModel.relationships must be an array", "normalizedModel.relationships");
+        return false;
+    };
+    for (index, raw_relationship) in relationships.iter().enumerate() {
+        let path = format!("normalizedModel.relationships[{index}]");
+        let Some(relationship) = raw_relationship.as_object() else {
+            diagnostic_code(diagnostics, "semantic_contract.normalized_model_invalid", "relationship record must be an object", &path);
+            valid = false;
+            continue;
+        };
+        for key in ["record_kind", "relationship_type", "from_entity_id", "to_entity_id", "canonical_source_ref"] {
+            if !normalized_field(relationship, key) {
+                diagnostic_code(diagnostics, "semantic_contract.normalized_model_invalid", format!("relationship requires {key}"), &format!("{path}.{key}"));
+                valid = false;
+            }
+        }
+        if text(relationship.get("record_kind")).as_deref() != Some("canonical")
+            || !text(relationship.get("id")).is_some_and(|value| is_uuid_v7(&value))
+            || !text(relationship.get("from_entity_id")).is_some_and(|value| is_uuid_v7(&value))
+            || !text(relationship.get("to_entity_id")).is_some_and(|value| is_uuid_v7(&value))
+        {
+            diagnostic_code(diagnostics, "semantic_contract.normalized_model_invalid", "relationship record has invalid UUID identity or kind", &path);
+            valid = false;
+        }
+    }
+    if array(model.get("unresolved")).is_none() {
+        diagnostic_code(diagnostics, "semantic_contract.normalized_model_invalid", "normalizedModel.unresolved must be an array", "normalizedModel.unresolved");
+        valid = false;
+    }
+    valid
 }
 
 fn extract_materialized_parts(value: Json) -> (Json, Vec<Json>, Json, Vec<Json>) {
@@ -1608,8 +2654,7 @@ pub fn execute(request: &Json) -> Json {
     };
     let resolution = match resolution {
         Ok(value) => value,
-        Err(mut diagnostics) => {
-            diagnostics.extend(request_diagnostics);
+        Err(diagnostics) => {
             return failure(
                 "Rejected",
                 Json::Null,
@@ -1635,7 +2680,7 @@ pub fn execute(request: &Json) -> Json {
         );
     };
     let _ = provider;
-    let Some(source_object) = source_basis.as_object() else {
+    if source_basis.as_object().is_none() {
         return failure(
             "Unavailable",
             Json::Null,
@@ -1648,10 +2693,15 @@ pub fn execute(request: &Json) -> Json {
                 Some("sourceBasis".into()),
             )],
         );
-    };
-    let _ = source_object;
+    }
+    let governed_resources = governed_source_resources(request, &mut request_diagnostics);
     let (materialized, closure, parts) =
-        materialize_sources(&source_basis, &authority_provider, &mut request_diagnostics);
+        materialize_sources(
+            &source_basis,
+            &authority_provider,
+            &governed_resources,
+            &mut request_diagnostics,
+        );
     let (normalized_model, limitations, _, _) = extract_materialized_parts(Json::Array(parts));
     if !request_diagnostics.is_empty() || normalized_model == Json::Null {
         return failure(

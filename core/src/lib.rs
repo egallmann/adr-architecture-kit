@@ -1602,7 +1602,7 @@ mod semantic_core_v11_tests {
     }
 
     #[test]
-    fn v11_vector_inventory_covers_the_required_evidence_cases() {
+    fn v11_vectors_execute_against_the_canonical_core() {
         let vectors: Json = serde_json::from_str(include_str!(
             "../../contracts/semantic-core/v1.1/vectors/architecture-materialization.json"
         ))
@@ -1612,7 +1612,61 @@ mod semantic_core_v11_tests {
             .and_then(|value| value.get("cases"))
             .and_then(Json::as_array)
             .expect("v1.1 vectors contain cases");
-        assert!(cases.len() >= 20);
+        assert!(cases.len() >= 28);
+        for case in cases {
+            let request = case
+                .as_object()
+                .and_then(|value| value.get("request"))
+                .cloned()
+                .expect("vector case contains a request");
+            let expected = case
+                .as_object()
+                .and_then(|value| value.get("expected"))
+                .and_then(Json::as_object)
+                .expect("vector case contains expectations");
+            let result = execute(request);
+            assert_eq!(
+                result.as_object().and_then(|value| value.get("success")),
+                expected.get("success"),
+                "{}",
+                case.as_object().and_then(|value| value.get("name")).and_then(Json::as_str).unwrap_or("unnamed")
+            );
+            assert_eq!(
+                result.as_object().and_then(|value| value.get("outcome")),
+                expected.get("outcome"),
+                "{}",
+                case.as_object().and_then(|value| value.get("name")).and_then(Json::as_str).unwrap_or("unnamed")
+            );
+            let mut actual_counts = std::collections::BTreeMap::new();
+            let mut actual_codes = Vec::new();
+            if let Some(diagnostics) = result.as_object().and_then(|value| value.get("diagnostics")).and_then(Json::as_array) {
+                for diagnostic in diagnostics {
+                    if let Some(code) = diagnostic.as_object().and_then(|value| value.get("code")).and_then(Json::as_str) {
+                        actual_codes.push(Json::String(code.to_owned()));
+                        let count = actual_counts.entry(code.to_owned()).or_insert(0u64);
+                        *count += 1;
+                    }
+                }
+            }
+            let actual = Json::Object(
+                actual_counts
+                    .into_iter()
+                    .map(|(code, count)| (code, Json::Number(serde_json::Number::from(count))))
+                    .collect(),
+            );
+            assert_eq!(
+                Json::Array(actual_codes),
+                expected.get("diagnostic_codes").cloned().unwrap_or_else(|| Json::Array(Vec::new())),
+                "diagnostic order for {}",
+                case.as_object().and_then(|value| value.get("name")).and_then(Json::as_str).unwrap_or("unnamed")
+            );
+            assert_eq!(
+                actual,
+                expected.get("diagnostic_code_counts").cloned().unwrap_or_else(|| Json::Object(std::collections::BTreeMap::new())),
+                "diagnostic count shape for {}",
+                case.as_object().and_then(|value| value.get("name")).and_then(Json::as_str).unwrap_or("unnamed")
+            );
+        }
     }
 
     #[test]

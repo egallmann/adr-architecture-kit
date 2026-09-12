@@ -31,13 +31,12 @@
         "operation": {"type": "string", "minLength": 1}
       }
     },
-    "semantic_contract_ref": {
+    "source_contract_resource": {
       "type": "object",
-      "required": ["semanticContractFamily", "semanticContractVersion", "semanticContractFingerprint"],
+      "required": ["canonicalResourceKey", "contentDigest"],
       "properties": {
-        "semanticContractFamily": {"type": "string", "minLength": 1},
-        "semanticContractVersion": {"type": "string", "minLength": 1},
-        "semanticContractFingerprint": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"}
+        "canonicalResourceKey": {"type": "string", "pattern": "^authoring/(?:1\\.5|1\\.6)/schema/[a-z0-9-]+\\.schema$"},
+        "contentDigest": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"}
       },
       "additionalProperties": false
     },
@@ -48,6 +47,21 @@
         "semanticContractFamily": {"type": "string", "minLength": 1},
         "semanticContractVersion": {"type": "string", "minLength": 1},
         "semanticContractFingerprint": {"type": "string", "pattern": "^scf:v1:sha256:[0-9a-f]{64}$"}
+      },
+      "additionalProperties": false
+    },
+    "source_contract_binding": {
+      "type": "object",
+      "required": ["family", "version", "schemaResource", "resourceClosure"],
+      "properties": {
+        "family": {"const": "authoring"},
+        "version": {"enum": ["1.5", "1.6"]},
+        "schemaResource": {"$ref": "#/$defs/source_contract_resource"},
+        "resourceClosure": {
+          "type": "array",
+          "minItems": 3,
+          "items": {"$ref": "#/$defs/source_contract_resource"}
+        }
       },
       "additionalProperties": false
     },
@@ -70,16 +84,6 @@
       "properties": {
         "kind": {"type": "string", "minLength": 1},
         "architectureNamespace": {"type": "string", "minLength": 1}
-      },
-      "additionalProperties": false
-    },
-    "source_contract_binding": {
-      "type": "object",
-      "required": ["family", "version", "fingerprint"],
-      "properties": {
-        "family": {"const": "authoring"},
-        "version": {"enum": ["1.5", "1.6"]},
-        "fingerprint": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"}
       },
       "additionalProperties": false
     },
@@ -188,7 +192,7 @@
             "materializationContractVersion": {"const": "1.0"},
             "semanticContractSetId": {"type": "string", "pattern": "^scs:v1:sha256:[0-9a-f]{64}$"},
             "authorityProvider": {"$ref": "#/$defs/authority_provider"},
-            "sourceBasis": {"$ref": "#/$defs/source_basis"},
+            "sourceBasis": {"anyOf": [{"$ref": "#/$defs/source_basis"}, {"type": "null"}]},
             "providerProvenance": {"$ref": "#/$defs/provider_provenance"},
             "profile": {"type": "object"},
             "targetOperation": {"const": "materialize_architecture"},
@@ -234,7 +238,7 @@
         "materializationContractVersion": {"const": "1.0"},
         "authorityProvider": {"anyOf": [{"$ref": "#/$defs/authority_provider"}, {"type": "null"}]},
         "sourceBasis": {"anyOf": [{"$ref": "#/$defs/source_basis"}, {"type": "null"}]},
-        "sourceContractClosure": {"type": "array", "items": {"$ref": "#/$defs/semantic_contract_ref"}},
+        "sourceContractClosure": {"type": "array", "items": {"$ref": "#/$defs/source_contract_binding"}},
         "semanticBasis": {"$ref": "#/$defs/semantic_basis"},
         "normalizedModel": {"type": ["object", "null"]},
         "sourceCapabilityLimitations": {"type": "array", "items": {"$ref": "#/$defs/limitation"}},

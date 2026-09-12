@@ -32,8 +32,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Limitations
 
-- Public Python/Node materialization bindings and capability advertising remain
-  outside this implementation unit; hosts still own acquisition and parsing.
+- Public Python and Node materialization bindings now advertise the exact,
+  parity-qualified `materialize_architecture` operation. Hosts own source
+  acquisition, parsing, and sealed request construction; semantic-core 1.1
+  owns qualification, interpretation, normalization, and bounded diagnostics.
 - Runtime integration, persistence, binding, and attribution changes remain
   outside this release.
 

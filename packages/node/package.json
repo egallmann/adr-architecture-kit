@@ -41,6 +41,10 @@
       "types": "./dist/node/governance.d.ts",
       "import": "./dist/node/governance.js"
     },
+    "./node/materialization": {
+      "types": "./dist/node/materialization.d.ts",
+      "import": "./dist/node/materialization.js"
+    },
     "./node/semantic-contract": {
       "types": "./dist/node/semantic-contract.d.ts",
       "import": "./dist/node/semantic-contract.js"

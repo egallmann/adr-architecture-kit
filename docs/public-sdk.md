@@ -69,6 +69,17 @@ Canonicalization, fingerprinting, closure validation, and contract-set
 composition execute in the shared semantic core. The Python and Node bindings
 adapt inputs and freeze results; they do not duplicate those algorithms.
 
+## Materialize an explicit architecture basis
+
+Python and Node expose the same `materialize_architecture` capability (named
+`materializeArchitecture` in Node). The caller supplies the exact SCS identity,
+provider identity, sealed source basis, source-contract closure, and parsed
+documents. The host never resolves a current pointer or interprets source
+meaning. Semantic-core 1.1 qualifies the exact tuple, interprets the sources,
+and returns an immutable normalized-model 2.3 result or a bounded rejection or
+unavailable outcome. This operation is Node-only in the TypeScript package;
+browser materialization is not advertised.
+
 ## Build validated embodiment linkage
 
 ```python

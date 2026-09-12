@@ -26,8 +26,10 @@ points are a separate constrained execution profile.
 
 The shared boundary currently includes normalized contract, metadata, repository
 identity, provider routing, linkage, generated-artifact classification, and ADR
-source-validation plus cross-reference/topology semantics. Source discovery is a
-host-adapter responsibility around that boundary. Projection rendering and
+source-validation plus cross-reference/topology semantics, and exact
+architecture materialization into normalized-model 2.3. Source acquisition and
+parsing are host-adapter responsibilities around that boundary; sealed source
+requests are executed by semantic-core 1.1. Projection rendering and
 compilation remain staged extraction targets rather than being reimplemented in
 the Node binding.
 

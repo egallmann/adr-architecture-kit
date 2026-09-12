@@ -5,13 +5,15 @@ from __future__ import annotations
 from dataclasses import asdict, dataclass
 from datetime import datetime, timezone
 from pathlib import Path
-from typing import Literal, Mapping
+from types import MappingProxyType
+from typing import Literal, Mapping, cast
 
 from ..models import NormalizedArchitectureModel
 from ..models.v2_1 import NormalizedArchitectureModelV21
 from ..models.v2_2 import NormalizedArchitectureModelV22
 from ..models.v2_0 import NormalizedArchitectureModelV2
 from ..models.v2_3 import NormalizedArchitectureModelV23
+from ..semantic_contract import SemanticResourceDependency
 from ._errors import InvalidRequestError
 
 API_CONTRACT_VERSION = "1.0"
@@ -65,6 +67,260 @@ class Diagnostic:
     path: str | None = None
     source_ref: str | None = None
     field: str | None = None
+
+
+def _freeze_json(value: object) -> object:
+    """Freeze host-owned JSON without assigning it semantic meaning."""
+
+    if isinstance(value, Mapping):
+        return MappingProxyType({str(key): _freeze_json(item) for key, item in value.items()})
+    if isinstance(value, (list, tuple)):
+        return tuple(_freeze_json(item) for item in value)
+    return value
+
+
+def _thaw_json(value: object) -> object:
+    """Return ordinary JSON containers for the WASM transport."""
+
+    if isinstance(value, Mapping):
+        return {str(key): _thaw_json(item) for key, item in value.items()}
+    if isinstance(value, (list, tuple)):
+        return [_thaw_json(item) for item in value]
+    return value
+
+
+def _require_text(value: object, field: str) -> str:
+    if not isinstance(value, str) or not value.strip():
+        raise InvalidRequestError(f"{field} must be a non-empty string")
+    return value
+
+
+@dataclass(frozen=True, slots=True)
+class MaterializationAuthorityProvider:
+    """Explicit provider identity supplied by the host; never inferred by core."""
+
+    kind: str
+    architecture_namespace: str
+
+    def __post_init__(self) -> None:
+        _require_text(self.kind, "authority_provider.kind")
+        _require_text(self.architecture_namespace, "authority_provider.architecture_namespace")
+
+    def to_wire(self) -> dict[str, str]:
+        return {"kind": self.kind, "architectureNamespace": self.architecture_namespace}
+
+
+@dataclass(frozen=True, slots=True)
+class MaterializationSourceContract:
+    """Exact authoring schema binding and closure for one source artifact."""
+
+    version: Literal["1.5", "1.6"]
+    schema_resource: SemanticResourceDependency
+    resource_closure: tuple[SemanticResourceDependency, ...]
+    family: Literal["authoring"] = "authoring"
+
+    @classmethod
+    def from_wire(cls, value: Mapping[str, object]) -> "MaterializationSourceContract":
+        schema = value.get("schemaResource")
+        closure = value.get("resourceClosure")
+        if not isinstance(schema, Mapping) or not isinstance(closure, (list, tuple)):
+            raise InvalidRequestError("Malformed source contract binding")
+        return cls(
+            version=cast(Literal["1.5", "1.6"], str(value.get("version", ""))),
+            schema_resource=SemanticResourceDependency(
+                str(schema.get("canonicalResourceKey", "")),
+                str(schema.get("contentDigest", "")),
+            ),
+            resource_closure=tuple(
+                SemanticResourceDependency(
+                    str(item.get("canonicalResourceKey", "")),
+                    str(item.get("contentDigest", "")),
+                )
+                for item in closure
+                if isinstance(item, Mapping)
+            ),
+        )
+
+    def __post_init__(self) -> None:
+        if self.version not in {"1.5", "1.6"}:
+            raise InvalidRequestError(f"Unsupported source contract version: {self.version}")
+        if len(self.resource_closure) < 3:
+            raise InvalidRequestError("resource_closure must contain at least three resources")
+
+    def to_wire(self) -> dict[str, object]:
+        return {
+            "family": self.family,
+            "version": self.version,
+            "schemaResource": self.schema_resource.to_wire(),
+            "resourceClosure": [item.to_wire() for item in self.resource_closure],
+        }
+
+
+@dataclass(frozen=True, slots=True)
+class MaterializationSourceArtifact:
+    """One parsed source document with its explicit content and contract identity."""
+
+    source_ref: str
+    artifact_path: str
+    content_digest: str
+    source_contract: MaterializationSourceContract
+    document: Mapping[str, object]
+
+    @classmethod
+    def from_wire(cls, value: Mapping[str, object]) -> "MaterializationSourceArtifact":
+        contract = value.get("sourceContract")
+        document = value.get("document")
+        if not isinstance(contract, Mapping) or not isinstance(document, Mapping):
+            raise InvalidRequestError("Malformed source artifact")
+        return cls(
+            source_ref=str(value.get("sourceRef", "")),
+            artifact_path=str(value.get("artifactPath", "")),
+            content_digest=str(value.get("contentDigest", "")),
+            source_contract=MaterializationSourceContract.from_wire(contract),
+            document=document,
+        )
+
+    def __post_init__(self) -> None:
+        _require_text(self.source_ref, "source_ref")
+        _require_text(self.artifact_path, "artifact_path")
+        if not isinstance(self.content_digest, str) or not self.content_digest.startswith(
+            "sha256:"
+        ):
+            raise InvalidRequestError("content_digest must use the sha256: prefix")
+        if not isinstance(self.document, Mapping):
+            raise InvalidRequestError("document must be a mapping")
+        object.__setattr__(self, "document", _freeze_json(self.document))
+
+    def to_wire(self) -> dict[str, object]:
+        return {
+            "sourceRef": self.source_ref,
+            "artifactPath": self.artifact_path,
+            "contentDigest": self.content_digest,
+            "sourceContract": self.source_contract.to_wire(),
+            "document": _thaw_json(self.document),
+        }
+
+
+@dataclass(frozen=True, slots=True)
+class MaterializationSourceBasis:
+    """Sealed source identity and parsed artifacts; ``None`` means unavailable."""
+
+    provider_source_identity: str
+    source_revision: str
+    artifacts: tuple[MaterializationSourceArtifact, ...]
+    sealed: Literal[True] = True
+    legacy_identity_map: Mapping[str, object] | None = None
+
+    @classmethod
+    def from_wire(cls, value: Mapping[str, object]) -> "MaterializationSourceBasis":
+        artifacts = value.get("artifacts")
+        if not isinstance(artifacts, (list, tuple)):
+            raise InvalidRequestError("Malformed source basis")
+        legacy = value.get("legacyIdentityMap")
+        return cls(
+            provider_source_identity=str(value.get("providerSourceIdentity", "")),
+            source_revision=str(value.get("sourceRevision", "")),
+            artifacts=tuple(
+                MaterializationSourceArtifact.from_wire(item)
+                for item in artifacts
+                if isinstance(item, Mapping)
+            ),
+            legacy_identity_map=legacy if isinstance(legacy, Mapping) else None,
+        )
+
+    def __post_init__(self) -> None:
+        if self.sealed is not True:
+            raise InvalidRequestError("source_basis.sealed must be True")
+        _require_text(self.provider_source_identity, "provider_source_identity")
+        _require_text(self.source_revision, "source_revision")
+        if not self.artifacts:
+            raise InvalidRequestError("source_basis.artifacts must not be empty")
+        if self.legacy_identity_map is not None:
+            if not isinstance(self.legacy_identity_map, Mapping):
+                raise InvalidRequestError("legacy_identity_map must be a mapping or None")
+            object.__setattr__(self, "legacy_identity_map", _freeze_json(self.legacy_identity_map))
+
+    def to_wire(self) -> dict[str, object]:
+        result: dict[str, object] = {
+            "sealed": True,
+            "providerSourceIdentity": self.provider_source_identity,
+            "sourceRevision": self.source_revision,
+            "artifacts": [item.to_wire() for item in self.artifacts],
+        }
+        if self.legacy_identity_map is not None:
+            result["legacyIdentityMap"] = _thaw_json(self.legacy_identity_map)
+        return result
+
+
+@dataclass(frozen=True, slots=True)
+class ArchitectureMaterializationRequest:
+    """Fully explicit public input to the semantic-core materialization boundary."""
+
+    semantic_contract_set_id: str
+    authority_provider: MaterializationAuthorityProvider
+    source_basis: MaterializationSourceBasis | None
+    direction: Literal["none", "forward", "reverse"]
+    use_mode: Literal["new", "historical"]
+    profile_id: str
+
+    def __post_init__(self) -> None:
+        _require_text(self.semantic_contract_set_id, "semantic_contract_set_id")
+        if self.direction not in {"none", "forward", "reverse"}:
+            raise InvalidRequestError(f"Unsupported materialization direction: {self.direction}")
+        if self.use_mode not in {"new", "historical"}:
+            raise InvalidRequestError(f"Unsupported materialization use_mode: {self.use_mode}")
+        if self.profile_id != "architecture-materialization@1.0":
+            raise InvalidRequestError(f"Unsupported materialization profile: {self.profile_id}")
+
+
+@dataclass(frozen=True, slots=True)
+class MaterializationSemanticBasis:
+    semantic_contract_set_id: str | None
+    authority_state_fingerprint: str | None
+
+
+@dataclass(frozen=True, slots=True)
+class MaterializationProviderProvenance:
+    """Stable evidence identifying the protocol and host binding used."""
+
+    semantic_core_contract_version: str
+    package_version: str
+    host_binding: str
+
+
+@dataclass(frozen=True, slots=True)
+class MaterializationCapabilityLimitation:
+    source_contract: MaterializationSourceContract
+    semantic_capability: str
+    classification: Literal["not_expressible_by_source_contract"]
+
+
+@dataclass(frozen=True, slots=True)
+class ArchitectureMaterializationResult:
+    """Immutable result view; normalized semantics remain owned by semantic-core."""
+
+    request: ArchitectureMaterializationRequest
+    success: bool
+    outcome: Literal["Materialized", "Rejected", "Unavailable"]
+    authority_provider: MaterializationAuthorityProvider | None
+    source_basis: MaterializationSourceBasis | None
+    source_contract_closure: tuple[MaterializationSourceContract, ...]
+    semantic_basis: MaterializationSemanticBasis
+    normalized_model: Mapping[str, object] | None
+    source_capability_limitations: tuple[MaterializationCapabilityLimitation, ...]
+    provider_provenance: MaterializationProviderProvenance | None
+    diagnostics: tuple[Diagnostic, ...]
+    package_version: str
+    api_contract_version: str
+
+    def __post_init__(self) -> None:
+        for field_name in (
+            "normalized_model",
+            "provider_provenance",
+        ):
+            value = getattr(self, field_name)
+            if value is not None:
+                object.__setattr__(self, field_name, _freeze_json(value))
 
 
 @dataclass(frozen=True, slots=True)

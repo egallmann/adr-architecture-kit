@@ -187,7 +187,11 @@ impl<'a> Context<'a> {
             };
             match probe.validate(value, branch, resource_key, path) {
                 Ok(()) => matches += 1,
-                Err(error) => first_error.get_or_insert(error),
+                Err(error) => {
+                    if first_error.is_none() {
+                        first_error = Some(error);
+                    }
+                }
             }
         }
         let valid = if exactly_one {
@@ -579,37 +583,64 @@ mod tests {
         let resources = BTreeMap::from([
             (
                 "authoring/1.6/schema/root.schema".to_owned(),
-                parsed(r#"{"type":"object","properties":{"name":{"$ref":"types.schema.json#/definitions/name"}},"required":["name"]}"#),
+                parsed(
+                    r#"{"type":"object","properties":{"name":{"$ref":"types.schema.json#/definitions/name"}},"required":["name"]}"#,
+                ),
             ),
             (
                 "authoring/1.6/schema/types.schema".to_owned(),
                 parsed(r#"{"definitions":{"name":{"type":"string","minLength":3}}}"#),
             ),
         ]);
-        assert!(validate(&resources, "authoring/1.6/schema/root.schema", &parsed(r#"{"name":"valid"}"#)).is_ok());
-        let error = validate(&resources, "authoring/1.6/schema/root.schema", &parsed(r#"{"name":"x"}"#)).expect_err("short name must fail");
+        assert!(validate(
+            &resources,
+            "authoring/1.6/schema/root.schema",
+            &parsed(r#"{"name":"valid"}"#)
+        )
+        .is_ok());
+        let error = validate(
+            &resources,
+            "authoring/1.6/schema/root.schema",
+            &parsed(r#"{"name":"x"}"#),
+        )
+        .expect_err("short name must fail");
         assert_eq!(error.path, "name");
         let missing = BTreeMap::from([(
             "authoring/1.6/schema/root.schema".to_owned(),
             parsed(r#"{"$ref":"missing.schema.json"}"#),
         )]);
-        assert!(validate(&missing, "authoring/1.6/schema/root.schema", &parsed("null")).is_err());
+        assert!(validate(
+            &missing,
+            "authoring/1.6/schema/root.schema",
+            &parsed("null")
+        )
+        .is_err());
     }
 
     #[test]
     fn enforces_nested_type_pattern_not_and_additional_properties() {
         let resources = BTreeMap::from([(
             "root.schema".to_owned(),
-            parsed(r#"{"type":"object","properties":{"alias":{"type":"string","pattern":"^COMP-[0-9]{4}$"},"nested":{"type":"object","required":["name"],"properties":{"name":{"type":"string"}},"additionalProperties":false}},"required":["alias","nested"],"not":{"required":["component_topology"]},"additionalProperties":false}"#),
+            parsed(
+                r#"{"type":"object","properties":{"alias":{"type":"string","pattern":"^COMP-[0-9]{4}$"},"nested":{"type":"object","required":["name"],"properties":{"name":{"type":"string"}},"additionalProperties":false}},"required":["alias","nested"],"not":{"required":["component_topology"]},"additionalProperties":false}"#,
+            ),
         )]);
-        assert!(validate(&resources, "root.schema", &parsed(r#"{"alias":"COMP-0001","nested":{"name":"ok"}}"#)).is_ok());
+        assert!(validate(
+            &resources,
+            "root.schema",
+            &parsed(r#"{"alias":"COMP-0001","nested":{"name":"ok"}}"#)
+        )
+        .is_ok());
         for invalid in [
             r#"{"alias":"BAD-0001","nested":{"name":"ok"}}"#,
             r#"{"alias":"COMP-0001","nested":{"name":42}}"#,
             r#"{"alias":"COMP-0001","nested":{},"component_topology":{}}"#,
             r#"{"alias":"COMP-0001","nested":{"name":"ok","extra":true}}"#,
         ] {
-            assert!(validate(&resources, "root.schema", &parsed(invalid)).is_err(), "{invalid}");
+            assert!(
+                validate(&resources, "root.schema", &parsed(invalid)).is_err(),
+                "{invalid}"
+            );
         }
     }
 }

@@ -7,6 +7,8 @@ from ._contracts import (
     ArtifactDescriptor,
     AttributionShimRequest,
     AttributionShimResult,
+    ArchitectureMaterializationRequest,
+    ArchitectureMaterializationResult,
     CapabilityManifest,
     CompilationRequest,
     CompilationResult,
@@ -22,6 +24,13 @@ from ._contracts import (
     GeneratedDocsValidationResult,
     LinkageOccurrence,
     LinkageProvenance,
+    MaterializationAuthorityProvider,
+    MaterializationCapabilityLimitation,
+    MaterializationProviderProvenance,
+    MaterializationSemanticBasis,
+    MaterializationSourceArtifact,
+    MaterializationSourceBasis,
+    MaterializationSourceContract,
     ProjectMetadataValidationRequest,
     ProjectMetadataValidationResult,
     RejectedEmbodimentClaim,
@@ -30,6 +39,7 @@ from ._contracts import (
 )
 from ._linkage import build_embodiment_linkage
 from ._attribution import generate_attribution_shim
+from ._materialization import materialize_architecture
 from ._errors import InvalidRequestError, OperationError, RepositoryError, SDKError
 from ._operations import (
     apply_promotion,
@@ -93,6 +103,8 @@ __all__ = [
     "ArtifactDescriptor",
     "AttributionShimRequest",
     "AttributionShimResult",
+    "ArchitectureMaterializationRequest",
+    "ArchitectureMaterializationResult",
     "CapabilityManifest",
     "ValidationRequest",
     "ValidationResult",
@@ -121,6 +133,13 @@ __all__ = [
     "Diagnostic",
     "EmbodimentLinkageRequest",
     "LinkageProvenance",
+    "MaterializationAuthorityProvider",
+    "MaterializationCapabilityLimitation",
+    "MaterializationProviderProvenance",
+    "MaterializationSemanticBasis",
+    "MaterializationSourceArtifact",
+    "MaterializationSourceBasis",
+    "MaterializationSourceContract",
     "LinkageOccurrence",
     "EmbodimentIntentLink",
     "RejectedEmbodimentClaim",
@@ -132,6 +151,7 @@ __all__ = [
     "capabilities",
     "build_embodiment_linkage",
     "generate_attribution_shim",
+    "materialize_architecture",
     "validate_architecture",
     "validate_project_metadata",
     "validate_contract",

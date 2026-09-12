@@ -23,6 +23,7 @@ Node-only entry points:
 import { openRepository } from "@system-of-thought/adr-kit/node";
 import { buildEmbodimentLinkage, generateAttributionShim } from "@system-of-thought/adr-kit/node/linkage";
 import { validateArchitecture, validateContract, validateProjectMetadata } from "@system-of-thought/adr-kit/node/governance";
+import { materializeArchitecture } from "@system-of-thought/adr-kit/node/materialization";
 import {
   getSemanticContract,
   getSemanticContractProfile,
@@ -33,7 +34,7 @@ import {
 } from "@system-of-thought/adr-kit/node/semantic-contract";
 ```
 
-TypeScript v1 supports normalized models 2.1 and 2.2, evidence attribution 1.5/1.6,
+TypeScript v1 supports normalized models 2.1, 2.2, and 2.3, evidence attribution 1.5/1.6,
 architecture discovery 1.1, canonical and compatibility relationships, and
 qualified semantic extensions. Unsupported versions fail explicitly.
 
@@ -56,10 +57,11 @@ the release parity gate.
 
 The Node binding exposes the governed `architecture-materialization@1.0` profile,
 explicit whole-tuple qualification, deterministic preview/apply assembly,
-retained-corpus validation, catalog/policy inspection, and current-pointer
-resolution. A resolved pointer returns one exact SCS ID. The profile does not
-advertise architecture materialization execution; that operation remains
-outside this contract boundary.
+retained-corpus validation, catalog/policy inspection, current-pointer
+resolution, and the parity-qualified `materializeArchitecture` operation.
+Materialization requires an exact SCS identity and a sealed, host-parsed source
+basis. It returns normalized-model 2.3 through semantic-core 1.1; browser
+materialization is not advertised.
 
 `generateAttributionShim({ language: "python" | "typescript" })` is a
 read-only, deterministic projection through the shared semantic core. Its

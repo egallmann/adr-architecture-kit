@@ -1406,11 +1406,17 @@ fn relationship_record(
             return None;
         };
         values.insert(
-            "extension".into(),
-            object([
-                ("properties".into(), properties.clone()),
-                ("rationale".into(), string(rationale)),
-            ]),
+            // The v2.3 relationship schema admits namespaced relationship
+            // types in the canonical branch, while its external extension
+            // pointer is not rooted in the supplied normalized-entity
+            // resource.  Preserve the validated extension payload as explicit
+            // evidence so exact closure validation remains schema-governed and
+            // no authored rationale or property is discarded.
+            "evidence".into(),
+            Json::Array(vec![object([
+                ("source_extension_properties".into(), properties.clone()),
+                ("source_extension_rationale".into(), string(rationale)),
+            ])]),
         );
     }
     Some(Json::Object(values))

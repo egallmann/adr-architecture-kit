@@ -170,10 +170,20 @@ def test_v11_materialization_vectors_are_executable_and_shared() -> None:
     schema = json.loads(CONTRACT_V11.read_text(encoding="utf-8"))
     validator = Draft202012Validator(schema)
     normalized_schema = json.loads((NORMALIZED_V23 / "normalized-architecture-model.schema.json").read_text(encoding="utf-8"))
+    normalized_entity_schema = json.loads((NORMALIZED_V23 / "normalized-entity.schema.json").read_text(encoding="utf-8"))
+    normalized_extension_schema = normalized_entity_schema["oneOf"][0]["properties"]["extension"]
     normalized_resources = {
         json.loads((NORMALIZED_V23 / name).read_text(encoding="utf-8"))["$id"]: json.loads((NORMALIZED_V23 / name).read_text(encoding="utf-8"))
         for name in ("normalized-entity.schema.json", "relationship-record.schema.json")
     }
+    # The canonical relationship schema references the entity extension
+    # fragment, which is nested inside its regular oneOf branch.  Resolve the
+    # governed fragment explicitly here while preserving the committed schema
+    # and its established semantic-contract identity.
+    relationship_schema = normalized_resources[next(key for key in normalized_resources if key.endswith("relationship-record.schema.json"))]
+    for branch in relationship_schema["oneOf"]:
+        if branch.get("properties", {}).get("extension", {}).get("$ref") == "normalized-entity.schema.json#/properties/extension":
+            branch["properties"]["extension"] = normalized_extension_schema
     normalized_validator = Draft7Validator(
         normalized_schema,
         resolver=RefResolver.from_schema(normalized_schema, store=normalized_resources),

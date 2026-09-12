@@ -664,7 +664,7 @@ def main() -> None:
     add("rejects_normative_proposition_in_15", materialization_request([artifact("invalid-15-np", invalid_15, "1.5", "logical", "8")]), {"success": False, "outcome": "Rejected", "diagnostic_code_counts": {"semantic_contract.invalid_source_document": 1}})
     invalid_binding = copy.deepcopy(logical_artifact)
     invalid_binding["sourceContract"]["schemaResource"]["contentDigest"] = "sha256:" + "0" * 64
-    add("rejects_unqualified_source_schema_digest", materialization_request([invalid_binding]), {"success": False, "outcome": "Rejected", "diagnostic_code_counts": {"semantic_contract.source_contract_resource_unqualified": 1, "semantic_contract.source_contract_schema_unqualified": 1}})
+    add("rejects_unqualified_source_schema_digest", materialization_request([invalid_binding]), {"success": False, "outcome": "Rejected", "diagnostic_code_counts": {"semantic_contract.source_contract_closure_mismatch": 1, "semantic_contract.source_contract_resource_unqualified": 1, "semantic_contract.source_contract_schema_unqualified": 1}})
     mismatched_document = copy.deepcopy(logical_artifact)
     mismatched_document["document"]["schema_version"] = "1.5"
     add("rejects_artifact_contract_version_mismatch", materialization_request([mismatched_document]), {"success": False, "outcome": "Rejected", "diagnostic_code_counts": {"semantic_contract.artifact_contract_mismatch": 1}})
@@ -673,6 +673,18 @@ def main() -> None:
     related_b["id"] = "01940000-0000-7000-8000-000000000041"
     related_b["alias_id"] = "ADR-L-0003"
     related_b["related_adrs"] = [logical["id"]]
+    related_b["decisions"][0].update({"id": "01940000-0000-7000-8000-000000000042", "alias_id": "DEC-0002"})
+    related_b["invariants"][0].update({"id": "01940000-0000-7000-8000-000000000043", "alias_id": "INV-0002"})
+    related_b["normative_propositions"][0].update({"id": "01940000-0000-7000-8000-000000000044", "alias_id": "NP-0002"})
+    related_b["extension_entities"][0].update({"id": "01940000-0000-7000-8000-000000000045", "alias_id": "EXT-0002"})
+    related_b["extension_relationships"][0].update({"id": "01940000-0000-7000-8000-000000000046", "alias_id": "REL-0002", "from_entity_id": related_b["id"], "to_entity_id": related_b["extension_entities"][0]["id"]})
+    logical_15_closure = copy.deepcopy(logical_15)
+    logical_15_closure["id"] = "01940000-0000-7000-8000-000000000051"
+    logical_15_closure["alias_id"] = "ADR-L-0004"
+    logical_15_closure["decisions"][0].update({"id": "01940000-0000-7000-8000-000000000052", "alias_id": "DEC-0003"})
+    logical_15_closure["invariants"][0].update({"id": "01940000-0000-7000-8000-000000000053", "alias_id": "INV-0003"})
+    logical_15_closure["extension_entities"][0].update({"id": "01940000-0000-7000-8000-000000000054", "alias_id": "EXT-0003"})
+    logical_15_closure["extension_relationships"][0].update({"id": "01940000-0000-7000-8000-000000000055", "alias_id": "REL-0003", "from_entity_id": logical_15_closure["id"], "to_entity_id": logical_15_closure["extension_entities"][0]["id"]})
     ordered = [artifact("related-a", related_a, "1.6", "logical", "9"), artifact("related-b", related_b, "1.6", "logical", "a")]
     reversed_request = materialization_request(list(reversed(ordered)))
     add("artifact_order_is_semantically_invariant", materialization_request(ordered), {"success": True, "outcome": "Materialized", "diagnostic_code_counts": {}, "pairedRequest": reversed_request, "assertions": {"same_normalized_model_as_pair": True, "same_source_contract_closure_as_pair": True}})
@@ -685,9 +697,9 @@ def main() -> None:
     add("invalid_extension_relationship_is_rejected", materialization_request([artifact("invalid-relationship", invalid_relationship, "1.6", "logical", "c")]), {"success": False, "outcome": "Rejected", "diagnostic_code_counts": {"semantic_contract.invalid_source_document": 1}})
     add("legacy_identity_requires_qualification", materialization_request([artifact("legacy-identity", {**copy.deepcopy(logical), "id": "legacy-root"}, "1.6", "logical", "d")]), {"success": False, "outcome": "Rejected", "diagnostic_code_counts": {"semantic_contract.invalid_source_document": 1}})
     add("normalized_output_retains_unresolved_reference", materialization_request([artifact("unresolved-reference", {**copy.deepcopy(logical), "related_adrs": ["01940000-0000-7000-8000-000000000099"]}, "1.6", "logical", "e")]), {"success": True, "outcome": "Materialized", "diagnostic_code_counts": {}, "assertions": {"unresolved_count": 1, "normalized_schema_version": "2.3"}})
-    add("source_contract_closure_is_exact_and_sorted", materialization_request([logical_artifact, artifact("physical-system-closure", physical_system, "1.6", "physical-system", "f")]), {"success": True, "outcome": "Materialized", "diagnostic_code_counts": {}, "assertions": {"source_contract_versions": ["1.6", "1.6"], "closure_resource_keys_are_sorted": True}})
-    add("diagnostics_are_not_duplicated", materialization_request([invalid_binding]), {"success": False, "outcome": "Rejected", "diagnostic_code_counts": {"semantic_contract.source_contract_resource_unqualified": 1, "semantic_contract.source_contract_schema_unqualified": 1}})
-    add("source_contract_binding_rejects_wrong_top_level_schema", materialization_request([copy.deepcopy(logical_artifact) | {"sourceContract": binding("1.6", "physical-system")}]), {"success": False, "outcome": "Rejected", "diagnostic_code_counts": {"semantic_contract.source_contract_schema_mismatch": 1, "semantic_contract.source_contract_closure_mismatch": 1}})
+    add("source_contract_closure_is_exact_and_sorted", materialization_request([logical_artifact, artifact("logical-15-closure", logical_15_closure, "1.5", "logical", "f")]), {"success": True, "outcome": "Materialized", "diagnostic_code_counts": {}, "assertions": {"source_contract_versions": ["1.5", "1.6"], "closure_resource_keys_are_sorted": True}})
+    add("diagnostics_are_not_duplicated", materialization_request([invalid_binding]), {"success": False, "outcome": "Rejected", "diagnostic_code_counts": {"semantic_contract.source_contract_closure_mismatch": 1, "semantic_contract.source_contract_resource_unqualified": 1, "semantic_contract.source_contract_schema_unqualified": 1}})
+    add("source_contract_binding_rejects_wrong_top_level_schema", materialization_request([copy.deepcopy(logical_artifact) | {"sourceContract": binding("1.6", "physical-system")}]), {"success": False, "outcome": "Rejected", "diagnostic_code_counts": {"semantic_contract.source_contract_closure_mismatch": 1, "semantic_contract.source_contract_schema_mismatch": 1}})
     assert len(cases) >= 28
     forbidden_vector_terms = ("slice", "phase", "wave", "tranche")
     assert not any(any(term in case["name"].lower() for term in forbidden_vector_terms) for case in cases)

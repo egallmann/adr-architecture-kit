@@ -89147,10 +89147,12 @@
         "success": false,
         "outcome": "Rejected",
         "diagnostic_code_counts": {
+          "semantic_contract.source_contract_closure_mismatch": 1,
           "semantic_contract.source_contract_resource_unqualified": 1,
           "semantic_contract.source_contract_schema_unqualified": 1
         },
         "diagnostic_codes": [
+          "semantic_contract.source_contract_closure_mismatch",
           "semantic_contract.source_contract_resource_unqualified",
           "semantic_contract.source_contract_schema_unqualified"
         ]
@@ -98323,23 +98325,23 @@
                 "context": "The boundary needs an explicit semantic authority.",
                 "decisions": [
                   {
-                    "id": "01940000-0000-7000-8000-000000000002",
-                    "alias_id": "DEC-0001",
+                    "id": "01940000-0000-7000-8000-000000000042",
+                    "alias_id": "DEC-0002",
                     "alias_name": "choose-authority",
                     "summary": "Use the governed boundary."
                   }
                 ],
                 "invariants": [
                   {
-                    "id": "01940000-0000-7000-8000-000000000003",
-                    "alias_id": "INV-0001",
+                    "id": "01940000-0000-7000-8000-000000000043",
+                    "alias_id": "INV-0002",
                     "alias_name": "retain-evidence"
                   }
                 ],
                 "normative_propositions": [
                   {
-                    "id": "01940000-0000-7000-8000-000000000004",
-                    "alias_id": "NP-0001",
+                    "id": "01940000-0000-7000-8000-000000000044",
+                    "alias_id": "NP-0002",
                     "alias_name": "retain-evidence",
                     "statement": "The canonical boundary MUST retain source evidence.",
                     "normative_force": "MUST",
@@ -98348,8 +98350,8 @@
                 ],
                 "extension_entities": [
                   {
-                    "id": "01940000-0000-7000-8000-000000000005",
-                    "alias_id": "EXT-0001",
+                    "id": "01940000-0000-7000-8000-000000000045",
+                    "alias_id": "EXT-0002",
                     "alias_name": "boundary-extension",
                     "entity_type": "acme:boundary",
                     "properties": {
@@ -98360,12 +98362,12 @@
                 ],
                 "extension_relationships": [
                   {
-                    "id": "01940000-0000-7000-8000-000000000006",
-                    "alias_id": "REL-0001",
+                    "id": "01940000-0000-7000-8000-000000000046",
+                    "alias_id": "REL-0002",
                     "alias_name": "boundary-relates",
                     "relationship_type": "acme:relates_to",
-                    "from_entity_id": "01940000-0000-7000-8000-000000000001",
-                    "to_entity_id": "01940000-0000-7000-8000-000000000005",
+                    "from_entity_id": "01940000-0000-7000-8000-000000000041",
+                    "to_entity_id": "01940000-0000-7000-8000-000000000045",
                     "properties": {
                       "kind": "evidence"
                     },
@@ -103008,23 +103010,23 @@
                   "context": "The boundary needs an explicit semantic authority.",
                   "decisions": [
                     {
-                      "id": "01940000-0000-7000-8000-000000000002",
-                      "alias_id": "DEC-0001",
+                      "id": "01940000-0000-7000-8000-000000000042",
+                      "alias_id": "DEC-0002",
                       "alias_name": "choose-authority",
                       "summary": "Use the governed boundary."
                     }
                   ],
                   "invariants": [
                     {
-                      "id": "01940000-0000-7000-8000-000000000003",
-                      "alias_id": "INV-0001",
+                      "id": "01940000-0000-7000-8000-000000000043",
+                      "alias_id": "INV-0002",
                       "alias_name": "retain-evidence"
                     }
                   ],
                   "normative_propositions": [
                     {
-                      "id": "01940000-0000-7000-8000-000000000004",
-                      "alias_id": "NP-0001",
+                      "id": "01940000-0000-7000-8000-000000000044",
+                      "alias_id": "NP-0002",
                       "alias_name": "retain-evidence",
                       "statement": "The canonical boundary MUST retain source evidence.",
                       "normative_force": "MUST",
@@ -103033,8 +103035,8 @@
                   ],
                   "extension_entities": [
                     {
-                      "id": "01940000-0000-7000-8000-000000000005",
-                      "alias_id": "EXT-0001",
+                      "id": "01940000-0000-7000-8000-000000000045",
+                      "alias_id": "EXT-0002",
                       "alias_name": "boundary-extension",
                       "entity_type": "acme:boundary",
                       "properties": {
@@ -103045,12 +103047,12 @@
                   ],
                   "extension_relationships": [
                     {
-                      "id": "01940000-0000-7000-8000-000000000006",
-                      "alias_id": "REL-0001",
+                      "id": "01940000-0000-7000-8000-000000000046",
+                      "alias_id": "REL-0002",
                       "alias_name": "boundary-relates",
                       "relationship_type": "acme:relates_to",
-                      "from_entity_id": "01940000-0000-7000-8000-000000000001",
-                      "to_entity_id": "01940000-0000-7000-8000-000000000005",
+                      "from_entity_id": "01940000-0000-7000-8000-000000000041",
+                      "to_entity_id": "01940000-0000-7000-8000-000000000045",
                       "properties": {
                         "kind": "evidence"
                       },
@@ -131200,40 +131202,36 @@
               }
             },
             {
-              "sourceRef": "physical-system-closure",
-              "artifactPath": "architecture/physical-system-closure.yaml",
+              "sourceRef": "logical-15-closure",
+              "artifactPath": "architecture/logical-15-closure.yaml",
               "contentDigest": "sha256:ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
               "sourceContract": {
                 "family": "authoring",
-                "version": "1.6",
+                "version": "1.5",
                 "schemaResource": {
-                  "canonicalResourceKey": "authoring/1.6/schema/adr-physical-system.schema",
-                  "contentDigest": "sha256:74915507eec0e91a4661dd256639d2126f3fd58b7af26824c040ccc01b0a6194"
+                  "canonicalResourceKey": "authoring/1.5/schema/adr-logical.schema",
+                  "contentDigest": "sha256:2c7045e8d6aa0bb21c76689b6065dee5b76d0f83378c9a7be53f1a0d689c6ccb"
                 },
                 "resourceClosure": [
                   {
-                    "canonicalResourceKey": "authoring/1.6/schema/adr-common.schema",
-                    "contentDigest": "sha256:aec704e1cfb5790d867a8864ebf4215506baa3c6b4fad77a74a4fceb59bb4451"
+                    "canonicalResourceKey": "authoring/1.5/schema/adr-common.schema",
+                    "contentDigest": "sha256:29489ee4a77bbb8f2963077315df86bbe6a476cdfe595b548321577cbc26dc4e"
                   },
                   {
-                    "canonicalResourceKey": "authoring/1.6/schema/adr-physical-base.schema",
-                    "contentDigest": "sha256:18c723c6afca8904bdc573b94c0451d6964b2a92c38b0590eec55005bfe0f1d1"
+                    "canonicalResourceKey": "authoring/1.5/schema/adr-logical.schema",
+                    "contentDigest": "sha256:2c7045e8d6aa0bb21c76689b6065dee5b76d0f83378c9a7be53f1a0d689c6ccb"
                   },
                   {
-                    "canonicalResourceKey": "authoring/1.6/schema/adr-physical-system.schema",
-                    "contentDigest": "sha256:74915507eec0e91a4661dd256639d2126f3fd58b7af26824c040ccc01b0a6194"
-                  },
-                  {
-                    "canonicalResourceKey": "authoring/1.6/schema/types.schema",
-                    "contentDigest": "sha256:94a19d6e654d00019c34c5569d1ced1751c69d39ab7d8a94f02fe1cf0781491e"
+                    "canonicalResourceKey": "authoring/1.5/schema/types.schema",
+                    "contentDigest": "sha256:59db7228822b0346f171b59f35e6deedba44c7c23e843e352d4dde8c565d27cf"
                   }
                 ]
               },
               "document": {
-                "schema_version": "1.6",
-                "adr_type": "physical-system",
-                "id": "01940000-0000-7000-8000-000000000011",
-                "alias_id": "ADR-PS-0001",
+                "schema_version": "1.5",
+                "adr_type": "logical",
+                "id": "01940000-0000-7000-8000-000000000051",
+                "alias_id": "ADR-L-0004",
                 "alias_name": "boundary-record",
                 "title": "A governed architecture boundary",
                 "status": "accepted",
@@ -131244,33 +131242,23 @@
                 "context": "The boundary needs an explicit semantic authority.",
                 "decisions": [
                   {
-                    "id": "01940000-0000-7000-8000-000000000002",
-                    "alias_id": "DEC-0001",
+                    "id": "01940000-0000-7000-8000-000000000052",
+                    "alias_id": "DEC-0003",
                     "alias_name": "choose-authority",
                     "summary": "Use the governed boundary."
                   }
                 ],
                 "invariants": [
                   {
-                    "id": "01940000-0000-7000-8000-000000000003",
-                    "alias_id": "INV-0001",
+                    "id": "01940000-0000-7000-8000-000000000053",
+                    "alias_id": "INV-0003",
                     "alias_name": "retain-evidence"
-                  }
-                ],
-                "normative_propositions": [
-                  {
-                    "id": "01940000-0000-7000-8000-000000000004",
-                    "alias_id": "NP-0001",
-                    "alias_name": "retain-evidence",
-                    "statement": "The canonical boundary MUST retain source evidence.",
-                    "normative_force": "MUST",
-                    "scope": "semantic-core"
                   }
                 ],
                 "extension_entities": [
                   {
-                    "id": "01940000-0000-7000-8000-000000000005",
-                    "alias_id": "EXT-0001",
+                    "id": "01940000-0000-7000-8000-000000000054",
+                    "alias_id": "EXT-0003",
                     "alias_name": "boundary-extension",
                     "entity_type": "acme:boundary",
                     "properties": {
@@ -131281,29 +131269,18 @@
                 ],
                 "extension_relationships": [
                   {
-                    "id": "01940000-0000-7000-8000-000000000006",
-                    "alias_id": "REL-0001",
+                    "id": "01940000-0000-7000-8000-000000000055",
+                    "alias_id": "REL-0003",
                     "alias_name": "boundary-relates",
                     "relationship_type": "acme:relates_to",
-                    "from_entity_id": "01940000-0000-7000-8000-000000000011",
-                    "to_entity_id": "01940000-0000-7000-8000-000000000005",
+                    "from_entity_id": "01940000-0000-7000-8000-000000000051",
+                    "to_entity_id": "01940000-0000-7000-8000-000000000054",
                     "properties": {
                       "kind": "evidence"
                     },
                     "rationale": "The relationship is explicitly authored."
                   }
-                ],
-                "implements_logical": [
-                  "01940000-0000-7000-8000-000000000011"
-                ],
-                "technology_stack": [
-                  "WASM"
-                ],
-                "system": {
-                  "id": "01940000-0000-7000-8000-000000000007",
-                  "alias_id": "SYS-0001",
-                  "alias_name": "boundary-system"
-                }
+                ]
               }
             }
           ]
@@ -131557,7 +131534,7 @@
         "diagnostic_code_counts": {},
         "assertions": {
           "source_contract_versions": [
-            "1.6",
+            "1.5",
             "1.6"
           ],
           "closure_resource_keys_are_sorted": true
@@ -136249,10 +136226,12 @@
         "success": false,
         "outcome": "Rejected",
         "diagnostic_code_counts": {
+          "semantic_contract.source_contract_closure_mismatch": 1,
           "semantic_contract.source_contract_resource_unqualified": 1,
           "semantic_contract.source_contract_schema_unqualified": 1
         },
         "diagnostic_codes": [
+          "semantic_contract.source_contract_closure_mismatch",
           "semantic_contract.source_contract_resource_unqualified",
           "semantic_contract.source_contract_schema_unqualified"
         ]
@@ -140946,12 +140925,12 @@
         "success": false,
         "outcome": "Rejected",
         "diagnostic_code_counts": {
-          "semantic_contract.source_contract_schema_mismatch": 1,
-          "semantic_contract.source_contract_closure_mismatch": 1
+          "semantic_contract.source_contract_closure_mismatch": 1,
+          "semantic_contract.source_contract_schema_mismatch": 1
         },
         "diagnostic_codes": [
-          "semantic_contract.source_contract_schema_mismatch",
-          "semantic_contract.source_contract_closure_mismatch"
+          "semantic_contract.source_contract_closure_mismatch",
+          "semantic_contract.source_contract_schema_mismatch"
         ]
       }
     }

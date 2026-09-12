@@ -3,15 +3,18 @@ import { readFile } from "node:fs/promises";
 import { resolve } from "node:path";
 import test from "node:test";
 import AjvModule from "ajv/dist/2020.js";
+import Ajv7Module from "ajv";
 import { semanticCoreContract } from "../dist/generated/semantic-core-contract.js";
 import { semanticCoreContractV11 } from "../dist/generated/semantic-core-contract-v1.1.js";
 import { validateSemanticCoreProtocol } from "../dist/node/protocol.js";
 import { executeSemanticCoreRequest } from "../dist/node/core.js";
 
 const Ajv = AjvModule.default ?? AjvModule;
+const Ajv7 = Ajv7Module.default ?? Ajv7Module;
 const validator = new Ajv({ allErrors: true, strict: false }).compile(semanticCoreContract);
 const vectorDirectory = resolve("../../contracts/semantic-core/v1.0/vectors");
 const vectorDirectoryV11 = resolve("../../contracts/semantic-core/v1.1/vectors");
+const normalizedSchemaDirectoryV23 = resolve("../../schema/normalized-model/v2.3");
 
 test("Node protocol validator accepts every valid shared vector request and result", async () => {
   let checked = 0;
@@ -120,10 +123,15 @@ function assertV11Vector(vector, v11Validator, normalizedValidator) {
 
 test("Node executes the shared v1.1 materialization vector corpus", async () => {
   const v11Validator = new Ajv({ allErrors: true, strict: false }).compile(semanticCoreContractV11);
-  const normalizedAjv = new Ajv({ allErrors: true, strict: false });
-  const normalizedEntity = JSON.parse(await readFile(resolve("schema/normalized-model/v2.3/normalized-entity.schema.json"), "utf8"));
-  const relationshipRecord = JSON.parse(await readFile(resolve("schema/normalized-model/v2.3/relationship-record.schema.json"), "utf8"));
-  const normalizedRoot = JSON.parse(await readFile(resolve("schema/normalized-model/v2.3/normalized-architecture-model.schema.json"), "utf8"));
+  const normalizedAjv = new Ajv7({ allErrors: true, strict: false });
+  const normalizedEntity = JSON.parse(await readFile(resolve(normalizedSchemaDirectoryV23, "normalized-entity.schema.json"), "utf8"));
+  const relationshipRecord = JSON.parse(await readFile(resolve(normalizedSchemaDirectoryV23, "relationship-record.schema.json"), "utf8"));
+  const normalizedRoot = JSON.parse(await readFile(resolve(normalizedSchemaDirectoryV23, "normalized-architecture-model.schema.json"), "utf8"));
+  for (const branch of relationshipRecord.oneOf) {
+    if (branch.properties?.extension?.$ref === "normalized-entity.schema.json#/properties/extension") {
+      branch.properties.extension = normalizedEntity.oneOf[0].properties.extension;
+    }
+  }
   normalizedAjv.addSchema(normalizedEntity);
   normalizedAjv.addSchema(relationshipRecord);
   const normalizedValidator = normalizedAjv.compile(normalizedRoot);

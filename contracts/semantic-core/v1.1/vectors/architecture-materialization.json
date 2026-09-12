@@ -252441,9 +252441,9 @@
           "semantic_contract.qualification_members_mismatch",
           "semantic_contract.missing_whole_tuple_qualification",
           "semantic_contract.member_fingerprint_mismatch",
-          "semantic_contract.member_fingerprint_mismatch",
           "semantic_contract.scs_id_mismatch",
-          "semantic_contract.scs_id_mismatch"
+          "semantic_contract.scs_id_mismatch",
+          "semantic_contract.member_fingerprint_mismatch"
         ],
         "diagnostic_messages": [
           "qualification members do not exactly match the SCS composition",
@@ -252455,9 +252455,9 @@
           "qualification members do not exactly match the SCS composition",
           "the exact retained SCS is not qualified as a whole for the requested operation and use mode",
           "SCS member fingerprint does not match the retained immutable definition",
-          "SCS member fingerprint does not match the retained immutable definition",
           "SCS ID does not match the canonical composition",
-          "SCS ID does not match the canonical composition"
+          "SCS ID does not match the canonical composition",
+          "SCS member fingerprint does not match the retained immutable definition"
         ],
         "diagnostic_paths": [
           "qualification.members",
@@ -252469,9 +252469,9 @@
           "qualification.members",
           "qualifications",
           "sets.members",
-          "sets.members",
           "sets.semanticContractSetId",
-          "sets.semanticContractSetId"
+          "sets.semanticContractSetId",
+          "sets[0].members"
         ],
         "diagnostic_severities": [
           "error",

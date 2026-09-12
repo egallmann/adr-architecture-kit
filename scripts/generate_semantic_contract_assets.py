@@ -2352,15 +2352,12 @@ def main() -> None:
                 "qualifications",
                 "error",
             ),
-            *[
-                (
-                    "semantic_contract.member_fingerprint_mismatch",
-                    "SCS member fingerprint does not match the retained immutable definition",
-                    "sets.members",
-                    "error",
-                )
-            ]
-            * 2,
+            (
+                "semantic_contract.member_fingerprint_mismatch",
+                "SCS member fingerprint does not match the retained immutable definition",
+                "sets.members",
+                "error",
+            ),
             *[
                 (
                     "semantic_contract.scs_id_mismatch",
@@ -2370,6 +2367,12 @@ def main() -> None:
                 )
             ]
             * 2,
+            (
+                "semantic_contract.member_fingerprint_mismatch",
+                "SCS member fingerprint does not match the retained immutable definition",
+                "sets[0].members",
+                "error",
+            ),
         ],
         "missing_selected_member_resource_content_is_rejected": [
             *[

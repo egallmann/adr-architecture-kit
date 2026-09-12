@@ -229,11 +229,11 @@ test("public Node materialization returns normalized-model 2.3 from exact SCS", 
   assert.deepEqual(result.sourceCapabilityLimitations, []);
   assert.deepEqual(result.providerProvenance, {
     semanticCoreContractVersion: "1.1",
-    packageVersion: "0.10.1",
+    packageVersion: "0.11.0",
     hostBinding: "public-host",
   });
   assert.deepEqual(result.diagnostics, []);
-  assert.equal(result.package_version, "0.10.1");
+  assert.equal(result.package_version, "0.11.0");
   assert.equal(result.api_contract_version, "1.0");
   assert.equal(Object.isFrozen(result), true);
   assert.equal(Object.isFrozen(result.authorityProvider), true);

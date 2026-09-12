@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.11.0] — 2026-09-12
+
 ### Added
 
 - Added lifecycle-free `normative-proposition` authoring 1.6 and
@@ -30,14 +32,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   `NormativeProposition` normalization, and deterministic
   `authorityStateFingerprint` projection semantics behind the shared core.
 
+### Architecture and boundaries
+
+- Semantic-core protocol `1.1` is the canonical semantic execution boundary.
+  Python and Node are peer host bindings: hosts own source acquisition,
+  parsing, and explicit request construction, while semantic-core owns
+  qualification, interpretation, normalization, and bounded diagnostics.
+- Architecture materialization requires an exact retained SemanticContractSet
+  identity; no host resolves or executes a convenience current SCS.
+- `NormativeProposition` remains a reasoning-shaping semantic construct in this
+  release. NP attribution is not part of the release.
+
 ### Limitations
 
-- Public Python and Node materialization bindings now advertise the exact,
-  parity-qualified `materialize_architecture` operation. Hosts own source
-  acquisition, parsing, and sealed request construction; semantic-core 1.1
-  owns qualification, interpretation, normalization, and bounded diagnostics.
-- Runtime integration, persistence, binding, and attribution changes remain
-  outside this release.
+- Runtime integration, runtime persistence, graph admission, runtime identity,
+  implementation attribution changes, and NP attribution remain outside this
+  release.
 
 ## [0.10.1] — 2026-09-08
 

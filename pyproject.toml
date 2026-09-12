@@ -1,6 +1,6 @@
 [project]
 name = "adr-architecture-kit"
-version = "0.10.1"
+version = "0.11.0"
 description = "Authoring-time STE toolkit: validate structured ADR YAML, emit discovery outputs and Architecture IR fragments (ste-spec). Pre-1.0 Alpha."
 authors = [{name = "Erik Gallmann"}]
 maintainers = [{name = "Erik Gallmann"}]
@@ -65,17 +65,22 @@ where = ["src"]
 "adr_kit.schema.v1_3" = ["*.json"]
 "adr_kit.schema.v1_4" = ["*.json"]
 "adr_kit.schema.authoring.v1_5" = ["*.json"]
+"adr_kit.schema.authoring.v1_6" = ["*.json"]
 "adr_kit.schema.v1_5" = ["*.json"]
 "adr_kit.schema.v1_6" = ["*.json"]
 "adr_kit.schema.v2_0" = ["*.json"]
 "adr_kit.schema.v2_1" = ["*.json"]
 "adr_kit.schema.v2_2" = ["*.json"]
+"adr_kit.schema.v2_3" = ["*.json"]
 "adr_kit.schema.migrations" = ["*.json"]
 "adr_kit.templates" = ["*.jinja2", "*.yaml"]
 "adr_kit.promotion.rules" = ["*.json"]
 "adr_kit.promotion.schemas" = ["*.json"]
 "adr_kit.compatibility" = ["*.json"]
 "adr_kit.core" = ["*.wasm", "*.json"]
+"adr_kit.semantic_contract" = ["*.json"]
+"adr_kit.semantic_contract.v1_0" = ["*.json", "profiles/*.json", "sets/*.json", "qualifications/*.json", "catalog/*.json", "policy/*.json", "current/*.json"]
+"adr_kit.semantic_contract.v1_0.resources" = ["*.json"]
 
 [tool.black]
 line-length = 100

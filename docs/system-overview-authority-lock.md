@@ -4,7 +4,7 @@
 
 ## Phase A disposition
 
-- Evidence note: [`docs/system-overview-phase-a-evidence.md`](../docs/system-overview-phase-a-evidence.md)
+- Evidence note: [`docs/system-overview-provider-refactor-evidence.md`](../docs/system-overview-provider-refactor-evidence.md)
 - Characterization tests: [`tests/test_system_overview_characterization.py`](../tests/test_system_overview_characterization.py) (3 passed)
 - **PROPOSED_CASE_B** (legacy generic compatibility path; no kit-provider framing; no future generic product)
 

@@ -6,7 +6,7 @@ generator_id: adr-projection-markdown
 generator_version: 3
 hash_algorithm: sha256
 source_hash: 75370da8346b55bc1cbb3243dbdb3f1efa1c6e771bb49aaeb112fb22627cc773
-rendered_hash: 18953e82182856e6e000b19e27266f643ebb7ab379ac703bc48e7363fb2a578d
+rendered_hash: f0d1ff4d11611c20eac74521da116afad33fd1bf8f06ad21d807672b2c11b431
 -->
 
 # ADR-L-0025: Topology and Contract Succession Authority (Authoring v1.5 / Normalized v2.2)
@@ -141,6 +141,7 @@ Production semantic validation must prove endpoint existence and permitted types
 - [ADR-L-0023](ADR-L-0023-consumer-semantic-extension-contract.md)
 - [ADR-L-0024](ADR-L-0024-cross-language-consumer-bindings-and-typescript-distribution.md)
 - [ADR-L-0026](ADR-L-0026-authoring-domain-contract-discovery-authority.md)
+- [ADR-L-0028](ADR-L-0028-normative-semantic-authority-and-materialization-foundation.md)
 
 
 

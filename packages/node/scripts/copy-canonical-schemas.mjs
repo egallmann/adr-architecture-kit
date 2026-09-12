@@ -13,14 +13,20 @@ const capabilityContract = JSON.parse(
 const semanticCoreContract = JSON.parse(
   await readFile(resolve(repoRoot, "contracts/semantic-core/v1.0/contract.json"), "utf8"),
 );
+const semanticCoreContractV11 = JSON.parse(
+  await readFile(resolve(repoRoot, "contracts/semantic-core/v1.1/contract.json"), "utf8"),
+);
+const semanticContractRoot = resolve(repoRoot, "contracts/semantic-contract/v1.0");
 
 const families = [
   ["authoring", "v1.2"],
   ["authoring", "v1.3"],
   ["authoring", "v1.4"],
   ["authoring", "v1.5"],
+  ["authoring", "v1.6"],
   ["normalized-model", "v2.1"],
   ["normalized-model", "v2.2"],
+  ["normalized-model", "v2.3"],
   ["evidence-attribution", "v1.5"],
   ["evidence-attribution", "v1.6"],
   ["architecture-discovery", "v1.1"],
@@ -63,3 +69,23 @@ await writeFile(resolve(generatedRoot, "package-metadata.ts"), `export const pac
 await writeFile(resolve(generatedRoot, "schema-assets.ts"), `export const schemaAssets = ${JSON.stringify(assets, null, 2)} as const;\n`);
 await writeFile(resolve(generatedRoot, "host-capabilities.ts"), `export const hostCapabilities = ${JSON.stringify(capabilityContract, null, 2)} as const;\n`);
 await writeFile(resolve(generatedRoot, "semantic-core-contract.ts"), `export const semanticCoreContract = ${JSON.stringify(semanticCoreContract, null, 2)} as const;\n`);
+await writeFile(resolve(generatedRoot, "semantic-core-contract-v1.1.ts"), `export const semanticCoreContractV11 = ${JSON.stringify(semanticCoreContractV11, null, 2)} as const;\n`);
+
+const semanticContractAssets = {};
+for (const directory of ["definitions", "resources", "profiles", "sets", "qualifications", "catalog", "policy", "current"]) {
+  const source = resolve(semanticContractRoot, directory);
+  const target = resolve(generatedRoot, "semantic-contract", directory);
+  await mkdir(target, { recursive: true });
+  for (const name of await readdir(source)) {
+    if (!name.endsWith(".json")) continue;
+    const bytes = await readFile(resolve(source, name));
+    await writeFile(resolve(target, name), bytes);
+    semanticContractAssets[`${directory}/${name}`] = JSON.parse(bytes.toString("utf8"));
+  }
+}
+for (const name of (await readdir(semanticContractRoot)).filter((name) => name.endsWith(".schema.json"))) {
+  const bytes = await readFile(resolve(semanticContractRoot, name));
+  await writeFile(resolve(generatedRoot, "semantic-contract", name), bytes);
+  semanticContractAssets[`schemas/${name}`] = JSON.parse(bytes.toString("utf8"));
+}
+await writeFile(resolve(generatedRoot, "semantic-contract-assets.ts"), `export const semanticContractAssets = ${JSON.stringify(semanticContractAssets, null, 2)} as const;\n`);

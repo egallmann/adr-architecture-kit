@@ -22,6 +22,8 @@ EXPECTED_PUBLIC_SYMBOLS = [
     "ArtifactDescriptor",
     "AttributionShimRequest",
     "AttributionShimResult",
+    "ArchitectureMaterializationRequest",
+    "ArchitectureMaterializationResult",
     "CapabilityManifest",
     "ValidationRequest",
     "ValidationResult",
@@ -50,6 +52,13 @@ EXPECTED_PUBLIC_SYMBOLS = [
     "Diagnostic",
     "EmbodimentLinkageRequest",
     "LinkageProvenance",
+    "MaterializationAuthorityProvider",
+    "MaterializationCapabilityLimitation",
+    "MaterializationProviderProvenance",
+    "MaterializationSemanticBasis",
+    "MaterializationSourceArtifact",
+    "MaterializationSourceBasis",
+    "MaterializationSourceContract",
     "LinkageOccurrence",
     "EmbodimentIntentLink",
     "RejectedEmbodimentClaim",
@@ -61,6 +70,7 @@ EXPECTED_PUBLIC_SYMBOLS = [
     "capabilities",
     "build_embodiment_linkage",
     "generate_attribution_shim",
+    "materialize_architecture",
     "validate_architecture",
     "validate_project_metadata",
     "validate_contract",
@@ -71,6 +81,30 @@ EXPECTED_PUBLIC_SYMBOLS = [
     "prepare_promotion",
     "check_promotion",
     "apply_promotion",
+    "SCF_SCHEME",
+    "SCS_SCHEME",
+    "SemanticContractVersion",
+    "SemanticContractProfile",
+    "SemanticOperationResult",
+    "SemanticResourceDependency",
+    "SemanticResourceManifestEntry",
+    "calculate_semantic_contract_fingerprint",
+    "canonicalize_semantic_json",
+    "compose_semantic_contract_set",
+    "list_semantic_contract_profiles",
+    "get_semantic_contract_profile",
+    "validate_semantic_contract_profile",
+    "validate_semantic_contract_qualification",
+    "preview_semantic_contract_set_assembly",
+    "apply_semantic_contract_set_assembly",
+    "validate_semantic_contract_corpus",
+    "list_semantic_contract_sets",
+    "resolve_current_semantic_contract_set",
+    "get_semantic_contract",
+    "list_semantic_contracts",
+    "load_semantic_resource",
+    "validate_semantic_resource_closure",
+    "verify_semantic_contract",
 ]
 
 
@@ -255,6 +289,23 @@ def test_capability_manifest_is_exact_and_deterministic() -> None:
         "open_provider_registry",
         "build_embodiment_linkage",
         "generate_attribution_shim",
+        "materialize_architecture",
+        "list_semantic_contracts",
+        "get_semantic_contract",
+        "canonicalize_semantic_json",
+        "calculate_semantic_contract_fingerprint",
+        "verify_semantic_contract",
+        "validate_semantic_resource_closure",
+        "compose_semantic_contract_set",
+        "list_semantic_contract_profiles",
+        "get_semantic_contract_profile",
+        "validate_semantic_contract_profile",
+        "validate_semantic_contract_qualification",
+        "preview_semantic_contract_set_assembly",
+        "apply_semantic_contract_set_assembly",
+        "validate_semantic_contract_corpus",
+        "list_semantic_contract_sets",
+        "resolve_current_semantic_contract_set",
     )
     assert "compile_architecture" in first.pending_host_operations
     assert first.browser_operations == ("capabilities",)
@@ -270,6 +321,22 @@ def test_capability_manifest_is_exact_and_deterministic() -> None:
         "open_provider_registry",
         "build_embodiment_linkage",
         "generate_attribution_shim",
+        "list_semantic_contracts",
+        "get_semantic_contract",
+        "canonicalize_semantic_json",
+        "calculate_semantic_contract_fingerprint",
+        "verify_semantic_contract",
+        "validate_semantic_resource_closure",
+        "compose_semantic_contract_set",
+        "list_semantic_contract_profiles",
+        "get_semantic_contract_profile",
+        "validate_semantic_contract_profile",
+        "validate_semantic_contract_qualification",
+        "preview_semantic_contract_set_assembly",
+        "apply_semantic_contract_set_assembly",
+        "validate_semantic_contract_corpus",
+        "list_semantic_contract_sets",
+        "resolve_current_semantic_contract_set",
         "prepare_promotion",
         "check_promotion",
         "apply_promotion",
@@ -280,12 +347,12 @@ def test_capability_manifest_is_exact_and_deterministic() -> None:
     )
     assert first.validation_modes == ("complete", "structural")
     assert first.artifact_groups == ("registries", "manifest", "markdown")
-    assert first.supported_adr_schema_versions == ("1.0", "1.1", "1.2", "1.3", "1.4", "1.5")
+    assert first.supported_adr_schema_versions == ("1.0", "1.1", "1.2", "1.3", "1.4", "1.5", "1.6")
     assert first.stable_adr_schema_versions == ("1.0",)
-    assert first.provisional_adr_schema_versions == ("1.1", "1.2", "1.3", "1.4", "1.5")
+    assert first.provisional_adr_schema_versions == ("1.1", "1.2", "1.3", "1.4", "1.5", "1.6")
     assert "1.3" in first.supported_adr_schema_versions
     assert first.normalized_model_schema_version == "1.1"
-    assert first.supported_normalized_model_schema_versions == ("1.1", "2.0", "2.1", "2.2")
+    assert first.supported_normalized_model_schema_versions == ("1.1", "2.0", "2.1", "2.2", "2.3")
     assert first.supported_evidence_attribution_versions == ("1.5", "1.6")
     assert first.preferred_evidence_attribution_version == "1.6"
     assert "supported_authoring_domain_versions" not in first.as_dict()

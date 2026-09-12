@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://adr-kit.dev/contracts/semantic-contract/v1.0/semantic-contract-qualification.schema.json",
+  "title": "ADR-Kit exact whole-tuple qualification v1.0",
+  "type": "object", "additionalProperties": false,
+  "required": ["qualificationRecordId", "qualificationSchemaVersion", "operation", "direction", "profileId", "semanticContractSetId", "members", "outcome", "installedExecutionSupport", "newUsePolicy", "historicalInterpretationSupport", "qualificationRevision"],
+  "properties": {
+    "qualificationRecordId": {"type": "string", "minLength": 1}, "qualificationSchemaVersion": {"const": "1.0"},
+    "operation": {"type": "string", "minLength": 1}, "direction": {"enum": ["none", "forward", "reverse"]},
+    "profileId": {"const": "architecture-materialization@1.0"},
+    "semanticContractSetId": {"type": "string", "pattern": "^scs:v1:sha256:[0-9a-f]{64}$"},
+    "members": {"$ref": "semantic-contract-set.schema.json#/properties/members"},
+    "outcome": {"enum": ["qualified", "rejected", "prohibited"]}, "installedExecutionSupport": {"type": "boolean"},
+    "newUsePolicy": {"enum": ["permitted", "prohibited"]}, "historicalInterpretationSupport": {"type": "boolean"},
+    "qualificationRevision": {"type": "string", "minLength": 1}, "reasonCode": {"type": "string"}
+  }
+}

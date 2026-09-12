@@ -34,6 +34,52 @@ print(manifest.as_dict())
 Capability discovery is local and deterministic. It performs no network access,
 repository discovery, validation, compilation, or writes.
 
+## Semantic contract identity and closure
+
+The public SDK exposes the immutable semantic definitions used by both peer hosts. The
+definitions contain only semantic meaning, resource manifests, frozen
+conformance resources, and their `scf:v1:sha256` identity; lifecycle policy,
+catalog state, executable support, and current selection are not part of that
+identity.
+
+The bundled families are `architecture-interpretation@1.0`,
+`normative-semantics@1.0`, and `normalized-model@2.3`. The normalized model is
+the canonical execution output contract, not a host-specific binding model.
+
+```python
+from adr_kit.api import (
+    get_semantic_contract,
+    load_semantic_resource,
+    validate_semantic_resource_closure,
+    verify_semantic_contract,
+)
+
+contract = get_semantic_contract("normative-semantics", "1.0")
+resources = [
+    {
+        "canonicalResourceKey": entry.canonical_resource_key,
+        "content": load_semantic_resource(entry.canonical_resource_key),
+    }
+    for entry in contract.resource_manifest
+]
+assert validate_semantic_resource_closure(contract, resources).closure_valid
+```
+
+Canonicalization, fingerprinting, closure validation, and contract-set
+composition execute in the shared semantic core. The Python and Node bindings
+adapt inputs and freeze results; they do not duplicate those algorithms.
+
+## Materialize an explicit architecture basis
+
+Python and Node expose the same `materialize_architecture` capability (named
+`materializeArchitecture` in Node). The caller supplies the exact SCS identity,
+provider identity, sealed source basis, source-contract closure, and parsed
+documents. The host never resolves a current pointer or interprets source
+meaning. Semantic-core 1.1 qualifies the exact tuple, interprets the sources,
+and returns an immutable normalized-model 2.3 result or a bounded rejection or
+unavailable outcome. This operation is Node-only in the TypeScript package;
+browser materialization is not advertised.
+
 ## Build validated embodiment linkage
 
 ```python
@@ -294,6 +340,20 @@ open_provider_registry
 prepare_promotion
 check_promotion
 apply_promotion
+SCF_SCHEME
+SCS_SCHEME
+SemanticContractVersion
+SemanticOperationResult
+SemanticResourceDependency
+SemanticResourceManifestEntry
+calculate_semantic_contract_fingerprint
+canonicalize_semantic_json
+compose_semantic_contract_set
+get_semantic_contract
+list_semantic_contracts
+load_semantic_resource
+validate_semantic_resource_closure
+verify_semantic_contract
 ```
 
 `NormalizedArchitectureModelV2`, `ProviderRegistry`, and `open_provider_registry`

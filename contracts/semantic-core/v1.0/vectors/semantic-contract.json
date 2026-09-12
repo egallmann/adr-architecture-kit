@@ -1,0 +1,136 @@
+{
+  "contract_version": "1.0",
+  "cases": [
+    {
+      "name": "jcs_ecmascript_appendix_b_number_corpus",
+      "request": {
+        "core_contract_version": "1.0",
+        "operation": "canonicalize_semantic_json",
+        "value_json": "{\"a\":333333333.33333329,\"b\":1e30,\"c\":4.50,\"d\":2e-3,\"e\":1e-27,\"f\":0.000001,\"g\":0.0000001,\"h\":1e20,\"i\":1e21,\"j\":-0,\"k\":5e-324,\"l\":1.7976931348623157e308,\"m\":1000000000000000100.0}"
+      },
+      "expected": {
+        "success": true,
+        "canonical_preimage_json": "{\"a\":333333333.3333333,\"b\":1e+30,\"c\":4.5,\"d\":0.002,\"e\":1e-27,\"f\":0.000001,\"g\":1e-7,\"h\":100000000000000000000,\"i\":1e+21,\"j\":0,\"k\":5e-324,\"l\":1.7976931348623157e+308,\"m\":1000000000000000100}",
+        "fingerprint": "sha256:220209c365ed6dd98eb857903c51a4ac3bff2f984f0e44474af141679b647717"
+      }
+    },
+    {
+      "name": "jcs_ecmascript_number_boundaries",
+      "request": {
+        "core_contract_version": "1.0",
+        "operation": "canonicalize_semantic_json",
+        "value_json": "{\"small\":1e-6,\"tiny\":1e-7,\"large\":1e20,\"huge\":1e21,\"zero\":-0,\"safe\":9007199254740991}"
+      },
+      "expected": {
+        "success": true,
+        "canonical_preimage_json": "{\"huge\":1e+21,\"large\":100000000000000000000,\"safe\":9007199254740991,\"small\":0.000001,\"tiny\":1e-7,\"zero\":0}",
+        "fingerprint": "sha256:e06142c266d760eeecc4841c710d04fe312941461cd9985bc0ec7a1b60d8b0c3"
+      }
+    },
+    {
+      "name": "jcs_sorts_object_keys_by_utf16_code_units",
+      "request": {
+        "core_contract_version": "1.0",
+        "operation": "canonicalize_semantic_json",
+        "value_json": "{\"\\ue000\":1,\"𝄞\":2}"
+      },
+      "expected": {
+        "success": true,
+        "canonical_preimage_json": "{\"𝄞\":2,\"\":1}",
+        "fingerprint": "sha256:d97a92b3c84f64933ffc1964d142ba3b5056c956b7a61089611a41b67b7a295f"
+      }
+    },
+    {
+      "name": "jcs_preserves_unicode_normalization_distinctions",
+      "request": {
+        "core_contract_version": "1.0",
+        "operation": "canonicalize_semantic_json",
+        "value_json": "{\"composed\":\"é\",\"decomposed\":\"é\"}"
+      },
+      "expected": {
+        "success": true,
+        "canonical_preimage_json": "{\"composed\":\"é\",\"decomposed\":\"é\"}",
+        "fingerprint": "sha256:7f04a9b0f36600f4b530afbb2601cb43068497f57b6ac5e07b2c173534c523ab"
+      }
+    },
+    {
+      "name": "duplicate_json_members_are_rejected_at_the_boundary",
+      "request": {
+        "core_contract_version": "1.0",
+        "operation": "canonicalize_semantic_json",
+        "value_json": "{\"x\":1,\"x\":2}"
+      },
+      "expected": {"success": false, "diagnostic_codes": ["semantic_contract.invalid_json"]}
+    },
+    {
+      "name": "unpaired_unicode_surrogate_is_rejected_at_the_boundary",
+      "request": {
+        "core_contract_version": "1.0",
+        "operation": "canonicalize_semantic_json",
+        "value_json": "{\"x\":\"\\ud800\"}"
+      },
+      "expected": {"success": false, "diagnostic_codes": ["semantic_contract.invalid_json"]}
+    },
+    {
+      "name": "unsafe_integer_is_rejected",
+      "request": {
+        "core_contract_version": "1.0",
+        "operation": "canonicalize_semantic_json",
+        "value": 9007199254740992
+      },
+      "expected": {"success": false, "diagnostic_codes": ["semantic_contract.unsafe_number"]}
+    },
+    {
+      "name": "calculate_mode_has_an_explicit_typed_boundary",
+      "request": {
+        "core_contract_version": "1.0",
+        "operation": "fingerprint_semantic_contract",
+        "mode": "calculate",
+        "definition": {
+          "semanticContractFamily": "test-contract",
+          "semanticContractVersion": "1.0",
+          "fingerprintScheme": "scf:v1:sha256",
+          "resourceManifest": [{"canonicalResourceKey": "test-contract/1.0/conformance", "contentDigest": "sha256:0000000000000000000000000000000000000000000000000000000000000000", "role": "normative-conformance", "dependencies": []}],
+          "frozenNormativeConformanceResources": ["test-contract/1.0/conformance"]
+        }
+      },
+      "expected": {
+        "success": true,
+        "mode": "calculate",
+        "semantic_contract_fingerprint": "scf:v1:sha256:1fcf80fa448f380dcbbacff1b15ddde076a8de698c7c5e6676e5061acf1cc641"
+      }
+    },
+    {
+      "name": "semantic_contract_set_uses_canonical_three_member_answer",
+      "request": {
+        "core_contract_version": "1.0",
+        "operation": "compose_semantic_contract_set",
+        "contracts": [
+          {"semanticContractFamily": "normalized-model", "semanticContractVersion": "2.3", "semanticContractFingerprint": "scf:v1:sha256:9b6c66904310264e7d0dc12e4e8f6d1fceda48b5420596080bb50a2d268a7ed8"},
+          {"semanticContractFamily": "normative-semantics", "semanticContractVersion": "1.0", "semanticContractFingerprint": "scf:v1:sha256:d251c20231d2eb8956e6e11ef4b68f1b88e2b3ce38bfce1a4245ace67c6dfc48"},
+          {"semanticContractFamily": "architecture-interpretation", "semanticContractVersion": "1.0", "semanticContractFingerprint": "scf:v1:sha256:c96a8d10b910981dbf0178cd6a97767d627550d03db4e5f0ccce14725b4e029e"}
+        ]
+      },
+      "expected": {
+        "success": true,
+        "semantic_contract_set_id": "scs:v1:sha256:18a1452f70968283c2b8bb4d82f38f8bbe76426a9db9ac7d75ea6c7d00eb6f2b"
+      }
+    },
+    {
+      "name": "semantic_contract_set_preserves_raw_non_object_member_diagnostic",
+      "executionBoundary": "raw-core",
+      "request": {
+        "core_contract_version": "1.0",
+        "operation": "compose_semantic_contract_set",
+        "contracts": [null]
+      },
+      "expected": {
+        "success": false,
+        "diagnostic_codes": ["semantic_contract.invalid_set_member"],
+        "diagnostic_messages": ["set member must be an object"],
+        "diagnostic_severities": ["error"],
+        "diagnostic_paths": ["contracts[0]"]
+      }
+    }
+  ]
+}

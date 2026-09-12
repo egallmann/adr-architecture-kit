@@ -5,12 +5,17 @@ use serde::{Deserialize, Serialize};
 mod architecture;
 mod attribution;
 mod linkage;
+mod materialization;
+mod schema_validation;
+mod semantic_contract;
+mod semantic_contract_set;
 
 // This module is the canonical semantic execution boundary. Host SDKs are
 // responsible for discovery, filesystem access, YAML parsing, and adapting
 // their native inputs into this normalized JSON contract; they must not
 // reimplement the rules evaluated below.
 const VERSION: &str = "1.0";
+const VERSION_1_1: &str = "1.1";
 const SENTINELS: [&str; 3] = [
     "__LEGACY_UNSPECIFIED__",
     "__NOT_YET_MODELED__",
@@ -30,7 +35,7 @@ const GENERATED_ARTIFACT_KINDS: [&str; 5] = [
 // from Python, Node, and browser/WASM hosts. Rust build dependencies are
 // compiled into that artifact, while Python additionally depends on wasmtime
 // to load it.
-#[derive(Clone, Debug, Deserialize, Serialize)]
+#[derive(Clone, Debug, PartialEq, Serialize)]
 #[serde(untagged)]
 enum Json {
     Null,
@@ -39,6 +44,107 @@ enum Json {
     String(String),
     Array(Vec<Json>),
     Object(BTreeMap<String, Json>),
+}
+
+// serde_json normally materializes objects into a map and lets a later member
+// replace an earlier member. That is convenient for application data but is
+// unsafe at a canonicalization boundary: two byte-distinct inputs would then
+// acquire one indistinguishable meaning. The semantic boundary therefore
+// parses objects with an explicit duplicate-member check before any map is
+// constructed.
+impl<'de> Deserialize<'de> for Json {
+    fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
+    where
+        D: serde::Deserializer<'de>,
+    {
+        use serde::de::{Error, MapAccess, SeqAccess, Visitor};
+        use std::fmt;
+
+        struct JsonVisitor;
+        impl<'de> Visitor<'de> for JsonVisitor {
+            type Value = Json;
+
+            fn expecting(&self, formatter: &mut fmt::Formatter<'_>) -> fmt::Result {
+                formatter.write_str("a JSON value")
+            }
+            fn visit_unit<E>(self) -> Result<Self::Value, E>
+            where
+                E: Error,
+            {
+                Ok(Json::Null)
+            }
+            fn visit_bool<E>(self, value: bool) -> Result<Self::Value, E>
+            where
+                E: Error,
+            {
+                Ok(Json::Bool(value))
+            }
+            fn visit_i64<E>(self, value: i64) -> Result<Self::Value, E>
+            where
+                E: Error,
+            {
+                Ok(Json::Number(serde_json::Number::from(value)))
+            }
+            fn visit_u64<E>(self, value: u64) -> Result<Self::Value, E>
+            where
+                E: Error,
+            {
+                Ok(Json::Number(serde_json::Number::from(value)))
+            }
+            fn visit_f64<E>(self, value: f64) -> Result<Self::Value, E>
+            where
+                E: Error,
+            {
+                serde_json::Number::from_f64(value)
+                    .map(Json::Number)
+                    .ok_or_else(|| E::custom("JSON number must be finite"))
+            }
+            fn visit_str<E>(self, value: &str) -> Result<Self::Value, E>
+            where
+                E: Error,
+            {
+                Ok(Json::String(value.to_owned()))
+            }
+            fn visit_string<E>(self, value: String) -> Result<Self::Value, E>
+            where
+                E: Error,
+            {
+                Ok(Json::String(value))
+            }
+            fn visit_none<E>(self) -> Result<Self::Value, E>
+            where
+                E: Error,
+            {
+                Ok(Json::Null)
+            }
+            fn visit_seq<A>(self, mut access: A) -> Result<Self::Value, A::Error>
+            where
+                A: SeqAccess<'de>,
+            {
+                let mut values = Vec::new();
+                while let Some(value) = access.next_element::<Json>()? {
+                    values.push(value);
+                }
+                Ok(Json::Array(values))
+            }
+            fn visit_map<A>(self, mut access: A) -> Result<Self::Value, A::Error>
+            where
+                A: MapAccess<'de>,
+            {
+                let mut values = BTreeMap::new();
+                while let Some(key) = access.next_key::<String>()? {
+                    if values.contains_key(&key) {
+                        return Err(A::Error::custom(format!("duplicate JSON member: {key}")));
+                    }
+                    let value = access.next_value::<Json>()?;
+                    values.insert(key, value);
+                }
+                Ok(Json::Object(values))
+            }
+        }
+
+        deserializer.deserialize_any(JsonVisitor)
+    }
 }
 
 impl Json {
@@ -72,6 +178,32 @@ impl Json {
         } else {
             None
         }
+    }
+    fn as_f64(&self) -> Option<f64> {
+        if let Self::Number(value) = self {
+            value.as_f64()
+        } else {
+            None
+        }
+    }
+    fn as_number(&self) -> Option<&serde_json::Number> {
+        if let Self::Number(value) = self {
+            Some(value)
+        } else {
+            None
+        }
+    }
+    // Test and audit helpers use path lookup so assertions stay expressed in
+    // the same semantic field names as the shared vector contract.
+    #[cfg(test)]
+    fn get(&self, key: &str) -> Option<&Json> {
+        self.as_object()?.get(key)
+    }
+    #[cfg(test)]
+    fn get_path<'a>(&'a self, path: &[&str]) -> Option<&'a Json> {
+        path.iter().try_fold(self, |value, key| {
+            value.as_object()?.get(*key)
+        })
     }
 }
 fn json(value: &Json) -> String {
@@ -132,6 +264,30 @@ fn simple_result(operation: &str, success: bool, diagnostics: Vec<Json>) -> Json
         (String::from("success"), Json::Bool(success)),
         (String::from("diagnostics"), Json::Array(diagnostics)),
     ])
+}
+
+/// Build a result for the additive 1.1 protocol without changing the v1.0
+/// envelope. Keeping this helper separate is intentional: compatibility
+/// callers must continue to observe the exact v1.0 wire version and fields.
+pub(crate) fn simple_result_v11(operation: &str, success: bool, diagnostics: Vec<Json>) -> Json {
+    object([
+        (String::from("core_contract_version"), string(VERSION_1_1)),
+        (String::from("operation"), string(operation)),
+        (String::from("success"), Json::Bool(success)),
+        (String::from("diagnostics"), Json::Array(diagnostics)),
+    ])
+}
+
+/// Return a deterministic v1.1 protocol rejection. New operations use their
+/// operation-specific result envelope when possible; malformed or unsupported
+/// requests still retain the declared v1.1 version so host validators can
+/// route the failure through the correct contract.
+pub(crate) fn invalid_v11(operation: &str, message: impl Into<String>) -> Json {
+    simple_result_v11(
+        operation,
+        false,
+        vec![diagnostic("core.invalid_request", message, None)],
+    )
 }
 
 fn optional_string_value(object: &BTreeMap<String, Json>, key: &str) -> Option<String> {
@@ -342,9 +498,18 @@ fn validate_project_metadata(request: &Json) -> Json {
             &mut diagnostics,
         );
         if let Some(value) = required_string(project, "type", "project.type", &mut diagnostics) {
+            // Project type is a shared semantic value; hosts must not invent
+            // a local enum that diverges from the canonical contract.
             if !one_of(
                 &value,
-                &["service", "library", "platform", "system", "tool"],
+                &[
+                    "service",
+                    "library",
+                    "platform",
+                    "system",
+                    "tool",
+                    "specification",
+                ],
             ) {
                 diagnostics.push(metadata_issue("project.type", "unsupported project type"));
             }
@@ -566,7 +731,7 @@ fn validate_repository(request: &Json) -> Json {
         .get("model_version")
         .and_then(Json::as_str)
         .unwrap_or("");
-    if !["2.0", "2.1", "2.2"].contains(&model_version) {
+    if !["2.0", "2.1", "2.2", "2.3"].contains(&model_version) {
         return simple_result(
             "open_repository",
             false,
@@ -1355,23 +1520,62 @@ pub fn execute_json(input: &[u8]) -> Vec<u8> {
     // parallel implementation for the same operation.
     match serde_json::from_slice::<Json>(input) {
         Ok(value) => {
+            let declared_version = value
+                .as_object()
+                .and_then(|object| object.get("core_contract_version"))
+                .and_then(Json::as_str);
             let operation = value
                 .as_object()
                 .and_then(|object| object.get("operation"))
                 .and_then(Json::as_str);
-            let result = match operation {
-                Some("validate_contract") => validate(&value),
-                Some("validate_project_metadata") => validate_project_metadata(&value),
-                Some("open_provider_registry") => validate_provider_registry(&value),
-                Some("open_repository") => validate_repository(&value),
-                Some("build_embodiment_linkage") => linkage::execute(&value),
-                Some("generate_attribution_shim") => attribution::execute(&value),
-                Some("classify_generated_artifact") => classify_generated_artifact(&value),
-                Some("validate_architecture_references") => {
-                    validate_architecture_references(&value)
+            let result = if declared_version == Some(VERSION_1_1) {
+                match operation {
+                    Some("resolve_semantic_contract_set") => {
+                        semantic_contract_set::resolve_exact(&value)
+                    }
+                    Some("materialize_architecture") => materialization::execute(&value),
+                    Some(operation) => invalid_v11(
+                        operation,
+                        "operation is not available in semantic-core protocol 1.1",
+                    ),
+                    None => invalid_v11("invalid_request", "operation is required"),
                 }
-                Some("validate_architecture") => architecture::execute(&value),
-                Some(_) | None => invalid("unsupported semantic core operation"),
+            } else {
+                match operation {
+                    Some("validate_contract") => validate(&value),
+                    Some("validate_project_metadata") => validate_project_metadata(&value),
+                    Some("open_provider_registry") => validate_provider_registry(&value),
+                    Some("open_repository") => validate_repository(&value),
+                    Some("build_embodiment_linkage") => linkage::execute(&value),
+                    Some("generate_attribution_shim") => attribution::execute(&value),
+                    Some("classify_generated_artifact") => classify_generated_artifact(&value),
+                    Some("validate_architecture_references") => {
+                        validate_architecture_references(&value)
+                    }
+                    Some("validate_architecture") => architecture::execute(&value),
+                    Some("canonicalize_semantic_json") => semantic_contract::canonicalize(&value),
+                    Some("fingerprint_semantic_contract") => semantic_contract::fingerprint(&value),
+                    Some("validate_semantic_resource_closure") => {
+                        semantic_contract::validate_closure(&value)
+                    }
+                    Some("compose_semantic_contract_set") => semantic_contract::compose_set(&value),
+                    Some("validate_semantic_contract_profile") => {
+                        semantic_contract_set::validate_profile(&value)
+                    }
+                    Some("validate_semantic_contract_qualification") => {
+                        semantic_contract_set::validate_qualification(&value)
+                    }
+                    Some("assemble_semantic_contract_set") => {
+                        semantic_contract_set::assemble(&value)
+                    }
+                    Some("validate_semantic_contract_corpus") => {
+                        semantic_contract_set::validate_corpus(&value)
+                    }
+                    Some("resolve_current_semantic_contract_set") => {
+                        semantic_contract_set::resolve_current(&value)
+                    }
+                    Some(_) | None => invalid("unsupported semantic core operation"),
+                }
             };
             json(&result).into_bytes()
         }
@@ -1413,4 +1617,244 @@ pub unsafe extern "C" fn execute(pointer: *const u8, size: usize) -> *mut u8 {
 #[no_mangle]
 pub unsafe extern "C" fn result_len() -> usize {
     LAST_RESULT_LEN
+}
+
+#[cfg(test)]
+mod semantic_core_v11_tests {
+    use super::Json;
+
+    fn execute(request: Json) -> Json {
+        let bytes = serde_json::to_vec(&request).expect("test request serializes");
+        serde_json::from_slice(&super::execute_json(&bytes)).expect("core result is JSON")
+    }
+
+    #[test]
+    fn v11_vectors_execute_against_the_canonical_core() {
+        let vectors: Json = serde_json::from_str(include_str!(
+            "../../contracts/semantic-core/v1.1/vectors/architecture-materialization.json"
+        ))
+        .expect("v1.1 vectors are valid JSON");
+        let cases = vectors
+            .as_object()
+            .and_then(|value| value.get("cases"))
+            .and_then(Json::as_array)
+            .expect("v1.1 vectors contain cases");
+        assert!(cases.len() >= 50);
+        for case in cases {
+            let name = case
+                .as_object()
+                .and_then(|value| value.get("name"))
+                .and_then(Json::as_str)
+                .unwrap_or("unnamed");
+            let request = case
+                .as_object()
+                .and_then(|value| value.get("request"))
+                .cloned()
+                .expect("vector case contains a request");
+            let expected = case
+                .as_object()
+                .and_then(|value| value.get("expected"))
+                .and_then(Json::as_object)
+                .expect("vector case contains expectations");
+            let result = execute(request);
+            assert_eq!(
+                result.as_object().and_then(|value| value.get("success")),
+                expected.get("success"),
+                "{}",
+                name
+            );
+            if let Some(outcome) = expected.get("outcome") {
+                assert_eq!(result.as_object().and_then(|value| value.get("outcome")), Some(outcome), "{name}");
+            }
+            if let Some(resolved) = expected.get("resolved") {
+                assert_eq!(
+                    result
+                        .as_object()
+                        .and_then(|value| value.get("resolved"))
+                        .and_then(Json::as_object)
+                        .and_then(|value| value.get("semanticContractSetId")),
+                    resolved.as_object().and_then(|value| value.get("semanticContractSetId")),
+                    "{name} resolved exact set"
+                );
+            }
+            let mut actual_counts = std::collections::BTreeMap::new();
+            let mut actual_codes = Vec::new();
+            let mut actual_messages = Vec::new();
+            let mut actual_paths = Vec::new();
+            let mut actual_severities = Vec::new();
+            if let Some(diagnostics) = result
+                .as_object()
+                .and_then(|value| value.get("diagnostics"))
+                .and_then(Json::as_array)
+            {
+                for diagnostic in diagnostics {
+                    if let Some(object) = diagnostic.as_object() {
+                        if let Some(message) = object.get("message") {
+                            actual_messages.push(message.clone());
+                        }
+                        if let Some(path) = object.get("path") {
+                            actual_paths.push(path.clone());
+                        }
+                        if let Some(severity) = object.get("severity") {
+                            actual_severities.push(severity.clone());
+                        }
+                    }
+                    if let Some(code) = diagnostic
+                        .as_object()
+                        .and_then(|value| value.get("code"))
+                        .and_then(Json::as_str)
+                    {
+                        actual_codes.push(Json::String(code.to_owned()));
+                        let count = actual_counts.entry(code.to_owned()).or_insert(0u64);
+                        *count += 1;
+                    }
+                }
+            }
+            let actual = Json::Object(
+                actual_counts
+                    .into_iter()
+                    .map(|(code, count)| (code, Json::Number(serde_json::Number::from(count))))
+                    .collect(),
+            );
+            assert_eq!(
+                Json::Array(actual_codes),
+                expected
+                    .get("diagnostic_codes")
+                    .cloned()
+                    .unwrap_or_else(|| Json::Array(Vec::new())),
+                "diagnostic order for {}",
+                case.as_object()
+                    .and_then(|value| value.get("name"))
+                    .and_then(Json::as_str)
+                    .unwrap_or("unnamed")
+            );
+            assert_eq!(
+                actual,
+                expected
+                    .get("diagnostic_code_counts")
+                    .cloned()
+                    .unwrap_or_else(|| Json::Object(std::collections::BTreeMap::new())),
+                "diagnostic count shape for {}",
+                name
+            );
+            assert_eq!(actual_messages, expected.get("diagnostic_messages").and_then(Json::as_array).cloned().unwrap_or_default(), "diagnostic messages for {name}");
+            assert_eq!(actual_paths, expected.get("diagnostic_paths").and_then(Json::as_array).cloned().unwrap_or_default(), "diagnostic paths for {name}");
+            assert_eq!(actual_severities, expected.get("diagnostic_severities").and_then(Json::as_array).cloned().unwrap_or_default(), "diagnostic severities for {name}");
+
+            if let Some(assertions) = expected.get("assertions").and_then(Json::as_object) {
+                if let Some(set_id) = assertions
+                    .get("semantic_contract_set_id")
+                    .and_then(Json::as_str)
+                {
+                    assert_eq!(
+                        result.get_path(&["semanticBasis", "semanticContractSetId"]),
+                        Some(&Json::String(set_id.to_owned())),
+                        "{name} executed semantic-contract set"
+                    );
+                }
+                if let Some(count) = assertions.get("unresolved_count").and_then(Json::as_u64) {
+                    assert_eq!(result.get_path(&["normalizedModel", "unresolved"]).and_then(Json::as_array).map(Vec::len), Some(count as usize), "{name} unresolved count");
+                }
+                if let Some(count) = assertions.get("relationship_count").and_then(Json::as_u64) {
+                    assert_eq!(result.get_path(&["normalizedModel", "relationships"]).and_then(Json::as_array).map(Vec::len), Some(count as usize), "{name} relationship count");
+                }
+                if let Some(required) = assertions.get("entity_ids").and_then(Json::as_array) {
+                    let actual: std::collections::BTreeSet<String> = result
+                        .get_path(&["normalizedModel", "entities"])
+                        .and_then(Json::as_array)
+                        .into_iter()
+                        .flatten()
+                        .filter_map(|entity| entity.get("id").and_then(Json::as_str).map(str::to_owned))
+                        .collect();
+                    for id in required {
+                        assert!(
+                            id.as_str().map(|value| actual.contains(value)).unwrap_or(false),
+                            "{name} missing projected entity {:?}",
+                            id
+                        );
+                    }
+                }
+                if let Some(expected_types) = assertions.get("relationship_type_counts") {
+                    let mut actual_types = std::collections::BTreeMap::<String, Json>::new();
+                    if let Some(relationships) = result.get_path(&["normalizedModel", "relationships"]).and_then(Json::as_array) {
+                        for relationship in relationships {
+                            if let Some(kind) = relationship.get("relationship_type").and_then(Json::as_str) {
+                                let count = actual_types.entry(kind.to_owned()).or_insert(Json::Number(serde_json::Number::from(0u64)));
+                                if let Json::Number(value) = count {
+                                    let next = value.as_u64().unwrap_or(0) + 1;
+                                    *value = serde_json::Number::from(next);
+                                }
+                            }
+                        }
+                    }
+                    let actual_json = Json::Object(actual_types);
+                    assert_eq!(&actual_json, expected_types, "{name} relationship type counts");
+                }
+            }
+
+            if let Some(paired_request) = expected.get("pairedRequest") {
+                // Paired vectors are the shared metamorphic contract.  They
+                // execute through the same core entry point, including the
+                // raw-core current-pointer case, and compare only the
+                // invariants declared by the vector.
+                let paired = execute(paired_request.clone());
+                assert_eq!(paired.get("success"), Some(&Json::Bool(true)), "{name}:pair success");
+                assert_eq!(paired.get("outcome").and_then(Json::as_str), Some("Materialized"), "{name}:pair outcome");
+                if let Some(paired_assertions) = expected.get("pairedAssertions").and_then(Json::as_object) {
+                    if paired_assertions.get("same_normalized_model") == Some(&Json::Bool(true)) {
+                        assert_eq!(result.get("normalizedModel"), paired.get("normalizedModel"), "{name}:pair normalized model");
+                    }
+                    if paired_assertions.get("same_source_contract_closure") == Some(&Json::Bool(true)) {
+                        assert_eq!(result.get("sourceContractClosure"), paired.get("sourceContractClosure"), "{name}:pair source closure");
+                    }
+                    if paired_assertions.get("same_authority_state_fingerprint") == Some(&Json::Bool(true)) {
+                        assert_eq!(result.get_path(&["semanticBasis", "authorityStateFingerprint"]), paired.get_path(&["semanticBasis", "authorityStateFingerprint"]), "{name}:pair fingerprint");
+                    }
+                    if paired_assertions.get("different_authority_state_fingerprint") == Some(&Json::Bool(true)) {
+                        assert_ne!(result.get_path(&["semanticBasis", "authorityStateFingerprint"]), paired.get_path(&["semanticBasis", "authorityStateFingerprint"]), "{name}:pair fingerprint");
+                    }
+                }
+            }
+        }
+    }
+
+    #[test]
+    fn v11_exact_resolution_is_routed_to_the_v11_boundary() {
+        let result = execute(Json::Object(std::collections::BTreeMap::from([
+            ("core_contract_version".into(), Json::String("1.1".into())),
+            (
+                "operation".into(),
+                Json::String("resolve_semantic_contract_set".into()),
+            ),
+        ])));
+        assert_eq!(
+            result
+                .as_object()
+                .and_then(|value| value.get("core_contract_version"))
+                .and_then(Json::as_str),
+            Some("1.1")
+        );
+        assert_eq!(
+            result.as_object().and_then(|value| value.get("success")),
+            Some(&Json::Bool(false))
+        );
+    }
+
+    #[test]
+    fn v11_materialization_without_an_exact_set_id_is_rejected() {
+        let result = execute(Json::Object(std::collections::BTreeMap::from([
+            ("core_contract_version".into(), Json::String("1.1".into())),
+            (
+                "operation".into(),
+                Json::String("materialize_architecture".into()),
+            ),
+        ])));
+        assert_eq!(
+            result
+                .as_object()
+                .and_then(|value| value.get("outcome"))
+                .and_then(Json::as_str),
+            Some("Rejected")
+        );
+    }
 }

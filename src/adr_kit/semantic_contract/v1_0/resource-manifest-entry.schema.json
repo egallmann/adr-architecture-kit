@@ -1,0 +1,49 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://adr-kit.dev/contracts/semantic-contract/v1.0/resource-manifest-entry.schema.json",
+  "title": "ADR-Kit semantic contract resource manifest entry",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["canonicalResourceKey", "contentDigest", "role", "dependencies"],
+  "properties": {
+    "canonicalResourceKey": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9._/-]*$"
+    },
+    "contentDigest": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "role": {
+      "enum": [
+        "normative-definition",
+        "normative-conformance",
+        "interpretation-rule",
+        "interpretation-conformance",
+        "normalized-model-schema",
+        "normalized-model-conformance",
+        "source-contract-schema",
+        "source-contract-mapping"
+      ]
+    },
+    "dependencies": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["canonicalResourceKey", "contentDigest"],
+        "properties": {
+          "canonicalResourceKey": {
+            "type": "string",
+            "pattern": "^[a-z0-9][a-z0-9._/-]*$"
+          },
+          "contentDigest": {
+            "type": "string",
+            "pattern": "^sha256:[0-9a-f]{64}$"
+          }
+        }
+      }
+    }
+  }
+}

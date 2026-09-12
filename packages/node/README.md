@@ -23,9 +23,18 @@ Node-only entry points:
 import { openRepository } from "@system-of-thought/adr-kit/node";
 import { buildEmbodimentLinkage, generateAttributionShim } from "@system-of-thought/adr-kit/node/linkage";
 import { validateArchitecture, validateContract, validateProjectMetadata } from "@system-of-thought/adr-kit/node/governance";
+import { materializeArchitecture } from "@system-of-thought/adr-kit/node/materialization";
+import {
+  getSemanticContract,
+  getSemanticContractProfile,
+  previewSemanticContractSetAssembly,
+  resolveCurrentSemanticContractSet,
+  validateSemanticResourceClosure,
+  verifySemanticContract,
+} from "@system-of-thought/adr-kit/node/semantic-contract";
 ```
 
-TypeScript v1 supports normalized models 2.1 and 2.2, evidence attribution 1.5/1.6,
+TypeScript v1 supports normalized models 2.1, 2.2, and 2.3, evidence attribution 1.5/1.6,
 architecture discovery 1.1, canonical and compatibility relationships, and
 qualified semantic extensions. Unsupported versions fail explicitly.
 
@@ -39,8 +48,20 @@ Architecture, contract, project-metadata, normalized-repository identity,
 provider-routing, and linkage rules execute through the packaged canonical
 semantic core shared with the Python binding. Node performs only
 filesystem/YAML loading and TypeScript result construction around that boundary.
-Fingerprints are binding-local deterministic values; equality with Python
-fingerprints is not a release gate.
+Semantic-contract canonicalization, SCF (`scf:v1:sha256`), resource closure,
+and SCS (`scs:v1:sha256`) execute in the shared semantic core. The bundled
+families are architecture-interpretation 1.0, normative-semantics 1.0, and
+normalized-model 2.3. Python and Node
+therefore compare canonical bytes, rejection diagnostics, and fingerprints in
+the release parity gate.
+
+The Node binding exposes the governed `architecture-materialization@1.0` profile,
+explicit whole-tuple qualification, deterministic preview/apply assembly,
+retained-corpus validation, catalog/policy inspection, current-pointer
+resolution, and the parity-qualified `materializeArchitecture` operation.
+Materialization requires an exact SCS identity and a sealed, host-parsed source
+basis. It returns normalized-model 2.3 through semantic-core 1.1; browser
+materialization is not advertised.
 
 `generateAttributionShim({ language: "python" | "typescript" })` is a
 read-only, deterministic projection through the shared semantic core. Its

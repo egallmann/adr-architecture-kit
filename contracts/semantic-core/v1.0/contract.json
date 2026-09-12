@@ -22,7 +22,25 @@
     {"$ref": "#/$defs/architecture_request"},
     {"$ref": "#/$defs/architecture_result"},
     {"$ref": "#/$defs/attribution_shim_request"},
-    {"$ref": "#/$defs/attribution_shim_result"}
+    {"$ref": "#/$defs/attribution_shim_result"},
+    {"$ref": "#/$defs/canonical_json_request"},
+    {"$ref": "#/$defs/canonical_json_result"},
+    {"$ref": "#/$defs/semantic_contract_request"},
+    {"$ref": "#/$defs/semantic_contract_result"},
+    {"$ref": "#/$defs/resource_closure_request"},
+    {"$ref": "#/$defs/resource_closure_result"},
+    {"$ref": "#/$defs/semantic_contract_set_request"},
+    {"$ref": "#/$defs/semantic_contract_set_result"},
+    {"$ref": "#/$defs/semantic_profile_request"},
+    {"$ref": "#/$defs/semantic_profile_result"},
+    {"$ref": "#/$defs/semantic_qualification_request"},
+    {"$ref": "#/$defs/semantic_qualification_result"},
+    {"$ref": "#/$defs/semantic_assembly_request"},
+    {"$ref": "#/$defs/semantic_assembly_result"},
+    {"$ref": "#/$defs/semantic_corpus_request"},
+    {"$ref": "#/$defs/semantic_corpus_result"},
+    {"$ref": "#/$defs/semantic_current_request"},
+    {"$ref": "#/$defs/semantic_current_result"}
   ],
   "$defs": {
     "any_object": {"type": "object"},
@@ -191,6 +209,151 @@
           "content": {"type": "string"}
         }}
       ],
+      "unevaluatedProperties": false
+    },
+    "canonical_json_request": {
+      "allOf": [
+        {"$ref": "#/$defs/request_base"},
+        {"type": "object", "required": ["operation"], "properties": {
+          "operation": {"const": "canonicalize_semantic_json"},
+          "value": {},
+          "value_json": {"type": "string"}
+        }, "anyOf": [{"required": ["value"]}, {"required": ["value_json"]}]}
+      ],
+      "unevaluatedProperties": false
+    },
+    "canonical_json_result": {
+      "allOf": [
+        {"$ref": "#/$defs/result_base"},
+        {"type": "object", "required": ["operation"], "properties": {
+          "operation": {"const": "canonicalize_semantic_json"},
+          "canonical_preimage_json": {"type": ["string", "null"]},
+          "canonical_preimage_hex": {"type": ["string", "null"]},
+          "fingerprint": {"type": ["string", "null"]},
+          "sha256": {"type": ["string", "null"]}
+        }}
+      ],
+      "unevaluatedProperties": false
+    },
+    "semantic_contract_request": {
+      "allOf": [
+        {"$ref": "#/$defs/request_base"},
+        {"type": "object", "required": ["operation", "definition", "mode"], "properties": {
+          "operation": {"const": "fingerprint_semantic_contract"},
+          "definition": {"$ref": "#/$defs/any_object"},
+          "mode": {"enum": ["calculate", "verify"]}
+        }}
+      ],
+      "unevaluatedProperties": false
+    },
+    "semantic_contract_result": {
+      "allOf": [
+        {"$ref": "#/$defs/result_base"},
+        {"type": "object", "required": ["operation"], "properties": {
+          "operation": {"const": "fingerprint_semantic_contract"},
+          "mode": {"enum": ["calculate", "verify"]},
+          "canonical_preimage_json": {"type": ["string", "null"]},
+          "canonical_preimage_hex": {"type": ["string", "null"]},
+          "fingerprint": {"type": ["string", "null"]},
+          "semantic_contract_fingerprint": {"type": ["string", "null"]}
+        }}
+      ],
+      "unevaluatedProperties": false
+    },
+    "resource_closure_request": {
+      "allOf": [
+        {"$ref": "#/$defs/request_base"},
+        {"type": "object", "required": ["operation", "definition", "resources"], "properties": {
+          "operation": {"const": "validate_semantic_resource_closure"},
+          "definition": {"$ref": "#/$defs/any_object"},
+          "resources": {"type": "array", "items": {"type": "object", "required": ["canonicalResourceKey", "content"], "properties": {"canonicalResourceKey": {"type": "string"}, "content": {}} , "additionalProperties": false}}
+        }}
+      ],
+      "unevaluatedProperties": false
+    },
+    "resource_closure_result": {
+      "allOf": [
+        {"$ref": "#/$defs/result_base"},
+        {"type": "object", "required": ["operation", "closure_valid"], "properties": {
+          "operation": {"const": "validate_semantic_resource_closure"},
+          "closure_valid": {"type": "boolean"}
+        }}
+      ],
+      "unevaluatedProperties": false
+    },
+    "semantic_contract_set_request": {
+      "allOf": [
+        {"$ref": "#/$defs/request_base"},
+        {"type": "object", "required": ["operation", "contracts"], "properties": {
+          "operation": {"const": "compose_semantic_contract_set"},
+          "contracts": {"type": "array", "items": {"$ref": "#/$defs/any_object"}}
+        }}
+      ],
+      "unevaluatedProperties": false
+    },
+    "semantic_contract_set_result": {
+      "allOf": [
+        {"$ref": "#/$defs/result_base"},
+        {"type": "object", "required": ["operation"], "properties": {
+          "operation": {"const": "compose_semantic_contract_set"},
+          "canonical_preimage_json": {"type": ["string", "null"]},
+          "canonical_preimage_hex": {"type": ["string", "null"]},
+          "fingerprint": {"type": ["string", "null"]},
+          "semantic_contract_set_id": {"type": ["string", "null"]}
+        }}
+      ],
+      "unevaluatedProperties": false
+    },
+    "semantic_contract_set_request_base": {
+      "allOf": [{"$ref": "#/$defs/request_base"}, {"type": "object", "properties": {"profile": {"type": "object"}, "definitions": {"type": "array", "items": {"$ref": "#/$defs/any_object"}}, "sets": {"type": "array", "items": {"$ref": "#/$defs/any_object"}}, "qualifications": {"type": "array", "items": {"$ref": "#/$defs/any_object"}}, "retainedSets": {"type": "array", "items": {"$ref": "#/$defs/any_object"}}, "retainedQualifications": {"type": "array", "items": {"$ref": "#/$defs/any_object"}}, "catalog": {"type": "object"}, "policy": {"type": "object"}, "members": {"type": "array", "items": {"$ref": "#/$defs/any_object"}}, "direction": {"enum": ["none", "forward", "reverse"]}, "qualification": {"type": "object"}, "requestedMembers": {"type": "array", "items": {"$ref": "#/$defs/any_object"}}, "current": {"type": "object"}, "targetOperation": {"type": "string", "minLength": 1}}}]
+    },
+    "semantic_profile_request": {
+      "allOf": [{"$ref": "#/$defs/semantic_contract_set_request_base"}, {"type": "object", "required": ["operation", "profile"], "properties": {"operation": {"const": "validate_semantic_contract_profile"}, "profile": {"type": "object"}}}],
+      "unevaluatedProperties": false
+    },
+    "semantic_profile_result": {
+      "allOf": [{"$ref": "#/$defs/result_base"}, {"type": "object", "required": ["operation"], "properties": {"operation": {"const": "validate_semantic_contract_profile"}}}],
+      "unevaluatedProperties": false
+    },
+    "semantic_qualification_request": {
+      "allOf": [{"$ref": "#/$defs/semantic_contract_set_request_base"}, {"type": "object", "required": ["operation", "profile", "members", "direction", "targetOperation", "qualification"], "properties": {"operation": {"const": "validate_semantic_contract_qualification"}, "members": {"type": "array", "items": {"$ref": "#/$defs/any_object"}}, "direction": {"enum": ["none", "forward", "reverse"]}, "targetOperation": {"type": "string", "minLength": 1}, "qualification": {"type": "object"}}}],
+      "unevaluatedProperties": false
+    },
+    "semantic_qualification_result": {
+      "allOf": [{"$ref": "#/$defs/result_base"}, {"type": "object", "required": ["operation"], "properties": {"operation": {"const": "validate_semantic_contract_qualification"}, "qualification_valid": {"type": "boolean"}}}],
+      "unevaluatedProperties": false
+    },
+    "semantic_assembly_request": {
+      "allOf": [{"$ref": "#/$defs/semantic_contract_set_request_base"}, {"type": "object", "required": ["operation", "profile", "direction", "targetOperation", "requestedMembers", "qualification", "definitions", "retainedSets", "retainedQualifications", "catalog", "policy"], "properties": {"operation": {"const": "assemble_semantic_contract_set"}, "direction": {"enum": ["none", "forward", "reverse"]}, "targetOperation": {"type": "string", "minLength": 1}, "requestedMembers": {"type": "array", "items": {"$ref": "#/$defs/any_object"}}, "qualification": {"type": "object"}}}],
+      "unevaluatedProperties": false
+    },
+    "semantic_assembly_result": {
+      "allOf": [
+        {"$ref": "#/$defs/result_base"},
+        {"type": "object", "required": ["operation"], "properties": {
+          "operation": {"const": "assemble_semantic_contract_set"},
+          "noOp": {"type": "boolean"},
+          "semanticContractSetId": {"type": ["string", "null"]},
+          "emittedImmutableArtifacts": {"type": "array", "items": {"$ref": "#/$defs/any_object"}},
+          "mutableChanges": {"type": "array", "items": {"$ref": "#/$defs/any_object"}}
+        }}
+      ],
+      "unevaluatedProperties": false
+    },
+    "semantic_corpus_request": {
+      "allOf": [{"$ref": "#/$defs/semantic_contract_set_request_base"}, {"type": "object", "required": ["operation", "profile", "definitions", "sets", "qualifications", "catalog", "policy"], "properties": {"operation": {"const": "validate_semantic_contract_corpus"}}}],
+      "unevaluatedProperties": false
+    },
+    "semantic_corpus_result": {
+      "allOf": [{"$ref": "#/$defs/result_base"}, {"type": "object", "required": ["operation"], "properties": {"operation": {"const": "validate_semantic_contract_corpus"}, "corpus_valid": {"type": "boolean"}}}],
+      "unevaluatedProperties": false
+    },
+    "semantic_current_request": {
+      "allOf": [{"$ref": "#/$defs/semantic_contract_set_request_base"}, {"type": "object", "required": ["operation", "profile", "direction", "targetOperation", "current", "definitions", "sets", "qualifications", "catalog", "policy"], "properties": {"operation": {"const": "resolve_current_semantic_contract_set"}, "direction": {"enum": ["none", "forward", "reverse"]}, "targetOperation": {"type": "string", "minLength": 1}, "current": {"type": "object"}}}],
+      "unevaluatedProperties": false
+    },
+    "semantic_current_result": {
+      "allOf": [{"$ref": "#/$defs/result_base"}, {"type": "object", "required": ["operation"], "properties": {"operation": {"const": "resolve_current_semantic_contract_set"}, "resolved": {"type": ["object", "null"]}}}],
       "unevaluatedProperties": false
     }
   }

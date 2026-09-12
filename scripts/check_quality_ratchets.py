@@ -17,7 +17,7 @@ ROOT = Path(__file__).resolve().parents[1]
 BASELINE_DIR = ROOT / "quality-baselines"
 FORMAT_TARGETS = ("src", "tests")
 MYPY_TARGETS = ("src/adr_kit", "scripts")
-PHASE0_FILES = (
+FOUNDATIONAL_CONTROL_FILES = (
     "scripts/check_compatibility_snapshots.py",
     "scripts/check_version_consistency.py",
     "scripts/sync_node_package_version.py",
@@ -26,16 +26,16 @@ PHASE0_FILES = (
     "scripts/resolve_qualified_release_bundle.py",
     "scripts/run_source_compat.py",
     "scripts/test_installed_wheel.py",
-    "benchmarks/phase0.py",
+    "benchmarks/architecture-workflow.py",
     "tests/test_import_namespace.py",
-    "tests/test_phase0_compatibility.py",
+    "tests/test_compatibility_controls.py",
     "tests/test_quality_ratchets.py",
     "tests/test_release_controls.py",
     "tests/test_resolve_qualified_release_bundle.py",
     "tests/test_run_source_compat.py",
-    "tests/test_benchmark_phase0.py",
+    "tests/test_architecture_workflow_benchmark.py",
 )
-PHASE1_FILES = (
+PUBLIC_SURFACE_FILES = (
     "src/adr_kit/_version.py",
     "src/adr_kit/api/__init__.py",
     "src/adr_kit/api/_contracts.py",
@@ -53,21 +53,21 @@ PHASE1_FILES = (
     "tests/test_v13_provider_resolution.py",
     "tests/test_identity_v13_migrator.py",
 )
-PHASE0_MYPY_ARGS = (
+FOUNDATIONAL_CONTROL_MYPY_ARGS = (
     "-m",
     "mypy",
     "--strict",
-    *PHASE0_FILES,
+    *FOUNDATIONAL_CONTROL_FILES,
     "--follow-imports=silent",
     "--no-incremental",
     "--no-color-output",
     "--no-pretty",
 )
-PHASE1_MYPY_ARGS = (
+PUBLIC_SURFACE_MYPY_ARGS = (
     "-m",
     "mypy",
     "--strict",
-    *PHASE1_FILES,
+    *PUBLIC_SURFACE_FILES,
     "--follow-imports=silent",
     "--no-incremental",
     "--no-color-output",
@@ -134,10 +134,12 @@ def collect_mypy() -> dict[str, object]:
     )
     if result.returncode not in (0, 1):
         raise RuntimeError(result.stdout + result.stderr)
-    phase0 = _run(PHASE0_MYPY_ARGS, environment)
-    if phase0.returncode != 0:
+    foundational = _run(FOUNDATIONAL_CONTROL_MYPY_ARGS, environment)
+    if foundational.returncode != 0:
         raise RuntimeError(
-            "new Phase 0 files are not strict-mypy clean:\n" + phase0.stdout + phase0.stderr
+            "new foundational control files are not strict-mypy clean:\n"
+            + foundational.stdout
+            + foundational.stderr
         )
     findings: Counter[tuple[str, str, str]] = Counter()
     for line in result.stdout.splitlines():
@@ -194,20 +196,27 @@ def _load(name: str) -> dict[str, Any]:
     return payload
 
 
-def check_new_phase_files() -> None:
+def check_new_quality_targets() -> None:
     environment = os.environ.copy()
     environment["MYPYPATH"] = "src"
     commands = (
-        ["-m", "ruff", "check", *PHASE0_FILES, *PHASE1_FILES],
-        ["-m", "black", "--no-cache", "--check", *PHASE0_FILES, *PHASE1_FILES],
-        PHASE0_MYPY_ARGS,
-        PHASE1_MYPY_ARGS,
+        ["-m", "ruff", "check", *FOUNDATIONAL_CONTROL_FILES, *PUBLIC_SURFACE_FILES],
+        [
+            "-m",
+            "black",
+            "--no-cache",
+            "--check",
+            *FOUNDATIONAL_CONTROL_FILES,
+            *PUBLIC_SURFACE_FILES,
+        ],
+        FOUNDATIONAL_CONTROL_MYPY_ARGS,
+        PUBLIC_SURFACE_MYPY_ARGS,
     )
     for command in commands:
         result = _run(command, environment)
         if result.returncode != 0:
             raise RuntimeError(
-                "new Phase 0/1 files are not clean:\n" + result.stdout + result.stderr
+                "new quality target files are not clean:\n" + result.stdout + result.stderr
             )
 
 
@@ -216,7 +225,7 @@ def main(argv: Iterable[str] | None = None) -> int:
     parser.add_argument("--write-baseline", action="store_true")
     arguments = parser.parse_args(argv)
     try:
-        check_new_phase_files()
+        check_new_quality_targets()
         current = {
             "ruff.json": collect_ruff(),
             "mypy.json": collect_mypy(),

@@ -1,0 +1,8 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://adr-kit.dev/contracts/semantic-contract/v1.0/semantic-contract-corpus-validation-result.schema.json",
+  "title": "ADR-Kit retained semantic-contract corpus validation result v1.0",
+  "type": "object", "additionalProperties": false,
+  "required": ["success", "corpus_valid", "diagnostics"],
+  "properties": {"success": {"type": "boolean"}, "corpus_valid": {"type": "boolean"}, "diagnostics": {"type": "array"}}
+}

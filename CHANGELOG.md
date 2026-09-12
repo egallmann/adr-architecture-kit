@@ -7,6 +7,48 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.11.0] — 2026-09-12
+
+### Added
+
+- Added lifecycle-free `normative-proposition` authoring 1.6 and
+  normalized-model 2.3 contract surfaces as the input authority for public SDK
+  semantics.
+- Added immutable `normative-semantics@1.0` and
+  `architecture-interpretation@1.0` definitions, explicit content-addressed
+  resource closure, `scf:v1:sha256` identities, and the `scs:v1:sha256`
+  composition primitive.
+- Added matching Python and TypeScript/Node public bindings and raw parity
+  vectors for canonical bytes, rejection diagnostics, SCF, and SCS.
+- Added the governed `architecture-materialization@1.0` profile, explicit
+  operation-qualified whole-tuple qualification, immutable SCS artifacts,
+  deterministic no-op assembly, append-only corpus validation, and explicit
+  current-set resolution with equivalent Python and Node operations.
+- Added semantic-core protocol `1.1` as an additive, version-routed successor
+  with exact retained semantic-contract-set resolution and canonical sealed
+  architecture materialization into normalized-model `2.3`.
+- Added provider-qualified source-contract closure, typed source capability
+  limitations, bounded materialization outcomes, lifecycle-free
+  `NormativeProposition` normalization, and deterministic
+  `authorityStateFingerprint` projection semantics behind the shared core.
+
+### Architecture and boundaries
+
+- Semantic-core protocol `1.1` is the canonical semantic execution boundary.
+  Python and Node are peer host bindings: hosts own source acquisition,
+  parsing, and explicit request construction, while semantic-core owns
+  qualification, interpretation, normalization, and bounded diagnostics.
+- Architecture materialization requires an exact retained SemanticContractSet
+  identity; no host resolves or executes a convenience current SCS.
+- `NormativeProposition` remains a reasoning-shaping semantic construct in this
+  release. NP attribution is not part of the release.
+
+### Limitations
+
+- Runtime integration, runtime persistence, graph admission, runtime identity,
+  implementation attribution changes, and NP attribution remain outside this
+  release.
+
 ## [0.10.1] — 2026-09-08
 
 ### Added

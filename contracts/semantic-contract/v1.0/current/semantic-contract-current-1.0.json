@@ -1,0 +1,11 @@
+{
+  "currentSelectionSchemaVersion": "1.0",
+  "currentSelectionRevision": "current:v1:1",
+  "profileId": "architecture-materialization@1.0",
+  "operation": "resolve_current",
+  "direction": "none",
+  "semanticContractSetId": "scs:v1:sha256:d12ce535f0a90c23741dfa516d207091197c2772dbcd538fabb133bdf5b79af6",
+  "qualificationRecordId": "qualification:architecture-materialization@1.0:resolve_current",
+  "catalogRevision": "catalog:v1:1",
+  "policyRevision": "policy:v1:1"
+}

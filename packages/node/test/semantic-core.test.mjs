@@ -4,6 +4,7 @@ import { mkdir, mkdtemp, readFile, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { resolve } from "node:path";
 import { executeSemanticCoreRequest, openProviderRegistry, validateArchitectureFacts, validateArchitectureReferences, validateContract, validateProjectMetadata } from "../dist/node/core.js";
+import { calculateSemanticContractFingerprint, canonicalizeSemanticJson, composeSemanticContractSet, getSemanticContract, listSemanticContracts, loadSemanticResource, validateSemanticResourceClosure, verifySemanticContract } from "../dist/node/semantic-contract.js";
 import { validateArchitecture } from "../dist/node/architecture.js";
 import { fixtureRepository } from "./fixture-repository.mjs";
 import { capabilities } from "../dist/index.js";
@@ -16,6 +17,7 @@ const artifactVectorPath = resolve("../../contracts/semantic-core/v1.0/vectors/g
 const referenceVectorPath = resolve("../../contracts/semantic-core/v1.0/vectors/architecture-reference-validation.json");
 const architectureVectorPath = resolve("../../contracts/semantic-core/v1.0/vectors/architecture-validation.json");
 const capabilityContractPath = resolve("../../contracts/compatibility/host-capabilities.json");
+const semanticContractVectorPath = resolve("../../contracts/semantic-core/v1.0/vectors/semantic-contract.json");
 
 test("Node capability manifest consumes the governed host capability contract", async () => {
   const contract = JSON.parse(await readFile(capabilityContractPath, "utf8"));
@@ -36,6 +38,45 @@ test("Node binding executes the shared semantic-core conformance vectors", async
     if ("issue_count" in vector.expected) assert.equal(result.issues.length, vector.expected.issue_count, vector.name);
     if ("issue_codes" in vector.expected) assert.deepEqual(result.diagnostics.filter((item) => item.code !== "contract.issue").map((item) => item.code), vector.expected.issue_codes, vector.name);
   }
+});
+
+test("Node semantic-contract binding matches the shared vectors", async () => {
+  const document = JSON.parse(await readFile(semanticContractVectorPath, "utf8"));
+  for (const vector of document.cases) {
+    const result = await executeSemanticCoreRequest(vector.request);
+    assert.equal(result.success, vector.expected.success, vector.name);
+    for (const field of ["canonical_preimage_json", "fingerprint", "semantic_contract_fingerprint", "semantic_contract_set_id"]) {
+      if (field in vector.expected) assert.equal(result[field], vector.expected[field], vector.name);
+    }
+    if (vector.expected.diagnostic_codes) assert.deepEqual(result.diagnostics.map((item) => item.code), vector.expected.diagnostic_codes, vector.name);
+    if (vector.expected.diagnostic_paths) assert.deepEqual(result.diagnostics.map((item) => item.path), vector.expected.diagnostic_paths, vector.name);
+    if (vector.expected.diagnostic_messages) assert.deepEqual(result.diagnostics.map((item) => item.message), vector.expected.diagnostic_messages, vector.name);
+    if (vector.expected.diagnostic_severities) assert.deepEqual(result.diagnostics.map((item) => item.severity), vector.expected.diagnostic_severities, vector.name);
+  }
+});
+
+test("Node public semantic-contract bindings expose the same immutable closure", async () => {
+  const contracts = listSemanticContracts();
+  assert.deepEqual(contracts.map((item) => item.semanticContractFamily), ["architecture-interpretation", "normalized-model", "normative-semantics"]);
+  const contract = getSemanticContract("normative-semantics", "1.0");
+  const fingerprint = await calculateSemanticContractFingerprint(contract);
+  assert.equal(fingerprint.semantic_contract_fingerprint, contract.semanticContractFingerprint);
+  assert.equal((await verifySemanticContract(contract)).success, true);
+  const resources = contract.resourceManifest.map((entry) => ({
+    canonicalResourceKey: entry.canonicalResourceKey,
+    content: loadSemanticResource(entry.canonicalResourceKey),
+  }));
+  const closure = await validateSemanticResourceClosure(contract, resources);
+  assert.equal(closure.closure_valid, true);
+  const set = await composeSemanticContractSet(contracts);
+  assert.match(set.semantic_contract_set_id ?? "", /^scs:v1:sha256:[0-9a-f]{64}$/);
+  const canonical = await canonicalizeSemanticJson('{"x":1,"x":2}');
+  assert.equal(canonical.success, false);
+  assert.equal(canonical.diagnostics[0]?.code, "semantic_contract.invalid_json");
+});
+
+test("Node semantic-contract selection requires an exact version", () => {
+  assert.throws(() => getSemanticContract("normative-semantics"), /Unsupported semantic contract/);
 });
 
 test("Node binding matches shared project-metadata vectors", async () => {

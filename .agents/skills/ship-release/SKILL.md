@@ -9,7 +9,7 @@ description: >
 disable-model-invocation: true
 ---
 
-# Ship release (`develop` → `release/<ver>` → `main` → `v*` → publish)
+# Ship release (`develop` → `release/<ver>` → `main` → `v*` → publish → `develop`)
 
 Repository-owned release procedure for `adr-architecture-kit`. Authority lives in
 [`CONTRIBUTING.md`](../../../CONTRIBUTING.md) (“Ship a version” / “Publishing to
@@ -126,7 +126,34 @@ explicit `./`-prefixed or absolute tarball path. Recover by:
 - human-authenticated publish of the **exact** retained `node-dist/*.tgz` from the
   qualifying main `release-bundle` (never rebuild).
 
-### 8. Verify
+### 8. Post-release synchronization → develop
+
+Publication does not complete the branch lifecycle. After PyPI and npm both expose
+`$VERSION`, synchronize the exact released `main` state back into `develop`:
+
+1. Fetch `origin/main` and `origin/develop`.
+2. Create `post-release/$VERSION` from `origin/develop`.
+3. Merge `origin/main` into that branch with `--no-ff`; do not copy release files
+   manually or squash the synchronization merge.
+4. Open a reviewed PR from `post-release/$VERSION` to `develop` and wait for its
+   PR checks.
+5. Merge the synchronization PR with a merge commit, then wait for successful
+   **develop `push`** Develop Assurance on the resulting merge SHA.
+6. Run the executable ancestry/version check:
+
+   ```bash
+   python scripts/verify_release_branch_sync.py \
+     --main-ref origin/main \
+     --release-ref v$VERSION \
+     --develop-ref origin/develop \
+     --expected-version $VERSION
+   ```
+
+The synchronization is incomplete if the released `main` commit or current
+`main` tip is not an ancestor of `develop`. This is a required post-release gate,
+not an optional cleanup step.
+
+### 9. Verify
 
 Record evidence for the skill/issue trail:
 
@@ -136,6 +163,9 @@ Record evidence for the skill/issue trail:
 - tag `v$VERSION` → annotated tag object / target SHA
 - PyPI + npm publish run URLs
 - installed/version probes
+- post-release synchronization PR URL + merge commit on `develop`
+- successful develop `push` Develop Assurance run URL
+- branch-sync ancestry/version check output
 
 ## Fail closed
 
@@ -146,6 +176,7 @@ Do not:
 - force-push release branches or tags
 - bump past `$VERSION` merely to retry publish
 - treat develop/PR green as release-eligible
+- declare a release complete while `main` is ahead of `develop`
 - auto-merge or auto-tag without explicit human approval
 
 Content repairs belong on `feature/*` → `develop`, then a fresh release cut.

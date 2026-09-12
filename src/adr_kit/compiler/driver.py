@@ -32,6 +32,11 @@ from ..models.v2_2 import (
     RelationshipRegistryV22,
     UnresolvedRegistryV22,
 )
+from ..models.v2_3 import (
+    NormalizedEntityRegistryV23,
+    RelationshipRegistryV23,
+    UnresolvedRegistryV23,
+)
 from ..parser import ADRParser
 from ..schema.contract_validation import validate_adr_contract_bundle
 from ..scope import ProjectScope, ProjectScopeResolver
@@ -156,7 +161,9 @@ class ArchitectureCompiler:
         config = config or CompilerConfig()
         diagnostics = DiagnosticLog()
         resolved_scope = self._resolve_scope(scope, config)
-        timestamp, check_timestamp_error = self._resolve_generation_timestamp(resolved_scope, config)
+        timestamp, check_timestamp_error = self._resolve_generation_timestamp(
+            resolved_scope, config
+        )
         if check_timestamp_error is not None:
             diagnostics.error("E705", check_timestamp_error)
             duration_ms = int((perf_counter() - started) * 1000)
@@ -188,7 +195,9 @@ class ArchitectureCompiler:
             )
             model = build_result.model
             model.metadata.scope_root = str(resolved_scope.root)
-            model.metadata.generated_at = timestamp or datetime.now(timezone.utc).replace(microsecond=0)
+            model.metadata.generated_at = timestamp or datetime.now(timezone.utc).replace(
+                microsecond=0
+            )
 
             artifacts = self._emit_artifacts(resolved_scope, config, diagnostics, build_result)
 
@@ -207,7 +216,9 @@ class ArchitectureCompiler:
 
         duration_ms = int((perf_counter() - started) * 1000)
         projectable_entities = [
-            entity for entity in build_result.model.entities.values() if entity.entity_type in PROJECTABLE_ENTITY_TYPES
+            entity
+            for entity in build_result.model.entities.values()
+            if entity.entity_type in PROJECTABLE_ENTITY_TYPES
         ]
         statistics = CompilationStatistics(
             source_files=len(build_result.model.corpus.artifacts),
@@ -237,10 +248,13 @@ class ArchitectureCompiler:
         config = config or CompilerConfig()
         root_scope = self._resolve_scope(scope, config)
         all_scopes = self.scope_resolver.resolve_recursive(root_scope.root)
-        ordered_scopes = [root_scope, *sorted(
-            (item for item in all_scopes if item.root != root_scope.root),
-            key=lambda item: item.root.as_posix(),
-        )]
+        ordered_scopes = [
+            root_scope,
+            *sorted(
+                (item for item in all_scopes if item.root != root_scope.root),
+                key=lambda item: item.root.as_posix(),
+            ),
+        ]
 
         aggregate_diagnostics = DiagnosticLog()
         scope_results: list[ScopedCompilationResult] = []
@@ -285,10 +299,18 @@ class ArchitectureCompiler:
             failed_scopes=failed_scopes,
             source_files=sum(item.result.statistics.source_files for item in scope_results),
             parse_errors=sum(item.result.statistics.parse_errors for item in scope_results),
-            entities_extracted=sum(item.result.statistics.entities_extracted for item in scope_results),
-            relationships_derived=sum(item.result.statistics.relationships_derived for item in scope_results),
-            unresolved_detected=sum(item.result.statistics.unresolved_detected for item in scope_results),
-            artifacts_emitted=sum(item.result.statistics.artifacts_emitted for item in scope_results),
+            entities_extracted=sum(
+                item.result.statistics.entities_extracted for item in scope_results
+            ),
+            relationships_derived=sum(
+                item.result.statistics.relationships_derived for item in scope_results
+            ),
+            unresolved_detected=sum(
+                item.result.statistics.unresolved_detected for item in scope_results
+            ),
+            artifacts_emitted=sum(
+                item.result.statistics.artifacts_emitted for item in scope_results
+            ),
         )
         return WorkspaceCompilationResult(
             success=all(item.result.success for item in scope_results),
@@ -306,7 +328,10 @@ class ArchitectureCompiler:
 
         if config.mode == CompilationMode.LENIENT:
             non_lenient_errors = [
-                item for item in items if item.level == DiagnosticLevel.ERROR and item.code not in {"E701", "E702", "E703", "E704"}
+                item
+                for item in items
+                if item.level == DiagnosticLevel.ERROR
+                and item.code not in {"E701", "E702", "E703", "E704"}
             ]
             return not non_lenient_errors
 
@@ -325,7 +350,14 @@ class ArchitectureCompiler:
         entity_registry_artifact = artifact_map.get("adrs/index/entity-registry.yaml")
         relationship_registry_artifact = artifact_map.get("adrs/index/relationship-registry.yaml")
         unresolved_registry_artifact = artifact_map.get("adrs/index/unresolved-registry.yaml")
-        if not all((architecture_index_artifact, entity_registry_artifact, relationship_registry_artifact, unresolved_registry_artifact)):
+        if not all(
+            (
+                architecture_index_artifact,
+                entity_registry_artifact,
+                relationship_registry_artifact,
+                unresolved_registry_artifact,
+            )
+        ):
             diagnostics.error(
                 "E703",
                 "Contract validation requires registries emission in the current compile invocation",
@@ -377,7 +409,13 @@ class ArchitectureCompiler:
     @classmethod
     def _parse_entity_registry_artifact(
         cls, parser: ADRParser, yaml_text: str
-    ) -> NormalizedEntityRegistry | NormalizedEntityRegistryV2 | NormalizedEntityRegistryV21 | NormalizedEntityRegistryV22:
+    ) -> (
+        NormalizedEntityRegistry
+        | NormalizedEntityRegistryV2
+        | NormalizedEntityRegistryV21
+        | NormalizedEntityRegistryV22
+        | NormalizedEntityRegistryV23
+    ):
         if cls._peek_schema_version(yaml_text) == "2.2":
             data = yaml.safe_load(yaml_text)
             return NormalizedEntityRegistryV22.model_validate(data)
@@ -392,7 +430,13 @@ class ArchitectureCompiler:
     @classmethod
     def _parse_relationship_registry_artifact(
         cls, parser: ADRParser, yaml_text: str
-    ) -> RelationshipRegistry | RelationshipRegistryV2 | RelationshipRegistryV21 | RelationshipRegistryV22:
+    ) -> (
+        RelationshipRegistry
+        | RelationshipRegistryV2
+        | RelationshipRegistryV21
+        | RelationshipRegistryV22
+        | RelationshipRegistryV23
+    ):
         if cls._peek_schema_version(yaml_text) == "2.2":
             data = yaml.safe_load(yaml_text)
             return RelationshipRegistryV22.model_validate(data)
@@ -407,7 +451,13 @@ class ArchitectureCompiler:
     @classmethod
     def _parse_unresolved_registry_artifact(
         cls, parser: ADRParser, yaml_text: str
-    ) -> UnresolvedRegistry | UnresolvedRegistryV2 | UnresolvedRegistryV21 | UnresolvedRegistryV22:
+    ) -> (
+        UnresolvedRegistry
+        | UnresolvedRegistryV2
+        | UnresolvedRegistryV21
+        | UnresolvedRegistryV22
+        | UnresolvedRegistryV23
+    ):
         if cls._peek_schema_version(yaml_text) == "2.2":
             data = yaml.safe_load(yaml_text)
             return UnresolvedRegistryV22.model_validate(data)
@@ -419,7 +469,9 @@ class ArchitectureCompiler:
             return UnresolvedRegistryV2.model_validate(data)
         return parser.parse_unresolved_registry_from_data(yaml_text)
 
-    def _resolve_scope(self, scope: Path | ProjectScope | None, config: CompilerConfig) -> ProjectScope:
+    def _resolve_scope(
+        self, scope: Path | ProjectScope | None, config: CompilerConfig
+    ) -> ProjectScope:
         if isinstance(scope, ProjectScope):
             return scope
         if scope is not None:
@@ -484,11 +536,19 @@ class ArchitectureCompiler:
         for artifact in artifacts:
             output_path = root / artifact.path
             if not output_path.exists():
-                diagnostics.error("E701", f"Compiled artifact missing on disk: {artifact.path}", path=artifact.path)
+                diagnostics.error(
+                    "E701",
+                    f"Compiled artifact missing on disk: {artifact.path}",
+                    path=artifact.path,
+                )
                 continue
             if output_path.read_bytes() != artifact.content:
                 artifact_label = artifact.path.as_posix()
-                diagnostics.error("E702", f"Compiled artifact drift detected: {artifact_label}", path=artifact.path)
+                diagnostics.error(
+                    "E702",
+                    f"Compiled artifact drift detected: {artifact_label}",
+                    path=artifact.path,
+                )
 
     def _parse_timestamp(self, timestamp: str | datetime | None) -> datetime | None:
         if timestamp is None:
@@ -521,7 +581,10 @@ class ArchitectureCompiler:
                 return None, None
             data = yaml.safe_load(path.read_text(encoding="utf-8"))
             if not isinstance(data, dict) or field_name not in data:
-                return None, f"Compiled artifact timestamp metadata missing from {path.relative_to(root).as_posix()}"
+                return (
+                    None,
+                    f"Compiled artifact timestamp metadata missing from {path.relative_to(root).as_posix()}",
+                )
             return self._parse_timestamp(data[field_name]), None
 
         if "manifest" in config.emit:
@@ -532,7 +595,9 @@ class ArchitectureCompiler:
                 candidates.append(("adrs/manifest.yaml", timestamp))
 
         if "registries" in config.emit:
-            timestamp, error = _load_timestamp(root / "adrs" / "index" / "architecture-index.yaml", "generated_at")
+            timestamp, error = _load_timestamp(
+                root / "adrs" / "index" / "architecture-index.yaml", "generated_at"
+            )
             if error is not None:
                 return None, error
             if timestamp is not None:
@@ -543,8 +608,14 @@ class ArchitectureCompiler:
 
         unique_timestamps = {item[1] for item in candidates}
         if len(unique_timestamps) > 1:
-            mismatch = ", ".join(f"{path}={timestamp.isoformat().replace('+00:00', 'Z')}" for path, timestamp in candidates)
-            return None, f"Compiled artifact timestamps disagree for deterministic check: {mismatch}"
+            mismatch = ", ".join(
+                f"{path}={timestamp.isoformat().replace('+00:00', 'Z')}"
+                for path, timestamp in candidates
+            )
+            return (
+                None,
+                f"Compiled artifact timestamps disagree for deterministic check: {mismatch}",
+            )
 
         return candidates[0][1], None
 
@@ -553,7 +624,9 @@ class ArchitectureCompiler:
         scope: ProjectScope,
         diagnostics: DiagnosticLog,
     ) -> None:
-        validator = ADRValidator(parser=self.parser, scope_resolver=ProjectScopeResolver(explicit_scope=scope.root))
+        validator = ADRValidator(
+            parser=self.parser, scope_resolver=ProjectScopeResolver(explicit_scope=scope.root)
+        )
         result = validator.validate_implementation_authority_gate(scope.adr_dir)
         for error in result.errors:
             diagnostics.error("E706", error.message)
@@ -566,7 +639,13 @@ class ArchitectureCompiler:
 
         with ExitStack() as stack:
             _FixedDateTime.fixed_timestamp = timestamp
-            stack.enter_context(patch("adr_kit.generators.architecture_index_generator.datetime", _FixedDateTime))
-            stack.enter_context(patch("adr_kit.generators.manifest_generator.datetime", _FixedDateTime))
-            stack.enter_context(patch("adr_kit.compiler.backend.manifest_rendering.datetime", _FixedDateTime))
+            stack.enter_context(
+                patch("adr_kit.generators.architecture_index_generator.datetime", _FixedDateTime)
+            )
+            stack.enter_context(
+                patch("adr_kit.generators.manifest_generator.datetime", _FixedDateTime)
+            )
+            stack.enter_context(
+                patch("adr_kit.compiler.backend.manifest_rendering.datetime", _FixedDateTime)
+            )
             yield

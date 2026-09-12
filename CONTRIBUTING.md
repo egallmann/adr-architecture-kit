@@ -74,6 +74,7 @@ See [`docs/contributors/tdd-workflow.md`](docs/contributors/tdd-workflow.md) for
 | Version consistency | `python scripts/check_version_consistency.py` |
 | Public SDK | `python -m pytest tests/test_public_sdk_contract.py tests/test_public_sdk_operations.py -q` |
 | Quality debt | `python scripts/check_quality_ratchets.py` |
+| Repository naming | `python scripts/check_repository_naming.py` |
 | Governance | `adr governance-checks` |
 | Schema parity | see below |
 
@@ -157,6 +158,14 @@ When touching implementation linkage or attribution evidence pipelines, smoke-ch
 
 Pre-push runs contract guards always; **`adr attribution check`** runs when workspace evidence exists (otherwise skipped with a message).
 
+Durable filenames, module names, contract identifiers, fixtures, and tests must
+describe their domain capability, responsibility, or behavior. Delivery
+sequencing belongs in issues, branches, PRs, and planning prose—not durable
+implementation names. The naming policy rejects delivery labels such as
+`slice_a`, `slice-c`, `hsg14`, `tranche-15`, `phase0`, `phase_2`, `phase-a`,
+and `wave_3` in active paths and identifiers; the exact historical design
+journals are allowlisted for provenance.
+
 ### System overview and unified compile
 
 ```bash
@@ -204,6 +213,11 @@ This repository uses a controlled feature → develop → release → main flow:
    changelog only, and open a release PR against `main`.
 7. `main` is publication/release admission. Create the release tag only after
    the release PR is admitted to `main`.
+8. After both registries report the released version, synchronize the exact
+   released `main` state back into `develop` through a reviewed post-release
+   synchronization PR. The synchronization is not complete until the
+   resulting `develop` push has passed Develop Assurance and the ancestry
+   check confirms that `main` is contained in `develop`.
 
 For non-trivial changes, consider opening an issue first to discuss the approach.
 
@@ -258,6 +272,32 @@ The **link** is that PyPI trusts *that GitHub repo + that workflow file* to uplo
    source commit / package version / tag / hashes, and publishes without rebuilding or
    re-running pytest, coverage, governance, OS matrices, or the retained-wheel matrix.
    PR and develop qualification runs are **not** release-eligible, even for the same SHA.
+
+8. Synchronize the released state back into `develop` after publication succeeds:
+
+   ```bash
+   git fetch origin main develop
+   git switch -c post-release/<version> origin/develop
+   git merge --no-ff origin/main -m "chore: synchronize main after <version>"
+   git push -u origin post-release/<version>
+   gh pr create --base develop --head post-release/<version> \
+     --title "chore: synchronize develop after <version>"
+   ```
+
+   Wait for the PR checks, merge the synchronization PR with a merge commit, and
+   then wait for the successful **develop `push`** Develop Assurance run on the
+   resulting merge SHA. Verify the final state with:
+
+   ```bash
+   python scripts/verify_release_branch_sync.py \
+     --main-ref origin/main \
+     --release-ref v<version> \
+     --develop-ref origin/develop \
+     --expected-version <version>
+   ```
+
+   This step is required even when the release PR itself merged cleanly: release
+   metadata and release-only governance fixes must not remain stranded on `main`.
 
 Qualification evidence axes on a release-eligible `main` push:
 

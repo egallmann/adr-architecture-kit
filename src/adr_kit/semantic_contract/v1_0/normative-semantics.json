@@ -1,0 +1,28 @@
+{
+  "semanticContractFamily": "normative-semantics",
+  "semanticContractVersion": "1.0",
+  "fingerprintScheme": "scf:v1:sha256",
+  "resourceManifest": [
+    {
+      "canonicalResourceKey": "normative-semantics/1.0/conformance",
+      "contentDigest": "sha256:8e14d1373ebd5dc8d6058ecf729e8c308ef87657f319e667020a92d6f788f718",
+      "role": "normative-conformance",
+      "dependencies": [
+        {
+          "canonicalResourceKey": "normative-semantics/1.0/definition",
+          "contentDigest": "sha256:6540bd5e03da7bc7ee42777cbc585073e785a6e221f3a76be0996c53bca872cd"
+        }
+      ]
+    },
+    {
+      "canonicalResourceKey": "normative-semantics/1.0/definition",
+      "contentDigest": "sha256:6540bd5e03da7bc7ee42777cbc585073e785a6e221f3a76be0996c53bca872cd",
+      "role": "normative-definition",
+      "dependencies": []
+    }
+  ],
+  "frozenNormativeConformanceResources": [
+    "normative-semantics/1.0/conformance"
+  ],
+  "semanticContractFingerprint": "scf:v1:sha256:3ad9db564b2fdb85df4b2d86e464beb533156635d8cb9790a4865d518d600f51"
+}

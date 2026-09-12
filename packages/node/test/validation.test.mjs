@@ -7,6 +7,7 @@ import { UnsupportedContractVersionError } from "../dist/errors.js";
 import { validateAuthoringDocument, validateContract } from "../dist/validation/index.js";
 import * as node from "../dist/node/index.js";
 import { buildEmbodimentLinkage, generateAttributionShim } from "../dist/node/linkage.js";
+import { materializeArchitecture } from "../dist/node/materialization.js";
 import * as nodeGovernance from "../dist/node/governance.js";
 
 const root = resolve("../../contracts/conformance/consumer-binding-v1");
@@ -17,8 +18,8 @@ const load = async (path) => JSON.parse(await readFile(resolve(root, path), "utf
 
 test("capability discovery is local and explicit", () => {
   const manifest = capabilities();
-  assert.deepEqual(manifest.supported_normalized_model_versions, ["2.1", "2.2"]);
-  assert.deepEqual(manifest.host_operations, ["capabilities", "validate_architecture", "validate_project_metadata", "validate_contract", "open_repository", "open_provider_registry", "build_embodiment_linkage", "generate_attribution_shim"]);
+  assert.deepEqual(manifest.supported_normalized_model_versions, ["2.1", "2.2", "2.3"]);
+  assert.deepEqual(manifest.host_operations, ["capabilities", "validate_architecture", "validate_project_metadata", "validate_contract", "open_repository", "open_provider_registry", "build_embodiment_linkage", "generate_attribution_shim", "materialize_architecture", "list_semantic_contracts", "get_semantic_contract", "canonicalize_semantic_json", "calculate_semantic_contract_fingerprint", "verify_semantic_contract", "validate_semantic_resource_closure", "compose_semantic_contract_set", "list_semantic_contract_profiles", "get_semantic_contract_profile", "validate_semantic_contract_profile", "validate_semantic_contract_qualification", "preview_semantic_contract_set_assembly", "apply_semantic_contract_set_assembly", "validate_semantic_contract_corpus", "list_semantic_contract_sets", "resolve_current_semantic_contract_set"]);
   assert.ok(manifest.pending_host_operations.includes("compile_architecture"));
   assert.deepEqual(manifest.browser_operations, ["capabilities"]);
   assert.equal("supported_authoring_domain_versions" in manifest, false);
@@ -45,6 +46,23 @@ test("host capability contract maps to real Node exports and keeps pending work 
     open_provider_registry: nodeGovernance.openProviderRegistry,
     build_embodiment_linkage: buildEmbodimentLinkage,
     generate_attribution_shim: generateAttributionShim,
+    materialize_architecture: materializeArchitecture,
+    list_semantic_contracts: node.listSemanticContracts,
+    get_semantic_contract: node.getSemanticContract,
+    canonicalize_semantic_json: node.canonicalizeSemanticJson,
+    calculate_semantic_contract_fingerprint: node.calculateSemanticContractFingerprint,
+    verify_semantic_contract: node.verifySemanticContract,
+    validate_semantic_resource_closure: node.validateSemanticResourceClosure,
+    compose_semantic_contract_set: node.composeSemanticContractSet,
+    list_semantic_contract_profiles: node.listSemanticContractProfiles,
+    get_semantic_contract_profile: node.getSemanticContractProfile,
+    validate_semantic_contract_profile: node.validateSemanticContractProfile,
+    validate_semantic_contract_qualification: node.validateSemanticContractQualification,
+    preview_semantic_contract_set_assembly: node.previewSemanticContractSetAssembly,
+    apply_semantic_contract_set_assembly: node.applySemanticContractSetAssembly,
+    validate_semantic_contract_corpus: node.validateSemanticContractCorpus,
+    list_semantic_contract_sets: node.listSemanticContractSets,
+    resolve_current_semantic_contract_set: node.resolveCurrentSemanticContractSet,
   };
   for (const operation of hostCapabilityContract.peer_host_operations) {
     assert.equal(typeof exportsByCapability[operation], "function", operation);
@@ -58,6 +76,34 @@ test("canonical normalized model validates and unsupported capability fails expl
   const fixture = await load("repository/model-v21.json");
   assert.equal(validateContract(fixture.input, "normalized-model:2.1").valid, true);
   assert.throws(() => validateContract(fixture.input, "normalized-model:1.1"), UnsupportedContractVersionError);
+});
+
+test("normalized model 2.3 accepts the lifecycle-free NP variant", () => {
+  const id = "019109a0-b1c2-7def-8a00-112233445566";
+  const np = {
+    id,
+    alias_id: "NP-0001",
+    alias_name: "explicit-contract",
+    alias_ref: "NP-0001:explicit-contract",
+    entity_type: "normative_proposition",
+    name: "The contract MUST remain explicit.",
+    summary: "The contract MUST remain explicit.",
+    uri: `adr://kit/entities/${id}`,
+    created_at: "2026-08-28T00:00:00Z",
+    entity_fingerprint: `sha256:${"0".repeat(64)}`,
+    statement: "The contract MUST remain explicit.",
+    normative_force: "MUST",
+    scope: "global",
+    declaring_adr: { provider: "adr-kit", id, alias_id: "ADR-L-0001", alias_name: "normative-authority" },
+    source_artifact: { source_type: "logical_adr", source_ref: "adr#np", artifact_path: "adrs/logical/ADR-L-0001.yaml", content_digest: `sha256:${"1".repeat(64)}` },
+    source_contract: { family: "authoring", version: "1.6", fingerprint: `sha256:${"2".repeat(64)}` },
+    canonical_source: { source_type: "logical_adr", source_ref: "adr#np", artifact_path: "adrs/logical/ADR-L-0001.yaml" },
+    completeness: { status: "complete", missing_fields: [] },
+    provenance: { source_type: "authoring", source_ref: "1.6", extraction_phase: "projection", classification: "explicit", generator: "test" },
+  };
+  const registry = { schema_version: "2.3", type: "normalized_entity_registry", entities: [np] };
+  assert.equal(validateContract(registry, "normalized-entity-registry:2.3").valid, true);
+  assert.equal(validateContract({ ...np, lifecycle_stage: "active" }, "normalized-entity-registry:2.3").valid, false);
 });
 
 test("v1.6 evidence structural restriction is observable", async () => {

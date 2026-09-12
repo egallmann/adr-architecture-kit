@@ -1,0 +1,8 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://adr-kit.dev/contracts/semantic-contract/v1.0/semantic-contract-current-resolution-result.schema.json",
+  "title": "ADR-Kit current semantic-contract resolution result v1.0",
+  "type": "object", "additionalProperties": false,
+  "required": ["success", "resolved", "diagnostics"],
+  "properties": {"success": {"type": "boolean"}, "resolved": {"type": ["object", "null"]}, "diagnostics": {"type": "array"}}
+}

@@ -60,7 +60,9 @@ assert resources.files('adr_kit.schema.v1_5').joinpath('implementation-attributi
 assert resources.files('adr_kit.schema.v1_5').joinpath('semantic-attribution-vocabulary.json').is_file()
 assert resources.files('adr_kit.schema.v1_6').joinpath('implementation-attribution-evidence.schema.json').is_file()
 assert resources.files('adr_kit.schema.v1_6').joinpath('semantic-attribution-vocabulary.json').is_file()
+assert resources.files('adr_kit.schema.authoring.v1_6').joinpath('adr-logical.schema.json').is_file()
 assert resources.files('adr_kit.schema.v2_0').joinpath('normalized-entity.schema.json').is_file()
+assert resources.files('adr_kit.schema.v2_3').joinpath('normalized-entity.schema.json').is_file()
 assert resources.files('adr_kit.templates').joinpath('adr-logical.md.jinja2').is_file()
 assert resources.files('adr_kit.templates').joinpath('system-overview-adr-architecture-kit.yaml').is_file()
 assert resources.files('adr_kit.templates').joinpath('system-overview-ste-runtime.yaml').is_file()
@@ -182,7 +184,7 @@ assert isinstance(v15_result, EmbodimentLinkageResult)
 assert v15_result.success and v15_result.evidence_schema_version == '1.5'
 assert RejectedEmbodimentClaim is not None
 """
-PHASE2_PROBE = """
+NORMALIZED_MODEL_PROBE = """
 import os
 import yaml
 from pathlib import Path
@@ -194,11 +196,11 @@ from adr_kit.api import (
     open_repository,
 )
 
-root = Path(os.environ['ADR_PHASE2_FIXTURE'])
+root = Path(os.environ['ADR_NORMALIZED_MODEL_FIXTURE'])
 manifest = capabilities()
-assert manifest.supported_adr_schema_versions == ('1.0', '1.1', '1.2', '1.3', '1.4', '1.5')
+assert manifest.supported_adr_schema_versions == ('1.0', '1.1', '1.2', '1.3', '1.4', '1.5', '1.6')
 assert manifest.normalized_model_schema_version == '1.1'
-assert manifest.supported_normalized_model_schema_versions == ('1.1', '2.0', '2.1', '2.2')
+assert manifest.supported_normalized_model_schema_versions == ('1.1', '2.0', '2.1', '2.2', '2.3')
 assert NormalizedArchitectureModelV2 is not None
 assert ProviderRegistry is not None
 assert callable(open_provider_registry)
@@ -310,8 +312,8 @@ def run_harness(wheel: Path, python: Path) -> None:
             consumer,
             isolated_environment,
         )
-        isolated_environment["ADR_PHASE2_FIXTURE"] = str(fixture)
-        _run([str(venv_python), "-c", PHASE2_PROBE], consumer, isolated_environment)
+        isolated_environment["ADR_NORMALIZED_MODEL_FIXTURE"] = str(fixture)
+        _run([str(venv_python), "-c", NORMALIZED_MODEL_PROBE], consumer, isolated_environment)
         linkage_evidence = consumer / "external-linkage-evidence.yaml"
         linkage_evidence.write_text(
             json.dumps(

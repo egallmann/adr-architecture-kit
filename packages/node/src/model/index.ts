@@ -31,7 +31,7 @@ export interface ArchitectureModelView<TModel extends NormalizedArchitectureMode
 
 export function createArchitectureModel<TModel extends NormalizedArchitectureModel>(input: TModel): ArchitectureModelView<TModel> {
   const version = (input as { schema_version?: unknown } | null)?.schema_version;
-  if (!input || (version !== "2.1" && version !== "2.2")) throw new UnsupportedContractVersionError(String(version ?? "missing"));
+  if (!input || (version !== "2.1" && version !== "2.2" && version !== "2.3")) throw new UnsupportedContractVersionError(String(version ?? "missing"));
   const model = freeze(clone(input));
   const entities = [...model.entities].sort((a, b) => a.id.localeCompare(b.id)) as ModelEntity<TModel>[];
   const relationships = [...model.relationships].sort((a, b) => relationshipKey(a).localeCompare(relationshipKey(b))) as ModelRelationship<TModel>[];

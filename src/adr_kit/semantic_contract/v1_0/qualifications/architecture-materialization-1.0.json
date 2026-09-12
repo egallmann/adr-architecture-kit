@@ -1,0 +1,219 @@
+[
+  {
+    "qualificationRecordId": "qualification:architecture-materialization@1.0:validate_profile",
+    "qualificationSchemaVersion": "1.0",
+    "operation": "validate_profile",
+    "direction": "none",
+    "profileId": "architecture-materialization@1.0",
+    "semanticContractSetId": "scs:v1:sha256:d12ce535f0a90c23741dfa516d207091197c2772dbcd538fabb133bdf5b79af6",
+    "members": [
+      {
+        "semanticContractFamily": "architecture-interpretation",
+        "semanticContractVersion": "1.0",
+        "semanticContractFingerprint": "scf:v1:sha256:3fcd0e98cec53e515a79b68ed493f91039c0a12bf76387ad259f32ac6394ee55"
+      },
+      {
+        "semanticContractFamily": "normalized-model",
+        "semanticContractVersion": "2.3",
+        "semanticContractFingerprint": "scf:v1:sha256:7a67fd98c9ca66a827f65ca0a16a3fb7b402ee23ded33342a4350869ea90ca00"
+      },
+      {
+        "semanticContractFamily": "normative-semantics",
+        "semanticContractVersion": "1.0",
+        "semanticContractFingerprint": "scf:v1:sha256:3ad9db564b2fdb85df4b2d86e464beb533156635d8cb9790a4865d518d600f51"
+      }
+    ],
+    "outcome": "qualified",
+    "installedExecutionSupport": true,
+    "newUsePolicy": "permitted",
+    "historicalInterpretationSupport": true,
+    "qualificationRevision": "qualification:v1:1",
+    "reasonCode": "architecture-materialization-qualified"
+  },
+  {
+    "qualificationRecordId": "qualification:architecture-materialization@1.0:qualify_tuple",
+    "qualificationSchemaVersion": "1.0",
+    "operation": "qualify_tuple",
+    "direction": "none",
+    "profileId": "architecture-materialization@1.0",
+    "semanticContractSetId": "scs:v1:sha256:d12ce535f0a90c23741dfa516d207091197c2772dbcd538fabb133bdf5b79af6",
+    "members": [
+      {
+        "semanticContractFamily": "architecture-interpretation",
+        "semanticContractVersion": "1.0",
+        "semanticContractFingerprint": "scf:v1:sha256:3fcd0e98cec53e515a79b68ed493f91039c0a12bf76387ad259f32ac6394ee55"
+      },
+      {
+        "semanticContractFamily": "normalized-model",
+        "semanticContractVersion": "2.3",
+        "semanticContractFingerprint": "scf:v1:sha256:7a67fd98c9ca66a827f65ca0a16a3fb7b402ee23ded33342a4350869ea90ca00"
+      },
+      {
+        "semanticContractFamily": "normative-semantics",
+        "semanticContractVersion": "1.0",
+        "semanticContractFingerprint": "scf:v1:sha256:3ad9db564b2fdb85df4b2d86e464beb533156635d8cb9790a4865d518d600f51"
+      }
+    ],
+    "outcome": "qualified",
+    "installedExecutionSupport": true,
+    "newUsePolicy": "permitted",
+    "historicalInterpretationSupport": true,
+    "qualificationRevision": "qualification:v1:1",
+    "reasonCode": "architecture-materialization-qualified"
+  },
+  {
+    "qualificationRecordId": "qualification:architecture-materialization@1.0:assemble_set",
+    "qualificationSchemaVersion": "1.0",
+    "operation": "assemble_set",
+    "direction": "none",
+    "profileId": "architecture-materialization@1.0",
+    "semanticContractSetId": "scs:v1:sha256:d12ce535f0a90c23741dfa516d207091197c2772dbcd538fabb133bdf5b79af6",
+    "members": [
+      {
+        "semanticContractFamily": "architecture-interpretation",
+        "semanticContractVersion": "1.0",
+        "semanticContractFingerprint": "scf:v1:sha256:3fcd0e98cec53e515a79b68ed493f91039c0a12bf76387ad259f32ac6394ee55"
+      },
+      {
+        "semanticContractFamily": "normalized-model",
+        "semanticContractVersion": "2.3",
+        "semanticContractFingerprint": "scf:v1:sha256:7a67fd98c9ca66a827f65ca0a16a3fb7b402ee23ded33342a4350869ea90ca00"
+      },
+      {
+        "semanticContractFamily": "normative-semantics",
+        "semanticContractVersion": "1.0",
+        "semanticContractFingerprint": "scf:v1:sha256:3ad9db564b2fdb85df4b2d86e464beb533156635d8cb9790a4865d518d600f51"
+      }
+    ],
+    "outcome": "qualified",
+    "installedExecutionSupport": true,
+    "newUsePolicy": "permitted",
+    "historicalInterpretationSupport": true,
+    "qualificationRevision": "qualification:v1:1",
+    "reasonCode": "architecture-materialization-qualified"
+  },
+  {
+    "qualificationRecordId": "qualification:architecture-materialization@1.0:validate_corpus",
+    "qualificationSchemaVersion": "1.0",
+    "operation": "validate_corpus",
+    "direction": "none",
+    "profileId": "architecture-materialization@1.0",
+    "semanticContractSetId": "scs:v1:sha256:d12ce535f0a90c23741dfa516d207091197c2772dbcd538fabb133bdf5b79af6",
+    "members": [
+      {
+        "semanticContractFamily": "architecture-interpretation",
+        "semanticContractVersion": "1.0",
+        "semanticContractFingerprint": "scf:v1:sha256:3fcd0e98cec53e515a79b68ed493f91039c0a12bf76387ad259f32ac6394ee55"
+      },
+      {
+        "semanticContractFamily": "normalized-model",
+        "semanticContractVersion": "2.3",
+        "semanticContractFingerprint": "scf:v1:sha256:7a67fd98c9ca66a827f65ca0a16a3fb7b402ee23ded33342a4350869ea90ca00"
+      },
+      {
+        "semanticContractFamily": "normative-semantics",
+        "semanticContractVersion": "1.0",
+        "semanticContractFingerprint": "scf:v1:sha256:3ad9db564b2fdb85df4b2d86e464beb533156635d8cb9790a4865d518d600f51"
+      }
+    ],
+    "outcome": "qualified",
+    "installedExecutionSupport": true,
+    "newUsePolicy": "permitted",
+    "historicalInterpretationSupport": true,
+    "qualificationRevision": "qualification:v1:1",
+    "reasonCode": "architecture-materialization-qualified"
+  },
+  {
+    "qualificationRecordId": "qualification:architecture-materialization@1.0:resolve_current",
+    "qualificationSchemaVersion": "1.0",
+    "operation": "resolve_current",
+    "direction": "none",
+    "profileId": "architecture-materialization@1.0",
+    "semanticContractSetId": "scs:v1:sha256:d12ce535f0a90c23741dfa516d207091197c2772dbcd538fabb133bdf5b79af6",
+    "members": [
+      {
+        "semanticContractFamily": "architecture-interpretation",
+        "semanticContractVersion": "1.0",
+        "semanticContractFingerprint": "scf:v1:sha256:3fcd0e98cec53e515a79b68ed493f91039c0a12bf76387ad259f32ac6394ee55"
+      },
+      {
+        "semanticContractFamily": "normalized-model",
+        "semanticContractVersion": "2.3",
+        "semanticContractFingerprint": "scf:v1:sha256:7a67fd98c9ca66a827f65ca0a16a3fb7b402ee23ded33342a4350869ea90ca00"
+      },
+      {
+        "semanticContractFamily": "normative-semantics",
+        "semanticContractVersion": "1.0",
+        "semanticContractFingerprint": "scf:v1:sha256:3ad9db564b2fdb85df4b2d86e464beb533156635d8cb9790a4865d518d600f51"
+      }
+    ],
+    "outcome": "qualified",
+    "installedExecutionSupport": true,
+    "newUsePolicy": "permitted",
+    "historicalInterpretationSupport": true,
+    "qualificationRevision": "qualification:v1:1",
+    "reasonCode": "architecture-materialization-qualified"
+  },
+  {
+    "qualificationRecordId": "qualification:architecture-materialization@1.0:resolve_semantic_contract_set",
+    "qualificationSchemaVersion": "1.0",
+    "operation": "resolve_semantic_contract_set",
+    "direction": "none",
+    "profileId": "architecture-materialization@1.0",
+    "semanticContractSetId": "scs:v1:sha256:d12ce535f0a90c23741dfa516d207091197c2772dbcd538fabb133bdf5b79af6",
+    "members": [
+      {
+        "semanticContractFamily": "architecture-interpretation",
+        "semanticContractVersion": "1.0",
+        "semanticContractFingerprint": "scf:v1:sha256:3fcd0e98cec53e515a79b68ed493f91039c0a12bf76387ad259f32ac6394ee55"
+      },
+      {
+        "semanticContractFamily": "normalized-model",
+        "semanticContractVersion": "2.3",
+        "semanticContractFingerprint": "scf:v1:sha256:7a67fd98c9ca66a827f65ca0a16a3fb7b402ee23ded33342a4350869ea90ca00"
+      },
+      {
+        "semanticContractFamily": "normative-semantics",
+        "semanticContractVersion": "1.0",
+        "semanticContractFingerprint": "scf:v1:sha256:3ad9db564b2fdb85df4b2d86e464beb533156635d8cb9790a4865d518d600f51"
+      }
+    ],
+    "outcome": "qualified",
+    "installedExecutionSupport": true,
+    "newUsePolicy": "permitted",
+    "historicalInterpretationSupport": true,
+    "qualificationRevision": "qualification:v1:1",
+    "reasonCode": "architecture-materialization-qualified"
+  },
+  {
+    "qualificationRecordId": "qualification:architecture-materialization@1.0:materialize_architecture",
+    "qualificationSchemaVersion": "1.0",
+    "operation": "materialize_architecture",
+    "direction": "none",
+    "profileId": "architecture-materialization@1.0",
+    "semanticContractSetId": "scs:v1:sha256:d12ce535f0a90c23741dfa516d207091197c2772dbcd538fabb133bdf5b79af6",
+    "members": [
+      {
+        "semanticContractFamily": "architecture-interpretation",
+        "semanticContractVersion": "1.0",
+        "semanticContractFingerprint": "scf:v1:sha256:3fcd0e98cec53e515a79b68ed493f91039c0a12bf76387ad259f32ac6394ee55"
+      },
+      {
+        "semanticContractFamily": "normalized-model",
+        "semanticContractVersion": "2.3",
+        "semanticContractFingerprint": "scf:v1:sha256:7a67fd98c9ca66a827f65ca0a16a3fb7b402ee23ded33342a4350869ea90ca00"
+      },
+      {
+        "semanticContractFamily": "normative-semantics",
+        "semanticContractVersion": "1.0",
+        "semanticContractFingerprint": "scf:v1:sha256:3ad9db564b2fdb85df4b2d86e464beb533156635d8cb9790a4865d518d600f51"
+      }
+    ],
+    "outcome": "qualified",
+    "installedExecutionSupport": true,
+    "newUsePolicy": "permitted",
+    "historicalInterpretationSupport": true,
+    "qualificationRevision": "qualification:v1:1",
+    "reasonCode": "architecture-materialization-qualified"
+  }
+]

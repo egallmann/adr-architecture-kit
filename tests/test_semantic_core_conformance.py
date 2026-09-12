@@ -19,6 +19,71 @@ ARCHITECTURE_VECTORS = Path("contracts/semantic-core/v1.0/vectors/architecture-v
 ATTRIBUTION_SHIM_VECTORS = Path(
     "contracts/semantic-core/v1.0/vectors/attribution-shim-generation.json"
 )
+SEMANTIC_CONTRACT_VECTORS = Path("contracts/semantic-core/v1.0/vectors/semantic-contract.json")
+SEMANTIC_CONTRACT_SET_VECTORS = Path(
+    "contracts/semantic-core/v1.0/vectors/semantic-contract-set-governance.json"
+)
+
+
+def test_python_binding_matches_shared_semantic_contract_vectors() -> None:
+    document = json.loads(SEMANTIC_CONTRACT_VECTORS.read_text(encoding="utf-8"))
+    for case in document["cases"]:
+        result = execute_semantic_core_request(case["request"])
+        expected = case["expected"]
+        assert result["success"] is expected["success"], case["name"]
+        for field in (
+            "canonical_preimage_json",
+            "fingerprint",
+            "semantic_contract_fingerprint",
+            "semantic_contract_set_id",
+        ):
+            if field in expected:
+                assert result[field] == expected[field], case["name"]
+        if "diagnostic_codes" in expected:
+            assert [item["code"] for item in result["diagnostics"]] == expected[
+                "diagnostic_codes"
+            ], case["name"]
+        if "diagnostic_paths" in expected:
+            assert [item["path"] for item in result["diagnostics"]] == expected[
+                "diagnostic_paths"
+            ], case["name"]
+        if "diagnostic_messages" in expected:
+            assert [item["message"] for item in result["diagnostics"]] == expected[
+                "diagnostic_messages"
+            ], case["name"]
+        if "diagnostic_severities" in expected:
+            assert [item["severity"] for item in result["diagnostics"]] == expected[
+                "diagnostic_severities"
+            ], case["name"]
+
+
+def test_python_binding_matches_shared_semantic_contract_set_vectors() -> None:
+    document = json.loads(SEMANTIC_CONTRACT_SET_VECTORS.read_text(encoding="utf-8"))
+    for case in document["cases"]:
+        result = execute_semantic_core_request(case["request"])
+        expected = case["expected"]
+        assert result["success"] is expected["success"], case["name"]
+        if "noOp" in expected:
+            assert result["noOp"] is expected["noOp"], case["name"]
+        if "semanticContractSetId" in expected:
+            assert result["semanticContractSetId"] == expected["semanticContractSetId"], case[
+                "name"
+            ]
+        if "resolved" in expected:
+            assert (
+                result["resolved"]["semanticContractSetId"]
+                == expected["resolved"]["semanticContractSetId"]
+            ), case["name"]
+        for field, diagnostic_key in (
+            ("diagnostic_codes", "code"),
+            ("diagnostic_messages", "message"),
+            ("diagnostic_paths", "path"),
+            ("diagnostic_severities", "severity"),
+        ):
+            if field in expected:
+                assert [item.get(diagnostic_key) for item in result["diagnostics"]] == expected[
+                    field
+                ], case["name"]
 
 
 def test_python_binding_matches_shared_semantic_core_vectors() -> None:

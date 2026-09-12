@@ -1,0 +1,344 @@
+schema_version: '1.5'
+adr_type: logical
+id: 01a083dd-22b5-726d-8e49-01851bde3ba5
+alias_id: ADR-L-0028
+alias_name: normative-semantic-authority-and-materialization-foundation
+title: Normative Semantic Authority and Exact Materialization Foundation
+status: accepted
+created_date: '2026-09-09'
+authors:
+- erik.gallmann
+domains:
+- architecture
+- semantic-authority
+- materialization
+- schema-governance
+- cross-language
+tags:
+- adr-kit-0.11.0
+- semantic-design-lock-r1
+- normative-proposition
+- interpretation-closure
+- historical-materialization
+related_adrs:
+- 019fee89-e616-7c4e-953c-b7349412a784
+- 019fee89-e617-78d9-ba3b-b7e3e6db1b12
+- 019ffdba-3c42-7c4a-a737-f6751a265d60
+- 01a00643-1bfc-788c-911b-83a4725a8de1
+- 01a048d8-454a-7464-bcaa-718e58dfb9c2
+- 01a05a26-0000-7000-8000-000000000026
+- 01a05a27-0000-7000-8000-000000000027
+- 019fee89-e617-7d2b-8325-cd85ff814477
+- 019fee89-e618-73ce-aa2d-101276d64e33
+- 019ffdba-3c42-70da-b33d-efc003269c42
+- 01a048d8-454a-7464-bcaa-718fa77bed6a
+context: |
+  The approved ADR-Kit 0.11.0 semantic design lock (R1) requires repository-local
+  architectural authority before successor contracts or implementation are built.
+  The current authoring contract is schema v1.5 and does not yet provide a native
+  first-class NormativeProposition field. The promotion therefore records the
+  architectural meaning using decisions, invariants, boundaries, and explicit
+  deferrals that the current authoring contract supports.
+
+  The release must preserve the distinction between an accepted project ADR, its
+  exact semantic interpretation, a retained realized result, and downstream
+  binding or assessment. A successful parser or materializer cannot manufacture
+  competence, effectivity, applicability, or implementation conformance. A
+  shared execution boundary may realize the meaning, but its implementation is
+  subordinate to this authority and cannot redefine it.
+
+  This ADR promotes the bounded R1 foundation only. It does not itself amend a
+  successor schema, create a registry, allocate a materialization identity,
+  implement a fingerprint, add public SDK operations, or authorize release
+  packaging.
+decisions:
+- id: 01a083dd-22b5-726d-8e49-01861b6ee644
+  alias_id: DEC-0207
+  alias_name: authority-boundary-precedes-r1-materialization
+  summary: Promote R1 meaning into ADR-Kit authority while preserving responsibility-scoped ownership
+  rationale: |
+    ADR-Kit owns its authoring representation and canonical interpretation
+    boundary. STE-wide normative doctrine remains owned by accepted STE-SPEC
+    authority where assigned, Runtime owns retention and binding admission, and
+    competent reviewers own semantic materiality judgments. A successful
+    representation or interpretation operation cannot create any of those forms
+    of authority.
+- id: 01a083dd-22b5-726d-8e49-018775331439
+  alias_id: DEC-0208
+  alias_name: promote-r1-through-supported-authoring-representation
+  summary: Express R1 architectural meaning with supported decisions and invariants until successor authoring contracts exist
+  rationale: |
+    The current repository contract does not support a normative_propositions
+    field. Adding an unsupported field or weakening validation would make the
+    promotion unverifiable. The contract-definition slice must later define the
+    native representation without treating this promotion as an executable
+    successor contract.
+- id: 01a083dd-22b5-726d-8e49-01882e3af252
+  alias_id: DEC-0209
+  alias_name: normative-proposition-and-invariant-are-peer-types
+  summary: Treat NormativeProposition and Invariant as peer semantic types with no independent NP lifecycle
+  rationale: |
+    An NP is ADR-scoped intent with declaring authority, scope, and force. It is
+    not an independently governed record merely because a normalized common
+    envelope may contain lifecycle fields. Requirements remain a future distinct
+    semantic family and must not be absorbed into either peer type.
+- id: 01a083dd-22b5-726d-8e49-01894d301c6c
+  alias_id: DEC-0210
+  alias_name: normative-force-and-meaning-require-explicit-review
+  summary: Use the closed force vocabulary and separate force, authority, effectivity, scope, applicability, and conformance
+  rationale: |
+    The permitted force values are MUST, MUST NOT, SHOULD, SHOULD NOT, and MAY.
+    Force is one semantic value, not a positive operator combined with an
+    independently inferred polarity. Statement meaning, materiality, and
+    identity continuity require competent review; deterministic validation may
+    check structure but cannot certify natural-language equivalence.
+- id: 01a083dd-22b5-726d-8e49-018a51527664
+  alias_id: DEC-0211
+  alias_name: interpretation-closure-is-a-semantic-authority
+  summary: Make every meaning-affecting interpretation rule part of an exact semantic definition or retained input
+  rationale: |
+    Source adapters, decoding, normalization, identity-map use, coverage rules,
+    and absence handling can change a materialized result even when an output
+    schema is unchanged. The initial semantic contract set therefore includes
+    architecture-interpretation 1.0 as a distinct semantic family alongside the
+    normalized and normative semantic families. Profiles select a set but do not
+    redefine it.
+- id: 01a083dd-22b5-726d-8e49-018bc3d37191
+  alias_id: DEC-0212
+  alias_name: materialization-uses-sealed-qualified-source
+  summary: Materialization is based on a complete sealed source basis with artifact-level contract qualification and persisted identity evidence
+  rationale: |
+    A claimed revision alone does not prove which auxiliary inputs, source
+    contracts, or identity maps were interpreted. Successful detached
+    materialization must preserve the complete acquired basis, encountered
+    artifact-to-contract bindings, provider qualification, and any required
+    sealed identity map. It must not mint identity during read-time traversal.
+- id: 01a083dd-22b5-726d-8e49-018d30ecb096
+  alias_id: DEC-0213
+  alias_name: contract-sets-and-history-have-explicit-qualification
+  summary: Keep immutable semantic definitions, exact whole-set qualification, lifecycle policy, fingerprints, and historical realization distinct
+  rationale: |
+    A semantic definition and a current-use decision do not have the same
+    lifecycle. A set is qualified as a whole for each operation rather than by
+    inferred pairwise compatibility. Portable state fingerprints and complete
+    payload digests have explicit projections and do not replace source or
+    retained-result identity. Historical recovery verifies the retained result
+    and exposes mismatches instead of rewriting prior history.
+- id: 01a083dd-22b5-726d-8e49-018e0598aca1
+  alias_id: DEC-0214
+  alias_name: pinned-materialization-binds-existing-attribution
+  summary: Evaluate existing attribution semantics against an explicitly pinned materialization and defer direct NP-target attribution
+  rationale: |
+    Exact-history evaluation must not reopen mutable present-day ADR source.
+    The released evidence-attribution 1.5 and 1.6 target matrix remains
+    unchanged: a first-class NP representation does not silently become a new
+    attribution target, and existing Invariant enforcement semantics remain
+    intact.
+- id: 01a083dd-22b5-726d-8e49-018f7e364f4a
+  alias_id: DEC-0215
+  alias_name: peer-hosts-share-semantic-authority
+  summary: Require equivalent public host observations from one canonical execution boundary
+  rationale: |
+    Python and TypeScript/Node are peer hosts for promoted capabilities. Parity
+    begins with equivalent raw source and exact semantic bases, including
+    parsing, diagnostics, coverage, and fingerprints. Public results remain
+    independent of compiler-internal types, private implementation objects, and
+    host-specific semantic defaults.
+- id: 01a083dd-22b5-726d-8e49-019009c28c68
+  alias_id: DEC-0216
+  alias_name: specification-project-type-is-a-general-future-capability
+  summary: Promote the specification project type as a backward-compatible general project-metadata capability for 0.11.0
+  rationale: |
+    The future contract-definition and implementation slices must extend the
+    project-metadata capability for any project using the type. They must not
+    special-case STE-SPEC, reinterpret its branch state, or weaken validation.
+    This promotion records the requirement without changing the current enum or
+    claiming that the capability is implemented.
+- id: 01a083dd-22b5-726d-8e49-019195581bbe
+  alias_id: DEC-0217
+  alias_name: ste-spec-rebaseline-is-bounded-directional-evidence
+  summary: Record the STE-SPEC sequencing exception without claiming branch admission
+  rationale: |
+    The accumulated STE-SPEC semantic-rebaseline branch and its ADR-L-0044
+    artifact are qualified directional design evidence only. ADR-Kit may refine
+    concrete authoring and materialization mechanics, but it must not redefine
+    STE-wide normative force, authority, competence, effectivity, applicability,
+    epistemic boundaries, bounded outcomes, or the NP/Invariant peer distinction.
+    STE-SPEC remains untouched in this slice.
+- id: 01a083dd-22b5-726d-8e49-01925705c12c
+  alias_id: DEC-0218
+  alias_name: sequence-contract-definition-after-authority-promotion
+  summary: Sequence successor contracts, implementation, Runtime integration, and release qualification after this authority promotion
+  rationale: |
+    The contract-definition slice must define authoring 1.6, normalized 2.3,
+    normative-semantics 1.0, architecture-interpretation 1.0, materialization
+    envelopes, qualification records, canonicalization, and host evidence.
+    Implementation and Runtime work follows those contracts. No release or
+    package claim is created by this ADR alone.
+invariants:
+- id: 01a083dd-22b5-726d-8e49-01937cd08264
+  alias_id: INV-0208
+  alias_name: r1-does-not-manufacture-authority
+  statement: Representation, interpretation, materialization, and binding operations MUST NOT manufacture competence, effectivity, applicability, or implementation-conformance authority.
+  scope: global
+  enforcement_level: must
+  enforcement_mechanism: design
+  verification_method: manual
+  rationale: Authority remains responsibility-scoped across STE-SPEC, ADR-Kit, competent review, Runtime, and conformance authorities.
+- id: 01a083dd-22b5-726d-8e49-01947fd963f4
+  alias_id: INV-0209
+  alias_name: normative-propositions-have-no-independent-lifecycle
+  statement: A NormativeProposition MUST derive its authority from its competent, effective declaring ADR and MUST NOT acquire an independent governance lifecycle through a shared entity envelope.
+  scope: global
+  enforcement_level: must
+  enforcement_mechanism: design
+  verification_method: manual
+  rationale: NP and Invariant are peer semantic types, while NP governance remains ADR-scoped.
+- id: 01a083dd-22b5-726d-8e49-0195733b798e
+  alias_id: INV-0210
+  alias_name: normative-force-vocabulary-is-closed
+  statement: Normative force MUST be exactly one of MUST, MUST NOT, SHOULD, SHOULD NOT, or MAY; implementations MUST NOT reconstruct force from positive force plus an independent polarity.
+  scope: global
+  enforcement_level: must
+  enforcement_mechanism: design
+  verification_method: automated
+  rationale: Closed force values prevent double-negation and modal reinterpretation drift.
+- id: 01a083dd-22b5-726d-8e49-019659bcdc94
+  alias_id: INV-0211
+  alias_name: normative-meaning-is-not-inferred-from-prose
+  statement: Mechanical validation MUST NOT infer an NP, certify semantic materiality, or assert meaning-preserving identity continuity from arbitrary modal or imperative prose.
+  scope: global
+  enforcement_level: must
+  enforcement_mechanism: design
+  verification_method: manual
+  rationale: Semantic materiality and equivalence are competent review responsibilities.
+- id: 01a083dd-22b5-726d-8e49-0197d40507b3
+  alias_id: INV-0212
+  alias_name: normative-dimensions-remain-separate
+  statement: Normative force, authority, effectivity, scope, applicability, and conformance MUST remain distinct dimensions and MUST NOT be substituted for one another.
+  scope: global
+  enforcement_level: must
+  enforcement_mechanism: design
+  verification_method: manual
+  rationale: A represented proposition is not thereby governing, applicable, or conformant.
+- id: 01a083dd-22b5-726d-8e49-0198f537d80a
+  alias_id: INV-0213
+  alias_name: normalized-inclusion-does-not-imply-applicability
+  statement: Inclusion of an NP in a normalized or materialized model MUST NOT imply that the proposition governs a concrete context.
+  scope: global
+  enforcement_level: must
+  enforcement_mechanism: design
+  verification_method: manual
+  rationale: Applicability requires its own qualified context and authority basis.
+- id: 01a083dd-22b5-726d-8e49-0199d6562797
+  alias_id: INV-0214
+  alias_name: interpretation-closure-covers-meaning-affecting-inputs
+  statement: Every meaning-affecting interpretation rule and input MUST be covered by an exact semantic definition or retained explicit source/request input; a profile MUST NOT redefine an identified semantic contract set.
+  scope: global
+  enforcement_level: must
+  enforcement_mechanism: design
+  verification_method: automated
+  rationale: Host defaults, mutable profiles, and undocumented adapters cannot be hidden semantic authorities.
+- id: 01a083dd-22b5-726d-8e49-019aeecf2483
+  alias_id: INV-0215
+  alias_name: immutable-semantics-are-separate-from-use-policy
+  statement: Immutable semantic definitions and exact historical set identities MUST remain stable independently of lifecycle, deprecation, compatibility, and current new-use policy.
+  scope: global
+  enforcement_level: must
+  enforcement_mechanism: design
+  verification_method: automated
+  rationale: A later prohibition on new use must not erase historical addressability or alter semantic identity.
+- id: 01a083dd-22b5-726d-8e49-019bd8599ead
+  alias_id: INV-0216
+  alias_name: semantic-set-qualification-is-whole-and-exact
+  statement: A semantic contract set MUST contain one exact qualified member per participating family and MUST be qualified as a whole for each supported operation; duplicate, missing, or conflicting members MUST fail closed.
+  scope: global
+  enforcement_level: must
+  enforcement_mechanism: design
+  verification_method: automated
+  rationale: Pairwise compatibility, transitivity, or symmetry cannot qualify an undeclared combination.
+- id: 01a083dd-22b5-726d-8e49-019c36d0b1c6
+  alias_id: INV-0217
+  alias_name: materialization-source-basis-is-sealed-and-qualified
+  statement: A successful detached materialization MUST retain the complete sealed source and auxiliary input basis actually interpreted, including artifact-level source-contract qualification and required provider identity evidence.
+  scope: global
+  enforcement_level: must
+  enforcement_mechanism: design
+  verification_method: automated
+  rationale: A revision label alone cannot prove complete acquisition or source-contract meaning.
+- id: 01a083dd-22b5-726d-8e49-019d5323f10d
+  alias_id: INV-0218
+  alias_name: detached-materialization-does-not-allocate-identity
+  statement: Detached materialization MUST NOT allocate canonical identity during read-time interpretation; legacy identity requires an exact sealed provider-authoritative map or a typed qualification failure.
+  scope: global
+  enforcement_level: must
+  enforcement_mechanism: design
+  verification_method: automated
+  rationale: Repeated reads must not remint or repair authority-owned identity.
+- id: 01a083dd-eef0-7358-9bdf-3de719877d0f
+  alias_id: INV-0219
+  alias_name: materialization-outcomes-preserve-epistemic-states
+  statement: Materialization MUST distinguish Materialized, Rejected, and Unavailable outcomes and MUST preserve unresolved, undeclared, inexpressible, unavailable, and unassessed states without success-shaped fallback.
+  scope: global
+  enforcement_level: must
+  enforcement_mechanism: design
+  verification_method: automated
+  rationale: Invalid or incomplete acquisition cannot masquerade as an empty or partial authority model.
+- id: 01a083dd-eef0-7358-9bdf-3de8199835a8
+  alias_id: INV-0220
+  alias_name: fingerprints-and-history-have-explicit-equivalence-boundaries
+  statement: Portable state fingerprints, complete semantic payload digests, source provenance, and retained realized results MUST use explicit projections and MUST NOT replace one another or rewrite historical records.
+  scope: global
+  enforcement_level: must
+  enforcement_mechanism: design
+  verification_method: automated
+  rationale: Contract conformance and reproduction of a prior executable result are distinct claims.
+- id: 01a083dd-eef0-7358-9bdf-3de9359df6a0
+  alias_id: INV-0221
+  alias_name: attribution-evaluates-pinned-materialization
+  statement: Exact-history evaluation of existing attribution semantics MUST consume the explicitly pinned materialization and MUST NOT silently reopen current ADR source; direct NP-target attribution remains unsupported under released evidence contracts.
+  scope: global
+  enforcement_level: must
+  enforcement_mechanism: design
+  verification_method: automated
+  rationale: Pinned history and released attribution target semantics remain separate authority boundaries.
+- id: 01a083dd-eef0-7358-9bdf-3dea151834be
+  alias_id: INV-0222
+  alias_name: peer-host-capabilities-require-installed-parity
+  statement: Publicly advertised shared capabilities MUST have equivalent raw-source semantic, diagnostic, coverage, fingerprint, and installed-package qualification evidence in both peer host distributions.
+  scope: global
+  enforcement_level: must
+  enforcement_mechanism: test
+  verification_method: automated
+  rationale: Source-level similarity is not evidence of published Python/TypeScript parity.
+- id: 01a083dd-eef0-7358-9bdf-3debf6fbe5b8
+  alias_id: INV-0223
+  alias_name: ste-spec-exception-remains-bounded
+  statement: ADR-Kit promotion MUST NOT represent the STE-SPEC semantic-rebaseline feature branch as admitted upstream authority, redefine STE-wide normative doctrine, or modify STE-SPEC in this slice.
+  scope: global
+  enforcement_level: must
+  enforcement_mechanism: design
+  verification_method: manual
+  rationale: The sequencing exception preserves repository ownership and prevents an accepted marker on an unadmitted branch from becoming false authority.
+gaps: []
+notes: |
+  Promotion evidence: .adr-kit/v11-design-journal/adr-kit-0.11.0-semantic-design-lock-approved.md
+  is the approved R1 design-state authority for this promotion. It is not an
+  executable contract, release certification, or substitute for accepted ADR
+  authority after this promotion. The accompanying R1 traceability matrix is
+  evidence only and does not create a second normative source.
+
+  The following remain explicitly deferred to later bounded slices: authoring
+  contract 1.6; normalized-model 2.3; normative-semantics 1.0;
+  architecture-interpretation 1.0 resources; architecture-materialization
+  envelopes; semantic contract registries and fingerprints; shared-core and
+  Python/Node operations; Runtime retention, recovery, binding admission, and
+  Snapshot behavior; direct NP-target attribution; general Requirements
+  semantics; and release packaging. project.type: specification is a general
+  future project-metadata capability, not a current schema change.
+
+  STE-SPEC exception: ADR-L-0044 at feature commit
+  e21b8409f09d01be419db09d979ce924a92e3777 is retained only as qualified
+  directional evidence. Its feature-branch status does not mean admission to
+  STE-SPEC develop. CE-01 promotion is not a prerequisite for this ADR-Kit
+  promotion, and ADR-Kit does not modify STE-SPEC here.

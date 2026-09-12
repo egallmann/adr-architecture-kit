@@ -329,7 +329,7 @@ def _amend_m04(document: dict[str, Any]) -> dict[str, Any]:
             "internals and without advertising schema/model embodiment as complete."
         )
     criteria47: list[Any] = []
-    replaced_phase1 = False
+    replaced_authorized_inventory = False
     for item in list(cap47.get("acceptance_criteria") or []):
         text = str(item)
         if "Phase 1 symbol inventory" in text:
@@ -338,10 +338,10 @@ def _amend_m04(document: dict[str, Any]) -> dict[str, Any]:
                 "for the current API contract, including additive promotion-provider "
                 "operations once separately authorized"
             )
-            replaced_phase1 = True
+            replaced_authorized_inventory = True
         else:
             criteria47.append(item)
-    if not replaced_phase1 and not any(
+    if not replaced_authorized_inventory and not any(
         "promotion-provider" in str(item).lower() or "promotion provider" in str(item).lower()
         for item in criteria47
     ):

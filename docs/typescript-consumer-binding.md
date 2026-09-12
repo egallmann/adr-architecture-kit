@@ -8,7 +8,8 @@ browser profile is deliberately constrained by its execution environment.
 ## Entry points
 
 The root, `model`, `schemas`, and `validation` entry points are browser-safe and
-framework-neutral. The `node`, `node/linkage`, and `node/governance` entry points are explicitly
+framework-neutral. The `node`, `node/linkage`, `node/governance`, and
+`node/materialization` entry points are explicitly
 Node-only because they use filesystem, path, YAML, and cryptographic APIs.
 Angular applications may use the browser-safe entry points from Angular
 services or other application code, but the package does not provide Angular
@@ -19,13 +20,14 @@ repository discovery.
 
 The binding advertises its supported capability versions through
 `capabilities()`. `host_operations` identifies the parity-qualified peer-host
-surface, including architecture and project-metadata validation, and `pending_host_operations`
+surface, including exact architecture materialization plus architecture and project-metadata validation, and `pending_host_operations`
 makes staged migration visible.
 The parity-qualified contract, project-metadata, normalized-repository identity,
 provider-routing, linkage, generated-artifact classification, and normalized
-architecture source-validation/reference/topology rules execute through the same
-packaged semantic core consumed by Python. Filesystem discovery, path safety, YAML
-loading, and language-native result views remain host adapter responsibilities.
+architecture source-validation/reference/topology and exact architecture
+materialization execute through the same packaged semantic core consumed by
+Python. Filesystem discovery, path safety, source parsing, sealed request
+construction, and language-native result views remain host adapter responsibilities.
 Projection rendering and compilation remain staged until their semantic
 dependencies are extracted through that boundary.
 Unsupported normalized-model, evidence, and manifest versions fail explicitly.

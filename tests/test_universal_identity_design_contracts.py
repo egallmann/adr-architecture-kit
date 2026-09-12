@@ -96,7 +96,10 @@ def test_fixture_remains_a_verification_snapshot_over_the_admitted_checkpoint() 
 
     assert fixture["classification"] == "NON-AUTHORITATIVE VERIFICATION SNAPSHOT"
     assert fixture["governing_adr"] == "ADR-L-0022"
-    assert fixture["baseline_sha"] == "b998bfc"
+    # The fixture was resealed at the 0.11 semantic-authority checkpoint.
+    # Keep this explicit historical assertion so a snapshot refresh cannot
+    # silently move the admitted checkpoint without updating its contract.
+    assert fixture["baseline_sha"] == "9bce83c"
     assert graph["baseline_identity_evidence"] == {
         "uuidv7_nodes": graph["node_count"],
         "nodes_with_alias_envelope": 0,

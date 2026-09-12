@@ -1,0 +1,59 @@
+{
+  "semanticDependencies": [
+    "architecture-interpretation/1.0/source-decoding-1.5",
+    "architecture-interpretation/1.0/source-decoding-1.6",
+    "architecture-interpretation/1.0/source-mapping-1.5-to-2.3",
+    "architecture-interpretation/1.0/source-mapping-1.6-to-2.3"
+  ],
+  "supportedSourceContractBindings": ["authoring@1.6", "authoring@1.5"],
+  "outputContractBinding": "normalized-model@2.3",
+  "sourceContractClosure": [
+    {"family": "authoring", "version": "1.6", "qualification": "exact-imported-schema-artifacts"},
+    {"family": "authoring", "version": "1.5", "qualification": "exact-imported-schema-artifacts"}
+  ],
+  "sourceContractMappings": [
+    {"source": "authoring@1.6", "artifactPrefix": "authoring/1.6/schema/", "coverage": "supported"},
+    {"source": "authoring@1.5", "artifactPrefix": "authoring/1.5/schema/", "coverage": "historical-qualified"}
+  ],
+  "sourceDecoding": {
+    "duplicateJsonMembers": "reject",
+    "unsafeNumbers": "reject-before-coercion",
+    "unicodeNormalization": "none",
+    "implicitImports": "reject",
+    "liveExternalReferences": "reject"
+  },
+  "normativePropositionQualification": {
+    "owner": "declaring-adr",
+    "parentQualification": "required",
+    "identityMap": "required-for-legacy-identity",
+    "lifecycle": "declaring-adr-only"
+  },
+  "absenceAndCoverage": {
+    "missingDeclaration": "covered-without-declaration",
+    "sourceCannotExpressNP": "source-contract-inexpressible",
+    "regionNotCovered": "source-region-not-covered",
+    "requiredInputMissing": "required-input-missing",
+    "acquisitionUnavailable": "acquisition-unavailable",
+    "invalidDeclaration": "invalid-declaration",
+    "emptyDeclaration": "covered-with-no-declarations",
+    "sourceLifecycle": "available-through-declaring-adr"
+  },
+  "projection": {
+    "force": "canonical-force-value",
+    "scope": "preserve-or-report-unknown",
+    "ordering": "deterministic",
+    "duplicateDefinitions": "reject",
+    "declaringKinds": ["ADR-L", "ADR-PS", "ADR-PC"],
+    "referencesAreNotDeclarations": true,
+    "noInferredApplicability": true,
+    "globalScopeBoundedByDeclaringAuthority": true,
+    "unknownScopeRemainsUnknown": true,
+    "provenanceAndParentQualification": "preserve",
+    "identityCreation": "never-from-path-hash-time-or-traversal-order",
+    "diagnosticClassification": "governed-and-deterministically-ordered"
+  },
+  "identity": {
+    "implicitCreation": "prohibited",
+    "legacyMap": "complete-sealed-provider-authoritative-map"
+  }
+}

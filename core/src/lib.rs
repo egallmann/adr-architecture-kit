@@ -1742,6 +1742,16 @@ mod semantic_core_v11_tests {
             assert_eq!(actual_severities, expected.get("diagnostic_severities").and_then(Json::as_array).cloned().unwrap_or_default(), "diagnostic severities for {name}");
 
             if let Some(assertions) = expected.get("assertions").and_then(Json::as_object) {
+                if let Some(set_id) = assertions
+                    .get("semantic_contract_set_id")
+                    .and_then(Json::as_str)
+                {
+                    assert_eq!(
+                        result.get_path(&["semanticBasis", "semanticContractSetId"]),
+                        Some(&Json::String(set_id.to_owned())),
+                        "{name} executed semantic-contract set"
+                    );
+                }
                 if let Some(count) = assertions.get("unresolved_count").and_then(Json::as_u64) {
                     assert_eq!(result.get_path(&["normalizedModel", "unresolved"]).and_then(Json::as_array).map(Vec::len), Some(count as usize), "{name} unresolved count");
                 }

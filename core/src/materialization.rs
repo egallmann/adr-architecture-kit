@@ -13,7 +13,7 @@ use sha2::{Digest, Sha256};
 
 use super::schema_validation;
 use super::semantic_contract::canonicalize_value;
-use super::semantic_contract_set::resolve_exact_set;
+use super::semantic_contract_set::{resolve_exact_set, ExactResolution};
 use super::{diagnostic, object, string, Json};
 
 const OPERATION: &str = "materialize_architecture";
@@ -386,78 +386,84 @@ fn source_error(diagnostics: &mut Vec<Json>, path: &str, message: impl Into<Stri
     );
 }
 
-fn governed_source_resources(
-    request: &Json,
+/// Build the only resource view materialization is allowed to consume.
+///
+/// `ExactResolution` has already selected one immutable bundle per participating
+/// family by the complete family/version/SCF identity.  This function never
+/// revisits the request's retained definitions, so a historical or future
+/// bundle that was not a member of the requested SCS cannot shadow anything.
+/// Overlapping imports are accepted only when their qualified digest and
+/// canonical bytes agree exactly.
+fn resolved_resource_view(
+    resolution: &ExactResolution,
     diagnostics: &mut Vec<Json>,
 ) -> GovernedSourceResources {
     let mut resources = GovernedSourceResources {
         digests: BTreeMap::new(),
         contents: BTreeMap::new(),
     };
-    let Some(definitions) = request
-        .as_object()
-        .and_then(|root| root.get("definitions"))
-        .and_then(Json::as_array)
-    else {
-        source_error(
-            diagnostics,
-            "definitions",
-            "architecture-interpretation definition closure is required",
-        );
-        return resources;
-    };
-    for bundle in definitions {
-        let Some(definition) = bundle
-            .as_object()
-            .and_then(|bundle| bundle.get("definition"))
-            .and_then(Json::as_object)
+    for bundle in resolution.definitions.values() {
+        let definition = bundle.definition.as_object();
+        let bundle_resources = bundle
+            .resources
+            .iter()
+            .filter_map(Json::as_object)
+            .filter_map(|resource| {
+                Some((
+                    text(resource.get("canonicalResourceKey"))?,
+                    resource.get("content")?.clone(),
+                ))
+            })
+            .collect::<BTreeMap<_, _>>();
+        let Some(manifest) = definition.and_then(|value| array(value.get("resourceManifest")))
         else {
             continue;
         };
-        if text(definition.get("semanticContractFamily")).as_deref()
-            != Some("architecture-interpretation")
-        {
-            continue;
-        }
-        let bundle_resources = bundle
-            .as_object()
-            .and_then(|bundle| bundle.get("resources"))
-            .and_then(Json::as_array)
-            .map(|resources| {
-                resources
-                    .iter()
-                    .filter_map(Json::as_object)
-                    .filter_map(|resource| {
-                        Some((
-                            text(resource.get("canonicalResourceKey"))?,
-                            resource.get("content")?.clone(),
-                        ))
-                    })
-                    .collect::<BTreeMap<_, _>>()
-            })
-            .unwrap_or_default();
-        if let Some(manifest) = array(definition.get("resourceManifest")) {
-            for entry in manifest {
-                let Some(entry) = entry.as_object() else {
-                    continue;
-                };
-                let Some(key) = text(entry.get("canonicalResourceKey")) else {
-                    continue;
-                };
-                if let Some(digest) = text(entry.get("contentDigest")) {
-                    resources.digests.insert(key.clone(), digest.clone());
-                    if let Some(content) = bundle_resources.get(&key) {
-                        resources.contents.insert(key, content.clone());
-                    } else {
-                        diagnostic_code(
-                            diagnostics,
-                            "semantic_contract.source_resource_content_missing",
-                            "governed source resource is listed but its sealed content is missing",
-                            "definitions",
-                        );
-                    }
+        for entry in manifest {
+            let Some(entry) = entry.as_object() else {
+                continue;
+            };
+            let Some(key) = text(entry.get("canonicalResourceKey")) else {
+                continue;
+            };
+            let Some(digest) = text(entry.get("contentDigest")) else {
+                continue;
+            };
+            let Some(content) = bundle_resources.get(&key) else {
+                diagnostic_code(
+                    diagnostics,
+                    "semantic_contract.source_resource_content_missing",
+                    format!(
+                        "selected {} definition lists a resource without sealed content",
+                        bundle.member.family
+                    ),
+                    &format!("definitions.{}.resources", bundle.member.family),
+                );
+                continue;
+            };
+            if let Some(existing_digest) = resources.digests.get(&key) {
+                let existing_content = resources.contents.get(&key);
+                let same_content = existing_content.is_some_and(|existing| {
+                    let mut left = String::new();
+                    let mut right = String::new();
+                    canonicalize_value(existing, &mut left).is_ok()
+                        && canonicalize_value(content, &mut right).is_ok()
+                        && left == right
+                });
+                if existing_digest != &digest || !same_content {
+                    diagnostic_code(
+                        diagnostics,
+                        "semantic_contract.selected_resource_conflict",
+                        format!(
+                            "selected resource {key} has conflicting identity or canonical bytes across exact SCS members"
+                        ),
+                        &format!("definitions.{}.resourceManifest", bundle.member.family),
+                    );
                 }
+                continue;
             }
+            resources.digests.insert(key.clone(), digest);
+            resources.contents.insert(key, content.clone());
         }
     }
     if resources.digests.is_empty() {
@@ -488,6 +494,57 @@ fn governed_source_resources(
         }
     }
     resources
+}
+
+fn validate_selected_import_ownership(
+    resolution: &ExactResolution,
+    diagnostics: &mut Vec<Json>,
+) {
+    let Some(architecture) = resolution.definitions.get("architecture-interpretation") else {
+        return;
+    };
+    let Some(normalized) = resolution.definitions.get("normalized-model") else {
+        return;
+    };
+    let architecture_manifest = architecture
+        .definition
+        .as_object()
+        .and_then(|definition| array(definition.get("resourceManifest")))
+        .into_iter()
+        .flatten()
+        .filter_map(Json::as_object)
+        .filter_map(|entry| text(entry.get("canonicalResourceKey")))
+        .filter(|key| key.starts_with("normalized-model/"));
+    let normalized_manifest = normalized
+        .definition
+        .as_object()
+        .and_then(|definition| array(definition.get("resourceManifest")))
+        .into_iter()
+        .flatten()
+        .filter_map(Json::as_object)
+        .filter_map(|entry| {
+            Some((
+                text(entry.get("canonicalResourceKey"))?,
+                text(entry.get("contentDigest"))?,
+            ))
+        })
+        .collect::<BTreeMap<_, _>>();
+    for key in architecture_manifest {
+        match normalized_manifest.get(&key) {
+            None => diagnostic_code(
+                diagnostics,
+                "semantic_contract.selected_import_owner_missing",
+                format!(
+                    "architecture-interpretation imports {key}, but the selected normalized-model member does not own it"
+                ),
+                "definitions.architecture-interpretation.resourceManifest",
+            ),
+            // Digest disagreement is reported once while the immutable view
+            // is assembled.  Keeping ownership validation focused on the
+            // missing-owner case avoids duplicate conflict diagnostics.
+            Some(_) => {}
+        }
+    }
 }
 
 fn expected_source_resource_keys(version: &str, adr_type: &str) -> Vec<String> {
@@ -687,7 +744,7 @@ fn source_contract(
             diagnostic_code(
                 diagnostics,
                 "semantic_contract.source_contract_resource_unqualified",
-                "source contract resource is not the governed imported resource and digest",
+                "source contract resource is not part of the exact resolved semantic basis with the selected member digest",
                 &resource_path,
             );
         }
@@ -714,7 +771,7 @@ fn source_contract(
         diagnostic_code(
             diagnostics,
             "semantic_contract.source_contract_schema_unqualified",
-            "top-level schema resource does not match the governed resource digest",
+            "top-level schema resource is not part of the exact resolved semantic basis with the selected member digest",
             &format!("{path}.sourceContract.schemaResource"),
         );
     }
@@ -2690,7 +2747,8 @@ pub fn execute(request: &Json) -> Json {
             )],
         );
     }
-    let governed_resources = governed_source_resources(request, &mut request_diagnostics);
+    let governed_resources = resolved_resource_view(&resolution, &mut request_diagnostics);
+    validate_selected_import_ownership(&resolution, &mut request_diagnostics);
     let (materialized, closure, parts) = materialize_sources(
         &source_basis,
         &authority_provider,

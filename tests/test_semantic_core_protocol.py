@@ -110,3 +110,13 @@ def test_v11_only_operation_submitted_as_v10_is_rejected() -> None:
     assert result["success"] is False
     assert result["core_contract_version"] == "1.0"
     validate_semantic_core_protocol(result)
+
+
+def test_v11_operations_execute_through_the_packaged_wasm_boundary() -> None:
+    for operation in ("resolve_semantic_contract_set", "materialize_architecture"):
+        result = execute_semantic_core_request(
+            {"core_contract_version": "1.1", "operation": operation}
+        )
+        assert result["core_contract_version"] == "1.1"
+        assert result["success"] is False
+        validate_semantic_core_protocol(result)

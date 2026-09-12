@@ -75,3 +75,15 @@ test("Node keeps a v1.1-only operation rejected on the v1.0 boundary", async () 
   assert.equal(result.success, false);
   assert.doesNotThrow(() => validateSemanticCoreProtocol(result));
 });
+
+test("Node executes v1.1 operations through the packaged WASM boundary", async () => {
+  for (const operation of ["resolve_semantic_contract_set", "materialize_architecture"]) {
+    const result = await executeSemanticCoreRequest({
+      core_contract_version: "1.1",
+      operation,
+    });
+    assert.equal(result.core_contract_version, "1.1");
+    assert.equal(result.success, false);
+    assert.doesNotThrow(() => validateSemanticCoreProtocol(result));
+  }
+});

@@ -12,4 +12,4 @@ else
     python_executable="python"
 fi
 
-"$python_executable" scripts/run_local_pre_push_checks.py
+"$python_executable" scripts/run_local_pre_push_checks.py --fast

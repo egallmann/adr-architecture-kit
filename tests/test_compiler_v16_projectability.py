@@ -2,15 +2,20 @@
 
 from __future__ import annotations
 
+import hashlib
+import json
+from dataclasses import replace
 from pathlib import Path
 
 import pytest
 import yaml
 
+import adr_kit.api as api
 from adr_kit.compiler.config import CompilerConfig
 from adr_kit.compiler.driver import ArchitectureCompiler
 from adr_kit.compiler.pipeline import MixedSchemaVersionError, VersionDetectionPass
-from adr_kit.api import CompilationRequest, compile_architecture
+from adr_kit.api import CompilationRequest, compile_architecture, open_repository
+from adr_kit.identity import entity_fingerprint, uuidv7_created_at
 from adr_kit.models.v2_3 import NormalizedEntityRegistryV23
 from adr_kit.scope import ProjectScopeResolver
 
@@ -59,6 +64,7 @@ def _logical(adr_id: str, alias_id: str, np_id: str, np_alias: str) -> dict[str,
                 "statement": "The contract MUST retain source evidence.",
                 "normative_force": "MUST",
                 "scope": "compiler",
+                "rationale": "The proposition remains reviewable and explicit.",
             }
         ],
     }
@@ -201,6 +207,7 @@ def test_homogeneous_v16_compiles_np_to_lifecycle_free_v23(tmp_path: Path) -> No
     }
     for proposition in propositions:
         assert proposition.statement.endswith("evidence.")
+        assert proposition.rationale == "The proposition remains reviewable and explicit."
         assert proposition.source_contract.family == "authoring"
         assert proposition.source_contract.version == "1.6"
         assert "lifecycle_stage" not in proposition.model_dump()
@@ -215,6 +222,188 @@ def test_homogeneous_v16_compiles_np_to_lifecycle_free_v23(tmp_path: Path) -> No
     assert public_result.success
     assert public_result.model is not None
     assert public_result.model.schema_version == "2.3"
+
+
+def _materialization_request() -> api.ArchitectureMaterializationRequest:
+    vector = json.loads(
+        Path("contracts/semantic-core/v1.1/vectors/architecture-materialization.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    request = vector["cases"][0]["request"]
+    source = request["sourceBasis"]
+    artifacts = tuple(
+        api.MaterializationSourceArtifact(
+            source_ref=item["sourceRef"],
+            artifact_path=item["artifactPath"],
+            content_digest=item["contentDigest"],
+            source_contract=api.MaterializationSourceContract(
+                version=item["sourceContract"]["version"],
+                schema_resource=api.SemanticResourceDependency(
+                    item["sourceContract"]["schemaResource"]["canonicalResourceKey"],
+                    item["sourceContract"]["schemaResource"]["contentDigest"],
+                ),
+                resource_closure=tuple(
+                    api.SemanticResourceDependency(
+                        value["canonicalResourceKey"], value["contentDigest"]
+                    )
+                    for value in item["sourceContract"]["resourceClosure"]
+                ),
+            ),
+            document=item["document"],
+        )
+        for item in source["artifacts"]
+    )
+    return api.ArchitectureMaterializationRequest(
+        semantic_contract_set_id=request["semanticContractSetId"],
+        authority_provider=api.MaterializationAuthorityProvider(
+            kind=request["authorityProvider"]["kind"],
+            architecture_namespace=request["authorityProvider"]["architectureNamespace"],
+        ),
+        source_basis=api.MaterializationSourceBasis(
+            provider_source_identity=source["providerSourceIdentity"],
+            source_revision=source["sourceRevision"],
+            artifacts=artifacts,
+        ),
+        direction="none",
+        use_mode="new",
+        profile_id="architecture-materialization@1.0",
+    )
+
+
+def _materialize_logical_fixture(
+    root: Path,
+) -> tuple[NormalizedEntityRegistryV23, dict[str, object]]:
+    _write_scope(root)
+    compiled = _compile(root)
+    assert compiled.success, [item.message for item in compiled.diagnostics.as_list()]
+    entity_artifact = next(
+        item
+        for item in compiled.artifacts
+        if item.path.as_posix() == "adrs/index/entity-registry.yaml"
+    )
+    compiler_registry = NormalizedEntityRegistryV23.model_validate(
+        yaml.safe_load(entity_artifact.content)
+    )
+
+    request = _materialization_request()
+    assert request.source_basis is not None
+    logical_path = root / "adrs" / "logical" / "ADR-L-0001.yaml"
+    logical_bytes = logical_path.read_bytes()
+    logical_document = yaml.safe_load(logical_bytes)
+    artifact = replace(
+        request.source_basis.artifacts[0],
+        source_ref=logical_document["id"],
+        artifact_path="adrs/logical/ADR-L-0001.yaml",
+        content_digest=f"sha256:{hashlib.sha256(logical_bytes).hexdigest()}",
+        document=logical_document,
+    )
+    source_basis = replace(request.source_basis, artifacts=(artifact,))
+    materialized = api.materialize_architecture(
+        replace(
+            request,
+            authority_provider=api.MaterializationAuthorityProvider(
+                kind="adr-kit",
+                architecture_namespace="v16-fixture",
+            ),
+            source_basis=source_basis,
+        )
+    )
+    assert materialized.success, materialized.diagnostics
+    assert materialized.normalized_model is not None
+    return compiler_registry, materialized.normalized_model
+
+
+def test_v16_compiler_and_semantic_core_materialization_preserve_np_semantics(
+    tmp_path: Path,
+) -> None:
+    compiler_registry, normalized_model = _materialize_logical_fixture(tmp_path)
+    compiler_np = next(
+        entity
+        for entity in compiler_registry.entities
+        if entity.entity_type == "normative_proposition"
+    )
+    core_np = next(
+        entity
+        for entity in normalized_model["entities"]
+        if entity["entity_type"] == "normative_proposition"
+    )
+
+    for field in (
+        "id",
+        "alias_id",
+        "alias_name",
+        "alias_ref",
+        "uri",
+        "created_at",
+        "entity_fingerprint",
+        "statement",
+        "normative_force",
+        "scope",
+        "rationale",
+    ):
+        assert core_np[field] == getattr(compiler_np, field)
+    assert "lifecycle_stage" not in core_np
+    assert not hasattr(compiler_np, "lifecycle_stage")
+    assert compiler_np.created_at == uuidv7_created_at(compiler_np.id)
+    assert core_np["created_at"] == uuidv7_created_at(core_np["id"])
+
+    # Source envelopes are operation-specific and intentionally not compared as
+    # semantic identity: the compiler has filesystem-relative ADR provenance,
+    # while semantic-core receives the sealed host source basis.
+    assert core_np["canonical_source"]["source_type"] == "authoring_adr"
+    assert compiler_np.canonical_source.source_type == "logical_adr"
+
+
+def test_semantic_core_regular_entity_identity_matches_canonical_projection(
+    tmp_path: Path,
+) -> None:
+    compiler_registry, normalized_model = _materialize_logical_fixture(tmp_path)
+    compiler_entity = next(
+        entity for entity in compiler_registry.entities if entity.entity_type == "adr"
+    )
+    core_entity = next(
+        entity for entity in normalized_model["entities"] if entity["entity_type"] == "adr"
+    )
+
+    expected_fingerprint = entity_fingerprint(
+        {
+            "id": compiler_entity.id,
+            "alias_id": compiler_entity.alias_id,
+            "alias_name": compiler_entity.alias_name,
+            "entity_type": compiler_entity.entity_type,
+            "name": compiler_entity.name,
+            "extension": None,
+        }
+    )
+    for field in ("id", "alias_id", "alias_name", "alias_ref", "uri", "created_at"):
+        assert core_entity[field] == getattr(compiler_entity, field)
+    assert compiler_entity.created_at == uuidv7_created_at(compiler_entity.id)
+    assert compiler_entity.entity_fingerprint == expected_fingerprint
+    assert core_entity["entity_fingerprint"] == expected_fingerprint
+
+
+def test_open_repository_reopens_written_v23_np_through_public_sdk(tmp_path: Path) -> None:
+    _write_scope(tmp_path)
+
+    result = compile_architecture(
+        CompilationRequest(
+            project_root=tmp_path,
+            output_root=tmp_path,
+            write=True,
+            timestamp="2026-01-01T00:00:00Z",
+        )
+    )
+    assert result.success, result.diagnostics
+
+    repository = open_repository(tmp_path)
+    assert repository.model_version == "2.3"
+    propositions = repository.query_entities(entity_type="normative_proposition")
+    assert len(propositions) == 3
+    proposition = propositions[0]
+    assert proposition.rationale == "The proposition remains reviewable and explicit."
+    assert proposition.entity_type == "normative_proposition"
+    assert not hasattr(proposition, "lifecycle_stage")
 
 
 @pytest.mark.parametrize("versions", [("1.5", "1.6"), ("1.4", "1.6")])

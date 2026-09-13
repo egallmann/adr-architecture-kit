@@ -812,7 +812,17 @@ fn validate_repository(request: &Json) -> Json {
                 ));
             }
         }
-        for field in ["alias_name", "entity_type", "name", "lifecycle_stage"] {
+        let required_fields: &[&str] = if model_version == "2.3"
+            && entity
+                .get("entity_type")
+                .and_then(Json::as_str)
+                == Some("normative_proposition")
+        {
+            &["alias_name", "entity_type", "name"]
+        } else {
+            &["alias_name", "entity_type", "name", "lifecycle_stage"]
+        };
+        for &field in required_fields {
             if !matches!(entity.get(field), Some(Json::String(value)) if !value.is_empty()) {
                 diagnostics.push(diagnostic(
                     "repository.invalid_entity_field",

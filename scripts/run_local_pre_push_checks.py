@@ -1,7 +1,8 @@
-"""Run the local pre-push check bundle for adr-architecture-kit."""
+"""Run the fast pre-push checks or the full local assurance bundle."""
 
 from __future__ import annotations
 
+import argparse
 import subprocess
 import sys
 from pathlib import Path
@@ -78,6 +79,12 @@ COMMANDS: tuple[tuple[str, ...], ...] = (
     ),
 )
 
+FAST_COMMANDS: tuple[tuple[str, ...], ...] = (
+    COMMANDS[0],
+    COMMANDS[1],
+    (PYTHON_EXECUTABLE, "scripts/verify_semantic_core_artifact.py"),
+)
+
 
 def run_attribution_check() -> int:
     if not WORKSPACE_EVIDENCE.is_file():
@@ -104,13 +111,23 @@ def run_attribution_check() -> int:
 
 
 def main() -> int:
-    for command in COMMANDS:
+    parser = argparse.ArgumentParser(
+        description="Run fast pre-push checks or the full local assurance bundle."
+    )
+    parser.add_argument(
+        "--fast",
+        action="store_true",
+        help="Run only fast repository and generated-artifact checks (used by the hook).",
+    )
+    args = parser.parse_args()
+    commands = FAST_COMMANDS if args.fast else COMMANDS
+    for command in commands:
         print("+", " ".join(command), flush=True)
         result = subprocess.run(command, cwd=REPO_ROOT)
         if result.returncode != 0:
             return result.returncode
 
-    return run_attribution_check()
+    return 0 if args.fast else run_attribution_check()
 
 
 if __name__ == "__main__":

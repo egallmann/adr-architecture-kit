@@ -106,14 +106,7 @@ ADR-V
 
 A typical refinement chain is: **logical intent (L)** → **system shape (PS)** → **component specification (PC)**. Exact linking fields live in the schemas; see [schema/v1.0/README.md](../schema/v1.0/README.md).
 
-## Source to output relationship
-
-- ADR source artifacts define canonical authoring intent
-- compiler and generators normalize that intent into repository discovery outputs
-- selected ADR inputs can also be adapted into public Architecture IR records governed by `ste-spec`
-
 ## Related
 
-- [architecture-ir-overview.md](architecture-ir-overview.md)
-- [walkthrough-adr-to-ir.md](walkthrough-adr-to-ir.md)
+- [authority-boundary.md](authority-boundary.md)
 - [public-surface-and-stability.md](public-surface-and-stability.md)

@@ -69,6 +69,93 @@ class Diagnostic:
     field: str | None = None
 
 
+AuthoringPolicyStatus = Literal["defined", "deferred", "not_applicable"]
+
+
+@dataclass(frozen=True, slots=True)
+class AuthoringTypeKey:
+    """Exact, case-sensitive key for one ADC authoring type."""
+
+    kind: Literal["adr", "entity", "relationship", "value"]
+    name: str
+
+
+@dataclass(frozen=True, slots=True)
+class AuthoringParentConstraint:
+    """One canonical composition-parent constraint from an ADC policy."""
+
+    kind: Literal["adr", "entity", "relationship", "value"]
+    name: str
+    min_occurs: int
+    max_occurs: int | None
+
+
+@dataclass(frozen=True, slots=True)
+class AuthoringPolicy:
+    """Immutable ADC policy projection preserving maturity and policy values."""
+
+    status: AuthoringPolicyStatus
+    mode: str | None = None
+    values: tuple[str, ...] = ()
+    allowed_parents: tuple[AuthoringParentConstraint, ...] = ()
+    owner: str | None = None
+
+
+@dataclass(frozen=True, slots=True)
+class AuthoringDiscriminator:
+    """Immutable discriminator semantics for one authoring type."""
+
+    mode: str
+    field: str | None
+    value: str | None
+
+
+@dataclass(frozen=True, slots=True)
+class AuthoringTypeSummary:
+    """Consumer-facing summary returned by ADC type enumeration."""
+
+    key: AuthoringTypeKey
+    display_name: str
+    description: str
+
+
+@dataclass(frozen=True, slots=True)
+class AuthoringTypeList:
+    """Immutable, version-qualified result for ADC type enumeration."""
+
+    contract_version: str
+    types: tuple[AuthoringTypeSummary, ...]
+
+
+@dataclass(frozen=True, slots=True)
+class AuthoringContractDescription:
+    """Immutable public projection of the ADC discovery contract description."""
+
+    contract_id: str
+    contract_version: str
+    defined_capabilities: tuple[str, ...]
+    discovery_operations: tuple[str, ...]
+    type_kinds: tuple[str, ...]
+
+
+@dataclass(frozen=True, slots=True)
+class AuthoringTypeDescriptor:
+    """Complete immutable consumer projection of one ADC type descriptor."""
+
+    contract_version: str
+    key: AuthoringTypeKey
+    display_name: str
+    description: str
+    authoring_mode: Literal["direct", "embedded", "template"]
+    semantic_type_ownership: Literal["adr_kit", "consumer_qualified"]
+    discriminator: AuthoringDiscriminator
+    input_contract: AuthoringPolicy
+    identity_policy: AuthoringPolicy
+    composition_policy: AuthoringPolicy
+    reference_policy: AuthoringPolicy
+    field_ownership_policy: AuthoringPolicy
+
+
 def _freeze_json(value: object) -> object:
     """Freeze host-owned JSON without assigning it semantic meaning."""
 
@@ -687,6 +774,9 @@ class CapabilityManifest:
     supported_normalized_model_schema_versions: tuple[str, ...]
     supported_evidence_attribution_versions: tuple[str, ...]
     preferred_evidence_attribution_version: str
+    supported_authoring_domain_versions: tuple[str, ...]
+    preferred_authoring_domain_version: str
+    authoring_capabilities: tuple[str, ...]
     host_operations: tuple[str, ...] = (
         "capabilities",
         "validate_project_metadata",

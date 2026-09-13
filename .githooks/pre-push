@@ -4,4 +4,12 @@ set -eu
 repo_root="$(git rev-parse --show-toplevel)"
 cd "$repo_root"
 
-python scripts/run_local_pre_push_checks.py
+if [ -f "$repo_root/.venv/Scripts/python.exe" ]; then
+    python_executable="$repo_root/.venv/Scripts/python.exe"
+elif [ -f "$repo_root/.venv/bin/python" ]; then
+    python_executable="$repo_root/.venv/bin/python"
+else
+    python_executable="python"
+fi
+
+"$python_executable" scripts/run_local_pre_push_checks.py

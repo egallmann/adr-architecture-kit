@@ -1,0 +1,409 @@
+schema_version: '1.5'
+adr_type: logical
+id: 01a09938-a15b-75ed-8326-212e21bd3cfe
+alias_id: ADR-L-0029
+alias_name: semantic-authoring-construction-and-candidate-authority
+title: Semantic Authoring Construction and Candidate Authority
+status: accepted
+created_date: '2026-09-13'
+authors:
+- erik.gallmann
+domains:
+- architecture
+- authoring
+- semantic-authority
+- schema-governance
+- extensibility
+- identity
+- topology
+- consumer-bindings
+tags:
+- semantic-authoring
+- construction
+- detached-candidate
+- authority-boundary
+- successor-contracts
+- r1-design-lock
+related_adrs:
+- 019fee89-e616-7c4e-953c-b7349412a784
+- 019fee89-e617-7e69-861a-f3040f70c2d9
+- 019fee89-e617-7ff5-863b-1eef71637b0f
+- 019fee89-e617-78d9-ba3b-b7e3e6db1b12
+- 01a00643-1bfc-788c-911b-83a4725a8de1
+- 01a00644-1bfc-7abc-8aaa-111111111111
+- 01a02d38-7cf3-7b3c-87ec-1c5f08490c6e
+- 01a048d8-454a-7464-bcaa-718e58dfb9c2
+- 01a05a26-0000-7000-8000-000000000026
+- 01a05a27-0000-7000-8000-000000000027
+- 01a083dd-22b5-726d-8e49-01851bde3ba5
+context: |
+  ADC 1.0, accepted by ADR-L-0026 and qualified by ADR-L-0027, established
+  read-only authoring-domain discovery. ADR-Kit now needs deterministic
+  semantic construction, but construction is distinct from persistence,
+  repository admission, governance promotion, Runtime admission, Runtime
+  Snapshot mutation, and implementation conformance.
+
+  The primitive construction unit is a schema-governed Semantic Fragment, not
+  an ADR document. Canonical and consumer-qualified semantics require one
+  governed compiler mechanism without erasing semantic ownership. ADR-Kit owns
+  canonical meaning; consumers own the meaning of qualified custom types.
+
+  The exact successor contracts authorized below do not yet exist. This ADR
+  authorizes their bounded definition and preserves the current supported ADR
+  representation for this promotion. It creates no release, package,
+  persistence, or implementation capability claim.
+decisions:
+- id: 01a09938-a15b-75ed-8326-212f2bed8cd4
+  alias_id: DEC-0128
+  alias_name: semantic-fragment-is-the-primitive-construction-unit
+  summary: Make a schema-governed Semantic Fragment the primitive constructible authoring unit
+  rationale: |
+    Decision, Invariant, NormativeProposition, Component, Interface, System,
+    SystemBoundary, DataFlow, EvidenceExpectation, and other contract-governed
+    constructs may each be fragments and may compose other fragments. An ADR is
+    a higher-order composition or synthesis, not the primitive create operation.
+- id: 01a09938-a15b-75ed-8326-2130776b22ca
+  alias_id: DEC-0129
+  alias_name: construction-produces-detached-candidates
+  summary: Make successful construction produce detached candidate semantic state or artifacts
+  rationale: |
+    Construction does not persist repository source, reserve aliases, perform
+    governance acceptance or promotion, admit architecture into a Runtime graph,
+    mutate a Runtime Snapshot, or establish implementation conformance. Those
+    authorities remain separately governed.
+- id: 01a09938-a15b-75ed-8326-2131e004ee1e
+  alias_id: DEC-0184
+  alias_name: uuidv7-establishment-is-separate-from-admission
+  summary: Permit UUIDv7 identity establishment during create-construction without implying admission
+  rationale: |
+    A valid caller-supplied UUIDv7 is validated and preserved; when absent,
+    ADR-Kit MAY mint UUIDv7 for an independently identity-bearing canonical or
+    custom fragment. Update preserves the UUID and reference does not recreate
+    it. Identity is never derived from alias, prose, path, hash, ordering,
+    source location, or composition position. Alias reservation remains separate.
+    Determinism begins after identity establishment over exact request, contract,
+    custom registry, reference basis, and target authoring contract.
+- id: 01a09938-a15b-75ed-8326-2132e517c436
+  alias_id: DEC-0185
+  alias_name: canonical-and-custom-fragments-share-construction-machinery
+  summary: Use one contract-driven construction mechanism for canonical and consumer-qualified fragments
+  rationale: |
+    Canonical type meaning remains ADR-Kit-owned while custom type meaning
+    remains consumer-owned. ADR-Kit may validate custom structural and relational
+    semantics only where the exact custom contract declares them. Custom means
+    extensible, not ungoverned.
+- id: 01a09938-a15b-75ed-8326-2133c05202ae
+  alias_id: DEC-0186
+  alias_name: constructible-type-contracts-close-construction-semantics
+  summary: Require exact contracts to close the semantics of every constructible type
+  rationale: |
+    Contracts must describe applicable input shape, identity, create/update/
+    reference/retire posture, field ownership and field presence, composition,
+    allowed parents, references, inbound and outbound relationships, endpoint
+    constraints, relationship identity posture, cardinality, and ordering.
+    Relationship validity is contract-declared wherever the contract model can
+    express it rather than hidden in host-language branching.
+- id: 01a09938-a15b-75ed-8326-21348773d7da
+  alias_id: DEC-0187
+  alias_name: construction-is-set-and-graph-oriented
+  summary: Authorize the set-oriented construct_authoring_set capability concept
+  rationale: |
+    One request may create, update, reference, retire where permitted, relate,
+    and compose multiple fragments. ADR synthesis is composition over fragments.
+    One-fragment and one-ADR operations are trivial subsets of the same semantic
+    operation, not separate compilers.
+- id: 01a09938-a15b-75ed-8326-2135fdc25f93
+  alias_id: DEC-0188
+  alias_name: prepared-and-compact-inputs-converge-on-one-compiler
+  summary: Converge prepared fragments and compact contract-oriented input into one semantic compiler
+  rationale: |
+    Compact input is semantic compression, not semantic inference. ADR-Kit may
+    supply declared structural or default ceremony but must not invent decisions,
+    rationales, relationships, NormativePropositions, applicability, materiality,
+    or other missing intent. AI or agent reasoning crosses the boundary as
+    explicit typed semantic intent.
+- id: 01a09938-a15b-75ed-8326-213668b3595b
+  alias_id: DEC-0189
+  alias_name: validation-and-construction-share-semantic-authority
+  summary: Make validation and construction use one canonical semantic validation authority
+  rationale: |
+    The future validate_authoring capability is diagnostic-oriented and shares
+    the construction validator. Validation fails closed while aggregating every
+    independently discoverable violation. A dependent check made impossible by
+    an earlier violation is reported blocked or unresolved, not silently omitted.
+    Diagnostics are governed semantic output.
+- id: 01a09938-a15b-75ed-8326-2137d737f8ff
+  alias_id: DEC-0190
+  alias_name: successful-construction-is-whole-result-conformance
+  summary: Require complete graph or set conformance before classifying a result Constructed
+  rationale: |
+    Individually schema-valid fragments do not guarantee a valid construction.
+    The complete supplied result must conform to exact canonical and custom
+    contracts across shape, identity, composition, references, relationships,
+    cardinality, cross-fragment constraints, and whole-result invariants. The
+    bounded outcomes are Constructed, Rejected, Unavailable, and Unresolved;
+    there is no empty-success fallback.
+- id: 01a09938-a15b-75ed-8326-2138cefb4699
+  alias_id: DEC-0191
+  alias_name: constructed-requires-canonical-round-trip-equivalence
+  summary: Require exact forward interpretation and normalized equivalence for Constructed results
+  rationale: |
+    Successful construction proves explicit intent to candidate artifacts, exact
+    forward interpretation, normalized semantic result, and equivalence to the
+    compiler's intended projection. The proof is bounded by available canonical
+    and custom authority; structural round-trip does not claim undeclared custom
+    domain meaning.
+- id: 01a09938-a15b-75ed-8326-21396d0502e3
+  alias_id: DEC-0192
+  alias_name: authorize-successor-contract-line-without-implementation-claim
+  summary: Authorize bounded successor contract definition after this authority promotion
+  rationale: |
+    Later exact definitions may establish Authoring Domain Contract 1.1, Custom
+    Entity Contract 1.0, Authoring Construction Contract 1.0, authoring 1.7,
+    normalized-model 2.4, architecture-interpretation 1.1, semantic-core 1.2,
+    and the whole-qualified architecture-authoring@1.0 contract set/profile.
+    Authorization does not claim any resource is implemented, qualified, or
+    released.
+- id: 01a09938-a15b-75ed-8326-213a79cf8c5a
+  alias_id: DEC-0193
+  alias_name: preserve-forward-owner-local-topology-construction
+  summary: Preserve owner-local topology vocabulary for future authoring 1.7
+  rationale: |
+    Forward topology construction uses topology_key, from_key, and to_key.
+    Historical authoring 1.5 and 1.6 remain immutable and readable. The admitted
+    verbs are calls, depends_on, publishes_to, subscribes_to, reads_from, and
+    writes_to. composed_of remains derived, and consumes_interface remains
+    deferred pending authority and endpoint reconciliation. Topology values do
+    not acquire canonical UUID identity.
+- id: 01a09938-a15b-75ed-8326-213b702d0928
+  alias_id: DEC-0194
+  alias_name: preserve-normative-proposition-construction-boundaries
+  summary: Preserve NormativeProposition as an explicit peer semantic type to Invariant
+  rationale: |
+    Future construction requires explicit semantic content and exactly one of
+    MUST, MUST NOT, SHOULD, SHOULD NOT, or MAY. It must not infer propositions,
+    materiality, applicability, competence, or effectivity from prose, add an
+    independent NP lifecycle, or add NP implementation attribution under the
+    current attribution contract.
+- id: 01a09938-a15b-75ed-8326-213c777d24d0
+  alias_id: DEC-0195
+  alias_name: python-and-typescript-node-remain-peer-host-adapters
+  summary: Require Python and TypeScript/Node to expose peer host capabilities over one semantic authority
+  rationale: |
+    Future construction semantics execute through the canonical Rust/WASM
+    semantic core. Python and TypeScript/Node remain peer public host adapters.
+    No second TypeScript compiler, host-specific semantic defaults, or Python
+    subprocess semantic implementation is authorized. Browser publication may
+    advertise a narrower execution-profile capability.
+- id: 01a09938-a15b-75ed-8326-213d93355d8d
+  alias_id: DEC-0196
+  alias_name: persistence-and-transaction-authority-remain-deferred
+  summary: Keep persistence and transaction semantics outside construction authority
+  rationale: |
+    Later authority must separately design alias reservation, base-revision
+    locking, conflicts, atomic writes, rollback, Git mutation, governance
+    promotion, and durable authoring transaction history. Construction does not
+    absorb those semantics.
+- id: 01a09938-a15b-75ed-8326-213e8ac81932
+  alias_id: DEC-0197
+  alias_name: promotion-is-authority-only
+  summary: Limit this promotion to accepted architectural authority
+  rationale: |
+    This ADR is sufficient authority for later contract-definition and
+    implementation slices, but it adds no successor contract resource, SDK
+    operation, persistence behavior, package capability, release claim, or
+    implementation conformance evidence.
+invariants:
+- id: 01a09938-a15b-75ed-8326-213f4843b3b7
+  alias_id: INV-0113
+  alias_name: construction-does-not-manufacture-external-authority
+  statement: Construction MUST NOT be treated as persistence, repository admission, governance promotion, Runtime admission or Snapshot mutation, alias reservation, or implementation-conformance authority.
+  scope: global
+  enforcement_level: must
+  enforcement_mechanism: design
+  verification_method: manual
+  rationale: Detached candidate construction remains responsibility-scoped.
+- id: 01a09938-a15b-75ed-8326-21407bab7478
+  alias_id: INV-0114
+  alias_name: canonical-identity-is-explicit-and-stable
+  statement: Valid supplied UUIDv7 identity MUST be preserved, update MUST preserve UUID identity, and ADR-Kit MUST NOT silently replace supplied identity or derive canonical identity from presentation or source-location properties; create MAY mint UUIDv7 without implying admission.
+  scope: global
+  enforcement_level: must
+  enforcement_mechanism: design
+  verification_method: automated
+  rationale: Canonical identity is independent of aliases, prose, paths, hashes, ordering, and composition position.
+- id: 01a09938-a15b-75ed-8326-2141b3f3bb07
+  alias_id: INV-0115
+  alias_name: composition-does-not-manufacture-child-identity
+  statement: Composing an independently identity-bearing fragment into another fragment or ADR MUST NOT create, replace, or derive that child's canonical identity.
+  scope: global
+  enforcement_level: must
+  enforcement_mechanism: design
+  verification_method: automated
+  rationale: Parent policy governs legal assembly, not whether a child can exist before its parent.
+- id: 01a09938-a15b-75ed-8326-2142ce791ced
+  alias_id: INV-0116
+  alias_name: construction-uses-an-exact-semantic-basis
+  statement: Every meaning-affecting construction or interpretation contract or source input MUST be explicitly qualified; mutable latest, repository HEAD, installed-current custom contract, host default, UI state, filesystem order, and undocumented behavior MUST NOT substitute for exact authority.
+  scope: global
+  enforcement_level: must
+  enforcement_mechanism: design
+  verification_method: automated
+  rationale: Construction reproducibility requires an explicit semantic basis.
+- id: 01a09938-a15b-75ed-8326-21436f195dc3
+  alias_id: INV-0117
+  alias_name: compact-input-cannot-infer-material-intent
+  statement: Compact input MUST NOT authorize ADR-Kit to invent semantically material architectural intent.
+  scope: global
+  enforcement_level: must
+  enforcement_mechanism: design
+  verification_method: manual
+  rationale: Compression may omit ceremony, but it cannot create missing intent.
+- id: 01a09938-a15b-75ed-8326-21448b288a8d
+  alias_id: INV-0118
+  alias_name: custom-semantic-validation-cannot-exceed-the-contract
+  statement: ADR-Kit MUST NOT claim custom semantic meaning, fields, relationship semantics, composition semantics, or domain correctness beyond the exact qualified custom contract; a custom entity MUST still conform to the governed identity and construction envelope.
+  scope: global
+  enforcement_level: must
+  enforcement_mechanism: design
+  verification_method: automated
+  rationale: Custom extensibility remains qualified semantic authority.
+- id: 01a09938-a15b-75ed-8326-2145e8e28597
+  alias_id: INV-0119
+  alias_name: custom-evolution-preserves-historical-identity-and-qualification
+  statement: Custom contract migration MUST be explicit; retirement MUST preserve UUID identity and sufficient provenance and contract qualification for historical reconstruction; canonical promotion of the same architectural referent MUST preserve UUID identity.
+  scope: global
+  enforcement_level: must
+  enforcement_mechanism: design
+  verification_method: automated
+  rationale: Version changes cannot become ambient reinterpretation or identity replacement.
+- id: 01a09938-a15b-75ed-8326-2146d3072550
+  alias_id: INV-0120
+  alias_name: relationship-validity-is-exact-contract-declared
+  statement: Every relationship admitted into a successful result MUST be authorized by an exact qualified canonical or custom contract and satisfy its endpoint and field constraints.
+  scope: global
+  enforcement_level: must
+  enforcement_mechanism: design
+  verification_method: automated
+  rationale: Relationship semantics cannot be hidden in host-language branching.
+- id: 01a09938-a15b-75ed-8326-2147719fed74
+  alias_id: INV-0121
+  alias_name: success-requires-complete-semantic-conformance
+  statement: ADR-Kit MUST NOT classify construction as successful unless the complete requested semantic result conforms to all applicable exact contracts.
+  scope: global
+  enforcement_level: must
+  enforcement_mechanism: design
+  verification_method: automated
+  rationale: Local schema validity is insufficient for graph or set conformance.
+- id: 01a09938-a15b-75ed-8326-214808732b78
+  alias_id: INV-0122
+  alias_name: validation-aggregates-reachable-violations
+  statement: Validation MUST report all independently discoverable violations, and a dependent check blocked by a prior violation MUST be represented as blocked or unresolved rather than successful.
+  scope: global
+  enforcement_level: must
+  enforcement_mechanism: design
+  verification_method: automated
+  rationale: Failure-closed diagnostics must preserve reachable accountability.
+- id: 01a09938-a15b-75ed-8326-2149f245223e
+  alias_id: INV-0123
+  alias_name: diagnostics-preserve-semantic-accountability
+  statement: A contract violation MUST identify, where deterministically available, a stable typed code, affected semantic location or request key, violated rule, observed and expected state, and safe remediation guidance.
+  scope: global
+  enforcement_level: must
+  enforcement_mechanism: design
+  verification_method: automated
+  rationale: Diagnostics are governed semantic output rather than arbitrary strings.
+- id: 01a09938-a15b-75ed-8326-214a4c978aca
+  alias_id: INV-0124
+  alias_name: validator-and-compiler-share-semantic-authority
+  statement: Public validation and construction MUST derive findings from the same canonical semantic validation authority.
+  scope: global
+  enforcement_level: must
+  enforcement_mechanism: design
+  verification_method: automated
+  rationale: Divergent validator and compiler interpretations are semantic drift.
+- id: 01a09938-a15b-75ed-8326-214b1de7b620
+  alias_id: INV-0125
+  alias_name: validation-claims-cannot-exceed-machine-evaluable-authority
+  statement: ADR-Kit MUST NOT claim to validate semantic properties that are not machine-evaluable under exact qualified contracts, including prose materiality, architectural quality, or meaning-preserving identity continuity without such authority.
+  scope: global
+  enforcement_level: must
+  enforcement_mechanism: design
+  verification_method: manual
+  rationale: Structural determinism cannot certify natural-language meaning or architectural judgment.
+- id: 01a09938-a15b-75ed-8326-214c01d2b0e4
+  alias_id: INV-0126
+  alias_name: constructed-requires-round-trip-equivalence
+  statement: A candidate MUST NOT be classified Constructed unless exact target validation and canonical rematerialization equivalence both succeed.
+  scope: global
+  enforcement_level: must
+  enforcement_mechanism: design
+  verification_method: automated
+  rationale: Forward schema validity alone does not prove semantic equivalence.
+- id: 01a09938-a15b-75ed-8326-214d1ca4a45b
+  alias_id: INV-0127
+  alias_name: bounded-outcomes-do-not-collapse-epistemic-states
+  statement: Construction MUST preserve Constructed, Rejected, Unavailable, and Unresolved as distinct outcomes and MUST NOT use empty or partial success to conceal missing authority or unresolved references.
+  scope: global
+  enforcement_level: must
+  enforcement_mechanism: design
+  verification_method: automated
+  rationale: Epistemic uncertainty must remain observable.
+- id: 01a09938-a15b-75ed-8326-214e721eaeab
+  alias_id: INV-0165
+  alias_name: normative-proposition-boundaries-remain-intact
+  statement: NormativeProposition force MUST use the exact closed vocabulary, and construction MUST NOT infer NP existence, materiality, applicability, authority, effectivity, governance lifecycle, or implementation attribution from prose or outside the current attribution contract.
+  scope: global
+  enforcement_level: must
+  enforcement_mechanism: design
+  verification_method: manual
+  rationale: NP remains a peer semantic type to Invariant with explicit content and authority dimensions.
+- id: 01a09938-a15b-75ed-8326-214f8294b206
+  alias_id: INV-0166
+  alias_name: topology-identity-remains-owner-local
+  statement: Topology keys and topology-local relationship endpoints MUST remain distinct from canonical UUID identity, and consumes_interface MUST remain deferred until separately reconciled.
+  scope: global
+  enforcement_level: must
+  enforcement_mechanism: design
+  verification_method: automated
+  rationale: Forward topology vocabulary is owner-local and does not create canonical entity identity.
+- id: 01a09938-a15b-75ed-8326-2150a5d7aa60
+  alias_id: INV-0167
+  alias_name: peer-hosts-do-not-become-semantic-authorities
+  statement: Public Python and TypeScript/Node capabilities MUST obtain equivalent semantics from the same canonical execution authority and MUST NOT maintain independent semantic implementations for the promoted capability.
+  scope: global
+  enforcement_level: must
+  enforcement_mechanism: design
+  verification_method: automated
+  rationale: Host adapters expose authority; they do not own construction meaning.
+- id: 01a09938-a15b-75ed-8326-2151e51ce6f4
+  alias_id: INV-0168
+  alias_name: downstream-retention-does-not-transfer-contract-ownership
+  statement: Runtime or another downstream system MAY retain an exact custom contract for historical reproducibility, but retention MUST NOT make that downstream system the defining semantic authority for the contract.
+  scope: global
+  enforcement_level: must
+  enforcement_mechanism: design
+  verification_method: manual
+  rationale: Retained evidence supports reconstruction without moving contract ownership.
+gaps: []
+notes: |
+  This promotion is based on the human-reviewed source `ADR-Kit Semantic
+  Authoring Construction — Candidate Design Lock R1.0`, reviewed 2026-09-13,
+  on the basis of `69d1bdca6ab536cd18cc777d7d209bfaff990abe`. The design source
+  is evidence for this promotion, not a second normative authority. This ADR is
+  self-sufficient accepted authority after promotion.
+
+  Explicitly deferred successor work includes the exact ADC 1.1 27-type matrix;
+  Custom Entity Contract 1.0 JSON Schema and property vocabulary; Authoring
+  Construction Contract 1.0 request and response DTOs; the authoring 1.6 to 1.7
+  source delta; normalized-model 2.3 to 2.4 delta; architecture-interpretation
+  1.0 to 1.1 delta; relationship-mode and endpoint matrices; diagnostic
+  enumeration and transport; contract and fingerprint domain prefixes; private
+  Rust compiler IR; Runtime retained-custom-contract paths; browser capability
+  advertisement; persistence and transaction design; and consumes_interface
+  reconciliation. None is implemented, advertised, or released by this ADR.
+
+  The current supported authoring representation is used intentionally. No
+  unsupported normative_propositions field is introduced, and no schema
+  validation is weakened. No successor contract directory or resource is
+  created by this promotion.

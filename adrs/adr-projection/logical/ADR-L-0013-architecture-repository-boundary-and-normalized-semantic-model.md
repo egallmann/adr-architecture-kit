@@ -6,7 +6,7 @@ generator_id: adr-projection-markdown
 generator_version: 3
 hash_algorithm: sha256
 source_hash: e8138f2e49c6dca3505299eac37307e59b0829784e047a38965aeda1a54e41d2
-rendered_hash: 719db81597433c80776ad49adcc538bd418051eb03ec4d5e818a127649c78d45
+rendered_hash: 80d57783e8968a8ace258c92ece069e9d8814817b4eddbf348b596c900e045ca
 -->
 
 # ADR-L-0013: Architecture Repository Boundary and Normalized Semantic Model
@@ -442,6 +442,7 @@ repository-local governance evidence.
 - [ADR-L-0020](ADR-L-0020-semantic-implementation-attribution-and-cross-layer-architecture-relationships.md)
 - [ADR-L-0024](ADR-L-0024-cross-language-consumer-bindings-and-typescript-distribution.md)
 - [ADR-L-0028](ADR-L-0028-normative-semantic-authority-and-materialization-foundation.md)
+- [ADR-L-0029](ADR-L-0029-semantic-authoring-construction-and-candidate-authority.md)
 
 
 ## Architecture Relationships

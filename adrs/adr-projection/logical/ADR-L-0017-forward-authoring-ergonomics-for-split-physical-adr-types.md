@@ -6,7 +6,7 @@ generator_id: adr-projection-markdown
 generator_version: 3
 hash_algorithm: sha256
 source_hash: 9dffb27800d091b38b05311c12e4e0ddb023aed180410963f301b7c78e3c1cd8
-rendered_hash: d669e77fd1fc6322757567ea0dc515c7d730f8ee0626306996bc4cde7e248537
+rendered_hash: c81c35519ba19a885f52434bca9962c71bbd17c3ff87229f2332676bc0571471
 -->
 
 # ADR-L-0017: Forward Authoring Ergonomics for Split Physical ADR Types
@@ -162,6 +162,7 @@ authoring does not collide with imported or exceptional identities.
 - [ADR-L-0002](ADR-L-0002-multi-scope-adr-architecture-for-sub-module-development.md)
 - [ADR-L-0026](ADR-L-0026-authoring-domain-contract-discovery-authority.md)
 - [ADR-L-0027](ADR-L-0027-public-binding-construction-and-release-parity.md)
+- [ADR-L-0029](ADR-L-0029-semantic-authoring-construction-and-candidate-authority.md)
 
 
 

@@ -416,6 +416,9 @@ class ArchitectureCompiler:
         | NormalizedEntityRegistryV22
         | NormalizedEntityRegistryV23
     ):
+        if cls._peek_schema_version(yaml_text) == "2.3":
+            data = yaml.safe_load(yaml_text)
+            return NormalizedEntityRegistryV23.model_validate(data)
         if cls._peek_schema_version(yaml_text) == "2.2":
             data = yaml.safe_load(yaml_text)
             return NormalizedEntityRegistryV22.model_validate(data)
@@ -437,6 +440,9 @@ class ArchitectureCompiler:
         | RelationshipRegistryV22
         | RelationshipRegistryV23
     ):
+        if cls._peek_schema_version(yaml_text) == "2.3":
+            data = yaml.safe_load(yaml_text)
+            return RelationshipRegistryV23.model_validate(data)
         if cls._peek_schema_version(yaml_text) == "2.2":
             data = yaml.safe_load(yaml_text)
             return RelationshipRegistryV22.model_validate(data)
@@ -458,6 +464,9 @@ class ArchitectureCompiler:
         | UnresolvedRegistryV22
         | UnresolvedRegistryV23
     ):
+        if cls._peek_schema_version(yaml_text) == "2.3":
+            data = yaml.safe_load(yaml_text)
+            return UnresolvedRegistryV23.model_validate(data)
         if cls._peek_schema_version(yaml_text) == "2.2":
             data = yaml.safe_load(yaml_text)
             return UnresolvedRegistryV22.model_validate(data)

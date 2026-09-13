@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+
+- Restored ordinary compiler/projector support for homogeneous authoring 1.6
+  corpora, including lifecycle-free normative propositions in normalized-model
+  2.3 registry output.
+
 ## [0.11.0] — 2026-09-12
 
 ### Added

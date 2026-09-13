@@ -28,6 +28,7 @@ IR_ENTITY_TYPES = (
     "interface",
     "integration",
     "implementation_decision",
+    "normative_proposition",
 )
 
 ENTITY_RELATIONSHIP_TYPES = (

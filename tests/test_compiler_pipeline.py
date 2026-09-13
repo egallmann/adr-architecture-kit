@@ -9,7 +9,11 @@ from adr_kit.compiler import (
 )
 from adr_kit.compiler.frontend import CachedADRParser
 from adr_kit.compiler.pipeline import run_frontend_pipeline
-from adr_kit.compiler.backend.projection import project_entity, project_relationship, project_unresolved
+from adr_kit.compiler.backend.projection import (
+    project_entity,
+    project_relationship,
+    project_unresolved,
+)
 from adr_kit.scope import ProjectScopeResolver
 
 
@@ -28,8 +32,7 @@ def _projected_bundle(model):
         for relationship in model.relationships.values()
     ]
     unresolved = [
-        project_unresolved(item).model_dump(mode="json")
-        for item in model.unresolved.values()
+        project_unresolved(item).model_dump(mode="json") for item in model.unresolved.values()
     ]
     return entities, relationships, unresolved
 
@@ -42,8 +45,9 @@ def test_default_frontend_pipeline_pass_order():
         "version_detection",
         "adr_normalization",
         "logical_entity_extraction",
-            "invariant_extraction",
-            "physical_entity_extraction",
+        "invariant_extraction",
+        "physical_entity_extraction",
+        "normative_proposition_extraction",
         "extension_entity_extraction",
         "topology_resolution",
         "relationship_inference",

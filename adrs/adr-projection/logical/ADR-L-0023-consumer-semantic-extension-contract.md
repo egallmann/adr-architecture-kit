@@ -6,7 +6,7 @@ generator_id: adr-projection-markdown
 generator_version: 3
 hash_algorithm: sha256
 source_hash: 8e83bf9ae6547b9fdf0bcac9a5133f0c1a164e55f0c01b9a98dbe1da81f2b907
-rendered_hash: b0022adae9e9ffc8746e703e55902c57eeece76b49fd6f2cbf19beddfffbc34f
+rendered_hash: e9e95c3d10d4bc853c07d9583d26f7782552f0e064faa06055deacfc1386d859
 -->
 
 # ADR-L-0023: Consumer Semantic Extension Contract
@@ -255,6 +255,7 @@ The local-only v1 boundary must not create an alias or hidden-property reference
 - [ADR-L-0025](ADR-L-0025-topology-and-contract-succession-authority.md)
 - [ADR-L-0024](ADR-L-0024-cross-language-consumer-bindings-and-typescript-distribution.md)
 - [ADR-L-0026](ADR-L-0026-authoring-domain-contract-discovery-authority.md)
+- [ADR-L-0029](ADR-L-0029-semantic-authoring-construction-and-candidate-authority.md)
 
 
 

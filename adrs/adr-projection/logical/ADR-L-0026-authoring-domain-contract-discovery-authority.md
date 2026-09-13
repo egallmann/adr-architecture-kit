@@ -6,7 +6,7 @@ generator_id: adr-projection-markdown
 generator_version: 3
 hash_algorithm: sha256
 source_hash: 69144126c58c5e3aca55a93439fe189de087dc0901eefae567974816ff8adb4e
-rendered_hash: 91f67b8eae2a80528474d7d34ef925484af45fb746ed4f95f6605ad927c635fb
+rendered_hash: a01e0b993a9cf4e79243c8cef1b4f92173d8cef0f59dc67874d00eb615cf7ed6
 -->
 
 # ADR-L-0026: Authoring Domain Contract Discovery Authority
@@ -221,6 +221,7 @@ JSON-compatible semantic projections are contract values; property order and bin
 - [ADR-L-0025](ADR-L-0025-topology-and-contract-succession-authority.md)
 - [ADR-L-0027](ADR-L-0027-public-binding-construction-and-release-parity.md)
 - [ADR-L-0028](ADR-L-0028-normative-semantic-authority-and-materialization-foundation.md)
+- [ADR-L-0029](ADR-L-0029-semantic-authoring-construction-and-candidate-authority.md)
 
 
 

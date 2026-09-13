@@ -6,7 +6,7 @@ generator_id: adr-projection-markdown
 generator_version: 3
 hash_algorithm: sha256
 source_hash: e0e1ccb85f9cd45556103d8890c22596f23525c8ab1628b2f726ffe0b735af1b
-rendered_hash: 72ba32691f39a74a6d1e2db38bd92326b7594b0b20221e2922a24848c9209675
+rendered_hash: b73a0dbb5e676285e2afec494819b4f8c5721e52bdbb72d1f5f3336d8409daee
 -->
 
 # ADR-L-0015: ADR Governance State and Override Semantics
@@ -231,6 +231,7 @@ Lookup surfaces must remain projections over canonical governance state.
 - [ADR-L-0011](ADR-L-0011-metadata-schemas-and-remediation-ledger-enforcement.md)
 - [ADR-L-0013](ADR-L-0013-architecture-repository-boundary-and-normalized-semantic-model.md)
 - [ADR-L-0010](ADR-L-0010-kernel-interface-contract-and-validation-profiles.md)
+- [ADR-L-0029](ADR-L-0029-semantic-authoring-construction-and-candidate-authority.md)
 
 
 

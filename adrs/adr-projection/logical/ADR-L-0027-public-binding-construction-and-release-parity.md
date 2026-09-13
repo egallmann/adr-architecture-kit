@@ -6,7 +6,7 @@ generator_id: adr-projection-markdown
 generator_version: 3
 hash_algorithm: sha256
 source_hash: e02276a51aec8c7bd67dad0672713af7184b23ca71c4fef71711a14352ac346b
-rendered_hash: 4ffdda3cde19f02c2d33d537f023d628c9abb46c4bae2b826779ac3749a08953
+rendered_hash: 1607b04d55f3ae17db49c4652dc77a8794dc92d5ca75fbe206637772bb2e8ae6
 -->
 
 # ADR-L-0027: Public Binding Construction and Release Parity
@@ -238,6 +238,7 @@ Browser and Node are distinct execution environments.
 - [ADR-L-0024](ADR-L-0024-cross-language-consumer-bindings-and-typescript-distribution.md)
 - [ADR-L-0026](ADR-L-0026-authoring-domain-contract-discovery-authority.md)
 - [ADR-L-0028](ADR-L-0028-normative-semantic-authority-and-materialization-foundation.md)
+- [ADR-L-0029](ADR-L-0029-semantic-authoring-construction-and-candidate-authority.md)
 
 
 

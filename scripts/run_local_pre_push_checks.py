@@ -7,6 +7,10 @@ import sys
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
+VENV_PYTHON_CANDIDATES = (
+    REPO_ROOT / ".venv" / "Scripts" / "python.exe",
+    REPO_ROOT / ".venv" / "bin" / "python",
+)
 WORKSPACE_EVIDENCE = (
     REPO_ROOT.parent
     / ".ste-workspace"
@@ -16,10 +20,21 @@ WORKSPACE_EVIDENCE = (
     / "implementation-attribution-evidence.yaml"
 )
 
+
+def _resolve_python_executable() -> str:
+    """Prefer the repository virtualenv, then the interpreter running this script."""
+    for candidate in VENV_PYTHON_CANDIDATES:
+        if candidate.is_file():
+            return str(candidate)
+    return sys.executable
+
+
+PYTHON_EXECUTABLE = _resolve_python_executable()
+
 COMMANDS: tuple[tuple[str, ...], ...] = (
-    (sys.executable, "scripts/check_repository_naming.py"),
+    (PYTHON_EXECUTABLE, "scripts/check_repository_naming.py"),
     (
-        sys.executable,
+        PYTHON_EXECUTABLE,
         "-m",
         "adr_kit.cli.main",
         "repair-canonical-ids",
@@ -28,7 +43,7 @@ COMMANDS: tuple[tuple[str, ...], ...] = (
         "--check",
     ),
     (
-        sys.executable,
+        PYTHON_EXECUTABLE,
         "-m",
         "adr_kit.cli.main",
         "validate-generated-docs",
@@ -36,7 +51,7 @@ COMMANDS: tuple[tuple[str, ...], ...] = (
         str(REPO_ROOT),
     ),
     (
-        sys.executable,
+        PYTHON_EXECUTABLE,
         "-m",
         "pytest",
         "tests/golden/test_current_outputs.py",
@@ -74,7 +89,7 @@ def run_attribution_check() -> int:
         return 0
 
     command = (
-        sys.executable,
+        PYTHON_EXECUTABLE,
         "-m",
         "adr_kit.cli.main",
         "attribution",

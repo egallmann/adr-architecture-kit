@@ -16,4 +16,6 @@ Completed phase baselines, closeouts, and one-time benchmark captures are preser
 in Git history rather than the active documentation tree. Current controls and the
 compatibility inventory above are the maintained references.
 
-v1.5 semantic attribution does not reopen Phase 3 GraphProjectionBundle. See [`../../ROADMAP.md`](../../ROADMAP.md).
+Semantic attribution remains a separate evidence line and does not authorize
+unrelated graph or transactional-authoring capability. Consult accepted ADRs and
+current issue/PR discussions for active planning.

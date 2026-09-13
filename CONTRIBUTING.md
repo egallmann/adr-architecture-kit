@@ -23,6 +23,10 @@ Thank you for your interest in contributing. This document covers how to set up 
 
 **Requirements:** Python 3.14+ (`requires-python >=3.14`; currently qualified 3.14.x; reference interpreter 3.14.7)
 
+Node package work additionally requires Node 20+; use the peer binding guide in
+[`packages/node/README.md`](packages/node/README.md) for its local commands and
+qualification gates.
+
 ```bash
 # Clone the repository
 git clone https://github.com/egallmann/adr-architecture-kit.git

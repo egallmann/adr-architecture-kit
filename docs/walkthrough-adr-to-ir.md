@@ -8,7 +8,10 @@ This walkthrough shows the end-to-end **public** story for `adr-architecture-kit
 2. Normalize them into the **repository-normalized discovery bundle** (indexes and manifest).
 3. Optionally emit **ADR-derived Architecture IR fragments** that conform to the contract owned by `ste-spec`.
 
-A minimal worked example lives under [`examples/public-v1/`](../examples/public-v1/).
+A retained stable-v1.0 compatibility example lives under
+[`examples/public-v1/`](../examples/public-v1/). It is useful for understanding
+the historical source-to-discovery-to-IR shape, but it is not the recommended
+modern onboarding path; use the host SDK guides for first use.
 
 ## Three authoring levels (conceptual)
 

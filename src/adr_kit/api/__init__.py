@@ -5,6 +5,14 @@ from ..models.v2_0 import NormalizedArchitectureModelV2
 from ..repository import ArchitectureRepository, ProviderRegistry
 from ._contracts import (
     ArtifactDescriptor,
+    AuthoringContractDescription,
+    AuthoringDiscriminator,
+    AuthoringParentConstraint,
+    AuthoringPolicy,
+    AuthoringTypeDescriptor,
+    AuthoringTypeKey,
+    AuthoringTypeList,
+    AuthoringTypeSummary,
     AttributionShimRequest,
     AttributionShimResult,
     ArchitectureMaterializationRequest,
@@ -40,7 +48,18 @@ from ._contracts import (
 from ._linkage import build_embodiment_linkage
 from ._attribution import generate_attribution_shim
 from ._materialization import materialize_architecture
-from ._errors import InvalidRequestError, OperationError, RepositoryError, SDKError
+from ._errors import (
+    AuthoringDiscoveryError,
+    InvalidRequestError,
+    OperationError,
+    RepositoryError,
+    SDKError,
+)
+from ._authoring import (
+    describe_authoring_contract,
+    describe_authoring_type,
+    list_authoring_types,
+)
 from ._operations import (
     apply_promotion,
     capabilities,
@@ -101,6 +120,14 @@ __all__ = [
     "NormalizedArchitectureModelV2",
     "ProviderRegistry",
     "ArtifactDescriptor",
+    "AuthoringContractDescription",
+    "AuthoringDiscriminator",
+    "AuthoringParentConstraint",
+    "AuthoringPolicy",
+    "AuthoringTypeDescriptor",
+    "AuthoringTypeKey",
+    "AuthoringTypeList",
+    "AuthoringTypeSummary",
     "AttributionShimRequest",
     "AttributionShimResult",
     "ArchitectureMaterializationRequest",
@@ -145,10 +172,14 @@ __all__ = [
     "RejectedEmbodimentClaim",
     "EmbodimentLinkageResult",
     "SDKError",
+    "AuthoringDiscoveryError",
     "InvalidRequestError",
     "OperationError",
     "RepositoryError",
     "capabilities",
+    "describe_authoring_contract",
+    "list_authoring_types",
+    "describe_authoring_type",
     "build_embodiment_linkage",
     "generate_attribution_shim",
     "materialize_architecture",

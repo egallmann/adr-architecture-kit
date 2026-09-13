@@ -575,6 +575,9 @@ def capabilities() -> CapabilityManifest:
     contract = load_host_capabilities_snapshot()
     operations = [
         "capabilities",
+        "describe_authoring_contract",
+        "list_authoring_types",
+        "describe_authoring_type",
         "validate_architecture",
         "validate_project_metadata",
         "validate_contract",
@@ -617,6 +620,13 @@ def capabilities() -> CapabilityManifest:
         supported_normalized_model_schema_versions=("1.1", "2.0", "2.1", "2.2", "2.3"),
         supported_evidence_attribution_versions=("1.5", "1.6"),
         preferred_evidence_attribution_version="1.6",
+        supported_authoring_domain_versions=tuple(
+            str(item) for item in contract["authoring_domain"]["supported_versions"]
+        ),
+        preferred_authoring_domain_version=str(contract["authoring_domain"]["preferred_version"]),
+        authoring_capabilities=tuple(
+            str(item) for item in contract["authoring_domain"]["capabilities"]
+        ),
         host_operations=tuple(str(item) for item in contract["peer_host_operations"]),
         pending_host_operations=tuple(str(item) for item in contract["pending_host_operations"]),
         browser_operations=tuple(str(item) for item in contract["browser_operations"]),

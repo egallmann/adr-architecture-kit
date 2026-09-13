@@ -29,6 +29,10 @@
       "types": "./dist/validation/index.d.ts",
       "import": "./dist/validation/index.js"
     },
+    "./authoring": {
+      "types": "./dist/authoring.d.ts",
+      "import": "./dist/authoring.js"
+    },
     "./node": {
       "types": "./dist/node/index.d.ts",
       "import": "./dist/node/index.js"

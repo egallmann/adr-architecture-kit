@@ -22,7 +22,7 @@ def _tracked_journal_paths() -> set[str]:
 
 
 def test_only_workflow_readme_is_tracked() -> None:
-    assert _tracked_journal_paths() <= ALLOWLIST
+    assert _tracked_journal_paths() == ALLOWLIST
 
 
 def test_active_design_journal_working_state_is_ignored() -> None:

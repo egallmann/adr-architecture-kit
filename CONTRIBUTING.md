@@ -66,7 +66,9 @@ The workflow is **Red → Green → Refactor**:
 2. Write the minimum implementation to make it pass.
 3. Refactor without changing external behavior.
 
-See [`docs/contributors/tdd-workflow.md`](docs/contributors/tdd-workflow.md) for detailed guidance and rationale.
+Keep the TDD loop repository-specific: write the smallest failing contract or
+behavior test, implement the change, then run the relevant assurance gates.
+Generic TDD tutorials are intentionally not maintained in this repository.
 
 **Quality gates** (all must pass before merging):
 
@@ -158,7 +160,8 @@ When touching implementation linkage or attribution evidence pipelines, smoke-ch
 2. Evidence path: `.ste-workspace/state/adr-architecture-kit/attribution/implementation-attribution-evidence.yaml`
 3. From **`adr-architecture-kit`**: `adr attribution check --scope . --evidence <path above>`
 4. Contract guards: `pytest tests/test_retrofit_contract_guards.py tests/test_attribution_evidence_sync.py -q`
-5. Negative-space sign-off: [`docs/attribution-negative-space.md`](docs/attribution-negative-space.md)
+5. Review attribution scope without fabricating claims to increase coverage;
+   evidence remains derived linkage, not architecture authority.
 
 Pre-push runs contract guards always; **`adr attribution check`** runs when workspace evidence exists (otherwise skipped with a message).
 

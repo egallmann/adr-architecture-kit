@@ -1,116 +1,37 @@
-# Canonical Placement for ADRs, Manifest, and Index
+# ADR placement convention
 
-**Authority**: ADR-L-0002, ProjectScopeResolver  
-**Purpose**: Ensure generated ADRs, manifest, and index files are placed correctly across submodules
+Placement is scoped by `PROJECT.yaml` and resolved by
+`ProjectScopeResolver`. A scope owns its `adrs/` directory, manifest, source
+records, and generated projections.
 
----
+## Current source paths
 
-## Per-Scope Structure
-
-Each project scope (workspace root or submodule) has its own canonical paths:
-
-```
-<scope_root>/
-  adrs/
-    logical/           # Logical ADRs (ADR-L-XXXX)
-    physical/          # Physical ADRs (ADR-P-XXXX, ADR-PS-XXXX, ADR-PC-XXXX)
-    manifest.yaml      # Index of all ADRs in this scope
+```text
+<scope>/adrs/logical/             ADR-L sources
+<scope>/adrs/physical-system/     ADR-PS sources
+<scope>/adrs/physical-component/  ADR-PC sources
+<scope>/adrs/manifest.yaml        generated scope manifest
+<scope>/adrs/index/               generated discovery registries and indexes
 ```
 
-**Type authority rule**:
-- Directory placement distinguishes only broad class: `logical` vs `physical`
-- Exact ADR subtype is authoritative in frontmatter via `adr_type` and `id`
-- Tooling must not infer `physical-system` or `physical-component` from subfolder names
+Legacy `adrs/physical/` remains a compatibility input path for readers and
+migrators. It is not the recommended placement for new physical-system or
+physical-component records.
 
-**ProjectScope fields** (from scope resolver):
+## Scope configuration
 
-| Field | Path | Purpose |
-|-------|------|---------|
-| `root` | `<scope_root>` | Project root |
-| `adr_dir` | `root/adrs` | ADR directory |
-| `logical_dir` | `adr_dir/logical` | Place new logical ADRs |
-| `physical_dir` | `adr_dir/physical` | Place new physical ADRs |
-| `manifest_path` | `adr_dir/manifest.yaml` | Manifest (index) output |
+When `PROJECT.yaml` declares `architecture_documentation.adr_directory` or
+`manifest_path`, resolve those paths relative to the scope root. Do not derive
+paths from the caller's current working directory or write into a parent
+workspace.
 
----
-
-## PROJECT.yaml Override
-
-When `PROJECT.yaml` exists with `architecture_documentation`:
-
-```yaml
-architecture_documentation:
-  adr_directory: "adrs/"
-  manifest_path: "adrs/manifest.yaml"
-```
-
-Paths are resolved relative to scope root. Defaults: `adrs/`, `adrs/manifest.yaml`.
-
----
-
-## Multi-Scope Placement
-
-**Workspace**: `adr-architecture-kit/`
-- `adr-architecture-kit/adrs/logical/`
-- `adr-architecture-kit/adrs/physical/`
-- `adr-architecture-kit/adrs/manifest.yaml`
-
-**Submodule**: `ste-rules-library/`
-- `ste-rules-library/adrs/logical/`
-- `ste-rules-library/adrs/physical/`
-- `ste-rules-library/adrs/manifest.yaml`
-
-**Submodule**: `ste-runtime/`
-- `ste-runtime/adrs/logical/`
-- `ste-runtime/adrs/physical/`
-- `ste-runtime/adrs/manifest.yaml`
-
----
-
-## Generator Placement Rules
-
-1. **Manifest**: Always write to `scope.manifest_path`
-2. **New logical ADR**: Write to `scope.logical_dir`
-3. **New physical ADR**: Write to `scope.physical_dir` regardless of physical subtype
-4. **Recursive**: Resolve scope first, then use that scope's paths
-
-## Path Invariants
-
-1. All artifact paths must be derived from an explicit scope root.
-2. Relative manifest paths must be computed from the resolved scope root, not the current working directory.
-3. Generated and temporary test artifacts must stay inside scope-owned ignored paths such as `tests/.tmp/`.
-4. Cross-scope traversal occurs only through explicit recursive scope resolution.
-
----
-
-## Usage
-
-```python
-from adr_kit.scope import ProjectScopeResolver
-
-resolver = ProjectScopeResolver(explicit_scope=Path("ste-rules-library"))
-scope = resolver.resolve()
-
-# Place new logical ADR
-output_path = scope.logical_dir / "ADR-L-0003-new-decision.yaml"
-
-# Place manifest
-manifest_path = scope.manifest_path  # ste-rules-library/adrs/manifest.yaml
-```
-
----
-
-## CLI
+Use the resolver and repository-owned commands when creating or regenerating
+artifacts:
 
 ```bash
-# Generate manifest for current scope (auto-detected)
-adr generate-manifest
-
-# Generate manifest for specific scope
-adr generate-manifest --scope ste-rules-library
-
-# Generate for all scopes
-adr generate-manifest --recursive
+adr generate-manifest --scope .
+adr generate-architecture-index --scope .
 ```
 
-Output goes to each scope's `adrs/manifest.yaml`.
+Generated files are derived projections. Canonical ADR source and contract
+inputs must be changed first; projections must be regenerated and validated.

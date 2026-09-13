@@ -181,7 +181,8 @@ for the Node request shape and host qualification.
 validated derived evidence. It does not write evidence, Architecture IR, or
 graph state, and its result has `graph_admission_status="not_admitted"`.
 Evidence attribution versions are separate from ADR authoring versions; use
-`capabilities()` to discover the supported line and the [linkage guide](https://github.com/egallmann/adr-architecture-kit/blob/main/docs/schema-v1.6.md)
+`capabilities()` to discover the supported line and the
+[evidence-attribution schema family](https://github.com/egallmann/adr-architecture-kit/tree/main/schema/evidence-attribution)
 for exact evidence semantics.
 
 ## Errors and stability

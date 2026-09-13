@@ -9,6 +9,4 @@ encoding and its repository-derived outputs:
 
 It is not the recommended current first-use path. Start with the root README and
 the Python or Node public SDK guides, then use this tree when you need a small
-v1.0 compatibility fixture or the deeper source-to-discovery walkthrough.
-
-See [../../docs/walkthrough-adr-to-ir.md](../../docs/walkthrough-adr-to-ir.md).
+v1.0 compatibility fixture.

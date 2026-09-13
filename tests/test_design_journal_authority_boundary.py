@@ -7,10 +7,6 @@ ROOT = Path(__file__).resolve().parents[1]
 JOURNAL_ROOT = ROOT / "docs" / "design-journal"
 ALLOWLIST = {
     "docs/design-journal/README.md",
-    "docs/design-journal/2026-phase-1-public-sdk.md",
-    "docs/design-journal/2026-phase-2-schema-v12.md",
-    "docs/design-journal/2026-production-hardening.md",
-    "docs/design-journal/2026-projection-v3-authority-substrate-promoted.md",
 }
 
 
@@ -25,8 +21,8 @@ def _tracked_journal_paths() -> set[str]:
     return {line for line in result.stdout.splitlines() if line}
 
 
-def test_only_grandfathered_explanatory_journals_are_tracked() -> None:
-    assert _tracked_journal_paths() <= ALLOWLIST
+def test_only_workflow_readme_is_tracked() -> None:
+    assert _tracked_journal_paths() == ALLOWLIST
 
 
 def test_active_design_journal_working_state_is_ignored() -> None:
@@ -48,3 +44,14 @@ def test_authority_boundary_does_not_require_local_journal_files() -> None:
         "docs/design-journal/2026-universal-uuidv7-alias-collision-disposition.yaml" not in tracked
     )
     assert "docs/design-journal/2026-universal-uuidv7-human-gates.md" not in tracked
+
+
+def test_local_adr_kit_state_is_not_tracked() -> None:
+    result = subprocess.run(
+        ["git", "-c", f"safe.directory={ROOT}", "ls-files", ".adr-kit"],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    assert result.stdout.strip() == ""

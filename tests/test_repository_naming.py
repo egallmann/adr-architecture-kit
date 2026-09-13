@@ -30,11 +30,16 @@ def test_domain_and_provenance_paths_are_accepted() -> None:
     paths = (
         "core/src/semantic_contract_set.rs",
         "contracts/semantic-core/v1.0/vectors/semantic-contract-set-governance.json",
-        "docs/design-journal/2026-phase-1-public-sdk.md",
         "adrs/ADR-L-0028-semantic-contracts.yaml",
         "contracts/semantic-core/v1.0/definitions/normalized-model-2.3.json",
     )
     assert MODULE.path_violations(paths) == []
+
+
+def test_local_adr_kit_state_is_rejected_when_tracked() -> None:
+    violations = MODULE.path_violations((".adr-kit/promotion/prepared.json",))
+    assert len(violations) == 1
+    assert "ignored and untracked" in violations[0]
 
 
 def test_active_identifiers_are_rejected_but_historical_prose_is_ignored(tmp_path: Path) -> None:
@@ -44,10 +49,7 @@ def test_active_identifiers_are_rejected_but_historical_prose_is_ignored(tmp_pat
     historical = tmp_path / "historical.md"
     historical.write_text("The old Slice C decision was retained.\n", encoding="utf-8")
     assert MODULE.content_violations(tmp_path, ("contracts/active.py",))
-    assert (
-        MODULE.content_violations(tmp_path, ("docs/design-journal/2026-phase-1-public-sdk.md",))
-        == []
-    )
+    assert MODULE.content_violations(tmp_path, ("historical.md",)) == []
 
 
 def test_broad_generated_directory_prefixes_do_not_hide_active_violations(tmp_path: Path) -> None:

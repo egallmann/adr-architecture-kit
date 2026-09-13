@@ -867,7 +867,7 @@ fn regular_entity(
         ("alias_name".into(), string(identity.alias_name.clone())),
         (
             "alias_ref".into(),
-            string(format!("{provider_key}:{}", identity.alias_id)),
+            string(format!("{}:{}", identity.alias_id, identity.alias_name)),
         ),
         ("entity_type".into(), string(entity_type)),
         ("name".into(), string(title)),
@@ -875,7 +875,7 @@ fn regular_entity(
         (
             "uri".into(),
             string(format!(
-                "adr://{}/{}",
+                "adr://{}/entities/{}",
                 text(provider.get("architectureNamespace")).unwrap_or_default(),
                 identity.id
             )),
@@ -1309,7 +1309,7 @@ fn normative_proposition(
         ("alias_name".into(), string(identity.alias_name.clone())),
         (
             "alias_ref".into(),
-            string(format!("{provider_key}:{}", identity.alias_id)),
+            string(format!("{}:{}", identity.alias_id, identity.alias_name)),
         ),
         ("entity_type".into(), string("normative_proposition")),
         ("name".into(), string(identity.alias_name.clone())),
@@ -1320,7 +1320,7 @@ fn normative_proposition(
         (
             "uri".into(),
             string(format!(
-                "adr://{}/{}",
+                "adr://{}/entities/{}",
                 text(provider.get("architectureNamespace")).unwrap_or_default(),
                 identity.id
             )),
@@ -1386,6 +1386,9 @@ fn normative_proposition(
             ]),
         ),
     ]);
+    if let Some(rationale) = text(raw.get("rationale")).filter(|value| !value.is_empty()) {
+        values.insert("rationale".into(), string(rationale));
+    }
     let fingerprint =
         digest_json(&Json::Object(values.clone())).unwrap_or_else(|_| digest_bytes(&[]));
     values.insert("entity_fingerprint".into(), string(fingerprint));

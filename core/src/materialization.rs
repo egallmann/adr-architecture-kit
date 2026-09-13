@@ -79,6 +79,44 @@ fn is_uuid_v7(value: &str) -> bool {
         && matches!(bytes[19], b'8' | b'9' | b'a' | b'b')
 }
 
+fn civil_from_days(days: i64) -> (i64, u64, u64) {
+    let shifted = days + 719_468;
+    let era = if shifted >= 0 {
+        shifted / 146_097
+    } else {
+        (shifted - 146_096) / 146_097
+    };
+    let day_of_era = shifted - era * 146_097;
+    let year_of_era =
+        (day_of_era - day_of_era / 1_460 + day_of_era / 36_524 - day_of_era / 146_096) / 365;
+    let year = year_of_era + era * 400;
+    let day_of_year = day_of_era - (365 * year_of_era + year_of_era / 4 - year_of_era / 100);
+    let month_part = (5 * day_of_year + 2) / 153;
+    let day = day_of_year - (153 * month_part + 2) / 5 + 1;
+    let month = month_part + if month_part < 10 { 3 } else { -9 };
+    let year = year + if month <= 2 { 1 } else { 0 };
+    (year, month as u64, day as u64)
+}
+
+fn uuidv7_created_at(value: &str) -> Option<String> {
+    if !is_uuid_v7(value) {
+        return None;
+    }
+    let timestamp_hex = format!("{}{}", &value[..8], &value[9..13]);
+    let timestamp_ms = u64::from_str_radix(&timestamp_hex, 16).ok()?;
+    let total_seconds = timestamp_ms / 1_000;
+    let milliseconds = timestamp_ms % 1_000;
+    let days = (total_seconds / 86_400) as i64;
+    let seconds_of_day = total_seconds % 86_400;
+    let (year, month, day) = civil_from_days(days);
+    let hour = seconds_of_day / 3_600;
+    let minute = (seconds_of_day % 3_600) / 60;
+    let second = seconds_of_day % 60;
+    Some(format!(
+        "{year:04}-{month:02}-{day:02}T{hour:02}:{minute:02}:{second:02}.{milliseconds:03}Z"
+    ))
+}
+
 fn digest_bytes(bytes: &[u8]) -> String {
     let mut hasher = Sha256::new();
     hasher.update(bytes);
@@ -824,6 +862,95 @@ fn normalized_source_contract(binding: &Json) -> Json {
     ])
 }
 
+fn regular_entity_fingerprint(values: &BTreeMap<String, Json>) -> String {
+    let preimage = object([
+        (
+            "id".into(),
+            values.get("id").cloned().unwrap_or(Json::Null),
+        ),
+        (
+            "alias_id".into(),
+            values.get("alias_id").cloned().unwrap_or(Json::Null),
+        ),
+        (
+            "alias_name".into(),
+            values.get("alias_name").cloned().unwrap_or(Json::Null),
+        ),
+        (
+            "entity_type".into(),
+            values.get("entity_type").cloned().unwrap_or(Json::Null),
+        ),
+        (
+            "name".into(),
+            values.get("name").cloned().unwrap_or(Json::Null),
+        ),
+        (
+            "extension".into(),
+            values.get("extension").cloned().unwrap_or(Json::Null),
+        ),
+    ]);
+    digest_json(&preimage).unwrap_or_else(|_| digest_bytes(&[]))
+}
+
+fn refresh_regular_entity_fingerprint(values: &mut BTreeMap<String, Json>) {
+    let fingerprint = regular_entity_fingerprint(values);
+    values.insert("entity_fingerprint".into(), string(fingerprint));
+}
+
+fn normative_proposition_fingerprint(values: &BTreeMap<String, Json>) -> String {
+    let preimage = object([
+        (
+            "id".into(),
+            values.get("id").cloned().unwrap_or(Json::Null),
+        ),
+        (
+            "alias_id".into(),
+            values.get("alias_id").cloned().unwrap_or(Json::Null),
+        ),
+        (
+            "alias_name".into(),
+            values.get("alias_name").cloned().unwrap_or(Json::Null),
+        ),
+        (
+            "entity_type".into(),
+            values.get("entity_type").cloned().unwrap_or(Json::Null),
+        ),
+        (
+            "name".into(),
+            values.get("name").cloned().unwrap_or(Json::Null),
+        ),
+        (
+            "statement".into(),
+            values.get("statement").cloned().unwrap_or(Json::Null),
+        ),
+        (
+            "normative_force".into(),
+            values.get("normative_force").cloned().unwrap_or(Json::Null),
+        ),
+        (
+            "scope".into(),
+            values.get("scope").cloned().unwrap_or(Json::Null),
+        ),
+        (
+            "rationale".into(),
+            values.get("rationale").cloned().unwrap_or(Json::Null),
+        ),
+        (
+            "declaring_adr".into(),
+            values.get("declaring_adr").cloned().unwrap_or(Json::Null),
+        ),
+        (
+            "source_artifact".into(),
+            values.get("source_artifact").cloned().unwrap_or(Json::Null),
+        ),
+        (
+            "source_contract".into(),
+            values.get("source_contract").cloned().unwrap_or(Json::Null),
+        ),
+    ]);
+    digest_json(&preimage).unwrap_or_else(|_| digest_bytes(&[]))
+}
+
 fn regular_entity(
     raw: &BTreeMap<String, Json>,
     entity_type: &str,
@@ -849,8 +976,7 @@ fn regular_entity(
             .or_else(|| raw.get("rationale")),
     )
     .unwrap_or_else(|| title.clone());
-    let created_at = text(raw.get("created_date").or_else(|| raw.get("created_at")))
-        .unwrap_or_else(|| "unknown".into());
+    let created_at = uuidv7_created_at(&identity.id)?;
     let status = text(raw.get("status")).unwrap_or_else(|| "proposed".into());
     let provider_key = format!(
         "{}:{}",
@@ -934,9 +1060,7 @@ fn regular_entity(
             ]),
         );
     }
-    let fingerprint_basis = Json::Object(values.clone());
-    let fingerprint = digest_json(&fingerprint_basis).unwrap_or_else(|_| digest_bytes(&[]));
-    values.insert("entity_fingerprint".into(), string(fingerprint));
+    refresh_regular_entity_fingerprint(&mut values);
     Some(Json::Object(values))
 }
 
@@ -967,10 +1091,7 @@ fn retain_source_semantics(
         .collect::<BTreeMap<_, _>>();
     metadata.insert("source_semantics".into(), Json::Object(source_semantics));
     values.insert("metadata".into(), Json::Object(metadata));
-    values.remove("entity_fingerprint");
-    let fingerprint =
-        digest_json(&Json::Object(values.clone())).unwrap_or_else(|_| digest_bytes(&[]));
-    values.insert("entity_fingerprint".into(), string(fingerprint));
+    refresh_regular_entity_fingerprint(values);
 }
 
 fn compatibility_relationship(
@@ -1247,6 +1368,7 @@ fn extension_entity(
                 ("rationale".into(), string(rationale)),
             ]),
         );
+        refresh_regular_entity_fingerprint(values);
     }
     Some(entity)
 }
@@ -1325,10 +1447,7 @@ fn normative_proposition(
                 identity.id
             )),
         ),
-        (
-            "created_at".into(),
-            string(text(source.get("createdAt")).unwrap_or_else(|| "unknown".into())),
-        ),
+        ("created_at".into(), string(uuidv7_created_at(&identity.id)?)),
         ("statement".into(), string(statement.unwrap_or_default())),
         ("normative_force".into(), string(force.unwrap_or_default())),
         ("scope".into(), string(scope.unwrap_or_default())),
@@ -1389,8 +1508,7 @@ fn normative_proposition(
     if let Some(rationale) = text(raw.get("rationale")).filter(|value| !value.is_empty()) {
         values.insert("rationale".into(), string(rationale));
     }
-    let fingerprint =
-        digest_json(&Json::Object(values.clone())).unwrap_or_else(|_| digest_bytes(&[]));
+    let fingerprint = normative_proposition_fingerprint(&values);
     values.insert("entity_fingerprint".into(), string(fingerprint));
     Some(Json::Object(values))
 }

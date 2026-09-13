@@ -81,8 +81,8 @@ bundle and the canonical qualification coverage suite).
 
 **Future release-protocol implication:** README/package-description portability is part
 of release qualification. The deferred `capture-release-protocol` contributor skill
-must consume this observed invariant as evidence (skill implementation remains separate
-future work; see `ROADMAP.md`).
+must consume this observed invariant as evidence; skill implementation remains
+separate future work tracked through current contributor planning.
 
 ## Benchmarks
 

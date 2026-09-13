@@ -101,7 +101,7 @@ are not a released capability.
 
 - [Python SDK recipes](https://github.com/egallmann/adr-architecture-kit/blob/main/docs/public-sdk.md) — validate, discover authoring contracts, inspect repositories, work with semantic contracts, and materialize an exact qualified basis.
 - [Node package guide](https://github.com/egallmann/adr-architecture-kit/blob/main/packages/node/README.md) — Node usage, browser qualification, and package entry points.
-- [TypeScript consumer binding](https://github.com/egallmann/adr-architecture-kit/blob/main/docs/typescript-consumer-binding.md) — cross-language qualification and distribution details.
+- [Node package guide](https://github.com/egallmann/adr-architecture-kit/blob/main/packages/node/README.md) — cross-language qualification and distribution details.
 - [Documentation router](https://github.com/egallmann/adr-architecture-kit/blob/main/docs/README.md) — choose a task-oriented path for usage, authoring, contracts, migration, or contribution.
 - [Schema taxonomy](https://github.com/egallmann/adr-architecture-kit/blob/main/schema/README.md) — exact schema families and authority boundaries.
 - [Public stability policy](https://github.com/egallmann/adr-architecture-kit/blob/main/docs/public-surface-and-stability.md) — stable, provisional, and internal surfaces.

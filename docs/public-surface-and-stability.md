@@ -138,6 +138,5 @@ explicit non-release sentinel `0+unknown`.
 - Avoid new dependencies on `ArchModel`, compiler internals, provisional graph shape,
   or experimental surfaces.
 
-See the [public-surface inventory](production-hardening/public-surface-inventory.md)
-for the frozen compatibility snapshot and [authority-boundary.md](authority-boundary.md)
-for repository ownership.
+See [authority-boundary.md](authority-boundary.md) for repository ownership and
+the compatibility contracts for exact symbol, diagnostic, and artifact shapes.

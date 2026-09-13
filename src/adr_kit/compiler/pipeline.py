@@ -21,6 +21,7 @@ from ..scope import ProjectScope
 from .backend.projection import (
     project_entity,
     project_entity_v22,
+    project_entity_v23,
     project_relationship,
     project_relationship_v22,
     project_unresolved,
@@ -52,12 +53,13 @@ from .passes.derive_relationships import derive_relationships
 from .passes.extract_logical_entities import extract_logical_entities
 from .passes.extract_physical_entities import extract_physical_entities
 from .passes.extract_extension_entities import extract_extension_entities
+from .passes.extract_normative_propositions import extract_normative_propositions
 from .passes.resolve_invariant_canonical import resolve_invariant_canonical
 from .passes.topology_resolution import resolve_topology_handles
 from .passes.topology_semantic_validation import validate_ir_topology_semantics
 from .passes.validate_bundle import validate_bundle
 
-UUID_ERA_MODEL_VERSIONS = frozenset({"2.0", "2.1", "2.2"})
+UUID_ERA_MODEL_VERSIONS = frozenset({"2.0", "2.1", "2.2", "2.3"})
 
 
 class MixedSchemaVersionError(ValueError):
@@ -295,11 +297,12 @@ class VersionDetectionPass:
 
     def run(self, state: CompilerPipelineState) -> None:
         versions = state.detected_schema_versions
-        authoring_versions = versions & {"1.3", "1.4", "1.5"}
+        authoring_versions = versions & {"1.3", "1.4", "1.5", "1.6"}
         has_v13 = "1.3" in authoring_versions
         has_v14 = "1.4" in authoring_versions
         has_v15 = "1.5" in authoring_versions
-        has_legacy = bool(versions - {"1.3", "1.4", "1.5"})
+        has_v16 = "1.6" in authoring_versions
+        has_legacy = bool(versions - {"1.3", "1.4", "1.5", "1.6"})
 
         if len(authoring_versions) > 1 or (authoring_versions and has_legacy):
             raise MixedSchemaVersionError(
@@ -308,7 +311,9 @@ class VersionDetectionPass:
                 f"All ADRs must use the same schema line for compilation."
             )
 
-        if has_v15 and not has_legacy:
+        if has_v16 and not has_legacy:
+            state.model_version = "2.3"
+        elif has_v15 and not has_legacy:
             state.model_version = "2.2"
         elif has_v14 and not has_legacy:
             state.model_version = "2.1"
@@ -349,7 +354,9 @@ class LogicalEntityExtractionPass:
         }
         for extracted in logical_extraction.entities:
             if state.model_version in UUID_ERA_MODEL_VERSIONS:
-                alias_id = extracted.entity.id if not UUIDV7_PATTERN.match(extracted.entity.id) else None
+                alias_id = (
+                    extracted.entity.id if not UUIDV7_PATTERN.match(extracted.entity.id) else None
+                )
                 if alias_id is None:
                     for adr, _ in state.logical_adrs:
                         if getattr(adr, "id", None) == extracted.entity.id:
@@ -358,7 +365,13 @@ class LogicalEntityExtractionPass:
                             if alias_name:
                                 extracted.entity.metadata["alias_name"] = alias_name
                             break
-                        for collection_name in ("capabilities", "decisions", "invariants", "architectural_boundaries", "interaction_contracts"):
+                        for collection_name in (
+                            "capabilities",
+                            "decisions",
+                            "invariants",
+                            "architectural_boundaries",
+                            "interaction_contracts",
+                        ):
                             for item in getattr(adr, collection_name, []):
                                 if getattr(item, "id", None) == extracted.entity.id:
                                     alias_id = getattr(item, "alias_id", extracted.entity.id)
@@ -480,6 +493,19 @@ class PhysicalEntityExtractionPass:
 
 
 @dataclass(frozen=True)
+class NormativePropositionExtractionPass:
+    name: str = "normative_proposition_extraction"
+
+    def run(self, state: CompilerPipelineState) -> None:
+        for entity in extract_normative_propositions(
+            [*state.logical_adrs, *state.physical_adrs],
+            scope_root=state.scope.root,
+            namespace=state.namespace,
+        ):
+            state.add_entity(entity)
+
+
+@dataclass(frozen=True)
 class ExtensionEntityExtractionPass:
     name: str = "extension_entity_extraction"
 
@@ -522,10 +548,8 @@ class RelationshipInferencePass:
     name: str = "relationship_inference"
 
     def run(self, state: CompilerPipelineState) -> None:
-        if state.model_version == "2.2":
-            lookup_entities = {
-                entity.id: entity for entity in state.model.entities.values()
-            }
+        if state.model_version in {"2.2", "2.3"}:
+            lookup_entities = {entity.id: entity for entity in state.model.entities.values()}
         else:
             lookup_entities = {
                 entity.id: projected
@@ -620,6 +644,9 @@ class ValidationPass:
     def run(self, state: CompilerPipelineState) -> None:
         state.finalize_source_refs()
         state.add_namespace_boundary()
+        if state.model_version == "2.3":
+            self._validate_v23(state)
+            return
         if state.model_version == "2.2":
             self._validate_v22(state)
             return
@@ -659,7 +686,9 @@ class ValidationPass:
             projected
             for entity in state.model.entities.values()
             if is_projectable_entity(entity)
-            and (projected := project_entity_v22(entity, state.model.relationships, state.namespace))
+            and (
+                projected := project_entity_v22(entity, state.model.relationships, state.namespace)
+            )
             is not None
         ]
         projected_relationships = [
@@ -667,16 +696,59 @@ class ValidationPass:
             for relationship in state.model.relationships.values()
             if (projected := project_relationship_v22(relationship)) is not None
         ]
-        NormalizedEntityRegistryV22(
-            entities=sorted(projected_entities, key=lambda item: item.id)
-        )
+        NormalizedEntityRegistryV22(entities=sorted(projected_entities, key=lambda item: item.id))
         RelationshipRegistryV22(
             relationships=sorted(
                 projected_relationships,
-                key=lambda item: (getattr(item, "id", None) or getattr(item, "relationship_id", "")),
+                key=lambda item: str(
+                    getattr(item, "id", None) or getattr(item, "relationship_id", "")
+                ),
             )
         )
         UnresolvedRegistryV22(
+            unresolved=sorted(
+                [project_unresolved(item) for item in state.model.unresolved.values()],
+                key=lambda item: item.id,
+            )
+        )
+
+    @staticmethod
+    def _validate_v23(state: CompilerPipelineState) -> None:
+        from ..models.v2_3 import (
+            NormalizedEntityRegistryV23,
+            RelationshipRegistryV23,
+            UnresolvedRegistryV23,
+        )
+
+        validate_ir_topology_semantics(
+            entities=state.model.entities,
+            relationships=state.model.relationships.values(),
+            physical_adrs=state.physical_adrs,
+        )
+        projected_entities = [
+            projected
+            for entity in state.model.entities.values()
+            if is_projectable_entity(entity)
+            and (
+                projected := project_entity_v23(entity, state.model.relationships, state.namespace)
+            )
+            is not None
+        ]
+        projected_relationships = [
+            projected
+            for relationship in state.model.relationships.values()
+            if (projected := project_relationship_v22(relationship)) is not None
+        ]
+        NormalizedEntityRegistryV23(entities=sorted(projected_entities, key=lambda item: item.id))
+        RelationshipRegistryV23(
+            relationships=sorted(
+                projected_relationships,
+                key=lambda item: str(
+                    getattr(item, "id", None) or getattr(item, "relationship_id", "")
+                ),
+            )
+        )
+        UnresolvedRegistryV23(
             unresolved=sorted(
                 [project_unresolved(item) for item in state.model.unresolved.values()],
                 key=lambda item: item.id,
@@ -713,6 +785,7 @@ def build_default_frontend_pipeline() -> CompilerPipeline:
             LogicalEntityExtractionPass(),
             InvariantExtractionPass(),
             PhysicalEntityExtractionPass(),
+            NormativePropositionExtractionPass(),
             ExtensionEntityExtractionPass(),
             TopologyResolutionPass(),
             RelationshipInferencePass(),

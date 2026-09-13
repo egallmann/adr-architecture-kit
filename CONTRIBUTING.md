@@ -187,13 +187,16 @@ adr compile --mode normal
 
 ## Pre-push Hook
 
-A pre-push hook runs the core local checks automatically:
+A pre-push hook runs a fast local safety check automatically:
 
 ```bash
 python scripts/install_pre_push_hook.py
 ```
 
-Or run the checks manually before pushing:
+The fast hook checks repository naming, canonical-ID allocation, and byte
+identity across the tracked semantic-core WASM artifacts. Generated-document
+integrity and test suites remain in the full local bundle and PR CI.
+The full local assurance bundle remains available when explicitly requested:
 
 ```bash
 python scripts/run_local_pre_push_checks.py

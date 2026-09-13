@@ -943,14 +943,18 @@ def open_repository(project_root: str | Path) -> ArchitectureRepository:
     try:
         repository = ArchitectureRepository(root)
         repository.load()
-        if repository.model_version in {"2.0", "2.1", "2.2"}:
+        if repository.model_version in {"2.0", "2.1", "2.2", "2.3"}:
             model = (
-                repository.get_model_v22()
-                if repository.model_version == "2.2"
+                repository.get_model_v23()
+                if repository.model_version == "2.3"
                 else (
-                    repository.get_model_v21()
-                    if repository.model_version == "2.1"
-                    else repository.get_model_v2()
+                    repository.get_model_v22()
+                    if repository.model_version == "2.2"
+                    else (
+                        repository.get_model_v21()
+                        if repository.model_version == "2.1"
+                        else repository.get_model_v2()
+                    )
                 )
             )
             core_result = execute_repository_validation(

@@ -16,6 +16,7 @@ from ...models.architecture_discovery import (
     UnresolvedRecord,
     lifecycle_stage_from_adr_status,
 )
+from ...models.v1_6 import NormativeForceV16
 from ..ir.entity_graph import ENTITY_RELATIONSHIP_TYPES, IREntity
 from ..ir.rel_graph import IRRelationship, RelGraph
 from ..ir.unresolved_list import IRUnresolved
@@ -31,6 +32,7 @@ PROJECTABLE_ENTITY_TYPES = {
     "contract",
     "interface",
     "implementation_decision",
+    "normative_proposition",
 }
 
 
@@ -297,7 +299,11 @@ def project_relationship_v2(
 
 def project_relationship_v21(relationship: IRRelationship):
     """Project canonical authored or compatibility relationships for v2.1."""
-    from ...models.v2_1 import CanonicalRelationshipV21, CompatibilityRelationshipV21, ExtensionPayloadV21
+    from ...models.v2_1 import (
+        CanonicalRelationshipV21,
+        CompatibilityRelationshipV21,
+        ExtensionPayloadV21,
+    )
     from ...identity import validate_uuidv7
 
     try:
@@ -370,6 +376,93 @@ def project_entity_v22(
         return None
     payload = projected.model_dump(mode="python")
     return NormalizedEntityV22.model_validate(payload)
+
+
+def project_entity_v23(
+    entity: IREntity,
+    rel_graph: RelGraph | None,
+    architecture_namespace: str,
+) -> Any:
+    """Project UUID-era entities and lifecycle-free v1.6 propositions to v2.3."""
+    from ...identity import (
+        derive_alias_ref,
+        derive_entity_uri,
+        entity_fingerprint as compute_fp,
+        uuidv7_created_at,
+        validate_uuidv7,
+    )
+    from ...models.v2_3 import (
+        DeclaringADRQualificationV23,
+        NormativePropositionEntityV23,
+        SourceArtifactQualificationV23,
+        SourceContractQualificationV23,
+        NormalizedEntityV23,
+    )
+
+    if entity.entity_type == "normative_proposition":
+        try:
+            validate_uuidv7(entity.id)
+        except ValueError:
+            return None
+        metadata = entity.metadata
+        declaring_adr = DeclaringADRQualificationV23.model_validate(metadata["declaring_adr"])
+        source_artifact = SourceArtifactQualificationV23.model_validate(metadata["source_artifact"])
+        source_contract = SourceContractQualificationV23.model_validate(metadata["source_contract"])
+        alias_id = str(metadata["alias_id"])
+        alias_name = str(metadata["alias_name"])
+        statement = str(metadata["statement"])
+        normative_force = str(metadata["normative_force"])
+        scope = str(metadata["scope"])
+        rationale = metadata.get("rationale")
+        relationships = (
+            build_relationship_summary(entity.id, rel_graph)
+            if rel_graph is not None
+            else EntityRelationshipSummary()
+        )
+        fp_record = {
+            "id": entity.id,
+            "alias_id": alias_id,
+            "alias_name": alias_name,
+            "entity_type": "normative_proposition",
+            "name": entity.name,
+            "statement": statement,
+            "normative_force": normative_force,
+            "scope": scope,
+            "rationale": rationale,
+            "declaring_adr": declaring_adr.model_dump(mode="json"),
+            "source_artifact": source_artifact.model_dump(mode="json"),
+            "source_contract": source_contract.model_dump(mode="json"),
+        }
+        return NormativePropositionEntityV23(
+            id=entity.id,
+            alias_id=alias_id,
+            alias_name=alias_name,
+            alias_ref=derive_alias_ref(alias_id, alias_name),
+            name=entity.name,
+            summary=entity.summary,
+            uri=derive_entity_uri(architecture_namespace, entity.id),
+            created_at=uuidv7_created_at(entity.id),
+            entity_fingerprint=compute_fp(fp_record),
+            statement=statement,
+            entity_type="normative_proposition",
+            normative_force=cast(NormativeForceV16, normative_force),
+            scope=scope,
+            rationale=rationale if isinstance(rationale, str) else None,
+            declaring_adr=declaring_adr,
+            source_artifact=source_artifact,
+            source_contract=source_contract,
+            canonical_source=entity.canonical_source,
+            source_refs=list(entity.source_refs),
+            metadata=dict(entity.metadata),
+            relationships=relationships,
+            completeness=entity.completeness,
+            provenance=entity.provenance,
+        )
+
+    projected = project_entity_v22(entity, rel_graph, architecture_namespace)
+    if projected is None:
+        return None
+    return NormalizedEntityV23.model_validate(projected.model_dump(mode="python"))
 
 
 def project_relationship_v22(relationship: IRRelationship):

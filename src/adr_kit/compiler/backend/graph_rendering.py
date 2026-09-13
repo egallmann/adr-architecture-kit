@@ -26,6 +26,7 @@ from .projection import (
     is_projectable_entity,
     project_entity,
     project_entity_v22,
+    project_entity_v23,
     project_relationship,
     project_relationship_v22,
 )
@@ -39,13 +40,17 @@ def build_architecture_graph(build_result: FrontendBuildResult) -> ArchitectureG
     generated_at = build_result.model.metadata.generated_at or datetime.now(timezone.utc).replace(
         microsecond=0
     )
-    if getattr(build_result, "model_version", "1.1") == "2.2":
+    if getattr(build_result, "model_version", "1.1") in {"2.2", "2.3"}:
+        projector = (
+            project_entity_v23 if build_result.model_version == "2.3" else project_entity_v22
+        )
         projected_entities = [
             projected
             for entity in build_result.model.entities.values()
             if is_projectable_entity(entity)
+            and entity.entity_type != "normative_proposition"
             and (
-                projected := project_entity_v22(
+                projected := projector(
                     entity, build_result.model.relationships, build_result.namespace
                 )
             )

@@ -11,6 +11,10 @@ const vector = JSON.parse(await readFile(
   resolve("../../contracts/semantic-core/v1.1/vectors/architecture-materialization.json"),
   "utf8",
 )).cases[0].request;
+const packageVersion = JSON.parse(await readFile(
+  resolve("package.json"),
+  "utf8",
+)).version;
 
 function publicRequest(request) {
   return {
@@ -229,11 +233,11 @@ test("public Node materialization returns normalized-model 2.3 from exact SCS", 
   assert.deepEqual(result.sourceCapabilityLimitations, []);
   assert.deepEqual(result.providerProvenance, {
     semanticCoreContractVersion: "1.1",
-    packageVersion: "0.11.0",
+    packageVersion,
     hostBinding: "public-host",
   });
   assert.deepEqual(result.diagnostics, []);
-  assert.equal(result.package_version, "0.11.0");
+  assert.equal(result.package_version, packageVersion);
   assert.equal(result.api_contract_version, "1.0");
   assert.equal(Object.isFrozen(result), true);
   assert.equal(Object.isFrozen(result.authorityProvider), true);

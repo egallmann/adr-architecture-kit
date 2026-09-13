@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.11.1] — 2026-09-13
+
 ### Fixed
 
 - Restored ordinary compiler/projector support for homogeneous authoring 1.6

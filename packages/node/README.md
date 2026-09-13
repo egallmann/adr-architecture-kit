@@ -1,69 +1,107 @@
 # `@system-of-thought/adr-kit`
 
-TypeScript host and browser binding over ADR-Kit authority. The package is
-framework-neutral and ESM-only; host capabilities are exposed through explicit
-Node entry points and browser capabilities remain constrained.
+The official TypeScript/Node binding for ADR-Kit. Node and Python are peer
+hosts over common semantic authority; this package is not a wrapper around a
+Python runtime. The package is ESM-only and requires Node 20 or newer.
 
-The Node host consumes the same self-contained semantic-core WASM artifact as
-the Python SDK. Rust build dependencies, including `serde` and `serde_json`,
-are compiled into that artifact; the Python host additionally depends on
-`wasmtime` to load it. The Python package itself is not dependency-free.
+## Install
 
-Browser-safe entry points:
-
-```ts
-import { capabilities } from "@system-of-thought/adr-kit";
-import { createArchitectureModel } from "@system-of-thought/adr-kit/model";
-import { validateContract } from "@system-of-thought/adr-kit/validation";
+```bash
+npm install @system-of-thought/adr-kit
 ```
 
-Node-only entry points:
+## Validate a repository
+
+The Node host reads a local project containing `PROJECT.yaml` and `adrs/`, then
+returns immutable result data and diagnostics.
+
+```js
+import { capabilities } from "@system-of-thought/adr-kit";
+import { validateArchitecture } from "@system-of-thought/adr-kit/node/governance";
+
+const projectRoot = process.argv[2] ?? process.cwd();
+console.log(capabilities());
+
+const result = await validateArchitecture({
+  project_root: projectRoot,
+  mode: "complete",
+  cross_references: true,
+});
+for (const diagnostic of result.diagnostics) {
+  console.log(diagnostic.severity, diagnostic.code, diagnostic.message);
+}
+process.exitCode = result.success ? 0 : 1;
+```
+
+Other filesystem-backed Node operations are exposed from explicit entry points:
 
 ```ts
 import { openRepository } from "@system-of-thought/adr-kit/node";
-import { buildEmbodimentLinkage, generateAttributionShim } from "@system-of-thought/adr-kit/node/linkage";
-import { validateArchitecture, validateContract, validateProjectMetadata } from "@system-of-thought/adr-kit/node/governance";
+import { validateContract, validateProjectMetadata } from "@system-of-thought/adr-kit/node/governance";
 import { materializeArchitecture } from "@system-of-thought/adr-kit/node/materialization";
-import {
-  getSemanticContract,
-  getSemanticContractProfile,
-  previewSemanticContractSetAssembly,
-  resolveCurrentSemanticContractSet,
-  validateSemanticResourceClosure,
-  verifySemanticContract,
-} from "@system-of-thought/adr-kit/node/semantic-contract";
+import { buildEmbodimentLinkage } from "@system-of-thought/adr-kit/node/linkage";
 ```
 
-TypeScript v1 supports normalized models 2.1, 2.2, and 2.3, evidence attribution 1.5/1.6,
-architecture discovery 1.1, canonical and compatibility relationships, and
-qualified semantic extensions. Unsupported versions fail explicitly.
+## Discover capabilities and authoring contracts
 
-Browser-safe entry points do not create or mutate ADRs, allocate identity, write
-repositories, admit graph records, access the network, or depend on Angular.
-Node host capabilities are qualified separately against the Python host SDK.
-The parity-qualified host operations are exposed in `capabilities().host_operations`;
-including `validateArchitecture` and `validateProjectMetadata`; `pending_host_operations` makes the bounded
-semantic-core migration visible.
-Architecture, contract, project-metadata, normalized-repository identity,
-provider-routing, and linkage rules execute through the packaged canonical
-semantic core shared with the Python binding. Node performs only
-filesystem/YAML loading and TypeScript result construction around that boundary.
-Semantic-contract canonicalization, SCF (`scf:v1:sha256`), resource closure,
-and SCS (`scs:v1:sha256`) execute in the shared semantic core. The bundled
-families are architecture-interpretation 1.0, normative-semantics 1.0, and
-normalized-model 2.3. Python and Node
-therefore compare canonical bytes, rejection diagnostics, and fingerprints in
-the release parity gate.
+Ask the installed package for its exact current surface:
 
-The Node binding exposes the governed `architecture-materialization@1.0` profile,
-explicit whole-tuple qualification, deterministic preview/apply assembly,
-retained-corpus validation, catalog/policy inspection, current-pointer
-resolution, and the parity-qualified `materializeArchitecture` operation.
-Materialization requires an exact SCS identity and a sealed, host-parsed source
-basis. It returns normalized-model 2.3 through semantic-core 1.1; browser
-materialization is not advertised.
+```ts
+import { capabilities } from "@system-of-thought/adr-kit";
+import { describeContract, listTypes } from "@system-of-thought/adr-kit/authoring";
 
-`generateAttributionShim({ language: "python" | "typescript" })` is a
-read-only, deterministic projection through the shared semantic core. Its
-`content` and UTF-8 `sha256` are byte-compatible with the Python API and the
-legacy CLI command; it does not load a repository or write a file.
+const manifest = capabilities();
+console.log(manifest.package_version);
+console.log(manifest.host_operations);
+console.log(manifest.supported_authoring_domain_versions);
+console.log(manifest.authoring_capabilities);
+
+const contract = describeContract("1.0");
+const entities = listTypes("1.0", "entity");
+console.log(contract.definedCapabilities);
+console.log(entities.types.map((item) => item.key));
+```
+
+ADC 1.0 discovery is descriptive and exact: it lists and describes the
+contract's types and policies. It does not construct, compose, mutate, allocate
+identity, persist, or write repositories. The ADC version is independent of
+ADR persistence-schema versions.
+
+## Browser-safe versus Node entry points
+
+The root, `model`, `schemas`, `validation`, and `authoring` entry points are
+browser-safe and framework-neutral. They do not access the filesystem, network,
+repository state, or Node-only loaders.
+
+The `node`, `node/governance`, `node/linkage`, `node/materialization`, and
+`node/semantic-contract` entry points are explicitly Node-only. Browser-safe
+TypeScript is a deliberately constrained execution profile, not a third peer
+filesystem host. Use `capabilities().browser_operations` and
+`capabilities().node_entrypoints` for the installed qualification.
+
+## Semantic contracts and exact materialization
+
+The binding exposes the same semantic-contract families and canonical operations
+as the Python public seam. It also exposes qualified architecture materialization
+through `materializeArchitecture`. Materialization requires an exact semantic
+contract-set identity and a sealed, caller-supplied source basis; it does not
+resolve current pointers or infer source meaning. Results are normalized-model
+outputs or bounded rejection/unavailable outcomes.
+
+Shared semantic-core execution is an implementation detail below these public
+seams. The package includes its self-contained WASM artifact; consumers do not
+need Rust, serde, Wasmtime, or compiler knowledge to use the supported APIs.
+
+## Qualification from this directory
+
+```bash
+npm run typecheck
+npm test
+npm run browser:check
+npm run pack:check
+```
+
+The build packages canonical schema mirrors and the semantic-core artifact. The
+Node package version follows the Python release lineage. Unsupported contract
+versions fail explicitly, and overlapping Python/Node capabilities are checked
+through the repository's conformance tests.

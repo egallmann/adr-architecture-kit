@@ -1,19 +1,33 @@
-# Release and quality controls (contributor)
+# Release and quality controls
 
-Durable release-quality controls live in this repository's Git history. The public
-`docs/` spine no longer indexes phase closeout logs.
+Release qualification validates the retained artifacts that were produced from
+the exact source commit. Publishing promotes that retained bundle; it must not
+rebuild a different bundle at tag or publish time.
 
-## Durable controls
+## Required controls
 
-- Quality, wheel, coverage, and release-manifest gates: [`../production-hardening/developer-and-release-controls.md`](../production-hardening/developer-and-release-controls.md)
-- Frozen Python/CLI compatibility inventory: [`../production-hardening/public-surface-inventory.md`](../production-hardening/public-surface-inventory.md)
-- Compatibility snapshots: `contracts/compatibility/`
-- Local pre-push bundle: `python scripts/run_local_pre_push_checks.py`
+Release qualification covers compatibility, version, quality, package,
+governance, retained-wheel installation, platform portability, deterministic
+generation, and package-description link portability. README links intended for
+PyPI or npm must be absolute or otherwise valid outside GitHub
+repository-relative rendering.
 
-## Historical execution records
+The release manifest must contain exactly one wheel and one source distribution
+and verify filenames, sizes, hashes, source commit, project version, and tag.
+Do not refresh a compatibility or quality baseline merely to hide a regression.
+Change canonical inputs first, regenerate derived artifacts with owned tooling,
+and require a deterministic second run before promotion.
 
-Completed phase baselines, closeouts, and one-time benchmark captures are preserved
-in Git history rather than the active documentation tree. Current controls and the
-compatibility inventory above are the maintained references.
+## Local checks
 
-v1.5 semantic attribution does not reopen Phase 3 GraphProjectionBundle. See [`../../ROADMAP.md`](../../ROADMAP.md).
+```bash
+python scripts/run_local_pre_push_checks.py
+python scripts/check_compatibility_snapshots.py
+python scripts/check_version_consistency.py
+python scripts/check_quality_ratchets.py
+adr governance-checks
+```
+
+The pre-push bundle is a fast local subset. Develop and release assurance remain
+authoritative for the full Python suite, coverage, platform qualification,
+retained artifacts, and publication gates.

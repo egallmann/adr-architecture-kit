@@ -20,6 +20,14 @@ EXPECTED_PUBLIC_SYMBOLS = [
     "NormalizedArchitectureModelV2",
     "ProviderRegistry",
     "ArtifactDescriptor",
+    "AuthoringContractDescription",
+    "AuthoringDiscriminator",
+    "AuthoringParentConstraint",
+    "AuthoringPolicy",
+    "AuthoringTypeDescriptor",
+    "AuthoringTypeKey",
+    "AuthoringTypeList",
+    "AuthoringTypeSummary",
     "AttributionShimRequest",
     "AttributionShimResult",
     "ArchitectureMaterializationRequest",
@@ -64,10 +72,14 @@ EXPECTED_PUBLIC_SYMBOLS = [
     "RejectedEmbodimentClaim",
     "EmbodimentLinkageResult",
     "SDKError",
+    "AuthoringDiscoveryError",
     "InvalidRequestError",
     "OperationError",
     "RepositoryError",
     "capabilities",
+    "describe_authoring_contract",
+    "list_authoring_types",
+    "describe_authoring_type",
     "build_embodiment_linkage",
     "generate_attribution_shim",
     "materialize_architecture",
@@ -213,6 +225,14 @@ def test_public_contracts_are_frozen(tmp_path: Path) -> None:
 
     contract_names = (
         "ArtifactDescriptor",
+        "AuthoringContractDescription",
+        "AuthoringDiscriminator",
+        "AuthoringParentConstraint",
+        "AuthoringPolicy",
+        "AuthoringTypeDescriptor",
+        "AuthoringTypeKey",
+        "AuthoringTypeList",
+        "AuthoringTypeSummary",
         "CapabilityManifest",
         "ValidationRequest",
         "ValidationResult",
@@ -308,10 +328,18 @@ def test_capability_manifest_is_exact_and_deterministic() -> None:
         "resolve_current_semantic_contract_set",
     )
     assert "compile_architecture" in first.pending_host_operations
-    assert first.browser_operations == ("capabilities",)
+    assert first.browser_operations == (
+        "capabilities",
+        "describe_contract",
+        "list_types",
+        "describe_type",
+    )
     assert first.api_contract_version == "1.0"
     assert first.operations == (
         "capabilities",
+        "describe_authoring_contract",
+        "list_authoring_types",
+        "describe_authoring_type",
         "validate_architecture",
         "validate_project_metadata",
         "validate_contract",
@@ -355,9 +383,9 @@ def test_capability_manifest_is_exact_and_deterministic() -> None:
     assert first.supported_normalized_model_schema_versions == ("1.1", "2.0", "2.1", "2.2", "2.3")
     assert first.supported_evidence_attribution_versions == ("1.5", "1.6")
     assert first.preferred_evidence_attribution_version == "1.6"
-    assert "supported_authoring_domain_versions" not in first.as_dict()
-    assert "preferred_authoring_domain_version" not in first.as_dict()
-    assert "authoring_capabilities" not in first.as_dict()
+    assert first.supported_authoring_domain_versions == ("1.0",)
+    assert first.preferred_authoring_domain_version == "1.0"
+    assert first.authoring_capabilities == ("authoring.discovery",)
     assert list(first.as_dict()) == [field.name for field in fields(first)]
     assert all(not isinstance(value, tuple) for value in first.as_dict().values())
 

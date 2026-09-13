@@ -35,6 +35,14 @@
     "check_promotion",
     "apply_promotion"
   ],
-  "browser_operations": ["capabilities"],
+  "browser_operations": ["capabilities", "describe_contract", "list_types", "describe_type"],
+  "authoring_domain": {
+    "authority": "contracts/authoring-domain/v1.0/contract.json",
+    "supported_versions": ["1.0"],
+    "preferred_version": "1.0",
+    "capabilities": ["authoring.discovery"],
+    "operations": ["describe_contract", "list_types", "describe_type"],
+    "browser_safe": true
+  },
   "rule": "Python and Node host_operations must match; pending operations are not parity-qualified until migrated through the semantic boundary."
 }

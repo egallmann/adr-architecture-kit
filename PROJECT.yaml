@@ -3,7 +3,7 @@ type: project_metadata
 
 project:
   name: "adr-architecture-kit"
-  description: "STE-compliant Python toolkit for machine-verifiable Architecture Decision Records"
+  description: "STE-compliant architecture decision toolkit with peer Python and TypeScript/Node bindings over shared semantic authority"
   type: library
 
 ownership:

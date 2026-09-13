@@ -10,13 +10,6 @@ from typing import Iterable
 
 ROOT = Path(__file__).resolve().parents[1]
 
-# These are intentionally exact historical filenames.  They are design-journal
-# provenance, not active implementation or release-stage surfaces.
-HISTORICAL_PATH_EXCEPTIONS: dict[str, str] = {
-    "docs/design-journal/2026-phase-1-public-sdk.md": "historical public-SDK decision journal",
-    "docs/design-journal/2026-phase-2-schema-v12.md": "historical schema decision journal",
-}
-
 CONTENT_SCAN_EXCEPTIONS: dict[str, str] = {
     "scripts/check_repository_naming.py": "the policy test contains forbidden examples",
     "tests/test_repository_naming.py": "the policy test contains forbidden examples",
@@ -62,7 +55,10 @@ def path_violations(paths: Iterable[str]) -> list[str]:
     violations: list[str] = []
     for path in paths:
         normalized = path.replace("\\", "/")
-        if normalized in HISTORICAL_PATH_EXCEPTIONS:
+        if normalized == ".adr-kit" or normalized.startswith(".adr-kit/"):
+            violations.append(
+                f"path {normalized}: local operational state must remain ignored and untracked"
+            )
             continue
         match = DELIVERY_PATH_RE.search(normalized)
         if match:
@@ -76,8 +72,7 @@ def path_violations(paths: Iterable[str]) -> list[str]:
 def _is_generated_or_historical(path: str) -> bool:
     normalized = path.replace("\\", "/")
     return (
-        normalized in HISTORICAL_PATH_EXCEPTIONS
-        or normalized in CONTENT_SCAN_EXCEPTIONS
+        normalized in CONTENT_SCAN_EXCEPTIONS
     )
 
 

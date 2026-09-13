@@ -34,9 +34,10 @@ evidence.
 It does not authorize construction, composition, mutation, identity
 allocation, persistence, or repository writes.
 
-The TypeScript `./authoring` browser-safe subpath remains the intended binding
-surface. Its implementation status, like Python discovery support, is governed
-by compatibility contracts and executable runtime capability manifests rather
-than canonical ADC semantic content; both remain planned/not implemented in
-this checkpoint.
+The TypeScript `./authoring` browser-safe subpath and Python
+`adr_kit.api` discovery functions are qualified binding surfaces. Both project
+this artifact directly and are governed by compatibility contracts and
+executable runtime capability manifests rather than independent semantic
+catalogs. Their shared conformance corpus checks structural, semantic,
+behavioral, and diagnostic equivalence.
 

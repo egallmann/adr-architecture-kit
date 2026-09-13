@@ -28,10 +28,9 @@ explore → evaluate → decide → lock readiness → prepare promotion
 ```
 
 They are not durable architecture authority. Promotion persists resolved intent
-into the governed substrate (`adrs/**`, DEC/INV content therein, `ROADMAP.md`,
-and other promoted authority). After promotion succeeds, current intent is
-reconstructed from that substrate and its Git history — not from the Design
-Journal.
+into accepted ADRs, contracts, and other governed authority. After promotion
+succeeds, current intent is reconstructed from that substrate and its Git
+history — not from the Design Journal.
 
 ## Lifecycle
 
@@ -40,7 +39,7 @@ Design Journal (local / mutable / non-authoritative)
   → prepared Promotion Contract (local mechanical handoff)
   → human lock
   → promotion apply
-  → ADR / DEC / INV / ROADMAP / other governed substrate
+  → accepted ADRs / contracts / governed substrate
        (durable / authoritative / versioned)
 ```
 
@@ -84,7 +83,7 @@ exact prepared Promotion Contract under the existing ignored kit state root:
 That location is outside governed authority, gitignored by default, inspectable
 for human review/lock, and eligible for local cleanup after successful
 promotion. An explicit caller-selected path remains supported and must still
-resolve outside `adrs/**` and `ROADMAP.md`.
+resolve outside governed authority paths.
 
 A prepared PC may persist locally long enough for deterministic review and lock;
 that does **not** imply it should be committed to Git or treated as durable
@@ -94,7 +93,7 @@ intent authority.
 
 After successful promotion:
 
-- ADR/DEC/INV/ROADMAP substrate is the durable architectural memory
+- Accepted ADRs, contracts, and governed substrate are the durable architectural memory
 - the Design Journal is no longer required to establish current intent
 - the prepared PC is no longer current intent authority
 - execution evidence may be retained per evidence/provenance policy (not as

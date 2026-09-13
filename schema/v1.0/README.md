@@ -43,4 +43,4 @@ v1.0 is the stable public encoding line for:
 ## Related
 
 - [../../docs/adr-type-model.md](../../docs/adr-type-model.md)
-- [../../docs/architecture-ir-overview.md](../../docs/architecture-ir-overview.md)
+- [../../docs/authority-boundary.md](../../docs/authority-boundary.md)

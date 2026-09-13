@@ -28,4 +28,12 @@ def load_host_capabilities_snapshot() -> dict[str, Any]:
     for field in ("peer_host_operations", "pending_host_operations", "browser_operations"):
         if not isinstance(payload.get(field), list):
             raise ValueError(f"host-capabilities.json must contain a {field} list")
+    authoring_domain = payload.get("authoring_domain")
+    if not isinstance(authoring_domain, dict):
+        raise ValueError("host-capabilities.json must contain an authoring_domain object")
+    for field in ("supported_versions", "capabilities", "operations"):
+        if not isinstance(authoring_domain.get(field), list):
+            raise ValueError(f"authoring_domain must contain a {field} list")
+    if not isinstance(authoring_domain.get("preferred_version"), str):
+        raise ValueError("authoring_domain must contain a preferred_version string")
     return payload

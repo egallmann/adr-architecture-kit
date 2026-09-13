@@ -109,5 +109,5 @@ For Architecture IR specifically:
 
 ## Related
 
-- [architecture-ir-overview.md](architecture-ir-overview.md) — three data layers (source, discovery bundle, public IR)
+- [public-sdk.md](public-sdk.md) — supported consumer operations and host boundaries
 - [public-surface-and-stability.md](public-surface-and-stability.md) — what is stable vs draft vs experimental

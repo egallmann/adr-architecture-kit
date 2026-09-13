@@ -21,11 +21,11 @@ test("capability discovery is local and explicit", () => {
   assert.deepEqual(manifest.supported_normalized_model_versions, ["2.1", "2.2", "2.3"]);
   assert.deepEqual(manifest.host_operations, ["capabilities", "validate_architecture", "validate_project_metadata", "validate_contract", "open_repository", "open_provider_registry", "build_embodiment_linkage", "generate_attribution_shim", "materialize_architecture", "list_semantic_contracts", "get_semantic_contract", "canonicalize_semantic_json", "calculate_semantic_contract_fingerprint", "verify_semantic_contract", "validate_semantic_resource_closure", "compose_semantic_contract_set", "list_semantic_contract_profiles", "get_semantic_contract_profile", "validate_semantic_contract_profile", "validate_semantic_contract_qualification", "preview_semantic_contract_set_assembly", "apply_semantic_contract_set_assembly", "validate_semantic_contract_corpus", "list_semantic_contract_sets", "resolve_current_semantic_contract_set"]);
   assert.ok(manifest.pending_host_operations.includes("compile_architecture"));
-  assert.deepEqual(manifest.browser_operations, ["capabilities"]);
-  assert.equal("supported_authoring_domain_versions" in manifest, false);
-  assert.equal("preferred_authoring_domain_version" in manifest, false);
-  assert.equal("authoring_capabilities" in manifest, false);
-  assert.deepEqual(manifest.browser_safe_entrypoints, [".", "./model", "./schemas", "./validation"]);
+  assert.deepEqual(manifest.browser_operations, ["capabilities", "describe_contract", "list_types", "describe_type"]);
+  assert.deepEqual(manifest.supported_authoring_domain_versions, ["1.0"]);
+  assert.equal(manifest.preferred_authoring_domain_version, "1.0");
+  assert.deepEqual(manifest.authoring_capabilities, ["authoring.discovery"]);
+  assert.deepEqual(manifest.browser_safe_entrypoints, [".", "./model", "./schemas", "./validation", "./authoring"]);
 });
 
 test("public Node governance entry point excludes internal semantic-core seams", () => {

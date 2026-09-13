@@ -1,41 +1,18 @@
 # Design Journal directory
 
-## Authority model
+Active Design Journals are local, ignored convergence state. They support
+explore → evaluate → decide → lock readiness → prepare promotion while intent
+is still changing.
 
-```text
-DESIGN_JOURNAL_DURABLE_AUTHORITY=NO
-DESIGN_JOURNAL_VERSIONED_HISTORY=NO
-PREPARED_PROMOTION_CONTRACT_DURABLE_AUTHORITY=NO
-PROMOTED_SUBSTRATE_DURABLE_AUTHORITY=YES
-```
+Design Journals are not durable architecture authority or a second versioned
+history of intent. Promotion moves resolved intent into accepted ADRs,
+contracts, schemas, or other governed artifacts. Those promoted substrates and
+their Git history are the durable record.
 
-STE Design Journals are **local convergence artifacts**. They support explore →
-evaluate → decide → lock readiness → prepare promotion. They are not durable
-architecture authority and must not become a second versioned history of intent.
+Prepared Promotion Contracts and review handoffs are local mechanical state.
+Keep them under ignored operational paths such as `.adr-kit/`; do not commit
+them as architecture history.
 
-After a successful promotion, current architectural intent is reconstructed from
-the promoted substrate (`adrs/**`, `ROADMAP.md`, and related governed artifacts)
-and its Git history — not from historical Design Journals.
-
-Prepared Promotion Contracts are **local mechanical handoffs** for review and
-human lock. Default persistence is under the existing ignored kit state root
-(`.adr-kit/`). They are not repository authority.
-
-## What is tracked here
-
-Only explanatory **process notes** from earlier kit phases (not STE DJ durable
-authority):
-
-- `2026-phase-1-public-sdk.md`
-- `2026-phase-2-schema-v12.md`
-- `2026-production-hardening.md`
-
-Those documents point at ADRs as authority. Keeping them versioned does not make
-STE Design Journals durable project memory.
-
-## Local working state (ignored)
-
-Active STE Design Journal / A-N handoff / prepared-PC working files under this
-directory are gitignored. Prefer writing new prepared handoffs via the provider
-default under `.adr-kit/promotion/`. Do not commit local journals, `_an-handoff/`,
-or `_prepared/` as architecture history.
+Historical journals are recovered from Git history when needed. This directory
+exists only to explain the local workflow and must remain ignored apart from
+this README.

@@ -31,19 +31,21 @@ construction, and language-native result views remain host adapter responsibilit
 Projection rendering and compilation remain staged until their semantic
 dependencies are extracted through that boundary.
 Unsupported normalized-model, evidence, and manifest versions fail explicitly.
-Authoring discovery remains a planned compatibility
-surface until its operations are implemented and qualified. The Node repository loader is index-first:
+Authoring discovery is now a qualified ADC 1.0 compatibility surface. Its
+contract version is independent of persistence-schema and package versions;
+selectors are exact and case-sensitive, and policy descriptors preserve
+defined, deferred, and not-applicable status. Discovery is descriptive only:
+it does not construct, compose, mutate, allocate identity, persist, or write to
+repositories. The Node repository loader is index-first:
 it requires the architecture index and its primary registries, validates the
 primary v2.1 bundle, and treats missing additive subset registries as empty.
 It does not reinterpret an older generated bundle as v2.1.
 
-The root capability manifest does not yet advertise ADC 1.0 or
-`authoring.discovery` because the discovery operations are not implemented by
-this binding. The browser-safe `./authoring` subpath and its
-`describeContract`, `listTypes`, and `describeType` operations remain promoted
-as planned compatibility authority, with status `promoted_authority_not_implemented`.
-After implementation and qualification, those ADC version and capability
-fields belong on the root capability surface.
+The root capability manifest advertises ADC 1.0 and `authoring.discovery`.
+Both the Python SDK and the browser-safe TypeScript `./authoring` subpath
+project the same canonical ADC artifact and shared conformance corpus. The
+root TypeScript surface re-exports the discovery operations, while the
+subpath is the explicit browser capability boundary.
 
 Semantic attribution linkage accepts evidence v1.5 and v1.6 under their
 version-specific vocabulary and confidence rules. Results are validated

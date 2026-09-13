@@ -25,6 +25,9 @@ test("Node capability manifest consumes the governed host capability contract", 
   assert.deepEqual(manifest.host_operations, contract.peer_host_operations);
   assert.deepEqual(manifest.pending_host_operations, contract.pending_host_operations);
   assert.deepEqual(manifest.browser_operations, contract.browser_operations);
+  assert.deepEqual(manifest.supported_authoring_domain_versions, contract.authoring_domain.supported_versions);
+  assert.equal(manifest.preferred_authoring_domain_version, contract.authoring_domain.preferred_version);
+  assert.deepEqual(manifest.authoring_capabilities, contract.authoring_domain.capabilities);
 });
 
 test("Node binding executes the shared semantic-core conformance vectors", async () => {

@@ -5,8 +5,8 @@ artifact_kind: system_overview
 generator_id: adr-system-overview
 generator_version: 2
 hash_algorithm: sha256
-source_hash: 3428c46a06c47111f29d405a7135c86cd5e7f8dc1e40b1abe035a1fe7d2b1729
-rendered_hash: 268173a2efb173f60921f59024a0eb3f23d04b35007b143b578bcf8197174dfe
+source_hash: 2a2ed0af27629fae4fbdbc177e15e21702f33db77d2c39cb7318c54e351e6a0e
+rendered_hash: fbf86a110bc7840f572dea0f07c70d0786a2d08b041dcedc088fcab0c949f734
 -->
 
 <!--
@@ -72,7 +72,7 @@ Consume supported programmatic behavior through `adr_kit.api`.
 Derived provider facts:
 
 - API contract version: `1.0`
-- Package version: `0.9.0`
+- Package version: `0.11.1`
 - Operations: `capabilities`, `describe_authoring_contract`, `list_authoring_types`, `describe_authoring_type`, `validate_architecture`, `validate_project_metadata`, `validate_contract`, `validate_generated_docs`, `compile_architecture`, `open_repository`, `open_provider_registry`, `build_embodiment_linkage`, `generate_attribution_shim`, `list_semantic_contracts`, `get_semantic_contract`, `canonicalize_semantic_json`, `calculate_semantic_contract_fingerprint`, `verify_semantic_contract`, `validate_semantic_resource_closure`, `compose_semantic_contract_set`, `list_semantic_contract_profiles`, `get_semantic_contract_profile`, `validate_semantic_contract_profile`, `validate_semantic_contract_qualification`, `preview_semantic_contract_set_assembly`, `apply_semantic_contract_set_assembly`, `validate_semantic_contract_corpus`, `list_semantic_contract_sets`, `resolve_current_semantic_contract_set`, `prepare_promotion`, `check_promotion`, `apply_promotion`- Validation modes: `complete`, `structural`- Artifact groups: `registries`, `manifest`, `markdown`- Supported ADR schema versions: `1.0`, `1.1`, `1.2`, `1.3`, `1.4`, `1.5`, `1.6`- Stable ADR schema versions: `1.0`- Provisional ADR schema versions: `1.1`, `1.2`, `1.3`, `1.4`, `1.5`, `1.6`- Normalized model schema version: `1.1`
 - Supported normalized model schema versions: `1.1`, `2.0`, `2.1`, `2.2`, `2.3`
 Supported semantic/repository contracts include `ArchitectureRepository` and `NormalizedArchitectureModel`.

@@ -11,7 +11,6 @@ import yaml
 from jinja2 import Environment, FileSystemLoader
 
 from ..decorators import enforces_invariant, implements_adr
-from ..compiler.backend.markdown_rendering import finalize_repository_admissible_markdown
 from ..integrity import (
     GENERATED_MARKER,
     HASH_ALGORITHM,
@@ -23,6 +22,7 @@ from ..integrity import (
     compute_rendered_hash,
     compute_source_hash,
 )
+from ..projection_markdown import canonicalize_projection_newlines
 from .system_overview_model import (
     AuthorityAnchor,
     LinkCategory,
@@ -94,7 +94,7 @@ class SystemOverviewGenerator:
         try:
             loaded = yaml.safe_load(path.read_text(encoding="utf-8"))
             return loaded if isinstance(loaded, dict) else {}
-        except (OSError, yaml.YAMLError):
+        except OSError, yaml.YAMLError:
             return {}
 
     def _project_name_and_description(self) -> tuple[str, str]:
@@ -157,7 +157,7 @@ class SystemOverviewGenerator:
             return {}
         try:
             data = yaml.safe_load(manifest.read_text(encoding="utf-8")) or {}
-        except (OSError, yaml.YAMLError):
+        except OSError, yaml.YAMLError:
             return {}
         records = {}
         for adr in data.get("adrs", []):
@@ -553,9 +553,7 @@ class SystemOverviewGenerator:
         """Render the system overview markdown."""
 
         template = self.env.get_template(TEMPLATE_NAME)
-        return finalize_repository_admissible_markdown(
-            template.render(**self.build_context())
-        )
+        return canonicalize_projection_newlines(template.render(**self.build_context()))
 
     def declared_source_inputs(self, output_path: Path) -> list[Path | HashInput]:
         """Return the explicit v2 semantic + projection-rule inputs for SYSTEM-OVERVIEW."""
@@ -573,6 +571,10 @@ class SystemOverviewGenerator:
             HashInput(
                 "__projection__/src/adr_kit/generators/system_overview_model.py",
                 (Path(__file__).resolve().parent / "system_overview_model.py").read_bytes(),
+            ),
+            HashInput(
+                "__projection__/src/adr_kit/projection_markdown.py",
+                (Path(__file__).resolve().parents[1] / "projection_markdown.py").read_bytes(),
             ),
             HashInput(
                 f"__projection__/src/adr_kit/templates/{TEMPLATE_NAME}",

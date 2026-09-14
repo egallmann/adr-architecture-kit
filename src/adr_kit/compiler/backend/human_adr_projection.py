@@ -523,10 +523,15 @@ def build_human_adr_projection_context(
     ps_module = Path(__file__).resolve().parent / "physical_system_projection.py"
     logical_module = Path(__file__).resolve().parent / "logical_projection.py"
     editorial_module = Path(__file__).resolve().parent / "projection_editorial.py"
+    projection_markdown_module = Path(__file__).resolve().parents[2] / "projection_markdown.py"
     dependency_keys[f"__generator__/modules/{this_module.name}"] = _module_hash_input(this_module)
     dependency_keys[f"__generator__/modules/{paths_module.name}"] = _module_hash_input(paths_module)
-    dependency_keys[f"__generator__/modules/{neighbor_module.name}"] = _module_hash_input(neighbor_module)
-    dependency_keys[f"__generator__/modules/{coverage_module.name}"] = _module_hash_input(coverage_module)
+    dependency_keys[f"__generator__/modules/{neighbor_module.name}"] = _module_hash_input(
+        neighbor_module
+    )
+    dependency_keys[f"__generator__/modules/{coverage_module.name}"] = _module_hash_input(
+        coverage_module
+    )
     dependency_keys[f"__generator__/modules/{pc_module.name}"] = _module_hash_input(pc_module)
     dependency_keys[f"__generator__/modules/{ps_module.name}"] = _module_hash_input(ps_module)
     dependency_keys[f"__generator__/modules/{logical_module.name}"] = _module_hash_input(
@@ -534,6 +539,9 @@ def build_human_adr_projection_context(
     )
     dependency_keys[f"__generator__/modules/{editorial_module.name}"] = _module_hash_input(
         editorial_module
+    )
+    dependency_keys[f"__generator__/modules/{projection_markdown_module.name}"] = (
+        _module_hash_input(projection_markdown_module)
     )
 
     inventory_payload = "\n".join(
@@ -582,7 +590,10 @@ def build_human_adr_projection_context(
     render_dependencies = [dependency_keys[key] for key in sorted(dependency_keys)]
 
     show_semantic_inventory = not has_human_relationship_inventory
-    if adr_type in {"physical-component", "physical-system", "logical"} and has_human_relationship_inventory:
+    if (
+        adr_type in {"physical-component", "physical-system", "logical"}
+        and has_human_relationship_inventory
+    ):
         show_semantic_inventory = False
 
     return HumanAdrProjectionContext(
@@ -621,9 +632,7 @@ def _endpoint_heading(
 ) -> str:
     from .physical_component_projection import human_endpoint_heading
 
-    return human_endpoint_heading(
-        entity_id, entities=entities, adr_models_by_id=adr_models_by_id
-    )
+    return human_endpoint_heading(entity_id, entities=entities, adr_models_by_id=adr_models_by_id)
 
 
 def _inventory_name(
@@ -634,9 +643,7 @@ def _inventory_name(
 ) -> str:
     from .physical_component_projection import human_inventory_name
 
-    return human_inventory_name(
-        entity_id, entities=entities, adr_models_by_id=adr_models_by_id
-    )
+    return human_inventory_name(entity_id, entities=entities, adr_models_by_id=adr_models_by_id)
 
 
 def _entity_label(
@@ -751,9 +758,7 @@ def _declared_in_bridges(
     relationships: list[IRRelationship],
     entity_types: dict[str, str],
 ) -> list[IRRelationship]:
-    non_adr_endpoints = {
-        endpoint for endpoint in endpoints if entity_types.get(endpoint) != "adr"
-    }
+    non_adr_endpoints = {endpoint for endpoint in endpoints if entity_types.get(endpoint) != "adr"}
     bridges: list[IRRelationship] = []
     for relationship in relationships:
         if relationship.relationship_type != "declared_in":

@@ -5,8 +5,8 @@ artifact_kind: rendered_adr_markdown
 generator_id: adr-projection-markdown
 generator_version: 3
 hash_algorithm: sha256
-source_hash: 5db243f4ec791cbd73d09b6f35dce01fe2575ef16a11cb4873c44b630039b45f
-rendered_hash: 6facfcebf7c1399923dba165399943b6c131002cef7c5b23c81d7f65ff18fd42
+source_hash: 764584c76336b2a558baffb3cafd827ce8aed5e25c87062c36935b3bd4112a30
+rendered_hash: cbe58f97f57e67c8b57c9b2aab794a772509d0904532e2e8dcf02b0fa8a4ed73
 -->
 
 # ADR-L-0003: Quality Assurance and Testing Strategy
@@ -165,7 +165,7 @@ TDD (Red-Green-Refactor) is architecturally aligned with STE principles:
 
 **Alignment with STE**:
 - SYS-2 (Deterministic Cognition): Tests enforce deterministic behavior
-- SYS-4 (Drift Prevention): Tests detect drift immediately
+- SYS-4 (Drift Prevention): Tests detect drift immediately<br>
 - PRIME-1 (No Implicit Assumptions): Tests make behavior explicit
 - INV-0001 (Schema Validation): Tests prove validation correctness
 

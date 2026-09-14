@@ -46,9 +46,9 @@ def _assert_no_trailing_horizontal_whitespace(text: str, *, label: str) -> None:
 
 def _assert_hard_break_preserved(body: str, *, label: str) -> None:
     assert HARD_BREAK_MARKER in body, f"{label}: missing admissible hard-break marker"
-    assert ABSENT_SOFT_BREAK not in body.replace(HARD_BREAK_MARKER, ""), (
-        f"{label}: hard break collapsed to soft break"
-    )
+    assert ABSENT_SOFT_BREAK not in body.replace(
+        HARD_BREAK_MARKER, ""
+    ), f"{label}: hard break collapsed to soft break"
     _assert_no_trailing_horizontal_whitespace(body, label=label)
 
 

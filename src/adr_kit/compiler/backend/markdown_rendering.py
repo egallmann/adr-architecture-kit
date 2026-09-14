@@ -35,7 +35,6 @@ from .human_adr_projection import (
 )
 from .projection_paths import projection_relative_path, stem_matches_adr
 
-
 MARKDOWN_GENERATOR_IDENTITY = GeneratorIdentity("adr-projection-markdown", 3)
 DEFAULT_TEMPLATE_DIR = Path(__file__).resolve().parents[2] / "templates"
 

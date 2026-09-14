@@ -6,7 +6,7 @@ generator_id: adr-projection-markdown
 generator_version: 3
 hash_algorithm: sha256
 source_hash: 97b9b85779d3d5b057765338fb4d039528960fa71bab389450572ab2f887d711
-rendered_hash: 9d34998ddbabc257dc98209d081075feee08aa8011d9806ebb3d4838eab23259
+rendered_hash: 3cd9d45f825049cd8dd5379435f1462019d2c0272037480a8e56760039b2c1f5
 -->
 
 # ADR-L-0024: Cross-Language Consumer Bindings and TypeScript Distribution
@@ -366,6 +366,7 @@ Equivalent behavior is required without semantic duplication.
 - [ADR-L-0025](ADR-L-0025-topology-and-contract-succession-authority.md)
 - [ADR-L-0026](ADR-L-0026-authoring-domain-contract-discovery-authority.md)
 - [ADR-L-0027](ADR-L-0027-public-binding-construction-and-release-parity.md)
+- [ADR-L-0029](ADR-L-0029-semantic-authoring-construction-and-candidate-authority.md)
 
 
 

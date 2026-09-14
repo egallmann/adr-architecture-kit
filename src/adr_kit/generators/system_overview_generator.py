@@ -159,7 +159,7 @@ class SystemOverviewGenerator:
             data = yaml.safe_load(manifest.read_text(encoding="utf-8")) or {}
         except (OSError, yaml.YAMLError):
             return {}
-        records: dict[str, dict[str, Any]] = {}
+        records = {}
         for adr in data.get("adrs", []):
             if isinstance(adr, dict) and isinstance(adr.get("id"), str):
                 records[adr["id"]] = adr

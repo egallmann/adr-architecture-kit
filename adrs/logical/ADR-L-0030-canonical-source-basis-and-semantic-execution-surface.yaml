@@ -1,0 +1,281 @@
+schema_version: '1.5'
+adr_type: logical
+id: 01a09cf0-179e-71cc-b150-d4a79551b939
+alias_id: ADR-L-0030
+alias_name: canonical-source-basis-and-semantic-execution-surface
+title: Canonical Source Basis and Semantic Execution Surface
+status: accepted
+created_date: '2026-09-13'
+authors:
+- erik.gallmann
+domains:
+- architecture
+- semantic-authority
+- authoring
+- consumer-bindings
+- determinism
+- projection
+tags:
+- exact-source-basis
+- semantic-execution
+- semantic-results
+- host-bindings
+- projection-bytes
+- promotion-seam
+related_adrs:
+- 019fee89-e615-7b9c-8e3f-32ceeda01491
+- 019fee89-e616-770c-a025-2c241a720730
+- 019fee89-e616-7c4e-953c-b7349412a784
+- 019fee89-e616-7d61-8e35-f11ba2ddd75d
+- 01a05a26-0000-7000-8000-000000000026
+- 01a05a27-0000-7000-8000-000000000027
+- 01a083dd-22b5-726d-8e49-01851bde3ba5
+context: |
+  Accepted host-parity and materialization authority already require one
+  semantic core and sealed source qualification for detached materialization.
+  ADR-Kit still needs an explicit authoring execution boundary for consumer-
+  bounded interpretation: how consumers establish what ADR-Kit may know, how
+  that basis becomes canonical semantic results, and how projections and
+  validation remain subordinate to that execution path.
+
+  This ADR promotes that execution-surface architecture only. It does not
+  implement public semantic-result APIs, move the compiler into Rust, add Node
+  APIs, authorize semantic-fragment construction, finalize Design Journal UX,
+  or advertise new distribution capabilities. Existing peer-host and materialization
+  decisions remain authoritative where they already bind shared semantics.
+decisions:
+- id: 01a09cf0-179e-71cc-b150-d4a88b327ed8
+  alias_id: DEC-0219
+  alias_name: exact-source-basis-is-consumer-bounded-semantic-input
+  summary: Require canonical interpretation and compilation to operate over an Exact Source Basis
+  rationale: |
+    An Exact Source Basis is the consumer-bounded set of ADR-Kit-owned source
+    artifacts ADR-Kit is allowed to know for a semantic operation. It preserves,
+    as appropriate, logical source identity or relative path, exact source bytes,
+    source classification, ADR-Kit-calculated content digest, applicable contract
+    qualification, source-basis fingerprint, and acquisition diagnostics. It is
+    not whole-repository authority and must not infer architecture from source
+    code, IaC, arbitrary docs, or Runtime-style embodiment surfaces.
+  related_invariants:
+  - 01a09cf0-179e-71cc-b150-d4b267533634
+  - 01a09cf0-179e-71cc-b150-d4b450b69792
+  - 01a09cf0-179e-71cc-b150-d4b520a6b4d2
+- id: 01a09cf0-179e-71cc-b150-d4a9898342bc
+  alias_id: DEC-0220
+  alias_name: acquisition-modes-converge-to-exact-source-basis
+  summary: Allow path-scoped governed discovery or explicit source bytes, converging to one Exact Source Basis
+  rationale: |
+    Consumers may either supply an explicit repository or ADR-domain path for
+    bounded governed discovery of ADR-Kit-owned artifacts within that scope, or
+    supply exact source artifacts or bytes directly. Both modes must converge to
+    the same Exact Source Basis before semantic interpretation. Equivalent exact
+    source bases must yield equivalent semantic results regardless of acquisition
+    mode. Host adapters perform acquisition; the Rust semantic core must not
+    traverse the consumer filesystem.
+  related_invariants:
+  - 01a09cf0-179e-71cc-b150-d4b267533634
+  - 01a09cf0-179e-71cc-b150-d4b3dc9cb5ab
+- id: 01a09cf0-179e-71cc-b150-d4aa0167e62c
+  alias_id: DEC-0221
+  alias_name: canonical-semantic-execution-over-exact-source-basis
+  summary: Make Rust semantic-core execution the canonical meaning-bearing path over an Exact Source Basis
+  rationale: |
+    For every advertised peer-host capability, Python and TypeScript/Node must
+    converge on the same canonical Rust semantic implementation. The existing
+    Python implementation may act as a characterization or migration oracle, but
+    accepted authority wins when behavior conflicts. This decision extends
+    ADR-L-0027 hard-convergence authority into the Exact Source Basis execution
+    boundary without redefining host-parity ownership.
+  related_invariants:
+  - 01a09cf0-179e-71cc-b150-d4b3dc9cb5ab
+  - 01a09cf0-179e-71cc-b150-d4b88005b71b
+- id: 01a09cf0-179e-71cc-b150-d4abc8366d8e
+  alias_id: DEC-0222
+  alias_name: semantic-results-are-complete-or-bounded-projections
+  summary: Treat semantic results as interpret(source basis) with optional deterministic bounded selection
+  rationale: |
+    Given an Exact Source Basis, ADR-Kit must eventually provide a public
+    peer-host capability that returns either the complete canonical semantic
+    result or a deterministic bounded semantic selection or traversal projection.
+    Source basis (what ADR-Kit may know) remains distinct from selection (which
+    semantic subset the consumer wants returned). This ADR does not lock a public
+    function name and does not define a speculative query DSL. Selections may
+    later address entities such as ADR, Decision, Invariant, NormativeProposition,
+    System, Component, Interface, DataFlow, relationships, UUID or alias,
+    unresolved semantics, and bounded graph traversal.
+  related_invariants:
+  - 01a09cf0-179e-71cc-b150-d4b6e1a037ce
+- id: 01a09cf0-179e-71cc-b150-d4ac397306fa
+  alias_id: DEC-0223
+  alias_name: relationship-and-graph-results-project-canonical-semantics
+  summary: Require relationship maps and graph results to project canonical normalized semantics only
+  rationale: |
+    Relationship and graph outputs must remain deterministic projections of the
+    same canonical semantic result. They must not become a second ontology or an
+    independently interpreted graph authority. This aligns with human-projection
+    relationship authority in ADR-L-0007 without duplicating that renderer rule.
+  related_invariants:
+  - 01a09cf0-179e-71cc-b150-d4b76a1fb95a
+- id: 01a09cf0-179e-71cc-b150-d4ad04f5223a
+  alias_id: DEC-0224
+  alias_name: exact-artifact-bytes-come-from-canonical-core
+  summary: Require meaning-bearing deterministic projection bytes to come from the canonical semantic execution path
+  rationale: |
+    For an Exact Source Basis and exact compile options, the canonical core
+    produces the exact artifact byte set. Hosts may acquire source, preview
+    returned bytes, persist exact returned bytes, and compare repository bytes to
+    canonical expected bytes. The Rust core itself does not write repositories.
+    Python and Node byte parity must come from one canonical result, not from
+    independent renderers attempting to agree.
+  related_invariants:
+  - 01a09cf0-179e-71cc-b150-d4b88005b71b
+  - 01a09cf0-179e-71cc-b150-d4b924025c57
+- id: 01a09cf0-179e-71cc-b150-d4aef5d57af2
+  alias_id: DEC-0225
+  alias_name: generated-validation-uses-canonical-projection-authority
+  summary: Require generated-artifact validation to use the same canonical projection authority as generation
+  rationale: |
+    Host bindings must not independently reproduce meaning-bearing validation
+    rules for shared generated artifacts. Validation compares repository state to
+    canonical expected bytes or equivalent canonical projection results.
+  related_invariants:
+  - 01a09cf0-179e-71cc-b150-d4b88005b71b
+- id: 01a09cf0-179e-71cc-b150-d4af6633c6f5
+  alias_id: DEC-0226
+  alias_name: public-apis-are-machine-boundary-cli-is-ux-adapter
+  summary: Preserve capability through public APIs while treating CLI as a human UX adapter
+  rationale: |
+    ADR-Kit is pre-1.0 and preserves capability rather than historical command
+    topology. Public APIs are the machine integration boundary. Compilation
+    remains the unified projection capability. Redundant CLI generation commands
+    may later be removed when fully represented by public APIs. Retained CLI
+    commands must not own unique semantic behavior, and public operations must
+    not be invented merely to mirror historical CLI command names such as
+    generateManifest or generateRegistry.
+  related_invariants:
+  - 01a09cf0-179e-71cc-b150-d4ba17576e20
+- id: 01a09cf0-179e-71cc-b150-d4b0b024e76b
+  alias_id: DEC-0227
+  alias_name: promotion-ops-are-provisional-peer-host-execution-seams
+  summary: Allow prepare_promotion, check_promotion, and apply_promotion as versioned peer-host seams without finalizing Design Journal
+  rationale: |
+    These operations are real governed authoring execution capabilities based on
+    the explicitly provisional ste.design_journal.promotion_contract/v0.1.
+    Exposing them through peer hosts is allowed so consumers can pressure the
+    current model. Doing so must not imply Design Journal stability, authorize
+    richer Design Journal construction APIs, or depend on semantic-fragment
+    construction authority.
+  related_invariants:
+  - 01a09cf0-179e-71cc-b150-d4bbcb854583
+- id: 01a09cf0-179e-71cc-b150-d4b183828678
+  alias_id: DEC-0228
+  alias_name: authoring-execution-surface-explicit-deferrals
+  summary: Keep workspace compile, Runtime discovery, Design Journal finality, construction, ArchSplain, and online version discovery deferred
+  rationale: |
+    This authority pass does not authorize workspace or recursive compilation
+    semantics, arbitrary Runtime repository/source-code/IaC discovery, final
+    Design Journal UX or domain model, semantic-fragment construction, ArchSplain
+    application behavior, or online tool-version or update discovery.
+invariants:
+- id: 01a09cf0-179e-71cc-b150-d4b267533634
+  alias_id: INV-0224
+  alias_name: equivalent-exact-source-bases-yield-equivalent-semantics
+  statement: Equivalent Exact Source Bases MUST yield equivalent canonical semantic results regardless of acquisition mode.
+  scope: global
+  enforcement_level: must
+  enforcement_mechanism: design
+  verification_method: automated
+  rationale: Acquisition mode must not become a hidden semantic input.
+- id: 01a09cf0-179e-71cc-b150-d4b3dc9cb5ab
+  alias_id: INV-0225
+  alias_name: semantic-core-must-not-traverse-consumer-filesystem
+  statement: The Rust semantic core MUST NOT traverse the consumer filesystem; host adapters MUST perform source acquisition into an Exact Source Basis.
+  scope: global
+  enforcement_level: must
+  enforcement_mechanism: design
+  verification_method: automated
+  rationale: Filesystem policy and consumer scope remain host responsibilities.
+- id: 01a09cf0-179e-71cc-b150-d4b450b69792
+  alias_id: INV-0226
+  alias_name: adr-kit-calculated-digests-are-authoritative
+  statement: When exact source bytes are available, ADR-Kit-calculated content digests MUST be authoritative and caller-provided hashes MUST NOT be trusted as semantic authority.
+  scope: global
+  enforcement_level: must
+  enforcement_mechanism: design
+  verification_method: automated
+  rationale: Digests are derived integrity evidence of exact bytes, not caller claims.
+- id: 01a09cf0-179e-71cc-b150-d4b520a6b4d2
+  alias_id: INV-0227
+  alias_name: prefer-exact-bytes-at-semantic-core-boundary
+  statement: The semantic-core boundary SHOULD receive exact source bytes rather than host-specific parsed YAML objects unless existing accepted authority already requires otherwise.
+  scope: global
+  enforcement_level: should
+  enforcement_mechanism: design
+  verification_method: manual
+  rationale: Exact bytes preserve host-neutral acquisition and digest authority.
+- id: 01a09cf0-179e-71cc-b150-d4b6e1a037ce
+  alias_id: INV-0228
+  alias_name: bounded-semantic-results-are-deterministic-projections
+  statement: Bounded semantic selections or traversals MUST be deterministic projections of the same canonical semantic result for the Exact Source Basis.
+  scope: global
+  enforcement_level: must
+  enforcement_mechanism: design
+  verification_method: automated
+  rationale: Selection cannot invent an alternate interpreted architecture.
+- id: 01a09cf0-179e-71cc-b150-d4b76a1fb95a
+  alias_id: INV-0229
+  alias_name: relationship-results-are-not-independent-ontology
+  statement: Relationship maps and graph results MUST project canonical normalized semantics and MUST NOT become a second ontology or independently interpreted graph authority.
+  scope: global
+  enforcement_level: must
+  enforcement_mechanism: design
+  verification_method: automated
+  rationale: One semantic ontology must remain shared across hosts and projections.
+- id: 01a09cf0-179e-71cc-b150-d4b88005b71b
+  alias_id: INV-0230
+  alias_name: hosts-must-not-own-shared-semantic-render-or-validation
+  statement: For shared peer-host capabilities, host bindings MUST NOT independently implement meaning-bearing compilers, validators, or renderers, and MUST NOT achieve parity by invoking another host or the ADR CLI.
+  scope: global
+  enforcement_level: must
+  enforcement_mechanism: design
+  verification_method: automated
+  rationale: Hard convergence requires one canonical semantic authority path.
+- id: 01a09cf0-179e-71cc-b150-d4b924025c57
+  alias_id: INV-0231
+  alias_name: rust-core-does-not-write-repositories
+  statement: The Rust semantic core MUST return exact projection bytes or semantic results and MUST NOT write consumer repositories.
+  scope: global
+  enforcement_level: must
+  enforcement_mechanism: design
+  verification_method: automated
+  rationale: Persistence and repository mutation remain host or caller responsibilities.
+- id: 01a09cf0-179e-71cc-b150-d4ba17576e20
+  alias_id: INV-0232
+  alias_name: cli-must-not-own-unique-semantic-behavior
+  statement: Retained CLI commands MUST adapt public API capability for human UX and MUST NOT own unique meaning-bearing semantic behavior.
+  scope: global
+  enforcement_level: must
+  enforcement_mechanism: design
+  verification_method: automated
+  rationale: Machine integration remains the public API surface.
+- id: 01a09cf0-179e-71cc-b150-d4bbcb854583
+  alias_id: INV-0233
+  alias_name: promotion-seam-does-not-finalize-design-journal
+  statement: Peer-host availability of prepare_promotion, check_promotion, and apply_promotion MUST NOT imply that the Design Journal or promotion-contract domain model is final, and MUST NOT authorize richer Design Journal construction APIs by itself.
+  scope: global
+  enforcement_level: must
+  enforcement_mechanism: design
+  verification_method: manual
+  rationale: The promotion seam is provisional execution pressure, not Design Journal completion.
+gaps: []
+notes: |
+  Reuses ADR-L-0027 DEC-0206/INV-0206 for shared semantic-core host parity,
+  ADR-L-0028 DEC-0212/INV-0217 for sealed materialization source qualification,
+  ADR-L-0028 DEC-0215/INV-0222 for peer-host observation and installed-distribution
+  qualification evidence, and ADR-L-0007 DEC-0109 for human-projection
+  relationship ontology. This ADR adds the Exact Source Basis plus semantic-
+  result execution boundary those decisions do not fully define.
+
+  Explicit non-claims: no public semantic-result API is implemented or
+  advertised here; capability manifests remain truthful to current behavior;
+  semantic-fragment construction remains outside this authority pass.

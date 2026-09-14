@@ -5,22 +5,22 @@ artifact_kind: rendered_adr_markdown
 generator_id: adr-projection-markdown
 generator_version: 3
 hash_algorithm: sha256
-source_hash: 69144126c58c5e3aca55a93439fe189de087dc0901eefae567974816ff8adb4e
-rendered_hash: 91f67b8eae2a80528474d7d34ef925484af45fb746ed4f95f6605ad927c635fb
+source_hash: fc9b563958f7db16e81cf0c876ee1926ee559f381a157dcd4f0bd2c3d37ae122
+rendered_hash: ebff8e06b148fce5366c4f27073b4e7caa2e5684ebc02fe03cb108b790994d66
 -->
 
 # ADR-L-0026: Authoring Domain Contract Discovery Authority
 
 ## Identity / Status
 
-**Type:** logical  
-**Status:** accepted  
-**Alias:** ADR-L-0026  
-**Authoring contract:** authoring v1.5  
-**Created:** 2026-09-02  
-**Authors:** erik.gallmann  
-**Domains:** architecture, authoring, schema-governance, consumer-bindings  
-**Tags:** authoring-domain, adc, discovery, consumer-binding  
+**Type:** logical<br>
+**Status:** accepted<br>
+**Alias:** ADR-L-0026<br>
+**Authoring contract:** authoring v1.5<br>
+**Created:** 2026-09-02<br>
+**Authors:** erik.gallmann<br>
+**Domains:** architecture, authoring, schema-governance, consumer-bindings<br>
+**Tags:** authoring-domain, adc, discovery, consumer-binding<br>
 
 ## Architecture at a Glance
 
@@ -44,6 +44,11 @@ This ADR promotes discovery authority only. It does not define construction,
 composition, mutation, repository writes, identity allocation, or persistence
 materialization. The canonical contract artifact is maintained independently of
 Python and TypeScript implementation models.
+
+ADC discovery remains distinct from Exact Source Basis semantic-result
+consumption. Discovery describes authoring types and contract descriptors;
+semantic results interpret a consumer-bounded source basis. This ADR does not
+authorize construction semantics.
 ## Architectural Decisions
 
 | Decision | Choice | Traceability |
@@ -205,6 +210,7 @@ JSON-compatible semantic projections are contract values; property order and bin
 ## Lifecycle / Related Architecture
 
 **Related ADRs**
+- [ADR-L-0030](ADR-L-0030-canonical-source-basis-and-semantic-execution-surface.md)
 - [ADR-L-0017](ADR-L-0017-forward-authoring-ergonomics-for-split-physical-adr-types.md)
 - [ADR-L-0019](ADR-L-0019-canonical-entity-identity.md)
 - [ADR-L-0022](ADR-L-0022-universal-uuidv7-entity-identity.md)
@@ -219,6 +225,7 @@ JSON-compatible semantic projections are contract values; property order and bin
 - [ADR-L-0023](ADR-L-0023-consumer-semantic-extension-contract.md)
 - [ADR-L-0024](ADR-L-0024-cross-language-consumer-bindings-and-typescript-distribution.md)
 - [ADR-L-0025](ADR-L-0025-topology-and-contract-succession-authority.md)
+- [ADR-L-0030](ADR-L-0030-canonical-source-basis-and-semantic-execution-surface.md)
 - [ADR-L-0027](ADR-L-0027-public-binding-construction-and-release-parity.md)
 - [ADR-L-0028](ADR-L-0028-normative-semantic-authority-and-materialization-foundation.md)
 

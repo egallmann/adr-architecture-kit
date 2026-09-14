@@ -5,21 +5,21 @@ artifact_kind: rendered_adr_markdown
 generator_id: adr-projection-markdown
 generator_version: 3
 hash_algorithm: sha256
-source_hash: b7d013039c6d1cb6d82aff8240634edf81a81a34dc0e45ef0f1236c23ad90823
-rendered_hash: 25f8e29d580f73364a5501ea2307aa3cc3b79e71b6d8a73bc2ec95cdf967c18c
+source_hash: 1f266f8e42963b5a32101284c1f1657ba1f4992094f001615f5b700a0b17947b
+rendered_hash: 92a968de7f2a0e85da4211fa1fccb3b2c05e5d5e872f2c542339bd524e5c446a
 -->
 
 # ADR-L-0022: Universal UUIDv7 Entity Identity
 
 ## Identity / Status
 
-**Type:** logical  
-**Status:** accepted  
-**Alias:** ADR-L-0022  
-**Authoring contract:** authoring v1.5  
-**Created:** 2026-08-15  
-**Authors:** erik.gallmann  
-**Domains:** architecture, identity, schema-governance  
+**Type:** logical<br>
+**Status:** accepted<br>
+**Alias:** ADR-L-0022<br>
+**Authoring contract:** authoring v1.5<br>
+**Created:** 2026-08-15<br>
+**Authors:** erik.gallmann<br>
+**Domains:** architecture, identity, schema-governance<br>
 
 ## Architecture at a Glance
 

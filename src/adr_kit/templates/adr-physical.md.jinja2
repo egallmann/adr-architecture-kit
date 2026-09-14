@@ -1,24 +1,24 @@
 # {{ adr | presentation_id }}: {{ adr.title }}
 
-**Status:** {{ adr.status.value }}  
-**Created:** {{ adr.created_date }}  
-{% if adr.modified_date %}**Modified:** {{ adr.modified_date }}  
+**Status:** {{ adr.status.value }}<br>
+**Created:** {{ adr.created_date }}<br>
+{% if adr.modified_date %}**Modified:** {{ adr.modified_date }}<br>
 {% endif %}
-**Authors:** {{ adr.authors | join(', ') }}  
-**Domains:** {{ adr.domains | join(', ') }}  
-{% if adr.tags %}**Tags:** {{ adr.tags | join(', ') }}  
+**Authors:** {{ adr.authors | join(', ') }}<br>
+**Domains:** {{ adr.domains | join(', ') }}<br>
+{% if adr.tags %}**Tags:** {{ adr.tags | join(', ') }}<br>
 {% endif %}
-{% if adr.alias_name %}**Alias name:** {{ adr.alias_name }}  
+{% if adr.alias_name %}**Alias name:** {{ adr.alias_name }}<br>
 {% endif %}
 
 {% if adr.implements_logical %}
-**Implements Logical:** {% for item in adr.implements_logical %}{{ item | present_ref }}{% if not loop.last %}, {% endif %}{% endfor %}  
+**Implements Logical:** {% for item in adr.implements_logical %}{{ item | present_ref }}{% if not loop.last %}, {% endif %}{% endfor %}<br>
 {% endif %}
-{% if adr.technologies %}**Technologies:** {{ adr.technologies | join(', ') }}  
+{% if adr.technologies %}**Technologies:** {{ adr.technologies | join(', ') }}<br>
 {% endif %}
 
 {% if adr.implements_system %}
-**Implements System:** {% for item in adr.implements_system %}{{ item | present_ref }}{% if not loop.last %}, {% endif %}{% endfor %}  
+**Implements System:** {% for item in adr.implements_system %}{{ item | present_ref }}{% if not loop.last %}, {% endif %}{% endfor %}<br>
 {% endif %}
 
 ## Context
@@ -61,7 +61,11 @@
 {% endfor %}
 {% endif %}
 
+{% if card.context_summary %}
 **Context:** {{ card.context_summary }}
+{% else %}
+**Context:**
+{% endif %}
 
 {% if card.link %}[Open projection]({{ card.link }}){% else %}*(projection link unavailable)*{% endif %}
 
@@ -181,7 +185,7 @@
 {% for integ in adr.integration_points %}
 ### {{ integ | presentation_id }}
 
-**Systems:** {{ integ.systems | join(', ') }}  
+**Systems:** {{ integ.systems | join(', ') }}<br>
 **Protocol:** {{ integ.protocol }}
 
 **Specification:**
@@ -224,7 +228,7 @@
 {% for gap in adr.gaps %}
 ### {{ gap | presentation_id }}: {{ gap.question }}
 
-**Impact:** {{ gap.impact.value }}  
+**Impact:** {{ gap.impact.value }}<br>
 **Blocking:** {{ "Yes" if gap.blocking else "No" }}
 
 {% if gap.context %}

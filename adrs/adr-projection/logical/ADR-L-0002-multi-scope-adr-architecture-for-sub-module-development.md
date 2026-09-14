@@ -5,23 +5,23 @@ artifact_kind: rendered_adr_markdown
 generator_id: adr-projection-markdown
 generator_version: 3
 hash_algorithm: sha256
-source_hash: f5e5d4f77353d9ada66412468850d17ada669c55eb2458551738692aae3a3e68
-rendered_hash: 8160ed8039723400d12602372f59988448a74b30b214bd9a108035f49cb85f25
+source_hash: 2268f3b105742e341e17c7933ef609fed9267796eaaf1972006f9d1711e1bc9a
+rendered_hash: 81a3f98aa7c6ba4fa56093b2e56af4e99b0b3ca1a1f2e36da2bc2cc0f7751f40
 -->
 
 # ADR-L-0002: Multi-Scope ADR Architecture for Sub-Module Development
 
 ## Identity / Status
 
-**Type:** logical  
-**Status:** accepted  
-**Alias:** ADR-L-0002  
-**Authoring contract:** authoring v1.5  
-**Created:** 2026-03-08  
-**Modified:** 2026-03-08  
-**Authors:** erik.gallmann  
-**Domains:** adr, architecture, governance, multi-project  
-**Tags:** adr, scope-resolution, multi-project, sub-modules, monorepo  
+**Type:** logical<br>
+**Status:** accepted<br>
+**Alias:** ADR-L-0002<br>
+**Authoring contract:** authoring v1.5<br>
+**Created:** 2026-03-08<br>
+**Modified:** 2026-03-08<br>
+**Authors:** erik.gallmann<br>
+**Domains:** adr, architecture, governance, multi-project<br>
+**Tags:** adr, scope-resolution, multi-project, sub-modules, monorepo<br>
 
 ## Architecture at a Glance
 

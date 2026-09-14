@@ -5,23 +5,23 @@ artifact_kind: rendered_adr_markdown
 generator_id: adr-projection-markdown
 generator_version: 3
 hash_algorithm: sha256
-source_hash: 12a51da2c515e82bf5a91cb5f61a14f8f562171fff50427bcf9ea10977cf4852
-rendered_hash: d08ffa7450aa72aaf2fa8c8dfe4423d4e9c91143b032ea37bce039a7753c210d
+source_hash: 022cd87eb7edeafbacbcafedab13688631d4aeae8aad2bd0abc5f6d6cc90c79d
+rendered_hash: 14f1950dfbbcec1fb7486a0b51299de0a975ce7cd484a2ac741c21e69325cdb9
 -->
 
 # ADR-L-0006: Rule Library Sub-Module with Cooperative Signals
 
 ## Identity / Status
 
-**Type:** logical  
-**Status:** accepted  
-**Alias:** ADR-L-0006  
-**Authoring contract:** authoring v1.5  
-**Created:** 2026-03-08  
-**Modified:** 2026-03-08  
-**Authors:** erik.gallmann  
-**Domains:** governance, rules, signals, integration  
-**Tags:** rule-library, cooperative-signals, submodule, mcp  
+**Type:** logical<br>
+**Status:** accepted<br>
+**Alias:** ADR-L-0006<br>
+**Authoring contract:** authoring v1.5<br>
+**Created:** 2026-03-08<br>
+**Modified:** 2026-03-08<br>
+**Authors:** erik.gallmann<br>
+**Domains:** governance, rules, signals, integration<br>
+**Tags:** rule-library, cooperative-signals, submodule, mcp<br>
 
 ## Architecture at a Glance
 

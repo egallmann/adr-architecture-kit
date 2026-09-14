@@ -5,22 +5,22 @@ artifact_kind: rendered_adr_markdown
 generator_id: adr-projection-markdown
 generator_version: 3
 hash_algorithm: sha256
-source_hash: 8ac1eaccdc3fba065f1049ec27e468f51be415473c46b262abfc6648a38d5d6a
-rendered_hash: d3505b745ae7a18330f6bed3a4e27dcdb2436124518c10915c7f401a8f770476
+source_hash: 27190c4df00b3c097b80e6c598d56217a7dd8743828c39cde97330c31647b680
+rendered_hash: 03f2b71c58e2eeeb952fb6abd1cc1525986466b5ab108270db0ec7bca245278e
 -->
 
 # ADR-L-0007: Deterministic Documentation Projection
 
 ## Identity / Status
 
-**Type:** logical  
-**Status:** accepted  
-**Alias:** ADR-L-0007  
-**Authoring contract:** authoring v1.5  
-**Created:** 2026-03-12  
-**Authors:** erik.gallmann  
-**Domains:** documentation, governance, determinism, projection  
-**Tags:** generated-documentation, deterministic, ai-first, drift-prevention  
+**Type:** logical<br>
+**Status:** accepted<br>
+**Alias:** ADR-L-0007<br>
+**Authoring contract:** authoring v1.5<br>
+**Created:** 2026-03-12<br>
+**Authors:** erik.gallmann<br>
+**Domains:** documentation, governance, determinism, projection<br>
+**Tags:** generated-documentation, deterministic, ai-first, drift-prevention<br>
 
 ## Architecture at a Glance
 
@@ -28,17 +28,18 @@ rendered_hash: d3505b745ae7a18330f6bed3a4e27dcdb2436124518c10915c7f401a8f770476
 | --- | --- |
 | Logical authority | ADR-L-0007 |
 | Status | accepted |
-| Decisions | 12 |
+| Decisions | 17 |
 | Capabilities | 1 |
-| Invariants | 7 |
+| Invariants | 11 |
 | Physical realizations | [ADR-PS-0002](../physical-system/ADR-PS-0002-adr-kit-authoring-compiler-and-validation-system.md), [ADR-PC-0005](../physical-component/ADR-PC-0005-generated-artifact-integrity-validation.md), [ADR-PC-0003](../physical-component/ADR-PC-0003-compiler-pipeline-and-driver.md) |
 
 
 ## Context
 
 The repository already treats several human-readable artifacts as derived state:
-ADR human projections under adrs/adr-projection/, manifest summaries, and the AI-first SYSTEM-OVERVIEW
-are generated from structured or code-defined sources. That behavior now needs
+ADR human projections under adrs/adr-projection/, manifest summaries, and the optional
+ADR-domain orientation projection (historically SYSTEM-OVERVIEW) are generated from
+structured or code-defined sources. That behavior now needs
 explicit architectural authority so future contributors do not reintroduce
 manually maintained documentation that drifts from canonical artifacts.
 
@@ -57,7 +58,7 @@ Manual maintenance of generated documentation creates several risks:
 This rule applies to all human-readable architecture documentation projections,
 including:
 - ADR human projections (adrs/adr-projection/)
-- SYSTEM-OVERVIEW
+- optional ADR-domain orientation projection (SYSTEM-OVERVIEW compatibility name)
 - manifest summaries
 - architecture diagrams
 - documentation indexes
@@ -80,8 +81,13 @@ must be enforced through generators, validators, tests, and CI.
 | DEC-0112 | Require projection-source closure for generated documentation freshness | Related INV-0101, INV-0038 |
 | DEC-0113 | Documentation projections reflect supported boundaries without redefining them | Related INV-0037, INV-0100 |
 | DEC-0114 | Isolate repository-specific documentation-projection orientation by scope | Related INV-0102 |
-| DEC-0115 | Preserve legacy generic SYSTEM-OVERVIEW generation as compatibility-only | Related INV-0102, INV-0100 |
+| DEC-0115 | Replace legacy generic SYSTEM-OVERVIEW posture with optional ADR-domain orientation | Related INV-0102, INV-0100, INV-0235 |
 | DEC-0176 | Encode projection v3 renderer contract for normalized v2.2 topology semantics | Related INV-0038, INV-0039 |
+| DEC-0229 | Emit generated documentation in final repository-admissible bytes | Related INV-0234, INV-0038 |
+| DEC-0230 | Treat ADR-domain orientation as optional consumption guidance, not whole-system authority | Related INV-0235, INV-0100 |
+| DEC-0231 | Require capability-aware ADR-domain orientation content | Related INV-0236, INV-0100 |
+| DEC-0232 | Separate human and machine/AI ADR-domain orientation guidance | Related INV-0100, INV-0037 |
+| DEC-0233 | Treat package version as orientation provenance, not semantic freshness | Related INV-0237, INV-0101 |
 
 ### DEC-0012 — Treat human-readable architecture documentation as deterministic derived state
 
@@ -337,13 +343,14 @@ Negative:
 **Rationale**
 
 Repository-specific orientation semantics must not leak into an unrelated
-repository scope. When ADR Kit generates SYSTEM-OVERVIEW for a consuming
-repository, ADR Kit provider orientation must not be rendered into that consumer
-merely because ADR Kit produced the file.
+repository scope. When ADR Kit generates an ADR-domain orientation projection for a
+consuming repository, ADR Kit provider orientation must not be rendered into that
+consumer merely because ADR Kit produced the file.
 
-Explicit repository profiles may specialize orientation. Unsupported or
-non-profiled scopes must follow the supported projection-scope rule rather than
-silently inheriting another repository's provider identity.
+Orientation remains consumption guidance for the ADR domain present in the target
+repository. It must not claim to describe an entire software system or repository
+outside that ADR domain, and must not silently inherit another repository's
+provider identity.
 
 **Consequences**
 
@@ -357,42 +364,41 @@ Negative:
 **Traceability**
 - Related invariants: INV-0102
 
-### DEC-0115 — Preserve legacy generic SYSTEM-OVERVIEW generation as compatibility-only
+### DEC-0115 — Replace legacy generic SYSTEM-OVERVIEW posture with optional ADR-domain orientation
 
 **Rationale**
 
-Evidence on the active branch shows generate-system-overview currently succeeds
-for non-kit, non-runtime project identities and is listed among generation
-commands whose success/failure behavior is preserved. Fail-closed unsupported
-routing would change that observable CLI behavior.
+The SYSTEM-OVERVIEW concept is refined into an optional ADR-domain orientation
+projection. Its purpose is to orient humans and AI on how to consume the ADR
+domain present in the repository, analogous to an injected README for that
+repository's ADR-Kit semantic interface. It is not an authoritative description
+of the entire repository or software system.
 
-Therefore generic-project generation remains a compatibility obligation for this
-refinement. The legacy generic path must preserve emission success without ADR
-Kit provider framing, without becoming a third product-level generic consumer
-overview design, and without new semantic inference beyond the minimum needed to
-keep the existing contract. Richer corpus-driven generic assembly remains
-deferred. Absence of SYSTEM-OVERVIEW remains valid; integrity validates the file
-only when present.
+Pre-1.0 authority intentionally replaces the prior generic/profile obligation
+that preserved emission success as a compatibility product surface. Orientation
+remains optional; absence must not invalidate an otherwise valid ADR corpus;
+integrity validates the artifact only when present.
 
 **Consequences**
 
 Positive:
-- Existing CLI success behavior for generic scopes is preserved
-- Provider isolation remains enforceable for non-kit scopes
-- Future generic-consumer design stays explicitly deferred
+- Orientation purpose is consumption guidance rather than whole-system explanation
+- Optional absence remains corpus-valid
+- Legacy generic overview product posture is retired as architectural obligation
 
 Negative:
-- A bounded legacy path must be maintained until replaced by later design
+- Generators and validators must treat orientation as optional rather than required
 
 **Traceability**
 - Related invariants: INV-0102
 - Related invariants: INV-0100
+- Related invariants: INV-0235
 
 ### DEC-0176 — Encode projection v3 renderer contract for normalized v2.2 topology semantics
 
 **Rationale**
 
-Projection v3 renders deterministic human documentation from normalized v2.2 inputs using compiler-derived relationship semantics only. Topology inventory, compatibility rows, and peer-card verbs must follow ADR-L-0025 topology and contract succession authority without inventing pseudo-edges or ADR-level fake topology. Coverage registry posture and SYSTEM-OVERVIEW integration remain sequenced post-substrate; this decision governs authority only, not implementation modules or templates.
+Projection v3 renders deterministic human documentation from normalized v2.2 inputs using compiler-derived relationship semantics only. Topology inventory, compatibility rows, and peer-card verbs must follow ADR-L-0025 topology and contract succession authority without inventing pseudo-edges or ADR-level fake topology. Coverage registry posture and ADR-domain orientation integration remain sequenced post-substrate; this decision governs authority only, not implementation modules or templates.
 
 **Consequences**
 
@@ -406,6 +412,131 @@ Negative:
 **Traceability**
 - Related invariants: INV-0038
 - Related invariants: INV-0039
+
+### DEC-0229 — Emit generated documentation in final repository-admissible bytes
+
+**Rationale**
+
+Meaning-bearing deterministic documentation projection must emit the final
+repository-admissible byte representation. No whitespace normalization, formatting
+cleanup, newline repair, or other post-generation mutation may be required between
+canonical generation and repository persistence or admission. This covers at least
+trailing horizontal whitespace, newline normalization, final-newline policy,
+formatter-required mutations, and post-render cleanup that would invalidate
+rendered hashes. Renderers must intentionally produce admissible bytes and must
+not rely on indiscriminate stripping of authored Markdown whitespace that could
+carry meaning.
+
+**Consequences**
+
+Positive:
+- Generated projections can be admitted without hand cleanup
+- Rendered hashes remain meaningful against admitted repository bytes
+
+Negative:
+- Templates and renderers must encode admission constraints deliberately
+
+**Traceability**
+- Related invariants: INV-0234
+- Related invariants: INV-0038
+
+### DEC-0230 — Treat ADR-domain orientation as optional consumption guidance, not whole-system authority
+
+**Rationale**
+
+The orientation projection orients consumers on how to use the ADR domain
+present in a repository. For humans it should point toward human ADR projections
+and, where appropriate, ADR-PS as a likely system-oriented entry point linking
+ADR-L and ADR-PC detail. It must not claim that one ADR-PS is always globally
+primary when a corpus may contain multiple systems. Absence of the orientation
+artifact must not invalidate an otherwise valid ADR corpus.
+
+**Consequences**
+
+Positive:
+- Orientation stays subordinate to canonical ADR YAML
+- Multi-system corpora are not falsely collapsed to one primary ADR-PS
+
+Negative:
+- Generators must avoid whole-repository or whole-product claims
+
+**Traceability**
+- Related invariants: INV-0235
+- Related invariants: INV-0100
+
+### DEC-0231 — Require capability-aware ADR-domain orientation content
+
+**Rationale**
+
+Generated orientation must reflect the API contract and capability profile
+actually available to the consumer. It must not recommend a public operation
+absent from the capability profile used to produce it. Its effective basis is
+ADR-Kit API contract generation, advertised capability profile, orientation
+projection contract or version, relevant repository ADR-domain facts, and any
+explicit small consumer orientation configuration. This is not an arbitrary
+templating or documentation DSL.
+
+**Consequences**
+
+Positive:
+- Orientation cannot advertise unimplemented capabilities
+- Capability truthfulness remains aligned with package evidence
+
+Negative:
+- Orientation regeneration depends on capability-profile inputs
+
+**Traceability**
+- Related invariants: INV-0236
+- Related invariants: INV-0100
+
+### DEC-0232 — Separate human and machine/AI ADR-domain orientation guidance
+
+**Rationale**
+
+Human orientation prefers human ADR projections, with ADR-PS as a likely
+system-oriented entry where appropriate. When ADR-Kit execution is available,
+machine and AI orientation should prefer the canonical semantic-result surface
+over reconstructing normalized architecture semantics from generated manifests,
+registries, or Markdown projections. Manifest and index surfaces remain useful
+for inventory, interoperability, integrity, navigation, and offline inspection
+and are not removed by this decision.
+
+**Consequences**
+
+Positive:
+- Humans and machines receive purpose-fit entry guidance
+- Generated indexes retain narrower inventory roles
+
+Negative:
+- Orientation content must distinguish audience without inventing APIs
+
+**Traceability**
+- Related invariants: INV-0100
+- Related invariants: INV-0037
+
+### DEC-0233 — Treat package version as orientation provenance, not semantic freshness
+
+**Rationale**
+
+An ADR-Kit package version change alone must not make the ADR-domain
+orientation projection stale. Package or tool version may be recorded as
+provenance, but release identity is not automatically a meaning-bearing
+projection input. Changes to API contract, capability profile, orientation
+contract, projection semantics, selected repository facts, or explicit consumer
+orientation input may legitimately change the artifact.
+
+**Consequences**
+
+Positive:
+- Patch releases do not force orientation churn by version alone
+- True meaning-bearing input changes remain freshness triggers
+
+Negative:
+- Freshness declarations must enumerate meaning-bearing inputs explicitly
+
+**Traceability**
+- Related invariants: INV-0237
+- Related invariants: INV-0101
 
 
 ## Capabilities
@@ -429,6 +560,10 @@ structured source artifacts and verify that rendered output remains in sync.
 | INV-0100 | INV-DOC-005: Authored orientation used by a documentation projection must remain explicit, non-authoritative, and… | MUST / design | manual |
 | INV-0101 | INV-DOC-006: Generated documentation freshness must close over all governed semantic inputs and projection-rule… | MUST / test | automated |
 | INV-0102 | INV-DOC-007: Repository-specific documentation-projection orientation must not leak into an unrelated repository… | MUST / test | automated |
+| INV-0234 | INV-DOC-008: Generated documentation MUST be emitted in its final repository-admissible byte representation; no… | MUST / test | automated |
+| INV-0235 | INV-DOC-009: Absence of the ADR-domain orientation projection MUST NOT invalidate an otherwise valid ADR corpus;… | MUST / design | automated |
+| INV-0236 | INV-DOC-010: An ADR-domain orientation projection MUST NOT recommend a public operation absent from the capability… | MUST / test | automated |
+| INV-0237 | INV-DOC-011: An ADR-Kit package version change alone MUST NOT make the ADR-domain orientation projection stale. | MUST / test | automated |
 
 ### INV-0037
 
@@ -554,6 +689,74 @@ semantics rendered into an arbitrary consuming repository.
 Scope isolation prevents consumer repositories from being mis-oriented as
 the authoring provider.
 
+### INV-0234
+
+**Statement**
+
+INV-DOC-008: Generated documentation MUST be emitted in its final
+repository-admissible byte representation; no whitespace normalization,
+formatting cleanup, newline repair, or other post-generation mutation may be
+required between canonical generation and repository persistence or admission.
+
+**Scope:** global
+
+**Enforcement:** MUST (test)
+**Verification:** automated
+
+**Rationale**
+
+Admission controls and rendered hashes must apply to the canonical
+generated bytes themselves.
+
+### INV-0235
+
+**Statement**
+
+INV-DOC-009: Absence of the ADR-domain orientation projection MUST NOT
+invalidate an otherwise valid ADR corpus; integrity validation applies to the
+orientation artifact only when present.
+
+**Scope:** global
+
+**Enforcement:** MUST (design)
+**Verification:** automated
+
+**Rationale**
+
+Orientation is optional consumption guidance, not corpus completeness.
+
+### INV-0236
+
+**Statement**
+
+INV-DOC-010: An ADR-domain orientation projection MUST NOT recommend a
+public operation absent from the capability profile used to produce it.
+
+**Scope:** global
+
+**Enforcement:** MUST (test)
+**Verification:** automated
+
+**Rationale**
+
+Orientation must remain truthful to advertised capability.
+
+### INV-0237
+
+**Statement**
+
+INV-DOC-011: An ADR-Kit package version change alone MUST NOT make the
+ADR-domain orientation projection stale.
+
+**Scope:** global
+
+**Enforcement:** MUST (test)
+**Verification:** automated
+
+**Rationale**
+
+Package release identity is provenance, not automatic semantic input.
+
 
 
 ## Decision / Intent Traceability
@@ -575,13 +778,22 @@ flowchart LR
   n_019ff22a_bb5f_76eb_8a31_546eeba55dcb["Documentation projections reflect supported boundaries without redefining them (DEC-0113)"]
   n_019ff22a_bb5f_7779_912f_040cdf1b54b8["INV-0100"]
   n_019ff22a_bb5f_77ed_a63f_98f0455fdd1e["Isolate repository-specific documentation-projection orientation by scope (DEC-0114)"]
-  n_019ff22a_bb5f_7926_a33c_b66f72343219["Preserve legacy generic SYSTEM-OVERVIEW generation as compatibility-only (DEC-0115)"]
+  n_019ff22a_bb5f_7926_a33c_b66f72343219["Replace legacy generic SYSTEM-OVERVIEW posture with optional ADR-domain orientation (DEC-0115)"]
   n_019ff22a_bb5f_7b93_a600_f587022aeffd["INV-0101"]
   n_019ff22a_bb5f_7bfc_851d_938bffc81281["Classify documentation-projection inputs as derived facts or authored orientation (DEC-0110)"]
   n_019ff22a_bb5f_7c77_a223_1dab5e8c814d["INV-0099"]
   n_019ff22a_bb5f_7d9e_973f_b9008898a8c9["Require projection-source closure for generated documentation freshness (DEC-0112)"]
   n_019ff22a_bb5f_7fca_b021_b3cbc68ddde2["INV-0102"]
   n_01a048f5_b197_75ab_a812_6e3361333731["Encode projection v3 renderer contract for normalized v2.2 topology semantics (DEC-0176)"]
+  n_01a09cf0_179e_71cc_b150_d4bc07d17a38["Emit generated documentation in final repository-admissible bytes (DEC-0229)"]
+  n_01a09cf0_179e_71cc_b150_d4bdd03ad104["Treat ADR-domain orientation as optional consumption guidance, not whole-system authority (DEC-0230)"]
+  n_01a09cf0_179e_71cc_b150_d4be32e00b3e["Require capability-aware ADR-domain orientation content (DEC-0231)"]
+  n_01a09cf0_179e_71cc_b150_d4bf50832101["Separate human and machine/AI ADR-domain orientation guidance (DEC-0232)"]
+  n_01a09cf0_179e_71cc_b150_d4c0e13c5fcc["Treat package version as orientation provenance, not semantic freshness (DEC-0233)"]
+  n_01a09cf0_179e_71cc_b150_d4c1f1865c19["INV-0234"]
+  n_01a09cf0_179e_71cc_b150_d4c281b85395["INV-0235"]
+  n_01a09cf0_179e_71cc_b150_d4c3c7e3d727["INV-0236"]
+  n_01a09cf0_179e_71cc_b150_d4c4947c82a2["INV-0237"]
   n_019fee89_e615_758b_b03f_e4a3dc338589 -->|"enforces"| n_019fee89_e616_77e0_992d_25764a1ed5a2
   n_019fee89_e615_758b_b03f_e4a3dc338589 -->|"enforces"| n_019fee89_e616_7abd_ad17_f29edbd30959
   n_019fee89_e615_758b_b03f_e4a3dc338589 -->|"enforces"| n_019fee89_e616_7bf6_a63f_2fdbec175790
@@ -601,12 +813,23 @@ flowchart LR
   n_019ff22a_bb5f_77ed_a63f_98f0455fdd1e -->|"enforces"| n_019ff22a_bb5f_7fca_b021_b3cbc68ddde2
   n_019ff22a_bb5f_7926_a33c_b66f72343219 -->|"enforces"| n_019ff22a_bb5f_7779_912f_040cdf1b54b8
   n_019ff22a_bb5f_7926_a33c_b66f72343219 -->|"enforces"| n_019ff22a_bb5f_7fca_b021_b3cbc68ddde2
+  n_019ff22a_bb5f_7926_a33c_b66f72343219 -->|"enforces"| n_01a09cf0_179e_71cc_b150_d4c281b85395
   n_019ff22a_bb5f_7bfc_851d_938bffc81281 -->|"enforces"| n_019ff22a_bb5f_7779_912f_040cdf1b54b8
   n_019ff22a_bb5f_7bfc_851d_938bffc81281 -->|"enforces"| n_019ff22a_bb5f_7c77_a223_1dab5e8c814d
   n_019ff22a_bb5f_7d9e_973f_b9008898a8c9 -->|"enforces"| n_019fee89_e616_7abd_ad17_f29edbd30959
   n_019ff22a_bb5f_7d9e_973f_b9008898a8c9 -->|"enforces"| n_019ff22a_bb5f_7b93_a600_f587022aeffd
   n_01a048f5_b197_75ab_a812_6e3361333731 -->|"enforces"| n_019fee89_e616_77e0_992d_25764a1ed5a2
   n_01a048f5_b197_75ab_a812_6e3361333731 -->|"enforces"| n_019fee89_e616_7abd_ad17_f29edbd30959
+  n_01a09cf0_179e_71cc_b150_d4bc07d17a38 -->|"enforces"| n_019fee89_e616_7abd_ad17_f29edbd30959
+  n_01a09cf0_179e_71cc_b150_d4bc07d17a38 -->|"enforces"| n_01a09cf0_179e_71cc_b150_d4c1f1865c19
+  n_01a09cf0_179e_71cc_b150_d4bdd03ad104 -->|"enforces"| n_019ff22a_bb5f_7779_912f_040cdf1b54b8
+  n_01a09cf0_179e_71cc_b150_d4bdd03ad104 -->|"enforces"| n_01a09cf0_179e_71cc_b150_d4c281b85395
+  n_01a09cf0_179e_71cc_b150_d4be32e00b3e -->|"enforces"| n_019ff22a_bb5f_7779_912f_040cdf1b54b8
+  n_01a09cf0_179e_71cc_b150_d4be32e00b3e -->|"enforces"| n_01a09cf0_179e_71cc_b150_d4c3c7e3d727
+  n_01a09cf0_179e_71cc_b150_d4bf50832101 -->|"enforces"| n_019fee89_e616_7bf6_a63f_2fdbec175790
+  n_01a09cf0_179e_71cc_b150_d4bf50832101 -->|"enforces"| n_019ff22a_bb5f_7779_912f_040cdf1b54b8
+  n_01a09cf0_179e_71cc_b150_d4c0e13c5fcc -->|"enforces"| n_019ff22a_bb5f_7b93_a600_f587022aeffd
+  n_01a09cf0_179e_71cc_b150_d4c0e13c5fcc -->|"enforces"| n_01a09cf0_179e_71cc_b150_d4c4947c82a2
 ```
 
 
@@ -638,6 +861,7 @@ ambiguity in an architecture governance repository.
 ## Lifecycle / Related Architecture
 
 **Related ADRs**
+- [ADR-L-0030](ADR-L-0030-canonical-source-basis-and-semantic-execution-surface.md)
 - [ADR-L-0001](ADR-L-0001-ste-compliant-machine-verifiable-architecture-decision-record-system.md)
 - [ADR-L-0003](ADR-L-0003-quality-assurance-and-testing-strategy.md)
 - [ADR-PS-0002](../physical-system/ADR-PS-0002-adr-kit-authoring-compiler-and-validation-system.md)
@@ -654,6 +878,7 @@ ambiguity in an architecture governance repository.
 - [ADR-PC-0005](../physical-component/ADR-PC-0005-generated-artifact-integrity-validation.md)
 - [ADR-PS-0002](../physical-system/ADR-PS-0002-adr-kit-authoring-compiler-and-validation-system.md)
 - [ADR-L-0025](ADR-L-0025-topology-and-contract-succession-authority.md)
+- [ADR-L-0030](ADR-L-0030-canonical-source-basis-and-semantic-execution-surface.md)
 - [ADR-L-0012](ADR-L-0012-federation-authority-and-qualified-identity-model.md)
 
 

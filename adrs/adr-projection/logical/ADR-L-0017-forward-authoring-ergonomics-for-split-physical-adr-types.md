@@ -5,22 +5,22 @@ artifact_kind: rendered_adr_markdown
 generator_id: adr-projection-markdown
 generator_version: 3
 hash_algorithm: sha256
-source_hash: 9dffb27800d091b38b05311c12e4e0ddb023aed180410963f301b7c78e3c1cd8
-rendered_hash: d669e77fd1fc6322757567ea0dc515c7d730f8ee0626306996bc4cde7e248537
+source_hash: b3b956f219832b07de7fb0042986603937594ba1973d17ec3a59bb67bb164cd9
+rendered_hash: 9c812ca0fd38338326af2eda79c977fc4190bb36a10efa06c9983dcd109c8cd2
 -->
 
 # ADR-L-0017: Forward Authoring Ergonomics for Split Physical ADR Types
 
 ## Identity / Status
 
-**Type:** logical  
-**Status:** accepted  
-**Alias:** ADR-L-0017  
-**Authoring contract:** authoring v1.5  
-**Created:** 2026-04-14  
-**Authors:** erik.gallmann  
-**Domains:** authoring, adr-taxonomy  
-**Tags:** scaffolding, next-id, physical-types  
+**Type:** logical<br>
+**Status:** accepted<br>
+**Alias:** ADR-L-0017<br>
+**Authoring contract:** authoring v1.5<br>
+**Created:** 2026-04-14<br>
+**Authors:** erik.gallmann<br>
+**Domains:** authoring, adr-taxonomy<br>
+**Tags:** scaffolding, next-id, physical-types<br>
 
 ## Architecture at a Glance
 

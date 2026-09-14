@@ -5,22 +5,22 @@ artifact_kind: rendered_adr_markdown
 generator_id: adr-projection-markdown
 generator_version: 3
 hash_algorithm: sha256
-source_hash: dea69d93db99cff8ddf585dd095cb1cb400a517c6cb051025f3d9f286a2dba6c
-rendered_hash: 692c4f9116a36989de016bda267dff65dd8e36c1907f8ee059befdfa9594965f
+source_hash: 983f6e9718b9beb821bad7f8635b68f2990719060ef13ebcc7ad0692e7adf3bd
+rendered_hash: 9d34998ddbabc257dc98209d081075feee08aa8011d9806ebb3d4838eab23259
 -->
 
 # ADR-L-0024: Cross-Language Consumer Bindings and TypeScript Distribution
 
 ## Identity / Status
 
-**Type:** logical  
-**Status:** accepted  
-**Alias:** ADR-L-0024  
-**Authoring contract:** authoring v1.5  
-**Created:** 2026-08-23  
-**Authors:** erik.gallmann  
-**Domains:** architecture, consumer-bindings, schema-governance, distribution  
-**Tags:** consumer-binding, typescript, node, browser, conformance, host-parity  
+**Type:** logical<br>
+**Status:** accepted<br>
+**Alias:** ADR-L-0024<br>
+**Authoring contract:** authoring v1.5<br>
+**Created:** 2026-08-23<br>
+**Authors:** erik.gallmann<br>
+**Domains:** architecture, consumer-bindings, schema-governance, distribution<br>
+**Tags:** consumer-binding, typescript, node, browser, conformance, host-parity<br>
 
 ## Architecture at a Glance
 

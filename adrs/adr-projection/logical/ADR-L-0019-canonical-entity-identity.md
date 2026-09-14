@@ -5,21 +5,21 @@ artifact_kind: rendered_adr_markdown
 generator_id: adr-projection-markdown
 generator_version: 3
 hash_algorithm: sha256
-source_hash: 47bb2b62bbf22c8d162f9666dde9a3c93f4defb1ae8be3077dcd02946e3695c7
-rendered_hash: db3e0cd0fac0c20a1a16974de0c803097fe5bb2dd18f82bacfee3a10281e9862
+source_hash: a4b953c2cb7f927ee787ec6ea3c01cbf787ec92ef2fd9c43b9927cfea09443f8
+rendered_hash: 71a3ba1a1355081ffb96448413f995fa9707c35e3271e014540eb60217936100
 -->
 
 # ADR-L-0019: Canonical Entity Identity
 
 ## Identity / Status
 
-**Type:** logical  
-**Status:** accepted  
-**Alias:** ADR-L-0019  
-**Authoring contract:** authoring v1.5  
-**Created:** 2026-08-09  
-**Modified:** 2026-09-05  
-**Authors:** erik.gallmann  
+**Type:** logical<br>
+**Status:** accepted<br>
+**Alias:** ADR-L-0019<br>
+**Authoring contract:** authoring v1.5<br>
+**Created:** 2026-08-09<br>
+**Modified:** 2026-09-05<br>
+**Authors:** erik.gallmann<br>
 
 ## Architecture at a Glance
 

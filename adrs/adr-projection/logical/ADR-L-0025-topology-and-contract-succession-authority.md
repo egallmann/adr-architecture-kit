@@ -5,22 +5,22 @@ artifact_kind: rendered_adr_markdown
 generator_id: adr-projection-markdown
 generator_version: 3
 hash_algorithm: sha256
-source_hash: 75370da8346b55bc1cbb3243dbdb3f1efa1c6e771bb49aaeb112fb22627cc773
-rendered_hash: f0d1ff4d11611c20eac74521da116afad33fd1bf8f06ad21d807672b2c11b431
+source_hash: 1ec019fa6c35926a536a603410734803861d42544db759985dc379c34ac22857
+rendered_hash: 43259bd856bed113dd273ddb2e726dedcf0548425ff61ffdc4f8f774791235cf
 -->
 
 # ADR-L-0025: Topology and Contract Succession Authority (Authoring v1.5 / Normalized v2.2)
 
 ## Identity / Status
 
-**Type:** logical  
-**Status:** accepted  
-**Alias:** ADR-L-0025  
-**Authoring contract:** authoring v1.5  
-**Created:** 2026-08-28  
-**Authors:** erik.gallmann  
-**Domains:** architecture, schema-governance, topology, normalization  
-**Tags:** projection-v3, authoring-v1.5, normalized-v2.2, topology  
+**Type:** logical<br>
+**Status:** accepted<br>
+**Alias:** ADR-L-0025<br>
+**Authoring contract:** authoring v1.5<br>
+**Created:** 2026-08-28<br>
+**Authors:** erik.gallmann<br>
+**Domains:** architecture, schema-governance, topology, normalization<br>
+**Tags:** projection-v3, authoring-v1.5, normalized-v2.2, topology<br>
 
 ## Architecture at a Glance
 

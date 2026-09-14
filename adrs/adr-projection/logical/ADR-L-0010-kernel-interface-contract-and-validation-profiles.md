@@ -5,22 +5,22 @@ artifact_kind: rendered_adr_markdown
 generator_id: adr-projection-markdown
 generator_version: 3
 hash_algorithm: sha256
-source_hash: 1bbdad4ddd9b357222c44c4ead4d00f2ad44fda5ab845e756d159bcbe768cfcb
-rendered_hash: 16841150beeb7591cc50cf5050b8fa7d3add09d6a5fb66c5c401831392a9b9df
+source_hash: 7d7cae2b693dca9935c22021561d3a4caaa16fe2ead72ff98bcaf18da4742b51
+rendered_hash: 41dedc10733cd450b0184eeb8337eaa450d798aa8749f2305f120158b7fb812d
 -->
 
 # ADR-L-0010: Kernel Interface Contract and Validation Profiles
 
 ## Identity / Status
 
-**Type:** logical  
-**Status:** accepted  
-**Alias:** ADR-L-0010  
-**Authoring contract:** authoring v1.5  
-**Created:** 2026-03-14  
-**Authors:** erik.gallmann  
-**Domains:** kernel, contract, governance, validation  
-**Tags:** contract, registries, brownfield, migration, sentinel  
+**Type:** logical<br>
+**Status:** accepted<br>
+**Alias:** ADR-L-0010<br>
+**Authoring contract:** authoring v1.5<br>
+**Created:** 2026-03-14<br>
+**Authors:** erik.gallmann<br>
+**Domains:** kernel, contract, governance, validation<br>
+**Tags:** contract, registries, brownfield, migration, sentinel<br>
 
 ## Architecture at a Glance
 
@@ -301,6 +301,7 @@ continue to satisfy the explicit kernel contract.
 - [ADR-PC-0001](../physical-component/ADR-PC-0001-entity-registry-and-discovery-index.md)
 - [ADR-PS-0002](../physical-system/ADR-PS-0002-adr-kit-authoring-compiler-and-validation-system.md)
 - [ADR-L-0015](ADR-L-0015-adr-governance-state-and-override-semantics.md)
+- [ADR-L-0030](ADR-L-0030-canonical-source-basis-and-semantic-execution-surface.md)
 
 
 ## Architecture Relationships

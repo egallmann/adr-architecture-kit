@@ -5,24 +5,24 @@ artifact_kind: rendered_adr_markdown
 generator_id: adr-projection-markdown
 generator_version: 3
 hash_algorithm: sha256
-source_hash: 83d81cabee4959935e75a5daf184b9c889e9a2aa3051ad1690d6c23e4f8d4d2a
-rendered_hash: e0f8bc584457fb1414330e602961dd3c86699c28a92f0fcf301588195c030772
+source_hash: e2e91886720072a21e4eab981326d50d06154dca46823586d743a2aebc29cf25
+rendered_hash: cb38b4cd45acf9427b846ff611ef3f14affa636676cba7c8bcf070cd6ec5bbb9
 -->
 
 # ADR-PC-0008: Project Scope Resolution
 
 ## Identity / Status
 
-**Type:** physical-component  
-**Status:** accepted  
-**Alias:** ADR-PC-0008  
-**Authoring contract:** authoring v1.5  
-**Created:** 2026-08-28  
-**Authors:** erik.gallmann  
-**Domains:** implementation, adr, python, scope-resolution  
-**Tags:** python, scope-resolution, multi-scope  
-**Implements Logical:** [ADR-L-0002](../logical/ADR-L-0002-multi-scope-adr-architecture-for-sub-module-development.md)  
-**Implements System:** [ADR-PS-0001](../physical-system/ADR-PS-0001-adr-architecture-kit-discovery-and-indexing-system.md), [ADR-PS-0002](../physical-system/ADR-PS-0002-adr-kit-authoring-compiler-and-validation-system.md)  
+**Type:** physical-component<br>
+**Status:** accepted<br>
+**Alias:** ADR-PC-0008<br>
+**Authoring contract:** authoring v1.5<br>
+**Created:** 2026-08-28<br>
+**Authors:** erik.gallmann<br>
+**Domains:** implementation, adr, python, scope-resolution<br>
+**Tags:** python, scope-resolution, multi-scope<br>
+**Implements Logical:** [ADR-L-0002](../logical/ADR-L-0002-multi-scope-adr-architecture-for-sub-module-development.md)<br>
+**Implements System:** [ADR-PS-0001](../physical-system/ADR-PS-0001-adr-architecture-kit-discovery-and-indexing-system.md), [ADR-PS-0002](../physical-system/ADR-PS-0002-adr-kit-authoring-compiler-and-validation-system.md)<br>
 
 ## Architecture at a Glance
 

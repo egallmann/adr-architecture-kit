@@ -5,22 +5,22 @@ artifact_kind: rendered_adr_markdown
 generator_id: adr-projection-markdown
 generator_version: 3
 hash_algorithm: sha256
-source_hash: 4353a3a1bfc1ff43fad422b6d0d7e86d59bd3c7e3d952098c91ad088c2993908
-rendered_hash: fb8ed49453caae30665e54a8197d9fffde23cc04f855a14f490712803c48e208
+source_hash: 1caae54acfca33c3fbaa7fa552040b037da313d09a510107d253d22eff9438d4
+rendered_hash: 7e338da61db0db88ddf4a63f7ba779bf8557714f5b5c477c33d7d56212c2e1ba
 -->
 
 # ADR-L-0014: Brownfield Onboarding and Canonicalization Workflow
 
 ## Identity / Status
 
-**Type:** logical  
-**Status:** accepted  
-**Alias:** ADR-L-0014  
-**Authoring contract:** authoring v1.5  
-**Created:** 2026-03-15  
-**Authors:** erik.gallmann  
-**Domains:** migration, onboarding, governance, brownfield  
-**Tags:** onboarding, migration, canonicalization, cleanup  
+**Type:** logical<br>
+**Status:** accepted<br>
+**Alias:** ADR-L-0014<br>
+**Authoring contract:** authoring v1.5<br>
+**Created:** 2026-03-15<br>
+**Authors:** erik.gallmann<br>
+**Domains:** migration, onboarding, governance, brownfield<br>
+**Tags:** onboarding, migration, canonicalization, cleanup<br>
 
 ## Architecture at a Glance
 

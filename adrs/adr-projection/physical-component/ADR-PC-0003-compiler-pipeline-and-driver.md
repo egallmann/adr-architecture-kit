@@ -5,24 +5,24 @@ artifact_kind: rendered_adr_markdown
 generator_id: adr-projection-markdown
 generator_version: 3
 hash_algorithm: sha256
-source_hash: 58de8d65865d9c476c2c69d0b267d1245c01f1e44e3224268f0a49a1bcace7d1
-rendered_hash: 8df0682bbd55f8e829e5c09795c1eae927c6c36aeb4792d7931662cade7bc984
+source_hash: 2eaee96034b85b0d264136f960917a682e42e7ffce761a9e4d6c3aa49151ec5b
+rendered_hash: 36e74ab4a3077b6f1b34585b38fc1f81a0dc730469b3f378beec57bb48af0fd8
 -->
 
 # ADR-PC-0003: Compiler Pipeline and Driver
 
 ## Identity / Status
 
-**Type:** physical-component  
-**Status:** accepted  
-**Alias:** ADR-PC-0003  
-**Authoring contract:** authoring v1.5  
-**Created:** 2026-03-15  
-**Modified:** 2026-08-27  
-**Authors:** erik.gallmann  
-**Domains:** compiler, pipeline, tooling  
-**Implements Logical:** [ADR-L-0007](../logical/ADR-L-0007-deterministic-documentation-projection.md), [ADR-L-0009](../logical/ADR-L-0009-derived-architecture-discovery-surfaces.md), [ADR-L-0013](../logical/ADR-L-0013-architecture-repository-boundary-and-normalized-semantic-model.md), [ADR-L-0002](../logical/ADR-L-0002-multi-scope-adr-architecture-for-sub-module-development.md)  
-**Implements System:** [ADR-PS-0002](../physical-system/ADR-PS-0002-adr-kit-authoring-compiler-and-validation-system.md)  
+**Type:** physical-component<br>
+**Status:** accepted<br>
+**Alias:** ADR-PC-0003<br>
+**Authoring contract:** authoring v1.5<br>
+**Created:** 2026-03-15<br>
+**Modified:** 2026-08-27<br>
+**Authors:** erik.gallmann<br>
+**Domains:** compiler, pipeline, tooling<br>
+**Implements Logical:** [ADR-L-0007](../logical/ADR-L-0007-deterministic-documentation-projection.md), [ADR-L-0009](../logical/ADR-L-0009-derived-architecture-discovery-surfaces.md), [ADR-L-0013](../logical/ADR-L-0013-architecture-repository-boundary-and-normalized-semantic-model.md), [ADR-L-0002](../logical/ADR-L-0002-multi-scope-adr-architecture-for-sub-module-development.md)<br>
+**Implements System:** [ADR-PS-0002](../physical-system/ADR-PS-0002-adr-kit-authoring-compiler-and-validation-system.md)<br>
 
 ## Architecture at a Glance
 

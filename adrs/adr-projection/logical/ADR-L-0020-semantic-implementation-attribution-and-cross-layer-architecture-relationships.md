@@ -5,23 +5,23 @@ artifact_kind: rendered_adr_markdown
 generator_id: adr-projection-markdown
 generator_version: 3
 hash_algorithm: sha256
-source_hash: e291436843ddd20d8e2685796ecfae802f2bbe645405b193a5ba73ed09dda3df
-rendered_hash: 10005cf1569b3fddc0c893fa20ec4dd7ef65f73b77523f03849533c9040d7f09
+source_hash: cf82be0e9a89f1a99df62441f4a0aacadac9685934a2d5e90da8878bdefca136
+rendered_hash: 129e220d47aac73bd5067390dbcf613d97ad8238ec8c17e389749c7931e2f683
 -->
 
 # ADR-L-0020: Semantic Implementation Attribution and Cross-Layer Architecture Relationships
 
 ## Identity / Status
 
-**Type:** logical  
-**Status:** accepted  
-**Alias:** ADR-L-0020  
-**Authoring contract:** authoring v1.5  
-**Created:** 2026-08-13  
-**Modified:** 2026-08-20  
-**Authors:** erik.gallmann  
-**Domains:** architecture, traceability, governance, identity  
-**Tags:** attribution, semantic-claims, uuid, evidence  
+**Type:** logical<br>
+**Status:** accepted<br>
+**Alias:** ADR-L-0020<br>
+**Authoring contract:** authoring v1.5<br>
+**Created:** 2026-08-13<br>
+**Modified:** 2026-08-20<br>
+**Authors:** erik.gallmann<br>
+**Domains:** architecture, traceability, governance, identity<br>
+**Tags:** attribution, semantic-claims, uuid, evidence<br>
 
 ## Architecture at a Glance
 

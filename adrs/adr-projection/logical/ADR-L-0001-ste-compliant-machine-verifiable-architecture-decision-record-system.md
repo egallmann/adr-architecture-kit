@@ -5,22 +5,22 @@ artifact_kind: rendered_adr_markdown
 generator_id: adr-projection-markdown
 generator_version: 3
 hash_algorithm: sha256
-source_hash: 893b4be9dfd0fc725e6ca7514bc18fb1d60d601cc96d0e189f9c4c367115bb64
-rendered_hash: 82bb287bb088d9a133c500cdcc155d8568d30b915c400c65b60a62491dde4426
+source_hash: 7dc9241019a21893b8ae29ef8c825326ad90e6687f6a3c483a678e169cbccada
+rendered_hash: 6843aa482efd54133d76f9477851e94cd7d654dabdebfc65ac9b0be983a32b32
 -->
 
 # ADR-L-0001: STE-Compliant Machine-Verifiable Architecture Decision Record System
 
 ## Identity / Status
 
-**Type:** logical  
-**Status:** accepted  
-**Alias:** ADR-L-0001  
-**Authoring contract:** authoring v1.5  
-**Created:** 2026-03-07  
-**Authors:** erik.gallmann  
-**Domains:** architecture, governance  
-**Tags:** ste-compliance, machine-verifiable, ai-first, authoring-subsystem  
+**Type:** logical<br>
+**Status:** accepted<br>
+**Alias:** ADR-L-0001<br>
+**Authoring contract:** authoring v1.5<br>
+**Created:** 2026-03-07<br>
+**Authors:** erik.gallmann<br>
+**Domains:** architecture, governance<br>
+**Tags:** ste-compliance, machine-verifiable, ai-first, authoring-subsystem<br>
 
 ## Architecture at a Glance
 

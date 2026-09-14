@@ -7,7 +7,7 @@ from typing import Any, Union
 
 from jinja2 import Environment, FileSystemLoader
 
-from ...decorators import implements_adr
+from ...decorators import enforces_invariant, implements_adr
 from ...integrity import (
     ArtifactKind,
     GENERATED_MARKER,
@@ -37,6 +37,20 @@ from .projection_paths import projection_relative_path, stem_matches_adr
 
 MARKDOWN_GENERATOR_IDENTITY = GeneratorIdentity("adr-projection-markdown", 3)
 DEFAULT_TEMPLATE_DIR = Path(__file__).resolve().parents[2] / "templates"
+
+
+def finalize_repository_admissible_markdown(body: str) -> str:
+    """Emit final repository-admissible markdown body bytes.
+
+    Strips trailing horizontal whitespace from each line and normalizes newlines
+    to LF. Preserves whether the body ended with a final newline. Does not alter
+    interior whitespace where it may carry authored meaning.
+    """
+    ends_with_newline = body.endswith(("\n", "\r\n"))
+    normalized = "\n".join(line.rstrip(" \t") for line in body.splitlines())
+    if ends_with_newline:
+        normalized += "\n"
+    return normalized
 
 
 def _jinja_presentation_id(value: Any) -> str:
@@ -96,6 +110,7 @@ def template_path_for_adr(
 
 
 @implements_adr("ADR-L-0007")
+@enforces_invariant("INV-0234")
 def render_adr_markdown(
     adr: Union[LogicalADR, PhysicalADR, PhysicalSystemADR, PhysicalComponentADR],
     *,
@@ -105,7 +120,9 @@ def render_adr_markdown(
     """Render one ADR model to markdown."""
     env = build_markdown_environment(template_dir, ctx=ctx)
     template_name = template_path_for_adr(adr, template_dir=template_dir).name
-    return env.get_template(template_name).render(adr=adr, ctx=ctx)
+    return finalize_repository_admissible_markdown(
+        env.get_template(template_name).render(adr=adr, ctx=ctx)
+    )
 
 
 def discover_scope_adr_files(scope: ProjectScope) -> list[Path]:

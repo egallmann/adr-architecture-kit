@@ -5,22 +5,22 @@ artifact_kind: rendered_adr_markdown
 generator_id: adr-projection-markdown
 generator_version: 3
 hash_algorithm: sha256
-source_hash: 749d41d69c0bfd5785a59e6770492fc3c3bc7dbb348fb32946f741daa3a8a919
-rendered_hash: c5e8fbb654e8ff71c2020ac67e6f7c14651376a20f2d24d41cb9234e224b60d0
+source_hash: 341706dba03d99873e3dffa430777d1fb33bf8cb99cc114150264eb50e0754d8
+rendered_hash: 0e6e35745f6a83ac727d5a039f3635f1483d3d3f4011d671637985c429fb240f
 -->
 
 # ADR-L-0016: Deterministic Corpus Query and Authoring Orientation APIs
 
 ## Identity / Status
 
-**Type:** logical  
-**Status:** accepted  
-**Alias:** ADR-L-0016  
-**Authoring contract:** authoring v1.5  
-**Created:** 2026-04-14  
-**Authors:** erik.gallmann  
-**Domains:** repository, discovery, authoring  
-**Tags:** repository-api, corpus-query, authoring-orientation  
+**Type:** logical<br>
+**Status:** accepted<br>
+**Alias:** ADR-L-0016<br>
+**Authoring contract:** authoring v1.5<br>
+**Created:** 2026-04-14<br>
+**Authors:** erik.gallmann<br>
+**Domains:** repository, discovery, authoring<br>
+**Tags:** repository-api, corpus-query, authoring-orientation<br>
 
 ## Architecture at a Glance
 

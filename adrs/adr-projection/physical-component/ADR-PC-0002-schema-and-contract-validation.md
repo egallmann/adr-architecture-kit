@@ -5,24 +5,24 @@ artifact_kind: rendered_adr_markdown
 generator_id: adr-projection-markdown
 generator_version: 3
 hash_algorithm: sha256
-source_hash: 0d0fa9e49deb91db8ed37ce607ef07b82be3b0b253aea240bdd1386dd4dc67bc
-rendered_hash: c2d5e20e82d4e1cf126964e91f9faf4311868c6fc17764a2dbf0f3a5fd7d57b4
+source_hash: eb82fd378f222b4e43cbf075cf76e820fe047524a23ae49deae86aea0ae2b0ed
+rendered_hash: a331d77b312446be48407ff6b5a24acb5b5b83a9c1f3a9c6ae9b9925144a68a7
 -->
 
 # ADR-PC-0002: Schema and Contract Validation
 
 ## Identity / Status
 
-**Type:** physical-component  
-**Status:** accepted  
-**Alias:** ADR-PC-0002  
-**Authoring contract:** authoring v1.5  
-**Created:** 2026-03-15  
-**Modified:** 2026-08-27  
-**Authors:** erik.gallmann  
-**Domains:** validation, schema, contracts  
-**Implements Logical:** [ADR-L-0008](../logical/ADR-L-0008-validation-modes-for-draft-and-complete-adrs.md), [ADR-L-0010](../logical/ADR-L-0010-kernel-interface-contract-and-validation-profiles.md), [ADR-L-0011](../logical/ADR-L-0011-metadata-schemas-and-remediation-ledger-enforcement.md), [ADR-L-0020](../logical/ADR-L-0020-semantic-implementation-attribution-and-cross-layer-architecture-relationships.md), [ADR-L-0002](../logical/ADR-L-0002-multi-scope-adr-architecture-for-sub-module-development.md)  
-**Implements System:** [ADR-PS-0002](../physical-system/ADR-PS-0002-adr-kit-authoring-compiler-and-validation-system.md)  
+**Type:** physical-component<br>
+**Status:** accepted<br>
+**Alias:** ADR-PC-0002<br>
+**Authoring contract:** authoring v1.5<br>
+**Created:** 2026-03-15<br>
+**Modified:** 2026-08-27<br>
+**Authors:** erik.gallmann<br>
+**Domains:** validation, schema, contracts<br>
+**Implements Logical:** [ADR-L-0008](../logical/ADR-L-0008-validation-modes-for-draft-and-complete-adrs.md), [ADR-L-0010](../logical/ADR-L-0010-kernel-interface-contract-and-validation-profiles.md), [ADR-L-0011](../logical/ADR-L-0011-metadata-schemas-and-remediation-ledger-enforcement.md), [ADR-L-0020](../logical/ADR-L-0020-semantic-implementation-attribution-and-cross-layer-architecture-relationships.md), [ADR-L-0002](../logical/ADR-L-0002-multi-scope-adr-architecture-for-sub-module-development.md)<br>
+**Implements System:** [ADR-PS-0002](../physical-system/ADR-PS-0002-adr-kit-authoring-compiler-and-validation-system.md)<br>
 
 ## Architecture at a Glance
 

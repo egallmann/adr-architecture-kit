@@ -44,19 +44,27 @@ context: 'adr-architecture-kit is primarily machine-facing tooling used by agent
 
   downstream consumers do not guess which generated surfaces are authoritative.
 
+  When ADR-Kit semantic execution is available, semantic results become the
+
+  preferred machine/AI surface for interpreted ADR-domain meaning, while
+
+  manifests and indexes retain inventory and navigation roles.
+
   '
 decisions:
 - id: 019fee89-e616-71a7-b73f-33795a11494e
-  summary: Use derived discovery artifacts for agent-facing architecture lookup
+  summary: Use derived discovery artifacts for agent-facing architecture inventory lookup
   rationale: 'Canonical authority remains in ADR artifacts (including ADR-established
 
-    invariant entities). Agents should interact with derived, machine-stable
+    invariant entities). Derived discovery artifacts remain the preferred machine
 
-    discovery artifacts (including the invariant-registry) by default.
+    inventory, navigation, interoperability, integrity, and offline inspection
 
-    Standalone invariant files are not authority. This reduces scan cost,
+    surfaces. Standalone invariant files are not authority. When canonical ADR-Kit
 
-    ambiguity, and ad hoc parsing logic.
+    semantic execution is available, interpreted architecture meaning should be
+
+    obtained from semantic results rather than reconstructed from these indexes.
 
     '
   alias_id: DEC-0014
@@ -113,6 +121,16 @@ decisions:
     '
   alias_id: DEC-0058
   alias_name: deprecate-adrs-entities-registry-yaml-as-a-legacy-compatibility-projection
+- id: 01a09cf0-179e-71cc-b150-d4c5d318a820
+  summary: Prefer semantic results for machine/AI semantic orientation when ADR-Kit execution is available
+  rationale: |
+    Manifest, index, and registry artifacts remain derived persisted projections
+    with narrower inventory, navigation, interchange, integrity, and offline
+    inspection roles. They are not durable semantic authority. When ADR-Kit
+    canonical semantic execution is available, machine and AI consumers should
+    prefer the semantic-result surface for interpreted architecture meaning.
+  alias_id: DEC-0234
+  alias_name: prefer-semantic-results-when-adr-kit-execution-available
 invariants:
 - id: 019fee89-e616-7196-a92f-bec6b05d3d47
   statement: 'Canonical architectural authority MUST remain in ADR artifacts (including
@@ -157,20 +175,41 @@ invariants:
 - id: 019fee89-e616-7dc8-bd2e-10db13af0951
   statement: 'Agent-facing ADR toolkit workflows MUST prefer indexed lookup surfaces
 
-    over raw ADR body traversal by default.
+    over raw ADR body traversal for inventory and navigation by default. When
+
+    canonical ADR-Kit semantic execution is available, workflows MUST prefer
+
+    semantic results over reconstructing interpreted architecture meaning from
+
+    manifest, index, registry, or Markdown projections.
 
     '
   scope: global
   enforcement_level: must
   enforcement_mechanism: design
   verification_method: automated
-  rationale: 'Explicit, cheap-to-query indexes are more aligned with AI-first design
+  rationale: 'Indexes remain cheap inventory surfaces; semantic results are the
 
-    than repeated ad hoc document scans.
+    machine-oriented evolution for interpreted ADR-domain meaning.
 
     '
   alias_id: INV-0045
   alias_name: inv-0045
+- id: 01a09cf0-179e-71cc-b150-d4c64e6c7774
+  statement: |
+    Semantic-result outputs MUST remain derived execution results for a supplied
+    Exact Source Basis and MUST NOT be treated as durable architecture authority
+    replacing canonical ADR YAML.
+  scope: global
+  enforcement_level: must
+  enforcement_mechanism: design
+  verification_method: manual
+  rationale: |
+    Preferring semantic results for orientation must not invent a second durable
+    authority layer beside authored ADRs.
+  alias_id: INV-0238
+  alias_name: semantic-results-are-not-durable-authority
+
 capabilities:
 - id: 019fee89-e616-7607-9312-8aa8d1816be9
   name: Summary Discovery Surface
@@ -195,6 +234,7 @@ capabilities:
   alias_id: CAP-0018
   alias_name: normalized-entity-lookup-surface
 related_adrs:
+- 01a09cf0-179e-71cc-b150-d4a79551b939
 - 019fee89-e615-70a5-861b-b2dde147e5af
 - 019fee89-e616-7066-8d2f-3acc7f469f72
 - 019fee89-e616-7d61-8e35-f11ba2ddd75d

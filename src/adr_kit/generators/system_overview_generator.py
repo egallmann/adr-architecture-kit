@@ -11,6 +11,7 @@ import yaml
 from jinja2 import Environment, FileSystemLoader
 
 from ..decorators import enforces_invariant, implements_adr
+from ..compiler.backend.markdown_rendering import finalize_repository_admissible_markdown
 from ..integrity import (
     GENERATED_MARKER,
     HASH_ALGORITHM,
@@ -552,7 +553,9 @@ class SystemOverviewGenerator:
         """Render the system overview markdown."""
 
         template = self.env.get_template(TEMPLATE_NAME)
-        return template.render(**self.build_context())
+        return finalize_repository_admissible_markdown(
+            template.render(**self.build_context())
+        )
 
     def declared_source_inputs(self, output_path: Path) -> list[Path | HashInput]:
         """Return the explicit v2 semantic + projection-rule inputs for SYSTEM-OVERVIEW."""

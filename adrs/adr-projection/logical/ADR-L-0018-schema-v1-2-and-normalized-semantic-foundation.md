@@ -5,23 +5,23 @@ artifact_kind: rendered_adr_markdown
 generator_id: adr-projection-markdown
 generator_version: 3
 hash_algorithm: sha256
-source_hash: 1d26f772add9388852911ac50da718296c38d38cb259805b0c0399c869bd2847
-rendered_hash: 5ec9dd2379af538abbc4d302782a2ab99325137543d8584fb951f184f258d29d
+source_hash: 8ac347022276aec60413e3e23d39dc54daca0835b434ebd80a9652b76f8070fe
+rendered_hash: c5942878bc9410b8823f7b88fe0f34a34595d01b53e5a5fae57f0c7dd6b13741
 -->
 
 # ADR-L-0018: Schema v1.2 and Normalized Semantic Foundation
 
 ## Identity / Status
 
-**Type:** logical  
-**Status:** accepted  
-**Alias:** ADR-L-0018  
-**Authoring contract:** authoring v1.5  
-**Created:** 2026-08-07  
-**Modified:** 2026-09-05  
-**Authors:** erik.gallmann  
-**Domains:** authoring, schema, semantic-model, identity, migration  
-**Tags:** schema-v1.2, normalized-model, assertion-identity, external-bindings, topology-identity  
+**Type:** logical<br>
+**Status:** accepted<br>
+**Alias:** ADR-L-0018<br>
+**Authoring contract:** authoring v1.5<br>
+**Created:** 2026-08-07<br>
+**Modified:** 2026-09-05<br>
+**Authors:** erik.gallmann<br>
+**Domains:** authoring, schema, semantic-model, identity, migration<br>
+**Tags:** schema-v1.2, normalized-model, assertion-identity, external-bindings, topology-identity<br>
 
 ## Architecture at a Glance
 

@@ -5,23 +5,23 @@ artifact_kind: rendered_adr_markdown
 generator_id: adr-projection-markdown
 generator_version: 3
 hash_algorithm: sha256
-source_hash: e8138f2e49c6dca3505299eac37307e59b0829784e047a38965aeda1a54e41d2
-rendered_hash: 719db81597433c80776ad49adcc538bd418051eb03ec4d5e818a127649c78d45
+source_hash: bad57183532f7346b202b787e906af9bd56ecbc7a9c76d780bb148eb3b8bc653
+rendered_hash: 423541b49d2ce8ca5581f084ee7a68196472d7ba9cb3199442decaade03fade8
 -->
 
 # ADR-L-0013: Architecture Repository Boundary and Normalized Semantic Model
 
 ## Identity / Status
 
-**Type:** logical  
-**Status:** accepted  
-**Alias:** ADR-L-0013  
-**Authoring contract:** authoring v1.5  
-**Created:** 2026-03-14  
-**Modified:** 2026-08-06  
-**Authors:** erik.gallmann  
-**Domains:** repository, discovery, compiler, kernel  
-**Tags:** repository-boundary, semantic-model, archmodel, registries  
+**Type:** logical<br>
+**Status:** accepted<br>
+**Alias:** ADR-L-0013<br>
+**Authoring contract:** authoring v1.5<br>
+**Created:** 2026-03-14<br>
+**Modified:** 2026-08-06<br>
+**Authors:** erik.gallmann<br>
+**Domains:** repository, discovery, compiler, kernel<br>
+**Tags:** repository-boundary, semantic-model, archmodel, registries<br>
 
 ## Architecture at a Glance
 
@@ -442,6 +442,7 @@ repository-local governance evidence.
 - [ADR-L-0020](ADR-L-0020-semantic-implementation-attribution-and-cross-layer-architecture-relationships.md)
 - [ADR-L-0024](ADR-L-0024-cross-language-consumer-bindings-and-typescript-distribution.md)
 - [ADR-L-0028](ADR-L-0028-normative-semantic-authority-and-materialization-foundation.md)
+- [ADR-L-0030](ADR-L-0030-canonical-source-basis-and-semantic-execution-surface.md)
 
 
 ## Architecture Relationships

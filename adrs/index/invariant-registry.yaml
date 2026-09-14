@@ -4454,7 +4454,8 @@ entities:
   entity_type: invariant
   name: INV-0045
   summary: Agent-facing ADR toolkit workflows MUST prefer indexed lookup surfaces
-    over raw ADR body traversal by default.
+    over raw ADR body traversal for inventory and navigation by default. When canonical
+    ADR-Kit semantic execution is available, workflows MUST prefer se
   uri: adr://adr-architecture-kit/entities/019fee89-e616-7dc8-bd2e-10db13af0951
   created_at: '2026-08-11T01:57:22.582Z'
   entity_fingerprint: sha256:4b4bed8d0355d838921e1dcf113441194ca56779e3dd20cd45f595a6e63145c5
@@ -4470,7 +4471,13 @@ entities:
     scope: global
     statement: 'Agent-facing ADR toolkit workflows MUST prefer indexed lookup surfaces
 
-      over raw ADR body traversal by default.
+      over raw ADR body traversal for inventory and navigation by default. When
+
+      canonical ADR-Kit semantic execution is available, workflows MUST prefer
+
+      semantic results over reconstructing interpreted architecture meaning from
+
+      manifest, index, registry, or Markdown projections.
 
       '
     enforcement_level: must
@@ -10442,9 +10449,9 @@ entities:
   alias_ref: INV-0206:no-second-host-semantic-authority
   entity_type: invariant
   name: INV-0206
-  summary: TypeScript/Node parity MUST NOT be achieved by independently recreating
-    compiler, validator, schema, or governance semantics in a second implementation
-    authority.
+  summary: 'TypeScript/Node parity MUST NOT be achieved by independently recreating
+    compiler, validator, renderer, schema, or governance semantics; by invoking Python
+    or the ADR CLI from Node; or by leaving Python on an independent '
   uri: adr://adr-architecture-kit/entities/01a05a27-0000-7600-8000-000000000206
   created_at: '2026-08-31T23:28:20.480Z'
   entity_fingerprint: sha256:193f901be7aadf33e8e1d0f48848d578f42ca09c96bfe8128bdf8ac22f7a51cf
@@ -10458,9 +10465,17 @@ entities:
     adr_id: 01a05a27-0000-7000-8000-000000000027
     adr_alias_id: ADR-L-0027
     scope: global
-    statement: TypeScript/Node parity MUST NOT be achieved by independently recreating
-      compiler, validator, schema, or governance semantics in a second implementation
-      authority.
+    statement: 'TypeScript/Node parity MUST NOT be achieved by independently recreating
+
+      compiler, validator, renderer, schema, or governance semantics; by invoking
+
+      Python or the ADR CLI from Node; or by leaving Python on an independent
+
+      semantic compiler while Node uses the Rust core for the same advertised
+
+      capability.
+
+      '
     enforcement_level: must
     declaration_mode: local
     upheld_by_decisions: []
@@ -11637,6 +11652,1092 @@ entities:
   provenance:
     source_type: logical_adr
     source_ref: 01a083dd-22b5-726d-8e49-01851bde3ba5#01a083dd-eef0-7358-9bdf-3debf6fbe5b8
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
+- id: 01a09cf0-179e-71cc-b150-d4b267533634
+  alias_id: INV-0224
+  alias_name: equivalent-exact-source-bases-yield-equivalent-semantics
+  alias_ref: INV-0224:equivalent-exact-source-bases-yield-equivalent-semantics
+  entity_type: invariant
+  name: INV-0224
+  summary: Equivalent Exact Source Bases MUST yield equivalent canonical semantic
+    results regardless of acquisition mode.
+  uri: adr://adr-architecture-kit/entities/01a09cf0-179e-71cc-b150-d4b267533634
+  created_at: '2026-09-13T22:42:55.518Z'
+  entity_fingerprint: sha256:322593b44954f3ee5bcb47ecdba46cfd1682da86b929cfb21fd21db9676561e3
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a09cf0-179e-71cc-b150-d4a79551b939#01a09cf0-179e-71cc-b150-d4b267533634
+    artifact_path: adrs/logical/ADR-L-0030-canonical-source-basis-and-semantic-execution-surface.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a09cf0-179e-71cc-b150-d4a79551b939
+    adr_alias_id: ADR-L-0030
+    scope: global
+    statement: Equivalent Exact Source Bases MUST yield equivalent canonical semantic
+      results regardless of acquisition mode.
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions: []
+    supersedes: []
+    alias_id: INV-0224
+    alias_name: equivalent-exact-source-bases-yield-equivalent-semantics
+  relationships:
+    declared_in:
+    - 01a09cf0-179e-71cc-b150-d4a79551b939
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    consumes_interface: []
+    composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a09cf0-179e-71cc-b150-d4a79551b939#01a09cf0-179e-71cc-b150-d4b267533634
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
+- id: 01a09cf0-179e-71cc-b150-d4b3dc9cb5ab
+  alias_id: INV-0225
+  alias_name: semantic-core-must-not-traverse-consumer-filesystem
+  alias_ref: INV-0225:semantic-core-must-not-traverse-consumer-filesystem
+  entity_type: invariant
+  name: INV-0225
+  summary: The Rust semantic core MUST NOT traverse the consumer filesystem; host
+    adapters MUST perform source acquisition into an Exact Source Basis.
+  uri: adr://adr-architecture-kit/entities/01a09cf0-179e-71cc-b150-d4b3dc9cb5ab
+  created_at: '2026-09-13T22:42:55.518Z'
+  entity_fingerprint: sha256:8a3563b117a493f83e43b4131e61a2cc5d1b08fde242406dc2242903a596417f
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a09cf0-179e-71cc-b150-d4a79551b939#01a09cf0-179e-71cc-b150-d4b3dc9cb5ab
+    artifact_path: adrs/logical/ADR-L-0030-canonical-source-basis-and-semantic-execution-surface.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a09cf0-179e-71cc-b150-d4a79551b939
+    adr_alias_id: ADR-L-0030
+    scope: global
+    statement: The Rust semantic core MUST NOT traverse the consumer filesystem; host
+      adapters MUST perform source acquisition into an Exact Source Basis.
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions: []
+    supersedes: []
+    alias_id: INV-0225
+    alias_name: semantic-core-must-not-traverse-consumer-filesystem
+  relationships:
+    declared_in:
+    - 01a09cf0-179e-71cc-b150-d4a79551b939
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    consumes_interface: []
+    composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a09cf0-179e-71cc-b150-d4a79551b939#01a09cf0-179e-71cc-b150-d4b3dc9cb5ab
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
+- id: 01a09cf0-179e-71cc-b150-d4b450b69792
+  alias_id: INV-0226
+  alias_name: adr-kit-calculated-digests-are-authoritative
+  alias_ref: INV-0226:adr-kit-calculated-digests-are-authoritative
+  entity_type: invariant
+  name: INV-0226
+  summary: When exact source bytes are available, ADR-Kit-calculated content digests
+    MUST be authoritative and caller-provided hashes MUST NOT be trusted as semantic
+    authority.
+  uri: adr://adr-architecture-kit/entities/01a09cf0-179e-71cc-b150-d4b450b69792
+  created_at: '2026-09-13T22:42:55.518Z'
+  entity_fingerprint: sha256:6319410dd701b6e2a4d841f1632c82ab911a071dd7609aed10109a6844edd61e
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a09cf0-179e-71cc-b150-d4a79551b939#01a09cf0-179e-71cc-b150-d4b450b69792
+    artifact_path: adrs/logical/ADR-L-0030-canonical-source-basis-and-semantic-execution-surface.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a09cf0-179e-71cc-b150-d4a79551b939
+    adr_alias_id: ADR-L-0030
+    scope: global
+    statement: When exact source bytes are available, ADR-Kit-calculated content digests
+      MUST be authoritative and caller-provided hashes MUST NOT be trusted as semantic
+      authority.
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions: []
+    supersedes: []
+    alias_id: INV-0226
+    alias_name: adr-kit-calculated-digests-are-authoritative
+  relationships:
+    declared_in:
+    - 01a09cf0-179e-71cc-b150-d4a79551b939
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    consumes_interface: []
+    composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a09cf0-179e-71cc-b150-d4a79551b939#01a09cf0-179e-71cc-b150-d4b450b69792
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
+- id: 01a09cf0-179e-71cc-b150-d4b520a6b4d2
+  alias_id: INV-0227
+  alias_name: prefer-exact-bytes-at-semantic-core-boundary
+  alias_ref: INV-0227:prefer-exact-bytes-at-semantic-core-boundary
+  entity_type: invariant
+  name: INV-0227
+  summary: The semantic-core boundary SHOULD receive exact source bytes rather than
+    host-specific parsed YAML objects unless existing accepted authority already requires
+    otherwise.
+  uri: adr://adr-architecture-kit/entities/01a09cf0-179e-71cc-b150-d4b520a6b4d2
+  created_at: '2026-09-13T22:42:55.518Z'
+  entity_fingerprint: sha256:fd3b570bddfd4d6cbcc8bf0af9bee45645dcadd8a6d84429ede5b6da0264deb9
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a09cf0-179e-71cc-b150-d4a79551b939#01a09cf0-179e-71cc-b150-d4b520a6b4d2
+    artifact_path: adrs/logical/ADR-L-0030-canonical-source-basis-and-semantic-execution-surface.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a09cf0-179e-71cc-b150-d4a79551b939
+    adr_alias_id: ADR-L-0030
+    scope: global
+    statement: The semantic-core boundary SHOULD receive exact source bytes rather
+      than host-specific parsed YAML objects unless existing accepted authority already
+      requires otherwise.
+    enforcement_level: should
+    declaration_mode: local
+    upheld_by_decisions: []
+    supersedes: []
+    alias_id: INV-0227
+    alias_name: prefer-exact-bytes-at-semantic-core-boundary
+  relationships:
+    declared_in:
+    - 01a09cf0-179e-71cc-b150-d4a79551b939
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    consumes_interface: []
+    composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a09cf0-179e-71cc-b150-d4a79551b939#01a09cf0-179e-71cc-b150-d4b520a6b4d2
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
+- id: 01a09cf0-179e-71cc-b150-d4b6e1a037ce
+  alias_id: INV-0228
+  alias_name: bounded-semantic-results-are-deterministic-projections
+  alias_ref: INV-0228:bounded-semantic-results-are-deterministic-projections
+  entity_type: invariant
+  name: INV-0228
+  summary: Bounded semantic selections or traversals MUST be deterministic projections
+    of the same canonical semantic result for the Exact Source Basis.
+  uri: adr://adr-architecture-kit/entities/01a09cf0-179e-71cc-b150-d4b6e1a037ce
+  created_at: '2026-09-13T22:42:55.518Z'
+  entity_fingerprint: sha256:6267717e7a8d4f88ef06b4bfec9dbbc2cfccd69138b781e9f040d2914b7294e3
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a09cf0-179e-71cc-b150-d4a79551b939#01a09cf0-179e-71cc-b150-d4b6e1a037ce
+    artifact_path: adrs/logical/ADR-L-0030-canonical-source-basis-and-semantic-execution-surface.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a09cf0-179e-71cc-b150-d4a79551b939
+    adr_alias_id: ADR-L-0030
+    scope: global
+    statement: Bounded semantic selections or traversals MUST be deterministic projections
+      of the same canonical semantic result for the Exact Source Basis.
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions: []
+    supersedes: []
+    alias_id: INV-0228
+    alias_name: bounded-semantic-results-are-deterministic-projections
+  relationships:
+    declared_in:
+    - 01a09cf0-179e-71cc-b150-d4a79551b939
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    consumes_interface: []
+    composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a09cf0-179e-71cc-b150-d4a79551b939#01a09cf0-179e-71cc-b150-d4b6e1a037ce
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
+- id: 01a09cf0-179e-71cc-b150-d4b76a1fb95a
+  alias_id: INV-0229
+  alias_name: relationship-results-are-not-independent-ontology
+  alias_ref: INV-0229:relationship-results-are-not-independent-ontology
+  entity_type: invariant
+  name: INV-0229
+  summary: Relationship maps and graph results MUST project canonical normalized semantics
+    and MUST NOT become a second ontology or independently interpreted graph authority.
+  uri: adr://adr-architecture-kit/entities/01a09cf0-179e-71cc-b150-d4b76a1fb95a
+  created_at: '2026-09-13T22:42:55.518Z'
+  entity_fingerprint: sha256:61504aaf12416e03f15935c5855ec4a69813d83083f6f43f8c0b4ac2f1b94464
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a09cf0-179e-71cc-b150-d4a79551b939#01a09cf0-179e-71cc-b150-d4b76a1fb95a
+    artifact_path: adrs/logical/ADR-L-0030-canonical-source-basis-and-semantic-execution-surface.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a09cf0-179e-71cc-b150-d4a79551b939
+    adr_alias_id: ADR-L-0030
+    scope: global
+    statement: Relationship maps and graph results MUST project canonical normalized
+      semantics and MUST NOT become a second ontology or independently interpreted
+      graph authority.
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions: []
+    supersedes: []
+    alias_id: INV-0229
+    alias_name: relationship-results-are-not-independent-ontology
+  relationships:
+    declared_in:
+    - 01a09cf0-179e-71cc-b150-d4a79551b939
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    consumes_interface: []
+    composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a09cf0-179e-71cc-b150-d4a79551b939#01a09cf0-179e-71cc-b150-d4b76a1fb95a
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
+- id: 01a09cf0-179e-71cc-b150-d4b88005b71b
+  alias_id: INV-0230
+  alias_name: hosts-must-not-own-shared-semantic-render-or-validation
+  alias_ref: INV-0230:hosts-must-not-own-shared-semantic-render-or-validation
+  entity_type: invariant
+  name: INV-0230
+  summary: For shared peer-host capabilities, host bindings MUST NOT independently
+    implement meaning-bearing compilers, validators, or renderers, and MUST NOT achieve
+    parity by invoking another host or the ADR CLI.
+  uri: adr://adr-architecture-kit/entities/01a09cf0-179e-71cc-b150-d4b88005b71b
+  created_at: '2026-09-13T22:42:55.518Z'
+  entity_fingerprint: sha256:60dcadf6b20594205c5b6d7bb4da6c671eb5b9376fda3691c6c081acc815793e
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a09cf0-179e-71cc-b150-d4a79551b939#01a09cf0-179e-71cc-b150-d4b88005b71b
+    artifact_path: adrs/logical/ADR-L-0030-canonical-source-basis-and-semantic-execution-surface.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a09cf0-179e-71cc-b150-d4a79551b939
+    adr_alias_id: ADR-L-0030
+    scope: global
+    statement: For shared peer-host capabilities, host bindings MUST NOT independently
+      implement meaning-bearing compilers, validators, or renderers, and MUST NOT
+      achieve parity by invoking another host or the ADR CLI.
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions: []
+    supersedes: []
+    alias_id: INV-0230
+    alias_name: hosts-must-not-own-shared-semantic-render-or-validation
+  relationships:
+    declared_in:
+    - 01a09cf0-179e-71cc-b150-d4a79551b939
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    consumes_interface: []
+    composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a09cf0-179e-71cc-b150-d4a79551b939#01a09cf0-179e-71cc-b150-d4b88005b71b
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
+- id: 01a09cf0-179e-71cc-b150-d4b924025c57
+  alias_id: INV-0231
+  alias_name: rust-core-does-not-write-repositories
+  alias_ref: INV-0231:rust-core-does-not-write-repositories
+  entity_type: invariant
+  name: INV-0231
+  summary: The Rust semantic core MUST return exact projection bytes or semantic results
+    and MUST NOT write consumer repositories.
+  uri: adr://adr-architecture-kit/entities/01a09cf0-179e-71cc-b150-d4b924025c57
+  created_at: '2026-09-13T22:42:55.518Z'
+  entity_fingerprint: sha256:d80c5d3d02f4b97a7aefd2f38e40f1732ca3baca8304933ee03a23b2d7e77299
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a09cf0-179e-71cc-b150-d4a79551b939#01a09cf0-179e-71cc-b150-d4b924025c57
+    artifact_path: adrs/logical/ADR-L-0030-canonical-source-basis-and-semantic-execution-surface.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a09cf0-179e-71cc-b150-d4a79551b939
+    adr_alias_id: ADR-L-0030
+    scope: global
+    statement: The Rust semantic core MUST return exact projection bytes or semantic
+      results and MUST NOT write consumer repositories.
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions: []
+    supersedes: []
+    alias_id: INV-0231
+    alias_name: rust-core-does-not-write-repositories
+  relationships:
+    declared_in:
+    - 01a09cf0-179e-71cc-b150-d4a79551b939
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    consumes_interface: []
+    composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a09cf0-179e-71cc-b150-d4a79551b939#01a09cf0-179e-71cc-b150-d4b924025c57
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
+- id: 01a09cf0-179e-71cc-b150-d4ba17576e20
+  alias_id: INV-0232
+  alias_name: cli-must-not-own-unique-semantic-behavior
+  alias_ref: INV-0232:cli-must-not-own-unique-semantic-behavior
+  entity_type: invariant
+  name: INV-0232
+  summary: Retained CLI commands MUST adapt public API capability for human UX and
+    MUST NOT own unique meaning-bearing semantic behavior.
+  uri: adr://adr-architecture-kit/entities/01a09cf0-179e-71cc-b150-d4ba17576e20
+  created_at: '2026-09-13T22:42:55.518Z'
+  entity_fingerprint: sha256:76ceafb00ba5bfe9ad344e3ff0e9f20e7efe323ff640468d7dd09256c8c06ac6
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a09cf0-179e-71cc-b150-d4a79551b939#01a09cf0-179e-71cc-b150-d4ba17576e20
+    artifact_path: adrs/logical/ADR-L-0030-canonical-source-basis-and-semantic-execution-surface.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a09cf0-179e-71cc-b150-d4a79551b939
+    adr_alias_id: ADR-L-0030
+    scope: global
+    statement: Retained CLI commands MUST adapt public API capability for human UX
+      and MUST NOT own unique meaning-bearing semantic behavior.
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions: []
+    supersedes: []
+    alias_id: INV-0232
+    alias_name: cli-must-not-own-unique-semantic-behavior
+  relationships:
+    declared_in:
+    - 01a09cf0-179e-71cc-b150-d4a79551b939
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    consumes_interface: []
+    composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a09cf0-179e-71cc-b150-d4a79551b939#01a09cf0-179e-71cc-b150-d4ba17576e20
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
+- id: 01a09cf0-179e-71cc-b150-d4bbcb854583
+  alias_id: INV-0233
+  alias_name: promotion-seam-does-not-finalize-design-journal
+  alias_ref: INV-0233:promotion-seam-does-not-finalize-design-journal
+  entity_type: invariant
+  name: INV-0233
+  summary: Peer-host availability of prepare_promotion, check_promotion, and apply_promotion
+    MUST NOT imply that the Design Journal or promotion-contract domain model is final,
+    and MUST NOT authorize richer Design Journal construct
+  uri: adr://adr-architecture-kit/entities/01a09cf0-179e-71cc-b150-d4bbcb854583
+  created_at: '2026-09-13T22:42:55.518Z'
+  entity_fingerprint: sha256:14ffbe4c512d0eaeffa5da5835513ab7b4a75cfa983a34354d8cdf6cc7fae18f
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a09cf0-179e-71cc-b150-d4a79551b939#01a09cf0-179e-71cc-b150-d4bbcb854583
+    artifact_path: adrs/logical/ADR-L-0030-canonical-source-basis-and-semantic-execution-surface.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a09cf0-179e-71cc-b150-d4a79551b939
+    adr_alias_id: ADR-L-0030
+    scope: global
+    statement: Peer-host availability of prepare_promotion, check_promotion, and apply_promotion
+      MUST NOT imply that the Design Journal or promotion-contract domain model is
+      final, and MUST NOT authorize richer Design Journal construction APIs by itself.
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions: []
+    supersedes: []
+    alias_id: INV-0233
+    alias_name: promotion-seam-does-not-finalize-design-journal
+  relationships:
+    declared_in:
+    - 01a09cf0-179e-71cc-b150-d4a79551b939
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    consumes_interface: []
+    composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a09cf0-179e-71cc-b150-d4a79551b939#01a09cf0-179e-71cc-b150-d4bbcb854583
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
+- id: 01a09cf0-179e-71cc-b150-d4c1f1865c19
+  alias_id: INV-0234
+  alias_name: generated-documentation-bytes-must-be-repository-admissible
+  alias_ref: INV-0234:generated-documentation-bytes-must-be-repository-admissible
+  entity_type: invariant
+  name: INV-0234
+  summary: 'INV-DOC-008: Generated documentation MUST be emitted in its final repository-admissible
+    byte representation; no whitespace normalization, formatting cleanup, newline
+    repair, or other post-generation mutation may be requi'
+  uri: adr://adr-architecture-kit/entities/01a09cf0-179e-71cc-b150-d4c1f1865c19
+  created_at: '2026-09-13T22:42:55.518Z'
+  entity_fingerprint: sha256:489e70ce30b0d719e383be2ebdc46048b4a8a2d635ff0f6684f8255c312bd53e
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 019fee89-e615-7b9c-8e3f-32ceeda01491#01a09cf0-179e-71cc-b150-d4c1f1865c19
+    artifact_path: adrs/logical/ADR-L-0007-deterministic-documentation-projection.yaml
+  source_refs: []
+  metadata:
+    adr_id: 019fee89-e615-7b9c-8e3f-32ceeda01491
+    adr_alias_id: ADR-L-0007
+    scope: global
+    statement: 'INV-DOC-008: Generated documentation MUST be emitted in its final
+
+      repository-admissible byte representation; no whitespace normalization,
+
+      formatting cleanup, newline repair, or other post-generation mutation may be
+
+      required between canonical generation and repository persistence or admission.
+
+      '
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions: []
+    supersedes: []
+    alias_id: INV-0234
+    alias_name: generated-documentation-bytes-must-be-repository-admissible
+  relationships:
+    declared_in:
+    - 019fee89-e615-7b9c-8e3f-32ceeda01491
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    consumes_interface: []
+    composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 019fee89-e615-7b9c-8e3f-32ceeda01491#01a09cf0-179e-71cc-b150-d4c1f1865c19
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
+- id: 01a09cf0-179e-71cc-b150-d4c281b85395
+  alias_id: INV-0235
+  alias_name: orientation-absence-must-not-invalidate-corpus
+  alias_ref: INV-0235:orientation-absence-must-not-invalidate-corpus
+  entity_type: invariant
+  name: INV-0235
+  summary: 'INV-DOC-009: Absence of the ADR-domain orientation projection MUST NOT
+    invalidate an otherwise valid ADR corpus; integrity validation applies to the
+    orientation artifact only when present.'
+  uri: adr://adr-architecture-kit/entities/01a09cf0-179e-71cc-b150-d4c281b85395
+  created_at: '2026-09-13T22:42:55.518Z'
+  entity_fingerprint: sha256:a7561eafad761072ebd903d29c5e9135ff087ad355e224ac9570dae7ff162519
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 019fee89-e615-7b9c-8e3f-32ceeda01491#01a09cf0-179e-71cc-b150-d4c281b85395
+    artifact_path: adrs/logical/ADR-L-0007-deterministic-documentation-projection.yaml
+  source_refs: []
+  metadata:
+    adr_id: 019fee89-e615-7b9c-8e3f-32ceeda01491
+    adr_alias_id: ADR-L-0007
+    scope: global
+    statement: 'INV-DOC-009: Absence of the ADR-domain orientation projection MUST
+      NOT
+
+      invalidate an otherwise valid ADR corpus; integrity validation applies to the
+
+      orientation artifact only when present.
+
+      '
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions: []
+    supersedes: []
+    alias_id: INV-0235
+    alias_name: orientation-absence-must-not-invalidate-corpus
+  relationships:
+    declared_in:
+    - 019fee89-e615-7b9c-8e3f-32ceeda01491
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    consumes_interface: []
+    composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 019fee89-e615-7b9c-8e3f-32ceeda01491#01a09cf0-179e-71cc-b150-d4c281b85395
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
+- id: 01a09cf0-179e-71cc-b150-d4c3c7e3d727
+  alias_id: INV-0236
+  alias_name: orientation-must-not-advertise-absent-capabilities
+  alias_ref: INV-0236:orientation-must-not-advertise-absent-capabilities
+  entity_type: invariant
+  name: INV-0236
+  summary: 'INV-DOC-010: An ADR-domain orientation projection MUST NOT recommend a
+    public operation absent from the capability profile used to produce it.'
+  uri: adr://adr-architecture-kit/entities/01a09cf0-179e-71cc-b150-d4c3c7e3d727
+  created_at: '2026-09-13T22:42:55.518Z'
+  entity_fingerprint: sha256:e0019691fedf8fc65dc24150f303c04ffa2196904fe87f2051cd97ab40de149e
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 019fee89-e615-7b9c-8e3f-32ceeda01491#01a09cf0-179e-71cc-b150-d4c3c7e3d727
+    artifact_path: adrs/logical/ADR-L-0007-deterministic-documentation-projection.yaml
+  source_refs: []
+  metadata:
+    adr_id: 019fee89-e615-7b9c-8e3f-32ceeda01491
+    adr_alias_id: ADR-L-0007
+    scope: global
+    statement: 'INV-DOC-010: An ADR-domain orientation projection MUST NOT recommend
+      a
+
+      public operation absent from the capability profile used to produce it.
+
+      '
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions: []
+    supersedes: []
+    alias_id: INV-0236
+    alias_name: orientation-must-not-advertise-absent-capabilities
+  relationships:
+    declared_in:
+    - 019fee89-e615-7b9c-8e3f-32ceeda01491
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    consumes_interface: []
+    composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 019fee89-e615-7b9c-8e3f-32ceeda01491#01a09cf0-179e-71cc-b150-d4c3c7e3d727
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
+- id: 01a09cf0-179e-71cc-b150-d4c4947c82a2
+  alias_id: INV-0237
+  alias_name: package-version-alone-must-not-stale-orientation
+  alias_ref: INV-0237:package-version-alone-must-not-stale-orientation
+  entity_type: invariant
+  name: INV-0237
+  summary: 'INV-DOC-011: An ADR-Kit package version change alone MUST NOT make the
+    ADR-domain orientation projection stale.'
+  uri: adr://adr-architecture-kit/entities/01a09cf0-179e-71cc-b150-d4c4947c82a2
+  created_at: '2026-09-13T22:42:55.518Z'
+  entity_fingerprint: sha256:cb6358cd27b6f0a01136e93185f1b647d835a9b657dfb5623a6c8290f36f1778
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 019fee89-e615-7b9c-8e3f-32ceeda01491#01a09cf0-179e-71cc-b150-d4c4947c82a2
+    artifact_path: adrs/logical/ADR-L-0007-deterministic-documentation-projection.yaml
+  source_refs: []
+  metadata:
+    adr_id: 019fee89-e615-7b9c-8e3f-32ceeda01491
+    adr_alias_id: ADR-L-0007
+    scope: global
+    statement: 'INV-DOC-011: An ADR-Kit package version change alone MUST NOT make
+      the
+
+      ADR-domain orientation projection stale.
+
+      '
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions: []
+    supersedes: []
+    alias_id: INV-0237
+    alias_name: package-version-alone-must-not-stale-orientation
+  relationships:
+    declared_in:
+    - 019fee89-e615-7b9c-8e3f-32ceeda01491
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    consumes_interface: []
+    composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 019fee89-e615-7b9c-8e3f-32ceeda01491#01a09cf0-179e-71cc-b150-d4c4947c82a2
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
+- id: 01a09cf0-179e-71cc-b150-d4c64e6c7774
+  alias_id: INV-0238
+  alias_name: semantic-results-are-not-durable-authority
+  alias_ref: INV-0238:semantic-results-are-not-durable-authority
+  entity_type: invariant
+  name: INV-0238
+  summary: Semantic-result outputs MUST remain derived execution results for a supplied
+    Exact Source Basis and MUST NOT be treated as durable architecture authority replacing
+    canonical ADR YAML.
+  uri: adr://adr-architecture-kit/entities/01a09cf0-179e-71cc-b150-d4c64e6c7774
+  created_at: '2026-09-13T22:42:55.518Z'
+  entity_fingerprint: sha256:066a197f69b8c18eb59f71a4b72767e8b32b6a8dc406866caa61516ebb3a1a8a
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 019fee89-e616-770c-a025-2c241a720730#01a09cf0-179e-71cc-b150-d4c64e6c7774
+    artifact_path: adrs/logical/ADR-L-0009-derived-architecture-discovery-surfaces.yaml
+  source_refs: []
+  metadata:
+    adr_id: 019fee89-e616-770c-a025-2c241a720730
+    adr_alias_id: ADR-L-0009
+    scope: global
+    statement: 'Semantic-result outputs MUST remain derived execution results for
+      a supplied
+
+      Exact Source Basis and MUST NOT be treated as durable architecture authority
+
+      replacing canonical ADR YAML.
+
+      '
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions: []
+    supersedes: []
+    alias_id: INV-0238
+    alias_name: semantic-results-are-not-durable-authority
+  relationships:
+    declared_in:
+    - 019fee89-e616-770c-a025-2c241a720730
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    consumes_interface: []
+    composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 019fee89-e616-770c-a025-2c241a720730#01a09cf0-179e-71cc-b150-d4c64e6c7774
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
+- id: 01a09cf0-179e-71cc-b150-d4c93cee08c0
+  alias_id: INV-0239
+  alias_name: shared-capability-bytes-come-from-one-canonical-result
+  alias_ref: INV-0239:shared-capability-bytes-come-from-one-canonical-result
+  entity_type: invariant
+  name: INV-0239
+  summary: For advertised shared peer-host capabilities, Python and Node MUST obtain
+    meaning-bearing projection bytes from one canonical semantic-core result and MUST
+    NOT rely on independent host-local renderers to manufacture byte
+  uri: adr://adr-architecture-kit/entities/01a09cf0-179e-71cc-b150-d4c93cee08c0
+  created_at: '2026-09-13T22:42:55.518Z'
+  entity_fingerprint: sha256:e013b45669e48fb01c26e379da967d3e4a4c7d8d9a328229a85ff893c306cd3b
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a05a27-0000-7000-8000-000000000027#01a09cf0-179e-71cc-b150-d4c93cee08c0
+    artifact_path: adrs/logical/ADR-L-0027-public-binding-construction-and-release-parity.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a05a27-0000-7000-8000-000000000027
+    adr_alias_id: ADR-L-0027
+    scope: global
+    statement: 'For advertised shared peer-host capabilities, Python and Node MUST
+      obtain
+
+      meaning-bearing projection bytes from one canonical semantic-core result and
+
+      MUST NOT rely on independent host-local renderers to manufacture byte parity.
+
+      '
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions: []
+    supersedes: []
+    alias_id: INV-0239
+    alias_name: shared-capability-bytes-come-from-one-canonical-result
+  relationships:
+    declared_in:
+    - 01a05a27-0000-7000-8000-000000000027
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    consumes_interface: []
+    composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a05a27-0000-7000-8000-000000000027#01a09cf0-179e-71cc-b150-d4c93cee08c0
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index

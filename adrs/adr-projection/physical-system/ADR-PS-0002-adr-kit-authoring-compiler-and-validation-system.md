@@ -5,25 +5,25 @@ artifact_kind: rendered_adr_markdown
 generator_id: adr-projection-markdown
 generator_version: 3
 hash_algorithm: sha256
-source_hash: 6f69e78427af6e6a6469ad29a53bbd19849bda643370068f2292445ffe2b06aa
-rendered_hash: 517ff431c8df10155d8d6b1b68d36b99edcf540a39c7932d75248c984f779d3a
+source_hash: c95e6d0c838a31db96ea787841e39eb259845bc0b43cd31926b9f742e40f8124
+rendered_hash: 2b6db67395fd1c6ac7b859976a1b739be4b82dad7bee165b034a28ebb03d4d43
 -->
 
 # ADR-PS-0002: ADR Kit Authoring Compiler and Validation System
 
 ## Identity / Status
 
-**Type:** physical-system  
-**Status:** accepted  
-**Alias:** ADR-PS-0002  
-**System:** SYS-0002 — ADR Kit Authoring Compiler and Validation System  
-**Authoring contract:** authoring v1.5  
-**Created:** 2026-03-15  
-**Modified:** 2026-08-27  
-**Authors:** erik.gallmann  
-**Domains:** compiler, validation, tooling  
-**Tags:** compiler, validation, authoring, python  
-**Implements Logical:** [ADR-L-0001](../logical/ADR-L-0001-ste-compliant-machine-verifiable-architecture-decision-record-system.md), [ADR-L-0007](../logical/ADR-L-0007-deterministic-documentation-projection.md), [ADR-L-0008](../logical/ADR-L-0008-validation-modes-for-draft-and-complete-adrs.md), [ADR-L-0010](../logical/ADR-L-0010-kernel-interface-contract-and-validation-profiles.md), [ADR-L-0011](../logical/ADR-L-0011-metadata-schemas-and-remediation-ledger-enforcement.md), [ADR-L-0013](../logical/ADR-L-0013-architecture-repository-boundary-and-normalized-semantic-model.md), [ADR-L-0002](../logical/ADR-L-0002-multi-scope-adr-architecture-for-sub-module-development.md)  
+**Type:** physical-system<br>
+**Status:** accepted<br>
+**Alias:** ADR-PS-0002<br>
+**System:** SYS-0002 — ADR Kit Authoring Compiler and Validation System<br>
+**Authoring contract:** authoring v1.5<br>
+**Created:** 2026-03-15<br>
+**Modified:** 2026-08-27<br>
+**Authors:** erik.gallmann<br>
+**Domains:** compiler, validation, tooling<br>
+**Tags:** compiler, validation, authoring, python<br>
+**Implements Logical:** [ADR-L-0001](../logical/ADR-L-0001-ste-compliant-machine-verifiable-architecture-decision-record-system.md), [ADR-L-0007](../logical/ADR-L-0007-deterministic-documentation-projection.md), [ADR-L-0008](../logical/ADR-L-0008-validation-modes-for-draft-and-complete-adrs.md), [ADR-L-0010](../logical/ADR-L-0010-kernel-interface-contract-and-validation-profiles.md), [ADR-L-0011](../logical/ADR-L-0011-metadata-schemas-and-remediation-ledger-enforcement.md), [ADR-L-0013](../logical/ADR-L-0013-architecture-repository-boundary-and-normalized-semantic-model.md), [ADR-L-0002](../logical/ADR-L-0002-multi-scope-adr-architecture-for-sub-module-development.md)<br>
 
 ## Architecture at a Glance
 

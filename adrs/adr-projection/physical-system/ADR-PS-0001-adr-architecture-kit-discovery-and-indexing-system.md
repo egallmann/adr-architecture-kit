@@ -5,24 +5,24 @@ artifact_kind: rendered_adr_markdown
 generator_id: adr-projection-markdown
 generator_version: 3
 hash_algorithm: sha256
-source_hash: 219a87c0e8ced5e2c67be8e48131edfdbae5d8cfb738f8e755ea994218434718
-rendered_hash: c83ee2cfd53ad3f11af1445160dca4d210353e57b939407a8fecc0198bedb925
+source_hash: 2ea543a68d9d782b3329d090073a7e34ac1b9bc3e934f24136b46ced5c32b20e
+rendered_hash: 58039440967dcdf29608f72754815949e5ab14da8e773d26df6ca4ea19587c68
 -->
 
 # ADR-PS-0001: ADR Architecture Kit Discovery and Indexing System
 
 ## Identity / Status
 
-**Type:** physical-system  
-**Status:** accepted  
-**Alias:** ADR-PS-0001  
-**System:** SYS-0001 — ADR Architecture Kit Discovery and Indexing System  
-**Authoring contract:** authoring v1.5  
-**Created:** 2026-03-13  
-**Modified:** 2026-08-27  
-**Authors:** erik.gallmann  
-**Domains:** discovery, indexing, tooling  
-**Implements Logical:** [ADR-L-0009](../logical/ADR-L-0009-derived-architecture-discovery-surfaces.md), [ADR-L-0012](../logical/ADR-L-0012-federation-authority-and-qualified-identity-model.md), [ADR-L-0002](../logical/ADR-L-0002-multi-scope-adr-architecture-for-sub-module-development.md)  
+**Type:** physical-system<br>
+**Status:** accepted<br>
+**Alias:** ADR-PS-0001<br>
+**System:** SYS-0001 — ADR Architecture Kit Discovery and Indexing System<br>
+**Authoring contract:** authoring v1.5<br>
+**Created:** 2026-03-13<br>
+**Modified:** 2026-08-27<br>
+**Authors:** erik.gallmann<br>
+**Domains:** discovery, indexing, tooling<br>
+**Implements Logical:** [ADR-L-0009](../logical/ADR-L-0009-derived-architecture-discovery-surfaces.md), [ADR-L-0012](../logical/ADR-L-0012-federation-authority-and-qualified-identity-model.md), [ADR-L-0002](../logical/ADR-L-0002-multi-scope-adr-architecture-for-sub-module-development.md)<br>
 
 ## Architecture at a Glance
 

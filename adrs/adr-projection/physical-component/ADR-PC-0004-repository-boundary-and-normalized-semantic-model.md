@@ -5,24 +5,24 @@ artifact_kind: rendered_adr_markdown
 generator_id: adr-projection-markdown
 generator_version: 3
 hash_algorithm: sha256
-source_hash: a809a91cc9d4b7d9e0b2fe3b8f4e0687fea43db5efd28f9e026ad0eeb5fe1ad0
-rendered_hash: 2c083658e8609a89c6a2aa38b14dd16916624ddda9c6c9ed9ec17b249acdce83
+source_hash: febb6eec68fb3e9850afd30477789482cc88f3fe82a2d9ebd6c4b0ff7af0201d
+rendered_hash: ffffd2b51233c3546da915a4c1ff488b530425e05d37f8bcbe4b96dbdbb8b15b
 -->
 
 # ADR-PC-0004: Repository Boundary and Normalized Semantic Model
 
 ## Identity / Status
 
-**Type:** physical-component  
-**Status:** accepted  
-**Alias:** ADR-PC-0004  
-**Authoring contract:** authoring v1.5  
-**Created:** 2026-03-15  
-**Modified:** 2026-08-27  
-**Authors:** erik.gallmann  
-**Domains:** repository, semantic-model, tooling  
-**Implements Logical:** [ADR-L-0013](../logical/ADR-L-0013-architecture-repository-boundary-and-normalized-semantic-model.md)  
-**Implements System:** [ADR-PS-0002](../physical-system/ADR-PS-0002-adr-kit-authoring-compiler-and-validation-system.md)  
+**Type:** physical-component<br>
+**Status:** accepted<br>
+**Alias:** ADR-PC-0004<br>
+**Authoring contract:** authoring v1.5<br>
+**Created:** 2026-03-15<br>
+**Modified:** 2026-08-27<br>
+**Authors:** erik.gallmann<br>
+**Domains:** repository, semantic-model, tooling<br>
+**Implements Logical:** [ADR-L-0013](../logical/ADR-L-0013-architecture-repository-boundary-and-normalized-semantic-model.md)<br>
+**Implements System:** [ADR-PS-0002](../physical-system/ADR-PS-0002-adr-kit-authoring-compiler-and-validation-system.md)<br>
 
 ## Architecture at a Glance
 

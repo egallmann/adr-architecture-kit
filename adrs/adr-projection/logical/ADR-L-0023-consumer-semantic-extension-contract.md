@@ -5,21 +5,21 @@ artifact_kind: rendered_adr_markdown
 generator_id: adr-projection-markdown
 generator_version: 3
 hash_algorithm: sha256
-source_hash: 8e83bf9ae6547b9fdf0bcac9a5133f0c1a164e55f0c01b9a98dbe1da81f2b907
-rendered_hash: b0022adae9e9ffc8746e703e55902c57eeece76b49fd6f2cbf19beddfffbc34f
+source_hash: fcea9962d35c3659cf2b1ebf0de86abd59838144bd71fe1e1f8693c2a95f11d4
+rendered_hash: 8d0c5d2fff9c0a112f4b115c2e133f4593bddcefa44d718538c5e3ab4aeba02f
 -->
 
 # ADR-L-0023: Consumer Semantic Extension Contract
 
 ## Identity / Status
 
-**Type:** logical  
-**Status:** accepted  
-**Alias:** ADR-L-0023  
-**Authoring contract:** authoring v1.5  
-**Created:** 2026-08-21  
-**Authors:** erik.gallmann  
-**Domains:** architecture, schema-governance, extensibility  
+**Type:** logical<br>
+**Status:** accepted<br>
+**Alias:** ADR-L-0023<br>
+**Authoring contract:** authoring v1.5<br>
+**Created:** 2026-08-21<br>
+**Authors:** erik.gallmann<br>
+**Domains:** architecture, schema-governance, extensibility<br>
 
 ## Architecture at a Glance
 

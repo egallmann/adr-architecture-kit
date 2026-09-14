@@ -5,22 +5,22 @@ artifact_kind: rendered_adr_markdown
 generator_id: adr-projection-markdown
 generator_version: 3
 hash_algorithm: sha256
-source_hash: 2f4a07be4dab4eafe2c6a79cac1c0a71597bb0622b07aeb5ec7704d17f9a123f
-rendered_hash: e9b9e86e1343076c8e51bc5ae750a89645e094d3108b90e57d517a5c356d217b
+source_hash: 358f9a279080f4138a70e783e28f5d95f1c135d0e9a3a1034f859c63e93aed5f
+rendered_hash: 5c68b885894b97c66b70fdc0ccbd5fd7998e89c1870ecab42e4eb861769b0811
 -->
 
 # ADR-L-0009: Derived Architecture Discovery Surfaces
 
 ## Identity / Status
 
-**Type:** logical  
-**Status:** accepted  
-**Alias:** ADR-L-0009  
-**Authoring contract:** authoring v1.5  
-**Created:** 2026-03-13  
-**Authors:** erik.gallmann  
-**Domains:** discovery, indexing, governance, ai-first  
-**Tags:** entity-registry, manifest, discovery, agent-tooling  
+**Type:** logical<br>
+**Status:** accepted<br>
+**Alias:** ADR-L-0009<br>
+**Authoring contract:** authoring v1.5<br>
+**Created:** 2026-03-13<br>
+**Authors:** erik.gallmann<br>
+**Domains:** discovery, indexing, governance, ai-first<br>
+**Tags:** entity-registry, manifest, discovery, agent-tooling<br>
 
 ## Architecture at a Glance
 
@@ -28,9 +28,9 @@ rendered_hash: e9b9e86e1343076c8e51bc5ae750a89645e094d3108b90e57d517a5c356d217b
 | --- | --- |
 | Logical authority | ADR-L-0009 |
 | Status | accepted |
-| Decisions | 5 |
+| Decisions | 6 |
 | Capabilities | 2 |
-| Invariants | 3 |
+| Invariants | 4 |
 | Physical realizations | [ADR-PS-0001](../physical-system/ADR-PS-0001-adr-architecture-kit-discovery-and-indexing-system.md), [ADR-PC-0001](../physical-component/ADR-PC-0001-entity-registry-and-discovery-index.md), [ADR-PC-0003](../physical-component/ADR-PC-0003-compiler-pipeline-and-driver.md) |
 
 
@@ -47,25 +47,30 @@ The kit already provides `manifest.yaml`, the normalized index family under
 explicit architectural decision that separates broad discovery, normalized
 lookup, guaranteed contract outputs, and compatibility-only projections so
 downstream consumers do not guess which generated surfaces are authoritative.
+When ADR-Kit semantic execution is available, semantic results become the
+preferred machine/AI surface for interpreted ADR-domain meaning, while
+manifests and indexes retain inventory and navigation roles.
 ## Architectural Decisions
 
 | Decision | Choice | Traceability |
 | --- | --- | --- |
-| DEC-0014 | Use derived discovery artifacts for agent-facing architecture lookup | — |
+| DEC-0014 | Use derived discovery artifacts for agent-facing architecture inventory lookup | — |
 | DEC-0021 | Treat manifest as a guaranteed discovery surface within the compiler contract family | — |
 | DEC-0028 | Use `adrs/index/entity-registry.yaml` as the normalized lookup surface and keep legacy registry as compatibility-only | — |
 | DEC-0057 | Classify compiler discovery outputs by guaranteed, optional, and deprecated stability tiers | — |
 | DEC-0058 | Deprecate `adrs/entities/registry.yaml` as a legacy compatibility projection | — |
+| DEC-0234 | Prefer semantic results for machine/AI semantic orientation when ADR-Kit execution is available | — |
 
-### DEC-0014 — Use derived discovery artifacts for agent-facing architecture lookup
+### DEC-0014 — Use derived discovery artifacts for agent-facing architecture inventory lookup
 
 **Rationale**
 
 Canonical authority remains in ADR artifacts (including ADR-established
-invariant entities). Agents should interact with derived, machine-stable
-discovery artifacts (including the invariant-registry) by default.
-Standalone invariant files are not authority. This reduces scan cost,
-ambiguity, and ad hoc parsing logic.
+invariant entities). Derived discovery artifacts remain the preferred machine
+inventory, navigation, interoperability, integrity, and offline inspection
+surfaces. Standalone invariant files are not authority. When canonical ADR-Kit
+semantic execution is available, interpreted architecture meaning should be
+obtained from semantic results rather than reconstructed from these indexes.
 
 ### DEC-0021 — Treat manifest as a guaranteed discovery surface within the compiler contract family
 
@@ -101,6 +106,16 @@ The normalized index family supersedes the legacy registry for new
 consumers. Keeping the legacy path for compatibility is acceptable, but it
 must be explicitly marked deprecated to prevent contract ambiguity.
 
+### DEC-0234 — Prefer semantic results for machine/AI semantic orientation when ADR-Kit execution is available
+
+**Rationale**
+
+Manifest, index, and registry artifacts remain derived persisted projections
+with narrower inventory, navigation, interchange, integrity, and offline
+inspection roles. They are not durable semantic authority. When ADR-Kit
+canonical semantic execution is available, machine and AI consumers should
+prefer the semantic-result surface for interpreted architecture meaning.
+
 
 ## Capabilities
 
@@ -127,7 +142,8 @@ Provide deterministic lookup for normalized architecture entities through
 | --- | --- | --- | --- |
 | INV-0043 | Canonical architectural authority MUST remain in ADR artifacts (including invariants established in logical ADRs).… | MUST / design | automated |
 | INV-0044 | Derived architecture discovery artifacts MUST be deterministic, reproducible, and disposable. | MUST / design | automated |
-| INV-0045 | Agent-facing ADR toolkit workflows MUST prefer indexed lookup surfaces over raw ADR body traversal by default. | MUST / design | automated |
+| INV-0045 | Agent-facing ADR toolkit workflows MUST prefer indexed lookup surfaces over raw ADR body traversal for inventory and… | MUST / design | automated |
+| INV-0238 | Semantic-result outputs MUST remain derived execution results for a supplied Exact Source Basis and MUST NOT be… | MUST / design | manual |
 
 ### INV-0043
 
@@ -171,7 +187,10 @@ and drift detection.
 **Statement**
 
 Agent-facing ADR toolkit workflows MUST prefer indexed lookup surfaces
-over raw ADR body traversal by default.
+over raw ADR body traversal for inventory and navigation by default. When
+canonical ADR-Kit semantic execution is available, workflows MUST prefer
+semantic results over reconstructing interpreted architecture meaning from
+manifest, index, registry, or Markdown projections.
 
 **Scope:** global
 
@@ -180,8 +199,26 @@ over raw ADR body traversal by default.
 
 **Rationale**
 
-Explicit, cheap-to-query indexes are more aligned with AI-first design
-than repeated ad hoc document scans.
+Indexes remain cheap inventory surfaces; semantic results are the
+machine-oriented evolution for interpreted ADR-domain meaning.
+
+### INV-0238
+
+**Statement**
+
+Semantic-result outputs MUST remain derived execution results for a supplied
+Exact Source Basis and MUST NOT be treated as durable architecture authority
+replacing canonical ADR YAML.
+
+**Scope:** global
+
+**Enforcement:** MUST (design)
+**Verification:** manual
+
+**Rationale**
+
+Preferring semantic results for orientation must not invent a second durable
+authority layer beside authored ADRs.
 
 
 
@@ -206,6 +243,7 @@ than repeated ad hoc document scans.
 ## Lifecycle / Related Architecture
 
 **Related ADRs**
+- [ADR-L-0030](ADR-L-0030-canonical-source-basis-and-semantic-execution-surface.md)
 - [ADR-L-0001](ADR-L-0001-ste-compliant-machine-verifiable-architecture-decision-record-system.md)
 - [ADR-L-0008](ADR-L-0008-validation-modes-for-draft-and-complete-adrs.md)
 - [ADR-L-0010](ADR-L-0010-kernel-interface-contract-and-validation-profiles.md)
@@ -217,6 +255,7 @@ than repeated ad hoc document scans.
 - [ADR-L-0008](ADR-L-0008-validation-modes-for-draft-and-complete-adrs.md)
 - [ADR-L-0013](ADR-L-0013-architecture-repository-boundary-and-normalized-semantic-model.md)
 - [ADR-L-0010](ADR-L-0010-kernel-interface-contract-and-validation-profiles.md)
+- [ADR-L-0030](ADR-L-0030-canonical-source-basis-and-semantic-execution-surface.md)
 - [ADR-L-0015](ADR-L-0015-adr-governance-state-and-override-semantics.md)
 - [ADR-L-0018](ADR-L-0018-schema-v1-2-and-normalized-semantic-foundation.md)
 

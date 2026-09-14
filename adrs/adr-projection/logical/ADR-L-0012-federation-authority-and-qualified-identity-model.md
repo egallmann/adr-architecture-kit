@@ -5,23 +5,23 @@ artifact_kind: rendered_adr_markdown
 generator_id: adr-projection-markdown
 generator_version: 3
 hash_algorithm: sha256
-source_hash: d7d3e5e2bb39dc1b5bb17430faa9aac3c190ecf81ea6290a06c2166c009e0065
-rendered_hash: 1fcb5949e496e93e0adf2d11d031a588ad9b22de194cdd06f6544627a8a4fa7f
+source_hash: 9c9878bd0982e22c758a808b168ca791b6e34e662eda5cb32fe47c326c95a5a3
+rendered_hash: 98d3368beb53f77f338ba46d5a299adb2cf007dc6a8b912e33c8f817c3383e7d
 -->
 
 # ADR-L-0012: Federation Authority and Qualified Identity Model
 
 ## Identity / Status
 
-**Type:** logical  
-**Status:** accepted  
-**Alias:** ADR-L-0012  
-**Authoring contract:** authoring v1.5  
-**Created:** 2026-03-14  
-**Modified:** 2026-06-02  
-**Authors:** erik.gallmann  
-**Domains:** federation, identity, governance, multi-repo  
-**Tags:** federation, qualified-id, namespace, authority  
+**Type:** logical<br>
+**Status:** accepted<br>
+**Alias:** ADR-L-0012<br>
+**Authoring contract:** authoring v1.5<br>
+**Created:** 2026-03-14<br>
+**Modified:** 2026-06-02<br>
+**Authors:** erik.gallmann<br>
+**Domains:** federation, identity, governance, multi-repo<br>
+**Tags:** federation, qualified-id, namespace, authority<br>
 
 ## Architecture at a Glance
 

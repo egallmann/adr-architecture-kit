@@ -126,8 +126,10 @@
 {% if adr.deployment_model %}
 ## Deployment Model
 
-{% if adr.deployment_model.hosting %}**Hosting:** {{ adr.deployment_model.hosting }}  {% endif %}
-{% if adr.deployment_model.orchestration %}**Orchestration:** {{ adr.deployment_model.orchestration }}  {% endif %}
+{% if adr.deployment_model.hosting %}**Hosting:** {{ adr.deployment_model.hosting }}<br>
+{% endif %}
+{% if adr.deployment_model.orchestration %}**Orchestration:** {{ adr.deployment_model.orchestration }}<br>
+{% endif %}
 
 {% if adr.deployment_model.scaling_strategy %}
 **Scaling Strategy:**

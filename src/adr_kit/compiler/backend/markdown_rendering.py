@@ -22,6 +22,7 @@ from ...integrity import (
 from ...models import LogicalADR, PhysicalADR, PhysicalComponentADR, PhysicalSystemADR
 from ...models.common import ADRType
 from ...parser import ADRParser
+from ...projection_markdown import finalize_repository_admissible_markdown
 from ...scope import ProjectScope
 from ..frontend.adr_access import adr_type_of, field_get
 from ..frontend.builder import ArchModelBuilder
@@ -37,20 +38,6 @@ from .projection_paths import projection_relative_path, stem_matches_adr
 
 MARKDOWN_GENERATOR_IDENTITY = GeneratorIdentity("adr-projection-markdown", 3)
 DEFAULT_TEMPLATE_DIR = Path(__file__).resolve().parents[2] / "templates"
-
-
-def finalize_repository_admissible_markdown(body: str) -> str:
-    """Emit final repository-admissible markdown body bytes.
-
-    Strips trailing horizontal whitespace from each line and normalizes newlines
-    to LF. Preserves whether the body ended with a final newline. Does not alter
-    interior whitespace where it may carry authored meaning.
-    """
-    ends_with_newline = body.endswith(("\n", "\r\n"))
-    normalized = "\n".join(line.rstrip(" \t") for line in body.splitlines())
-    if ends_with_newline:
-        normalized += "\n"
-    return normalized
 
 
 def _jinja_presentation_id(value: Any) -> str:
@@ -137,7 +124,11 @@ def discover_scope_adr_files(scope: ProjectScope) -> list[Path]:
         if not directory.exists():
             continue
         files.extend(
-            sorted(path for path in directory.glob("*.yaml") if path.is_file() and not path.is_symlink())
+            sorted(
+                path
+                for path in directory.glob("*.yaml")
+                if path.is_file() and not path.is_symlink()
+            )
         )
     return files
 

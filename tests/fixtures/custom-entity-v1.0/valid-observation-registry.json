@@ -1,0 +1,177 @@
+{
+  "registry_id": "example.consumer.custom-entity-registry",
+  "registry_version": "1.0",
+  "authority": "consumer_namespace",
+  "definitions": [
+    {
+      "semantic_kind": "entity",
+      "semantic_type": "example:observation",
+      "consumer_namespace": "example",
+      "contract_version": "1.0",
+      "contract_fingerprint": "scf:v1:sha256:1111111111111111111111111111111111111111111111111111111111111111",
+      "display_name": "Observation",
+      "description": "A consumer-owned observation entity.",
+      "identity_policy": {
+        "mode": "canonical_uuidv7",
+        "identity_bearing": true,
+        "supplied_identity": "preserve",
+        "establishment": "create_when_absent",
+        "update_identity": "preserve",
+        "reference_identity": "reuse",
+        "composition_identity": "does_not_manufacture",
+        "forbidden_derivations": ["alias", "prose", "path", "hash", "source_location", "ordering", "composition_position"]
+      },
+      "alias_policy": {
+        "fields": ["alias_id", "alias_name"],
+        "orientation": "alias_id_stable_name_descriptive",
+        "allocation_authority": "consumer",
+        "reservation": "outside_construction",
+        "canonical_foreign_key": false
+      },
+      "field_contract": {
+        "required_fields": ["id", "alias_id", "alias_name", "existence_state", "observation_code"],
+        "optional_fields": ["confidence", "tags", "observation_status"],
+        "forbidden_fields": ["topology_key", "from_key", "to_key"],
+        "unknown_field_policy": "reject",
+        "fields": {
+          "id": {"type": "string"},
+          "alias_id": {"type": "string"},
+          "alias_name": {"type": "string"},
+          "existence_state": {"type": "string", "enum": ["active", "retired"]},
+          "observation_code": {"type": "string"},
+          "confidence": {"type": "number"},
+          "tags": {"type": "array", "items": "string", "max_items": 8},
+          "observation_status": {"type": "string", "enum": ["draft", "approved"]}
+        }
+      },
+      "composition_policy": {
+        "allowed_parents": ["adr/logical"],
+        "minimum": 0,
+        "maximum": null,
+        "identity_effect": "does_not_manufacture_identity",
+        "admission_effect": "does_not_imply_governance_admission"
+      },
+      "existence_policy": {
+        "field": "existence_state",
+        "values": ["active", "retired"],
+        "semantic_dimension": "adr_kit_generic_existence",
+        "retire_effect": "preserve_identity_and_historical_interpretation"
+      },
+      "consumer_state_policy": {
+        "separate_from_existence": true,
+        "field_authority": "consumer_contract",
+        "replacement_of_existence_state": false,
+        "examples": ["observation_status"]
+      },
+      "relationship_participation": {
+        "outbound": [
+          {
+            "relationship_type": "example:observes",
+            "target_types": [{"endpoint_kind": "canonical_entity", "semantic_type": "entity/capability"}],
+            "minimum": 0,
+            "maximum": null,
+            "ordering": "not_material"
+          }
+        ],
+        "inbound": [],
+        "inverse_inference": "forbidden_without_declared_inverse"
+      },
+      "reference_policy": {
+        "identity_representation": "canonical_uuidv7",
+        "resolution": "exact_identity_basis",
+        "unresolved": "reject",
+        "aliases_as_identity": false
+      },
+      "operation_posture": {
+        "create": {"status": "descriptive_not_executable", "permission": "qualified_contract_required", "execution": false, "persistence": "outside_contract_definition", "alias_reservation": "outside_construction"},
+        "update": {"status": "descriptive_not_executable", "permission": "qualified_contract_required", "execution": false, "persistence": "outside_contract_definition", "alias_reservation": "outside_construction"},
+        "reference": {"status": "descriptive_not_executable", "permission": "read_only_reference", "execution": false, "persistence": "outside_contract_definition", "alias_reservation": "outside_construction"},
+        "retire": {"status": "descriptive_not_executable", "permission": "qualified_contract_required", "execution": false, "persistence": "outside_contract_definition", "alias_reservation": "outside_construction"}
+      }
+    },
+    {
+      "semantic_kind": "relationship",
+      "semantic_type": "example:observes",
+      "consumer_namespace": "example",
+      "contract_version": "1.0",
+      "contract_fingerprint": "scf:v1:sha256:2222222222222222222222222222222222222222222222222222222222222222",
+      "display_name": "Observes",
+      "description": "An explicit consumer-owned relationship from an observation to a capability.",
+      "relationship_mode": "custom_explicit",
+      "identity_policy": {
+        "mode": "canonical_uuidv7",
+        "identity_bearing": true,
+        "supplied_identity": "preserve",
+        "establishment": "create_when_absent",
+        "update_identity": "preserve",
+        "reference_identity": "reuse",
+        "composition_identity": "does_not_manufacture",
+        "forbidden_derivations": ["alias", "prose", "path", "hash", "source_location", "ordering", "composition_position"]
+      },
+      "alias_policy": {
+        "fields": ["alias_id", "alias_name"],
+        "orientation": "alias_id_stable_name_descriptive",
+        "allocation_authority": "consumer",
+        "reservation": "outside_construction",
+        "canonical_foreign_key": false
+      },
+      "field_contract": {
+        "required_fields": ["id", "alias_id", "alias_name", "relationship_type", "from_entity_id", "to_entity_id", "properties", "rationale"],
+        "optional_fields": [],
+        "forbidden_fields": ["topology_key", "from_key", "to_key"],
+        "unknown_field_policy": "reject",
+        "fields": {
+          "id": {"type": "string"},
+          "alias_id": {"type": "string"},
+          "alias_name": {"type": "string"},
+          "relationship_type": {"type": "string"},
+          "from_entity_id": {"type": "string"},
+          "to_entity_id": {"type": "string"},
+          "properties": {"type": "bounded_property_map", "max_properties": 16, "key_pattern": "^[a-z][a-z0-9_]{0,63}$", "value_types": ["string", "integer", "number", "boolean"], "array_max_items": 8, "unknown_property_policy": "reject", "nested_objects": false},
+          "rationale": {"type": "string"}
+        }
+      },
+      "reference_policy": {
+        "mode": "canonical_uuidv7",
+        "allowed_reference_kinds": ["canonical_entity", "qualified_custom_type"],
+        "reference_fields": ["from_entity_id", "to_entity_id"],
+        "endpoint_representation": "canonical_uuidv7",
+        "resolution": "exact_identity_basis",
+        "unresolved": "reject",
+        "aliases_as_endpoints": false
+      },
+      "source_types": [{"endpoint_kind": "qualified_custom_type", "semantic_type": "example:observation"}],
+      "target_types": [{"endpoint_kind": "canonical_entity", "semantic_type": "entity/capability"}],
+      "property_policy": {
+        "value_semantics": "bounded_scalar_or_scalar_array",
+        "unknown_property_policy": "reject",
+        "nested_objects": false,
+        "relationship_effect": "never_implies_graph_relationship",
+        "max_properties": 16,
+        "array_max_items": 8
+      },
+      "rationale": "required",
+      "cardinality": {"mode": "custom_contract_declared", "minimum": 0, "maximum": null},
+      "ordering": {"mode": "contract_declared", "materiality": "material_when_declared", "rule": "order by persisted relationship UUID when the consumer declares ordering material"},
+      "operation_posture": {
+        "create": {"status": "descriptive_not_executable", "permission": "qualified_contract_required", "execution": false, "persistence": "outside_contract_definition", "alias_reservation": "outside_construction"},
+        "update": {"status": "descriptive_not_executable", "permission": "qualified_contract_required", "execution": false, "persistence": "outside_contract_definition", "alias_reservation": "outside_construction"},
+        "reference": {"status": "descriptive_not_executable", "permission": "read_only_reference", "execution": false, "persistence": "outside_contract_definition", "alias_reservation": "outside_construction"},
+        "retire": {"status": "descriptive_not_executable", "permission": "qualified_contract_required", "execution": false, "persistence": "outside_contract_definition", "alias_reservation": "outside_construction"}
+      }
+    }
+  ],
+  "selection_policy": {
+    "mode": "exact_qualified_selection",
+    "latest": "forbidden",
+    "missing_exact_authority": "reject",
+    "ambiguous_duplicate": "reject",
+    "ordering": "canonical_semantic_json"
+  },
+  "exact_selection": {
+    "semantic_kind": "relationship",
+    "semantic_type": "example:observes",
+    "contract_version": "1.0",
+    "contract_fingerprint": "scf:v1:sha256:2222222222222222222222222222222222222222222222222222222222222222"
+  }
+}

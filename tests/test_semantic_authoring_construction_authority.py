@@ -88,7 +88,7 @@ def test_adr_l_0029_authorizes_successors_without_advertising_implementation() -
     assert "No successor contract directory or resource" in text
 
 
-def test_adc11_is_the_only_authorized_successor_contract_resource() -> None:
+def test_adc11_and_cec10_are_the_only_authorized_successor_contract_resources() -> None:
     successor_paths = (
         ROOT / "contracts" / "custom-entity" / "v1.0",
         ROOT / "contracts" / "authoring-construction" / "v1.0",
@@ -99,7 +99,8 @@ def test_adc11_is_the_only_authorized_successor_contract_resource() -> None:
         ROOT / "contracts" / "architecture-authoring" / "v1.0",
     )
     assert (ROOT / "contracts" / "authoring-domain" / "v1.1").is_dir()
-    assert not any(path.exists() for path in successor_paths)
+    assert (ROOT / "contracts" / "custom-entity" / "v1.0").is_dir()
+    assert not any(path.exists() for path in successor_paths[1:])
 
 
 def test_current_capability_and_execution_authority_remain_unchanged() -> None:

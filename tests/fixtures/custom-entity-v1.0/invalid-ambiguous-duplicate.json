@@ -8,7 +8,7 @@
       "semantic_type": "example:observation",
       "consumer_namespace": "example",
       "contract_version": "1.0",
-      "contract_fingerprint": "scf:v1:sha256:1111111111111111111111111111111111111111111111111111111111111111",
+      "contract_fingerprint": "cecf:v1:sha256:0ea26a7ea84f1b8eff7dbdee1b65b3711ae372c9777908c323689230f8f320b3",
       "description": "First meaning."
     },
     {
@@ -16,10 +16,9 @@
       "semantic_type": "example:observation",
       "consumer_namespace": "example",
       "contract_version": "1.0",
-      "contract_fingerprint": "scf:v1:sha256:9999999999999999999999999999999999999999999999999999999999999999",
+      "contract_fingerprint": "cecf:v1:sha256:9999999999999999999999999999999999999999999999999999999999999999",
       "description": "Conflicting meaning."
     }
   ],
-  "selection_policy": {"mode": "exact_qualified_selection", "latest": "forbidden", "missing_exact_authority": "reject", "ambiguous_duplicate": "reject", "ordering": "canonical_semantic_json"},
-  "exact_selection": {"semantic_kind": "entity", "semantic_type": "example:observation", "contract_version": "1.0", "contract_fingerprint": "scf:v1:sha256:1111111111111111111111111111111111111111111111111111111111111111"}
+  "registry_policy": {"ordering": "canonical_semantic_json", "latest": "forbidden", "ambiguous_duplicate": "reject", "retained_versions": "explicit_historical_versions", "selection": "separate_exact_operation_source_basis"}
 }

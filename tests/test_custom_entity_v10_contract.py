@@ -8,7 +8,9 @@ import json
 from pathlib import Path
 from typing import Any
 
+import pytest
 from jsonschema import Draft202012Validator
+from adr_kit.semantic_contract import canonicalize_semantic_json
 
 ROOT = Path(__file__).resolve().parents[1]
 CONTRACT = ROOT / "contracts/custom-entity/v1.0/contract.json"
@@ -17,6 +19,8 @@ FIXTURE = ROOT / "tests/fixtures/custom-entity-v1.0/valid-observation-registry.j
 INVALID_UNQUALIFIED = ROOT / "tests/fixtures/custom-entity-v1.0/invalid-unqualified-type.json"
 INVALID_LATEST = ROOT / "tests/fixtures/custom-entity-v1.0/invalid-latest-selection.json"
 INVALID_DUPLICATE = ROOT / "tests/fixtures/custom-entity-v1.0/invalid-ambiguous-duplicate.json"
+INVALID_SCF = ROOT / "tests/fixtures/custom-entity-v1.0/invalid-scf-fingerprint.json"
+VECTORS = ROOT / "contracts/custom-entity/v1.0/vectors/contract-fingerprint.json"
 ADC10 = ROOT / "contracts/authoring-domain/v1.0/contract.json"
 CAPABILITIES = ROOT / "contracts/compatibility/host-capabilities.json"
 ADC10_SHA256 = "b2de54a60b6f395dfc69a8ddb1b9707def18e5c93456607f947fc0af5d473c6a"
@@ -29,6 +33,39 @@ def load(path: Path) -> dict[str, Any]:
 def errors(document: dict[str, Any]) -> list[str]:
     validator = Draft202012Validator(load(SCHEMA))
     return [error.message for error in validator.iter_errors(document)]
+
+
+def selection_errors(document: dict[str, Any]) -> list[str]:
+    schema = load(SCHEMA)
+    selection_schema = {"$ref": "#/$defs/selection", "$defs": schema["$defs"]}
+    validator = Draft202012Validator(selection_schema)
+    return [error.message for error in validator.iter_errors(document)]
+
+
+def cecf(definition: dict[str, Any]) -> tuple[str, str]:
+    definition_without_fingerprint = {
+        key: value for key, value in definition.items() if key != "contract_fingerprint"
+    }
+    result = canonicalize_semantic_json(
+        {
+            "scheme": "adr-kit.custom-entity-contract/v1",
+            "definition": definition_without_fingerprint,
+        }
+    )
+    assert result.success is True
+    assert result.canonical_preimage_json is not None
+    digest = hashlib.sha256(result.canonical_preimage_json.encode("utf-8")).hexdigest()
+    return result.canonical_preimage_json, f"cecf:v1:sha256:{digest}"
+
+
+def namespace_owned(definition: dict[str, Any]) -> bool:
+    semantic_type = definition["semantic_type"]
+    return semantic_type.split(":", maxsplit=1)[0] == definition["consumer_namespace"]
+
+
+def validate_namespace_ownership(definition: dict[str, Any]) -> None:
+    if not namespace_owned(definition):
+        raise ValueError("qualified custom semantic type is owned by another namespace")
 
 
 def qualification(definition: dict[str, Any]) -> tuple[str, str, str]:
@@ -56,18 +93,12 @@ def registry_for(definition: dict[str, Any]) -> dict[str, Any]:
         "registry_version": "1.0",
         "authority": "consumer_namespace",
         "definitions": [definition],
-        "selection_policy": {
-            "mode": "exact_qualified_selection",
-            "latest": "forbidden",
-            "missing_exact_authority": "reject",
-            "ambiguous_duplicate": "reject",
+        "registry_policy": {
             "ordering": "canonical_semantic_json",
-        },
-        "exact_selection": {
-            "semantic_kind": definition["semantic_kind"],
-            "semantic_type": definition["semantic_type"],
-            "contract_version": definition["contract_version"],
-            "contract_fingerprint": definition["contract_fingerprint"],
+            "latest": "forbidden",
+            "ambiguous_duplicate": "reject",
+            "retained_versions": "explicit_historical_versions",
+            "selection": "separate_exact_operation_source_basis",
         },
     }
 
@@ -88,7 +119,7 @@ def test_qualification_is_exact_for_entity_and_relationship() -> None:
         assert ":" in definition["semantic_type"]
         assert definition["semantic_type"].startswith(definition["consumer_namespace"] + ":")
         assert definition["contract_version"] == "1.0"
-        assert definition["contract_fingerprint"].startswith("scf:v1:sha256:")
+        assert definition["contract_fingerprint"].startswith("cecf:v1:sha256:")
     assert contract["qualification_policy"] == {
         "semantic_kinds": ["entity", "relationship"],
         "semantic_type_format": "consumer_namespace:local_name",
@@ -99,6 +130,7 @@ def test_qualification_is_exact_for_entity_and_relationship() -> None:
             "contract_version",
             "contract_fingerprint",
         ],
+        "namespace_prefix_matches_owner": True,
         "path_identity": False,
         "ambient_defaults": False,
         "latest_selection": False,
@@ -107,8 +139,23 @@ def test_qualification_is_exact_for_entity_and_relationship() -> None:
 
 def test_unqualified_and_latest_authority_are_rejected() -> None:
     assert errors(load(INVALID_UNQUALIFIED))
-    assert errors(load(INVALID_LATEST))
-    assert load(INVALID_LATEST)["exact_selection"]["contract_version"] == "latest"
+    assert selection_errors(load(INVALID_LATEST))
+    assert load(INVALID_LATEST)["contract_version"] == "latest"
+    assert selection_errors(load(INVALID_SCF))
+
+
+def test_namespace_prefix_is_semantically_bound_for_entities_and_relationships() -> None:
+    fixture = load(FIXTURE)
+    for definition in fixture["definitions"]:
+        validate_namespace_ownership(definition)
+        mismatched = copy.deepcopy(definition)
+        local_name = mismatched["semantic_type"].split(":", maxsplit=1)[1]
+        mismatched["semantic_type"] = f"other:{local_name}"
+        assert errors(registry_for(mismatched)) == []
+        with pytest.raises(ValueError, match="another namespace"):
+            validate_namespace_ownership(mismatched)
+
+    assert load(CONTRACT)["qualification_policy"]["namespace_prefix_matches_owner"] is True
 
 
 def test_registry_rejects_ambiguous_duplicate_but_retains_exact_duplicate() -> None:
@@ -134,7 +181,7 @@ def test_registry_rejects_ambiguous_duplicate_but_retains_exact_duplicate() -> N
 
     registry_policy = load(CONTRACT)["registry_policy"]
     assert registry_policy["retained_versions"] == "explicit_historical_versions"
-    assert registry_policy["selection"] == "exact_type_kind_version_fingerprint"
+    assert registry_policy["selection"] == "separate_exact_operation_source_basis"
     assert registry_policy["global_registry"] is False
 
 
@@ -229,6 +276,68 @@ def test_relationship_is_explicit_and_supports_canonical_and_custom_endpoints() 
     assert load(CONTRACT)["relationship_policy"]["endpoint_legality"] == (
         "exact_custom_contract_declared_source_and_target_types"
     )
+
+
+def test_cecf_vectors_use_shared_canonical_json_and_change_only_for_meaning() -> None:
+    vectors = load(VECTORS)
+    fixture = load(FIXTURE)
+    by_type = {item["semantic_type"]: item for item in fixture["definitions"]}
+    cases = {item["name"]: item for item in vectors["cases"]}
+
+    for name in ("entity_definition", "relationship_definition"):
+        case = cases[name]
+        definition = by_type[
+            "example:observation" if name.startswith("entity") else "example:observes"
+        ]
+        canonical_preimage, fingerprint = cecf(definition)
+        assert canonical_preimage == case["expected_canonical_preimage"]
+        assert fingerprint == case["expected_fingerprint"]
+
+    entity = by_type["example:observation"]
+    reordered = dict(reversed(list(entity.items())))
+    assert (
+        cecf(reordered)[1]
+        == cases["reordered_members_have_same_fingerprint"]["expected_fingerprint"]
+    )
+
+    changed = copy.deepcopy(entity)
+    changed_case = cases["meaning_affecting_change_has_different_fingerprint"]
+    changed["description"] = changed_case["mutation"]["value"]
+    assert changed_case["expected_fingerprint_differs_from"] == "entity_definition"
+    assert cecf(changed)[1] != cases["entity_definition"]["expected_fingerprint"]
+
+    declared_mismatch = copy.deepcopy(entity)
+    declared_mismatch["contract_fingerprint"] = cases["declared_fingerprint_mismatch_is_invalid"][
+        "declared_fingerprint"
+    ]
+    assert cecf(declared_mismatch)[1] != declared_mismatch["contract_fingerprint"]
+    assert vectors["scheme"] == "cecf:v1:sha256"
+    assert vectors["domain"] == "adr-kit.custom-entity-contract/v1"
+
+
+def test_registry_is_stable_source_and_exact_selection_is_separate() -> None:
+    source_bytes = FIXTURE.read_bytes()
+    registry = load(FIXTURE)
+    assert "exact_selection" not in registry
+    assert len(registry["definitions"]) == 2
+
+    historical = copy.deepcopy(registry["definitions"][0])
+    historical["contract_version"] = "1.1"
+    historical["description"] = "A retained historical observation contract."
+    _, historical["contract_fingerprint"] = cecf(historical)
+    registry["definitions"].append(historical)
+    assert errors(registry) == []
+    assert {item["contract_version"] for item in registry["definitions"]} == {"1.0", "1.1"}
+    assert FIXTURE.read_bytes() == source_bytes
+
+    exact_selection = {
+        "semantic_kind": "relationship",
+        "semantic_type": "example:observes",
+        "contract_version": "1.0",
+        "contract_fingerprint": registry["definitions"][1]["contract_fingerprint"],
+    }
+    assert selection_errors(exact_selection) == []
+    assert selection_errors({**exact_selection, "contract_version": "latest"})
 
 
 def test_operations_migration_promotion_and_read_only_boundary_are_descriptive() -> None:

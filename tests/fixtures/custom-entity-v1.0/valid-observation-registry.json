@@ -8,7 +8,7 @@
       "semantic_type": "example:observation",
       "consumer_namespace": "example",
       "contract_version": "1.0",
-      "contract_fingerprint": "scf:v1:sha256:1111111111111111111111111111111111111111111111111111111111111111",
+      "contract_fingerprint": "cecf:v1:sha256:0ea26a7ea84f1b8eff7dbdee1b65b3711ae372c9777908c323689230f8f320b3",
       "display_name": "Observation",
       "description": "A consumer-owned observation entity.",
       "identity_policy": {
@@ -94,7 +94,7 @@
       "semantic_type": "example:observes",
       "consumer_namespace": "example",
       "contract_version": "1.0",
-      "contract_fingerprint": "scf:v1:sha256:2222222222222222222222222222222222222222222222222222222222222222",
+      "contract_fingerprint": "cecf:v1:sha256:2486291faebfdc1158145bbc06e4b030fa9fd3a7e196ea93fcab3feab5c9c96a",
       "display_name": "Observes",
       "description": "An explicit consumer-owned relationship from an observation to a capability.",
       "relationship_mode": "custom_explicit",
@@ -161,17 +161,11 @@
       }
     }
   ],
-  "selection_policy": {
-    "mode": "exact_qualified_selection",
+  "registry_policy": {
+    "ordering": "canonical_semantic_json",
     "latest": "forbidden",
-    "missing_exact_authority": "reject",
     "ambiguous_duplicate": "reject",
-    "ordering": "canonical_semantic_json"
-  },
-  "exact_selection": {
-    "semantic_kind": "relationship",
-    "semantic_type": "example:observes",
-    "contract_version": "1.0",
-    "contract_fingerprint": "scf:v1:sha256:2222222222222222222222222222222222222222222222222222222222222222"
+    "retained_versions": "explicit_historical_versions",
+    "selection": "separate_exact_operation_source_basis"
   }
 }

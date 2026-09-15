@@ -1,0 +1,4331 @@
+{
+  "$schema": "./schema.json",
+  "contract_id": "adr-kit.authoring-domain",
+  "contract_version": "1.1",
+  "contract_family": "authoring_domain",
+  "versioning": {
+    "independent_of": [
+      "canonical_persistence_schema"
+    ],
+    "successor_of": "1.0",
+    "adc_1_0_immutable": true
+  },
+  "defined_capabilities": [
+    "authoring.discovery"
+  ],
+  "discovery_operations": [
+    "describe_contract",
+    "list_types",
+    "describe_type"
+  ],
+  "type_kinds": [
+    "adr",
+    "entity",
+    "relationship",
+    "value"
+  ],
+  "read_only_boundary": {
+    "posture": "descriptive_only",
+    "public_binding_support": false,
+    "advertised_authoring_domain_version": "1.0",
+    "construction_execution": "not_implemented",
+    "future_execution_authority": "authoring_construction_contract/1.0",
+    "excluded_operations": [
+      "construct_authoring_set",
+      "validate_authoring",
+      "persist_authoring",
+      "reserve_alias",
+      "admit_governance"
+    ],
+    "statement": "This artifact closes construction-facing descriptive policy; it does not execute construction or advertise successor binding support."
+  },
+  "policy_vocabulary": {
+    "policy_status": [
+      "defined",
+      "not_applicable"
+    ],
+    "relationship_modes": [
+      "explicit",
+      "composition_derived",
+      "field_derived",
+      "compatibility_projection",
+      "custom_explicit"
+    ],
+    "operation_permissions": [
+      "allowed",
+      "proposed_only",
+      "unsupported",
+      "qualified_contract_required",
+      "future_custom_entity_contract_required"
+    ],
+    "identity_modes": [
+      "canonical_uuidv7",
+      "owner_local",
+      "owner_local_relationship_value",
+      "custom_contract_qualified",
+      "none"
+    ],
+    "ordering_modes": [
+      "source_declared_sequence",
+      "identity_keyed_set",
+      "owner_declared_sequence",
+      "custom_contract_declared",
+      "not_applicable"
+    ]
+  },
+  "discovery_projections": {
+    "describe_contract": {
+      "response": {
+        "fields": [
+          "contract_id",
+          "contract_version",
+          "defined_capabilities",
+          "discovery_operations",
+          "type_kinds"
+        ]
+      }
+    },
+    "list_types": {
+      "request": {
+        "kind": {
+          "presence": "optional",
+          "matching": "exact",
+          "case_sensitive": true,
+          "allowed_values": [
+            "adr",
+            "entity",
+            "relationship",
+            "value"
+          ]
+        }
+      },
+      "response": {
+        "fields": [
+          "contract_version",
+          "types"
+        ],
+        "item_type": "AuthoringTypeSummary",
+        "item_fields": [
+          "key",
+          "display_name",
+          "description"
+        ]
+      },
+      "ordering": {
+        "deterministic": true,
+        "by": [
+          "key.kind",
+          "key.name"
+        ]
+      },
+      "filter": {
+        "request_field": "kind",
+        "response_echoed": false
+      }
+    },
+    "describe_type": {
+      "request": {
+        "fields": [
+          {
+            "name": "kind",
+            "required": true,
+            "matching": "exact",
+            "case_sensitive": true
+          },
+          {
+            "name": "name",
+            "required": true,
+            "matching": "exact",
+            "case_sensitive": true
+          },
+          {
+            "name": "contract_version",
+            "required": false,
+            "matching": "exact",
+            "case_sensitive": true
+          }
+        ]
+      },
+      "response": {
+        "type": "AuthoringTypeDescriptor"
+      }
+    }
+  },
+  "types": [
+    {
+      "contract_version": "1.1",
+      "key": {
+        "kind": "adr",
+        "name": "logical"
+      },
+      "display_name": "Logical ADR",
+      "description": "Construction-aware descriptive contract for Logical ADR.",
+      "authoring_mode": "direct",
+      "semantic_type_ownership": "adr_kit",
+      "discriminator": {
+        "mode": "fixed",
+        "field": "adr_type",
+        "value": "logical"
+      },
+      "construction_support": {
+        "status": "described",
+        "fragment_kind": "composite_fragment",
+        "execution": "not_implemented",
+        "result": "detached_candidate_only"
+      },
+      "input_contract": {
+        "status": "defined",
+        "shape": "exact_typed_root",
+        "authority": "explicit_typed_intent",
+        "required_fields": [
+          "adr_type",
+          "id",
+          "alias_id",
+          "alias_name",
+          "title"
+        ],
+        "optional_fields": [],
+        "unknown_fields": "reject",
+        "inference": "forbidden"
+      },
+      "identity_policy": {
+        "status": "defined",
+        "mode": "canonical_uuidv7",
+        "identity_bearing": true,
+        "establishment": "create",
+        "supplied_identity": "preserve",
+        "update_identity": "preserve",
+        "reference_identity": "reuse",
+        "composition_identity": "does_not_manufacture",
+        "forbidden_derivations": [
+          "alias",
+          "prose",
+          "path",
+          "source_location",
+          "hash",
+          "ordering",
+          "composition_position"
+        ]
+      },
+      "composition_policy": {
+        "status": "defined",
+        "mode": "root_fragment",
+        "allowed_parents": [],
+        "cardinality": "root",
+        "child_identity": "preserve",
+        "admission": "deferred",
+        "persistence": "deferred"
+      },
+      "reference_policy": {
+        "status": "defined",
+        "mode": "canonical_uuidv7",
+        "allowed_reference_kinds": [
+          "canonical_entity",
+          "adr"
+        ],
+        "reference_field_contract": {
+          "fields": [
+            "id",
+            "alias_id",
+            "alias_ref"
+          ],
+          "endpoint_representation": "canonical_uuidv7"
+        },
+        "unresolved": "preserve_explicit_unresolved",
+        "identity_effect": "reference_does_not_recreate_identity"
+      },
+      "field_ownership_policy": {
+        "status": "defined",
+        "owner": "adr_kit",
+        "semantic_fields": [
+          "type-specific semantic fields"
+        ],
+        "identity_fields": [
+          "id"
+        ],
+        "provenance_fields": [
+          "declaring_owner",
+          "source_contract"
+        ],
+        "extension_fields": "none",
+        "unknown_fields": "reject"
+      },
+      "relationship_policy": {
+        "status": "defined",
+        "semantic_owner": "adr_kit",
+        "relationship_mode": "explicit",
+        "allowed_outbound": [],
+        "allowed_inbound": [],
+        "relationship_field_contract": {
+          "fields": [],
+          "endpoint_representation": "none"
+        },
+        "cardinality": "no_relationship_participation_declared",
+        "ordering": {
+          "status": "defined",
+          "mode": "not_material",
+          "material": false,
+          "rule": "no undeclared relationship sequence"
+        }
+      },
+      "operation_posture": {
+        "create": {
+          "status": "defined",
+          "permission": "proposed_only"
+        },
+        "update": {
+          "status": "defined",
+          "permission": "proposed_only"
+        },
+        "reference": {
+          "status": "defined",
+          "permission": "allowed"
+        },
+        "retire": {
+          "status": "defined",
+          "permission": "unsupported"
+        }
+      },
+      "ordering_policy": {
+        "status": "defined",
+        "mode": "source_declared_sequence",
+        "material": true,
+        "rule": "preserve authored fragment sequence"
+      }
+    },
+    {
+      "contract_version": "1.1",
+      "key": {
+        "kind": "adr",
+        "name": "physical-component"
+      },
+      "display_name": "Physical-Component ADR",
+      "description": "Construction-aware descriptive contract for Physical-Component ADR.",
+      "authoring_mode": "direct",
+      "semantic_type_ownership": "adr_kit",
+      "discriminator": {
+        "mode": "fixed",
+        "field": "adr_type",
+        "value": "physical-component"
+      },
+      "construction_support": {
+        "status": "described",
+        "fragment_kind": "composite_fragment",
+        "execution": "not_implemented",
+        "result": "detached_candidate_only"
+      },
+      "input_contract": {
+        "status": "defined",
+        "shape": "exact_typed_root",
+        "authority": "explicit_typed_intent",
+        "required_fields": [
+          "adr_type",
+          "id",
+          "alias_id",
+          "alias_name",
+          "title"
+        ],
+        "optional_fields": [],
+        "unknown_fields": "reject",
+        "inference": "forbidden"
+      },
+      "identity_policy": {
+        "status": "defined",
+        "mode": "canonical_uuidv7",
+        "identity_bearing": true,
+        "establishment": "create",
+        "supplied_identity": "preserve",
+        "update_identity": "preserve",
+        "reference_identity": "reuse",
+        "composition_identity": "does_not_manufacture",
+        "forbidden_derivations": [
+          "alias",
+          "prose",
+          "path",
+          "source_location",
+          "hash",
+          "ordering",
+          "composition_position"
+        ]
+      },
+      "composition_policy": {
+        "status": "defined",
+        "mode": "root_fragment",
+        "allowed_parents": [],
+        "cardinality": "root",
+        "child_identity": "preserve",
+        "admission": "deferred",
+        "persistence": "deferred"
+      },
+      "reference_policy": {
+        "status": "defined",
+        "mode": "canonical_uuidv7",
+        "allowed_reference_kinds": [
+          "canonical_entity",
+          "adr"
+        ],
+        "reference_field_contract": {
+          "fields": [
+            "id",
+            "alias_id",
+            "alias_ref"
+          ],
+          "endpoint_representation": "canonical_uuidv7"
+        },
+        "unresolved": "preserve_explicit_unresolved",
+        "identity_effect": "reference_does_not_recreate_identity"
+      },
+      "field_ownership_policy": {
+        "status": "defined",
+        "owner": "adr_kit",
+        "semantic_fields": [
+          "type-specific semantic fields"
+        ],
+        "identity_fields": [
+          "id"
+        ],
+        "provenance_fields": [
+          "declaring_owner",
+          "source_contract"
+        ],
+        "extension_fields": "none",
+        "unknown_fields": "reject"
+      },
+      "relationship_policy": {
+        "status": "defined",
+        "semantic_owner": "adr_kit",
+        "relationship_mode": "explicit",
+        "allowed_outbound": [],
+        "allowed_inbound": [],
+        "relationship_field_contract": {
+          "fields": [],
+          "endpoint_representation": "none"
+        },
+        "cardinality": "no_relationship_participation_declared",
+        "ordering": {
+          "status": "defined",
+          "mode": "not_material",
+          "material": false,
+          "rule": "no undeclared relationship sequence"
+        }
+      },
+      "operation_posture": {
+        "create": {
+          "status": "defined",
+          "permission": "proposed_only"
+        },
+        "update": {
+          "status": "defined",
+          "permission": "proposed_only"
+        },
+        "reference": {
+          "status": "defined",
+          "permission": "allowed"
+        },
+        "retire": {
+          "status": "defined",
+          "permission": "unsupported"
+        }
+      },
+      "ordering_policy": {
+        "status": "defined",
+        "mode": "source_declared_sequence",
+        "material": true,
+        "rule": "preserve authored fragment sequence"
+      }
+    },
+    {
+      "contract_version": "1.1",
+      "key": {
+        "kind": "adr",
+        "name": "physical-system"
+      },
+      "display_name": "Physical-System ADR",
+      "description": "Construction-aware descriptive contract for Physical-System ADR.",
+      "authoring_mode": "direct",
+      "semantic_type_ownership": "adr_kit",
+      "discriminator": {
+        "mode": "fixed",
+        "field": "adr_type",
+        "value": "physical-system"
+      },
+      "construction_support": {
+        "status": "described",
+        "fragment_kind": "composite_fragment",
+        "execution": "not_implemented",
+        "result": "detached_candidate_only"
+      },
+      "input_contract": {
+        "status": "defined",
+        "shape": "exact_typed_root",
+        "authority": "explicit_typed_intent",
+        "required_fields": [
+          "adr_type",
+          "id",
+          "alias_id",
+          "alias_name",
+          "title"
+        ],
+        "optional_fields": [],
+        "unknown_fields": "reject",
+        "inference": "forbidden"
+      },
+      "identity_policy": {
+        "status": "defined",
+        "mode": "canonical_uuidv7",
+        "identity_bearing": true,
+        "establishment": "create",
+        "supplied_identity": "preserve",
+        "update_identity": "preserve",
+        "reference_identity": "reuse",
+        "composition_identity": "does_not_manufacture",
+        "forbidden_derivations": [
+          "alias",
+          "prose",
+          "path",
+          "source_location",
+          "hash",
+          "ordering",
+          "composition_position"
+        ]
+      },
+      "composition_policy": {
+        "status": "defined",
+        "mode": "root_fragment",
+        "allowed_parents": [],
+        "cardinality": "root",
+        "child_identity": "preserve",
+        "admission": "deferred",
+        "persistence": "deferred"
+      },
+      "reference_policy": {
+        "status": "defined",
+        "mode": "canonical_uuidv7",
+        "allowed_reference_kinds": [
+          "canonical_entity",
+          "adr"
+        ],
+        "reference_field_contract": {
+          "fields": [
+            "id",
+            "alias_id",
+            "alias_ref"
+          ],
+          "endpoint_representation": "canonical_uuidv7"
+        },
+        "unresolved": "preserve_explicit_unresolved",
+        "identity_effect": "reference_does_not_recreate_identity"
+      },
+      "field_ownership_policy": {
+        "status": "defined",
+        "owner": "adr_kit",
+        "semantic_fields": [
+          "type-specific semantic fields"
+        ],
+        "identity_fields": [
+          "id"
+        ],
+        "provenance_fields": [
+          "declaring_owner",
+          "source_contract"
+        ],
+        "extension_fields": "none",
+        "unknown_fields": "reject"
+      },
+      "relationship_policy": {
+        "status": "defined",
+        "semantic_owner": "adr_kit",
+        "relationship_mode": "explicit",
+        "allowed_outbound": [],
+        "allowed_inbound": [],
+        "relationship_field_contract": {
+          "fields": [],
+          "endpoint_representation": "none"
+        },
+        "cardinality": "no_relationship_participation_declared",
+        "ordering": {
+          "status": "defined",
+          "mode": "not_material",
+          "material": false,
+          "rule": "no undeclared relationship sequence"
+        }
+      },
+      "operation_posture": {
+        "create": {
+          "status": "defined",
+          "permission": "proposed_only"
+        },
+        "update": {
+          "status": "defined",
+          "permission": "proposed_only"
+        },
+        "reference": {
+          "status": "defined",
+          "permission": "allowed"
+        },
+        "retire": {
+          "status": "defined",
+          "permission": "unsupported"
+        }
+      },
+      "ordering_policy": {
+        "status": "defined",
+        "mode": "source_declared_sequence",
+        "material": true,
+        "rule": "preserve authored fragment sequence"
+      }
+    },
+    {
+      "contract_version": "1.1",
+      "key": {
+        "kind": "entity",
+        "name": "boundary"
+      },
+      "display_name": "Boundary",
+      "description": "Construction-aware descriptive contract for Boundary.",
+      "authoring_mode": "direct",
+      "semantic_type_ownership": "adr_kit",
+      "discriminator": {
+        "mode": "contextual",
+        "value": "boundary"
+      },
+      "construction_support": {
+        "status": "described",
+        "fragment_kind": "semantic_fragment",
+        "execution": "not_implemented",
+        "result": "detached_candidate_only"
+      },
+      "input_contract": {
+        "status": "defined",
+        "shape": "exact_typed_fragment",
+        "authority": "explicit_typed_intent",
+        "required_fields": [
+          "id",
+          "alias_id",
+          "alias_name"
+        ],
+        "optional_fields": [],
+        "unknown_fields": "reject",
+        "inference": "forbidden"
+      },
+      "identity_policy": {
+        "status": "defined",
+        "mode": "canonical_uuidv7",
+        "identity_bearing": true,
+        "establishment": "create",
+        "supplied_identity": "preserve",
+        "update_identity": "preserve",
+        "reference_identity": "reuse",
+        "composition_identity": "does_not_manufacture",
+        "forbidden_derivations": [
+          "alias",
+          "prose",
+          "path",
+          "source_location",
+          "hash",
+          "ordering",
+          "composition_position"
+        ]
+      },
+      "composition_policy": {
+        "status": "defined",
+        "mode": "fragment_composition",
+        "allowed_parents": [
+          {
+            "kind": "adr",
+            "name": "logical",
+            "min_occurs": 0,
+            "max_occurs": null
+          }
+        ],
+        "cardinality": "parent_context_declared",
+        "child_identity": "preserve",
+        "admission": "deferred",
+        "persistence": "deferred"
+      },
+      "reference_policy": {
+        "status": "defined",
+        "mode": "canonical_uuidv7",
+        "allowed_reference_kinds": [
+          "canonical_entity",
+          "adr"
+        ],
+        "reference_field_contract": {
+          "fields": [
+            "id",
+            "alias_id",
+            "alias_ref"
+          ],
+          "endpoint_representation": "canonical_uuidv7"
+        },
+        "unresolved": "preserve_explicit_unresolved",
+        "identity_effect": "reference_does_not_recreate_identity"
+      },
+      "field_ownership_policy": {
+        "status": "defined",
+        "owner": "adr_kit",
+        "semantic_fields": [
+          "type-specific semantic fields"
+        ],
+        "identity_fields": [
+          "id"
+        ],
+        "provenance_fields": [
+          "declaring_owner",
+          "source_contract"
+        ],
+        "extension_fields": "none",
+        "unknown_fields": "reject"
+      },
+      "relationship_policy": {
+        "status": "defined",
+        "semantic_owner": "adr_kit",
+        "relationship_mode": "explicit",
+        "allowed_outbound": [],
+        "allowed_inbound": [],
+        "relationship_field_contract": {
+          "fields": [],
+          "endpoint_representation": "none"
+        },
+        "cardinality": "no_relationship_participation_declared",
+        "ordering": {
+          "status": "defined",
+          "mode": "not_material",
+          "material": false,
+          "rule": "no undeclared relationship sequence"
+        }
+      },
+      "operation_posture": {
+        "create": {
+          "status": "defined",
+          "permission": "allowed"
+        },
+        "update": {
+          "status": "defined",
+          "permission": "allowed"
+        },
+        "reference": {
+          "status": "defined",
+          "permission": "allowed"
+        },
+        "retire": {
+          "status": "defined",
+          "permission": "unsupported"
+        }
+      },
+      "ordering_policy": {
+        "status": "defined",
+        "mode": "identity_keyed_set",
+        "material": false,
+        "rule": "identity-bearing entities are not reordered by presentation"
+      }
+    },
+    {
+      "contract_version": "1.1",
+      "key": {
+        "kind": "entity",
+        "name": "capability"
+      },
+      "display_name": "Capability",
+      "description": "Construction-aware descriptive contract for Capability.",
+      "authoring_mode": "direct",
+      "semantic_type_ownership": "adr_kit",
+      "discriminator": {
+        "mode": "contextual",
+        "value": "capability"
+      },
+      "construction_support": {
+        "status": "described",
+        "fragment_kind": "semantic_fragment",
+        "execution": "not_implemented",
+        "result": "detached_candidate_only"
+      },
+      "input_contract": {
+        "status": "defined",
+        "shape": "exact_typed_fragment",
+        "authority": "explicit_typed_intent",
+        "required_fields": [
+          "id",
+          "alias_id",
+          "alias_name"
+        ],
+        "optional_fields": [],
+        "unknown_fields": "reject",
+        "inference": "forbidden"
+      },
+      "identity_policy": {
+        "status": "defined",
+        "mode": "canonical_uuidv7",
+        "identity_bearing": true,
+        "establishment": "create",
+        "supplied_identity": "preserve",
+        "update_identity": "preserve",
+        "reference_identity": "reuse",
+        "composition_identity": "does_not_manufacture",
+        "forbidden_derivations": [
+          "alias",
+          "prose",
+          "path",
+          "source_location",
+          "hash",
+          "ordering",
+          "composition_position"
+        ]
+      },
+      "composition_policy": {
+        "status": "defined",
+        "mode": "fragment_composition",
+        "allowed_parents": [
+          {
+            "kind": "adr",
+            "name": "logical",
+            "min_occurs": 0,
+            "max_occurs": null
+          }
+        ],
+        "cardinality": "parent_context_declared",
+        "child_identity": "preserve",
+        "admission": "deferred",
+        "persistence": "deferred"
+      },
+      "reference_policy": {
+        "status": "defined",
+        "mode": "canonical_uuidv7",
+        "allowed_reference_kinds": [
+          "canonical_entity",
+          "adr"
+        ],
+        "reference_field_contract": {
+          "fields": [
+            "id",
+            "alias_id",
+            "alias_ref"
+          ],
+          "endpoint_representation": "canonical_uuidv7"
+        },
+        "unresolved": "preserve_explicit_unresolved",
+        "identity_effect": "reference_does_not_recreate_identity"
+      },
+      "field_ownership_policy": {
+        "status": "defined",
+        "owner": "adr_kit",
+        "semantic_fields": [
+          "type-specific semantic fields"
+        ],
+        "identity_fields": [
+          "id"
+        ],
+        "provenance_fields": [
+          "declaring_owner",
+          "source_contract"
+        ],
+        "extension_fields": "none",
+        "unknown_fields": "reject"
+      },
+      "relationship_policy": {
+        "status": "defined",
+        "semantic_owner": "adr_kit",
+        "relationship_mode": "explicit",
+        "allowed_outbound": [],
+        "allowed_inbound": [],
+        "relationship_field_contract": {
+          "fields": [],
+          "endpoint_representation": "none"
+        },
+        "cardinality": "no_relationship_participation_declared",
+        "ordering": {
+          "status": "defined",
+          "mode": "not_material",
+          "material": false,
+          "rule": "no undeclared relationship sequence"
+        }
+      },
+      "operation_posture": {
+        "create": {
+          "status": "defined",
+          "permission": "allowed"
+        },
+        "update": {
+          "status": "defined",
+          "permission": "allowed"
+        },
+        "reference": {
+          "status": "defined",
+          "permission": "allowed"
+        },
+        "retire": {
+          "status": "defined",
+          "permission": "unsupported"
+        }
+      },
+      "ordering_policy": {
+        "status": "defined",
+        "mode": "identity_keyed_set",
+        "material": false,
+        "rule": "identity-bearing entities are not reordered by presentation"
+      }
+    },
+    {
+      "contract_version": "1.1",
+      "key": {
+        "kind": "entity",
+        "name": "component"
+      },
+      "display_name": "Component",
+      "description": "Construction-aware descriptive contract for Component.",
+      "authoring_mode": "direct",
+      "semantic_type_ownership": "adr_kit",
+      "discriminator": {
+        "mode": "contextual",
+        "value": "component"
+      },
+      "construction_support": {
+        "status": "described",
+        "fragment_kind": "semantic_fragment",
+        "execution": "not_implemented",
+        "result": "detached_candidate_only"
+      },
+      "input_contract": {
+        "status": "defined",
+        "shape": "exact_typed_fragment",
+        "authority": "explicit_typed_intent",
+        "required_fields": [
+          "id",
+          "alias_id",
+          "alias_name"
+        ],
+        "optional_fields": [],
+        "unknown_fields": "reject",
+        "inference": "forbidden"
+      },
+      "identity_policy": {
+        "status": "defined",
+        "mode": "canonical_uuidv7",
+        "identity_bearing": true,
+        "establishment": "create",
+        "supplied_identity": "preserve",
+        "update_identity": "preserve",
+        "reference_identity": "reuse",
+        "composition_identity": "does_not_manufacture",
+        "forbidden_derivations": [
+          "alias",
+          "prose",
+          "path",
+          "source_location",
+          "hash",
+          "ordering",
+          "composition_position"
+        ]
+      },
+      "composition_policy": {
+        "status": "defined",
+        "mode": "fragment_composition",
+        "allowed_parents": [
+          {
+            "kind": "adr",
+            "name": "physical-component",
+            "min_occurs": 0,
+            "max_occurs": null
+          }
+        ],
+        "cardinality": "parent_context_declared",
+        "child_identity": "preserve",
+        "admission": "deferred",
+        "persistence": "deferred"
+      },
+      "reference_policy": {
+        "status": "defined",
+        "mode": "canonical_uuidv7",
+        "allowed_reference_kinds": [
+          "canonical_entity",
+          "adr"
+        ],
+        "reference_field_contract": {
+          "fields": [
+            "id",
+            "alias_id",
+            "alias_ref"
+          ],
+          "endpoint_representation": "canonical_uuidv7"
+        },
+        "unresolved": "preserve_explicit_unresolved",
+        "identity_effect": "reference_does_not_recreate_identity"
+      },
+      "field_ownership_policy": {
+        "status": "defined",
+        "owner": "adr_kit",
+        "semantic_fields": [
+          "type-specific semantic fields"
+        ],
+        "identity_fields": [
+          "id"
+        ],
+        "provenance_fields": [
+          "declaring_owner",
+          "source_contract"
+        ],
+        "extension_fields": "none",
+        "unknown_fields": "reject"
+      },
+      "relationship_policy": {
+        "status": "defined",
+        "semantic_owner": "adr_kit",
+        "relationship_mode": "explicit",
+        "allowed_outbound": [],
+        "allowed_inbound": [],
+        "relationship_field_contract": {
+          "fields": [],
+          "endpoint_representation": "none"
+        },
+        "cardinality": "no_relationship_participation_declared",
+        "ordering": {
+          "status": "defined",
+          "mode": "not_material",
+          "material": false,
+          "rule": "no undeclared relationship sequence"
+        }
+      },
+      "operation_posture": {
+        "create": {
+          "status": "defined",
+          "permission": "allowed"
+        },
+        "update": {
+          "status": "defined",
+          "permission": "allowed"
+        },
+        "reference": {
+          "status": "defined",
+          "permission": "allowed"
+        },
+        "retire": {
+          "status": "defined",
+          "permission": "unsupported"
+        }
+      },
+      "ordering_policy": {
+        "status": "defined",
+        "mode": "identity_keyed_set",
+        "material": false,
+        "rule": "identity-bearing entities are not reordered by presentation"
+      }
+    },
+    {
+      "contract_version": "1.1",
+      "key": {
+        "kind": "entity",
+        "name": "contract"
+      },
+      "display_name": "Contract",
+      "description": "Construction-aware descriptive contract for Contract.",
+      "authoring_mode": "direct",
+      "semantic_type_ownership": "adr_kit",
+      "discriminator": {
+        "mode": "contextual",
+        "value": "contract"
+      },
+      "construction_support": {
+        "status": "described",
+        "fragment_kind": "semantic_fragment",
+        "execution": "not_implemented",
+        "result": "detached_candidate_only"
+      },
+      "input_contract": {
+        "status": "defined",
+        "shape": "exact_typed_fragment",
+        "authority": "explicit_typed_intent",
+        "required_fields": [
+          "id",
+          "alias_id",
+          "alias_name"
+        ],
+        "optional_fields": [],
+        "unknown_fields": "reject",
+        "inference": "forbidden"
+      },
+      "identity_policy": {
+        "status": "defined",
+        "mode": "canonical_uuidv7",
+        "identity_bearing": true,
+        "establishment": "create",
+        "supplied_identity": "preserve",
+        "update_identity": "preserve",
+        "reference_identity": "reuse",
+        "composition_identity": "does_not_manufacture",
+        "forbidden_derivations": [
+          "alias",
+          "prose",
+          "path",
+          "source_location",
+          "hash",
+          "ordering",
+          "composition_position"
+        ]
+      },
+      "composition_policy": {
+        "status": "defined",
+        "mode": "fragment_composition",
+        "allowed_parents": [
+          {
+            "kind": "adr",
+            "name": "logical",
+            "min_occurs": 0,
+            "max_occurs": null
+          }
+        ],
+        "cardinality": "parent_context_declared",
+        "child_identity": "preserve",
+        "admission": "deferred",
+        "persistence": "deferred"
+      },
+      "reference_policy": {
+        "status": "defined",
+        "mode": "canonical_uuidv7",
+        "allowed_reference_kinds": [
+          "canonical_entity",
+          "adr"
+        ],
+        "reference_field_contract": {
+          "fields": [
+            "id",
+            "alias_id",
+            "alias_ref"
+          ],
+          "endpoint_representation": "canonical_uuidv7"
+        },
+        "unresolved": "preserve_explicit_unresolved",
+        "identity_effect": "reference_does_not_recreate_identity"
+      },
+      "field_ownership_policy": {
+        "status": "defined",
+        "owner": "adr_kit",
+        "semantic_fields": [
+          "type-specific semantic fields"
+        ],
+        "identity_fields": [
+          "id"
+        ],
+        "provenance_fields": [
+          "declaring_owner",
+          "source_contract"
+        ],
+        "extension_fields": "none",
+        "unknown_fields": "reject"
+      },
+      "relationship_policy": {
+        "status": "defined",
+        "semantic_owner": "adr_kit",
+        "relationship_mode": "explicit",
+        "allowed_outbound": [],
+        "allowed_inbound": [],
+        "relationship_field_contract": {
+          "fields": [],
+          "endpoint_representation": "none"
+        },
+        "cardinality": "no_relationship_participation_declared",
+        "ordering": {
+          "status": "defined",
+          "mode": "not_material",
+          "material": false,
+          "rule": "no undeclared relationship sequence"
+        }
+      },
+      "operation_posture": {
+        "create": {
+          "status": "defined",
+          "permission": "allowed"
+        },
+        "update": {
+          "status": "defined",
+          "permission": "allowed"
+        },
+        "reference": {
+          "status": "defined",
+          "permission": "allowed"
+        },
+        "retire": {
+          "status": "defined",
+          "permission": "unsupported"
+        }
+      },
+      "ordering_policy": {
+        "status": "defined",
+        "mode": "identity_keyed_set",
+        "material": false,
+        "rule": "identity-bearing entities are not reordered by presentation"
+      }
+    },
+    {
+      "contract_version": "1.1",
+      "key": {
+        "kind": "entity",
+        "name": "data_flow"
+      },
+      "display_name": "Data Flow",
+      "description": "Construction-aware descriptive contract for Data Flow.",
+      "authoring_mode": "direct",
+      "semantic_type_ownership": "adr_kit",
+      "discriminator": {
+        "mode": "contextual",
+        "value": "data_flow"
+      },
+      "construction_support": {
+        "status": "described",
+        "fragment_kind": "semantic_fragment",
+        "execution": "not_implemented",
+        "result": "detached_candidate_only"
+      },
+      "input_contract": {
+        "status": "defined",
+        "shape": "exact_typed_fragment",
+        "authority": "explicit_typed_intent",
+        "required_fields": [
+          "id",
+          "alias_id",
+          "alias_name"
+        ],
+        "optional_fields": [],
+        "unknown_fields": "reject",
+        "inference": "forbidden"
+      },
+      "identity_policy": {
+        "status": "defined",
+        "mode": "canonical_uuidv7",
+        "identity_bearing": true,
+        "establishment": "create",
+        "supplied_identity": "preserve",
+        "update_identity": "preserve",
+        "reference_identity": "reuse",
+        "composition_identity": "does_not_manufacture",
+        "forbidden_derivations": [
+          "alias",
+          "prose",
+          "path",
+          "source_location",
+          "hash",
+          "ordering",
+          "composition_position"
+        ]
+      },
+      "composition_policy": {
+        "status": "defined",
+        "mode": "fragment_composition",
+        "allowed_parents": [
+          {
+            "kind": "adr",
+            "name": "physical-system",
+            "min_occurs": 0,
+            "max_occurs": null
+          }
+        ],
+        "cardinality": "parent_context_declared",
+        "child_identity": "preserve",
+        "admission": "deferred",
+        "persistence": "deferred"
+      },
+      "reference_policy": {
+        "status": "defined",
+        "mode": "canonical_uuidv7",
+        "allowed_reference_kinds": [
+          "canonical_entity",
+          "adr"
+        ],
+        "reference_field_contract": {
+          "fields": [
+            "id",
+            "alias_id",
+            "alias_ref"
+          ],
+          "endpoint_representation": "canonical_uuidv7"
+        },
+        "unresolved": "preserve_explicit_unresolved",
+        "identity_effect": "reference_does_not_recreate_identity"
+      },
+      "field_ownership_policy": {
+        "status": "defined",
+        "owner": "adr_kit",
+        "semantic_fields": [
+          "type-specific semantic fields"
+        ],
+        "identity_fields": [
+          "id"
+        ],
+        "provenance_fields": [
+          "declaring_owner",
+          "source_contract"
+        ],
+        "extension_fields": "none",
+        "unknown_fields": "reject"
+      },
+      "relationship_policy": {
+        "status": "defined",
+        "semantic_owner": "adr_kit",
+        "relationship_mode": "explicit",
+        "allowed_outbound": [],
+        "allowed_inbound": [],
+        "relationship_field_contract": {
+          "fields": [],
+          "endpoint_representation": "none"
+        },
+        "cardinality": "no_relationship_participation_declared",
+        "ordering": {
+          "status": "defined",
+          "mode": "not_material",
+          "material": false,
+          "rule": "no undeclared relationship sequence"
+        }
+      },
+      "operation_posture": {
+        "create": {
+          "status": "defined",
+          "permission": "allowed"
+        },
+        "update": {
+          "status": "defined",
+          "permission": "allowed"
+        },
+        "reference": {
+          "status": "defined",
+          "permission": "allowed"
+        },
+        "retire": {
+          "status": "defined",
+          "permission": "unsupported"
+        }
+      },
+      "ordering_policy": {
+        "status": "defined",
+        "mode": "identity_keyed_set",
+        "material": false,
+        "rule": "identity-bearing entities are not reordered by presentation"
+      }
+    },
+    {
+      "contract_version": "1.1",
+      "key": {
+        "kind": "entity",
+        "name": "decision"
+      },
+      "display_name": "Decision",
+      "description": "Construction-aware descriptive contract for Decision.",
+      "authoring_mode": "direct",
+      "semantic_type_ownership": "adr_kit",
+      "discriminator": {
+        "mode": "contextual",
+        "value": "decision"
+      },
+      "construction_support": {
+        "status": "described",
+        "fragment_kind": "semantic_fragment",
+        "execution": "not_implemented",
+        "result": "detached_candidate_only"
+      },
+      "input_contract": {
+        "status": "defined",
+        "shape": "exact_typed_fragment",
+        "authority": "explicit_typed_intent",
+        "required_fields": [
+          "id",
+          "alias_id",
+          "alias_name"
+        ],
+        "optional_fields": [],
+        "unknown_fields": "reject",
+        "inference": "forbidden"
+      },
+      "identity_policy": {
+        "status": "defined",
+        "mode": "canonical_uuidv7",
+        "identity_bearing": true,
+        "establishment": "create",
+        "supplied_identity": "preserve",
+        "update_identity": "preserve",
+        "reference_identity": "reuse",
+        "composition_identity": "does_not_manufacture",
+        "forbidden_derivations": [
+          "alias",
+          "prose",
+          "path",
+          "source_location",
+          "hash",
+          "ordering",
+          "composition_position"
+        ]
+      },
+      "composition_policy": {
+        "status": "defined",
+        "mode": "fragment_composition",
+        "allowed_parents": [
+          {
+            "kind": "adr",
+            "name": "logical",
+            "min_occurs": 0,
+            "max_occurs": null
+          }
+        ],
+        "cardinality": "parent_context_declared",
+        "child_identity": "preserve",
+        "admission": "deferred",
+        "persistence": "deferred"
+      },
+      "reference_policy": {
+        "status": "defined",
+        "mode": "canonical_uuidv7",
+        "allowed_reference_kinds": [
+          "canonical_entity",
+          "adr"
+        ],
+        "reference_field_contract": {
+          "fields": [
+            "id",
+            "alias_id",
+            "alias_ref"
+          ],
+          "endpoint_representation": "canonical_uuidv7"
+        },
+        "unresolved": "preserve_explicit_unresolved",
+        "identity_effect": "reference_does_not_recreate_identity"
+      },
+      "field_ownership_policy": {
+        "status": "defined",
+        "owner": "adr_kit",
+        "semantic_fields": [
+          "type-specific semantic fields"
+        ],
+        "identity_fields": [
+          "id"
+        ],
+        "provenance_fields": [
+          "declaring_owner",
+          "source_contract"
+        ],
+        "extension_fields": "none",
+        "unknown_fields": "reject"
+      },
+      "relationship_policy": {
+        "status": "defined",
+        "semantic_owner": "adr_kit",
+        "relationship_mode": "explicit",
+        "allowed_outbound": [],
+        "allowed_inbound": [],
+        "relationship_field_contract": {
+          "fields": [],
+          "endpoint_representation": "none"
+        },
+        "cardinality": "no_relationship_participation_declared",
+        "ordering": {
+          "status": "defined",
+          "mode": "not_material",
+          "material": false,
+          "rule": "no undeclared relationship sequence"
+        }
+      },
+      "operation_posture": {
+        "create": {
+          "status": "defined",
+          "permission": "allowed"
+        },
+        "update": {
+          "status": "defined",
+          "permission": "allowed"
+        },
+        "reference": {
+          "status": "defined",
+          "permission": "allowed"
+        },
+        "retire": {
+          "status": "defined",
+          "permission": "unsupported"
+        }
+      },
+      "ordering_policy": {
+        "status": "defined",
+        "mode": "identity_keyed_set",
+        "material": false,
+        "rule": "identity-bearing entities are not reordered by presentation"
+      }
+    },
+    {
+      "contract_version": "1.1",
+      "key": {
+        "kind": "entity",
+        "name": "evidence_expectation"
+      },
+      "display_name": "Evidence Expectation",
+      "description": "Construction-aware descriptive contract for Evidence Expectation.",
+      "authoring_mode": "direct",
+      "semantic_type_ownership": "adr_kit",
+      "discriminator": {
+        "mode": "contextual",
+        "value": "evidence_expectation"
+      },
+      "construction_support": {
+        "status": "described",
+        "fragment_kind": "semantic_fragment",
+        "execution": "not_implemented",
+        "result": "detached_candidate_only"
+      },
+      "input_contract": {
+        "status": "defined",
+        "shape": "exact_typed_fragment",
+        "authority": "explicit_typed_intent",
+        "required_fields": [
+          "id",
+          "alias_id",
+          "alias_name"
+        ],
+        "optional_fields": [],
+        "unknown_fields": "reject",
+        "inference": "forbidden"
+      },
+      "identity_policy": {
+        "status": "defined",
+        "mode": "canonical_uuidv7",
+        "identity_bearing": true,
+        "establishment": "create",
+        "supplied_identity": "preserve",
+        "update_identity": "preserve",
+        "reference_identity": "reuse",
+        "composition_identity": "does_not_manufacture",
+        "forbidden_derivations": [
+          "alias",
+          "prose",
+          "path",
+          "source_location",
+          "hash",
+          "ordering",
+          "composition_position"
+        ]
+      },
+      "composition_policy": {
+        "status": "defined",
+        "mode": "fragment_composition",
+        "allowed_parents": [
+          {
+            "kind": "adr",
+            "name": "logical",
+            "min_occurs": 0,
+            "max_occurs": null
+          },
+          {
+            "kind": "adr",
+            "name": "physical-system",
+            "min_occurs": 0,
+            "max_occurs": null
+          },
+          {
+            "kind": "adr",
+            "name": "physical-component",
+            "min_occurs": 0,
+            "max_occurs": null
+          }
+        ],
+        "cardinality": "parent_context_declared",
+        "child_identity": "preserve",
+        "admission": "deferred",
+        "persistence": "deferred"
+      },
+      "reference_policy": {
+        "status": "defined",
+        "mode": "canonical_uuidv7",
+        "allowed_reference_kinds": [
+          "canonical_entity",
+          "adr"
+        ],
+        "reference_field_contract": {
+          "fields": [
+            "id",
+            "alias_id",
+            "alias_ref"
+          ],
+          "endpoint_representation": "canonical_uuidv7"
+        },
+        "unresolved": "preserve_explicit_unresolved",
+        "identity_effect": "reference_does_not_recreate_identity"
+      },
+      "field_ownership_policy": {
+        "status": "defined",
+        "owner": "adr_kit",
+        "semantic_fields": [
+          "type-specific semantic fields"
+        ],
+        "identity_fields": [
+          "id"
+        ],
+        "provenance_fields": [
+          "declaring_owner",
+          "source_contract"
+        ],
+        "extension_fields": "none",
+        "unknown_fields": "reject"
+      },
+      "relationship_policy": {
+        "status": "defined",
+        "semantic_owner": "adr_kit",
+        "relationship_mode": "explicit",
+        "allowed_outbound": [],
+        "allowed_inbound": [],
+        "relationship_field_contract": {
+          "fields": [],
+          "endpoint_representation": "none"
+        },
+        "cardinality": "no_relationship_participation_declared",
+        "ordering": {
+          "status": "defined",
+          "mode": "not_material",
+          "material": false,
+          "rule": "no undeclared relationship sequence"
+        }
+      },
+      "operation_posture": {
+        "create": {
+          "status": "defined",
+          "permission": "allowed"
+        },
+        "update": {
+          "status": "defined",
+          "permission": "allowed"
+        },
+        "reference": {
+          "status": "defined",
+          "permission": "allowed"
+        },
+        "retire": {
+          "status": "defined",
+          "permission": "unsupported"
+        }
+      },
+      "ordering_policy": {
+        "status": "defined",
+        "mode": "identity_keyed_set",
+        "material": false,
+        "rule": "identity-bearing entities are not reordered by presentation"
+      }
+    },
+    {
+      "contract_version": "1.1",
+      "key": {
+        "kind": "entity",
+        "name": "extension"
+      },
+      "display_name": "Extension Entity Template",
+      "description": "Construction-aware descriptive contract for Extension Entity Template.",
+      "authoring_mode": "template",
+      "semantic_type_ownership": "consumer_qualified",
+      "discriminator": {
+        "mode": "qualified_input",
+        "field": "entity_type",
+        "value": "extension"
+      },
+      "construction_support": {
+        "status": "qualified_template",
+        "fragment_kind": "semantic_fragment",
+        "execution": "not_implemented",
+        "result": "detached_candidate_only"
+      },
+      "input_contract": {
+        "status": "defined",
+        "shape": "qualified_entity_fragment",
+        "authority": "exact_custom_contract",
+        "required_fields": [
+          "entity_type",
+          "properties"
+        ],
+        "optional_fields": [],
+        "unknown_fields": "reject",
+        "inference": "forbidden"
+      },
+      "identity_policy": {
+        "status": "defined",
+        "mode": "canonical_uuidv7",
+        "identity_bearing": true,
+        "establishment": "create",
+        "supplied_identity": "preserve",
+        "update_identity": "preserve",
+        "reference_identity": "reuse",
+        "composition_identity": "does_not_manufacture",
+        "forbidden_derivations": [
+          "alias",
+          "prose",
+          "path",
+          "source_location",
+          "hash",
+          "ordering",
+          "composition_position"
+        ]
+      },
+      "composition_policy": {
+        "status": "defined",
+        "mode": "consumer_qualified_composition",
+        "allowed_parents": [
+          {
+            "kind": "adr",
+            "name": "logical",
+            "min_occurs": 0,
+            "max_occurs": null
+          },
+          {
+            "kind": "adr",
+            "name": "physical-system",
+            "min_occurs": 0,
+            "max_occurs": null
+          },
+          {
+            "kind": "adr",
+            "name": "physical-component",
+            "min_occurs": 0,
+            "max_occurs": null
+          }
+        ],
+        "cardinality": "parent_context_declared",
+        "child_identity": "preserve",
+        "admission": "deferred",
+        "persistence": "deferred"
+      },
+      "reference_policy": {
+        "status": "defined",
+        "mode": "canonical_uuidv7",
+        "allowed_reference_kinds": [
+          "canonical_entity",
+          "adr"
+        ],
+        "reference_field_contract": {
+          "fields": [
+            "id",
+            "alias_id",
+            "alias_ref"
+          ],
+          "endpoint_representation": "canonical_uuidv7"
+        },
+        "unresolved": "preserve_explicit_unresolved",
+        "identity_effect": "reference_does_not_recreate_identity"
+      },
+      "field_ownership_policy": {
+        "status": "defined",
+        "owner": "consumer_qualified",
+        "semantic_fields": [
+          "type-specific semantic fields"
+        ],
+        "identity_fields": [
+          "id"
+        ],
+        "provenance_fields": [
+          "declaring_owner",
+          "source_contract"
+        ],
+        "extension_fields": "consumer_contract_owned",
+        "unknown_fields": "reject"
+      },
+      "relationship_policy": {
+        "status": "defined",
+        "semantic_owner": "consumer_qualified",
+        "relationship_mode": "explicit",
+        "allowed_outbound": [],
+        "allowed_inbound": [],
+        "relationship_field_contract": {
+          "fields": [],
+          "endpoint_representation": "none"
+        },
+        "cardinality": "no_relationship_participation_declared",
+        "ordering": {
+          "status": "defined",
+          "mode": "not_material",
+          "material": false,
+          "rule": "no undeclared relationship sequence"
+        }
+      },
+      "operation_posture": {
+        "create": {
+          "status": "defined",
+          "permission": "future_custom_entity_contract_required"
+        },
+        "update": {
+          "status": "defined",
+          "permission": "future_custom_entity_contract_required"
+        },
+        "reference": {
+          "status": "defined",
+          "permission": "allowed"
+        },
+        "retire": {
+          "status": "defined",
+          "permission": "future_custom_entity_contract_required"
+        }
+      },
+      "ordering_policy": {
+        "status": "defined",
+        "mode": "identity_keyed_set",
+        "material": false,
+        "rule": "identity-bearing entities are not reordered by presentation"
+      }
+    },
+    {
+      "contract_version": "1.1",
+      "key": {
+        "kind": "entity",
+        "name": "gap"
+      },
+      "display_name": "Gap",
+      "description": "Construction-aware descriptive contract for Gap.",
+      "authoring_mode": "direct",
+      "semantic_type_ownership": "adr_kit",
+      "discriminator": {
+        "mode": "contextual",
+        "value": "gap"
+      },
+      "construction_support": {
+        "status": "described",
+        "fragment_kind": "semantic_fragment",
+        "execution": "not_implemented",
+        "result": "detached_candidate_only"
+      },
+      "input_contract": {
+        "status": "defined",
+        "shape": "exact_typed_fragment",
+        "authority": "explicit_typed_intent",
+        "required_fields": [
+          "id",
+          "alias_id",
+          "alias_name"
+        ],
+        "optional_fields": [],
+        "unknown_fields": "reject",
+        "inference": "forbidden"
+      },
+      "identity_policy": {
+        "status": "defined",
+        "mode": "canonical_uuidv7",
+        "identity_bearing": true,
+        "establishment": "create",
+        "supplied_identity": "preserve",
+        "update_identity": "preserve",
+        "reference_identity": "reuse",
+        "composition_identity": "does_not_manufacture",
+        "forbidden_derivations": [
+          "alias",
+          "prose",
+          "path",
+          "source_location",
+          "hash",
+          "ordering",
+          "composition_position"
+        ]
+      },
+      "composition_policy": {
+        "status": "defined",
+        "mode": "fragment_composition",
+        "allowed_parents": [
+          {
+            "kind": "adr",
+            "name": "logical",
+            "min_occurs": 0,
+            "max_occurs": null
+          },
+          {
+            "kind": "adr",
+            "name": "physical-system",
+            "min_occurs": 0,
+            "max_occurs": null
+          },
+          {
+            "kind": "adr",
+            "name": "physical-component",
+            "min_occurs": 0,
+            "max_occurs": null
+          }
+        ],
+        "cardinality": "parent_context_declared",
+        "child_identity": "preserve",
+        "admission": "deferred",
+        "persistence": "deferred"
+      },
+      "reference_policy": {
+        "status": "defined",
+        "mode": "canonical_uuidv7",
+        "allowed_reference_kinds": [
+          "canonical_entity",
+          "adr"
+        ],
+        "reference_field_contract": {
+          "fields": [
+            "id",
+            "alias_id",
+            "alias_ref"
+          ],
+          "endpoint_representation": "canonical_uuidv7"
+        },
+        "unresolved": "preserve_explicit_unresolved",
+        "identity_effect": "reference_does_not_recreate_identity"
+      },
+      "field_ownership_policy": {
+        "status": "defined",
+        "owner": "adr_kit",
+        "semantic_fields": [
+          "type-specific semantic fields"
+        ],
+        "identity_fields": [
+          "id"
+        ],
+        "provenance_fields": [
+          "declaring_owner",
+          "source_contract"
+        ],
+        "extension_fields": "none",
+        "unknown_fields": "reject"
+      },
+      "relationship_policy": {
+        "status": "defined",
+        "semantic_owner": "adr_kit",
+        "relationship_mode": "explicit",
+        "allowed_outbound": [],
+        "allowed_inbound": [],
+        "relationship_field_contract": {
+          "fields": [],
+          "endpoint_representation": "none"
+        },
+        "cardinality": "no_relationship_participation_declared",
+        "ordering": {
+          "status": "defined",
+          "mode": "not_material",
+          "material": false,
+          "rule": "no undeclared relationship sequence"
+        }
+      },
+      "operation_posture": {
+        "create": {
+          "status": "defined",
+          "permission": "allowed"
+        },
+        "update": {
+          "status": "defined",
+          "permission": "allowed"
+        },
+        "reference": {
+          "status": "defined",
+          "permission": "allowed"
+        },
+        "retire": {
+          "status": "defined",
+          "permission": "unsupported"
+        }
+      },
+      "ordering_policy": {
+        "status": "defined",
+        "mode": "identity_keyed_set",
+        "material": false,
+        "rule": "identity-bearing entities are not reordered by presentation"
+      }
+    },
+    {
+      "contract_version": "1.1",
+      "key": {
+        "kind": "entity",
+        "name": "implementation_decision"
+      },
+      "display_name": "Implementation Decision",
+      "description": "Construction-aware descriptive contract for Implementation Decision.",
+      "authoring_mode": "direct",
+      "semantic_type_ownership": "adr_kit",
+      "discriminator": {
+        "mode": "contextual",
+        "value": "implementation_decision"
+      },
+      "construction_support": {
+        "status": "described",
+        "fragment_kind": "semantic_fragment",
+        "execution": "not_implemented",
+        "result": "detached_candidate_only"
+      },
+      "input_contract": {
+        "status": "defined",
+        "shape": "exact_typed_fragment",
+        "authority": "explicit_typed_intent",
+        "required_fields": [
+          "id",
+          "alias_id",
+          "alias_name"
+        ],
+        "optional_fields": [],
+        "unknown_fields": "reject",
+        "inference": "forbidden"
+      },
+      "identity_policy": {
+        "status": "defined",
+        "mode": "canonical_uuidv7",
+        "identity_bearing": true,
+        "establishment": "create",
+        "supplied_identity": "preserve",
+        "update_identity": "preserve",
+        "reference_identity": "reuse",
+        "composition_identity": "does_not_manufacture",
+        "forbidden_derivations": [
+          "alias",
+          "prose",
+          "path",
+          "source_location",
+          "hash",
+          "ordering",
+          "composition_position"
+        ]
+      },
+      "composition_policy": {
+        "status": "defined",
+        "mode": "fragment_composition",
+        "allowed_parents": [
+          {
+            "kind": "adr",
+            "name": "physical-component",
+            "min_occurs": 0,
+            "max_occurs": null
+          }
+        ],
+        "cardinality": "parent_context_declared",
+        "child_identity": "preserve",
+        "admission": "deferred",
+        "persistence": "deferred"
+      },
+      "reference_policy": {
+        "status": "defined",
+        "mode": "canonical_uuidv7",
+        "allowed_reference_kinds": [
+          "canonical_entity",
+          "adr"
+        ],
+        "reference_field_contract": {
+          "fields": [
+            "id",
+            "alias_id",
+            "alias_ref"
+          ],
+          "endpoint_representation": "canonical_uuidv7"
+        },
+        "unresolved": "preserve_explicit_unresolved",
+        "identity_effect": "reference_does_not_recreate_identity"
+      },
+      "field_ownership_policy": {
+        "status": "defined",
+        "owner": "adr_kit",
+        "semantic_fields": [
+          "type-specific semantic fields"
+        ],
+        "identity_fields": [
+          "id"
+        ],
+        "provenance_fields": [
+          "declaring_owner",
+          "source_contract"
+        ],
+        "extension_fields": "none",
+        "unknown_fields": "reject"
+      },
+      "relationship_policy": {
+        "status": "defined",
+        "semantic_owner": "adr_kit",
+        "relationship_mode": "explicit",
+        "allowed_outbound": [],
+        "allowed_inbound": [],
+        "relationship_field_contract": {
+          "fields": [],
+          "endpoint_representation": "none"
+        },
+        "cardinality": "no_relationship_participation_declared",
+        "ordering": {
+          "status": "defined",
+          "mode": "not_material",
+          "material": false,
+          "rule": "no undeclared relationship sequence"
+        }
+      },
+      "operation_posture": {
+        "create": {
+          "status": "defined",
+          "permission": "allowed"
+        },
+        "update": {
+          "status": "defined",
+          "permission": "allowed"
+        },
+        "reference": {
+          "status": "defined",
+          "permission": "allowed"
+        },
+        "retire": {
+          "status": "defined",
+          "permission": "unsupported"
+        }
+      },
+      "ordering_policy": {
+        "status": "defined",
+        "mode": "identity_keyed_set",
+        "material": false,
+        "rule": "identity-bearing entities are not reordered by presentation"
+      }
+    },
+    {
+      "contract_version": "1.1",
+      "key": {
+        "kind": "entity",
+        "name": "interface"
+      },
+      "display_name": "Interface",
+      "description": "Construction-aware descriptive contract for Interface.",
+      "authoring_mode": "direct",
+      "semantic_type_ownership": "adr_kit",
+      "discriminator": {
+        "mode": "contextual",
+        "value": "interface"
+      },
+      "construction_support": {
+        "status": "described",
+        "fragment_kind": "semantic_fragment",
+        "execution": "not_implemented",
+        "result": "detached_candidate_only"
+      },
+      "input_contract": {
+        "status": "defined",
+        "shape": "exact_typed_fragment",
+        "authority": "explicit_typed_intent",
+        "required_fields": [
+          "id",
+          "alias_id",
+          "alias_name"
+        ],
+        "optional_fields": [],
+        "unknown_fields": "reject",
+        "inference": "forbidden"
+      },
+      "identity_policy": {
+        "status": "defined",
+        "mode": "canonical_uuidv7",
+        "identity_bearing": true,
+        "establishment": "create",
+        "supplied_identity": "preserve",
+        "update_identity": "preserve",
+        "reference_identity": "reuse",
+        "composition_identity": "does_not_manufacture",
+        "forbidden_derivations": [
+          "alias",
+          "prose",
+          "path",
+          "source_location",
+          "hash",
+          "ordering",
+          "composition_position"
+        ]
+      },
+      "composition_policy": {
+        "status": "defined",
+        "mode": "fragment_composition",
+        "allowed_parents": [
+          {
+            "kind": "entity",
+            "name": "component",
+            "min_occurs": 0,
+            "max_occurs": null
+          }
+        ],
+        "cardinality": "parent_context_declared",
+        "child_identity": "preserve",
+        "admission": "deferred",
+        "persistence": "deferred"
+      },
+      "reference_policy": {
+        "status": "defined",
+        "mode": "canonical_uuidv7",
+        "allowed_reference_kinds": [
+          "canonical_entity",
+          "adr"
+        ],
+        "reference_field_contract": {
+          "fields": [
+            "id",
+            "alias_id",
+            "alias_ref"
+          ],
+          "endpoint_representation": "canonical_uuidv7"
+        },
+        "unresolved": "preserve_explicit_unresolved",
+        "identity_effect": "reference_does_not_recreate_identity"
+      },
+      "field_ownership_policy": {
+        "status": "defined",
+        "owner": "adr_kit",
+        "semantic_fields": [
+          "type-specific semantic fields"
+        ],
+        "identity_fields": [
+          "id"
+        ],
+        "provenance_fields": [
+          "declaring_owner",
+          "source_contract"
+        ],
+        "extension_fields": "none",
+        "unknown_fields": "reject"
+      },
+      "relationship_policy": {
+        "status": "defined",
+        "semantic_owner": "adr_kit",
+        "relationship_mode": "explicit",
+        "allowed_outbound": [],
+        "allowed_inbound": [],
+        "relationship_field_contract": {
+          "fields": [],
+          "endpoint_representation": "none"
+        },
+        "cardinality": "no_relationship_participation_declared",
+        "ordering": {
+          "status": "defined",
+          "mode": "not_material",
+          "material": false,
+          "rule": "no undeclared relationship sequence"
+        }
+      },
+      "operation_posture": {
+        "create": {
+          "status": "defined",
+          "permission": "allowed"
+        },
+        "update": {
+          "status": "defined",
+          "permission": "allowed"
+        },
+        "reference": {
+          "status": "defined",
+          "permission": "allowed"
+        },
+        "retire": {
+          "status": "defined",
+          "permission": "unsupported"
+        }
+      },
+      "ordering_policy": {
+        "status": "defined",
+        "mode": "identity_keyed_set",
+        "material": false,
+        "rule": "identity-bearing entities are not reordered by presentation"
+      }
+    },
+    {
+      "contract_version": "1.1",
+      "key": {
+        "kind": "entity",
+        "name": "invariant"
+      },
+      "display_name": "Invariant",
+      "description": "Construction-aware descriptive contract for Invariant.",
+      "authoring_mode": "direct",
+      "semantic_type_ownership": "adr_kit",
+      "discriminator": {
+        "mode": "contextual",
+        "value": "invariant"
+      },
+      "construction_support": {
+        "status": "described",
+        "fragment_kind": "semantic_fragment",
+        "execution": "not_implemented",
+        "result": "detached_candidate_only"
+      },
+      "input_contract": {
+        "status": "defined",
+        "shape": "exact_typed_fragment",
+        "authority": "explicit_typed_intent",
+        "required_fields": [
+          "id",
+          "alias_id",
+          "alias_name"
+        ],
+        "optional_fields": [],
+        "unknown_fields": "reject",
+        "inference": "forbidden"
+      },
+      "identity_policy": {
+        "status": "defined",
+        "mode": "canonical_uuidv7",
+        "identity_bearing": true,
+        "establishment": "create",
+        "supplied_identity": "preserve",
+        "update_identity": "preserve",
+        "reference_identity": "reuse",
+        "composition_identity": "does_not_manufacture",
+        "forbidden_derivations": [
+          "alias",
+          "prose",
+          "path",
+          "source_location",
+          "hash",
+          "ordering",
+          "composition_position"
+        ]
+      },
+      "composition_policy": {
+        "status": "defined",
+        "mode": "fragment_composition",
+        "allowed_parents": [
+          {
+            "kind": "adr",
+            "name": "logical",
+            "min_occurs": 0,
+            "max_occurs": null
+          }
+        ],
+        "cardinality": "parent_context_declared",
+        "child_identity": "preserve",
+        "admission": "deferred",
+        "persistence": "deferred"
+      },
+      "reference_policy": {
+        "status": "defined",
+        "mode": "canonical_uuidv7",
+        "allowed_reference_kinds": [
+          "canonical_entity",
+          "adr"
+        ],
+        "reference_field_contract": {
+          "fields": [
+            "id",
+            "alias_id",
+            "alias_ref"
+          ],
+          "endpoint_representation": "canonical_uuidv7"
+        },
+        "unresolved": "preserve_explicit_unresolved",
+        "identity_effect": "reference_does_not_recreate_identity"
+      },
+      "field_ownership_policy": {
+        "status": "defined",
+        "owner": "adr_kit",
+        "semantic_fields": [
+          "type-specific semantic fields"
+        ],
+        "identity_fields": [
+          "id"
+        ],
+        "provenance_fields": [
+          "declaring_owner",
+          "source_contract"
+        ],
+        "extension_fields": "none",
+        "unknown_fields": "reject"
+      },
+      "relationship_policy": {
+        "status": "defined",
+        "semantic_owner": "adr_kit",
+        "relationship_mode": "explicit",
+        "allowed_outbound": [],
+        "allowed_inbound": [],
+        "relationship_field_contract": {
+          "fields": [],
+          "endpoint_representation": "none"
+        },
+        "cardinality": "no_relationship_participation_declared",
+        "ordering": {
+          "status": "defined",
+          "mode": "not_material",
+          "material": false,
+          "rule": "no undeclared relationship sequence"
+        }
+      },
+      "operation_posture": {
+        "create": {
+          "status": "defined",
+          "permission": "allowed"
+        },
+        "update": {
+          "status": "defined",
+          "permission": "allowed"
+        },
+        "reference": {
+          "status": "defined",
+          "permission": "allowed"
+        },
+        "retire": {
+          "status": "defined",
+          "permission": "unsupported"
+        }
+      },
+      "ordering_policy": {
+        "status": "defined",
+        "mode": "identity_keyed_set",
+        "material": false,
+        "rule": "identity-bearing entities are not reordered by presentation"
+      }
+    },
+    {
+      "contract_version": "1.1",
+      "key": {
+        "kind": "entity",
+        "name": "normative_proposition"
+      },
+      "display_name": "Normative Proposition",
+      "description": "Construction-aware descriptive contract for Normative Proposition.",
+      "authoring_mode": "direct",
+      "semantic_type_ownership": "adr_kit",
+      "discriminator": {
+        "mode": "contextual",
+        "value": "normative_proposition"
+      },
+      "construction_support": {
+        "status": "described",
+        "fragment_kind": "semantic_fragment",
+        "execution": "not_implemented",
+        "result": "detached_candidate_only"
+      },
+      "input_contract": {
+        "status": "defined",
+        "shape": "exact_typed_fragment",
+        "authority": "explicit_typed_intent",
+        "required_fields": [
+          "id",
+          "alias_id",
+          "alias_name",
+          "statement",
+          "normative_force",
+          "scope"
+        ],
+        "optional_fields": [],
+        "unknown_fields": "reject",
+        "inference": "forbidden"
+      },
+      "identity_policy": {
+        "status": "defined",
+        "mode": "canonical_uuidv7",
+        "identity_bearing": true,
+        "establishment": "create",
+        "supplied_identity": "preserve",
+        "update_identity": "preserve",
+        "reference_identity": "reuse",
+        "composition_identity": "does_not_manufacture",
+        "forbidden_derivations": [
+          "alias",
+          "prose",
+          "path",
+          "source_location",
+          "hash",
+          "ordering",
+          "composition_position"
+        ]
+      },
+      "composition_policy": {
+        "status": "defined",
+        "mode": "fragment_composition",
+        "allowed_parents": [
+          {
+            "kind": "adr",
+            "name": "logical",
+            "min_occurs": 0,
+            "max_occurs": null
+          },
+          {
+            "kind": "adr",
+            "name": "physical-system",
+            "min_occurs": 0,
+            "max_occurs": null
+          },
+          {
+            "kind": "adr",
+            "name": "physical-component",
+            "min_occurs": 0,
+            "max_occurs": null
+          }
+        ],
+        "cardinality": "parent_context_declared",
+        "child_identity": "preserve",
+        "admission": "deferred",
+        "persistence": "deferred"
+      },
+      "reference_policy": {
+        "status": "defined",
+        "mode": "canonical_uuidv7",
+        "allowed_reference_kinds": [
+          "canonical_entity",
+          "adr"
+        ],
+        "reference_field_contract": {
+          "fields": [
+            "id",
+            "alias_id",
+            "alias_ref"
+          ],
+          "endpoint_representation": "canonical_uuidv7"
+        },
+        "unresolved": "preserve_explicit_unresolved",
+        "identity_effect": "reference_does_not_recreate_identity"
+      },
+      "field_ownership_policy": {
+        "status": "defined",
+        "owner": "adr_kit",
+        "semantic_fields": [
+          "type-specific semantic fields"
+        ],
+        "identity_fields": [
+          "id"
+        ],
+        "provenance_fields": [
+          "declaring_owner",
+          "source_contract"
+        ],
+        "extension_fields": "none",
+        "unknown_fields": "reject"
+      },
+      "relationship_policy": {
+        "status": "defined",
+        "semantic_owner": "adr_kit",
+        "relationship_mode": "explicit",
+        "allowed_outbound": [],
+        "allowed_inbound": [],
+        "relationship_field_contract": {
+          "fields": [],
+          "endpoint_representation": "none"
+        },
+        "cardinality": "no_relationship_participation_declared",
+        "ordering": {
+          "status": "defined",
+          "mode": "not_material",
+          "material": false,
+          "rule": "no undeclared relationship sequence"
+        }
+      },
+      "operation_posture": {
+        "create": {
+          "status": "defined",
+          "permission": "allowed"
+        },
+        "update": {
+          "status": "defined",
+          "permission": "allowed"
+        },
+        "reference": {
+          "status": "defined",
+          "permission": "allowed"
+        },
+        "retire": {
+          "status": "defined",
+          "permission": "unsupported"
+        }
+      },
+      "ordering_policy": {
+        "status": "defined",
+        "mode": "identity_keyed_set",
+        "material": false,
+        "rule": "identity-bearing entities are not reordered by presentation"
+      }
+    },
+    {
+      "contract_version": "1.1",
+      "key": {
+        "kind": "entity",
+        "name": "system"
+      },
+      "display_name": "System",
+      "description": "Construction-aware descriptive contract for System.",
+      "authoring_mode": "direct",
+      "semantic_type_ownership": "adr_kit",
+      "discriminator": {
+        "mode": "contextual",
+        "value": "system"
+      },
+      "construction_support": {
+        "status": "described",
+        "fragment_kind": "semantic_fragment",
+        "execution": "not_implemented",
+        "result": "detached_candidate_only"
+      },
+      "input_contract": {
+        "status": "defined",
+        "shape": "exact_typed_fragment",
+        "authority": "explicit_typed_intent",
+        "required_fields": [
+          "id",
+          "alias_id",
+          "alias_name"
+        ],
+        "optional_fields": [],
+        "unknown_fields": "reject",
+        "inference": "forbidden"
+      },
+      "identity_policy": {
+        "status": "defined",
+        "mode": "canonical_uuidv7",
+        "identity_bearing": true,
+        "establishment": "create",
+        "supplied_identity": "preserve",
+        "update_identity": "preserve",
+        "reference_identity": "reuse",
+        "composition_identity": "does_not_manufacture",
+        "forbidden_derivations": [
+          "alias",
+          "prose",
+          "path",
+          "source_location",
+          "hash",
+          "ordering",
+          "composition_position"
+        ]
+      },
+      "composition_policy": {
+        "status": "defined",
+        "mode": "fragment_composition",
+        "allowed_parents": [
+          {
+            "kind": "adr",
+            "name": "physical-system",
+            "min_occurs": 1,
+            "max_occurs": 1
+          }
+        ],
+        "cardinality": "parent_context_declared",
+        "child_identity": "preserve",
+        "admission": "deferred",
+        "persistence": "deferred"
+      },
+      "reference_policy": {
+        "status": "defined",
+        "mode": "canonical_uuidv7",
+        "allowed_reference_kinds": [
+          "canonical_entity",
+          "adr"
+        ],
+        "reference_field_contract": {
+          "fields": [
+            "id",
+            "alias_id",
+            "alias_ref"
+          ],
+          "endpoint_representation": "canonical_uuidv7"
+        },
+        "unresolved": "preserve_explicit_unresolved",
+        "identity_effect": "reference_does_not_recreate_identity"
+      },
+      "field_ownership_policy": {
+        "status": "defined",
+        "owner": "adr_kit",
+        "semantic_fields": [
+          "type-specific semantic fields"
+        ],
+        "identity_fields": [
+          "id"
+        ],
+        "provenance_fields": [
+          "declaring_owner",
+          "source_contract"
+        ],
+        "extension_fields": "none",
+        "unknown_fields": "reject"
+      },
+      "relationship_policy": {
+        "status": "defined",
+        "semantic_owner": "adr_kit",
+        "relationship_mode": "explicit",
+        "allowed_outbound": [],
+        "allowed_inbound": [],
+        "relationship_field_contract": {
+          "fields": [],
+          "endpoint_representation": "none"
+        },
+        "cardinality": "no_relationship_participation_declared",
+        "ordering": {
+          "status": "defined",
+          "mode": "not_material",
+          "material": false,
+          "rule": "no undeclared relationship sequence"
+        }
+      },
+      "operation_posture": {
+        "create": {
+          "status": "defined",
+          "permission": "allowed"
+        },
+        "update": {
+          "status": "defined",
+          "permission": "allowed"
+        },
+        "reference": {
+          "status": "defined",
+          "permission": "allowed"
+        },
+        "retire": {
+          "status": "defined",
+          "permission": "unsupported"
+        }
+      },
+      "ordering_policy": {
+        "status": "defined",
+        "mode": "identity_keyed_set",
+        "material": false,
+        "rule": "identity-bearing entities are not reordered by presentation"
+      }
+    },
+    {
+      "contract_version": "1.1",
+      "key": {
+        "kind": "entity",
+        "name": "system_boundary"
+      },
+      "display_name": "System Boundary",
+      "description": "Construction-aware descriptive contract for System Boundary.",
+      "authoring_mode": "direct",
+      "semantic_type_ownership": "adr_kit",
+      "discriminator": {
+        "mode": "contextual",
+        "value": "system_boundary"
+      },
+      "construction_support": {
+        "status": "described",
+        "fragment_kind": "semantic_fragment",
+        "execution": "not_implemented",
+        "result": "detached_candidate_only"
+      },
+      "input_contract": {
+        "status": "defined",
+        "shape": "exact_typed_fragment",
+        "authority": "explicit_typed_intent",
+        "required_fields": [
+          "id",
+          "alias_id",
+          "alias_name"
+        ],
+        "optional_fields": [],
+        "unknown_fields": "reject",
+        "inference": "forbidden"
+      },
+      "identity_policy": {
+        "status": "defined",
+        "mode": "canonical_uuidv7",
+        "identity_bearing": true,
+        "establishment": "create",
+        "supplied_identity": "preserve",
+        "update_identity": "preserve",
+        "reference_identity": "reuse",
+        "composition_identity": "does_not_manufacture",
+        "forbidden_derivations": [
+          "alias",
+          "prose",
+          "path",
+          "source_location",
+          "hash",
+          "ordering",
+          "composition_position"
+        ]
+      },
+      "composition_policy": {
+        "status": "defined",
+        "mode": "fragment_composition",
+        "allowed_parents": [
+          {
+            "kind": "adr",
+            "name": "physical-system",
+            "min_occurs": 0,
+            "max_occurs": null
+          }
+        ],
+        "cardinality": "parent_context_declared",
+        "child_identity": "preserve",
+        "admission": "deferred",
+        "persistence": "deferred"
+      },
+      "reference_policy": {
+        "status": "defined",
+        "mode": "canonical_uuidv7",
+        "allowed_reference_kinds": [
+          "canonical_entity",
+          "adr"
+        ],
+        "reference_field_contract": {
+          "fields": [
+            "id",
+            "alias_id",
+            "alias_ref"
+          ],
+          "endpoint_representation": "canonical_uuidv7"
+        },
+        "unresolved": "preserve_explicit_unresolved",
+        "identity_effect": "reference_does_not_recreate_identity"
+      },
+      "field_ownership_policy": {
+        "status": "defined",
+        "owner": "adr_kit",
+        "semantic_fields": [
+          "type-specific semantic fields"
+        ],
+        "identity_fields": [
+          "id"
+        ],
+        "provenance_fields": [
+          "declaring_owner",
+          "source_contract"
+        ],
+        "extension_fields": "none",
+        "unknown_fields": "reject"
+      },
+      "relationship_policy": {
+        "status": "defined",
+        "semantic_owner": "adr_kit",
+        "relationship_mode": "explicit",
+        "allowed_outbound": [],
+        "allowed_inbound": [],
+        "relationship_field_contract": {
+          "fields": [],
+          "endpoint_representation": "none"
+        },
+        "cardinality": "no_relationship_participation_declared",
+        "ordering": {
+          "status": "defined",
+          "mode": "not_material",
+          "material": false,
+          "rule": "no undeclared relationship sequence"
+        }
+      },
+      "operation_posture": {
+        "create": {
+          "status": "defined",
+          "permission": "allowed"
+        },
+        "update": {
+          "status": "defined",
+          "permission": "allowed"
+        },
+        "reference": {
+          "status": "defined",
+          "permission": "allowed"
+        },
+        "retire": {
+          "status": "defined",
+          "permission": "unsupported"
+        }
+      },
+      "ordering_policy": {
+        "status": "defined",
+        "mode": "identity_keyed_set",
+        "material": false,
+        "rule": "identity-bearing entities are not reordered by presentation"
+      }
+    },
+    {
+      "contract_version": "1.1",
+      "key": {
+        "kind": "relationship",
+        "name": "calls"
+      },
+      "display_name": "Calls",
+      "description": "Construction-aware descriptive contract for Calls.",
+      "authoring_mode": "direct",
+      "semantic_type_ownership": "adr_kit",
+      "discriminator": {
+        "mode": "contextual",
+        "value": "calls"
+      },
+      "construction_support": {
+        "status": "described",
+        "fragment_kind": "semantic_fragment",
+        "execution": "not_implemented",
+        "result": "detached_candidate_only"
+      },
+      "input_contract": {
+        "status": "defined",
+        "shape": "owner_local_relationship_value",
+        "authority": "explicit_typed_intent",
+        "required_fields": [
+          "relationship_type",
+          "from_key",
+          "to_key"
+        ],
+        "optional_fields": [],
+        "unknown_fields": "reject",
+        "inference": "forbidden"
+      },
+      "identity_policy": {
+        "status": "defined",
+        "mode": "owner_local_relationship_value",
+        "identity_bearing": false,
+        "establishment": "not_applicable",
+        "supplied_identity": "not_applicable",
+        "update_identity": "not_applicable",
+        "reference_identity": "owner_local_value",
+        "composition_identity": "does_not_manufacture",
+        "forbidden_derivations": [
+          "canonical_uuidv7",
+          "alias",
+          "path",
+          "hash"
+        ]
+      },
+      "composition_policy": {
+        "status": "defined",
+        "mode": "owner_local_topology_composition",
+        "allowed_parents": [
+          {
+            "kind": "adr",
+            "name": "physical-system",
+            "min_occurs": 0,
+            "max_occurs": null
+          }
+        ],
+        "cardinality": "physical_system_owner_declared",
+        "child_identity": "does_not_manufacture",
+        "admission": "deferred",
+        "persistence": "deferred"
+      },
+      "reference_policy": {
+        "status": "defined",
+        "mode": "owner_local",
+        "allowed_reference_kinds": [
+          "value/topology_component"
+        ],
+        "reference_field_contract": {
+          "fields": [
+            "topology_key",
+            "from_key",
+            "to_key"
+          ],
+          "endpoint_representation": "topology_key"
+        },
+        "unresolved": "preserve_explicit_unresolved",
+        "identity_effect": "reference_does_not_recreate_identity"
+      },
+      "field_ownership_policy": {
+        "status": "defined",
+        "owner": "adr_kit",
+        "semantic_fields": [
+          "type-specific semantic fields"
+        ],
+        "identity_fields": [
+          "id"
+        ],
+        "provenance_fields": [
+          "declaring_owner",
+          "source_contract"
+        ],
+        "extension_fields": "none",
+        "unknown_fields": "reject"
+      },
+      "relationship_policy": {
+        "status": "defined",
+        "semantic_owner": "physical-system-adr",
+        "relationship_mode": "explicit",
+        "allowed_outbound": [
+          {
+            "relationship": "relationship/calls",
+            "source_types": [
+              "value/topology_component"
+            ],
+            "target_types": [
+              "value/topology_component"
+            ],
+            "min_occurs": 0,
+            "max_occurs": null
+          }
+        ],
+        "allowed_inbound": [
+          {
+            "relationship": "relationship/calls",
+            "source_types": [
+              "value/topology_component"
+            ],
+            "target_types": [
+              "value/topology_component"
+            ],
+            "min_occurs": 0,
+            "max_occurs": null
+          }
+        ],
+        "relationship_field_contract": {
+          "fields": [
+            "topology_key",
+            "from_key",
+            "to_key"
+          ],
+          "endpoint_representation": "topology_key",
+          "projected_endpoint_representation": "canonical_uuidv7"
+        },
+        "cardinality": "one_source_one_target_per_assertion",
+        "ordering": {
+          "status": "defined",
+          "mode": "owner_declared_sequence",
+          "material": true,
+          "rule": "preserve physical-system topology sequence"
+        }
+      },
+      "operation_posture": {
+        "create": {
+          "status": "defined",
+          "permission": "allowed"
+        },
+        "update": {
+          "status": "defined",
+          "permission": "allowed"
+        },
+        "reference": {
+          "status": "defined",
+          "permission": "allowed"
+        },
+        "retire": {
+          "status": "defined",
+          "permission": "unsupported"
+        }
+      },
+      "ordering_policy": {
+        "status": "defined",
+        "mode": "identity_keyed_set",
+        "material": false,
+        "rule": "identity-bearing entities are not reordered by presentation"
+      }
+    },
+    {
+      "contract_version": "1.1",
+      "key": {
+        "kind": "relationship",
+        "name": "depends_on"
+      },
+      "display_name": "Depends On",
+      "description": "Construction-aware descriptive contract for Depends On.",
+      "authoring_mode": "direct",
+      "semantic_type_ownership": "adr_kit",
+      "discriminator": {
+        "mode": "contextual",
+        "value": "depends_on"
+      },
+      "construction_support": {
+        "status": "described",
+        "fragment_kind": "semantic_fragment",
+        "execution": "not_implemented",
+        "result": "detached_candidate_only"
+      },
+      "input_contract": {
+        "status": "defined",
+        "shape": "owner_local_relationship_value",
+        "authority": "explicit_typed_intent",
+        "required_fields": [
+          "relationship_type",
+          "from_key",
+          "to_key"
+        ],
+        "optional_fields": [],
+        "unknown_fields": "reject",
+        "inference": "forbidden"
+      },
+      "identity_policy": {
+        "status": "defined",
+        "mode": "owner_local_relationship_value",
+        "identity_bearing": false,
+        "establishment": "not_applicable",
+        "supplied_identity": "not_applicable",
+        "update_identity": "not_applicable",
+        "reference_identity": "owner_local_value",
+        "composition_identity": "does_not_manufacture",
+        "forbidden_derivations": [
+          "canonical_uuidv7",
+          "alias",
+          "path",
+          "hash"
+        ]
+      },
+      "composition_policy": {
+        "status": "defined",
+        "mode": "owner_local_topology_composition",
+        "allowed_parents": [
+          {
+            "kind": "adr",
+            "name": "physical-system",
+            "min_occurs": 0,
+            "max_occurs": null
+          }
+        ],
+        "cardinality": "physical_system_owner_declared",
+        "child_identity": "does_not_manufacture",
+        "admission": "deferred",
+        "persistence": "deferred"
+      },
+      "reference_policy": {
+        "status": "defined",
+        "mode": "owner_local",
+        "allowed_reference_kinds": [
+          "value/topology_component"
+        ],
+        "reference_field_contract": {
+          "fields": [
+            "topology_key",
+            "from_key",
+            "to_key"
+          ],
+          "endpoint_representation": "topology_key"
+        },
+        "unresolved": "preserve_explicit_unresolved",
+        "identity_effect": "reference_does_not_recreate_identity"
+      },
+      "field_ownership_policy": {
+        "status": "defined",
+        "owner": "adr_kit",
+        "semantic_fields": [
+          "type-specific semantic fields"
+        ],
+        "identity_fields": [
+          "id"
+        ],
+        "provenance_fields": [
+          "declaring_owner",
+          "source_contract"
+        ],
+        "extension_fields": "none",
+        "unknown_fields": "reject"
+      },
+      "relationship_policy": {
+        "status": "defined",
+        "semantic_owner": "physical-system-adr",
+        "relationship_mode": "explicit",
+        "allowed_outbound": [
+          {
+            "relationship": "relationship/depends_on",
+            "source_types": [
+              "value/topology_component"
+            ],
+            "target_types": [
+              "value/topology_component"
+            ],
+            "min_occurs": 0,
+            "max_occurs": null
+          }
+        ],
+        "allowed_inbound": [
+          {
+            "relationship": "relationship/depends_on",
+            "source_types": [
+              "value/topology_component"
+            ],
+            "target_types": [
+              "value/topology_component"
+            ],
+            "min_occurs": 0,
+            "max_occurs": null
+          }
+        ],
+        "relationship_field_contract": {
+          "fields": [
+            "topology_key",
+            "from_key",
+            "to_key"
+          ],
+          "endpoint_representation": "topology_key",
+          "projected_endpoint_representation": "canonical_uuidv7"
+        },
+        "cardinality": "one_source_one_target_per_assertion",
+        "ordering": {
+          "status": "defined",
+          "mode": "owner_declared_sequence",
+          "material": true,
+          "rule": "preserve physical-system topology sequence"
+        }
+      },
+      "operation_posture": {
+        "create": {
+          "status": "defined",
+          "permission": "allowed"
+        },
+        "update": {
+          "status": "defined",
+          "permission": "allowed"
+        },
+        "reference": {
+          "status": "defined",
+          "permission": "allowed"
+        },
+        "retire": {
+          "status": "defined",
+          "permission": "unsupported"
+        }
+      },
+      "ordering_policy": {
+        "status": "defined",
+        "mode": "identity_keyed_set",
+        "material": false,
+        "rule": "identity-bearing entities are not reordered by presentation"
+      }
+    },
+    {
+      "contract_version": "1.1",
+      "key": {
+        "kind": "relationship",
+        "name": "extension"
+      },
+      "display_name": "Extension Entity Template",
+      "description": "Construction-aware descriptive contract for Extension Entity Template.",
+      "authoring_mode": "template",
+      "semantic_type_ownership": "consumer_qualified",
+      "discriminator": {
+        "mode": "qualified_input",
+        "field": "relationship_type",
+        "value": "extension"
+      },
+      "construction_support": {
+        "status": "qualified_template",
+        "fragment_kind": "semantic_fragment",
+        "execution": "not_implemented",
+        "result": "detached_candidate_only"
+      },
+      "input_contract": {
+        "status": "defined",
+        "shape": "qualified_relationship_fragment",
+        "authority": "exact_custom_contract",
+        "required_fields": [
+          "relationship_type",
+          "from_entity_id",
+          "to_entity_id",
+          "properties",
+          "rationale"
+        ],
+        "optional_fields": [],
+        "unknown_fields": "reject",
+        "inference": "forbidden"
+      },
+      "identity_policy": {
+        "status": "defined",
+        "mode": "custom_contract_qualified",
+        "identity_bearing": false,
+        "establishment": "not_applicable",
+        "supplied_identity": "not_applicable",
+        "update_identity": "not_applicable",
+        "reference_identity": "owner_local_value",
+        "composition_identity": "does_not_manufacture",
+        "forbidden_derivations": [
+          "canonical_uuidv7",
+          "alias",
+          "path",
+          "hash"
+        ]
+      },
+      "composition_policy": {
+        "status": "defined",
+        "mode": "custom_relationship_composition",
+        "allowed_parents": [
+          {
+            "kind": "adr",
+            "name": "logical",
+            "min_occurs": 0,
+            "max_occurs": null
+          },
+          {
+            "kind": "adr",
+            "name": "physical-system",
+            "min_occurs": 0,
+            "max_occurs": null
+          },
+          {
+            "kind": "adr",
+            "name": "physical-component",
+            "min_occurs": 0,
+            "max_occurs": null
+          }
+        ],
+        "cardinality": "custom_contract_declared",
+        "child_identity": "does_not_manufacture",
+        "admission": "deferred",
+        "persistence": "deferred"
+      },
+      "reference_policy": {
+        "status": "defined",
+        "mode": "owner_local",
+        "allowed_reference_kinds": [
+          "value/topology_component"
+        ],
+        "reference_field_contract": {
+          "fields": [
+            "topology_key",
+            "from_key",
+            "to_key"
+          ],
+          "endpoint_representation": "topology_key"
+        },
+        "unresolved": "preserve_explicit_unresolved",
+        "identity_effect": "reference_does_not_recreate_identity"
+      },
+      "field_ownership_policy": {
+        "status": "defined",
+        "owner": "consumer_qualified",
+        "semantic_fields": [
+          "type-specific semantic fields"
+        ],
+        "identity_fields": [
+          "id"
+        ],
+        "provenance_fields": [
+          "declaring_owner",
+          "source_contract"
+        ],
+        "extension_fields": "consumer_contract_owned",
+        "unknown_fields": "reject"
+      },
+      "relationship_policy": {
+        "status": "defined",
+        "semantic_owner": "consumer_qualified",
+        "relationship_mode": "custom_explicit",
+        "allowed_outbound": [
+          {
+            "relationship": "relationship/extension",
+            "source_types": [
+              "qualified_custom_type"
+            ],
+            "target_types": [
+              "qualified_custom_type"
+            ],
+            "min_occurs": 0,
+            "max_occurs": null
+          }
+        ],
+        "allowed_inbound": [
+          {
+            "relationship": "relationship/extension",
+            "source_types": [
+              "qualified_custom_type"
+            ],
+            "target_types": [
+              "qualified_custom_type"
+            ],
+            "min_occurs": 0,
+            "max_occurs": null
+          }
+        ],
+        "relationship_field_contract": {
+          "fields": [
+            "relationship_type",
+            "from_entity_id",
+            "to_entity_id",
+            "properties"
+          ],
+          "endpoint_representation": "contract_qualified"
+        },
+        "cardinality": "custom_contract_declared",
+        "ordering": {
+          "status": "defined",
+          "mode": "custom_contract_declared",
+          "material": true,
+          "rule": "consumer contract declares material sequence"
+        }
+      },
+      "operation_posture": {
+        "create": {
+          "status": "defined",
+          "permission": "qualified_contract_required"
+        },
+        "update": {
+          "status": "defined",
+          "permission": "qualified_contract_required"
+        },
+        "reference": {
+          "status": "defined",
+          "permission": "allowed"
+        },
+        "retire": {
+          "status": "defined",
+          "permission": "qualified_contract_required"
+        }
+      },
+      "ordering_policy": {
+        "status": "defined",
+        "mode": "identity_keyed_set",
+        "material": false,
+        "rule": "identity-bearing entities are not reordered by presentation"
+      }
+    },
+    {
+      "contract_version": "1.1",
+      "key": {
+        "kind": "relationship",
+        "name": "publishes_to"
+      },
+      "display_name": "Publishes To",
+      "description": "Construction-aware descriptive contract for Publishes To.",
+      "authoring_mode": "direct",
+      "semantic_type_ownership": "adr_kit",
+      "discriminator": {
+        "mode": "contextual",
+        "value": "publishes_to"
+      },
+      "construction_support": {
+        "status": "described",
+        "fragment_kind": "semantic_fragment",
+        "execution": "not_implemented",
+        "result": "detached_candidate_only"
+      },
+      "input_contract": {
+        "status": "defined",
+        "shape": "owner_local_relationship_value",
+        "authority": "explicit_typed_intent",
+        "required_fields": [
+          "relationship_type",
+          "from_key",
+          "to_key"
+        ],
+        "optional_fields": [],
+        "unknown_fields": "reject",
+        "inference": "forbidden"
+      },
+      "identity_policy": {
+        "status": "defined",
+        "mode": "owner_local_relationship_value",
+        "identity_bearing": false,
+        "establishment": "not_applicable",
+        "supplied_identity": "not_applicable",
+        "update_identity": "not_applicable",
+        "reference_identity": "owner_local_value",
+        "composition_identity": "does_not_manufacture",
+        "forbidden_derivations": [
+          "canonical_uuidv7",
+          "alias",
+          "path",
+          "hash"
+        ]
+      },
+      "composition_policy": {
+        "status": "defined",
+        "mode": "owner_local_topology_composition",
+        "allowed_parents": [
+          {
+            "kind": "adr",
+            "name": "physical-system",
+            "min_occurs": 0,
+            "max_occurs": null
+          }
+        ],
+        "cardinality": "physical_system_owner_declared",
+        "child_identity": "does_not_manufacture",
+        "admission": "deferred",
+        "persistence": "deferred"
+      },
+      "reference_policy": {
+        "status": "defined",
+        "mode": "owner_local",
+        "allowed_reference_kinds": [
+          "value/topology_component"
+        ],
+        "reference_field_contract": {
+          "fields": [
+            "topology_key",
+            "from_key",
+            "to_key"
+          ],
+          "endpoint_representation": "topology_key"
+        },
+        "unresolved": "preserve_explicit_unresolved",
+        "identity_effect": "reference_does_not_recreate_identity"
+      },
+      "field_ownership_policy": {
+        "status": "defined",
+        "owner": "adr_kit",
+        "semantic_fields": [
+          "type-specific semantic fields"
+        ],
+        "identity_fields": [
+          "id"
+        ],
+        "provenance_fields": [
+          "declaring_owner",
+          "source_contract"
+        ],
+        "extension_fields": "none",
+        "unknown_fields": "reject"
+      },
+      "relationship_policy": {
+        "status": "defined",
+        "semantic_owner": "physical-system-adr",
+        "relationship_mode": "explicit",
+        "allowed_outbound": [
+          {
+            "relationship": "relationship/publishes_to",
+            "source_types": [
+              "value/topology_component"
+            ],
+            "target_types": [
+              "value/topology_component"
+            ],
+            "min_occurs": 0,
+            "max_occurs": null
+          }
+        ],
+        "allowed_inbound": [
+          {
+            "relationship": "relationship/publishes_to",
+            "source_types": [
+              "value/topology_component"
+            ],
+            "target_types": [
+              "value/topology_component"
+            ],
+            "min_occurs": 0,
+            "max_occurs": null
+          }
+        ],
+        "relationship_field_contract": {
+          "fields": [
+            "topology_key",
+            "from_key",
+            "to_key"
+          ],
+          "endpoint_representation": "topology_key",
+          "projected_endpoint_representation": "canonical_uuidv7"
+        },
+        "cardinality": "one_source_one_target_per_assertion",
+        "ordering": {
+          "status": "defined",
+          "mode": "owner_declared_sequence",
+          "material": true,
+          "rule": "preserve physical-system topology sequence"
+        }
+      },
+      "operation_posture": {
+        "create": {
+          "status": "defined",
+          "permission": "allowed"
+        },
+        "update": {
+          "status": "defined",
+          "permission": "allowed"
+        },
+        "reference": {
+          "status": "defined",
+          "permission": "allowed"
+        },
+        "retire": {
+          "status": "defined",
+          "permission": "unsupported"
+        }
+      },
+      "ordering_policy": {
+        "status": "defined",
+        "mode": "identity_keyed_set",
+        "material": false,
+        "rule": "identity-bearing entities are not reordered by presentation"
+      }
+    },
+    {
+      "contract_version": "1.1",
+      "key": {
+        "kind": "relationship",
+        "name": "reads_from"
+      },
+      "display_name": "Reads From",
+      "description": "Construction-aware descriptive contract for Reads From.",
+      "authoring_mode": "direct",
+      "semantic_type_ownership": "adr_kit",
+      "discriminator": {
+        "mode": "contextual",
+        "value": "reads_from"
+      },
+      "construction_support": {
+        "status": "described",
+        "fragment_kind": "semantic_fragment",
+        "execution": "not_implemented",
+        "result": "detached_candidate_only"
+      },
+      "input_contract": {
+        "status": "defined",
+        "shape": "owner_local_relationship_value",
+        "authority": "explicit_typed_intent",
+        "required_fields": [
+          "relationship_type",
+          "from_key",
+          "to_key"
+        ],
+        "optional_fields": [],
+        "unknown_fields": "reject",
+        "inference": "forbidden"
+      },
+      "identity_policy": {
+        "status": "defined",
+        "mode": "owner_local_relationship_value",
+        "identity_bearing": false,
+        "establishment": "not_applicable",
+        "supplied_identity": "not_applicable",
+        "update_identity": "not_applicable",
+        "reference_identity": "owner_local_value",
+        "composition_identity": "does_not_manufacture",
+        "forbidden_derivations": [
+          "canonical_uuidv7",
+          "alias",
+          "path",
+          "hash"
+        ]
+      },
+      "composition_policy": {
+        "status": "defined",
+        "mode": "owner_local_topology_composition",
+        "allowed_parents": [
+          {
+            "kind": "adr",
+            "name": "physical-system",
+            "min_occurs": 0,
+            "max_occurs": null
+          }
+        ],
+        "cardinality": "physical_system_owner_declared",
+        "child_identity": "does_not_manufacture",
+        "admission": "deferred",
+        "persistence": "deferred"
+      },
+      "reference_policy": {
+        "status": "defined",
+        "mode": "owner_local",
+        "allowed_reference_kinds": [
+          "value/topology_component"
+        ],
+        "reference_field_contract": {
+          "fields": [
+            "topology_key",
+            "from_key",
+            "to_key"
+          ],
+          "endpoint_representation": "topology_key"
+        },
+        "unresolved": "preserve_explicit_unresolved",
+        "identity_effect": "reference_does_not_recreate_identity"
+      },
+      "field_ownership_policy": {
+        "status": "defined",
+        "owner": "adr_kit",
+        "semantic_fields": [
+          "type-specific semantic fields"
+        ],
+        "identity_fields": [
+          "id"
+        ],
+        "provenance_fields": [
+          "declaring_owner",
+          "source_contract"
+        ],
+        "extension_fields": "none",
+        "unknown_fields": "reject"
+      },
+      "relationship_policy": {
+        "status": "defined",
+        "semantic_owner": "physical-system-adr",
+        "relationship_mode": "explicit",
+        "allowed_outbound": [
+          {
+            "relationship": "relationship/reads_from",
+            "source_types": [
+              "value/topology_component"
+            ],
+            "target_types": [
+              "value/topology_component"
+            ],
+            "min_occurs": 0,
+            "max_occurs": null
+          }
+        ],
+        "allowed_inbound": [
+          {
+            "relationship": "relationship/reads_from",
+            "source_types": [
+              "value/topology_component"
+            ],
+            "target_types": [
+              "value/topology_component"
+            ],
+            "min_occurs": 0,
+            "max_occurs": null
+          }
+        ],
+        "relationship_field_contract": {
+          "fields": [
+            "topology_key",
+            "from_key",
+            "to_key"
+          ],
+          "endpoint_representation": "topology_key",
+          "projected_endpoint_representation": "canonical_uuidv7"
+        },
+        "cardinality": "one_source_one_target_per_assertion",
+        "ordering": {
+          "status": "defined",
+          "mode": "owner_declared_sequence",
+          "material": true,
+          "rule": "preserve physical-system topology sequence"
+        }
+      },
+      "operation_posture": {
+        "create": {
+          "status": "defined",
+          "permission": "allowed"
+        },
+        "update": {
+          "status": "defined",
+          "permission": "allowed"
+        },
+        "reference": {
+          "status": "defined",
+          "permission": "allowed"
+        },
+        "retire": {
+          "status": "defined",
+          "permission": "unsupported"
+        }
+      },
+      "ordering_policy": {
+        "status": "defined",
+        "mode": "identity_keyed_set",
+        "material": false,
+        "rule": "identity-bearing entities are not reordered by presentation"
+      }
+    },
+    {
+      "contract_version": "1.1",
+      "key": {
+        "kind": "relationship",
+        "name": "subscribes_to"
+      },
+      "display_name": "Subscribes To",
+      "description": "Construction-aware descriptive contract for Subscribes To.",
+      "authoring_mode": "direct",
+      "semantic_type_ownership": "adr_kit",
+      "discriminator": {
+        "mode": "contextual",
+        "value": "subscribes_to"
+      },
+      "construction_support": {
+        "status": "described",
+        "fragment_kind": "semantic_fragment",
+        "execution": "not_implemented",
+        "result": "detached_candidate_only"
+      },
+      "input_contract": {
+        "status": "defined",
+        "shape": "owner_local_relationship_value",
+        "authority": "explicit_typed_intent",
+        "required_fields": [
+          "relationship_type",
+          "from_key",
+          "to_key"
+        ],
+        "optional_fields": [],
+        "unknown_fields": "reject",
+        "inference": "forbidden"
+      },
+      "identity_policy": {
+        "status": "defined",
+        "mode": "owner_local_relationship_value",
+        "identity_bearing": false,
+        "establishment": "not_applicable",
+        "supplied_identity": "not_applicable",
+        "update_identity": "not_applicable",
+        "reference_identity": "owner_local_value",
+        "composition_identity": "does_not_manufacture",
+        "forbidden_derivations": [
+          "canonical_uuidv7",
+          "alias",
+          "path",
+          "hash"
+        ]
+      },
+      "composition_policy": {
+        "status": "defined",
+        "mode": "owner_local_topology_composition",
+        "allowed_parents": [
+          {
+            "kind": "adr",
+            "name": "physical-system",
+            "min_occurs": 0,
+            "max_occurs": null
+          }
+        ],
+        "cardinality": "physical_system_owner_declared",
+        "child_identity": "does_not_manufacture",
+        "admission": "deferred",
+        "persistence": "deferred"
+      },
+      "reference_policy": {
+        "status": "defined",
+        "mode": "owner_local",
+        "allowed_reference_kinds": [
+          "value/topology_component"
+        ],
+        "reference_field_contract": {
+          "fields": [
+            "topology_key",
+            "from_key",
+            "to_key"
+          ],
+          "endpoint_representation": "topology_key"
+        },
+        "unresolved": "preserve_explicit_unresolved",
+        "identity_effect": "reference_does_not_recreate_identity"
+      },
+      "field_ownership_policy": {
+        "status": "defined",
+        "owner": "adr_kit",
+        "semantic_fields": [
+          "type-specific semantic fields"
+        ],
+        "identity_fields": [
+          "id"
+        ],
+        "provenance_fields": [
+          "declaring_owner",
+          "source_contract"
+        ],
+        "extension_fields": "none",
+        "unknown_fields": "reject"
+      },
+      "relationship_policy": {
+        "status": "defined",
+        "semantic_owner": "physical-system-adr",
+        "relationship_mode": "explicit",
+        "allowed_outbound": [
+          {
+            "relationship": "relationship/subscribes_to",
+            "source_types": [
+              "value/topology_component"
+            ],
+            "target_types": [
+              "value/topology_component"
+            ],
+            "min_occurs": 0,
+            "max_occurs": null
+          }
+        ],
+        "allowed_inbound": [
+          {
+            "relationship": "relationship/subscribes_to",
+            "source_types": [
+              "value/topology_component"
+            ],
+            "target_types": [
+              "value/topology_component"
+            ],
+            "min_occurs": 0,
+            "max_occurs": null
+          }
+        ],
+        "relationship_field_contract": {
+          "fields": [
+            "topology_key",
+            "from_key",
+            "to_key"
+          ],
+          "endpoint_representation": "topology_key",
+          "projected_endpoint_representation": "canonical_uuidv7"
+        },
+        "cardinality": "one_source_one_target_per_assertion",
+        "ordering": {
+          "status": "defined",
+          "mode": "owner_declared_sequence",
+          "material": true,
+          "rule": "preserve physical-system topology sequence"
+        }
+      },
+      "operation_posture": {
+        "create": {
+          "status": "defined",
+          "permission": "allowed"
+        },
+        "update": {
+          "status": "defined",
+          "permission": "allowed"
+        },
+        "reference": {
+          "status": "defined",
+          "permission": "allowed"
+        },
+        "retire": {
+          "status": "defined",
+          "permission": "unsupported"
+        }
+      },
+      "ordering_policy": {
+        "status": "defined",
+        "mode": "identity_keyed_set",
+        "material": false,
+        "rule": "identity-bearing entities are not reordered by presentation"
+      }
+    },
+    {
+      "contract_version": "1.1",
+      "key": {
+        "kind": "relationship",
+        "name": "writes_to"
+      },
+      "display_name": "Writes To",
+      "description": "Construction-aware descriptive contract for Writes To.",
+      "authoring_mode": "direct",
+      "semantic_type_ownership": "adr_kit",
+      "discriminator": {
+        "mode": "contextual",
+        "value": "writes_to"
+      },
+      "construction_support": {
+        "status": "described",
+        "fragment_kind": "semantic_fragment",
+        "execution": "not_implemented",
+        "result": "detached_candidate_only"
+      },
+      "input_contract": {
+        "status": "defined",
+        "shape": "owner_local_relationship_value",
+        "authority": "explicit_typed_intent",
+        "required_fields": [
+          "relationship_type",
+          "from_key",
+          "to_key"
+        ],
+        "optional_fields": [],
+        "unknown_fields": "reject",
+        "inference": "forbidden"
+      },
+      "identity_policy": {
+        "status": "defined",
+        "mode": "owner_local_relationship_value",
+        "identity_bearing": false,
+        "establishment": "not_applicable",
+        "supplied_identity": "not_applicable",
+        "update_identity": "not_applicable",
+        "reference_identity": "owner_local_value",
+        "composition_identity": "does_not_manufacture",
+        "forbidden_derivations": [
+          "canonical_uuidv7",
+          "alias",
+          "path",
+          "hash"
+        ]
+      },
+      "composition_policy": {
+        "status": "defined",
+        "mode": "owner_local_topology_composition",
+        "allowed_parents": [
+          {
+            "kind": "adr",
+            "name": "physical-system",
+            "min_occurs": 0,
+            "max_occurs": null
+          }
+        ],
+        "cardinality": "physical_system_owner_declared",
+        "child_identity": "does_not_manufacture",
+        "admission": "deferred",
+        "persistence": "deferred"
+      },
+      "reference_policy": {
+        "status": "defined",
+        "mode": "owner_local",
+        "allowed_reference_kinds": [
+          "value/topology_component"
+        ],
+        "reference_field_contract": {
+          "fields": [
+            "topology_key",
+            "from_key",
+            "to_key"
+          ],
+          "endpoint_representation": "topology_key"
+        },
+        "unresolved": "preserve_explicit_unresolved",
+        "identity_effect": "reference_does_not_recreate_identity"
+      },
+      "field_ownership_policy": {
+        "status": "defined",
+        "owner": "adr_kit",
+        "semantic_fields": [
+          "type-specific semantic fields"
+        ],
+        "identity_fields": [
+          "id"
+        ],
+        "provenance_fields": [
+          "declaring_owner",
+          "source_contract"
+        ],
+        "extension_fields": "none",
+        "unknown_fields": "reject"
+      },
+      "relationship_policy": {
+        "status": "defined",
+        "semantic_owner": "physical-system-adr",
+        "relationship_mode": "explicit",
+        "allowed_outbound": [
+          {
+            "relationship": "relationship/writes_to",
+            "source_types": [
+              "value/topology_component"
+            ],
+            "target_types": [
+              "value/topology_component"
+            ],
+            "min_occurs": 0,
+            "max_occurs": null
+          }
+        ],
+        "allowed_inbound": [
+          {
+            "relationship": "relationship/writes_to",
+            "source_types": [
+              "value/topology_component"
+            ],
+            "target_types": [
+              "value/topology_component"
+            ],
+            "min_occurs": 0,
+            "max_occurs": null
+          }
+        ],
+        "relationship_field_contract": {
+          "fields": [
+            "topology_key",
+            "from_key",
+            "to_key"
+          ],
+          "endpoint_representation": "topology_key",
+          "projected_endpoint_representation": "canonical_uuidv7"
+        },
+        "cardinality": "one_source_one_target_per_assertion",
+        "ordering": {
+          "status": "defined",
+          "mode": "owner_declared_sequence",
+          "material": true,
+          "rule": "preserve physical-system topology sequence"
+        }
+      },
+      "operation_posture": {
+        "create": {
+          "status": "defined",
+          "permission": "allowed"
+        },
+        "update": {
+          "status": "defined",
+          "permission": "allowed"
+        },
+        "reference": {
+          "status": "defined",
+          "permission": "allowed"
+        },
+        "retire": {
+          "status": "defined",
+          "permission": "unsupported"
+        }
+      },
+      "ordering_policy": {
+        "status": "defined",
+        "mode": "identity_keyed_set",
+        "material": false,
+        "rule": "identity-bearing entities are not reordered by presentation"
+      }
+    },
+    {
+      "contract_version": "1.1",
+      "key": {
+        "kind": "value",
+        "name": "normative_force"
+      },
+      "display_name": "Normative Force",
+      "description": "Construction-aware descriptive contract for Normative Force.",
+      "authoring_mode": "embedded",
+      "semantic_type_ownership": "adr_kit",
+      "discriminator": {
+        "mode": "contextual",
+        "value": "normative_force"
+      },
+      "construction_support": {
+        "status": "described",
+        "fragment_kind": "embedded_value",
+        "execution": "not_applicable",
+        "result": "value_fragment_only"
+      },
+      "input_contract": {
+        "status": "defined",
+        "shape": "closed_value",
+        "authority": "owner_contract",
+        "required_fields": [
+          "value"
+        ],
+        "optional_fields": [],
+        "unknown_fields": "reject",
+        "inference": "forbidden"
+      },
+      "identity_policy": {
+        "status": "not_applicable",
+        "mode": "none",
+        "identity_bearing": false,
+        "establishment": "not_applicable",
+        "supplied_identity": "not_applicable",
+        "update_identity": "not_applicable",
+        "reference_identity": "not_applicable",
+        "composition_identity": "not_applicable",
+        "forbidden_derivations": []
+      },
+      "composition_policy": {
+        "status": "not_applicable",
+        "mode": "embedded_value",
+        "allowed_parents": [],
+        "cardinality": "embedded_only",
+        "child_identity": "not_applicable",
+        "admission": "not_applicable",
+        "persistence": "not_applicable"
+      },
+      "reference_policy": {
+        "status": "not_applicable",
+        "mode": "embedded_value",
+        "allowed_reference_kinds": [],
+        "reference_field_contract": {
+          "fields": [],
+          "endpoint_representation": "none"
+        },
+        "unresolved": "not_applicable",
+        "identity_effect": "not_applicable"
+      },
+      "field_ownership_policy": {
+        "status": "defined",
+        "owner": "physical-system-adr",
+        "semantic_fields": [
+          "type-specific semantic fields"
+        ],
+        "identity_fields": [
+          "id"
+        ],
+        "provenance_fields": [
+          "declaring_owner",
+          "source_contract"
+        ],
+        "extension_fields": "none",
+        "unknown_fields": "reject"
+      },
+      "relationship_policy": {
+        "status": "not_applicable",
+        "semantic_owner": "adr_kit",
+        "relationship_mode": "explicit",
+        "allowed_outbound": [],
+        "allowed_inbound": [],
+        "relationship_field_contract": {
+          "fields": [],
+          "endpoint_representation": "none"
+        },
+        "cardinality": "no_relationship_participation_declared",
+        "ordering": {
+          "status": "defined",
+          "mode": "not_material",
+          "material": false,
+          "rule": "no undeclared relationship sequence"
+        }
+      },
+      "operation_posture": {
+        "create": {
+          "status": "defined",
+          "permission": "unsupported"
+        },
+        "update": {
+          "status": "defined",
+          "permission": "unsupported"
+        },
+        "reference": {
+          "status": "defined",
+          "permission": "unsupported"
+        },
+        "retire": {
+          "status": "defined",
+          "permission": "unsupported"
+        }
+      },
+      "ordering_policy": {
+        "status": "defined",
+        "mode": "owner_declared_sequence",
+        "material": true,
+        "rule": "preserve owner-local sequence"
+      },
+      "values": [
+        "MUST",
+        "MUST NOT",
+        "SHOULD",
+        "SHOULD NOT",
+        "MAY"
+      ]
+    },
+    {
+      "contract_version": "1.1",
+      "key": {
+        "kind": "value",
+        "name": "topology_component"
+      },
+      "display_name": "Topology Component Occurrence",
+      "description": "Construction-aware descriptive contract for Topology Component Occurrence.",
+      "authoring_mode": "embedded",
+      "semantic_type_ownership": "adr_kit",
+      "discriminator": {
+        "mode": "contextual",
+        "value": "topology_component"
+      },
+      "construction_support": {
+        "status": "described",
+        "fragment_kind": "embedded_value",
+        "execution": "not_implemented",
+        "result": "detached_candidate_only"
+      },
+      "input_contract": {
+        "status": "defined",
+        "shape": "owner_local_topology_value",
+        "authority": "owner_contract",
+        "required_fields": [
+          "topology_key",
+          "component_ref"
+        ],
+        "optional_fields": [],
+        "unknown_fields": "reject",
+        "inference": "forbidden"
+      },
+      "identity_policy": {
+        "status": "defined",
+        "mode": "owner_local",
+        "identity_bearing": false,
+        "establishment": "not_applicable",
+        "supplied_identity": "not_applicable",
+        "update_identity": "not_applicable",
+        "reference_identity": "owner_local_key",
+        "composition_identity": "not_applicable",
+        "forbidden_derivations": [
+          "canonical_uuidv7",
+          "alias",
+          "path",
+          "hash",
+          "composition_position"
+        ]
+      },
+      "composition_policy": {
+        "status": "defined",
+        "mode": "fragment_composition",
+        "allowed_parents": [
+          {
+            "kind": "adr",
+            "name": "physical-system",
+            "min_occurs": 0,
+            "max_occurs": null
+          }
+        ],
+        "cardinality": "parent_context_declared",
+        "child_identity": "preserve",
+        "admission": "deferred",
+        "persistence": "deferred"
+      },
+      "reference_policy": {
+        "status": "defined",
+        "mode": "owner_local",
+        "allowed_reference_kinds": [
+          "entity/component"
+        ],
+        "reference_field_contract": {
+          "fields": [
+            "topology_key",
+            "from_key",
+            "to_key"
+          ],
+          "endpoint_representation": "topology_key"
+        },
+        "unresolved": "preserve_explicit_unresolved",
+        "identity_effect": "reference_does_not_recreate_identity"
+      },
+      "field_ownership_policy": {
+        "status": "defined",
+        "owner": "physical-system-adr",
+        "semantic_fields": [
+          "type-specific semantic fields"
+        ],
+        "identity_fields": [
+          "id"
+        ],
+        "provenance_fields": [
+          "declaring_owner",
+          "source_contract"
+        ],
+        "extension_fields": "none",
+        "unknown_fields": "reject"
+      },
+      "relationship_policy": {
+        "status": "defined",
+        "semantic_owner": "physical-system-adr",
+        "relationship_mode": "field_derived",
+        "allowed_outbound": [],
+        "allowed_inbound": [],
+        "relationship_field_contract": {
+          "fields": [
+            "topology_key",
+            "component_ref"
+          ],
+          "endpoint_representation": "topology_key"
+        },
+        "cardinality": "occurrence_value_only",
+        "ordering": {
+          "status": "defined",
+          "mode": "owner_declared_sequence",
+          "material": true,
+          "rule": "preserve topology occurrence order"
+        }
+      },
+      "operation_posture": {
+        "create": {
+          "status": "defined",
+          "permission": "allowed"
+        },
+        "update": {
+          "status": "defined",
+          "permission": "allowed"
+        },
+        "reference": {
+          "status": "defined",
+          "permission": "allowed"
+        },
+        "retire": {
+          "status": "defined",
+          "permission": "unsupported"
+        }
+      },
+      "ordering_policy": {
+        "status": "defined",
+        "mode": "owner_declared_sequence",
+        "material": true,
+        "rule": "preserve owner-local sequence"
+      },
+      "forward_vocabulary": {
+        "required_fields": [
+          "topology_key",
+          "from_key",
+          "to_key"
+        ],
+        "identity": "owner_local",
+        "historical_identity": "not_authoritative"
+      }
+    }
+  ],
+  "diagnostics": {
+    "unsupported_version": "contract.unsupported_version",
+    "unknown_type_kind": "authoring.unknown_type_kind",
+    "unknown_type": "authoring.unknown_type"
+  },
+  "reconciliation_notes": [
+    {
+      "id": "ADC-RECON-001",
+      "topic": "consumes_interface",
+      "status": "unresolved",
+      "authority_reference": "ADR-L-0026 / ADR-L-0029",
+      "statement": "consumes_interface endpoint semantics remain unresolved.",
+      "disposition": "Excluded; no authoring or derived endpoint semantics are invented."
+    },
+    {
+      "id": "ADC-RECON-002",
+      "topic": "composed_of",
+      "status": "derived",
+      "authority_reference": "ADR-L-0029",
+      "statement": "composed_of is derived composition, not directly authorable.",
+      "disposition": "Excluded from the catalog."
+    }
+  ],
+  "excluded_from_version": [
+    "entity/constraint",
+    "entity/nfr",
+    "entity/requirement",
+    "entity/integration",
+    "relationship/consumes_interface",
+    "relationship/composed_of",
+    "relationship/provides_interface",
+    "relationship/binds_substrate",
+    "relationship/binds_rule",
+    "relationship/expects_evidence"
+  ],
+  "successor_notes": [
+    "ADC 1.0 remains immutable, supported, and advertised as the only binding version.",
+    "ADC 1.1 defines future construction-facing policy only; it does not define or implement construction or authoring 1.7.",
+    "NormativeProposition has no independent lifecycle; normative_force has exactly five values; topology_component is owner-local."
+  ]
+}

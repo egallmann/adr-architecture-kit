@@ -3147,8 +3147,8 @@
         "kind": "relationship",
         "name": "extension"
       },
-      "display_name": "Extension Entity Template",
-      "description": "Construction-aware descriptive contract for Extension Entity Template.",
+      "display_name": "Extension Relationship Template",
+      "description": "Construction-aware descriptive contract for an explicit consumer-qualified extension relationship.",
       "authoring_mode": "template",
       "semantic_type_ownership": "consumer_qualified",
       "discriminator": {
@@ -3167,6 +3167,9 @@
         "shape": "qualified_relationship_fragment",
         "authority": "exact_custom_contract",
         "required_fields": [
+          "id",
+          "alias_id",
+          "alias_name",
           "relationship_type",
           "from_entity_id",
           "to_entity_id",
@@ -3179,18 +3182,21 @@
       },
       "identity_policy": {
         "status": "defined",
-        "mode": "custom_contract_qualified",
-        "identity_bearing": false,
-        "establishment": "not_applicable",
-        "supplied_identity": "not_applicable",
-        "update_identity": "not_applicable",
-        "reference_identity": "owner_local_value",
+        "mode": "canonical_uuidv7",
+        "identity_bearing": true,
+        "establishment": "create",
+        "supplied_identity": "preserve",
+        "update_identity": "preserve",
+        "reference_identity": "reuse",
         "composition_identity": "does_not_manufacture",
         "forbidden_derivations": [
-          "canonical_uuidv7",
           "alias",
+          "prose",
           "path",
-          "hash"
+          "source_location",
+          "hash",
+          "ordering",
+          "composition_position"
         ]
       },
       "composition_policy": {
@@ -3223,17 +3229,16 @@
       },
       "reference_policy": {
         "status": "defined",
-        "mode": "owner_local",
+        "mode": "canonical_uuidv7",
         "allowed_reference_kinds": [
-          "value/topology_component"
+          "canonical_entity"
         ],
         "reference_field_contract": {
           "fields": [
-            "topology_key",
-            "from_key",
-            "to_key"
+            "from_entity_id",
+            "to_entity_id"
           ],
-          "endpoint_representation": "topology_key"
+          "endpoint_representation": "canonical_uuidv7"
         },
         "unresolved": "preserve_explicit_unresolved",
         "identity_effect": "reference_does_not_recreate_identity"
@@ -3289,10 +3294,12 @@
             "relationship_type",
             "from_entity_id",
             "to_entity_id",
-            "properties"
+            "properties",
+            "rationale"
           ],
-          "endpoint_representation": "contract_qualified"
+          "endpoint_representation": "canonical_uuidv7"
         },
+        "property_relationship_effect": "never_implies_graph_relationship",
         "cardinality": "custom_contract_declared",
         "ordering": {
           "status": "defined",

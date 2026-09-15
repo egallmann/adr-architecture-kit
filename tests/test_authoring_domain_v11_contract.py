@@ -126,9 +126,102 @@ def test_adc11_boundaries_and_truthful_capability() -> None:
     values = catalog(ADC11)
     assert not EXCLUDED.intersection(values)
     assert "relationship/consumes_interface" in set(load(ADC11)["excluded_from_version"])
+    extension_relationship = values["relationship/extension"]
+    assert extension_relationship["display_name"] == "Extension Relationship Template"
+    assert "entity" not in extension_relationship["display_name"].lower()
+    assert "consumer-qualified" in extension_relationship["description"]
+    assert extension_relationship["semantic_type_ownership"] == "consumer_qualified"
+    assert extension_relationship["relationship_policy"]["relationship_mode"] == "custom_explicit"
+    assert extension_relationship["reference_policy"]["mode"] == "canonical_uuidv7"
+    assert extension_relationship["reference_policy"]["allowed_reference_kinds"] == [
+        "canonical_entity"
+    ]
+    assert extension_relationship["reference_policy"]["reference_field_contract"] == {
+        "fields": ["from_entity_id", "to_entity_id"],
+        "endpoint_representation": "canonical_uuidv7",
+    }
+    assert extension_relationship["relationship_policy"]["relationship_field_contract"] == {
+        "fields": [
+            "relationship_type",
+            "from_entity_id",
+            "to_entity_id",
+            "properties",
+            "rationale",
+        ],
+        "endpoint_representation": "canonical_uuidv7",
+    }
+    assert extension_relationship["relationship_policy"]["property_relationship_effect"] == (
+        "never_implies_graph_relationship"
+    )
+    assert extension_relationship["input_contract"]["required_fields"] == [
+        "id",
+        "alias_id",
+        "alias_name",
+        "relationship_type",
+        "from_entity_id",
+        "to_entity_id",
+        "properties",
+        "rationale",
+    ]
+    identity = extension_relationship["identity_policy"]
+    assert identity["mode"] == "canonical_uuidv7"
+    assert identity["identity_bearing"] is True
+    assert identity["establishment"] == "create"
+    assert identity["supplied_identity"] == "preserve"
+    assert identity["update_identity"] == "preserve"
+    assert identity["reference_identity"] == "reuse"
+    assert identity["composition_identity"] == "does_not_manufacture"
+    assert "canonical_uuidv7" not in identity["forbidden_derivations"]
+    assert set(identity["forbidden_derivations"]) >= {
+        "alias",
+        "prose",
+        "path",
+        "source_location",
+        "hash",
+        "ordering",
+        "composition_position",
+    }
+    assert extension_relationship["input_contract"]["inference"] == "forbidden"
+    for operation in ("create", "update", "retire"):
+        assert (
+            extension_relationship["operation_posture"][operation]["permission"]
+            == "qualified_contract_required"
+        )
+    topology = values["value/topology_component"]
+    assert topology["reference_policy"]["mode"] == "owner_local"
+    assert topology["forward_vocabulary"]["required_fields"] == [
+        "topology_key",
+        "from_key",
+        "to_key",
+    ]
+    for topology_relationship in (
+        "calls",
+        "depends_on",
+        "publishes_to",
+        "subscribes_to",
+        "reads_from",
+        "writes_to",
+    ):
+        descriptor = values[f"relationship/{topology_relationship}"]
+        assert descriptor["reference_policy"]["mode"] == "owner_local"
+        assert descriptor["reference_policy"]["allowed_reference_kinds"] == [
+            "value/topology_component"
+        ]
+        assert (
+            descriptor["reference_policy"]["reference_field_contract"]["endpoint_representation"]
+            == "topology_key"
+        )
     assert (
-        values["relationship/extension"]["relationship_policy"]["relationship_mode"]
-        == "custom_explicit"
+        "topology_key"
+        not in extension_relationship["reference_policy"]["reference_field_contract"]["fields"]
+    )
+    assert (
+        "from_key"
+        not in extension_relationship["reference_policy"]["reference_field_contract"]["fields"]
+    )
+    assert (
+        "to_key"
+        not in extension_relationship["reference_policy"]["reference_field_contract"]["fields"]
     )
     assert (
         values["entity/normative_proposition"]["operation_posture"]["retire"]["permission"]

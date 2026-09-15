@@ -1,0 +1,193 @@
+{
+  "$schema": "./schema.json",
+  "$id": "https://adr-kit.ste.systems/contracts/custom-entity/v1.0/contract.json",
+  "contract_id": "adr-kit.custom-entity",
+  "contract_version": "1.0",
+  "contract_family": "custom_entity",
+  "status": "descriptive_read_only",
+  "title": "ADR-Kit Custom Entity Contract 1.0",
+  "description": "Exact, consumer-qualified contract semantics for identity-bearing custom entities and explicit custom relationships. ADR-Kit owns the universal envelope; the consumer owns qualified domain meaning.",
+  "qualification_policy": {
+    "semantic_kinds": ["entity", "relationship"],
+    "semantic_type_format": "consumer_namespace:local_name",
+    "required_components": ["semantic_kind", "semantic_type", "consumer_namespace", "contract_version", "contract_fingerprint"],
+    "path_identity": false,
+    "ambient_defaults": false,
+    "latest_selection": false
+  },
+  "fingerprint_policy": {
+    "scheme": "scf:v1:sha256",
+    "algorithm": "SHA-256",
+    "canonicalization": "repository_canonical_semantic_json",
+    "preimage": "all_meaning_affecting_contract_content_except_contract_fingerprint",
+    "self_reference": "contract_fingerprint_excluded_from_own_preimage",
+    "deterministic_replay": true,
+    "meaning_affecting_changes": "change_fingerprint"
+  },
+  "registry_policy": {
+    "is_semantic_input": true,
+    "authority": "consumer_namespace",
+    "supports_multiple_types": true,
+    "retained_versions": "explicit_historical_versions",
+    "selection": "exact_type_kind_version_fingerprint",
+    "duplicate_rule": "same_qualification_same_contract; differing_fingerprint_conflicts",
+    "ordering": "canonical_semantic_json",
+    "global_registry": false,
+    "historical_interpretation": "retain_required_exact_versions"
+  },
+  "identity_policy": {
+    "entity_and_relationship_identity": "identity_bearing",
+    "mode": "canonical_uuidv7",
+    "supplied_identity": "preserve",
+    "create": "may_mint_when_absent_without_admission",
+    "update": "preserve",
+    "reference": "reuse",
+    "composition": "does_not_manufacture",
+    "forbidden_derivations": ["alias", "prose", "path", "hash", "source_location", "ordering", "composition_position"]
+  },
+  "alias_policy": {
+    "fields": ["alias_id", "alias_name"],
+    "orientation": "alias_id_stable_name_descriptive",
+    "allocation": "consumer_authority",
+    "reservation": "outside_construction",
+    "foreign_keys": "aliases_never_canonical"
+  },
+  "field_policy": {
+    "required_optional_forbidden": "exact_contract_declared_sets",
+    "unknown_fields": "reject",
+    "value_domain": "string_integer_number_boolean_and_bounded_arrays",
+    "nested_objects": "forbidden_as_generic_semantic_values",
+    "determinism": "closed_types_and_explicit_constraints"
+  },
+  "composition_policy": {
+    "parent_constraint": "exact_contract_declared",
+    "allowed_parents": ["adr/logical", "adr/physical-system", "adr/physical-component"],
+    "identity_effect": "does_not_manufacture_identity",
+    "admission_effect": "does_not_imply_governance_admission"
+  },
+  "relationship_policy": {
+    "mode": "custom_explicit",
+    "existence": "explicit_relationship_request",
+    "endpoint_universe": ["canonical_entity", "qualified_custom_type"],
+    "endpoint_legality": "exact_custom_contract_declared_source_and_target_types",
+    "properties": "never_implies_graph_relationship",
+    "inverse_inference": "forbidden_without_declared_inverse",
+    "identity": "canonical_uuidv7"
+  },
+  "operation_semantics": {
+    "create": {
+      "permission": "qualified_contract_required",
+      "qualification": "exact_type_version_fingerprint",
+      "persistence": "not_authorized",
+      "admission": "not_authorized",
+      "alias_reservation": "not_authorized",
+      "rules": [
+        "explicit semantic fields and relationship requests are required",
+        "valid caller-supplied UUIDv7 is preserved; a UUIDv7 may later be minted when absent",
+        "malformed or conflicting supplied identity is rejected",
+        "identity is never derived from alias, content, path, source order, or composition position"
+      ]
+    },
+    "update": {
+      "permission": "qualified_contract_required",
+      "qualification": "exact_type_version_fingerprint",
+      "persistence": "not_authorized",
+      "admission": "not_authorized",
+      "alias_reservation": "not_authorized",
+      "rules": [
+        "an exact existing source basis and governing contract are required",
+        "UUID identity is preserved and changed fields and resulting relationships are revalidated",
+        "a contract-version change is explicit migration, not ambient update"
+      ]
+    },
+    "reference": {
+      "permission": "read_only_reference",
+      "qualification": "exact_type_version_fingerprint",
+      "persistence": "not_authorized",
+      "admission": "not_authorized",
+      "alias_reservation": "not_authorized",
+      "rules": [
+        "reference reuses persisted UUID identity and never recreates an entity",
+        "endpoint resolution uses the exact identity and contract basis"
+      ]
+    },
+    "retire": {
+      "permission": "qualified_contract_required",
+      "qualification": "exact_type_version_fingerprint",
+      "persistence": "not_authorized",
+      "admission": "not_authorized",
+      "alias_reservation": "not_authorized",
+      "rules": [
+        "retirement changes generic existence_state to retired rather than deleting the entity",
+        "UUID identity, contract qualification, provenance, and historical relationship interpretation remain",
+        "retirement does not mutate Runtime or erase historical materializations"
+      ]
+    },
+    "execution": "not_implemented_in_contract_definition_slice"
+  },
+  "migration_policy": {
+    "mode": "explicit_contract_migration",
+    "source": "exact_type_version_fingerprint",
+    "target": "exact_type_version_fingerprint",
+    "identity": "same_architectural_referent_preserves_uuidv7",
+    "field_changes": "explicitly_qualified",
+    "relationship_disposition": "explicitly_declared",
+    "aliases": "governed_changes_retain_provenance",
+    "ambient_replacement": false
+  },
+  "canonical_promotion_policy": {
+    "mode": "future_explicit_canonical_promotion",
+    "same_referent_identity": "preserve_uuidv7",
+    "relationships": "compatible_relationships_should_be_preserved",
+    "field_migration": "explicit_contract_qualified",
+    "aliases": "may_evolve_with_provenance",
+    "recreation": false
+  },
+  "validation_authority_ceiling": [
+    "exact contract qualification",
+    "identity validity",
+    "required field presence",
+    "forbidden field absence",
+    "bounded field validity",
+    "legal composition",
+    "declared relationship existence",
+    "legal relationship source and target type",
+    "endpoint resolution",
+    "declared cardinality",
+    "declared material ordering",
+    "generic active or retired existence state"
+  ],
+  "read_only_boundary": {
+    "descriptive_only": true,
+    "construct_authoring_set": false,
+    "validate_authoring": false,
+    "custom_operations": false,
+    "registry_execution": false,
+    "persistence": false,
+    "runtime": false,
+    "capability_advertisement": false
+  },
+  "excluded_from_version": [
+    "construct_authoring_set",
+    "validate_authoring",
+    "create_custom_entity",
+    "update_custom_entity",
+    "retire_custom_entity",
+    "custom_contract_registry_execution",
+    "alias_reservation",
+    "persistence",
+    "Runtime_admission",
+    "governance_promotion",
+    "semantic-core 1.2",
+    "Authoring Construction Contract 1.0",
+    "authoring 1.7",
+    "normalized-model 2.4",
+    "architecture-interpretation 1.1",
+    "architecture-authoring@1.0"
+  ],
+  "successor_notes": [
+    "This definition is a semantic source contract, not a public execution capability.",
+    "The consumer remains authoritative for the meaning of every qualified type.",
+    "Concrete source and target legality is declared by each exact custom relationship contract; the registry endpoint universe is not an any-to-any default."
+  ]
+}

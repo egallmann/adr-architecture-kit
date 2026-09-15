@@ -1,0 +1,25 @@
+{
+  "registry_id": "example.consumer.custom-entity-registry",
+  "registry_version": "1.0",
+  "authority": "consumer_namespace",
+  "definitions": [
+    {
+      "semantic_kind": "entity",
+      "semantic_type": "example:observation",
+      "consumer_namespace": "example",
+      "contract_version": "1.0",
+      "contract_fingerprint": "scf:v1:sha256:1111111111111111111111111111111111111111111111111111111111111111",
+      "description": "First meaning."
+    },
+    {
+      "semantic_kind": "entity",
+      "semantic_type": "example:observation",
+      "consumer_namespace": "example",
+      "contract_version": "1.0",
+      "contract_fingerprint": "scf:v1:sha256:9999999999999999999999999999999999999999999999999999999999999999",
+      "description": "Conflicting meaning."
+    }
+  ],
+  "selection_policy": {"mode": "exact_qualified_selection", "latest": "forbidden", "missing_exact_authority": "reject", "ambiguous_duplicate": "reject", "ordering": "canonical_semantic_json"},
+  "exact_selection": {"semantic_kind": "entity", "semantic_type": "example:observation", "contract_version": "1.0", "contract_fingerprint": "scf:v1:sha256:1111111111111111111111111111111111111111111111111111111111111111"}
+}

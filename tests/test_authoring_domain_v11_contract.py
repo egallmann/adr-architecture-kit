@@ -134,7 +134,8 @@ def test_adc11_boundaries_and_truthful_capability() -> None:
     assert extension_relationship["relationship_policy"]["relationship_mode"] == "custom_explicit"
     assert extension_relationship["reference_policy"]["mode"] == "canonical_uuidv7"
     assert extension_relationship["reference_policy"]["allowed_reference_kinds"] == [
-        "canonical_entity"
+        "canonical_entity",
+        "qualified_custom_type",
     ]
     assert extension_relationship["reference_policy"]["reference_field_contract"] == {
         "fields": ["from_entity_id", "to_entity_id"],
@@ -182,6 +183,27 @@ def test_adc11_boundaries_and_truthful_capability() -> None:
         "composition_position",
     }
     assert extension_relationship["input_contract"]["inference"] == "forbidden"
+    assert extension_relationship["input_contract"]["authority"] == "exact_custom_contract"
+    endpoint_universe = {"canonical_entity", "qualified_custom_type"}
+    for direction in ("allowed_outbound", "allowed_inbound"):
+        declarations = extension_relationship["relationship_policy"][direction]
+        assert len(declarations) == 1
+        declaration = declarations[0]
+        assert set(declaration["source_types"]) == endpoint_universe
+        assert set(declaration["target_types"]) == endpoint_universe
+        assert {
+            (source_type, target_type)
+            for source_type in declaration["source_types"]
+            for target_type in declaration["target_types"]
+        } == {
+            ("canonical_entity", "canonical_entity"),
+            ("canonical_entity", "qualified_custom_type"),
+            ("qualified_custom_type", "canonical_entity"),
+            ("qualified_custom_type", "qualified_custom_type"),
+        }
+    assert extension_relationship["relationship_policy"]["cardinality"] == (
+        "custom_contract_declared"
+    )
     for operation in ("create", "update", "retire"):
         assert (
             extension_relationship["operation_posture"][operation]["permission"]

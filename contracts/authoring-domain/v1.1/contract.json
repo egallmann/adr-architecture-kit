@@ -3231,7 +3231,8 @@
         "status": "defined",
         "mode": "canonical_uuidv7",
         "allowed_reference_kinds": [
-          "canonical_entity"
+          "canonical_entity",
+          "qualified_custom_type"
         ],
         "reference_field_contract": {
           "fields": [
@@ -3267,9 +3268,11 @@
           {
             "relationship": "relationship/extension",
             "source_types": [
+              "canonical_entity",
               "qualified_custom_type"
             ],
             "target_types": [
+              "canonical_entity",
               "qualified_custom_type"
             ],
             "min_occurs": 0,
@@ -3280,9 +3283,11 @@
           {
             "relationship": "relationship/extension",
             "source_types": [
+              "canonical_entity",
               "qualified_custom_type"
             ],
             "target_types": [
+              "canonical_entity",
               "qualified_custom_type"
             ],
             "min_occurs": 0,

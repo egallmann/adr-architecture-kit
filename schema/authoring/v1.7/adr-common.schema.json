@@ -253,9 +253,7 @@
     "normative_propositions": {"type": "array", "items": {"$ref": "#/definitions/normative_proposition"}},
     "evidence_expectations": {"type": "array", "items": {"$ref": "#/definitions/evidence_expectation"}},
     "extension_entities": {"type": "array", "items": {"$ref": "#/definitions/custom_entity"}},
-    "extension_relationships": {"type": "array", "items": {"$ref": "#/definitions/custom_relationship"}},
-    "substrate_bindings": {"type": "array", "items": {"type": "object"}},
-    "rule_bindings": {"type": "array", "items": {"type": "object"}}
+    "extension_relationships": {"type": "array", "items": {"$ref": "#/definitions/custom_relationship"}}
   },
   "required": ["schema_version", "adr_type", "id", "alias_id", "alias_name", "title", "status", "created_date", "authors"],
   "additionalProperties": false

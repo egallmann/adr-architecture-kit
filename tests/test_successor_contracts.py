@@ -9,6 +9,11 @@ from typing import Any, cast
 
 import rfc8785
 from jsonschema import Draft7Validator, Draft202012Validator, RefResolver
+from adr_kit.semantic_contract import (
+    calculate_semantic_contract_fingerprint,
+    validate_semantic_resource_closure,
+    verify_semantic_contract,
+)
 
 ROOT = Path(__file__).resolve().parents[1]
 AUTHORING = ROOT / "schema" / "authoring" / "v1.7"
@@ -34,6 +39,36 @@ def _authoring_validator(name: str) -> Draft7Validator:
     return Draft7Validator(
         document,
         resolver=RefResolver(path.resolve().as_uri(), document, store=store),
+    )
+
+
+def _normalized_validator(name: str) -> Draft7Validator:
+    paths = list(NORMALIZED.glob("*.json"))
+    store: dict[str, Any] = {}
+    for path in paths:
+        document = _document(path)
+        store[path.resolve().as_uri()] = document
+        store[document["$id"]] = document
+    path = NORMALIZED / name
+    document = _document(path)
+    return Draft7Validator(
+        document,
+        resolver=RefResolver(path.resolve().as_uri(), document, store=store),
+    )
+
+
+def _custom_qualification_is_exact(
+    instance: dict[str, Any], type_field: str, qualification: dict[str, Any]
+) -> bool:
+    semantic_type = qualification.get("semantic_type")
+    namespace = semantic_type.split(":", 1)[0] if isinstance(semantic_type, str) else None
+    return (
+        qualification.get("semantic_kind")
+        == ("entity" if type_field == "entity_type" else "relationship")
+        and instance.get(type_field) == semantic_type
+        and namespace == qualification.get("consumer_namespace")
+        and isinstance(qualification.get("contract_version"), str)
+        and isinstance(qualification.get("contract_fingerprint"), str)
     )
 
 
@@ -178,6 +213,19 @@ def test_forward_identity_topology_and_exclusions_are_closed() -> None:
         "type": "calls",
     }
     assert list(_authoring_validator("adr-physical-system.schema.json").iter_errors(bad_topology))
+
+
+def test_forward_authoring_has_no_untyped_binding_escape_hatches() -> None:
+    for path in AUTHORING.glob("*.json"):
+        properties = _document(path).get("properties", {})
+        assert "substrate_bindings" not in properties
+        assert "rule_bindings" not in properties
+
+    decoding = _document(INTERPRETATION / "resources" / "source-decoding-1.7.json")
+    assert set(decoding["unsupported_forward_fields"]) == {
+        "substrate_bindings",
+        "rule_bindings",
+    }
     forbidden = _root(
         adr_type="logical",
         alias_id="ADR-L-0001",
@@ -225,6 +273,224 @@ def test_np_and_custom_sources_require_their_locked_qualification() -> None:
     assert list(_authoring_validator("adr-logical.schema.json").iter_errors(value))
 
 
+def test_authoring_custom_qualification_is_semantically_exact() -> None:
+    entity = {
+        "id": UUID,
+        "alias_id": "PAY-0001",
+        "alias_name": "payment-policy",
+        "entity_type": "payments:policy",
+        "qualification": {
+            "semantic_kind": "entity",
+            "semantic_type": "payments:policy",
+            "consumer_namespace": "payments",
+            "contract_version": "1.0",
+            "contract_fingerprint": "cecf:v1:sha256:" + "0" * 64,
+        },
+        "properties": {"policy_code": "P1"},
+        "rationale": "Consumer-qualified meaning.",
+    }
+    relationship = {
+        "id": UUID,
+        "alias_id": "PAYREL-0001",
+        "alias_name": "payment-dependency",
+        "relationship_type": "payments:depends_on",
+        "qualification": {
+            "semantic_kind": "relationship",
+            "semantic_type": "payments:depends_on",
+            "consumer_namespace": "payments",
+            "contract_version": "1.0",
+            "contract_fingerprint": "cecf:v1:sha256:" + "1" * 64,
+        },
+        "from_entity_id": UUID,
+        "to_entity_id": UUID2,
+        "properties": {"reason": "required"},
+        "rationale": "Consumer-qualified relationship.",
+    }
+    validator = _authoring_validator("adr-logical.schema.json")
+    root = _root(
+        adr_type="logical",
+        alias_id="ADR-L-0001",
+        context="context",
+        decisions=[_decision()],
+        extension_entities=[entity],
+        extension_relationships=[relationship],
+    )
+    assert not list(validator.iter_errors(root))
+    assert _custom_qualification_is_exact(entity, "entity_type", entity["qualification"])
+    assert _custom_qualification_is_exact(
+        relationship, "relationship_type", relationship["qualification"]
+    )
+
+    for field, replacement in (
+        ("semantic_type", "other:requirement"),
+        ("consumer_namespace", "other"),
+    ):
+        invalid_entity = json.loads(json.dumps(root))
+        invalid_entity["extension_entities"][0]["qualification"][field] = replacement
+        assert list(validator.iter_errors(invalid_entity)) == []
+        assert not _custom_qualification_is_exact(
+            invalid_entity["extension_entities"][0],
+            "entity_type",
+            invalid_entity["extension_entities"][0]["qualification"],
+        )
+
+    invalid_relationship = json.loads(json.dumps(root))
+    invalid_relationship["extension_relationships"][0]["qualification"][
+        "semantic_type"
+    ] = "other:requires"
+    assert not list(validator.iter_errors(invalid_relationship))
+    assert not _custom_qualification_is_exact(
+        invalid_relationship["extension_relationships"][0],
+        "relationship_type",
+        invalid_relationship["extension_relationships"][0]["qualification"],
+    )
+
+
+def _normalized_custom_entity() -> dict[str, Any]:
+    return {
+        "id": UUID,
+        "alias_id": "PAY-0001",
+        "alias_name": "payment-policy",
+        "alias_ref": "PAY-0001:payment-policy",
+        "entity_type": "payments:policy",
+        "name": "Payment policy",
+        "summary": "Payment policy",
+        "uri": "adr://payment-policy",
+        "created_at": "2026-09-15T00:00:00Z",
+        "entity_fingerprint": "sha256:" + "0" * 64,
+        "lifecycle_stage": "active",
+        "canonical_source": {},
+        "completeness": {},
+        "provenance": {},
+        "extension": {
+            "qualification": {
+                "semantic_kind": "entity",
+                "semantic_type": "payments:policy",
+                "consumer_namespace": "payments",
+                "contract_version": "1.0",
+                "contract_fingerprint": "cecf:v1:sha256:" + "0" * 64,
+            },
+            "properties": {"policy_code": "P1"},
+            "rationale": "Consumer-qualified meaning.",
+        },
+    }
+
+
+def _normalized_custom_relationship() -> dict[str, Any]:
+    return {
+        "record_kind": "canonical",
+        "id": UUID,
+        "alias_id": "PAYREL-0001",
+        "alias_name": "payment-dependency",
+        "relationship_type": "payments:depends_on",
+        "from_entity_id": UUID,
+        "to_entity_id": UUID2,
+        "canonical_source_ref": "source#relationship",
+        "custom_qualification": {
+            "semantic_kind": "relationship",
+            "semantic_type": "payments:depends_on",
+            "consumer_namespace": "payments",
+            "contract_version": "1.0",
+            "contract_fingerprint": "cecf:v1:sha256:" + "1" * 64,
+        },
+        "properties": {"reason": "required"},
+        "rationale": "Consumer-qualified relationship.",
+    }
+
+
+def test_normalized_custom_qualification_and_properties_are_exact() -> None:
+    entity_validator = _normalized_validator("normalized-entity.schema.json")
+    entity = _normalized_custom_entity()
+    assert not list(entity_validator.iter_errors(entity))
+    assert _custom_qualification_is_exact(
+        entity, "entity_type", entity["extension"]["qualification"]
+    )
+    mismatched_type = json.loads(json.dumps(entity))
+    mismatched_type["extension"]["qualification"]["semantic_type"] = "other:requirement"
+    assert list(entity_validator.iter_errors(mismatched_type)) == []
+    assert not _custom_qualification_is_exact(
+        mismatched_type, "entity_type", mismatched_type["extension"]["qualification"]
+    )
+    mismatched_namespace = json.loads(json.dumps(entity))
+    mismatched_namespace["extension"]["qualification"]["consumer_namespace"] = "other"
+    assert list(entity_validator.iter_errors(mismatched_namespace)) == []
+    assert not _custom_qualification_is_exact(
+        mismatched_namespace,
+        "entity_type",
+        mismatched_namespace["extension"]["qualification"],
+    )
+
+    relationship_validator = _normalized_validator("relationship-record.schema.json")
+    relationship = _normalized_custom_relationship()
+    assert not list(relationship_validator.iter_errors(relationship))
+    assert _custom_qualification_is_exact(
+        relationship, "relationship_type", relationship["custom_qualification"]
+    )
+    mismatched_relationship = json.loads(json.dumps(relationship))
+    mismatched_relationship["custom_qualification"]["semantic_type"] = "other:requires"
+    assert list(relationship_validator.iter_errors(mismatched_relationship)) == []
+    assert not _custom_qualification_is_exact(
+        mismatched_relationship,
+        "relationship_type",
+        mismatched_relationship["custom_qualification"],
+    )
+    nested = json.loads(json.dumps(entity))
+    nested["extension"]["properties"] = {"nested": {"not": "allowed"}}
+    assert list(entity_validator.iter_errors(nested))
+    relationship_nested = json.loads(json.dumps(relationship))
+    relationship_nested["properties"] = {"nested": {"not": "allowed"}}
+    assert list(relationship_validator.iter_errors(relationship_nested))
+
+
+def test_normalized_first_class_entities_require_typed_semantics() -> None:
+    validator = _normalized_validator("normalized-entity.schema.json")
+    base = {
+        "id": UUID,
+        "alias_id": "BOUND-0001",
+        "alias_name": "sample-boundary",
+        "alias_ref": "BOUND-0001:sample-boundary",
+        "name": "Sample",
+        "summary": "Sample",
+        "uri": "adr://sample",
+        "created_at": "2026-09-15T00:00:00Z",
+        "entity_fingerprint": "sha256:" + "0" * 64,
+        "lifecycle_stage": "active",
+        "canonical_source": {},
+        "completeness": {},
+        "provenance": {},
+    }
+    boundary = {**base, "entity_type": "system_boundary", "description": "External edge."}
+    boundary["external_dependencies"] = ["payments"]
+    boundary["exposed_interfaces"] = [UUID2]
+    assert not list(validator.iter_errors(boundary))
+    assert list(validator.iter_errors({**base, "entity_type": "system_boundary"}))
+
+    data_flow = {
+        **base,
+        "entity_type": "data_flow",
+        "description": "Moves payment data.",
+        "path": ["TOPO-API", "TOPO-DB"],
+        "path_semantics": "owner_local_ordered_topology_path",
+        "data_type": "payment",
+        "volume": "1k/min",
+        "latency_requirements": "p95 < 100ms",
+    }
+    assert not list(validator.iter_errors(data_flow))
+    assert list(validator.iter_errors({**data_flow, "path_semantics": "not-a-path"}))
+
+    evidence = {
+        **base,
+        "entity_type": "evidence_expectation",
+        "evidence_kind": "test-result",
+        "description": "A passing test.",
+        "related_entity_ids": [UUID2],
+    }
+    assert not list(validator.iter_errors(evidence))
+    missing_evidence_kind = dict(evidence)
+    missing_evidence_kind.pop("evidence_kind")
+    assert list(validator.iter_errors(missing_evidence_kind))
+
+
 def test_normalized_v24_preserves_first_class_np_and_relationship_modes() -> None:
     entity = {
         "id": UUID,
@@ -234,10 +500,16 @@ def test_normalized_v24_preserves_first_class_np_and_relationship_modes() -> Non
         "entity_type": "data_flow",
         "name": "Flow",
         "summary": "Flow",
+        "description": "Flow description",
         "uri": "adr://flow",
         "created_at": "2026-09-15T00:00:00Z",
         "entity_fingerprint": "sha256:" + "0" * 64,
         "lifecycle_stage": "active",
+        "path": ["TOPO-API", "TOPO-DB"],
+        "path_semantics": "owner_local_ordered_topology_path",
+        "data_type": "payment",
+        "volume": "1k/min",
+        "latency_requirements": "p95 < 100ms",
         "canonical_source": {},
         "completeness": {},
         "provenance": {},
@@ -256,9 +528,23 @@ def test_normalized_v24_preserves_first_class_np_and_relationship_modes() -> Non
         "statement": "MUST",
         "normative_force": "MUST",
         "scope": "global",
-        "declaring_adr": {},
-        "source_artifact": {},
-        "source_contract": {},
+        "declaring_adr": {
+            "provider": "adr-kit",
+            "id": UUID,
+            "alias_id": "ADR-L-0001",
+            "alias_name": "sample-adr",
+        },
+        "source_artifact": {
+            "source_type": "authoring",
+            "source_ref": "ADR-L-0001",
+            "artifact_path": "adrs/logical/sample.yaml",
+            "content_digest": "sha256:" + "2" * 64,
+        },
+        "source_contract": {
+            "family": "authoring",
+            "version": "1.7",
+            "fingerprint": "sha256:" + "3" * 64,
+        },
         "canonical_source": {},
         "completeness": {},
         "provenance": {},
@@ -294,6 +580,8 @@ def test_normalized_v24_preserves_first_class_np_and_relationship_modes() -> Non
             "contract_version": "1.0",
             "contract_fingerprint": "cecf:v1:sha256:" + "2" * 64,
         },
+        "properties": {"reason": "required"},
+        "rationale": "Consumer-qualified relationship.",
     }
     compatibility = {
         "record_kind": "compatibility",
@@ -323,7 +611,13 @@ def test_normalized_v24_preserves_first_class_np_and_relationship_modes() -> Non
 
 def test_interpretation_covers_all_forward_types_and_resource_digests() -> None:
     contract = _document(INTERPRETATION / "contract.json")
-    dispositions = {item["source"] for item in contract["forward_type_dispositions"]}
+    source_decoding = _document(INTERPRETATION / "resources" / "source-decoding-1.7.json")
+    dispositions = {
+        *(f"adr/{item}" for item in source_decoding["forward_authorable"]["adr"]),
+        *(f"entity/{item}" for item in source_decoding["forward_authorable"]["entity"]),
+        *(f"relationship/{item}" for item in source_decoding["forward_authorable"]["relationship"]),
+        *(f"value/{item}" for item in source_decoding["forward_authorable"]["value"]),
+    }
     assert len(dispositions) == 27
     assert {
         "entity/system_boundary",
@@ -331,12 +625,188 @@ def test_interpretation_covers_all_forward_types_and_resource_digests() -> None:
         "entity/evidence_expectation",
         "relationship/extension",
     } <= dispositions
-    assert contract["public_boundary"] == {
+    assert _document(INTERPRETATION / "resources" / "rules.json")["public_boundary"] == {
         "advertised": False,
         "execution": "not_implemented",
         "selected_by_current_semantic_contract_set": False,
     }
-    for item in contract["resources"]:
-        value = _document(INTERPRETATION / item["path"])
+    for item in contract["resourceManifest"]:
+        filename = item["canonicalResourceKey"].rsplit("/", 1)[-1] + ".json"
+        value = _document(INTERPRETATION / "resources" / filename)
         digest = "sha256:" + hashlib.sha256(rfc8785.dumps(value)).hexdigest()
-        assert digest == item["content_digest"]
+        assert digest == item["contentDigest"]
+
+
+def test_normalized_v24_preserves_the_v23_np_contract() -> None:
+    v23 = _document(ROOT / "schema" / "normalized-model" / "v2.3" / "normalized-entity.schema.json")
+    v24 = _document(NORMALIZED / "normalized-entity.schema.json")
+    v23_np = next(item for item in v23["oneOf"] if item["title"] == "Normative proposition")
+    v24_np = next(
+        item for item in v24["oneOf"] if item["title"] == "Lifecycle-free normative proposition"
+    )
+    assert set(v24_np["required"]) >= set(v23_np["required"])
+    for field in ("declaring_adr", "source_artifact", "source_contract"):
+        assert v24_np["properties"][field]["type"] == "object"
+        assert v24_np["properties"][field]["additionalProperties"] is False
+        assert set(v24_np["properties"][field]["required"]) == set(
+            v23_np["properties"][field]["required"]
+        )
+    forbidden = {
+        "lifecycle_stage",
+        "applicability",
+        "materiality",
+        "authority_competence",
+        "effectivity",
+        "implementation_attribution",
+    }
+    assert not forbidden.intersection(v24_np["properties"])
+    np = {
+        "id": UUID,
+        "alias_id": "NP-0001",
+        "alias_name": "sample-np",
+        "alias_ref": "NP-0001:sample-np",
+        "entity_type": "normative_proposition",
+        "name": "MUST",
+        "summary": "MUST",
+        "uri": "adr://np",
+        "created_at": "2026-09-15T00:00:00Z",
+        "entity_fingerprint": "sha256:" + "1" * 64,
+        "statement": "MUST",
+        "normative_force": "MUST",
+        "scope": "global",
+        "declaring_adr": {
+            "provider": "adr-kit",
+            "id": UUID,
+            "alias_id": "ADR-L-0001",
+            "alias_name": "sample-adr",
+        },
+        "source_artifact": {
+            "source_type": "authoring",
+            "source_ref": "ADR-L-0001",
+            "artifact_path": "sample.yaml",
+            "content_digest": "sha256:" + "2" * 64,
+        },
+        "source_contract": {
+            "family": "authoring",
+            "version": "1.7",
+            "fingerprint": "sha256:" + "3" * 64,
+        },
+        "canonical_source": {},
+        "completeness": {},
+        "provenance": {},
+    }
+    validator = _normalized_validator("normalized-entity.schema.json")
+    assert not list(validator.iter_errors(np))
+    for field in forbidden:
+        invalid = json.loads(json.dumps(np))
+        invalid[field] = "forbidden"
+        assert list(validator.iter_errors(invalid))
+
+
+def test_architecture_interpretation_11_uses_canonical_scf_and_verified_closure() -> None:
+    contract = _document(INTERPRETATION / "contract.json")
+    schema = _document(INTERPRETATION / "schema.json")
+    assert not list(Draft202012Validator(schema).iter_errors(contract))
+    assert set(contract) == {
+        "semanticContractFamily",
+        "semanticContractVersion",
+        "fingerprintScheme",
+        "resourceManifest",
+        "frozenNormativeConformanceResources",
+        "semanticContractFingerprint",
+    }
+    calculated = calculate_semantic_contract_fingerprint(contract)
+    assert calculated.success is True
+    assert calculated.semantic_contract_fingerprint == contract["semanticContractFingerprint"]
+    assert verify_semantic_contract(contract).success is True
+
+    resources = []
+    for entry in contract["resourceManifest"]:
+        filename = entry["canonicalResourceKey"].rsplit("/", 1)[-1] + ".json"
+        resources.append(
+            {
+                "canonicalResourceKey": entry["canonicalResourceKey"],
+                "content": _document(INTERPRETATION / "resources" / filename),
+            }
+        )
+    closure = validate_semantic_resource_closure(contract, resources)
+    assert closure.success is True
+    assert closure.closure_valid is True
+    drifted = list(resources)
+    drifted[0] = {**drifted[0], "content": {"resource": "drifted"}}
+    drift = validate_semantic_resource_closure(contract, drifted)
+    assert drift.success is False
+    assert any(
+        item.code == "semantic_contract.resource_digest_mismatch" for item in drift.diagnostics
+    )
+
+    rules = _document(INTERPRETATION / "resources" / "rules.json")
+    assert rules["identity"]["custom_entity"] == "canonical_uuidv7"
+    assert rules["identity"]["custom_relationship"] == "canonical_uuidv7"
+    assert rules["identity"]["qualification_is_identity"] is False
+    assert "entity_type=qualification.semantic_type" in rules["custom"]["entity_equalities"]
+    assert (
+        "namespace_prefix(entity_type)=qualification.consumer_namespace"
+        in rules["custom"]["entity_equalities"]
+    )
+    assert (
+        "relationship_type=qualification.semantic_type"
+        in rules["custom"]["relationship_equalities"]
+    )
+
+
+def test_interpretation_conformance_is_vector_data_not_a_case_catalog() -> None:
+    resource = _document(INTERPRETATION / "resources" / "conformance.json")
+    cases = resource["cases"]
+    assert [case["id"] for case in cases] == [f"I{index:02d}" for index in range(1, 39)]
+    for case in cases:
+        assert {"id", "name", "source_contract", "input", "expected"} <= set(case)
+        assert {"source_pointer", "fragment"} <= set(case["input"])
+        expected = case["expected"]
+        if expected["disposition"] == "accepted":
+            assert {"normalized_type", "identity", "fields"} <= set(expected)
+            assert expected["fields"]
+        elif expected["disposition"] == "rejected":
+            assert {"reason_code", "reason"} <= set(expected)
+        else:
+            assert expected["disposition"] == "historical_compatibility"
+            assert expected["fields"]["forward_authority"] is False
+
+    authoring_logical = next(case for case in cases if case["id"] == "I01")["input"]["fragment"]
+    authoring_system = next(case for case in cases if case["id"] == "I09")["input"]["fragment"]
+    assert not list(_authoring_validator("adr-logical.schema.json").iter_errors(authoring_logical))
+    assert not list(
+        _authoring_validator("adr-physical-system.schema.json").iter_errors(authoring_system)
+    )
+
+    data_flow = next(case for case in cases if case["id"] == "I20")["expected"]
+    data_flow_entity = {
+        "id": UUID,
+        "alias_id": "FLOW-0001",
+        "alias_name": "sample-flow",
+        "alias_ref": "FLOW-0001:sample-flow",
+        "entity_type": data_flow["normalized_type"],
+        "name": data_flow["fields"]["name"],
+        "summary": data_flow["fields"]["description"],
+        "uri": "adr://flow",
+        "created_at": "2026-09-15T00:00:00Z",
+        "entity_fingerprint": "sha256:" + "0" * 64,
+        "lifecycle_stage": "active",
+        "description": data_flow["fields"]["description"],
+        "path": data_flow["fields"]["path"],
+        "path_semantics": data_flow["fields"]["path_semantics"],
+        "data_type": data_flow["fields"]["data_type"],
+        "volume": data_flow["fields"]["volume"],
+        "latency_requirements": data_flow["fields"]["latency_requirements"],
+        "canonical_source": {},
+        "completeness": {},
+        "provenance": {},
+    }
+    assert not list(
+        _normalized_validator("normalized-entity.schema.json").iter_errors(data_flow_entity)
+    )
+    assert not list(
+        _normalized_validator("relationship-record.schema.json").iter_errors(
+            _normalized_custom_relationship()
+        )
+    )

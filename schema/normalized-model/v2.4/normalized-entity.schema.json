@@ -2,30 +2,113 @@
   "$schema": "http://json-schema.org/draft-07/schema#",
   "$id": "https://adr-kit.ste.systems/schema/normalized-model/v2.4/normalized-entity.schema.json",
   "title": "Normalized Entity v2.4",
-  "description": "Canonical normalized entities, including first-class system_boundary, data_flow, and evidence_expectation; normative propositions remain lifecycle-free.",
+  "description": "Normalized entities retain the v2.3 envelope; first-class source types carry explicit typed semantics and normative propositions remain lifecycle-free.",
   "oneOf": [
     {
       "title": "Regular normalized entity",
       "type": "object",
       "required": ["id", "alias_id", "alias_name", "alias_ref", "entity_type", "name", "summary", "uri", "created_at", "entity_fingerprint", "lifecycle_stage", "canonical_source", "completeness", "provenance"],
       "properties": {
-        "id": {"$ref": "#/definitions/uuid_v7"}, "alias_id": {"type": "string"}, "alias_name": {"$ref": "#/definitions/alias_name"}, "alias_ref": {"type": "string"},
-        "entity_type": {"$ref": "#/definitions/entity_type"}, "name": {"type": "string"}, "summary": {"type": "string"}, "uri": {"type": "string"}, "created_at": {"type": "string"}, "entity_fingerprint": {"$ref": "#/definitions/sha256"}, "lifecycle_stage": {"enum": ["proposed", "active", "deprecated", "superseded"]},
-        "canonical_source": {"type": "object"}, "source_refs": {"type": "array"}, "metadata": {"type": "object"}, "relationships": {"type": "object"}, "completeness": {"type": "object"}, "provenance": {"type": "object"},
+        "id": {"$ref": "#/definitions/uuid_v7"},
+        "alias_id": {"type": "string"},
+        "alias_name": {"$ref": "#/definitions/alias_name"},
+        "alias_ref": {"type": "string"},
+        "entity_type": {"$ref": "#/definitions/entity_type"},
+        "name": {"type": "string"},
+        "summary": {"type": "string"},
+        "uri": {"type": "string"},
+        "created_at": {"type": "string"},
+        "entity_fingerprint": {"$ref": "#/definitions/sha256"},
+        "lifecycle_stage": {"enum": ["proposed", "active", "deprecated", "superseded"]},
+        "canonical_source": {"type": "object"},
+        "source_refs": {"type": "array"},
+        "metadata": {"type": "object"},
+        "relationships": {"type": "object"},
+        "completeness": {"type": "object"},
+        "provenance": {"type": "object"},
+        "description": {"type": "string", "minLength": 1},
+        "external_dependencies": {"type": "array", "items": {"type": "string"}},
+        "exposed_interfaces": {"type": "array", "items": {"$ref": "#/definitions/uuid_v7"}},
+        "path": {"type": "array", "items": {"$ref": "#/definitions/topology_key"}},
+        "path_semantics": {"const": "owner_local_ordered_topology_path"},
+        "data_type": {"type": "string", "minLength": 1},
+        "volume": {"type": "string", "minLength": 1},
+        "latency_requirements": {"type": "string", "minLength": 1},
+        "evidence_kind": {"type": "string", "minLength": 1},
+        "related_entity_ids": {"type": "array", "items": {"$ref": "#/definitions/uuid_v7"}},
         "extension": {"$ref": "#/definitions/custom_extension"}
       },
-      "allOf": [{"if": {"properties": {"entity_type": {"pattern": ":"}}, "required": ["entity_type"]}, "then": {"required": ["extension"]}}, {"if": {"properties": {"entity_type": {"pattern": "^[^:]+$"}}, "required": ["entity_type"]}, "then": {"not": {"required": ["extension"]}}}],
+      "allOf": [
+        {"if": {"properties": {"entity_type": {"pattern": ":"}}, "required": ["entity_type"]}, "then": {"required": ["extension"]}},
+        {"if": {"properties": {"entity_type": {"pattern": "^[^:]+$"}}, "required": ["entity_type"]}, "then": {"not": {"required": ["extension"]}}},
+        {"if": {"properties": {"entity_type": {"const": "system_boundary"}}, "required": ["entity_type"]}, "then": {"required": ["description"]}},
+        {"if": {"properties": {"entity_type": {"const": "data_flow"}}, "required": ["entity_type"]}, "then": {"required": ["description"]}},
+        {"if": {"properties": {"entity_type": {"const": "evidence_expectation"}}, "required": ["entity_type"]}, "then": {"required": ["evidence_kind", "description", "related_entity_ids"]}},
+        {"if": {"required": ["path"]}, "then": {"required": ["path_semantics"]}},
+        {"if": {"required": ["path_semantics"]}, "then": {"required": ["path"]}}
+      ],
       "additionalProperties": false
     },
     {
       "title": "Lifecycle-free normative proposition",
+      "description": "An ADR-scoped normative proposition. Qualification and provenance do not create an independent lifecycle or applicability model.",
       "type": "object",
       "required": ["id", "alias_id", "alias_name", "alias_ref", "entity_type", "name", "summary", "uri", "created_at", "entity_fingerprint", "statement", "normative_force", "scope", "declaring_adr", "source_artifact", "source_contract", "canonical_source", "completeness", "provenance"],
       "properties": {
-        "id": {"$ref": "#/definitions/uuid_v7"}, "alias_id": {"type": "string", "pattern": "^NP-[0-9]{4}$"}, "alias_name": {"$ref": "#/definitions/alias_name"}, "alias_ref": {"type": "string"}, "entity_type": {"const": "normative_proposition"}, "name": {"type": "string"}, "summary": {"type": "string"}, "uri": {"type": "string"}, "created_at": {"type": "string"}, "entity_fingerprint": {"$ref": "#/definitions/sha256"},
-        "statement": {"type": "string", "minLength": 1}, "normative_force": {"$ref": "#/definitions/normative_force"}, "scope": {"type": "string", "minLength": 1}, "rationale": {"type": "string"}, "declaring_adr": {"type": "object"}, "source_artifact": {"type": "object"}, "source_contract": {"type": "object"}, "canonical_source": {"type": "object"}, "source_refs": {"type": "array"}, "metadata": {"type": "object"}, "relationships": {"type": "object"}, "completeness": {"type": "object"}, "provenance": {"type": "object"}
+        "id": {"$ref": "#/definitions/uuid_v7"},
+        "alias_id": {"type": "string", "pattern": "^NP-[0-9]{4}$"},
+        "alias_name": {"$ref": "#/definitions/alias_name"},
+        "alias_ref": {"type": "string"},
+        "entity_type": {"const": "normative_proposition"},
+        "name": {"type": "string"},
+        "summary": {"type": "string"},
+        "uri": {"type": "string"},
+        "created_at": {"type": "string"},
+        "entity_fingerprint": {"$ref": "#/definitions/sha256"},
+        "statement": {"type": "string", "minLength": 1},
+        "normative_force": {"$ref": "#/definitions/normative_force"},
+        "scope": {"type": "string", "minLength": 1},
+        "rationale": {"type": "string"},
+        "declaring_adr": {
+          "type": "object",
+          "required": ["provider", "id", "alias_id", "alias_name"],
+          "properties": {
+            "provider": {"type": "string", "minLength": 1},
+            "id": {"$ref": "#/definitions/uuid_v7"},
+            "alias_id": {"type": "string", "pattern": "^ADR-(L|PS|PC)-[0-9]{4}$"},
+            "alias_name": {"$ref": "#/definitions/alias_name"}
+          },
+          "additionalProperties": false
+        },
+        "source_artifact": {
+          "type": "object",
+          "required": ["source_type", "source_ref", "artifact_path", "content_digest"],
+          "properties": {
+            "source_type": {"type": "string", "minLength": 1},
+            "source_ref": {"type": "string", "minLength": 1},
+            "artifact_path": {"type": "string", "minLength": 1},
+            "content_digest": {"$ref": "#/definitions/sha256"}
+          },
+          "additionalProperties": false
+        },
+        "source_contract": {
+          "type": "object",
+          "required": ["family", "version", "fingerprint"],
+          "properties": {
+            "family": {"type": "string", "pattern": "^[a-z][a-z0-9]*(?:-[a-z0-9]+)*$"},
+            "version": {"type": "string", "minLength": 1},
+            "fingerprint": {"$ref": "#/definitions/sha256"}
+          },
+          "additionalProperties": false
+        },
+        "canonical_source": {"type": "object"},
+        "source_refs": {"type": "array"},
+        "metadata": {"type": "object"},
+        "relationships": {"type": "object"},
+        "completeness": {"type": "object"},
+        "provenance": {"type": "object"}
       },
-      "not": {"anyOf": [{"required": ["lifecycle_stage"]}, {"required": ["applicability"]}, {"required": ["materiality"]}, {"required": ["implementation_attribution"]}]},
+      "not": {"anyOf": [{"required": ["lifecycle_stage"]}, {"required": ["applicability"]}, {"required": ["materiality"]}, {"required": ["authority_competence"]}, {"required": ["effectivity"]}, {"required": ["implementation_attribution"]}]},
       "additionalProperties": false
     }
   ],
@@ -34,8 +117,22 @@
     "sha256": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"},
     "alias_name": {"type": "string", "minLength": 3, "maxLength": 96, "pattern": "^[a-z][a-z0-9]*(?:-[a-z0-9]+)*$"},
     "normative_force": {"enum": ["MUST", "MUST NOT", "SHOULD", "SHOULD NOT", "MAY"]},
-    "entity_type": {"type": "string", "pattern": "^(?:adr|system|component|decision|capability|invariant|boundary|contract|constraint|nfr|gap|interface|integration|implementation_decision|system_boundary|data_flow|evidence_expectation|[A-Za-z0-9][A-Za-z0-9._-]*:[a-z][a-z0-9_]{1,63})$"},
-    "custom_qualification": {"type": "object", "required": ["semantic_kind", "semantic_type", "consumer_namespace", "contract_version", "contract_fingerprint"], "properties": {"semantic_kind": {"const": "entity"}, "semantic_type": {"type": "string"}, "consumer_namespace": {"type": "string"}, "contract_version": {"type": "string"}, "contract_fingerprint": {"type": "string", "pattern": "^cecf:v1:sha256:[0-9a-f]{64}$"}}, "additionalProperties": false},
-    "custom_extension": {"type": "object", "required": ["qualification", "properties", "rationale"], "properties": {"qualification": {"$ref": "#/definitions/custom_qualification"}, "properties": {"type": "object"}, "rationale": {"type": "string", "minLength": 1}, "existence_state": {"enum": ["active", "retired"]}}, "additionalProperties": false}
+    "topology_key": {"type": "string", "pattern": "^TOPO-[A-Z0-9][A-Z0-9-]*$"},
+    "entity_type": {"type": "string", "pattern": "^(?:adr|system|component|decision|capability|invariant|boundary|contract|constraint|nfr|gap|interface|integration|implementation_decision|system_boundary|data_flow|evidence_expectation|[a-z][a-z0-9._-]*:[a-z][a-z0-9_]{1,63})$"},
+    "property_value": {"oneOf": [{"type": ["string", "integer", "number", "boolean"]}, {"type": "array", "maxItems": 64, "items": {"type": ["string", "integer", "number", "boolean"]}}]},
+    "properties": {"type": "object", "propertyNames": {"pattern": "^[a-z][a-z0-9_]{0,63}$"}, "additionalProperties": {"$ref": "#/definitions/property_value"}},
+    "custom_qualification": {
+      "type": "object",
+      "required": ["semantic_kind", "semantic_type", "consumer_namespace", "contract_version", "contract_fingerprint"],
+      "properties": {
+        "semantic_kind": {"const": "entity"},
+        "semantic_type": {"type": "string", "pattern": "^[a-z][a-z0-9._-]*:[a-z][a-z0-9_]{1,63}$"},
+        "consumer_namespace": {"type": "string", "pattern": "^[a-z][a-z0-9]*(?:[._-][a-z0-9]+)*$"},
+        "contract_version": {"type": "string", "pattern": "^[0-9]+\\.[0-9]+$"},
+        "contract_fingerprint": {"type": "string", "pattern": "^cecf:v1:sha256:[0-9a-f]{64}$"}
+      },
+      "additionalProperties": false
+    },
+    "custom_extension": {"type": "object", "required": ["qualification", "properties", "rationale"], "properties": {"qualification": {"$ref": "#/definitions/custom_qualification"}, "properties": {"$ref": "#/definitions/properties"}, "rationale": {"type": "string", "minLength": 1}, "existence_state": {"enum": ["active", "retired"]}}, "additionalProperties": false}
   }
 }

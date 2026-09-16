@@ -1,45 +1,1331 @@
 {
   "resource": "architecture-interpretation/1.1/conformance",
-  "source": "authoring@1.7",
-  "output": "normalized-model@2.4",
+  "source_contract": "authoring@1.7",
+  "semanticDependencies": ["architecture-interpretation/1.1/legacy-compatibility", "architecture-interpretation/1.1/rules", "architecture-interpretation/1.1/source-decoding-1.7", "architecture-interpretation/1.1/source-mapping-1.7-to-2.4"],
+  "output_contract": "normalized-model@2.4",
+  "case_schema": {
+    "required": [
+      "id",
+      "name",
+      "source_contract",
+      "input",
+      "expected"
+    ],
+    "accepted_expected": [
+      "disposition",
+      "normalized_type",
+      "identity",
+      "fields"
+    ],
+    "rejected_expected": [
+      "disposition",
+      "reason_code",
+      "reason"
+    ],
+    "input_required": [
+      "source_pointer",
+      "fragment"
+    ]
+  },
   "cases": [
-    {"id": "I01", "name": "minimal-valid-logical-adr", "outcome": "accepted"},
-    {"id": "I02", "name": "logical-decision", "outcome": "decision-explicit"},
-    {"id": "I03", "name": "invariant", "outcome": "invariant-explicit"},
-    {"id": "I04", "name": "lifecycle-free-normative-proposition", "outcome": "np-explicit-no-lifecycle"},
-    {"id": "I05", "name": "capability", "outcome": "capability-explicit"},
-    {"id": "I06", "name": "boundary", "outcome": "boundary-explicit"},
-    {"id": "I07", "name": "contract", "outcome": "contract-explicit"},
-    {"id": "I08", "name": "gap", "outcome": "gap-explicit"},
-    {"id": "I09", "name": "physical-system-one-system", "outcome": "system-explicit"},
-    {"id": "I10", "name": "first-class-system-boundary", "outcome": "system_boundary-explicit"},
-    {"id": "I11", "name": "topology-key-component", "outcome": "owner-local-field-derived"},
-    {"id": "I12", "name": "topology-calls", "outcome": "compatibility-projection"},
-    {"id": "I13", "name": "topology-depends-on", "outcome": "compatibility-projection"},
-    {"id": "I14", "name": "topology-publishes-to", "outcome": "compatibility-projection"},
-    {"id": "I15", "name": "topology-reads-from", "outcome": "compatibility-projection"},
-    {"id": "I16", "name": "topology-subscribes-to", "outcome": "compatibility-projection"},
-    {"id": "I17", "name": "topology-writes-to", "outcome": "compatibility-projection"},
-    {"id": "I18", "name": "topology-projects-component-uuids", "outcome": "uuid-endpoints"},
-    {"id": "I19", "name": "composition-derived-composed-of", "outcome": "derived-not-authored"},
-    {"id": "I20", "name": "first-class-data-flow", "outcome": "data_flow-explicit"},
-    {"id": "I21", "name": "physical-component", "outcome": "accepted"},
-    {"id": "I22", "name": "component", "outcome": "component-explicit"},
-    {"id": "I23", "name": "interface", "outcome": "interface-explicit"},
-    {"id": "I24", "name": "implementation-decision", "outcome": "implementation_decision-explicit"},
-    {"id": "I25", "name": "first-class-evidence-expectation", "outcome": "evidence_expectation-explicit"},
-    {"id": "I26", "name": "qualified-custom-entity", "outcome": "custom-explicit"},
-    {"id": "I27", "name": "qualified-custom-relationship", "outcome": "canonical-uuid-relationship"},
-    {"id": "I28", "name": "custom-to-canonical", "outcome": "accepted-if-cec-permits"},
-    {"id": "I29", "name": "canonical-to-custom", "outcome": "accepted-if-cec-permits"},
-    {"id": "I30", "name": "unresolved-topology-reference", "outcome": "explicit-unresolved"},
-    {"id": "I31", "name": "unknown-custom-qualification", "outcome": "fail-closed"},
-    {"id": "I32", "name": "np-forbidden-lifecycle", "outcome": "rejected"},
-    {"id": "I33", "name": "legacy-forward-entity", "outcome": "rejected"},
-    {"id": "I34", "name": "consumes-interface-forward", "outcome": "rejected"},
-    {"id": "I35", "name": "legacy-1.5-1.6-readable", "outcome": "retained-through-1.0"},
-    {"id": "I36", "name": "custom-relationship-canonical-identity", "outcome": "uuidv7"},
-    {"id": "I37", "name": "topology-compatibility-noncanonical", "outcome": "noncanonical"},
-    {"id": "I38", "name": "forward-absence-states", "outcome": "deterministic"}
+    {
+      "id": "I01",
+      "name": "minimal-valid-logical-adr",
+      "source_contract": {
+        "family": "authoring",
+        "version": "1.7",
+        "qualification": "exact-schema-artifacts-and-source-bytes"
+      },
+      "input": {
+        "source_pointer": "/",
+        "fragment": {
+          "schema_version": "1.7",
+          "adr_type": "logical",
+          "id": "019109a0-b1c2-7def-8a00-112233445566",
+          "alias_id": "ADR-L-0001",
+          "alias_name": "sample-adr",
+          "title": "Sample ADR",
+          "status": "proposed",
+          "created_date": "2026-09-15",
+          "authors": [
+            "test"
+          ],
+          "context": "bounded context",
+          "decisions": [
+            {
+              "id": "019109a0-b1c2-7def-8a00-112233445567",
+              "alias_id": "DEC-0001",
+              "alias_name": "sample-decision",
+              "summary": "Use sample",
+              "rationale": "Explicit"
+            }
+          ]
+        }
+      },
+      "expected": {
+        "disposition": "accepted",
+        "normalized_type": "adr",
+        "identity": "canonical_uuidv7",
+        "fields": {
+          "schema_version": "1.7",
+          "adr_type": "logical"
+        }
+      }
+    },
+    {
+      "id": "I02",
+      "name": "logical-decision",
+      "source_contract": {
+        "family": "authoring",
+        "version": "1.7",
+        "qualification": "exact-schema-artifacts-and-source-bytes"
+      },
+      "input": {
+        "source_pointer": "/",
+        "fragment": {
+          "id": "019109a0-b1c2-7def-8a00-112233445567",
+          "alias_id": "DEC-0001",
+          "alias_name": "sample-decision",
+          "summary": "Use sample",
+          "rationale": "Explicit",
+          "alternatives_considered": [
+            {
+              "name": "Other",
+              "rejected_because": "Less clear"
+            }
+          ]
+        }
+      },
+      "expected": {
+        "disposition": "accepted",
+        "normalized_type": "decision",
+        "identity": "canonical_uuidv7",
+        "fields": {
+          "summary": "Use sample",
+          "rationale": "Explicit"
+        }
+      }
+    },
+    {
+      "id": "I03",
+      "name": "invariant",
+      "source_contract": {
+        "family": "authoring",
+        "version": "1.7",
+        "qualification": "exact-schema-artifacts-and-source-bytes"
+      },
+      "input": {
+        "source_pointer": "/",
+        "fragment": {
+          "id": "019109a0-b1c2-7def-8a00-112233445566",
+          "alias_id": "INV-0001",
+          "alias_name": "sample-invariant",
+          "statement": "The boundary is explicit.",
+          "scope": "system",
+          "enforcement_level": "must",
+          "enforcement_mechanism": "policy",
+          "verification_method": "manual",
+          "rationale": "Safety"
+        }
+      },
+      "expected": {
+        "disposition": "accepted",
+        "normalized_type": "invariant",
+        "identity": "canonical_uuidv7",
+        "fields": {
+          "statement": "The boundary is explicit.",
+          "scope": "system"
+        }
+      }
+    },
+    {
+      "id": "I04",
+      "name": "lifecycle-free-normative-proposition",
+      "source_contract": {
+        "family": "authoring",
+        "version": "1.7",
+        "qualification": "exact-schema-artifacts-and-source-bytes"
+      },
+      "input": {
+        "source_pointer": "/",
+        "fragment": {
+          "id": "019109a0-b1c2-7def-8a00-112233445566",
+          "alias_id": "NP-0001",
+          "alias_name": "sample-proposition",
+          "statement": "The source must be exact.",
+          "normative_force": "MUST",
+          "scope": "authoring",
+          "rationale": "Determinism"
+        }
+      },
+      "expected": {
+        "disposition": "accepted",
+        "normalized_type": "normative_proposition",
+        "identity": "canonical_uuidv7",
+        "fields": {
+          "statement": "The source must be exact.",
+          "normative_force": "MUST",
+          "scope": "authoring",
+          "forbidden_fields": [
+            "lifecycle_stage"
+          ]
+        }
+      }
+    },
+    {
+      "id": "I05",
+      "name": "capability",
+      "source_contract": {
+        "family": "authoring",
+        "version": "1.7",
+        "qualification": "exact-schema-artifacts-and-source-bytes"
+      },
+      "input": {
+        "source_pointer": "/",
+        "fragment": {
+          "id": "019109a0-b1c2-7def-8a00-112233445566",
+          "alias_id": "CAP-0001",
+          "alias_name": "sample-capability",
+          "name": "Sample capability",
+          "description": "Does sample work."
+        }
+      },
+      "expected": {
+        "disposition": "accepted",
+        "normalized_type": "capability",
+        "identity": "canonical_uuidv7",
+        "fields": {
+          "name": "Sample capability",
+          "description": "Does sample work."
+        }
+      }
+    },
+    {
+      "id": "I06",
+      "name": "boundary",
+      "source_contract": {
+        "family": "authoring",
+        "version": "1.7",
+        "qualification": "exact-schema-artifacts-and-source-bytes"
+      },
+      "input": {
+        "source_pointer": "/",
+        "fragment": {
+          "id": "019109a0-b1c2-7def-8a00-112233445566",
+          "alias_id": "BOUND-0001",
+          "alias_name": "sample-boundary",
+          "name": "Sample boundary",
+          "description": "Bounds the system.",
+          "rationale": "Explicit"
+        }
+      },
+      "expected": {
+        "disposition": "accepted",
+        "normalized_type": "boundary",
+        "identity": "canonical_uuidv7",
+        "fields": {
+          "name": "Sample boundary",
+          "description": "Bounds the system.",
+          "rationale": "Explicit"
+        }
+      }
+    },
+    {
+      "id": "I07",
+      "name": "contract",
+      "source_contract": {
+        "family": "authoring",
+        "version": "1.7",
+        "qualification": "exact-schema-artifacts-and-source-bytes"
+      },
+      "input": {
+        "source_pointer": "/",
+        "fragment": {
+          "id": "019109a0-b1c2-7def-8a00-112233445566",
+          "alias_id": "CONTRACT-0001",
+          "alias_name": "sample-contract",
+          "parties": [
+            "019109a0-b1c2-7def-8a00-112233445566",
+            "019109a0-b1c2-7def-8a00-112233445567"
+          ],
+          "protocol": "HTTPS",
+          "guarantees": "Authenticated"
+        }
+      },
+      "expected": {
+        "disposition": "accepted",
+        "normalized_type": "contract",
+        "identity": "canonical_uuidv7",
+        "fields": {
+          "parties": [
+            "019109a0-b1c2-7def-8a00-112233445566",
+            "019109a0-b1c2-7def-8a00-112233445567"
+          ],
+          "protocol": "HTTPS",
+          "guarantees": "Authenticated"
+        }
+      }
+    },
+    {
+      "id": "I08",
+      "name": "gap",
+      "source_contract": {
+        "family": "authoring",
+        "version": "1.7",
+        "qualification": "exact-schema-artifacts-and-source-bytes"
+      },
+      "input": {
+        "source_pointer": "/",
+        "fragment": {
+          "id": "019109a0-b1c2-7def-8a00-112233445566",
+          "alias_id": "GAP-0001",
+          "alias_name": "sample-gap",
+          "question": "Which owner decides?",
+          "impact": "medium",
+          "blocking": true,
+          "affects": [
+            "019109a0-b1c2-7def-8a00-112233445567"
+          ]
+        }
+      },
+      "expected": {
+        "disposition": "accepted",
+        "normalized_type": "gap",
+        "identity": "canonical_uuidv7",
+        "fields": {
+          "question": "Which owner decides?",
+          "blocking": true
+        }
+      }
+    },
+    {
+      "id": "I09",
+      "name": "physical-system-one-system",
+      "source_contract": {
+        "family": "authoring",
+        "version": "1.7",
+        "qualification": "exact-schema-artifacts-and-source-bytes"
+      },
+      "input": {
+        "source_pointer": "/",
+        "fragment": {
+          "schema_version": "1.7",
+          "adr_type": "physical-system",
+          "id": "019109a0-b1c2-7def-8a00-112233445566",
+          "alias_id": "ADR-PS-0001",
+          "alias_name": "sample-system-adr",
+          "title": "Sample System ADR",
+          "status": "proposed",
+          "created_date": "2026-09-15",
+          "authors": [
+            "test"
+          ],
+          "implements_logical": [
+            "019109a0-b1c2-7def-8a00-112233445567"
+          ],
+          "context": "physical context",
+          "technology_stack": [
+            {
+              "category": "language",
+              "name": "Rust",
+              "version": "1",
+              "rationale": "test"
+            }
+          ],
+          "system": {
+            "id": "019109a0-b1c2-7def-8a00-112233445567",
+            "alias_id": "SYS-0001",
+            "alias_name": "sample-system"
+          }
+        }
+      },
+      "expected": {
+        "disposition": "accepted",
+        "normalized_type": "adr",
+        "identity": "canonical_uuidv7",
+        "fields": {
+          "adr_type": "physical-system",
+          "system_id": "019109a0-b1c2-7def-8a00-112233445567"
+        }
+      }
+    },
+    {
+      "id": "I10",
+      "name": "first-class-system-boundary",
+      "source_contract": {
+        "family": "authoring",
+        "version": "1.7",
+        "qualification": "exact-schema-artifacts-and-source-bytes"
+      },
+      "input": {
+        "source_pointer": "/",
+        "fragment": {
+          "id": "019109a0-b1c2-7def-8a00-112233445566",
+          "alias_id": "SYSBOUND-0001",
+          "alias_name": "sample-boundary",
+          "name": "Public boundary",
+          "description": "External edge.",
+          "external_dependencies": [
+            "payments"
+          ],
+          "exposed_interfaces": [
+            "019109a0-b1c2-7def-8a00-112233445567"
+          ]
+        }
+      },
+      "expected": {
+        "disposition": "accepted",
+        "normalized_type": "system_boundary",
+        "identity": "canonical_uuidv7",
+        "fields": {
+          "name": "Public boundary",
+          "description": "External edge.",
+          "external_dependencies": [
+            "payments"
+          ],
+          "exposed_interfaces": [
+            "019109a0-b1c2-7def-8a00-112233445567"
+          ]
+        }
+      }
+    },
+    {
+      "id": "I11",
+      "name": "topology-key-component",
+      "source_contract": {
+        "family": "authoring",
+        "version": "1.7",
+        "qualification": "exact-schema-artifacts-and-source-bytes"
+      },
+      "input": {
+        "source_pointer": "/",
+        "fragment": {
+          "topology_key": "TOPO-API",
+          "component_ref": "019109a0-b1c2-7def-8a00-112233445566",
+          "purpose": "serve"
+        }
+      },
+      "expected": {
+        "disposition": "accepted",
+        "normalized_type": "component-reference",
+        "identity": "owner_local",
+        "fields": {
+          "topology_key": "TOPO-API",
+          "component_ref": "019109a0-b1c2-7def-8a00-112233445566",
+          "purpose": "serve"
+        }
+      }
+    },
+    {
+      "id": "I12",
+      "name": "topology-calls",
+      "source_contract": {
+        "family": "authoring",
+        "version": "1.7",
+        "qualification": "exact-schema-artifacts-and-source-bytes"
+      },
+      "input": {
+        "source_pointer": "/",
+        "fragment": {
+          "from_key": "TOPO-API",
+          "to_key": "TOPO-DB",
+          "type": "calls"
+        }
+      },
+      "expected": {
+        "disposition": "accepted",
+        "normalized_type": "compatibility",
+        "identity": "noncanonical",
+        "fields": {
+          "from_entity_id": "019109a0-b1c2-7def-8a00-112233445566",
+          "to_entity_id": "019109a0-b1c2-7def-8a00-112233445567",
+          "relationship_type": "calls",
+          "source_provenance": {
+            "from_key": "TOPO-API",
+            "to_key": "TOPO-DB"
+          }
+        },
+        "relationship_mode": "compatibility_projection",
+        "endpoint_semantics": "component_ref UUIDs"
+      }
+    },
+    {
+      "id": "I13",
+      "name": "topology-depends-on",
+      "source_contract": {
+        "family": "authoring",
+        "version": "1.7",
+        "qualification": "exact-schema-artifacts-and-source-bytes"
+      },
+      "input": {
+        "source_pointer": "/",
+        "fragment": {
+          "from_key": "TOPO-API",
+          "to_key": "TOPO-DB",
+          "type": "depends_on"
+        }
+      },
+      "expected": {
+        "disposition": "accepted",
+        "normalized_type": "compatibility",
+        "identity": "noncanonical",
+        "fields": {
+          "from_entity_id": "019109a0-b1c2-7def-8a00-112233445566",
+          "to_entity_id": "019109a0-b1c2-7def-8a00-112233445567",
+          "relationship_type": "depends_on",
+          "source_provenance": {
+            "from_key": "TOPO-API",
+            "to_key": "TOPO-DB"
+          }
+        },
+        "relationship_mode": "compatibility_projection",
+        "endpoint_semantics": "component_ref UUIDs"
+      }
+    },
+    {
+      "id": "I14",
+      "name": "topology-publishes-to",
+      "source_contract": {
+        "family": "authoring",
+        "version": "1.7",
+        "qualification": "exact-schema-artifacts-and-source-bytes"
+      },
+      "input": {
+        "source_pointer": "/",
+        "fragment": {
+          "from_key": "TOPO-API",
+          "to_key": "TOPO-DB",
+          "type": "publishes_to"
+        }
+      },
+      "expected": {
+        "disposition": "accepted",
+        "normalized_type": "compatibility",
+        "identity": "noncanonical",
+        "fields": {
+          "from_entity_id": "019109a0-b1c2-7def-8a00-112233445566",
+          "to_entity_id": "019109a0-b1c2-7def-8a00-112233445567",
+          "relationship_type": "publishes_to",
+          "source_provenance": {
+            "from_key": "TOPO-API",
+            "to_key": "TOPO-DB"
+          }
+        },
+        "relationship_mode": "compatibility_projection",
+        "endpoint_semantics": "component_ref UUIDs"
+      }
+    },
+    {
+      "id": "I15",
+      "name": "topology-reads-from",
+      "source_contract": {
+        "family": "authoring",
+        "version": "1.7",
+        "qualification": "exact-schema-artifacts-and-source-bytes"
+      },
+      "input": {
+        "source_pointer": "/",
+        "fragment": {
+          "from_key": "TOPO-API",
+          "to_key": "TOPO-DB",
+          "type": "reads_from"
+        }
+      },
+      "expected": {
+        "disposition": "accepted",
+        "normalized_type": "compatibility",
+        "identity": "noncanonical",
+        "fields": {
+          "from_entity_id": "019109a0-b1c2-7def-8a00-112233445566",
+          "to_entity_id": "019109a0-b1c2-7def-8a00-112233445567",
+          "relationship_type": "reads_from",
+          "source_provenance": {
+            "from_key": "TOPO-API",
+            "to_key": "TOPO-DB"
+          }
+        },
+        "relationship_mode": "compatibility_projection",
+        "endpoint_semantics": "component_ref UUIDs"
+      }
+    },
+    {
+      "id": "I16",
+      "name": "topology-subscribes-to",
+      "source_contract": {
+        "family": "authoring",
+        "version": "1.7",
+        "qualification": "exact-schema-artifacts-and-source-bytes"
+      },
+      "input": {
+        "source_pointer": "/",
+        "fragment": {
+          "from_key": "TOPO-API",
+          "to_key": "TOPO-DB",
+          "type": "subscribes_to"
+        }
+      },
+      "expected": {
+        "disposition": "accepted",
+        "normalized_type": "compatibility",
+        "identity": "noncanonical",
+        "fields": {
+          "from_entity_id": "019109a0-b1c2-7def-8a00-112233445566",
+          "to_entity_id": "019109a0-b1c2-7def-8a00-112233445567",
+          "relationship_type": "subscribes_to",
+          "source_provenance": {
+            "from_key": "TOPO-API",
+            "to_key": "TOPO-DB"
+          }
+        },
+        "relationship_mode": "compatibility_projection",
+        "endpoint_semantics": "component_ref UUIDs"
+      }
+    },
+    {
+      "id": "I17",
+      "name": "topology-writes-to",
+      "source_contract": {
+        "family": "authoring",
+        "version": "1.7",
+        "qualification": "exact-schema-artifacts-and-source-bytes"
+      },
+      "input": {
+        "source_pointer": "/",
+        "fragment": {
+          "from_key": "TOPO-API",
+          "to_key": "TOPO-DB",
+          "type": "writes_to"
+        }
+      },
+      "expected": {
+        "disposition": "accepted",
+        "normalized_type": "compatibility",
+        "identity": "noncanonical",
+        "fields": {
+          "from_entity_id": "019109a0-b1c2-7def-8a00-112233445566",
+          "to_entity_id": "019109a0-b1c2-7def-8a00-112233445567",
+          "relationship_type": "writes_to",
+          "source_provenance": {
+            "from_key": "TOPO-API",
+            "to_key": "TOPO-DB"
+          }
+        },
+        "relationship_mode": "compatibility_projection",
+        "endpoint_semantics": "component_ref UUIDs"
+      }
+    },
+    {
+      "id": "I18",
+      "name": "topology-projects-component-uuids",
+      "source_contract": {
+        "family": "authoring",
+        "version": "1.7",
+        "qualification": "exact-schema-artifacts-and-source-bytes"
+      },
+      "input": {
+        "source_pointer": "/",
+        "fragment": {
+          "components": [
+            {
+              "topology_key": "TOPO-API",
+              "component_ref": "019109a0-b1c2-7def-8a00-112233445566"
+            },
+            {
+              "topology_key": "TOPO-DB",
+              "component_ref": "019109a0-b1c2-7def-8a00-112233445567"
+            }
+          ],
+          "relationship": {
+            "from_key": "TOPO-API",
+            "to_key": "TOPO-DB",
+            "type": "calls"
+          }
+        }
+      },
+      "expected": {
+        "disposition": "accepted",
+        "normalized_type": "compatibility",
+        "identity": "noncanonical",
+        "fields": {
+          "from_entity_id": "019109a0-b1c2-7def-8a00-112233445566",
+          "to_entity_id": "019109a0-b1c2-7def-8a00-112233445567",
+          "relationship_type": "calls",
+          "endpoint_semantics": "resolve topology_key to component_ref UUID"
+        }
+      }
+    },
+    {
+      "id": "I19",
+      "name": "composition-derived-composed-of",
+      "source_contract": {
+        "family": "authoring",
+        "version": "1.7",
+        "qualification": "exact-schema-artifacts-and-source-bytes"
+      },
+      "input": {
+        "source_pointer": "/",
+        "fragment": {
+          "system_id": "019109a0-b1c2-7def-8a00-112233445566",
+          "components": [
+            {
+              "topology_key": "TOPO-API",
+              "component_ref": "019109a0-b1c2-7def-8a00-112233445567"
+            }
+          ]
+        }
+      },
+      "expected": {
+        "disposition": "accepted",
+        "normalized_type": "composed_of",
+        "identity": "noncanonical",
+        "fields": {
+          "from_entity_id": "019109a0-b1c2-7def-8a00-112233445566",
+          "to_entity_id": "019109a0-b1c2-7def-8a00-112233445567",
+          "relationship_mode": "composition_derived",
+          "authorable": false
+        }
+      }
+    },
+    {
+      "id": "I20",
+      "name": "first-class-data-flow",
+      "source_contract": {
+        "family": "authoring",
+        "version": "1.7",
+        "qualification": "exact-schema-artifacts-and-source-bytes"
+      },
+      "input": {
+        "source_pointer": "/",
+        "fragment": {
+          "id": "019109a0-b1c2-7def-8a00-112233445566",
+          "alias_id": "FLOW-0001",
+          "alias_name": "sample-flow",
+          "name": "Payment flow",
+          "description": "Moves payment data.",
+          "path": [
+            "TOPO-API",
+            "TOPO-DB"
+          ],
+          "data_type": "payment",
+          "volume": "1k/min",
+          "latency_requirements": "p95 < 100ms"
+        }
+      },
+      "expected": {
+        "disposition": "accepted",
+        "normalized_type": "data_flow",
+        "identity": "canonical_uuidv7",
+        "fields": {
+          "name": "Payment flow",
+          "description": "Moves payment data.",
+          "path": [
+            "TOPO-API",
+            "TOPO-DB"
+          ],
+          "data_type": "payment",
+          "volume": "1k/min",
+          "latency_requirements": "p95 < 100ms",
+          "path_semantics": "owner_local_ordered_topology_path"
+        }
+      }
+    },
+    {
+      "id": "I21",
+      "name": "physical-component",
+      "source_contract": {
+        "family": "authoring",
+        "version": "1.7",
+        "qualification": "exact-schema-artifacts-and-source-bytes"
+      },
+      "input": {
+        "source_pointer": "/",
+        "fragment": {
+          "schema_version": "1.7",
+          "adr_type": "physical-component",
+          "id": "019109a0-b1c2-7def-8a00-112233445566",
+          "alias_id": "ADR-PC-0001",
+          "alias_name": "sample-component-adr",
+          "title": "Sample Component ADR",
+          "status": "proposed",
+          "created_date": "2026-09-15",
+          "authors": [
+            "test"
+          ],
+          "implements_logical": [
+            "019109a0-b1c2-7def-8a00-112233445567"
+          ],
+          "implements_system": [
+            "019109a0-b1c2-7def-8a00-112233445566"
+          ],
+          "context": "component context",
+          "technology_stack": [
+            {
+              "category": "language",
+              "name": "Rust",
+              "version": "1",
+              "rationale": "test"
+            }
+          ],
+          "component_specifications": []
+        }
+      },
+      "expected": {
+        "disposition": "accepted",
+        "normalized_type": "adr",
+        "identity": "canonical_uuidv7",
+        "fields": {
+          "adr_type": "physical-component"
+        }
+      }
+    },
+    {
+      "id": "I22",
+      "name": "component",
+      "source_contract": {
+        "family": "authoring",
+        "version": "1.7",
+        "qualification": "exact-schema-artifacts-and-source-bytes"
+      },
+      "input": {
+        "source_pointer": "/",
+        "fragment": {
+          "id": "019109a0-b1c2-7def-8a00-112233445566",
+          "alias_id": "COMP-0001",
+          "alias_name": "sample-component",
+          "name": "Sample component",
+          "type": "service",
+          "responsibilities": "Does work.",
+          "generation_context": {
+            "purpose": "Testing",
+            "key_responsibilities": [
+              "test"
+            ]
+          },
+          "interfaces": [
+            {
+              "id": "019109a0-b1c2-7def-8a00-112233445567",
+              "alias_id": "IFACE-0001",
+              "alias_name": "sample-interface",
+              "type": "REST",
+              "specification": "OpenAPI"
+            }
+          ]
+        }
+      },
+      "expected": {
+        "disposition": "accepted",
+        "normalized_type": "component",
+        "identity": "canonical_uuidv7",
+        "fields": {
+          "name": "Sample component",
+          "interfaces": [
+            "019109a0-b1c2-7def-8a00-112233445567"
+          ]
+        }
+      }
+    },
+    {
+      "id": "I23",
+      "name": "interface",
+      "source_contract": {
+        "family": "authoring",
+        "version": "1.7",
+        "qualification": "exact-schema-artifacts-and-source-bytes"
+      },
+      "input": {
+        "source_pointer": "/",
+        "fragment": {
+          "id": "019109a0-b1c2-7def-8a00-112233445567",
+          "alias_id": "IFACE-0001",
+          "alias_name": "sample-interface",
+          "type": "REST",
+          "specification": "OpenAPI"
+        }
+      },
+      "expected": {
+        "disposition": "accepted",
+        "normalized_type": "interface",
+        "identity": "canonical_uuidv7",
+        "fields": {
+          "type": "REST",
+          "specification": "OpenAPI"
+        }
+      }
+    },
+    {
+      "id": "I24",
+      "name": "implementation-decision",
+      "source_contract": {
+        "family": "authoring",
+        "version": "1.7",
+        "qualification": "exact-schema-artifacts-and-source-bytes"
+      },
+      "input": {
+        "source_pointer": "/",
+        "fragment": {
+          "id": "019109a0-b1c2-7def-8a00-112233445566",
+          "alias_id": "IMPL-0001",
+          "alias_name": "sample-implementation",
+          "summary": "Use Rust",
+          "rationale": "Safety"
+        }
+      },
+      "expected": {
+        "disposition": "accepted",
+        "normalized_type": "implementation_decision",
+        "identity": "canonical_uuidv7",
+        "fields": {
+          "summary": "Use Rust",
+          "rationale": "Safety"
+        }
+      }
+    },
+    {
+      "id": "I25",
+      "name": "first-class-evidence-expectation",
+      "source_contract": {
+        "family": "authoring",
+        "version": "1.7",
+        "qualification": "exact-schema-artifacts-and-source-bytes"
+      },
+      "input": {
+        "source_pointer": "/",
+        "fragment": {
+          "id": "019109a0-b1c2-7def-8a00-112233445566",
+          "alias_id": "EVID-0001",
+          "alias_name": "sample-evidence",
+          "kind": "test-result",
+          "description": "A passing test.",
+          "related_entities": [
+            "019109a0-b1c2-7def-8a00-112233445567"
+          ]
+        }
+      },
+      "expected": {
+        "disposition": "accepted",
+        "normalized_type": "evidence_expectation",
+        "identity": "canonical_uuidv7",
+        "fields": {
+          "evidence_kind": "test-result",
+          "description": "A passing test.",
+          "related_entity_ids": [
+            "019109a0-b1c2-7def-8a00-112233445567"
+          ]
+        }
+      }
+    },
+    {
+      "id": "I26",
+      "name": "qualified-custom-entity",
+      "source_contract": {
+        "family": "authoring",
+        "version": "1.7",
+        "qualification": "exact-schema-artifacts-and-source-bytes"
+      },
+      "input": {
+        "source_pointer": "/",
+        "fragment": {
+          "id": "019109a0-b1c2-7def-8a00-112233445566",
+          "alias_id": "PAY-0001",
+          "alias_name": "payment-policy",
+          "entity_type": "payments:policy",
+          "qualification": {
+            "semantic_kind": "entity",
+            "semantic_type": "payments:policy",
+            "consumer_namespace": "payments",
+            "contract_version": "1.0",
+            "contract_fingerprint": "cecf:v1:sha256:0000000000000000000000000000000000000000000000000000000000000000"
+          },
+          "properties": {
+            "policy_code": "P1"
+          },
+          "rationale": "Consumer meaning."
+        }
+      },
+      "expected": {
+        "disposition": "accepted",
+        "normalized_type": "qualified_custom_entity",
+        "identity": "canonical_uuidv7",
+        "fields": {
+          "semantic_type": "payments:policy",
+          "properties": {
+            "policy_code": "P1"
+          },
+          "qualification": {
+            "semantic_kind": "entity",
+            "semantic_type": "payments:policy",
+            "consumer_namespace": "payments",
+            "contract_version": "1.0",
+            "contract_fingerprint": "cecf:v1:sha256:0000000000000000000000000000000000000000000000000000000000000000"
+          }
+        },
+        "custom_qualification": {
+          "semantic_kind": "entity",
+          "semantic_type": "payments:policy",
+          "consumer_namespace": "payments",
+          "contract_version": "1.0",
+          "contract_fingerprint": "cecf:v1:sha256:0000000000000000000000000000000000000000000000000000000000000000"
+        }
+      }
+    },
+    {
+      "id": "I27",
+      "name": "qualified-custom-relationship",
+      "source_contract": {
+        "family": "authoring",
+        "version": "1.7",
+        "qualification": "exact-schema-artifacts-and-source-bytes"
+      },
+      "input": {
+        "source_pointer": "/",
+        "fragment": {
+          "id": "019109a0-b1c2-7def-8a00-112233445566",
+          "alias_id": "PAYREL-0001",
+          "alias_name": "payment-dependency",
+          "relationship_type": "payments:depends_on",
+          "qualification": {
+            "semantic_kind": "relationship",
+            "semantic_type": "payments:depends_on",
+            "consumer_namespace": "payments",
+            "contract_version": "1.0",
+            "contract_fingerprint": "cecf:v1:sha256:1111111111111111111111111111111111111111111111111111111111111111"
+          },
+          "from_entity_id": "019109a0-b1c2-7def-8a00-112233445566",
+          "to_entity_id": "019109a0-b1c2-7def-8a00-112233445567",
+          "properties": {
+            "reason": "required"
+          },
+          "rationale": "Consumer relationship."
+        }
+      },
+      "expected": {
+        "disposition": "accepted",
+        "normalized_type": "qualified_custom_relationship",
+        "identity": "canonical_uuidv7",
+        "fields": {
+          "relationship_type": "payments:depends_on",
+          "from_entity_id": "019109a0-b1c2-7def-8a00-112233445566",
+          "to_entity_id": "019109a0-b1c2-7def-8a00-112233445567",
+          "properties": {
+            "reason": "required"
+          },
+          "relationship_mode": "custom_explicit"
+        },
+        "custom_qualification": {
+          "semantic_kind": "relationship",
+          "semantic_type": "payments:depends_on",
+          "consumer_namespace": "payments",
+          "contract_version": "1.0",
+          "contract_fingerprint": "cecf:v1:sha256:1111111111111111111111111111111111111111111111111111111111111111"
+        },
+        "endpoint_semantics": "UUIDv7 entity endpoints"
+      }
+    },
+    {
+      "id": "I28",
+      "name": "custom-to-canonical",
+      "source_contract": {
+        "family": "authoring",
+        "version": "1.7",
+        "qualification": "exact-schema-artifacts-and-source-bytes"
+      },
+      "input": {
+        "source_pointer": "/",
+        "fragment": {
+          "from_entity_id": "019109a0-b1c2-7def-8a00-112233445566",
+          "to_entity_id": "019109a0-b1c2-7def-8a00-112233445567",
+          "relationship_type": "payments:depends_on",
+          "qualification": {
+            "semantic_kind": "relationship",
+            "semantic_type": "payments:depends_on",
+            "consumer_namespace": "payments",
+            "contract_version": "1.0",
+            "contract_fingerprint": "cecf:v1:sha256:1111111111111111111111111111111111111111111111111111111111111111"
+          }
+        }
+      },
+      "expected": {
+        "disposition": "accepted",
+        "normalized_type": "qualified_custom_relationship",
+        "identity": "canonical_uuidv7",
+        "fields": {
+          "endpoint_semantics": "custom entity to canonical entity",
+          "relationship_mode": "custom_explicit"
+        }
+      }
+    },
+    {
+      "id": "I29",
+      "name": "canonical-to-custom",
+      "source_contract": {
+        "family": "authoring",
+        "version": "1.7",
+        "qualification": "exact-schema-artifacts-and-source-bytes"
+      },
+      "input": {
+        "source_pointer": "/",
+        "fragment": {
+          "from_entity_id": "019109a0-b1c2-7def-8a00-112233445566",
+          "to_entity_id": "019109a0-b1c2-7def-8a00-112233445567",
+          "relationship_type": "payments:depends_on",
+          "qualification": {
+            "semantic_kind": "relationship",
+            "semantic_type": "payments:depends_on",
+            "consumer_namespace": "payments",
+            "contract_version": "1.0",
+            "contract_fingerprint": "cecf:v1:sha256:1111111111111111111111111111111111111111111111111111111111111111"
+          }
+        }
+      },
+      "expected": {
+        "disposition": "accepted",
+        "normalized_type": "qualified_custom_relationship",
+        "identity": "canonical_uuidv7",
+        "fields": {
+          "endpoint_semantics": "canonical entity to custom entity",
+          "relationship_mode": "custom_explicit"
+        }
+      }
+    },
+    {
+      "id": "I30",
+      "name": "unresolved-topology-reference",
+      "source_contract": {
+        "family": "authoring",
+        "version": "1.7",
+        "qualification": "exact-schema-artifacts-and-source-bytes"
+      },
+      "input": {
+        "source_pointer": "/",
+        "fragment": {
+          "from_key": "TOPO-MISSING",
+          "to_key": "TOPO-DB",
+          "type": "calls"
+        }
+      },
+      "expected": {
+        "disposition": "accepted",
+        "normalized_type": "unresolved",
+        "identity": "none",
+        "fields": {
+          "reason_code": "topology_key_unresolved",
+          "source_pointer": "/component_topology/relationships/0"
+        }
+      }
+    },
+    {
+      "id": "I31",
+      "name": "unknown-custom-qualification",
+      "source_contract": {
+        "family": "authoring",
+        "version": "1.7",
+        "qualification": "exact-schema-artifacts-and-source-bytes"
+      },
+      "input": {
+        "source_pointer": "/",
+        "fragment": {
+          "id": "019109a0-b1c2-7def-8a00-112233445566",
+          "entity_type": "payments:policy",
+          "qualification": {
+            "semantic_kind": "entity",
+            "semantic_type": "payments:policy",
+            "consumer_namespace": "payments",
+            "contract_version": "1.0"
+          }
+        }
+      },
+      "expected": {
+        "disposition": "rejected",
+        "reason_code": "custom_qualification_missing",
+        "reason": "exact CECF authority is absent"
+      }
+    },
+    {
+      "id": "I32",
+      "name": "np-forbidden-lifecycle",
+      "source_contract": {
+        "family": "authoring",
+        "version": "1.7",
+        "qualification": "exact-schema-artifacts-and-source-bytes"
+      },
+      "input": {
+        "source_pointer": "/",
+        "fragment": {
+          "id": "019109a0-b1c2-7def-8a00-112233445566",
+          "alias_id": "NP-0001",
+          "alias_name": "sample-proposition",
+          "statement": "MUST",
+          "normative_force": "MUST",
+          "scope": "global",
+          "lifecycle_stage": "active"
+        }
+      },
+      "expected": {
+        "disposition": "rejected",
+        "reason_code": "np_lifecycle_forbidden",
+        "reason": "NP is lifecycle-free"
+      }
+    },
+    {
+      "id": "I33",
+      "name": "legacy-forward-entity",
+      "source_contract": {
+        "family": "authoring",
+        "version": "1.7",
+        "qualification": "exact-schema-artifacts-and-source-bytes"
+      },
+      "input": {
+        "source_pointer": "/",
+        "fragment": {
+          "id": "019109a0-b1c2-7def-8a00-112233445566",
+          "entity_type": "constraint",
+          "name": "Legacy constraint"
+        }
+      },
+      "expected": {
+        "disposition": "rejected",
+        "reason_code": "forward_type_forbidden",
+        "reason": "legacy entity family is not authorable in 1.7"
+      }
+    },
+    {
+      "id": "I34",
+      "name": "consumes-interface-forward",
+      "source_contract": {
+        "family": "authoring",
+        "version": "1.7",
+        "qualification": "exact-schema-artifacts-and-source-bytes"
+      },
+      "input": {
+        "source_pointer": "/",
+        "fragment": {
+          "from_key": "TOPO-A",
+          "to_key": "TOPO-B",
+          "type": "consumes_interface"
+        }
+      },
+      "expected": {
+        "disposition": "rejected",
+        "reason_code": "forward_relationship_forbidden",
+        "reason": "consumes_interface remains deferred"
+      }
+    },
+    {
+      "id": "I35",
+      "name": "legacy-1.5-1.6-readable",
+      "source_contract": {
+        "family": "authoring",
+        "version": "1.5/1.6",
+        "qualification": "frozen-architecture-interpretation-1.0"
+      },
+      "input": {
+        "source_pointer": "historical-source",
+        "fragment": {
+          "schema_version": "1.5",
+          "adr_type": "logical"
+        }
+      },
+      "expected": {
+        "disposition": "historical_compatibility",
+        "normalized_type": "normalized-model@2.3",
+        "identity": "preserved_by_frozen_1.0_resources",
+        "fields": {
+          "forward_authority": false
+        }
+      }
+    },
+    {
+      "id": "I36",
+      "name": "custom-relationship-canonical-identity",
+      "source_contract": {
+        "family": "authoring",
+        "version": "1.7",
+        "qualification": "exact-schema-artifacts-and-source-bytes"
+      },
+      "input": {
+        "source_pointer": "/",
+        "fragment": {
+          "id": "019109a0-b1c2-7def-8a00-112233445566",
+          "relationship_type": "payments:depends_on",
+          "qualification": {
+            "semantic_kind": "relationship",
+            "semantic_type": "payments:depends_on",
+            "consumer_namespace": "payments",
+            "contract_version": "1.0",
+            "contract_fingerprint": "cecf:v1:sha256:1111111111111111111111111111111111111111111111111111111111111111"
+          },
+          "from_entity_id": "019109a0-b1c2-7def-8a00-112233445566",
+          "to_entity_id": "019109a0-b1c2-7def-8a00-112233445567"
+        }
+      },
+      "expected": {
+        "disposition": "accepted",
+        "normalized_type": "qualified_custom_relationship",
+        "identity": "canonical_uuidv7",
+        "fields": {
+          "relationship_mode": "custom_explicit",
+          "identity_is_not_qualification": true
+        }
+      }
+    },
+    {
+      "id": "I37",
+      "name": "topology-compatibility-noncanonical",
+      "source_contract": {
+        "family": "authoring",
+        "version": "1.7",
+        "qualification": "exact-schema-artifacts-and-source-bytes"
+      },
+      "input": {
+        "source_pointer": "/",
+        "fragment": {
+          "relationship_id": "hash-derived-allowed",
+          "assertion_id": "asrt-2222222222222222222222222222222222222222222222222222222222222222",
+          "relationship_type": "calls",
+          "from_entity_id": "019109a0-b1c2-7def-8a00-112233445566",
+          "to_entity_id": "019109a0-b1c2-7def-8a00-112233445567"
+        }
+      },
+      "expected": {
+        "disposition": "accepted",
+        "normalized_type": "compatibility",
+        "identity": "noncanonical",
+        "fields": {
+          "canonical_relationship_uuid": false,
+          "relationship_mode": "compatibility_projection"
+        }
+      }
+    },
+    {
+      "id": "I38",
+      "name": "forward-absence-states",
+      "source_contract": {
+        "family": "authoring",
+        "version": "1.7",
+        "qualification": "exact-schema-artifacts-and-source-bytes"
+      },
+      "input": {
+        "source_pointer": "/",
+        "fragment": {
+          "absent": "no-declaration",
+          "present_empty": [],
+          "present_populated": [
+            {
+              "id": "019109a0-b1c2-7def-8a00-112233445566"
+            }
+          ]
+        }
+      },
+      "expected": {
+        "disposition": "accepted",
+        "normalized_type": "absence-semantics",
+        "identity": "none",
+        "fields": {
+          "absent": "no-declaration",
+          "present_empty": "declared-empty",
+          "present_populated": "each-member-declared"
+        }
+      }
+    }
   ]
 }

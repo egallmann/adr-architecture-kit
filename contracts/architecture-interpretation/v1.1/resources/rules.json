@@ -1,0 +1,16 @@
+{
+  "resource": "architecture-interpretation/1.1/rules",
+  "relationship_modes": {
+    "explicit": "preserve_authored_semantic_fragment",
+    "composition_derived": "emit_only_from_declared_composition_rule",
+    "field_derived": "derive_only_from_declared_field_value",
+    "compatibility_projection": "emit_noncanonical_compatibility_record_with_provenance",
+    "custom_explicit": "preserve_only_under_exact_cec_qualification"
+  },
+  "identity": {"canonical": "preserve_supplied_uuidv7", "forbidden_derivations": ["alias", "prose", "path", "hash", "ordering", "source_location", "composition_position"], "topology": "owner-local-key-only", "compatibility": "noncanonical"},
+  "topology": {"component_key": "topology_key", "component_reference": "component_ref", "relationship_endpoints": ["from_key", "to_key"], "verbs": ["calls", "depends_on", "publishes_to", "reads_from", "subscribes_to", "writes_to"], "resolve_within": "owning-physical-system-adr", "failure": "explicit-unresolved"},
+  "system_composition": {"source": "component_topology.components[].component_ref", "relationship": "composed_of", "mode": "composition_derived", "authorable": false},
+  "normative_proposition": {"lifecycle": "declaring-adr-only", "presence": "declaration-only", "forbidden_fields": ["lifecycle_stage", "status", "applicability", "materiality", "authority_competence", "effectivity", "implementation_attribution"]},
+  "custom": {"qualification_fields": ["semantic_kind", "semantic_type", "consumer_namespace", "contract_version", "contract_fingerprint"], "unknown_fields": "reject-under-cec", "properties": "never-implies-relationship", "missing_contract": "fail-closed-explicit-unresolved"},
+  "unresolved": {"never_empty_success": true, "required": ["code", "message"]}
+}

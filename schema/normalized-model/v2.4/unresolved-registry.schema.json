@@ -1,0 +1,10 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://adr-kit.ste.systems/schema/normalized-model/v2.4/unresolved-registry.schema.json",
+  "title": "Unresolved Registry v2.4",
+  "type": "object",
+  "required": ["schema_version", "type", "unresolved"],
+  "properties": {"schema_version": {"const": "2.4"}, "type": {"const": "unresolved_registry"}, "unresolved": {"type": "array", "items": {"$ref": "#/definitions/unresolved_item"}}},
+  "definitions": {"unresolved_item": {"type": "object", "required": ["code", "message"], "properties": {"code": {"type": "string", "pattern": "^[a-z][a-z0-9_.-]*$"}, "message": {"type": "string", "minLength": 1}, "source_pointer": {"type": "string"}, "subject": {"type": "string"}, "resolution": {"enum": ["unresolved", "unavailable", "invalid", "required"]}, "details": {"type": "object"}}, "additionalProperties": false}},
+  "additionalProperties": false
+}

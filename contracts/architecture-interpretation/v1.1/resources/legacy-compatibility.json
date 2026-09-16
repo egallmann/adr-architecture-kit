@@ -1,0 +1,9 @@
+{
+  "resource": "architecture-interpretation/1.1/legacy-compatibility",
+  "mode": "compose-frozen-1.0-resources",
+  "forward_authority": false,
+  "retained_source_contracts": ["authoring@1.5", "authoring@1.6"],
+  "retained_output_contract": "normalized-model@2.3",
+  "frozen_resources": ["architecture-interpretation/1.0/source-decoding-1.5", "architecture-interpretation/1.0/source-decoding-1.6", "architecture-interpretation/1.0/source-mapping-1.5-to-2.3", "architecture-interpretation/1.0/source-mapping-1.6-to-2.3"],
+  "rules": "The referenced 1.0 resources remain authoritative for historical decoding and mapping; 1.7 source qualification is never inferred from historical vocabulary."
+}

@@ -1,0 +1,54 @@
+{
+  "resource": "architecture-interpretation/1.1/rules",
+  "semanticDependencies": ["architecture-interpretation/1.1/source-decoding-1.7", "architecture-interpretation/1.1/source-mapping-1.7-to-2.4"],
+  "public_boundary": {"advertised": false, "execution": "not_implemented", "selected_by_current_semantic_contract_set": false},
+  "relationship_modes": {
+    "explicit": "preserve_authored_semantic_fragment",
+    "composition_derived": "emit_only_from_declared_composition_rule",
+    "field_derived": "derive_only_from_declared_field_value",
+    "compatibility_projection": "emit_noncanonical_compatibility_record_with_provenance",
+    "custom_explicit": "preserve_only_under_exact_cec_qualification"
+  },
+  "identity": {
+    "canonical": "preserve_supplied_uuidv7",
+    "forbidden_derivations": ["alias", "prose", "path", "hash", "ordering", "source_location", "composition_position"],
+    "custom_entity": "canonical_uuidv7",
+    "custom_relationship": "canonical_uuidv7",
+    "qualification_is_identity": false,
+    "topology": "owner-local-key-only",
+    "compatibility": "noncanonical"
+  },
+  "topology": {
+    "component_key": "topology_key",
+    "component_reference": "component_ref",
+    "relationship_endpoints": ["from_key", "to_key"],
+    "verbs": ["calls", "depends_on", "publishes_to", "reads_from", "subscribes_to", "writes_to"],
+    "resolve_within": "owning-physical-system-adr",
+    "endpoint_projection": "component_ref UUIDv7",
+    "failure": "explicit-unresolved",
+    "path_is_not_identity_or_edge": true
+  },
+  "system_composition": {"source": "component_topology.components[].component_ref", "relationship": "composed_of", "mode": "composition_derived", "authorable": false},
+  "first_class_entities": {
+    "system_boundary": {"required": ["name", "description"], "preserve": ["external_dependencies", "exposed_interfaces"], "exposed_interfaces": "UUIDv7 references"},
+    "data_flow": {"required": ["name", "description"], "preserve": ["path", "data_type", "volume", "latency_requirements"], "path": "ordered owner-local topology keys; never identity or graph endpoints"},
+    "evidence_expectation": {"required": ["evidence_kind", "description", "related_entity_ids"], "preserve": ["evidence_kind", "description", "related_entity_ids"], "runtime_observed_evidence": false}
+  },
+  "custom": {
+    "qualification_fields": ["semantic_kind", "semantic_type", "consumer_namespace", "contract_version", "contract_fingerprint"],
+    "entity_equalities": ["semantic_kind=entity", "entity_type=qualification.semantic_type", "namespace_prefix(entity_type)=qualification.consumer_namespace"],
+    "relationship_equalities": ["semantic_kind=relationship", "relationship_type=qualification.semantic_type", "namespace_prefix(relationship_type)=qualification.consumer_namespace"],
+    "exact_contract": "contract_version and contract_fingerprint are explicit and registry-qualified",
+    "unknown_fields": "reject-under-cec",
+    "properties": "bounded scalar values and bounded scalar arrays; never nested objects; never implies relationship",
+    "missing_or_mismatched_contract": "fail-closed-explicit-unresolved",
+    "qualification_failure": "explicit-unresolved; never normalize a mismatched instance"
+  },
+  "normative_proposition": {
+    "lifecycle": "declaring-adr-only",
+    "presence": "declaration-only",
+    "preserve": ["declaring_adr", "source_artifact", "source_contract", "statement", "normative_force", "scope", "provenance"],
+    "forbidden_fields": ["lifecycle_stage", "status", "applicability", "materiality", "authority_competence", "effectivity", "implementation_attribution"]
+  },
+  "unresolved": {"never_empty_success": true, "required": ["code", "message", "source_pointer-or-subject-when-available"]}
+}

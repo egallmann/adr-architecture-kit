@@ -89,18 +89,17 @@ def test_adr_l_0029_authorizes_successors_without_advertising_implementation() -
 
 
 def test_adc11_and_cec10_are_the_only_authorized_successor_contract_resources() -> None:
-    successor_paths = (
-        ROOT / "contracts" / "custom-entity" / "v1.0",
+    absent_successor_paths = (
         ROOT / "contracts" / "authoring-construction" / "v1.0",
-        ROOT / "schema" / "authoring" / "v1.7",
-        ROOT / "schema" / "v2.4",
-        ROOT / "contracts" / "architecture-interpretation" / "v1.1",
         ROOT / "contracts" / "semantic-core" / "v1.2",
         ROOT / "contracts" / "architecture-authoring" / "v1.0",
     )
     assert (ROOT / "contracts" / "authoring-domain" / "v1.1").is_dir()
     assert (ROOT / "contracts" / "custom-entity" / "v1.0").is_dir()
-    assert not any(path.exists() for path in successor_paths[1:])
+    assert (ROOT / "schema" / "authoring" / "v1.7").is_dir()
+    assert (ROOT / "schema" / "normalized-model" / "v2.4").is_dir()
+    assert (ROOT / "contracts" / "architecture-interpretation" / "v1.1").is_dir()
+    assert not any(path.exists() for path in absent_successor_paths)
 
 
 def test_current_capability_and_execution_authority_remain_unchanged() -> None:

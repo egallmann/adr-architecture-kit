@@ -1,0 +1,33 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://adr-kit.ste.systems/schema/authoring/v1.7/adr-physical-system.schema.json",
+  "title": "Physical-System ADR Schema (authoring v1.7)",
+  "allOf": [{"$ref": "adr-physical-base.schema.json"}],
+  "type": "object",
+  "properties": {
+    "schema_version": {"const": "1.7"}, "adr_type": {"const": "physical-system"}, "id": {"$ref": "types.schema.json#/definitions/uuid_v7"}, "alias_id": {"type": "string", "pattern": "^ADR-PS-[0-9]{4}$"}, "alias_name": {"$ref": "types.schema.json#/definitions/alias_name"},
+    "title": {"type": "string", "minLength": 5, "maxLength": 200}, "status": {"$ref": "types.schema.json#/definitions/status"}, "created_date": {"$ref": "types.schema.json#/definitions/iso_date"}, "modified_date": {"$ref": "types.schema.json#/definitions/iso_date"}, "authors": {"type": "array", "minItems": 1, "items": {"type": "string"}}, "domains": {"type": "array", "items": {"type": "string"}}, "tags": {"type": "array", "items": {"type": "string"}}, "related_adrs": {"type": "array", "items": {"$ref": "types.schema.json#/definitions/uuid_v7"}}, "supersedes": {"type": "array", "items": {"$ref": "types.schema.json#/definitions/uuid_v7"}}, "superseded_by": {"$ref": "types.schema.json#/definitions/uuid_v7"}, "projection_signals": {"type": "array", "items": {"type": "string"}},
+    "ownership": {"type": "object", "additionalProperties": false, "properties": {"architecture_authority": {"type": "string"}, "implementation_owners": {"type": "array", "items": {"type": "string"}}}}, "governance": {"type": "object", "additionalProperties": false, "properties": {"implementation_authority": {"enum": ["none", "advisory", "implementation_authoritative"]}, "approved_by": {"type": "string"}, "approved_date": {"type": "string"}}},
+    "implements_logical": {"type": "array", "minItems": 1, "items": {"$ref": "types.schema.json#/definitions/uuid_v7"}}, "context": {"type": "string"}, "technologies": {"type": "array", "items": {"type": "string"}}, "technology_stack": {"type": "array", "minItems": 1, "items": {"$ref": "types.schema.json#/definitions/technology_choice"}},
+    "system": {"$ref": "adr-common.schema.json#/definitions/system"},
+    "system_boundaries": {"type": "array", "minItems": 1, "items": {"$ref": "adr-common.schema.json#/definitions/system_boundary"}},
+    "component_topology": {
+      "type": "object",
+      "properties": {
+        "components": {"type": "array", "items": {"type": "object", "required": ["topology_key", "component_ref", "purpose"], "properties": {"topology_key": {"$ref": "types.schema.json#/definitions/topology_key"}, "component_ref": {"$ref": "types.schema.json#/definitions/uuid_v7"}, "purpose": {"type": "string", "minLength": 1}, "name": {"type": "string"}, "type": {"enum": ["service", "library", "database", "queue", "cache", "gateway", "proxy", "worker", "scheduler"]}}, "additionalProperties": false}},
+        "relationships": {"type": "array", "items": {"type": "object", "required": ["from_key", "to_key", "type"], "properties": {"from_key": {"$ref": "types.schema.json#/definitions/topology_key"}, "to_key": {"$ref": "types.schema.json#/definitions/topology_key"}, "type": {"enum": ["calls", "depends_on", "publishes_to", "reads_from", "subscribes_to", "writes_to"]}, "protocol": {"type": "string"}, "description": {"type": "string"}}, "additionalProperties": false}}
+      },
+      "additionalProperties": false
+    },
+    "data_flows": {"type": "array", "items": {"$ref": "adr-common.schema.json#/definitions/data_flow"}},
+    "integration_patterns": {"type": "array", "items": {"type": "object", "required": ["pattern_name", "application"], "properties": {"pattern_name": {"type": "string"}, "application": {"type": "string"}, "components_affected": {"type": "array", "items": {"$ref": "types.schema.json#/definitions/topology_key"}}, "rationale": {"type": "string"}}, "additionalProperties": false}},
+    "references_components": {"type": "array", "items": {"$ref": "types.schema.json#/definitions/uuid_v7"}},
+    "deployment_model": {"type": "object", "additionalProperties": false, "properties": {"hosting": {"enum": ["cloud", "on-premise", "hybrid", "edge"]}, "orchestration": {"type": "string"}, "scaling_strategy": {"type": "string"}}},
+    "scalability_strategy": {"type": "object", "additionalProperties": false, "properties": {"horizontal_scaling": {"type": "string"}, "vertical_scaling": {"type": "string"}, "bottlenecks": {"type": "array", "items": {"type": "string"}}, "capacity_planning": {"type": "string"}}},
+    "failure_modes": {"type": "array", "items": {"type": "object", "required": ["scenario", "impact", "mitigation"], "properties": {"scenario": {"type": "string"}, "impact": {"$ref": "types.schema.json#/definitions/impact_level"}, "mitigation": {"type": "string"}, "detection": {"type": "string"}, "recovery": {"type": "string"}}, "additionalProperties": false}},
+    "operational_requirements": {"type": "object", "additionalProperties": false, "properties": {"monitoring": {"type": "string"}, "logging": {"type": "string"}, "backup_recovery": {"type": "string"}, "security": {"type": "string"}}},
+    "normative_propositions": {"type": "array", "items": {"$ref": "adr-common.schema.json#/definitions/normative_proposition"}}, "evidence_expectations": {"type": "array", "items": {"$ref": "adr-common.schema.json#/definitions/evidence_expectation"}}, "gaps": {"type": "array", "items": {"$ref": "adr-common.schema.json#/definitions/gap"}}, "extension_entities": {"type": "array", "items": {"$ref": "adr-common.schema.json#/definitions/custom_entity"}}, "extension_relationships": {"type": "array", "items": {"$ref": "adr-common.schema.json#/definitions/custom_relationship"}}
+  },
+  "required": ["schema_version", "adr_type", "id", "alias_id", "alias_name", "title", "status", "created_date", "authors", "implements_logical", "context", "technology_stack", "system"],
+  "additionalProperties": false
+}

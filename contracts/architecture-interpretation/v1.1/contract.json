@@ -1,0 +1,47 @@
+{
+  "semanticContractFamily": "architecture-interpretation",
+  "semanticContractVersion": "1.1",
+  "fingerprintScheme": "scf:v1:sha256",
+  "resourceManifest": [
+    {
+      "canonicalResourceKey": "architecture-interpretation/1.1/source-decoding-1.7",
+      "contentDigest": "sha256:5af4e8e008d67e3a775a0ec818cc78d134d8fb2d85aabaf8ee536d26b1bd6da7",
+      "role": "source-contract-mapping",
+      "dependencies": []
+    },
+    {
+      "canonicalResourceKey": "architecture-interpretation/1.1/source-mapping-1.7-to-2.4",
+      "contentDigest": "sha256:fdb5d84fc113100d198e9174f5b16205a37bd7400d86d3f0241ccd36b04db615",
+      "role": "source-contract-mapping",
+      "dependencies": [{"canonicalResourceKey": "architecture-interpretation/1.1/source-decoding-1.7", "contentDigest": "sha256:5af4e8e008d67e3a775a0ec818cc78d134d8fb2d85aabaf8ee536d26b1bd6da7"}]
+    },
+    {
+      "canonicalResourceKey": "architecture-interpretation/1.1/rules",
+      "contentDigest": "sha256:919efbb1c507748b6a4dfe763fc705f16a0e04f010c3ab6536e545bde68c576f",
+      "role": "interpretation-rule",
+      "dependencies": [
+        {"canonicalResourceKey": "architecture-interpretation/1.1/source-decoding-1.7", "contentDigest": "sha256:5af4e8e008d67e3a775a0ec818cc78d134d8fb2d85aabaf8ee536d26b1bd6da7"},
+        {"canonicalResourceKey": "architecture-interpretation/1.1/source-mapping-1.7-to-2.4", "contentDigest": "sha256:fdb5d84fc113100d198e9174f5b16205a37bd7400d86d3f0241ccd36b04db615"}
+      ]
+    },
+    {
+      "canonicalResourceKey": "architecture-interpretation/1.1/legacy-compatibility",
+      "contentDigest": "sha256:bf3aca79d504875ed306ca5774a56ed1f235da739f04e70a86593cf739484062",
+      "role": "source-contract-mapping",
+      "dependencies": []
+    },
+    {
+      "canonicalResourceKey": "architecture-interpretation/1.1/conformance",
+      "contentDigest": "sha256:a031431a99e07fb71d01b4dcf221f6c06c0b838ff37dc97a260c999f77f13421",
+      "role": "interpretation-conformance",
+      "dependencies": [
+        {"canonicalResourceKey": "architecture-interpretation/1.1/legacy-compatibility", "contentDigest": "sha256:bf3aca79d504875ed306ca5774a56ed1f235da739f04e70a86593cf739484062"},
+        {"canonicalResourceKey": "architecture-interpretation/1.1/rules", "contentDigest": "sha256:919efbb1c507748b6a4dfe763fc705f16a0e04f010c3ab6536e545bde68c576f"},
+        {"canonicalResourceKey": "architecture-interpretation/1.1/source-decoding-1.7", "contentDigest": "sha256:5af4e8e008d67e3a775a0ec818cc78d134d8fb2d85aabaf8ee536d26b1bd6da7"},
+        {"canonicalResourceKey": "architecture-interpretation/1.1/source-mapping-1.7-to-2.4", "contentDigest": "sha256:fdb5d84fc113100d198e9174f5b16205a37bd7400d86d3f0241ccd36b04db615"}
+      ]
+    }
+  ],
+  "frozenNormativeConformanceResources": ["architecture-interpretation/1.1/conformance"],
+  "semanticContractFingerprint": "scf:v1:sha256:3650db1f6763a1e7ab81a3f3663d002b3e97ffc0ae007bd7d3543508c069100e"
+}

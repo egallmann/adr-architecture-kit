@@ -32,7 +32,7 @@
     },
     {
       "canonicalResourceKey": "architecture-interpretation/1.1/conformance",
-      "contentDigest": "sha256:86ef4b62b03098ac03ce784ed956e0a2e4ba5ff3bdfd7b50891b6c2b758542b9",
+      "contentDigest": "sha256:a031431a99e07fb71d01b4dcf221f6c06c0b838ff37dc97a260c999f77f13421",
       "role": "interpretation-conformance",
       "dependencies": [
         {"canonicalResourceKey": "architecture-interpretation/1.1/legacy-compatibility", "contentDigest": "sha256:bf3aca79d504875ed306ca5774a56ed1f235da739f04e70a86593cf739484062"},
@@ -43,5 +43,5 @@
     }
   ],
   "frozenNormativeConformanceResources": ["architecture-interpretation/1.1/conformance"],
-  "semanticContractFingerprint": "scf:v1:sha256:7fd0c308a58168119450b2c02152e6bc8b7d700a741a623fe945485ab2e870cb"
+  "semanticContractFingerprint": "scf:v1:sha256:3650db1f6763a1e7ab81a3f3663d002b3e97ffc0ae007bd7d3543508c069100e"
 }

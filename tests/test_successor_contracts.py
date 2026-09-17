@@ -42,6 +42,23 @@ def _authoring_validator(name: str) -> Draft7Validator:
     )
 
 
+def _authoring_definition_validator(reference: str) -> Draft7Validator:
+    schema_name, fragment = reference.split("#", 1)
+    paths = list(AUTHORING.glob("*.json"))
+    store: dict[str, Any] = {}
+    for path in paths:
+        document = _document(path)
+        store[path.resolve().as_uri()] = document
+        store[document["$id"]] = document
+    path = AUTHORING / schema_name
+    document = _document(path)
+    schema = {"$ref": f"{document['$id']}#{fragment}"}
+    return Draft7Validator(
+        schema,
+        resolver=RefResolver(path.resolve().as_uri(), document, store=store),
+    )
+
+
 def _normalized_validator(name: str) -> Draft7Validator:
     paths = list(NORMALIZED.glob("*.json"))
     store: dict[str, Any] = {}
@@ -759,25 +776,171 @@ def test_interpretation_conformance_is_vector_data_not_a_case_catalog() -> None:
     resource = _document(INTERPRETATION / "resources" / "conformance.json")
     cases = resource["cases"]
     assert [case["id"] for case in cases] == [f"I{index:02d}" for index in range(1, 39)]
+    case_schema = resource["case_schema"]
+    assert set(case_schema["dispositions"]) == {
+        "accepted",
+        "unresolved",
+        "rejected",
+        "historical_compatibility",
+    }
+    assert set(case_schema["basis_kinds"]) == {
+        "authoring_document",
+        "authoring_fragment",
+        "topology_resolution",
+        "composition_context",
+        "endpoint_classification",
+        "forward_type_disposition",
+        "historical_compatibility",
+        "absence_semantics",
+    }
+
+    root_schemas = {
+        "I01": "adr-logical.schema.json",
+        "I09": "adr-physical-system.schema.json",
+        "I21": "adr-physical-component.schema.json",
+    }
+    topology_relationship_schema = (
+        "adr-physical-system.schema.json"
+        "#/properties/component_topology/properties/relationships/items"
+    )
+    topology_component_schema = (
+        "adr-physical-system.schema.json"
+        "#/properties/component_topology/properties/components/items"
+    )
+
     for case in cases:
         assert {"id", "name", "source_contract", "input", "expected"} <= set(case)
-        assert {"source_pointer", "fragment"} <= set(case["input"])
+        source_contract = case["source_contract"]
+        assert source_contract["family"] == "authoring"
+        assert source_contract["qualification"]
+        assert {"source_pointer", "fragment", "basis"} <= set(case["input"])
+        assert case["input"]["source_pointer"]
+        basis = case["input"]["basis"]
+        assert basis["kind"] in case_schema["basis_kinds"]
         expected = case["expected"]
-        if expected["disposition"] == "accepted":
+        disposition = expected["disposition"]
+        assert disposition in case_schema["dispositions"]
+        if disposition in {"accepted", "unresolved"}:
             assert {"normalized_type", "identity", "fields"} <= set(expected)
             assert expected["fields"]
         elif expected["disposition"] == "rejected":
             assert {"reason_code", "reason"} <= set(expected)
         else:
-            assert expected["disposition"] == "historical_compatibility"
+            assert disposition == "historical_compatibility"
             assert expected["fields"]["forward_authority"] is False
 
-    authoring_logical = next(case for case in cases if case["id"] == "I01")["input"]["fragment"]
-    authoring_system = next(case for case in cases if case["id"] == "I09")["input"]["fragment"]
-    assert not list(_authoring_validator("adr-logical.schema.json").iter_errors(authoring_logical))
-    assert not list(
-        _authoring_validator("adr-physical-system.schema.json").iter_errors(authoring_system)
-    )
+        if basis["kind"] == "authoring_document":
+            assert root_schemas[case["id"]] == basis["schema"]
+            assert not list(
+                _authoring_validator(basis["schema"]).iter_errors(case["input"]["fragment"])
+            )
+        elif basis["kind"] == "authoring_fragment":
+            validator = _authoring_definition_validator(basis["schema"])
+            fragment = case["input"]["fragment"]
+            if case["id"] == "I31":
+                valid = json.loads(json.dumps(fragment))
+                valid["qualification"]["contract_fingerprint"] = "cecf:v1:sha256:" + "0" * 64
+                assert not list(validator.iter_errors(valid))
+                errors = list(validator.iter_errors(fragment))
+                assert errors
+                assert all(list(error.absolute_path)[:1] == ["qualification"] for error in errors)
+                assert any("contract_fingerprint" in error.message for error in errors)
+            elif case["id"] == "I32":
+                valid = json.loads(json.dumps(fragment))
+                valid.pop("lifecycle_stage")
+                assert not list(validator.iter_errors(valid))
+                errors = list(validator.iter_errors(fragment))
+                assert errors
+                assert any("lifecycle_stage" in error.message for error in errors)
+            else:
+                assert not list(validator.iter_errors(fragment))
+
+        if basis["kind"] == "endpoint_classification":
+            assert not list(
+                _authoring_definition_validator(
+                    "adr-common.schema.json#/definitions/custom_relationship"
+                ).iter_errors(case["input"]["fragment"])
+            )
+
+        if basis["kind"] in {"topology_resolution", "composition_context"}:
+            component_validator = _authoring_definition_validator(topology_component_schema)
+            for component in basis["components"]:
+                assert not list(component_validator.iter_errors(component))
+            if basis["kind"] == "topology_resolution":
+                relationship = json.loads(json.dumps(case["input"]["fragment"]))
+                if case["id"] == "I34":
+                    valid_relationship = json.loads(json.dumps(relationship))
+                    valid_relationship["type"] = "calls"
+                    assert not list(
+                        _authoring_definition_validator(topology_relationship_schema).iter_errors(
+                            valid_relationship
+                        )
+                    )
+                    assert list(
+                        _authoring_definition_validator(topology_relationship_schema).iter_errors(
+                            relationship
+                        )
+                    )
+                else:
+                    assert not list(
+                        _authoring_definition_validator(topology_relationship_schema).iter_errors(
+                            relationship
+                        )
+                    )
+                mapping = {
+                    component["topology_key"]: component["component_ref"]
+                    for component in basis["components"]
+                }
+                if disposition in {"accepted", "unresolved"} and case["id"] != "I30":
+                    assert expected["fields"]["from_entity_id"] == mapping[relationship["from_key"]]
+                    assert expected["fields"]["to_entity_id"] == mapping[relationship["to_key"]]
+                if case["id"] == "I30":
+                    assert "TOPO-MISSING" not in mapping
+                    assert mapping["TOPO-DB"] == UUID2
+                    assert expected["fields"]["source_pointer"] == case["input"]["source_pointer"]
+                    assert expected["fields"]["missing_keys"] == ["TOPO-MISSING"]
+                if case["id"] == "I34":
+                    assert expected["reason_code"] == "forward_relationship_forbidden"
+
+        if "endpoint_entities" in basis:
+            endpoints = {endpoint["id"]: endpoint for endpoint in basis["endpoint_entities"]}
+            fragment = case["input"]["fragment"]
+            assert {fragment["from_entity_id"], fragment["to_entity_id"]} <= set(endpoints)
+            assert {
+                endpoints[fragment["from_entity_id"]]["classification"],
+                endpoints[fragment["to_entity_id"]]["classification"],
+            } <= {
+                "canonical",
+                "qualified_custom",
+            }
+
+        fragment = case["input"]["fragment"]
+        if disposition == "accepted" and "entity_type" in fragment and "qualification" in fragment:
+            assert _custom_qualification_is_exact(
+                fragment, "entity_type", fragment["qualification"]
+            )
+        if (
+            disposition == "accepted"
+            and "relationship_type" in fragment
+            and "qualification" in fragment
+        ):
+            assert _custom_qualification_is_exact(
+                fragment, "relationship_type", fragment["qualification"]
+            )
+
+        if case["id"] == "I33":
+            decoding = _document(INTERPRETATION / "resources" / "source-decoding-1.7.json")
+            assert basis["forbidden_type"] in decoding["forward_forbidden"]
+            assert case["input"]["fragment"]["entity_type"] == basis["forbidden_type"]
+        if case["id"] == "I35":
+            assert source_contract["version"] == "1.5/1.6"
+            assert basis["historical_resources"]
+        if case["id"] == "I38":
+            assert case["input"]["fragment"] == {
+                "absent": "no-declaration",
+                "present_empty": [],
+                "present_populated": [{"id": UUID}],
+            }
 
     data_flow = next(case for case in cases if case["id"] == "I20")["expected"]
     data_flow_entity = {
@@ -805,8 +968,75 @@ def test_interpretation_conformance_is_vector_data_not_a_case_catalog() -> None:
     assert not list(
         _normalized_validator("normalized-entity.schema.json").iter_errors(data_flow_entity)
     )
-    assert not list(
-        _normalized_validator("relationship-record.schema.json").iter_errors(
-            _normalized_custom_relationship()
+
+    for case_id in ("I10", "I25"):
+        case = next(item for item in cases if item["id"] == case_id)
+        fields = case["expected"]["fields"]
+        entity = {
+            **data_flow_entity,
+            "alias_id": "SYSBOUND-0001" if case_id == "I10" else "EVID-0001",
+            "alias_name": "sample-boundary" if case_id == "I10" else "sample-evidence",
+            "entity_type": case["expected"]["normalized_type"],
+            "name": fields.get("name", "Expected evidence"),
+            "summary": fields["description"],
+            **fields,
+        }
+        if case_id == "I25":
+            entity["description"] = fields["description"]
+        assert not list(_normalized_validator("normalized-entity.schema.json").iter_errors(entity))
+
+    relationship_validator = _normalized_validator("relationship-record.schema.json")
+    for case_id in ("I27", "I28", "I29", "I36"):
+        case = next(item for item in cases if item["id"] == case_id)
+        relationship = _normalized_custom_relationship()
+        relationship["alias_id"] = case["input"]["fragment"]["alias_id"]
+        relationship["alias_name"] = case["input"]["fragment"]["alias_name"]
+        relationship.update(
+            {
+                key: value
+                for key, value in case["expected"]["fields"].items()
+                if key in {"relationship_type", "from_entity_id", "to_entity_id", "properties"}
+            }
         )
-    )
+        assert not list(relationship_validator.iter_errors(relationship))
+
+    for case_id in ("I12", "I13", "I14", "I15", "I16", "I17", "I18", "I19", "I37"):
+        case = next(item for item in cases if item["id"] == case_id)
+        fragment = case["input"]["fragment"]
+        relationship_type = (
+            case["expected"]["fields"].get("relationship_type")
+            or case["expected"]["normalized_type"]
+        )
+        if case_id == "I19":
+            relationship_type = "composed_of"
+            from_id = fragment["system_id"]
+            to_id = fragment["components"][0]["component_ref"]
+        else:
+            from_id = case["expected"]["fields"]["from_entity_id"]
+            to_id = case["expected"]["fields"]["to_entity_id"]
+        compatibility = {
+            "record_kind": "compatibility",
+            "relationship_id": f"compatibility:{case_id}",
+            "assertion_id": "asrt-" + "2" * 64,
+            "relationship_type": relationship_type,
+            "from_entity_id": from_id,
+            "to_entity_id": to_id,
+            "provenance_classification": "explicit",
+            "evidence": [],
+            "canonical_source_ref": f"conformance/{case_id}",
+            "source_provenance": {
+                "source_contract": "authoring@1.7",
+                "source_pointer": case["input"]["source_pointer"],
+                "topology_key_endpoints": {
+                    "from_key": fragment.get("from_key", "TOPO-API"),
+                    "to_key": fragment.get("to_key", "TOPO-DB"),
+                },
+            },
+        }
+        assert not list(relationship_validator.iter_errors(compatibility))
+        assert compatibility["record_kind"] == "compatibility"
+        assert list(
+            relationship_validator.iter_errors(
+                {**compatibility, "record_kind": "canonical", "id": UUID}
+            )
+        )

@@ -1,7 +1,12 @@
 {
   "resource": "architecture-interpretation/1.1/conformance",
   "source_contract": "authoring@1.7",
-  "semanticDependencies": ["architecture-interpretation/1.1/legacy-compatibility", "architecture-interpretation/1.1/rules", "architecture-interpretation/1.1/source-decoding-1.7", "architecture-interpretation/1.1/source-mapping-1.7-to-2.4"],
+  "semanticDependencies": [
+    "architecture-interpretation/1.1/legacy-compatibility",
+    "architecture-interpretation/1.1/rules",
+    "architecture-interpretation/1.1/source-decoding-1.7",
+    "architecture-interpretation/1.1/source-mapping-1.7-to-2.4"
+  ],
   "output_contract": "normalized-model@2.4",
   "case_schema": {
     "required": [
@@ -11,7 +16,19 @@
       "input",
       "expected"
     ],
+    "dispositions": [
+      "accepted",
+      "unresolved",
+      "rejected",
+      "historical_compatibility"
+    ],
     "accepted_expected": [
+      "disposition",
+      "normalized_type",
+      "identity",
+      "fields"
+    ],
+    "unresolved_expected": [
       "disposition",
       "normalized_type",
       "identity",
@@ -22,9 +39,26 @@
       "reason_code",
       "reason"
     ],
+    "historical_expected": [
+      "disposition",
+      "normalized_type",
+      "identity",
+      "fields"
+    ],
     "input_required": [
       "source_pointer",
-      "fragment"
+      "fragment",
+      "basis"
+    ],
+    "basis_kinds": [
+      "authoring_document",
+      "authoring_fragment",
+      "topology_resolution",
+      "composition_context",
+      "endpoint_classification",
+      "forward_type_disposition",
+      "historical_compatibility",
+      "absence_semantics"
     ]
   },
   "cases": [
@@ -60,6 +94,10 @@
               "rationale": "Explicit"
             }
           ]
+        },
+        "basis": {
+          "kind": "authoring_document",
+          "schema": "adr-logical.schema.json"
         }
       },
       "expected": {
@@ -87,13 +125,11 @@
           "alias_id": "DEC-0001",
           "alias_name": "sample-decision",
           "summary": "Use sample",
-          "rationale": "Explicit",
-          "alternatives_considered": [
-            {
-              "name": "Other",
-              "rejected_because": "Less clear"
-            }
-          ]
+          "rationale": "Explicit"
+        },
+        "basis": {
+          "kind": "authoring_fragment",
+          "schema": "adr-common.schema.json#/definitions/decision"
         }
       },
       "expected": {
@@ -126,6 +162,10 @@
           "enforcement_mechanism": "policy",
           "verification_method": "manual",
           "rationale": "Safety"
+        },
+        "basis": {
+          "kind": "authoring_fragment",
+          "schema": "adr-common.schema.json#/definitions/invariant"
         }
       },
       "expected": {
@@ -156,6 +196,10 @@
           "normative_force": "MUST",
           "scope": "authoring",
           "rationale": "Determinism"
+        },
+        "basis": {
+          "kind": "authoring_fragment",
+          "schema": "adr-common.schema.json#/definitions/normative_proposition"
         }
       },
       "expected": {
@@ -188,6 +232,10 @@
           "alias_name": "sample-capability",
           "name": "Sample capability",
           "description": "Does sample work."
+        },
+        "basis": {
+          "kind": "authoring_fragment",
+          "schema": "adr-common.schema.json#/definitions/capability"
         }
       },
       "expected": {
@@ -217,6 +265,10 @@
           "name": "Sample boundary",
           "description": "Bounds the system.",
           "rationale": "Explicit"
+        },
+        "basis": {
+          "kind": "authoring_fragment",
+          "schema": "adr-common.schema.json#/definitions/boundary"
         }
       },
       "expected": {
@@ -250,6 +302,10 @@
           ],
           "protocol": "HTTPS",
           "guarantees": "Authenticated"
+        },
+        "basis": {
+          "kind": "authoring_fragment",
+          "schema": "adr-common.schema.json#/definitions/contract"
         }
       },
       "expected": {
@@ -286,6 +342,10 @@
           "affects": [
             "019109a0-b1c2-7def-8a00-112233445567"
           ]
+        },
+        "basis": {
+          "kind": "authoring_fragment",
+          "schema": "adr-common.schema.json#/definitions/gap"
         }
       },
       "expected": {
@@ -337,6 +397,10 @@
             "alias_id": "SYS-0001",
             "alias_name": "sample-system"
           }
+        },
+        "basis": {
+          "kind": "authoring_document",
+          "schema": "adr-physical-system.schema.json"
         }
       },
       "expected": {
@@ -371,6 +435,10 @@
           "exposed_interfaces": [
             "019109a0-b1c2-7def-8a00-112233445567"
           ]
+        },
+        "basis": {
+          "kind": "authoring_fragment",
+          "schema": "adr-common.schema.json#/definitions/system_boundary"
         }
       },
       "expected": {
@@ -403,6 +471,10 @@
           "topology_key": "TOPO-API",
           "component_ref": "019109a0-b1c2-7def-8a00-112233445566",
           "purpose": "serve"
+        },
+        "basis": {
+          "kind": "authoring_fragment",
+          "schema": "adr-physical-system.schema.json#/properties/component_topology/properties/components/items"
         }
       },
       "expected": {
@@ -425,11 +497,27 @@
         "qualification": "exact-schema-artifacts-and-source-bytes"
       },
       "input": {
-        "source_pointer": "/",
+        "source_pointer": "/component_topology/relationships/0",
         "fragment": {
           "from_key": "TOPO-API",
           "to_key": "TOPO-DB",
           "type": "calls"
+        },
+        "basis": {
+          "kind": "topology_resolution",
+          "scope": "owning physical-system ADR component_topology",
+          "components": [
+            {
+              "topology_key": "TOPO-API",
+              "component_ref": "019109a0-b1c2-7def-8a00-112233445566",
+              "purpose": "serve"
+            },
+            {
+              "topology_key": "TOPO-DB",
+              "component_ref": "019109a0-b1c2-7def-8a00-112233445567",
+              "purpose": "persist"
+            }
+          ]
         }
       },
       "expected": {
@@ -441,12 +529,13 @@
           "to_entity_id": "019109a0-b1c2-7def-8a00-112233445567",
           "relationship_type": "calls",
           "source_provenance": {
+            "topology_scope": "owning physical-system ADR",
             "from_key": "TOPO-API",
             "to_key": "TOPO-DB"
           }
         },
         "relationship_mode": "compatibility_projection",
-        "endpoint_semantics": "component_ref UUIDs"
+        "endpoint_semantics": "resolve each topology_key to its component_ref UUID"
       }
     },
     {
@@ -458,11 +547,27 @@
         "qualification": "exact-schema-artifacts-and-source-bytes"
       },
       "input": {
-        "source_pointer": "/",
+        "source_pointer": "/component_topology/relationships/0",
         "fragment": {
           "from_key": "TOPO-API",
           "to_key": "TOPO-DB",
           "type": "depends_on"
+        },
+        "basis": {
+          "kind": "topology_resolution",
+          "scope": "owning physical-system ADR component_topology",
+          "components": [
+            {
+              "topology_key": "TOPO-API",
+              "component_ref": "019109a0-b1c2-7def-8a00-112233445566",
+              "purpose": "serve"
+            },
+            {
+              "topology_key": "TOPO-DB",
+              "component_ref": "019109a0-b1c2-7def-8a00-112233445567",
+              "purpose": "persist"
+            }
+          ]
         }
       },
       "expected": {
@@ -474,12 +579,13 @@
           "to_entity_id": "019109a0-b1c2-7def-8a00-112233445567",
           "relationship_type": "depends_on",
           "source_provenance": {
+            "topology_scope": "owning physical-system ADR",
             "from_key": "TOPO-API",
             "to_key": "TOPO-DB"
           }
         },
         "relationship_mode": "compatibility_projection",
-        "endpoint_semantics": "component_ref UUIDs"
+        "endpoint_semantics": "resolve each topology_key to its component_ref UUID"
       }
     },
     {
@@ -491,11 +597,27 @@
         "qualification": "exact-schema-artifacts-and-source-bytes"
       },
       "input": {
-        "source_pointer": "/",
+        "source_pointer": "/component_topology/relationships/0",
         "fragment": {
           "from_key": "TOPO-API",
           "to_key": "TOPO-DB",
           "type": "publishes_to"
+        },
+        "basis": {
+          "kind": "topology_resolution",
+          "scope": "owning physical-system ADR component_topology",
+          "components": [
+            {
+              "topology_key": "TOPO-API",
+              "component_ref": "019109a0-b1c2-7def-8a00-112233445566",
+              "purpose": "serve"
+            },
+            {
+              "topology_key": "TOPO-DB",
+              "component_ref": "019109a0-b1c2-7def-8a00-112233445567",
+              "purpose": "persist"
+            }
+          ]
         }
       },
       "expected": {
@@ -507,12 +629,13 @@
           "to_entity_id": "019109a0-b1c2-7def-8a00-112233445567",
           "relationship_type": "publishes_to",
           "source_provenance": {
+            "topology_scope": "owning physical-system ADR",
             "from_key": "TOPO-API",
             "to_key": "TOPO-DB"
           }
         },
         "relationship_mode": "compatibility_projection",
-        "endpoint_semantics": "component_ref UUIDs"
+        "endpoint_semantics": "resolve each topology_key to its component_ref UUID"
       }
     },
     {
@@ -524,11 +647,27 @@
         "qualification": "exact-schema-artifacts-and-source-bytes"
       },
       "input": {
-        "source_pointer": "/",
+        "source_pointer": "/component_topology/relationships/0",
         "fragment": {
           "from_key": "TOPO-API",
           "to_key": "TOPO-DB",
           "type": "reads_from"
+        },
+        "basis": {
+          "kind": "topology_resolution",
+          "scope": "owning physical-system ADR component_topology",
+          "components": [
+            {
+              "topology_key": "TOPO-API",
+              "component_ref": "019109a0-b1c2-7def-8a00-112233445566",
+              "purpose": "serve"
+            },
+            {
+              "topology_key": "TOPO-DB",
+              "component_ref": "019109a0-b1c2-7def-8a00-112233445567",
+              "purpose": "persist"
+            }
+          ]
         }
       },
       "expected": {
@@ -540,12 +679,13 @@
           "to_entity_id": "019109a0-b1c2-7def-8a00-112233445567",
           "relationship_type": "reads_from",
           "source_provenance": {
+            "topology_scope": "owning physical-system ADR",
             "from_key": "TOPO-API",
             "to_key": "TOPO-DB"
           }
         },
         "relationship_mode": "compatibility_projection",
-        "endpoint_semantics": "component_ref UUIDs"
+        "endpoint_semantics": "resolve each topology_key to its component_ref UUID"
       }
     },
     {
@@ -557,11 +697,27 @@
         "qualification": "exact-schema-artifacts-and-source-bytes"
       },
       "input": {
-        "source_pointer": "/",
+        "source_pointer": "/component_topology/relationships/0",
         "fragment": {
           "from_key": "TOPO-API",
           "to_key": "TOPO-DB",
           "type": "subscribes_to"
+        },
+        "basis": {
+          "kind": "topology_resolution",
+          "scope": "owning physical-system ADR component_topology",
+          "components": [
+            {
+              "topology_key": "TOPO-API",
+              "component_ref": "019109a0-b1c2-7def-8a00-112233445566",
+              "purpose": "serve"
+            },
+            {
+              "topology_key": "TOPO-DB",
+              "component_ref": "019109a0-b1c2-7def-8a00-112233445567",
+              "purpose": "persist"
+            }
+          ]
         }
       },
       "expected": {
@@ -573,12 +729,13 @@
           "to_entity_id": "019109a0-b1c2-7def-8a00-112233445567",
           "relationship_type": "subscribes_to",
           "source_provenance": {
+            "topology_scope": "owning physical-system ADR",
             "from_key": "TOPO-API",
             "to_key": "TOPO-DB"
           }
         },
         "relationship_mode": "compatibility_projection",
-        "endpoint_semantics": "component_ref UUIDs"
+        "endpoint_semantics": "resolve each topology_key to its component_ref UUID"
       }
     },
     {
@@ -590,11 +747,27 @@
         "qualification": "exact-schema-artifacts-and-source-bytes"
       },
       "input": {
-        "source_pointer": "/",
+        "source_pointer": "/component_topology/relationships/0",
         "fragment": {
           "from_key": "TOPO-API",
           "to_key": "TOPO-DB",
           "type": "writes_to"
+        },
+        "basis": {
+          "kind": "topology_resolution",
+          "scope": "owning physical-system ADR component_topology",
+          "components": [
+            {
+              "topology_key": "TOPO-API",
+              "component_ref": "019109a0-b1c2-7def-8a00-112233445566",
+              "purpose": "serve"
+            },
+            {
+              "topology_key": "TOPO-DB",
+              "component_ref": "019109a0-b1c2-7def-8a00-112233445567",
+              "purpose": "persist"
+            }
+          ]
         }
       },
       "expected": {
@@ -606,12 +779,13 @@
           "to_entity_id": "019109a0-b1c2-7def-8a00-112233445567",
           "relationship_type": "writes_to",
           "source_provenance": {
+            "topology_scope": "owning physical-system ADR",
             "from_key": "TOPO-API",
             "to_key": "TOPO-DB"
           }
         },
         "relationship_mode": "compatibility_projection",
-        "endpoint_semantics": "component_ref UUIDs"
+        "endpoint_semantics": "resolve each topology_key to its component_ref UUID"
       }
     },
     {
@@ -623,23 +797,27 @@
         "qualification": "exact-schema-artifacts-and-source-bytes"
       },
       "input": {
-        "source_pointer": "/",
+        "source_pointer": "/component_topology/relationships/0",
         "fragment": {
+          "from_key": "TOPO-API",
+          "to_key": "TOPO-DB",
+          "type": "calls"
+        },
+        "basis": {
+          "kind": "topology_resolution",
+          "scope": "owning physical-system ADR component_topology",
           "components": [
             {
               "topology_key": "TOPO-API",
-              "component_ref": "019109a0-b1c2-7def-8a00-112233445566"
+              "component_ref": "019109a0-b1c2-7def-8a00-112233445566",
+              "purpose": "serve"
             },
             {
               "topology_key": "TOPO-DB",
-              "component_ref": "019109a0-b1c2-7def-8a00-112233445567"
+              "component_ref": "019109a0-b1c2-7def-8a00-112233445567",
+              "purpose": "persist"
             }
-          ],
-          "relationship": {
-            "from_key": "TOPO-API",
-            "to_key": "TOPO-DB",
-            "type": "calls"
-          }
+          ]
         }
       },
       "expected": {
@@ -650,8 +828,13 @@
           "from_entity_id": "019109a0-b1c2-7def-8a00-112233445566",
           "to_entity_id": "019109a0-b1c2-7def-8a00-112233445567",
           "relationship_type": "calls",
-          "endpoint_semantics": "resolve topology_key to component_ref UUID"
-        }
+          "source_provenance": {
+            "topology_scope": "owning physical-system ADR",
+            "from_key": "TOPO-API",
+            "to_key": "TOPO-DB"
+          }
+        },
+        "endpoint_semantics": "resolve each topology_key to its component_ref UUID"
       }
     },
     {
@@ -663,13 +846,26 @@
         "qualification": "exact-schema-artifacts-and-source-bytes"
       },
       "input": {
-        "source_pointer": "/",
+        "source_pointer": "/component_topology/components",
         "fragment": {
           "system_id": "019109a0-b1c2-7def-8a00-112233445566",
           "components": [
             {
               "topology_key": "TOPO-API",
-              "component_ref": "019109a0-b1c2-7def-8a00-112233445567"
+              "component_ref": "019109a0-b1c2-7def-8a00-112233445567",
+              "purpose": "serve"
+            }
+          ]
+        },
+        "basis": {
+          "kind": "composition_context",
+          "scope": "owning physical-system ADR",
+          "system_id": "019109a0-b1c2-7def-8a00-112233445566",
+          "components": [
+            {
+              "topology_key": "TOPO-API",
+              "component_ref": "019109a0-b1c2-7def-8a00-112233445567",
+              "purpose": "serve"
             }
           ]
         }
@@ -709,6 +905,10 @@
           "data_type": "payment",
           "volume": "1k/min",
           "latency_requirements": "p95 < 100ms"
+        },
+        "basis": {
+          "kind": "authoring_fragment",
+          "schema": "adr-common.schema.json#/definitions/data_flow"
         }
       },
       "expected": {
@@ -766,7 +966,51 @@
               "rationale": "test"
             }
           ],
-          "component_specifications": []
+        "component_specifications": [
+          {
+            "id": "019109a0-b1c2-7def-8a00-112233445567",
+            "alias_id": "COMP-0001",
+            "alias_name": "sample-component",
+            "name": "Sample component",
+            "type": "service",
+            "responsibilities": "Does work.",
+            "generation_context": {
+              "purpose": "Testing",
+              "key_responsibilities": [
+                "test"
+              ]
+            },
+            "interfaces": [
+              {
+                "id": "019109a0-b1c2-7def-8a00-112233445566",
+                "alias_id": "IFACE-0001",
+                "alias_name": "sample-interface",
+                "type": "REST",
+                "specification": "OpenAPI"
+              }
+            ]
+          }
+        ]
+        },
+        "basis": {
+          "kind": "authoring_document",
+          "schema": "adr-physical-component.schema.json",
+          "required_fields": [
+            "schema_version",
+            "adr_type",
+            "id",
+            "alias_id",
+            "alias_name",
+            "title",
+            "status",
+            "created_date",
+            "authors",
+            "implements_logical",
+            "implements_system",
+            "context",
+            "technology_stack",
+            "component_specifications"
+          ]
         }
       },
       "expected": {
@@ -810,6 +1054,10 @@
               "specification": "OpenAPI"
             }
           ]
+        },
+        "basis": {
+          "kind": "authoring_fragment",
+          "schema": "adr-common.schema.json#/definitions/component"
         }
       },
       "expected": {
@@ -840,6 +1088,10 @@
           "alias_name": "sample-interface",
           "type": "REST",
           "specification": "OpenAPI"
+        },
+        "basis": {
+          "kind": "authoring_fragment",
+          "schema": "adr-common.schema.json#/definitions/interface"
         }
       },
       "expected": {
@@ -868,6 +1120,10 @@
           "alias_name": "sample-implementation",
           "summary": "Use Rust",
           "rationale": "Safety"
+        },
+        "basis": {
+          "kind": "authoring_fragment",
+          "schema": "adr-common.schema.json#/definitions/implementation_decision"
         }
       },
       "expected": {
@@ -894,11 +1150,15 @@
           "id": "019109a0-b1c2-7def-8a00-112233445566",
           "alias_id": "EVID-0001",
           "alias_name": "sample-evidence",
-          "kind": "test-result",
+          "kind": "test_result",
           "description": "A passing test.",
           "related_entities": [
             "019109a0-b1c2-7def-8a00-112233445567"
           ]
+        },
+        "basis": {
+          "kind": "authoring_fragment",
+          "schema": "adr-common.schema.json#/definitions/evidence_expectation"
         }
       },
       "expected": {
@@ -906,7 +1166,7 @@
         "normalized_type": "evidence_expectation",
         "identity": "canonical_uuidv7",
         "fields": {
-          "evidence_kind": "test-result",
+          "evidence_kind": "test_result",
           "description": "A passing test.",
           "related_entity_ids": [
             "019109a0-b1c2-7def-8a00-112233445567"
@@ -940,6 +1200,10 @@
             "policy_code": "P1"
           },
           "rationale": "Consumer meaning."
+        },
+        "basis": {
+          "kind": "authoring_fragment",
+          "schema": "adr-common.schema.json#/definitions/custom_entity"
         }
       },
       "expected": {
@@ -996,6 +1260,28 @@
             "reason": "required"
           },
           "rationale": "Consumer relationship."
+        },
+        "basis": {
+          "kind": "endpoint_classification",
+          "endpoint_entities": [
+            {
+              "id": "019109a0-b1c2-7def-8a00-112233445566",
+              "classification": "canonical",
+              "entity_type": "component"
+            },
+            {
+              "id": "019109a0-b1c2-7def-8a00-112233445567",
+              "classification": "qualified_custom",
+              "entity_type": "payments:policy",
+              "qualification": {
+                "semantic_kind": "entity",
+                "semantic_type": "payments:policy",
+                "consumer_namespace": "payments",
+                "contract_version": "1.0",
+                "contract_fingerprint": "cecf:v1:sha256:0000000000000000000000000000000000000000000000000000000000000000"
+              }
+            }
+          ]
         }
       },
       "expected": {
@@ -1018,7 +1304,7 @@
           "contract_version": "1.0",
           "contract_fingerprint": "cecf:v1:sha256:1111111111111111111111111111111111111111111111111111111111111111"
         },
-        "endpoint_semantics": "UUIDv7 entity endpoints"
+        "endpoint_semantics": "UUIDv7 references classified by explicit endpoint basis"
       }
     },
     {
@@ -1030,10 +1316,11 @@
         "qualification": "exact-schema-artifacts-and-source-bytes"
       },
       "input": {
-        "source_pointer": "/",
+        "source_pointer": "/extension_relationships/0",
         "fragment": {
-          "from_entity_id": "019109a0-b1c2-7def-8a00-112233445566",
-          "to_entity_id": "019109a0-b1c2-7def-8a00-112233445567",
+          "id": "019109a0-b1c2-7def-8a00-112233445566",
+          "alias_id": "PAYREL-0028",
+          "alias_name": "custom-to-canonical",
           "relationship_type": "payments:depends_on",
           "qualification": {
             "semantic_kind": "relationship",
@@ -1041,7 +1328,35 @@
             "consumer_namespace": "payments",
             "contract_version": "1.0",
             "contract_fingerprint": "cecf:v1:sha256:1111111111111111111111111111111111111111111111111111111111111111"
-          }
+          },
+          "from_entity_id": "019109a0-b1c2-7def-8a00-112233445566",
+          "to_entity_id": "019109a0-b1c2-7def-8a00-112233445567",
+          "properties": {
+            "reason": "required"
+          },
+          "rationale": "Cross-boundary dependency."
+        },
+        "basis": {
+          "kind": "endpoint_classification",
+          "endpoint_entities": [
+            {
+              "id": "019109a0-b1c2-7def-8a00-112233445566",
+              "classification": "qualified_custom",
+              "entity_type": "payments:policy",
+              "qualification": {
+                "semantic_kind": "entity",
+                "semantic_type": "payments:policy",
+                "consumer_namespace": "payments",
+                "contract_version": "1.0",
+                "contract_fingerprint": "cecf:v1:sha256:0000000000000000000000000000000000000000000000000000000000000000"
+              }
+            },
+            {
+              "id": "019109a0-b1c2-7def-8a00-112233445567",
+              "classification": "canonical",
+              "entity_type": "component"
+            }
+          ]
         }
       },
       "expected": {
@@ -1049,8 +1364,14 @@
         "normalized_type": "qualified_custom_relationship",
         "identity": "canonical_uuidv7",
         "fields": {
-          "endpoint_semantics": "custom entity to canonical entity",
-          "relationship_mode": "custom_explicit"
+          "relationship_type": "payments:depends_on",
+          "from_entity_id": "019109a0-b1c2-7def-8a00-112233445566",
+          "to_entity_id": "019109a0-b1c2-7def-8a00-112233445567",
+          "properties": {
+            "reason": "required"
+          },
+          "relationship_mode": "custom_explicit",
+          "endpoint_semantics": "qualified_custom entity to canonical entity"
         }
       }
     },
@@ -1063,10 +1384,11 @@
         "qualification": "exact-schema-artifacts-and-source-bytes"
       },
       "input": {
-        "source_pointer": "/",
+        "source_pointer": "/extension_relationships/0",
         "fragment": {
-          "from_entity_id": "019109a0-b1c2-7def-8a00-112233445566",
-          "to_entity_id": "019109a0-b1c2-7def-8a00-112233445567",
+          "id": "019109a0-b1c2-7def-8a00-112233445566",
+          "alias_id": "PAYREL-0029",
+          "alias_name": "canonical-to-custom",
           "relationship_type": "payments:depends_on",
           "qualification": {
             "semantic_kind": "relationship",
@@ -1074,7 +1396,35 @@
             "consumer_namespace": "payments",
             "contract_version": "1.0",
             "contract_fingerprint": "cecf:v1:sha256:1111111111111111111111111111111111111111111111111111111111111111"
-          }
+          },
+          "from_entity_id": "019109a0-b1c2-7def-8a00-112233445566",
+          "to_entity_id": "019109a0-b1c2-7def-8a00-112233445567",
+          "properties": {
+            "reason": "required"
+          },
+          "rationale": "Canonical consumer dependency."
+        },
+        "basis": {
+          "kind": "endpoint_classification",
+          "endpoint_entities": [
+            {
+              "id": "019109a0-b1c2-7def-8a00-112233445566",
+              "classification": "canonical",
+              "entity_type": "component"
+            },
+            {
+              "id": "019109a0-b1c2-7def-8a00-112233445567",
+              "classification": "qualified_custom",
+              "entity_type": "payments:policy",
+              "qualification": {
+                "semantic_kind": "entity",
+                "semantic_type": "payments:policy",
+                "consumer_namespace": "payments",
+                "contract_version": "1.0",
+                "contract_fingerprint": "cecf:v1:sha256:0000000000000000000000000000000000000000000000000000000000000000"
+              }
+            }
+          ]
         }
       },
       "expected": {
@@ -1082,8 +1432,14 @@
         "normalized_type": "qualified_custom_relationship",
         "identity": "canonical_uuidv7",
         "fields": {
-          "endpoint_semantics": "canonical entity to custom entity",
-          "relationship_mode": "custom_explicit"
+          "relationship_type": "payments:depends_on",
+          "from_entity_id": "019109a0-b1c2-7def-8a00-112233445566",
+          "to_entity_id": "019109a0-b1c2-7def-8a00-112233445567",
+          "properties": {
+            "reason": "required"
+          },
+          "relationship_mode": "custom_explicit",
+          "endpoint_semantics": "canonical entity to qualified_custom entity"
         }
       }
     },
@@ -1096,20 +1452,40 @@
         "qualification": "exact-schema-artifacts-and-source-bytes"
       },
       "input": {
-        "source_pointer": "/",
+        "source_pointer": "/component_topology/relationships/0",
         "fragment": {
           "from_key": "TOPO-MISSING",
           "to_key": "TOPO-DB",
           "type": "calls"
+        },
+        "basis": {
+          "kind": "topology_resolution",
+          "scope": "owning physical-system ADR component_topology",
+          "components": [
+            {
+              "topology_key": "TOPO-DB",
+              "component_ref": "019109a0-b1c2-7def-8a00-112233445567",
+              "purpose": "persist"
+            }
+          ],
+          "missing_keys": [
+            "TOPO-MISSING"
+          ]
         }
       },
       "expected": {
-        "disposition": "accepted",
+        "disposition": "unresolved",
         "normalized_type": "unresolved",
         "identity": "none",
         "fields": {
           "reason_code": "topology_key_unresolved",
-          "source_pointer": "/component_topology/relationships/0"
+          "source_pointer": "/component_topology/relationships/0",
+          "resolved_keys": [
+            "TOPO-DB"
+          ],
+          "missing_keys": [
+            "TOPO-MISSING"
+          ]
         }
       }
     },
@@ -1122,16 +1498,27 @@
         "qualification": "exact-schema-artifacts-and-source-bytes"
       },
       "input": {
-        "source_pointer": "/",
+        "source_pointer": "/extension_entities/0",
         "fragment": {
           "id": "019109a0-b1c2-7def-8a00-112233445566",
+          "alias_id": "PAY-0031",
+          "alias_name": "unknown-payment-policy",
           "entity_type": "payments:policy",
           "qualification": {
             "semantic_kind": "entity",
             "semantic_type": "payments:policy",
             "consumer_namespace": "payments",
             "contract_version": "1.0"
-          }
+          },
+          "properties": {
+            "policy_code": "P31"
+          },
+          "rationale": "Authority must be exact."
+        },
+        "basis": {
+          "kind": "authoring_fragment",
+          "schema": "adr-common.schema.json#/definitions/custom_entity",
+          "isolated_defect": "qualification.contract_fingerprint absent"
         }
       },
       "expected": {
@@ -1158,6 +1545,11 @@
           "normative_force": "MUST",
           "scope": "global",
           "lifecycle_stage": "active"
+        },
+        "basis": {
+          "kind": "authoring_fragment",
+          "schema": "adr-common.schema.json#/definitions/normative_proposition",
+          "isolated_defect": "lifecycle_stage is forbidden for normative propositions"
         }
       },
       "expected": {
@@ -1175,11 +1567,18 @@
         "qualification": "exact-schema-artifacts-and-source-bytes"
       },
       "input": {
-        "source_pointer": "/",
+        "source_pointer": "/entity_type",
         "fragment": {
           "id": "019109a0-b1c2-7def-8a00-112233445566",
+          "alias_id": "CON-0033",
+          "alias_name": "legacy-constraint",
           "entity_type": "constraint",
           "name": "Legacy constraint"
+        },
+        "basis": {
+          "kind": "forward_type_disposition",
+          "classifier": "entity",
+          "forbidden_type": "constraint"
         }
       },
       "expected": {
@@ -1197,11 +1596,28 @@
         "qualification": "exact-schema-artifacts-and-source-bytes"
       },
       "input": {
-        "source_pointer": "/",
+        "source_pointer": "/component_topology/relationships/0",
         "fragment": {
           "from_key": "TOPO-A",
           "to_key": "TOPO-B",
           "type": "consumes_interface"
+        },
+        "basis": {
+          "kind": "topology_resolution",
+          "scope": "owning physical-system ADR component_topology",
+          "components": [
+            {
+              "topology_key": "TOPO-A",
+              "component_ref": "019109a0-b1c2-7def-8a00-112233445566",
+              "purpose": "serve"
+            },
+            {
+              "topology_key": "TOPO-B",
+              "component_ref": "019109a0-b1c2-7def-8a00-112233445567",
+              "purpose": "expose"
+            }
+          ],
+          "isolated_defect": "relationship type is deferred consumes_interface"
         }
       },
       "expected": {
@@ -1223,6 +1639,15 @@
         "fragment": {
           "schema_version": "1.5",
           "adr_type": "logical"
+        },
+        "basis": {
+          "kind": "historical_compatibility",
+          "historical_resources": [
+            "architecture-interpretation/1.0/source-decoding-1.5",
+            "architecture-interpretation/1.0/source-decoding-1.6",
+            "architecture-interpretation/1.0/source-mapping-1.5-to-2.3",
+            "architecture-interpretation/1.0/source-mapping-1.6-to-2.3"
+          ]
         }
       },
       "expected": {
@@ -1243,9 +1668,11 @@
         "qualification": "exact-schema-artifacts-and-source-bytes"
       },
       "input": {
-        "source_pointer": "/",
+        "source_pointer": "/extension_relationships/0",
         "fragment": {
           "id": "019109a0-b1c2-7def-8a00-112233445566",
+          "alias_id": "PAYREL-0036",
+          "alias_name": "canonical-identity-check",
           "relationship_type": "payments:depends_on",
           "qualification": {
             "semantic_kind": "relationship",
@@ -1255,7 +1682,34 @@
             "contract_fingerprint": "cecf:v1:sha256:1111111111111111111111111111111111111111111111111111111111111111"
           },
           "from_entity_id": "019109a0-b1c2-7def-8a00-112233445566",
-          "to_entity_id": "019109a0-b1c2-7def-8a00-112233445567"
+          "to_entity_id": "019109a0-b1c2-7def-8a00-112233445567",
+          "properties": {
+            "reason": "identity"
+          },
+          "rationale": "Qualification is not identity."
+        },
+        "basis": {
+          "kind": "authoring_fragment",
+          "schema": "adr-common.schema.json#/definitions/custom_relationship",
+          "endpoint_entities": [
+            {
+              "id": "019109a0-b1c2-7def-8a00-112233445566",
+              "classification": "canonical",
+              "entity_type": "component"
+            },
+            {
+              "id": "019109a0-b1c2-7def-8a00-112233445567",
+              "classification": "qualified_custom",
+              "entity_type": "payments:policy",
+              "qualification": {
+                "semantic_kind": "entity",
+                "semantic_type": "payments:policy",
+                "consumer_namespace": "payments",
+                "contract_version": "1.0",
+                "contract_fingerprint": "cecf:v1:sha256:0000000000000000000000000000000000000000000000000000000000000000"
+              }
+            }
+          ]
         }
       },
       "expected": {
@@ -1264,7 +1718,13 @@
         "identity": "canonical_uuidv7",
         "fields": {
           "relationship_mode": "custom_explicit",
-          "identity_is_not_qualification": true
+          "identity_is_not_qualification": true,
+          "relationship_type": "payments:depends_on",
+          "from_entity_id": "019109a0-b1c2-7def-8a00-112233445566",
+          "to_entity_id": "019109a0-b1c2-7def-8a00-112233445567",
+          "properties": {
+            "reason": "identity"
+          }
         }
       }
     },
@@ -1277,13 +1737,27 @@
         "qualification": "exact-schema-artifacts-and-source-bytes"
       },
       "input": {
-        "source_pointer": "/",
+        "source_pointer": "/component_topology/relationships/0",
         "fragment": {
-          "relationship_id": "hash-derived-allowed",
-          "assertion_id": "asrt-2222222222222222222222222222222222222222222222222222222222222222",
-          "relationship_type": "calls",
-          "from_entity_id": "019109a0-b1c2-7def-8a00-112233445566",
-          "to_entity_id": "019109a0-b1c2-7def-8a00-112233445567"
+          "from_key": "TOPO-API",
+          "to_key": "TOPO-DB",
+          "type": "calls"
+        },
+        "basis": {
+          "kind": "topology_resolution",
+          "scope": "owning physical-system ADR component_topology",
+          "components": [
+            {
+              "topology_key": "TOPO-API",
+              "component_ref": "019109a0-b1c2-7def-8a00-112233445566",
+              "purpose": "serve"
+            },
+            {
+              "topology_key": "TOPO-DB",
+              "component_ref": "019109a0-b1c2-7def-8a00-112233445567",
+              "purpose": "persist"
+            }
+          ]
         }
       },
       "expected": {
@@ -1291,9 +1765,19 @@
         "normalized_type": "compatibility",
         "identity": "noncanonical",
         "fields": {
+          "record_kind": "compatibility",
+          "from_entity_id": "019109a0-b1c2-7def-8a00-112233445566",
+          "to_entity_id": "019109a0-b1c2-7def-8a00-112233445567",
+          "relationship_type": "calls",
           "canonical_relationship_uuid": false,
-          "relationship_mode": "compatibility_projection"
-        }
+          "assertion_identity": "noncanonical compatibility assertion",
+          "source_provenance": {
+            "topology_scope": "owning physical-system ADR",
+            "from_key": "TOPO-API",
+            "to_key": "TOPO-DB"
+          }
+        },
+        "endpoint_semantics": "component_ref UUID endpoints resolved from authored topology keys"
       }
     },
     {
@@ -1314,6 +1798,10 @@
               "id": "019109a0-b1c2-7def-8a00-112233445566"
             }
           ]
+        },
+        "basis": {
+          "kind": "absence_semantics",
+          "governed_by": "architecture-interpretation/1.1/rules"
         }
       },
       "expected": {

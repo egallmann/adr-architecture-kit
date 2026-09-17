@@ -1,0 +1,21 @@
+{
+  "semanticContractFamily": "authoring-construction",
+  "semanticContractVersion": "1.0",
+  "fingerprintScheme": "scf:v1:sha256",
+  "resourceManifest": [
+    {
+      "canonicalResourceKey": "authoring-construction/1.0/conformance",
+      "contentDigest": "sha256:76a516f0a866c5878890835fb13dd9c3f785fe07249a4876968db70b06e4edcf",
+      "role": "interpretation-conformance",
+      "dependencies": [{"canonicalResourceKey": "authoring-construction/1.0/rules", "contentDigest": "sha256:c81dc929746361409c2413f0492d5cd96338f9fbd26ab3842900153a95c2da63"}]
+    },
+    {
+      "canonicalResourceKey": "authoring-construction/1.0/rules",
+      "contentDigest": "sha256:c81dc929746361409c2413f0492d5cd96338f9fbd26ab3842900153a95c2da63",
+      "role": "interpretation-rule",
+      "dependencies": []
+    }
+  ],
+  "frozenNormativeConformanceResources": ["authoring-construction/1.0/conformance"],
+  "semanticContractFingerprint": "scf:v1:sha256:c1cb464575d979ab55921cf39c7bb2840312a002ddecb5f34a1a7e17f17fb356"
+}

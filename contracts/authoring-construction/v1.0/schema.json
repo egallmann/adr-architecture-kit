@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://adr-kit.ste.systems/contracts/authoring-construction/v1.0/schema.json",
   "title": "ADR-Kit Authoring Construction Contract 1.0 shape",
-  "description": "Strict host-neutral shape for the descriptive Authoring Construction Contract 1.0, its requests, diagnostics, conformance records, and detached results.",
+  "description": "Strict host-neutral wire shape for ACC requests, diagnostics, operation-specific results, and exact authority qualification.",
   "oneOf": [
     {"$ref": "#/$defs/contract_document"},
     {"$ref": "#/$defs/authoring_request"},
@@ -16,13 +16,32 @@
     "scf": {"type": "string", "pattern": "^scf:v1:sha256:[0-9a-f]{64}$"},
     "cecf": {"type": "string", "pattern": "^cecf:v1:sha256:[0-9a-f]{64}$"},
     "semantic_type": {"type": "string", "pattern": "^(?:[a-z][a-z0-9._-]*/[a-z][a-z0-9_-]*|[a-z][a-z0-9._-]*:[a-z][a-z0-9_]{1,63})$"},
-    "contract_qualification": {
+    "resource_member": {
       "type": "object",
-      "required": ["family", "version", "fingerprint"],
+      "required": ["canonical_resource_key", "content_digest"],
+      "properties": {
+        "canonical_resource_key": {"type": "string", "minLength": 1},
+        "content_digest": {"$ref": "#/$defs/digest"}
+      },
+      "additionalProperties": false
+    },
+    "semantic_contract_qualification": {
+      "type": "object",
+      "required": ["family", "version", "semantic_contract_fingerprint"],
       "properties": {
         "family": {"$ref": "#/$defs/non_empty"},
         "version": {"$ref": "#/$defs/non_empty"},
-        "fingerprint": {"$ref": "#/$defs/scf"}
+        "semantic_contract_fingerprint": {"$ref": "#/$defs/scf"}
+      },
+      "additionalProperties": false
+    },
+    "exact_resource_set_qualification": {
+      "type": "object",
+      "required": ["family", "version", "resources"],
+      "properties": {
+        "family": {"$ref": "#/$defs/non_empty"},
+        "version": {"$ref": "#/$defs/non_empty"},
+        "resources": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/resource_member"}}
       },
       "additionalProperties": false
     },
@@ -38,11 +57,54 @@
       },
       "additionalProperties": false
     },
+    "custom_definition_qualification": {
+      "type": "object",
+      "required": ["semantic_kind", "semantic_type", "consumer_namespace", "contract_version", "contract_fingerprint", "definition_source", "definition_digest"],
+      "properties": {
+        "semantic_kind": {"enum": ["entity", "relationship"]},
+        "semantic_type": {"type": "string", "pattern": "^[a-z][a-z0-9._-]*:[a-z][a-z0-9_]{1,63}$"},
+        "consumer_namespace": {"type": "string", "pattern": "^[a-z][a-z0-9]*(?:[._-][a-z0-9]+)*$"},
+        "contract_version": {"type": "string", "pattern": "^[0-9]+\\.[0-9]+$"},
+        "contract_fingerprint": {"$ref": "#/$defs/cecf"},
+        "definition_source": {"$ref": "#/$defs/non_empty"},
+        "definition_digest": {"$ref": "#/$defs/digest"}
+      },
+      "additionalProperties": false
+    },
+    "custom_registry_qualification": {
+      "type": "object",
+      "required": ["contract_resources", "registry_source", "selected_definitions"],
+      "properties": {
+        "contract_resources": {"$ref": "#/$defs/exact_resource_set_qualification"},
+        "registry_source": {"$ref": "#/$defs/exact_source_descriptor"},
+        "selected_definitions": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/custom_definition_qualification"}}
+      },
+      "additionalProperties": false
+    },
     "fragment_qualification": {
       "oneOf": [
-        {"$ref": "#/$defs/contract_qualification"},
+        {"$ref": "#/$defs/semantic_contract_qualification"},
+        {"$ref": "#/$defs/exact_resource_set_qualification"},
         {"$ref": "#/$defs/custom_qualification"}
       ]
+    },
+    "exact_source_descriptor": {
+      "type": "object",
+      "required": ["source_ref", "content_digest", "source_bytes"],
+      "properties": {"source_ref": {"$ref": "#/$defs/non_empty"}, "content_digest": {"$ref": "#/$defs/digest"}, "source_bytes": {"type": "string", "contentEncoding": "base64"}},
+      "additionalProperties": false
+    },
+    "fragment_reference": {
+      "type": "object",
+      "required": ["reference_key", "reference_kind", "target"],
+      "properties": {
+        "reference_key": {"type": "string", "pattern": "^[A-Za-z][A-Za-z0-9_.-]{0,127}$"},
+        "reference_kind": {"enum": ["request", "existing"]},
+        "target": {"type": "string", "minLength": 1},
+        "expected_semantic_type": {"$ref": "#/$defs/semantic_type"},
+        "qualification": {"$ref": "#/$defs/fragment_qualification"}
+      },
+      "additionalProperties": false
     },
     "fragment_intent": {
       "type": "object",
@@ -61,37 +123,16 @@
       },
       "additionalProperties": false
     },
-    "fragment_reference": {
-      "type": "object",
-      "required": ["reference_key", "reference_kind", "target"],
-      "properties": {
-        "reference_key": {"type": "string", "pattern": "^[A-Za-z][A-Za-z0-9_.-]{0,127}$"},
-        "reference_kind": {"enum": ["request", "existing"]},
-        "target": {"type": "string", "minLength": 1},
-        "expected_semantic_type": {"$ref": "#/$defs/semantic_type"},
-        "qualification": {"$ref": "#/$defs/fragment_qualification"}
-      },
-      "additionalProperties": false
-    },
     "composition_intent": {
       "type": "object",
       "required": ["parent", "child", "relation", "ordering"],
-      "properties": {
-        "parent": {"type": "string", "minLength": 1},
-        "child": {"type": "string", "minLength": 1},
-        "relation": {"type": "string", "pattern": "^[a-z][a-z0-9._-]*$"},
-        "ordering": {"type": "integer", "minimum": 0}
-      },
+      "properties": {"parent": {"type": "string", "minLength": 1}, "child": {"type": "string", "minLength": 1}, "relation": {"type": "string", "pattern": "^[a-z][a-z0-9._-]*$"}, "ordering": {"type": "integer", "minimum": 0}},
       "additionalProperties": false
     },
     "endpoint": {
       "type": "object",
       "required": ["kind", "target"],
-      "properties": {
-        "kind": {"enum": ["request", "reference", "topology"]},
-        "target": {"type": "string", "minLength": 1},
-        "semantic_type": {"$ref": "#/$defs/semantic_type"}
-      },
+      "properties": {"kind": {"enum": ["request", "reference", "topology"]}, "target": {"type": "string", "minLength": 1}, "semantic_type": {"$ref": "#/$defs/semantic_type"}},
       "additionalProperties": false
     },
     "relationship_intent": {
@@ -108,37 +149,11 @@
       },
       "additionalProperties": false
     },
-    "exact_basis": {
-      "type": "object",
-      "required": ["acc", "adc", "authoring", "normalized_model", "architecture_interpretation", "reference_basis", "existing_source_basis", "identity_establishment", "provenance"],
-      "properties": {
-        "acc": {"$ref": "#/$defs/contract_qualification"},
-        "adc": {"$ref": "#/$defs/contract_qualification"},
-        "authoring": {"$ref": "#/$defs/contract_qualification"},
-        "normalized_model": {"$ref": "#/$defs/contract_qualification"},
-        "architecture_interpretation": {"$ref": "#/$defs/contract_qualification"},
-        "custom_entity": {"anyOf": [{"$ref": "#/$defs/contract_qualification"}, {"type": "null"}]},
-        "reference_basis": {"$ref": "#/$defs/reference_basis"},
-        "existing_source_basis": {"$ref": "#/$defs/existing_source_basis"},
-        "identity_establishment": {"$ref": "#/$defs/identity_establishment_policy"},
-        "provenance": {"type": "object", "additionalProperties": true}
-      },
-      "additionalProperties": false
-    },
-    "reference_basis": {
-      "type": "object",
-      "required": ["sealed", "entries"],
-      "properties": {
-        "sealed": {"const": true},
-        "entries": {"type": "array", "items": {"$ref": "#/$defs/reference_entry"}}
-      },
-      "additionalProperties": false
-    },
     "reference_entry": {
       "type": "object",
       "required": ["reference_id", "canonical_uuid", "semantic_kind", "semantic_type", "qualification", "existence_state"],
       "properties": {
-        "reference_id": {"type": "string", "minLength": 1},
+        "reference_id": {"$ref": "#/$defs/non_empty"},
         "canonical_uuid": {"$ref": "#/$defs/uuid_v7"},
         "semantic_kind": {"enum": ["adr", "entity", "relationship", "value"]},
         "semantic_type": {"$ref": "#/$defs/semantic_type"},
@@ -148,13 +163,10 @@
       },
       "additionalProperties": false
     },
-    "existing_source_basis": {
+    "reference_basis": {
       "type": "object",
       "required": ["sealed", "entries"],
-      "properties": {
-        "sealed": {"const": true},
-        "entries": {"type": "array", "items": {"$ref": "#/$defs/existing_source_entry"}}
-      },
+      "properties": {"sealed": {"const": true}, "entries": {"type": "array", "items": {"$ref": "#/$defs/reference_entry"}}},
       "additionalProperties": false
     },
     "existing_source_entry": {
@@ -164,10 +176,16 @@
         "canonical_uuid": {"$ref": "#/$defs/uuid_v7"},
         "semantic_type": {"$ref": "#/$defs/semantic_type"},
         "qualification": {"$ref": "#/$defs/fragment_qualification"},
-        "source_ref": {"type": "string", "minLength": 1},
+        "source_ref": {"$ref": "#/$defs/non_empty"},
         "content_digest": {"$ref": "#/$defs/digest"},
         "source_bytes": {"type": "string", "contentEncoding": "base64"}
       },
+      "additionalProperties": false
+    },
+    "existing_source_basis": {
+      "type": "object",
+      "required": ["sealed", "entries"],
+      "properties": {"sealed": {"const": true}, "entries": {"type": "array", "items": {"$ref": "#/$defs/existing_source_entry"}}},
       "additionalProperties": false
     },
     "identity_establishment_policy": {
@@ -183,6 +201,23 @@
       },
       "additionalProperties": false
     },
+    "exact_basis": {
+      "type": "object",
+      "required": ["acc", "adc", "authoring", "normalized_model", "architecture_interpretation", "custom_entity", "reference_basis", "existing_source_basis", "identity_establishment", "provenance"],
+      "properties": {
+        "acc": {"$ref": "#/$defs/semantic_contract_qualification"},
+        "adc": {"$ref": "#/$defs/exact_resource_set_qualification"},
+        "authoring": {"$ref": "#/$defs/exact_resource_set_qualification"},
+        "normalized_model": {"$ref": "#/$defs/exact_resource_set_qualification"},
+        "architecture_interpretation": {"$ref": "#/$defs/semantic_contract_qualification"},
+        "custom_entity": {"anyOf": [{"$ref": "#/$defs/custom_registry_qualification"}, {"type": "null"}]},
+        "reference_basis": {"$ref": "#/$defs/reference_basis"},
+        "existing_source_basis": {"$ref": "#/$defs/existing_source_basis"},
+        "identity_establishment": {"$ref": "#/$defs/identity_establishment_policy"},
+        "provenance": {"type": "object", "additionalProperties": true}
+      },
+      "additionalProperties": false
+    },
     "authoring_request": {
       "type": "object",
       "required": ["contract_family", "contract_version", "operation", "request", "basis"],
@@ -194,12 +229,12 @@
           "type": "object",
           "required": ["request_id", "fragments", "compositions", "relationships"],
           "properties": {
-            "request_id": {"type": "string", "minLength": 1},
+            "request_id": {"$ref": "#/$defs/non_empty"},
             "fragments": {"type": "array", "items": {"$ref": "#/$defs/fragment_intent"}},
             "compositions": {"type": "array", "items": {"$ref": "#/$defs/composition_intent"}},
             "relationships": {"type": "array", "items": {"$ref": "#/$defs/relationship_intent"}}
           },
-          "unevaluatedProperties": false
+          "additionalProperties": false
         },
         "basis": {"$ref": "#/$defs/exact_basis"}
       },
@@ -207,47 +242,33 @@
     },
     "diagnostic": {
       "type": "object",
-      "required": ["code", "severity", "status", "request_key", "location", "rule", "expected", "observed", "remediation"],
+      "required": ["code", "severity", "status", "request_key", "location", "semantic_type", "rule", "expected", "observed", "remediation"],
       "properties": {
         "code": {"type": "string", "pattern": "^authoring_construction\\.[a-z0-9_.-]+$"},
         "severity": {"enum": ["info", "warning", "error"]},
         "status": {"enum": ["violation", "blocked", "unresolved", "unavailable"]},
         "request_key": {"type": ["string", "null"]},
-        "location": {"type": "string", "minLength": 1},
+        "location": {"$ref": "#/$defs/non_empty"},
         "semantic_type": {"anyOf": [{"$ref": "#/$defs/semantic_type"}, {"type": "null"}]},
-        "rule": {"type": "string", "minLength": 1},
+        "rule": {"$ref": "#/$defs/non_empty"},
         "expected": {},
         "observed": {},
-        "remediation": {"type": "string", "minLength": 1},
-        "blocked_by": {"type": "array", "items": {"type": "string", "minLength": 1}}
+        "remediation": {"$ref": "#/$defs/non_empty"},
+        "blocked_by": {"type": "array", "minItems": 1, "items": {"type": "string", "pattern": "^authoring_construction\\.[a-z0-9_.-]+$"}}
       },
       "additionalProperties": false
     },
-    "basis_qualification": {
-      "type": "object",
-      "required": ["acc", "adc", "authoring", "normalized_model", "architecture_interpretation", "custom_entity", "reference_basis_digest", "existing_source_basis_digest"],
-      "properties": {
-        "acc": {"$ref": "#/$defs/contract_qualification"},
-        "adc": {"$ref": "#/$defs/contract_qualification"},
-        "authoring": {"$ref": "#/$defs/contract_qualification"},
-        "normalized_model": {"$ref": "#/$defs/contract_qualification"},
-        "architecture_interpretation": {"$ref": "#/$defs/contract_qualification"},
-        "custom_entity": {"anyOf": [{"$ref": "#/$defs/contract_qualification"}, {"type": "null"}]},
-        "reference_basis_digest": {"$ref": "#/$defs/digest"},
-        "existing_source_basis_digest": {"$ref": "#/$defs/digest"}
-      },
-      "additionalProperties": false
-    },
+    "basis_qualification": {"$ref": "#/$defs/exact_basis"},
     "construction_map_entry": {
       "type": "object",
       "required": ["request_key", "operation", "semantic_type", "canonical_uuid", "identity_disposition", "contract_qualification", "resulting_state", "diagnostic_codes"],
       "properties": {
-        "request_key": {"type": "string", "minLength": 1},
+        "request_key": {"$ref": "#/$defs/non_empty"},
         "operation": {"enum": ["create", "update", "reference", "retire"]},
         "semantic_type": {"$ref": "#/$defs/semantic_type"},
         "canonical_uuid": {"anyOf": [{"$ref": "#/$defs/uuid_v7"}, {"type": "null"}]},
         "identity_disposition": {"enum": ["preserved", "minted", "reused", "not_applicable"]},
-        "candidate_source_ref": {"anyOf": [{"type": "string", "minLength": 1}, {"type": "null"}]},
+        "candidate_source_ref": {"anyOf": [{"$ref": "#/$defs/non_empty"}, {"type": "null"}]},
         "contract_qualification": {"$ref": "#/$defs/fragment_qualification"},
         "resulting_state": {"enum": ["active", "retired", "referenced"]},
         "diagnostic_codes": {"type": "array", "uniqueItems": true, "items": {"type": "string", "pattern": "^authoring_construction\\.[a-z0-9_.-]+$"}}
@@ -258,22 +279,33 @@
       "type": "object",
       "required": ["request_key", "source_ref", "artifact_kind", "content_digest", "bytes", "source_contract"],
       "properties": {
-        "request_key": {"type": "string", "minLength": 1},
-        "source_ref": {"type": "string", "minLength": 1},
+        "request_key": {"$ref": "#/$defs/non_empty"},
+        "source_ref": {"$ref": "#/$defs/non_empty"},
         "artifact_kind": {"enum": ["authoring_fragment", "authoring_document"]},
         "content_digest": {"$ref": "#/$defs/digest"},
         "bytes": {"type": "string", "contentEncoding": "base64"},
-        "source_contract": {"$ref": "#/$defs/contract_qualification"}
+        "source_contract": {"$ref": "#/$defs/exact_resource_set_qualification"}
       },
       "additionalProperties": false
     },
     "candidate_source_basis": {
       "type": "object",
-      "required": ["sealed", "basis_digest", "artifacts"],
+      "required": ["sealed", "basis_digest", "artifacts", "source_contract"],
       "properties": {
         "sealed": {"const": true},
         "basis_digest": {"$ref": "#/$defs/digest"},
-        "artifacts": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/candidate_artifact"}}
+        "artifacts": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/candidate_artifact"}},
+        "source_contract": {"$ref": "#/$defs/exact_resource_set_qualification"}
+      },
+      "additionalProperties": false
+    },
+    "normalized_result": {
+      "type": "object",
+      "required": ["normalized_contract", "semantic_digest", "model"],
+      "properties": {
+        "normalized_contract": {"$ref": "#/$defs/exact_resource_set_qualification"},
+        "semantic_digest": {"$ref": "#/$defs/digest"},
+        "model": {"type": "object", "additionalProperties": true}
       },
       "additionalProperties": false
     },
@@ -283,8 +315,8 @@
       "properties": {
         "qualified": {"type": "boolean"},
         "comparison": {"enum": ["semantic_equivalent", "semantic_mismatch", "not_evaluated"]},
-        "authorized_differences": {"type": "array", "items": {"type": "string", "minLength": 1}},
-        "hidden_semantics": {"type": "array", "items": {"type": "string", "minLength": 1}},
+        "authorized_differences": {"type": "array", "items": {"$ref": "#/$defs/non_empty"}},
+        "hidden_semantics": {"type": "array", "items": {"$ref": "#/$defs/non_empty"}},
         "diagnostic_codes": {"type": "array", "items": {"type": "string", "pattern": "^authoring_construction\\.[a-z0-9_.-]+$"}}
       },
       "additionalProperties": false
@@ -304,52 +336,15 @@
     "validation_result": {
       "allOf": [
         {"$ref": "#/$defs/result_base"},
-        {
-          "type": "object",
-          "required": ["operation", "validation_status"],
-          "properties": {
-            "operation": {"const": "validate_authoring"},
-            "validation_status": {"enum": ["valid", "invalid"]}
-          },
-          "unevaluatedProperties": false
-        }
+        {"type": "object", "required": ["operation", "validation_status"], "properties": {"operation": {"const": "validate_authoring"}, "validation_status": {"enum": ["valid", "invalid", "unavailable", "unresolved"]}}}
       ],
       "unevaluatedProperties": false
     },
     "construction_result": {
       "allOf": [
         {"$ref": "#/$defs/result_base"},
-        {
-          "type": "object",
-          "required": ["operation", "outcome", "construction_map", "candidate_fragments", "candidate_artifacts", "candidate_source_basis", "normalized_result", "round_trip"],
-          "properties": {
-            "operation": {"const": "construct_authoring_set"},
-            "outcome": {"enum": ["Constructed", "Rejected", "Unavailable", "Unresolved"]},
-            "construction_map": {"type": "array", "items": {"$ref": "#/$defs/construction_map_entry"}},
-            "candidate_fragments": {"type": "array", "items": {"type": "object", "additionalProperties": true}},
-            "candidate_artifacts": {"type": "array", "items": {"$ref": "#/$defs/candidate_artifact"}},
-            "candidate_source_basis": {"anyOf": [{"$ref": "#/$defs/candidate_source_basis"}, {"type": "null"}]},
-            "normalized_result": {"anyOf": [{"type": "object", "additionalProperties": true}, {"type": "null"}]},
-            "round_trip": {"$ref": "#/$defs/round_trip"}
-          },
-          "unevaluatedProperties": false
-        },
-        {
-          "if": {"properties": {"outcome": {"const": "Constructed"}}},
-          "then": {
-            "required": ["candidate_source_basis", "normalized_result"],
-            "properties": {
-              "candidate_source_basis": {"$ref": "#/$defs/candidate_source_basis"},
-              "normalized_result": {"type": "object"},
-              "round_trip": {
-                "properties": {
-                  "qualified": {"const": true},
-                  "comparison": {"const": "semantic_equivalent"}
-                }
-              }
-            }
-          }
-        }
+        {"type": "object", "required": ["operation", "outcome", "construction_map", "candidate_fragments", "candidate_artifacts", "candidate_source_basis", "normalized_result", "round_trip"], "properties": {"operation": {"const": "construct_authoring_set"}, "outcome": {"enum": ["Constructed", "Rejected", "Unavailable", "Unresolved"]}, "construction_map": {"type": "array", "items": {"$ref": "#/$defs/construction_map_entry"}}, "candidate_fragments": {"type": "array", "items": {"type": "object", "required": ["request_key", "semantic_kind", "semantic_type", "identity", "contract_qualification", "fields", "source_contract"], "properties": {"request_key": {"$ref": "#/$defs/non_empty"}, "semantic_kind": {"enum": ["adr", "entity", "relationship", "value"]}, "semantic_type": {"$ref": "#/$defs/semantic_type"}, "identity": {"anyOf": [{"$ref": "#/$defs/uuid_v7"}, {"type": "null"}]}, "contract_qualification": {"$ref": "#/$defs/fragment_qualification"}, "fields": {"type": "object", "additionalProperties": true}, "source_contract": {"$ref": "#/$defs/exact_resource_set_qualification"}}, "additionalProperties": false}}, "candidate_artifacts": {"type": "array", "items": {"$ref": "#/$defs/candidate_artifact"}}, "candidate_source_basis": {"anyOf": [{"$ref": "#/$defs/candidate_source_basis"}, {"type": "null"}]}, "normalized_result": {"anyOf": [{"$ref": "#/$defs/normalized_result"}, {"type": "null"}]}, "round_trip": {"$ref": "#/$defs/round_trip"}}},
+        {"if": {"properties": {"outcome": {"const": "Constructed"}}}, "then": {"required": ["candidate_source_basis", "normalized_result"], "properties": {"candidate_source_basis": {"$ref": "#/$defs/candidate_source_basis"}, "normalized_result": {"$ref": "#/$defs/normalized_result"}, "round_trip": {"properties": {"qualified": {"const": true}, "comparison": {"const": "semantic_equivalent"}}}}}}
       ],
       "unevaluatedProperties": false
     },
@@ -361,7 +356,7 @@
         "semanticContractVersion": {"const": "1.0"},
         "fingerprintScheme": {"const": "scf:v1:sha256"},
         "resourceManifest": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/resource_manifest_entry"}},
-        "frozenNormativeConformanceResources": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string", "minLength": 1}},
+        "frozenNormativeConformanceResources": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"$ref": "#/$defs/non_empty"}},
         "semanticContractFingerprint": {"$ref": "#/$defs/scf"}
       },
       "additionalProperties": false
@@ -380,10 +375,7 @@
     "resource_dependency": {
       "type": "object",
       "required": ["canonicalResourceKey", "contentDigest"],
-      "properties": {
-        "canonicalResourceKey": {"type": "string", "pattern": "^authoring-construction/1\\.0/[a-z0-9._-]+$"},
-        "contentDigest": {"$ref": "#/$defs/digest"}
-      },
+      "properties": {"canonicalResourceKey": {"type": "string", "pattern": "^authoring-construction/1\\.0/[a-z0-9._-]+$"}, "contentDigest": {"$ref": "#/$defs/digest"}},
       "additionalProperties": false
     }
   }

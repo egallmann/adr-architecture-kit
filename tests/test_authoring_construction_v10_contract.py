@@ -301,8 +301,8 @@ def test_acc_corpus_executes_operation_specific_schemas_and_exact_basis() -> Non
     cases = bound_corpus["cases"]
     validator = Draft202012Validator(schema)
 
-    assert [case["id"] for case in cases] == [f"C{index:02d}" for index in range(1, 42)]
-    assert len({case["id"] for case in cases}) == 41
+    assert [case["id"] for case in cases] == [f"C{index:02d}" for index in range(1, 43)]
+    assert len({case["id"] for case in cases}) == 42
     assert corpus["case_schema"]["input_schema"] == "#/$defs/authoring_request"
     assert corpus["case_schema"]["expected_result_schemas"] == {
         "construct_authoring_set": "#/$defs/construction_result",
@@ -313,7 +313,7 @@ def test_acc_corpus_executes_operation_specific_schemas_and_exact_basis() -> Non
         for case in cases
         if any(fragment["references"] for fragment in case["input"]["request"]["fragments"])
     }
-    assert {"C04", "C06", "C34", "C41"} <= fragment_reference_cases
+    assert {"C04", "C06", "C41", "C42"} <= fragment_reference_cases
     assert {
         reference["reference_kind"]
         for case in cases
@@ -321,10 +321,51 @@ def test_acc_corpus_executes_operation_specific_schemas_and_exact_basis() -> Non
         for reference in fragment["references"]
     } == {"request", "existing"}
     cases_by_id = {case["id"]: case for case in cases}
+    c34 = cases_by_id["C34"]
+    c34_fragment = c34["input"]["request"]["fragments"][0]
+    assert c34_fragment["operation"] == "update"
+    assert c34_fragment["references"] == []
+    assert c34["input"]["basis"]["existing_source_basis"]["entries"] == []
+    assert c34["expected"]["result"]["outcome"] == "Unavailable"
+    assert c34["expected"]["result"]["diagnostics"][0]["code"] == (
+        "authoring_construction.basis.existing_source_unavailable"
+    )
+    assert c34["expected"]["result"]["diagnostics"][0]["location"] == ("/request/fragments/0")
+
+    c41 = cases_by_id["C41"]
+    c41_fragment = c41["input"]["request"]["fragments"][0]
+    c41_reference = c41_fragment["references"][0]
+    c41_entries = c41["input"]["basis"]["reference_basis"]["entries"]
+    assert c41_fragment["operation"] == "create"
+    assert c41["input"]["operation"] == "construct_authoring_set"
+    assert c41["input"]["basis"]["custom_entity"] is None
+    assert c41_entries
+    assert c41_reference["target"] not in {entry["reference_id"] for entry in c41_entries}
+    assert c41_entries[0]["source_basis"]["source_bytes"]
+    assert c41_entries[0]["qualification"] == c41_reference["qualification"]
     assert cases_by_id["C41"]["expected"]["result"]["outcome"] == "Unresolved"
     assert cases_by_id["C41"]["expected"]["result"]["diagnostics"][0]["location"] == (
         "/request/fragments/0/references/0"
     )
+
+    c42 = cases_by_id["C42"]
+    c42_fragment = c42["input"]["request"]["fragments"][0]
+    c42_reference = c42_fragment["references"][0]
+    c42_entries = c42["input"]["basis"]["reference_basis"]["entries"]
+    c42_diagnostic = c42["expected"]["result"]["diagnostics"][0]
+    assert c42_fragment["operation"] == "create"
+    assert c42["input"]["basis"]["custom_entity"] is None
+    assert c42_entries
+    assert c42_reference["target"] in {entry["reference_id"] for entry in c42_entries}
+    c42_entry = next(
+        entry for entry in c42_entries if entry["reference_id"] == c42_reference["target"]
+    )
+    assert c42_entry["source_basis"]["source_bytes"]
+    assert c42_entry["qualification"] == c42_reference["qualification"]
+    assert c42["expected"]["result"]["outcome"] == "Unavailable"
+    assert c42_diagnostic["code"] == "authoring_construction.custom.authority_unavailable"
+    assert c42_diagnostic["location"] == "/request/fragments/0/references/0"
+    assert c42_diagnostic["code"] != "authoring_construction.basis.existing_source_unavailable"
 
     for case in cases:
         request = case["input"]
@@ -354,9 +395,8 @@ def test_acc_corpus_executes_operation_specific_schemas_and_exact_basis() -> Non
                     assert reference["target"] in request_keys
                 else:
                     if reference["target"] not in reference_ids:
-                        assert case["id"] in {"C34", "C41"}
-                        expected_outcome = "Unavailable" if case["id"] == "C34" else "Unresolved"
-                        assert result.get("outcome") == expected_outcome
+                        assert case["id"] == "C41"
+                        assert result.get("outcome") == "Unresolved"
         for relationship in request["request"]["relationships"]:
             for endpoint in (relationship["source"], relationship["target"]):
                 if endpoint["kind"] == "request":

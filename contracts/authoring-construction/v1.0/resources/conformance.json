@@ -17222,7 +17222,7 @@
     },
     {
       "id": "C34",
-      "name": "missing existing fragment reference basis is unavailable",
+      "name": "missing existing update source basis is unavailable",
       "operation": "construct_authoring_set",
       "input": {
         "contract_family": "authoring_construction",
@@ -17258,28 +17258,7 @@
                   }
                 ]
               },
-              "references": [
-                {
-                  "reference_key": "missing-existing-decision",
-                  "reference_kind": "existing",
-                  "target": "missing-existing-decision",
-                  "expected_semantic_type": "entity/decision",
-                  "qualification": {
-                    "family": "authoring-domain",
-                    "version": "1.1",
-                    "resources": [
-                      {
-                        "canonical_resource_key": "authoring-domain/1.1/contract",
-                        "content_digest": "sha256:4788acb08de41ce69e51c9b0fc336147d68b6f7ea36feb41d46233c0c7e281aa"
-                      },
-                      {
-                        "canonical_resource_key": "authoring-domain/1.1/schema",
-                        "content_digest": "sha256:688cfdd2dd5a15960e9ec218e0e058a17dccd3939c3eeac2f4a4c5604977eee9"
-                      }
-                    ]
-                  }
-                }
-              ],
+              "references": [],
               "composition_keys": []
             }
           ],
@@ -17532,12 +17511,12 @@
               "severity": "warning",
               "status": "unavailable",
               "request_key": "update",
-              "location": "/request/fragments/0/references/0",
+              "location": "/request/fragments/0",
               "semantic_type": "entity/decision",
               "rule": "ACC 1.0 authoring_construction.basis.existing_source_unavailable",
-              "expected": "active bounded reference entry",
-              "observed": "sealed reference basis contains no matching entry",
-              "remediation": "Supply the exact bounded reference entry and source basis before constructing an update."
+              "expected": "active bounded existing source entry",
+              "observed": "sealed existing source basis contains no matching entry",
+              "remediation": "Supply the exact bounded existing source entry before constructing an update."
             }
           ],
           "provenance": {
@@ -20908,10 +20887,10 @@
           "request_id": "ACC-C41",
           "fragments": [
             {
-              "request_key": "update",
+              "request_key": "decision",
               "semantic_kind": "entity",
               "semantic_type": "entity/decision",
-              "operation": "update",
+              "operation": "create",
               "input_mode": "prepared",
               "fields": {
                 "alias_id": "DEC-CONFORMANCE",
@@ -21234,7 +21213,7 @@
               "code": "authoring_construction.reference.fragment_unresolved",
               "severity": "warning",
               "status": "unresolved",
-              "request_key": "update",
+              "request_key": "decision",
               "location": "/request/fragments/0/references/0",
               "semantic_type": "entity/decision",
               "rule": "ACC 1.0 authoring_construction.reference.fragment_unresolved",
@@ -21268,6 +21247,370 @@
             "hidden_semantics": [],
             "diagnostic_codes": [
               "authoring_construction.reference.fragment_unresolved"
+            ]
+          }
+        },
+        "assertions": {}
+      }
+    },
+    {
+      "id": "C42",
+      "name": "fragment reference target authority is unavailable",
+      "operation": "construct_authoring_set",
+      "input": {
+        "contract_family": "authoring_construction",
+        "contract_version": "1.0",
+        "operation": "construct_authoring_set",
+        "request": {
+          "request_id": "ACC-C42",
+          "fragments": [
+            {
+              "request_key": "decision",
+              "semantic_kind": "entity",
+              "semantic_type": "entity/decision",
+              "operation": "create",
+              "input_mode": "prepared",
+              "fields": {
+                "alias_id": "DEC-CONFORMANCE",
+                "alias_name": "conformance-decision",
+                "summary": "An explicitly supplied decision.",
+                "rationale": "An explicitly supplied rationale.",
+                "id": "019109a0-b1c2-7def-8a00-112233445566"
+              },
+              "contract_qualification": {
+                "family": "authoring-domain",
+                "version": "1.1",
+                "resources": [
+                  {
+                    "canonical_resource_key": "authoring-domain/1.1/contract",
+                    "content_digest": "sha256:4788acb08de41ce69e51c9b0fc336147d68b6f7ea36feb41d46233c0c7e281aa"
+                  },
+                  {
+                    "canonical_resource_key": "authoring-domain/1.1/schema",
+                    "content_digest": "sha256:688cfdd2dd5a15960e9ec218e0e058a17dccd3939c3eeac2f4a4c5604977eee9"
+                  }
+                ]
+              },
+              "references": [
+                {
+                  "reference_key": "existing-policy",
+                  "reference_kind": "existing",
+                  "target": "existing-policy",
+                  "expected_semantic_type": "payments:policy",
+                  "qualification": {
+                    "semantic_kind": "entity",
+                    "semantic_type": "payments:policy",
+                    "consumer_namespace": "payments",
+                    "contract_version": "1.0",
+                    "contract_fingerprint": "cecf:v1:sha256:0000000000000000000000000000000000000000000000000000000000000000"
+                  }
+                }
+              ],
+              "composition_keys": []
+            }
+          ],
+          "compositions": [],
+          "relationships": []
+        },
+        "basis": {
+          "acc": {
+            "family": "authoring-construction",
+            "version": "1.0",
+            "semantic_contract_fingerprint": "$enclosing_scf"
+          },
+          "adc": {
+            "family": "authoring-domain",
+            "version": "1.1",
+            "resources": [
+              {
+                "canonical_resource_key": "authoring-domain/1.1/contract",
+                "content_digest": "sha256:4788acb08de41ce69e51c9b0fc336147d68b6f7ea36feb41d46233c0c7e281aa"
+              },
+              {
+                "canonical_resource_key": "authoring-domain/1.1/schema",
+                "content_digest": "sha256:688cfdd2dd5a15960e9ec218e0e058a17dccd3939c3eeac2f4a4c5604977eee9"
+              }
+            ]
+          },
+          "authoring": {
+            "family": "authoring",
+            "version": "1.7",
+            "resources": [
+              {
+                "canonical_resource_key": "authoring/1.7/schema/adr-common.schema",
+                "content_digest": "sha256:6914d44456fa078ec6af20bab680d6d9e7e7af00f4d3d31eea828d656f2b3760"
+              },
+              {
+                "canonical_resource_key": "authoring/1.7/schema/adr-logical.schema",
+                "content_digest": "sha256:32f6058dd5efc77cf6612587304f9275aa3a66bb7270fdb0f7ef4b871c9f5731"
+              },
+              {
+                "canonical_resource_key": "authoring/1.7/schema/adr-physical-base.schema",
+                "content_digest": "sha256:f3dd3e6989262477404579a5058c07b3d75cb0fef1fdf37392788d8b287f3a4d"
+              },
+              {
+                "canonical_resource_key": "authoring/1.7/schema/adr-physical-component.schema",
+                "content_digest": "sha256:151980ce3054d5c64990a700ca1b202181629c2375447d5758ba9186658ee7e7"
+              },
+              {
+                "canonical_resource_key": "authoring/1.7/schema/adr-physical-system.schema",
+                "content_digest": "sha256:461abbf9ce25edbf2e75f78a73eec83aac4330c7fbe3b0bb7e7736b7d8afb4be"
+              },
+              {
+                "canonical_resource_key": "authoring/1.7/schema/types.schema",
+                "content_digest": "sha256:037ad8a50ad48e0b19452795e4b0ffd710e5aecf1d93e6aa1d69db3745ef1b65"
+              }
+            ]
+          },
+          "normalized_model": {
+            "family": "normalized-model",
+            "version": "2.4",
+            "resources": [
+              {
+                "canonical_resource_key": "normalized-model/2.4/schema/normalized-architecture-model.schema",
+                "content_digest": "sha256:14844a15f83f3ac2ecb4e2ceb45ae144b30e93b5e530f83d339c97530aeab7d3"
+              },
+              {
+                "canonical_resource_key": "normalized-model/2.4/schema/normalized-entity-registry.schema",
+                "content_digest": "sha256:53dfff9437c0d1d21becf71dbdf6582004a9dcd90ab79e29d64cae3cc2071110"
+              },
+              {
+                "canonical_resource_key": "normalized-model/2.4/schema/normalized-entity.schema",
+                "content_digest": "sha256:eaca142cb37975f7c321a66dcac58f464fe968bc90b6367658088dbeee09df30"
+              },
+              {
+                "canonical_resource_key": "normalized-model/2.4/schema/relationship-record.schema",
+                "content_digest": "sha256:3842db1e8cc12571b0ccbfb76e06ccf48a1bafa46bf55a72be3e316d891b2e85"
+              },
+              {
+                "canonical_resource_key": "normalized-model/2.4/schema/relationship-registry.schema",
+                "content_digest": "sha256:e9d114cbec69095ad09c958bae30e83d7da62a50878b468488634b1c06ebab48"
+              },
+              {
+                "canonical_resource_key": "normalized-model/2.4/schema/unresolved-registry.schema",
+                "content_digest": "sha256:6ab7768448abffbea1619edde28ad0c14744105a35c7fbc081ed9746b0c85c7e"
+              }
+            ]
+          },
+          "architecture_interpretation": {
+            "family": "architecture-interpretation",
+            "version": "1.1",
+            "semantic_contract_fingerprint": "scf:v1:sha256:3650db1f6763a1e7ab81a3f3663d002b3e97ffc0ae007bd7d3543508c069100e"
+          },
+          "custom_entity": null,
+          "reference_basis": {
+            "sealed": true,
+            "entries": [
+              {
+                "reference_id": "existing-policy",
+                "canonical_uuid": "019109a0-b1c2-7def-8a00-112233445577",
+                "semantic_kind": "entity",
+                "semantic_type": "payments:policy",
+                "qualification": {
+                  "semantic_kind": "entity",
+                  "semantic_type": "payments:policy",
+                  "consumer_namespace": "payments",
+                  "contract_version": "1.0",
+                  "contract_fingerprint": "cecf:v1:sha256:0000000000000000000000000000000000000000000000000000000000000000"
+                },
+                "existence_state": "active",
+                "source_basis": {
+                  "source_ref": "references/existing-policy",
+                  "content_digest": "sha256:2d711642b726b04401627ca9fbac32f5c8530fb1903cc4db02258717921a4881",
+                  "source_bytes": "eA=="
+                }
+              }
+            ]
+          },
+          "existing_source_basis": {
+            "sealed": true,
+            "entries": []
+          },
+          "identity_establishment": {
+            "phase": "before_deterministic_interpretation",
+            "supplied_uuidv7": "preserve",
+            "absent_on_create": "mint_uuidv7_allowed_for_identity_bearing_types",
+            "absent_on_update": "reject",
+            "composition": "does_not_create_or_replace_identity",
+            "derivations_forbidden": [
+              "alias",
+              "prose",
+              "path",
+              "source_location",
+              "content_hash",
+              "source_order",
+              "array_order",
+              "composition_position"
+            ]
+          },
+          "provenance": {
+            "source_ref": "conformance/C42",
+            "source_revision": "frozen-1.0",
+            "registry_selection": "exact"
+          }
+        }
+      },
+      "expected": {
+        "result": {
+          "contract_family": "authoring_construction",
+          "contract_version": "1.0",
+          "operation": "construct_authoring_set",
+          "basis_qualification": {
+            "acc": {
+              "family": "authoring-construction",
+              "version": "1.0",
+              "semantic_contract_fingerprint": "$enclosing_scf"
+            },
+            "adc": {
+              "family": "authoring-domain",
+              "version": "1.1",
+              "resources": [
+                {
+                  "canonical_resource_key": "authoring-domain/1.1/contract",
+                  "content_digest": "sha256:4788acb08de41ce69e51c9b0fc336147d68b6f7ea36feb41d46233c0c7e281aa"
+                },
+                {
+                  "canonical_resource_key": "authoring-domain/1.1/schema",
+                  "content_digest": "sha256:688cfdd2dd5a15960e9ec218e0e058a17dccd3939c3eeac2f4a4c5604977eee9"
+                }
+              ]
+            },
+            "authoring": {
+              "family": "authoring",
+              "version": "1.7",
+              "resources": [
+                {
+                  "canonical_resource_key": "authoring/1.7/schema/adr-common.schema",
+                  "content_digest": "sha256:6914d44456fa078ec6af20bab680d6d9e7e7af00f4d3d31eea828d656f2b3760"
+                },
+                {
+                  "canonical_resource_key": "authoring/1.7/schema/adr-logical.schema",
+                  "content_digest": "sha256:32f6058dd5efc77cf6612587304f9275aa3a66bb7270fdb0f7ef4b871c9f5731"
+                },
+                {
+                  "canonical_resource_key": "authoring/1.7/schema/adr-physical-base.schema",
+                  "content_digest": "sha256:f3dd3e6989262477404579a5058c07b3d75cb0fef1fdf37392788d8b287f3a4d"
+                },
+                {
+                  "canonical_resource_key": "authoring/1.7/schema/adr-physical-component.schema",
+                  "content_digest": "sha256:151980ce3054d5c64990a700ca1b202181629c2375447d5758ba9186658ee7e7"
+                },
+                {
+                  "canonical_resource_key": "authoring/1.7/schema/adr-physical-system.schema",
+                  "content_digest": "sha256:461abbf9ce25edbf2e75f78a73eec83aac4330c7fbe3b0bb7e7736b7d8afb4be"
+                },
+                {
+                  "canonical_resource_key": "authoring/1.7/schema/types.schema",
+                  "content_digest": "sha256:037ad8a50ad48e0b19452795e4b0ffd710e5aecf1d93e6aa1d69db3745ef1b65"
+                }
+              ]
+            },
+            "normalized_model": {
+              "family": "normalized-model",
+              "version": "2.4",
+              "resources": [
+                {
+                  "canonical_resource_key": "normalized-model/2.4/schema/normalized-architecture-model.schema",
+                  "content_digest": "sha256:14844a15f83f3ac2ecb4e2ceb45ae144b30e93b5e530f83d339c97530aeab7d3"
+                },
+                {
+                  "canonical_resource_key": "normalized-model/2.4/schema/normalized-entity-registry.schema",
+                  "content_digest": "sha256:53dfff9437c0d1d21becf71dbdf6582004a9dcd90ab79e29d64cae3cc2071110"
+                },
+                {
+                  "canonical_resource_key": "normalized-model/2.4/schema/normalized-entity.schema",
+                  "content_digest": "sha256:eaca142cb37975f7c321a66dcac58f464fe968bc90b6367658088dbeee09df30"
+                },
+                {
+                  "canonical_resource_key": "normalized-model/2.4/schema/relationship-record.schema",
+                  "content_digest": "sha256:3842db1e8cc12571b0ccbfb76e06ccf48a1bafa46bf55a72be3e316d891b2e85"
+                },
+                {
+                  "canonical_resource_key": "normalized-model/2.4/schema/relationship-registry.schema",
+                  "content_digest": "sha256:e9d114cbec69095ad09c958bae30e83d7da62a50878b468488634b1c06ebab48"
+                },
+                {
+                  "canonical_resource_key": "normalized-model/2.4/schema/unresolved-registry.schema",
+                  "content_digest": "sha256:6ab7768448abffbea1619edde28ad0c14744105a35c7fbc081ed9746b0c85c7e"
+                }
+              ]
+            },
+            "architecture_interpretation": {
+              "family": "architecture-interpretation",
+              "version": "1.1",
+              "semantic_contract_fingerprint": "scf:v1:sha256:3650db1f6763a1e7ab81a3f3663d002b3e97ffc0ae007bd7d3543508c069100e"
+            },
+            "custom_entity": null,
+            "reference_basis": {
+              "sealed": true,
+              "entries": []
+            },
+            "existing_source_basis": {
+              "sealed": true,
+              "entries": []
+            },
+            "identity_establishment": {
+              "phase": "before_deterministic_interpretation",
+              "supplied_uuidv7": "preserve",
+              "absent_on_create": "mint_uuidv7_allowed_for_identity_bearing_types",
+              "absent_on_update": "reject",
+              "composition": "does_not_create_or_replace_identity",
+              "derivations_forbidden": [
+                "alias",
+                "prose",
+                "path",
+                "source_location",
+                "content_hash",
+                "source_order",
+                "array_order",
+                "composition_position"
+              ]
+            },
+            "provenance": {
+              "source_ref": "conformance/C41",
+              "source_revision": "frozen-1.0",
+              "registry_selection": "exact"
+            }
+          },
+          "diagnostics": [
+            {
+              "code": "authoring_construction.custom.authority_unavailable",
+              "severity": "warning",
+              "status": "unavailable",
+              "request_key": "decision",
+              "location": "/request/fragments/0/references/0",
+              "semantic_type": "payments:policy",
+              "rule": "ACC 1.0 authoring_construction.custom.authority_unavailable",
+              "expected": "exact custom registry and definition authority",
+              "observed": "bounded reference target is present but its exact custom authority is unavailable",
+              "remediation": "Supply the exact custom registry and selected definition required by the reference qualification."
+            }
+          ],
+          "provenance": {
+            "case_id": "C42",
+            "deterministic": true,
+            "side_effects": {
+              "repository": false,
+              "git": false,
+              "runtime": false,
+              "runtime_snapshot": false,
+              "admission": false,
+              "alias_reservation": false
+            }
+          },
+          "outcome": "Unavailable",
+          "construction_map": [],
+          "candidate_fragments": [],
+          "candidate_artifacts": [],
+          "candidate_source_basis": null,
+          "normalized_result": null,
+          "round_trip": {
+            "qualified": false,
+            "comparison": "not_evaluated",
+            "authorized_differences": [],
+            "hidden_semantics": [],
+            "diagnostic_codes": [
+              "authoring_construction.custom.authority_unavailable"
             ]
           }
         },

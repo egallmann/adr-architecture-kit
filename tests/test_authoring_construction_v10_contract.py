@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+from copy import deepcopy
 from pathlib import Path
 from typing import Any
 
@@ -24,6 +25,12 @@ RESOURCE_FAMILIES = {
     "authoring": "authoring",
     "normalized_model": "normalized-model",
 }
+SELF_BINDING_MARKER = "$enclosing_scf"
+SELF_BINDING_SOURCE = "verified_enclosing_semantic_contract_fingerprint"
+SELF_BINDING_PATTERNS = (
+    "/cases/*/input/basis/acc/semantic_contract_fingerprint",
+    "/cases/*/expected/result/basis_qualification/acc/semantic_contract_fingerprint",
+)
 
 
 def _document(path: Path) -> dict[str, Any]:
@@ -79,9 +86,173 @@ def _assert_basis(basis: dict[str, Any]) -> None:
         assert entry["canonical_uuid"]
         assert entry["semantic_type"]
         assert "qualification" in entry
+        if "source_basis" in entry and "content_digest" in entry["source_basis"]:
+            assert set(entry["source_basis"]) == {
+                "source_ref",
+                "content_digest",
+                "source_bytes",
+            }
+            assert entry["source_basis"]["source_bytes"]
+            assert entry["source_basis"]["content_digest"].startswith("sha256:")
     for entry in basis["existing_source_basis"]["entries"]:
         assert entry["source_bytes"]
         assert entry["content_digest"].startswith("sha256:")
+
+
+def _walk_scalars(value: Any, path: str = "") -> list[tuple[str, Any]]:
+    if isinstance(value, dict):
+        return [
+            item for key, child in value.items() for item in _walk_scalars(child, f"{path}/{key}")
+        ]
+    if isinstance(value, list):
+        return [
+            item
+            for index, child in enumerate(value)
+            for item in _walk_scalars(child, f"{path}/{index}")
+        ]
+    return [(path or "/", value)]
+
+
+def _marker_paths(document: dict[str, Any]) -> set[str]:
+    return {
+        path
+        for path, value in _walk_scalars(document)
+        if value == SELF_BINDING_MARKER and path != "/self_binding/marker"
+    }
+
+
+def _assert_self_binding_shape(corpus: dict[str, Any]) -> set[str]:
+    assert set(corpus["self_binding"]) == {
+        "marker",
+        "source",
+        "allowed_json_pointer_patterns",
+    }
+    assert corpus["self_binding"] == {
+        "marker": SELF_BINDING_MARKER,
+        "source": SELF_BINDING_SOURCE,
+        "allowed_json_pointer_patterns": list(SELF_BINDING_PATTERNS),
+    }
+    expected_paths = {
+        f"/cases/{index}/input/basis/acc/semantic_contract_fingerprint"
+        for index in range(len(corpus["cases"]))
+    }
+    expected_paths.update(
+        f"/cases/{index}/expected/result/basis_qualification/acc/semantic_contract_fingerprint"
+        for index in range(len(corpus["cases"]))
+    )
+    assert _marker_paths(corpus) == expected_paths
+    assert all(
+        not (isinstance(value, str) and value.startswith("$") and value != SELF_BINDING_MARKER)
+        for _, value in _walk_scalars(corpus)
+    )
+    return expected_paths
+
+
+def _verified_bound_conformance(
+    schema: dict[str, Any],
+) -> tuple[dict[str, Any], dict[str, Any], str]:
+    contract = _document(ACC / "contract.json")
+    assert verify_semantic_contract(contract).success is True
+    calculated = calculate_semantic_contract_fingerprint(contract)
+    assert calculated.success is True
+    assert calculated.semantic_contract_fingerprint == contract["semanticContractFingerprint"]
+
+    resources = [
+        {
+            "canonicalResourceKey": entry["canonicalResourceKey"],
+            "content": _document(
+                ACC / "resources" / f"{entry['canonicalResourceKey'].split('/')[-1]}.json"
+            ),
+        }
+        for entry in contract["resourceManifest"]
+    ]
+    closure = validate_semantic_resource_closure(contract, resources)
+    assert closure.success is True
+    assert closure.closure_valid is True
+
+    corpus = _document(ACC / "resources" / "conformance.json")
+    conformance_entry = next(
+        entry
+        for entry in contract["resourceManifest"]
+        if entry["canonicalResourceKey"] == "authoring-construction/1.0/conformance"
+    )
+    digest = "sha256:" + hashlib.sha256(rfc8785.dumps(corpus)).hexdigest()
+    assert conformance_entry["contentDigest"] == digest
+
+    _assert_self_binding_shape(corpus)
+
+    validator = Draft202012Validator(schema)
+    unbound_request_errors = _errors(validator, corpus["cases"][0]["input"], "authoring_request")
+    unbound_result_errors = _errors(
+        validator,
+        corpus["cases"][0]["expected"]["result"],
+        "construction_result",
+    )
+    assert unbound_request_errors
+    assert unbound_result_errors
+    assert any(
+        "semantic_contract_fingerprint" in error.absolute_path
+        for error in unbound_request_errors + unbound_result_errors
+    )
+
+    bound = deepcopy(corpus)
+    bound.pop("self_binding")
+    verified_scf = contract["semanticContractFingerprint"]
+    for case in bound["cases"]:
+        case["input"]["basis"]["acc"]["semantic_contract_fingerprint"] = verified_scf
+        case["expected"]["result"]["basis_qualification"]["acc"][
+            "semantic_contract_fingerprint"
+        ] = verified_scf
+
+    assert _marker_paths(bound) == set()
+    assert all(
+        not (isinstance(value, str) and value.startswith("$")) for _, value in _walk_scalars(bound)
+    )
+    for index in range(len(corpus["cases"])):
+        assert (
+            corpus["cases"][index]["input"]["basis"]["acc"]["semantic_contract_fingerprint"]
+            == SELF_BINDING_MARKER
+        )
+        assert (
+            bound["cases"][index]["input"]["basis"]["acc"]["semantic_contract_fingerprint"]
+            == verified_scf
+        )
+        assert (
+            corpus["cases"][index]["expected"]["result"]["basis_qualification"]["acc"][
+                "semantic_contract_fingerprint"
+            ]
+            == SELF_BINDING_MARKER
+        )
+        assert (
+            bound["cases"][index]["expected"]["result"]["basis_qualification"]["acc"][
+                "semantic_contract_fingerprint"
+            ]
+            == verified_scf
+        )
+    return corpus, bound, verified_scf
+
+
+def test_acc_self_binding_rejects_unknown_and_undeclared_markers() -> None:
+    corpus = _document(ACC / "resources" / "conformance.json")
+    invalid_marker = deepcopy(corpus)
+    invalid_marker["cases"][0]["input"]["basis"]["acc"][
+        "semantic_contract_fingerprint"
+    ] = "$ambient_scf"
+    try:
+        _assert_self_binding_shape(invalid_marker)
+    except AssertionError:
+        pass
+    else:
+        raise AssertionError("unknown self-binding marker was accepted")
+
+    undeclared_marker = deepcopy(corpus)
+    undeclared_marker["cases"][0]["input"]["request"]["request_id"] = SELF_BINDING_MARKER
+    try:
+        _assert_self_binding_shape(undeclared_marker)
+    except AssertionError:
+        pass
+    else:
+        raise AssertionError("undeclared self-binding location was accepted")
 
 
 def test_acc_contract_schema_and_document_are_strictly_valid() -> None:
@@ -126,17 +297,34 @@ def test_acc_scf_and_resource_closure_are_verified_by_shared_authority() -> None
 
 def test_acc_corpus_executes_operation_specific_schemas_and_exact_basis() -> None:
     schema = _document(ACC / "schema.json")
-    corpus = _document(ACC / "resources" / "conformance.json")
-    cases = corpus["cases"]
+    corpus, bound_corpus, _ = _verified_bound_conformance(schema)
+    cases = bound_corpus["cases"]
     validator = Draft202012Validator(schema)
 
-    assert [case["id"] for case in cases] == [f"C{index:02d}" for index in range(1, 41)]
-    assert len({case["id"] for case in cases}) == 40
+    assert [case["id"] for case in cases] == [f"C{index:02d}" for index in range(1, 42)]
+    assert len({case["id"] for case in cases}) == 41
     assert corpus["case_schema"]["input_schema"] == "#/$defs/authoring_request"
     assert corpus["case_schema"]["expected_result_schemas"] == {
         "construct_authoring_set": "#/$defs/construction_result",
         "validate_authoring": "#/$defs/validation_result",
     }
+    fragment_reference_cases = {
+        case["id"]
+        for case in cases
+        if any(fragment["references"] for fragment in case["input"]["request"]["fragments"])
+    }
+    assert {"C04", "C06", "C34", "C41"} <= fragment_reference_cases
+    assert {
+        reference["reference_kind"]
+        for case in cases
+        for fragment in case["input"]["request"]["fragments"]
+        for reference in fragment["references"]
+    } == {"request", "existing"}
+    cases_by_id = {case["id"]: case for case in cases}
+    assert cases_by_id["C41"]["expected"]["result"]["outcome"] == "Unresolved"
+    assert cases_by_id["C41"]["expected"]["result"]["diagnostics"][0]["location"] == (
+        "/request/fragments/0/references/0"
+    )
 
     for case in cases:
         request = case["input"]
@@ -156,10 +344,19 @@ def test_acc_corpus_executes_operation_specific_schemas_and_exact_basis() -> Non
         _assert_basis(request["basis"])
 
         request_keys = _request_keys(request["request"])
+        reference_ids = {
+            entry["reference_id"] for entry in request["basis"]["reference_basis"]["entries"]
+        }
         for fragment in request["request"]["fragments"]:
             for reference in fragment["references"]:
-                if reference["kind"] == "request":
+                assert reference["reference_key"]
+                if reference["reference_kind"] == "request":
                     assert reference["target"] in request_keys
+                else:
+                    if reference["target"] not in reference_ids:
+                        assert case["id"] in {"C34", "C41"}
+                        expected_outcome = "Unavailable" if case["id"] == "C34" else "Unresolved"
+                        assert result.get("outcome") == expected_outcome
         for relationship in request["request"]["relationships"]:
             for endpoint in (relationship["source"], relationship["target"]):
                 if endpoint["kind"] == "request":
@@ -205,6 +402,28 @@ def test_acc_corpus_executes_operation_specific_schemas_and_exact_basis() -> Non
                 assert result["normalized_result"] is not None
                 assert result["round_trip"]["qualified"] is True
                 assert result["round_trip"]["comparison"] == "semantic_equivalent"
+                for fragment in request["request"]["fragments"]:
+                    if not fragment["references"]:
+                        continue
+                    candidate_fragment = next(
+                        item
+                        for item in result["candidate_fragments"]
+                        if item["request_key"] == fragment["request_key"]
+                    )
+                    resolutions = candidate_fragment["resolved_references"]
+                    assert {item["reference_key"] for item in resolutions} == {
+                        item["reference_key"] for item in fragment["references"]
+                    }
+                    for reference in fragment["references"]:
+                        resolution = next(
+                            item
+                            for item in resolutions
+                            if item["reference_key"] == reference["reference_key"]
+                        )
+                        assert resolution["reference_kind"] == reference["reference_kind"]
+                        assert resolution["target"] == reference["target"]
+                        assert resolution["semantic_type"] == reference["expected_semantic_type"]
+                        assert resolution["qualification"] == reference["qualification"]
             else:
                 assert not (
                     result["round_trip"]["qualified"]
@@ -240,6 +459,7 @@ def test_acc_semantic_vectors_preserve_relationship_and_authority_doctrine() -> 
     }
 
     c08 = cases["C08"]
+    assert c08["name"] == "consumer-qualified custom relationship permitted by exact contract"
     relationship = c08["input"]["request"]["relationships"][0]
     assert relationship["relationship_type"] == "payments:depends_on"
     assert relationship["qualification"]["semantic_type"] == "payments:depends_on"

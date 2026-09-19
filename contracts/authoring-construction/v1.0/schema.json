@@ -275,6 +275,20 @@
       },
       "additionalProperties": false
     },
+    "resolved_reference": {
+      "type": "object",
+      "required": ["reference_key", "reference_kind", "target", "canonical_uuid", "semantic_type", "qualification", "disposition"],
+      "properties": {
+        "reference_key": {"$ref": "#/$defs/non_empty"},
+        "reference_kind": {"enum": ["request", "existing"]},
+        "target": {"$ref": "#/$defs/non_empty"},
+        "canonical_uuid": {"$ref": "#/$defs/uuid_v7"},
+        "semantic_type": {"$ref": "#/$defs/semantic_type"},
+        "qualification": {"$ref": "#/$defs/fragment_qualification"},
+        "disposition": {"enum": ["resolved", "reused"]}
+      },
+      "additionalProperties": false
+    },
     "candidate_artifact": {
       "type": "object",
       "required": ["request_key", "source_ref", "artifact_kind", "content_digest", "bytes", "source_contract"],
@@ -343,7 +357,7 @@
     "construction_result": {
       "allOf": [
         {"$ref": "#/$defs/result_base"},
-        {"type": "object", "required": ["operation", "outcome", "construction_map", "candidate_fragments", "candidate_artifacts", "candidate_source_basis", "normalized_result", "round_trip"], "properties": {"operation": {"const": "construct_authoring_set"}, "outcome": {"enum": ["Constructed", "Rejected", "Unavailable", "Unresolved"]}, "construction_map": {"type": "array", "items": {"$ref": "#/$defs/construction_map_entry"}}, "candidate_fragments": {"type": "array", "items": {"type": "object", "required": ["request_key", "semantic_kind", "semantic_type", "identity", "contract_qualification", "fields", "source_contract"], "properties": {"request_key": {"$ref": "#/$defs/non_empty"}, "semantic_kind": {"enum": ["adr", "entity", "relationship", "value"]}, "semantic_type": {"$ref": "#/$defs/semantic_type"}, "identity": {"anyOf": [{"$ref": "#/$defs/uuid_v7"}, {"type": "null"}]}, "contract_qualification": {"$ref": "#/$defs/fragment_qualification"}, "fields": {"type": "object", "additionalProperties": true}, "source_contract": {"$ref": "#/$defs/exact_resource_set_qualification"}}, "additionalProperties": false}}, "candidate_artifacts": {"type": "array", "items": {"$ref": "#/$defs/candidate_artifact"}}, "candidate_source_basis": {"anyOf": [{"$ref": "#/$defs/candidate_source_basis"}, {"type": "null"}]}, "normalized_result": {"anyOf": [{"$ref": "#/$defs/normalized_result"}, {"type": "null"}]}, "round_trip": {"$ref": "#/$defs/round_trip"}}},
+        {"type": "object", "required": ["operation", "outcome", "construction_map", "candidate_fragments", "candidate_artifacts", "candidate_source_basis", "normalized_result", "round_trip"], "properties": {"operation": {"const": "construct_authoring_set"}, "outcome": {"enum": ["Constructed", "Rejected", "Unavailable", "Unresolved"]}, "construction_map": {"type": "array", "items": {"$ref": "#/$defs/construction_map_entry"}}, "candidate_fragments": {"type": "array", "items": {"type": "object", "required": ["request_key", "semantic_kind", "semantic_type", "identity", "contract_qualification", "fields", "source_contract"], "properties": {"request_key": {"$ref": "#/$defs/non_empty"}, "semantic_kind": {"enum": ["adr", "entity", "relationship", "value"]}, "semantic_type": {"$ref": "#/$defs/semantic_type"}, "identity": {"anyOf": [{"$ref": "#/$defs/uuid_v7"}, {"type": "null"}]}, "contract_qualification": {"$ref": "#/$defs/fragment_qualification"}, "fields": {"type": "object", "additionalProperties": true}, "resolved_references": {"type": "array", "items": {"$ref": "#/$defs/resolved_reference"}}, "source_contract": {"$ref": "#/$defs/exact_resource_set_qualification"}}, "additionalProperties": false}}, "candidate_artifacts": {"type": "array", "items": {"$ref": "#/$defs/candidate_artifact"}}, "candidate_source_basis": {"anyOf": [{"$ref": "#/$defs/candidate_source_basis"}, {"type": "null"}]}, "normalized_result": {"anyOf": [{"$ref": "#/$defs/normalized_result"}, {"type": "null"}]}, "round_trip": {"$ref": "#/$defs/round_trip"}}},
         {"if": {"properties": {"outcome": {"const": "Constructed"}}}, "then": {"required": ["candidate_source_basis", "normalized_result"], "properties": {"candidate_source_basis": {"$ref": "#/$defs/candidate_source_basis"}, "normalized_result": {"$ref": "#/$defs/normalized_result"}, "round_trip": {"properties": {"qualified": {"const": true}, "comparison": {"const": "semantic_equivalent"}}}}}}
       ],
       "unevaluatedProperties": false

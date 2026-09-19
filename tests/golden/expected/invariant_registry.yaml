@@ -14010,3 +14010,611 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
+- id: 01a0b75d-8a02-70e6-b59c-63e53aaa543e
+  alias_id: INV-0240
+  alias_name: scf-v1-remains-exact-resource-closure-identity
+  alias_ref: INV-0240:scf-v1-remains-exact-resource-closure-identity
+  entity_type: invariant
+  name: INV-0240
+  summary: SCF v1 MUST remain an identity over the immutable semantic-contract definition
+    and exact content-addressed resource closure; implementations MUST NOT exclude
+    conformance resources, ignore fields in exact resource digests
+  uri: adr://adr-architecture-kit/entities/01a0b75d-8a02-70e6-b59c-63e53aaa543e
+  created_at: '2026-09-19T01:52:35.842Z'
+  entity_fingerprint: sha256:bdc6564d37dcfc10280e12360bab15f4ba6336bb92d76e5bef3af0d83e68a00a
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a0b75d-8a02-70e6-b59c-63dd6133c637#01a0b75d-8a02-70e6-b59c-63e53aaa543e
+    artifact_path: adrs/logical/ADR-L-0031-non-recursive-semantic-contract-conformance-binding.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a0b75d-8a02-70e6-b59c-63dd6133c637
+    adr_alias_id: ADR-L-0031
+    scope: global
+    statement: SCF v1 MUST remain an identity over the immutable semantic-contract
+      definition and exact content-addressed resource closure; implementations MUST
+      NOT exclude conformance resources, ignore fields in exact resource digests,
+      or introduce an alternate semantic digest for this rule.
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions: []
+    supersedes: []
+    alias_id: INV-0240
+    alias_name: scf-v1-remains-exact-resource-closure-identity
+  relationships:
+    declared_in:
+    - 01a0b75d-8a02-70e6-b59c-63dd6133c637
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    consumes_interface: []
+    composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a0b75d-8a02-70e6-b59c-63dd6133c637#01a0b75d-8a02-70e6-b59c-63e53aaa543e
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
+- id: 01a0b75d-8a02-70e6-b59c-63e684f454c3
+  alias_id: INV-0241
+  alias_name: manifest-resource-must-not-literally-self-embed-enclosing-scf
+  alias_ref: INV-0241:manifest-resource-must-not-literally-self-embed-enclosing-scf
+  entity_type: invariant
+  name: INV-0241
+  summary: A semantic resource whose exact content digest participates in an enclosing
+    semantic contract SCF MUST NOT require a literal copy of that same enclosing SCF
+    in its frozen bytes.
+  uri: adr://adr-architecture-kit/entities/01a0b75d-8a02-70e6-b59c-63e684f454c3
+  created_at: '2026-09-19T01:52:35.842Z'
+  entity_fingerprint: sha256:2ab03bef7868fabaf364dafd1974b198d2cd24c7646bd841ef7329ccce51703f
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a0b75d-8a02-70e6-b59c-63dd6133c637#01a0b75d-8a02-70e6-b59c-63e684f454c3
+    artifact_path: adrs/logical/ADR-L-0031-non-recursive-semantic-contract-conformance-binding.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a0b75d-8a02-70e6-b59c-63dd6133c637
+    adr_alias_id: ADR-L-0031
+    scope: global
+    statement: A semantic resource whose exact content digest participates in an enclosing
+      semantic contract SCF MUST NOT require a literal copy of that same enclosing
+      SCF in its frozen bytes.
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions: []
+    supersedes: []
+    alias_id: INV-0241
+    alias_name: manifest-resource-must-not-literally-self-embed-enclosing-scf
+  relationships:
+    declared_in:
+    - 01a0b75d-8a02-70e6-b59c-63dd6133c637
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    consumes_interface: []
+    composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a0b75d-8a02-70e6-b59c-63dd6133c637#01a0b75d-8a02-70e6-b59c-63e684f454c3
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
+- id: 01a0b75d-8a02-70e6-b59c-63e7c9b9778f
+  alias_id: INV-0242
+  alias_name: enclosing-scf-marker-is-conformance-only
+  alias_ref: INV-0242:enclosing-scf-marker-is-conformance-only
+  entity_type: invariant
+  name: INV-0242
+  summary: The reserved marker $enclosing_scf MAY occur only in a frozen normative
+    conformance resource at an explicitly declared self-binding location and MUST
+    denote only the verified SCF of its exact enclosing semantic contract.
+  uri: adr://adr-architecture-kit/entities/01a0b75d-8a02-70e6-b59c-63e7c9b9778f
+  created_at: '2026-09-19T01:52:35.842Z'
+  entity_fingerprint: sha256:1bbdcb4d4c24199cb4cfc368844c4237de1d7d5ccd9acd622cb06b18a6a2c364
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a0b75d-8a02-70e6-b59c-63dd6133c637#01a0b75d-8a02-70e6-b59c-63e7c9b9778f
+    artifact_path: adrs/logical/ADR-L-0031-non-recursive-semantic-contract-conformance-binding.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a0b75d-8a02-70e6-b59c-63dd6133c637
+    adr_alias_id: ADR-L-0031
+    scope: conformance
+    statement: The reserved marker $enclosing_scf MAY occur only in a frozen normative
+      conformance resource at an explicitly declared self-binding location and MUST
+      denote only the verified SCF of its exact enclosing semantic contract.
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions: []
+    supersedes: []
+    alias_id: INV-0242
+    alias_name: enclosing-scf-marker-is-conformance-only
+  relationships:
+    declared_in:
+    - 01a0b75d-8a02-70e6-b59c-63dd6133c637
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    consumes_interface: []
+    composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a0b75d-8a02-70e6-b59c-63dd6133c637#01a0b75d-8a02-70e6-b59c-63e7c9b9778f
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
+- id: 01a0b75d-8a02-70e6-b59c-63e83840bbf0
+  alias_id: INV-0243
+  alias_name: self-binding-requires-verified-definition-and-closure
+  alias_ref: INV-0243:self-binding-requires-verified-definition-and-closure
+  entity_type: invariant
+  name: INV-0243
+  summary: 'Self-binding MUST occur only after the enclosing semantic-contract definition
+    verifies against its declared SCF, complete required resource closure verifies
+    successfully, and the conformance resource is proven to be the '
+  uri: adr://adr-architecture-kit/entities/01a0b75d-8a02-70e6-b59c-63e83840bbf0
+  created_at: '2026-09-19T01:52:35.842Z'
+  entity_fingerprint: sha256:b49c0a6cb2b3d16844c03cc31c45fff230310d69c3c1eefcb570a166663aeff3
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a0b75d-8a02-70e6-b59c-63dd6133c637#01a0b75d-8a02-70e6-b59c-63e83840bbf0
+    artifact_path: adrs/logical/ADR-L-0031-non-recursive-semantic-contract-conformance-binding.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a0b75d-8a02-70e6-b59c-63dd6133c637
+    adr_alias_id: ADR-L-0031
+    scope: conformance
+    statement: Self-binding MUST occur only after the enclosing semantic-contract
+      definition verifies against its declared SCF, complete required resource closure
+      verifies successfully, and the conformance resource is proven to be the exact
+      manifest-qualified resource being bound.
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions: []
+    supersedes: []
+    alias_id: INV-0243
+    alias_name: self-binding-requires-verified-definition-and-closure
+  relationships:
+    declared_in:
+    - 01a0b75d-8a02-70e6-b59c-63dd6133c637
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    consumes_interface: []
+    composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a0b75d-8a02-70e6-b59c-63dd6133c637#01a0b75d-8a02-70e6-b59c-63e83840bbf0
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
+- id: 01a0b75d-8a02-70e6-b59c-63e911e0a757
+  alias_id: INV-0244
+  alias_name: bound-conformance-is-derived-and-non-authoritative
+  alias_ref: INV-0244:bound-conformance-is-derived-and-non-authoritative
+  entity_type: invariant
+  name: INV-0244
+  summary: A projection that replaces an authorized self-binding marker with the verified
+    enclosing SCF MUST be treated as a deterministic execution projection, MUST NOT
+    be a new semantic-contract resource, and MUST NOT mutate or r
+  uri: adr://adr-architecture-kit/entities/01a0b75d-8a02-70e6-b59c-63e911e0a757
+  created_at: '2026-09-19T01:52:35.842Z'
+  entity_fingerprint: sha256:4d787e82a3e5cf6085bc5e9e3dbbd625bb718a843bd6f2350dffa38c64cad43d
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a0b75d-8a02-70e6-b59c-63dd6133c637#01a0b75d-8a02-70e6-b59c-63e911e0a757
+    artifact_path: adrs/logical/ADR-L-0031-non-recursive-semantic-contract-conformance-binding.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a0b75d-8a02-70e6-b59c-63dd6133c637
+    adr_alias_id: ADR-L-0031
+    scope: conformance
+    statement: A projection that replaces an authorized self-binding marker with the
+      verified enclosing SCF MUST be treated as a deterministic execution projection,
+      MUST NOT be a new semantic-contract resource, and MUST NOT mutate or replace
+      the frozen resource.
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions: []
+    supersedes: []
+    alias_id: INV-0244
+    alias_name: bound-conformance-is-derived-and-non-authoritative
+  relationships:
+    declared_in:
+    - 01a0b75d-8a02-70e6-b59c-63dd6133c637
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    consumes_interface: []
+    composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a0b75d-8a02-70e6-b59c-63dd6133c637#01a0b75d-8a02-70e6-b59c-63e911e0a757
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
+- id: 01a0b75d-8a02-70e6-b59c-63ea6b065e5b
+  alias_id: INV-0246
+  alias_name: production-wire-surfaces-reject-unbound-marker
+  alias_ref: INV-0246:production-wire-surfaces-reject-unbound-marker
+  entity_type: invariant
+  name: INV-0246
+  summary: Production wire schemas, public APIs, ordinary consumer requests, semantic
+    results, and retained exact source bases MUST require the real verified scf:v1:sha256
+    value and MUST reject an unbound $enclosing_scf marker.
+  uri: adr://adr-architecture-kit/entities/01a0b75d-8a02-70e6-b59c-63ea6b065e5b
+  created_at: '2026-09-19T01:52:35.842Z'
+  entity_fingerprint: sha256:6172f14ed8ce23b71562b9f5eee0fd8aa960052e3f31eceea92ce1cf8280cba4
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a0b75d-8a02-70e6-b59c-63dd6133c637#01a0b75d-8a02-70e6-b59c-63ea6b065e5b
+    artifact_path: adrs/logical/ADR-L-0031-non-recursive-semantic-contract-conformance-binding.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a0b75d-8a02-70e6-b59c-63dd6133c637
+    adr_alias_id: ADR-L-0031
+    scope: production
+    statement: Production wire schemas, public APIs, ordinary consumer requests, semantic
+      results, and retained exact source bases MUST require the real verified scf:v1:sha256
+      value and MUST reject an unbound $enclosing_scf marker.
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions: []
+    supersedes: []
+    alias_id: INV-0246
+    alias_name: production-wire-surfaces-reject-unbound-marker
+  relationships:
+    declared_in:
+    - 01a0b75d-8a02-70e6-b59c-63dd6133c637
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    consumes_interface: []
+    composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a0b75d-8a02-70e6-b59c-63dd6133c637#01a0b75d-8a02-70e6-b59c-63ea6b065e5b
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
+- id: 01a0b75d-8a02-70e6-b59c-63eba3864cbe
+  alias_id: INV-0245
+  alias_name: self-binding-locations-are-closed-and-path-scoped
+  alias_ref: INV-0245:self-binding-locations-are-closed-and-path-scoped
+  entity_type: invariant
+  name: INV-0245
+  summary: Self-binding MUST replace markers only at contract-declared locations;
+    unknown markers, undeclared locations, multiple conflicting binding sources, and
+    markers remaining after binding MUST fail closed.
+  uri: adr://adr-architecture-kit/entities/01a0b75d-8a02-70e6-b59c-63eba3864cbe
+  created_at: '2026-09-19T01:52:35.842Z'
+  entity_fingerprint: sha256:45b1609a2613bba3a9755b7abc77203b01f459ac028dffc2cd0784c83878d073
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a0b75d-8a02-70e6-b59c-63dd6133c637#01a0b75d-8a02-70e6-b59c-63eba3864cbe
+    artifact_path: adrs/logical/ADR-L-0031-non-recursive-semantic-contract-conformance-binding.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a0b75d-8a02-70e6-b59c-63dd6133c637
+    adr_alias_id: ADR-L-0031
+    scope: conformance
+    statement: Self-binding MUST replace markers only at contract-declared locations;
+      unknown markers, undeclared locations, multiple conflicting binding sources,
+      and markers remaining after binding MUST fail closed.
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions: []
+    supersedes: []
+    alias_id: INV-0245
+    alias_name: self-binding-locations-are-closed-and-path-scoped
+  relationships:
+    declared_in:
+    - 01a0b75d-8a02-70e6-b59c-63dd6133c637
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    consumes_interface: []
+    composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a0b75d-8a02-70e6-b59c-63dd6133c637#01a0b75d-8a02-70e6-b59c-63eba3864cbe
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
+- id: 01a0b75d-8a02-70e6-b59c-63ec8e13995a
+  alias_id: INV-0247
+  alias_name: corpus-changes-change-enclosing-contract-identity
+  alias_ref: INV-0247:corpus-changes-change-enclosing-contract-identity
+  entity_type: invariant
+  name: INV-0247
+  summary: Any change to a frozen unbound conformance resource, including case meaning,
+    expected results, diagnostics, binding declarations, binding locations, or the
+    self-binding marker, MUST change its exact resource digest and t
+  uri: adr://adr-architecture-kit/entities/01a0b75d-8a02-70e6-b59c-63ec8e13995a
+  created_at: '2026-09-19T01:52:35.842Z'
+  entity_fingerprint: sha256:a44ec0ad927777bfb4d4453cbf1412df30da6bd7dfda3ade817db0d13c29500f
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a0b75d-8a02-70e6-b59c-63dd6133c637#01a0b75d-8a02-70e6-b59c-63ec8e13995a
+    artifact_path: adrs/logical/ADR-L-0031-non-recursive-semantic-contract-conformance-binding.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a0b75d-8a02-70e6-b59c-63dd6133c637
+    adr_alias_id: ADR-L-0031
+    scope: conformance
+    statement: Any change to a frozen unbound conformance resource, including case
+      meaning, expected results, diagnostics, binding declarations, binding locations,
+      or the self-binding marker, MUST change its exact resource digest and therefore
+      the enclosing semantic-contract identity.
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions: []
+    supersedes: []
+    alias_id: INV-0247
+    alias_name: corpus-changes-change-enclosing-contract-identity
+  relationships:
+    declared_in:
+    - 01a0b75d-8a02-70e6-b59c-63dd6133c637
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    consumes_interface: []
+    composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a0b75d-8a02-70e6-b59c-63dd6133c637#01a0b75d-8a02-70e6-b59c-63ec8e13995a
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
+- id: 01a0b75d-8a02-70e6-b59c-63ed9af7ac12
+  alias_id: INV-0248
+  alias_name: self-binding-does-not-move-authority-or-add-capability
+  alias_ref: INV-0248:self-binding-does-not-move-authority-or-add-capability
+  entity_type: invariant
+  name: INV-0248
+  summary: Self-binding MUST NOT create persistence, repository admission, governance
+    promotion, alias reservation, Runtime mutation, semantic inference, or a host-specific
+    semantic implementation, and peer hosts MUST obtain equiva
+  uri: adr://adr-architecture-kit/entities/01a0b75d-8a02-70e6-b59c-63ed9af7ac12
+  created_at: '2026-09-19T01:52:35.842Z'
+  entity_fingerprint: sha256:6c58bfa98140c407c727f554367907c599537bf8b1ec4109472a5e13edfcae8e
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a0b75d-8a02-70e6-b59c-63dd6133c637#01a0b75d-8a02-70e6-b59c-63ed9af7ac12
+    artifact_path: adrs/logical/ADR-L-0031-non-recursive-semantic-contract-conformance-binding.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a0b75d-8a02-70e6-b59c-63dd6133c637
+    adr_alias_id: ADR-L-0031
+    scope: global
+    statement: Self-binding MUST NOT create persistence, repository admission, governance
+      promotion, alias reservation, Runtime mutation, semantic inference, or a host-specific
+      semantic implementation, and peer hosts MUST obtain equivalent binding semantics
+      from one canonical authority when implemented.
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions: []
+    supersedes: []
+    alias_id: INV-0248
+    alias_name: self-binding-does-not-move-authority-or-add-capability
+  relationships:
+    declared_in:
+    - 01a0b75d-8a02-70e6-b59c-63dd6133c637
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    consumes_interface: []
+    composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a0b75d-8a02-70e6-b59c-63dd6133c637#01a0b75d-8a02-70e6-b59c-63ed9af7ac12
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index

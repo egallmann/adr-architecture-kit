@@ -372,6 +372,7 @@ def test_acc_corpus_executes_operation_specific_schemas_and_exact_basis() -> Non
         result = case["expected"]["result"]
         assert request["operation"] == case["operation"]
         assert result["operation"] == case["operation"]
+        assert result["basis_qualification"] == request["basis"]
         assert not _errors(validator, request, "authoring_request")
         result_definition = (
             "validation_result"

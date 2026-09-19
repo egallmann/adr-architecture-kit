@@ -2068,7 +2068,9 @@
                   },
                   "existence_state": "active",
                   "source_basis": {
-                    "source_ref": "references/existing-decision"
+                    "source_ref": "references/existing-decision",
+                    "content_digest": "sha256:2d711642b726b04401627ca9fbac32f5c8530fb1903cc4db02258717921a4881",
+                    "source_bytes": "eA=="
                   }
                 }
               ]
@@ -21179,7 +21181,34 @@
             "custom_entity": null,
             "reference_basis": {
               "sealed": true,
-              "entries": []
+              "entries": [
+                {
+                  "reference_id": "existing-decision",
+                  "canonical_uuid": "019109a0-b1c2-7def-8a00-112233445566",
+                  "semantic_kind": "entity",
+                  "semantic_type": "entity/decision",
+                  "qualification": {
+                    "family": "authoring-domain",
+                    "version": "1.1",
+                    "resources": [
+                      {
+                        "canonical_resource_key": "authoring-domain/1.1/contract",
+                        "content_digest": "sha256:4788acb08de41ce69e51c9b0fc336147d68b6f7ea36feb41d46233c0c7e281aa"
+                      },
+                      {
+                        "canonical_resource_key": "authoring-domain/1.1/schema",
+                        "content_digest": "sha256:688cfdd2dd5a15960e9ec218e0e058a17dccd3939c3eeac2f4a4c5604977eee9"
+                      }
+                    ]
+                  },
+                  "existence_state": "active",
+                  "source_basis": {
+                    "source_ref": "references/existing-decision",
+                    "content_digest": "sha256:2d711642b726b04401627ca9fbac32f5c8530fb1903cc4db02258717921a4881",
+                    "source_bytes": "eA=="
+                  }
+                }
+              ]
             },
             "existing_source_basis": {
               "sealed": true,
@@ -21543,7 +21572,27 @@
             "custom_entity": null,
             "reference_basis": {
               "sealed": true,
-              "entries": []
+              "entries": [
+                {
+                  "reference_id": "existing-policy",
+                  "canonical_uuid": "019109a0-b1c2-7def-8a00-112233445577",
+                  "semantic_kind": "entity",
+                  "semantic_type": "payments:policy",
+                  "qualification": {
+                    "semantic_kind": "entity",
+                    "semantic_type": "payments:policy",
+                    "consumer_namespace": "payments",
+                    "contract_version": "1.0",
+                    "contract_fingerprint": "cecf:v1:sha256:0000000000000000000000000000000000000000000000000000000000000000"
+                  },
+                  "existence_state": "active",
+                  "source_basis": {
+                    "source_ref": "references/existing-policy",
+                    "content_digest": "sha256:2d711642b726b04401627ca9fbac32f5c8530fb1903cc4db02258717921a4881",
+                    "source_bytes": "eA=="
+                  }
+                }
+              ]
             },
             "existing_source_basis": {
               "sealed": true,
@@ -21567,7 +21616,7 @@
               ]
             },
             "provenance": {
-              "source_ref": "conformance/C41",
+              "source_ref": "conformance/C42",
               "source_revision": "frozen-1.0",
               "registry_selection": "exact"
             }

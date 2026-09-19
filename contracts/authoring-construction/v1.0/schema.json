@@ -1,0 +1,396 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://adr-kit.ste.systems/contracts/authoring-construction/v1.0/schema.json",
+  "title": "ADR-Kit Authoring Construction Contract 1.0 shape",
+  "description": "Strict host-neutral wire shape for ACC requests, diagnostics, operation-specific results, and exact authority qualification.",
+  "oneOf": [
+    {"$ref": "#/$defs/contract_document"},
+    {"$ref": "#/$defs/authoring_request"},
+    {"$ref": "#/$defs/validation_result"},
+    {"$ref": "#/$defs/construction_result"}
+  ],
+  "$defs": {
+    "non_empty": {"type": "string", "minLength": 1},
+    "uuid_v7": {"type": "string", "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-7[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"},
+    "digest": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"},
+    "scf": {"type": "string", "pattern": "^scf:v1:sha256:[0-9a-f]{64}$"},
+    "cecf": {"type": "string", "pattern": "^cecf:v1:sha256:[0-9a-f]{64}$"},
+    "semantic_type": {"type": "string", "pattern": "^(?:[a-z][a-z0-9._-]*/[a-z][a-z0-9_-]*|[a-z][a-z0-9._-]*:[a-z][a-z0-9_]{1,63})$"},
+    "resource_member": {
+      "type": "object",
+      "required": ["canonical_resource_key", "content_digest"],
+      "properties": {
+        "canonical_resource_key": {"type": "string", "minLength": 1},
+        "content_digest": {"$ref": "#/$defs/digest"}
+      },
+      "additionalProperties": false
+    },
+    "semantic_contract_qualification": {
+      "type": "object",
+      "required": ["family", "version", "semantic_contract_fingerprint"],
+      "properties": {
+        "family": {"$ref": "#/$defs/non_empty"},
+        "version": {"$ref": "#/$defs/non_empty"},
+        "semantic_contract_fingerprint": {"$ref": "#/$defs/scf"}
+      },
+      "additionalProperties": false
+    },
+    "exact_resource_set_qualification": {
+      "type": "object",
+      "required": ["family", "version", "resources"],
+      "properties": {
+        "family": {"$ref": "#/$defs/non_empty"},
+        "version": {"$ref": "#/$defs/non_empty"},
+        "resources": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/resource_member"}}
+      },
+      "additionalProperties": false
+    },
+    "custom_qualification": {
+      "type": "object",
+      "required": ["semantic_kind", "semantic_type", "consumer_namespace", "contract_version", "contract_fingerprint"],
+      "properties": {
+        "semantic_kind": {"enum": ["entity", "relationship"]},
+        "semantic_type": {"type": "string", "pattern": "^[a-z][a-z0-9._-]*:[a-z][a-z0-9_]{1,63}$"},
+        "consumer_namespace": {"type": "string", "pattern": "^[a-z][a-z0-9]*(?:[._-][a-z0-9]+)*$"},
+        "contract_version": {"type": "string", "pattern": "^[0-9]+\\.[0-9]+$"},
+        "contract_fingerprint": {"$ref": "#/$defs/cecf"}
+      },
+      "additionalProperties": false
+    },
+    "custom_definition_qualification": {
+      "type": "object",
+      "required": ["semantic_kind", "semantic_type", "consumer_namespace", "contract_version", "contract_fingerprint", "definition_source", "definition_digest"],
+      "properties": {
+        "semantic_kind": {"enum": ["entity", "relationship"]},
+        "semantic_type": {"type": "string", "pattern": "^[a-z][a-z0-9._-]*:[a-z][a-z0-9_]{1,63}$"},
+        "consumer_namespace": {"type": "string", "pattern": "^[a-z][a-z0-9]*(?:[._-][a-z0-9]+)*$"},
+        "contract_version": {"type": "string", "pattern": "^[0-9]+\\.[0-9]+$"},
+        "contract_fingerprint": {"$ref": "#/$defs/cecf"},
+        "definition_source": {"$ref": "#/$defs/non_empty"},
+        "definition_digest": {"$ref": "#/$defs/digest"}
+      },
+      "additionalProperties": false
+    },
+    "custom_registry_qualification": {
+      "type": "object",
+      "required": ["contract_resources", "registry_source", "selected_definitions"],
+      "properties": {
+        "contract_resources": {"$ref": "#/$defs/exact_resource_set_qualification"},
+        "registry_source": {"$ref": "#/$defs/exact_source_descriptor"},
+        "selected_definitions": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/custom_definition_qualification"}}
+      },
+      "additionalProperties": false
+    },
+    "fragment_qualification": {
+      "oneOf": [
+        {"$ref": "#/$defs/semantic_contract_qualification"},
+        {"$ref": "#/$defs/exact_resource_set_qualification"},
+        {"$ref": "#/$defs/custom_qualification"}
+      ]
+    },
+    "exact_source_descriptor": {
+      "type": "object",
+      "required": ["source_ref", "content_digest", "source_bytes"],
+      "properties": {"source_ref": {"$ref": "#/$defs/non_empty"}, "content_digest": {"$ref": "#/$defs/digest"}, "source_bytes": {"type": "string", "contentEncoding": "base64"}},
+      "additionalProperties": false
+    },
+    "fragment_reference": {
+      "type": "object",
+      "required": ["reference_key", "reference_kind", "target"],
+      "properties": {
+        "reference_key": {"type": "string", "pattern": "^[A-Za-z][A-Za-z0-9_.-]{0,127}$"},
+        "reference_kind": {"enum": ["request", "existing"]},
+        "target": {"type": "string", "minLength": 1},
+        "expected_semantic_type": {"$ref": "#/$defs/semantic_type"},
+        "qualification": {"$ref": "#/$defs/fragment_qualification"}
+      },
+      "additionalProperties": false
+    },
+    "fragment_intent": {
+      "type": "object",
+      "required": ["request_key", "semantic_kind", "semantic_type", "operation", "input_mode", "fields", "contract_qualification", "references", "composition_keys"],
+      "properties": {
+        "request_key": {"type": "string", "pattern": "^[A-Za-z][A-Za-z0-9_.-]{0,127}$"},
+        "semantic_kind": {"enum": ["adr", "entity", "relationship", "value"]},
+        "semantic_type": {"$ref": "#/$defs/semantic_type"},
+        "operation": {"enum": ["create", "update", "reference", "retire"]},
+        "input_mode": {"enum": ["prepared", "compact"]},
+        "fields": {"type": "object", "additionalProperties": true},
+        "contract_qualification": {"$ref": "#/$defs/fragment_qualification"},
+        "references": {"type": "array", "items": {"$ref": "#/$defs/fragment_reference"}},
+        "composition_keys": {"type": "array", "uniqueItems": true, "items": {"type": "string", "pattern": "^[A-Za-z][A-Za-z0-9_.-]{0,127}$"}},
+        "source_pointer": {"type": "string", "minLength": 1}
+      },
+      "additionalProperties": false
+    },
+    "composition_intent": {
+      "type": "object",
+      "required": ["parent", "child", "relation", "ordering"],
+      "properties": {"parent": {"type": "string", "minLength": 1}, "child": {"type": "string", "minLength": 1}, "relation": {"type": "string", "pattern": "^[a-z][a-z0-9._-]*$"}, "ordering": {"type": "integer", "minimum": 0}},
+      "additionalProperties": false
+    },
+    "endpoint": {
+      "type": "object",
+      "required": ["kind", "target"],
+      "properties": {"kind": {"enum": ["request", "reference", "topology"]}, "target": {"type": "string", "minLength": 1}, "semantic_type": {"$ref": "#/$defs/semantic_type"}},
+      "additionalProperties": false
+    },
+    "relationship_intent": {
+      "type": "object",
+      "required": ["relationship_key", "relationship_type", "source", "target", "fields", "qualification"],
+      "properties": {
+        "relationship_key": {"type": "string", "pattern": "^[A-Za-z][A-Za-z0-9_.-]{0,127}$"},
+        "relationship_type": {"$ref": "#/$defs/semantic_type"},
+        "source": {"$ref": "#/$defs/endpoint"},
+        "target": {"$ref": "#/$defs/endpoint"},
+        "fields": {"type": "object", "additionalProperties": true},
+        "qualification": {"$ref": "#/$defs/fragment_qualification"},
+        "ordering": {"type": "integer", "minimum": 0}
+      },
+      "additionalProperties": false
+    },
+    "reference_entry": {
+      "type": "object",
+      "required": ["reference_id", "canonical_uuid", "semantic_kind", "semantic_type", "qualification", "existence_state"],
+      "properties": {
+        "reference_id": {"$ref": "#/$defs/non_empty"},
+        "canonical_uuid": {"$ref": "#/$defs/uuid_v7"},
+        "semantic_kind": {"enum": ["adr", "entity", "relationship", "value"]},
+        "semantic_type": {"$ref": "#/$defs/semantic_type"},
+        "qualification": {"$ref": "#/$defs/fragment_qualification"},
+        "existence_state": {"enum": ["active", "retired"]},
+        "source_basis": {"type": "object", "additionalProperties": true}
+      },
+      "additionalProperties": false
+    },
+    "reference_basis": {
+      "type": "object",
+      "required": ["sealed", "entries"],
+      "properties": {"sealed": {"const": true}, "entries": {"type": "array", "items": {"$ref": "#/$defs/reference_entry"}}},
+      "additionalProperties": false
+    },
+    "existing_source_entry": {
+      "type": "object",
+      "required": ["canonical_uuid", "semantic_type", "qualification", "source_ref", "content_digest", "source_bytes"],
+      "properties": {
+        "canonical_uuid": {"$ref": "#/$defs/uuid_v7"},
+        "semantic_type": {"$ref": "#/$defs/semantic_type"},
+        "qualification": {"$ref": "#/$defs/fragment_qualification"},
+        "source_ref": {"$ref": "#/$defs/non_empty"},
+        "content_digest": {"$ref": "#/$defs/digest"},
+        "source_bytes": {"type": "string", "contentEncoding": "base64"}
+      },
+      "additionalProperties": false
+    },
+    "existing_source_basis": {
+      "type": "object",
+      "required": ["sealed", "entries"],
+      "properties": {"sealed": {"const": true}, "entries": {"type": "array", "items": {"$ref": "#/$defs/existing_source_entry"}}},
+      "additionalProperties": false
+    },
+    "identity_establishment_policy": {
+      "type": "object",
+      "required": ["phase", "supplied_uuidv7", "absent_on_create", "absent_on_update", "composition", "derivations_forbidden"],
+      "properties": {
+        "phase": {"const": "before_deterministic_interpretation"},
+        "supplied_uuidv7": {"const": "preserve"},
+        "absent_on_create": {"const": "mint_uuidv7_allowed_for_identity_bearing_types"},
+        "absent_on_update": {"const": "reject"},
+        "composition": {"const": "does_not_create_or_replace_identity"},
+        "derivations_forbidden": {"const": ["alias", "prose", "path", "source_location", "content_hash", "source_order", "array_order", "composition_position"]}
+      },
+      "additionalProperties": false
+    },
+    "exact_basis": {
+      "type": "object",
+      "required": ["acc", "adc", "authoring", "normalized_model", "architecture_interpretation", "custom_entity", "reference_basis", "existing_source_basis", "identity_establishment", "provenance"],
+      "properties": {
+        "acc": {"$ref": "#/$defs/semantic_contract_qualification"},
+        "adc": {"$ref": "#/$defs/exact_resource_set_qualification"},
+        "authoring": {"$ref": "#/$defs/exact_resource_set_qualification"},
+        "normalized_model": {"$ref": "#/$defs/exact_resource_set_qualification"},
+        "architecture_interpretation": {"$ref": "#/$defs/semantic_contract_qualification"},
+        "custom_entity": {"anyOf": [{"$ref": "#/$defs/custom_registry_qualification"}, {"type": "null"}]},
+        "reference_basis": {"$ref": "#/$defs/reference_basis"},
+        "existing_source_basis": {"$ref": "#/$defs/existing_source_basis"},
+        "identity_establishment": {"$ref": "#/$defs/identity_establishment_policy"},
+        "provenance": {"type": "object", "additionalProperties": true}
+      },
+      "additionalProperties": false
+    },
+    "authoring_request": {
+      "type": "object",
+      "required": ["contract_family", "contract_version", "operation", "request", "basis"],
+      "properties": {
+        "contract_family": {"const": "authoring_construction"},
+        "contract_version": {"const": "1.0"},
+        "operation": {"enum": ["validate_authoring", "construct_authoring_set"]},
+        "request": {
+          "type": "object",
+          "required": ["request_id", "fragments", "compositions", "relationships"],
+          "properties": {
+            "request_id": {"$ref": "#/$defs/non_empty"},
+            "fragments": {"type": "array", "items": {"$ref": "#/$defs/fragment_intent"}},
+            "compositions": {"type": "array", "items": {"$ref": "#/$defs/composition_intent"}},
+            "relationships": {"type": "array", "items": {"$ref": "#/$defs/relationship_intent"}}
+          },
+          "additionalProperties": false
+        },
+        "basis": {"$ref": "#/$defs/exact_basis"}
+      },
+      "additionalProperties": false
+    },
+    "diagnostic": {
+      "type": "object",
+      "required": ["code", "severity", "status", "request_key", "location", "semantic_type", "rule", "expected", "observed", "remediation"],
+      "properties": {
+        "code": {"type": "string", "pattern": "^authoring_construction\\.[a-z0-9_.-]+$"},
+        "severity": {"enum": ["info", "warning", "error"]},
+        "status": {"enum": ["violation", "blocked", "unresolved", "unavailable"]},
+        "request_key": {"type": ["string", "null"]},
+        "location": {"$ref": "#/$defs/non_empty"},
+        "semantic_type": {"anyOf": [{"$ref": "#/$defs/semantic_type"}, {"type": "null"}]},
+        "rule": {"$ref": "#/$defs/non_empty"},
+        "expected": {},
+        "observed": {},
+        "remediation": {"$ref": "#/$defs/non_empty"},
+        "blocked_by": {"type": "array", "minItems": 1, "items": {"type": "string", "pattern": "^authoring_construction\\.[a-z0-9_.-]+$"}}
+      },
+      "additionalProperties": false
+    },
+    "basis_qualification": {"$ref": "#/$defs/exact_basis"},
+    "construction_map_entry": {
+      "type": "object",
+      "required": ["request_key", "operation", "semantic_type", "canonical_uuid", "identity_disposition", "contract_qualification", "resulting_state", "diagnostic_codes"],
+      "properties": {
+        "request_key": {"$ref": "#/$defs/non_empty"},
+        "operation": {"enum": ["create", "update", "reference", "retire"]},
+        "semantic_type": {"$ref": "#/$defs/semantic_type"},
+        "canonical_uuid": {"anyOf": [{"$ref": "#/$defs/uuid_v7"}, {"type": "null"}]},
+        "identity_disposition": {"enum": ["preserved", "minted", "reused", "not_applicable"]},
+        "candidate_source_ref": {"anyOf": [{"$ref": "#/$defs/non_empty"}, {"type": "null"}]},
+        "contract_qualification": {"$ref": "#/$defs/fragment_qualification"},
+        "resulting_state": {"enum": ["active", "retired", "referenced"]},
+        "diagnostic_codes": {"type": "array", "uniqueItems": true, "items": {"type": "string", "pattern": "^authoring_construction\\.[a-z0-9_.-]+$"}}
+      },
+      "additionalProperties": false
+    },
+    "resolved_reference": {
+      "type": "object",
+      "required": ["reference_key", "reference_kind", "target", "canonical_uuid", "semantic_type", "qualification", "disposition"],
+      "properties": {
+        "reference_key": {"$ref": "#/$defs/non_empty"},
+        "reference_kind": {"enum": ["request", "existing"]},
+        "target": {"$ref": "#/$defs/non_empty"},
+        "canonical_uuid": {"$ref": "#/$defs/uuid_v7"},
+        "semantic_type": {"$ref": "#/$defs/semantic_type"},
+        "qualification": {"$ref": "#/$defs/fragment_qualification"},
+        "disposition": {"enum": ["resolved", "reused"]}
+      },
+      "additionalProperties": false
+    },
+    "candidate_artifact": {
+      "type": "object",
+      "required": ["request_key", "source_ref", "artifact_kind", "content_digest", "bytes", "source_contract"],
+      "properties": {
+        "request_key": {"$ref": "#/$defs/non_empty"},
+        "source_ref": {"$ref": "#/$defs/non_empty"},
+        "artifact_kind": {"enum": ["authoring_fragment", "authoring_document"]},
+        "content_digest": {"$ref": "#/$defs/digest"},
+        "bytes": {"type": "string", "contentEncoding": "base64"},
+        "source_contract": {"$ref": "#/$defs/exact_resource_set_qualification"}
+      },
+      "additionalProperties": false
+    },
+    "candidate_source_basis": {
+      "type": "object",
+      "required": ["sealed", "basis_digest", "artifacts", "source_contract"],
+      "properties": {
+        "sealed": {"const": true},
+        "basis_digest": {"$ref": "#/$defs/digest"},
+        "artifacts": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/candidate_artifact"}},
+        "source_contract": {"$ref": "#/$defs/exact_resource_set_qualification"}
+      },
+      "additionalProperties": false
+    },
+    "normalized_result": {
+      "type": "object",
+      "required": ["normalized_contract", "semantic_digest", "model"],
+      "properties": {
+        "normalized_contract": {"$ref": "#/$defs/exact_resource_set_qualification"},
+        "semantic_digest": {"$ref": "#/$defs/digest"},
+        "model": {"type": "object", "additionalProperties": true}
+      },
+      "additionalProperties": false
+    },
+    "round_trip": {
+      "type": "object",
+      "required": ["qualified", "comparison", "authorized_differences", "hidden_semantics", "diagnostic_codes"],
+      "properties": {
+        "qualified": {"type": "boolean"},
+        "comparison": {"enum": ["semantic_equivalent", "semantic_mismatch", "not_evaluated"]},
+        "authorized_differences": {"type": "array", "items": {"$ref": "#/$defs/non_empty"}},
+        "hidden_semantics": {"type": "array", "items": {"$ref": "#/$defs/non_empty"}},
+        "diagnostic_codes": {"type": "array", "items": {"type": "string", "pattern": "^authoring_construction\\.[a-z0-9_.-]+$"}}
+      },
+      "additionalProperties": false
+    },
+    "result_base": {
+      "type": "object",
+      "required": ["contract_family", "contract_version", "operation", "basis_qualification", "diagnostics", "provenance"],
+      "properties": {
+        "contract_family": {"const": "authoring_construction"},
+        "contract_version": {"const": "1.0"},
+        "operation": {"enum": ["validate_authoring", "construct_authoring_set"]},
+        "basis_qualification": {"$ref": "#/$defs/basis_qualification"},
+        "diagnostics": {"type": "array", "items": {"$ref": "#/$defs/diagnostic"}},
+        "provenance": {"type": "object", "additionalProperties": true}
+      }
+    },
+    "validation_result": {
+      "allOf": [
+        {"$ref": "#/$defs/result_base"},
+        {"type": "object", "required": ["operation", "validation_status"], "properties": {"operation": {"const": "validate_authoring"}, "validation_status": {"enum": ["valid", "invalid", "unavailable", "unresolved"]}}}
+      ],
+      "unevaluatedProperties": false
+    },
+    "construction_result": {
+      "allOf": [
+        {"$ref": "#/$defs/result_base"},
+        {"type": "object", "required": ["operation", "outcome", "construction_map", "candidate_fragments", "candidate_artifacts", "candidate_source_basis", "normalized_result", "round_trip"], "properties": {"operation": {"const": "construct_authoring_set"}, "outcome": {"enum": ["Constructed", "Rejected", "Unavailable", "Unresolved"]}, "construction_map": {"type": "array", "items": {"$ref": "#/$defs/construction_map_entry"}}, "candidate_fragments": {"type": "array", "items": {"type": "object", "required": ["request_key", "semantic_kind", "semantic_type", "identity", "contract_qualification", "fields", "source_contract"], "properties": {"request_key": {"$ref": "#/$defs/non_empty"}, "semantic_kind": {"enum": ["adr", "entity", "relationship", "value"]}, "semantic_type": {"$ref": "#/$defs/semantic_type"}, "identity": {"anyOf": [{"$ref": "#/$defs/uuid_v7"}, {"type": "null"}]}, "contract_qualification": {"$ref": "#/$defs/fragment_qualification"}, "fields": {"type": "object", "additionalProperties": true}, "resolved_references": {"type": "array", "items": {"$ref": "#/$defs/resolved_reference"}}, "source_contract": {"$ref": "#/$defs/exact_resource_set_qualification"}}, "additionalProperties": false}}, "candidate_artifacts": {"type": "array", "items": {"$ref": "#/$defs/candidate_artifact"}}, "candidate_source_basis": {"anyOf": [{"$ref": "#/$defs/candidate_source_basis"}, {"type": "null"}]}, "normalized_result": {"anyOf": [{"$ref": "#/$defs/normalized_result"}, {"type": "null"}]}, "round_trip": {"$ref": "#/$defs/round_trip"}}},
+        {"if": {"properties": {"outcome": {"const": "Constructed"}}}, "then": {"required": ["candidate_source_basis", "normalized_result"], "properties": {"candidate_source_basis": {"$ref": "#/$defs/candidate_source_basis"}, "normalized_result": {"$ref": "#/$defs/normalized_result"}, "round_trip": {"properties": {"qualified": {"const": true}, "comparison": {"const": "semantic_equivalent"}}}}}}
+      ],
+      "unevaluatedProperties": false
+    },
+    "contract_document": {
+      "type": "object",
+      "required": ["semanticContractFamily", "semanticContractVersion", "fingerprintScheme", "resourceManifest", "frozenNormativeConformanceResources", "semanticContractFingerprint"],
+      "properties": {
+        "semanticContractFamily": {"const": "authoring-construction"},
+        "semanticContractVersion": {"const": "1.0"},
+        "fingerprintScheme": {"const": "scf:v1:sha256"},
+        "resourceManifest": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/resource_manifest_entry"}},
+        "frozenNormativeConformanceResources": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"$ref": "#/$defs/non_empty"}},
+        "semanticContractFingerprint": {"$ref": "#/$defs/scf"}
+      },
+      "additionalProperties": false
+    },
+    "resource_manifest_entry": {
+      "type": "object",
+      "required": ["canonicalResourceKey", "contentDigest", "role", "dependencies"],
+      "properties": {
+        "canonicalResourceKey": {"type": "string", "pattern": "^authoring-construction/1\\.0/[a-z0-9._-]+$"},
+        "contentDigest": {"$ref": "#/$defs/digest"},
+        "role": {"enum": ["interpretation-rule", "interpretation-conformance"]},
+        "dependencies": {"type": "array", "items": {"$ref": "#/$defs/resource_dependency"}}
+      },
+      "additionalProperties": false
+    },
+    "resource_dependency": {
+      "type": "object",
+      "required": ["canonicalResourceKey", "contentDigest"],
+      "properties": {"canonicalResourceKey": {"type": "string", "pattern": "^authoring-construction/1\\.0/[a-z0-9._-]+$"}, "contentDigest": {"$ref": "#/$defs/digest"}},
+      "additionalProperties": false
+    }
+  }
+}

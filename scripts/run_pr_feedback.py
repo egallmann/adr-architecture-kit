@@ -45,6 +45,8 @@ SEMANTIC_TESTS: tuple[str, ...] = (
     "tests/test_architecture_repository.py",
     "tests/test_entity_validator.py",
     "tests/test_adr_validator.py",
+    "tests/test_universal_graph_identity.py",
+    "tests/test_universal_identity_design_contracts.py",
     "tests/test_architecture_ir_publication.py",
     "tests/test_compatibility_controls.py",
     "tests/test_repository_naming.py",

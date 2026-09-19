@@ -6,7 +6,7 @@ generator_id: adr-projection-markdown
 generator_version: 3
 hash_algorithm: sha256
 source_hash: 524c54f1831e386382fe169cc11bac9c0625248a1d7c7dacd3741b674a19e04a
-rendered_hash: a0b76405b4af03400d1552a4baffa15371c86371546280708530cb7fa2cc730e
+rendered_hash: 0cd4a72707dc5215a03f4ef24f824789e43b0fd452ba0470a7899efef1f9cd77
 -->
 
 # ADR-L-0030: Canonical Source Basis and Semantic Execution Surface
@@ -439,6 +439,7 @@ flowchart LR
 - [ADR-L-0013](ADR-L-0013-architecture-repository-boundary-and-normalized-semantic-model.md)
 - [ADR-L-0010](ADR-L-0010-kernel-interface-contract-and-validation-profiles.md)
 - [ADR-L-0028](ADR-L-0028-normative-semantic-authority-and-materialization-foundation.md)
+- [ADR-L-0031](ADR-L-0031-non-recursive-semantic-contract-conformance-binding.md)
 
 
 

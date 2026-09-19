@@ -6,7 +6,7 @@ generator_id: adr-projection-markdown
 generator_version: 3
 hash_algorithm: sha256
 source_hash: 743c16a151baef799085dcf73e6b51826c168e79895e4d4359a579faf5ce25ba
-rendered_hash: eb9a1f7b2c25aa80a5404ea67309e2152875cd880fa7f5b857678a0b523ef2ff
+rendered_hash: 9163c09d0a5bfc42e6a560fd490f9d58eb31c0bf02be1c3805ba0aa4c760da34
 -->
 
 # ADR-L-0027: Public Binding Construction and Release Parity
@@ -295,6 +295,7 @@ flowchart LR
 - [ADR-L-0030](ADR-L-0030-canonical-source-basis-and-semantic-execution-surface.md)
 - [ADR-L-0028](ADR-L-0028-normative-semantic-authority-and-materialization-foundation.md)
 - [ADR-L-0029](ADR-L-0029-semantic-authoring-construction-and-candidate-authority.md)
+- [ADR-L-0031](ADR-L-0031-non-recursive-semantic-contract-conformance-binding.md)
 
 
 

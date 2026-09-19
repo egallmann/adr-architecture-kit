@@ -8,7 +8,7 @@ high_water_marks:
   DEC: 9000
   IFACE: 35
   IMPL: 29
-  INV: 239
+  INV: 248
 allocations:
 - id: BOUND-0001
   entity_type: boundary
@@ -1936,6 +1936,48 @@ allocations:
   source_pointer: /decisions/6/alias_id
   state: active
   adr_id: 01a05a27-0000-7000-8000-000000000027
+- id: DEC-0240
+  entity_type: decision
+  file_path: adrs/logical/ADR-L-0031-non-recursive-semantic-contract-conformance-binding.yaml
+  source_pointer: /decisions/0/alias_id
+  state: active
+  adr_id: 01a0b75d-8a02-70e6-b59c-63dd6133c637
+- id: DEC-0241
+  entity_type: decision
+  file_path: adrs/logical/ADR-L-0031-non-recursive-semantic-contract-conformance-binding.yaml
+  source_pointer: /decisions/1/alias_id
+  state: active
+  adr_id: 01a0b75d-8a02-70e6-b59c-63dd6133c637
+- id: DEC-0242
+  entity_type: decision
+  file_path: adrs/logical/ADR-L-0031-non-recursive-semantic-contract-conformance-binding.yaml
+  source_pointer: /decisions/2/alias_id
+  state: active
+  adr_id: 01a0b75d-8a02-70e6-b59c-63dd6133c637
+- id: DEC-0243
+  entity_type: decision
+  file_path: adrs/logical/ADR-L-0031-non-recursive-semantic-contract-conformance-binding.yaml
+  source_pointer: /decisions/3/alias_id
+  state: active
+  adr_id: 01a0b75d-8a02-70e6-b59c-63dd6133c637
+- id: DEC-0244
+  entity_type: decision
+  file_path: adrs/logical/ADR-L-0031-non-recursive-semantic-contract-conformance-binding.yaml
+  source_pointer: /decisions/4/alias_id
+  state: active
+  adr_id: 01a0b75d-8a02-70e6-b59c-63dd6133c637
+- id: DEC-0245
+  entity_type: decision
+  file_path: adrs/logical/ADR-L-0031-non-recursive-semantic-contract-conformance-binding.yaml
+  source_pointer: /decisions/5/alias_id
+  state: active
+  adr_id: 01a0b75d-8a02-70e6-b59c-63dd6133c637
+- id: DEC-0246
+  entity_type: decision
+  file_path: adrs/logical/ADR-L-0031-non-recursive-semantic-contract-conformance-binding.yaml
+  source_pointer: /decisions/6/alias_id
+  state: active
+  adr_id: 01a0b75d-8a02-70e6-b59c-63dd6133c637
 - id: DEC-9000
   entity_type: decision
   adr_id: ADR-L-9000
@@ -3562,3 +3604,57 @@ allocations:
   source_pointer: /invariants/7/alias_id
   state: active
   adr_id: 01a05a27-0000-7000-8000-000000000027
+- id: INV-0240
+  entity_type: invariant
+  file_path: adrs/logical/ADR-L-0031-non-recursive-semantic-contract-conformance-binding.yaml
+  source_pointer: /invariants/0/alias_id
+  state: active
+  adr_id: 01a0b75d-8a02-70e6-b59c-63dd6133c637
+- id: INV-0241
+  entity_type: invariant
+  file_path: adrs/logical/ADR-L-0031-non-recursive-semantic-contract-conformance-binding.yaml
+  source_pointer: /invariants/1/alias_id
+  state: active
+  adr_id: 01a0b75d-8a02-70e6-b59c-63dd6133c637
+- id: INV-0242
+  entity_type: invariant
+  file_path: adrs/logical/ADR-L-0031-non-recursive-semantic-contract-conformance-binding.yaml
+  source_pointer: /invariants/2/alias_id
+  state: active
+  adr_id: 01a0b75d-8a02-70e6-b59c-63dd6133c637
+- id: INV-0243
+  entity_type: invariant
+  file_path: adrs/logical/ADR-L-0031-non-recursive-semantic-contract-conformance-binding.yaml
+  source_pointer: /invariants/3/alias_id
+  state: active
+  adr_id: 01a0b75d-8a02-70e6-b59c-63dd6133c637
+- id: INV-0244
+  entity_type: invariant
+  file_path: adrs/logical/ADR-L-0031-non-recursive-semantic-contract-conformance-binding.yaml
+  source_pointer: /invariants/4/alias_id
+  state: active
+  adr_id: 01a0b75d-8a02-70e6-b59c-63dd6133c637
+- id: INV-0245
+  entity_type: invariant
+  file_path: adrs/logical/ADR-L-0031-non-recursive-semantic-contract-conformance-binding.yaml
+  source_pointer: /invariants/5/alias_id
+  state: active
+  adr_id: 01a0b75d-8a02-70e6-b59c-63dd6133c637
+- id: INV-0246
+  entity_type: invariant
+  file_path: adrs/logical/ADR-L-0031-non-recursive-semantic-contract-conformance-binding.yaml
+  source_pointer: /invariants/6/alias_id
+  state: active
+  adr_id: 01a0b75d-8a02-70e6-b59c-63dd6133c637
+- id: INV-0247
+  entity_type: invariant
+  file_path: adrs/logical/ADR-L-0031-non-recursive-semantic-contract-conformance-binding.yaml
+  source_pointer: /invariants/7/alias_id
+  state: active
+  adr_id: 01a0b75d-8a02-70e6-b59c-63dd6133c637
+- id: INV-0248
+  entity_type: invariant
+  file_path: adrs/logical/ADR-L-0031-non-recursive-semantic-contract-conformance-binding.yaml
+  source_pointer: /invariants/8/alias_id
+  state: active
+  adr_id: 01a0b75d-8a02-70e6-b59c-63dd6133c637

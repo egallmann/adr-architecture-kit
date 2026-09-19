@@ -1,0 +1,24 @@
+{
+  "resource_kind": "authoring-construction-rules",
+  "resource_version": "1.0",
+  "operation_identifiers": ["validate_authoring", "construct_authoring_set"],
+  "operations": {
+    "create": {"identity": "preserve_supplied_or_mint_when_allowed", "source": "explicit_typed_fields", "persistence": false, "admission": false, "alias_reservation": false, "inference": false},
+    "update": {"identity": "preserve_existing", "requires": ["exact_existing_identity", "exact_source_basis"], "validate": "whole_result", "ambient_contract_migration": false, "persistence": false},
+    "reference": {"identity": "reuse_existing", "recreate": false, "requires": "bounded_exact_reference_basis", "persistence": false},
+    "retire": {"custom_entity": "retired_existence_state_preserving_identity", "canonical_unsupported": "rejected", "delete": false, "persistence": false}
+  },
+  "input_modes": {"prepared": "explicit_forward_authoring_fields", "compact": "semantic_compression_of_contract_declared_ceremony", "convergence": "one_fragment_intent_model", "semantic_inference": false},
+  "identity": {"scheme": "canonical_uuidv7", "phase": "before_deterministic_interpretation", "preserve_supplied": true, "mint_create_absent": true, "update_absent": "rejected", "composition": "no_identity_effect", "forbidden_derivations": ["alias", "prose", "path", "source_location", "content_hash", "source_order", "array_order", "composition_position"]},
+  "authority": {"exact": ["authoring-construction/1.0", "authoring-domain/1.1", "authoring/1.7", "normalized-model/2.4", "architecture-interpretation/1.1"], "custom": "custom-entity/1.0", "selection": "exact_content_qualified_only", "mutable_or_latest": "rejected"},
+  "references": {"basis": "bounded_exact_host_supplied", "unresolved": "Unresolved", "missing_authority": "Unavailable", "arbitrary_repository_crawl": false, "aliases_as_identity": false},
+  "composition": {"explicit": true, "parent_and_child": "request_key_or_exact_reference", "ordering": "only_when_contract_material", "child_identity": "preserved", "admission": false, "persistence": false},
+  "relationships": {"existence": "explicit_intent_only", "canonical_custom": {"identity": "uuidv7", "endpoints": "uuidv7", "qualification": "exact_cecf"}, "topology": {"fields": ["topology_key", "from_key", "to_key"], "verbs": ["calls", "depends_on", "publishes_to", "subscribes_to", "reads_from", "writes_to"], "identity": "owner_local"}, "properties_imply_edges": false, "forbidden": ["consumes_interface", "composed_of"]},
+  "validation": {"scope": "whole_result", "authority": "shared_with_construction", "fail_closed": true, "aggregate_independent_violations": true, "blocked_checks_are_reported": true, "blocked_is_not_success": true, "machine_evaluable_only": true},
+  "diagnostics": {"statuses": ["violation", "blocked", "unresolved", "unavailable"], "ordering_key": ["request_key_or_global_location", "semantic_location", "code", "stable_tiebreaker"], "host_discovery_order": "not_observable", "partial_reachability": true},
+  "outcomes": {"exact": ["Constructed", "Rejected", "Unavailable", "Unresolved"], "Constructed": {"requires": ["complete_validation", "candidate_bytes", "exact_source_basis", "architecture_interpretation_1.1", "normalized_model_2.4", "round_trip_equivalence"], "partial": false}, "Rejected": "authority_available_but_request_or_result_invalid", "Unavailable": "required_authority_or_capability_unavailable", "Unresolved": "reference_or_dependency_unresolved_under_supplied_authority"},
+  "detached_result": {"candidate_bytes": "separate_from_semantic_fragments_and_normalized_result", "side_effects": {"repository": false, "git": false, "runtime": false, "runtime_snapshot": false, "admission": false, "alias_reservation": false}},
+  "round_trip": {"source": "candidate_authoring_1.7_bytes", "interpretation": "architecture-interpretation/1.1", "target": "normalized-model/2.4", "authorized_differences": ["deterministic_ceremony", "canonical_field_placement", "compatibility_projection", "declared_absence"], "hidden_differences": ["semantic_field_loss", "uuid_change", "endpoint_change", "normative_force_change", "custom_qualification_change", "custom_property_change", "composition_change", "unresolved_reference", "unauthorized_relationship_change"]},
+  "authority_ceiling": ["exact machine-evaluable contract semantics", "exact identity and reference semantics", "exact relationship and composition semantics", "exact source-basis and round-trip qualification"],
+  "forbidden_claims": ["architectural_quality", "prose_materiality", "real_world_truth", "undeclared_custom_meaning", "implementation_conformance", "persistence", "governance_admission"]
+}

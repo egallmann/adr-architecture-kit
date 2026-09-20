@@ -89,16 +89,14 @@ def test_adr_l_0029_authorizes_successors_without_advertising_implementation() -
 
 
 def test_adc11_and_cec10_are_the_only_authorized_successor_contract_resources() -> None:
-    absent_successor_paths = (
-        ROOT / "contracts" / "semantic-core" / "v1.2",
-        ROOT / "contracts" / "architecture-authoring" / "v1.0",
-    )
+    absent_successor_paths = (ROOT / "contracts" / "architecture-authoring" / "v1.0",)
     assert (ROOT / "contracts" / "authoring-domain" / "v1.1").is_dir()
     assert (ROOT / "contracts" / "custom-entity" / "v1.0").is_dir()
     assert (ROOT / "contracts" / "authoring-construction" / "v1.0").is_dir()
     assert (ROOT / "schema" / "authoring" / "v1.7").is_dir()
     assert (ROOT / "schema" / "normalized-model" / "v2.4").is_dir()
     assert (ROOT / "contracts" / "architecture-interpretation" / "v1.1").is_dir()
+    assert (ROOT / "contracts" / "semantic-core" / "v1.2" / "contract.json").is_file()
     assert not any(path.exists() for path in absent_successor_paths)
 
 
@@ -114,6 +112,18 @@ def test_current_capability_and_execution_authority_remain_unchanged() -> None:
         "list_types",
         "describe_type",
     ]
+    serialized = json.dumps(capabilities)
+    assert "validate_authoring" not in serialized
+    assert "construct_authoring_set" not in serialized
+
+    for path in (
+        ROOT / "core" / "src" / "lib.rs",
+        ROOT / "src" / "adr_kit" / "core" / "semantic_core.py",
+        ROOT / "packages" / "node" / "src" / "node" / "core.ts",
+    ):
+        text = path.read_text(encoding="utf-8")
+        assert "validate_authoring" not in text
+        assert "construct_authoring_set" not in text
 
     adr_0030 = yaml.safe_load(ADR_0030_PATH.read_text(encoding="utf-8"))
     assert adr_0030["alias_id"] == "ADR-L-0030"

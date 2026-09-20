@@ -57,7 +57,7 @@ def test_self_binding_is_verified_closed_derived_and_non_production() -> None:
     ):
         assert phrase in text
 
-    assert not (ROOT / "contracts" / "semantic-core" / "v1.2").exists()
+    assert (ROOT / "contracts" / "semantic-core" / "v1.2" / "contract.json").is_file()
     assert not (ROOT / "contracts" / "architecture-authoring" / "v1.0").exists()
 
 

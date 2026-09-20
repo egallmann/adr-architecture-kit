@@ -1,6 +1,7 @@
 import AjvModule, { type ErrorObject } from "ajv/dist/2020.js";
 import { semanticCoreContract } from "../generated/semantic-core-contract.js";
 import { semanticCoreContractV11 } from "../generated/semantic-core-contract-v1.1.js";
+import { semanticCoreContractV12 } from "../generated/semantic-core-contract-v1.2.js";
 
 type Validator = ((value: unknown) => boolean) & { errors?: ErrorObject[] | null };
 interface AjvLike { compile(schema: unknown): Validator; }
@@ -9,6 +10,7 @@ const ajv = new AjvConstructor({ allErrors: true, strict: false });
 const validators = new Map<string, Validator>([
   ["1.0", ajv.compile(semanticCoreContract)],
   ["1.1", ajv.compile(semanticCoreContractV11)],
+  ["1.2", ajv.compile(semanticCoreContractV12)],
 ]);
 
 /** Enforce the versioned request/result transport contract in the Node host. */

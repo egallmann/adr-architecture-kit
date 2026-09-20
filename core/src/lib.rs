@@ -1651,6 +1651,9 @@ pub unsafe extern "C" fn result_len() -> usize {
 }
 
 #[cfg(test)]
+mod conformance_binding_tests;
+
+#[cfg(test)]
 mod semantic_core_v11_tests {
     use super::Json;
 

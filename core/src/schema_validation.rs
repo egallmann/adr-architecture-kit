@@ -39,6 +39,42 @@ pub(crate) fn validate(
     context.validate(value, schema, root_key, "")
 }
 
+/// Validate against a schema fragment from the same sealed resource.  This is
+/// used when a contract document contains a strict `oneOf` root but the
+/// caller already knows which transport shape it is validating.
+pub(crate) fn validate_fragment(
+    resources: &BTreeMap<String, Json>,
+    root_key: &str,
+    pointer: &str,
+    value: &Json,
+) -> Result<(), SchemaError> {
+    let Some(root) = resources.get(root_key) else {
+        return Err(SchemaError {
+            path: String::new(),
+            message: format!("schema validation failed: sealed schema resource {root_key} is unavailable"),
+        });
+    };
+    let mut schema = root;
+    for segment in pointer.trim_start_matches('/').split('/') {
+        if segment.is_empty() {
+            continue;
+        }
+        let segment = segment.replace("~1", "/").replace("~0", "~");
+        schema = schema
+            .as_object()
+            .and_then(|object| object.get(&segment))
+            .ok_or_else(|| SchemaError {
+                path: String::new(),
+                message: format!("schema validation failed: schema fragment {pointer} is unresolved"),
+            })?;
+    }
+    let mut context = Context {
+        resources,
+        active_refs: BTreeSet::new(),
+    };
+    context.validate(value, schema, root_key, "")
+}
+
 struct Context<'a> {
     resources: &'a BTreeMap<String, Json>,
     active_refs: BTreeSet<String>,
@@ -284,6 +320,11 @@ impl<'a> Context<'a> {
                 ));
             }
         }
+        if schema.get("uniqueItems").and_then(Json::as_bool) == Some(true)
+            && values.iter().enumerate().any(|(index, value)| values[..index].contains(value))
+        {
+            return Err(self.error(path, "schema validation failed: array items must be unique"));
+        }
         if let Some(item_schema) = schema.get("items") {
             match item_schema {
                 Json::Object(_) => {
@@ -489,6 +530,8 @@ impl<'a> Context<'a> {
             "$id",
             "$ref",
             "$schema",
+            "$defs",
+            "contentEncoding",
             "title",
             "description",
             "definitions",
@@ -507,6 +550,8 @@ impl<'a> Context<'a> {
             "maxLength",
             "minItems",
             "maxItems",
+            "uniqueItems",
+            "unevaluatedProperties",
             "items",
             "required",
             "properties",

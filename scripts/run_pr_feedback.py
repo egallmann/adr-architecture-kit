@@ -28,6 +28,8 @@ SEMANTIC_TESTS: tuple[str, ...] = (
     "tests/test_kernel_contract_schemas.py",
     "tests/test_kernel_contract_validation.py",
     "tests/test_semantic_core_protocol.py",
+    "tests/test_semantic_core_protocol_v12.py",
+    "tests/test_semantic_core_execution_routing.py",
     "tests/test_semantic_core_conformance.py",
     "tests/test_semantic_adapter.py",
     "tests/test_public_sdk_contract.py",

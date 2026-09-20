@@ -13,6 +13,7 @@ from adr_kit.core import execute_semantic_core_request, validate_semantic_core_p
 ROOT = Path(__file__).resolve().parents[1]
 CONTRACT = ROOT / "contracts" / "semantic-core" / "v1.0" / "contract.json"
 CONTRACT_V11 = ROOT / "contracts" / "semantic-core" / "v1.1" / "contract.json"
+CONTRACT_V12 = ROOT / "contracts" / "semantic-core" / "v1.2" / "contract.json"
 VECTORS = ROOT / "contracts" / "semantic-core" / "v1.0" / "vectors"
 VECTORS_V11 = ROOT / "contracts" / "semantic-core" / "v1.1" / "vectors"
 NORMALIZED_V23 = ROOT / "schema" / "normalized-model" / "v2.3"
@@ -123,6 +124,17 @@ def test_v11_operations_execute_through_the_packaged_wasm_boundary() -> None:
         assert result["core_contract_version"] == "1.1"
         assert result["success"] is False
         validate_semantic_core_protocol(result)
+
+
+def test_protocol_contract_mirrors_are_byte_identical_for_all_versions() -> None:
+    mirrors = {
+        CONTRACT: ROOT / "src" / "adr_kit" / "core" / "semantic-core-contract.json",
+        CONTRACT_V11: ROOT / "src" / "adr_kit" / "core" / "semantic-core-contract-v1.1.json",
+        CONTRACT_V12: ROOT / "src" / "adr_kit" / "core" / "semantic-core-contract-v1.2.json",
+    }
+    for canonical, mirror in mirrors.items():
+        assert mirror.is_file(), mirror
+        assert canonical.read_bytes() == mirror.read_bytes(), (canonical, mirror)
 
 
 def _assert_v11_vector(

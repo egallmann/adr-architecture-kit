@@ -48,18 +48,20 @@ def execute_semantic_core_request(request: dict[str, Any]) -> dict[str, Any]:
     return decoded
 
 
-@lru_cache(maxsize=2)
+@lru_cache(maxsize=3)
 def _protocol_validator(version: str = "1.0") -> Draft202012Validator:
     """Load the validator selected by the declared semantic-core version.
 
     v1.0 remains the compatibility fallback for unknown declarations because
     the Rust boundary emits its established v1.0 invalid-request envelope for
-    those requests. v1.1 is intentionally a separate canonical schema rather
-    than a mutation of the packaged v1.0 contract.
+    those requests. v1.1 and v1.2 are intentionally separate canonical
+    schemas rather than mutations of the packaged v1.0 contract.
     """
-    filename = (
-        "semantic-core-contract-v1.1.json" if version == "1.1" else "semantic-core-contract.json"
-    )
+    filename = {
+        "1.0": "semantic-core-contract.json",
+        "1.1": "semantic-core-contract-v1.1.json",
+        "1.2": "semantic-core-contract-v1.2.json",
+    }.get(version, "semantic-core-contract.json")
     contract = json.loads(
         resources.files("adr_kit.core").joinpath(filename).read_text(encoding="utf-8")
     )
@@ -70,7 +72,7 @@ def validate_semantic_core_protocol(value: dict[str, Any]) -> None:
     """Assert that a host request/result obeys the versioned transport schema."""
 
     declared_version = value.get("core_contract_version")
-    version = declared_version if declared_version in {"1.0", "1.1"} else "1.0"
+    version = declared_version if declared_version in {"1.0", "1.1", "1.2"} else "1.0"
     errors = sorted(
         _protocol_validator(version).iter_errors(value), key=lambda error: list(error.path)
     )

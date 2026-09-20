@@ -16,6 +16,7 @@ mod semantic_contract_set;
 // reimplement the rules evaluated below.
 const VERSION: &str = "1.0";
 const VERSION_1_1: &str = "1.1";
+const VERSION_1_2: &str = "1.2";
 const SENTINELS: [&str; 3] = [
     "__LEGACY_UNSPECIFIED__",
     "__NOT_YET_MODELED__",
@@ -1534,64 +1535,84 @@ pub fn execute_json(input: &[u8]) -> Vec<u8> {
                 .as_object()
                 .and_then(|object| object.get("core_contract_version"))
                 .and_then(Json::as_str);
-            let operation = value
-                .as_object()
-                .and_then(|object| object.get("operation"))
-                .and_then(Json::as_str);
-            let result = if declared_version == Some(VERSION_1_1) {
-                match operation {
-                    Some("resolve_semantic_contract_set") => {
-                        semantic_contract_set::resolve_exact(&value)
+            let result = match declared_version {
+                Some(VERSION) => {
+                    let operation = value
+                        .as_object()
+                        .and_then(|object| object.get("operation"))
+                        .and_then(Json::as_str);
+                    match operation {
+                        Some("validate_contract") => validate(&value),
+                        Some("validate_project_metadata") => validate_project_metadata(&value),
+                        Some("open_provider_registry") => validate_provider_registry(&value),
+                        Some("open_repository") => validate_repository(&value),
+                        Some("build_embodiment_linkage") => linkage::execute(&value),
+                        Some("generate_attribution_shim") => attribution::execute(&value),
+                        Some("classify_generated_artifact") => classify_generated_artifact(&value),
+                        Some("validate_architecture_references") => {
+                            validate_architecture_references(&value)
+                        }
+                        Some("validate_architecture") => architecture::execute(&value),
+                        Some("canonicalize_semantic_json") => {
+                            semantic_contract::canonicalize(&value)
+                        }
+                        Some("fingerprint_semantic_contract") => {
+                            semantic_contract::fingerprint(&value)
+                        }
+                        Some("validate_semantic_resource_closure") => {
+                            semantic_contract::validate_closure(&value)
+                        }
+                        Some("compose_semantic_contract_set") => {
+                            semantic_contract::compose_set(&value)
+                        }
+                        Some("validate_semantic_contract_profile") => {
+                            semantic_contract_set::validate_profile(&value)
+                        }
+                        Some("validate_semantic_contract_qualification") => {
+                            semantic_contract_set::validate_qualification(&value)
+                        }
+                        Some("assemble_semantic_contract_set") => {
+                            semantic_contract_set::assemble(&value)
+                        }
+                        Some("validate_semantic_contract_corpus") => {
+                            semantic_contract_set::validate_corpus(&value)
+                        }
+                        Some("resolve_current_semantic_contract_set") => {
+                            semantic_contract_set::resolve_current(&value)
+                        }
+                        Some(_) | None => invalid("unsupported semantic core operation"),
                     }
-                    Some("materialize_architecture") => materialization::execute(&value),
-                    Some(operation) => invalid_v11(
-                        operation,
-                        "operation is not available in semantic-core protocol 1.1",
-                    ),
-                    None => invalid_v11("invalid_request", "operation is required"),
                 }
-            } else {
-                match operation {
-                    Some("validate_contract") => validate(&value),
-                    Some("validate_project_metadata") => validate_project_metadata(&value),
-                    Some("open_provider_registry") => validate_provider_registry(&value),
-                    Some("open_repository") => validate_repository(&value),
-                    Some("build_embodiment_linkage") => linkage::execute(&value),
-                    Some("generate_attribution_shim") => attribution::execute(&value),
-                    Some("classify_generated_artifact") => classify_generated_artifact(&value),
-                    Some("validate_architecture_references") => {
-                        validate_architecture_references(&value)
+                Some(VERSION_1_1) => {
+                    let operation = value
+                        .as_object()
+                        .and_then(|object| object.get("operation"))
+                        .and_then(Json::as_str);
+                    match operation {
+                        Some("resolve_semantic_contract_set") => {
+                            semantic_contract_set::resolve_exact(&value)
+                        }
+                        Some("materialize_architecture") => materialization::execute(&value),
+                        Some(operation) => invalid_v11(
+                            operation,
+                            "operation is not available in semantic-core protocol 1.1",
+                        ),
+                        None => invalid_v11("invalid_request", "operation is required"),
                     }
-                    Some("validate_architecture") => architecture::execute(&value),
-                    Some("canonicalize_semantic_json") => semantic_contract::canonicalize(&value),
-                    Some("fingerprint_semantic_contract") => semantic_contract::fingerprint(&value),
-                    Some("validate_semantic_resource_closure") => {
-                        semantic_contract::validate_closure(&value)
-                    }
-                    Some("compose_semantic_contract_set") => semantic_contract::compose_set(&value),
-                    Some("validate_semantic_contract_profile") => {
-                        semantic_contract_set::validate_profile(&value)
-                    }
-                    Some("validate_semantic_contract_qualification") => {
-                        semantic_contract_set::validate_qualification(&value)
-                    }
-                    Some("assemble_semantic_contract_set") => {
-                        semantic_contract_set::assemble(&value)
-                    }
-                    Some("validate_semantic_contract_corpus") => {
-                        semantic_contract_set::validate_corpus(&value)
-                    }
-                    Some("resolve_current_semantic_contract_set") => {
-                        semantic_contract_set::resolve_current(&value)
-                    }
-                    Some(_) | None => invalid("unsupported semantic core operation"),
                 }
+                Some(VERSION_1_2) => invalid(
+                    "semantic-core protocol 1.2 is known but execution is not implemented",
+                ),
+                Some(_) | None => invalid("unsupported core_contract_version"),
             };
             json(&result).into_bytes()
         }
         Err(error) => json(&invalid(format!("malformed JSON: {error}"))).into_bytes(),
     }
 }
+
+#[cfg(test)]
+mod semantic_core_version_routing_tests;
 
 static mut LAST_RESULT_LEN: usize = 0;
 

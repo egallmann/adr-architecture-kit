@@ -1,0 +1,19 @@
+{
+  "resource_kind": "semantic-core-authoring-construction-transport-conformance",
+  "resource_version": "1.2",
+  "semanticDependencies": ["authoring-construction/1.0/conformance"],
+  "cases": [
+    {"id": "T01", "name": "validate request envelope", "kind": "request", "operation": "validate_authoring", "source_case": "C27"},
+    {"id": "T02", "name": "validate result envelope", "kind": "result", "operation": "validate_authoring", "source_case": "C27"},
+    {"id": "T03", "name": "construct request envelope", "kind": "request", "operation": "construct_authoring_set", "source_case": "C01"},
+    {"id": "T04", "name": "construct result envelope", "kind": "result", "operation": "construct_authoring_set", "source_case": "C01"},
+    {"id": "T05", "name": "outer and inner operations disagree", "kind": "mismatch", "operation": "validate_authoring", "source_case": "C27"},
+    {"id": "T06", "name": "wrong protocol version", "kind": "wrong_version", "operation": "validate_authoring", "source_case": "C27"},
+    {"id": "T07", "name": "unknown protocol operation", "kind": "unknown_operation"},
+    {"id": "T08", "name": "request or result is required", "kind": "missing_payload"},
+    {"id": "T09", "name": "request and result are mutually exclusive", "kind": "both_payloads"},
+    {"id": "T10", "name": "transport fields are closed", "kind": "unknown_transport_field"},
+    {"id": "T11", "name": "ACC-invalid nested request is rejected by composition", "kind": "acc_invalid_request", "operation": "validate_authoring", "source_case": "C27", "remove_path": ["request", "fragments"]},
+    {"id": "T12", "name": "ACC-invalid nested result is rejected by composition", "kind": "acc_invalid_result", "operation": "construct_authoring_set", "source_case": "C01", "remove_path": ["outcome"]}
+  ]
+}

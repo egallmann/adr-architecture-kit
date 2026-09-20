@@ -6,6 +6,7 @@ import AjvModule from "ajv/dist/2020.js";
 import Ajv7Module from "ajv";
 import { semanticCoreContract } from "../dist/generated/semantic-core-contract.js";
 import { semanticCoreContractV11 } from "../dist/generated/semantic-core-contract-v1.1.js";
+import { semanticCoreContractV12 } from "../dist/generated/semantic-core-contract-v1.2.js";
 import { validateSemanticCoreProtocol } from "../dist/node/protocol.js";
 import { executeSemanticCoreRequest } from "../dist/node/core.js";
 
@@ -68,6 +69,35 @@ test("Node protocol routes v1.1 results to the additive contract", () => {
   };
   assert.equal(v11(result), true, JSON.stringify(v11.errors));
   assert.doesNotThrow(() => validateSemanticCoreProtocol(result));
+});
+
+test("Node validates the additive v1.2 authoring transport surface", async () => {
+  const v12 = new Ajv({ allErrors: true, strict: false }).compile(semanticCoreContractV12);
+  const request = {
+    core_contract_version: "1.2",
+    operation: "validate_authoring",
+    request: { operation: "validate_authoring" },
+  };
+  const result = {
+    core_contract_version: "1.2",
+    operation: "construct_authoring_set",
+    result: { operation: "construct_authoring_set" },
+  };
+  assert.equal(v12(request), true, JSON.stringify(v12.errors));
+  assert.equal(v12(result), true, JSON.stringify(v12.errors));
+
+  const mismatch = { ...request, operation: "construct_authoring_set" };
+  assert.equal(v12(mismatch), false);
+  assert.equal(v12({ ...request, core_contract_version: "1.1" }), false);
+  assert.equal(v12({ ...request, operation: "unknown_authoring_operation" }), false);
+  assert.equal(v12({ core_contract_version: "1.2", operation: "validate_authoring" }), false);
+  assert.equal(v12({ ...request, result: { operation: "validate_authoring" } }), false);
+  assert.equal(v12({ ...request, transport_extension: true }), false);
+
+  const transportVectors = JSON.parse(
+    await readFile(resolve("../../contracts/semantic-core/v1.2/vectors/authoring-construction-transport.json"), "utf8"),
+  );
+  assert.equal(transportVectors.cases.length, 12);
 });
 
 test("Node keeps a v1.1-only operation rejected on the v1.0 boundary", async () => {

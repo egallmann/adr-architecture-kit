@@ -351,6 +351,27 @@ impl<'a> Context<'a> {
                 }
             }
         }
+        if let Some(contains) = schema.get("contains") {
+            let mut matches = 0;
+            for item in values {
+                let mut probe = Context {
+                    resources: self.resources,
+                    active_refs: self.active_refs.clone(),
+                };
+                if probe
+                    .validate(item, contains, resource_key, path)
+                    .is_ok()
+                {
+                    matches += 1;
+                }
+            }
+            if matches == 0 {
+                return Err(self.error(
+                    path,
+                    "schema validation failed: array must contain a matching item",
+                ));
+            }
+        }
         Ok(())
     }
 
@@ -379,6 +400,17 @@ impl<'a> Context<'a> {
                 }
             }
         }
+        if let Some(minimum) = schema.get("minProperties").and_then(Json::as_u64) {
+            if value.len() < minimum as usize {
+                return Err(self.error(
+                    path,
+                    format!(
+                        "schema validation failed: object must contain at least {minimum} propert{}",
+                        if minimum == 1 { "y" } else { "ies" }
+                    ),
+                ));
+            }
+        }
         if let Some(property_names) = schema.get("propertyNames") {
             for property in value.keys() {
                 self.validate(
@@ -403,9 +435,41 @@ impl<'a> Context<'a> {
                 )?;
             }
         }
+        if let Some(patterns) = schema.get("patternProperties").and_then(Json::as_object) {
+            for (pattern, property_schema) in patterns {
+                let regex = Regex::new(pattern).map_err(|_| {
+                    self.error(
+                        path,
+                        "schema validation failed: governed patternProperties pattern is invalid",
+                    )
+                })?;
+                for (property, property_value) in value {
+                    if regex.is_match(property) {
+                        self.validate(
+                            property_value,
+                            property_schema,
+                            resource_key,
+                            &property_path(path, property),
+                        )?;
+                    }
+                }
+            }
+        }
+        let matching_pattern = schema
+            .get("patternProperties")
+            .and_then(Json::as_object)
+            .map(|patterns| {
+                patterns
+                    .keys()
+                    .filter_map(|pattern| Regex::new(pattern).ok())
+                    .collect::<Vec<_>>()
+            })
+            .unwrap_or_default();
         if let Some(additional) = schema.get("additionalProperties") {
             for (property, property_value) in value {
-                if properties.is_some_and(|properties| properties.contains_key(property)) {
+                if properties.is_some_and(|properties| properties.contains_key(property))
+                    || matching_pattern.iter().any(|pattern| pattern.is_match(property))
+                {
                     continue;
                 }
                 match additional {
@@ -550,8 +614,10 @@ impl<'a> Context<'a> {
             "maxLength",
             "minItems",
             "maxItems",
+            "minProperties",
             "uniqueItems",
-            "unevaluatedProperties",
+            "contains",
+            "patternProperties",
             "items",
             "required",
             "properties",

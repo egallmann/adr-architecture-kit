@@ -1,5 +1,7 @@
 use std::collections::BTreeMap;
 
+use sha2::{Digest, Sha256};
+
 use super::{authoring_construction, semantic_contract, Json};
 
 const TARGET_KEY: &str = "authoring-construction/1.0/conformance";
@@ -71,11 +73,80 @@ fn diagnostic_codes(report: &authoring_construction::ValidationReport) -> Vec<St
         .collect()
 }
 
+fn custom_qualification(definition: &Json) -> Json {
+    Json::Object(BTreeMap::from([
+        (
+            "semantic_kind".into(),
+            definition.get("semantic_kind").cloned().expect("kind"),
+        ),
+        (
+            "semantic_type".into(),
+            definition.get("semantic_type").cloned().expect("type"),
+        ),
+        (
+            "consumer_namespace".into(),
+            definition
+                .get("consumer_namespace")
+                .cloned()
+                .expect("namespace"),
+        ),
+        (
+            "contract_version".into(),
+            definition
+                .get("contract_version")
+                .cloned()
+                .expect("version"),
+        ),
+        (
+            "contract_fingerprint".into(),
+            definition
+                .get("contract_fingerprint")
+                .cloned()
+                .expect("fingerprint"),
+        ),
+    ]))
+}
+
+fn raw_digest(bytes: &[u8]) -> String {
+    let mut hasher = Sha256::new();
+    hasher.update(bytes);
+    let digest = hasher.finalize();
+    format!(
+        "sha256:{}",
+        digest.iter().map(|byte| format!("{byte:02x}")).collect::<String>()
+    )
+}
+
+fn base64_encode(bytes: &[u8]) -> String {
+    const ALPHABET: &[u8; 64] =
+        b"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
+    let mut encoded = String::new();
+    for chunk in bytes.chunks(3) {
+        let first = chunk[0] as u32;
+        let second = chunk.get(1).copied().unwrap_or(0) as u32;
+        let third = chunk.get(2).copied().unwrap_or(0) as u32;
+        let value = (first << 16) | (second << 8) | third;
+        encoded.push(ALPHABET[((value >> 18) & 63) as usize] as char);
+        encoded.push(ALPHABET[((value >> 12) & 63) as usize] as char);
+        encoded.push(if chunk.len() > 1 {
+            ALPHABET[((value >> 6) & 63) as usize] as char
+        } else {
+            '='
+        });
+        encoded.push(if chunk.len() > 2 {
+            ALPHABET[(value & 63) as usize] as char
+        } else {
+            '='
+        });
+    }
+    encoded
+}
+
 #[test]
 fn frozen_acc_vectors_use_one_shared_validation_authority() {
     let cases = [
         "C11", "C12", "C13", "C16", "C17", "C19", "C20", "C23", "C24", "C25", "C26", "C27", "C29",
-        "C31", "C34", "C40", "C41", "C42",
+        "C34", "C40", "C41", "C42",
     ];
     for id in cases {
         let frozen_case = case(id);
@@ -144,6 +215,20 @@ fn frozen_acc_vectors_use_one_shared_validation_authority() {
             "{id} preserves the ACC operation in its semantic result"
         );
     }
+}
+
+#[test]
+fn c31_cardinality_expectation_is_reported_as_an_authority_gap() {
+    let report = authoring_construction::validate_authoring_request(&case_input("C31"));
+    assert_eq!(
+        report.status,
+        authoring_construction::ValidationStatus::Unavailable
+    );
+    let codes = diagnostic_codes(&report);
+    assert!(codes.contains(&
+        "authoring_construction.custom.authority_unavailable".to_owned()
+    ));
+    assert!(!codes.contains(&"authoring_construction.relationship.cardinality".to_owned()));
 }
 
 #[test]
@@ -259,4 +344,305 @@ fn custom_relationships_require_the_exact_selected_cec_definition() {
     let report = authoring_construction::validate_authoring_request(&request);
     assert!(diagnostic_codes(&report)
         .contains(&"authoring_construction.custom.qualification_mismatch".into()));
+}
+
+#[test]
+fn request_local_and_existing_reference_resolution_are_distinct() {
+    let request_local = authoring_construction::validate_authoring_request(&case_input("C06"));
+    assert_eq!(request_local.status, authoring_construction::ValidationStatus::Valid);
+    assert!(!diagnostic_codes(&request_local)
+        .contains(&"authoring_construction.reference.fragment_unresolved".into()));
+
+    let existing = authoring_construction::validate_authoring_request(&case_input("C04"));
+    assert_eq!(existing.status, authoring_construction::ValidationStatus::Valid);
+    assert!(!diagnostic_codes(&existing)
+        .contains(&"authoring_construction.reference.fragment_unresolved".into()));
+}
+
+#[test]
+fn missing_existing_reference_remains_unresolved() {
+    let report = authoring_construction::validate_authoring_request(&case_input("C41"));
+    assert_eq!(report.status, authoring_construction::ValidationStatus::Unresolved);
+    assert!(diagnostic_codes(&report)
+        .contains(&"authoring_construction.reference.fragment_unresolved".into()));
+}
+
+#[test]
+fn exact_existing_source_and_qualification_are_required_for_updates() {
+    let mut request = case_input("C34");
+    let basis = request
+        .as_object_mut()
+        .and_then(|root| root.get_mut("basis"))
+        .and_then(Json::as_object_mut)
+        .expect("basis is mutable");
+    basis.insert(
+        "existing_source_basis".into(),
+        Json::Object(BTreeMap::from([
+            ("sealed".into(), Json::Bool(true)),
+            (
+                "entries".into(),
+                Json::Array(vec![Json::Object(BTreeMap::from([
+                    (
+                        "canonical_uuid".into(),
+                        Json::String("019109a0-b1c2-7def-8a00-112233445566".into()),
+                    ),
+                    ("semantic_type".into(), Json::String("entity/decision".into())),
+                    (
+                        "qualification".into(),
+                        case_input("C13")
+                            .get("basis")
+                            .and_then(Json::as_object)
+                            .and_then(|value| value.get("adc"))
+                            .cloned()
+                            .expect("ADC qualification exists"),
+                    ),
+                    ("source_ref".into(), Json::String("test/existing".into())),
+                    ("content_digest".into(), Json::String("sha256:2d711642b726b04401627ca9fbac32f5c8530fb1903cc4db02258717921a4881".into())),
+                    ("source_bytes".into(), Json::String("eA==".into())),
+                ]))]),
+            ),
+        ])),
+    );
+    let report = authoring_construction::validate_authoring_request(&request);
+    assert!(!diagnostic_codes(&report)
+        .contains(&"authoring_construction.basis.existing_source_unavailable".into()));
+
+    let fragment_qualification = request
+        .get("request")
+        .and_then(Json::as_object)
+        .and_then(|value| value.get("fragments"))
+        .and_then(Json::as_array)
+        .and_then(|values| values.first())
+        .and_then(Json::as_object)
+        .and_then(|value| value.get("contract_qualification"))
+        .cloned()
+        .expect("fragment qualification exists");
+    {
+        let entry = request
+            .as_object_mut()
+            .and_then(|root| root.get_mut("basis"))
+            .and_then(Json::as_object_mut)
+            .and_then(|basis| basis.get_mut("existing_source_basis"))
+            .and_then(Json::as_object_mut)
+            .and_then(|basis| basis.get_mut("entries"))
+            .and_then(Json::as_array_mut)
+            .and_then(|entries| entries.first_mut())
+            .and_then(Json::as_object_mut)
+            .expect("source entry exists");
+        entry.insert("qualification".into(), fragment_qualification);
+    }
+    let report = authoring_construction::validate_authoring_request(&request);
+    assert!(!diagnostic_codes(&report)
+        .contains(&"authoring_construction.basis.existing_source_unavailable".into()));
+
+    request
+        .as_object_mut()
+        .and_then(|root| root.get_mut("basis"))
+        .and_then(Json::as_object_mut)
+        .and_then(|basis| basis.get_mut("existing_source_basis"))
+        .and_then(Json::as_object_mut)
+        .and_then(|basis| basis.get_mut("entries"))
+        .and_then(Json::as_array_mut)
+        .and_then(|entries| entries.first_mut())
+        .and_then(Json::as_object_mut)
+        .expect("source entry exists")
+        .insert("source_bytes".into(), Json::String("eQ==".into()));
+    let report = authoring_construction::validate_authoring_request(&request);
+    assert!(diagnostic_codes(&report)
+        .contains(&"authoring_construction.basis.exact_source_digest".into()));
+}
+
+#[test]
+fn canonical_qualification_and_field_schema_are_authoritative() {
+    let mut qualification_mismatch = case_input("C01");
+    qualification_mismatch
+        .as_object_mut()
+        .and_then(|root| root.get_mut("request"))
+        .and_then(Json::as_object_mut)
+        .and_then(|value| value.get_mut("fragments"))
+        .and_then(Json::as_array_mut)
+        .and_then(|values| values.first_mut())
+        .and_then(Json::as_object_mut)
+        .and_then(|value| value.get_mut("contract_qualification"))
+        .and_then(Json::as_object_mut)
+        .expect("canonical qualification exists")
+        .insert("version".into(), Json::String("9.9".into()));
+    let report = authoring_construction::validate_authoring_request(&qualification_mismatch);
+    assert!(diagnostic_codes(&report)
+        .contains(&"authoring_construction.fragment.qualification_mismatch".into()));
+
+    let mut invalid_field = case_input("C01");
+    invalid_field
+        .as_object_mut()
+        .and_then(|root| root.get_mut("request"))
+        .and_then(Json::as_object_mut)
+        .and_then(|value| value.get_mut("fragments"))
+        .and_then(Json::as_array_mut)
+        .and_then(|values| values.first_mut())
+        .and_then(Json::as_object_mut)
+        .and_then(|value| value.get_mut("fields"))
+        .and_then(Json::as_object_mut)
+        .expect("canonical fields exist")
+        .insert("alias_id".into(), Json::Bool(true));
+    let report = authoring_construction::validate_authoring_request(&invalid_field);
+    assert!(diagnostic_codes(&report)
+        .contains(&"authoring_construction.field.invalid".into()));
+
+    let mut missing_field = case_input("C01");
+    missing_field
+        .as_object_mut()
+        .and_then(|root| root.get_mut("request"))
+        .and_then(Json::as_object_mut)
+        .and_then(|value| value.get_mut("fragments"))
+        .and_then(Json::as_array_mut)
+        .and_then(|values| values.first_mut())
+        .and_then(Json::as_object_mut)
+        .and_then(|value| value.get_mut("fields"))
+        .and_then(Json::as_object_mut)
+        .expect("canonical fields exist")
+        .remove("summary");
+    let report = authoring_construction::validate_authoring_request(&missing_field);
+    assert!(diagnostic_codes(&report)
+        .contains(&"authoring_construction.field.required".into()));
+}
+
+#[test]
+fn exact_custom_registry_authority_controls_fields_endpoints_and_cardinality() {
+    let registry_bytes = include_bytes!("../../tests/fixtures/custom-entity-v1.0/valid-observation-registry.json");
+    let registry = document(std::str::from_utf8(registry_bytes).expect("fixture is UTF-8"));
+    let definitions = registry
+        .get("definitions")
+        .and_then(Json::as_array)
+        .expect("registry definitions");
+    let observation = definitions
+        .iter()
+        .find(|definition| definition.get("semantic_type").and_then(Json::as_str) == Some("example:observation"))
+        .cloned()
+        .expect("observation definition");
+    let observes = definitions
+        .iter()
+        .find(|definition| definition.get("semantic_type").and_then(Json::as_str) == Some("example:observes"))
+        .cloned()
+        .expect("relationship definition");
+    let registry_digest = raw_digest(registry_bytes);
+    let selected = [observation.clone(), observes.clone()]
+        .iter()
+        .map(|definition| {
+            let mut selected = definition
+                .as_object()
+                .expect("definition object")
+                .iter()
+                .filter(|(key, _)| {
+                    matches!(
+                        key.as_str(),
+                        "semantic_kind"
+                            | "semantic_type"
+                            | "consumer_namespace"
+                            | "contract_version"
+                            | "contract_fingerprint"
+                    )
+                })
+                .map(|(key, value)| (key.clone(), value.clone()))
+                .collect::<BTreeMap<_, _>>();
+            selected.insert(
+                "definition_source".into(),
+                Json::String("tests/fixtures/custom-entity-v1.0/valid-observation-registry.json".into()),
+            );
+            selected.insert("definition_digest".into(), Json::String(registry_digest.clone()));
+            Json::Object(selected)
+        })
+        .collect::<Vec<_>>();
+
+    let mut request = case_input("C31");
+    let root = request.as_object_mut().expect("request root");
+    let basis = root
+        .get_mut("basis")
+        .and_then(Json::as_object_mut)
+        .expect("basis");
+    let custom_basis = basis
+        .get_mut("custom_entity")
+        .and_then(Json::as_object_mut)
+        .expect("custom basis");
+    custom_basis.insert(
+        "registry_source".into(),
+        Json::Object(BTreeMap::from([
+            ("source_ref".into(), Json::String("tests/fixtures/custom-entity-v1.0/valid-observation-registry.json".into())),
+            ("content_digest".into(), Json::String(registry_digest.clone())),
+            ("source_bytes".into(), Json::String(base64_encode(registry_bytes))),
+        ])),
+    );
+    custom_basis.insert("selected_definitions".into(), Json::Array(selected));
+    let adc = basis.get("adc").cloned().expect("ADC basis");
+    let observation_id = Json::String("019109a0-b1c2-7def-8a00-112233445568".into());
+    let capability_id = Json::String("019109a0-b1c2-7def-8a00-112233445569".into());
+    let fragments = Json::Array(vec![
+        Json::Object(BTreeMap::from([
+            ("request_key".into(), Json::String("observation".into())),
+            ("semantic_kind".into(), Json::String("entity".into())),
+            ("semantic_type".into(), Json::String("example:observation".into())),
+            ("operation".into(), Json::String("create".into())),
+            ("input_mode".into(), Json::String("prepared".into())),
+            ("fields".into(), Json::Object(BTreeMap::from([
+                ("id".into(), observation_id),
+                ("alias_id".into(), Json::String("OBS-1".into())),
+                ("alias_name".into(), Json::String("observation".into())),
+                ("existence_state".into(), Json::String("active".into())),
+                ("observation_code".into(), Json::String("OBS-1".into())),
+            ]))),
+            ("contract_qualification".into(), custom_qualification(&observation)),
+            ("references".into(), Json::Array(Vec::new())),
+            ("composition_keys".into(), Json::Array(Vec::new())),
+        ])),
+        Json::Object(BTreeMap::from([
+            ("request_key".into(), Json::String("capability".into())),
+            ("semantic_kind".into(), Json::String("entity".into())),
+            ("semantic_type".into(), Json::String("entity/capability".into())),
+            ("operation".into(), Json::String("create".into())),
+            ("input_mode".into(), Json::String("prepared".into())),
+            ("fields".into(), Json::Object(BTreeMap::from([
+                ("id".into(), capability_id),
+                ("alias_id".into(), Json::String("CAP-1".into())),
+                ("alias_name".into(), Json::String("capability".into())),
+                ("name".into(), Json::String("Capability".into())),
+                ("description".into(), Json::String("A capability.".into())),
+            ]))),
+            ("contract_qualification".into(), adc),
+            ("references".into(), Json::Array(Vec::new())),
+            ("composition_keys".into(), Json::Array(Vec::new())),
+        ])),
+    ]);
+    let relationship = |key: &str| {
+        Json::Object(BTreeMap::from([
+            ("relationship_key".into(), Json::String(key.into())),
+            ("relationship_type".into(), Json::String("example:observes".into())),
+            ("source".into(), Json::Object(BTreeMap::from([
+                ("kind".into(), Json::String("request".into())),
+                ("target".into(), Json::String("observation".into())),
+            ]))),
+            ("target".into(), Json::Object(BTreeMap::from([
+                ("kind".into(), Json::String("request".into())),
+                ("target".into(), Json::String("capability".into())),
+            ]))),
+            ("fields".into(), Json::Object(BTreeMap::new())),
+            ("qualification".into(), custom_qualification(&observes)),
+        ]))
+    };
+    root.get_mut("request")
+        .and_then(Json::as_object_mut)
+        .expect("request body")
+        .insert("fragments".into(), fragments);
+    root.get_mut("request")
+        .and_then(Json::as_object_mut)
+        .expect("request body")
+        .insert(
+            "relationships".into(),
+            Json::Array(vec![relationship("one"), relationship("two")]),
+        );
+
+    let report = authoring_construction::validate_authoring_request(&request);
+    let codes = diagnostic_codes(&report);
+    assert_eq!(report.status, authoring_construction::ValidationStatus::Valid, "{codes:?}");
+    assert!(!codes.contains(&"authoring_construction.custom.authority_unavailable".into()));
+    assert!(!codes.contains(&"authoring_construction.relationship.endpoint_forbidden".into()));
+    assert!(!codes.contains(&"authoring_construction.relationship.cardinality".into()));
 }

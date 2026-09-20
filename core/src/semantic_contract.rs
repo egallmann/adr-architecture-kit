@@ -1169,7 +1169,7 @@ fn collect_explicit_semantic_dependencies(
 
 fn validate_resource_contents(
     entries: &[ResourceEntry],
-    resources: Option<&Vec<Json>>,
+    resources: Option<&[Json]>,
     diagnostics: &mut Vec<Json>,
 ) {
     let Some(resources) = resources else {
@@ -1328,6 +1328,392 @@ fn validate_resource_contents(
     }
 }
 
+const SELF_BINDING_MARKER: &str = "$enclosing_scf";
+const SELF_BINDING_SOURCE: &str = "verified_enclosing_semantic_contract_fingerprint";
+
+#[derive(Clone, Debug, Eq, PartialEq)]
+enum BindingPatternSegment {
+    Literal(String),
+    Wildcard,
+}
+
+#[derive(Clone, Debug, Eq, PartialEq)]
+struct BindingPattern {
+    raw: String,
+    segments: Vec<BindingPatternSegment>,
+}
+
+fn decode_json_pointer_segment(raw: &str) -> Result<String, String> {
+    let mut decoded = String::new();
+    let mut characters = raw.chars();
+    while let Some(character) = characters.next() {
+        if character != '~' {
+            decoded.push(character);
+            continue;
+        }
+        match characters.next() {
+            Some('0') => decoded.push('~'),
+            Some('1') => decoded.push('/'),
+            Some(other) => {
+                return Err(format!(
+                    "invalid JSON Pointer escape ~{other} in binding pattern"
+                ))
+            }
+            None => return Err("unterminated JSON Pointer escape in binding pattern".into()),
+        }
+    }
+    Ok(decoded)
+}
+
+fn parse_binding_pattern(raw: &str) -> Result<BindingPattern, String> {
+    if raw.is_empty() || !raw.starts_with('/') {
+        return Err(format!("binding pattern is not an absolute JSON Pointer: {raw}"));
+    }
+    let mut segments = Vec::new();
+    for segment in raw.split('/').skip(1) {
+        if segment.is_empty() {
+            return Err(format!("binding pattern contains an empty path segment: {raw}"));
+        }
+        if segment == "*" {
+            segments.push(BindingPatternSegment::Wildcard);
+        } else {
+            segments.push(BindingPatternSegment::Literal(decode_json_pointer_segment(
+                segment,
+            )?));
+        }
+    }
+    if segments.is_empty() {
+        return Err(format!("binding pattern must contain a path: {raw}"));
+    }
+    Ok(BindingPattern {
+        raw: raw.to_owned(),
+        segments,
+    })
+}
+
+fn binding_patterns_overlap(left: &BindingPattern, right: &BindingPattern) -> bool {
+    left.segments.len() == right.segments.len()
+        && left
+            .segments
+            .iter()
+            .zip(&right.segments)
+            .all(|(left, right)| match (left, right) {
+                (BindingPatternSegment::Literal(left), BindingPatternSegment::Literal(right)) => {
+                    left == right
+                }
+                _ => true,
+            })
+}
+
+fn binding_pattern_matches(pattern: &BindingPattern, path: &[String]) -> bool {
+    pattern.segments.len() == path.len()
+        && pattern
+            .segments
+            .iter()
+            .zip(path)
+            .all(|(segment, value)| match segment {
+                BindingPatternSegment::Literal(expected) => expected == value,
+                BindingPatternSegment::Wildcard => true,
+            })
+}
+
+fn json_pointer(path: &[String]) -> String {
+    if path.is_empty() {
+        return "/".into();
+    }
+    path.iter()
+        .map(|segment| format!("/{}", segment.replace('~', "~0").replace('/', "~1")))
+        .collect()
+}
+
+fn path_segments(pointer: &str) -> Result<Vec<String>, String> {
+    if pointer == "/" {
+        return Ok(Vec::new());
+    }
+    if !pointer.starts_with('/') {
+        return Err(format!("invalid generated JSON Pointer: {pointer}"));
+    }
+    pointer
+        .split('/')
+        .skip(1)
+        .map(decode_json_pointer_segment)
+        .collect()
+}
+
+fn parse_self_binding_patterns(resource: &Json) -> Result<Vec<BindingPattern>, String> {
+    let Some(root) = resource.as_object() else {
+        return Err("frozen conformance resource must be an object".into());
+    };
+    let Some(binding) = root.get("self_binding").and_then(Json::as_object) else {
+        return Err("frozen conformance resource must declare self_binding".into());
+    };
+    let allowed_fields = ["marker", "source", "allowed_json_pointer_patterns"];
+    for field in binding.keys() {
+        if !allowed_fields.contains(&field.as_str()) {
+            return Err(format!("self_binding contains an unknown field: {field}"));
+        }
+    }
+    if binding.get("marker").and_then(Json::as_str) != Some(SELF_BINDING_MARKER) {
+        return Err("self_binding.marker must equal $enclosing_scf".into());
+    }
+    if binding.get("source").and_then(Json::as_str) != Some(SELF_BINDING_SOURCE) {
+        return Err(
+            "self_binding.source must identify the verified enclosing semantic contract fingerprint"
+                .into(),
+        );
+    }
+    let Some(raw_patterns) = binding
+        .get("allowed_json_pointer_patterns")
+        .and_then(Json::as_array)
+    else {
+        return Err("self_binding.allowed_json_pointer_patterns must be an array".into());
+    };
+    if raw_patterns.is_empty() {
+        return Err("self_binding.allowed_json_pointer_patterns must not be empty".into());
+    }
+    let mut patterns = Vec::new();
+    for raw_pattern in raw_patterns {
+        let Some(raw_pattern) = raw_pattern.as_str() else {
+            return Err("self-binding path patterns must be strings".into());
+        };
+        let pattern = parse_binding_pattern(raw_pattern)?;
+        if patterns
+            .iter()
+            .any(|existing: &BindingPattern| binding_patterns_overlap(existing, &pattern))
+        {
+            return Err(format!(
+                "self-binding path pattern overlaps another declaration: {}",
+                pattern.raw
+            ));
+        }
+        patterns.push(pattern);
+    }
+    Ok(patterns)
+}
+
+fn collect_binding_markers(
+    value: &Json,
+    path: &mut Vec<String>,
+    markers: &mut Vec<(String, String)>,
+) {
+    match value {
+        Json::Object(values) => {
+            for (key, child) in values {
+                if path.is_empty() && key == "self_binding" {
+                    continue;
+                }
+                path.push(key.clone());
+                collect_binding_markers(child, path, markers);
+                path.pop();
+            }
+        }
+        Json::Array(values) => {
+            for (index, child) in values.iter().enumerate() {
+                path.push(index.to_string());
+                collect_binding_markers(child, path, markers);
+                path.pop();
+            }
+        }
+        Json::String(value) if value.starts_with('$') => {
+            markers.push((json_pointer(path), value.clone()));
+        }
+        Json::Null | Json::Bool(_) | Json::Number(_) | Json::String(_) => {}
+    }
+}
+
+fn replace_binding_markers(
+    value: &Json,
+    path: &mut Vec<String>,
+    marker_paths: &BTreeSet<String>,
+    verified_scf: &str,
+) -> Json {
+    match value {
+        Json::Object(values) => Json::Object(
+            values
+                .iter()
+                .map(|(key, child)| {
+                    path.push(key.clone());
+                    let replaced = replace_binding_markers(child, path, marker_paths, verified_scf);
+                    path.pop();
+                    (key.clone(), replaced)
+                })
+                .collect(),
+        ),
+        Json::Array(values) => Json::Array(
+            values
+                .iter()
+                .enumerate()
+                .map(|(index, child)| {
+                    path.push(index.to_string());
+                    let replaced = replace_binding_markers(child, path, marker_paths, verified_scf);
+                    path.pop();
+                    replaced
+                })
+                .collect(),
+        ),
+        Json::String(value) if marker_paths.contains(&json_pointer(path)) => {
+            Json::String(verified_scf.to_owned())
+        }
+        _ => value.clone(),
+    }
+}
+
+pub(crate) fn projection_has_marker(value: &Json) -> Option<String> {
+    let mut markers = Vec::new();
+    collect_binding_markers(value, &mut Vec::new(), &mut markers);
+    markers.into_iter().next().map(|(path, value)| format!("{path}={value}"))
+}
+
+fn binding_diagnostics(prefix: &str, diagnostics: &[Json]) -> String {
+    let details = diagnostics
+        .iter()
+        .filter_map(|item| item.as_object())
+        .map(|item| {
+            let code = item.get("code").and_then(Json::as_str).unwrap_or("unknown");
+            let message = item
+                .get("message")
+                .and_then(Json::as_str)
+                .unwrap_or("semantic-contract validation failed");
+            format!("{code}: {message}")
+        })
+        .collect::<Vec<_>>();
+    format!("{prefix}: {}", details.join("; "))
+}
+
+/// Verify the enclosing semantic contract and exact supplied closure before
+/// deriving a structural, conformance-only self-binding projection.
+///
+/// This is intentionally crate-private and is not routed through a semantic
+/// core operation. The returned value is derived execution material only; the
+/// supplied resource and its enclosing identity remain untouched.
+pub(crate) fn bind_verified_conformance_resource(
+    definition: &BTreeMap<String, Json>,
+    resources: &[Json],
+    target_resource_key: &str,
+) -> Result<Json, String> {
+    let mut diagnostics = Vec::new();
+    let verified_canonical = validate_declared_fingerprint(definition, true, &mut diagnostics);
+    if verified_canonical.is_none() || !diagnostics.is_empty() {
+        return Err(binding_diagnostics(
+            "enclosing semantic-contract definition did not verify",
+            &diagnostics,
+        ));
+    }
+    let verified_scf = definition
+        .get("semanticContractFingerprint")
+        .and_then(Json::as_str)
+        .ok_or_else(|| "verified enclosing semantic contract has no SCF".to_owned())?;
+
+    diagnostics.clear();
+    let entries = parse_definition(definition, true, &mut diagnostics).ok_or_else(|| {
+        binding_diagnostics(
+            "enclosing semantic-contract definition could not be parsed",
+            &diagnostics,
+        )
+    })?;
+    if !diagnostics.is_empty() {
+        return Err(binding_diagnostics(
+            "enclosing semantic-contract definition could not be parsed",
+            &diagnostics,
+        ));
+    }
+
+    diagnostics.clear();
+    validate_resource_contents(&entries, Some(resources), &mut diagnostics);
+    if !diagnostics.is_empty() {
+        return Err(binding_diagnostics(
+            "supplied semantic-contract resource closure did not verify",
+            &diagnostics,
+        ));
+    }
+
+    let Some(entry) = entries.iter().find(|entry| entry.key == target_resource_key) else {
+        return Err(format!(
+            "target resource is absent from the enclosing manifest: {target_resource_key}"
+        ));
+    };
+    if !role_is_conformance(&entry.role) {
+        return Err(format!(
+            "target resource is not a frozen normative conformance resource: {target_resource_key}"
+        ));
+    }
+    let frozen = definition
+        .get("frozenNormativeConformanceResources")
+        .and_then(Json::as_array)
+        .ok_or_else(|| "enclosing definition has no frozen conformance resource list".to_owned())?;
+    if !frozen
+        .iter()
+        .any(|value| value.as_str() == Some(target_resource_key))
+    {
+        return Err(format!(
+            "target resource is not listed as frozen normative conformance: {target_resource_key}"
+        ));
+    }
+    let target = resources
+        .iter()
+        .find(|resource| {
+            resource
+                .as_object()
+                .and_then(|value| value.get("canonicalResourceKey"))
+                .and_then(Json::as_str)
+                == Some(target_resource_key)
+        })
+        .and_then(|resource| resource.as_object())
+        .and_then(|resource| resource.get("content"))
+        .ok_or_else(|| {
+            format!("target resource content is not supplied exactly: {target_resource_key}")
+        })?;
+
+    let patterns = parse_self_binding_patterns(target)?;
+    let mut markers = Vec::new();
+    collect_binding_markers(target, &mut Vec::new(), &mut markers);
+    let mut marker_paths = BTreeSet::new();
+    let mut used_patterns = BTreeSet::new();
+    for (path, value) in markers {
+        if value != SELF_BINDING_MARKER {
+            return Err(format!("unknown self-binding marker at {path}: {value}"));
+        }
+        let segments = path_segments(&path)?;
+        let matching = patterns
+            .iter()
+            .enumerate()
+            .filter(|(_, pattern)| binding_pattern_matches(pattern, &segments))
+            .map(|(index, _)| index)
+            .collect::<Vec<_>>();
+        if matching.is_empty() {
+            return Err(format!("self-binding marker occurs at undeclared path: {path}"));
+        }
+        if matching.len() != 1 {
+            return Err(format!("self-binding marker has ambiguous path: {path}"));
+        }
+        marker_paths.insert(path);
+        used_patterns.insert(matching[0]);
+    }
+    if marker_paths.is_empty() {
+        return Err("frozen conformance resource contains no self-binding marker".into());
+    }
+    if used_patterns.len() != patterns.len() {
+        return Err("self-binding declaration contains a path with no marker".into());
+    }
+
+    let mut projection = target.clone();
+    if let Json::Object(projection_object) = &mut projection {
+        projection_object.remove("self_binding");
+    } else {
+        return Err("frozen conformance resource must be an object".into());
+    }
+    projection = replace_binding_markers(
+        &projection,
+        &mut Vec::new(),
+        &marker_paths,
+        verified_scf,
+    );
+    if let Some(marker) = projection_has_marker(&projection) {
+        return Err(format!("bound execution projection retains marker: {marker}"));
+    }
+    Ok(projection)
+}
+
 pub fn canonicalize(request: &Json) -> Json {
     let Some(root) = request.as_object() else {
         return super::invalid("request must be an object");
@@ -1449,7 +1835,9 @@ pub fn validate_closure(request: &Json) -> Json {
     if let Some(entries) = entries {
         validate_resource_contents(
             entries.as_slice(),
-            root.get("resources").and_then(Json::as_array),
+            root.get("resources")
+                .and_then(Json::as_array)
+                .map(Vec::as_slice),
             &mut diagnostics,
         );
     }

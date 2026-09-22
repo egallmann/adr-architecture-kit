@@ -12820,7 +12820,27 @@
               "operation": "create",
               "input_mode": "prepared",
               "fields": {
-                "id": "019109a0-b1c2-7def-8a00-112233445566"
+                "id": "019109a0-b1c2-7def-8a00-112233445566",
+                "alias_id": "COMP-0001",
+                "alias_name": "sample-component",
+                "name": "Sample Component",
+                "type": "service",
+                "responsibilities": "Provides the sample service.",
+                "generation_context": {
+                  "purpose": "Support the conformance case.",
+                  "key_responsibilities": [
+                    "Provide the sample service."
+                  ]
+                },
+                "interfaces": [
+                  {
+                    "id": "019109a0-b1c2-7def-8a00-112233445567",
+                    "alias_id": "IFACE-0001",
+                    "alias_name": "sample-interface",
+                    "type": "REST",
+                    "specification": "Sample interface."
+                  }
+                ]
               },
               "contract_qualification": {
                 "family": "authoring-domain",
@@ -16003,7 +16023,27 @@
               "operation": "create",
               "input_mode": "prepared",
               "fields": {
-                "id": "019109a0-b1c2-7def-8a00-112233445566"
+                "id": "019109a0-b1c2-7def-8a00-112233445566",
+                "alias_id": "COMP-0001",
+                "alias_name": "sample-component",
+                "name": "Sample Component",
+                "type": "service",
+                "responsibilities": "Provides the sample service.",
+                "generation_context": {
+                  "purpose": "Support the conformance case.",
+                  "key_responsibilities": [
+                    "Provide the sample service."
+                  ]
+                },
+                "interfaces": [
+                  {
+                    "id": "019109a0-b1c2-7def-8a00-112233445567",
+                    "alias_id": "IFACE-0001",
+                    "alias_name": "sample-interface",
+                    "type": "REST",
+                    "specification": "Sample interface."
+                  }
+                ]
               },
               "contract_qualification": {
                 "family": "authoring-domain",

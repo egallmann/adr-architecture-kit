@@ -5,17 +5,17 @@
   "resourceManifest": [
     {
       "canonicalResourceKey": "authoring-construction/1.0/conformance",
-      "contentDigest": "sha256:471750695a5e4e86a314b250cdf92547e33b761facd33a21d5d1bb896cabd07f",
+      "contentDigest": "sha256:8f0e982964f8afdf17b1db735d08ff79f259d47e1d16fa4f7b7ed13d180d7f44",
       "role": "interpretation-conformance",
-      "dependencies": [{"canonicalResourceKey": "authoring-construction/1.0/rules", "contentDigest": "sha256:c81dc929746361409c2413f0492d5cd96338f9fbd26ab3842900153a95c2da63"}]
+      "dependencies": [{"canonicalResourceKey": "authoring-construction/1.0/rules", "contentDigest": "sha256:75ec37f042f7b75aeae15672e0a617027946c8e74ff53cde152f95d80eba1dbd"}]
     },
     {
       "canonicalResourceKey": "authoring-construction/1.0/rules",
-      "contentDigest": "sha256:c81dc929746361409c2413f0492d5cd96338f9fbd26ab3842900153a95c2da63",
+      "contentDigest": "sha256:75ec37f042f7b75aeae15672e0a617027946c8e74ff53cde152f95d80eba1dbd",
       "role": "interpretation-rule",
       "dependencies": []
     }
   ],
   "frozenNormativeConformanceResources": ["authoring-construction/1.0/conformance"],
-  "semanticContractFingerprint": "scf:v1:sha256:ccf1331310d72f3851432ab9934474e4725ce4643abf8fc44dc51a7031166bff"
+  "semanticContractFingerprint": "scf:v1:sha256:821f0e647cb2c7ce68ee0251e9c52c05a6be05a0b407dd56216e6eff3acfa61d"
 }

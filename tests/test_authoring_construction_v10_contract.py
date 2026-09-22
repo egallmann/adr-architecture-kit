@@ -570,6 +570,20 @@ def test_acc_prepared_compact_identity_round_trip_and_permutation_vectors_are_co
 
 def test_acc_policy_resource_preserves_authority_ceiling_and_boundaries() -> None:
     rules = _document(ACC / "resources" / "rules.json")
+    assert rules["authority"]["custom_definition_selection"] == {
+        "source_locator": "registry_source.source_ref#/definitions/<zero_based_index>",
+        "source_index": "exact_zero_based_definitions_array_position",
+        "definition_digest": "canonical_semantic_json_sha256_of_exact_definition_object",
+        "exact": [
+            "semantic_kind",
+            "semantic_type",
+            "consumer_namespace",
+            "contract_version",
+            "contract_fingerprint",
+            "definition_source",
+            "definition_digest",
+        ],
+    }
     assert rules["outcomes"]["exact"] == [
         "Constructed",
         "Rejected",

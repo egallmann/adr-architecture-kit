@@ -15,6 +15,8 @@ use super::{object, schema_validation, semantic_contract, string, Json};
 const ACC_SCHEMA: &str = include_str!("../../contracts/authoring-construction/v1.0/schema.json");
 const ACC_CONTRACT: &str =
     include_str!("../../contracts/authoring-construction/v1.0/contract.json");
+const ACC_RULES: &str =
+    include_str!("../../contracts/authoring-construction/v1.0/resources/rules.json");
 const ADC_CONTRACT: &str = include_str!("../../contracts/authoring-domain/v1.1/contract.json");
 const AUTHORING_COMMON_SCHEMA: &str =
     include_str!("../../schema/authoring/v1.7/adr-common.schema.json");
@@ -345,19 +347,20 @@ fn validate_fragment(
         if !field_surface_invalid
             && identity_valid
             && fragment_operation == "create"
-            && (fields.len() > 1 || !fields.contains_key("id"))
             && value.get("input_mode").and_then(Json::as_str) != Some("compact")
             && value
                 .get("references")
                 .and_then(Json::as_array)
                 .is_none_or(|references| references.is_empty())
             && semantic_type.is_some_and(|value| !value.contains(':'))
+            && semantic_type.is_some_and(create_identity_mint_allowed)
         {
             validate_canonical_required_fields(
                 semantic_type.expect("canonical semantic type is present"),
                 fields,
                 key,
                 index,
+                true,
                 diagnostics,
             );
         }
@@ -429,6 +432,7 @@ fn validate_canonical_required_fields(
     fields: &BTreeMap<String, Json>,
     request_key: Option<&str>,
     index: usize,
+    allow_create_time_identity_establishment: bool,
     diagnostics: &mut Vec<Json>,
 ) {
     let Some(definition_name) = authoring_definition_name(semantic_type) else {
@@ -447,6 +451,9 @@ fn validate_canonical_required_fields(
         return;
     };
     for field in required.iter().filter_map(Json::as_str) {
+        if allow_create_time_identity_establishment && field == "id" {
+            continue;
+        }
         if !fields.contains_key(field) {
             diagnostics.push(diag(
                 "authoring_construction.field.required",
@@ -462,6 +469,21 @@ fn validate_canonical_required_fields(
             ));
         }
     }
+}
+
+fn create_identity_mint_allowed(semantic_type: &str) -> bool {
+    if authoring_definition_name(semantic_type).is_none() {
+        return false;
+    }
+    let Ok(rules) = serde_json::from_str::<Json>(ACC_RULES) else {
+        return false;
+    };
+    rules
+        .get("identity")
+        .and_then(Json::as_object)
+        .and_then(|identity| identity.get("mint_create_absent"))
+        .and_then(Json::as_bool)
+        == Some(true)
 }
 
 fn validate_canonical_fragment_qualification(

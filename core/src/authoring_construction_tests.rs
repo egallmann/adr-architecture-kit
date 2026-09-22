@@ -518,6 +518,13 @@ fn canonical_qualification_and_field_schema_are_authoritative() {
 }
 
 #[test]
+fn unmodified_c02_is_valid_before_create_time_identity_establishment() {
+    let report = authoring_construction::validate_authoring_request(&case_input("C02"));
+    assert_eq!(report.status, authoring_construction::ValidationStatus::Valid);
+    assert!(report.diagnostics.is_empty(), "{:?}", report.diagnostics);
+}
+
+#[test]
 fn create_identity_mint_does_not_suppress_other_required_fields() {
     let mut request = case_input("C02");
     request
@@ -534,15 +541,83 @@ fn create_identity_mint_does_not_suppress_other_required_fields() {
         .remove("summary");
 
     let report = authoring_construction::validate_authoring_request(&request);
-    assert!(
-        diagnostic_codes(&report).contains(&"authoring_construction.field.required".into()),
+    assert_eq!(
+        diagnostic_codes(&report),
+        vec!["authoring_construction.field.required"],
         "missing summary must remain diagnosable when id is intentionally absent: {:?}",
         report.diagnostics
     );
+    assert_eq!(
+        report.diagnostics[0].get("location").and_then(Json::as_str),
+        Some("/request/fragments/0/fields/summary")
+    );
+    assert!(!diagnostic_codes(&report)
+        .contains(&"authoring_construction.identity.update_requires_existing".into()));
+    assert!(!report.diagnostics.iter().any(|diagnostic| {
+        diagnostic.get("location").and_then(Json::as_str)
+            == Some("/request/fragments/0/fields/id")
+    }));
+}
+
+#[test]
+fn supplied_id_only_create_reports_all_other_required_canonical_fields() {
+    let mut request = case_input("C01");
+    let fields = request
+        .as_object_mut()
+        .and_then(|root| root.get_mut("request"))
+        .and_then(Json::as_object_mut)
+        .and_then(|value| value.get_mut("fragments"))
+        .and_then(Json::as_array_mut)
+        .and_then(|values| values.first_mut())
+        .and_then(Json::as_object_mut)
+        .and_then(|value| value.get_mut("fields"))
+        .and_then(Json::as_object_mut)
+        .expect("C01 canonical fields exist");
+    fields.clear();
+    fields.insert(
+        "id".into(),
+        Json::String("019109a0-b1c2-7def-8a00-112233445566".into()),
+    );
+
+    let report = authoring_construction::validate_authoring_request(&request);
+    let locations = report
+        .diagnostics
+        .iter()
+        .filter_map(|diagnostic| diagnostic.get("location").and_then(Json::as_str))
+        .collect::<Vec<_>>();
+    assert_eq!(
+        locations,
+        vec![
+            "/request/fragments/0/fields/alias_id",
+            "/request/fragments/0/fields/alias_name",
+            "/request/fragments/0/fields/rationale",
+            "/request/fragments/0/fields/summary",
+        ]
+    );
+    assert!(!locations.contains(&"/request/fragments/0/fields/id"));
 }
 
 #[test]
 fn exact_custom_registry_authority_controls_fields_endpoints_and_cardinality() {
+    let rules = document(include_str!(
+        "../../contracts/authoring-construction/v1.0/resources/rules.json"
+    ));
+    let selection_rule = rules
+        .get("authority")
+        .and_then(Json::as_object)
+        .and_then(|authority| authority.get("custom_definition_selection"))
+        .and_then(Json::as_object)
+        .expect("ACC declares exact custom-definition selection authority");
+    assert_eq!(
+        selection_rule.get("source_locator").and_then(Json::as_str),
+        Some("registry_source.source_ref#/definitions/<zero_based_index>")
+    );
+    assert_eq!(
+        selection_rule
+            .get("definition_digest")
+            .and_then(Json::as_str),
+        Some("canonical_semantic_json_sha256_of_exact_definition_object")
+    );
     let registry_bytes = include_bytes!("../../tests/fixtures/custom-entity-v1.0/valid-observation-registry.json");
     let registry = document(std::str::from_utf8(registry_bytes).expect("fixture is UTF-8"));
     let definitions = registry

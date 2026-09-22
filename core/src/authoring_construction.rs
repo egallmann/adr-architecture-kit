@@ -345,8 +345,8 @@ fn validate_fragment(
         if !field_surface_invalid
             && identity_valid
             && fragment_operation == "create"
-            && fields.contains_key("id")
-            && fields.len() > 1
+            && (fields.len() > 1 || !fields.contains_key("id"))
+            && value.get("input_mode").and_then(Json::as_str) != Some("compact")
             && value
                 .get("references")
                 .and_then(Json::as_array)
@@ -1393,8 +1393,9 @@ fn validate_custom_qualification(
             REMEDIATION,
             None,
         ));
+        return;
     }
-    let Some(custom_basis) = root
+    let Some(_custom_basis) = root
         .get("basis")
         .and_then(Json::as_object)
         .and_then(|basis| basis.get("custom_entity"))
@@ -1414,26 +1415,21 @@ fn validate_custom_qualification(
         ));
         return;
     };
-    let selected = custom_basis
-        .get("selected_definitions")
-        .and_then(Json::as_array)
-        .is_some_and(|definitions| {
-            definitions.iter().any(|definition| {
-                let Some(definition) = definition.as_object() else {
-                    return false;
-                };
-                [
-                    "semantic_kind",
-                    "semantic_type",
-                    "consumer_namespace",
-                    "contract_version",
-                    "contract_fingerprint",
-                ]
-                .iter()
-                .all(|field| definition.get(*field) == qualification.get(*field))
-            })
-        });
-    if !selected {
+    if semantic_kind == "relationship" {
+        return;
+    }
+    if root
+        .get("basis")
+        .and_then(Json::as_object)
+        .and_then(|basis| basis.get("provenance"))
+        .and_then(Json::as_object)
+        .and_then(|provenance| provenance.get("registry_selection"))
+        .and_then(Json::as_str)
+        == Some("latest")
+    {
+        return;
+    }
+    if custom_definition_for(root, semantic_type, raw_qualification).is_none() {
         diagnostics.push(diag(
             "authoring_construction.custom.authority_unavailable",
             "warning",
@@ -1500,7 +1496,7 @@ fn custom_definition_for(
     let definitions = registry
         .get("definitions")
         .and_then(Json::as_array)?;
-    let definition = definitions.iter().find(|definition| {
+    let (definition_index, definition) = definitions.iter().enumerate().find(|(_, definition)| {
         let Some(definition) = definition.as_object() else {
             return false;
         };
@@ -1515,6 +1511,19 @@ fn custom_definition_for(
         .all(|field| definition.get(*field) == qualification.get(*field))
     })?;
     let definition_object = definition.as_object()?.clone();
+    let source_ref = source.get("source_ref").and_then(Json::as_str)?;
+    let selected_source = selected
+        .get("definition_source")
+        .and_then(Json::as_str)?;
+    if selected_source != format!("{source_ref}#/definitions/{definition_index}") {
+        return None;
+    }
+    let selected_digest = selected
+        .get("definition_digest")
+        .and_then(Json::as_str)?;
+    if selected_digest != canonical_json_digest(&Json::Object(definition_object.clone()))? {
+        return None;
+    }
     let declared_fingerprint = definition_object
         .get("contract_fingerprint")
         .and_then(Json::as_str)?;
@@ -1540,8 +1549,14 @@ fn custom_definition_for(
     if declared_fingerprint != format!("cecf:v1:{calculated}") {
         return None;
     }
-    let _ = selected;
     Some(Json::Object(definition_object))
+}
+
+fn canonical_json_digest(value: &Json) -> Option<String> {
+    semantic_contract::canonicalize(&object([("value".into(), value.clone())]))
+        .get("fingerprint")
+        .and_then(Json::as_str)
+        .map(ToOwned::to_owned)
 }
 
 fn validate_relationship(

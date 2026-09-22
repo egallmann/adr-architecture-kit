@@ -117,6 +117,17 @@ fn raw_digest(bytes: &[u8]) -> String {
     )
 }
 
+fn canonical_digest(value: &Json) -> String {
+    semantic_contract::canonicalize(&Json::Object(BTreeMap::from([(
+        "value".into(),
+        value.clone(),
+    )])))
+    .get("fingerprint")
+    .and_then(Json::as_str)
+    .expect("canonical value fingerprint")
+    .to_owned()
+}
+
 fn base64_encode(bytes: &[u8]) -> String {
     const ALPHABET: &[u8; 64] =
         b"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
@@ -145,7 +156,7 @@ fn base64_encode(bytes: &[u8]) -> String {
 #[test]
 fn frozen_acc_vectors_use_one_shared_validation_authority() {
     let cases = [
-        "C11", "C12", "C13", "C16", "C17", "C19", "C20", "C23", "C24", "C25", "C26", "C27", "C29",
+        "C11", "C12", "C13", "C16", "C17", "C19", "C20", "C23", "C24", "C25", "C26", "C27", "C29", "C31",
         "C34", "C40", "C41", "C42",
     ];
     for id in cases {
@@ -218,17 +229,17 @@ fn frozen_acc_vectors_use_one_shared_validation_authority() {
 }
 
 #[test]
-fn c31_cardinality_expectation_is_reported_as_an_authority_gap() {
+fn c31_cardinality_is_validated_by_shared_authority() {
     let report = authoring_construction::validate_authoring_request(&case_input("C31"));
     assert_eq!(
         report.status,
-        authoring_construction::ValidationStatus::Unavailable
+        authoring_construction::ValidationStatus::Invalid
     );
     let codes = diagnostic_codes(&report);
-    assert!(codes.contains(&
-        "authoring_construction.custom.authority_unavailable".to_owned()
-    ));
-    assert!(!codes.contains(&"authoring_construction.relationship.cardinality".to_owned()));
+    assert_eq!(
+        codes,
+        vec!["authoring_construction.relationship.cardinality"]
+    );
 }
 
 #[test]
@@ -507,6 +518,30 @@ fn canonical_qualification_and_field_schema_are_authoritative() {
 }
 
 #[test]
+fn create_identity_mint_does_not_suppress_other_required_fields() {
+    let mut request = case_input("C02");
+    request
+        .as_object_mut()
+        .and_then(|root| root.get_mut("request"))
+        .and_then(Json::as_object_mut)
+        .and_then(|value| value.get_mut("fragments"))
+        .and_then(Json::as_array_mut)
+        .and_then(|values| values.first_mut())
+        .and_then(Json::as_object_mut)
+        .and_then(|value| value.get_mut("fields"))
+        .and_then(Json::as_object_mut)
+        .expect("C02 canonical fields exist")
+        .remove("summary");
+
+    let report = authoring_construction::validate_authoring_request(&request);
+    assert!(
+        diagnostic_codes(&report).contains(&"authoring_construction.field.required".into()),
+        "missing summary must remain diagnosable when id is intentionally absent: {:?}",
+        report.diagnostics
+    );
+}
+
+#[test]
 fn exact_custom_registry_authority_controls_fields_endpoints_and_cardinality() {
     let registry_bytes = include_bytes!("../../tests/fixtures/custom-entity-v1.0/valid-observation-registry.json");
     let registry = document(std::str::from_utf8(registry_bytes).expect("fixture is UTF-8"));
@@ -527,7 +562,8 @@ fn exact_custom_registry_authority_controls_fields_endpoints_and_cardinality() {
     let registry_digest = raw_digest(registry_bytes);
     let selected = [observation.clone(), observes.clone()]
         .iter()
-        .map(|definition| {
+        .enumerate()
+        .map(|(definition_index, definition)| {
             let mut selected = definition
                 .as_object()
                 .expect("definition object")
@@ -546,9 +582,14 @@ fn exact_custom_registry_authority_controls_fields_endpoints_and_cardinality() {
                 .collect::<BTreeMap<_, _>>();
             selected.insert(
                 "definition_source".into(),
-                Json::String("tests/fixtures/custom-entity-v1.0/valid-observation-registry.json".into()),
+                Json::String(format!(
+                    "tests/fixtures/custom-entity-v1.0/valid-observation-registry.json#/definitions/{definition_index}"
+                )),
             );
-            selected.insert("definition_digest".into(), Json::String(registry_digest.clone()));
+            selected.insert(
+                "definition_digest".into(),
+                Json::String(canonical_digest(definition)),
+            );
             Json::Object(selected)
         })
         .collect::<Vec<_>>();
@@ -645,4 +686,39 @@ fn exact_custom_registry_authority_controls_fields_endpoints_and_cardinality() {
     assert!(!codes.contains(&"authoring_construction.custom.authority_unavailable".into()));
     assert!(!codes.contains(&"authoring_construction.relationship.endpoint_forbidden".into()));
     assert!(!codes.contains(&"authoring_construction.relationship.cardinality".into()));
+
+    for (field, value) in [
+        (
+            "definition_source",
+            Json::String(
+                "tests/fixtures/custom-entity-v1.0/valid-observation-registry.json#/definitions/99"
+                    .into(),
+            ),
+        ),
+        (
+            "definition_digest",
+            Json::String(format!("sha256:{}", "0".repeat(64))),
+        ),
+    ] {
+        let mut tampered = request.clone();
+        tampered
+            .as_object_mut()
+            .and_then(|root| root.get_mut("basis"))
+            .and_then(Json::as_object_mut)
+            .and_then(|basis| basis.get_mut("custom_entity"))
+            .and_then(Json::as_object_mut)
+            .and_then(|custom| custom.get_mut("selected_definitions"))
+            .and_then(Json::as_array_mut)
+            .and_then(|definitions| definitions.first_mut())
+            .and_then(Json::as_object_mut)
+            .expect("selected definition")
+            .insert(field.into(), value);
+        let tampered_report = authoring_construction::validate_authoring_request(&tampered);
+        assert!(
+            diagnostic_codes(&tampered_report)
+                .contains(&"authoring_construction.custom.authority_unavailable".into()),
+            "tampered {field} must fail closed: {:?}",
+            tampered_report.diagnostics
+        );
+    }
 }

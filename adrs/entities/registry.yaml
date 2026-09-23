@@ -4,7 +4,7 @@
 # generator_id: adr-compiler
 # generator_version: 1
 # hash_algorithm: sha256
-# source_hash: 9f935896259d26664686c0f32ef27ebeefde3b635f0f114ad279c11de2dc3002
+# source_hash: 8c1f80cebc5f44764780b3af66c73968c822006f58e8e8bc74df85662d891fec
 # rendered_hash: 1720c0be6c990b6c220365fb57cfe165db5196b3f3a3edd462e866f018e432c8
 
 schema_version: '1.1'

@@ -31,6 +31,15 @@ const ARCHITECTURE_INTERPRETATION_CONTRACT: &str =
 const CUSTOM_ENTITY_SCHEMA: &str =
     include_str!("../../contracts/custom-entity/v1.0/schema.json");
 const AUTHORING_TYPES_SCHEMA: &str = include_str!("../../schema/authoring/v1.7/types.schema.json");
+
+// Keep the ACC authority bundle in the canonical WASM data section. The
+// validator currently consumes these resources through the shared host/test
+// boundary, but retaining the exact embedded bytes makes a contract-resource
+// change observable in the tracked source-built artifacts as required by the
+// semantic-core artifact guard.
+#[used]
+static ACC_AUTHORITY_BUNDLE: [&str; 3] = [ACC_SCHEMA, ACC_CONTRACT, ACC_RULES];
+
 const ACC_RULE_PREFIX: &str = "ACC 1.0 ";
 const EXPECTED: &str = "contract-conforming state";
 const OBSERVED: &str = "request or result violates the rule";

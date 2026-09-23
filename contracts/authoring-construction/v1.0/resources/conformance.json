@@ -439,8 +439,8 @@
               "request_key": "decision",
               "source_ref": "candidate/C01/decision",
               "artifact_kind": "authoring_fragment",
-              "content_digest": "sha256:2d711642b726b04401627ca9fbac32f5c8530fb1903cc4db02258717921a4881",
-              "bytes": "eA==",
+              "content_digest": "sha256:b6e9057e0d90ef371701e61b90b6c7050da533c22adef25f6553cd0ffb58b8ad",
+              "bytes": "ImlkIjogIjAxOTEwOWEwLWIxYzItN2RlZi04YTAwLTExMjIzMzQ0NTU2NiIKImFsaWFzX2lkIjogIkRFQy0wMDAxIgoiYWxpYXNfbmFtZSI6ICJzYW1wbGUiCiJzdW1tYXJ5IjogIlVzZSB0aGUgc2FtcGxlIgoicmF0aW9uYWxlIjogIkV4cGxpY2l0IHJhdGlvbmFsZS4iCg==",
               "source_contract": {
                 "family": "authoring",
                 "version": "1.7",
@@ -470,19 +470,24 @@
                     "content_digest": "sha256:037ad8a50ad48e0b19452795e4b0ffd710e5aecf1d93e6aa1d69db3745ef1b65"
                   }
                 ]
-              }
+              },
+              "source_schema": {
+                "canonical_resource_key": "authoring/1.7/schema/adr-common.schema",
+                "json_pointer": "/definitions/decision"
+              },
+              "serialization_profile": "adr-kit.authoring-yaml/v1"
             }
           ],
           "candidate_source_basis": {
             "sealed": true,
-            "basis_digest": "sha256:2d711642b726b04401627ca9fbac32f5c8530fb1903cc4db02258717921a4881",
+            "basis_digest": "sha256:38654fd0d3e989018503e57fa3247b8a2daa6e678f57c9fd6e96a097320204fe",
             "artifacts": [
               {
                 "request_key": "decision",
                 "source_ref": "candidate/C01/decision",
                 "artifact_kind": "authoring_fragment",
-                "content_digest": "sha256:2d711642b726b04401627ca9fbac32f5c8530fb1903cc4db02258717921a4881",
-                "bytes": "eA==",
+                "content_digest": "sha256:b6e9057e0d90ef371701e61b90b6c7050da533c22adef25f6553cd0ffb58b8ad",
+                "bytes": "ImlkIjogIjAxOTEwOWEwLWIxYzItN2RlZi04YTAwLTExMjIzMzQ0NTU2NiIKImFsaWFzX2lkIjogIkRFQy0wMDAxIgoiYWxpYXNfbmFtZSI6ICJzYW1wbGUiCiJzdW1tYXJ5IjogIlVzZSB0aGUgc2FtcGxlIgoicmF0aW9uYWxlIjogIkV4cGxpY2l0IHJhdGlvbmFsZS4iCg==",
                 "source_contract": {
                   "family": "authoring",
                   "version": "1.7",
@@ -512,7 +517,12 @@
                       "content_digest": "sha256:037ad8a50ad48e0b19452795e4b0ffd710e5aecf1d93e6aa1d69db3745ef1b65"
                     }
                   ]
-                }
+                },
+                "source_schema": {
+                  "canonical_resource_key": "authoring/1.7/schema/adr-common.schema",
+                  "json_pointer": "/definitions/decision"
+                },
+                "serialization_profile": "adr-kit.authoring-yaml/v1"
               }
             ],
             "source_contract": {
@@ -987,8 +997,8 @@
               "request_key": "decision",
               "source_ref": "candidate/C02/decision",
               "artifact_kind": "authoring_fragment",
-              "content_digest": "sha256:2d711642b726b04401627ca9fbac32f5c8530fb1903cc4db02258717921a4881",
-              "bytes": "eA==",
+              "content_digest": "sha256:c46662d07a9f83920a3052729ece192c8c843b5e55b03de8a941bb14625a9870",
+              "bytes": "ImlkIjogIjAxOTEwOWEwLWIxYzItN2RlZi04YTAwLTExMjIzMzQ0NTU5OSIKImFsaWFzX2lkIjogIkRFQy0wMDAyIgoiYWxpYXNfbmFtZSI6ICJtaW50ZWQiCiJzdW1tYXJ5IjogIkV4cGxpY2l0IgoicmF0aW9uYWxlIjogIkV4cGxpY2l0LiIK",
               "source_contract": {
                 "family": "authoring",
                 "version": "1.7",
@@ -1018,19 +1028,24 @@
                     "content_digest": "sha256:037ad8a50ad48e0b19452795e4b0ffd710e5aecf1d93e6aa1d69db3745ef1b65"
                   }
                 ]
-              }
+              },
+              "source_schema": {
+                "canonical_resource_key": "authoring/1.7/schema/adr-common.schema",
+                "json_pointer": "/definitions/decision"
+              },
+              "serialization_profile": "adr-kit.authoring-yaml/v1"
             }
           ],
           "candidate_source_basis": {
             "sealed": true,
-            "basis_digest": "sha256:2d711642b726b04401627ca9fbac32f5c8530fb1903cc4db02258717921a4881",
+            "basis_digest": "sha256:951fef151e8b87143cf97d1d5be55610b8a16754b5ca4ff113d5a8d93d0347b7",
             "artifacts": [
               {
                 "request_key": "decision",
                 "source_ref": "candidate/C02/decision",
                 "artifact_kind": "authoring_fragment",
-                "content_digest": "sha256:2d711642b726b04401627ca9fbac32f5c8530fb1903cc4db02258717921a4881",
-                "bytes": "eA==",
+                "content_digest": "sha256:c46662d07a9f83920a3052729ece192c8c843b5e55b03de8a941bb14625a9870",
+                "bytes": "ImlkIjogIjAxOTEwOWEwLWIxYzItN2RlZi04YTAwLTExMjIzMzQ0NTU5OSIKImFsaWFzX2lkIjogIkRFQy0wMDAyIgoiYWxpYXNfbmFtZSI6ICJtaW50ZWQiCiJzdW1tYXJ5IjogIkV4cGxpY2l0IgoicmF0aW9uYWxlIjogIkV4cGxpY2l0LiIK",
                 "source_contract": {
                   "family": "authoring",
                   "version": "1.7",
@@ -1060,7 +1075,12 @@
                       "content_digest": "sha256:037ad8a50ad48e0b19452795e4b0ffd710e5aecf1d93e6aa1d69db3745ef1b65"
                     }
                   ]
-                }
+                },
+                "source_schema": {
+                  "canonical_resource_key": "authoring/1.7/schema/adr-common.schema",
+                  "json_pointer": "/definitions/decision"
+                },
+                "serialization_profile": "adr-kit.authoring-yaml/v1"
               }
             ],
             "source_contract": {
@@ -1581,8 +1601,8 @@
               "request_key": "decision",
               "source_ref": "candidate/C03/decision",
               "artifact_kind": "authoring_fragment",
-              "content_digest": "sha256:2d711642b726b04401627ca9fbac32f5c8530fb1903cc4db02258717921a4881",
-              "bytes": "eA==",
+              "content_digest": "sha256:da1c3639786dd712aa86483618b21b87d073f1b9ba1c538a486239ae58968842",
+              "bytes": "ImlkIjogIjAxOTEwOWEwLWIxYzItN2RlZi04YTAwLTExMjIzMzQ0NTU2NiIKImFsaWFzX2lkIjogIkRFQy0wMDAxIgoiYWxpYXNfbmFtZSI6ICJjb25mb3JtYW5jZS1kZWNpc2lvbiIKInN1bW1hcnkiOiAiVXBkYXRlZCBleHBsaWNpdGx5IgoicmF0aW9uYWxlIjogIkFuIGV4cGxpY2l0bHkgc3VwcGxpZWQgcmF0aW9uYWxlLiIK",
               "source_contract": {
                 "family": "authoring",
                 "version": "1.7",
@@ -1612,19 +1632,24 @@
                     "content_digest": "sha256:037ad8a50ad48e0b19452795e4b0ffd710e5aecf1d93e6aa1d69db3745ef1b65"
                   }
                 ]
-              }
+              },
+              "source_schema": {
+                "canonical_resource_key": "authoring/1.7/schema/adr-common.schema",
+                "json_pointer": "/definitions/decision"
+              },
+              "serialization_profile": "adr-kit.authoring-yaml/v1"
             }
           ],
           "candidate_source_basis": {
             "sealed": true,
-            "basis_digest": "sha256:2d711642b726b04401627ca9fbac32f5c8530fb1903cc4db02258717921a4881",
+            "basis_digest": "sha256:c70043bfa695fedc522829e618ce3827dc64c53587961782467d1ee19624a682",
             "artifacts": [
               {
                 "request_key": "decision",
                 "source_ref": "candidate/C03/decision",
                 "artifact_kind": "authoring_fragment",
-                "content_digest": "sha256:2d711642b726b04401627ca9fbac32f5c8530fb1903cc4db02258717921a4881",
-                "bytes": "eA==",
+                "content_digest": "sha256:da1c3639786dd712aa86483618b21b87d073f1b9ba1c538a486239ae58968842",
+                "bytes": "ImlkIjogIjAxOTEwOWEwLWIxYzItN2RlZi04YTAwLTExMjIzMzQ0NTU2NiIKImFsaWFzX2lkIjogIkRFQy0wMDAxIgoiYWxpYXNfbmFtZSI6ICJjb25mb3JtYW5jZS1kZWNpc2lvbiIKInN1bW1hcnkiOiAiVXBkYXRlZCBleHBsaWNpdGx5IgoicmF0aW9uYWxlIjogIkFuIGV4cGxpY2l0bHkgc3VwcGxpZWQgcmF0aW9uYWxlLiIK",
                 "source_contract": {
                   "family": "authoring",
                   "version": "1.7",
@@ -1654,7 +1679,12 @@
                       "content_digest": "sha256:037ad8a50ad48e0b19452795e4b0ffd710e5aecf1d93e6aa1d69db3745ef1b65"
                     }
                   ]
-                }
+                },
+                "source_schema": {
+                  "canonical_resource_key": "authoring/1.7/schema/adr-common.schema",
+                  "json_pointer": "/definitions/decision"
+                },
+                "serialization_profile": "adr-kit.authoring-yaml/v1"
               }
             ],
             "source_contract": {
@@ -2230,8 +2260,8 @@
               "request_key": "existing",
               "source_ref": "candidate/C04/existing",
               "artifact_kind": "authoring_fragment",
-              "content_digest": "sha256:2d711642b726b04401627ca9fbac32f5c8530fb1903cc4db02258717921a4881",
-              "bytes": "eA==",
+              "content_digest": "sha256:de8c9a8d0a3e3d39517e31938d63980b06694ac3b48b79c21781648063517b62",
+              "bytes": "ImlkIjogIjAxOTEwOWEwLWIxYzItN2RlZi04YTAwLTExMjIzMzQ0NTU2NiIKImFsaWFzX2lkIjogIkRFQy0wMDAxIgoiYWxpYXNfbmFtZSI6ICJjb25mb3JtYW5jZS1kZWNpc2lvbiIKInN1bW1hcnkiOiAiQW4gZXhwbGljaXRseSBzdXBwbGllZCBkZWNpc2lvbi4iCiJyYXRpb25hbGUiOiAiQW4gZXhwbGljaXRseSBzdXBwbGllZCByYXRpb25hbGUuIgo=",
               "source_contract": {
                 "family": "authoring",
                 "version": "1.7",
@@ -2261,19 +2291,24 @@
                     "content_digest": "sha256:037ad8a50ad48e0b19452795e4b0ffd710e5aecf1d93e6aa1d69db3745ef1b65"
                   }
                 ]
-              }
+              },
+              "source_schema": {
+                "canonical_resource_key": "authoring/1.7/schema/adr-common.schema",
+                "json_pointer": "/definitions/decision"
+              },
+              "serialization_profile": "adr-kit.authoring-yaml/v1"
             }
           ],
           "candidate_source_basis": {
             "sealed": true,
-            "basis_digest": "sha256:2d711642b726b04401627ca9fbac32f5c8530fb1903cc4db02258717921a4881",
+            "basis_digest": "sha256:b846d9e570c267c1d01cdd783b890848438ebb0d7dbb22c0198f067d0625b03e",
             "artifacts": [
               {
                 "request_key": "existing",
                 "source_ref": "candidate/C04/existing",
                 "artifact_kind": "authoring_fragment",
-                "content_digest": "sha256:2d711642b726b04401627ca9fbac32f5c8530fb1903cc4db02258717921a4881",
-                "bytes": "eA==",
+                "content_digest": "sha256:de8c9a8d0a3e3d39517e31938d63980b06694ac3b48b79c21781648063517b62",
+                "bytes": "ImlkIjogIjAxOTEwOWEwLWIxYzItN2RlZi04YTAwLTExMjIzMzQ0NTU2NiIKImFsaWFzX2lkIjogIkRFQy0wMDAxIgoiYWxpYXNfbmFtZSI6ICJjb25mb3JtYW5jZS1kZWNpc2lvbiIKInN1bW1hcnkiOiAiQW4gZXhwbGljaXRseSBzdXBwbGllZCBkZWNpc2lvbi4iCiJyYXRpb25hbGUiOiAiQW4gZXhwbGljaXRseSBzdXBwbGllZCByYXRpb25hbGUuIgo=",
                 "source_contract": {
                   "family": "authoring",
                   "version": "1.7",
@@ -2303,7 +2338,12 @@
                       "content_digest": "sha256:037ad8a50ad48e0b19452795e4b0ffd710e5aecf1d93e6aa1d69db3745ef1b65"
                     }
                   ]
-                }
+                },
+                "source_schema": {
+                  "canonical_resource_key": "authoring/1.7/schema/adr-common.schema",
+                  "json_pointer": "/definitions/decision"
+                },
+                "serialization_profile": "adr-kit.authoring-yaml/v1"
               }
             ],
             "source_contract": {
@@ -2910,8 +2950,8 @@
               "request_key": "parent",
               "source_ref": "candidate/C05/parent",
               "artifact_kind": "authoring_document",
-              "content_digest": "sha256:2d711642b726b04401627ca9fbac32f5c8530fb1903cc4db02258717921a4881",
-              "bytes": "eA==",
+              "content_digest": "sha256:e5fc42ecce08c72fa15ef0c90a8662d3fe8ac335cea2aecb6f5536bb7f912bb7",
+              "bytes": "InNjaGVtYV92ZXJzaW9uIjogIjEuNyIKImFkcl90eXBlIjogImxvZ2ljYWwiCiJpZCI6ICIwMTkxMDlhMC1iMWMyLTdkZWYtOGEwMC0xMTIyMzM0NDU1NjYiCiJhbGlhc19pZCI6ICJBRFItTC0wMDAxIgoiYWxpYXNfbmFtZSI6ICJjb25mb3JtYW5jZS1hZHIiCiJ0aXRsZSI6ICJDb25mb3JtYW5jZSBBRFIiCiJzdGF0dXMiOiAicHJvcG9zZWQiCiJjcmVhdGVkX2RhdGUiOiAiMjAyNi0wOS0xNyIKImF1dGhvcnMiOgogIC0gImNvbmZvcm1hbmNlIgoiY29udGV4dCI6ICJBIGJvdW5kZWQgZXhwbGljaXQgY29udGV4dC4iCiJkZWNpc2lvbnMiOgogIC0KICAgICJpZCI6ICIwMTkxMDlhMC1iMWMyLTdkZWYtOGEwMC0xMTIyMzM0NDU1NjciCiAgICAiYWxpYXNfaWQiOiAiREVDLTAwMDEiCiAgICAiYWxpYXNfbmFtZSI6ICJjb25mb3JtYW5jZS1kZWNpc2lvbiIKICAgICJzdW1tYXJ5IjogIkFuIGV4cGxpY2l0bHkgc3VwcGxpZWQgZGVjaXNpb24uIgogICAgInJhdGlvbmFsZSI6ICJBbiBleHBsaWNpdGx5IHN1cHBsaWVkIHJhdGlvbmFsZS4iCg==",
               "source_contract": {
                 "family": "authoring",
                 "version": "1.7",
@@ -2941,14 +2981,19 @@
                     "content_digest": "sha256:037ad8a50ad48e0b19452795e4b0ffd710e5aecf1d93e6aa1d69db3745ef1b65"
                   }
                 ]
-              }
+              },
+              "source_schema": {
+                "canonical_resource_key": "authoring/1.7/schema/adr-logical.schema",
+                "json_pointer": ""
+              },
+              "serialization_profile": "adr-kit.authoring-yaml/v1"
             },
             {
               "request_key": "child",
               "source_ref": "candidate/C05/child",
               "artifact_kind": "authoring_fragment",
-              "content_digest": "sha256:2d711642b726b04401627ca9fbac32f5c8530fb1903cc4db02258717921a4881",
-              "bytes": "eA==",
+              "content_digest": "sha256:f40883a319bd23b70acdb88817171f23d84692d02ac7ad7a8c8bb7af3a39c280",
+              "bytes": "ImlkIjogIjAxOTEwOWEwLWIxYzItN2RlZi04YTAwLTExMjIzMzQ0NTU2NyIKImFsaWFzX2lkIjogIkRFQy0wMDAxIgoiYWxpYXNfbmFtZSI6ICJjb25mb3JtYW5jZS1kZWNpc2lvbiIKInN1bW1hcnkiOiAiQW4gZXhwbGljaXRseSBzdXBwbGllZCBkZWNpc2lvbi4iCiJyYXRpb25hbGUiOiAiQW4gZXhwbGljaXRseSBzdXBwbGllZCByYXRpb25hbGUuIgo=",
               "source_contract": {
                 "family": "authoring",
                 "version": "1.7",
@@ -2978,19 +3023,24 @@
                     "content_digest": "sha256:037ad8a50ad48e0b19452795e4b0ffd710e5aecf1d93e6aa1d69db3745ef1b65"
                   }
                 ]
-              }
+              },
+              "source_schema": {
+                "canonical_resource_key": "authoring/1.7/schema/adr-common.schema",
+                "json_pointer": "/definitions/decision"
+              },
+              "serialization_profile": "adr-kit.authoring-yaml/v1"
             }
           ],
           "candidate_source_basis": {
             "sealed": true,
-            "basis_digest": "sha256:2d711642b726b04401627ca9fbac32f5c8530fb1903cc4db02258717921a4881",
+            "basis_digest": "sha256:be45524031200c70d7768ea9a2ae69f72a88caa665544b194efd16af3e76467f",
             "artifacts": [
               {
                 "request_key": "parent",
                 "source_ref": "candidate/C05/parent",
                 "artifact_kind": "authoring_document",
-                "content_digest": "sha256:2d711642b726b04401627ca9fbac32f5c8530fb1903cc4db02258717921a4881",
-                "bytes": "eA==",
+                "content_digest": "sha256:e5fc42ecce08c72fa15ef0c90a8662d3fe8ac335cea2aecb6f5536bb7f912bb7",
+                "bytes": "InNjaGVtYV92ZXJzaW9uIjogIjEuNyIKImFkcl90eXBlIjogImxvZ2ljYWwiCiJpZCI6ICIwMTkxMDlhMC1iMWMyLTdkZWYtOGEwMC0xMTIyMzM0NDU1NjYiCiJhbGlhc19pZCI6ICJBRFItTC0wMDAxIgoiYWxpYXNfbmFtZSI6ICJjb25mb3JtYW5jZS1hZHIiCiJ0aXRsZSI6ICJDb25mb3JtYW5jZSBBRFIiCiJzdGF0dXMiOiAicHJvcG9zZWQiCiJjcmVhdGVkX2RhdGUiOiAiMjAyNi0wOS0xNyIKImF1dGhvcnMiOgogIC0gImNvbmZvcm1hbmNlIgoiY29udGV4dCI6ICJBIGJvdW5kZWQgZXhwbGljaXQgY29udGV4dC4iCiJkZWNpc2lvbnMiOgogIC0KICAgICJpZCI6ICIwMTkxMDlhMC1iMWMyLTdkZWYtOGEwMC0xMTIyMzM0NDU1NjciCiAgICAiYWxpYXNfaWQiOiAiREVDLTAwMDEiCiAgICAiYWxpYXNfbmFtZSI6ICJjb25mb3JtYW5jZS1kZWNpc2lvbiIKICAgICJzdW1tYXJ5IjogIkFuIGV4cGxpY2l0bHkgc3VwcGxpZWQgZGVjaXNpb24uIgogICAgInJhdGlvbmFsZSI6ICJBbiBleHBsaWNpdGx5IHN1cHBsaWVkIHJhdGlvbmFsZS4iCg==",
                 "source_contract": {
                   "family": "authoring",
                   "version": "1.7",
@@ -3020,44 +3070,12 @@
                       "content_digest": "sha256:037ad8a50ad48e0b19452795e4b0ffd710e5aecf1d93e6aa1d69db3745ef1b65"
                     }
                   ]
-                }
-              },
-              {
-                "request_key": "child",
-                "source_ref": "candidate/C05/child",
-                "artifact_kind": "authoring_fragment",
-                "content_digest": "sha256:2d711642b726b04401627ca9fbac32f5c8530fb1903cc4db02258717921a4881",
-                "bytes": "eA==",
-                "source_contract": {
-                  "family": "authoring",
-                  "version": "1.7",
-                  "resources": [
-                    {
-                      "canonical_resource_key": "authoring/1.7/schema/adr-common.schema",
-                      "content_digest": "sha256:6914d44456fa078ec6af20bab680d6d9e7e7af00f4d3d31eea828d656f2b3760"
-                    },
-                    {
-                      "canonical_resource_key": "authoring/1.7/schema/adr-logical.schema",
-                      "content_digest": "sha256:32f6058dd5efc77cf6612587304f9275aa3a66bb7270fdb0f7ef4b871c9f5731"
-                    },
-                    {
-                      "canonical_resource_key": "authoring/1.7/schema/adr-physical-base.schema",
-                      "content_digest": "sha256:f3dd3e6989262477404579a5058c07b3d75cb0fef1fdf37392788d8b287f3a4d"
-                    },
-                    {
-                      "canonical_resource_key": "authoring/1.7/schema/adr-physical-component.schema",
-                      "content_digest": "sha256:151980ce3054d5c64990a700ca1b202181629c2375447d5758ba9186658ee7e7"
-                    },
-                    {
-                      "canonical_resource_key": "authoring/1.7/schema/adr-physical-system.schema",
-                      "content_digest": "sha256:461abbf9ce25edbf2e75f78a73eec83aac4330c7fbe3b0bb7e7736b7d8afb4be"
-                    },
-                    {
-                      "canonical_resource_key": "authoring/1.7/schema/types.schema",
-                      "content_digest": "sha256:037ad8a50ad48e0b19452795e4b0ffd710e5aecf1d93e6aa1d69db3745ef1b65"
-                    }
-                  ]
-                }
+                },
+                "source_schema": {
+                  "canonical_resource_key": "authoring/1.7/schema/adr-logical.schema",
+                  "json_pointer": ""
+                },
+                "serialization_profile": "adr-kit.authoring-yaml/v1"
               }
             ],
             "source_contract": {
@@ -3699,8 +3717,8 @@
               "request_key": "decision",
               "source_ref": "candidate/C06/decision",
               "artifact_kind": "authoring_fragment",
-              "content_digest": "sha256:2d711642b726b04401627ca9fbac32f5c8530fb1903cc4db02258717921a4881",
-              "bytes": "eA==",
+              "content_digest": "sha256:de8c9a8d0a3e3d39517e31938d63980b06694ac3b48b79c21781648063517b62",
+              "bytes": "ImlkIjogIjAxOTEwOWEwLWIxYzItN2RlZi04YTAwLTExMjIzMzQ0NTU2NiIKImFsaWFzX2lkIjogIkRFQy0wMDAxIgoiYWxpYXNfbmFtZSI6ICJjb25mb3JtYW5jZS1kZWNpc2lvbiIKInN1bW1hcnkiOiAiQW4gZXhwbGljaXRseSBzdXBwbGllZCBkZWNpc2lvbi4iCiJyYXRpb25hbGUiOiAiQW4gZXhwbGljaXRseSBzdXBwbGllZCByYXRpb25hbGUuIgo=",
               "source_contract": {
                 "family": "authoring",
                 "version": "1.7",
@@ -3730,14 +3748,19 @@
                     "content_digest": "sha256:037ad8a50ad48e0b19452795e4b0ffd710e5aecf1d93e6aa1d69db3745ef1b65"
                   }
                 ]
-              }
+              },
+              "source_schema": {
+                "canonical_resource_key": "authoring/1.7/schema/adr-common.schema",
+                "json_pointer": "/definitions/decision"
+              },
+              "serialization_profile": "adr-kit.authoring-yaml/v1"
             },
             {
               "request_key": "invariant",
               "source_ref": "candidate/C06/invariant",
               "artifact_kind": "authoring_fragment",
-              "content_digest": "sha256:2d711642b726b04401627ca9fbac32f5c8530fb1903cc4db02258717921a4881",
-              "bytes": "eA==",
+              "content_digest": "sha256:e14774ee82a0768befe42f5116b68f482adf929b9b50c1c747ccc43027b67dc2",
+              "bytes": "ImlkIjogIjAxOTEwOWEwLWIxYzItN2RlZi04YTAwLTExMjIzMzQ0NTU2NyIKImFsaWFzX2lkIjogIklOVi0wMDAxIgoiYWxpYXNfbmFtZSI6ICJjb25mb3JtYW5jZS1pbnZhcmlhbnQiCiJzdGF0ZW1lbnQiOiAiQW4gZXhwbGljaXRseSBzdXBwbGllZCBpbnZhcmlhbnQuIgoic2NvcGUiOiAidGhlIGNvbmZvcm1hbmNlIHJlcXVlc3QiCiJlbmZvcmNlbWVudF9sZXZlbCI6ICJtdXN0IgoiZW5mb3JjZW1lbnRfbWVjaGFuaXNtIjogInRlc3QiCiJ2ZXJpZmljYXRpb25fbWV0aG9kIjogImF1dG9tYXRlZCIKInJhdGlvbmFsZSI6ICJBbiBleHBsaWNpdGx5IHN1cHBsaWVkIHJhdGlvbmFsZS4iCg==",
               "source_contract": {
                 "family": "authoring",
                 "version": "1.7",
@@ -3767,19 +3790,24 @@
                     "content_digest": "sha256:037ad8a50ad48e0b19452795e4b0ffd710e5aecf1d93e6aa1d69db3745ef1b65"
                   }
                 ]
-              }
+              },
+              "source_schema": {
+                "canonical_resource_key": "authoring/1.7/schema/adr-common.schema",
+                "json_pointer": "/definitions/invariant"
+              },
+              "serialization_profile": "adr-kit.authoring-yaml/v1"
             }
           ],
           "candidate_source_basis": {
             "sealed": true,
-            "basis_digest": "sha256:2d711642b726b04401627ca9fbac32f5c8530fb1903cc4db02258717921a4881",
+            "basis_digest": "sha256:453deb7d2cddbc166e242fb71d8779f9ff86bc8f4e12d27885efb8d84c8d7b98",
             "artifacts": [
               {
                 "request_key": "decision",
                 "source_ref": "candidate/C06/decision",
                 "artifact_kind": "authoring_fragment",
-                "content_digest": "sha256:2d711642b726b04401627ca9fbac32f5c8530fb1903cc4db02258717921a4881",
-                "bytes": "eA==",
+                "content_digest": "sha256:de8c9a8d0a3e3d39517e31938d63980b06694ac3b48b79c21781648063517b62",
+                "bytes": "ImlkIjogIjAxOTEwOWEwLWIxYzItN2RlZi04YTAwLTExMjIzMzQ0NTU2NiIKImFsaWFzX2lkIjogIkRFQy0wMDAxIgoiYWxpYXNfbmFtZSI6ICJjb25mb3JtYW5jZS1kZWNpc2lvbiIKInN1bW1hcnkiOiAiQW4gZXhwbGljaXRseSBzdXBwbGllZCBkZWNpc2lvbi4iCiJyYXRpb25hbGUiOiAiQW4gZXhwbGljaXRseSBzdXBwbGllZCByYXRpb25hbGUuIgo=",
                 "source_contract": {
                   "family": "authoring",
                   "version": "1.7",
@@ -3809,14 +3837,19 @@
                       "content_digest": "sha256:037ad8a50ad48e0b19452795e4b0ffd710e5aecf1d93e6aa1d69db3745ef1b65"
                     }
                   ]
-                }
+                },
+                "source_schema": {
+                  "canonical_resource_key": "authoring/1.7/schema/adr-common.schema",
+                  "json_pointer": "/definitions/decision"
+                },
+                "serialization_profile": "adr-kit.authoring-yaml/v1"
               },
               {
                 "request_key": "invariant",
                 "source_ref": "candidate/C06/invariant",
                 "artifact_kind": "authoring_fragment",
-                "content_digest": "sha256:2d711642b726b04401627ca9fbac32f5c8530fb1903cc4db02258717921a4881",
-                "bytes": "eA==",
+                "content_digest": "sha256:e14774ee82a0768befe42f5116b68f482adf929b9b50c1c747ccc43027b67dc2",
+                "bytes": "ImlkIjogIjAxOTEwOWEwLWIxYzItN2RlZi04YTAwLTExMjIzMzQ0NTU2NyIKImFsaWFzX2lkIjogIklOVi0wMDAxIgoiYWxpYXNfbmFtZSI6ICJjb25mb3JtYW5jZS1pbnZhcmlhbnQiCiJzdGF0ZW1lbnQiOiAiQW4gZXhwbGljaXRseSBzdXBwbGllZCBpbnZhcmlhbnQuIgoic2NvcGUiOiAidGhlIGNvbmZvcm1hbmNlIHJlcXVlc3QiCiJlbmZvcmNlbWVudF9sZXZlbCI6ICJtdXN0IgoiZW5mb3JjZW1lbnRfbWVjaGFuaXNtIjogInRlc3QiCiJ2ZXJpZmljYXRpb25fbWV0aG9kIjogImF1dG9tYXRlZCIKInJhdGlvbmFsZSI6ICJBbiBleHBsaWNpdGx5IHN1cHBsaWVkIHJhdGlvbmFsZS4iCg==",
                 "source_contract": {
                   "family": "authoring",
                   "version": "1.7",
@@ -3846,7 +3879,12 @@
                       "content_digest": "sha256:037ad8a50ad48e0b19452795e4b0ffd710e5aecf1d93e6aa1d69db3745ef1b65"
                     }
                   ]
-                }
+                },
+                "source_schema": {
+                  "canonical_resource_key": "authoring/1.7/schema/adr-common.schema",
+                  "json_pointer": "/definitions/invariant"
+                },
+                "serialization_profile": "adr-kit.authoring-yaml/v1"
               }
             ],
             "source_contract": {
@@ -4457,8 +4495,8 @@
               "request_key": "adr",
               "source_ref": "candidate/C07/adr",
               "artifact_kind": "authoring_document",
-              "content_digest": "sha256:2d711642b726b04401627ca9fbac32f5c8530fb1903cc4db02258717921a4881",
-              "bytes": "eA==",
+              "content_digest": "sha256:e5fc42ecce08c72fa15ef0c90a8662d3fe8ac335cea2aecb6f5536bb7f912bb7",
+              "bytes": "InNjaGVtYV92ZXJzaW9uIjogIjEuNyIKImFkcl90eXBlIjogImxvZ2ljYWwiCiJpZCI6ICIwMTkxMDlhMC1iMWMyLTdkZWYtOGEwMC0xMTIyMzM0NDU1NjYiCiJhbGlhc19pZCI6ICJBRFItTC0wMDAxIgoiYWxpYXNfbmFtZSI6ICJjb25mb3JtYW5jZS1hZHIiCiJ0aXRsZSI6ICJDb25mb3JtYW5jZSBBRFIiCiJzdGF0dXMiOiAicHJvcG9zZWQiCiJjcmVhdGVkX2RhdGUiOiAiMjAyNi0wOS0xNyIKImF1dGhvcnMiOgogIC0gImNvbmZvcm1hbmNlIgoiY29udGV4dCI6ICJBIGJvdW5kZWQgZXhwbGljaXQgY29udGV4dC4iCiJkZWNpc2lvbnMiOgogIC0KICAgICJpZCI6ICIwMTkxMDlhMC1iMWMyLTdkZWYtOGEwMC0xMTIyMzM0NDU1NjciCiAgICAiYWxpYXNfaWQiOiAiREVDLTAwMDEiCiAgICAiYWxpYXNfbmFtZSI6ICJjb25mb3JtYW5jZS1kZWNpc2lvbiIKICAgICJzdW1tYXJ5IjogIkFuIGV4cGxpY2l0bHkgc3VwcGxpZWQgZGVjaXNpb24uIgogICAgInJhdGlvbmFsZSI6ICJBbiBleHBsaWNpdGx5IHN1cHBsaWVkIHJhdGlvbmFsZS4iCg==",
               "source_contract": {
                 "family": "authoring",
                 "version": "1.7",
@@ -4488,14 +4526,19 @@
                     "content_digest": "sha256:037ad8a50ad48e0b19452795e4b0ffd710e5aecf1d93e6aa1d69db3745ef1b65"
                   }
                 ]
-              }
+              },
+              "source_schema": {
+                "canonical_resource_key": "authoring/1.7/schema/adr-logical.schema",
+                "json_pointer": ""
+              },
+              "serialization_profile": "adr-kit.authoring-yaml/v1"
             },
             {
               "request_key": "decision",
               "source_ref": "candidate/C07/decision",
               "artifact_kind": "authoring_fragment",
-              "content_digest": "sha256:2d711642b726b04401627ca9fbac32f5c8530fb1903cc4db02258717921a4881",
-              "bytes": "eA==",
+              "content_digest": "sha256:f40883a319bd23b70acdb88817171f23d84692d02ac7ad7a8c8bb7af3a39c280",
+              "bytes": "ImlkIjogIjAxOTEwOWEwLWIxYzItN2RlZi04YTAwLTExMjIzMzQ0NTU2NyIKImFsaWFzX2lkIjogIkRFQy0wMDAxIgoiYWxpYXNfbmFtZSI6ICJjb25mb3JtYW5jZS1kZWNpc2lvbiIKInN1bW1hcnkiOiAiQW4gZXhwbGljaXRseSBzdXBwbGllZCBkZWNpc2lvbi4iCiJyYXRpb25hbGUiOiAiQW4gZXhwbGljaXRseSBzdXBwbGllZCByYXRpb25hbGUuIgo=",
               "source_contract": {
                 "family": "authoring",
                 "version": "1.7",
@@ -4525,19 +4568,24 @@
                     "content_digest": "sha256:037ad8a50ad48e0b19452795e4b0ffd710e5aecf1d93e6aa1d69db3745ef1b65"
                   }
                 ]
-              }
+              },
+              "source_schema": {
+                "canonical_resource_key": "authoring/1.7/schema/adr-common.schema",
+                "json_pointer": "/definitions/decision"
+              },
+              "serialization_profile": "adr-kit.authoring-yaml/v1"
             }
           ],
           "candidate_source_basis": {
             "sealed": true,
-            "basis_digest": "sha256:2d711642b726b04401627ca9fbac32f5c8530fb1903cc4db02258717921a4881",
+            "basis_digest": "sha256:9aa67ec3df1f28fdc0c9712c5374eca072a92ca312f2ade6fc608933d9ed79f2",
             "artifacts": [
               {
                 "request_key": "adr",
                 "source_ref": "candidate/C07/adr",
                 "artifact_kind": "authoring_document",
-                "content_digest": "sha256:2d711642b726b04401627ca9fbac32f5c8530fb1903cc4db02258717921a4881",
-                "bytes": "eA==",
+                "content_digest": "sha256:e5fc42ecce08c72fa15ef0c90a8662d3fe8ac335cea2aecb6f5536bb7f912bb7",
+                "bytes": "InNjaGVtYV92ZXJzaW9uIjogIjEuNyIKImFkcl90eXBlIjogImxvZ2ljYWwiCiJpZCI6ICIwMTkxMDlhMC1iMWMyLTdkZWYtOGEwMC0xMTIyMzM0NDU1NjYiCiJhbGlhc19pZCI6ICJBRFItTC0wMDAxIgoiYWxpYXNfbmFtZSI6ICJjb25mb3JtYW5jZS1hZHIiCiJ0aXRsZSI6ICJDb25mb3JtYW5jZSBBRFIiCiJzdGF0dXMiOiAicHJvcG9zZWQiCiJjcmVhdGVkX2RhdGUiOiAiMjAyNi0wOS0xNyIKImF1dGhvcnMiOgogIC0gImNvbmZvcm1hbmNlIgoiY29udGV4dCI6ICJBIGJvdW5kZWQgZXhwbGljaXQgY29udGV4dC4iCiJkZWNpc2lvbnMiOgogIC0KICAgICJpZCI6ICIwMTkxMDlhMC1iMWMyLTdkZWYtOGEwMC0xMTIyMzM0NDU1NjciCiAgICAiYWxpYXNfaWQiOiAiREVDLTAwMDEiCiAgICAiYWxpYXNfbmFtZSI6ICJjb25mb3JtYW5jZS1kZWNpc2lvbiIKICAgICJzdW1tYXJ5IjogIkFuIGV4cGxpY2l0bHkgc3VwcGxpZWQgZGVjaXNpb24uIgogICAgInJhdGlvbmFsZSI6ICJBbiBleHBsaWNpdGx5IHN1cHBsaWVkIHJhdGlvbmFsZS4iCg==",
                 "source_contract": {
                   "family": "authoring",
                   "version": "1.7",
@@ -4567,44 +4615,12 @@
                       "content_digest": "sha256:037ad8a50ad48e0b19452795e4b0ffd710e5aecf1d93e6aa1d69db3745ef1b65"
                     }
                   ]
-                }
-              },
-              {
-                "request_key": "decision",
-                "source_ref": "candidate/C07/decision",
-                "artifact_kind": "authoring_fragment",
-                "content_digest": "sha256:2d711642b726b04401627ca9fbac32f5c8530fb1903cc4db02258717921a4881",
-                "bytes": "eA==",
-                "source_contract": {
-                  "family": "authoring",
-                  "version": "1.7",
-                  "resources": [
-                    {
-                      "canonical_resource_key": "authoring/1.7/schema/adr-common.schema",
-                      "content_digest": "sha256:6914d44456fa078ec6af20bab680d6d9e7e7af00f4d3d31eea828d656f2b3760"
-                    },
-                    {
-                      "canonical_resource_key": "authoring/1.7/schema/adr-logical.schema",
-                      "content_digest": "sha256:32f6058dd5efc77cf6612587304f9275aa3a66bb7270fdb0f7ef4b871c9f5731"
-                    },
-                    {
-                      "canonical_resource_key": "authoring/1.7/schema/adr-physical-base.schema",
-                      "content_digest": "sha256:f3dd3e6989262477404579a5058c07b3d75cb0fef1fdf37392788d8b287f3a4d"
-                    },
-                    {
-                      "canonical_resource_key": "authoring/1.7/schema/adr-physical-component.schema",
-                      "content_digest": "sha256:151980ce3054d5c64990a700ca1b202181629c2375447d5758ba9186658ee7e7"
-                    },
-                    {
-                      "canonical_resource_key": "authoring/1.7/schema/adr-physical-system.schema",
-                      "content_digest": "sha256:461abbf9ce25edbf2e75f78a73eec83aac4330c7fbe3b0bb7e7736b7d8afb4be"
-                    },
-                    {
-                      "canonical_resource_key": "authoring/1.7/schema/types.schema",
-                      "content_digest": "sha256:037ad8a50ad48e0b19452795e4b0ffd710e5aecf1d93e6aa1d69db3745ef1b65"
-                    }
-                  ]
-                }
+                },
+                "source_schema": {
+                  "canonical_resource_key": "authoring/1.7/schema/adr-logical.schema",
+                  "json_pointer": ""
+                },
+                "serialization_profile": "adr-kit.authoring-yaml/v1"
               }
             ],
             "source_contract": {
@@ -5399,8 +5415,8 @@
               "request_key": "a",
               "source_ref": "candidate/C08/a",
               "artifact_kind": "authoring_fragment",
-              "content_digest": "sha256:2d711642b726b04401627ca9fbac32f5c8530fb1903cc4db02258717921a4881",
-              "bytes": "eA==",
+              "content_digest": "sha256:6ac63159b2d55d3b9be9d5cc97879f222a1cd2c43e7d8fed65429ffebd2c23f2",
+              "bytes": "ImlkIjogIjAxOTEwOWEwLWIxYzItN2RlZi04YTAwLTExMjIzMzQ0NTU2NiIKImFsaWFzX2lkIjogIkNPTVAtMDAwMSIKImFsaWFzX25hbWUiOiAic2FtcGxlLWNvbXBvbmVudCIKIm5hbWUiOiAiU2FtcGxlIENvbXBvbmVudCIKInR5cGUiOiAic2VydmljZSIKInJlc3BvbnNpYmlsaXRpZXMiOiAiUHJvdmlkZXMgdGhlIHNhbXBsZSBzZXJ2aWNlLiIKImdlbmVyYXRpb25fY29udGV4dCI6CiAgInB1cnBvc2UiOiAiU3VwcG9ydCB0aGUgY29uZm9ybWFuY2UgY2FzZS4iCiAgImtleV9yZXNwb25zaWJpbGl0aWVzIjoKICAgIC0gIlByb3ZpZGUgdGhlIHNhbXBsZSBzZXJ2aWNlLiIKImludGVyZmFjZXMiOgogIC0KICAgICJpZCI6ICIwMTkxMDlhMC1iMWMyLTdkZWYtOGEwMC0xMTIyMzM0NDU1NjgiCiAgICAiYWxpYXNfaWQiOiAiSUZBQ0UtMDAwMSIKICAgICJhbGlhc19uYW1lIjogInNhbXBsZS1pbnRlcmZhY2UiCiAgICAidHlwZSI6ICJSRVNUIgogICAgInNwZWNpZmljYXRpb24iOiAiU2FtcGxlIGludGVyZmFjZS4iCg==",
               "source_contract": {
                 "family": "authoring",
                 "version": "1.7",
@@ -5430,14 +5446,19 @@
                     "content_digest": "sha256:037ad8a50ad48e0b19452795e4b0ffd710e5aecf1d93e6aa1d69db3745ef1b65"
                   }
                 ]
-              }
+              },
+              "source_schema": {
+                "canonical_resource_key": "authoring/1.7/schema/adr-common.schema",
+                "json_pointer": "/definitions/component"
+              },
+              "serialization_profile": "adr-kit.authoring-yaml/v1"
             },
             {
               "request_key": "b",
               "source_ref": "candidate/C08/b",
               "artifact_kind": "authoring_fragment",
-              "content_digest": "sha256:2d711642b726b04401627ca9fbac32f5c8530fb1903cc4db02258717921a4881",
-              "bytes": "eA==",
+              "content_digest": "sha256:2c83d37244853162a6344598e4a6bbfb6828ffea5fe44a6205e0e8b51f52f789",
+              "bytes": "ImlkIjogIjAxOTEwOWEwLWIxYzItN2RlZi04YTAwLTExMjIzMzQ0NTU2NyIKImFsaWFzX2lkIjogIkNPTVAtMDAwMiIKImFsaWFzX25hbWUiOiAidGFyZ2V0LWNvbXBvbmVudCIKIm5hbWUiOiAiVGFyZ2V0IENvbXBvbmVudCIKInR5cGUiOiAic2VydmljZSIKInJlc3BvbnNpYmlsaXRpZXMiOiAiUHJvdmlkZXMgdGhlIHRhcmdldCBzZXJ2aWNlLiIKImdlbmVyYXRpb25fY29udGV4dCI6CiAgInB1cnBvc2UiOiAiU3VwcG9ydCB0aGUgY29uZm9ybWFuY2UgY2FzZS4iCiAgImtleV9yZXNwb25zaWJpbGl0aWVzIjoKICAgIC0gIlByb3ZpZGUgdGhlIHRhcmdldCBzZXJ2aWNlLiIKImludGVyZmFjZXMiOgogIC0KICAgICJpZCI6ICIwMTkxMDlhMC1iMWMyLTdkZWYtOGEwMC0xMTIyMzM0NDU1NjkiCiAgICAiYWxpYXNfaWQiOiAiSUZBQ0UtMDAwMiIKICAgICJhbGlhc19uYW1lIjogInRhcmdldC1pbnRlcmZhY2UiCiAgICAidHlwZSI6ICJSRVNUIgogICAgInNwZWNpZmljYXRpb24iOiAiVGFyZ2V0IGludGVyZmFjZS4iCg==",
               "source_contract": {
                 "family": "authoring",
                 "version": "1.7",
@@ -5467,14 +5488,19 @@
                     "content_digest": "sha256:037ad8a50ad48e0b19452795e4b0ffd710e5aecf1d93e6aa1d69db3745ef1b65"
                   }
                 ]
-              }
+              },
+              "source_schema": {
+                "canonical_resource_key": "authoring/1.7/schema/adr-common.schema",
+                "json_pointer": "/definitions/component"
+              },
+              "serialization_profile": "adr-kit.authoring-yaml/v1"
             },
             {
               "request_key": "edge",
               "source_ref": "candidate/C08/edge",
               "artifact_kind": "authoring_fragment",
-              "content_digest": "sha256:2d711642b726b04401627ca9fbac32f5c8530fb1903cc4db02258717921a4881",
-              "bytes": "eA==",
+              "content_digest": "sha256:0e52ecc86e5450ae18cdb9be8f35372df9449e4f07dc4ab4a362cf9cde27236d",
+              "bytes": "ImlkIjogIjAxOTEwOWEwLWIxYzItN2RlZi04YTAwLTExMjIzMzQ0NTU5OSIKImFsaWFzX2lkIjogIlBBWU1FTlRTLTAwMDEiCiJhbGlhc19uYW1lIjogImRlcGVuZHMtb24iCiJyZWxhdGlvbnNoaXBfdHlwZSI6ICJwYXltZW50czpkZXBlbmRzX29uIgoicXVhbGlmaWNhdGlvbiI6CiAgInNlbWFudGljX2tpbmQiOiAicmVsYXRpb25zaGlwIgogICJzZW1hbnRpY190eXBlIjogInBheW1lbnRzOmRlcGVuZHNfb24iCiAgImNvbnN1bWVyX25hbWVzcGFjZSI6ICJwYXltZW50cyIKICAiY29udHJhY3RfdmVyc2lvbiI6ICIxLjAiCiAgImNvbnRyYWN0X2ZpbmdlcnByaW50IjogImNlY2Y6djE6c2hhMjU2OjAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAiCiJmcm9tX2VudGl0eV9pZCI6ICIwMTkxMDlhMC1iMWMyLTdkZWYtOGEwMC0xMTIyMzM0NDU1NjYiCiJ0b19lbnRpdHlfaWQiOiAiMDE5MTA5YTAtYjFjMi03ZGVmLThhMDAtMTEyMjMzNDQ1NTY3IgoicHJvcGVydGllcyI6IHt9CiJyYXRpb25hbGUiOiAiRXhwbGljaXQgcmVsYXRpb25zaGlwLiIK",
               "source_contract": {
                 "family": "authoring",
                 "version": "1.7",
@@ -5504,19 +5530,24 @@
                     "content_digest": "sha256:037ad8a50ad48e0b19452795e4b0ffd710e5aecf1d93e6aa1d69db3745ef1b65"
                   }
                 ]
-              }
+              },
+              "source_schema": {
+                "canonical_resource_key": "authoring/1.7/schema/adr-common.schema",
+                "json_pointer": "/definitions/custom_relationship"
+              },
+              "serialization_profile": "adr-kit.authoring-yaml/v1"
             }
           ],
           "candidate_source_basis": {
             "sealed": true,
-            "basis_digest": "sha256:2d711642b726b04401627ca9fbac32f5c8530fb1903cc4db02258717921a4881",
+            "basis_digest": "sha256:6d8767c4ac9c9f11f8e3c6f14ad88193144f9afba85abd0b95fa7c2324603e5b",
             "artifacts": [
               {
                 "request_key": "a",
                 "source_ref": "candidate/C08/a",
                 "artifact_kind": "authoring_fragment",
-                "content_digest": "sha256:2d711642b726b04401627ca9fbac32f5c8530fb1903cc4db02258717921a4881",
-                "bytes": "eA==",
+                "content_digest": "sha256:6ac63159b2d55d3b9be9d5cc97879f222a1cd2c43e7d8fed65429ffebd2c23f2",
+                "bytes": "ImlkIjogIjAxOTEwOWEwLWIxYzItN2RlZi04YTAwLTExMjIzMzQ0NTU2NiIKImFsaWFzX2lkIjogIkNPTVAtMDAwMSIKImFsaWFzX25hbWUiOiAic2FtcGxlLWNvbXBvbmVudCIKIm5hbWUiOiAiU2FtcGxlIENvbXBvbmVudCIKInR5cGUiOiAic2VydmljZSIKInJlc3BvbnNpYmlsaXRpZXMiOiAiUHJvdmlkZXMgdGhlIHNhbXBsZSBzZXJ2aWNlLiIKImdlbmVyYXRpb25fY29udGV4dCI6CiAgInB1cnBvc2UiOiAiU3VwcG9ydCB0aGUgY29uZm9ybWFuY2UgY2FzZS4iCiAgImtleV9yZXNwb25zaWJpbGl0aWVzIjoKICAgIC0gIlByb3ZpZGUgdGhlIHNhbXBsZSBzZXJ2aWNlLiIKImludGVyZmFjZXMiOgogIC0KICAgICJpZCI6ICIwMTkxMDlhMC1iMWMyLTdkZWYtOGEwMC0xMTIyMzM0NDU1NjgiCiAgICAiYWxpYXNfaWQiOiAiSUZBQ0UtMDAwMSIKICAgICJhbGlhc19uYW1lIjogInNhbXBsZS1pbnRlcmZhY2UiCiAgICAidHlwZSI6ICJSRVNUIgogICAgInNwZWNpZmljYXRpb24iOiAiU2FtcGxlIGludGVyZmFjZS4iCg==",
                 "source_contract": {
                   "family": "authoring",
                   "version": "1.7",
@@ -5546,14 +5577,19 @@
                       "content_digest": "sha256:037ad8a50ad48e0b19452795e4b0ffd710e5aecf1d93e6aa1d69db3745ef1b65"
                     }
                   ]
-                }
+                },
+                "source_schema": {
+                  "canonical_resource_key": "authoring/1.7/schema/adr-common.schema",
+                  "json_pointer": "/definitions/component"
+                },
+                "serialization_profile": "adr-kit.authoring-yaml/v1"
               },
               {
                 "request_key": "b",
                 "source_ref": "candidate/C08/b",
                 "artifact_kind": "authoring_fragment",
-                "content_digest": "sha256:2d711642b726b04401627ca9fbac32f5c8530fb1903cc4db02258717921a4881",
-                "bytes": "eA==",
+                "content_digest": "sha256:2c83d37244853162a6344598e4a6bbfb6828ffea5fe44a6205e0e8b51f52f789",
+                "bytes": "ImlkIjogIjAxOTEwOWEwLWIxYzItN2RlZi04YTAwLTExMjIzMzQ0NTU2NyIKImFsaWFzX2lkIjogIkNPTVAtMDAwMiIKImFsaWFzX25hbWUiOiAidGFyZ2V0LWNvbXBvbmVudCIKIm5hbWUiOiAiVGFyZ2V0IENvbXBvbmVudCIKInR5cGUiOiAic2VydmljZSIKInJlc3BvbnNpYmlsaXRpZXMiOiAiUHJvdmlkZXMgdGhlIHRhcmdldCBzZXJ2aWNlLiIKImdlbmVyYXRpb25fY29udGV4dCI6CiAgInB1cnBvc2UiOiAiU3VwcG9ydCB0aGUgY29uZm9ybWFuY2UgY2FzZS4iCiAgImtleV9yZXNwb25zaWJpbGl0aWVzIjoKICAgIC0gIlByb3ZpZGUgdGhlIHRhcmdldCBzZXJ2aWNlLiIKImludGVyZmFjZXMiOgogIC0KICAgICJpZCI6ICIwMTkxMDlhMC1iMWMyLTdkZWYtOGEwMC0xMTIyMzM0NDU1NjkiCiAgICAiYWxpYXNfaWQiOiAiSUZBQ0UtMDAwMiIKICAgICJhbGlhc19uYW1lIjogInRhcmdldC1pbnRlcmZhY2UiCiAgICAidHlwZSI6ICJSRVNUIgogICAgInNwZWNpZmljYXRpb24iOiAiVGFyZ2V0IGludGVyZmFjZS4iCg==",
                 "source_contract": {
                   "family": "authoring",
                   "version": "1.7",
@@ -5583,14 +5619,19 @@
                       "content_digest": "sha256:037ad8a50ad48e0b19452795e4b0ffd710e5aecf1d93e6aa1d69db3745ef1b65"
                     }
                   ]
-                }
+                },
+                "source_schema": {
+                  "canonical_resource_key": "authoring/1.7/schema/adr-common.schema",
+                  "json_pointer": "/definitions/component"
+                },
+                "serialization_profile": "adr-kit.authoring-yaml/v1"
               },
               {
                 "request_key": "edge",
                 "source_ref": "candidate/C08/edge",
                 "artifact_kind": "authoring_fragment",
-                "content_digest": "sha256:2d711642b726b04401627ca9fbac32f5c8530fb1903cc4db02258717921a4881",
-                "bytes": "eA==",
+                "content_digest": "sha256:0e52ecc86e5450ae18cdb9be8f35372df9449e4f07dc4ab4a362cf9cde27236d",
+                "bytes": "ImlkIjogIjAxOTEwOWEwLWIxYzItN2RlZi04YTAwLTExMjIzMzQ0NTU5OSIKImFsaWFzX2lkIjogIlBBWU1FTlRTLTAwMDEiCiJhbGlhc19uYW1lIjogImRlcGVuZHMtb24iCiJyZWxhdGlvbnNoaXBfdHlwZSI6ICJwYXltZW50czpkZXBlbmRzX29uIgoicXVhbGlmaWNhdGlvbiI6CiAgInNlbWFudGljX2tpbmQiOiAicmVsYXRpb25zaGlwIgogICJzZW1hbnRpY190eXBlIjogInBheW1lbnRzOmRlcGVuZHNfb24iCiAgImNvbnN1bWVyX25hbWVzcGFjZSI6ICJwYXltZW50cyIKICAiY29udHJhY3RfdmVyc2lvbiI6ICIxLjAiCiAgImNvbnRyYWN0X2ZpbmdlcnByaW50IjogImNlY2Y6djE6c2hhMjU2OjAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAiCiJmcm9tX2VudGl0eV9pZCI6ICIwMTkxMDlhMC1iMWMyLTdkZWYtOGEwMC0xMTIyMzM0NDU1NjYiCiJ0b19lbnRpdHlfaWQiOiAiMDE5MTA5YTAtYjFjMi03ZGVmLThhMDAtMTEyMjMzNDQ1NTY3IgoicHJvcGVydGllcyI6IHt9CiJyYXRpb25hbGUiOiAiRXhwbGljaXQgcmVsYXRpb25zaGlwLiIK",
                 "source_contract": {
                   "family": "authoring",
                   "version": "1.7",
@@ -5620,7 +5661,12 @@
                       "content_digest": "sha256:037ad8a50ad48e0b19452795e4b0ffd710e5aecf1d93e6aa1d69db3745ef1b65"
                     }
                   ]
-                }
+                },
+                "source_schema": {
+                  "canonical_resource_key": "authoring/1.7/schema/adr-common.schema",
+                  "json_pointer": "/definitions/custom_relationship"
+                },
+                "serialization_profile": "adr-kit.authoring-yaml/v1"
               }
             ],
             "source_contract": {
@@ -6141,8 +6187,8 @@
               "request_key": "policy",
               "source_ref": "candidate/C09/policy",
               "artifact_kind": "authoring_fragment",
-              "content_digest": "sha256:2d711642b726b04401627ca9fbac32f5c8530fb1903cc4db02258717921a4881",
-              "bytes": "eA==",
+              "content_digest": "sha256:4443bebce3881323c51e6cc67f07495d0dc5992d166870ef5c03aabcedbb18a7",
+              "bytes": "ImlkIjogIjAxOTEwOWEwLWIxYzItN2RlZi04YTAwLTExMjIzMzQ0NTU2NiIKImFsaWFzX2lkIjogIlBBWU1FTlRTLTAwMDEiCiJhbGlhc19uYW1lIjogInBvbGljeSIKImVudGl0eV90eXBlIjogInBheW1lbnRzOnBvbGljeSIKInF1YWxpZmljYXRpb24iOgogICJzZW1hbnRpY19raW5kIjogImVudGl0eSIKICAic2VtYW50aWNfdHlwZSI6ICJwYXltZW50czpwb2xpY3kiCiAgImNvbnN1bWVyX25hbWVzcGFjZSI6ICJwYXltZW50cyIKICAiY29udHJhY3RfdmVyc2lvbiI6ICIxLjAiCiAgImNvbnRyYWN0X2ZpbmdlcnByaW50IjogImNlY2Y6djE6c2hhMjU2OjAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAiCiJwcm9wZXJ0aWVzIjoKICAicG9saWN5X2NvZGUiOiAiUDEiCiJyYXRpb25hbGUiOiAiRXhwbGljaXQuIgo=",
               "source_contract": {
                 "family": "authoring",
                 "version": "1.7",
@@ -6172,19 +6218,24 @@
                     "content_digest": "sha256:037ad8a50ad48e0b19452795e4b0ffd710e5aecf1d93e6aa1d69db3745ef1b65"
                   }
                 ]
-              }
+              },
+              "source_schema": {
+                "canonical_resource_key": "authoring/1.7/schema/adr-common.schema",
+                "json_pointer": "/definitions/custom_entity"
+              },
+              "serialization_profile": "adr-kit.authoring-yaml/v1"
             }
           ],
           "candidate_source_basis": {
             "sealed": true,
-            "basis_digest": "sha256:2d711642b726b04401627ca9fbac32f5c8530fb1903cc4db02258717921a4881",
+            "basis_digest": "sha256:fdfba8331c462eae5f4d5ae8e6fffe9340c7139177cc80afc599775c8eecf106",
             "artifacts": [
               {
                 "request_key": "policy",
                 "source_ref": "candidate/C09/policy",
                 "artifact_kind": "authoring_fragment",
-                "content_digest": "sha256:2d711642b726b04401627ca9fbac32f5c8530fb1903cc4db02258717921a4881",
-                "bytes": "eA==",
+                "content_digest": "sha256:4443bebce3881323c51e6cc67f07495d0dc5992d166870ef5c03aabcedbb18a7",
+                "bytes": "ImlkIjogIjAxOTEwOWEwLWIxYzItN2RlZi04YTAwLTExMjIzMzQ0NTU2NiIKImFsaWFzX2lkIjogIlBBWU1FTlRTLTAwMDEiCiJhbGlhc19uYW1lIjogInBvbGljeSIKImVudGl0eV90eXBlIjogInBheW1lbnRzOnBvbGljeSIKInF1YWxpZmljYXRpb24iOgogICJzZW1hbnRpY19raW5kIjogImVudGl0eSIKICAic2VtYW50aWNfdHlwZSI6ICJwYXltZW50czpwb2xpY3kiCiAgImNvbnN1bWVyX25hbWVzcGFjZSI6ICJwYXltZW50cyIKICAiY29udHJhY3RfdmVyc2lvbiI6ICIxLjAiCiAgImNvbnRyYWN0X2ZpbmdlcnByaW50IjogImNlY2Y6djE6c2hhMjU2OjAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAiCiJwcm9wZXJ0aWVzIjoKICAicG9saWN5X2NvZGUiOiAiUDEiCiJyYXRpb25hbGUiOiAiRXhwbGljaXQuIgo=",
                 "source_contract": {
                   "family": "authoring",
                   "version": "1.7",
@@ -6214,7 +6265,12 @@
                       "content_digest": "sha256:037ad8a50ad48e0b19452795e4b0ffd710e5aecf1d93e6aa1d69db3745ef1b65"
                     }
                   ]
-                }
+                },
+                "source_schema": {
+                  "canonical_resource_key": "authoring/1.7/schema/adr-common.schema",
+                  "json_pointer": "/definitions/custom_entity"
+                },
+                "serialization_profile": "adr-kit.authoring-yaml/v1"
               }
             ],
             "source_contract": {
@@ -7006,8 +7062,8 @@
               "request_key": "a",
               "source_ref": "candidate/C10/a",
               "artifact_kind": "authoring_fragment",
-              "content_digest": "sha256:2d711642b726b04401627ca9fbac32f5c8530fb1903cc4db02258717921a4881",
-              "bytes": "eA==",
+              "content_digest": "sha256:7a317c809e22bada1e1c2db192169417baa6e2a6859722b19ed0e0d5113901c8",
+              "bytes": "ImlkIjogIjAxOTEwOWEwLWIxYzItN2RlZi04YTAwLTExMjIzMzQ0NTU2NiIKImFsaWFzX2lkIjogIlBBWU1FTlRTLTAwMDEiCiJhbGlhc19uYW1lIjogImFjY291bnQiCiJlbnRpdHlfdHlwZSI6ICJwYXltZW50czphY2NvdW50IgoicXVhbGlmaWNhdGlvbiI6CiAgInNlbWFudGljX2tpbmQiOiAiZW50aXR5IgogICJzZW1hbnRpY190eXBlIjogInBheW1lbnRzOmFjY291bnQiCiAgImNvbnN1bWVyX25hbWVzcGFjZSI6ICJwYXltZW50cyIKICAiY29udHJhY3RfdmVyc2lvbiI6ICIxLjAiCiAgImNvbnRyYWN0X2ZpbmdlcnByaW50IjogImNlY2Y6djE6c2hhMjU2OjAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAiCiJwcm9wZXJ0aWVzIjoge30KInJhdGlvbmFsZSI6ICJSZWZlcmVuY2Ugc291cmNlIGV2aWRlbmNlLiIK",
               "source_contract": {
                 "family": "authoring",
                 "version": "1.7",
@@ -7037,14 +7093,19 @@
                     "content_digest": "sha256:037ad8a50ad48e0b19452795e4b0ffd710e5aecf1d93e6aa1d69db3745ef1b65"
                   }
                 ]
-              }
+              },
+              "source_schema": {
+                "canonical_resource_key": "authoring/1.7/schema/adr-common.schema",
+                "json_pointer": "/definitions/custom_entity"
+              },
+              "serialization_profile": "adr-kit.authoring-yaml/v1"
             },
             {
               "request_key": "b",
               "source_ref": "candidate/C10/b",
               "artifact_kind": "authoring_fragment",
-              "content_digest": "sha256:2d711642b726b04401627ca9fbac32f5c8530fb1903cc4db02258717921a4881",
-              "bytes": "eA==",
+              "content_digest": "sha256:bd2106a08cb2d97629c1012d314641b997c7cda24ef9e0f321cff4994cab100c",
+              "bytes": "ImlkIjogIjAxOTEwOWEwLWIxYzItN2RlZi04YTAwLTExMjIzMzQ0NTU2NyIKImFsaWFzX2lkIjogIlBBWU1FTlRTLTAwMDEiCiJhbGlhc19uYW1lIjogInBvbGljeSIKImVudGl0eV90eXBlIjogInBheW1lbnRzOnBvbGljeSIKInF1YWxpZmljYXRpb24iOgogICJzZW1hbnRpY19raW5kIjogImVudGl0eSIKICAic2VtYW50aWNfdHlwZSI6ICJwYXltZW50czpwb2xpY3kiCiAgImNvbnN1bWVyX25hbWVzcGFjZSI6ICJwYXltZW50cyIKICAiY29udHJhY3RfdmVyc2lvbiI6ICIxLjAiCiAgImNvbnRyYWN0X2ZpbmdlcnByaW50IjogImNlY2Y6djE6c2hhMjU2OjAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAiCiJwcm9wZXJ0aWVzIjoge30KInJhdGlvbmFsZSI6ICJSZWZlcmVuY2Ugc291cmNlIGV2aWRlbmNlLiIK",
               "source_contract": {
                 "family": "authoring",
                 "version": "1.7",
@@ -7074,14 +7135,19 @@
                     "content_digest": "sha256:037ad8a50ad48e0b19452795e4b0ffd710e5aecf1d93e6aa1d69db3745ef1b65"
                   }
                 ]
-              }
+              },
+              "source_schema": {
+                "canonical_resource_key": "authoring/1.7/schema/adr-common.schema",
+                "json_pointer": "/definitions/custom_entity"
+              },
+              "serialization_profile": "adr-kit.authoring-yaml/v1"
             },
             {
               "request_key": "policy-edge",
               "source_ref": "candidate/C10/policy-edge",
               "artifact_kind": "authoring_fragment",
-              "content_digest": "sha256:2d711642b726b04401627ca9fbac32f5c8530fb1903cc4db02258717921a4881",
-              "bytes": "eA==",
+              "content_digest": "sha256:b88060d644661ca292bdda7d479e7e6a1c45cf1726f4a68e49498561df58249b",
+              "bytes": "ImlkIjogIjAxOTEwOWEwLWIxYzItN2RlZi04YTAwLTExMjIzMzQ0NTU5OSIKImFsaWFzX2lkIjogIlBBWU1FTlRTLTAwMDEiCiJhbGlhc19uYW1lIjogImFwcGxpZXMtdG8iCiJyZWxhdGlvbnNoaXBfdHlwZSI6ICJwYXltZW50czphcHBsaWVzX3RvIgoicXVhbGlmaWNhdGlvbiI6CiAgInNlbWFudGljX2tpbmQiOiAicmVsYXRpb25zaGlwIgogICJzZW1hbnRpY190eXBlIjogInBheW1lbnRzOmFwcGxpZXNfdG8iCiAgImNvbnN1bWVyX25hbWVzcGFjZSI6ICJwYXltZW50cyIKICAiY29udHJhY3RfdmVyc2lvbiI6ICIxLjAiCiAgImNvbnRyYWN0X2ZpbmdlcnByaW50IjogImNlY2Y6djE6c2hhMjU2OjAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAiCiJmcm9tX2VudGl0eV9pZCI6ICIwMTkxMDlhMC1iMWMyLTdkZWYtOGEwMC0xMTIyMzM0NDU1NjYiCiJ0b19lbnRpdHlfaWQiOiAiMDE5MTA5YTAtYjFjMi03ZGVmLThhMDAtMTEyMjMzNDQ1NTY3IgoicHJvcGVydGllcyI6CiAgInJlYXNvbiI6ICJleHBsaWNpdCIKInJhdGlvbmFsZSI6ICJFeHBsaWNpdCByZWxhdGlvbnNoaXAuIgo=",
               "source_contract": {
                 "family": "authoring",
                 "version": "1.7",
@@ -7111,19 +7177,24 @@
                     "content_digest": "sha256:037ad8a50ad48e0b19452795e4b0ffd710e5aecf1d93e6aa1d69db3745ef1b65"
                   }
                 ]
-              }
+              },
+              "source_schema": {
+                "canonical_resource_key": "authoring/1.7/schema/adr-common.schema",
+                "json_pointer": "/definitions/custom_relationship"
+              },
+              "serialization_profile": "adr-kit.authoring-yaml/v1"
             }
           ],
           "candidate_source_basis": {
             "sealed": true,
-            "basis_digest": "sha256:2d711642b726b04401627ca9fbac32f5c8530fb1903cc4db02258717921a4881",
+            "basis_digest": "sha256:1ba816e5ec5338e456dd189224b54b026622c8c8079f648cf1ee9d944c274c2c",
             "artifacts": [
               {
                 "request_key": "a",
                 "source_ref": "candidate/C10/a",
                 "artifact_kind": "authoring_fragment",
-                "content_digest": "sha256:2d711642b726b04401627ca9fbac32f5c8530fb1903cc4db02258717921a4881",
-                "bytes": "eA==",
+                "content_digest": "sha256:7a317c809e22bada1e1c2db192169417baa6e2a6859722b19ed0e0d5113901c8",
+                "bytes": "ImlkIjogIjAxOTEwOWEwLWIxYzItN2RlZi04YTAwLTExMjIzMzQ0NTU2NiIKImFsaWFzX2lkIjogIlBBWU1FTlRTLTAwMDEiCiJhbGlhc19uYW1lIjogImFjY291bnQiCiJlbnRpdHlfdHlwZSI6ICJwYXltZW50czphY2NvdW50IgoicXVhbGlmaWNhdGlvbiI6CiAgInNlbWFudGljX2tpbmQiOiAiZW50aXR5IgogICJzZW1hbnRpY190eXBlIjogInBheW1lbnRzOmFjY291bnQiCiAgImNvbnN1bWVyX25hbWVzcGFjZSI6ICJwYXltZW50cyIKICAiY29udHJhY3RfdmVyc2lvbiI6ICIxLjAiCiAgImNvbnRyYWN0X2ZpbmdlcnByaW50IjogImNlY2Y6djE6c2hhMjU2OjAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAiCiJwcm9wZXJ0aWVzIjoge30KInJhdGlvbmFsZSI6ICJSZWZlcmVuY2Ugc291cmNlIGV2aWRlbmNlLiIK",
                 "source_contract": {
                   "family": "authoring",
                   "version": "1.7",
@@ -7153,14 +7224,19 @@
                       "content_digest": "sha256:037ad8a50ad48e0b19452795e4b0ffd710e5aecf1d93e6aa1d69db3745ef1b65"
                     }
                   ]
-                }
+                },
+                "source_schema": {
+                  "canonical_resource_key": "authoring/1.7/schema/adr-common.schema",
+                  "json_pointer": "/definitions/custom_entity"
+                },
+                "serialization_profile": "adr-kit.authoring-yaml/v1"
               },
               {
                 "request_key": "b",
                 "source_ref": "candidate/C10/b",
                 "artifact_kind": "authoring_fragment",
-                "content_digest": "sha256:2d711642b726b04401627ca9fbac32f5c8530fb1903cc4db02258717921a4881",
-                "bytes": "eA==",
+                "content_digest": "sha256:bd2106a08cb2d97629c1012d314641b997c7cda24ef9e0f321cff4994cab100c",
+                "bytes": "ImlkIjogIjAxOTEwOWEwLWIxYzItN2RlZi04YTAwLTExMjIzMzQ0NTU2NyIKImFsaWFzX2lkIjogIlBBWU1FTlRTLTAwMDEiCiJhbGlhc19uYW1lIjogInBvbGljeSIKImVudGl0eV90eXBlIjogInBheW1lbnRzOnBvbGljeSIKInF1YWxpZmljYXRpb24iOgogICJzZW1hbnRpY19raW5kIjogImVudGl0eSIKICAic2VtYW50aWNfdHlwZSI6ICJwYXltZW50czpwb2xpY3kiCiAgImNvbnN1bWVyX25hbWVzcGFjZSI6ICJwYXltZW50cyIKICAiY29udHJhY3RfdmVyc2lvbiI6ICIxLjAiCiAgImNvbnRyYWN0X2ZpbmdlcnByaW50IjogImNlY2Y6djE6c2hhMjU2OjAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAiCiJwcm9wZXJ0aWVzIjoge30KInJhdGlvbmFsZSI6ICJSZWZlcmVuY2Ugc291cmNlIGV2aWRlbmNlLiIK",
                 "source_contract": {
                   "family": "authoring",
                   "version": "1.7",
@@ -7190,14 +7266,19 @@
                       "content_digest": "sha256:037ad8a50ad48e0b19452795e4b0ffd710e5aecf1d93e6aa1d69db3745ef1b65"
                     }
                   ]
-                }
+                },
+                "source_schema": {
+                  "canonical_resource_key": "authoring/1.7/schema/adr-common.schema",
+                  "json_pointer": "/definitions/custom_entity"
+                },
+                "serialization_profile": "adr-kit.authoring-yaml/v1"
               },
               {
                 "request_key": "policy-edge",
                 "source_ref": "candidate/C10/policy-edge",
                 "artifact_kind": "authoring_fragment",
-                "content_digest": "sha256:2d711642b726b04401627ca9fbac32f5c8530fb1903cc4db02258717921a4881",
-                "bytes": "eA==",
+                "content_digest": "sha256:b88060d644661ca292bdda7d479e7e6a1c45cf1726f4a68e49498561df58249b",
+                "bytes": "ImlkIjogIjAxOTEwOWEwLWIxYzItN2RlZi04YTAwLTExMjIzMzQ0NTU5OSIKImFsaWFzX2lkIjogIlBBWU1FTlRTLTAwMDEiCiJhbGlhc19uYW1lIjogImFwcGxpZXMtdG8iCiJyZWxhdGlvbnNoaXBfdHlwZSI6ICJwYXltZW50czphcHBsaWVzX3RvIgoicXVhbGlmaWNhdGlvbiI6CiAgInNlbWFudGljX2tpbmQiOiAicmVsYXRpb25zaGlwIgogICJzZW1hbnRpY190eXBlIjogInBheW1lbnRzOmFwcGxpZXNfdG8iCiAgImNvbnN1bWVyX25hbWVzcGFjZSI6ICJwYXltZW50cyIKICAiY29udHJhY3RfdmVyc2lvbiI6ICIxLjAiCiAgImNvbnRyYWN0X2ZpbmdlcnByaW50IjogImNlY2Y6djE6c2hhMjU2OjAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAiCiJmcm9tX2VudGl0eV9pZCI6ICIwMTkxMDlhMC1iMWMyLTdkZWYtOGEwMC0xMTIyMzM0NDU1NjYiCiJ0b19lbnRpdHlfaWQiOiAiMDE5MTA5YTAtYjFjMi03ZGVmLThhMDAtMTEyMjMzNDQ1NTY3IgoicHJvcGVydGllcyI6CiAgInJlYXNvbiI6ICJleHBsaWNpdCIKInJhdGlvbmFsZSI6ICJFeHBsaWNpdCByZWxhdGlvbnNoaXAuIgo=",
                 "source_contract": {
                   "family": "authoring",
                   "version": "1.7",
@@ -7227,7 +7308,12 @@
                       "content_digest": "sha256:037ad8a50ad48e0b19452795e4b0ffd710e5aecf1d93e6aa1d69db3745ef1b65"
                     }
                   ]
-                }
+                },
+                "source_schema": {
+                  "canonical_resource_key": "authoring/1.7/schema/adr-common.schema",
+                  "json_pointer": "/definitions/custom_relationship"
+                },
+                "serialization_profile": "adr-kit.authoring-yaml/v1"
               }
             ],
             "source_contract": {
@@ -8834,8 +8920,8 @@
               "request_key": "system",
               "source_ref": "candidate/C14/system",
               "artifact_kind": "authoring_document",
-              "content_digest": "sha256:2d711642b726b04401627ca9fbac32f5c8530fb1903cc4db02258717921a4881",
-              "bytes": "eA==",
+              "content_digest": "sha256:3b35e1cdd3b31db50b0dc1e4855063cabe37668e8b5d4da91ed097a3404753c4",
+              "bytes": "InNjaGVtYV92ZXJzaW9uIjogIjEuNyIKImFkcl90eXBlIjogInBoeXNpY2FsLXN5c3RlbSIKImlkIjogIjAxOTEwOWEwLWIxYzItN2RlZi04YTAwLTExMjIzMzQ0NTU2NiIKImFsaWFzX2lkIjogIkFEUi1QUy0wMDAxIgoiYWxpYXNfbmFtZSI6ICJjb25mb3JtYW5jZS1zeXN0ZW0iCiJ0aXRsZSI6ICJDb25mb3JtYW5jZSBwaHlzaWNhbCBzeXN0ZW0iCiJzdGF0dXMiOiAicHJvcG9zZWQiCiJjcmVhdGVkX2RhdGUiOiAiMjAyNi0wOS0xNyIKImF1dGhvcnMiOgogIC0gImNvbmZvcm1hbmNlIgoiaW1wbGVtZW50c19sb2dpY2FsIjoKICAtICIwMTkxMDlhMC1iMWMyLTdkZWYtOGEwMC0xMTIyMzM0NDU1NjYiCiJjb250ZXh0IjogIkEgYm91bmRlZCBleHBsaWNpdCBzeXN0ZW0gY29udGV4dC4iCiJ0ZWNobm9sb2d5X3N0YWNrIjoKICAtCiAgICAiY2F0ZWdvcnkiOiAibGFuZ3VhZ2UiCiAgICAibmFtZSI6ICJSdXN0IgogICAgInZlcnNpb24iOiAiMSIKICAgICJyYXRpb25hbGUiOiAiRXhwbGljaXQuIgoic3lzdGVtIjoKICAiaWQiOiAiMDE5MTA5YTAtYjFjMi03ZGVmLThhMDAtMTEyMjMzNDQ1NTY2IgogICJhbGlhc19pZCI6ICJTWVMtMDAwMSIKICAiYWxpYXNfbmFtZSI6ICJjb25mb3JtYW5jZS1zeXN0ZW0iCiJjb21wb25lbnRfdG9wb2xvZ3kiOgogICJjb21wb25lbnRzIjoKICAgIC0KICAgICAgInRvcG9sb2d5X2tleSI6ICJUT1BPLUFQSSIKICAgICAgImNvbXBvbmVudF9yZWYiOiAiMDE5MTA5YTAtYjFjMi03ZGVmLThhMDAtMTEyMjMzNDQ1NTY3IgogICAgICAicHVycG9zZSI6ICJFeHBsaWNpdCB0b3BvbG9neSBjb21wb25lbnQuIgo=",
               "source_contract": {
                 "family": "authoring",
                 "version": "1.7",
@@ -8865,19 +8951,24 @@
                     "content_digest": "sha256:037ad8a50ad48e0b19452795e4b0ffd710e5aecf1d93e6aa1d69db3745ef1b65"
                   }
                 ]
-              }
+              },
+              "source_schema": {
+                "canonical_resource_key": "authoring/1.7/schema/adr-physical-system.schema",
+                "json_pointer": ""
+              },
+              "serialization_profile": "adr-kit.authoring-yaml/v1"
             }
           ],
           "candidate_source_basis": {
             "sealed": true,
-            "basis_digest": "sha256:2d711642b726b04401627ca9fbac32f5c8530fb1903cc4db02258717921a4881",
+            "basis_digest": "sha256:b1bb65c2734042a031a54c3f4d3b7d2bf72e9bcb6dc5a0ccf8c2cb10365cd274",
             "artifacts": [
               {
                 "request_key": "system",
                 "source_ref": "candidate/C14/system",
                 "artifact_kind": "authoring_document",
-                "content_digest": "sha256:2d711642b726b04401627ca9fbac32f5c8530fb1903cc4db02258717921a4881",
-                "bytes": "eA==",
+                "content_digest": "sha256:3b35e1cdd3b31db50b0dc1e4855063cabe37668e8b5d4da91ed097a3404753c4",
+                "bytes": "InNjaGVtYV92ZXJzaW9uIjogIjEuNyIKImFkcl90eXBlIjogInBoeXNpY2FsLXN5c3RlbSIKImlkIjogIjAxOTEwOWEwLWIxYzItN2RlZi04YTAwLTExMjIzMzQ0NTU2NiIKImFsaWFzX2lkIjogIkFEUi1QUy0wMDAxIgoiYWxpYXNfbmFtZSI6ICJjb25mb3JtYW5jZS1zeXN0ZW0iCiJ0aXRsZSI6ICJDb25mb3JtYW5jZSBwaHlzaWNhbCBzeXN0ZW0iCiJzdGF0dXMiOiAicHJvcG9zZWQiCiJjcmVhdGVkX2RhdGUiOiAiMjAyNi0wOS0xNyIKImF1dGhvcnMiOgogIC0gImNvbmZvcm1hbmNlIgoiaW1wbGVtZW50c19sb2dpY2FsIjoKICAtICIwMTkxMDlhMC1iMWMyLTdkZWYtOGEwMC0xMTIyMzM0NDU1NjYiCiJjb250ZXh0IjogIkEgYm91bmRlZCBleHBsaWNpdCBzeXN0ZW0gY29udGV4dC4iCiJ0ZWNobm9sb2d5X3N0YWNrIjoKICAtCiAgICAiY2F0ZWdvcnkiOiAibGFuZ3VhZ2UiCiAgICAibmFtZSI6ICJSdXN0IgogICAgInZlcnNpb24iOiAiMSIKICAgICJyYXRpb25hbGUiOiAiRXhwbGljaXQuIgoic3lzdGVtIjoKICAiaWQiOiAiMDE5MTA5YTAtYjFjMi03ZGVmLThhMDAtMTEyMjMzNDQ1NTY2IgogICJhbGlhc19pZCI6ICJTWVMtMDAwMSIKICAiYWxpYXNfbmFtZSI6ICJjb25mb3JtYW5jZS1zeXN0ZW0iCiJjb21wb25lbnRfdG9wb2xvZ3kiOgogICJjb21wb25lbnRzIjoKICAgIC0KICAgICAgInRvcG9sb2d5X2tleSI6ICJUT1BPLUFQSSIKICAgICAgImNvbXBvbmVudF9yZWYiOiAiMDE5MTA5YTAtYjFjMi03ZGVmLThhMDAtMTEyMjMzNDQ1NTY3IgogICAgICAicHVycG9zZSI6ICJFeHBsaWNpdCB0b3BvbG9neSBjb21wb25lbnQuIgo=",
                 "source_contract": {
                   "family": "authoring",
                   "version": "1.7",
@@ -8907,7 +8998,12 @@
                       "content_digest": "sha256:037ad8a50ad48e0b19452795e4b0ffd710e5aecf1d93e6aa1d69db3745ef1b65"
                     }
                   ]
-                }
+                },
+                "source_schema": {
+                  "canonical_resource_key": "authoring/1.7/schema/adr-physical-system.schema",
+                  "json_pointer": ""
+                },
+                "serialization_profile": "adr-kit.authoring-yaml/v1"
               }
             ],
             "source_contract": {
@@ -9450,8 +9546,8 @@
               "request_key": "system",
               "source_ref": "candidate/C15/system",
               "artifact_kind": "authoring_document",
-              "content_digest": "sha256:2d711642b726b04401627ca9fbac32f5c8530fb1903cc4db02258717921a4881",
-              "bytes": "eA==",
+              "content_digest": "sha256:16b3f85d9d739a6b2801c58a20871009138721d3268140253b0deb4210c54a74",
+              "bytes": "InNjaGVtYV92ZXJzaW9uIjogIjEuNyIKImFkcl90eXBlIjogInBoeXNpY2FsLXN5c3RlbSIKImlkIjogIjAxOTEwOWEwLWIxYzItN2RlZi04YTAwLTExMjIzMzQ0NTU2NiIKImFsaWFzX2lkIjogIkFEUi1QUy0wMDAxIgoiYWxpYXNfbmFtZSI6ICJjb25mb3JtYW5jZS1zeXN0ZW0iCiJ0aXRsZSI6ICJDb25mb3JtYW5jZSBwaHlzaWNhbCBzeXN0ZW0iCiJzdGF0dXMiOiAicHJvcG9zZWQiCiJjcmVhdGVkX2RhdGUiOiAiMjAyNi0wOS0xNyIKImF1dGhvcnMiOgogIC0gImNvbmZvcm1hbmNlIgoiaW1wbGVtZW50c19sb2dpY2FsIjoKICAtICIwMTkxMDlhMC1iMWMyLTdkZWYtOGEwMC0xMTIyMzM0NDU1NjYiCiJjb250ZXh0IjogIkEgYm91bmRlZCBleHBsaWNpdCBzeXN0ZW0gY29udGV4dC4iCiJ0ZWNobm9sb2d5X3N0YWNrIjoKICAtCiAgICAiY2F0ZWdvcnkiOiAibGFuZ3VhZ2UiCiAgICAibmFtZSI6ICJSdXN0IgogICAgInZlcnNpb24iOiAiMSIKICAgICJyYXRpb25hbGUiOiAiRXhwbGljaXQuIgoic3lzdGVtIjoKICAiaWQiOiAiMDE5MTA5YTAtYjFjMi03ZGVmLThhMDAtMTEyMjMzNDQ1NTY2IgogICJhbGlhc19pZCI6ICJTWVMtMDAwMSIKICAiYWxpYXNfbmFtZSI6ICJjb25mb3JtYW5jZS1zeXN0ZW0iCiJjb21wb25lbnRfdG9wb2xvZ3kiOgogICJjb21wb25lbnRzIjoKICAgIC0KICAgICAgInRvcG9sb2d5X2tleSI6ICJUT1BPLUFQSSIKICAgICAgImNvbXBvbmVudF9yZWYiOiAiMDE5MTA5YTAtYjFjMi03ZGVmLThhMDAtMTEyMjMzNDQ1NTY3IgogICAgICAicHVycG9zZSI6ICJFeHBsaWNpdCB0b3BvbG9neSBjb21wb25lbnQuIgogICAgLQogICAgICAidG9wb2xvZ3lfa2V5IjogIlRPUE8tREIiCiAgICAgICJjb21wb25lbnRfcmVmIjogIjAxOTEwOWEwLWIxYzItN2RlZi04YTAwLTExMjIzMzQ0NTU2OCIKICAgICAgInB1cnBvc2UiOiAiRXhwbGljaXQgdG9wb2xvZ3kgY29tcG9uZW50LiIKICAicmVsYXRpb25zaGlwcyI6CiAgICAtCiAgICAgICJmcm9tX2tleSI6ICJUT1BPLUFQSSIKICAgICAgInRvX2tleSI6ICJUT1BPLURCIgogICAgICAidHlwZSI6ICJjYWxscyIK",
               "source_contract": {
                 "family": "authoring",
                 "version": "1.7",
@@ -9481,19 +9577,24 @@
                     "content_digest": "sha256:037ad8a50ad48e0b19452795e4b0ffd710e5aecf1d93e6aa1d69db3745ef1b65"
                   }
                 ]
-              }
+              },
+              "source_schema": {
+                "canonical_resource_key": "authoring/1.7/schema/adr-physical-system.schema",
+                "json_pointer": ""
+              },
+              "serialization_profile": "adr-kit.authoring-yaml/v1"
             }
           ],
           "candidate_source_basis": {
             "sealed": true,
-            "basis_digest": "sha256:2d711642b726b04401627ca9fbac32f5c8530fb1903cc4db02258717921a4881",
+            "basis_digest": "sha256:5d7b2e74ac229fc5c7f2a9505d3c27d28032c1b891c32703810f9bcb845b4488",
             "artifacts": [
               {
                 "request_key": "system",
                 "source_ref": "candidate/C15/system",
                 "artifact_kind": "authoring_document",
-                "content_digest": "sha256:2d711642b726b04401627ca9fbac32f5c8530fb1903cc4db02258717921a4881",
-                "bytes": "eA==",
+                "content_digest": "sha256:16b3f85d9d739a6b2801c58a20871009138721d3268140253b0deb4210c54a74",
+                "bytes": "InNjaGVtYV92ZXJzaW9uIjogIjEuNyIKImFkcl90eXBlIjogInBoeXNpY2FsLXN5c3RlbSIKImlkIjogIjAxOTEwOWEwLWIxYzItN2RlZi04YTAwLTExMjIzMzQ0NTU2NiIKImFsaWFzX2lkIjogIkFEUi1QUy0wMDAxIgoiYWxpYXNfbmFtZSI6ICJjb25mb3JtYW5jZS1zeXN0ZW0iCiJ0aXRsZSI6ICJDb25mb3JtYW5jZSBwaHlzaWNhbCBzeXN0ZW0iCiJzdGF0dXMiOiAicHJvcG9zZWQiCiJjcmVhdGVkX2RhdGUiOiAiMjAyNi0wOS0xNyIKImF1dGhvcnMiOgogIC0gImNvbmZvcm1hbmNlIgoiaW1wbGVtZW50c19sb2dpY2FsIjoKICAtICIwMTkxMDlhMC1iMWMyLTdkZWYtOGEwMC0xMTIyMzM0NDU1NjYiCiJjb250ZXh0IjogIkEgYm91bmRlZCBleHBsaWNpdCBzeXN0ZW0gY29udGV4dC4iCiJ0ZWNobm9sb2d5X3N0YWNrIjoKICAtCiAgICAiY2F0ZWdvcnkiOiAibGFuZ3VhZ2UiCiAgICAibmFtZSI6ICJSdXN0IgogICAgInZlcnNpb24iOiAiMSIKICAgICJyYXRpb25hbGUiOiAiRXhwbGljaXQuIgoic3lzdGVtIjoKICAiaWQiOiAiMDE5MTA5YTAtYjFjMi03ZGVmLThhMDAtMTEyMjMzNDQ1NTY2IgogICJhbGlhc19pZCI6ICJTWVMtMDAwMSIKICAiYWxpYXNfbmFtZSI6ICJjb25mb3JtYW5jZS1zeXN0ZW0iCiJjb21wb25lbnRfdG9wb2xvZ3kiOgogICJjb21wb25lbnRzIjoKICAgIC0KICAgICAgInRvcG9sb2d5X2tleSI6ICJUT1BPLUFQSSIKICAgICAgImNvbXBvbmVudF9yZWYiOiAiMDE5MTA5YTAtYjFjMi03ZGVmLThhMDAtMTEyMjMzNDQ1NTY3IgogICAgICAicHVycG9zZSI6ICJFeHBsaWNpdCB0b3BvbG9neSBjb21wb25lbnQuIgogICAgLQogICAgICAidG9wb2xvZ3lfa2V5IjogIlRPUE8tREIiCiAgICAgICJjb21wb25lbnRfcmVmIjogIjAxOTEwOWEwLWIxYzItN2RlZi04YTAwLTExMjIzMzQ0NTU2OCIKICAgICAgInB1cnBvc2UiOiAiRXhwbGljaXQgdG9wb2xvZ3kgY29tcG9uZW50LiIKICAicmVsYXRpb25zaGlwcyI6CiAgICAtCiAgICAgICJmcm9tX2tleSI6ICJUT1BPLUFQSSIKICAgICAgInRvX2tleSI6ICJUT1BPLURCIgogICAgICAidHlwZSI6ICJjYWxscyIK",
                 "source_contract": {
                   "family": "authoring",
                   "version": "1.7",
@@ -9523,7 +9624,12 @@
                       "content_digest": "sha256:037ad8a50ad48e0b19452795e4b0ffd710e5aecf1d93e6aa1d69db3745ef1b65"
                     }
                   ]
-                }
+                },
+                "source_schema": {
+                  "canonical_resource_key": "authoring/1.7/schema/adr-physical-system.schema",
+                  "json_pointer": ""
+                },
+                "serialization_profile": "adr-kit.authoring-yaml/v1"
               }
             ],
             "source_contract": {
@@ -10656,8 +10762,8 @@
               "request_key": "np",
               "source_ref": "candidate/C18/np",
               "artifact_kind": "authoring_fragment",
-              "content_digest": "sha256:2d711642b726b04401627ca9fbac32f5c8530fb1903cc4db02258717921a4881",
-              "bytes": "eA==",
+              "content_digest": "sha256:d561a75e1a5321472631a77eece0aff2732f86560995317207b8c0950fe6d412",
+              "bytes": "ImlkIjogIjAxOTEwOWEwLWIxYzItN2RlZi04YTAwLTExMjIzMzQ0NTU2NiIKImFsaWFzX2lkIjogIk5QLTAwMDEiCiJhbGlhc19uYW1lIjogImNvbmZvcm1hbmNlLXByb3Bvc2l0aW9uIgoic3RhdGVtZW50IjogIkNsaWVudHMgTVVTVCBhdXRoZW50aWNhdGUiCiJub3JtYXRpdmVfZm9yY2UiOiAiTVVTVCIKInNjb3BlIjogImNsaWVudHMiCg==",
               "source_contract": {
                 "family": "authoring",
                 "version": "1.7",
@@ -10687,19 +10793,24 @@
                     "content_digest": "sha256:037ad8a50ad48e0b19452795e4b0ffd710e5aecf1d93e6aa1d69db3745ef1b65"
                   }
                 ]
-              }
+              },
+              "source_schema": {
+                "canonical_resource_key": "authoring/1.7/schema/adr-common.schema",
+                "json_pointer": "/definitions/normative_proposition"
+              },
+              "serialization_profile": "adr-kit.authoring-yaml/v1"
             }
           ],
           "candidate_source_basis": {
             "sealed": true,
-            "basis_digest": "sha256:2d711642b726b04401627ca9fbac32f5c8530fb1903cc4db02258717921a4881",
+            "basis_digest": "sha256:07d05a0c4e864324360ca4170e70aa201af6186cb7eb93da2465838380c257de",
             "artifacts": [
               {
                 "request_key": "np",
                 "source_ref": "candidate/C18/np",
                 "artifact_kind": "authoring_fragment",
-                "content_digest": "sha256:2d711642b726b04401627ca9fbac32f5c8530fb1903cc4db02258717921a4881",
-                "bytes": "eA==",
+                "content_digest": "sha256:d561a75e1a5321472631a77eece0aff2732f86560995317207b8c0950fe6d412",
+                "bytes": "ImlkIjogIjAxOTEwOWEwLWIxYzItN2RlZi04YTAwLTExMjIzMzQ0NTU2NiIKImFsaWFzX2lkIjogIk5QLTAwMDEiCiJhbGlhc19uYW1lIjogImNvbmZvcm1hbmNlLXByb3Bvc2l0aW9uIgoic3RhdGVtZW50IjogIkNsaWVudHMgTVVTVCBhdXRoZW50aWNhdGUiCiJub3JtYXRpdmVfZm9yY2UiOiAiTVVTVCIKInNjb3BlIjogImNsaWVudHMiCg==",
                 "source_contract": {
                   "family": "authoring",
                   "version": "1.7",
@@ -10729,7 +10840,12 @@
                       "content_digest": "sha256:037ad8a50ad48e0b19452795e4b0ffd710e5aecf1d93e6aa1d69db3745ef1b65"
                     }
                   ]
-                }
+                },
+                "source_schema": {
+                  "canonical_resource_key": "authoring/1.7/schema/adr-common.schema",
+                  "json_pointer": "/definitions/normative_proposition"
+                },
+                "serialization_profile": "adr-kit.authoring-yaml/v1"
               }
             ],
             "source_contract": {
@@ -11864,8 +11980,8 @@
               "request_key": "good",
               "source_ref": "candidate/C21/good",
               "artifact_kind": "authoring_fragment",
-              "content_digest": "sha256:2d711642b726b04401627ca9fbac32f5c8530fb1903cc4db02258717921a4881",
-              "bytes": "eA==",
+              "content_digest": "sha256:de8c9a8d0a3e3d39517e31938d63980b06694ac3b48b79c21781648063517b62",
+              "bytes": "ImlkIjogIjAxOTEwOWEwLWIxYzItN2RlZi04YTAwLTExMjIzMzQ0NTU2NiIKImFsaWFzX2lkIjogIkRFQy0wMDAxIgoiYWxpYXNfbmFtZSI6ICJjb25mb3JtYW5jZS1kZWNpc2lvbiIKInN1bW1hcnkiOiAiQW4gZXhwbGljaXRseSBzdXBwbGllZCBkZWNpc2lvbi4iCiJyYXRpb25hbGUiOiAiQW4gZXhwbGljaXRseSBzdXBwbGllZCByYXRpb25hbGUuIgo=",
               "source_contract": {
                 "family": "authoring",
                 "version": "1.7",
@@ -11895,19 +12011,24 @@
                     "content_digest": "sha256:037ad8a50ad48e0b19452795e4b0ffd710e5aecf1d93e6aa1d69db3745ef1b65"
                   }
                 ]
-              }
+              },
+              "source_schema": {
+                "canonical_resource_key": "authoring/1.7/schema/adr-common.schema",
+                "json_pointer": "/definitions/decision"
+              },
+              "serialization_profile": "adr-kit.authoring-yaml/v1"
             }
           ],
           "candidate_source_basis": {
             "sealed": true,
-            "basis_digest": "sha256:2d711642b726b04401627ca9fbac32f5c8530fb1903cc4db02258717921a4881",
+            "basis_digest": "sha256:13ba99697dbc165f0d506c5da31ffd0c3220fec4a3ec19a1ba0b4e189c62498b",
             "artifacts": [
               {
                 "request_key": "good",
                 "source_ref": "candidate/C21/good",
                 "artifact_kind": "authoring_fragment",
-                "content_digest": "sha256:2d711642b726b04401627ca9fbac32f5c8530fb1903cc4db02258717921a4881",
-                "bytes": "eA==",
+                "content_digest": "sha256:de8c9a8d0a3e3d39517e31938d63980b06694ac3b48b79c21781648063517b62",
+                "bytes": "ImlkIjogIjAxOTEwOWEwLWIxYzItN2RlZi04YTAwLTExMjIzMzQ0NTU2NiIKImFsaWFzX2lkIjogIkRFQy0wMDAxIgoiYWxpYXNfbmFtZSI6ICJjb25mb3JtYW5jZS1kZWNpc2lvbiIKInN1bW1hcnkiOiAiQW4gZXhwbGljaXRseSBzdXBwbGllZCBkZWNpc2lvbi4iCiJyYXRpb25hbGUiOiAiQW4gZXhwbGljaXRseSBzdXBwbGllZCByYXRpb25hbGUuIgo=",
                 "source_contract": {
                   "family": "authoring",
                   "version": "1.7",
@@ -11937,7 +12058,12 @@
                       "content_digest": "sha256:037ad8a50ad48e0b19452795e4b0ffd710e5aecf1d93e6aa1d69db3745ef1b65"
                     }
                   ]
-                }
+                },
+                "source_schema": {
+                  "canonical_resource_key": "authoring/1.7/schema/adr-common.schema",
+                  "json_pointer": "/definitions/decision"
+                },
+                "serialization_profile": "adr-kit.authoring-yaml/v1"
               }
             ],
             "source_contract": {
@@ -12412,8 +12538,8 @@
               "request_key": "mint",
               "source_ref": "candidate/C22/mint",
               "artifact_kind": "authoring_fragment",
-              "content_digest": "sha256:2d711642b726b04401627ca9fbac32f5c8530fb1903cc4db02258717921a4881",
-              "bytes": "eA==",
+              "content_digest": "sha256:062ddb0931774aec84003663b6bcebb73f22ce83fc5452081bdad96642bafaf8",
+              "bytes": "ImlkIjogIjAxOTEwOWEwLWIxYzItN2RlZi04YTAwLTExMjIzMzQ0NTU5OSIKImFsaWFzX2lkIjogIkRFQy0wMDAxIgoiYWxpYXNfbmFtZSI6ICJjb25mb3JtYW5jZS1kZWNpc2lvbiIKInN1bW1hcnkiOiAiQW4gZXhwbGljaXRseSBzdXBwbGllZCBkZWNpc2lvbi4iCiJyYXRpb25hbGUiOiAiQW4gZXhwbGljaXRseSBzdXBwbGllZCByYXRpb25hbGUuIgo=",
               "source_contract": {
                 "family": "authoring",
                 "version": "1.7",
@@ -12443,19 +12569,24 @@
                     "content_digest": "sha256:037ad8a50ad48e0b19452795e4b0ffd710e5aecf1d93e6aa1d69db3745ef1b65"
                   }
                 ]
-              }
+              },
+              "source_schema": {
+                "canonical_resource_key": "authoring/1.7/schema/adr-common.schema",
+                "json_pointer": "/definitions/decision"
+              },
+              "serialization_profile": "adr-kit.authoring-yaml/v1"
             }
           ],
           "candidate_source_basis": {
             "sealed": true,
-            "basis_digest": "sha256:2d711642b726b04401627ca9fbac32f5c8530fb1903cc4db02258717921a4881",
+            "basis_digest": "sha256:b34da3cecd8416a0774396850fbb17431815ed84a08a39a3c20222eda38048e4",
             "artifacts": [
               {
                 "request_key": "mint",
                 "source_ref": "candidate/C22/mint",
                 "artifact_kind": "authoring_fragment",
-                "content_digest": "sha256:2d711642b726b04401627ca9fbac32f5c8530fb1903cc4db02258717921a4881",
-                "bytes": "eA==",
+                "content_digest": "sha256:062ddb0931774aec84003663b6bcebb73f22ce83fc5452081bdad96642bafaf8",
+                "bytes": "ImlkIjogIjAxOTEwOWEwLWIxYzItN2RlZi04YTAwLTExMjIzMzQ0NTU5OSIKImFsaWFzX2lkIjogIkRFQy0wMDAxIgoiYWxpYXNfbmFtZSI6ICJjb25mb3JtYW5jZS1kZWNpc2lvbiIKInN1bW1hcnkiOiAiQW4gZXhwbGljaXRseSBzdXBwbGllZCBkZWNpc2lvbi4iCiJyYXRpb25hbGUiOiAiQW4gZXhwbGljaXRseSBzdXBwbGllZCByYXRpb25hbGUuIgo=",
                 "source_contract": {
                   "family": "authoring",
                   "version": "1.7",
@@ -12485,7 +12616,12 @@
                       "content_digest": "sha256:037ad8a50ad48e0b19452795e4b0ffd710e5aecf1d93e6aa1d69db3745ef1b65"
                     }
                   ]
-                }
+                },
+                "source_schema": {
+                  "canonical_resource_key": "authoring/1.7/schema/adr-common.schema",
+                  "json_pointer": "/definitions/decision"
+                },
+                "serialization_profile": "adr-kit.authoring-yaml/v1"
               }
             ],
             "source_contract": {
@@ -14952,8 +15088,8 @@
               "request_key": "compact",
               "source_ref": "candidate/C28/compact",
               "artifact_kind": "authoring_fragment",
-              "content_digest": "sha256:2d711642b726b04401627ca9fbac32f5c8530fb1903cc4db02258717921a4881",
-              "bytes": "eA==",
+              "content_digest": "sha256:3b052dfdb9b8d95ea643804ab0fa85d608e201c3e4773b3ac257e13261c7fa79",
+              "bytes": "ImlkIjogIjAxOTEwOWEwLWIxYzItN2RlZi04YTAwLTExMjIzMzQ0NTU2NiIKImFsaWFzX2lkIjogIkRFQy0wMDAxIgoiYWxpYXNfbmFtZSI6ICJjb25mb3JtYW5jZS1kZWNpc2lvbiIKInN1bW1hcnkiOiAiRXhwbGljaXQiCiJyYXRpb25hbGUiOiAiRXhwbGljaXQuIgo=",
               "source_contract": {
                 "family": "authoring",
                 "version": "1.7",
@@ -14983,14 +15119,19 @@
                     "content_digest": "sha256:037ad8a50ad48e0b19452795e4b0ffd710e5aecf1d93e6aa1d69db3745ef1b65"
                   }
                 ]
-              }
+              },
+              "source_schema": {
+                "canonical_resource_key": "authoring/1.7/schema/adr-common.schema",
+                "json_pointer": "/definitions/decision"
+              },
+              "serialization_profile": "adr-kit.authoring-yaml/v1"
             },
             {
               "request_key": "prepared",
               "source_ref": "candidate/C28/prepared",
               "artifact_kind": "authoring_fragment",
-              "content_digest": "sha256:2d711642b726b04401627ca9fbac32f5c8530fb1903cc4db02258717921a4881",
-              "bytes": "eA==",
+              "content_digest": "sha256:05918bd7f148aaa03379c946ed8a78b15755eb3ec7f683c81460b901ea7e7115",
+              "bytes": "ImlkIjogIjAxOTEwOWEwLWIxYzItN2RlZi04YTAwLTExMjIzMzQ0NTU2NyIKImFsaWFzX2lkIjogIkRFQy0wMDAxIgoiYWxpYXNfbmFtZSI6ICJjb25mb3JtYW5jZS1kZWNpc2lvbiIKInN1bW1hcnkiOiAiRXhwbGljaXQiCiJyYXRpb25hbGUiOiAiRXhwbGljaXQuIgo=",
               "source_contract": {
                 "family": "authoring",
                 "version": "1.7",
@@ -15020,19 +15161,24 @@
                     "content_digest": "sha256:037ad8a50ad48e0b19452795e4b0ffd710e5aecf1d93e6aa1d69db3745ef1b65"
                   }
                 ]
-              }
+              },
+              "source_schema": {
+                "canonical_resource_key": "authoring/1.7/schema/adr-common.schema",
+                "json_pointer": "/definitions/decision"
+              },
+              "serialization_profile": "adr-kit.authoring-yaml/v1"
             }
           ],
           "candidate_source_basis": {
             "sealed": true,
-            "basis_digest": "sha256:2d711642b726b04401627ca9fbac32f5c8530fb1903cc4db02258717921a4881",
+            "basis_digest": "sha256:061f3bf924ae38c5b0846f651cc8e42838960788ec5e1ca6b2c54e4b8c4d8e26",
             "artifacts": [
               {
                 "request_key": "compact",
                 "source_ref": "candidate/C28/compact",
                 "artifact_kind": "authoring_fragment",
-                "content_digest": "sha256:2d711642b726b04401627ca9fbac32f5c8530fb1903cc4db02258717921a4881",
-                "bytes": "eA==",
+                "content_digest": "sha256:3b052dfdb9b8d95ea643804ab0fa85d608e201c3e4773b3ac257e13261c7fa79",
+                "bytes": "ImlkIjogIjAxOTEwOWEwLWIxYzItN2RlZi04YTAwLTExMjIzMzQ0NTU2NiIKImFsaWFzX2lkIjogIkRFQy0wMDAxIgoiYWxpYXNfbmFtZSI6ICJjb25mb3JtYW5jZS1kZWNpc2lvbiIKInN1bW1hcnkiOiAiRXhwbGljaXQiCiJyYXRpb25hbGUiOiAiRXhwbGljaXQuIgo=",
                 "source_contract": {
                   "family": "authoring",
                   "version": "1.7",
@@ -15062,14 +15208,19 @@
                       "content_digest": "sha256:037ad8a50ad48e0b19452795e4b0ffd710e5aecf1d93e6aa1d69db3745ef1b65"
                     }
                   ]
-                }
+                },
+                "source_schema": {
+                  "canonical_resource_key": "authoring/1.7/schema/adr-common.schema",
+                  "json_pointer": "/definitions/decision"
+                },
+                "serialization_profile": "adr-kit.authoring-yaml/v1"
               },
               {
                 "request_key": "prepared",
                 "source_ref": "candidate/C28/prepared",
                 "artifact_kind": "authoring_fragment",
-                "content_digest": "sha256:2d711642b726b04401627ca9fbac32f5c8530fb1903cc4db02258717921a4881",
-                "bytes": "eA==",
+                "content_digest": "sha256:05918bd7f148aaa03379c946ed8a78b15755eb3ec7f683c81460b901ea7e7115",
+                "bytes": "ImlkIjogIjAxOTEwOWEwLWIxYzItN2RlZi04YTAwLTExMjIzMzQ0NTU2NyIKImFsaWFzX2lkIjogIkRFQy0wMDAxIgoiYWxpYXNfbmFtZSI6ICJjb25mb3JtYW5jZS1kZWNpc2lvbiIKInN1bW1hcnkiOiAiRXhwbGljaXQiCiJyYXRpb25hbGUiOiAiRXhwbGljaXQuIgo=",
                 "source_contract": {
                   "family": "authoring",
                   "version": "1.7",
@@ -15099,7 +15250,12 @@
                       "content_digest": "sha256:037ad8a50ad48e0b19452795e4b0ffd710e5aecf1d93e6aa1d69db3745ef1b65"
                     }
                   ]
-                }
+                },
+                "source_schema": {
+                  "canonical_resource_key": "authoring/1.7/schema/adr-common.schema",
+                  "json_pointer": "/definitions/decision"
+                },
+                "serialization_profile": "adr-kit.authoring-yaml/v1"
               }
             ],
             "source_contract": {
@@ -15946,8 +16102,8 @@
               "request_key": "policy",
               "source_ref": "candidate/C30/policy",
               "artifact_kind": "authoring_fragment",
-              "content_digest": "sha256:2d711642b726b04401627ca9fbac32f5c8530fb1903cc4db02258717921a4881",
-              "bytes": "eA==",
+              "content_digest": "sha256:82c424a35db454a5d1602ab79ad2120f296c3aa8782d46b2209d6e16ca5f3bfc",
+              "bytes": "ImlkIjogIjAxOTEwOWEwLWIxYzItN2RlZi04YTAwLTExMjIzMzQ0NTU5OSIKImFsaWFzX2lkIjogIlBBWU1FTlRTLTAwMDEiCiJhbGlhc19uYW1lIjogInBvbGljeSIKImVudGl0eV90eXBlIjogInBheW1lbnRzOnBvbGljeSIKInF1YWxpZmljYXRpb24iOgogICJzZW1hbnRpY19raW5kIjogImVudGl0eSIKICAic2VtYW50aWNfdHlwZSI6ICJwYXltZW50czpwb2xpY3kiCiAgImNvbnN1bWVyX25hbWVzcGFjZSI6ICJwYXltZW50cyIKICAiY29udHJhY3RfdmVyc2lvbiI6ICIxLjAiCiAgImNvbnRyYWN0X2ZpbmdlcnByaW50IjogImNlY2Y6djE6c2hhMjU2OjAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAiCiJwcm9wZXJ0aWVzIjoKICAiZGVwZW5kc19vbiI6ICJkYXRhYmFzZSIKInJhdGlvbmFsZSI6ICJFeHBsaWNpdC4iCg==",
               "source_contract": {
                 "family": "authoring",
                 "version": "1.7",
@@ -15977,19 +16133,24 @@
                     "content_digest": "sha256:037ad8a50ad48e0b19452795e4b0ffd710e5aecf1d93e6aa1d69db3745ef1b65"
                   }
                 ]
-              }
+              },
+              "source_schema": {
+                "canonical_resource_key": "authoring/1.7/schema/adr-common.schema",
+                "json_pointer": "/definitions/custom_entity"
+              },
+              "serialization_profile": "adr-kit.authoring-yaml/v1"
             }
           ],
           "candidate_source_basis": {
             "sealed": true,
-            "basis_digest": "sha256:2d711642b726b04401627ca9fbac32f5c8530fb1903cc4db02258717921a4881",
+            "basis_digest": "sha256:c99d186e2c3169c235823c7762bb16ac32e3805f686e3f194fc23b650ca85b24",
             "artifacts": [
               {
                 "request_key": "policy",
                 "source_ref": "candidate/C30/policy",
                 "artifact_kind": "authoring_fragment",
-                "content_digest": "sha256:2d711642b726b04401627ca9fbac32f5c8530fb1903cc4db02258717921a4881",
-                "bytes": "eA==",
+                "content_digest": "sha256:82c424a35db454a5d1602ab79ad2120f296c3aa8782d46b2209d6e16ca5f3bfc",
+                "bytes": "ImlkIjogIjAxOTEwOWEwLWIxYzItN2RlZi04YTAwLTExMjIzMzQ0NTU5OSIKImFsaWFzX2lkIjogIlBBWU1FTlRTLTAwMDEiCiJhbGlhc19uYW1lIjogInBvbGljeSIKImVudGl0eV90eXBlIjogInBheW1lbnRzOnBvbGljeSIKInF1YWxpZmljYXRpb24iOgogICJzZW1hbnRpY19raW5kIjogImVudGl0eSIKICAic2VtYW50aWNfdHlwZSI6ICJwYXltZW50czpwb2xpY3kiCiAgImNvbnN1bWVyX25hbWVzcGFjZSI6ICJwYXltZW50cyIKICAiY29udHJhY3RfdmVyc2lvbiI6ICIxLjAiCiAgImNvbnRyYWN0X2ZpbmdlcnByaW50IjogImNlY2Y6djE6c2hhMjU2OjAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAiCiJwcm9wZXJ0aWVzIjoKICAiZGVwZW5kc19vbiI6ICJkYXRhYmFzZSIKInJhdGlvbmFsZSI6ICJFeHBsaWNpdC4iCg==",
                 "source_contract": {
                   "family": "authoring",
                   "version": "1.7",
@@ -16019,7 +16180,12 @@
                       "content_digest": "sha256:037ad8a50ad48e0b19452795e4b0ffd710e5aecf1d93e6aa1d69db3745ef1b65"
                     }
                   ]
-                }
+                },
+                "source_schema": {
+                  "canonical_resource_key": "authoring/1.7/schema/adr-common.schema",
+                  "json_pointer": "/definitions/custom_entity"
+                },
+                "serialization_profile": "adr-kit.authoring-yaml/v1"
               }
             ],
             "source_contract": {
@@ -16875,8 +17041,8 @@
               "request_key": "decision",
               "source_ref": "candidate/C32/decision",
               "artifact_kind": "authoring_fragment",
-              "content_digest": "sha256:2d711642b726b04401627ca9fbac32f5c8530fb1903cc4db02258717921a4881",
-              "bytes": "eA==",
+              "content_digest": "sha256:71f1962b4e08b8e743914c69fcf0387d13034df6bd8be64b96cd30639e6f0e46",
+              "bytes": "ImlkIjogIjAxOTEwOWEwLWIxYzItN2RlZi04YTAwLTExMjIzMzQ0NTU2NiIKImFsaWFzX2lkIjogIkRFQy0wMDAxIgoiYWxpYXNfbmFtZSI6ICJjb25mb3JtYW5jZS1kZWNpc2lvbiIKInN1bW1hcnkiOiAiU291cmNlIG1pc21hdGNoIgoicmF0aW9uYWxlIjogIkFuIGV4cGxpY2l0bHkgc3VwcGxpZWQgcmF0aW9uYWxlLiIK",
               "source_contract": {
                 "family": "authoring",
                 "version": "1.7",
@@ -16906,19 +17072,24 @@
                     "content_digest": "sha256:037ad8a50ad48e0b19452795e4b0ffd710e5aecf1d93e6aa1d69db3745ef1b65"
                   }
                 ]
-              }
+              },
+              "source_schema": {
+                "canonical_resource_key": "authoring/1.7/schema/adr-common.schema",
+                "json_pointer": "/definitions/decision"
+              },
+              "serialization_profile": "adr-kit.authoring-yaml/v1"
             }
           ],
           "candidate_source_basis": {
             "sealed": true,
-            "basis_digest": "sha256:2d711642b726b04401627ca9fbac32f5c8530fb1903cc4db02258717921a4881",
+            "basis_digest": "sha256:6f7e4d1199645660654a0d46da09f584c6215dd6aed0b00a3eb7916d9449a901",
             "artifacts": [
               {
                 "request_key": "decision",
                 "source_ref": "candidate/C32/decision",
                 "artifact_kind": "authoring_fragment",
-                "content_digest": "sha256:2d711642b726b04401627ca9fbac32f5c8530fb1903cc4db02258717921a4881",
-                "bytes": "eA==",
+                "content_digest": "sha256:71f1962b4e08b8e743914c69fcf0387d13034df6bd8be64b96cd30639e6f0e46",
+                "bytes": "ImlkIjogIjAxOTEwOWEwLWIxYzItN2RlZi04YTAwLTExMjIzMzQ0NTU2NiIKImFsaWFzX2lkIjogIkRFQy0wMDAxIgoiYWxpYXNfbmFtZSI6ICJjb25mb3JtYW5jZS1kZWNpc2lvbiIKInN1bW1hcnkiOiAiU291cmNlIG1pc21hdGNoIgoicmF0aW9uYWxlIjogIkFuIGV4cGxpY2l0bHkgc3VwcGxpZWQgcmF0aW9uYWxlLiIK",
                 "source_contract": {
                   "family": "authoring",
                   "version": "1.7",
@@ -16948,7 +17119,12 @@
                       "content_digest": "sha256:037ad8a50ad48e0b19452795e4b0ffd710e5aecf1d93e6aa1d69db3745ef1b65"
                     }
                   ]
-                }
+                },
+                "source_schema": {
+                  "canonical_resource_key": "authoring/1.7/schema/adr-common.schema",
+                  "json_pointer": "/definitions/decision"
+                },
+                "serialization_profile": "adr-kit.authoring-yaml/v1"
               }
             ],
             "source_contract": {
@@ -18083,8 +18259,8 @@
               "request_key": "decision",
               "source_ref": "candidate/C35/decision",
               "artifact_kind": "authoring_fragment",
-              "content_digest": "sha256:2d711642b726b04401627ca9fbac32f5c8530fb1903cc4db02258717921a4881",
-              "bytes": "eA==",
+              "content_digest": "sha256:3b052dfdb9b8d95ea643804ab0fa85d608e201c3e4773b3ac257e13261c7fa79",
+              "bytes": "ImlkIjogIjAxOTEwOWEwLWIxYzItN2RlZi04YTAwLTExMjIzMzQ0NTU2NiIKImFsaWFzX2lkIjogIkRFQy0wMDAxIgoiYWxpYXNfbmFtZSI6ICJjb25mb3JtYW5jZS1kZWNpc2lvbiIKInN1bW1hcnkiOiAiRXhwbGljaXQiCiJyYXRpb25hbGUiOiAiRXhwbGljaXQuIgo=",
               "source_contract": {
                 "family": "authoring",
                 "version": "1.7",
@@ -18114,19 +18290,24 @@
                     "content_digest": "sha256:037ad8a50ad48e0b19452795e4b0ffd710e5aecf1d93e6aa1d69db3745ef1b65"
                   }
                 ]
-              }
+              },
+              "source_schema": {
+                "canonical_resource_key": "authoring/1.7/schema/adr-common.schema",
+                "json_pointer": "/definitions/decision"
+              },
+              "serialization_profile": "adr-kit.authoring-yaml/v1"
             }
           ],
           "candidate_source_basis": {
             "sealed": true,
-            "basis_digest": "sha256:2d711642b726b04401627ca9fbac32f5c8530fb1903cc4db02258717921a4881",
+            "basis_digest": "sha256:abfc40ef8b3a45e8c94ca296f1f79f756a8e1c92b8c86306fbfae7a439908873",
             "artifacts": [
               {
                 "request_key": "decision",
                 "source_ref": "candidate/C35/decision",
                 "artifact_kind": "authoring_fragment",
-                "content_digest": "sha256:2d711642b726b04401627ca9fbac32f5c8530fb1903cc4db02258717921a4881",
-                "bytes": "eA==",
+                "content_digest": "sha256:3b052dfdb9b8d95ea643804ab0fa85d608e201c3e4773b3ac257e13261c7fa79",
+                "bytes": "ImlkIjogIjAxOTEwOWEwLWIxYzItN2RlZi04YTAwLTExMjIzMzQ0NTU2NiIKImFsaWFzX2lkIjogIkRFQy0wMDAxIgoiYWxpYXNfbmFtZSI6ICJjb25mb3JtYW5jZS1kZWNpc2lvbiIKInN1bW1hcnkiOiAiRXhwbGljaXQiCiJyYXRpb25hbGUiOiAiRXhwbGljaXQuIgo=",
                 "source_contract": {
                   "family": "authoring",
                   "version": "1.7",
@@ -18156,7 +18337,12 @@
                       "content_digest": "sha256:037ad8a50ad48e0b19452795e4b0ffd710e5aecf1d93e6aa1d69db3745ef1b65"
                     }
                   ]
-                }
+                },
+                "source_schema": {
+                  "canonical_resource_key": "authoring/1.7/schema/adr-common.schema",
+                  "json_pointer": "/definitions/decision"
+                },
+                "serialization_profile": "adr-kit.authoring-yaml/v1"
               }
             ],
             "source_contract": {
@@ -18633,8 +18819,8 @@
               "request_key": "decision",
               "source_ref": "candidate/C36/decision",
               "artifact_kind": "authoring_fragment",
-              "content_digest": "sha256:2d711642b726b04401627ca9fbac32f5c8530fb1903cc4db02258717921a4881",
-              "bytes": "eA==",
+              "content_digest": "sha256:de8c9a8d0a3e3d39517e31938d63980b06694ac3b48b79c21781648063517b62",
+              "bytes": "ImlkIjogIjAxOTEwOWEwLWIxYzItN2RlZi04YTAwLTExMjIzMzQ0NTU2NiIKImFsaWFzX2lkIjogIkRFQy0wMDAxIgoiYWxpYXNfbmFtZSI6ICJjb25mb3JtYW5jZS1kZWNpc2lvbiIKInN1bW1hcnkiOiAiQW4gZXhwbGljaXRseSBzdXBwbGllZCBkZWNpc2lvbi4iCiJyYXRpb25hbGUiOiAiQW4gZXhwbGljaXRseSBzdXBwbGllZCByYXRpb25hbGUuIgo=",
               "source_contract": {
                 "family": "authoring",
                 "version": "1.7",
@@ -18664,19 +18850,24 @@
                     "content_digest": "sha256:037ad8a50ad48e0b19452795e4b0ffd710e5aecf1d93e6aa1d69db3745ef1b65"
                   }
                 ]
-              }
+              },
+              "source_schema": {
+                "canonical_resource_key": "authoring/1.7/schema/adr-common.schema",
+                "json_pointer": "/definitions/decision"
+              },
+              "serialization_profile": "adr-kit.authoring-yaml/v1"
             }
           ],
           "candidate_source_basis": {
             "sealed": true,
-            "basis_digest": "sha256:2d711642b726b04401627ca9fbac32f5c8530fb1903cc4db02258717921a4881",
+            "basis_digest": "sha256:ba909e86ef5065ee5f20e1418317261b2ad0571ad65802a19a52ef5a78f1394b",
             "artifacts": [
               {
                 "request_key": "decision",
                 "source_ref": "candidate/C36/decision",
                 "artifact_kind": "authoring_fragment",
-                "content_digest": "sha256:2d711642b726b04401627ca9fbac32f5c8530fb1903cc4db02258717921a4881",
-                "bytes": "eA==",
+                "content_digest": "sha256:de8c9a8d0a3e3d39517e31938d63980b06694ac3b48b79c21781648063517b62",
+                "bytes": "ImlkIjogIjAxOTEwOWEwLWIxYzItN2RlZi04YTAwLTExMjIzMzQ0NTU2NiIKImFsaWFzX2lkIjogIkRFQy0wMDAxIgoiYWxpYXNfbmFtZSI6ICJjb25mb3JtYW5jZS1kZWNpc2lvbiIKInN1bW1hcnkiOiAiQW4gZXhwbGljaXRseSBzdXBwbGllZCBkZWNpc2lvbi4iCiJyYXRpb25hbGUiOiAiQW4gZXhwbGljaXRseSBzdXBwbGllZCByYXRpb25hbGUuIgo=",
                 "source_contract": {
                   "family": "authoring",
                   "version": "1.7",
@@ -18706,7 +18897,12 @@
                       "content_digest": "sha256:037ad8a50ad48e0b19452795e4b0ffd710e5aecf1d93e6aa1d69db3745ef1b65"
                     }
                   ]
-                }
+                },
+                "source_schema": {
+                  "canonical_resource_key": "authoring/1.7/schema/adr-common.schema",
+                  "json_pointer": "/definitions/decision"
+                },
+                "serialization_profile": "adr-kit.authoring-yaml/v1"
               }
             ],
             "source_contract": {
@@ -19185,8 +19381,8 @@
               "request_key": "decision",
               "source_ref": "candidate/C37/decision",
               "artifact_kind": "authoring_fragment",
-              "content_digest": "sha256:2d711642b726b04401627ca9fbac32f5c8530fb1903cc4db02258717921a4881",
-              "bytes": "eA==",
+              "content_digest": "sha256:de8c9a8d0a3e3d39517e31938d63980b06694ac3b48b79c21781648063517b62",
+              "bytes": "ImlkIjogIjAxOTEwOWEwLWIxYzItN2RlZi04YTAwLTExMjIzMzQ0NTU2NiIKImFsaWFzX2lkIjogIkRFQy0wMDAxIgoiYWxpYXNfbmFtZSI6ICJjb25mb3JtYW5jZS1kZWNpc2lvbiIKInN1bW1hcnkiOiAiQW4gZXhwbGljaXRseSBzdXBwbGllZCBkZWNpc2lvbi4iCiJyYXRpb25hbGUiOiAiQW4gZXhwbGljaXRseSBzdXBwbGllZCByYXRpb25hbGUuIgo=",
               "source_contract": {
                 "family": "authoring",
                 "version": "1.7",
@@ -19216,19 +19412,24 @@
                     "content_digest": "sha256:037ad8a50ad48e0b19452795e4b0ffd710e5aecf1d93e6aa1d69db3745ef1b65"
                   }
                 ]
-              }
+              },
+              "source_schema": {
+                "canonical_resource_key": "authoring/1.7/schema/adr-common.schema",
+                "json_pointer": "/definitions/decision"
+              },
+              "serialization_profile": "adr-kit.authoring-yaml/v1"
             }
           ],
           "candidate_source_basis": {
             "sealed": true,
-            "basis_digest": "sha256:2d711642b726b04401627ca9fbac32f5c8530fb1903cc4db02258717921a4881",
+            "basis_digest": "sha256:81a192d068eeca3f57bed646074eea832e6d2a4e5f263237c11dc431baa8db6d",
             "artifacts": [
               {
                 "request_key": "decision",
                 "source_ref": "candidate/C37/decision",
                 "artifact_kind": "authoring_fragment",
-                "content_digest": "sha256:2d711642b726b04401627ca9fbac32f5c8530fb1903cc4db02258717921a4881",
-                "bytes": "eA==",
+                "content_digest": "sha256:de8c9a8d0a3e3d39517e31938d63980b06694ac3b48b79c21781648063517b62",
+                "bytes": "ImlkIjogIjAxOTEwOWEwLWIxYzItN2RlZi04YTAwLTExMjIzMzQ0NTU2NiIKImFsaWFzX2lkIjogIkRFQy0wMDAxIgoiYWxpYXNfbmFtZSI6ICJjb25mb3JtYW5jZS1kZWNpc2lvbiIKInN1bW1hcnkiOiAiQW4gZXhwbGljaXRseSBzdXBwbGllZCBkZWNpc2lvbi4iCiJyYXRpb25hbGUiOiAiQW4gZXhwbGljaXRseSBzdXBwbGllZCByYXRpb25hbGUuIgo=",
                 "source_contract": {
                   "family": "authoring",
                   "version": "1.7",
@@ -19258,7 +19459,12 @@
                       "content_digest": "sha256:037ad8a50ad48e0b19452795e4b0ffd710e5aecf1d93e6aa1d69db3745ef1b65"
                     }
                   ]
-                }
+                },
+                "source_schema": {
+                  "canonical_resource_key": "authoring/1.7/schema/adr-common.schema",
+                  "json_pointer": "/definitions/decision"
+                },
+                "serialization_profile": "adr-kit.authoring-yaml/v1"
               }
             ],
             "source_contract": {
@@ -19738,8 +19944,8 @@
               "request_key": "decision",
               "source_ref": "candidate/C38/decision",
               "artifact_kind": "authoring_fragment",
-              "content_digest": "sha256:2d711642b726b04401627ca9fbac32f5c8530fb1903cc4db02258717921a4881",
-              "bytes": "eA==",
+              "content_digest": "sha256:de8c9a8d0a3e3d39517e31938d63980b06694ac3b48b79c21781648063517b62",
+              "bytes": "ImlkIjogIjAxOTEwOWEwLWIxYzItN2RlZi04YTAwLTExMjIzMzQ0NTU2NiIKImFsaWFzX2lkIjogIkRFQy0wMDAxIgoiYWxpYXNfbmFtZSI6ICJjb25mb3JtYW5jZS1kZWNpc2lvbiIKInN1bW1hcnkiOiAiQW4gZXhwbGljaXRseSBzdXBwbGllZCBkZWNpc2lvbi4iCiJyYXRpb25hbGUiOiAiQW4gZXhwbGljaXRseSBzdXBwbGllZCByYXRpb25hbGUuIgo=",
               "source_contract": {
                 "family": "authoring",
                 "version": "1.7",
@@ -19769,19 +19975,24 @@
                     "content_digest": "sha256:037ad8a50ad48e0b19452795e4b0ffd710e5aecf1d93e6aa1d69db3745ef1b65"
                   }
                 ]
-              }
+              },
+              "source_schema": {
+                "canonical_resource_key": "authoring/1.7/schema/adr-common.schema",
+                "json_pointer": "/definitions/decision"
+              },
+              "serialization_profile": "adr-kit.authoring-yaml/v1"
             }
           ],
           "candidate_source_basis": {
             "sealed": true,
-            "basis_digest": "sha256:2d711642b726b04401627ca9fbac32f5c8530fb1903cc4db02258717921a4881",
+            "basis_digest": "sha256:9094203a8355fff7a0cfe4e98eb6a74abe228a5af9f75270746c91ac6de11f9d",
             "artifacts": [
               {
                 "request_key": "decision",
                 "source_ref": "candidate/C38/decision",
                 "artifact_kind": "authoring_fragment",
-                "content_digest": "sha256:2d711642b726b04401627ca9fbac32f5c8530fb1903cc4db02258717921a4881",
-                "bytes": "eA==",
+                "content_digest": "sha256:de8c9a8d0a3e3d39517e31938d63980b06694ac3b48b79c21781648063517b62",
+                "bytes": "ImlkIjogIjAxOTEwOWEwLWIxYzItN2RlZi04YTAwLTExMjIzMzQ0NTU2NiIKImFsaWFzX2lkIjogIkRFQy0wMDAxIgoiYWxpYXNfbmFtZSI6ICJjb25mb3JtYW5jZS1kZWNpc2lvbiIKInN1bW1hcnkiOiAiQW4gZXhwbGljaXRseSBzdXBwbGllZCBkZWNpc2lvbi4iCiJyYXRpb25hbGUiOiAiQW4gZXhwbGljaXRseSBzdXBwbGllZCByYXRpb25hbGUuIgo=",
                 "source_contract": {
                   "family": "authoring",
                   "version": "1.7",
@@ -19811,7 +20022,12 @@
                       "content_digest": "sha256:037ad8a50ad48e0b19452795e4b0ffd710e5aecf1d93e6aa1d69db3745ef1b65"
                     }
                   ]
-                }
+                },
+                "source_schema": {
+                  "canonical_resource_key": "authoring/1.7/schema/adr-common.schema",
+                  "json_pointer": "/definitions/decision"
+                },
+                "serialization_profile": "adr-kit.authoring-yaml/v1"
               }
             ],
             "source_contract": {
@@ -20412,8 +20628,8 @@
               "request_key": "b",
               "source_ref": "candidate/C39/b",
               "artifact_kind": "authoring_fragment",
-              "content_digest": "sha256:2d711642b726b04401627ca9fbac32f5c8530fb1903cc4db02258717921a4881",
-              "bytes": "eA==",
+              "content_digest": "sha256:f40883a319bd23b70acdb88817171f23d84692d02ac7ad7a8c8bb7af3a39c280",
+              "bytes": "ImlkIjogIjAxOTEwOWEwLWIxYzItN2RlZi04YTAwLTExMjIzMzQ0NTU2NyIKImFsaWFzX2lkIjogIkRFQy0wMDAxIgoiYWxpYXNfbmFtZSI6ICJjb25mb3JtYW5jZS1kZWNpc2lvbiIKInN1bW1hcnkiOiAiQW4gZXhwbGljaXRseSBzdXBwbGllZCBkZWNpc2lvbi4iCiJyYXRpb25hbGUiOiAiQW4gZXhwbGljaXRseSBzdXBwbGllZCByYXRpb25hbGUuIgo=",
               "source_contract": {
                 "family": "authoring",
                 "version": "1.7",
@@ -20443,14 +20659,19 @@
                     "content_digest": "sha256:037ad8a50ad48e0b19452795e4b0ffd710e5aecf1d93e6aa1d69db3745ef1b65"
                   }
                 ]
-              }
+              },
+              "source_schema": {
+                "canonical_resource_key": "authoring/1.7/schema/adr-common.schema",
+                "json_pointer": "/definitions/decision"
+              },
+              "serialization_profile": "adr-kit.authoring-yaml/v1"
             },
             {
               "request_key": "a",
               "source_ref": "candidate/C39/a",
               "artifact_kind": "authoring_fragment",
-              "content_digest": "sha256:2d711642b726b04401627ca9fbac32f5c8530fb1903cc4db02258717921a4881",
-              "bytes": "eA==",
+              "content_digest": "sha256:1d70ff655e19855de15b8d5c4bce37786ed7674a33653f856dfdb0baffe92619",
+              "bytes": "ImlkIjogIjAxOTEwOWEwLWIxYzItN2RlZi04YTAwLTExMjIzMzQ0NTU2NiIKImFsaWFzX2lkIjogIklOVi0wMDAxIgoiYWxpYXNfbmFtZSI6ICJjb25mb3JtYW5jZS1pbnZhcmlhbnQiCiJzdGF0ZW1lbnQiOiAiQW4gZXhwbGljaXRseSBzdXBwbGllZCBpbnZhcmlhbnQuIgoic2NvcGUiOiAidGhlIGNvbmZvcm1hbmNlIHJlcXVlc3QiCiJlbmZvcmNlbWVudF9sZXZlbCI6ICJtdXN0IgoiZW5mb3JjZW1lbnRfbWVjaGFuaXNtIjogInRlc3QiCiJ2ZXJpZmljYXRpb25fbWV0aG9kIjogImF1dG9tYXRlZCIKInJhdGlvbmFsZSI6ICJBbiBleHBsaWNpdGx5IHN1cHBsaWVkIHJhdGlvbmFsZS4iCg==",
               "source_contract": {
                 "family": "authoring",
                 "version": "1.7",
@@ -20480,56 +20701,24 @@
                     "content_digest": "sha256:037ad8a50ad48e0b19452795e4b0ffd710e5aecf1d93e6aa1d69db3745ef1b65"
                   }
                 ]
-              }
+              },
+              "source_schema": {
+                "canonical_resource_key": "authoring/1.7/schema/adr-common.schema",
+                "json_pointer": "/definitions/invariant"
+              },
+              "serialization_profile": "adr-kit.authoring-yaml/v1"
             }
           ],
           "candidate_source_basis": {
             "sealed": true,
-            "basis_digest": "sha256:2d711642b726b04401627ca9fbac32f5c8530fb1903cc4db02258717921a4881",
+            "basis_digest": "sha256:0aff1fdcecf64e286b663f59625a1fb68cd42ea978c009c661a67e670a0c626e",
             "artifacts": [
-              {
-                "request_key": "b",
-                "source_ref": "candidate/C39/b",
-                "artifact_kind": "authoring_fragment",
-                "content_digest": "sha256:2d711642b726b04401627ca9fbac32f5c8530fb1903cc4db02258717921a4881",
-                "bytes": "eA==",
-                "source_contract": {
-                  "family": "authoring",
-                  "version": "1.7",
-                  "resources": [
-                    {
-                      "canonical_resource_key": "authoring/1.7/schema/adr-common.schema",
-                      "content_digest": "sha256:6914d44456fa078ec6af20bab680d6d9e7e7af00f4d3d31eea828d656f2b3760"
-                    },
-                    {
-                      "canonical_resource_key": "authoring/1.7/schema/adr-logical.schema",
-                      "content_digest": "sha256:32f6058dd5efc77cf6612587304f9275aa3a66bb7270fdb0f7ef4b871c9f5731"
-                    },
-                    {
-                      "canonical_resource_key": "authoring/1.7/schema/adr-physical-base.schema",
-                      "content_digest": "sha256:f3dd3e6989262477404579a5058c07b3d75cb0fef1fdf37392788d8b287f3a4d"
-                    },
-                    {
-                      "canonical_resource_key": "authoring/1.7/schema/adr-physical-component.schema",
-                      "content_digest": "sha256:151980ce3054d5c64990a700ca1b202181629c2375447d5758ba9186658ee7e7"
-                    },
-                    {
-                      "canonical_resource_key": "authoring/1.7/schema/adr-physical-system.schema",
-                      "content_digest": "sha256:461abbf9ce25edbf2e75f78a73eec83aac4330c7fbe3b0bb7e7736b7d8afb4be"
-                    },
-                    {
-                      "canonical_resource_key": "authoring/1.7/schema/types.schema",
-                      "content_digest": "sha256:037ad8a50ad48e0b19452795e4b0ffd710e5aecf1d93e6aa1d69db3745ef1b65"
-                    }
-                  ]
-                }
-              },
               {
                 "request_key": "a",
                 "source_ref": "candidate/C39/a",
                 "artifact_kind": "authoring_fragment",
-                "content_digest": "sha256:2d711642b726b04401627ca9fbac32f5c8530fb1903cc4db02258717921a4881",
-                "bytes": "eA==",
+                "content_digest": "sha256:1d70ff655e19855de15b8d5c4bce37786ed7674a33653f856dfdb0baffe92619",
+                "bytes": "ImlkIjogIjAxOTEwOWEwLWIxYzItN2RlZi04YTAwLTExMjIzMzQ0NTU2NiIKImFsaWFzX2lkIjogIklOVi0wMDAxIgoiYWxpYXNfbmFtZSI6ICJjb25mb3JtYW5jZS1pbnZhcmlhbnQiCiJzdGF0ZW1lbnQiOiAiQW4gZXhwbGljaXRseSBzdXBwbGllZCBpbnZhcmlhbnQuIgoic2NvcGUiOiAidGhlIGNvbmZvcm1hbmNlIHJlcXVlc3QiCiJlbmZvcmNlbWVudF9sZXZlbCI6ICJtdXN0IgoiZW5mb3JjZW1lbnRfbWVjaGFuaXNtIjogInRlc3QiCiJ2ZXJpZmljYXRpb25fbWV0aG9kIjogImF1dG9tYXRlZCIKInJhdGlvbmFsZSI6ICJBbiBleHBsaWNpdGx5IHN1cHBsaWVkIHJhdGlvbmFsZS4iCg==",
                 "source_contract": {
                   "family": "authoring",
                   "version": "1.7",
@@ -20559,7 +20748,54 @@
                       "content_digest": "sha256:037ad8a50ad48e0b19452795e4b0ffd710e5aecf1d93e6aa1d69db3745ef1b65"
                     }
                   ]
-                }
+                },
+                "source_schema": {
+                  "canonical_resource_key": "authoring/1.7/schema/adr-common.schema",
+                  "json_pointer": "/definitions/invariant"
+                },
+                "serialization_profile": "adr-kit.authoring-yaml/v1"
+              },
+              {
+                "request_key": "b",
+                "source_ref": "candidate/C39/b",
+                "artifact_kind": "authoring_fragment",
+                "content_digest": "sha256:f40883a319bd23b70acdb88817171f23d84692d02ac7ad7a8c8bb7af3a39c280",
+                "bytes": "ImlkIjogIjAxOTEwOWEwLWIxYzItN2RlZi04YTAwLTExMjIzMzQ0NTU2NyIKImFsaWFzX2lkIjogIkRFQy0wMDAxIgoiYWxpYXNfbmFtZSI6ICJjb25mb3JtYW5jZS1kZWNpc2lvbiIKInN1bW1hcnkiOiAiQW4gZXhwbGljaXRseSBzdXBwbGllZCBkZWNpc2lvbi4iCiJyYXRpb25hbGUiOiAiQW4gZXhwbGljaXRseSBzdXBwbGllZCByYXRpb25hbGUuIgo=",
+                "source_contract": {
+                  "family": "authoring",
+                  "version": "1.7",
+                  "resources": [
+                    {
+                      "canonical_resource_key": "authoring/1.7/schema/adr-common.schema",
+                      "content_digest": "sha256:6914d44456fa078ec6af20bab680d6d9e7e7af00f4d3d31eea828d656f2b3760"
+                    },
+                    {
+                      "canonical_resource_key": "authoring/1.7/schema/adr-logical.schema",
+                      "content_digest": "sha256:32f6058dd5efc77cf6612587304f9275aa3a66bb7270fdb0f7ef4b871c9f5731"
+                    },
+                    {
+                      "canonical_resource_key": "authoring/1.7/schema/adr-physical-base.schema",
+                      "content_digest": "sha256:f3dd3e6989262477404579a5058c07b3d75cb0fef1fdf37392788d8b287f3a4d"
+                    },
+                    {
+                      "canonical_resource_key": "authoring/1.7/schema/adr-physical-component.schema",
+                      "content_digest": "sha256:151980ce3054d5c64990a700ca1b202181629c2375447d5758ba9186658ee7e7"
+                    },
+                    {
+                      "canonical_resource_key": "authoring/1.7/schema/adr-physical-system.schema",
+                      "content_digest": "sha256:461abbf9ce25edbf2e75f78a73eec83aac4330c7fbe3b0bb7e7736b7d8afb4be"
+                    },
+                    {
+                      "canonical_resource_key": "authoring/1.7/schema/types.schema",
+                      "content_digest": "sha256:037ad8a50ad48e0b19452795e4b0ffd710e5aecf1d93e6aa1d69db3745ef1b65"
+                    }
+                  ]
+                },
+                "source_schema": {
+                  "canonical_resource_key": "authoring/1.7/schema/adr-common.schema",
+                  "json_pointer": "/definitions/decision"
+                },
+                "serialization_profile": "adr-kit.authoring-yaml/v1"
               }
             ],
             "source_contract": {

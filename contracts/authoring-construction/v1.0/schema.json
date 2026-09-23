@@ -289,13 +289,33 @@
       },
       "additionalProperties": false
     },
+    "source_schema": {
+      "type": "object",
+      "required": ["canonical_resource_key", "json_pointer"],
+      "properties": {
+        "canonical_resource_key": {
+          "enum": [
+            "authoring/1.7/schema/adr-common.schema",
+            "authoring/1.7/schema/adr-logical.schema",
+            "authoring/1.7/schema/adr-physical-base.schema",
+            "authoring/1.7/schema/adr-physical-component.schema",
+            "authoring/1.7/schema/adr-physical-system.schema",
+            "authoring/1.7/schema/types.schema"
+          ]
+        },
+        "json_pointer": {"type": "string", "pattern": "^(|/(?:[^~/]|~[01])*)*$"}
+      },
+      "additionalProperties": false
+    },
     "candidate_artifact": {
       "type": "object",
-      "required": ["request_key", "source_ref", "artifact_kind", "content_digest", "bytes", "source_contract"],
+      "required": ["request_key", "source_ref", "artifact_kind", "source_schema", "serialization_profile", "content_digest", "bytes", "source_contract"],
       "properties": {
         "request_key": {"$ref": "#/$defs/non_empty"},
         "source_ref": {"$ref": "#/$defs/non_empty"},
         "artifact_kind": {"enum": ["authoring_fragment", "authoring_document"]},
+        "source_schema": {"$ref": "#/$defs/source_schema"},
+        "serialization_profile": {"const": "adr-kit.authoring-yaml/v1"},
         "content_digest": {"$ref": "#/$defs/digest"},
         "bytes": {"type": "string", "contentEncoding": "base64"},
         "source_contract": {"$ref": "#/$defs/exact_resource_set_qualification"}

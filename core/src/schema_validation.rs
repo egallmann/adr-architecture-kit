@@ -39,6 +39,42 @@ pub(crate) fn validate(
     context.validate(value, schema, root_key, "")
 }
 
+/// Validate against a schema fragment from the same sealed resource.  This is
+/// used when a contract document contains a strict `oneOf` root but the
+/// caller already knows which transport shape it is validating.
+pub(crate) fn validate_fragment(
+    resources: &BTreeMap<String, Json>,
+    root_key: &str,
+    pointer: &str,
+    value: &Json,
+) -> Result<(), SchemaError> {
+    let Some(root) = resources.get(root_key) else {
+        return Err(SchemaError {
+            path: String::new(),
+            message: format!("schema validation failed: sealed schema resource {root_key} is unavailable"),
+        });
+    };
+    let mut schema = root;
+    for segment in pointer.trim_start_matches('/').split('/') {
+        if segment.is_empty() {
+            continue;
+        }
+        let segment = segment.replace("~1", "/").replace("~0", "~");
+        schema = schema
+            .as_object()
+            .and_then(|object| object.get(&segment))
+            .ok_or_else(|| SchemaError {
+                path: String::new(),
+                message: format!("schema validation failed: schema fragment {pointer} is unresolved"),
+            })?;
+    }
+    let mut context = Context {
+        resources,
+        active_refs: BTreeSet::new(),
+    };
+    context.validate(value, schema, root_key, "")
+}
+
 struct Context<'a> {
     resources: &'a BTreeMap<String, Json>,
     active_refs: BTreeSet<String>,
@@ -284,6 +320,11 @@ impl<'a> Context<'a> {
                 ));
             }
         }
+        if schema.get("uniqueItems").and_then(Json::as_bool) == Some(true)
+            && values.iter().enumerate().any(|(index, value)| values[..index].contains(value))
+        {
+            return Err(self.error(path, "schema validation failed: array items must be unique"));
+        }
         if let Some(item_schema) = schema.get("items") {
             match item_schema {
                 Json::Object(_) => {
@@ -308,6 +349,27 @@ impl<'a> Context<'a> {
                         self.error(path, "schema validation failed: items keyword is invalid")
                     )
                 }
+            }
+        }
+        if let Some(contains) = schema.get("contains") {
+            let mut matches = 0;
+            for item in values {
+                let mut probe = Context {
+                    resources: self.resources,
+                    active_refs: self.active_refs.clone(),
+                };
+                if probe
+                    .validate(item, contains, resource_key, path)
+                    .is_ok()
+                {
+                    matches += 1;
+                }
+            }
+            if matches == 0 {
+                return Err(self.error(
+                    path,
+                    "schema validation failed: array must contain a matching item",
+                ));
             }
         }
         Ok(())
@@ -338,6 +400,17 @@ impl<'a> Context<'a> {
                 }
             }
         }
+        if let Some(minimum) = schema.get("minProperties").and_then(Json::as_u64) {
+            if value.len() < minimum as usize {
+                return Err(self.error(
+                    path,
+                    format!(
+                        "schema validation failed: object must contain at least {minimum} propert{}",
+                        if minimum == 1 { "y" } else { "ies" }
+                    ),
+                ));
+            }
+        }
         if let Some(property_names) = schema.get("propertyNames") {
             for property in value.keys() {
                 self.validate(
@@ -362,9 +435,41 @@ impl<'a> Context<'a> {
                 )?;
             }
         }
+        if let Some(patterns) = schema.get("patternProperties").and_then(Json::as_object) {
+            for (pattern, property_schema) in patterns {
+                let regex = Regex::new(pattern).map_err(|_| {
+                    self.error(
+                        path,
+                        "schema validation failed: governed patternProperties pattern is invalid",
+                    )
+                })?;
+                for (property, property_value) in value {
+                    if regex.is_match(property) {
+                        self.validate(
+                            property_value,
+                            property_schema,
+                            resource_key,
+                            &property_path(path, property),
+                        )?;
+                    }
+                }
+            }
+        }
+        let matching_pattern = schema
+            .get("patternProperties")
+            .and_then(Json::as_object)
+            .map(|patterns| {
+                patterns
+                    .keys()
+                    .filter_map(|pattern| Regex::new(pattern).ok())
+                    .collect::<Vec<_>>()
+            })
+            .unwrap_or_default();
         if let Some(additional) = schema.get("additionalProperties") {
             for (property, property_value) in value {
-                if properties.is_some_and(|properties| properties.contains_key(property)) {
+                if properties.is_some_and(|properties| properties.contains_key(property))
+                    || matching_pattern.iter().any(|pattern| pattern.is_match(property))
+                {
                     continue;
                 }
                 match additional {
@@ -489,6 +594,8 @@ impl<'a> Context<'a> {
             "$id",
             "$ref",
             "$schema",
+            "$defs",
+            "contentEncoding",
             "title",
             "description",
             "definitions",
@@ -507,6 +614,10 @@ impl<'a> Context<'a> {
             "maxLength",
             "minItems",
             "maxItems",
+            "minProperties",
+            "uniqueItems",
+            "contains",
+            "patternProperties",
             "items",
             "required",
             "properties",

@@ -4,11 +4,15 @@ use serde::{Deserialize, Serialize};
 
 mod architecture;
 mod attribution;
+mod authoring_construction;
 mod linkage;
 mod materialization;
 mod schema_validation;
 mod semantic_contract;
 mod semantic_contract_set;
+
+#[cfg(test)]
+mod authoring_construction_tests;
 
 // This module is the canonical semantic execution boundary. Host SDKs are
 // responsible for discovery, filesystem access, YAML parsing, and adapting
@@ -159,7 +163,21 @@ impl Json {
             None
         }
     }
+    fn as_object_mut(&mut self) -> Option<&mut BTreeMap<String, Json>> {
+        if let Self::Object(value) = self {
+            Some(value)
+        } else {
+            None
+        }
+    }
     fn as_array(&self) -> Option<&Vec<Json>> {
+        if let Self::Array(value) = self {
+            Some(value)
+        } else {
+            None
+        }
+    }
+    fn as_array_mut(&mut self) -> Option<&mut Vec<Json>> {
         if let Self::Array(value) = self {
             Some(value)
         } else {
@@ -169,6 +187,13 @@ impl Json {
     fn as_str(&self) -> Option<&str> {
         if let Self::String(value) = self {
             Some(value)
+        } else {
+            None
+        }
+    }
+    fn as_bool(&self) -> Option<bool> {
+        if let Self::Bool(value) = self {
+            Some(*value)
         } else {
             None
         }
@@ -196,7 +221,6 @@ impl Json {
     }
     // Test and audit helpers use path lookup so assertions stay expressed in
     // the same semantic field names as the shared vector contract.
-    #[cfg(test)]
     fn get(&self, key: &str) -> Option<&Json> {
         self.as_object()?.get(key)
     }

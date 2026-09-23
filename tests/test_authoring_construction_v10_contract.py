@@ -4,12 +4,14 @@ from __future__ import annotations
 
 import hashlib
 import json
+import base64
 from copy import deepcopy
 from pathlib import Path
 from typing import Any
 
 import rfc8785
-from jsonschema import Draft202012Validator
+import yaml
+from jsonschema import Draft202012Validator, RefResolver
 
 from adr_kit.semantic_contract import (
     calculate_semantic_contract_fingerprint,
@@ -19,6 +21,16 @@ from adr_kit.semantic_contract import (
 
 ROOT = Path(__file__).resolve().parents[1]
 ACC = ROOT / "contracts" / "authoring-construction" / "v1.0"
+AUTHORING_17 = ROOT / "schema" / "authoring" / "v1.7"
+AUTHORING_17_KEYS = {
+    "authoring/1.7/schema/adr-common.schema",
+    "authoring/1.7/schema/adr-logical.schema",
+    "authoring/1.7/schema/adr-physical-base.schema",
+    "authoring/1.7/schema/adr-physical-component.schema",
+    "authoring/1.7/schema/adr-physical-system.schema",
+    "authoring/1.7/schema/types.schema",
+}
+SERIALIZATION_PROFILE = "adr-kit.authoring-yaml/v1"
 DIAGNOSTIC_NAMESPACE = "authoring_construction."
 RESOURCE_FAMILIES = {
     "adc": "authoring-domain",
@@ -97,6 +109,73 @@ def _assert_basis(basis: dict[str, Any]) -> None:
     for entry in basis["existing_source_basis"]["entries"]:
         assert entry["source_bytes"]
         assert entry["content_digest"].startswith("sha256:")
+
+
+def _source_validator(source_schema: dict[str, str]) -> Draft202012Validator:
+    resource_key = source_schema["canonical_resource_key"]
+    schema_path = AUTHORING_17 / f"{resource_key.rsplit('/', 1)[-1]}.json"
+    root_schema = _document(schema_path)
+    target: Any = root_schema
+    for segment in (
+        source_schema["json_pointer"].lstrip("/").split("/")
+        if source_schema["json_pointer"]
+        else []
+    ):
+        target = target[segment.replace("~1", "/").replace("~0", "~")]
+    store = {path.name: _document(path) for path in AUTHORING_17.glob("*.json")}
+    return Draft202012Validator(
+        target,
+        resolver=RefResolver(schema_path.as_uri(), root_schema, store=store),
+    )
+
+
+def _candidate_descriptor(artifacts: list[dict[str, Any]]) -> dict[str, Any]:
+    fields = (
+        "request_key",
+        "source_ref",
+        "artifact_kind",
+        "source_schema",
+        "serialization_profile",
+        "content_digest",
+        "source_contract",
+    )
+    return {
+        "domain": "adr-kit.candidate-source-basis/v1",
+        "artifacts": [
+            {field: artifact[field] for field in fields}
+            for artifact in sorted(artifacts, key=lambda item: item["source_ref"])
+        ],
+    }
+
+
+def _assert_candidate_artifact(artifact: dict[str, Any]) -> None:
+    assert set(artifact) == {
+        "request_key",
+        "source_ref",
+        "artifact_kind",
+        "source_schema",
+        "serialization_profile",
+        "content_digest",
+        "bytes",
+        "source_contract",
+    }
+    assert set(artifact["source_schema"]) == {"canonical_resource_key", "json_pointer"}
+    assert artifact["source_schema"]["canonical_resource_key"] in AUTHORING_17_KEYS
+    assert artifact["serialization_profile"] == SERIALIZATION_PROFILE
+    raw = base64.b64decode(artifact["bytes"], validate=True)
+    assert raw.decode("utf-8")
+    assert not raw.startswith(b"\xef\xbb\xbf")
+    assert b"\r" not in raw
+    assert raw.endswith(b"\n")
+    assert not raw.endswith(b"\n\n")
+    assert raw.count(b"\n") >= 1
+    assert artifact["bytes"] != "eA=="
+    assert hashlib.sha256(raw).hexdigest() == artifact["content_digest"].removeprefix("sha256:")
+    assert b"---" not in raw and b"..." not in raw
+    assert not any(line.lstrip().startswith((b"#", b"&", b"*", b"!")) for line in raw.splitlines())
+    document = yaml.safe_load(raw)
+    validator = _source_validator(artifact["source_schema"])
+    assert not list(validator.iter_errors(document))
 
 
 def _walk_scalars(value: Any, path: str = "") -> list[tuple[str, Any]]:
@@ -484,6 +563,7 @@ def test_acc_result_material_is_exactly_qualified() -> None:
             _assert_resource_set(fragment["source_contract"], "authoring")
         for artifact in result["candidate_artifacts"]:
             _assert_resource_set(artifact["source_contract"], "authoring")
+            _assert_candidate_artifact(artifact)
         normalized = result["normalized_result"]
         if normalized is not None:
             _assert_resource_set(normalized["normalized_contract"], "normalized-model")
@@ -492,6 +572,68 @@ def test_acc_result_material_is_exactly_qualified() -> None:
             assert source_basis["artifacts"]
             assert all(entry["bytes"] for entry in source_basis["artifacts"])
             _assert_resource_set(source_basis["source_contract"], "authoring")
+            artifact_by_ref = {
+                artifact["source_ref"]: artifact for artifact in result["candidate_artifacts"]
+            }
+            assert [artifact["source_ref"] for artifact in source_basis["artifacts"]] == sorted(
+                artifact["source_ref"] for artifact in source_basis["artifacts"]
+            )
+            for artifact in source_basis["artifacts"]:
+                _assert_candidate_artifact(artifact)
+                assert artifact == artifact_by_ref[artifact["source_ref"]]
+            descriptor = _candidate_descriptor(source_basis["artifacts"])
+            assert source_basis["basis_digest"] == (
+                "sha256:" + hashlib.sha256(rfc8785.dumps(descriptor)).hexdigest()
+            )
+
+
+def test_acc_candidate_source_minimality_and_negative_round_trip_cases() -> None:
+    cases = {
+        case["id"]: case for case in _document(ACC / "resources" / "conformance.json")["cases"]
+    }
+    for case in cases.values():
+        result = case["expected"]["result"]
+        if case["operation"] != "construct_authoring_set":
+            continue
+        artifact_refs = {artifact["source_ref"] for artifact in result["candidate_artifacts"]}
+        basis_refs = {
+            artifact["source_ref"]
+            for artifact in (result["candidate_source_basis"] or {}).get("artifacts", [])
+        }
+        assert basis_refs <= artifact_refs
+    assert {
+        artifact["source_ref"]
+        for artifact in cases["C05"]["expected"]["result"]["candidate_source_basis"]["artifacts"]
+    } == {"candidate/C05/parent"}
+    assert {
+        artifact["source_ref"]
+        for artifact in cases["C07"]["expected"]["result"]["candidate_source_basis"]["artifacts"]
+    } == {"candidate/C07/adr"}
+    assert cases["C05"]["expected"]["result"]["candidate_fragments"][1]["identity"] == (
+        "019109a0-b1c2-7def-8a00-112233445567"
+    )
+    assert cases["C07"]["expected"]["result"]["candidate_fragments"][1]["identity"] == (
+        "019109a0-b1c2-7def-8a00-112233445567"
+    )
+    c32 = cases["C32"]["expected"]["result"]
+    assert c32["outcome"] == "Rejected"
+    assert c32["normalized_result"] is not None
+    assert c32["round_trip"]["comparison"] == "semantic_mismatch"
+    assert c32["round_trip"]["hidden_semantics"] == ["semantic_field_loss"]
+    assert c32["diagnostics"][0]["code"] == "authoring_construction.round_trip.semantic_mismatch"
+    assert (
+        _errors(
+            Draft202012Validator(_document(ACC / "schema.json")),
+            c32["candidate_artifacts"][0],
+            "candidate_artifact",
+        )
+        == []
+    )
+    c33 = cases["C33"]["expected"]["result"]
+    assert c33["outcome"] == "Unavailable"
+    assert c33["candidate_artifacts"] == []
+    assert c33["candidate_source_basis"] is None
+    assert c33["diagnostics"][0]["code"] == "authoring_construction.interpretation.unavailable"
 
 
 def test_acc_semantic_vectors_preserve_relationship_and_authority_doctrine() -> None:

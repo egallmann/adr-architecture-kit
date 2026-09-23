@@ -3,7 +3,7 @@ use std::collections::{BTreeMap, BTreeSet};
 use super::{semantic_contract, Json};
 
 const TARGET_KEY: &str = "authoring-construction/1.0/conformance";
-const VERIFIED_SCF: &str = "scf:v1:sha256:821f0e647cb2c7ce68ee0251e9c52c05a6be05a0b407dd56216e6eff3acfa61d";
+const VERIFIED_SCF: &str = "scf:v1:sha256:5b32f73d8b90741c25ff98607f567607946d7ecb612cdab5a5483638192bc76a";
 const MARKER: &str = "$enclosing_scf";
 
 fn document(raw: &str) -> Json {

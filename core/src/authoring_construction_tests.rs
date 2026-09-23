@@ -229,6 +229,41 @@ fn frozen_acc_vectors_use_one_shared_validation_authority() {
 }
 
 #[test]
+fn frozen_constructed_inputs_are_valid_under_shared_validation_authority() {
+    let mut failures = Vec::new();
+    for frozen_case in bound_cases() {
+        let expected_outcome = frozen_case
+            .get("expected")
+            .and_then(Json::as_object)
+            .and_then(|expected| expected.get("result"))
+            .and_then(Json::as_object)
+            .and_then(|result| result.get("outcome"))
+            .and_then(Json::as_str);
+        if expected_outcome != Some("Constructed") {
+            continue;
+        }
+        let case_id = frozen_case
+            .get("id")
+            .and_then(Json::as_str)
+            .expect("frozen Constructed case has an id");
+        let input = frozen_case
+            .get("input")
+            .expect("frozen Constructed case has input");
+        let report = authoring_construction::validate_authoring_request(input);
+        if report.status != authoring_construction::ValidationStatus::Valid
+            || !report.diagnostics.is_empty()
+        {
+            failures.push(format!(
+                "{case_id}: status={}, diagnostics={:?}",
+                report.status.as_str(),
+                report.diagnostics
+            ));
+        }
+    }
+    assert!(failures.is_empty(), "invalid frozen Constructed inputs: {failures:#?}");
+}
+
+#[test]
 fn c31_cardinality_is_validated_by_shared_authority() {
     let report = authoring_construction::validate_authoring_request(&case_input("C31"));
     assert_eq!(

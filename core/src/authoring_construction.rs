@@ -20,6 +20,12 @@ const ACC_RULES: &str =
 const ADC_CONTRACT: &str = include_str!("../../contracts/authoring-domain/v1.1/contract.json");
 const AUTHORING_COMMON_SCHEMA: &str =
     include_str!("../../schema/authoring/v1.7/adr-common.schema.json");
+const AUTHORING_LOGICAL_SCHEMA: &str =
+    include_str!("../../schema/authoring/v1.7/adr-logical.schema.json");
+const AUTHORING_PHYSICAL_SYSTEM_SCHEMA: &str =
+    include_str!("../../schema/authoring/v1.7/adr-physical-system.schema.json");
+const AUTHORING_PHYSICAL_COMPONENT_SCHEMA: &str =
+    include_str!("../../schema/authoring/v1.7/adr-physical-component.schema.json");
 const ARCHITECTURE_INTERPRETATION_CONTRACT: &str =
     include_str!("../../contracts/architecture-interpretation/v1.1/contract.json");
 const CUSTOM_ENTITY_SCHEMA: &str =
@@ -348,10 +354,6 @@ fn validate_fragment(
             && identity_valid
             && fragment_operation == "create"
             && value.get("input_mode").and_then(Json::as_str) != Some("compact")
-            && value
-                .get("references")
-                .and_then(Json::as_array)
-                .is_none_or(|references| references.is_empty())
             && semantic_type.is_some_and(|value| !value.contains(':'))
             && semantic_type.is_some_and(create_identity_mint_allowed)
         {
@@ -369,10 +371,6 @@ fn validate_fragment(
             && !(fragment_operation == "update" && !fields.contains_key("id"))
             && !(fragment_operation == "update" && !existing_source_matches(root, value, fields))
             && value.get("input_mode").and_then(Json::as_str) != Some("compact")
-            && value
-                .get("references")
-                .and_then(Json::as_array)
-                .is_none_or(|references| references.is_empty())
             && semantic_type.is_some_and(|value| !value.contains(':'))
         {
             validate_canonical_field_values(
@@ -395,7 +393,7 @@ fn validate_fragment(
             root,
             diagnostics,
         );
-        if fields.is_some_and(|fields| !fields.is_empty()) {
+        if let Some(fields) = fields {
             if let Some(definition) = custom_definition_for(
                 root,
                 semantic_type.expect("custom semantic type is present"),
@@ -403,13 +401,14 @@ fn validate_fragment(
             ) {
                 validate_custom_fields(
                     semantic_type.expect("custom semantic type is present"),
-                    fields.expect("custom fields are present"),
+                    fields,
                     &definition,
+                    fragment_operation,
                     key,
                     index,
                     diagnostics,
                 );
-            } else {
+            } else if !fields.is_empty() {
                 diagnostics.push(diag(
                     "authoring_construction.custom.authority_unavailable",
                     "warning",
@@ -438,15 +437,28 @@ fn validate_canonical_required_fields(
     let Some(definition_name) = authoring_definition_name(semantic_type) else {
         return;
     };
-    let schema = serde_json::from_str::<Json>(AUTHORING_COMMON_SCHEMA)
+    let schema_source = match definition_name {
+        "logical" => AUTHORING_LOGICAL_SCHEMA,
+        "physical-system" => AUTHORING_PHYSICAL_SYSTEM_SCHEMA,
+        "physical-component" => AUTHORING_PHYSICAL_COMPONENT_SCHEMA,
+        _ => AUTHORING_COMMON_SCHEMA,
+    };
+    let schema = serde_json::from_str::<Json>(schema_source)
         .expect("the accepted authoring schema must remain valid JSON");
-    let Some(required) = schema
-        .get("definitions")
-        .and_then(Json::as_object)
-        .and_then(|definitions| definitions.get(definition_name))
-        .and_then(Json::as_object)
-        .and_then(|definition| definition.get("required"))
-        .and_then(Json::as_array)
+    let required = if matches!(
+        definition_name,
+        "logical" | "physical-system" | "physical-component"
+    ) {
+        schema.get("required")
+    } else {
+        schema
+            .get("definitions")
+            .and_then(Json::as_object)
+            .and_then(|definitions| definitions.get(definition_name))
+            .and_then(Json::as_object)
+            .and_then(|definition| definition.get("required"))
+    };
+    let Some(required) = required.and_then(Json::as_array)
     else {
         return;
     };
@@ -647,6 +659,7 @@ fn validate_custom_fields(
     semantic_type: &str,
     fields: &BTreeMap<String, Json>,
     definition: &Json,
+    operation: &str,
     request_key: Option<&str>,
     index: usize,
     diagnostics: &mut Vec<Json>,
@@ -663,6 +676,12 @@ fn validate_custom_fields(
         .into_iter()
         .flat_map(|values| values.iter().filter_map(Json::as_str));
     for field in required {
+        if operation == "reference" && field != "id" {
+            continue;
+        }
+        if field == "id" && custom_identity_establishment_allowed(definition, operation) {
+            continue;
+        }
         if !fields.contains_key(field) {
             diagnostics.push(diag(
                 "authoring_construction.field.required",
@@ -731,6 +750,22 @@ fn validate_custom_fields(
             ));
         }
     }
+}
+
+fn custom_identity_establishment_allowed(definition: &Json, operation: &str) -> bool {
+    operation == "create"
+        && definition
+            .get("identity_policy")
+            .and_then(Json::as_object)
+            .and_then(|policy| policy.get("identity_bearing"))
+            .and_then(Json::as_bool)
+            == Some(true)
+        && definition
+            .get("identity_policy")
+            .and_then(Json::as_object)
+            .and_then(|policy| policy.get("establishment"))
+            .and_then(Json::as_str)
+            == Some("create_when_absent")
 }
 
 fn custom_field_value_matches(definition: &Json, value: &Json) -> bool {
@@ -1205,15 +1240,25 @@ fn adc_allowed_fields(semantic_type: Option<&str>) -> Option<BTreeSet<String>> {
 
 fn authoring_allowed_fields(semantic_type: Option<&str>) -> Option<BTreeSet<String>> {
     let name = semantic_type?.split_once('/')?.1;
-    let schema = serde_json::from_str::<Json>(AUTHORING_COMMON_SCHEMA)
+    let schema_source = match name {
+        "logical" => AUTHORING_LOGICAL_SCHEMA,
+        "physical-system" => AUTHORING_PHYSICAL_SYSTEM_SCHEMA,
+        "physical-component" => AUTHORING_PHYSICAL_COMPONENT_SCHEMA,
+        _ => AUTHORING_COMMON_SCHEMA,
+    };
+    let schema = serde_json::from_str::<Json>(schema_source)
         .expect("the accepted authoring schema must remain valid JSON");
-    let properties = schema
-        .get("definitions")
-        .and_then(Json::as_object)
-        .and_then(|definitions| definitions.get(name))
-        .and_then(Json::as_object)
-        .and_then(|definition| definition.get("properties"))
-        .and_then(Json::as_object)?;
+    let properties = if matches!(name, "logical" | "physical-system" | "physical-component") {
+        schema.get("properties").and_then(Json::as_object)
+    } else {
+        schema
+            .get("definitions")
+            .and_then(Json::as_object)
+            .and_then(|definitions| definitions.get(name))
+            .and_then(Json::as_object)
+            .and_then(|definition| definition.get("properties"))
+            .and_then(Json::as_object)
+    }?;
     Some(properties.keys().cloned().collect())
 }
 

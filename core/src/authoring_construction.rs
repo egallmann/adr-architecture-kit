@@ -18,19 +18,22 @@ const ACC_CONTRACT: &str =
 const ACC_RULES: &str =
     include_str!("../../contracts/authoring-construction/v1.0/resources/rules.json");
 const ADC_CONTRACT: &str = include_str!("../../contracts/authoring-domain/v1.1/contract.json");
-const AUTHORING_COMMON_SCHEMA: &str =
+pub(crate) const AUTHORING_COMMON_SCHEMA: &str =
     include_str!("../../schema/authoring/v1.7/adr-common.schema.json");
-const AUTHORING_LOGICAL_SCHEMA: &str =
+pub(crate) const AUTHORING_LOGICAL_SCHEMA: &str =
     include_str!("../../schema/authoring/v1.7/adr-logical.schema.json");
-const AUTHORING_PHYSICAL_SYSTEM_SCHEMA: &str =
+pub(crate) const AUTHORING_PHYSICAL_SYSTEM_SCHEMA: &str =
     include_str!("../../schema/authoring/v1.7/adr-physical-system.schema.json");
-const AUTHORING_PHYSICAL_COMPONENT_SCHEMA: &str =
+pub(crate) const AUTHORING_PHYSICAL_BASE_SCHEMA: &str =
+    include_str!("../../schema/authoring/v1.7/adr-physical-base.schema.json");
+pub(crate) const AUTHORING_PHYSICAL_COMPONENT_SCHEMA: &str =
     include_str!("../../schema/authoring/v1.7/adr-physical-component.schema.json");
 const ARCHITECTURE_INTERPRETATION_CONTRACT: &str =
     include_str!("../../contracts/architecture-interpretation/v1.1/contract.json");
 const CUSTOM_ENTITY_SCHEMA: &str =
     include_str!("../../contracts/custom-entity/v1.0/schema.json");
-const AUTHORING_TYPES_SCHEMA: &str = include_str!("../../schema/authoring/v1.7/types.schema.json");
+pub(crate) const AUTHORING_TYPES_SCHEMA: &str =
+    include_str!("../../schema/authoring/v1.7/types.schema.json");
 
 // Keep the ACC authority bundle in the canonical WASM data section. The
 // validator currently consumes these resources through the shared host/test

@@ -5,6 +5,8 @@ use serde::{Deserialize, Serialize};
 mod architecture;
 mod attribution;
 mod authoring_construction;
+// Internal substrate only; protocol 1.2 dispatch remains intentionally closed.
+pub(crate) mod candidate_source;
 mod linkage;
 mod materialization;
 mod schema_validation;

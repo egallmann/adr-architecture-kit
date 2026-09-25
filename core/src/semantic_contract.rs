@@ -120,7 +120,7 @@ fn utf16_cmp(left: &str, right: &str) -> Ordering {
     left.encode_utf16().cmp(right.encode_utf16())
 }
 
-fn canonical_string(value: &str) -> String {
+pub(crate) fn canonical_string(value: &str) -> String {
     // RFC 8785 hashes the UTF-8 representation of a string.  serde_json's
     // default serializer may escape non-ASCII characters, which is JSON
     // equivalent on the wire but produces a different digest from the
@@ -151,7 +151,7 @@ fn canonical_string(value: &str) -> String {
     output
 }
 
-fn canonical_number(value: &serde_json::Number) -> Result<String, String> {
+pub(crate) fn canonical_number(value: &serde_json::Number) -> Result<String, String> {
     let raw = value.to_string();
     if !raw.contains('.') && !raw.contains('e') && !raw.contains('E') {
         let integer = raw

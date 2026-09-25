@@ -14618,3 +14618,1269 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
+- id: 01a0d054-b885-70b3-a72f-d370a4586a30
+  alias_id: INV-0250
+  alias_name: standalone-fragments-remain-primitive
+  alias_ref: INV-0250:standalone-fragments-remain-primitive
+  entity_type: invariant
+  name: INV-0250
+  summary: A standalone authoring_fragment MUST NOT be wrapped in a synthetic ADR
+    solely to obtain source bytes, and composition MUST NOT replace the fragment's
+    identity.
+  uri: adr://adr-architecture-kit/entities/01a0d054-b885-70b3-a72f-d370a4586a30
+  created_at: '2026-09-23T22:13:28.325Z'
+  entity_fingerprint: sha256:39953e6e3ca0c42163f45fb1b84a694061905b6d41162b25fd4ade09a135b564
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a0d054-b885-70b3-a72f-d3630d2e76c6#01a0d054-b885-70b3-a72f-d370a4586a30
+    artifact_path: adrs/logical/ADR-L-0032-candidate-source-representation-and-round-trip-basis-authority.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a0d054-b885-70b3-a72f-d3630d2e76c6
+    adr_alias_id: ADR-L-0032
+    scope: construction
+    statement: A standalone authoring_fragment MUST NOT be wrapped in a synthetic
+      ADR solely to obtain source bytes, and composition MUST NOT replace the fragment's
+      identity.
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions: []
+    supersedes: []
+    alias_id: INV-0250
+    alias_name: standalone-fragments-remain-primitive
+  relationships:
+    declared_in:
+    - 01a0d054-b885-70b3-a72f-d3630d2e76c6
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    consumes_interface: []
+    composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a0d054-b885-70b3-a72f-d3630d2e76c6#01a0d054-b885-70b3-a72f-d370a4586a30
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
+- id: 01a0d054-b885-70b3-a72f-d371a16d6043
+  alias_id: INV-0251
+  alias_name: candidate-sources-have-exact-schema-selectors
+  alias_ref: INV-0251:candidate-sources-have-exact-schema-selectors
+  entity_type: invariant
+  name: INV-0251
+  summary: Every candidate source artifact used as source authority MUST carry an
+    exact canonical_resource_key and json_pointer selector for an authoring 1.7 schema
+    resource.
+  uri: adr://adr-architecture-kit/entities/01a0d054-b885-70b3-a72f-d371a16d6043
+  created_at: '2026-09-23T22:13:28.325Z'
+  entity_fingerprint: sha256:9740fbed7416c9e34c26f33545bb7f6de936d8514ed7a4321b5d2d295df5a6fd
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a0d054-b885-70b3-a72f-d3630d2e76c6#01a0d054-b885-70b3-a72f-d371a16d6043
+    artifact_path: adrs/logical/ADR-L-0032-candidate-source-representation-and-round-trip-basis-authority.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a0d054-b885-70b3-a72f-d3630d2e76c6
+    adr_alias_id: ADR-L-0032
+    scope: construction
+    statement: Every candidate source artifact used as source authority MUST carry
+      an exact canonical_resource_key and json_pointer selector for an authoring 1.7
+      schema resource.
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions: []
+    supersedes: []
+    alias_id: INV-0251
+    alias_name: candidate-sources-have-exact-schema-selectors
+  relationships:
+    declared_in:
+    - 01a0d054-b885-70b3-a72f-d3630d2e76c6
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    consumes_interface: []
+    composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a0d054-b885-70b3-a72f-d3630d2e76c6#01a0d054-b885-70b3-a72f-d371a16d6043
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
+- id: 01a0d054-b885-70b3-a72f-d3726c4422bb
+  alias_id: INV-0252
+  alias_name: source-schema-selection-is-not-inferred
+  alias_ref: INV-0252:source-schema-selection-is-not-inferred
+  entity_type: invariant
+  name: INV-0252
+  summary: Source schema selection MUST NOT be inferred from repository path, filename,
+    alias, request_key, source order, current or latest schema, host defaults, or
+    UI state.
+  uri: adr://adr-architecture-kit/entities/01a0d054-b885-70b3-a72f-d3726c4422bb
+  created_at: '2026-09-23T22:13:28.325Z'
+  entity_fingerprint: sha256:c19cfe5f834da23e7f44343b82c4dc5b40bda3a1455f264e6bc829534c4040ae
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a0d054-b885-70b3-a72f-d3630d2e76c6#01a0d054-b885-70b3-a72f-d3726c4422bb
+    artifact_path: adrs/logical/ADR-L-0032-candidate-source-representation-and-round-trip-basis-authority.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a0d054-b885-70b3-a72f-d3630d2e76c6
+    adr_alias_id: ADR-L-0032
+    scope: global
+    statement: Source schema selection MUST NOT be inferred from repository path,
+      filename, alias, request_key, source order, current or latest schema, host defaults,
+      or UI state.
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions: []
+    supersedes: []
+    alias_id: INV-0252
+    alias_name: source-schema-selection-is-not-inferred
+  relationships:
+    declared_in:
+    - 01a0d054-b885-70b3-a72f-d3630d2e76c6
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    consumes_interface: []
+    composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a0d054-b885-70b3-a72f-d3630d2e76c6#01a0d054-b885-70b3-a72f-d3726c4422bb
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
+- id: 01a0d054-b885-70b3-a72f-d373539633da
+  alias_id: INV-0253
+  alias_name: rust-owns-canonical-candidate-bytes
+  alias_ref: INV-0253:rust-owns-canonical-candidate-bytes
+  entity_type: invariant
+  name: INV-0253
+  summary: The canonical Rust semantic execution path MUST own exact candidate source
+    bytes, and Python and TypeScript/Node MUST NOT independently render shared candidate
+    source authority.
+  uri: adr://adr-architecture-kit/entities/01a0d054-b885-70b3-a72f-d373539633da
+  created_at: '2026-09-23T22:13:28.325Z'
+  entity_fingerprint: sha256:440fdacf2cc0307a45f7d629e0b40b2bfa772205cf53ebf469f5d04383b48d21
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a0d054-b885-70b3-a72f-d3630d2e76c6#01a0d054-b885-70b3-a72f-d373539633da
+    artifact_path: adrs/logical/ADR-L-0032-candidate-source-representation-and-round-trip-basis-authority.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a0d054-b885-70b3-a72f-d3630d2e76c6
+    adr_alias_id: ADR-L-0032
+    scope: global
+    statement: The canonical Rust semantic execution path MUST own exact candidate
+      source bytes, and Python and TypeScript/Node MUST NOT independently render shared
+      candidate source authority.
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions: []
+    supersedes: []
+    alias_id: INV-0253
+    alias_name: rust-owns-canonical-candidate-bytes
+  relationships:
+    declared_in:
+    - 01a0d054-b885-70b3-a72f-d3630d2e76c6
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    consumes_interface: []
+    composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a0d054-b885-70b3-a72f-d3630d2e76c6#01a0d054-b885-70b3-a72f-d373539633da
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
+- id: 01a0d054-b885-70b3-a72f-d374b3ff1ca5
+  alias_id: INV-0254
+  alias_name: authoring-yaml-profile-is-exact
+  alias_ref: INV-0254:authoring-yaml-profile-is-exact
+  entity_type: invariant
+  name: INV-0254
+  summary: adr-kit.authoring-yaml/v1 MUST use UTF-8 without BOM, LF endings, exactly
+    one terminal LF, two-space indentation, block style, no marker, directives, comments,
+    anchors, aliases, or custom tags, and no host-formatting dep
+  uri: adr://adr-architecture-kit/entities/01a0d054-b885-70b3-a72f-d374b3ff1ca5
+  created_at: '2026-09-23T22:13:28.325Z'
+  entity_fingerprint: sha256:ce0f991b6b2cb6c0e12667578de71ac0371a6843b3b0a5ea72b18a9967852886
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a0d054-b885-70b3-a72f-d3630d2e76c6#01a0d054-b885-70b3-a72f-d374b3ff1ca5
+    artifact_path: adrs/logical/ADR-L-0032-candidate-source-representation-and-round-trip-basis-authority.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a0d054-b885-70b3-a72f-d3630d2e76c6
+    adr_alias_id: ADR-L-0032
+    scope: serialization
+    statement: adr-kit.authoring-yaml/v1 MUST use UTF-8 without BOM, LF endings, exactly
+      one terminal LF, two-space indentation, block style, no marker, directives,
+      comments, anchors, aliases, or custom tags, and no host-formatting dependency.
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions: []
+    supersedes: []
+    alias_id: INV-0254
+    alias_name: authoring-yaml-profile-is-exact
+  relationships:
+    declared_in:
+    - 01a0d054-b885-70b3-a72f-d3630d2e76c6
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    consumes_interface: []
+    composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a0d054-b885-70b3-a72f-d3630d2e76c6#01a0d054-b885-70b3-a72f-d374b3ff1ca5
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
+- id: 01a0d054-b885-70b3-a72f-d37575260740
+  alias_id: INV-0255
+  alias_name: schema-order-and-open-map-order-are-deterministic
+  alias_ref: INV-0255:schema-order-and-open-map-order-are-deterministic
+  entity_type: invariant
+  name: INV-0255
+  summary: Schema-governed mappings MUST follow governing schema property order, absent
+    optional fields MUST be omitted, authorized open maps MUST use lexical key order,
+    and serialization MUST NOT reorder arrays.
+  uri: adr://adr-architecture-kit/entities/01a0d054-b885-70b3-a72f-d37575260740
+  created_at: '2026-09-23T22:13:28.325Z'
+  entity_fingerprint: sha256:2afd8322ec4a6e315f3f67ef846b3a5279f3e9a34e9a568c7990ba04ea43a8b1
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a0d054-b885-70b3-a72f-d3630d2e76c6#01a0d054-b885-70b3-a72f-d37575260740
+    artifact_path: adrs/logical/ADR-L-0032-candidate-source-representation-and-round-trip-basis-authority.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a0d054-b885-70b3-a72f-d3630d2e76c6
+    adr_alias_id: ADR-L-0032
+    scope: serialization
+    statement: Schema-governed mappings MUST follow governing schema property order,
+      absent optional fields MUST be omitted, authorized open maps MUST use lexical
+      key order, and serialization MUST NOT reorder arrays.
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions: []
+    supersedes: []
+    alias_id: INV-0255
+    alias_name: schema-order-and-open-map-order-are-deterministic
+  relationships:
+    declared_in:
+    - 01a0d054-b885-70b3-a72f-d3630d2e76c6
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    consumes_interface: []
+    composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a0d054-b885-70b3-a72f-d3630d2e76c6#01a0d054-b885-70b3-a72f-d37575260740
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
+- id: 01a0d054-b885-70b3-a72f-d37642725f9e
+  alias_id: INV-0256
+  alias_name: candidate-scalars-have-one-canonical-spelling
+  alias_ref: INV-0256:candidate-scalars-have-one-canonical-spelling
+  entity_type: invariant
+  name: INV-0256
+  summary: Candidate string, boolean, null, integer, and finite numeric scalars MUST
+    use the single host-neutral lexical representation defined by adr-kit.authoring-yaml/v1,
+    and implicit YAML typing MUST NOT change their meaning.
+  uri: adr://adr-architecture-kit/entities/01a0d054-b885-70b3-a72f-d37642725f9e
+  created_at: '2026-09-23T22:13:28.325Z'
+  entity_fingerprint: sha256:c93c067f917fb3e85abc931b46da321afe325fda424b3b0ff2bd01c920325d7b
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a0d054-b885-70b3-a72f-d3630d2e76c6#01a0d054-b885-70b3-a72f-d37642725f9e
+    artifact_path: adrs/logical/ADR-L-0032-candidate-source-representation-and-round-trip-basis-authority.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a0d054-b885-70b3-a72f-d3630d2e76c6
+    adr_alias_id: ADR-L-0032
+    scope: serialization
+    statement: Candidate string, boolean, null, integer, and finite numeric scalars
+      MUST use the single host-neutral lexical representation defined by adr-kit.authoring-yaml/v1,
+      and implicit YAML typing MUST NOT change their meaning.
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions: []
+    supersedes: []
+    alias_id: INV-0256
+    alias_name: candidate-scalars-have-one-canonical-spelling
+  relationships:
+    declared_in:
+    - 01a0d054-b885-70b3-a72f-d3630d2e76c6
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    consumes_interface: []
+    composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a0d054-b885-70b3-a72f-d3630d2e76c6#01a0d054-b885-70b3-a72f-d37642725f9e
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
+- id: 01a0d054-b885-70b3-a72f-d377235e03c4
+  alias_id: INV-0257
+  alias_name: hosts-must-not-reserialize-candidate-authority
+  alias_ref: INV-0257:hosts-must-not-reserialize-candidate-authority
+  entity_type: invariant
+  name: INV-0257
+  summary: A host MAY preview or persist exact returned candidate bytes but MUST NOT
+    reinterpret or reserialize them as shared semantic authority.
+  uri: adr://adr-architecture-kit/entities/01a0d054-b885-70b3-a72f-d377235e03c4
+  created_at: '2026-09-23T22:13:28.325Z'
+  entity_fingerprint: sha256:90493804371af5358346cf3aad88cbaa6aac409363c72de4a9547ad5693a596f
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a0d054-b885-70b3-a72f-d3630d2e76c6#01a0d054-b885-70b3-a72f-d377235e03c4
+    artifact_path: adrs/logical/ADR-L-0032-candidate-source-representation-and-round-trip-basis-authority.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a0d054-b885-70b3-a72f-d3630d2e76c6
+    adr_alias_id: ADR-L-0032
+    scope: global
+    statement: A host MAY preview or persist exact returned candidate bytes but MUST
+      NOT reinterpret or reserialize them as shared semantic authority.
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions: []
+    supersedes: []
+    alias_id: INV-0257
+    alias_name: hosts-must-not-reserialize-candidate-authority
+  relationships:
+    declared_in:
+    - 01a0d054-b885-70b3-a72f-d3630d2e76c6
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    consumes_interface: []
+    composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a0d054-b885-70b3-a72f-d3630d2e76c6#01a0d054-b885-70b3-a72f-d377235e03c4
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
+- id: 01a0d054-b885-70b3-a72f-d3786ddbbb63
+  alias_id: INV-0258
+  alias_name: candidate-source-references-do-not-allocate-placement
+  alias_ref: INV-0258:candidate-source-references-do-not-allocate-placement
+  entity_type: invariant
+  name: INV-0258
+  summary: A candidate source_ref MUST remain a deterministic logical candidate identity
+    and MUST NOT allocate a repository path, filename, alias, Git placement, or persistence
+    location.
+  uri: adr://adr-architecture-kit/entities/01a0d054-b885-70b3-a72f-d3786ddbbb63
+  created_at: '2026-09-23T22:13:28.325Z'
+  entity_fingerprint: sha256:fb288df30af7e070e139aab12d898d63ee2db0d3c63d658a6a0f1fe616739828
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a0d054-b885-70b3-a72f-d3630d2e76c6#01a0d054-b885-70b3-a72f-d3786ddbbb63
+    artifact_path: adrs/logical/ADR-L-0032-candidate-source-representation-and-round-trip-basis-authority.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a0d054-b885-70b3-a72f-d3630d2e76c6
+    adr_alias_id: ADR-L-0032
+    scope: construction
+    statement: A candidate source_ref MUST remain a deterministic logical candidate
+      identity and MUST NOT allocate a repository path, filename, alias, Git placement,
+      or persistence location.
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions: []
+    supersedes: []
+    alias_id: INV-0258
+    alias_name: candidate-source-references-do-not-allocate-placement
+  relationships:
+    declared_in:
+    - 01a0d054-b885-70b3-a72f-d3630d2e76c6
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    consumes_interface: []
+    composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a0d054-b885-70b3-a72f-d3630d2e76c6#01a0d054-b885-70b3-a72f-d3786ddbbb63
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
+- id: 01a0d054-b885-70b3-a72f-d379f8223a0a
+  alias_id: INV-0259
+  alias_name: content-digest-commits-to-exact-candidate-bytes
+  alias_ref: INV-0259:content-digest-commits-to-exact-candidate-bytes
+  entity_type: invariant
+  name: INV-0259
+  summary: Every candidate artifact content_digest MUST equal SHA-256 of its exact
+    returned source bytes, and caller-provided digests MUST NOT be authoritative.
+  uri: adr://adr-architecture-kit/entities/01a0d054-b885-70b3-a72f-d379f8223a0a
+  created_at: '2026-09-23T22:13:28.325Z'
+  entity_fingerprint: sha256:be8d86cda85675f0e07b5d76af315b58212c5fd8d5950120079b966838b9322c
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a0d054-b885-70b3-a72f-d3630d2e76c6#01a0d054-b885-70b3-a72f-d379f8223a0a
+    artifact_path: adrs/logical/ADR-L-0032-candidate-source-representation-and-round-trip-basis-authority.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a0d054-b885-70b3-a72f-d3630d2e76c6
+    adr_alias_id: ADR-L-0032
+    scope: construction
+    statement: Every candidate artifact content_digest MUST equal SHA-256 of its exact
+      returned source bytes, and caller-provided digests MUST NOT be authoritative.
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions: []
+    supersedes: []
+    alias_id: INV-0259
+    alias_name: content-digest-commits-to-exact-candidate-bytes
+  relationships:
+    declared_in:
+    - 01a0d054-b885-70b3-a72f-d3630d2e76c6
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    consumes_interface: []
+    composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a0d054-b885-70b3-a72f-d3630d2e76c6#01a0d054-b885-70b3-a72f-d379f8223a0a
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
+- id: 01a0d054-b885-70b3-a72f-d37a284fe6f4
+  alias_id: INV-0260
+  alias_name: basis-digest-preimage-is-explicit
+  alias_ref: INV-0260:basis-digest-preimage-is-explicit
+  entity_type: invariant
+  name: INV-0260
+  summary: basis_digest MUST equal SHA-256 over canonical semantic JSON of the adr-kit.candidate-source-basis/v1
+    descriptor containing every retained artifact's request_key, source_ref, artifact_kind,
+    exact source_schema, serializa
+  uri: adr://adr-architecture-kit/entities/01a0d054-b885-70b3-a72f-d37a284fe6f4
+  created_at: '2026-09-23T22:13:28.325Z'
+  entity_fingerprint: sha256:bc9d4e21a1f4e471bf1273a16c7cbe21792a83803fe3cadc101d66c7080bf340
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a0d054-b885-70b3-a72f-d3630d2e76c6#01a0d054-b885-70b3-a72f-d37a284fe6f4
+    artifact_path: adrs/logical/ADR-L-0032-candidate-source-representation-and-round-trip-basis-authority.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a0d054-b885-70b3-a72f-d3630d2e76c6
+    adr_alias_id: ADR-L-0032
+    scope: construction
+    statement: basis_digest MUST equal SHA-256 over canonical semantic JSON of the
+      adr-kit.candidate-source-basis/v1 descriptor containing every retained artifact's
+      request_key, source_ref, artifact_kind, exact source_schema, serialization_profile,
+      content_digest, and exact source_contract qualification.
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions: []
+    supersedes: []
+    alias_id: INV-0260
+    alias_name: basis-digest-preimage-is-explicit
+  relationships:
+    declared_in:
+    - 01a0d054-b885-70b3-a72f-d3630d2e76c6
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    consumes_interface: []
+    composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a0d054-b885-70b3-a72f-d3630d2e76c6#01a0d054-b885-70b3-a72f-d37a284fe6f4
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
+- id: 01a0d054-b885-70b3-a72f-d37b6ad04aac
+  alias_id: INV-0261
+  alias_name: basis-artifacts-are-ordered-by-source-reference
+  alias_ref: INV-0261:basis-artifacts-are-ordered-by-source-reference
+  entity_type: invariant
+  name: INV-0261
+  summary: Candidate source-basis artifacts MUST be ordered deterministically by source_ref
+    before basis_digest calculation.
+  uri: adr://adr-architecture-kit/entities/01a0d054-b885-70b3-a72f-d37b6ad04aac
+  created_at: '2026-09-23T22:13:28.325Z'
+  entity_fingerprint: sha256:3cc178b760698e5a72428796662736985d845a001e45d99ed5943f185586ea88
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a0d054-b885-70b3-a72f-d3630d2e76c6#01a0d054-b885-70b3-a72f-d37b6ad04aac
+    artifact_path: adrs/logical/ADR-L-0032-candidate-source-representation-and-round-trip-basis-authority.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a0d054-b885-70b3-a72f-d3630d2e76c6
+    adr_alias_id: ADR-L-0032
+    scope: construction
+    statement: Candidate source-basis artifacts MUST be ordered deterministically
+      by source_ref before basis_digest calculation.
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions: []
+    supersedes: []
+    alias_id: INV-0261
+    alias_name: basis-artifacts-are-ordered-by-source-reference
+  relationships:
+    declared_in:
+    - 01a0d054-b885-70b3-a72f-d3630d2e76c6
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    consumes_interface: []
+    composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a0d054-b885-70b3-a72f-d3630d2e76c6#01a0d054-b885-70b3-a72f-d37b6ad04aac
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
+- id: 01a0d054-b885-70b3-a72f-d37cec1a7a28
+  alias_id: INV-0262
+  alias_name: candidate-source-basis-is-minimal-and-non-overlapping
+  alias_ref: INV-0262:candidate-source-basis-is-minimal-and-non-overlapping
+  entity_type: invariant
+  name: INV-0262
+  summary: candidate_source_basis.artifacts MUST contain only minimal non-overlapping
+    source roots; a child fragment already represented in a synthesized authoring_document
+    MUST NOT also be supplied independently.
+  uri: adr://adr-architecture-kit/entities/01a0d054-b885-70b3-a72f-d37cec1a7a28
+  created_at: '2026-09-23T22:13:28.325Z'
+  entity_fingerprint: sha256:3777e81343a5cdf24b940c685c8fe5042b9562d0d7bd98c645d4750358faf9b8
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a0d054-b885-70b3-a72f-d3630d2e76c6#01a0d054-b885-70b3-a72f-d37cec1a7a28
+    artifact_path: adrs/logical/ADR-L-0032-candidate-source-representation-and-round-trip-basis-authority.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a0d054-b885-70b3-a72f-d3630d2e76c6
+    adr_alias_id: ADR-L-0032
+    scope: construction
+    statement: candidate_source_basis.artifacts MUST contain only minimal non-overlapping
+      source roots; a child fragment already represented in a synthesized authoring_document
+      MUST NOT also be supplied independently.
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions: []
+    supersedes: []
+    alias_id: INV-0262
+    alias_name: candidate-source-basis-is-minimal-and-non-overlapping
+  relationships:
+    declared_in:
+    - 01a0d054-b885-70b3-a72f-d3630d2e76c6
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    consumes_interface: []
+    composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a0d054-b885-70b3-a72f-d3630d2e76c6#01a0d054-b885-70b3-a72f-d37cec1a7a28
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
+- id: 01a0d054-b885-70b3-a72f-d37db70c8320
+  alias_id: INV-0263
+  alias_name: composition-preserves-child-identity
+  alias_ref: INV-0263:composition-preserves-child-identity
+  entity_type: invariant
+  name: INV-0263
+  summary: Excluding an embedded child from candidate_source_basis MUST NOT create,
+    replace, derive, or otherwise alter that fragment's canonical UUID identity.
+  uri: adr://adr-architecture-kit/entities/01a0d054-b885-70b3-a72f-d37db70c8320
+  created_at: '2026-09-23T22:13:28.325Z'
+  entity_fingerprint: sha256:810faf11bf6cb39b68a582b584e3c16246c67450cfa0ba72ce9b85436707fd3e
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a0d054-b885-70b3-a72f-d3630d2e76c6#01a0d054-b885-70b3-a72f-d37db70c8320
+    artifact_path: adrs/logical/ADR-L-0032-candidate-source-representation-and-round-trip-basis-authority.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a0d054-b885-70b3-a72f-d3630d2e76c6
+    adr_alias_id: ADR-L-0032
+    scope: construction
+    statement: Excluding an embedded child from candidate_source_basis MUST NOT create,
+      replace, derive, or otherwise alter that fragment's canonical UUID identity.
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions: []
+    supersedes: []
+    alias_id: INV-0263
+    alias_name: composition-preserves-child-identity
+  relationships:
+    declared_in:
+    - 01a0d054-b885-70b3-a72f-d3630d2e76c6
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    consumes_interface: []
+    composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a0d054-b885-70b3-a72f-d3630d2e76c6#01a0d054-b885-70b3-a72f-d37db70c8320
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
+- id: 01a0d054-b885-70b3-a72f-d37e6a616062
+  alias_id: INV-0264
+  alias_name: constructed-requires-complete-round-trip-gates
+  alias_ref: INV-0264:constructed-requires-complete-round-trip-gates
+  entity_type: invariant
+  name: INV-0264
+  summary: Constructed MUST require successful pre-construction validation, construction,
+    exact bytes, exact schema qualification, sealed source basis, target authoring
+    1.7 validation, available and successful architecture-interpre
+  uri: adr://adr-architecture-kit/entities/01a0d054-b885-70b3-a72f-d37e6a616062
+  created_at: '2026-09-23T22:13:28.325Z'
+  entity_fingerprint: sha256:2111fa55fc659ff1ba44551827439046440c67a10160966e38a48b4aa528e932
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a0d054-b885-70b3-a72f-d3630d2e76c6#01a0d054-b885-70b3-a72f-d37e6a616062
+    artifact_path: adrs/logical/ADR-L-0032-candidate-source-representation-and-round-trip-basis-authority.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a0d054-b885-70b3-a72f-d3630d2e76c6
+    adr_alias_id: ADR-L-0032
+    scope: construction
+    statement: Constructed MUST require successful pre-construction validation, construction,
+      exact bytes, exact schema qualification, sealed source basis, target authoring
+      1.7 validation, available and successful architecture-interpretation 1.1, normalized-model
+      2.4 output, and semantic equivalence.
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions: []
+    supersedes: []
+    alias_id: INV-0264
+    alias_name: constructed-requires-complete-round-trip-gates
+  relationships:
+    declared_in:
+    - 01a0d054-b885-70b3-a72f-d3630d2e76c6
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    consumes_interface: []
+    composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a0d054-b885-70b3-a72f-d3630d2e76c6#01a0d054-b885-70b3-a72f-d37e6a616062
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
+- id: 01a0d054-b885-70b3-a72f-d37f09026d38
+  alias_id: INV-0265
+  alias_name: architecture-interpretation-remains-forward-interpreter
+  alias_ref: INV-0265:architecture-interpretation-remains-forward-interpreter
+  entity_type: invariant
+  name: INV-0265
+  summary: Candidate Exact Source Basis MUST feed the canonical architecture-interpretation
+    1.1 execution surface, and construction MUST NOT introduce a second semantic interpreter
+    or clone semantic mappings.
+  uri: adr://adr-architecture-kit/entities/01a0d054-b885-70b3-a72f-d37f09026d38
+  created_at: '2026-09-23T22:13:28.325Z'
+  entity_fingerprint: sha256:e7855eedf64856c4f638c2c645f87a72a9d872ceb0947426c32a906e6cb29825
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a0d054-b885-70b3-a72f-d3630d2e76c6#01a0d054-b885-70b3-a72f-d37f09026d38
+    artifact_path: adrs/logical/ADR-L-0032-candidate-source-representation-and-round-trip-basis-authority.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a0d054-b885-70b3-a72f-d3630d2e76c6
+    adr_alias_id: ADR-L-0032
+    scope: semantic-authority
+    statement: Candidate Exact Source Basis MUST feed the canonical architecture-interpretation
+      1.1 execution surface, and construction MUST NOT introduce a second semantic
+      interpreter or clone semantic mappings.
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions: []
+    supersedes: []
+    alias_id: INV-0265
+    alias_name: architecture-interpretation-remains-forward-interpreter
+  relationships:
+    declared_in:
+    - 01a0d054-b885-70b3-a72f-d3630d2e76c6
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    consumes_interface: []
+    composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a0d054-b885-70b3-a72f-d3630d2e76c6#01a0d054-b885-70b3-a72f-d37f09026d38
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
+- id: 01a0d054-b885-70b3-a72f-d38038f00bfb
+  alias_id: INV-0266
+  alias_name: round-trip-equivalence-is-semantic-not-byte-equality
+  alias_ref: INV-0266:round-trip-equivalence-is-semantic-not-byte-equality
+  entity_type: invariant
+  name: INV-0266
+  summary: Round-trip success MUST compare normalized semantic equivalence under ACC
+    rules and MUST NOT elevate YAML presentation equality to architectural semantics
+    beyond exact-source integrity and deterministic rendering.
+  uri: adr://adr-architecture-kit/entities/01a0d054-b885-70b3-a72f-d38038f00bfb
+  created_at: '2026-09-23T22:13:28.325Z'
+  entity_fingerprint: sha256:de632c73b7f582dd024bcfa3e9eb1c681d87857e64e13197979f404edef43395
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a0d054-b885-70b3-a72f-d3630d2e76c6#01a0d054-b885-70b3-a72f-d38038f00bfb
+    artifact_path: adrs/logical/ADR-L-0032-candidate-source-representation-and-round-trip-basis-authority.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a0d054-b885-70b3-a72f-d3630d2e76c6
+    adr_alias_id: ADR-L-0032
+    scope: construction
+    statement: Round-trip success MUST compare normalized semantic equivalence under
+      ACC rules and MUST NOT elevate YAML presentation equality to architectural semantics
+      beyond exact-source integrity and deterministic rendering.
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions: []
+    supersedes: []
+    alias_id: INV-0266
+    alias_name: round-trip-equivalence-is-semantic-not-byte-equality
+  relationships:
+    declared_in:
+    - 01a0d054-b885-70b3-a72f-d3630d2e76c6
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    consumes_interface: []
+    composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a0d054-b885-70b3-a72f-d3630d2e76c6#01a0d054-b885-70b3-a72f-d38038f00bfb
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
+- id: 01a0d054-b885-70b3-a72f-d38109026d38
+  alias_id: INV-0267
+  alias_name: candidate-round-trip-failure-remains-bounded
+  alias_ref: INV-0267:candidate-round-trip-failure-remains-bounded
+  entity_type: invariant
+  name: INV-0267
+  summary: If any required construction or round-trip gate fails, the result MUST
+    remain Rejected, Unavailable, or Unresolved as applicable; partial success MUST
+    NOT be introduced, and this authority MUST NOT create persistence, ad
+  uri: adr://adr-architecture-kit/entities/01a0d054-b885-70b3-a72f-d38109026d38
+  created_at: '2026-09-23T22:13:28.325Z'
+  entity_fingerprint: sha256:14e1c9b33673f4b98703dcd92e40ff56e73644cc587e84895ea6687f5be7d753
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a0d054-b885-70b3-a72f-d3630d2e76c6#01a0d054-b885-70b3-a72f-d38109026d38
+    artifact_path: adrs/logical/ADR-L-0032-candidate-source-representation-and-round-trip-basis-authority.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a0d054-b885-70b3-a72f-d3630d2e76c6
+    adr_alias_id: ADR-L-0032
+    scope: global
+    statement: If any required construction or round-trip gate fails, the result MUST
+      remain Rejected, Unavailable, or Unresolved as applicable; partial success MUST
+      NOT be introduced, and this authority MUST NOT create persistence, admission,
+      alias, Git, Runtime, or implementation-conformance capability.
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions: []
+    supersedes: []
+    alias_id: INV-0267
+    alias_name: candidate-round-trip-failure-remains-bounded
+  relationships:
+    declared_in:
+    - 01a0d054-b885-70b3-a72f-d3630d2e76c6
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    consumes_interface: []
+    composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a0d054-b885-70b3-a72f-d3630d2e76c6#01a0d054-b885-70b3-a72f-d38109026d38
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
+- id: 01a0d057-9df9-764f-9e5c-f347c4ac888e
+  alias_id: INV-0249
+  alias_name: candidate-artifact-kinds-are-closed
+  alias_ref: INV-0249:candidate-artifact-kinds-are-closed
+  entity_type: invariant
+  name: INV-0249
+  summary: A successful construction MUST return candidate artifacts only as authoring_document
+    or authoring_fragment sources qualified by authoring 1.7.
+  uri: adr://adr-architecture-kit/entities/01a0d057-9df9-764f-9e5c-f347c4ac888e
+  created_at: '2026-09-23T22:16:38.137Z'
+  entity_fingerprint: sha256:b080abe550f18c60ed5613c4e31975d130d7b6516b4a1ad718da2667aa31b432
+  lifecycle_stage: active
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a0d054-b885-70b3-a72f-d3630d2e76c6#01a0d057-9df9-764f-9e5c-f347c4ac888e
+    artifact_path: adrs/logical/ADR-L-0032-candidate-source-representation-and-round-trip-basis-authority.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a0d054-b885-70b3-a72f-d3630d2e76c6
+    adr_alias_id: ADR-L-0032
+    scope: construction
+    statement: A successful construction MUST return candidate artifacts only as authoring_document
+      or authoring_fragment sources qualified by authoring 1.7.
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions: []
+    supersedes: []
+    alias_id: INV-0249
+    alias_name: candidate-artifact-kinds-are-closed
+  relationships:
+    declared_in:
+    - 01a0d054-b885-70b3-a72f-d3630d2e76c6
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    consumes_interface: []
+    composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a0d054-b885-70b3-a72f-d3630d2e76c6#01a0d057-9df9-764f-9e5c-f347c4ac888e
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index

@@ -7,6 +7,7 @@ mod architecture;
 pub(crate) mod architecture_interpretation;
 mod attribution;
 mod authoring_construction;
+mod authoring_construction_orchestration;
 // Internal substrate only; protocol 1.2 dispatch remains intentionally closed.
 pub(crate) mod candidate_source;
 mod linkage;

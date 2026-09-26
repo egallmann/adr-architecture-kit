@@ -3,6 +3,8 @@ use std::collections::{BTreeMap, BTreeSet};
 use serde::{Deserialize, Serialize};
 
 mod architecture;
+// Internal Architecture Interpretation 1.1 semantic authority.
+pub(crate) mod architecture_interpretation;
 mod attribution;
 mod authoring_construction;
 // Internal substrate only; protocol 1.2 dispatch remains intentionally closed.

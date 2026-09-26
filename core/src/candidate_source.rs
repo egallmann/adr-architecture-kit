@@ -9,7 +9,7 @@ use std::collections::{BTreeMap, BTreeSet};
 
 use sha2::{Digest, Sha256};
 
-use super::{authoring_construction, semantic_contract, Json};
+use super::{authoring_construction, schema_validation, semantic_contract, Json};
 
 const SERIALIZATION_PROFILE: &str = "adr-kit.authoring-yaml/v1";
 const BASIS_DOMAIN: &str = "adr-kit.candidate-source-basis/v1";
@@ -524,7 +524,10 @@ enum Additional<'a> {
     Schema(ResolvedSchema<'a>),
 }
 
-fn render_source(selector: &CandidateSourceSelector, source: &Json) -> Result<Vec<u8>, String> {
+pub(crate) fn render_source(
+    selector: &CandidateSourceSelector,
+    source: &Json,
+) -> Result<Vec<u8>, String> {
     let catalog = SchemaCatalog::load()?;
     let schema = catalog.select(selector)?;
     let mut output = String::new();
@@ -794,6 +797,325 @@ pub(crate) fn seal_candidate_source_basis(
     })
 }
 
+fn authoring_schema_resources() -> Result<BTreeMap<String, Json>, String> {
+    [
+        (
+            "authoring/1.7/schema/adr-common.schema",
+            authoring_construction::AUTHORING_COMMON_SCHEMA,
+        ),
+        (
+            "authoring/1.7/schema/adr-logical.schema",
+            authoring_construction::AUTHORING_LOGICAL_SCHEMA,
+        ),
+        (
+            "authoring/1.7/schema/adr-physical-base.schema",
+            authoring_construction::AUTHORING_PHYSICAL_BASE_SCHEMA,
+        ),
+        (
+            "authoring/1.7/schema/adr-physical-component.schema",
+            authoring_construction::AUTHORING_PHYSICAL_COMPONENT_SCHEMA,
+        ),
+        (
+            "authoring/1.7/schema/adr-physical-system.schema",
+            authoring_construction::AUTHORING_PHYSICAL_SYSTEM_SCHEMA,
+        ),
+        (
+            "authoring/1.7/schema/types.schema",
+            authoring_construction::AUTHORING_TYPES_SCHEMA,
+        ),
+    ]
+    .into_iter()
+    .map(|(key, source)| {
+        serde_json::from_str::<Json>(source)
+            .map(|value| (key.to_owned(), value))
+            .map_err(|error| format!("authoring schema {key} is invalid JSON: {error}"))
+    })
+    .collect()
+}
+
+fn validate_selected_authoring_schema(
+    selector: &CandidateSourceSelector,
+    source: &Json,
+) -> Result<(), String> {
+    let resources = authoring_schema_resources()?;
+    schema_validation::validate_fragment(
+        &resources,
+        &selector.canonical_resource_key,
+        &selector.json_pointer,
+        source,
+    )
+    .map_err(|error| {
+        if error.path.is_empty() {
+            error.message
+        } else {
+            format!("{} at {}", error.message, error.path)
+        }
+    })
+}
+
+fn canonical_yaml_key(line: &str) -> Result<(String, &str), String> {
+    if !line.starts_with('"') {
+        return Err("canonical YAML mapping keys must be JSON-compatible strings".into());
+    }
+    let bytes = line.as_bytes();
+    let mut offset = 1;
+    while offset < bytes.len() {
+        match bytes[offset] {
+            b'\\' => {
+                offset += 2;
+                if offset > bytes.len() {
+                    return Err("canonical YAML mapping key has an incomplete escape".into());
+                }
+            }
+            b'"' => {
+                let raw = &line[..=offset];
+                let key = serde_json::from_str::<String>(raw)
+                    .map_err(|error| format!("canonical YAML mapping key is invalid: {error}"))?;
+                if semantic_contract::canonical_string(&key) != raw {
+                    return Err("canonical YAML mapping key is not canonically quoted".into());
+                }
+                let rest = line[offset + 1..]
+                    .strip_prefix(':')
+                    .ok_or_else(|| "canonical YAML mapping key must be followed by ':'".to_owned())?;
+                if rest.starts_with(' ') {
+                    if rest.starts_with("  ") {
+                        return Err("canonical YAML mapping separator is not canonical".into());
+                    }
+                    return Ok((key, &rest[1..]));
+                }
+                if rest.is_empty() {
+                    return Ok((key, rest));
+                }
+                return Err("canonical YAML mapping has trailing bytes".into());
+            }
+            byte if byte < 0x20 => {
+                return Err("canonical YAML mapping key contains a control byte".into())
+            }
+            _ => offset += 1,
+        }
+    }
+    Err("canonical YAML mapping key is unterminated".into())
+}
+
+fn is_canonical_mapping_line(line: &str) -> bool {
+    if !line.starts_with('"') {
+        return false;
+    }
+    let bytes = line.as_bytes();
+    let mut offset = 1;
+    while offset < bytes.len() {
+        match bytes[offset] {
+            b'\\' => offset += 2,
+            b'"' => return bytes.get(offset + 1) == Some(&b':'),
+            byte if byte < 0x20 => return false,
+            _ => offset += 1,
+        }
+    }
+    false
+}
+
+fn canonical_yaml_scalar(raw: &str) -> Result<Json, String> {
+    if raw.is_empty() {
+        return Err("canonical YAML scalar is empty".into());
+    }
+    if raw == "{}" {
+        return Ok(Json::Object(BTreeMap::new()));
+    }
+    if raw == "[]" {
+        return Ok(Json::Array(Vec::new()));
+    }
+    let value = serde_json::from_str::<Json>(raw)
+        .map_err(|error| format!("canonical YAML scalar is not JSON-compatible: {error}"))?;
+    let rendered = match &value {
+        Json::String(value) => semantic_contract::canonical_string(value),
+        Json::Bool(true) => "true".to_owned(),
+        Json::Bool(false) => "false".to_owned(),
+        Json::Null => "null".to_owned(),
+        Json::Number(value) => semantic_contract::canonical_number(value)?,
+        Json::Object(_) | Json::Array(_) => {
+            return Err("non-empty YAML flow values are not in the canonical profile".into())
+        }
+    };
+    if rendered != raw {
+        return Err("canonical YAML scalar spelling is not canonical".into());
+    }
+    Ok(value)
+}
+
+struct CanonicalYaml<'a> {
+    lines: Vec<&'a str>,
+    position: usize,
+}
+
+impl<'a> CanonicalYaml<'a> {
+    fn decode(bytes: &'a [u8]) -> Result<Json, String> {
+        if bytes.starts_with(&[0xef, 0xbb, 0xbf]) {
+            return Err("canonical candidate source must not contain a UTF-8 BOM".into());
+        }
+        let text = std::str::from_utf8(bytes)
+            .map_err(|error| format!("canonical candidate source is not UTF-8: {error}"))?;
+        if !text.ends_with('\n') || text.ends_with("\n\n") {
+            return Err("canonical candidate source must have exactly one terminal LF".into());
+        }
+        if text.contains('\r') {
+            return Err("canonical candidate source must use LF line endings".into());
+        }
+        let body = &text[..text.len() - 1];
+        if body.is_empty() {
+            return Err("canonical candidate source is empty".into());
+        }
+        let lines = body.split('\n').collect::<Vec<_>>();
+        if lines.iter().any(|line| line.is_empty() || line.trim_end() != *line) {
+            return Err("canonical candidate source contains a blank or padded line".into());
+        }
+        let mut parser = Self {
+            lines,
+            position: 0,
+        };
+        let value = parser.node(0)?;
+        if parser.position != parser.lines.len() {
+            return Err("canonical candidate source contains trailing content".into());
+        }
+        Ok(value)
+    }
+
+    fn indentation(line: &str) -> Result<usize, String> {
+        let indent = line.len() - line.trim_start_matches(' ').len();
+        if line[..indent].contains('\t') || indent % 2 != 0 {
+            return Err("canonical candidate source indentation must use two spaces".into());
+        }
+        if line.contains('\t') {
+            return Err("canonical candidate source must not contain tabs".into());
+        }
+        Ok(indent)
+    }
+
+    fn node(&mut self, indent: usize) -> Result<Json, String> {
+        let line = *self
+            .lines
+            .get(self.position)
+            .ok_or_else(|| "canonical candidate source ended before a value".to_owned())?;
+        let actual = Self::indentation(line)?;
+        if actual != indent {
+            return Err(format!(
+                "canonical candidate source indentation {actual} does not equal expected {indent}"
+            ));
+        }
+        let content = &line[indent..];
+        if content == "-" || content.starts_with("- ") {
+            self.sequence(indent)
+        } else if is_canonical_mapping_line(content) {
+            self.mapping(indent)
+        } else if content.starts_with('"') {
+            self.scalar_line(content)
+        } else if content == "{}"
+            || content == "[]"
+            || content == "true"
+            || content == "false"
+            || content == "null"
+            || content.starts_with('-')
+            || content
+                .as_bytes()
+                .first()
+                .is_some_and(|byte| byte.is_ascii_digit())
+        {
+            self.scalar_line(content)
+        } else {
+            self.mapping(indent)
+        }
+    }
+
+    fn scalar_line(&mut self, content: &str) -> Result<Json, String> {
+        self.position += 1;
+        canonical_yaml_scalar(content)
+    }
+
+    fn mapping(&mut self, indent: usize) -> Result<Json, String> {
+        let mut values = BTreeMap::new();
+        while let Some(line) = self.lines.get(self.position).copied() {
+            let actual = Self::indentation(line)?;
+            if actual != indent || line[indent..].starts_with('-') {
+                break;
+            }
+            let (key, rest) = canonical_yaml_key(&line[indent..])?;
+            self.position += 1;
+            let value = if rest.is_empty() {
+                let next = self.lines.get(self.position).copied().ok_or_else(|| {
+                    "canonical YAML mapping value is missing".to_owned()
+                })?;
+                let child_indent = Self::indentation(next)?;
+                if child_indent != indent + 2 {
+                    return Err("canonical YAML nested value must be indented by two spaces".into());
+                }
+                self.node(child_indent)?
+            } else {
+                canonical_yaml_scalar(rest)?
+            };
+            if values.insert(key.clone(), value).is_some() {
+                return Err(format!("duplicate canonical YAML mapping key: {key}"));
+            }
+        }
+        if values.is_empty() {
+            return Err("canonical YAML mapping is empty".into());
+        }
+        Ok(Json::Object(values))
+    }
+
+    fn sequence(&mut self, indent: usize) -> Result<Json, String> {
+        let mut values = Vec::new();
+        while let Some(line) = self.lines.get(self.position).copied() {
+            let actual = Self::indentation(line)?;
+            if actual != indent || !line[indent..].starts_with('-') {
+                break;
+            }
+            let content = &line[indent..];
+            if content != "-" && !content.starts_with("- ") {
+                return Err("canonical YAML sequence marker is malformed".into());
+            }
+            let rest = content.strip_prefix('-').unwrap();
+            self.position += 1;
+            if rest.is_empty() {
+                let next = self.lines.get(self.position).copied().ok_or_else(|| {
+                    "canonical YAML sequence item is missing".to_owned()
+                })?;
+                let child_indent = Self::indentation(next)?;
+                if child_indent != indent + 2 {
+                    return Err("canonical YAML sequence item must be indented by two spaces".into());
+                }
+                values.push(self.node(child_indent)?);
+            } else {
+                values.push(canonical_yaml_scalar(rest.strip_prefix(' ').unwrap())?);
+            }
+        }
+        if values.is_empty() {
+            return Err("canonical YAML sequence is empty".into());
+        }
+        Ok(Json::Array(values))
+    }
+}
+
+pub(crate) fn decode_canonical_candidate(bytes: &[u8]) -> Result<Json, String> {
+    CanonicalYaml::decode(bytes)
+}
+
+pub(crate) fn decode_and_validate_candidate(
+    artifact: &CandidateSourceArtifact,
+) -> Result<Json, String> {
+    if artifact.serialization_profile != SERIALIZATION_PROFILE {
+        return Err("candidate serialization profile is not adr-kit.authoring-yaml/v1".into());
+    }
+    if sha256_digest(&artifact.bytes) != artifact.content_digest {
+        return Err("candidate content_digest does not match exact source bytes".into());
+    }
+    let source = decode_canonical_candidate(&artifact.bytes)?;
+    let rendered = render_source(&artifact.source_schema, &source)?;
+    if rendered != artifact.bytes {
+        return Err("candidate source bytes are not canonical under their exact schema selector".into());
+    }
+    validate_selected_authoring_schema(&artifact.source_schema, &source)?;
+    Ok(source)
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -842,94 +1164,6 @@ mod tests {
         Ok(result)
     }
 
-    fn yaml_scalar(raw: &str) -> Result<Json, String> {
-        serde_json::from_str(raw)
-            .map_err(|error| format!("frozen YAML scalar is not JSON-compatible: {error}"))
-    }
-
-    fn yaml_block(lines: &[&str], position: &mut usize, indent: usize) -> Result<Json, String> {
-        let sequence = lines
-            .get(*position)
-            .ok_or_else(|| "frozen YAML ended before a nested value".to_owned())?
-            .len()
-            - lines[*position].trim_start().len();
-        if sequence != indent {
-            return Err(format!(
-                "unexpected frozen YAML indentation: {sequence} != {indent}"
-            ));
-        }
-        if lines[*position][indent..].starts_with('-') {
-            let mut values = Vec::new();
-            while *position < lines.len() {
-                let line = lines[*position];
-                let actual_indent = line.len() - line.trim_start().len();
-                if actual_indent != indent || !line[indent..].starts_with('-') {
-                    break;
-                }
-                let rest = line[indent + 1..].trim_start();
-                *position += 1;
-                if rest.is_empty() {
-                    values.push(yaml_block(
-                        lines,
-                        position,
-                        lines
-                            .get(*position)
-                            .map(|line| line.len() - line.trim_start().len())
-                            .ok_or_else(|| "frozen YAML sequence item is empty".to_owned())?,
-                    )?);
-                } else {
-                    values.push(yaml_scalar(rest)?);
-                }
-            }
-            Ok(Json::Array(values))
-        } else {
-            let mut values = BTreeMap::new();
-            while *position < lines.len() {
-                let line = lines[*position];
-                let actual_indent = line.len() - line.trim_start().len();
-                if actual_indent != indent || line[indent..].starts_with('-') {
-                    break;
-                }
-                let colon = line[indent..]
-                    .find(':')
-                    .ok_or_else(|| format!("frozen YAML mapping has no colon: {line}"))?
-                    + indent;
-                let key: String = serde_json::from_str(line[indent..colon].trim())
-                    .map_err(|error| format!("frozen YAML key is invalid: {error}"))?;
-                let rest = line[colon + 1..].trim_start();
-                *position += 1;
-                let value = if rest.is_empty() {
-                    let child_indent = lines
-                        .get(*position)
-                        .map(|line| line.len() - line.trim_start().len())
-                        .ok_or_else(|| "frozen YAML mapping value is empty".to_owned())?;
-                    yaml_block(lines, position, child_indent)?
-                } else {
-                    yaml_scalar(rest)?
-                };
-                if values.insert(key.clone(), value).is_some() {
-                    return Err(format!("duplicate frozen YAML key: {key}"));
-                }
-            }
-            Ok(Json::Object(values))
-        }
-    }
-
-    fn frozen_yaml(bytes: &[u8]) -> Result<Json, String> {
-        let text = std::str::from_utf8(bytes).map_err(|error| error.to_string())?;
-        let lines = text
-            .strip_suffix('\n')
-            .ok_or_else(|| "frozen candidate bytes lack their terminal LF".to_owned())?
-            .split('\n')
-            .collect::<Vec<_>>();
-        let mut position = 0;
-        let result = yaml_block(&lines, &mut position, 0)?;
-        if position != lines.len() {
-            return Err(format!("frozen YAML parser stopped at line {position}"));
-        }
-        Ok(result)
-    }
-
     fn frozen_conformance() -> Json {
         serde_json::from_str(include_str!(
             "../../contracts/authoring-construction/v1.0/resources/conformance.json"
@@ -958,7 +1192,7 @@ mod tests {
                 .expect("candidate bytes string"),
         )
         .expect("candidate bytes base64");
-        let source = frozen_yaml(&bytes).expect("frozen candidate bytes parse in test only");
+        let source = decode_canonical_candidate(&bytes).expect("frozen candidate bytes parse");
         let source_schema = selector(object.get("source_schema").expect("source schema"));
         let source_contract = object
             .get("source_contract")
@@ -1176,6 +1410,46 @@ mod tests {
         )
         .expect("repeat edge source seals");
         assert_eq!(artifact, repeated);
+    }
+
+    #[test]
+    fn strict_inverse_rejects_noncanonical_profile_spellings() {
+        let valid = b"\"a\":\n  - true\n  - null\n";
+        let decoded = decode_canonical_candidate(valid).expect("valid canonical profile");
+        assert_eq!(
+            decoded,
+            Json::Object(BTreeMap::from([(
+                "a".into(),
+                Json::Array(vec![Json::Bool(true), Json::Null]),
+            )]))
+        );
+
+        let invalid_inputs: &[&[u8]] = &[
+            b"\xef\xbb\xbf\"a\": \"b\"\n",
+            b"\"a\": \"b\"\r\n",
+            b"\"a\": \"b\"",
+            b"\"a\": \"b\"\n\n",
+            b"\"a\": \"b\"\n \n",
+            b"---\n\"a\": \"b\"\n",
+            b"%YAML 1.2\n\"a\": \"b\"\n",
+            b"\"a\": \"b\" # comment\n",
+            b"\"a\": &anchor\n",
+            b"\"a\": *anchor\n",
+            b"\"a\": !tag\n",
+            b"\"a\":\n   \"b\"\n",
+            b"\"a\": \"one\"\n\"a\": \"two\"\n",
+            b"\"a\": True\n",
+            b"\"a\": 01\n",
+            b"'a': \"b\"\n",
+        ];
+        for bytes in invalid_inputs {
+            assert!(
+                decode_canonical_candidate(bytes).is_err(),
+                "noncanonical bytes were accepted: {:?}",
+                String::from_utf8_lossy(bytes)
+            );
+        }
+        assert!(decode_canonical_candidate(&[0xff, b'\n']).is_err());
     }
 
     #[test]

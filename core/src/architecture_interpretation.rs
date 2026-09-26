@@ -8,9 +8,7 @@
 
 use std::collections::BTreeMap;
 
-use sha2::{Digest, Sha256};
-
-use super::{candidate_source, semantic_contract, Json};
+use super::{candidate_source, materialization, semantic_contract, Json};
 
 const FORWARD_RELATIONSHIPS: &[&str] = &[
     "calls",
@@ -28,6 +26,24 @@ const FORWARD_FORBIDDEN_RELATIONSHIPS: &[&str] = &[
     "binds_rule",
     "expects_evidence",
 ];
+
+#[derive(Clone, Debug, Eq, PartialEq)]
+pub(crate) struct InterpretationSourceContext {
+    pub(crate) canonical_source_ref: String,
+    pub(crate) source_pointer: String,
+}
+
+impl InterpretationSourceContext {
+    fn validate(&self) -> Result<(), String> {
+        if self.canonical_source_ref.is_empty() {
+            return Err("interpretation source context requires canonical_source_ref".into());
+        }
+        if self.source_pointer.is_empty() {
+            return Err("interpretation source context requires source_pointer".into());
+        }
+        Ok(())
+    }
+}
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub(crate) enum InterpretationDisposition {
@@ -164,39 +180,28 @@ fn string(value: impl Into<String>) -> Json {
     Json::String(value.into())
 }
 
-fn stable_digest(parts: &[&str]) -> String {
-    let mut hasher = Sha256::new();
-    for part in parts {
-        hasher.update(part.as_bytes());
-        hasher.update([0]);
-    }
-    hasher
-        .finalize()
-        .iter()
-        .map(|byte| format!("{byte:02x}"))
-        .collect()
-}
-
 fn compatibility_record(
     relationship_type: &str,
     from_entity_id: &str,
     to_entity_id: &str,
-    source_pointer: &str,
+    source_context: &InterpretationSourceContext,
     from_key: Option<&str>,
     to_key: Option<&str>,
     provenance_classification: &str,
 ) -> Json {
-    let digest = stable_digest(&[
+    let digest = materialization::compatibility_assertion_digest(
         relationship_type,
         from_entity_id,
         to_entity_id,
-        source_pointer,
-        from_key.unwrap_or(""),
-        to_key.unwrap_or(""),
-    ]);
+        &source_context.canonical_source_ref,
+        &source_context.source_pointer,
+    );
     let mut source_provenance = BTreeMap::from([
         ("source_contract".into(), string("authoring@1.7")),
-        ("source_pointer".into(), string(source_pointer)),
+        (
+            "source_pointer".into(),
+            string(source_context.source_pointer.clone()),
+        ),
     ]);
     if let (Some(from_key), Some(to_key)) = (from_key, to_key) {
         source_provenance.insert(
@@ -209,7 +214,7 @@ fn compatibility_record(
     }
     Json::Object(BTreeMap::from([
         ("record_kind".into(), string("compatibility")),
-        ("relationship_id".into(), string(format!("compatibility:{digest}"))),
+        ("relationship_id".into(), string(format!("assertion:{digest}"))),
         ("assertion_id".into(), string(format!("asrt-{digest}"))),
         ("relationship_type".into(), string(relationship_type)),
         ("from_entity_id".into(), string(from_entity_id)),
@@ -217,8 +222,12 @@ fn compatibility_record(
         ("provenance_classification".into(), string(provenance_classification)),
         ("evidence".into(), Json::Array(Vec::new())),
         (
+            "source_pointer".into(),
+            string(source_context.source_pointer.clone()),
+        ),
+        (
             "canonical_source_ref".into(),
-            string(format!("authoring@1.7#{source_pointer}")),
+            string(source_context.canonical_source_ref.clone()),
         ),
         ("source_provenance".into(), Json::Object(source_provenance)),
     ]))
@@ -227,7 +236,7 @@ fn compatibility_record(
 fn canonical_relationship_record(
     fragment: &Json,
     qualification: &Json,
-    source_pointer: &str,
+    source_context: &InterpretationSourceContext,
 ) -> Option<Json> {
     let id = field_text(fragment, "id")?;
     let alias_id = field_text(fragment, "alias_id")?;
@@ -247,7 +256,11 @@ fn canonical_relationship_record(
         ("to_entity_id".into(), string(to_entity_id)),
         (
             "canonical_source_ref".into(),
-            string(format!("authoring@1.7#{source_pointer}")),
+            string(source_context.canonical_source_ref.clone()),
+        ),
+        (
+            "source_pointer".into(),
+            string(source_context.source_pointer.clone()),
         ),
         ("custom_qualification".into(), qualification.clone()),
         ("properties".into(), properties),
@@ -417,7 +430,7 @@ fn topology_index(basis: &Json) -> Result<(BTreeMap<String, String>, Vec<String>
 fn topology_relationship(
     fragment: &Json,
     basis: &Json,
-    source_pointer: &str,
+    source_context: &InterpretationSourceContext,
 ) -> Result<InterpretationResult, String> {
     let relationship_type = field_text(fragment, "type").unwrap_or_default();
     if !FORWARD_RELATIONSHIPS.contains(&relationship_type.as_str()) {
@@ -449,7 +462,7 @@ fn topology_relationship(
             ("reason_code".into(), string("topology_key_unresolved")),
             (
                 "source_pointer".into(),
-                string(source_pointer),
+                string(source_context.source_pointer.clone()),
             ),
             ("resolved_keys".into(), Json::Array(resolved_keys.into_iter().map(string).collect())),
             ("missing_keys".into(), Json::Array(missing.into_iter().map(string).collect())),
@@ -479,7 +492,7 @@ fn topology_relationship(
         &relationship_type,
         &from,
         &to,
-        source_pointer,
+        source_context,
         Some(&from_key),
         Some(&to_key),
         "explicit",
@@ -489,7 +502,7 @@ fn topology_relationship(
 fn composition_relationship(
     fragment: &Json,
     basis: &Json,
-    source_pointer: &str,
+    source_context: &InterpretationSourceContext,
 ) -> Result<InterpretationResult, String> {
     let system_id = field_text(fragment, "system_id")
         .or_else(|| field_text(basis, "system_id"))
@@ -525,7 +538,7 @@ fn composition_relationship(
             .and_then(|component| field_text(component, "component_ref"))
             .as_deref()
             .unwrap_or_default(),
-        source_pointer,
+        source_context,
         None,
         None,
         "derived",
@@ -600,7 +613,7 @@ fn custom_entity_result(fragment: &Json) -> Result<InterpretationResult, String>
 fn custom_relationship_result(
     fragment: &Json,
     basis: &Json,
-    source_pointer: &str,
+    source_context: &InterpretationSourceContext,
 ) -> Result<InterpretationResult, String> {
     let relationship_type = field_text(fragment, "relationship_type").unwrap_or_default();
     if FORWARD_FORBIDDEN_RELATIONSHIPS.contains(&relationship_type.as_str()) {
@@ -661,7 +674,7 @@ fn custom_relationship_result(
         string("custom_explicit"),
     );
     let Some(normalized_record) =
-        canonical_relationship_record(fragment, &record_qualification, source_pointer)
+        canonical_relationship_record(fragment, &record_qualification, source_context)
     else {
         return Ok(InterpretationResult::rejected(
             "normalized_relationship_incomplete",
@@ -671,7 +684,11 @@ fn custom_relationship_result(
     Ok(result.with_normalized_record(normalized_record))
 }
 
-fn fragment_result(fragment: &Json, basis: &Json, source_pointer: &str) -> Result<InterpretationResult, String> {
+fn fragment_result(
+    fragment: &Json,
+    basis: &Json,
+    source_context: &InterpretationSourceContext,
+) -> Result<InterpretationResult, String> {
     if let Some(lifecycle) = field(fragment, "lifecycle_stage") {
         if schema_name(basis) == Some("normative_proposition") || field(fragment, "normative_force").is_some() {
             let _ = lifecycle;
@@ -682,10 +699,10 @@ fn fragment_result(fragment: &Json, basis: &Json, source_pointer: &str) -> Resul
         }
     }
     if basis_kind(basis) == Some("topology_resolution") {
-        return topology_relationship(fragment, basis, source_pointer);
+        return topology_relationship(fragment, basis, source_context);
     }
     if basis_kind(basis) == Some("composition_context") {
-        return composition_relationship(fragment, basis, source_pointer);
+        return composition_relationship(fragment, basis, source_context);
     }
     if basis_kind(basis) == Some("forward_type_disposition") {
         return Ok(InterpretationResult::rejected(
@@ -720,30 +737,12 @@ fn fragment_result(fragment: &Json, basis: &Json, source_pointer: &str) -> Resul
         return document_result(fragment);
     }
     if field(fragment, "relationship_type").is_some() {
-        return custom_relationship_result(fragment, basis, source_pointer);
+        return custom_relationship_result(fragment, basis, source_context);
     }
     if field(fragment, "entity_type").is_some() {
         return custom_entity_result(fragment);
     }
-    let kind = schema_name(basis).or_else(|| {
-        field_text(fragment, "alias_id").as_deref().and_then(|alias| {
-            alias.split('-').next().map(|value| match value {
-                "DEC" => "decision",
-                "INV" => "invariant",
-                "NP" => "normative_proposition",
-                "CAP" => "capability",
-                "BOUND" => "boundary",
-                "GAP" => "gap",
-                "FLOW" => "data_flow",
-                "COMP" => "component",
-                "IFACE" => "interface",
-                "IMPL" => "implementation_decision",
-                "EVID" => "evidence_expectation",
-                "SYSBOUND" => "system_boundary",
-                _ => "",
-            })
-        })
-    });
+    let kind = schema_name(basis);
     let Some(kind) = kind else {
         return Ok(InterpretationResult::rejected(
             "forward_type_forbidden",
@@ -798,8 +797,9 @@ fn fragment_result(fragment: &Json, basis: &Json, source_pointer: &str) -> Resul
 pub(crate) fn interpret(
     fragment: &Json,
     basis: &Json,
-    source_pointer: &str,
+    source_context: &InterpretationSourceContext,
 ) -> Result<InterpretationResult, String> {
+    source_context.validate()?;
     if basis_kind(basis) == Some("absence_semantics") {
         return Ok(InterpretationResult::accepted(
             "absence-semantics",
@@ -811,7 +811,7 @@ pub(crate) fn interpret(
             ]),
         ));
     }
-    fragment_result(fragment, basis, source_pointer)
+    fragment_result(fragment, basis, source_context)
 }
 
 pub(crate) fn interpret_candidate_artifact(
@@ -834,7 +834,24 @@ pub(crate) fn interpret_candidate_artifact(
             artifact.source_schema.canonical_resource_key, artifact.source_schema.json_pointer
         )),
     );
-    interpret(&source, &Json::Object(basis), &artifact.source_schema.json_pointer)
+    basis.insert(
+        "source_schema".into(),
+        object([
+            (
+                "canonical_resource_key",
+                string(artifact.source_schema.canonical_resource_key.clone()),
+            ),
+            (
+                "json_pointer",
+                string(artifact.source_schema.json_pointer.clone()),
+            ),
+        ]),
+    );
+    let source_context = InterpretationSourceContext {
+        canonical_source_ref: artifact.source_ref.clone(),
+        source_pointer: "/".into(),
+    };
+    interpret(&source, &Json::Object(basis), &source_context)
 }
 
 #[cfg(test)]
@@ -975,7 +992,11 @@ mod tests {
             .unwrap_or_else(|error| panic!("normalized relationship schema failed: {error:?}"));
     }
 
-    fn assert_vector(case: &Json, result: &InterpretationResult) {
+    fn assert_vector(
+        case: &Json,
+        result: &InterpretationResult,
+        source_context: &InterpretationSourceContext,
+    ) {
         let case_id = value(case, "id").as_str().expect("case id");
         let input = object(value(case, "input"));
         let expected = object(value(case, "expected"));
@@ -1001,6 +1022,27 @@ mod tests {
         }
 
         assert_normalized_relationship_schema(result);
+        if let Some(record) = result.normalized_record.as_ref().and_then(Json::as_object) {
+            assert_eq!(
+                record.get("canonical_source_ref").and_then(Json::as_str),
+                Some(source_context.canonical_source_ref.as_str()),
+                "{case_id} source identity",
+            );
+            if let Some(source_pointer) = record.get("source_pointer").and_then(Json::as_str) {
+                assert_eq!(
+                    source_pointer,
+                    source_context.source_pointer,
+                    "{case_id} semantic source pointer",
+                );
+            }
+            if let Some(provenance) = record.get("source_provenance").and_then(Json::as_object) {
+                assert_eq!(
+                    provenance.get("source_pointer").and_then(Json::as_str),
+                    Some(source_context.source_pointer.as_str()),
+                    "{case_id} provenance source pointer",
+                );
+            }
+        }
         let actual_fields = object(value(&actual_json, "fields"));
         let expected_fields = expected.get("fields").map(object).unwrap_or_else(|| panic!("{case_id} fields"));
         for (key, expected_value) in expected_fields {
@@ -1069,6 +1111,13 @@ mod tests {
         }
     }
 
+    fn conformance_source_context(case_id: &str, source_pointer: &str) -> InterpretationSourceContext {
+        InterpretationSourceContext {
+            canonical_source_ref: format!("test://architecture-interpretation/1.1/{case_id}"),
+            source_pointer: source_pointer.to_owned(),
+        }
+    }
+
     #[test]
     fn i01_to_i38_execute_as_semantic_assertion_vectors() {
         let root = parsed(include_str!(
@@ -1078,13 +1127,18 @@ mod tests {
         assert_eq!(cases.len(), 38);
         for case in cases {
             let input = object(value(case, "input"));
+            let case_id = value(case, "id").as_str().expect("case id");
+            let source_context = conformance_source_context(
+                case_id,
+                map_value(input, "source_pointer").as_str().expect("source pointer"),
+            );
             let result = interpret(
                 map_value(input, "fragment"),
                 map_value(input, "basis"),
-                map_value(input, "source_pointer").as_str().expect("source pointer"),
+                &source_context,
             )
-            .unwrap_or_else(|error| panic!("{} failed: {error}", value(case, "id").as_str().unwrap()));
-            assert_vector(case, &result);
+            .unwrap_or_else(|error| panic!("{case_id} failed: {error}"));
+            assert_vector(case, &result, &source_context);
         }
     }
 
@@ -1098,14 +1152,28 @@ mod tests {
             .iter()
             .map(|id| cases.iter().find(|case| value(case, "id").as_str() == Some(id)).expect("vector"))
             .collect::<Vec<_>>();
+        let first_input = object(value(selected[0], "input"));
+        for case in selected.iter().skip(1) {
+            let input = object(value(case, "input"));
+            assert_eq!(input.get("fragment"), first_input.get("fragment"));
+            assert_eq!(input.get("basis"), first_input.get("basis"));
+            assert_eq!(input.get("source_pointer"), first_input.get("source_pointer"));
+        }
+        let source_context = InterpretationSourceContext {
+            canonical_source_ref: "test://architecture-interpretation/1.1/duplicate-topology".into(),
+            source_pointer: map_value(first_input, "source_pointer")
+                .as_str()
+                .expect("source pointer")
+                .into(),
+        };
         let results = selected
             .iter()
             .map(|case| {
                 let input = object(value(case, "input"));
                 interpret(
-                map_value(input, "fragment"),
-                map_value(input, "basis"),
-                map_value(input, "source_pointer").as_str().unwrap(),
+                    map_value(input, "fragment"),
+                    map_value(input, "basis"),
+                    &source_context,
                 )
                 .unwrap()
             })
@@ -1146,11 +1214,109 @@ mod tests {
                     bytes: base64_decode(artifact_object.get("bytes").unwrap().as_str().unwrap()),
                     source_contract: artifact_object.get("source_contract").unwrap().clone(),
                 };
-                interpret_candidate_artifact(&artifact)
+                let result = interpret_candidate_artifact(&artifact)
                     .unwrap_or_else(|error| panic!("{} failed: {error}", artifact.source_ref));
+                if let Some(record) = result.normalized_record.as_ref().and_then(Json::as_object) {
+                    assert_eq!(
+                        record.get("canonical_source_ref").and_then(Json::as_str),
+                        Some(artifact.source_ref.as_str()),
+                    );
+                    assert_eq!(record.get("source_pointer").and_then(Json::as_str), Some("/"));
+                }
                 count += 1;
             }
         }
         assert_eq!(count, 32);
+    }
+
+    #[test]
+    fn ordinary_fragment_alias_does_not_supply_semantic_schema_authority() {
+        let fragment = parsed(
+            r#"{
+                "alias_id": "DEC-0001",
+                "summary": "alias is not schema authority"
+            }"#,
+        );
+        let basis = parsed(r#"{"kind":"authoring_fragment"}"#);
+        let source_context = InterpretationSourceContext {
+            canonical_source_ref: "test://architecture-interpretation/1.1/alias-negative".into(),
+            source_pointer: "/".into(),
+        };
+        let result = interpret(&fragment, &basis, &source_context).expect("interpretation result");
+        assert_eq!(result.disposition, InterpretationDisposition::Rejected);
+        assert_eq!(result.reason_code.as_deref(), Some("forward_type_forbidden"));
+    }
+
+    #[test]
+    fn exact_schema_authority_wins_over_alias_spelling() {
+        let fragment = parsed(
+            r#"{
+                "alias_id": "INV-0001",
+                "summary": "schema selects decision"
+            }"#,
+        );
+        let basis = parsed(
+            r#"{
+                "kind":"authoring_fragment",
+                "schema":"adr-common.schema.json#/definitions/decision"
+            }"#,
+        );
+        let source_context = InterpretationSourceContext {
+            canonical_source_ref: "test://architecture-interpretation/1.1/schema-authority".into(),
+            source_pointer: "/".into(),
+        };
+        let result = interpret(&fragment, &basis, &source_context).expect("interpretation result");
+        assert_eq!(result.disposition, InterpretationDisposition::Accepted);
+        assert_eq!(result.normalized_type.as_deref(), Some("decision"));
+    }
+
+    #[test]
+    fn source_context_is_required_and_source_sensitive() {
+        let fragment = parsed(
+            r#"{
+                "type":"calls",
+                "from_key":"TOPO-A",
+                "to_key":"TOPO-B"
+            }"#,
+        );
+        let basis = parsed(
+            r#"{
+                "kind":"topology_resolution",
+                "components":[
+                    {"topology_key":"TOPO-A","component_ref":"019109a0-b1c2-7def-8a00-112233445566"},
+                    {"topology_key":"TOPO-B","component_ref":"019109a0-b1c2-7def-8a00-112233445567"}
+                ]
+            }"#,
+        );
+        let missing_ref = InterpretationSourceContext {
+            canonical_source_ref: String::new(),
+            source_pointer: "/relationships/0".into(),
+        };
+        assert!(interpret(&fragment, &basis, &missing_ref).is_err());
+
+        let result = |source_ref: &str, source_pointer: &str| {
+            interpret(
+                &fragment,
+                &basis,
+                &InterpretationSourceContext {
+                    canonical_source_ref: source_ref.into(),
+                    source_pointer: source_pointer.into(),
+                },
+            )
+            .expect("topology interpretation")
+        };
+        let first = result("test://source-a", "/relationships/0");
+        let same = result("test://source-a", "/relationships/0");
+        let different_ref = result("test://source-b", "/relationships/0");
+        let different_pointer = result("test://source-a", "/relationships/1");
+        assert_eq!(first, same);
+        assert_ne!(
+            normalized_record(&first).get("assertion_id"),
+            normalized_record(&different_ref).get("assertion_id")
+        );
+        assert_ne!(
+            normalized_record(&first).get("assertion_id"),
+            normalized_record(&different_pointer).get("assertion_id")
+        );
     }
 }

@@ -1103,17 +1103,13 @@ fn compatibility_relationship(
     source_pointer: &str,
     evidence: Option<Json>,
 ) -> Json {
-    let preimage = object([
-        ("relationship_type".into(), string(relationship_type)),
-        ("from_entity_id".into(), string(from)),
-        ("to_entity_id".into(), string(to)),
-        ("canonical_source_ref".into(), string(source_ref)),
-        ("source_pointer".into(), string(source_pointer)),
-    ]);
-    let assertion = digest_json(&preimage)
-        .unwrap_or_else(|_| digest_bytes(&[]))
-        .trim_start_matches("sha256:")
-        .to_owned();
+    let assertion = compatibility_assertion_digest(
+        relationship_type,
+        from,
+        to,
+        source_ref,
+        source_pointer,
+    );
     object([
         ("record_kind".into(), string("compatibility")),
         (
@@ -1133,6 +1129,32 @@ fn compatibility_relationship(
         ),
         ("canonical_source_ref".into(), string(source_ref)),
     ])
+}
+
+/// Return the canonical source-sensitive compatibility assertion digest.
+///
+/// Architecture Interpretation uses the same primitive so compatibility
+/// identities cannot diverge between materialization 1.0 and interpretation
+/// 1.1. Keep the preimage fields and canonicalization stable: existing
+/// materialization output depends on this exact authority.
+pub(crate) fn compatibility_assertion_digest(
+    relationship_type: &str,
+    from: &str,
+    to: &str,
+    source_ref: &str,
+    source_pointer: &str,
+) -> String {
+    let preimage = object([
+        ("relationship_type".into(), string(relationship_type)),
+        ("from_entity_id".into(), string(from)),
+        ("to_entity_id".into(), string(to)),
+        ("canonical_source_ref".into(), string(source_ref)),
+        ("source_pointer".into(), string(source_pointer)),
+    ]);
+    digest_json(&preimage)
+        .unwrap_or_else(|_| digest_bytes(&[]))
+        .trim_start_matches("sha256:")
+        .to_owned()
 }
 
 fn unresolved_relationship(

@@ -182,6 +182,174 @@ def _require_text(value: object, field: str) -> str:
     return value
 
 
+AuthoringOperation = Literal["validate_authoring", "construct_authoring_set"]
+AuthoringValidationStatus = Literal["valid", "invalid", "unavailable", "unresolved"]
+AuthoringConstructionOutcome = Literal["Constructed", "Rejected", "Unavailable", "Unresolved"]
+
+
+@dataclass(frozen=True, slots=True)
+class AuthoringRequest:
+    """Exact ACC 1.0 request payload supplied to the public authoring facade.
+
+    The nested request and basis remain opaque JSON owned by ACC.  This DTO
+    only gives consumers an immutable, operation-qualified outer shape; it
+    deliberately does not validate or infer semantic authoring meaning.
+    """
+
+    request: Mapping[str, object]
+    basis: Mapping[str, object]
+    operation: AuthoringOperation = "construct_authoring_set"
+    contract_family: Literal["authoring_construction"] = "authoring_construction"
+    contract_version: Literal["1.0"] = "1.0"
+
+    def __post_init__(self) -> None:
+        if self.contract_family != "authoring_construction":
+            raise InvalidRequestError("contract_family must be authoring_construction")
+        if self.contract_version != "1.0":
+            raise InvalidRequestError("contract_version must be 1.0")
+        if self.operation not in {"validate_authoring", "construct_authoring_set"}:
+            raise InvalidRequestError(f"Unsupported authoring operation: {self.operation}")
+        if not isinstance(self.request, Mapping):
+            raise InvalidRequestError("request must be a mapping")
+        if not isinstance(self.basis, Mapping):
+            raise InvalidRequestError("basis must be a mapping")
+        object.__setattr__(self, "request", _freeze_json(self.request))
+        object.__setattr__(self, "basis", _freeze_json(self.basis))
+
+    @classmethod
+    def from_wire(cls, value: Mapping[str, object]) -> "AuthoringRequest":
+        if not isinstance(value, Mapping):
+            raise InvalidRequestError("Authoring request must be a mapping")
+        return cls(
+            request=value.get("request"),  # type: ignore[arg-type]
+            basis=value.get("basis"),  # type: ignore[arg-type]
+            operation=value.get("operation", "construct_authoring_set"),  # type: ignore[arg-type]
+            contract_family=value.get("contract_family", "authoring_construction"),  # type: ignore[arg-type]
+            contract_version=value.get("contract_version", "1.0"),  # type: ignore[arg-type]
+        )
+
+    def to_wire(self) -> dict[str, object]:
+        return {
+            "contract_family": self.contract_family,
+            "contract_version": self.contract_version,
+            "operation": self.operation,
+            "request": _thaw_json(self.request),
+            "basis": _thaw_json(self.basis),
+        }
+
+
+@dataclass(frozen=True, slots=True)
+class AuthoringDiagnostic:
+    """Complete immutable projection of one ACC diagnostic."""
+
+    code: str
+    severity: Literal["info", "warning", "error"]
+    status: Literal["violation", "blocked", "unresolved", "unavailable"]
+    request_key: str | None
+    location: str
+    semantic_type: str | None
+    rule: str
+    expected: object
+    observed: object
+    remediation: str
+    blocked_by: tuple[str, ...] = ()
+
+    def __post_init__(self) -> None:
+        object.__setattr__(self, "expected", _freeze_json(self.expected))
+        object.__setattr__(self, "observed", _freeze_json(self.observed))
+
+    @classmethod
+    def from_wire(cls, value: Mapping[str, object]) -> "AuthoringDiagnostic":
+        if not isinstance(value, Mapping):
+            raise InvalidRequestError("Malformed authoring diagnostic")
+        blocked_by = value.get("blocked_by", ())
+        if not isinstance(blocked_by, (list, tuple)) or not all(
+            isinstance(item, str) for item in blocked_by
+        ):
+            raise InvalidRequestError("authoring diagnostic blocked_by must be a string list")
+        severity = value.get("severity")
+        status = value.get("status")
+        if severity not in {"info", "warning", "error"}:
+            raise InvalidRequestError("Malformed authoring diagnostic severity")
+        if status not in {"violation", "blocked", "unresolved", "unavailable"}:
+            raise InvalidRequestError("Malformed authoring diagnostic status")
+        request_key = value.get("request_key")
+        semantic_type = value.get("semantic_type")
+        return cls(
+            code=_require_text(value.get("code"), "diagnostic.code"),
+            severity=cast(Literal["info", "warning", "error"], severity),
+            status=cast(Literal["violation", "blocked", "unresolved", "unavailable"], status),
+            request_key=request_key if isinstance(request_key, str) else None,
+            location=_require_text(value.get("location"), "diagnostic.location"),
+            semantic_type=semantic_type if isinstance(semantic_type, str) else None,
+            rule=_require_text(value.get("rule"), "diagnostic.rule"),
+            expected=value.get("expected"),
+            observed=value.get("observed"),
+            remediation=_require_text(value.get("remediation"), "diagnostic.remediation"),
+            blocked_by=tuple(blocked_by),
+        )
+
+
+@dataclass(frozen=True, slots=True)
+class AuthoringValidationResult:
+    """Immutable ACC validation result; semantic status is never raised."""
+
+    request: AuthoringRequest
+    contract_family: Literal["authoring_construction"]
+    contract_version: Literal["1.0"]
+    operation: Literal["validate_authoring"]
+    validation_status: AuthoringValidationStatus
+    diagnostics: tuple[AuthoringDiagnostic, ...]
+    basis_qualification: Mapping[str, object]
+    provenance: Mapping[str, object]
+    package_version: str
+    api_contract_version: str
+
+    def __post_init__(self) -> None:
+        object.__setattr__(self, "basis_qualification", _freeze_json(self.basis_qualification))
+        object.__setattr__(self, "provenance", _freeze_json(self.provenance))
+
+
+@dataclass(frozen=True, slots=True)
+class AuthoringConstructionResult:
+    """Complete immutable ACC construction result with detached candidates."""
+
+    request: AuthoringRequest
+    contract_family: Literal["authoring_construction"]
+    contract_version: Literal["1.0"]
+    operation: Literal["construct_authoring_set"]
+    outcome: AuthoringConstructionOutcome
+    diagnostics: tuple[AuthoringDiagnostic, ...]
+    basis_qualification: Mapping[str, object]
+    candidate_fragments: tuple[Mapping[str, object], ...]
+    candidate_artifacts: tuple[Mapping[str, object], ...]
+    candidate_source_basis: Mapping[str, object] | None
+    construction_map: tuple[Mapping[str, object], ...]
+    normalized_result: Mapping[str, object] | None
+    round_trip: Mapping[str, object]
+    provenance: Mapping[str, object]
+    package_version: str
+    api_contract_version: str
+
+    def __post_init__(self) -> None:
+        for field_name in (
+            "basis_qualification",
+            "candidate_source_basis",
+            "normalized_result",
+            "round_trip",
+            "provenance",
+        ):
+            value = getattr(self, field_name)
+            if value is not None:
+                object.__setattr__(self, field_name, _freeze_json(value))
+        for field_name in ("candidate_fragments", "candidate_artifacts", "construction_map"):
+            object.__setattr__(
+                self,
+                field_name,
+                tuple(_freeze_json(item) for item in getattr(self, field_name)),
+            )
+
+
 @dataclass(frozen=True, slots=True)
 class MaterializationAuthorityProvider:
     """Explicit provider identity supplied by the host; never inferred by core."""

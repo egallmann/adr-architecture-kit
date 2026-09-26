@@ -79,12 +79,11 @@ def test_adr_l_0029_is_accepted_and_uses_the_supported_representation() -> None:
     assert "canonical Rust semantic execution" in round_trip_rationale
 
 
-def test_adr_l_0029_authorizes_successors_without_advertising_implementation() -> None:
+def test_adr_l_0029_authorizes_successors_and_keeps_ownership_in_rust() -> None:
     text = ADR_PATH.read_text(encoding="utf-8")
 
     for successor in SUCCESSOR_CONTRACTS:
         assert successor in text
-    assert "None is implemented, advertised, or released" in text
     assert "No successor contract directory or resource" in text
 
 
@@ -100,7 +99,9 @@ def test_adc11_and_cec10_are_the_only_authorized_successor_contract_resources() 
     assert not any(path.exists() for path in absent_successor_paths)
 
 
-def test_current_capability_and_execution_authority_remain_unchanged() -> None:
+def test_protocol_exposure_keeps_semantics_in_rust_and_preserves_host_api_scope() -> None:
+    from adr_kit.core import semantic_core_capabilities
+
     capabilities = json.loads(
         (ROOT / "src" / "adr_kit" / "compatibility" / "host-capabilities.json").read_text(
             encoding="utf-8"
@@ -112,18 +113,25 @@ def test_current_capability_and_execution_authority_remain_unchanged() -> None:
         "list_types",
         "describe_type",
     ]
-    serialized = json.dumps(capabilities)
-    assert "validate_authoring" not in serialized
-    assert "construct_authoring_set" not in serialized
+    assert "validate_authoring" not in json.dumps(capabilities)
+    assert "construct_authoring_set" not in json.dumps(capabilities)
+    assert semantic_core_capabilities()["operations_by_version"]["1.2"] == (
+        "validate_authoring",
+        "construct_authoring_set",
+    )
 
+    rust = (ROOT / "core" / "src" / "lib.rs").read_text(encoding="utf-8")
+    assert "authoring_construction::validate_authoring_request" in rust
+    assert "authoring_construction_orchestration::construct_authoring_set" in rust
     for path in (
-        ROOT / "core" / "src" / "lib.rs",
         ROOT / "src" / "adr_kit" / "core" / "semantic_core.py",
         ROOT / "packages" / "node" / "src" / "node" / "core.ts",
     ):
         text = path.read_text(encoding="utf-8")
-        assert "validate_authoring" not in text
-        assert "construct_authoring_set" not in text
+        assert "def validate_authoring" not in text
+        assert "def construct_authoring_set" not in text
+        assert "function validateAuthoring" not in text
+        assert "function constructAuthoringSet" not in text
 
     adr_0030 = yaml.safe_load(ADR_0030_PATH.read_text(encoding="utf-8"))
     assert adr_0030["alias_id"] == "ADR-L-0030"

@@ -79,7 +79,8 @@ pub(crate) struct ValidationReport {
 
 /// Validate an ACC request against the canonical ACC schema and the semantic
 /// rules that are safe to evaluate before construction.  The report is an
-/// internal shared authority; no protocol dispatcher routes to it yet.
+/// internal shared authority; protocol dispatch supplies only the transport
+/// envelope around this result.
 pub(crate) fn validate_authoring_request(request: &Json) -> ValidationReport {
     let mut diagnostics = Vec::new();
     let mut resources = BTreeMap::new();
@@ -178,8 +179,8 @@ pub(crate) fn validate_authoring_request(request: &Json) -> ValidationReport {
 }
 
 /// Render the ACC validation result shape without adding any protocol-level
-/// outcome or diagnostic fields.  Construction result rendering remains
-/// intentionally absent until the construction slice.
+/// outcome or diagnostic fields. Protocol dispatch wraps this unchanged ACC
+/// result in the v1.2 transport envelope.
 pub(crate) fn render_validation_result(request: &Json, validation: &ValidationReport) -> Json {
     let root = request
         .as_object()

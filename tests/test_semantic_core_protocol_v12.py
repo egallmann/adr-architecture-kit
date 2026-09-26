@@ -10,7 +10,12 @@ from typing import Any
 
 from jsonschema import Draft202012Validator
 
-from adr_kit.core import validate_semantic_core_protocol
+from adr_kit.core import (
+    execute_validated_semantic_core_request,
+    semantic_core_capabilities,
+    supports_semantic_core_operation,
+    validate_semantic_core_protocol,
+)
 
 # Reuse the existing verified ACC binding helper rather than defining a second
 # self-binding implementation in this protocol test.
@@ -156,6 +161,39 @@ def test_v12_transport_vectors_cover_the_closed_envelope_surface() -> None:
         raise AssertionError(f"unhandled protocol vector kind: {kind}")
 
 
+def test_v12_capability_negotiation_advertises_only_reachable_operations() -> None:
+    capabilities = semantic_core_capabilities()
+    assert capabilities["supported_versions"] == ("1.0", "1.1", "1.2")
+    assert capabilities["operations_by_version"] == {
+        "1.2": ("validate_authoring", "construct_authoring_set")
+    }
+    assert supports_semantic_core_operation("1.2", "validate_authoring")
+    assert supports_semantic_core_operation("1.2", "construct_authoring_set")
+    assert not supports_semantic_core_operation("1.0", "validate_authoring")
+    assert not supports_semantic_core_operation("1.1", "construct_authoring_set")
+
+
+def test_v12_representative_acc_cases_execute_through_packaged_wasm() -> None:
+    bound = _bound_cases()
+    for case_id, expected_outcome in (
+        ("C01", "Constructed"),
+        ("C32", "Rejected"),
+        ("C33", "Unavailable"),
+    ):
+        case = bound[case_id]
+        request = {
+            "core_contract_version": "1.2",
+            "operation": "construct_authoring_set",
+            "request": case["input"],
+        }
+        result = execute_validated_semantic_core_request(request)
+        assert result["core_contract_version"] == "1.2"
+        assert result["operation"] == "construct_authoring_set"
+        payload = result["result"]
+        assert isinstance(payload, dict)
+        assert payload["outcome"] == expected_outcome
+
+
 def test_v12_wraps_all_bound_acc_cases_without_changing_semantics() -> None:
     protocol_validator = _protocol_validator()
     acc_schema = _document(ACC / "schema.json")
@@ -182,7 +220,7 @@ def test_v12_wraps_all_bound_acc_cases_without_changing_semantics() -> None:
         assert not _acc_errors(acc_schema, result_envelope["result"], result_definition), case["id"]
 
 
-def test_v12_does_not_define_acc_semantic_fields_or_execute_authoring_operations() -> None:
+def test_v12_transport_does_not_define_acc_semantic_fields_or_host_semantics() -> None:
     schema = _document(PROTOCOL / "contract.json")
     serialized = json.dumps(schema)
     for field in (
@@ -196,10 +234,11 @@ def test_v12_does_not_define_acc_semantic_fields_or_execute_authoring_operations
         assert f'"{field}"' not in serialized
 
     for path in (
-        ROOT / "core" / "src" / "lib.rs",
         ROOT / "src" / "adr_kit" / "core" / "semantic_core.py",
         ROOT / "packages" / "node" / "src" / "node" / "core.ts",
     ):
         text = path.read_text(encoding="utf-8")
-        assert "validate_authoring" not in text
-        assert "construct_authoring_set" not in text
+        assert "def validate_authoring" not in text
+        assert "def construct_authoring_set" not in text
+        assert "function validateAuthoring" not in text
+        assert "function constructAuthoringSet" not in text

@@ -11,6 +11,8 @@ from .semantic_core import (
     execute_repository_validation,
     execute_semantic_core_request,
     execute_validated_semantic_core_request,
+    semantic_core_capabilities,
+    supports_semantic_core_operation,
     validate_semantic_core_protocol,
 )
 
@@ -25,5 +27,7 @@ __all__ = [
     "execute_repository_validation",
     "execute_semantic_core_request",
     "execute_validated_semantic_core_request",
+    "semantic_core_capabilities",
+    "supports_semantic_core_operation",
     "validate_semantic_core_protocol",
 ]

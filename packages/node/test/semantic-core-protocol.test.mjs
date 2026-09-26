@@ -7,7 +7,11 @@ import Ajv7Module from "ajv";
 import { semanticCoreContract } from "../dist/generated/semantic-core-contract.js";
 import { semanticCoreContractV11 } from "../dist/generated/semantic-core-contract-v1.1.js";
 import { semanticCoreContractV12 } from "../dist/generated/semantic-core-contract-v1.2.js";
-import { validateSemanticCoreProtocol } from "../dist/node/protocol.js";
+import {
+  semanticCoreCapabilities,
+  supportsSemanticCoreOperation,
+  validateSemanticCoreProtocol,
+} from "../dist/node/protocol.js";
 import { executeSemanticCoreRequest } from "../dist/node/core.js";
 
 const Ajv = AjvModule.default ?? AjvModule;
@@ -98,6 +102,44 @@ test("Node validates the additive v1.2 authoring transport surface", async () =>
     await readFile(resolve("../../contracts/semantic-core/v1.2/vectors/authoring-construction-transport.json"), "utf8"),
   );
   assert.equal(transportVectors.cases.length, 12);
+});
+
+test("Node capability negotiation advertises only reachable v1.2 operations", () => {
+  assert.deepEqual(semanticCoreCapabilities(), {
+    supported_versions: ["1.0", "1.1", "1.2"],
+    operations_by_version: {
+      "1.2": ["validate_authoring", "construct_authoring_set"],
+    },
+  });
+  assert.equal(supportsSemanticCoreOperation("1.2", "validate_authoring"), true);
+  assert.equal(supportsSemanticCoreOperation("1.2", "construct_authoring_set"), true);
+  assert.equal(supportsSemanticCoreOperation("1.0", "validate_authoring"), false);
+  assert.equal(supportsSemanticCoreOperation("1.1", "construct_authoring_set"), false);
+});
+
+function bindAccMarkers(value) {
+  if (typeof value === "string") return value === "$enclosing_scf"
+    ? "scf:v1:sha256:c4449d19f107afbfe93d7c20028b618cd5bb653fb320680ac0b37d49b150fcc0"
+    : value;
+  if (Array.isArray(value)) return value.map(bindAccMarkers);
+  if (value && typeof value === "object") return Object.fromEntries(Object.entries(value).map(([key, child]) => [key, bindAccMarkers(child)]));
+  return value;
+}
+
+test("Node executes representative ACC outcomes through the v1.2 WASM boundary", async () => {
+  const corpus = JSON.parse(await readFile(resolve("../../contracts/authoring-construction/v1.0/resources/conformance.json"), "utf8"));
+  for (const [id, outcome] of [["C01", "Constructed"], ["C32", "Rejected"], ["C33", "Unavailable"]]) {
+    const source = corpus.cases.find((item) => item.id === id);
+    assert.ok(source, id);
+    const result = await executeSemanticCoreRequest({
+      core_contract_version: "1.2",
+      operation: "construct_authoring_set",
+      request: bindAccMarkers(source.input),
+    });
+    assert.equal(result.core_contract_version, "1.2", id);
+    assert.equal(result.operation, "construct_authoring_set", id);
+    assert.equal(result.result?.outcome, outcome, id);
+  }
 });
 
 test("Node keeps a v1.1-only operation rejected on the v1.0 boundary", async () => {

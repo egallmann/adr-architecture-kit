@@ -58,29 +58,55 @@ fn assert_generic_rejection(result: &Json) {
 fn v12_does_not_fall_through_to_the_v10_dispatcher() {
     let request = valid_v10_contract_request("1.2");
     let result = execute_request(request);
-    assert_generic_rejection(&result);
+    assert_eq!(
+        result.get("core_contract_version").and_then(Json::as_str),
+        Some("1.2")
+    );
+    assert_eq!(
+        result.get("operation").and_then(Json::as_str),
+        Some("invalid_request")
+    );
+    assert!(result.get("result").is_some());
 }
 
 #[test]
 fn v12_does_not_execute_v11_operations() {
     for operation in ["resolve_semantic_contract_set", "materialize_architecture"] {
         let result = execute("1.2", operation);
-        assert_generic_rejection(&result);
+        assert_eq!(
+            result.get("core_contract_version").and_then(Json::as_str),
+            Some("1.2")
+        );
+        assert_eq!(result.get("operation").and_then(Json::as_str), Some(operation));
+        assert!(result.get("result").is_some());
     }
 }
 
 #[test]
-fn v12_authoring_operations_remain_non_executable() {
+fn v12_authoring_operations_fail_closed_without_a_request_payload() {
     for operation in ["validate_authoring", "construct_authoring_set"] {
         let result = execute("1.2", operation);
-        assert_generic_rejection(&result);
+        assert_eq!(
+            result.get("core_contract_version").and_then(Json::as_str),
+            Some("1.2")
+        );
+        assert_eq!(result.get("operation").and_then(Json::as_str), Some(operation));
+        assert!(result.get("result").is_some());
     }
 }
 
 #[test]
 fn v12_unknown_operations_are_rejected_at_the_version_boundary() {
     let result = execute("1.2", "unknown_future_operation");
-    assert_generic_rejection(&result);
+    assert_eq!(
+        result.get("core_contract_version").and_then(Json::as_str),
+        Some("1.2")
+    );
+    assert_eq!(
+        result.get("operation").and_then(Json::as_str),
+        Some("unknown_future_operation")
+    );
+    assert!(result.get("result").is_some());
 }
 
 #[test]

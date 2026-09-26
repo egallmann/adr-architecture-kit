@@ -77,9 +77,13 @@ def _assert_resource_set(qualification: dict[str, Any], family: str) -> None:
 
 
 def _assert_basis(basis: dict[str, Any]) -> None:
-    for key in ("acc", "architecture_interpretation"):
+    for key in ("acc",):
         assert "semantic_contract_fingerprint" in basis[key]
         assert "resources" not in basis[key]
+    architecture = basis["architecture_interpretation"]
+    assert "semantic_contract_fingerprint" in architecture
+    assert set(architecture["authority_closure"]) == {"family", "version", "resources"}
+    _assert_resource_set(architecture["authority_closure"], "architecture-interpretation")
     for key, family in RESOURCE_FAMILIES.items():
         _assert_resource_set(basis[key], family)
 

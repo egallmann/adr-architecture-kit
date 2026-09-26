@@ -60,6 +60,99 @@ fn case(id: &str) -> Json {
         .expect("requested frozen ACC case exists")
 }
 
+#[test]
+fn c32_round_trip_vector_uses_a_real_semantic_field_loss() {
+    let frozen = case("C32");
+    let fragment = frozen
+        .get("input")
+        .and_then(|input| input.get("request"))
+        .and_then(|request| request.get("fragments"))
+        .and_then(Json::as_array)
+        .and_then(|fragments| fragments.first())
+        .and_then(Json::as_object)
+        .expect("C32 fragment");
+    let fields = fragment.get("fields").cloned().expect("C32 fields");
+    assert_eq!(fragment.get("semantic_type").and_then(Json::as_str), Some("entity/gap"));
+    assert!(fields.get("context").is_some(), "C32 must carry semantic context");
+
+    let basis = Json::Object(BTreeMap::from([
+        ("kind".into(), Json::String("authoring_fragment".into())),
+        (
+            "schema".into(),
+            Json::String("authoring/1.7/schema/adr-common.schema#/definitions/gap".into()),
+        ),
+    ]));
+    let context = super::architecture_interpretation::InterpretationSourceContext {
+        canonical_source_ref: "candidate/C32/gap".into(),
+        source_pointer: "/".into(),
+    };
+    let interpreted = super::architecture_interpretation::interpret(&fields, &basis, &context)
+        .expect("C32 gap interpretation succeeds");
+    let interpreted_fields = interpreted
+        .fields
+        .as_object()
+        .expect("interpreted fields are an object");
+    assert_eq!(interpreted_fields.get("question"), fields.get("question"));
+    assert_eq!(interpreted_fields.get("blocking"), fields.get("blocking"));
+    assert!(
+        !interpreted_fields.contains_key("context"),
+        "C32 must expose the production mapping loss rather than a fixture mutation"
+    );
+}
+
+#[test]
+fn c33_missing_interpretation_authority_is_unavailable_and_metadata_invariant() {
+    let input = case_input("C33");
+    let baseline = authoring_construction::validate_authoring_request(&input);
+    assert_eq!(baseline.status, authoring_construction::ValidationStatus::Unavailable);
+    assert_eq!(
+        diagnostic_codes(&baseline),
+        vec!["authoring_construction.interpretation.unavailable"]
+    );
+
+    let mut mutated = input;
+    mutated
+        .as_object_mut()
+        .and_then(|root| root.get_mut("request"))
+        .and_then(Json::as_object_mut)
+        .expect("request")
+        .insert("request_id".into(), Json::String("renamed-request".into()));
+    mutated
+        .as_object_mut()
+        .and_then(|root| root.get_mut("basis"))
+        .and_then(Json::as_object_mut)
+        .and_then(|basis| basis.get_mut("provenance"))
+        .and_then(Json::as_object_mut)
+        .expect("provenance")
+        .insert("source_ref".into(), Json::String("conformance/renamed".into()));
+    let changed = authoring_construction::validate_authoring_request(&mutated);
+    assert_eq!(changed.status, baseline.status);
+    assert_eq!(changed.diagnostics, baseline.diagnostics);
+}
+
+#[test]
+fn available_interpretation_authority_does_not_follow_fixture_metadata() {
+    let mut input = case_input("C02");
+    input
+        .as_object_mut()
+        .and_then(|root| root.get_mut("request"))
+        .and_then(Json::as_object_mut)
+        .expect("request")
+        .insert("request_id".into(), Json::String("ACC-C33".into()));
+    input
+        .as_object_mut()
+        .and_then(|root| root.get_mut("basis"))
+        .and_then(Json::as_object_mut)
+        .and_then(|basis| basis.get_mut("provenance"))
+        .and_then(Json::as_object_mut)
+        .expect("provenance")
+        .insert("source_ref".into(), Json::String("conformance/C33".into()));
+    let report = authoring_construction::validate_authoring_request(&input);
+    assert_eq!(report.status, authoring_construction::ValidationStatus::Valid);
+    assert!(!diagnostic_codes(&report)
+        .contains(&"authoring_construction.interpretation.unavailable".into()));
+}
+
 fn diagnostic_codes(report: &authoring_construction::ValidationReport) -> Vec<String> {
     report
         .diagnostics

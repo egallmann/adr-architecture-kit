@@ -1295,18 +1295,13 @@ mod tests {
                 .iter()
                 .map(seal_frozen_artifact)
                 .collect::<Vec<_>>();
-            let case_id = case.get("id").and_then(Json::as_str).unwrap_or("case");
             let Some(basis) = result
                 .get("candidate_source_basis")
                 .filter(|value| !matches!(value, Json::Null))
             else {
-                if case_id == "C33" {
-                    assert!(result
-                        .get("candidate_source_basis")
-                        .is_some_and(|value| matches!(value, Json::Null)));
-                }
                 continue;
             };
+            let case_id = case.get("id").and_then(Json::as_str).unwrap_or("case");
             let basis_object = basis.as_object().expect("basis object");
             let selected_refs = basis_object
                 .get("artifacts")

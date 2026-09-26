@@ -92,6 +92,33 @@ is independent of ADR persistence-schema versions; discover both through
 `capabilities()` and use the [authoring contract reference](https://github.com/egallmann/adr-architecture-kit/tree/main/contracts/authoring-domain)
 for exact canonical bytes.
 
+## Construct detached authoring candidates
+
+Authoring Construction accepts the exact ACC 1.0 request and qualified basis.
+The public facade returns the complete Rust/WASM-governed result, including
+diagnostics, candidate artifacts, construction map, normalized result, and
+round-trip qualification. It does not write files or persist anything.
+
+```python
+from adr_kit.api import AuthoringRequest, construct_authoring_set
+
+request = AuthoringRequest(
+    request=acc_request,
+    basis=qualified_basis,
+    operation="construct_authoring_set",
+)
+result = construct_authoring_set(request)
+print(result.outcome)
+for diagnostic in result.diagnostics:
+    print(diagnostic.severity, diagnostic.code)
+print(result.candidate_artifacts)  # detached candidate bytes
+```
+
+Use `validate_authoring()` with the same DTO and
+`operation="validate_authoring"` for validation. `Rejected`, `Unavailable`,
+and `Unresolved` are returned as governed outcomes; host and protocol failures
+raise SDK exceptions.
+
 ## Work with semantic contracts
 
 The SDK exposes the immutable semantic definitions used by both peer hosts.

@@ -169,12 +169,14 @@ def test_python_discovery_objects_are_immutable_and_do_not_admit_mutation() -> N
     assert descriptor.input_contract.values == ("MUST", "MUST NOT", "SHOULD", "SHOULD NOT", "MAY")
     with pytest.raises((AttributeError, TypeError)):
         descriptor.input_contract.status = "deferred"
-    assert not any(
-        name.startswith(
-            ("create_", "construct_", "author_", "mutate_", "save_", "persist_", "update_")
+        allowed_execution_apis = {"validate_authoring", "construct_authoring_set"}
+        assert not any(
+            name.startswith(
+                ("create_", "construct_", "author_", "mutate_", "save_", "persist_", "update_")
+            )
+            and name not in allowed_execution_apis
+            for name in api.__all__
         )
-        for name in api.__all__
-    )
 
 
 def test_python_authoring_mirror_is_byte_exact() -> None:

@@ -578,6 +578,8 @@ def capabilities() -> CapabilityManifest:
         "describe_authoring_contract",
         "list_authoring_types",
         "describe_authoring_type",
+        "validate_authoring",
+        "construct_authoring_set",
         "validate_architecture",
         "validate_project_metadata",
         "validate_contract",

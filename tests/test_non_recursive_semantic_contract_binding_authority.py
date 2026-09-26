@@ -67,6 +67,9 @@ def test_self_binding_does_not_advertise_construction_capability() -> None:
             encoding="utf-8"
         )
     )
-    serialized = json.dumps(capabilities)
-    assert "construct_authoring_set" not in serialized
-    assert "validate_authoring" not in serialized
+    assert capabilities["peer_host_operations"][1:3] == [
+        "validate_authoring",
+        "construct_authoring_set",
+    ]
+    assert "construct_authoring_set" not in json.dumps(capabilities["authoring_domain"])
+    assert "validate_authoring" not in json.dumps(capabilities["authoring_domain"])

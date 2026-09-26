@@ -113,8 +113,12 @@ def test_protocol_exposure_keeps_semantics_in_rust_and_preserves_host_api_scope(
         "list_types",
         "describe_type",
     ]
-    assert "validate_authoring" not in json.dumps(capabilities)
-    assert "construct_authoring_set" not in json.dumps(capabilities)
+    assert capabilities["peer_host_operations"][1:3] == [
+        "validate_authoring",
+        "construct_authoring_set",
+    ]
+    assert "validate_authoring" not in json.dumps(capabilities["authoring_domain"])
+    assert "construct_authoring_set" not in json.dumps(capabilities["authoring_domain"])
     assert semantic_core_capabilities()["operations_by_version"]["1.2"] == (
         "validate_authoring",
         "construct_authoring_set",

@@ -35,6 +35,17 @@
       },
       "additionalProperties": false
     },
+    "architecture_interpretation_qualification": {
+      "type": "object",
+      "required": ["family", "version", "semantic_contract_fingerprint", "authority_closure"],
+      "properties": {
+        "family": {"$ref": "#/$defs/non_empty"},
+        "version": {"$ref": "#/$defs/non_empty"},
+        "semantic_contract_fingerprint": {"$ref": "#/$defs/scf"},
+        "authority_closure": {"$ref": "#/$defs/exact_resource_set_qualification"}
+      },
+      "additionalProperties": false
+    },
     "exact_resource_set_qualification": {
       "type": "object",
       "required": ["family", "version", "resources"],
@@ -209,7 +220,7 @@
         "adc": {"$ref": "#/$defs/exact_resource_set_qualification"},
         "authoring": {"$ref": "#/$defs/exact_resource_set_qualification"},
         "normalized_model": {"$ref": "#/$defs/exact_resource_set_qualification"},
-        "architecture_interpretation": {"$ref": "#/$defs/semantic_contract_qualification"},
+        "architecture_interpretation": {"$ref": "#/$defs/architecture_interpretation_qualification"},
         "custom_entity": {"anyOf": [{"$ref": "#/$defs/custom_registry_qualification"}, {"type": "null"}]},
         "reference_basis": {"$ref": "#/$defs/reference_basis"},
         "existing_source_basis": {"$ref": "#/$defs/existing_source_basis"},

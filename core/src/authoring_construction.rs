@@ -898,7 +898,7 @@ fn validate_basis(root: &BTreeMap<String, Json>, diagnostics: &mut Vec<Json>) {
     if !acc_ok {
         basis_diagnostic("/basis/acc", diagnostics);
     }
-    let architecture_ok = basis
+    let architecture_qualification_ok = basis
         .get("architecture_interpretation")
         .and_then(Json::as_object)
         .and_then(|value| value.get("family"))
@@ -916,8 +916,15 @@ fn validate_basis(root: &BTreeMap<String, Json>, diagnostics: &mut Vec<Json>) {
             .and_then(|value| value.get("semantic_contract_fingerprint"))
             .and_then(Json::as_str)
             == Some(architecture_interpretation_scf().as_str());
-    if !architecture_ok {
+    if !architecture_qualification_ok {
         basis_diagnostic("/basis/architecture_interpretation", diagnostics);
+    } else if basis
+        .get("architecture_interpretation")
+        .and_then(Json::as_object)
+        .and_then(|value| value.get("authority_closure"))
+        != Some(&architecture_interpretation_authority())
+    {
+        interpretation_unavailable_diagnostic(diagnostics);
     }
     for (name, expected) in [
         (
@@ -1047,6 +1054,35 @@ fn architecture_interpretation_scf() -> String {
         .and_then(Json::as_str)
         .expect("the accepted architecture-interpretation contract must declare its SCF")
         .to_owned()
+}
+
+fn architecture_interpretation_authority() -> Json {
+    expected_resources(
+        "architecture-interpretation",
+        "1.1",
+        &[
+            (
+                "architecture-interpretation/1.1/source-decoding-1.7",
+                include_str!("../../contracts/architecture-interpretation/v1.1/resources/source-decoding-1.7.json"),
+            ),
+            (
+                "architecture-interpretation/1.1/source-mapping-1.7-to-2.4",
+                include_str!("../../contracts/architecture-interpretation/v1.1/resources/source-mapping-1.7-to-2.4.json"),
+            ),
+            (
+                "architecture-interpretation/1.1/rules",
+                include_str!("../../contracts/architecture-interpretation/v1.1/resources/rules.json"),
+            ),
+            (
+                "architecture-interpretation/1.1/legacy-compatibility",
+                include_str!("../../contracts/architecture-interpretation/v1.1/resources/legacy-compatibility.json"),
+            ),
+            (
+                "architecture-interpretation/1.1/conformance",
+                include_str!("../../contracts/architecture-interpretation/v1.1/resources/conformance.json"),
+            ),
+        ],
+    )
 }
 
 fn expected_resources(family: &str, version: &str, resources: &[(&str, &str)]) -> Json {
@@ -1183,6 +1219,21 @@ fn basis_diagnostic(location: &str, diagnostics: &mut Vec<Json>) {
         "exact governed semantic basis",
         "supplied basis is not the exact accepted authority",
         "Supply the exact contract-qualified resource set and semantic fingerprint.",
+        None,
+    ));
+}
+
+fn interpretation_unavailable_diagnostic(diagnostics: &mut Vec<Json>) {
+    diagnostics.push(diag(
+        "authoring_construction.interpretation.unavailable",
+        "warning",
+        "unavailable",
+        None,
+        "/request",
+        None,
+        EXPECTED,
+        "required authority is unavailable",
+        REMEDIATION,
         None,
     ));
 }

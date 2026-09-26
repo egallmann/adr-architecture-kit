@@ -52,8 +52,8 @@ impl IdentityMinter for UuidV7Minter {
 }
 
 /// Construct an ACC request using the default detached identity authority.
-/// This function is crate-visible only and is intentionally not reachable from
-/// the semantic-core protocol dispatcher.
+/// This function is crate-visible only; the protocol dispatcher supplies only
+/// the versioned transport envelope around its governed ACC result.
 pub(crate) fn construct_authoring_set(request: &Json) -> Json {
     let mut minter = UuidV7Minter;
     construct_authoring_set_with_minter(request, &mut minter)

@@ -8,7 +8,6 @@ pub(crate) mod architecture_interpretation;
 mod attribution;
 mod authoring_construction;
 mod authoring_construction_orchestration;
-// Internal substrate only; protocol 1.2 dispatch remains intentionally closed.
 pub(crate) mod candidate_source;
 mod linkage;
 mod materialization;
@@ -318,6 +317,69 @@ pub(crate) fn invalid_v11(operation: &str, message: impl Into<String>) -> Json {
         false,
         vec![diagnostic("core.invalid_request", message, None)],
     )
+}
+
+fn protocol_v12_result(operation: &str, result: Json) -> Json {
+    object([
+        (String::from("core_contract_version"), string(VERSION_1_2)),
+        (String::from("operation"), string(operation)),
+        (String::from("result"), result),
+    ])
+}
+
+fn invalid_v12(operation: &str, message: impl Into<String>) -> Json {
+    protocol_v12_result(
+        operation,
+        object([
+            (String::from("operation"), string(operation)),
+            (
+                String::from("diagnostics"),
+                Json::Array(vec![diagnostic("core.invalid_request", message, None)]),
+            ),
+        ]),
+    )
+}
+
+fn execute_authoring_v12(request: &Json) -> Json {
+    let Some(root) = request.as_object() else {
+        return invalid_v12("invalid_request", "semantic-core protocol 1.2 request must be an object");
+    };
+    if root
+        .keys()
+        .any(|key| !matches!(key.as_str(), "core_contract_version" | "operation" | "request"))
+    {
+        return invalid_v12("invalid_request", "protocol 1.2 envelope contains an undeclared field");
+    }
+    let Some(operation) = root.get("operation").and_then(Json::as_str) else {
+        return invalid_v12("invalid_request", "semantic-core protocol 1.2 operation is required");
+    };
+    if !matches!(operation, "validate_authoring" | "construct_authoring_set") {
+        return invalid_v12(operation, "operation is not available in semantic-core protocol 1.2");
+    }
+    if root.contains_key("result") {
+        return invalid_v12(operation, "protocol 1.2 execution accepts a request payload, not a result payload");
+    }
+    let Some(payload) = root.get("request") else {
+        return invalid_v12(operation, "protocol 1.2 request payload is required");
+    };
+    let Some(payload_object) = payload.as_object() else {
+        return invalid_v12(operation, "protocol 1.2 request payload must be an object");
+    };
+    if payload_object.get("operation").and_then(Json::as_str) != Some(operation) {
+        return invalid_v12(operation, "outer and nested protocol 1.2 operations must agree");
+    }
+
+    let result = match operation {
+        "validate_authoring" => {
+            let validation = authoring_construction::validate_authoring_request(payload);
+            authoring_construction::render_validation_result(payload, &validation)
+        }
+        "construct_authoring_set" => {
+            authoring_construction_orchestration::construct_authoring_set(payload)
+        }
+        _ => unreachable!("operation was checked above"),
+    };
+    protocol_v12_result(operation, result)
 }
 
 fn optional_string_value(object: &BTreeMap<String, Json>, key: &str) -> Option<String> {
@@ -1629,9 +1691,7 @@ pub fn execute_json(input: &[u8]) -> Vec<u8> {
                         None => invalid_v11("invalid_request", "operation is required"),
                     }
                 }
-                Some(VERSION_1_2) => invalid(
-                    "semantic-core protocol 1.2 is known but execution is not implemented",
-                ),
+                Some(VERSION_1_2) => execute_authoring_v12(&value),
                 Some(_) | None => invalid("unsupported core_contract_version"),
             };
             json(&result).into_bytes()
@@ -1642,6 +1702,9 @@ pub fn execute_json(input: &[u8]) -> Vec<u8> {
 
 #[cfg(test)]
 mod semantic_core_version_routing_tests;
+
+#[cfg(test)]
+mod semantic_core_v12_tests;
 
 static mut LAST_RESULT_LEN: usize = 0;
 

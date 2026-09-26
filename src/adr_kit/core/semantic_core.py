@@ -18,6 +18,29 @@ from jsonschema import Draft202012Validator
 import wasmtime
 import yaml
 
+SEMANTIC_CORE_PROTOCOL_VERSIONS = ("1.0", "1.1", "1.2")
+SEMANTIC_CORE_PROTOCOL_V12_OPERATIONS = (
+    "validate_authoring",
+    "construct_authoring_set",
+)
+
+
+def semantic_core_capabilities() -> dict[str, object]:
+    """Advertise the additive protocol capabilities reachable by this adapter."""
+
+    return {
+        "supported_versions": SEMANTIC_CORE_PROTOCOL_VERSIONS,
+        "operations_by_version": {
+            "1.2": SEMANTIC_CORE_PROTOCOL_V12_OPERATIONS,
+        },
+    }
+
+
+def supports_semantic_core_operation(version: str, operation: str) -> bool:
+    """Return whether an additive operation is reachable for an exact version."""
+
+    return version == "1.2" and operation in SEMANTIC_CORE_PROTOCOL_V12_OPERATIONS
+
 
 def _artifact_bytes() -> bytes:
     return resources.files("adr_kit.core").joinpath("semantic-core.wasm").read_bytes()

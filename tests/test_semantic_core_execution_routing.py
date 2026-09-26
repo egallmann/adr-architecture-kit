@@ -23,7 +23,9 @@ def _assert_generic_rejection(result: dict[str, object]) -> None:
 
 def test_raw_wasm_v12_does_not_execute_a_valid_v10_operation() -> None:
     result = execute_semantic_core_request(_valid_v10_contract_request("1.2"))
-    _assert_generic_rejection(result)
+    assert result["core_contract_version"] == "1.2"
+    assert result["operation"] == "invalid_request"
+    assert isinstance(result["result"], dict)
 
 
 def test_raw_wasm_v12_does_not_execute_v11_operations() -> None:
@@ -31,15 +33,19 @@ def test_raw_wasm_v12_does_not_execute_v11_operations() -> None:
         result = execute_semantic_core_request(
             {"core_contract_version": "1.2", "operation": operation}
         )
-        _assert_generic_rejection(result)
+        assert result["core_contract_version"] == "1.2"
+        assert result["operation"] == operation
+        assert isinstance(result["result"], dict)
 
 
-def test_raw_wasm_v12_authoring_operations_remain_non_executable() -> None:
+def test_raw_wasm_v12_authoring_operations_fail_closed_without_a_request_payload() -> None:
     for operation in ("validate_authoring", "construct_authoring_set"):
         result = execute_semantic_core_request(
             {"core_contract_version": "1.2", "operation": operation}
         )
-        _assert_generic_rejection(result)
+        assert result["core_contract_version"] == "1.2"
+        assert result["operation"] == operation
+        assert isinstance(result["result"], dict)
 
 
 def test_raw_wasm_unsupported_version_cannot_execute_v10_or_v11_operations() -> None:

@@ -12,9 +12,10 @@ reference, composition, relationship, diagnostic, outcome, detached-candidate,
 and round-trip semantics. This protocol contract intentionally validates only
 the versioned envelope and agreement between its outer and inner operations.
 
-Protocol 1.0 and 1.1 remain separate additive surfaces. Protocol 1.2 does not
-execute either operation; Rust/WASM execution and public host capability
-advertisement remain deferred.
+Protocol 1.0 and 1.1 remain separate additive surfaces. Protocol 1.2 executes
+both operations through the canonical Rust/WASM dispatcher. Low-level Python
+and Node adapters advertise the exact supported version and operation surface;
+they do not add author-facing construction APIs or semantic implementations.
 
 The transport conformance vectors reference the frozen ACC C01-C42 corpus
 instead of copying its meaning-bearing inputs or expected outputs.

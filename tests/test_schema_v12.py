@@ -123,9 +123,18 @@ def test_capability_manifest_reports_v1_2_as_provisional_without_promoting_v1_1(
         "1.4",
         "1.5",
         "1.6",
+        "1.7",
     )
     assert manifest.stable_adr_schema_versions == ("1.0",)
-    assert manifest.provisional_adr_schema_versions == ("1.1", "1.2", "1.3", "1.4", "1.5", "1.6")
+    assert manifest.provisional_adr_schema_versions == (
+        "1.1",
+        "1.2",
+        "1.3",
+        "1.4",
+        "1.5",
+        "1.6",
+        "1.7",
+    )
 
 
 def test_valid_v1_2_logical_and_topology_fixtures_parse() -> None:

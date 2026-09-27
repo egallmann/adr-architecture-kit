@@ -7,6 +7,9 @@ export interface CapabilityManifest {
   readonly consumer_binding_contract_version: "1.0";
   readonly execution_environments: readonly ["browser", "node"];
   readonly supported_architecture_discovery_versions: readonly ["1.1"];
+  readonly supported_adr_schema_versions: readonly ["1.0", "1.1", "1.2", "1.3", "1.4", "1.5", "1.6", "1.7"];
+  readonly stable_adr_schema_versions: readonly ["1.0"];
+  readonly provisional_adr_schema_versions: readonly ["1.1", "1.2", "1.3", "1.4", "1.5", "1.6", "1.7"];
   readonly supported_normalized_model_versions: readonly ["2.1", "2.2", "2.3"];
   readonly supported_evidence_attribution_versions: readonly ["1.5", "1.6"];
   readonly preferred_evidence_attribution_version: "1.6";
@@ -27,6 +30,9 @@ export function capabilities(): CapabilityManifest {
     consumer_binding_contract_version: "1.0",
     execution_environments: ["browser", "node"] as const,
     supported_architecture_discovery_versions: ["1.1"] as const,
+    supported_adr_schema_versions: ["1.0", "1.1", "1.2", "1.3", "1.4", "1.5", "1.6", "1.7"] as const,
+    stable_adr_schema_versions: ["1.0"] as const,
+    provisional_adr_schema_versions: ["1.1", "1.2", "1.3", "1.4", "1.5", "1.6", "1.7"] as const,
     supported_normalized_model_versions: ["2.1", "2.2", "2.3"] as const,
     supported_evidence_attribution_versions: ["1.5", "1.6"] as const,
     preferred_evidence_attribution_version: "1.6",

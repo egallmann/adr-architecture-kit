@@ -33,6 +33,7 @@ const families = [
   ["authoring", "v1.4"],
   ["authoring", "v1.5"],
   ["authoring", "v1.6"],
+  ["authoring", "v1.7"],
   ["normalized-model", "v2.1"],
   ["normalized-model", "v2.2"],
   ["normalized-model", "v2.3"],

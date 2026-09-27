@@ -88,7 +88,7 @@ export function validateAuthoringDocument(
   mode: AuthoringValidationMode = "complete",
 ): ValidationResult {
   const version = String(schemaVersion ?? "1.0");
-  const familyVersion = ["1.2", "1.3", "1.4", "1.5", "1.6"].includes(version) ? version : "1.0";
+  const familyVersion = ["1.2", "1.3", "1.4", "1.5", "1.6", "1.7"].includes(version) ? version : "1.0";
   const filename = `adr-${adrType}.schema.json`;
   const schemaPath = familyVersion === "1.0"
     ? `v1.0/${filename}`

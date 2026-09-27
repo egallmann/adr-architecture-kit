@@ -58,6 +58,11 @@ from ..models.v1_6 import (
     PhysicalComponentADRv16,
     PhysicalSystemADRv16,
 )
+from ..models.v1_7 import (
+    LogicalADRv17,
+    PhysicalComponentADRv17,
+    PhysicalSystemADRv17,
+)
 from ..models.v2_0 import (
     NormalizedEntityRegistryV2,
     RelationshipRegistryV2,
@@ -119,6 +124,7 @@ class ADRParser:
         schema_v15_dir: Path | None = None,
         schema_authoring_v15_dir: Path | None = None,
         schema_authoring_v16_dir: Path | None = None,
+        schema_authoring_v17_dir: Path | None = None,
         schema_v16_dir: Path | None = None,
         schema_v21_dir: Path | None = None,
         schema_v22_dir: Path | None = None,
@@ -134,6 +140,7 @@ class ADRParser:
             schema_v15_dir: Path to evidence-attribution v1.5 schemas (defaults to adr_kit.schema.v1_5)
             schema_authoring_v15_dir: Path to ADR authoring v1.5 schemas (defaults to adr_kit.schema.authoring.v1_5)
             schema_authoring_v16_dir: Path to ADR authoring v1.6 schemas (defaults to adr_kit.schema.authoring.v1_6)
+            schema_authoring_v17_dir: Path to ADR authoring v1.7 schemas (defaults to adr_kit.schema.authoring.v1_7)
         """
         if schema_dir is None:
             schema_dir = _package_schema_dir("adr_kit.schema.v1_0")
@@ -151,6 +158,8 @@ class ADRParser:
             schema_authoring_v15_dir = _package_schema_dir("adr_kit.schema.authoring.v1_5")
         if schema_authoring_v16_dir is None:
             schema_authoring_v16_dir = _package_schema_dir("adr_kit.schema.authoring.v1_6")
+        if schema_authoring_v17_dir is None:
+            schema_authoring_v17_dir = _package_schema_dir("adr_kit.schema.authoring.v1_7")
         if schema_v16_dir is None:
             schema_v16_dir = _package_schema_dir("adr_kit.schema.v1_6")
         if schema_v21_dir is None:
@@ -168,6 +177,7 @@ class ADRParser:
         self.schema_v15_dir = Path(schema_v15_dir)
         self.schema_authoring_v15_dir = Path(schema_authoring_v15_dir)
         self.schema_authoring_v16_dir = Path(schema_authoring_v16_dir)
+        self.schema_authoring_v17_dir = Path(schema_authoring_v17_dir)
         self.schema_v16_dir = Path(schema_v16_dir)
         self.schema_v21_dir = Path(schema_v21_dir)
         self.schema_v22_dir = Path(schema_v22_dir)
@@ -269,6 +279,14 @@ class ADRParser:
             "physical_system_v1_6": "adr-physical-system.schema.json",
             "physical_component_v1_6": "adr-physical-component.schema.json",
         }
+        schema_authoring_v17_files = {
+            "types_v1_7": "types.schema.json",
+            "common_v1_7": "adr-common.schema.json",
+            "logical_v1_7": "adr-logical.schema.json",
+            "physical_base_v1_7": "adr-physical-base.schema.json",
+            "physical_system_v1_7": "adr-physical-system.schema.json",
+            "physical_component_v1_7": "adr-physical-component.schema.json",
+        }
         schema_v15_files = {
             "implementation_attribution_evidence_v1_5": "implementation-attribution-evidence.schema.json",
         }
@@ -342,6 +360,12 @@ class ADRParser:
 
         for name, filename in schema_authoring_v16_files.items():
             schema_path = self.schema_authoring_v16_dir / filename
+            if schema_path.exists():
+                with open(schema_path) as f:
+                    self._schemas[name] = json.load(f)
+
+        for name, filename in schema_authoring_v17_files.items():
+            schema_path = self.schema_authoring_v17_dir / filename
             if schema_path.exists():
                 with open(schema_path) as f:
                     self._schemas[name] = json.load(f)
@@ -479,6 +503,8 @@ class ADRParser:
             return f"{base_name}_v1_5"
         if version == "1.6":
             return f"{base_name}_v1_6"
+        if version == "1.7":
+            return f"{base_name}_v1_7"
         raise ADRParseError(
             f"Unsupported ADR schema_version '{version}' for adr_type "
             f"'{data.get('adr_type', base_name)}'"
@@ -507,6 +533,8 @@ class ADRParser:
         self.validate_against_schema(data, self._authoring_schema_name(data, "logical"))
 
         try:
+            if data.get("schema_version") == "1.7":
+                return cast(LogicalADR, LogicalADRv17(**data))
             if data.get("schema_version") == "1.6":
                 return cast(LogicalADR, LogicalADRv16(**data))
             if data.get("schema_version") == "1.5":
@@ -573,6 +601,8 @@ class ADRParser:
         self.validate_against_schema(data, self._authoring_schema_name(data, "physical_system"))
 
         try:
+            if data.get("schema_version") == "1.7":
+                return cast(PhysicalSystemADR, PhysicalSystemADRv17(**data))
             if data.get("schema_version") == "1.6":
                 return cast(PhysicalSystemADR, PhysicalSystemADRv16(**data))
             if data.get("schema_version") == "1.5":
@@ -609,6 +639,8 @@ class ADRParser:
 
         # Parse into Pydantic model
         try:
+            if data.get("schema_version") == "1.7":
+                return cast(PhysicalComponentADR, PhysicalComponentADRv17(**data))
             if data.get("schema_version") == "1.6":
                 return cast(PhysicalComponentADR, PhysicalComponentADRv16(**data))
             if data.get("schema_version") == "1.5":

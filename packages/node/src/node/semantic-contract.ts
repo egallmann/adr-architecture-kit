@@ -6,6 +6,7 @@
  * returned views; the Rust semantic core remains the sole meaning authority.
  */
 import { semanticContractAssets } from "../generated/semantic-contract-assets.js";
+import { canonicalSchemas } from "../schemas/index.js";
 import { executeValidatedSemanticCoreRequest } from "./core.js";
 import type { AdrKitDiagnostic } from "../errors.js";
 import { mkdir, readFile, writeFile } from "node:fs/promises";
@@ -233,6 +234,11 @@ export function getSemanticContract(family: string, version: string): SemanticCo
 
 export function loadSemanticResource(key: string): unknown {
   const parts = key.split("/");
+  if (parts.length === 4 && parts[0] === "authoring" && parts[1] === "1.7" && parts[2] === "schema") {
+    const resource = canonicalSchemas[`authoring/v1.7/${parts[3]}.json` as keyof typeof canonicalSchemas];
+    if (resource) return deepFreeze(structuredClone(resource));
+    throw new Error(`Missing bundled semantic resource: ${key}`);
+  }
   if (parts.length < 3 || !["1.0", "1.5", "1.6", "2.3"].includes(parts[1] ?? "")) throw new Error(`Unsupported semantic resource: ${key}`);
   const names = [`${key.replaceAll("/", "-")}.json`];
   if (parts.length === 3) names.push(`${parts[0]}-${parts[2]}.json`);

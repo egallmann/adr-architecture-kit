@@ -1093,18 +1093,6 @@ fn interpret_artifact(
         canonical_source_ref: artifact.source_ref.clone(),
         source_pointer: "/".into(),
     };
-    if artifact.artifact_kind == "authoring_document" {
-        architecture_interpretation::interpret_document(
-            &source,
-            &context,
-            &artifact.source_contract,
-            &format!(
-                "{}#{}",
-                artifact.source_schema.canonical_resource_key, artifact.source_schema.json_pointer
-            ),
-            &artifact.content_digest,
-        )?;
-    }
     architecture_interpretation::interpret(&source, &Json::Object(basis), &context)
 }
 

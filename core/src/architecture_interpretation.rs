@@ -8,8 +8,6 @@
 
 use std::collections::BTreeMap;
 
-use sha2::{Digest, Sha256};
-
 use super::{candidate_source, materialization, schema_validation, semantic_contract, Json};
 
 const FORWARD_RELATIONSHIPS: &[&str] = &[
@@ -853,18 +851,6 @@ pub(crate) fn interpret_candidate_artifact(
         canonical_source_ref: artifact.source_ref.clone(),
         source_pointer: "/".into(),
     };
-    if artifact.artifact_kind == "authoring_document" {
-        interpret_document(
-            &source,
-            &source_context,
-            &artifact.source_contract,
-            &format!(
-                "{}#{}",
-                artifact.source_schema.canonical_resource_key, artifact.source_schema.json_pointer
-            ),
-            &artifact.content_digest,
-        )?;
-    }
     interpret(&source, &Json::Object(basis), &source_context)
 }
 
@@ -882,30 +868,22 @@ pub(crate) struct NormalizedInterpretation {
     pub(crate) unresolved_registry: Json,
 }
 
+#[derive(Clone, Debug, Eq, PartialEq)]
+pub(crate) struct NormalizedOutputContext {
+    pub(crate) architecture_namespace: String,
+}
+
+impl NormalizedOutputContext {
+    fn validate(&self) -> Result<(), String> {
+        materialization::validate_architecture_namespace(&self.architecture_namespace)
+    }
+}
+
 #[derive(Clone, Debug)]
 struct DocumentFragment {
     value: Json,
     schema: String,
     pointer: String,
-}
-
-fn is_uuid_v7(value: &str) -> bool {
-    let parts = value.split('-').collect::<Vec<_>>();
-    parts.len() == 5
-        && [8, 4, 4, 4, 12]
-            .into_iter()
-            .zip(parts.iter())
-            .all(|(length, part)| {
-                part.len() == length
-                    && part
-                        .bytes()
-                        .all(|byte| byte.is_ascii_hexdigit() && !byte.is_ascii_uppercase())
-            })
-        && parts[2].starts_with('7')
-        && parts[3]
-            .as_bytes()
-            .first()
-            .is_some_and(|byte| matches!(byte, b'8' | b'9' | b'a' | b'b'))
 }
 
 fn source_object<'a>(value: &'a Json, label: &str) -> Result<&'a BTreeMap<String, Json>, String> {
@@ -953,22 +931,6 @@ fn source_contract_projection(source_contract: &Json) -> Json {
 
 fn number(value: u64) -> Json {
     Json::Number(serde_json::Number::from(value))
-}
-
-fn normalized_digest(value: &Json) -> String {
-    let mut canonical = String::new();
-    semantic_contract::canonicalize_value(value, &mut canonical)
-        .expect("normalized interpretation JSON must be canonicalizable");
-    let mut hasher = Sha256::new();
-    hasher.update(canonical.as_bytes());
-    let digest = hasher.finalize();
-    format!(
-        "sha256:{}",
-        digest
-            .iter()
-            .map(|byte| format!("{byte:02x}"))
-            .collect::<String>()
-    )
 }
 
 fn add_nested_fragments(
@@ -1079,12 +1041,13 @@ fn normalized_entity(
     result: &InterpretationResult,
     root: &BTreeMap<String, Json>,
     source_context: &InterpretationSourceContext,
+    output_context: &NormalizedOutputContext,
     source_contract: &Json,
     content_digest: &str,
 ) -> Result<Json, String> {
     let fragment = source_object(fragment, "interpreted fragment")?;
     let id = source_text(fragment, "id", "interpreted fragment")?;
-    if !is_uuid_v7(&id) {
+    if !materialization::is_uuid_v7(&id) {
         return Err(format!("interpreted fragment id is not UUIDv7: {id}"));
     }
     let alias_id = source_text(fragment, "alias_id", "interpreted fragment")?;
@@ -1103,12 +1066,9 @@ fn normalized_entity(
         .find_map(|key| fragment.get(key).and_then(Json::as_str))
         .unwrap_or(name.as_str())
         .to_owned();
-    let created_at = fragment
-        .get("created_date")
-        .or_else(|| root.get("created_date"))
-        .and_then(Json::as_str)
-        .unwrap_or("source-basis")
-        .to_owned();
+    let created_at = materialization::uuidv7_created_at(&id)
+        .ok_or_else(|| format!("UUIDv7 identity lacks a valid timestamp: {id}"))?;
+    let uri = materialization::canonical_entity_uri(&output_context.architecture_namespace, &id)?;
     let mut values = BTreeMap::from([
         ("id".into(), string(id.clone())),
         ("alias_id".into(), string(alias_id.clone())),
@@ -1117,7 +1077,7 @@ fn normalized_entity(
         ("entity_type".into(), string(normalized_type)),
         ("name".into(), string(name)),
         ("summary".into(), string(summary)),
-        ("uri".into(), string(format!("source://{}/entities/{id}", source_context.canonical_source_ref))),
+        ("uri".into(), string(uri)),
         ("created_at".into(), string(created_at)),
         (
             "canonical_source".into(),
@@ -1189,14 +1149,13 @@ fn normalized_entity(
             }
         }
     } else {
+        let status = root
+            .get("status")
+            .and_then(Json::as_str)
+            .unwrap_or("proposed");
         values.insert(
             "lifecycle_stage".into(),
-            string(
-                root.get("status")
-                    .and_then(Json::as_str)
-                    .filter(|status| matches!(*status, "proposed" | "active" | "deprecated" | "superseded"))
-                    .unwrap_or("proposed"),
-            ),
+            string(materialization::lifecycle_stage(status)),
         );
         if normalized_type == "qualified_custom_entity" {
             let fields = result.fields.as_object().cloned().unwrap_or_default();
@@ -1214,8 +1173,12 @@ fn normalized_entity(
             );
         }
     }
-    let preimage = Json::Object(values.clone());
-    values.insert("entity_fingerprint".into(), string(normalized_digest(&preimage)));
+    let entity_fingerprint = if normalized_type == "normative_proposition" {
+        materialization::normative_proposition_fingerprint(&values)
+    } else {
+        materialization::regular_entity_fingerprint(&values)
+    };
+    values.insert("entity_fingerprint".into(), string(entity_fingerprint));
     Ok(Json::Object(values))
 }
 
@@ -1263,11 +1226,13 @@ fn unresolved_from_result(result: &InterpretationResult, context: &Interpretatio
 pub(crate) fn interpret_document(
     source: &Json,
     source_context: &InterpretationSourceContext,
+    output_context: &NormalizedOutputContext,
     source_contract: &Json,
     source_schema: &str,
     content_digest: &str,
 ) -> Result<NormalizedInterpretation, String> {
     source_context.validate()?;
+    output_context.validate()?;
     let root = source_object(source, "authoring document")?;
     let root_basis = object([
         ("kind", string("authoring_document")),
@@ -1282,6 +1247,7 @@ pub(crate) fn interpret_document(
         &root_result,
         root,
         source_context,
+        output_context,
         source_contract,
         content_digest,
     )?];
@@ -1313,6 +1279,7 @@ pub(crate) fn interpret_document(
                     &result,
                     root,
                     &context,
+                    output_context,
                     source_contract,
                     content_digest,
                 )?;
@@ -1445,7 +1412,10 @@ pub(crate) fn interpret_document(
         ("type", string("normalized_architecture_model")),
         ("mode", string("normalized")),
         ("scope_root", string(source_context.canonical_source_ref.clone())),
-        ("architecture_namespace", Json::Null),
+        (
+            "architecture_namespace",
+            string(output_context.architecture_namespace.clone()),
+        ),
         ("entities", Json::Array(entities)),
         ("relationships", Json::Array(relationships)),
         ("unresolved", Json::Array(unresolved)),
@@ -1470,7 +1440,10 @@ pub(crate) fn interpret_document(
         .as_object()
         .cloned()
         .ok_or_else(|| "normalized model assembly failed".to_owned())?;
-    model_values.insert("fingerprint".into(), string(normalized_digest(&model_without_fingerprint)));
+    model_values.insert(
+        "fingerprint".into(),
+        string(materialization::digest_json(&model_without_fingerprint)?),
+    );
     let model = Json::Object(model_values);
     let resources = normalized_schema_resources()?;
     for (key, value) in [
@@ -1882,6 +1855,9 @@ mod tests {
             canonical_source_ref: "test://architecture-interpretation/1.1/I01".into(),
             source_pointer: "/".into(),
         };
+        let output_context = NormalizedOutputContext {
+            architecture_namespace: "test-architecture".into(),
+        };
         let source_contract = parsed(
             r#"{
                 "family": "authoring",
@@ -1895,6 +1871,7 @@ mod tests {
         let first = interpret_document(
             source,
             &source_context,
+            &output_context,
             &source_contract,
             "authoring/1.7/schema/adr-logical.schema",
             "sha256:1111111111111111111111111111111111111111111111111111111111111111",
@@ -1903,6 +1880,7 @@ mod tests {
         let second = interpret_document(
             source,
             &source_context,
+            &output_context,
             &source_contract,
             "authoring/1.7/schema/adr-logical.schema",
             "sha256:1111111111111111111111111111111111111111111111111111111111111111",
@@ -1931,6 +1909,111 @@ mod tests {
                 .and_then(Json::as_str)
                 .is_some_and(|value| value.starts_with("sha256:"))
         );
+        assert_eq!(
+            first.model.get("architecture_namespace").and_then(Json::as_str),
+            Some("test-architecture")
+        );
+        let root_id = "019109a0-b1c2-7def-8a00-112233445566";
+        let root_entity = first
+            .entity_registry
+            .get("entities")
+            .and_then(Json::as_array)
+            .and_then(|entities| {
+                entities.iter().find(|entity| {
+                    entity.get("id").and_then(Json::as_str) == Some(root_id)
+                })
+            })
+            .and_then(Json::as_object)
+            .expect("root normalized entity");
+        assert_eq!(
+            root_entity.get("uri").and_then(Json::as_str),
+            Some("adr://test-architecture/entities/019109a0-b1c2-7def-8a00-112233445566")
+        );
+        assert_eq!(
+            root_entity.get("created_at").and_then(Json::as_str),
+            materialization::uuidv7_created_at(root_id).as_deref()
+        );
+        assert_ne!(root_entity.get("created_at").and_then(Json::as_str), Some("2026-09-15"));
+        assert_eq!(root_entity.get("lifecycle_stage").and_then(Json::as_str), Some("proposed"));
+        let expected_fingerprint = materialization::regular_entity_fingerprint(root_entity);
+        assert_eq!(
+            root_entity.get("entity_fingerprint").and_then(Json::as_str),
+            Some(expected_fingerprint.as_str())
+        );
+    }
+
+    #[test]
+    fn normalized_output_context_maps_accepted_and_rejects_missing_namespace() {
+        let root = parsed(include_str!(
+            "../../contracts/architecture-interpretation/v1.1/resources/conformance.json"
+        ));
+        let case = value(&root, "cases")
+            .as_array()
+            .expect("conformance cases")
+            .iter()
+            .find(|case| value(case, "id").as_str() == Some("I01"))
+            .expect("I01");
+        let input = object(value(case, "input"));
+        let mut source = map_value(&input, "fragment").clone();
+        source
+            .as_object_mut()
+            .expect("I01 source object")
+            .insert("status".into(), string("accepted"));
+        let source_context = InterpretationSourceContext {
+            canonical_source_ref: "test://architecture-interpretation/1.1/accepted".into(),
+            source_pointer: "/".into(),
+        };
+        let output_context = NormalizedOutputContext {
+            architecture_namespace: "test-architecture".into(),
+        };
+        let source_contract = parsed(
+            r#"{
+                "family": "authoring",
+                "version": "1.7",
+                "schemaResource": {
+                    "canonicalResourceKey": "authoring/1.7/schema/adr-logical.schema",
+                    "contentDigest": "sha256:0000000000000000000000000000000000000000000000000000000000000000"
+                }
+            }"#,
+        );
+        let result = interpret_document(
+            &source,
+            &source_context,
+            &output_context,
+            &source_contract,
+            "authoring/1.7/schema/adr-logical.schema",
+            "sha256:1111111111111111111111111111111111111111111111111111111111111111",
+        )
+        .expect("accepted source interpretation");
+        let root_entity = result
+            .entity_registry
+            .get("entities")
+            .and_then(Json::as_array)
+            .and_then(|entities| {
+                entities.iter().find(|entity| {
+                    entity.get("id").and_then(Json::as_str)
+                        == Some("019109a0-b1c2-7def-8a00-112233445566")
+                })
+            })
+            .expect("accepted root normalized entity");
+        assert_eq!(
+            root_entity.get("lifecycle_stage").and_then(Json::as_str),
+            Some("active")
+        );
+
+        let missing_context = NormalizedOutputContext {
+            architecture_namespace: String::new(),
+        };
+        let error = interpret_document(
+            &source,
+            &source_context,
+            &missing_context,
+            &source_contract,
+            "authoring/1.7/schema/adr-logical.schema",
+            "sha256:1111111111111111111111111111111111111111111111111111111111111111",
+        )
+        .expect_err("missing normalized output context must fail closed");
+        assert!(error.contains("architecture_namespace"));
     }
 
     #[test]

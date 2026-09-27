@@ -66,7 +66,7 @@ fn is_sha256(value: &str) -> bool {
             .all(|byte| byte.is_ascii_hexdigit() && !byte.is_ascii_uppercase())
 }
 
-fn is_uuid_v7(value: &str) -> bool {
+pub(crate) fn is_uuid_v7(value: &str) -> bool {
     let bytes = value.as_bytes();
     bytes.len() == 36
         && [8, 13, 18, 23].iter().all(|index| bytes[*index] == b'-')
@@ -98,7 +98,7 @@ fn civil_from_days(days: i64) -> (i64, u64, u64) {
     (year, month as u64, day as u64)
 }
 
-fn uuidv7_created_at(value: &str) -> Option<String> {
+pub(crate) fn uuidv7_created_at(value: &str) -> Option<String> {
     if !is_uuid_v7(value) {
         return None;
     }
@@ -130,7 +130,7 @@ fn digest_bytes(bytes: &[u8]) -> String {
     )
 }
 
-fn digest_json(value: &Json) -> Result<String, String> {
+pub(crate) fn digest_json(value: &Json) -> Result<String, String> {
     let mut canonical = String::new();
     canonicalize_value(value, &mut canonical)?;
     Ok(digest_bytes(canonical.as_bytes()))
@@ -170,13 +170,34 @@ fn canonical_alias(value: &str, fallback: &str) -> String {
     }
 }
 
-fn lifecycle_stage(status: &str) -> &'static str {
+pub(crate) fn lifecycle_stage(status: &str) -> &'static str {
     match status {
         "accepted" | "active" => "active",
         "deprecated" => "deprecated",
         "superseded" => "superseded",
         _ => "proposed",
     }
+}
+
+pub(crate) fn validate_architecture_namespace(value: &str) -> Result<(), String> {
+    if value.is_empty() {
+        Err("architecture_namespace must be a non-empty string".into())
+    } else {
+        Ok(())
+    }
+}
+
+pub(crate) fn canonical_entity_uri(
+    architecture_namespace: &str,
+    entity_id: &str,
+) -> Result<String, String> {
+    validate_architecture_namespace(architecture_namespace)?;
+    if !is_uuid_v7(entity_id) {
+        return Err(format!("canonical entity id is not UUIDv7: {entity_id}"));
+    }
+    Ok(format!(
+        "adr://{architecture_namespace}/entities/{entity_id}"
+    ))
 }
 
 fn source_artifact_value(
@@ -862,7 +883,7 @@ fn normalized_source_contract(binding: &Json) -> Json {
     ])
 }
 
-fn regular_entity_fingerprint(values: &BTreeMap<String, Json>) -> String {
+pub(crate) fn regular_entity_fingerprint(values: &BTreeMap<String, Json>) -> String {
     let preimage = object([
         (
             "id".into(),
@@ -897,7 +918,7 @@ fn refresh_regular_entity_fingerprint(values: &mut BTreeMap<String, Json>) {
     values.insert("entity_fingerprint".into(), string(fingerprint));
 }
 
-fn normative_proposition_fingerprint(values: &BTreeMap<String, Json>) -> String {
+pub(crate) fn normative_proposition_fingerprint(values: &BTreeMap<String, Json>) -> String {
     let preimage = object([
         (
             "id".into(),
@@ -987,6 +1008,8 @@ fn regular_entity(
     let artifact_path = text(source.get("artifactPath")).unwrap_or_default();
     let content_digest = text(source.get("contentDigest")).unwrap_or_default();
     let source_type = format!("{declaration_kind}_adr");
+    let architecture_namespace = text(provider.get("architectureNamespace")).unwrap_or_default();
+    let uri = canonical_entity_uri(&architecture_namespace, &identity.id).ok()?;
     let mut values = BTreeMap::from([
         ("id".into(), string(identity.id.clone())),
         ("alias_id".into(), string(identity.alias_id.clone())),
@@ -998,14 +1021,7 @@ fn regular_entity(
         ("entity_type".into(), string(entity_type)),
         ("name".into(), string(title)),
         ("summary".into(), string(summary)),
-        (
-            "uri".into(),
-            string(format!(
-                "adr://{}/entities/{}",
-                text(provider.get("architectureNamespace")).unwrap_or_default(),
-                identity.id
-            )),
-        ),
+        ("uri".into(), string(uri)),
         ("created_at".into(), string(created_at)),
         ("lifecycle_stage".into(), string(lifecycle_stage(&status))),
         (
@@ -1447,6 +1463,8 @@ fn normative_proposition(
     let source_ref = text(source.get("sourceRef")).unwrap_or_default();
     let artifact_path = text(source.get("artifactPath")).unwrap_or_default();
     let content_digest = text(source.get("contentDigest")).unwrap_or_default();
+    let architecture_namespace = text(provider.get("architectureNamespace")).unwrap_or_default();
+    let uri = canonical_entity_uri(&architecture_namespace, &identity.id).ok()?;
     let mut values = BTreeMap::from([
         ("id".into(), string(identity.id.clone())),
         ("alias_id".into(), string(identity.alias_id.clone())),
@@ -1461,14 +1479,7 @@ fn normative_proposition(
             "summary".into(),
             string(statement.clone().unwrap_or_default()),
         ),
-        (
-            "uri".into(),
-            string(format!(
-                "adr://{}/entities/{}",
-                text(provider.get("architectureNamespace")).unwrap_or_default(),
-                identity.id
-            )),
-        ),
+        ("uri".into(), string(uri)),
         ("created_at".into(), string(uuidv7_created_at(&identity.id)?)),
         ("statement".into(), string(statement.unwrap_or_default())),
         ("normative_force".into(), string(force.unwrap_or_default())),

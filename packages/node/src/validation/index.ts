@@ -16,31 +16,9 @@ const AjvConstructor = AjvModule as unknown as new (options: Record<string, unkn
 const ajv = new AjvConstructor({ allErrors: true, strict: false, validateFormats: true });
 (addFormats as unknown as (instance: object) => void)(ajv);
 
-function runtimeSchema(schema: unknown): unknown {
-  const id = (schema as { $id?: string }).$id;
-  if (!id?.includes("/schema/authoring/v1.7/")) return schema;
-  const copy = JSON.parse(JSON.stringify(schema)) as unknown;
-  const rewrite = (node: unknown): void => {
-    if (Array.isArray(node)) {
-      for (const item of node) rewrite(item);
-      return;
-    }
-    if (!node || typeof node !== "object") return;
-    const record = node as Record<string, unknown>;
-    if (record.$ref === "#/definitions/alternative") {
-      record.$ref = "types.schema.json#/definitions/alternative";
-    } else if (record.$ref === "#/definitions/consequences") {
-      record.$ref = "types.schema.json#/definitions/consequences";
-    }
-    for (const value of Object.values(record)) rewrite(value);
-  };
-  rewrite(copy);
-  return copy;
-}
-
 for (const schema of Object.values(canonicalSchemas)) {
   const id = (schema as { $id?: string }).$id;
-  if (id && !ajv.getSchema(id)) ajv.addSchema(runtimeSchema(schema), id);
+  if (id && !ajv.getSchema(id)) ajv.addSchema(schema, id);
 }
 
 function structuralSchema(schema: unknown): unknown {
@@ -63,7 +41,7 @@ const structuralAjv = new AjvConstructor({ allErrors: true, strict: false, valid
 (addFormats as unknown as (instance: object) => void)(structuralAjv);
 for (const schema of Object.values(canonicalSchemas)) {
   const id = (schema as { $id?: string }).$id;
-  if (id && !structuralAjv.getSchema(id)) structuralAjv.addSchema(structuralSchema(runtimeSchema(schema)), id);
+  if (id && !structuralAjv.getSchema(id)) structuralAjv.addSchema(structuralSchema(schema), id);
 }
 
 const schemaFor: Record<SupportedCapability, string> = {

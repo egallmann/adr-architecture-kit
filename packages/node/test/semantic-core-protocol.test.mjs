@@ -119,7 +119,7 @@ test("Node capability negotiation advertises only reachable v1.2 operations", ()
 
 function bindAccMarkers(value) {
   if (typeof value === "string") return value === "$enclosing_scf"
-    ? "scf:v1:sha256:c4449d19f107afbfe93d7c20028b618cd5bb653fb320680ac0b37d49b150fcc0"
+    ? "scf:v1:sha256:b94f67ebff64b6560206715cef87a49b4444b71aa661cce92a6c3d04d8bf2703"
     : value;
   if (Array.isArray(value)) return value.map(bindAccMarkers);
   if (value && typeof value === "object") return Object.fromEntries(Object.entries(value).map(([key, child]) => [key, bindAccMarkers(child)]));

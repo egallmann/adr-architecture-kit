@@ -95,8 +95,8 @@
         "alias_name": {"$ref": "types.schema.json#/definitions/alias_name"},
         "summary": {"type": "string", "minLength": 1},
         "rationale": {"type": "string", "minLength": 1},
-        "alternatives_considered": {"type": "array", "items": {"$ref": "types.schema.json#/definitions/alternative"}},
-        "consequences": {"$ref": "types.schema.json#/definitions/consequences"},
+        "alternatives_considered": {"type": "array", "items": {"$ref": "#/definitions/alternative"}},
+        "consequences": {"$ref": "#/definitions/consequences"},
         "related_invariants": {"type": "array", "items": {"$ref": "types.schema.json#/definitions/uuid_v7"}},
         "enforces_invariants": {"type": "array", "items": {"$ref": "types.schema.json#/definitions/uuid_v7"}},
         "enables_capabilities": {"type": "array", "items": {"$ref": "types.schema.json#/definitions/uuid_v7"}},
@@ -169,7 +169,7 @@
         "summary": {"type": "string", "minLength": 1},
         "rationale": {"type": "string", "minLength": 1},
         "implements_invariants": {"type": "array", "items": {"$ref": "types.schema.json#/definitions/uuid_v7"}},
-        "alternatives_considered": {"type": "array", "items": {"$ref": "types.schema.json#/definitions/alternative"}}
+        "alternatives_considered": {"type": "array", "items": {"$ref": "#/definitions/alternative"}}
       },
       "additionalProperties": false
     },

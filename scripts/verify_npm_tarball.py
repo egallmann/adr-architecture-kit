@@ -17,6 +17,12 @@ REQUIRED_FILES = (
     "dist/schemas/canonical/normalized-model/v2.1/normalized-architecture-model.schema.json",
     "dist/schemas/canonical/normalized-model/v2.2/normalized-architecture-model.schema.json",
     "dist/schemas/canonical/normalized-model/v2.3/normalized-architecture-model.schema.json",
+    "dist/schemas/canonical/normalized-model/v2.4/normalized-architecture-model.schema.json",
+    "dist/schemas/canonical/normalized-model/v2.4/normalized-entity-registry.schema.json",
+    "dist/schemas/canonical/normalized-model/v2.4/normalized-entity.schema.json",
+    "dist/schemas/canonical/normalized-model/v2.4/relationship-record.schema.json",
+    "dist/schemas/canonical/normalized-model/v2.4/relationship-registry.schema.json",
+    "dist/schemas/canonical/normalized-model/v2.4/unresolved-registry.schema.json",
     "README.md",
     "LICENSE",
 )

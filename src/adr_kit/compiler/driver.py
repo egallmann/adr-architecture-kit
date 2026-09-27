@@ -376,6 +376,16 @@ class ArchitectureCompiler:
         unresolved_registry = self._parse_unresolved_registry_artifact(
             parser, unresolved_registry_artifact.content.decode("utf-8")
         )
+        if (
+            isinstance(entity_registry, dict)
+            or isinstance(relationship_registry, dict)
+            or isinstance(unresolved_registry, dict)
+        ):
+            diagnostics.error(
+                "E703",
+                "Normalized-model v2.4 is schema-valid but remains outside compiler materialization",
+            )
+            return
 
         remediation_ledger = None
         remediation_ledger_path = scope.adr_dir / "governance" / "remediation-ledger.yaml"
@@ -415,6 +425,7 @@ class ArchitectureCompiler:
         | NormalizedEntityRegistryV21
         | NormalizedEntityRegistryV22
         | NormalizedEntityRegistryV23
+        | dict[str, object]
     ):
         if cls._peek_schema_version(yaml_text) == "2.3":
             data = yaml.safe_load(yaml_text)
@@ -439,6 +450,7 @@ class ArchitectureCompiler:
         | RelationshipRegistryV21
         | RelationshipRegistryV22
         | RelationshipRegistryV23
+        | dict[str, object]
     ):
         if cls._peek_schema_version(yaml_text) == "2.3":
             data = yaml.safe_load(yaml_text)
@@ -463,6 +475,7 @@ class ArchitectureCompiler:
         | UnresolvedRegistryV21
         | UnresolvedRegistryV22
         | UnresolvedRegistryV23
+        | dict[str, object]
     ):
         if cls._peek_schema_version(yaml_text) == "2.3":
             data = yaml.safe_load(yaml_text)

@@ -64,6 +64,15 @@ assert resources.files('adr_kit.schema.authoring.v1_6').joinpath('adr-logical.sc
 assert resources.files('adr_kit.schema.authoring.v1_7').joinpath('adr-logical.schema.json').is_file()
 assert resources.files('adr_kit.schema.v2_0').joinpath('normalized-entity.schema.json').is_file()
 assert resources.files('adr_kit.schema.v2_3').joinpath('normalized-entity.schema.json').is_file()
+for schema_name in (
+    'normalized-architecture-model.schema.json',
+    'normalized-entity-registry.schema.json',
+    'normalized-entity.schema.json',
+    'relationship-record.schema.json',
+    'relationship-registry.schema.json',
+    'unresolved-registry.schema.json',
+):
+    assert resources.files('adr_kit.schema.v2_4').joinpath(schema_name).is_file()
 assert resources.files('adr_kit.templates').joinpath('adr-logical.md.jinja2').is_file()
 assert resources.files('adr_kit.templates').joinpath('system-overview-adr-architecture-kit.yaml').is_file()
 assert resources.files('adr_kit.templates').joinpath('system-overview-ste-runtime.yaml').is_file()
@@ -201,7 +210,7 @@ root = Path(os.environ['ADR_NORMALIZED_MODEL_FIXTURE'])
 manifest = capabilities()
 assert manifest.supported_adr_schema_versions == ('1.0', '1.1', '1.2', '1.3', '1.4', '1.5', '1.6', '1.7')
 assert manifest.normalized_model_schema_version == '1.1'
-assert manifest.supported_normalized_model_schema_versions == ('1.1', '2.0', '2.1', '2.2', '2.3')
+assert manifest.supported_normalized_model_schema_versions == ('1.1', '2.0', '2.1', '2.2', '2.3', '2.4')
 assert NormalizedArchitectureModelV2 is not None
 assert ProviderRegistry is not None
 assert callable(open_provider_registry)

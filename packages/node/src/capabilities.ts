@@ -10,7 +10,7 @@ export interface CapabilityManifest {
   readonly supported_adr_schema_versions: readonly ["1.0", "1.1", "1.2", "1.3", "1.4", "1.5", "1.6", "1.7"];
   readonly stable_adr_schema_versions: readonly ["1.0"];
   readonly provisional_adr_schema_versions: readonly ["1.1", "1.2", "1.3", "1.4", "1.5", "1.6", "1.7"];
-  readonly supported_normalized_model_versions: readonly ["2.1", "2.2", "2.3"];
+  readonly supported_normalized_model_versions: readonly ["2.1", "2.2", "2.3", "2.4"];
   readonly supported_evidence_attribution_versions: readonly ["1.5", "1.6"];
   readonly preferred_evidence_attribution_version: "1.6";
   readonly supported_authoring_domain_versions: readonly ["1.0"];
@@ -33,7 +33,7 @@ export function capabilities(): CapabilityManifest {
     supported_adr_schema_versions: ["1.0", "1.1", "1.2", "1.3", "1.4", "1.5", "1.6", "1.7"] as const,
     stable_adr_schema_versions: ["1.0"] as const,
     provisional_adr_schema_versions: ["1.1", "1.2", "1.3", "1.4", "1.5", "1.6", "1.7"] as const,
-    supported_normalized_model_versions: ["2.1", "2.2", "2.3"] as const,
+    supported_normalized_model_versions: ["2.1", "2.2", "2.3", "2.4"] as const,
     supported_evidence_attribution_versions: ["1.5", "1.6"] as const,
     preferred_evidence_attribution_version: "1.6",
     supported_authoring_domain_versions: hostCapabilities.authoring_domain.supported_versions as readonly ["1.0"],

@@ -165,3 +165,64 @@ test("authoring v1.7 validates through the packaged canonical schema", () => {
   };
   assert.equal(validateAuthoringDocument(document, "logical", "1.7").valid, true);
 });
+
+test("authoring v1.7 resolves cross-file decision references in Node", () => {
+  const logical = {
+    schema_version: "1.7",
+    adr_type: "logical",
+    id: "01940000-0000-7000-8000-000000000001",
+    alias_id: "ADR-L-0001",
+    alias_name: "authoring-v17",
+    title: "Authoring v1.7 contract",
+    status: "accepted",
+    created_date: "2026-01-01",
+    authors: ["test"],
+    context: "A complete v1.7 logical document.",
+    decisions: [{
+      id: "01940000-0000-7000-8000-000000000002",
+      alias_id: "DEC-0001",
+      alias_name: "choose-v17",
+      summary: "Use authoring v1.7",
+      rationale: "The accepted ACC source contract requires it.",
+      alternatives_considered: [{ name: "Authoring v1.6", rejected_because: "The accepted source contract is v1.7." }],
+      consequences: { positive: ["The source contract is explicit."], negative: ["Consumers resolve v1.7."] },
+    }],
+  };
+  const physical = {
+    schema_version: "1.7",
+    adr_type: "physical-component",
+    id: "01940000-0000-7000-8000-000000000011",
+    alias_id: "ADR-PC-0001",
+    alias_name: "authoring-v17-component",
+    title: "Authoring v1.7 component",
+    status: "accepted",
+    created_date: "2026-01-01",
+    authors: ["test"],
+    implements_logical: ["01940000-0000-7000-8000-000000000001"],
+    implements_system: ["01940000-0000-7000-8000-000000000003"],
+    context: "A complete v1.7 physical component document.",
+    technology_stack: [{ category: "framework", name: "Test", version: "1", rationale: "Test fixture." }],
+    component_specifications: [{
+      id: "01940000-0000-7000-8000-000000000012",
+      alias_id: "COMP-0001",
+      alias_name: "test-component",
+      name: "Test component",
+      type: "service",
+      responsibilities: "Validates authoring v1.7.",
+      generation_context: { purpose: "Test", key_responsibilities: ["Validate"] },
+      interfaces: [{ id: "01940000-0000-7000-8000-000000000013", alias_id: "IFACE-0001", alias_name: "test-interface", type: "REST", specification: "Test interface." }],
+    }],
+    implementation_decisions: [{
+      id: "01940000-0000-7000-8000-000000000014",
+      alias_id: "IMPL-0001",
+      alias_name: "choose-v17",
+      summary: "Use the v1.7 schema.",
+      rationale: "It is the accepted source contract.",
+      alternatives_considered: [{ name: "An older schema", rejected_because: "It lacks the accepted contract." }],
+    }],
+  };
+  assert.equal(validateAuthoringDocument(logical, "logical", "1.7").valid, true);
+  assert.equal(validateAuthoringDocument(physical, "physical-component", "1.7").valid, true);
+  assert.equal(validateAuthoringDocument({ ...logical, decisions: [{ ...logical.decisions[0], consequences: { positive: [7] } }] }, "logical", "1.7").valid, false);
+  assert.equal(validateAuthoringDocument({ ...physical, implementation_decisions: [{ ...physical.implementation_decisions[0], alternatives_considered: [{ name: 7, rejected_because: "bad" }] }] }, "physical-component", "1.7").valid, false);
+});

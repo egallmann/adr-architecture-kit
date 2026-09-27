@@ -37,6 +37,7 @@ const families = [
   ["normalized-model", "v2.1"],
   ["normalized-model", "v2.2"],
   ["normalized-model", "v2.3"],
+  ["normalized-model", "v2.4"],
   ["evidence-attribution", "v1.5"],
   ["evidence-attribution", "v1.6"],
   ["architecture-discovery", "v1.1"],

@@ -5,8 +5,8 @@ artifact_kind: system_overview
 generator_id: adr-system-overview
 generator_version: 2
 hash_algorithm: sha256
-source_hash: 7b5aceb080cf92bbb3fade79554592e772c78c3a111f959184f36014a07b7edd
-rendered_hash: 72e5a206dbac033a142c339ab6971e64fec4ff3894c03c5fdb3aa2861c01221b
+source_hash: 66d19b4f1bd90eebdd273b02e6d9842037ec15c5ea89676b95834933d4f34345
+rendered_hash: fa4a633247620c3e1d456d9ce8a820b6adbea0f721abaf24cdb3b9742526b7a6
 -->
 
 <!--
@@ -74,7 +74,7 @@ Derived provider facts:
 - API contract version: `1.0`
 - Package version: `0.11.1`
 - Operations: `capabilities`, `describe_authoring_contract`, `list_authoring_types`, `describe_authoring_type`, `validate_authoring`, `construct_authoring_set`, `validate_architecture`, `validate_project_metadata`, `validate_contract`, `validate_generated_docs`, `compile_architecture`, `open_repository`, `open_provider_registry`, `build_embodiment_linkage`, `generate_attribution_shim`, `list_semantic_contracts`, `get_semantic_contract`, `canonicalize_semantic_json`, `calculate_semantic_contract_fingerprint`, `verify_semantic_contract`, `validate_semantic_resource_closure`, `compose_semantic_contract_set`, `list_semantic_contract_profiles`, `get_semantic_contract_profile`, `validate_semantic_contract_profile`, `validate_semantic_contract_qualification`, `preview_semantic_contract_set_assembly`, `apply_semantic_contract_set_assembly`, `validate_semantic_contract_corpus`, `list_semantic_contract_sets`, `resolve_current_semantic_contract_set`, `prepare_promotion`, `check_promotion`, `apply_promotion`- Validation modes: `complete`, `structural`- Artifact groups: `registries`, `manifest`, `markdown`- Supported ADR schema versions: `1.0`, `1.1`, `1.2`, `1.3`, `1.4`, `1.5`, `1.6`, `1.7`- Stable ADR schema versions: `1.0`- Provisional ADR schema versions: `1.1`, `1.2`, `1.3`, `1.4`, `1.5`, `1.6`, `1.7`- Normalized model schema version: `1.1`
-- Supported normalized model schema versions: `1.1`, `2.0`, `2.1`, `2.2`, `2.3`
+- Supported normalized model schema versions: `1.1`, `2.0`, `2.1`, `2.2`, `2.3`, `2.4`
 Supported semantic/repository contracts include `ArchitectureRepository` and `NormalizedArchitectureModel`.
 
 See [`docs/public-sdk.md`](docs/public-sdk.md).

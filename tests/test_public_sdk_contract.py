@@ -414,7 +414,14 @@ def test_capability_manifest_is_exact_and_deterministic() -> None:
     )
     assert "1.3" in first.supported_adr_schema_versions
     assert first.normalized_model_schema_version == "1.1"
-    assert first.supported_normalized_model_schema_versions == ("1.1", "2.0", "2.1", "2.2", "2.3")
+    assert first.supported_normalized_model_schema_versions == (
+        "1.1",
+        "2.0",
+        "2.1",
+        "2.2",
+        "2.3",
+        "2.4",
+    )
     assert first.supported_evidence_attribution_versions == ("1.5", "1.6")
     assert first.preferred_evidence_attribution_version == "1.6"
     assert first.supported_authoring_domain_versions == ("1.0",)

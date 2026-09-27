@@ -619,7 +619,7 @@ def capabilities() -> CapabilityManifest:
         stable_adr_schema_versions=("1.0",),
         provisional_adr_schema_versions=("1.1", "1.2", "1.3", "1.4", "1.5", "1.6", "1.7"),
         normalized_model_schema_version="1.1",
-        supported_normalized_model_schema_versions=("1.1", "2.0", "2.1", "2.2", "2.3"),
+        supported_normalized_model_schema_versions=("1.1", "2.0", "2.1", "2.2", "2.3", "2.4"),
         supported_evidence_attribution_versions=("1.5", "1.6"),
         preferred_evidence_attribution_version="1.6",
         supported_authoring_domain_versions=tuple(

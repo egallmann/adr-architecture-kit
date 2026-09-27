@@ -8,7 +8,9 @@
 
 use std::collections::BTreeMap;
 
-use super::{candidate_source, materialization, semantic_contract, Json};
+use sha2::{Digest, Sha256};
+
+use super::{candidate_source, materialization, schema_validation, semantic_contract, Json};
 
 const FORWARD_RELATIONSHIPS: &[&str] = &[
     "calls",
@@ -851,7 +853,641 @@ pub(crate) fn interpret_candidate_artifact(
         canonical_source_ref: artifact.source_ref.clone(),
         source_pointer: "/".into(),
     };
+    if artifact.artifact_kind == "authoring_document" {
+        interpret_document(
+            &source,
+            &source_context,
+            &artifact.source_contract,
+            &format!(
+                "{}#{}",
+                artifact.source_schema.canonical_resource_key, artifact.source_schema.json_pointer
+            ),
+            &artifact.content_digest,
+        )?;
+    }
     interpret(&source, &Json::Object(basis), &source_context)
+}
+
+/// The complete internal result of interpreting one qualified authoring ADR.
+///
+/// This is intentionally not a protocol DTO. The public semantic-core
+/// dispatcher does not route to this type; it exists so the Rust interpreter
+/// can assemble and validate the complete normalized-model result before any
+/// later host/protocol accretion is considered.
+#[derive(Clone, Debug, PartialEq)]
+pub(crate) struct NormalizedInterpretation {
+    pub(crate) model: Json,
+    pub(crate) entity_registry: Json,
+    pub(crate) relationship_registry: Json,
+    pub(crate) unresolved_registry: Json,
+}
+
+#[derive(Clone, Debug)]
+struct DocumentFragment {
+    value: Json,
+    schema: String,
+    pointer: String,
+}
+
+fn is_uuid_v7(value: &str) -> bool {
+    let parts = value.split('-').collect::<Vec<_>>();
+    parts.len() == 5
+        && [8, 4, 4, 4, 12]
+            .into_iter()
+            .zip(parts.iter())
+            .all(|(length, part)| {
+                part.len() == length
+                    && part
+                        .bytes()
+                        .all(|byte| byte.is_ascii_hexdigit() && !byte.is_ascii_uppercase())
+            })
+        && parts[2].starts_with('7')
+        && parts[3]
+            .as_bytes()
+            .first()
+            .is_some_and(|byte| matches!(byte, b'8' | b'9' | b'a' | b'b'))
+}
+
+fn source_object<'a>(value: &'a Json, label: &str) -> Result<&'a BTreeMap<String, Json>, String> {
+    value
+        .as_object()
+        .ok_or_else(|| format!("{label} must be an object"))
+}
+
+fn source_text(value: &BTreeMap<String, Json>, key: &str, label: &str) -> Result<String, String> {
+    value
+        .get(key)
+        .and_then(Json::as_str)
+        .filter(|value| !value.is_empty())
+        .map(ToOwned::to_owned)
+        .ok_or_else(|| format!("{label}.{key} must be a non-empty string"))
+}
+
+fn source_contract_projection(source_contract: &Json) -> Json {
+    let source_object = source_contract.as_object();
+    let family = source_object
+        .and_then(|value| value.get("family"))
+        .and_then(Json::as_str)
+        .unwrap_or_default();
+    let version = source_object
+        .and_then(|value| value.get("version"))
+        .and_then(Json::as_str)
+        .unwrap_or_default();
+    let fingerprint = source_object
+        .and_then(|value| value.get("fingerprint").or_else(|| value.get("content_digest")))
+        .and_then(Json::as_str)
+        .or_else(|| {
+            source_object
+                .and_then(|value| value.get("schemaResource").or_else(|| value.get("schema_resource")))
+                .and_then(Json::as_object)
+                .and_then(|value| value.get("contentDigest").or_else(|| value.get("content_digest")))
+                .and_then(Json::as_str)
+        })
+        .unwrap_or_default();
+    object([
+        ("family", string(family)),
+        ("version", string(version)),
+        ("fingerprint", string(fingerprint)),
+    ])
+}
+
+fn number(value: u64) -> Json {
+    Json::Number(serde_json::Number::from(value))
+}
+
+fn normalized_digest(value: &Json) -> String {
+    let mut canonical = String::new();
+    semantic_contract::canonicalize_value(value, &mut canonical)
+        .expect("normalized interpretation JSON must be canonicalizable");
+    let mut hasher = Sha256::new();
+    hasher.update(canonical.as_bytes());
+    let digest = hasher.finalize();
+    format!(
+        "sha256:{}",
+        digest
+            .iter()
+            .map(|byte| format!("{byte:02x}"))
+            .collect::<String>()
+    )
+}
+
+fn add_nested_fragments(
+    source: &BTreeMap<String, Json>,
+    field_name: &str,
+    schema_name: &str,
+    fragments: &mut Vec<DocumentFragment>,
+) {
+    let Some(values) = source.get(field_name).and_then(Json::as_array) else {
+        return;
+    };
+    for (index, value) in values.iter().enumerate() {
+        fragments.push(DocumentFragment {
+            value: value.clone(),
+            schema: format!("authoring/1.7/schema/adr-common.schema#/definitions/{schema_name}"),
+            pointer: format!("/{field_name}/{index}"),
+        });
+    }
+}
+
+fn collect_document_fragments(source: &Json) -> Result<Vec<DocumentFragment>, String> {
+    let source = source_object(source, "authoring document")?;
+    let mut fragments = Vec::new();
+    for (field_name, schema_name) in [
+        ("decisions", "decision"),
+        ("capabilities", "capability"),
+        ("architectural_boundaries", "boundary"),
+        ("contracts", "contract"),
+        ("invariants", "invariant"),
+        ("gaps", "gap"),
+        ("normative_propositions", "normative_proposition"),
+        ("evidence_expectations", "evidence_expectation"),
+        ("extension_entities", "custom_entity"),
+        ("system_boundaries", "system_boundary"),
+        ("data_flows", "data_flow"),
+        ("implementation_decisions", "implementation_decision"),
+    ] {
+        add_nested_fragments(source, field_name, schema_name, &mut fragments);
+    }
+    if let Some(system) = source.get("system") {
+        fragments.push(DocumentFragment {
+            value: system.clone(),
+            schema: "authoring/1.7/schema/adr-common.schema#/definitions/system".into(),
+            pointer: "/system".into(),
+        });
+    }
+    if let Some(specifications) = source
+        .get("component_specifications")
+        .and_then(Json::as_array)
+    {
+        for (index, specification) in specifications.iter().enumerate() {
+            fragments.push(DocumentFragment {
+                value: specification.clone(),
+                schema: "authoring/1.7/schema/adr-common.schema#/definitions/component".into(),
+                pointer: format!("/component_specifications/{index}"),
+            });
+            if let Some(interfaces) = specification.get("interfaces").and_then(Json::as_array) {
+                for (interface_index, interface) in interfaces.iter().enumerate() {
+                    fragments.push(DocumentFragment {
+                        value: interface.clone(),
+                        schema: "authoring/1.7/schema/adr-common.schema#/definitions/interface".into(),
+                        pointer: format!("/component_specifications/{index}/interfaces/{interface_index}"),
+                    });
+                }
+            }
+        }
+    }
+    Ok(fragments)
+}
+
+fn entity_semantic_fields(
+    result: &InterpretationResult,
+    fragment: &BTreeMap<String, Json>,
+) -> BTreeMap<String, Json> {
+    let mut fields = BTreeMap::new();
+    let result_fields = result.fields.as_object().cloned().unwrap_or_default();
+    for key in [
+        "description",
+        "external_dependencies",
+        "exposed_interfaces",
+        "path",
+        "path_semantics",
+        "data_type",
+        "volume",
+        "latency_requirements",
+        "evidence_kind",
+        "related_entity_ids",
+    ] {
+        if let Some(value) = result_fields.get(key) {
+            fields.insert(key.into(), value.clone());
+        }
+    }
+    if result.normalized_type.as_deref() == Some("normative_proposition") {
+        for key in ["statement", "normative_force", "scope"] {
+            if let Some(value) = result_fields.get(key) {
+                fields.insert(key.into(), value.clone());
+            }
+        }
+        if let Some(value) = fragment.get("rationale") {
+            fields.insert("rationale".into(), value.clone());
+        }
+    }
+    fields
+}
+
+fn normalized_entity(
+    fragment: &Json,
+    result: &InterpretationResult,
+    root: &BTreeMap<String, Json>,
+    source_context: &InterpretationSourceContext,
+    source_contract: &Json,
+    content_digest: &str,
+) -> Result<Json, String> {
+    let fragment = source_object(fragment, "interpreted fragment")?;
+    let id = source_text(fragment, "id", "interpreted fragment")?;
+    if !is_uuid_v7(&id) {
+        return Err(format!("interpreted fragment id is not UUIDv7: {id}"));
+    }
+    let alias_id = source_text(fragment, "alias_id", "interpreted fragment")?;
+    let alias_name = source_text(fragment, "alias_name", "interpreted fragment")?;
+    let normalized_type = result
+        .normalized_type
+        .as_deref()
+        .ok_or_else(|| "accepted interpretation lacks normalized type".to_owned())?;
+    let name = ["title", "name", "summary", "description", "statement"]
+        .into_iter()
+        .find_map(|key| fragment.get(key).and_then(Json::as_str))
+        .unwrap_or(alias_name.as_str())
+        .to_owned();
+    let summary = ["summary", "description", "statement", "rationale", "context", "name"]
+        .into_iter()
+        .find_map(|key| fragment.get(key).and_then(Json::as_str))
+        .unwrap_or(name.as_str())
+        .to_owned();
+    let created_at = fragment
+        .get("created_date")
+        .or_else(|| root.get("created_date"))
+        .and_then(Json::as_str)
+        .unwrap_or("source-basis")
+        .to_owned();
+    let mut values = BTreeMap::from([
+        ("id".into(), string(id.clone())),
+        ("alias_id".into(), string(alias_id.clone())),
+        ("alias_name".into(), string(alias_name.clone())),
+        ("alias_ref".into(), string(format!("{alias_id}:{alias_name}"))),
+        ("entity_type".into(), string(normalized_type)),
+        ("name".into(), string(name)),
+        ("summary".into(), string(summary)),
+        ("uri".into(), string(format!("source://{}/entities/{id}", source_context.canonical_source_ref))),
+        ("created_at".into(), string(created_at)),
+        (
+            "canonical_source".into(),
+            object([
+                ("source_ref", string(source_context.canonical_source_ref.clone())),
+                ("source_pointer", string(source_context.source_pointer.clone())),
+                ("content_digest", string(content_digest)),
+            ]),
+        ),
+        (
+            "source_refs".into(),
+            Json::Array(vec![string(source_context.canonical_source_ref.clone())]),
+        ),
+        (
+            "metadata".into(),
+            object([
+                ("source_pointer", string(source_context.source_pointer.clone())),
+                ("source_semantics", Json::Object(fragment.clone())),
+            ]),
+        ),
+        ("relationships".into(), Json::Object(BTreeMap::new())),
+        (
+            "completeness".into(),
+            object([
+                ("status", string("complete")),
+                ("missing_fields", Json::Array(Vec::new())),
+            ]),
+        ),
+        (
+            "provenance".into(),
+            object([
+                ("source_ref", string(source_context.canonical_source_ref.clone())),
+                ("source_pointer", string(source_context.source_pointer.clone())),
+                ("source_contract", source_contract_projection(source_contract)),
+                ("classification", string("explicit")),
+            ]),
+        ),
+    ]);
+    for (key, value) in entity_semantic_fields(result, fragment) {
+        values.insert(key, value);
+    }
+    if normalized_type == "normative_proposition" {
+        let parent_id = source_text(root, "id", "authoring document")?;
+        let parent_alias_id = source_text(root, "alias_id", "authoring document")?;
+        let parent_alias_name = source_text(root, "alias_name", "authoring document")?;
+        let fields = result.fields.as_object().cloned().unwrap_or_default();
+        values.insert(
+            "declaring_adr".into(),
+            object([
+                ("provider", string("authoring@1.7")),
+                ("id", string(parent_id)),
+                ("alias_id", string(parent_alias_id)),
+                ("alias_name", string(parent_alias_name)),
+            ]),
+        );
+        values.insert(
+            "source_artifact".into(),
+            object([
+                ("source_type", string("authoring_adr")),
+                ("source_ref", string(source_context.canonical_source_ref.clone())),
+                ("artifact_path", string(source_context.canonical_source_ref.clone())),
+                ("content_digest", string(content_digest)),
+            ]),
+        );
+        values.insert("source_contract".into(), source_contract_projection(source_contract));
+        for key in ["statement", "normative_force", "scope", "rationale"] {
+            if let Some(value) = fields.get(key) {
+                values.insert(key.into(), value.clone());
+            }
+        }
+    } else {
+        values.insert(
+            "lifecycle_stage".into(),
+            string(
+                root.get("status")
+                    .and_then(Json::as_str)
+                    .filter(|status| matches!(*status, "proposed" | "active" | "deprecated" | "superseded"))
+                    .unwrap_or("proposed"),
+            ),
+        );
+        if normalized_type == "qualified_custom_entity" {
+            let fields = result.fields.as_object().cloned().unwrap_or_default();
+            values.insert(
+                "extension".into(),
+                object([
+                    ("qualification", fields.get("qualification").cloned().unwrap_or(Json::Null)),
+                    ("properties", fields.get("properties").cloned().unwrap_or(Json::Object(BTreeMap::new()))),
+                    ("rationale", fragment.get("rationale").cloned().unwrap_or_else(|| string("qualified custom entity"))),
+                ]),
+            );
+            values.insert(
+                "entity_type".into(),
+                fields.get("semantic_type").cloned().unwrap_or_else(|| string(normalized_type)),
+            );
+        }
+    }
+    let preimage = Json::Object(values.clone());
+    values.insert("entity_fingerprint".into(), string(normalized_digest(&preimage)));
+    Ok(Json::Object(values))
+}
+
+fn normalized_schema_resources() -> Result<BTreeMap<String, Json>, String> {
+    [
+        ("normalized-model/2.4/schema/normalized-architecture-model.schema", include_str!("../../schema/normalized-model/v2.4/normalized-architecture-model.schema.json")),
+        ("normalized-model/2.4/schema/normalized-entity-registry.schema", include_str!("../../schema/normalized-model/v2.4/normalized-entity-registry.schema.json")),
+        ("normalized-model/2.4/schema/normalized-entity.schema", include_str!("../../schema/normalized-model/v2.4/normalized-entity.schema.json")),
+        ("normalized-model/2.4/schema/relationship-record.schema", include_str!("../../schema/normalized-model/v2.4/relationship-record.schema.json")),
+        ("normalized-model/2.4/schema/relationship-registry.schema", include_str!("../../schema/normalized-model/v2.4/relationship-registry.schema.json")),
+        ("normalized-model/2.4/schema/unresolved-registry.schema", include_str!("../../schema/normalized-model/v2.4/unresolved-registry.schema.json")),
+    ]
+    .into_iter()
+    .map(|(key, value)| {
+        serde_json::from_str::<Json>(value)
+            .map(|value| (key.to_owned(), value))
+            .map_err(|error| format!("normalized-model schema {key} is invalid JSON: {error}"))
+    })
+    .collect()
+}
+
+fn unresolved_from_result(result: &InterpretationResult, context: &InterpretationSourceContext) -> Json {
+    let fields = result.fields.as_object().cloned().unwrap_or_default();
+    let code = fields
+        .get("reason_code")
+        .and_then(Json::as_str)
+        .unwrap_or("interpretation_unresolved");
+    let missing = fields
+        .get("missing_keys")
+        .and_then(Json::as_array)
+        .map(|keys| keys.iter().filter_map(Json::as_str).collect::<Vec<_>>().join(", "))
+        .unwrap_or_else(|| "semantic source could not be resolved".into());
+    object([
+        ("code", string(code)),
+        ("message", string(format!("unresolved interpretation: {missing}"))),
+        ("source_pointer", string(context.source_pointer.clone())),
+        ("resolution", string("unresolved")),
+        ("details", Json::Object(fields)),
+    ])
+}
+
+/// Interpret a complete, already-qualified authoring 1.7 document into the
+/// canonical normalized-model 2.4 result. This function is crate-internal;
+/// it is deliberately not a semantic-core protocol operation.
+pub(crate) fn interpret_document(
+    source: &Json,
+    source_context: &InterpretationSourceContext,
+    source_contract: &Json,
+    source_schema: &str,
+    content_digest: &str,
+) -> Result<NormalizedInterpretation, String> {
+    source_context.validate()?;
+    let root = source_object(source, "authoring document")?;
+    let root_basis = object([
+        ("kind", string("authoring_document")),
+        ("schema", string(source_schema)),
+    ]);
+    let root_result = interpret(source, &root_basis, source_context)?;
+    if root_result.disposition != InterpretationDisposition::Accepted {
+        return Err(format!("authoring document was not accepted: {:?}", root_result.to_json()));
+    }
+    let mut entities = vec![normalized_entity(
+        source,
+        &root_result,
+        root,
+        source_context,
+        source_contract,
+        content_digest,
+    )?];
+    let mut entity_classifications = BTreeMap::new();
+    entity_classifications.insert(source_text(root, "id", "authoring document")?, "canonical".to_owned());
+    for fragment in collect_document_fragments(source)? {
+        // Physical-system authoring embeds the owning system descriptor under
+        // `/system` and intentionally reuses the document identity.  It is a
+        // structural projection of the root ADR, not a second normalized
+        // entity; preserve one canonical entity per authored identity.
+        if fragment.pointer == "/system"
+            && fragment.value.get("id") == root.get("id")
+        {
+            continue;
+        }
+        let basis = object([
+            ("kind", string("authoring_fragment")),
+            ("schema", string(fragment.schema.clone())),
+        ]);
+        let context = InterpretationSourceContext {
+            canonical_source_ref: source_context.canonical_source_ref.clone(),
+            source_pointer: fragment.pointer.clone(),
+        };
+        let result = interpret(&fragment.value, &basis, &context)?;
+        match result.disposition {
+            InterpretationDisposition::Accepted => {
+                let entity = normalized_entity(
+                    &fragment.value,
+                    &result,
+                    root,
+                    &context,
+                    source_contract,
+                    content_digest,
+                )?;
+                let id = entity
+                    .get("id")
+                    .and_then(Json::as_str)
+                    .ok_or_else(|| "normalized entity lacks id".to_owned())?;
+                if entity_classifications.insert(
+                    id.to_owned(),
+                    if result.normalized_type.as_deref() == Some("qualified_custom_entity") {
+                        "qualified_custom".into()
+                    } else {
+                        "canonical".into()
+                    },
+                ).is_some() {
+                    return Err(format!("duplicate canonical entity identity: {id}"));
+                }
+                entities.push(entity);
+            }
+            InterpretationDisposition::Rejected => {
+                return Err(format!("authoring fragment was rejected: {:?}", result.to_json()));
+            }
+            InterpretationDisposition::Unresolved | InterpretationDisposition::HistoricalCompatibility => {
+                return Err(format!("authoring fragment did not produce canonical semantics: {:?}", result.to_json()));
+            }
+        }
+    }
+    let mut relationships = Vec::new();
+    let mut unresolved = Vec::new();
+    if let Some(topology) = root.get("component_topology").and_then(Json::as_object) {
+        let components = topology.get("components").cloned().unwrap_or(Json::Array(Vec::new()));
+        if let Some(topology_relationships) = topology.get("relationships").and_then(Json::as_array) {
+            for (index, relationship) in topology_relationships.iter().enumerate() {
+                let basis = object([
+                    ("kind", string("topology_resolution")),
+                    ("components", components.clone()),
+                ]);
+                let context = InterpretationSourceContext {
+                    canonical_source_ref: source_context.canonical_source_ref.clone(),
+                    source_pointer: format!("/component_topology/relationships/{index}"),
+                };
+                let result = interpret(relationship, &basis, &context)?;
+                match result.disposition {
+                    InterpretationDisposition::Accepted => {
+                        relationships.push(result.normalized_record.ok_or_else(|| "accepted topology relationship lacks normalized record".to_owned())?);
+                    }
+                    InterpretationDisposition::Unresolved => unresolved.push(unresolved_from_result(&result, &context)),
+                    InterpretationDisposition::Rejected => return Err(format!("topology relationship was rejected: {:?}", result.to_json())),
+                    InterpretationDisposition::HistoricalCompatibility => return Err("historical topology compatibility cannot enter a 2.4 normalized result".into()),
+                }
+            }
+        }
+        if let Some(components) = topology.get("components").and_then(Json::as_array) {
+            let system = root
+                .get("system")
+                .and_then(Json::as_object)
+                .ok_or_else(|| "physical-system document lacks system".to_owned())?;
+            let system_id = source_text(system, "id", "system")?;
+            for (index, component) in components.iter().enumerate() {
+                let basis = object([
+                    ("kind", string("composition_context")),
+                    ("system_id", string(system_id.clone())),
+                    ("components", Json::Array(vec![component.clone()])),
+                ]);
+                let context = InterpretationSourceContext {
+                    canonical_source_ref: source_context.canonical_source_ref.clone(),
+                    source_pointer: format!("/component_topology/components/{index}"),
+                };
+                let result = interpret(&Json::Object(BTreeMap::new()), &basis, &context)?;
+                if result.disposition == InterpretationDisposition::Accepted {
+                    relationships.push(result.normalized_record.ok_or_else(|| "composition relationship lacks normalized record".to_owned())?);
+                } else {
+                    return Err(format!("composition relationship was not accepted: {:?}", result.to_json()));
+                }
+            }
+        }
+    }
+    if let Some(extension_relationships) = root.get("extension_relationships").and_then(Json::as_array) {
+        for (index, relationship) in extension_relationships.iter().enumerate() {
+            let endpoint_entities = relationship
+                .as_object()
+                .into_iter()
+                .flat_map(|object| ["from_entity_id", "to_entity_id"].into_iter().filter_map(move |key| object.get(key).and_then(Json::as_str)))
+                .map(|id| object([
+                    ("id", string(id)),
+                    ("classification", string(entity_classifications.get(id).map(String::as_str).unwrap_or("unknown"))),
+                ]))
+                .collect::<Vec<_>>();
+            let basis = object([
+                ("kind", string("endpoint_classification")),
+                ("endpoint_entities", Json::Array(endpoint_entities)),
+            ]);
+            let context = InterpretationSourceContext {
+                canonical_source_ref: source_context.canonical_source_ref.clone(),
+                source_pointer: format!("/extension_relationships/{index}"),
+            };
+            let result = interpret(relationship, &basis, &context)?;
+            if result.disposition != InterpretationDisposition::Accepted {
+                return Err(format!("custom relationship was not accepted: {:?}", result.to_json()));
+            }
+            relationships.push(result.normalized_record.ok_or_else(|| "custom relationship lacks normalized record".to_owned())?);
+        }
+    }
+    entities.sort_by_key(|entity| entity.get("id").and_then(Json::as_str).unwrap_or_default().to_owned());
+    relationships.sort_by_key(|relationship| (
+        relationship.get("record_kind").and_then(Json::as_str).unwrap_or_default().to_owned(),
+        relationship.get("id").or_else(|| relationship.get("assertion_id")).and_then(Json::as_str).unwrap_or_default().to_owned(),
+    ));
+    unresolved.sort_by_key(|item| (
+        item.get("code").and_then(Json::as_str).unwrap_or_default().to_owned(),
+        item.get("source_pointer").and_then(Json::as_str).unwrap_or_default().to_owned(),
+    ));
+    let entity_registry = object([
+        ("schema_version", string("2.4")),
+        ("type", string("normalized_entity_registry")),
+        ("entities", Json::Array(entities.clone())),
+    ]);
+    let relationship_registry = object([
+        ("schema_version", string("2.4")),
+        ("type", string("relationship_registry")),
+        ("relationships", Json::Array(relationships.clone())),
+    ]);
+    let unresolved_registry = object([
+        ("schema_version", string("2.4")),
+        ("type", string("unresolved_registry")),
+        ("unresolved", Json::Array(unresolved.clone())),
+    ]);
+    let model_without_fingerprint = object([
+        ("schema_version", string("2.4")),
+        ("type", string("normalized_architecture_model")),
+        ("mode", string("normalized")),
+        ("scope_root", string(source_context.canonical_source_ref.clone())),
+        ("architecture_namespace", Json::Null),
+        ("entities", Json::Array(entities)),
+        ("relationships", Json::Array(relationships)),
+        ("unresolved", Json::Array(unresolved)),
+        (
+            "validation_summary",
+            object([
+                ("entity_count", number(entity_registry.get("entities").and_then(Json::as_array).map_or(0, Vec::len) as u64)),
+                ("relationship_count", number(relationship_registry.get("relationships").and_then(Json::as_array).map_or(0, Vec::len) as u64)),
+                ("unresolved_count", number(unresolved_registry.get("unresolved").and_then(Json::as_array).map_or(0, Vec::len) as u64)),
+            ]),
+        ),
+        (
+            "source_coverage",
+            object([
+                ("source_contract", source_contract.clone()),
+                ("source_schema", string(source_schema)),
+                ("content_digest", string(content_digest)),
+            ]),
+        ),
+    ]);
+    let mut model_values = model_without_fingerprint
+        .as_object()
+        .cloned()
+        .ok_or_else(|| "normalized model assembly failed".to_owned())?;
+    model_values.insert("fingerprint".into(), string(normalized_digest(&model_without_fingerprint)));
+    let model = Json::Object(model_values);
+    let resources = normalized_schema_resources()?;
+    for (key, value) in [
+        ("normalized-model/2.4/schema/normalized-architecture-model.schema", &model),
+        ("normalized-model/2.4/schema/normalized-entity-registry.schema", &entity_registry),
+        ("normalized-model/2.4/schema/relationship-registry.schema", &relationship_registry),
+        ("normalized-model/2.4/schema/unresolved-registry.schema", &unresolved_registry),
+    ] {
+        schema_validation::validate(&resources, key, value)
+            .map_err(|error| format!("{key} validation failed at {}: {}", error.path, error.message))?;
+    }
+    Ok(NormalizedInterpretation {
+        model,
+        entity_registry,
+        relationship_registry,
+        unresolved_registry,
+    })
 }
 
 #[cfg(test)]
@@ -1227,6 +1863,74 @@ mod tests {
             }
         }
         assert_eq!(count, 32);
+    }
+
+    #[test]
+    fn complete_normalized_result_is_deterministic_and_schema_valid() {
+        let root = parsed(include_str!(
+            "../../contracts/architecture-interpretation/v1.1/resources/conformance.json"
+        ));
+        let case = value(&root, "cases")
+            .as_array()
+            .expect("conformance cases")
+            .iter()
+            .find(|case| value(case, "id").as_str() == Some("I01"))
+            .expect("I01");
+        let input = object(value(case, "input"));
+        let source = map_value(&input, "fragment");
+        let source_context = InterpretationSourceContext {
+            canonical_source_ref: "test://architecture-interpretation/1.1/I01".into(),
+            source_pointer: "/".into(),
+        };
+        let source_contract = parsed(
+            r#"{
+                "family": "authoring",
+                "version": "1.7",
+                "schemaResource": {
+                    "canonicalResourceKey": "authoring/1.7/schema/adr-logical.schema",
+                    "contentDigest": "sha256:0000000000000000000000000000000000000000000000000000000000000000"
+                }
+            }"#,
+        );
+        let first = interpret_document(
+            source,
+            &source_context,
+            &source_contract,
+            "authoring/1.7/schema/adr-logical.schema",
+            "sha256:1111111111111111111111111111111111111111111111111111111111111111",
+        )
+        .expect("complete I01 interpretation");
+        let second = interpret_document(
+            source,
+            &source_context,
+            &source_contract,
+            "authoring/1.7/schema/adr-logical.schema",
+            "sha256:1111111111111111111111111111111111111111111111111111111111111111",
+        )
+        .expect("repeat complete I01 interpretation");
+        assert_eq!(first, second);
+        assert_eq!(
+            first.model.get("schema_version").and_then(Json::as_str),
+            Some("2.4")
+        );
+        assert_eq!(
+            first.model.get("type").and_then(Json::as_str),
+            Some("normalized_architecture_model")
+        );
+        assert_eq!(
+            first.model
+                .get("entities")
+                .and_then(Json::as_array)
+                .map(Vec::len),
+            Some(2)
+        );
+        assert!(
+            first
+                .model
+                .get("fingerprint")
+                .and_then(Json::as_str)
+                .is_some_and(|value| value.starts_with("sha256:"))
+        );
     }
 
     #[test]

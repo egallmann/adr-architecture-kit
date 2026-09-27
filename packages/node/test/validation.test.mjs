@@ -18,6 +18,9 @@ const load = async (path) => JSON.parse(await readFile(resolve(root, path), "utf
 
 test("capability discovery is local and explicit", () => {
   const manifest = capabilities();
+  assert.deepEqual(manifest.supported_adr_schema_versions, ["1.0", "1.1", "1.2", "1.3", "1.4", "1.5", "1.6", "1.7"]);
+  assert.deepEqual(manifest.stable_adr_schema_versions, ["1.0"]);
+  assert.deepEqual(manifest.provisional_adr_schema_versions, ["1.1", "1.2", "1.3", "1.4", "1.5", "1.6", "1.7"]);
   assert.deepEqual(manifest.supported_normalized_model_versions, ["2.1", "2.2", "2.3"]);
   assert.deepEqual(manifest.host_operations, ["capabilities", "validate_authoring", "construct_authoring_set", "validate_architecture", "validate_project_metadata", "validate_contract", "open_repository", "open_provider_registry", "build_embodiment_linkage", "generate_attribution_shim", "materialize_architecture", "list_semantic_contracts", "get_semantic_contract", "canonicalize_semantic_json", "calculate_semantic_contract_fingerprint", "verify_semantic_contract", "validate_semantic_resource_closure", "compose_semantic_contract_set", "list_semantic_contract_profiles", "get_semantic_contract_profile", "validate_semantic_contract_profile", "validate_semantic_contract_qualification", "preview_semantic_contract_set_assembly", "apply_semantic_contract_set_assembly", "validate_semantic_contract_corpus", "list_semantic_contract_sets", "resolve_current_semantic_contract_set"]);
   assert.ok(manifest.pending_host_operations.includes("compile_architecture"));
@@ -138,4 +141,27 @@ test("authoring structural validation relaxes completeness without changing shap
   const missingRequired = { ...draft };
   delete missingRequired.decisions;
   assert.equal(validateAuthoringDocument(missingRequired, "logical", "1.0", "structural").valid, false);
+});
+
+test("authoring v1.7 validates through the packaged canonical schema", () => {
+  const document = {
+    schema_version: "1.7",
+    adr_type: "logical",
+    id: "01940000-0000-7000-8000-000000000001",
+    alias_id: "ADR-L-0001",
+    alias_name: "authoring-v17",
+    title: "Authoring v1.7 contract",
+    status: "accepted",
+    created_date: "2026-01-01",
+    authors: ["test"],
+    context: "A complete v1.7 logical document.",
+    decisions: [{
+      id: "01940000-0000-7000-8000-000000000002",
+      alias_id: "DEC-0001",
+      alias_name: "choose-v17",
+      summary: "Use authoring v1.7",
+      rationale: "The accepted ACC source contract requires it.",
+    }],
+  };
+  assert.equal(validateAuthoringDocument(document, "logical", "1.7").valid, true);
 });

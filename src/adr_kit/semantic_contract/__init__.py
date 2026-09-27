@@ -454,6 +454,12 @@ def load_semantic_resource(key: str) -> Any:
     """Load one bundled resource by canonical key for closure verification."""
 
     parts = key.split("/")
+    if len(parts) == 4 and parts[:3] == ["authoring", "1.7", "schema"]:
+        filename = f"{parts[3]}.json"
+        resource = resources.files("adr_kit.schema.authoring.v1_7").joinpath(filename)
+        if resource.is_file():
+            return json.loads(resource.read_text(encoding="utf-8"))
+        raise LookupError(f"Bundled semantic resource is missing: {key}")
     if len(parts) < 3 or parts[1] not in {"1.0", "1.5", "1.6", "2.3"}:
         raise LookupError(f"Unsupported semantic resource: {key}")
     package = resources.files("adr_kit.semantic_contract.v1_0.resources")

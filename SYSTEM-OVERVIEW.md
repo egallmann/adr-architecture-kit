@@ -5,8 +5,8 @@ artifact_kind: system_overview
 generator_id: adr-system-overview
 generator_version: 2
 hash_algorithm: sha256
-source_hash: 03cb0865987c90e3124140bbb5ab9edda5999089201a3c98691ee86dc1bfc835
-rendered_hash: 8cb9e099f95d7930bfb0a19b74ba2c69e645108d9c62d18838b3e4fa5e14cdda
+source_hash: 237ea4fdea682ad8700bfe8aca2be4e820125c16b29cc2109cbfa29d905af41c
+rendered_hash: f5aeb8fb0f10b6322b9ce9493b048d3727316e08556a01e920868cdc4a333000
 -->
 
 <!--
@@ -72,8 +72,8 @@ Consume supported programmatic behavior through `adr_kit.api`.
 Derived provider facts:
 
 - API contract version: `1.0`
-- Package version: `0.11.1`
-- Operations: `capabilities`, `describe_authoring_contract`, `list_authoring_types`, `describe_authoring_type`, `validate_authoring`, `construct_authoring_set`, `validate_architecture`, `validate_project_metadata`, `validate_contract`, `validate_generated_docs`, `compile_architecture`, `open_repository`, `open_provider_registry`, `build_embodiment_linkage`, `generate_attribution_shim`, `list_semantic_contracts`, `get_semantic_contract`, `canonicalize_semantic_json`, `calculate_semantic_contract_fingerprint`, `verify_semantic_contract`, `validate_semantic_resource_closure`, `compose_semantic_contract_set`, `list_semantic_contract_profiles`, `get_semantic_contract_profile`, `validate_semantic_contract_profile`, `validate_semantic_contract_qualification`, `preview_semantic_contract_set_assembly`, `apply_semantic_contract_set_assembly`, `validate_semantic_contract_corpus`, `list_semantic_contract_sets`, `resolve_current_semantic_contract_set`, `prepare_promotion`, `check_promotion`, `apply_promotion`- Validation modes: `complete`, `structural`- Artifact groups: `registries`, `manifest`, `markdown`- Supported ADR schema versions: `1.0`, `1.1`, `1.2`, `1.3`, `1.4`, `1.5`, `1.6`- Stable ADR schema versions: `1.0`- Provisional ADR schema versions: `1.1`, `1.2`, `1.3`, `1.4`, `1.5`, `1.6`- Normalized model schema version: `1.1`
+- Package version: `0.12.0`
+- Operations: `capabilities`, `describe_authoring_contract`, `list_authoring_types`, `describe_authoring_type`, `validate_authoring`, `construct_authoring_set`, `validate_architecture`, `validate_project_metadata`, `validate_contract`, `validate_generated_docs`, `compile_architecture`, `open_repository`, `open_provider_registry`, `build_embodiment_linkage`, `generate_attribution_shim`, `list_semantic_contracts`, `get_semantic_contract`, `canonicalize_semantic_json`, `calculate_semantic_contract_fingerprint`, `verify_semantic_contract`, `validate_semantic_resource_closure`, `compose_semantic_contract_set`, `list_semantic_contract_profiles`, `get_semantic_contract_profile`, `validate_semantic_contract_profile`, `validate_semantic_contract_qualification`, `preview_semantic_contract_set_assembly`, `apply_semantic_contract_set_assembly`, `validate_semantic_contract_corpus`, `list_semantic_contract_sets`, `resolve_current_semantic_contract_set`, `prepare_promotion`, `check_promotion`, `apply_promotion`- Validation modes: `complete`, `structural`- Artifact groups: `registries`, `manifest`, `markdown`- Supported ADR schema versions: `1.0`, `1.1`, `1.2`, `1.3`, `1.4`, `1.5`, `1.6`, `1.7`- Stable ADR schema versions: `1.0`- Provisional ADR schema versions: `1.1`, `1.2`, `1.3`, `1.4`, `1.5`, `1.6`, `1.7`- Normalized model schema version: `1.1`
 - Supported normalized model schema versions: `1.1`, `2.0`, `2.1`, `2.2`, `2.3`
 Supported semantic/repository contracts include `ArchitectureRepository` and `NormalizedArchitectureModel`.
 

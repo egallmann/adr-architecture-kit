@@ -392,9 +392,26 @@ def test_capability_manifest_is_exact_and_deterministic() -> None:
     )
     assert first.validation_modes == ("complete", "structural")
     assert first.artifact_groups == ("registries", "manifest", "markdown")
-    assert first.supported_adr_schema_versions == ("1.0", "1.1", "1.2", "1.3", "1.4", "1.5", "1.6")
+    assert first.supported_adr_schema_versions == (
+        "1.0",
+        "1.1",
+        "1.2",
+        "1.3",
+        "1.4",
+        "1.5",
+        "1.6",
+        "1.7",
+    )
     assert first.stable_adr_schema_versions == ("1.0",)
-    assert first.provisional_adr_schema_versions == ("1.1", "1.2", "1.3", "1.4", "1.5", "1.6")
+    assert first.provisional_adr_schema_versions == (
+        "1.1",
+        "1.2",
+        "1.3",
+        "1.4",
+        "1.5",
+        "1.6",
+        "1.7",
+    )
     assert "1.3" in first.supported_adr_schema_versions
     assert first.normalized_model_schema_version == "1.1"
     assert first.supported_normalized_model_schema_versions == ("1.1", "2.0", "2.1", "2.2", "2.3")

@@ -1,0 +1,260 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://adr-kit.ste.systems/schema/authoring/v1.7/adr-common.schema.json",
+  "title": "ADR Common Frontmatter Schema (authoring v1.7)",
+  "definitions": {
+    "normative_proposition": {
+      "type": "object",
+      "required": ["id", "alias_id", "alias_name", "statement", "normative_force", "scope"],
+      "properties": {
+        "id": {"$ref": "types.schema.json#/definitions/uuid_v7"},
+        "alias_id": {"type": "string", "pattern": "^NP-[0-9]{4}$"},
+        "alias_name": {"$ref": "types.schema.json#/definitions/alias_name"},
+        "statement": {"type": "string", "minLength": 1},
+        "normative_force": {"$ref": "types.schema.json#/definitions/normative_force"},
+        "scope": {"type": "string", "minLength": 1},
+        "rationale": {"type": "string"}
+      },
+      "additionalProperties": false
+    },
+    "gap": {
+      "type": "object",
+      "required": ["id", "alias_id", "alias_name", "question", "impact", "blocking"],
+      "properties": {
+        "id": {"$ref": "types.schema.json#/definitions/uuid_v7"},
+        "alias_id": {"type": "string", "pattern": "^GAP-[0-9]{4}$"},
+        "alias_name": {"$ref": "types.schema.json#/definitions/alias_name"},
+        "question": {"type": "string", "minLength": 1},
+        "context": {"type": "string"},
+        "impact": {"$ref": "types.schema.json#/definitions/impact_level"},
+        "blocking": {"type": "boolean"},
+        "affects": {"type": "array", "items": {"$ref": "types.schema.json#/definitions/uuid_v7"}},
+        "decision_required_from": {"type": "string"}
+      },
+      "additionalProperties": false
+    },
+    "evidence_expectation": {
+      "type": "object",
+      "required": ["id", "alias_id", "alias_name", "kind", "description"],
+      "properties": {
+        "id": {"$ref": "types.schema.json#/definitions/uuid_v7"},
+        "alias_id": {"type": "string", "pattern": "^EVID-[A-Z0-9-]+$"},
+        "alias_name": {"$ref": "types.schema.json#/definitions/alias_name"},
+        "kind": {"type": "string", "pattern": "^[a-z][a-z0-9_]*$"},
+        "description": {"type": "string", "minLength": 1},
+        "related_entities": {"type": "array", "items": {"$ref": "types.schema.json#/definitions/uuid_v7"}}
+      },
+      "additionalProperties": false
+    },
+    "capability": {
+      "type": "object",
+      "required": ["id", "alias_id", "alias_name", "name", "description"],
+      "properties": {
+        "id": {"$ref": "types.schema.json#/definitions/uuid_v7"},
+        "alias_id": {"type": "string", "pattern": "^CAP-[0-9]{4}$"},
+        "alias_name": {"$ref": "types.schema.json#/definitions/alias_name"},
+        "name": {"type": "string", "minLength": 1},
+        "description": {"type": "string", "minLength": 1},
+        "implemented_by_components": {"type": "array", "items": {"$ref": "types.schema.json#/definitions/uuid_v7"}},
+        "enabled_by_decisions": {"type": "array", "items": {"$ref": "types.schema.json#/definitions/uuid_v7"}}
+      },
+      "additionalProperties": false
+    },
+    "boundary": {
+      "type": "object",
+      "required": ["id", "alias_id", "alias_name", "name", "description", "rationale"],
+      "properties": {
+        "id": {"$ref": "types.schema.json#/definitions/uuid_v7"},
+        "alias_id": {"type": "string", "pattern": "^BOUND-[0-9]{4}$"},
+        "alias_name": {"$ref": "types.schema.json#/definitions/alias_name"},
+        "name": {"type": "string", "minLength": 1},
+        "description": {"type": "string", "minLength": 1},
+        "rationale": {"type": "string", "minLength": 1}
+      },
+      "additionalProperties": false
+    },
+    "contract": {
+      "type": "object",
+      "required": ["id", "alias_id", "alias_name", "parties", "protocol", "guarantees"],
+      "properties": {
+        "id": {"$ref": "types.schema.json#/definitions/uuid_v7"},
+        "alias_id": {"type": "string", "pattern": "^CONTRACT-[0-9]{4}$"},
+        "alias_name": {"$ref": "types.schema.json#/definitions/alias_name"},
+        "parties": {"type": "array", "minItems": 2, "items": {"$ref": "types.schema.json#/definitions/uuid_v7"}},
+        "protocol": {"type": "string", "minLength": 1},
+        "guarantees": {"type": "string", "minLength": 1}
+      },
+      "additionalProperties": false
+    },
+    "decision": {
+      "type": "object",
+      "required": ["id", "alias_id", "alias_name", "summary", "rationale"],
+      "properties": {
+        "id": {"$ref": "types.schema.json#/definitions/uuid_v7"},
+        "alias_id": {"type": "string", "pattern": "^DEC-[0-9]{4}$"},
+        "alias_name": {"$ref": "types.schema.json#/definitions/alias_name"},
+        "summary": {"type": "string", "minLength": 1},
+        "rationale": {"type": "string", "minLength": 1},
+        "alternatives_considered": {"type": "array", "items": {"$ref": "#/definitions/alternative"}},
+        "consequences": {"$ref": "#/definitions/consequences"},
+        "related_invariants": {"type": "array", "items": {"$ref": "types.schema.json#/definitions/uuid_v7"}},
+        "enforces_invariants": {"type": "array", "items": {"$ref": "types.schema.json#/definitions/uuid_v7"}},
+        "enables_capabilities": {"type": "array", "items": {"$ref": "types.schema.json#/definitions/uuid_v7"}},
+        "governs_components": {"type": "array", "items": {"$ref": "types.schema.json#/definitions/uuid_v7"}},
+        "supersedes": {"type": "array", "items": {"$ref": "types.schema.json#/definitions/uuid_v7"}},
+        "refines": {"type": "array", "items": {"$ref": "types.schema.json#/definitions/uuid_v7"}}
+      },
+      "additionalProperties": false
+    },
+    "invariant": {
+      "type": "object",
+      "required": ["id", "alias_id", "alias_name", "statement", "scope", "enforcement_level", "enforcement_mechanism", "verification_method", "rationale"],
+      "properties": {
+        "id": {"$ref": "types.schema.json#/definitions/uuid_v7"},
+        "alias_id": {"type": "string", "pattern": "^INV-[0-9]{4}$"},
+        "alias_name": {"$ref": "types.schema.json#/definitions/alias_name"},
+        "statement": {"type": "string", "minLength": 1},
+        "scope": {"type": "string", "minLength": 1},
+        "enforcement_level": {"enum": ["must", "should", "may"]},
+        "enforcement_mechanism": {"enum": ["design", "runtime", "test", "policy", "manual"]},
+        "verification_method": {"enum": ["automated", "manual", "audit"]},
+        "rationale": {"type": "string", "minLength": 1},
+        "upheld_by_decisions": {"type": "array", "items": {"$ref": "types.schema.json#/definitions/uuid_v7"}},
+        "policy_reference": {"type": "string"},
+        "compliance_frameworks": {"type": "array", "items": {"type": "string"}},
+        "exceptions": {"type": "array", "items": {"type": "string"}},
+        "supersedes": {"type": "array", "items": {"$ref": "types.schema.json#/definitions/uuid_v7"}}
+      },
+      "additionalProperties": false
+    },
+    "interface": {
+      "type": "object",
+      "required": ["id", "alias_id", "alias_name", "type", "specification"],
+      "properties": {
+        "id": {"$ref": "types.schema.json#/definitions/uuid_v7"},
+        "alias_id": {"type": "string", "pattern": "^IFACE-[0-9]{4}$"},
+        "alias_name": {"$ref": "types.schema.json#/definitions/alias_name"},
+        "type": {"enum": ["REST", "gRPC", "GraphQL", "message", "event", "stream", "batch", "CLI", "library_api"]},
+        "specification": {"type": "string", "minLength": 1},
+        "contract_reference": {"$ref": "types.schema.json#/definitions/uuid_v7"},
+        "contract_tests": {"type": "string"}
+      },
+      "additionalProperties": false
+    },
+    "component": {
+      "type": "object",
+      "required": ["id", "alias_id", "alias_name", "name", "type", "responsibilities", "generation_context", "interfaces"],
+      "properties": {
+        "id": {"$ref": "types.schema.json#/definitions/uuid_v7"},
+        "alias_id": {"type": "string", "pattern": "^COMP-[0-9]{4}$"},
+        "alias_name": {"$ref": "types.schema.json#/definitions/alias_name"},
+        "name": {"type": "string", "minLength": 1},
+        "type": {"enum": ["service", "library", "database", "queue", "cache", "gateway", "proxy", "worker", "scheduler"]},
+        "responsibilities": {"type": "string", "minLength": 1},
+        "generation_context": {"type": "object", "required": ["purpose", "key_responsibilities"], "properties": {"purpose": {"type": "string"}, "key_responsibilities": {"type": "array", "minItems": 1, "items": {"type": "string"}}, "constraints": {"type": "array", "items": {"type": "string"}}, "success_criteria": {"type": "array", "items": {"type": "string"}}}, "additionalProperties": false},
+        "interfaces": {"type": "array", "minItems": 1, "items": {"$ref": "#/definitions/interface"}},
+        "dependencies": {"type": "array", "items": {"$ref": "types.schema.json#/definitions/uuid_v7"}},
+        "implements_capabilities": {"type": "array", "items": {"$ref": "types.schema.json#/definitions/uuid_v7"}},
+        "realizes_entities": {"type": "array", "items": {"$ref": "types.schema.json#/definitions/uuid_v7"}}
+      },
+      "additionalProperties": false
+    },
+    "implementation_decision": {
+      "type": "object",
+      "required": ["id", "alias_id", "alias_name", "summary", "rationale"],
+      "properties": {
+        "id": {"$ref": "types.schema.json#/definitions/uuid_v7"},
+        "alias_id": {"type": "string", "pattern": "^IMPL-[0-9]{4}$"},
+        "alias_name": {"$ref": "types.schema.json#/definitions/alias_name"},
+        "summary": {"type": "string", "minLength": 1},
+        "rationale": {"type": "string", "minLength": 1},
+        "implements_invariants": {"type": "array", "items": {"$ref": "types.schema.json#/definitions/uuid_v7"}},
+        "alternatives_considered": {"type": "array", "items": {"$ref": "#/definitions/alternative"}}
+      },
+      "additionalProperties": false
+    },
+    "system": {
+      "type": "object",
+      "required": ["id", "alias_id", "alias_name"],
+      "properties": {"id": {"$ref": "types.schema.json#/definitions/uuid_v7"}, "alias_id": {"type": "string", "pattern": "^SYS-[0-9]{4}$"}, "alias_name": {"$ref": "types.schema.json#/definitions/alias_name"}},
+      "additionalProperties": false
+    },
+    "system_boundary": {
+      "type": "object",
+      "required": ["id", "alias_id", "alias_name", "name", "description"],
+      "properties": {"id": {"$ref": "types.schema.json#/definitions/uuid_v7"}, "alias_id": {"type": "string", "pattern": "^SYSBOUND-[0-9]{4}$"}, "alias_name": {"$ref": "types.schema.json#/definitions/alias_name"}, "name": {"type": "string", "minLength": 1}, "description": {"type": "string", "minLength": 1}, "external_dependencies": {"type": "array", "items": {"type": "string"}}, "exposed_interfaces": {"type": "array", "items": {"$ref": "types.schema.json#/definitions/uuid_v7"}}},
+      "additionalProperties": false
+    },
+    "data_flow": {
+      "type": "object",
+      "required": ["id", "alias_id", "alias_name", "name", "description"],
+      "properties": {"id": {"$ref": "types.schema.json#/definitions/uuid_v7"}, "alias_id": {"type": "string", "pattern": "^FLOW-[0-9]{4}$"}, "alias_name": {"$ref": "types.schema.json#/definitions/alias_name"}, "name": {"type": "string", "minLength": 1}, "description": {"type": "string", "minLength": 1}, "path": {"type": "array", "items": {"$ref": "types.schema.json#/definitions/topology_key"}}, "data_type": {"type": "string"}, "volume": {"type": "string"}, "latency_requirements": {"type": "string"}},
+      "additionalProperties": false
+    },
+    "custom_entity": {
+      "type": "object",
+      "required": ["id", "alias_id", "alias_name", "entity_type", "qualification", "properties", "rationale"],
+      "properties": {
+        "id": {"$ref": "types.schema.json#/definitions/uuid_v7"},
+        "alias_id": {"type": "string", "pattern": "^[A-Z][A-Z0-9]{0,15}-[0-9]{4}$"},
+        "alias_name": {"$ref": "types.schema.json#/definitions/alias_name"},
+        "entity_type": {"$ref": "types.schema.json#/definitions/semantic_type"},
+        "qualification": {"$ref": "types.schema.json#/definitions/custom_qualification"},
+        "properties": {"$ref": "types.schema.json#/definitions/properties"},
+        "rationale": {"type": "string", "minLength": 1},
+        "existence_state": {"enum": ["active", "retired"]}
+      },
+      "allOf": [{"properties": {"qualification": {"properties": {"semantic_kind": {"const": "entity"}}}}}],
+      "additionalProperties": false
+    },
+    "custom_relationship": {
+      "type": "object",
+      "required": ["id", "alias_id", "alias_name", "relationship_type", "qualification", "from_entity_id", "to_entity_id", "properties", "rationale"],
+      "properties": {
+        "id": {"$ref": "types.schema.json#/definitions/uuid_v7"},
+        "alias_id": {"type": "string", "pattern": "^[A-Z][A-Z0-9]{0,15}-[0-9]{4}$"},
+        "alias_name": {"$ref": "types.schema.json#/definitions/alias_name"},
+        "relationship_type": {"$ref": "types.schema.json#/definitions/semantic_type"},
+        "qualification": {"$ref": "types.schema.json#/definitions/custom_qualification"},
+        "from_entity_id": {"$ref": "types.schema.json#/definitions/uuid_v7"},
+        "to_entity_id": {"$ref": "types.schema.json#/definitions/uuid_v7"},
+        "properties": {"$ref": "types.schema.json#/definitions/properties"},
+        "rationale": {"type": "string", "minLength": 1}
+      },
+      "allOf": [{"properties": {"qualification": {"properties": {"semantic_kind": {"const": "relationship"}}}}}],
+      "additionalProperties": false
+    }
+  },
+  "type": "object",
+  "properties": {
+    "schema_version": {"const": "1.7"},
+    "adr_type": {"enum": ["logical", "physical-system", "physical-component"]},
+    "id": {"$ref": "types.schema.json#/definitions/uuid_v7"},
+    "alias_id": {"$ref": "types.schema.json#/definitions/adr_alias"},
+    "alias_name": {"$ref": "types.schema.json#/definitions/alias_name"},
+    "title": {"type": "string", "minLength": 5, "maxLength": 200},
+    "status": {"$ref": "types.schema.json#/definitions/status"},
+    "created_date": {"$ref": "types.schema.json#/definitions/iso_date"},
+    "modified_date": {"$ref": "types.schema.json#/definitions/iso_date"},
+    "authors": {"type": "array", "minItems": 1, "items": {"type": "string"}},
+    "domains": {"type": "array", "items": {"type": "string"}},
+    "tags": {"type": "array", "items": {"type": "string"}},
+    "related_adrs": {"type": "array", "items": {"$ref": "types.schema.json#/definitions/uuid_v7"}},
+    "supersedes": {"type": "array", "items": {"$ref": "types.schema.json#/definitions/uuid_v7"}},
+    "superseded_by": {"$ref": "types.schema.json#/definitions/uuid_v7"},
+    "projection_signals": {"type": "array", "items": {"type": "string"}},
+    "ownership": {"type": "object", "additionalProperties": false, "properties": {"architecture_authority": {"type": "string"}, "implementation_owners": {"type": "array", "items": {"type": "string"}}}},
+    "governance": {"type": "object", "additionalProperties": false, "properties": {"implementation_authority": {"enum": ["none", "advisory", "implementation_authoritative"]}, "approved_by": {"type": "string"}, "approved_date": {"type": "string"}}},
+    "implements_logical": {"type": "array", "items": {"$ref": "types.schema.json#/definitions/uuid_v7"}},
+    "implements_system": {"type": "array", "items": {"$ref": "types.schema.json#/definitions/uuid_v7"}},
+    "technologies": {"type": "array", "items": {"type": "string"}},
+    "technology_stack": {"type": "array", "items": {"$ref": "types.schema.json#/definitions/technology_choice"}},
+    "context": {"type": "string"},
+    "normative_propositions": {"type": "array", "items": {"$ref": "#/definitions/normative_proposition"}},
+    "evidence_expectations": {"type": "array", "items": {"$ref": "#/definitions/evidence_expectation"}},
+    "extension_entities": {"type": "array", "items": {"$ref": "#/definitions/custom_entity"}},
+    "extension_relationships": {"type": "array", "items": {"$ref": "#/definitions/custom_relationship"}}
+  },
+  "required": ["schema_version", "adr_type", "id", "alias_id", "alias_name", "title", "status", "created_date", "authors"],
+  "additionalProperties": false
+}

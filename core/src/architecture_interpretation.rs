@@ -872,7 +872,6 @@ pub(crate) struct NormalizedInterpretation {
 pub(crate) struct NormalizedOutputContext {
     pub(crate) architecture_namespace: String,
     pub(crate) provider_kind: String,
-    pub(crate) provider_identity: String,
     pub(crate) artifact_path: String,
 }
 
@@ -881,7 +880,6 @@ impl NormalizedOutputContext {
         materialization::validate_architecture_namespace(&self.architecture_namespace)?;
         for (label, value) in [
             ("provider_kind", &self.provider_kind),
-            ("provider_identity", &self.provider_identity),
             ("artifact_path", &self.artifact_path),
         ] {
             if value.is_empty() {
@@ -912,34 +910,6 @@ fn source_text(value: &BTreeMap<String, Json>, key: &str, label: &str) -> Result
         .filter(|value| !value.is_empty())
         .map(ToOwned::to_owned)
         .ok_or_else(|| format!("{label}.{key} must be a non-empty string"))
-}
-
-fn source_contract_projection(source_contract: &Json) -> Json {
-    let source_object = source_contract.as_object();
-    let family = source_object
-        .and_then(|value| value.get("family"))
-        .and_then(Json::as_str)
-        .unwrap_or_default();
-    let version = source_object
-        .and_then(|value| value.get("version"))
-        .and_then(Json::as_str)
-        .unwrap_or_default();
-    let fingerprint = source_object
-        .and_then(|value| value.get("fingerprint").or_else(|| value.get("content_digest")))
-        .and_then(Json::as_str)
-        .or_else(|| {
-            source_object
-                .and_then(|value| value.get("schemaResource").or_else(|| value.get("schema_resource")))
-                .and_then(Json::as_object)
-                .and_then(|value| value.get("contentDigest").or_else(|| value.get("content_digest")))
-                .and_then(Json::as_str)
-        })
-        .unwrap_or_default();
-    object([
-        ("family", string(family)),
-        ("version", string(version)),
-        ("fingerprint", string(fingerprint)),
-    ])
 }
 
 fn number(value: u64) -> Json {
@@ -1082,6 +1052,10 @@ fn normalized_entity(
     let created_at = materialization::uuidv7_created_at(&id)
         .ok_or_else(|| format!("UUIDv7 identity lacks a valid timestamp: {id}"))?;
     let uri = materialization::canonical_entity_uri(&output_context.architecture_namespace, &id)?;
+    let provider_key = materialization::provider_key(
+        &output_context.provider_kind,
+        &output_context.architecture_namespace,
+    )?;
     let declaring_kind = source_text(root, "adr_type", "authoring document")?;
     let source_type = if normalized_type == "normative_proposition" {
         "authoring_adr".to_owned()
@@ -1098,7 +1072,7 @@ fn normalized_entity(
         ("content_digest", string(content_digest)),
         (
             "provider",
-            string(output_context.provider_identity.clone()),
+            string(provider_key.clone()),
         ),
     ]);
     let mut values = BTreeMap::from([
@@ -1137,7 +1111,7 @@ fn normalized_entity(
         (
             "provenance".into(),
             object([
-                ("provider", string(output_context.provider_identity.clone())),
+                ("provider", string(provider_key.clone())),
                 ("source_ref", string(source_context.canonical_source_ref.clone())),
                 ("artifact_path", string(output_context.artifact_path.clone())),
                 ("source_pointer", string(source_context.source_pointer.clone())),
@@ -1159,7 +1133,7 @@ fn normalized_entity(
             object([
                 (
                     "provider",
-                    string(output_context.provider_identity.clone()),
+                    string(provider_key.clone()),
                 ),
                 ("id", string(parent_id.clone())),
                 ("alias_id", string(parent_alias_id)),
@@ -1182,7 +1156,10 @@ fn normalized_entity(
         provenance.remove("source_contract");
         provenance.insert("declaring_adr".into(), string(parent_id));
         values.insert("provenance".into(), Json::Object(provenance));
-        values.insert("source_contract".into(), source_contract_projection(source_contract));
+        values.insert(
+            "source_contract".into(),
+            materialization::normalized_source_contract(source_contract),
+        );
         for key in ["statement", "normative_force", "scope", "rationale"] {
             if let Some(value) = fields.get(key) {
                 values.insert(key.into(), value.clone());
@@ -1283,6 +1260,10 @@ fn unresolved_from_result(
     ]))
 }
 
+fn forward_historical_compatibility_error() -> String {
+    "historical compatibility cannot enter forward authoring@1.7 -> architecture-interpretation@1.1 -> normalized-model@2.4 assembly".to_owned()
+}
+
 /// Interpret a complete, already-qualified authoring 1.7 document into the
 /// canonical normalized-model 2.4 result. This function is crate-internal;
 /// it is deliberately not a semantic-core protocol operation.
@@ -1343,15 +1324,10 @@ pub(crate) fn interpret_document(
             disposition: InterpretationDisposition::Rejected,
             ..
         } => return Err(format!("authoring document was rejected: {:?}", result.to_json())),
-        result @ InterpretationResult {
+        InterpretationResult {
             disposition: InterpretationDisposition::HistoricalCompatibility,
             ..
-        } => {
-            let record = result.normalized_record.ok_or_else(|| {
-                "historical compatibility result lacks a governed normalized record".to_owned()
-            })?;
-            relationships.push(record);
-        }
+        } => return Err(forward_historical_compatibility_error()),
     }
     for fragment in collect_document_fragments(source)? {
         // Physical-system authoring embeds the owning system descriptor under
@@ -1406,10 +1382,7 @@ pub(crate) fn interpret_document(
                 unresolved.push(unresolved_from_result(&result, &context)?);
             }
             InterpretationDisposition::HistoricalCompatibility => {
-                let record = result.normalized_record.ok_or_else(|| {
-                    "historical compatibility result lacks a governed normalized record".to_owned()
-                })?;
-                relationships.push(record);
+                return Err(forward_historical_compatibility_error());
             }
         }
     }
@@ -1435,10 +1408,7 @@ pub(crate) fn interpret_document(
                     }
                     InterpretationDisposition::Rejected => return Err(format!("topology relationship was rejected: {:?}", result.to_json())),
                     InterpretationDisposition::HistoricalCompatibility => {
-                        let record = result.normalized_record.ok_or_else(|| {
-                            "historical compatibility result lacks a governed normalized record".to_owned()
-                        })?;
-                        relationships.push(record);
+                        return Err(forward_historical_compatibility_error());
                     }
                 }
             }
@@ -1471,10 +1441,7 @@ pub(crate) fn interpret_document(
                         return Err(format!("composition relationship was rejected: {:?}", result.to_json()));
                     }
                     InterpretationDisposition::HistoricalCompatibility => {
-                        let record = result.normalized_record.ok_or_else(|| {
-                            "historical compatibility result lacks a governed normalized record".to_owned()
-                        })?;
-                        relationships.push(record);
+                        return Err(forward_historical_compatibility_error());
                     }
                 }
             }
@@ -1511,10 +1478,7 @@ pub(crate) fn interpret_document(
                     return Err(format!("custom relationship was rejected: {:?}", result.to_json()));
                 }
                 InterpretationDisposition::HistoricalCompatibility => {
-                    let record = result.normalized_record.ok_or_else(|| {
-                        "historical compatibility result lacks a governed normalized record".to_owned()
-                    })?;
-                    relationships.push(record);
+                    return Err(forward_historical_compatibility_error());
                 }
             }
         }
@@ -1613,7 +1577,6 @@ mod tests {
         NormalizedOutputContext {
             architecture_namespace: "test-architecture".into(),
             provider_kind: "test-provider".into(),
-            provider_identity: "test-provider:test-architecture".into(),
             artifact_path: artifact_path.into(),
         }
     }
@@ -1650,6 +1613,23 @@ mod tests {
         artifact_path: &str,
         source_schema: &str,
     ) -> Result<NormalizedInterpretation, String> {
+        let source_contract = complete_source_contract();
+        interpret_complete_fixture_with_contract(
+            source,
+            source_ref,
+            artifact_path,
+            source_schema,
+            &source_contract,
+        )
+    }
+
+    fn interpret_complete_fixture_with_contract(
+        source: &Json,
+        source_ref: &str,
+        artifact_path: &str,
+        source_schema: &str,
+        source_contract: &Json,
+    ) -> Result<NormalizedInterpretation, String> {
         let source_context = InterpretationSourceContext {
             canonical_source_ref: source_ref.into(),
             source_pointer: "/".into(),
@@ -1658,7 +1638,7 @@ mod tests {
             source,
             &source_context,
             &complete_output_context(artifact_path),
-            &complete_source_contract(),
+            source_contract,
             source_schema,
             "sha256:1111111111111111111111111111111111111111111111111111111111111111",
         )
@@ -2049,7 +2029,6 @@ mod tests {
         let output_context = NormalizedOutputContext {
             architecture_namespace: "test-architecture".into(),
             provider_kind: "test-provider".into(),
-            provider_identity: "test-provider:test-architecture".into(),
             artifact_path: "architecture/I01.yaml".into(),
         };
         let source_contract = parsed(
@@ -2188,7 +2167,6 @@ mod tests {
         let output_context = NormalizedOutputContext {
             architecture_namespace: "test-architecture".into(),
             provider_kind: "test-provider".into(),
-            provider_identity: "test-provider:test-architecture".into(),
             artifact_path: "architecture/accepted.yaml".into(),
         };
         let source_contract = parsed(
@@ -2229,7 +2207,6 @@ mod tests {
         let missing_context = NormalizedOutputContext {
             architecture_namespace: String::new(),
             provider_kind: "test-provider".into(),
-            provider_identity: "test-provider:test-architecture".into(),
             artifact_path: "architecture/accepted.yaml".into(),
         };
         let error = interpret_document(
@@ -2242,6 +2219,17 @@ mod tests {
         )
         .expect_err("missing normalized output context must fail closed");
         assert!(error.contains("architecture_namespace"));
+    }
+
+    #[test]
+    fn provider_identity_is_derived_from_kind_and_namespace() {
+        assert_eq!(
+            materialization::provider_key("test-provider", "test-architecture")
+                .expect("complete provider facts"),
+            "test-provider:test-architecture"
+        );
+        assert!(materialization::provider_key("", "test-architecture").is_err());
+        assert!(materialization::provider_key("test-provider", "").is_err());
     }
 
     #[test]
@@ -2404,11 +2392,21 @@ mod tests {
                 }"#,
             )]),
         );
-        let result = interpret_complete_fixture(
+        let mut source_contract = complete_source_contract();
+        source_contract
+            .as_object_mut()
+            .expect("source contract object")
+            .insert("fingerprint".into(), string("sha256:conflicting-top-level"));
+        source_contract
+            .as_object_mut()
+            .expect("source contract object")
+            .insert("content_digest".into(), string("sha256:conflicting-alias"));
+        let result = interpret_complete_fixture_with_contract(
             &source,
             "test://architecture-interpretation/1.1/np-custom",
             "architecture/logical-with-extensions.yaml",
             "authoring/1.7/schema/adr-logical.schema",
+            &source_contract,
         )
         .expect("NP and custom complete document");
         let entities = result
@@ -2435,6 +2433,13 @@ mod tests {
                 .and_then(|provenance| provenance.get("declaring_adr"))
                 .and_then(Json::as_str),
             Some("019109a0-b1c2-7def-8a00-112233445566")
+        );
+        assert_eq!(
+            np.get("source_contract")
+                .and_then(Json::as_object)
+                .and_then(|contract| contract.get("fingerprint"))
+                .and_then(Json::as_str),
+            Some("sha256:0000000000000000000000000000000000000000000000000000000000000000")
         );
         let custom = entities
             .iter()

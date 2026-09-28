@@ -187,6 +187,17 @@ pub(crate) fn validate_architecture_namespace(value: &str) -> Result<(), String>
     }
 }
 
+pub(crate) fn provider_key(
+    provider_kind: &str,
+    architecture_namespace: &str,
+) -> Result<String, String> {
+    if provider_kind.is_empty() {
+        return Err("provider_kind must be a non-empty string".into());
+    }
+    validate_architecture_namespace(architecture_namespace)?;
+    Ok(format!("{provider_kind}:{architecture_namespace}"))
+}
+
 pub(crate) fn canonical_entity_uri(
     architecture_namespace: &str,
     entity_id: &str,
@@ -329,11 +340,11 @@ fn identity_map(
         );
     }
     if let Some(declared_provider) = text(map.get("provider")) {
-        let expected_provider = format!(
-            "{}:{}",
-            text(provider.get("kind")).unwrap_or_default(),
-            text(provider.get("architectureNamespace")).unwrap_or_default()
-        );
+        let expected_provider = provider_key(
+            &text(provider.get("kind")).unwrap_or_default(),
+            &text(provider.get("architectureNamespace")).unwrap_or_default(),
+        )
+        .unwrap_or_default();
         if declared_provider != expected_provider {
             diagnostic_code(
                 diagnostics,
@@ -860,7 +871,7 @@ fn source_identity_ref(binding: &Json) -> Json {
     binding.clone()
 }
 
-fn normalized_source_contract(binding: &Json) -> Json {
+pub(crate) fn normalized_source_contract(binding: &Json) -> Json {
     // normalized-model v2.3 predates the richer transport binding and keeps
     // its compatibility-shaped source_contract member.  Its fingerprint is
     // the exact qualified top-level schema resource digest; it is never an
@@ -999,11 +1010,11 @@ fn regular_entity(
     .unwrap_or_else(|| title.clone());
     let created_at = uuidv7_created_at(&identity.id)?;
     let status = text(raw.get("status")).unwrap_or_else(|| "proposed".into());
-    let provider_key = format!(
-        "{}:{}",
-        text(provider.get("kind")).unwrap_or_default(),
-        text(provider.get("architectureNamespace")).unwrap_or_default()
-    );
+    let provider_key = provider_key(
+        &text(provider.get("kind")).unwrap_or_default(),
+        &text(provider.get("architectureNamespace")).unwrap_or_default(),
+    )
+    .ok()?;
     let source_ref = text(source.get("sourceRef")).unwrap_or_default();
     let artifact_path = text(source.get("artifactPath")).unwrap_or_default();
     let content_digest = text(source.get("contentDigest")).unwrap_or_default();
@@ -1455,11 +1466,11 @@ fn normative_proposition(
         );
         return None;
     }
-    let provider_key = format!(
-        "{}:{}",
-        text(provider.get("kind")).unwrap_or_default(),
-        text(provider.get("architectureNamespace")).unwrap_or_default()
-    );
+    let provider_key = provider_key(
+        &text(provider.get("kind")).unwrap_or_default(),
+        &text(provider.get("architectureNamespace")).unwrap_or_default(),
+    )
+    .ok()?;
     let source_ref = text(source.get("sourceRef")).unwrap_or_default();
     let artifact_path = text(source.get("artifactPath")).unwrap_or_default();
     let content_digest = text(source.get("contentDigest")).unwrap_or_default();
@@ -2667,17 +2678,28 @@ fn materialize_sources(
         )
     });
     let source_basis = source_basis_with_sorted_artifacts(source_basis, &artifacts);
+    let provider_key = match provider_key(
+        &text(provider.get("kind")).unwrap_or_default(),
+        &text(provider.get("architectureNamespace")).unwrap_or_default(),
+    ) {
+        Ok(value) => value,
+        Err(error) => {
+            diagnostic_code(
+                diagnostics,
+                "semantic_contract.provider_identity_required",
+                error,
+                "authorityProvider",
+            );
+            return (Json::Null, Vec::new(), Vec::new());
+        }
+    };
     let normalized = object([
         ("schema_version".into(), string(NORMALIZED_MODEL_VERSION)),
         ("type".into(), string("normalized_architecture_model")),
         ("mode".into(), string("normalized")),
         (
             "scope_root".into(),
-            string(format!(
-                "{}:{}",
-                text(provider.get("kind")).unwrap_or_default(),
-                text(provider.get("architectureNamespace")).unwrap_or_default()
-            )),
+            string(provider_key),
         ),
         (
             "architecture_namespace".into(),

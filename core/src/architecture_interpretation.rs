@@ -6,7 +6,7 @@
 //! The contract resources remain the authority; this Rust code is only their
 //! deterministic execution mechanism.
 
-use std::collections::BTreeMap;
+use std::collections::{BTreeMap, BTreeSet};
 
 use super::{candidate_source, materialization, schema_validation, semantic_contract, Json};
 
@@ -1563,6 +1563,156 @@ pub(crate) fn interpret_document(
     })
 }
 
+/// Assemble already-interpreted documents into one canonical normalized-model
+/// result for a qualified source basis. Per-document meaning is established
+/// only by [`interpret_document`]; this operation composes those results and
+/// owns the deterministic whole-basis representation.
+pub(crate) fn assemble_normalized_interpretations(
+    interpretations: &[NormalizedInterpretation],
+    provider_key: &str,
+    architecture_namespace: &str,
+    mut source_coverage: Vec<Json>,
+) -> Result<Json, String> {
+    if interpretations.is_empty() {
+        return Err("normalized model assembly requires at least one interpretation".to_owned());
+    }
+    if interpretations.len() == 1 {
+        return Ok(interpretations[0].model.clone());
+    }
+
+    let mut entities = Vec::new();
+    let mut relationships = Vec::new();
+    let mut unresolved = Vec::new();
+    let mut entity_ids = BTreeSet::new();
+    for interpretation in interpretations {
+        for entity in interpretation
+            .model
+            .as_object()
+            .and_then(|value| value.get("entities"))
+            .and_then(Json::as_array)
+            .into_iter()
+            .flatten()
+        {
+            let id = entity
+                .as_object()
+                .and_then(|value| value.get("id"))
+                .and_then(Json::as_str)
+                .unwrap_or_default()
+                .to_owned();
+            if !entity_ids.insert(id.clone()) {
+                return Err(format!("duplicate normalized entity identity: {id}"));
+            }
+            entities.push(entity.clone());
+        }
+        relationships.extend(
+            interpretation
+                .model
+                .as_object()
+                .and_then(|value| value.get("relationships"))
+                .and_then(Json::as_array)
+                .into_iter()
+                .flatten()
+                .cloned(),
+        );
+        unresolved.extend(
+            interpretation
+                .model
+                .as_object()
+                .and_then(|value| value.get("unresolved"))
+                .and_then(Json::as_array)
+                .into_iter()
+                .flatten()
+                .cloned(),
+        );
+    }
+
+    entities.sort_by_key(|value| {
+        value
+            .as_object()
+            .and_then(|object| object.get("id"))
+            .and_then(Json::as_str)
+            .unwrap_or_default()
+            .to_owned()
+    });
+    relationships.sort_by_key(|value| {
+        (
+            value
+                .as_object()
+                .and_then(|object| object.get("record_kind"))
+                .and_then(Json::as_str)
+                .unwrap_or_default()
+                .to_owned(),
+            value
+                .as_object()
+                .and_then(|object| object.get("id").or_else(|| object.get("assertion_id")))
+                .and_then(Json::as_str)
+                .unwrap_or_default()
+                .to_owned(),
+        )
+    });
+    unresolved.sort_by_key(|value| {
+        (
+            value
+                .as_object()
+                .and_then(|object| object.get("code"))
+                .and_then(Json::as_str)
+                .unwrap_or_default()
+                .to_owned(),
+            value
+                .as_object()
+                .and_then(|object| object.get("source_pointer"))
+                .and_then(Json::as_str)
+                .unwrap_or_default()
+                .to_owned(),
+        )
+    });
+
+    let mut coverage_by_digest = source_coverage
+        .drain(..)
+        .map(|coverage| {
+            let digest = materialization::digest_json(&coverage)?;
+            Ok::<_, String>((digest, coverage))
+        })
+        .collect::<Result<Vec<_>, String>>()?;
+    coverage_by_digest.sort_by(|left, right| left.0.cmp(&right.0));
+    source_coverage = coverage_by_digest
+        .into_iter()
+        .map(|(_, coverage)| coverage)
+        .collect();
+
+    let model_without_fingerprint = object([
+        ("schema_version", string("2.4")),
+        ("type", string("normalized_architecture_model")),
+        ("mode", string("normalized")),
+        ("scope_root", string(provider_key)),
+        ("architecture_namespace", string(architecture_namespace)),
+        ("entities", Json::Array(entities)),
+        ("relationships", Json::Array(relationships)),
+        ("unresolved", Json::Array(unresolved)),
+        (
+            "validation_summary",
+            object([
+                ("entity_count", number(entity_ids.len() as u64)),
+                (
+                    "source_artifact_count",
+                    number(source_coverage.len() as u64),
+                ),
+            ]),
+        ),
+        (
+            "source_coverage",
+            object([("source_artifacts", Json::Array(source_coverage))]),
+        ),
+    ]);
+    let fingerprint = materialization::digest_json(&model_without_fingerprint)?;
+    let mut values = model_without_fingerprint
+        .as_object()
+        .cloned()
+        .ok_or_else(|| "normalized model assembly failed".to_owned())?;
+    values.insert("fingerprint".into(), string(fingerprint));
+    Ok(Json::Object(values))
+}
+
 #[cfg(test)]
 mod tests {
     use crate::schema_validation;
@@ -2060,6 +2210,14 @@ mod tests {
         )
         .expect("repeat complete I01 interpretation");
         assert_eq!(first, second);
+        let assembled = assemble_normalized_interpretations(
+            std::slice::from_ref(&first),
+            "test-provider:test-architecture",
+            "test-architecture",
+            vec![first.model.get("source_coverage").cloned().expect("source coverage")],
+        )
+        .expect("single interpretation assembly");
+        assert_eq!(assembled, first.model);
         assert_eq!(
             first.model.get("schema_version").and_then(Json::as_str),
             Some("2.4")

@@ -5,10 +5,10 @@
 //! assembler.  It does not interpret authoring fields or manufacture a
 //! second normalized model implementation.
 
-use std::collections::{BTreeMap, BTreeSet};
+use std::collections::BTreeMap;
 
 use super::architecture_interpretation::{
-    interpret_document, InterpretationSourceContext, NormalizedInterpretation,
+    assemble_normalized_interpretations, interpret_document, InterpretationSourceContext,
     NormalizedOutputContext,
 };
 use super::materialization;
@@ -35,13 +35,6 @@ fn object(entries: impl IntoIterator<Item = (&'static str, Json)>) -> Json {
             .map(|(key, value)| (key.to_owned(), value))
             .collect(),
     )
-}
-
-fn array<'a>(value: Option<&'a Json>) -> Option<&'a Vec<Json>> {
-    match value {
-        Some(Json::Array(values)) => Some(values),
-        _ => None,
-    }
 }
 
 fn diagnostic_code(
@@ -298,113 +291,6 @@ fn validate_source_artifact(
         return None;
     }
     Some((document, source_contract, schema_key, content_digest))
-}
-
-fn merge_interpretations(
-    interpretations: &[NormalizedInterpretation],
-    provider_key: &str,
-    architecture_namespace: &str,
-    source_coverage: Vec<Json>,
-) -> Result<Json, String> {
-    if interpretations.len() == 1 {
-        return Ok(interpretations[0].model.clone());
-    }
-    let mut entities = Vec::new();
-    let mut relationships = Vec::new();
-    let mut unresolved = Vec::new();
-    let mut entity_ids = BTreeSet::new();
-    for interpretation in interpretations {
-        for entity in array(
-            interpretation
-                .model
-                .as_object()
-                .and_then(|v| v.get("entities")),
-        )
-        .into_iter()
-        .flatten()
-        {
-            let id = text(entity.as_object().and_then(|v| v.get("id"))).unwrap_or_default();
-            if !entity_ids.insert(id.clone()) {
-                return Err(format!("duplicate normalized entity identity: {id}"));
-            }
-            entities.push(entity.clone());
-        }
-        relationships.extend(
-            array(
-                interpretation
-                    .model
-                    .as_object()
-                    .and_then(|v| v.get("relationships")),
-            )
-            .into_iter()
-            .flatten()
-            .cloned(),
-        );
-        unresolved.extend(
-            array(
-                interpretation
-                    .model
-                    .as_object()
-                    .and_then(|v| v.get("unresolved")),
-            )
-            .into_iter()
-            .flatten()
-            .cloned(),
-        );
-    }
-    entities
-        .sort_by_key(|value| text(value.as_object().and_then(|v| v.get("id"))).unwrap_or_default());
-    relationships.sort_by_key(|value| {
-        (
-            text(value.as_object().and_then(|v| v.get("record_kind"))).unwrap_or_default(),
-            text(
-                value
-                    .as_object()
-                    .and_then(|v| v.get("id").or_else(|| v.get("assertion_id"))),
-            )
-            .unwrap_or_default(),
-        )
-    });
-    unresolved.sort_by_key(|value| {
-        (
-            text(value.as_object().and_then(|v| v.get("code"))).unwrap_or_default(),
-            text(value.as_object().and_then(|v| v.get("source_pointer"))).unwrap_or_default(),
-        )
-    });
-    let without_fingerprint = object([
-        ("schema_version", string("2.4")),
-        ("type", string("normalized_architecture_model")),
-        ("mode", string("normalized")),
-        ("scope_root", string(provider_key)),
-        ("architecture_namespace", string(architecture_namespace)),
-        ("entities", Json::Array(entities)),
-        ("relationships", Json::Array(relationships)),
-        ("unresolved", Json::Array(unresolved)),
-        (
-            "validation_summary",
-            object([
-                (
-                    "entity_count",
-                    Json::Number(serde_json::Number::from(entity_ids.len() as u64)),
-                ),
-                (
-                    "source_artifact_count",
-                    Json::Number(serde_json::Number::from(source_coverage.len() as u64)),
-                ),
-            ]),
-        ),
-        (
-            "source_coverage",
-            object([("source_artifacts", Json::Array(source_coverage))]),
-        ),
-    ]);
-    let fingerprint = materialization::digest_json(&without_fingerprint)?;
-    let mut values = without_fingerprint
-        .as_object()
-        .cloned()
-        .ok_or_else(|| "normalized model assembly failed".to_owned())?;
-    values.insert("fingerprint".into(), string(fingerprint));
-    Ok(Json::Object(values))
 }
 
 fn result(
@@ -664,6 +550,7 @@ pub(crate) fn execute(request: &Json) -> Json {
     let mut interpretations = Vec::new();
     let mut coverage = Vec::new();
     for (index, artifact) in artifacts.iter().enumerate() {
+        let artifact_diagnostics_before = diagnostics.len();
         let Some((document, source_contract, source_schema, content_digest)) =
             validate_source_artifact(
                 artifact,
@@ -680,7 +567,7 @@ pub(crate) fn execute(request: &Json) -> Json {
             .expect("validated source artifact object");
         let source_ref = text(artifact_object.get("sourceRef")).unwrap_or_default();
         let artifact_path = text(artifact_object.get("artifactPath")).unwrap_or_default();
-        if diagnostics.is_empty() {
+        if diagnostics.len() == artifact_diagnostics_before {
             let source_context = InterpretationSourceContext {
                 canonical_source_ref: source_ref,
                 source_pointer: "/".into(),
@@ -731,7 +618,7 @@ pub(crate) fn execute(request: &Json) -> Json {
             diagnostics,
         );
     }
-    let model = match merge_interpretations(
+    let model = match assemble_normalized_interpretations(
         &interpretations,
         &provider_key,
         &architecture_namespace,

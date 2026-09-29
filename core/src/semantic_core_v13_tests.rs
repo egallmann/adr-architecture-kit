@@ -238,6 +238,34 @@ fn successor_request() -> Json {
     })
 }
 
+fn successor_artifact(
+    source_ref: &str,
+    artifact_path: &str,
+    content_digest: &str,
+    root_id: &str,
+    decision_id: &str,
+    ordinal: &str,
+) -> Json {
+    let mut artifact = successor_request()["request"]["sourceBasis"]["artifacts"][0].clone();
+    artifact["sourceRef"] = json!(source_ref);
+    artifact["artifactPath"] = json!(artifact_path);
+    artifact["contentDigest"] = json!(content_digest);
+    artifact["document"]["id"] = json!(root_id);
+    artifact["document"]["alias_id"] = json!(format!("ADR-L-{ordinal}"));
+    artifact["document"]["alias_name"] = json!(format!("sample-adr-{ordinal}"));
+    artifact["document"]["decisions"][0]["id"] = json!(decision_id);
+    artifact["document"]["decisions"][0]["alias_id"] = json!(format!("DEC-{ordinal}"));
+    artifact["document"]["decisions"][0]["alias_name"] =
+        json!(format!("sample-decision-{ordinal}"));
+    artifact
+}
+
+fn successor_request_with_artifacts(artifacts: Vec<Json>) -> Json {
+    let mut request = successor_request();
+    request["request"]["sourceBasis"]["artifacts"] = Json::Array(artifacts);
+    request
+}
+
 fn execute(value: Json) -> Json {
     let bytes = serde_json::to_vec(&value).expect("request serializes");
     serde_json::from_slice(&super::execute_json(&bytes)).expect("result is JSON")
@@ -421,6 +449,166 @@ fn protocol_1_3_materializes_the_exact_retained_successor() {
     assert!(result["result"]["normalizedModel"]
         .get("entityRegistry")
         .is_none());
+}
+
+#[test]
+fn protocol_1_3_materializes_two_artifacts_through_one_canonical_assembly() {
+    let first = successor_artifact(
+        "ADR-L-0001",
+        "architecture/ADR-L-0001.yaml",
+        "sha256:1111111111111111111111111111111111111111111111111111111111111111",
+        "019109a0-b1c2-7def-8a00-112233445566",
+        "019109a0-b1c2-7def-8a00-112233445567",
+        "0001",
+    );
+    let second = successor_artifact(
+        "ADR-L-0002",
+        "architecture/ADR-L-0002.yaml",
+        "sha256:2222222222222222222222222222222222222222222222222222222222222222",
+        "019109a0-b1c2-7def-8a00-112233445576",
+        "019109a0-b1c2-7def-8a00-112233445577",
+        "0002",
+    );
+    let result = execute(successor_request_with_artifacts(vec![first, second]));
+    assert_eq!(result["result"]["outcome"], "Materialized");
+    let model = &result["result"]["normalizedModel"];
+    assert_eq!(model["schema_version"], "2.4");
+    assert_eq!(model["type"], "normalized_architecture_model");
+    assert_eq!(model["entities"].as_array().map(Vec::len), Some(4));
+    assert_eq!(model["validation_summary"]["entity_count"], 4);
+    assert_eq!(model["validation_summary"]["source_artifact_count"], 2);
+    assert_eq!(
+        model["source_coverage"]["source_artifacts"]
+            .as_array()
+            .map(Vec::len),
+        Some(2)
+    );
+    assert!(model["fingerprint"]
+        .as_str()
+        .is_some_and(|value| value.starts_with("sha256:")));
+    let ids = model["entities"]
+        .as_array()
+        .expect("aggregated entities")
+        .iter()
+        .map(|entity| entity["id"].as_str().expect("entity identity"))
+        .collect::<Vec<_>>();
+    assert_eq!(
+        ids.iter()
+            .filter(|id| **id == "019109a0-b1c2-7def-8a00-112233445566")
+            .count(),
+        1
+    );
+    assert_eq!(
+        ids.iter()
+            .filter(|id| **id == "019109a0-b1c2-7def-8a00-112233445576")
+            .count(),
+        1
+    );
+}
+
+#[test]
+fn protocol_1_3_duplicate_canonical_definition_fails_closed() {
+    let first = successor_artifact(
+        "ADR-L-0001",
+        "architecture/ADR-L-0001.yaml",
+        "sha256:1111111111111111111111111111111111111111111111111111111111111111",
+        "019109a0-b1c2-7def-8a00-112233445566",
+        "019109a0-b1c2-7def-8a00-112233445567",
+        "0001",
+    );
+    let second = successor_artifact(
+        "ADR-L-0002",
+        "architecture/ADR-L-0002.yaml",
+        "sha256:2222222222222222222222222222222222222222222222222222222222222222",
+        "019109a0-b1c2-7def-8a00-112233445566",
+        "019109a0-b1c2-7def-8a00-112233445577",
+        "0002",
+    );
+    let result = execute(successor_request_with_artifacts(vec![first, second]));
+    assert_eq!(result["result"]["outcome"], "Rejected");
+    assert_eq!(result["result"]["normalizedModel"], Json::Null);
+    assert!(result["result"]["diagnostics"]
+        .as_array()
+        .is_some_and(|items| {
+            items.iter().any(|item| {
+                item["code"] == "semantic_contract.normalized_model_assembly_failed"
+                    && item["message"].as_str().is_some_and(|message| {
+                        message.contains("019109a0-b1c2-7def-8a00-112233445566")
+                    })
+            })
+        }));
+}
+
+#[test]
+fn protocol_1_3_artifact_diagnostics_do_not_suppress_later_interpretation() {
+    let mut first = successor_artifact(
+        "ADR-L-0001",
+        "architecture/ADR-L-0001.yaml",
+        "sha256:1111111111111111111111111111111111111111111111111111111111111111",
+        "019109a0-b1c2-7def-8a00-112233445566",
+        "019109a0-b1c2-7def-8a00-112233445567",
+        "0001",
+    );
+    first["sourceContract"]["schemaResource"]["contentDigest"] =
+        json!("sha256:0000000000000000000000000000000000000000000000000000000000000000");
+    let mut second = successor_artifact(
+        "ADR-L-0002",
+        "architecture/ADR-L-0002.yaml",
+        "sha256:2222222222222222222222222222222222222222222222222222222222222222",
+        "019109a0-b1c2-7def-8a00-112233445576",
+        "019109a0-b1c2-7def-8a00-112233445577",
+        "0002",
+    );
+    let duplicate_decision = second["document"]["decisions"][0].clone();
+    second["document"]["decisions"] = json!([duplicate_decision.clone(), duplicate_decision]);
+    let result = execute(successor_request_with_artifacts(vec![first, second]));
+    assert_eq!(result["result"]["outcome"], "Rejected");
+    let diagnostics = result["result"]["diagnostics"]
+        .as_array()
+        .expect("diagnostics");
+    assert!(diagnostics
+        .iter()
+        .any(|item| item["code"] == "semantic_contract.source_contract_schema_digest_mismatch"));
+    assert!(diagnostics
+        .iter()
+        .any(|item| item["code"] == "semantic_contract.architecture_interpretation_failed"));
+}
+
+#[test]
+fn protocol_1_3_artifact_permutation_preserves_canonical_model_and_fingerprint() {
+    let first = successor_artifact(
+        "ADR-L-0001",
+        "architecture/ADR-L-0001.yaml",
+        "sha256:1111111111111111111111111111111111111111111111111111111111111111",
+        "019109a0-b1c2-7def-8a00-112233445566",
+        "019109a0-b1c2-7def-8a00-112233445567",
+        "0001",
+    );
+    let second = successor_artifact(
+        "ADR-L-0002",
+        "architecture/ADR-L-0002.yaml",
+        "sha256:2222222222222222222222222222222222222222222222222222222222222222",
+        "019109a0-b1c2-7def-8a00-112233445576",
+        "019109a0-b1c2-7def-8a00-112233445577",
+        "0002",
+    );
+    let forward = execute(successor_request_with_artifacts(vec![
+        first.clone(),
+        second.clone(),
+    ]));
+    let reverse = execute(successor_request_with_artifacts(vec![second, first]));
+    assert_eq!(forward["result"]["outcome"], "Materialized");
+    assert_eq!(reverse["result"]["outcome"], "Materialized");
+    assert_eq!(
+        forward["result"]["normalizedModel"],
+        reverse["result"]["normalizedModel"]
+    );
+    assert_eq!(
+        forward["result"]["normalizedModel"]["source_coverage"]["source_artifacts"]
+            .as_array()
+            .map(Vec::len),
+        Some(2)
+    );
 }
 
 #[test]

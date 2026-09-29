@@ -15,8 +15,10 @@ use super::semantic_contract::{
 use super::{diagnostic, object, simple_result, string, Json};
 
 const PROFILE_ID: &str = "architecture-materialization@1.0";
+const SUCCESSOR_PROFILE_ID: &str = "architecture-materialization@1.1";
 const PROFILE_FAMILY: &str = "architecture-materialization";
 const PROFILE_VERSION: &str = "1.0";
+const SUCCESSOR_PROFILE_VERSION: &str = "1.1";
 const QUALIFICATION_VERSION: &str = "1.0";
 
 fn is_scs(value: &str) -> bool {
@@ -81,6 +83,18 @@ fn expected_families() -> BTreeMap<String, String> {
     ])
 }
 
+fn expected_families_for(profile_id: &str) -> Option<BTreeMap<String, String>> {
+    match profile_id {
+        PROFILE_ID => Some(expected_families()),
+        SUCCESSOR_PROFILE_ID => Some(BTreeMap::from([
+            ("architecture-interpretation".into(), "1.1".into()),
+            ("normalized-model".into(), "2.4".into()),
+            ("normative-semantics".into(), "1.0".into()),
+        ])),
+        _ => None,
+    }
+}
+
 fn validate_profile_value(profile: Option<&Json>, diagnostics: &mut Vec<Json>) {
     let Some(value) = profile.and_then(Json::as_object) else {
         diagnostics.push(diagnostic(
@@ -115,17 +129,23 @@ fn validate_profile_value(profile: Option<&Json>, diagnostics: &mut Vec<Json>) {
             Some("profile.profileFamily".into()),
         ));
     }
-    if text(value.get("profileVersion")).as_deref() != Some(PROFILE_VERSION) {
+    let profile_id = text(value.get("profileId")).unwrap_or_default();
+    let expected_version = match profile_id.as_str() {
+        PROFILE_ID => PROFILE_VERSION,
+        SUCCESSOR_PROFILE_ID => SUCCESSOR_PROFILE_VERSION,
+        _ => "",
+    };
+    if text(value.get("profileVersion")).as_deref() != Some(expected_version) {
         diagnostics.push(diagnostic(
             "semantic_contract.profile_failure",
-            "profileVersion must be 1.0",
+            "profileVersion must match the exact profile identity",
             Some("profile.profileVersion".into()),
         ));
     }
-    if text(value.get("profileId")).as_deref() != Some(PROFILE_ID) {
+    if !matches!(profile_id.as_str(), PROFILE_ID | SUCCESSOR_PROFILE_ID) {
         diagnostics.push(diagnostic(
             "semantic_contract.profile_failure",
-            "profileId must be architecture-materialization@1.0",
+            "profileId must be a governed architecture-materialization profile",
             Some("profile.profileId".into()),
         ));
     }
@@ -169,11 +189,11 @@ fn validate_profile_value(profile: Option<&Json>, diagnostics: &mut Vec<Json>) {
             Some("profile.participatingFamilies".into()),
         )),
     }
-    let expected = expected_families();
+    let expected = expected_families_for(&profile_id).unwrap_or_default();
     if actual != expected {
         diagnostics.push(diagnostic(
             "semantic_contract.profile_family_mismatch",
-            "architecture-materialization@1.0 requires exactly the landed three semantic families and versions",
+            "the selected architecture-materialization profile requires exactly its governed semantic families and versions",
             Some("profile.participatingFamilies".into()),
         ));
     }
@@ -204,7 +224,7 @@ fn validate_profile_value(profile: Option<&Json>, diagnostics: &mut Vec<Json>) {
     {
         diagnostics.push(diagnostic(
             "semantic_contract.profile_operation_mismatch",
-            "profile operations must advertise only the implemented semantic-contract-set operations",
+            "profile operations must advertise only the governed semantic-contract-set operations",
             Some("profile.operations".into()),
         ));
     }
@@ -360,7 +380,9 @@ fn profile_members_match(
     diagnostics: &mut Vec<Json>,
 ) {
     validate_profile_value(Some(profile), diagnostics);
-    let expected = expected_families();
+    let profile_id = text(profile.as_object().and_then(|value| value.get("profileId")))
+        .unwrap_or_default();
+    let expected = expected_families_for(&profile_id).unwrap_or_default();
     let actual = members
         .iter()
         .map(|member| (member.family.as_str(), member.version.as_str()))
@@ -500,10 +522,13 @@ fn validate_qualification_value(
             Some("qualification.qualificationSchemaVersion".into()),
         ));
     }
-    if text(value.get("profileId")).as_deref() != Some(PROFILE_ID) {
+    if !matches!(
+        text(value.get("profileId")).as_deref(),
+        Some(PROFILE_ID) | Some(SUCCESSOR_PROFILE_ID)
+    ) {
         diagnostics.push(diagnostic(
             "semantic_contract.qualification_failure",
-            "qualification must use architecture-materialization@1.0",
+            "qualification must use a governed architecture-materialization profile",
             Some("qualification.profileId".into()),
         ));
     }

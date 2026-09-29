@@ -7,7 +7,7 @@
   "properties": {
     "qualificationRecordId": {"type": "string", "minLength": 1}, "qualificationSchemaVersion": {"const": "1.0"},
     "operation": {"type": "string", "minLength": 1}, "direction": {"enum": ["none", "forward", "reverse"]},
-    "profileId": {"const": "architecture-materialization@1.0"},
+    "profileId": {"enum": ["architecture-materialization@1.0", "architecture-materialization@1.1"]},
     "semanticContractSetId": {"type": "string", "pattern": "^scs:v1:sha256:[0-9a-f]{64}$"},
     "members": {"$ref": "semantic-contract-set.schema.json#/properties/members"},
     "outcome": {"enum": ["qualified", "rejected", "prohibited"]}, "installedExecutionSupport": {"type": "boolean"},

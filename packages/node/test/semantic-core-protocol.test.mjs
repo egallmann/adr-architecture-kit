@@ -106,9 +106,10 @@ test("Node validates the additive v1.2 authoring transport surface", async () =>
 
 test("Node capability negotiation advertises only reachable v1.2 operations", () => {
   assert.deepEqual(semanticCoreCapabilities(), {
-    supported_versions: ["1.0", "1.1", "1.2"],
+    supported_versions: ["1.0", "1.1", "1.2", "1.3"],
     operations_by_version: {
       "1.2": ["validate_authoring", "construct_authoring_set"],
+      "1.3": [],
     },
   });
   assert.equal(supportsSemanticCoreOperation("1.2", "validate_authoring"), true);

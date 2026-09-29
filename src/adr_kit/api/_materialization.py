@@ -36,16 +36,23 @@ def _load_asset(relative: str) -> Any:
 
 def _authority_definitions() -> list[dict[str, Any]]:
     definitions: list[dict[str, Any]] = []
-    for contract in list_semantic_contracts():
+    contracts = [contract.to_wire() for contract in list_semantic_contracts()] + [
+        _load_asset(f"definitions/{name}")
+        for name in (
+            "architecture-interpretation-1.1.json",
+            "normalized-model-2.4.json",
+        )
+    ]
+    for contract in contracts:
         definitions.append(
             {
-                "definition": contract.to_wire(),
+                "definition": contract,
                 "resources": [
                     {
-                        "canonicalResourceKey": entry.canonical_resource_key,
-                        "content": load_semantic_resource(entry.canonical_resource_key),
+                        "canonicalResourceKey": entry["canonicalResourceKey"],
+                        "content": load_semantic_resource(entry["canonicalResourceKey"]),
                     }
-                    for entry in contract.resource_manifest
+                    for entry in contract["resourceManifest"]
                 ],
             }
         )

@@ -1,12 +1,18 @@
 {
   "catalogSchemaVersion": "1.0",
-  "catalogRevision": "catalog:v1:1",
+  "catalogRevision": "catalog:v1:2",
   "entries": [
     {
       "semanticContractSetId": "scs:v1:sha256:d12ce535f0a90c23741dfa516d207091197c2772dbcd538fabb133bdf5b79af6",
       "catalogued": true,
       "lifecycle": "active",
       "historicalAddressable": true
+    },
+    {
+      "semanticContractSetId": "scs:v1:sha256:2cf903fe80c50b97443645369b28443c7fa186ed758e2e22d7ce758ccb0d6020",
+      "catalogued": true,
+      "lifecycle": "active",
+      "historicalAddressable": false
     }
   ]
 }

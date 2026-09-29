@@ -28,7 +28,7 @@
     "newUsePolicy": "prohibited",
     "historicalInterpretationSupport": false,
     "qualificationRevision": "qualification:v1:successor-1",
-    "reasonCode": "successor-boundary-closed"
+    "reasonCode": "successor-operation-not-implemented"
   },
   {
     "qualificationRecordId": "qualification:architecture-materialization@1.1:qualify_tuple",
@@ -59,7 +59,7 @@
     "newUsePolicy": "prohibited",
     "historicalInterpretationSupport": false,
     "qualificationRevision": "qualification:v1:successor-1",
-    "reasonCode": "successor-boundary-closed"
+    "reasonCode": "successor-operation-not-implemented"
   },
   {
     "qualificationRecordId": "qualification:architecture-materialization@1.1:assemble_set",
@@ -90,7 +90,7 @@
     "newUsePolicy": "prohibited",
     "historicalInterpretationSupport": false,
     "qualificationRevision": "qualification:v1:successor-1",
-    "reasonCode": "successor-boundary-closed"
+    "reasonCode": "successor-operation-not-implemented"
   },
   {
     "qualificationRecordId": "qualification:architecture-materialization@1.1:validate_corpus",
@@ -121,7 +121,7 @@
     "newUsePolicy": "prohibited",
     "historicalInterpretationSupport": false,
     "qualificationRevision": "qualification:v1:successor-1",
-    "reasonCode": "successor-boundary-closed"
+    "reasonCode": "successor-operation-not-implemented"
   },
   {
     "qualificationRecordId": "qualification:architecture-materialization@1.1:resolve_current",
@@ -152,7 +152,7 @@
     "newUsePolicy": "prohibited",
     "historicalInterpretationSupport": false,
     "qualificationRevision": "qualification:v1:successor-1",
-    "reasonCode": "successor-boundary-closed"
+    "reasonCode": "successor-operation-not-implemented"
   },
   {
     "qualificationRecordId": "qualification:architecture-materialization@1.1:resolve_semantic_contract_set",
@@ -183,13 +183,13 @@
     "newUsePolicy": "prohibited",
     "historicalInterpretationSupport": false,
     "qualificationRevision": "qualification:v1:successor-1",
-    "reasonCode": "successor-boundary-closed"
+    "reasonCode": "successor-operation-not-implemented"
   },
   {
     "qualificationRecordId": "qualification:architecture-materialization@1.1:materialize_architecture",
     "qualificationSchemaVersion": "1.0",
     "operation": "materialize_architecture",
-    "direction": "none",
+    "direction": "forward",
     "profileId": "architecture-materialization@1.1",
     "semanticContractSetId": "scs:v1:sha256:2cf903fe80c50b97443645369b28443c7fa186ed758e2e22d7ce758ccb0d6020",
     "members": [
@@ -210,10 +210,10 @@
       }
     ],
     "outcome": "qualified",
-    "installedExecutionSupport": false,
-    "newUsePolicy": "prohibited",
+    "installedExecutionSupport": true,
+    "newUsePolicy": "permitted",
     "historicalInterpretationSupport": false,
     "qualificationRevision": "qualification:v1:successor-1",
-    "reasonCode": "successor-boundary-closed"
+    "reasonCode": "successor-materialization-1.1-executable"
   }
 ]

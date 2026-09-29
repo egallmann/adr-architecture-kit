@@ -109,13 +109,15 @@ test("Node capability negotiation advertises only reachable v1.2 operations", ()
     supported_versions: ["1.0", "1.1", "1.2", "1.3"],
     operations_by_version: {
       "1.2": ["validate_authoring", "construct_authoring_set"],
-      "1.3": [],
+      "1.3": ["materialize_architecture"],
     },
   });
   assert.equal(supportsSemanticCoreOperation("1.2", "validate_authoring"), true);
   assert.equal(supportsSemanticCoreOperation("1.2", "construct_authoring_set"), true);
   assert.equal(supportsSemanticCoreOperation("1.0", "validate_authoring"), false);
   assert.equal(supportsSemanticCoreOperation("1.1", "construct_authoring_set"), false);
+  assert.equal(supportsSemanticCoreOperation("1.3", "materialize_architecture"), true);
+  assert.equal(supportsSemanticCoreOperation("1.3", "construct_authoring_set"), false);
 });
 
 function bindAccMarkers(value) {

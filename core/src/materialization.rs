@@ -1722,7 +1722,7 @@ fn state_projection(value: &Json, key: Option<&str>) -> Option<Json> {
     }
 }
 
-fn authority_state_fingerprint(
+pub(crate) fn authority_state_fingerprint(
     provider: &Json,
     normalized_model: &Json,
     limitations: &[Json],

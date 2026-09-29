@@ -14,6 +14,7 @@ export const SEMANTIC_CORE_PROTOCOL_V12_OPERATIONS = [
   "validate_authoring",
   "construct_authoring_set",
 ] as const;
+export const SEMANTIC_CORE_PROTOCOL_V13_OPERATIONS = ["materialize_architecture"] as const;
 
 export function semanticCoreCapabilities(): {
   readonly supported_versions: readonly string[];
@@ -21,12 +22,13 @@ export function semanticCoreCapabilities(): {
 } {
   return Object.freeze({
     supported_versions: SEMANTIC_CORE_PROTOCOL_VERSIONS,
-    operations_by_version: Object.freeze({ "1.2": SEMANTIC_CORE_PROTOCOL_V12_OPERATIONS, "1.3": [] }),
+    operations_by_version: Object.freeze({ "1.2": SEMANTIC_CORE_PROTOCOL_V12_OPERATIONS, "1.3": SEMANTIC_CORE_PROTOCOL_V13_OPERATIONS }),
   });
 }
 
 export function supportsSemanticCoreOperation(version: string, operation: string): boolean {
-  return version === "1.2" && (SEMANTIC_CORE_PROTOCOL_V12_OPERATIONS as readonly string[]).includes(operation);
+  return (version === "1.2" && (SEMANTIC_CORE_PROTOCOL_V12_OPERATIONS as readonly string[]).includes(operation))
+    || (version === "1.3" && (SEMANTIC_CORE_PROTOCOL_V13_OPERATIONS as readonly string[]).includes(operation));
 }
 
 const validators = new Map<string, Validator>([

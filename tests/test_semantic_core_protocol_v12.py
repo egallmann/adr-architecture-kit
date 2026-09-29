@@ -166,12 +166,14 @@ def test_v12_capability_negotiation_advertises_only_reachable_operations() -> No
     assert capabilities["supported_versions"] == ("1.0", "1.1", "1.2", "1.3")
     assert capabilities["operations_by_version"] == {
         "1.2": ("validate_authoring", "construct_authoring_set"),
-        "1.3": (),
+        "1.3": ("materialize_architecture",),
     }
     assert supports_semantic_core_operation("1.2", "validate_authoring")
     assert supports_semantic_core_operation("1.2", "construct_authoring_set")
     assert not supports_semantic_core_operation("1.0", "validate_authoring")
     assert not supports_semantic_core_operation("1.1", "construct_authoring_set")
+    assert supports_semantic_core_operation("1.3", "materialize_architecture")
+    assert not supports_semantic_core_operation("1.3", "construct_authoring_set")
 
 
 def test_v12_representative_acc_cases_execute_through_packaged_wasm() -> None:

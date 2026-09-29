@@ -485,6 +485,14 @@ def main() -> None:
     ]
     successor_members.sort(key=lambda item: item["semanticContractFamily"])
     successor_set_id = scs_id(successor_members)
+    expected_successor_set_id = (
+        "scs:v1:sha256:2cf903fe80c50b97443645369b28443c7fa186ed758e2e22d7ce758ccb0d6020"
+    )
+    if successor_set_id != expected_successor_set_id:
+        raise RuntimeError(
+            "successor semantic-contract authority drifted: "
+            f"expected {expected_successor_set_id}, got {successor_set_id}"
+        )
     successor_profile: dict[str, Any] = {
         "profileFamily": "architecture-materialization",
         "profileVersion": "1.1",
@@ -519,26 +527,28 @@ def main() -> None:
             "qualificationRecordId": f"qualification:architecture-materialization@1.1:{operation}",
             "qualificationSchemaVersion": "1.0",
             "operation": operation,
-            "direction": "none",
+            "direction": "forward" if operation == "materialize_architecture" else "none",
             "profileId": successor_profile["profileId"],
             "semanticContractSetId": successor_set_id,
             "members": successor_members,
             "outcome": "qualified",
-            "installedExecutionSupport": False,
-            "newUsePolicy": "prohibited",
+            "installedExecutionSupport": operation == "materialize_architecture",
+            "newUsePolicy": "permitted" if operation == "materialize_architecture" else "prohibited",
             "historicalInterpretationSupport": False,
             "qualificationRevision": "qualification:v1:successor-1",
-            "reasonCode": "successor-boundary-closed",
+            "reasonCode": "successor-materialization-1.1-executable"
+            if operation == "materialize_architecture"
+            else "successor-operation-not-implemented",
         }
         for operation in successor_profile["operations"]
     ]
     successor_catalog = {
         "catalogSchemaVersion": "1.0",
-        "catalogRevision": "catalog:v1:successor-1",
+        "catalogRevision": "catalog:v1:2",
         "entries": [
             {
                 "semanticContractSetId": successor_set_id,
-                "catalogued": False,
+                "catalogued": True,
                 "lifecycle": "active",
                 "historicalAddressable": False,
             }
@@ -546,33 +556,46 @@ def main() -> None:
     }
     successor_policy = {
         "policySchemaVersion": "1.0",
-        "policyRevision": "policy:v1:successor-1",
+        "policyRevision": "policy:v1:2",
         "entries": [
             {
                 "semanticContractSetId": successor_set_id,
                 "operation": operation,
-                "direction": "none",
-                "newUsePolicy": "prohibited",
-                "installedExecutionSupport": False,
+                "direction": "forward" if operation == "materialize_architecture" else "none",
+                "newUsePolicy": "permitted" if operation == "materialize_architecture" else "prohibited",
+                "installedExecutionSupport": operation == "materialize_architecture",
                 "historicalInterpretationSupport": False,
             }
             for operation in successor_profile["operations"]
         ],
     }
+    retained_catalog = copy.deepcopy(catalog)
+    retained_catalog["catalogRevision"] = successor_catalog["catalogRevision"]
+    retained_catalog["entries"].append(successor_catalog["entries"][0])
+    retained_policy = copy.deepcopy(policy)
+    retained_policy["policyRevision"] = successor_policy["policyRevision"]
+    retained_policy["entries"].extend(successor_policy["entries"])
+    current["catalogRevision"] = retained_catalog["catalogRevision"]
+    current["policyRevision"] = retained_policy["policyRevision"]
+    for relative, value in {
+        "catalog/semantic-contract-catalog-1.0.json": retained_catalog,
+        "policy/semantic-contract-policy-1.0.json": retained_policy,
+        "current/semantic-contract-current-1.0.json": current,
+    }.items():
+        write_json(CANONICAL / relative, value)
+        write_json(BUNDLED / relative, value)
     for candidate_root in (CANONICAL / "candidate", BUNDLED / "candidate"):
-        for stale_set in (candidate_root / "sets").glob("*.json"):
-            stale_set.unlink()
+        for stale_asset in candidate_root.rglob("*.json"):
+            stale_asset.unlink()
     successor_generated = {
         "profiles/architecture-materialization-1.1.json": successor_profile,
-        "candidate/definitions/architecture-interpretation-1.1.json": successor_architecture,
-        "candidate/definitions/normalized-model-2.4.json": successor_normalized,
-        "candidate/definitions/normative-semantics-1.0.json": definitions[
+        "definitions/architecture-interpretation-1.1.json": successor_architecture,
+        "definitions/normalized-model-2.4.json": successor_normalized,
+        "definitions/normative-semantics-1.0.json": definitions[
             "normative-semantics.json"
         ],
-        f"candidate/sets/{successor_set_id.replace(':', '-')}.json": successor_set,
-        "candidate/qualifications/architecture-materialization-1.1.json": successor_qualifications,
-        "candidate/catalog/semantic-contract-catalog-1.1.json": successor_catalog,
-        "candidate/policy/semantic-contract-policy-1.1.json": successor_policy,
+        f"sets/{successor_set_id.replace(':', '-')}.json": successor_set,
+        "qualifications/architecture-materialization-1.1.json": successor_qualifications,
     }
     for relative, value in successor_generated.items():
         write_json(CANONICAL / relative, value)

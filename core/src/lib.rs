@@ -11,6 +11,7 @@ mod authoring_construction_orchestration;
 pub(crate) mod candidate_source;
 mod linkage;
 mod materialization;
+mod successor_materialization;
 mod schema_validation;
 mod semantic_contract;
 mod semantic_contract_set;
@@ -395,77 +396,6 @@ fn invalid_v13(operation: &str, message: impl Into<String>) -> Json {
     ])
 }
 
-fn unavailable_v13_from_request(request: &BTreeMap<String, Json>) -> Json {
-    let source_basis = request.get("sourceBasis").cloned().unwrap_or(Json::Null);
-    let authority_provider = request
-        .get("authorityProvider")
-        .cloned()
-        .unwrap_or(Json::Null);
-    let provider_provenance = request
-        .get("providerProvenance")
-        .cloned()
-        .unwrap_or(Json::Null);
-    let source_contract_closure = request
-        .get("sourceBasis")
-        .and_then(Json::as_object)
-        .and_then(|value| value.get("artifacts"))
-        .and_then(Json::as_array)
-        .map(|artifacts| {
-            artifacts
-                .iter()
-                .filter_map(|artifact| {
-                    artifact
-                        .as_object()
-                        .and_then(|value| value.get("sourceContract"))
-                        .cloned()
-                })
-                .collect()
-        })
-        .unwrap_or_default();
-    protocol_v13_result(
-        "materialize_architecture",
-        object([
-            (String::from("operation"), string("materialize_architecture")),
-            (String::from("success"), Json::Bool(false)),
-            (String::from("outcome"), string("Unavailable")),
-            (
-                String::from("materializationContractVersion"),
-                string("1.1"),
-            ),
-            (String::from("authorityProvider"), authority_provider),
-            (String::from("sourceBasis"), source_basis),
-            (String::from("sourceContractClosure"), Json::Array(source_contract_closure)),
-            (
-                String::from("semanticBasis"),
-                object([
-                    (
-                        String::from("semanticContractSetId"),
-                        request
-                            .get("semanticContractSetId")
-                            .cloned()
-                            .unwrap_or(Json::Null),
-                    ),
-                    (String::from("authorityStateFingerprint"), Json::Null),
-                ]),
-            ),
-            (String::from("normalizedModel"), Json::Null),
-            (
-                String::from("sourceCapabilityLimitations"),
-                Json::Array(Vec::new()),
-            ),
-            (String::from("providerProvenance"), provider_provenance),
-            (
-                String::from("diagnostics"),
-                Json::Array(vec![diagnostic(
-                    "core.operation_unavailable",
-                    "semantic-core protocol 1.3 materialize_architecture execution is not enabled",
-                    None,
-                )]),
-            ),
-        ]),
-    )
-}
-
 fn validate_v13_request(request: &BTreeMap<String, Json>) -> Result<(), String> {
     if request
         .get("materializationContractVersion")
@@ -587,7 +517,10 @@ fn execute_materialization_v13(request: &Json) -> Json {
     if let Err(message) = validate_v13_request(payload) {
         return invalid_v13("materialize_architecture", message);
     }
-    unavailable_v13_from_request(payload)
+    protocol_v13_result(
+        "materialize_architecture",
+        successor_materialization::execute(request),
+    )
 }
 
 fn execute_authoring_v12(request: &Json) -> Json {

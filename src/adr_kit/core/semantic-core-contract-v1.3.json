@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://adr-kit.dev/contracts/semantic-core/v1.3/contract.json",
   "title": "ADR-Kit semantic core protocol contract v1.3",
-  "description": "Closed successor transport boundary for authoring 1.7 materialization through the architecture-materialization 1.1 profile. The public execution path is intentionally unavailable in this slice.",
+  "description": "Explicit successor transport for authoring 1.7 materialization through the retained architecture-materialization 1.1 profile.",
   "oneOf": [
     {"$ref": "#/$defs/materialization_request_envelope"},
     {"$ref": "#/$defs/materialization_result_envelope"},
@@ -150,6 +150,20 @@
         "classification": {"const": "not_expressible_by_source_contract"}
       }
     },
+    "normalized_model_2_4": {
+      "type": "object",
+      "required": ["schema_version", "type", "mode", "scope_root", "fingerprint", "entities", "relationships", "unresolved"],
+      "properties": {
+        "schema_version": {"const": "2.4"},
+        "type": {"const": "normalized_architecture_model"},
+        "mode": {"enum": ["normalized", "legacy"]},
+        "scope_root": {"type": "string"},
+        "fingerprint": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"},
+        "entities": {"type": "array"},
+        "relationships": {"type": "array"},
+        "unresolved": {"type": "array"}
+      }
+    },
     "materialization_result_payload": {
       "type": "object", "additionalProperties": false,
       "required": ["operation", "success", "outcome", "materializationContractVersion", "authorityProvider", "sourceBasis", "sourceContractClosure", "semanticBasis", "normalizedModel", "sourceCapabilityLimitations", "providerProvenance", "diagnostics"],
@@ -162,7 +176,7 @@
         "sourceBasis": {"anyOf": [{"$ref": "#/$defs/source_basis"}, {"type": "null"}]},
         "sourceContractClosure": {"type": "array", "items": {"$ref": "#/$defs/source_contract_binding"}},
         "semanticBasis": {"$ref": "#/$defs/semantic_basis"},
-        "normalizedModel": {"type": ["object", "null"], "description": "When non-null, this is the normalized-model@2.4 result; internal registries are not separate protocol fields."},
+        "normalizedModel": {"anyOf": [{"$ref": "#/$defs/normalized_model_2_4"}, {"type": "null"}], "description": "When non-null, this is the normalized-model@2.4 result; internal registries are not separate protocol fields."},
         "sourceCapabilityLimitations": {"type": "array", "items": {"$ref": "#/$defs/limitation"}},
         "providerProvenance": {"anyOf": [{"$ref": "#/$defs/provider_provenance"}, {"type": "null"}]},
         "diagnostics": {"type": "array", "items": {"$ref": "#/$defs/diagnostic"}}

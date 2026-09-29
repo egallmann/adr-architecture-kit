@@ -1,0 +1,101 @@
+{
+  "semanticContractFamily": "normalized-model",
+  "semanticContractVersion": "2.4",
+  "fingerprintScheme": "scf:v1:sha256",
+  "resourceManifest": [
+    {
+      "canonicalResourceKey": "normalized-model/2.4/conformance",
+      "contentDigest": "sha256:1ee9f59791428d174082a8c82f540cf765ed3594d404d785d3cd4672533e0d83",
+      "role": "normalized-model-conformance",
+      "dependencies": [
+        {
+          "canonicalResourceKey": "normalized-model/2.4/schema/normalized-architecture-model.schema",
+          "contentDigest": "sha256:14844a15f83f3ac2ecb4e2ceb45ae144b30e93b5e530f83d339c97530aeab7d3"
+        },
+        {
+          "canonicalResourceKey": "normalized-model/2.4/schema/normalized-entity-registry.schema",
+          "contentDigest": "sha256:53dfff9437c0d1d21becf71dbdf6582004a9dcd90ab79e29d64cae3cc2071110"
+        },
+        {
+          "canonicalResourceKey": "normalized-model/2.4/schema/normalized-entity.schema",
+          "contentDigest": "sha256:eaca142cb37975f7c321a66dcac58f464fe968bc90b6367658088dbeee09df30"
+        },
+        {
+          "canonicalResourceKey": "normalized-model/2.4/schema/relationship-record.schema",
+          "contentDigest": "sha256:3842db1e8cc12571b0ccbfb76e06ccf48a1bafa46bf55a72be3e316d891b2e85"
+        },
+        {
+          "canonicalResourceKey": "normalized-model/2.4/schema/relationship-registry.schema",
+          "contentDigest": "sha256:e9d114cbec69095ad09c958bae30e83d7da62a50878b468488634b1c06ebab48"
+        },
+        {
+          "canonicalResourceKey": "normalized-model/2.4/schema/unresolved-registry.schema",
+          "contentDigest": "sha256:6ab7768448abffbea1619edde28ad0c14744105a35c7fbc081ed9746b0c85c7e"
+        }
+      ]
+    },
+    {
+      "canonicalResourceKey": "normalized-model/2.4/schema/normalized-architecture-model.schema",
+      "contentDigest": "sha256:14844a15f83f3ac2ecb4e2ceb45ae144b30e93b5e530f83d339c97530aeab7d3",
+      "role": "normalized-model-schema",
+      "dependencies": [
+        {
+          "canonicalResourceKey": "normalized-model/2.4/schema/normalized-entity.schema",
+          "contentDigest": "sha256:eaca142cb37975f7c321a66dcac58f464fe968bc90b6367658088dbeee09df30"
+        },
+        {
+          "canonicalResourceKey": "normalized-model/2.4/schema/relationship-record.schema",
+          "contentDigest": "sha256:3842db1e8cc12571b0ccbfb76e06ccf48a1bafa46bf55a72be3e316d891b2e85"
+        },
+        {
+          "canonicalResourceKey": "normalized-model/2.4/schema/unresolved-registry.schema",
+          "contentDigest": "sha256:6ab7768448abffbea1619edde28ad0c14744105a35c7fbc081ed9746b0c85c7e"
+        }
+      ]
+    },
+    {
+      "canonicalResourceKey": "normalized-model/2.4/schema/normalized-entity-registry.schema",
+      "contentDigest": "sha256:53dfff9437c0d1d21becf71dbdf6582004a9dcd90ab79e29d64cae3cc2071110",
+      "role": "normalized-model-schema",
+      "dependencies": [
+        {
+          "canonicalResourceKey": "normalized-model/2.4/schema/normalized-entity.schema",
+          "contentDigest": "sha256:eaca142cb37975f7c321a66dcac58f464fe968bc90b6367658088dbeee09df30"
+        }
+      ]
+    },
+    {
+      "canonicalResourceKey": "normalized-model/2.4/schema/normalized-entity.schema",
+      "contentDigest": "sha256:eaca142cb37975f7c321a66dcac58f464fe968bc90b6367658088dbeee09df30",
+      "role": "normalized-model-schema",
+      "dependencies": []
+    },
+    {
+      "canonicalResourceKey": "normalized-model/2.4/schema/relationship-record.schema",
+      "contentDigest": "sha256:3842db1e8cc12571b0ccbfb76e06ccf48a1bafa46bf55a72be3e316d891b2e85",
+      "role": "normalized-model-schema",
+      "dependencies": []
+    },
+    {
+      "canonicalResourceKey": "normalized-model/2.4/schema/relationship-registry.schema",
+      "contentDigest": "sha256:e9d114cbec69095ad09c958bae30e83d7da62a50878b468488634b1c06ebab48",
+      "role": "normalized-model-schema",
+      "dependencies": [
+        {
+          "canonicalResourceKey": "normalized-model/2.4/schema/relationship-record.schema",
+          "contentDigest": "sha256:3842db1e8cc12571b0ccbfb76e06ccf48a1bafa46bf55a72be3e316d891b2e85"
+        }
+      ]
+    },
+    {
+      "canonicalResourceKey": "normalized-model/2.4/schema/unresolved-registry.schema",
+      "contentDigest": "sha256:6ab7768448abffbea1619edde28ad0c14744105a35c7fbc081ed9746b0c85c7e",
+      "role": "normalized-model-schema",
+      "dependencies": []
+    }
+  ],
+  "frozenNormativeConformanceResources": [
+    "normalized-model/2.4/conformance"
+  ],
+  "semanticContractFingerprint": "scf:v1:sha256:83f1c50cd5c63f027b1b4d937604a255d78c868629085dfd3240f2517d64d394"
+}

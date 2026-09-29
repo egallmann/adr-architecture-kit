@@ -241,12 +241,18 @@ function limitationFromWire(value: unknown): MaterializationCapabilityLimitation
 }
 
 function authorityDefinitions(): Record<string, unknown>[] {
-  return listSemanticContracts().map((definition) => ({
+  const definitions = [
+    ...listSemanticContracts(),
+    assets["definitions/architecture-interpretation-1.1.json"],
+    assets["definitions/normalized-model-2.4.json"],
+  ].filter(isRecord);
+  return definitions.map((definition) => ({
     definition,
-    resources: definition.resourceManifest.map((entry) => ({
-      canonicalResourceKey: entry.canonicalResourceKey,
-      content: loadSemanticResource(entry.canonicalResourceKey),
-    })),
+    resources: (definition["resourceManifest"] as readonly Record<string, unknown>[]).map((entry) => {
+      const key = entry.canonicalResourceKey;
+      if (typeof key !== "string") throw new Error("semantic contract resource key is malformed");
+      return { canonicalResourceKey: key, content: loadSemanticResource(key) };
+    }),
   }));
 }
 

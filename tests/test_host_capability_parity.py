@@ -12,6 +12,8 @@ def test_declared_peer_host_capabilities_match_compatibility_contract() -> None:
     )
     manifest = capabilities()
     assert list(manifest.host_operations) == contract["peer_host_operations"]
+    assert set(contract["peer_host_operations"]).issubset(manifest.operations)
+    assert "materialize_architecture" in manifest.operations
     assert list(manifest.pending_host_operations) == contract["pending_host_operations"]
     assert list(manifest.browser_operations) == contract["browser_operations"]
     assert (

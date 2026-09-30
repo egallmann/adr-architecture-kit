@@ -369,7 +369,7 @@ class MaterializationAuthorityProvider:
 class MaterializationSourceContract:
     """Exact authoring schema binding and closure for one source artifact."""
 
-    version: Literal["1.5", "1.6"]
+    version: Literal["1.5", "1.6", "1.7"]
     schema_resource: SemanticResourceDependency
     resource_closure: tuple[SemanticResourceDependency, ...]
     family: Literal["authoring"] = "authoring"
@@ -381,7 +381,7 @@ class MaterializationSourceContract:
         if not isinstance(schema, Mapping) or not isinstance(closure, (list, tuple)):
             raise InvalidRequestError("Malformed source contract binding")
         return cls(
-            version=cast(Literal["1.5", "1.6"], str(value.get("version", ""))),
+            version=cast(Literal["1.5", "1.6", "1.7"], str(value.get("version", ""))),
             schema_resource=SemanticResourceDependency(
                 str(schema.get("canonicalResourceKey", "")),
                 str(schema.get("contentDigest", "")),
@@ -397,7 +397,7 @@ class MaterializationSourceContract:
         )
 
     def __post_init__(self) -> None:
-        if self.version not in {"1.5", "1.6"}:
+        if self.version not in {"1.5", "1.6", "1.7"}:
             raise InvalidRequestError(f"Unsupported source contract version: {self.version}")
         if len(self.resource_closure) < 3:
             raise InvalidRequestError("resource_closure must contain at least three resources")
@@ -516,7 +516,7 @@ class ArchitectureMaterializationRequest:
     source_basis: MaterializationSourceBasis | None
     direction: Literal["none", "forward", "reverse"]
     use_mode: Literal["new", "historical"]
-    profile_id: str
+    profile_id: Literal["architecture-materialization@1.0", "architecture-materialization@1.1"]
 
     def __post_init__(self) -> None:
         _require_text(self.semantic_contract_set_id, "semantic_contract_set_id")
@@ -524,8 +524,19 @@ class ArchitectureMaterializationRequest:
             raise InvalidRequestError(f"Unsupported materialization direction: {self.direction}")
         if self.use_mode not in {"new", "historical"}:
             raise InvalidRequestError(f"Unsupported materialization use_mode: {self.use_mode}")
-        if self.profile_id != "architecture-materialization@1.0":
+        if self.profile_id not in {
+            "architecture-materialization@1.0",
+            "architecture-materialization@1.1",
+        }:
             raise InvalidRequestError(f"Unsupported materialization profile: {self.profile_id}")
+        if self.source_basis is not None:
+            source_versions = {item.source_contract.version for item in self.source_basis.artifacts}
+            if self.profile_id == "architecture-materialization@1.0" and "1.7" in source_versions:
+                raise InvalidRequestError("authoring 1.7 requires architecture-materialization@1.1")
+            if self.profile_id == "architecture-materialization@1.1" and source_versions != {"1.7"}:
+                raise InvalidRequestError(
+                    "architecture-materialization@1.1 requires authoring 1.7 source artifacts"
+                )
 
 
 @dataclass(frozen=True, slots=True)

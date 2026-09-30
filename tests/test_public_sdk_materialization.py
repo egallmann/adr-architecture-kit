@@ -14,6 +14,25 @@ VECTOR = Path("contracts/semantic-core/v1.1/vectors/architecture-materialization
 PACKAGE_VERSION = tomllib.loads(
     (Path(__file__).resolve().parents[1] / "pyproject.toml").read_text(encoding="utf-8")
 )["project"]["version"]
+SUCCESSOR_FIXTURE = Path("tests/fixtures/public_materialization_v17.json")
+
+
+def _successor_request(
+    *, profile_id: str = "architecture-materialization@1.1", scs: str | None = None
+) -> api.ArchitectureMaterializationRequest:
+    request = json.loads(SUCCESSOR_FIXTURE.read_text(encoding="utf-8"))
+    source = api.MaterializationSourceBasis.from_wire(request["sourceBasis"])
+    return api.ArchitectureMaterializationRequest(
+        semantic_contract_set_id=scs or request["semanticContractSetId"],
+        authority_provider=api.MaterializationAuthorityProvider(
+            kind=request["authorityProvider"]["kind"],
+            architecture_namespace=request["authorityProvider"]["architectureNamespace"],
+        ),
+        source_basis=source,
+        direction="forward",
+        use_mode="new",
+        profile_id=profile_id,  # type: ignore[arg-type]
+    )
 
 
 def _request() -> api.ArchitectureMaterializationRequest:
@@ -169,3 +188,89 @@ def test_public_materialization_rejects_unknown_exact_scs() -> None:
     assert result.success is False
     assert result.outcome == "Rejected"
     assert result.diagnostics
+
+
+def test_public_materialization_successor_is_explicit_and_multi_artifact() -> None:
+    request = _successor_request()
+    result = api.materialize_architecture(request)
+
+    assert result.success is True
+    assert result.outcome == "Materialized"
+    assert result.normalized_model is not None
+    assert result.normalized_model["schema_version"] == "2.4"
+    assert result.semantic_basis.semantic_contract_set_id == request.semantic_contract_set_id
+    assert result.provider_provenance == api.MaterializationProviderProvenance(
+        semantic_core_contract_version="1.3",
+        package_version=PACKAGE_VERSION,
+        host_binding="public-host",
+    )
+    assert len(result.source_contract_closure) == 1
+    assert len(result.source_basis.artifacts) == 2 if result.source_basis else False
+    assert {item["alias_id"] for item in result.normalized_model["entities"]} >= {
+        "ADR-L-0001",
+        "ADR-L-0002",
+        "DEC-0001",
+        "DEC-0002",
+    }
+
+
+def test_public_materialization_successor_rejects_wrong_scs_without_rewriting_it() -> None:
+    request = _successor_request(scs="scs:v1:sha256:" + "0" * 64)
+    result = api.materialize_architecture(request)
+
+    assert result.success is False
+    assert result.outcome == "Rejected"
+    assert result.semantic_basis.semantic_contract_set_id == request.semantic_contract_set_id
+    assert any(item.code for item in result.diagnostics)
+
+
+def test_public_materialization_profile_discovery_exposes_both_explicit_profiles() -> None:
+    assert tuple(item.profile_id for item in api.list_semantic_contract_profiles()) == (
+        "architecture-materialization@1.0",
+        "architecture-materialization@1.1",
+    )
+
+
+def test_public_materialization_does_not_upgrade_source_contracts_implicitly() -> None:
+    request = _request()
+    assert request.source_basis is not None
+    source_basis = api.MaterializationSourceBasis(
+        provider_source_identity=request.source_basis.provider_source_identity,
+        source_revision=request.source_basis.source_revision,
+        artifacts=tuple(
+            api.MaterializationSourceArtifact(
+                source_ref=item.source_ref,
+                artifact_path=item.artifact_path,
+                content_digest=item.content_digest,
+                source_contract=api.MaterializationSourceContract(
+                    version="1.7",
+                    schema_resource=item.source_contract.schema_resource,
+                    resource_closure=item.source_contract.resource_closure,
+                ),
+                document={**item.document, "schema_version": "1.7"},
+            )
+            for item in request.source_basis.artifacts
+        ),
+    )
+    with pytest.raises(api.InvalidRequestError):
+        api.ArchitectureMaterializationRequest(
+            semantic_contract_set_id=request.semantic_contract_set_id,
+            authority_provider=request.authority_provider,
+            source_basis=source_basis,
+            direction=request.direction,
+            use_mode=request.use_mode,
+            profile_id="architecture-materialization@1.0",
+        )
+
+
+def test_public_materialization_successor_rejects_legacy_source_contracts() -> None:
+    request = _request()
+    with pytest.raises(api.InvalidRequestError):
+        api.ArchitectureMaterializationRequest(
+            semantic_contract_set_id="scs:v1:sha256:2cf903fe80c50b97443645369b28443c7fa186ed758e2e22d7ce758ccb0d6020",
+            authority_provider=request.authority_provider,
+            source_basis=request.source_basis,
+            direction="forward",
+            use_mode="new",
+            profile_id="architecture-materialization@1.1",
+        )

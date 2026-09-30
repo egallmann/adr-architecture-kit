@@ -1,4 +1,4 @@
-"""Public architecture-materialization binding over semantic-core protocol 1.1."""
+"""Public architecture-materialization binding over semantic-core protocols 1.1 and 1.3."""
 
 from __future__ import annotations
 
@@ -34,7 +34,7 @@ def _load_asset(relative: str) -> Any:
     return json.loads(resource.read_text(encoding="utf-8"))
 
 
-def _authority_definitions() -> list[dict[str, Any]]:
+def _authority_definitions(profile_id: str) -> list[dict[str, Any]]:
     definitions: list[dict[str, Any]] = []
     contracts = [contract.to_wire() for contract in list_semantic_contracts()] + [
         _load_asset(f"definitions/{name}")
@@ -60,11 +60,17 @@ def _authority_definitions() -> list[dict[str, Any]]:
 
 
 def _authority_inputs(profile_id: str) -> dict[str, Any]:
+    qualification_version = {
+        "architecture-materialization@1.0": "1.0",
+        "architecture-materialization@1.1": "1.1",
+    }[profile_id]
     return {
         "profile": get_semantic_contract_profile(profile_id).to_wire(),
-        "definitions": _authority_definitions(),
+        "definitions": _authority_definitions(profile_id),
         "sets": [dict(value) for value in list_semantic_contract_sets()],
-        "qualifications": _load_asset("qualifications/architecture-materialization-1.0.json"),
+        "qualifications": _load_asset(
+            f"qualifications/architecture-materialization-{qualification_version}.json"
+        ),
         "catalog": _load_asset("catalog/semantic-contract-catalog-1.0.json"),
         "policy": _load_asset("policy/semantic-contract-policy-1.0.json"),
     }
@@ -168,7 +174,7 @@ def _result(
 def materialize_architecture(
     request: ArchitectureMaterializationRequest,
 ) -> ArchitectureMaterializationResult:
-    """Materialize explicit host-parsed sources through semantic-core 1.1.
+    """Materialize explicit host-parsed sources through the selected core protocol.
 
     This adapter never resolves a current pointer and never interprets source
     documents. It supplies the exact packaged authority closure selected by
@@ -178,9 +184,7 @@ def materialize_architecture(
 
     if not isinstance(request, ArchitectureMaterializationRequest):
         raise TypeError("request must be an ArchitectureMaterializationRequest")
-    wire: dict[str, Any] = {
-        "core_contract_version": "1.1",
-        "operation": "materialize_architecture",
+    payload: dict[str, Any] = {
         "materializationContractVersion": "1.0",
         "semanticContractSetId": request.semantic_contract_set_id,
         "authorityProvider": request.authority_provider.to_wire(),
@@ -195,13 +199,36 @@ def materialize_architecture(
         "useMode": request.use_mode,
         **_authority_inputs(request.profile_id),
     }
+    if request.profile_id == "architecture-materialization@1.1":
+        payload["materializationContractVersion"] = "1.1"
+        payload["providerProvenance"] = {
+            "semanticCoreContractVersion": "1.3",
+            "packageVersion": __version__,
+            "hostBinding": "public-host",
+        }
+        wire = {
+            "core_contract_version": "1.3",
+            "operation": "materialize_architecture",
+            "request": {"operation": "materialize_architecture", **payload},
+        }
+    else:
+        wire = {
+            "core_contract_version": "1.1",
+            "operation": "materialize_architecture",
+            **payload,
+        }
     try:
         result = execute_validated_semantic_core_request(wire)
     except OperationError:
         raise
     except Exception as exc:
         raise OperationError("Architecture materialization could not complete") from exc
-    return _result(request, result)
+    result_payload = (
+        result.get("result") if request.profile_id == "architecture-materialization@1.1" else result
+    )
+    if not isinstance(result_payload, Mapping):
+        raise OperationError("Architecture materialization returned a malformed result")
+    return _result(request, result_payload)
 
 
 __all__ = ["materialize_architecture"]

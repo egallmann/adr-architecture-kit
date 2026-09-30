@@ -199,7 +199,14 @@ materialization requests. The caller provides the sealed source basis, source
 contract closure, provider identity, and exact semantic contract-set identity;
 the host does not resolve a current pointer or infer source meaning. The result
 is either an immutable normalized-model result or a bounded rejection/unavailable
-outcome. See the [materialization reference](https://github.com/egallmann/adr-architecture-kit/blob/main/packages/node/README.md)
+outcome. `architecture-materialization@1.0` remains the current/default profile
+and continues to use the protocol-1.1 materialization path for authoring 1.5
+and 1.6. `architecture-materialization@1.1` is available only when the caller
+explicitly supplies that profile together with the retained successor SCS
+`scs:v1:sha256:2cf903fe80c50b97443645369b28443c7fa186ed758e2e22d7ce758ccb0d6020`
+and a sealed authoring 1.7 source basis; that route uses semantic-core protocol
+1.3. No latest/current successor is inferred. See the [materialization
+reference](https://github.com/egallmann/adr-architecture-kit/blob/main/packages/node/README.md)
 for the Node request shape and host qualification.
 
 ## Work with implementation linkage

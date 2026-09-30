@@ -272,8 +272,12 @@ def _load_json_asset(relative: str) -> Any:
 def list_semantic_contract_profiles() -> tuple[SemanticContractProfile, ...]:
     """Return governed profiles bundled with this host distribution."""
 
-    profile = _load_json_asset("profiles/architecture-materialization-1.0.json")
-    return (SemanticContractProfile.from_wire(profile),)
+    return tuple(
+        SemanticContractProfile.from_wire(
+            _load_json_asset(f"profiles/architecture-materialization-{version}.json")
+        )
+        for version in ("1.0", "1.1")
+    )
 
 
 def get_semantic_contract_profile(profile_id: str) -> SemanticContractProfile:

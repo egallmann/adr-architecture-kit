@@ -366,6 +366,7 @@ def test_capability_manifest_is_exact_and_deterministic() -> None:
         "open_provider_registry",
         "build_embodiment_linkage",
         "generate_attribution_shim",
+        "materialize_architecture",
         "list_semantic_contracts",
         "get_semantic_contract",
         "canonicalize_semantic_json",

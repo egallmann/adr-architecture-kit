@@ -589,6 +589,7 @@ def capabilities() -> CapabilityManifest:
         "open_provider_registry",
         "build_embodiment_linkage",
         "generate_attribution_shim",
+        "materialize_architecture",
         "list_semantic_contracts",
         "get_semantic_contract",
         "canonicalize_semantic_json",
@@ -608,6 +609,13 @@ def capabilities() -> CapabilityManifest:
     ]
     if PROMOTION_OPERATIONS_ADVERTISED:
         operations.extend(["prepare_promotion", "check_promotion", "apply_promotion"])
+    host_operations = tuple(str(item) for item in contract["peer_host_operations"])
+    missing_host_operations = tuple(item for item in host_operations if item not in operations)
+    if missing_host_operations:
+        raise RuntimeError(
+            "peer-qualified host operations missing from complete Python operations: "
+            + ", ".join(missing_host_operations)
+        )
     return CapabilityManifest(
         package_version=__version__,
         api_contract_version=API_CONTRACT_VERSION,
@@ -629,7 +637,7 @@ def capabilities() -> CapabilityManifest:
         authoring_capabilities=tuple(
             str(item) for item in contract["authoring_domain"]["capabilities"]
         ),
-        host_operations=tuple(str(item) for item in contract["peer_host_operations"]),
+        host_operations=host_operations,
         pending_host_operations=tuple(str(item) for item in contract["pending_host_operations"]),
         browser_operations=tuple(str(item) for item in contract["browser_operations"]),
     )

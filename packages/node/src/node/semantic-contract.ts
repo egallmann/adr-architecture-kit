@@ -128,6 +128,7 @@ export function composeSemanticContractSet(
 export function listSemanticContractProfiles(): readonly SemanticContractProfile[] {
   return Object.freeze([
     deepFreeze(structuredClone(assets["profiles/architecture-materialization-1.0.json"])) as SemanticContractProfile,
+    deepFreeze(structuredClone(assets["profiles/architecture-materialization-1.1.json"])) as SemanticContractProfile,
   ]);
 }
 

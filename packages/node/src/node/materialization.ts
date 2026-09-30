@@ -20,7 +20,7 @@ export interface MaterializationAuthorityProvider {
 }
 
 export interface MaterializationSourceContract {
-  readonly version: "1.5" | "1.6";
+  readonly version: "1.5" | "1.6" | "1.7";
   readonly schema_resource: { readonly canonical_resource_key: string; readonly content_digest: string };
   readonly resource_closure: readonly { readonly canonical_resource_key: string; readonly content_digest: string }[];
   readonly family?: "authoring";
@@ -54,7 +54,7 @@ export interface ArchitectureMaterializationRequest {
   readonly source_basis: MaterializationSourceBasis | null;
   readonly direction: "none" | "forward" | "reverse";
   readonly use_mode: "new" | "historical";
-  readonly profile_id: "architecture-materialization@1.0";
+  readonly profile_id: "architecture-materialization@1.0" | "architecture-materialization@1.1";
 }
 
 export interface MaterializationSemanticBasis {
@@ -142,7 +142,7 @@ function sourceContractFromWire(value: unknown): MaterializationSourceContract {
     throw new Error("semantic core returned malformed source contract");
   }
   const version = requiredText(value.version, "source contract version");
-  if (version !== "1.5" && version !== "1.6") {
+  if (version !== "1.5" && version !== "1.6" && version !== "1.7") {
     throw new Error(`semantic core returned unsupported source contract version: ${version}`);
   }
   const closure = Array.isArray(value.resourceClosure) ? value.resourceClosure : [];
@@ -257,11 +257,12 @@ function authorityDefinitions(): Record<string, unknown>[] {
 }
 
 function authorityInputs(profileId: string): Record<string, unknown> {
+  const qualificationVersion = profileId === "architecture-materialization@1.1" ? "1.1" : "1.0";
   return {
     profile: getSemanticContractProfile(profileId),
     definitions: authorityDefinitions(),
     sets: listSemanticContractSets().map((value) => ({ ...value })),
-    qualifications: assets["qualifications/architecture-materialization-1.0.json"],
+    qualifications: assets[`qualifications/architecture-materialization-${qualificationVersion}.json`],
     catalog: assets["catalog/semantic-contract-catalog-1.0.json"],
     policy: assets["policy/semantic-contract-policy-1.0.json"],
   };
@@ -302,9 +303,7 @@ export async function materializeArchitecture(
   request: ArchitectureMaterializationRequest,
 ): Promise<ArchitectureMaterializationResult> {
   const profileId = request.profile_id;
-  const wire: Record<string, unknown> = {
-    core_contract_version: "1.1",
-    operation: "materialize_architecture",
+  const payload: Record<string, unknown> = {
     materializationContractVersion: "1.0",
     semanticContractSetId: request.semantic_contract_set_id,
     authorityProvider: {
@@ -322,5 +321,28 @@ export async function materializeArchitecture(
     useMode: request.use_mode,
     ...authorityInputs(profileId),
   };
-  return result(request, await executeValidatedSemanticCoreRequest(wire));
+  const wire: Record<string, unknown> = profileId === "architecture-materialization@1.1"
+    ? {
+      core_contract_version: "1.3",
+      operation: "materialize_architecture",
+      request: {
+        operation: "materialize_architecture",
+        ...payload,
+        materializationContractVersion: "1.1",
+        providerProvenance: {
+          semanticCoreContractVersion: "1.3",
+          packageVersion,
+          hostBinding: "public-host",
+        },
+      },
+    }
+    : {
+      core_contract_version: "1.1",
+      operation: "materialize_architecture",
+      ...payload,
+    };
+  const response = await executeValidatedSemanticCoreRequest(wire);
+  const resultPayload = profileId === "architecture-materialization@1.1" ? response.result : response;
+  if (!isRecord(resultPayload)) throw new Error("semantic core returned malformed materialization result");
+  return result(request, resultPayload);
 }

@@ -1,0 +1,110 @@
+{
+  "semanticContractSetId": "scs:v1:sha256:2cf903fe80c50b97443645369b28443c7fa186ed758e2e22d7ce758ccb0d6020",
+  "authorityProvider": {
+    "kind": "fixture-provider",
+    "architectureNamespace": "example"
+  },
+  "sourceBasis": {
+    "sealed": true,
+    "providerSourceIdentity": "fixture-provider:example",
+    "sourceRevision": "revision-v17",
+    "artifacts": [
+      {
+        "sourceRef": "ADR-L-0001",
+        "artifactPath": "architecture/ADR-L-0001.yaml",
+        "contentDigest": "sha256:eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+        "sourceContract": {
+          "family": "authoring",
+          "version": "1.7",
+          "schemaResource": {
+            "canonicalResourceKey": "authoring/1.7/schema/adr-logical.schema",
+            "contentDigest": "sha256:32f6058dd5efc77cf6612587304f9275aa3a66bb7270fdb0f7ef4b871c9f5731"
+          },
+          "resourceClosure": [
+            {
+              "canonicalResourceKey": "authoring/1.7/schema/adr-common.schema",
+              "contentDigest": "sha256:f8d51b652285e8cdcefa19aa13c0cd76cb388fbdf86d3d32efe1470bd2606660"
+            },
+            {
+              "canonicalResourceKey": "authoring/1.7/schema/adr-logical.schema",
+              "contentDigest": "sha256:32f6058dd5efc77cf6612587304f9275aa3a66bb7270fdb0f7ef4b871c9f5731"
+            },
+            {
+              "canonicalResourceKey": "authoring/1.7/schema/types.schema",
+              "contentDigest": "sha256:037ad8a50ad48e0b19452795e4b0ffd710e5aecf1d93e6aa1d69db3745ef1b65"
+            }
+          ]
+        },
+        "document": {
+          "schema_version": "1.7",
+          "adr_type": "logical",
+          "id": "019109a0-b1c2-7def-8a00-112233445566",
+          "alias_id": "ADR-L-0001",
+          "alias_name": "sample-adr-one",
+          "title": "Sample ADR one",
+          "status": "proposed",
+          "created_date": "2026-09-15",
+          "authors": ["test"],
+          "context": "The first bounded logical architecture decision.",
+          "decisions": [
+            {
+              "id": "019109a0-b1c2-7def-8a00-112233445567",
+              "alias_id": "DEC-0001",
+              "alias_name": "sample-decision-one",
+              "summary": "Use sample one",
+              "rationale": "The first source artifact is explicit."
+            }
+          ]
+        }
+      },
+      {
+        "sourceRef": "ADR-L-0002",
+        "artifactPath": "architecture/ADR-L-0002.yaml",
+        "contentDigest": "sha256:ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+        "sourceContract": {
+          "family": "authoring",
+          "version": "1.7",
+          "schemaResource": {
+            "canonicalResourceKey": "authoring/1.7/schema/adr-logical.schema",
+            "contentDigest": "sha256:32f6058dd5efc77cf6612587304f9275aa3a66bb7270fdb0f7ef4b871c9f5731"
+          },
+          "resourceClosure": [
+            {
+              "canonicalResourceKey": "authoring/1.7/schema/adr-common.schema",
+              "contentDigest": "sha256:f8d51b652285e8cdcefa19aa13c0cd76cb388fbdf86d3d32efe1470bd2606660"
+            },
+            {
+              "canonicalResourceKey": "authoring/1.7/schema/adr-logical.schema",
+              "contentDigest": "sha256:32f6058dd5efc77cf6612587304f9275aa3a66bb7270fdb0f7ef4b871c9f5731"
+            },
+            {
+              "canonicalResourceKey": "authoring/1.7/schema/types.schema",
+              "contentDigest": "sha256:037ad8a50ad48e0b19452795e4b0ffd710e5aecf1d93e6aa1d69db3745ef1b65"
+            }
+          ]
+        },
+        "document": {
+          "schema_version": "1.7",
+          "adr_type": "logical",
+          "id": "019109a0-b1c2-7def-8a00-112233445568",
+          "alias_id": "ADR-L-0002",
+          "alias_name": "sample-adr-two",
+          "title": "Sample ADR two",
+          "status": "proposed",
+          "created_date": "2026-09-16",
+          "authors": ["test"],
+          "context": "The second bounded logical architecture decision.",
+          "decisions": [
+            {
+              "id": "019109a0-b1c2-7def-8a00-112233445569",
+              "alias_id": "DEC-0002",
+              "alias_name": "sample-decision-two",
+              "summary": "Use sample two",
+              "rationale": "The second source artifact is explicit."
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

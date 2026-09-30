@@ -19,7 +19,6 @@ use super::{diagnostic, string, Json};
 
 const OPERATION: &str = "materialize_architecture";
 const MATERIALIZATION_VERSION: &str = "1.1";
-const PROTOCOL_VERSION: &str = "1.3";
 const EXPECTED_PROFILE: &str = "architecture-materialization@1.1";
 const EXPECTED_SCS: &str =
     "scs:v1:sha256:2cf903fe80c50b97443645369b28443c7fa186ed758e2e22d7ce758ccb0d6020";
@@ -306,7 +305,9 @@ fn result(
 ) -> Json {
     sort_diagnostics(&mut diagnostics);
     object([
-        ("core_contract_version", string(PROTOCOL_VERSION)),
+        // The protocol-1.3 envelope owns these fields; the nested result is
+        // the materialization-contract payload defined by the retained
+        // semantic-core contract.
         ("operation", string(OPERATION)),
         ("success", Json::Bool(outcome == "Materialized")),
         ("outcome", string(outcome)),

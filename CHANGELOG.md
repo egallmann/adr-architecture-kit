@@ -53,9 +53,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Limitations
 
-- This candidate does not promote materialization 1.1 to current/default,
-  change compiler defaults, persist or admit detached authoring results, add
-  Runtime responsibilities, or perform release/tag/publication actions.
+- This release does not promote materialization 1.1 to current/default, change
+  compiler defaults, persist or admit detached authoring results, or add Runtime
+  responsibilities.
 
 ## [0.11.1] — 2026-09-13
 

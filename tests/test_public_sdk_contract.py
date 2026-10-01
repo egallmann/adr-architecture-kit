@@ -20,6 +20,13 @@ EXPECTED_PUBLIC_SYMBOLS = [
     "NormalizedArchitectureModelV2",
     "ProviderRegistry",
     "ArtifactDescriptor",
+    "AuthoringOperation",
+    "AuthoringRequest",
+    "AuthoringDiagnostic",
+    "AuthoringValidationStatus",
+    "AuthoringValidationResult",
+    "AuthoringConstructionOutcome",
+    "AuthoringConstructionResult",
     "AuthoringContractDescription",
     "AuthoringDiscriminator",
     "AuthoringParentConstraint",
@@ -80,6 +87,8 @@ EXPECTED_PUBLIC_SYMBOLS = [
     "describe_authoring_contract",
     "list_authoring_types",
     "describe_authoring_type",
+    "validate_authoring",
+    "construct_authoring_set",
     "build_embodiment_linkage",
     "generate_attribution_shim",
     "materialize_architecture",
@@ -225,6 +234,10 @@ def test_public_contracts_are_frozen(tmp_path: Path) -> None:
 
     contract_names = (
         "ArtifactDescriptor",
+        "AuthoringRequest",
+        "AuthoringDiagnostic",
+        "AuthoringValidationResult",
+        "AuthoringConstructionResult",
         "AuthoringContractDescription",
         "AuthoringDiscriminator",
         "AuthoringParentConstraint",
@@ -302,6 +315,8 @@ def test_capability_manifest_is_exact_and_deterministic() -> None:
     assert first == second
     assert first.host_operations == (
         "capabilities",
+        "validate_authoring",
+        "construct_authoring_set",
         "validate_architecture",
         "validate_project_metadata",
         "validate_contract",
@@ -340,6 +355,8 @@ def test_capability_manifest_is_exact_and_deterministic() -> None:
         "describe_authoring_contract",
         "list_authoring_types",
         "describe_authoring_type",
+        "validate_authoring",
+        "construct_authoring_set",
         "validate_architecture",
         "validate_project_metadata",
         "validate_contract",
@@ -349,6 +366,7 @@ def test_capability_manifest_is_exact_and_deterministic() -> None:
         "open_provider_registry",
         "build_embodiment_linkage",
         "generate_attribution_shim",
+        "materialize_architecture",
         "list_semantic_contracts",
         "get_semantic_contract",
         "canonicalize_semantic_json",
@@ -375,12 +393,36 @@ def test_capability_manifest_is_exact_and_deterministic() -> None:
     )
     assert first.validation_modes == ("complete", "structural")
     assert first.artifact_groups == ("registries", "manifest", "markdown")
-    assert first.supported_adr_schema_versions == ("1.0", "1.1", "1.2", "1.3", "1.4", "1.5", "1.6")
+    assert first.supported_adr_schema_versions == (
+        "1.0",
+        "1.1",
+        "1.2",
+        "1.3",
+        "1.4",
+        "1.5",
+        "1.6",
+        "1.7",
+    )
     assert first.stable_adr_schema_versions == ("1.0",)
-    assert first.provisional_adr_schema_versions == ("1.1", "1.2", "1.3", "1.4", "1.5", "1.6")
+    assert first.provisional_adr_schema_versions == (
+        "1.1",
+        "1.2",
+        "1.3",
+        "1.4",
+        "1.5",
+        "1.6",
+        "1.7",
+    )
     assert "1.3" in first.supported_adr_schema_versions
     assert first.normalized_model_schema_version == "1.1"
-    assert first.supported_normalized_model_schema_versions == ("1.1", "2.0", "2.1", "2.2", "2.3")
+    assert first.supported_normalized_model_schema_versions == (
+        "1.1",
+        "2.0",
+        "2.1",
+        "2.2",
+        "2.3",
+        "2.4",
+    )
     assert first.supported_evidence_attribution_versions == ("1.5", "1.6")
     assert first.preferred_evidence_attribution_version == "1.6"
     assert first.supported_authoring_domain_versions == ("1.0",)

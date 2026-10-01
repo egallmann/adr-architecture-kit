@@ -5,22 +5,22 @@ artifact_kind: rendered_adr_markdown
 generator_id: adr-projection-markdown
 generator_version: 3
 hash_algorithm: sha256
-source_hash: 9dffb27800d091b38b05311c12e4e0ddb023aed180410963f301b7c78e3c1cd8
-rendered_hash: d669e77fd1fc6322757567ea0dc515c7d730f8ee0626306996bc4cde7e248537
+source_hash: 68377fc6565c17916735782ad24228d0245ddf83ac61166b17b8962555bb1993
+rendered_hash: f9c97b631001cdf2ef238db854100376970acc3b8d7afdac2c1990779320b0c7
 -->
 
 # ADR-L-0017: Forward Authoring Ergonomics for Split Physical ADR Types
 
 ## Identity / Status
 
-**Type:** logical  
-**Status:** accepted  
-**Alias:** ADR-L-0017  
-**Authoring contract:** authoring v1.5  
-**Created:** 2026-04-14  
-**Authors:** erik.gallmann  
-**Domains:** authoring, adr-taxonomy  
-**Tags:** scaffolding, next-id, physical-types  
+**Type:** logical<br>
+**Status:** accepted<br>
+**Alias:** ADR-L-0017<br>
+**Authoring contract:** authoring v1.5<br>
+**Created:** 2026-04-14<br>
+**Authors:** erik.gallmann<br>
+**Domains:** authoring, adr-taxonomy<br>
+**Tags:** scaffolding, next-id, physical-types<br>
 
 ## Architecture at a Glance
 
@@ -162,6 +162,7 @@ authoring does not collide with imported or exceptional identities.
 - [ADR-L-0002](ADR-L-0002-multi-scope-adr-architecture-for-sub-module-development.md)
 - [ADR-L-0026](ADR-L-0026-authoring-domain-contract-discovery-authority.md)
 - [ADR-L-0027](ADR-L-0027-public-binding-construction-and-release-parity.md)
+- [ADR-L-0029](ADR-L-0029-semantic-authoring-construction-and-candidate-authority.md)
 
 
 

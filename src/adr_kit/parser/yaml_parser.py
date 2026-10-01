@@ -58,6 +58,11 @@ from ..models.v1_6 import (
     PhysicalComponentADRv16,
     PhysicalSystemADRv16,
 )
+from ..models.v1_7 import (
+    LogicalADRv17,
+    PhysicalComponentADRv17,
+    PhysicalSystemADRv17,
+)
 from ..models.v2_0 import (
     NormalizedEntityRegistryV2,
     RelationshipRegistryV2,
@@ -119,10 +124,12 @@ class ADRParser:
         schema_v15_dir: Path | None = None,
         schema_authoring_v15_dir: Path | None = None,
         schema_authoring_v16_dir: Path | None = None,
+        schema_authoring_v17_dir: Path | None = None,
         schema_v16_dir: Path | None = None,
         schema_v21_dir: Path | None = None,
         schema_v22_dir: Path | None = None,
         schema_v23_dir: Path | None = None,
+        schema_v24_dir: Path | None = None,
     ):
         """Initialize parser with schema directory.
 
@@ -134,6 +141,8 @@ class ADRParser:
             schema_v15_dir: Path to evidence-attribution v1.5 schemas (defaults to adr_kit.schema.v1_5)
             schema_authoring_v15_dir: Path to ADR authoring v1.5 schemas (defaults to adr_kit.schema.authoring.v1_5)
             schema_authoring_v16_dir: Path to ADR authoring v1.6 schemas (defaults to adr_kit.schema.authoring.v1_6)
+            schema_authoring_v17_dir: Path to ADR authoring v1.7 schemas (defaults to adr_kit.schema.authoring.v1_7)
+            schema_v24_dir: Path to normalized-model v2.4 schemas (defaults to adr_kit.schema.v2_4)
         """
         if schema_dir is None:
             schema_dir = _package_schema_dir("adr_kit.schema.v1_0")
@@ -151,6 +160,8 @@ class ADRParser:
             schema_authoring_v15_dir = _package_schema_dir("adr_kit.schema.authoring.v1_5")
         if schema_authoring_v16_dir is None:
             schema_authoring_v16_dir = _package_schema_dir("adr_kit.schema.authoring.v1_6")
+        if schema_authoring_v17_dir is None:
+            schema_authoring_v17_dir = _package_schema_dir("adr_kit.schema.authoring.v1_7")
         if schema_v16_dir is None:
             schema_v16_dir = _package_schema_dir("adr_kit.schema.v1_6")
         if schema_v21_dir is None:
@@ -159,6 +170,8 @@ class ADRParser:
             schema_v22_dir = _package_schema_dir("adr_kit.schema.v2_2")
         if schema_v23_dir is None:
             schema_v23_dir = _package_schema_dir("adr_kit.schema.v2_3")
+        if schema_v24_dir is None:
+            schema_v24_dir = _package_schema_dir("adr_kit.schema.v2_4")
 
         self.schema_dir = Path(schema_dir)
         self.schema_v11_dir = Path(schema_v11_dir)
@@ -168,10 +181,12 @@ class ADRParser:
         self.schema_v15_dir = Path(schema_v15_dir)
         self.schema_authoring_v15_dir = Path(schema_authoring_v15_dir)
         self.schema_authoring_v16_dir = Path(schema_authoring_v16_dir)
+        self.schema_authoring_v17_dir = Path(schema_authoring_v17_dir)
         self.schema_v16_dir = Path(schema_v16_dir)
         self.schema_v21_dir = Path(schema_v21_dir)
         self.schema_v22_dir = Path(schema_v22_dir)
         self.schema_v23_dir = Path(schema_v23_dir)
+        self.schema_v24_dir = Path(schema_v24_dir)
         self._schemas = {}
         self._validators = {}
         self._structural_validators = {}
@@ -269,6 +284,14 @@ class ADRParser:
             "physical_system_v1_6": "adr-physical-system.schema.json",
             "physical_component_v1_6": "adr-physical-component.schema.json",
         }
+        schema_authoring_v17_files = {
+            "types_v1_7": "types.schema.json",
+            "common_v1_7": "adr-common.schema.json",
+            "logical_v1_7": "adr-logical.schema.json",
+            "physical_base_v1_7": "adr-physical-base.schema.json",
+            "physical_system_v1_7": "adr-physical-system.schema.json",
+            "physical_component_v1_7": "adr-physical-component.schema.json",
+        }
         schema_v15_files = {
             "implementation_attribution_evidence_v1_5": "implementation-attribution-evidence.schema.json",
         }
@@ -298,6 +321,14 @@ class ADRParser:
             "normalized_entity_v2_3": "normalized-entity.schema.json",
             "relationship_record_v2_3": "relationship-record.schema.json",
             "normalized_architecture_model_v2_3": "normalized-architecture-model.schema.json",
+        }
+        schema_v24_files = {
+            "normalized_entity_registry_v2_4": "normalized-entity-registry.schema.json",
+            "relationship_registry_v2_4": "relationship-registry.schema.json",
+            "unresolved_registry_v2_4": "unresolved-registry.schema.json",
+            "normalized_entity_v2_4": "normalized-entity.schema.json",
+            "relationship_record_v2_4": "relationship-record.schema.json",
+            "normalized_architecture_model_v2_4": "normalized-architecture-model.schema.json",
         }
 
         # Load v1.0 schemas
@@ -346,6 +377,12 @@ class ADRParser:
                 with open(schema_path) as f:
                     self._schemas[name] = json.load(f)
 
+        for name, filename in schema_authoring_v17_files.items():
+            schema_path = self.schema_authoring_v17_dir / filename
+            if schema_path.exists():
+                with open(schema_path) as f:
+                    self._schemas[name] = json.load(f)
+
         for name, filename in schema_v15_files.items():
             schema_path = self.schema_v15_dir / filename
             if schema_path.exists():
@@ -368,6 +405,11 @@ class ADRParser:
                     self._schemas[name] = json.load(f)
         for name, filename in schema_v23_files.items():
             schema_path = self.schema_v23_dir / filename
+            if schema_path.exists():
+                with open(schema_path) as f:
+                    self._schemas[name] = json.load(f)
+        for name, filename in schema_v24_files.items():
+            schema_path = self.schema_v24_dir / filename
             if schema_path.exists():
                 with open(schema_path) as f:
                     self._schemas[name] = json.load(f)
@@ -479,6 +521,8 @@ class ADRParser:
             return f"{base_name}_v1_5"
         if version == "1.6":
             return f"{base_name}_v1_6"
+        if version == "1.7":
+            return f"{base_name}_v1_7"
         raise ADRParseError(
             f"Unsupported ADR schema_version '{version}' for adr_type "
             f"'{data.get('adr_type', base_name)}'"
@@ -507,6 +551,8 @@ class ADRParser:
         self.validate_against_schema(data, self._authoring_schema_name(data, "logical"))
 
         try:
+            if data.get("schema_version") == "1.7":
+                return cast(LogicalADR, LogicalADRv17(**data))
             if data.get("schema_version") == "1.6":
                 return cast(LogicalADR, LogicalADRv16(**data))
             if data.get("schema_version") == "1.5":
@@ -573,6 +619,8 @@ class ADRParser:
         self.validate_against_schema(data, self._authoring_schema_name(data, "physical_system"))
 
         try:
+            if data.get("schema_version") == "1.7":
+                return cast(PhysicalSystemADR, PhysicalSystemADRv17(**data))
             if data.get("schema_version") == "1.6":
                 return cast(PhysicalSystemADR, PhysicalSystemADRv16(**data))
             if data.get("schema_version") == "1.5":
@@ -609,6 +657,8 @@ class ADRParser:
 
         # Parse into Pydantic model
         try:
+            if data.get("schema_version") == "1.7":
+                return cast(PhysicalComponentADR, PhysicalComponentADRv17(**data))
             if data.get("schema_version") == "1.6":
                 return cast(PhysicalComponentADR, PhysicalComponentADRv16(**data))
             if data.get("schema_version") == "1.5":
@@ -757,9 +807,13 @@ class ADRParser:
         | NormalizedEntityRegistryV21
         | NormalizedEntityRegistryV22
         | NormalizedEntityRegistryV23
+        | dict[str, object]
     ):
-        """Parse and validate normalized entity registry (1.1, 2.0, 2.1, or 2.2)."""
+        """Parse and validate normalized entity registry, including schema-only v2.4."""
         data = self.parse_yaml(file_path)
+        if data.get("schema_version") == "2.4":
+            self.validate_against_schema(data, "normalized_entity_registry_v2_4")
+            return data
         if data.get("schema_version") == "2.3":
             try:
                 return NormalizedEntityRegistryV23.model_validate(data)
@@ -795,9 +849,13 @@ class ADRParser:
         | NormalizedEntityRegistryV21
         | NormalizedEntityRegistryV22
         | NormalizedEntityRegistryV23
+        | dict[str, object]
     ):
         """Parse and validate normalized entity registry from YAML text."""
         data = yaml.safe_load(yaml_text)
+        if isinstance(data, dict) and data.get("schema_version") == "2.4":
+            self.validate_against_schema(data, "normalized_entity_registry_v2_4")
+            return data
         if isinstance(data, dict) and data.get("schema_version") == "2.3":
             try:
                 return NormalizedEntityRegistryV23.model_validate(data)
@@ -826,9 +884,12 @@ class ADRParser:
 
     def parse_relationship_registry(
         self, file_path: Union[str, Path]
-    ) -> RelationshipRegistry | RelationshipRegistryV2 | RelationshipRegistryV21 | RelationshipRegistryV22 | RelationshipRegistryV23:
-        """Parse and validate relationship registry (1.1, 2.0, 2.1, 2.2, or 2.3)."""
+    ) -> RelationshipRegistry | RelationshipRegistryV2 | RelationshipRegistryV21 | RelationshipRegistryV22 | RelationshipRegistryV23 | dict[str, object]:
+        """Parse and validate relationship registry, including schema-only v2.4."""
         data = self.parse_yaml(file_path)
+        if data.get("schema_version") == "2.4":
+            self.validate_against_schema(data, "relationship_registry_v2_4")
+            return data
         if data.get("schema_version") == "2.3":
             try:
                 return RelationshipRegistryV23.model_validate(data)
@@ -858,9 +919,12 @@ class ADRParser:
 
     def parse_relationship_registry_from_data(
         self, yaml_text: str
-    ) -> RelationshipRegistry | RelationshipRegistryV2 | RelationshipRegistryV21 | RelationshipRegistryV22 | RelationshipRegistryV23:
+    ) -> RelationshipRegistry | RelationshipRegistryV2 | RelationshipRegistryV21 | RelationshipRegistryV22 | RelationshipRegistryV23 | dict[str, object]:
         """Parse and validate relationship registry from YAML text."""
         data = yaml.safe_load(yaml_text)
+        if isinstance(data, dict) and data.get("schema_version") == "2.4":
+            self.validate_against_schema(data, "relationship_registry_v2_4")
+            return data
         if isinstance(data, dict) and data.get("schema_version") == "2.3":
             try:
                 return RelationshipRegistryV23.model_validate(data)
@@ -889,9 +953,12 @@ class ADRParser:
 
     def parse_unresolved_registry(
         self, file_path: Union[str, Path]
-    ) -> UnresolvedRegistry | UnresolvedRegistryV2 | UnresolvedRegistryV21 | UnresolvedRegistryV22 | UnresolvedRegistryV23:
-        """Parse and validate unresolved registry (1.1, 2.0, 2.1, 2.2, or 2.3)."""
+    ) -> UnresolvedRegistry | UnresolvedRegistryV2 | UnresolvedRegistryV21 | UnresolvedRegistryV22 | UnresolvedRegistryV23 | dict[str, object]:
+        """Parse and validate unresolved registry, including schema-only v2.4."""
         data = self.parse_yaml(file_path)
+        if data.get("schema_version") == "2.4":
+            self.validate_against_schema(data, "unresolved_registry_v2_4")
+            return data
         if data.get("schema_version") == "2.3":
             try:
                 return UnresolvedRegistryV23.model_validate(data)
@@ -921,9 +988,12 @@ class ADRParser:
 
     def parse_unresolved_registry_from_data(
         self, yaml_text: str
-    ) -> UnresolvedRegistry | UnresolvedRegistryV2 | UnresolvedRegistryV21 | UnresolvedRegistryV22 | UnresolvedRegistryV23:
+    ) -> UnresolvedRegistry | UnresolvedRegistryV2 | UnresolvedRegistryV21 | UnresolvedRegistryV22 | UnresolvedRegistryV23 | dict[str, object]:
         """Parse and validate unresolved registry from YAML text."""
         data = yaml.safe_load(yaml_text)
+        if isinstance(data, dict) and data.get("schema_version") == "2.4":
+            self.validate_against_schema(data, "unresolved_registry_v2_4")
+            return data
         if isinstance(data, dict) and data.get("schema_version") == "2.3":
             try:
                 return UnresolvedRegistryV23.model_validate(data)

@@ -5,22 +5,22 @@ artifact_kind: rendered_adr_markdown
 generator_id: adr-projection-markdown
 generator_version: 3
 hash_algorithm: sha256
-source_hash: 06f3bbeb8df199d7ecf884b4047aeea88419d202937c2ce41af6a79c7299c623
-rendered_hash: 04a5e852e43848b1a06073c34d881af225bd8292d0156c463983237a674d1498
+source_hash: 626c27ecbbfa2106b7bb52650865aadcdbc4b9f9df521fce9b3b7a6fc1c5da87
+rendered_hash: a20cf70e2744f5a928fccb33be43a1520de141792a150067d4207edcb6d4cfd4
 -->
 
 # ADR-L-0028: Normative Semantic Authority and Exact Materialization Foundation
 
 ## Identity / Status
 
-**Type:** logical  
-**Status:** accepted  
-**Alias:** ADR-L-0028  
-**Authoring contract:** authoring v1.5  
-**Created:** 2026-09-09  
-**Authors:** erik.gallmann  
-**Domains:** architecture, semantic-authority, materialization, schema-governance, cross-language  
-**Tags:** adr-kit-0.11.0, semantic-design-lock-r1, normative-proposition, interpretation-closure, historical-materialization  
+**Type:** logical<br>
+**Status:** accepted<br>
+**Alias:** ADR-L-0028<br>
+**Authoring contract:** authoring v1.5<br>
+**Created:** 2026-09-09<br>
+**Authors:** erik.gallmann<br>
+**Domains:** architecture, semantic-authority, materialization, schema-governance, cross-language<br>
+**Tags:** adr-kit-0.11.0, semantic-design-lock-r1, normative-proposition, interpretation-closure, historical-materialization<br>
 
 ## Architecture at a Glance
 
@@ -490,6 +490,9 @@ The sequencing exception preserves repository ownership and prevents an accepted
 - [ADR-PC-0008](../physical-component/ADR-PC-0008-project-scope-resolution.md)
 - [ADR-L-0026](ADR-L-0026-authoring-domain-contract-discovery-authority.md)
 - [ADR-L-0027](ADR-L-0027-public-binding-construction-and-release-parity.md)
+- [ADR-L-0029](ADR-L-0029-semantic-authoring-construction-and-candidate-authority.md)
+- [ADR-L-0030](ADR-L-0030-canonical-source-basis-and-semantic-execution-surface.md)
+- [ADR-L-0031](ADR-L-0031-non-recursive-semantic-contract-conformance-binding.md)
 
 
 

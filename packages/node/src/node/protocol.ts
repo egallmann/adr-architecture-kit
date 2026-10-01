@@ -1,14 +1,41 @@
 import AjvModule, { type ErrorObject } from "ajv/dist/2020.js";
 import { semanticCoreContract } from "../generated/semantic-core-contract.js";
 import { semanticCoreContractV11 } from "../generated/semantic-core-contract-v1.1.js";
+import { semanticCoreContractV12 } from "../generated/semantic-core-contract-v1.2.js";
+import { semanticCoreContractV13 } from "../generated/semantic-core-contract-v1.3.js";
 
 type Validator = ((value: unknown) => boolean) & { errors?: ErrorObject[] | null };
 interface AjvLike { compile(schema: unknown): Validator; }
 const AjvConstructor = AjvModule as unknown as new (options: Record<string, unknown>) => AjvLike;
 const ajv = new AjvConstructor({ allErrors: true, strict: false });
+
+export const SEMANTIC_CORE_PROTOCOL_VERSIONS = ["1.0", "1.1", "1.2", "1.3"] as const;
+export const SEMANTIC_CORE_PROTOCOL_V12_OPERATIONS = [
+  "validate_authoring",
+  "construct_authoring_set",
+] as const;
+export const SEMANTIC_CORE_PROTOCOL_V13_OPERATIONS = ["materialize_architecture"] as const;
+
+export function semanticCoreCapabilities(): {
+  readonly supported_versions: readonly string[];
+  readonly operations_by_version: Readonly<Record<string, readonly string[]>>;
+} {
+  return Object.freeze({
+    supported_versions: SEMANTIC_CORE_PROTOCOL_VERSIONS,
+    operations_by_version: Object.freeze({ "1.2": SEMANTIC_CORE_PROTOCOL_V12_OPERATIONS, "1.3": SEMANTIC_CORE_PROTOCOL_V13_OPERATIONS }),
+  });
+}
+
+export function supportsSemanticCoreOperation(version: string, operation: string): boolean {
+  return (version === "1.2" && (SEMANTIC_CORE_PROTOCOL_V12_OPERATIONS as readonly string[]).includes(operation))
+    || (version === "1.3" && (SEMANTIC_CORE_PROTOCOL_V13_OPERATIONS as readonly string[]).includes(operation));
+}
+
 const validators = new Map<string, Validator>([
   ["1.0", ajv.compile(semanticCoreContract)],
   ["1.1", ajv.compile(semanticCoreContractV11)],
+  ["1.2", ajv.compile(semanticCoreContractV12)],
+  ["1.3", ajv.compile(semanticCoreContractV13)],
 ]);
 
 /** Enforce the versioned request/result transport contract in the Node host. */

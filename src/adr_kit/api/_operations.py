@@ -578,6 +578,8 @@ def capabilities() -> CapabilityManifest:
         "describe_authoring_contract",
         "list_authoring_types",
         "describe_authoring_type",
+        "validate_authoring",
+        "construct_authoring_set",
         "validate_architecture",
         "validate_project_metadata",
         "validate_contract",
@@ -587,6 +589,7 @@ def capabilities() -> CapabilityManifest:
         "open_provider_registry",
         "build_embodiment_linkage",
         "generate_attribution_shim",
+        "materialize_architecture",
         "list_semantic_contracts",
         "get_semantic_contract",
         "canonicalize_semantic_json",
@@ -606,6 +609,13 @@ def capabilities() -> CapabilityManifest:
     ]
     if PROMOTION_OPERATIONS_ADVERTISED:
         operations.extend(["prepare_promotion", "check_promotion", "apply_promotion"])
+    host_operations = tuple(str(item) for item in contract["peer_host_operations"])
+    missing_host_operations = tuple(item for item in host_operations if item not in operations)
+    if missing_host_operations:
+        raise RuntimeError(
+            "peer-qualified host operations missing from complete Python operations: "
+            + ", ".join(missing_host_operations)
+        )
     return CapabilityManifest(
         package_version=__version__,
         api_contract_version=API_CONTRACT_VERSION,
@@ -613,11 +623,11 @@ def capabilities() -> CapabilityManifest:
         supported_promotion_contract_versions=PROMOTION_CONTRACT_VERSIONS,
         validation_modes=VALIDATION_MODES,
         artifact_groups=ARTIFACT_GROUPS,
-        supported_adr_schema_versions=("1.0", "1.1", "1.2", "1.3", "1.4", "1.5", "1.6"),
+        supported_adr_schema_versions=("1.0", "1.1", "1.2", "1.3", "1.4", "1.5", "1.6", "1.7"),
         stable_adr_schema_versions=("1.0",),
-        provisional_adr_schema_versions=("1.1", "1.2", "1.3", "1.4", "1.5", "1.6"),
+        provisional_adr_schema_versions=("1.1", "1.2", "1.3", "1.4", "1.5", "1.6", "1.7"),
         normalized_model_schema_version="1.1",
-        supported_normalized_model_schema_versions=("1.1", "2.0", "2.1", "2.2", "2.3"),
+        supported_normalized_model_schema_versions=("1.1", "2.0", "2.1", "2.2", "2.3", "2.4"),
         supported_evidence_attribution_versions=("1.5", "1.6"),
         preferred_evidence_attribution_version="1.6",
         supported_authoring_domain_versions=tuple(
@@ -627,7 +637,7 @@ def capabilities() -> CapabilityManifest:
         authoring_capabilities=tuple(
             str(item) for item in contract["authoring_domain"]["capabilities"]
         ),
-        host_operations=tuple(str(item) for item in contract["peer_host_operations"]),
+        host_operations=host_operations,
         pending_host_operations=tuple(str(item) for item in contract["pending_host_operations"]),
         browser_operations=tuple(str(item) for item in contract["browser_operations"]),
     )

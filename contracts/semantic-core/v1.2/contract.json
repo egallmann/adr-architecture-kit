@@ -1,0 +1,90 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://adr-kit.dev/contracts/semantic-core/v1.2/contract.json",
+  "title": "ADR-Kit semantic core protocol contract v1.2",
+  "description": "Additive transport boundary for Authoring Construction Contract 1.0. ACC owns the nested request and result semantics; this contract owns only routing and envelope shape.",
+  "oneOf": [
+    {"$ref": "#/$defs/validate_authoring_request_envelope"},
+    {"$ref": "#/$defs/validate_authoring_result_envelope"},
+    {"$ref": "#/$defs/construct_authoring_set_request_envelope"},
+    {"$ref": "#/$defs/construct_authoring_set_result_envelope"}
+  ],
+  "$defs": {
+    "validate_authoring_request_envelope": {
+      "type": "object",
+      "required": ["core_contract_version", "operation", "request"],
+      "properties": {
+        "core_contract_version": {"const": "1.2"},
+        "operation": {"const": "validate_authoring"},
+        "request": {
+          "$ref": "#/$defs/validate_authoring_request_payload"
+        }
+      },
+      "additionalProperties": false
+    },
+    "validate_authoring_result_envelope": {
+      "type": "object",
+      "required": ["core_contract_version", "operation", "result"],
+      "properties": {
+        "core_contract_version": {"const": "1.2"},
+        "operation": {"const": "validate_authoring"},
+        "result": {
+          "$ref": "#/$defs/validate_authoring_result_payload"
+        }
+      },
+      "additionalProperties": false
+    },
+    "construct_authoring_set_request_envelope": {
+      "type": "object",
+      "required": ["core_contract_version", "operation", "request"],
+      "properties": {
+        "core_contract_version": {"const": "1.2"},
+        "operation": {"const": "construct_authoring_set"},
+        "request": {
+          "$ref": "#/$defs/construct_authoring_set_request_payload"
+        }
+      },
+      "additionalProperties": false
+    },
+    "construct_authoring_set_result_envelope": {
+      "type": "object",
+      "required": ["core_contract_version", "operation", "result"],
+      "properties": {
+        "core_contract_version": {"const": "1.2"},
+        "operation": {"const": "construct_authoring_set"},
+        "result": {
+          "$ref": "#/$defs/construct_authoring_set_result_payload"
+        }
+      },
+      "additionalProperties": false
+    },
+    "validate_authoring_request_payload": {
+      "type": "object",
+      "required": ["operation"],
+      "properties": {
+        "operation": {"const": "validate_authoring"}
+      }
+    },
+    "validate_authoring_result_payload": {
+      "type": "object",
+      "required": ["operation"],
+      "properties": {
+        "operation": {"const": "validate_authoring"}
+      }
+    },
+    "construct_authoring_set_request_payload": {
+      "type": "object",
+      "required": ["operation"],
+      "properties": {
+        "operation": {"const": "construct_authoring_set"}
+      }
+    },
+    "construct_authoring_set_result_payload": {
+      "type": "object",
+      "required": ["operation"],
+      "properties": {
+        "operation": {"const": "construct_authoring_set"}
+      }
+    }
+  }
+}

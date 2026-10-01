@@ -1,0 +1,15 @@
+{
+  "registry_id": "example.consumer.custom-entity-registry",
+  "registry_version": "1.0",
+  "authority": "consumer_namespace",
+  "definitions": [
+    {
+      "semantic_kind": "entity",
+      "semantic_type": "observation",
+      "consumer_namespace": "example",
+      "contract_version": "1.0",
+      "contract_fingerprint": "cecf:v1:sha256:0ea26a7ea84f1b8eff7dbdee1b65b3711ae372c9777908c323689230f8f320b3"
+    }
+  ],
+  "registry_policy": {"ordering": "canonical_semantic_json", "latest": "forbidden", "ambiguous_duplicate": "reject", "retained_versions": "explicit_historical_versions", "selection": "separate_exact_operation_source_basis"}
+}

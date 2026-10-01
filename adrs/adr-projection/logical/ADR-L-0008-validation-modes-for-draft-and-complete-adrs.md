@@ -5,22 +5,22 @@ artifact_kind: rendered_adr_markdown
 generator_id: adr-projection-markdown
 generator_version: 3
 hash_algorithm: sha256
-source_hash: aa02ab87b6984c57a0df63b5368ce8b846e7abda8b4ec000c6e9ed7dddb3134d
-rendered_hash: 381aa378695a0dc3e9b8e510e26dc8d36cfc99d8bfa0c0a454962ac1ee021392
+source_hash: 06c8262116452d9549f3636d6b9ba2e97b2de21e14e52fa84bdc51f95cf5452e
+rendered_hash: bbfe24a83f0d568fa68dd4966a963119fe90a04ffbfcfa6a99b28dd74418c636
 -->
 
 # ADR-L-0008: Validation Modes for Draft and Complete ADRs
 
 ## Identity / Status
 
-**Type:** logical  
-**Status:** accepted  
-**Alias:** ADR-L-0008  
-**Authoring contract:** authoring v1.5  
-**Created:** 2026-03-13  
-**Authors:** erik.gallmann  
-**Domains:** validation, adr, workflow, governance  
-**Tags:** draft, completeness, schema, steelman  
+**Type:** logical<br>
+**Status:** accepted<br>
+**Alias:** ADR-L-0008<br>
+**Authoring contract:** authoring v1.5<br>
+**Created:** 2026-03-13<br>
+**Authors:** erik.gallmann<br>
+**Domains:** validation, adr, workflow, governance<br>
+**Tags:** draft, completeness, schema, steelman<br>
 
 ## Architecture at a Glance
 

@@ -66,7 +66,7 @@ fn is_sha256(value: &str) -> bool {
             .all(|byte| byte.is_ascii_hexdigit() && !byte.is_ascii_uppercase())
 }
 
-fn is_uuid_v7(value: &str) -> bool {
+pub(crate) fn is_uuid_v7(value: &str) -> bool {
     let bytes = value.as_bytes();
     bytes.len() == 36
         && [8, 13, 18, 23].iter().all(|index| bytes[*index] == b'-')
@@ -98,7 +98,7 @@ fn civil_from_days(days: i64) -> (i64, u64, u64) {
     (year, month as u64, day as u64)
 }
 
-fn uuidv7_created_at(value: &str) -> Option<String> {
+pub(crate) fn uuidv7_created_at(value: &str) -> Option<String> {
     if !is_uuid_v7(value) {
         return None;
     }
@@ -130,7 +130,7 @@ fn digest_bytes(bytes: &[u8]) -> String {
     )
 }
 
-fn digest_json(value: &Json) -> Result<String, String> {
+pub(crate) fn digest_json(value: &Json) -> Result<String, String> {
     let mut canonical = String::new();
     canonicalize_value(value, &mut canonical)?;
     Ok(digest_bytes(canonical.as_bytes()))
@@ -170,13 +170,45 @@ fn canonical_alias(value: &str, fallback: &str) -> String {
     }
 }
 
-fn lifecycle_stage(status: &str) -> &'static str {
+pub(crate) fn lifecycle_stage(status: &str) -> &'static str {
     match status {
         "accepted" | "active" => "active",
         "deprecated" => "deprecated",
         "superseded" => "superseded",
         _ => "proposed",
     }
+}
+
+pub(crate) fn validate_architecture_namespace(value: &str) -> Result<(), String> {
+    if value.is_empty() {
+        Err("architecture_namespace must be a non-empty string".into())
+    } else {
+        Ok(())
+    }
+}
+
+pub(crate) fn provider_key(
+    provider_kind: &str,
+    architecture_namespace: &str,
+) -> Result<String, String> {
+    if provider_kind.is_empty() {
+        return Err("provider_kind must be a non-empty string".into());
+    }
+    validate_architecture_namespace(architecture_namespace)?;
+    Ok(format!("{provider_kind}:{architecture_namespace}"))
+}
+
+pub(crate) fn canonical_entity_uri(
+    architecture_namespace: &str,
+    entity_id: &str,
+) -> Result<String, String> {
+    validate_architecture_namespace(architecture_namespace)?;
+    if !is_uuid_v7(entity_id) {
+        return Err(format!("canonical entity id is not UUIDv7: {entity_id}"));
+    }
+    Ok(format!(
+        "adr://{architecture_namespace}/entities/{entity_id}"
+    ))
 }
 
 fn source_artifact_value(
@@ -308,11 +340,11 @@ fn identity_map(
         );
     }
     if let Some(declared_provider) = text(map.get("provider")) {
-        let expected_provider = format!(
-            "{}:{}",
-            text(provider.get("kind")).unwrap_or_default(),
-            text(provider.get("architectureNamespace")).unwrap_or_default()
-        );
+        let expected_provider = provider_key(
+            &text(provider.get("kind")).unwrap_or_default(),
+            &text(provider.get("architectureNamespace")).unwrap_or_default(),
+        )
+        .unwrap_or_default();
         if declared_provider != expected_provider {
             diagnostic_code(
                 diagnostics,
@@ -839,7 +871,7 @@ fn source_identity_ref(binding: &Json) -> Json {
     binding.clone()
 }
 
-fn normalized_source_contract(binding: &Json) -> Json {
+pub(crate) fn normalized_source_contract(binding: &Json) -> Json {
     // normalized-model v2.3 predates the richer transport binding and keeps
     // its compatibility-shaped source_contract member.  Its fingerprint is
     // the exact qualified top-level schema resource digest; it is never an
@@ -862,7 +894,7 @@ fn normalized_source_contract(binding: &Json) -> Json {
     ])
 }
 
-fn regular_entity_fingerprint(values: &BTreeMap<String, Json>) -> String {
+pub(crate) fn regular_entity_fingerprint(values: &BTreeMap<String, Json>) -> String {
     let preimage = object([
         (
             "id".into(),
@@ -897,7 +929,7 @@ fn refresh_regular_entity_fingerprint(values: &mut BTreeMap<String, Json>) {
     values.insert("entity_fingerprint".into(), string(fingerprint));
 }
 
-fn normative_proposition_fingerprint(values: &BTreeMap<String, Json>) -> String {
+pub(crate) fn normative_proposition_fingerprint(values: &BTreeMap<String, Json>) -> String {
     let preimage = object([
         (
             "id".into(),
@@ -978,15 +1010,17 @@ fn regular_entity(
     .unwrap_or_else(|| title.clone());
     let created_at = uuidv7_created_at(&identity.id)?;
     let status = text(raw.get("status")).unwrap_or_else(|| "proposed".into());
-    let provider_key = format!(
-        "{}:{}",
-        text(provider.get("kind")).unwrap_or_default(),
-        text(provider.get("architectureNamespace")).unwrap_or_default()
-    );
+    let provider_key = provider_key(
+        &text(provider.get("kind")).unwrap_or_default(),
+        &text(provider.get("architectureNamespace")).unwrap_or_default(),
+    )
+    .ok()?;
     let source_ref = text(source.get("sourceRef")).unwrap_or_default();
     let artifact_path = text(source.get("artifactPath")).unwrap_or_default();
     let content_digest = text(source.get("contentDigest")).unwrap_or_default();
     let source_type = format!("{declaration_kind}_adr");
+    let architecture_namespace = text(provider.get("architectureNamespace")).unwrap_or_default();
+    let uri = canonical_entity_uri(&architecture_namespace, &identity.id).ok()?;
     let mut values = BTreeMap::from([
         ("id".into(), string(identity.id.clone())),
         ("alias_id".into(), string(identity.alias_id.clone())),
@@ -998,14 +1032,7 @@ fn regular_entity(
         ("entity_type".into(), string(entity_type)),
         ("name".into(), string(title)),
         ("summary".into(), string(summary)),
-        (
-            "uri".into(),
-            string(format!(
-                "adr://{}/entities/{}",
-                text(provider.get("architectureNamespace")).unwrap_or_default(),
-                identity.id
-            )),
-        ),
+        ("uri".into(), string(uri)),
         ("created_at".into(), string(created_at)),
         ("lifecycle_stage".into(), string(lifecycle_stage(&status))),
         (
@@ -1103,17 +1130,13 @@ fn compatibility_relationship(
     source_pointer: &str,
     evidence: Option<Json>,
 ) -> Json {
-    let preimage = object([
-        ("relationship_type".into(), string(relationship_type)),
-        ("from_entity_id".into(), string(from)),
-        ("to_entity_id".into(), string(to)),
-        ("canonical_source_ref".into(), string(source_ref)),
-        ("source_pointer".into(), string(source_pointer)),
-    ]);
-    let assertion = digest_json(&preimage)
-        .unwrap_or_else(|_| digest_bytes(&[]))
-        .trim_start_matches("sha256:")
-        .to_owned();
+    let assertion = compatibility_assertion_digest(
+        relationship_type,
+        from,
+        to,
+        source_ref,
+        source_pointer,
+    );
     object([
         ("record_kind".into(), string("compatibility")),
         (
@@ -1133,6 +1156,32 @@ fn compatibility_relationship(
         ),
         ("canonical_source_ref".into(), string(source_ref)),
     ])
+}
+
+/// Return the canonical source-sensitive compatibility assertion digest.
+///
+/// Architecture Interpretation uses the same primitive so compatibility
+/// identities cannot diverge between materialization 1.0 and interpretation
+/// 1.1. Keep the preimage fields and canonicalization stable: existing
+/// materialization output depends on this exact authority.
+pub(crate) fn compatibility_assertion_digest(
+    relationship_type: &str,
+    from: &str,
+    to: &str,
+    source_ref: &str,
+    source_pointer: &str,
+) -> String {
+    let preimage = object([
+        ("relationship_type".into(), string(relationship_type)),
+        ("from_entity_id".into(), string(from)),
+        ("to_entity_id".into(), string(to)),
+        ("canonical_source_ref".into(), string(source_ref)),
+        ("source_pointer".into(), string(source_pointer)),
+    ]);
+    digest_json(&preimage)
+        .unwrap_or_else(|_| digest_bytes(&[]))
+        .trim_start_matches("sha256:")
+        .to_owned()
 }
 
 fn unresolved_relationship(
@@ -1417,14 +1466,16 @@ fn normative_proposition(
         );
         return None;
     }
-    let provider_key = format!(
-        "{}:{}",
-        text(provider.get("kind")).unwrap_or_default(),
-        text(provider.get("architectureNamespace")).unwrap_or_default()
-    );
+    let provider_key = provider_key(
+        &text(provider.get("kind")).unwrap_or_default(),
+        &text(provider.get("architectureNamespace")).unwrap_or_default(),
+    )
+    .ok()?;
     let source_ref = text(source.get("sourceRef")).unwrap_or_default();
     let artifact_path = text(source.get("artifactPath")).unwrap_or_default();
     let content_digest = text(source.get("contentDigest")).unwrap_or_default();
+    let architecture_namespace = text(provider.get("architectureNamespace")).unwrap_or_default();
+    let uri = canonical_entity_uri(&architecture_namespace, &identity.id).ok()?;
     let mut values = BTreeMap::from([
         ("id".into(), string(identity.id.clone())),
         ("alias_id".into(), string(identity.alias_id.clone())),
@@ -1439,14 +1490,7 @@ fn normative_proposition(
             "summary".into(),
             string(statement.clone().unwrap_or_default()),
         ),
-        (
-            "uri".into(),
-            string(format!(
-                "adr://{}/entities/{}",
-                text(provider.get("architectureNamespace")).unwrap_or_default(),
-                identity.id
-            )),
-        ),
+        ("uri".into(), string(uri)),
         ("created_at".into(), string(uuidv7_created_at(&identity.id)?)),
         ("statement".into(), string(statement.unwrap_or_default())),
         ("normative_force".into(), string(force.unwrap_or_default())),
@@ -1678,7 +1722,7 @@ fn state_projection(value: &Json, key: Option<&str>) -> Option<Json> {
     }
 }
 
-fn authority_state_fingerprint(
+pub(crate) fn authority_state_fingerprint(
     provider: &Json,
     normalized_model: &Json,
     limitations: &[Json],
@@ -2634,17 +2678,28 @@ fn materialize_sources(
         )
     });
     let source_basis = source_basis_with_sorted_artifacts(source_basis, &artifacts);
+    let provider_key = match provider_key(
+        &text(provider.get("kind")).unwrap_or_default(),
+        &text(provider.get("architectureNamespace")).unwrap_or_default(),
+    ) {
+        Ok(value) => value,
+        Err(error) => {
+            diagnostic_code(
+                diagnostics,
+                "semantic_contract.provider_identity_required",
+                error,
+                "authorityProvider",
+            );
+            return (Json::Null, Vec::new(), Vec::new());
+        }
+    };
     let normalized = object([
         ("schema_version".into(), string(NORMALIZED_MODEL_VERSION)),
         ("type".into(), string("normalized_architecture_model")),
         ("mode".into(), string("normalized")),
         (
             "scope_root".into(),
-            string(format!(
-                "{}:{}",
-                text(provider.get("kind")).unwrap_or_default(),
-                text(provider.get("architectureNamespace")).unwrap_or_default()
-            )),
+            string(provider_key),
         ),
         (
             "architecture_namespace".into(),

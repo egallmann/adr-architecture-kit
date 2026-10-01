@@ -22,6 +22,39 @@ CANONICAL = ROOT / "contracts" / "semantic-contract" / "v1.0"
 RESOURCES = CANONICAL / "resources"
 BUNDLED = ROOT / "src" / "adr_kit" / "semantic_contract" / "v1_0"
 
+SUCCESSOR_RESOURCE_SOURCES = {
+    **{
+        f"architecture-interpretation-1.1-{name}": ROOT
+        / "contracts"
+        / "architecture-interpretation"
+        / "v1.1"
+        / "resources"
+        / f"{name}.json"
+        for name in (
+            "source-decoding-1.7",
+            "source-mapping-1.7-to-2.4",
+            "rules",
+            "legacy-compatibility",
+            "conformance",
+        )
+    },
+    **{
+        f"normalized-model-2.4-schema-{name}": ROOT
+        / "schema"
+        / "normalized-model"
+        / "v2.4"
+        / f"{name}.json"
+        for name in (
+            "normalized-architecture-model.schema",
+            "normalized-entity-registry.schema",
+            "normalized-entity.schema",
+            "relationship-record.schema",
+            "relationship-registry.schema",
+            "unresolved-registry.schema",
+        )
+    },
+}
+
 
 def scs_id(members: list[dict[str, str]]) -> str:
     composition: dict[str, Any] = {
@@ -128,10 +161,15 @@ def resource_value(key: str) -> Any:
     return read_json(path)
 
 
-def definition(family: str, manifest: list[dict[str, Any]], frozen: list[str]) -> dict[str, Any]:
+def definition(
+    family: str,
+    manifest: list[dict[str, Any]],
+    frozen: list[str],
+    version: str | None = None,
+) -> dict[str, Any]:
     value: dict[str, Any] = {
         "semanticContractFamily": family,
-        "semanticContractVersion": "1.0" if family != "normalized-model" else "2.3",
+        "semanticContractVersion": version or ("1.0" if family != "normalized-model" else "2.3"),
         "fingerprintScheme": "scf:v1:sha256",
         "resourceManifest": sorted(manifest, key=lambda item: item["canonicalResourceKey"]),
         "frozenNormativeConformanceResources": sorted(frozen),
@@ -152,6 +190,25 @@ def write_json(path: Path, value: Any) -> None:
 
 
 def main() -> None:
+    for successor_filename, successor_source in SUCCESSOR_RESOURCE_SOURCES.items():
+        successor_target = RESOURCES / f"{successor_filename}.json"
+        successor_target.write_bytes(successor_source.read_bytes())
+    successor_conformance = read_json(RESOURCES / "normalized-model-2.3-conformance.json")
+
+    def retarget(value: Any) -> Any:
+        if isinstance(value, str):
+            return value.replace("2.3", "2.4")
+        if isinstance(value, list):
+            return [retarget(item) for item in value]
+        if isinstance(value, dict):
+            return {key: retarget(item) for key, item in value.items()}
+        return value
+
+    write_json(
+        RESOURCES / "normalized-model-2.4-conformance.json",
+        retarget(successor_conformance),
+    )
+
     normalized_schema_files = [
         "normalized-architecture-model.schema",
         "normalized-entity-registry.schema",
@@ -383,6 +440,164 @@ def main() -> None:
         "current/semantic-contract-current-1.0.json": current,
     }
     for relative, value in generated.items():
+        write_json(CANONICAL / relative, value)
+        write_json(BUNDLED / relative, value)
+
+    # The successor tuple is an explicit candidate authority surface. It is
+    # intentionally kept outside the current ``definitions`` and ``sets``
+    # directories so existing public loaders cannot silently promote it.
+    successor_architecture = read_json(
+        ROOT / "contracts" / "architecture-interpretation" / "v1.1" / "contract.json"
+    )
+    successor_normalized_keys = [
+        f"normalized-model/2.4/schema/{name}" for name in normalized_schema_files
+    ]
+    successor_normalized_manifest = [
+        resource(key, key.replace("/", "-") + ".json", "normalized-model-schema")
+        for key in successor_normalized_keys
+    ]
+    successor_normalized_conformance_key = "normalized-model/2.4/conformance"
+    successor_normalized_manifest.append(
+        resource(
+            successor_normalized_conformance_key,
+            "normalized-model-2.4-conformance.json",
+            "normalized-model-conformance",
+        )
+    )
+    successor_normalized = definition(
+        "normalized-model",
+        successor_normalized_manifest,
+        [successor_normalized_conformance_key],
+        version="2.4",
+    )
+    successor_definitions = {
+        "architecture-interpretation-1.1.json": successor_architecture,
+        "normalized-model-2.4.json": successor_normalized,
+        "normative-semantics-1.0.json": definitions["normative-semantics.json"],
+    }
+    successor_members = [
+        {
+            "semanticContractFamily": value["semanticContractFamily"],
+            "semanticContractVersion": value["semanticContractVersion"],
+            "semanticContractFingerprint": value["semanticContractFingerprint"],
+        }
+        for value in successor_definitions.values()
+    ]
+    successor_members.sort(key=lambda item: item["semanticContractFamily"])
+    successor_set_id = scs_id(successor_members)
+    expected_successor_set_id = (
+        "scs:v1:sha256:2cf903fe80c50b97443645369b28443c7fa186ed758e2e22d7ce758ccb0d6020"
+    )
+    if successor_set_id != expected_successor_set_id:
+        raise RuntimeError(
+            "successor semantic-contract authority drifted: "
+            f"expected {expected_successor_set_id}, got {successor_set_id}"
+        )
+    successor_profile: dict[str, Any] = {
+        "profileFamily": "architecture-materialization",
+        "profileVersion": "1.1",
+        "profileId": "architecture-materialization@1.1",
+        "participatingFamilies": [
+            {
+                "semanticContractFamily": "architecture-interpretation",
+                "semanticContractVersion": "1.1",
+                "cardinality": 1,
+            },
+            {
+                "semanticContractFamily": "normalized-model",
+                "semanticContractVersion": "2.4",
+                "cardinality": 1,
+            },
+            {
+                "semanticContractFamily": "normative-semantics",
+                "semanticContractVersion": "1.0",
+                "cardinality": 1,
+            },
+        ],
+        "operations": profile["operations"],
+        "selectionPurposes": ["architecture-materialization"],
+    }
+    successor_set = {
+        "scsScheme": "scs:v1:sha256",
+        "semanticContractSetId": successor_set_id,
+        "members": successor_members,
+    }
+    successor_qualifications = [
+        {
+            "qualificationRecordId": f"qualification:architecture-materialization@1.1:{operation}",
+            "qualificationSchemaVersion": "1.0",
+            "operation": operation,
+            "direction": "forward" if operation == "materialize_architecture" else "none",
+            "profileId": successor_profile["profileId"],
+            "semanticContractSetId": successor_set_id,
+            "members": successor_members,
+            "outcome": "qualified",
+            "installedExecutionSupport": operation == "materialize_architecture",
+            "newUsePolicy": "permitted" if operation == "materialize_architecture" else "prohibited",
+            "historicalInterpretationSupport": False,
+            "qualificationRevision": "qualification:v1:successor-1",
+            "reasonCode": "successor-materialization-1.1-executable"
+            if operation == "materialize_architecture"
+            else "successor-operation-not-implemented",
+        }
+        for operation in successor_profile["operations"]
+    ]
+    successor_catalog = {
+        "catalogSchemaVersion": "1.0",
+        "catalogRevision": "catalog:v1:2",
+        "entries": [
+            {
+                "semanticContractSetId": successor_set_id,
+                "catalogued": True,
+                "lifecycle": "active",
+                "historicalAddressable": False,
+            }
+        ],
+    }
+    successor_policy = {
+        "policySchemaVersion": "1.0",
+        "policyRevision": "policy:v1:2",
+        "entries": [
+            {
+                "semanticContractSetId": successor_set_id,
+                "operation": operation,
+                "direction": "forward" if operation == "materialize_architecture" else "none",
+                "newUsePolicy": "permitted" if operation == "materialize_architecture" else "prohibited",
+                "installedExecutionSupport": operation == "materialize_architecture",
+                "historicalInterpretationSupport": False,
+            }
+            for operation in successor_profile["operations"]
+        ],
+    }
+    retained_catalog = copy.deepcopy(catalog)
+    retained_catalog["catalogRevision"] = successor_catalog["catalogRevision"]
+    retained_catalog["entries"].append(successor_catalog["entries"][0])
+    retained_policy = copy.deepcopy(policy)
+    retained_policy["policyRevision"] = successor_policy["policyRevision"]
+    retained_policy["entries"].extend(successor_policy["entries"])
+    current["catalogRevision"] = retained_catalog["catalogRevision"]
+    current["policyRevision"] = retained_policy["policyRevision"]
+    for relative, value in {
+        "catalog/semantic-contract-catalog-1.0.json": retained_catalog,
+        "policy/semantic-contract-policy-1.0.json": retained_policy,
+        "current/semantic-contract-current-1.0.json": current,
+    }.items():
+        write_json(CANONICAL / relative, value)
+        write_json(BUNDLED / relative, value)
+    for candidate_root in (CANONICAL / "candidate", BUNDLED / "candidate"):
+        for stale_asset in candidate_root.rglob("*.json"):
+            stale_asset.unlink()
+    successor_generated = {
+        "profiles/architecture-materialization-1.1.json": successor_profile,
+        "definitions/architecture-interpretation-1.1.json": successor_architecture,
+        "definitions/normalized-model-2.4.json": successor_normalized,
+        "definitions/normative-semantics-1.0.json": definitions[
+            "normative-semantics.json"
+        ],
+        f"sets/{successor_set_id.replace(':', '-')}.json": successor_set,
+        "qualifications/architecture-materialization-1.1.json": successor_qualifications,
+    }
+    for relative, value in successor_generated.items():
         write_json(CANONICAL / relative, value)
         write_json(BUNDLED / relative, value)
 

@@ -272,8 +272,12 @@ def _load_json_asset(relative: str) -> Any:
 def list_semantic_contract_profiles() -> tuple[SemanticContractProfile, ...]:
     """Return governed profiles bundled with this host distribution."""
 
-    profile = _load_json_asset("profiles/architecture-materialization-1.0.json")
-    return (SemanticContractProfile.from_wire(profile),)
+    return tuple(
+        SemanticContractProfile.from_wire(
+            _load_json_asset(f"profiles/architecture-materialization-{version}.json")
+        )
+        for version in ("1.0", "1.1")
+    )
 
 
 def get_semantic_contract_profile(profile_id: str) -> SemanticContractProfile:
@@ -454,7 +458,13 @@ def load_semantic_resource(key: str) -> Any:
     """Load one bundled resource by canonical key for closure verification."""
 
     parts = key.split("/")
-    if len(parts) < 3 or parts[1] not in {"1.0", "1.5", "1.6", "2.3"}:
+    if len(parts) == 4 and parts[:3] == ["authoring", "1.7", "schema"]:
+        filename = f"{parts[3]}.json"
+        resource = resources.files("adr_kit.schema.authoring.v1_7").joinpath(filename)
+        if resource.is_file():
+            return json.loads(resource.read_text(encoding="utf-8"))
+        raise LookupError(f"Bundled semantic resource is missing: {key}")
+    if len(parts) < 3 or parts[1] not in {"1.0", "1.1", "1.5", "1.6", "2.3", "2.4"}:
         raise LookupError(f"Unsupported semantic resource: {key}")
     package = resources.files("adr_kit.semantic_contract.v1_0.resources")
     candidates = [f"{key.replace('/', '-')}.json"]

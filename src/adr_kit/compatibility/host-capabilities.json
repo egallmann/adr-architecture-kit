@@ -3,6 +3,8 @@
   "semantic_core_contract": "contracts/semantic-core/v1.0/contract.json",
   "peer_host_operations": [
     "capabilities",
+    "validate_authoring",
+    "construct_authoring_set",
     "validate_architecture",
     "validate_project_metadata",
     "validate_contract",

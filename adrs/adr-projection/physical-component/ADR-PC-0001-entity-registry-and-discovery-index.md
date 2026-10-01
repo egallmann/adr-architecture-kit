@@ -5,24 +5,24 @@ artifact_kind: rendered_adr_markdown
 generator_id: adr-projection-markdown
 generator_version: 3
 hash_algorithm: sha256
-source_hash: 4ac62b3da229ec1decd795740e3ad815a5ad3b616192cf8bf558b369b69e9975
-rendered_hash: c5734b18a2492fee557d31d7ca199aaaf3891372eb42b714dc5ae100bfecf066
+source_hash: d133e7703673bf6cc19d0ff9977f170e47c02db6f48d238341001aa5443aee09
+rendered_hash: 207b7718939af54e2532f78165de134b12f2b78fa91c66f441fcaf134e264861
 -->
 
 # ADR-PC-0001: Entity Registry and Discovery Index
 
 ## Identity / Status
 
-**Type:** physical-component  
-**Status:** accepted  
-**Alias:** ADR-PC-0001  
-**Authoring contract:** authoring v1.5  
-**Created:** 2026-03-13  
-**Modified:** 2026-08-27  
-**Authors:** erik.gallmann  
-**Domains:** discovery, indexing, tooling  
-**Implements Logical:** [ADR-L-0009](../logical/ADR-L-0009-derived-architecture-discovery-surfaces.md), [ADR-L-0012](../logical/ADR-L-0012-federation-authority-and-qualified-identity-model.md), [ADR-L-0002](../logical/ADR-L-0002-multi-scope-adr-architecture-for-sub-module-development.md)  
-**Implements System:** [ADR-PS-0001](../physical-system/ADR-PS-0001-adr-architecture-kit-discovery-and-indexing-system.md)  
+**Type:** physical-component<br>
+**Status:** accepted<br>
+**Alias:** ADR-PC-0001<br>
+**Authoring contract:** authoring v1.5<br>
+**Created:** 2026-03-13<br>
+**Modified:** 2026-08-27<br>
+**Authors:** erik.gallmann<br>
+**Domains:** discovery, indexing, tooling<br>
+**Implements Logical:** [ADR-L-0009](../logical/ADR-L-0009-derived-architecture-discovery-surfaces.md), [ADR-L-0012](../logical/ADR-L-0012-federation-authority-and-qualified-identity-model.md), [ADR-L-0002](../logical/ADR-L-0002-multi-scope-adr-architecture-for-sub-module-development.md)<br>
+**Implements System:** [ADR-PS-0001](../physical-system/ADR-PS-0001-adr-architecture-kit-discovery-and-indexing-system.md)<br>
 
 ## Architecture at a Glance
 

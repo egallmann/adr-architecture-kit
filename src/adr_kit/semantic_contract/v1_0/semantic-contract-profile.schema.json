@@ -1,16 +1,13 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://adr-kit.dev/contracts/semantic-contract/v1.0/semantic-contract-profile.schema.json",
-  "title": "ADR-Kit semantic-contract profile v1.0",
-  "type": "object",
-  "additionalProperties": false,
-  "required": ["profileFamily", "profileVersion", "profileId", "participatingFamilies", "operations", "selectionPurposes"],
-  "properties": {
-    "$schema": {"type": "string"},
-    "profileFamily": {"const": "architecture-materialization"},
-    "profileVersion": {"const": "1.0"},
-    "profileId": {"const": "architecture-materialization@1.0"},
-    "participatingFamilies": {
+  "title": "ADR-Kit architecture-materialization profiles v1.0",
+  "oneOf": [
+    {"$ref": "#/$defs/current_profile"},
+    {"$ref": "#/$defs/successor_profile"}
+  ],
+  "$defs": {
+    "participating_families_v10": {
       "type": "array", "minItems": 3, "maxItems": 3, "uniqueItems": true,
       "items": {"type": "object", "additionalProperties": false, "required": ["semanticContractFamily", "semanticContractVersion", "cardinality"], "properties": {
         "semanticContractFamily": {"enum": ["architecture-interpretation", "normalized-model", "normative-semantics"]},
@@ -18,7 +15,42 @@
         "cardinality": {"const": 1}
       }}
     },
-    "operations": {"type": "array", "const": ["validate_profile", "qualify_tuple", "assemble_set", "validate_corpus", "resolve_current"]},
-    "selectionPurposes": {"type": "array", "const": ["architecture-materialization"]}
+    "participating_families_v11": {
+      "type": "array", "minItems": 3, "maxItems": 3, "uniqueItems": true,
+      "items": {"type": "object", "additionalProperties": false, "required": ["semanticContractFamily", "semanticContractVersion", "cardinality"], "properties": {
+        "semanticContractFamily": {"enum": ["architecture-interpretation", "normalized-model", "normative-semantics"]},
+        "semanticContractVersion": {"enum": ["1.0", "1.1", "2.3", "2.4"]},
+        "cardinality": {"const": 1}
+      }}
+    },
+    "operations": {
+      "const": ["validate_profile", "qualify_tuple", "assemble_set", "validate_corpus", "resolve_current", "resolve_semantic_contract_set", "materialize_architecture"]
+    },
+    "current_profile": {
+      "type": "object", "additionalProperties": false,
+      "required": ["profileFamily", "profileVersion", "profileId", "participatingFamilies", "operations", "selectionPurposes"],
+      "properties": {
+        "$schema": {"type": "string"},
+        "profileFamily": {"const": "architecture-materialization"},
+        "profileVersion": {"const": "1.0"},
+        "profileId": {"const": "architecture-materialization@1.0"},
+        "participatingFamilies": {"$ref": "#/$defs/participating_families_v10"},
+        "operations": {"$ref": "#/$defs/operations"},
+        "selectionPurposes": {"const": ["architecture-materialization"]}
+      }
+    },
+    "successor_profile": {
+      "type": "object", "additionalProperties": false,
+      "required": ["profileFamily", "profileVersion", "profileId", "participatingFamilies", "operations", "selectionPurposes"],
+      "properties": {
+        "$schema": {"type": "string"},
+        "profileFamily": {"const": "architecture-materialization"},
+        "profileVersion": {"const": "1.1"},
+        "profileId": {"const": "architecture-materialization@1.1"},
+        "participatingFamilies": {"$ref": "#/$defs/participating_families_v11"},
+        "operations": {"$ref": "#/$defs/operations"},
+        "selectionPurposes": {"const": ["architecture-materialization"]}
+      }
+    }
   }
 }

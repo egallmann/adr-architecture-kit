@@ -5,22 +5,22 @@ artifact_kind: rendered_adr_markdown
 generator_id: adr-projection-markdown
 generator_version: 3
 hash_algorithm: sha256
-source_hash: e0e1ccb85f9cd45556103d8890c22596f23525c8ab1628b2f726ffe0b735af1b
-rendered_hash: 72ba32691f39a74a6d1e2db38bd92326b7594b0b20221e2922a24848c9209675
+source_hash: c10de68f93434d14c6eca1ba8beeb4102fc1cefc533328ef2f657258b203833c
+rendered_hash: 9505683d5da4420003fd0c1416f2dc5e8e89f4e3af6e547a52387ea5528dc15c
 -->
 
 # ADR-L-0015: ADR Governance State and Override Semantics
 
 ## Identity / Status
 
-**Type:** logical  
-**Status:** accepted  
-**Alias:** ADR-L-0015  
-**Authoring contract:** authoring v1.5  
-**Created:** 2026-03-18  
-**Authors:** erik.gallmann  
-**Domains:** governance, validation, approval, overrides  
-**Tags:** governance, override, steelman, approval  
+**Type:** logical<br>
+**Status:** accepted<br>
+**Alias:** ADR-L-0015<br>
+**Authoring contract:** authoring v1.5<br>
+**Created:** 2026-03-18<br>
+**Authors:** erik.gallmann<br>
+**Domains:** governance, validation, approval, overrides<br>
+**Tags:** governance, override, steelman, approval<br>
 
 ## Architecture at a Glance
 
@@ -231,6 +231,7 @@ Lookup surfaces must remain projections over canonical governance state.
 - [ADR-L-0011](ADR-L-0011-metadata-schemas-and-remediation-ledger-enforcement.md)
 - [ADR-L-0013](ADR-L-0013-architecture-repository-boundary-and-normalized-semantic-model.md)
 - [ADR-L-0010](ADR-L-0010-kernel-interface-contract-and-validation-profiles.md)
+- [ADR-L-0029](ADR-L-0029-semantic-authoring-construction-and-candidate-authority.md)
 
 
 

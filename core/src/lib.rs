@@ -3,12 +3,21 @@ use std::collections::{BTreeMap, BTreeSet};
 use serde::{Deserialize, Serialize};
 
 mod architecture;
+// Internal Architecture Interpretation 1.1 semantic authority.
+pub(crate) mod architecture_interpretation;
 mod attribution;
+mod authoring_construction;
+mod authoring_construction_orchestration;
+pub(crate) mod candidate_source;
 mod linkage;
 mod materialization;
+mod successor_materialization;
 mod schema_validation;
 mod semantic_contract;
 mod semantic_contract_set;
+
+#[cfg(test)]
+mod authoring_construction_tests;
 
 // This module is the canonical semantic execution boundary. Host SDKs are
 // responsible for discovery, filesystem access, YAML parsing, and adapting
@@ -16,6 +25,8 @@ mod semantic_contract_set;
 // reimplement the rules evaluated below.
 const VERSION: &str = "1.0";
 const VERSION_1_1: &str = "1.1";
+const VERSION_1_2: &str = "1.2";
+const VERSION_1_3: &str = "1.3";
 const SENTINELS: [&str; 3] = [
     "__LEGACY_UNSPECIFIED__",
     "__NOT_YET_MODELED__",
@@ -158,7 +169,21 @@ impl Json {
             None
         }
     }
+    fn as_object_mut(&mut self) -> Option<&mut BTreeMap<String, Json>> {
+        if let Self::Object(value) = self {
+            Some(value)
+        } else {
+            None
+        }
+    }
     fn as_array(&self) -> Option<&Vec<Json>> {
+        if let Self::Array(value) = self {
+            Some(value)
+        } else {
+            None
+        }
+    }
+    fn as_array_mut(&mut self) -> Option<&mut Vec<Json>> {
         if let Self::Array(value) = self {
             Some(value)
         } else {
@@ -168,6 +193,13 @@ impl Json {
     fn as_str(&self) -> Option<&str> {
         if let Self::String(value) = self {
             Some(value)
+        } else {
+            None
+        }
+    }
+    fn as_bool(&self) -> Option<bool> {
+        if let Self::Bool(value) = self {
+            Some(*value)
         } else {
             None
         }
@@ -195,7 +227,6 @@ impl Json {
     }
     // Test and audit helpers use path lookup so assertions stay expressed in
     // the same semantic field names as the shared vector contract.
-    #[cfg(test)]
     fn get(&self, key: &str) -> Option<&Json> {
         self.as_object()?.get(key)
     }
@@ -288,6 +319,250 @@ pub(crate) fn invalid_v11(operation: &str, message: impl Into<String>) -> Json {
         false,
         vec![diagnostic("core.invalid_request", message, None)],
     )
+}
+
+fn protocol_v12_result(operation: &str, result: Json) -> Json {
+    object([
+        (String::from("core_contract_version"), string(VERSION_1_2)),
+        (String::from("operation"), string(operation)),
+        (String::from("result"), result),
+    ])
+}
+
+fn invalid_v12(operation: &str, message: impl Into<String>) -> Json {
+    protocol_v12_result(
+        operation,
+        object([
+            (String::from("operation"), string(operation)),
+            (
+                String::from("diagnostics"),
+                Json::Array(vec![diagnostic("core.invalid_request", message, None)]),
+            ),
+        ]),
+    )
+}
+
+fn protocol_v13_result(operation: &str, result: Json) -> Json {
+    object([
+        (String::from("core_contract_version"), string(VERSION_1_3)),
+        (String::from("operation"), string(operation)),
+        (String::from("result"), result),
+    ])
+}
+
+fn invalid_v13(operation: &str, message: impl Into<String>) -> Json {
+    if operation == "materialize_architecture" {
+        return protocol_v13_result(
+            operation,
+            object([
+                (String::from("operation"), string(operation)),
+                (String::from("success"), Json::Bool(false)),
+                (String::from("outcome"), string("Rejected")),
+                (
+                    String::from("materializationContractVersion"),
+                    string("1.1"),
+                ),
+                (String::from("authorityProvider"), Json::Null),
+                (String::from("sourceBasis"), Json::Null),
+                (String::from("sourceContractClosure"), Json::Array(Vec::new())),
+                (
+                    String::from("semanticBasis"),
+                    object([
+                        (String::from("semanticContractSetId"), Json::Null),
+                        (String::from("authorityStateFingerprint"), Json::Null),
+                    ]),
+                ),
+                (String::from("normalizedModel"), Json::Null),
+                (
+                    String::from("sourceCapabilityLimitations"),
+                    Json::Array(Vec::new()),
+                ),
+                (String::from("providerProvenance"), Json::Null),
+                (
+                    String::from("diagnostics"),
+                    Json::Array(vec![diagnostic("core.invalid_request", message, None)]),
+                ),
+            ]),
+        );
+    }
+    object([
+        (String::from("core_contract_version"), string(VERSION_1_3)),
+        (String::from("operation"), string(operation)),
+        (String::from("success"), Json::Bool(false)),
+        (
+            String::from("diagnostics"),
+            Json::Array(vec![diagnostic("core.invalid_request", message, None)]),
+        ),
+    ])
+}
+
+fn validate_v13_request(request: &BTreeMap<String, Json>) -> Result<(), String> {
+    if request
+        .get("materializationContractVersion")
+        .and_then(Json::as_str)
+        != Some("1.1")
+    {
+        return Err("materializationContractVersion must be 1.1".into());
+    }
+    if request
+        .get("targetOperation")
+        .and_then(Json::as_str)
+        != Some("materialize_architecture")
+    {
+        return Err("targetOperation must be materialize_architecture".into());
+    }
+    if request
+        .get("semanticContractSetId")
+        .and_then(Json::as_str)
+        .is_none_or(str::is_empty)
+    {
+        return Err("semanticContractSetId is required".into());
+    }
+    let Some(provider) = request.get("authorityProvider").and_then(Json::as_object) else {
+        return Err("authorityProvider must be an object".into());
+    };
+    for key in ["kind", "architectureNamespace"] {
+        if provider.get(key).and_then(Json::as_str).is_none_or(str::is_empty) {
+            return Err(format!("authorityProvider.{key} must be non-empty"));
+        }
+    }
+    let Some(profile) = request.get("profile").and_then(Json::as_object) else {
+        return Err("profile must be an object".into());
+    };
+    if profile.get("profileId").and_then(Json::as_str) != Some("architecture-materialization@1.1") {
+        return Err("profile must be architecture-materialization@1.1".into());
+    }
+    let Some(provenance) = request.get("providerProvenance").and_then(Json::as_object) else {
+        return Err("providerProvenance must be an object".into());
+    };
+    if provenance.get("semanticCoreContractVersion").and_then(Json::as_str) != Some("1.3") {
+        return Err("providerProvenance.semanticCoreContractVersion must be 1.3".into());
+    }
+    let Some(basis) = request.get("sourceBasis").and_then(Json::as_object) else {
+        return Err("sourceBasis must be an object".into());
+    };
+    if basis.get("sealed").and_then(Json::as_bool) != Some(true) {
+        return Err("sourceBasis.sealed must be true".into());
+    }
+    for key in ["providerSourceIdentity", "sourceRevision"] {
+        if basis.get(key).and_then(Json::as_str).is_none_or(str::is_empty) {
+            return Err(format!("sourceBasis.{key} must be non-empty"));
+        }
+    }
+    let Some(artifacts) = basis.get("artifacts").and_then(Json::as_array) else {
+        return Err("sourceBasis.artifacts must be an array".into());
+    };
+    if artifacts.is_empty() {
+        return Err("sourceBasis.artifacts must not be empty".into());
+    }
+    for (index, artifact) in artifacts.iter().enumerate() {
+        let Some(artifact) = artifact.as_object() else {
+            return Err(format!("sourceBasis.artifacts[{index}] must be an object"));
+        };
+        for key in ["sourceRef", "artifactPath", "contentDigest"] {
+            if artifact.get(key).and_then(Json::as_str).is_none_or(str::is_empty) {
+                return Err(format!("sourceBasis.artifacts[{index}].{key} must be non-empty"));
+            }
+        }
+        if artifact.get("document").and_then(Json::as_object).is_none() {
+            return Err(format!("sourceBasis.artifacts[{index}].document must be an object"));
+        }
+        let Some(source_contract) = artifact.get("sourceContract").and_then(Json::as_object) else {
+            return Err(format!("sourceBasis.artifacts[{index}].sourceContract must be an object"));
+        };
+        if source_contract.get("family").and_then(Json::as_str) != Some("authoring") {
+            return Err(format!("sourceBasis.artifacts[{index}].sourceContract.family must be authoring"));
+        }
+        let version = source_contract.get("version").and_then(Json::as_str);
+        if matches!(version, Some("1.5") | Some("1.6")) {
+            return Err("authoring 1.5/1.6 is not accepted by the protocol 1.3 forward boundary".into());
+        }
+        if version != Some("1.7") {
+            return Err(format!("sourceBasis.artifacts[{index}].sourceContract.version must be 1.7"));
+        }
+        if source_contract.get("schemaResource").and_then(Json::as_object).is_none()
+            || source_contract.get("resourceClosure").and_then(Json::as_array).is_none()
+        {
+            return Err(format!("sourceBasis.artifacts[{index}].sourceContract must carry exact schema resources and closure"));
+        }
+    }
+    Ok(())
+}
+
+fn execute_materialization_v13(request: &Json) -> Json {
+    let Some(root) = request.as_object() else {
+        return invalid_v13("invalid_request", "semantic-core protocol 1.3 request must be an object");
+    };
+    if root
+        .keys()
+        .any(|key| !matches!(key.as_str(), "core_contract_version" | "operation" | "request"))
+    {
+        return invalid_v13("invalid_request", "protocol 1.3 envelope contains an undeclared field");
+    }
+    let Some(operation) = root.get("operation").and_then(Json::as_str) else {
+        return invalid_v13("invalid_request", "semantic-core protocol 1.3 operation is required");
+    };
+    if operation != "materialize_architecture" {
+        return invalid_v13(operation, "operation is not available in semantic-core protocol 1.3");
+    }
+    if root.contains_key("result") {
+        return invalid_v13(operation, "protocol 1.3 execution accepts a request payload, not a result payload");
+    }
+    let Some(payload) = root.get("request").and_then(Json::as_object) else {
+        return invalid_v13(operation, "protocol 1.3 request payload must be an object");
+    };
+    if payload.get("operation").and_then(Json::as_str) != Some(operation) {
+        return invalid_v13(operation, "outer and nested protocol 1.3 operations must agree");
+    }
+    if let Err(message) = validate_v13_request(payload) {
+        return invalid_v13("materialize_architecture", message);
+    }
+    protocol_v13_result(
+        "materialize_architecture",
+        successor_materialization::execute(request),
+    )
+}
+
+fn execute_authoring_v12(request: &Json) -> Json {
+    let Some(root) = request.as_object() else {
+        return invalid_v12("invalid_request", "semantic-core protocol 1.2 request must be an object");
+    };
+    if root
+        .keys()
+        .any(|key| !matches!(key.as_str(), "core_contract_version" | "operation" | "request"))
+    {
+        return invalid_v12("invalid_request", "protocol 1.2 envelope contains an undeclared field");
+    }
+    let Some(operation) = root.get("operation").and_then(Json::as_str) else {
+        return invalid_v12("invalid_request", "semantic-core protocol 1.2 operation is required");
+    };
+    if !matches!(operation, "validate_authoring" | "construct_authoring_set") {
+        return invalid_v12(operation, "operation is not available in semantic-core protocol 1.2");
+    }
+    if root.contains_key("result") {
+        return invalid_v12(operation, "protocol 1.2 execution accepts a request payload, not a result payload");
+    }
+    let Some(payload) = root.get("request") else {
+        return invalid_v12(operation, "protocol 1.2 request payload is required");
+    };
+    let Some(payload_object) = payload.as_object() else {
+        return invalid_v12(operation, "protocol 1.2 request payload must be an object");
+    };
+    if payload_object.get("operation").and_then(Json::as_str) != Some(operation) {
+        return invalid_v12(operation, "outer and nested protocol 1.2 operations must agree");
+    }
+
+    let result = match operation {
+        "validate_authoring" => {
+            let validation = authoring_construction::validate_authoring_request(payload);
+            authoring_construction::render_validation_result(payload, &validation)
+        }
+        "construct_authoring_set" => {
+            authoring_construction_orchestration::construct_authoring_set(payload)
+        }
+        _ => unreachable!("operation was checked above"),
+    };
+    protocol_v12_result(operation, result)
 }
 
 fn optional_string_value(object: &BTreeMap<String, Json>, key: &str) -> Option<String> {
@@ -1534,64 +1809,89 @@ pub fn execute_json(input: &[u8]) -> Vec<u8> {
                 .as_object()
                 .and_then(|object| object.get("core_contract_version"))
                 .and_then(Json::as_str);
-            let operation = value
-                .as_object()
-                .and_then(|object| object.get("operation"))
-                .and_then(Json::as_str);
-            let result = if declared_version == Some(VERSION_1_1) {
-                match operation {
-                    Some("resolve_semantic_contract_set") => {
-                        semantic_contract_set::resolve_exact(&value)
+            let result = match declared_version {
+                Some(VERSION) => {
+                    let operation = value
+                        .as_object()
+                        .and_then(|object| object.get("operation"))
+                        .and_then(Json::as_str);
+                    match operation {
+                        Some("validate_contract") => validate(&value),
+                        Some("validate_project_metadata") => validate_project_metadata(&value),
+                        Some("open_provider_registry") => validate_provider_registry(&value),
+                        Some("open_repository") => validate_repository(&value),
+                        Some("build_embodiment_linkage") => linkage::execute(&value),
+                        Some("generate_attribution_shim") => attribution::execute(&value),
+                        Some("classify_generated_artifact") => classify_generated_artifact(&value),
+                        Some("validate_architecture_references") => {
+                            validate_architecture_references(&value)
+                        }
+                        Some("validate_architecture") => architecture::execute(&value),
+                        Some("canonicalize_semantic_json") => {
+                            semantic_contract::canonicalize(&value)
+                        }
+                        Some("fingerprint_semantic_contract") => {
+                            semantic_contract::fingerprint(&value)
+                        }
+                        Some("validate_semantic_resource_closure") => {
+                            semantic_contract::validate_closure(&value)
+                        }
+                        Some("compose_semantic_contract_set") => {
+                            semantic_contract::compose_set(&value)
+                        }
+                        Some("validate_semantic_contract_profile") => {
+                            semantic_contract_set::validate_profile(&value)
+                        }
+                        Some("validate_semantic_contract_qualification") => {
+                            semantic_contract_set::validate_qualification(&value)
+                        }
+                        Some("assemble_semantic_contract_set") => {
+                            semantic_contract_set::assemble(&value)
+                        }
+                        Some("validate_semantic_contract_corpus") => {
+                            semantic_contract_set::validate_corpus(&value)
+                        }
+                        Some("resolve_current_semantic_contract_set") => {
+                            semantic_contract_set::resolve_current(&value)
+                        }
+                        Some(_) | None => invalid("unsupported semantic core operation"),
                     }
-                    Some("materialize_architecture") => materialization::execute(&value),
-                    Some(operation) => invalid_v11(
-                        operation,
-                        "operation is not available in semantic-core protocol 1.1",
-                    ),
-                    None => invalid_v11("invalid_request", "operation is required"),
                 }
-            } else {
-                match operation {
-                    Some("validate_contract") => validate(&value),
-                    Some("validate_project_metadata") => validate_project_metadata(&value),
-                    Some("open_provider_registry") => validate_provider_registry(&value),
-                    Some("open_repository") => validate_repository(&value),
-                    Some("build_embodiment_linkage") => linkage::execute(&value),
-                    Some("generate_attribution_shim") => attribution::execute(&value),
-                    Some("classify_generated_artifact") => classify_generated_artifact(&value),
-                    Some("validate_architecture_references") => {
-                        validate_architecture_references(&value)
+                Some(VERSION_1_1) => {
+                    let operation = value
+                        .as_object()
+                        .and_then(|object| object.get("operation"))
+                        .and_then(Json::as_str);
+                    match operation {
+                        Some("resolve_semantic_contract_set") => {
+                            semantic_contract_set::resolve_exact(&value)
+                        }
+                        Some("materialize_architecture") => materialization::execute(&value),
+                        Some(operation) => invalid_v11(
+                            operation,
+                            "operation is not available in semantic-core protocol 1.1",
+                        ),
+                        None => invalid_v11("invalid_request", "operation is required"),
                     }
-                    Some("validate_architecture") => architecture::execute(&value),
-                    Some("canonicalize_semantic_json") => semantic_contract::canonicalize(&value),
-                    Some("fingerprint_semantic_contract") => semantic_contract::fingerprint(&value),
-                    Some("validate_semantic_resource_closure") => {
-                        semantic_contract::validate_closure(&value)
-                    }
-                    Some("compose_semantic_contract_set") => semantic_contract::compose_set(&value),
-                    Some("validate_semantic_contract_profile") => {
-                        semantic_contract_set::validate_profile(&value)
-                    }
-                    Some("validate_semantic_contract_qualification") => {
-                        semantic_contract_set::validate_qualification(&value)
-                    }
-                    Some("assemble_semantic_contract_set") => {
-                        semantic_contract_set::assemble(&value)
-                    }
-                    Some("validate_semantic_contract_corpus") => {
-                        semantic_contract_set::validate_corpus(&value)
-                    }
-                    Some("resolve_current_semantic_contract_set") => {
-                        semantic_contract_set::resolve_current(&value)
-                    }
-                    Some(_) | None => invalid("unsupported semantic core operation"),
                 }
+                Some(VERSION_1_2) => execute_authoring_v12(&value),
+                Some(VERSION_1_3) => execute_materialization_v13(&value),
+                Some(_) | None => invalid("unsupported core_contract_version"),
             };
             json(&result).into_bytes()
         }
         Err(error) => json(&invalid(format!("malformed JSON: {error}"))).into_bytes(),
     }
 }
+
+#[cfg(test)]
+mod semantic_core_version_routing_tests;
+
+#[cfg(test)]
+mod semantic_core_v12_tests;
+
+#[cfg(test)]
+mod semantic_core_v13_tests;
 
 static mut LAST_RESULT_LEN: usize = 0;
 
@@ -1628,6 +1928,9 @@ pub unsafe extern "C" fn execute(pointer: *const u8, size: usize) -> *mut u8 {
 pub unsafe extern "C" fn result_len() -> usize {
     LAST_RESULT_LEN
 }
+
+#[cfg(test)]
+mod conformance_binding_tests;
 
 #[cfg(test)]
 mod semantic_core_v11_tests {

@@ -92,6 +92,33 @@ is independent of ADR persistence-schema versions; discover both through
 `capabilities()` and use the [authoring contract reference](https://github.com/egallmann/adr-architecture-kit/tree/main/contracts/authoring-domain)
 for exact canonical bytes.
 
+## Construct detached authoring candidates
+
+Authoring Construction accepts the exact ACC 1.0 request and qualified basis.
+The public facade returns the complete Rust/WASM-governed result, including
+diagnostics, candidate artifacts, construction map, normalized result, and
+round-trip qualification. It does not write files or persist anything.
+
+```python
+from adr_kit.api import AuthoringRequest, construct_authoring_set
+
+request = AuthoringRequest(
+    request=acc_request,
+    basis=qualified_basis,
+    operation="construct_authoring_set",
+)
+result = construct_authoring_set(request)
+print(result.outcome)
+for diagnostic in result.diagnostics:
+    print(diagnostic.severity, diagnostic.code)
+print(result.candidate_artifacts)  # detached candidate bytes
+```
+
+Use `validate_authoring()` with the same DTO and
+`operation="validate_authoring"` for validation. `Rejected`, `Unavailable`,
+and `Unresolved` are returned as governed outcomes; host and protocol failures
+raise SDK exceptions.
+
 ## Work with semantic contracts
 
 The SDK exposes the immutable semantic definitions used by both peer hosts.
@@ -172,7 +199,14 @@ materialization requests. The caller provides the sealed source basis, source
 contract closure, provider identity, and exact semantic contract-set identity;
 the host does not resolve a current pointer or infer source meaning. The result
 is either an immutable normalized-model result or a bounded rejection/unavailable
-outcome. See the [materialization reference](https://github.com/egallmann/adr-architecture-kit/blob/main/packages/node/README.md)
+outcome. `architecture-materialization@1.0` remains the current/default profile
+and continues to use the protocol-1.1 materialization path for authoring 1.5
+and 1.6. `architecture-materialization@1.1` is available only when the caller
+explicitly supplies that profile together with the retained successor SCS
+`scs:v1:sha256:2cf903fe80c50b97443645369b28443c7fa186ed758e2e22d7ce758ccb0d6020`
+and a sealed authoring 1.7 source basis; that route uses semantic-core protocol
+1.3. No latest/current successor is inferred. See the [materialization
+reference](https://github.com/egallmann/adr-architecture-kit/blob/main/packages/node/README.md)
 for the Node request shape and host qualification.
 
 ## Work with implementation linkage

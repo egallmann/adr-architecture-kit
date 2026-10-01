@@ -1,0 +1,401 @@
+schema_version: '1.5'
+adr_type: logical
+id: 01a0d054-b885-70b3-a72f-d3630d2e76c6
+alias_id: ADR-L-0032
+alias_name: candidate-source-representation-and-round-trip-basis-authority
+title: Candidate Source Representation and Round-Trip Basis Authority
+status: accepted
+created_date: '2026-09-23'
+authors:
+- erik.gallmann
+domains:
+- architecture
+- authoring
+- semantic-authority
+- schema-governance
+- determinism
+- consumer-bindings
+tags:
+- candidate-source
+- authoring-1.7
+- exact-source-basis
+- round-trip-equivalence
+- rust-authority
+- deterministic-serialization
+- detached-construction
+related_adrs:
+- 01a05a26-0000-7000-8000-000000000026
+- 01a09938-a15b-75ed-8326-212e21bd3cfe
+- 01a09cf0-179e-71cc-b150-d4a79551b939
+- 01a0b75d-8a02-70e6-b59c-63dd6133c637
+context: |
+  ADR-L-0029 established detached semantic construction and made a
+  schema-governed Semantic Fragment the primitive construction unit.
+  ADR-L-0030 established the Exact Source Basis and the canonical semantic
+  execution surface, and ADR-L-0031 established non-recursive conformance
+  qualification. Authoring Domain Contract 1.1, Custom Entity Contract 1.0,
+  Authoring Construction Contract 1.0, authoring 1.7,
+  architecture-interpretation 1.1, normalized-model 2.4, and semantic-core
+  protocol 1.2 now provide the accepted successor boundary that a successful
+  construction must cross.
+
+  One design boundary remains open: how detached candidate semantic state is
+  represented as exact authoring source, how each source is qualified, and how
+  only the minimal non-overlapping source roots are fed back through the
+  existing canonical interpreter. Without that boundary, a Constructed result
+  cannot prove source integrity or semantic round-trip equivalence without
+  making host rendering, repository placement, or a second interpreter
+  authoritative.
+
+  This ADR promotes that representation and round-trip authority only. It does
+  not implement construction, semantic-core protocol 1.2 execution, public
+  Python or Node APIs, persistence, repository admission, governance
+  promotion, Runtime admission, alias reservation, or Git mutation.
+decisions:
+- id: 01a0d054-b885-70b3-a72f-d3641dfae900
+  alias_id: DEC-0249
+  alias_name: candidate-source-artifacts-are-authoring-1-7-sources
+  summary: Define candidate artifacts as detached authoring 1.7 document or fragment sources
+  rationale: |
+    A successful construction may return candidate artifacts of exactly two
+    source kinds: authoring_document and authoring_fragment. An
+    authoring_document is a complete authoring 1.7 ADR source object. An
+    authoring_fragment is a standalone schema-governed authoring 1.7 semantic
+    fragment. A standalone fragment remains primitive and MUST NOT be wrapped
+    in a synthetic ADR merely to obtain source bytes. ADR synthesis is
+    composition over fragments and does not replace fragment identity.
+- id: 01a0d054-b885-70b3-a72f-d3655572e683
+  alias_id: DEC-0250
+  alias_name: require-explicit-candidate-source-schema-selection
+  summary: Require every candidate source artifact to carry an exact authoring 1.7 schema selector
+  rationale: |
+    Every candidate artifact used as source authority carries a selector with
+    this exact shape:
+
+      source_schema:
+        canonical_resource_key: <exact authoring 1.7 schema resource key>
+        json_pointer: <exact JSON pointer within that resource>
+
+    A decision fragment may select authoring/1.7/schema/adr-common.schema at
+    /definitions/decision. A logical ADR document may select
+    authoring/1.7/schema/adr-logical.schema at the empty JSON pointer, which
+    denotes the schema root. The selector is retained source-basis evidence
+    and is never inferred from path, filename, alias, request key, source
+    order, current or latest schema, host defaults, or UI state.
+- id: 01a0d054-b885-70b3-a72f-d3664d99bf4f
+  alias_id: DEC-0251
+  alias_name: make-rust-the-canonical-candidate-source-serializer
+  summary: Make the canonical Rust semantic execution path own candidate source bytes
+  rationale: |
+    ADR-Kit calculates and returns the exact candidate source bytes through the
+    canonical Rust semantic execution path. Python and TypeScript/Node remain
+    peer host adapters and MUST NOT independently render candidate source
+    bytes. A host may preview or persist the exact returned bytes, but it may
+    not reinterpret, normalize, or reserialize them as shared semantic
+    authority.
+- id: 01a0d054-b885-70b3-a72f-d36746a4d49a
+  alias_id: DEC-0252
+  alias_name: define-adr-kit-authoring-yaml-v1
+  summary: Define adr-kit.authoring-yaml/v1 as the language-neutral candidate serialization profile
+  rationale: |
+    The profile fixes UTF-8 without a BOM, LF line endings, exactly one
+    terminal LF, two-space indentation, block-style mappings and sequences,
+    no YAML document marker, no directives, no comments, no anchors, no
+    aliases, no custom tags, and no terminal-width or host-formatting
+    dependency. Schema-governed object fields follow the exact property order
+    declared by the governing authoring 1.7 schema resource. Absent optional
+    fields are omitted, authorized open property maps use deterministic lexical
+    key order, and arrays retain their semantic order. Libraries may implement
+    this profile, but no library's incidental output defines it.
+- id: 01a0d054-b885-70b3-a72f-d368166587c8
+  alias_id: DEC-0253
+  alias_name: lock-host-neutral-candidate-scalar-representation
+  summary: Make candidate scalar spelling deterministic and safe from YAML implicit typing
+  rationale: |
+    String scalars and mapping keys use one deterministic JSON-compatible
+    double-quoted YAML representation with UTF-8 characters preserved and
+    quote, backslash, and control characters escaped canonically. Boolean
+    scalars use only true or false. Null uses only null. Integers use base-ten
+    spelling with no plus sign or leading zero except zero. Other finite
+    numbers use the canonical JSON number lexical form; NaN and infinity are
+    not representable. These rules are part of the profile and are not
+    delegated to a host library.
+- id: 01a0d054-b885-70b3-a72f-d369df0a2b12
+  alias_id: DEC-0254
+  alias_name: distinguish-candidate-artifacts-from-round-trip-source-roots
+  summary: Distinguish all returned candidate artifacts from minimal source-basis roots
+  rationale: |
+    candidate_artifacts contains the detached artifacts produced for the
+    requested fragments and compositions. candidate_source_basis.artifacts
+    contains the minimal non-overlapping source roots that canonical
+    interpretation consumes. If a synthesized authoring_document already
+    represents an embedded fragment, that child is excluded from the source
+    basis while remaining a candidate artifact. A standalone fragment not
+    represented in another source root remains independently present. This
+    prevents duplicate declaration without changing fragment identity.
+- id: 01a0d054-b885-70b3-a72f-d36a9a9fac68
+  alias_id: DEC-0255
+  alias_name: keep-candidate-source-references-logical
+  summary: Define candidate source references as detached logical identities
+  rationale: |
+    Each candidate source_ref is a deterministic logical reference for the
+    detached result. It does not allocate a repository path, choose a
+    filename, reserve an alias, imply Git placement, or imply persistence.
+    Exact candidate bytes are independent of repository location. A source_ref
+    identifies the candidate source for result comparison and basis sealing,
+    not a future storage location.
+- id: 01a0d054-b885-70b3-a72f-d36bbe466620
+  alias_id: DEC-0256
+  alias_name: make-adr-kit-the-candidate-content-digest-authority
+  summary: Define candidate content_digest as SHA-256 over exact returned source bytes
+  rationale: |
+    For every candidate artifact, content_digest is sha256 over the exact
+    candidate source bytes returned under adr-kit.authoring-yaml/v1. ADR-Kit
+    calculates this digest. A caller-provided digest is an assertion to be
+    checked, not authority, and cannot replace the digest calculated from the
+    exact bytes.
+- id: 01a0d054-b885-70b3-a72f-d36ca18783b1
+  alias_id: DEC-0257
+  alias_name: fingerprint-the-sealed-candidate-source-basis
+  summary: Define adr-kit.candidate-source-basis/v1 as the source-basis fingerprint domain
+  rationale: |
+    basis_digest is SHA-256 over UTF-8 canonical semantic JSON of a
+    domain-separated descriptor whose domain is
+    adr-kit.candidate-source-basis/v1 and whose artifacts are ordered by
+    source_ref. Each descriptor entry contains request_key, source_ref,
+    artifact_kind, exact source_schema selector, serialization_profile,
+    content_digest, and exact source_contract qualification. Raw source bytes
+    need not be repeated because content_digest commits to those bytes. A
+    change to retained bytes, source schema, serialization profile, source
+    contract, request key, or source identity changes basis_digest.
+- id: 01a0d054-b885-70b3-a72f-d36dd0a448ed
+  alias_id: DEC-0258
+  alias_name: route-candidate-round-trip-through-canonical-interpretation
+  summary: Route the constructed source basis through the existing authoring interpretation surface
+  rationale: |
+    The success path is explicit typed construction intent, candidate semantic
+    state, canonical Rust candidate serialization, sealed candidate Exact
+    Source Basis, exact target authoring 1.7 validation,
+    architecture-interpretation 1.1, normalized-model 2.4, and semantic
+    equivalence comparison. Architecture-interpretation remains the forward
+    interpreter. Construction orchestrates that path but does not define a
+    construction-specific semantic interpreter or clone its mappings.
+- id: 01a0d054-b885-70b3-a72f-d36f16265661
+  alias_id: DEC-0259
+  alias_name: require-semantic-equivalence-before-constructed
+  summary: Permit Constructed only after exact source qualification and normalized semantic equivalence
+  rationale: |
+    Constructed is permitted only when pre-construction validation and
+    candidate construction succeed, exact source bytes and schema
+    qualification exist, the candidate source basis is sealed, target
+    authoring 1.7 validation succeeds, architecture-interpretation 1.1 is
+    available and succeeds, normalized-model 2.4 is produced, and semantic
+    equivalence succeeds. The comparison is semantic normalized equivalence,
+    not byte equality; deterministic bytes provide integrity and parity while
+    ACC round-trip rules continue to govern authorized representation
+    differences.
+- id: 01a0d054-b885-70b3-a72f-d36e928c18b7
+  alias_id: DEC-0260
+  alias_name: preserve-acc-boundary-for-subsequent-contract-amendments
+  summary: Record implementation consequences without amending ACC contracts or vectors in this promotion
+  rationale: |
+    The subsequent implementation and contract slice must add the exact
+    source_schema selector and serialization profile to ACC candidate_artifact,
+    define the candidate_source_basis.basis_digest preimage, replace
+    Constructed vector placeholder bytes such as eA== with canonical rendered
+    bytes, and correct C05 and C07 to use minimal non-overlapping source roots.
+    C32 remains the semantic-mismatch oracle and C33 remains the
+    architecture-interpretation-unavailable oracle. This ADR records those
+    consequences only; it does not modify ACC schemas, resources, or vectors.
+invariants:
+- id: 01a0d057-9df9-764f-9e5c-f347c4ac888e
+  alias_id: INV-0249
+  alias_name: candidate-artifact-kinds-are-closed
+  statement: A successful construction MUST return candidate artifacts only as authoring_document or authoring_fragment sources qualified by authoring 1.7.
+  scope: construction
+  enforcement_level: must
+  enforcement_mechanism: design
+  verification_method: automated
+  rationale: A closed source-kind set prevents an unqualified representation from becoming round-trip authority.
+- id: 01a0d054-b885-70b3-a72f-d370a4586a30
+  alias_id: INV-0250
+  alias_name: standalone-fragments-remain-primitive
+  statement: A standalone authoring_fragment MUST NOT be wrapped in a synthetic ADR solely to obtain source bytes, and composition MUST NOT replace the fragment's identity.
+  scope: construction
+  enforcement_level: must
+  enforcement_mechanism: design
+  verification_method: manual
+  rationale: ADR synthesis is composition over independently meaningful semantic fragments.
+- id: 01a0d054-b885-70b3-a72f-d371a16d6043
+  alias_id: INV-0251
+  alias_name: candidate-sources-have-exact-schema-selectors
+  statement: Every candidate source artifact used as source authority MUST carry an exact canonical_resource_key and json_pointer selector for an authoring 1.7 schema resource.
+  scope: construction
+  enforcement_level: must
+  enforcement_mechanism: design
+  verification_method: automated
+  rationale: Exact qualification prevents a source from changing meaning through ambient schema selection.
+- id: 01a0d054-b885-70b3-a72f-d3726c4422bb
+  alias_id: INV-0252
+  alias_name: source-schema-selection-is-not-inferred
+  statement: Source schema selection MUST NOT be inferred from repository path, filename, alias, request_key, source order, current or latest schema, host defaults, or UI state.
+  scope: global
+  enforcement_level: must
+  enforcement_mechanism: design
+  verification_method: automated
+  rationale: Schema identity is retained evidence rather than an environmental guess.
+- id: 01a0d054-b885-70b3-a72f-d373539633da
+  alias_id: INV-0253
+  alias_name: rust-owns-canonical-candidate-bytes
+  statement: The canonical Rust semantic execution path MUST own exact candidate source bytes, and Python and TypeScript/Node MUST NOT independently render shared candidate source authority.
+  scope: global
+  enforcement_level: must
+  enforcement_mechanism: design
+  verification_method: manual
+  rationale: One renderer preserves cross-host source integrity and semantic parity.
+- id: 01a0d054-b885-70b3-a72f-d374b3ff1ca5
+  alias_id: INV-0254
+  alias_name: authoring-yaml-profile-is-exact
+  statement: adr-kit.authoring-yaml/v1 MUST use UTF-8 without BOM, LF endings, exactly one terminal LF, two-space indentation, block style, no marker, directives, comments, anchors, aliases, or custom tags, and no host-formatting dependency.
+  scope: serialization
+  enforcement_level: must
+  enforcement_mechanism: design
+  verification_method: automated
+  rationale: Exact profile rules make candidate bytes reproducible without naming an implementation library.
+- id: 01a0d054-b885-70b3-a72f-d37575260740
+  alias_id: INV-0255
+  alias_name: schema-order-and-open-map-order-are-deterministic
+  statement: Schema-governed mappings MUST follow governing schema property order, absent optional fields MUST be omitted, authorized open maps MUST use lexical key order, and serialization MUST NOT reorder arrays.
+  scope: serialization
+  enforcement_level: must
+  enforcement_mechanism: design
+  verification_method: automated
+  rationale: Ordering is deterministic while preserving declared semantic sequence.
+- id: 01a0d054-b885-70b3-a72f-d37642725f9e
+  alias_id: INV-0256
+  alias_name: candidate-scalars-have-one-canonical-spelling
+  statement: Candidate string, boolean, null, integer, and finite numeric scalars MUST use the single host-neutral lexical representation defined by adr-kit.authoring-yaml/v1, and implicit YAML typing MUST NOT change their meaning.
+  scope: serialization
+  enforcement_level: must
+  enforcement_mechanism: design
+  verification_method: automated
+  rationale: Scalar spelling is part of exact source integrity and cannot vary by library defaults.
+- id: 01a0d054-b885-70b3-a72f-d377235e03c4
+  alias_id: INV-0257
+  alias_name: hosts-must-not-reserialize-candidate-authority
+  statement: A host MAY preview or persist exact returned candidate bytes but MUST NOT reinterpret or reserialize them as shared semantic authority.
+  scope: global
+  enforcement_level: must
+  enforcement_mechanism: design
+  verification_method: manual
+  rationale: Host convenience must not create a second source representation.
+- id: 01a0d054-b885-70b3-a72f-d3786ddbbb63
+  alias_id: INV-0258
+  alias_name: candidate-source-references-do-not-allocate-placement
+  statement: A candidate source_ref MUST remain a deterministic logical candidate identity and MUST NOT allocate a repository path, filename, alias, Git placement, or persistence location.
+  scope: construction
+  enforcement_level: must
+  enforcement_mechanism: design
+  verification_method: manual
+  rationale: Repository placement is a later host and governance responsibility.
+- id: 01a0d054-b885-70b3-a72f-d379f8223a0a
+  alias_id: INV-0259
+  alias_name: content-digest-commits-to-exact-candidate-bytes
+  statement: Every candidate artifact content_digest MUST equal SHA-256 of its exact returned source bytes, and caller-provided digests MUST NOT be authoritative.
+  scope: construction
+  enforcement_level: must
+  enforcement_mechanism: design
+  verification_method: automated
+  rationale: The digest is an integrity commitment to the exact canonical source.
+- id: 01a0d054-b885-70b3-a72f-d37a284fe6f4
+  alias_id: INV-0260
+  alias_name: basis-digest-preimage-is-explicit
+  statement: basis_digest MUST equal SHA-256 over canonical semantic JSON of the adr-kit.candidate-source-basis/v1 descriptor containing every retained artifact's request_key, source_ref, artifact_kind, exact source_schema, serialization_profile, content_digest, and exact source_contract qualification.
+  scope: construction
+  enforcement_level: must
+  enforcement_mechanism: design
+  verification_method: automated
+  rationale: An explicit domain-separated preimage prevents accidental omission of authority-bearing evidence.
+- id: 01a0d054-b885-70b3-a72f-d37b6ad04aac
+  alias_id: INV-0261
+  alias_name: basis-artifacts-are-ordered-by-source-reference
+  statement: Candidate source-basis artifacts MUST be ordered deterministically by source_ref before basis_digest calculation.
+  scope: construction
+  enforcement_level: must
+  enforcement_mechanism: design
+  verification_method: automated
+  rationale: Equivalent detached source bases must produce the same fingerprint independent of request traversal order.
+- id: 01a0d054-b885-70b3-a72f-d37cec1a7a28
+  alias_id: INV-0262
+  alias_name: candidate-source-basis-is-minimal-and-non-overlapping
+  statement: candidate_source_basis.artifacts MUST contain only minimal non-overlapping source roots; a child fragment already represented in a synthesized authoring_document MUST NOT also be supplied independently.
+  scope: construction
+  enforcement_level: must
+  enforcement_mechanism: design
+  verification_method: automated
+  rationale: Duplicate declaration would require an authority not established by this ADR.
+- id: 01a0d054-b885-70b3-a72f-d37db70c8320
+  alias_id: INV-0263
+  alias_name: composition-preserves-child-identity
+  statement: Excluding an embedded child from candidate_source_basis MUST NOT create, replace, derive, or otherwise alter that fragment's canonical UUID identity.
+  scope: construction
+  enforcement_level: must
+  enforcement_mechanism: design
+  verification_method: automated
+  rationale: Source-root minimization is a basis operation, not an identity operation.
+- id: 01a0d054-b885-70b3-a72f-d37e6a616062
+  alias_id: INV-0264
+  alias_name: constructed-requires-complete-round-trip-gates
+  statement: Constructed MUST require successful pre-construction validation, construction, exact bytes, exact schema qualification, sealed source basis, target authoring 1.7 validation, available and successful architecture-interpretation 1.1, normalized-model 2.4 output, and semantic equivalence.
+  scope: construction
+  enforcement_level: must
+  enforcement_mechanism: design
+  verification_method: automated
+  rationale: No individual local success can substitute for complete round-trip evidence.
+- id: 01a0d054-b885-70b3-a72f-d37f09026d38
+  alias_id: INV-0265
+  alias_name: architecture-interpretation-remains-forward-interpreter
+  statement: Candidate Exact Source Basis MUST feed the canonical architecture-interpretation 1.1 execution surface, and construction MUST NOT introduce a second semantic interpreter or clone semantic mappings.
+  scope: semantic-authority
+  enforcement_level: must
+  enforcement_mechanism: design
+  verification_method: manual
+  rationale: Forward semantic authority remains centralized under ADR-L-0030.
+- id: 01a0d054-b885-70b3-a72f-d38038f00bfb
+  alias_id: INV-0266
+  alias_name: round-trip-equivalence-is-semantic-not-byte-equality
+  statement: Round-trip success MUST compare normalized semantic equivalence under ACC rules and MUST NOT elevate YAML presentation equality to architectural semantics beyond exact-source integrity and deterministic rendering.
+  scope: construction
+  enforcement_level: must
+  enforcement_mechanism: design
+  verification_method: automated
+  rationale: Canonical bytes provide reproducible source evidence while authorized semantic representation differences remain valid.
+- id: 01a0d054-b885-70b3-a72f-d38109026d38
+  alias_id: INV-0267
+  alias_name: candidate-round-trip-failure-remains-bounded
+  statement: If any required construction or round-trip gate fails, the result MUST remain Rejected, Unavailable, or Unresolved as applicable; partial success MUST NOT be introduced, and this authority MUST NOT create persistence, admission, alias, Git, Runtime, or implementation-conformance capability.
+  scope: global
+  enforcement_level: must
+  enforcement_mechanism: design
+  verification_method: manual
+  rationale: The design closes source authority without moving responsibility to construction.
+gaps: []
+notes: |
+  The subsequent implementation and contract slice must amend the Authoring
+  Construction Contract 1.0 candidate_artifact shape with source_schema and
+  serialization_profile, and must define candidate_source_basis.basis_digest
+  using the explicit adr-kit.candidate-source-basis/v1 descriptor above.
+  Existing Constructed conformance vectors that use placeholder bytes eA==
+  cannot remain executable success evidence once rendering exists. Composition
+  vectors such as C05 and C07, which currently repeat both synthesized ADR
+  documents and their child fragments in candidate_source_basis, must be
+  corrected to the minimal non-overlapping source-root rule. C32 remains the semantic round-trip-mismatch negative
+  oracle, and C33 remains the architecture-interpretation-unavailable oracle.
+
+  This ADR does not modify those contracts or vectors. It does not add
+  construction execution, semantic-core protocol 1.2 execution, public Python
+  or Node APIs, persistence, repository or Git writes, filename or path
+  allocation, alias reservation, governance or Runtime admission, Runtime
+  Snapshot mutation, or implementation-conformance claims. Exact source bytes
+  remain detached candidate evidence until a later authority separately admits
+  them.

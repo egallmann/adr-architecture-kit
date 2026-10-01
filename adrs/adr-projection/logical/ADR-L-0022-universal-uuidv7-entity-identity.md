@@ -5,21 +5,21 @@ artifact_kind: rendered_adr_markdown
 generator_id: adr-projection-markdown
 generator_version: 3
 hash_algorithm: sha256
-source_hash: b7d013039c6d1cb6d82aff8240634edf81a81a34dc0e45ef0f1236c23ad90823
-rendered_hash: 25f8e29d580f73364a5501ea2307aa3cc3b79e71b6d8a73bc2ec95cdf967c18c
+source_hash: d74549611630019aedf21cb1f948a8d7ff3175c1dfac6878991a618d8b24809a
+rendered_hash: 82794b1e6e29dfd50569181cdd70a046e6812db85a6446cab83768a314810d02
 -->
 
 # ADR-L-0022: Universal UUIDv7 Entity Identity
 
 ## Identity / Status
 
-**Type:** logical  
-**Status:** accepted  
-**Alias:** ADR-L-0022  
-**Authoring contract:** authoring v1.5  
-**Created:** 2026-08-15  
-**Authors:** erik.gallmann  
-**Domains:** architecture, identity, schema-governance  
+**Type:** logical<br>
+**Status:** accepted<br>
+**Alias:** ADR-L-0022<br>
+**Authoring contract:** authoring v1.5<br>
+**Created:** 2026-08-15<br>
+**Authors:** erik.gallmann<br>
+**Domains:** architecture, identity, schema-governance<br>
 
 ## Architecture at a Glance
 
@@ -364,6 +364,7 @@ Architectural closure and implementation readiness are separate states.
 - [ADR-L-0023](ADR-L-0023-consumer-semantic-extension-contract.md)
 - [ADR-L-0026](ADR-L-0026-authoring-domain-contract-discovery-authority.md)
 - [ADR-L-0028](ADR-L-0028-normative-semantic-authority-and-materialization-foundation.md)
+- [ADR-L-0029](ADR-L-0029-semantic-authoring-construction-and-candidate-authority.md)
 
 
 

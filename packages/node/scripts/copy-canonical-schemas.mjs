@@ -16,6 +16,12 @@ const semanticCoreContract = JSON.parse(
 const semanticCoreContractV11 = JSON.parse(
   await readFile(resolve(repoRoot, "contracts/semantic-core/v1.1/contract.json"), "utf8"),
 );
+const semanticCoreContractV12 = JSON.parse(
+  await readFile(resolve(repoRoot, "contracts/semantic-core/v1.2/contract.json"), "utf8"),
+);
+const semanticCoreContractV13 = JSON.parse(
+  await readFile(resolve(repoRoot, "contracts/semantic-core/v1.3/contract.json"), "utf8"),
+);
 const authoringDomainContractPath = resolve(
   repoRoot,
   "contracts/authoring-domain/v1.0/contract.json",
@@ -30,9 +36,11 @@ const families = [
   ["authoring", "v1.4"],
   ["authoring", "v1.5"],
   ["authoring", "v1.6"],
+  ["authoring", "v1.7"],
   ["normalized-model", "v2.1"],
   ["normalized-model", "v2.2"],
   ["normalized-model", "v2.3"],
+  ["normalized-model", "v2.4"],
   ["evidence-attribution", "v1.5"],
   ["evidence-attribution", "v1.6"],
   ["architecture-discovery", "v1.1"],
@@ -77,6 +85,8 @@ await writeFile(resolve(generatedRoot, "host-capabilities.ts"), `export const ho
 await writeFile(resolve(generatedRoot, "authoring-domain.ts"), `export const authoringDomainContract = ${JSON.stringify(authoringDomainContract, null, 2)} as const;\n`);
 await writeFile(resolve(generatedRoot, "semantic-core-contract.ts"), `export const semanticCoreContract = ${JSON.stringify(semanticCoreContract, null, 2)} as const;\n`);
 await writeFile(resolve(generatedRoot, "semantic-core-contract-v1.1.ts"), `export const semanticCoreContractV11 = ${JSON.stringify(semanticCoreContractV11, null, 2)} as const;\n`);
+await writeFile(resolve(generatedRoot, "semantic-core-contract-v1.2.ts"), `export const semanticCoreContractV12 = ${JSON.stringify(semanticCoreContractV12, null, 2)} as const;\n`);
+await writeFile(resolve(generatedRoot, "semantic-core-contract-v1.3.ts"), `export const semanticCoreContractV13 = ${JSON.stringify(semanticCoreContractV13, null, 2)} as const;\n`);
 await writeFile(resolve(repoRoot, "src/adr_kit/compatibility/authoring-domain-v1.0.json"), authoringDomainContractBytes);
 
 const semanticContractAssets = {};

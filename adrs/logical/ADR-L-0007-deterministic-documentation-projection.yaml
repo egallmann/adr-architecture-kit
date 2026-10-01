@@ -19,9 +19,11 @@ tags:
 context: 'The repository already treats several human-readable artifacts as derived
   state:
 
-  ADR human projections under adrs/adr-projection/, manifest summaries, and the AI-first SYSTEM-OVERVIEW
+  ADR human projections under adrs/adr-projection/, manifest summaries, and the optional
 
-  are generated from structured or code-defined sources. That behavior now needs
+  ADR-domain orientation projection (historically SYSTEM-OVERVIEW) are generated from
+
+  structured or code-defined sources. That behavior now needs
 
   explicit architectural authority so future contributors do not reintroduce
 
@@ -56,7 +58,7 @@ context: 'The repository already treats several human-readable artifacts as deri
 
   - ADR human projections (adrs/adr-projection/)
 
-  - SYSTEM-OVERVIEW
+  - optional ADR-domain orientation projection (SYSTEM-OVERVIEW compatibility name)
 
   - manifest summaries
 
@@ -371,18 +373,20 @@ decisions:
   summary: Isolate repository-specific documentation-projection orientation by scope
   rationale: 'Repository-specific orientation semantics must not leak into an unrelated
 
-    repository scope. When ADR Kit generates SYSTEM-OVERVIEW for a consuming
+    repository scope. When ADR Kit generates an ADR-domain orientation projection for a
 
-    repository, ADR Kit provider orientation must not be rendered into that consumer
+    consuming repository, ADR Kit provider orientation must not be rendered into that
 
-    merely because ADR Kit produced the file.
+    consumer merely because ADR Kit produced the file.
 
 
-    Explicit repository profiles may specialize orientation. Unsupported or
+    Orientation remains consumption guidance for the ADR domain present in the target
 
-    non-profiled scopes must follow the supported projection-scope rule rather than
+    repository. It must not claim to describe an entire software system or repository
 
-    silently inheriting another repository''s provider identity.
+    outside that ADR domain, and must not silently inherit another repository''s
+
+    provider identity.
 
     '
   consequences:
@@ -396,41 +400,38 @@ decisions:
   alias_id: DEC-0114
   alias_name: isolate-repository-specific-documentation-projection-orientation-by-scope
 - id: 019ff22a-bb5f-7926-a33c-b66f72343219
-  summary: Preserve legacy generic SYSTEM-OVERVIEW generation as compatibility-only
-  rationale: 'Evidence on the active branch shows generate-system-overview currently succeeds
+  summary: Replace legacy generic SYSTEM-OVERVIEW posture with optional ADR-domain orientation
+  rationale: 'The SYSTEM-OVERVIEW concept is refined into an optional ADR-domain orientation
 
-    for non-kit, non-runtime project identities and is listed among generation
+    projection. Its purpose is to orient humans and AI on how to consume the ADR
 
-    commands whose success/failure behavior is preserved. Fail-closed unsupported
+    domain present in the repository, analogous to an injected README for that
 
-    routing would change that observable CLI behavior.
+    repository''s ADR-Kit semantic interface. It is not an authoritative description
+
+    of the entire repository or software system.
 
 
-    Therefore generic-project generation remains a compatibility obligation for this
+    Pre-1.0 authority intentionally replaces the prior generic/profile obligation
 
-    refinement. The legacy generic path must preserve emission success without ADR
+    that preserved emission success as a compatibility product surface. Orientation
 
-    Kit provider framing, without becoming a third product-level generic consumer
+    remains optional; absence must not invalidate an otherwise valid ADR corpus;
 
-    overview design, and without new semantic inference beyond the minimum needed to
-
-    keep the existing contract. Richer corpus-driven generic assembly remains
-
-    deferred. Absence of SYSTEM-OVERVIEW remains valid; integrity validates the file
-
-    only when present.
+    integrity validates the artifact only when present.
 
     '
   consequences:
     positive:
-    - Existing CLI success behavior for generic scopes is preserved
-    - Provider isolation remains enforceable for non-kit scopes
-    - Future generic-consumer design stays explicitly deferred
+    - Orientation purpose is consumption guidance rather than whole-system explanation
+    - Optional absence remains corpus-valid
+    - Legacy generic overview product posture is retired as architectural obligation
     negative:
-    - A bounded legacy path must be maintained until replaced by later design
+    - Generators and validators must treat orientation as optional rather than required
   related_invariants:
   - 019ff22a-bb5f-7fca-b021-b3cbc68ddde2
   - 019ff22a-bb5f-7779-912f-040cdf1b54b8
+  - 01a09cf0-179e-71cc-b150-d4c281b85395
   alias_id: DEC-0115
   alias_name: preserve-legacy-generic-system-overview-generation-as-compatibility-only
 - id: 01a048f5-b197-75ab-a812-6e3361333731
@@ -439,7 +440,7 @@ decisions:
     v2.2 inputs using compiler-derived relationship semantics only. Topology inventory,
     compatibility rows, and peer-card verbs must follow ADR-L-0025 topology and
     contract succession authority without inventing pseudo-edges or ADR-level fake
-    topology. Coverage registry posture and SYSTEM-OVERVIEW integration remain
+    topology. Coverage registry posture and ADR-domain orientation integration remain
     sequenced post-substrate; this decision governs authority only, not implementation
     modules or templates.
 
@@ -455,6 +456,147 @@ decisions:
   - 019fee89-e616-77e0-992d-25764a1ed5a2
   alias_id: DEC-0176
   alias_name: encode-projection-v3-renderer-contract-for-normalized-v2-2
+- id: 01a09cf0-179e-71cc-b150-d4bc07d17a38
+  summary: Emit generated documentation in final repository-admissible bytes
+  rationale: 'Meaning-bearing deterministic documentation projection must emit the final
+
+    repository-admissible byte representation. No whitespace normalization, formatting
+
+    cleanup, newline repair, or other post-generation mutation may be required between
+
+    canonical generation and repository persistence or admission. This covers at least
+
+    trailing horizontal whitespace, newline normalization, final-newline policy,
+
+    formatter-required mutations, and post-render cleanup that would invalidate
+
+    rendered hashes. Renderers must intentionally produce admissible bytes and must
+
+    not rely on indiscriminate stripping of authored Markdown whitespace that could
+
+    carry meaning.
+
+    '
+  consequences:
+    positive:
+    - Generated projections can be admitted without hand cleanup
+    - Rendered hashes remain meaningful against admitted repository bytes
+    negative:
+    - Templates and renderers must encode admission constraints deliberately
+  related_invariants:
+  - 01a09cf0-179e-71cc-b150-d4c1f1865c19
+  - 019fee89-e616-7abd-ad17-f29edbd30959
+  alias_id: DEC-0229
+  alias_name: emit-generated-documentation-in-final-repository-admissible-bytes
+- id: 01a09cf0-179e-71cc-b150-d4bdd03ad104
+  summary: Treat ADR-domain orientation as optional consumption guidance, not whole-system authority
+  rationale: 'The orientation projection orients consumers on how to use the ADR domain
+
+    present in a repository. For humans it should point toward human ADR projections
+
+    and, where appropriate, ADR-PS as a likely system-oriented entry point linking
+
+    ADR-L and ADR-PC detail. It must not claim that one ADR-PS is always globally
+
+    primary when a corpus may contain multiple systems. Absence of the orientation
+
+    artifact must not invalidate an otherwise valid ADR corpus.
+
+    '
+  consequences:
+    positive:
+    - Orientation stays subordinate to canonical ADR YAML
+    - Multi-system corpora are not falsely collapsed to one primary ADR-PS
+    negative:
+    - Generators must avoid whole-repository or whole-product claims
+  related_invariants:
+  - 01a09cf0-179e-71cc-b150-d4c281b85395
+  - 019ff22a-bb5f-7779-912f-040cdf1b54b8
+  alias_id: DEC-0230
+  alias_name: treat-adr-domain-orientation-as-optional-consumption-guidance
+- id: 01a09cf0-179e-71cc-b150-d4be32e00b3e
+  summary: Require capability-aware ADR-domain orientation content
+  rationale: 'Generated orientation must reflect the API contract and capability profile
+
+    actually available to the consumer. It must not recommend a public operation
+
+    absent from the capability profile used to produce it. Its effective basis is
+
+    ADR-Kit API contract generation, advertised capability profile, orientation
+
+    projection contract or version, relevant repository ADR-domain facts, and any
+
+    explicit small consumer orientation configuration. This is not an arbitrary
+
+    templating or documentation DSL.
+
+    '
+  consequences:
+    positive:
+    - Orientation cannot advertise unimplemented capabilities
+    - Capability truthfulness remains aligned with package evidence
+    negative:
+    - Orientation regeneration depends on capability-profile inputs
+  related_invariants:
+  - 01a09cf0-179e-71cc-b150-d4c3c7e3d727
+  - 019ff22a-bb5f-7779-912f-040cdf1b54b8
+  alias_id: DEC-0231
+  alias_name: require-capability-aware-adr-domain-orientation-content
+- id: 01a09cf0-179e-71cc-b150-d4bf50832101
+  summary: Separate human and machine/AI ADR-domain orientation guidance
+  rationale: 'Human orientation prefers human ADR projections, with ADR-PS as a likely
+
+    system-oriented entry where appropriate. When ADR-Kit execution is available,
+
+    machine and AI orientation should prefer the canonical semantic-result surface
+
+    over reconstructing normalized architecture semantics from generated manifests,
+
+    registries, or Markdown projections. Manifest and index surfaces remain useful
+
+    for inventory, interoperability, integrity, navigation, and offline inspection
+
+    and are not removed by this decision.
+
+    '
+  consequences:
+    positive:
+    - Humans and machines receive purpose-fit entry guidance
+    - Generated indexes retain narrower inventory roles
+    negative:
+    - Orientation content must distinguish audience without inventing APIs
+  related_invariants:
+  - 019ff22a-bb5f-7779-912f-040cdf1b54b8
+  - 019fee89-e616-7bf6-a63f-2fdbec175790
+  alias_id: DEC-0232
+  alias_name: separate-human-and-machine-adr-domain-orientation-guidance
+- id: 01a09cf0-179e-71cc-b150-d4c0e13c5fcc
+  summary: Treat package version as orientation provenance, not semantic freshness
+  rationale: 'An ADR-Kit package version change alone must not make the ADR-domain
+
+    orientation projection stale. Package or tool version may be recorded as
+
+    provenance, but release identity is not automatically a meaning-bearing
+
+    projection input. Changes to API contract, capability profile, orientation
+
+    contract, projection semantics, selected repository facts, or explicit consumer
+
+    orientation input may legitimately change the artifact.
+
+    '
+  consequences:
+    positive:
+    - Patch releases do not force orientation churn by version alone
+    - True meaning-bearing input changes remain freshness triggers
+    negative:
+    - Freshness declarations must enumerate meaning-bearing inputs explicitly
+  related_invariants:
+  - 01a09cf0-179e-71cc-b150-d4c4947c82a2
+  - 019ff22a-bb5f-7b93-a600-f587022aeffd
+  alias_id: DEC-0233
+  alias_name: treat-package-version-as-orientation-provenance-not-semantic-freshness
+
 constraints:
 - id: CONST-0001
   type: technical
@@ -601,6 +743,75 @@ invariants:
     '
   alias_id: INV-0102
   alias_name: inv-0102
+- id: 01a09cf0-179e-71cc-b150-d4c1f1865c19
+  statement: 'INV-DOC-008: Generated documentation MUST be emitted in its final
+
+    repository-admissible byte representation; no whitespace normalization,
+
+    formatting cleanup, newline repair, or other post-generation mutation may be
+
+    required between canonical generation and repository persistence or admission.
+
+    '
+  scope: global
+  enforcement_level: must
+  enforcement_mechanism: test
+  verification_method: automated
+  rationale: 'Admission controls and rendered hashes must apply to the canonical
+
+    generated bytes themselves.
+
+    '
+  alias_id: INV-0234
+  alias_name: generated-documentation-bytes-must-be-repository-admissible
+- id: 01a09cf0-179e-71cc-b150-d4c281b85395
+  statement: 'INV-DOC-009: Absence of the ADR-domain orientation projection MUST NOT
+
+    invalidate an otherwise valid ADR corpus; integrity validation applies to the
+
+    orientation artifact only when present.
+
+    '
+  scope: global
+  enforcement_level: must
+  enforcement_mechanism: design
+  verification_method: automated
+  rationale: 'Orientation is optional consumption guidance, not corpus completeness.
+
+    '
+  alias_id: INV-0235
+  alias_name: orientation-absence-must-not-invalidate-corpus
+- id: 01a09cf0-179e-71cc-b150-d4c3c7e3d727
+  statement: 'INV-DOC-010: An ADR-domain orientation projection MUST NOT recommend a
+
+    public operation absent from the capability profile used to produce it.
+
+    '
+  scope: global
+  enforcement_level: must
+  enforcement_mechanism: test
+  verification_method: automated
+  rationale: 'Orientation must remain truthful to advertised capability.
+
+    '
+  alias_id: INV-0236
+  alias_name: orientation-must-not-advertise-absent-capabilities
+- id: 01a09cf0-179e-71cc-b150-d4c4947c82a2
+  statement: 'INV-DOC-011: An ADR-Kit package version change alone MUST NOT make the
+
+    ADR-domain orientation projection stale.
+
+    '
+  scope: global
+  enforcement_level: must
+  enforcement_mechanism: test
+  verification_method: automated
+  rationale: 'Package release identity is provenance, not automatic semantic input.
+
+    '
+  alias_id: INV-0237
+  alias_name: package-version-alone-must-not-stale-orientation
+
 capabilities:
 - id: 019fee89-e615-7564-933f-0bb0cbbcf41b
   name: Deterministic Documentation Projection
@@ -613,6 +824,7 @@ capabilities:
   alias_id: CAP-0014
   alias_name: deterministic-documentation-projection
 related_adrs:
+- 01a09cf0-179e-71cc-b150-d4a79551b939
 - 019fee89-e615-70a5-861b-b2dde147e5af
 - 019fee89-e615-77f6-9b1f-695732d25443
 - 019fee89-e618-7d04-9337-4aa2d3258507

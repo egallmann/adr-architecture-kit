@@ -7,6 +7,56 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.12.0] — 2026-09-30
+
+### Added
+
+- Exposed detached Authoring Construction Contract 1.0 validation and
+  construction through the supported Python and Node hosts over semantic-core
+  protocol 1.2. Results remain governed, detached candidates; construction
+  does not persist files, admit architecture, or promote state.
+- Added the provisional authoring 1.7 contract line and its retained semantic
+  authority, including Architecture Interpretation 1.1 and normalized-model
+  2.4 resources and conformance coverage.
+- Added executable architecture-materialization 1.1 successor support through
+  semantic-core protocol 1.3 and explicit Python/Node profile selection. The
+  route requires the exact retained successor SCS
+  `scs:v1:sha256:2cf903fe80c50b97443645369b28443c7fa186ed758e2e22d7ce758ccb0d6020`
+  and a sealed authoring 1.7 source basis.
+
+### Fixed
+
+- Updated the Node dependency lockfile to avoid vulnerable `fast-uri`
+  releases resolved transitively through AJV.
+- Centralized successor multi-artifact interpretation and preserved
+  independently discoverable artifact diagnostics while retaining fail-closed
+  request outcomes.
+- Aligned Python capability advertisement with the canonical peer-host
+  operation contract and regenerated the System Overview projection.
+
+### Architecture and boundaries
+
+- Rust/WASM semantic-core remains the meaning authority; Python and Node are
+  peer adapters over the protocol boundaries.
+- `architecture-materialization@1.0` remains current/default and continues to
+  serve the existing authoring 1.5/1.6 materialization path. The 1.1 route is
+  explicit opt-in only; no `latest` or successor inference is performed.
+- The current semantic-contract selection remains the retained 1.0 SCS.
+  Successor `resolve_current` remains non-executable/prohibited, while
+  successor `materialize_architecture` is executable/permitted for forward use.
+
+### Compatibility / migration
+
+- The public API contract remains `1.0`; the additive host capability and DTO
+  support preserve existing 1.0 materialization and authoring 1.5/1.6 behavior.
+- Package version is `0.12.0` for this release.
+
+### Limitations
+
+- This release does not promote materialization 1.1 to current/default, change
+  compiler defaults, persist or admit detached authoring results, or add Runtime
+  responsibilities.
+
 ## [0.11.1] — 2026-09-13
 
 ### Fixed

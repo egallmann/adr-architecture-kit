@@ -1,14 +1,14 @@
 # {{ adr | presentation_id }}: {{ adr.title }}
 
-**Status:** {{ adr.status.value }}  
-**Created:** {{ adr.created_date }}  
-{% if adr.modified_date %}**Modified:** {{ adr.modified_date }}  
+**Status:** {{ adr.status.value }}<br>
+**Created:** {{ adr.created_date }}<br>
+{% if adr.modified_date %}**Modified:** {{ adr.modified_date }}<br>
 {% endif %}
-**Authors:** {{ adr.authors | join(', ') }}  
-**Domains:** {{ adr.domains | join(', ') }}  
-{% if adr.tags %}**Tags:** {{ adr.tags | join(', ') }}  
+**Authors:** {{ adr.authors | join(', ') }}<br>
+**Domains:** {{ adr.domains | join(', ') }}<br>
+{% if adr.tags %}**Tags:** {{ adr.tags | join(', ') }}<br>
 {% endif %}
-{% if adr.alias_name %}**Alias name:** {{ adr.alias_name }}  
+{% if adr.alias_name %}**Alias name:** {{ adr.alias_name }}<br>
 {% endif %}
 
 ## Context
@@ -37,7 +37,11 @@
 {% endfor %}
 {% endif %}
 
+{% if card.context_summary %}
 **Context:** {{ card.context_summary }}
+{% else %}
+**Context:**
+{% endif %}
 
 {% if card.link %}[Open projection]({{ card.link }}){% else %}*(projection link unavailable)*{% endif %}
 
@@ -76,7 +80,7 @@
 {% for contract in adr.interaction_contracts %}
 ### {{ contract | presentation_id }}
 
-**Parties:** {{ contract.parties | join(', ') }}  
+**Parties:** {{ contract.parties | join(', ') }}<br>
 **Protocol:** {{ contract.protocol }}
 
 **Guarantees:**
@@ -106,9 +110,9 @@
 {% for inv in adr.invariants %}
 ### {{ inv | presentation_id }}
 
-**Statement:** {{ inv.statement }}  
-**Scope:** {{ inv.scope }}  
-**Enforcement:** {{ inv.enforcement_level.value }} ({{ inv.enforcement_mechanism }})  
+**Statement:** {{ inv.statement }}<br>
+**Scope:** {{ inv.scope }}<br>
+**Enforcement:** {{ inv.enforcement_level.value }} ({{ inv.enforcement_mechanism }})<br>
 **Verification:** {{ inv.verification_method }}
 
 **Rationale:**
@@ -193,7 +197,7 @@ This vision ADR is intentionally lightweight and does not yet formalize architec
 {% for gap in adr.gaps %}
 ### {{ gap | presentation_id }}: {{ gap.question }}
 
-**Impact:** {{ gap.impact.value }}  
+**Impact:** {{ gap.impact.value }}<br>
 **Blocking:** {{ "Yes" if gap.blocking else "No" }}
 
 {% if gap.context %}

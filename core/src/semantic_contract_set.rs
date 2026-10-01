@@ -15,8 +15,10 @@ use super::semantic_contract::{
 use super::{diagnostic, object, simple_result, string, Json};
 
 const PROFILE_ID: &str = "architecture-materialization@1.0";
+const SUCCESSOR_PROFILE_ID: &str = "architecture-materialization@1.1";
 const PROFILE_FAMILY: &str = "architecture-materialization";
 const PROFILE_VERSION: &str = "1.0";
+const SUCCESSOR_PROFILE_VERSION: &str = "1.1";
 const QUALIFICATION_VERSION: &str = "1.0";
 
 fn is_scs(value: &str) -> bool {
@@ -81,6 +83,18 @@ fn expected_families() -> BTreeMap<String, String> {
     ])
 }
 
+fn expected_families_for(profile_id: &str) -> Option<BTreeMap<String, String>> {
+    match profile_id {
+        PROFILE_ID => Some(expected_families()),
+        SUCCESSOR_PROFILE_ID => Some(BTreeMap::from([
+            ("architecture-interpretation".into(), "1.1".into()),
+            ("normalized-model".into(), "2.4".into()),
+            ("normative-semantics".into(), "1.0".into()),
+        ])),
+        _ => None,
+    }
+}
+
 fn validate_profile_value(profile: Option<&Json>, diagnostics: &mut Vec<Json>) {
     let Some(value) = profile.and_then(Json::as_object) else {
         diagnostics.push(diagnostic(
@@ -115,17 +129,23 @@ fn validate_profile_value(profile: Option<&Json>, diagnostics: &mut Vec<Json>) {
             Some("profile.profileFamily".into()),
         ));
     }
-    if text(value.get("profileVersion")).as_deref() != Some(PROFILE_VERSION) {
+    let profile_id = text(value.get("profileId")).unwrap_or_default();
+    let expected_version = match profile_id.as_str() {
+        PROFILE_ID => PROFILE_VERSION,
+        SUCCESSOR_PROFILE_ID => SUCCESSOR_PROFILE_VERSION,
+        _ => "",
+    };
+    if text(value.get("profileVersion")).as_deref() != Some(expected_version) {
         diagnostics.push(diagnostic(
             "semantic_contract.profile_failure",
-            "profileVersion must be 1.0",
+            "profileVersion must match the exact profile identity",
             Some("profile.profileVersion".into()),
         ));
     }
-    if text(value.get("profileId")).as_deref() != Some(PROFILE_ID) {
+    if !matches!(profile_id.as_str(), PROFILE_ID | SUCCESSOR_PROFILE_ID) {
         diagnostics.push(diagnostic(
             "semantic_contract.profile_failure",
-            "profileId must be architecture-materialization@1.0",
+            "profileId must be a governed architecture-materialization profile",
             Some("profile.profileId".into()),
         ));
     }
@@ -169,11 +189,11 @@ fn validate_profile_value(profile: Option<&Json>, diagnostics: &mut Vec<Json>) {
             Some("profile.participatingFamilies".into()),
         )),
     }
-    let expected = expected_families();
+    let expected = expected_families_for(&profile_id).unwrap_or_default();
     if actual != expected {
         diagnostics.push(diagnostic(
             "semantic_contract.profile_family_mismatch",
-            "architecture-materialization@1.0 requires exactly the landed three semantic families and versions",
+            "the selected architecture-materialization profile requires exactly its governed semantic families and versions",
             Some("profile.participatingFamilies".into()),
         ));
     }
@@ -204,7 +224,7 @@ fn validate_profile_value(profile: Option<&Json>, diagnostics: &mut Vec<Json>) {
     {
         diagnostics.push(diagnostic(
             "semantic_contract.profile_operation_mismatch",
-            "profile operations must advertise only the implemented semantic-contract-set operations",
+            "profile operations must advertise only the governed semantic-contract-set operations",
             Some("profile.operations".into()),
         ));
     }
@@ -360,7 +380,9 @@ fn profile_members_match(
     diagnostics: &mut Vec<Json>,
 ) {
     validate_profile_value(Some(profile), diagnostics);
-    let expected = expected_families();
+    let profile_id = text(profile.as_object().and_then(|value| value.get("profileId")))
+        .unwrap_or_default();
+    let expected = expected_families_for(&profile_id).unwrap_or_default();
     let actual = members
         .iter()
         .map(|member| (member.family.as_str(), member.version.as_str()))
@@ -421,7 +443,7 @@ fn qualification_key(value: &BTreeMap<String, Json>) -> (String, String, String,
 }
 
 fn validate_qualification_value(
-    _profile: &Json,
+    profile: &Json,
     qualification: &Json,
     expected_set_id: Option<&str>,
     expected_members: Option<&[ContractSetMember]>,
@@ -500,12 +522,27 @@ fn validate_qualification_value(
             Some("qualification.qualificationSchemaVersion".into()),
         ));
     }
-    if text(value.get("profileId")).as_deref() != Some(PROFILE_ID) {
+    if !matches!(
+        text(value.get("profileId")).as_deref(),
+        Some(PROFILE_ID) | Some(SUCCESSOR_PROFILE_ID)
+    ) {
         diagnostics.push(diagnostic(
             "semantic_contract.qualification_failure",
-            "qualification must use architecture-materialization@1.0",
+            "qualification must use a governed architecture-materialization profile",
             Some("qualification.profileId".into()),
         ));
+    }
+    if let Some(expected_profile_id) = profile
+        .as_object()
+        .and_then(|profile| text(profile.get("profileId")))
+    {
+        if text(value.get("profileId")).as_deref() != Some(expected_profile_id.as_str()) {
+            diagnostics.push(diagnostic(
+                "semantic_contract.qualification_profile_mismatch",
+                "qualification profileId must match the supplied profile identity",
+                Some("qualification.profileId".into()),
+            ));
+        }
     }
     let actual_set_id = text(value.get("semanticContractSetId")).unwrap_or_default();
     if !is_scs(&actual_set_id) {
@@ -679,6 +716,7 @@ fn find_qualified<'a>(
     set_id: &str,
     operation: &str,
     direction: &str,
+    profile_id: &str,
     members: &[ContractSetMember],
 ) -> Option<&'a BTreeMap<String, Json>> {
     qualifications
@@ -688,7 +726,7 @@ fn find_qualified<'a>(
             qualification_key(value).0 == set_id
                 && qualification_key(value).1 == operation
                 && qualification_key(value).2 == direction
-                && text(value.get("profileId")).as_deref() == Some(PROFILE_ID)
+                && text(value.get("profileId")).as_deref() == Some(profile_id)
                 && text(value.get("outcome")).as_deref() == Some("qualified")
                 && bool_value(value.get("installedExecutionSupport")) == Some(true)
                 && text(value.get("newUsePolicy")).as_deref() == Some("permitted")
@@ -1089,6 +1127,7 @@ impl VerifiedDefinitionBundles {
 #[derive(Clone, Debug)]
 pub(crate) struct ExactResolution {
     pub(crate) set_id: String,
+    pub(crate) profile_id: String,
     pub(crate) members: Vec<ContractSetMember>,
     /// Only bundles whose complete family/version/SCF identity is a member of
     /// the requested SCS are exposed to materialization.
@@ -1263,6 +1302,7 @@ fn exact_qualification<'a>(
     operation: &str,
     direction: &str,
     use_mode: &str,
+    profile_id: &str,
     members: &[ContractSetMember],
 ) -> Option<&'a BTreeMap<String, Json>> {
     qualifications
@@ -1272,7 +1312,7 @@ fn exact_qualification<'a>(
             qualification_key(value).0 == set_id
                 && qualification_key(value).1 == operation
                 && qualification_key(value).2 == direction
-                && text(value.get("profileId")).as_deref() == Some(PROFILE_ID)
+                && text(value.get("profileId")).as_deref() == Some(profile_id)
                 && text(value.get("outcome")).as_deref() == Some("qualified")
                 && bool_value(value.get("installedExecutionSupport")) == Some(true)
                 && (use_mode == "historical"
@@ -1338,6 +1378,8 @@ pub(crate) fn resolve_exact_set(
     }
     let profile = root.get("profile").unwrap_or(&Json::Null);
     validate_profile_value(Some(profile), &mut diagnostics);
+    let profile_id = text(profile.as_object().and_then(|value| value.get("profileId")))
+        .unwrap_or_default();
     if !profile_declares_operation(Some(profile), target_operation) {
         diagnostics.push(diagnostic(
             "semantic_contract.profile_operation_mismatch",
@@ -1397,6 +1439,7 @@ pub(crate) fn resolve_exact_set(
         target_operation,
         &direction,
         &use_mode,
+        &profile_id,
         &members,
     );
     if qualification.is_none() {
@@ -1435,6 +1478,7 @@ pub(crate) fn resolve_exact_set(
         .collect();
     Ok(ExactResolution {
         set_id: requested_id,
+        profile_id,
         members,
         definitions,
         qualification: Json::Object(qualification.clone()),
@@ -1476,7 +1520,7 @@ pub fn resolve_exact(request: &Json) -> Json {
             values.insert(
                 "resolved".into(),
                 object([
-                    ("profileId".into(), string(PROFILE_ID)),
+                    ("profileId".into(), string(resolution.profile_id)),
                     ("operation".into(), string(resolution.operation)),
                     ("direction".into(), string(resolution.direction)),
                     ("useMode".into(), string(resolution.use_mode)),
@@ -1648,6 +1692,8 @@ pub fn assemble(request: &Json) -> Json {
     };
     let mut diagnostics = Vec::new();
     let profile = root.get("profile").unwrap_or(&Json::Null);
+    let profile_id = text(profile.as_object().and_then(|value| value.get("profileId")))
+        .unwrap_or_default();
     let members = parse_contract_set_members(
         root.get("requestedMembers"),
         "requestedMembers",
@@ -1699,6 +1745,7 @@ pub fn assemble(request: &Json) -> Json {
         &set_id,
         &operation,
         &direction,
+        &profile_id,
         &members,
     )
     .is_none()
@@ -1783,7 +1830,16 @@ pub fn assemble(request: &Json) -> Json {
                 &mut diagnostics,
             );
         }
-        if find_qualified(qualifications, &set_id, &operation, &direction, &members).is_none() {
+        if find_qualified(
+            qualifications,
+            &set_id,
+            &operation,
+            &direction,
+            &profile_id,
+            &members,
+        )
+        .is_none()
+        {
             diagnostics.push(diagnostic(
                 "semantic_contract.missing_whole_tuple_qualification",
                 "the exact tuple and operation are not explicitly qualified",
@@ -1959,6 +2015,7 @@ pub fn resolve_current(request: &Json) -> Json {
         &current_id,
         &operation,
         &direction,
+        PROFILE_ID,
         &members,
     ) else {
         diagnostics.push(diagnostic(

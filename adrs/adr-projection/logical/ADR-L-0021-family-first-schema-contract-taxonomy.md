@@ -5,22 +5,22 @@ artifact_kind: rendered_adr_markdown
 generator_id: adr-projection-markdown
 generator_version: 3
 hash_algorithm: sha256
-source_hash: beacd3cb003adb6064a07c10a64cf6cc77bad02407e890b4ddad75b97c667234
-rendered_hash: 4b62694f16c061a61b43934ef15c246531f8035b692b8a306ee75eac6031b7e4
+source_hash: a8728feec9c7c0186ffc6562bc76b7820401a22c75ce0111de6bdd7d95e3212f
+rendered_hash: 58163f99daafd9a5d881cf75dcf7c441ef561a8758d7d2f98f97032b7532807c
 -->
 
 # ADR-L-0021: Family-First Schema Contract Taxonomy and Authority
 
 ## Identity / Status
 
-**Type:** logical  
-**Status:** accepted  
-**Alias:** ADR-L-0021  
-**Authoring contract:** authoring v1.5  
-**Created:** 2026-08-15  
-**Authors:** erik.gallmann  
-**Domains:** architecture, schema  
-**Tags:** schema-taxonomy, authority, compatibility  
+**Type:** logical<br>
+**Status:** accepted<br>
+**Alias:** ADR-L-0021<br>
+**Authoring contract:** authoring v1.5<br>
+**Created:** 2026-08-15<br>
+**Authors:** erik.gallmann<br>
+**Domains:** architecture, schema<br>
+**Tags:** schema-taxonomy, authority, compatibility<br>
 
 ## Architecture at a Glance
 

@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://adr-kit.ste.systems/contracts/architecture-interpretation/v1.1/schema.json",
+  "title": "ADR-Kit immutable architecture-interpretation semantic contract version 1.1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["semanticContractFamily", "semanticContractVersion", "fingerprintScheme", "resourceManifest", "frozenNormativeConformanceResources", "semanticContractFingerprint"],
+  "properties": {
+    "semanticContractFamily": {"const": "architecture-interpretation"},
+    "semanticContractVersion": {"const": "1.1"},
+    "fingerprintScheme": {"const": "scf:v1:sha256"},
+    "resourceManifest": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["canonicalResourceKey", "contentDigest", "role", "dependencies"],
+        "properties": {
+          "canonicalResourceKey": {"type": "string", "minLength": 1},
+          "contentDigest": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"},
+          "role": {"enum": ["interpretation-rule", "interpretation-conformance", "source-contract-mapping"]},
+          "dependencies": {"type": "array", "items": {"type": "object", "additionalProperties": false, "required": ["canonicalResourceKey", "contentDigest"], "properties": {"canonicalResourceKey": {"type": "string", "minLength": 1}, "contentDigest": {"type": "string", "pattern": "^sha256:[0-9a-f]{64}$"}}}}
+        }
+      }
+    },
+    "frozenNormativeConformanceResources": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string", "minLength": 1}},
+    "semanticContractFingerprint": {"type": "string", "pattern": "^scf:v1:sha256:[0-9a-f]{64}$"}
+  }
+}

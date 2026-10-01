@@ -64,8 +64,33 @@ console.log(entities.types.map((item) => item.key));
 
 ADC 1.0 discovery is descriptive and exact: it lists and describes the
 contract's types and policies. It does not construct, compose, mutate, allocate
-identity, persist, or write repositories. The ADC version is independent of
-ADR persistence-schema versions.
+identity, persist, or write repositories. ACC 1.0 construction is available
+through the Node entry point as a detached, read-only candidate operation; its
+version is independent of ADR persistence-schema versions.
+
+## Construct detached authoring candidates
+
+Pass the exact ACC 1.0 payload and qualified basis supplied by the consumer.
+The returned result is complete governed output and does not persist files.
+
+```ts
+import { constructAuthoringSet } from "@system-of-thought/adr-kit/node";
+
+const result = await constructAuthoringSet({
+  contract_family: "authoring_construction",
+  contract_version: "1.0",
+  operation: "construct_authoring_set",
+  request: accRequest,
+  basis: qualifiedBasis,
+});
+console.log(result.outcome);
+for (const diagnostic of result.diagnostics) console.log(diagnostic.severity, diagnostic.code);
+console.log(result.candidate_artifacts); // detached candidate bytes; no files are written
+```
+
+Use `validateAuthoring` with the same request shape and
+`operation: "validate_authoring"` for validation. Rejected, unavailable, and
+unresolved outcomes are returned values; host/protocol failures are exceptions.
 
 ## Browser-safe versus Node entry points
 
@@ -86,7 +111,13 @@ as the Python public seam. It also exposes qualified architecture materializatio
 through `materializeArchitecture`. Materialization requires an exact semantic
 contract-set identity and a sealed, caller-supplied source basis; it does not
 resolve current pointers or infer source meaning. Results are normalized-model
-outputs or bounded rejection/unavailable outcomes.
+outputs or bounded rejection/unavailable outcomes. `architecture-materialization@1.0`
+remains the current/default profile for authoring 1.5 and 1.6. The qualified
+`architecture-materialization@1.1` successor is available only by explicitly
+selecting that profile, the retained successor SCS
+`scs:v1:sha256:2cf903fe80c50b97443645369b28443c7fa186ed758e2e22d7ce758ccb0d6020`,
+and a sealed authoring 1.7 source basis; it routes through semantic-core
+protocol 1.3. No latest/current successor is selected implicitly.
 
 Shared semantic-core execution is an implementation detail below these public
 seams. The package includes its self-contained WASM artifact; consumers do not

@@ -6,7 +6,12 @@ import AjvModule from "ajv/dist/2020.js";
 import Ajv7Module from "ajv";
 import { semanticCoreContract } from "../dist/generated/semantic-core-contract.js";
 import { semanticCoreContractV11 } from "../dist/generated/semantic-core-contract-v1.1.js";
-import { validateSemanticCoreProtocol } from "../dist/node/protocol.js";
+import { semanticCoreContractV12 } from "../dist/generated/semantic-core-contract-v1.2.js";
+import {
+  semanticCoreCapabilities,
+  supportsSemanticCoreOperation,
+  validateSemanticCoreProtocol,
+} from "../dist/node/protocol.js";
 import { executeSemanticCoreRequest } from "../dist/node/core.js";
 
 const Ajv = AjvModule.default ?? AjvModule;
@@ -68,6 +73,76 @@ test("Node protocol routes v1.1 results to the additive contract", () => {
   };
   assert.equal(v11(result), true, JSON.stringify(v11.errors));
   assert.doesNotThrow(() => validateSemanticCoreProtocol(result));
+});
+
+test("Node validates the additive v1.2 authoring transport surface", async () => {
+  const v12 = new Ajv({ allErrors: true, strict: false }).compile(semanticCoreContractV12);
+  const request = {
+    core_contract_version: "1.2",
+    operation: "validate_authoring",
+    request: { operation: "validate_authoring" },
+  };
+  const result = {
+    core_contract_version: "1.2",
+    operation: "construct_authoring_set",
+    result: { operation: "construct_authoring_set" },
+  };
+  assert.equal(v12(request), true, JSON.stringify(v12.errors));
+  assert.equal(v12(result), true, JSON.stringify(v12.errors));
+
+  const mismatch = { ...request, operation: "construct_authoring_set" };
+  assert.equal(v12(mismatch), false);
+  assert.equal(v12({ ...request, core_contract_version: "1.1" }), false);
+  assert.equal(v12({ ...request, operation: "unknown_authoring_operation" }), false);
+  assert.equal(v12({ core_contract_version: "1.2", operation: "validate_authoring" }), false);
+  assert.equal(v12({ ...request, result: { operation: "validate_authoring" } }), false);
+  assert.equal(v12({ ...request, transport_extension: true }), false);
+
+  const transportVectors = JSON.parse(
+    await readFile(resolve("../../contracts/semantic-core/v1.2/vectors/authoring-construction-transport.json"), "utf8"),
+  );
+  assert.equal(transportVectors.cases.length, 12);
+});
+
+test("Node capability negotiation advertises only reachable v1.2 operations", () => {
+  assert.deepEqual(semanticCoreCapabilities(), {
+    supported_versions: ["1.0", "1.1", "1.2", "1.3"],
+    operations_by_version: {
+      "1.2": ["validate_authoring", "construct_authoring_set"],
+      "1.3": ["materialize_architecture"],
+    },
+  });
+  assert.equal(supportsSemanticCoreOperation("1.2", "validate_authoring"), true);
+  assert.equal(supportsSemanticCoreOperation("1.2", "construct_authoring_set"), true);
+  assert.equal(supportsSemanticCoreOperation("1.0", "validate_authoring"), false);
+  assert.equal(supportsSemanticCoreOperation("1.1", "construct_authoring_set"), false);
+  assert.equal(supportsSemanticCoreOperation("1.3", "materialize_architecture"), true);
+  assert.equal(supportsSemanticCoreOperation("1.3", "construct_authoring_set"), false);
+});
+
+function bindAccMarkers(value) {
+  if (typeof value === "string") return value === "$enclosing_scf"
+    ? "scf:v1:sha256:b94f67ebff64b6560206715cef87a49b4444b71aa661cce92a6c3d04d8bf2703"
+    : value;
+  if (Array.isArray(value)) return value.map(bindAccMarkers);
+  if (value && typeof value === "object") return Object.fromEntries(Object.entries(value).map(([key, child]) => [key, bindAccMarkers(child)]));
+  return value;
+}
+
+test("Node executes representative ACC outcomes through the v1.2 WASM boundary", async () => {
+  const corpus = JSON.parse(await readFile(resolve("../../contracts/authoring-construction/v1.0/resources/conformance.json"), "utf8"));
+  for (const [id, outcome] of [["C01", "Constructed"], ["C32", "Rejected"], ["C33", "Unavailable"]]) {
+    const source = corpus.cases.find((item) => item.id === id);
+    assert.ok(source, id);
+    const result = await executeSemanticCoreRequest({
+      core_contract_version: "1.2",
+      operation: "construct_authoring_set",
+      request: bindAccMarkers(source.input),
+    });
+    assert.equal(result.core_contract_version, "1.2", id);
+    assert.equal(result.operation, "construct_authoring_set", id);
+    assert.equal(result.result?.outcome, outcome, id);
+  }
 });
 
 test("Node keeps a v1.1-only operation rejected on the v1.0 boundary", async () => {

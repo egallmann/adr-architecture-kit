@@ -5,22 +5,22 @@ artifact_kind: rendered_adr_markdown
 generator_id: adr-projection-markdown
 generator_version: 3
 hash_algorithm: sha256
-source_hash: dea69d93db99cff8ddf585dd095cb1cb400a517c6cb051025f3d9f286a2dba6c
-rendered_hash: 692c4f9116a36989de016bda267dff65dd8e36c1907f8ee059befdfa9594965f
+source_hash: 97b9b85779d3d5b057765338fb4d039528960fa71bab389450572ab2f887d711
+rendered_hash: 3cd9d45f825049cd8dd5379435f1462019d2c0272037480a8e56760039b2c1f5
 -->
 
 # ADR-L-0024: Cross-Language Consumer Bindings and TypeScript Distribution
 
 ## Identity / Status
 
-**Type:** logical  
-**Status:** accepted  
-**Alias:** ADR-L-0024  
-**Authoring contract:** authoring v1.5  
-**Created:** 2026-08-23  
-**Authors:** erik.gallmann  
-**Domains:** architecture, consumer-bindings, schema-governance, distribution  
-**Tags:** consumer-binding, typescript, node, browser, conformance, host-parity  
+**Type:** logical<br>
+**Status:** accepted<br>
+**Alias:** ADR-L-0024<br>
+**Authoring contract:** authoring v1.5<br>
+**Created:** 2026-08-23<br>
+**Authors:** erik.gallmann<br>
+**Domains:** architecture, consumer-bindings, schema-governance, distribution<br>
+**Tags:** consumer-binding, typescript, node, browser, conformance, host-parity<br>
 
 ## Architecture at a Glance
 
@@ -366,6 +366,7 @@ Equivalent behavior is required without semantic duplication.
 - [ADR-L-0025](ADR-L-0025-topology-and-contract-succession-authority.md)
 - [ADR-L-0026](ADR-L-0026-authoring-domain-contract-discovery-authority.md)
 - [ADR-L-0027](ADR-L-0027-public-binding-construction-and-release-parity.md)
+- [ADR-L-0029](ADR-L-0029-semantic-authoring-construction-and-candidate-authority.md)
 
 
 

@@ -6,17 +6,22 @@ import { readFile } from "node:fs/promises";
 import { resolve } from "node:path";
 import { delimiter } from "node:path";
 import { materializeArchitecture } from "../dist/node/materialization.js";
+import { listSemanticContractProfiles } from "../dist/node/semantic-contract.js";
 
 const vector = JSON.parse(await readFile(
   resolve("../../contracts/semantic-core/v1.1/vectors/architecture-materialization.json"),
   "utf8",
 )).cases[0].request;
+const successorFixture = JSON.parse(await readFile(
+  resolve("../../tests/fixtures/public_materialization_v17.json"),
+  "utf8",
+));
 const packageVersion = JSON.parse(await readFile(
   resolve("package.json"),
   "utf8",
 )).version;
 
-function publicRequest(request) {
+function publicRequest(request, options = {}) {
   return {
     semantic_contract_set_id: request.semanticContractSetId,
     authority_provider: {
@@ -44,9 +49,9 @@ function publicRequest(request) {
         document: artifact.document,
       })),
     },
-    direction: "none",
-    use_mode: "new",
-    profile_id: "architecture-materialization@1.0",
+    direction: options.direction ?? "none",
+    use_mode: options.use_mode ?? "new",
+    profile_id: options.profile_id ?? "architecture-materialization@1.0",
   };
 }
 
@@ -105,21 +110,51 @@ from collections.abc import Mapping
 from adr_kit.api import (
     ArchitectureMaterializationRequest,
     MaterializationAuthorityProvider,
+    MaterializationSourceArtifact,
     MaterializationSourceBasis,
+    MaterializationSourceContract,
+    SemanticResourceDependency,
     materialize_architecture,
 )
 
 wire = json.load(sys.stdin)
+source = wire["source_basis"]
+artifacts = tuple(
+    MaterializationSourceArtifact(
+        source_ref=item["source_ref"],
+        artifact_path=item["artifact_path"],
+        content_digest=item["content_digest"],
+        source_contract=MaterializationSourceContract(
+            version=item["source_contract"]["version"],
+            schema_resource=SemanticResourceDependency(
+                item["source_contract"]["schema_resource"]["canonical_resource_key"],
+                item["source_contract"]["schema_resource"]["content_digest"],
+            ),
+            resource_closure=tuple(
+                SemanticResourceDependency(
+                    value["canonical_resource_key"], value["content_digest"]
+                )
+                for value in item["source_contract"]["resource_closure"]
+            ),
+        ),
+        document=item["document"],
+    )
+    for item in source["artifacts"]
+)
 value = ArchitectureMaterializationRequest(
-    semantic_contract_set_id=wire["semanticContractSetId"],
+    semantic_contract_set_id=wire["semantic_contract_set_id"],
     authority_provider=MaterializationAuthorityProvider(
-        kind=wire["authorityProvider"]["kind"],
-        architecture_namespace=wire["authorityProvider"]["architectureNamespace"],
+        kind=wire["authority_provider"]["kind"],
+        architecture_namespace=wire["authority_provider"]["architecture_namespace"],
     ),
-    source_basis=MaterializationSourceBasis.from_wire(wire["sourceBasis"]),
-    direction="none",
-    use_mode="new",
-    profile_id="architecture-materialization@1.0",
+    source_basis=MaterializationSourceBasis(
+        provider_source_identity=source["provider_source_identity"],
+        source_revision=source["source_revision"],
+        artifacts=artifacts,
+    ),
+    direction=wire["direction"],
+    use_mode=wire["use_mode"],
+    profile_id=wire["profile_id"],
 )
 result = materialize_architecture(value)
 
@@ -280,6 +315,49 @@ test("public Node materialization preserves bounded unavailable and exact-set re
 });
 
 test("Python and Node public materialization expose equivalent DTO information", async () => {
-  const nodeResult = await materializeArchitecture(publicRequest(vector));
-  assert.deepEqual(publicSummary(nodeResult), pythonPublicSummary(vector));
+  const request = publicRequest(vector);
+  const nodeResult = await materializeArchitecture(request);
+  assert.deepEqual(publicSummary(nodeResult), pythonPublicSummary(request));
+});
+
+test("public Node materialization exposes the explicit successor through protocol 1.3", async () => {
+  const request = publicRequest(successorFixture, {
+    direction: "forward",
+    profile_id: "architecture-materialization@1.1",
+  });
+  const result = await materializeArchitecture(request);
+  assert.equal(result.success, true);
+  assert.equal(result.outcome, "Materialized");
+  assert.equal(result.normalizedModel.schema_version, "2.4");
+  assert.equal(result.semanticBasis.semanticContractSetId, successorFixture.semanticContractSetId);
+  assert.equal(result.providerProvenance.semanticCoreContractVersion, "1.3");
+  assert.equal(result.sourceBasis.artifacts.length, 2);
+  assert.deepEqual(publicSummary(result), pythonPublicSummary(request));
+});
+
+test("public Node materialization keeps successor selection exact and explicit", async () => {
+  const request = publicRequest(successorFixture, {
+    direction: "forward",
+    profile_id: "architecture-materialization@1.1",
+  });
+  const rejected = await materializeArchitecture({
+    ...request,
+    semantic_contract_set_id: `scs:v1:sha256:${"0".repeat(64)}`,
+  });
+  assert.equal(rejected.outcome, "Rejected");
+  assert.equal(rejected.semanticBasis.semanticContractSetId, `scs:v1:sha256:${"0".repeat(64)}`);
+
+  const profiles = listSemanticContractProfiles().map((profile) => profile.profileId);
+  assert.deepEqual(profiles, ["architecture-materialization@1.0", "architecture-materialization@1.1"]);
+
+  const legacySource = {
+    ...request.source_basis,
+    artifacts: request.source_basis.artifacts.map((artifact) => ({
+      ...artifact,
+      source_contract: { ...artifact.source_contract, version: "1.6" },
+    })),
+  };
+  await assert.rejects(
+    materializeArchitecture({ ...request, source_basis: legacySource }),
+  );
 });

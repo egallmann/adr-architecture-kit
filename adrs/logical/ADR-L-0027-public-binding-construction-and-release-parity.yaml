@@ -20,6 +20,7 @@ tags:
 - release-parity
 - stable-authority
 related_adrs:
+- 01a09cf0-179e-71cc-b150-d4a79551b939
 - 01a02d38-7cf3-7b3c-87ec-1c5f08490c6e
 - 01a05a26-0000-7000-8000-000000000026
 - 019fee89-e617-78d9-ba3b-b7e3e6db1b12
@@ -71,7 +72,27 @@ decisions:
   alias_id: DEC-0206
   alias_name: shared-semantic-core-precedes-host-parity
   summary: Host parity MUST be implemented through one canonical semantic core or authority-preserving shared execution boundary
-  rationale: A second TypeScript compiler or validator would create semantic drift; a Python subprocess would not satisfy the Node host contract.
+  rationale: |
+    Hard convergence is an invariant for advertised peer-host capabilities.
+    Unacceptable parity mechanisms include an independent TypeScript
+    compiler/validator/renderer, Node invoking Python, Node invoking the ADR
+    CLI, and Python remaining on an independent semantic compiler while Node
+    uses Rust even if output-parity tests happen to pass. Accepted authority
+    wins when characterization oracles conflict with the canonical core.
+
+- id: 01a09cf0-179e-71cc-b150-d4c747eea355
+  alias_id: DEC-0235
+  alias_name: hosts-own-acquisition-rust-core-owns-shared-semantics
+  summary: Keep consumer filesystem acquisition in host adapters and shared meaning in the Rust semantic core
+  rationale: |
+    Python and TypeScript/Node may acquire Exact Source Basis inputs from
+    consumer-supplied paths or explicit bytes. The Rust semantic core performs
+    shared meaning-bearing execution and returns exact projection bytes or
+    semantic results. It does not traverse consumer filesystems or write
+    repositories. Exact shared-capability byte parity comes from one canonical
+    result rather than independent host renderers.
+  related_invariants:
+  - 01a09cf0-179e-71cc-b150-d4c93cee08c0
 invariants:
 - id: 01a05a27-0000-7600-8000-000000000201
   alias_id: INV-0201
@@ -121,7 +142,12 @@ invariants:
 - id: 01a05a27-0000-7600-8000-000000000206
   alias_id: INV-0206
   alias_name: no-second-host-semantic-authority
-  statement: TypeScript/Node parity MUST NOT be achieved by independently recreating compiler, validator, schema, or governance semantics in a second implementation authority.
+  statement: |
+    TypeScript/Node parity MUST NOT be achieved by independently recreating
+    compiler, validator, renderer, schema, or governance semantics; by invoking
+    Python or the ADR CLI from Node; or by leaving Python on an independent
+    semantic compiler while Node uses the Rust core for the same advertised
+    capability.
   scope: global
   enforcement_level: must
   enforcement_mechanism: design
@@ -136,8 +162,25 @@ invariants:
   enforcement_mechanism: design
   verification_method: automated
   rationale: Browser and Node are distinct execution environments.
+- id: 01a09cf0-179e-71cc-b150-d4c93cee08c0
+  alias_id: INV-0239
+  alias_name: shared-capability-bytes-come-from-one-canonical-result
+  statement: |
+    For advertised shared peer-host capabilities, Python and Node MUST obtain
+    meaning-bearing projection bytes from one canonical semantic-core result and
+    MUST NOT rely on independent host-local renderers to manufacture byte parity.
+  scope: global
+  enforcement_level: must
+  enforcement_mechanism: design
+  verification_method: automated
+  rationale: Independent renderers create semantic drift even when tests appear green.
+
 gaps: []
 notes:
+  packed_installed_package_qualification: |
+    Where a capability is advertised as peer-host shared, packed installed-package
+    qualification remains release evidence under ADR-L-0028 INV-0222 and is not
+    redefined here.
   stable_authority_substrate:
   - accepted ADR decisions and invariants
   - canonical schema bytes and semantic vocabularies

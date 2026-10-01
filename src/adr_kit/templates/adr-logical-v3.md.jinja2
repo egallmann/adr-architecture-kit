@@ -5,13 +5,13 @@
 
 {% if logical and logical.identity_rows %}
 {% for row in logical.identity_rows %}
-**{{ row.label }}:** {{ row.value }}  
+**{{ row.label }}:** {{ row.value }}<br>
 {% endfor %}
 {% else %}
-**Type:** {{ ctx.adr_type if ctx else adr.adr_type }}  
-**Status:** {{ adr.status.value }}  
-**Alias:** {{ adr | presentation_id }}  
-**Created:** {{ adr.created_date }}  
+**Type:** {{ ctx.adr_type if ctx else adr.adr_type }}<br>
+**Status:** {{ adr.status.value }}<br>
+**Alias:** {{ adr | presentation_id }}<br>
+**Created:** {{ adr.created_date }}<br>
 {% endif %}
 
 {% if logical and logical.glance_rows %}

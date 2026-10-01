@@ -7,7 +7,7 @@ from typing import Any, Union
 
 from jinja2 import Environment, FileSystemLoader
 
-from ...decorators import implements_adr
+from ...decorators import enforces_invariant, implements_adr
 from ...integrity import (
     ArtifactKind,
     GENERATED_MARKER,
@@ -22,6 +22,7 @@ from ...integrity import (
 from ...models import LogicalADR, PhysicalADR, PhysicalComponentADR, PhysicalSystemADR
 from ...models.common import ADRType
 from ...parser import ADRParser
+from ...projection_markdown import finalize_repository_admissible_markdown
 from ...scope import ProjectScope
 from ..frontend.adr_access import adr_type_of, field_get
 from ..frontend.builder import ArchModelBuilder
@@ -33,7 +34,6 @@ from .human_adr_projection import (
     format_present_ref,
 )
 from .projection_paths import projection_relative_path, stem_matches_adr
-
 
 MARKDOWN_GENERATOR_IDENTITY = GeneratorIdentity("adr-projection-markdown", 3)
 DEFAULT_TEMPLATE_DIR = Path(__file__).resolve().parents[2] / "templates"
@@ -96,6 +96,7 @@ def template_path_for_adr(
 
 
 @implements_adr("ADR-L-0007")
+@enforces_invariant("INV-0234")
 def render_adr_markdown(
     adr: Union[LogicalADR, PhysicalADR, PhysicalSystemADR, PhysicalComponentADR],
     *,
@@ -105,7 +106,9 @@ def render_adr_markdown(
     """Render one ADR model to markdown."""
     env = build_markdown_environment(template_dir, ctx=ctx)
     template_name = template_path_for_adr(adr, template_dir=template_dir).name
-    return env.get_template(template_name).render(adr=adr, ctx=ctx)
+    return finalize_repository_admissible_markdown(
+        env.get_template(template_name).render(adr=adr, ctx=ctx)
+    )
 
 
 def discover_scope_adr_files(scope: ProjectScope) -> list[Path]:
@@ -120,7 +123,11 @@ def discover_scope_adr_files(scope: ProjectScope) -> list[Path]:
         if not directory.exists():
             continue
         files.extend(
-            sorted(path for path in directory.glob("*.yaml") if path.is_file() and not path.is_symlink())
+            sorted(
+                path
+                for path in directory.glob("*.yaml")
+                if path.is_file() and not path.is_symlink()
+            )
         )
     return files
 

@@ -93,9 +93,53 @@ console.log(manifest.authoring_capabilities);
 
 Capability discovery is local and deterministic. It reports supported schema,
 contract, host, and browser surfaces for the installed release. ADC 1.0
-discovery is descriptive: it can list and describe authoring contracts and types;
-semantic authoring construction, mutation, persistence, and repository writes
-are not a released capability.
+discovery is descriptive, while ACC 1.0 construction is a detached,
+read-only candidate operation. Neither API persists files, mutates Git, or
+writes a repository.
+
+## Construct detached authoring candidates
+
+Both public hosts accept the exact governed ACC 1.0 request and return the
+complete Rust/WASM-produced result. The request below assumes `acc_request` and
+`qualified_basis` were supplied by the consumer from the frozen ACC contract.
+
+Python:
+
+```python
+from adr_kit.api import AuthoringRequest, construct_authoring_set
+
+request = AuthoringRequest(
+    request=acc_request,
+    basis=qualified_basis,
+    operation="construct_authoring_set",
+)
+result = construct_authoring_set(request)
+print(result.outcome)
+for diagnostic in result.diagnostics:
+    print(diagnostic.severity, diagnostic.code)
+print(result.candidate_artifacts)  # detached candidate bytes; no files are written
+```
+
+Node:
+
+```ts
+import { constructAuthoringSet } from "@system-of-thought/adr-kit/node";
+
+const result = await constructAuthoringSet({
+  contract_family: "authoring_construction",
+  contract_version: "1.0",
+  operation: "construct_authoring_set",
+  request: accRequest,
+  basis: qualifiedBasis,
+});
+console.log(result.outcome);
+for (const diagnostic of result.diagnostics) console.log(diagnostic.severity, diagnostic.code);
+console.log(result.candidate_artifacts); // detached candidate bytes; no files are written
+```
+
+`Rejected`, `Unavailable`, and `Unresolved` are returned as governed results;
+host and protocol failures raise exceptions. Validation is exposed as
+`validate_authoring` / `validateAuthoring` with the same request shape.
 
 ## Choose the next guide
 

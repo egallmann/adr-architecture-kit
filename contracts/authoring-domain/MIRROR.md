@@ -31,6 +31,12 @@ projections of those three operations are canonical ADC semantics in
 `discovery_projections`; they are not inferred from binding conformance
 evidence.
 
+ADC 1.1 is an independently versioned, descriptive successor. Its
+construction-aware policy matrix is canonical contract documentation only:
+it does not add a supported binding version, capability, operation, or
+preferred version. The executable compatibility mirror remains ADC 1.0 until
+a later binding qualification explicitly promotes the successor.
+
 It does not authorize construction, composition, mutation, identity
 allocation, persistence, or repository writes.
 

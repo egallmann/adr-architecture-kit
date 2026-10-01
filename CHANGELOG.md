@@ -24,6 +24,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+- Updated the Node dependency lockfile to avoid vulnerable `fast-uri`
+  releases resolved transitively through AJV.
 - Centralized successor multi-artifact interpretation and preserved
   independently discoverable artifact diagnostics while retaining fail-closed
   request outcomes.

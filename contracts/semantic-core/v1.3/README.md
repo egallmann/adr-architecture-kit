@@ -16,8 +16,11 @@ Interpretation is governed semantic machinery inside materialization, not a
 second public API operation. The successor profile records AI 1.1, NM 2.4,
 and the existing normative-semantics 1.0 contract as one exact tuple.
 
-This slice establishes authority and transport shape only. Protocol 1.3 is
-recognized and validated version-first, but execution returns deterministic
-`Unavailable`; it does not route to the internal AI 1.1 kernel. The current
+Protocol 1.3 is recognized, validated version-first, and executes the
+qualified `materialize_architecture` successor route through the canonical
+Architecture Interpretation 1.1 semantic boundary. A valid request uses the
+exact retained successor SCS, a sealed authoring 1.7 source basis, and the
+complete packaged authority closure; invalid or unqualified requests remain
+fail-closed with governed rejection or unavailability outcomes. The current
 semantic-contract selection, the `architecture-materialization@1.0` profile,
 and all older protocol contracts remain unchanged.

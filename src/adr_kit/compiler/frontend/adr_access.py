@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+from enum import Enum
 from typing import Any
 
 from ...identity import UUIDV7_PATTERN
@@ -39,6 +40,20 @@ def presentation_id(obj: Any) -> str:
     if isinstance(value, str) and value:
         return value
     return str(obj)
+
+
+def presentation_value(value: Any) -> str:
+    """Render an enum-backed value or a plain scalar for human projection.
+
+    Authoring 1.3 typed gaps expose impact as an enum with ``.value``.
+    Authoring 1.5 and 1.6 leave gaps structurally open, so the same field may
+    be a plain scalar inside a mapping. Projection normalizes presentation
+    only and does not change either authoring contract.
+    """
+    rendered = value.value if isinstance(value, Enum) else value
+    if rendered is None:
+        return ""
+    return str(rendered)
 
 
 def field_list(obj: Any, key: str) -> list[Any]:

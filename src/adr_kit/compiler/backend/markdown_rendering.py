@@ -24,7 +24,7 @@ from ...models.common import ADRType
 from ...parser import ADRParser
 from ...projection_markdown import finalize_repository_admissible_markdown
 from ...scope import ProjectScope
-from ..frontend.adr_access import adr_type_of, field_get
+from ..frontend.adr_access import adr_type_of, field_get, presentation_value
 from ..frontend.builder import ArchModelBuilder
 from ..pipeline import FrontendBuildResult
 from .common import EmittedArtifact
@@ -45,6 +45,10 @@ def _jinja_presentation_id(value: Any) -> str:
     return presentation_id(value)
 
 
+def _jinja_presentation_value(value: Any) -> str:
+    return presentation_value(value)
+
+
 def build_markdown_environment(
     template_dir: Path | None = None,
     *,
@@ -58,6 +62,7 @@ def build_markdown_environment(
         lstrip_blocks=True,
     )
     env.filters["presentation_id"] = _jinja_presentation_id
+    env.filters["presentation_value"] = _jinja_presentation_value
 
     def present_ref_filter(value: Any) -> str:
         ref_id = str(value)

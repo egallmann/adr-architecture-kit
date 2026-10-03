@@ -230,7 +230,7 @@
 {% for gap in adr.gaps %}
 ### {{ gap | presentation_id }}: {{ gap.question }}
 
-**Impact:** {{ gap.impact.value }}<br>
+**Impact:** {{ gap.impact | presentation_value }}<br>
 **Blocking:** {{ "Yes" if gap.blocking else "No" }}
 
 {% if gap.context %}

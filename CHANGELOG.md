@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.12.0] — 2026-09-30
+
 ### Added
 
 - Exposed detached Authoring Construction Contract 1.0 validation and
@@ -47,13 +49,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - The public API contract remains `1.0`; the additive host capability and DTO
   support preserve existing 1.0 materialization and authoring 1.5/1.6 behavior.
-- Package version remains `0.11.1` for this unreleased develop candidate.
+- Package version is `0.12.0` for this release.
 
 ### Limitations
 
-- This candidate does not promote materialization 1.1 to current/default,
-  change compiler defaults, persist or admit detached authoring results, add
-  Runtime responsibilities, or perform release/tag/publication actions.
+- This release does not promote materialization 1.1 to current/default, change
+  compiler defaults, persist or admit detached authoring results, or add Runtime
+  responsibilities.
 
 ## [0.11.1] — 2026-09-13
 

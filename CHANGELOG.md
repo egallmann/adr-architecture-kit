@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+
+- Corrected promotion apply dry-runs to validate only an isolated post-state,
+  leaving governed ADRs, ROADMAP, and apply execution evidence unchanged.
+
 ## [0.12.0] — 2026-09-30
 
 ### Added

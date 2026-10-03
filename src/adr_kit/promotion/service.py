@@ -920,19 +920,7 @@ def apply_promotion(
                     )
 
     if not request.commit:
-        # Dry-run: stage+validate only
-        try:
-            commit_all_or_none(
-                request.project_root,
-                writes,
-                validate_staged=validate_staged,
-                fault=fault,
-                journal_root=store / "dry-run-journal",
-            )
-        except Exception:
-            # Dry-run should not commit; use a side journal and always abort before commit
-            pass
-        # Explicit dry-run validation without writing authority
+        # Validate an isolated post-state; only commit requests enter the authority transaction.
         tmp = store / "dry-run-overlay"
         if tmp.exists():
             shutil.rmtree(tmp)

@@ -7,6 +7,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.12.1] — 2026-10-03
+
+### Fixed
+
+- Corrected promotion apply dry-runs to validate only an isolated post-state,
+  leaving governed ADRs, ROADMAP, and apply execution evidence unchanged.
+- Human Markdown projections now render authored gap impact whether the runtime
+  value is an enum or a plain scalar. Authoring 1.5 and later leave gaps
+  structurally open, and the generic logical and physical templates were still
+  reading `impact.value`, which dropped scalar impact values. Canonical ADR
+  YAML is unchanged.
+
 ## [0.12.0] — 2026-09-30
 
 ### Added

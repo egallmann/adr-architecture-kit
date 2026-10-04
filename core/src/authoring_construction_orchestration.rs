@@ -214,6 +214,7 @@ pub(crate) fn construct_authoring_set_with_minter(
 
     let mut candidate_fragments = Vec::new();
     let mut candidate_artifacts = Vec::new();
+    let mut candidate_containments = Vec::new();
     let mut construction_map = Vec::new();
     let mut interpretation_results = Vec::new();
 
@@ -243,6 +244,7 @@ pub(crate) fn construct_authoring_set_with_minter(
             .cloned()
             .unwrap_or_default();
         let identity = identities.get(key).expect("validated identity exists");
+        let mut embedded_children = Vec::new();
         let source = build_fragment_source(
             value,
             &fields,
@@ -252,6 +254,7 @@ pub(crate) fn construct_authoring_set_with_minter(
             &identities,
             &fragments,
             &compositions,
+            &mut embedded_children,
         );
         let selector = selector_for(semantic_type, &source);
         let source_ref = format!("{source_prefix}/{key}");
@@ -300,6 +303,12 @@ pub(crate) fn construct_authoring_set_with_minter(
             interpretation,
         ));
         candidate_artifacts.push(artifact_to_json(&artifact));
+        candidate_containments.extend(embedded_children.into_iter().map(|child_request_key| {
+            candidate_source::CandidateSourceContainment {
+                parent_request_key: key.to_owned(),
+                child_request_key,
+            }
+        }));
         candidate_fragments.push(candidate_fragment(
             value,
             &fields,
@@ -421,31 +430,38 @@ pub(crate) fn construct_authoring_set_with_minter(
         .iter()
         .map(json_to_artifact)
         .collect::<Result<Vec<_>, _>>();
-    let basis_artifacts =
-        match artifacts_for_basis.and_then(candidate_source::seal_candidate_source_basis) {
-            Ok(value) => value,
-            Err(error) => {
-                let diagnostic = orchestration_diagnostic(
-                    "authoring_construction.candidate_source.unavailable",
-                    &error,
-                    None,
-                    None,
-                    "unavailable",
-                );
-                return result(
-                    &basis,
-                    "Unavailable",
-                    vec![diagnostic.clone()],
-                    provenance,
-                    construction_map,
-                    candidate_fragments,
-                    candidate_artifacts,
-                    None,
-                    round_trip(false, "not_evaluated", &[], &[], &[diagnostic]),
-                )
-                .value;
-            }
-        };
+    let basis_artifacts = match artifacts_for_basis
+        .and_then(|artifacts| {
+            candidate_source::select_minimal_candidate_source_roots(
+                artifacts,
+                &candidate_containments,
+            )
+        })
+        .and_then(candidate_source::seal_candidate_source_basis)
+    {
+        Ok(value) => value,
+        Err(error) => {
+            let diagnostic = orchestration_diagnostic(
+                "authoring_construction.candidate_source.unavailable",
+                &error,
+                None,
+                None,
+                "unavailable",
+            );
+            return result(
+                &basis,
+                "Unavailable",
+                vec![diagnostic.clone()],
+                provenance,
+                construction_map,
+                candidate_fragments,
+                candidate_artifacts,
+                None,
+                round_trip(false, "not_evaluated", &[], &[], &[diagnostic]),
+            )
+            .value;
+        }
+    };
 
     if let Some(mismatch) = round_trip_mismatch(&interpretation_results) {
         let diagnostic = orchestration_diagnostic(
@@ -550,6 +566,7 @@ fn build_fragment_source(
     identities: &BTreeMap<String, Identity>,
     fragments: &[Json],
     compositions: &[Json],
+    embedded_children: &mut Vec<String>,
 ) -> Json {
     let mut output = fields.clone();
     output.insert("id".into(), string(identity.id.clone()));
@@ -579,32 +596,38 @@ fn build_fragment_source(
     if semantic_type.starts_with("adr/") {
         output.insert("schema_version".into(), string("1.7"));
         if semantic_type == "adr/logical" {
-            let children = compositions
-                .iter()
-                .filter_map(|value| value.as_object())
-                .filter(|value| value.get("parent").and_then(Json::as_str) == Some(key))
-                .filter_map(|value| value.get("child").and_then(Json::as_str))
-                .filter_map(|child| {
-                    let child_identity = identities.get(child)?;
-                    let child_value = fragments.iter().find_map(|fragment| {
-                        let value = fragment.as_object()?;
-                        (value.get("request_key").and_then(Json::as_str) == Some(child))
-                            .then_some(value)
-                    })?;
-                    let child_type = child_value
-                        .get("semantic_type")
-                        .and_then(Json::as_str)
-                        .unwrap_or("entity/decision");
-                    let mut child_source = child_value
-                        .get("fields")
-                        .and_then(Json::as_object)
-                        .cloned()
-                        .unwrap_or_default();
-                    child_source.insert("id".into(), string(child_identity.id.clone()));
-                    ceremony_alias(&mut child_source, child_type);
-                    Some(Json::Object(child_source))
-                })
-                .collect::<Vec<_>>();
+            let mut children = Vec::new();
+            for composition in compositions.iter().filter_map(Json::as_object) {
+                if composition.get("parent").and_then(Json::as_str) != Some(key) {
+                    continue;
+                }
+                let Some(child) = composition.get("child").and_then(Json::as_str) else {
+                    continue;
+                };
+                let Some(child_identity) = identities.get(child) else {
+                    continue;
+                };
+                let Some(child_value) = fragments.iter().find_map(|fragment| {
+                    let value = fragment.as_object()?;
+                    (value.get("request_key").and_then(Json::as_str) == Some(child))
+                        .then_some(value)
+                }) else {
+                    continue;
+                };
+                let child_type = child_value
+                    .get("semantic_type")
+                    .and_then(Json::as_str)
+                    .unwrap_or("entity/decision");
+                let mut child_source = child_value
+                    .get("fields")
+                    .and_then(Json::as_object)
+                    .cloned()
+                    .unwrap_or_default();
+                child_source.insert("id".into(), string(child_identity.id.clone()));
+                ceremony_alias(&mut child_source, child_type);
+                children.push(Json::Object(child_source));
+                embedded_children.push(child.to_owned());
+            }
             if !children.is_empty() {
                 output.insert("decisions".into(), Json::Array(children));
             }
@@ -1569,5 +1592,105 @@ mod tests {
             .get("candidate_artifacts")
             .and_then(Json::as_array)
             .is_some_and(Vec::is_empty));
+    }
+
+    #[test]
+    fn c05_and_c07_keep_embedded_artifacts_but_seal_only_document_roots() {
+        let corpus = frozen_cases();
+        let cases = corpus.get("cases").and_then(Json::as_array).unwrap();
+        for (case_id, parent_key, child_key) in
+            [("C05", "parent", "child"), ("C07", "adr", "decision")]
+        {
+            let case = cases
+                .iter()
+                .find(|case| case.get("id").and_then(Json::as_str) == Some(case_id))
+                .unwrap();
+            let mut minter = FixedMinter { next: 0x90 };
+            let result =
+                construct_authoring_set_with_minter(case.get("input").unwrap(), &mut minter);
+            assert_eq!(
+                result.get("outcome").and_then(Json::as_str),
+                Some("Constructed")
+            );
+
+            let artifacts = result
+                .get("candidate_artifacts")
+                .and_then(Json::as_array)
+                .unwrap();
+            let artifact_refs = artifacts
+                .iter()
+                .map(|artifact| artifact.get("source_ref").and_then(Json::as_str).unwrap())
+                .collect::<Vec<_>>();
+            assert_eq!(artifacts.len(), 2, "{case_id} retains both artifacts");
+            assert!(artifact_refs.contains(&format!("candidate/{case_id}/{parent_key}").as_str()));
+            assert!(artifact_refs.contains(&format!("candidate/{case_id}/{child_key}").as_str()));
+
+            let child = artifacts
+                .iter()
+                .find(|artifact| {
+                    artifact.get("request_key").and_then(Json::as_str) == Some(child_key)
+                })
+                .unwrap();
+            let child_bytes =
+                base64_decode(child.get("bytes").and_then(Json::as_str).unwrap()).unwrap();
+            let child_source = candidate_source::decode_canonical_candidate(&child_bytes).unwrap();
+            assert_eq!(
+                child_source.get("id").and_then(Json::as_str),
+                Some("019109a0-b1c2-7def-8a00-112233445567"),
+                "{case_id} preserves the embedded child UUID"
+            );
+
+            let basis = result
+                .get("candidate_source_basis")
+                .and_then(Json::as_object)
+                .unwrap();
+            let basis_artifacts = basis.get("artifacts").and_then(Json::as_array).unwrap();
+            assert_eq!(basis_artifacts.len(), 1, "{case_id} has one minimal root");
+            assert_eq!(
+                basis_artifacts[0].get("request_key").and_then(Json::as_str),
+                Some(parent_key)
+            );
+            assert_eq!(
+                basis_artifacts[0].get("source_ref").and_then(Json::as_str),
+                Some(format!("candidate/{case_id}/{parent_key}").as_str())
+            );
+
+            let expected = case
+                .get("expected")
+                .and_then(|expected| expected.get("result"))
+                .and_then(|expected| expected.get("candidate_source_basis"))
+                .and_then(Json::as_object)
+                .unwrap();
+            assert_eq!(
+                basis.get("basis_digest").and_then(Json::as_str),
+                expected.get("basis_digest").and_then(Json::as_str),
+                "{case_id} digest commits to exactly the frozen root set"
+            );
+        }
+    }
+
+    #[test]
+    fn repeated_request_produces_byte_identical_candidate_basis() {
+        let corpus = frozen_cases();
+        let case = corpus
+            .get("cases")
+            .and_then(Json::as_array)
+            .unwrap()
+            .iter()
+            .find(|case| case.get("id").and_then(Json::as_str) == Some("C05"))
+            .unwrap();
+        let input = case.get("input").unwrap();
+        let mut first_minter = FixedMinter { next: 0x90 };
+        let mut second_minter = FixedMinter { next: 0x90 };
+        let first = construct_authoring_set_with_minter(input, &mut first_minter);
+        let second = construct_authoring_set_with_minter(input, &mut second_minter);
+        assert_eq!(
+            first.get("candidate_artifacts"),
+            second.get("candidate_artifacts")
+        );
+        assert_eq!(
+            first.get("candidate_source_basis"),
+            second.get("candidate_source_basis")
+        );
     }
 }

@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+
+- Authoring Construction now seals only minimal non-overlapping candidate
+  source roots while retaining embedded child artifacts in the complete
+  detached candidate result.
+
 ## [0.12.2] — 2026-10-04
 
 ### Fixed

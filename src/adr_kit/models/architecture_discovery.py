@@ -61,18 +61,23 @@ TOPOLOGY_RELATIONSHIP_TYPES = (
 
 
 def lifecycle_stage_from_adr_status(status: Optional[str]) -> LifecycleStageNormalized:
-    """Map ADR status (accepted/...) to normalized registry lifecycle_stage enum."""
+    """Map ADR status (accepted/...) to normalized registry lifecycle_stage enum.
+
+    Raises ``ValueError`` for a missing or unrecognized status.
+    """
 
     if not status:
-        return "active"
-    lowered = status.lower()
+        raise ValueError("Missing ADR status; cannot derive lifecycle_stage")
     mapping: dict[str, LifecycleStageNormalized] = {
         "proposed": "proposed",
         "accepted": "active",
         "deprecated": "deprecated",
         "superseded": "superseded",
     }
-    return mapping.get(lowered, "active")
+    try:
+        return mapping[status.lower()]
+    except KeyError:
+        raise ValueError(f"Unknown ADR status {status!r}; cannot derive lifecycle_stage") from None
 
 
 class DiscoveryProvenance(BaseModel):

@@ -601,6 +601,7 @@ def test_resolve_invariant_canonical_uses_logical_adr_as_canonical_source(tmp_pa
                 {
                     "name": "INV-1000",
                     "summary": "Discovery must be deterministic.",
+                    "lifecycle_stage": "active",
                     "metadata": {
                         "adr_id": "ADR-L-1000",
                         "scope": "global",
@@ -636,6 +637,7 @@ def test_resolve_invariant_canonical_pass_matches_helper(tmp_path):
                 {
                     "name": "INV-1000",
                     "summary": "Discovery must be deterministic.",
+                    "lifecycle_stage": "active",
                     "metadata": {
                         "adr_id": "ADR-L-1000",
                         "scope": "global",

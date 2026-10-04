@@ -134,6 +134,7 @@ def resolve_invariant_canonical(
             entity_type="invariant",
             name=payload["name"],
             summary=payload["summary"],
+            lifecycle_stage=payload["lifecycle_stage"],
             canonical_source=canonical("logical_adr", source_ref, artifact),
             metadata=metadata,
             completeness=complete(),

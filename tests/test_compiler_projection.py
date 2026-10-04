@@ -11,7 +11,11 @@ from adr_kit.compiler.backend.projection import (
     project_unresolved,
 )
 from adr_kit.compiler.ir import IREntity, IRRelationship, IRUnresolved, RelGraph
-from adr_kit.models.architecture_discovery import CanonicalSource, DiscoveryProvenance
+from adr_kit.models.architecture_discovery import (
+    CanonicalSource,
+    DiscoveryProvenance,
+    NormalizedEntity,
+)
 from adr_kit.models.v2_0 import NormalizedEntityV2
 from adr_kit.models.v2_2 import NormalizedEntityV22
 from adr_kit.parser import ADRParser
@@ -46,6 +50,25 @@ def _load_generated_bundle(scope_root):
 
 def _repo_root():
     return __import__("pathlib").Path(__file__).resolve().parents[1]
+
+
+def _ir_record(entity):
+    """Rebuild the IR record extraction stores for a projected registry entity."""
+    fields = dict(
+        id=entity.id,
+        entity_type=entity.entity_type,
+        name=entity.name,
+        summary=entity.summary,
+        canonical_source=entity.canonical_source,
+        source_refs=list(entity.source_refs),
+        metadata=dict(entity.metadata),
+        completeness=entity.completeness,
+        provenance=entity.provenance,
+    )
+    extension = getattr(entity, "extension", None)
+    if extension is not None:
+        return IREntity(**fields, extension=extension)
+    return NormalizedEntity(**fields, lifecycle_stage=entity.lifecycle_stage)
 
 
 def test_build_relationship_summary_matches_current_registry_shape(tmp_path):
@@ -105,18 +128,7 @@ def test_projection_round_trips_current_registry_models(tmp_path):
     if is_v22:
         projected_entities = [
             project_entity_v22(
-                IREntity(
-                    id=entity.id,
-                    entity_type=entity.entity_type,
-                    name=entity.name,
-                    summary=entity.summary,
-                    canonical_source=entity.canonical_source,
-                    source_refs=list(entity.source_refs),
-                    metadata=dict(entity.metadata),
-                    completeness=entity.completeness,
-                    provenance=entity.provenance,
-                    extension=entity.extension,
-                ),
+                _ir_record(entity),
                 rel_graph,
                 namespace,
             ).model_dump(mode="json")
@@ -149,17 +161,7 @@ def test_projection_round_trips_current_registry_models(tmp_path):
     elif is_v2:
         projected_entities = [
             project_entity_v2(
-                IREntity(
-                    id=entity.id,
-                    entity_type=entity.entity_type,
-                    name=entity.name,
-                    summary=entity.summary,
-                    canonical_source=entity.canonical_source,
-                    source_refs=list(entity.source_refs),
-                    metadata=dict(entity.metadata),
-                    completeness=entity.completeness,
-                    provenance=entity.provenance,
-                ),
+                _ir_record(entity),
                 rel_graph,
                 namespace,
             ).model_dump(mode="json")
@@ -185,17 +187,7 @@ def test_projection_round_trips_current_registry_models(tmp_path):
     else:
         projected_entities = [
             project_entity(
-                IREntity(
-                    id=entity.id,
-                    entity_type=entity.entity_type,
-                    name=entity.name,
-                    summary=entity.summary,
-                    canonical_source=entity.canonical_source,
-                    source_refs=list(entity.source_refs),
-                    metadata=dict(entity.metadata),
-                    completeness=entity.completeness,
-                    provenance=entity.provenance,
-                ),
+                _ir_record(entity),
                 rel_graph,
             ).model_dump(mode="json")
             for entity in entity_registry.entities

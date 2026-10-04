@@ -19,6 +19,7 @@ def _mention(
         {
             "name": inv_id,
             "summary": statement,
+            "lifecycle_stage": "active",
             "metadata": {
                 "adr_id": adr_id,
                 "scope": "global",

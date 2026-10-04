@@ -7,6 +7,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.12.2] — 2026-10-04
+
+### Fixed
+
+- Compiled entity registries now project the declaring ADR's lifecycle onto
+  derived child entities. Decisions, invariants, capabilities, boundaries,
+  contracts, systems, components, interfaces, and implementation decisions
+  declared by a proposed, deprecated, or superseded ADR were emitted as
+  `active` because the projection ignored the lifecycle set during extraction
+  and invariant canonicalization rebuilt the entity without it. Accepted ADRs
+  are unaffected, and normative propositions remain lifecycle-free.
+- `lifecycle_stage_from_adr_status` now raises `ValueError` for a missing or
+  unrecognized ADR status instead of returning `active`, and compiler
+  projection fails closed when no declaring-ADR lifecycle is available.
+
 ## [0.12.1] — 2026-10-03
 
 ### Fixed

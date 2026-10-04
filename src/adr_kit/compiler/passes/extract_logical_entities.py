@@ -240,6 +240,7 @@ def extract_logical_entities(
                     payload={
                         "name": alias_id if isinstance(alias_id, str) and alias_id else invariant.id,
                         "summary": summary(invariant.statement),
+                        "lifecycle_stage": adr_lifecycle,
                         "metadata": metadata,
                     },
                     artifact_path=artifact,

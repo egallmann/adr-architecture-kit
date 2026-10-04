@@ -56,6 +56,10 @@ def _lifecycle_stage_for_projection(entity: IREntity) -> str:
     raw = entity.metadata.get("lifecycle_stage")
     if isinstance(raw, str) and raw in ("proposed", "active", "deprecated", "superseded"):
         return raw
+    # Extraction stores NormalizedEntity records in the IR. Only a lifecycle the
+    # producer set from the declaring ADR is authoritative; the model default is not.
+    if "lifecycle_stage" in getattr(entity, "model_fields_set", ()):
+        return str(getattr(entity, "lifecycle_stage"))
     return lifecycle_stage_from_adr_status(
         entity.metadata.get("status") if isinstance(entity.metadata.get("status"), str) else None
     )

@@ -5,8 +5,8 @@ artifact_kind: rendered_adr_markdown
 generator_id: adr-projection-markdown
 generator_version: 3
 hash_algorithm: sha256
-source_hash: 39aaeb0c7cc937f1007b8644cce0abee4b1c3af9b12be21adfc4c9b6a58cfe43
-rendered_hash: f9ea5dc863ddd478a0077e13e32fafcca755637b4f0ea72eb33d9b2da715296f
+source_hash: 17c13b540d1955e1efc347ee7618f8a86929eb4ad7f13c64889fbfb696687564
+rendered_hash: effbf70024136883cca1314cdbed62c80969f8a5675676b005748b059b9690dd
 -->
 
 # ADR-L-0033: Governed Candidate Binding for Authoring Construction
@@ -84,17 +84,20 @@ Node behavior required before parity is claimed.
 **Rationale**
 
 A DTO type, Constructed outcome, sealed flag, or caller-provided
-qualification claim is not proof. Before producing a promotable contract,
-the provider verifies exact authority and resource closure, source
-selectors and serialization profile, candidate bytes and digests, sealed
-source basis, and artifact/root consistency. Through shared canonical
-semantic machinery it validates the request and candidate, replays
-construction using established identities, and proves complete normalized
-equivalence over the whole qualified result. It verifies provenance and
-identity evidence separately from byte integrity and semantic
-qualification. Missing or unresolved authority cannot become readiness.
-This verification reuses the canonical semantic authority; it does not add
-a second compiler or interpreter in promotion.
+qualification claim is not proof. Preparation MUST independently
+re-establish construction qualification through canonical semantic
+authority before producing a promotable contract. Verification MUST cover
+exact candidate bytes and digests, source selectors and serialization
+profile, qualified authority and resource closure, sealed source-basis
+integrity, artifact/root consistency, identity continuity, and complete
+whole-result normalized equivalence. Deterministic construction replay
+using established identities is an acceptable implementation strategy;
+another canonical verification operation is also acceptable if it proves
+the same governed facts without altering candidate meaning. Byte
+integrity, semantic qualification, and provenance are verified distinctly.
+Missing or unresolved authority cannot become readiness. This verification
+reuses canonical semantic authority; it does not add a second compiler or
+interpreter in promotion.
 
 ### DEC-0263 — Restrict initial candidate persistence to complete qualified ADR documents
 
@@ -138,8 +141,8 @@ whole-set accounting are material execution intent and participate in the
 Promotion Contract's locked provider evidence. Apply derives execution
 only from that approved evidence and verifies it again. Sidecar state may
 cache a resolution but cannot redirect it. Create, amend, and explicit
-supersede are supported only when every affected complete post-image and
-destination is covered by the same lock.
+supersede are eligible under this authority only when every affected
+complete post-image and destination is covered by the same lock.
 
 ### DEC-0266 — Use genuine journal outcomes with the existing STE Promotion Contract v0.1
 

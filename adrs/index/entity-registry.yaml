@@ -42468,7 +42468,7 @@ entities:
   uri: adr://adr-architecture-kit/entities/01a1044a-fe30-7025-b327-c8d22a0d7a8c
   created_at: '2026-10-04T00:23:06.032Z'
   entity_fingerprint: sha256:c472e6fcd1d44f351d075373f7fd7d09f036f2eb13ea38ebdbb9df4dbd1c4abe
-  lifecycle_stage: active
+  lifecycle_stage: proposed
   canonical_source:
     source_type: logical_adr
     source_ref: 01a1044a-fe30-7025-b327-c8d13b1a135a#01a1044a-fe30-7025-b327-c8d22a0d7a8c
@@ -42527,13 +42527,13 @@ entities:
   alias_ref: DEC-0262:independently-verify-construction-qualification-before-binding
   entity_type: decision
   name: Require canonical verification of construction evidence before preparation
-  summary: 'A DTO type, Constructed outcome, sealed flag, or caller-provided qualification
-    claim is not proof. Before producing a promotable contract, the provider verifies
-    exact authority and resource closure, source selectors and '
+  summary: A DTO type, Constructed outcome, sealed flag, or caller-provided qualification
+    claim is not proof. Preparation MUST independently re-establish construction qualification
+    through canonical semantic authority before produc
   uri: adr://adr-architecture-kit/entities/01a1044a-fe30-7025-b327-c8d38052131a
   created_at: '2026-10-04T00:23:06.032Z'
   entity_fingerprint: sha256:9fa88daaeeb2b5d7dc8641879c6838d638b1a53ecc58e7a606ab626c4ddb4de2
-  lifecycle_stage: active
+  lifecycle_stage: proposed
   canonical_source:
     source_type: logical_adr
     source_ref: 01a1044a-fe30-7025-b327-c8d13b1a135a#01a1044a-fe30-7025-b327-c8d38052131a
@@ -42598,7 +42598,7 @@ entities:
   uri: adr://adr-architecture-kit/entities/01a1044a-fe30-7025-b327-c8d40dff4adf
   created_at: '2026-10-04T00:23:06.032Z'
   entity_fingerprint: sha256:7d2fda487ef5150824185472d04337856f0577720ef8c66c7e8247b724f46ceb
-  lifecycle_stage: active
+  lifecycle_stage: proposed
   canonical_source:
     source_type: logical_adr
     source_ref: 01a1044a-fe30-7025-b327-c8d13b1a135a#01a1044a-fe30-7025-b327-c8d40dff4adf
@@ -42664,7 +42664,7 @@ entities:
   uri: adr://adr-architecture-kit/entities/01a1044a-fe30-7025-b327-c8d5bf1b064d
   created_at: '2026-10-04T00:23:06.032Z'
   entity_fingerprint: sha256:d89a6181ff76722be00b60c643709184d92ac65753debd71a023a057f79f2537
-  lifecycle_stage: active
+  lifecycle_stage: proposed
   canonical_source:
     source_type: logical_adr
     source_ref: 01a1044a-fe30-7025-b327-c8d13b1a135a#01a1044a-fe30-7025-b327-c8d5bf1b064d
@@ -42730,7 +42730,7 @@ entities:
   uri: adr://adr-architecture-kit/entities/01a1044a-fe30-7025-b327-c8d6b3f4ad1b
   created_at: '2026-10-04T00:23:06.032Z'
   entity_fingerprint: sha256:1e78ae6d50f0998ddc64d1a69fed98f84191fd6baefba4612f175db2338a5f15
-  lifecycle_stage: active
+  lifecycle_stage: proposed
   canonical_source:
     source_type: logical_adr
     source_ref: 01a1044a-fe30-7025-b327-c8d13b1a135a#01a1044a-fe30-7025-b327-c8d6b3f4ad1b
@@ -42795,7 +42795,7 @@ entities:
   uri: adr://adr-architecture-kit/entities/01a1044a-fe30-7025-b327-c8d739646669
   created_at: '2026-10-04T00:23:06.032Z'
   entity_fingerprint: sha256:74f5f0119d04773b9733c5eb1a1a4e473051aafec02601b1dd6baf1391d9740b
-  lifecycle_stage: active
+  lifecycle_stage: proposed
   canonical_source:
     source_type: logical_adr
     source_ref: 01a1044a-fe30-7025-b327-c8d13b1a135a#01a1044a-fe30-7025-b327-c8d739646669
@@ -42860,7 +42860,7 @@ entities:
   uri: adr://adr-architecture-kit/entities/01a1044a-fe30-7025-b327-c8d80515ce3c
   created_at: '2026-10-04T00:23:06.032Z'
   entity_fingerprint: sha256:9c5755233684d7c6f1b13783ef159f3089667eaa8ee8df7d6e51ed08e0294224
-  lifecycle_stage: active
+  lifecycle_stage: proposed
   canonical_source:
     source_type: logical_adr
     source_ref: 01a1044a-fe30-7025-b327-c8d13b1a135a#01a1044a-fe30-7025-b327-c8d80515ce3c
@@ -42925,7 +42925,7 @@ entities:
   uri: adr://adr-architecture-kit/entities/01a1044a-fe30-7025-b327-c8d9239ec8cd
   created_at: '2026-10-04T00:23:06.032Z'
   entity_fingerprint: sha256:6c5de4aa38b32d7a564c2a5f31dfc46615d3edf9d794f92d091d765403e60e43
-  lifecycle_stage: active
+  lifecycle_stage: proposed
   canonical_source:
     source_type: logical_adr
     source_ref: 01a1044a-fe30-7025-b327-c8d13b1a135a#01a1044a-fe30-7025-b327-c8d9239ec8cd
@@ -42993,7 +42993,7 @@ entities:
   uri: adr://adr-architecture-kit/entities/01a1044a-fe30-7025-b327-c8da934b3f8c
   created_at: '2026-10-04T00:23:06.032Z'
   entity_fingerprint: sha256:d45447c865b7c71ca9ab40fb312d1994ef73a9b3aded6a1e024d8a0b2d31bb1f
-  lifecycle_stage: active
+  lifecycle_stage: proposed
   canonical_source:
     source_type: logical_adr
     source_ref: 01a1044a-fe30-7025-b327-c8d13b1a135a#01a1044a-fe30-7025-b327-c8da934b3f8c
@@ -43061,7 +43061,7 @@ entities:
   uri: adr://adr-architecture-kit/entities/01a1044a-fe30-7025-b327-c8dbfbcf57f4
   created_at: '2026-10-04T00:23:06.032Z'
   entity_fingerprint: sha256:74860359fa7a2cbaea0ecfa61c63912c66371dea5735f3606735644de025e66a
-  lifecycle_stage: active
+  lifecycle_stage: proposed
   canonical_source:
     source_type: logical_adr
     source_ref: 01a1044a-fe30-7025-b327-c8d13b1a135a#01a1044a-fe30-7025-b327-c8dbfbcf57f4
@@ -43129,7 +43129,7 @@ entities:
   uri: adr://adr-architecture-kit/entities/01a1044a-fe30-7025-b327-c8dcd5abf966
   created_at: '2026-10-04T00:23:06.032Z'
   entity_fingerprint: sha256:dfc609626aa71676716a6623b80a330cf6b12c1de3f3c9c93ae52dd782510df9
-  lifecycle_stage: active
+  lifecycle_stage: proposed
   canonical_source:
     source_type: logical_adr
     source_ref: 01a1044a-fe30-7025-b327-c8d13b1a135a#01a1044a-fe30-7025-b327-c8dcd5abf966
@@ -43197,7 +43197,7 @@ entities:
   uri: adr://adr-architecture-kit/entities/01a1044a-fe30-7025-b327-c8dd8a8b15e3
   created_at: '2026-10-04T00:23:06.032Z'
   entity_fingerprint: sha256:19bb07392cb5e91436e4d985bd4229f1010d2523b63ed12ade3e8a80949d1585
-  lifecycle_stage: active
+  lifecycle_stage: proposed
   canonical_source:
     source_type: logical_adr
     source_ref: 01a1044a-fe30-7025-b327-c8d13b1a135a#01a1044a-fe30-7025-b327-c8dd8a8b15e3
@@ -43265,7 +43265,7 @@ entities:
   uri: adr://adr-architecture-kit/entities/01a1044a-fe30-7025-b327-c8def6ac2b7e
   created_at: '2026-10-04T00:23:06.032Z'
   entity_fingerprint: sha256:bf16febeaca67099a9147a94aeedba42526b1c3649552ba0efd10d1013038d79
-  lifecycle_stage: active
+  lifecycle_stage: proposed
   canonical_source:
     source_type: logical_adr
     source_ref: 01a1044a-fe30-7025-b327-c8d13b1a135a#01a1044a-fe30-7025-b327-c8def6ac2b7e
@@ -43332,7 +43332,7 @@ entities:
   uri: adr://adr-architecture-kit/entities/01a1044a-fe30-7025-b327-c8e06bc25362
   created_at: '2026-10-04T00:23:06.032Z'
   entity_fingerprint: sha256:5931c4747996a9ab764613dd98419403a78df2e5fa60ae150cecd9183f8821f7
-  lifecycle_stage: active
+  lifecycle_stage: proposed
   canonical_source:
     source_type: logical_adr
     source_ref: 01a1044a-fe30-7025-b327-c8d13b1a135a#01a1044a-fe30-7025-b327-c8e06bc25362
@@ -43399,7 +43399,7 @@ entities:
   uri: adr://adr-architecture-kit/entities/01a1044a-fe30-7025-b327-c8e189f951a1
   created_at: '2026-10-04T00:23:06.032Z'
   entity_fingerprint: sha256:0d59757d63d8eb25a1483b6cb4e9e4a6efca73b3d827ab7e9f8053e4a8d6b1e0
-  lifecycle_stage: active
+  lifecycle_stage: proposed
   canonical_source:
     source_type: logical_adr
     source_ref: 01a1044a-fe30-7025-b327-c8d13b1a135a#01a1044a-fe30-7025-b327-c8e189f951a1

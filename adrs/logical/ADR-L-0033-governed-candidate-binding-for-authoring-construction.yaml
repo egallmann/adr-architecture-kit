@@ -68,17 +68,20 @@ decisions:
   summary: Require canonical verification of construction evidence before preparation
   rationale: |
     A DTO type, Constructed outcome, sealed flag, or caller-provided
-    qualification claim is not proof. Before producing a promotable contract,
-    the provider verifies exact authority and resource closure, source
-    selectors and serialization profile, candidate bytes and digests, sealed
-    source basis, and artifact/root consistency. Through shared canonical
-    semantic machinery it validates the request and candidate, replays
-    construction using established identities, and proves complete normalized
-    equivalence over the whole qualified result. It verifies provenance and
-    identity evidence separately from byte integrity and semantic
-    qualification. Missing or unresolved authority cannot become readiness.
-    This verification reuses the canonical semantic authority; it does not add
-    a second compiler or interpreter in promotion.
+    qualification claim is not proof. Preparation MUST independently
+    re-establish construction qualification through canonical semantic
+    authority before producing a promotable contract. Verification MUST cover
+    exact candidate bytes and digests, source selectors and serialization
+    profile, qualified authority and resource closure, sealed source-basis
+    integrity, artifact/root consistency, identity continuity, and complete
+    whole-result normalized equivalence. Deterministic construction replay
+    using established identities is an acceptable implementation strategy;
+    another canonical verification operation is also acceptable if it proves
+    the same governed facts without altering candidate meaning. Byte
+    integrity, semantic qualification, and provenance are verified distinctly.
+    Missing or unresolved authority cannot become readiness. This verification
+    reuses canonical semantic authority; it does not add a second compiler or
+    interpreter in promotion.
 - id: 01a1044a-fe30-7025-b327-c8d40dff4adf
   alias_id: DEC-0263
   alias_name: initially-persist-complete-adr-document-roots
@@ -122,8 +125,8 @@ decisions:
     Promotion Contract's locked provider evidence. Apply derives execution
     only from that approved evidence and verifies it again. Sidecar state may
     cache a resolution but cannot redirect it. Create, amend, and explicit
-    supersede are supported only when every affected complete post-image and
-    destination is covered by the same lock.
+    supersede are eligible under this authority only when every affected
+    complete post-image and destination is covered by the same lock.
 - id: 01a1044a-fe30-7025-b327-c8d739646669
   alias_id: DEC-0266
   alias_name: retain-genuine-design-journal-and-promotion-contract-v01

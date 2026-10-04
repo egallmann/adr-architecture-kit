@@ -125,17 +125,17 @@ def test_public_host_preserves_complete_artifacts_and_minimal_source_roots(
 ) -> None:
     result = construct_authoring_set(_request(case_id))
     expected = _case(case_id)["expected"]["result"]
+    assert result.candidate_source_basis is not None
+    basis_artifacts = cast(list[dict[str, Any]], result.candidate_source_basis["artifacts"])
 
     assert result.outcome == "Constructed"
     assert [item["source_ref"] for item in result.candidate_artifacts] == [
         item["source_ref"] for item in expected["candidate_artifacts"]
     ]
-    assert [item["source_ref"] for item in result.candidate_source_basis["artifacts"]] == [
+    assert [item["source_ref"] for item in basis_artifacts] == [
         item["source_ref"] for item in expected["candidate_source_basis"]["artifacts"]
     ]
-    assert [item["request_key"] for item in result.candidate_source_basis["artifacts"]] == [
-        parent_key
-    ]
+    assert [item["request_key"] for item in basis_artifacts] == [parent_key]
     assert child_key in {item["request_key"] for item in result.candidate_artifacts}
 
 

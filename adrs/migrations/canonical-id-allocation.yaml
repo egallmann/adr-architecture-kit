@@ -8,7 +8,7 @@ high_water_marks:
   DEC: 9000
   IFACE: 35
   IMPL: 29
-  INV: 275
+  INV: 283
 allocations:
 - id: BOUND-0001
   entity_type: boundary
@@ -2092,6 +2092,42 @@ allocations:
   source_pointer: /decisions/6/alias_id
   state: active
   adr_id: 01a1044a-fe30-7025-b327-c8d13b1a135a
+- id: DEC-0268
+  entity_type: decision
+  file_path: adrs/logical/ADR-L-0034-detached-normalized-semantic-equivalence-for-authoring-construction.yaml
+  source_pointer: /decisions/0/alias_id
+  state: active
+  adr_id: 01a10888-daba-75bc-a071-d33f43ab8a8b
+- id: DEC-0269
+  entity_type: decision
+  file_path: adrs/logical/ADR-L-0034-detached-normalized-semantic-equivalence-for-authoring-construction.yaml
+  source_pointer: /decisions/1/alias_id
+  state: active
+  adr_id: 01a10888-daba-75bc-a071-d33f43ab8a8b
+- id: DEC-0270
+  entity_type: decision
+  file_path: adrs/logical/ADR-L-0034-detached-normalized-semantic-equivalence-for-authoring-construction.yaml
+  source_pointer: /decisions/2/alias_id
+  state: active
+  adr_id: 01a10888-daba-75bc-a071-d33f43ab8a8b
+- id: DEC-0271
+  entity_type: decision
+  file_path: adrs/logical/ADR-L-0034-detached-normalized-semantic-equivalence-for-authoring-construction.yaml
+  source_pointer: /decisions/3/alias_id
+  state: active
+  adr_id: 01a10888-daba-75bc-a071-d33f43ab8a8b
+- id: DEC-0272
+  entity_type: decision
+  file_path: adrs/logical/ADR-L-0034-detached-normalized-semantic-equivalence-for-authoring-construction.yaml
+  source_pointer: /decisions/4/alias_id
+  state: active
+  adr_id: 01a10888-daba-75bc-a071-d33f43ab8a8b
+- id: DEC-0273
+  entity_type: decision
+  file_path: adrs/logical/ADR-L-0034-detached-normalized-semantic-equivalence-for-authoring-construction.yaml
+  source_pointer: /decisions/5/alias_id
+  state: active
+  adr_id: 01a10888-daba-75bc-a071-d33f43ab8a8b
 - id: DEC-9000
   entity_type: decision
   adr_id: ADR-L-9000
@@ -3934,3 +3970,51 @@ allocations:
   source_pointer: /invariants/7/alias_id
   state: active
   adr_id: 01a1044a-fe30-7025-b327-c8d13b1a135a
+- id: INV-0276
+  entity_type: invariant
+  file_path: adrs/logical/ADR-L-0034-detached-normalized-semantic-equivalence-for-authoring-construction.yaml
+  source_pointer: /invariants/0/alias_id
+  state: active
+  adr_id: 01a10888-daba-75bc-a071-d33f43ab8a8b
+- id: INV-0277
+  entity_type: invariant
+  file_path: adrs/logical/ADR-L-0034-detached-normalized-semantic-equivalence-for-authoring-construction.yaml
+  source_pointer: /invariants/1/alias_id
+  state: active
+  adr_id: 01a10888-daba-75bc-a071-d33f43ab8a8b
+- id: INV-0278
+  entity_type: invariant
+  file_path: adrs/logical/ADR-L-0034-detached-normalized-semantic-equivalence-for-authoring-construction.yaml
+  source_pointer: /invariants/2/alias_id
+  state: active
+  adr_id: 01a10888-daba-75bc-a071-d33f43ab8a8b
+- id: INV-0279
+  entity_type: invariant
+  file_path: adrs/logical/ADR-L-0034-detached-normalized-semantic-equivalence-for-authoring-construction.yaml
+  source_pointer: /invariants/3/alias_id
+  state: active
+  adr_id: 01a10888-daba-75bc-a071-d33f43ab8a8b
+- id: INV-0280
+  entity_type: invariant
+  file_path: adrs/logical/ADR-L-0034-detached-normalized-semantic-equivalence-for-authoring-construction.yaml
+  source_pointer: /invariants/4/alias_id
+  state: active
+  adr_id: 01a10888-daba-75bc-a071-d33f43ab8a8b
+- id: INV-0281
+  entity_type: invariant
+  file_path: adrs/logical/ADR-L-0034-detached-normalized-semantic-equivalence-for-authoring-construction.yaml
+  source_pointer: /invariants/5/alias_id
+  state: active
+  adr_id: 01a10888-daba-75bc-a071-d33f43ab8a8b
+- id: INV-0282
+  entity_type: invariant
+  file_path: adrs/logical/ADR-L-0034-detached-normalized-semantic-equivalence-for-authoring-construction.yaml
+  source_pointer: /invariants/6/alias_id
+  state: active
+  adr_id: 01a10888-daba-75bc-a071-d33f43ab8a8b
+- id: INV-0283
+  entity_type: invariant
+  file_path: adrs/logical/ADR-L-0034-detached-normalized-semantic-equivalence-for-authoring-construction.yaml
+  source_pointer: /invariants/7/alias_id
+  state: active
+  adr_id: 01a10888-daba-75bc-a071-d33f43ab8a8b

@@ -6,7 +6,7 @@ generator_id: adr-projection-markdown
 generator_version: 3
 hash_algorithm: sha256
 source_hash: 9fe7dcc974d65e5f5d9e8d44c2e81f9478809c9f65bb27c873e0768b3f07d061
-rendered_hash: 1944205719e6768d386bb6344be17c752cafc17c1027625a206a68bd24bea5b0
+rendered_hash: 37e69bb555b80b8451218fd36921dd1baeb1b9369984a8598581db457dcb435f
 -->
 
 # ADR-L-0033: Governed Candidate Binding for Authoring Construction
@@ -334,6 +334,7 @@ Asserted success flags and incomplete local evidence cannot substitute for quali
 - [ADR-L-0030](ADR-L-0030-canonical-source-basis-and-semantic-execution-surface.md)
 - [ADR-L-0031](ADR-L-0031-non-recursive-semantic-contract-conformance-binding.md)
 - [ADR-L-0032](ADR-L-0032-candidate-source-representation-and-round-trip-basis-authority.md)
+- [ADR-L-0034](ADR-L-0034-detached-normalized-semantic-equivalence-for-authoring-construction.md)
 
 
 

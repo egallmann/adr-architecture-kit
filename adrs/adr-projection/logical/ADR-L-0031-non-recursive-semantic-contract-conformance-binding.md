@@ -6,7 +6,7 @@ generator_id: adr-projection-markdown
 generator_version: 3
 hash_algorithm: sha256
 source_hash: adc6305471721dbca04f75a60b992a9c024be14aa28920edf1402582b5e6069a
-rendered_hash: c142b053b6e8668ec81ae267b654d6099bcd2876cea04e6dcf123739dbbb7c24
+rendered_hash: ebe64856cd091847edb5dbfa6b95b9c4c28e890c79fb82789988664b64fa4ce4
 -->
 
 # ADR-L-0031: Non-Recursive Semantic Contract Conformance Binding
@@ -364,6 +364,7 @@ flowchart LR
 - [ADR-L-0030](ADR-L-0030-canonical-source-basis-and-semantic-execution-surface.md)
 - [ADR-L-0032](ADR-L-0032-candidate-source-representation-and-round-trip-basis-authority.md)
 - [ADR-L-0033](ADR-L-0033-governed-candidate-binding-for-authoring-construction.md)
+- [ADR-L-0034](ADR-L-0034-detached-normalized-semantic-equivalence-for-authoring-construction.md)
 
 
 

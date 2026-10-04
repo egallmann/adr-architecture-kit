@@ -5,26 +5,26 @@
   "baseline_sha": "9bce83c",
   "architecture_graph": {
     "path": "adrs/index/architecture-graph.yaml",
-    "source_sha256": "4055bf204fb193d8f3fcf4a348e5648bdf0d8f89dd639e6867f664f31af9cfa5",
-    "node_count": 649,
-    "edge_count": 896,
-    "node_semantic_sha256": "81132c4a679ce032bc6ff3a6449db7a3fd8ff3cf5af66c699e6e38be2e7b9233",
-    "edge_semantic_sha256": "8e16f138558a5f79eaff2d6eb6eb9be07e7815a012baed64304297ba298aaeb6",
+    "source_sha256": "797e95f1b8fd50213dfe175bdc2992b090783fdbcaa057694c65821f24d236e5",
+    "node_count": 664,
+    "edge_count": 917,
+    "node_semantic_sha256": "21f10d5b3a761f0729832268b68c9de569df7027e6920a66106ad2125f523815",
+    "edge_semantic_sha256": "e202419914fb4a29b565755eec5d084ea0757536cc066ee916c2a0a4da34a477",
     "node_types": {
-      "adr": 44,
+      "adr": 45,
       "boundary": 4,
       "capability": 58,
       "component": 8,
       "contract": 5,
-      "decision": 259,
+      "decision": 265,
       "implementation_decision": 14,
       "interface": 13,
-      "invariant": 242,
+      "invariant": 250,
       "system": 2
     },
     "edge_types": {
       "composed_of": 5,
-      "declared_in": 605,
+      "declared_in": 619,
       "depends_on": 3,
       "embodied_in": 9,
       "enabled_by": 1,
@@ -33,12 +33,12 @@
       "implemented_by": 2,
       "implements_logical": 30,
       "provides_interface": 13,
-      "references": 161,
+      "references": 168,
       "superseded_by": 1,
       "supersedes": 1
     },
     "baseline_identity_evidence": {
-      "uuidv7_nodes": 649,
+      "uuidv7_nodes": 664,
       "nodes_with_alias_envelope": 0,
       "uuidv7_edges": 0,
       "edges_with_alias_envelope": 0
@@ -57,7 +57,8 @@
     "adrs/logical/ADR-L-0022-universal-uuidv7-entity-identity.yaml": "cf0c8f5239498a43c6a8b97185ec0a62aec5fac06e9f1adde14ff015808a3c04",
     "adrs/physical-system/ADR-PS-0001-adr-architecture-kit-discovery-and-indexing-system.yaml": "6328a023b4276e6d6393ce75017a72994c141326cdaf57d3d3bce111336daf50",
     "adrs/physical-system/ADR-PS-0002-adr-kit-compiler-and-validation-runtime.yaml": "5502ba45285b28699b563f2eed05bd5e1ac9ead2e344473e6897aa4f434fd6aa",
-    "adrs/logical/ADR-L-0033-governed-candidate-binding-for-authoring-construction.yaml": "bddeb15e1902424066b8ff22e3ba5e5293a5e434f24d5d3f55ca59a0b531fff7"
+    "adrs/logical/ADR-L-0033-governed-candidate-binding-for-authoring-construction.yaml": "bddeb15e1902424066b8ff22e3ba5e5293a5e434f24d5d3f55ca59a0b531fff7",
+    "adrs/logical/ADR-L-0034-detached-normalized-semantic-equivalence-for-authoring-construction.yaml": "58f3c7bc374e4bda35351f409b0524c142b18c30b4fef9db9140a9572d005808"
   },
   "graph_eligible_corpus_records": [
     {

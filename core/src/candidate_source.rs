@@ -38,6 +38,16 @@ pub(crate) struct CandidateSourceBasis {
     pub(crate) basis_digest: String,
 }
 
+/// Construction evidence that one candidate source was emitted as a complete
+/// semantic value inside another candidate source. This is recorded by the
+/// composition renderer at the point of insertion; request-key similarity or
+/// source shape alone never establishes containment.
+#[derive(Clone, Debug, PartialEq)]
+pub(crate) struct CandidateSourceContainment {
+    pub(crate) parent_request_key: String,
+    pub(crate) child_request_key: String,
+}
+
 #[derive(Clone, Debug)]
 enum OrderedValue {
     Null,
@@ -797,6 +807,130 @@ pub(crate) fn seal_candidate_source_basis(
     })
 }
 
+/// Select the minimal source roots from the complete set of returned
+/// candidate artifacts. A child is omitted only when construction recorded an
+/// actual composition insertion and its exact canonical source value is a
+/// complete subtree of the parent document bytes.
+pub(crate) fn select_minimal_candidate_source_roots(
+    artifacts: Vec<CandidateSourceArtifact>,
+    containments: &[CandidateSourceContainment],
+) -> Result<Vec<CandidateSourceArtifact>, String> {
+    let mut artifact_indices = BTreeMap::new();
+    for (index, artifact) in artifacts.iter().enumerate() {
+        if artifact_indices
+            .insert(artifact.request_key.as_str(), index)
+            .is_some()
+        {
+            return Err(format!(
+                "candidate containment has an ambiguous request key: {}",
+                artifact.request_key
+            ));
+        }
+    }
+
+    let mut parents = BTreeMap::<String, String>::new();
+    for containment in containments {
+        if containment.parent_request_key == containment.child_request_key {
+            return Err("candidate containment cannot contain itself".into());
+        }
+        let parent_index = *artifact_indices
+            .get(containment.parent_request_key.as_str())
+            .ok_or_else(|| {
+                format!(
+                    "candidate containment parent is not a returned artifact: {}",
+                    containment.parent_request_key
+                )
+            })?;
+        let child_index = *artifact_indices
+            .get(containment.child_request_key.as_str())
+            .ok_or_else(|| {
+                format!(
+                    "candidate containment child is not a returned artifact: {}",
+                    containment.child_request_key
+                )
+            })?;
+        let parent = &artifacts[parent_index];
+        let child = &artifacts[child_index];
+        if parent.artifact_kind != "authoring_document" {
+            return Err(format!(
+                "candidate containment parent is not an authoring_document: {}",
+                parent.source_ref
+            ));
+        }
+
+        let parent_source = decode_canonical_candidate(&parent.bytes)?;
+        let child_source = decode_canonical_candidate(&child.bytes)?;
+        if !contains_exact_value(&parent_source, &child_source) {
+            return Err(format!(
+                "candidate containment evidence does not match exact embedded source: {} -> {}",
+                parent.source_ref, child.source_ref
+            ));
+        }
+        if parents
+            .insert(
+                containment.child_request_key.clone(),
+                containment.parent_request_key.clone(),
+            )
+            .is_some()
+        {
+            return Err(format!(
+                "candidate artifact has ambiguous containment: {}",
+                child.source_ref
+            ));
+        }
+    }
+
+    ensure_acyclic_containment(&artifact_indices, &parents)?;
+    let roots = artifacts
+        .into_iter()
+        .filter(|artifact| !parents.contains_key(&artifact.request_key))
+        .collect::<Vec<_>>();
+    if roots.is_empty() {
+        return Err("candidate source containment has no source roots".into());
+    }
+    Ok(roots)
+}
+
+fn contains_exact_value(parent: &Json, candidate: &Json) -> bool {
+    if parent == candidate {
+        return true;
+    }
+    match parent {
+        Json::Array(values) => values
+            .iter()
+            .any(|value| contains_exact_value(value, candidate)),
+        Json::Object(values) => values
+            .values()
+            .any(|value| contains_exact_value(value, candidate)),
+        Json::Null | Json::Bool(_) | Json::Number(_) | Json::String(_) => false,
+    }
+}
+
+fn ensure_acyclic_containment(
+    artifacts: &BTreeMap<&str, usize>,
+    parents: &BTreeMap<String, String>,
+) -> Result<(), String> {
+    let mut complete = BTreeSet::new();
+    for request_key in artifacts.keys() {
+        let mut active = BTreeSet::new();
+        let mut current = *request_key;
+        loop {
+            if complete.contains(current) {
+                break;
+            }
+            if !active.insert(current) {
+                return Err("candidate source containment contains a cycle".into());
+            }
+            let Some(parent) = parents.get(current) else {
+                break;
+            };
+            current = parent;
+        }
+        complete.extend(active);
+    }
+    Ok(())
+}
+
 fn authoring_schema_resources() -> Result<BTreeMap<String, Json>, String> {
     [
         (
@@ -874,9 +1008,9 @@ fn canonical_yaml_key(line: &str) -> Result<(String, &str), String> {
                 if semantic_contract::canonical_string(&key) != raw {
                     return Err("canonical YAML mapping key is not canonically quoted".into());
                 }
-                let rest = line[offset + 1..]
-                    .strip_prefix(':')
-                    .ok_or_else(|| "canonical YAML mapping key must be followed by ':'".to_owned())?;
+                let rest = line[offset + 1..].strip_prefix(':').ok_or_else(|| {
+                    "canonical YAML mapping key must be followed by ':'".to_owned()
+                })?;
                 if rest.starts_with(' ') {
                     if rest.starts_with("  ") {
                         return Err("canonical YAML mapping separator is not canonical".into());
@@ -965,13 +1099,13 @@ impl<'a> CanonicalYaml<'a> {
             return Err("canonical candidate source is empty".into());
         }
         let lines = body.split('\n').collect::<Vec<_>>();
-        if lines.iter().any(|line| line.is_empty() || line.trim_end() != *line) {
+        if lines
+            .iter()
+            .any(|line| line.is_empty() || line.trim_end() != *line)
+        {
             return Err("canonical candidate source contains a blank or padded line".into());
         }
-        let mut parser = Self {
-            lines,
-            position: 0,
-        };
+        let mut parser = Self { lines, position: 0 };
         let value = parser.node(0)?;
         if parser.position != parser.lines.len() {
             return Err("canonical candidate source contains trailing content".into());
@@ -1040,9 +1174,11 @@ impl<'a> CanonicalYaml<'a> {
             let (key, rest) = canonical_yaml_key(&line[indent..])?;
             self.position += 1;
             let value = if rest.is_empty() {
-                let next = self.lines.get(self.position).copied().ok_or_else(|| {
-                    "canonical YAML mapping value is missing".to_owned()
-                })?;
+                let next = self
+                    .lines
+                    .get(self.position)
+                    .copied()
+                    .ok_or_else(|| "canonical YAML mapping value is missing".to_owned())?;
                 let child_indent = Self::indentation(next)?;
                 if child_indent != indent + 2 {
                     return Err("canonical YAML nested value must be indented by two spaces".into());
@@ -1075,12 +1211,16 @@ impl<'a> CanonicalYaml<'a> {
             let rest = content.strip_prefix('-').unwrap();
             self.position += 1;
             if rest.is_empty() {
-                let next = self.lines.get(self.position).copied().ok_or_else(|| {
-                    "canonical YAML sequence item is missing".to_owned()
-                })?;
+                let next = self
+                    .lines
+                    .get(self.position)
+                    .copied()
+                    .ok_or_else(|| "canonical YAML sequence item is missing".to_owned())?;
                 let child_indent = Self::indentation(next)?;
                 if child_indent != indent + 2 {
-                    return Err("canonical YAML sequence item must be indented by two spaces".into());
+                    return Err(
+                        "canonical YAML sequence item must be indented by two spaces".into(),
+                    );
                 }
                 values.push(self.node(child_indent)?);
             } else {
@@ -1110,7 +1250,9 @@ pub(crate) fn decode_and_validate_candidate(
     let source = decode_canonical_candidate(&artifact.bytes)?;
     let rendered = render_source(&artifact.source_schema, &source)?;
     if rendered != artifact.bytes {
-        return Err("candidate source bytes are not canonical under their exact schema selector".into());
+        return Err(
+            "candidate source bytes are not canonical under their exact schema selector".into(),
+        );
     }
     validate_selected_authoring_schema(&artifact.source_schema, &source)?;
     Ok(source)
@@ -1349,6 +1491,76 @@ mod tests {
                 case_id
             );
         }
+    }
+
+    #[test]
+    fn minimal_root_selection_requires_exact_unique_composition_evidence() {
+        let corpus = frozen_conformance();
+        let case = corpus
+            .get("cases")
+            .and_then(Json::as_array)
+            .unwrap()
+            .iter()
+            .find(|case| case.get("id").and_then(Json::as_str) == Some("C05"))
+            .unwrap();
+        let expected_result = case
+            .get("expected")
+            .and_then(|value| value.get("result"))
+            .and_then(Json::as_object)
+            .unwrap();
+        let all_artifacts = expected_result
+            .get("candidate_artifacts")
+            .and_then(Json::as_array)
+            .unwrap()
+            .iter()
+            .map(seal_frozen_artifact)
+            .collect::<Vec<_>>();
+        let evidence = [CandidateSourceContainment {
+            parent_request_key: "parent".into(),
+            child_request_key: "child".into(),
+        }];
+
+        let roots = select_minimal_candidate_source_roots(all_artifacts.clone(), &evidence)
+            .expect("exact composition evidence selects the document root");
+        assert_eq!(roots.len(), 1);
+        assert_eq!(roots[0].request_key, "parent");
+
+        let reordered_roots = select_minimal_candidate_source_roots(
+            all_artifacts.iter().cloned().rev().collect(),
+            &evidence,
+        )
+        .expect("request traversal order does not change the selected root");
+        let first_basis = seal_candidate_source_basis(roots).unwrap();
+        let reordered_basis = seal_candidate_source_basis(reordered_roots).unwrap();
+        assert_eq!(first_basis, reordered_basis);
+
+        let standalone = all_artifacts
+            .iter()
+            .find(|artifact| artifact.request_key == "child")
+            .unwrap()
+            .clone();
+        let standalone_root = select_minimal_candidate_source_roots(vec![standalone.clone()], &[])
+            .expect("a standalone fragment remains a root");
+        assert_eq!(standalone_root, vec![standalone]);
+
+        let complete_basis = seal_candidate_source_basis(all_artifacts.clone()).unwrap();
+        assert_ne!(
+            first_basis.basis_digest, complete_basis.basis_digest,
+            "adding a redundant child root changes the selected-root digest"
+        );
+
+        assert!(
+            select_minimal_candidate_source_roots(
+                all_artifacts.clone(),
+                &[evidence[0].clone(), evidence[0].clone()]
+            )
+            .is_err(),
+            "duplicate containment evidence fails closed"
+        );
+
+        let mut mismatched = all_artifacts;
+        mismatched[0].bytes = b"not the sealed source".to_vec();
+        assert!(select_minimal_candidate_source_roots(mismatched, &evidence).is_err());
     }
 
     #[test]

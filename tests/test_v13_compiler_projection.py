@@ -73,7 +73,7 @@ class TestProjectEntityV2:
             name="Test ADR",
             summary="Test summary",
             canonical_source=_canonical(UUID_A),
-            metadata={"alias_id": "ADR-L-9990", "alias_name": "test-adr"},
+            metadata={"alias_id": "ADR-L-9990", "alias_name": "test-adr", "status": "accepted"},
             provenance=_provenance(),
         )
         result = project_entity_v2(entity, None, NAMESPACE)
@@ -123,7 +123,7 @@ class TestProjectEntityV2:
             name="Test Decision",
             summary="Test",
             canonical_source=_canonical(),
-            metadata={"alias_id": "DEC-9990", "alias_name": "test-decision"},
+            metadata={"alias_id": "DEC-9990", "alias_name": "test-decision", "status": "accepted"},
             provenance=_provenance(),
         )
         result = project_entity_v2(entity, None, NAMESPACE)

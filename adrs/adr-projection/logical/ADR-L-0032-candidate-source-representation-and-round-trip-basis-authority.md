@@ -6,7 +6,7 @@ generator_id: adr-projection-markdown
 generator_version: 3
 hash_algorithm: sha256
 source_hash: 8b2fbc27d712fb86a0a19aa8cc6b54a9958e553acdb0631f1c37c56c5b7da7f5
-rendered_hash: 4ea7dbb9366d7faf2dc5758eb5506122713cd3af1aac956e5161383b17b36a0c
+rendered_hash: bb15a2848e81fe00a84503cd9aeb9edc9b10422a1f906f309b9e27e91c0534eb
 -->
 
 # ADR-L-0032: Candidate Source Representation and Round-Trip Basis Authority
@@ -560,6 +560,7 @@ The design closes source authority without moving responsibility to construction
 - [ADR-L-0029](ADR-L-0029-semantic-authoring-construction-and-candidate-authority.md)
 - [ADR-L-0030](ADR-L-0030-canonical-source-basis-and-semantic-execution-surface.md)
 - [ADR-L-0031](ADR-L-0031-non-recursive-semantic-contract-conformance-binding.md)
+- [ADR-L-0033](ADR-L-0033-governed-candidate-binding-for-authoring-construction.md)
 
 
 

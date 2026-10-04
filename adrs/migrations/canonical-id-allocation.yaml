@@ -8,7 +8,7 @@ high_water_marks:
   DEC: 9000
   IFACE: 35
   IMPL: 29
-  INV: 267
+  INV: 275
 allocations:
 - id: BOUND-0001
   entity_type: boundary
@@ -2050,6 +2050,48 @@ allocations:
   source_pointer: /decisions/11/alias_id
   state: active
   adr_id: 01a0d054-b885-70b3-a72f-d3630d2e76c6
+- id: DEC-0261
+  entity_type: decision
+  file_path: adrs/logical/ADR-L-0033-governed-candidate-binding-for-authoring-construction.yaml
+  source_pointer: /decisions/0/alias_id
+  state: active
+  adr_id: 01a1044a-fe30-7025-b327-c8d13b1a135a
+- id: DEC-0262
+  entity_type: decision
+  file_path: adrs/logical/ADR-L-0033-governed-candidate-binding-for-authoring-construction.yaml
+  source_pointer: /decisions/1/alias_id
+  state: active
+  adr_id: 01a1044a-fe30-7025-b327-c8d13b1a135a
+- id: DEC-0263
+  entity_type: decision
+  file_path: adrs/logical/ADR-L-0033-governed-candidate-binding-for-authoring-construction.yaml
+  source_pointer: /decisions/2/alias_id
+  state: active
+  adr_id: 01a1044a-fe30-7025-b327-c8d13b1a135a
+- id: DEC-0264
+  entity_type: decision
+  file_path: adrs/logical/ADR-L-0033-governed-candidate-binding-for-authoring-construction.yaml
+  source_pointer: /decisions/3/alias_id
+  state: active
+  adr_id: 01a1044a-fe30-7025-b327-c8d13b1a135a
+- id: DEC-0265
+  entity_type: decision
+  file_path: adrs/logical/ADR-L-0033-governed-candidate-binding-for-authoring-construction.yaml
+  source_pointer: /decisions/4/alias_id
+  state: active
+  adr_id: 01a1044a-fe30-7025-b327-c8d13b1a135a
+- id: DEC-0266
+  entity_type: decision
+  file_path: adrs/logical/ADR-L-0033-governed-candidate-binding-for-authoring-construction.yaml
+  source_pointer: /decisions/5/alias_id
+  state: active
+  adr_id: 01a1044a-fe30-7025-b327-c8d13b1a135a
+- id: DEC-0267
+  entity_type: decision
+  file_path: adrs/logical/ADR-L-0033-governed-candidate-binding-for-authoring-construction.yaml
+  source_pointer: /decisions/6/alias_id
+  state: active
+  adr_id: 01a1044a-fe30-7025-b327-c8d13b1a135a
 - id: DEC-9000
   entity_type: decision
   adr_id: ADR-L-9000
@@ -3844,3 +3886,51 @@ allocations:
   source_pointer: /invariants/18/alias_id
   state: active
   adr_id: 01a0d054-b885-70b3-a72f-d3630d2e76c6
+- id: INV-0268
+  entity_type: invariant
+  file_path: adrs/logical/ADR-L-0033-governed-candidate-binding-for-authoring-construction.yaml
+  source_pointer: /invariants/0/alias_id
+  state: active
+  adr_id: 01a1044a-fe30-7025-b327-c8d13b1a135a
+- id: INV-0269
+  entity_type: invariant
+  file_path: adrs/logical/ADR-L-0033-governed-candidate-binding-for-authoring-construction.yaml
+  source_pointer: /invariants/1/alias_id
+  state: active
+  adr_id: 01a1044a-fe30-7025-b327-c8d13b1a135a
+- id: INV-0270
+  entity_type: invariant
+  file_path: adrs/logical/ADR-L-0033-governed-candidate-binding-for-authoring-construction.yaml
+  source_pointer: /invariants/2/alias_id
+  state: active
+  adr_id: 01a1044a-fe30-7025-b327-c8d13b1a135a
+- id: INV-0271
+  entity_type: invariant
+  file_path: adrs/logical/ADR-L-0033-governed-candidate-binding-for-authoring-construction.yaml
+  source_pointer: /invariants/3/alias_id
+  state: active
+  adr_id: 01a1044a-fe30-7025-b327-c8d13b1a135a
+- id: INV-0272
+  entity_type: invariant
+  file_path: adrs/logical/ADR-L-0033-governed-candidate-binding-for-authoring-construction.yaml
+  source_pointer: /invariants/4/alias_id
+  state: active
+  adr_id: 01a1044a-fe30-7025-b327-c8d13b1a135a
+- id: INV-0273
+  entity_type: invariant
+  file_path: adrs/logical/ADR-L-0033-governed-candidate-binding-for-authoring-construction.yaml
+  source_pointer: /invariants/5/alias_id
+  state: active
+  adr_id: 01a1044a-fe30-7025-b327-c8d13b1a135a
+- id: INV-0274
+  entity_type: invariant
+  file_path: adrs/logical/ADR-L-0033-governed-candidate-binding-for-authoring-construction.yaml
+  source_pointer: /invariants/6/alias_id
+  state: active
+  adr_id: 01a1044a-fe30-7025-b327-c8d13b1a135a
+- id: INV-0275
+  entity_type: invariant
+  file_path: adrs/logical/ADR-L-0033-governed-candidate-binding-for-authoring-construction.yaml
+  source_pointer: /invariants/7/alias_id
+  state: active
+  adr_id: 01a1044a-fe30-7025-b327-c8d13b1a135a

@@ -42378,3 +42378,1080 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
+- id: 01a1044a-fe30-7025-b327-c8d13b1a135a
+  alias_id: ADR-L-0033
+  alias_name: governed-candidate-binding-for-authoring-construction
+  alias_ref: ADR-L-0033:governed-candidate-binding-for-authoring-construction
+  entity_type: adr
+  name: Governed Candidate Binding for Authoring Construction
+  summary: ADR-L-0029 through ADR-L-0032 establish detached semantic construction,
+    exact candidate source representation, and canonical qualification boundaries.
+    They deliberately do not admit candidate bytes into repository author
+  uri: adr://adr-architecture-kit/entities/01a1044a-fe30-7025-b327-c8d13b1a135a
+  created_at: '2026-10-04T00:23:06.032Z'
+  entity_fingerprint: sha256:74a7625766a2e419c3fdee1f03d606d8d6278b58306c59f6ea768817d8c4a493
+  lifecycle_stage: proposed
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a1044a-fe30-7025-b327-c8d13b1a135a
+    artifact_path: adrs/logical/ADR-L-0033-governed-candidate-binding-for-authoring-construction.yaml
+  source_refs: []
+  metadata:
+    status: proposed
+    domains:
+    - architecture
+    - authoring
+    - semantic-authority
+    - governance
+    - repository-boundaries
+    tags:
+    - candidate-binding
+    - detached-construction
+    - promotion-contract
+    - repository-admission
+    - self-hosting
+    implementation_authority: null
+    related_reviews: []
+    related_overrides: []
+    alias_name: governed-candidate-binding-for-authoring-construction
+    alias_id: ADR-L-0033
+  relationships:
+    declared_in: []
+    references:
+    - 019fee89-e617-78d9-ba3b-b7e3e6db1b12
+    - 01a00643-1bfc-788c-911b-83a4725a8de1
+    - 01a09938-a15b-75ed-8326-212e21bd3cfe
+    - 01a09cf0-179e-71cc-b150-d4a79551b939
+    - 01a0b75d-8a02-70e6-b59c-63dd6133c637
+    - 01a0d054-b885-70b3-a72f-d3630d2e76c6
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    consumes_interface: []
+    composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a1044a-fe30-7025-b327-c8d13b1a135a
+    extraction_phase: extract_adr
+    classification: explicit
+    generator: adr-architecture-index
+- id: 01a1044a-fe30-7025-b327-c8d22a0d7a8c
+  alias_id: DEC-0261
+  alias_name: bind-qualified-candidates-through-promotion-preparation
+  alias_ref: DEC-0261:bind-qualified-candidates-through-promotion-preparation
+  entity_type: decision
+  name: Assign candidate-to-repository binding to the ADR-Kit promotion provider
+  summary: A caller presents a qualified detached construction result, explicit repository
+    mutation intent, genuine design-journal outcome associations, and repository context
+    with an expected baseline. The ADR-Kit provider verifie
+  uri: adr://adr-architecture-kit/entities/01a1044a-fe30-7025-b327-c8d22a0d7a8c
+  created_at: '2026-10-04T00:23:06.032Z'
+  entity_fingerprint: sha256:c472e6fcd1d44f351d075373f7fd7d09f036f2eb13ea38ebdbb9df4dbd1c4abe
+  lifecycle_stage: proposed
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a1044a-fe30-7025-b327-c8d13b1a135a#01a1044a-fe30-7025-b327-c8d22a0d7a8c
+    artifact_path: adrs/logical/ADR-L-0033-governed-candidate-binding-for-authoring-construction.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a1044a-fe30-7025-b327-c8d13b1a135a
+    adr_alias_id: ADR-L-0033
+    related_invariants: []
+    enforces_invariants: []
+    enables_capabilities: []
+    governs_components: []
+    supersedes: []
+    refines: []
+    alias_name: bind-qualified-candidates-through-promotion-preparation
+    alias_id: DEC-0261
+  relationships:
+    declared_in:
+    - 01a1044a-fe30-7025-b327-c8d13b1a135a
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    consumes_interface: []
+    composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a1044a-fe30-7025-b327-c8d13b1a135a#01a1044a-fe30-7025-b327-c8d22a0d7a8c
+    extraction_phase: extract_decision
+    classification: explicit
+    generator: adr-architecture-index
+- id: 01a1044a-fe30-7025-b327-c8d38052131a
+  alias_id: DEC-0262
+  alias_name: independently-verify-construction-qualification-before-binding
+  alias_ref: DEC-0262:independently-verify-construction-qualification-before-binding
+  entity_type: decision
+  name: Require canonical verification of construction evidence before preparation
+  summary: A DTO type, Constructed outcome, sealed flag, or caller-provided qualification
+    claim is not proof. Preparation MUST independently re-establish construction qualification
+    through canonical semantic authority before produc
+  uri: adr://adr-architecture-kit/entities/01a1044a-fe30-7025-b327-c8d38052131a
+  created_at: '2026-10-04T00:23:06.032Z'
+  entity_fingerprint: sha256:9fa88daaeeb2b5d7dc8641879c6838d638b1a53ecc58e7a606ab626c4ddb4de2
+  lifecycle_stage: proposed
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a1044a-fe30-7025-b327-c8d13b1a135a#01a1044a-fe30-7025-b327-c8d38052131a
+    artifact_path: adrs/logical/ADR-L-0033-governed-candidate-binding-for-authoring-construction.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a1044a-fe30-7025-b327-c8d13b1a135a
+    adr_alias_id: ADR-L-0033
+    related_invariants: []
+    enforces_invariants: []
+    enables_capabilities: []
+    governs_components: []
+    supersedes: []
+    refines: []
+    alias_name: independently-verify-construction-qualification-before-binding
+    alias_id: DEC-0262
+  relationships:
+    declared_in:
+    - 01a1044a-fe30-7025-b327-c8d13b1a135a
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    consumes_interface: []
+    composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a1044a-fe30-7025-b327-c8d13b1a135a#01a1044a-fe30-7025-b327-c8d38052131a
+    extraction_phase: extract_decision
+    classification: explicit
+    generator: adr-architecture-index
+- id: 01a1044a-fe30-7025-b327-c8d40dff4adf
+  alias_id: DEC-0263
+  alias_name: initially-persist-complete-adr-document-roots
+  alias_ref: DEC-0263:initially-persist-complete-adr-document-roots
+  entity_type: decision
+  name: Restrict initial candidate persistence to complete qualified ADR documents
+  summary: Initial binding admits only complete qualified authoring_document roots
+    in the supported ADR families. A standalone authoring_fragment remains a valid
+    detached construction product but cannot independently become a repos
+  uri: adr://adr-architecture-kit/entities/01a1044a-fe30-7025-b327-c8d40dff4adf
+  created_at: '2026-10-04T00:23:06.032Z'
+  entity_fingerprint: sha256:7d2fda487ef5150824185472d04337856f0577720ef8c66c7e8247b724f46ceb
+  lifecycle_stage: proposed
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a1044a-fe30-7025-b327-c8d13b1a135a#01a1044a-fe30-7025-b327-c8d40dff4adf
+    artifact_path: adrs/logical/ADR-L-0033-governed-candidate-binding-for-authoring-construction.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a1044a-fe30-7025-b327-c8d13b1a135a
+    adr_alias_id: ADR-L-0033
+    related_invariants: []
+    enforces_invariants: []
+    enables_capabilities: []
+    governs_components: []
+    supersedes: []
+    refines: []
+    alias_name: initially-persist-complete-adr-document-roots
+    alias_id: DEC-0263
+  relationships:
+    declared_in:
+    - 01a1044a-fe30-7025-b327-c8d13b1a135a
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    consumes_interface: []
+    composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a1044a-fe30-7025-b327-c8d13b1a135a#01a1044a-fe30-7025-b327-c8d40dff4adf
+    extraction_phase: extract_decision
+    classification: explicit
+    generator: adr-architecture-index
+- id: 01a1044a-fe30-7025-b327-c8d5bf1b064d
+  alias_id: DEC-0264
+  alias_name: require-explicit-aliases-and-preserve-existing-placement
+  alias_ref: DEC-0264:require-explicit-aliases-and-preserve-existing-placement
+  entity_type: decision
+  name: Require explicit alias intent and preserve aliases and paths for existing
+    records
+  summary: 'Create intent supplies every required alias before construction. Binding
+    checks the proposed aliases against active, historical, and reserved repository
+    authority, including conflicts within the mutation set; it rejects '
+  uri: adr://adr-architecture-kit/entities/01a1044a-fe30-7025-b327-c8d5bf1b064d
+  created_at: '2026-10-04T00:23:06.032Z'
+  entity_fingerprint: sha256:d89a6181ff76722be00b60c643709184d92ac65753debd71a023a057f79f2537
+  lifecycle_stage: proposed
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a1044a-fe30-7025-b327-c8d13b1a135a#01a1044a-fe30-7025-b327-c8d5bf1b064d
+    artifact_path: adrs/logical/ADR-L-0033-governed-candidate-binding-for-authoring-construction.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a1044a-fe30-7025-b327-c8d13b1a135a
+    adr_alias_id: ADR-L-0033
+    related_invariants: []
+    enforces_invariants: []
+    enables_capabilities: []
+    governs_components: []
+    supersedes: []
+    refines: []
+    alias_name: require-explicit-aliases-and-preserve-existing-placement
+    alias_id: DEC-0264
+  relationships:
+    declared_in:
+    - 01a1044a-fe30-7025-b327-c8d13b1a135a
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    consumes_interface: []
+    composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a1044a-fe30-7025-b327-c8d13b1a135a#01a1044a-fe30-7025-b327-c8d5bf1b064d
+    extraction_phase: extract_decision
+    classification: explicit
+    generator: adr-architecture-index
+- id: 01a1044a-fe30-7025-b327-c8d6b3f4ad1b
+  alias_id: DEC-0265
+  alias_name: bind-complete-mutation-sets-and-targets-into-locked-intent
+  alias_ref: DEC-0265:bind-complete-mutation-sets-and-targets-into-locked-intent
+  entity_type: decision
+  name: Bind complete mutation accounting and resolved repository targets to approved
+    intent
+  summary: 'Explicit caller intent associates each mutable construction root with
+    one requested repository operation and placement. Binding observes the repository,
+    establishes the expected previous state and baseline, resolves the '
+  uri: adr://adr-architecture-kit/entities/01a1044a-fe30-7025-b327-c8d6b3f4ad1b
+  created_at: '2026-10-04T00:23:06.032Z'
+  entity_fingerprint: sha256:1e78ae6d50f0998ddc64d1a69fed98f84191fd6baefba4612f175db2338a5f15
+  lifecycle_stage: proposed
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a1044a-fe30-7025-b327-c8d13b1a135a#01a1044a-fe30-7025-b327-c8d6b3f4ad1b
+    artifact_path: adrs/logical/ADR-L-0033-governed-candidate-binding-for-authoring-construction.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a1044a-fe30-7025-b327-c8d13b1a135a
+    adr_alias_id: ADR-L-0033
+    related_invariants: []
+    enforces_invariants: []
+    enables_capabilities: []
+    governs_components: []
+    supersedes: []
+    refines: []
+    alias_name: bind-complete-mutation-sets-and-targets-into-locked-intent
+    alias_id: DEC-0265
+  relationships:
+    declared_in:
+    - 01a1044a-fe30-7025-b327-c8d13b1a135a
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    consumes_interface: []
+    composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a1044a-fe30-7025-b327-c8d13b1a135a#01a1044a-fe30-7025-b327-c8d6b3f4ad1b
+    extraction_phase: extract_decision
+    classification: explicit
+    generator: adr-architecture-index
+- id: 01a1044a-fe30-7025-b327-c8d739646669
+  alias_id: DEC-0266
+  alias_name: retain-genuine-design-journal-and-promotion-contract-v01
+  alias_ref: DEC-0266:retain-genuine-design-journal-and-promotion-contract-v01
+  entity_type: decision
+  name: Use genuine journal outcomes with the existing STE Promotion Contract v0.1
+  summary: A genuine Design Journal with actual stable outcomes exists before construction.
+    The Promotion Contract continues to reference those actual outcomes using its
+    existing provider, baseline, mutation, payload, schema, valid
+  uri: adr://adr-architecture-kit/entities/01a1044a-fe30-7025-b327-c8d739646669
+  created_at: '2026-10-04T00:23:06.032Z'
+  entity_fingerprint: sha256:74f5f0119d04773b9733c5eb1a1a4e473051aafec02601b1dd6baf1391d9740b
+  lifecycle_stage: proposed
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a1044a-fe30-7025-b327-c8d13b1a135a#01a1044a-fe30-7025-b327-c8d739646669
+    artifact_path: adrs/logical/ADR-L-0033-governed-candidate-binding-for-authoring-construction.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a1044a-fe30-7025-b327-c8d13b1a135a
+    adr_alias_id: ADR-L-0033
+    related_invariants: []
+    enforces_invariants: []
+    enables_capabilities: []
+    governs_components: []
+    supersedes: []
+    refines: []
+    alias_name: retain-genuine-design-journal-and-promotion-contract-v01
+    alias_id: DEC-0266
+  relationships:
+    declared_in:
+    - 01a1044a-fe30-7025-b327-c8d13b1a135a
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    consumes_interface: []
+    composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a1044a-fe30-7025-b327-c8d13b1a135a#01a1044a-fe30-7025-b327-c8d739646669
+    extraction_phase: extract_decision
+    classification: explicit
+    generator: adr-architecture-index
+- id: 01a1044a-fe30-7025-b327-c8d80515ce3c
+  alias_id: DEC-0267
+  alias_name: require-bounded-single-writer-governed-application
+  alias_ref: DEC-0267:require-bounded-single-writer-governed-application
+  entity_type: decision
+  name: Bound application by a single governance writer and stale-state rejection
+  summary: The initial guarantee assumes one governance writer throughout final verification,
+    replacement, regeneration, validation, and recovery. The provider establishes
+    an exact expected repository revision and protected authori
+  uri: adr://adr-architecture-kit/entities/01a1044a-fe30-7025-b327-c8d80515ce3c
+  created_at: '2026-10-04T00:23:06.032Z'
+  entity_fingerprint: sha256:9c5755233684d7c6f1b13783ef159f3089667eaa8ee8df7d6e51ed08e0294224
+  lifecycle_stage: proposed
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a1044a-fe30-7025-b327-c8d13b1a135a#01a1044a-fe30-7025-b327-c8d80515ce3c
+    artifact_path: adrs/logical/ADR-L-0033-governed-candidate-binding-for-authoring-construction.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a1044a-fe30-7025-b327-c8d13b1a135a
+    adr_alias_id: ADR-L-0033
+    related_invariants: []
+    enforces_invariants: []
+    enables_capabilities: []
+    governs_components: []
+    supersedes: []
+    refines: []
+    alias_name: require-bounded-single-writer-governed-application
+    alias_id: DEC-0267
+  relationships:
+    declared_in:
+    - 01a1044a-fe30-7025-b327-c8d13b1a135a
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    consumes_interface: []
+    composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a1044a-fe30-7025-b327-c8d13b1a135a#01a1044a-fe30-7025-b327-c8d80515ce3c
+    extraction_phase: extract_decision
+    classification: explicit
+    generator: adr-architecture-index
+- id: 01a1044a-fe30-7025-b327-c8d9239ec8cd
+  alias_id: INV-0268
+  alias_name: candidate-binding-preserves-construction-authority
+  alias_ref: INV-0268:candidate-binding-preserves-construction-authority
+  entity_type: invariant
+  name: INV-0268
+  summary: Candidate binding MUST preserve the exact qualified construction result
+    and MUST NOT change candidate bytes, UUID identity, source selectors, serialization
+    profile, source-basis commitment, semantic content, or construct
+  uri: adr://adr-architecture-kit/entities/01a1044a-fe30-7025-b327-c8d9239ec8cd
+  created_at: '2026-10-04T00:23:06.032Z'
+  entity_fingerprint: sha256:6c5de4aa38b32d7a564c2a5f31dfc46615d3edf9d794f92d091d765403e60e43
+  lifecycle_stage: proposed
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a1044a-fe30-7025-b327-c8d13b1a135a#01a1044a-fe30-7025-b327-c8d9239ec8cd
+    artifact_path: adrs/logical/ADR-L-0033-governed-candidate-binding-for-authoring-construction.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a1044a-fe30-7025-b327-c8d13b1a135a
+    adr_alias_id: ADR-L-0033
+    scope: global
+    statement: Candidate binding MUST preserve the exact qualified construction result
+      and MUST NOT change candidate bytes, UUID identity, source selectors, serialization
+      profile, source-basis commitment, semantic content, or construction qualification;
+      any content change requires new construction.
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions: []
+    supersedes: []
+    alias_id: INV-0268
+    alias_name: candidate-binding-preserves-construction-authority
+  relationships:
+    declared_in:
+    - 01a1044a-fe30-7025-b327-c8d13b1a135a
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    consumes_interface: []
+    composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a1044a-fe30-7025-b327-c8d13b1a135a#01a1044a-fe30-7025-b327-c8d9239ec8cd
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
+- id: 01a1044a-fe30-7025-b327-c8da934b3f8c
+  alias_id: INV-0269
+  alias_name: candidate-binding-accounts-for-the-whole-mutable-result
+  alias_ref: INV-0269:candidate-binding-accounts-for-the-whole-mutable-result
+  entity_type: invariant
+  name: INV-0269
+  summary: Every mutable candidate source root MUST have exactly one explicit disposition
+    and every writable root MUST map to one explicit mutation; binding MUST NOT silently
+    subset a whole-qualified construction result, and a smal
+  uri: adr://adr-architecture-kit/entities/01a1044a-fe30-7025-b327-c8da934b3f8c
+  created_at: '2026-10-04T00:23:06.032Z'
+  entity_fingerprint: sha256:d45447c865b7c71ca9ab40fb312d1994ef73a9b3aded6a1e024d8a0b2d31bb1f
+  lifecycle_stage: proposed
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a1044a-fe30-7025-b327-c8d13b1a135a#01a1044a-fe30-7025-b327-c8da934b3f8c
+    artifact_path: adrs/logical/ADR-L-0033-governed-candidate-binding-for-authoring-construction.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a1044a-fe30-7025-b327-c8d13b1a135a
+    adr_alias_id: ADR-L-0033
+    scope: promotion
+    statement: Every mutable candidate source root MUST have exactly one explicit
+      disposition and every writable root MUST map to one explicit mutation; binding
+      MUST NOT silently subset a whole-qualified construction result, and a smaller
+      mutation scope requires an independently qualified construction result.
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions: []
+    supersedes: []
+    alias_id: INV-0269
+    alias_name: candidate-binding-accounts-for-the-whole-mutable-result
+  relationships:
+    declared_in:
+    - 01a1044a-fe30-7025-b327-c8d13b1a135a
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    consumes_interface: []
+    composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a1044a-fe30-7025-b327-c8d13b1a135a#01a1044a-fe30-7025-b327-c8da934b3f8c
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
+- id: 01a1044a-fe30-7025-b327-c8dbfbcf57f4
+  alias_id: INV-0270
+  alias_name: approved-target-cannot-be-redirected
+  alias_ref: INV-0270:approved-target-cannot-be-redirected
+  entity_type: invariant
+  name: INV-0270
+  summary: 'For every mutation, the freshly verified repository instance, destination,
+    operation, semantic identity, source-root association, previous-state condition,
+    and payload MUST equal the values covered by the human-approved '
+  uri: adr://adr-architecture-kit/entities/01a1044a-fe30-7025-b327-c8dbfbcf57f4
+  created_at: '2026-10-04T00:23:06.032Z'
+  entity_fingerprint: sha256:74860359fa7a2cbaea0ecfa61c63912c66371dea5735f3606735644de025e66a
+  lifecycle_stage: proposed
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a1044a-fe30-7025-b327-c8d13b1a135a#01a1044a-fe30-7025-b327-c8dbfbcf57f4
+    artifact_path: adrs/logical/ADR-L-0033-governed-candidate-binding-for-authoring-construction.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a1044a-fe30-7025-b327-c8d13b1a135a
+    adr_alias_id: ADR-L-0033
+    scope: promotion
+    statement: For every mutation, the freshly verified repository instance, destination,
+      operation, semantic identity, source-root association, previous-state condition,
+      and payload MUST equal the values covered by the human-approved locked intent;
+      any mismatch MUST prevent execution under that lock.
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions: []
+    supersedes: []
+    alias_id: INV-0270
+    alias_name: approved-target-cannot-be-redirected
+  relationships:
+    declared_in:
+    - 01a1044a-fe30-7025-b327-c8d13b1a135a
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    consumes_interface: []
+    composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a1044a-fe30-7025-b327-c8d13b1a135a#01a1044a-fe30-7025-b327-c8dbfbcf57f4
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
+- id: 01a1044a-fe30-7025-b327-c8dcd5abf966
+  alias_id: INV-0271
+  alias_name: material-candidate-evidence-participates-in-lock
+  alias_ref: INV-0271:material-candidate-evidence-participates-in-lock
+  entity_type: invariant
+  name: INV-0271
+  summary: Every fact that can change payload bytes, semantic identity, operation,
+    target, repository scope, baseline, qualification, conflict condition, or mutation-set
+    completeness MUST participate in the Promotion Contract locke
+  uri: adr://adr-architecture-kit/entities/01a1044a-fe30-7025-b327-c8dcd5abf966
+  created_at: '2026-10-04T00:23:06.032Z'
+  entity_fingerprint: sha256:dfc609626aa71676716a6623b80a330cf6b12c1de3f3c9c93ae52dd782510df9
+  lifecycle_stage: proposed
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a1044a-fe30-7025-b327-c8d13b1a135a#01a1044a-fe30-7025-b327-c8dcd5abf966
+    artifact_path: adrs/logical/ADR-L-0033-governed-candidate-binding-for-authoring-construction.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a1044a-fe30-7025-b327-c8d13b1a135a
+    adr_alias_id: ADR-L-0033
+    scope: promotion
+    statement: Every fact that can change payload bytes, semantic identity, operation,
+      target, repository scope, baseline, qualification, conflict condition, or mutation-set
+      completeness MUST participate in the Promotion Contract locked intent and MUST
+      NOT be carried only as unlocked provenance.
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions: []
+    supersedes: []
+    alias_id: INV-0271
+    alias_name: material-candidate-evidence-participates-in-lock
+  relationships:
+    declared_in:
+    - 01a1044a-fe30-7025-b327-c8d13b1a135a
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    consumes_interface: []
+    composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a1044a-fe30-7025-b327-c8d13b1a135a#01a1044a-fe30-7025-b327-c8dcd5abf966
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
+- id: 01a1044a-fe30-7025-b327-c8dd8a8b15e3
+  alias_id: INV-0272
+  alias_name: stale-authority-fails-under-single-writer-assumption
+  alias_ref: INV-0272:stale-authority-fails-under-single-writer-assumption
+  entity_type: invariant
+  name: INV-0272
+  summary: Candidate application MUST reject any change to the expected baseline,
+    protected authority scope, destination pre-image, or alias occupancy detected
+    at required verification points; the documented single-governance-write
+  uri: adr://adr-architecture-kit/entities/01a1044a-fe30-7025-b327-c8dd8a8b15e3
+  created_at: '2026-10-04T00:23:06.032Z'
+  entity_fingerprint: sha256:19bb07392cb5e91436e4d985bd4229f1010d2523b63ed12ade3e8a80949d1585
+  lifecycle_stage: proposed
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a1044a-fe30-7025-b327-c8d13b1a135a#01a1044a-fe30-7025-b327-c8dd8a8b15e3
+    artifact_path: adrs/logical/ADR-L-0033-governed-candidate-binding-for-authoring-construction.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a1044a-fe30-7025-b327-c8d13b1a135a
+    adr_alias_id: ADR-L-0033
+    scope: promotion
+    statement: Candidate application MUST reject any change to the expected baseline,
+      protected authority scope, destination pre-image, or alias occupancy detected
+      at required verification points; the documented single-governance-writer condition
+      MUST cover final verification, sequential replacement, and recovery.
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions: []
+    supersedes: []
+    alias_id: INV-0272
+    alias_name: stale-authority-fails-under-single-writer-assumption
+  relationships:
+    declared_in:
+    - 01a1044a-fe30-7025-b327-c8d13b1a135a
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    consumes_interface: []
+    composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a1044a-fe30-7025-b327-c8d13b1a135a#01a1044a-fe30-7025-b327-c8dd8a8b15e3
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
+- id: 01a1044a-fe30-7025-b327-c8def6ac2b7e
+  alias_id: INV-0273
+  alias_name: promotion-does-not-infer-semantic-or-lifecycle-intent
+  alias_ref: INV-0273:promotion-does-not-infer-semantic-or-lifecycle-intent
+  entity_type: invariant
+  name: INV-0273
+  summary: Binding and promotion MUST NOT infer aliases, lifecycle state, relationships,
+    supersession, target identity, destination, or other material intent from prose,
+    paths, ordering, filenames, or repository contents; the compl
+  uri: adr://adr-architecture-kit/entities/01a1044a-fe30-7025-b327-c8def6ac2b7e
+  created_at: '2026-10-04T00:23:06.032Z'
+  entity_fingerprint: sha256:bf16febeaca67099a9147a94aeedba42526b1c3649552ba0efd10d1013038d79
+  lifecycle_stage: proposed
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a1044a-fe30-7025-b327-c8d13b1a135a#01a1044a-fe30-7025-b327-c8def6ac2b7e
+    artifact_path: adrs/logical/ADR-L-0033-governed-candidate-binding-for-authoring-construction.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a1044a-fe30-7025-b327-c8d13b1a135a
+    adr_alias_id: ADR-L-0033
+    scope: global
+    statement: Binding and promotion MUST NOT infer aliases, lifecycle state, relationships,
+      supersession, target identity, destination, or other material intent from prose,
+      paths, ordering, filenames, or repository contents; the complete semantic post-image
+      and requested mutations MUST be explicit construction and caller intent.
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions: []
+    supersedes: []
+    alias_id: INV-0273
+    alias_name: promotion-does-not-infer-semantic-or-lifecycle-intent
+  relationships:
+    declared_in:
+    - 01a1044a-fe30-7025-b327-c8d13b1a135a
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    consumes_interface: []
+    composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a1044a-fe30-7025-b327-c8d13b1a135a#01a1044a-fe30-7025-b327-c8def6ac2b7e
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
+- id: 01a1044a-fe30-7025-b327-c8e06bc25362
+  alias_id: INV-0274
+  alias_name: candidate-binding-does-not-admit-runtime-or-mutate-git
+  alias_ref: INV-0274:candidate-binding-does-not-admit-runtime-or-mutate-git
+  entity_type: invariant
+  name: INV-0274
+  summary: Candidate binding and repository application MUST NOT claim Runtime admission
+    or perform external Git branch, commit, pull-request, merge, or release operations.
+  uri: adr://adr-architecture-kit/entities/01a1044a-fe30-7025-b327-c8e06bc25362
+  created_at: '2026-10-04T00:23:06.032Z'
+  entity_fingerprint: sha256:5931c4747996a9ab764613dd98419403a78df2e5fa60ae150cecd9183f8821f7
+  lifecycle_stage: proposed
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a1044a-fe30-7025-b327-c8d13b1a135a#01a1044a-fe30-7025-b327-c8e06bc25362
+    artifact_path: adrs/logical/ADR-L-0033-governed-candidate-binding-for-authoring-construction.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a1044a-fe30-7025-b327-c8d13b1a135a
+    adr_alias_id: ADR-L-0033
+    scope: global
+    statement: Candidate binding and repository application MUST NOT claim Runtime
+      admission or perform external Git branch, commit, pull-request, merge, or release
+      operations.
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions: []
+    supersedes: []
+    alias_id: INV-0274
+    alias_name: candidate-binding-does-not-admit-runtime-or-mutate-git
+  relationships:
+    declared_in:
+    - 01a1044a-fe30-7025-b327-c8d13b1a135a
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    consumes_interface: []
+    composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a1044a-fe30-7025-b327-c8d13b1a135a#01a1044a-fe30-7025-b327-c8e06bc25362
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
+- id: 01a1044a-fe30-7025-b327-c8e189f951a1
+  alias_id: INV-0275
+  alias_name: promotable-candidates-require-complete-canonical-qualification
+  alias_ref: INV-0275:promotable-candidates-require-complete-canonical-qualification
+  entity_type: invariant
+  name: INV-0275
+  summary: A prepared Promotion Contract MUST NOT be mechanically ready unless exact
+    candidate integrity, canonical semantic qualification, complete normalized-equivalence
+    evidence, identity continuity, source-root accounting, repo
+  uri: adr://adr-architecture-kit/entities/01a1044a-fe30-7025-b327-c8e189f951a1
+  created_at: '2026-10-04T00:23:06.032Z'
+  entity_fingerprint: sha256:0d59757d63d8eb25a1483b6cb4e9e4a6efca73b3d827ab7e9f8053e4a8d6b1e0
+  lifecycle_stage: proposed
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a1044a-fe30-7025-b327-c8d13b1a135a#01a1044a-fe30-7025-b327-c8e189f951a1
+    artifact_path: adrs/logical/ADR-L-0033-governed-candidate-binding-for-authoring-construction.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a1044a-fe30-7025-b327-c8d13b1a135a
+    adr_alias_id: ADR-L-0033
+    scope: promotion
+    statement: A prepared Promotion Contract MUST NOT be mechanically ready unless
+      exact candidate integrity, canonical semantic qualification, complete normalized-equivalence
+      evidence, identity continuity, source-root accounting, repository preconditions,
+      and genuine journal outcome associations are verified.
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions: []
+    supersedes: []
+    alias_id: INV-0275
+    alias_name: promotable-candidates-require-complete-canonical-qualification
+  relationships:
+    declared_in:
+    - 01a1044a-fe30-7025-b327-c8d13b1a135a
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    consumes_interface: []
+    composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a1044a-fe30-7025-b327-c8d13b1a135a#01a1044a-fe30-7025-b327-c8e189f951a1
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index

@@ -5,8 +5,8 @@ artifact_kind: rendered_adr_markdown
 generator_id: adr-projection-markdown
 generator_version: 3
 hash_algorithm: sha256
-source_hash: 17c13b540d1955e1efc347ee7618f8a86929eb4ad7f13c64889fbfb696687564
-rendered_hash: effbf70024136883cca1314cdbed62c80969f8a5675676b005748b059b9690dd
+source_hash: 9fe7dcc974d65e5f5d9e8d44c2e81f9478809c9f65bb27c873e0768b3f07d061
+rendered_hash: 1944205719e6768d386bb6344be17c752cafc17c1027625a206a68bd24bea5b0
 -->
 
 # ADR-L-0033: Governed Candidate Binding for Authoring Construction
@@ -14,7 +14,7 @@ rendered_hash: effbf70024136883cca1314cdbed62c80969f8a5675676b005748b059b9690dd
 ## Identity / Status
 
 **Type:** logical<br>
-**Status:** proposed<br>
+**Status:** accepted<br>
 **Alias:** ADR-L-0033<br>
 **Authoring contract:** authoring v1.5<br>
 **Created:** 2026-10-03<br>
@@ -27,7 +27,7 @@ rendered_hash: effbf70024136883cca1314cdbed62c80969f8a5675676b005748b059b9690dd
 | | |
 | --- | --- |
 | Logical authority | ADR-L-0033 |
-| Status | proposed |
+| Status | accepted |
 | Decisions | 7 |
 | Invariants | 8 |
 
@@ -43,8 +43,8 @@ Contract (PC), without moving semantic interpretation into promotion or
 introducing a second durable intent lifecycle.
 
 This decision defines the provider-owned binding boundary and the conditions
-under which that handoff may become promotable. It does not claim that
-ADR-Kit 0.12.1 implements or qualifies candidate binding. The known C05/C07
+under which that handoff may become promotable. ADR-Kit 0.12.2 does not
+implement or qualify candidate binding. The known C05/C07
 minimal-root discrepancy and incomplete whole-result normalized-equivalence
 proof remain implementation and self-hosting prerequisites under the
 existing construction authority; they do not weaken that authority or block
@@ -402,9 +402,10 @@ identity; UUID preservation; complete mutation accounting; no mutation
 during construction, preparation, or dry-run; stale-state and conflict
 rejection; payload, target, identity, and qualification tamper rejection;
 explicit human authorization; bounded truthful recovery and execution
-reporting; peer-host parity; and corpus freshness. ADR-Kit 0.12.1 does not
-claim to implement or satisfy this flow. The proposed ADR itself remains
-subject to human architectural review and acceptance.
+reporting; peer-host parity; and corpus freshness. ADR-Kit 0.12.2 does not
+implement or satisfy this flow. This ADR records the architecture approved by
+human review; implementation remains subject to the stated qualification
+prerequisites.
 
 
 ---

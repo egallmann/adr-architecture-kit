@@ -4,7 +4,7 @@ id: 01a1044a-fe30-7025-b327-c8d13b1a135a
 alias_id: ADR-L-0033
 alias_name: governed-candidate-binding-for-authoring-construction
 title: Governed Candidate Binding for Authoring Construction
-status: proposed
+status: accepted
 created_date: '2026-10-03'
 authors:
 - erik.gallmann
@@ -37,8 +37,8 @@ context: |
   introducing a second durable intent lifecycle.
 
   This decision defines the provider-owned binding boundary and the conditions
-  under which that handoff may become promotable. It does not claim that
-  ADR-Kit 0.12.1 implements or qualifies candidate binding. The known C05/C07
+  under which that handoff may become promotable. ADR-Kit 0.12.2 does not
+  implement or qualify candidate binding. The known C05/C07
   minimal-root discrepancy and incomplete whole-result normalized-equivalence
   proof remain implementation and self-hosting prerequisites under the
   existing construction authority; they do not weaken that authority or block
@@ -293,6 +293,7 @@ notes: |
   during construction, preparation, or dry-run; stale-state and conflict
   rejection; payload, target, identity, and qualification tamper rejection;
   explicit human authorization; bounded truthful recovery and execution
-  reporting; peer-host parity; and corpus freshness. ADR-Kit 0.12.1 does not
-  claim to implement or satisfy this flow. The proposed ADR itself remains
-  subject to human architectural review and acceptance.
+  reporting; peer-host parity; and corpus freshness. ADR-Kit 0.12.2 does not
+  implement or satisfy this flow. This ADR records the architecture approved by
+  human review; implementation remains subject to the stated qualification
+  prerequisites.

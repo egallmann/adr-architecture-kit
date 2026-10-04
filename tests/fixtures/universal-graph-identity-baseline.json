@@ -5,7 +5,7 @@
   "baseline_sha": "9bce83c",
   "architecture_graph": {
     "path": "adrs/index/architecture-graph.yaml",
-    "source_sha256": "2364da1da9fa5ca66a559e14901ea783fbc5f0dd8494da0ebd7116575dcf14e9",
+    "source_sha256": "4055bf204fb193d8f3fcf4a348e5648bdf0d8f89dd639e6867f664f31af9cfa5",
     "node_count": 649,
     "edge_count": 896,
     "node_semantic_sha256": "81132c4a679ce032bc6ff3a6449db7a3fd8ff3cf5af66c699e6e38be2e7b9233",
@@ -57,7 +57,7 @@
     "adrs/logical/ADR-L-0022-universal-uuidv7-entity-identity.yaml": "cf0c8f5239498a43c6a8b97185ec0a62aec5fac06e9f1adde14ff015808a3c04",
     "adrs/physical-system/ADR-PS-0001-adr-architecture-kit-discovery-and-indexing-system.yaml": "6328a023b4276e6d6393ce75017a72994c141326cdaf57d3d3bce111336daf50",
     "adrs/physical-system/ADR-PS-0002-adr-kit-compiler-and-validation-runtime.yaml": "5502ba45285b28699b563f2eed05bd5e1ac9ead2e344473e6897aa4f434fd6aa",
-    "adrs/logical/ADR-L-0033-governed-candidate-binding-for-authoring-construction.yaml": "71ec2fe476f27ee5789f579b7274081c87afcceff1a9b8604c9811d67e990ba5"
+    "adrs/logical/ADR-L-0033-governed-candidate-binding-for-authoring-construction.yaml": "bddeb15e1902424066b8ff22e3ba5e5293a5e434f24d5d3f55ca59a0b531fff7"
   },
   "graph_eligible_corpus_records": [
     {

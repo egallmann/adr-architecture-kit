@@ -5,8 +5,8 @@ artifact_kind: system_overview
 generator_id: adr-system-overview
 generator_version: 2
 hash_algorithm: sha256
-source_hash: 62569985b9ee9910a0f01b0a01b1a50ea5e010b033820c6c3acf14536059e674
-rendered_hash: b6a9a1b76c595d2a1918059e416e3e0d665505c8a2fed5f1f373b2983bcf4b2e
+source_hash: bf4d390f8c9919de67447057524c408948abd454faf6e0cf8ca0237be33d051a
+rendered_hash: 9133ef2b2105500541ef0e3e3a18db2a2d41aff6814425756ea1318ee438cc46
 -->
 
 <!--
@@ -72,7 +72,7 @@ Consume supported programmatic behavior through `adr_kit.api`.
 Derived provider facts:
 
 - API contract version: `1.0`
-- Package version: `0.12.2`
+- Package version: `0.11.1`
 - Operations: `capabilities`, `describe_authoring_contract`, `list_authoring_types`, `describe_authoring_type`, `validate_authoring`, `construct_authoring_set`, `validate_architecture`, `validate_project_metadata`, `validate_contract`, `validate_generated_docs`, `compile_architecture`, `open_repository`, `open_provider_registry`, `build_embodiment_linkage`, `generate_attribution_shim`, `materialize_architecture`, `list_semantic_contracts`, `get_semantic_contract`, `canonicalize_semantic_json`, `calculate_semantic_contract_fingerprint`, `verify_semantic_contract`, `validate_semantic_resource_closure`, `compose_semantic_contract_set`, `list_semantic_contract_profiles`, `get_semantic_contract_profile`, `validate_semantic_contract_profile`, `validate_semantic_contract_qualification`, `preview_semantic_contract_set_assembly`, `apply_semantic_contract_set_assembly`, `validate_semantic_contract_corpus`, `list_semantic_contract_sets`, `resolve_current_semantic_contract_set`, `prepare_promotion`, `check_promotion`, `apply_promotion`- Validation modes: `complete`, `structural`- Artifact groups: `registries`, `manifest`, `markdown`- Supported ADR schema versions: `1.0`, `1.1`, `1.2`, `1.3`, `1.4`, `1.5`, `1.6`, `1.7`- Stable ADR schema versions: `1.0`- Provisional ADR schema versions: `1.1`, `1.2`, `1.3`, `1.4`, `1.5`, `1.6`, `1.7`- Normalized model schema version: `1.1`
 - Supported normalized model schema versions: `1.1`, `2.0`, `2.1`, `2.2`, `2.3`, `2.4`
 Supported semantic/repository contracts include `ArchitectureRepository` and `NormalizedArchitectureModel`.

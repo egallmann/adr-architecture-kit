@@ -16,6 +16,7 @@ ROOT = Path(__file__).resolve().parents[1]
 CONTRACT = ROOT / "contracts/custom-entity/v1.0/contract.json"
 SCHEMA = ROOT / "contracts/custom-entity/v1.0/schema.json"
 FIXTURE = ROOT / "tests/fixtures/custom-entity-v1.0/valid-observation-registry.json"
+ADR_KIT_REGISTRY = ROOT / "contracts/custom-entity/registries/adrkit/registry.json"
 INVALID_UNQUALIFIED = ROOT / "tests/fixtures/custom-entity-v1.0/invalid-unqualified-type.json"
 INVALID_LATEST = ROOT / "tests/fixtures/custom-entity-v1.0/invalid-latest-selection.json"
 INVALID_DUPLICATE = ROOT / "tests/fixtures/custom-entity-v1.0/invalid-ambiguous-duplicate.json"
@@ -108,6 +109,54 @@ def test_contract_schema_and_positive_registry_validate() -> None:
     Draft202012Validator.check_schema(schema)
     assert errors(load(CONTRACT)) == []
     assert errors(load(FIXTURE)) == []
+
+
+def test_adrkit_implementation_layout_registry_is_exact_and_canonical() -> None:
+    registry = load(ADR_KIT_REGISTRY)
+    assert errors(registry) == []
+    assert registry["authority"] == "consumer_namespace"
+    assert registry["registry_id"] == "adrkit.implementation-layout-registry"
+    definitions = registry["definitions"]
+    assert [item["semantic_type"] for item in definitions] == [
+        "adrkit:contains_domain",
+        "adrkit:depends_on_domain",
+        "adrkit:implementation_domain",
+        "adrkit:implementation_layout",
+    ]
+    for definition in definitions:
+        assert definition["consumer_namespace"] == "adrkit"
+        assert definition["contract_version"] == "1.0"
+        assert cecf(definition)[1] == definition["contract_fingerprint"]
+
+    by_type = {item["semantic_type"]: item for item in definitions}
+    layout = by_type["adrkit:implementation_layout"]
+    domain = by_type["adrkit:implementation_domain"]
+    assert layout["composition_policy"]["allowed_parents"] == ["adr/physical-component"]
+    assert domain["composition_policy"]["allowed_parents"] == ["adr/physical-component"]
+    for definition in (layout, domain):
+        assert "path" in definition["identity_policy"]["forbidden_derivations"]
+        assert "source_location" in definition["identity_policy"]["forbidden_derivations"]
+    assert "root_path" in layout["field_contract"]["fields"]
+    assert "relative_path" in domain["field_contract"]["fields"]
+
+    contains = by_type["adrkit:contains_domain"]
+    depends = by_type["adrkit:depends_on_domain"]
+    assert contains["source_types"] == [
+        {"endpoint_kind": "qualified_custom_type", "semantic_type": "adrkit:implementation_layout"}
+    ]
+    assert contains["target_types"] == [
+        {"endpoint_kind": "qualified_custom_type", "semantic_type": "adrkit:implementation_domain"}
+    ]
+    assert (
+        depends["source_types"]
+        == depends["target_types"]
+        == [
+            {
+                "endpoint_kind": "qualified_custom_type",
+                "semantic_type": "adrkit:implementation_domain",
+            }
+        ]
+    )
 
 
 def test_qualification_is_exact_for_entity_and_relationship() -> None:

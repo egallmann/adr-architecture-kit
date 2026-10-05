@@ -5,8 +5,8 @@ artifact_kind: rendered_adr_markdown
 generator_id: adr-projection-markdown
 generator_version: 3
 hash_algorithm: sha256
-source_hash: 516aa41a0854bddd53ddf2e375751fcd641400bf62bac2acd80ad9bec286bc98
-rendered_hash: 0f5b82b86f6762e505689efe5c338fa3b1e299916f56cfbbf84ef52251a25c7f
+source_hash: 116424705533701f723b89a00d0a0221fce6c4b88e031480b3e64376bebdf4a8
+rendered_hash: c0ca68bb736bac6e8eebbd06290d0f7835531699e44d8c24415a5b80d1778c66
 -->
 
 # ADR-L-0013: Architecture Repository Boundary and Normalized Semantic Model
@@ -454,7 +454,7 @@ repository-local governance evidence.
 | [ADR-PC-0003 — Compiler Pipeline and Driver](../physical-component/ADR-PC-0003-compiler-pipeline-and-driver.md) | implements this logical authority | `ADR-PC-0003 -[:implements_logical]-> ADR-L-0013` |
 | [ADR-PC-0004 — Repository Boundary and Normalized Semantic Model](../physical-component/ADR-PC-0004-repository-boundary-and-normalized-semantic-model.md) | implements this logical authority | `ADR-PC-0004 -[:implements_logical]-> ADR-L-0013` |
 | [ADR-PC-0005 — Generated Artifact Integrity Validation](../physical-component/ADR-PC-0005-generated-artifact-integrity-validation.md) | implements this logical authority | `ADR-PC-0005 -[:implements_logical]-> ADR-L-0013` |
-| [ADR-PS-0002 — ADR Kit Authoring Compiler and Validation System](../physical-system/ADR-PS-0002-adr-kit-authoring-compiler-and-validation-system.md) | implements this logical authority | `ADR-PS-0002 -[:implements_logical]-> ADR-L-0013` |
+| [ADR-PS-0002 — ADR Kit Compiler, Validation, and Canonical Semantic Execution System](../physical-system/ADR-PS-0002-adr-kit-authoring-compiler-and-validation-system.md) | implements this logical authority | `ADR-PS-0002 -[:implements_logical]-> ADR-L-0013` |
 
 
 

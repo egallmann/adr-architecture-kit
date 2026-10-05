@@ -5,8 +5,8 @@ artifact_kind: rendered_adr_markdown
 generator_id: adr-projection-markdown
 generator_version: 3
 hash_algorithm: sha256
-source_hash: 4856f716f9f66c8a1a0c189b84c4f865000b85b9c196f351f8179f3929fb15dd
-rendered_hash: 03f2b71c58e2eeeb952fb6abd1cc1525986466b5ab108270db0ec7bca245278e
+source_hash: 45aace36196145e3d69f69f89b3c723fac5b3b4be91b421b88ae2887ed7010d0
+rendered_hash: d648ef505bd63412494822bd9c3b40303eadef2a20d53921e4a8d2ac4be33429
 -->
 
 # ADR-L-0007: Deterministic Documentation Projection
@@ -888,7 +888,7 @@ ambiguity in an architecture governance repository.
 | --- | --- | --- |
 | [ADR-PC-0003 — Compiler Pipeline and Driver](../physical-component/ADR-PC-0003-compiler-pipeline-and-driver.md) | implements this logical authority | `ADR-PC-0003 -[:implements_logical]-> ADR-L-0007` |
 | [ADR-PC-0005 — Generated Artifact Integrity Validation](../physical-component/ADR-PC-0005-generated-artifact-integrity-validation.md) | implements this logical authority | `ADR-PC-0005 -[:implements_logical]-> ADR-L-0007` |
-| [ADR-PS-0002 — ADR Kit Authoring Compiler and Validation System](../physical-system/ADR-PS-0002-adr-kit-authoring-compiler-and-validation-system.md) | implements this logical authority | `ADR-PS-0002 -[:implements_logical]-> ADR-L-0007` |
+| [ADR-PS-0002 — ADR Kit Compiler, Validation, and Canonical Semantic Execution System](../physical-system/ADR-PS-0002-adr-kit-authoring-compiler-and-validation-system.md) | implements this logical authority | `ADR-PS-0002 -[:implements_logical]-> ADR-L-0007` |
 
 
 

@@ -5,8 +5,8 @@ artifact_kind: rendered_adr_markdown
 generator_id: adr-projection-markdown
 generator_version: 3
 hash_algorithm: sha256
-source_hash: e20de002a59687dd6e8ea17f4a6514bade613eaa4a14bdbb66cf227f61f1cd16
-rendered_hash: 81a3f98aa7c6ba4fa56093b2e56af4e99b0b3ca1a1f2e36da2bc2cc0f7751f40
+source_hash: 61a2de6121a228aa134a5a952af5cffc98841b5e3967bfef7cf680a83b079775
+rendered_hash: 07a0e795bb4ca4800ba2a0a7055379605a80ca1b479a68a62c4a4c580eef23a6
 -->
 
 # ADR-L-0002: Multi-Scope ADR Architecture for Sub-Module Development
@@ -307,7 +307,7 @@ Recursive execution is orchestration, not authorization to collapse scopes.
 | [ADR-PC-0003 — Compiler Pipeline and Driver](../physical-component/ADR-PC-0003-compiler-pipeline-and-driver.md) | implements this logical authority | `ADR-PC-0003 -[:implements_logical]-> ADR-L-0002` |
 | [ADR-PC-0008 — Project Scope Resolution](../physical-component/ADR-PC-0008-project-scope-resolution.md) | implements this logical authority | `ADR-PC-0008 -[:implements_logical]-> ADR-L-0002` |
 | [ADR-PS-0001 — ADR Architecture Kit Discovery and Indexing System](../physical-system/ADR-PS-0001-adr-architecture-kit-discovery-and-indexing-system.md) | implements this logical authority | `ADR-PS-0001 -[:implements_logical]-> ADR-L-0002` |
-| [ADR-PS-0002 — ADR Kit Authoring Compiler and Validation System](../physical-system/ADR-PS-0002-adr-kit-authoring-compiler-and-validation-system.md) | implements this logical authority | `ADR-PS-0002 -[:implements_logical]-> ADR-L-0002` |
+| [ADR-PS-0002 — ADR Kit Compiler, Validation, and Canonical Semantic Execution System](../physical-system/ADR-PS-0002-adr-kit-authoring-compiler-and-validation-system.md) | implements this logical authority | `ADR-PS-0002 -[:implements_logical]-> ADR-L-0002` |
 
 
 

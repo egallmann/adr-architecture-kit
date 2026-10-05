@@ -4,13 +4,13 @@
 # generator_id: adr-architecture-graph
 # generator_version: 1
 # hash_algorithm: sha256
-# source_hash: 06f16614b02171c7752f97a53fa208ce4484db00f621d1dbc60417296415e2e4
-# rendered_hash: 20ae0ac20cd490aad9c62f5fb4e8c279f85e17f700059d004e3fbbbc74a795c9
+# source_hash: 04b1c87e2ee0a2eb46a59845e8d6010332afd4e28c0a247e6e32c056750c76e2
+# rendered_hash: 8a84ae66cdc16a5be5b997b340ed2d3c796f90a747b9f76a5a088b30ad38949c
 
 schema_version: '1.0'
 type: architecture_graph
 architecture_namespace: adr-architecture-kit
-generated_at: '2026-10-04T20:35:19Z'
+generated_at: '2026-09-23T00:00:00Z'
 nodes:
 - id: 019fee89-e614-707f-8d3f-7a814d286ce6
   entity_type: capability
@@ -2163,7 +2163,7 @@ nodes:
     artifact_path: adrs/physical-component/ADR-PC-0003-compiler-pipeline-and-driver.yaml
 - id: 019fee89-e618-713e-a017-5b417ef9ac9f
   entity_type: system
-  name: ADR Kit Authoring Compiler and Validation System
+  name: ADR Kit Authoring Compiler, Validation, and Semantic Execution System
   canonical_source:
     source_type: physical_system_adr
     source_ref: 019fee89-e618-7d04-9337-4aa2d3258507
@@ -2318,7 +2318,7 @@ nodes:
     artifact_path: adrs/physical-component/ADR-PC-0004-repository-boundary-and-normalized-model.yaml
 - id: 019fee89-e618-7d04-9337-4aa2d3258507
   entity_type: adr
-  name: ADR Kit Authoring Compiler and Validation System
+  name: ADR Kit Compiler, Validation, and Canonical Semantic Execution System
   canonical_source:
     source_type: physical_system_adr
     source_ref: 019fee89-e618-7d04-9337-4aa2d3258507
@@ -4786,6 +4786,27 @@ nodes:
     source_type: logical_adr
     source_ref: 01a10888-daba-75bc-a071-d33f43ab8a8b#01a10888-daba-75bc-a071-d34da363a9f6
     artifact_path: adrs/logical/ADR-L-0034-detached-normalized-semantic-equivalence-for-authoring-construction.yaml
+- id: 01a10e4c-9ea8-76a2-93f7-8fbeca1ad7cf
+  entity_type: adr
+  name: Canonical Semantic Execution Core
+  canonical_source:
+    source_type: physical_component_adr
+    source_ref: 01a10e4c-9ea8-76a2-93f7-8fbeca1ad7cf
+    artifact_path: adrs/physical-component/ADR-PC-0009-canonical-semantic-execution-core.yaml
+- id: 01a10e4c-9ea8-76a2-93f7-8fbfd4c11741
+  entity_type: component
+  name: Canonical Semantic Execution Core
+  canonical_source:
+    source_type: physical_component_adr
+    source_ref: 01a10e4c-9ea8-76a2-93f7-8fbeca1ad7cf#01a10e4c-9ea8-76a2-93f7-8fbfd4c11741
+    artifact_path: adrs/physical-component/ADR-PC-0009-canonical-semantic-execution-core.yaml
+- id: 01a10e4c-9ea8-76a2-93f7-8fc0145b9808
+  entity_type: interface
+  name: 01a10e4c-9ea8-76a2-93f7-8fc0145b9808
+  canonical_source:
+    source_type: physical_component_adr
+    source_ref: 01a10e4c-9ea8-76a2-93f7-8fbeca1ad7cf#01a10e4c-9ea8-76a2-93f7-8fc0145b9808
+    artifact_path: adrs/physical-component/ADR-PC-0009-canonical-semantic-execution-core.yaml
 edges:
 - relationship_id: composed_of:019fee89-e618-713e-a017-5b417ef9ac9f:019fee89-e617-7060-8f3f-4ecd46a719da
   assertion_id: asrt-d74242277345f165c818296ac134a2feaff28ca36257f6aa02377dea3ba84258
@@ -4833,6 +4854,18 @@ edges:
   - 019fee89-e618-7d04-9337-4aa2d3258507
   canonical_source_ref: 019fee89-e618-7d04-9337-4aa2d3258507#TOPO-0004
   source_pointer: /component_topology/components/3
+  confidence: 1.0
+  metadata: {}
+- relationship_id: composed_of:019fee89-e618-713e-a017-5b417ef9ac9f:01a10e4c-9ea8-76a2-93f7-8fbfd4c11741
+  assertion_id: asrt-518decc83d7b25e93a519d8d7afd79ec2ac2a3034d0263a621a9554299fa51c0
+  relationship_type: composed_of
+  source_entity_id: 019fee89-e618-713e-a017-5b417ef9ac9f
+  target_entity_id: 01a10e4c-9ea8-76a2-93f7-8fbfd4c11741
+  provenance_classification: explicit
+  evidence:
+  - 019fee89-e618-7d04-9337-4aa2d3258507
+  canonical_source_ref: 019fee89-e618-7d04-9337-4aa2d3258507#TOPO-0005
+  source_pointer: /component_topology/components/4
   confidence: 1.0
   metadata: {}
 - relationship_id: composed_of:019fee89-e618-79df-a73f-edc9dead8526:019fee89-e617-76d8-a333-e21361cd6602
@@ -11656,8 +11689,44 @@ edges:
   canonical_source_ref: 01a10888-daba-75bc-a071-d33f43ab8a8b#01a10888-daba-75bc-a071-d34da363a9f6
   confidence: 1.0
   metadata: {}
+- relationship_id: declared_in:01a10e4c-9ea8-76a2-93f7-8fbfd4c11741:01a10e4c-9ea8-76a2-93f7-8fbeca1ad7cf
+  assertion_id: asrt-d2e0236a9beaad09d9e3d2630f0c42867eb317a9d98154360b533bc45c657621
+  relationship_type: declared_in
+  source_entity_id: 01a10e4c-9ea8-76a2-93f7-8fbfd4c11741
+  target_entity_id: 01a10e4c-9ea8-76a2-93f7-8fbeca1ad7cf
+  provenance_classification: explicit
+  evidence:
+  - 01a10e4c-9ea8-76a2-93f7-8fbeca1ad7cf#01a10e4c-9ea8-76a2-93f7-8fbfd4c11741
+  canonical_source_ref: 01a10e4c-9ea8-76a2-93f7-8fbeca1ad7cf#01a10e4c-9ea8-76a2-93f7-8fbfd4c11741
+  confidence: 1.0
+  metadata: {}
+- relationship_id: declared_in:01a10e4c-9ea8-76a2-93f7-8fc0145b9808:01a10e4c-9ea8-76a2-93f7-8fbeca1ad7cf
+  assertion_id: asrt-e7c38c6ba25ff23e05c186efe890d828bffffe922d46b075cdda155aec203684
+  relationship_type: declared_in
+  source_entity_id: 01a10e4c-9ea8-76a2-93f7-8fc0145b9808
+  target_entity_id: 01a10e4c-9ea8-76a2-93f7-8fbeca1ad7cf
+  provenance_classification: explicit
+  evidence:
+  - 01a10e4c-9ea8-76a2-93f7-8fbeca1ad7cf#01a10e4c-9ea8-76a2-93f7-8fc0145b9808
+  canonical_source_ref: 01a10e4c-9ea8-76a2-93f7-8fbeca1ad7cf#01a10e4c-9ea8-76a2-93f7-8fc0145b9808
+  confidence: 1.0
+  metadata: {}
+- relationship_id: depends_on:019fee89-e617-7060-8f3f-4ecd46a719da:01a10e4c-9ea8-76a2-93f7-8fbfd4c11741
+  assertion_id: asrt-081c53293c2421242e2cb6404598edcfbbe4c53c33c6381fbec7c6f9ab2eaf11
+  relationship_type: depends_on
+  source_entity_id: 019fee89-e617-7060-8f3f-4ecd46a719da
+  target_entity_id: 01a10e4c-9ea8-76a2-93f7-8fbfd4c11741
+  provenance_classification: explicit
+  evidence:
+  - 019fee89-e618-7d04-9337-4aa2d3258507
+  canonical_source_ref: 019fee89-e618-7d04-9337-4aa2d3258507#TOPO-0001->TOPO-0005
+  source_pointer: /component_topology/relationships/0
+  confidence: 1.0
+  metadata:
+    description: Host validation delegates shared meaning-bearing rules to the canonical
+      semantic core.
 - relationship_id: depends_on:019fee89-e617-76ad-9336-b3615a6e4bde:019fee89-e617-7060-8f3f-4ecd46a719da
-  assertion_id: asrt-614b77b26154d9427fcdea191d9553b6a55d50d6f6e853fe9d165023f18db3de
+  assertion_id: asrt-04595ccb7c5592599679178aec697cbcc7f6400bd98e52532a7a40b5c080d5f5
   relationship_type: depends_on
   source_entity_id: 019fee89-e617-76ad-9336-b3615a6e4bde
   target_entity_id: 019fee89-e617-7060-8f3f-4ecd46a719da
@@ -11665,11 +11734,25 @@ edges:
   evidence:
   - 019fee89-e618-7d04-9337-4aa2d3258507
   canonical_source_ref: 019fee89-e618-7d04-9337-4aa2d3258507#TOPO-0002->TOPO-0001
-  source_pointer: /component_topology/relationships/0
+  source_pointer: /component_topology/relationships/1
   confidence: 1.0
   metadata: {}
+- relationship_id: depends_on:019fee89-e617-76ad-9336-b3615a6e4bde:01a10e4c-9ea8-76a2-93f7-8fbfd4c11741
+  assertion_id: asrt-01e704a43e32067f7038f6b46ad2fb7d02d0d28471b687b93447814144ddb4ac
+  relationship_type: depends_on
+  source_entity_id: 019fee89-e617-76ad-9336-b3615a6e4bde
+  target_entity_id: 01a10e4c-9ea8-76a2-93f7-8fbfd4c11741
+  provenance_classification: explicit
+  evidence:
+  - 019fee89-e618-7d04-9337-4aa2d3258507
+  canonical_source_ref: 019fee89-e618-7d04-9337-4aa2d3258507#TOPO-0002->TOPO-0005
+  source_pointer: /component_topology/relationships/2
+  confidence: 1.0
+  metadata:
+    description: Compiler hosts route canonical semantic operations through the shared
+      core.
 - relationship_id: depends_on:019fee89-e618-74d1-9a1f-37e2c2982a51:019fee89-e617-76ad-9336-b3615a6e4bde
-  assertion_id: asrt-22a612e7c299fdfc1d67b4b7ce928b01805da8eae164b99afe86faba75afb0cf
+  assertion_id: asrt-ba2b1b24522fc225c82805cc2415b7920a3b1fdb3937f27c2c002caaf5730d97
   relationship_type: depends_on
   source_entity_id: 019fee89-e618-74d1-9a1f-37e2c2982a51
   target_entity_id: 019fee89-e617-76ad-9336-b3615a6e4bde
@@ -11677,11 +11760,11 @@ edges:
   evidence:
   - 019fee89-e618-7d04-9337-4aa2d3258507
   canonical_source_ref: 019fee89-e618-7d04-9337-4aa2d3258507#TOPO-0003->TOPO-0002
-  source_pointer: /component_topology/relationships/1
+  source_pointer: /component_topology/relationships/3
   confidence: 1.0
   metadata: {}
 - relationship_id: depends_on:019fee89-e618-781c-831f-0d5fe24f7d85:019fee89-e617-76ad-9336-b3615a6e4bde
-  assertion_id: asrt-cd4317d4cea73b704c9be9e6a7fb607eadc9c123efbb1ff9e43874412ad28efe
+  assertion_id: asrt-6c7e1eda316a54c93955a179fd643a4d272121b66c6f444745c61454cf25b00b
   relationship_type: depends_on
   source_entity_id: 019fee89-e618-781c-831f-0d5fe24f7d85
   target_entity_id: 019fee89-e617-76ad-9336-b3615a6e4bde
@@ -11689,7 +11772,7 @@ edges:
   evidence:
   - 019fee89-e618-7d04-9337-4aa2d3258507
   canonical_source_ref: 019fee89-e618-7d04-9337-4aa2d3258507#TOPO-0004->TOPO-0002
-  source_pointer: /component_topology/relationships/2
+  source_pointer: /component_topology/relationships/4
   confidence: 1.0
   metadata: {}
 - relationship_id: embodied_in:019fee89-e617-7060-8f3f-4ecd46a719da:019fee89-e618-713e-a017-5b417ef9ac9f
@@ -11789,6 +11872,17 @@ edges:
   evidence:
   - 019ffdba-3c42-70da-b33d-efc003269c42
   canonical_source_ref: 019ffdba-3c42-70da-b33d-efc003269c42#019ffdba-3c42-75d5-b93b-f32f35152e32
+  confidence: 1.0
+  metadata: {}
+- relationship_id: embodied_in:01a10e4c-9ea8-76a2-93f7-8fbfd4c11741:019fee89-e618-713e-a017-5b417ef9ac9f
+  assertion_id: asrt-a32c200172cb787e06e30aa392b52a2ff9b06c46d5e05a322f44512967d4a8a6
+  relationship_type: embodied_in
+  source_entity_id: 01a10e4c-9ea8-76a2-93f7-8fbfd4c11741
+  target_entity_id: 019fee89-e618-713e-a017-5b417ef9ac9f
+  provenance_classification: explicit
+  evidence:
+  - 01a10e4c-9ea8-76a2-93f7-8fbeca1ad7cf
+  canonical_source_ref: 01a10e4c-9ea8-76a2-93f7-8fbeca1ad7cf#01a10e4c-9ea8-76a2-93f7-8fbfd4c11741
   confidence: 1.0
   metadata: {}
 - relationship_id: enabled_by:019fee89-e617-7410-8c37-e302d20b9f8b:019fee89-e617-793a-b537-a492afa6f167
@@ -12869,6 +12963,39 @@ edges:
   canonical_source_ref: 01a048d8-454a-7464-bcaa-718fa77bed6a
   confidence: 1.0
   metadata: {}
+- relationship_id: implements_logical:01a10e4c-9ea8-76a2-93f7-8fbeca1ad7cf:01a05a27-0000-7000-8000-000000000027
+  assertion_id: asrt-1c64660c307d3a1c430a0e870a41719287101b31cc677b20ad5c473ee633b367
+  relationship_type: implements_logical
+  source_entity_id: 01a10e4c-9ea8-76a2-93f7-8fbeca1ad7cf
+  target_entity_id: 01a05a27-0000-7000-8000-000000000027
+  provenance_classification: explicit
+  evidence:
+  - 01a10e4c-9ea8-76a2-93f7-8fbeca1ad7cf
+  canonical_source_ref: 01a10e4c-9ea8-76a2-93f7-8fbeca1ad7cf
+  confidence: 1.0
+  metadata: {}
+- relationship_id: implements_logical:01a10e4c-9ea8-76a2-93f7-8fbeca1ad7cf:01a09938-a15b-75ed-8326-212e21bd3cfe
+  assertion_id: asrt-b528809842427be78dad19e4e22c6e77539bb05f22ac2c2edea20c0f0ea51633
+  relationship_type: implements_logical
+  source_entity_id: 01a10e4c-9ea8-76a2-93f7-8fbeca1ad7cf
+  target_entity_id: 01a09938-a15b-75ed-8326-212e21bd3cfe
+  provenance_classification: explicit
+  evidence:
+  - 01a10e4c-9ea8-76a2-93f7-8fbeca1ad7cf
+  canonical_source_ref: 01a10e4c-9ea8-76a2-93f7-8fbeca1ad7cf
+  confidence: 1.0
+  metadata: {}
+- relationship_id: implements_logical:01a10e4c-9ea8-76a2-93f7-8fbeca1ad7cf:01a09cf0-179e-71cc-b150-d4a79551b939
+  assertion_id: asrt-eb7f578b2b4d60bc3ff37f671440c1e06a180762617d51df7ba88c174c0b3c66
+  relationship_type: implements_logical
+  source_entity_id: 01a10e4c-9ea8-76a2-93f7-8fbeca1ad7cf
+  target_entity_id: 01a09cf0-179e-71cc-b150-d4a79551b939
+  provenance_classification: explicit
+  evidence:
+  - 01a10e4c-9ea8-76a2-93f7-8fbeca1ad7cf
+  canonical_source_ref: 01a10e4c-9ea8-76a2-93f7-8fbeca1ad7cf
+  confidence: 1.0
+  metadata: {}
 - relationship_id: provides_interface:019fee89-e617-7060-8f3f-4ecd46a719da:019fee89-e617-74dd-a62f-5ce1a1994d18
   assertion_id: asrt-92b546e55185fdc70437a053a892a616372a61519e5f99a6b0fda7def16d62d0
   relationship_type: provides_interface
@@ -13010,6 +13137,17 @@ edges:
   evidence:
   - 019ffdba-3c42-70da-b33d-efc003269c42
   canonical_source_ref: 019ffdba-3c42-70da-b33d-efc003269c42#019ffdba-3c42-7d5b-b52f-b36c3000f299
+  confidence: 1.0
+  metadata: {}
+- relationship_id: provides_interface:01a10e4c-9ea8-76a2-93f7-8fbfd4c11741:01a10e4c-9ea8-76a2-93f7-8fc0145b9808
+  assertion_id: asrt-d1aef03d4aca923ba6e095b262588059e98620464ac77f35500625a7de17fd78
+  relationship_type: provides_interface
+  source_entity_id: 01a10e4c-9ea8-76a2-93f7-8fbfd4c11741
+  target_entity_id: 01a10e4c-9ea8-76a2-93f7-8fc0145b9808
+  provenance_classification: explicit
+  evidence:
+  - 01a10e4c-9ea8-76a2-93f7-8fbeca1ad7cf
+  canonical_source_ref: 01a10e4c-9ea8-76a2-93f7-8fbeca1ad7cf#01a10e4c-9ea8-76a2-93f7-8fc0145b9808
   confidence: 1.0
   metadata: {}
 - relationship_id: references:019fee89-e615-70a5-861b-b2dde147e5af:01a048d8-454a-7464-bcaa-718e58dfb9c2

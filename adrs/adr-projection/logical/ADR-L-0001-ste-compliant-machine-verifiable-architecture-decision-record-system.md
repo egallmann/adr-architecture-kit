@@ -5,8 +5,8 @@ artifact_kind: rendered_adr_markdown
 generator_id: adr-projection-markdown
 generator_version: 3
 hash_algorithm: sha256
-source_hash: 834115a13789afb04a1958c8fbb19fc83cdf5a6ab914ab557f4cee55024932fd
-rendered_hash: 6843aa482efd54133d76f9477851e94cd7d654dabdebfc65ac9b0be983a32b32
+source_hash: 3c92168fbb89f916ed86df396143fbf3b30f415442b19d8d1549212211ac1d91
+rendered_hash: ceb6d2a204565b27617b37cb1713776a813ff7e8c7c20703b7e4f80546ebb03c
 -->
 
 # ADR-L-0001: STE-Compliant Machine-Verifiable Architecture Decision Record System
@@ -711,7 +711,7 @@ Enables PROJECT.yaml, Decision ADRs, policy validation, correction agents.
 
 | Neighbor | Relationship | Exact Path |
 | --- | --- | --- |
-| [ADR-PS-0002 — ADR Kit Authoring Compiler and Validation System](../physical-system/ADR-PS-0002-adr-kit-authoring-compiler-and-validation-system.md) | implements this logical authority | `ADR-PS-0002 -[:implements_logical]-> ADR-L-0001` |
+| [ADR-PS-0002 — ADR Kit Compiler, Validation, and Canonical Semantic Execution System](../physical-system/ADR-PS-0002-adr-kit-authoring-compiler-and-validation-system.md) | implements this logical authority | `ADR-PS-0002 -[:implements_logical]-> ADR-L-0001` |
 
 
 

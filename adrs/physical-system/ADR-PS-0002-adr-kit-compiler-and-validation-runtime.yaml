@@ -1,21 +1,27 @@
 schema_version: '1.5'
 adr_type: physical-system
 id: 019fee89-e618-7d04-9337-4aa2d3258507
-title: ADR Kit Authoring Compiler and Validation System
-status: accepted
+title: ADR Kit Compiler, Validation, and Canonical Semantic Execution System
+status: proposed
 created_date: '2026-03-15'
 authors:
 - erik.gallmann
-modified_date: '2026-08-27'
+modified_date: '2026-10-05'
 domains:
 - compiler
 - validation
 - tooling
+- semantic-execution
+- multi-host
 tags:
 - compiler
 - validation
 - authoring
+- rust
+- wasm
+- semantic-core
 - python
+- node
 implements_logical:
 - 019fee89-e615-70a5-861b-b2dde147e5af
 - 019fee89-e615-7b9c-8e3f-32ceeda01491
@@ -26,40 +32,31 @@ implements_logical:
 - 019fee89-e615-7f19-810b-c7b33a9d9e0d
 technologies:
 - python
+- rust
+- wasm
+- typescript
+- node
 - click
 - pydantic
 - yaml
 - json-schema
-context: 'adr-architecture-kit operates as an authoring-time compiler and validation
-  system rather
+context: 'ADR-Kit provides authoring, validation, compilation, and peer Python and
+  TypeScript/Node host capabilities. Rust/WASM semantic-core is the canonical
+  meaning-bearing execution authority shared by those hosts. Hosts acquire source
+  facts such as filesystem scope and YAML input, adapt them to the versioned core
+  protocol, and present deterministic results. The core owns shared semantic
+  validation and execution, including schema execution required by the core,
+  semantic-contract operations, authoring construction, architecture
+  interpretation, materialization, and canonical architecture-rule validation.
 
-  than a collection of unrelated generators. The implementation includes an
-
-  explicit compiler pipeline, contract validation, normalized repository/model
-
-  access, integrity verification, and CLI orchestration over those surfaces.
-
-
-  This ADR establishes the concrete authoring/compiler system boundary for those public
-
-  capabilities. Discovery and indexing remain covered by ADR-PS-0001; this ADR
-
-  covers the authoring/compiler implementation that powers canonical parsing,
-
-  compilation, repository loading, contract checks, artifact integrity, and the
-
-  narrow `adr_kit.api` authoring SDK.
-
-
-  The boundary explicitly excludes Assembler behavior, runtime observation or
-
-  evidence extraction, rules execution, substrate management, admission decisions,
-
-  MCP surfaces, and LLM responsibilities. Those belong to later work or sibling
-
-  systems and must not be introduced by the Phase 1 SDK.
-
-  '
+  This system boundary includes host-side compiler orchestration, repository
+  access, generated-artifact integrity, the CLI, and supported Python and
+  TypeScript/Node bindings. The semantic core does not traverse consumer
+  filesystems, acquire YAML, write repositories, perform governance admission,
+  present CLI output, or observe Runtime state. Hosts do not recreate core-owned
+  meaning. Discovery and indexing remain covered by ADR-PS-0001. The Rust crate
+  and WASM artifact are implementation mechanisms behind the shared semantic
+  boundary, not Rust-native public SDK contracts.'
 technology_stack:
 - category: language
   name: Python
@@ -69,6 +66,18 @@ technology_stack:
     3.14.7; new GA Python minors require explicit qualification before support is
     advertised.
     '
+- category: language
+  name: Rust
+  version: 2021 edition
+  rationale: Canonical shared semantic execution implementation in the single semantic-core crate.
+- category: infrastructure
+  name: WebAssembly
+  version: wasm32-unknown-unknown
+  rationale: Shared execution artifact consumed by supported hosts.
+- category: language
+  name: TypeScript and Node.js
+  version: Supported package baseline
+  rationale: Peer host binding over the same semantic-core execution authority.
 - category: tooling
   name: Click
   version: 8.x
@@ -83,21 +92,16 @@ technology_stack:
   rationale: Structural schema validation for canonical artifacts.
 system_boundaries:
 - id: SYSBOUND-0002
-  name: Authoring Compiler and Validation Boundary
-  description: 'Encapsulates canonical ADR parsing, compiler orchestration, schema
-    and
-
-    contract validation, normalized repository access, and generated artifact
-
-    integrity validation. It exposes a narrow Python authoring SDK over supported
-
-    validation, compilation, repository, model, and capability contracts. It does
-
-    not perform runtime extraction, rules, substrate, admission, MCP, LLM, or
-
-    Assembler responsibilities.
-
-    '
+  name: Authoring, Validation, and Canonical Semantic Execution Boundary
+  description: 'Encapsulates host-side source acquisition and compiler orchestration,
+    canonical Rust/WASM semantic execution, normalized repository access, and
+    generated-artifact integrity. Python and TypeScript/Node are peer host
+    adapters over the same versioned semantic-core protocol. Hosts own filesystem
+    discovery, YAML acquisition/parsing, and presentation; the core owns shared
+    meaning-bearing validation, construction, interpretation, and materialization.
+    The core does not traverse or write consumer filesystems. The system excludes
+    Runtime observation, evidence extraction, governance admission, MCP, LLM, and
+    Assembler responsibilities.'
   external_dependencies:
   - Canonical ADR artifacts
   - Canonical invariant artifacts
@@ -109,6 +113,7 @@ system_boundaries:
   - adr validate-project-metadata
   - adr entities *
   - adr_kit.api
+  - TypeScript/Node package API
 component_topology:
   components:
   - id: TOPO-0001
@@ -123,10 +128,21 @@ component_topology:
   - id: TOPO-0004
     component_ref: 019fee89-e618-781c-831f-0d5fe24f7d85
     purpose: Verifies generated artifact freshness and tamper integrity.
+  - id: TOPO-0005
+    component_ref: 01a10e4c-9ea8-76a2-93f7-8fbfd4c11741
+    purpose: Executes canonical shared semantics through the Rust/WASM boundary.
   relationships:
+  - from: TOPO-0001
+    to: TOPO-0005
+    type: depends_on
+    description: Host validation delegates shared meaning-bearing rules to the canonical semantic core.
   - from: TOPO-0002
     to: TOPO-0001
     type: depends_on
+  - from: TOPO-0002
+    to: TOPO-0005
+    type: depends_on
+    description: Compiler hosts route canonical semantic operations through the shared core.
   - from: TOPO-0003
     to: TOPO-0002
     type: depends_on
@@ -143,4 +159,4 @@ system:
   id: 019fee89-e618-713e-a017-5b417ef9ac9f
   alias_id: SYS-0002
   alias_name: sys-0002-adr-kit-authoring-compiler-and-validation-system
-  name: ADR Kit Authoring Compiler and Validation System
+  name: ADR Kit Authoring Compiler, Validation, and Semantic Execution System

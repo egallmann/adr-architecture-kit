@@ -5,8 +5,8 @@ artifact_kind: rendered_adr_markdown
 generator_id: adr-projection-markdown
 generator_version: 3
 hash_algorithm: sha256
-source_hash: 524c54f1831e386382fe169cc11bac9c0625248a1d7c7dacd3741b674a19e04a
-rendered_hash: b509cd69e9530b8e33aeb8b7fef953364d7a6fad273f9c1a792cc8bc3d7c7a9d
+source_hash: 53c776ad758a901f422dab4a5eb957e49079d2f9c1ef7de54c35b9a1fb35d407
+rendered_hash: 923224303b8c2265bf121e94b666f88dcf0246230444016e790a648a12f329a6
 -->
 
 # ADR-L-0030: Canonical Source Basis and Semantic Execution Surface
@@ -30,6 +30,7 @@ rendered_hash: b509cd69e9530b8e33aeb8b7fef953364d7a6fad273f9c1a792cc8bc3d7c7a9d
 | Status | accepted |
 | Decisions | 10 |
 | Invariants | 10 |
+| Physical realizations | [ADR-PC-0009](../physical-component/ADR-PC-0009-canonical-semantic-execution-core.md) |
 
 
 ## Context
@@ -416,6 +417,11 @@ flowchart LR
 ```
 
 
+## Physical Realization
+
+**Components**
+- [ADR-PC-0009](../physical-component/ADR-PC-0009-canonical-semantic-execution-core.md)
+
 
 
 
@@ -444,6 +450,12 @@ flowchart LR
 - [ADR-L-0033](ADR-L-0033-governed-candidate-binding-for-authoring-construction.md)
 - [ADR-L-0034](ADR-L-0034-detached-normalized-semantic-equivalence-for-authoring-construction.md)
 
+
+## Architecture Relationships
+
+| Neighbor | Relationship | Exact Path |
+| --- | --- | --- |
+| [ADR-PC-0009 — Canonical Semantic Execution Core](../physical-component/ADR-PC-0009-canonical-semantic-execution-core.md) | implements this logical authority | `ADR-PC-0009 -[:implements_logical]-> ADR-L-0030` |
 
 
 

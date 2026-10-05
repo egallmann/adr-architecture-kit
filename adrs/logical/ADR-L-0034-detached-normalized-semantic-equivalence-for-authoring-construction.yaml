@@ -66,8 +66,14 @@ decisions:
     The observed side is extracted from the complete schema-valid Normalized
     Model 2.4 produced by validating and interpreting only the sealed minimal
     candidate source roots through exact Authoring 1.7 and Architecture
-    Interpretation authority. The observed projection uses the same
+    Interpretation 1.2 authority. The observed projection uses the same
     contract-owned field disposition map to produce the same ledger shape.
+
+    Complete whole-result qualification is governed by immutable Authoring
+    Construction 1.1, the successor to ACC 1.0. ACC 1.0 and its frozen
+    conformance remain unchanged historical authority. ACC 1.1 consumes AI
+    1.2 and retains Normalized Model 2.4 under the qualified open-metadata
+    preservation rule defined below.
 
     A ledger contains every entity, semantic relation, owner-local topology
     value, compatibility occurrence, composition-derived relation, and
@@ -104,11 +110,27 @@ decisions:
     normalized-result assembly, comparison, and diagnostics; ACC does not
     define a second interpretation map.
 
+    This capability MUST use the immutable Architecture Interpretation 1.2
+    successor to AI 1.1. AI 1.1, including its fixed semantic-contract
+    fingerprint and frozen normative conformance, remains historical authority
+    and MUST NOT be edited. AI 1.2 owns the new machine-evaluable disposition
+    resource and native detached interpretation defined here.
+
     The selected exact AI authority MUST provide a machine-evaluable
-    disposition for every semantic field pointer reachable through ACC's
-    supported Authoring Construction types. Each pointer has exactly one
-    disposition: direct_semantic_value at an exact normalized path;
-    canonical_field_placement with a named source and target JSON Pointer;
+    disposition for every semantic field reachable through ACC's supported
+    Authoring Construction types. Each field has a stable AI-owned
+    semantic-field key formed from its semantic type and schema-relative field
+    selector, encoded as `<semantic-type>#<schema-relative-JSON-Pointer>` (for
+    example, `entity/gap#/context`). The selector is relative to the field's
+    schema, uses RFC 6901 token escaping, and is not relative to a particular
+    source instance. AI 1.2 MUST guarantee key uniqueness within each semantic
+    unit; duplicate or ambiguous keys fail closed. It excludes runtime array
+    indexes, root traversal positions, embedded positions, candidate
+    filenames, and incidental container placement unless exact source
+    authority makes that order or location semantic. Each field has exactly
+    one disposition: direct_semantic_value at an exact normalized path;
+    canonical_field_placement with a named stable source field key and
+    normalized semantic destination;
     compatibility_projection with a closed semantic matching tuple and
     multiplicity rule;
     declared_absence naming the exact source field and omitted normalized
@@ -126,16 +148,23 @@ decisions:
     recursively schema-governed root object and array. Every field with no
     first-class normalized destination MUST receive an explicit
     direct_semantic_value disposition to the reserved
-    metadata.semantic_extensions object. That object is keyed by the exact
-    source JSON Pointer and stores the complete typed JSON value without
-    coercion; its values participate in semantic equality. This ADR defines
+    metadata.semantic_extensions object. Its entries are keyed by the stable
+    AI-owned semantic-field key within the independently identified semantic
+    unit, and store the complete typed JSON value without coercion; the key
+    and value participate in semantic equality. Runtime source-instance
+    pointers remain available for integrity, diagnostics, provenance, and
+    replay, but are not equality keys merely because they locate a value.
+    This ADR defines
     the preservation destination, but the selected AI resource MUST enumerate
-    each exact pointer and destination and MUST be checked against the closed
+    each exact field key and destination and MUST be checked against the closed
     schema closure. There is no runtime default for a missing mapping: any
-    pointer absent from the selected resource fails closed. Structured source
+    field absent from the selected resource fails closed. Structured source
     containers that compose child units MUST map their membership and any
     governed order without duplicating child payload semantics; child fields
-    are compared on the child semantic unit.
+    are compared on the child semantic unit. An ordered array remains an
+    ordered typed value under its stable field key; runtime array indices do
+    not enter field or semantic-unit identity. Reordering a collection whose
+    order is not governed changes neither identity nor equality.
 
     Existing metadata.source_semantics is source replay/provenance evidence;
     it cannot substitute for semantic output or make a dropped value equal.
@@ -146,6 +175,16 @@ decisions:
     entity/gap.context is semantic and its loss is semantic_mismatch (C32).
     No unclassified field may disappear, and implementation limitations
     cannot be labeled declared_absence.
+
+    Authoring Construction 1.1 is the immutable successor to ACC 1.0 for
+    complete whole-result qualification. ACC 1.1 consumes exact AI 1.2
+    authority and owns ledger construction, comparison, diagnostics, and the
+    closed meaning of normalized_result.model. ACC 1.0, including its fixed
+    fingerprint and frozen C01-C42 conformance, remains historical authority
+    and MUST NOT be edited. Normalized Model 2.4 remains unchanged: its open
+    metadata object is only a schema-valid carrier here; semantic-extension
+    meaning is conferred by exact AI 1.2 qualification and does not give
+    generic NM 2.4 consumers intrinsic semantics for arbitrary metadata.
 - id: 01a10888-daba-75bc-a071-d34250a1b891
   alias_id: DEC-0270
   alias_name: normalize-detached-candidates-under-a-domain-separated-context
@@ -190,9 +229,12 @@ decisions:
     UUID, qualification, or relationship meaning is never ceremony merely
     because an implementation produced it.
 
-    canonical_field_placement is an exact lossless source-pointer to
-    normalized-pointer mapping declared by Architecture Interpretation.
-    Both paths must yield the same canonical semantic value. Examples include
+    canonical_field_placement is an exact lossless mapping from an AI-owned
+    stable semantic-field key (semantic type plus schema-relative field
+    selector) to a normalized semantic destination declared by Architecture
+    Interpretation. Runtime source-instance pointers may locate the value but
+    do not define its semantic field identity. The source and destination
+    values must be the same canonical semantic value. Examples include
     title to name, status to lifecycle_stage, evidence kind to evidence_kind,
     and related_entities to related_entity_ids where the selected exact
     mapping declares those paths. Truncation, fallback, value-changing
@@ -241,7 +283,9 @@ decisions:
     integrity/qualification evidence; custom semantic qualification is both
     semantic meaning and qualification. Candidate-local source_ref becomes
     semantic only when the AI mapping declares it as owner/occurrence
-    identity; otherwise it is integrity evidence. Detached provider/context,
+    identity; otherwise it is integrity evidence. Runtime source-instance
+    pointers are locators for integrity, diagnostics, provenance, and replay,
+    not semantic equality keys by default. Detached provider/context,
     generated URI, generated fingerprints, validation summaries, and outer
     storage ordering are representation provenance and may be normalized only
     by the deterministic_ceremony rules.
@@ -270,6 +314,14 @@ decisions:
     fields map to that child unit. The complete nested child object is not
     copied again into the parent semantic extension. This prevents both
     omission and double counting.
+
+    Semantic-extension entries match by (semantic-unit identity, stable
+    AI-owned semantic-field key), never by runtime instance JSON Pointer
+    unless exact authority independently makes that location semantic. The
+    complete typed JSON value participates in equality without coercion;
+    values already mapped to first-class normalized properties are not
+    duplicated. Embedded child values remain with the child semantic unit
+    rather than being copied into a parent extension.
 
     Canonical UUIDv7 identifies ADRs, canonical entities, custom entities,
     normative propositions, and canonical relationships. Topology components
@@ -302,7 +354,7 @@ invariants:
 - id: 01a10888-daba-75bc-a071-d347f04468de
   alias_id: INV-0277
   alias_name: every-supported-source-field-has-one-exact-disposition
-  statement: Every machine-evaluable Authoring 1.7 semantic field reachable through supported construction MUST have exactly one exact Architecture Interpretation disposition; unclassified fields MUST fail closed and semantic values without a first-class Normalized Model field MUST be preserved in metadata.semantic_extensions and compared by exact source pointer.
+  statement: Every machine-evaluable Authoring 1.7 semantic field reachable through supported construction MUST have exactly one exact Architecture Interpretation 1.2 disposition; unclassified fields MUST fail closed and semantic values without a first-class Normalized Model field MUST be preserved in metadata.semantic_extensions and compared by (semantic-unit identity, stable AI-owned semantic-field key), independent of runtime source-instance location unless exact authority declares that location semantic.
   scope: semantic-authority
   enforcement_level: must
   enforcement_mechanism: design
@@ -370,32 +422,35 @@ notes: |
   That journal is exploratory evidence, not durable authority; this ADR's
   decisions and invariants are the promoted design surface.
 
-  The next contract and implementation slice must publish exact content-bound
-  Architecture Interpretation field-disposition authority for every supported
-  Authoring 1.7 JSON pointer, implement native fragment and mixed-root
-  Normalized Model 2.4 assembly, define and validate the detached context,
-  close ACC normalized_result.model around the complete model, and provide
-  deterministic whole-ledger diagnostics and reproducible qualification
-  evidence. Architecture Interpretation retains all source-to-normalized
-  meaning. ACC owns orchestration and comparison only.
+  After this ADR is accepted, the next authority sequence is fixed: publish
+  immutable Architecture Interpretation 1.2 with exact field-disposition and
+  detached interpretation authority; publish immutable Authoring Construction
+  1.1 consuming AI 1.2; retain Normalized Model 2.4 unchanged under the
+  AI-qualified metadata extension rule; then implement native fragment and
+  mixed-root Normalized Model 2.4 assembly, define and validate the detached
+  context, close ACC normalized_result.model around the complete model, and
+  provide deterministic whole-ledger diagnostics and reproducible
+  qualification evidence. Architecture Interpretation retains all
+  source-to-normalized meaning. ACC owns orchestration and comparison only.
 
   Existing ACC metadata.source_semantics is source provenance and does not by
   itself preserve semantic meaning for equality. Semantic values without a
   dedicated Normalized Model property are losslessly carried in the
-  contractually governed metadata.semantic_extensions object and compared
-  by source pointer. C32 remains the generalized semantic-loss negative
+  AI 1.2-qualified metadata.semantic_extensions object and compared by
+  (semantic-unit identity, stable AI-owned semantic-field key), not runtime
+  source-instance pointer. C32 remains the generalized semantic-loss negative
   case: gap.context is an authored semantic value and its absence from the
   semantic extension is a mismatch, even if raw source/provenance still
   records it. The conformance vector should exercise an observed-side omission
   without any gap-specific production comparator.
 
-  Architecture Interpretation authority owns direct values, canonical
-  placements, compatibility projections, declared absence, and the
-  complete field disposition inventory. ACC consumes the exact selected AI
-  resource closure. If accepted AI1.1 resources cannot be additively amended
-  while preserving their fingerprint, publish the rule as a new AI contract
-  version; do not mutate a frozen contract identity or add a new generic
-  semantic-contract family.
+  Architecture Interpretation 1.2 authority owns direct values, canonical
+  placements, compatibility projections, declared absence, stable
+  semantic-field keys, and the complete field-disposition inventory. ACC 1.1
+  consumes the exact selected AI 1.2 resource closure. AI 1.1 and ACC 1.0
+  remain immutable historical contract identities; neither may be amended in
+  place. Normalized Model 2.4 remains unchanged because its schema permits the
+  metadata carrier and AI 1.2 alone qualifies the extension's meaning.
 
   The follow-on conformance set must cover simple, composed, standalone and
   mixed roots; C05/C07 minimal roots; C32 field loss; custom properties and

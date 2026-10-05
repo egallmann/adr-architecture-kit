@@ -43455,3 +43455,1021 @@ entities:
     extraction_phase: assign_canonical_invariant
     classification: explicit
     generator: adr-architecture-index
+- id: 01a10888-daba-75bc-a071-d33f43ab8a8b
+  alias_id: ADR-L-0034
+  alias_name: detached-normalized-semantic-equivalence-for-authoring-construction
+  alias_ref: ADR-L-0034:detached-normalized-semantic-equivalence-for-authoring-construction
+  entity_type: adr
+  name: Detached Normalized Semantic Equivalence for Authoring Construction
+  summary: ADR-L-0029 through ADR-L-0033 establish detached semantic construction,
+    exact candidate source representation, whole-result equivalence as a construction
+    gate, and downstream governed candidate binding. ADR-L-0032 requir
+  uri: adr://adr-architecture-kit/entities/01a10888-daba-75bc-a071-d33f43ab8a8b
+  created_at: '2026-10-04T20:09:09.050Z'
+  entity_fingerprint: sha256:b07a308ad3addbde4f0332836d3615e0f4c485664ffff945aedc1c0aff248a7a
+  lifecycle_stage: proposed
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a10888-daba-75bc-a071-d33f43ab8a8b
+    artifact_path: adrs/logical/ADR-L-0034-detached-normalized-semantic-equivalence-for-authoring-construction.yaml
+  source_refs: []
+  metadata:
+    status: proposed
+    domains:
+    - architecture
+    - authoring
+    - semantic-authority
+    - normalized-model
+    - determinism
+    - conformance
+    tags:
+    - authoring-construction
+    - whole-result-equivalence
+    - architecture-interpretation
+    - normalized-model-2.4
+    - detached-context
+    - semantic-preservation
+    implementation_authority: null
+    related_reviews: []
+    related_overrides: []
+    alias_name: detached-normalized-semantic-equivalence-for-authoring-construction
+    alias_id: ADR-L-0034
+  relationships:
+    declared_in: []
+    references:
+    - 019fee89-e617-78d9-ba3b-b7e3e6db1b12
+    - 01a00643-1bfc-788c-911b-83a4725a8de1
+    - 01a09938-a15b-75ed-8326-212e21bd3cfe
+    - 01a09cf0-179e-71cc-b150-d4a79551b939
+    - 01a0b75d-8a02-70e6-b59c-63dd6133c637
+    - 01a0d054-b885-70b3-a72f-d3630d2e76c6
+    - 01a1044a-fe30-7025-b327-c8d13b1a135a
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    consumes_interface: []
+    composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a10888-daba-75bc-a071-d33f43ab8a8b
+    extraction_phase: extract_adr
+    classification: explicit
+    generator: adr-architecture-index
+- id: 01a10888-daba-75bc-a071-d34018be0d8e
+  alias_id: DEC-0268
+  alias_name: compare-complete-post-construction-semantic-ledgers
+  alias_ref: DEC-0268:compare-complete-post-construction-semantic-ledgers
+  entity_type: decision
+  name: Compare complete expected and observed semantic ledgers for construction round
+    trips
+  summary: 'The expected side is the complete semantic state after construction has
+    established identity, resolved references, selected exact custom qualification,
+    and validated composition, but before serialization ceremony. It is '
+  uri: adr://adr-architecture-kit/entities/01a10888-daba-75bc-a071-d34018be0d8e
+  created_at: '2026-10-04T20:09:09.050Z'
+  entity_fingerprint: sha256:fc572c2fb12a6e35542f02cd68e8e2e2d10785982fd5212ae988abd32beb278f
+  lifecycle_stage: proposed
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a10888-daba-75bc-a071-d33f43ab8a8b#01a10888-daba-75bc-a071-d34018be0d8e
+    artifact_path: adrs/logical/ADR-L-0034-detached-normalized-semantic-equivalence-for-authoring-construction.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a10888-daba-75bc-a071-d33f43ab8a8b
+    adr_alias_id: ADR-L-0034
+    related_invariants: []
+    enforces_invariants: []
+    enables_capabilities: []
+    governs_components: []
+    supersedes: []
+    refines: []
+    alias_name: compare-complete-post-construction-semantic-ledgers
+    alias_id: DEC-0268
+  relationships:
+    declared_in:
+    - 01a10888-daba-75bc-a071-d33f43ab8a8b
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    consumes_interface: []
+    composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a10888-daba-75bc-a071-d33f43ab8a8b#01a10888-daba-75bc-a071-d34018be0d8e
+    extraction_phase: extract_decision
+    classification: explicit
+    generator: adr-architecture-index
+- id: 01a10888-daba-75bc-a071-d3416d58355d
+  alias_id: DEC-0269
+  alias_name: make-architecture-interpretation-own-closed-field-dispositions
+  alias_ref: DEC-0269:make-architecture-interpretation-own-closed-field-dispositions
+  entity_type: decision
+  name: Require exact Architecture Interpretation dispositions for all supported Authoring
+    1.7 fields
+  summary: Architecture Interpretation owns source-to-Normalized-Model meaning. ACC
+    orchestrates the expected ledger, sealed-source interpretation, normalized-result
+    assembly, comparison, and diagnostics; ACC does not define a seco
+  uri: adr://adr-architecture-kit/entities/01a10888-daba-75bc-a071-d3416d58355d
+  created_at: '2026-10-04T20:09:09.050Z'
+  entity_fingerprint: sha256:b414d249b9882512aee06d38deae17cf4cd934d659bd446e18664b5950840f5a
+  lifecycle_stage: proposed
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a10888-daba-75bc-a071-d33f43ab8a8b#01a10888-daba-75bc-a071-d3416d58355d
+    artifact_path: adrs/logical/ADR-L-0034-detached-normalized-semantic-equivalence-for-authoring-construction.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a10888-daba-75bc-a071-d33f43ab8a8b
+    adr_alias_id: ADR-L-0034
+    related_invariants: []
+    enforces_invariants: []
+    enables_capabilities: []
+    governs_components: []
+    supersedes: []
+    refines: []
+    alias_name: make-architecture-interpretation-own-closed-field-dispositions
+    alias_id: DEC-0269
+  relationships:
+    declared_in:
+    - 01a10888-daba-75bc-a071-d33f43ab8a8b
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    consumes_interface: []
+    composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a10888-daba-75bc-a071-d33f43ab8a8b#01a10888-daba-75bc-a071-d3416d58355d
+    extraction_phase: extract_decision
+    classification: explicit
+    generator: adr-architecture-index
+- id: 01a10888-daba-75bc-a071-d34250a1b891
+  alias_id: DEC-0270
+  alias_name: normalize-detached-candidates-under-a-domain-separated-context
+  alias_ref: DEC-0270:normalize-detached-candidates-under-a-domain-separated-context
+  entity_type: decision
+  name: Produce complete Normalized Model results using a deterministic detached context
+  summary: Complete Normalized Model 2.4 output for detached construction uses the
+    explicit DetachedCandidateContext, not repository materialization context. Its
+    domain is adr-kit.detached-candidate-normalization/v1. The fixed prov
+  uri: adr://adr-architecture-kit/entities/01a10888-daba-75bc-a071-d34250a1b891
+  created_at: '2026-10-04T20:09:09.050Z'
+  entity_fingerprint: sha256:cbeb276c7cb72663a59a452318874664e614762e4f5c3cb0f104ffb570cd7efa
+  lifecycle_stage: proposed
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a10888-daba-75bc-a071-d33f43ab8a8b#01a10888-daba-75bc-a071-d34250a1b891
+    artifact_path: adrs/logical/ADR-L-0034-detached-normalized-semantic-equivalence-for-authoring-construction.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a10888-daba-75bc-a071-d33f43ab8a8b
+    adr_alias_id: ADR-L-0034
+    related_invariants: []
+    enforces_invariants: []
+    enables_capabilities: []
+    governs_components: []
+    supersedes: []
+    refines: []
+    alias_name: normalize-detached-candidates-under-a-domain-separated-context
+    alias_id: DEC-0270
+  relationships:
+    declared_in:
+    - 01a10888-daba-75bc-a071-d33f43ab8a8b
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    consumes_interface: []
+    composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a10888-daba-75bc-a071-d33f43ab8a8b#01a10888-daba-75bc-a071-d34250a1b891
+    extraction_phase: extract_decision
+    classification: explicit
+    generator: adr-architecture-index
+- id: 01a10888-daba-75bc-a071-d343c9a83e46
+  alias_id: DEC-0271
+  alias_name: define-four-authorized-round-trip-difference-classes
+  alias_ref: DEC-0271:define-four-authorized-round-trip-difference-classes
+  entity_type: decision
+  name: Define the only authorized differences in construction semantic comparison
+  summary: deterministic_ceremony is a field fully and uniquely derivable from established
+    identity, exact selected authority, sealed basis identity, or the fixed detached
+    context, and contains no independent semantic choice. Examp
+  uri: adr://adr-architecture-kit/entities/01a10888-daba-75bc-a071-d343c9a83e46
+  created_at: '2026-10-04T20:09:09.050Z'
+  entity_fingerprint: sha256:c1db4fc007c66f25c4b8921688108110be649e397edbeaca9793f0f7b599226d
+  lifecycle_stage: proposed
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a10888-daba-75bc-a071-d33f43ab8a8b#01a10888-daba-75bc-a071-d343c9a83e46
+    artifact_path: adrs/logical/ADR-L-0034-detached-normalized-semantic-equivalence-for-authoring-construction.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a10888-daba-75bc-a071-d33f43ab8a8b
+    adr_alias_id: ADR-L-0034
+    related_invariants: []
+    enforces_invariants: []
+    enables_capabilities: []
+    governs_components: []
+    supersedes: []
+    refines: []
+    alias_name: define-four-authorized-round-trip-difference-classes
+    alias_id: DEC-0271
+  relationships:
+    declared_in:
+    - 01a10888-daba-75bc-a071-d33f43ab8a8b
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    consumes_interface: []
+    composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a10888-daba-75bc-a071-d33f43ab8a8b#01a10888-daba-75bc-a071-d343c9a83e46
+    extraction_phase: extract_decision
+    classification: explicit
+    generator: adr-architecture-index
+- id: 01a10888-daba-75bc-a071-d34463d939dc
+  alias_id: DEC-0272
+  alias_name: partition-semantic-provenance-and-integrity-evidence
+  alias_ref: DEC-0272:partition-semantic-provenance-and-integrity-evidence
+  entity_type: decision
+  name: Distinguish semantic provenance from candidate integrity and representation
+    ceremony
+  summary: 'Semantic equality includes provenance facts that distinguish or qualify
+    meaning: canonical UUIDs and aliases; resolved reference identities; exact custom
+    type qualification/version/fingerprint; relationship endpoints; ow'
+  uri: adr://adr-architecture-kit/entities/01a10888-daba-75bc-a071-d34463d939dc
+  created_at: '2026-10-04T20:09:09.050Z'
+  entity_fingerprint: sha256:cbc9cb57983d7a07be596bd8e0400d15e9328f0aab24e3f34d8d774842bfd69c
+  lifecycle_stage: proposed
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a10888-daba-75bc-a071-d33f43ab8a8b#01a10888-daba-75bc-a071-d34463d939dc
+    artifact_path: adrs/logical/ADR-L-0034-detached-normalized-semantic-equivalence-for-authoring-construction.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a10888-daba-75bc-a071-d33f43ab8a8b
+    adr_alias_id: ADR-L-0034
+    related_invariants: []
+    enforces_invariants: []
+    enables_capabilities: []
+    governs_components: []
+    supersedes: []
+    refines: []
+    alias_name: partition-semantic-provenance-and-integrity-evidence
+    alias_id: DEC-0272
+  relationships:
+    declared_in:
+    - 01a10888-daba-75bc-a071-d33f43ab8a8b
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    consumes_interface: []
+    composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a10888-daba-75bc-a071-d33f43ab8a8b#01a10888-daba-75bc-a071-d34463d939dc
+    extraction_phase: extract_decision
+    classification: explicit
+    generator: adr-architecture-index
+- id: 01a10888-daba-75bc-a071-d34592ae0d52
+  alias_id: DEC-0273
+  alias_name: aggregate-complete-document-and-fragment-results-once
+  alias_ref: DEC-0273:aggregate-complete-document-and-fragment-results-once
+  entity_type: decision
+  name: Define whole-result aggregation for documents, fragments, relationships, and
+    unresolved semantics
+  summary: The expected ledger is built from the complete post-construction semantic
+    state after explicit composition and identity resolution. The observed normalized
+    model is interpreted from the minimal sealed root basis. A selec
+  uri: adr://adr-architecture-kit/entities/01a10888-daba-75bc-a071-d34592ae0d52
+  created_at: '2026-10-04T20:09:09.050Z'
+  entity_fingerprint: sha256:60f30cb8db673b80a2a78332e3e91dd4c168d23dcfabe24ba6063ff12f4d54d3
+  lifecycle_stage: proposed
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a10888-daba-75bc-a071-d33f43ab8a8b#01a10888-daba-75bc-a071-d34592ae0d52
+    artifact_path: adrs/logical/ADR-L-0034-detached-normalized-semantic-equivalence-for-authoring-construction.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a10888-daba-75bc-a071-d33f43ab8a8b
+    adr_alias_id: ADR-L-0034
+    related_invariants: []
+    enforces_invariants: []
+    enables_capabilities: []
+    governs_components: []
+    supersedes: []
+    refines: []
+    alias_name: aggregate-complete-document-and-fragment-results-once
+    alias_id: DEC-0273
+  relationships:
+    declared_in:
+    - 01a10888-daba-75bc-a071-d33f43ab8a8b
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    consumes_interface: []
+    composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a10888-daba-75bc-a071-d33f43ab8a8b#01a10888-daba-75bc-a071-d34592ae0d52
+    extraction_phase: extract_decision
+    classification: explicit
+    generator: adr-architecture-index
+- id: 01a10888-daba-75bc-a071-d346bddc51a6
+  alias_id: INV-0276
+  alias_name: constructed-requires-complete-normalized-result-and-ledger-equality
+  alias_ref: INV-0276:constructed-requires-complete-normalized-result-and-ledger-equality
+  entity_type: invariant
+  name: INV-0276
+  summary: A Constructed Authoring Construction result MUST contain a schema-valid
+    complete Normalized Model 2.4 derived from the minimal sealed candidate source
+    roots and MUST report semantic_equivalent only after whole-ledger equ
+  uri: adr://adr-architecture-kit/entities/01a10888-daba-75bc-a071-d346bddc51a6
+  created_at: '2026-10-04T20:09:09.050Z'
+  entity_fingerprint: sha256:02352294c0db3f862ee1fc6064a7324dfb24aa142716ff5a38505284d172d7c8
+  lifecycle_stage: proposed
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a10888-daba-75bc-a071-d33f43ab8a8b#01a10888-daba-75bc-a071-d346bddc51a6
+    artifact_path: adrs/logical/ADR-L-0034-detached-normalized-semantic-equivalence-for-authoring-construction.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a10888-daba-75bc-a071-d33f43ab8a8b
+    adr_alias_id: ADR-L-0034
+    scope: construction
+    statement: A Constructed Authoring Construction result MUST contain a schema-valid
+      complete Normalized Model 2.4 derived from the minimal sealed candidate source
+      roots and MUST report semantic_equivalent only after whole-ledger equality succeeds.
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions: []
+    supersedes: []
+    alias_id: INV-0276
+    alias_name: constructed-requires-complete-normalized-result-and-ledger-equality
+  relationships:
+    declared_in:
+    - 01a10888-daba-75bc-a071-d33f43ab8a8b
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    consumes_interface: []
+    composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a10888-daba-75bc-a071-d33f43ab8a8b#01a10888-daba-75bc-a071-d346bddc51a6
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
+- id: 01a10888-daba-75bc-a071-d347f04468de
+  alias_id: INV-0277
+  alias_name: every-supported-source-field-has-one-exact-disposition
+  alias_ref: INV-0277:every-supported-source-field-has-one-exact-disposition
+  entity_type: invariant
+  name: INV-0277
+  summary: Every machine-evaluable Authoring 1.7 semantic field reachable through
+    supported construction MUST have exactly one exact Architecture Interpretation
+    1.2 disposition; unclassified fields MUST fail closed and semantic val
+  uri: adr://adr-architecture-kit/entities/01a10888-daba-75bc-a071-d347f04468de
+  created_at: '2026-10-04T20:09:09.050Z'
+  entity_fingerprint: sha256:507804b574e02bee3734c38726a17fb6fadb1fef1c2243d3c03fcd70c1c64215
+  lifecycle_stage: proposed
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a10888-daba-75bc-a071-d33f43ab8a8b#01a10888-daba-75bc-a071-d347f04468de
+    artifact_path: adrs/logical/ADR-L-0034-detached-normalized-semantic-equivalence-for-authoring-construction.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a10888-daba-75bc-a071-d33f43ab8a8b
+    adr_alias_id: ADR-L-0034
+    scope: semantic-authority
+    statement: Every machine-evaluable Authoring 1.7 semantic field reachable through
+      supported construction MUST have exactly one exact Architecture Interpretation
+      1.2 disposition; unclassified fields MUST fail closed and semantic values without
+      a first-class Normalized Model field MUST be preserved in metadata.semantic_extensions
+      and compared by (semantic-unit identity, stable AI-owned semantic-field key),
+      independent of runtime source-instance location unless exact authority declares
+      that location semantic.
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions: []
+    supersedes: []
+    alias_id: INV-0277
+    alias_name: every-supported-source-field-has-one-exact-disposition
+  relationships:
+    declared_in:
+    - 01a10888-daba-75bc-a071-d33f43ab8a8b
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    consumes_interface: []
+    composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a10888-daba-75bc-a071-d33f43ab8a8b#01a10888-daba-75bc-a071-d347f04468de
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
+- id: 01a10888-daba-75bc-a071-d3481abee3a6
+  alias_id: INV-0278
+  alias_name: detached-context-is-domain-separated-from-repository-materialization
+  alias_ref: INV-0278:detached-context-is-domain-separated-from-repository-materialization
+  entity_type: invariant
+  name: INV-0278
+  summary: Detached normalized-output context MUST be deterministic under adr-kit.detached-candidate-normalization/v1
+    and MUST NOT imply or be reinterpreted as repository placement, persistence, or
+    admission.
+  uri: adr://adr-architecture-kit/entities/01a10888-daba-75bc-a071-d3481abee3a6
+  created_at: '2026-10-04T20:09:09.050Z'
+  entity_fingerprint: sha256:f310eb68681469d4c54ee58aab447dc20062dbacc6a5cc8798703c2ad32413d4
+  lifecycle_stage: proposed
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a10888-daba-75bc-a071-d33f43ab8a8b#01a10888-daba-75bc-a071-d3481abee3a6
+    artifact_path: adrs/logical/ADR-L-0034-detached-normalized-semantic-equivalence-for-authoring-construction.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a10888-daba-75bc-a071-d33f43ab8a8b
+    adr_alias_id: ADR-L-0034
+    scope: construction
+    statement: Detached normalized-output context MUST be deterministic under adr-kit.detached-candidate-normalization/v1
+      and MUST NOT imply or be reinterpreted as repository placement, persistence,
+      or admission.
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions: []
+    supersedes: []
+    alias_id: INV-0278
+    alias_name: detached-context-is-domain-separated-from-repository-materialization
+  relationships:
+    declared_in:
+    - 01a10888-daba-75bc-a071-d33f43ab8a8b
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    consumes_interface: []
+    composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a10888-daba-75bc-a071-d33f43ab8a8b#01a10888-daba-75bc-a071-d3481abee3a6
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
+- id: 01a10888-daba-75bc-a071-d34915e9e47f
+  alias_id: INV-0279
+  alias_name: minimal-source-roots-aggregate-each-semantic-unit-once
+  alias_ref: INV-0279:minimal-source-roots-aggregate-each-semantic-unit-once
+  entity_type: invariant
+  name: INV-0279
+  summary: 'Candidate source interpretation MUST consume only the minimal non-overlapping
+    source roots; every embedded child MUST contribute its semantic identity and values
+    exactly once, and standalone fragments MUST remain native '
+  uri: adr://adr-architecture-kit/entities/01a10888-daba-75bc-a071-d34915e9e47f
+  created_at: '2026-10-04T20:09:09.050Z'
+  entity_fingerprint: sha256:d61e581b2c1668d38bbb75f3cd7b9ba29c85be95470c6eb3e4188014a1351355
+  lifecycle_stage: proposed
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a10888-daba-75bc-a071-d33f43ab8a8b#01a10888-daba-75bc-a071-d34915e9e47f
+    artifact_path: adrs/logical/ADR-L-0034-detached-normalized-semantic-equivalence-for-authoring-construction.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a10888-daba-75bc-a071-d33f43ab8a8b
+    adr_alias_id: ADR-L-0034
+    scope: construction
+    statement: Candidate source interpretation MUST consume only the minimal non-overlapping
+      source roots; every embedded child MUST contribute its semantic identity and
+      values exactly once, and standalone fragments MUST remain native roots without
+      synthetic ADR wrappers.
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions: []
+    supersedes: []
+    alias_id: INV-0279
+    alias_name: minimal-source-roots-aggregate-each-semantic-unit-once
+  relationships:
+    declared_in:
+    - 01a10888-daba-75bc-a071-d33f43ab8a8b
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    consumes_interface: []
+    composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a10888-daba-75bc-a071-d33f43ab8a8b#01a10888-daba-75bc-a071-d34915e9e47f
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
+- id: 01a10888-daba-75bc-a071-d34aba1b6f3e
+  alias_id: INV-0280
+  alias_name: semantic-provenance-and-source-integrity-remain-distinct
+  alias_ref: INV-0280:semantic-provenance-and-source-integrity-remain-distinct
+  entity_type: invariant
+  name: INV-0280
+  summary: Semantic equality MUST include provenance facts that disambiguate meaning,
+    while candidate source integrity and representation provenance MUST be independently
+    verified and MUST NOT be conflated with semantic equivalence
+  uri: adr://adr-architecture-kit/entities/01a10888-daba-75bc-a071-d34aba1b6f3e
+  created_at: '2026-10-04T20:09:09.050Z'
+  entity_fingerprint: sha256:80a4dc36b4f1b9457cca2355e30fff0cf6e0784efa74ee7a241e54a1de4da9bd
+  lifecycle_stage: proposed
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a10888-daba-75bc-a071-d33f43ab8a8b#01a10888-daba-75bc-a071-d34aba1b6f3e
+    artifact_path: adrs/logical/ADR-L-0034-detached-normalized-semantic-equivalence-for-authoring-construction.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a10888-daba-75bc-a071-d33f43ab8a8b
+    adr_alias_id: ADR-L-0034
+    scope: construction
+    statement: Semantic equality MUST include provenance facts that disambiguate meaning,
+      while candidate source integrity and representation provenance MUST be independently
+      verified and MUST NOT be conflated with semantic equivalence.
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions: []
+    supersedes: []
+    alias_id: INV-0280
+    alias_name: semantic-provenance-and-source-integrity-remain-distinct
+  relationships:
+    declared_in:
+    - 01a10888-daba-75bc-a071-d33f43ab8a8b
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    consumes_interface: []
+    composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a10888-daba-75bc-a071-d33f43ab8a8b#01a10888-daba-75bc-a071-d34aba1b6f3e
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
+- id: 01a10888-daba-75bc-a071-d34bf766674d
+  alias_id: INV-0281
+  alias_name: compatibility-projection-equality-uses-semantic-occurrence
+  alias_ref: INV-0281:compatibility-projection-equality-uses-semantic-occurrence
+  entity_type: invariant
+  name: INV-0281
+  summary: Noncanonical compatibility records MUST compare by declared relation type,
+    resolved endpoints, owner scope, semantic properties, and multiplicity; a source
+    occurrence key participates only when exact source authority def
+  uri: adr://adr-architecture-kit/entities/01a10888-daba-75bc-a071-d34bf766674d
+  created_at: '2026-10-04T20:09:09.050Z'
+  entity_fingerprint: sha256:35d407d6ed8cb9f944a74ca963bc1b2ed45c9d43ab6416dfae898bbb6290e14f
+  lifecycle_stage: proposed
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a10888-daba-75bc-a071-d33f43ab8a8b#01a10888-daba-75bc-a071-d34bf766674d
+    artifact_path: adrs/logical/ADR-L-0034-detached-normalized-semantic-equivalence-for-authoring-construction.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a10888-daba-75bc-a071-d33f43ab8a8b
+    adr_alias_id: ADR-L-0034
+    scope: semantic-authority
+    statement: Noncanonical compatibility records MUST compare by declared relation
+      type, resolved endpoints, owner scope, semantic properties, and multiplicity;
+      a source occurrence key participates only when exact source authority defines
+      it as semantic, and generated noncanonical identifiers MUST NOT substitute for
+      semantic equality.
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions: []
+    supersedes: []
+    alias_id: INV-0281
+    alias_name: compatibility-projection-equality-uses-semantic-occurrence
+  relationships:
+    declared_in:
+    - 01a10888-daba-75bc-a071-d33f43ab8a8b
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    consumes_interface: []
+    composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a10888-daba-75bc-a071-d33f43ab8a8b#01a10888-daba-75bc-a071-d34bf766674d
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
+- id: 01a10888-daba-75bc-a071-d34c7a3bb1cf
+  alias_id: INV-0282
+  alias_name: fingerprints-are-integrity-evidence-not-equivalence
+  alias_ref: INV-0282:fingerprints-are-integrity-evidence-not-equivalence
+  entity_type: invariant
+  name: INV-0282
+  summary: Candidate, basis, entity, and normalized-model digests or fingerprints
+    MUST NOT substitute for complete structural semantic comparison unless their exact
+    governed preimage is proven complete for that claim.
+  uri: adr://adr-architecture-kit/entities/01a10888-daba-75bc-a071-d34c7a3bb1cf
+  created_at: '2026-10-04T20:09:09.050Z'
+  entity_fingerprint: sha256:3feeba35418aa4c1f69ee3d6e91dadfeffa147bda8fdc5bceddff1cf008ed72b
+  lifecycle_stage: proposed
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a10888-daba-75bc-a071-d33f43ab8a8b#01a10888-daba-75bc-a071-d34c7a3bb1cf
+    artifact_path: adrs/logical/ADR-L-0034-detached-normalized-semantic-equivalence-for-authoring-construction.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a10888-daba-75bc-a071-d33f43ab8a8b
+    adr_alias_id: ADR-L-0034
+    scope: construction
+    statement: Candidate, basis, entity, and normalized-model digests or fingerprints
+      MUST NOT substitute for complete structural semantic comparison unless their
+      exact governed preimage is proven complete for that claim.
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions: []
+    supersedes: []
+    alias_id: INV-0282
+    alias_name: fingerprints-are-integrity-evidence-not-equivalence
+  relationships:
+    declared_in:
+    - 01a10888-daba-75bc-a071-d33f43ab8a8b
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    consumes_interface: []
+    composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a10888-daba-75bc-a071-d33f43ab8a8b#01a10888-daba-75bc-a071-d34c7a3bb1cf
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index
+- id: 01a10888-daba-75bc-a071-d34da363a9f6
+  alias_id: INV-0283
+  alias_name: whole-result-evidence-does-not-admit-candidates
+  alias_ref: INV-0283:whole-result-evidence-does-not-admit-candidates
+  entity_type: invariant
+  name: INV-0283
+  summary: Construction equivalence evidence MUST remain detached and MUST NOT authorize
+    candidate binding, repository mutation, Promotion Contract execution, Git operations,
+    Runtime admission, or consumer admission.
+  uri: adr://adr-architecture-kit/entities/01a10888-daba-75bc-a071-d34da363a9f6
+  created_at: '2026-10-04T20:09:09.050Z'
+  entity_fingerprint: sha256:d3709a39fcb2a539d09d5dd61ae624976b38d30b497268f6664b7410221c4fe2
+  lifecycle_stage: proposed
+  canonical_source:
+    source_type: logical_adr
+    source_ref: 01a10888-daba-75bc-a071-d33f43ab8a8b#01a10888-daba-75bc-a071-d34da363a9f6
+    artifact_path: adrs/logical/ADR-L-0034-detached-normalized-semantic-equivalence-for-authoring-construction.yaml
+  source_refs: []
+  metadata:
+    adr_id: 01a10888-daba-75bc-a071-d33f43ab8a8b
+    adr_alias_id: ADR-L-0034
+    scope: global
+    statement: Construction equivalence evidence MUST remain detached and MUST NOT
+      authorize candidate binding, repository mutation, Promotion Contract execution,
+      Git operations, Runtime admission, or consumer admission.
+    enforcement_level: must
+    declaration_mode: local
+    upheld_by_decisions: []
+    supersedes: []
+    alias_id: INV-0283
+    alias_name: whole-result-evidence-does-not-admit-candidates
+  relationships:
+    declared_in:
+    - 01a10888-daba-75bc-a071-d33f43ab8a8b
+    references: []
+    related_to: []
+    enforces: []
+    enabled_by: []
+    enables: []
+    governs: []
+    implemented_by: []
+    embodied_in: []
+    implements_logical: []
+    supersedes: []
+    superseded_by: []
+    refines: []
+    provides_interface: []
+    consumes_interface: []
+    composed_of: []
+    depends_on: []
+    calls: []
+    publishes_to: []
+    subscribes_to: []
+    reads_from: []
+    writes_to: []
+    binds_substrate: []
+    binds_rule: []
+    expects_evidence: []
+  completeness:
+    status: complete
+    missing_fields: []
+  provenance:
+    source_type: logical_adr
+    source_ref: 01a10888-daba-75bc-a071-d33f43ab8a8b#01a10888-daba-75bc-a071-d34da363a9f6
+    extraction_phase: assign_canonical_invariant
+    classification: explicit
+    generator: adr-architecture-index

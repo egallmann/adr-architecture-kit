@@ -1,4 +1,4 @@
-"""Metadata-first runtime package-version resolution."""
+"""Source-aware runtime package-version resolution."""
 
 from __future__ import annotations
 
@@ -28,12 +28,15 @@ def _source_version() -> str:
 
 
 def resolve_version() -> str:
-    """Return installed metadata, direct-source metadata, or a non-release sentinel."""
+    """Return checkout metadata when running from source, else installed metadata."""
 
+    source_version = _source_version()
+    if source_version != UNKNOWN_VERSION:
+        return source_version
     try:
         return distribution_version(DIST_NAME)
     except PackageNotFoundError:
-        return _source_version()
+        return UNKNOWN_VERSION
 
 
 __version__ = resolve_version()

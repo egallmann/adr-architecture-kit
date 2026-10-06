@@ -379,8 +379,8 @@ def test_pr_feedback_is_fast_and_semantically_explicit() -> None:
     python_text = _job_steps_text(jobs["python-semantic"])
     assert "run_pr_feedback.py" in python_text
     assert "run_source_compat.py" in python_text
+    assert "python -m pytest -m fast --durations=10" in python_text
     assert "--durations=30" not in python_text
-    assert "python -m pytest" not in python_text
 
     node_text = _job_steps_text(jobs["typescript-consumer"])
     for command in ("npm run build", "npm run typecheck", "npm test", "browser:check"):
@@ -442,6 +442,12 @@ def test_integration_assurance_owns_full_suite_and_develop_runs_it() -> None:
     assert "--cov-fail-under=80" in coverage_text
     assert "--durations=30" in coverage_text
     assert '-m "not governance"' in coverage_text
+    governance_text = _job_steps_text(jobs["governance"])
+    assert "python -m pytest -m governance --durations=30" in governance_text
+    assert "adr governance-checks --skip-tests" in governance_text
+    assert "adr repair-canonical-ids --check" in governance_text
+    assert "adr validate-generated-docs" in governance_text
+    assert "adr validate-system-overview" in governance_text
     os_port = jobs["os-portability"]
     assert set(os_port["strategy"]["matrix"]["os"]) == {"windows-latest", "macos-latest"}
     assert "--durations=30" in _job_steps_text(os_port)
@@ -498,15 +504,46 @@ def test_release_certification_owns_retained_artifacts_and_release_only_checks()
     portability_trigger = _workflow_trigger(portability)
     assert "schedule" in portability_trigger
     assert "workflow_dispatch" in portability_trigger
-    assert portability["jobs"]["semantic-core"]["uses"] == (
-        "./.github/workflows/semantic-core-qualification.yml"
+    resolver = portability["jobs"]["resolve-source"]
+    resolver_ref = resolver["steps"][0]["with"]["ref"]
+    assert "github.event_name == 'schedule'" in resolver_ref
+    assert "refs/heads/develop" in resolver_ref
+    assert "github.sha" in resolver_ref
+    assert "git rev-parse HEAD" in _job_steps_text(resolver)
+    assert resolver["outputs"]["source_commit"] == "${{ steps.source.outputs.commit }}"
+
+    portability_core = portability["jobs"]["semantic-core"]
+    assert portability_core["needs"] == "resolve-source"
+    assert portability_core["uses"] == ("./.github/workflows/semantic-core-qualification.yml")
+    assert portability_core["with"]["source_ref"] == (
+        "${{ needs.resolve-source.outputs.source_commit }}"
     )
+    producer = _load_workflow("semantic-core-qualification.yml")
+    producer_trigger = _workflow_trigger(producer)
+    producer_call = producer_trigger["workflow_call"]
+    assert producer_call["inputs"]["source_ref"]["type"] == "string"
+    assert producer_call["outputs"]["source_commit"]["value"] == (
+        "${{ jobs.semantic-core.outputs.source_commit }}"
+    )
+    producer_job = producer["jobs"]["semantic-core"]
+    assert producer_job["steps"][0]["with"]["ref"] == "${{ inputs.source_ref || github.sha }}"
+    producer_text = _job_steps_text(producer_job)
+    assert "git rev-parse HEAD" in producer_text
+    assert "${{ steps.source.outputs.commit }}" in producer_text
+
     portability_suite = portability["jobs"]["full-os-suite"]
+    assert portability_suite["needs"] == "semantic-core"
+    assert portability_suite["steps"][0]["with"]["ref"] == (
+        "${{ needs.semantic-core.outputs.source_commit }}"
+    )
     assert set(portability_suite["strategy"]["matrix"]["os"]) == {
         "windows-latest",
         "macos-latest",
     }
-    assert "python -m pytest --durations=30" in _job_steps_text(portability_suite)
+    portability_text = _job_steps_text(portability_suite)
+    assert "semantic-core-${{ needs.semantic-core.outputs.source_commit }}" in portability_text
+    assert '--source-commit "${{ needs.semantic-core.outputs.source_commit }}"' in portability_text
+    assert "python -m pytest --durations=30" in portability_text
 
 
 def test_publishing_workflows_resolve_main_release_certification() -> None:

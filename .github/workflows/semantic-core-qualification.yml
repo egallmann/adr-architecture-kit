@@ -2,15 +2,36 @@ name: Semantic Core Qualification
 
 on:
   workflow_call:
+    inputs:
+      source_ref:
+        description: Exact source ref or commit to qualify; defaults to the caller event commit.
+        required: false
+        type: string
+        default: ""
+    outputs:
+      source_commit:
+        description: Full commit SHA of the checkout used to build the qualified artifact.
+        value: ${{ jobs.semantic-core.outputs.source_commit }}
 
 jobs:
   semantic-core:
     name: Source qualification and WASM build
     runs-on: ubuntu-latest
+    outputs:
+      source_commit: ${{ steps.source.outputs.commit }}
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
+          ref: ${{ inputs.source_ref || github.sha }}
+      - name: Record and validate qualified source commit
+        id: source
+        shell: bash
+        run: |
+          commit="$(git rev-parse HEAD)"
+          [[ "$commit" =~ ^[0-9a-f]{40}$ ]]
+          echo "commit=$commit" >> "$GITHUB_OUTPUT"
+          echo "Qualified semantic-core source commit: $commit"
       - uses: dtolnay/rust-toolchain@stable
         with:
           targets: wasm32-unknown-unknown
@@ -32,10 +53,10 @@ jobs:
           python scripts/semantic_core_artifact_bundle.py create
           --artifact core/target/wasm32-unknown-unknown/release/adr_kit_semantic_core.wasm
           --output-dir "${{ runner.temp }}/semantic-core-artifact"
-          --source-commit "${{ github.sha }}"
+          --source-commit "${{ steps.source.outputs.commit }}"
       - uses: actions/upload-artifact@v4
         with:
-          name: semantic-core-${{ github.sha }}
+          name: semantic-core-${{ steps.source.outputs.commit }}
           path: ${{ runner.temp }}/semantic-core-artifact/
           if-no-files-found: error
           retention-days: 1

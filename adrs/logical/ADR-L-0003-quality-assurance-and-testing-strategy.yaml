@@ -674,19 +674,25 @@ notes: "Testing strategy implementation:\n\nTest organization:\n```\ntests/\n  t
   \ 0 --max-non-complete-entities 0\n\n# Generated artifact integrity (manifest +\
   \ rendered ADR markdown)\nadr validate-generated-docs\n\n# Generated system overview\
   \ integrity\nadr validate-system-overview\n\n# PROJECT.yaml integrity\nadr validate-project-metadata\n\
-  \n# Developer/TDD fast suite (isolated behavior and contract checks)\npython -m pytest -m fast --durations=10\n\n# Focus one test file or case\npython -m pytest tests/test_schema_validation.py -q\npython -m pytest -k 'scope' -q\n\n# Complete suite and canonical coverage\npython -m pytest --durations=30\npython -m pytest --durations=30 --cov=adr_kit --cov-report=term-missing --cov-fail-under=80\n\n# PR semantic/source and dedicated governance assurance\npython scripts/run_pr_feedback.py\nadr governance-checks --skip-tests\n```\n\nCI/CD integration (orthogonal evidence axes):\n\
+  \n# Developer/TDD fast suite (isolated behavior and contract checks)\npython -m pytest -m fast --durations=10\n\n# Focus one test file or case\npython -m pytest tests/test_schema_validation.py -q\npython -m pytest -k 'scope' -q\n\n# Complete suite and canonical coverage\npython -m pytest --durations=30\npython -m pytest --durations=30 --cov=adr_kit --cov-report=term-missing --cov-fail-under=80\n\n# PR fast/TDD plus semantic/source assurance\npython -m pytest -m fast --durations=10\npython scripts/run_pr_feedback.py\n\n# Governance pytest assertions and repository-state assurance\npython -m pytest -m governance --durations=30\nadr governance-checks --skip-tests\n```\n\nCI/CD integration (orthogonal evidence axes):\n\
   - Minimum supported Python minor is 3.14 (`requires-python >=3.14`); currently\
   \ qualified released minor line is 3.14; reference interpreter is currently 3.14.7;\
   \ new GA Python minors require explicit admission to the qualification matrix\n\
-  - Canonical correctness: Ubuntu + Python 3.14 runs the complete suite with coverage\
-  \ (`--cov=adr_kit --cov-fail-under=80`) exactly once\n- Python-version compatibility:\
+  - Canonical correctness: Ubuntu + Python 3.14 runs the non-governance behavioral,\
+  \ integration, and cross-host suite with canonical coverage (`--cov=adr_kit\
+  \ --cov-fail-under=80`). The governance job separately runs every governance-marked\
+  \ pytest assertion. Together, those lanes execute the complete Python assertion\
+  \ inventory for the same develop commit; the 80% threshold remains on the canonical\
+  \ coverage lane\n- Python-version compatibility:\
   \ Ubuntu runs focused source/install/SDK compatibility on the currently qualified\
   \ released minor line (Python 3.14; not a second full suite on each interpreter)\n\
-  - OS behavior / source-runtime portability: Linux runs the complete suite and\
-  \ canonical coverage on each develop integration; dedicated governance/quality gates\
-  \ own whole-repository assertions. Windows and macOS complete source\
-  \ suites run on the scheduled portability workflow and at release certification,\
-  \ rather than on every ordinary develop push\n- Retained-wheel Python compatibility: exact\
+  - OS behavior / source-runtime portability: each develop integration runs the\
+  \ complete Python assertion inventory across the Linux behavioral/coverage and\
+  \ governance pytest lanes; governance CLI and quality gates separately validate\
+  \ repository state. The scheduled portability workflow resolves and qualifies one\
+  \ current `develop` commit on both Windows and macOS. Release Certification\
+  \ independently requalifies complete Windows/macOS source suites and retained\
+  \ artifacts\n- Retained-wheel Python compatibility:\
   \ retained wheel via `scripts/test_installed_wheel.py` on Ubuntu Python 3.14\n\
   - Retained-wheel OS portability: the exact same retained wheel via\
   \ `scripts/test_installed_wheel.py` on Windows and macOS at Python 3.14; the\
@@ -695,11 +701,11 @@ notes: "Testing strategy implementation:\n\nTest organization:\n```\ntests/\n  t
   \ axes are orthogonal and MUST NOT imply that all supported Python versions\
   \ execute on every OS\n- Linux-only execution\
   \ is insufficient evidence for an OS-agnostic package claim\n- PR feedback = proposed-change evidence: it MUST install and exercise the\
-  \ project through the designated semantic/source collection and MUST NOT be\
+  \ project through an explicit developer/TDD fast suite and the broader designated\n  \ semantic/source collection, and MUST NOT be\
   \ treated as complete release qualification. Develop qualification = integration\
   \ evidence: it MUST own the complete Linux behavioral/integration/cross-host suite,\
   \ canonical coverage, and\
-  \ peer-host/governance checks. Scheduled portability and Release Certification own\
+  \ peer-host checks, every governance-marked pytest assertion, and repository-state\n  \ governance commands. Scheduled portability and Release Certification own\
   \ complete Windows/macOS source-suite evidence. Only a successful completed `push`\
   \ of Release Certification on `main` for the exact source commit and retained\
   \ artifacts is release-eligible; tag publication is promotion/identity verification\

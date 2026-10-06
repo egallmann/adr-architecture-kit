@@ -143,6 +143,8 @@ jobs:
           cache-dependency-path: packages/node/package-lock.json
       - run: python -m pip install --upgrade pip
       - run: python -m pip install .[dev]
+      - name: Run governance-marked pytest assertions
+        run: python -m pytest -m governance --durations=30
       - run: adr repair-canonical-ids --check
       - run: adr governance-checks --skip-tests
       - run: adr validate-generated-docs

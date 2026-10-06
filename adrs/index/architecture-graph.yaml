@@ -4,7 +4,7 @@
 # generator_id: adr-architecture-graph
 # generator_version: 1
 # hash_algorithm: sha256
-# source_hash: 0adedfdc3db924ffe14f4c79451799f35ef3d6a146585e702ed286634bdba8df
+# source_hash: d124d43858a9c4a55b1ade7530962d3d802dd5c2d3af8efcf7932829e4f4c1d2
 # rendered_hash: 8a84ae66cdc16a5be5b997b340ed2d3c796f90a747b9f76a5a088b30ad38949c
 
 schema_version: '1.0'

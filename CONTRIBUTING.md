@@ -84,16 +84,19 @@ Generic TDD tutorials are intentionally not maintained in this repository.
 | Governance | `adr governance-checks` |
 | Schema parity | see below |
 
-CI stratifies these checks by lifecycle. Pull requests run the explicit semantic
-and SDK contract collection, Rust source qualification, Node/TypeScript checks,
-governance, and quality ratchets in **`.github/workflows/pr-feedback.yml`**. A
+CI stratifies these checks by lifecycle. Pull requests run the explicit
+developer/TDD fast suite, the broader semantic and SDK contract collection,
+Rust source qualification, Node/TypeScript checks, governance, and quality
+ratchets in **`.github/workflows/pr-feedback.yml`**. A
 single producer job tests the Rust core, builds the source WASM, verifies its
 identity, and publishes a commit-bound artifact for dependent jobs. Pushes to
-`develop` run **`.github/workflows/develop-assurance.yml`**: the complete
-behavioral/integration/cross-host Python suite and coverage, Python/Node parity,
-dependency, governance, and quality assurance. Whole-repository governance tests
-are exercised by their dedicated gates rather than repeated inside coverage.
-Full Windows/macOS source suites run weekly or on demand through
+`develop` run **`.github/workflows/develop-assurance.yml`**: the non-governance
+behavioral/integration/cross-host Python suite with canonical coverage, plus the
+governance-marked pytest assertions in the governance job. Together these lanes
+exercise the complete Python assertion inventory; repository-state governance
+commands, Python/Node parity, dependency, and quality assurance also remain
+required. Full Windows/macOS source suites run weekly against the resolved
+`develop` commit or on demand through
 **`.github/workflows/portability-assurance.yml`**, and again during release
 certification. Pushes to `main` run
 **`.github/workflows/release-certification.yml`**, which also qualifies the exact
@@ -122,8 +125,12 @@ python -m pytest --durations=30
 # Full suite with canonical coverage gate
 python -m pytest --durations=30 --cov=adr_kit --cov-report=term-missing --cov-fail-under=80
 
-# PR semantic/source collection and dedicated governance check
+# PR fast/TDD plus semantic/source collections
+python -m pytest -m fast --durations=10
 python scripts/run_pr_feedback.py
+
+# Governance pytest assertions and repository-state checks
+python -m pytest -m governance --durations=30
 adr governance-checks --skip-tests
 ```
 
@@ -131,7 +138,8 @@ Pytest registers `fast`, `integration`, `governance`, `crosshost`, and
 `benchmark` assurance layers. Tests without an explicit layer remain in the
 complete suite as `integration`; accidental multiple-layer classification fails
 collection. Use `-m fast` only for the TDD loop, not as a replacement for the
-complete suite or lifecycle gates. CI reports test counts and slowest tests;
+complete suite or lifecycle gates. PR Feedback reports the fast suite's count,
+slowest tests, and duration separately. CI reports test counts and slowest tests;
 workflow job durations provide the lane-level timing record.
 
 ---

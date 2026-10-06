@@ -5,8 +5,8 @@ artifact_kind: rendered_adr_markdown
 generator_id: adr-projection-markdown
 generator_version: 3
 hash_algorithm: sha256
-source_hash: b09dd78fafb5e98c06e3d6886d76863414f382e451f303645fd09d147ffce681
-rendered_hash: f25a2a134d4a8bf9e3a0e906340daca273e30945586f34d6d5f79dac94bdbc35
+source_hash: 71855a10d9d8a9895ed810f2064021f4499139203c3807907877740c685fbd50
+rendered_hash: 533ccfa2128f2565da03b8dcaee9221992858b9a1403d2856485fdaaca883c19
 -->
 
 # ADR-L-0003: Quality Assurance and Testing Strategy
@@ -688,22 +688,28 @@ python -m pytest -k 'scope' -q
 python -m pytest --durations=30
 python -m pytest --durations=30 --cov=adr_kit --cov-report=term-missing --cov-fail-under=80
 
-# PR semantic/source and dedicated governance assurance
+# PR fast/TDD plus semantic/source assurance
+python -m pytest -m fast --durations=10
 python scripts/run_pr_feedback.py
+
+# Governance pytest assertions and repository-state assurance
+python -m pytest -m governance --durations=30
 adr governance-checks --skip-tests
 ```
 
 CI/CD integration (orthogonal evidence axes):
 - Minimum supported Python minor is 3.14 (`requires-python >=3.14`); currently qualified released minor line is 3.14; reference interpreter is currently 3.14.7; new GA Python minors require explicit admission to the qualification matrix
-- Canonical correctness: Ubuntu + Python 3.14 runs the complete suite with coverage (`--cov=adr_kit --cov-fail-under=80`) exactly once
+- Canonical correctness: Ubuntu + Python 3.14 runs the non-governance behavioral, integration, and cross-host suite with canonical coverage (`--cov=adr_kit --cov-fail-under=80`). The governance job separately runs every governance-marked pytest assertion. Together, those lanes execute the complete Python assertion inventory for the same develop commit; the 80% threshold remains on the canonical coverage lane
 - Python-version compatibility: Ubuntu runs focused source/install/SDK compatibility on the currently qualified released minor line (Python 3.14; not a second full suite on each interpreter)
-- OS behavior / source-runtime portability: Linux runs the complete suite and canonical coverage on each develop integration; dedicated governance/quality gates own whole-repository assertions. Windows and macOS complete source suites run on the scheduled portability workflow and at release certification, rather than on every ordinary develop push
-- Retained-wheel Python compatibility: exact retained wheel via `scripts/test_installed_wheel.py` on Ubuntu Python 3.14
+- OS behavior / source-runtime portability: each develop integration runs the complete Python assertion inventory across the Linux behavioral/coverage and governance pytest lanes; governance CLI and quality gates separately validate repository state. The scheduled portability workflow resolves and qualifies one current `develop` commit on both Windows and macOS. Release Certification independently requalifies complete Windows/macOS source suites and retained artifacts
+- Retained-wheel Python compatibility: retained wheel via `scripts/test_installed_wheel.py` on Ubuntu Python 3.14
 - Retained-wheel OS portability: the exact same retained wheel via `scripts/test_installed_wheel.py` on Windows and macOS at Python 3.14; the wheel MUST NOT be rebuilt per OS
 - UUIDv7 mint mechanism remains implementation-owned and is not part of ADR-L-0003 identity semantics
 - These axes are orthogonal and MUST NOT imply that all supported Python versions execute on every OS
 - Linux-only execution is insufficient evidence for an OS-agnostic package claim
-- PR feedback = proposed-change evidence: it MUST install and exercise the project through the designated semantic/source collection and MUST NOT be treated as complete release qualification. Develop qualification = integration evidence: it MUST own the complete Linux behavioral/integration/cross-host suite, canonical coverage, and peer-host/governance checks. Scheduled portability and Release Certification own complete Windows/macOS source-suite evidence. Only a successful completed `push` of Release Certification on `main` for the exact source commit and retained artifacts is release-eligible; tag publication is promotion/identity verification only
+- PR feedback = proposed-change evidence: it MUST install and exercise the project through an explicit developer/TDD fast suite and the broader designated
+   semantic/source collection, and MUST NOT be treated as complete release qualification. Develop qualification = integration evidence: it MUST own the complete Linux behavioral/integration/cross-host suite, canonical coverage, and peer-host checks, every governance-marked pytest assertion, and repository-state
+   governance commands. Scheduled portability and Release Certification own complete Windows/macOS source-suite evidence. Only a successful completed `push` of Release Certification on `main` for the exact source commit and retained artifacts is release-eligible; tag publication is promotion/identity verification only
 - `adr governance-checks --skip-tests` must pass in CI when the complete suite is already owned by the coverage job
 - `adr validate-generated-docs` must pass for manifest and rendered ADR output
 - `adr validate-system-overview` must pass for `SYSTEM-OVERVIEW.md`

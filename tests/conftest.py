@@ -7,6 +7,23 @@ from pathlib import Path
 
 import pytest
 
+_ASSURANCE_LAYERS = {"fast", "integration", "governance", "crosshost", "benchmark"}
+
+
+def pytest_collection_modifyitems(items: list[pytest.Item]) -> None:
+    """Give every test one lifecycle layer; new tests default to full integration."""
+
+    for item in items:
+        selected = {
+            marker.name for marker in item.iter_markers() if marker.name in _ASSURANCE_LAYERS
+        }
+        if not selected:
+            item.add_marker(pytest.mark.integration)
+        elif len(selected) != 1:
+            raise pytest.UsageError(
+                f"test must have exactly one assurance-layer marker, found {sorted(selected)}: {item.nodeid}"
+            )
+
 
 @pytest.fixture
 def tmp_path(request):

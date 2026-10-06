@@ -1,0 +1,41 @@
+name: Semantic Core Qualification
+
+on:
+  workflow_call:
+
+jobs:
+  semantic-core:
+    name: Source qualification and WASM build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: wasm32-unknown-unknown
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - name: Guard semantic-core source and tracked artifacts
+        run: python scripts/check_semantic_core_artifact_change.py
+      - name: Smoke-test the tracked artifact before source build
+        run: node scripts/check_tracked_semantic_core.mjs
+      - name: Test semantic-core source
+        run: cargo test --manifest-path core/Cargo.toml
+      - name: Build WASM from this commit's Rust source
+        run: node scripts/build_semantic_core.mjs
+      - name: Verify source-built artifact against all host copies
+        run: python scripts/verify_semantic_core_artifact.py
+      - name: Create commit-bound artifact bundle
+        run: >-
+          python scripts/semantic_core_artifact_bundle.py create
+          --artifact core/target/wasm32-unknown-unknown/release/adr_kit_semantic_core.wasm
+          --output-dir "${{ runner.temp }}/semantic-core-artifact"
+          --source-commit "${{ github.sha }}"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: semantic-core-${{ github.sha }}
+          path: ${{ runner.temp }}/semantic-core-artifact/
+          if-no-files-found: error
+          retention-days: 1

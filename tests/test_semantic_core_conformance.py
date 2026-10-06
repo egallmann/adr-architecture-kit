@@ -3,7 +3,11 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
+import pytest
+
 from adr_kit.core import execute_semantic_core_request
+
+pytestmark = pytest.mark.fast
 
 VECTORS = Path("contracts/semantic-core/v1.0/vectors/contract-validation.json")
 METADATA_VECTORS = Path("contracts/semantic-core/v1.0/vectors/project-metadata-validation.json")

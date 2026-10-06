@@ -85,17 +85,22 @@ Generic TDD tutorials are intentionally not maintained in this repository.
 | Schema parity | see below |
 
 CI stratifies these checks by lifecycle. Pull requests run the explicit semantic
-and SDK contract collection, Rust and Node/TypeScript checks, governance, and
-quality ratchets in **`.github/workflows/pr-feedback.yml`**. Pushes to
-`develop` run **`.github/workflows/develop-assurance.yml`**, which calls the
-full integration assurance workflow for the complete Python suite and coverage,
-Windows/macOS portability, dependency audit, Rust, Python/Node parity, and
-governance. Pushes to `main` run **`.github/workflows/release-certification.yml`**;
-that path adds an explicit source-built semantic-core/WASM qualification gate,
-the retained Python/npm bundle, packaged WASM identity, retained wheel smoke
-tests, fixed-epoch reproducibility, and benchmark determinism. A release
-candidate cannot be retained unless the Rust core tests, source-built WASM
-artifact, Python binding, and Node binding all pass that gate.
+and SDK contract collection, Rust source qualification, Node/TypeScript checks,
+governance, and quality ratchets in **`.github/workflows/pr-feedback.yml`**. A
+single producer job tests the Rust core, builds the source WASM, verifies its
+identity, and publishes a commit-bound artifact for dependent jobs. Pushes to
+`develop` run **`.github/workflows/develop-assurance.yml`**: the complete
+behavioral/integration/cross-host Python suite and coverage, Python/Node parity,
+dependency, governance, and quality assurance. Whole-repository governance tests
+are exercised by their dedicated gates rather than repeated inside coverage.
+Full Windows/macOS source suites run weekly or on demand through
+**`.github/workflows/portability-assurance.yml`**, and again during release
+certification. Pushes to `main` run
+**`.github/workflows/release-certification.yml`**, which also qualifies the exact
+retained Python/npm bundle, packaged WASM identity, retained-wheel smoke tests,
+fixed-epoch reproducibility, and benchmark determinism. Release qualification
+therefore retains cross-platform evidence without spending the full OS-suite cost
+on every ordinary develop push.
 Tag publishers only promote the retained bundle from that successful `main`
 certification run.
 
@@ -104,15 +109,30 @@ certification run.
 ## Running Tests
 
 ```bash
-# Full test suite
-pytest
+# Developer/TDD fast suite (isolated behavior and contract tests)
+python -m pytest -m fast --durations=10
 
-# With coverage report
-python -m pytest --cov=adr_kit --cov-report=term-missing --cov-fail-under=80
+# Focus one file or case
+python -m pytest tests/test_schema_validation.py -q
+python -m pytest -k "scope" -q
 
-# Specific test file
-pytest tests/test_schema_validation.py -v
+# Full source suite
+python -m pytest --durations=30
+
+# Full suite with canonical coverage gate
+python -m pytest --durations=30 --cov=adr_kit --cov-report=term-missing --cov-fail-under=80
+
+# PR semantic/source collection and dedicated governance check
+python scripts/run_pr_feedback.py
+adr governance-checks --skip-tests
 ```
+
+Pytest registers `fast`, `integration`, `governance`, `crosshost`, and
+`benchmark` assurance layers. Tests without an explicit layer remain in the
+complete suite as `integration`; accidental multiple-layer classification fails
+collection. Use `-m fast` only for the TDD loop, not as a replacement for the
+complete suite or lifecycle gates. CI reports test counts and slowest tests;
+workflow job durations provide the lane-level timing record.
 
 ---
 

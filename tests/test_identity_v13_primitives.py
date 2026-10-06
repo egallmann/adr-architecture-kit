@@ -5,7 +5,6 @@ from __future__ import annotations
 import uuid
 
 import pytest
-
 from adr_kit.identity import (
     UUIDV7_PATTERN,
     derive_assertion_id_v13,
@@ -21,6 +20,8 @@ from tests.support.uuidv7_fixtures import (
     UUIDV7_TIMESTAMP_FIXTURE,
     UUIDV7_TIMESTAMP_MS,
 )
+
+pytestmark = pytest.mark.fast
 
 
 class TestUUIDv7Validation:

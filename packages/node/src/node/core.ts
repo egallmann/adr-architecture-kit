@@ -78,9 +78,20 @@ function loadCoreBytes(): Promise<Buffer> {
   return coreBytes;
 }
 
+let coreModule: Promise<WebAssembly.Module> | undefined;
+function loadCoreModule(): Promise<WebAssembly.Module> {
+  coreModule ??= loadCoreBytes().then((bytes) => {
+    const moduleBytes = new Uint8Array(bytes.byteLength);
+    moduleBytes.set(bytes);
+    return new WebAssembly.Module(moduleBytes);
+  });
+  return coreModule;
+}
+
 export async function executeSemanticCoreRequest(request: Record<string, unknown>): Promise<Record<string, unknown>> {
-  const instantiated = await WebAssembly.instantiate(await loadCoreBytes());
-  const instance = ("instance" in instantiated ? instantiated.instance : instantiated) as WebAssembly.Instance;
+  // Compiled modules are immutable and reusable; each request gets a fresh
+  // instance (and therefore fresh guest memory and mutable globals).
+  const instance = new WebAssembly.Instance(await loadCoreModule());
   const exports = instance.exports as unknown as CoreExports;
   const payload = Buffer.from(JSON.stringify(request), "utf8");
   const input = exports.alloc(payload.length);

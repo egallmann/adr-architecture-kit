@@ -5,6 +5,8 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
+import pytest
+
 from adr_kit import decorators
 from adr_kit.attribution_shim_generator import generate_shim
 from adr_kit.models.implementation_attribution import SemanticAttributionClaim
@@ -15,6 +17,8 @@ from adr_kit.semantic_attribution.vocabulary import (
     uuid_decorator_name,
     uuid_sequence_decorator_name,
 )
+
+pytestmark = pytest.mark.crosshost
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 CANONICAL = (

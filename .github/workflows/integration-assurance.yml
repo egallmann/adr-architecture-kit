@@ -2,29 +2,38 @@ name: Integration Assurance
 
 on:
   workflow_call:
+    inputs:
+      full_os_portability:
+        description: Run complete Windows and macOS source-suite qualification (release boundary).
+        required: false
+        type: boolean
+        default: false
 
 env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
 jobs:
+  semantic-core:
+    uses: ./.github/workflows/semantic-core-qualification.yml
+
   source-compatibility:
     name: Source install / Python 3.14
+    needs: semantic-core
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - uses: dtolnay/rust-toolchain@stable
+      - uses: actions/download-artifact@v4
         with:
-          targets: wasm32-unknown-unknown
-      - name: Guard semantic-core source and tracked artifacts
-        run: python scripts/check_semantic_core_artifact_change.py
-      - name: Smoke-test tracked semantic core before rebuild
-        run: node scripts/check_tracked_semantic_core.mjs
-      - name: Build shared semantic core
-        run: node scripts/build_semantic_core.mjs
-      - name: Verify source-built semantic core artifacts
-        run: python scripts/verify_semantic_core_artifact.py
+          name: semantic-core-${{ github.sha }}
+          path: semantic-core-artifact
+      - name: Install the qualified artifact for this commit
+        run: >-
+          python scripts/semantic_core_artifact_bundle.py consume
+          --bundle-dir semantic-core-artifact
+          --source-commit "${{ github.sha }}"
+      - run: python scripts/verify_semantic_core_artifact.py
       - uses: actions/setup-python@v5
         with:
           python-version: "3.14"
@@ -40,22 +49,22 @@ jobs:
 
   typescript-consumer:
     name: TypeScript consumer binding / Node 20
+    needs: semantic-core
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - uses: dtolnay/rust-toolchain@stable
+      - uses: actions/download-artifact@v4
         with:
-          targets: wasm32-unknown-unknown
-      - name: Guard semantic-core source and tracked artifacts
-        run: python scripts/check_semantic_core_artifact_change.py
-      - name: Smoke-test tracked semantic core before rebuild
-        run: node scripts/check_tracked_semantic_core.mjs
-      - name: Build shared semantic core
-        run: node scripts/build_semantic_core.mjs
-      - name: Verify source-built semantic core artifacts
-        run: python scripts/verify_semantic_core_artifact.py
+          name: semantic-core-${{ github.sha }}
+          path: semantic-core-artifact
+      - name: Install the qualified artifact for this commit
+        run: >-
+          python scripts/semantic_core_artifact_bundle.py consume
+          --bundle-dir semantic-core-artifact
+          --source-commit "${{ github.sha }}"
+      - run: python scripts/verify_semantic_core_artifact.py
       - uses: actions/setup-node@v4
         with:
           node-version: "20"
@@ -102,22 +111,23 @@ jobs:
 
   governance:
     name: ADR, generated artifact, and contract governance
+    needs: semantic-core
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
         with:
           submodules: recursive
           fetch-depth: 0
-      - uses: dtolnay/rust-toolchain@stable
+      - uses: actions/download-artifact@v4
         with:
-          targets: wasm32-unknown-unknown
-      - name: Build and test shared semantic core
-        run: |
-          python scripts/check_semantic_core_artifact_change.py
-          node scripts/check_tracked_semantic_core.mjs
-          cargo test --manifest-path core/Cargo.toml
-          node scripts/build_semantic_core.mjs
-          python scripts/verify_semantic_core_artifact.py
+          name: semantic-core-${{ github.sha }}
+          path: semantic-core-artifact
+      - name: Install the qualified artifact for this commit
+        run: >-
+          python scripts/semantic_core_artifact_bundle.py consume
+          --bundle-dir semantic-core-artifact
+          --source-commit "${{ github.sha }}"
+      - run: python scripts/verify_semantic_core_artifact.py
       - uses: actions/setup-python@v5
         with:
           python-version: "3.14"
@@ -139,23 +149,23 @@ jobs:
       - run: adr validate-system-overview
 
   full-python-coverage:
-    name: Full Python suite and coverage
+    name: Python behavioral suite and coverage
+    needs: semantic-core
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - uses: dtolnay/rust-toolchain@stable
+      - uses: actions/download-artifact@v4
         with:
-          targets: wasm32-unknown-unknown
-      - name: Guard semantic-core source and tracked artifacts
-        run: python scripts/check_semantic_core_artifact_change.py
-      - name: Smoke-test tracked semantic core before rebuild
-        run: node scripts/check_tracked_semantic_core.mjs
-      - name: Build shared semantic core
-        run: node scripts/build_semantic_core.mjs
-      - name: Verify source-built semantic core artifacts
-        run: python scripts/verify_semantic_core_artifact.py
+          name: semantic-core-${{ github.sha }}
+          path: semantic-core-artifact
+      - name: Install the qualified artifact for this commit
+        run: >-
+          python scripts/semantic_core_artifact_bundle.py consume
+          --bundle-dir semantic-core-artifact
+          --source-commit "${{ github.sha }}"
+      - run: python scripts/verify_semantic_core_artifact.py
       - uses: actions/setup-python@v5
         with:
           python-version: "3.14"
@@ -164,11 +174,15 @@ jobs:
         run: python --version
       - run: python -m pip install --upgrade pip
       - run: python -m pip install .[dev]
-      - name: Run full suite with slow-test reporting and coverage
-        run: python -m pytest --durations=30 --cov=adr_kit --cov-report=term-missing --cov-fail-under=80
+      - name: Run the non-governance suite with slow-test reporting and coverage
+        run: >-
+          python -m pytest -m "not governance" --durations=30
+          --cov=adr_kit --cov-report=term-missing --cov-fail-under=80
 
   os-portability:
     name: Full Python suite / ${{ matrix.os }} / Python 3.14
+    if: inputs.full_os_portability
+    needs: semantic-core
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
@@ -178,20 +192,16 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - uses: dtolnay/rust-toolchain@stable
+      - uses: actions/download-artifact@v4
         with:
-          targets: wasm32-unknown-unknown
-      - uses: actions/setup-node@v4
-        with:
-          node-version: "20"
-      - name: Guard semantic-core source and tracked artifacts
-        run: python scripts/check_semantic_core_artifact_change.py
-      - name: Smoke-test tracked semantic core before rebuild
-        run: node scripts/check_tracked_semantic_core.mjs
-      - name: Build shared semantic core
-        run: node scripts/build_semantic_core.mjs
-      - name: Verify source-built semantic core artifacts
-        run: python scripts/verify_semantic_core_artifact.py
+          name: semantic-core-${{ github.sha }}
+          path: semantic-core-artifact
+      - name: Install the qualified artifact for this commit
+        run: >-
+          python scripts/semantic_core_artifact_bundle.py consume
+          --bundle-dir semantic-core-artifact
+          --source-commit "${{ github.sha }}"
+      - run: python scripts/verify_semantic_core_artifact.py
       - uses: actions/setup-python@v5
         with:
           python-version: "3.14"

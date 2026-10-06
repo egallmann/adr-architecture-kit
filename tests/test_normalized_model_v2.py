@@ -11,7 +11,6 @@ from pathlib import Path
 
 import pytest
 from pydantic import ValidationError
-
 from adr_kit.identity import (
     derive_alias_ref,
     derive_entity_uri,
@@ -35,6 +34,8 @@ from adr_kit.models.v2_0 import (
     RelationshipRegistryV2,
     UnresolvedRegistryV2,
 )
+
+pytestmark = pytest.mark.fast
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 NAMESPACE = "adr-architecture-kit"

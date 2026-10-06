@@ -9,7 +9,7 @@ from pathlib import Path
 from typing import Any
 
 from jsonschema import Draft202012Validator
-
+import pytest
 from adr_kit.core import (
     execute_validated_semantic_core_request,
     semantic_core_capabilities,
@@ -21,6 +21,8 @@ from adr_kit.core import (
 # self-binding implementation in this protocol test.
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from test_authoring_construction_v10_contract import _verified_bound_conformance
+
+pytestmark = pytest.mark.fast
 
 ROOT = Path(__file__).resolve().parents[1]
 PROTOCOL = ROOT / "contracts" / "semantic-core" / "v1.2"

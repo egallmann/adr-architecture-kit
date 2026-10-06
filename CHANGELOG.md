@@ -12,6 +12,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Authoring Construction now seals only minimal non-overlapping candidate
   source roots while retaining embedded child artifacts in the complete
   detached candidate result.
+- Python and Node semantic-core hosts now compile the immutable WASM module once
+  per process while retaining a fresh isolated store/instance for every request.
+
+### Changed
+
+- Test assurance now has explicit fast, integration, governance, cross-host, and
+  benchmark lanes. Develop runs Linux behavioral coverage and dedicated
+  governance; complete Windows/macOS source suites run on schedule and at release.
 
 ## [0.12.2] — 2026-10-04
 

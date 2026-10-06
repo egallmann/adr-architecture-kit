@@ -5,7 +5,7 @@ artifact_kind: rendered_adr_markdown
 generator_id: adr-projection-markdown
 generator_version: 3
 hash_algorithm: sha256
-source_hash: 45aace36196145e3d69f69f89b3c723fac5b3b4be91b421b88ae2887ed7010d0
+source_hash: af2c62de42485666fd8cab2a98e6aec2272d019ce33863a93192e6b4e3907d58
 rendered_hash: d648ef505bd63412494822bd9c3b40303eadef2a20d53921e4a8d2ac4be33429
 -->
 

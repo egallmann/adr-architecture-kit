@@ -348,7 +348,7 @@
       "semantic_type": "adrkit:implementation_domain",
       "consumer_namespace": "adrkit",
       "contract_version": "1.0",
-      "contract_fingerprint": "cecf:v1:sha256:bc48a9ae341607ae281e4ac32d15f6600812acd5f7be6f35bf14d41bf705d94a",
+      "contract_fingerprint": "cecf:v1:sha256:1524f320486e3656cee4b8d1d65a7be1701dcd2e6c5ebfca86a417c534a06ecd",
       "display_name": "Implementation Domain",
       "description": "A cohesive, intentionally assigned implementation responsibility within a governed layout. It is not created merely because a directory or file exists; relative_path is mutable descriptive embodiment data.",
       "identity_policy": {
@@ -386,8 +386,7 @@
           "alias_name",
           "existence_state",
           "relative_path",
-          "responsibility",
-          "boundary_classification"
+          "responsibility"
         ],
         "optional_fields": [],
         "forbidden_fields": [
@@ -418,14 +417,6 @@
           },
           "responsibility": {
             "type": "string"
-          },
-          "boundary_classification": {
-            "type": "string",
-            "enum": [
-              "semantic",
-              "shared_infrastructure",
-              "protocol_adapter"
-            ]
           }
         }
       },
@@ -450,10 +441,7 @@
       "consumer_state_policy": {
         "separate_from_existence": true,
         "field_authority": "consumer_contract",
-        "replacement_of_existence_state": false,
-        "examples": [
-          "observation_status"
-        ]
+        "replacement_of_existence_state": false
       },
       "relationship_participation": {
         "outbound": [
@@ -480,7 +468,7 @@
               }
             ],
             "minimum": 1,
-            "maximum": null,
+            "maximum": 1,
             "ordering": "not_material"
           }
         ],
@@ -528,9 +516,9 @@
       "semantic_type": "adrkit:implementation_layout",
       "consumer_namespace": "adrkit",
       "contract_version": "1.0",
-      "contract_fingerprint": "cecf:v1:sha256:30c1717a9ad7f2cff4039aeb2069fa14466479489092ada900580d013979e57c",
+      "contract_fingerprint": "cecf:v1:sha256:247230fb818a91332e45e8fa1530fd04a884a2c230e6ed90fdbae1ab348ae4e7",
       "display_name": "Implementation Layout",
-      "description": "One intentionally governed implementation layout for a physical component. It describes a bounded root and ecosystem; it is not a source inventory and its path is not identity.",
+      "description": "One intentionally governed implementation layout for a physical component. It describes a bounded root and may record its primary implementation language or execution target; it is not a source inventory and its path is not identity.",
       "identity_policy": {
         "mode": "canonical_uuidv7",
         "identity_bearing": true,
@@ -565,11 +553,12 @@
           "alias_id",
           "alias_name",
           "existence_state",
-          "root_path",
+          "root_path"
+        ],
+        "optional_fields": [
           "language",
           "execution_target"
         ],
-        "optional_fields": [],
         "forbidden_fields": [
           "topology_key",
           "from_key",
@@ -597,16 +586,10 @@
             "type": "string"
           },
           "language": {
-            "type": "string",
-            "enum": [
-              "Rust"
-            ]
+            "type": "string"
           },
           "execution_target": {
-            "type": "string",
-            "enum": [
-              "wasm32-unknown-unknown"
-            ]
+            "type": "string"
           }
         }
       },
@@ -631,10 +614,7 @@
       "consumer_state_policy": {
         "separate_from_existence": true,
         "field_authority": "consumer_contract",
-        "replacement_of_existence_state": false,
-        "examples": [
-          "observation_status"
-        ]
+        "replacement_of_existence_state": false
       },
       "relationship_participation": {
         "outbound": [

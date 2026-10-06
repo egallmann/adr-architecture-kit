@@ -5,8 +5,8 @@ artifact_kind: rendered_adr_markdown
 generator_id: adr-projection-markdown
 generator_version: 3
 hash_algorithm: sha256
-source_hash: b3ad694358228f0989ffa336e58e712f41333a6d62593b6def94b231e553a4c7
-rendered_hash: 765649a74e6405323507f6afe439a406d99bdb36099ccab4eeb8e5ae4b73d038
+source_hash: 04d8406d5ff50a6d5e26ea32023facfb53e701e9e700d961cb08f411163aa29c
+rendered_hash: daf935475187867f7011fa22cd8035a42a47ee8b2dd3f2d48204c2fea742f359
 -->
 
 # ADR-PS-0002: ADR Kit Compiler, Validation, and Canonical Semantic Execution System
@@ -14,7 +14,7 @@ rendered_hash: 765649a74e6405323507f6afe439a406d99bdb36099ccab4eeb8e5ae4b73d038
 ## Identity / Status
 
 **Type:** physical-system<br>
-**Status:** proposed<br>
+**Status:** accepted<br>
 **Alias:** ADR-PS-0002<br>
 **System:** SYS-0002 — ADR Kit Authoring Compiler, Validation, and Semantic Execution System<br>
 **Authoring contract:** authoring v1.5<br>

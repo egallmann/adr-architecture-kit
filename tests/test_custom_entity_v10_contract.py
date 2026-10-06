@@ -127,6 +127,10 @@ def test_adrkit_implementation_layout_registry_is_exact_and_canonical() -> None:
         assert definition["consumer_namespace"] == "adrkit"
         assert definition["contract_version"] == "1.0"
         assert cecf(definition)[1] == definition["contract_fingerprint"]
+        assert "observation_status" not in definition.get("consumer_state_policy", {}).get(
+            "examples", []
+        )
+        assert "path" in definition["identity_policy"]["forbidden_derivations"]
 
     by_type = {item["semantic_type"]: item for item in definitions}
     layout = by_type["adrkit:implementation_layout"]
@@ -134,10 +138,27 @@ def test_adrkit_implementation_layout_registry_is_exact_and_canonical() -> None:
     assert layout["composition_policy"]["allowed_parents"] == ["adr/physical-component"]
     assert domain["composition_policy"]["allowed_parents"] == ["adr/physical-component"]
     for definition in (layout, domain):
-        assert "path" in definition["identity_policy"]["forbidden_derivations"]
         assert "source_location" in definition["identity_policy"]["forbidden_derivations"]
-    assert "root_path" in layout["field_contract"]["fields"]
-    assert "relative_path" in domain["field_contract"]["fields"]
+    assert layout["field_contract"]["required_fields"] == [
+        "id",
+        "alias_id",
+        "alias_name",
+        "existence_state",
+        "root_path",
+    ]
+    assert layout["field_contract"]["optional_fields"] == ["language", "execution_target"]
+    assert layout["field_contract"]["fields"]["root_path"] == {"type": "string"}
+    assert layout["field_contract"]["fields"]["language"] == {"type": "string"}
+    assert layout["field_contract"]["fields"]["execution_target"] == {"type": "string"}
+    assert domain["field_contract"]["required_fields"] == [
+        "id",
+        "alias_id",
+        "alias_name",
+        "existence_state",
+        "relative_path",
+        "responsibility",
+    ]
+    assert "boundary_classification" not in domain["field_contract"]["fields"]
 
     contains = by_type["adrkit:contains_domain"]
     depends = by_type["adrkit:depends_on_domain"]
@@ -146,6 +167,48 @@ def test_adrkit_implementation_layout_registry_is_exact_and_canonical() -> None:
     ]
     assert contains["target_types"] == [
         {"endpoint_kind": "qualified_custom_type", "semantic_type": "adrkit:implementation_domain"}
+    ]
+    assert contains["cardinality"] == {
+        "mode": "custom_contract_declared",
+        "minimum": 0,
+        "maximum": None,
+    }
+    assert layout["relationship_participation"]["outbound"] == [
+        {
+            "relationship_type": "adrkit:contains_domain",
+            "target_types": contains["target_types"],
+            "minimum": 1,
+            "maximum": None,
+            "ordering": "not_material",
+        }
+    ]
+    assert domain["relationship_participation"]["inbound"] == [
+        {
+            "relationship_type": "adrkit:contains_domain",
+            "target_types": [
+                {
+                    "endpoint_kind": "qualified_custom_type",
+                    "semantic_type": "adrkit:implementation_layout",
+                }
+            ],
+            "minimum": 1,
+            "maximum": 1,
+            "ordering": "not_material",
+        }
+    ]
+    assert depends["cardinality"] == {
+        "mode": "custom_contract_declared",
+        "minimum": 0,
+        "maximum": None,
+    }
+    assert domain["relationship_participation"]["outbound"] == [
+        {
+            "relationship_type": "adrkit:depends_on_domain",
+            "target_types": depends["target_types"],
+            "minimum": 0,
+            "maximum": None,
+            "ordering": "not_material",
+        }
     ]
     assert (
         depends["source_types"]

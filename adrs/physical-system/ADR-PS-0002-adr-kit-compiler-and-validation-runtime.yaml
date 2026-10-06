@@ -2,7 +2,7 @@ schema_version: '1.5'
 adr_type: physical-system
 id: 019fee89-e618-7d04-9337-4aa2d3258507
 title: ADR Kit Compiler, Validation, and Canonical Semantic Execution System
-status: proposed
+status: accepted
 created_date: '2026-03-15'
 authors:
 - erik.gallmann

@@ -13,7 +13,7 @@ entities:
   uri: adr://adr-architecture-kit/entities/019fee89-e618-713e-a017-5b417ef9ac9f
   created_at: '2026-08-11T01:57:22.584Z'
   entity_fingerprint: sha256:e87cd76992ef2f66e1647f3e9410b0f4ae6ca436aae217e975460ab86b55ed27
-  lifecycle_stage: proposed
+  lifecycle_stage: active
   canonical_source:
     source_type: physical_system_adr
     source_ref: 019fee89-e618-7d04-9337-4aa2d3258507

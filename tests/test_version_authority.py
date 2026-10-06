@@ -1,4 +1,4 @@
-"""Executable contracts for metadata-first package-version authority."""
+"""Executable contracts for source and installed package-version authority."""
 
 from __future__ import annotations
 
@@ -29,7 +29,9 @@ def test_runtime_version_has_no_duplicate_literal() -> None:
     assert "from ._version import __version__" in source
 
 
-def test_direct_source_fallback_reads_pyproject(monkeypatch: pytest.MonkeyPatch) -> None:
+def test_source_checkout_version_overrides_stale_distribution_metadata(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
     import tomllib
 
     version_module = _version_module()
@@ -37,34 +39,35 @@ def test_direct_source_fallback_reads_pyproject(monkeypatch: pytest.MonkeyPatch)
         "version"
     ]
 
-    def missing_metadata(_distribution: str) -> str:
-        raise metadata.PackageNotFoundError
-
-    monkeypatch.setattr(version_module, "distribution_version", missing_metadata)
+    monkeypatch.setattr(version_module, "distribution_version", lambda _distribution: "0.11.1")
     monkeypatch.setattr(version_module, "SOURCE_PROJECT", ROOT / "pyproject.toml")
 
     assert version_module.resolve_version() == expected
 
 
-def test_editable_install_uses_distribution_metadata(monkeypatch: pytest.MonkeyPatch) -> None:
+def test_installed_package_uses_distribution_metadata_without_source_project(
+    monkeypatch: pytest.MonkeyPatch,
+    tmp_path: Path,
+) -> None:
     version_module = _version_module()
-    expected = metadata.version("adr-architecture-kit")
+    expected = "99.0.0"
 
-    def forbidden_fallback() -> str:
-        raise AssertionError("source fallback must not run when metadata exists")
-
-    monkeypatch.setattr(version_module, "_source_version", forbidden_fallback)
+    monkeypatch.setattr(version_module, "SOURCE_PROJECT", tmp_path / "missing-pyproject.toml")
+    monkeypatch.setattr(version_module, "distribution_version", lambda _distribution: expected)
 
     assert version_module.resolve_version() == expected
 
 
 def test_cli_runtime_and_capability_versions_match() -> None:
+    import tomllib
+
     api = import_module("adr_kit.api")
     cli_result = CliRunner().invoke(cli, ["--version"])
 
     assert cli_result.exit_code == 0, cli_result.output
     cli_version = cli_result.output.strip().rsplit(" ", 1)[-1]
-    assert adr_kit.__version__ == metadata.version("adr-architecture-kit")
+    project = tomllib.loads((ROOT / "pyproject.toml").read_text(encoding="utf-8"))["project"]
+    assert adr_kit.__version__ == project["version"]
     assert cli_version == adr_kit.__version__
     assert api.capabilities().package_version == adr_kit.__version__
 

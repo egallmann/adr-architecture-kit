@@ -5,36 +5,36 @@ artifact_kind: rendered_adr_markdown
 generator_id: adr-projection-markdown
 generator_version: 3
 hash_algorithm: sha256
-source_hash: 45260d42a06443dd79a3de553ef162b5a2b6070a098212e8975f193faa690789
-rendered_hash: 2b6db67395fd1c6ac7b859976a1b739be4b82dad7bee165b034a28ebb03d4d43
+source_hash: 04d8406d5ff50a6d5e26ea32023facfb53e701e9e700d961cb08f411163aa29c
+rendered_hash: daf935475187867f7011fa22cd8035a42a47ee8b2dd3f2d48204c2fea742f359
 -->
 
-# ADR-PS-0002: ADR Kit Authoring Compiler and Validation System
+# ADR-PS-0002: ADR Kit Compiler, Validation, and Canonical Semantic Execution System
 
 ## Identity / Status
 
 **Type:** physical-system<br>
 **Status:** accepted<br>
 **Alias:** ADR-PS-0002<br>
-**System:** SYS-0002 — ADR Kit Authoring Compiler and Validation System<br>
+**System:** SYS-0002 — ADR Kit Authoring Compiler, Validation, and Semantic Execution System<br>
 **Authoring contract:** authoring v1.5<br>
 **Created:** 2026-03-15<br>
-**Modified:** 2026-08-27<br>
+**Modified:** 2026-10-05<br>
 **Authors:** erik.gallmann<br>
-**Domains:** compiler, validation, tooling<br>
-**Tags:** compiler, validation, authoring, python<br>
+**Domains:** compiler, validation, tooling, semantic-execution, multi-host<br>
+**Tags:** compiler, validation, authoring, rust, wasm, semantic-core, python, node<br>
 **Implements Logical:** [ADR-L-0001](../logical/ADR-L-0001-ste-compliant-machine-verifiable-architecture-decision-record-system.md), [ADR-L-0007](../logical/ADR-L-0007-deterministic-documentation-projection.md), [ADR-L-0008](../logical/ADR-L-0008-validation-modes-for-draft-and-complete-adrs.md), [ADR-L-0010](../logical/ADR-L-0010-kernel-interface-contract-and-validation-profiles.md), [ADR-L-0011](../logical/ADR-L-0011-metadata-schemas-and-remediation-ledger-enforcement.md), [ADR-L-0013](../logical/ADR-L-0013-architecture-repository-boundary-and-normalized-semantic-model.md), [ADR-L-0002](../logical/ADR-L-0002-multi-scope-adr-architecture-for-sub-module-development.md)<br>
 
 ## Architecture at a Glance
 
 | | |
 | --- | --- |
-| System | SYS-0002 — ADR Kit Authoring Compiler and Validation System |
-| Components | 4 |
+| System | SYS-0002 — ADR Kit Authoring Compiler, Validation, and Semantic Execution System |
+| Components | 5 |
 | Boundaries | 1 |
-| Internal relationships | 3 |
+| Internal relationships | 5 |
 | External dependencies | 3 |
-| Exposed surfaces | 6 |
+| Exposed surfaces | 7 |
 
 **Logical authority**
 - [ADR-L-0001](../logical/ADR-L-0001-ste-compliant-machine-verifiable-architecture-decision-record-system.md)
@@ -62,9 +62,12 @@ rendered_hash: 2b6db67395fd1c6ac7b859976a1b739be4b82dad7bee165b034a28ebb03d4d43
 - COMP-0012 — Compiler Pipeline and Driver
 - COMP-0013 — Repository Boundary Component
 - COMP-0014 — Generated Artifact Integrity Validation
+- COMP-0023 — Canonical Semantic Execution Core
 
 **Internal relationships**
+- COMP-0011 — Schema and Contract Validation Surface depends on COMP-0023 — Canonical Semantic Execution Core
 - COMP-0012 — Compiler Pipeline and Driver depends on COMP-0011 — Schema and Contract Validation Surface
+- COMP-0012 — Compiler Pipeline and Driver depends on COMP-0023 — Canonical Semantic Execution Core
 - COMP-0013 — Repository Boundary Component depends on COMP-0012 — Compiler Pipeline and Driver
 - COMP-0014 — Generated Artifact Integrity Validation depends on COMP-0012 — Compiler Pipeline and Driver
 
@@ -80,6 +83,7 @@ rendered_hash: 2b6db67395fd1c6ac7b859976a1b739be4b82dad7bee165b034a28ebb03d4d43
 - `adr validate-project-metadata`
 - `adr entities *`
 - `adr_kit.api`
+- `TypeScript/Node package API`
 
 **Operational requirements**
 - Monitoring: Deterministic validation and compilation output with explicit diagnostics.
@@ -88,22 +92,8 @@ rendered_hash: 2b6db67395fd1c6ac7b859976a1b739be4b82dad7bee165b034a28ebb03d4d43
 
 ## Context
 
-adr-architecture-kit operates as an authoring-time compiler and validation system rather
-than a collection of unrelated generators. The implementation includes an
-explicit compiler pipeline, contract validation, normalized repository/model
-access, integrity verification, and CLI orchestration over those surfaces.
-
-This ADR establishes the concrete authoring/compiler system boundary for those public
-capabilities. Discovery and indexing remain covered by ADR-PS-0001; this ADR
-covers the authoring/compiler implementation that powers canonical parsing,
-compilation, repository loading, contract checks, artifact integrity, and the
-narrow `adr_kit.api` authoring SDK.
-
-The boundary explicitly excludes Assembler behavior, runtime observation or
-evidence extraction, rules execution, substrate management, admission decisions,
-MCP surfaces, and LLM responsibilities. Those belong to later work or sibling
-systems and must not be introduced by the Phase 1 SDK.
-
+ADR-Kit provides authoring, validation, compilation, and peer Python and TypeScript/Node host capabilities. Rust/WASM semantic-core is the canonical meaning-bearing execution authority shared by those hosts. Hosts acquire source facts such as filesystem scope and YAML input, adapt them to the versioned core protocol, and present deterministic results. The core owns shared semantic validation and execution, including schema execution required by the core, semantic-contract operations, authoring construction, architecture interpretation, materialization, and canonical architecture-rule validation.
+This system boundary includes host-side compiler orchestration, repository access, generated-artifact integrity, the CLI, and supported Python and TypeScript/Node bindings. The semantic core does not traverse consumer filesystems, acquire YAML, write repositories, perform governance admission, present CLI output, or observe Runtime state. Hosts do not recreate core-owned meaning. Discovery and indexing remain covered by ADR-PS-0001. The Rust crate and WASM artifact are implementation mechanisms behind the shared semantic boundary, not Rust-native public SDK contracts.
 
 ## Internal System Architecture
 
@@ -115,6 +105,7 @@ systems and must not be introduced by the Phase 1 SDK.
 | COMP-0012 — Compiler Pipeline and Driver | service | Builds and emits deterministic architecture compilation outputs. | [ADR-PC-0003](../physical-component/ADR-PC-0003-compiler-pipeline-and-driver.md) |
 | COMP-0013 — Repository Boundary Component | service | Loads and serves normalized semantic state for in-process consumers. | [ADR-PC-0004](../physical-component/ADR-PC-0004-repository-boundary-and-normalized-semantic-model.md) |
 | COMP-0014 — Generated Artifact Integrity Validation | service | Verifies generated artifact freshness and tamper integrity. | [ADR-PC-0005](../physical-component/ADR-PC-0005-generated-artifact-integrity-validation.md) |
+| COMP-0023 — Canonical Semantic Execution Core | library | Executes canonical shared semantics through the Rust/WASM boundary. | [ADR-PC-0009](../physical-component/ADR-PC-0009-canonical-semantic-execution-core.md) |
 
 ### System Topology
 
@@ -126,7 +117,10 @@ flowchart LR
   n_019fee89_e617_76ad_9336_b3615a6e4bde["COMP-0012<br/>Compiler Pipeline and Driver"]
   n_019fee89_e618_74d1_9a1f_37e2c2982a51["COMP-0013<br/>Repository Boundary Component"]
   n_019fee89_e618_781c_831f_0d5fe24f7d85["COMP-0014<br/>Generated Artifact Integrity Validation"]
+  n_01a10e4c_9ea8_76a2_93f7_8fbfd4c11741["COMP-0023<br/>Canonical Semantic Execution Core"]
+  n_019fee89_e617_7060_8f3f_4ecd46a719da -->|"depends_on"| n_01a10e4c_9ea8_76a2_93f7_8fbfd4c11741
   n_019fee89_e617_76ad_9336_b3615a6e4bde -->|"depends_on"| n_019fee89_e617_7060_8f3f_4ecd46a719da
+  n_019fee89_e617_76ad_9336_b3615a6e4bde -->|"depends_on"| n_01a10e4c_9ea8_76a2_93f7_8fbfd4c11741
   n_019fee89_e618_74d1_9a1f_37e2c2982a51 -->|"depends_on"| n_019fee89_e617_76ad_9336_b3615a6e4bde
   n_019fee89_e618_781c_831f_0d5fe24f7d85 -->|"depends_on"| n_019fee89_e617_76ad_9336_b3615a6e4bde
 ```
@@ -136,26 +130,24 @@ Local topology handles:
 - `TOPO-0002` → COMP-0012 — Compiler Pipeline and Driver
 - `TOPO-0003` → COMP-0013 — Repository Boundary Component
 - `TOPO-0004` → COMP-0014 — Generated Artifact Integrity Validation
+- `TOPO-0005` → COMP-0023 — Canonical Semantic Execution Core
 
 ### Component Interactions
 
 | From | Relationship | To | Protocol | Description |
 | --- | --- | --- | --- | --- |
+| COMP-0011 — Schema and Contract Validation Surface | depends on (`depends_on`) | COMP-0023 — Canonical Semantic Execution Core | — | Host validation delegates shared meaning-bearing rules to the canonical semantic core. |
 | COMP-0012 — Compiler Pipeline and Driver | depends on (`depends_on`) | COMP-0011 — Schema and Contract Validation Surface | — | — |
+| COMP-0012 — Compiler Pipeline and Driver | depends on (`depends_on`) | COMP-0023 — Canonical Semantic Execution Core | — | Compiler hosts route canonical semantic operations through the shared core. |
 | COMP-0013 — Repository Boundary Component | depends on (`depends_on`) | COMP-0012 — Compiler Pipeline and Driver | — | — |
 | COMP-0014 — Generated Artifact Integrity Validation | depends on (`depends_on`) | COMP-0012 — Compiler Pipeline and Driver | — | — |
 
 
 ## System Boundaries
 
-### SYSBOUND-0002 — Authoring Compiler and Validation Boundary
+### SYSBOUND-0002 — Authoring, Validation, and Canonical Semantic Execution Boundary
 
-Encapsulates canonical ADR parsing, compiler orchestration, schema and
-contract validation, normalized repository access, and generated artifact
-integrity validation. It exposes a narrow Python authoring SDK over supported
-validation, compilation, repository, model, and capability contracts. It does
-not perform runtime extraction, rules, substrate, admission, MCP, LLM, or
-Assembler responsibilities.
+Encapsulates host-side source acquisition and compiler orchestration, canonical Rust/WASM semantic execution, normalized repository access, and generated-artifact integrity. Python and TypeScript/Node are peer host adapters over the same versioned semantic-core protocol. Hosts own filesystem discovery, YAML acquisition/parsing, and presentation; the core owns shared meaning-bearing validation, construction, interpretation, and materialization. The core does not traverse or write consumer filesystems. The system excludes Runtime observation, evidence extraction, governance admission, MCP, LLM, and Assembler responsibilities.
 
 **External Dependencies**
 - Canonical ADR artifacts
@@ -169,6 +161,7 @@ Assembler responsibilities.
 - `adr validate-project-metadata`
 - `adr entities *`
 - `adr_kit.api`
+- `TypeScript/Node package API`
 
 
 ## Operational Requirements
@@ -192,10 +185,14 @@ flowchart LR
   n_019fee89_e618_74d1_9a1f_37e2c2982a51["COMP-0013<br/>Repository Boundary Component"]
   n_019fee89_e618_781c_831f_0d5fe24f7d85["COMP-0014<br/>Generated Artifact Integrity Validation"]
   n_019fee89_e618_7b76_843f_cfe21ceb2ea6["ADR-PC-0003<br/>Compiler Pipeline and Driver"]
+  n_01a10e4c_9ea8_76a2_93f7_8fbeca1ad7cf["ADR-PC-0009<br/>Canonical Semantic Execution Core"]
+  n_01a10e4c_9ea8_76a2_93f7_8fbfd4c11741["COMP-0023<br/>Canonical Semantic Execution Core"]
   n_019fee89_e617_7060_8f3f_4ecd46a719da -->|"declared_in"| n_019fee89_e617_7d2b_8325_cd85ff814477
   n_019fee89_e617_76ad_9336_b3615a6e4bde -->|"declared_in"| n_019fee89_e618_7b76_843f_cfe21ceb2ea6
   n_019fee89_e618_74d1_9a1f_37e2c2982a51 -->|"declared_in"| n_019fee89_e618_73ce_aa2d_101276d64e33
   n_019fee89_e618_781c_831f_0d5fe24f7d85 -->|"declared_in"| n_019fee89_e618_74b2_a83e_e41c7d8c9f37
+  n_01a10e4c_9ea8_76a2_93f7_8fbfd4c11741 -->|"declared_in"| n_01a10e4c_9ea8_76a2_93f7_8fbeca1ad7cf
+  n_019fee89_e617_7060_8f3f_4ecd46a719da -->|"depends_on"| n_01a10e4c_9ea8_76a2_93f7_8fbfd4c11741
   n_019fee89_e617_76ad_9336_b3615a6e4bde -->|"depends_on"| n_019fee89_e617_7060_8f3f_4ecd46a719da
   n_019fee89_e618_74d1_9a1f_37e2c2982a51 -->|"depends_on"| n_019fee89_e617_76ad_9336_b3615a6e4bde
   n_019fee89_e618_781c_831f_0d5fe24f7d85 -->|"depends_on"| n_019fee89_e617_76ad_9336_b3615a6e4bde
@@ -213,8 +210,12 @@ flowchart LR
   n_019fee89_e616_7d61_8e35_f11ba2ddd75d["ADR-L-0010<br/>Kernel Interface Contract and Validation Profiles"]
   n_019fee89_e617_7d2b_8325_cd85ff814477["ADR-PC-0002<br/>Schema and Contract Validation"]
   n_019fee89_e618_7b76_843f_cfe21ceb2ea6["ADR-PC-0003<br/>Compiler Pipeline and Driver"]
-  n_019fee89_e618_7d04_9337_4aa2d3258507["ADR-PS-0002<br/>ADR Kit Authoring Compiler and Validation System"]
+  n_019fee89_e618_7d04_9337_4aa2d3258507["ADR-PS-0002<br/>ADR Kit Compiler, Validation, and Canonical Semantic Execution System"]
   n_019ffdba_3c42_7c4a_a737_f6751a265d60["ADR-L-0020<br/>Semantic Implementation Attribution and Cross-Layer Architecture Relationships"]
+  n_01a05a27_0000_7000_8000_000000000027["ADR-L-0027<br/>Public Binding Construction and Release Parity"]
+  n_01a09938_a15b_75ed_8326_212e21bd3cfe["ADR-L-0029<br/>Semantic Authoring Construction and Candidate Authority"]
+  n_01a09cf0_179e_71cc_b150_d4a79551b939["ADR-L-0030<br/>Canonical Source Basis and Semantic Execution Surface"]
+  n_01a10e4c_9ea8_76a2_93f7_8fbeca1ad7cf["ADR-PC-0009<br/>Canonical Semantic Execution Core"]
   n_019fee89_e617_7d2b_8325_cd85ff814477 -->|"implements_logical"| n_019ffdba_3c42_7c4a_a737_f6751a265d60
   n_019fee89_e618_7b76_843f_cfe21ceb2ea6 -->|"implements_logical"| n_019fee89_e616_770c_a025_2c241a720730
   n_019fee89_e618_7d04_9337_4aa2d3258507 -->|"implements_logical"| n_019fee89_e615_70a5_861b_b2dde147e5af
@@ -224,6 +225,9 @@ flowchart LR
   n_019fee89_e618_7d04_9337_4aa2d3258507 -->|"implements_logical"| n_019fee89_e616_7b97_971d_ae165d13bf9c
   n_019fee89_e618_7d04_9337_4aa2d3258507 -->|"implements_logical"| n_019fee89_e616_7c4e_953c_b7349412a784
   n_019fee89_e618_7d04_9337_4aa2d3258507 -->|"implements_logical"| n_019fee89_e616_7d61_8e35_f11ba2ddd75d
+  n_01a10e4c_9ea8_76a2_93f7_8fbeca1ad7cf -->|"implements_logical"| n_01a05a27_0000_7000_8000_000000000027
+  n_01a10e4c_9ea8_76a2_93f7_8fbeca1ad7cf -->|"implements_logical"| n_01a09938_a15b_75ed_8326_212e21bd3cfe
+  n_01a10e4c_9ea8_76a2_93f7_8fbeca1ad7cf -->|"implements_logical"| n_01a09cf0_179e_71cc_b150_d4a79551b939
 ```
 
 
@@ -234,6 +238,24 @@ flowchart LR
 
 **Rationale:**
 Minimum supported Python minor is 3.14 (`requires-python >=3.14`); currently qualified released minor line is 3.14; repository reference interpreter is currently 3.14.7; new GA Python minors require explicit qualification before support is advertised.
+
+### Rust (language)
+**Version:** 2021 edition
+
+**Rationale:**
+Canonical shared semantic execution implementation in the single semantic-core crate.
+
+### WebAssembly (infrastructure)
+**Version:** wasm32-unknown-unknown
+
+**Rationale:**
+Shared execution artifact consumed by supported hosts.
+
+### TypeScript and Node.js (language)
+**Version:** Supported package baseline
+
+**Rationale:**
+Peer host binding over the same semantic-core execution authority.
 
 ### Click (tooling)
 **Version:** 8.x
@@ -260,15 +282,18 @@ Structural schema validation for canonical artifacts.
 
 | Neighbor | Relationship | Exact Path |
 | --- | --- | --- |
-| [ADR-L-0001 — STE-Compliant Machine-Verifiable Architecture Decision Record System](../logical/ADR-L-0001-ste-compliant-machine-verifiable-architecture-decision-record-system.md) | ADR Kit Authoring Compiler and Validation System (ADR-PS-0002) → STE-Compliant Machine-Verifiable Architecture Decision Record System (ADR-L-0001) | `ADR-PS-0002 -[:implements_logical]-> ADR-L-0001` |
-| [ADR-L-0002 — Multi-Scope ADR Architecture for Sub-Module Development](../logical/ADR-L-0002-multi-scope-adr-architecture-for-sub-module-development.md) | ADR Kit Authoring Compiler and Validation System (ADR-PS-0002) → Multi-Scope ADR Architecture for Sub-Module Development (ADR-L-0002) | `ADR-PS-0002 -[:implements_logical]-> ADR-L-0002` |
-| [ADR-L-0007 — Deterministic Documentation Projection](../logical/ADR-L-0007-deterministic-documentation-projection.md) | ADR Kit Authoring Compiler and Validation System (ADR-PS-0002) → Deterministic Documentation Projection (ADR-L-0007) | `ADR-PS-0002 -[:implements_logical]-> ADR-L-0007` |
-| [ADR-L-0008 — Validation Modes for Draft and Complete ADRs](../logical/ADR-L-0008-validation-modes-for-draft-and-complete-adrs.md) | ADR Kit Authoring Compiler and Validation System (ADR-PS-0002) → Validation Modes for Draft and Complete ADRs (ADR-L-0008) | `ADR-PS-0002 -[:implements_logical]-> ADR-L-0008` |
+| [ADR-L-0001 — STE-Compliant Machine-Verifiable Architecture Decision Record System](../logical/ADR-L-0001-ste-compliant-machine-verifiable-architecture-decision-record-system.md) | ADR Kit Compiler, Validation, and Canonical Semantic Execution System (ADR-PS-0002) → STE-Compliant Machine-Verifiable Architecture Decision Record System (ADR-L-0001) | `ADR-PS-0002 -[:implements_logical]-> ADR-L-0001` |
+| [ADR-L-0002 — Multi-Scope ADR Architecture for Sub-Module Development](../logical/ADR-L-0002-multi-scope-adr-architecture-for-sub-module-development.md) | ADR Kit Compiler, Validation, and Canonical Semantic Execution System (ADR-PS-0002) → Multi-Scope ADR Architecture for Sub-Module Development (ADR-L-0002) | `ADR-PS-0002 -[:implements_logical]-> ADR-L-0002` |
+| [ADR-L-0007 — Deterministic Documentation Projection](../logical/ADR-L-0007-deterministic-documentation-projection.md) | ADR Kit Compiler, Validation, and Canonical Semantic Execution System (ADR-PS-0002) → Deterministic Documentation Projection (ADR-L-0007) | `ADR-PS-0002 -[:implements_logical]-> ADR-L-0007` |
+| [ADR-L-0008 — Validation Modes for Draft and Complete ADRs](../logical/ADR-L-0008-validation-modes-for-draft-and-complete-adrs.md) | ADR Kit Compiler, Validation, and Canonical Semantic Execution System (ADR-PS-0002) → Validation Modes for Draft and Complete ADRs (ADR-L-0008) | `ADR-PS-0002 -[:implements_logical]-> ADR-L-0008` |
 | [ADR-L-0009 — Derived Architecture Discovery Surfaces](../logical/ADR-L-0009-derived-architecture-discovery-surfaces.md) | Compiler Pipeline and Driver (ADR-PC-0003) → Derived Architecture Discovery Surfaces (ADR-L-0009) | `ADR-PC-0003 -[:implements_logical]-> ADR-L-0009` |
-| [ADR-L-0010 — Kernel Interface Contract and Validation Profiles](../logical/ADR-L-0010-kernel-interface-contract-and-validation-profiles.md) | ADR Kit Authoring Compiler and Validation System (ADR-PS-0002) → Kernel Interface Contract and Validation Profiles (ADR-L-0010) | `ADR-PS-0002 -[:implements_logical]-> ADR-L-0010` |
-| [ADR-L-0011 — Metadata Schemas and Remediation Ledger Enforcement](../logical/ADR-L-0011-metadata-schemas-and-remediation-ledger-enforcement.md) | ADR Kit Authoring Compiler and Validation System (ADR-PS-0002) → Metadata Schemas and Remediation Ledger Enforcement (ADR-L-0011) | `ADR-PS-0002 -[:implements_logical]-> ADR-L-0011` |
-| [ADR-L-0013 — Architecture Repository Boundary and Normalized Semantic Model](../logical/ADR-L-0013-architecture-repository-boundary-and-normalized-semantic-model.md) | ADR Kit Authoring Compiler and Validation System (ADR-PS-0002) → Architecture Repository Boundary and Normalized Semantic Model (ADR-L-0013) | `ADR-PS-0002 -[:implements_logical]-> ADR-L-0013` |
+| [ADR-L-0010 — Kernel Interface Contract and Validation Profiles](../logical/ADR-L-0010-kernel-interface-contract-and-validation-profiles.md) | ADR Kit Compiler, Validation, and Canonical Semantic Execution System (ADR-PS-0002) → Kernel Interface Contract and Validation Profiles (ADR-L-0010) | `ADR-PS-0002 -[:implements_logical]-> ADR-L-0010` |
+| [ADR-L-0011 — Metadata Schemas and Remediation Ledger Enforcement](../logical/ADR-L-0011-metadata-schemas-and-remediation-ledger-enforcement.md) | ADR Kit Compiler, Validation, and Canonical Semantic Execution System (ADR-PS-0002) → Metadata Schemas and Remediation Ledger Enforcement (ADR-L-0011) | `ADR-PS-0002 -[:implements_logical]-> ADR-L-0011` |
+| [ADR-L-0013 — Architecture Repository Boundary and Normalized Semantic Model](../logical/ADR-L-0013-architecture-repository-boundary-and-normalized-semantic-model.md) | ADR Kit Compiler, Validation, and Canonical Semantic Execution System (ADR-PS-0002) → Architecture Repository Boundary and Normalized Semantic Model (ADR-L-0013) | `ADR-PS-0002 -[:implements_logical]-> ADR-L-0013` |
 | [ADR-L-0020 — Semantic Implementation Attribution and Cross-Layer Architecture Relationships](../logical/ADR-L-0020-semantic-implementation-attribution-and-cross-layer-architecture-relationships.md) | Schema and Contract Validation (ADR-PC-0002) → Semantic Implementation Attribution and Cross-Layer Architecture Relationships (ADR-L-0020) | `ADR-PC-0002 -[:implements_logical]-> ADR-L-0020` |
+| [ADR-L-0027 — Public Binding Construction and Release Parity](../logical/ADR-L-0027-public-binding-construction-and-release-parity.md) | Canonical Semantic Execution Core (ADR-PC-0009) → Public Binding Construction and Release Parity (ADR-L-0027) | `ADR-PC-0009 -[:implements_logical]-> ADR-L-0027` |
+| [ADR-L-0029 — Semantic Authoring Construction and Candidate Authority](../logical/ADR-L-0029-semantic-authoring-construction-and-candidate-authority.md) | Canonical Semantic Execution Core (ADR-PC-0009) → Semantic Authoring Construction and Candidate Authority (ADR-L-0029) | `ADR-PC-0009 -[:implements_logical]-> ADR-L-0029` |
+| [ADR-L-0030 — Canonical Source Basis and Semantic Execution Surface](../logical/ADR-L-0030-canonical-source-basis-and-semantic-execution-surface.md) | Canonical Semantic Execution Core (ADR-PC-0009) → Canonical Source Basis and Semantic Execution Surface (ADR-L-0030) | `ADR-PC-0009 -[:implements_logical]-> ADR-L-0030` |
 
 
 

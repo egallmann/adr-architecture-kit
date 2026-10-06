@@ -5,8 +5,8 @@ artifact_kind: rendered_adr_markdown
 generator_id: adr-projection-markdown
 generator_version: 3
 hash_algorithm: sha256
-source_hash: dfecb29a5a4810fd54a4b2b523778bc7a76dad46b8870fbb2169423e0e569b1b
-rendered_hash: 41dedc10733cd450b0184eeb8337eaa450d798aa8749f2305f120158b7fb812d
+source_hash: ec6b40fe670d54c2bbf09f9e329cc1f812f7b4aec167fd342de32be2b6e12183
+rendered_hash: 78f5e1821d8877ca3edfa9dcea50e2a5c4bc66fcfec4b05c762efa98bd8b27d5
 -->
 
 # ADR-L-0010: Kernel Interface Contract and Validation Profiles
@@ -309,7 +309,7 @@ continue to satisfy the explicit kernel contract.
 | Neighbor | Relationship | Exact Path |
 | --- | --- | --- |
 | [ADR-PC-0002 — Schema and Contract Validation](../physical-component/ADR-PC-0002-schema-and-contract-validation.md) | implements this logical authority | `ADR-PC-0002 -[:implements_logical]-> ADR-L-0010` |
-| [ADR-PS-0002 — ADR Kit Authoring Compiler and Validation System](../physical-system/ADR-PS-0002-adr-kit-authoring-compiler-and-validation-system.md) | implements this logical authority | `ADR-PS-0002 -[:implements_logical]-> ADR-L-0010` |
+| [ADR-PS-0002 — ADR Kit Compiler, Validation, and Canonical Semantic Execution System](../physical-system/ADR-PS-0002-adr-kit-authoring-compiler-and-validation-system.md) | implements this logical authority | `ADR-PS-0002 -[:implements_logical]-> ADR-L-0010` |
 
 
 

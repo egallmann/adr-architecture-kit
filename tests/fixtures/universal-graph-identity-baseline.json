@@ -5,40 +5,40 @@
   "baseline_sha": "9bce83c",
   "architecture_graph": {
     "path": "adrs/index/architecture-graph.yaml",
-    "source_sha256": "797e95f1b8fd50213dfe175bdc2992b090783fdbcaa057694c65821f24d236e5",
-    "node_count": 664,
-    "edge_count": 917,
-    "node_semantic_sha256": "21f10d5b3a761f0729832268b68c9de569df7027e6920a66106ad2125f523815",
-    "edge_semantic_sha256": "e202419914fb4a29b565755eec5d084ea0757536cc066ee916c2a0a4da34a477",
+    "source_sha256": "04b1c87e2ee0a2eb46a59845e8d6010332afd4e28c0a247e6e32c056750c76e2",
+    "node_count": 667,
+    "edge_count": 927,
+    "node_semantic_sha256": "18329f89e89f6b2c9e7e57e965940bc7d4de22929e4f7458e59896026f5e3da5",
+    "edge_semantic_sha256": "8c29c184a2a3c4db8301bd7f41b1ec374ff0b58e168fb4b4e29ecab87203063a",
     "node_types": {
-      "adr": 45,
+      "adr": 46,
       "boundary": 4,
       "capability": 58,
-      "component": 8,
+      "component": 9,
       "contract": 5,
       "decision": 265,
       "implementation_decision": 14,
-      "interface": 13,
+      "interface": 14,
       "invariant": 250,
       "system": 2
     },
     "edge_types": {
-      "composed_of": 5,
-      "declared_in": 619,
-      "depends_on": 3,
-      "embodied_in": 9,
+      "composed_of": 6,
+      "declared_in": 621,
+      "depends_on": 5,
+      "embodied_in": 10,
       "enabled_by": 1,
       "enables": 1,
       "enforces": 64,
       "implemented_by": 2,
-      "implements_logical": 30,
-      "provides_interface": 13,
+      "implements_logical": 33,
+      "provides_interface": 14,
       "references": 168,
       "superseded_by": 1,
       "supersedes": 1
     },
     "baseline_identity_evidence": {
-      "uuidv7_nodes": 664,
+      "uuidv7_nodes": 667,
       "nodes_with_alias_envelope": 0,
       "uuidv7_edges": 0,
       "edges_with_alias_envelope": 0
@@ -56,9 +56,10 @@
     "adrs/logical/ADR-L-0021-schema-contract-taxonomy.yaml": "7c86002ee78c458f05edce3753c72985e29ef36550ef845c61c418f49bf0ca3f",
     "adrs/logical/ADR-L-0022-universal-uuidv7-entity-identity.yaml": "cf0c8f5239498a43c6a8b97185ec0a62aec5fac06e9f1adde14ff015808a3c04",
     "adrs/physical-system/ADR-PS-0001-adr-architecture-kit-discovery-and-indexing-system.yaml": "6328a023b4276e6d6393ce75017a72994c141326cdaf57d3d3bce111336daf50",
-    "adrs/physical-system/ADR-PS-0002-adr-kit-compiler-and-validation-runtime.yaml": "5502ba45285b28699b563f2eed05bd5e1ac9ead2e344473e6897aa4f434fd6aa",
+    "adrs/physical-system/ADR-PS-0002-adr-kit-compiler-and-validation-runtime.yaml": "9be190681df0ff7a0281bc1cc29ee3306ab3f6ae6bc90ce25332213546c1cdd4",
     "adrs/logical/ADR-L-0033-governed-candidate-binding-for-authoring-construction.yaml": "bddeb15e1902424066b8ff22e3ba5e5293a5e434f24d5d3f55ca59a0b531fff7",
-    "adrs/logical/ADR-L-0034-detached-normalized-semantic-equivalence-for-authoring-construction.yaml": "58f3c7bc374e4bda35351f409b0524c142b18c30b4fef9db9140a9572d005808"
+    "adrs/logical/ADR-L-0034-detached-normalized-semantic-equivalence-for-authoring-construction.yaml": "58f3c7bc374e4bda35351f409b0524c142b18c30b4fef9db9140a9572d005808",
+    "adrs/physical-component/ADR-PC-0009-canonical-semantic-execution-core.yaml": "ee7580e2375664b4136e9642c7bdaeee056e8d3272dc7261decd07c822add731"
   },
   "graph_eligible_corpus_records": [
     {

@@ -5,8 +5,8 @@ artifact_kind: rendered_adr_markdown
 generator_id: adr-projection-markdown
 generator_version: 3
 hash_algorithm: sha256
-source_hash: 564737c0ee084ac04efc0708d25880355a4cdc459d7a8a25692804f641d3213a
-rendered_hash: dac31ee2f36a89487b379d10e072316405c548ab7408498ab3915b17658982d5
+source_hash: 3ac0d4e5f4bdae5e503643077719c323123bc050be693f3156159802b0ee1ed8
+rendered_hash: deae48d1bc07f5ad51be941eca546b37f69083904e77dbbc0f8a743698fa8585
 -->
 
 # ADR-L-0011: Metadata Schemas and Remediation Ledger Enforcement
@@ -242,7 +242,7 @@ remain a permanent escape hatch.
 | --- | --- | --- |
 | [ADR-PC-0002 — Schema and Contract Validation](../physical-component/ADR-PC-0002-schema-and-contract-validation.md) | implements this logical authority | `ADR-PC-0002 -[:implements_logical]-> ADR-L-0011` |
 | [ADR-PC-0006 — Brownfield Onboarding and Canonical Normalization](../physical-component/ADR-PC-0006-brownfield-onboarding-and-canonical-normalization.md) | implements this logical authority | `ADR-PC-0006 -[:implements_logical]-> ADR-L-0011` |
-| [ADR-PS-0002 — ADR Kit Authoring Compiler and Validation System](../physical-system/ADR-PS-0002-adr-kit-authoring-compiler-and-validation-system.md) | implements this logical authority | `ADR-PS-0002 -[:implements_logical]-> ADR-L-0011` |
+| [ADR-PS-0002 — ADR Kit Compiler, Validation, and Canonical Semantic Execution System](../physical-system/ADR-PS-0002-adr-kit-authoring-compiler-and-validation-system.md) | implements this logical authority | `ADR-PS-0002 -[:implements_logical]-> ADR-L-0011` |
 
 
 

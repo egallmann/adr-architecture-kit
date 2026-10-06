@@ -3,10 +3,10 @@ type: canonical_id_allocation
 high_water_marks:
   BOUND: 4
   CAP: 9002
-  COMP: 22
+  COMP: 23
   CONTRACT: 5
   DEC: 9000
-  IFACE: 35
+  IFACE: 36
   IMPL: 29
   INV: 283
 allocations:
@@ -514,6 +514,12 @@ allocations:
   file_path: adrs/physical-component/ADR-PC-0007-semantic-attribution-embodiment.yaml
   source_pointer: /component_specifications/0/alias_id
   state: active
+- id: COMP-0023
+  entity_type: component
+  file_path: adrs/physical-component/ADR-PC-0009-canonical-semantic-execution-core.yaml
+  source_pointer: /component_specifications/0/alias_id
+  state: active
+  adr_id: 01a10e4c-9ea8-76a2-93f7-8fbeca1ad7cf
 - id: CONTRACT-0001
   entity_type: contract
   adr_id: ADR-L-0001
@@ -2344,6 +2350,12 @@ allocations:
   file_path: adrs/physical-component/ADR-PC-0007-semantic-attribution-embodiment.yaml
   source_pointer: /component_specifications/0/interfaces/1/alias_id
   state: active
+- id: IFACE-0036
+  entity_type: interface
+  file_path: adrs/physical-component/ADR-PC-0009-canonical-semantic-execution-core.yaml
+  source_pointer: /component_specifications/0/interfaces/0/alias_id
+  state: active
+  adr_id: 01a10e4c-9ea8-76a2-93f7-8fbeca1ad7cf
 - id: IMPL-0001
   entity_type: implementation_decision
   adr_id: ADR-P-0001

@@ -5,8 +5,8 @@ artifact_kind: rendered_adr_markdown
 generator_id: adr-projection-markdown
 generator_version: 3
 hash_algorithm: sha256
-source_hash: 7e1cc62fac336ab9e496663848badaf8e20c2bb3bfd423d0d0b591f8b37c1296
-rendered_hash: 36e74ab4a3077b6f1b34585b38fc1f81a0dc730469b3f378beec57bb48af0fd8
+source_hash: 62c7f9fcc1979c3571a82d7c656da782600f73ace4e55f74215a0b923b12412f
+rendered_hash: 3cdc605944788d98b5ce7b457aeacbeba0223904b951662585094050eadfdc49
 -->
 
 # ADR-PC-0003: Compiler Pipeline and Driver
@@ -32,7 +32,7 @@ rendered_hash: 36e74ab4a3077b6f1b34585b38fc1f81a0dc730469b3f378beec57bb48af0fd8
 | Type | service |
 | System | [ADR-PS-0002](../physical-system/ADR-PS-0002-adr-kit-authoring-compiler-and-validation-system.md) |
 | Purpose | Compile canonical architecture artifacts into derived outputs. |
-| Depends on | Schema and Contract Validation Surface (COMP-0011) |
+| Depends on | Schema and Contract Validation Surface (COMP-0011); Canonical Semantic Execution Core (COMP-0023) |
 | Depended on by | Repository Boundary Component (COMP-0013); Generated Artifact Integrity Validation (COMP-0014) |
 | Interfaces | IFACE-0013 — CLI; IFACE-0018 — library_api |
 | Primary implementation | `src/adr_kit/compiler/driver.py` |
@@ -53,7 +53,7 @@ rendered_hash: 36e74ab4a3077b6f1b34585b38fc1f81a0dc730469b3f378beec57bb48af0fd8
 - Internal compiler types must not cross the supported public facade
 
 **Known architectural surface**
-- Depends on: Schema and Contract Validation Surface (COMP-0011)
+- Depends on: Schema and Contract Validation Surface (COMP-0011); Canonical Semantic Execution Core (COMP-0023)
 - Depended on by: Repository Boundary Component (COMP-0013); Generated Artifact Integrity Validation (COMP-0014)
 - Provided interfaces: IFACE-0013 — CLI; IFACE-0018 — library_api
 
@@ -85,7 +85,9 @@ flowchart LR
   n_019fee89_e618_74d1_9a1f_37e2c2982a51["COMP-0013<br/>Repository Boundary Component"]
   n_019fee89_e618_781c_831f_0d5fe24f7d85["COMP-0014<br/>Generated Artifact Integrity Validation"]
   n_019fee89_e618_7e7b_813b_2a48de1d809a["IFACE-0018<br/>library_api"]
+  n_01a10e4c_9ea8_76a2_93f7_8fbfd4c11741["COMP-0023<br/>Canonical Semantic Execution Core"]
   n_019fee89_e617_76ad_9336_b3615a6e4bde -->|"depends_on"| n_019fee89_e617_7060_8f3f_4ecd46a719da
+  n_019fee89_e617_76ad_9336_b3615a6e4bde -->|"depends_on"| n_01a10e4c_9ea8_76a2_93f7_8fbfd4c11741
   n_019fee89_e618_74d1_9a1f_37e2c2982a51 -->|"depends_on"| n_019fee89_e617_76ad_9336_b3615a6e4bde
   n_019fee89_e618_781c_831f_0d5fe24f7d85 -->|"depends_on"| n_019fee89_e617_76ad_9336_b3615a6e4bde
   n_019fee89_e617_76ad_9336_b3615a6e4bde -->|"provides_interface"| n_019fee89_e617_779d_a12e_7713d58fbc21
@@ -98,6 +100,9 @@ flowchart LR
 - Schema and Contract Validation Surface (COMP-0011)
 
   `COMP-0012 -[:depends_on]-> COMP-0011`
+- Canonical Semantic Execution Core (COMP-0023)
+
+  `COMP-0012 -[:depends_on]-> COMP-0023`
 
 **Depended on by**
 - Repository Boundary Component (COMP-0013)
@@ -286,6 +291,7 @@ CLI orchestration for compile entrypoints.
 | [ADR-PC-0002 — Schema and Contract Validation](ADR-PC-0002-schema-and-contract-validation.md) | Compiler Pipeline and Driver (COMP-0012) → Schema and Contract Validation Surface (COMP-0011) | `COMP-0012 -[:depends_on]-> COMP-0011` |
 | [ADR-PC-0004 — Repository Boundary and Normalized Semantic Model](ADR-PC-0004-repository-boundary-and-normalized-semantic-model.md) | Repository Boundary Component (COMP-0013) → Compiler Pipeline and Driver (COMP-0012) | `COMP-0013 -[:depends_on]-> COMP-0012` |
 | [ADR-PC-0005 — Generated Artifact Integrity Validation](ADR-PC-0005-generated-artifact-integrity-validation.md) | Generated Artifact Integrity Validation (COMP-0014) → Compiler Pipeline and Driver (COMP-0012) | `COMP-0014 -[:depends_on]-> COMP-0012` |
+| [ADR-PC-0009 — Canonical Semantic Execution Core](ADR-PC-0009-canonical-semantic-execution-core.md) | Compiler Pipeline and Driver (COMP-0012) → Canonical Semantic Execution Core (COMP-0023) | `COMP-0012 -[:depends_on]-> COMP-0023` |
 
 
 

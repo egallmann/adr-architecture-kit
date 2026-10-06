@@ -5,8 +5,8 @@ artifact_kind: rendered_adr_markdown
 generator_id: adr-projection-markdown
 generator_version: 3
 hash_algorithm: sha256
-source_hash: c85b98456ff360bbfd194384823527f7e9b8a41f20f445e355564e63ce4859a4
-rendered_hash: 7798d8f639f9096e1e4b6e8eedab20737cba89c41d40f939bcfa3dbbd4cf9ed7
+source_hash: 4caae3be09d4219bf6eadda20ffda6f76efa62357393fcad81b0837f599168c0
+rendered_hash: 037cc3c7b5fa8e4e02efaafb640d3bc1def003117e39687b97ee735f883fb8de
 -->
 
 # ADR-L-0029: Semantic Authoring Construction and Candidate Authority
@@ -30,6 +30,7 @@ rendered_hash: 7798d8f639f9096e1e4b6e8eedab20737cba89c41d40f939bcfa3dbbd4cf9ed7
 | Status | accepted |
 | Decisions | 16 |
 | Invariants | 19 |
+| Physical realizations | [ADR-PC-0009](../physical-component/ADR-PC-0009-canonical-semantic-execution-core.md) |
 
 
 ## Context
@@ -550,6 +551,11 @@ Retained evidence supports reconstruction without moving contract ownership.
 
 
 
+## Physical Realization
+
+**Components**
+- [ADR-PC-0009](../physical-component/ADR-PC-0009-canonical-semantic-execution-core.md)
+
 
 
 
@@ -587,6 +593,12 @@ Retained evidence supports reconstruction without moving contract ownership.
 - [ADR-L-0033](ADR-L-0033-governed-candidate-binding-for-authoring-construction.md)
 - [ADR-L-0034](ADR-L-0034-detached-normalized-semantic-equivalence-for-authoring-construction.md)
 
+
+## Architecture Relationships
+
+| Neighbor | Relationship | Exact Path |
+| --- | --- | --- |
+| [ADR-PC-0009 — Canonical Semantic Execution Core](../physical-component/ADR-PC-0009-canonical-semantic-execution-core.md) | implements this logical authority | `ADR-PC-0009 -[:implements_logical]-> ADR-L-0029` |
 
 
 
